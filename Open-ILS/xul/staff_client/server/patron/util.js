@@ -4,9 +4,115 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
+	'columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
+
+patron.util.mb_columns = function(modify) {
+
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
+
+
+	var c = [
+		{
+			'id' : 'id', 'label' : 'Id', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mb.id()'
+		},
+		{
+			'id' : 'voided', 'label' : 'Voided', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mb.voided() ? "Yes" : "No"'
+		},
+		{
+			'id' : 'voider', 'label' : 'Voider', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mb.voider() ? "Id = " + my.mb.voider() : ""'
+		},
+		{
+			'id' : 'void_time', 'label' : 'Void Time', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mb.void_time()'
+		},
+		{
+			'id' : 'amount', 'label' : 'Amount', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mb.amount() )'
+		},
+		{
+			'id' : 'billing_type', 'label' : 'Type', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mb.billing_type()'
+		},
+		{
+			'id' : 'billing_ts', 'label' : 'When', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'util.date.formatted_date( my.mb.billing_ts(), "" )'
+		},
+		{
+			'id' : 'note', 'label' : 'Note', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mb.note()'
+		},
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	return c;
+}
+
+patron.util.mp_columns = function(modify) {
+
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
+
+
+	var c = [
+		{
+			'id' : 'id', 'label' : 'ID', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mp.id()'
+		},
+		{
+			'id' : 'refunded', 'label' : 'Refunded', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.refunded() ? "Yes" : "No"'
+		},
+		{
+			'id' : 'refunder', 'label' : 'Refunder ID', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mp.refunder() ? my.mp.refunder() : ""'
+		},
+		{
+			'id' : 'refund_time', 'label' : 'Refund Time', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mp.refund_time()'
+		},
+		{
+			'id' : 'amount', 'label' : 'Amount', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )'
+		},
+		{
+			'id' : 'payment_type', 'label' : 'Type', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.payment_type()'
+		},
+		{
+			'id' : 'payment_ts', 'label' : 'When', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'util.date.formatted_date( my.mp.payment_ts(), "" )'
+		},
+		{
+			'id' : 'note', 'label' : 'Note', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.note()'
+		},
+		{
+			'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 0,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.xact()'
+		},
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	return c;
+}
 
 patron.util.columns = function(modify) {
 	
