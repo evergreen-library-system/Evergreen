@@ -144,7 +144,17 @@ main.menu.prototype = {
 					obj.data.stash_retrieve();
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
 						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( obj.data.session ) );
-					obj.set_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Register Patron' });
+					obj.set_tab(
+						loc, 
+						{}, 
+						{ 
+							'show_print_button' : true , 
+							'tab_name' : 'Register Patron' ,
+							'passthru_content_params' : {
+								'spawn_search' : function(s) { alert('Editor would like to search for: ' + js2JSON(s)); }
+							}
+						}
+					);
 				}
 			],
 			'cmd_circ_checkin' : [
