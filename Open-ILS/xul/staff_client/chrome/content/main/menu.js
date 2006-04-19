@@ -161,6 +161,7 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
+			/*
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
@@ -168,11 +169,12 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
+			*/
 			'cmd_browse_holds' : [
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER) + '?session='+window.escape(obj.data.session),{ 'tab_name' : 'Hold Browser' },{});
 				}
 			],
 			'cmd_circ_hold_pull_list' : [
