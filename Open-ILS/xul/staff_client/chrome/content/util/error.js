@@ -107,10 +107,11 @@ util.error.prototype = {
 				}
 				if (this.fileDump) {
 					if (level!='D_FILE') {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						JSAN.use('util.file'); var master_log = new util.file('log');
 						master_log.write_content('append',message); master_log.close();
 						var specific_log = new util.file('log_'+level);
-						specific_log.write_content('append',message);
+						specific_log.write_content('append',message); specific_log.close();
 					}
 				}
 			}
