@@ -35,6 +35,26 @@ sub initialize {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'retrieve_circ',
+	api_name	=> 'open-ils.circ.retrieve',
+	signature => q/
+		Retrieve a circ object by id
+		@param authtoken Login session key
+		@pararm circid The id of the circ object
+	/
+);
+sub retrieve_circ {
+	my( $s, $c, $a, $i ) = @_;
+	my($reqr, $evt) = $U->checksesperm($a, 'VIEW_CIRCULATIONS');
+	return $evt if $evt;
+	my $circ;
+	($circ, $evt) = $U->fetch_circulation($i);
+	return $evt if $evt;
+	return $circ;
+}
+
+
 # ------------------------------------------------------------------------
 # Returns an array of {circ, record} hashes checked out by the user.
 # ------------------------------------------------------------------------
