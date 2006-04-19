@@ -487,7 +487,7 @@
 										<td><div class='wide right'>Profile Group</div></td>
 										<td>
 											<div class='wide left'>
-												<select id='ue_profile'>
+												<select id='ue_profile' class='select_big'>
 													<option> -- Required -- </option>
 												</select>
 											</div>
@@ -508,9 +508,11 @@
 												</button>
 
 												<span class='pad' style='font-size: 8pt;'>(YYYY-MM-DD)</span>
+												<!--
 												<div style='margin-top: 5px;'>
 													Note: a default will be provided if none is selected
 												</div>
+												-->
 	
 												<script type="text/javascript">
 													Calendar.setup({
@@ -564,7 +566,11 @@
 											<div class='wide left'>
 												<textarea wrap='soft' cols='30' rows='4' id='ue_alert_message'/>
 												<input class='pad' id='ue_alert_message_reset' 
-													type='submit' value='Clear' onclick='$("ue_alert_message").value = "";'/>
+													type='submit' value='Clear' 
+														onclick='
+														var node = $("ue_alert_message");
+														node.value = "";
+														if(node.onchange) node.onchange();'/>
 											</div>
 										</td>
 									</tr>
@@ -591,7 +597,7 @@
 										<td>
 											<div class='wide left'>
 												<select name='ue_stat_cat_selector'>
-													<option> -- Select One -- </option>
+													<option value=''> -- Select One -- </option>
 												</select>
 												<span class='pad'> or </span>
 												<input class='pad' type='text' name='ue_stat_cat_newval'/>
@@ -623,9 +629,10 @@
 											style='width: 60%; text-align: left; padding-left: 40px;'/>
 										<td class='hide_me'>
 											<select name='ue_survey_answer'>
-												<option> -- Select One -- </option>
+												<option value=''> -- Select One -- </option>
 											</select>
 										</td>
+										<!--
 										<td class='hide_me' name='ue_survey_answer_poll'>
 											<table>
 												<tbody name='ue_survey_answer_poll_tbody'>
@@ -639,6 +646,7 @@
 												</tbody>
 											</table>
 										</td>
+										-->
 									</tr>
 								</tbody>
 							</table>

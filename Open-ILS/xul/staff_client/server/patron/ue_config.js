@@ -21,12 +21,13 @@ var ssnRegex	= /^\d{3}-\d{2}-\d{4}$/;
 var dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 var phoneRegex	= /\d{3}-\d{3}-\d{4}/;
 var nonumRegex	= /^\D+$/;
+var dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 
 
 
-function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
+function uEditDefineData(patron) {
 	
-	dataFields = [
+	var fields = [
 		{
 			required : true,
 			object	: patron.card(),
@@ -127,7 +128,7 @@ function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
 			key		: 'dob',
 			widget	: {
 				id			: 'ue_dob',
-				regex		: /^\d{4}-\d{2}-\d{2}/,
+				regex		: dateRegex,
 				type		: 'input',
 			}
 		},
@@ -223,7 +224,76 @@ function uEditDefineData(patron, identTypes, groups, statCats, surveys ) {
 				regex		:  numRegex,
 			}
 		},
+		{
+			required : true,
+			object	: patron,
+			key		: 'expire_date',
+			widget	: {
+				id			: 'ue_expire',
+				type		: 'input',
+				regex		:  dateRegex,
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'active',
+			widget	: {
+				id			: 'ue_active',
+				type		: 'checkbox',
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'barred',
+			widget	: {
+				id			: 'ue_barred',
+				type		: 'checkbox',
+			}
+		},
+		{
+			required : true,
+			object	: patron,
+			key		: 'profile',
+			widget	: {
+				id			: 'ue_profile',
+				type		: 'select',
+				regex		: numRegex,
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'master_account',
+			widget	: {
+				id			: 'ue_group_lead',
+				type		: 'checkbox',
+			}
+		},
+		{
+			required : true,
+			object	: patron,
+			key		: 'claims_returned_count',
+			widget	: {
+				id			: 'ue_claims_returned',
+				type		: 'input',
+				regex		: numRegex,
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'alert_message',
+			widget	: {
+				id			: 'ue_alert_message',
+				type		: 'input',
+			}
+		}
 	];
+
+	for( var f in fields ) 
+		dataFields.push(fields[f]);
 
 	uEditBuildAddrs(patron);
 }
@@ -238,30 +308,6 @@ function uEditBuildAddrs(patron) {
 	for( var a in patron.addresses() ) 
 		uEditBuildAddrFields( patron, patron.addresses()[a]);
 }
-
-
-/* Creates a new blank address, adds it to the user
-	and the fields array */
-var uEditVirtualAddrId = -1;
-function uEditCreateNewAddr() {
-	var addr = new aua();
-
-	addr.id(uEditVirtualAddrId--);
-	addr.isnew(1);
-	addr.usr(patron.id());
-	addr.state(defaultState);
-	addr.country(defaultCountry);
-
-	if(patron.addresses().length == 0) {
-		patron.mailing_address(addr);
-		patron.billing_address(addr);
-	}
-
-	uEditBuildAddrFields(patron, addr);
-	patron.addresses().push(addr);
-}
-
-
 
 
 function uEditDeleteAddr( tbody, row, address ) {
@@ -361,6 +407,7 @@ function uEditBuildAddrFields(patron, address) {
 
 	if( address.id() == patron.billing_address().id() ) 
 		$n(row, 'ue_addr_billing_yes').checked = true;
+	
 
 	if( address.id() == patron.mailing_address().id() ) 
 		$n(row, 'ue_addr_mailing_yes').checked = true;
@@ -489,6 +536,67 @@ function uEditBuildAddrFields(patron, address) {
 }
 
 
+function uEditBuildSCMField(statcat, row) {
+
+	var map = new actscecm();
+	map.stat_cat(statcat.id());
+	map.target_usr(patron.id());
+
+	var field = {
+		required : false,
+		object	: map,
+		key		: 'stat_cat_entry',
+		widget	: {
+			base	: row,
+			name	: 'ue_stat_cat_newval',
+			type	: 'input',
+
+			onpostchange : function( field, newval ) {
+
+				/* see if the current map already resides in 
+					the patron entry list */
+				var exists = grep( patron.stat_cat_entries(),
+					function(item) {
+						return (item.stat_cat() == statcat.id()); 
+					}
+				);
+
+				if(newval) map.isdeleted(0);
+
+				if(exists) {
+					if(!newval) {
+
+						/* if the map is new but currently contains no value
+							remove it from the set of new maps */
+						if(map.isnew()) {
+							patron.stat_cat_entries(
+								grep( patron.stat_cat_entries(),
+									function(item) {
+										return (item.stat_cat() != map.stat_cat());
+									}
+								)
+							);
+
+						} else {
+							map.isdeleted(1);
+						}
+					} 
+
+				} else {
+
+					/* map does not exist in the map array but now has data */
+					if(newval) { 
+						map.isnew(1);
+						patron.stat_cat_entries().push(map);
+					}
+				}
+			}
+		}
+	}
+
+	dataFields.push(field);
+}
+
 
 
 /** Run this after a new ident type is selected */
@@ -528,14 +636,4 @@ function _uEditIdentPostchange(type, field, newval) {
 
 
 
-
-	/*
-	$('ue_expire')
-	$('ue_active')
-	$('ue_barred')
-	$('ue_claims_returned')
-	$('ue_alert_message')
-
-	$('ue_profile')
-	*/
 

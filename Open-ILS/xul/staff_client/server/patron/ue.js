@@ -11,6 +11,9 @@ var counter				= 0;
 var dataFields;
 var patron;
 var identTypesCache	= {};
+/*
+var statCatsCache		= {};
+*/
 
 
 /* fetch the necessary data to start off */
@@ -28,39 +31,6 @@ function uEditInit() {
 
 	setTimeout( function() { uEditBuild(); }, 20 );
 }
-
-
-function uEditBuild() {
-	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
-
-	/* these have to be synchronous */
-	uEditBuildLibSelector();
-
-	patron = fetchFleshedUser(cgi.param('usr'));
-	if(!patron) patron = uEditNewPatron();
-
-	uEditDraw( 
-		uEditFetchIdentTypes(),
-		uEditFetchGroups(),
-		uEditFetchStatCats(),
-		uEditFetchSurveys() );
-}
-
-
-/* creates a new patron object with card attached */
-function uEditNewPatron() {
-	var patron = new au(); 
-	patron.isnew(1);
-	patron.id(-1);
-	card = new ac();
-	card.id(-1);
-	patron.card(card);
-	patron.cards([card]);
-	patron.stat_cat_entries([]);
-	patron.survey_responses([]);
-	return patron;
-}
-
 
 /* ------------------------------------------------------------------------------ */
 /* Fetch code
@@ -91,52 +61,74 @@ function uEditFetchGroups() {
 /* ------------------------------------------------------------------------------ */
 
 
-function uEditBuildLibSelector( node, depth, selector ) {
-	if(!selector) selector = $('ue_org_selector');
-	if(!node) { depth = 0; node = globalOrgTree; }
-	
-	var opt = insertSelectorVal( selector, -1, node.name(), node.id(), null, depth++ );
 
-	if(!findOrgType(node.ou_type()).can_have_users()) opt.disabled = true; 
+/* fetches necessary and builds the UI */
+function uEditBuild() {
+	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
-	if( node.id() == USER.ws_ou() ) 
-		setSelector(selector, node.id());
+	uEditBuildLibSelector();
+	patron = fetchFleshedUser(cgi.param('usr'));
+	if(!patron) patron = uEditNewPatron();
 
-	for( var c in node.children() ) 
-		uEditBuildLibSelector(node.children()[c], depth, selector);
+	uEditDraw( 
+		uEditFetchIdentTypes(),
+		uEditFetchGroups(),
+		uEditFetchStatCats());
+		/*
+		uEditFetchSurveys() );
+		*/
 }
 
-function uEditDrawIDTypes(types) {
-	var pri_sel = $('ue_primary_ident_type');
-	var sec_sel = $('ue_secondary_ident_type');
-	var idx = 1;
-	for( var t in types ) {
-		var type = types[t];
-		if(!type.name()) continue;
-		identTypesCache[type.id()] = type;
-		setSelectorVal( pri_sel, idx, type.name(), type.id() );
-		setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+
+/* creates a new patron object with card attached */
+function uEditNewPatron() {
+	var patron = new au(); 
+	patron.isnew(1);
+	patron.id(-1);
+	card = new ac();
+	card.id(-1);
+	patron.card(card);
+	patron.cards([card]);
+	patron.stat_cat_entries([]);
+	patron.survey_responses([]);
+	return patron;
+}
+
+/* Creates a new blank address, adds it to the user and the fields array */
+var uEditVirtualAddrId = -1;
+function uEditCreateNewAddr() {
+	var addr = new aua();
+	addr.id(uEditVirtualAddrId--);
+	addr.isnew(1);
+	addr.usr(patron.id());
+	addr.state(defaultState);
+	addr.country(defaultCountry);
+	if(patron.addresses().length == 0) {
+		patron.mailing_address(addr);
+		patron.billing_address(addr);
 	}
+	uEditBuildAddrFields(patron, addr);
+	patron.addresses().push(addr);
 }
 
 
-
-
-
+/* kicks off the UI drawing */
 function uEditDraw(identTypes, groups, statCats, surveys ) {
-
 	hideMe($('uedit_loading'));
 	unHideMe($('ue_maintd'));
 
+	dataFields = [];
 	uEditDrawIDTypes(identTypes);
-	uEditDefineData(patron, identTypes, groups, statCats, surveys );
+	uEditDrawGroups(groups);
+	uEditDrawStatCats(statCats);
+	uEditDefineData(patron);
 
 	for( var f in dataFields ) 
 		uEditActivateField(dataFields[f]);
 }
 
 
-/** Applies the event handlers and set the data for the field */
+/** Applies the event handlers and sets the data for the field */
 function uEditActivateField(field) {
 
 	if( field.widget.id ) {
@@ -167,12 +159,14 @@ function uEditActivateField(field) {
 }
 
 
+/* set up the onchange event for the field */
 function uEditSetOnchange(field) {
 	var func = function() {uEditOnChange( field );}
 	field.widget.node.onchange = func;
 	field.widget.node.onkeyup = func;
 }
 
+/* find the current value of the field object's widget */
 function uEditNodeVal(field) {
 	if(field.widget.type == 'input')
 		return field.widget.node.value;
@@ -185,6 +179,7 @@ function uEditNodeVal(field) {
 }
 
 
+/* update a field value */
 function uEditOnChange(field) {
 	var newval = uEditNodeVal(field);
 
@@ -217,23 +212,31 @@ function uEditOnChange(field) {
 		field.widget.onpostchange(field, newval);
 }
 
+/* find a field object by object key */
 function uEditFindFieldByKey(key) {
 	var fields = grep( dataFields,
 		function(item) { return (item.key == key); });
 	return (fields) ? fields[0] : null;
 }
 
+/* find a field object by widget id */
 function uEditFindFieldByWId(id) {
 	var fields = grep( dataFields,
 		function(item) { return (item.widget.id == id); });
 	return (fields) ? fields[0] : null;
 }
 
+
+/* send the user to the database */
 function uEditSaveUser() {
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
 	var result = req.result();
+
+	var es = patron.stat_cat_entries();
+	for( var e in es ) alert(js2JSON(es[e]));
+	return;
 
 	if( checkILSEvent(result) ) 
 		alert(js2JSON(result));
