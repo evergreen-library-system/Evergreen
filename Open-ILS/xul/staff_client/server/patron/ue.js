@@ -10,10 +10,11 @@ var defaultState		= 'GA';
 var counter				= 0;
 var dataFields;
 var patron;
-var identTypesCache	= {};
-/*
-var statCatsCache		= {};
-*/
+var identTypesCache			= {};
+var statCatsCache				= {};
+var surveysCache				= {};
+var surveyQuestionsCache	= {};
+var surveyAnswersCache		= {};
 
 
 /* fetch the necessary data to start off */
@@ -232,14 +233,38 @@ function uEditFindFieldByWId(id) {
 }
 
 
+function uEditIterateFields(callback) {
+	for( var f in dataFields ) {
+		callback(dataFields[f]);
+	}
+}
+
+
+function uEditGetErrorStrings() {
+	var errors = [];
+	uEditIterateFields(
+		function(field) { 
+			if(field.errkey) {
+				if( field.widget.node.className.indexOf(CSS_INVALID_DATA) != -1) {
+					var str = $(field.errkey).innerHTML;
+					if(str) errors.push(str);
+				}
+			}
+		}
+	);
+	return errors;
+}
+
+function uEditAlertErrors() {
+	var errors = uEditGetErrorStrings();
+	if( !errors[0] ) return false;
+	alert(errors.join("\n"));
+	return true;
+}
+
+
 /* send the user to the database */
 function uEditSaveUser() {
-
-	/*
-	var es = patron.survey_responses();
-	for( var e in es ) alert(js2JSON(es[e]));
-	return;
-	*/
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
@@ -256,10 +281,4 @@ function uEditSaveUser() {
 		location.href = location.href;
 	}
 }
-
-function uEditShowSummary() {
-}
-
-
-
 

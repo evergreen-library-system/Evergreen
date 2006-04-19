@@ -27,6 +27,7 @@ var pageFocus = [
 
 
 function uEditNext() {
+	if(uEditAlertErrors()) return;
 	var i = _findActive();
 	if( i < (pages.length - 1)) uEditShowPage(pages[i+1]);
 }
@@ -42,6 +43,7 @@ function uEditFetchError(id) { if($(id)) return $(id).innerHTML + "\n"; return "
 
 function uEditShowPage(id) {
 	if( id == null ) return;
+	if(uEditAlertErrors()) return;
 
 	for( var p in pages ) {
 		var page = pages[p];
@@ -49,9 +51,10 @@ function uEditShowPage(id) {
 		removeCSSClass($(page+'_label'), 'label_active');
 	}
 
+	var idx = _findPageIdx(id);
+
 	unHideMe($(id));
 	addCSSClass($(id+'_label'), 'label_active');
-	var idx = _findPageIdx(id);
 	var fpage = pageFocus[idx];
 
 	if($(fpage)) { 
@@ -151,6 +154,8 @@ function uEditInsertCat( row, cat, idx ) {
 		}
 	);
 
+	statCatsCache[cat.id()] = cat;
+
 	/* register the new map object */
 	uEditBuildSCMField(cat, row);
 
@@ -181,6 +186,7 @@ function uEditDrawSurveys(surveys) {
 	var table = div.removeChild($('ue_survey_table'));
 	for( var s in surveys ) {
 		var survey = surveys[s];
+		surveysCache[survey.id()] = survey;
 		var clone = table.cloneNode(true);
 		uEditInsertSurvey( div, clone, survey, s );
 		div.appendChild(clone);
@@ -208,8 +214,11 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 	$n(row, 'ue_survey_question').appendChild(text(question.question()));
 	for( var a in question.answers() ) {
 		var answer = question.answers()[a];
+		surveyAnswersCache[answer.id()] = answer;
 		insertSelectorVal(selector, -1, answer.answer(), answer.id() );
 	}
+
+	surveyQuestionsCache[question.id()] = question;
 
 	selector.onchange = function() {
 
@@ -238,4 +247,145 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 	}
 }
 
+
+
+
+
+/* -----------------------------------------------------------------------
+	Spit out the patron info to the summary display tables...
+	----------------------------------------------------------------------- */
+
+function uEditShowSummary() {
+	hideMe($('main_div_container'));
+	unHideMe($('summary_div_container'));
+
+	for( var f in dataFields ) {
+
+		var field = dataFields[f];
+		if( field.object == patron ) {
+
+			var val = uEditNodeVal(field);
+
+			if(	field.key == 'profile'		||
+					field.key == 'home_ou'		||
+					field.key == 'ident_type'	||
+					field.key == 'ident_type2') {
+
+				val = getSelectorName($(field.widget.id));
+			}
+
+			var node = $('ue_summary_'+field.key);
+			if(node) appendClear(node, text(val));
+		}
+	}
+
+	var table = $('ue_summary_table');
+	uEditFleshSummaryAddresses( table, patron );
+	uEditFleshSummaryStatCats( table, patron );
+	uEditFleshSummarySurveys( table, patron );
+}
+
+
+
+var uEditSummaryAddrRow;
+function uEditFleshSummaryAddresses( table, patron ) {
+
+	var addrtbody = $n(table, 'ue_summary_addr_tbody');
+	if(!uEditSummaryAddrRow)
+		uEditSummaryAddrRow = 
+			addrtbody.removeChild($n(addrtbody, 'ue_summary_addr_row'));
+	var rowtmpl = uEditSummaryAddrRow;
+	removeChildren(addrtbody);
+
+	for( var a in patron.addresses() ) {
+		var address = patron.addresses()[a];
+		var row = rowtmpl.cloneNode(true);
+		uEditFleshSummaryAddr( address, patron, row );
+		addrtbody.appendChild(row);
+		if(address.isdeleted()) addCSSClass(row, 'deleted');
+	}
+}
+
+
+function uEditFleshSummaryAddr( address, patron, row ) {
+	var yes = $('yes').innerHTML;
+	var no = $('no').innerHTML;
+
+	$n(row, 'label').appendChild(text(address.address_type()));
+	$n(row, 'street1').appendChild(text(address.street1()));
+	$n(row, 'street2').appendChild(text(address.street2()));
+	$n(row, 'city').appendChild(text(address.city()));
+	$n(row, 'county').appendChild(text(address.county()));
+	$n(row, 'state').appendChild(text(address.state()));
+	$n(row, 'country').appendChild(text(address.country()));
+	$n(row, 'zip').appendChild(text(address.post_code()));
+	$n(row, 'valid').appendChild(text( (address.valid()) ? yes : no ));
+	$n(row, 'incorporated').appendChild(text( (address.within_city_limits()) ? yes : no ));
+
+	$n(row, 'mailing').appendChild(text( 
+		(patron.mailing_address() == address.id()) ? yes : no ));
+
+	$n(row, 'billing').appendChild(text( 
+		(patron.billing_address() == address.id()) ? yes : no ));
+}
+
+
+
+var uEditSummaryStatCatRow;
+function uEditFleshSummaryStatCats( table, patron ) {
+	var tbody = $n(table, 'ue_summary_stats_tbody');
+
+	if(!uEditSummaryStatCatRow)
+		uEditSummaryStatCatRow = 
+			tbody.removeChild($n(tbody, 'ue_summary_stats_row'));
+	var rowtmpl = uEditSummaryStatCatRow;
+	removeChildren(tbody);
+
+	for( var s in patron.stat_cat_entries() ) {
+		row = rowtmpl.cloneNode(true);
+		var entry = patron.stat_cat_entries()[s];
+		var cat = statCatsCache[entry.stat_cat()];
+		$n(row, 'ue_summary_stat_name').appendChild(text(cat.name()));
+		$n(row, 'ue_summary_stat_value').appendChild(text(entry.stat_cat_entry()));
+		row.setAttribute('statcat', entry.stat_cat());
+		if( entry.isdeleted() ) addCSSClass(row, 'deleted'); 
+		tbody.appendChild(row);
+	}
+
+	if( ! getElementsByTagNameFlat( tbody, 'tr' )[0] )
+		hideMe(tbody.parentNode);
+	else
+		unHideMe(tbody.parentNode);
+}
+
+
+
+var uEditSummarySurveyRow;
+function uEditFleshSummarySurveys( table, patron ) {
+
+	var tbody	= $n(table, 'ue_summary_survey_tbody');
+	if(!uEditSummarySurveyRow)
+		uEditSummarySurveyRow = 
+			tbody.removeChild($n(tbody, 'ue_summary_survey_row'));
+	var rowtmpl = uEditSummarySurveyRow;
+
+	removeChildren(tbody);
+
+	for( var r in patron.survey_responses() ) {
+		var row		= rowtmpl.cloneNode(true);
+		var resp		= patron.survey_responses()[r];
+		var survey	= surveysCache[resp.survey()];
+		var quest	= surveyQuestionsCache[resp.question()];
+		var answer	= surveyAnswersCache[resp.answer()];
+		$n(row, 'ue_summary_survey_name').appendChild(text(survey.name()));
+		$n(row, 'ue_summary_survey_question').appendChild(text(quest.question()));
+		$n(row, 'ue_summary_survey_answer').appendChild(text(answer.answer()));
+		tbody.appendChild(row);
+	}
+
+	if( ! getElementsByTagNameFlat(tbody, 'tr')[0])
+		hideMe(tbody.parentNode);
+	else
+		unHideMe(tbody.parentNode);
+}
 

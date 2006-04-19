@@ -66,6 +66,8 @@
 				class applied and are currently focused */
 			input:focus:not(.invalid_value) { background: #E0F0E0; color: darkblue;}
 
+			.deleted { background: #FF6666; }
+
 		</style>
 	</head>
 
@@ -81,6 +83,7 @@
 
 		<hr/><br/>
 
+		<div id='main_div_container'>
 		<div style='margin-bottom: 5px; width:100%; text-align: left;'>
 			<b>
 				<span>Note: required fields are </span>
@@ -682,43 +685,50 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+
 	</center>
 
-	<div id='ue_summary_page' class='hide_me'>
-		<table id='ue_summary_table' class='summary_grid' width='55%'>
-			<style type='text/css'>
-				.summary_grid { padding: 5px; }
-				.summary_grid thead tr { background: #E0F0E0; font-weight: bold;}
-				.summary_grid tbody tr td { border: 1px solid #E0F0E0; }
-				.hide_me{ visibility: hidden; display: none }
-				.deleted { background: #FF6666; }
-			</style>
-			<thead><tr>
-				<td colspan='2'>
-					<span>User Summary Information (Deleted items are marked in</span>
-					<span class='deleted'>color</span><span>)</span>
-				</td>
-			</tr></thead>
-			<tbody name='ue_summary_page_tbody'>
+	<div id='summary_div_container' class='hide_me'>
+
+	<div id='ue_summary_page'>
+		<table id='ue_summary_table' class='data_grid' width='55%'>
+			<thead>
 				<tr>
-					<td><input type='submit' value='Print Page' onclick='window.print();'/></td>
-					<td><input type='submit' value='Close Window' onclick='window.close();'/></td>
+					<td colspan='2'>
+						<span>User Summary Information (Deleted items are marked in</span>
+						<span class='deleted'>color</span><span>)</span>
+					</td>
 				</tr>
-				<tr><td>Username</td><td name='ue_summary_username'/></tr>
-				<tr><td>First Name</td><td name='ue_summary_firstname'/></tr>
-				<tr><td>Middle Name</td><td name='ue_summary_middlename'/></tr>
-				<tr><td>Last Name</td><td name='ue_summary_lastname'/></tr>
-				<tr><td>Suffix</td><td name='ue_summary_suffix'/></tr>
-				<tr><td>Date of Birth</td><td name='ue_summary_dob'/></tr>
-				<tr><td>Primary Identification Type</td><td name='ue_summary_primary_ident_type'/></tr>
-				<tr><td>Primary Identification</td><td name='ue_summary_primary_ident'/></tr>
-				<tr><td>Secondary Identification Type</td><td name='ue_summary_secondary_ident_type'/></tr>
-				<tr><td>Secondary Identification</td><td name='ue_summary_secondary_ident'/></tr>
-				<tr><td>Email Address</td><td name='ue_summary_email'/></tr>
-				<tr><td>Day Phone</td><td name='ue_summary_dayphone'/></tr>
-				<tr><td>Evening Phone</td><td name='ue_summary_nightphone'/></tr>
-				<tr><td>Other Phone</td><td name='ue_summary_otherphone'/></tr>
-				<tr><td>Home Library</td><td name='ue_summary_home_lib'/></tr>
+			</thead>
+			<tbody name='ue_summary_page_tbody'>
+
+				<tr>
+
+					<td colspan='2' align='center'>
+						<input style='margin-right: 15px;' type='submit' value='Print Page' onclick='window.print();'/>
+						<input style='margin-left: 15px;' type='submit' value='Return to Editor' 
+							onclick=' unHideMe($("main_div_container")); 
+								hideMe($("summary_div_container"));'/>
+					</td>
+				</tr>
+
+				<tr><td>Username</td><td id='ue_summary_usrname'/></tr>
+				<tr><td>First Name</td><td id='ue_summary_first_given_name'/></tr>
+				<tr><td>Middle Name</td><td id='ue_summary_second_given_name'/></tr>
+				<tr><td>Last Name</td><td id='ue_summary_family_name'/></tr>
+				<tr><td>Suffix</td><td id='ue_summary_suffix'/></tr>
+				<tr><td>Date of Birth</td><td id='ue_summary_dob'/></tr>
+				<tr><td>Primary Identification Type</td><td id='ue_summary_ident_type'/></tr>
+				<tr><td>Primary Identification</td><td id='ue_summary_ident_value'/></tr>
+				<tr><td>Secondary Identification Type</td><td id='ue_summary_ident_type2'/></tr>
+				<tr><td>Secondary Identification</td><td id='ue_summary_ident_value2'/></tr>
+				<tr><td>Email Address</td><td id='ue_summary_email'/></tr>
+				<tr><td>Day Phone</td><td id='ue_summary_day_phone'/></tr>
+				<tr><td>Evening Phone</td><td id='ue_summary_evening_phone'/></tr>
+				<tr><td>Other Phone</td><td id='ue_summary_other_phone'/></tr>
+				<tr><td>Home Library</td><td id='ue_summary_home_ou'/></tr>
+
 				<tr>
 					<td colspan='2'>
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
@@ -730,28 +740,28 @@
 											<thead><tr><td colspan='4'/><span> </span></tr></thead>
 											<tbody>
 												<tr>
-													<td>Address Label</td><td name='label'/>
-													<td>Zip Code</td><td name='zip'/>
+													<td><b>Address Label</b></td><td name='label'/>
+													<td><b>Zip Code</b></td><td name='zip'/>
 												</tr>
 												<tr>
-													<td>Street1</td><td name='street1'/>
-													<td>Country</td><td name='country'/>
+													<td><b>Street1</b></td><td name='street1'/>
+													<td><b>Country</b></td><td name='country'/>
 												</tr>
 												<tr>
-													<td>Street2</td><td name='street2'/>
-													<td>Mailing</td><td name='mailing'/>
+													<td><b>Street2</b></td><td name='street2'/>
+													<td><b>Mailing</b></td><td name='mailing'/>
 												</tr>
 												<tr>
-													<td>City</td><td name='city'/>
-													<td>Billing</td><td name='billing'/>
+													<td><b>City</b></td><td name='city'/>
+													<td><b>Billing</b></td><td name='billing'/>
 												</tr>
 												<tr>
-													<td>County</td><td name='county'/>
-													<td>Valid</td><td name='valid'/>
+													<td><b>County</b></td><td name='county'/>
+													<td><b>Valid</b></td><td name='valid'/>
 												</tr>
 												<tr>
-													<td>State</td><td name='state'/>
-													<td>Within City Limits</td><td name='incorporated'/>
+													<td><b>State</b></td><td name='state'/>
+													<td><b>Within City Limits</b></td><td name='incorporated'/>
 												</tr>
 											</tbody>
 										</table>
@@ -761,19 +771,18 @@
 						</table>
 					</td>
 				</tr>
-				<tr><td>Profile</td><td name='ue_summary_profile'/></tr>
-				<tr><td>Expire Date</td><td name='ue_summary_expire'/></tr>
-				<tr><td>Family Lead Account</td><td name='ue_summary_family_lead'/></tr>
-				<tr><td>Claims Returned Count</td><td name='ue_summary_claims_returned'/></tr>
-				<tr><td>Alert Message</td><td name='ue_summary_alert_message'/></tr>
+				<tr><td>Profile</td><td id='ue_summary_profile'/></tr>
+				<tr><td>Active</td><td id='ue_summary_active'/></tr>
+				<tr><td>Barred</td><td id='ue_summary_barred'/></tr>
+				<tr><td>Expire Date</td><td id='ue_summary_expire_date'/></tr>
+				<tr><td>Family Lead Account</td><td id='ue_summary_master_account'/></tr>
+				<tr><td>Claims Returned Count</td><td id='ue_summary_claims_returned_count'/></tr>
+				<tr><td>Alert Message</td><td id='ue_summary_alert_message'/></tr>
 				<tr name='ue_summary_stat_cat_td'>
 					<td colspan='2' >
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
 							<thead><tr><td colspan='2'>Statistical Categories</td></tr></thead>
 							<tbody name='ue_summary_stats_tbody'>
-								<tr class='hide_me' name='ue_summary_stat_cat_none'>
-									<td colspan='2'>No Stat Cats have been set</td>
-								</tr>
 								<tr name='ue_summary_stats_row'>
 									<td name='ue_summary_stat_name'/><td name='ue_summary_stat_value'/>
 								</tr>
@@ -786,11 +795,6 @@
 						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
 							<thead><tr><td>Survey</td><td>Question</td><td>Answer</td></tr></thead>
 							<tbody name='ue_summary_survey_tbody'>
-
-								<tr class='hide_me' name='ue_summary_survey_none'>
-									<td colspan='3'>No new survey entries were created</td>
-								</tr>
-
 								<tr name='ue_summary_survey_row'>
 									<td name='ue_summary_survey_name'/>
 									<td name='ue_summary_survey_question'/>
@@ -800,25 +804,19 @@
 						</table>
 					</td>
 				</tr>
-				<tr name='ue_summary_errors_row' class='hide_me'>
-					<td colspan='2'>
-						<table width='100%' style='margin-top: 15px; margin-bottom: 15px;'>
-							<thead>
-								<tr>
-									<td style='color: red;' ><b>Errors you would see if you saved now...</b></td>
-								</tr>
-							</thead>
-							<tbody><tr><td name='ue_summary_errors'/></tr></tbody>
-						</table>
-					</td>
-				</tr>
 				<tr>
-					<td><input type='submit' value='Print Page' onclick='window.print();'/></td>
-					<td><input type='submit' value='Close Window' onclick='window.close();'/></td>
+					<td colspan='2' align='center'>
+						<input style='margin-right: 15px;' type='submit' value='Print Page' onclick='window.print();'/>
+						<input style='margin-left: 15px;' type='submit' value='Return to Editor' 
+							onclick=' unHideMe($("main_div_container")); 
+								hideMe($("summary_div_container"));'/>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	</div>
+
 
 	<!-- ************************************************************** -->
 	<!-- This holds all of the strings we may have to alert to the user -->
@@ -837,6 +835,8 @@
 			enter the new barcode below.  Otherwise, click the Cancel button.
 		</span>
 		<span id='ue_no_ident'>You must select two types of identification</span>
+		<span id='ue_bad_ident_dl'>Invalid drivers license. Should be STATE-NUMBER</span>
+		<span id='ue_bad_ident_ssn'>Invalid social security number.  Format should be 111-22-3333</span>
 		<span id='ue_bad_email'>The email addresses do not match or are invalid</span>
 		<span id='ue_bad_phone'>An invalid phone number was entered</span>
 		<span id='ue_no_profile'>A profile group must be selected</span>

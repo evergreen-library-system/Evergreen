@@ -32,6 +32,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron.card(),
 			key		: 'barcode',
+			errkey	: 'ue_bad_barcode',
 			widget	: {
 				id		: 'ue_barcode',
 				regex	: wordRegex,
@@ -42,6 +43,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'usrname',
+			errkey	: 'ue_bad_username',
 			widget	: {
 				id		: 'ue_username',
 				regex	: nonumRegex,
@@ -52,6 +54,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'passwd',
+			errkey	: 'ue_bad_password',
 			widget	: {
 				id		: 'ue_password1',
 				type	: 'input',
@@ -67,6 +70,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'passwd',
+			errkey	: 'ue_bad_password',
 			widget	: {
 				id		: 'ue_password2',
 				type	: 'input',
@@ -84,6 +88,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'first_given_name',
+			errkey	: 'ue_bad_firstname',
 			widget	: {
 				id		: 'ue_firstname',
 				regex	: nonumRegex,
@@ -94,6 +99,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'second_given_name',
+			errkey	: 'ue_bad_middlename',
 			widget	: {
 				id		: 'ue_middlename',
 				regex	: nonumRegex,
@@ -104,6 +110,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'family_name',
+			errkey	: 'ue_bad_lastname',
 			widget	: {
 				id		: 'ue_lastname',
 				regex	: nonumRegex,
@@ -126,6 +133,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'dob',
+			errkey	: 'ue_bad_dob',
 			widget	: {
 				id			: 'ue_dob',
 				regex		: dateRegex,
@@ -136,6 +144,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'ident_type',
+			errkey	: 'ue_no_ident',
 			widget	: {
 				id		: 'ue_primary_ident_type',
 				regex	: numRegex,
@@ -178,6 +187,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'email',
+			errkey	: 'ue_bad_email',
 			widget	: {
 				id			: 'ue_email',
 				type		: 'input',
@@ -188,6 +198,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'day_phone',
+			errkey	: 'ue_bad_phone',
 			widget	: {
 				id			: 'ue_day_phone',
 				type		: 'input',
@@ -198,6 +209,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'evening_phone',
+			errkey	: 'ue_bad_phone',
 			widget	: {
 				id			: 'ue_night_phone',
 				type		: 'input',
@@ -208,6 +220,7 @@ function uEditDefineData(patron) {
 			required : false,
 			object	: patron,
 			key		: 'other_phone',
+			errkey	: 'ue_bad_phone',
 			widget	: {
 				id			: 'ue_other_phone',
 				type		: 'input',
@@ -228,6 +241,7 @@ function uEditDefineData(patron) {
 			required : true,
 			object	: patron,
 			key		: 'expire_date',
+			errkey	: 'ue_bad_expire',
 			widget	: {
 				id			: 'ue_expire',
 				type		: 'input',
@@ -431,6 +445,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : true,
 			object	: address, 
 			key		: 'street1', 
+			errkey	: 'ue_bad_addr_street',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_street1',
@@ -441,16 +456,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : false,
 			object	: address, 
 			key		: 'street2', 
-			widget	: {
-				base	: row,
-				name	: 'ue_addr_street2',
-				type	: 'input',
-			}
-		},
-		{ 
-			required : false,
-			object	: address, 
-			key		: 'street2', 
+			errkey	: 'ue_bad_addr_street',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_street2',
@@ -461,6 +467,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : true,
 			object	: address, 
 			key		: 'city', 
+			errkey	: 'ue_bad_addr_city',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_city',
@@ -481,6 +488,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : true,
 			object	: address, 
 			key		: 'state', 
+			errkey	: 'ue_bad_addr_state',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_state',
@@ -491,6 +499,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : true,
 			object	: address, 
 			key		: 'country', 
+			errkey	: 'ue_bad_addr_country',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_country',
@@ -501,6 +510,7 @@ function uEditBuildAddrFields(patron, address) {
 			required : true,
 			object	: address, 
 			key		: 'post_code',
+			errkey	: 'ue_bad_addr_zip',
 			widget	: {
 				base	: row,
 				name	: 'ue_addr_zip',
@@ -654,16 +664,19 @@ function _uEditIdentPostchange(type, field, newval) {
 
 	if(name.match(/ssn/i)) {
 		vfield.widget.regex = ssnRegex;
+		vfield.errkey = 'ue_bad_ident_ssn';
 		unHideMe($(type+'_ident_ssn_help'));
 
 	} else {
 
 		if(name.match(/driver/i)) {
 			vfield.widget.regex = dlRegex;
+			vfield.errkey = 'ue_bad_ident_dl';
 			unHideMe($(type+'_ident_dl_help'));
 
 		} else {
 			vfield.widget.regex = null;
+			vfield.errkey = null;
 		}
 	}
 
