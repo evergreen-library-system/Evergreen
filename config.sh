@@ -89,6 +89,9 @@ function buildConfig {
 	prompt "Bootstrapping Database Host [$DBHOST] "
 	read X; if [ ! -z "$X" ]; then DBHOST="$X"; fi;
 
+	prompt "Bootstrapping Database Port [$DBPORT] "
+	read X; if [ ! -z "$X" ]; then DBPORT="$X"; fi;
+
 	prompt "Bootstrapping Database Name [$DBNAME] "
 	read X; if [ ! -z "$X" ]; then DBNAME="$X"; fi;
 
@@ -156,6 +159,7 @@ function writeConfig {
 	# db vars
 	_write "DBDRVR=\"$DBDRVR\"";
 	_write "DBHOST=\"$DBHOST\"";
+	_write "DBPORT=\"$DBPORT\"";
 	_write "DBNAME=\"$DBNAME\"";
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
@@ -170,7 +174,8 @@ function writeConfig {
 	STR='$main::config{dsn} =';
 		STR="$STR 'dbi:${DBDRVR}:host=";
 		STR="${STR}${DBHOST};dbname=";
-		STR="${STR}${DBNAME}';";
+		STR="${STR}${DBNAME};port=";
+		STR="${STR}${DBPORT}';";
 	_write "$STR"
 
 	STR='$main::config{usr} =';
