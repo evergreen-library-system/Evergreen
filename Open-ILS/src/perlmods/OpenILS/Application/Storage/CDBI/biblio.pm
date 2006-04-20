@@ -10,7 +10,7 @@ use base qw/biblio/;
 
 biblio::record_entry->table( 'biblio_record_entry' );
 biblio::record_entry->columns( Essential => qw/id tcn_source tcn_value creator editor
-				      create_date edit_date source active
+				      create_date edit_date source active quality
 				      deleted marc last_xact_id fingerprint/ );
 
 #-------------------------------------------------------------------------------
