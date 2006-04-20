@@ -623,6 +623,11 @@ patron.bills.prototype = {
 									'test' + my.mobts.id(),
 									'modal,chrome,resizable'
 								);
+								obj.OpenILS.data.init({'via':'stash'}); 
+								if (obj.OpenILS.data.temp == 'refresh') {
+									obj.refresh();
+								}
+
 							},
 							false
 						);
