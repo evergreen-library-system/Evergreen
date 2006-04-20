@@ -297,23 +297,23 @@ patron.util.std_map_row_to_column = function() {
 patron.util.retrieve_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var patron = network.request(
+	var patron_obj = network.request(
 		api.FM_AU_RETRIEVE_VIA_ID.app,
 		api.FM_AU_RETRIEVE_VIA_ID.method,
 		[ session, id ]
 	);
-	return patron;
+	return patron_obj;
 }
 
 patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var patron = network.simple_request(
+	var patron_obj = network.simple_request(
 		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
 		[ session, id ]
 	);
-	patron.util.set_penalty_css(patron);
-	return patron;
+	patron.util.set_penalty_css(patron_obj);
+	return patron_obj;
 }
 
 var TIME = { minute : 60, hour : 60*60, day : 60*60*24, year : 60*60*24*365 };
