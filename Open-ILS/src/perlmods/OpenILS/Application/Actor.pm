@@ -229,6 +229,7 @@ sub update_patron {
 	($new_patron, $evt) = _create_standing_penalties($session, $user_session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
 
+	$logger->activity("user ".$user_obj->id." updating/creating  user ".$new_patron->id);
 	$apputils->commit_db_session($session);
 
 	#warn "Patron Update/Create complete\n";
@@ -377,6 +378,16 @@ sub _update_patron {
 	return (undef, $evt) if $evt;
 
 	$patron->clear_passwd unless $patron->passwd;
+
+	if(!$patron->ident_type) {
+		$patron->clear_ident_type;
+		$patron->clear_ident_value;
+	}
+
+	if(!$patron->ident_type2) {
+		$patron->clear_ident_type2;
+		$patron->clear_ident_value2;
+	}
 
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
