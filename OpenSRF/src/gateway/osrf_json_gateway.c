@@ -1,6 +1,7 @@
 #include "apachetools.h"
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_system.h"
+#include "opensrf/osrfConfig.h"
 #include "objson/object.h"
 #include "objson/json2xml.h"
 #include <sys/time.h>
@@ -24,6 +25,7 @@ module AP_MODULE_DECLARE_DATA osrf_json_gateway_module;
 char* osrf_json_gateway_config_file = NULL;
 int bootstrapped = 0;
 int numserved = 0;
+osrfStringArray* allowedServices = NULL;
 
 static const char* osrf_json_gateway_set_config(cmd_parms *parms, void *config, const char *arg) {
 	osrf_json_gateway_config  *cfg;
@@ -52,16 +54,25 @@ static void* osrf_json_gateway_create_config( apr_pool_t* p, server_rec* s) {
 static void osrf_json_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 	char* cfg = osrf_json_gateway_config_file;
-	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT) ) {
+	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT ) ) {
 		ap_log_error( APLOG_MARK, APLOG_ERR, 0, s, 
 			"Unable to Bootstrap OpenSRF Client with config %s..", cfg);
 		return;
 	}
+
 	bootstrapped = 1;
+	allowedServices = osrfNewStringArray(8);
 	osrfLogInfo(OSRF_LOG_MARK, "Bootstrapping gateway child for requests");
+	osrfConfigGetValueList( NULL, allowedServices, "/services/service" );
+
+	int i;
+	for( i = 0; i < allowedServices->size; i++ ) {
+		fprintf(stderr, "allowed service: %s\n", 
+			osrfStringArrayGetString(allowedServices, i));
+	}
 
 
-#ifdef OSRF_GATEWAY_ENABLE_RLIMIT /* emergency measures only */
+#ifdef OSRF_GATEWAY_ENABLE_RLIMIT /* emergency test measures only */
 	struct rlimit lim = { 536870912, 536870912 }; /* 512MB */
 	setrlimit(RLIMIT_AS, &lim);
 	setrlimit(RLIMIT_MEMLOCK,&lim);
@@ -120,8 +131,16 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		ap_set_content_type(r, "text/plain");
 	}
 
+	int ret = OK;
 
-	if( service && method ) {
+	if(!(service && method) || 
+		!osrfStringArrayContains(allowedServices, service)) {
+
+		osrfLogError(OSRF_LOG_MARK, 
+			"Service [%s] not found or not allowed", service);
+		ret = HTTP_NOT_FOUND;
+
+	} else {
 
 		osrfLogInfo( OSRF_LOG_MARK,  "service=%s, method=%s", service, method );
 		osrfAppSession* session = osrf_app_client_session_init(service);
@@ -230,7 +249,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
 
-	return OK;
+	return ret;
 }
 
 

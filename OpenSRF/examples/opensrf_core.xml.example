@@ -43,6 +43,18 @@
 			<domain>127.0.0.1</domain>
 		</domains>
 
+		<!-- These are the services that the gateway will serve. 
+			Any other requests will receive a HTT_NOT_FOUND -->
+		<services>
+			<service>opensrf.math</service> 
+			<service>open-ils.cat</service> 
+			<service>open-ils.search</service> 
+			<service>open-ils.circ</service> 
+			<service>open-ils.actor</service> 
+			<service>open-ils.auth</service> 
+		</services>
+
+
 		<!-- jabber login info -->
 		<username>mylogin</username>
 		<passwd>mypassword</passwd>
