@@ -68,6 +68,14 @@ function uEditFetchGroups() {
 function uEditBuild() {
 	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
+
+	/*
+	xulG.new_tab('about:blank',{},{});
+	 spawn_search()
+	*/
+
+
+
 	uEditBuildLibSelector();
 	patron = fetchFleshedUser(cgi.param('usr'));
 	if(!patron) patron = uEditNewPatron(); 
@@ -151,6 +159,11 @@ function uEditActivateField(field) {
 
 	uEditSetOnchange(field);
 
+	if(field.widget.onblur) {
+		field.widget.node.onblur = 
+			function() { field.widget.onblur(field); };
+	}
+
 	var val = field.object[field.key]();
 	if(val == null) return;
 
@@ -166,6 +179,12 @@ function uEditActivateField(field) {
 
 	if( field.widget.onload ) 
 		field.widget.onload(val);
+
+	/*
+	alert(field.key);
+	if(field.key == 'ident_value') alert(field.widget.onblur);
+	*/
+
 }
 
 
@@ -200,6 +219,7 @@ function uEditOnChange(field) {
 
 	if(field.widget.onpostchange)
 		field.widget.onpostchange(field, newval);
+
 
 	uEditIterateFields(function(f) { uEditCheckValid(f); });
 	uEditCheckErrors();
@@ -309,5 +329,47 @@ function uEditSaveUser() {
 	} else {
 		location.href = location.href;
 	}
+}
+
+
+var uEditDupHashes = {};
+function uEditRunDupeSearch(type, search_hash) {
+
+	if(!patron.isnew()) return;
+	_debug('dup search: ' + js2JSON(search_hash));
+
+	var linkid = 'ue_dups_'+type;
+	var req = new Request(PATRON_SEARCH, SESSION, search_hash);
+
+	req.callback( 
+
+		function(r) {
+			var ids = r.getResultObject();
+			_debug('dup search results: ' + js2JSON(ids));
+
+			if(!(ids && ids[0])) {
+				uEditDupHashes[type] = null;
+				hideMe($(linkid));
+				return;
+			}
+
+			unHideMe($(linkid));
+			uEditDupHashes[type] = search_hash;
+			switch(type) {
+				case 'ident1' :
+					if(confirm($('ue_dup_ident1').innerHTML)) 
+						uEditShowSearch(type);
+					break;
+			}
+		}
+	);
+	req.send();
+}
+
+
+function uEditShowSearch(type) {
+	if(window.xulG)
+		window.xulG.spawn_search(uEditDupHashes[type]);	
+	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));
 }
 

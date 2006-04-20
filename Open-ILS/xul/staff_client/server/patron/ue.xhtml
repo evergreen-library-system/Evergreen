@@ -69,6 +69,8 @@
 
 			.deleted { background: #FF6666; }
 
+			.dup_link { padding-left: 5px; color: red; }
+
 		</style>
 	</head>
 
@@ -162,6 +164,28 @@
 
 
 					<td width='85%' id='ue_maintd' class='hide_me'>
+
+						<div>
+							<div>
+								<a id='ue_dups_ident1' class='dup_link hide_me'
+									href='javascript:void(0);' onclick='uEditShowSearch("ident1");'>
+									Show user in the the database with the same primary identification.
+								</a>
+							</div>
+							<div>
+								<a id='ue_dups_ident2' class='dup_link hide_me'
+									href='javascript:void(0);' onclick='uEditShowSearch("ident2");'>
+									Show user in the the database with the same secondary identification.
+								</a>
+							</div>
+							<div>
+								<a id='ue_dups_names' class='dup_link hide_me'
+									href='javascript:void(0);' onclick='uEditShowSearch("names");'>
+									Show user in the the database with the same first and last name.
+								</a>
+							</div>
+						</div>
+
 
 						<!-- ************************************************************** -->
 						<!--  Identification Pane -->
@@ -873,7 +897,12 @@
 		<span id='no'>No</span>
 		<span id='ue_summary_window'>Patron Summary</span>
 		<span id='ue_success'>User update succeeded</span>
+		<span id='ue_dup_ident1'>
+			User already exists with the primary identification provided.  
+			Do you wish to view the duplicate record now?
+		</span>
 	</div>
+
 
 	</body>
 </html>
