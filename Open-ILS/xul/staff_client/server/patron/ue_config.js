@@ -7,6 +7,7 @@ var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
 var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
 var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
 var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
+var PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
 var defaultState		= 'GA';
 var defaultCountry	= 'USA';
 var CSS_INVALID_DATA = 'invalid_value';
@@ -84,6 +85,8 @@ function uEditDefineData(patron) {
 				}
 			}
 		},
+
+		/*
 		{
 			required : true,
 			object	: patron,
@@ -92,9 +95,28 @@ function uEditDefineData(patron) {
 			widget	: {
 				id		: 'ue_firstname',
 				regex	: nonumRegex,
-				type	: 'input'
+				type	: 'input',
+				onblur : function(field) {
+					uEditCheckNamesDup('first', field );
+				}
+		},
+		*/
+
+		{
+			required : true,
+			object	: patron,
+			key		: 'first_given_name',
+			errkey	: 'ue_bad_firstname',
+			widget	: {
+				id		: 'ue_firstname',
+				regex	: nonumRegex,
+				type	: 'input',
+				onblur : function(field) {
+					uEditCheckNamesDup('first', field );
+				}
 			}
 		},
+
 		{
 			required : false,
 			object	: patron,
@@ -114,7 +136,10 @@ function uEditDefineData(patron) {
 			widget	: {
 				id		: 'ue_lastname',
 				regex	: nonumRegex,
-				type	: 'input'
+				type	: 'input',
+				onblur : function(field) {
+					uEditCheckNamesDup('last', field );
+				}
 			}
 		},
 		{
@@ -160,6 +185,9 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_primary_ident',
 				type		: 'input',
+				onblur : function(field) {
+					uEditCheckIdentDup(field);
+				}
 			}
 		},
 		{
@@ -181,6 +209,9 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_secondary_ident',
 				type		: 'input',
+				onblur : function(field) {
+					uEditCheckIdentDup(field);
+				}
 			}
 		},
 		{
@@ -191,7 +222,15 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_email',
 				type		: 'input',
-				regex		:  /.+\@.+\..+/ /* make me better */
+				regex		:  /.+\@.+\..+/,  /* make me better */
+				onblur	: function(field) {
+					var val = uEditNodeVal(field);
+					if( val && val != field.oldemail ) {
+						uEditRunDupeSearch('email',
+							{ email : { value : val, group : 0 } });
+						field.oldemail = val;
+					}
+				}
 			}
 		},
 		{
@@ -333,6 +372,47 @@ function uEditDefineData(patron) {
 	uEditBuildAddrs(patron);
 	uEditBuildPatronSCM(patron);
 }
+
+var uEditOldFirstName;
+var uEditOldMiddleName; /* future */
+var uEditOldLastName;
+function uEditCheckNamesDup(type, field) {
+	var newval = uEditNodeVal(field);
+	if(!newval) return;
+
+	var dosearch = false;
+
+	if(type =='first') {
+		if( newval != uEditOldFirstName )
+			dosearch = true;
+		uEditOldFirstName = newval;
+	}
+
+	if(type =='last') {
+		if( newval != uEditOldLastName )
+			dosearch = true;
+		uEditOldLastName = newval;
+	}
+
+	if( dosearch && uEditOldFirstName && uEditOldLastName ) {
+		var search_hash = {};
+		search_hash['first_given_name'] = { value : uEditOldFirstName, group : 0 };
+		search_hash['family_name'] = { value : uEditOldLastName, group : 0 };
+		uEditRunDupeSearch('names', search_hash);
+	}
+}
+
+var uEditOldIdentValue;
+function uEditCheckIdentDup(field) {
+	var newval = uEditNodeVal(field);
+	if( newval && newval != uEditOldIdentValue ) {
+		/* searches all ident_value fields */
+		var search_hash  = { ident : { value : newval, group : 2 } };
+		uEditRunDupeSearch('ident', search_hash);
+		uEditOldIdentValue = newval;
+	}
+}
+
 
 /* Adds all of the addresses attached to the patron object
 	to the fields array */
