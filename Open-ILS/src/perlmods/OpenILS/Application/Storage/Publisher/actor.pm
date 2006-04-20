@@ -63,7 +63,7 @@ sub patron_search {
 	my $ident = '';
 	my @is;
 	my @identv;
-	if ($pv) {
+	if ($iv) {
 		for my $i ( qw/ident_value ident_value2/ ) {
 			push @is, "LOWER($i) ~ ?";
 			push @identv, "^$iv";
