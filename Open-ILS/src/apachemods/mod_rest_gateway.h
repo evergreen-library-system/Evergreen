@@ -17,7 +17,7 @@
 #include "json_xml.h"
 #define GATEWAY_CONFIG "ILSRestGatewayConfig"
 #define MODULE_NAME "ils_rest_gateway_module"
-#define CONFIG_CONTEXT "rest_gateway"
+#define CONFIG_CONTEXT "gateway"
 
 #define GATEWAY_DEFAULT_CONFIG "/openils/conf/opensrf_core.xml"
 
