@@ -51,6 +51,10 @@
 
 				JSAN.use('patron.search_form'); g.search_form = new patron.search_form();
 				g.search_form.init( { 'session' : session, 'query' : query } );
+
+				if (g.cgi.param('doit')) {
+					g.search_form.submit();
+				}
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

@@ -30,31 +30,7 @@ patron.search_form.prototype = {
 					'cmd_patron_search_submit' : [
 						['command'],
 						function() {
-							var query = '';
-							for (var i = 0; i < obj.controller.render_list.length; i++) {
-								var id = obj.controller.render_list[i][0];
-								var node = document.getElementById(id);
-								if (node && node.value != '') {
-									if (query == '') {
-										// Responsible for own ? or &
-									} else {
-										query += '&';
-									}
-									query += id + '=' + window.escape(node.value);
-									dump('id = ' + id + '  value = ' + node.value + '\n');
-								}
-							}
-							if (typeof obj.on_submit == 'function') {
-								obj.on_submit(query);
-							}
-							if (typeof window.xulG == 'object' 
-								&& typeof window.xulG.on_submit == 'function') {
-								obj.error.sdump('D_PATRON','patron.search_form: Calling external .on_submit()\n');
-								window.xulG.on_submit(query);
-							} else {
-								obj.error.sdump('D_PATRON','patron.search_form: No external .on_query()\n');
-							}
-
+							obj.submit();
 						}
 					],
 					'cmd_patron_search_clear' : [
@@ -133,6 +109,12 @@ patron.search_form.prototype = {
 								if (params.query&&params.query.ident) {
 									e.setAttribute('value',params.query.ident);
 									e.value = params.query.ident;
+								} if (params.query&&params.query.ident_value) {
+									e.setAttribute('value',params.query.ident_value);
+									e.value = params.query.ident_value;
+								} if (params.query&&params.query.ident_value2) {
+									e.setAttribute('value',params.query.ident_value2);
+									e.value = params.query.ident_value2;
 								} else {
 									e.value = '';
 								}
@@ -216,6 +198,34 @@ patron.search_form.prototype = {
 	'on_submit' : function(q) {
 		var msg = 'Query = ' + q;
 		this.error.sdump('D_PATRON', msg);
+	},
+
+	'submit' : function() {
+		var obj = this;
+		var query = '';
+		for (var i = 0; i < obj.controller.render_list.length; i++) {
+		var id = obj.controller.render_list[i][0];
+		var node = document.getElementById(id);
+			if (node && node.value != '') {
+				if (query == '') {
+					// Responsible for own ? or &
+				} else {
+					query += '&';
+				}
+				query += id + '=' + window.escape(node.value);
+				dump('id = ' + id + '  value = ' + node.value + '\n');
+			}
+		}
+		if (typeof obj.on_submit == 'function') {
+			obj.on_submit(query);
+		}
+		if (typeof window.xulG == 'object' 
+			&& typeof window.xulG.on_submit == 'function') {
+			obj.error.sdump('D_PATRON','patron.search_form: Calling external .on_submit()\n');
+			window.xulG.on_submit(query);
+		} else {
+			obj.error.sdump('D_PATRON','patron.search_form: No external .on_query()\n');
+		}
 	},
 
 }
