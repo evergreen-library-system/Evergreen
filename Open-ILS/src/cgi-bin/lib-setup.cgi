@@ -10,8 +10,7 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 our %config;
-#do '##CONFIG##/live-db-setup.pl';
-do '/openils/conf/live-db-setup.pl';
+do '##CONFIG##/live-db-setup.pl';
 
 OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr},$config{pw});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
