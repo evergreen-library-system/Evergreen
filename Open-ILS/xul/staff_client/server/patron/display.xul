@@ -50,6 +50,8 @@
 					'session' : g.cgi.param('session') , 
 					'barcode' : g.cgi.param('barcode') ,
 					'id' : g.cgi.param('id') ,
+					'query' : g.cgi.param('query'),
+					'doit' : g.cgi.param('doit'),
 				} );
 
 			} catch(E) {

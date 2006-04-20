@@ -308,9 +308,19 @@ patron.display.prototype = {
 			);
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
+
+			var loc = urls.XUL_PATRON_SEARCH_FORM +'?session=' + window.escape(obj.session);
+			if (params['query']) {
+				var query = JSON2js(params['query']);
+				for (var i in query) {
+					loc += '&'+window.escape(i)+'='+window.escape(query[i].value);
+				}
+				if (params.doit) {
+					loc += '&doit=1';
+				}
+			}
 			var form_frame = obj.left_deck.set_iframe(
-				urls.XUL_PATRON_SEARCH_FORM
-				+'?session=' + window.escape(obj.session),
+				loc,
 				{},
 				{
 					'on_submit' : function(query) {

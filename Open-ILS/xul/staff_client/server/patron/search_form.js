@@ -109,10 +109,10 @@ patron.search_form.prototype = {
 								if (params.query&&params.query.ident) {
 									e.setAttribute('value',params.query.ident);
 									e.value = params.query.ident;
-								} if (params.query&&params.query.ident_value) {
+								} else if (params.query&&params.query.ident_value) {
 									e.setAttribute('value',params.query.ident_value);
 									e.value = params.query.ident_value;
-								} if (params.query&&params.query.ident_value2) {
+								} else if (params.query&&params.query.ident_value2) {
 									e.setAttribute('value',params.query.ident_value2);
 									e.value = params.query.ident_value2;
 								} else {
