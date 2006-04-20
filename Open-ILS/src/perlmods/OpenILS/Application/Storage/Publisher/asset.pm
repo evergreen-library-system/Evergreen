@@ -6,6 +6,101 @@ use base qw/OpenILS::Application::Storage/;
 #
 #my $log = 'OpenSRF::Utils::Logger';
 
+use MARC::Record;
+use MARC::File::XML;
+
+#our $_default_subfield_map = {
+#        call_number     => $cn,
+#        barcode         => $bc,
+#        owning_lib      => $ol,
+#        circulating_lib => $cl,
+#        copy_location   => $sl,
+#        copy_number     => $num,
+#        price           => $pr,
+#        status          => $loc,
+#        create_date     => $date,
+#
+#        legacy_item_type        => $it,
+#        legacy_item_cat_1       => $ic1,
+#        legacy_item_cat_2       => $ic2,
+#};
+
+sub import_xml_holdings {
+	my $self = shift;
+	my $client = shift;
+	my $editor = shift;
+	my $record = shift;
+	my $xml = shift;
+	my $tag = shift;
+	my $map = shift;
+	my $date_format = shift || 'mm/dd/yyyy';
+
+	my $r = MARC::Record->new_from_xml($xml);
+
+	for my $f ( $r->fields( $tag ) ) {
+		next unless ($f->subfield( $map->{owning_lib} ));
+
+		my $ol = actor::org_unit->search( shortname => $f->subfield( $map->{owning_lib} ) )->next->id;
+		my $cl = actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id;
+
+		my $cn = asset::call_number->find_or_create(
+			{ label		=> $f->subfield( $map->{call_number} ),
+			  owning_lib	=> $ol,
+			  record	=> $record,
+			  creator	=> $editor,
+			  editor	=> $editor,
+			}
+		);
+
+		my $create_date =  $f->subfield( $map->{create_date} );
+
+		my ($m,$d,$y);
+		if ($date_format eq 'mm/dd/yyyy') {
+			($m,$d,$y) = split '/', $create_date;
+
+		} elsif ($date_format eq 'dd/mm/yyyy') {
+			($d,$m,$y) = split '/', $create_date;
+
+		} elsif ($date_format eq 'mm-dd-yyyy') {
+			($m,$d,$y) = split '-', $create_date;
+
+		} elsif ($date_format eq 'dd-mm-yyyy') {
+			($d,$m,$y) = split '-', $create_date;
+
+		} elsif ($date_format eq 'yyyy-mm-dd') {
+			($y,$m,$d) = split '-', $create_date;
+
+		} elsif ($date_format eq 'yyyy/mm/dd') {
+			($y,$m,$d) = split '-', $create_date;
+		}
+
+		my $price = $f->subfield( $map->{price} );
+		$price =~ s/[^0-9\.]+//gso;
+		$price ||= '0.00';
+
+		$cn->add_to_copies(
+			{ circ_lib	=> actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id,
+			  copy_number	=> $f->subfield( $map->{copy_number} ),
+			  price		=> $price,
+			  barcode	=> $f->subfield( $map->{barcode} ),
+			  loan_duration	=> 2,
+			  fine_level	=> 2,
+			  creator	=> $editor,
+			  editor	=> $editor,
+			  create_date	=> sprintf('%04d-%02d-%02d',$y,$m,$d),
+			}
+		);
+	}
+
+	return 1;
+}
+__PACKAGE__->register_method(
+	method		=> 'import_xml_holdings',
+	api_name	=> 'open-ils.storage.asset.holdings.import.xml',
+	argc		=> 5,
+	stream		=> 0,
+);
+
 # XXX
 # see /home/miker/cn_browse-test.sql for page up and down sql ...
 # XXX
