@@ -709,10 +709,16 @@ sub recv {
 		$logger->debug( ref($self) ."->recv with timeout " . $args{timeout}, INTERNAL );
 	}
 
-	$args{count} ||= 1;
-
 	my $avail = @{ $self->{recv_queue} };
 	$self->{remaining_recv_timeout} = $self->{recv_timeout};
+
+	if (!$args{count}) {
+		if (wantarray) {
+			$args{count} = $avail;
+		} else {
+			$args{count} = 1;
+		}
+	}
 
 	while ( $self->{remaining_recv_timeout} > 0 and $avail < $args{count} ) {
 		last if $self->complete;
