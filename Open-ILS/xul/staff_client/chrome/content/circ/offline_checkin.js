@@ -31,7 +31,7 @@ function my_init() {
 
 		JSAN.use('util.file');
 		var file = new util.file('offline_delta'); 
-		if (file._file.exists()) { g.delta = file.get_object(); file.close(); } else { g.delta = 0; }
+		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
