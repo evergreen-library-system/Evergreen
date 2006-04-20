@@ -17,8 +17,6 @@ string_array* apacheParseParms(request_rec* r) {
 	/* gather the post args and append them to the url query string */
 	if( !strcmp(r->method,"POST") ) {
 
-		osrfLogDebug(OSRF_LOG_MARK, "gateway checking for post data..");
-
 		ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
 		
 		osrfLogDebug(OSRF_LOG_MARK, "gateway reading post data..");
@@ -29,13 +27,12 @@ string_array* apacheParseParms(request_rec* r) {
 			memset(body,0,1025);
 			buffer = buffer_init(1025);
 	
-			osrfLogDebug(OSRF_LOG_MARK, "gateway entering ap_get_client_block loop");
-
 			long bread;
 			while( (bread = ap_get_client_block(r, body, 1024)) ) {
 
-				if(bread == -1) {
-					osrfLogInfo(OSRF_LOG_MARK, "ap_get_client_block(): returned error, exiting POST reader");
+				if(bread < 0) {
+					osrfLogInfo(OSRF_LOG_MARK, 
+						"ap_get_client_block(): returned error, exiting POST reader");
 					break;
 				}
 
