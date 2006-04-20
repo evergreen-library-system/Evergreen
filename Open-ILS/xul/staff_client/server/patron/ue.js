@@ -333,43 +333,74 @@ function uEditSaveUser() {
 
 
 var uEditDupHashes = {};
+var uEditDupTemplate;
+
 function uEditRunDupeSearch(type, search_hash) {
 
 	if(!patron.isnew()) return;
+
 	_debug('dup search: ' + js2JSON(search_hash));
 
-	var linkid = 'ue_dups_'+type;
-	var hitsid = linkid + '_hits';
 	var req = new Request(PATRON_SEARCH, SESSION, search_hash);
 
-	req.callback( 
+	var container = $('dup_div_container');
+	if(!uEditDupTemplate)
+		uEditDupTemplate = container.removeChild($('dup_div'));
 
-		function(r) {
-			var ids = r.getResultObject();
-			_debug('dup search results: ' + js2JSON(ids));
-
-			if(!(ids && ids[0])) {
-				uEditDupHashes[type] = null;
-				hideMe($(linkid));
+	/* clear any existing dups for this type */
+	iterate( container.getElementsByTagName('div'),
+		function(d) {
+			if( d.getAttribute('type') == type ) {
+				container.removeChild(d)
 				return;
 			}
+		}
+	);
 
-			unHideMe($(linkid));
-			appendClear($(hitsid), text(ids.length));
-			uEditDupHashes[type] = search_hash;
-			switch(type) {
-				case 'ident1' :
-					if(confirm($('ue_dup_ident1').innerHTML)) 
-						uEditShowSearch(type);
-					break;
-			}
+	/*req.callback(uEditHandleDupResults);*/
+	req.callback(
+		function(r) {
+			uEditHandleDupResults( r.getResultObject(), search_hash, type, container );
 		}
 	);
 	req.send();
 }
 
 
-function uEditShowSearch(type) {
+function uEditHandleDupResults(ids, search_hash, type, container) {
+
+	_debug('dup search results: ' + js2JSON(ids));
+
+	if(!(ids && ids[0]))  /* no results */
+		return uEditDupHashes[type] = null;
+
+	/* add a dup link to the UI and plug in the data */
+	var node = uEditDupTemplate.cloneNode(true);
+	container.appendChild(node);
+	node.setAttribute('type', type);
+
+	var link = $n(node, 'link');
+	link.setAttribute('type', type);
+	unHideMe(link);
+	$n(node,'count').appendChild(text(ids.length));
+
+	for( var o in search_hash ) 
+		$n(node, 'data').appendChild(
+			text(search_hash[o].value + ' '));
+
+	uEditDupHashes[type] = search_hash;
+
+	switch(type) {
+		case 'ident1' :
+			if(confirm($('ue_dup_ident1').innerHTML)) 
+				uEditShowSearch(type);
+			break;
+	}
+}
+
+
+function uEditShowSearch(link) {
+	var type = link.getAttribute('type');
 	if(window.xulG)
 		window.xulG.spawn_search(uEditDupHashes[type]);	
 	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));

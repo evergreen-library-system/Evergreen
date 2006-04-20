@@ -165,38 +165,12 @@
 
 					<td width='85%' id='ue_maintd' class='hide_me'>
 
-						<!-- 
-							TODO add links for middle-name -> first-name + last name
-							and first-name -> middle-name + last-name
-						-->
-
-						<div>
-							<div>
-								<a id='ue_dups_ident1' class='dup_link hide_me'
-									href='javascript:void(0);' onclick='uEditShowSearch("ident1");'>
-									Show users in the the database with the same primary identification.
-									(<b id='ue_dups_ident1_hits'></b>)
-								</a>
-							</div>
-							<div>
-								<a id='ue_dups_ident2' class='dup_link hide_me'
-									href='javascript:void(0);' onclick='uEditShowSearch("ident2");'>
-									Show users in the the database with the same secondary identification.
-									(<b id='ue_dups_ident2_hits'></b>)
-								</a>
-							</div>
-							<div>
-								<a id='ue_dups_names' class='dup_link hide_me'
-									href='javascript:void(0);' onclick='uEditShowSearch("names");'>
-									Show users in the the database with a similar first and last name.
-									(<b id='ue_dups_names_hits'></b>)
-								</a>
-							</div>
-							<div>
-								<a id='ue_dups_email' class='dup_link hide_me'
-									href='javascript:void(0);' onclick='uEditShowSearch("email");'>
-									Show users in the the database with a matching email address.
-									(<b id='ue_dups_email_hits'></b>)
+						<div id='dup_div_container'>
+							<div id='dup_div' name='dup_div'>
+								<a name='link' class='dup_link hide_me'
+									href='javascript:void(0);' onclick='uEditShowSearch(this);'>
+									Found <b name='count'/> possible duplicate patron(s):
+									<b name='data'/>
 								</a>
 							</div>
 						</div>
