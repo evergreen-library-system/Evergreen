@@ -151,7 +151,7 @@ main.menu.prototype = {
 							'show_print_button' : true , 
 							'tab_name' : 'Register Patron' ,
 							'passthru_content_params' : {
-								'spawn_search' : function(s) { alert('Editor would like to search for: ' + js2JSON(s)); }
+								'spawn_search' : function(s) { obj.spawn_search(s); }
 							}
 						}
 					);
@@ -358,6 +358,18 @@ main.menu.prototype = {
 		obj.new_tab(null,{'focus':true},null);
 
 		obj.init_tab_focus_handlers();
+	},
+
+	'spawn_search' : function(s) {
+		var obj = this;
+		obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
+		obj.data.stash_retrieve();
+		var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY) + '?session='+window.escape(obj.data.session);
+		for (var i in s) {
+			loc += '&' + window.escape(i) + '=' + window.escape(s[i].value);
+		}
+		loc += '&doit=1';
+		obj.new_tab( loc, {}, {} );
 	},
 
 	'init_tab_focus_handlers' : function() {
