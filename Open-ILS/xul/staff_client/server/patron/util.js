@@ -66,11 +66,11 @@ patron.util.mbts_columns = function(modify,params) {
 		},
 		{
 			'id' : 'xact_start', 'label' : 'Created', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,19) : ""'
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""'
 		},
 		{
 			'id' : 'xact_start', 'label' : 'Closed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,19) : ""'
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {

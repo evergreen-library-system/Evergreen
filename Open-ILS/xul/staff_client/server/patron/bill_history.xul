@@ -77,17 +77,24 @@
 		}
 
 		function retrieve_specific_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,g.mbts_id],
+			if (g.mbts_id) g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
-						$('mbts_id').value = g.mbts.id();
-						$('mbts_xact_type').value = g.mbts.xact_type();
-						$('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
-						$('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
-						$('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
-						$('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
-						$('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
+						if (g.mbts.ilsevent) {
+							switch(g.mbts.ilsevent) {
+								case -1: g.error.standard_network_error_alert('mbts_id = ' + g.mbts_id); break;
+								default: g.error.standard_unexpected_error_alert('mbts_id = ' + g.mbts_id,g.mbts); break;
+							}
+						} else {
+							$('mbts_id').value = g.mbts_id;
+							$('mbts_xact_type').value = g.mbts.xact_type();
+							$('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
+							$('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
+							$('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
+							$('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
+							$('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
+						}
 					} catch(E) {
 						g.error.sdump('D_ERROR',E);
 					}
@@ -160,13 +167,15 @@
 				},
                 'retrieve_row' : function(params) {
                     var id = params.retrieve_id;
-                    var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,id]);
-                    var row = params.row;
-                    if (typeof row.my == 'undefined') row.my = {};
-                    row.my.mbts = mbts_obj;
-                    if (typeof params.on_retrieve == 'function') {
-                        params.on_retrieve(row);
-                    }
+					var row = params.row;
+					if (id) {
+						var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,id]);
+						if (typeof row.my == 'undefined') row.my = {};
+						row.my.mbts = mbts_obj;
+					}
+					if (typeof params.on_retrieve == 'function') {
+						params.on_retrieve(row);
+					}
                     return row;
                 },
 			} );
@@ -226,33 +235,55 @@
 			var msg = 'Are you sure you would like to add a billing to bill' + ( g.bill_list_selection.length > 1 ? 's ' : ' ') + g.bill_list_selection + '?';
 			var r = g.error.yns_alert(msg,'Bill Patron','Yes','No',null,'Check here to confirm this message');
 			if (r == 0) {
+				JSAN.use('util.window');
+				var win = new util.window();
+				var w = win.open(
+					urls.XUL_PATRON_BILL_WIZARD
+						+ '?session=' + window.escape(g.session)
+						+ '&patron_id=' + window.escape(g.patron_id)
+						+ '&xact_id=' + window.escape( g.bill_list_selection[0] ),
+					'billwizard',
+					'chrome,resizable,modal'
+				);
+				//dump('pause\n');alert('pause');
 				g.bill_list.clear();
+				//dump('pause\n');alert('pause');
 				retrieve_all_mbts_for_list();
+				//dump('pause\n');alert('pause');
 				g.data.temp = 'refresh'; g.data.stash('temp');
+				//dump('pause\n');alert('pause');
 			}
-			alert('Not Yet Implemented');
 		}
 
 		function handle_details() {
-			alert('Not Yet Implemented');
+			JSAN.use('util.window'); var w = new util.window();
+			w.open(
+				urls.XUL_PATRON_BILL_DETAILS 
+				+ '?session=' + window.escape(g.session) 
+				+ '&patron_id=' + window.escape(g.patron_id)
+				+ '&mbts_id=' + window.escape( g.bill_list_selection[0] ),
+				'test_billdetails',
+				'modal,chrome,resizable'
+			);
 		}
+
 	]]>
 	</script>
 
 	<vbox flex="1" class="my_overflow">
 		<label id="patron_name" class="patronNameLarge"/>
 
-		<groupbox orient="vertical" flex="1" id="summary" />
+		<groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
 
 		<splitter><grippy/></splitter>
 
 		<groupbox orient="vertical" flex="3">
 			<caption label="Bill History"/>
-			<tree id="bill_tree" flex="1" enableColumnDrag="true"/>
+			<tree id="bill_tree" flex="1" enableColumnDrag="true" seltype="single"/>
 			<hbox>
 				<spacer flex="1"/>
 				<button id="add" label="Add Billing" disabled="true"/>
-				<button id="details" label="Full Details" disabled="true"/>
+				<button id="details" label="Full Details" disabled="true" accesskey="D"/>
 			</hbox>
 		</groupbox>
 
