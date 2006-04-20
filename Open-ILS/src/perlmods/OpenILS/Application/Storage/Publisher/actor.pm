@@ -35,6 +35,9 @@ sub patron_search {
 	my $self = shift;
 	my $client = shift;
 	my $search = shift;
+	my $limit = shift || 1000;
+	my $sort = shift;
+	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
 
 	# group 0 = user
 	# group 1 = address
@@ -48,6 +51,7 @@ sub patron_search {
 
 	my $pv = $$search{phone}{value};
 	my $iv = $$search{ident}{value};
+	my $nv = $$search{name}{value};
 
 	my $phone = '';
 	my @ps;
@@ -71,15 +75,26 @@ sub patron_search {
 		$ident = '(' . join(' OR ', @is) . ')';
 	}
 
-	my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident);
+	my $name = '';
+	my @ns;
+	my @namev;
+	if (0 && $nv) {
+		for my $n ( qw/first_given_name second_given_name family_name/ ) {
+			push @ns, "LOWER($i) ~ ?";
+			push @namev, "^$nv";
+		}
+		$name = '(' . join(' OR ', @ns) . ')';
+	}
+
+	my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name);
 	my $addr_where = $addr;
 
 
 	my $u_table = actor::user->table;
 	my $a_table = actor::user_address->table;
 
-	my $u_select = "SELECT id FROM $u_table a WHERE $usr_where";
-	my $a_select = "SELECT usr FROM $a_table a WHERE $addr_where";
+	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
+	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
 
 	my $select = '';
 	if ($usr_where) {
@@ -94,7 +109,11 @@ sub patron_search {
 		return undef;
 	}
 
-	return actor::user->db_Main->selectcol_arrayref($select." LIMIT 1000", {}, map {lc($_)} (@usrv,@phonev,@identv,@addrv));
+	my $order_by = join ', ', map { 'users.'. $_} @$sort;
+		
+	$select = "SELECT users.id FROM $u_table AS users JOIN ($select) AS search USING (id) ORDER BY $order_by LIMIT $limit";
+
+	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
