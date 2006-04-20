@@ -425,7 +425,7 @@ sub generate_fines {
 			my $fine_interval = interval_to_seconds( $c->fine_interval );
 	
 			if ( interval_to_seconds( $c->fine_interval ) >= interval_to_seconds('1d') ) {	
-				my $tz_offset_s = 0;;
+				my $tz_offset_s = 0;
 				if ($due_dt->strftime('%z') =~ /(-|\+)(\d{2}):?(\d{2})/) {
 					$tz_offset_s = $1 . interval_to_seconds( "${2}h ${3}m"); 
 				}
@@ -447,6 +447,7 @@ sub generate_fines {
 	
 			my $last_fine;
 			if ($fine) {
+				$client->respond( "Last billing time: ".$fine->billing_ts." (clensed fromat: ".clense_ISO8601( $fine->billing_ts ).")");
 				$last_fine = $parser->parse_datetime( clense_ISO8601( $fine->billing_ts ) )->epoch;
 			} else {
 				$last_fine = $due;
