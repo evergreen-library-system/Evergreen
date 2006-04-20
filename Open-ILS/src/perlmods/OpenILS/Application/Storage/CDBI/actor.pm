@@ -78,6 +78,16 @@ __PACKAGE__->columns( Essential => qw/parent_ou ou_type mailing_address billing_
 				ill_address holds_address shortname name/);
 
 #-------------------------------------------------------------------------------
+package actor::org_unit::hours_of_operation;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_hours_of_operation' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Essential => qw/dow_0_open dow_0_close dow_1_open dow_1_close dow_2_open dow_2_close
+					dow_3_open dow_3_close dow_4_open dow_4_close dow_5_open dow_5_close
+					dow_6_open dow_6_close/);
+
+#-------------------------------------------------------------------------------
 package actor::org_unit_setting;
 use base qw/actor/;
 

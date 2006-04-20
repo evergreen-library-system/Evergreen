@@ -389,6 +389,24 @@ INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, '
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL1', 'Example Sub-lib 1');
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM1', 'Example Bookmobile 1');
 
+CREATE TABLE actor.hours_of_operation (
+	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+	dow_0_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_0_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_1_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_1_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_2_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_2_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_3_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_3_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_4_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_4_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_5_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_5_close	TIME	NOT NULL DEFAULT '17:00',
+	dow_6_open	TIME	NOT NULL DEFAULT '09:00',
+	dow_6_close	TIME	NOT NULL DEFAULT '17:00'
+);
+
 -- Workstation registration...
 CREATE TABLE actor.workstation (
 	id		SERIAL	PRIMARY KEY,

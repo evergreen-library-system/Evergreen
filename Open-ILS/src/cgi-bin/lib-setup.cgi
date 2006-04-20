@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 
+use DateTime;
 use OpenILS::Application::Storage;
 use OpenILS::Application::Storage::CDBI;
 
@@ -9,10 +10,12 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 our %config;
-do '##CONFIG##/live-db-setup.pl';
+#do '##CONFIG##/live-db-setup.pl';
+do '/openils/conf/live-db-setup.pl';
 
 OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr},$config{pw});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
+
 
 my $cgi = new CGI;
 
@@ -33,6 +36,14 @@ if (my $action = $cgi->param('action')) {
 				$u->$col( $cgi->param($col."_$id") );
 			}
 			$u->update;
+		}
+	} elsif ( $action eq 'Update Hours' ) {
+		for my $id ( ($cgi->param('id')) ) {
+			my $hoo = actor::org_unit::hours_of_operation->retrieve($id);
+			for my $col ( $hoo->columns('Essential') ) {
+				$hoo->$col( $cgi->param($col) );
+			}
+			$hoo->update;
 		}
 	} elsif ( $action eq 'Add New' ) {
 		actor::org_unit->create( { map { defined($cgi->param($_)) ? ($_ => $cgi->param($_)) : () } keys %org_cols } );
@@ -162,7 +173,7 @@ for my $lib ( actor::org_unit->search( {parent_ou=>undef} ) ) {
 	$name =~ s/'/\\'/og;
 	$top = $lib->id;
 	print <<"	HEADER";
-<div style="float: left;">
+<div>
 	<script language='javascript'>
 	var tree = new dTree("tree");
 	tree.add($lib, -1, "$name", "$uri?action=child&id=$lib", "$name");
@@ -200,7 +211,7 @@ if (my $action = $cgi->param('action')) {
 			# child form
 			#-----------------------------------------------------------------------
 
-			print "<h2>Edit ".$node->name."</h2>";
+			print "<hr/><h2>Edit ".$node->name."</h2>";
 			print	"<form method='POST'>".
 				"<table class='table_class'><tr class='header_class'>\n";
 	
@@ -244,14 +255,59 @@ if (my $action = $cgi->param('action')) {
 			);
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
+			print	"</table></form>";
 
-			print	"</table></form><hr/><table cellspacing='20'><tr>";
+			#-------------------------------------------------------------------------
+			# Hours of operation form
+			#-------------------------------------------------------------------------
 
+		
+			
+			my %dow = (
+				0 => 'Monday',
+				1 => 'Tuesday',
+				2 => 'Wednesday',
+				3 => 'Thursday',
+				4 => 'Friday',
+				5 => 'Saturday',
+				6 => 'Sunday',
+			);
+				
+			print "<hr/><h2>Hours of Operation for ".$node->name."</h2>".
+				"<form method='POST'>".
+				"<table class='table_class'><tr class='header_class'>\n";
 
+			print Tr(
+				th('Day of Week'),
+				th('Open time'),
+				th('Close time'),
+			);
+
+			my $hoo = actor::org_unit::hours_of_operation->find_or_create( { id => $node->id } );
+			for my $day ( 0 .. 6 ) {
+				my $open = "dow_${day}_open";
+				my $close = "dow_${day}_close";
+
+				print Tr(
+					th($dow{$day}),
+					td("<input type='text' name='$open' value=\"". $hoo->$open  ."\">"),
+					td("<input type='text' name='$close' value=\"". $hoo->$close ."\">"),
+				);
+			}
+
+			print Tr( "<td colspan='3'>".
+				  "<input type='hidden' value='$node' name='id'>".
+				  "<input type='submit' name='action' value='Update Hours'/></td>"
+			);
+			print	"</table></form>";
+			
+			
 			#-------------------------------------------------------------------------
 			# Address edit form
 			#-------------------------------------------------------------------------
 
+			print "<hr/><h2>Adresses for ".$node->name."</h2>";
+			print	"<table cellspacing='20'><tr>";
 			my %addrs = (	ill_address	=> 'ILL Address',
 					holds_address	=> 'Consortial Holds Address',
 					mailing_address	=> 'Mailing Address',
@@ -271,7 +327,7 @@ if (my $action = $cgi->param('action')) {
 						id		=> $addr?$addr->id:'',
 				);
 
-				print '</tr><tr>' if ($a eq 'holds_address');
+				#print '</tr><tr>' if ($a eq 'holds_address');
 				print <<"				TABLE";
 
 <td>

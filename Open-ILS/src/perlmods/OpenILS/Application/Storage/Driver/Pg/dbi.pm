@@ -383,6 +383,11 @@
 	actor::org_unit_type->sequence( 'actor.org_unit_type_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::org_unit::hours_of_operation;
+	
+	actor::org_unit::hours_of_operation->table( 'actor.hours_of_operation' );
+
+	#---------------------------------------------------------------------
 	package actor::org_unit;
 	
 	actor::org_unit->table( 'actor.org_unit' );
