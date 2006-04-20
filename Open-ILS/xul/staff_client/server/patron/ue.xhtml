@@ -184,13 +184,13 @@
 								<tbody>
 									<tr class='required_field'>
 										<td><div class='wide right'>Barcode</div></td>
-										<td><div class='wide left'>
-
-											<input type='text' id='ue_barcode' 
-												onblur=' var un = $("ue_username");
-													if(!un.value) un.value = this.value;'/>
-
-										</div></td>
+										<td>
+											<div class='wide left'>
+												<input type='text' id='ue_barcode' 
+													onblur=' var un = $("ue_username");
+														if(!un.value) un.value = this.value;'/>
+											</div>
+										</td>
 									</tr>
 									<tr class='required_field'>
 										<td><div class='wide right'>Username</div></td>
@@ -198,7 +198,15 @@
 									</tr>
 									<tr class='required_field'>
 										<td><div class='wide right'>Password</div></td>
-										<td><div class='wide left'><input type='password' id='ue_password1'/></div></td>
+										<td>
+											<div class='wide left'>
+												<input type='password' id='ue_password1'/>
+												<span style='padding-left: 10px;'>
+													Generated password: 
+													<span style='text-decoration:underline;' id='ue_password_plain'/>
+												</span>
+											</div>
+										</td>
 									</tr>
 									<tr class='required_field'>
 										<td><div class='wide right'>Verify Password</div></td>

@@ -68,14 +68,6 @@ function uEditFetchGroups() {
 function uEditBuild() {
 	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
-
-	/*
-	xulG.new_tab('about:blank',{},{});
-	 spawn_search()
-	*/
-
-
-
 	uEditBuildLibSelector();
 	patron = fetchFleshedUser(cgi.param('usr'));
 	if(!patron) patron = uEditNewPatron(); 
@@ -105,6 +97,10 @@ function uEditNewPatron() {
 	patron.survey_responses([]);
 	patron.addresses([]);
 	patron.home_ou(USER.ws_ou());
+	var rand  = Math.random();
+	rand = parseInt( rand * 10000 );
+	patron.passwd(rand);
+	$('ue_password_plain').appendChild(text(rand));
 	return patron;
 }
 
@@ -311,9 +307,6 @@ function uEditSaveUser() {
 		uEditAlertErrors();
 		return;
 	}
-
-	alert(patron.ident_type2());
-	alert(patron.ischanged());
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
