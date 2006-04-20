@@ -365,10 +365,7 @@ main.menu.prototype = {
 		obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
 		obj.data.stash_retrieve();
 		var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY) + '?session='+window.escape(obj.data.session);
-		for (var i in s) {
-			loc += '&' + window.escape(i) + '=' + window.escape(s[i].value);
-		}
-		loc += '&doit=1';
+		loc += '&doit=1&query=' + window.escape(js2JSON(s));
 		obj.new_tab( loc, {}, {} );
 	},
 
