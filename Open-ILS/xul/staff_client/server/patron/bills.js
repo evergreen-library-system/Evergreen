@@ -29,6 +29,8 @@ patron.bills.prototype = {
 		for (var i = 0; i < obj.bills.length; i++) {
 			if (instanceOf(obj.bills[i],mobts)) {
 				obj.bills[i] = { 'transaction' : obj.bills[i] }
+			} else if (instanceOf(obj.bills[i],mbts)) {
+				obj.bills[i] = { 'transaction' : obj.bills[i] }
 			}
 		}
 
@@ -147,6 +149,28 @@ patron.bills.prototype = {
 							}
 						}
 					],
+					'cmd_bill_history' : [
+						['command'],
+						function() { 
+							try {
+								JSAN.use('util.window');
+								var win = new util.window();
+								obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
+								var w = win.open(
+									urls.XUL_PATRON_BILL_HISTORY
+										+ '?session=' + window.escape(obj.session)
+										+ '&patron_id=' + window.escape(obj.patron_id),
+									'billhistory',
+									'chrome,resizable,modal'
+								);
+								obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+							} catch(E) {
+								obj.error.sdump('D_ERROR',E);
+								alert(E);
+							}
+						}
+					],
+
 					'cmd_change_to_credit' : [
 						['command'],
 						function() {
@@ -619,6 +643,7 @@ patron.bills.prototype = {
 								w.open(
 									urls.XUL_PATRON_BILL_DETAILS 
 									+ '?session=' + window.escape(obj.session) 
+									+ '&patron_id=' + window.escape(obj.patron_id)
 									+ '&mbts_id=' + window.escape(my.mobts.id()),
 									'test' + my.mobts.id(),
 									'modal,chrome,resizable'

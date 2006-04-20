@@ -4,9 +4,95 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
+	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
+
+patron.util.mbts_columns = function(modify,params) {
+
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
+
+
+	var c = [
+		{
+			'id' : 'id', 'label' : 'Id', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.id()'
+		},
+		{
+			'id' : 'usr', 'label' : 'User', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.usr() ? "Id = " + my.mbts.usr() : ""'
+		},
+		{
+			'id' : 'xact_type', 'label' : 'Type', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_type()'
+		},
+		{
+			'id' : 'balance_owed', 'label' : 'Balance Owed', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.balance_owed() )'
+		},
+		{
+			'id' : 'total_owed', 'label' : 'Total Billed', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_owed() )'
+		},
+		{
+			'id' : 'total_paid', 'label' : 'Total Paid', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_paid() )'
+		},
+		{
+			'id' : 'last_billing_note', 'label' : 'Last Billing Note', 'flex' : 2,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_billing_note()'
+		},
+		{
+			'id' : 'last_billing_type', 'label' : 'Last Billing Type', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_billing_type()'
+		},
+		{
+			'id' : 'last_billing_ts', 'label' : 'Last Billed', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'util.date.formatted_date( my.mbts.last_billing_ts(), "" )'
+		},
+		{
+			'id' : 'last_payment_note', 'label' : 'Last Payment Note', 'flex' : 2,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_payment_note()'
+		},
+		{
+			'id' : 'last_payment_type', 'label' : 'Last Payment Type', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_payment_type()'
+		},
+		{
+			'id' : 'last_payment_ts', 'label' : 'Last Payment', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'util.date.formatted_date( my.mbts.last_payment_ts(), "" )'
+		},
+		{
+			'id' : 'xact_start', 'label' : 'Created', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,19) : ""'
+		},
+		{
+			'id' : 'xact_start', 'label' : 'Closed', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,19) : ""'
+		},
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	if (params) {
+		if (params.just_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			return new_c;
+		}
+	}
+	return c;
+}
 
 patron.util.mb_columns = function(modify,params) {
 
@@ -277,7 +363,7 @@ patron.util.columns = function(modify,params) {
 	return c;
 }
 
-patron.util.std_map_row_to_column = function() {
+patron.util.std_map_row_to_column = function(error_value) {
 	return function(row,col) {
 		// row contains { 'my' : { 'au' : {} } }
 		// col contains one of the objects listed above in columns
@@ -285,14 +371,15 @@ patron.util.std_map_row_to_column = function() {
 		var obj = {}; obj.OpenILS = {}; 
 		JSAN.use('util.error'); obj.error = new util.error();
 		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
+		JSAN.use('util.date'); JSAN.use('util.money');
 
 		var my = row.my;
 		var value;
 		try { 
 			value = eval( col.render );
 		} catch(E) {
-			obj.error.sdump('D_ERROR','map_row_to_column: ' + E);
-			value = '???';
+			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
+			if (error_value) { value = error_value; } else { value = '???' };
 		}
 		return value;
 	}

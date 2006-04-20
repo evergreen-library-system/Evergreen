@@ -81,7 +81,7 @@
 									util.widgets.remove_children('title');
 									$('title').appendChild( document.createTextNode( r_mvr.title() ) );
 								} else {
-									obj.network.simple_request(
+									g.network.simple_request(
 										'FM_ACP_RETRIEVE',
 										[ r_circ.target_copy() ],
 										function (rrreq) {
@@ -101,6 +101,17 @@
 			);
 		}
 
+		function retrieve_patron() {
+			g.patron_id = g.cgi.param('patron_id');
+
+			if (g.patron_id) {
+				JSAN.use('patron.util'); 
+				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
+				
+				$('patron_name').setAttribute('value', g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
+			}
+
+		}
 
 		function patron_bill_init() {
 			try {
@@ -118,12 +129,9 @@
 
 				g.cgi = new CGI();
 				g.session = g.cgi.param('session');
-				g.patron_id = g.cgi.param('patron_id');
 
-				JSAN.use('patron.util'); 
-				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
-				
-				$('patron_name').setAttribute('value', g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
+				retrieve_patron();
+
 				$('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
 				$('bill_amount').focus();
@@ -190,11 +198,12 @@
 
 	<vbox flex="1">
 
+			<label id="patron_name" class="patronNameLarge"/>
+
 			<groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
 
 			<groupbox flex="1">
-				<caption label="Bill Patron"/>
-				<label id="patron_name" class="patronNameLarge"/>
+				<caption label="Create Bill"/>
 				<grid>
 					<columns> <column flex="0" /> <column flex="0" /> </columns>
 					<rows id="page1_rows">

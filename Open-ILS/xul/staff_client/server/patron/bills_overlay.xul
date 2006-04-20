@@ -90,6 +90,7 @@
 	</hbox>
 	<hbox>
 		<button id="bill_wizard" label="Bill Patron" accesskey="B" command="cmd_bill_wizard"/>
+		<button id="bill_history" label="History" accesskey="H" command="cmd_bill_history"/>
 		<spacer flex="2"/>
 		<button id="change_to_credit" label="Convert Change to Patron Credit" command="cmd_change_to_credit"/>
 		<button id="bill_apply_payment" label="Apply Payment!" accesskey="P" command="cmd_bill_apply_payment"/>

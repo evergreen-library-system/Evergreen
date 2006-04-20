@@ -74,6 +74,7 @@
 
 	<commandset id="bills_cmds">
 		<command id="cmd_bill_wizard" />
+		<command id="cmd_bill_history" />
 		<command id="cmd_bill_apply_payment" />
 		<command id="cmd_change_to_credit" />
 	</commandset>
