@@ -172,12 +172,19 @@ sub running {
 
 sub request {
 	my $self = shift;
+	my $hash_param;
+
 	my $method = shift;
+	if (ref $method) {
+		$hash_param = $method;
+		$method = shift;
+	}
+
 	my @params = @_;
 
 	$self->session_reap;
 	if ($self->running < $self->request_cap ) {
-		my $index = $self->session_hash_function->($self, $method, @params);
+		my $index = $self->session_hash_function->($self, (defined $hash_param ? $hash_param : ()), $method, @params);
 		my $ses = $self->{sessions}->[$index % $self->session_cap]; 
 
 		#print "Running $method using session ".$ses->session_id."\n";
@@ -196,7 +203,7 @@ sub request {
 	} elsif (!$self->adaptive) {
 		#print "Oops.  Too many running: ".$self->running."\n";
 		$self->session_wait;
-		return $self->request($method => @params);
+		return $self->request((defined $hash_param ? $hash_param : ()), $method => @params);
 	} else {
 		# XXX do addaptive stuff ...
 	}
@@ -206,14 +213,18 @@ sub session_wait {
 	my $self = shift;
 	my $all = shift;
 
+	my $count;
 	if ($all) {
+		$count = $self->running;
 		while ($self->running) {
 			$self->session_reap;
 		}
+		return $count;
 	} else {
-		while(!$self->session_reap) {
+		while(($count = $self->session_reap) > 0) {
 			usleep 100;
 		}
+		return $count;
 	}
 }
 
@@ -226,7 +237,7 @@ sub session_reap {
 		if ($req->{req}->complete) {
 			#print "Currently running: ".$self->running."\n";
 
-			$req->{response} = [$req->{req}->recv];
+			$req->{response} = [ $req->{req}->recv ];
 			$req->{duration} = $req->{req}->duration;
 
 			#print "Completed ".$req->{meth}." in session ".$req->{req}->session->session_id." [$req->{duration}]\n";
@@ -239,13 +250,10 @@ sub session_reap {
 				push @{ $self->{completed} }, $req;
 			}
 
-			$req->{req}->finish;
-			delete $$req{req};
-
 			push @done, $req;
 
 		} else {
-			#print "Still running ".$req->{meth}." in session ".$req->{req}->session->session_id."\n";
+			#$log->debug("Still running ".$req->{meth}." in session ".$req->{req}->session->session_id);
 			push @running, $req;
 		}
 	}
@@ -254,9 +262,18 @@ sub session_reap {
 	for my $req ( @done ) {
 		my $handler = $req->{error} ? $self->failure_handler : $self->success_handler;
 		$handler->($self, $req) if ($handler);
+
+		$req->{req}->finish;
+		delete $$req{$_} for (keys %$req);
+
 	}
 
-	return scalar @done;
+	my $complete = scalar @done;
+	my $incomplete = scalar @running;
+
+	#$log->debug("Still running $incomplete, completed $complete");
+
+	return $complete;
 }
 
 1;
