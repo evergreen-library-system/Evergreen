@@ -363,7 +363,7 @@ sub clense_ISO8601 {
 	if ($date =~ /^\s*(\d{4})-?(\d{2})-?(\d{2})/o) {
 		my $new_date = "$1-$2-$3";
 
-		if ($date =~/(?:$new_date).(\d{2}):(\d{2}):(\d{2})/o) {
+		if ($date =~/(\d{2}):(\d{2}):(\d{2})/o) {
 			$new_date .= "T$1:$2:$3";
 
 			my $z;
