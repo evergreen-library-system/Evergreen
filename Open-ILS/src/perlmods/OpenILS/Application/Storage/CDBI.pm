@@ -388,6 +388,7 @@ sub modify_from_fieldmapper {
 	
 	if (ref($fm) and UNIVERSAL::isa($fm => 'Fieldmapper')) {
 		%hash = map { ($_ => $fm->$_) } grep { $_ ne $primary } $class->columns('Essential');
+		delete $hash{passwd} if ($fm->isa('Fieldmapper::actor::user'));
 	} else {
 		%hash = %{$fm};
 	}
