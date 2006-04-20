@@ -165,23 +165,38 @@
 
 					<td width='85%' id='ue_maintd' class='hide_me'>
 
+						<!-- 
+							TODO add links for middle-name -> first-name + last name
+							and first-name -> middle-name + last-name
+						-->
+
 						<div>
 							<div>
 								<a id='ue_dups_ident1' class='dup_link hide_me'
 									href='javascript:void(0);' onclick='uEditShowSearch("ident1");'>
-									Show user in the the database with the same primary identification.
+									Show users in the the database with the same primary identification.
+									(<b id='ue_dups_ident1_hits'></b>)
 								</a>
 							</div>
 							<div>
 								<a id='ue_dups_ident2' class='dup_link hide_me'
 									href='javascript:void(0);' onclick='uEditShowSearch("ident2");'>
-									Show user in the the database with the same secondary identification.
+									Show users in the the database with the same secondary identification.
+									(<b id='ue_dups_ident2_hits'></b>)
 								</a>
 							</div>
 							<div>
 								<a id='ue_dups_names' class='dup_link hide_me'
 									href='javascript:void(0);' onclick='uEditShowSearch("names");'>
-									Show user in the the database with the same first and last name.
+									Show users in the the database with a similar first and last name.
+									(<b id='ue_dups_names_hits'></b>)
+								</a>
+							</div>
+							<div>
+								<a id='ue_dups_email' class='dup_link hide_me'
+									href='javascript:void(0);' onclick='uEditShowSearch("email");'>
+									Show users in the the database with a matching email address.
+									(<b id='ue_dups_email_hits'></b>)
 								</a>
 							</div>
 						</div>
@@ -898,7 +913,7 @@
 		<span id='ue_summary_window'>Patron Summary</span>
 		<span id='ue_success'>User update succeeded</span>
 		<span id='ue_dup_ident1'>
-			User already exists with the primary identification provided.  
+			A user already exists with the primary identification provided.  
 			Do you wish to view the duplicate record now?
 		</span>
 	</div>

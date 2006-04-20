@@ -339,6 +339,7 @@ function uEditRunDupeSearch(type, search_hash) {
 	_debug('dup search: ' + js2JSON(search_hash));
 
 	var linkid = 'ue_dups_'+type;
+	var hitsid = linkid + '_hits';
 	var req = new Request(PATRON_SEARCH, SESSION, search_hash);
 
 	req.callback( 
@@ -354,6 +355,7 @@ function uEditRunDupeSearch(type, search_hash) {
 			}
 
 			unHideMe($(linkid));
+			appendClear($(hitsid), text(ids.length));
 			uEditDupHashes[type] = search_hash;
 			switch(type) {
 				case 'ident1' :
