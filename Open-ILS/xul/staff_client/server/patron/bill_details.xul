@@ -18,6 +18,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>
 
 <window id="bill_details_win" width="700" height="550"
 	onload="try{ my_init(); } catch(E) { alert(E); }"
@@ -248,53 +249,7 @@
 		<groupbox orient="vertical" flex="1">
 			<caption label="Full Details"/>
 
-			<groupbox orient="vertical" flex="1">
-				<caption label="Summary" />
-				<grid flex="1">
-					<columns>
-						<column flex="1"/>
-						<column flex="1"/>
-						<column flex="1"/>
-						<column flex="1"/>
-						<column flex="1"/>
-						<column flex="2"/>
-					</columns>
-					<rows>
-						<row>
-							<label class="header" value="Bill #"/>
-							<label id="mbts_id" />
-							<label class="header" value="Total Billed"/>
-							<label id="mbts_total_owed" />
-							<label class="header" id="title_label" value="Title" hidden="true"/>
-							<description id="title"/>
-						</row>
-						<row>
-							<label class="header" value="Type"/>
-							<label id="mbts_xact_type"/>
-							<label class="header" value="Total Paid"/>
-							<label id="mbts_total_paid" />
-							<label class="header" id="checked_out_label" value="Checked Out" hidden="true"/>
-							<label id="checked_out"/>
-						</row>
-						<row>
-							<label class="header" value="Start"/>
-							<label id="mbts_xact_start"/>
-							<label class="header" value="Balance Owed"/>
-							<label id="mbts_balance_owed" />
-							<label class="header" id="due_label" value="Due Date" hidden="true"/>
-							<label id="due"/>
-						</row>
-						<row>
-							<label class="header" value="Finish"/>
-							<label id="mbts_xact_finish"/>
-							<label/>
-							<label/>
-							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
-							<label id="checked_in"/>
-						</row>
-					</rows>
-				</grid>
-			</groupbox>
+			<groupbox orient="vertical" flex="1" id="summary" />
 
 			<splitter><grippy/></splitter>
 

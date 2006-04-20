@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+<overlay id="bills_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+			<groupbox orient="vertical" flex="1" id="summary">
+				<caption label="Summary" />
+				<grid flex="1">
+					<columns>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<row>
+							<label class="header" value="Bill #"/>
+							<label id="mbts_id" />
+							<label class="header" value="Total Billed"/>
+							<label id="mbts_total_owed" />
+							<label class="header" id="title_label" value="Title" hidden="true"/>
+							<description id="title"/>
+						</row>
+						<row>
+							<label class="header" value="Type"/>
+							<label id="mbts_xact_type"/>
+							<label class="header" value="Total Paid"/>
+							<label id="mbts_total_paid" />
+							<label class="header" id="checked_out_label" value="Checked Out" hidden="true"/>
+							<label id="checked_out"/>
+						</row>
+						<row>
+							<label class="header" value="Start"/>
+							<label id="mbts_xact_start"/>
+							<label class="header" value="Balance Owed"/>
+							<label id="mbts_balance_owed" />
+							<label class="header" id="due_label" value="Due Date" hidden="true"/>
+							<label id="due"/>
+						</row>
+						<row>
+							<label class="header" value="Finish"/>
+							<label id="mbts_xact_finish"/>
+							<label/>
+							<label/>
+							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
+							<label id="checked_in"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+
+
+</overlay>
+
