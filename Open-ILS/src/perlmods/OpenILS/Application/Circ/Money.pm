@@ -142,7 +142,7 @@ sub make_payments {
 
 
 	$logger->activity("user ".$user->id." applying total ".
-		"credit of $credit to user $userid") if $credit;
+		"credit of $credit to user $userid") if $credit != 0;
 
 	_update_patron_credit( $session, $userid, $credit );
 
@@ -327,6 +327,30 @@ sub void_bill {
 	return $U->DB_UPDATE_FAILED($bill) unless defined $stat;
 
 	return 1;
+}
+
+__PACKAGE__->register_method (
+	method => 'fetch_mbts',
+	api_name => 'open-ils.circ.money.billable_xact_summary.retrieve'
+);
+sub fetch_mbts {
+	my($s, $c, $authtoken, $id) = @_;
+
+	my $sum = $U->storagereq(
+		'open-ils.storage.direct.money.billable_transaction_summary.retrieve', $id );
+	return OpenILS::Event->new('BILLABLE_XACT_SUMMARY_NOT_FOUND', id => $id) unless $sum;
+
+	my ($reqr, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	my $usr;
+	($usr, $evt) = $U->fetch_user($sum->usr);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($reqr->id, $usr->home_ou, 'VIEW_TRANSACTION');
+	return $evt if $evt;
+
+	return $sum;
 }
 
 
