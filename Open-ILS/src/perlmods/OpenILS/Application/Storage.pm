@@ -12,7 +12,9 @@ use OpenILS::Application::Storage::FTS;
 
 # the easy way to get to the logger...
 my $log = "OpenSRF::Utils::Logger";
+
 our $WRITE = 0;
+our $IGNORE_XACT_ID_FAILURE = 1;
 
 sub DESTROY {};
 
