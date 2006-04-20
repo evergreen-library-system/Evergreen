@@ -36,9 +36,13 @@ util.exec.prototype = {
 		if (args.length > 0) setTimeout(
 			function() {
 				try {
-					for (var i = 0; i < obj.chunk_size ; i++) {
+					for (var i = 0; (i < args.length && i < obj.chunk_size) ; i++) {
 						try {
-							args[i]();
+							if (typeof args[i] == 'function') {
+								args[i]();
+							} else {
+								alert('FIXME -- typeof args['+i+'] == ' + typeof args[i]);
+							}
 						} catch(E) {
 							dump('util.exec.chain error: ' + js2JSON(E) + '\n');
 							var keep_going = false;
