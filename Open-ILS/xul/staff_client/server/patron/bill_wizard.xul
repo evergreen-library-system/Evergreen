@@ -21,7 +21,7 @@
 
 <window id="patron_bill" title="Bill Patron Wizard"
 	orient="vertical" style="overflow: auto"
-	onload="patron_bill_init()"
+	onload="patron_bill_init()" width="700" height="550"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -34,6 +34,73 @@
 	<script>
 	<![CDATA[
 
+		function $(id) { return document.getElementById(id); }
+
+		function retrieve_mbts() {
+			g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,g.mbts_id],
+				function(req) {
+					try {
+						g.mbts = req.getResultObject();
+						$('mbts_id').value = g.mbts.id();
+						$('mbts_xact_type').value = g.mbts.xact_type();
+						$('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
+						$('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
+						$('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
+						$('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
+						$('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
+						$('xact_type').value = g.mbts.xact_type(); $('xact_type').disabled = true;
+					} catch(E) {
+						g.error.sdump('D_ERROR',E);
+					}
+				}
+			);
+		}
+
+		function retrieve_circ() {
+			JSAN.use('util.widgets');
+			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ g.session, g.mbts_id ],
+				function (req) {
+					var r_circ = req.getResultObject();
+					if (instanceOf(r_circ,circ)) {
+
+						$('title_label').hidden = false;
+						$('checked_out_label').hidden = false;
+						$('due_label').hidden = false;
+						$('checked_in_label').hidden = false;
+						$('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
+						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
+						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+
+						g.network.simple_request(
+							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
+							[ r_circ.target_copy() ],
+							function (rreq) {
+								var r_mvr = rreq.getResultObject();
+								if (instanceOf(r_mvr,mvr)) {
+									util.widgets.remove_children('title');
+									$('title').appendChild( document.createTextNode( r_mvr.title() ) );
+								} else {
+									obj.network.simple_request(
+										'FM_ACP_RETRIEVE',
+										[ r_circ.target_copy() ],
+										function (rrreq) {
+											var r_acp = rrreq.getResultObject();
+											if (instanceOf(r_acp,acp)) {
+												util.widgets.remove_children('title');
+												$('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
+											}
+										}
+									);
+								}
+							}
+						);
+
+					}
+				}
+			);
+		}
+
+
 		function patron_bill_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -44,6 +111,9 @@
 				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 				g.OpenILS = {}; JSAN.use('OpenILS.data'); g.OpenILS.data = new OpenILS.data();
 				g.OpenILS.data.init({'via':'stash'});
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date');
+				JSAN.use('util.money');
 
 				g.cgi = new CGI();
 				g.session = g.cgi.param('session');
@@ -52,12 +122,17 @@
 				JSAN.use('patron.util'); 
 				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
 				
-				document.getElementById('patron_name').setAttribute('value',
-					g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
-				document.getElementById('billing_location').setAttribute('value',
-					g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
+				$('patron_name').setAttribute('value', g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
+				$('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
-				document.getElementById('bill_amount').focus();
+				$('bill_amount').focus();
+
+				if (g.cgi.param('xact_id')) { 
+					g.mbts_id = g.cgi.param('xact_id');
+					$('summary').hidden = false; 
+					retrieve_mbts();
+					retrieve_circ();
+				}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -71,25 +146,27 @@
 
 		function patron_bill_finish() {
 			try {
-				var grocery = new mg();
-					grocery.isnew('1');
-					grocery.billing_location( g.OpenILS.data.list.au[0].ws_ou() );
-					grocery.usr( g.au_obj.id() );
-					grocery.note( document.getElementById('bill_note').value );
-				JSAN.use('util.network'); var net = new util.network();
-				var mg_id = net.request(
-					api.FM_MG_CREATE.app,
-					api.FM_MG_CREATE.method,
-					[ g.session, grocery ]
-				);
-				if (mg_id) {
+				var xact_id = g.cgi.param('xact_id');
+				if (!xact_id) {
+						var grocery = new mg();
+							grocery.isnew('1');
+							grocery.billing_location( g.OpenILS.data.list.au[0].ws_ou() );
+							grocery.usr( g.au_obj.id() );
+							grocery.note( $('bill_note').value );
+						xact_id = g.network.request(
+							api.FM_MG_CREATE.app,
+							api.FM_MG_CREATE.method,
+							[ g.session, grocery ]
+						);
+				}
+				if (xact_id) {
 					var billing = new mb();
 						billing.isnew('1');
-						billing.note( document.getElementById('bill_note').value );
-						billing.xact( mg_id );
-						billing.amount( document.getElementById('bill_amount').value );
-						billing.billing_type( document.getElementById('billing_type').value );
-					var mb_id = net.request(
+						billing.note( $('bill_note').value );
+						billing.xact( xact_id );
+						billing.amount( $('bill_amount').value );
+						billing.billing_type( $('billing_type').value );
+					var mb_id = g.network.request(
 						api.FM_MB_CREATE.app,
 						api.FM_MB_CREATE.method,
 						[ g.session, billing ]
@@ -99,7 +176,7 @@
 						throw('mb_id = ' + mb_id);
 					}
 				} else {
-					throw('mg_id = ' + mg_id);
+					throw('xact_id = ' + xact_id);
 				}
 			} catch(E) {
 				g.error.sdump('D_ERROR',js2JSON(E));
@@ -110,64 +187,114 @@
 	]]>
 	</script>
 
+	<vbox flex="1">
+			<groupbox orient="vertical" flex="1" hidden="true" id="summary">
+				<caption label="Summary" />
+				<grid flex="1">
+					<columns>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<row>
+							<label class="header" value="Bill #"/>
+							<label id="mbts_id" />
+							<label class="header" value="Total Billed"/>
+							<label id="mbts_total_owed" />
+							<label class="header" id="title_label" value="Title" hidden="true"/>
+							<description id="title"/>
+						</row>
+						<row>
+							<label class="header" value="Type"/>
+							<label id="mbts_xact_type"/>
+							<label class="header" value="Total Paid"/>
+							<label id="mbts_total_paid" />
+							<label class="header" id="checked_out_label" value="Checked Out" hidden="true"/>
+							<label id="checked_out"/>
+						</row>
+						<row>
+							<label class="header" value="Start"/>
+							<label id="mbts_xact_start"/>
+							<label class="header" value="Balance Owed"/>
+							<label id="mbts_balance_owed" />
+							<label class="header" id="due_label" value="Due Date" hidden="true"/>
+							<label id="due"/>
+						</row>
+						<row>
+							<label class="header" value="Finish"/>
+							<label id="mbts_xact_finish"/>
+							<label/>
+							<label/>
+							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
+							<label id="checked_in"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
 
-	<groupbox>
-		<caption label="Bill Patron"/>
-		<label id="patron_name"/>
-		<grid>
-			<columns> <column flex="0" /> <column flex="0" /> </columns>
-			<rows id="page1_rows">
-				<row><label value="Location"/><textbox id="billing_location" disabled="true" /></row>
-				<row><label value="Transaction Type"/>
-					<menulist id="xact_type">
-						<menupopup>
-							<menuitem label="Grocery" value="grocery" selected="true"/>
-						</menupopup>
-					</menulist>
-				</row>
-				<row><label value="Billing Type"/>
-					<menulist id="billing_type">
-						<menupopup>
-							<menuitem value="Miscellaneous" label="Miscellaneous" />
-							<menuitem value="Overdue materials" label="Overdue materials" />
-							<menuitem value="Fee for placing a hold" label="Fee for placing a hold" />
-							<menuitem value="Fee for checking out a book" label="Fee for checking out a book" />
-							<menuitem value="Fee for library card" label="Fee for library card" />
-							<menuitem value="Miscellaneous charges" label="Miscellaneous charges" />
-							<menuitem value="Lost materials" label="Lost materials" />
-							<menuitem value="Damaged material" label="Damaged material" />
-							<menuitem value="Overdue Reserves charge" label="Overdue Reserves charge" />
-							<menuitem value="Recall overdue" label="Recall overdue" />
-							<menuitem value="Fee for processing lost library materials" label="Fee for processing lost library materials" />
-							<menuitem value="Fee for sending patron bills to collection agency" label="Fee for sending patron bills to collection agency" />
-							<menuitem value="Fee for interlibrary loan" label="Fee for interlibrary loan" />
-							<menuitem value="Fee for copies" label="Fee for copies" />
-							<menuitem value="Money advanced to pay for telephone use" label="Money advanced to pay for telephone use" />
-							<menuitem value="Deposit fee" label="Deposit fee" />
-							<menuitem value="Fee for disk" label="Fee for disk" />
-							<menuitem value="Fee for faxing" label="Fee for faxing" />
-							<menuitem value="Fee for laminating" label="Fee for laminating" />
-							<menuitem value="Fee for room cleaning" label="Fee for room cleaning" />
-							<menuitem value="Deposit returned; fee refund" label="Deposit returned; fee refund" />
-							<menuitem value="Sale items" label="Sale items" />
-							<menuitem value="Fee for lost card" label="Fee for lost card" />
-							<menuitem value="Long overdue items" label="Long overdue items" />
-							<menuitem value="Lost/Replacement Cassette" label="Lost/Replacement Cassette" />
-							<menuitem value="Returned Check" label="Returned Check" />
-						</menupopup>
-					</menulist>
-				</row>
-				<row><label value="Amount"/><textbox id="bill_amount" /></row>
-				<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
-			</rows>
-		</grid>
-		<hbox>
-			<spacer flex="1"/>
-			<button label="Cancel" oncommand="window.close()" accesskey="C"/>
-			<button label="Submit this Bill" oncommand="patron_bill_finish(); window.close();" accesskey="S"/>
-		</hbox>
-	</groupbox>
-
+			<groupbox flex="1">
+				<caption label="Bill Patron"/>
+				<label id="patron_name" class="patronNameLarge"/>
+				<grid>
+					<columns> <column flex="0" /> <column flex="0" /> </columns>
+					<rows id="page1_rows">
+						<row><label value="Location"/><textbox id="billing_location" disabled="true" /></row>
+						<row><label value="Transaction Type"/>
+							<menulist id="xact_type">
+								<menupopup>
+									<menuitem label="Grocery" value="grocery" selected="true"/>
+									<menuitem label="Circulation" value="circulation" disabled="true"/>
+								</menupopup>
+							</menulist>
+						</row>
+						<row><label value="Billing Type"/>
+							<menulist id="billing_type">
+								<menupopup>
+									<menuitem value="Miscellaneous" label="Miscellaneous" />
+									<menuitem value="Overdue materials" label="Overdue materials" />
+									<menuitem value="Fee for placing a hold" label="Fee for placing a hold" />
+									<menuitem value="Fee for checking out a book" label="Fee for checking out a book" />
+									<menuitem value="Fee for library card" label="Fee for library card" />
+									<menuitem value="Miscellaneous charges" label="Miscellaneous charges" />
+									<menuitem value="Lost materials" label="Lost materials" />
+									<menuitem value="Damaged material" label="Damaged material" />
+									<menuitem value="Overdue Reserves charge" label="Overdue Reserves charge" />
+									<menuitem value="Recall overdue" label="Recall overdue" />
+									<menuitem value="Fee for processing lost library materials" label="Fee for processing lost library materials" />
+									<menuitem value="Fee for sending patron bills to collection agency" label="Fee for sending patron bills to collection agency" />
+									<menuitem value="Fee for interlibrary loan" label="Fee for interlibrary loan" />
+									<menuitem value="Fee for copies" label="Fee for copies" />
+									<menuitem value="Money advanced to pay for telephone use" label="Money advanced to pay for telephone use" />
+									<menuitem value="Deposit fee" label="Deposit fee" />
+									<menuitem value="Fee for disk" label="Fee for disk" />
+									<menuitem value="Fee for faxing" label="Fee for faxing" />
+									<menuitem value="Fee for laminating" label="Fee for laminating" />
+									<menuitem value="Fee for room cleaning" label="Fee for room cleaning" />
+									<menuitem value="Deposit returned; fee refund" label="Deposit returned; fee refund" />
+									<menuitem value="Sale items" label="Sale items" />
+									<menuitem value="Fee for lost card" label="Fee for lost card" />
+									<menuitem value="Long overdue items" label="Long overdue items" />
+									<menuitem value="Lost/Replacement Cassette" label="Lost/Replacement Cassette" />
+									<menuitem value="Returned Check" label="Returned Check" />
+								</menupopup>
+							</menulist>
+						</row>
+						<row><label value="Amount"/><textbox id="bill_amount" /></row>
+						<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
+					</rows>
+				</grid>
+				<spacer flex="1"/>
+				<hbox>
+					<spacer flex="1"/>
+					<button label="Cancel" oncommand="window.close()" accesskey="C"/>
+					<button label="Submit this Bill" oncommand="patron_bill_finish(); window.close();" accesskey="S"/>
+				</hbox>
+			</groupbox>
+	</vbox>
 </window>
 
 

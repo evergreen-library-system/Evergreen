@@ -638,6 +638,17 @@ patron.bills.prototype = {
 						btn2.addEventListener(
 							'command',
 							function(ev) {
+								JSAN.use('util.window');
+								var win = new util.window();
+								var w = win.open(
+									urls.XUL_PATRON_BILL_WIZARD
+										+ '?session=' + window.escape(obj.session)
+										+ '&patron_id=' + window.escape(obj.patron_id)
+										+ '&xact_id=' + window.escape( my.mobts.id() ),
+									'billwizard',
+									'chrome,resizable,modal'
+								);
+								obj.refresh();
 							},
 							false
 						);

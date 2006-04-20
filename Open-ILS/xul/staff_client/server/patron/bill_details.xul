@@ -43,9 +43,9 @@
 						$('mbts_xact_type').value = g.mbts.xact_type();
 						$('mbts_xact_start').value = g.mbts.xact_start().toString().substr(0,19);
 						$('mbts_xact_finish').value = g.mbts.xact_finish() ? g.mbts.xact_finish().toString().substr(0,19) : '';
-						$('mbts_total_owed').value = util.money.sanitize( g.mbts.total_owed() );
-						$('mbts_total_paid').value = util.money.sanitize( g.mbts.total_paid() );
-						$('mbts_balance_owed').value = util.money.sanitize( g.mbts.balance_owed() );
+						$('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
+						$('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
+						$('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
 					} catch(E) {
 						g.error.sdump('D_ERROR',E);
 					}
