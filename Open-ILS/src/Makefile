@@ -158,10 +158,12 @@ storage-bootstrap:
 	@echo "WARNING!"
 	@echo ""
 	@echo "storage-bootstrap will DESTROY all data within all of the ILS tables in your database."
+	@echo "The database this script will touch has a DBI DSN of"
+	@echo "    dbi:$(DBDRVR):host=$(DBHOST);dbname=$(DBNAME);port=$(DBPORT)"
 	@echo "Type control-c to avoid destroying all of the data.  Type enter to continue..."
 	@echo ""
 	@read X;
-	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBNAME) $(DBUSER) $(DBPW)
+	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBPORT) $(DBNAME) $(DBUSER) $(DBPW)
 
 # -----------------------------------------------------------------------------------
 
