@@ -44,12 +44,13 @@ util.file.prototype = {
 			}
 			this._file.append(fname);
 	
+			dump('file: ' + this._file.path + '\n');
 			this.error.sdump('D_FILE',this._file.path);
 
 			return this._file;
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.get(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.get(): ' + E);
 			throw(E);
 		}
 	},
@@ -63,7 +64,7 @@ util.file.prototype = {
 			if (this._f) { this._f = null; }
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.close(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.close(): ' + E);
 			throw(E);
 		}
 	},
@@ -72,7 +73,7 @@ util.file.prototype = {
 		try {
 			this.write_object('append',obj);
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.append_object(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.append_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -82,7 +83,7 @@ util.file.prototype = {
 			this.write_object('truncate',obj);
 			this.close();
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.set_object(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.set_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -98,7 +99,7 @@ util.file.prototype = {
 			this.write_content(write_type,obj_json);
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.write_object(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.write_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -109,9 +110,9 @@ util.file.prototype = {
 			if (!this._output_stream) this._create_output_stream(write_type);
 			this._output_stream.write( content, String( content ).length );
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.write_content(): ' + E);
-			dump('write_type = ' + write_type + '\n');
-			dump('content = ' + content + '\n');
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.write_content(): ' + E);
+			//dump('write_type = ' + write_type + '\n');
+			//dump('content = ' + content + '\n');
 			throw(E);
 		}
 	},
@@ -122,7 +123,7 @@ util.file.prototype = {
 			var obj; try { obj = JSON2js( data ); } catch(E) { throw('Could not js-ify the JSON: '+E); }
 			return obj;
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.get_object(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.get_object(): ' + E);
 			throw(E);
 		}
 	},
@@ -139,14 +140,14 @@ util.file.prototype = {
 			//var data = {}; this._istream.readLine(data);
 			return data;
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file.get_content(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.get_content(): ' + E);
 			throw(E);
 		}
 	},
 
 	'_create_input_stream' : function() {
 		try {
-			dump('_create_input_stream()\n');
+			//dump('_create_input_stream()\n');
 			
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
 
@@ -170,14 +171,14 @@ util.file.prototype = {
 			return this._input_stream;
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file._create_input_stream(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file._create_input_stream(): ' + E);
 			throw(E);
 		}
 	},
 
 	'_create_output_stream' : function(param) {
 		try {
-			dump('_create_output_stream('+param+')\n');
+			//dump('_create_output_stream('+param+')\n');
 			
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
 
@@ -200,7 +201,7 @@ util.file.prototype = {
 			return this._output_stream;
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','util.file._create_output_stream(): ' + E);
+			this.error.sdump('D_ERROR',this._file.path + '\nutil.file._create_output_stream(): ' + E);
 			throw(E);
 		}
 	}
