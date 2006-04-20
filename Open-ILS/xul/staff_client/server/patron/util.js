@@ -48,6 +48,10 @@ patron.util.mb_columns = function(modify,params) {
 			'id' : 'note', 'label' : 'Note', 'flex' : 2,
 			'primary' : false, 'hidden' : false, 'render' : 'my.mb.note()'
 		},
+		{
+			'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.mb.xact()'
+		},
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
