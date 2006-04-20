@@ -387,7 +387,7 @@ sub modify_from_fieldmapper {
 	my %hash;
 	
 	if (ref($fm) and UNIVERSAL::isa($fm => 'Fieldmapper')) {
-		%hash = map { ($_ => ''.$fm->$_) } grep { $_ ne $primary } $class->columns('Essential');
+		%hash = map { ($_ => $fm->$_) } grep { $_ ne $primary } $class->columns('Essential');
 	} else {
 		%hash = %{$fm};
 	}
