@@ -86,7 +86,7 @@
 				var barcode = tb.value;
 
 				var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( 
-					urls.XUL_PATRON_EDIT
+					urls.XUL_ADV_PATRON_EDIT
 					+ '?ses=' + window.escape( g.cgi.param('session') )
 					+ '&adv=1'
 					+ '&barcode=' + window.escape( barcode )
