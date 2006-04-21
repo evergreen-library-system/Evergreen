@@ -1,0 +1,83 @@
+<table class='hide_me'>
+	<script language='javascript' src='../js/copy_details.js'> </script>
+	<style>
+		.copy_details_table {
+		}
+	</style>
+	<tbody>
+		<tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row' templateRow='1'>
+			<td colspan='10'>
+				<div style='text-align: center; margin-top: 6px; margin-bottom: 6px'>
+				
+					<a name='print' href='javascript:void(0);' class='classic_link'>print these details</a>
+					<table class='data_grid data_grid_center' style='width: 100%'>
+						<thead>
+							<tr>
+								<td width='33%'>Barcode</td>
+								<td>Status</td>
+								<td>Location</td>
+							</tr>
+						</thead>
+						<tbody name='copies_tbody' class='copy_details_table'>
+							<tr name='copies_row'>
+								<td>
+									<span name='barcode'> </span>
+									<a style='padding-left: 6px; color: #804070;' 
+										class='hide_me classic_link' name='details_link'>more info...</a>
+									<a style='padding-left: 6px; color: #804070;' 
+										class='hide_me classic_link' name='less_details_link'>less info</a>
+								</td>
+								<td name='status'></td>
+								<td name='location'></td>
+							</tr>
+							<tr name='copy_extras_row' class='hide_me'>
+								<td colspan='3'>
+									<table width='100%' class='data_grid'>
+										<tbody name='extras_tbody'>
+											<tr name='extras_row' class='hide_me'>
+												<td name='type'> 
+													<span name='note' class='hide_me'><b>Copy Note</b></span>
+													<span name='cat' class='hide_me'><b>Copy Category</b></span>
+												</td>
+												<td name='key'> </td>
+												<td name='value' width='70%'> </td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+<div id='rdetail_print_details' class='hide_me'>
+	<div style='text-align: center; padding: 20px; width: 100%'>
+		<div style='width:100%; border: 2px solid #E0F0E0; margin-bottom: 20px;'>
+			<input type='submit' value='Print Page' onclick='window.print();'> </input>
+		</div>
+		<div name='body'> 
+			<table>
+				<tbody name='tbody'>
+					<tr><td>Library</td><td colspan='2' name='lib'></td></tr>
+					<tr><td>Title</td><td colspan='2' name='title'></td></tr>
+					<tr><td>Author</td><td colspan='2' name='author'></td></tr>
+					<tr><td>Edition</td><td colspan='2' name='edition'></td></tr>
+					<tr><td>Publication Date</td><td colspan='2' name='pubdate'></td></tr>
+					<tr><td>Publisher</td><td colspan='2' name='publisher'></td></tr>
+					<tr><td>Physical Description</td><td colspan='2' name='phys'></td></tr>
+					<tr>
+						<td colspan='3' style='background: #E0F0E0;'> </td>
+					</tr>
+					<tr name='cnrow'><td>Call Number</td><td colspan='2' name='cn'></td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
