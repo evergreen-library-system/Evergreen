@@ -316,7 +316,7 @@ function uEditSaveUser() {
 	else 
 		alert($('ue_success').innerHTML);
 
-	if (window.xulG && typeof window.xulG.save == 'function') {
+	if (window.xulG && typeof window.xulG.on_save == 'function') {
 		window.xulG.on_save(patron); 
 	} else {
 		location.href = location.href;
