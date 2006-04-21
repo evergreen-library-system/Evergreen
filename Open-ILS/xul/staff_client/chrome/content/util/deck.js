@@ -37,11 +37,24 @@ util.deck.prototype = {
 		var idx = this.find_index(url);
 		if (idx>-1) {
 			this.node.selectedIndex = idx;
-			return this.node.childNodes[idx];
+
+			var iframe = this.node.childNodes[idx];
+
+			if (content_params) {
+				try {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					this.error.sdump('D_DECK', 'set_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
+					iframe.contentWindow.IAMXUL = true;
+					iframe.contentWindow.xulG = content_params;
+				} catch(E) {
+					this.error.sdump('D_ERROR','E: ' + E + '\n');
+				}
+			}
+
+			return iframe;
 		} else {
 			return this.new_iframe(url,params,content_params);
 		}
-		
 		
 	},
 
@@ -64,11 +77,11 @@ util.deck.prototype = {
 		if (content_params) {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-				this.error.sdump('D_DECK', 'frame.contentWindow = ' + iframe.contentWindow + '\n');
+				this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
 				iframe.contentWindow.IAMXUL = true;
 				iframe.contentWindow.xulG = content_params;
 			} catch(E) {
-				dump('E: ' + E + '\n');
+				this.error.sdump('D_ERROR','E: ' + E + '\n');
 			}
 		}
 		return iframe;
