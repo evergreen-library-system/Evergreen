@@ -26,7 +26,7 @@
 
 <window id="menu_frame_win"
 	onload="try { my_init(); } catch(E) { alert(E); }"
-	orient="vertical" style="overflow: auto" width="800" height="500"
+	orient="vertical" width="800" height="500"
 	sizemode="maximized" persist="width height" title="&staff.main.menu.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -89,7 +89,7 @@
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<!-- CONTENT -->
 
-	<box id="menu_frame_main" />
+	<box id="menu_frame_main" class="my_overflow"/>
 
 </window>
 

@@ -12,7 +12,7 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 
 .shrinkable_groupbox { font-weight: bold; -moz-binding: url('chrome://open_ils_staff_client/content/main/bindings.xml#caption'); }
 
-.my_overflow { overflow: auto; }
+.my_overflow3 { overflow: auto; }
 
 .text_left { text-align: left; }
 .text_right { text-align: right; }
