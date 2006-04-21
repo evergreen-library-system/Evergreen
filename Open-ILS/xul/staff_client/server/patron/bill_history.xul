@@ -49,7 +49,7 @@
 		}
 
 		function retrieve_all_mbts_for_list() {
-			g.mbts_ids = g.network.simple_request('FM_MBTS_IDS_RETRIEVE_ALL',[g.session,g.patron_id]);
+			g.mbts_ids = g.network.simple_request('FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE',[g.session,g.patron_id]);
 			if (g.mbts_ids.ilsevent) {
 				switch(g.mbts_ids.ilsevent) {
 					case -1: g.error.standard_network_error_alert('Please close this window and try again.'); break;
