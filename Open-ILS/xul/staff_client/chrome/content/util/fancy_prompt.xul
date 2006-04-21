@@ -77,7 +77,7 @@
 			g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value;
 			var nl = document.getElementsByAttribute('name','fancy_data');
 			for (var i = 0; i < nl.length; i++) {
-				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].value;
+				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
 			}
 			g.data.stash('fancy_prompt_data');
 			window.close();
