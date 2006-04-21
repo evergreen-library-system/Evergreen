@@ -63,6 +63,8 @@
 
 				if (g.cgi.param('title')) document.title = g.cgi.param('title');
 
+				if (g.cgi.param('focus')) document.getElementById(g.cgi.param('focus')).focus();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\nfancy_prompt.xul\n" + E + '\n';
@@ -75,7 +77,7 @@
 			g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value;
 			var nl = document.getElementsByAttribute('name','fancy_data');
 			for (var i = 0; i < nl.length; i++) {
-				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].getAttribute('value');
+				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].value;
 			}
 			g.data.stash('fancy_prompt_data');
 			window.close();
