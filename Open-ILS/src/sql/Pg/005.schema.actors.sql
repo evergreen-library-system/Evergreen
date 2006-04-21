@@ -34,7 +34,7 @@ CREATE TABLE actor.usr (
 	passwd			TEXT		NOT NULL,
 	standing		INT		NOT NULL DEFAULT 1 REFERENCES config.standing (id),
 	ident_type		INT		NOT NULL REFERENCES config.identification_type (id),
-	ident_value		TEXT		NOT NULL,
+	ident_value		TEXT,
 	ident_type2		INT		REFERENCES config.identification_type (id),
 	ident_value2		TEXT,
 	net_access_level	INT		NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id),
@@ -87,6 +87,8 @@ COMMENT ON TABLE actor.usr IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+CREATE UNIQUE INDEX actor_usr_unique_ident ON actor.usr (ident_type, ident_value);
 
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
 CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
@@ -405,6 +407,13 @@ CREATE TABLE actor.hours_of_operation (
 	dow_5_close	TIME	NOT NULL DEFAULT '17:00',
 	dow_6_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_6_close	TIME	NOT NULL DEFAULT '17:00'
+);
+
+CREATE TABLE actor.org_unit_closed (
+	id		SERIAL	PRIMARY KEY,
+	org_unit	INT	NOT NULL REFERENCES actor.org_unit (id),
+	close_start	DATE	NOT NULL,
+	close_end	DATE	NOT NULL
 );
 
 -- Workstation registration...
