@@ -96,6 +96,9 @@
 				/* template */
 				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
 				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
+				util.widgets.apply(node,'name','create_date',
+					function(n){n.setAttribute("tooltiptext","Note ID: " + g.notes[i].id() + " Creator ID: " + g.notes[i].creator());}
+				);
 				apply(node,'title',g.notes[i].title());
 				apply(node,'pub',g.notes[i].pub() ? "Public" : "Private");
 				apply(node,'value',g.notes[i].value());
@@ -167,27 +170,6 @@
 			<description name="value"/>
 		</groupbox>
 	</stack>
-<!--
-		<grid class="postit" id="note_template" hidden="true">
-			<columns>
-				<column/>
-			</columns>
-			<rows>
-				<row class="postit titleRow">
-					<hbox flex="1">
-						<label name="title" flex="1" value="A note"/>
-						<label name="create_date" value="2005-01-01"/>
-						<label name="pub" value="Public"/>
-					</hbox>
-				</row>
-				<row class="postit bodyRow">
-					<description name="value" >
-						Here's a bunch of text that should wrap to multiple lines in a 250px wide grid.  It's just a description box... yay.
-					</description>
-				</row>
-			</rows>
-		</grid>
--->
 
 	<vbox flex="1" class="my_overflow">
 		<tabbox flex="1" orient="horizontal">
