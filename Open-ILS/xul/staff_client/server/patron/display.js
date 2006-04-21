@@ -56,7 +56,6 @@ patron.display.prototype = {
 					}
 				}
 			);
-			dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 		}
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
@@ -120,7 +119,6 @@ patron.display.prototype = {
 									}
 								}
 							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 							obj.items_window = frame.contentWindow;
 						}
@@ -149,14 +147,14 @@ patron.display.prototype = {
 									}
 								}
 							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
-							obj.right_deck.set_iframe(urls.XUL_PATRON_INFO);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
+							obj.right_deck.set_iframe(
+								urls.XUL_PATRON_INFO + '?patron_id=' + window.escape( obj.patron.id() )
+							);
 						}
 					],
 					'cmd_patron_holds' : [
@@ -175,7 +173,6 @@ patron.display.prototype = {
 									}
 								}
 							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
 					'cmd_patron_bills' : [
@@ -194,14 +191,6 @@ patron.display.prototype = {
 									}
 								}
 							);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
-						}
-					],
-					'cmd_patron_info' : [
-						['command'],
-						function(ev) {
-							obj.right_deck.set_iframe(urls.XUL_PATRON_INFO);
-							dump('obj.right_deck.node.childNodes.length = ' + obj.right_deck.node.childNodes.length + '\n');
 						}
 					],
 					'patron_name' : [
@@ -288,7 +277,7 @@ patron.display.prototype = {
 						}
 					},
 					'on_error' : function(E) {
-						var error = js2JSON(E); dump(error + '\n');
+						var error = js2JSON(E); obj.error.sdump('D_ERROR', error);
 						location.href = urls.XUL_PATRON_BARCODE_ENTRY 
 							+ '?session=' + window.escape(obj.session)
 							+ '&error=' + window.escape(error.substr(0,100));
@@ -394,7 +383,7 @@ patron.display.prototype = {
 				}
 
 			} catch(E) {
-				dump('refresh_deck: ' + E + '\n');
+				obj.error.sdump('D_ERROR','refresh_deck: ' + E + '\n');
 			}
 		}
 	},
@@ -405,8 +394,8 @@ patron.display.prototype = {
 			'value','Retrieving...'
 		);
 		document.documentElement.setAttribute('class','');
-		try { obj.summary_window.refresh(); } catch(E) { dump(E + '\n'); }
-		try { obj.refresh_deck(); } catch(E) { dump(E + '\n'); }
+		try { obj.summary_window.refresh(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
+		try { obj.refresh_deck(); } catch(E) { obj.error.sdump('D_ERROR', E + '\n'); }
 	},
 }
 
