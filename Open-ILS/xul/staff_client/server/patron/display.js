@@ -138,10 +138,14 @@ patron.display.prototype = {
 								{}, {
 									'show_print_button' : true,
 									'passthru_content_params' : {
-										'on_save' : function() {
-											netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-											obj.summary_window.g.summary.retrieve();
-										}
+										'on_save' : function(p) {
+											try {
+												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+												obj.summary_window.g.summary.retrieve();
+											} catch(E) {
+												alert(E);
+											}
+										},
 									}
 								}
 							);
