@@ -1,10 +1,13 @@
 package OpenILS::Application::Storage::Publisher::asset;
 use base qw/OpenILS::Application::Storage/;
 #use OpenILS::Application::Storage::CDBI::asset;
-#use OpenSRF::Utils::Logger qw/:level/;
 #use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::EX qw/:try/;
+
 #
-#my $log = 'OpenSRF::Utils::Logger';
+
+my $log = 'OpenSRF::Utils::Logger';
 
 use MARC::Record;
 use MARC::File::XML;
@@ -40,17 +43,37 @@ sub import_xml_holdings {
 	for my $f ( $r->fields( $tag ) ) {
 		next unless ($f->subfield( $map->{owning_lib} ));
 
-		my $ol = actor::org_unit->search( shortname => $f->subfield( $map->{owning_lib} ) )->next->id;
-		my $cl = actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id;
+		my ($ol,$cl);
 
-		my $cn = asset::call_number->find_or_create(
-			{ label		=> $f->subfield( $map->{call_number} ),
-			  owning_lib	=> $ol,
-			  record	=> $record,
-			  creator	=> $editor,
-			  editor	=> $editor,
-			}
-		);
+		try {
+			$ol = actor::org_unit->search( shortname => $f->subfield( $map->{owning_lib} ) )->next->id;
+		} otherwise {
+			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{owning_lib} ).'] : '. shift(), ERROR);
+		};
+		
+		try {
+			$cl = actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id;
+		} otherwise {
+			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{circulating_lib} ).'] : '. shift(), ERROR);
+		};
+
+		next unless ($ol && $cl);
+
+		my $cn;
+		try {
+			$cn = asset::call_number->find_or_create(
+				{ label		=> $f->subfield( $map->{call_number} ),
+				  owning_lib	=> $ol,
+				  record	=> $record,
+				  creator	=> $editor,
+				  editor	=> $editor,
+				}
+			);
+		} otherwise {
+			$log->debug('Could not find or create callnumber ['.$f->subfield( $map->{call_number} ).'] : '. shift(), ERROR);
+		};
+
+		next unless ($cn);
 
 		my $create_date =  $f->subfield( $map->{create_date} );
 
@@ -71,25 +94,35 @@ sub import_xml_holdings {
 			($y,$m,$d) = split '-', $create_date;
 
 		} elsif ($date_format eq 'yyyy/mm/dd') {
-			($y,$m,$d) = split '-', $create_date;
+			($y,$m,$d) = split '/', $create_date;
+		}
+
+		if ($y == 0) {
+			(undef,undef,undef,$d,$m,$y) = localtime;
+			$m++;
+			$y+=1900;
 		}
 
 		my $price = $f->subfield( $map->{price} );
 		$price =~ s/[^0-9\.]+//gso;
 		$price ||= '0.00';
 
-		$cn->add_to_copies(
-			{ circ_lib	=> actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id,
-			  copy_number	=> $f->subfield( $map->{copy_number} ),
-			  price		=> $price,
-			  barcode	=> $f->subfield( $map->{barcode} ),
-			  loan_duration	=> 2,
-			  fine_level	=> 2,
-			  creator	=> $editor,
-			  editor	=> $editor,
-			  create_date	=> sprintf('%04d-%02d-%02d',$y,$m,$d),
-			}
-		);
+		try {
+			$cn->add_to_copies(
+				{ circ_lib	=> actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id,
+				  copy_number	=> $f->subfield( $map->{copy_number} ),
+				  price		=> $price,
+				  barcode	=> $f->subfield( $map->{barcode} ),
+				  loan_duration	=> 2,
+				  fine_level	=> 2,
+				  creator	=> $editor,
+				  editor	=> $editor,
+				  create_date	=> sprintf('%04d-%02d-%02d',$y,$m,$d),
+				}
+			);
+		} otherwise {
+			$log->debug('Could not create copy ['.$f->subfield( $map->{barcode} ).'] : '. shift(), ERROR);
+		};
 	}
 
 	return 1;
