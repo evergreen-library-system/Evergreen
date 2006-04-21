@@ -51,7 +51,10 @@
 				g.cgi = new CGI();
 				g.patron_id = g.cgi.param('patron_id');
 
-				refresh();
+
+				$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));
+				$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));
+				$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -62,131 +65,47 @@
 		}
 
 		function refresh() {
-			retrieve_notes(); render_notes();
-		}
-
-		function retrieve_notes() {
-			g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
-		}
-
-		function apply(node,field,value) {
-			util.widgets.apply(
-				node,'name',field,
-				function(n) {
-					switch(n.nodeName) {
-						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
-						case 'label' : n.value = value; break;
-						default : n.value = value; break;
-					}
-				}
-			);
-		}
-
-		function render_notes() {
-			JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
-			var np = $('notes_panel');
-				var hbox = document.createElement('hbox'); np.appendChild(hbox);
-					var btn = document.createElement('button'); hbox.appendChild(btn);
-						btn.setAttribute('label','Add New Note');
-						btn.setAttribute('accesskey','A');
-						btn.setAttribute('oncommand','new_note()');
-
-			for (var i = 0; i < g.notes.length; i++) {
-
-				/* template */
-				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
-				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,10));
-				util.widgets.apply(node,'name','create_date',
-					function(n){n.setAttribute("tooltiptext","Note ID: " + g.notes[i].id() + " Creator ID: " + g.notes[i].creator());}
-				);
-				apply(node,'title',g.notes[i].title());
-				apply(node,'pub',g.notes[i].pub() ? "Public" : "Private");
-				apply(node,'value',g.notes[i].value());
-				apply(node,'id',g.notes[i].id());
-				apply(node,'creator',g.notes[i].creator());
-
-				/* button bar */
-				var hb = document.createElement('hbox'); np.appendChild(hb);
-					var spacer = document.createElement('spacer'); hb.appendChild(spacer); spacer.flex = 1;
-					var btn1 = document.createElement('button'); hb.appendChild(btn1);
-						btn1.setAttribute('label','Delete This Note');
-						btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");
-
-						btn1.addEventListener(
-							'command',
-							function(id){ return function() { 
-								var r = g.error.yns_alert('Delete the note titled "' + g.notes[id].title() + '" created on ' + g.notes[id].create_date().toString().substr(0,10) + '?','Delete Note','Yes','No',null,'Check here to confirm this action'); 
-								if (r == 0) {
-									g.network.simple_request('FM_AUN_DELETE',[ses(),g.notes[id].id()]);
-									setTimeout(function(){ refresh();},0);
-								}
-							} }(i),
-							false
-						);
-			}
-
-		}
-		
-		function new_note() {
 			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
-				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Public?"/><checkbox id="public" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
-				window.open(
-					'/xul/server/util/fancy_prompt.xul'
-					+ '?xml=' + window.escape(xml)
-					+ '&focus=' + window.escape('title')
-					+ '&title=' + window.escape('Add Note'),
-					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
-				);
-				g.data.init({'via':'stash'});
-				if (g.data.fancy_prompt_data != '') {
-					//alert(js2JSON(g.data.fancy_prompt_data));
-					var note = new aun();
-					note.isnew(1);
-					note.title( g.data.fancy_prompt_data.title );
-					note.value( g.data.fancy_prompt_data.note );
-					note.pub( g.data.fancy_prompt_data.public ? 't' : 'f' );
-					note.usr( g.patron_id );
-					g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
-					setTimeout(function(){refresh();},0);
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				if ($('notes_frame').contentWindow && typeof $('notes_frame').contentWindow.refresh == 'function') {
+					$('notes_frame').contentWindow.refresh();
+				}
+				if ($('stat_cats_frame').contentWindow && typeof $('stat_cats_frame').contentWindow.refresh == 'function') {
+					$('stat_cats_frame').contentWindow.refresh();
+				}
+				if ($('surveys_frame').contentWindow && typeof $('surveys_frame').contentWindow.refresh == 'function') {
+					$('surveys_frame').contentWindow.refresh();
 				}
 			} catch(E) {
-				g.error.standard_unexpected_error_alert('The note was not likely created.',E);
+				alert(E);
 			}
 		}
 
 	]]>
 	</script>
 
-	<stack hidden="true" id="note_template" flex="1">
-		<groupbox flex="1" style="background-color: black;"/>
-		<groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
-			<hbox>
-				<description name="title" style="font-weight: bold"/>
-				<spacer flex="1"/>
-				<description name="create_date" style="font-weight: bold"/>
-				<description name="pub" style="font-weight: bold"/>
-			</hbox>
-			<description name="value"/>
-		</groupbox>
-	</stack>
-
-	<vbox flex="1" class="my_overflow">
+	<vbox flex="1" class="my_overflow2">
 		<tabbox flex="1" orient="horizontal">
 			<tabs orient="vertical" class="tabs-left">
 				<tab accesskey="N" label="Notes" />
 				<tab accesskey="S" label="Stat Cats"/>
 				<tab accesskey="y" label="Surveys"/>
-				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
-				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
-				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
-				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 			</tabs>
 			<tabpanels flex="1">
-				<tabpanel id="notes_panel" orient="vertical"/>
-				<tabpanel id="stat_cats_panel" orient="vertical"/>
-				<tabpanel id="surveys_panel" orient="vertical"/>
+				<tabpanel id="notes_panel" orient="vertical">
+					<iframe id="notes_frame" flex="1"/>
+				</tabpanel>
+				<tabpanel id="stat_cats_panel" orient="vertical">
+					<iframe id="stat_cats_frame" flex="1"/>
+				</tabpanel>
+				<tabpanel id="surveys_panel" orient="vertical">
+					<iframe id="surveys_frame" flex="1"/>
+				</tabpanel>
 			</tabpanels>
 		</tabbox>
 	</vbox>

@@ -99,7 +99,7 @@
 		<command id="cmd_search_form" />
 	</commandset>
 
-	<box id="patron_display_main" />
+	<box id="patron_display_main" style="overflow: scroll"/>
 
 </window>
 

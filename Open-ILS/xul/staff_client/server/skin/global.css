@@ -7,10 +7,13 @@
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
-.my_overflow { overflow: scroll; }
+.my_overflow3 { overflow: scroll; }
 
 iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
 .my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+
+.postit_hb { -moz-border-radius: 30px; background-color: black; }
+.postit_gb { -moz-border-radius: 30px; background-color: yellow; }
 
 .text_left { text-align: left; }
 .text_right { text-align: right; }
@@ -28,3 +31,5 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 .coral { background-color: #FF7F50; }
 
 listitem { border-bottom: solid thin black; }
+
+
