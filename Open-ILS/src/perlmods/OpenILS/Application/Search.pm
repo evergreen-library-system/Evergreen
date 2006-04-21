@@ -38,7 +38,9 @@ sub initialize {
 	$implementation = "OpenILS::Application::Search::AddedContent" unless $implementation;
 
 	$logger->debug("Attempting to load Added Content handler: $implementation");
-	$implementation->use;
+
+	eval "use $implementation";
+
 	if($@) {	
 		$logger->error("Unable to load Added Content handler [$implementation]: $@"); 
 		return; 
