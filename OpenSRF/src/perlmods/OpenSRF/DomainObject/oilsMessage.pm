@@ -300,6 +300,9 @@ sub do_client {
 
 		# add more STATUS handling code here (as 'elsif's), for Message layer status stuff
 
+		#$session->state( $session->DISCONNECTED() );
+		#$session->reset;
+
 	} elsif ($session->state == $session->CONNECTING()) {
 		# This should be changed to check the type of response (is it a connectException?, etc.)
 	}

@@ -754,7 +754,7 @@ sub push_resend {
 
 sub flush_resend {
 	my $self = shift;
-	$logger->debug( "Resending..." . @_RESEND_QUEUE, DEBUG );
+	$logger->debug( "Resending..." . @_RESEND_QUEUE, INTERNAL );
 	while ( my $req = shift @OpenSRF::AppSession::_RESEND_QUEUE ) {
 		$req->resend unless $req->complete;
 	}
@@ -765,7 +765,7 @@ sub queue_wait {
 	my $self = shift;
 	if( ! $self->{peer_handle} ) { return 0; }
 	my $timeout = shift || 0;
-	$logger->debug( "Calling queue_wait($timeout)" , DEBUG );
+	$logger->debug( "Calling queue_wait($timeout)" , INTERNAL );
 	my $o = $self->{peer_handle}->process($timeout);
 	$self->flush_resend;
 	return $o;
@@ -906,7 +906,7 @@ sub failed {
 
 sub queue_wait {
 	my $self = shift;
-	OpenSRF::Utils::Logger->debug( "Calling queue_wait(@_)", DEBUG );
+	OpenSRF::Utils::Logger->debug( "Calling queue_wait(@_)", INTERNAL );
 	return $self->session->queue_wait(@_)
 }
 

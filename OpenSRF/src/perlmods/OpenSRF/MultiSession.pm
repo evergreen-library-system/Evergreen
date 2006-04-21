@@ -60,7 +60,9 @@ sub _dummy_session_hash_function {
 
 sub connect {
 	my $self = shift;
-	$_->connect for (@{$self->{sessions}});
+	for my $ses (@{$self->{sessions}}) {
+		$ses->connect unless ($ses->connected);
+	}
 }
 
 sub finish {

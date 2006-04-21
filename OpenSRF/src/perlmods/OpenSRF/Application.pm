@@ -181,7 +181,7 @@ sub handler {
 				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
 
-				$log->debug( "Method duration for {$method_name}:  ". $time );
+				$log->debug( "Method duration for [$method_name]:  ". $time );
 				if( defined( $resp ) ) {
 					$appreq->respond_complete( $resp );
 				} else {
@@ -257,7 +257,7 @@ sub handler {
 					my $start = time;
 					my $response = $aref->[2]->run( $aref->[0], @{$aref->[1]} );
 					my $time = sprintf '%.3f', time - $start;
-					$log->debug( "Method duration for {[".$aref->[2]->api_name." -> ".join(', ',@{$aref->[1]}).'}:  '.$time, DEBUG );
+					$log->debug( "Method duration for [".$aref->[2]->api_name." -> ".join(', ',@{$aref->[1]}).']:  '.$time, DEBUG );
 
 					$appreq = $aref->[0];	
 					if( ref( $response ) ) {
@@ -285,6 +285,8 @@ sub handler {
 
 			return 1;
 		} 
+
+		$log->info("Received non-REQUEST message in Application handler");
 
 		my $res = OpenSRF::DomainObject::oilsMethodException->new( 
 				status => "Received non-REQUEST message in Application handler");
