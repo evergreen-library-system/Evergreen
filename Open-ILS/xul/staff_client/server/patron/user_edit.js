@@ -248,6 +248,7 @@ function init_editor (u) {
 
 	if (user.card() && user.card().barcode()) x['user.card.barcode'].value = user.card().barcode();
 	x['user.card.barcode'].setAttribute('onchange','user.card().barcode(this.value)');
+	/*
 	if (user.isnew()) {
 		x['user.card.barcode'].disabled = false;
 	} else {
@@ -263,6 +264,7 @@ function init_editor (u) {
 			'return false;'
 		);
 	}
+	*/
 
 	if (user.passwd()) x['user.passwd'].value = user.passwd();
 	x['user.passwd'].setAttribute('onchange','user.passwd(this.value)');

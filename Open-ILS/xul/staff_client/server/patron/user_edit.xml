@@ -24,6 +24,10 @@
 
 		<style>
 
+			.stay_hidden {		visibility: hidden;
+						display: none;
+
+			}
 
 			.hideme {		visibility: hidden;
 						display: none;
@@ -73,94 +77,94 @@
 			</tr>
 			<tr>
 				<td class="label">User Name:</td>
-				<td class="value"><input type="text" name="user.usrname" id="user.usrname"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.usrname" id="user.usrname"/></td>
 			</tr>
 			<tr>
 				<td class="label">Current Barcode:</td>
 				<td class="value"><input type="text" name="user.card.barcode" id="user.card.barcode" disabled="true"/>
-						  <button class="hideme" name="replace_card">Replace Card</button>
+						  <button class="hideme stay_hidden" name="replace_card">Replace Card</button>
 				</td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Password:</td>
 				<td class="value"><input type="password" name="user.passwd" id="user.passwd"/></td>
 			</tr>
 
 			<tr>
 				<td class="label">Honorific:</td>
-				<td class="value"><input type="text" name="user.prefix" id="user.prefix"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.prefix" id="user.prefix"/></td>
 			</tr>
 			<tr>
 				<td class="label">First Name:</td>
-				<td class="value"><input type="text" name="user.first_given_name" id="user.first_given_name"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.first_given_name" id="user.first_given_name"/></td>
 			</tr>
 			<tr>
 				<td class="label">Middle Name:</td>
-				<td class="value"><input type="text" name="user.second_given_name" id="user.second_given_name"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.second_given_name" id="user.second_given_name"/></td>
 			</tr>
 			<tr>
 				<td class="label">Last Name:</td>
-				<td class="value"><input type="text" name="user.family_name" id="user.family_name"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.family_name" id="user.family_name"/></td>
 			</tr>
 			<tr>
 				<td class="label">Title:</td>
-				<td class="value"><input type="text" name="user.suffix" id="user.suffix"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.suffix" id="user.suffix"/></td>
 			</tr>
 
 			<tr>
 				<td class="label">Date of Birth:</td>
-				<td class="value"><input type="text" name="user.dob" id="user.dob"/></td>
+				<td class="value"><input disabled="true" type="text" name="user.dob" id="user.dob"/></td>
 			</tr>
 
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Primary Identification Type:</td>
 				<td class="value"><select name="user.ident_type" id="user.ident_type"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Primary Identification:</td>
 				<td class="value"><input type="text" name="user.ident_value" id="user.ident_value"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Alternate Identification Type:</td>
 				<td class="value"><select name="user.ident_type2" id="user.ident_type2"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Alternate Identification:</td>
 				<td class="value"><input type="text" name="user.ident_value2" id="user.ident_value2"/></td>
 			</tr>
 
 
 
-			<tr>
+			<tr class='stay_hidden'>
 				<th colspan="2">Contact Information</th>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Email Address:</td>
 				<td class="value"><input type="text" name="user.email" id="user.email"/></td>
 			</tr>
 
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Daytime Phone:</td>
 				<td class="value"><input type="text" name="user.day_phone" id="user.day_phone"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Evening Phone:</td>
 				<td class="value"><input type="text" name="user.evening_phone" id="user.evening_phone"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Other/Cell Phone:</td>
 				<td class="value"><input type="text" name="user.other_phone" id="user.other_phone"/></td>
 			</tr>
 
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Home Library:</td>
 				<td class="value"><select name="user.home_ou" id="user.home_ou"/></td>
 			</tr>
 
-			<tr>
+			<tr class='stay_hidden'>
 				<th class="label" colspan="2">Addresses</th>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="value" colspan="2">
 					<div>
 						<button onclick="new_addr(); return false;">New Address</button>
@@ -180,7 +184,7 @@
 				<td class="label">Profile Group:</td>
 				<td class="value"><select name="user.profile" id="user.profile"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Expire Date:</td>
 				<td class="value"><input type="text" name="user.expire_date" id="user.expire_date"/></td>
 			</tr>
@@ -196,18 +200,18 @@
 				<td class="label">Barred:</td>
 				<td class="value"><input type="checkbox" name="user.barred" id="user.barred" value="t"/></td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Set as Family or Group Lead Account:</td>
 				<td class="value"><input type="checkbox" name="user.master_account" id="user.master_account" value="t"/></td>
 			</tr>
-			<tr class='advanced hideme'>
+			<tr class='advanced hideme stay_hidden'>
 				<td class="label">"Claims returned" count:</td>
 				<td class="value">
 					<input type="text" name="user.claims_returned_count" id="user.claims_returned_count" value="0" disabled="true"/>
 					<button onclick="reset_crc(); return false;">Reset</button>
 				</td>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td class="label">Alert Message:</td>
 				<td class="value">
 					<textarea name="user.alert_message" id="user.alert_message" defaultvalue=''> </textarea>
@@ -240,16 +244,16 @@
 			</tr>
 
 
-			<tr>
+			<tr class='stay_hidden'>
 				<th colspan="2">Local Statistical Catagories</th>
 			</tr>
-			<tbody id="statcats" name="statcats"/>
+			<tbody id="statcats" name="statcats" class='stay_hidden'/>
 
 
-			<tr>
+			<tr class='stay_hidden'>
 				<th colspan="2">Required Surveys</th>
 			</tr>
-			<tr>
+			<tr class='stay_hidden'>
 				<td colspan="2" class='value'>
 					<div name="surveys" id="surveys" style="width: 100%"/>
 				</td>

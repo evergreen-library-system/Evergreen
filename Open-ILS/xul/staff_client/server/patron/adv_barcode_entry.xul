@@ -68,7 +68,7 @@
 				tb.focus();
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('User Scan for Advanced Edit'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name('User Permission Editor'); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
@@ -114,7 +114,7 @@
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
-			<caption label="Retrieve Patron" />
+			<caption label="Retrieve User" />
 			<hbox>
 				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
