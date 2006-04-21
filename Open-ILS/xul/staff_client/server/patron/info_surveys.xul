@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_info_surveys_win" width="700" height="550"
+	onload="try{ my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('patron.util'); JSAN.use('util.functional');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.error.sdump('D_TRACE','my_init() for patron_info_surveys.xul');
+
+				g.cgi = new CGI();
+				g.patron_id = g.cgi.param('patron_id');
+
+				refresh();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\npatron_info_surveys.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function refresh() {
+			retrieve_surveys(); render_surveys();
+		}
+
+		function retrieve_surveys() {
+			try {
+				var surveys = g.data.list.asv;
+				g.survey_responses = {};
+				for (var i = 0; i < surveys.length; i++) {
+					var responses = g.network.simple_request(
+						'FM_ASVR_RETRIEVE',
+						[ ses(), surveys[i].id(), g.patron_id ]
+					);
+					g.survey_responses[ surveys[i].id() ] = responses;
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Failed to retrieve all the survey responses.',E);
+			}
+
+		}
+
+		function apply(node,field,value) {
+			util.widgets.apply(
+				node,'name',field,
+				function(n) {
+					switch(n.nodeName) {
+						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
+						case 'label' : n.value = value; break;
+						default : n.value = value; break;
+					}
+				}
+			);
+		}
+
+		function render_surveys() {
+			JSAN.use('util.widgets'); util.widgets.remove_children('surveys_panel');
+			var sp = $('surveys_panel');
+
+			for (var i in g.survey_responses) {
+
+				/* template */
+				var asv_node = $('asv_template').cloneNode(true); sp.appendChild(asv_node); asv_node.hidden = false;
+				apply(asv_node,'id',g.data.hash.asv[i].id());
+				apply(asv_node,'description',g.data.hash.asv[i].description());
+				apply(asv_node,'required',g.data.hash.asv[i].required() ? 'Required' : 'Not Required');
+				apply(asv_node,'opac',g.data.hash.asv[i].opac() ? 'OPAC Visible' : 'Not OPAC Visible');
+
+				var nl = asv_node.getElementsByAttribute('name','questions');
+				var question_placeholder;
+				if (nl.length>0) question_placeholder = nl[0];
+				if (question_placeholder) {
+
+					var questions = g.data.hash.asv[i].questions();
+					for (var j = 0; j < questions.length; j++) {
+
+						/* template */
+						var asvq_node = $('asvq_template').cloneNode(true); question_placeholder.appendChild(asvq_node); asvq_node.hidden = false;
+						apply(asvq_node,'ordinal',j+1);
+						apply(asvq_node,'question',questions[j].question());
+
+						var nl2 = asvq_node.getElementsByAttribute('name','answer');
+						var answer_placeholder;
+						if (nl2.length>0) answer_placeholder = nl2[0];
+						if (answer_placeholder && g.survey_responses[i].length > 0) {
+
+							/* template */
+							var asva_node = $('asva_template').cloneNode(true); answer_placeholder.appendChild(asva_node); asva_node.hidden = false;
+
+							var last_response = g.survey_responses[i][ g.survey_responses[i].length - 1 ];
+							var date = last_response.effective_date() ? last_response.effective_date() : last_response.answer_date();
+							date = util.date.formatted_date( date, '%D' );
+							var answer = util.functional.find_id_object_in_list( questions[j].answers(), last_response.answer() );
+
+							apply(asva_node,'answer',answer.answer());
+							apply(asva_node,'date',date);
+						}
+					}
+
+				}
+
+			}
+
+		}
+		
+	]]>
+	</script>
+
+	<stack hidden="true" id="asv_template" flex="1">
+		<groupbox flex="1" style="background-color: black;"/>
+		<groupbox flex="1" style="background-color: #CC9966; -moz-border-radius-topright: 35px;" >
+			<hbox>
+				<label value="Survey #" style="font-weight: bold"/>
+				<label name="id" style="font-weight: bold"/>
+				<description name="description" style="font-weight: bold"/>
+				<spacer flex="1"/>
+				<description name="required" style="font-weight: bold"/>
+				<description name="opac" style="font-weight: bold"/>
+			</hbox>
+			<vbox name="questions"/>
+		</groupbox>
+	</stack>
+
+	<grid hidden="true" id="asvq_template" flex="1">
+		<columns><column/><column flex="1"/></columns>
+		<rows>
+			<row><label name="ordinal"/><label name="question"/></row>
+			<row><spacer /><vbox name="answer"/></row>
+		</rows>
+	</grid>
+
+	<hbox hidden="true" id="asva_template" flex="1">
+		<label value="Last Answered on:"/><label name="date"/>
+		<label value="Answer:"/><description style="font-weight: bold" name="answer"/>
+	</hbox>
+
+	<vbox flex="1" class="my_overflow" id="surveys_panel">
+	</vbox>
+
+
+</window>
+

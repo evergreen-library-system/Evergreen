@@ -51,10 +51,9 @@
 				g.cgi = new CGI();
 				g.patron_id = g.cgi.param('patron_id');
 
-
-				$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));
-				$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));
-				$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));
+				try{$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
+				try{$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
+				try{$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
