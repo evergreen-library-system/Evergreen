@@ -1617,6 +1617,15 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user, optionally by type
 	NOTES
+	
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_charge",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
+	NOTES
+
 sub user_transaction_history {
 	my( $self, $client, $login_session, $user_id, $type ) = @_;
 
@@ -1626,17 +1635,18 @@ sub user_transaction_history {
 	
 	my $api = $self->api_name();
 	my @xact;
+	my @charge;
 
 	@xact = (xact_type =>  $type) if(defined($type));
+	@charge = (total_owed => { ">" => 0}) if($api =~ /have_charge/);
 
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.storage",
 		"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
-		{ usr => $user_id, @xact }, { order_by => 'xact_start DESC' });
+		{ usr => $user_id, @xact, @charge }, { order_by => 'xact_start DESC' });
 
 	return [ map { $_->id } @$trans ];
 }
-
 
 __PACKAGE__->register_method(
 	method	=> "user_perms",
