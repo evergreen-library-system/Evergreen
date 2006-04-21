@@ -557,7 +557,7 @@ sub process {
 		  "Call to Client->timed_read( $timeout ) failed", ERROR );
 	} elsif ( ! $val ) {
 		$logger->transport( 
-			"Call to Client->timed_read( $timeout ) returned 0 bytes of data", DEBUG );
+			"Call to Client->timed_read( $timeout ) returned 0 bytes of data", INTERNAL );
 	} elsif ( $val ) {
 		$logger->transport( 
 			"Call to Client->timed_read( $timeout ) successfully returned data", INTERNAL );
