@@ -144,23 +144,33 @@ sub listen {
 		my $sock = $self->unix_sock();
 		my $o;
 
+		$logger->debug("Inbound listener calling process()");
+
 		try {
 			$o = $self->process( -1 );
 
+			$logger->debug("Inbound listener received ".length($o)." bytes of data");
+
+			if(!$o){$logger->error(
+				"Inbound received no data from the Jabber socket in process()")}
+
 		} catch OpenSRF::EX::JabberDisconnected with {
+
 			$logger->error("Inbound process lost its ".
 				"jabber connection.  Attempting to reconnect...");
 			$self->initialize;
+			$o = undef;
 		};
 
-		if(defined $o) {
+
+		if($o) {
 			my $socket = IO::Socket::UNIX->new( Peer => $sock  );
-			throw OpenSRF::EX::Socket( "Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
+			throw OpenSRF::EX::Socket( 
+				"Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
 				unless ($socket->connected);
 			print $socket $o;
 			$socket->close;
-		}
-
+		} 
 	}
 
 	throw OpenSRF::EX::Socket( "How did we get here?!?!" );
