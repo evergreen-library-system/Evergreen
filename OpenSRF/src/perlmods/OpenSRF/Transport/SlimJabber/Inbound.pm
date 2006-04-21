@@ -138,20 +138,28 @@ sub listen {
 	
 			
 	$logger->transport( $self->{app} . " going into listen loop", INFO );
+
 	while(1) {
 	
 		my $sock = $self->unix_sock();
-		my $o = $self->process( -1 );
+		my $o;
 
-		if( ! defined( $o ) ) {
-			throw OpenSRF::EX::Jabber( "Listen Loop failed at 'process()'" );
+		try {
+			$o = $self->process( -1 );
+
+		} catch OpenSRF::EX::JabberDisconnected with {
+			$logger->error("Inbound process lost its ".
+				"jabber connection.  Attempting to reconnect...");
+			$self->initialize;
+		};
+
+		if(defined $o) {
+			my $socket = IO::Socket::UNIX->new( Peer => $sock  );
+			throw OpenSRF::EX::Socket( "Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
+				unless ($socket->connected);
+			print $socket $o;
+			$socket->close;
 		}
-
-		my $socket = IO::Socket::UNIX->new( Peer => $sock  );
-		throw OpenSRF::EX::Socket( "Unable to connect to UnixServer: socket-file: $sock \n :=> $! " )
-			unless ($socket->connected);
-		print $socket $o;
-		$socket->close;
 
 	}
 

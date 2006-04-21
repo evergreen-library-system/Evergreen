@@ -258,9 +258,14 @@ sub timed_read {
 				}
 
 				my $t_buf = "";
-				my $read_size = 1024;
-				my $f = 0;
+				my $read_size = 1024; my $f = 0;
 				while( my $n = sysread( $fh, $t_buf, $read_size ) ) {
+
+					unless( $fh->connected ) {
+						OpenSRF::EX::JabberDisconnected->throw(
+							"Lost jabber client in timed_read()");
+					}
+
 					$buffer .= $t_buf;
 					if( $n < $read_size ) {
 						#reset_fl( $fh, $f ) if $f;
