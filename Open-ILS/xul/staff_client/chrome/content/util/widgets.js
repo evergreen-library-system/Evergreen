@@ -5,6 +5,7 @@ util.widgets = {};
 
 util.widgets.EXPORT_OK	= [ 
 	'get',
+	'apply',
 	'save_xml',
 	'serialize_node',
 	'xul_from_string',
@@ -31,6 +32,14 @@ util.widgets.get = function(e) {
 		return e;
 	} else {
 		return document.getElementById(e);
+	}
+}
+
+util.widgets.apply = function(e,attr,attr_value,f) {
+	var node = util.widgets.get(e);
+	var nl = node.getElementsByAttribute(attr,attr_value);
+	for (var i = 0; i < nl.length; i++) {
+		f( nl[i] );
 	}
 }
 
