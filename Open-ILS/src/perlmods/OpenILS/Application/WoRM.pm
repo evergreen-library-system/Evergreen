@@ -66,7 +66,15 @@ sub post_init {
 }
 
 sub entityize {
-	my $stuff = NFC(shift());
+	my $stuff = shift;
+	my $form = shift;
+
+	if ($form eq 'D') {
+		$stuff = NFD($stuff);
+	} else {
+		$stuff = NFC($stuff);
+	}
+
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
 }
@@ -116,7 +124,7 @@ sub rollback_transaction {
 			$log->debug("WoRM isn't inside a transaction.", INFO);
 		}
 	} catch Error with {
-		throw OpenSRF::EX::PANIC ("WoRM Couldn't COMMIT transaction!")
+		throw OpenSRF::EX::PANIC ("WoRM Couldn't ROLLBACK transaction!")
 	};
 
 	return 1;
@@ -293,65 +301,109 @@ sub wormize_biblio_record {
 		my @metarecord = ();
 		my @source_map = ();
 		for my $r (@$bibs) {
-			my $xml = $parser->parse_string($r->marc);
+			try {
+				OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'extract_data'.$r->id );
 
-			# the full_rec stuff
-			for my $fr ( $self->method_lookup( 'open-ils.worm.flat_marc.biblio.xml' )->run( $xml ) ) {
-				$fr->record( $r->id );
-				push @full_rec, $fr;
-			}
+				my $xml = $parser->parse_string($r->marc);
 
-			# the rec_descriptor stuff
-			my ($rd) = $self->method_lookup( 'open-ils.worm.biblio_leader.xml' )->run( $xml );
-			$rd->record( $r->id );
-			push @rec_descriptor, $rd;
+				#update the fingerprint
+				my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $xml );
+				OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.biblio.record_entry.remote_update',
+					{ id => $r->id },
+					{ fingerprint => $fp->{fingerprint},
+					  quality     => int($fp->{quality}) }
+				) if ($fp->{fingerprint} ne $r->fingerprint || int($fp->{quality}) ne $r->quality);
+
+				# the full_rec stuff
+				for my $fr ( $self->method_lookup( 'open-ils.worm.flat_marc.biblio.xml' )->run( $xml ) ) {
+					$fr->record( $r->id );
+					push @full_rec, $fr;
+				}
+
+				# the rec_descriptor stuff
+				my ($rd) = $self->method_lookup( 'open-ils.worm.biblio_leader.xml' )->run( $xml );
+				$rd->record( $r->id );
+				push @rec_descriptor, $rd;
 			
-			# the indexing field entry stuff
-			for my $class ( qw/title author subject keyword series/ ) {
-				for my $fe ( $self->method_lookup( 'open-ils.worm.field_entry.class.xml' )->run( $xml, $class ) ) {
-					$fe->source( $r->id );
-					push @{$field_entry{$class}}, $fe;
+				# the indexing field entry stuff
+				for my $class ( qw/title author subject keyword series/ ) {
+					for my $fe ( $self->method_lookup( 'open-ils.worm.field_entry.class.xml' )->run( $xml, $class ) ) {
+						$fe->source( $r->id );
+						push @{$field_entry{$class}}, $fe;
+					}
 				}
-			}
 
-			#update the fingerprint
-			my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $xml );
-			OpenILS::Application::WoRM->storage_req(
-				'open-ils.storage.direct.biblio.record_entry.remote_update',
-				{ id => $r->id },
-				{ fingerprint => $fp }
-			) if ($fp ne $r->fingerprint);
-
-			unless ($self->api_name =~ /nomap/o) {
-				my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic', $fp  )->[0];
+				unless ($self->api_name =~ /nomap/o) {
+					my $mr = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic', $fp->{fingerprint}  )->[0];
 				
-				unless ($mr) {
-					$mr = Fieldmapper::metabib::metarecord->new;
-					$mr->fingerprint( $fp );
-					$mr->master_record( $r->id );
-					$mr->id( OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.create', $mr) );
+					unless ($mr) {
+						$mr = Fieldmapper::metabib::metarecord->new;
+						$mr->fingerprint( $fp->{fingerprint} );
+						$mr->master_record( $r->id );
+						$mr->id( OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.create', $mr) );
+					}
+
+					my $mr_map = Fieldmapper::metabib::metarecord_source_map->new;
+					$mr_map->metarecord( $mr->id );
+					$mr_map->source( $r->id );
+					push @source_map, $mr_map;
 				}
-
-				my $mr_map = Fieldmapper::metabib::metarecord_source_map->new;
-				$mr_map->metarecord( $mr->id );
-				$mr_map->source( $r->id );
-				push @source_map, $mr_map;
-			}
-
+				OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'extract_data'.$r->id );
+			} otherwise {
+				$log->debug('Data extraction failed for record '.$r->id.': '.shift(), ERROR);
+				OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.rollback', 'extract_data'.$r->id );
+			};
 		}
+		
 
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'wormize_record' );
+		if (@rec_descriptor) {
+			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.set', 'wormize_record' );
 
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create', @source_map ) if (@source_map);
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.record_descriptor.batch.create', @rec_descriptor ) if (@rec_descriptor);
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.full_rec.batch.create', @full_rec ) if (@full_rec);
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.title_field_entry.batch.create', @{ $field_entry{title} } ) if (@{ $field_entry{title} });
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.author_field_entry.batch.create', @{ $field_entry{author} } ) if (@{ $field_entry{author} });
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.subject_field_entry.batch.create', @{ $field_entry{subject} } ) if (@{ $field_entry{subject} });
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.keyword_field_entry.batch.create', @{ $field_entry{keyword} } ) if (@{ $field_entry{keyword} });
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.series_field_entry.batch.create', @{ $field_entry{series} } ) if (@{ $field_entry{series} });
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
+				@source_map
+			) if (@source_map);
 
-		OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'wormize_record' );
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.record_descriptor.batch.create',
+				@rec_descriptor
+			) if (@rec_descriptor);
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.full_rec.batch.create',
+				@full_rec
+			) if (@full_rec);
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.title_field_entry.batch.create',
+				@{ $field_entry{title} }
+			) if (@{ $field_entry{title} });
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.author_field_entry.batch.create',
+				@{ $field_entry{author} }
+			) if (@{ $field_entry{author} });
+			
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.subject_field_entry.batch.create',
+				@{ $field_entry{subject} }
+			) if (@{ $field_entry{subject} });
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.keyword_field_entry.batch.create',
+				@{ $field_entry{keyword} }
+			) if (@{ $field_entry{keyword} });
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.metabib.series_field_entry.batch.create',
+				@{ $field_entry{series} }
+			) if (@{ $field_entry{series} });
+
+			OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'wormize_record' );
+		} else {
+			$success = 0;
+		}
 
 	} otherwise {
 		$log->debug('Wormization failed : '.shift(), ERROR);
@@ -494,7 +546,7 @@ sub _xpath_to_string {
 			$string .= $value->textContent . " ";
 		}
 	}
-	return NFC($string);
+	return NFD($string);
 }
 
 sub class_all_index_string_xml {
@@ -518,8 +570,11 @@ sub class_all_index_string_xml {
 
 		next unless $value;
 
-		$value =~ s/(\pM|\pC)//sgoe;
-		$value =~ s/[\x80-\xff]//sgoe;
+		$value =~ s/\pM+//sgo;
+		$value =~ s/\pC+//sgo;
+		#$value =~ s/[\x{0080}-\x{fffd}]//sgoe;
+
+		$value =~ s/(\w)\./$1/sgo;
 		$value = lc($value);
 
 		my $fm = $class_constructor->new;
@@ -685,8 +740,8 @@ our %biblio_descriptor_code = (
 	cat_form => sub { substr($ldr,18,1); },
 	pub_status => sub { substr($ldr,5,1); },
 	item_lang => sub { substr($oo8,35,3); },
-	lit_form => sub { (substr($ldr,6,1) =~ _type_re('BKS')) ? substr($oo8,33,1) : ' '; },
-	type_mat => sub { (substr($ldr,6,1) =~ _type_re('VIS')) ? substr($oo8,33,1) : ' '; },
+	lit_form => sub { (substr($ldr,6,1) =~ _type_re('BKS')) ? substr($oo8,33,1) : undef; },
+	type_mat => sub { (substr($ldr,6,1) =~ _type_re('VIS')) ? substr($oo8,33,1) : undef; },
 	audience => sub { substr($oo8,22,1); },
 );
 
@@ -695,6 +750,7 @@ sub _extract_biblio_descriptors {
 
 	local $ldr = $xml->findvalue('//*[local-name()="leader"]');
 	local $oo8 = $xml->findvalue('//*[local-name()="controlfield" and @tag="008"]');
+	local $oo7 = $xml->findvalue('//*[local-name()="controlfield" and @tag="007"]');
 
 	my $rd_obj = Fieldmapper::metabib::record_descriptor->new;
 	for my $rd_field ( keys %biblio_descriptor_code ) {
@@ -1055,11 +1111,18 @@ sub refingerprint_bibrec {
 	my $success = 1;
 	try {
 		my $bibs = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.biblio.record_entry.search.id.atomic', $rec );
-		OpenILS::Application::WoRM->storage_req(
-			'open-ils.storage.direct.biblio.record_entry.remote_update',
-			{ id => $_->id },
-			{ fingerprint => $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $_->marc ) }
-		) for (@$bibs);
+ 		for my $b (@$bibs) {
+			my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $b->marc );
+
+			$log->debug("Updating ".$b->id." with fingerprint [$fp->{fingerprint}], quality [$fp->{quality}]", INFO);;
+
+			OpenILS::Application::WoRM->storage_req(
+				'open-ils.storage.direct.biblio.record_entry.remote_update',
+				{ id => $b->id },
+				{ fingerprint => $fp->{fingerprint},
+				  quality     => $fp->{quality} }
+			);
+		}
 	} otherwise {
 		$log->debug('Fingerprinting failed : '.shift(), ERROR);
 		$success = 0;
@@ -1076,6 +1139,7 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );                      
 
+=comment
 
 sub fingerprint_bibrec {
 	my $self = shift;
@@ -1093,9 +1157,10 @@ sub fingerprint_bibrec {
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.fingerprint.record",
 	method		=> "fingerprint_bibrec",
-	api_level	=> 1,
+	api_level	=> 0,
 	argc		=> 1,
 );                      
+
 
 sub fingerprint_mods {
 	my $self = shift;
@@ -1114,28 +1179,72 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );                      
 
-our $fp_script;
-sub biblio_fingerprint {
+sub fingerprint_marc {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+
+	$xml = $parser->parse_string($xml) unless (ref $xml);
+
+	OpenILS::Application::WoRM->post_init();
+	my $fp = _fp_mods( $mods_sheet->transform($xml)->documentElement );
+	$log->debug("Returning [$fp] as fingerprint", INFO);
+	return $fp;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.marc",
+	method		=> "fingerprint_marc",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+
+=cut
+
+sub biblio_fingerprint_record {
 	my $self = shift;
 	my $client = shift;
 	my $rec = shift;
 
 	OpenILS::Application::WoRM->post_init();
 
-	my $marc = OpenILS::Application::WoRM::entityize(
-		OpenILS::Application::WoRM
+	my $marc = OpenILS::Application::WoRM
 			->storage_req( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rec )
-			->marc
-	);
+			->marc;
 
-	$log->internal("Got MARC [$marc]");
+	my ($fp) = $self->method_lookup('open-ils.worm.fingerprint.marc')->run($marc);
+	$log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
+	return $fp;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.record",
+	method		=> "biblio_fingerprint_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+our $fp_script;
+sub biblio_fingerprint {
+	my $self = shift;
+	my $client = shift;
+	my $marc = shift;
+
+	OpenILS::Application::WoRM->post_init();
+
+	$marc = $parser->parse_string($marc) unless (ref $marc);
 
 	my $mods = OpenILS::Application::WoRM::entityize(
 		$mods_sheet
-			->transform( $parser->parse_string($marc) )
-			->toString
+			->transform( $marc )
+			->documentElement
+			->toString,
+		'D'
 	);
 
+	$marc = OpenILS::Application::WoRM::entityize( $marc->documentElement->toString => 'D' );
+
+	warn $marc;
+	$log->internal("Got MARC [$marc]");
 	$log->internal("Created MODS [$mods]");
 
 	if(!$fp_script) {
@@ -1164,38 +1273,18 @@ sub biblio_fingerprint {
 
 	$log->debug("Running script for biblio fingerprinting...");
 
-	$fp_script->run || OpenSRF::EX::ERROR->throw( "Fingerprint script died!  $@" );
+	$fp_script->run || ($log->error( "Fingerprint script died!  $@" ) && return 0);
 
 	$log->debug("Script for biblio fingerprinting completed successfully...");
 
 	return $res;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.fingerprint.record",
-	method		=> "biblio_fingerprint",
-	api_level	=> 0,
-	argc		=> 1,
-);                      
-
-sub fingerprint_marc {
-	my $self = shift;
-	my $client = shift;
-	my $xml = shift;
-
-	$xml = $parser->parse_string($xml) unless (ref $xml);
-
-	OpenILS::Application::WoRM->post_init();
-	my $fp = _fp_mods( $mods_sheet->transform($xml)->documentElement );
-	$log->debug("Returning [$fp] as fingerprint", INFO);
-	return $fp;
-}
-__PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.fingerprint.marc",
-	method		=> "fingerprint_marc",
+	method		=> "biblio_fingerprint",
 	api_level	=> 1,
 	argc		=> 1,
 );                      
-
 
 # --------------------------------------------------------------------------------
 

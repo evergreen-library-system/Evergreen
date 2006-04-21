@@ -1,5 +1,5 @@
-//var marcdoc = new XML(environment.marc);
-//var marc_ns = new Namespace('http://www.loc.gov/MARC21/slim');
+var marcdoc = new XML(environment.marc);
+var marc_ns = new Namespace('http://www.loc.gov/MARC21/slim');
 
 var modsdoc = new XML(environment.mods);
 var mods_ns = new Namespace('http://www.loc.gov/mods/');
@@ -31,12 +31,16 @@ function extract_typed_title( ti ) {
 function extract_author( au ) {
 	log_debug(au.toString());
 
-	if ( au..role.length() > 0 ) au = au.(role.text == 'creator' || role.text == 'author');
+	try {
+		if ( au..role.length() > 0 ) au = au.(role.text == 'creator' || role.text == 'author');
 	
-	if ( au.(hasOwnProperty("@type")) ) {
-		au = au.(@type == 'personal')[0] ||
-			au.(@type == 'corporate')[0] ||
-			au.(@type == 'conference')[0];
+		if ( au.(hasOwnProperty("@type")) ) {
+			au = au.(@type == 'personal')[0] ||
+				au.(@type == 'corporate')[0] ||
+				au.(@type == 'conference')[0];
+		}
+	} catch (e) {
+		log_debug(e);
 	}
 
 	return au ? au.namePart[0] : '';
@@ -111,5 +115,30 @@ var author = (
 ).toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
 
 result.fingerprint = title + author;
+
+// now we deal with marc stuff...
+default xml namespace = marc_ns;
+
+if (marcdoc.datafield.(@tag == '040').subfield.(@code == 'a').toString().match(/DLC/)) {
+	quality += 5;
+	log_debug( 'got DLC bump' );
+}
+
+if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/oclc/i)) {
+	quality += 10;
+	log_debug( 'got OCLC source bump' );
+	
+} else if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/isxn/i)) {
+	quality += 5;
+	log_debug( 'got ISxN source bump' );
+	
+} else if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/local/i)) {
+	quality += 1;
+	log_debug( 'got Local source bump' );
+}
+
+quality += marcdoc.datafield.length();
+
+// XXX this has to be a string ... for now. JS::SM limitation
 result.quality = '' + quality;
 
