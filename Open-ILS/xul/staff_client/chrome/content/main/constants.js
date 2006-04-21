@@ -28,6 +28,7 @@ var api = {
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve' },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
 	'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all' },
+	'FM_ACTSC_RETRIEVE_BATCH' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.batch' },
 	'FM_ACTSC_RETRIEVE_VIA_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.stat_cat.actor.retrieve.all' },
 	'FM_AHR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
 	'FM_AHR_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_pickup_lib' },

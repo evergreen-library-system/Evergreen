@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_info_stat_cats_win" width="700" height="550"
+	onload="try{ my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('patron.util'); JSAN.use('util.functional');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.error.sdump('D_TRACE','my_init() for patron_info_stat_cats.xul');
+
+				g.cgi = new CGI();
+				g.patron_id = g.cgi.param('patron_id');
+
+				refresh();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\npatron_info_stat_cats.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function refresh() {
+			retrieve_fleshed_patron(); render_stat_cats();
+		}
+
+		function retrieve_fleshed_patron() {
+			try {
+
+				g.patron = patron.util.retrieve_fleshed_au_via_id(ses(), g.patron_id);
+				if (g.patron.ilsevent) throw(g.patron);
+
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Failed to retrieve patron stat cats.',E);
+				g.patron = null;
+			}
+
+		}
+
+		function apply(node,field,value) {
+			util.widgets.apply(
+				node,'name',field,
+				function(n) {
+					switch(n.nodeName) {
+						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
+						case 'label' : n.value = value; break;
+						default : n.value = value; break;
+					}
+				}
+			);
+		}
+
+		function render_stat_cats() {
+			JSAN.use('util.widgets'); util.widgets.remove_children('stat_cats_panel');
+			if (!g.patron) return;
+			var sp = $('stat_cats_panel');
+			var my_actsc = g.data.list.my_actsc;
+			/* I'm throwing all the patron's stat cat entry maps in here, and pruning it as we go through my_actsc.  Those left behind are "foreign" stat cats that need to pulled from the server. */
+			var scem_hash = {}; 
+			for (var i = 0; i < g.patron.stat_cat_entries().length; i++) {
+				scem_hash[ g.patron.stat_cat_entries()[i].stat_cat() ] = function(a){ return g.patron.stat_cat_entries()[a]; }(i);
+			}
+
+			for (var i = 0; i < my_actsc.length; i++) {
+
+				/* template */
+				var actsc_node = $('actsc_template').cloneNode(true); sp.appendChild(actsc_node); actsc_node.hidden = false;
+				apply(actsc_node,'name',my_actsc[i].name());
+				apply(actsc_node,'opac',my_actsc[i].opac_visible() ? 'OPAC Visible' : 'Not OPAC Visible');
+				apply(actsc_node,'owner',g.data.hash.aou[my_actsc[i].owner()].shortname());
+
+				var nl = actsc_node.getElementsByAttribute('name','entry');
+				var entry_placeholder;
+				if (nl.length>0) entry_placeholder = nl[0];
+
+				if (entry_placeholder && scem_hash[ my_actsc[i].id() ]) {
+
+					/* template */
+					var actsce_node = $('actsce_template').cloneNode(true); entry_placeholder.appendChild(actsce_node); actsce_node.hidden = false;
+					var sc_id = my_actsc[i].id();
+					var scem = scem_hash[ sc_id ];
+					apply(actsce_node,'value',scem.stat_cat_entry());
+					delete scem_hash[ sc_id ];
+
+				}
+			}
+
+			for (var i in scem_hash) {
+
+				var sc = g.network.simple_request('FM_ACTSC_RETRIEVE_BATCH', [ ses(), [ scem_hash[i].stat_cat() ] ]);
+				if (!sc || sc.ilsevent) { g.error.sdump('D_ERROR',sc); continue; }
+
+				/* template */
+				var actsc_node = $('actsc_template').cloneNode(true); sp.appendChild(actsc_node); actsc_node.hidden = false;
+				apply(actsc_node,'name',sc.name());
+				apply(actsc_node,'opac',sc.opac_visible() ? 'OPAC Visible' : 'Not OPAC Visible');
+				apply(actsc_node,'owner',g.data.hash.aou[sc.owner()].shortname());
+
+				var nl = actsc_node.getElementsByAttribute('name','entry');
+				var entry_placeholder;
+				if (nl.length>0) entry_placeholder = nl[0];
+
+				if (entry_placeholder) {
+
+					/* template */
+					var actsce_node = $('actsce_template').cloneNode(true); entry_placeholder.appendChild(actsce_node); actsce_node.hidden = false;
+					var scem = scem_hash[ i ];
+					apply(actsce_node,'value',scem.stat_cat_entry());
+
+				}
+
+			}
+		}
+		
+	]]>
+	</script>
+
+	<stack hidden="true" id="actsc_template" flex="1">
+		<groupbox flex="1" style="background-color: black;"/>
+		<groupbox flex="1" style="background-color: #99CC66; -moz-border-radius-topright: 35px;" >
+			<hbox>
+				<description name="name" style="font-weight: bold"/>
+				<spacer flex="1"/>
+				<description name="opac" style="font-weight: bold"/>
+				<description name="owner" style="font-weight: bold"/>
+			</hbox>
+			<vbox name="entry"/>
+		</groupbox>
+	</stack>
+
+	<hbox hidden="true" id="actsce_template" flex="1">
+		<description name="value"/>
+	</hbox>
+
+	<vbox flex="1" class="my_overflow" id="stat_cats_panel">
+	</vbox>
+
+
+</window>
+
