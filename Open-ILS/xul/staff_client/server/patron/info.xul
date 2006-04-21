@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="patron_info_win" width="700" height="550"
+	onload="try{ my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('patron.util');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.error.sdump('D_TRACE','my_init() for patron_info.xul');
+
+				g.cgi = new CGI();
+				g.patron_id = g.cgi.param('patron_id');
+
+				retrieve_notes(); render_notes();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\npatron_info.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function retrieve_notes() {
+			g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]);
+		}
+
+		function apply(node,field,value) {
+			util.widgets.apply(
+				node,'name',field,
+				function(n) {
+					switch(n.nodeName) {
+						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
+						case 'label' : n.value = value; break;
+						default : n.value = value; break;
+					}
+				}
+			);
+		}
+
+		function render_notes() {
+			JSAN.use('util.widgets'); util.widgets.remove_children('notes_panel');
+			var np = $('notes_panel');
+			for (var i = 0; i < g.notes.length; i++) {
+				var node = $('note_template').cloneNode(true); np.appendChild(node); node.hidden = false;
+				apply(node,'create_date',g.notes[i].create_date().toString().substr(0,19));
+				apply(node,'title',g.notes[i].title());
+				apply(node,'pub',g.notes[i].pub() ? "Public" : "Private");
+				apply(node,'value',g.notes[i].value());
+				apply(node,'id',g.notes[i].id());
+				apply(node,'creator',g.notes[i].creator());
+			}
+		}
+	]]>
+	</script>
+
+	<hbox hidden="true" id="note_template" flex="1">
+		<groupbox flex="1">
+			<hbox>
+				<description name="create_date" style="font-weight: bold"/>
+				<description name="title" style="font-weight: bold"/>
+				<spacer flex="1"/>
+				<description name="pub" style="font-weight: bold"/>
+			</hbox>
+			<description name="value"/>
+		</groupbox>
+	</hbox>
+
+	<vbox flex="1" class="my_overflow">
+		<tabbox flex="1" orient="horizontal">
+			<tabs orient="vertical" class="tabs-left">
+				<tab accesskey="N" label="Notes" />
+				<tab accesskey="S" label="Stat Cats"/>
+				<tab accesskey="y" label="Surveys"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+				<tab label=" " disabled="true" linkedpanel="notes_panel"/>
+			</tabs>
+			<tabpanels flex="1">
+				<tabpanel id="notes_panel" orient="vertical"/>
+				<tabpanel id="stat_cats_panel" orient="vertical"/>
+				<tabpanel id="surveys_panel" orient="vertical"/>
+			</tabpanels>
+		</tabbox>
+	</vbox>
+
+
+</window>
+
