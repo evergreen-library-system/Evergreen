@@ -29,9 +29,8 @@ function uEditInit() {
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
-	uEditShowPage('uedit_userid');
 
-	setTimeout( function() { uEditBuild(); }, 20 );
+	setTimeout( function() { uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
 }
 
 /* ------------------------------------------------------------------------------ */
