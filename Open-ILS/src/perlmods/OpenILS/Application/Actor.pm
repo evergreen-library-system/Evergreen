@@ -1617,7 +1617,6 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user, optionally by type
 	NOTES
-	
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history.have_charge",
@@ -1625,7 +1624,6 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have an initial charge, optionally by type
 	NOTES
-
 sub user_transaction_history {
 	my( $self, $client, $login_session, $user_id, $type ) = @_;
 
@@ -1647,6 +1645,7 @@ sub user_transaction_history {
 
 	return [ map { $_->id } @$trans ];
 }
+
 
 __PACKAGE__->register_method(
 	method	=> "user_perms",
@@ -1891,6 +1890,7 @@ sub create_user_note {
 	return $evt if $evt;
 	$logger->activity("user ".$reqr->id." creating note for user ".$note->usr);
 
+	$note->pub('f') unless $note->pub;
 	$note->creator($reqr->id);
 	my $id = $U->storagereq(
 		'open-ils.storage.direct.actor.usr_note.create', $note );
