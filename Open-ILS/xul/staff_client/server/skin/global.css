@@ -7,7 +7,7 @@
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
-.my_overflow3 { overflow: scroll; }
+.my_overflow { overflow: scroll; }
 
 iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
 .my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
