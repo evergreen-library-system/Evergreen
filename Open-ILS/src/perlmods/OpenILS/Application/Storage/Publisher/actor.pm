@@ -30,6 +30,101 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub lost_barcodes {
+	my $self = shift;
+	my $client = shift;
+
+	my $c = actor::card->table;
+	my $p = actor::user->table;
+
+	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.card <> c.id";
+
+	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.lost_barcodes',
+	api_level	=> 1,
+	method		=> 'lost_barcodes',
+	signature	=> <<'	NOTE',
+		Returns an array of barcodes that belong to lost cards.
+		@return array of barcodes
+	NOTE
+);
+
+sub expired_barcodes {
+	my $self = shift;
+	my $client = shift;
+
+	my $c = actor::card->table;
+	my $p = actor::user->table;
+
+	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.expire_date < CURRENT_DATE";
+
+	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.expired_barcodes',
+	api_level	=> 1,
+	method		=> 'expired_barcodes',
+	signature	=> <<'	NOTE',
+		Returns an array of barcodes that are currently expired.
+		@return array of barcodes
+	NOTE
+);
+
+sub barred_barcodes {
+	my $self = shift;
+	my $client = shift;
+
+	my $c = actor::card->table;
+	my $p = actor::user->table;
+
+	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.barred IS TRUE";
+
+	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.barred_barcodes',
+	api_level	=> 1,
+	method		=> 'barred_barcodes',
+	signature	=> <<'	NOTE',
+		Returns an array of barcodes that are currently barred.
+		@return array of barcodes
+	NOTE
+);
+
+sub penalized_barcodes {
+	my $self = shift;
+	my $client = shift;
+	my @ignore = @_;
+
+	my $c = actor::card->table;
+	my $p = actor::user_standing_penalty->table;
+
+	my $sql = "SELECT c.barcode FROM $c c JOIN $p p USING (usr)";
+
+	if (@ignore) {
+		$sql .= ' WHERE penalty_type NOT IN ('. join(',', map { '?' } @ignore) . ')';
+	}
+
+	$sql .= ' GROUP BY c.barcode;';
+
+	return actor::card->db_Main->selectcol_arrayref($sql, {}, @ignore);
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.penalized_barcodes',
+	api_level	=> 1,
+	method		=> 'penalized_barcodes',
+	signature	=> <<'	NOTE',
+		Returns an array of barcodes that have penalties not listed
+		as a parameter.  Supply a list of any penalty types that should
+		not stop a patron from checking out materials.
+
+		@param ignore_list Penalty type to ignore
+		@return array of barcodes
+	NOTE
+);
+
 
 sub patron_search {
 	my $self = shift;
