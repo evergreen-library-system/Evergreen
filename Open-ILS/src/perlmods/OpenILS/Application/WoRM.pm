@@ -298,7 +298,7 @@ sub wormize_biblio_record {
 			keyword	=> [],
 			series	=> [],
 		);
-		my @metarecord = ();
+		my %metarecord = ();
 		my @source_map = ();
 		for my $r (@$bibs) {
 			try {
@@ -348,6 +348,8 @@ sub wormize_biblio_record {
 					$mr_map->metarecord( $mr->id );
 					$mr_map->source( $r->id );
 					push @source_map, $mr_map;
+
+					$metarecord{$mr->id} = $mr;
 				}
 				OpenILS::Application::WoRM->storage_req( 'open-ils.storage.savepoint.release', 'extract_data'.$r->id );
 			} otherwise {
@@ -364,6 +366,26 @@ sub wormize_biblio_record {
 				'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
 				@source_map
 			) if (@source_map);
+
+			for my $mr ( values %metarecord ) {
+				my $sources = OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
+					$mr->id
+				);
+
+				my $bibs = OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.biblio.record_entry.search.id.atomic',
+					[ map { $_->source } @$sources ]
+				);
+
+				my $master = ( sort { $b->quality <=> $a->quality } @$bibs )[0];
+
+				OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.metabib.metarecord.remote_update',
+					{ id => $mr->id },
+					{ master_record => $master->id, mods => undef }
+				);
+			}
 
 			OpenILS::Application::WoRM->storage_req(
 				'open-ils.storage.direct.metabib.record_descriptor.batch.create',
