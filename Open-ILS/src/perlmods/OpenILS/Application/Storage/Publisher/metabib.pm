@@ -42,13 +42,15 @@ sub ordered_records_from_metarecord {
 	my $cp_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
 	my $out_table = actor::org_unit_type->table;
+	my $br_table = biblio::record_entry->table;
 
 	my $sql = <<"	SQL";
-	 SELECT	*
+	 SELECT	record, item_type, item_form, count
 	   FROM	(
 		SELECT	rd.record,
 			rd.item_type,
 			rd.item_form,
+			br.quality,
 	SQL
 
 	if ($copies_visible) {
@@ -69,22 +71,26 @@ sub ordered_records_from_metarecord {
 		$sql .= <<"		SQL";
 		  FROM	$cn_table cn,
 			$sm_table sm,
+			$br_table br,
 			$rd_table rd
 		  WHERE	rd.record = sm.source
+		  	AND br.id = rd.record
 		  	AND cn.record = rd.record
 			AND sm.metarecord = ?
 		SQL
 	} else {
 		$sql .= <<"		SQL";
 		  FROM	$sm_table sm,
+			$br_table br,
 			$rd_table rd
 		  WHERE	rd.record = sm.source
+		  	AND br.id = rd.record
 			AND sm.metarecord = ?
 		SQL
 	}
 
 	$sql .= <<"	SQL";
-		  GROUP BY rd.record, rd.item_type, rd.item_form
+		  GROUP BY rd.record, rd.item_type, rd.item_form, br.quality
 		  ORDER BY
 			CASE
 				WHEN rd.item_type IS NULL -- default
@@ -110,6 +116,7 @@ sub ordered_records_from_metarecord {
 				WHEN rd.item_type = 'r' -- 3d
 					THEN 9
 			END,
+			br.quality DESC,
 			count DESC
 		) x
 	SQL
