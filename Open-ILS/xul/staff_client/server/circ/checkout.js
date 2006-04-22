@@ -86,6 +86,18 @@ circ.checkout.prototype = {
 							}
 						}
 					],
+					'checkout_duedate_menu' : [
+						['change'],
+						function(ev) { 
+							try {
+								obj.check_date(ev.target);
+								ev.target.parentNode.setAttribute('style','');
+							} catch(E) {
+								ev.target.parentNode.setAttribute('style','background-color: red');
+								alert(E + '\nUse this format: YYYY-MM-DD');
+							}
+						}
+					],
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
@@ -94,6 +106,7 @@ circ.checkout.prototype = {
 						['command'],
 						function() {
 							var params = {}; var count = 1;
+
 							if (obj.controller.view.checkout_menu.value == 'barcode' ||
 								obj.controller.view.checkout_menu.value == '') {
 								params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
@@ -163,8 +176,32 @@ circ.checkout.prototype = {
 
 	},
 
+	'check_date' : function(node) {
+		JSAN.use('util.date');
+		try {
+			if (node.value == 'Normal') return true;
+			var pattern = node.value.match(/Today \+ (\d+) days/);
+			if (pattern) {
+				var today = new Date();
+				var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*pattern[1] );
+				node.value = util.date.formatted_date(todayPlus,"%F");
+			}
+			if (! util.date.check('YYYY-MM-DD',node.value) ) { throw('Invalid Date'); }
+			if (util.date.check_past('YYYY-MM-DD',node.value) ) { throw('Due date needs to be after today.'); }
+			if ( util.date.formatted_date(new Date(),'%F') == node.value) { throw('Due date needs to be after today.'); }
+			return true;
+		} catch(E) {
+			throw(E);
+		}
+	},
+
 	'checkout' : function(params) {
 		var obj = this;
+
+		try { obj.check_date(obj.controller.view.checkout_duedate_menu); } catch(E) { return; }
+		if (obj.controller.view.checkout_duedate_menu.value != 'Normal') {
+			params.due_date = obj.controller.view.checkout_duedate_menu.value;
+		}
 
 		if (! (params.barcode||params.noncat)) return;
 
