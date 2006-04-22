@@ -104,6 +104,15 @@
 
 		function retrieve_circ() {
 			JSAN.use('util.widgets');
+			util.widgets.remove_children('title');
+			$('title_label').hidden = true;
+			$('checked_out_label').hidden = true;
+			$('due_label').hidden = true;
+			$('checked_in_label').hidden = true;
+			$('checked_out').value = '';
+			$('checked_in').value = '';
+			$('due').value = '';
+
 			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ g.session, g.mbts_id ],
 				function (req) {
 					var r_circ = req.getResultObject();
@@ -123,7 +132,6 @@
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();
 								if (instanceOf(r_mvr,mvr)) {
-									util.widgets.remove_children('title');
 									$('title').appendChild( document.createTextNode( r_mvr.title() ) );
 								} else {
 									g.network.simple_request(
@@ -132,7 +140,6 @@
 										function (rrreq) {
 											var r_acp = rrreq.getResultObject();
 											if (instanceOf(r_acp,acp)) {
-												util.widgets.remove_children('title');
 												$('title').appendChild( document.createTextNode( r_acp.dummy_title() ) );
 											}
 										}
