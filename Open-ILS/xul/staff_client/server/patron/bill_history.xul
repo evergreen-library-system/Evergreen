@@ -164,6 +164,7 @@
 					$('summary').hidden = g.bill_list_selection.length == 0;
 					g.mbts_id = g.bill_list_selection[0];
 					retrieve_specific_mbts();
+					retrieve_circ();
 				},
                 'retrieve_row' : function(params) {
                     var id = params.retrieve_id;
