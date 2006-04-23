@@ -58,12 +58,12 @@ patron.items.prototype = {
 									[ row.my.circ.target_copy() ]
 								);
 
-								params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
+								params.row_node.setAttribute( 'retrieve_id',js2JSON([row.my.circ.id(),row.my.acp.barcode()]) );
 
 							}
 						);
 					} else {
-						params.row_node.setAttribute( 'retrieve_id',row.my.acp.barcode() );
+						params.row_node.setAttribute( 'retrieve_id',js2JSON([row.my.circ.id(),row.my.acp.barcode()]) );
 					}
 
 					funcs.push(
@@ -91,7 +91,7 @@ patron.items.prototype = {
 					var sel = obj.list.retrieve_selection();
 					var list = util.functional.map_list(
 						sel,
-						function(o) { return o.getAttribute('retrieve_id'); }
+						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
 					);
 					if (typeof obj.on_select == 'function') {
 						obj.on_select(list);
@@ -144,7 +144,7 @@ patron.items.prototype = {
 						['command'],
 						function() {
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i];
+								var barcode = obj.retrieve_ids[i][1];
 								dump('Renew barcode = ' + barcode);
 								var renew = obj.network.simple_request(
 									'CHECKOUT_RENEW', 
@@ -158,13 +158,56 @@ patron.items.prototype = {
 					'cmd_items_edit' : [
 						['command'],
 						function() {
+							try {
+								function check_date(value) {
+									JSAN.use('util.date');
+									try {
+										if (! util.date.check('YYYY-MM-DD',value) ) { 
+											throw('Invalid Date'); 
+										}
+										if (util.date.check_past('YYYY-MM-DD',value) ) { 
+											throw('Due date needs to be after today.'); 
+										}
+										if ( util.date.formatted_date(new Date(),'%F') == value) { 
+											throw('Due date needs to be after today.'); 
+										}
+										return true;
+									} catch(E) {
+										alert(E);
+										return false;
+									}
+								}
+
+								JSAN.use('util.functional');
+								var title = 'Edit Due Date' + (obj.retrieve_ids.length > 1 ? 's' : '');
+								var value = 'YYYY-MM-DD';
+								var text = 'Enter a new due date for these copies: ' + 
+									util.functional.map_list(obj.retrieve_ids,function(o){return o[1];}).join(', ');
+								var due_date; var invalid = true;
+								while(invalid) {
+									due_date = window.prompt(text,value,title);
+									if (due_date) {
+										invalid = ! check_date(due_date);
+									} else {
+										invalid = false;
+									}
+								}
+								if (due_date) {
+									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o[0];});
+									for (var i = 0; i < circs.length; i++) {
+										g.network.simple_request('FM_CIRC_EDIT_DUE_DATE',ses(),circs[i],due_date);
+									}
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
+							}
 						}
 					],
 					'cmd_items_mark_lost' : [
 						['command'],
 						function() {
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i];
+								var barcode = obj.retrieve_ids[i][1];
 								dump('Mark barcode lost = ' + barcode);
 								var lost = obj.network.simple_request(
 									'MARK_ITEM_LOST', 
@@ -179,7 +222,7 @@ patron.items.prototype = {
 						['command'],
 						function() {
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i];
+								var barcode = obj.retrieve_ids[i][1];
 								var backdate = window.prompt('This will be replaced with our generic valdiating popup calendar/date widget','2004-12-12','Claims Returned Date');
 								dump('Mark barcode lost = ' + barcode);
 								var lost = obj.network.simple_request(
@@ -196,7 +239,7 @@ patron.items.prototype = {
 						function() {
 							JSAN.use('circ.util');
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i];
+								var barcode = obj.retrieve_ids[i][1];
 								dump('Check in barcode = ' + barcode);
 								var checkin = circ.util.checkin_via_barcode(
 									obj.session, barcode
