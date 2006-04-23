@@ -48,12 +48,12 @@ util.network.prototype = {
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
 								+ obj.error.pretty_print(js2JSON(req.getResultObject())));
-							req = obj.rerequest_on_session_timeout(app,name,params,req);
-							req = obj.rerequest_on_perm_failure(app,name,params,req);
+							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params);
+							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params);
 							if (o_params) {
 								req = obj.rerequest_on_override(app,name,params,req,o_params);
 							}
-							req = obj.check_for_offline(req);
+							req = obj.check_for_offline(app,name,params,req,o_params);
 							f(req);
 						} catch(E) {
 							alert(E);
@@ -64,14 +64,14 @@ util.network.prototype = {
 				return null;
 			} else {
 				request.send(true);
-				request = obj.rerequest_on_session_timeout(app,name,params,request);
-				request = obj.rerequest_on_perm_failure(app,name,params,request);
+				var result = request.getResultObject();
+				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + obj.error.pretty_print(js2JSON(result)));
+				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params);
+				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params);
 				if (o_params) {
 					request = obj.rerequest_on_override(app,name,params,request,o_params);
 				}
-				request = obj.check_for_offline(request);
-				var result = request.getResultObject();
-				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + obj.error.pretty_print(js2JSON(result)));
+				request = obj.check_for_offline(app,name,params,request,o_params);
 				return request;
 			}
 
@@ -83,19 +83,34 @@ util.network.prototype = {
 		}
 	},
 
-	'check_for_offline' : function (req) {
+	'check_for_offline' : function (app,name,params,req,o_params) {
+		var obj = this;
 		var result = req.getResultObject();
 		if (result != null) return req;
-		var test = new RemoteRequest( 'open-ils.actor','opensrf.system.time');
-		test.send(true);
-		if (test.getResultObject() == null) { /* opensrf/network problem */
-			return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : 'Network/Server Problem' }; } };
-		} else { /* legitimate null result */
-			return req; 
+
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		var proceed = true;
+
+		while(proceed) {
+
+			proceed = false;
+
+			var r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Reconnect.  If you need to enter Offline Mode, choose Abort Connection in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message "' + name + '".','Network Failure','Reconnect','Abort Connection',null,'Check here to confirm this message');
+
+			switch(r) {
+				case 0: 
+					req = obj._request(app,name,params,null,o_params);
+					if (req.getResultObject() == null) proceed = true;
+					return req;
+				break;
+				case 1: 
+					return { 'getResultObject' : function() { return { 'ilsevent' : -1, 'textcode' : 'Network/Server Problem' }; } };
+				break;
+			}
 		}
 	},
 
-	'rerequest_on_session_timeout' : function(app,name,params,req) {
+	'rerequest_on_session_timeout' : function(app,name,params,req,o_params) {
 		try {
 			var obj = this;
 			var robj = req.getResultObject();
@@ -114,7 +129,7 @@ util.network.prototype = {
 				if (data.temporary_session != '') {
 					data.session = data.temporary_session; data.stash('session');
 					params[0] = data.session;
-					req = obj._request(app,name,params);
+					req = obj._request(app,name,params,null,o_params);
 				}
 			}
 		} catch(E) {
@@ -123,7 +138,7 @@ util.network.prototype = {
 		return req;
 	},
 	
-	'rerequest_on_perm_failure' : function(app,name,params,req) {
+	'rerequest_on_perm_failure' : function(app,name,params,req,o_params) {
 		try {
 			var obj = this;
 			var robj = req.getResultObject();
@@ -141,7 +156,7 @@ util.network.prototype = {
 				var data = new OpenILS.data(); data.init({'via':'stash'});
 				if (data.temporary_session != '') {
 					params[0] = data.temporary_session;
-					req = obj._request(app,name,params);
+					req = obj._request(app,name,params,null,o_params);
 				}
 			}
 		} catch(E) {
