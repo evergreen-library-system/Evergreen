@@ -4,16 +4,11 @@ if (typeof util == 'undefined') util = {};
 util.network = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
-	// Place a test here for network connectivity
-	// this.offline = true;
 
 	return this;
 };
 
 util.network.prototype = {
-
-	// Flag for whether the staff client should act as if it were offline or not
-	'offline' : false,
 
 	'link_id' : 0,
 
@@ -95,7 +90,27 @@ util.network.prototype = {
 
 			proceed = false;
 
-			var r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Reconnect.  If you need to enter Offline Mode, choose Abort Connection in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message "' + name + '".','Network Failure','Reconnect','Abort Connection',null,'Check here to confirm this message');
+			var r;
+
+			if (data.proceed_offline) {
+
+				r = 1;
+
+			} else {
+				r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message "' + name + '".','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
+				if (r == 1) {
+					data.proceed_offline = true; data.stash('proceed_offline');
+					dump('Remembering proceed_offline for 200000 ms.\n');
+					setTimeout(
+						function() {
+							data.proceed_offline = false; data.stash('proceed_offline');
+							dump('Setting proceed_offline back to false.\n');
+						}, 200000
+					);
+				}
+			}
+
+			dump( r == 0 ? 'Retry Network\n' : 'Proceed Offline\n' );
 
 			switch(r) {
 				case 0: 
