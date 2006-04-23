@@ -39,11 +39,16 @@ sub lost_barcodes {
 
 	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.card <> c.id";
 
-	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	my $list = actor::user->db_Main->selectcol_arrayref($sql);
+	for my $bc ( @$list ) {
+		$client->respond($bc);
+	}
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.lost_barcodes',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'lost_barcodes',
 	signature	=> <<'	NOTE',
 		Returns an array of barcodes that belong to lost cards.
@@ -60,11 +65,16 @@ sub expired_barcodes {
 
 	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.expire_date < CURRENT_DATE";
 
-	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	my $list = actor::user->db_Main->selectcol_arrayref($sql);
+	for my $bc ( @$list ) {
+		$client->respond($bc);
+	}
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.expired_barcodes',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'expired_barcodes',
 	signature	=> <<'	NOTE',
 		Returns an array of barcodes that are currently expired.
@@ -81,11 +91,16 @@ sub barred_barcodes {
 
 	my $sql = "SELECT c.barcode FROM $c c JOIN $p p ON (c.usr = p.id) WHERE p.barred IS TRUE";
 
-	return actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	my $list = actor::user->db_Main->selectcol_arrayref($sql);
+	for my $bc ( @$list ) {
+		$client->respond($bc);
+	}
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.barred_barcodes',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'barred_barcodes',
 	signature	=> <<'	NOTE',
 		Returns an array of barcodes that are currently barred.
@@ -109,11 +124,16 @@ sub penalized_barcodes {
 
 	$sql .= ' GROUP BY c.barcode;';
 
-	return actor::card->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	my $list = actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	for my $bc ( @$list ) {
+		$client->respond($bc);
+	}
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.penalized_barcodes',
 	api_level	=> 1,
+	stream		=> 1,
 	method		=> 'penalized_barcodes',
 	signature	=> <<'	NOTE',
 		Returns an array of barcodes that have penalties not listed
