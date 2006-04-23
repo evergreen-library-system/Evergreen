@@ -95,6 +95,12 @@ circ.checkout.prototype = {
 							} catch(E) {
 								ev.target.parentNode.setAttribute('style','background-color: red');
 								alert(E + '\nUse this format: YYYY-MM-DD');
+								try {
+									ev.target.inputField.select();
+									ev.target.inputField.focus();
+								} catch(E) { /* this should work, let me try on other platforms */ 
+									obj.error.sdump('D_ERROR','menulist.inputField: ' + E);
+								}
 							}
 						}
 					],
