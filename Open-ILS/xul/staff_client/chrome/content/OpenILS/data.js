@@ -199,7 +199,12 @@ OpenILS.data.prototype = {
 					var level = obj.error.sdump_levels.D_SES_RESULT;
 					if (classname == 'aou' || classname == 'my_aou')
 						obj.error.sdump_levels.D_SES_RESULT = false;
-					obj.list[classname] = obj.network.request( app, method, params);
+					var robj = obj.network.request( app, method, params);
+					if (!robj || robj.ilsevent) {
+						obj.error.standard_unexpected_error_alert('The staff client failed to retrieve expected data from this call, "' + method + '"',robj);
+						throw(robj);
+					}
+					obj.list[classname] = robj;
 					obj.error.sdump_levels.D_SES_RESULT = level;
 					convert();
 					// if cacheable, store an offline copy
@@ -248,7 +253,6 @@ OpenILS.data.prototype = {
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);
-					alert(error);
 					throw(E);
 				}
 				obj.list.au = [ obj.list.au ];
@@ -273,7 +277,6 @@ OpenILS.data.prototype = {
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);
-					alert(error);
 					throw(E);
 				}
 			}
@@ -297,7 +300,6 @@ OpenILS.data.prototype = {
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);
-					alert(error);
 					throw(E);
 				}
 			}
@@ -381,7 +383,6 @@ OpenILS.data.prototype = {
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);
-					alert(error);
 					throw(E);
 				}
 			}
