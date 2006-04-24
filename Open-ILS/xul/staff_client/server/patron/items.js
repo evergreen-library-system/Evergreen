@@ -23,6 +23,7 @@ patron.items.prototype = {
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
 				'renewal_remaining' : { 'hidden' : false },
+				'stop_fines' : { 'hidden' : false },
 			} 
 		);
 
