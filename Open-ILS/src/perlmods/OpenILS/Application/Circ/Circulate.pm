@@ -1549,7 +1549,8 @@ sub renew {
 	} else {
 		$evt = $self->permit_circ( $client, $authtoken, $params );
 		if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
-			$ctx->{precat} = 1;
+			#$ctx->{precat} = 1;
+			$params->{precat} = 1;
 
 		} else {
 			if(!$U->event_equals($evt, 'SUCCESS')) {
