@@ -185,14 +185,25 @@ util.network.prototype = {
 	'rerequest_on_override' : function (app,name,params,req,o_params) {
 		var obj = this;
 		try {
+			if (!o_params.text) o_params.text = {};
 			function override(r) {
 				try {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"><groupbox><caption label="Exceptions"/><grid><columns><column/><column/><column/></columns><rows>';
+					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
+						'<groupbox><caption label="Exceptions"/>' + 
+						'<grid><columns><column/><column/><column/><column/></columns><rows>';
 					for (var i = 0; i < r.length; i++) {
-						xml += '<row style="color: red"><description>' + r[i].ilsevent + '</description><description>' + r[i].textcode + '</description><description>' +  (obj.error.get_ilsevent(r[i].ilsevent) ? obj.error.get_ilsevent(r[i].ilsevent) : "") + '</description></row>';
+						xml += '<row style="color: red">' + 
+							'<description>' + r[i].ilsevent + '</description>' + 
+							'<description>' + r[i].textcode + '</description>' + 
+							'<description>' +  (obj.error.get_ilsevent(r[i].ilsevent) ? obj.error.get_ilsevent(r[i].ilsevent) : "") + '</description>' +
+							'<description>' + (o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '') + '</description>' + 
+							'</row>';
 					}
-					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox><description>Force this action?</description><button accesskey="C" label="Cancel" name="fancy_cancel"/><button id="override" accesskey="O" label="Override" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox>' + 
+						'<description>Force this action?</description>' + 
+						'<button accesskey="C" label="Cancel" name="fancy_cancel"/>' + 
+						'<button id="override" accesskey="O" label="Override" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
 					window.open(
 						'/xul/server/util/fancy_prompt.xul'
 						+ '?xml=' + window.escape(xml)
