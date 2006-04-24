@@ -305,9 +305,26 @@ circ.checkout.prototype = {
 				null,
 				{
 					'title' : 'Override Checkout Failure?',
-					'overridable_events' : [ 7004, 7006 ],
+					'overridable_events' : [ 7004 /* COPY_NOT_AVAILABLE */, 7006, 7010 /* COPY_ALERT_MESSAGE */ ],
+					'text' : {
+						'7004' : function(r) {
+							return obj.data.hash.ccs[ r.payload ].name();
+						},
+						'7010' : function(r) {
+							return r.payload;
+						},
+					}
 				}
 			);
+
+			if (!permit) throw(permit);
+
+			if (typeof permit.ilsevent == 'undefined') {
+				if (permit.length > 1) {
+					throw(permit);
+				}
+				permit = permit[0];	
+			}
 
 			/**********************************************************************************************************************/
 			/* Normal case, proceed with checkout */
@@ -319,7 +336,7 @@ circ.checkout.prototype = {
 
 			/**********************************************************************************************************************/
 			/* Item not cataloged or barcode mis-scan.  Prompt for pre-cat option */
-			} else if (permit.ilsevent == 1202) {
+			} else if (permit.ilsevent == 1202 /* ITEM_NOT_CATALOGED */) {
 
 				if ( 1 == obj.error.yns_alert(
 					'Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?',
@@ -342,6 +359,18 @@ circ.checkout.prototype = {
 
 					if (params.dummy_title != '') { check_out( params ); } else { throw('Checkout cancelled'); }
 				} 
+
+			} else if (permit.ilsevent == 1702 /* OPEN_CIRCULATION_EXISTS */) {
+
+				obj.error.yns_alert('Item is already checked out.  Please investigate.','Checkout Failed','OK',null,null,'Check here to confirm this message');
+			
+			} else if (permit.ilsevent == 7004 /* COPY_NOT_AVAILABLE */) {
+
+				//they already saw a copy not available dialog
+
+			} else if (permit.ilsevent == 5000 /* PERM_FAILURE */) {
+
+				//they already saw a perm failure dialog
 
 			} else {
 				throw(permit);
