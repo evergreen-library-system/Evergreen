@@ -257,7 +257,7 @@ sub set_circ_due_date {
 	return $evt if $evt;
 
 	my $reqr;
-	($reqr, $evt) = $U->checkses_perms(
+	($reqr, $evt) = $U->checksesperm(
 		$authtoken, $circ->circ_lib, 'CIRC_OVERRIDE_DUE_DATE');
 	return $evt if $evt;
 
@@ -419,7 +419,7 @@ sub fetch_notes {
 				'open-ils.storage.direct.asset.copy_note.search_where.atomic',
 				{ owning_copy => $id, pub => 't' } );
 		} else {
-			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_COPY_NOTES');
+			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_COPY_NOTES');
 			return $evt if $evt;
 			return $U->storagereq(
 				'open-ils.storage.direct.asset.copy_note.search.owning_copy.atomic', $id );
@@ -431,7 +431,7 @@ sub fetch_notes {
 				'open-ils.storage.direct.asset.call_number_note.search_where.atomic',
 				{ call_number => $id, pub => 't' } );
 		} else {
-			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_VOLUME_NOTES');
+			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_VOLUME_NOTES');
 			return $evt if $evt;
 			return $U->storagereq(
 				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
@@ -443,7 +443,7 @@ sub fetch_notes {
 				'open-ils.storage.direct.bilbio.record_note.search_where.atomic',
 				{ record => $id, pub => 't' } );
 		} else {
-			( $r, $evt ) = $U->checksesperms($authtoken, 'VIEW_TITLE_NOTES');
+			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_TITLE_NOTES');
 			return $evt if $evt;
 			return $U->storagereq(
 				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
