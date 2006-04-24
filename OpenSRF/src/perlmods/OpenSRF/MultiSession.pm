@@ -196,6 +196,7 @@ sub request {
 		push @{ $self->{running} },
 			{ req => $req,
 			  meth => $method,
+			  hash => $hash_param,
 			  params => [@params]
 			};
 
@@ -223,7 +224,7 @@ sub session_wait {
 		}
 		return $count;
 	} else {
-		while(($count = $self->session_reap) > 0) {
+		while(($count = $self->session_reap) == 0 && $self->running) {
 			usleep 100;
 		}
 		return $count;
