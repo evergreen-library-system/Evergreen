@@ -257,16 +257,19 @@ sub set_circ_due_date {
 	return $evt if $evt;
 
 	my $reqr;
-	($reqr, $evt) = $U->checksesperm(
-		$authtoken, $circ->circ_lib, 'CIRC_OVERRIDE_DUE_DATE');
+	($reqr, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($reqr->id, $circ->circ_lib, 'CIRC_OVERRIDE_DUE_DATE');
 	return $evt if $evt;
 
 	$date = clense_ISO8601($date);
-	$logger->activity("user ".$reqr->id." updating due_date on circ $circid: $date");
+	$logger->activity("user ".$reqr->id.
+		" updating due_date on circ $circid: $date");
 
 	$circ->due_date($date);
 	my $stat = $U->storagereq(
-		'open-ils.storage.action.circulation.update', $circ);
+		'open-ils.storage.direct.action.circulation.update', $circ);
 	return $U->DB_UPDATE_FAILED unless defined $stat;
 	return $stat;
 }
