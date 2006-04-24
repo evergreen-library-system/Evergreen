@@ -195,8 +195,9 @@ patron.items.prototype = {
 								if (due_date) {
 									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o[0];});
 									for (var i = 0; i < circs.length; i++) {
-										g.network.simple_request('FM_CIRC_EDIT_DUE_DATE',ses(),circs[i],due_date);
+										obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
 									}
+									obj.retrieve();
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
@@ -221,17 +222,51 @@ patron.items.prototype = {
 					'cmd_items_claimed_returned' : [
 						['command'],
 						function() {
-							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i][1];
-								var backdate = window.prompt('This will be replaced with our generic valdiating popup calendar/date widget','2004-12-12','Claims Returned Date');
-								dump('Mark barcode lost = ' + barcode);
-								var lost = obj.network.simple_request(
-									'MARK_ITEM_CLAIM_RETURNED', 
-									[ obj.session, { barcode: barcode, backdate: backdate } ]
-								);
-								dump('  result = ' + js2JSON(lost) + '\n');
+							function check_date(value) {
+								JSAN.use('util.date');
+								try {
+									if (! util.date.check('YYYY-MM-DD',value) ) { 
+										throw('Invalid Date'); 
+									}
+									if ( util.date.formatted_date(new Date(),'%F') == value) { 
+										return true;
+									}
+									if (! util.date.check_past('YYYY-MM-DD',value) ) { 
+										throw('Claims Returned Date cannot be in the future.'); 
+									}
+									return true;
+								} catch(E) {
+									alert(E);
+									return false;
+								}
 							}
-							obj.retrieve();
+
+							JSAN.use('util.functional');
+							var title = 'Claimed Returned';
+							var value = 'YYYY-MM-DD';
+							var text = 'Enter a claimed returned date for these copies: ' + 
+								util.functional.map_list(obj.retrieve_ids,function(o){return o[1];}).join(', ');
+							var backdate; var invalid = true;
+							while(invalid) {
+								backdate = window.prompt(text,value,title);
+								if (backdate) {
+									invalid = ! check_date(backdate);
+								} else {
+									invalid = false;
+								}
+							}
+							alert('backdate = ' + backdate);
+							if (backdate) {
+								var barcodes = util.functional.map_list(obj.retrieve_ids,function(o){return o[1];});
+								for (var i = 0; i < barcodes.length; i++) {
+									var lost = obj.network.simple_request(
+										'MARK_ITEM_CLAIM_RETURNED', 
+										[ obj.session, { barcode: barcodes[i], backdate: backdate } ]
+									);
+								}
+								alert('pause');
+								obj.retrieve();
+							}
 						}
 					],
 					'cmd_items_checkin' : [
