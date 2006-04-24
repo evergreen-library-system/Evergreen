@@ -143,6 +143,10 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()'
 		},
 		{
+			'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.stop_fines()'
+		},
+		{
 			'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.status())>=0) obj.data.hash.ccs[ my.acp.status() ].name(); else my.acp.status().name();'
 		},
