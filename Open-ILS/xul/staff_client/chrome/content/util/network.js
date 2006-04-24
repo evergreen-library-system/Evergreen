@@ -40,9 +40,10 @@ util.network.prototype = {
 				request.setCompleteCallback(
 					function(req) {
 						try {
+							var json_string = js2JSON(req.getResultObject());
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
-								+ obj.error.pretty_print(js2JSON(req.getResultObject())));
+								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) );
 							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params);
 							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params);
 							if (o_params) {
@@ -60,7 +61,8 @@ util.network.prototype = {
 			} else {
 				request.send(true);
 				var result = request.getResultObject();
-				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + obj.error.pretty_print(js2JSON(result)));
+				var json_string = js2JSON(result);
+				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) );
 				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params);
 				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params);
 				if (o_params) {
