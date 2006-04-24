@@ -359,7 +359,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		var check = network.request(
 			api.CHECKIN_VIA_BARCODE.app,
 			api.CHECKIN_VIA_BARCODE.method,
-			[ session, params ]
+			[ session, params ],
+			null,
+			{
+				'title' : 'Override Checkin Failure?',
+				'overridable_events' : [ 1203 /* COPY_BAD_STATUS */ ],
+			}
 		);
 
 		check.message = check.textcode;
