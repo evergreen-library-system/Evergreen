@@ -457,9 +457,16 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			check.route_to = lib.shortname();
 			var msg = 'This item is in transit to ' + check.route_to + '.\n';
 			msg += '\n' + lib.name() + '\n';
-			msg += 'HOLD ADDRESSS STREET 1\n';
-			msg += 'HOLD ADDRESSS STREET 2\n';
-			msg += 'HOLD ADDRESSS CITY, STATE, ZIP\n';
+			try {
+				var a = network.simple_request('FM_AOA_RETRIEVE',[ lib.holds_address() ]);
+				if (typeof a.ilsevent != 'undefined') throw(a);
+				msg += a.street1() + '\n';
+				msg += a.street2() + '\n';
+				msg += a.city() + ', ' + a.state() + ' ' + a.post_code() + '\n';
+			} catch(E) {
+				msg += 'Unable to retrieve mailing address.\n';
+				error.standard_unexpected_error_alert('Unable to retrieve mailing address.',E);
+			}
 			msg += '\nBarcode: ' + check.payload.copy.barcode() + '\n';
 			msg += 'Title: ' + (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() ) + '\n';
 			msg += 'Author: ' + (check.payload.record ? check.payload.record.author() :check.payload.copy.dummy_author()  ) + '\n';
