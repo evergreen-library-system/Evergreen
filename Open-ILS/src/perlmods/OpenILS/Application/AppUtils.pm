@@ -148,6 +148,8 @@ sub simplereq {
 
 sub get_storage_session {
 
+	return undef; # XXX testing
+
 	if(	$storage_session and 
 			$storage_session->connected and
 			$storage_session->transport_connected and
@@ -172,14 +174,12 @@ sub simple_scalar_request {
 		} else { $session = undef; }
 	}
 
-	if(!$session) {
-		$session = OpenSRF::AppSession->create( $service );
-	}
+	$session = OpenSRF::AppSession->create( $service ) unless $session;
 
 	$logger->debug("simple request for service $service using session " .$session->app);
 
 	my $request = $session->request( $method, @params );
-	my $response = $request->recv(30);
+	my $response = $request->recv(60);
 
 	$request->wait_complete;
 
