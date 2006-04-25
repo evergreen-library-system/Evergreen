@@ -184,6 +184,9 @@
 	<event code='1525' textcode='BILLING_NOT_FOUND'>
 		<desc> Requested copy note does not exist </desc>
 	</event>
+	<event code='1526' textcode='BILLABLE_XACT_SUMMARY_NOT_FOUND'>
+		<desc> Requested transaction summary does not exist </desc>
+	</event>
 
 
 
@@ -200,7 +203,7 @@
 		<desc> There is an open circulation on the requested item </desc>
 	</event>
 
-	<event code='1702' textcode='WORKSTATION_NAME_EXISTS'>
+	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
 		<desc> A workstation with that name already exists </desc>
 	</event>
 
@@ -280,6 +283,14 @@
 		A copy needs to be routed to a copy location.  The location
 		should be specified within the event with a 'location' key
 		</desc>
+	</event>
+
+	<event code='7009' textcode='CIRC_CLAIMS_RETURNED'>
+		<desc> Requested circulation is marked claims returned </desc>
+	</event>
+	
+	<event code='7010' textcode='COPY_ALERT_MESSAGE'>
+		<desc> The requested copy has an alert message attached </desc>
 	</event>
 
 	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>
