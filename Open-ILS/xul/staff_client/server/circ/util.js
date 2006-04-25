@@ -444,7 +444,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 				default:
-					msg += ("FIXME -- this case is unhandled\n");
+					msg += ('FIXME -- this case "' + data.hash.ccs[check.copy.status()].name() + '" is unhandled.\n');
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 			}
