@@ -222,16 +222,20 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(!obj) return null;
 
 	if( obj.status != 200 ) {
-		if(!isXUL()) {
-			alert("A Server Error Occured.  Debug information follows:\n" +
-				"Status: " + obj.status + '\n' + obj.debug + '\n' 
-				+ 'Payload: ' + js2JSON(obj.payload) + '\n');
-		} else { 
-			dump('Remote Request Error:' +
+
+		var str = 'A server error occurred. Debug information follows: ' +
 					'\ncode = '		+ obj.status + 
 					'\ndebug: '		+ obj.debug + 
-					'\npayload: '	+ js2JSON(obj.payload)); 
+					'\npayload: '	+ js2JSON(obj.payload); 
+
+
+		if(isXUL()) {
+			dump(str);
 			throw obj;
+
+		} else {
+			_debug(str);
+			alert(str);
 		}
 	}
 
