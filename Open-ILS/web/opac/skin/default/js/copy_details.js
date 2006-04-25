@@ -56,8 +56,8 @@ var i = cpdCheckExisting(contextRow);
 	return templateRow.id;
 }
 
-/* builds a friendly print window for this CNs data */
-function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
+
+function cpdBuildPrintWindow(record, orgid) {
 	var win = window.open('','', 'resizable,width=700,height=500');
 	var div = $('rdetail_print_details').cloneNode(true);
 	div.id = "";
@@ -69,7 +69,30 @@ function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 	$n(div, 'pubdate').appendChild(text(record.pubdate()));
 	$n(div, 'publisher').appendChild(text(record.publisher()));
 	$n(div, 'phys').appendChild(text(record.physical_description()));
+
+
+	return [ win, div ];
+}
+
+function cpdStylePopupWindow(div) {
+	var tds = div.getElementsByTagName('td');
+	for( var i = 0; i < tds.length ; i++ ) {
+		var sty = tds[i].getAttribute('style');
+		if(!sty) sty = "";
+		tds[i].setAttribute('style', sty + 'padding: 2px; border: 1px solid #F0F0E0;');
+	}
+}
+
+/* builds a friendly print window for this CNs data */
+function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
+
+	var arr = cpdBuildPrintWindow( record, orgid);
+	var win = arr[0];
+	var div = arr[1];
+
 	$n(div, 'cn').appendChild(text(callnumber));
+
+	unHideMe($n(div, 'copy_header'));
 
 	var subtbody = $n(contextRow.nextSibling, 'copies_tbody');
 	var rows = subtbody.getElementsByTagName('tr');
@@ -85,13 +108,7 @@ function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 		$n(div, 'tbody').appendChild(clone);
 	}
 
-	var tds = div.getElementsByTagName('td');
-	for( var i = 0; i < tds.length ; i++ ) {
-		var sty = tds[i].getAttribute('style');
-		if(!sty) sty = "";
-		tds[i].setAttribute('style', sty + 'padding: 2px; border: 1px solid #F0F0E0;');
-	}
-
+	cpdStylePopupWindow(div);
 	win.document.body.innerHTML = div.innerHTML;
 }
 

@@ -1,10 +1,10 @@
 
 <div xmlns:xi="http://www.w3.org/2001/XInclude">
 
-	<table class='data_grid'>
+	<table class='rdetails_extra_links'>
 		<thead>
 			<tr>
-				<td id='rdetail_copy_info_link' class='rdetail_extras_td' 
+				<td id='rdetail_copy_info_link' class='rdetail_extras_td rdetail_extras_selected' 
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("copyinfo");' 
 						class='classic_link'>Copy Summary</a>

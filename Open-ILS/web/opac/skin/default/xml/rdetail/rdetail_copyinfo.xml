@@ -32,7 +32,11 @@
 		</thead>
 		<tbody id='rdetail_copy_info_tbody'>
 			<tr id='rdetail_copy_info_row' class='hide_me'>
-				<td name='rdetail_library_cell'> </td>
+				<td name='rdetail_library_cell'>
+					<a name='lib_print_link' class='hide_me classic_link' style='font-size: 8pt; padding-left: 20px;'>
+						Print Call Numbers for this library
+					</a>
+				</td>
 				<td name='rdetail_callnumber_cell'> </td>
 				<td name='rdetail_actions_cell'> 
 					<div style='padding-bottom: 1px;'>

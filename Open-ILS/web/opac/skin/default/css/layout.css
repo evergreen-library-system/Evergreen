@@ -176,6 +176,9 @@ table { border-collapse: collapse; }
 }
 
 .rdetail_extras_td { padding-right: 15px; padding-left: 15px; border-right: 1px solid #888; }
+.rdetail_extras_selected { background: #E0F0E0;} 
+.rdetails_extra_links { border: 1px solid #808080; padding-right: 5px; padding-left: 5px; }
+
 
 .cn_browse_item { height: 190px; }
 .cn_browse_info { padding: 4px; border-bottom: 1px dashed #E0E0E0;}

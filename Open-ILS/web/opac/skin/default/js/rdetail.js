@@ -226,13 +226,23 @@ function rdetailShowExtra(type, args) {
 	hideMe($('rdetail_cn_browse_div'));
 	hideMe($('rdetail_notes_div'));
 
+	removeCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_viewcn_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
+
 	var req;
 	switch(type) {
+
 		case "copyinfo": 
 			unHideMe($('rdetail_copy_info_div')); 
+			addCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
 			break;
 
 		case "reviews": 
+			addCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_reviews_div')); 
 			if(rdetailReviewFetched) break;
 			unHideMe($('rdetail_extras_loading'));
@@ -243,6 +253,7 @@ function rdetailShowExtra(type, args) {
 			break;
 
 		case "toc": 
+			addCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_toc_div'));
 			if(rdetailTocFetched) break;
 			unHideMe($('rdetail_extras_loading'));
@@ -251,30 +262,29 @@ function rdetailShowExtra(type, args) {
 				hideMe($('rdetail_extras_loading'));
 				$('rdetail_toc_div').innerHTML = record.toc().replace(/--/g, "<br/>");
 			} else {
-				var req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
+				req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
 				req.callback(rdetailShowTOC);
 				req.send();
 			}
 			break;
 
 		case "marc": 
+			addCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_marc_div')); 
 			if(rdetailMarcFetched) return;
 			unHideMe($('rdetail_extras_loading'));
 			rdetailMarcFetched = true;
-			var req = new Request( FETCH_MARC_HTML, record.doc_id() );
+			req = new Request( FETCH_MARC_HTML, record.doc_id() );
 			req.callback(rdetailViewMarc); 
 			req.send();
 			break;
 
 		case 'cn':
+			addCSSClass($('rdetail_viewcn_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_cn_browse_div'));
 			rdetailShowCNBrowse(defaultCN, getLocation(), null, true);
 			break;
 
-		case 'notes':
-			unHideMe($('rdetail_notes_div'));
-			break;
 	}
 }
 
@@ -390,7 +400,9 @@ function _rdetailRows(node) {
 		var cpctd = findNodeByName( row, config.names.rdetail.cp_count_cell );
 		var actions = $n(row, 'rdetail_actions_cell');
 	
-		libtd.appendChild(text(node.name()));
+		var p = libtd.getElementsByTagName('a')[0];
+		libtd.insertBefore(text(node.name()), p);
+		//libtd.appendChild(text(node.name()));
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
 	
 		if(!findOrgType(node.ou_type()).can_have_vols()) {
@@ -398,6 +410,7 @@ function _rdetailRows(node) {
 			row.removeChild(cntd);
 			row.removeChild(cpctd);
 			row.removeChild(actions);
+			row.setAttribute('novols', '1');
 
 			libtd.setAttribute("colspan", numStatuses + 3 );
 			libtd.colSpan = numStatuses + 3;
@@ -410,6 +423,16 @@ function _rdetailRows(node) {
 
 	for( var c in node.children() ) 
 		_rdetailRows(node.children()[c]);
+}
+
+function rdetailCNPrint(orgid, cn) {
+	var arr = cpdBuildPrintWindow( record, orgid);
+	var win = arr[0];
+	var div = arr[1];
+	var template = div.removeChild($n(div, 'cnrow'));
+	var rowNode = $("cp_info_" + orgid);
+	cpdStylePopupWindow(div);
+	win.document.body.innerHTML = div.innerHTML;
 }
 
 /* walk through the copy info and build rows where necessary */
@@ -433,6 +456,16 @@ function _rdetailBuildInfoRows(r) {
 		var thisOrg = findOrgUnit(arr[0]);
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
+
+		/* set up the print link */
+		var pn = rowNode.previousSibling;
+		if( pn && pn.getAttribute('novols') ) {
+			var a = $n(pn, 'lib_print_link');
+			a.setAttribute('href',
+				'javascript:rdetailCNPrint('+thisOrg.id()+',"'+arr[1]+'");');
+			/*unHideMe(a);*/
+			/* make this more smarter */
+		}
 
 		if(rowNode.getAttribute("used")) {
 
