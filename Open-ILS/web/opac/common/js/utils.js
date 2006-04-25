@@ -452,3 +452,10 @@ function setEnterFunc(node, func) {
 		if( userPressedEnter(evt)) func();
 	}
 }
+
+function iterate( arr, callback ) {
+	for( var i = 0; i < arr.length; i++ ) 
+		callback(arr[i]);
+}
+
+
