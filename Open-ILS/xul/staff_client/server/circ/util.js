@@ -504,12 +504,9 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 
 		/* COPY_NOT_FOUND */
 		if (check.ilsevent == 1502) {
-			check.copy = new acp();
-			check.copy.barcode( barcode );
-			check.copy.status( 11 );
 			check.route_to = 'CATALOGING';
 			error.yns_alert(
-				'The barcode was either mis-scanned or this item needs to be routed to CATALOGING.',
+				'The barcode was either mis-scanned or the item needs to be cataloged.',
 				'Alert',
 				null,
 				'OK',
@@ -555,7 +552,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert('Check In Failed',E);
+		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
 		return null;
 	}
 }
