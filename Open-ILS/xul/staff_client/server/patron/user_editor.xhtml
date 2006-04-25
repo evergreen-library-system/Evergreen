@@ -65,6 +65,8 @@
 				}
 			.addr_info_checked { -moz-border-radius: 6px; background: #F0E0E0; }
 			.button_row { width: 95%; text-align: center; margin-top: 7px; border: 1px solid #E0E0E0; }
+			.required_field { background: #F0E0E0; }
+			input:focus { background: #E0F0E0; }
 		</style>
 	</head>
 
@@ -79,6 +81,13 @@
 		</div>
 
 		<hr/><br/>
+
+		<div style='margin-bottom: 5px; width:100%; text-align: left;'>
+			<b>
+				<span>Note: required fields are </span>
+				<span class='required_field'>marked with color</span>
+			</b>
+		</div>
 
 		<table class='main_table'>
 			<tbody>
@@ -144,7 +153,7 @@
 						<div id='uedit_userid' class='main_div'>
 							<table class='uedit_table'>
 								<tbody>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Barcode</div></td>
 										<td><div class='wide left'>
 
@@ -154,19 +163,19 @@
 
 										</div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Username</div></td>
 										<td><div class='wide left'><input type='text' id='ue_username'/></div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Password</div></td>
 										<td><div class='wide left'><input type='password' id='ue_password1'/></div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Verify Password</div></td>
 										<td><div class='wide left'><input type='password' id='ue_password2'/></div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>First Name</div></td>
 										<td><div class='wide left'><input type='text' id='ue_firstname'/></div></td>
 									</tr>
@@ -174,15 +183,59 @@
 										<td><div class='wide right'>Middle Name</div></td>
 										<td><div class='wide left'><input type='text' id='ue_middlename'/></div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Last Name</div></td>
 										<td><div class='wide left'><input type='text' id='ue_lastname'/></div></td>
 									</tr>
 									<tr>
 										<td><div class='wide right'>Suffix</div></td>
-										<td><div class='wide left'><input type='text' id='ue_suffix'/></div></td>
+										<td><div class='wide left'>
+											<input type='text' id='ue_suffix'/>
+											<select id='ue_suffix_selector' style='width: 6em;'
+												onclick='$("ue_suffix").value = this.options[this.selectedIndex].value'
+												onchange='$("ue_suffix").value = this.options[this.selectedIndex].value'>
+												<option value=''>- Pick -</option>
+												<option value='Jr'>Jr</option>
+												<option value='Sr'>Sr</option>
+												<option value='II'>II</option>
+												<option value='III'>III</option>
+												<option value='AA'>AA</option>
+												<option value='AS'>AS</option>
+												<option value='AAS'>AAS</option>
+												<option value='BA'>BA</option>
+												<option value='BS'>BS</option>
+												<option value='CFPIM'>CFPIM</option>
+												<option value='CPA'>CPA</option>
+												<option value='CPIM'>CPIM</option>
+												<option value='CPM'>CPM</option>
+												<option value='CXE'>CXE</option>
+												<option value='DC'>DC</option>
+												<option value='DDS'>DDS</option>
+												<option value='DO '>DO</option>
+												<option value='DPM'>DPM</option>
+												<option value='DVM'>DVM</option>
+												<option value='Esq'>Esq</option>
+												<option value='FACAAI'>FACAAI</option>
+												<option value='FACP'>FACP</option>
+												<option value='FACS'>FACS</option>
+												<option value='FACEP'>FACEP</option>
+												<option value='FCP'>FCP</option>
+												<option value='FICS'>FICS</option>
+												<option value='GYN'>GYN</option>
+												<option value='JD'>JD</option>
+												<option value='LPN'>LPN</option>
+												<option value='MA'>MA</option>
+												<option value='MCSE'>MCSE</option>
+												<option value='MD'></option>
+												<option value='MS'></option>
+												<option value='NMD'></option>
+												<option value='OB'></option>
+												<option value='PhD'></option>
+												<option value='RN'></option>
+											</select>
+										</div></td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Date of Birth</div></td>
 										<td>
 											<div class='wide left'>
@@ -213,7 +266,7 @@
 											</div>
 										</td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Primary Identification Type</div></td>
 										<td><div class='wide left'>
 												<select id='ue_primary_ident_type'>
@@ -222,10 +275,23 @@
 											</div>
 										</td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Primary Identification</div></td>
-										<td><div class='wide left'>
-											<input type='text' id='ue_primary_ident'/>
+										<td>
+											<div class='wide left'>
+												<input type='text' id='ue_primary_ident'/>
+												<span class='hide_me' id='ue_primary_ident_dl'>
+													<input type='text' id='ue_primary_ident_dl_state' size='2' maxlength='2'/>
+													<input type='text' id='ue_primary_ident_dl_val'/>
+												</span>
+												<span class='hide_me' id='ue_primary_ident_ssn'>
+													<input type='text' id='ue_primary_ident_ssn_1' size='3' maxlength='3'/>
+													<input type='text' id='ue_primary_ident_ssn_2' size='2' maxlength='2'/>
+													<input type='text' id='ue_primary_ident_ssn_3' size='4' maxlength='4'/>
+												</span>
+												<span style='padding-left: 10px;'>Verified 
+													<input id='ue_primary_ident_verified' type='checkbox'/>
+												</span>
 											</div>
 										</td>
 									</tr>
@@ -233,15 +299,28 @@
 										<td><div class='wide right'>Secondary Identification Type</div></td>
 										<td><div class='wide left'>
 												<select id='ue_secondary_ident_type'>
-													<option> -- Required -- </option>
+													<option> -- Select One -- </option>
 												</select>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<td><div class='wide right'>Secondary Identification</div></td>
-										<td><div class='wide left'>
-											<input type='text' id='ue_secondary_ident'/>
+										<td>
+											<div class='wide left'>
+												<input type='text' id='ue_secondary_ident'/>
+												<span class='hide_me' id='ue_secondary_ident_dl'>
+													<input type='text' id='ue_secondary_ident_dl_state' size='2' maxlength='2'/>
+													<input type='text' id='ue_secondary_ident_dl_val'/>
+												</span>
+												<span class='hide_me' id='ue_secondary_ident_ssn'>
+													<input type='text' id='ue_secondary_ident_ssn_1' size='3' maxlength='3'/>
+													<input type='text' id='ue_secondary_ident_ssn_2' size='2' maxlength='2'/>
+													<input type='text' id='ue_secondary_ident_ssn_3' size='4' maxlength='4'/>
+												</span>
+												<span style='padding-left: 10px;'>Verified 
+													<input id='ue_secondary_ident_verified' type='checkbox'/>
+												</span>
 											</div>
 										</td>
 									</tr>
@@ -253,16 +332,19 @@
 						<!-- Contact Info Pane -->
 						<!-- ************************************************************** -->
 						<div id='uedit_contact_info' class='main_div hide_me'>
+
 							<table class='uedit_table'>
 								<tbody>
 									<tr>
 										<td><div class='wide right'>Email Address</div></td>
-										<td><div class='wide left'><input type='text' id='ue_email1'/></div></td>
+										<td><div class='wide left'><input type='text' id='ue_email1' size='32'/></div></td>
 									</tr>
+									<!--
 									<tr>
 										<td><div class='wide right'>Verify Email Address</div></td>
 										<td><div class='wide left'><input type='text' id='ue_email2'/></div></td>
 									</tr>
+									-->
 									<tr>
 										<td><div class='wide right'>Daytime Phone</div></td>
 										<td>
@@ -299,7 +381,7 @@
 											</div>
 										</td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Home Library</div></td>
 										<td>
 											<div class='wide left'>
@@ -430,7 +512,7 @@
 						<div id='uedit_groups' class='main_div hide_me'>
 							<table class='uedit_table'>
 								<tbody>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Profile Group</div></td>
 										<td>
 											<div class='wide left'>
@@ -440,7 +522,7 @@
 											</div>
 										</td>
 									</tr>
-									<tr>
+									<tr class='required_field'>
 										<td><div class='wide right'>Account Expiration Date</div></td>
 										<td>
 											<div class='wide left'>
@@ -603,13 +685,11 @@
 								</div>
 								<br/>
 								<a style='margin-right: 30px;' id='ue_view_summary' 
-									href='javascript:uEditShowSummary();'>View Summary</a>
+									href='javascript:_uEditShowSummary();'>View Summary</a>
 								<input style='margin-left: 30px;' 
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
 							</div>
 						</div>
-
-	
 					</td>
 				</tr>
 

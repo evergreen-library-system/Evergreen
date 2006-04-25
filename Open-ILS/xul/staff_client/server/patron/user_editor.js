@@ -18,6 +18,7 @@ var cachedStatCats			= {};
 var deletedStatCats			= {};
 var cachedAddresses			= {};
 var deletedAddresses			= {};
+var defaultState				= 'GA';
 
 /* if they don't have these perms, they shouldn't be here */
 //var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
@@ -49,6 +50,7 @@ regexes.email	= /.+\@.+\..+/;
 regexes.date	= /^\d{4}-\d{2}-\d{2}/;
 regexes.isnum	= /^\d+$/;
 
+
 /* fetch the necessary data to start off */
 function uEditInit() {
 
@@ -56,6 +58,7 @@ function uEditInit() {
 	session	= cgi.param('ses');
 	if(cgi.param('adv')) advanced = true 
 	if(!session) throw "User session is not defined";
+
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
@@ -150,14 +153,12 @@ function uEditAddrHighlight( node, type ) {
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIDTypes() {
 	var req = new Request(FETCH_ID_TYPES);
-	//req.callback(uEditDrawIDTypes);
 	req.send(true);
 	uEditDrawIDTypes(req.request);
 }
 
 function uEditFetchStatCats() {
 	var req = new Request(SC_FETCH_ALL, SESSION);
-	//req.callback(uEditDrawStatCats);
 	req.send(true);
 	uEditDrawStatCats(req.request);
 }
@@ -260,7 +261,6 @@ function uEditDrawUser(p) {
 	$('ue_primary_ident').value	= patron.ident_value();
 	$('ue_secondary_ident').value	= patron.ident_value2();
 	$('ue_email1').value				= patron.email();
-	$('ue_email2').value				= patron.email();
 	$('ue_expire').value				= patron.expire_date();
 	$('ue_active').value				= patron.active();
 	$('ue_barred').value				= patron.barred();
@@ -305,6 +305,7 @@ function uEditDrawUser(p) {
 	for( var i = 0; i != patron.addresses().length; i++ ) {
 		var addr = patron.addresses()[i];
 		cachedAddresses[addr.id()] = addr;
+
 		var row;
 		if( i == 0 ) row = getElementsByTagNameFlat(tbody, 'tr')[0];
 		else row = $('ue_address_new').onclick(); /* create a new row if necessary */
@@ -330,8 +331,6 @@ function uEditDrawUser(p) {
 		$n(row, 'ue_addr_country').value	= addr.country();
 
 	}
-
-
 
 	var stattbody = $('ue_stat_cat_tbody');
 	for( var m in patron.stat_cat_entries() ) {
@@ -360,12 +359,64 @@ function uEditDrawIDTypes(r) {
 	for( var t in types ) {
 		var type = types[t];
 		identTypes[type.id()] = type;
-		setSelectorVal( pri_sel, idx, type.name(), type.id() );
+
+		var action = function() {
+			unHideMe($('ue_primary_ident'));
+			hideMe($('ue_primary_ident_dl'));
+			hideMe($('ue_primary_ident_ssn'));
+			$('ue_primary_ident').focus();
+		}
+
+		if( type.name().match(/ssn/i) ) 
+			action = function() {
+				hideMe($('ue_primary_ident'));
+				hideMe($('ue_primary_ident_dl'));
+				unHideMe($('ue_primary_ident_ssn'));
+				$('ue_primary_ident_ssn_1').focus();
+			}
+
+		if( type.name().match(/driver/i) ) 
+			action = function() {
+				hideMe($('ue_primary_ident'));
+				unHideMe($('ue_primary_ident_dl'));
+				hideMe($('ue_primary_ident_ssn'));
+				$('ue_primary_ident_dl_state').value = defaultState;
+				$('ue_primary_ident_dl_val').focus();
+			}
+
+		setSelectorVal( pri_sel, idx, type.name(), type.id(), action );
 
 		if(patron && patron.ident_type() != null ) 
 			setSelector( pri_sel, patron.ident_type() );
 
-		setSelectorVal( sec_sel, idx++, type.name(), type.id() );
+
+		action = function() {
+			unHideMe($('ue_secondary_ident'));
+			hideMe($('ue_secondary_ident_dl'));
+			hideMe($('ue_secondary_ident_ssn'));
+			$('ue_secondary_ident').focus();
+		}
+
+		if( type.name().match(/ssn/i) ) 
+			action = function() {
+				hideMe($('ue_secondary_ident'));
+				hideMe($('ue_secondary_ident_dl'));
+				unHideMe($('ue_secondary_ident_ssn'));
+				$('ue_secondary_ident_ssn_1').focus();
+			}
+
+		if( type.name().match(/driver/i) ) 
+			action = function() {
+				hideMe($('ue_secondary_ident'));
+				unHideMe($('ue_secondary_ident_dl'));
+				hideMe($('ue_secondary_ident_ssn'));
+				$('ue_secondary_ident_dl_state').value = defaultState;
+				$('ue_secondary_ident_dl_val').focus();
+			}
+
+
+		setSelectorVal( sec_sel, idx++, type.name(), type.id(), action );
+
 		if(patron && patron.ident_type2() != null ) 
 			setSelector( sec_sel, patron.ident_type2() );
 	}
@@ -640,21 +691,11 @@ function uEditAddBasicPatronInfo(patron) {
 	
 	uEditSetVal(patron, "usrname", $('ue_username'), null, 'ue_bad_username' );
 	uEditSetVal(patron, "first_given_name", $('ue_firstname'), null, 'ue_bad_firstname' );
-	//uEditSetVal(patron, "second_given_name", $('ue_middlename'), null, 'ue_bad_middlename' ); 
 	uEditSetVal(patron, "family_name", $('ue_lastname'), null, 'ue_bad_lastname' ); 
 	uEditSetVal(patron, "dob", $('ue_dob'), 'date', 'ue_bad_dob' );
 
 	patron.second_given_name($('ue_middlename').value);
 	patron.suffix($('ue_suffix').value); /* suffis isn't required */
-
-
-	/* make sure emails match */
-	/*
-	var email	= $('ue_email1').value;
-	var email2	= $('ue_email2').value;
-	if( email != email2 || uEditSetVal(patron, "email", email, 'email' ))
-		ERRORS += uEditFetchError('ue_bad_email');
-		*/
 
 	patron.email($('ue_email1').value);
 	patron.home_ou(getSelectorVal($('ue_org_selector')));
@@ -700,13 +741,79 @@ function uEditFleshCard(card) {
 	return "";
 }
 
+function uEditParseIdent(type, required) {
+	var err = 'ue_no_ident';
+	var error = [null, null, uEditFetchError(err)];
+	var selector = $('ue_' + type + '_ident_type');
+	var tname = getSelectorName(selector);
+	var tval = getSelectorVal(selector);
+	var val = "";
+
+	if( tname.match(/ssn/i) ) {
+		var ssn1 = $('ue_'+type+'_ident_ssn_1').value;
+		var ssn2 = $('ue_'+type+'_ident_ssn_2').value;
+		var ssn3 = $('ue_'+type+'_ident_ssn_3').value;
+
+		if(!(ssn1 && ssn2 && ssn3)) return error;
+		if(!ssn1.match(/^\d{3}$/)) return error;
+		if(!ssn2.match(/^\d{2}$/)) return error;
+		if(!ssn3.match(/^\d{4}$/)) return error;
+		val = ssn1+'-'+ssn2+'-'+ssn3;
+
+	} else if( tname.match(/driver/i) ) {
+		var state = $('ue_'+type+'_ident_dl_state').value;
+		var dlval = $('ue_'+type+'_ident_dl_val').value;
+		if(!(state && dlval)) return error;
+		val = state+'-'+dlval;
+
+	} else {
+		val = $('ue_'+type+'_ident').value;
+		if(!val) return error;
+	}
+
+	return [ tval, val ];
+}
+
 function uEditAddIdents(patron) {
 
-	var err = 'ue_no_ident';
 
+	/*
 	uEditSetVal( patron, "ident_type", 
 		getSelectorVal($('ue_primary_ident_type')), 'isnum', err );
 	uEditSetVal( patron, "ident_value", $('ue_primary_ident'), null, err );
+	*/
+
+	var identdata = uEditParseIdent(
+
+	var it1 = getSelectorVal($('ue_primary_ident_type'));
+	var name = getSelectorName($('ue_primary_ident_type'));
+
+	if(it1 && it1.match(regexes['isnum'])) {
+		patron.ident_type(it1);
+		if( name.match(/ssn/i) ) {
+			var ssn1 = $('ue_secondary_ident_ssn_1');
+		} else if( name.match(/driver/i) ) {
+
+		} else {
+
+		}
+
+		var val = $('ue_primary_ident').value;
+		if(val) {
+			patron.ident_value(val);
+		} else {
+			if($('ue_primary_ident_verified')) {
+				patron.ident_value("");
+			} else {
+				ERRORS += error;
+			}
+		}
+	} else {
+		ERRORS += error;
+	}
+
+
+
 
 	var val = getSelectorVal($('ue_secondary_ident_type'));
 	if( val && val.match(/^\d+$/) ) {
@@ -879,6 +986,7 @@ function uEditBuildAddrs() {
 }
 
 
+/* Use this in XUL mode (default) */
 function uEditShowSummary() {
 	uEditCollectData();
 	var table = $('ue_summary_table').cloneNode(true);;
@@ -891,6 +999,18 @@ function uEditShowSummary() {
 		'chrome,resizable,width=700,height=500');
 	//win.document.body.innerHTML = "";
 	//win.document.body.appendChild(table);
+	ERRORS = "";
+}
+
+
+/* Use this when debugging in HTML mode */
+function _uEditShowSummary() {
+	uEditCollectData();
+	var table = $('ue_summary_table').cloneNode(true);;
+	uEditFleshSummaryTable(table);
+	var win = window.open('','','scrollbars=1,resizable,width=700,height=500');
+	win.document.body.innerHTML = "";
+	win.document.body.appendChild(table);
 	ERRORS = "";
 }
 

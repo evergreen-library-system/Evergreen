@@ -100,6 +100,7 @@ function uEditNewPatron() {
 	rand = parseInt( rand * 10000 );
 	patron.passwd(rand);
 	$('ue_password_plain').appendChild(text(rand));
+	unHideMe($('ue_password_gen'));
 	return patron;
 }
 
