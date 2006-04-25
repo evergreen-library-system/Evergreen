@@ -1699,6 +1699,22 @@ sub retrieve_groups {
 }
 
 __PACKAGE__->register_method(
+	method	=> "retrieve_org_address",
+	api_name	=> "open-ils.actor.org_unit.address.retrieve",
+	notes		=> <<'	NOTES');
+	Returns an org_unit address by ID
+	@param An org_address ID
+	NOTES
+sub retrieve_org_address {
+	my( $self, $client, $id ) = @_;
+	return $apputils->simple_scalar_request(
+		"open-ils.storage",
+		"open-ils.storage.direct.actor.org_address.retrieve",
+		$id
+	);
+}
+
+__PACKAGE__->register_method(
 	method	=> "retrieve_groups_tree",
 	api_name	=> "open-ils.actor.groups.tree.retrieve",
 	notes		=> <<"	NOTES");
