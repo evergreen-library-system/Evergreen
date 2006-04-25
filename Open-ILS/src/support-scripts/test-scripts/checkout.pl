@@ -68,17 +68,26 @@ sub do_permit {
 	my $resp = simplereq( 
 		CIRC(), 'open-ils.circ.checkout.permit', $authtoken, $args );
 
-	if( ref($resp) eq 'ARRAY' ) { # we received a list of non-success events
-		printl("received event: ".$_->{textcode}) for @$resp;
+	if( oils_event_equals($resp, 'ITEM_NOT_CATALOGED') ) {
+		$precat = 1;
 
-		#if( oils_event_equals($resp, 'ITEM_NOT_CATALOGED') ) {
-			#$precat = 1;
-		#} else { oils_event_die($resp); }
-		return undef;
 
-	} 
+	} else {
 
-	oils_event_die($resp);	 
+		oils_event_die($resp);	 
+	
+		if( ref($resp) eq 'ARRAY' ) { # we received a list of non-success events
+			if( oils_event_equals($$resp[0], 'COPY_ALERT_MESSAGE') ) {
+				printl("copy has alert attached: " . $$resp[0]->{payload});
+				printl("");
+				debug($resp);
+				printl("");
+			}
+
+			printl("received event: ".$_->{textcode}) for @$resp;
+			return undef;
+		} 
+	}
 
 	my $e = time() - $start;
 	my $key = $resp->{payload};
