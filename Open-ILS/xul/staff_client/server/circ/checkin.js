@@ -148,6 +148,10 @@ circ.checkin.prototype = {
 				obj.session, barcode, backdate
 			);
 			if (!checkin) return; /* circ.util.checkin handles errors and returns null currently */
+			if (check.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
+				|| check.ilsevent == 1203 /* COPY_BAD_STATUS */
+				|| check.ilsevent == 7011 /* COPY_STATUS_LOST */ 
+				|| check.ilsevent == 7012 /* COPY_STATUS_MISSING */) return;
 			obj.list.append(
 				{
 					'row' : {

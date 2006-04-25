@@ -363,7 +363,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 			null,
 			{
 				'title' : 'Override Checkin Failure?',
-				'overridable_events' : [ 1203 /* COPY_BAD_STATUS */, 7010 /* COPY_ALERT_MESSAGE */ ],
+				'overridable_events' : [ 
+					1203 /* COPY_BAD_STATUS */, 
+					7010 /* COPY_ALERT_MESSAGE */, 
+					7011 /* COPY_STATUS_LOST */, 
+					7012 /* COPY_STATUS_MISSING */, 
+				],
 				'text' : {
 					'1203' : function(r) {
 						return data.hash.ccs[ r.payload.status() ].name();
