@@ -18,6 +18,7 @@ patron.bills.prototype = {
 	'current_payments' : [],
 
 	'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE',
+	/*'SHOW_ME_THE_BILLS' : 'FM_MOBTS_OPEN',*/
 
 	'refresh' : function(dont_show_me_the_money) {
 		var obj = this;
