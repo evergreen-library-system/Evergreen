@@ -34,6 +34,7 @@ var api = {
 	'FM_AHR_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_pickup_lib' },
 	'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count' },
 	'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
+	'FM_AOA_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.address.retrieve' },
 	'FM_AOU_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_tree.retrieve' },
 	'FM_AOU_RETRIEVE_RELATED_VIA_SESSION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.full_path.retrieve' },
 	'FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.actor.org_unit.retrieve_by_title' },
