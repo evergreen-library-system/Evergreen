@@ -23,8 +23,11 @@
 #define MODXMLENT_CONFIG_STRIP_PI "XMLEntStripPI"  
 #define MODXMLENT_CONFIG_DOCTYPE "XMLEntDoctype"
 #define MODXMLENT_CONFIG_STRIP_DOCTYPE "XMLEntStripDoctype"
+#define MODXMLENT_CONFIG_ESCAPE_SCRIPT "XMLEntEscapeScript"
 
 module AP_MODULE_DECLARE_DATA xmlent_module;
+
+int xmlEntInScript = 0; /* are we in the middle of a <script> tag */
 
 /* our context */
 typedef struct {
@@ -37,6 +40,7 @@ typedef struct {
 	int stripComments;	/* should we strip comments on the way out? */
 	int stripPI;			/* should we strip processing instructions on the way out? */
 	int stripDoctype;
+	int escapeScript;		/* if true, we html-escape anything text inside a <scritp> tag */
 	char* contentType;	/* the content type used to server pages */
 	char* doctype;			/* the doctype header to send before any other data */
 } xmlEntConfig;
@@ -63,6 +67,13 @@ static const char* xmlEntSetStripComments(cmd_parms *params, void *cfg, const ch
 	xmlEntConfig* config = (xmlEntConfig*) cfg;
 	char* a = (char*) arg;
 	config->stripComments = (a && !strcasecmp(a, "yes")) ? 1 : 0;
+	return NULL;
+}
+
+static const char* xmlEntSetEscapeScript(cmd_parms *params, void *cfg, const char *arg) {
+	xmlEntConfig* config = (xmlEntConfig*) cfg;
+	char* a = (char*) arg;
+	config->escapeScript = (a && !strcasecmp(a, "yes")) ? 1 : 0;
 	return NULL;
 }
 
@@ -93,6 +104,8 @@ static const command_rec xmlEntCommands[] = {
 			xmlEntSetDoctype, NULL, ACCESS_CONF, "XMLENT Doctype Declaration"),
 	AP_INIT_TAKE1( MODXMLENT_CONFIG_STRIP_DOCTYPE,
 			xmlEntSetStripDoctype, NULL, ACCESS_CONF, "XMLENT Strip Doctype Declaration"),
+	AP_INIT_TAKE1( MODXMLENT_CONFIG_ESCAPE_SCRIPT,
+			xmlEntSetEscapeScript, NULL, ACCESS_CONF, "XMLENT Escape data in script tags"),
 	{NULL}
 };
 
@@ -104,6 +117,7 @@ static void* xmlEntCreateDirConfig( apr_pool_t* p, char* dir ) {
 	config->stripComments = 0;
 	config->stripPI       = 0;
 	config->stripDoctype  = 0;
+	config->escapeScript	 = 1;
 	config->contentType	 = MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT;
 	config->doctype       = NULL;
 
@@ -170,6 +184,8 @@ static void XMLCALL startElement(void *userData, const char *name, const char **
 	_fwrite(filter, "<%s", name );
 	printAttr( filter, atts );
 	_fwrite(filter, ">", name );
+	if(!strcmp(name, "script")) 
+		xmlEntInScript = 1;
 }
 
 /* Handles the character data */
@@ -178,8 +194,17 @@ static void XMLCALL charHandler( void* userData, const XML_Char* s, int len ) {
 	char data[len+1];
 	bzero(data, len+1);
 	memcpy( data, s, len );
-	char* escaped = ap_escape_html(filter->r->pool, data);
-	_fwrite( filter, "%s", escaped );
+
+	xmlEntConfig* config = ap_get_module_config( 
+			filter->r->per_dir_config, &xmlent_module );
+
+	if( xmlEntInScript && ! config->escapeScript ) {
+		_fwrite( filter, "%s", data );
+
+	} else {
+		char* escaped = ap_escape_html(filter->r->pool, data);
+		_fwrite( filter, "%s", escaped );
+	} 
 }
 
 static void XMLCALL handlePI( void* userData, const XML_Char* target, const XML_Char* data) {
@@ -196,6 +221,8 @@ static void XMLCALL handleComment( void* userData, const XML_Char* comment ) {
 static void XMLCALL endElement(void *userData, const char *name) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
 	_fwrite( filter, "</%s>", name );
+	if(!strcmp(name, "script")) 
+		xmlEntInScript = 1;
 }
 
 static void XMLCALL doctypeHandler( void* userData, 
