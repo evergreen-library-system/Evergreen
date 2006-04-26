@@ -111,13 +111,9 @@ cat.z3950.prototype = {
 							['command'],
 							function() {
 								obj.spawn_marc_editor(
-									obj.network.simple_request(
-										'FM_BRN_FROM_MARCXML',
-										[
-											obj.results.records[
-												obj.controller.view.marc_import.getAttribute('retrieve_id')
-											].marcxml
-										]
+										obj.results.records[
+											obj.controller.view.marc_import.getAttribute('retrieve_id')
+										].marcxml
 									)
 								);
 							},
@@ -369,11 +365,20 @@ cat.z3950.prototype = {
 		}
 	},
 
-	'spawn_marc_editor' : function(my_brn) {
+	'spawn_marc_editor' : function(my_marcxml) {
 		var obj = this;
 		xulG.new_tab(
-			xulG.url_prefix(urls.XUL_MARC_EDIT) + '?session=' + window.escape(obj.session), 
-			{ 'tab_name' : 'MARC Editor' }, { 'import_tree' : my_brn } 
+			xulG.url_prefix(urls.XUL_MARC_EDIT), 
+			{ 'tab_name' : 'MARC Editor' }, 
+			{ 
+				'record' : { 'marc' : my_marcxml },
+				'save' : {
+					'label' : 'Import Record',
+					'func' : function (new_marcxml) {
+						alert('We got MARC!  Put network call to import here.');
+					}
+				}
+			} 
 		);
 	},
 

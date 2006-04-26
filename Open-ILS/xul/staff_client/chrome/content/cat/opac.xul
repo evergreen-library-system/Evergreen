@@ -90,8 +90,19 @@
 		}
 
 		function set_marc_edit() {
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_EDIT ) + '?session=' + window.escape(session) 
-				+ '&docid=' + window.escape(docid),{},xulG);
+			bottom_pane.set_iframe( 
+				xulG.url_prefix( urls.XUL_MARC_EDIT ),
+				{},
+				{
+					'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+					'save' : {
+						'label' : 'Save Record',
+						'func' : function (new_marcxml) {
+							alert('We got MARC!  Put network call to save here.');
+						}
+					}
+				}
+			);
 		}
 
 		function set_copy_browser() {
