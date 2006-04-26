@@ -1394,7 +1394,7 @@ sub user_transactions {
 		$trans =  $apputils->simple_scalar_request( 
 			"open-ils.storage",
 			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
-			{ usr => $user_id, balance_owed => { ">" => 0 }, @xact });
+			{ usr => $user_id, balance_owed => { "<>" => 0 }, @xact });
 
 	} else {
 
@@ -1417,14 +1417,9 @@ sub user_transactions {
 	if($api =~ /count/o) { return scalar @$trans; }
 	if($api !~ /fleshed/o) { return $trans; }
 
-	#warn "API: $api\n";
-
 	my @resp;
 	for my $t (@$trans) {
 			
-		#warn $t->id . "\n";
-
-
 		if( $t->xact_type ne 'circulation' ) {
 			push @resp, {transaction => $t};
 			next;
