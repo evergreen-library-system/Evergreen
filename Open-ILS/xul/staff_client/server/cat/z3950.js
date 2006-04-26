@@ -223,9 +223,9 @@ cat.z3950.prototype = {
 			obj.controller.view.database.disabled = true;
 			obj.controller.view.port.value = '210';
 			obj.controller.view.port.disabled = true;
-			obj.controller.view.username.value = '****';
+			obj.controller.view.username.value = '';
 			obj.controller.view.username.disabled = false;
-			obj.controller.view.password.value = '****';
+			obj.controller.view.password.value = '';
 			obj.controller.view.password.disabled = false;
 
 		} catch(E) {
@@ -269,7 +269,7 @@ cat.z3950.prototype = {
 			var params;
 			obj.network.simple_request(
 				'FM_BLOB_RETRIEVE_VIA_Z3950_TCN',
-				[ obj.session, search, 'oclc' ],
+				[ obj.session, search, 'oclc', obj.controller.view.username.value, obj.controller.view.password.value ],
 				function(req) {
 					obj.handle_results(req.getResultObject())
 					obj.restore_enable_search_buttons();
