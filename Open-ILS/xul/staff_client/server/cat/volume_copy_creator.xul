@@ -80,6 +80,16 @@
 									return [ i + ' -> ' + o[i], o[i] ];
 								}
 							}
+						).sort(
+							function(b,a) {
+								if (a == 88 && b == 92) return -1;
+								if (a == 92 && b == 88) return 1;
+								if (a == 88) return -1;
+								if (a == 92) return -1;
+								if (a < b) return -1;
+								if (a > b) return 1;
+								return 0;
+							}
 						)
 					); hbox.appendChild(ml);
 					var btn = document.createElement('button');
@@ -376,7 +386,7 @@
 		<hbox style="border-bottom: solid black thin">
 			<hbox id="marc_cn"/>
 			<spacer flex="1" />
-			<button id="Create" label="Create" disabled="true" oncommand="g.stash_and_close();"/>
+			<button id="Create" accesskey="C" label="Create" disabled="true" oncommand="g.stash_and_close();"/>
 		</hbox>
 		<grid flex="1">
 			<columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
