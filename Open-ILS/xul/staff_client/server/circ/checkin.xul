@@ -46,7 +46,6 @@
 				JSAN.use('circ.checkin'); g.checkin = new circ.checkin();
 				g.checkin.init( 
 					{ 
-						'session' : g.cgi.param('session') 
 					} 
 				);
 	

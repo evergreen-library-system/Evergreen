@@ -47,7 +47,6 @@
 						name = window.xulG.name || window.xulG.tab_name || null;
 					}
 				}
-				var session = g.cgi.param('session');
 				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
 
@@ -59,7 +58,6 @@
 				g.browser.init( 
 					{ 
 						'url' : url,
-						'session' : session,
 						'push_xulG' : push_xulG,
 					} 
 				);

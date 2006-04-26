@@ -43,13 +43,11 @@
 				g.error.sdump('D_TRACE','my_init() for cat_z3950.xul');
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
 
 				JSAN.use('cat.z3950'); g.z3950 = new cat.z3950();
 
 				g.z3950.init( 
 					{ 
-						'session' : session,
 					} 
 				);
 

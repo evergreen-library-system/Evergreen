@@ -40,16 +40,6 @@
 				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
-				if (!session) { 
-					g.error.sdump('D_ERROR','session = ' + session + '\n'
-						+ 'g.cgi._keys = ' + g.cgi._keys + '\n'
-						+ 'g.cgi.param("session") = ' + g.cgi.param('session') + '\n'
-						+ 'location = ' + location + '\n'
-						+ 'location.href = ' + location.href + '\n'
-					);
-					alert('pause.  session is ' + session ); 
-				}
 
 				var tb = document.getElementById('barcode_tb');
 				tb.addEventListener(
@@ -87,7 +77,7 @@
 
 				var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( 
 					urls.XUL_ADV_PATRON_EDIT
-					+ '?ses=' + window.escape( g.cgi.param('session') )
+					+ '?ses=' + window.escape( ses() )
 					+ '&adv=1'
 					+ '&barcode=' + window.escape( barcode )
 				);

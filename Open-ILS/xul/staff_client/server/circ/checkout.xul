@@ -47,7 +47,6 @@
 				g.checkout.init( 
 					{ 
 						'patron_id' : g.cgi.param('patron_id'), 
-						'session' : g.cgi.param('session') 
 					} 
 				);
 	

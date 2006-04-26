@@ -41,7 +41,7 @@
 
 			if (g.patron_id) {
 				JSAN.use('patron.util'); 
-				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
+				g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
 				
 				$('patron_name').setAttribute('value', g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
 			}
@@ -49,7 +49,7 @@
 		}
 
 		function retrieve_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,g.mbts_id],
+			g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -69,7 +69,7 @@
 
 		function retrieve_circ() {
 			JSAN.use('util.widgets');
-			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ g.session, g.mbts_id ],
+			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
 				function (req) {
 					var r_circ = req.getResultObject();
 					if (instanceOf(r_circ,circ)) {
@@ -144,7 +144,7 @@
 		}
 
 		function retrieve_mb() {
-			var mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ g.session, g.mbts_id ] );
+			var mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ] );
 
 			var mb_funcs = [];
 
@@ -163,7 +163,7 @@
 		}
 
 		function retrieve_mp() {
-			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID', [ g.session, g.mbts_id ]);
+			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ]);
 
 			var mp_funcs = [];
 
@@ -201,7 +201,6 @@
 				g.cgi = new CGI();
 
 				g.mbts_id = g.cgi.param('mbts_id');
-				g.session = g.cgi.param('session');
 
 				retrieve_patron();
 
@@ -239,7 +238,7 @@
 			var r = g.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
 			if (r == 0) {
 				for (var i = 0; i < g.bill_list_selection.length; i++) {
-					var robj = g.network.simple_request('FM_MB_VOID',[g.session,g.bill_list_selection[i]]);
+					var robj = g.network.simple_request('FM_MB_VOID',[ses(),g.bill_list_selection[i]]);
 					if (robj.ilsevent) {
 						switch(robj.ilsevent) {
 							case -1 : g.error.standard_network_error_alert('Void of Bill #' + g.bill_list_selection[i] + ' failed.'); break;

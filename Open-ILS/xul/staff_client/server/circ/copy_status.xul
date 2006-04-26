@@ -46,7 +46,6 @@
 				JSAN.use('circ.copy_status'); g.copy_status = new circ.copy_status();
 				g.copy_status.init( 
 					{ 
-						'session' : g.cgi.param('session') 
 					} 
 				);
 

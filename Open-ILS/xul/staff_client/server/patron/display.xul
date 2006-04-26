@@ -47,7 +47,6 @@
 
 				JSAN.use('patron.display'); g.patron = new patron.display();
 				g.patron.init( { 
-					'session' : g.cgi.param('session') , 
 					'barcode' : g.cgi.param('barcode') ,
 					'id' : g.cgi.param('id') ,
 					'query' : g.cgi.param('query'),

@@ -54,8 +54,7 @@
 				mw.G = {};
 				mw.G.main_test_variable = 'Hello World';
 				g.cgi = new CGI();
-				g.session = g.cgi.param('session');
-				mw.G.auth_ses = [ g.session ];
+				mw.G.auth_ses = [ ses() ];
 				mw.sdump = function(a,b) { g.error.sdump(a,b); }
 
 				find_this_id = g.cgi.param('docid');
@@ -335,7 +334,7 @@
 					api.PERM_MULTI_ORG_CHECK.app,
 					api.PERM_MULTI_ORG_CHECK.method,
 					[ 
-						g.session, 
+						ses(), 
 						g.data.list.au[0].id(), 
 						util.functional.map_list(
 							list,
@@ -364,8 +363,7 @@
 			g.data.stash('temp');
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
-					+'?session='+window.escape(g.session)
-					+'&copy_ids='+window.escape(js2JSON(list))
+					+'?copy_ids='+window.escape(js2JSON(list))
 					+'&docid='+window.escape(find_this_id)
 					+'&edit='+edit
 					+'&handle_update=1',
@@ -397,7 +395,7 @@
 					api.PERM_MULTI_ORG_CHECK.app,
 					api.PERM_MULTI_ORG_CHECK.method,
 					[ 
-						g.session, 
+						ses(), 
 						g.data.list.au[0].id(), 
 						util.functional.map_list(
 							list,
@@ -428,8 +426,7 @@
 			g.data.stash('temp');
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR)
-					+'?session='+window.escape(g.session)
-					+'&ou_id_volume_id_callnumber_tuples=' + window.escape( js2JSON(list) ),
+					+'?ou_id_volume_id_callnumber_tuples=' + window.escape( js2JSON(list) ),
 				title,
 				'chrome,modal,resizable'
 			);
@@ -461,7 +458,7 @@
 				var r = g.network.request(
 					api.FM_ACN_TREE_UPDATE.app,
 					api.FM_ACN_TREE_UPDATE.method,
-					[ g.session, volumes ]
+					[ ses(), volumes ]
 				);
 				/* FIXME -- revisit the return value here */
 			} catch(E) {
@@ -492,7 +489,7 @@
 					api.PERM_MULTI_ORG_CHECK.app,
 					api.PERM_MULTI_ORG_CHECK.method,
 					[ 
-						g.session, 
+						ses(), 
 						g.data.list.au[0].id(), 
 						list,
 						[ 'CREATE_VOLUME', 'CREATE_COPY' ]
@@ -509,8 +506,7 @@
 			JSAN.use('util.window'); var win = new util.window();
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
-					+'?session='+window.escape(g.session)
-					+'&doc_id=' + window.escape(find_this_id)
+					+'?doc_id=' + window.escape(find_this_id)
 					+'&ou_ids=' + window.escape( js2JSON(list) ),
 				title,
 				'chrome,modal,resizable'
@@ -550,7 +546,7 @@
 					api.PERM_MULTI_ORG_CHECK.app,
 					api.PERM_MULTI_ORG_CHECK.method,
 					[ 
-						g.session, 
+						ses(), 
 						g.data.list.au[0].id(), 
 						list,
 						[ 'CREATE_COPY' ]
@@ -567,8 +563,7 @@
 			JSAN.use('util.window'); var win = new util.window();
 			var w = win.open(
 				window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
-					+'?session='+window.escape(g.session)
-					+'&doc_id=' + window.escape(find_this_id)
+					+'?doc_id=' + window.escape(find_this_id)
 					+'&ou_ids=' + window.escape( js2JSON(list) )
 					+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
 				title,
@@ -620,8 +615,7 @@
 			JSAN.use('util.window'); var win = new util.window();
 			win.open( 
 				xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
-				+ '?session=' + window.escape(g.session)
-				+ '&copy_ids=' + js2JSON( list ),
+				+ '?copy_ids=' + js2JSON( list ),
 				'sel_bucket_win' + win.window_name_increment(),
 				'chrome,resizable,modal,center'
 			);

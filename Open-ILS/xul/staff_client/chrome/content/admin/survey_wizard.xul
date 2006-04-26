@@ -48,8 +48,6 @@
 
 				g.cgi = new CGI();
 
-				g.session = g.cgi.param('session'); 
-
 				JSAN.use('OpenILS.data'); g.OpenILS = {};
 				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
 

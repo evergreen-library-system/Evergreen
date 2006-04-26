@@ -42,14 +42,12 @@
 				g.error.sdump('D_TRACE','my_init() for print_list.xul');
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
 
 				JSAN.use('circ.print_list_template_editor');
 				g.editor = new circ.print_list_template_editor();
 
 				g.editor.init( 
 					{ 
-						'session' : session,
 					} 
 				);
 

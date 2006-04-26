@@ -38,7 +38,7 @@
 		function $(id) { return document.getElementById(id); }
 
 		function retrieve_mbts() {
-			g.network.simple_request('FM_MBTS_RETRIEVE',[g.session,g.mbts_id],
+			g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),g.mbts_id],
 				function(req) {
 					try {
 						g.mbts = req.getResultObject();
@@ -59,7 +59,7 @@
 
 		function retrieve_circ() {
 			JSAN.use('util.widgets');
-			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ g.session, g.mbts_id ],
+			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
 				function (req) {
 					var r_circ = req.getResultObject();
 					if (instanceOf(r_circ,circ)) {
@@ -106,7 +106,7 @@
 
 			if (g.patron_id) {
 				JSAN.use('patron.util'); 
-				g.au_obj = patron.util.retrieve_fleshed_au_via_id( g.session, g.patron_id );
+				g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
 				
 				$('patron_name').setAttribute('value', g.au_obj.family_name() + ', ' + g.au_obj.first_given_name() + ' : ' + g.au_obj.card().barcode() );
 			}
@@ -128,7 +128,6 @@
 				JSAN.use('util.money');
 
 				g.cgi = new CGI();
-				g.session = g.cgi.param('session');
 
 				retrieve_patron();
 
@@ -165,7 +164,7 @@
 						xact_id = g.network.request(
 							api.FM_MG_CREATE.app,
 							api.FM_MG_CREATE.method,
-							[ g.session, grocery ]
+							[ ses(), grocery ]
 						);
 				}
 				if (xact_id) {
@@ -178,7 +177,7 @@
 					var mb_id = g.network.request(
 						api.FM_MB_CREATE.app,
 						api.FM_MB_CREATE.method,
-						[ g.session, billing ]
+						[ ses(), billing ]
 					);
 					if (mb_id) {
 					} else {

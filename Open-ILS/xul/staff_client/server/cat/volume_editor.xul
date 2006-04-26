@@ -47,8 +47,6 @@
 
 				g.cgi = new CGI();
 
-				g.session = g.cgi.param('session') || g.cgi.param('ses');
-
 				var tuples = [];
 				if (g.cgi.param('ou_id_volume_id_callnumber_tuples')) 
 					tuples = JSON2js( g.cgi.param('ou_id_volume_id_callnumber_tuples') );

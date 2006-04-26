@@ -58,7 +58,7 @@
 				mw.G = {};
 				mw.G.main_test_variable = 'Hello World';
 				g.cgi = new CGI();
-				mw.G.auth_ses = [ g.cgi.param('session') ];
+				mw.G.auth_ses = [ ses() ];
 				mw.sdump = function(a,b) { g.error.sdump(a,b); }
 
 				find_this_id = g.cgi.param('docid');

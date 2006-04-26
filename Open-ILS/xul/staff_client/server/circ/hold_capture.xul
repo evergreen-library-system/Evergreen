@@ -46,7 +46,6 @@
 				JSAN.use('circ.hold_capture'); g.hold_capture = new circ.hold_capture();
 				g.hold_capture.init( 
 					{ 
-						'session' : g.cgi.param('session') 
 					} 
 				);
 	

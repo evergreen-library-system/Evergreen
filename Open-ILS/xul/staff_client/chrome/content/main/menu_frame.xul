@@ -56,8 +56,6 @@
 
 				JSAN.use('main.menu'); g.menu = new main.menu();
 				g.menu.init( { 
-					/* 'session' : g.cgi.param('session'), */
-					'authtime' : g.cgi.param('authtime'),
 					'server' : g.cgi.param('server'),
 				} );
 

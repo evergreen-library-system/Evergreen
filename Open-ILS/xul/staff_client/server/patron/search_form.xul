@@ -42,7 +42,6 @@
 				g.error.sdump('D_TRACE','my_init() for patron_search_form.xul');
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
 				var keys = g.cgi.keys();
 				var query = {};
 				for (var i = 0; i < keys.length; i++) {
@@ -55,7 +54,7 @@
 				}
 
 				JSAN.use('patron.search_form'); g.search_form = new patron.search_form();
-				g.search_form.init( { 'session' : session, 'query' : query } );
+				g.search_form.init( { 'query' : query } );
 
 				if (g.cgi.param('doit')) {
 					g.search_form.submit();

@@ -42,7 +42,6 @@
 				g.error.sdump('D_TRACE','my_init() for patron_search_result.xul');
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
 				var keys = g.cgi.keys();
 				var query = {};
 				for (var i = 0; i < keys.length; i++) {
@@ -50,7 +49,7 @@
 				}
 
 				JSAN.use('patron.search_result'); g.search_result = new patron.search_result();
-				g.search_result.init( { 'session' : session, 'query' : query } );
+				g.search_result.init( { 'query' : query } );
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

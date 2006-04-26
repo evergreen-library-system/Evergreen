@@ -49,7 +49,6 @@
 
 				g.cgi = new CGI();
 
-				g.session = g.cgi.param('session') || g.cgi.param('ses');
 				g.doc_id = g.cgi.param('doc_id');
 				g.copy_shortcut = g.cgi.param('copy_shortcut');
 				g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + g.cgi.param('ou_ids'));
@@ -341,8 +340,7 @@
 				JSAN.use('util.window'); var win = new util.window();
 				var w = win.open(
 					urls.XUL_COPY_EDITOR
-						+'?session='+window.escape(g.session)
-						+'&copies='+window.escape(js2JSON(copies))
+						+'?copies='+window.escape(js2JSON(copies))
 						+'&callnumbers='+window.escape(js2JSON(volume_labels))
 						+'&edit=1',
 					title,
@@ -364,7 +362,7 @@
 					var r = g.network.request(
 						api.FM_ACN_TREE_UPDATE.app,
 						api.FM_ACN_TREE_UPDATE.method,
-						[ g.session, volumes ]
+						[ ses(), volumes ]
 					);
 					/* FIXME -- revisit the return value here */
 				} catch(E) {

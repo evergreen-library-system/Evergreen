@@ -31,7 +31,7 @@
 	<script>
 	<![CDATA[
 
-		var session; var authtime; var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame;
+		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame;
 
 		function my_init() {
 			try {
@@ -48,7 +48,6 @@
 				JSAN.use('util.network'); g.network = new util.network();
 
 				g.cgi = new CGI();
-				try { session = g.cgi.param('session') || xulG.session; } catch(E) { g.error.sdump('D_ERROR',E); }
 				try { authtime = g.cgi.param('authtime') || xulG.authtime; } catch(E) { g.error.sdump('D_ERROR',E); }
 				try { docid = g.cgi.param('docid') || xulG.docid; } catch(E) { g.error.sdump('D_ERROR',E); }
 				try { opac_url = g.cgi.param('opac_url') || xulG.opac_url; } catch(E) { g.error.sdump('D_ERROR',E); }
@@ -115,17 +114,15 @@
 		}
 
 		function set_copy_browser() {
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?session=' + window.escape(session) 
-				+ '&docid=' + window.escape(docid),{},xulG);
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_opac() {
 			try {
-				dump('set_opac: session = ' + session + ' authtime = ' + authtime + '\n');
 				var content_params = { 
 					'show_nav_buttons' : true,
 					'show_print_button' : true,
-					'passthru_content_params' : { 'authtoken' : session, 'authtime' : authtime },
+					'passthru_content_params' : { 'authtoken' : ses(), 'authtime' : ses('authtime') },
 					'on_url_load' : function(f) {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var win;
@@ -165,7 +162,7 @@
 		function bib_in_new_tab() {
 			try {
 				var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.wrappedJSObject.location.href;
-				var content_params = { 'session' : session, 'authtime' : authtime, 'opac_url' : url };
+				var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : url };
 				xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 			} catch(E) {
 				g.error.sdump('D_ERROR',E);

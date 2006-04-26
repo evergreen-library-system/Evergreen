@@ -44,7 +44,6 @@
 				}
 
 				g.cgi = new CGI();
-				var session = g.cgi.param('session');
 
 				JSAN.use('circ.offline'); g.offline = new circ.offline();
 

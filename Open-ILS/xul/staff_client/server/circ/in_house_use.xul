@@ -45,7 +45,6 @@
 				JSAN.use('circ.in_house_use'); g.in_house_use = new circ.in_house_use();
 				g.in_house_use.init( 
 					{ 
-						'session' : g.cgi.param('session') 
 					} 
 				);
 	

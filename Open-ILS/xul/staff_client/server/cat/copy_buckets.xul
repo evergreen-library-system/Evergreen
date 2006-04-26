@@ -46,7 +46,6 @@
 				JSAN.use('cat.copy_buckets'); g.copy_buckets = new cat.copy_buckets();
 				g.copy_buckets.init( 
 					{ 
-						'session' : g.cgi.param('session'),
 						'copy_ids' : JSON2js( g.cgi.param('copy_ids') ),
 					} 
 				);
