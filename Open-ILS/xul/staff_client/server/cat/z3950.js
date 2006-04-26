@@ -374,9 +374,27 @@ cat.z3950.prototype = {
 				'save' : {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
-						var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), my_marcxml ]);
-						if (typeof r.ilsevent != 'undefined') {
-							obj.error.standard_unexpected_error_alert('Record not likely imported.',r);
+						try {
+							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), my_marcxml ]);
+							if (typeof r.ilsevent != 'undefined') {
+								switch(r.ilsevent) {
+									case 1704 /* TCN_EXISTS */ :
+										var msg = 'A record with with TCN ' + r.payload.tcn + 'already exists.  FIXME: add record summary here';
+										var title = 'Import Collision';
+										var btn1 = 'Overlay';
+										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
+										var btn3 = 'Cancel Import';
+										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,'Check here to confirm this action');
+										alert('option ' + p + 'chosen.  FIXME: add behavior here');
+									break;
+									default:
+										throw(r);
+									break;
+							} else {
+								alert('Record successfully imported.');
+							}
+						} catch(E) {
+							obj.error.standard_unexpected_error_alert('Record not likely imported.',E);
 						}
 					}
 				}

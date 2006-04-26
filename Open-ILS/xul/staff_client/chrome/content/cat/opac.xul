@@ -98,9 +98,15 @@
 					'save' : {
 						'label' : 'Save Record',
 						'func' : function (new_marcxml) {
-							var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
-							if (typeof r.ilsevent != 'undefined') {
-								g.error.standard_unexpected_error_alert('Record not likely updated.',r);
+							try {
+								var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
+								if (typeof r.ilsevent != 'undefined') {
+									throw(r);
+								} else {
+									alert('Record successfully saved.');
+								}
+							} catch(E) {
+									g.error.standard_unexpected_error_alert('Record not likely updated.',E);
 							}
 						}
 					}
