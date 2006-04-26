@@ -36,11 +36,7 @@ sub retrieve_marc_template {
 	my( $self, $client, $type ) = @_;
 
 	return $marctemplates{$type} if defined($marctemplates{$type});
-
-	my $xml = _load_marc_template($type);
-
-	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $xml ); 
-	$marctemplates{$type} = $utils->nodeset2tree( $nodes->nodeset );
+	$marctemplates{$type} = _load_marc_template($type);
 	return $marctemplates{$type};
 }
 
@@ -53,11 +49,14 @@ sub _load_marc_template {
 		"apps", "open-ils.cat","app_settings", "marctemplates", $type );
 	warn "Opening template file $template\n";
 
-	open( F, $template );
+	open( F, $template ) or 
+		throw OpenSRF::EX::ERROR ("Unable to open MARC template file: $template : $@");
+
 	my @xml = <F>;
 	close(F);
-	return join('', @xml);
+	my $xml = join('', @xml);
 
+	return XML::LibXML->new->parse_string($xml)->documentElement->toString;
 }
 
 
