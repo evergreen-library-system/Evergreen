@@ -1185,6 +1185,11 @@ sub checkin_do_receive {
 
 		} else {
 
+			# Transit has been closed, now let's see if the copy's original
+			# status is something the staff should be warned of
+			my $e = _checkin_check_copy_status($ctx);
+			$evt = $e if $e;
+
 			if($holdtrans) {
 
 				# copy was received as a hold transit.  Copy is at target lib
@@ -1432,6 +1437,7 @@ sub _checkin_check_copy_status {
 	return undef 
 		if(	$status == $U->copy_status_from_name('available')->id		||
 				$status == $U->copy_status_from_name('checked out')->id	||
+				$status == $U->copy_status_from_name('in process')->id	||
 				$status == $U->copy_status_from_name('in transit')->id	||
 				$status == $U->copy_status_from_name('reshelving')->id );
 

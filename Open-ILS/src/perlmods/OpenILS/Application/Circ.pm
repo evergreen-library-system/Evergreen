@@ -22,6 +22,7 @@ use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Utils::Fieldmapper;
 #my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -210,6 +211,8 @@ sub set_circ_lost {
 		return $evt if $evt;
 		$circ->stop_fines("CLAIMSRETURNED");
 
+		$logger->activity("user ".$user->id." marking circ".  $circ->id. " as claims returned");
+
 		# allow the caller to backdate the circulation and void any fines
 		# that occurred after the backdate
 		if($backdate) {
@@ -229,15 +232,53 @@ sub set_circ_lost {
 
 sub _set_circ_lost {
 	my( $copy, $circ, $reqr, $session ) = @_;
+
+	my $evt = $U->check_perms($reqr->id, $circ->circ_lib, 'SET_CIRC_LOST');
+	return $evt if $evt;
+
+	$logger->activity("user ".$reqr->id." marking copy ".$copy->id.
+		" lost  for circ ".  $circ->id. " and checking for necessary charges");
+
 	my $newstat = $U->copy_status_from_name('lost');
 	if( $copy->status ne $newstat->id ) {
+
 		$copy->status($newstat);
-		$U->update_copy(copy => $copy, editor => $user->id, session => $session);
+		$U->update_copy(
+			copy		=> $copy, 
+			editor	=> $reqr->id, 
+			session	=> $session);
 	}
 
-	$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_LOST');
-	return $evt if $evt;
+	# if the copy has a price defined and/or a processing fee, bill the patron
+	my $amount = $copy->price || 0;
+	my $owner = $U->fetch_copy_owner($copy->id);
+	$logger->info("circ fetching org settings for $owner to determine processing fee");
+	my $settings = $U->simplereq(
+		'open-ils.actor',
+		'open-ils.actor.org_unit.settings.retrieve', $owner );
+	my $f = $settings->{'circ.processing_fee'} || 0;
+	$amount += $f;
+	
+	if( $amount > 0 ) {
+
+		$logger->activity("The system is charging $amount ".
+			"for lost materials on circulation ".$circ->id);
+
+		my $bill = Fieldmapper::money::billing->new;
+
+		$bill->xact( $circ->id );
+		$bill->amount( $amount );
+		$bill->billing_type('Lost materials'); # - these strings should be configurable some day
+		$bill->note('SYSTEM GENERATED');
+
+		my $id = $session->request(
+			'open-ils.storage.direct.money.billing.create', $bill )->gather(1);
+
+		return $U->DB_UPDATE_FAILED($bill) unless defined $id;
+	}
+
 	$circ->stop_fines("LOST");		
+	return undef;
 }
 
 
@@ -479,6 +520,7 @@ sub create_copy_note {
 	return $evt if $evt;
 
 	$note->create_date('now');
+	$note->creator($requestor->id);
 	$note->pub( ($note->pub) ? 't' : 'f' );
 
 	my $id = $U->storagereq(
