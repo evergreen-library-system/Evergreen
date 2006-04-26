@@ -293,6 +293,15 @@
 		<desc> The requested copy has an alert message attached </desc>
 	</event>
 
+	<event code='7011' textcode='COPY_STATUS_LOST'>
+		<desc>Copy has is marked as lost</desc>
+	</event>
+
+	<event code='7012' textcode='COPY_STATUS_MISSING'>
+		<desc>Copy has is marked as missing</desc>
+	</event>
+
+
 	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>
 		<desc> An offline session for this location is currently processing </desc>
 	</event>
