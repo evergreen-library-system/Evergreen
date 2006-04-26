@@ -50,7 +50,7 @@ function my_init() {
 		if (g.cgi.param('callnumbers')) g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
 
 		/******************************************************************************************************/
-		/* Is the interface an editor or a viewer, single or multi copy? */
+		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
 
 		if (g.cgi.param('edit') == '1') { 
 			g.edit = true;
@@ -66,7 +66,18 @@ function my_init() {
 
 		if (g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
+		} else {
+			g.right_pane_field_names.push(
+				[
+					"Status",
+					{ 
+						render: 'fm.status().name();', 
+						input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
+					}
+				]
+			);
 		}
+
 		if (g.copies.length != 1) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 		}
@@ -430,15 +441,6 @@ g.right_pane_field_names = [
 		{ 
 			render: 'fm.ref() ? "Yes" : "No";', 
 			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("ref",ev.target.value); }, false);',
-		}
-	],
-	[
-		"Status",
-		{ 
-			render: 'fm.status().name();', 
-			input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
-
-
 		}
 	],
 ];

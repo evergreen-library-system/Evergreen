@@ -375,7 +375,7 @@ cat.z3950.prototype = {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
 						try {
-							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), my_marcxml ]);
+							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml ]);
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
@@ -385,11 +385,37 @@ cat.z3950.prototype = {
 										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
 										var btn3 = 'Cancel Import';
 										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,'Check here to confirm this action');
-										alert('option ' + p + 'chosen.  FIXME: add behavior here');
+										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+										switch(p) {
+											case 1:
+												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml ]);
+												if (typeof r3.ilsevent != 'undefined') {
+													throw(r3);
+												} else {
+													alert('Record successfully overlayed.');
+												}
+											break;
+											case 2:
+												var r2 = obj.network.request(
+													api.MARC_XML_RECORD_IMPORT.app,
+													api.MARC_XML_RECORD_IMPORT.method + '.override',
+													[ ses(), new_marcxml ]
+												);
+												if (typeof r2.ilsevent != 'undefined') {
+													throw(r2);
+												} else {
+													alert('Record successfully imported.');
+												}
+											break;
+											default:
+												alert('Record import cancelled');
+											break;
+										}
 									break;
 									default:
 										throw(r);
 									break;
+								}
 							} else {
 								alert('Record successfully imported.');
 							}
