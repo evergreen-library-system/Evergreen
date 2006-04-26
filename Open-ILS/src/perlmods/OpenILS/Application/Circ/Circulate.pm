@@ -37,7 +37,6 @@ my %RECORD_FROM_COPY_CACHE;
 # for security, this is a process-defined and not
 # a client-defined variable
 my $__isrenewal	= 0;
-my $__islost		= 0;
 
 # ------------------------------------------------------------------------------
 # Load the circ script from the config
@@ -450,6 +449,7 @@ sub override_events {
 		my $tc = $e->{textcode};
 		next if $tc eq 'SUCCESS';
 		my $ov = "$tc.override";
+		$logger->info("attempting to override event $ov");
 		my $evt = $U->check_perms( $requestor->id, $org, $ov );
 		return $evt if $evt;
 	}
@@ -1127,62 +1127,49 @@ sub checkin_do_receive {
 	my $session		= $ctx->{session};
 	my $requestor	= $ctx->{requestor};
 	my $change		= 0; # did we actually do anything?
-	my $ischecked	= 0;
+	my $circ;
 
 	my @eventlist;
 
+	# does the copy have an attached alert message?
 	my $ae = _check_copy_alert($copy);
 	push(@eventlist, $ae) if $ae;
 
-	# if the copy is an a status we can't automatically
-	# resolve, handle the appropriate event
-	push( @eventlist, $evt ) if ($evt = _checkin_check_copy_status($copy));
+	# is the copy is an a status we can't automatically resolve?
+	$evt = _checkin_check_copy_status($ctx);
+	push( @eventlist, $evt ) if $evt;
 
-	if( $evt = _handle_claims_returned($ctx) ) {
-		if( $U->event_equals($evt, 'SUCCESS') ) {
-			$ischecked = 1;
-			$change = 1;
+
+	# - see if the copy has an open circ attached
+	($ctx->{circ}, $evt)	= $U->fetch_open_circulation($copy->id);
+	return $evt if ($evt and $__isrenewal); # renewals require a circulation
+	$evt = undef;
+	$circ = $ctx->{circ};
+
+	# if the circ is marked as 'claims returned', add the event to the list
+	push( @eventlist, 'CIRC_CLAIMS_RETURNED' ) 
+		if ($circ and $circ->stop_fines eq 'CLAIMSRETURNED');
+
+	# override or die
+	if(@eventlist) {
+		if($ctx->{override}) {
+			$evt = override_events($requestor, $requestor->ws_ou, \@eventlist );
+			return $evt if $evt;
 		} else {
-			push( @eventlist, $evt );
-		}
-	}
-
-	$logger->debug("checkin collected ".scalar(@eventlist) ." overridable events");
-
-	if( @eventlist ) {
-
-		my @retevents;
-
-		if( $ctx->{override} ) {
-			for( @eventlist ) {
-				my $evtname = $_->{textcode};
-				$logger->info("checkin attempting to override event $evtname");
-				push( @retevents, $evt ) if ($evt = $U->check_perms( 
-					$requestor->id, $copy->circ_lib, "$evtname.override"));
-			}
-			return \@retevents if @retevents;
-
-		} else {
-			$logger->info("checkin returning non-success events");
 			return \@eventlist;
 		}
 	}
 
-	($ctx->{circ}, $evt)	= $U->fetch_open_circulation($copy->id);
-	return $evt if ($evt and $__isrenewal); # renewals require a circulation
-
-	$evt = undef;
 	($ctx->{transit})	= $U->fetch_open_transit_by_copy($copy->id);
 
-
-	if( !$ischecked && $ctx->{circ} ) {
+	if( $ctx->{circ} ) {
 
 		# There is an open circ on this item, close it out.
 		$change	= 1;
 		$evt		= _checkin_handle_circ($ctx);
 		return $evt if $evt;
 
-	} elsif( !$ischecked && $ctx->{transit} ) {
+	} elsif( $ctx->{transit} ) {
 
 		# is this item currently in transit?
 		$change			= 1;
@@ -1220,7 +1207,6 @@ sub checkin_do_receive {
 		$U->commit_db_session($session);
 		return OpenILS::Event->new('SUCCESS');
 	}
-
 
 	# Now, let's see if this copy is needed for a hold
 	my ($hold) = $holdcode->find_local_hold( $session, $copy, $requestor ); 
@@ -1269,11 +1255,20 @@ sub checkin_do_receive {
 		}
 	}
 
+
+	# ------------------------------------------------------------------
+	# if the copy is not in a state that should persist,
+	# set the copy to reshelving if it's not already there
+	# ------------------------------------------------------------------
+	my ($c, $e) = _reshelve_copy($ctx);
+	return $e if $e;
+	$change = $c unless $change;
+
 	if(!$change) {
 
 		$evt = OpenILS::Event->new('NO_CHANGE');
 		($ctx->{hold}) = $U->fetch_open_hold_by_copy($copy->id) 
-			if ($copy->status == $U->copy_status_from_name('on holds shelf')->id);
+			if( $copy->status == $U->copy_status_from_name('on holds shelf')->id );
 
 	} else {
 
@@ -1285,6 +1280,37 @@ sub checkin_do_receive {
 
 	return _checkin_flesh_event($ctx, $evt);
 }
+
+sub _reshelve_copy {
+
+	my $ctx = shift;
+	my $copy		= $ctx->{copy};
+	my $reqr		= $ctx->{requestor};
+	my $session	= $ctx->{session};
+
+	my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
+
+	if($stat != $U->copy_status_from_name('on holds shelf')->id and 
+		$stat != $U->copy_status_from_name('available')->id and 
+		$stat != $U->copy_status_from_name('cataloging')->id and 
+		$stat != $U->copy_status_from_name('in transit')->id and 
+		$stat != $U->copy_status_from_name('reshelving')->id ) {
+
+		$copy->status( $U->copy_status_from_name('reshelving')->id );
+
+		my $evt = $U->update_copy( 
+			copy		=> $copy,
+			editor	=> $reqr->id,
+			session	=> $session,
+			);
+
+		return( 1, $evt );
+	}
+	return undef;
+}
+
+
+
 
 # returns undef if there are no 'open' claims-returned circs attached
 # to the given copy.  if there is an open claims-returned circ, 
@@ -1330,6 +1356,32 @@ sub _fetch_open_claims_returned {
 	return undef;
 }
 
+# - if the copy is has the 'in process' status, set it to reshelving
+#sub _check_in_process {
+	#my $ctx = shift;
+#
+	#my $copy = $ctx->{copy};
+	#my $reqr	= $ctx->{requestor};
+	#my $ses	= $ctx->{session};
+##
+	#my $stat = $U->copy_status_from_name('in process');
+	#my $rstat = $U->copy_status_from_name('reshelving');
+#
+	#if( $stat->id == $copy->status->id ) {
+		#$logger->info("marking 'in-process' copy ".$copy->id." as 'reshelving'");
+		#$copy->status( $rstat->id );
+		#my $evt = $U->update_copy( 
+			#copy		=> $copy,
+			#editor	=> $reqr->id,
+			#session	=> $ses
+			#);
+		#return $evt if $evt;
+#
+		#$copy->status( $rstat ); # - reflesh the copy status
+	#}
+	#return undef;
+#}
+
 
 # returns (ITEM_NOT_CATALOGED, change_occurred, $error_event) where necessary
 sub _checkin_handle_precat {
@@ -1363,14 +1415,94 @@ sub _checkin_handle_precat {
 }
 
 
+# returns the appropriate event for the given copy status
+# if the copy is not in a 'special' status, undef is returned
 sub _checkin_check_copy_status {
-	my $copy = shift;
-	my $stat = (ref($copy->status)) ? $copy->status->id : $copy->status;
-	my $evt = OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
-	$logger->info("checking copy status id is ".$stat);
-	return $evt if ($stat == $U->copy_status_from_name('lost')->id);
-	return $evt if ($stat == $U->copy_status_from_name('missing')->id);
-	return undef;
+	my $ctx	= shift;
+	my $copy = $ctx->{copy};
+	my $reqr	= $ctx->{requestor};
+	my $ses	= $ctx->{session};
+
+	my $islost		= 0;
+	my $ismissing	= 0;
+	my $evt			= undef;
+
+	my $status = ref($copy->status) ? $copy->status->id : $copy->status;
+
+	return undef 
+		if(	$status == $U->copy_status_from_name('available')->id		||
+				$status == $U->copy_status_from_name('checked out')->id	||
+				$status == $U->copy_status_from_name('in transit')->id	||
+				$status == $U->copy_status_from_name('reshelving')->id );
+
+	return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy ) 
+		if( $status == $U->copy_status_from_name('lost')->id );
+
+	return OpenILS::Event->new('COPY_STATUS_MISSING', payload => $copy ) 
+		if( $status == $U->copy_status_from_name('missing')->id );
+
+	return OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
+
+
+
+#	my $rstat = $U->copy_status_from_name('reshelving');
+#	my $stat = (ref($copy->status)) ? $copy->status->id : $copy->status;
+#
+#	if( $stat == $U->copy_status_from_name('lost')->id ) {
+#		$islost = 1;
+#		$evt = OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy );
+#
+#	} elsif( $stat == $U->copy_status_from_name('missing')->id) {
+#		$ismissing = 1;
+#		$evt = OpenILS::Event->new('COPY_STATUS_MISSING', payload => $copy );
+#	}
+#
+#	return (undef,$evt) if(!$ctx->{override});
+#
+#	# we're are now going to attempt to override the failure 
+#	# and set the copy to reshelving
+#	my $e;
+#	my $copyid = $copy->id;
+#	my $userid = $reqr->id;
+#	if( $islost ) {
+#
+#		# - make sure we have permission
+#		$e = $U->check_perms( $reqr->id, 
+#			$copy->circ_lib, 'COPY_STATUS_LOST.override');
+#		return (undef,$e) if $e;
+#		$copy->status( $rstat->id );
+#
+#		# XXX if no fines are owed in the circ, close it out - will this happen later anyway?
+#		#my $circ = $U->storagereq(
+#		#	'open-ils.storage.direct.action.circulation
+#
+#		$logger->activity("user $userid overriding 'lost' copy status for copy $copyid");
+#
+#	} elsif( $ismissing ) {
+#
+#		# - make sure we have permission
+#		$e = $U->check_perms( $reqr->id, 
+#			$copy->circ_lib, 'COPY_STATUS_MISSING.override');
+#		return (undef,$e) if $e;
+#		$copy->status( $rstat->id );
+#		$logger->activity("user $userid overriding 'missing' copy status for copy $copyid");
+#	}
+#
+#	if( $islost or $ismissing ) {
+#
+#		# - update the copy with the new status
+#		$evt = $U->update_copy(
+#			copy		=> $copy,
+#			editor	=> $reqr->id,
+#			session	=> $ses
+#		);
+#		return (undef,$evt) if $evt;
+#		$copy->status( $rstat );
+#	}
+#
+#	return (1);
+
+
 }
 
 # Just gets the copy back home.  Returns undef on success, event on error
@@ -1480,35 +1612,44 @@ sub _checkin_handle_circ {
 
 	my $circ = $ctx->{circ};
 	my $copy = $ctx->{copy};
-	my $requestor = $ctx->{requestor};
-	my $session = $ctx->{session};
+	my $requestor	= $ctx->{requestor};
+	my $session		= $ctx->{session};
+	my $evt;
+	my $obt;
 
 	$logger->info("Handling circulation [".$circ->id."] found in checkin...");
 
-	$ctx->{longoverdue}		= 1 if ($circ->stop_fines =~ /longoverdue/io);
-	$ctx->{claimsreturned}	= 1 if ($circ->stop_fines =~ /claimsreturned/io);
+	#$ctx->{longoverdue}		= 1 if ($circ->stop_fines =~ /longoverdue/io);
+	#$ctx->{claimsreturned}	= 1 if ($circ->stop_fines =~ /claimsreturned/io);
 
-	my ( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
-	return $evt if $evt;
-
-	$circ->stop_fines('CHECKIN');
-	$circ->stop_fines('RENEW') if $__isrenewal;
-	$circ->stop_fines('LOST') if($__islost);
-	$circ->xact_finish('now') if($obt->balance_owed <= 0 and !$__islost);
-	$circ->stop_fines_time('now');
-	$circ->checkin_time('now');
-	$circ->checkin_staff($requestor->id);
-
+	# backdate the circ if necessary
 	if(my $backdate = $ctx->{backdate}) {
 		return $evt if ($evt = 
 			_checkin_handle_backdate($backdate, $circ, $requestor, $session, 1));
 	}
 
-	$logger->info("Checkin copy setting status to 'reshelving' and committing...");
-	$copy->status($U->copy_status_from_name('reshelving')->id);
-	$evt = $U->update_copy( session => $session, 
-		copy => $copy, editor => $requestor->id );
+
+	if(!$circ->stop_fines) {
+		$circ->stop_fines('CHECKIN');
+		$circ->stop_fines('RENEW') if $__isrenewal;
+		$circ->stop_fines_time('now');
+	}
+
+	# see if there are any fines owed on this circ.  if not, close it
+	( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
 	return $evt if $evt;
+	$circ->xact_finish('now') if( $obt->balance_owed <= 0 );
+
+	# Set the checkin vars since we have the item
+	$circ->checkin_time('now');
+	$circ->checkin_staff($requestor->id);
+	$circ->checkin_lib($requestor->ws_ou);
+
+
+#	$copy->status($U->copy_status_from_name('reshelving')->id);
+#	$evt = $U->update_copy( session => $session, 
+#		copy => $copy, editor => $requestor->id );
+#	return $evt if $evt;
 
 	$ctx->{session}->request(
 		'open-ils.storage.direct.action.circulation.update', $circ )->gather(1);
@@ -1516,9 +1657,24 @@ sub _checkin_handle_circ {
 	return undef;
 }
 
+sub _set_copy_reshelving {
+	my( $copy, $reqr, $session ) = @_;
+
+	$logger->info("Setting copy ".$copy->id." to reshelving");
+	$copy->status($U->copy_status_from_name('reshelving')->id);
+
+	my $evt = $U->update_copy( 
+		session	=> $session, 
+		copy		=> $copy, 
+		editor	=> $reqr
+		);
+	return $evt if $evt;
+}
+
 # returns event on error, undef on success
 # This voids all bills attached to the given circulation that occurred
 # after the backdate 
+# THIS DOES NOT CLOSE THE CIRC if there are no more fines on the item
 sub _checkin_handle_backdate {
 	my( $backdate, $circ, $requestor, $session, $closecirc ) = @_;
 
@@ -1538,15 +1694,14 @@ sub _checkin_handle_backdate {
 		}
 	}
 
-
 	# if the caller elects to attempt to close the circulation
 	# transaction, then it will be closed if there are not further
 	# charges on the transaction
-	if( $closecirc ) {
-		my ( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
-	   return $evt if $evt;
-		$circ->xact_finish($backdate) if $obt->balance_owed <= 0;
-	}
+	#if( $closecirc ) {
+		#my ( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
+	   #return $evt if $evt;
+		#$circ->xact_finish($backdate) if $obt->balance_owed <= 0;
+	#}
 
 	return undef;
 }

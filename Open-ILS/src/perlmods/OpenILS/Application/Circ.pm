@@ -195,25 +195,13 @@ sub set_circ_lost {
 	my $islost		= $self->api_name =~ /lost/;
 	my $session		= $U->start_db_session(); 
 
-
-	# if setting to list, update the copy's statua
-	if( $islost ) {
-		my $newstat = $U->copy_status_from_name('lost') if $islost;
-		if( $copy->status ne $newstat->id ) {
-			$copy->status($newstat);
-			$U->update_copy(copy => $copy, editor => $user->id, session => $session);
-		}
-	}
-
 	# grab the circulation
 	( $circ ) = $U->fetch_open_circulation( $copy->id );
 	return 1 unless $circ;
 
-
 	if($islost) {
-		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_LOST');
+		$evt  = _set_circ_lost($copy, $circ, $user, $session) if $islost;
 		return $evt if $evt;
-		$circ->stop_fines("LOST");		
 	}
 
 	if($isclaims) {
@@ -237,6 +225,19 @@ sub set_circ_lost {
 	$U->commit_db_session($session);
 
 	return 1;
+}
+
+sub _set_circ_lost {
+	my( $copy, $circ, $reqr, $session ) = @_;
+	my $newstat = $U->copy_status_from_name('lost');
+	if( $copy->status ne $newstat->id ) {
+		$copy->status($newstat);
+		$U->update_copy(copy => $copy, editor => $user->id, session => $session);
+	}
+
+	$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_LOST');
+	return $evt if $evt;
+	$circ->stop_fines("LOST");		
 }
 
 
