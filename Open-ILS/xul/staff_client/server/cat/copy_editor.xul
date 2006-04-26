@@ -54,11 +54,12 @@
 			<vbox id="right_pane" style="overflow: scroll" flex="1"/> <!-- right pane -->
 		</hbox>
 
-		<hbox id="nav" hidden="true">
+		<hbox id="nav">
 			<spacer flex="1"/>
-			<button id="save" label="Modify" 
+			<button id="copy_notes" label="Copy Notes" accesskey="N" oncommand="g.copy_notes();"/>
+			<button id="save" label="Modify" hidden="true"
 				oncommand="g.stash_and_close();"/>
-			<button id="save" label="Cancel" 
+			<button id="cancel" label="Close" accesskey="C" 
 				oncommand="window.close();"/>
 		</hbox>
 

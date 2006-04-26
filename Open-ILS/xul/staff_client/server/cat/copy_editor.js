@@ -50,18 +50,25 @@ function my_init() {
 		if (g.cgi.param('callnumbers')) g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
 
 		/******************************************************************************************************/
-		/* Is the interface an editor or a viewer? */
+		/* Is the interface an editor or a viewer, single or multi copy? */
 
 		if (g.cgi.param('edit') == '1') { 
 			g.edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
-			document.getElementById('nav').setAttribute('hidden','false'); 
+			document.getElementById('save').setAttribute('hidden','false'); 
 		}
 
 		if (g.cgi.param('single_edit') == '1') {
 			g.single_edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
-			document.getElementById('nav').setAttribute('hidden','false'); 
+			document.getElementById('save').setAttribute('hidden','false'); 
+		}
+
+		if (g.copies[0].id() < 0) {
+			document.getElementById('copy_notes').setAttribute('hidden','true');
+		}
+		if (g.copies.length != 1) {
+			document.getElementById('copy_notes').setAttribute('hidden','true');
 		}
 
 		/******************************************************************************************************/
@@ -755,5 +762,13 @@ g.stash_and_close = function() {
 	g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
 	g.data.stash('temp');
 	window.close();
+}
+
+/******************************************************************************************************/
+/* spawn copy notes interface */
+
+g.copy_notes = function() {
+	JSAN.use('util.window'); var win = new util.window();
+	win.open(urls.XUL_COPY_NOTES + '&copy_id=' + window.escape(g.copies[0].id()),'Copy Notes','chrome,resizable,modal');
 }
 
