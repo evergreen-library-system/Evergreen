@@ -8,6 +8,7 @@ use Net::Z3950;
 use MARC::Record;
 use MARC::File::XML;
 use OpenSRF::Utils::SettingsClient;
+use Unicode::Normalize;
 
 use OpenILS::Utils::FlatXML;
 use OpenILS::Application::Cat::Utils;
@@ -36,6 +37,20 @@ my $password;
 my $defserv;
 
 my $settings_client;
+
+sub entityize {
+        my $stuff = shift;
+        my $form = shift;
+
+        if ($form eq 'D') {
+                $stuff = NFD($stuff);
+        } else {
+                $stuff = NFC($stuff);
+        }
+
+        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+        return $stuff;
+}
 
 sub initialize {
 	$settings_client = OpenSRF::Utils::SettingsClient->new();
@@ -176,7 +191,7 @@ sub z39_search_by_string {
 		my $rec = $rs->record($x+1);
 		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
 
-		my $marcxml = $marc->as_xml();
+		my $marcxml = entityize( $marc->as_xml_record() );
 		my $mods;
 			
 		my $u = OpenILS::Utils::ModsParser->new();
