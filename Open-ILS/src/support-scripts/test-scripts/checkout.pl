@@ -152,6 +152,7 @@ sub do_checkin {
 		CIRC(), 'open-ils.circ.checkin', $authtoken, $args );
 	my $e = time() - $t;
 	oils_event_die($resp);
+	debug($resp) if(ref($resp) eq 'ARRAY');
 	printl("Checkin succeeded\nTime: $t");
 
 }
