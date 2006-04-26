@@ -66,6 +66,7 @@ function my_init() {
 
 		if (g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
+			g.apply("status",5 /* In Process */);
 		} else {
 			g.right_pane_field_names.push(
 				[
