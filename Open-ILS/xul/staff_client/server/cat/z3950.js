@@ -59,7 +59,7 @@ cat.z3950.prototype = {
 				}
 			);
 
-
+/*
 			document.getAnonymousNodes(document.getElementById('c1'))[0].addEventListener(
 				'mouseup',
 				function() {
@@ -76,7 +76,7 @@ cat.z3950.prototype = {
 					);
 				}, false
 			);
-
+*/
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{
@@ -145,78 +145,88 @@ cat.z3950.prototype = {
 								obj.raw_search_async();
 							},
 						],
-						'menu_placeholder' : [
-							['render'],
-							function(e) {
-								return function() {
-									util.widgets.remove_children(e);
-									var ml = util.widgets.make_menulist( [
-										[ 'OCLC', 'oclc' ],
-										[ 'Custom', 1 ],
-									] );
-									ml.setAttribute('flex','1');
-									e.appendChild(ml);
-									/* An experiment with virtual events.  I could just use a named function
-									   instead of defining one inline, and then call that once to set things
-									   up, and let the event handler call it the rest of the time. */
-									ml.addEventListener(
-										'set_server_details',
-										function(ev) { 
-											/* FIXME - get these values from server */
-											switch(ev.target.value) {
-												case 'oclc':
-													obj.controller.view.server.value = 'zcat.oclc.org';
-													obj.controller.view.server.disabled = true;
-													obj.controller.view.database.value = 'OLUCWorldCat';
-													obj.controller.view.database.disabled = true;
-													obj.controller.view.port.value = '210';
-													obj.controller.view.port.disabled = true;
-													obj.controller.view.username.value = '****';
-													obj.controller.view.username.disabled = true;
-													obj.controller.view.password.value = '****';
-													obj.controller.view.password.disabled = true;
-													//obj.controller.view.raw_string.value = 'DISABLED';
-													//obj.controller.view.raw_string.disabled = true;
-													//obj.controller.view.raw_search.disabled = true;
-													//obj.controller.view.asc_id.value = '';
-													//obj.controller.view.asc_id.disabled = false;
-													//obj.controller.view.asc_search.disabled = false;
-												break;
-												default:
-													obj.controller.view.server.disabled = false;
-													obj.controller.view.database.disabled = false;
-													obj.controller.view.server.disabled = false;
-													obj.controller.view.port.disabled = false;
-													obj.controller.view.username.value = '';
-													obj.controller.view.username.disabled = false;
-													obj.controller.view.password.value = '';
-													obj.controller.view.password.disabled = false;
-													//obj.controller.view.raw_string.value = '';
-													//obj.controller.view.raw_string.disabled = false;
-													//obj.controller.view.raw_search.disabled = false;
-													//obj.controller.view.asc_id.value = 'DISABLED';
-													//obj.controller.view.asc_id.disabled = true;
-													//obj.controller.view.asc_search.disabled = true;
-												break;
-											}
-										},
-										false
-									);
-									ml.addEventListener(
-										'command',
-										function(ev) { util.widgets.dispatch('set_server_details', ev.target); },
-										false
-									);
-									setTimeout( function() { util.widgets.dispatch('set_server_details',ml); }, 0 );
-									obj.controller.view.server_menu = ml;
-								}
-							}
-						],
+//						'menu_placeholder' : [
+//							['render'],
+//							function(e) {
+//								return function() {
+//									util.widgets.remove_children(e);
+//									var ml = util.widgets.make_menulist( [
+//										[ 'OCLC', 'oclc' ],
+//										[ 'Custom', 1 ],
+//									] );
+//									ml.setAttribute('flex','1');
+//									e.appendChild(ml);
+//									/* An experiment with virtual events.  I could just use a named function
+//									   instead of defining one inline, and then call that once to set things
+//									   up, and let the event handler call it the rest of the time. */
+//									ml.addEventListener(
+//										'set_server_details',
+//										function(ev) { 
+//											/* FIXME - get these values from server */
+//											switch(ev.target.value) {
+//												case 'oclc':
+//													obj.controller.view.server.value = 'zcat.oclc.org';
+//													obj.controller.view.server.disabled = true;
+//													obj.controller.view.database.value = 'OLUCWorldCat';
+//													obj.controller.view.database.disabled = true;
+//													obj.controller.view.port.value = '210';
+//													obj.controller.view.port.disabled = true;
+//													obj.controller.view.username.value = '****';
+//													obj.controller.view.username.disabled = true;
+//													obj.controller.view.password.value = '****';
+//													obj.controller.view.password.disabled = true;
+//													//obj.controller.view.raw_string.value = 'DISABLED';
+//													//obj.controller.view.raw_string.disabled = true;
+//													//obj.controller.view.raw_search.disabled = true;
+//													//obj.controller.view.asc_id.value = '';
+//													//obj.controller.view.asc_id.disabled = false;
+//													//obj.controller.view.asc_search.disabled = false;
+//												break;
+//												default:
+//													obj.controller.view.server.disabled = false;
+//													obj.controller.view.database.disabled = false;
+//													obj.controller.view.server.disabled = false;
+//													obj.controller.view.port.disabled = false;
+//													obj.controller.view.username.value = '';
+//													obj.controller.view.username.disabled = false;
+//													obj.controller.view.password.value = '';
+//													obj.controller.view.password.disabled = false;
+//													//obj.controller.view.raw_string.value = '';
+//													//obj.controller.view.raw_string.disabled = false;
+//													//obj.controller.view.raw_search.disabled = false;
+//													//obj.controller.view.asc_id.value = 'DISABLED';
+//													//obj.controller.view.asc_id.disabled = true;
+//													//obj.controller.view.asc_search.disabled = true;
+//												break;
+//											}
+//										},
+//										false
+//									);
+//									ml.addEventListener(
+//										'command',
+//										function(ev) { util.widgets.dispatch('set_server_details', ev.target); },
+//										false
+//									);
+//									setTimeout( function() { util.widgets.dispatch('set_server_details',ml); }, 0 );
+//									obj.controller.view.server_menu = ml;
+//								}
+//							}
+//						],
 					}
 				}
 			);
 
 			obj.controller.render();
+			obj.controller.view.server.value = 'zcat.oclc.org';
+			obj.controller.view.server.disabled = true;
+			obj.controller.view.database.value = 'OLUCWorldCat';
+			obj.controller.view.database.disabled = true;
+			obj.controller.view.port.value = '210';
+			obj.controller.view.port.disabled = true;
+			obj.controller.view.username.value = '****';
+			obj.controller.view.username.disabled = false;
+			obj.controller.view.password.value = '****';
+			obj.controller.view.password.disabled = false;
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
@@ -257,11 +267,6 @@ cat.z3950.prototype = {
 			);
 			obj.store_disable_search_buttons();
 			var params;
-			if (!Number(obj.controller.view.server_menu.value)) {
-				params = [ obj.session, search, obj.controller.view.server_menu.value ];
-			} else {
-				params = [ obj.session, search, 'oclc' ];
-			}
 			obj.network.simple_request(
 				'FM_BLOB_RETRIEVE_VIA_Z3950_TCN',
 				[ obj.session, search, 'oclc' ],
