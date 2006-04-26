@@ -171,7 +171,6 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
-			/*
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
@@ -179,7 +178,6 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(obj.data.session),{},{});
 				}
 			],
-			*/
 			'cmd_browse_holds' : [
 				['oncommand'],
 				function() { 
