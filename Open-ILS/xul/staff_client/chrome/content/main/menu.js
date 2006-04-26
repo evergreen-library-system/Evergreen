@@ -70,6 +70,31 @@ main.menu.prototype = {
 						+ '?session='+window.escape(obj.data.session),{'tab_name':'Copy Buckets'},{});
 				}
 			],
+			'cmd_replace_barcode' : [
+				['oncommand'],
+				function() {
+					JSAN.use('util.network');
+					var network = new util.network();
+					var old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
+					if (!old_bc) return;
+					var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), old_bc ]);
+					if (typeof copy.ilsevent != 'undefined') {
+						alert('Rename aborted: ' + copy.textcode);
+						return;
+					}
+					if (!copy) return;
+					copy = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE',[ ses(), [ copy.id() ] ])[0];
+					var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
+					var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
+					if (typeof copy.ilsevent == 'undefined') {
+						alert('Rename aborted.  Another copy has that barcode');
+						return;
+					}
+					copy.barcode(new_bc); copy.ischanged('1');
+					var r = network.simple_request('FM-ACP_FLESHED_BATCH_UPDATE', [ ses(), copy ]);
+					alert(r);
+				}
+			],
 
 			/* Search Menu */
 			'cmd_patron_search' : [

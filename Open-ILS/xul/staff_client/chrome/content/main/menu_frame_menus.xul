@@ -94,6 +94,8 @@
 		<menuitem label="Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
 		<menuitem label="Volume Buckets" command="cmd_broken" accesskey="V"/>
 		<menuitem label="Record Buckets" command="cmd_broken" accesskey="R"/>
+		<menuseparator />
+		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
 	</menupopup>
 </menu>
 
