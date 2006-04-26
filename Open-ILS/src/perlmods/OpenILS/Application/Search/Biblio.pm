@@ -228,9 +228,10 @@ sub copy_retrieve {
 }
 
 
+# XXX add last 3 circs and total circ count
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve_batch",
-	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve",);
+	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve");
 
 sub fleshed_copy_retrieve_batch { 
 	my( $self, $client, $ids ) = @_;

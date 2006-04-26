@@ -206,21 +206,36 @@ sub set_circ_lost {
 	}
 
 	if($isclaims) {
-
-		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
+		$evt = _set_circ_claims_returned(
+			$user, $circ, $session, $backdate );
 		return $evt if $evt;
-		$circ->stop_fines("CLAIMSRETURNED");
 
-		$logger->activity("user ".$user->id." marking circ".  $circ->id. " as claims returned");
+#		$evt = $U->check_perms($user->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
+#		return $evt if $evt;
+#		$circ->stop_fines("CLAIMSRETURNED");
+#
+#		$logger->activity("user ".$user->id." marking circ".  $circ->id. " as claims returned");
+#
+#		# allow the caller to backdate the circulation and void any fines
+#		# that occurred after the backdate
+#		if($backdate) {
+#			OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
+#				$backdate, $circ, $user, $session );
+#		}
+#
+#		my $patron;
+#		($patron, $evt) = $U->fetch_user($circ->usr);
+#		return $evt if $evt;
+#		$patron->claims_returned_count( 
+#			$patron->claims_returned_count + 1 );
+#
+#		my $stat = $U->storagereq(
+#			'open-ils.storage.direct.actor.user.update', $patron );
+#		return $U->DB_UPDATE_FAILED($patron) unless $stat;
 
-		# allow the caller to backdate the circulation and void any fines
-		# that occurred after the backdate
-		if($backdate) {
-			OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
-				$backdate, $circ, $user, $session );
-		}
 	}
 
+	$circ->stop_fines_time('now') unless $circ->stop_fines_time('now');
 	my $s = $session->request(
 		"open-ils.storage.direct.action.circulation.update", $circ )->gather(1);
 
@@ -280,6 +295,27 @@ sub _set_circ_lost {
 	$circ->stop_fines("LOST");		
 	return undef;
 }
+
+sub _set_circ_claims_returned {
+	my( $reqr, $circ, $session, $backdate ) = @_;
+
+	my $evt = $U->check_perms($reqr->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
+	return $evt if $evt;
+	$circ->stop_fines("CLAIMSRETURNED");
+
+	$logger->activity("user ".$reqr->id.
+		" marking circ".  $circ->id. " as claims returned");
+
+	# allow the caller to backdate the circulation and void any fines
+	# that occurred after the backdate
+	if($backdate) {
+		OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
+			$backdate, $circ, $reqr, $session );
+	}
+
+	return undef;
+}
+
 
 
 __PACKAGE__->register_method (
