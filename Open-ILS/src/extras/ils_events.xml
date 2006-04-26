@@ -188,6 +188,10 @@
 		<desc> Requested transaction summary does not exist </desc>
 	</event>
 
+	<event code='1527' textcode='OPEN_TCN_NOT_FOUND'>
+		<desc>No TCN could be found that does not collide with existing records</desc>
+	</event>
+
 
 
 
@@ -206,6 +210,11 @@
 	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
 		<desc> A workstation with that name already exists </desc>
 	</event>
+
+	<event code='1704' textcode='TCN_EXISTS'>
+		<desc>A record already exists with the requested TCN value</desc>
+	</event>
+
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
@@ -300,6 +309,12 @@
 	<event code='7012' textcode='COPY_STATUS_MISSING'>
 		<desc>Copy has is marked as missing</desc>
 	</event>
+
+	<event code='7013' textcode='PATRON_EXCEEDS_FINES'>
+		<desc>The patron in question has reached the maximum fine amount</desc>
+	</event>
+
+	<!-- ================================================================ -->
 
 
 	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>

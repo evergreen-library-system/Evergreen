@@ -8,6 +8,7 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use JSON;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Event;
 
 use XML::LibXML;
 use Unicode::Normalize;
@@ -20,6 +21,7 @@ use OpenSRF::Utils::Logger qw($logger);
 my $apputils = "OpenILS::Application::AppUtils";
 
 my $utils = "OpenILS::Application::Cat::Utils";
+my $U = "OpenILS::Application::AppUtils";
 
 my $conf;
 
@@ -27,7 +29,7 @@ my %marctemplates;
 
 sub entityize { 
 	my $stuff = shift;
-	my $form = shift;
+	my $form = shift || "";
 
 	if ($form eq 'D') {
 		$stuff = NFD($stuff);
@@ -78,30 +80,44 @@ sub _load_marc_template {
 
 __PACKAGE__->register_method(
 	method	=> "create_record_xml",
-	api_name	=> "open-ils.cat.biblio.record.xml.create",
-	notes		=> <<"	NOTES");
-	Inserts a new MARC 'record tree' into the system
-	NOTES
+	api_name	=> "open-ils.cat.biblio.record.xml.create.override",
+	signature	=> q/@see open-ils.cat.biblio.record.xml.create/);
+
+__PACKAGE__->register_method(
+	method		=> "create_record_xml",
+	api_name		=> "open-ils.cat.biblio.record.xml.create",
+	signature	=> q/
+		Inserts a new biblio with the given XML
+	/
+);
 
 sub create_record_xml {
-	my( $self, $client, $login, $tree, $source ) = @_;
+	my( $self, $client, $login, $xml, $source ) = @_;
 	$source ||= 2;
 
-	my $user_obj = $apputils->check_user_session($login);
+	my $override = 1 if $self->api_name =~ /override/;
 
-	if($apputils->check_user_perms(
-			$user_obj->id, $user_obj->home_ou, "CREATE_MARC")) {
-		return OpenILS::Perm->new("CREATE_MARC"); 
-	}
+	my( $user_obj, $evt ) = $U->checksesperm($login, 'CREATE_MARC');
+	return $evt if $evt;
 
-	warn "Creating a new record entry...";
+	$logger->activity("user ".$user_obj->id." creating new MARC record");
+
 	my $meth = $self->method_lookup("open-ils.cat.biblio.record.xml.import");
-	my ($s) = $meth->run($login, $tree, 2);
+
+	$meth = $self->method_lookup(
+		"open-ils.cat.biblio.record.xml.import.override") if $override;
+
+	my ($s) = $meth->run($login, $xml, 2);
 	return $s;
 }
 
 
 
+
+__PACKAGE__->register_method(
+	method	=> "biblio_record_xml_import",
+	api_name	=> "open-ils.cat.biblio.record.xml.import.override",
+	signature	=> q/@see open-ils.cat.biblio.record.xml.import/);
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_xml_import",
@@ -117,70 +133,134 @@ __PACKAGE__->register_method(
 
 
 sub biblio_record_xml_import {
-	my( $self, $client, $user_session, $xml, $source) = @_;
-	my $user_obj = $apputils->check_user_session($user_session);
+	my( $self, $client, $authtoken, $xml, $source) = @_;
 
-	if($apputils->check_user_perms(
-			$user_obj->id, $user_obj->home_ou, "IMPORT_MARC")) {
-		return OpenILS::Perm->new("IMPORT_MARC"); 
-	}
-
-	# copy the doc so that we can mangle the namespace.  
-	my $marcxml = XML::LibXML->new->parse_string( $xml );
-
-	$marcxml->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
 	my ($tcn, $tcn_source);
 
-	#warn "Importing MARC Doc:\n".$marcxml->toString(1)."\n";
-	#warn "Namespace: " . $marcxml->documentElement->firstChild->namespaceURI . "\n";
-	#return 1;
+	my $override = 1 if $self->api_name =~ /override/;
 
-	warn "Starting db session in import\n";
+	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'IMPORT_MARC');
+	return $evt if $evt;
+
 	my $session = $apputils->start_db_session();
 
-	my $xpath = '//controlfield[@tag="001"]';
+	# parse the XML
+	my $marcxml = XML::LibXML->new->parse_string( $xml );
+	$marcxml->documentElement->setNamespace( 
+		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+
+	my $xpath = '//marc:controlfield[@tag="001"]';
 	$tcn = $marcxml->documentElement->findvalue($xpath);
+	$logger->info("biblio import located 001 (tcn) value of $tcn");
 
-	$xpath = '//controlfield[@tag="003"]';
-	$tcn_source = $marcxml->documentElement->findvalue($xpath);
+	$xpath = '//marc:controlfield[@tag="003"]';
+	$tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
 
-	if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+	if(my $rec = _tcn_exists($session, $tcn, $tcn_source)) {
 
-	my $add_039 = 0;
-	if(!$tcn) {
-		$xpath = '//datafield[@tag="039"]/subfield[@code="a"]';
-		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
+		my $origtcn = $tcn;
+		$tcn = find_free_tcn( $marcxml, $session );
 
-		$add_039++ if (!$tcn);
+		# if we're overriding, try to find a different TCN to use
+		if( $override ) {
 
-		$xpath = '//datafield[@tag="039"]/subfield[@code="b"]';
-		$tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
-		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+			$logger->activity("tcn value $tcn already exists, attempting to override");
+
+			if(!$tcn) {
+				return OpenILS::Event->new(
+					'OPEN_TCN_NOT_FOUND', payload => $marcxml->toString());
+			}
+
+		} else {
+
+			$logger->warn("tcn value $origtcn already exists in import/create");
+
+			# otherwise, return event
+			return OpenILS::Event->new( 
+				'TCN_EXISTS', payload => { 
+					dup_record	=> $rec, 
+					tcn			=> $origtcn,
+					new_tcn		=> $tcn
+					} );
+		}
+
+	} else {
+
+		$logger->activity("user ".$requestor->id.
+		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
 	}
 
+
+	my $record = Fieldmapper::biblio::record_entry->new;
+
+	$record->source($source) if ($source);
+	$record->tcn_source($tcn_source);
+	$record->tcn_value($tcn);
+	$record->creator($requestor->id);
+	$record->editor($requestor->id);
+	$record->marc( entityize( $marcxml->documentElement->toString ) );
+
+	my $id = $session->request(
+		"open-ils.storage.direct.biblio.record_entry.create", $record )->gather(1);
+
+	return $U->DB_UPDATE_FAILED($record) unless $id;
+	$record->id( $id );
+
+	$logger->info("marc create/import created new record $id");
+
+	$apputils->commit_db_session($session);
+
+	$logger->debug("Sending record off to be wormized");
+
+	my $stat = $U->storagereq( 'open-ils.worm.wormize.biblio', $id );
+	throw OpenSRF::EX::ERROR 
+		("Unable to wormize imported record") unless $stat;
+
+	return $record;
+}
+
+sub find_free_tcn {
+
+	my $marcxml = shift;
+	my $session = shift;
+
+	my $add_039 = 0;
+
+	my $xpath = '//marc:datafield[@tag="039"]/subfield[@code="a"]';
+	my ($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
+	$xpath = '//marc:datafield[@tag="039"]/subfield[@code="b"]';
+	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
+
+	if(_tcn_exists($session, $tcn, $tcn_source)) {
+		$tcn = undef;
+	} else {
+		$add_039++;
+	}
+
+
 	if(!$tcn) {
-		$xpath = '//datafield[@tag="020"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="020"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISBN";
 		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) { 
-		$xpath = '//datafield[@tag="022"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="022"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISSN";
 		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
-		$xpath = '//datafield[@tag="010"]';
+		$xpath = '//marc:datafield[@tag="010"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "LCCN";
 		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
-		$xpath = '//datafield[@tag="035"]/subfield[@code="a"]';
+		$xpath = '//marc:datafield[@tag="035"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "System Legacy";
 		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
@@ -202,47 +282,18 @@ sub biblio_record_xml_import {
 		my $sfa = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
 		$sfa->setAttribute( code => 'a' );
 		$sfa->appendChild( $marcxml->createTextNode( $tcn ) );
-		$df->appendChid( $sfa );
+		$df->appendChild( $sfa );
 
 		my $sfb = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
 		$sfb->setAttribute( code => 'b' );
 		$sfb->appendChild( $marcxml->createTextNode( $tcn_source ) );
-		$df->appendChid( $sfb );
+		$df->appendChild( $sfb );
 	}
 
-	warn "Record import with tcn: $tcn and source $tcn_source\n";
-
-	my $record = Fieldmapper::biblio::record_entry->new;
-
-	$record->source($source) if ($source);
-	$record->tcn_source($tcn_source);
-	$record->tcn_value($tcn);
-	$record->creator($user_obj->id);
-	$record->editor($user_obj->id);
-	$record->marc( entityize( $marcxml->documentElement->toString ) );
-
-
-	my $req = $session->request(
-		"open-ils.storage.direct.biblio.record_entry.create", $record );
-
-	my $id = $req->gather(1);
-	$record->id( $id );
-
-	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new record_entry from import"); }
-	warn "received id: $id from record_entry create\n";
-
-	$apputils->commit_db_session($session);
-
-	$session = OpenSRF::AppSession->create("open-ils.storage");
-
-	my $wreq = $session->request("open-ils.worm.wormize.biblio", $id)->gather(1);
-	warn "Done worming record $id\n";
-
-	if(!$wreq) { throw OpenSRF::EX::ERROR ("Unable to wormize imported record"); }
-
-	return $record;
-
+	return $tcn;
 }
+
+
 
 sub _tcn_exists {
 	my $session = shift;
@@ -250,6 +301,8 @@ sub _tcn_exists {
 	my $source = shift;
 
 	if(!$tcn) {return 0;}
+
+	$logger->debug("tcn_exists search for tcn $tcn and source $source");
 
 	my $req = $session->request(      
 		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
@@ -317,10 +370,6 @@ sub biblio_record_xml_update {
 
 	my( $self, $client, $user_session,  $id, $xml ) = @_;
 
-	throw OpenSRF::EX::InvalidArg 
-		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
-		unless ( $user_session and $tree );
-
 	my $user_obj = $apputils->check_user_session($user_session); 
 
 	if($apputils->check_user_perms(
@@ -328,8 +377,9 @@ sub biblio_record_xml_update {
 		return OpenILS::Perm->new("UPDATE_MARC"); 
 	}
 
+	$logger->activity("user ".$user_obj->id." updating biblio record $id");
 
-	warn "Starting db session\n";
+
 	my $session = OpenILS::Application::AppUtils->start_db_session();
 
 	warn "Retrieving biblio record from storage for update\n";
@@ -340,13 +390,17 @@ sub biblio_record_xml_update {
 
 	warn "retrieved doc $id\n";
 
-	$biblio->marc( entityize( $xml ) );
+	my $doc = XML::LibXML->new->parse_string($xml);
+	throw OpenSRF::EX::ERROR ("Invalid XML in record update: $xml") unless $doc;
+
+	$biblio->marc( entityize( $doc->documentElement->toString ) );
 	$biblio->editor( $user_obj->id );
 	$biblio->edit_date( 'now' );
 
+	warn "Sending updated doc $id to db with xml ".$biblio->marc. "\n";
 
-	warn "Sending updated doc $id to db\n";
-	my $req = $session->request( "open-ils.storage.direct.biblio.record_entry.update", $biblio );
+	my $req = $session->request( 
+		"open-ils.storage.direct.biblio.record_entry.update", $biblio );
 
 	$req->wait_complete;
 	my $status = $req->recv();
@@ -363,7 +417,7 @@ sub biblio_record_xml_update {
 	my $success = 0;
 	my $wresp;
 
-	my $wreq = $session->request( "open-ils.worm.wormize.biblio", $docid );
+	my $wreq = $session->request( "open-ils.worm.wormize.biblio", $id );
 
 	my $w = 0;
 	try {
@@ -375,7 +429,7 @@ sub biblio_record_xml_update {
 		OpenILS::Application::AppUtils->rollback_db_session($session);
 
 		if($e) { throw $e ($e); }
-		throw OpenSRF::EX::ERROR ("Wormizing Failed for $docid" );
+		throw OpenSRF::EX::ERROR ("Wormizing Failed for $id" );
 	};
 
 	warn "Committing db session...\n";

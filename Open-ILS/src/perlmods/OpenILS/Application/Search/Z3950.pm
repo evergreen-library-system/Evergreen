@@ -9,6 +9,7 @@ use MARC::Record;
 use MARC::File::XML;
 use OpenSRF::Utils::SettingsClient;
 use Unicode::Normalize;
+use XML::LibXML;
 
 use OpenILS::Utils::FlatXML;
 use OpenILS::Application::Cat::Utils;
@@ -139,7 +140,11 @@ sub z39_search_by_string {
 	my $search	= $$params{search};
 
 	if( $service ) {
+
 		($hst, $prt, $db, $usr, $pw ) = _load_settings($$params{service});
+		$usr	= ($$params{username}) ? $$params{username} : $usr;
+		$pw	= ($$params{password}) ? $$params{password} : $pw;
+
 	} else {
 		$hst	= $$params{host};
 		$prt	= $$params{prt};
@@ -191,10 +196,16 @@ sub z39_search_by_string {
 		my $rec = $rs->record($x+1);
 		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
 
-		my $marcxml = entityize( $marc->as_xml_record() );
+		# parse the XML
+		my $doc = XML::LibXML->new->parse_string($marc->as_xml_record());
+
+		# strip the <xml> declaration and run through entityize
+		my $marcxml = entityize( $doc->documentElement->toString );
 		my $mods;
 			
 		my $u = OpenILS::Utils::ModsParser->new();
+
+		warn "z3950: creating mvr\n";
 		$u->start_mods_batch( $marcxml );
 		$mods = $u->finish_mods_batch();
 
@@ -215,7 +226,7 @@ __PACKAGE__->register_method(
 );
 
 sub tcn_search {
-	my($self, $connection, $authtoken, $tcn, $service) = @_;
+	my($self, $connection, $authtoken, $tcn, $service, $username, $password) = @_;
 
 	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
 	return $evt if $evt;
@@ -227,8 +238,12 @@ sub tcn_search {
 
 	return $self->z39_search_by_string(
 		$connection, $authtoken, {
-			search => "\@attr 1=$attr \"$tcn\"", 
-			service => $service });
+			search	=> "\@attr 1=$attr \"$tcn\"", 
+			service	=> $service,
+			username	=> $username,
+			password	=> $password,
+		}
+	);
 }
 
 
@@ -238,7 +253,7 @@ __PACKAGE__->register_method(
 );
 
 sub isbn_search {
-	my( $self, $connection, $authtoken, $isbn, $service ) = @_;
+	my( $self, $connection, $authtoken, $isbn, $service, $username, $password ) = @_;
 
 	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
 	return $evt if $evt;
@@ -250,8 +265,12 @@ sub isbn_search {
 
 	return $self->z39_search_by_string(
 		$connection, $authtoken, {
-			search => "\@attr 1=$attr \"$isbn\"", 
-			service => $service });
+			search	=> "\@attr 1=$attr \"$isbn\"", 
+			service	=> $service ,
+			username	=> $username,
+			password	=> $password,
+		}
+	);
 }
 
 
