@@ -8,7 +8,9 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use JSON;
 use OpenILS::Utils::Fieldmapper;
+
 use XML::LibXML;
+use Unicode::Normalize;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
 use OpenILS::Perm;
@@ -23,6 +25,19 @@ my $conf;
 
 my %marctemplates;
 
+sub entityize { 
+	my $stuff = shift;
+	my $form = shift;
+
+	if ($form eq 'D') {
+		$stuff = NFD($stuff);
+	} else {
+		$stuff = NFC($stuff);
+	}
+
+	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+	return $stuff;
+}
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_marc_template",
@@ -62,14 +77,15 @@ sub _load_marc_template {
 
 
 __PACKAGE__->register_method(
-	method	=> "create_record_tree",
-	api_name	=> "open-ils.cat.biblio.record_tree.create",
+	method	=> "create_record_xml",
+	api_name	=> "open-ils.cat.biblio.record.xml.create",
 	notes		=> <<"	NOTES");
 	Inserts a new MARC 'record tree' into the system
 	NOTES
 
-sub create_record_tree {
-	my( $self, $client, $login, $tree ) = @_;
+sub create_record_xml {
+	my( $self, $client, $login, $tree, $source ) = @_;
+	$source ||= 2;
 
 	my $user_obj = $apputils->check_user_session($login);
 
@@ -78,9 +94,9 @@ sub create_record_tree {
 		return OpenILS::Perm->new("CREATE_MARC"); 
 	}
 
-	warn "Creating a new record tree entry...";
-	my $meth = $self->method_lookup("open-ils.cat.biblio.record.tree.import");
-	my ($s) = $meth->run($login, $tree);
+	warn "Creating a new record entry...";
+	my $meth = $self->method_lookup("open-ils.cat.biblio.record.xml.import");
+	my ($s) = $meth->run($login, $tree, 2);
 	return $s;
 }
 
@@ -88,20 +104,20 @@ sub create_record_tree {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_record_tree_import",
-	api_name	=> "open-ils.cat.biblio.record.tree.import",
+	method	=> "biblio_record_xml_import",
+	api_name	=> "open-ils.cat.biblio.record.xml.import",
 	notes		=> <<"	NOTES");
-	Takes a record tree and imports the record into the database.  In this
-	case, the record tree is assumed to be a complete record (i.e. valid
-	MARC.  The title control number is taken from (whichever comes first)
-	tags 001, 020, 022, 010, 035 and whichever does not already exist
+	Takes a marcxml record and imports the record into the database.  In this
+	case, the marcxml record is assumed to be a complete record (i.e. valid
+	MARC).  The title control number is taken from (whichever comes first)
+	tags 001, 039[ab], 020a, 022a, 010, 035a and whichever does not already exist
 	in the database.
 	user_session must have IMPORT_MARC permissions
 	NOTES
 
 
-sub biblio_record_tree_import {
-	my( $self, $client, $user_session, $tree) = @_;
+sub biblio_record_xml_import {
+	my( $self, $client, $user_session, $xml, $source) = @_;
 	my $user_obj = $apputils->check_user_session($user_session);
 
 	if($apputils->check_user_perms(
@@ -109,14 +125,11 @@ sub biblio_record_tree_import {
 		return OpenILS::Perm->new("IMPORT_MARC"); 
 	}
 
-	my $nodeset = $utils->tree2nodeset($tree);
-
 	# copy the doc so that we can mangle the namespace.  
-	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml($nodeset);
-	my $copy_marcxml = XML::LibXML->new->parse_string($marcxml->toString);
+	my $marcxml = XML::LibXML->new->parse_string( $xml );
 
 	$marcxml->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
-	my $tcn;
+	my ($tcn, $tcn_source);
 
 	#warn "Importing MARC Doc:\n".$marcxml->toString(1)."\n";
 	#warn "Namespace: " . $marcxml->documentElement->firstChild->namespaceURI . "\n";
@@ -124,61 +137,96 @@ sub biblio_record_tree_import {
 
 	warn "Starting db session in import\n";
 	my $session = $apputils->start_db_session();
-	my $source = 2; # system local source
 
 	my $xpath = '//controlfield[@tag="001"]';
 	$tcn = $marcxml->documentElement->findvalue($xpath);
-	if(_tcn_exists($session, $tcn)) {$tcn = undef;}
-	my $tcn_source = "External";
 
+	$xpath = '//controlfield[@tag="003"]';
+	$tcn_source = $marcxml->documentElement->findvalue($xpath);
+
+	if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+
+	my $add_039 = 0;
+	if(!$tcn) {
+		$xpath = '//datafield[@tag="039"]/subfield[@code="a"]';
+		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
+
+		$add_039++ if (!$tcn);
+
+		$xpath = '//datafield[@tag="039"]/subfield[@code="b"]';
+		$tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
+		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+	}
 
 	if(!$tcn) {
-		$xpath = '//datafield[@tag="020"]';
-		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$xpath = '//datafield[@tag="020"]/subfield[@code="a"]';
+		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISBN";
-		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) { 
-		$xpath = '//datafield[@tag="022"]';
-		$tcn = $marcxml->documentElement->findvalue($xpath);
+		$xpath = '//datafield[@tag="022"]/subfield[@code="a"]';
+		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISSN";
-		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
 		$xpath = '//datafield[@tag="010"]';
-		$tcn = $marcxml->documentElement->findvalue($xpath);
+		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "LCCN";
-		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
-		$xpath = '//datafield[@tag="035"]';
-		$tcn = $marcxml->documentElement->findvalue($xpath);
-		$tcn_source = "System";
-		if(_tcn_exists($session, $tcn)) {$tcn = undef;}
+		$xpath = '//datafield[@tag="035"]/subfield[@code="a"]';
+		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
+		$tcn_source = "System Legacy";
+		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+
+		if($tcn) {
+			$marcxml->documentElement->removeChild(
+				$marcxml->documentElement->findnodes( '//datafield[@tag="035"]' )
+			);
+		}
 	}
 
-	$tcn =~ s/^\s+//g;
-	$tcn =~ s/\s+$//g;
+	if ($add_039) {
+		my $df = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'datafield');
+		$df->setAttribute( tag => '039' );
+		$df->setAttribute( ind1 => ' ' );
+		$df->setAttribute( ind2 => ' ' );
+		$marcxml->documentElement->appendChild( $df );
+
+		my $sfa = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
+		$sfa->setAttribute( code => 'a' );
+		$sfa->appendChild( $marcxml->createTextNode( $tcn ) );
+		$df->appendChid( $sfa );
+
+		my $sfb = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
+		$sfb->setAttribute( code => 'b' );
+		$sfb->appendChild( $marcxml->createTextNode( $tcn_source ) );
+		$df->appendChid( $sfb );
+	}
 
 	warn "Record import with tcn: $tcn and source $tcn_source\n";
 
 	my $record = Fieldmapper::biblio::record_entry->new;
 
-	$record->source($source);
+	$record->source($source) if ($source);
 	$record->tcn_source($tcn_source);
 	$record->tcn_value($tcn);
 	$record->creator($user_obj->id);
 	$record->editor($user_obj->id);
-	$record->marc($copy_marcxml->toString);
+	$record->marc( entityize( $marcxml->documentElement->toString ) );
 
 
 	my $req = $session->request(
 		"open-ils.storage.direct.biblio.record_entry.create", $record );
 
 	my $id = $req->gather(1);
+	$record->id( $id );
 
 	if(!$id) { throw OpenSRF::EX::ERROR ("Unable to create new record_entry from import"); }
 	warn "received id: $id from record_entry create\n";
@@ -192,29 +240,29 @@ sub biblio_record_tree_import {
 
 	if(!$wreq) { throw OpenSRF::EX::ERROR ("Unable to wormize imported record"); }
 
-	return $self->biblio_record_tree_retrieve($client, $id);
+	return $record;
 
 }
 
 sub _tcn_exists {
 	my $session = shift;
 	my $tcn = shift;
+	my $source = shift;
 
 	if(!$tcn) {return 0;}
 
 	my $req = $session->request(      
-		"open-ils.storage.direct.biblio.record_entry.search_where.atomic",
-		{ tcn_value => $tcn, deleted => 'f' } );
-		#"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic",
+		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
+		{ tcn_value => $tcn, tcn_source => $source, deleted => 'f' } );
 
 	my $recs = $req->gather(1);
 
 	if($recs and $recs->[0]) {
-		$logger->debug("_tcn_exists is true for tcn : $tcn");
-		return 1;
+		$logger->debug("_tcn_exists is true for tcn : $tcn ($source)");
+		return $recs->[0];
 	}
 
-	$logger->debug("_tcn_exists is false for tcn : $tcn");
+	$logger->debug("_tcn_exists is false for tcn : $tcn ($source)");
 	return 0;
 }
 
@@ -255,19 +303,19 @@ sub biblio_record_tree_retrieve {
 }
 
 __PACKAGE__->register_method(
-	method	=> "biblio_record_tree_commit",
-	api_name	=> "open-ils.cat.biblio.record.tree.commit",
+	method	=> "biblio_record_xml_update",
+	api_name	=> "open-ils.cat.biblio.record.xml.update",
 	argc		=> 3, #(session_id, biblio_tree ) 
-	notes		=> <<"	NOTES");
-	Walks the tree and commits any changed nodes 
-	adds any new nodes, and deletes any deleted nodes
-	The record to commit must already exist or this
-	method will fail
+	notes		=> <<'	NOTES');
+	Updates the XML of a biblio record entry
+	@param authtoken The session token for the staff updating the record
+	@param docID The record entry ID to update
+	@param xml The new MARCXML record
 	NOTES
 
-sub biblio_record_tree_commit {
+sub biblio_record_xml_update {
 
-	my( $self, $client, $user_session,  $tree ) = @_;
+	my( $self, $client, $user_session,  $id, $xml ) = @_;
 
 	throw OpenSRF::EX::InvalidArg 
 		("Not enough args to to open-ils.cat.biblio.record.tree.commit")
@@ -281,41 +329,23 @@ sub biblio_record_tree_commit {
 	}
 
 
-	# capture the doc id
-	my $docid = $tree->owner_doc();
+	warn "Starting db session\n";
 	my $session = OpenILS::Application::AppUtils->start_db_session();
 
 	warn "Retrieving biblio record from storage for update\n";
 
 	my $req1 = $session->request(
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $docid );
+			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $id );
 	my $biblio = $req1->gather(1);
 
-	warn "retrieved doc $docid\n";
+	warn "retrieved doc $id\n";
+
+	$biblio->marc( entityize( $xml ) );
+	$biblio->editor( $user_obj->id );
+	$biblio->edit_date( 'now' );
 
 
-	# turn the tree into a nodeset
-	my $nodeset = $utils->tree2nodeset($tree);
-	$nodeset = $utils->clean_nodeset($nodeset);
-
-	if(!defined($docid)) { # be sure
-		for my $node (@$nodeset) {
-			$docid = $node->owner_doc();
-			last if defined($docid);
-		}
-	}
-
-	# turn the nodeset into a doc
-	my $marcxml = OpenILS::Utils::FlatXML->new()->nodeset_to_xml( $nodeset );
-
-	$biblio->marc( $marcxml->toString() );
-
-	warn "Starting db session\n";
-
-	my $x = _update_record_metadata( $session, { user => $user_obj, docid => $docid } );
-	OpenILS::Application::AppUtils->rollback_db_session($session) unless $x;
-
-	warn "Sending updated doc $docid to db\n";
+	warn "Sending updated doc $id to db\n";
 	my $req = $session->request( "open-ils.storage.direct.biblio.record_entry.update", $biblio );
 
 	$req->wait_complete;
@@ -335,8 +365,9 @@ sub biblio_record_tree_commit {
 
 	my $wreq = $session->request( "open-ils.worm.wormize.biblio", $docid );
 
+	my $w = 0;
 	try {
-		$wreq->gather(1);
+		$w = $wreq->gather(1);
 
 	} catch Error with {
 		my $e = shift;
@@ -350,10 +381,6 @@ sub biblio_record_tree_commit {
 	warn "Committing db session...\n";
 	OpenILS::Application::AppUtils->commit_db_session( $session );
 
-	$nodeset = OpenILS::Utils::FlatXML->new()->xmldoc_to_nodeset($marcxml);
-	$tree = $utils->nodeset2tree($nodeset->nodeset);
-	$tree->owner_doc($docid);
-
 #	$client->respond_complete($tree);
 
 	warn "Done wormizing\n";
@@ -362,7 +389,7 @@ sub biblio_record_tree_commit {
 	#warn "Returning tree:\n";
 	#warn Dumper $tree;
 
-	return $tree;
+	return $biblio;
 
 }
 
@@ -562,15 +589,6 @@ sub orgs_for_title {
 
 	my $orgs = { map {$_->owning_lib => 1 } @$vols };
 	return [ keys %$orgs ];
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "retrieve_copies_",
-	api_name	=> "open-ils.cat.asset.copy_tree.retrieve_");
-
-sub retrieve_copies_ {
-	my( $self, $conn, $authtoken, $docid, $orgs ) = @_;
 }
 
 
