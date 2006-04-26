@@ -1948,7 +1948,7 @@ __PACKAGE__->register_method (
 		@param note The closed_date object
 	/
 );
-sub create_user_note {
+sub create_closed_date {
 	my( $self, $conn, $authtoken, $cd ) = @_;
 
 	my( $user, $evt ) = $U->checkses($authtoken);
@@ -1981,6 +1981,7 @@ sub delete_closed_date {
 	my( $user, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
 
+	my $cd_obj;
 	($cd_obj, $evt) = fetch_closed_date($cd);
 	return $evt if $evt;
 
