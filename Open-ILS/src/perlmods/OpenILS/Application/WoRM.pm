@@ -871,7 +871,7 @@ sub _marcxml_to_full_rows {
 		my $ind1 = $tagline->getAttribute( "ind1" );
 		my $ind2 = $tagline->getAttribute( "ind2" );
 
-		for my $data ( $tagline->childNodes ) {
+		for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
 			next unless $data;
 
 			my $ns = $type->new;
