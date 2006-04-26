@@ -112,7 +112,7 @@ function save_survey() {
 		var result = g.network.request(
 			api.FM_ASV_CREATE.app,
 			api.FM_ASV_CREATE.method,
-			[ g.session, SURVEY.asv ]
+			[ ses(), SURVEY.asv ]
 		);
 		if (! (result instanceof asv) ) {
 			throw('save_survey: result not an asv');

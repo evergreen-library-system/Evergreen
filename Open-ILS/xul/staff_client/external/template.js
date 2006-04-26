@@ -19,8 +19,6 @@ example.template.prototype = {
 
 			var obj = this;
 
-			obj.session = params['session'];
-
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{

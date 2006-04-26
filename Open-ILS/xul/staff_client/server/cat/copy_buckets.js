@@ -27,7 +27,6 @@ cat.copy_buckets.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.copy_ids = params['copy_ids'] || [];
 
 		JSAN.use('circ.util');
@@ -111,7 +110,7 @@ cat.copy_buckets.prototype = {
 									util.functional.map_list(
 										obj.network.simple_request(
 											'BUCKET_RETRIEVE_VIA_USER',
-											[ obj.session, obj.data.list.au[0].id() ]
+											[ ses(), obj.data.list.au[0].id() ]
 										).copy,
 										function(o) {
 											obj.bucket_id_name_map[ o.id() ] = o.name();
@@ -133,7 +132,7 @@ cat.copy_buckets.prototype = {
 									if (!bucket_id) return;
 									var bucket = obj.network.simple_request(
 										'BUCKET_FLESH',
-										[ obj.session, 'copy', bucket_id ]
+										[ ses(), 'copy', bucket_id ]
 									);
 									var items = bucket.items() || [];
 									obj.list2.clear();
@@ -168,7 +167,7 @@ cat.copy_buckets.prototype = {
 								bucket_item.target_copy( obj.copy_ids[i] );
 								try {
 									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
-										[ obj.session, 'copy', bucket_item ]);
+										[ ses(), 'copy', bucket_item ]);
 
 									if (typeof robj == 'object') throw robj;
 
@@ -196,7 +195,7 @@ cat.copy_buckets.prototype = {
 								bucket_item.target_copy( acp_id );
 								try {
 									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
-										[ obj.session, 'copy', bucket_item ]);
+										[ ses(), 'copy', bucket_item ]);
 
 									if (typeof robj == 'object') throw robj;
 
@@ -236,7 +235,7 @@ cat.copy_buckets.prototype = {
 									//var barcode = obj.selection_list2[i][1];
 									var bucket_item_id = obj.selection_list2[i][2];
 									var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
-										[ obj.session, 'copy', bucket_item_id ]);
+										[ ses(), 'copy', bucket_item_id ]);
 									if (typeof robj == 'object') throw robj;
 								} catch(E) {
 									alert(js2JSON(E));
@@ -254,7 +253,7 @@ cat.copy_buckets.prototype = {
 								var conf = prompt('To delete this bucket, re-type its name:','','Delete Bucket');
 								if (conf != name) return;
 								obj.list2.clear();
-								var robj = obj.network.simple_request('BUCKET_DELETE',[obj.session,'copy',bucket]);
+								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
@@ -274,7 +273,7 @@ cat.copy_buckets.prototype = {
 									bucket.owner( obj.data.list.au[0].id() );
 									bucket.name( name );
 
-									var robj = obj.network.simple_request('BUCKET_CREATE',[obj.session,'copy',bucket]);
+									var robj = obj.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
 
 									if (typeof robj == 'object') throw robj;
 
@@ -300,8 +299,7 @@ cat.copy_buckets.prototype = {
 								JSAN.use('util.window'); var win = new util.window();
 								win.open(
 									urls.XUL_COPY_EDITOR 
-									+ '?session=' + window.escape(obj.session)
-									+ '&copy_ids=' + window.escape( js2JSON(
+									+ '?copy_ids=' + window.escape( js2JSON(
 										util.functional.map_list(
 											obj.list2.dump_retrieve_ids(),
 											function (o) {
@@ -351,7 +349,7 @@ cat.copy_buckets.prototype = {
 								}
 
 								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',
-									[ obj.session, copies ]);
+									[ ses(), copies ]);
 								// FIXME -- check return value at some point
 
 								obj.controller.render('copy_buckets_menulist_placeholder');		

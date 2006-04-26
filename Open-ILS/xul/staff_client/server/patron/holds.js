@@ -16,7 +16,6 @@ patron.holds.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
 
 		JSAN.use('circ.util');
@@ -93,7 +92,7 @@ patron.holds.prototype = {
 							try {
 								JSAN.use('patron.util');
 								var params = { 
-									'patron' : patron.util.retrieve_au_via_id(obj.session,obj.patron_id), 
+									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
 									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
 									'staff' : obj.OpenILS.data.list.au[0],
 									'header' : obj.OpenILS.data.print_list_templates.holds.header,
@@ -161,7 +160,7 @@ patron.holds.prototype = {
 				method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				id = obj.OpenILS.data.list.au[0].ws_ou(); 
 			}
-			obj.holds = obj.network.simple_request( method, [ obj.session, id ]);
+			obj.holds = obj.network.simple_request( method, [ ses(), id ]);
 		}
 
 		function gen_list_append(hold) {

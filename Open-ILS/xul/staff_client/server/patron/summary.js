@@ -15,7 +15,6 @@ patron.summary.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.barcode = params['barcode'];
 		obj.id = params['id'];
 
@@ -110,7 +109,7 @@ patron.summary.prototype = {
 								e.setAttribute('value','...');
 								obj.network.simple_request(
 									'FM_MOBTS_TOTAL_HAVING_BALANCE',
-									[ obj.session, obj.patron.id() ],
+									[ ses(), obj.patron.id() ],
 									function(req) {
 										JSAN.use('util.money');
 										e.setAttribute('value',
@@ -134,7 +133,7 @@ patron.summary.prototype = {
 								if (e2) e2.setAttribute('value','...');
 								obj.network.simple_request(
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
-									[ obj.session, obj.patron.id() ],
+									[ ses(), obj.patron.id() ],
 									function(req) {
 										e.setAttribute('value',
 											req.getResultObject().total	
@@ -164,7 +163,7 @@ patron.summary.prototype = {
 								if (e2) e2.setAttribute('value','...');
 								obj.network.simple_request(
 									'FM_AHR_COUNT_RETRIEVE',
-									[ obj.session, obj.patron.id() ],
+									[ ses(), obj.patron.id() ],
 									function(req) {
 										e.setAttribute('value',
 											req.getResultObject().total
@@ -464,12 +463,12 @@ patron.summary.prototype = {
 							robj = obj.network.request(
 								api.FM_AU_RETRIEVE_VIA_BARCODE.app,
 								api.FM_AU_RETRIEVE_VIA_BARCODE.method,
-								[ obj.session, obj.barcode ]
+								[ ses(), obj.barcode ]
 							);
 						} else if (obj.id && obj.id != 'null') {
 							robj = obj.network.simple_request(
 								'FM_AU_FLESHED_RETRIEVE_VIA_ID',
-								[ obj.session, obj.id ]
+								[ ses(), obj.id ]
 							);
 						} else {
 							throw('summary: No barcode or id');
@@ -510,7 +509,7 @@ patron.summary.prototype = {
 							var s = obj.network.request(
 								api.FM_ASVR_RETRIEVE.app,
 								api.FM_ASVR_RETRIEVE.method,
-								[ obj.session, surveys[i].id(), obj.patron.id() ]
+								[ ses(), surveys[i].id(), obj.patron.id() ]
 							);
 							survey_responses[ surveys[i].id() ] = s;
 						}

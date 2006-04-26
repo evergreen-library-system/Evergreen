@@ -16,8 +16,6 @@ circ.copy_status.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
-
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
@@ -75,7 +73,7 @@ circ.copy_status.prototype = {
                                                         for (var i = 0; i < obj.selection_list.length; i++) {
                                                                 var barcode = obj.selection_list[i][1];
                                                                 var checkin = circ.util.checkin_via_barcode(
-                                                                        obj.session, barcode
+                                                                        ses(), barcode
                                                                 );
                                                         }
 						}
@@ -109,8 +107,7 @@ circ.copy_status.prototype = {
 							JSAN.use('util.window'); var win = new util.window();
 							win.open( 
 								xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
-								+ '?session=' + window.escape(obj.session)
-								+ '&copy_ids=' + js2JSON(
+								+ '?copy_ids=' + js2JSON(
 									util.functional.map_list(
 										obj.selection_list,
 										function (o) {
@@ -249,7 +246,7 @@ circ.copy_status.prototype = {
 				api.PERM_MULTI_ORG_CHECK.app,
 				api.PERM_MULTI_ORG_CHECK.method,
 				[ 
-					obj.session, 
+					ses(), 
 					obj.data.list.au[0].id(), 
 					util.functional.map_list(
 						copies,
@@ -271,8 +268,7 @@ circ.copy_status.prototype = {
 		obj.data.stash('temp');
 		var w = win.open(
 			window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
-				+'?session='+window.escape(obj.session)
-				+'&copy_ids='+window.escape(js2JSON(list))
+				+'?copy_ids='+window.escape(js2JSON(list))
 				+'&edit='+edit,
 			title,
 			'chrome,modal,resizable'
@@ -286,7 +282,7 @@ circ.copy_status.prototype = {
 				var r = obj.network.request(
 					api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 					api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-					[ obj.session, copies ]
+					[ ses(), copies ]
 				);
 				/* FIXME -- revisit the return value here */
 			} catch(E) {

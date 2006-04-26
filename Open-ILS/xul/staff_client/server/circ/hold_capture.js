@@ -14,8 +14,6 @@ circ.hold_capture.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
-
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
@@ -87,14 +85,14 @@ circ.hold_capture.prototype = {
 			var barcode = obj.controller.view.hold_capture_barcode_entry_textbox.value;
 			JSAN.use('circ.util');
 			var hold_capture = circ.util.hold_capture_via_copy_barcode(
-				obj.session, barcode, true
+				ses(), barcode, true
 			);
 			if (hold_capture) {
 				JSAN.use('patron.util');
 				var au_obj;
 				if (hold_capture.hold && hold_capture.hold.usr()) {
 
-					au_obj = patron.util.retrieve_au_via_id( obj.session, hold_capture.hold.usr() );
+					au_obj = patron.util.retrieve_au_via_id( ses(), hold_capture.hold.usr() );
 
 				} else {
 

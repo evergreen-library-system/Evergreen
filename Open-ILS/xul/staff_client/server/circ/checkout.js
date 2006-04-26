@@ -14,9 +14,8 @@ circ.checkout.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
-		obj.patron = obj.network.simple_request('FM_AU_RETRIEVE_VIA_ID',[obj.session,obj.patron_id]);
+		obj.patron = obj.network.simple_request('FM_AU_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
@@ -218,7 +217,7 @@ circ.checkout.prototype = {
 			var checkout = obj.network.request(
 				api.CHECKOUT.app,
 				api.CHECKOUT.method,
-				[ obj.session, params ]
+				[ ses(), params ]
 			);
 
 			if (checkout.ilsevent == 0) {
@@ -301,7 +300,7 @@ circ.checkout.prototype = {
 			var permit = obj.network.request(
 				api.CHECKOUT_PERMIT.app,
 				api.CHECKOUT_PERMIT.method,
-				[ obj.session, params ],
+				[ ses(), params ],
 				null,
 				{
 					'title' : 'Override Checkout Failure?',

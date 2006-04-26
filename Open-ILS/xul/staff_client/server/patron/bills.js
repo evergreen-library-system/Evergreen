@@ -24,7 +24,7 @@ patron.bills.prototype = {
 		var obj = this;
 		obj.bills = obj.network.simple_request(
 			obj.SHOW_ME_THE_BILLS,
-			[ obj.session, obj.patron_id ]
+			[ ses(), obj.patron_id ]
 		);
 
 		for (var i = 0; i < obj.bills.length; i++) {
@@ -90,7 +90,6 @@ patron.bills.prototype = {
 
 		if (obj._controller_inited) return;
 
-		obj.session = obj.session || params['session'];
 		obj.patron_id = obj.patron_id || params['patron_id'];
 
 		JSAN.use('util.list'); obj.list = new util.list('bill_list');
@@ -138,8 +137,7 @@ patron.bills.prototype = {
 								var win = new util.window();
 								var w = win.open(
 									urls.XUL_PATRON_BILL_WIZARD
-										+ '?session=' + window.escape(obj.session)
-										+ '&patron_id=' + window.escape(obj.patron_id),
+										+ '?patron_id=' + window.escape(obj.patron_id),
 									'billwizard',
 									'chrome,resizable,modal'
 								);
@@ -159,8 +157,7 @@ patron.bills.prototype = {
 								obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
 								var w = win.open(
 									urls.XUL_PATRON_BILL_HISTORY
-										+ '?session=' + window.escape(obj.session)
-										+ '&patron_id=' + window.escape(obj.patron_id),
+										+ '?patron_id=' + window.escape(obj.patron_id),
 									'billhistory',
 									'chrome,resizable,modal'
 								);
@@ -338,7 +335,7 @@ patron.bills.prototype = {
 			var robj = obj.network.request(
 				api.BILL_PAY.app,	
 				api.BILL_PAY.method,
-				[ obj.session, payment_blob ]
+				[ ses(), payment_blob ]
 			);
 			if (robj && robj.ilsevent && robj.ilsevent == 0) {
 				return true;
@@ -415,7 +412,7 @@ patron.bills.prototype = {
 		} else {
 			obj.bills = obj.network.simple_request(
 				obj.SHOW_ME_THE_BILLS,	
-				[ obj.session, obj.patron_id ]
+				[ ses(), obj.patron_id ]
 			);
 			for (var i = 0; i < obj.bills.length; i++) {
 				if (instanceOf(obj.bills[i],mobts)) {
@@ -564,7 +561,7 @@ patron.bills.prototype = {
 					xt_label.setAttribute( 'value', 'Title' );
 					obj.network.simple_request(
 						'FM_CIRC_RETRIEVE_VIA_ID',
-						[ obj.session, my.mobts.id() ],
+						[ ses(), my.mobts.id() ],
 						function (req) {
 							var r_circ = req.getResultObject();
 							if (instanceOf(r_circ,circ)) {
@@ -643,8 +640,7 @@ patron.bills.prototype = {
 								JSAN.use('util.window'); var w = new util.window();
 								w.open(
 									urls.XUL_PATRON_BILL_DETAILS 
-									+ '?session=' + window.escape(obj.session) 
-									+ '&patron_id=' + window.escape(obj.patron_id)
+									+ '?patron_id=' + window.escape(obj.patron_id)
 									+ '&mbts_id=' + window.escape(my.mobts.id()),
 									'test' + my.mobts.id(),
 									'modal,chrome,resizable'
@@ -668,8 +664,7 @@ patron.bills.prototype = {
 								var win = new util.window();
 								var w = win.open(
 									urls.XUL_PATRON_BILL_WIZARD
-										+ '?session=' + window.escape(obj.session)
-										+ '&patron_id=' + window.escape(obj.patron_id)
+										+ '?patron_id=' + window.escape(obj.patron_id)
 										+ '&xact_id=' + window.escape( my.mobts.id() ),
 									'billwizard',
 									'chrome,resizable,modal'

@@ -315,7 +315,7 @@ cat.copy_browser.prototype = {
 				var v_count = 0; var c_count = 0;
 				acn_tree_list = obj.network.simple_request(
 					'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS',
-					[ obj.data.session, obj.docid, [ org.id() ] ]
+					[ ses(), obj.docid, [ org.id() ] ]
 				);
 				for (var i = 0; i < acn_tree_list.length; i++) {
 					v_count++;

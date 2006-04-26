@@ -24,7 +24,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.retrieve_seslist(); obj.render_seslist();
 
 		var x = document.getElementById('create');
-		if (obj.check_perm(obj.session,'OFFLINE_CREATE_SESSION')) {
+		if (obj.check_perm(ses(),'OFFLINE_CREATE_SESSION')) {
 			x.disabled = false;
 			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
 		}
@@ -149,14 +149,14 @@ admin.offline_manage_xacts.prototype = {
 									}
 
 									if (upload) {
-										if (obj.check_perm(obj.session,'OFFLINE_UPLOAD_XACTS')) {
+										if (obj.check_perm(ses(),'OFFLINE_UPLOAD_XACTS')) {
 											document.getElementById('upload').disabled = false;
 										}
 									} else {
 										document.getElementById('upload').disabled = true;
 									}
 									if (process) {
-										if (obj.check_perm(obj.session,'OFFLINE_EXECUTE_SESSION')) {
+										if (obj.check_perm(ses(),'OFFLINE_EXECUTE_SESSION')) {
 											document.getElementById('execute').disabled = false;	
 										}
 									} else {
@@ -343,7 +343,7 @@ admin.offline_manage_xacts.prototype = {
 		for (var i = 0; i < obj.sel_list.length; i++) {
 
 			var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-				+ "?ses=" + window.escape(obj.data.session)
+				+ "?ses=" + window.escape(ses())
 				+ "&action=execute" 
 				+ "&seskey=" + window.escape(obj.seslist[obj.sel_list[i]].key)
 				+ "&ws=" + window.escape(obj.data.ws_name);
@@ -366,7 +366,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-			+ "?ses=" + window.escape(obj.data.session)
+			+ "?ses=" + window.escape(ses())
 			+ "&action=status" 
 			+ "&seskey=" + window.escape(obj.seslist[ obj.sel_list[0] ].key)
 			+ "&ws=" + window.escape(obj.data.ws_name)
@@ -440,7 +440,7 @@ admin.offline_manage_xacts.prototype = {
 			window.xulG.url_prefix( urls.XUL_REMOTE_BROWSER )
 			+ '?url=' + window.escape(
 				urls.XUL_OFFLINE_UPLOAD_XACTS
-				+ '?ses=' + window.escape(obj.data.session)
+				+ '?ses=' + window.escape(ses())
 				+ '&seskey=' + window.escape(seskey)
 				+ '&ws=' + window.escape(obj.data.ws_name)
 				+ '&delta=' + window.escape('0')
@@ -483,7 +483,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-			+ "?ses=" + window.escape(obj.data.session)
+			+ "?ses=" + window.escape(ses())
 			+ "&action=status" 
 			+ "&seskey=" + window.escape(obj.seslist[obj.sel_list[0]].key)
 			+ "&ws=" + window.escape(obj.data.ws_name)
@@ -508,7 +508,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
-			+ "?ses=" + window.escape(obj.data.session)
+			+ "?ses=" + window.escape(ses())
 			+ "&action=create" 
 			+ "&desc=" + window.escape(desc)
 			+ "&ws=" + window.escape(obj.data.ws_name);
@@ -532,7 +532,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.data.stash_retrieve();
 
 		var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
-			+ "?ses=" + window.escape(obj.data.session)
+			+ "?ses=" + window.escape(ses())
 			+ "&action=status"
 			+ "&org=" + window.escape(obj.data.list.au[0].ws_ou())
 			+ "&status_type=sessions";
@@ -656,8 +656,7 @@ admin.offline_manage_xacts.prototype = {
 			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 				try {
 					var url = urls.XUL_COPY_STATUS
-						+ '?session=' + window.escape(obj.data.session)
-						+ '&barcodes=' + window.escape( js2JSON(barcodes) );
+						+ '?barcodes=' + window.escape( js2JSON(barcodes) );
 					window.xulG.new_tab(
 						url
 					);
@@ -680,8 +679,7 @@ admin.offline_manage_xacts.prototype = {
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					try {
 						var url = urls.XUL_PATRON_DISPLAY
-							+ '?session=' + window.escape(obj.data.session)
-							+ '&barcode=' + window.escape( error.command.patron_barcode );
+							+ '?barcode=' + window.escape( error.command.patron_barcode );
 						window.xulG.new_tab(
 							url
 						);

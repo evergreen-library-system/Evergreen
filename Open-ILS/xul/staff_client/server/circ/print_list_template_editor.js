@@ -19,8 +19,6 @@ circ.print_list_template_editor.prototype = {
 
 			var obj = this;
 
-			obj.session = params['session'];
-
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 			this.test_patron = new au();
 			this.test_patron.family_name('Doe');

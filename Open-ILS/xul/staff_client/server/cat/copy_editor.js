@@ -18,7 +18,6 @@ function my_init() {
 
 		g.cgi = new CGI();
 
-		g.session = g.cgi.param('session') || g.cgi.param('ses');
 		g.docid = g.cgi.param('docid');
 		g.handle_update = g.cgi.param('handle_update');
 
@@ -119,7 +118,7 @@ function my_init() {
 
 				sc = g.network.simple_request(
 					'FM_ASC_BATCH_RETRIEVE',
-					[ g.session, [ sc_id ] ]
+					[ ses(), [ sc_id ] ]
 				)[0];
 
 			}
@@ -251,7 +250,7 @@ g.special_exception = {
 		if (value == null || value == '' || value == 'null') return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
-			[ g.session, value ],
+			[ ses(), value ],
 			function(req) {
 				var p = '??? id = ' + value;
 				try {
@@ -269,7 +268,7 @@ g.special_exception = {
 		if (value == null || value == '' || value == 'null') return;
 		g.network.simple_request(
 			'FM_AU_RETRIEVE_VIA_ID',
-			[ g.session, value ],
+			[ ses(), value ],
 			function(req) {
 				var p = '??? id = ' + value;
 				try {
@@ -754,7 +753,7 @@ g.stash_and_close = function() {
 			var r = g.network.request(
 				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-				[ g.session, g.copies ]
+				[ ses(), g.copies ]
 			);
 			/* FIXME -- revisit the return value here */
 		} catch(E) {

@@ -174,7 +174,7 @@ util.network.prototype = {
 				JSAN.use('OpenILS.data');
 				var data = new OpenILS.data(); data.init({'via':'stash'});
 				if (data.temporary_session != '') {
-					params[0] = data.temporary_session;
+					params[0] = data.temporary_session.key;
 					req = obj._request(app,name,params,null,o_params);
 				}
 			}

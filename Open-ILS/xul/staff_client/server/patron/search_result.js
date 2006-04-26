@@ -14,7 +14,6 @@ patron.search_result.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.query = params['query'];
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
@@ -40,7 +39,7 @@ patron.search_result.prototype = {
 				'map_row_to_column' : patron.util.std_map_row_to_column(),
 				'retrieve_row' : function(params) {
 					var id = params.retrieve_id;
-					var au_obj = patron.util.retrieve_au_via_id( obj.session, id );
+					var au_obj = patron.util.retrieve_au_via_id( ses(), id );
 
 					var row = params.row;
 					if (typeof row.my == 'undefined') row.my = {};
@@ -122,7 +121,7 @@ patron.search_result.prototype = {
 			var results = this.network.request(
 				api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
 				api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
-				[ this.session, search_hash ]
+				[ ses(), search_hash ]
 			);
 			//this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
 			var funcs = [];

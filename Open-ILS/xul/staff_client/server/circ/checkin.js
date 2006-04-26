@@ -15,8 +15,6 @@ circ.checkin.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
-
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
@@ -145,7 +143,7 @@ circ.checkin.prototype = {
 			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
 			JSAN.use('circ.util');
 			var checkin = circ.util.checkin_via_barcode(
-				obj.session, barcode, backdate
+				ses(), barcode, backdate
 			);
 			if (!checkin) return; /* circ.util.checkin handles errors and returns null currently */
 			if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */

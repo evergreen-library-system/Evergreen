@@ -17,7 +17,6 @@ patron.display.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.barcode = params['barcode'];
 		obj.id = params['id'];
 
@@ -31,8 +30,7 @@ patron.display.prototype = {
 		function spawn_checkout_interface() {
 			obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT
-				+ '?session=' + window.escape( obj.session )
-				+ '&patron_id=' + window.escape( obj.patron.id() ),
+				+ '?patron_id=' + window.escape( obj.patron.id() ),
 				{},
 				{ 
 					'on_list_change' : function(checkout) {
@@ -73,8 +71,7 @@ patron.display.prototype = {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {	
 									try {
 										var url = urls.XUL_PATRON_DISPLAY 
-											+ '?session=' + window.escape(obj.session) 
-											+ '&id=' + window.escape( obj.retrieve_ids[i] );
+											+ '?id=' + window.escape( obj.retrieve_ids[i] );
 										window.xulG.new_tab(
 											url
 										);
@@ -108,8 +105,7 @@ patron.display.prototype = {
 						function(ev) {
 							var frame = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_ITEMS
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
 									'on_list_change' : function(b) {
@@ -130,7 +126,7 @@ patron.display.prototype = {
 								urls.XUL_REMOTE_BROWSER
 								+ '?url=' + window.escape( 
 									urls.XUL_PATRON_EDIT
-									+ '?ses=' + window.escape( obj.session )
+									+ '?ses=' + window.escape( ses() )
 									+ '&usr=' + window.escape( obj.patron.id() )
 								),
 								{}, {
@@ -162,8 +158,7 @@ patron.display.prototype = {
 						function(ev) {
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_HOLDS	
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
 									'on_list_change' : function(h) {
@@ -180,8 +175,7 @@ patron.display.prototype = {
 						function(ev) {
 							var f = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_BILLS
-								+ '?session=' + window.escape( obj.session )
-								+ '&patron_id=' + window.escape( obj.patron.id() ),
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
 									'on_money_change' : function(b) {
@@ -239,8 +233,7 @@ patron.display.prototype = {
 			document.documentElement.setAttribute('class','');
 			var frame = obj.left_deck.set_iframe(
 				urls.XUL_PATRON_SUMMARY
-				+'?session=' + window.escape(obj.session)
-				+'&barcode=' + window.escape(obj.barcode) 
+				+'?barcode=' + window.escape(obj.barcode) 
 				+'&id=' + window.escape(obj.id), 
 				{},
 				{
@@ -279,8 +272,7 @@ patron.display.prototype = {
 					'on_error' : function(E) {
 						var error = js2JSON(E); obj.error.sdump('D_ERROR', error);
 						location.href = urls.XUL_PATRON_BARCODE_ENTRY 
-							+ '?session=' + window.escape(obj.session)
-							+ '&error=' + window.escape(error.substr(0,100));
+							+ '?error=' + window.escape(error.substr(0,100));
 					}
 				}
 			);
@@ -302,7 +294,7 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 
-			var loc = urls.XUL_PATRON_SEARCH_FORM +'?session=' + window.escape(obj.session);
+			var loc = urls.XUL_PATRON_SEARCH_FORM + '?blah=blah';
 			if (params['query']) {
 				var query = JSON2js(params['query']);
 				for (var i in query) {
@@ -319,8 +311,7 @@ patron.display.prototype = {
 					'on_submit' : function(query) {
 						obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 						var list_frame = obj.right_deck.reset_iframe(
-							urls.XUL_PATRON_SEARCH_RESULT
-							+'?session=' + window.escape(obj.session) + '&' + query,
+							urls.XUL_PATRON_SEARCH_RESULT + '?' + query,
 							{},
 							{
 								'on_select' : function(list) {
@@ -333,8 +324,7 @@ patron.display.prototype = {
 										function() {
 											var frame = obj.left_deck.set_iframe(
 												urls.XUL_PATRON_SUMMARY
-													+'?session=' + window.escape(obj.session)
-													+'&id=' + window.escape(list[0]), 
+													+'?id=' + window.escape(list[0]), 
 													{},
 													{
 														'on_finished' : function(patron) {

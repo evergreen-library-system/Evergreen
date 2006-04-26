@@ -21,8 +21,6 @@ cat.z3950.prototype = {
 
 			var obj = this;
 
-			obj.session = params['session'];
-
 			JSAN.use('circ.util');
 			var columns = circ.util.columns(
 				{
@@ -269,7 +267,7 @@ cat.z3950.prototype = {
 			var params;
 			obj.network.simple_request(
 				'FM_BLOB_RETRIEVE_VIA_Z3950_TCN',
-				[ obj.session, search, 'oclc', obj.controller.view.username.value, obj.controller.view.password.value ],
+				[ ses(), search, 'oclc', obj.controller.view.username.value, obj.controller.view.password.value ],
 				function(req) {
 					obj.handle_results(req.getResultObject())
 					obj.restore_enable_search_buttons();
@@ -295,7 +293,7 @@ cat.z3950.prototype = {
 			obj.store_disable_search_buttons();
 			if (!Number(obj.controller.view.server_menu.value)) {
 				params = [ 
-					obj.session, 
+					ses(), 
 					{
 						'search':search,
 						'service':obj.controller.view.server_menu.value,
@@ -303,7 +301,7 @@ cat.z3950.prototype = {
 				];
 			} else {
 				params = [ 
-					obj.session, 
+					ses(), 
 					{
 						'search':search,
 						'server':obj.controller.view.server.value, 

@@ -14,8 +14,6 @@ patron.search_form.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
-
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 

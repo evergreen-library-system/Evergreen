@@ -19,7 +19,6 @@ util.browser.prototype = {
 
 			var obj = this;
 
-			obj.session = params['session'];
 			obj.url = params['url'];
 			obj.push_xulG = params['push_xulG'];
 

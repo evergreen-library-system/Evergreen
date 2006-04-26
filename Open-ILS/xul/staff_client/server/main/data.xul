@@ -70,9 +70,7 @@
 					urls.XUL_OFFLINE_GENERATE_WIDGETS	
 				);
 				xulG.window.open(urls.XUL_MENU_FRAME
-					+ '?session='+window.escape(xulG.auth.session.key)
-					+ '&authtime='+window.escape(xulG.auth.session.authtime)
-					+ '&server='+window.escape(xulG.url),
+					+ '?server='+window.escape(xulG.url),
 					'main'+xulG.window.window_name_increment(),'chrome,resizable'
 				);
 

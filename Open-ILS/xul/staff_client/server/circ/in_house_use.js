@@ -15,8 +15,6 @@ circ.in_house_use.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
-
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
@@ -149,7 +147,7 @@ circ.in_house_use.prototype = {
 
 			var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
 			var result = obj.network.simple_request('FM_AIHU_CREATE',
-				[ obj.session, { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
+				[ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
 			);
 
 			obj.list.append(

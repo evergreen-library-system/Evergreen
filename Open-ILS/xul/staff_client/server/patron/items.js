@@ -14,7 +14,6 @@ patron.items.prototype = {
 
 		var obj = this;
 
-		obj.session = params['session'];
 		obj.patron_id = params['patron_id'];
 
 		JSAN.use('circ.util');
@@ -122,7 +121,7 @@ patron.items.prototype = {
 							try {
 								JSAN.use('patron.util');
 								var params = { 
-									'patron' : patron.util.retrieve_au_via_id(obj.session,obj.patron_id), 
+									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
 									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
 									'staff' : obj.OpenILS.data.list.au[0],
 									'header' : obj.OpenILS.data.print_list_templates.checkout.header,
@@ -149,7 +148,7 @@ patron.items.prototype = {
 								dump('Renew barcode = ' + barcode);
 								var renew = obj.network.simple_request(
 									'CHECKOUT_RENEW', 
-									[ obj.session, { barcode: barcode, patron: obj.patron_id } ]
+									[ ses(), { barcode: barcode, patron: obj.patron_id } ]
 								);
 								dump('  result = ' + js2JSON(renew) + '\n');
 							}
@@ -213,7 +212,7 @@ patron.items.prototype = {
 								dump('Mark barcode lost = ' + barcode);
 								var lost = obj.network.simple_request(
 									'MARK_ITEM_LOST', 
-									[ obj.session, { barcode: barcode } ]
+									[ ses(), { barcode: barcode } ]
 								);
 								dump('  result = ' + js2JSON(lost) + '\n');
 							}
@@ -262,7 +261,7 @@ patron.items.prototype = {
 								for (var i = 0; i < barcodes.length; i++) {
 									var lost = obj.network.simple_request(
 										'MARK_ITEM_CLAIM_RETURNED', 
-										[ obj.session, { barcode: barcodes[i], backdate: backdate } ]
+										[ ses(), { barcode: barcodes[i], backdate: backdate } ]
 									);
 								}
 								obj.retrieve();
@@ -277,7 +276,7 @@ patron.items.prototype = {
 								var barcode = obj.retrieve_ids[i][1];
 								dump('Check in barcode = ' + barcode);
 								var checkin = circ.util.checkin_via_barcode(
-									obj.session, barcode
+									ses(), barcode
 								);
 								dump('  result = ' + js2JSON(checkin) + '\n');
 							}
@@ -312,7 +311,7 @@ patron.items.prototype = {
 			obj.checkouts = obj.network.request(
 				api.FM_CIRC_RETRIEVE_VIA_USER.app,
 				api.FM_CIRC_RETRIEVE_VIA_USER.method,
-				[ obj.session, obj.patron_id ]
+				[ ses(), obj.patron_id ]
 			);
 				
 		}

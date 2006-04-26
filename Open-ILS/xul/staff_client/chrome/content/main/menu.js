@@ -20,8 +20,6 @@ main.menu.prototype = {
 
 	'init' : function( params ) {
 
-		/* var session = params['session']; */
-		var authtime = params['authtime'];
 		urls.remote = params['server'];
 
 		var obj = this;
@@ -45,9 +43,7 @@ main.menu.prototype = {
 					obj.data.stash_retrieve();
 					obj.window.open(
 						obj.url_prefix(urls.XUL_MENU_FRAME)
-						+ '?session='+window.escape(obj.data.session) 
-						+ '&authtime='+window.escape(authtime) 
-						+ '&server='+window.escape(urls.remote),
+						+ '?server='+window.escape(urls.remote),
 						'main' + obj.window.window_name_increment(),
 						'chrome,resizable'); 
 				}
@@ -66,8 +62,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS)
-						+ '?session='+window.escape(obj.data.session),{'tab_name':'Copy Buckets'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':'Copy Buckets'},{});
 				}
 			],
 			'cmd_replace_barcode' : [
@@ -106,15 +101,14 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY)
-						+ '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_DISPLAY),{},{});
 				}
 			],
 			'cmd_search_opac' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					var content_params = { 'session' : obj.data.session, 'authtime' : authtime };
+					var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
 					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
 				}
 			],
@@ -136,8 +130,8 @@ main.menu.prototype = {
 								var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
 								obj.data.stash_retrieve();
 								var content_params = { 
-									'session' : obj.data.session, 
-									'authtime' : authtime,
+									'session' : ses(), 
+									'authtime' : ses('authtime'),
 									'opac_url' : opac_url,
 								};
 								if (i == 0) {
@@ -162,8 +156,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS)
-						+ '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS),{},{});
 				}
 			],
 
@@ -173,7 +166,7 @@ main.menu.prototype = {
 				function() {
 					obj.data.stash_retrieve();
 					var loc = obj.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( obj.data.session ) );
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( ses() ) );
 					obj.set_tab(
 						loc, 
 						{}, 
@@ -191,28 +184,28 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN),{},{});
 				}
 			],
 			'cmd_circ_checkout' : [
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY),{},{});
 				}
 			],
 			'cmd_circ_hold_capture' : [
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE),{},{});
 				}
 			],
 			'cmd_browse_holds' : [
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER) + '?session='+window.escape(obj.data.session),{ 'tab_name' : 'Hold Browser' },{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : 'Hold Browser' },{});
 				}
 			],
 			'cmd_circ_hold_pull_list' : [
@@ -220,7 +213,7 @@ main.menu.prototype = {
 				function() { 
 					obj.data.stash_retrieve();
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
-						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(obj.data.session)
+						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(ses())
 					);
 					obj.set_tab( loc, {'tab_name':'On Shelf Pull List'}, { 'show_print_button' : true, } );
 				}
@@ -230,7 +223,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_IN_HOUSE_USE),{},{});
 				}
 			],
 
@@ -246,7 +239,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT),{},{});
 				}
 			],
 
@@ -262,42 +255,42 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY) + '?session=' + window.escape(obj.data.session), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_ADV_USER_BARCODE_ENTRY), {}, {});
 				}
 			],
 			'cmd_print_list_template_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR) + '?session=' + window.escape(obj.data.session), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR), {}, {});
 				}
 			],
 			'cmd_stat_cat_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Stat Cat Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Stat Cat Editor'},{});
 				}
 			],
 			'cmd_non_cat_type_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Non-Cataloged Type Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Non-Cataloged Type Editor'},{});
 				}
 			],
 			'cmd_copy_location_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(obj.data.session),{'tab_name':'Copy Location Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Copy Location Editor'},{});
 				}
 			],
 			'cmd_test' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					var content_params = { 'session' : obj.data.session, 'authtime' : authtime };
+					var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
 					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 				}
 			],
@@ -305,14 +298,14 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?ses='+window.escape(ses()),{},{});
 				}
 			],
 			'cmd_test_xul' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?session='+window.escape(obj.data.session),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_XUL) + '?ses='+window.escape(ses()),{},{});
 				}
 			],
 			'cmd_console' : [
@@ -343,7 +336,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD)+ '?session='+window.escape(obj.data.session),'survey_wizard','chrome'); 
+					obj.window.open(obj.url_prefix(urls.XUL_SURVEY_WIZARD),'survey_wizard','chrome'); 
 				}
 			],
 			'cmd_public_opac' : [
@@ -392,8 +385,8 @@ main.menu.prototype = {
 		var obj = this;
 		obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
 		obj.data.stash_retrieve();
-		var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY) + '?session='+window.escape(obj.data.session);
-		loc += '&doit=1&query=' + window.escape(js2JSON(s));
+		var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY);
+		loc += '?doit=1&query=' + window.escape(js2JSON(s));
 		obj.new_tab( loc, {}, {} );
 	},
 
