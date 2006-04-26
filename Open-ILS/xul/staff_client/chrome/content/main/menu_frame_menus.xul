@@ -34,6 +34,7 @@
 	<command id="cmd_print_list_template_edit" />
 	<command id="cmd_z39_50_import" />
 	<command id="cmd_create_new_marc_book" />
+	<command id="cmd_replace_barcode" />
 
 	<command id="cmd_manage_offline_xacts" />
 
@@ -59,33 +60,15 @@
 	<key id="save-key" modifiers="accel" key="S" command=""/>
 	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
 	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
-	<!--
-	<key id="edit-undo-key" modifiers="accel" key="Z" command=""/>
-	<key id="edit-redo-key" modifiers="accel" key="Y" command=""/>
-	<key id="edit-cut-key" modifiers="accel" key="X" command=""/>
-	<key id="edit-copy-key" modifiers="accel" key="C" command=""/>
-	<key id="edit-paste-key" modifiers="accel" key="V" command=""/>
-	<key id="edit-delete-key" modifiers="" keycode="VK_DELETE" command=""/>
-	<key id="edit-select-all-key" modifiers="accel" key="A" command=""/>
-	<key id="edit-find-key" modifiers="accel" key="F" command=""/>
-	<key id="edit-find-again-key" modifiers="accel" key="G" command=""/>
-
-	<key id="circ-patron-status-key" keycode="VK_F11" command="cmd_circ_display"/>
-	<key id="circ-copy-status-key" keycode="VK_F9" command=""/>
-	<key id="circ-check-in-key" keycode="VK_F2" command="cmd_circ_checkin"/>
-	<key id="circ-renew-key" keycode="VK_F3" command=""/>
-	<key id="circ-mark-used-key" keycode="VK_F4" command=""/>
-	<key id="circ-place-hold-key" keycode="VK_F5" command=""/>
-	<key id="circ-patron-registration-key" keycode="VK_F12" command=""/>
-	-->
 	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
 	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
 	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
+	<key id="search-tcn-key" keycode="VK_F3" modifiers="shift" command="cmd_search_tcn"/>
 	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
 	<key id="copy-status-key" keycode="VK_F5" command="cmd_copy_status"/>
 	<key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
-	<key id="circ-hold-capture-key" keycode="VK_F7" command="cmd_circ_hold_capture"/>
-	<key id="patron-register-key" keycode="VK_F12" command="cmd_patron_registration"/>
+	<key id="circ-hold-capture-key" keycode="VK_F2" modifiers="shift" command="cmd_circ_hold_capture"/>
+	<key id="patron-register-key" keycode="VK_F1" modifiers="shift" command="cmd_patron_registration"/>
 </keyset>
 
 
@@ -109,40 +92,26 @@
 <menu id="main.menu.edit" label="&staff.main.menu.edit.label;" accesskey="&staff.main.menu.edit.key;">
 	<menupopup id="main.menu.edit.popup">
 		<menuitem label="Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
-	<!--
-		<menuitem label="&staff.main.menu.edit.undo.label;" accesskey="&staff.main.menu.edit.undo.key;" key="edit-undo-key" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.edit.redo.label;" accesskey="&staff.main.menu.edit.redo.key;" key="edit-redo-key" command="cmd_broken"/>
-		<menuseparator />
-		<menuitem label="&staff.main.menu.edit.cut.label;" accesskey="&staff.main.menu.edit.cut.key;" key="edit-cut-key" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.edit.copy.label;" accesskey="&staff.main.menu.edit.copy.key;" key="edit-copy-key" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.edit.paste.label;" accesskey="&staff.main.menu.edit.paste.key;" key="edit-paste-key" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.edit.delete.label;" accesskey="&staff.main.menu.edit.delete.key;" key="edit-delete-key" command="cmd_broken"/>
-		<menuseparator />
-		<menuitem label="&staff.main.menu.edit.buckets.label;" accesskey="&staff.main.menu.edit.buckets.key;" command="cmd_broken"/>
-		<menuseparator />
-		<menuitem label="&staff.main.menu.edit.select_all.label;" accesskey="&staff.main.menu.edit.select_all.key;" key="edit-select-all-key" command="cmd_broken"/>
-		<menuseparator />
-		<menuitem label="&staff.main.menu.edit.find.label;" accesskey="&staff.main.menu.edit.find.key;" key="edit-find-key" command="cmd_broken"/>
-		<menuitem label="&staff.main.menu.edit.find_again.label;" accesskey="&staff.main.menu.edit.find_again.key;" key="edit-find-again-key" command="cmd_broken"/>
-	-->
+		<menuitem label="Volume Buckets" command="cmd_broken" accesskey="V"/>
+		<menuitem label="Record Buckets" command="cmd_broken" accesskey="R"/>
 	</menupopup>
 </menu>
 
 <!-- The Circulation menu on the main menu -->
 <menu id="main.menu.circ" label="&staff.main.menu.circ.label;" accesskey="&staff.main.menu.circ.key;">
 	<menupopup id="main.menu.circ.popup">
-		<menuitem label="&staff.main.menu.circ.checkout.label;" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
-		<menuitem label="&staff.main.menu.circ.checkin.label;" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
-		<menuitem label="&staff.main.menu.circ.hold_capture.label;" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
-		<menuitem label="On Shelf Hold Pull List" accesskey="S" command="cmd_circ_hold_pull_list"/>
-		<menuitem label="Browse Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
-		<menuitem label="In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
+		<menuitem label="Check Out Items / Display Patron" accesskey="&staff.main.menu.circ.checkout.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+		<menuitem label="Use In-House Items" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
+		<menuitem label="Check In Items / Process Items" accesskey="&staff.main.menu.circ.checkin.key;" key="circ-checkin-key" command="cmd_circ_checkin"/>
+		<menuitem label="Capture Holds / Process Items" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
 		<menuseparator />
-		<menuitem label="&staff.main.menu.circ.copy_status.label;" accesskey="&staff.main.menu.circ.copy_status.key;" key="copy-status-key" command="cmd_copy_status"/>
-		<menuitem label="&staff.main.menu.circ.patron_status.label;" accesskey="&staff.main.menu.circ.patron_status.key;" key="circ-checkout-key" command="cmd_circ_checkout"/>
+		<menuitem label="View Pull List for Hold Requests" accesskey="S" command="cmd_circ_hold_pull_list"/>
+		<menuitem label="Browse Active Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
 		<menuseparator />
-		<menuitem label="Offline Interface" command="cmd_standalone" accesskey="f"/>
+		<menuitem label="Show Copy Status by Barcode" accesskey="B" key="copy-status-key" command="cmd_copy_status"/>
+		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
 		<menuseparator />
+		<menuitem label="Enter Offline Interface" command="cmd_standalone" accesskey="f"/>
 		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
 	</menupopup>
 </menu>
@@ -150,21 +119,31 @@
 <!-- The Cataloging menu on the main menu -->
 <menu id="main.menu.cat" label="&staff.main.menu.cat.label;" accesskey="&staff.main.menu.cat.key;">
 	<menupopup id="main.menu.cat.popup">
-		<menuitem label="&staff.main.menu.cat.bib_search.label;" accesskey="&staff.main.menu.cat.bib_search.key;" key="search-opac-key" command="cmd_search_opac"/>
+		<menuitem label="Search the Catalog" accesskey="&staff.main.menu.cat.bib_search.key;" key="search-opac-key" command="cmd_search_opac"/>
+		<menuitem label="Retrieve record by TCN" accesskey="T" key="search-tcn-key" command="cmd_search_tcn" />
+		<menuitem label="Show Copy Status by Barcode" accesskey="B" key="copy-status-key" command="cmd_copy_status"/>
 		<menuseparator />
+		<!--
 		<menuitem disabled="true" label="&staff.main.menu.cat.dedup.label;" accesskey="&staff.main.menu.cat.dedup.key;" command="cmd_broken"/>
-		<menuitem label="Create New Marc Record" accesskey="n" command="cmd_create_new_marc_book"/>
-		<menuitem label="Z39.50 Import" accesskey="Z" command="cmd_z39_50_import"/>
+		-->
+		<menuitem label="Manage Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
+		<menuitem label="Manage Volume Buckets" command="cmd_broken" accesskey="V"/>
+		<menuitem label="Manage Record Buckets" command="cmd_broken" accesskey="R"/>
+		<menuseparator />
+		<menuitem label="Create New Marc Record" accesskey="N" command="cmd_broken"/>
+		<menuitem label="Import Record from Z39.50" accesskey="Z" command="cmd_z39_50_import"/>
+		<menuseparator />
+		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
 	</menupopup>
 </menu>
 
 <!-- The Search menu on the main menu -->
 <menu id="main.menu.search" label="&staff.main.menu.search.label;" accesskey="&staff.main.menu.search.key;">
 	<menupopup id="main.menu.search.popup">
-		<menuitem label="Patrons" accesskey="P" key="patron-search-key" command="cmd_patron_search" />
-		<menuitem label="Catalog" accesskey="C" key="search-opac-key" command="cmd_search_opac" />
-		<menuitem label="TCN" accesskey="T" command="cmd_search_tcn" />
-		<menuitem label="Item Barcode" accesskey="I" key="copy-status-key" command="cmd_copy_status"/>
+		<menuitem label="for Patrons" accesskey="P" key="patron-search-key" command="cmd_patron_search" />
+		<menuitem label="the Catalog" accesskey="C" key="search-opac-key" command="cmd_search_opac" />
+		<menuitem label="for record by TCN" accesskey="T" key="search-tcn-key" command="cmd_search_tcn" />
+		<menuitem label="for copies by Barcode" accesskey="B" key="copy-status-key" command="cmd_copy_status"/>
 	</menupopup>
 </menu>
 
