@@ -15,6 +15,16 @@
 		<script type="text/javascript" src="util/RemoteRequest.js" />
 		<script type="text/javascript" src="util/OrgTree.js" />
 		<script type="text/javascript" src="util/org_utils.js" />   
+		<script type="text/javascript">
+		<![CDATA[
+
+			function ses() {
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				return data.session;
+			}
+
+		]]>
+		</script>
 	</scripts>
 	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
 
