@@ -10,6 +10,8 @@ patron.holds = function (params) {
 
 patron.holds.prototype = {
 
+	'retrieve_ids' : [],
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -63,7 +65,16 @@ patron.holds.prototype = {
 						params.on_retrieve(row);
 					}
 					return row;
-				}
+				},
+				'on_select' : function(ev) {
+					JSAN.use('util.functional');
+					var sel = obj.list.retrieve_selection();
+					obj.retrieve_ids = util.functional.map_list(
+						sel,
+						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
+					);
+				},
+
 			}
 		);
 		
@@ -114,6 +125,19 @@ patron.holds.prototype = {
 					'cmd_show_catalog' : [
 						['command'],
 						function() {
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + obj.retrieve_ids[i].target;
+								var content_params = { 
+									'session' : ses(),
+									'authtime' : ses('authtime'),
+									'opac_url' : opac_url,
+								};
+								xulG.new_tab(
+									xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+									{'tab_name':tcn}, 
+									content_params
+								);
+							}
 						}
 					],
 				}
@@ -144,6 +168,7 @@ patron.holds.prototype = {
 			return function() {
 				obj.list.append(
 					{
+						'retrieve_id' : js2JSON({'id':hold.id(),'target':hold.target(),}),
 						'row' : {
 							'my' : {
 								'ahr' : hold,

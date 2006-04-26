@@ -244,7 +244,7 @@ OpenILS.data.prototype = {
 					[
 						api.FM_AU_RETRIEVE_VIA_SESSION.app,
 						api.FM_AU_RETRIEVE_VIA_SESSION.method,
-						[ obj.session ],
+						[ obj.session.key ],
 						false
 					]
 				);
@@ -267,7 +267,7 @@ OpenILS.data.prototype = {
 					[
 						api.FM_ASV_RETRIEVE_REQUIRED.app,
 						api.FM_ASV_RETRIEVE_REQUIRED.method,
-						[ obj.session ],
+						[ obj.session.key ],
 						true
 					]
 				);
@@ -290,7 +290,7 @@ OpenILS.data.prototype = {
 					[
 						api.FM_ASV_RETRIEVE.app,
 						api.FM_ASV_RETRIEVE.method,
-						[ obj.session ],
+						[ obj.session.key ],
 						true
 					]
 				);
@@ -329,7 +329,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.app,
 						api.FM_AOU_RETRIEVE_RELATED_VIA_SESSION.method,
-						[ obj.session, obj.list.au[0].ws_ou() ], /* use ws_ou and not home_ou */
+						[ obj.session.key, obj.list.au[0].ws_ou() ], /* use ws_ou and not home_ou */
 						true
 					]
 				)();
@@ -344,7 +344,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.FM_ACTSC_RETRIEVE_VIA_AOU.app,
 						api.FM_ACTSC_RETRIEVE_VIA_AOU.method,
-						[ obj.session, obj.list.au[0].ws_ou() ],
+						[ obj.session.key, obj.list.au[0].ws_ou() ],
 						true
 					]
 				)();
@@ -359,7 +359,7 @@ OpenILS.data.prototype = {
 					[ 
 						api.FM_ASC_RETRIEVE_VIA_AOU.app,
 						api.FM_ASC_RETRIEVE_VIA_AOU.method,
-						[ obj.session, obj.list.au[0].ws_ou() ],
+						[ obj.session.key, obj.list.au[0].ws_ou() ],
 						true
 					]
 				)();
