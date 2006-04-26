@@ -23,6 +23,10 @@ function advgInit() {
 		req.callback(advDrawBibExtras);
 		req.send();
 	}
+
+	var input = $n($('adv_global_trow'), 'term');
+	input.focus();
+	setEnterFunc(input, advSubmitGlobal);
 }
 
 function advDrawBibExtras(r) {

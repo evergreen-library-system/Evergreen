@@ -7,6 +7,13 @@
 
 	<script src='../js/adv_global.js'> </script>
 
+
+	<!--
+	<tr style='border: 2px solid #E0F0E0;'>
+		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input></td>
+	</tr>
+	-->
+
 	<tr>
 
 		<!-- Contains the user-addable(?) rows to define search class, containment and text -->
@@ -71,8 +78,11 @@
 									var input = $n(newrow, "term");
 									tbody.insertBefore(newrow, $("adv_global_addrow"));
 									input.value = "";
+									setEnterFunc(input, advSubmitGlobal);
 									input.focus();'>
 							</input>
+							<span style='padding-left: 10px;'> </span>
+							<input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input>
 						</td>
 					</tr>
 
