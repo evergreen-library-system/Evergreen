@@ -126,6 +126,8 @@ __PACKAGE__->register_method(
 sub ou_settings {
 	my( $self, $client, $ouid ) = @_;
 	
+	$logger->info("Fetching org unit settings for org $ouid");
+
 	my $s = $apputils->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic', $ouid);
