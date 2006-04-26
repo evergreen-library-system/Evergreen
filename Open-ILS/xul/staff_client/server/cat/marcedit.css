@@ -1,0 +1,92 @@
+input {
+	background-color: lightgrey;
+}
+
+input:focus {
+	background-color: lightcyan;
+}
+
+.marcSubfieldDelimiter, .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag, .marcSubfield, .marcControlfield, .marcLeader {
+	font-family: fixed, monospace;
+	margin: 0;
+}
+
+.marcSubfieldCode, .marcInd1, .marcInd2, .marcTag {
+	width: 1em;
+}
+
+.marcSubfieldDelimiter, .marcSubfieldCode {
+	color: blue;
+}
+
+.marcInd1, .marcInd2, .marcTag {
+	text-align: center;
+}
+
+.marcSubfield {
+	min-width: 1em;
+}
+
+.tooltip {
+	/* width: 10em; */
+}
+
+caption {
+	font-weight: bold;
+}
+
+grid row, grid column {
+	border-collapse: collapse;
+	border: solid thin gray;
+	vertical-align: bottom;
+}
+
+grid column {
+	background-color: lightgray; 
+	padding: 2px;
+}
+
+grid#leaderGrid textbox {
+	min-width: 1em;
+}
+
+grid#leaderGrid label {
+	font-weight: bold;
+}
+
+grid#leaderGrid label, grid#leaderGrid textbox {
+	visibility: hidden;
+}
+
+grid#leaderGrid[type="BKS"] *[set~="BKS"], grid#leaderGrid[type="BKS"] *[set~="BKS"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="SER"] *[set~="SER"], grid#leaderGrid[type="SER"] *[set~="SER"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="VIS"] *[set~="VIS"], grid#leaderGrid[type="VIS"] *[set~="VIS"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="MIX"] *[set~="MIX"], grid#leaderGrid[type="MIX"] *[set~="MIX"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="MAP"] *[set~="MAP"], grid#leaderGrid[type="MAP"] *[set~="MAP"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="SCO"] *[set~="SCO"], grid#leaderGrid[type="SCO"] *[set~="SCO"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="REC"] *[set~="REC"], grid#leaderGrid[type="REC"] *[set~="REC"] + textbox {
+	visibility: visible;
+}
+
+grid#leaderGrid[type="COM"] *[set~="COM"], grid#leaderGrid[type="COM"] *[set~="COM"] + textbox {
+	visibility: visible;
+}
+

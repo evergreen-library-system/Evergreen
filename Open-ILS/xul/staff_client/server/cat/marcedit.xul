@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="marcedit.css" type="text/css"?>
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadRecord(xml_record);">
+
+<script src="marcedit.js" type="application/x-javascript; e4x=1"/>
+<script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
+
+<groupbox flex="0">
+	<caption label="Options"/>
+	<hbox flex="1">
+		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
+		<button id="save-button"/>
+		<button label="Help" onclick="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del');"/>
+	</hbox>
+</groupbox>
+
+<groupbox flex="1">
+	<caption label="MARC Record"/>
+	<vbox flex="1" style="overflow: auto;">
+		<groupbox flex="0">
+			<caption>
+				<label value="Fixed Fields -- Record type: " ondblclick="toggleFFE();"/>
+				<label id="recordTypeLabel" context="recordTypeMenu"/>
+			</caption>
+			<vbox flex="1">
+				<grid flex="0" id="leaderGrid" type="BKS" hidden="true" persist="hidden">
+					<columns>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+						<column flex="1"/>
+					</columns>
+					<rows>
+						<row>
+							<label name="Type" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="ELvl" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Srce" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Srce" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Audn" set="BKS VIS SCO REC COM" value="Audn" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Audn" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Ctrl" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Ctrl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Lang" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Lang" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
+						</row>
+						<row>
+							<label name="BLvl" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="BLvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Form" set="BKS SER VIS MIX MAP SCO REC" value="Form" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Form" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Conf" set="BKS SER" value="Conf" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Conf" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+							<label name="Biog" set="BKS" value="Biog" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Biog" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="MRec" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Ctry" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Ctry" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+						</row>
+						<row>
+							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="S/L" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Cont" set="BKS SER" value="Cont" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Cont" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="GPub" set="BKS SER VIS MAP COM" value="GPub" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="GPub" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="LitF" set="BKS" value="LitF" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="LitF" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Indx" set="BKS MAP" value="Indx" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Indx" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Alph" set="SER" value="Alph" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Alph" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+						</row>
+						<row>
+							<label name="Desc" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Desc" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Ills" set="BKS" value="Ills" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Ills" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+							<label name="Fest" set="BKS" value="Fest" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Fest" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="DtSt" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="DtSt" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<label name="Date1" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Date1" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+							<label name="Date2" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" onclick="this.nextSibling.focus();"/>
+							<textbox class="plain" name="Date2" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+						</row>
+					</rows>
+				</grid>
+			</vbox>
+		</groupbox>
+
+		<grid id="recGrid">
+			<columns>
+				<column/>
+				<column/>
+				<column/>
+				<column flex="1"/>
+			</columns>
+			<rows/>
+		</grid>
+	</vbox>
+</groupbox>
+
+<popupset>
+	<popup id="recordTypeMenu" position="after_start">
+		<menuitem label="BKS" oncommand="changeFFEditor('BKS');"/>
+		<menuitem label="SER" oncommand="changeFFEditor('SER');"/>
+		<menuitem label="VIS" oncommand="changeFFEditor('VIS');"/>
+		<menuitem label="MIX" oncommand="changeFFEditor('MIX');"/>
+		<menuitem label="MAP" oncommand="changeFFEditor('MAP');"/>
+		<menuitem label="SCO" oncommand="changeFFEditor('SCO');"/>
+		<menuitem label="REC" oncommand="changeFFEditor('REC');"/>
+		<menuitem label="COM" oncommand="changeFFEditor('COM');"/>
+	</popup>
+</popupset>
+
+<script type="application/x-javascript; e4x=1"><![CDATA[
+
+// Fake xulG for standalone...
+try {
+	xulG.record;
+} catch (e) {
+	var xulG = {};
+	xulG.record = {};
+	xulG.save = {};
+
+	xulG.save.label = 'Save Record';
+	xulG.save.func = function (r) { alert(r); }
+
+	var cgi = new CGI();
+	var _rid = cgi.param('record');
+	if (_rid) {
+		xulG.record.url = '/opac/extras/supercat/retrieve/marcxml/record/' + _rid;
+	}
+}
+// End faking part...
+
+
+
+document.getElementById('save-button').setAttribute('label', xulG.save.label);
+document.getElementById('save-button').setAttribute('onclick', 'xulG.save.func(xml_record.toXMLString())');
+
+if (xulG.record.url) {
+	var req =  new XMLHttpRequest();
+	req.open('GET',xulG.record.url,false);
+	req.send(null);
+	xulG.record.marc = req.responseText
+}
+
+var xml_record = new XML( xulG.record.marc );
+
+// Get the tooltip xml all async like
+req =  new XMLHttpRequest();
+req.open('GET','marcedit-tooltips.xml',true);
+req.onreadystatechange = function () {
+	if (req.readyState == 4) {
+		bib_data = new XML( req.responseText );
+		genToolTips();
+	}
+}
+req.send(null);
+
+
+]]></script>
+
+</window>
+
+
+
