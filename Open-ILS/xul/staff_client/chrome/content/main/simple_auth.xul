@@ -92,7 +92,7 @@
 					g.cgi.param('login_type') || 'temp'
 				);
 				g.session.on_init = function() { 
-					g.data.temporary_session = g.session.key;
+					g.data.temporary_session = { 'key' : g.session.key, 'authtime' : g.session.authtime };
 					g.data.stash('temporary_session');
 					window.close();
 				}

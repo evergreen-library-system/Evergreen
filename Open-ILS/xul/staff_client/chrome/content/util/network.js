@@ -144,8 +144,10 @@ util.network.prototype = {
 				JSAN.use('OpenILS.data');
 				var data = new OpenILS.data(); data.init({'via':'stash'});
 				if (data.temporary_session != '') {
-					data.session = data.temporary_session; data.stash('session');
-					params[0] = data.session;
+					data.session.key = data.temporary_session.key; 
+					data.session.authtime = data.temporary_session.authtime; 
+					data.stash('session');
+					params[0] = data.session.key;
 					req = obj._request(app,name,params,null,o_params);
 				}
 			}

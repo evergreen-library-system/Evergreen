@@ -56,7 +56,10 @@
 			g.data.entities = entities;
 			g.data.stash('entities');
 
-			g.data.session = xulG.auth.session.key;
+			g.data.session = {};
+			g.data.session.key = xulG.auth.session.key;
+			g.data.session.authtime = xulG.auth.session.authtime;
+			g.data.stash('session');
 			g.data.on_complete = function () {
 
 				g.data.stash('list','hash','tree','temp');

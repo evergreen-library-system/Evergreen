@@ -19,9 +19,17 @@
 		<script type="text/javascript">
 		<![CDATA[
 
-			function ses() {
+			function ses(a) {
 				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				return data.session;
+				switch(a) {
+					case 'authtime' :
+						return data.session.authtime;
+					break;
+					case 'key':
+					default:
+						return data.session.key;
+					break;
+				}
 			}
 
 		]]>
