@@ -63,16 +63,15 @@ sub make_payments {
 	my $session = $apputils->start_db_session;
 	my $type		= $payments->{payment_type};
 	my $credit	= $payments->{patron_credit} || 0;
-	#my $drawer	= $payments->{cash_drawer};
 	my $drawer	= $user->wsid;
 	my $userid	= $payments->{userid};
 	my $note		= $payments->{note};
 	my $cc_type = $payments->{cc_type} || 'n/a';
-	my $cc_number = $payments->{cc_number} || 'n/a';
-	my $expire_month = $payments->{expire_month};
-	my $expire_year = $payments->{expire_year};
+	my $cc_number		= $payments->{cc_number} || 'n/a';
+	my $expire_month	= $payments->{expire_month};
+	my $expire_year	= $payments->{expire_year};
 	my $approval_code = $payments->{approval_code} || 'n/a';
-	my $check_number = $payments->{check_number} || 'n/a';
+	my $check_number	= $payments->{check_number} || 'n/a';
 
 	for my $pay (@{$payments->{payments}}) {
 

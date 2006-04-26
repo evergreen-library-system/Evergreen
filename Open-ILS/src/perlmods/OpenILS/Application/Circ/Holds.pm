@@ -344,6 +344,10 @@ sub retrieve_hold_status {
 	return 2;
 }
 
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "capture_copy",
 	api_name	=> "open-ils.circ.hold.capture_copy.barcode",
@@ -355,6 +359,8 @@ __PACKAGE__->register_method(
 	login mus have COPY_CHECKIN permissions (since this is essentially
 	copy checkin)
 	NOTE
+
+# XXX deprecate me XXX
 
 sub capture_copy {
 	my( $self, $client, $login_session, $params ) = @_;
