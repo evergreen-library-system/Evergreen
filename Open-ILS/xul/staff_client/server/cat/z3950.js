@@ -374,7 +374,10 @@ cat.z3950.prototype = {
 				'save' : {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
-						alert('We got MARC!  Put network call to import here.');
+						var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), my_marcxml ]);
+						if (typeof r.ilsevent != 'undefined') {
+							obj.error.standard_unexpected_error_alert('Record not likely imported.',r);
+						}
 					}
 				}
 			} 
