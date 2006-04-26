@@ -42,59 +42,59 @@
 					</columns>
 					<rows>
 						<row>
-							<label name="Type" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" onclick="this.nextSibling.focus();"/>
+							<label name="Type" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="ELvl" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" onclick="this.nextSibling.focus();"/>
+							<label name="ELvl" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Srce" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" onclick="this.nextSibling.focus();"/>
+							<label name="Srce" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Srce" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Audn" set="BKS VIS SCO REC COM" value="Audn" onclick="this.nextSibling.focus();"/>
+							<label name="Audn" set="BKS VIS SCO REC COM" value="Audn" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Audn" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ctrl" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" onclick="this.nextSibling.focus();"/>
+							<label name="Ctrl" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctrl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Ctrl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Lang" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" onclick="this.nextSibling.focus();"/>
+							<label name="Lang" set="BKS SER VIS MIX MAP SCO REC COM" value="Lang" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Lang" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
 						</row>
 						<row>
-							<label name="BLvl" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" onclick="this.nextSibling.focus();"/>
+							<label name="BLvl" set="BKS SER VIS MIX MAP SCO REC COM" value="BLvl" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="BLvl" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Form" set="BKS SER VIS MIX MAP SCO REC" value="Form" onclick="this.nextSibling.focus();"/>
+							<label name="Form" set="BKS SER VIS MIX MAP SCO REC" value="Form" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Form" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Conf" set="BKS SER" value="Conf" onclick="this.nextSibling.focus();"/>
+							<label name="Conf" set="BKS SER" value="Conf" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Conf" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Biog" set="BKS" value="Biog" onclick="this.nextSibling.focus();"/>
+							<label name="Biog" set="BKS" value="Biog" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Biog" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus();"/>
+							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="MRec" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ctry" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" onclick="this.nextSibling.focus();"/>
+							<label name="Ctry" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Ctry" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 						</row>
 						<row>
-							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus();"/>
+							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="S/L" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Cont" set="BKS SER" value="Cont" onclick="this.nextSibling.focus();"/>
+							<label name="Cont" set="BKS SER" value="Cont" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Cont" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="GPub" set="BKS SER VIS MAP COM" value="GPub" onclick="this.nextSibling.focus();"/>
+							<label name="GPub" set="BKS SER VIS MAP COM" value="GPub" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="GPub" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="LitF" set="BKS" value="LitF" onclick="this.nextSibling.focus();"/>
+							<label name="LitF" set="BKS" value="LitF" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="LitF" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Indx" set="BKS MAP" value="Indx" onclick="this.nextSibling.focus();"/>
+							<label name="Indx" set="BKS MAP" value="Indx" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Indx" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Alph" set="SER" value="Alph" onclick="this.nextSibling.focus();"/>
+							<label name="Alph" set="SER" value="Alph" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Alph" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 						</row>
 						<row>
-							<label name="Desc" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" onclick="this.nextSibling.focus();"/>
+							<label name="Desc" set="BKS SER VIS MIX MAP SCO REC COM" value="Desc" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Desc" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Ills" set="BKS" value="Ills" onclick="this.nextSibling.focus();"/>
+							<label name="Ills" set="BKS" value="Ills" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Ills" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Fest" set="BKS" value="Fest" onclick="this.nextSibling.focus();"/>
+							<label name="Fest" set="BKS" value="Fest" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Fest" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="DtSt" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" onclick="this.nextSibling.focus();"/>
+							<label name="DtSt" set="BKS SER VIS MIX MAP SCO REC COM" value="DtSt" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="DtSt" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
-							<label name="Date1" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" onclick="this.nextSibling.focus();"/>
+							<label name="Date1" set="BKS SER VIS MIX MAP SCO REC COM" value="Date1" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Date1" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
-							<label name="Date2" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" onclick="this.nextSibling.focus();"/>
+							<label name="Date2" set="BKS SER VIS MIX MAP SCO REC COM" value="Date2" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Date2" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
 						</row>
 					</rows>

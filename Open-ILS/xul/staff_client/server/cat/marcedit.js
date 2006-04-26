@@ -640,8 +640,8 @@ function updateFixedFields (element) {
 	var name = element.getAttribute('name');
 	for (var i in ff_pos[name]) {
 
-		if (!ff_pos[name][i][rtype])
-			continue;
+		if (!ff_pos[name][i][rtype]) continue;
+		if (!parts[i]) continue;
 
 		var before = parts[i].substr(0, ff_pos[name][i][rtype].start);
 		var after = parts[i].substr(ff_pos[name][i][rtype].start + ff_pos[name][i][rtype].len);
