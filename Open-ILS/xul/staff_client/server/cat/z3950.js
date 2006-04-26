@@ -111,10 +111,9 @@ cat.z3950.prototype = {
 							['command'],
 							function() {
 								obj.spawn_marc_editor(
-										obj.results.records[
-											obj.controller.view.marc_import.getAttribute('retrieve_id')
-										].marcxml
-									)
+									obj.results.records[
+										obj.controller.view.marc_import.getAttribute('retrieve_id')
+									].marcxml
 								);
 							},
 						],
