@@ -478,9 +478,13 @@ function myOPACShowCircTransaction(trans, record, circ) {
 	var checkin = _trimTime(circ.stop_fines_time());
 
 	$n(row,'myopac_circ_trans_due').appendChild(text(due))
-	/*$n(row,'myopac_circ_trans_finished').appendChild(text(checkin));*/
 	if(checkin)
 		appendClear($n(row,'myopac_circ_trans_finished'), text(checkin));
+	if(circ.stop_fines() == 'LOST')
+		appendClear($n(row,'myopac_circ_trans_finished'), text(circ.stop_fines()));
+	if(circ.stop_fines() == 'CLAIMSRETURNED')
+		appendClear($n(row,'myopac_circ_trans_finished'), text(""));
+
 
 	$n(row,'myopac_circ_trans_balance').
 		appendChild(text(_finesFormatNumber(trans.balance_owed())));
