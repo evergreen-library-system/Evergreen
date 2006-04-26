@@ -147,7 +147,8 @@
 					note.value( g.data.fancy_prompt_data.note );
 					note.pub( g.data.fancy_prompt_data.public ? 't' : 'f' );
 					note.usr( g.patron_id );
-					g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
+					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
+					if (typeof r.ilsevent != 'undefined') throw(r);
 					setTimeout(function(){refresh();},0);
 				}
 			} catch(E) {

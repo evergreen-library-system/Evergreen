@@ -55,7 +55,7 @@
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncopy_notes.xul\n" + E + '\n';
+					"system administrator or software developer the following:\ncopy_notes.xul\n" + js2JSON(E) + '\n';
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -66,7 +66,7 @@
 		}
 
 		function retrieve_notes() {
-			g.notes = g.network.simple_request('FM_ACPN_RETRIEVE_ALL',[ ses(), { 'itemid' : g.copy_id } ]).reverse();
+			g.notes = g.network.simple_request('FM_ACPN_RETRIEVE_ALL',[ { 'authtoken' : ses(), 'itemid' : g.copy_id } ]).reverse();
 		}
 
 		function apply(node,field,value) {
@@ -147,7 +147,8 @@
 					note.value( g.data.fancy_prompt_data.note );
 					note.pub( g.data.fancy_prompt_data.public ? 't' : 'f' );
 					note.owning_copy( g.copy_id );
-					g.network.simple_request('FM_ACPN_CREATE',[ ses(), note ]);
+					var r = g.network.simple_request('FM_ACPN_CREATE',[ ses(), note ]);
+					if (typeof r.ilsevent != 'undefined') throw(r);
 					setTimeout(function(){refresh();},0);
 				}
 			} catch(E) {
