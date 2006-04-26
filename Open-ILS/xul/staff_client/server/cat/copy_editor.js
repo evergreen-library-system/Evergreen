@@ -769,6 +769,6 @@ g.stash_and_close = function() {
 
 g.copy_notes = function() {
 	JSAN.use('util.window'); var win = new util.window();
-	win.open(urls.XUL_COPY_NOTES + '&copy_id=' + window.escape(g.copies[0].id()),'Copy Notes','chrome,resizable,modal');
+	win.open(urls.XUL_COPY_NOTES + '?copy_id=' + window.escape(g.copies[0].id()),'Copy Notes','chrome,resizable,modal');
 }
 
