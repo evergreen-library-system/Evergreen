@@ -316,6 +316,24 @@ sub build_org_tree {
 
 }
 
+sub fetch_closed_date {
+	my( $self, $cd ) = @_;
+	my $evt;
+	
+	$logger->debug("Fetching closed_date $cd from storage");
+
+	my $cd_obj = $self->simplereq(
+		'open-ils.storage',
+		'open-ils.storage.direct.actor.org_unit.closed_date.retrieve', $cd );
+
+	if(!$cd_obj) {
+		$logger->info("closed_date $cd not found in the db");
+		$evt = OpenILS::Event->new('USER_NOT_FOUND');
+	}
+
+	return ($cd_obj, $evt);
+}
+
 sub fetch_user {
 	my( $self, $userid ) = @_;
 	my( $user, $evt );

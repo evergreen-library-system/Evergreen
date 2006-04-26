@@ -1938,5 +1938,63 @@ sub delete_user_note {
 }
 
 
+
+__PACKAGE__->register_method (
+	method		=> 'create_closed_date',
+	api_name	=> 'open-ils.actor.org_unit.closed_date.create',
+	signature	=> q/
+		Creates a new closing entry for the given org_unit
+		@param authtoken The login session key
+		@param note The closed_date object
+	/
+);
+sub create_user_note {
+	my( $self, $conn, $authtoken, $cd ) = @_;
+
+	my( $user, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($user->id, $cd->org_unit, 'CREATE_CLOSEING');
+	return $evt if $evt;
+
+	$logger->activity("user ".$user->id." creating library closing for ".$cd->org_unit);
+
+	my $id = $U->storagereq(
+		'open-ils.storage.direct.actor.org_unit.closed_date.create', $cd );
+	return $U->DB_UPDATE_FAILED($cd) unless $id;
+	return $id;
+}
+
+
+__PACKAGE__->register_method (
+	method		=> 'delete_closed_date',
+	api_name	=> 'open-ils.actor.org_unit.closed_date.delete',
+	signature	=> q/
+		Deletes a closing entry for the given org_unit
+		@param authtoken The login session key
+		@param noteid The close_date id
+	/
+);
+sub delete_closed_date {
+	my( $self, $conn, $authtoken, $cd ) = @_;
+
+	my( $user, $evt ) = $U->checkses($authtoken);
+	return $evt if $evt;
+
+	($cd_obj, $evt) = fetch_closed_date($cd);
+	return $evt if $evt;
+
+	$evt = $U->check_perms($user->id, $cd->org_unit, 'DELETE_CLOSEING');
+	return $evt if $evt;
+
+	$logger->activity("user ".$user->id." deleting library closing for ".$cd->org_unit);
+
+	my $stat = $U->storagereq(
+		'open-ils.storage.direct.actor.org_unit.closed_date.delete', $cd );
+	return $U->DB_UPDATE_FAILED($cd) unless $stat;
+	return $stat;
+}
+
+
 1;
 

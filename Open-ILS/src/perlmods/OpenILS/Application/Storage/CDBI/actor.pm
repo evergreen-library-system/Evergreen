@@ -88,6 +88,15 @@ __PACKAGE__->columns( Essential => qw/dow_0_open dow_0_close dow_1_open dow_1_cl
 					dow_6_open dow_6_close/);
 
 #-------------------------------------------------------------------------------
+package actor::org_unit::closed_date;
+use base qw/actor/;
+
+__PACKAGE__->table( 'actor_org_unit_closed' );
+__PACKAGE__->columns( Primary => qw/id/);
+__PACKAGE__->columns( Essential => qw/org_unit close_start close_end reason/);
+
+
+#-------------------------------------------------------------------------------
 package actor::org_unit_setting;
 use base qw/actor/;
 

@@ -341,6 +341,12 @@
 	actor::user->sequence( 'actor.usr_id_seq' );
 
 	#---------------------------------------------------------------------
+	package actor::org_unit::closed_date;
+	
+	actor::org_unit::closed_date->table( 'actor.org_unit_closed' );
+	actor::org_unit::closed_date->sequence( 'actor.org_unit_closed_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::org_unit_setting;
 	
 	actor::org_unit_setting->table( 'actor.org_unit_setting' );

@@ -112,6 +112,8 @@ sub _init {
 		'Fieldmapper::actor::stat_cat_entry_user_map'	=> { hint => 'actscecm'  },
 		'Fieldmapper::actor::org_unit'			=> { hint 		=> 'aou',
 								     proto_fields	=> { children => 1 } },
+		'Fieldmapper::actor::org_unit::closed_date'	=> { hint => 'aoucd'    },
+		'Fieldmapper::actor::org_unit::hours_of_operation'	=> { hint => 'aouhoo'    },
 		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
 								     proto_fields	=> { children => 1 } },
 		
