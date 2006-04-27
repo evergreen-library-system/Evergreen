@@ -10,7 +10,7 @@
 <commandset id="copy_status_cmds" />
 
 <popupset id="copy_status_popupset">
-	<popup id="copy_status_actions" onpopupshowing="dump(document.popupNode.localName + '\n');if (document.popupNode.localName == 'treechildren') this.setAttribute('position','at_pointer'); else this.setAttribute('position','after_start');">
+	<popup id="copy_status_actions" position="at_pointer"> 
 		<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
@@ -43,28 +43,26 @@
 		command="cmd_copy_status_submit_barcode"
 		accesskey="S"/>
 	<spacer flex="1"/>
-	<button label="Selected Items" popup="copy_status_actions" accesskey="I"/>
+	<menubar>
+	<menu label="Actions for Selected Items" accesskey="S">
+		<menupopup>
+			<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
+			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_patron" label="Show Recent Circulations" accesskey="R"/>
+			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+		</menupopup>
+	</menu>
+	</menubar>
+
 </hbox>
 
 <hbox id="copy_status_bottom_ui">
+	<spacer flex="1"/>
 	<button id="copy_status_print" 
 		label="Print"
 		command="cmd_copy_status_print"
 		accesskey="P"/>
-	<button id="copy_status_reprint" 
-		label="Print Last"
-		command="cmd_copy_status_reprint"
-		accesskey_disabled="L"/>
-	<spacer id="pcii3s" flex="1"/>
-	<checkbox id="copy_status_auto" 
-		label="Auto-Print"
-		accesskey_disabled="A"/> 
-<!--
-	<button id="copy_status_done" 
-		label="&staff.copy_status.done_label;" 
-		command="cmd_copy_status_done"
-		accesskey="&staff.copy_status.done_label.accesskey;"/>
--->
 </hbox>
 
 </overlay>

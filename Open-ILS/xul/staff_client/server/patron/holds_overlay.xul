@@ -9,6 +9,20 @@
 
 <commandset id="holds_cmds" />
 
+<popupset id="holds_popupset">
+	<popup id="holds_actions" position="at_pointer"> 
+		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
+		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" />
+		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" />
+		<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" />
+		<menuitem label="Edit Selection Depth (Hold Range)" command="cmd_holds_edit_selection_depth" />
+		<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_holds_edit_selection_focus" />
+		<menuitem label="Find Another Target" command="cmd_holds_retarget"/>
+		<menuitem label="Cancel Hold" command="cmd_holds_cancel" />
+	</popup>
+</popupset>
+
+
 <box id="holds_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="cmvb1" flex="1"/>
 </box>
@@ -19,7 +33,7 @@
 		<vbox flex="0">
 			<hbox id="holds_top_ui" />
 		</vbox>
-		<tree id="holds_list" flex="1" enableColumnDrag="true"/>
+		<tree id="holds_list" flex="1" enableColumnDrag="true" context="holds_actions"/>
 		<vbox flex="0">
 			<hbox id="holds_bottom_ui" />
 		</vbox>
@@ -28,23 +42,25 @@
 
 <hbox id="holds_top_ui" flex="1">
 	<spacer flex="1"/>
-	<button id="catalog"
-		label="Show in Catalog"
-		command="cmd_show_catalog"
-	/>
-	<button id="holds_edit"
-		label="Edit"
-		command="cmd_holds_edit"
-	/>
-	<button id="holds_cancel"
-		label="Cancel"
-		command="cmd_holds_cancel"
-	/>
-	<button id="holds_print" 
-		label="Print"
-		command="cmd_holds_print"
-		accesskey="P"
-	/>
+	<menubar>
+		<menu label="Actions for Selected Holds" accesskey="S">
+			<menupopup>
+				<menuitem label="Show in Catalog" command="cmd_show_catalog" />
+				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" />
+				<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" />
+				<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" />
+				<menuitem label="Edit Selection Depth (Hold Range)" command="cmd_holds_edit_selection_depth" />
+				<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_holds_edit_selection_focus" />
+				<menuitem label="Find Another Target" command="cmd_holds_retarget"/>
+				<menuitem label="Cancel Hold" command="cmd_holds_cancel" />
+			</menupopup>
+		</menu>
+	</menubar>
+</hbox>
+
+<hbox id="holds_bottom_ui" flex="1">
+	<spacer flex="1"/>
+	<button id="holds_print" label="Print" command="cmd_holds_print" accesskey="P" />
 </hbox>
 
 </overlay>

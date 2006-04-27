@@ -69,6 +69,8 @@
 		<command id="cmd_show_catalog" />
 	</commandset>
 
+	<popupset id="holds_popupset"/>
+
 	<box id="holds_main" />
 
 </window>

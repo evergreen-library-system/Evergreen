@@ -73,6 +73,8 @@
 		<command id="cmd_show_catalog" />
 	</commandset>
 
+	<popupset id="items_popupset"/>
+
 	<box id="items_main" />
 
 </window>
