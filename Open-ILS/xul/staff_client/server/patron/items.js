@@ -149,9 +149,36 @@ patron.items.prototype = {
 								dump('Renew barcode = ' + barcode);
 								var renew = obj.network.simple_request(
 									'CHECKOUT_RENEW', 
-									[ ses(), { barcode: barcode, patron: obj.patron_id } ]
+									[ ses(), { barcode: barcode, patron: obj.patron_id } ],
+									null,
+									{
+										'title' : 'Override Checkin Failure?',
+										'overridable_events' : [ 
+											1203 /* COPY_BAD_STATUS */, 
+											7010 /* COPY_ALERT_MESSAGE */, 
+											7011 /* COPY_STATUS_LOST */, 
+											7012 /* COPY_STATUS_MISSING */, 
+											7004 /* COPY_NOT_AVAILABLE */, 
+											7006 /* COPY_IS_REFERENCE */, 
+											7010 /* COPY_ALERT_MESSAGE */,
+										],
+										'text' : {
+											'1203' : function(r) {
+												return obj.OpenILS.data.hash.ccs[ r.payload.status() ].name();
+											},
+											'7010' : function(r) {
+												return r.payload;
+											},
+											'7004' : function(r) {
+												return obj.OpenILS.data.hash.ccs[ r.payload ].name();
+											},
+											'7010' : function(r) {
+												return r.payload;
+											},
+										}
+									}
 								);
-								dump('  result = ' + js2JSON(renew) + '\n');
+								if (typeof renew.ilsevent != 'undefined') throw(renew);
 							}
 							obj.retrieve();
 							} catch(E) {
