@@ -207,7 +207,7 @@ util.network.prototype = {
 						'<button accesskey="C" label="Cancel" name="fancy_cancel"/>' + 
 						'<button id="override" accesskey="O" label="Override" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
 					window.open(
-						'/xul/server/util/fancy_prompt.xul'
+						urls.XUL_FANCY_PROMPT
 						+ '?xml=' + window.escape(xml)
 						+ '&title=' + window.escape(o_params.title),
 						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
