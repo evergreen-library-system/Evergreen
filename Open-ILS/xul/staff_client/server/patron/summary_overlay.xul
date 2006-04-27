@@ -114,7 +114,8 @@
 		<row id="pdsgr0">
 			<label id="PatronSummaryContact_library_card_label" class="text_right card label"
 				value="&staff.patron_display.library_card.label;"/>
-			<label id="patron_card" class="card value"/>
+			<!--<label id="patron_card" class="card value"/>-->
+			<textbox id="patron_card" class="plain" readonly="true" onclick="this.select()"/>
 		</row>
 		<row id="pdsgr1">
 			<label id="PatronSummaryContact_ident_label" class="text_right"
