@@ -13,7 +13,7 @@
 			</td>
 			<td>
 				<span style='padding-right: 0px;'>&opac.advanced.quick.isbn;:</span>
-				<input id='opac.advanced.quick.isbn' style='margin: 2px;' type='text' size='10' maxlength='10'> </input>
+				<input id='opac.advanced.quick.isbn' style='margin: 2px;' type='text' size='13' maxlength='13'> </input>
 				<input type='submit' onclick='advISBNRun();' value='Go'> </input>
 			</td>
 			<td>

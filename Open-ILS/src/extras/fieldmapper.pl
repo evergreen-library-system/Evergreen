@@ -9,17 +9,17 @@ my $map = $Fieldmapper::fieldmap;
 my $web = $ARGV[0];
 if(!$web) { $web = ""; }
 
-# List of classes needed by the opac
-my @web_hints = qw/ asv asva asvr asvq 
-		circ ccs ahn  
-		crcd crmf crrf mbts aoc aus 
-		mous mobts mb /;
 
 my @web_core = qw/ 
 	aou au perm_ex ex aout 
 	mvr ccs ahr aua ac actscecm cbreb acpl 
 	cbrebi acpn acp acnn acn bren asc asce 
-	clfm cifm citm cam /;
+	clfm cifm citm cam ahtc
+	asv asva asvr asvq 
+	circ ccs ahn  
+	crcd crmf crrf mbts aoc aus 
+	mous mobts mb 
+	/;
 
 my @reports = qw/ perm_ex ex ao aou aout /;
 
@@ -29,10 +29,6 @@ print "var _c = {};\n";
 for my $object (keys %$map) {
 
 	my $hint = $map->{$object}->{hint};
-
-	if($web eq "web") {
-		next unless (grep { $_ eq $hint } @web_hints );
-	}
 
 	if($web eq "web_core") {
 		next unless (grep { $_ eq $hint } @web_core );

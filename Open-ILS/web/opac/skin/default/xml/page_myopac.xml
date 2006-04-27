@@ -1,11 +1,6 @@
 <div id='canvas_main'>
 
 	<script language='javascript' src='../js/myopac.js'> </script>
-
-	<!-- overwrite the fieldmapper code with the extended fieldmapper code -->
-	<script language='javascript' src='../../../../common/js/fmextcore.js'> </script>
-	<script language='javascript' src='../../../../common/js/fmgen.js'> </script>
-
 	<script> config.ids.altcanvas.myopac_reload = 'myopac_reloading'; </script>
 	<div id='myopac_reloading' class='hide_me non_canvas'> Loading... </div>
 
