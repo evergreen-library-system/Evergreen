@@ -22,7 +22,7 @@
 				<columns><column /><column /></columns>                                 
 				<rows>
 					<row>
-						<label value="Total Owed" />
+						<label value="Net Balance" />
 	
 						<textbox id="bill_total_owed" value="" readonly="true" />
 					</row>
@@ -72,7 +72,7 @@
 						<textbox id="bpato" observes="bill_payment_applied" />
 					</row>
 					<row>
-						<label value="= Change" control="bill_change_amount" />
+						<label value="= Change" control="bill_change_amount" style="font-weight: bold" />
 	
 						<hbox>
 							<textbox id="bill_change_amount" />

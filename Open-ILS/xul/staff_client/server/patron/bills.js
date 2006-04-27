@@ -190,30 +190,14 @@ patron.bills.prototype = {
 						function(e) { return function() {}; }
 					],
 					'bill_payment_amount' : [
-						['change'],
+						['change','keypress'],
 						function(ev) {
-							JSAN.use('util.money');
-							var tb = ev.target;
-							tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
-							tb.setAttribute('value', tb.value );
-							var total = util.money.dollars_float_to_cents_integer( tb.value );
-							for (var i = 0; i < obj.current_payments.length; i++) {
-								var bill = obj.current_payments[i];
-								if (bill.checkbox.checked) {
-									var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
-									if ( bo > total ) {
-										bill.textbox.value = util.money.cents_as_dollars( total );
-										total = 0;
-									} else {
-										bill.textbox.value = util.money.cents_as_dollars( bo );
-										total = total - bo;
-									}
-								} else {
-									bill.textbox.value = '0.00';
+							if (ev.type == 'keypress') {
+								if (! (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* mac enter */) ) {
+									return;	
 								}
-								bill.textbox.setAttribute('value',bill.textbox.value);
 							}
-							obj.update_payment_applied();
+							obj.distribute_payment(ev.target);
 						} 
 					],
 					'bill_payment_applied' : [
@@ -256,10 +240,39 @@ patron.bills.prototype = {
 			}
 		);
 
+		obj.controller.render();
 		obj._controller_inited = true;
 
 	},
 
+	/*****************************************************************************************************************************/
+
+	'distribute_payment' : function(node) {
+		var obj = this;
+		JSAN.use('util.money');
+		var tb = node;
+		tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
+		tb.setAttribute('value', tb.value );
+		var total = util.money.dollars_float_to_cents_integer( tb.value );
+		if (total < 0) { tb.value = '0.00'; tb.setAttribute('value','0.00'); total = 0; }
+		for (var i = 0; i < obj.current_payments.length; i++) {
+				var bill = obj.current_payments[i];
+				if (bill.checkbox.checked) {
+					var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
+					if ( bo > total ) {
+						bill.textbox.value = util.money.cents_as_dollars( total );
+						total = 0;
+					} else {
+						bill.textbox.value = util.money.cents_as_dollars( bo );
+						total = total - bo;
+					}
+				} else {
+					bill.textbox.value = '0.00';
+				}
+				bill.textbox.setAttribute('value',bill.textbox.value);
+		}
+		obj.update_payment_applied();
+	},
 
 	/*****************************************************************************************************************************/
 
@@ -519,7 +532,9 @@ patron.bills.prototype = {
 				if ( my.mobts.balance_owed() == 0 ) { 
 					cb.setAttribute('disabled', 'true'); 
 				} else { 
-					cb.setAttribute('checked', 'true'); 
+					if (my.mobts.balance_owed() > 0) {
+						cb.setAttribute('checked', 'true'); 
+					}
 				}
 
 				try {
@@ -673,6 +688,20 @@ patron.bills.prototype = {
 							},
 							false
 						);
+		if (my.mobts.balance_owed() < 0) {
+			var btn3 = document.createElement('button');
+			btn_box.appendChild( btn3 );
+			btn3.setAttribute( 'label', 'Refund' );
+			btn3.setAttribute( 'mobts_id', my.mobts.id() );	
+			btn3.addEventListener(
+				'command',
+				function(ev) {
+					cb.setAttribute('checked','true');
+					obj.distribute_payment(obj.controller.view.bill_payment_amount);
+				},
+				false
+			);
+		}
 
 		return vbox;
 	},
