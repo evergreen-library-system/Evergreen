@@ -213,8 +213,19 @@ circ.copy_status.prototype = {
 				throw('Something weird happened.  null result');
 			} else if (copy.ilsevent) {
 				switch(copy.ilsevent) {
-					case -1: obj.error.standard_network_error_alert(); break;
-					default: throw(copy); break;
+					case -1: 
+						obj.error.standard_network_error_alert(); 
+						obj.controller.view.copy_status_barcode_entry_textbox.select();
+						obj.controller.view.copy_status_barcode_entry_textbox.focus();
+					break;
+					case 1502 /* COPY_NOT_FOUND */ :
+						obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
+						obj.controller.view.copy_status_barcode_entry_textbox.select();
+						obj.controller.view.copy_status_barcode_entry_textbox.focus();
+					break;
+					default: 
+						throw(copy); 
+					break;
 				}
 			} else {
 				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
