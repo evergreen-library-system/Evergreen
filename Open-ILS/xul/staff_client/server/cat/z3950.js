@@ -382,7 +382,7 @@ cat.z3950.prototype = {
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
-										var msg = 'A record with with TCN ' + r.payload.tcn + 'already exists.  FIXME: add record summary here';
+										var msg = 'A record with with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
 										var title = 'Import Collision';
 										var btn1 = 'Overlay';
 										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
@@ -390,7 +390,7 @@ cat.z3950.prototype = {
 										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,'Check here to confirm this action');
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
-											case 1:
+											case 0:
 												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml ]);
 												if (typeof r3.ilsevent != 'undefined') {
 													throw(r3);
@@ -398,7 +398,7 @@ cat.z3950.prototype = {
 													alert('Record successfully overlayed.');
 												}
 											break;
-											case 2:
+											case 1:
 												var r2 = obj.network.request(
 													api.MARC_XML_RECORD_IMPORT.app,
 													api.MARC_XML_RECORD_IMPORT.method + '.override',
@@ -407,9 +407,10 @@ cat.z3950.prototype = {
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
 												} else {
-													alert('Record successfully imported.');
+													alert('Record successfully imported with alternate TCN.');
 												}
 											break;
+											case 2:
 											default:
 												alert('Record import cancelled');
 											break;
