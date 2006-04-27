@@ -255,14 +255,16 @@ __PACKAGE__->register_method(
 
 sub cancel_hold {
 	my($self, $client, $login_session, $holdid) = @_;
-	
+	my $hold;	
 
-	my $user = $apputils->check_user_session($login_session);
-	my( $hold, $evt ) = $apputils->fetch_hold($holdid);
+	my($user, $evt) = $U->checkses($login_session);
+	return $evt if $evt;
+
+	( $hold, $evt ) = $U->fetch_hold($holdid);
 	return $evt if $evt;
 
 	if($user->id ne $hold->usr) { #am I allowed to cancel this user's hold?
-		if($evt = $apputils->checkperms(
+		if($evt = $apputils->check_perms(
 			$user->id, $user->home_ou, 'CANCEL_HOLDS')) {
 			return $evt;
 		}
