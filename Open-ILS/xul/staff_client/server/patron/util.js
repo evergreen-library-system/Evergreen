@@ -173,18 +173,6 @@ patron.util.mp_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.mp.id()'
 		},
 		{
-			'persist' : 'hidden width', 'id' : 'refunded', 'label' : 'Refunded', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mp.refunded() ? "Yes" : "No"'
-		},
-		{
-			'persist' : 'hidden width', 'id' : 'refunder', 'label' : 'Refunder ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mp.refunder() ? my.mp.refunder() : ""'
-		},
-		{
-			'persist' : 'hidden width', 'id' : 'refund_time', 'label' : 'Refund Time', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mp.refund_time()'
-		},
-		{
 			'persist' : 'hidden width', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )'
 		},
