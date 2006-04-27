@@ -43,17 +43,17 @@ circ.copy_status.prototype = {
 						);
 						obj.error.sdump('D_TRACE','circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
 						if (obj.selection_list.length == 0) {
-							obj.controller.view.sel_checkin.disabled = true;
-							obj.controller.view.sel_edit.disabled = true;
-							obj.controller.view.sel_opac.disabled = true;
-							obj.controller.view.sel_patron.disabled = true;
-							obj.controller.view.sel_bucket.disabled = true;
+							obj.controller.view.sel_checkin.setAttribute('disabled','true');
+							obj.controller.view.sel_edit.setAttribute('disabled','true');
+							obj.controller.view.sel_opac.setAttribute('disabled','true');
+							obj.controller.view.sel_patron.setAttribute('disabled','true');
+							obj.controller.view.sel_bucket.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.sel_checkin.disabled = false;
-							obj.controller.view.sel_edit.disabled = false;
-							obj.controller.view.sel_opac.disabled = false;
-							obj.controller.view.sel_patron.disabled = false;
-							obj.controller.view.sel_bucket.disabled = false;
+							obj.controller.view.sel_checkin.setAttribute('disabled','false');
+							obj.controller.view.sel_edit.setAttribute('disabled','false');
+							obj.controller.view.sel_opac.setAttribute('disabled','false');
+							obj.controller.view.sel_patron.setAttribute('disabled','false');
+							obj.controller.view.sel_bucket.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);

@@ -86,7 +86,14 @@
 		<command id="cmd_copy_status_print" />
 		<command id="cmd_copy_status_reprint" />
 		<command id="cmd_copy_status_done" />
+		<command id="sel_checkin" disabled="true"/>
+		<command id="sel_edit" disabled="true"/>
+		<command id="sel_opac" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
+		<command id="sel_bucket" disabled="true"/>
 	</commandset>
+
+	<popupset id="copy_status_popupset"/>
 
 	<box id="copy_status_main" />
 
