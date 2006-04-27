@@ -534,22 +534,9 @@ sub new_hold_copy_targeter {
 	try {
 		if ($one_hold) {
 
-			my $time = time;
-			$check_expire ||= '12h';
-			$check_expire = interval_to_seconds( $check_expire );
-
-			my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
-			$year += 1900;
-			$mon += 1;
-			my $expire_threshold = sprintf(
-				'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
-				$year, $mon, $mday, $hour, $min, $sec
-			);
-
 			$holds = [ action::hold_request->search_where(
 					{ id => $one_hold,
-					  fulfillment_time => undef, 
-					  prev_check_time => [ undef, { '<=' => $expire_threshold } ] }
+					  fulfillment_time => undef } ] }
 				   ) ];
 		} elsif ( $check_expire ) {
 
@@ -724,7 +711,7 @@ sub new_hold_copy_targeter {
 
 			if (!$best) {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$copies)." copies");
-				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
+				$prox_list = create_prox_list( $self, $hold->pickup_lib, $copies );
 				$best = choose_nearest_copy($hold, $prox_list);
 			}
 
@@ -884,7 +871,7 @@ sub hold_copy_targeter {
 			my $best = choose_nearest_copy($hold, $prox_list);
 
 			if (!$best) {
-				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
+				$prox_list = create_prox_list( $self, $hold->pickup_lib, $copies );
 				$best = choose_nearest_copy($hold, $prox_list);
 			}
 
