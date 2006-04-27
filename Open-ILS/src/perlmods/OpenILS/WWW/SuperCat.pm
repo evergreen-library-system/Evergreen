@@ -357,7 +357,7 @@ sub supercat {
 	}
 
 	print "Content-type: application/xml; charset=utf-8\n\n";
-	print $req->gather(1);
+	print entityize( $parser->parse_string( $req->gather(1) )->documentElement->toString );
 
 	return Apache2::Const::OK;
 }
