@@ -17,153 +17,153 @@ circ.util.columns = function(modify,params) {
 	var c = [
 		{
 			'id' : 'acp_id', 'label' : getString('staff.acp_label_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.id()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.id()', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'circ_id', 'label' : getString('staff.circ_label_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.id()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.id()', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'mvr_doc_id', 'label' : getString('staff.mvr_label_doc_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.doc_id()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.doc_id()', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'barcode', 'label' : getString('staff.acp_label_barcode'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.barcode()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.barcode()', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : ' if (my.acp && my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } } ' 
+			'primary' : false, 'hidden' : true, 'render' : ' if (my.acp && my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } } ' , 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'owning_lib', 'label' : 'Owning Lib', 'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : 'if (Number(my.acn.owning_lib())>=0) obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); else my.acn.owning_lib().shortname();'
+			'render' : 'if (Number(my.acn.owning_lib())>=0) obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); else my.acn.owning_lib().shortname();', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.copy_number()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.copy_number()', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) obj.data.hash.acpl[ my.acp.location() ].name(); else my.acp.location().name();'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) obj.data.hash.acpl[ my.acp.location() ].name(); else my.acp.location().name();', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 
-			'render' : 'switch(my.acp.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }'
+			'render' : 'switch(my.acp.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'circ_lib', 'label' : getString('staff.acp_label_circ_lib'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.circ_lib())>=0) obj.data.hash.aou[ my.acp.circ_lib() ].shortname(); else my.acp.circ_lib().shortname();'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.circ_lib())>=0) obj.data.hash.aou[ my.acp.circ_lib() ].shortname(); else my.acp.circ_lib().shortname();', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'fine_level', 'label' : getString('staff.acp_label_fine_level'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : 'switch(my.acp.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }'
+			'render' : 'switch(my.acp.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'circulate', 'label' : 'Circulate?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circulate() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circulate() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.holdable() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.holdable() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'opac_visible', 'label' : 'OPAC Visible?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.opac_visible() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'my.acp.opac_visible() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
-			'id' : 'ref', 'label' : 'Reference?', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'ref', 'label' : 'Reference?', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.ref() == 1 ? "Yes" : "No"'
 		},
 		{
-			'id' : 'deposit', 'label' : 'Deposit?', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'deposit', 'label' : 'Deposit?', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit() == 1 ? "Yes" : "No"'
 		},
 		{
-			'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit_amount()'
 		},
 		{
-			'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.price()'
 		},
 		{
-			'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_as_type()'
 		},
 		{
-			'id' : 'circ_modifier', 'label' : getString('staff.acp_label_circ_modifier'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'circ_modifier', 'label' : getString('staff.acp_label_circ_modifier'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_modifier()'
 		},
 		{
-			'id' : 'xact_start', 'label' : getString('staff.circ_label_xact_start'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'xact_start', 'label' : getString('staff.circ_label_xact_start'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_start()'
 		},
 		{
-			'id' : 'xact_finish', 'label' : getString('staff.circ_label_xact_finish'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'xact_finish', 'label' : getString('staff.circ_label_xact_finish'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_finish()'
 		},
 		{
-			'id' : 'due_date', 'label' : getString('staff.circ_label_due_date'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'due_date', 'label' : getString('staff.circ_label_due_date'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.due_date().substr(0,10)'
 		},
 		{
-			'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2,
+			'persist' : 'hidden width', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2,
 			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
 		},
 		{
-			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
 		},
 		{
-			'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
 		},
 		{
-			'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
 		},
 		{
-			'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
 		},
 		{
-			'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
 		},
 		{
-			'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
 		},
 		{
-			'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
+			'persist' : 'hidden width', 'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()'
 		},
 		{
-			'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
+			'persist' : 'hidden width', 'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.stop_fines()'
 		},
 		{
-			'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.status())>=0) obj.data.hash.ccs[ my.acp.status() ].name(); else my.acp.status().name();'
 		},
 		{
-			'id' : 'route_to', 'label' : 'Route To', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'route_to', 'label' : 'Route To', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.route_to.toString()'
 		},
 		{
-			'id' : 'message', 'label' : 'Message', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'message', 'label' : 'Message', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.message.toString()'
 		},
 		{
-			'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.uses'
 		},
 		{
-			'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.alert_message()'
 		},
 	];
@@ -196,106 +196,106 @@ circ.util.hold_columns = function(modify,params) {
 
 	var c = [
 		{
-			'id' : 'request_time', 'label' : getString('staff.ahr_request_time_label'), 'flex' : 0,
+			'persist' : 'hidden width', 'id' : 'request_time', 'label' : getString('staff.ahr_request_time_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
 			'render' : 'my.ahr.request_time().toString().substr(0,10)'
 		},
 		{
-			'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time()'
 		},
 		{
-			'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.status()'
 		},
 		{
-			'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
+			'persist' : 'hidden width', 'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.hold_type()'
 		},
 		{
-			'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
 			'render' : 'if (Number(my.ahr.pickup_lib())>=0) obj.data.hash.aou[ my.ahr.pickup_lib() ].name(); else my.ahr.pickup_lib().name();'
 		},
 		{
-			'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
+			'persist' : 'hidden width', 'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
 			'render' : 'if (Number(my.ahr.pickup_lib())>=0) obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname(); else my.ahr.pickup_lib().shortname();'
 		},
 		{
-			'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.acp ? my.acp.barcode() : "No Copy"'
 		},
 		{
-			'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.email_notify()'
 		},
 		{
-			'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.expire_time()'
 		},
 		{
-			'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.fulfillment_time()'
 		},
 		{
-			'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.holdable_formats()'
 		},
 		{
-			'id' : 'id', 'label' : getString('staff.ahr_id_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'id', 'label' : getString('staff.ahr_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.id()'
 		},
 		{
-			'id' : 'phone_notify', 'label' : getString('staff.ahr_phone_notify_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'phone_notify', 'label' : getString('staff.ahr_phone_notify_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.phone_notify()'
 		},
 		{
-			'id' : 'prev_check_time', 'label' : getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'prev_check_time', 'label' : getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.prev_check_time()'
 		},
 		{
-			'id' : 'requestor', 'label' : getString('staff.ahr_requestor_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'requestor', 'label' : getString('staff.ahr_requestor_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.requestor()'
 		},
 		{
-			'id' : 'selection_depth', 'label' : getString('staff.ahr_selection_depth_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'selection_depth', 'label' : getString('staff.ahr_selection_depth_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.selection_depth()'
 		},
 		{
-			'id' : 'target', 'label' : getString('staff.ahr_target_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'target', 'label' : getString('staff.ahr_target_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.target()'
 		},
 		{
-			'id' : 'usr', 'label' : getString('staff.ahr_usr_label'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'usr', 'label' : getString('staff.ahr_usr_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.usr()'
 		},
 		{
-			'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.title() : "No Title?"'
 		},
 		{
-			'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.author() : "No Author?"'
 		},
 		{
-			'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
 		},
 		{
-			'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
 		},
 		{
-			'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
 		},
 		{
-			'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
 		},
 		{
-			'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
 		},
 
