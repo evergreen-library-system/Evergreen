@@ -533,11 +533,7 @@ sub new_hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
-
-			$holds = [ action::hold_request->search_where(
-					{ id => $one_hold,
-					  fulfillment_time => undef } ] }
-				   ) ];
+			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef } ) ];
 		} elsif ( $check_expire ) {
 
 			my $time = time;
