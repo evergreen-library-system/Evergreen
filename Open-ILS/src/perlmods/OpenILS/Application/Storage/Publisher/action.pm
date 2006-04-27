@@ -720,12 +720,12 @@ sub new_hold_copy_targeter {
 
 			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
 
-			my $best = $self->choose_nearest_copy($hold, $prox_list);
+			my $best = choose_nearest_copy($hold, $prox_list);
 
 			if (!$best) {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$copies)." copies");
 				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
-				$best = $self->choose_nearest_copy($hold, $prox_list);
+				$best = choose_nearest_copy($hold, $prox_list);
 			}
 
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
@@ -881,11 +881,11 @@ sub hold_copy_targeter {
 			$$prox_list[0] = [grep {$_->circ_lib == $hold->pickup_lib } @good_copies];
 			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
 
-			my $best = $self->choose_nearest_copy($hold, $prox_list);
+			my $best = choose_nearest_copy($hold, $prox_list);
 
 			if (!$best) {
 				$prox_list = $self->create_prox_list( $hold->pickup_lib, $copies );
-				$best = $self->choose_nearest_copy($hold, $prox_list);
+				$best = choose_nearest_copy($hold, $prox_list);
 			}
 
 			if ($old_best) {
@@ -996,7 +996,6 @@ sub copy_hold_capture {
 
 
 sub choose_nearest_copy {
-	my $self = shift;
 	my $hold = shift;
 	my $prox_list = shift;
 
