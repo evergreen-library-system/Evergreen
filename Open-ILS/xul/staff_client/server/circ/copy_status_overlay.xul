@@ -15,6 +15,7 @@
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 		<menuitem command="sel_patron" label="Show Recent Circulations" accesskey="R"/>
+		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 	</popup>
 </popupset>

@@ -48,12 +48,14 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
+							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
+							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -114,6 +116,25 @@ circ.copy_status.prototype = {
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('',E);
+							}
+						}
+					],
+					'sel_transit_abort' : [
+						['command'],
+						function() {
+							JSAN.use('util.functional');
+							var msg = 'Are you sure you would like to abort transits for copies:' + util.functional.map_list( obj.selection_list, function(o){return o.copy_id;}).join(', ') + '?';
+							var r = obj.error.yns_alert(msg,'Aborting Transits','Yes','No',null,'Check here to confirm this action');
+							if (r == 0) {
+								try {
+									for (var i = 0; i < obj.selection_list.length; i++) {
+										var copy_id = obj.selection_list[i].copy_id;
+										var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'copyid' : copy_id } ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Transit not likely aborted.',E);
+								}
 							}
 						}
 					],
