@@ -1748,6 +1748,13 @@ sub _find_patron_from_params {
 
 __PACKAGE__->register_method(
 	method	=> "renew",
+	api_name	=> "open-ils.circ.renew.override",
+	signature	=> q/@see open-ils.circ.renew/,
+);
+
+
+__PACKAGE__->register_method(
+	method	=> "renew",
 	api_name	=> "open-ils.circ.renew",
 	notes		=> <<"	NOTES");
 	PARAMS( authtoken, circ => circ_id );
@@ -1763,6 +1770,8 @@ sub renew {
 
 	my ( $requestor, $patron, $ctx, $evt, $circ, $copy );
 	$__isrenewal = 1;
+
+	$params->{override} = 1 if $self->api_name =~ /override/o;
 
 	# fetch the patron object one way or another
 	if( $params->{patron} ) {
