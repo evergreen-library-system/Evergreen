@@ -56,11 +56,23 @@ void _osrf_app_request_free( void * req ){
 void _osrf_app_request_push_queue( osrf_app_request* req, osrf_message* result ){
 	if(req == NULL || result == NULL) return;
 	osrfLogDebug( OSRF_LOG_MARK,  "App Session pushing request [%d] onto request queue", result->thread_trace );
-	if(req->result == NULL)
+	if(req->result == NULL) {
 		req->result = result;
-	else {
+
+	} else {
+		
+		osrf_message* ptr = req->result;
+		osrf_message* ptr2 = req->result->next;
+		while( ptr2 ) {
+			ptr = ptr2;
+			ptr2 = ptr2->next;
+		}
+		ptr->next = result;
+
+		/*
 		result->next = req->result;
 		req->result = result;
+		*/
 	}
 }
 

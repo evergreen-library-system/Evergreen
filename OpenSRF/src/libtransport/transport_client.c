@@ -60,11 +60,6 @@ transport_client* client_init( char* server, int port, char* unix_path, int comp
 	client->m_list->type = MESSAGE_LIST_HEAD;
 	client->session = init_transport( server, port, unix_path, client, component );
 
-
-	if(client->session == NULL) {
-		osrfLogError(OSRF_LOG_MARK,  "client_init(): Out of Memory"); 
-		return NULL;
-	}
 	client->session->message_callback = client_message_handler;
 
 	return client;
