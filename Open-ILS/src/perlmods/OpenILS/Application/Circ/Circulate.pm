@@ -778,7 +778,17 @@ sub _make_precat_copy {
 
 	if($copy) {
 		$logger->debug("Pre-cat copy already exists in checkout: ID=" . $copy->id);
-		return ($copy, undef);
+
+		$copy->editor($requestor->id);
+		$copy->edit_date('now');
+		$copy->dummy_title($params->{dummy_title});
+		$copy->dummy_author($params->{dummy_author});
+
+		my $stat = $U->storagereq(
+			'open-ils.storage.direct.asset.copy.update', $copy );
+
+		return (undef, $U->DB_UPDATE_FAILED($copy)) unless $stat;
+		return ($copy);
 	}
 
 	$logger->debug("Creating a new precataloged copy in checkout with barcode " . $params->{barcode});
@@ -805,7 +815,7 @@ sub _make_precat_copy {
 	return (undef, $U->DB_UPDATE_FAILED($copy)) unless $copy;
 
 	$logger->debug("Pre-cataloged copy successfully created");
-	return $U->fetch_copy($id);
+	return ($U->fetch_copy($id));
 }
 
 
@@ -1775,7 +1785,7 @@ sub renew {
 
 	# make sure we have permission to perform a renewal
 	if( $requestor->id ne $patron->id ) {
-		$evt = $U->check_perms($requestor->id, $patron->ws_ou, 'RENEW_CIRC');
+		$evt = $U->check_perms($requestor->id, $requestor->ws_ou, 'RENEW_CIRC');
 		if($evt) { $__isrenewal = 0; return $evt; }
 	}
 
