@@ -368,7 +368,6 @@ patron.items.prototype = {
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
-		alert('pause');
 		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
