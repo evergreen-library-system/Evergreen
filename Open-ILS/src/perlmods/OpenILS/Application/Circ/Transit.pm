@@ -157,9 +157,109 @@ sub copy_transit_create {
 	return OpenILS::Event->new('SUCCESS', 
 		payload => { copy => $copy, transit => $transit } );
 }
+
+
+__PACKAGE__->register_method(
+	method => 'abort_transit',
+	api_name	=> 'open-ils.circ.transit.abort',
+	signature	=> q/
+		Deletes a cleans up a transit
+	/
+);
+
+sub abort_transit {
+	my( $self, $conn, $authtoken, $params ) = @_;
+
+	my $copyid		= $$params{copyid};
+	my $barcode		= $$params{barcode};
+	my $transitid	= $$params{transitid};
+
+	my $reqr;
+	my $copy;
+	my $transit;
+	my $holdtransit;
+	my $hold;
+	my $evt;
+
+
+	($reqr, $evt) = $U->checksesperm($authtoken, 'ABORT_TRANSIT');
+	return $evt if $evt;
+
+	# ---------------------------------------------------------------------
+	# Find the related copy and/or transit based on whatever data we have
+	if( $barcode ) {
+		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+		return $evt if $evt;
+
+	} elsif( $copyid ) {
+		($copy, $evt) = $U->fetch_copy($copyid);
+		return $evt if $evt;
+	}
+
+	if( $transitid ) {
+		($transit, $evt) = $U->fetch_transit($transitid);
+		return $evt if $evt;
+
+	} else {
+		($transit, $evt) = $U->fetch_open_transit_by_copy($copy->id);
+		return $evt if $evt;
+	}
+
+	if(!$copy) {
+		($copy, $evt) = $U->fetch_copy($transit->tartet_copy);
+		return $evt if $evt;
+	}
+	# ---------------------------------------------------------------------
+
+
+	if( $transit->dest != $reqr->ws_ou 
+		and $transit->source != $reqr->ws_ou ) {
+		$evt = $U->check_perms($reqr->id, $reqr->ws_ou, 'ABORT_REMOTE_TRANIST');
+		return $evt if $evt;
+	}
+
+	# recover the copy status
+	$copy->status( $transit->copy_status );
+	$copy->editor( $reqr->id );
+	$copy->edit_date('now');
+
+	($holdtransit) = $U->fetch_hold_transit($transit->id);
+
+	# if this is a hold transit, un-capture/un-target the hold
+	if($holdtransit) {
+		($hold, $evt) = $U->fetch_hold($holdtransit->hold);			
+		return $evt if $evt;
+		$hold->clear_capture_time;
+		$hold->clear_current_copy;
+	}
+
+	# update / delete the objects
+	my $session = $U->start_db_session();
+
+	return $U->DB_UPDATE_FAILED($transit) unless 
+		$session->request(
+			'open-ils.storage.direct.action.transit_copy.delete', 
+			$transit->id )->gather(1);
+
+
+	return $U->DB_UPDATE_FAILED($copy) unless 
+		$session->request(
+			'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
+
+
+	if($hold) {
+		return $U->DB_UPDATE_FAILED($hold) unless 
+			$session->request( 
+				'open-ils.storage.direct.action.hold_request.update', $hold )->gather(1);
+	}	
+
+	$U->commit_db_session($session);
+
+	return 1;
+}
 	
 
 
 
 
-666;
+1;
