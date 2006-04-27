@@ -69,13 +69,15 @@ circ.copy_status.prototype = {
 					'sel_checkin' : [
 						['command'],
 						function() {
-                                                        JSAN.use('circ.util');
-                                                        for (var i = 0; i < obj.selection_list.length; i++) {
-                                                                var barcode = obj.selection_list[i][1];
-                                                                var checkin = circ.util.checkin_via_barcode(
-                                                                        ses(), barcode
-                                                                );
-                                                        }
+							try {
+								JSAN.use('circ.util');
+								for (var i = 0; i < obj.selection_list.length; i++) {
+									var barcode = obj.selection_list[i].barcode;
+									var checkin = circ.util.checkin_via_barcode( ses(), barcode );
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
+							}
 						}
 					],
 					'sel_edit' : [
@@ -91,7 +93,28 @@ circ.copy_status.prototype = {
 					'sel_opac' : [
 						['command'],
 						function() {
-							alert('Not Yet Implemented');
+							try {
+								for (var i = 0; i < obj.selection_list.length; i++) {
+									var doc_id = obj.selection_list[i].doc_id;
+									if (!doc_id) {
+										alert(obj.selection_list[i].barcode + ' is not cataloged');
+										continue;
+									}
+									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+									var content_params = { 
+										'session' : ses(),
+										'authtime' : ses('authtime'),
+										'opac_url' : opac_url,
+									};
+									xulG.new_tab(
+										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':'Retrieving title...'}, 
+										content_params
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('',E);
+							}
 						}
 					],
 					'sel_patron' : [
@@ -111,7 +134,7 @@ circ.copy_status.prototype = {
 									util.functional.map_list(
 										obj.selection_list,
 										function (o) {
-											return o[0];
+											return o.copy_id;
 										}
 									)
 								),
@@ -194,12 +217,13 @@ circ.copy_status.prototype = {
 					default: throw(copy); break;
 				}
 			} else {
+				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON( [ copy.id(), barcode ] ),
+						'retrieve_id' : js2JSON( { 'copy_id' : copy.id(), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
 						'row' : {
 							'my' : {
-								'mvr' : obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]),
+								'mvr' : my_mvr,
 								'acp' : copy,
 							}
 						}
@@ -229,7 +253,7 @@ circ.copy_status.prototype = {
 		list = util.functional.map_list(
 			list,
 			function (o) {
-				return o[0];
+				return o.copy_id;
 			}
 		);
 

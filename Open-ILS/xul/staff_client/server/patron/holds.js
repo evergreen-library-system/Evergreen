@@ -72,6 +72,15 @@ patron.holds.prototype = {
 						sel,
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
 					);
+					if (obj.retrieve_ids.length > 0) {
+						obj.controller.view.cmd_holds_edit.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
+						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
+					} else {
+						obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
+						obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+					}
 				},
 
 			}
@@ -124,27 +133,40 @@ patron.holds.prototype = {
 					'cmd_show_catalog' : [
 						['command'],
 						function() {
-							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + obj.retrieve_ids[i].target;
-								var content_params = { 
-									'session' : ses(),
-									'authtime' : ses('authtime'),
-									'opac_url' : opac_url,
-								};
-								xulG.new_tab(
-									xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-									{'tab_name':tcn}, 
-									content_params
-								);
+							try {
+								for (var i = 0; i < obj.retrieve_ids.length; i++) {
+									var doc_id = obj.retrieve_ids[i].target;
+									if (!doc_id) {
+										alert(obj.retrieve_ids[i].barcode + ' is not cataloged');
+										continue;
+									}
+									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+									var content_params = { 
+										'session' : ses(),
+										'authtime' : ses('authtime'),
+										'opac_url' : opac_url,
+									};
+									xulG.new_tab(
+										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':'Retrieving title...'}, 
+										content_params
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('',E);
 							}
 						}
 					],
 				}
 			}
 		);
+		obj.controller.render();
 
 		obj.retrieve();
 
+		obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
+		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
