@@ -7,6 +7,16 @@
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
+.nav { 
+	-moz-appearance: none;
+	margin: 0px;
+	min-width: 6.3em;
+	color: #000000;
+	font-family: arial, san-serif;
+	font-weight: bold;
+	height: 26px;
+}
+
 .my_overflow { overflow: scroll; }
 
 iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }

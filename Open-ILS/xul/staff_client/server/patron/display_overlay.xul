@@ -52,19 +52,19 @@
 	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
 		label="&staff.patron_navbar.refresh;" accesskey="&staff.patron_navbar.refresh.accesskey;"/>
 	-->
-	<button id="PatronNavBar_refresh" command="cmd_patron_refresh"
+	<button id="PatronNavBar_refresh" command="cmd_patron_refresh" class="nav"
 		label="&staff.patron_navbar.refresh;" />
-	<button id="PatronNavBar_checkout" command="cmd_patron_checkout"
+	<button id="PatronNavBar_checkout" command="cmd_patron_checkout" class="nav"
 		label="&staff.patron_navbar.checkout;" accesskey="&staff.patron_navbar.checkout.accesskey;"/>
-	<button id="PatronNavBar_items" command="cmd_patron_items"
+	<button id="PatronNavBar_items" command="cmd_patron_items" class="nav"
 		label="&staff.patron_navbar.items;" accesskey="&staff.patron_navbar.items.accesskey;"/>
-	<button id="PatronNavBar_holds" command="cmd_patron_holds"
+	<button id="PatronNavBar_holds" command="cmd_patron_holds" class="nav"
 		label="&staff.patron_navbar.holds;" accesskey="&staff.patron_navbar.holds.accesskey;"/>
-	<button id="PatronNavBar_bills" command="cmd_patron_bills"
+	<button id="PatronNavBar_bills" command="cmd_patron_bills" class="nav"
 		label="&staff.patron_navbar.bills;" accesskey="&staff.patron_navbar.bills.accesskey;"/>
-	<button id="PatronNavBar_edit" command="cmd_patron_edit"
+	<button id="PatronNavBar_edit" command="cmd_patron_edit" class="nav"
 		label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
-	<button id="PatronNavBar_info" command="cmd_patron_info"
+	<button id="PatronNavBar_info" command="cmd_patron_info" class="nav"
 		label="&staff.patron_navbar.info;" accesskey="&staff.patron_navbar.info.accesskey;"/>
 </hbox>
 
