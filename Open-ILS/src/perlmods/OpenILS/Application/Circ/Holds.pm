@@ -295,11 +295,10 @@ sub update_hold {
 		$login_session, $hold->usr, 'UPDATE_HOLD' );
 	return $evt if $evt;
 
-	$logger->activity('User ' + $requestor->id . 
+	$logger->activity('User ' . $requestor->id . 
 		' updating hold ' . $hold->id . ' for user ' . $target->id );
 
-	return $apputils->simplereq(
-		'open-ils.storage',
+	return $U->storagereq(
 		"open-ils.storage.direct.action.hold_request.update", $hold );
 }
 
