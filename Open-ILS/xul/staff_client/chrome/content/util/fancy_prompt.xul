@@ -87,7 +87,7 @@
 	]]>
 	</script>
 
-	<vbox id="fancy_prompt_main">
+	<vbox id="fancy_prompt_main" flex="1">
 	</vbox>
 </window>
 
