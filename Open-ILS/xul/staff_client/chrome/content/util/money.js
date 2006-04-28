@@ -10,8 +10,7 @@ util.money.EXPORT_TAGS	= { ':all' : util.money.EXPORT_OK };
 
 util.money.dollars_float_to_cents_integer = function( money ) {
 	// careful to avoid fractions of pennies
-	var money_s = money.toString();
-	// FIXME: strip miscellaneous characters
+	var money_s = money.toString().replace(/[^\.\d]/g, '');
 	var marray = money_s.split(".");
 	var dollars = marray[0];
 	var cents = marray[1];
@@ -41,8 +40,7 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 }
 
 util.money.cents_as_dollars = function( cents ) {
-	cents = cents.toString(); 
-	// FIXME: strip miscellaneous characters
+	cents = cents.toString().replace(/[^\.\d]/g, ''); 
 	if (cents.match(/\./)) cents = util.money.dollars_float_to_cents_integer( cents ).toString();
 	try {
 		switch( cents.length ) {
