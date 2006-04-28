@@ -46,8 +46,10 @@
 
 				g.cgi = new CGI();
 
+				var my_xml = g.cgi.param('xml') || obj.data[ g.cgi.param('xml_in_stash') ];
+
 				var parser = new DOMParser();
-				var doc = parser.parseFromString( g.cgi.param('xml'), 'text/xml' );
+				var doc = parser.parseFromString( my_xml, 'text/xml' );
 				var node = doc.documentElement;
 				if (node) document.getElementById('fancy_prompt_main').appendChild(node);
 
