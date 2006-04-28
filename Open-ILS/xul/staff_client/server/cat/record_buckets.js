@@ -402,7 +402,7 @@ cat.record_buckets.prototype = {
 				throw(record);
 			} else {
 				var item = {
-					'retrieve_id' : js2JSON( { 'docid' : record.id(), 'bucket_item_id' : bucket_item_id } ),
+					'retrieve_id' : js2JSON( { 'docid' : docid, 'bucket_item_id' : bucket_item_id } ),
 					'row' : {
 						'my' : {
 							'mvr' : record,
