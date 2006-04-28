@@ -3,6 +3,7 @@ package OpenILS::Application::Cat;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Application;
 use OpenILS::Application::Cat::Utils;
+use OpenILS::Application::Cat::Merge;
 use base qw/OpenSRF::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
@@ -14,6 +15,7 @@ use XML::LibXML;
 use Unicode::Normalize;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
+use OpenILS::Utils::Editor;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
@@ -1057,6 +1059,30 @@ sub _copy_update_stat_cats {
 
 }
 
+
+__PACKAGE__->register_method(
+	method => 'merge',
+	api_name	=> 'open-ils.cat.biblio.records.merge',
+	signature	=> q/
+		Merges a group of records
+		@param auth The login session key
+		@param master The id of the record all other r
+			ecords should be merged into
+		@param records Array of records to be merged into the master record
+		@return 1 on success, Event on error.
+	/
+);
+
+sub merge {
+	my( $self, $conn, $auth, $master, $records ) = @_;
+	my( $reqr, $evt ) = $U->checkses($auth);
+	return $evt if $evt;
+	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
+	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
+	return $v if $v;
+	$editor->finish;
+	return 1;
+}
 
 
 
