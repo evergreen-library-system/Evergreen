@@ -16,6 +16,12 @@ function holdsHandleStaff() {
 	$('xul_recipient_barcode').onkeypress = function(evt) 
 		{if(userPressedEnter(evt)) { _holdsHandleStaff(); } };
 	$('xul_recipient_barcode_submit').onclick = _holdsHandleStaff;
+	$('xul_recipient_me').onclick = _holdsHandleStaffMe;
+}
+
+function _holdsHandleStaffMe() {
+	holdRecipient = G.user;
+	holdsDrawWindow( currentHoldRecord, null );
 }
 
 function _holdsHandleStaff() {
@@ -60,12 +66,14 @@ function holdsDrawWindow(recid, type, edithold, done_callback) {
 
 	swapCanvas($('check_holds_box'));
 
-	if(!edithold) {
-		setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
-
-	} else {
+	if(edithold) {
+		hideMe($('holds_submit'));
+		unHideMe($('holds_update'));
 		_holdsDrawWindow(recid, type);
 		_holdsUpdateEditHold(edithold);
+
+	} else {
+		setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
 	}
 }
 
@@ -77,6 +85,7 @@ function _holdsUpdateEditHold(hold) {
 		setSelector($('holds_org_selector'), hold.pickup_lib());
 
 	$('holds_submit').onclick = holdsEditHold;
+	$('holds_update').onclick = holdsEditHold;
 
 
 	if(hold.phone_notify()) {
@@ -98,7 +107,7 @@ function _holdsUpdateEditHold(hold) {
 
 function holdsEditHold() {
 	var hold = holdsBuildHoldFromWindow();
-	hold.id( holdEditHold.id() );
+	//hold.id( holdEditHold.id() );
 	holdsUpdate(hold);
 	showCanvas();
 	if(holdEditCallback) holdEditCallback(hold);
@@ -115,6 +124,21 @@ function _holdsDrawWindow(recid, type) {
 	if(!holdsOrgSelectorBuilt) {
 		holdsBuildOrgSelector(null,0);
 		holdsOrgSelectorBuilt = true;
+	}
+
+	if(isXUL()) {
+		var dsel = $('holds_depth_selector');
+		unHideMe($('holds_depth_selector_row'));
+		if(dsel.getElementsByTagName('option').length == 0) {
+			var types = globalOrgTypes;
+			var depth = findOrgDepth(G.user.ws_ou());
+			iterate(types, 
+				function(t) {
+					if(t.depth() > depth) return;
+					insertSelectorVal(dsel, -1, t.opac_label(), t.depth());
+				}
+			);
+		}
 	}
 
 	appendClear($('holds_recipient'), text(
@@ -151,6 +175,7 @@ function _holdsDrawWindow(recid, type) {
 
 	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
 	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
+	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
 	if(type == 'M') hideMe($('hold_physical_desc_row'));
 }
@@ -196,6 +221,10 @@ function holdsBuildHoldFromWindow() {
 		$('holds_org_selector').selectedIndex].value;
 
 	var hold = new ahr();
+	if(holdEditHold) {
+		hold = holdEditHold;
+		holdEditHold = null;
+	}
 
 
 	if( $('holds_enable_phone').checked ) {
@@ -222,6 +251,8 @@ function holdsBuildHoldFromWindow() {
 	hold.usr(holdRecipient.id());
 	hold.hold_type('T');
 	hold.target(currentHoldRecord);
+	if(isXUL())		
+		hold.selection_depth(getSelectorVal($('holds_depth_selector')));
 	return hold;
 }
 	

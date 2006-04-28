@@ -9,7 +9,10 @@
 						<td><input type='text' id='xul_recipient_barcode'> </input></td>
 						<td><input type='submit' value='&common.submit;' 
 							id='xul_recipient_barcode_submit'> </input></td>
+						<td><input type='submit' value='Place hold for me' 
+							id='xul_recipient_me'> </input></td>
 					</tr>
+
 				</tbody>
 			</table>
 		</center>
@@ -80,6 +83,12 @@
 						<input type='checkbox' id='holds_enable_email' checked='checked'/>
 					</td>
 				</tr>
+				<tr id='holds_depth_selector_row' class='hide_me'>
+					<td class='holds_cell'>Hold Range</td>
+					<td class='holds_cell'>
+						<select id='holds_depth_selector'></select>
+					</td>
+				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.pickupLocation;</td>
 					<td class='holds_cell'>
@@ -88,10 +97,8 @@
 				</tr>
 				<tr>
 					<td class='holds_cell' align='center' colspan='2'>
-						<!--
 						<button id='holds_submit'>&opac.holds.placeHold;</button>
-						-->
-						<button id='holds_submit'>Update Hold</button>
+						<button class='hide_me' id='holds_update'>Update Hold</button>
 						<span style='padding: 20px;'> </span>
 						<button id='holds_cancel'>&common.cancel;</button>
 					</td>
