@@ -65,6 +65,14 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':'Copy Buckets'},{});
 				}
 			],
+			'cmd_edit_record_buckets' : [
+				['oncommand'],
+				function() {
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':'Record Buckets'},{});
+				}
+			],
+
 			'cmd_replace_barcode' : [
 				['oncommand'],
 				function() {

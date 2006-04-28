@@ -12,6 +12,7 @@
 	<command id="cmd_close_tab" key="close-tab-key" />
 
 	<command id="cmd_edit_copy_buckets" />
+	<command id="cmd_edit_record_buckets" />
 
 	<command id="cmd_cat_main" key="cat-main-key" />
 	<command id="cmd_circ_checkout" key="circ-checkout-key" />
@@ -93,7 +94,7 @@
 	<menupopup id="main.menu.edit.popup">
 		<menuitem label="Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
 		<menuitem label="Volume Buckets" command="cmd_broken" accesskey="V"/>
-		<menuitem label="Record Buckets" command="cmd_broken" accesskey="R"/>
+		<menuitem label="Record Buckets" command="cmd_edit_record_buckets" accesskey="R"/>
 		<menuseparator />
 		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
 	</menupopup>
@@ -130,7 +131,7 @@
 		-->
 		<menuitem label="Manage Copy Buckets" command="cmd_edit_copy_buckets" accesskey="B"/>
 		<menuitem label="Manage Volume Buckets" command="cmd_broken" accesskey="V"/>
-		<menuitem label="Manage Record Buckets" command="cmd_broken" accesskey="R"/>
+		<menuitem label="Manage Record Buckets" command="cmd_edit_record_buckets" accesskey="R"/>
 		<menuseparator />
 		<menuitem label="Create New Marc Record" accesskey="N" command="cmd_broken"/>
 		<menuitem label="Import Record from Z39.50" accesskey="Z" command="cmd_z39_50_import"/>
