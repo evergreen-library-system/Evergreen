@@ -150,7 +150,7 @@ cat.record_buckets.prototype = {
 									obj.list2.clear();
 									for (var i = 0; i < items.length; i++) {
 										var item = obj.flesh_item_for_list( 
-											items[i].target_record(),
+											items[i].target_biblio_record_entry(),
 											items[i].id()
 										);
 										if (item) obj.list2.append( item );
@@ -326,43 +326,72 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-					'record_buckets_transfer_to_volume' : [
+					'cmd_merge_records' : [
 						['command'],
 						function() {
-							// FM_ACN_RETRIEVE
-							obj.data.stash_retrieve();
-							if (!obj.data.marked_volume) {
-								alert('Please mark a volume as the destination from within the record browser and then try this again.');
-								return;
-							}
-							var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
-							// FIXME -- later, show some brief details for the record
-							var confirm = prompt('Moving records to volume "' + volume.label() + '".  To confirm, please retype the volume label.','','Copy Transfer');
-							if (confirm == volume.label()) {
+							try {
+								obj.data.stash_retrieve();
+								if (!obj.data.marked_record) {
+									alert('Please mark a record from within the catalog as the Merge Record Destination.');
+									return;
+								}
 								JSAN.use('util.functional');
 
-								var records = obj.network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [
-									util.functional.map_list(
-										obj.list2.dump_retrieve_ids(),
-										function (o) {
-											return JSON2js(o).docid; // docid
-										}
-									)
-								]);
+								var record_ids = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o).docid; // docid
+									}
+								);
 
-								for (var i = 0; i < records.length; i++) {
-									records[i].call_number( obj.data.marked_volume );
-									records[i].ischanged( 1 );
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+								xml += '<description>Merge these records? (the lead record will be the first listed)</description>';
+								xml += '<hbox><button label="Merge" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								xml += '<arrowscrollbox flex="1">';
+
+									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ obj.data.marked_record ]);
+									xml += '<vbox>';
+									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + obj.data.marked_record + '"/>';
+									xml += '<iframe src="data:text/html,' + window.escape(html) + '"/>';
+									xml += '</vbox>';
+
+								for (var i = 0; i < record_ids.length; i++) {
+
+									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
+									xml += '<vbox>';
+									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + record_ids[i] + '"/>';
+									xml += '<iframe src="data:text/html,' + window.escape(html) + '"/>';
+									xml += '</vbox>';
+
 								}
 
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',
-									[ ses(), records ]);
-								// FIXME -- check return value at some point
+								xml += '</arrowscrollbox>';
+								xml += '</vbox>';
+								obj.data.temp_merge = xml; obj.data.stash('temp_merge');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_merge'
+									+ '&title=' + window.escape('Record Merging'),
+									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+								);
+								JSAN.use('OpenILS.data');
+								var data = new OpenILS.data(); data.init({'via':'stash'});
+								if (data.fancy_prompt_data == '') { alert('Merge Aborted'); return; }
+
+								var robj = obj.network.simple_request('MERGE_RECORDS', [ ses(), obj.data.marked_record, record_ids ]);
+								if (typeof robj.ilsevent != 'undefined') {
+									throw(robj);
+								} else {
+									alert('Records were successfully merged.');
+								}
 
 								obj.controller.render('record_buckets_menulist_placeholder');		
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
-
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Records were not likely merged.',E);
 							}
+
 						}
 					],
 					'cmd_broken' : [
