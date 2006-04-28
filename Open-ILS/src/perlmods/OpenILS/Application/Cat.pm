@@ -750,6 +750,28 @@ sub volume_tree_fleshed_update {
 
 	my $user_obj = $apputils->check_user_session($user_session);
 
+	# first lets see if we have any dup volume labels
+#	my %volumes;
+#	my @volumes = @$volumes;
+#	for my $vol (@volumes) {
+#		$volumes{$_->owning_lib} = {}  unless $volumes{$_->owning_lib};
+#		$volumes{$_->record} = {}  unless $volumes{$_->record};
+#		if($volumes{$_->record}->{$_->label}) {
+#			$logger->info("Duplicate volume label found ".
+#				"for record ".$_->record." and label ".$_->label);
+#			$volumes{$_->record}->{$_->label}++;
+#		} else {
+#			$volumes{$_->record}->{$_->label} = 1;
+#		}
+#	}
+#
+#	for my $r (values %volumes) {
+#		for my $l (keys %{$volumes{$r}}) {
+#			return OpenILS::Event->new('CALL_NUMBER_EXISTS', payload => $l)
+#				if $volumes{$r}{$l} > 1;
+#		}
+#	}
+
 
 	my $session = $apputils->start_db_session();
 	warn "Looping on volumes in fleshed volume tree update\n";
@@ -1085,6 +1107,221 @@ sub merge {
 	$editor->finish;
 	return 1;
 }
+
+
+
+
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
+
+__PACKAGE__->register_method(
+	method	=> "fleshed_volume_update",
+	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update",
+);
+sub fleshed_volume_update {
+	my( $self, $conn, $auth, $volumes ) = @_;
+	my( $reqr, $evt ) = $U->checkses($auth);
+	return $evt if $evt;
+
+	my $override = ($self->api_name =~ /override/);
+	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
+
+	for my $vol (@$volumes) {
+		$logger->info("vol-update: investigating volume ".$vol->id);
+
+		$vol->editor($reqr->id);
+		$vol->edit_date('now');
+
+		my $copies = $vol->copies;
+		$vol->clear_copies;
+
+		if( $vol->isdeleted ) {
+
+			$logger->info("vol-update: deleting volume");
+			my $cs = $editor->search_asset_copy(
+				{ call_number => $vol->id, deleted => 'f' } );
+			return OpenILS::Event->new(
+				'VOLUME_NOT_EMPTY', payload => $vol->id ) if @$cs;
+
+			$vol->delete('t');
+			$evt = $editor->update_asset_call_number($vol);
+			return $evt if $evt;
+			
+		} elsif( $vol->isnew ) {
+			$logger->info("vol-update: creating volume");
+			$evt = create_volume( $override, $editor, $vol );
+			return $evt if $evt;
+
+		} elsif( $vol->ischanged ) {
+			$logger->info("vol-update: update volume");
+			$evt = $editor->update_asset_call_number($vol);
+			return $evt if $evt;
+		}
+
+		# now update any attached copies
+		if( @$copies and !$vol->isdeleted ) {
+			$_->call_number($vol->id) for @$copies;
+			$evt = update_fleshed_copies( $editor, $vol, $copies );
+			return $evt if $evt;
+		}
+	}
+
+	$editor->finish;
+	return scalar(@$volumes);
+}
+
+
+# this does the actual work
+sub update_fleshed_copies {
+	my( $editor, $vol, $copies ) = @_;
+
+	my $evt;
+	for my $copy (@$copies) {
+
+		my $copyid = $copy->id;
+		$logger->info("vol-update: inspecting copy $copyid");
+	
+		$copy->editor($editor->requestor->id);
+		$copy->edit_date('now');
+		$copy->call_number($vol->id);
+
+		$copy->status( $copy->status->id ) if ref($copy->status);
+		$copy->location( $copy->location->id ) if ref($copy->location);
+		$copy->circ_lib( $copy->circ_lib->id ) if ref($copy->circ_lib);
+		
+		my $sc_entries = $copy->stat_cat_entries;
+		$copy->clear_stat_cat_entries;
+
+		if( $copy->isdeleted ) {
+
+			$logger->info("vol-update: deleting copy $copyid");
+			$copy->delete('t');
+			$evt = $editor->update_asset_copy(
+				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			return $evt if $evt;
+
+		} elsif( $copy->isnew ) {
+
+			$logger->info("vol-update: creating copy $copyid");
+			$copy->clear_id;
+			$copy->creator($editor->requestor->id);
+			$copy->create_date('now');
+			$evt = $editor->create_asset_copy(
+				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			return $evt if $evt;
+			$copy->id($editor->lastid);
+
+		} elsif( $copy->ischanged ) {
+
+			$logger->info("vol-update: updating copy $copyid");
+			$evt = $editor->update_asset_copy(
+				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			return $evt if $evt;
+		}
+
+		$copy->stat_cat_entries( $sc_entries );
+		$evt = update_copy_stat_entries($editor, $copy);
+		return $evt if $evt;
+	}
+
+	return undef;
+}
+
+sub update_copy_stat_entries {
+	my( $editor, $copy ) = @_;
+
+	my $evt;
+	my $entries = $copy->stat_cat_entries;
+	return undef unless ($entries and @$entries);
+
+	my $maps = $editor->search_asset_stat_cat_entry_copy_map({copy=>$copy->id});
+
+	if(!$copy->isnew) {
+		# if there is no stat cat entry on the copy who's id matches the
+		# current map's id, remove the map from the database
+		for my $map (@$maps) {
+			if(! grep { $_->id == $map->stat_cat_entry } @$entries ) {
+
+				$logger->info("copy update found stale ".
+					"stat cat entry map ".$map->id. " on copy ".$copy->id);
+
+				$evt = $editor->delete_asset_stat_cat_entry_copy_map($map);
+				return $evt if $evt;
+			}
+		}
+	}
+	
+	# go through the stat cat update/create process
+	for my $entry (@$entries) { 
+
+		# if this link already exists in the DB, don't attempt to re-create it
+		next if( grep{$_->stat_cat_entry == $entry->id} @$maps );
+	
+		my $new_map = Fieldmapper::asset::stat_cat_entry_copy_map->new();
+		
+		$new_map->stat_cat( $entry->stat_cat );
+		$new_map->stat_cat_entry( $entry->id );
+		$new_map->owning_copy( $copy->id );
+
+		$evt = $editor->create_asset_stat_cat_entry_copy_map($new_map);
+		return $evt if $evt;
+
+		$logger->info("copy update created new stat cat entry map ".$editor->lastid);
+	}
+
+	return undef;
+}
+
+
+sub create_volume {
+	my( $override, $editor, $vol ) = @_;
+	my $evt;
+
+
+	# first lets see if there are any collisions
+	my $vols = $editor->search_asset_call_number( { 
+			owning_lib	=> $vol->owning_lib,
+			record		=> $vol->record,
+			label			=> $vol->label
+		}
+	);
+
+	my $label = undef;
+	if(@$vols) {
+		if($override) { 
+			$label = $vol->label;
+		} else {
+			return OpenILS::Event->new(
+				'VOLUME_LABEL_EXISTS', payload => $vol->id);
+		}
+	}
+
+	# create a temp label so we can create the volume, then de-dup it
+	$vol->label( '__SYSTEM_TMP_'.time) if $label;
+
+	$vol->creator($editor->requestor->id);
+	$vol->create_date('now');
+	$vol->clear_id;
+
+	$evt = $editor->create_asset_call_number($vol);
+	return $evt if $evt;
+	$vol->id($editor->lastid);
+
+
+	if($label) {
+		# now restore the label and merge into the existing record
+		$vol->label($label);
+		(undef, $evt) = 
+			OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $$vols[0]);
+		return $evt if $evt;
+	}
+
+	return undef;
+}
+
+
+
 
 
 

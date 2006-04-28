@@ -65,10 +65,11 @@ sub requestor {
 	return $self->{requestor};
 }
 
-sub setperm {
-	my( $self, $type, $perm) = @_;
+sub lastid {
+	my($self, $id) = @_;
+	$self->{lastid} = $id if $id;
+	return $self->{lastid};
 }
-
 
 # -------------------------------------------------------------
 # Actually performs the perm check
@@ -130,11 +131,47 @@ sub _update_method {
 sub _retrieve_method {
 	my( $self, $type, $id, $params ) = @_;
 	my $method = "open-ils.storage.direct.$type.retrieve";
-	$logger->info("editor: retrieving $type ".$id);
+	$logger->info("editor: retrieving $type $id");
 	my $evt = $self->checkperm(
 		$type, 'retrieve', $$params{org}) if $$params{checkperm};
 	return $self->session->request($method, $id)->gather(1);
 }
+
+
+# -------------------------------------------------------------
+# does the actual deleting
+# -------------------------------------------------------------
+sub _delete_method {
+	my( $self, $type, $obj, $params ) = @_;
+	my $method = "open-ils.storage.direct.$type.delete";
+	$logger->info("editor: deleting $type ".$obj->id);
+	my $evt = $self->checkperm(
+		$type, 'delete', $$params{org}) if $$params{checkperm};
+	return $U->DB_UPDATE_FAILED($obj) unless 
+		$self->session->request($method, $obj)->gather(1);
+	return undef;
+}
+
+
+
+
+
+# -------------------------------------------------------------
+# does the actual fetching by id
+# -------------------------------------------------------------
+sub _create_method {
+	my( $self, $type, $obj, $params ) = @_;
+	my $method = "open-ils.storage.direct.$type.create";
+	$logger->info("editor: creating $type");
+	my $evt = $self->checkperm(
+		$type, 'create', $$params{org}) if $$params{checkperm};
+
+	my $id = $self->session->request($method, $obj)->gather(1);
+	return $U->DB_UPDATE_FAILED($obj) unless $id;
+	$self->lastid($id);
+	return undef;
+}
+
 
 
 # -------------------------------------------------------------
@@ -144,13 +181,11 @@ sub _search_method {
 	my( $self, $type, $shash, $params ) = @_;
 
 	my $method = "open-ils.storage.direct.$type.search_where.atomic";
-
 	if( $params->{idlist} ) {
 		$method = "open-ils.storage.id_list.$type.search_where.atomic";
 	}
 
 	$logger->info("editor: searching $type ".Dumper($shash));
-
 	my $evt = $self->checkperm(
 		$type, 'retrieve', $$params{org}) if $$params{checkperm};
 	return $self->session->request($method, $shash)->gather(1);
@@ -189,6 +224,17 @@ for my $object (keys %$map) {
 	my $searchf = 
 		"sub $search {return shift()->_search_method('$type', \@_);}";
 	eval $searchf;
+
+	my $create = "create_$obj";
+	my $createf = 
+		"sub $create {return shift()->_create_method('$type', \@_);}";
+	eval $createf;
+
+	my $delete = "delete_$obj";
+	my $deletef = 
+		"sub $delete {return shift()->_delete_method('$type', \@_);}";
+	eval $deletef;
+
 }
 
 

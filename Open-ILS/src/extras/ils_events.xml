@@ -67,9 +67,10 @@
 		</desc>
 	</event>
 	<event code='1205' textcode='CARD_EXISTS'>
-		<desc>
-			The given user barcode already exists
-		</desc>
+		<desc>The given user barcode already exists</desc>
+	</event>
+	<event code='1206' textcode='VOLUME_NOT_EMPTY'>
+		<desc>The selected volume has copies attached</desc>
 	</event>
 
 
@@ -213,6 +214,9 @@
 
 	<event code='1704' textcode='TCN_EXISTS'>
 		<desc>A record already exists with the requested TCN value</desc>
+	</event>
+	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
+		<desc>A volume with the same label, title and owning library exists</desc>
 	</event>
 
 

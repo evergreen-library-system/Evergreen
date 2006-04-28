@@ -99,7 +99,7 @@ sub merge_records {
 # copies and moves all copies attached to the other volumes
 # into said volume.  all other volumes are deleted
 sub merge_volumes {
-	my( $editor, $volumes ) = @_;
+	my( $editor, $volumes, $master ) = @_;
 	my %copies;
 	my $evt;
 
@@ -112,14 +112,23 @@ sub merge_volumes {
 		$copies{$_->id} = $editor->search_asset_copy({call_number=>$_->id});
 	}
 
-	# find the CN with the most copies and make it the master CN
-	my $big = 0;
 	my $bigcn;
-	for my $cn (keys %copies) {
-		my $count = scalar(@{$copies{$cn}});
-		if( $count > $big ) {
-			$big = $count;
-			$bigcn = $cn;
+	if( $master ) {
+
+		# the caller has chosen the master record
+		$bigcn = $master->id;
+		push( @$volumes, $master );
+
+	} else {
+
+		# find the CN with the most copies and make it the master CN
+		my $big = 0;
+		for my $cn (keys %copies) {
+			my $count = scalar(@{$copies{$cn}});
+			if( $count > $big ) {
+				$big = $count;
+				$bigcn = $cn;
+			}
 		}
 	}
 
