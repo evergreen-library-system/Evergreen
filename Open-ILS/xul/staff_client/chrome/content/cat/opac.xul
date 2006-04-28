@@ -36,7 +36,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -176,19 +176,36 @@
 			document.getElementById('nav').setAttribute('hidden','true');
 		}
 
+		function add_to_bucket() {
+			JSAN.use('util.window'); var win = new util.window();
+			win.open(
+				xulG.url_prefix(urls.XUL_RECORD_BUCKETS)
+				+ '?record_ids=' + js2JSON( [ docid ] ),
+				'sel_bucket_win' + win.window_name_increment(),
+				'chrome,resizable,modal,center'
+			);
+		}
+
 	]]>
 	</script>
 
 	<vbox flex="1">
 		<deck id="top_pane"/>
-		<hbox id="nav" hidden="true">
-			<button label="OPAC View" id="opac_view" oncommand="set_opac();"/>
-			<button label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
-			<button label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
-			<button label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
-			<button label="Open in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
-			<button label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
-		</hbox>
+		<menubar id="nav" hidden="true">
+			<menu label="Actions for this Record" accesskey="A">
+			<menupopup>
+			<menuitem label="OPAC View" id="opac_view" oncommand="set_opac();"/>
+			<menuitem label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
+			<menuitem label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
+			<menuitem label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuseparator/>
+			<menuitem label="Add to Bucket" id="add_bucket" oncommand="add_to_bucket();"/>
+			<menuseparator/>
+			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+			</menupopup>
+			</menu>
+		</menubar>
 		<deck id="bottom_pane" flex="1"/>
 	</vbox>
 

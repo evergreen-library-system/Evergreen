@@ -121,7 +121,7 @@ cat.record_buckets.prototype = {
 										util.functional.filter_list(
 											buckets.biblio,
 											function(o) {
-												return o.btype() == 'staff';
+												return o.btype() == 'staff_client';
 											}
 										),
 										function(o) {
