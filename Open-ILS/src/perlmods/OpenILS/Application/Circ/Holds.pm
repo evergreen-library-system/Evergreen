@@ -620,5 +620,54 @@ sub create_hold_notify {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> 'reset_hold',
+	api_name	=> 'open-ils.circ.hold.reset',
+	signature	=> q/
+		Un-captures and un-targets a hold, essentially returning
+		it to the state it was in directly after it was placed,
+		then attempts to re-target the hold
+		@param authtoken The login session key
+		@param holdid The id of the hold
+	/
+);
+
+
+sub reset_hold {
+	my( $self, $conn, $auth, $holdid ) = @_;
+	my $reqr;
+	my ($hold, $evt) = $U->fetch_hold($holdid);
+	return $evt if $evt;
+	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD');
+	return $evt if $evt;
+	$evt = $self->_reset_hold($reqr, $hold);
+	return $evt if $evt;
+	return 1;
+}
+
+sub _reset_hold {
+	my ($self, $reqr, $hold, $session) = @_;
+
+	my $x;
+	if(!$session) {
+		$x = 1;
+		$session = $U->start_db_session();
+	}
+
+	$hold->clear_capture_time;
+	$hold->clear_current_copy;
+
+	return $U->DB_UPDATE_FAILED($hold) unless 
+		$session->request(
+			'open-ils.storage.direct.action.hold_request.update', $hold )->gather(1);
+
+	$session->request(
+		'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id )->gather(1);
+
+	$U->commit_db_session($session) unless $x;
+	return undef;
+}
+
+
 
 1;
