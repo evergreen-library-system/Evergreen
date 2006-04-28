@@ -4,6 +4,7 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
+use Data::Dumper;
 use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 
@@ -25,13 +26,21 @@ sub new {
 sub session {
 	my( $self, $session ) = @_;
 	$self->{session} = $session if $session;
-	$self->{session} = $U->start_db_session unless $self->{session};
+	if(!$self->{session}) {
+		if( $self->{xact} ) {
+			$self->{session} = $U->start_db_session;
+		} else {
+			$self->{session} = 
+				OpenSRF::AppSession->create('open-ils.storage');
+		}
+	}
 	return $self->{session};
 }
 
 # commits the db session
 sub commit {
 	my $self = shift;
+	return unless $self->{xact};
 	$logger->info("editor: committing session");
 	$U->commit_db_session( $self->session );
 }
@@ -48,6 +57,12 @@ sub finish {
 	my $self = shift;
 	$self->commit;
 	$self->reset;
+}
+
+sub requestor {
+	my($self, $requestor) = @_;
+	$self->{requestor} = $requestor if $requestor;
+	return $self->{requestor};
 }
 
 sub setperm {
@@ -122,6 +137,26 @@ sub _retrieve_method {
 }
 
 
+# -------------------------------------------------------------
+# does the actual searching
+# -------------------------------------------------------------
+sub _search_method {
+	my( $self, $type, $shash, $params ) = @_;
+
+	my $method = "open-ils.storage.direct.$type.search_where.atomic";
+
+	if( $params->{idlist} ) {
+		$method = "open-ils.storage.id_list.$type.search_where.atomic";
+	}
+
+	$logger->info("editor: searching $type ".Dumper($shash));
+
+	my $evt = $self->checkperm(
+		$type, 'retrieve', $$params{org}) if $$params{checkperm};
+	return $self->session->request($method, $shash)->gather(1);
+}
+
+
 # utility method for loading
 sub __fm2meth { 
 	my $str = shift;
@@ -149,6 +184,11 @@ for my $object (keys %$map) {
 	my $retrievef = 
 		"sub $retrieve {return shift()->_retrieve_method('$type', \@_);}";
 	eval $retrievef;
+
+	my $search = "search_$obj";
+	my $searchf = 
+		"sub $search {return shift()->_search_method('$type', \@_);}";
+	eval $searchf;
 }
 
 
