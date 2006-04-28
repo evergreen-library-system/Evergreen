@@ -179,7 +179,7 @@ cat.record_buckets.prototype = {
 								bucket_item.target_biblio_record_entry( obj.record_ids[i] );
 								try {
 									var robj = obj.network.simple_request('BUCKET_ITEM_CREATE',
-										[ ses(), 'bilbio', bucket_item ]);
+										[ ses(), 'biblio', bucket_item ]);
 
 									if (typeof robj == 'object') throw robj;
 
