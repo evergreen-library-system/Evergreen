@@ -173,12 +173,8 @@ sub _update_patron_credit {
 	
 	$logger->info("Total patron credit for $userid is now " . $patron->credit_forward_balance );
 
-	my $res = $session->request(
+	$session->request( 
 		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);
-
-	if(!$res) {
-		throw OpenSRF::EX("Error updating patron credit");
-	}
 }
 
 
