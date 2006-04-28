@@ -225,16 +225,17 @@ sub abort_transit {
 
 	($holdtransit) = $U->fetch_hold_transit($transit->id);
 
+	# update / delete the objects
+	my $session = $U->start_db_session();
+
+
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit) {
 		($hold, $evt) = $U->fetch_hold($holdtransit->hold);			
 		return $evt if $evt;
-		$hold->clear_capture_time;
-		$hold->clear_current_copy;
+		$evt = $holdcode->_reset_hold( $reqr, $hold, $session);
+		return $evt if $evt;
 	}
-
-	# update / delete the objects
-	my $session = $U->start_db_session();
 
 	return $U->DB_UPDATE_FAILED($transit) unless 
 		$session->request(
@@ -245,13 +246,6 @@ sub abort_transit {
 	return $U->DB_UPDATE_FAILED($copy) unless 
 		$session->request(
 			'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
-
-
-	if($hold) {
-		return $U->DB_UPDATE_FAILED($hold) unless 
-			$session->request( 
-				'open-ils.storage.direct.action.hold_request.update', $hold )->gather(1);
-	}	
 
 	$U->commit_db_session($session);
 
