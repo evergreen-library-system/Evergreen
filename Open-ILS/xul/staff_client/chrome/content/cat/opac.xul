@@ -186,6 +186,13 @@
 			);
 		}
 
+		function mark_destination() {
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+			data.marked_record = docid;
+			data.stash('marked_record');
+			alert('Record marked as Merge Record Destination');
+		}
+
 	]]>
 	</script>
 
@@ -194,12 +201,13 @@
 		<menubar id="nav" hidden="true">
 			<menu label="Actions for this Record" accesskey="A">
 			<menupopup>
-			<menuitem label="OPAC View" id="opac_view" oncommand="set_opac();"/>
-			<menuitem label="MARC View" id="marc_view" oncommand="set_marc_view();"/>
-			<menuitem label="MARC Edit" id="marc_edit" oncommand="set_marc_edit();"/>
-			<menuitem label="Copy Browser" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
+			<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
+			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
+			<menuitem label="Copy Browser" accesskey="C" id="copy_browse" oncommand="set_copy_browser();"/>
 			<menuseparator/>
-			<menuitem label="Add to Bucket" id="add_bucket" oncommand="add_to_bucket();"/>
+			<menuitem label="Mark as a Merge Record Destination" accesskey="M" id="mark_destination" oncommand="mark_destination();"/>
+			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
 			<menuseparator/>
 			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
 			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
