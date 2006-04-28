@@ -46,7 +46,7 @@
 
 				g.cgi = new CGI();
 
-				var my_xml = g.cgi.param('xml') || obj.data[ g.cgi.param('xml_in_stash') ];
+				var my_xml = g.cgi.param('xml') || g.data[ g.cgi.param('xml_in_stash') ];
 
 				var parser = new DOMParser();
 				var doc = parser.parseFromString( my_xml, 'text/xml' );
