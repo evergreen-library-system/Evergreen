@@ -119,7 +119,7 @@
 </menu>
 
 <!-- The Cataloging menu on the main menu -->
-<menu id="main.menu.cat" label="&staff.main.menu.cat.label;" accesskey="&staff.main.menu.cat.key;">
+<menu id="main.menu.cat" label="Cataloging" accesskey="g">
 	<menupopup id="main.menu.cat.popup">
 		<menuitem label="Search the Catalog" accesskey="&staff.main.menu.cat.bib_search.key;" key="search-opac-key" command="cmd_search_opac"/>
 		<menuitem label="Retrieve record by TCN" accesskey="T" key="search-tcn-key" command="cmd_search_tcn" />
