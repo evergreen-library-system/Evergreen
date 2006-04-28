@@ -348,25 +348,25 @@ cat.record_buckets.prototype = {
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
 								xml += '<description>Merge these records? (the lead record will be the first listed)</description>';
 								xml += '<hbox><button label="Merge" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								xml += '<arrowscrollbox flex="1">';
+								xml += '<hbox flex="1" style="overflow: scroll;">';
 
 									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ obj.data.marked_record ]);
-									xml += '<vbox>';
+									xml += '<vbox flex="1" style="min-width: 500px">';
 									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + obj.data.marked_record + '"/>';
-									xml += '<iframe src="data:text/html,' + window.escape(html) + '"/>';
-									xml += '</vbox>';
+									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
+									xml += '</vbox><splitter><grippy/></splitter>';
 
 								for (var i = 0; i < record_ids.length; i++) {
 
 									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
-									xml += '<vbox>';
+									xml += '<vbox flex="1" style="min-width: 500px">';
 									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + record_ids[i] + '"/>';
-									xml += '<iframe src="data:text/html,' + window.escape(html) + '"/>';
-									xml += '</vbox>';
+									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
+									xml += '</vbox><splitter><grippy/></splitter>';
 
 								}
 
-								xml += '</arrowscrollbox>';
+								xml += '</hbox>';
 								xml += '</vbox>';
 								obj.data.temp_merge = xml; obj.data.stash('temp_merge');
 								window.open(
