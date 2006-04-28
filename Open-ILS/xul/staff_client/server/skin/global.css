@@ -19,8 +19,10 @@ caption { font-weight: bold; }
 
 .my_overflow { overflow: scroll; }
 
+/*
 iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
 .my_bg { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }
+*/
 
 .postit_hb { -moz-border-radius: 30px; background-color: black; }
 .postit_gb { -moz-border-radius: 30px; background-color: yellow; }
