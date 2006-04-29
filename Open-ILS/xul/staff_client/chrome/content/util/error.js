@@ -228,13 +228,24 @@ util.error.prototype = {
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
 		if (!msg) msg = '';
-		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + js2JSON(E).substr(0,100);
+		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode : ( typeof E.status != 'undefined' ? 'Status: ' + E.status : '' ) );
 		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
-		obj.yns_alert(
+		var r = obj.yns_alert(
 			alert_msg,	
 			'Unhandled Error',
-			'Ok', null, null, 'Check here to confirm this message'
+			'Ok', 'Debug', 'Report to Helpdesk', 'Check here to confirm this message'
 		);
+		if (r == 1) {
+			JSAN.use('util.window'); var win = new util.window();
+			win.open(
+				'data:text/plain,' + window.escape( msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
+				'error_alert',
+				'chrome,resizable'
+			);
+		}
+		if (r==2) {
+			alert('Not Yet Implemented');
+		}
 	},
 
 
