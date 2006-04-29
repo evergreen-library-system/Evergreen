@@ -19,7 +19,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="cat_bib_brief_win" 
-	onload="my_init()"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -114,16 +115,40 @@
 	]]>
 	</script>
 
-	<groupbox flex="1">
+	<groupbox flex="1" style="overflow: auto; min-height: 100px;">
 		<caption label="Record Details"/>
-			<label style="font-weight: bold;" value="Title:"/><description id="title" />
-			<label style="font-weight: bold;" value="Author:"/><description id="author" />
-			<label style="font-weight: bold;" value="Edition:"/><description id="edition" />
-			<label style="font-weight: bold;" value="Pub Date:"/><description id="pubdate" />
-			<label style="font-weight: bold;" value="TCN:"/><description id="tcn" /></hbox>
-			<label style="font-weight: bold;" value="Created By:"/><description id="creator" />
-			<label style="font-weight: bold;" value="Last Edited By:"/><description id="editor" />
-			<label style="font-weight: bold;" value="Last Edited On:"/><description id="edit_date" />
+			<html:table width="90%">
+				<html:tr valign="top">
+					<html:td colspan="4">
+						<html:span style="font-weight: bold;">Title: </html:span><html:span id="title" />
+					</html:td>
+				</html:tr>
+				<html:tr valign="top">
+					<html:td colspan="2">
+						<html:span style="font-weight: bold;">Author: </html:span><html:span id="author" />
+					</html:td>
+					<html:td>
+						<html:span style="font-weight: bold;">Edition: </html:span><html:span id="edition" />
+					</html:td>
+					<html:td>
+						<html:span style="font-weight: bold;">Pub Date: </html:span><html:span id="pubdate" />
+					</html:td>
+				</html:tr>
+				<html:tr valign="top">
+					<html:td>
+						<html:span style="font-weight: bold;">TCN: </html:span><html:span id="tcn" />
+					</html:td>
+					<html:td>
+						<html:span style="font-weight: bold;">Created By: </html:span><html:span id="creator" />
+					</html:td>
+					<html:td>
+						<html:span style="font-weight: bold;">Last Edited By: </html:span><html:span id="editor" />
+					</html:td>
+					<html:td>
+						<html:span style="font-weight: bold;">Last Edited On: </html:span><html:span id="edit_date" />
+					</html:td>
+				</html:tr>
+			</html:table>
 	</groupbox>
 
 </window>

@@ -342,12 +342,14 @@ cat.copy_buckets.prototype = {
 								var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
-								xml += '<description>Transfer the bucket copies from their original volumes to ';
+								xml += '<description>Transfer the copies in bucket "';
+								xml += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';
+								xml += 'from their original volumes to ';
 								xml += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
 								xml += '"' + volume.label() + '" on the following record?</description>';
 								xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
 								xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								//xml += '<iframe style="overflow: scroll" flex="1" src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + volume.record() + '"/>';
+								xml += '<iframe style="overflow: scroll" flex="1" src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + volume.record() + '"/>';
 								xml += '</vbox>';
 								obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
 								window.open(
@@ -386,7 +388,11 @@ cat.copy_buckets.prototype = {
 									}, 0
 								);
 								
-								if (typeof robj.ilsevent != 'undefined') throw(robj);
+								if (typeof robj.ilsevent != 'undefined') {
+									throw(robj);
+								} else {
+									alert('Copies transferred.');
+								}
 
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Copies not likely transferred.',E);
