@@ -536,6 +536,18 @@ patron.bills.prototype = {
 						cb.setAttribute('checked', 'true'); 
 					}
 				}
+				cb.addEventListener(
+					'command',
+					function() {
+						setTimeout(
+							function() {
+								obj.distribute_payment(obj.controller.view.bill_payment_amount);
+							}, 0
+						);
+					},
+					false
+				);
+
 
 				try {
 					var xt_id = document.createElement('label');
