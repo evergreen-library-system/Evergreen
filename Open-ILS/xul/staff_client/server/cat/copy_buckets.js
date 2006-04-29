@@ -241,7 +241,12 @@ cat.copy_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							obj.controller.render('copy_buckets_menulist_placeholder');
+							setTimeout(
+								function() {
+									JSAN.use('util.widgets'); 
+									util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+								}, 0
+							);
 						}
 					],
 					'copy_buckets_delete_bucket' : [
@@ -312,8 +317,13 @@ cat.copy_buckets.prototype = {
 									'batch_copy_editor_win_' + win.window_name_increment(),
 									'chrome,resizable,modal'
 								);
-								obj.controller.render('copy_buckets_menulist_placeholder');		
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
 							} catch(E) {
 								alert( js2JSON(E) );
 							}
@@ -352,8 +362,13 @@ cat.copy_buckets.prototype = {
 									[ ses(), copies ]);
 								// FIXME -- check return value at some point
 
-								obj.controller.render('copy_buckets_menulist_placeholder');		
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
 
 							}
 						}
