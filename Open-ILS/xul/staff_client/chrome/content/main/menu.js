@@ -373,6 +373,15 @@ main.menu.prototype = {
 					}
 				}
 			],
+			'cmd_restore_all_tabs' : [
+				['oncommand'],
+				function() {
+					var tabs = obj.controller.view.tabs;
+					for (var i = 0; i < tabs.childNodes.length; i++) {
+						tabs.childNodes[i].hidden = false;
+					}
+				}
+			],
 		};
 
 		JSAN.use('util.controller');
@@ -472,7 +481,10 @@ main.menu.prototype = {
 			if (!tab.hidden)
 				tab_flag = false;
 		}
-		if (tab_flag) this.new_tab();
+		if (tab_flag) {
+			this.controller.view.tabs.selectedIndex = 0;
+			this.new_tab(); 
+		}
 	},
 
 	'find_free_tab' : function() {

@@ -47,6 +47,7 @@
 	<command id="cmd_test_html" />
 	<command id="cmd_test_xul" />
 	<command id="cmd_clear_cache" />
+	<command id="cmd_restore_all_tabs" />
 
 	<command id="cmd_test" />
 	<command id="cmd_broken" disabled="true" />
@@ -200,6 +201,7 @@
 		<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
 		<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
 		<menuitem label="Clear Cache" accesskey="3" command="cmd_clear_cache"/>
+		<menuitem label="Unhide Tabs" command="cmd_restore_all_tabs"/>
 	</menupopup>
 </menu>
 
