@@ -638,7 +638,7 @@
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<groupbox flex="1">
-		<caption label="Copy Browser"/>
+		<caption label="Holdings Maintenance"/>
 		<vbox id="browse_list_vbox" class="test_class"/>
 	</groupbox>
 

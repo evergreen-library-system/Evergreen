@@ -204,7 +204,7 @@
 			<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
 			<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
 			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
-			<menuitem label="Copy Browser" accesskey="C" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
 			<menuseparator/>
 			<menuitem label="Mark as a Merge Record Destination" accesskey="M" id="mark_destination" oncommand="mark_destination();"/>
 			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
