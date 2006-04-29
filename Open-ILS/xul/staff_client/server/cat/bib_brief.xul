@@ -54,11 +54,21 @@
 					function (req) {
 						var mods = req.getResultObject();
 						
-						if (mods.title()) document.getElementById('title').setAttribute('value',mods.title());
-						if (mods.author()) document.getElementById('author').setAttribute('value',mods.author());
-						if (mods.edition()) document.getElementById('edition').setAttribute('value',mods.edition());
-						if (mods.pubdate()) document.getElementById('pubdate').setAttribute('value',mods.pubdate());
-						if (mods.tcn()) document.getElementById('tcn').setAttribute('value',mods.tcn());
+						if (mods.title()) document.getElementById('title').appendChild(
+							document.createTextNode(mods.title())
+						);
+						if (mods.author()) document.getElementById('author').appendChild(
+							document.createTextNode(mods.author())
+						);
+						if (mods.edition()) document.getElementById('edition').appendChild(
+							document.createTextNode(mods.edition())
+						);
+						if (mods.pubdate()) document.getElementById('pubdate').appendChild(
+							document.createTextNode(mods.pubdate())
+						);
+						if (mods.tcn()) document.getElementById('tcn').appendChild(
+							document.createTextNode(mods.tcn())
+						);
 
 						if (window.xulG && typeof window.xulG.set_tab_name == 'function') {
 							try {
@@ -74,10 +84,16 @@
 							[ docid ],
 							function (req) {
 								var meta = req.getResultObject()[0];
-								document.getElementById('creator').setAttribute('value',meta.creator());
-								document.getElementById('editor').setAttribute('value',meta.editor());
-								document.getElementById('edit_date').setAttribute('value',
-									util.date.formatted_date(meta.edit_date(),"%D")
+								document.getElementById('creator').appendChild(
+									document.createTextNode(meta.creator())
+								);
+								document.getElementById('editor').appendChild(
+									document.createTextNode(meta.editor())
+								);
+								document.getElementById('edit_date').appendChild(
+									document.createTextNode(
+										util.date.formatted_date(meta.edit_date(),"%D")
+									)
 								);
 							}
 						);
@@ -101,16 +117,16 @@
 	<groupbox flex="1">
 		<caption label="Record Details"/>
 		<hbox flex="1">
-			<label style="font-weight: bold;" value="Title:" /><label id="title" /> 
-			<label style="font-weight: bold;" value="Author:" /><label id="author" />
-			<label style="font-weight: bold;" value="Edition:" /> <label id="edition" />
-			<label style="font-weight: bold;" value="Pub Date:" /> <label id="pubdate" />
+			<label style="font-weight: bold;" value="Title:" /><description id="title" /> 
+			<label style="font-weight: bold;" value="Author:" /><description id="author" />
+			<label style="font-weight: bold;" value="Edition:" /> <description id="edition" />
+			<label style="font-weight: bold;" value="Pub Date:" /> <description id="pubdate" />
 		</hbox>
 		<hbox flex="1">
-			<label style="font-weight: bold;" value="TCN:" /> <label id="tcn" />
-			<label style="font-weight: bold;" value="Created By:" /> <label id="creator" />
-			<label style="font-weight: bold;" value="Last Edited By:" /> <label id="editor" />
-			<label style="font-weight: bold;" value="Last Edited On:" /> <label id="edit_date" />
+			<label style="font-weight: bold;" value="TCN:" /> <description id="tcn" />
+			<label style="font-weight: bold;" value="Created By:" /> <description id="creator" />
+			<label style="font-weight: bold;" value="Last Edited By:" /> <description id="editor" />
+			<label style="font-weight: bold;" value="Last Edited On:" /> <description id="edit_date" />
 		</hbox>
 	</groupbox>
 

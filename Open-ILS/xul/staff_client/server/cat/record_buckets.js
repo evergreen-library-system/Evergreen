@@ -248,7 +248,12 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							obj.controller.render('record_buckets_menulist_placeholder');
+							setTimeout(
+								function() {
+									JSAN.use('util.widgets'); 
+									util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+								}, 0
+							);
 						}
 					],
 					'record_buckets_delete_bucket' : [
@@ -263,6 +268,13 @@ cat.record_buckets.prototype = {
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
 								obj.controller.render('record_buckets_menulist_placeholder');
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
+
 							} catch(E) {
 								alert('FIXME -- ' + E);
 							}
@@ -319,7 +331,12 @@ cat.record_buckets.prototype = {
 									'batch_record_editor_win_' + win.window_name_increment(),
 									'chrome,resizable,modal'
 								);
-								obj.controller.render('record_buckets_menulist_placeholder');		
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
 							} catch(E) {
 								alert( js2JSON(E) );
@@ -351,7 +368,7 @@ cat.record_buckets.prototype = {
 								xml += '<hbox flex="1" style="overflow: scroll;">';
 
 									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ obj.data.marked_record ]);
-									xml += '<vbox flex="1" style="min-width: 500px">';
+									xml += '<vbox flex="1" style="">';
 									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + obj.data.marked_record + '"/>';
 									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
 									xml += '</vbox><splitter><grippy/></splitter>';
@@ -359,7 +376,7 @@ cat.record_buckets.prototype = {
 								for (var i = 0; i < record_ids.length; i++) {
 
 									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
-									xml += '<vbox flex="1" style="min-width: 500px">';
+									xml += '<vbox flex="1" style="">';
 									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + record_ids[i] + '"/>';
 									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
 									xml += '</vbox><splitter><grippy/></splitter>';
@@ -386,8 +403,13 @@ cat.record_buckets.prototype = {
 									alert('Records were successfully merged.');
 								}
 
-								obj.controller.render('record_buckets_menulist_placeholder');		
 								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Records were not likely merged.',E);
 							}
