@@ -76,7 +76,8 @@
 		}
 
 		function fancy_save(ev) {
-			g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value;
+			if (ev.target.id) g.data.fancy_prompt_data[ ev.target.id ] = ev.target.value || ev.target.getAttribute('value');
+			g.data.fancy_prompt_data[ 'fancy_submit' ] = ev.target.value || ev.target.getAttribute('value');
 			var nl = document.getElementsByAttribute('name','fancy_data');
 			for (var i = 0; i < nl.length; i++) {
 				g.data.fancy_prompt_data[ nl[i].id ] = nl[i].nodeName == 'checkbox' ? nl[i].checked : nl[i].value;
