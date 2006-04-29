@@ -46,12 +46,29 @@
 
 				g.cgi = new CGI();
 
-				var my_xml = g.cgi.param('xml') || g.data[ g.cgi.param('xml_in_stash') ];
+				var top_xml = g.cgi.param('top_xml') || g.data[ g.cgi.param('top_xml_in_stash') ];
+				if (top_xml) {
+					var parser = new DOMParser();
+					var doc = parser.parseFromString( top_xml, 'text/xml' );
+					var node = doc.documentElement;
+					if (node) document.getElementById('fancy_prompt_topbar').appendChild(node);
+				}
 
-				var parser = new DOMParser();
-				var doc = parser.parseFromString( my_xml, 'text/xml' );
-				var node = doc.documentElement;
-				if (node) document.getElementById('fancy_prompt_main').appendChild(node);
+				var my_xml = g.cgi.param('xml') || g.data[ g.cgi.param('xml_in_stash') ];
+				if (my_xml) {
+					var parser = new DOMParser();
+					var doc = parser.parseFromString( my_xml, 'text/xml' );
+					var node = doc.documentElement;
+					if (node) document.getElementById('fancy_prompt_main').appendChild(node);
+				}
+
+				var bot_xml = g.cgi.param('bot_xml') || g.data[ g.cgi.param('bottom_xml_in_stash') ];
+				if (bot_xml) {
+					var parser = new DOMParser();
+					var doc = parser.parseFromString( bot_xml, 'text/xml' );
+					var node = doc.documentElement;
+					if (node) document.getElementById('fancy_prompt_bottombar').appendChild(node);
+				}
 
 				var nl = document.getElementsByAttribute('name','fancy_submit');
 				for (var i = 0; i < nl.length; i++) {
@@ -88,7 +105,9 @@
 	]]>
 	</script>
 
-	<vbox id="fancy_prompt_main" flex="1">
-	</vbox>
+	<vbox id="fancy_prompt_topbar"/>
+	<vbox id="fancy_prompt_main" flex="1" style="overflow: auto"/>
+	<vbox id="fancy_prompt_bottombar"/>
+
 </window>
 
