@@ -141,7 +141,51 @@ circ.copy_status.prototype = {
 					'sel_patron' : [
 						['command'],
 						function() {
-							alert('Not Yet Implemented');
+							var count = 5;
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								try {
+									var circs = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',
+										[ ses(), obj.selection_list[i].copy_id, count ]);
+									if (circs == null || typeof circs.ilsevent != 'undefined') throw(circs);
+									if (circs.length == 0) { alert('There are no circs for item with barcode ' + obj.selection_list[i].barcode); continue; }
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+									var top_xml = '<description xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
+									top_xml += 'These are the last ' + circs.length + ' circulations for item ';
+									top_xml += obj.selection_list[i].barcode + '</description>';
+
+									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+									for (var j = 0; j < circs.length; j++) {
+										xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_CIRC_BRIEF );
+										xml += '?circ_id=' + circs[j] + '"/>';
+									}
+									xml += '</vbox>';
+									
+									var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
+									bot_xml += '<button id="retrieve_last" value="last" label="Retrieve Last Patron" accesskey="L" name="fancy_submit"/>';
+									bot_xml += '<button id="retrieve_all" value="all" label="Retrieve All Patrons" accesskey="A" name="fancy_submit"/>';
+									bot_xml += '<button label="Done" accesskey="D" name="fancy_submit"/></hbox></vbox>';
+
+									obj.data.temp_top = top_xml; obj.data.stash('temp_top');
+									obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+									obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+									window.open(
+										urls.XUL_FANCY_PROMPT
+										+ '?xml_in_stash=temp_mid'
+										+ '&top_xml_in_stash=temp_top'
+										+ '&bottom_xml_in_stash=temp_bot'
+										+ '&title=' + window.escape('Brief Circulation History'),
+										'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+									);
+									JSAN.use('OpenILS.data');
+									var data = new OpenILS.data(); data.init({'via':'stash'});
+									if (data.fancy_prompt_data == '') { continue; }
+									var s = ''; for (var j in data.fancy_prompt_data) s+= j + ' = ' + data.fancy_prompt_data[j] + '\n'; alert(s);
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Problem retrieving circulations.',E);
+								}
+							}
+							//FM_CIRC_RETRIEVE_VIA_COPY
 						}
 					],
 					'sel_bucket' : [

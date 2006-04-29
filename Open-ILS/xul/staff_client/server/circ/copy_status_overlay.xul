@@ -11,12 +11,12 @@
 
 <popupset id="copy_status_popupset">
 	<popup id="copy_status_actions" position="at_pointer"> 
-		<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
-		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-		<menuitem command="sel_patron" label="Show Recent Circulations" accesskey="R"/>
+		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+		<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
 	</popup>
 </popupset>
 
@@ -41,17 +41,17 @@
 	<textbox id="copy_status_barcode_entry_textbox"/>
 	<button id="copy_status_submit_barcode_button" 
 		label="Submit"
-		command="cmd_copy_status_submit_barcode"
-		accesskey="S"/>
+		command="cmd_copy_status_submit_barcode"/>
 	<spacer flex="1"/>
 	<menubar>
 	<menu label="Actions for Selected Items" accesskey="S">
 		<menupopup>
-			<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
-			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-			<menuitem command="sel_patron" label="Show Recent Circulations" accesskey="R"/>
+			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="sel_transit_abort" label="Abort Transits" />
 			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+			<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
 		</menupopup>
 	</menu>
 	</menubar>
