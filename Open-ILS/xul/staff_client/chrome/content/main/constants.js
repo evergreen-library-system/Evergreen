@@ -22,7 +22,7 @@ var api = {
 	'CHECKOUT_PERMIT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.permit' },
 	'CHECKOUT_RENEW' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.renew' },
 	'FM_ACN_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.callnumber.retrieve' },
-	'FM_ACN_TREE_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume_tree.fleshed.batch.update' },
+	'FM_ACN_TREE_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume.fleshed.batch.update' },
 	'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy_tree.retrieve' },
 	'FM_ACP_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.retrieve' },
 	'FM_ACP_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.find_by_barcode' },
@@ -101,6 +101,7 @@ var api = {
 	'MARC_XML_RECORD_CREATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.create' },
 	'MARC_XML_RECORD_IMPORT' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.import' },
 	'MARC_XML_RECORD_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.update' },
+	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
 }
 
 var urls = {
