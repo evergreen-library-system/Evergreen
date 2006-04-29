@@ -176,7 +176,7 @@ cat.copy_buckets.prototype = {
 
 									obj.list2.append( item );
 								} catch(E) {
-									alert( js2JSON(E) );
+									obj.error.standard_unexpected_error_alert('Addition likely failed.',E);
 								}
 							}
 						}
@@ -204,7 +204,7 @@ cat.copy_buckets.prototype = {
 
 									obj.list2.append( item );
 								} catch(E) {
-									alert( js2JSON(E) );
+									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
 								}
 							}
 
@@ -238,7 +238,7 @@ cat.copy_buckets.prototype = {
 										[ ses(), 'copy', bucket_item_id ]);
 									if (typeof robj == 'object') throw robj;
 								} catch(E) {
-									alert(js2JSON(E));
+									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
 								}
                                                         }
 							setTimeout(
@@ -255,14 +255,14 @@ cat.copy_buckets.prototype = {
 							try {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
-								var conf = prompt('To delete this bucket, re-type its name:','','Delete Bucket');
-								if (conf != name) return;
+								var conf = window.confirm('Delete the bucket named ' + name + '?');
+								if (conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
-								alert('FIXME -- ' + E);
+								obj.error.standard_unexpected_error_alert('Bucket deletion likely failed.',E);
 							}
 						}
 					],
@@ -292,7 +292,7 @@ cat.copy_buckets.prototype = {
 									);
 								}
 							} catch(E) {
-								alert( js2JSON(E) );
+								obj.error.standard_unexpected_error_alert('Bucket creation failed.',E);
 							}
 						}
 					],
@@ -332,16 +332,34 @@ cat.copy_buckets.prototype = {
 					'copy_buckets_transfer_to_volume' : [
 						['command'],
 						function() {
-							// FM_ACN_RETRIEVE
-							obj.data.stash_retrieve();
-							if (!obj.data.marked_volume) {
-								alert('Please mark a volume as the destination from within the copy browser and then try this again.');
-								return;
-							}
-							var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
-							// FIXME -- later, show some brief details for the record
-							var confirm = prompt('Moving copies to volume "' + volume.label() + '".  To confirm, please retype the volume label.','','Copy Transfer');
-							if (confirm == volume.label()) {
+							try {
+								// FM_ACN_RETRIEVE
+								obj.data.stash_retrieve();
+								if (!obj.data.marked_volume) {
+									alert('Please mark a volume as the destination from within the copy browser and then try this again.');
+									return;
+								}
+								var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
+								xml += '<description>Transfer the bucket copies from their original volumes to ';
+								xml += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
+								xml += '"' + volume.label() + '" on the following record?</description>';
+								xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
+								xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								//xml += '<iframe style="overflow: scroll" flex="1" src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + volume.record() + '"/>';
+								xml += '</vbox>';
+								obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_transfer'
+									+ '&title=' + window.escape('Copy Transfer'),
+									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+								);
+								JSAN.use('OpenILS.data');
+								var data = new OpenILS.data(); data.init({'via':'stash'});
+								if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
+
 								JSAN.use('util.functional');
 
 								var copies = obj.network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [
@@ -358,9 +376,7 @@ cat.copy_buckets.prototype = {
 									copies[i].ischanged( 1 );
 								}
 
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',
-									[ ses(), copies ]);
-								// FIXME -- check return value at some point
+								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies ]);
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
@@ -369,7 +385,11 @@ cat.copy_buckets.prototype = {
 										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
 									}, 0
 								);
+								
+								if (typeof robj.ilsevent != 'undefined') throw(robj);
 
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Copies not likely transferred.',E);
 							}
 						}
 					],
@@ -406,8 +426,8 @@ cat.copy_buckets.prototype = {
 		var obj = this;
 		try {
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ acp_id ]);
-			if (copy == null) {
-				throw('COPY NOT FOUND');
+			if (copy == null || typeof copy.ilsevent != 'undefined') {
+				throw(copy);
 			} else {
 				var item = {
 					'retrieve_id' : js2JSON( [ copy.id(), copy.barcode(), bucket_item_id ] ),
@@ -421,7 +441,7 @@ cat.copy_buckets.prototype = {
 				return item;
 			}
 		} catch(E) {
-			alert('FIXME: need special alert and error handling\n' + js2JSON(E));
+			obj.error.standard_unexpected_error_alert('List building failed.',E);
 			return null;
 		}
 

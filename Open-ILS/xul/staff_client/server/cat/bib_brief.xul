@@ -116,18 +116,14 @@
 
 	<groupbox flex="1">
 		<caption label="Record Details"/>
-		<hbox flex="1">
-			<label style="font-weight: bold;" value="Title:" /><description id="title" /> 
-			<label style="font-weight: bold;" value="Author:" /><description id="author" />
-			<label style="font-weight: bold;" value="Edition:" /> <description id="edition" />
-			<label style="font-weight: bold;" value="Pub Date:" /> <description id="pubdate" />
-		</hbox>
-		<hbox flex="1">
-			<label style="font-weight: bold;" value="TCN:" /> <description id="tcn" />
-			<label style="font-weight: bold;" value="Created By:" /> <description id="creator" />
-			<label style="font-weight: bold;" value="Last Edited By:" /> <description id="editor" />
-			<label style="font-weight: bold;" value="Last Edited On:" /> <description id="edit_date" />
-		</hbox>
+			<label style="font-weight: bold;" value="Title:"/><description id="title" />
+			<label style="font-weight: bold;" value="Author:"/><description id="author" />
+			<label style="font-weight: bold;" value="Edition:"/><description id="edition" />
+			<label style="font-weight: bold;" value="Pub Date:"/><description id="pubdate" />
+			<label style="font-weight: bold;" value="TCN:"/><description id="tcn" /></hbox>
+			<label style="font-weight: bold;" value="Created By:"/><description id="creator" />
+			<label style="font-weight: bold;" value="Last Edited By:"/><description id="editor" />
+			<label style="font-weight: bold;" value="Last Edited On:"/><description id="edit_date" />
 	</groupbox>
 
 </window>
