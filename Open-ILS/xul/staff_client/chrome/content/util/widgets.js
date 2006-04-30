@@ -109,12 +109,13 @@ util.widgets.make_menulist = function( items, dvalue ) {
 		var label = items[i][0]; var value = items[i][1]; var disabled = items[i][2]; var indent = items[i][3];
 		if (indent) {
 			for (var j = 0; j < Number(indent); j++) {
-				label = ' ' + label;
+				//label = ' ' + label;
 			}
 		}
 		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
 		menuitem.setAttribute('label',label);
 		menuitem.setAttribute('value',value);
+		menuitem.setAttribute('style','font-family: monospace; padding-left: ' + indent + 'em;');
 		if ( (disabled == true) || (disabled == "true") ) {
 			menuitem.disabled = true;
 			menuitem.setAttribute('disabled','true');
