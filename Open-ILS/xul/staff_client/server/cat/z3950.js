@@ -51,7 +51,7 @@ cat.z3950.prototype = {
 							obj.controller.view.marc_import.disabled = false;
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
-							alert('FIXME: ' + E);
+							obj.error.standard_unexpected_error_alert('Failure during list construction.',E);
 						}
 					},
 				}
@@ -274,8 +274,7 @@ cat.z3950.prototype = {
 				}
 			);
 		} catch(E) {
-			this.error.sdump('D_ERROR',E);
-			alert(E);
+			this.error.standard_unexpected_error_alert('Failure during search.',E);
 		}
 
 	},
@@ -322,8 +321,7 @@ cat.z3950.prototype = {
 				}
 			);
 		} catch(E) {
-			this.error.sdump('D_ERROR',E);
-			alert(E);
+			this.error.standard_unexpected_error_alert('Failure during search.',E);
 		}
 	},
 
