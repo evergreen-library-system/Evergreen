@@ -1202,15 +1202,8 @@ sub update_fleshed_copies {
 			return $evt if $evt;
 
 		} elsif( $copy->isnew ) {
-
-			$logger->info("vol-update: creating copy $copyid");
-			$copy->clear_id;
-			$copy->creator($editor->requestor->id);
-			$copy->create_date('now');
-			$evt = $editor->create_asset_copy(
-				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			$evt = create_copy( $editor, $vol, $copy );
 			return $evt if $evt;
-			$copy->id($editor->lastid);
 
 		} elsif( $copy->ischanged ) {
 
@@ -1225,6 +1218,26 @@ sub update_fleshed_copies {
 		return $evt if $evt;
 	}
 
+	return undef;
+}
+
+sub create_copy {
+	my( $editor, $vol, $copy ) = @_;
+
+	my $existing = $editor->search_asset_copy(
+		{ call_number => $copy->call_number } );
+	
+	return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
+
+	$copy->clear_id;
+	$copy->creator($editor->requestor->id);
+	$copy->create_date('now');
+
+	my $evt = $editor->create_asset_copy(
+		$copy, {checkperm=>1, org=>$vol->owning_lib});
+	return $evt if $evt;
+
+	$copy->id($editor->lastid);
 	return undef;
 }
 

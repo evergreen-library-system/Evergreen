@@ -218,6 +218,9 @@
 	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
 		<desc>A volume with the same label, title and owning library exists</desc>
 	</event>
+	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
+		<desc>An item with the same barcode exists</desc>
+	</event>
 
 
 
