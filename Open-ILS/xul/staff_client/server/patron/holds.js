@@ -12,6 +12,8 @@ patron.holds.prototype = {
 
 	'retrieve_ids' : [],
 
+	'holds_map' : {},
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -123,6 +125,63 @@ patron.holds.prototype = {
 					'cmd_holds_edit' : [
 						['command'],
 						function() {
+						return ' <command id="cmd_show_notifications" /> <command id="cmd_holds_edit_pickup_lib" /> <command id="cmd_holds_edit_phone_notify" /> <command id="cmd_holds_edit_email_notify" /> <command id="cmd_holds_edit_selection_depth" /> ';
+						}
+					],
+					'cmd_holds_edit_pickup_lib' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+								var list = util.functional.map_list(
+									obj.OpenILS.data.list.aou,
+									function(o) { 
+										var sname = o.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
+										return [
+											o.name() ? sname + ' ' + o.name() : o.shortname(),
+											o.id(),
+											( obj.OpenILS.data.hash.aout[ o.ou_type() ].can_have_users() == 0),
+											( obj.OpenILS.data.hash.aout[ o.ou_type() ].depth() * 2),
+										]; 
+									}
+								);
+								ml = util.widgets.make_menulist( list, obj.OpenILS.data.list.au[0].ws_ou() );
+								ml.setAttribute('id','lib');
+								ml.setAttribute('name','fancy_data');
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								xml += '<description>Please choose a new Pickup Library:</description>';
+								xml += util.widgets.serialize_node(ml);
+								xml += '</vbox>';
+								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
+								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
+								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_mid'
+									+ '&bottom_xml_in_stash=temp_bot'
+									+ '&title=' + window.escape('Choose a Pick Up Library'),
+									'fancy_prompt', 'chrome,resizable,modal'
+								);
+								obj.OpenILS.data.init({'via':'stash'});
+								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
+								var pickup_lib = obj.OpenILS.data.fancy_prompt_data.lib;
+								var msg = 'Are you sure you would like to change the Pick Up Lib for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to ' + obj.OpenILS.data.hash.aou[pickup_lib].shortname() + '?';
+								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+								if (r == 0) {
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+									obj.retrieve();
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+							}
 						}
 					],
 					'cmd_holds_cancel' : [
@@ -137,6 +196,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
+									obj.retrieve();
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely cancelled.',E);
@@ -200,6 +260,7 @@ patron.holds.prototype = {
 
 		function gen_list_append(hold) {
 			return function() {
+				obj.holds_map[ hold.id() ] = hold;
 				obj.list.append(
 					{
 						'retrieve_id' : js2JSON({'id':hold.id(),'target':hold.target(),}),

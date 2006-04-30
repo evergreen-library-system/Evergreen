@@ -12,11 +12,12 @@
 <popupset id="holds_popupset">
 	<popup id="holds_actions" position="at_pointer"> 
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
-		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" />
+		<menuitem label="Show Notification History" command="cmd_show_notifications" />
+		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" />
 		<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" />
 		<menuitem label="Edit Selection Depth (Hold Range)" command="cmd_holds_edit_selection_depth" />
-		<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_holds_edit_selection_focus" />
+		<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_broken" />
 		<menuitem label="Find Another Target" command="cmd_holds_retarget"/>
 		<menuitem label="Cancel Hold" command="cmd_holds_cancel" />
 	</popup>
@@ -46,11 +47,12 @@
 		<menu label="Actions for Selected Holds" accesskey="S">
 			<menupopup>
 				<menuitem label="Show in Catalog" command="cmd_show_catalog" />
-				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" />
+				<menuitem label="Show Notification History" command="cmd_show_notifications" />
+				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 				<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" />
 				<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" />
 				<menuitem label="Edit Selection Depth (Hold Range)" command="cmd_holds_edit_selection_depth" />
-				<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_holds_edit_selection_focus" />
+				<menuitem label="Edit Selection Focus (Hold Range from a Specific Library)" command="cmd_broken" />
 				<menuitem label="Find Another Target" command="cmd_holds_retarget"/>
 				<menuitem label="Cancel Hold" command="cmd_holds_cancel" />
 			</menupopup>

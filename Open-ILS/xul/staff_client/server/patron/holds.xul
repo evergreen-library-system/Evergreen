@@ -64,9 +64,16 @@
 
 	<commandset id="holds_cmds">
 		<command id="cmd_holds_print" />
-		<command id="cmd_holds_edit" />
-		<command id="cmd_holds_cancel" />
 		<command id="cmd_show_catalog" />
+		<command id="cmd_show_notifications" />
+		<command id="cmd_holds_edit" />
+		<command id="cmd_holds_edit_pickup_lib" />
+		<command id="cmd_holds_edit_phone_notify" />
+		<command id="cmd_holds_edit_email_notify" />
+		<command id="cmd_holds_edit_selection_depth" />
+		<command id="cmd_broken" disabled="true"/>
+		<command id="cmd_holds_retarget"/>
+		<command id="cmd_holds_cancel" />
 	</commandset>
 
 	<popupset id="holds_popupset"/>
