@@ -76,10 +76,22 @@ patron.holds.prototype = {
 					);
 					if (obj.retrieve_ids.length > 0) {
 						obj.controller.view.cmd_holds_edit.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','false');
+						obj.controller.view.cmd_show_notifications.setAttribute('disabled','false');
+						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 					} else {
 						obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
+						obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
+						obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 					}
@@ -128,6 +140,76 @@ patron.holds.prototype = {
 						return ' <command id="cmd_show_notifications" /> <command id="cmd_holds_edit_pickup_lib" /> <command id="cmd_holds_edit_phone_notify" /> <command id="cmd_holds_edit_email_notify" /> <command id="cmd_holds_edit_selection_depth" /> ';
 						}
 					],
+					'cmd_show_notifications' : [
+						['command'],
+						function() {
+						return ' <command id="cmd_show_notifications" /> <command id="cmd_holds_edit_pickup_lib" /> <command id="cmd_holds_edit_phone_notify" /> <command id="cmd_holds_edit_email_notify" /> <command id="cmd_holds_edit_selection_depth" /> ';
+						}
+					],
+					'cmd_holds_edit_selection_depth' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+								var ws_type = obj.OpenILS.data.hash.aout[ obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ].ou_type() ];
+								var list = util.functional.map_list(
+									util.functional.filter_list(	
+										obj.OpenILS.data.list.aout,
+										function(o) {
+											if (o.depth() > ws_type.depth()) return false;
+											if (o.depth() < ws_type.depth()) return true;
+											return (o.id() == ws_type.id());
+										}
+									),
+									function(o) { 
+										return [
+											o.opac_label(),
+											o.id(),
+											false,
+											( o.depth() * 2),
+										]; 
+									}
+								);
+								ml = util.widgets.make_menulist( list, obj.OpenILS.data.list.au[0].ws_ou() );
+								ml.setAttribute('id','selection');
+								ml.setAttribute('name','fancy_data');
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								xml += '<description>Please choose a Hold Range:</description>';
+								xml += util.widgets.serialize_node(ml);
+								xml += '</vbox>';
+								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
+								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
+								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_mid'
+									+ '&bottom_xml_in_stash=temp_bot'
+									+ '&title=' + window.escape('Choose a Pick Up Library'),
+									'fancy_prompt', 'chrome,resizable,modal'
+								);
+								obj.OpenILS.data.init({'via':'stash'});
+								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
+								var selection = obj.OpenILS.data.fancy_prompt_data.selection;
+								var msg = 'Are you sure you would like to change the Hold Range for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + obj.OpenILS.data.hash.aout[selection].opac_label() + '"?';
+								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+								if (r == 0) {
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										hold.selection_depth( obj.OpenILS.data.hash.aout[selection].depth() ); hold.ischanged('1');
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+									obj.retrieve();
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+							}
+						}
+					],
+
 					'cmd_holds_edit_pickup_lib' : [
 						['command'],
 						function() {
@@ -184,6 +266,94 @@ patron.holds.prototype = {
 							}
 						}
 					],
+					'cmd_holds_edit_phone_notify' : [
+						['command'],
+						function() {
+							try {
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								xml += '<description>Please enter a new phone number for hold notification (leave the field empty to disable phone notification):</description>';
+								xml += '<textbox id="phone" name="fancy_data"/>';
+								xml += '</vbox>';
+								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
+								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
+								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_mid'
+									+ '&bottom_xml_in_stash=temp_bot'
+									+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
+									+ '&focus=phone',
+									'fancy_prompt', 'chrome,resizable,modal'
+								);
+								obj.OpenILS.data.init({'via':'stash'});
+								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
+								var phone = obj.OpenILS.data.fancy_prompt_data.phone;
+								var msg = 'Are you sure you would like to change the Notification Phone Number for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + phone + '"?';
+								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+								if (r == 0) {
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										hold.phone_notify(  phone ); hold.ischanged('1');
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+									obj.retrieve();
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+							}
+						}
+					],
+					'cmd_holds_edit_email_notify' : [
+						['command'],
+						function() {
+							try {
+								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								xml += '<description>Send email notifications (when appropriate)?  The email address used is found in the hold recepient account.</description>';
+								xml += '<hbox><button value="email" label="Email" accesskey="E" name="fancy_submit"/>';
+								xml += '<button value="noemail" label="No Email" accesskey="N" name="fancy_submit"/></hbox>';
+								xml += '</vbox>';
+								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
+								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								window.open(
+									urls.XUL_FANCY_PROMPT
+									+ '?xml_in_stash=temp_mid'
+									+ '&bottom_xml_in_stash=temp_bot'
+									+ '&title=' + window.escape('Set Email Notification for Holds'),
+									'fancy_prompt', 'chrome,resizable,modal'
+								);
+								obj.OpenILS.data.init({'via':'stash'});
+								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
+								var email = obj.OpenILS.data.fancy_prompt_data.fancy_submit == 'email' ? 't' : 'f';
+								var msg = 'Are you sure you would like ' + ( email == 't' ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
+								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
+								if (r == 0) {
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+										hold.email_notify(  email ); hold.ischanged('1');
+										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+									obj.retrieve();
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
+							}
+						}
+					],
+
+
+					'cmd_holds_retarget' : [
+						['command'],
+						function() {
+						}
+					],
 					'cmd_holds_cancel' : [
 						['command'],
 						function() {
@@ -238,11 +408,18 @@ patron.holds.prototype = {
 		obj.retrieve();
 
 		obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
+		obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
+		obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
 		obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
+		alert('pause');
 		var obj = this;
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
