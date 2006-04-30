@@ -10,6 +10,7 @@ util.money.EXPORT_TAGS	= { ':all' : util.money.EXPORT_OK };
 
 util.money.dollars_float_to_cents_integer = function( money ) {
 	try {
+		if (money == '' || money == null || money == undefined) money = 0;
 		// careful to avoid fractions of pennies
 		var negative; negative = money.toString().match(/-/) ? -1 : 1;
 		var money_s = money.toString().replace(/[^\.\d]/g, '');
@@ -46,6 +47,7 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 
 util.money.cents_as_dollars = function( cents ) {
 	try {
+		if (cents == '' || cents == null || cents == undefined) cents = 0;
 		var negative; negative = cents.toString().match(/-/) ? '-' : '';
 		cents = cents.toString().replace(/[^\.\d]/g, ''); 
 		if (cents.match(/\./)) cents = util.money.dollars_float_to_cents_integer( cents ).toString();
