@@ -256,7 +256,7 @@ cat.copy_buckets.prototype = {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
 								var conf = window.confirm('Delete the bucket named ' + name + '?');
-								if (conf) return;
+								if (!conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
