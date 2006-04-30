@@ -185,14 +185,6 @@
 				'chrome,resizable,modal,center'
 			);
 		}
-
-		function mark_destination() {
-			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-			data.marked_record = docid;
-			data.stash('marked_record');
-			alert('Record marked as Merge Record Destination');
-		}
-
 	]]>
 	</script>
 
@@ -206,7 +198,6 @@
 			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
 			<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
 			<menuseparator/>
-			<menuitem label="Mark as a Merge Record Destination" accesskey="M" id="mark_destination" oncommand="mark_destination();"/>
 			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
 			<menuseparator/>
 			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>

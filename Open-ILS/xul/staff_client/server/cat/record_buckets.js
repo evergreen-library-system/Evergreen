@@ -263,7 +263,7 @@ cat.record_buckets.prototype = {
 								var bucket = obj.controller.view.bucket_menulist.value;
 								var name = obj.bucket_id_name_map[ bucket ];
 								var conf = window.confirm('Delete the bucket named ' + name + '?');
-								if (conf != name) return;
+								if (!conf) return;
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
@@ -348,10 +348,6 @@ cat.record_buckets.prototype = {
 						function() {
 							try {
 								obj.data.stash_retrieve();
-								if (!obj.data.marked_record) {
-									alert('Please mark a record from within the catalog as the Merge Record Destination.');
-									return;
-								}
 								JSAN.use('util.functional');
 
 								var record_ids = util.functional.map_list(
@@ -362,41 +358,51 @@ cat.record_buckets.prototype = {
 								);
 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-								xml += '<description>Merge these records? (the lead record will be the first listed)</description>';
-								xml += '<hbox><button label="Merge" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								xml += '<hbox flex="1" style="overflow: scroll;">';
+								var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+								top_xml += '<description>Merge these records? (Select the "lead" record first)</description>';
+								top_xml += '<hbox><button id="lead" disabled="true" label="Merge" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
 
-									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ obj.data.marked_record ]);
-									xml += '<vbox flex="1" style="">';
-									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + obj.data.marked_record + '"/>';
-									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
-									xml += '</vbox><splitter><grippy/></splitter>';
-
+								var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
+								xml += '<table><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
-
-									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
-									xml += '<vbox flex="1" style="">';
-									xml += '<iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + record_ids[i] + '"/>';
-									xml += '<iframe flex="1" src="data:text/html,' + window.escape(html) + '"/>';
-									xml += '</vbox><splitter><grippy/></splitter>';
-
+									xml += '<td><input value="Lead" id="record_' + record_ids[i] + '" type="radio" name="lead"';
+									xml += ' onclick="' + "try { var x = document.getElementById('lead'); x.setAttribute('value',";
+									xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
+									xml += '</input>Lead Record? #' + record_ids[i] + '</td>';
 								}
-
-								xml += '</hbox>';
-								xml += '</vbox>';
-								obj.data.temp_merge = xml; obj.data.stash('temp_merge');
+								xml += '</tr><tr valign="top">';
+								for (var i = 0; i < record_ids.length; i++) {
+									xml += '<td nowrap="nowrap"><iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ); 
+									xml += '?docid=' + record_ids[i] + '"/></td>';
+								}
+								xml += '</tr><tr valign="top">';
+								for (var i = 0; i < record_ids.length; i++) {
+									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
+									xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
+								}
+								xml += '</tr></table></form>';
+								obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
+								obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
 								window.open(
 									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_merge'
+									+ '?xml_in_stash=temp_merge_mid'
+									+ '&top_xml_in_stash=temp_merge_top'
 									+ '&title=' + window.escape('Record Merging'),
 									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 								);
-								JSAN.use('OpenILS.data');
-								var data = new OpenILS.data(); data.init({'via':'stash'});
-								if (data.fancy_prompt_data == '') { alert('Merge Aborted'); return; }
-
-								var robj = obj.network.simple_request('MERGE_RECORDS', [ ses(), obj.data.marked_record, record_ids ]);
+								obj.data.stash_retrieve();
+								if (obj.data.fancy_prompt_data == '') { alert('Merge Aborted'); return; }
+								var robj = obj.network.simple_request('MERGE_RECORDS', 
+									[ 
+										ses(), 
+										obj.data.fancy_prompt_data.lead, 
+										util.functional.filter_list( record_ids,
+											function(o) {
+												return o != obj.data.fancy_prompt_data.lead;
+											}
+										)
+									]
+								);
 								if (typeof robj.ilsevent != 'undefined') {
 									throw(robj);
 								} else {
