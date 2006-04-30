@@ -36,7 +36,6 @@
 </hbox>
 
 <hbox id="record_buckets_top_ui">
-	<label value="Select:"/>
 	<hbox id="record_buckets_menulist_placeholder" />
 	<button id="record_buckets_new_bucket" label="New Bucket"/>
 	<button id="record_buckets_delete_bucket" label="Delete Bucket"/>

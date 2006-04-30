@@ -36,7 +36,6 @@
 </hbox>
 
 <hbox id="copy_buckets_top_ui">
-	<label value="Select:"/>
 	<hbox id="copy_buckets_menulist_placeholder" />
 	<button id="copy_buckets_new_bucket" label="New Bucket"/>
 	<button id="copy_buckets_delete_bucket" label="Delete Bucket"/>
