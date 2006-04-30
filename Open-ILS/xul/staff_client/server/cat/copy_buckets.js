@@ -356,7 +356,7 @@ cat.copy_buckets.prototype = {
 									urls.XUL_FANCY_PROMPT
 									+ '?xml_in_stash=temp_transfer'
 									+ '&title=' + window.escape('Copy Transfer'),
-									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+									'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
 								);
 								JSAN.use('OpenILS.data');
 								var data = new OpenILS.data(); data.init({'via':'stash'});
