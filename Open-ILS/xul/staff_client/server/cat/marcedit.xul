@@ -12,7 +12,7 @@
 	<hbox flex="1">
 		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
 		<button id="save-button"/>
-		<button label="Help" onclick="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del');"/>
+		<button label="Help" oncommand="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del');"/>
 	</hbox>
 </groupbox>
 
@@ -151,7 +151,7 @@ try {
 
 
 document.getElementById('save-button').setAttribute('label', xulG.save.label);
-document.getElementById('save-button').setAttribute('onclick', 'xulG.save.func(xml_record.toXMLString())');
+document.getElementById('save-button').setAttribute('oncommand', 'xulG.save.func(xml_record.toXMLString())');
 
 if (xulG.record.url) {
 	var req =  new XMLHttpRequest();
