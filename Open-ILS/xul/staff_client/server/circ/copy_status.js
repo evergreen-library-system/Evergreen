@@ -156,14 +156,14 @@ circ.copy_status.prototype = {
 									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 									for (var j = 0; j < circs.length; j++) {
 										xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_CIRC_BRIEF );
-										xml += '?circ_id=' + circs[j] + '"/>';
+										xml += '?circ_id=' + circs[j].id() + '"/>';
 									}
 									xml += '</vbox>';
 									
 									var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
 									bot_xml += '<button id="retrieve_last" value="last" label="Retrieve Last Patron" accesskey="L" name="fancy_submit"/>';
 									bot_xml += '<button id="retrieve_all" value="all" label="Retrieve All Patrons" accesskey="A" name="fancy_submit"/>';
-									bot_xml += '<button label="Done" accesskey="D" name="fancy_submit"/></hbox></vbox>';
+									bot_xml += '<button label="Done" accesskey="D" name="fancy_cancel"/></hbox></vbox>';
 
 									obj.data.temp_top = top_xml; obj.data.stash('temp_top');
 									obj.data.temp_mid = xml; obj.data.stash('temp_mid');
@@ -179,7 +179,24 @@ circ.copy_status.prototype = {
 									JSAN.use('OpenILS.data');
 									var data = new OpenILS.data(); data.init({'via':'stash'});
 									if (data.fancy_prompt_data == '') { continue; }
-									var s = ''; for (var j in data.fancy_prompt_data) s+= j + ' = ' + data.fancy_prompt_data[j] + '\n'; alert(s);
+									var patron_hash = {};
+									for (var j = 0; j < (data.fancy_prompt_data.fancy_submit == 'all' ? circs.length : 1); j++) {
+										if (typeof patron_hash[circs[j].usr()] != 'undefined') {
+											continue;
+										} else {
+											patron_hash[circs[j].usr()] = true;
+										}
+										if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+											try {
+												var url = urls.XUL_PATRON_DISPLAY 
+													+ '?id=' + window.escape( circs[j].usr() );
+												window.xulG.new_tab( url );
+											} catch(E) {
+												obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
+											}
+										}
+
+									}
 
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('Problem retrieving circulations.',E);

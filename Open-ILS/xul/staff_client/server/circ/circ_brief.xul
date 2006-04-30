@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Brief Bib Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="circ_circ_brief_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
+
+				g.cgi = new CGI();
+				var circ_id = g.cgi.param('circ_id');
+
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.network.request(
+					api.FM_CIRC_RETRIEVE_VIA_ID.app,
+					api.FM_CIRC_RETRIEVE_VIA_ID.method,
+					[ ses(), circ_id ],
+					function (req) {
+						try {
+						var r_circ = req.getResultObject();
+						$('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
+						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
+						$('circ_staff').value = r_circ.circ_staff() ? r_circ.circ_staff() : '';
+						$('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
+						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
+						$('checkin_staff').value = r_circ.checkin_staff() ? r_circ.checkin_staff() : '';
+						$('id').value = r_circ.id() ? r_circ.id() : '';
+						$('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
+						var r = '';
+						if (r_circ.desk_renewal() == 't' || r_circ.desk_renewal() == '1') r += 'DESK ';
+						if (r_circ.opac_renewal() == 't' || r_circ.opac_renewal() == '1') r += 'OPAC ';
+						if (r_circ.phone_renewal() == 't' || r_circ.phone_renewal() == '1') r += 'PHONE ';
+						$('renewal').value = r || 'No';
+						} catch(E) {
+							g.error.standard_unexpected_error_alert('Failure rendering circ.',E);
+						}
+						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
+							var r_au = preq.getResultObject();
+							$('barcode').value = r_au.card().barcode();
+							$('patron_name').value = r_au.family_name() + ', ' + r_au.first_given_name() + ' ' + (r_au.second_given_name() ? r_au.second_given_name() : '');
+							JSAN.use('patron.util'); patron.util.set_penalty_css(r_au);
+						});
+					}
+				);
+
+
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncirc/circ_brief.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function $(id) { return document.getElementById(id); }
+
+	]]>
+	</script>
+
+	<groupbox flex="1" style="overflow: auto;">
+		<hbox>
+			<label id="patron_name" class="patronNameLarge"/>
+			<spacer flex="1"/>
+			<textbox id="barcode" class="plain" readonly="true" onclick="this.select()"/>
+		</hbox>
+		<grid flex="1">
+			<columns>
+				<column/>
+				<column flex="1"/>
+				<column/>
+				<column flex="1"/>
+				<column/>
+				<column flex="1"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Circ Id"/><label id="id"/>
+					<label value="Renewal"/><label id="renewal"/>
+					<label value="Stop Fines Reason"/><label id="stop_fines"/>
+				</row>
+				<row>
+					<label value="Check Out Lib"/><label id="circ_lib"/>
+					<label value="Check Out Time"/><label id="xact_start"/>
+					<label value="Check Out Staff ID"/><label id="circ_staff"/>
+				</row>
+				<row>
+					<label value="Check In Lib"/><label id="checkin_lib"/>
+					<label value="Check In Time"/><label id="checkin_time"/>
+					<label value="Check In Staff ID"/><label id="checkin_staff"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</window>
+
