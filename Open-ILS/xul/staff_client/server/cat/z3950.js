@@ -367,6 +367,20 @@ cat.z3950.prototype = {
 		}
 	},
 
+	'replace_tab_with_opac' : function(doc_id) {
+		var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+		var content_params = { 
+			'session' : ses(),
+			'authtime' : ses('authtime'),
+			'opac_url' : opac_url,
+		};
+		xulG.set_tab(
+			xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+			{'tab_name':'Retrieving title...'}, 
+			content_params
+		);
+	},
+
 	'spawn_marc_editor' : function(my_marcxml) {
 		var obj = this;
 		xulG.new_tab(
@@ -396,7 +410,7 @@ cat.z3950.prototype = {
 													throw(r3);
 												} else {
 													alert('Record successfully overlayed.');
-													xulG.set_tab('data:text/plain,' + window.escape('FIXME: Show the record we just overlayed in the opac.'),{'tab_name':'opac goes here'},{});
+													obj.replace_tab_with_opac(r3.id());
 												}
 											break;
 											case 1:
@@ -409,7 +423,7 @@ cat.z3950.prototype = {
 													throw(r2);
 												} else {
 													alert('Record successfully imported with alternate TCN.');
-													xulG.set_tab('data:text/plain,' + window.escape('FIXME: Show the record we just imported in the opac.'),{'tab_name':'opac goes here'},{});
+													obj.replace_tab_with_opac(r2.id());
 												}
 											break;
 											case 2:
@@ -424,7 +438,7 @@ cat.z3950.prototype = {
 								}
 							} else {
 								alert('Record successfully imported.');
-								xulG.set_tab('data:text/plain,' + window.escape('FIXME: Show the record we just imported in the opac.'),{'tab_name':'opac goes here'},{});
+								obj.replace_tab_with_opac(r.id());
 							}
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert('Record not likely imported.',E);
