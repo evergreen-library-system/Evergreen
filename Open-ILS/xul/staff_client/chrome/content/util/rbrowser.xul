@@ -53,10 +53,10 @@
 				JSAN.use('util.browser'); g.browser = new util.browser();
 
 				var push_xulG = true;
-				if (g.cgi.param('no_xulG') || xulG.no_xulG) push_xulG = false;
+				if (g.cgi.param('no_xulG') || (typeof xulG == 'object' ? xulG.no_xulG : false)) push_xulG = false;
 
 				var alt_print = false;
-				if (g.cgi.param('alternate_print') || xulG.alternate_print) alt_print = true;
+				if (g.cgi.param('alternate_print') || (typeof xulG == 'object' ? xulG.alternate_print : false)) alt_print = true;
 
 				g.browser.init( 
 					{ 
@@ -69,11 +69,11 @@
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
 				}
-				if (typeof window.xulG && window.xulG.show_nav_buttons) {
+				if (g.cgi.param('show_nav_buttons')||(typeof window.xulG == 'object' && window.xulG.show_nav_buttons)) {
 					document.getElementById('back').hidden = false;
 					document.getElementById('forward').hidden = false;
 				}
-				if (typeof window.xulG && window.xulG.show_print_button) {
+				if (g.cgi.param('show_print_button')||(typeof window.xulG == 'object' && window.xulG.show_print_button)) {
 					document.getElementById('browser_print').hidden = false;
 				}
 
