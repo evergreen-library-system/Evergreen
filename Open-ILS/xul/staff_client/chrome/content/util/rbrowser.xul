@@ -55,10 +55,14 @@
 				var push_xulG = true;
 				if (g.cgi.param('no_xulG') || xulG.no_xulG) push_xulG = false;
 
+				var alt_print = false;
+				if (g.cgi.param('alternate_print') || xulG.alternate_print) alt_print = true;
+
 				g.browser.init( 
 					{ 
 						'url' : url,
 						'push_xulG' : push_xulG,
+						'alt_print' : alt_print,
 					} 
 				);
 
@@ -73,6 +77,10 @@
 					document.getElementById('browser_print').hidden = false;
 				}
 
+				if (g.cgi.param('title')) {
+					try { document.title = g.cgi.param('title'); } catch(E) {}
+					try { window.title = g.cgi.param('title'); } catch(E) {}
+				}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

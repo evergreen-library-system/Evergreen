@@ -91,6 +91,7 @@
 		<command id="sel_opac" disabled="true"/>
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_bucket" disabled="true"/>
+		<command id="sel_spine" disabled="true"/>
 		<command id="sel_transit_abort" disabled="true"/>
 	</commandset>
 

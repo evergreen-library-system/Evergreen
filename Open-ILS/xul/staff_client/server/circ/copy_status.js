@@ -48,6 +48,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
+							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
@@ -55,6 +56,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
+							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 						}
 					} catch(E) {
@@ -89,6 +91,22 @@ circ.copy_status.prototype = {
 								obj.spawn_copy_editor();
 							} catch(E) {
 								alert(E);
+							}
+						}
+					],
+					'sel_spine' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								xulG.new_tab(
+									xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
+									+ js2JSON( util.functional.map_list(obj.selection_list,function(o){return o.barcode;}) ),
+									{ 'tab_name' : 'Spine Labels' },
+									{}
+								);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Spine Labels',E);
 							}
 						}
 					],

@@ -16,6 +16,7 @@
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 		<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
 	</popup>
 </popupset>
@@ -51,6 +52,7 @@
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 			<menuitem command="sel_transit_abort" label="Abort Transits" />
 			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 			<menuitem command="sel_checkin" label="Check In Items" accesskey="C" />
 		</menupopup>
 	</menu>

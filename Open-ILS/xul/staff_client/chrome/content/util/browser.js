@@ -21,6 +21,7 @@ util.browser.prototype = {
 
 			obj.url = params['url'];
 			obj.push_xulG = params['push_xulG'];
+			obj.alt_print = params['alt_print'];
 
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -34,7 +35,12 @@ util.browser.prototype = {
 							['command'],
 							function() {
 								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-								obj.get_content().print();
+								if (obj.alt_print) {
+									JSAN.use('util.print'); var p = new util.print();
+									p.NSPrint(obj.get_content(),false,{});
+								} else {
+									obj.get_content().print();
+								}
 							}
 						],
 						'cmd_forward' : [

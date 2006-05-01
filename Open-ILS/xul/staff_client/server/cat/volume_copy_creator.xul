@@ -348,7 +348,7 @@
 				);
 				/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 				g.data.stash_retrieve();
-				copies = JSON2js( g.data.temp );
+				copies = JSON2js( g.data.temp_copies );
 
 				for (var i = 0; i < copies.length; i++) {
 					var copy = copies[i];
@@ -359,12 +359,25 @@
 				}
 
 				try {
+					alert('pause');
 					var r = g.network.request(
 						api.FM_ACN_TREE_UPDATE.app,
 						api.FM_ACN_TREE_UPDATE.method,
 						[ ses(), volumes ]
 					);
+					if (typeof r.ilsevent != 'undefined') {
+						g.error.standard_unexpected_error_alert('volume tree update',r);
+					} else {
+						JSAN.use('util.functional');
+						var w = win.open(
+							urls.XUL_SPINE_LABEL
+							+ '?barcodes=' + window.escape( js2JSON( util.functional.map_list(copies,function(o){return o.barcode();}) ) ),
+							'spine_labels',
+							'chrome,modal,resizable'
+						);
+					}
 					/* FIXME -- revisit the return value here */
+					alert('pause');
 				} catch(E) {
 					alert('volume update error: ' + js2JSON(E));
 				}

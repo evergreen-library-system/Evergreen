@@ -750,19 +750,24 @@ g.render_input = function(node,input_cmd) {
 g.stash_and_close = function() {
 	if (g.handle_update) {
 		try {
+			alert('c-pause');
 			var r = g.network.request(
 				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
 				[ ses(), g.copies ]
 			);
+			if (typeof r.ilsevent != 'undefined') {
+				g.error.standard_unexpected_error_alert('copy update',r);
+			}
 			/* FIXME -- revisit the return value here */
+			alert('c-pause');
 		} catch(E) {
 			alert('copy update error: ' + js2JSON(E));
 		}
 	}
-	g.data.temp = js2JSON( g.copies );
-	g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
-	g.data.stash('temp');
+	g.data.temp_copies = js2JSON( g.copies );
+	g.data.stash('temp_copies');
+	g.error.sdump('D_CAT','in modal window, g.data.temp_copies = \n' + g.data.temp_copies + '\n');
 	window.close();
 }
 
