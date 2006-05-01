@@ -23,6 +23,7 @@ use OpenILS::Event;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::Editor;
 #my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -463,6 +464,22 @@ sub view_circs {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "circ_count",
+	api_name	=> "open-ils.circ.circulation.count",
+	notes		=> q/
+		Returns the number of times the item has circulated
+		@param copyid The copy to check
+	/);
+
+sub circ_count {
+	my( $self, $client, $copyid ) = @_; 
+	my $circs = $U->storagereq(
+		'open-ils.storage.id_list.action.circulation.search.target_copy.atomic', $copyid );
+	return scalar @$circs;
+}
+
+
 
 __PACKAGE__->register_method(
 	method		=> 'fetch_notes',
@@ -528,11 +545,39 @@ sub fetch_notes {
 			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_TITLE_NOTES');
 			return $evt if $evt;
 			return $U->storagereq(
-				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
+				'open-ils.storage.direct.biblio.record_note.search.record.atomic', $id );
 		}
 	}
 
 	return undef;
+}
+
+__PACKAGE__->register_method(
+	method	=> 'has_notes',
+	api_name	=> 'open-ils.circ.copy.has_notes');
+__PACKAGE__->register_method(
+	method	=> 'has_notes',
+	api_name	=> 'open-ils.circ.call_number.has_notes');
+__PACKAGE__->register_method(
+	method	=> 'has_notes',
+	api_name	=> 'open-ils.circ.title.has_notes');
+
+
+sub has_notes {
+	my( $self, $conn, $authtoken, $id ) = @_;
+	my $editor = OpenILS::Utils::Editor->new(authtoken => $authtoken);
+	return $editor->event unless $editor->checkauth;
+
+	my $n = $editor->search_asset_copy_note(
+		{owning_copy=>$id}, {idlist=>1}) if $self->api_name =~ /copy/;
+
+	$n = $editor->search_asset_call_number_note(
+		{call_number=>$id}, {idlist=>1}) if $self->api_name =~ /call_number/;
+
+	$n = $editor->search_biblio_record_note(
+		{record=>$id}, {idlist=>1}) if $self->api_name =~ /title/;
+
+	return scalar @$n;
 }
 
 __PACKAGE__->register_method(
