@@ -75,7 +75,7 @@ patron.holds.prototype = {
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
 					);
 					if (obj.retrieve_ids.length > 0) {
-						obj.controller.view.cmd_holds_edit.setAttribute('disabled','false');
+						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','false');
@@ -85,7 +85,7 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 					} else {
-						obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
@@ -134,16 +134,23 @@ patron.holds.prototype = {
 
 						}
 					],
-					'cmd_holds_edit' : [
-						['command'],
-						function() {
-						return ' <command id="cmd_show_notifications" /> <command id="cmd_holds_edit_pickup_lib" /> <command id="cmd_holds_edit_phone_notify" /> <command id="cmd_holds_edit_email_notify" /> <command id="cmd_holds_edit_selection_depth" /> ';
-						}
-					],
 					'cmd_show_notifications' : [
 						['command'],
 						function() {
-						return ' <command id="cmd_show_notifications" /> <command id="cmd_holds_edit_pickup_lib" /> <command id="cmd_holds_edit_phone_notify" /> <command id="cmd_holds_edit_email_notify" /> <command id="cmd_holds_edit_selection_depth" /> ';
+							try {
+								JSAN.use('util.window'); var win = new util.window();
+								for (var i = 0; i < obj.retrieve_ids.length; i++) {
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+									win.open(
+										xulG.url_prefix(urls.XUL_HOLD_NOTICES) 
+										+ '?ahr_id=' + obj.retrieve_ids[i].id,
+										'hold_notices_' + obj.retrieve_ids[i].id,
+										'chrome,resizable'
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Error rendering/retrieving hold notifications.',E);
+							}
 						}
 					],
 					'cmd_holds_edit_selection_depth' : [
@@ -389,6 +396,25 @@ patron.holds.prototype = {
 							}
 						}
 					],
+					'cmd_retrieve_patron' : [
+						['command'],
+						function() {
+							try {
+								var seen = {};
+								for (var i = 0; i < obj.retrieve_ids.length; i++) {
+									var patron_id = obj.retrieve_ids[i].usr;
+									if (seen[patron_id]) continue; seen[patron_id] = true;
+									xulG.new_tab(
+										xulG.url_prefix(urls.XUL_PATRON_DISPLAY) + '?id=' + patron_id, 
+										{}, 
+										{}
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('',E);
+							}
+						}
+					],
 					'cmd_show_catalog' : [
 						['command'],
 						function() {
@@ -423,7 +449,7 @@ patron.holds.prototype = {
 
 		obj.retrieve();
 
-		obj.controller.view.cmd_holds_edit.setAttribute('disabled','true');
+		obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
 		obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
 		obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
 		obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
@@ -435,18 +461,19 @@ patron.holds.prototype = {
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
-		alert('pause');
 		var obj = this;
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
 		} else {
 			var method; var id;
 			if (obj.patron_id) {
-				method = 'FM_AHR_RETRIEVE'; 
+				method = 'FM_AHR_RETRIEVE_VIA_AU'; 
 				id = obj.patron_id; 
+				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
 			} else {
 				method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				id = obj.OpenILS.data.list.au[0].ws_ou(); 
+				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
 			obj.holds = obj.network.simple_request( method, [ ses(), id ]);
 		}
@@ -456,7 +483,7 @@ patron.holds.prototype = {
 				obj.holds_map[ hold.id() ] = hold;
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON({'id':hold.id(),'target':hold.target(),}),
+						'retrieve_id' : js2JSON({'id':hold.id(),'target':hold.target(),'usr':hold.usr(),}),
 						'row' : {
 							'my' : {
 								'ahr' : hold,

@@ -12,7 +12,8 @@
 <popupset id="holds_popupset">
 	<popup id="holds_actions" position="at_pointer"> 
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" accesskey="S"/>
-		<menuitem label="Show Notification History" command="cmd_show_notifications" accesskey="H" />
+		<menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
+		<menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
 		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 		<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" accesskey="E"/>
@@ -47,7 +48,8 @@
 		<menu label="Actions for Selected Holds" accesskey="S">
 			<menupopup>
 				<menuitem label="Show in Catalog" command="cmd_show_catalog"  accesskey="S"/>
-				<menuitem label="Show Notification History" command="cmd_show_notifications" accesskey="H" />
+				<menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
+				<menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
 				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 				<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 				<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" accesskey="E" />
