@@ -171,6 +171,42 @@ sub _check_request_holds_override {
 	}
 }
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds_by_id",
+	api_name	=> "open-ils.circ.holds.retrieve_by_id",
+	notes		=> <<NOTE);
+Retrieve the hold, with hold transits attached, for the specified id
+The login session is the requestor and if the requestor is
+different from the user, then the requestor must have VIEW_HOLD permissions.
+NOTE
+
+
+sub retrieve_holds_by_id {
+	my($self, $client, $login_session, $hold_id) = @_;
+
+	#FIXME
+	#my( $user, $target, $evt ) = $apputils->checkses_requestor(
+	#	$login_session, $user_id, 'VIEW_HOLD' );
+	#return $evt if $evt;
+
+	my $holds = $apputils->simplereq(
+		'open-ils.storage',
+		"open-ils.storage.direct.action.hold_request.search.atomic",
+		"id" =>  $hold_id , fulfillment_time => undef, { order_by => "request_time" });
+	
+	for my $hold ( @$holds ) {
+		$hold->transit(
+			$apputils->simplereq(
+				'open-ils.storage',
+				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
+				{ order_by => 'id desc', limit => 1 }
+			)->[0]
+		);
+	}
+
+	return $holds;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_holds",
