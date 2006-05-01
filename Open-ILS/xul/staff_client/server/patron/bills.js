@@ -358,9 +358,7 @@ patron.bills.prototype = {
 				throw robj;
 			}
 		} catch(E) {
-			var error = 'patron.bills.pay: ' + js2JSON(E);
-			obj.error.sdump('D_ERROR',error);
-			alert(error);
+			obj.error.standard_unexpected_error_alert('Bill payment likely failed',E);
 			return false;
 		}
 	},
