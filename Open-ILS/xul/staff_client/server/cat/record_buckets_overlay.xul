@@ -50,6 +50,7 @@
 	<button id="record_buckets_reprint" label="Print Last" command="cmd_record_buckets_reprint" accesskey_disabled="L"/>
 -->
 	<spacer flex="1"/>
+	<button command="cmd_sel_opac" label="Show in Catalog" accesskey="S"/>
 	<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge Records"/>
 <!--
 	<button id="record_buckets_transfer_to_volume" label="Transfer to Volume"/>

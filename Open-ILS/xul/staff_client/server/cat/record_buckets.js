@@ -444,6 +444,37 @@ cat.record_buckets.prototype = {
 							window.close();
 						}
 					],
+					'cmd_sel_opac' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var docids = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o).docid; // docid
+									}
+								);
+								for (var i = 0; i < docids.length; i++) {
+									var doc_id = docids[i];
+									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+									var content_params = { 
+										'session' : ses(),
+										'authtime' : ses('authtime'),
+										'opac_url' : opac_url,
+									};
+									xulG.new_tab(
+										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':'Retrieving title...'}, 
+										content_params
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Showing in OPAC',E);
+							}
+						}
+					],
+
 				}
 			}
 		);
