@@ -224,7 +224,7 @@ patron.items.prototype = {
 									}
 								}
 								if (due_date) {
-									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o.copy_id;});
+									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o.circ_id;});
 									for (var i = 0; i < circs.length; i++) {
 										var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
 										if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
@@ -367,7 +367,6 @@ patron.items.prototype = {
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
-		alert('pause');
 		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
