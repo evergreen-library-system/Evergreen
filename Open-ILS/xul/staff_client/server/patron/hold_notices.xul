@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="hold_notices_win" width="700" height="550"
+	onload="try{ my_init(); } catch(E) { alert(E); }" title="Hold Notices"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+
+				JSAN.use('util.error'); g.error = new util.error();
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('patron.util');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.error.sdump('D_TRACE','my_init() for hold_notices.xul');
+
+				g.cgi = new CGI();
+				g.ahr_id = g.cgi.param('ahr_id');
+				g.ahr = g.network.simple_request('FM_AHR_RETRIEVE',[ ses(), g.ahr_id ]);
+				if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
+				g.ahr = g.ahr[0];
+
+				a_list_of_one();
+
+				document.getElementById('bib_brief').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.ahr.target());
+
+				refresh();
+
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('/xul/server/patron/hold_notices.xul',E); } catch(E) { alert('FIXME: ' + js2JSON(E)); }
+			}
+		}
+
+		function a_list_of_one() {
+			JSAN.use('circ.util');
+			var columns = circ.util.hold_columns( 
+				{ 
+					'request_time' : { 'hidden' : false },
+					'pickup_lib_shortname' : { 'hidden' : false },
+					'current_copy' : { 'hidden' : false },
+					'phone_notify' : { 'hidden' : false },
+					'email_notify' : { 'hidden' : false },
+				} 
+			);
+			JSAN.use('util.list'); g.list = new util.list('holds_list');
+			g.list.init(
+				{
+					'columns' : columns,
+					'map_row_to_column' : circ.util.std_map_row_to_column(),
+					'retrieve_row' : function(params) {
+						var row = params.row;
+						try {
+							switch(row.my.ahr.hold_type()) {
+								case 'M' :
+									row.my.mvr = g.network.request(
+										api.MODS_SLIM_METARECORD_RETRIEVE.app,
+										api.MODS_SLIM_METARECORD_RETRIEVE.method,
+										[ row.my.ahr.target() ]
+									);
+								break;
+								default:
+									row.my.mvr = g.network.request(
+										api.MODS_SLIM_RECORD_RETRIEVE.app,
+										api.MODS_SLIM_RECORD_RETRIEVE.method,
+										[ row.my.ahr.target() ]
+									);
+									if (row.my.ahr.current_copy()) {
+										row.my.acp = g.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
+									}
+								break;
+							}
+						} catch(E) {
+							g.error.sdump('D_ERROR','retrieve_row: ' + E );
+						}
+						if (typeof params.on_retrieve == 'function') {
+							params.on_retrieve(row);
+						}
+						return row;
+					},
+				}
+			);
+			g.list.append(
+				{
+					'row' : {
+						'my' : {
+							'ahr' : g.ahr,
+						}
+					}
+				}
+			);
+		}
+
+		function refresh() {
+			retrieve_notifications(); render_notifications();
+		}
+
+		function retrieve_notifications() {
+			g.notifications = g.network.simple_request('FM_AHN_RETRIEVE_VIA_AHR',[ ses(), g.ahr_id ]).reverse();
+		}
+
+		function apply(node,field,value) {
+			util.widgets.apply(
+				node,'name',field,
+				function(n) {
+					switch(n.nodeName) {
+						case 'description' : n.appendChild( document.createTextNode( value ) ); break;
+						case 'label' : n.value = value; break;
+						default : n.value = value; break;
+					}
+				}
+			);
+		}
+
+		function render_notifications() {
+			JSAN.use('util.widgets'); util.widgets.remove_children('notifications_panel');
+			var np = $('notifications_panel');
+
+			for (var i = 0; i < g.notifications.length; i++) {
+
+				/* template */
+				var node = $('notification_template').cloneNode(true); np.appendChild(node); node.hidden = false;
+				util.widgets.apply(node,'name','notify_time',
+					function(n){n.setAttribute("tooltiptext","ID: " + g.notifications[i].id() + " Hold ID: " + g.notifications[i].hold() + " Notifying Staff ID: " + g.notifications[i].notify_staff());}
+				);
+				apply(node,'method',g.notifications[i].method ? g.notifications[i].method() : '');
+				apply(node,'note',g.notifications[i].note() ? g.notifications[i].note() : '');
+				apply(node,'notify_time',g.notifications[i].notify_time() ? g.notifications[i].notify_time().toString().substr(0,10) : '');
+			}
+
+		}
+		
+		function new_notification() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
+				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">';
+				xml += '<caption label="New Notification Record"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows>';
+				xml += '<row><label value="Method"/><textbox id="method" name="fancy_data"/></row>';
+				xml += '<row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
+				xml += '<row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/>';
+				xml += '<button label="Add Notification Record" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				window.open(
+					urls.XUL_FANCY_PROMPT
+					+ '?xml=' + window.escape(xml)
+					+ '&focus=' + window.escape('method')
+					+ '&title=' + window.escape('Add Notification Record'),
+					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+				);
+				g.data.init({'via':'stash'});
+				if (g.data.fancy_prompt_data != '') {
+					var notification = new ahn();
+					notification.isnew(1);
+					notification.hold(g.ahr_id);
+					notification.method( g.data.fancy_prompt_data.method );
+					notification.note( g.data.fancy_prompt_data.note );
+					var r = g.network.simple_request('FM_AHN_CREATE',[ ses(), notification ]); if (typeof r.ilsevent != 'undefined') throw(r);
+					setTimeout(function(){refresh();},0);
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('The notification was not likely created.',E);
+				setTimeout(function(){refresh();},0);
+			}
+		}
+
+	]]>
+	</script>
+
+	<stack hidden="true" id="notification_template" flex="1">
+		<groupbox flex="1" style="background-color: black;"/>
+		<groupbox flex="1" style="background-color: #FFDE00; -moz-border-radius-topright: 35px;" >
+			<hbox>
+				<description name="method" label="Method:" style="font-weight: bold"/>
+				<spacer flex="1"/>
+				<description name="notify_time" style="font-weight: bold"/>
+			</hbox>
+			<description name="note"/>
+		</groupbox>
+	</stack>
+
+	<vbox id="top_panel" flex="1">
+		<iframe id="bib_brief" flex="2"/>
+		<vbox flex="1" style="min-height: 30px">
+			<tree id="holds_list" flex="1" enableColumnDrag="true" style=""/>
+		</vbox>
+		<hbox>
+			<button label="Add Record of Notification" accesskey="A" oncommand="new_notification()"/>
+			<spacer flex="1"/>
+			<button label="Close" accesskey="C" oncommand="window.close()"/>
+		</hbox>
+	</vbox>
+
+	<vbox flex="9" class="my_overflow" id="notifications_panel">
+	</vbox>
+
+
+</window>
+
