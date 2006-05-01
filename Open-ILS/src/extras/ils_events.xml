@@ -76,6 +76,10 @@
 		<desc>A refund greater than the negative balance on a transaction was provided</desc>
 	</event>
 
+	<event code='1208' textcode='TITLE_LAST_COPY'>
+		<desc>The last copy attached to a title is being removed or deleted</desc>
+	</event>
+
 
 
 

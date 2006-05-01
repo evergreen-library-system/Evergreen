@@ -460,46 +460,31 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_record_record_metadata {
-	my( $self, $client, @ids ) = @_;
+	my( $self, $client, $authtoken, @ids ) = @_;
 
-	if(!@ids){return undef;}
+	return [] unless @ids;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", @ids );
+	my $editor = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+	return $editor->event unless $editor->checkauth;
 
-	my $results = [];
+	my $evt = $U->check_perms(
+		$editor->requestor, $editor->requestor->ws_ou, 'VIEW_USER');
+	return $evt if $evt;
 
-	while( my $response = $request->recv() ) {
+	my @results;
 
-		if(!$response) {
-			throw OpenSRF::EX::ERROR ("No Response from Storage");
-		}
-		if($response->isa("Error")) {
-			throw $response ($response->stringify);
-		}
-
-		my $record_entry = $response->content;
-
-		my $creator = $record_entry->creator;
-		my $editor	= $record_entry->editor;
-
-		($creator, $editor) = _get_userid_by_id($creator, $editor);
-
-		$record_entry->creator($creator);
-		$record_entry->editor($editor);
-
-		push @$results, $record_entry;
-
+	for(@ids) {
+		my $rec = $editor->retrieve_biblio_record_entry($_);
+		$rec->creator($editor->retrieve_actor_user($rec->creator));
+		$rec->editor($editor->retrieve_actor_user($rec->editor));
+		$rec->clear_marc; # slim the record down
+		push( @results, $rec );
 	}
 
-	$request->finish;
-	$session->disconnect();
-	$session->finish();
-
-	return $results;
-
+	return \@results;
 }
+
+
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_marc_cn",
@@ -532,34 +517,34 @@ sub biblio_record_marc_cn {
 }
 
 # gets the username
-sub _get_userid_by_id {
-
-	my @ids = @_;
-	my @users;
-
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-	my $request = $session->request( 
-		"open-ils.storage.direct.actor.user.batch.retrieve.atomic", @ids );
-
-	$request->wait_complete;
-	my $response = $request->recv();
-	if(!$request->complete) { return undef; }
-
-	if($response->isa("Error")){
-		throw $response ($response);
-	}
-
-	for my $u (@{$response->content}) {
-		next unless ref($u);
-		push @users, $u->usrname;
-	}
-
-	$request->finish;
-	$session->disconnect;
-	$session->kill_me();
-
-	return @users;
-}
+#sub _get_userid_by_id {
+#
+#	my @ids = @_;
+#	my @users;
+#
+#	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+#	my $request = $session->request( 
+#		"open-ils.storage.direct.actor.user.batch.retrieve.atomic", @ids );
+#
+#	$request->wait_complete;
+#	my $response = $request->recv();
+#	if(!$request->complete) { return undef; }
+#
+#	if($response->isa("Error")){
+#		throw $response ($response);
+#	}
+#
+#	for my $u (@{$response->content}) {
+#		next unless ref($u);
+#		push @users, $u->usrname;
+#	}
+#
+#	$request->finish;
+#	$session->disconnect;
+#	$session->kill_me();
+#
+#	return @users;
+#}
 
 sub _get_id_by_userid {
 
@@ -915,30 +900,19 @@ sub _add_volume {
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_update",
-	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update",
-);
+	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update",);
 
-#sub fleshed_copy_update {
-#	my($self, $client, $user_session, $copies) = @_;
-#
-#	my $user_obj = $apputils->check_user_session($user_session); 
-#	my $session = $apputils->start_db_session();
-#
-#	for my $copy (@$copies) {
-#		_fleshed_copy_update($session, $copy, $user_obj);
-#	}
-#
-#	$apputils->commit_db_session($session);
-#	return 1;
-#}
-
+__PACKAGE__->register_method(
+	method	=> "fleshed_copy_update",
+	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update.override",);
 
 sub fleshed_copy_update {
 	my( $self, $conn, $auth, $copies ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
 	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
-	$evt = update_fleshed_copies($editor, undef, $copies);
+	$evt = update_fleshed_copies(
+		$editor, ($self->api_name =~ /override/), undef, $copies);
 	return $evt if $evt;
 	$editor->finish;
 	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
@@ -1120,7 +1094,7 @@ sub merge {
 	my( $self, $conn, $auth, $master, $records ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
-	my %r = map { $_->id => 1 } (@$records, $master); # unique the ids
+	my %r = map { $_ => 1 } (@$records, $master); # unique the ids
 	$records = [ keys %r ];
 	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
 	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
@@ -1135,11 +1109,32 @@ sub merge {
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
+# returns true if the given title (id) has no un-deleted
+# copies attached
+sub title_is_empty {
+	my( $editor, $rid ) = @_;
+	my $cnlist = $editor->search_asset_call_number(
+		{ record => $rid, deleted => 'f' }, { idlist => 1 } );
+	return 1 unless @$cnlist;
+
+	for my $cn (@$cnlist) {
+		my $copylist = $editor->search_asset_copy(
+			{ call_number => $cn, deleted => 'f' }, { idlist => 1 });
+		return 0 if @$copylist;
+	}
+
+	return 1;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_volume_update",
-	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update",
-);
+	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update",);
+
+__PACKAGE__->register_method(
+	method	=> "fleshed_volume_update",
+	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update.override",);
+
 sub fleshed_volume_update {
 	my( $self, $conn, $auth, $volumes ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
@@ -1165,9 +1160,10 @@ sub fleshed_volume_update {
 			return OpenILS::Event->new(
 				'VOLUME_NOT_EMPTY', payload => $vol->id ) if @$cs;
 
-			$vol->delete('t');
+			$vol->deleted('t');
 			$evt = $editor->update_asset_call_number($vol);
 			return $evt if $evt;
+
 			
 		} elsif( $vol->isnew ) {
 			$logger->info("vol-update: creating volume");
@@ -1183,7 +1179,7 @@ sub fleshed_volume_update {
 		# now update any attached copies
 		if( @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
-			$evt = update_fleshed_copies( $editor, $vol, $copies );
+			$evt = update_fleshed_copies( $editor, $override, $vol, $copies );
 			return $evt if $evt;
 		}
 	}
@@ -1195,7 +1191,7 @@ sub fleshed_volume_update {
 
 # this does the actual work
 sub update_fleshed_copies {
-	my( $editor, $vol, $copies ) = @_;
+	my( $editor, $override, $vol, $copies ) = @_;
 
 	my $evt;
 	my $fetchvol = ($vol) ? 0 : 1;
@@ -1224,11 +1220,7 @@ sub update_fleshed_copies {
 		$copy->clear_stat_cat_entries;
 
 		if( $copy->isdeleted ) {
-
-			$logger->info("vol-update: deleting copy $copyid");
-			$copy->delete('t');
-			$evt = $editor->update_asset_copy(
-				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			$evt = delete_copy($editor, $override, $vol, $copy);
 			return $evt if $evt;
 
 		} elsif( $copy->isnew ) {
@@ -1249,6 +1241,32 @@ sub update_fleshed_copies {
 	}
 
 	$logger->debug("vol-update: done updating copy batch");
+
+	return undef;
+}
+
+sub delete_copy {
+	my( $editor, $override, $vol, $copy ) = @_;
+
+	$logger->info("vol-update: deleting copy ".$copy->id);
+	$copy->deleted('t');
+
+	my $evt = $editor->update_asset_copy(
+		$copy, {checkperm=>1, org=>$vol->owning_lib});
+	return $evt if $evt;
+
+	if( title_is_empty($editor, $vol->record) ) {
+
+		if( $override ) {
+			my $rec = $editor->retrieve_biblio_record_entry($vol->record);	
+			$rec->deleted('t');
+			$evt = $editor->update_biblio_record_entry($rec, {checkperm=>0});
+			return $evt if $evt;
+
+		} else {
+			return OpenILS::Event->new('TITLE_LAST_COPY');
+		}
+	}
 
 	return undef;
 }
