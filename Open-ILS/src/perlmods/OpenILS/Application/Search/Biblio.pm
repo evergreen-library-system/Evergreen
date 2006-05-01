@@ -8,6 +8,7 @@ use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
+use OpenILS::Utils::Editor;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -1076,6 +1077,27 @@ sub bib_extras {
 }
 
 
+
+__PACKAGE__->register_method(
+	method	=> 'fetch_slim_record',
+	api_name	=> 'open-ils.search.biblio.record_entry.slim.retrieve',
+	signature=> q/
+		Returns a biblio.record_entry without the attached marcxml
+	/
+);
+
+sub fetch_slim_record {
+	my( $self, $conn, $ids ) = @_;
+
+	my $editor = OpenILS::Utils::Editor->new;
+	my @res;
+	for( @$ids ) {
+		my $r = $editor->retrieve_biblio_record_entry($_);
+		$r->clear_marc;
+		push(@res, $r);
+	}
+	return \@res;
+}
 
 
 
