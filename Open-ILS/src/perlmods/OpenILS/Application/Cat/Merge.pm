@@ -14,6 +14,25 @@ my $U = "OpenILS::Application::AppUtils";
 my $storage;
 
 
+# removes items from an array and returns the removed items
+# example : my @d = rgrep(sub { $_ =~ /o/ }, \@a);
+# there's surely a smarter way to do this
+sub rgrep {
+   my( $sub, $arr ) = @_;
+   my @del;
+   for( my $i = 0; $i < @$arr; $i++ ) {
+      my $a = $$arr[$i];
+      local $_ = $a;
+      if($sub->()) {
+         splice(@$arr, $i--, 1);
+         push( @del, $a );
+      }
+   }
+   return @del;
+}
+
+
+
 # takes a master record and a list of 
 # sub-records to merge into the master record
 sub merge_records {
@@ -38,30 +57,24 @@ sub merge_records {
 
 	$logger->info("merge: merge recovered ".scalar(@volumes)." total volumes");
 
-	my %volumes;
-	for (@volumes) {
-		$logger->debug("merge: loaded volume ".$_->id);
-		$volumes{$_->label}++ if $volumes{$_->label};
-		$volumes{$_->label} = 1 unless $volumes{$_->label};
-	}
-
-	# deduplicate volumes
 	my @trimmed;
-	for my $label (keys %volumes) {
+	# de-duplicate any volumes with the same label and owning_lib
+	for my $v (@volumes) {
+		my $l = $v->label;
+		my $o = $v->owning_lib;
+		my @dups = rgrep( 
+			sub { $_->label eq $l and $_->owning_lib == $o }, \@volumes );
 
-		if( $volumes{$label} == 1 ) {
-			my ($v) = grep { $_->label eq $label } @volumes;
-			push( @trimmed, $v );
+		if( @dups == 1 ) {
+			push( @trimmed, @dups );
 
 		} else {
-
-			$logger->debug("merge: found duplicate CN label $label");
-			($vol, $evt) = merge_volumes( $editor,
-				[grep { $_->label eq $label } @volumes ]);
-			return $evt if $evt;
-			push( @trimmed, $vol );
+			my($vol, $e) = merge_volumes($editor, \@dups);
+			return $e if $e;
+			push(@trimmed, $vol);
 		}
 	}
+
 
 	# make all the volumes point to the master record
 	my $stat;
