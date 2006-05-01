@@ -25,10 +25,9 @@ sub new {
 
 sub checkauth {
 	my $self = shift;
-	my $reqr = $U->simplereq( 
-		'open-ils.auth', 
-		'open-ils.auth.session.retrieve', $self->authtoken );
-	$self->event(OpenILS::Event->new('NO_SESSION')) unless $reqr;
+	$logger->info("editor: checking auth token ".$self->authtoken);
+	my ($reqr, $evt) = $U->checkses($self->authtoken);
+	$self->event($evt) if $evt;
 	return $self->{requestor} = $reqr;
 }
 
