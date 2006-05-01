@@ -185,7 +185,10 @@ sub _search_method {
 		$method = "open-ils.storage.id_list.$type.search_where.atomic";
 	}
 
-	$logger->info("editor: searching $type ".Dumper($shash));
+	my @p;
+	push( @p, $_.'='.$shash->{$_}) for keys %$shash;
+	$logger->info("editor: searching $type @p");
+
 	my $evt = $self->checkperm(
 		$type, 'retrieve', $$params{org}) if $$params{checkperm};
 	return $self->session->request($method, $shash)->gather(1);
