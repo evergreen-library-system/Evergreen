@@ -226,7 +226,8 @@ patron.items.prototype = {
 								if (due_date) {
 									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o.copy_id;});
 									for (var i = 0; i < circs.length; i++) {
-										obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
+										var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
+										if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 									}
 									obj.retrieve();
 								}
@@ -242,15 +243,12 @@ patron.items.prototype = {
 							for (var i = 0; i < obj.retrieve_ids.length; i++) {
 								var barcode = obj.retrieve_ids[i].barcode;
 								dump('Mark barcode lost = ' + barcode);
-								var lost = obj.network.simple_request(
-									'MARK_ITEM_LOST', 
-									[ ses(), { barcode: barcode } ]
-								);
-								dump('  result = ' + js2JSON(lost) + '\n');
+								var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
+								if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 							}
 							obj.retrieve();
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('',E);
+								obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
 							}
 						}
 					],
@@ -295,15 +293,16 @@ patron.items.prototype = {
 							if (backdate) {
 								var barcodes = util.functional.map_list(obj.retrieve_ids,function(o){return o.barcode;});
 								for (var i = 0; i < barcodes.length; i++) {
-									var lost = obj.network.simple_request(
+									var robj = obj.network.simple_request(
 										'MARK_ITEM_CLAIM_RETURNED', 
 										[ ses(), { barcode: barcodes[i], backdate: backdate } ]
 									);
+									if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 								}
 								obj.retrieve();
 							}
 						} catch(E) {
-							obj.error.standard_unexpected_error_alert('',E);
+							obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
 						}
 						}
 					],
@@ -315,10 +314,10 @@ patron.items.prototype = {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
 									var barcode = obj.retrieve_ids[i].barcode;
 									dump('Check in barcode = ' + barcode);
-									var checkin = circ.util.checkin_via_barcode(
+									var robj = circ.util.checkin_via_barcode(
 										ses(), barcode
 									);
-									dump('  result = ' + js2JSON(checkin) + '\n');
+									if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 								}
 								obj.retrieve();
 							} catch(E) {
@@ -368,6 +367,7 @@ patron.items.prototype = {
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
+		alert('pause');
 		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
