@@ -19,7 +19,31 @@ my %PERMS = (
 sub new {
 	my( $class, %params ) = @_;
 	$class = ref($class) || $class;
-	return bless( \%params, $class );
+	my $self = bless( \%params, $class );
+	return $self;
+}
+
+sub checkauth {
+	my $self = shift;
+	my $reqr = $U->simplereq( 
+		'open-ils.auth', 
+		'open-ils.auth.session.retrieve', $self->authtoken );
+	$self->event(OpenILS::Event->new('NO_SESSION')) unless $reqr;
+	return $self->{requestor} = $reqr;
+}
+
+
+# Returns the last captured event
+sub event {
+	my( $self, $evt ) = @_;
+	$self->{event} = $evt if $evt;
+	return $self->{event};
+}
+
+sub authtoken {
+	my( $self, $auth ) = @_;
+	$self->{authtoken} = $auth if $auth;
+	return $self->{authtoken};
 }
 
 # fetches the session, creating if necessary
@@ -78,30 +102,45 @@ sub checkperms {
 	my($self, $uid, $org, @perms) = @_;
 	$logger->info("editor: checking perms user=$uid, org=$org, perms=@perms");
 	for my $type (@perms) {
+
 		my $success = $self->session->request(
 			"open-ils.storage.permission.user_has_perm", 
 			$uid, $type, $org )->gather(1);
-		return OpenILS::Event->new( 'PERM_FAILURE', 
-			ilsperm => $type, ilspermloc => $org ) unless $success;
+
+		if(!$success) {
+			my $e = OpenILS::Event->new( 'PERM_FAILURE', 
+				ilsperm => $type, ilspermloc => $org );
+			return $self->event($e);
+		}
 	}
 	return undef;
 }
 
 
 # -------------------------------------------------------------
-# checks the appropriate perm for the operations if that perm
-# hasn't already been checked for this session
+# checks the appropriate perm for the operation if said perm
+# hasn't already been checked for this session at the 
+# requested org
 # -------------------------------------------------------------
 sub checkperm {
 	my( $self, $ptype, $action, $org ) = @_;
 	$org ||= $self->{requestor}->ws_ou;
+
+	$self->{perms} = {} unless $self->{perms};
+	$self->{perms}->{$org} = {} unless $self->{perms}->{$org};
+
 	my $perm = $PERMS{$ptype}{$action};
 	if( $perm ) {
-		if( !$self->{$perm} ) {
+
+		if( !$self->{perms}->{$org}->{$perm} ) {
 			my $evt = $self->checkperms(
 				$self->{requestor}->id, $org, $perm );
 			return $evt if $evt;
-			$self->{$perm} = 1;
+			$self->{perms}->{$org}->{$perm} = 1;
+
+		} else {
+			$logger->debug(
+				"editor: already checked perm $perm at org $org for this session");
 		}
 	}
 	return undef;
@@ -119,7 +158,7 @@ sub _update_method {
 	my $evt = $self->checkperm(
 		$type, 'update', $$params{org}) if $$params{checkperm};
 	return $evt if $evt;
-	return $U->DB_UPDATE_FAILED($obj) unless 
+	return $self->event($U->DB_UPDATE_FAILED($obj)) unless 
 		$self->session->request($method, $obj)->gather(1);
 	return undef;
 }
@@ -147,7 +186,7 @@ sub _delete_method {
 	$logger->info("editor: deleting $type ".$obj->id);
 	my $evt = $self->checkperm(
 		$type, 'delete', $$params{org}) if $$params{checkperm};
-	return $U->DB_UPDATE_FAILED($obj) unless 
+	return $self->event($U->DB_UPDATE_FAILED($obj)) unless 
 		$self->session->request($method, $obj)->gather(1);
 	return undef;
 }
@@ -165,9 +204,10 @@ sub _create_method {
 	$logger->info("editor: creating $type");
 	my $evt = $self->checkperm(
 		$type, 'create', $$params{org}) if $$params{checkperm};
+	return $evt if $evt;
 
 	my $id = $self->session->request($method, $obj)->gather(1);
-	return $U->DB_UPDATE_FAILED($obj) unless $id;
+	return $self->event($U->DB_UPDATE_FAILED($obj)) unless $id;
 	$self->lastid($id);
 	return undef;
 }
@@ -191,6 +231,7 @@ sub _search_method {
 
 	my $evt = $self->checkperm(
 		$type, 'retrieve', $$params{org}) if $$params{checkperm};
+	return $evt if $evt;
 	return $self->session->request($method, $shash)->gather(1);
 }
 
