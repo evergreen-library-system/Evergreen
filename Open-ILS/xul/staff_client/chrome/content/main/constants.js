@@ -40,6 +40,7 @@ var api = {
 	'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count' },
 	'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
 	'FM_AHR_UPDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update' },
+	'FM_AHR_RESET' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.reset' },
 	'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
 	'FM_AOA_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.address.retrieve' },
 	'FM_AOU_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_tree.retrieve' },

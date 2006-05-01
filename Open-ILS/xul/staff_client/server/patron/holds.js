@@ -352,8 +352,24 @@ patron.holds.prototype = {
 					'cmd_holds_retarget' : [
 						['command'],
 						function() {
+							try {
+								JSAN.use('util.functional');
+								var msg = 'Are you sure you would like to reset hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
+								var r = obj.error.yns_alert(msg,'Resetting Holds','Yes','No',null,'Check here to confirm this message');
+								if (r == 0) {
+									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+										var robj = obj.network.simple_request('FM_AHR_RESET',[ ses(), obj.retrieve_ids[i].id]);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+									}
+									obj.retrieve();
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Holds not likely reset.',E);
+							}
+
 						}
 					],
+
 					'cmd_holds_cancel' : [
 						['command'],
 						function() {
