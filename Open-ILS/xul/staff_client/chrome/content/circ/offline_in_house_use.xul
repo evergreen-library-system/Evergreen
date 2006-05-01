@@ -13,7 +13,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay_offline.xul"?>
 
 <window id="offline_checkout_win" sizemode="maximized"
 	onload="try { my_init(); } catch(E) { alert(E); }"
