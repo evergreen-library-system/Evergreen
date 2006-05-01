@@ -82,20 +82,26 @@
 						g.network.request(
 							api.FM_BRE_RETRIEVE_VIA_ID.app,
 							api.FM_BRE_RETRIEVE_VIA_ID.method,
-							[ docid ],
+							[ ses(), [ docid ] ],
 							function (req) {
-								var meta = req.getResultObject()[0];
-								document.getElementById('creator').appendChild(
-									document.createTextNode(meta.creator())
-								);
-								document.getElementById('editor').appendChild(
-									document.createTextNode(meta.editor())
-								);
-								document.getElementById('edit_date').appendChild(
-									document.createTextNode(
-										util.date.formatted_date(meta.edit_date(),"%D")
-									)
-								);
+								try {
+									var meta = req.getResultObject();
+									if (typeof meta.ilsevent != 'undefined') throw(meta);
+									meta = meta[0];
+									document.getElementById('creator').appendChild(
+										document.createTextNode(meta.creator().usrname())
+									);
+									document.getElementById('editor').appendChild(
+										document.createTextNode(meta.editor().usrname())
+									);
+									document.getElementById('edit_date').appendChild(
+										document.createTextNode(
+											util.date.formatted_date(meta.edit_date(),"%D")
+										)
+									);
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('meta retrieve',E);
+								}
 							}
 						);
 
