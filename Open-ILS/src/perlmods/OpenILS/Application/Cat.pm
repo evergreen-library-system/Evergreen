@@ -460,20 +460,20 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_record_record_metadata {
-	my( $self, $client, $authtoken, @ids ) = @_;
+	my( $self, $client, $authtoken, $ids ) = @_;
 
-	return [] unless @ids;
+	return [] unless $ids and @$ids;
 
 	my $editor = OpenILS::Utils::Editor->new( authtoken => $authtoken );
 	return $editor->event unless $editor->checkauth;
 
 	my $evt = $U->check_perms(
-		$editor->requestor, $editor->requestor->ws_ou, 'VIEW_USER');
+		$editor->requestor->id, $editor->requestor->ws_ou, 'VIEW_USER');
 	return $evt if $evt;
 
 	my @results;
 
-	for(@ids) {
+	for(@$ids) {
 		my $rec = $editor->retrieve_biblio_record_entry($_);
 		$rec->creator($editor->retrieve_actor_user($rec->creator));
 		$rec->editor($editor->retrieve_actor_user($rec->editor));
