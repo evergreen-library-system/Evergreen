@@ -71,6 +71,15 @@
 		<command id="cmd_copy_buckets_print" />
 		<command id="cmd_copy_buckets_reprint" />
 		<command id="cmd_copy_buckets_done" />
+		<command id="cmd_export_to_copy_status" />
+		<command id="copy_buckets_new_bucket" />
+		<command id="copy_buckets_delete_bucket" />
+		<command id="copy_buckets_delete_item" />
+		<command id="copy_buckets_add" />
+		<command id="copy_buckets_sel_add" />
+		<command id="copy_buckets_export" />
+		<command id="copy_buckets_transfer_to_volume" />
+		<command id="copy_buckets_batch_copy_edit" />
 	</commandset>
 
 	<box id="copy_buckets_main" />

@@ -421,6 +421,22 @@ cat.copy_buckets.prototype = {
 							window.close();
 						}
 					],
+					'cmd_export_to_copy_status' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var barcodes = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function(o) { return JSON2js(o)[1]; }
+								);
+								var url = urls.XUL_COPY_STATUS + '?barcodes=' + window.escape( js2JSON(barcodes) );
+								xulG.new_tab( url, {}, {});
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
+							}
+						}
+					],
 				}
 			}
 		);
