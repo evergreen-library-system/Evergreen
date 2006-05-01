@@ -96,12 +96,15 @@
 			return [
 				util.functional.map_list( 
 					g.data.list.aou,
-					function(obj) { return [ 
-						obj.name() ? obj.shortname() + ' : ' + obj.name() : obj.shortname(), 
-						obj.id(), 
-						( g.data.hash.aout[ obj.ou_type() ].can_have_users() == 0),
-						( g.data.hash.aout[ obj.ou_type() ].depth() ),
-					]; }
+					function(obj) { 
+						var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
+						return [ 
+							obj.name() ? sname + ' ' + obj.name() : obj.shortname(),
+							obj.id(), 
+							( g.data.hash.aout[ obj.ou_type() ].can_have_users() == 0),
+							( g.data.hash.aout[ obj.ou_type() ].depth() * 2),
+						]; 
+					}
 				),
 				g.data.list.au[0].ws_ou()
 			];
