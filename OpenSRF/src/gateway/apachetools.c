@@ -26,6 +26,9 @@ string_array* apacheParseParms(request_rec* r) {
 			char body[1025];
 			memset(body,0,1025);
 			buffer = buffer_init(1025);
+
+
+			osrfLogDebug(OSRF_LOG_MARK, "gateway client has post data, reading...");
 	
 			long bread;
 			while( (bread = ap_get_client_block(r, body, 1024)) ) {
