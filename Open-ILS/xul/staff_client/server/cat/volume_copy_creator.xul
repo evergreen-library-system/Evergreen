@@ -373,7 +373,7 @@
 							urls.XUL_SPINE_LABEL
 							+ '?barcodes=' + window.escape( js2JSON( util.functional.map_list(copies,function(o){return o.barcode();}) ) ),
 							'spine_labels',
-							'chrome,modal,resizable'
+							'chrome,modal,resizable,width=750,height=550'
 						);
 					}
 					/* FIXME -- revisit the return value here */
