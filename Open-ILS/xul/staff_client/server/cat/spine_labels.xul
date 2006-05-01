@@ -127,14 +127,15 @@
 		function preview() {
 			try {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-					var pt = parseInt( $('pt').value ) || 10; var lm = parseInt($('lm').value) || 11; var lw = parseInt($('lw').value) || 8;
-					var ll = parseInt($('ll').value) || 9; var sbl = parseInt($('sbl').value) || 2;
-					alert('pt = ' + pt + ' lm = ' + lm + ' lw = ' + lw + ' ll = ' + ll + ' sbl = ' + sbl);
+					var pt = parseInt( $('pt').value ) || 10; var lm = parseInt($('lm').value); if (lm == NaN) lm = 11;
+					var lw = parseInt($('lw').value) || 8; var ll = parseInt($('ll').value) || 9; 
+					var sbl = parseInt($('sbl').value); if (sbl == NaN) sbl = 2;
+					//alert('pt = ' + pt + ' lm = ' + lm + ' lw = ' + lw + ' ll = ' + ll + ' sbl = ' + sbl);
 					var html = "<html><head><link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt;
 					html += "pt}'></link><title>Spine Labels</title></head><body><pre>\n";
 					var nl = document.getElementsByAttribute('name','template');
 					for (var i = 0; i < nl.length; i++) {
-						var count = parseInt( nl[i].getElementsByAttribute('name','count')[0].value ) || 1;
+						var count = parseInt( nl[i].getElementsByAttribute('name','count')[0].value ); if (count == NaN) count = 1;
 						for (var j = 0; j < count; j++) {
 							var gb = nl[i].childNodes[1];
 							var nl2 = gb.getElementsByTagName('textbox');
@@ -147,13 +148,8 @@
 					}
 					html += '</pre></body></html>';
 					JSAN.use('util.window'); var win = new util.window();
-					var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( 'data:text/html,' + window.escape(html) );
-					var w = win.open(
-						loc + '&title=' + window.escape('Spine Labels'),
-						'spine_preview',
-						'chrome,resizable,width=750,height=550'
-					);
-					w.xulG = { 'show_print_button' : true , 'alternate_print' : true, 'passthru_content_params' : { } };
+					var loc = ( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( 'data:text/html,' + window.escape(html) ) + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
+					var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('Preview and Print',E);
 			}
@@ -185,11 +181,6 @@
 					<description control="pb">Use form feeds instead of line feeds between labels?</description><checkbox id="pb" oncommand="alert('Not Yet Implemented');this.checked = false;"/>
 				</row>
 			</rows></grid>
-			<groupbox flex="1">
-				<description>Currently, this interface is designed for and tested with an OKI MICROLINE 320 Turbo 9 Pin Printer using SP1 stock (thank you Uncle Remus!).  More to come as time, money, and printer/ink/label donations permit. ;)  Please join the PINES-DEV or OPEN-ILS-DEV mailing lists (at http://open-ils.org/) for discussion on spine labels.</description>
-				<spacer style="height: 1em"/>
-				<description>PINES: In Windows, we're assuming a generic/text printer device.  The instructions for creating one should be available on the helpdesk.</description>
-			</groupbox>
 		</hbox>
 		<hbox>
 			<button label="Generate" accesskey="G" oncommand="generate()"/>
@@ -197,6 +188,14 @@
 			<button id="preview" disabled="true" label="Preview and Print" accesskey="P" oncommand="preview()"/>
 		</hbox>
 		<hbox id="panel" flex="1" style="overflow: auto"/>
+		<hbox>
+			<groupbox flex="1">
+				<caption label='Note'/>
+				<description>Currently, this interface is designed for and tested with an OKI MICROLINE 320 Turbo 9 Pin Printer using SP1 stock (thank you Uncle Remus!).  More to come as time, money, and printer/ink/label donations permit. ;)  Please join the PINES-DEV or OPEN-ILS-DEV mailing lists (at http://open-ils.org/) for discussion on spine labels.</description>
+				<spacer style="height: 1em"/>
+				<description>PINES: In Windows, we're assuming a generic/text printer device.  The instructions for creating one should be available on the helpdesk.</description>
+			</groupbox>
+		</hbox>
 	</vbox>
 
 </window>
