@@ -274,11 +274,17 @@ transport_message* osrfRouterClassHandleBounce(
 	
 	} else { 
 
-		if( node->lastMessage ) {
-			osrfLogDebug( OSRF_LOG_MARK, "Cloning lastMessage so next node can send it");
-			lastSent = message_init( node->lastMessage->body,
-				node->lastMessage->subject, node->lastMessage->thread, "", node->lastMessage->router_from );
-			message_set_router_info( lastSent, node->lastMessage->router_from, NULL, NULL, NULL, 0 );
+		if( node ) {
+			if( node->lastMessage ) {
+				osrfLogDebug( OSRF_LOG_MARK, "Cloning lastMessage so next node can send it");
+				lastSent = message_init( node->lastMessage->body,
+					node->lastMessage->subject, node->lastMessage->thread, "", node->lastMessage->router_from );
+				message_set_router_info( lastSent, node->lastMessage->router_from, NULL, NULL, NULL, 0 );
+			}
+		} else {
+
+			osrfLogInfo(OSRF_LOG_MARK, "network error occurred after we removed the class.. ignoring");
+			return NULL;
 		}
 	}
 
