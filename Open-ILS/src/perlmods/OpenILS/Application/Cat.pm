@@ -911,8 +911,8 @@ sub fleshed_copy_update {
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
 	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
-	$evt = update_fleshed_copies(
-		$editor, ($self->api_name =~ /override/), undef, $copies);
+	my $override = $self->api_name =~ /override/;
+	$evt = update_fleshed_copies( $editor, $override, undef, $copies);
 	return $evt if $evt;
 	$editor->finish;
 	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
@@ -1298,7 +1298,7 @@ sub update_copy_stat_entries {
 	my $entries = $copy->stat_cat_entries;
 	return undef unless ($entries and @$entries);
 
-	my $maps = $editor->search_asset_stat_cat_entry_copy_map({copy=>$copy->id});
+	my $maps = $editor->search_asset_stat_cat_entry_copy_map({owning_copy=>$copy->id});
 
 	if(!$copy->isnew) {
 		# if there is no stat cat entry on the copy who's id matches the
