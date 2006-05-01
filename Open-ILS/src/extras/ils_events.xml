@@ -72,6 +72,9 @@
 	<event code='1206' textcode='VOLUME_NOT_EMPTY'>
 		<desc>The selected volume has copies attached</desc>
 	</event>
+	<event code='1207' textcode='REFUND_EXCEEDS_BALANCE'>
+		<desc>A refund greater than the negative balance on a transaction was provided</desc>
+	</event>
 
 
 

@@ -91,6 +91,14 @@ sub make_payments {
 				"$credit by making a credit_payment on transaction ".$trans->id);
 		}
 
+
+		# A negative payment is a refund.  If the refund causes the transaction 
+		# balance to exceed 0 dollars, we are in effect loaning the patron
+		# money.  This is not allowed.
+		if( $amount < 0 and ($trans->balance_owed - $amount > 0) ) {
+			return OpenILS::Event->new('REFUND_EXCEEDS_BALANCE');
+		}
+
 		my $payobj = "Fieldmapper::money::$type";
 		$payobj = $payobj->new;
 

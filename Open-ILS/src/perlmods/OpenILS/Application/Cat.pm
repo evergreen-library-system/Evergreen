@@ -735,6 +735,8 @@ sub _build_volume_list {
 }
 
 
+=head old code
+
 # -----------------------------------------------------------------
 # Fleshed volume tree batch add/update.  This does everything a 
 # volume tree could want, add, update, delete
@@ -906,6 +908,8 @@ sub _add_volume {
 
 }
 
+=cut
+
 
 
 
@@ -914,22 +918,36 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update",
 );
 
+#sub fleshed_copy_update {
+#	my($self, $client, $user_session, $copies) = @_;
+#
+#	my $user_obj = $apputils->check_user_session($user_session); 
+#	my $session = $apputils->start_db_session();
+#
+#	for my $copy (@$copies) {
+#		_fleshed_copy_update($session, $copy, $user_obj);
+#	}
+#
+#	$apputils->commit_db_session($session);
+#	return 1;
+#}
+
+
 sub fleshed_copy_update {
-	my($self, $client, $user_session, $copies) = @_;
-
-	my $user_obj = $apputils->check_user_session($user_session); 
-	my $session = $apputils->start_db_session();
-
-	for my $copy (@$copies) {
-		_fleshed_copy_update($session, $copy, $user_obj);
-	}
-
-	$apputils->commit_db_session($session);
+	my( $self, $conn, $auth, $copies ) = @_;
+	my( $reqr, $evt ) = $U->checkses($auth);
+	return $evt if $evt;
+	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
+	$evt = update_fleshed_copies($editor, undef, $copies);
+	return $evt if $evt;
+	$editor->finish;
+	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
 	return 1;
 }
 
 
 
+=head old code
 sub _delete_copy {
 	my($session, $copy, $user_obj) = @_;
 
@@ -979,6 +997,7 @@ sub _update_copy {
 	$logger->debug("Successfully updated copy " . $copy->id );
 	return $status;
 }
+
 
 
 # -----------------------------------------------------------------
@@ -1081,6 +1100,8 @@ sub _copy_update_stat_cats {
 
 }
 
+=cut
+
 
 __PACKAGE__->register_method(
 	method => 'merge',
@@ -1177,14 +1198,23 @@ sub update_fleshed_copies {
 	my( $editor, $vol, $copies ) = @_;
 
 	my $evt;
+	my $fetchvol = ($vol) ? 0 : 1;
+
+	my %cache;
+	$cache{$vol->id} = $vol if $vol;
+
 	for my $copy (@$copies) {
 
 		my $copyid = $copy->id;
 		$logger->info("vol-update: inspecting copy $copyid");
-	
+
+		if( !($vol = $cache{$copy->call_number}) ) {
+			$vol = $cache{$copy->call_number} = 
+				$editor->retrieve_asset_call_number($copy->call_number);
+		}
+
 		$copy->editor($editor->requestor->id);
 		$copy->edit_date('now');
-		$copy->call_number($vol->id);
 
 		$copy->status( $copy->status->id ) if ref($copy->status);
 		$copy->location( $copy->location->id ) if ref($copy->location);
@@ -1218,6 +1248,8 @@ sub update_fleshed_copies {
 		return $evt if $evt;
 	}
 
+	$logger->debug("vol-update: done updating copy batch");
+
 	return undef;
 }
 
@@ -1225,7 +1257,7 @@ sub create_copy {
 	my( $editor, $vol, $copy ) = @_;
 
 	my $existing = $editor->search_asset_copy(
-		{ call_number => $copy->call_number } );
+		{ barcode => $copy->barcode } );
 	
 	return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
 
