@@ -80,7 +80,10 @@
 					nl[i].addEventListener('command',function(ev) { window.close(); },false);
 				}
 
-				if (g.cgi.param('title')) document.title = g.cgi.param('title');
+				if (g.cgi.param('title')) {
+					try { window.title = g.cgi.param('title'); } catch(E) {}
+					try { document.title = g.cgi.param('title'); } catch(E) {}
+				}
 
 				if (g.cgi.param('focus')) document.getElementById(g.cgi.param('focus')).focus();
 
