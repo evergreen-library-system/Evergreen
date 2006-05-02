@@ -81,9 +81,9 @@
 							}
 						).sort(
 							function(b,a) {
-								if (a == 88 && b == 92) return -1;
-								if (a == 92 && b == 88) return 1;
-								if (a == 88) return -1;
+								if (a == 82 && b == 92) return -1;
+								if (a == 92 && b == 82) return 1;
+								if (a == 82) return -1;
 								if (a == 92) return -1;
 								if (a < b) return -1;
 								if (a > b) return 1;
