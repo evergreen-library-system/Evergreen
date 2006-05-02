@@ -76,31 +76,35 @@ main.menu.prototype = {
 			'cmd_replace_barcode' : [
 				['oncommand'],
 				function() {
-					JSAN.use('util.network');
-					var network = new util.network();
-					var old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
-					if (!old_bc) return;
-					var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
-					if (typeof copy.ilsevent != 'undefined') {
-						alert('Rename aborted: ' + copy.textcode);
-						return;
+					try {
+						JSAN.use('util.network');
+						var network = new util.network();
+
+						var old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
+						if (!old_bc) return;
+	
+						var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
+						if (typeof copy.ilsevent != 'undefined') throw(copy); 
+						if (!copy) throw(copy);
+	
+						// Why did I want to do this twice?  Because this copy is more fleshed?
+						copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
+						if (typeof copy.ilsevent != 'undefined') throw(copy);
+						if (!copy) throw(copy);
+	
+						var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
+	
+						var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
+						if (typeof test.ilsevent == 'undefined') {
+							alert('Rename aborted.  Another copy has that barcode');
+							return;
+						}
+						copy.barcode(new_bc); copy.ischanged('1');
+						var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
+						if (typeof r.ilsevent != 'undefined') { if (r.ilsevent != 0) throw(r); }
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('Rename did not likely occur.',copy);
 					}
-					if (!copy) return;
-					copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
-					if (typeof copy.ilsevent != 'undefined') {
-						alert('Rename aborted: ' + copy.textcode);
-						return;
-					}
-					if (!copy) return;
-					var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
-					var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
-					if (typeof test.ilsevent == 'undefined') {
-						alert('Rename aborted.  Another copy has that barcode');
-						return;
-					}
-					copy.barcode(new_bc); copy.ischanged('1');
-					var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
-					alert(r);
 				}
 			],
 
