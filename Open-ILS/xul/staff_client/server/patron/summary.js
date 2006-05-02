@@ -455,8 +455,7 @@ patron.summary.prototype = {
 			var chain = [];
 
 			// Retrieve the patron
-			chain.push(
-				function() {
+				function blah_retrieve() {
 					try {
 						var robj;
 						if (obj.barcode && obj.barcode != 'null') {
@@ -495,8 +494,8 @@ patron.summary.prototype = {
 					} catch(E) {
 						throw(E);
 					}
-				}
-			);
+				};
+				blah_retrieve();
 
 			/*
 			// Retrieve the survey responses for required surveys

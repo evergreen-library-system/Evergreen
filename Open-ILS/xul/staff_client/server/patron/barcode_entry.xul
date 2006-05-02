@@ -63,16 +63,7 @@
 
 				if (g.cgi.param('error')) { 
 					var error = g.cgi.param('error');
-					var E = JSON2js( error );
-					if (E.ilsevent) {
-						switch(E.ilsevent) {
-							case -1: g.error.standard_network_error_alert(); break;
-							case 1002: alert('No user was found with this barcode.'); break;
-							default: g.error.standard_unexpected_error_alert('',E); break;
-						}
-					} else {
-						g.error.standard_unexpected_error_alert('',E);
-					}
+					alert(error);
 				}
 
 			} catch(E) {

@@ -274,9 +274,17 @@ patron.display.prototype = {
 						}
 					},
 					'on_error' : function(E) {
-						var error = js2JSON(E); obj.error.sdump('D_ERROR', error);
-						location.href = urls.XUL_PATRON_BARCODE_ENTRY 
-							+ '?error=' + window.escape(error.substr(0,100));
+						try {
+							var error;
+							if (typeof E.ilsevent != 'undefined') {
+								error = E.textcode;
+							} else {
+								error = js2JSON(E).substr(0,100);
+							}
+							location.href = urls.XUL_PATRON_BARCODE_ENTRY + '?error=' + window.escape(error);
+						} catch(F) {
+							alert(F);
+						}
 					}
 				}
 			);
