@@ -345,7 +345,7 @@ circ.util.std_map_row_to_column = function(error_value) {
 	}
 }
 
-circ.util.checkin_via_barcode = function(session,barcode,backdate) {
+circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 	try {
 		JSAN.use('util.error'); var error = new util.error();
 		JSAN.use('util.network'); var network = new util.network();
@@ -421,7 +421,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 						if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
 						if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + check.payload.hold.email_notify() + '\n';
 					}
-					var rv = error.yns_alert(
+					var rv = 0;
+					if (!auto_print) rv = error.yns_alert(
 						msg,
 						'Hold Slip',
 						"Print",
@@ -483,7 +484,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate) {
 				if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
 				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + check.payload.hold.email_notify() + '\n';
 			}
-			var rv = error.yns_alert(
+			var rv = 0;
+			if (!auto_print) rv = error.yns_alert(
 				msg,
 				'Transit Slip',
 				"Print",

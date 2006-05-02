@@ -141,9 +141,11 @@ circ.checkin.prototype = {
 			var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
 			if (!barcode) return;
 			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
+			var auto_print = document.getElementById('checkin_auto');
+			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
 			var checkin = circ.util.checkin_via_barcode(
-				ses(), barcode, backdate
+				ses(), barcode, backdate, auto_print
 			);
 			if (!checkin) return; /* circ.util.checkin handles errors and returns null currently */
 			if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
