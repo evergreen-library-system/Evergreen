@@ -152,26 +152,29 @@
 </menu>
 
 <!-- The Serials menu on the main menu -->
+<!--
 <menu id="main.menu.serials" label="&staff.main.menu.serials.label;" accesskey="&staff.main.menu.serials.key;">
 	<menupopup id="main.menu.serials.popup">
 		<menuitem label="stub" />
 	</menupopup>
 </menu>
-
+-->
 <!-- The Acquisitions menu on the main menu -->
+<!--
 <menu id="main.menu.acquisitions" label="&staff.main.menu.acquisitions.label;" accesskey="&staff.main.menu.acquisitions.key;">
 	<menupopup id="main.menu.acquisitions.popup">
 		<menuitem label="stub" />
 	</menupopup>
 </menu>
-
+-->
 <!-- The Reports menu on the main menu -->
+<!--
 <menu id="main.menu.reports" label="&staff.main.menu.reports.label;" accesskey="&staff.main.menu.reports.key;">
 	<menupopup id="main.menu.reports.popup">
 		<menuitem label="stub" />
 	</menupopup>
 </menu>
-
+-->
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.help" label="&staff.main.menu.help.label;" accesskey="&staff.main.menu.help.key;">
 	<menupopup id="main.menu.help.popup">
