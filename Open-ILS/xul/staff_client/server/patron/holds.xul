@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/patron/holds_overlay.xul"?>
 
 <window id="holds_win" 
-	onload="my_init()"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -47,6 +47,7 @@
 				g.holds.init( 
 					{ 
 						'patron_id' : g.cgi.param('patron_id'), 
+						'docid' : g.cgi.param('docid'),
 					} 
 				);
 				window.refresh = function(p) { g.holds.retrieve(p); }

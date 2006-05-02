@@ -19,6 +19,7 @@ patron.holds.prototype = {
 		var obj = this;
 
 		obj.patron_id = params['patron_id'];
+		obj.docid = params['docid'];
 
 		JSAN.use('circ.util');
 		var columns = circ.util.hold_columns( 
@@ -470,6 +471,10 @@ patron.holds.prototype = {
 				method = 'FM_AHR_RETRIEVE_VIA_AU'; 
 				id = obj.patron_id; 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
+			} else if (obj.docid) {
+				method = 'FM_AHR_RETRIEVE_VIA_BRE'; 
+				id = obj.docid; 
+				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else {
 				method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				id = obj.OpenILS.data.list.au[0].ws_ou(); 
