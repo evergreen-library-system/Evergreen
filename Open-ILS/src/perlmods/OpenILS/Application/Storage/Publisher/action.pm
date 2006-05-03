@@ -600,7 +600,7 @@ sub new_hold_copy_targeter {
 				) {
 					my ($rtree) = $self
 						->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-						->run( $r->id, $hold->usr->home_ou->id, $hold->selection_depth );
+						->run( $r->id, $hold->usr->selection_ou, $hold->selection_depth );
 
 					for my $cn ( @{ $rtree->call_numbers } ) {
 						push @$all_copies,
@@ -610,7 +610,7 @@ sub new_hold_copy_targeter {
 			} elsif ($hold->hold_type eq 'T') {
 				my ($rtree) = $self
 					->method_lookup( 'open-ils.storage.biblio.record_entry.ranged_tree')
-					->run( $hold->target, $hold->usr->home_ou->id, $hold->selection_depth );
+					->run( $hold->target, $hold->usr->selection_ou, $hold->selection_depth );
 
 				unless ($rtree) {
 					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_RECORD' };
@@ -624,7 +624,7 @@ sub new_hold_copy_targeter {
 			} elsif ($hold->hold_type eq 'V') {
 				my ($vtree) = $self
 					->method_lookup( 'open-ils.storage.asset.call_number.ranged_tree')
-					->run( $hold->target, $hold->usr->home_ou->id, $hold->selection_depth );
+					->run( $hold->target, $hold->usr->selection_ou, $hold->selection_depth );
 
 				push @$all_copies,
 					asset::copy->search( id => [map {$_->id} @{ $vtree->copies }] );
