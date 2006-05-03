@@ -560,7 +560,7 @@ function doLogin() {
    var auth_result = auth_request.result();
 
 	var code = checkILSEvent(auth_result);
-	if(code) { alertILSEvent(code); return null; }
+	if(code) { alertILSEvent(auth_result); return null; }
 
 	AUTHTIME = parseInt(auth_result.payload.authtime);
 	var u = grabUser(auth_result.payload.authtoken, true);
@@ -771,9 +771,17 @@ function checkILSEvent(obj) {
 		return parseInt(obj.ilsevent);
 	return null;
 }
+
+/*
 function alertILSEvent(code, msg) {
    if(!msg) msg = "";
 	alert( msg + '\n' + $('ilsevent.' + code).innerHTML );
+}
+*/
+
+function alertILSEvent(evt, msg) {
+   if(!msg) msg = "";
+	alert( msg + '\n' + evt.desc );
 }
 
 
