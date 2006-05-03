@@ -19,6 +19,7 @@ patron.items.prototype = {
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
+				'barcode' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
 				'renewal_remaining' : { 'hidden' : false },
