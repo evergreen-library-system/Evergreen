@@ -189,6 +189,13 @@ patron.search_form.prototype = {
 		);
 
 		obj.controller.render();
+		var nl = document.getElementsByTagName('textbox');
+		for (var i = 0; i < nl.length; i++) {
+			nl[i].addEventListener('keypress',function(ev){
+				if (ev.target.tagName != 'textbox') return;
+				if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) obj.submit();
+			},false);
+		}
 		document.getElementById('family_name').focus();
 
 	},
