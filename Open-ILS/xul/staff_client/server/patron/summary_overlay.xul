@@ -18,7 +18,7 @@
 		<caption id="psagbc" label="Alert" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>
 	</groupbox>
-	<groupbox id="PatronSummaryStanding_groupbox" flex="0" hidden="false" class="standing">
+	<groupbox id="PatronSummaryStanding_groupbox" flex="0" hidden="true" class="standing">
 		<caption id="pssgbc" label="Standing" class="shrinkable_groupbox"/>
 		<vbox id="patron_standing_penalties"/>
 	</groupbox>
