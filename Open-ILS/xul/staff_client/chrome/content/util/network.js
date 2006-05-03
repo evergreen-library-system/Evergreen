@@ -198,7 +198,7 @@ util.network.prototype = {
 						xml += '<row style="color: red">' + 
 							'<description>' + r[i].ilsevent + '</description>' + 
 							'<description>' + r[i].textcode + '</description>' + 
-							'<description>' +  (obj.error.get_ilsevent(r[i].ilsevent) ? obj.error.get_ilsevent(r[i].ilsevent) : "") + '</description>' +
+							'<description>' + r[i].desc + '</description>' +
 							'<description>' + (o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '') + '</description>' + 
 							'</row>';
 					}
@@ -226,12 +226,12 @@ util.network.prototype = {
 			var result = req.getResultObject();
 			if (!result) return req;
 
-			if ( o_params.overridable_events.indexOf(result.ilsevent) != -1 ) {
+			if ( (typeof result.ilsevent != 'undefined') && (o_params.overridable_events.indexOf(result.ilsevent) != -1) ) {
 				req = override([result]);
 			} else {
 				var found_good = false; var found_bad = false;
 				for (var i = 0; i < result.length; i++) {
-					if (o_params.overridable_events.indexOf(result[i].ilsevent) != -1 ) {
+					if ( (result[i].ilsevent != 'undefined') && (o_params.overridable_events.indexOf(result[i].ilsevent) != -1) ) {
 						found_good = true;
 					} else {
 						found_bad = true;

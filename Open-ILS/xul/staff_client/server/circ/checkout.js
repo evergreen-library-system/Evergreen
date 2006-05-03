@@ -308,7 +308,6 @@ circ.checkout.prototype = {
 						7004 /* COPY_NOT_AVAILABLE */, 
 						7006 /* COPY_IS_REFERENCE */, 
 						7010 /* COPY_ALERT_MESSAGE */,
-						7014 /* COPY_IN_TRANSIT */,
 					],
 					'text' : {
 						'7004' : function(r) {
@@ -323,11 +322,21 @@ circ.checkout.prototype = {
 
 			if (!permit) throw(permit);
 
-			if (typeof permit.ilsevent == 'undefined') {
-				if (permit.length > 1) {
-					throw(permit);
+			function test_event(list,ev) {
+				if (typeof list.ilsevent != 'undefined' ) {
+					if (list.ilsevent == ev) {
+						return list;
+					} else {
+						return false;
+					}
+				} else {
+					for (var i = 0; i < list.length; i++) {
+						if (typeof list[i].ilsevent != 'undefined') {
+							if (list[i].ilsevent == ev) return list[i];
+						}
+					}
+					return false;
 				}
-				permit = permit[0];	
 			}
 
 			/**********************************************************************************************************************/
@@ -340,44 +349,86 @@ circ.checkout.prototype = {
 
 			/**********************************************************************************************************************/
 			/* Item not cataloged or barcode mis-scan.  Prompt for pre-cat option */
-			} else if (permit.ilsevent == 1202 /* ITEM_NOT_CATALOGED */) {
-
-				if ( 1 == obj.error.yns_alert(
-					'Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?',
-					'Alert',
-					'Cancel',
-					'Pre-Cat',
-					null,
-					null
-				) ) {
-
-					obj.data.dummy_title = ''; obj.data.dummy_author = ''; obj.data.stash('dummy_title','dummy_author');
-					JSAN.use('util.window'); var win = new util.window();
-					win.open(urls.XUL_PRE_CAT, 'dummy_fields', 'chrome,resizable,modal');
-					obj.data.stash_retrieve();
-
-					params.permit_key = permit.payload;
-					params.dummy_title = obj.data.dummy_title;
-					params.dummy_author = obj.data.dummy_author;
-					params.precat = 1;
-
-					if (params.dummy_title != '') { check_out( params ); } else { throw('Checkout cancelled'); }
-				} 
-
-			} else if (permit.ilsevent == 1702 /* OPEN_CIRCULATION_EXISTS */) {
-
-				obj.error.yns_alert('Item is already checked out.  Please investigate.','Checkout Failed','OK',null,null,'Check here to confirm this message');
-			
-			} else if (permit.ilsevent == 7004 /* COPY_NOT_AVAILABLE */) {
-
-				//they already saw a copy not available dialog
-
-			} else if (permit.ilsevent == 5000 /* PERM_FAILURE */) {
-
-				//they already saw a perm failure dialog
-
 			} else {
-				throw(permit);
+			
+				var found_handled = false; var found_not_handled = false; var msg = '';	
+
+				if (test_event(permit,1202 /* ITEM_NOT_CATALOGED */)) {
+
+					if ( 1 == obj.error.yns_alert(
+						'Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?',
+						'Alert',
+						'Cancel',
+						'Pre-Cat',
+						null,
+						null
+					) ) {
+
+						obj.data.dummy_title = ''; obj.data.dummy_author = ''; obj.data.stash('dummy_title','dummy_author');
+						JSAN.use('util.window'); var win = new util.window();
+						win.open(urls.XUL_PRE_CAT, 'dummy_fields', 'chrome,resizable,modal');
+						obj.data.stash_retrieve();
+
+						params.permit_key = permit.payload;
+						params.dummy_title = obj.data.dummy_title;
+						params.dummy_author = obj.data.dummy_author;
+						params.precat = 1;
+
+						if (params.dummy_title != '') { check_out( params ); } else { throw('Checkout cancelled'); }
+					} 
+				};
+
+				var test_permit;
+				if (typeof permit.ilsevent != 'undefined') { test_permit = [ permit ]; } else { test_permit = permit; }
+
+				for (var i = 0; i < test_permit.length; i++) {
+					dump('found [' + test_permit[i].ilsevent + ']\n');
+					switch(test_permit[i].ilsevent) {
+						case 7004 /* COPY_NOT_AVAILABLE */ :
+							msg += test_permit[i].desc + '\n' + 'Copy status = ' + obj.data.hash.ccs[ test_permit[i].payload ].name() + '\n';
+							found_handled = true;
+						break;
+						case 7006 /* COPY_IS_REFERENCE */ :
+							msg += test_permit[i].desc + '\n';
+							found_handled = true;
+						break;
+						case 7010 /* COPY_ALERT_MESSAGE */ :
+							msg += test_permit[i].desc + '\n' + 'Alert Message = ' + test_permit[i].payload + '\n';
+							found_handled = true;
+						break;
+						case 1202 /* ITEM_NOT_CATALOGED */ :
+							found_handled = true;
+						break;
+						case 5000 /* PERM_FAILURE */ :
+							msg += test_permit[i].desc + '\n' + 'Permission Denied = ' + test_permit[i].ilsperm + '\n';
+							found_handled = true;
+						break;
+						case 1702 /* OPEN_CIRCULATION_EXISTS */ :
+							msg += test_permit[i].desc + '\n';
+							found_handled = true;
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+						break;
+						case 7014 /* COPY_IN_TRANSIT */ :
+							msg += test_permit[i].desc + '\n';
+							found_handled = true;
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+						break;
+						case -1 /* NETWORK_FAILURE */ :
+							msg += 'There was a network failure.\n';
+							found_handled = true;
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+						break;
+						default:
+							msg += 'FIXME: ' + js2JSON(test_permit[i]) + '\n';
+							found_not_handled = true;
+						break;
+					}
+				}
+				
+				if (found_not_handled) {
+					obj.error.standard_unexpected_error_alert(msg,permit);
+				}
+
 			}
 
 		} catch(E) {
