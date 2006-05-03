@@ -24,6 +24,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Utils::Editor;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -105,6 +106,7 @@ sub create_hold {
 
 		#enforce the fact that the login is the one requesting the hold
 		$hold->requestor($user->id); 
+		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
 
 		my $resp = $apputils->simplereq(
 			'open-ils.storage',
@@ -703,6 +705,33 @@ sub _reset_hold {
 	return undef;
 }
 
+
+__PACKAGE__->register_method(
+	method => 'fetch_open_title_holds',
+	api_name	=> 'open-ils.circ.open_holds.retrieve',
+	signature	=> q/
+		Returns a list ids of un-fulfilled holds for a given title id
+		@param authtoken The login session key
+		@param id the id of the item whose holds we want to retrieve
+		@param type The hold type - M, T, V, C
+	/
+);
+
+sub fetch_open_title_holds {
+	my( $self, $conn, $auth, $id, $type, $org ) = @_;
+	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+
+	$type ||= "T";
+	$org ||= $e->requestor->ws_ou;
+
+#	return $e->search_action_hold_request(
+#		{ target => $id, hold_type => $type, fulfillment_time => undef }, {idlist=>1});
+
+	# XXX make me return IDs in the future ^--
+	return $e->search_action_hold_request(
+		{ target => $id, hold_type => $type, fulfillment_time => undef });
+}
 
 
 1;
