@@ -304,7 +304,12 @@ circ.checkout.prototype = {
 				null,
 				{
 					'title' : 'Override Checkout Failure?',
-					'overridable_events' : [ 7004 /* COPY_NOT_AVAILABLE */, 7006 /* COPY_IS_REFERENCE */, 7010 /* COPY_ALERT_MESSAGE */ ],
+					'overridable_events' : [ 
+						7004 /* COPY_NOT_AVAILABLE */, 
+						7006 /* COPY_IS_REFERENCE */, 
+						7010 /* COPY_ALERT_MESSAGE */,
+						7014 /* COPY_IN_TRANSIT */,
+					],
 					'text' : {
 						'7004' : function(r) {
 							return obj.data.hash.ccs[ r.payload ].name();
