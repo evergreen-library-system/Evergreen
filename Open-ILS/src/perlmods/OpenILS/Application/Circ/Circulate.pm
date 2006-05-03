@@ -393,6 +393,7 @@ sub permit_circ {
 		$authtoken, $params->{patron}, 'VIEW_PERMIT_CHECKOUT' );
 	return $evt if $evt;
 
+
 	# fetch and build the circulation environment
 	if( !( $ctx = $params->{_ctx}) ) {
 
@@ -405,6 +406,13 @@ sub permit_circ {
 			fetch_copy_locations			=> 1, 
 			);
 		return $evt if $evt;
+	}
+
+	my $copy = $ctx->{copy};
+	if($copy) {
+		my $stat = (ref $copy->status) ? $copy->status->id : $copy->status;
+		return OpenILS::Event->new('COPY_IN_TRANSIT') 
+			if $stat == $U->copy_status_from_name('in transit')->id;
 	}
 
 	$ctx->{authtoken} = $authtoken;
@@ -431,7 +439,8 @@ sub permit_circ {
 	my $events = _run_permit_scripts($ctx);
 
 	if( $override ) {
-		$evt = override_events($requestor, $requestor->ws_ou, $events);
+		$evt = override_events($requestor, $requestor->ws_ou, 
+			$events, $authtoken, $ctx->{copy}->id, $client);
 		return $evt if $evt;
 		return OpenILS::Event->new('SUCCESS', payload => $ctx->{permit_key} );
 	}
@@ -441,7 +450,7 @@ sub permit_circ {
 
 sub override_events {
 
-	my( $requestor, $org, $events ) = @_;
+	my( $requestor, $org, $events, $authtoken, $copyid, $conn ) = @_;
 	$events = [ $events ] unless ref($events) eq 'ARRAY';
 	my @failed;
 
@@ -485,6 +494,7 @@ sub check_title_hold {
 
 	my $rangelib	= $patron->home_ou;
 	my $depth		= $params{depth} || 0;
+	my $pickup		= $params{pickup_lib};
 
 	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
 
@@ -517,6 +527,7 @@ sub check_title_hold {
 						copy					=> $copy,
 						title					=> $title, 
 						title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
+						pickup_lib			=> $pickup,
 						request_lib			=> $org } );
 	
 				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
@@ -714,6 +725,14 @@ sub checkout {
 		if( $ctx->{copy}->call_number eq '-1' ) {
 			return OpenILS::Event->new('ITEM_NOT_CATALOGED');
 		}
+	}
+
+
+	$copy = $ctx->{copy};
+	if($copy) {
+		my $stat = (ref $copy->status) ? $copy->status->id : $copy->status;
+		return OpenILS::Event->new('COPY_IN_TRANSIT') 
+			if $stat == $U->copy_status_from_name('in transit')->id;
 	}
 
 	# this happens in permit.. but we need to check here for 'offline' requests
@@ -1160,7 +1179,7 @@ sub checkin_do_receive {
 
 	# if the circ is marked as 'claims returned', add the event to the list
 	push( @eventlist, 'CIRC_CLAIMS_RETURNED' ) 
-		if ($circ and $circ->stop_fines eq 'CLAIMSRETURNED');
+		if ($circ and $circ->stop_fines and $circ->stop_fines eq 'CLAIMSRETURNED');
 
 	# override or die
 	if(@eventlist) {
@@ -1221,6 +1240,10 @@ sub checkin_do_receive {
 
 	# If it's a renewal, we're done
 	if($__isrenewal) {
+		$$ctx{force} = 1;
+		my ($c, $e) = _reshelve_copy($ctx);
+		return $e if $e;
+		delete $$ctx{force};
 		$U->commit_db_session($session);
 		return OpenILS::Event->new('SUCCESS');
 	}
@@ -1304,14 +1327,16 @@ sub _reshelve_copy {
 	my $copy		= $ctx->{copy};
 	my $reqr		= $ctx->{requestor};
 	my $session	= $ctx->{session};
+	my $force	= $ctx->{force};
 
 	my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
 
-	if($stat != $U->copy_status_from_name('on holds shelf')->id and 
+	if($force || (
+		$stat != $U->copy_status_from_name('on holds shelf')->id and 
 		$stat != $U->copy_status_from_name('available')->id and 
 		$stat != $U->copy_status_from_name('cataloging')->id and 
 		$stat != $U->copy_status_from_name('in transit')->id and 
-		$stat != $U->copy_status_from_name('reshelving')->id ) {
+		$stat != $U->copy_status_from_name('reshelving')->id) ) {
 
 		$copy->status( $U->copy_status_from_name('reshelving')->id );
 
