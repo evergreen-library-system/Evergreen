@@ -991,14 +991,14 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.search.advanced" );
 
 sub patron_adv_search {
-	my( $self, $client, $staff_login, $search_hash ) = @_;
+	my( $self, $client, $staff_login, $search_hash, $search_limit, $search_sort ) = @_;
 
 	#warn "patron adv with $staff_login and search " . 
 		#Dumper($search_hash) . "\n";
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 	my $req = $session->request(
-		"open-ils.storage.actor.user.crazy_search", $search_hash);
+		"open-ils.storage.actor.user.crazy_search", $search_hash, $search_limit, $search_sort);
 
 	my $ans = $req->gather(1);
 
