@@ -27,6 +27,7 @@ sub permit_copy_hold {
 	$runner->insert( "$k.copy",				$$params{copy},				1);
 	$runner->insert( "$k.requestor",			$$params{requestor},			1);
 	$runner->insert( "$k.requestLib",		$$params{request_lib},		1);
+	$runner->insert( "$k.pickupLib",			$$params{pickup_lib},		1);
 	$runner->insert( "$k.titleDescriptor",	$$params{title_descriptor},1);
 
 	# we get the script result from the event 
