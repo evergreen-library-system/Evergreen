@@ -58,10 +58,11 @@ __PACKAGE__->register_method(
 	/
 );
 sub search_zip {
-	my( $self, $conn, $auth, $zip ) = @_;
-	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_ZIP_DATA');
+	#my( $self, $conn, $auth, $zip ) = @_;
+	#my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	#return $e->event unless $e->checkauth;
+	#return $e->event unless $e->allowed('VIEW_ZIP_DATA');
+	my( $self, $conn, $zip ) = @_;
 	return $zips{$zip};
 }
 
