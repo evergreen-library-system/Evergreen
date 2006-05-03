@@ -15,6 +15,7 @@ use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Authority;
 #use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
+use OpenILS::Application::Search::Zips;
 
 
 use OpenILS::Application::AppUtils;
@@ -29,6 +30,7 @@ use Text::Aspell; # spell checking...
 
 sub initialize {
 	OpenILS::Application::Search::Z3950->initialize();
+	OpenILS::Application::Search::Zips->initialize();
 
 	# try to load the added content handler
 	my $conf = OpenSRF::Utils::SettingsClient->new;
