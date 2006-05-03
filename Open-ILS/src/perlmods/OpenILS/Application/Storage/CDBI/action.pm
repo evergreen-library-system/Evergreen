@@ -90,7 +90,7 @@ __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     hold_type holdable_formats target
 				     phone_notify email_notify selection_depth
 				     pickup_lib current_copy request_lib
-				     fulfillment_staff fulfillment_lib/);
+				     fulfillment_staff fulfillment_lib selection_ou/);
 
 #-------------------------------------------------------------------------------
 
