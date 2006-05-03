@@ -121,7 +121,7 @@ patron.search_result.prototype = {
 			var results = this.network.request(
 				api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
 				api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
-				[ ses(), search_hash ]
+				[ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ]
 			);
 			//this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
 			var funcs = [];
