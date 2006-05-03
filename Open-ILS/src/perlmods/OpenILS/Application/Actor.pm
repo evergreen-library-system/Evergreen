@@ -26,6 +26,8 @@ use DateTime::Format::ISO8601;
 
 use OpenILS::Application::Actor::Container;
 
+use OpenILS::Utils::Editor;
+
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
 }
@@ -989,27 +991,14 @@ sub get_my_org_path {
 __PACKAGE__->register_method(
 	method	=> "patron_adv_search",
 	api_name	=> "open-ils.actor.patron.search.advanced" );
-
 sub patron_adv_search {
-	my( $self, $client, $staff_login, $search_hash, $search_limit, $search_sort ) = @_;
-
-	#warn "patron adv with $staff_login and search " . 
-		#Dumper($search_hash) . "\n";
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	my $req = $session->request(
-		"open-ils.storage.actor.user.crazy_search", $search_hash, $search_limit, $search_sort);
-
-	my $ans = $req->gather(1);
-
-	my %hash = map { ($_ =>1) } @$ans;
-	$ans = [ keys %hash ];
-
-	#warn "Returning @$ans\n";
-
-	$session->disconnect();
-	return $ans;
-
+	my( $self, $client, $auth, $search_hash, $search_limit, $search_sort ) = @_;
+	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER');
+	return $e->request(
+		"open-ils.storage.actor.user.crazy_search", 
+		$search_hash, $search_limit, $search_sort);
 }
 
 
