@@ -133,6 +133,36 @@ sub checkouts_by_user_slim {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "checkouts_by_user_opac",
+	api_name	=> "open-ils.circ.actor.user.checked_out.opac",);
+
+sub checkouts_by_user_opac {
+	my( $self, $client, $auth, $user_id ) = @_;
+
+	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+	$user_id ||= $e->requestor->id;
+	return $e->event unless 
+		my $patron = $e->retrieve_actor_user($user_id);
+
+	my $data;
+	my $search = {usr => $user_id, stop_fines => undef};
+	if( $user_id ne $e->requestor->id ) {
+		$data = $e->search_action_circulation(
+			$search, {checkperm=>1, permorg=>$patron->home_ou});
+
+	} else {
+		$data = $e->search_action_circulation($search);
+	}
+
+	return $e->event if $e->event;
+	return $data;
+}
+
+
+
+
 
 
 __PACKAGE__->register_method(
