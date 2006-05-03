@@ -4,6 +4,7 @@
 #include "opensrf/osrf_settings.h"
 
 osrfHash* __oilsEventEvents = NULL;
+osrfHash* __oilsEventDescriptions = NULL;
 
 oilsEvent* oilsNewEvent( char* event ) {
 	if(!event) return NULL;
@@ -63,9 +64,21 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 		return NULL;
 	}
 
+
+	char* lang = "en-US"; /* assume this for now */
+	char* desc = NULL;
+	osrfHash* h = osrfHashGet(__oilsEventDescriptions, lang);
+	if(h) {
+		osrfLogDebug(OSRF_LOG_MARK, "Loaded event lang hash for %s",lang);
+		desc = osrfHashGet(h, code);
+		osrfLogDebug(OSRF_LOG_MARK, "Found event description %s", desc);
+	}
+	if(!desc) desc = "";
+
 	jsonObject* json = jsonNewObject(NULL);
 	jsonObjectSetKey( json, "ilsevent", jsonNewNumberObject(atoi(code)) );
 	jsonObjectSetKey( json, "textcode", jsonNewObject(event->event) );
+	jsonObjectSetKey( json, "desc", jsonNewObject(desc) );
 
 	if(event->perm) jsonObjectSetKey( json, "ilsperm", jsonNewObject(event->perm) );
 	if(event->permloc != -1) jsonObjectSetKey( json, "ilspermloc", jsonNewNumberObject(event->permloc) );
@@ -88,6 +101,7 @@ void _oilsEventParseEvents() {
 	free(xml);
 	int success = 0;
 	__oilsEventEvents = osrfNewHash();
+	__oilsEventDescriptions = osrfNewHash();
 
 	if( doc ) {
 		xmlNodePtr root = xmlDocGetRootElement(doc);
@@ -100,6 +114,31 @@ void _oilsEventParseEvents() {
 					if( code && textcode ) {
 						osrfHashSet( __oilsEventEvents, code, textcode );
 						success = 1;
+					}
+
+					/* here we collect all of the <desc> nodes on the event
+					 * element and store them based on the xml:lang attribute
+					 */
+					xmlNodePtr desc = child->children;
+					while(desc) {
+						if( !strcmp((char*) desc->name, "desc") ) {
+							xmlChar* lang = xmlGetProp( desc, BAD_CAST "lang");	
+							if(lang) {
+								osrfLogDebug(OSRF_LOG_MARK, "Loaded event lang: %s", (char*) lang);
+								osrfHash* langHash = osrfHashGet(
+									__oilsEventDescriptions, lang);
+								if(!langHash) {
+									langHash = osrfNewHash();
+									osrfHashSet(__oilsEventDescriptions, langHash, lang);
+								}
+								char* content;
+								if( desc->children && (content = desc->children->content) ) {
+									osrfLogDebug(OSRF_LOG_MARK, "Loaded event desc: %s", (char*) content);
+									osrfHashSet( langHash, content, code );
+								}
+							}
+						}
+						desc = desc->next;
 					}
 				}
 				child = child->next;

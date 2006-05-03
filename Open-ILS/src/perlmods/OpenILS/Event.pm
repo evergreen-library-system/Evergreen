@@ -15,6 +15,8 @@ my $logger = "OpenSRF::Utils::Logger";
 
 
 my $events = undef;
+my $descs = undef;
+
 sub new {
 	my( $class, $event, %params ) = @_;
 
@@ -36,10 +38,13 @@ sub new {
 	$ff ||= "";
 	$ll ||= "";
 
+	my $lang = 'en-US'; # assume english for now
+
 	return { 
 		ilsevent		=> $e, 
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l, $ff:$ll", 
+		desc			=> $descs->{$lang}->{$e},
 		pid			=> $$, %params };
 }
 
@@ -59,6 +64,15 @@ sub _load_events {
 	for my $node (@nodes) {
 		$events->{$node->getAttribute('textcode')} = 
 			$node->getAttribute('code');
+	}
+
+	$descs = {};
+	my @desc = $doc->documentElement->findnodes('//desc');
+	for my $d (@desc) {
+		my $lang = $d->getAttribute('lang');
+		my $code = $d->parentNode->getAttribute('code');
+		$descs->{$lang} = {} unless $descs->{$lang};
+		$descs->{$lang}->{$code} = $d->textContent;
 	}
 }
 

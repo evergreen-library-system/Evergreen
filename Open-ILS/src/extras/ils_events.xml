@@ -11,73 +11,75 @@
 	</notes>
 
 	<event code='0' textcode='SUCCESS'>
-		<desc>No errors or unexpected events occurred</desc>
+		<desc xml:lang="en-US">No errors or unexpected events occurred</desc>
 	</event>
 	<event code='1' textcode='UNKNOWN'>
-		<desc>Placeholder event.  Used for development only</desc>
+		<desc xml:lang="en-US">Placeholder event.  Used for development only</desc>
 	</event>
 	<event code='3' textcode='NO_CHANGE'>
-		<desc>
-			The called method didn't actually do anything
+		<desc xml:lang="en-US">
+			No change occurred	
 		</desc>
 	</event>
 	<event code='1000' textcode='LOGIN_FAILED'>
-		<desc>
-			User login failed.  Why the login failed is not specified.
+		<desc xml:lang="en-US">
+			User login failed
 		</desc>
 	</event>
 	<event code='1001' textcode='NO_SESSION'>
-		<desc>
+		<desc xml:lang="en-US">
 			User login session has either timed out or does not exist.
 		</desc>
 	</event>
 	<event code='1002' textcode='ACTOR_USER_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a user from the system and the user
 			was not found.
 		</desc>
 	</event>
 	<event code='1003' textcode='Z3950_SEARCH_FAILED'>
-		<desc>The Z search did not succeed</desc>
+		<desc xml:lang="en-US">The Z search did not succeed</desc>
 	</event>
 	<event code='1200' textcode='USERNAME_EXISTS'>
-		<desc>
-			The given username exists in the database
+		<desc xml:lang="en-US">
+			The given username already exists in the database.
 		</desc>
 	</event>
 	<event code='1201' textcode='CIRC_PERMIT_BAD_KEY'>
-		<desc>
+		<desc xml:lang="en-US">
 			A checkout was attempted without a valid checkout permit key
 		</desc>
 	</event>
 	<event code='1202' textcode='ITEM_NOT_CATALOGED'>
-		<desc>
+		<desc xml:lang="en-US">
 			The requested item is not cataloged in the database
 		</desc>
 	</event>
 	<event code='1203' textcode='COPY_BAD_STATUS'>
-		<desc>
+		<desc xml:lang="en-US">
 			The given copy is not in a standard circulation status
 		</desc>
 	</event>
 	<event code='1204' textcode='CIRC_BAD_STATUS'>
-		<desc>
+		<desc xml:lang="en-US">
 			The given circulation is not in a standard status or
 			the circulation was never fully closed properly
 		</desc>
 	</event>
 	<event code='1205' textcode='CARD_EXISTS'>
-		<desc>The given user barcode already exists</desc>
+		<desc xml:lang="en-US">The given user barcode already exists</desc>
 	</event>
 	<event code='1206' textcode='VOLUME_NOT_EMPTY'>
-		<desc>The selected volume has copies attached</desc>
+		<desc xml:lang="en-US">The selected volume has copies attached</desc>
 	</event>
 	<event code='1207' textcode='REFUND_EXCEEDS_BALANCE'>
-		<desc>A refund greater than the negative balance on a transaction was provided</desc>
+		<desc xml:lang="en-US">A refund greater than the negative balance on a transaction was provided</desc>
 	</event>
-
 	<event code='1208' textcode='TITLE_LAST_COPY'>
-		<desc>The last copy attached to a title is being removed or deleted</desc>
+		<desc xml:lang="en-US">The last copy attached to a title is being removed or deleted</desc>
+	</event>
+	<event code='1209' textcode='Z3950_LOGIN_FAILED'>
+		<desc xml:lang="en-US">The login failed</desc>
 	</event>
 
 
@@ -85,167 +87,167 @@
 
 
 	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a circulation object from the system and 
 			the object was not found.
 		</desc>
 	</event>
 	<event code='1501' textcode='BIBLIO_RECORD_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a biblio record entry object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1502' textcode='ASSET_COPY_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a copy object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1503' textcode='HOLD_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a hold object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1504' textcode='TRANSIT_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1505' textcode='BILLING_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a container object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1507' textcode='CONTAINER_ITEM_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a container item object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1508' textcode='VOLUME_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve a volume object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1509' textcode='ORG_UNIT_NOT_FOUND'>
-		<desc>
+		<desc xml:lang="en-US">
 			Someone attempted to retrieve an org unit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
 	<event code='1510' textcode='STAT_CAT_NOT_FOUND'>
-		<desc> Stat cat object does not exist </desc>
+		<desc xml:lang="en-US"> Stat cat object does not exist </desc>
 	</event>
 	<event code='1511' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
-		<desc> Stat cat entry object does not exist </desc>
+		<desc xml:lang="en-US"> Stat cat entry object does not exist </desc>
 	</event>
 	<event code='1512' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
-		<desc> Stat cat entry map object does not exist </desc>
+		<desc xml:lang="en-US"> Stat cat entry map object does not exist </desc>
 	</event>
 	<event code='1513' textcode='NON_CAT_TYPE_NOT_FOUND'>
-		<desc> The non cataloged type object does not exist </desc>
+		<desc xml:lang="en-US"> The non cataloged type object does not exist </desc>
 	</event>
 	<event code='1514' textcode='CIRC_DURATION_NOT_FOUND'>
-		<desc> The circ duration object does not exist </desc>
+		<desc xml:lang="en-US"> The circ duration object does not exist </desc>
 	</event>
 	<event code='1515' textcode='RECURRING_FINE_NOT_FOUND'>
-		<desc> The recurring fines object does not exist </desc>
+		<desc xml:lang="en-US"> The recurring fines object does not exist </desc>
 	</event>
 	<event code='1516' textcode='MAX_FINE_NOT_FOUND'>
-		<desc> The max fines object does not exist </desc>
+		<desc xml:lang="en-US"> The max fines object does not exist </desc>
 	</event>
 	<event code='1517' textcode='COPY_LOCATION_NOT_FOUND'>
-		<desc> The copy location object does not exist </desc>
+		<desc xml:lang="en-US"> The copy location object does not exist </desc>
 	</event>
 	<event code='1518' textcode='HOLD_TRANSIT_NOT_FOUND'>
-		<desc> The hold transit object does not exist </desc>
+		<desc xml:lang="en-US"> The hold transit object does not exist </desc>
 	</event>
 	<event code='1519' textcode='TRANSACTION_NOT_FOUND'>
-		<desc> Requested transaction object does not exist </desc>
+		<desc xml:lang="en-US"> Requested transaction object does not exist </desc>
 	</event>
 	<event code='1520' textcode='WORKSTATION_NOT_FOUND'>
-		<desc> Requested workstation object does not exist </desc>
+		<desc xml:lang="en-US"> Requested workstation object does not exist </desc>
 	</event>
 	<event code='1521' textcode='COPY_NOTE_NOT_FOUND'>
-		<desc> Requested copy note does not exist </desc>
+		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
 	</event>
 	<event code='1522' textcode='VOLUME_NOTE_NOT_FOUND'>
-		<desc> Requested copy note does not exist </desc>
+		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
 	</event>
 	<event code='1523' textcode='TITLE_NOTE_NOT_FOUND'>
-		<desc> Requested copy note does not exist </desc>
+		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
 	</event>
 	<event code='1524' textcode='CARD_NOT_FOUND'>
-		<desc> Requested copy note does not exist </desc>
+		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
 	</event>
 	<event code='1525' textcode='BILLING_NOT_FOUND'>
-		<desc> Requested copy note does not exist </desc>
+		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
 	</event>
 	<event code='1526' textcode='BILLABLE_XACT_SUMMARY_NOT_FOUND'>
-		<desc> Requested transaction summary does not exist </desc>
+		<desc xml:lang="en-US"> Requested transaction summary does not exist </desc>
 	</event>
 
 	<event code='1527' textcode='OPEN_TCN_NOT_FOUND'>
-		<desc>No TCN could be found that does not collide with existing records</desc>
+		<desc xml:lang="en-US">No TCN could be found that does not collide with existing records</desc>
 	</event>
 
 
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
-		<desc> The non-cataloged type object already exists </desc>
+		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
 	</event>
 
 	<event code='1701' textcode='COPY_LOCATION_EXISTS'>
-		<desc> The copy location object already exists </desc>
+		<desc xml:lang="en-US"> The copy location object already exists </desc>
 	</event>
 
 	<event code='1702' textcode='OPEN_CIRCULATION_EXISTS'>
-		<desc> There is an open circulation on the requested item </desc>
+		<desc xml:lang="en-US"> There is an open circulation on the requested item </desc>
 	</event>
 
 	<event code='1703' textcode='WORKSTATION_NAME_EXISTS'>
-		<desc> A workstation with that name already exists </desc>
+		<desc xml:lang="en-US"> A workstation with that name already exists </desc>
 	</event>
 
 	<event code='1704' textcode='TCN_EXISTS'>
-		<desc>A record already exists with the requested TCN value</desc>
+		<desc xml:lang="en-US">A record already exists with the requested TCN value</desc>
 	</event>
 	<event code='1705' textcode='VOLUME_LABEL_EXISTS'>
-		<desc>A volume with the same label, title and owning library exists</desc>
+		<desc xml:lang="en-US">A volume with the same label, title and owning library exists</desc>
 	</event>
 	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
-		<desc>An item with the same barcode exists</desc>
+		<desc xml:lang="en-US">An item with the same barcode exists</desc>
 	</event>
 
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
-		<desc>
+		<desc xml:lang="en-US">
 			Invalid parameters were encountered in a method
 		</desc>
 	</event>
 
 	<event code='2001' textcode='DATABASE_UPDATE_FAILED'>
-		<desc>
+		<desc xml:lang="en-US">
 			The attempt to write to the DB failed
 		</desc>
 	</event>
 
 
 	<event code='5000' textcode='PERM_FAILURE'>
-		<desc> 
+		<desc xml:lang="en-US"> 
 			Permission Error.  * The object returning this code shall also 
 			contain a field "ilsperm" containing the name of the permission which failed 
 			and a field called "ilspermloc" defining the location at which the permission
@@ -257,7 +259,7 @@
 	<!-- ================================================================ -->
 	<!-- CIRC EVENTS -->
 	<event code='7000' textcode='ROUTE_ITEM'>
-		<desc> 
+		<desc xml:lang="en-US"> 
 			A copy needs to be routed to a different location	
 			The destination location will be specified by an 'org' key
 			within the event object
@@ -265,104 +267,107 @@
 	</event>
 
 	<event code='7001' textcode='PATRON_BAD_STANDING'>
-		<desc>
+		<desc xml:lang="en-US">
 			The patron in question is not able to check out materials because
 			their account is in bad standing
 		</desc>
 	</event>
 
 	<event code='7002' textcode='PATRON_EXCEEDS_CHECKOUT_COUNT'>
-		<desc>
+		<desc xml:lang="en-US">
 			The patron in question has the maximum number of items already checked out
 		</desc>
 	</event>
 
 	<event code='7003' textcode='COPY_CIRC_NOT_ALLOWED'>
-		<desc> Target copy is not allowed to circulate </desc>
+		<desc xml:lang="en-US"> Target copy is not allowed to circulate </desc>
 	</event>
 
 	<event code='7004' textcode='COPY_NOT_AVAILABLE'>
-		<desc> Copy is not available </desc>
+		<desc xml:lang="en-US"> Copy is not available </desc>
 	</event>
 
 	<event code='7005' textcode='LOCATION_CIRC_NOT_ALLOWED'>
-		<desc> Location does not allow materials to circulate </desc>
+		<desc xml:lang="en-US"> Location does not allow materials to circulate </desc>
 	</event>
 
 	<event code='7006' textcode='COPY_IS_REFERENCE'>
-		<desc> Copy is reference material </desc>
+		<desc xml:lang="en-US"> Copy is reference material </desc>
 	</event>
 
 	<event code='7007' textcode='COPY_NEEDED_FOR_HOLD'>
-		<desc> Copy is needed to fulfil a hold </desc>
+		<desc xml:lang="en-US"> Copy is needed to fulfil a hold </desc>
 	</event>
 
 	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
-		<desc> Circulation has no more renewals remaining </desc>
+		<desc xml:lang="en-US"> Circulation has no more renewals remaining </desc>
 	</event>
 
 	<event code='7009' textcode='ROUTE_TO_COPY_LOCATION'>
-		<desc> 
+		<desc xml:lang="en-US"> 
 		A copy needs to be routed to a copy location.  The location
 		should be specified within the event with a 'location' key
 		</desc>
 	</event>
 
 	<event code='7009' textcode='CIRC_CLAIMS_RETURNED'>
-		<desc> Requested circulation is marked claims returned </desc>
+		<desc xml:lang="en-US"> Requested circulation is marked claims returned </desc>
 	</event>
 	
 	<event code='7010' textcode='COPY_ALERT_MESSAGE'>
-		<desc> The requested copy has an alert message attached </desc>
+		<desc xml:lang="en-US"> The requested copy has an alert message attached </desc>
 	</event>
 
 	<event code='7011' textcode='COPY_STATUS_LOST'>
-		<desc>Copy has is marked as lost</desc>
+		<desc xml:lang="en-US">Copy has is marked as lost</desc>
 	</event>
 
 	<event code='7012' textcode='COPY_STATUS_MISSING'>
-		<desc>Copy has is marked as missing</desc>
+		<desc xml:lang="en-US">Copy has is marked as missing</desc>
 	</event>
 
 	<event code='7013' textcode='PATRON_EXCEEDS_FINES'>
-		<desc>The patron in question has reached the maximum fine amount</desc>
+		<desc xml:lang="en-US">The patron in question has reached the maximum fine amount</desc>
+	</event>
+	<event code='7014' textcode='COPY_IN_TRANSIT'>
+		<desc xml:lang="en-US">Copy is in transit</desc>
 	</event>
 
 	<!-- ================================================================ -->
 
 
 	<event code='8000' textcode='OFFLINE_SESSION_ACTIVE'>
-		<desc> An offline session for this location is currently processing </desc>
+		<desc xml:lang="en-US"> An offline session for this location is currently processing </desc>
 	</event>
 	<event code='8001' textcode='OFFLINE_SESSION_FILE_EXISTS'>
-		<desc> An offline file for this workstation exists within this session </desc>
+		<desc xml:lang="en-US"> An offline file for this workstation exists within this session </desc>
 	</event>
 	<event code='8002' textcode='OFFLINE_FILE_ERROR'>
-		<desc> An offline file or directory could not be created or accessed </desc>
+		<desc xml:lang="en-US"> An offline file or directory could not be created or accessed </desc>
 	</event>
 	<event code='8003' textcode='OFFLINE_PARAM_ERROR'>
-		<desc> Missing params in offline upload </desc>
+		<desc xml:lang="en-US"> Missing params in offline upload </desc>
 	</event>
 	<event code='8004' textcode='OFFLINE_CONFIG_ERROR'>
-		<desc> Offline server is not configured properly </desc>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
 	</event>
 	<event code='8005' textcode='OFFLINE_CHECKSUM_FAILED'>
-		<desc> Offline server is not configured properly </desc>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
 	</event>
 	<event code='8006' textcode='OFFLINE_SESSION_NOT_FOUND'>
-		<desc> Offline server is not configured properly </desc>
+		<desc xml:lang="en-US"> Offline server is not configured properly </desc>
 	</event>
 	<event code='8007' textcode='OFFLINE_SESSION_EXISTS'>
-		<desc> A session with the given name already exists </desc>
+		<desc xml:lang="en-US"> A session with the given name already exists </desc>
 	</event>
 	<event code='8008' textcode='OFFLINE_INVALID_SESSION'>
-		<desc> The session name is invalid </desc>
+		<desc xml:lang="en-US"> The session name is invalid </desc>
 	</event>
 	<event code='8009' textcode='OFFLINE_NO_ORG'>
-		<desc> No org id was provided </desc>
+		<desc xml:lang="en-US"> No org id was provided </desc>
 	</event>
 	<event code='8010' textcode='OFFLINE_SESSION_COMPLETE'>
-		<desc> No org id was provided </desc>
+		<desc xml:lang="en-US"> No org id was provided </desc>
 	</event>
 
 	<!-- ================================================================ -->
