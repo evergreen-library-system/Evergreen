@@ -205,12 +205,9 @@ function myOPACRenewCirc(circid) {
 	req.send(true);
 	var res = req.result();
 
-	if(evt = checkILSEvent(res)) {
-		if( evt != 0 ) {
-			alert(evt);
-			alertILSEvent(evt);
-			return;
-		}
+	if(checkILSEvent(res)) {
+		alertILSEvent(res);
+		return;
 	}
 
 	alert($('myopac_renew_success').innerHTML);	
@@ -615,8 +612,9 @@ function myOPACUpdateUsername() {
 	if(req.result()) {
 
 		var evt;
-		if(evt = checkILSEvent(req.result())) {
-			alertILSEvent(evt);
+		var res = req.result();
+		if(evt = checkILSEvent(res)) {
+			alertILSEvent(res);
 			return;
 		}
 
@@ -749,7 +747,7 @@ function myOPACMakeBBPublished(bbid, hideme) {
 	var result = containerUpdate(bb);
 
 	var code = checkILSEvent(result);
-	if(code) { alertILSEvent(code); return; }
+	if(code) { alertILSEvent(result); return; }
 
 	if(result) alert($('myopac_bb_update_success').innerHTML);
 	myOPACShowBookbags(true);
@@ -761,7 +759,7 @@ function myOPACDeleteBookbag(id) {
 	if( confirm( $('myopac_delete_bookbag_warn').innerHTML ) ) {
 		var result = containerDelete(id);
 		var code = checkILSEvent(result);
-		if(code) { alertILSEvent(code); return; }
+		if(code) { alertILSEvent(result); return; }
 		hideMe($('myopac_bookbag_items_table'));
 		hideMe($('myopac_bookbag_items_name'));
 		hideMe($('myopac_bookbag_no_items'));
@@ -856,7 +854,7 @@ function myOPACCreateBookbag() {
 
 	var result = containerCreate( name, $('bb_public_yes').checked );
 	var code = checkILSEvent(result);
-	if(code) { alertILSEvent(code); return; }
+	if(code) { alertILSEvent(result); return; }
 	myOPACShowBookbags(true);
 }
 

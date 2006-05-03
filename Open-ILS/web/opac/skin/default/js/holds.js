@@ -29,7 +29,7 @@ function _holdsHandleStaff() {
 	var user = grabUserByBarcode( G.user.session, barcode );
 	var code = checkILSEvent(user);
 	if(code || !user) {
-		alertILSEvent(code, barcode);
+		alertILSEvent(user, barcode);
 		showCanvas();
 		return;
 	}
