@@ -33,13 +33,14 @@ if( copy.circulate == '0' )
 if( copy.ref != '0' ) 
 	result.events.push('COPY_IS_REFERENCE');
 
-if(	copyStatus != 'available' && 
-		copyStatus != 'on holds shelf' && 
-		copyStatus != 'reshelving' )
-
-	result.events.push('COPY_NOT_AVAILABLE');
 
 
+if(copyStatus != 'available' && 
+	copyStatus != 'on holds shelf' && copyStatus != 'reshelving' ) {
+		result.events.push('COPY_NOT_AVAILABLE');
+}
+	
+	
 } go();
 
 
