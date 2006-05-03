@@ -943,6 +943,8 @@ sub _apply_modified_due_date {
 	my $ctx = shift;
 	my $circ = $ctx->{circ};
 
+	$U->logmark;
+
 	if( $ctx->{due_date} ) {
 
 		my $evt = $U->check_perms(
@@ -952,6 +954,29 @@ sub _apply_modified_due_date {
 		my $ds = _create_date_stamp($ctx->{due_date});
 		$logger->debug("circ modifying  due_date to $ds");
 		$circ->due_date($ds);
+
+	} else {
+
+		# if the due_date lands on a day when the location is closed
+		my $copy = $ctx->{copy};
+		return unless $copy;
+
+		$logger->info("circ searching for closed date overlap on lib ".
+			$copy->circ_lib->id ." with an item due date of ".$circ->due_date );
+
+		my $dateinfo = $ctx->{session}->request(
+			'open-ils.storage.actor.org_unit.closed_date.overlap',
+			$copy->circ_lib->id, $circ->due_date )->gather(1);
+
+
+		if($dateinfo) {
+			$logger->info("$dateinfo : circ due data / close date overlap found : due_date=".
+				$circ->due_date." start=". $dateinfo->{start}.", end=".$dateinfo->{end});
+
+				# XXX make the behavior more dynamic
+				# for now, we just push the due date to after the close date
+				$circ->due_date($dateinfo->{end});
+		}
 
 	}
 	return undef;
@@ -1240,10 +1265,10 @@ sub checkin_do_receive {
 
 	# If it's a renewal, we're done
 	if($__isrenewal) {
-		$$ctx{force} = 1;
-		my ($c, $e) = _reshelve_copy($ctx);
-		return $e if $e;
-		delete $$ctx{force};
+		#$$ctx{force} = 1;
+		#my ($cc, $ee) = _reshelve_copy($ctx);
+		#return $ee if $ee;
+		#delete $$ctx{force};
 		$U->commit_db_session($session);
 		return OpenILS::Event->new('SUCCESS');
 	}
@@ -1662,9 +1687,6 @@ sub _checkin_handle_circ {
 
 	$logger->info("Handling circulation [".$circ->id."] found in checkin...");
 
-	#$ctx->{longoverdue}		= 1 if ($circ->stop_fines =~ /longoverdue/io);
-	#$ctx->{claimsreturned}	= 1 if ($circ->stop_fines =~ /claimsreturned/io);
-
 	# backdate the circ if necessary
 	if(my $backdate = $ctx->{backdate}) {
 		return $evt if ($evt = 
@@ -1681,13 +1703,15 @@ sub _checkin_handle_circ {
 	# see if there are any fines owed on this circ.  if not, close it
 	( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
 	return $evt if $evt;
-	$circ->xact_finish('now') if( $obt->balance_owed <= 0 );
+	$circ->xact_finish('now') if( $obt->balance_owed != 0 );
 
 	# Set the checkin vars since we have the item
 	$circ->checkin_time('now');
 	$circ->checkin_staff($requestor->id);
 	$circ->checkin_lib($requestor->ws_ou);
 
+	$evt = _set_copy_reshelving($copy, $requestor->id, $ctx->{session}); 
+	return $evt if $evt;
 
 #	$copy->status($U->copy_status_from_name('reshelving')->id);
 #	$evt = $U->update_copy( session => $session, 
