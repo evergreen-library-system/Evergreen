@@ -114,6 +114,17 @@ sub finish {
 	$self->reset;
 }
 
+
+# -----------------------------------------------------------------------------
+# Does a simple storage request
+# -----------------------------------------------------------------------------
+sub request {
+	my( $self, $method, @params ) = @_;
+	$logger->info("editor: performing simple storage request $method");
+	return $self->session->request($method, @params)->gather(1);
+}
+
+
 sub requestor {
 	my($self, $requestor) = @_;
 	$self->{requestor} = $requestor if $requestor;
@@ -163,9 +174,8 @@ sub allowed {
 	$logger->info("editor: checking perms user=$uid, org=$org, perm=$perm");
 	return 1 if $self->perm_checked($perm, $org); 
 
-	my $s = $self->session->request(
-		"open-ils.storage.permission.user_has_perm", 
-		$uid, $perm, $org )->gather(1);
+	my $s = $self->request(
+		"open-ils.storage.permission.user_has_perm", $uid, $perm, $org );
 
 	if(!$s) {
 		my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
@@ -192,6 +202,28 @@ sub checkperm {
 		$logger->error("editor: no perm provided for $ptype.$action");
 	}
 	return undef;
+}
+
+
+
+# -----------------------------------------------------------------------------
+# Logs update actions to the activity log
+# -----------------------------------------------------------------------------
+sub log_activity {
+	my( $self, $type, $action, $arg ) = @_;
+	my $str = "$type.$action";
+
+	if( $self->requestor ) {
+		$str = "$str [requestor=".$self->requestor->id."] : ";
+	} else { $str = "$str : "; }
+
+	my @props = $arg->properties;
+	for(@props) {
+		my $prop = $arg->$_() || "";
+		$str .= " $_=$prop";
+	}
+
+	$logger->activity($str);
 }
 
 
@@ -230,7 +262,11 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
-	$logger->info("editor: performing $action on $type=$arg");
+	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
+		$self->log_activity($type, $action, $arg);
+	} else {
+		$logger->info("editor: performing $action on $type=$arg");
+	}
 
 	if($$options{checkperm}) {
 		my $a = ($action eq 'search') ? 'retrieve' : $action;
@@ -245,7 +281,7 @@ sub runmethod {
 	my $err;
 
 	try {
-		$obj = $self->session->request($method, @arg)->gather(1);
+		$obj = $self->request($method, @arg);
 	} catch Error with {
 		$err = shift;
 	};
