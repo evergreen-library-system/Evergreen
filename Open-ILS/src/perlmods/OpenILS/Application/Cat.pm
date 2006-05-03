@@ -464,17 +464,15 @@ sub biblio_record_record_metadata {
 
 	return [] unless $ids and @$ids;
 
-	my $editor = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+	my $editor = OpenILS::Utils::Editor->new(authtoken => $authtoken);
 	return $editor->event unless $editor->checkauth;
-
-	my $evt = $U->check_perms(
-		$editor->requestor->id, $editor->requestor->ws_ou, 'VIEW_USER');
-	return $evt if $evt;
+	return $editor->event unless $editor->allowed('VIEW_USER');
 
 	my @results;
 
 	for(@$ids) {
-		my $rec = $editor->retrieve_biblio_record_entry($_);
+		return $editor->event unless 
+			my $rec = $editor->retrieve_biblio_record_entry($_);
 		$rec->creator($editor->retrieve_actor_user($rec->creator));
 		$rec->editor($editor->retrieve_actor_user($rec->editor));
 		$rec->clear_marc; # slim the record down
@@ -1161,8 +1159,8 @@ sub fleshed_volume_update {
 				'VOLUME_NOT_EMPTY', payload => $vol->id ) if @$cs;
 
 			$vol->deleted('t');
-			$evt = $editor->update_asset_call_number($vol);
-			return $evt if $evt;
+			return $editor->event unless
+				$editor->update_asset_call_number($vol);
 
 			
 		} elsif( $vol->isnew ) {
@@ -1172,7 +1170,8 @@ sub fleshed_volume_update {
 
 		} elsif( $vol->ischanged ) {
 			$logger->info("vol-update: update volume");
-			$evt = $editor->update_asset_call_number($vol);
+			return $editor->event unless
+				$editor->update_asset_call_number($vol);
 			return $evt if $evt;
 		}
 
@@ -1207,6 +1206,7 @@ sub update_fleshed_copies {
 		if( !($vol = $cache{$copy->call_number}) ) {
 			$vol = $cache{$copy->call_number} = 
 				$editor->retrieve_asset_call_number($copy->call_number);
+			return $editor->event unless $vol;
 		}
 
 		$copy->editor($editor->requestor->id);
@@ -1230,8 +1230,9 @@ sub update_fleshed_copies {
 		} elsif( $copy->ischanged ) {
 
 			$logger->info("vol-update: updating copy $copyid");
-			$evt = $editor->update_asset_copy(
-				$copy, {checkperm=>1, org=>$vol->owning_lib});
+			return $editor->event unless
+				$editor->update_asset_copy(
+					$copy, {checkperm=>1, permorg=>$vol->owning_lib});
 			return $evt if $evt;
 		}
 
@@ -1251,17 +1252,19 @@ sub delete_copy {
 	$logger->info("vol-update: deleting copy ".$copy->id);
 	$copy->deleted('t');
 
-	my $evt = $editor->update_asset_copy(
-		$copy, {checkperm=>1, org=>$vol->owning_lib});
-	return $evt if $evt;
+	$editor->update_asset_copy(
+		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
+		or return $editor->event;
 
 	if( title_is_empty($editor, $vol->record) ) {
 
 		if( $override ) {
-			my $rec = $editor->retrieve_biblio_record_entry($vol->record);	
+			return $editor->event unless
+				my $rec = $editor->retrieve_biblio_record_entry($vol->record);	
 			$rec->deleted('t');
-			$evt = $editor->update_biblio_record_entry($rec, {checkperm=>0});
-			return $evt if $evt;
+
+			$editor->update_biblio_record_entry($rec, {checkperm=>0})
+				or return $editor->event;
 
 		} else {
 			return OpenILS::Event->new('TITLE_LAST_COPY');
@@ -1283,11 +1286,10 @@ sub create_copy {
 	$copy->creator($editor->requestor->id);
 	$copy->create_date('now');
 
-	my $evt = $editor->create_asset_copy(
-		$copy, {checkperm=>1, org=>$vol->owning_lib});
-	return $evt if $evt;
+	$editor->create_asset_copy(
+		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
+		or return $editor->event;
 
-	$copy->id($editor->lastid);
 	return undef;
 }
 
@@ -1309,8 +1311,8 @@ sub update_copy_stat_entries {
 				$logger->info("copy update found stale ".
 					"stat cat entry map ".$map->id. " on copy ".$copy->id);
 
-				$evt = $editor->delete_asset_stat_cat_entry_copy_map($map);
-				return $evt if $evt;
+				$editor->delete_asset_stat_cat_entry_copy_map($map)
+					or return $editor->event;
 			}
 		}
 	}
@@ -1327,10 +1329,10 @@ sub update_copy_stat_entries {
 		$new_map->stat_cat_entry( $entry->id );
 		$new_map->owning_copy( $copy->id );
 
-		$evt = $editor->create_asset_stat_cat_entry_copy_map($new_map);
-		return $evt if $evt;
+		$editor->create_asset_stat_cat_entry_copy_map($new_map)
+			or return $editor->event;
 
-		$logger->info("copy update created new stat cat entry map ".$editor->lastid);
+		$logger->info("copy update created new stat cat entry map ".$editor->data);
 	}
 
 	return undef;
@@ -1367,10 +1369,7 @@ sub create_volume {
 	$vol->create_date('now');
 	$vol->clear_id;
 
-	$evt = $editor->create_asset_call_number($vol);
-	return $evt if $evt;
-	$vol->id($editor->lastid);
-
+	$editor->create_asset_call_number($vol) or return $editor->event;
 
 	if($label) {
 		# now restore the label and merge into the existing record

@@ -728,7 +728,7 @@ sub user_retrieve_by_barcode {
 
 	if(!$card || !$card->[0]) {
 		$session->disconnect();
-		return OpenILS::Event->new( 'USER_NOT_FOUND' );
+		return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
 	}
 
 	$card = $card->[0];
@@ -738,7 +738,7 @@ sub user_retrieve_by_barcode {
 	return $evt if $evt;
 
 	$session->disconnect();
-	if(!$user) { return OpenILS::Event->new( 'USER_NOT_FOUND' ); }
+	if(!$user) { return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ); }
 	return $user;
 
 }

@@ -9,20 +9,35 @@ use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 
 
+# -----------------------------------------------------------------------------
+# These need to be auto-generated
+# -----------------------------------------------------------------------------
 my %PERMS = (
 	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
 	'asset.copy'				=> { update => 'UPDATE_COPY'},
 	'asset.call_number'		=> { update => 'UPDATE_VOLUME'},
+	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
 );
 
 
+
+
+# -----------------------------------------------------------------------------
+# Params include:
+#	xact=><true> : creates a storage transaction
+#	authtoken=>$token : the login session key
+# -----------------------------------------------------------------------------
 sub new {
 	my( $class, %params ) = @_;
 	$class = ref($class) || $class;
 	my $self = bless( \%params, $class );
+	$self->{checked_perms} = {};
 	return $self;
 }
 
+# -----------------------------------------------------------------------------
+# Verifies the auth token and fetches the requestor object
+# -----------------------------------------------------------------------------
 sub checkauth {
 	my $self = shift;
 	$logger->info("editor: checking auth token ".$self->authtoken);
@@ -32,11 +47,18 @@ sub checkauth {
 }
 
 
-# Returns the last captured event
+# -----------------------------------------------------------------------------
+# Returns the last generated event
+# -----------------------------------------------------------------------------
 sub event {
 	my( $self, $evt ) = @_;
 	$self->{event} = $evt if $evt;
 	return $self->{event};
+}
+
+sub clear_event {
+	my $self = shift;
+	$self->{event} = undef;
 }
 
 sub authtoken {
@@ -45,7 +67,10 @@ sub authtoken {
 	return $self->{authtoken};
 }
 
-# fetches the session, creating if necessary
+# -----------------------------------------------------------------------------
+# fetches the session, creating if necessary.  If 'xact' is true on this
+# object, a db session is created
+# -----------------------------------------------------------------------------
 sub session {
 	my( $self, $session ) = @_;
 	$self->{session} = $session if $session;
@@ -60,22 +85,29 @@ sub session {
 	return $self->{session};
 }
 
-# commits the db session
+# -----------------------------------------------------------------------------
+# commits the db session and destroys the session
+# -----------------------------------------------------------------------------
 sub commit {
 	my $self = shift;
 	return unless $self->{xact};
 	$logger->info("editor: committing session");
 	$U->commit_db_session( $self->session );
+	$self->{session} = undef;
 }
 
-# clears state data, but does not commit the db transaction
+# -----------------------------------------------------------------------------
+# clears all object data. Does not commit the db transaction.
+# -----------------------------------------------------------------------------
 sub reset {
 	my $self = shift;
 	$logger->debug("editor: cleaning up");
 	$$self{$_} = undef for (keys %$self);
 }
 
+# -----------------------------------------------------------------------------
 # commits and resets
+# -----------------------------------------------------------------------------
 sub finish {
 	my $self = shift;
 	$self->commit;
@@ -85,154 +117,164 @@ sub finish {
 sub requestor {
 	my($self, $requestor) = @_;
 	$self->{requestor} = $requestor if $requestor;
+	$logger->warn("editor: no requestor defined") unless $self->{requestor};
 	return $self->{requestor};
 }
 
-sub lastid {
-	my($self, $id) = @_;
-	$self->{lastid} = $id if $id;
-	return $self->{lastid};
+# -----------------------------------------------------------------------------
+# Holds the last data received from a storage call
+# -----------------------------------------------------------------------------
+sub data {
+	my( $self, $data ) = @_;
+	$self->{data} = $data if defined $data;
+	return $self->{data};
 }
 
-# -------------------------------------------------------------
-# Actually performs the perm check
-# -------------------------------------------------------------
-sub checkperms {
-	my($self, $uid, $org, @perms) = @_;
-	$logger->info("editor: checking perms user=$uid, org=$org, perms=@perms");
-	for my $type (@perms) {
 
-		my $success = $self->session->request(
-			"open-ils.storage.permission.user_has_perm", 
-			$uid, $type, $org )->gather(1);
-
-		if(!$success) {
-			my $e = OpenILS::Event->new( 'PERM_FAILURE', 
-				ilsperm => $type, ilspermloc => $org );
-			return $self->event($e);
-		}
+# -----------------------------------------------------------------------------
+# True if this perm has already been checked at this org
+# -----------------------------------------------------------------------------
+sub perm_checked {
+	my( $self, $perm, $org ) = @_;
+	$self->{checked_perms}->{$org} = {}
+		unless $self->{checked_perms}->{$org};
+	my $checked = $self->{checked_perms}->{$org}->{$perm};
+	if(!$checked) {
+		$self->{checked_perms}->{$org}->{$perm} = 1;
+		return 0;
 	}
-	return undef;
+	return 1;
 }
 
 
-# -------------------------------------------------------------
-# checks the appropriate perm for the operation if said perm
-# hasn't already been checked for this session at the 
-# requested org
-# -------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Returns true if the requested perm is allowed.  If the perm check fails,
+# $e->event is set and undef is returned
+# The perm user is $e->requestor->id and perm org defaults to the requestor's
+# ws_ou
+# If this perm at the given org has already been verified, true is returned
+# and the perm is not re-checked
+# -----------------------------------------------------------------------------
+sub allowed {
+	my( $self, $perm, $org ) = @_;
+	my $uid = $self->requestor->id;
+	$org ||= $self->requestor->ws_ou;
+	$logger->info("editor: checking perms user=$uid, org=$org, perm=$perm");
+	return 1 if $self->perm_checked($perm, $org); 
+
+	my $s = $self->session->request(
+		"open-ils.storage.permission.user_has_perm", 
+		$uid, $perm, $org )->gather(1);
+
+	if(!$s) {
+		my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
+		$self->event($e);
+		return undef;
+	}
+
+	return 1;
+}
+
+
+
+# -----------------------------------------------------------------------------
+# checks the appropriate perm for the operation
+# -----------------------------------------------------------------------------
 sub checkperm {
 	my( $self, $ptype, $action, $org ) = @_;
-	$org ||= $self->{requestor}->ws_ou;
-
-	$self->{perms} = {} unless $self->{perms};
-	$self->{perms}->{$org} = {} unless $self->{perms}->{$org};
-
+	$org ||= $self->requestor->ws_ou;
 	my $perm = $PERMS{$ptype}{$action};
 	if( $perm ) {
+		return undef if $self->perm_checked($perm, $org);
+		return $self->event unless $self->allowed($perm, $org);
+	} else {
+		$logger->error("editor: no perm provided for $ptype.$action");
+	}
+	return undef;
+}
 
-		if( !$self->{perms}->{$org}->{$perm} ) {
-			my $evt = $self->checkperms(
-				$self->{requestor}->id, $org, $perm );
-			return $evt if $evt;
-			$self->{perms}->{$org}->{$perm} = 1;
 
-		} else {
-			$logger->debug(
-				"editor: already checked perm $perm at org $org for this session");
+
+# -----------------------------------------------------------------------------
+# This does the actual storage query.
+#
+# 'search' calls become search_where calls and $arg can be a search hash or
+# an array-ref of storage search options.  
+#
+# 'retrieve' expects an id
+# 'update' expects an object
+# 'create' expects an object
+# 'delete' expects an object
+#
+# All methods return true on success and undef on failure.  On failure, 
+# $e->event is set to the generated event.  This method assumes that updating
+# a non-changed object and thereby receiving a 0 from storage, is a successful
+# update.  The method will therefore return true so the caller can just do 
+# $e->update_blah($x) or return $e->event;
+# The true value returned from storage for all methods will be stored in 
+# $e->data, until the next method is called.
+# -----------------------------------------------------------------------------
+sub runmethod {
+	my( $self, $action, $type, $arg, $options ) = @_;
+
+	my @arg = ($arg);
+	my $method = "open-ils.storage.direct.$type.$action";
+	if( $action eq 'search' ) {
+		$method =~ s/search/search_where/o;
+		$method =~ s/direct/id_list/o if $options->{idlist};
+		$method = "$method.atomic";
+		@arg = @$arg if ref($arg) eq 'ARRAY';
+	}
+
+	# remove any stale events
+	$self->clear_event;
+
+	$logger->info("editor: performing $action on $type=$arg");
+
+	if($$options{checkperm}) {
+		my $a = ($action eq 'search') ? 'retrieve' : $action;
+		my $e = $self->checkperm($type, $a, $$options{permorg});
+		if($e) {
+			$self->event($e);
+			return undef;
 		}
 	}
-	return undef;
-}
 
+	my $obj; 
+	my $err;
 
+	try {
+		$obj = $self->session->request($method, @arg)->gather(1);
+	} catch Error with {
+		$err = shift;
+	};
 
-# -------------------------------------------------------------
-# does the object updating
-# -------------------------------------------------------------
-sub _update_method {
-	my( $self, $type, $obj, $params ) = @_;
-	my $method = "open-ils.storage.direct.$type.update";
-	$logger->info("editor: updating $type ".$obj->id);
-	my $evt = $self->checkperm(
-		$type, 'update', $$params{org}) if $$params{checkperm};
-	return $evt if $evt;
-	return $self->event($U->DB_UPDATE_FAILED($obj)) unless 
-		$self->session->request($method, $obj)->gather(1);
-	return undef;
-}
+	if(!defined $obj) {
+		$logger->info("editor: request returned no data");
 
+		if( $action eq 'retrieve' ) {
+			(my $t = $type) =~ s/\./_/og;
+			$t = uc($t);
+			$self->event(OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg));
 
-# -------------------------------------------------------------
-# does the actual fetching by id
-# -------------------------------------------------------------
-sub _retrieve_method {
-	my( $self, $type, $id, $params ) = @_;
-	my $method = "open-ils.storage.direct.$type.retrieve";
-	$logger->info("editor: retrieving $type $id");
-	my $evt = $self->checkperm(
-		$type, 'retrieve', $$params{org}) if $$params{checkperm};
-	return $self->session->request($method, $id)->gather(1);
-}
+		} elsif( $action eq 'update' or 
+				$action eq 'delete' or $action eq 'create' ) {
+			my $evt = OpenILS::Event->new(
+				'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+			$self->event($evt);
+		}
 
-
-# -------------------------------------------------------------
-# does the actual deleting
-# -------------------------------------------------------------
-sub _delete_method {
-	my( $self, $type, $obj, $params ) = @_;
-	my $method = "open-ils.storage.direct.$type.delete";
-	$logger->info("editor: deleting $type ".$obj->id);
-	my $evt = $self->checkperm(
-		$type, 'delete', $$params{org}) if $$params{checkperm};
-	return $self->event($U->DB_UPDATE_FAILED($obj)) unless 
-		$self->session->request($method, $obj)->gather(1);
-	return undef;
-}
-
-
-
-
-
-# -------------------------------------------------------------
-# does the actual fetching by id
-# -------------------------------------------------------------
-sub _create_method {
-	my( $self, $type, $obj, $params ) = @_;
-	my $method = "open-ils.storage.direct.$type.create";
-	$logger->info("editor: creating $type");
-	my $evt = $self->checkperm(
-		$type, 'create', $$params{org}) if $$params{checkperm};
-	return $evt if $evt;
-
-	my $id = $self->session->request($method, $obj)->gather(1);
-	return $self->event($U->DB_UPDATE_FAILED($obj)) unless $id;
-	$self->lastid($id);
-	return undef;
-}
-
-
-
-# -------------------------------------------------------------
-# does the actual searching
-# -------------------------------------------------------------
-sub _search_method {
-	my( $self, $type, $shash, $params ) = @_;
-
-	my $method = "open-ils.storage.direct.$type.search_where.atomic";
-	if( $params->{idlist} ) {
-		$method = "open-ils.storage.id_list.$type.search_where.atomic";
+		return undef;
 	}
 
-	my @p;
-	push( @p, $_.'='.$shash->{$_}) for keys %$shash;
-	$logger->info("editor: searching $type @p");
+	$arg->id($obj) if $action eq 'create';
+	$self->data($obj);
 
-	my $evt = $self->checkperm(
-		$type, 'retrieve', $$params{org}) if $$params{checkperm};
-	return $evt if $evt;
-	return $self->session->request($method, $shash)->gather(1);
+	return ($obj) ? $obj : 1;
 }
+
+
 
 
 # utility method for loading
@@ -255,29 +297,28 @@ for my $object (keys %$map) {
 
 	my $update = "update_$obj";
 	my $updatef = 
-		"sub $update {return shift()->_update_method('$type', \@_);}";
+		"sub $update {return shift()->runmethod('update', '$type', \@_);}";
 	eval $updatef;
 
 	my $retrieve = "retrieve_$obj";
 	my $retrievef = 
-		"sub $retrieve {return shift()->_retrieve_method('$type', \@_);}";
+		"sub $retrieve {return shift()->runmethod('retrieve', '$type', \@_);}";
 	eval $retrievef;
 
 	my $search = "search_$obj";
 	my $searchf = 
-		"sub $search {return shift()->_search_method('$type', \@_);}";
+		"sub $search {return shift()->runmethod('search', '$type', \@_);}";
 	eval $searchf;
 
 	my $create = "create_$obj";
 	my $createf = 
-		"sub $create {return shift()->_create_method('$type', \@_);}";
+		"sub $create {return shift()->runmethod('create', '$type', \@_);}";
 	eval $createf;
 
 	my $delete = "delete_$obj";
 	my $deletef = 
-		"sub $delete {return shift()->_delete_method('$type', \@_);}";
+		"sub $delete {return shift()->runmethod('delete', '$type', \@_);}";
 	eval $deletef;
-
 }
 
 

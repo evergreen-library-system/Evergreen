@@ -1092,7 +1092,8 @@ sub fetch_slim_record {
 	my $editor = OpenILS::Utils::Editor->new;
 	my @res;
 	for( @$ids ) {
-		my $r = $editor->retrieve_biblio_record_entry($_);
+		return $editor->event unless
+			my $r = $editor->retrieve_biblio_record_entry($_);
 		$r->clear_marc;
 		push(@res, $r);
 	}
