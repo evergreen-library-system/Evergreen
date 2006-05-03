@@ -4,6 +4,7 @@ use base qw/OpenILS::Application::Storage/;
 #use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::EX qw/:try/;
+use JSON;
 
 #
 
@@ -28,6 +29,8 @@ use MARC::File::XML;
 #        legacy_item_cat_2       => $ic2,
 #};
 
+my %org_cache;
+
 sub import_xml_holdings {
 	my $self = shift;
 	my $client = shift;
@@ -38,23 +41,38 @@ sub import_xml_holdings {
 	my $map = shift;
 	my $date_format = shift || 'mm/dd/yyyy';
 
+	($record) = biblio::record_entry->search_where($record);
+
+	return 0 unless ($record);
+
 	my $r = MARC::Record->new_from_xml($xml);
 
+	my $count = 0;
 	for my $f ( $r->fields( $tag ) ) {
 		next unless ($f->subfield( $map->{owning_lib} ));
 
 		my ($ol,$cl);
 
 		try {
-			$ol = actor::org_unit->search( shortname => $f->subfield( $map->{owning_lib} ) )->next->id;
+			$ol = 
+				$org_cache{ $f->subfield( $map->{owning_lib} ) }
+				|| actor::org_unit->search( shortname => $f->subfield( $map->{owning_lib} ) )->next->id;
+
+			$org_cache{ $f->subfield( $map->{owning_lib} ) } = $ol;
 		} otherwise {
 			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{owning_lib} ).'] : '. shift(), ERROR);
+			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
 		};
 		
 		try {
-			$cl = actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id;
+			$cl =
+				$org_cache{ $f->subfield( $map->{circulating_lib} ) }
+				|| actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id;
+
+			$org_cache{ $f->subfield( $map->{circulating_lib} ) } = $cl;
 		} otherwise {
 			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{circulating_lib} ).'] : '. shift(), ERROR);
+			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
 		};
 
 		next unless ($ol && $cl);
@@ -64,13 +82,14 @@ sub import_xml_holdings {
 			$cn = asset::call_number->find_or_create(
 				{ label		=> $f->subfield( $map->{call_number} ),
 				  owning_lib	=> $ol,
-				  record	=> $record,
+				  record	=> $record->id,
 				  creator	=> $editor,
 				  editor	=> $editor,
 				}
 			);
 		} otherwise {
-			$log->debug('Could not find or create callnumber ['.$f->subfield( $map->{call_number} ).'] : '. shift(), ERROR);
+			$log->debug('Could not find or create callnumber ['.$f->subfield( $map->{call_number} )."] on record $record : ". shift(), ERROR);
+			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
 		};
 
 		next unless ($cn);
@@ -109,7 +128,7 @@ sub import_xml_holdings {
 
 		try {
 			$cn->add_to_copies(
-				{ circ_lib	=> actor::org_unit->search( shortname => $f->subfield( $map->{circulating_lib} ) )->next->id,
+				{ circ_lib	=> $cl,
 				  copy_number	=> $f->subfield( $map->{copy_number} ),
 				  price		=> $price,
 				  barcode	=> $f->subfield( $map->{barcode} ),
@@ -120,12 +139,13 @@ sub import_xml_holdings {
 				  create_date	=> sprintf('%04d-%02d-%02d',$y,$m,$d),
 				}
 			);
+			$count++;
 		} otherwise {
 			$log->debug('Could not create copy ['.$f->subfield( $map->{barcode} ).'] : '. shift(), ERROR);
 		};
 	}
 
-	return 1;
+	return $count;
 }
 __PACKAGE__->register_method(
 	method		=> 'import_xml_holdings',
