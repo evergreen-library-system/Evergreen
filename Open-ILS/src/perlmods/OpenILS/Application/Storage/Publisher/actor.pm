@@ -4,7 +4,72 @@ use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Utils::Fieldmapper;
 
+use DateTime;           
+use DateTime::Format::ISO8601;  
+                                                
+						                                                
+my $_dt_parser = DateTime::Format::ISO8601->new;    
+
 my $log = 'OpenSRF::Utils::Logger';
+
+sub org_closed_overlap {
+	my $self = shift;
+	my $client = shift;
+	my $ou = shift;
+	my $date = shift;
+	my $direction = shift || 0;
+
+	return undef unless ($date && $ou);
+
+	my $t = actor::org_unit::closed_date->table;
+	my $sql = <<"	SQL";
+		SELECT	*
+		  FROM	$t
+		  WHERE	? between close_start and close_end
+			AND org_unit = ?
+		  ORDER BY close_start ASC, close_end DESC
+	SQL
+
+	my $sth = actor::org_unit::closed_date->db_Main->prepare( $sql );
+	$sth->execute($date, $ou);
+	
+	my ($begin, $end);
+	while (my $closure = $sth->fetchrow_hashref) {
+		$begin ||= $closure->{close_start};
+		$end = $closure->{close_end};
+
+		my $before = $_dt_parser->parse_datetime( $begin );
+		$before->subtract( days => 1 );
+		my $after = $_dt_parser->parse_datetime( $end );
+		$after->add( days => 1 );
+
+		if ( $direction <= 0 ) {
+			while ( my $_b = org_closed_overlap($self, $client, $ou, $before->ymd, -1 ) ) {
+				$before = $_dt_parser->parse_datetime( $_b->{start} );
+			}
+		}
+
+		if ( $direction >= 0 ) {
+			while ( my $_a = org_closed_overlap($self, $client, $ou, $after->ymd, 1 ) ) {
+				$after = $_dt_parser->parse_datetime( $_a->{end} );
+			}
+		}
+
+		$begin = $before->ymd;
+		$end = $after->ymd;
+	}
+
+	if ($begin && $end) {
+		return { start => $begin, end => $end };
+	}
+
+	return;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.org_unit.closed_date.overlap',
+	api_level	=> 1,
+	method		=> 'org_closed_overlap',
+);
 
 sub user_by_barcode {
 	my $self = shift;
