@@ -551,7 +551,8 @@ int osrfChatHandleNewConnection( osrfChatNode* node, const char* name, const xml
 		if(!domain) return -1; 
 	
 		if(!eq(domain, node->domain)) {
-			osrfLogWarning( OSRF_LOG_MARK, "Client attempting to connect to invalid domain");
+			osrfLogWarning( OSRF_LOG_MARK, 
+				"Client attempting to connect to invalid domain %s. Our domain is %s", domain, node->domain);
 			return -1;
 		}
 	
