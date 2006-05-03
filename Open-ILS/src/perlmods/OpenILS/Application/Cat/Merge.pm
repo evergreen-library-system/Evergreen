@@ -83,7 +83,7 @@ sub merge_records {
 			$vol->record( $master );
 			$evt = $editor->update_asset_call_number(
 				$vol, { 
-					org => $vol->owning_lib, 
+					permorg => $vol->owning_lib, 
 					checkperm => 1 
 				}
 			);
@@ -93,14 +93,26 @@ sub merge_records {
 
 	# cycle through and delete the non-master records
 	for my $rec (@recs) {
-		next if $rec == $master;
+
 		my ($record, $evt) = 
 			$editor->retrieve_biblio_record_entry($rec);
 		return $evt if $evt;
-		$record->deleted('t');
-		$evt = $editor->update_biblio_record_entry(
-			$record, { checkperm => 1 });
-		return $evt if $evt;
+
+		if( $rec == $master ) {
+			# make sure the master record is not deleted
+			if( $record->deleted ne 'f' ) {
+				$logger->info("merge: master record is marked as deleted...un-deleting.");
+				$record->deleted('f');
+				$evt = $editor->update_biblio_record_entry($record, {checkperm => 1});
+				return $evt if $evt;
+			}
+
+		} else {
+			$logger->info("merge: deleting record $rec");
+			$record->deleted('t');
+			$evt = $editor->update_biblio_record_entry($record, {checkperm => 1});
+			return $evt if $evt;
+		}
 	}
 
 	return undef;
