@@ -464,11 +464,15 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			var msg = 'This item is in transit to ' + check.route_to + '.\n';
 			msg += '\n' + lib.name() + '\n';
 			try {
-				var a = network.simple_request('FM_AOA_RETRIEVE',[ lib.holds_address() ]);
-				if (typeof a.ilsevent != 'undefined') throw(a);
-				msg += a.street1() + '\n';
-				msg += a.street2() + '\n';
-				msg += a.city() + ', ' + a.state() + ' ' + a.post_code() + '\n';
+				if (lib.holds_address() ) {
+					var a = network.simple_request('FM_AOA_RETRIEVE',[ lib.holds_address() ]);
+					if (typeof a.ilsevent != 'undefined') throw(a);
+					if (a.street1()) msg += a.street1() + '\n';
+					if (a.street2()) msg += a.street2() + '\n';
+					msg += (a.city() ? a.city() + ', ' : '') + (a.state() ? a.state() + ' ' : '') + (a.post_code() ? a.post_code() : '') + '\n';
+				} else {
+					msg += "We do not have a holds address for this library.\n";
+				}
 			} catch(E) {
 				msg += 'Unable to retrieve mailing address.\n';
 				error.standard_unexpected_error_alert('Unable to retrieve mailing address.',E);
@@ -478,11 +482,11 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			msg += 'Author: ' + (check.payload.record ? check.payload.record.author() :check.payload.copy.dummy_author()  ) + '\n';
 			if (check.payload.hold) {
 				JSAN.use('patron.util');
-				var au_obj = patron.util.retrieve_au_via_id( session, check.payload.hold.usr() );
+				var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
 				msg += '\nHold for patron ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + '\n';
 				msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 				if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
-				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + check.payload.hold.email_notify() + '\n';
+				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + au_obj.email() + '\n';
 			}
 			var rv = 0;
 			if (!auto_print) rv = error.yns_alert(
@@ -496,7 +500,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			if (rv == 0) {
 				try {
 					JSAN.use('util.print'); var print = new util.print();
-					print.simple( msg, { 'no_prompt' : true } );
+					print.simple( msg, { 'no_prompt' : true, 'content-type' : 'text/plain' } );
 				} catch(E) {
 					dump('FIXME: ' + E + '\n');
 					alert('FIXME: ' + E + '\n');
