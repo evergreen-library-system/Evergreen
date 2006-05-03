@@ -94,7 +94,7 @@ sub create_circ_ctx {
 
 	if(!$params{noncat}) {
 		if( $evt = _ctx_add_copy_objects($ctx, %params) ) {
-			$ctx->{precat} = 1 if($evt->{textcode} eq 'COPY_NOT_FOUND')
+			$ctx->{precat} = 1 if($evt->{textcode} eq 'ASSET_COPY_NOT_FOUND')
 		} else {
 			$ctx->{precat} = 1 if ( $ctx->{copy}->call_number == -1 ); # special case copy
 		}
@@ -471,6 +471,8 @@ __PACKAGE__->register_method(
 			titleid (brn) - the id of the title to be held
 			depth	- the hold range depth (defaults to 0)
 	/);
+
+# XXX add pickup lib to the call to test for perms
 
 sub check_title_hold {
 	my( $self, $client, $authtoken, $params ) = @_;
@@ -1111,7 +1113,7 @@ sub generic_receive {
 
 	my $copy = $ctx->{copy};
 	$U->unflesh_copy($copy);
-	return OpenILS::Event->new('COPY_NOT_FOUND') unless $copy;
+	return OpenILS::Event->new('ASSET_COPY_NOT_FOUND') unless $copy;
 
 	$logger->info("Checkin copy called by user ".
 		$requestor->id." for copy ".$copy->id);

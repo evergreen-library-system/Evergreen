@@ -31,7 +31,7 @@
 			User login session has either timed out or does not exist.
 		</desc>
 	</event>
-	<event code='1002' textcode='USER_NOT_FOUND'>
+	<event code='1002' textcode='ACTOR_USER_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a user from the system and the user
 			was not found.
@@ -96,7 +96,7 @@
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1502' textcode='COPY_NOT_FOUND'>
+	<event code='1502' textcode='ASSET_COPY_NOT_FOUND'>
 		<desc>
 			Someone attempted to retrieve a copy object from the 
 			system and the object was not found.

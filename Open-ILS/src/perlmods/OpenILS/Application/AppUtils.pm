@@ -328,7 +328,7 @@ sub fetch_closed_date {
 
 	if(!$cd_obj) {
 		$logger->info("closed_date $cd not found in the db");
-		$evt = OpenILS::Event->new('USER_NOT_FOUND');
+		$evt = OpenILS::Event->new('ACTOR_USER_NOT_FOUND');
 	}
 
 	return ($cd_obj, $evt);
@@ -346,7 +346,7 @@ sub fetch_user {
 
 	if(!$user) {
 		$logger->info("User $userid not found in the db");
-		$evt = OpenILS::Event->new('USER_NOT_FOUND');
+		$evt = OpenILS::Event->new('ACTOR_USER_NOT_FOUND');
 	}
 
 	return ($user, $evt);
@@ -420,7 +420,7 @@ sub fetch_copy {
 		'open-ils.storage',
 		'open-ils.storage.direct.asset.copy.retrieve', $copyid );
 
-	if(!$copy) { $evt = OpenILS::Event->new('COPY_NOT_FOUND'); }
+	if(!$copy) { $evt = OpenILS::Event->new('ASSET_COPY_NOT_FOUND'); }
 
 	return( $copy, $evt );
 }
@@ -540,7 +540,7 @@ sub fetch_copy_by_barcode {
 		'open-ils.storage.direct.asset.copy.search_where', { barcode => $barcode, deleted => 'f'} );
 		#'open-ils.storage.direct.asset.copy.search.barcode', $barcode );
 
-	$evt = OpenILS::Event->new('COPY_NOT_FOUND', barcode => $barcode) unless $copy;
+	$evt = OpenILS::Event->new('ASSET_COPY_NOT_FOUND', barcode => $barcode) unless $copy;
 
 	return ($copy, $evt);
 }
@@ -919,7 +919,7 @@ sub fetch_fleshed_copy {
 	$logger->info("Fetching fleshed copy $id");
 	$copy = $self->storagereq(
 		"open-ils.storage.fleshed.asset.copy.retrieve", $id );
-	$evt = OpenILS::Event->new('COPY_NOT_FOUND', id => $id) unless $copy;
+	$evt = OpenILS::Event->new('ASSET_COPY_NOT_FOUND', id => $id) unless $copy;
 	return ($copy, $evt);
 }
 
@@ -971,7 +971,7 @@ sub fetch_user_by_barcode {
 	return (undef, OpenILS::Event->new('CARD_NOT_FOUND', barcode => $bc)) unless $cardid;
 	my $user = $self->storagereq(
 		'open-ils.storage.direct.actor.user.search.card', $cardid );
-	return (undef, OpenILS::Event->new('USER_NOT_FOUND', card => $cardid)) unless $user;
+	return (undef, OpenILS::Event->new('ACTOR_USER_NOT_FOUND', card => $cardid)) unless $user;
 	return ($user);
 	
 }
