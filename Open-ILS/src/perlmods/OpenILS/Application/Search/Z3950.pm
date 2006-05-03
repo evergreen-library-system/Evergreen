@@ -33,8 +33,6 @@ my $port;
 my $database;
 my $tcnattr;
 my $isbnattr;
-my $username;
-my $password;
 my $defserv;
 
 my $settings_client;
@@ -58,31 +56,32 @@ sub initialize {
 
 	$defserv		= $settings_client->config_value("z3950", "default" );
 
-	( $host, $port, $database, $username, $password ) = _load_settings($defserv);
+	( $host, $port, $database ) = _load_settings($defserv);
 	$tcnattr		= $settings_client->config_value("z3950", $defserv, "tcnattr");
 	$isbnattr	= $settings_client->config_value("z3950", $defserv, "isbnattr");
 
 	$logger->info("z3950: Loading Defaults: service=$defserv, host=$host, port=$port, ".
-		"db=$database, tcnattr=$tcnattr, isbnattr=$isbnattr, username=$username, password=$password" );
+		"db=$database, tcnattr=$tcnattr, isbnattr=$isbnattr" );
 }
 
 sub _load_settings {
 	my $service = shift;
 
 	if( $service eq $defserv and $host ) {
-		return ( $host, $port, $database, $username, $password );
+		return ( $host, $port, $database );
 	}
 
 	return (
 		$settings_client->config_value("z3950", $service, "host"),
 		$settings_client->config_value("z3950", $service, "port"),
 		$settings_client->config_value("z3950", $service, "db"),
-		$settings_client->config_value("z3950", $service, "username"),
-		$settings_client->config_value("z3950", $service, "password"),
+		#$settings_client->config_value("z3950", $service, "username"),
+		#$settings_client->config_value("z3950", $service, "password"),
 	);
 }
 
 
+=head deprecated
 __PACKAGE__->register_method(
 	method	=> "marcxml_to_brn",
 	api_name	=> "open-ils.search.z3950.marcxml_to_brn",
@@ -122,6 +121,9 @@ sub marcxml_to_brn {
 		return $tree;
 	}
 }
+=cut
+
+
 
 __PACKAGE__->register_method(
 	method	=> "z39_search_by_string",
@@ -131,8 +133,10 @@ __PACKAGE__->register_method(
 sub z39_search_by_string {
 
 	my( $self, $connection, $authtoken, $params ) = @_;
-	my( $hst, $prt, $db, $usr, $pw );
+	my( $hst, $prt, $db );
 
+	my $usr	= $$params{username};
+	my $pw	= $$params{password};
 
 	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
 	return $evt if $evt;
@@ -140,20 +144,14 @@ sub z39_search_by_string {
 	my $search	= $$params{search};
 
 	if( $service ) {
-
-		($hst, $prt, $db, $usr, $pw ) = _load_settings($$params{service});
-		$usr	= ($$params{username}) ? $$params{username} : $usr;
-		$pw	= ($$params{password}) ? $$params{password} : $pw;
+		($hst, $prt, $db) = _load_settings($$params{service});
 
 	} else {
 		$hst	= $$params{host};
 		$prt	= $$params{prt};
 		$db	= $$params{db};
-		$usr	= $$params{username};
-		$pw	= $$params{password};
 		$service = "(custom)";
 	}
-
 
 	$logger->info("z3950:  Search App connecting:  service=$service, ".
 		"host=$hst, port=$prt, db=$db, username=$usr, password=$pw, search=$search" );
@@ -172,7 +170,7 @@ sub z39_search_by_string {
 
 	if(!$conn) {
 		$logger->error("Unable to create Z3950 connection: $hst, $prt, $db, $usr, $pw, $output");
-		return OpenILS::Event->new('UNKNOWN'); # XXX needs to be a real event
+		return OpenILS::Event->new('Z3950_LOGIN_FAILED');
 	}
 
 	my $rs = $conn->search( $search );
@@ -205,7 +203,7 @@ sub z39_search_by_string {
 			
 		my $u = OpenILS::Utils::ModsParser->new();
 
-		warn "z3950: creating mvr\n";
+		$logger->debug("z3950: creating mvr");
 		$u->start_mods_batch( $marcxml );
 		$mods = $u->finish_mods_batch();
 
