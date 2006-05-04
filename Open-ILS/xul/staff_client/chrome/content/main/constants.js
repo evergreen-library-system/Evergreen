@@ -1,5 +1,5 @@
 dump('Loading constants.js\n');
-var api = {
+const api = {
 	'AUTH_INIT' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'AUTH_COMPLETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },
 	'AUTH_DELETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.session.delete' },
@@ -109,7 +109,7 @@ var api = {
 	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
 }
 
-var urls = {
+const urls = {
 
 	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
