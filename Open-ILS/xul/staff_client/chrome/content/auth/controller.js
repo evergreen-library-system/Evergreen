@@ -120,7 +120,7 @@ auth.controller.prototype = {
 									var ws = obj.data.ws_info[ obj.controller.view.server_prompt.value ];
 									x.appendChild(
 										document.createTextNode(
-											ws.name + ' @  ' + ws.lib_shortname
+											ws.name /*+ ' @  ' + ws.lib_shortname*/
 										)
 									);
 								} else {

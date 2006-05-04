@@ -109,7 +109,7 @@
 			try {
 				var robj = g.network.simple_request(
 					'AUTH_WORKSTATION',
-					[ xulG.auth.session.key, g.tb.value, g.ml.value ]
+					[ xulG.auth.session.key, g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ]
 				);
 
 				if (robj.ilsevent) {
@@ -117,7 +117,7 @@
 				} else {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
 					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
-						'name' : g.tb.value, 
+						'name' : g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, 
 						'owning_lib' : g.ml.value,
 						'lib_shortname' : g.my_libs_hash[ g.ml.value ],
 					};
