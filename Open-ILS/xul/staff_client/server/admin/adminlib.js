@@ -25,12 +25,20 @@ function fetchUser(session) {
 	return user;
 }
 
-function fetchFleshedUser(id) {
+/* if defined, callback will get the user object asynchronously */
+function fetchFleshedUser(id, callback) {
 	if(id == null) return null;
 	var req = new Request(
 		'open-ils.actor:open-ils.actor.user.fleshed.retrieve', SESSION, id );
-	req.send(true);
-	return req.result();
+
+	if( callback ) {
+		req.callback( function(r){callback(r.getResultObject());} );
+		req.send();
+
+	} else {
+		req.send(true);
+		return req.result();
+	}
 }
 
 /**
