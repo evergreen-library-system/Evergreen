@@ -350,13 +350,15 @@ function uEditSaveUser(clone) {
 	else 
 		alert($('ue_success').innerHTML);
 
+	if(clone) clone = patron.id();
+
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
 		window.xulG.on_save(newuser, clone); 
 
 	} else {
 
 		var href = location.href;
-		if( clone ) href += '&clone=' + newuser.id();
+		if( clone ) href = href.replace(/usr=\d+/, 'clone=' + clone);
 		location.href = href;
 	}
 }

@@ -27,9 +27,6 @@ var pageFocus = [
 
 
 function uEditNext() {
-	/*
-	if(uEditAlertErrors()) return;
-	*/
 	var i = _findActive();
 	if( i < (pages.length - 1)) uEditShowPage(pages[i+1]);
 }
@@ -53,10 +50,6 @@ function uEditFetchError(id) { if($(id)) return $(id).innerHTML + "\n"; return "
 function uEditShowPage(id) {
 	if( id == null ) return;
 
-	/*
-	if(uEditAlertErrors()) return;
-	*/
-
 	for( var p in pages ) {
 		var page = pages[p];
 		hideMe($(page));
@@ -69,9 +62,14 @@ function uEditShowPage(id) {
 	addCSSClass($(id+'_label'), 'label_active');
 	var fpage = pageFocus[idx];
 
-	if($(fpage)) { 
-		$(fpage).focus(); 
-		try{$(fpage).select()}catch(e){} 
+	var pnode = $(fpage);
+	if( id == 'uedit_addresses' ) 
+		pnode = $n( $('ue_address_tbody').
+			getElementsByTagName('tr')[0], 'ue_addr_label');
+
+	if(pnode) { 
+		pnode.focus(); 
+		try{pnode.select()}catch(e){} 
 	}
 
 	unHideMe($('ue_back'));

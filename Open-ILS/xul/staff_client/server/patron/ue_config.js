@@ -625,9 +625,18 @@ function uEditBuildAddrFields(patron, address) {
 							var state = $n(f.widget.base, 'ue_addr_state');
 							var county = $n(f.widget.base, 'ue_addr_county');
 							var city = $n(f.widget.base, 'ue_addr_city');
-							if(!state.value) state.value = info.state;
-							if(!county.value) county.value = info.county;
-							if(!city.value) city.value = info.city;
+							if(!state.value) {
+								state.value = info.state;
+								state.onchange();
+							}
+							if(!county.value) {
+								county.value = info.county;
+								county.onchange();
+							}
+							if(!city.value) {
+								city.value = info.city;
+								city.onchange();
+							}
 						}
 					);
 					req.send();
