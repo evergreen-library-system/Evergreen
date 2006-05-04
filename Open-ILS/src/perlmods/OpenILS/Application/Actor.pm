@@ -28,8 +28,10 @@ use OpenILS::Application::Actor::Container;
 
 use OpenILS::Utils::Editor;
 
+use OpenILS::Application::Actor::UserGroups;
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
+	OpenILS::Application::Actor::UserGroups->initialize();
 }
 
 my $apputils = "OpenILS::Application::AppUtils";
@@ -1986,6 +1988,10 @@ sub delete_closed_date {
 	return $U->DB_UPDATE_FAILED($cd) unless $stat;
 	return $stat;
 }
+
+
+#__PACKAGE__->register_method(
+#);
 
 
 1;
