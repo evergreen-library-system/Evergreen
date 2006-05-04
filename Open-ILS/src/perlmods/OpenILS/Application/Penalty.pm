@@ -118,7 +118,7 @@ sub patron_penalty {
 
 	$conn->respond_complete(1) if $$args{background};
 
-	if( $patron = $$args{patron} ) { # - unfless if necessary
+	if( $patron = $$args{patron} ) { # - unflesh if necessary
 		$patron->home_ou( $patron->home_ou->id ) if ref($patron->home_ou);
 		$patron->profile( $patron->profile->id ) if ref($patron->profile);
 
