@@ -41,7 +41,16 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for checkin.xul');
 
-				g.cgi = new CGI();
+				g.cgi = new CGI(); var tab_name;
+				if (g.cgi.param('hold_capture') == 1) {
+					document.getElementById('checkin_auto').checked = true;
+					document.getElementById('checkin_auto').hidden = true;
+					document.getElementById('checkin_effective_date_hbox').hidden = true;
+					document.getElementById('caption').setAttribute('label','Hold Capture');
+					tab_name = 'Hold Capture';
+				} else {
+					tab_name = 'Item Check In';
+				}
 
 				JSAN.use('circ.checkin'); g.checkin = new circ.checkin();
 				g.checkin.init( 
@@ -50,7 +59,7 @@
 				);
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Item Check In'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(tab_name); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
