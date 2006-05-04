@@ -175,3 +175,30 @@ int apacheError( char* msg, ... ) {
 }
 
 
+/* taken more or less directly from O'Reillly - Writing Apache Modules in Perl and C */
+apr_table_t* apacheParseCookies(request_rec *r) {
+
+   const char *data = ap_table_get(r->headers_in, "Cookie");
+	osrfLogDebug(OSRF_LOG_MARK, "Loaded cookies: %s", data);
+
+   apr_table_t* cookies;
+   const char *pair;
+   if(!data) return NULL;
+
+   cookies = ap_make_table(r->pool, 4);
+   while(*data && (pair = ap_getword(r->pool, &data, ';'))) {
+       const char *name, *value;
+       if(*data == ' ') ++data;
+       name = ap_getword(r->pool, &pair, '=');
+       while(*pair && (value = ap_getword(r->pool, &pair, '&'))) {
+           ap_unescape_url((char *)value);
+           ap_table_add(cookies, name, value);
+       }
+   }
+
+    return cookies;
+}
+
+ 
+
+

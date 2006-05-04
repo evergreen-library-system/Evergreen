@@ -46,5 +46,10 @@ int apacheDebug( char* msg, ... );
  */
 int apacheError( char* msg, ... );
 
+/*
+ * Creates an apache table* of cookie name / value pairs 
+ */
+apr_table_t* apacheParseCookies(request_rec *r);
+
 
 #endif

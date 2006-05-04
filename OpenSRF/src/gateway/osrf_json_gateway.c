@@ -108,6 +108,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	char* a_l			= NULL;	/* request api level */
 	int   isXML			= 0;
 	int   api_level	= 1;
+	apr_table_t* cookies = NULL;
 
 	r->allowed |= (AP_METHOD_BIT << M_GET);
 	r->allowed |= (AP_METHOD_BIT << M_POST);
@@ -141,6 +142,12 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		ret = HTTP_NOT_FOUND;
 
 	} else {
+
+		if( 0 && (cookies = apacheParseCookies(r)) ) {
+			const char* authtoken = apr_table_get(cookies, "ses");
+			osrfLogInfo(OSRF_LOG_MARK, "SESSION = %s", authtoken);
+		}
+
 
 		osrfLogInfo( OSRF_LOG_MARK,  "service=%s, method=%s", service, method );
 		osrfAppSession* session = osrf_app_client_session_init(service);
