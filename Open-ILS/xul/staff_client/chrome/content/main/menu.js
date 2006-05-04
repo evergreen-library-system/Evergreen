@@ -233,7 +233,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLD_CAPTURE),{},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN)+'?hold_capture=1',{},{});
 				}
 			],
 			'cmd_browse_holds' : [
