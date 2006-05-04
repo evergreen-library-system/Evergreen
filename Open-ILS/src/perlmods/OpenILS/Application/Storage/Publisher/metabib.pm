@@ -1484,18 +1484,11 @@ sub postfilter_search_multi_class_fts {
   	  	FROM	$search_table_list
 			$metabib_metarecord_source_map_table m,
 			$metabib_metarecord_source_map_table smrs,
-			$metabib_metarecord mr,
-			$metabib_record_descriptor rd
+			$metabib_metarecord mr
 	  	WHERE	m.metarecord = mr.id
 	  		AND smrs.metarecord = mr.id
   	  		$fts_list
 			$join_table_list
-			AND rd.record = smrs.source
-			$t_filter
-			$f_filter
-			$a_filter
-			$l_filter
-			$lf_filter
   	  	GROUP BY m.metarecord
   	  	ORDER BY 4 $sort_dir
 		LIMIT 10000
@@ -1589,7 +1582,7 @@ sub postfilter_search_multi_class_fts {
 			$select, {},
 			@bonus_values,
 			@types, @forms, @aud, @lang, @lit_form,
-			@types, @forms, @aud, @lang, @lit_form,
+			# @types, @forms, @aud, @lang, @lit_form,
 			($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
 	);
 	
