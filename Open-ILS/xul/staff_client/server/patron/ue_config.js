@@ -404,15 +404,10 @@ function uEditCheckIdentDup(field) {
 var uEditAddrTemplate;
 function uEditBuildAddrs(patron) {
 	var tbody = $('ue_address_tbody');
-	/*
-	uEditAddrTemplate = 
-		tbody.removeChild($('ue_address_template'));
-		*/
-	for( var a in patron.addresses() ) {
-		if(!uEditAddrTemplate)
-			uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
+	if(!uEditAddrTemplate)
+		uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
+	for( var a in patron.addresses() ) 
 		uEditBuildAddrFields( patron, patron.addresses()[a]);
-	}
 }
 
 
@@ -506,8 +501,6 @@ function uEditBuildAddrFields(patron, address) {
 
 	var tbody = $('ue_address_tbody');
 
-
-
 	var row	= tbody.appendChild(
 		uEditAddrTemplate.cloneNode(true));
 
@@ -525,6 +518,9 @@ function uEditBuildAddrFields(patron, address) {
 	$n(row, 'ue_addr_billing_yes').setAttribute('address', address.id());
 	$n(row, 'ue_addr_mailing_yes').setAttribute('address', address.id());
 
+	/* currently, non-owners cannot edit an address */
+	var disabled = (address.usr() != patron.id())
+
 	var fields = [
 		{ 
 			required : false,
@@ -534,6 +530,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_label',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -545,6 +542,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street1',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -556,6 +554,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_street2',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -567,6 +566,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_city',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -577,6 +577,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_county',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -588,6 +589,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_state',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -599,6 +601,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_country',
 				type	: 'input',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -610,6 +613,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_zip',
 				type	: 'input',
+				disabled : disabled,
 				regex	: /^\d{5}$/,
 				onblur : function(f) {
 					var v = uEditNodeVal(f);
@@ -638,6 +642,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_inc_yes',
 				type	: 'checkbox',
+				disabled : disabled,
 			}
 		},
 		{ 
@@ -648,6 +653,7 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_valid_yes',
 				type	: 'checkbox',
+				disabled : disabled,
 			}
 		}
 	];
@@ -803,17 +809,24 @@ function _uEditIdentPostchange(type, field, newval) {
 /* checks to see if the given address is shared by others.
  * if so, the address row is styled and ...
  */
+
 function uEditCheckSharedAddr(patron, address, tbody, row) {
+
+	if( patron.isnew() && !clone ) return;
+
 	var req = new Request(FETCH_ADDR_MEMS, SESSION, address.id());
 	req.callback( 
 		function(r) {
+
 			var members = r.getResultObject();
+			var shared = false;
+
 			for( var m in members ) {
 				var id = members[m];
 
 				if( id != patron.id() ) {
 
-					addCSSClass(row, 'shared_address');
+					addCSSClass(row.getElementsByTagName('table')[0], 'shared_address');
 					unHideMe($n(row, 'shared_row'));
 					$n(row, 'ue_addr_delete').disabled = true;
 
@@ -824,11 +837,50 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 							function() { uEditDeleteAddr( tbody, row, address, true ); }
 					}
 
+					shared = true;
 					break;
+				}
+			}
+
+			if( shared ) {
+
+				/* if this is a shared address, set the owner field and 
+					give the staff a chance to edit the owner if it's not this user */
+
+				var nnode = $n(row, 'addr_owner_name');
+				var link = $n(row, 'addr_owner');
+				var id = address.usr();
+			
+				if( id == patron.id() ) {
+			
+					nnode.appendChild(text(
+						patron.first_given_name() + ' ' + patron.family_name()));
+					hideMe($n(row, 'owner_link_div'));
+			
+				} else {
+			
+					link.onclick = 
+						function() { window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id}) };
+				
+					if( userCache[id] ) {
+						nnode.appendChild(text(
+							usr.first_given_name() + ' ' +  usr.family_name()));
+				
+					} else {
+				
+						fetchFleshedUser( id, 
+							function(usr) {
+								userCache[usr.id()] = usr;
+								nnode.appendChild(text(
+									usr.first_given_name() + ' ' + usr.family_name()));
+							}
+						);
+					}
 				}
 			}
 		}
 	);
+
 	req.send();
 }
 

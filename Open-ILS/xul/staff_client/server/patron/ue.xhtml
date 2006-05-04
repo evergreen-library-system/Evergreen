@@ -418,15 +418,16 @@
 										<td>
 											<table class='address_table'>
 												<tbody>
-													<tr name='shared_row'>
+													<tr name='shared_row' class='hide_me'>
 														<td colspan='6'>
-															<span style='color:red;'>*</span>
-															<b>This address is shared with other users</b>
-															<!--
-															<div>
-																<input type='submit' value='Detach Address'/>
+															<div style='padding: 8px;'>
+																<span style='color:red;'>*</span>
+																Address is owned by
+																<span name='addr_owner_name'/>
+																<span name='owner_link_div'>
+																	(<a name='addr_owner' href='javascript:void(0);'>Edit</a>)
+																</span>
 															</div>
-															-->
 														</td>
 													</tr>
 													<tr>

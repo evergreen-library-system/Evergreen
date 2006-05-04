@@ -1,14 +1,3 @@
-/*
-var SC_FETCH_ALL		= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
-var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
-var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
-var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
-var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
-var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
-var defaultState		= 'GA';
-var dataFields;
-*/
-
 var cgi							= null;
 var clone						= false;
 var patron						= null;
@@ -18,6 +7,7 @@ var statCatsCache				= {};
 var surveysCache				= {};
 var surveyQuestionsCache	= {};
 var surveyAnswersCache		= {};
+var userCache					= {};
 var groupsCache				= {};
 
 
@@ -32,7 +22,8 @@ function uEditInit() {
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
 
-	setTimeout( function() { uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
+	setTimeout( function() { 
+		uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
 }
 
 /* ------------------------------------------------------------------------------ */
@@ -104,7 +95,8 @@ function uEditNewPatron() {
 	patron.addresses([]);
 	patron.home_ou(USER.ws_ou());
 	var rand  = Math.random();
-	rand = parseInt( rand * 10000 );
+	rand = parseInt(rand * 10000) + '';
+	while(rand.length < 4) rand += '0';
 	patron.passwd(rand);
 	$('ue_password_plain').appendChild(text(rand));
 	unHideMe($('ue_password_gen'));
@@ -200,6 +192,7 @@ function uEditActivateField(field) {
 			function() { field.widget.onblur(field); };
 	}
 
+	field.widget.node.disabled = field.widget.disabled;
 	var val = field.object[field.key]();
 	if(val == null) return;
 
