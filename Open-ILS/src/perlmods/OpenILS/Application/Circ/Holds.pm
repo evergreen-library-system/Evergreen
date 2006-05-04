@@ -734,4 +734,46 @@ sub fetch_open_title_holds {
 }
 
 
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_captured_holds',
+	api_name	=> 'open-ils.circ.captured_holds.on_shelf.retrieve',
+	signature	=> q/
+		Returns a list ids of un-fulfilled holds for a given title id
+		@param authtoken The login session key
+		@param org The org id of the location in question
+	/
+);
+sub fetch_captured_holds {
+	my( $self, $conn, $auth, $org ) = @_;
+
+	my $e = OpenILS::Utils::Editor->new(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
+
+	$org ||= $e->requestor->ws_ou;
+
+	my $holds = $e->search_action_hold_request(
+		{ 
+			capture_time		=> { "!=" => undef },
+			current_copy		=> { "!=" => undef },
+			fulfillment_time	=> undef,
+			pickup_lib			=> $org
+		}
+	);
+
+	my @res;
+	my $stat = $U->copy_status_from_name('on holds shelf');
+	for my $h (@$holds) {
+		my $copy = $e->retrieve_asset_copy($h->current_copy)
+			or return $e->event;
+		push( @res, $h ) if $copy->status == $stat->id; # eventually, push IDs here
+	}
+
+	return \@res;
+}
+
+
+
 1;
