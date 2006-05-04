@@ -11,7 +11,7 @@
 	</notes>
 
 	<event code='0' textcode='SUCCESS'>
-		<desc xml:lang="en-US">No errors or unexpected events occurred</desc>
+		<desc xml:lang="en-US"> </desc>
 	</event>
 	<event code='1' textcode='UNKNOWN'>
 		<desc xml:lang="en-US">Placeholder event.  Used for development only</desc>

@@ -13,24 +13,27 @@ struct _oilsEventStruct {
 	int permloc;			/* the permission location id */
 	jsonObject* payload;	/* the payload */
 	jsonObject* json;		/* the event as a jsonObject */
+	char* file;
+	int line;
 };
 typedef struct _oilsEventStruct oilsEvent;
 
 
 /** Creates a new event.  User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent( char* event );
+oilsEvent* oilsNewEvent( char* file, int line, char* event );
 
 /** Creates a new event with payload.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent2( char* event, jsonObject* payload );
+oilsEvent* oilsNewEvent2( char* file, int line, char* event, jsonObject* payload );
 
 /** Creates a new event with permission and permission location.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent3( char* event, char* perm, int permloc );
+oilsEvent* oilsNewEvent3( char* file, int line, char* event, char* perm, int permloc );
 
 /** Creates a new event with permission, permission location, and payload.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent4( char* event, char* perm, int permloc, jsonObject* payload );
+oilsEvent* oilsNewEvent4( char* file, int line, 
+		char* event, char* perm, int permloc, jsonObject* payload );
 
 /** Sets the permission info for the event */
 void oilsEventSetPermission( oilsEvent* event, char* perm, int permloc );

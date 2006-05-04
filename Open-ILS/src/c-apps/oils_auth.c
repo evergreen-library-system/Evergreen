@@ -285,7 +285,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 	jsonObject* payload = jsonParseString(
 		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
 
-	response = oilsNewEvent2( OILS_EVENT_SUCCESS, payload );
+	response = oilsNewEvent2( OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload );
 	free(string); free(authToken); free(authKey);
 	jsonObjectFree(payload);
 
@@ -296,7 +296,7 @@ oilsEvent* oilsAuthVerifyWorkstation(
 		osrfMethodContext* ctx, jsonObject* userObj, char* ws ) {
 	osrfLogInfo(OSRF_LOG_MARK, "Attaching workstation to user at login: %s", ws);
 	jsonObject* workstation = oilsUtilsFetchWorkstationByName(ws);
-	if(!workstation) return oilsNewEvent("WORKSTATION_NOT_FOUND");
+	if(!workstation) return oilsNewEvent(OSRF_LOG_MARK, "WORKSTATION_NOT_FOUND");
 	long wsid = oilsFMGetObjectId(workstation);
 	LONG_TO_STRING(wsid);
 	char* orgid = oilsFMGetString(workstation, "owning_lib");
@@ -336,7 +336,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	else if(barcode) userObj = oilsUtilsFetchUserByBarcode( barcode );
 	
 	if(!userObj) { 
-		response = oilsNewEvent( OILS_EVENT_AUTH_FAILED );
+		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
 		free(barcode);
@@ -384,7 +384,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc );
 
 	} else {
-		response = oilsNewEvent( OILS_EVENT_AUTH_FAILED );
+		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
 		osrfLogInfo(OSRF_LOG_MARK,  "Login failed for for %s", uname );
 	}
 
@@ -432,14 +432,14 @@ oilsEvent*  _oilsAuthResetTimeout( char* authToken ) {
 
 	if(!cacheObj) {
 		osrfLogError(OSRF_LOG_MARK, "No user in the cache exists with key %s", key);
-		evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 
 	} else {
 
 		timeout = jsonObjectGetNumber( jsonObjectGetKey( cacheObj, "authtime"));
 		osrfCacheSetExpire( timeout, key );
 		jsonObject* payload = jsonNewNumberObject(timeout);
-		evt = oilsNewEvent2(OILS_EVENT_SUCCESS, payload);
+		evt = oilsNewEvent2(OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload);
 		jsonObjectFree(payload);
 		jsonObjectFree(cacheObj);
 	}
@@ -482,7 +482,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 				osrfAppRespondComplete( ctx, jsonObjectGetKey( cacheObj, "userobj"));
 				jsonObjectFree(cacheObj);
 			} else {
-				oilsEvent* evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+				oilsEvent* evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 				osrfAppRespondComplete( ctx, oilsEventToJSON(evt) ); /* should be event.. */
 				oilsEventFree(evt);
 			}
@@ -491,7 +491,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 
 	} else {
 
-		evt = oilsNewEvent(OILS_EVENT_NO_SESSION);
+		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 		osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
 		oilsEventFree(evt);
 	}

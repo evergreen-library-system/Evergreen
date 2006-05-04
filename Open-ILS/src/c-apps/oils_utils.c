@@ -53,7 +53,7 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 		char* r = jsonObjectToSimpleString(o);
 
 		if(r && !strcmp(r, "0")) 
-			evt = oilsNewEvent3( OILS_EVENT_PERM_FAILURE, perm, orgid );
+			evt = oilsNewEvent3( OSRF_LOG_MARK, OILS_EVENT_PERM_FAILURE, perm, orgid );
 
 		jsonObjectFree(params);
 		jsonObjectFree(o);

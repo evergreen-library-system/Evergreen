@@ -6,30 +6,33 @@
 osrfHash* __oilsEventEvents = NULL;
 osrfHash* __oilsEventDescriptions = NULL;
 
-oilsEvent* oilsNewEvent( char* event ) {
+oilsEvent* oilsNewEvent( char* file, int line, char* event ) {
 	if(!event) return NULL;
 	osrfLogInfo(OSRF_LOG_MARK, "Creating new event: %s", event);
 	if(!__oilsEventEvents) _oilsEventParseEvents();
 	oilsEvent* evt =  (oilsEvent*) safe_malloc(sizeof(oilsEvent));
 	evt->event = strdup(event);
 	evt->permloc = -1;
+	if(file) evt->file = strdup(file);
+	evt->line = line;
 	return evt;
 }
 
-oilsEvent* oilsNewEvent2( char* event, jsonObject* payload ) {
-	oilsEvent* evt = oilsNewEvent(event);
+oilsEvent* oilsNewEvent2( char* file, int line, char* event, jsonObject* payload ) {
+	oilsEvent* evt = oilsNewEvent(file, line, event);
 	oilsEventSetPayload(evt, payload);
 	return evt;
 }
 
-oilsEvent* oilsNewEvent3( char* event, char* perm, int permloc ) {
-	oilsEvent* evt = oilsNewEvent(event);
+oilsEvent* oilsNewEvent3( char* file, int line, char* event, char* perm, int permloc ) {
+	oilsEvent* evt = oilsNewEvent(file, line, event);
 	oilsEventSetPermission( evt, perm, permloc );
 	return evt;
 }
 
-oilsEvent* oilsNewEvent4( char* event, char* perm, int permloc, jsonObject* payload ) {
-	oilsEvent* evt = oilsNewEvent3( event, perm, permloc );
+oilsEvent* oilsNewEvent4( char* file, int line, 
+			char* event, char* perm, int permloc, jsonObject* payload ) {
+	oilsEvent* evt = oilsNewEvent3( file, line, event, perm, permloc );
 	if(evt) oilsEventSetPayload( evt, payload );
 	return evt;
 }
@@ -49,6 +52,7 @@ void oilsEventSetPayload( oilsEvent* event, jsonObject* payload ) {
 void oilsEventFree( oilsEvent* event ) {
 	if(!event) return;
 	free(event->perm);
+	free(event->file);
 	if(event->json) jsonObjectFree(event->json);
 	else jsonObjectFree(event->payload);
 	free(event);
@@ -79,6 +83,12 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 	jsonObjectSetKey( json, "ilsevent", jsonNewNumberObject(atoi(code)) );
 	jsonObjectSetKey( json, "textcode", jsonNewObject(event->event) );
 	jsonObjectSetKey( json, "desc", jsonNewObject(desc) );
+	jsonObjectSetKey( json, "pid", jsonNewNumberObject(getpid()) );
+
+	char buf[256];
+	memset(buf,0, 256);
+	snprintf(buf, 256, "%s:%d", event->file, event->line);
+	jsonObjectSetKey( json, "stacktrace", jsonNewObject(buf) );
 
 	if(event->perm) jsonObjectSetKey( json, "ilsperm", jsonNewObject(event->perm) );
 	if(event->permloc != -1) jsonObjectSetKey( json, "ilspermloc", jsonNewNumberObject(event->permloc) );
