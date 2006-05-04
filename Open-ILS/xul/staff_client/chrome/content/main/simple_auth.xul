@@ -6,6 +6,7 @@
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/simple_auth.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -46,6 +47,7 @@
 				$('server').value = g.data.server_unadorned;
 
 				g.cgi = new CGI();
+				addCSSClass(document.documentElement,g.cgi.param('login_type'))
 
 				if (g.cgi.param('desc_brief')) {
 					$('desc').hidden = false;
@@ -114,7 +116,7 @@
 		<command id="cmd_broken" />
 	</commandset>
 
-	<vbox id="simple_auth_main">
+	<vbox id="simple_auth_main" flex="1">
 	<groupbox id="desc" hidden="true">
 		<caption label="Exception"/>
 		<description id="desc_brief" style="color: red"/>
@@ -141,6 +143,7 @@
 		</grid>
 		<label id="server" hidden="true"/>
 	</groupbox>
+	<spacer flex="1"/>
 	</vbox>
 </window>
 

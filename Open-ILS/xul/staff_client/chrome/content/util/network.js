@@ -138,7 +138,7 @@ util.network.prototype = {
 					+ '?login_type=staff'
 					+ '&desc_brief=' + window.escape('Your session has expired')
 					+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and inform your friendly Evergreen developers of this debug information: ' + name),
-					'simple_auth',
+					'simple_auth' + (new Date()).toString(),
 					'chrome,resizable,modal,width=700,height=500'
 				);
 				JSAN.use('OpenILS.data');
@@ -168,7 +168,7 @@ util.network.prototype = {
 					+ '?login_type=temp'
 					+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
 					+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
-					'simple_auth',
+					'simple_auth' + (new Date()).toString(),
 					'chrome,resizable,modal,width=700,height=500'
 				);
 				JSAN.use('OpenILS.data');
@@ -193,19 +193,17 @@ util.network.prototype = {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
 						'<groupbox><caption label="Exceptions"/>' + 
-						'<grid><columns><column/><column/><column/><column/></columns><rows>';
+						'<grid><columns><column/><column/></columns><rows>';
 					for (var i = 0; i < r.length; i++) {
-						xml += '<row style="color: red">' + 
-							'<description>' + r[i].ilsevent + '</description>' + 
-							'<description>' + r[i].textcode + '</description>' + 
-							'<description>' + r[i].desc + '</description>' +
+						xml += '<row>' + 
+							'<description style="color: red" tooltiptext="' + r[i].ilsevent + '">' + r[i].textcode + '</description>' + 
 							'<description>' + (o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '') + '</description>' + 
-							'</row>';
+							'</row><row>' + '<description>' + r[i].desc + '</description>' + '</row>';
 					}
 					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox>' + 
 						'<description>Force this action?</description>' + 
-						'<button accesskey="C" label="Cancel" name="fancy_cancel"/>' + 
-						'<button id="override" accesskey="O" label="Override" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+						'<button accesskey="N" label="No" name="fancy_cancel"/>' + 
+						'<button id="override" accesskey="Y" label="Yes" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
 					window.open(
 						urls.XUL_FANCY_PROMPT
 						+ '?xml=' + window.escape(xml)

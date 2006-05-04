@@ -228,7 +228,7 @@ util.error.prototype = {
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
 		if (!msg) msg = '';
-		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode : ( typeof E.status != 'undefined' ? 'Status: ' + E.status : '' ) );
+		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + E.desc : ( typeof E.status != 'undefined' ? 'Status: ' + E.status : '' ) );
 		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
 		var r = obj.yns_alert(
 			alert_msg,	
