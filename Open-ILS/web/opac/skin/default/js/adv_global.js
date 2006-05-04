@@ -53,8 +53,10 @@ function advSelToStringList(sel) {
 	var vals = [];
 	for( var i = 0; i < list.length; i++ ) {
 		var str = list[i];
-		for( var j = 0; j < str.length; j++ )
+		for( var j = 0; j < str.length; j++ ) {
+			if(str.charAt(j) == ' ') continue;
 			vals.push(str.charAt(j));
+		}
 	}
 	return vals.toString();
 }
@@ -75,7 +77,7 @@ function advSubmitGlobal() {
 	var itemforms = advGetVisSelectorVals('adv_global_item_form');
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
-	var languages = advGetVisSelectorVals('adv_global_lang');	
+	var languages = getSelectedList($('adv_global_lang')) + '';	
 
 	var searches = advBuildSearchBlob();
 	if(!searches) return;
