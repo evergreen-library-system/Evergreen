@@ -297,6 +297,23 @@ sub flesh_user {
 			$user->id() );
 	$user->addresses( $add_req->gather(1) );
 
+	if( @{$user->addresses} ) {
+		if( ! grep { $_->id eq $user->billing_address } @{$user->addresses} ) {
+			my $ba = $session->request(
+				'open-ils.storage.direct.actor.user_address.retrieve', 
+				$user->billing_address)->gather(1);
+			push( @{$user->addresses}, $ba );
+		}
+	
+		if( ! grep { $_->id eq $user->mailing_address } @{$user->addresses} ) {
+			my $ba = $session->request(
+				'open-ils.storage.direct.actor.user_address.retrieve', 
+				$user->mailing_address)->gather(1);
+			push( @{$user->addresses}, $ba );
+		}
+	}
+
+
 	for my $c(@{$user->addresses}) {
 		if($c->id eq $user->billing_address ) { $user->billing_address($c); }
 		if($c->id eq $user->mailing_address ) { $user->mailing_address($c); }
