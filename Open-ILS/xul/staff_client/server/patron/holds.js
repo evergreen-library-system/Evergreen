@@ -20,6 +20,7 @@ patron.holds.prototype = {
 
 		obj.patron_id = params['patron_id'];
 		obj.docid = params['docid'];
+		obj.shelf = params['shelf'];
 
 		JSAN.use('circ.util');
 		var columns = circ.util.hold_columns( 
@@ -476,7 +477,11 @@ patron.holds.prototype = {
 				id = obj.docid; 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else {
-				method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
+				if (obj.shelf) {
+					method = 'FM_AHR_ONSHELF_RETRIEVE'; 
+				} else {
+					method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
+				}
 				id = obj.OpenILS.data.list.au[0].ws_ou(); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}

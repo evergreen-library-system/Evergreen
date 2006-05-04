@@ -40,6 +40,7 @@ const api = {
 	'FM_AHR_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
 	'FM_AHR_RETRIEVE_VIA_BRE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.open_holds.retrieve' },
 	'FM_AHR_RETRIEVE_VIA_PICKUP_AOU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_pickup_lib' },
+	'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
 	'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count' },
 	'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
 	'FM_AHR_UPDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update' },
