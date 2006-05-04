@@ -124,6 +124,29 @@ patron.display.prototype = {
 					'cmd_patron_edit' : [
 						['command'],
 						function(ev) {
+
+								function spawn_editor(p) {
+									var url = urls.XUL_PATRON_EDIT;
+									var param_count = 0;
+									for (var i in p) {
+										if (param_count++ == 0) url += '?'; else url += '&';
+										url += i + '=' + window.escape(p[i]);
+									}
+									var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( url );
+									xulG.new_tab(
+										loc, 
+										{}, 
+										{ 
+											'show_print_button' : true , 
+											'tab_name' : 'Editing Related Patron' ,
+											'passthru_content_params' : {
+												'spawn_search' : function(s) { obj.spawn_search(s); },
+												'spawn_editor' : spawn_editor,
+											}
+										}
+									);
+								}
+
 							obj.right_deck.set_iframe(
 								urls.XUL_REMOTE_BROWSER
 								+ '?url=' + window.escape( 
@@ -142,6 +165,7 @@ patron.display.prototype = {
 												alert(E);
 											}
 										},
+										'spawn_editor' : spawn_editor,
 									}
 								}
 							);
@@ -151,7 +175,12 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_INFO + '?patron_id=' + window.escape( obj.patron.id() )
+								urls.XUL_PATRON_INFO + '?patron_id=' + window.escape( obj.patron.id() ),
+								{},
+								{
+									'url_prefix' : xulG.url_prefix,
+									'new_tab' : xulG.new_tab,
+								}
 							);
 						}
 					],

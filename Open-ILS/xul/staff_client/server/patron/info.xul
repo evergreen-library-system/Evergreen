@@ -51,9 +51,22 @@
 				g.cgi = new CGI();
 				g.patron_id = g.cgi.param('patron_id');
 
-				try{$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
-				try{$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
-				try{$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));}catch(E){alert(E);}
+				try{
+					$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));
+					$('notes_frame').contentWindow.xulG = xulG;
+				}catch(E){alert(E);}
+				try{
+					$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));
+					$('stat_cats_frame').contentWindow.xulG = xulG;
+				}catch(E){alert(E);}
+				try{
+					$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));
+					$('surveys_frame').contentWindow.xulG = xulG;
+				}catch(E){alert(E);}
+				try{
+					$('group_frame').setAttribute('src',urls.XUL_PATRON_INFO_GROUP + '?patron_id=' + window.escape(g.patron_id));
+					$('group_frame').contentWindow.xulG = xulG;
+				}catch(E){alert(E);}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -75,6 +88,9 @@
 				if ($('surveys_frame').contentWindow && typeof $('surveys_frame').contentWindow.refresh == 'function') {
 					$('surveys_frame').contentWindow.refresh();
 				}
+				if ($('group_frame').contentWindow && typeof $('group_frame').contentWindow.refresh == 'function') {
+					$('group_frame').contentWindow.refresh();
+				}
 			} catch(E) {
 				alert(E);
 			}
@@ -89,7 +105,7 @@
 				<tab accesskey="N" label="Notes" />
 				<tab accesskey="S" label="Stat Cats"/>
 				<tab accesskey="y" label="Surveys"/>
-				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
+				<tab accesskey="G" label="Group"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
 				<tab label=" " disabled="true" linkedpanel="notes_panel" flex="1"/>
@@ -104,6 +120,9 @@
 				</tabpanel>
 				<tabpanel id="surveys_panel" orient="vertical">
 					<iframe id="surveys_frame" flex="1"/>
+				</tabpanel>
+				<tabpanel id="group_panel" orient="vertical">
+					<iframe id="group_frame" flex="1"/>
 				</tabpanel>
 			</tabpanels>
 		</tabbox>
