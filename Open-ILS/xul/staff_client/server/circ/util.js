@@ -228,7 +228,7 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.email_notify()'
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.email_notify() == 1 ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
