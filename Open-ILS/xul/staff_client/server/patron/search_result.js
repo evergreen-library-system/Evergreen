@@ -93,6 +93,7 @@ patron.search_result.prototype = {
 	'search' : function(query) {
 		var obj = this;
 		var search_hash = {};
+		obj.search_term_count = 0;
 		for (var i in query) {
 			switch( i ) {
 				case 'phone': case 'ident': 
@@ -100,6 +101,7 @@ patron.search_result.prototype = {
 					search_hash[ i ] = {};
 					search_hash[ i ].value = query[i];
 					search_hash[i].group = 2; 
+					obj.search_term_count++;
 				break;
 
 				case 'street1': case 'street2': case 'city': case 'state': case 'post_code': 
@@ -107,6 +109,7 @@ patron.search_result.prototype = {
 					search_hash[ i ] = {};
 					search_hash[ i ].value = query[i];
 					search_hash[i].group = 1; 
+					obj.search_term_count++;
 				break;
 
 				case 'family_name': case 'first_given_name': case 'second_given_name': case 'email':
@@ -114,15 +117,27 @@ patron.search_result.prototype = {
 					search_hash[ i ] = {};
 					search_hash[ i ].value = query[i];
 					search_hash[i].group = 0; 
+					obj.search_term_count++;
 				break;
 			}
 		}
 		try {
-			var results = this.network.request(
-				api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
-				api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
-				[ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ]
-			);
+			var results = [];
+
+			if (obj.search_term_count > 0) {
+				results = this.network.request(
+					api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
+					api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
+					[ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ]
+				);
+				if ( (results == null) || (typeof results.ilsevent != 'undefined') ) throw(results);
+			}
+
+			if (results.length == 0) {
+				alert('No hits found.');
+				return;
+			}
+
 			//this.list.append( { 'retrieve_id' : results[i], 'row' : {} } );
 			var funcs = [];
 
@@ -139,8 +154,7 @@ patron.search_result.prototype = {
 			exec.chain( funcs );
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','patron.search_result.search: ' + js2JSON(E));
-			alert(E);
+			this.error.standard_unexpected_error_alert('patron.search_result.search',E);
 		}
 	}
 

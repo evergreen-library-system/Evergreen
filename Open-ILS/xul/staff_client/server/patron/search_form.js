@@ -193,7 +193,7 @@ patron.search_form.prototype = {
 		for (var i = 0; i < nl.length; i++) {
 			nl[i].addEventListener('keypress',function(ev){
 				if (ev.target.tagName != 'textbox') return;
-				if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) obj.submit();
+				if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.submit(); }, 0);
 			},false);
 		}
 		document.getElementById('family_name').focus();
