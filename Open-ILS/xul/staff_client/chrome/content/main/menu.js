@@ -220,6 +220,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : 'Hold Browser' },{});
 				}
 			],
+			'cmd_browse_holds_shelf' : [
+				['oncommand'],
+				function() { 
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : 'Holds Shelf' },{});
+				}
+			],
 			'cmd_circ_hold_pull_list' : [
 				['oncommand'],
 				function() { 

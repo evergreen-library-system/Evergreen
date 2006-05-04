@@ -21,6 +21,7 @@
 	<command id="cmd_circ_hold_capture" key="circ-hold-capture-key" />
 	<command id="cmd_circ_hold_pull_list" />
 	<command id="cmd_browse_holds" />
+	<command id="cmd_browse_holds_shelf" />
 	<command id="cmd_in_house_use" key="circ-in-house-use" />
 	<command id="cmd_copy_status" key="copy-status-key" />
 	<command id="cmd_search_opac" key="search-opac-key" />
@@ -110,7 +111,7 @@
 		<menuitem label="Capture Holds / Process Items" accesskey="&staff.main.menu.circ.hold_capture.key;" key="circ-hold-capture-key" command="cmd_circ_hold_capture"/>
 		<menuseparator />
 		<menuitem label="View Pull List for Hold Requests" accesskey="S" command="cmd_circ_hold_pull_list"/>
-		<menuitem label="Browse Active Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
+		<menuitem label="Browse Holds Shelf" command="cmd_browse_holds_shelf" accesskey="B"/>
 		<menuseparator />
 		<menuitem label="Show Copy Status by Barcode" accesskey="B" key="copy-status-key" command="cmd_copy_status"/>
 		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
@@ -193,6 +194,7 @@
 		<menuitem label="Statistical Category Editor" accesskey="C" command="cmd_stat_cat_edit"/>
 		<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
 		<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
+		<menuitem label="Browse Unfulfilled Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
 		<menuseparator />
 		<menuitem label="For developers..." disabled="true"/>
 		<menuitem label="Public OPAC" command="cmd_public_opac" accesskey="p"/>
