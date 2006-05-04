@@ -57,6 +57,7 @@
 			.no_border td { border: none; }
 			.uedit_table { width: 80% }
 			.address_table { -moz-border-radius: 4px; border: 4px solid #E0E0F0; padding: 4px; }
+			.shared_address { background : #E0F0F0; }
 			.address_table td { border: none; width: auto; padding: 1px; }
 			.addr_info_checked { -moz-border-radius: 6px; background: #F0E0E0; }
 			.button_row { width: 95%; text-align: center; margin-top: 7px; border: 1px solid #E0E0E0; }
@@ -70,6 +71,7 @@
 			.deleted { background: #FF6666; }
 
 			.dup_link { padding-left: 5px; color: red; }
+
 
 		</style>
 	</head>
@@ -91,13 +93,13 @@
 		<table style='margin-bottom: 5px; width:100%;'>
 			<tbody>
 				<tr>
-					<td align='left' width='50%'>
+					<td align='left' width='80%'>
 						<b>
 							<span>Note: required or invalid fields are </span>
 							<span style='border-bottom: 2px solid red;'>marked with color</span>
 						</b>
 					</td>
-					<td align='right' width='50%'>
+					<td align='right' width='20%'>
 						<a class='hide_me' id='ue_errors' href='javascript:void(0);' 
 							style='color: red; font-size: 12pt; font-weight: bold' onclick='uEditAlertErrors();'>
 							View Errors
@@ -416,6 +418,17 @@
 										<td>
 											<table class='address_table'>
 												<tbody>
+													<tr name='shared_row'>
+														<td colspan='6'>
+															<span style='color:red;'>*</span>
+															<b>This address is shared with other users</b>
+															<!--
+															<div>
+																<input type='submit' value='Detach Address'/>
+															</div>
+															-->
+														</td>
+													</tr>
 													<tr>
 														<td><div class='wide right'>Label</div></td>
 														<td colspan='3'>
@@ -486,12 +499,13 @@
 														<td colspan='6'>
 															<div class='button_row'>
 																<input type='submit' name='ue_addr_delete' 
-																	value='Delete this Address'
-																	onclick='uEditRemoveAddress(this);'/>
-														</div>
-													</td>
-												</tr>
-
+																	value='Delete this Address'/>
+																<span style='padding-left: 10px;'> </span>
+																<input type='submit' name='ue_addr_detach' 
+																	value='Detach this Address' class='hide_me'/>
+															</div>
+														</td>
+													</tr>
 												</tbody>
 											</table>
 										</td>
@@ -698,6 +712,8 @@
 									href='javascript:uEditShowSummary();'>View Summary</a>
 								<input style='margin-left: 30px;' id='ue_save'
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
+								<input style='margin-left: 30px;' id='ue_save_clone'
+									type='submit' value='Save and Clone' onclick='uEditSaveUser(true);'/>
 							</div>
 						</div>
 					</td>

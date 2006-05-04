@@ -1,28 +1,30 @@
 /* -----------------------------------------------------------------------
 	----------------------------------------------------------------------- */
-var SC_FETCH_ALL		= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
-var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
-var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
-var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
-var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
-var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
-var PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
-var ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
-var defaultState		= 'GA';
-var defaultCountry	= 'USA';
-var CSS_INVALID_DATA = 'invalid_value';
+const SC_FETCH_ALL		= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
+const SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
+const SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
+const FETCH_ID_TYPES		= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
+const FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
+const UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
+const PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
+const ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
+const FETCH_ADDR_MEMS	= 'open-ils.actor:open-ils.actor.address.members';
+const FETCH_GRP_MEMS		= 'open-ils.actor:open-ils.actor.usergroup.members.retrieve';
+const defaultState		= 'GA';
+const defaultCountry		= 'USA';
+const CSS_INVALID_DATA	= 'invalid_value';
 
 /* if they don't have these perms, they shouldn't be here */
 var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
 
 var dataFields;
-var numRegex	= /^\d+$/;
-var wordRegex	= /^\w+$/;
-var ssnRegex	= /^\d{3}-\d{2}-\d{4}$/;
-var dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
-var phoneRegex	= /\d{3}-\d{3}-\d{4}/;
-var nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
-var dateRegex	= /^\d{4}-\d{2}-\d{2}/;
+const numRegex		= /^\d+$/;
+const wordRegex	= /^\w+$/;
+const ssnRegex		= /^\d{3}-\d{2}-\d{4}$/;
+const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
+const phoneRegex	= /\d{3}-\d{3}-\d{4}/;
+const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
+const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 
 
 
@@ -402,14 +404,19 @@ function uEditCheckIdentDup(field) {
 var uEditAddrTemplate;
 function uEditBuildAddrs(patron) {
 	var tbody = $('ue_address_tbody');
+	/*
 	uEditAddrTemplate = 
 		tbody.removeChild($('ue_address_template'));
-	for( var a in patron.addresses() ) 
+		*/
+	for( var a in patron.addresses() ) {
+		if(!uEditAddrTemplate)
+			uEditAddrTemplate = tbody.removeChild($('ue_address_template'));
 		uEditBuildAddrFields( patron, patron.addresses()[a]);
+	}
 }
 
 
-function uEditDeleteAddr( tbody, row, address ) {
+function uEditDeleteAddr( tbody, row, address, detach ) {
 	if(!confirm($('ue_delete_addr_warn').innerHTML)) return;
 	if(address.isnew()) { 
 		patron.addresses(
@@ -420,7 +427,7 @@ function uEditDeleteAddr( tbody, row, address ) {
 			)
 		);
 	} else {
-		address.isdeleted(1);
+		if(!detach) address.isdeleted(1);
 	}
 	tbody.removeChild(row);
 
@@ -440,7 +447,7 @@ function uEditDeleteAddr( tbody, row, address ) {
 	if( bid == address.id() ) {
 		for( var a in patron.addresses() ) {
 			var addr = patron.addresses()[a];
-			if(!addr.isdeleted()) {
+			if(!addr.isdeleted() && addr.id() != address.id()) {
 				var node = uEditFindAddrInput('billing', addr.id());
 				node.checked = true;
 				uEditAddrTypeClick(node, 'billing');
@@ -452,7 +459,7 @@ function uEditDeleteAddr( tbody, row, address ) {
 	if( mid == address.id() ) {
 		for( var a in patron.addresses() ) {
 			var addr = patron.addresses()[a];
-			if(!addr.isdeleted()) {
+			if(!addr.isdeleted() && addr.id() != address.id()) {
 				var node = uEditFindAddrInput('mailing', addr.id());
 				node.checked = true;
 				uEditAddrTypeClick(node, 'mailing');
@@ -498,15 +505,19 @@ function uEditAddrTypeClick(input, type) {
 function uEditBuildAddrFields(patron, address) {
 
 	var tbody = $('ue_address_tbody');
+
+
+
 	var row	= tbody.appendChild(
 		uEditAddrTemplate.cloneNode(true));
+
+	uEditCheckSharedAddr(patron, address, tbody, row);
 
 	$n(row, 'ue_addr_delete').onclick = 
 		function() { uEditDeleteAddr(tbody, row, address); }
 
 	if( address.id() == patron.billing_address().id() ) 
 		$n(row, 'ue_addr_billing_yes').checked = true;
-	
 
 	if( address.id() == patron.mailing_address().id() ) 
 		$n(row, 'ue_addr_mailing_yes').checked = true;
@@ -786,6 +797,39 @@ function _uEditIdentPostchange(type, field, newval) {
 	/* focus then valdate the value field */
 	vfield.widget.node.onchange();
 	vfield.widget.node.focus();
+}
+
+
+/* checks to see if the given address is shared by others.
+ * if so, the address row is styled and ...
+ */
+function uEditCheckSharedAddr(patron, address, tbody, row) {
+	var req = new Request(FETCH_ADDR_MEMS, SESSION, address.id());
+	req.callback( 
+		function(r) {
+			var members = r.getResultObject();
+			for( var m in members ) {
+				var id = members[m];
+
+				if( id != patron.id() ) {
+
+					addCSSClass(row, 'shared_address');
+					unHideMe($n(row, 'shared_row'));
+					$n(row, 'ue_addr_delete').disabled = true;
+
+					if( address.usr() != patron.id() ) {
+						var button = $n(row, 'ue_addr_detach');
+						unHideMe(button);
+						button.onclick = 
+							function() { uEditDeleteAddr( tbody, row, address, true ); }
+					}
+
+					break;
+				}
+			}
+		}
+	);
+	req.send();
 }
 
 

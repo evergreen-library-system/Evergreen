@@ -10,6 +10,7 @@ var dataFields;
 */
 
 var cgi							= null;
+var clone						= false;
 var patron						= null;
 var counter						= 0;
 var identTypesCache			= {};
@@ -25,6 +26,7 @@ function uEditInit() {
 
 	cgi		= new CGI();
 	session	= cgi.param('ses');
+	clone		= cgi.param('clone');
 	if(!session) throw "User session is not defined";
 
 	fetchUser(session);
@@ -78,7 +80,12 @@ function uEditBuild() {
 		uEditFetchStatCats(),
 		uEditFetchSurveys() );
 
-	if(patron.isnew()) uEditCreateNewAddr();
+	if(patron.isnew()) {
+		if(clone) 
+			uEditClone(clone);
+		else 
+			uEditCreateNewAddr();
+	}
 }
 
 
@@ -104,7 +111,41 @@ function uEditNewPatron() {
 	return patron;
 }
 
-/* Creates a new blank address, adds it to the user and the fields array */
+
+function uEditClone(clone) {
+
+	var cloneUser = fetchFleshedUser(clone);
+	patron.usrgroup(cloneUser.usrgroup());
+
+	if( cloneUser.day_phone() )
+		$('ue_day_phone').value = cloneUser.day_phone();
+	if( cloneUser.evening_phone() )
+		$('ue_night_phone').value = cloneUser.evening_phone();
+	if( cloneUser.other_phone() )
+		$('ue_other_phone').value = cloneUser.other_phone();
+	setSelector($('ue_org_selector'), cloneUser.home_ou());
+
+
+	setSelector($('ue_profile'), cloneUser.profile());
+
+	/* force the expire date to be set */
+	$('ue_profile').onchange();
+
+	for( var a in cloneUser.addresses() ) {
+		var addr = cloneUser.addresses()[a];
+		if( addr.id() == cloneUser.mailing_address().id() )
+			patron.mailing_address(addr);
+		if( addr.id() == cloneUser.billing_address().id() )
+			patron.billing_address(addr);
+		patron.addresses().push(addr);
+	}
+
+	uEditBuildAddrs(patron);
+}
+
+
+/* Creates a new blank address, 
+	adds it to the user and the fields array */
 var uEditVirtualAddrId = -1;
 function uEditCreateNewAddr() {
 	var addr = new aua();
@@ -300,7 +341,7 @@ function uEditAlertErrors() {
 
 
 /* send the user to the database */
-function uEditSaveUser() {
+function uEditSaveUser(clone) {
 
 	if(uEditGetErrorStrings()) {
 		uEditAlertErrors();
@@ -309,17 +350,21 @@ function uEditSaveUser() {
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
-	var result = req.result();
+	var newuser = req.result();
 
-	if( checkILSEvent(result) ) 
-		alert(js2JSON(result));
+	if( checkILSEvent(newuser) ) 
+		alert(js2JSON(newuser));
 	else 
 		alert($('ue_success').innerHTML);
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
-		window.xulG.on_save(patron); 
+		window.xulG.on_save(newuser, clone); 
+
 	} else {
-		location.href = location.href;
+
+		var href = location.href;
+		if( clone ) href += '&clone=' + newuser.id();
+		location.href = href;
 	}
 }
 
