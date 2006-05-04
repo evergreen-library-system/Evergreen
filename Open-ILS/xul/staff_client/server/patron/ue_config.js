@@ -1,6 +1,5 @@
 /* -----------------------------------------------------------------------
 	----------------------------------------------------------------------- */
-
 var SC_FETCH_ALL		= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
 var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
 var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
@@ -8,6 +7,7 @@ var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
 var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
 var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
 var PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
+var ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
 var defaultState		= 'GA';
 var defaultCountry	= 'USA';
 var CSS_INVALID_DATA = 'invalid_value';
@@ -21,7 +21,7 @@ var wordRegex	= /^\w+$/;
 var ssnRegex	= /^\d{3}-\d{2}-\d{4}$/;
 var dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 var phoneRegex	= /\d{3}-\d{3}-\d{4}/;
-var nonumRegex	= /^\D+$/;
+var nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 var dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 
 
@@ -85,23 +85,6 @@ function uEditDefineData(patron) {
 				}
 			}
 		},
-
-		/*
-		{
-			required : true,
-			object	: patron,
-			key		: 'first_given_name',
-			errkey	: 'ue_bad_firstname',
-			widget	: {
-				id		: 'ue_firstname',
-				regex	: nonumRegex,
-				type	: 'input',
-				onblur : function(field) {
-					uEditCheckNamesDup('first', field );
-				}
-		},
-		*/
-
 		{
 			required : true,
 			object	: patron,
@@ -616,7 +599,24 @@ function uEditBuildAddrFields(patron, address) {
 				base	: row,
 				name	: 'ue_addr_zip',
 				type	: 'input',
-				regex	: /^\d{5}$/
+				regex	: /^\d{5}$/,
+				onblur : function(f) {
+					var v = uEditNodeVal(f);
+					var req = new Request(ZIP_SEARCH, v);
+					req.callback( 
+						function(r) {
+							var info = r.getResultObject();
+							if(!info) return;
+							var state = $n(f.widget.base, 'ue_addr_state');
+							var county = $n(f.widget.base, 'ue_addr_county');
+							var city = $n(f.widget.base, 'ue_addr_city');
+							if(!state.value) state.value = info.state;
+							if(!county.value) county.value = info.county;
+							if(!city.value) city.value = info.city;
+						}
+					);
+					req.send();
+				}
 			}
 		},
 		{ 

@@ -1,5 +1,4 @@
-var cgi					= null;
-var advanced			= false;
+/*
 var SC_FETCH_ALL		= 'open-ils.circ:open-ils.circ.stat_cat.actor.retrieve.all';
 var SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.create';
 var SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
@@ -7,9 +6,12 @@ var FETCH_ID_TYPES	= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
 var FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
 var UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
 var defaultState		= 'GA';
-var counter				= 0;
 var dataFields;
-var patron;
+*/
+
+var cgi							= null;
+var patron						= null;
+var counter						= 0;
 var identTypesCache			= {};
 var statCatsCache				= {};
 var surveysCache				= {};
@@ -23,9 +25,7 @@ function uEditInit() {
 
 	cgi		= new CGI();
 	session	= cgi.param('ses');
-	if(cgi.param('adv')) advanced = true 
 	if(!session) throw "User session is not defined";
-
 
 	fetchUser(session);
 	$('uedit_user').appendChild(text(USER.usrname()));
@@ -111,7 +111,6 @@ function uEditCreateNewAddr() {
 	addr.id(uEditVirtualAddrId--);
 	addr.isnew(1);
 	addr.usr(patron.id());
-	addr.state(defaultState);
 	addr.country(defaultCountry);
 	if(patron.addresses().length == 0) {
 		patron.mailing_address(addr);
