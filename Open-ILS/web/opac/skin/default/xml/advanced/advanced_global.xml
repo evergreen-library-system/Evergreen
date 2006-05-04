@@ -228,10 +228,6 @@
 							<select multiple='true' size='3' id='adv_global_lang'>
 								<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
 							</select>
-							<!--
-							<select multiple='true' size='3' id='adv_global_lang_basic'>
-							</select>
-							-->
 						</td>
 					</tr>
 

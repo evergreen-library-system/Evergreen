@@ -319,9 +319,17 @@ function  buildOPACLink(args, slim, ssl) {
 }
 
 function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
+
 	var ret = "";
-	if( fieldVar != null && (fieldVar +'' != 'NaN') && overrideArgs[fieldName] == null ) 
+
+	if(	fieldVar != null && 
+			(fieldVar +'' != 'NaN') && 
+			overrideArgs[fieldName] == null &&
+			getFunc() != null &&
+			getFunc() != '' ) {
+
 		ret = "&" + fieldName + "=" + encodeURIComponent(getFunc());
+	}
 	return ret;
 }
 
