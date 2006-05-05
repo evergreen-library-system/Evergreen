@@ -68,7 +68,33 @@
 		<command id="cmd_show_my_libs" />
 		<command id="cmd_show_all_libs" />
 		<command id="cmd_show_libs_with_copies" />
+
+		<command id="cmd_add_items"/>
+		<command id="cmd_add_items_to_buckets"/>
+		<command id="cmd_edit_items"/>
+		<command id="cmd_delete_items"/>
+		<command id="cmd_add_volumes"/>
+		<command id="cmd_edit_volumes"/>
+		<command id="cmd_delete_volumes"/>
+		<command id="cmd_mark_volume"/>
+		<command id="cmd_refresh_list"/>
 	</commandset>
+
+	<popupset>
+		<popup id="copy_browser_actions">
+			<menuitem command="cmd_add_items" label="Add Items" accesskey="I"/>
+			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
+			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
+			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+			<menuseparator/>
+			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
+			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+			<menuseparator/>
+			<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
+		</popup>
+	</popupset>
 
 	<groupbox flex="1">
 		<caption label="Holdings Maintenance"/>
@@ -76,9 +102,27 @@
 			<!--<button label="Clear" command="cmd_clear" accesskey="C"/>-->
 			<button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>
 			<button label="Show Libs With Copies" command="cmd_show_libs_with_copies" accesskey="L"/>
-			<button label="Show All Libs" command="cmd_show_all_libs" accesskey="S"/>
+			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
+			<spacer flex="1"/>
+			<menubar>
+				<menu label="Actions for Selected Rows" accesskey="S">
+					<menupopup>
+							<menuitem command="cmd_add_items" label="Add Items" accesskey="I"/>
+							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
+							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
+							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+							<menuseparator/>
+							<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+							<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
+							<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+							<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+							<menuseparator/>
+							<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
+					</menupopup>
+				</menu>
+			</menubar>
 		</hbox>
-		<tree id="copy_tree" flex="1" enableColumnDrag="true"/>
+		<tree id="copy_tree" flex="1" enableColumnDrag="true" context="copy_browser_actions"/>
 	</groupbox>
 
 </window>
