@@ -15,6 +15,7 @@ cat.copy_browser.prototype = {
 	'map_tree' : {},
 	'map_acn' : {},
 	'map_acp' : {},
+	'sel_list' : [],
 
 	'init' : function( params ) {
 
@@ -57,6 +58,167 @@ cat.copy_browser.prototype = {
 							function() {
 								obj.map_tree = {};
 								obj.list.clear();
+							}
+						],
+						'cmd_add_items' : [
+							['command'],
+							function() {
+								try {
+									JSAN.use('util.widgets'); JSAN.use('util.functional');
+									var list = util.functional.map_list(
+										util.functional.filter_list(
+											obj.sel_list,
+											function (o) {
+												return o.split(/_/)[0] == 'acn';
+											}
+										),
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+									if (list.length == 0) return;
+
+									var copy_shortcut = {};
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											var ou_id = obj.map_acn['acn_' + o].owning_lib();
+											var volume_id = o;
+											var label = obj.map_acn['acn_' + o].label();
+											if (!copy_shortcut[ou_id]) copy_shortcut[ou_id] = {};
+											copy_shortcut[ou_id][ label ] = volume_id;
+
+											return ou_id;
+										}
+									);
+									/* quick fix */  /* what was this fixing? */
+									list = []; for (var i in copy_shortcut) { list.push( i ); }
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												list,
+												[ 'CREATE_COPY' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('batch permission check: ' + E);
+									}
+
+									if (edit==0) return; // no read-only view for this interface
+
+									var title = 'Add Copy';
+
+									JSAN.use('util.window'); var win = new util.window();
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(obj.docid)
+											+'&ou_ids=' + window.escape( js2JSON(list) )
+											+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
+										title,
+										'chrome,modal,resizable'
+									);
+									obj.refresh_list();
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> add copies',E);
+								}
+							}
+						],
+						'cmd_add_items_to_buckets' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_edit_items' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_delete_items' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_print_spine_labels' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_add_volumes' : [
+							['command'],
+							function() {
+								try {
+									JSAN.use('util.widgets'); JSAN.use('util.functional');
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'aou';
+										}
+									);
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);		
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												list,
+												[ 'CREATE_VOLUME', 'CREATE_COPY' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('batch permission check: ' + E);
+									}
+
+									if (edit==0) return; // no read-only view for this interface
+
+									var title = 'Add Volume/Copy';
+
+									JSAN.use('util.window'); var win = new util.window();
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(obj.docid)
+											+'&ou_ids=' + window.escape( js2JSON(list) ),
+										title,
+										'chrome,modal,resizable'
+									);
+
+									obj.refresh_list();
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> add volumes',E);
+								}
+							}
+						],
+						'cmd_edit_volumes' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_delete_volumes' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_mark_volume' : [
+							['command'],
+							function() {
+							}
+						],
+						'cmd_refresh_list' : [
+							['command'],
+							function() {
 							}
 						],
 					}
@@ -326,7 +488,11 @@ cat.copy_browser.prototype = {
 				);
 				for (var i = 0; i < acn_tree_list.length; i++) {
 					v_count++;
-					if (acn_tree_list[i].copies()) c_count += acn_tree_list[i].copies().length;
+					obj.map_acn[ 'acn_' + acn_tree_list[i].id() ] = function(r){return r;}(acn_tree_list[i]);
+					var copies = acn_tree_list[i].copies(); if (copies) c_count += copies.length;
+					for (var j = 0; j < copies.length; j++) {
+						obj.map_acp[ 'acp_' + copies[j].id() ] = function(r){return r;}(copies[j]);
+					}
 				}
 				data.row.my.volume_count = v_count;
 				data.row.my.copy_count = '<' + c_count + '>';
@@ -587,15 +753,15 @@ cat.copy_browser.prototype = {
 					'on_select' : function(ev) {
 						JSAN.use('util.functional');
 						var sel = obj.list.retrieve_selection();
-						var list = util.functional.map_list(
+						obj.sel_list = util.functional.map_list(
 							sel,
 							function(o) { return o.getAttribute('retrieve_id'); }
 						);
 						if (typeof obj.on_select == 'function') {
-							obj.on_select(list);
+							obj.on_select(obj.sel_list);
 						}
 						if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
-							window.xulG.on_select(list);
+							window.xulG.on_select(obj.sel_list);
 						}
 					},
 				}
@@ -607,6 +773,8 @@ cat.copy_browser.prototype = {
 			alert(E);
 		}
 	},
+
+	'refresh_list' : function() { alert('FIXME: refresh the list now'); },
 }
 
 dump('exiting cat.copy_browser.js\n');
