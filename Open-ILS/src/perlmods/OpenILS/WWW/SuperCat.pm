@@ -17,6 +17,7 @@ use OpenSRF::System;
 use OpenSRF::AppSession;
 use XML::LibXML;
 
+use Encode;
 use Unicode::Normalize;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
@@ -562,6 +563,7 @@ sub opensearch_feed {
 
 
 	$class = 'keyword' if ($class eq '-');
+	$terms = decode_utf8($terms);
 	$terms =~ s/\+/ /go;
 	$terms =~ s/'//go;
 
