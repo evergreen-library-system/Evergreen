@@ -359,8 +359,8 @@ function uEditSaveUser(clone) {
 
 		var href = location.href;
 		if( clone ) {
-			href = href.replace(/usr=\d+/, '');
-			href += 'clone=' + clone;
+			href = href.replace(/\&?usr=\d+/, '');
+			href += '&clone=' + clone;
 		}
 		location.href = href;
 	}
