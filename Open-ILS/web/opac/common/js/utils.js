@@ -459,3 +459,29 @@ function iterate( arr, callback ) {
 }
 
 
+
+
+/* taken directly from the JSAN util.date library */
+if (typeof util == 'undefined') var util = {};
+util.date = {};
+util.date.interval_to_seconds = function ( $interval ) {
+
+        $interval = $interval.replace( /and/, ',' );
+        $interval = $interval.replace( /,/, ' ' );
+
+        var $amount = 0;
+	var results = $interval.match( /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/g);  
+	for (var i in results) {
+		var result = results[i].match( /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/ );
+		if (result[2] == 's') $amount += result[1] ;
+		if (result[2] == 'm') $amount += 60 * result[1] ;
+		if (result[2] == 'h') $amount += 60 * 60 * result[1] ;
+		if (result[2] == 'd') $amount += 60 * 60 * 24 * result[1] ;
+		if (result[2] == 'w') $amount += 60 * 60 * 24 * 7 * result[1] ;
+		if (result[2] == 'M') $amount += ((60 * 60 * 24 * 365)/12) * result[1] ;
+		if (result[2] == 'y') $amount += 60 * 60 * 24 * 365 * result[1] ;
+        }
+        return $amount;
+}
+
+
