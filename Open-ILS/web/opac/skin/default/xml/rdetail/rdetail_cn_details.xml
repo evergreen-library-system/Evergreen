@@ -74,7 +74,7 @@
 					<tr>
 						<td colspan='3' style='background: #E0F0E0;'> </td>
 					</tr>
-					<tr name='cnrow'><td>Call Number</td><td colspan='2' name='cn'></td></tr>
+					<tr name='cnrow'><td><b>Call Number</b></td><td><b colspan='2' name='cn'/></td></tr>
 				</tbody>
 			</table>
 		</div>
