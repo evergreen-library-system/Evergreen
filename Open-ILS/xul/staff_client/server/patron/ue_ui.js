@@ -195,6 +195,8 @@ function uEditInsertCat( row, cat, idx ) {
 function uEditDrawSurveys(surveys) {
 	var div = $('uedit_surveys');
 	var table = div.removeChild($('ue_survey_table'));
+	if( surveys.length == 0 ) 
+		unHideMe($('uedit_no_surveys'));
 	for( var s in surveys ) {
 		var survey = surveys[s];
 		surveysCache[survey.id()] = survey;
