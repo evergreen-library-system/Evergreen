@@ -435,7 +435,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 					if (rv == 0) {
 						try {
 							JSAN.use('util.print'); var print = new util.print();
-							print.simple( msg, { 'no_prompt' : true } );
+							print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
 						} catch(E) {
 							dump('FIXME: ' + E + '\n');
 							alert('FIXME: ' + E + '\n');
@@ -502,7 +502,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			if (rv == 0) {
 				try {
 					JSAN.use('util.print'); var print = new util.print();
-					print.simple( msg, { 'no_prompt' : true, 'content-type' : 'text/plain' } );
+					print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
 				} catch(E) {
 					dump('FIXME: ' + E + '\n');
 					alert('FIXME: ' + E + '\n');

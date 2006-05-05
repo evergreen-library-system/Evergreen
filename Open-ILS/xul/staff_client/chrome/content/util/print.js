@@ -26,7 +26,22 @@ util.print.prototype = {
 			var silent = false;
 			if (params && params.no_prompt && params.no_prompt == true) silent = true;
 
-			var w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','receipt_temp','chrome,resizable');
+			var content_type;
+			if (params && params.content_type) {
+				content_type = params.content_type;
+			} else {
+				content_type = 'text/html';
+			}
+
+			var w;
+			switch(content_type) {
+				case 'text/html' :
+					w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','receipt_temp','chrome,resizable');
+				break;
+				default:
+					w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
+				break;
+			}
 
 			w.minimize();
 
