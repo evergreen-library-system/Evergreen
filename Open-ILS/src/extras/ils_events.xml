@@ -64,18 +64,22 @@
 	<event code='1209' textcode='Z3950_LOGIN_FAILED'>
 		<desc xml:lang="en-US">The login failed</desc>
 	</event>
+	<event code='1210' textcode='INCORRECT_PASSWORD'>
+		<!-- used when updating a password and the original is wrong -->
+		<desc xml:lang="en-US">The provided password is not correct</desc>
+	</event>
 
 
 
 
 
-	<event code='1500' textcode='CIRCULATION_NOT_FOUND'>
+	<event code='1500' textcode='ACTION_CIRCULATION_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a circulation object from the system and 
 			the object was not found.
 		</desc>
 	</event>
-	<event code='1501' textcode='BIBLIO_RECORD_NOT_FOUND'>
+	<event code='1501' textcode='BIBLIO_RECORD_ENTRY_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a biblio record entry object from the 
 			system and the object was not found.
@@ -87,19 +91,19 @@
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1503' textcode='HOLD_NOT_FOUND'>
+	<event code='1503' textcode='ACTION_HOLD_REQUEST_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a hold object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1504' textcode='TRANSIT_NOT_FOUND'>
+	<event code='1504' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1505' textcode='BILLING_NOT_FOUND'>
+	<event code='1505' textcode='MONEY_BILLING_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a transit object from the 
 			system and the object was not found.
@@ -117,7 +121,7 @@
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1508' textcode='VOLUME_NOT_FOUND'>
+	<event code='1508' textcode='ASSET_CALL_NUMBER_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a volume object from the 
 			system and the object was not found.
