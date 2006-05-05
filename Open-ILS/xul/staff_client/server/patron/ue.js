@@ -350,7 +350,7 @@ function uEditSaveUser(clone) {
 	else 
 		alert($('ue_success').innerHTML);
 
-	if(clone) clone = patron.id();
+	if(clone) clone = newuser.id();
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
 		window.xulG.on_save(newuser, clone); 
