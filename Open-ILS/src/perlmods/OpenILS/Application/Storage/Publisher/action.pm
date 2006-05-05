@@ -13,6 +13,32 @@ use DateTime::Format::ISO8601;
 my $parser = DateTime::Format::ISO8601->new;
 my $log = 'OpenSRF::Utils::Logger';
 
+sub open_noncat_circs {
+	my $self = shift;
+	my $client = shift;
+	my $user = shift;
+
+	my $a = action::non_cataloged_circulation->table;
+	my $c = config::non_cataloged_type->table;
+
+	my $sql = <<"	SQL";
+		SELECT	a.id
+		  FROM	$a a
+			JOIN $c c ON (a.item_type = c.id)
+		  WHERE	a.circ_time + c.circ_duration > current_timestamp
+			AND a.patron = ?
+	SQL
+
+	return action::non_cataloged_circulation->db_Main->selectcol_arrayref($sql, {}, $user);
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.open_non_cataloged_circulation.user',
+	api_level       => 1,
+	argc		=> 1,
+	method          => 'open_noncat_circs',
+);
+
+
 sub ou_hold_requests {
 	my $self = shift;
 	my $client = shift;
