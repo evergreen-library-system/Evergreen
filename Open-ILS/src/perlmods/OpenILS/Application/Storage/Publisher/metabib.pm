@@ -23,6 +23,8 @@ sub ordered_records_from_metarecord {
 	my $client = shift;
 	my $mr = shift;
 	my $formats = shift;
+	my $org = shift || 1;
+	my $depth = shift;
 
 	my (@types,@forms);
 
@@ -31,6 +33,12 @@ sub ordered_records_from_metarecord {
 		@types = split '', $t;
 		@forms = split '', $f;
 	}
+
+	my $descendants =
+		defined($depth) ?
+			"actor.org_unit_descendants($org, $depth)" :
+			"actor.org_unit_descendants($org)" ;
+
 
 	my $copies_visible = 'AND cp.opac_visible IS TRUE AND cs.holdable IS TRUE AND cl.opac_visible IS TRUE';
 	$copies_visible = '' if ($self->api_name =~ /staff/o);
@@ -59,6 +67,7 @@ sub ordered_records_from_metarecord {
 	                       FROM	$cp_table cp
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
+					JOIN $descendants d ON (cp.circ_lib = d.id)
 	                       WHERE	cn.id = cp.call_number
 	                                $copies_visible
 			  )) AS count
@@ -116,8 +125,8 @@ sub ordered_records_from_metarecord {
 				WHEN rd.item_type = 'r' -- 3d
 					THEN 9
 			END,
-			br.quality DESC,
-			count DESC
+			count DESC,
+			br.quality DESC
 		) x
 	SQL
 
