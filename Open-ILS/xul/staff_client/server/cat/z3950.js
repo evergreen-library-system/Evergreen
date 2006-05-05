@@ -335,6 +335,12 @@ cat.z3950.prototype = {
 			);
 			return;
 		}
+		if (typeof results.ilsevent != 'undefined') {
+			obj.controller.view.result_message.appendChild(
+				document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc )
+			);
+			return;
+		}
 		if (results.count) {
 			obj.controller.view.result_message.appendChild(
 				document.createTextNode( results.count + (results.count == 1 ? ' result ' : ' results ') + 'found. ' )
