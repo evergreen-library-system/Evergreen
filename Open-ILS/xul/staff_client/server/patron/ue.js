@@ -358,10 +358,11 @@ function uEditSaveUser(clone) {
 	} else {
 
 		var href = location.href;
-		if( clone ) {
-			href = href.replace(/\&?usr=\d+/, '');
-			href += '&clone=' + clone;
-		}
+
+		href = href.replace(/\&?usr=\d+/, '');
+		href = href.replace(/\&?clone=\d+/, '');
+
+		if( clone ) href += '&clone=' + clone;
 		location.href = href;
 	}
 }
