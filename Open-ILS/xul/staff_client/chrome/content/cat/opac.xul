@@ -117,6 +117,10 @@
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
+		function set_copy_browser_old() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE_OLD ) + '?docid=' + window.escape(docid),{},xulG);
+		}
+
 		function set_hold_browser() {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
 		}
@@ -201,6 +205,7 @@
 			<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
 			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
 			<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuitem label="Developers: Old Copy Browser" accesskey="C" id="copy_browse_old" oncommand="set_copy_browser_old();"/>
 			<menuitem label="View Holds" accesskey="s" id="view_holds" oncommand="set_hold_browser();"/>
 			<menuseparator/>
 			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
