@@ -107,7 +107,7 @@ cat.copy_browser.prototype = {
 											]
 										).length == 0 ? 1 : 0;
 									} catch(E) {
-										obj.error.sdump('batch permission check: ' + E);
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
 									}
 
 									if (edit==0) return; // no read-only view for this interface
@@ -241,7 +241,7 @@ cat.copy_browser.prototype = {
 											]
 										).length == 0 ? 1 : 0;
 									} catch(E) {
-										obj.error.sdump('batch permission check: ' + E);
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
 									}
 
 									if (edit==0) {
@@ -269,6 +269,105 @@ cat.copy_browser.prototype = {
 						'cmd_edit_volumes' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+									var list = util.functional.map_list(
+										util.functional.filter_list(
+											obj.sel_list,
+											function (o) {
+												return o.split(/_/)[0] == 'acn';
+											}
+										),
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+									if (list.length == 0) return;
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												util.functional.map_list(
+													list,
+													function (o) {
+														return obj.map_acn[ 'acn_' + o ].owning_lib();
+													}
+												),
+												[ 'UPDATE_VOLUME' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
+									}
+
+									if (edit==0) {
+										alert("You don't have permission to edit this volume.");
+										return; // no read-only view for this interface
+									}
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											var my_acn = obj.map_acn['acn_' + o];
+											return [ my_acn.owning_lib(), o, my_acn.label() ];
+										}
+									);
+
+									var title = list.length == 1 ? 'Volume' : 'Volumes';
+
+									JSAN.use('util.window'); var win = new util.window();
+									obj.data.temp = '';
+									obj.data.stash('temp');
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR)
+											+'?ou_id_volume_id_callnumber_tuples=' + window.escape( js2JSON(list) ),
+										title,
+										'chrome,modal,resizable'
+									);
+
+									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+									obj.data.stash_retrieve();
+									var volumes = JSON2js( obj.data.temp );
+									obj.error.sdump('D_CAT','in browse, obj.data.temp =\n' + obj.data.temp);
+									if (volumes=='') return;
+								
+									volumes = util.functional.filter_list(
+										volumes,
+										function (o) {
+											return o.ischanged() == '1';
+										}
+									);
+
+									volumes = util.functional.map_list(
+										volumes,
+										function (o) {
+											o.record( obj.docid ); // staff client 2 did not do this.  Does it matter?
+											return o;
+										}
+									);
+
+									if (volumes.length == 0) return;
+
+									try {
+										var r = obj.network.request(
+											api.FM_ACN_TREE_UPDATE.app,
+											api.FM_ACN_TREE_UPDATE.method,
+											[ ses(), volumes ]
+										);
+										if (typeof r.ilsevent != 'undefined') throw(r);
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('volume update error: ',E);
+									}
+									obj.refresh_list();
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Copy Browser -> Volume Edit',E);
+								}
 							}
 						],
 						'cmd_delete_volumes' : [
