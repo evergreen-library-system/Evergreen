@@ -318,7 +318,7 @@ patron.items.prototype = {
 									var robj = circ.util.checkin_via_barcode(
 										ses(), barcode
 									);
-									if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+									/* circ.util.checkin_via_barcode handles errors currently */
 								}
 								obj.retrieve();
 							} catch(E) {
