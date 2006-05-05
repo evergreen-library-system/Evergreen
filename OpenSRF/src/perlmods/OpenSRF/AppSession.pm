@@ -721,16 +721,16 @@ sub recv {
 	}
 
 	while ( $self->{remaining_recv_timeout} > 0 and $avail < $args{count} ) {
-		last if $self->complete;
-		my $starttime = time;
-		$self->queue_wait($self->{remaining_recv_timeout});
-		my $endtime = time;
-		if ($self->{timeout_reset}) {
-			$self->{timeout_reset} = 0;
-		} else {
-			$self->{remaining_recv_timeout} -= ($endtime - $starttime)
-		}
-		$avail = @{ $self->{recv_queue} };
+			last if $self->complete;
+			my $starttime = time;
+			$self->queue_wait($self->{remaining_recv_timeout});
+			my $endtime = time;
+			if ($self->{timeout_reset}) {
+				$self->{timeout_reset} = 0;
+			} else {
+				$self->{remaining_recv_timeout} -= ($endtime - $starttime)
+			}
+			$avail = @{ $self->{recv_queue} };
 	}
 
 
@@ -825,6 +825,16 @@ sub new {
 	push @{ $self->session->{request_queue} }, $self;
 
 	return $self;
+}
+
+sub recv_timeout {
+	my $self = shift;
+	my $timeout = shift;
+	if (defined $timeout) {
+		$self->{recv_timeout} = $timeout;
+		$self->{remaining_recv_timeout} = $timeout;
+	}
+	return $self->{recv_timeout};
 }
 
 sub queue_size {
