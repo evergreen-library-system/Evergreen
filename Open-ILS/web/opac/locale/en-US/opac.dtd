@@ -36,6 +36,10 @@
 <!ENTITY common.org.note "Tip:">
 <!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a section.">
 <!ENTITY opac.login.login "Login">
+<!ENTITY common.password_criteria 
+	"The password must be at least 7 characters in length, 
+	contain at least one letter (a-z/A-Z), 
+	and contain at least one number.">
 
 
 <!--	================================================================= 

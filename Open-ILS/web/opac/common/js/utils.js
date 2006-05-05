@@ -406,6 +406,7 @@ function scaleFonts(type) {
 	if(!currentFontSize) currentFontSize = 'regular';
 	if(currentFontSize == 'regular' && type == 'regular' ) return;
 	currentFontSize = type;
+	if( currentFontSize == type ) return;
 
 	switch(type) {
 		case "large":  /* these are arbitrary.. but they seem to work ok in FF/IE */

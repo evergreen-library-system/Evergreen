@@ -20,7 +20,7 @@
 
 	<br/>
 
-	<table class='data_grid' style='margin-left: 20px;' width='95%'>
+	<table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
 		<tbody>
 			<tr>
 				<td><span class='login_text'>Enter your username or library barcode</span></td>
@@ -53,6 +53,53 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
+		<thead>
+			<tr><td colspan='2' align='center'><b>Change Password</b></td></tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td colspan='2' style='padding:10px;'>
+					This appears to be the first time you have logged in.  
+					You will need to change your password.
+					&common.password_criteria;
+				</td>
+			</tr>
+
+			<tr>
+				<td>Enter your current password</td>
+				<td><input type='password' id='change_pw_current'/></td>
+			</tr>
+
+			<tr>
+				<td>Enter the new password</td>
+				<td><input type='password' id='change_pw_1'/></td>
+			</tr>
+			<tr>
+				<td>Re-type the new password for verifiication</td>
+				<td><input type='password' id='change_pw_2'/></td>
+			</tr>
+			<tr><td><br/></td><td/></tr>
+			<tr class='color_1'>
+				<td colspan='2' align='center'>
+					<span class='login_text' style='margin-right: 20px;'>
+						<input type='submit' value='Update Password'  id='change_pw_button'/>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<span id='pw_no_match' class='hide_me'>Passwords do not match</span>
+	<span id='pw_update_successful' class='hide_me'>Password successfully updated</span>
+
+	<span id='pw_not_strong' class='hide_me'>
+		The password provided is not strong enough.  
+		&common.password_criteria;
+	</span>
+
 </div>
 
 

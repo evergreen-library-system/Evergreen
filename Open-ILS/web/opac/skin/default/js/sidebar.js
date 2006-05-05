@@ -47,14 +47,69 @@ function initSideBar() {
 var loginBoxVisible = false;
 
 function loginDance() {
-	if(doLogin()) {
-		showCanvas();
-		G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
-		unHideMe(G.ui.sidebar.logoutbox);
-		unHideMe(G.ui.sidebar.logged_in_as);
-		hideMe(G.ui.sidebar.loginbox);
-		runEvt("common", "loggedIn");
+
+	if(doLogin(true)) {
+
+		if(!strongPassword( G.ui.login.password.value ) ) {
+
+			cookieManager.write(COOKIE_SES, "");
+			hideMe($('login_table'));
+			unHideMe($('change_pw_table'));
+			$('change_pw_current').focus();
+			$('change_pw_button').onclick = changePassword;
+			setEnterFunc($('change_pw_2'), changePassword);
+
+		} else {
+			loggedInOK();
+		}
 	}
+}
+
+function loggedInOK() {
+	showCanvas();
+	G.ui.sidebar.username_dest.appendChild(text(G.user.usrname()));
+	unHideMe(G.ui.sidebar.logoutbox);
+	unHideMe(G.ui.sidebar.logged_in_as);
+	hideMe(G.ui.sidebar.loginbox);
+	runEvt( "common", "locationChanged", G.user.home_ou(), findOrgDepth(G.user.home_ou()) );
+}
+
+
+function changePassword() {
+
+	var pc = $('change_pw_current').value;
+	var p1 = $('change_pw_1').value;
+	var p2 = $('change_pw_2').value;
+
+	if( p1 != p2 ) {
+		alert($('pw_no_match').innerHTML);
+		return;
+	}
+
+	if(!strongPassword(p2, true) ) return;
+
+	var req = new Request(UPDATE_PASSWORD, G.user.session, p2, pc );
+	req.send(true);
+	if(req.result()) {
+		alert($('pw_update_successful').innerHTML);
+		loggedInOK();
+	}
+}
+
+function strongPassword(pass, alrt) {
+	var good = false;
+
+	do {
+
+		if(pass.length < 7) break;
+		if(!pass.match(/.*\d+.*/)) break;
+		if(!pass.match(/.*[A-Za-z]+.*/)) break;
+		good = true;
+
+	} while(0);
+
+	if(!good && alrt) alert($('pw_not_strong').innerHTML);
+	return good;
 }
 
 function initLogin() {

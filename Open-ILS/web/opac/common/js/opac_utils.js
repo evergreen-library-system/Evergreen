@@ -407,8 +407,7 @@ function grabUser(ses, force) {
 	request.send(true);
 	var user = request.result();
 
-	if(checkILSEvent(user)) {
-		__ilsEvent = user;
+	if(!user) {
 		doLogout();
 		return false; /* unable to grab the session */
 	}
@@ -422,6 +421,7 @@ function grabUser(ses, force) {
 	G.user.fleshed = false;
 	G.user.session = ses;
 	cookieManager.write(COOKIE_SES, ses, '+1d');
+
 
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
@@ -537,7 +537,7 @@ function grabSkinFromURL() {
 
 
 /* returns a fleshed G.user on success, false on failure */
-function doLogin() {
+function doLogin(suppressEvents) {
 
 	abortAllRequests();
 
@@ -566,13 +566,12 @@ function doLogin() {
 
    auth_request.send(true);
    var auth_result = auth_request.result();
-
-	var code = checkILSEvent(auth_result);
-	if(code) { alertILSEvent(auth_result); return null; }
+	if(!auth_result) return null;
 
 	AUTHTIME = parseInt(auth_result.payload.authtime);
 	var u = grabUser(auth_result.payload.authtoken, true);
-	if(u) runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
+	if(u && ! suppressEvents) 
+		runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
 
 	checkUserSkin();
 
@@ -648,8 +647,6 @@ function orgSelect(id) {
 	removeChildren(G.ui.common.now_searching);
 	G.ui.common.now_searching.appendChild(text(findOrgUnit(id).name()));
 }
-
-//var fontCookie = new HTTP.Cookies();
 
 function setFontSize(size) {
 	scaleFonts(size);
@@ -775,7 +772,7 @@ function _timerRun(tname) {
 }
 
 function checkILSEvent(obj) {
-	if( obj.ilsevent != null && obj.ilsevent != 0 )
+	if( obj && obj.ilsevent != null && obj.ilsevent != 0 )
 		return parseInt(obj.ilsevent);
 	return null;
 }
@@ -789,7 +786,7 @@ function alertILSEvent(code, msg) {
 
 function alertILSEvent(evt, msg) {
    if(!msg) msg = "";
-	alert( msg + '\n' + evt.desc );
+	alert(evt.textcode + '\n' + evt.desc );
 }
 
 

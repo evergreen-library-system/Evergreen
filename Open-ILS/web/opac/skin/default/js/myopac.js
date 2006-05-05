@@ -661,13 +661,15 @@ function myOPACUpdatePassword() {
 		return;
 	}
 
+	if(!strongPassword(password, true)) return;
+
 	var req = new Request(UPDATE_PASSWORD, G.user.session, password, curpassword );
 	req.send(true);
 	if(req.result()) {
-		G.user.usrname(password);
 		hideMe($('myopac_update_password_row'));
 		userShown = false;
 		myOPACShowSummary();
+		alert($('pw_update_successful').innerHTML);
 		return;
 	}
 
