@@ -302,7 +302,7 @@ function uEditDefineData(patron) {
 				onpostchange : function(field, value) {
 					var type			= groupsCache[value];
 					var interval	= type.perm_interval();
-					var intsecs		= parseInt(util.date.interval_to_seconds(interval));
+					var intsecs		= parseInt(interval_to_seconds(interval));
 
 					var expdate		= new Date();
 					var exptime		= expdate.getTime();
