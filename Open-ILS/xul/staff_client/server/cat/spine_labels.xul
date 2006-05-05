@@ -186,16 +186,10 @@
 			<button label="Generate" accesskey="G" oncommand="generate()"/>
 			<spacer />
 			<button id="preview" disabled="true" label="Preview and Print" accesskey="P" oncommand="preview()"/>
+			<spacer />
+			<button id="close" disabled="false" label="Close Window" accesskey="C" oncommand="window.close()"/>
 		</hbox>
 		<hbox id="panel" flex="1" style="overflow: auto"/>
-		<hbox>
-			<groupbox flex="1">
-				<caption label='Note'/>
-				<description>Currently, this interface is designed for and tested with an OKI MICROLINE 320 Turbo 9 Pin Printer using SP1 stock (thank you Uncle Remus!).  More to come as time, money, and printer/ink/label donations permit. ;)  Please join the PINES-DEV or OPEN-ILS-DEV mailing lists (at http://open-ils.org/) for discussion on spine labels.</description>
-				<spacer style="height: 1em"/>
-				<description>PINES: In Windows, we're assuming a generic/text printer device.  The instructions for creating one should be available on the helpdesk.</description>
-			</groupbox>
-		</hbox>
 	</vbox>
 
 </window>
