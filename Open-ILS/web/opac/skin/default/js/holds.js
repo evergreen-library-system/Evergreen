@@ -1,5 +1,6 @@
 
 var currentHoldRecord;
+var currentHoldType;
 var currentHoldRecordObj;
 var holdsOrgSelectorBuilt = false;
 var holdRecipient;
@@ -43,7 +44,9 @@ function holdsDrawWindow(recid, type, edithold, done_callback) {
 		recid = currentHoldRecord;
 		if(recid == null) return;
 	}	
+
 	currentHoldRecord = recid;
+	currentHoldType = type;
 	holdEditHold = edithold;
 	holdEditCallback = done_callback;
 	
@@ -63,18 +66,12 @@ function holdsDrawWindow(recid, type, edithold, done_callback) {
 		return;
 	}
 
-
-	swapCanvas($('check_holds_box'));
-
+	_holdsDrawWindow(recid, type);
 	if(edithold) {
 		hideMe($('holds_submit'));
 		unHideMe($('holds_update'));
-		_holdsDrawWindow(recid, type);
 		_holdsUpdateEditHold(edithold);
-
-	} else {
-		setTimeout( function() { holdsCheckPossibility(recid, type); }, 10 );
-	}
+	}  
 }
 
 function _holdsUpdateEditHold(hold) {
@@ -181,14 +178,11 @@ function _holdsDrawWindow(recid, type) {
 }
 
 
-function holdsCheckPossibility(recid, type) {
+function holdsCheckPossibility(recid, type, pickuplib) {
 	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, 
-			{ titleid : recid, patronid : G.user.id(), depth : 0 } );
+			{ titleid : recid, patronid : G.user.id(), depth : 0, pickup_lib : pickuplib } );
 	req.send(true);
-	var res = req.result();
-
-	if(res) _holdsDrawWindow(recid, type);
-	else drawCanvas();
+	return req.result();
 }
 
 
@@ -258,6 +252,15 @@ function holdsBuildHoldFromWindow() {
 	
 function holdsPlaceHold(hold) {
 
+	swapCanvas($('check_holds_box'));
+	alert(currentHoldRecord + ' : ' +  hold.pickup_lib() );
+
+	if( ! holdsCheckPossibility(currentHoldRecord, currentHoldType, hold.pickup_lib() ) ) {
+		alert($('hold_not_allowed').innerHTML);
+		drawCanvas();
+		return;
+	}
+
 	var req = new Request( CREATE_HOLD, holdRequestor.session, hold );
 	req.send(true);
 	var res = req.result();
@@ -266,8 +269,12 @@ function holdsPlaceHold(hold) {
 	else alert($('holds_failure').innerHTML);
 	
 	showCanvas();
+
 	holdRecipient = null;
 	holdRequestor = null;
+	currentHoldRecord = null;
+	currentHoldType = null;
+
 	runEvt('common', 'holdUpdated');
 }
 

@@ -31,7 +31,7 @@
 			<tbody>
 				<tr>
 					<td class='holds_cell color_1' 
-						align='center' colspan='2'>Place or Edit a Hold</td>
+						align='center' colspan='2'>Create / Edit a Hold</td>
 				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.recipient;:</td>
@@ -111,6 +111,12 @@
 		<span class='hide_me' id='holds_bad_phone'>
 			The phone number does not have the correct format.
 			The expected format is XXX-YYY-ZZZZ
+		</span>
+
+		<span class='hide_me' id='hold_not_allowed'>
+			No items were found that could fulfill the requested holds.  
+			It's possible that changing the pickup library or choosing a 
+			different format will result in a successful hold.
 		</span>
 	
 	</div>
