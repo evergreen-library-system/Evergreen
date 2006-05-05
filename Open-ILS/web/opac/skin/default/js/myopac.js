@@ -106,6 +106,10 @@ function myOPACShowChecked() {
 	var req = new Request(FETCH_CHECKED_OUT_SLIM, G.user.session);	
 	req.callback(myOPACDrawCheckedOutSlim);
 	req.send();
+
+	var nreq = new Request(FETCH_NON_CAT_CIRCS, G.user.session);
+	nreq.callback(myOPACDrawNonCatCircs);
+	nreq.send();
 }
 
 
@@ -179,6 +183,7 @@ function myOPACDrawCheckedTitle(r) {
 }
 
 function myOPACDrawNonCatalogedItem(r) {
+	alert('AHHH');
 	var copy = r.getResultObject();
 	var circid = r.circ;
 
@@ -859,5 +864,63 @@ function myOPACCreateBookbag() {
 	if(code) { alertILSEvent(result); return; }
 	myOPACShowBookbags(true);
 }
+
+
+/* ---------------------------------------------------------------------- */
+/* Non cat circs */
+/* ---------------------------------------------------------------------- */
+
+var nonCatCircIds;
+var nonCatTypes;
+/* if we have some circs, grab the non-cat types */
+function myOPACDrawNonCatCircs(r) {
+	var ids = r.getResultObject();
+	if(ids.length == 0) return;
+	nonCatCircIds = ids;
+	unHideMe($('non_cat_circs_div'));
+	var req = new Request(FETCH_NON_CAT_TYPES, G.user.home_ou());
+	req.callback(myOPACDrawNonCatCircs2);
+	req.send();
+}
+
+
+/* now we have circs and the types.. draw each one */
+var nonCatTbody;
+var nonCatRow;
+function myOPACDrawNonCatCircs2(r) {
+	nonCatTypes = r.getResultObject();
+	nonCatTbody = $('non_cat_circs_tbody');
+	nonCatRow = nonCatTbody.removeChild($('non_cat_circs_row'));
+	for( var i in nonCatCircIds ) {
+		var req = new Request(FETCH_NON_CAT_CIRC, G.user.session, nonCatCircIds[i]);
+		req.callback(myOPACDrawNonCatCirc);
+		req.send();
+	}
+}
+
+
+/* draw a single circ */
+function myOPACDrawNonCatCirc(r) {
+	var circ = r.getResultObject();
+	var type = grep(nonCatTypes, 
+		function(i){
+			return (i.id() == circ.item_type());
+		}
+	)[0];
+
+	var row = nonCatTbody.appendChild(nonCatRow.cloneNode(true));
+	$n(row, 'circ_lib').appendChild(text(findOrgUnit(circ.circ_lib()).name()));
+	$n(row, 'item_type').appendChild(text(type.name()));
+
+	var duration = interval_to_seconds(type.circ_duration());
+	duration = parseInt(duration + '000');
+
+	var start = new Date.W3CDTF(circ.circ_time());
+	var due = new Date(  start.getTime() + duration );
+
+	$n(row, 'circ_time').appendChild(text(due));
+}
+
+
 
 

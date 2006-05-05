@@ -1,9 +1,7 @@
 
 <div id='myopac_checked_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript'>
-	</script>
-
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Date.W3CDTF.js'/>
 
 	<table width='100%' class='light_border data_grid'>
 
@@ -45,6 +43,27 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<div id='non_cat_circs_div' class='hide_me'>
+		<br/><br/>
+		<div style='text-align: center'><b>Other Circulations</b></div>
+		<table class='data_grid' width='100%'>
+			<thead>
+				<tr>	
+					<td>Circulating Library</td>
+					<td>Circulation Type</td>
+					<td>Please return by</td>
+				</tr>
+			</thead>
+			<tbody id='non_cat_circs_tbody'>
+				<tr id='non_cat_circs_row'>
+					<td name='circ_lib'/>
+					<td name='item_type'/>
+					<td name='circ_time'/>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<div id='myopac_renew_success' class='hide_me'>Item successfully renewed</div>
 

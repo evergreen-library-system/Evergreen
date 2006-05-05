@@ -18,7 +18,7 @@ my @web_core = qw/
 	asv asva asvr asvq 
 	circ ccs ahn  
 	crcd crmf crrf mbts aoc aus 
-	mous mobts mb 
+	mous mobts mb ancc cnct
 	/;
 
 my @reports = qw/ perm_ex ex ao aou aout /;

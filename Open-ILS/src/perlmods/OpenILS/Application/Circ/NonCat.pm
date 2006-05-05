@@ -6,6 +6,7 @@ use Data::Dumper;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::Editor;
 $Data::Dumper::Indent = 0;
 
 my $U = "OpenILS::Application::AppUtils";
@@ -130,5 +131,47 @@ sub retrieve_noncat_types_all {
 }
 
 
+
+__PACKAGE__->register_method(
+	method		=> 'fetch_noncat',
+	api_name		=> 'open-ils.circ.non_cataloged_circulation.retrieve',
+	signature	=> q/
+	/
+);
+
+sub fetch_noncat {
+	my( $self, $conn, $auth, $circid ) = @_;
+	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
+	my $c = $e->retrieve_action_non_cataloged_circulation($circid)
+		or return $e->event;
+	return $c;
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_open_noncats',
+	api_name	=> 'open-ils.circ.open_non_cataloged_circulation.user',
+	signature => q/
+		Returns an id-list of non-cataloged circulations that are considered
+		open as of now.  a circ is open if circ time + circ duration 
+		(based on type) is > than now.
+		@param auth auth key
+		@param userid user to retrieve non-cat circs for 
+			defaults to the session user
+	/
+);
+
+sub fetch_open_noncats {
+	my( $self, $conn, $auth, $userid ) = @_;
+	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
+	$userid ||= $e->requestor->id;
+	return $e->request(
+		'open-ils.storage.action.open_non_cataloged_circulation.user', $userid );
+}
 
 1;
