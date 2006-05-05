@@ -51,6 +51,17 @@
 					} 
 				);
 
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				JSAN.use('util.file'); var file = new util.file('z3950_store');
+                if (file._file.exists()) {
+                        var creds = file.get_object(); file.close();
+						document.getElementById('username').value = creds[0];
+						document.getElementById('password').value = creds[1];
+						document.getElementById('asc_id').focus();
+				} else {
+						document.getElementById('username').focus();
+				}
+
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					try { window.xulG.set_tab_name('Z39.50'); } catch(E) { alert(E); }
 				}
@@ -60,6 +71,18 @@
 					"system administrator or software developer the following:\ncat/z3950.xul\n" + E + '\n';
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
+			}
+		}
+
+		function save() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				var creds = [ document.getElementById('username').value, document.getElementById('password').value ];
+				JSAN.use('util.file'); var file = new util.file('z3950_store');
+				file.set_object(creds);
+				file.close();
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Problem storing z39.50 credentials.',E);
 			}
 		}
 
@@ -80,11 +103,15 @@
 					<rows>
 						<row>
 							<label value="Server:" control="server"/><textbox id="server" value="" disabled="false"/>
-							<label value="Username:" control="username"/><textbox id="username" value="" disabled="false"/>
+							<label value="Username:" control="username" accesskey="U"/>
+							<!--<textbox id="username" persist="value" onchange="this.setAttribute('value',this.value);" disabled="false"/>-->
+							<textbox id="username" disabled="false"/>
 						</row>
 						<row>
 							<label value="Database:" control="database"/><textbox id="database" value="" disabled="false"/>
-							<label value="Password:" control="password"/><textbox id="password" value="" disabled="false"/>
+							<label value="Password:" control="password"/>
+							<!--<textbox id="password" persist="value" onchange="this.setAttribute('value',this.value);" disabled="false"/>-->
+							<textbox id="password" disabled="false" onchange="save()"/>
 						</row>
 						<row>
 							<label value="Port:" control="port"/><textbox id="port" value="" disabled="false"/>
@@ -102,17 +129,17 @@
 						<label value="Accession ID:" control="asc_id" accesskey="I"/>
 						<hbox>
 							<textbox id="asc_id"/>
-							<label value="ISBN:"/>
-							<textbox disabled="true"/>
-							<label value="ISSN:"/>
-							<textbox disabled="true"/>
+							<label value="ISBN:" hidden="true"/>
+							<textbox disabled="true" hidden="true"/>
+							<label value="ISSN:" hidden="true"/>
+							<textbox disabled="true" hidden="true"/>
 						</hbox>
 					</row>
-					<row>
+					<row hidden="true">
 						<label value="Title:" accesskey="T"/>
 						<textbox disabled="true"/>
 					</row>
-					<row>
+					<row hidden="true">
 						<label value="Author:"/>
 						<textbox disabled="true"/>
 					</row>
