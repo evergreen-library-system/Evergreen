@@ -48,6 +48,8 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 
+				document.getElementById('caption').setAttribute('tooltiptext','Record ID = ' + docid);
+
 				g.network.request(
 					api.MODS_SLIM_RECORD_RETRIEVE.app,
 					api.MODS_SLIM_RECORD_RETRIEVE.method,
@@ -122,7 +124,7 @@
 	</script>
 
 	<groupbox flex="1" style="overflow: auto; min-height: 100px;">
-		<caption label="Record Details"/>
+		<caption label="Record Details" id="caption"/>
 			<html:table width="90%">
 				<html:tr valign="top">
 					<html:td colspan="4">
