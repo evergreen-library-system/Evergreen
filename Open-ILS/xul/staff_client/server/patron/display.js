@@ -34,6 +34,8 @@ patron.display.prototype = {
 				{},
 				{ 
 					'on_list_change' : function(checkout) {
+					
+						if (!checkout.circ.id()) return; /* this stops noncats from getting pushed into Items Out */
 
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.summary_window.g.summary.controller.render('patron_checkouts');
