@@ -861,7 +861,7 @@ sub fetch_open_transit_by_copy {
 	$transit = $self->storagereq(
 		'open-ils.storage.direct.action.transit_copy.search_where',
 		{ target_copy => $copyid, dest_recv_time => undef });
-	$evt = OpenILS::Event->new('TRANSIT_NOT_FOUND') unless $transit;
+	$evt = OpenILS::Event->new('ACTION_TRANSIT_COPY_NOT_FOUND') unless $transit;
 	return ($transit, $evt);
 }
 

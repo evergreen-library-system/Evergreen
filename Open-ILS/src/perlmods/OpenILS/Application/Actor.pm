@@ -394,13 +394,23 @@ sub _add_patron {
 
 
 sub _update_patron {
-	my( $session, $patron, $user_obj) = @_;
+	my( $session, $patron, $user_obj, $noperm) = @_;
 
 	$logger->info("Updating patron ".$patron->id." in DB");
-	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
-	return (undef, $evt) if $evt;
 
-	$patron->clear_passwd unless $patron->passwd;
+	if(!$noperm) {
+		my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
+		return (undef, $evt) if $evt;
+	}
+
+	# update the password by itself to avoid the password protection magic
+	if( $patron->passwd ) {
+		my $s = $session->request(
+			'open-ils.storage.direct.actor.user.remote_update',
+			{id => $patron->id}, {passwd => $patron->passwd})->gather(1);
+		return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($s);
+		$patron->clear_passwd;
+	}
 
 	if(!$patron->ident_type) {
 		$patron->clear_ident_type;
@@ -1057,34 +1067,33 @@ sub update_password {
 
 	my $evt;
 
-	#warn "Updating user with method " .$self->api_name . "\n";
 	my $user_obj = $apputils->check_user_session($user_session); 
 
 	if($self->api_name =~ /password/o) {
 
 		#make sure they know the current password
 		if(!_verify_password($user_session, md5_hex($current_password))) {
-			return OpenILS::EX->new("USER_WRONG_PASSWORD")->ex;
+			return OpenILS::Event->new('INCORRECT_PASSWORD');
 		}
 
+		$logger->debug("update_password setting new password $new_value");
 		$user_obj->passwd($new_value);
-	} 
-	elsif($self->api_name =~ /username/o) {
+
+	} elsif($self->api_name =~ /username/o) {
 		my $users = search_username(undef, undef, $new_value); 
 		if( $users and $users->[0] ) {
 			return OpenILS::Event->new('USERNAME_EXISTS');
 		}
 		$user_obj->usrname($new_value);
-	}
 
-	elsif($self->api_name =~ /email/o) {
+	} elsif($self->api_name =~ /email/o) {
 		#warn "Updating email to $new_value\n";
 		$user_obj->email($new_value);
 	}
 
 	my $session = $apputils->start_db_session();
 
-	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj);
+	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj, 1);
 	return $evt if $evt;
 
 	$apputils->commit_db_session($session);

@@ -148,15 +148,16 @@ sub checkouts_by_user_opac {
 
 	my $data;
 	my $search = {usr => $user_id, stop_fines => undef};
+
 	if( $user_id ne $e->requestor->id ) {
 		$data = $e->search_action_circulation(
-			$search, {checkperm=>1, permorg=>$patron->home_ou});
+			$search, {checkperm=>1, permorg=>$patron->home_ou})
+			or return $e->event;
 
 	} else {
 		$data = $e->search_action_circulation($search);
 	}
 
-	return $e->event if $e->event;
 	return $data;
 }
 

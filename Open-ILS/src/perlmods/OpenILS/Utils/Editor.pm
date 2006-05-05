@@ -240,12 +240,19 @@ sub log_activity {
 # 'delete' expects an object
 #
 # All methods return true on success and undef on failure.  On failure, 
-# $e->event is set to the generated event.  This method assumes that updating
-# a non-changed object and thereby receiving a 0 from storage, is a successful
-# update.  The method will therefore return true so the caller can just do 
+# $e->event is set to the generated event.  
+# Note: this method assumes that updating a non-changed object and 
+# thereby receiving a 0 from storage, is a successful update.  
+#
+# The method will therefore return true so the caller can just do 
 # $e->update_blah($x) or return $e->event;
 # The true value returned from storage for all methods will be stored in 
 # $e->data, until the next method is called.
+#
+# not-found events are generated on retrieve and serach methods.
+# action=search methods will return [] (==true) if no data is found.  If the
+# caller is interested in the not found event, they can do:  
+# return $e->event unless @$results; 
 # -----------------------------------------------------------------------------
 sub runmethod {
 	my( $self, $action, $type, $arg, $options ) = @_;
@@ -285,14 +292,14 @@ sub runmethod {
 	} catch Error with {
 		$err = shift;
 	};
+	
+	# Generate the not-found event in case we need it
 
 	if(!defined $obj) {
 		$logger->info("editor: request returned no data");
 
 		if( $action eq 'retrieve' ) {
-			(my $t = $type) =~ s/\./_/og;
-			$t = uc($t);
-			$self->event(OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg));
+			$self->event(_mk_not_found($type, $arg));
 
 		} elsif( $action eq 'update' or 
 				$action eq 'delete' or $action eq 'create' ) {
@@ -304,10 +311,30 @@ sub runmethod {
 		return undef;
 	}
 
+	if( $action eq 'create' and $obj == 0 ) {
+		my $evt = OpenILS::Event->new(
+			'DATABASE_UPDATE_FAILED', payload => $arg, debug => "$err" );
+		$self->event($evt);
+		return undef;
+	}
+
+
+	if( $action eq 'search' ) {
+		$self->event(_mk_not_found($type, $arg)) unless @$obj;
+	}
+
 	$arg->id($obj) if $action eq 'create';
 	$self->data($obj);
 
 	return ($obj) ? $obj : 1;
+}
+
+
+sub _mk_not_found {
+	my( $type, $arg ) = @_;
+	(my $t = $type) =~ s/\./_/og;
+	$t = uc($t);
+	return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
 }
 
 

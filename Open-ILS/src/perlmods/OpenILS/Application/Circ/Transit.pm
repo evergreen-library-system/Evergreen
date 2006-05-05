@@ -7,6 +7,7 @@ use OpenSRF::Utils;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::ScriptRunner;
+use OpenILS::Utils::Editor;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
 use OpenSRF::Utils::Logger qw(:logger);
@@ -251,6 +252,31 @@ sub abort_transit {
 
 	return 1;
 }
+
+
+__PACKAGE__->register_method(
+	method		=> 'get_open_copy_transit',
+	api_name		=> 'open-ils.circ.open_copy_transit.retrieve',
+	signature	=> q/
+		Retrieves the open transit object for a given copy
+		@param auth The login session key
+		@param copyid The id of the copy
+		@return Transit object
+ /
+);
+
+sub get_open_copy_transit {
+	my( $self, $conn, $auth, $copyid ) = @_;	
+	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER'); # XXX rely on editor perms
+	my $t = $e->search_action_transit_copy(
+		{ target_copy => $copyid, dest_recv_time => undef });
+	return $e->event unless @$t;
+	return $$t[0];
+}
+
+
 	
 
 
