@@ -165,7 +165,7 @@ cat.copy_browser.prototype = {
 												util.functional.map_list(
 													list,
 													function (o) {
-														return map_acn[ 'acn_' + map_acp[ 'acp_' + o ].call_number() ].owning_lib();
+														return obj.map_acn[ 'acn_' + obj.map_acp[ 'acp_' + o ].call_number() ].owning_lib();
 													}
 												),
 												[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
