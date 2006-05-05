@@ -54,7 +54,8 @@ function rresultCollectIds() {
 		case "" :
 		defaut:
 			var form = (getForm() == "all") ? null : getForm();
-			var req = new Request(FETCH_RIDS, getMrid(), form );
+			var req = new Request(FETCH_RIDS, getMrid(), 
+				{ format : form, org : getLocation(), depth : getDepth() } );
 			req.callback( rresultHandleRIds );
 			req.send();
 	}

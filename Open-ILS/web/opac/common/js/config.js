@@ -247,9 +247,6 @@ config.ids.altcanvas = {};
 
 var SEARCH_MRS						= 'open-ils.search:open-ils.search.metabib.multiclass:1';
 var SEARCH_RS						= 'open-ils.search:open-ils.search.biblio.multiclass:1';
-/*
-var FETCH_MRIDS_					= "open-ils.search:open-ils.search.biblio.metabib.class.search:1";
-*/
 var FETCH_SEARCH_RIDS			= "open-ils.search:open-ils.search.biblio.record.class.search:1";
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MODS_FROM_COPY		= "open-ils.search:open-ils.search.biblio.mods_from_copy";

@@ -631,28 +631,17 @@ __PACKAGE__->register_method(
 );
 
 sub biblio_mrid_to_record_ids {
-	my( $self, $client, $mrid, $format ) = @_;
+	my( $self, $client, $mrid, $args ) = @_;
 
-	throw OpenSRF::EX::InvalidArg 
-		("search.biblio.metarecord_to_record_ids requires mr id")
-			unless defined( $mrid );
-
-	warn "Searching for record for MR $mrid and format $format\n";
+	my $format	= $$args{format};
+	my $org		= $$args{org};
+	my $depth	= $$args{depth};
 
 	my $method = "open-ils.storage.ordered.metabib.metarecord.records.atomic";
-	if($self and $self->api_name =~ /staff/) { $method =~ s/atomic/staff\.atomic/; }
-	warn "Performing record retrieval with method $method\n";
+	$method =~ s/atomic/staff\.atomic/o if $self->api_name =~ /staff/o; 
+	my $recs = $U->storagereq($method, $mrid, $format, $org, $depth);
 
-
-	my $mrmaps = OpenILS::Application::AppUtils->simple_scalar_request( 
-			"open-ils.storage", $method, $mrid, $format );
-
-	warn Dumper $mrmaps;
-
-	my $size = @$mrmaps;	
-
-	return { count => $size, ids => $mrmaps };
-
+	return { count => scalar(@$recs), ids => $recs };
 }
 
 
