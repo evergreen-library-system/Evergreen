@@ -63,11 +63,14 @@ circ.checkout.prototype = {
 									'command',
 									function(ev) {
 										var tb = obj.controller.view.checkout_barcode_entry_textbox;
+										var db = document.getElementById('duedate_hbox');
 										if (ev.target.value == 'barcode') {
+											db.hidden = false;
 											tb.disabled = false;
 											tb.value = '';
 											tb.focus();
 										} else {
+											db.hidden = true;
 											tb.disabled = true;
 											tb.value = 'Non-Cataloged';
 										}
@@ -455,6 +458,7 @@ circ.checkout.prototype = {
 		this.controller.view.checkout_barcode_entry_textbox.disabled = false;
 		this.controller.view.checkout_barcode_entry_textbox.value = '';
 		this.controller.view.checkout_barcode_entry_textbox.focus();
+		document.getElementById('duedate_hbox').hidden = false;
 	},
 
 	'on_failure' : function() {

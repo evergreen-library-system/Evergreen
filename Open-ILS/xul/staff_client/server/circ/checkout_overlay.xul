@@ -37,7 +37,7 @@
 		command="cmd_checkout_submit"
 		accesskey="&staff.patron_display.checkout.submit_label.accesskey;"/>
 	<spacer flex="1"/>
-	<hbox>
+	<hbox id="duedate_hbox">
 		<label value="Due Date" accesskey="u" control="checkout_duedate_menu"/>
 		<menulist id="checkout_duedate_menu" editable="true">
 			<menupopup>
