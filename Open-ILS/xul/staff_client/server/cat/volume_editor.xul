@@ -47,27 +47,12 @@
 
 				g.cgi = new CGI();
 
-				var tuples = [];
-				if (g.cgi.param('ou_id_volume_id_callnumber_tuples')) 
-					tuples = JSON2js( g.cgi.param('ou_id_volume_id_callnumber_tuples') );
-				if (!tuples) tuples = [];
-				if (window.xulG && window.xulG.ou_id_volume_id_callnumber_tuples) 
-					tuples = tuples.concat( window.xulG.ou_id_volume_id_callnumber_tuples );
-
 				JSAN.use('util.network'); g.network = new util.network();
 
 				JSAN.use('util.functional');
 
-				g.volumes = util.functional.map_list(
-					tuples,
-					function (obj) {
-						var cn = new acn();
-						cn.owning_lib( obj[0] );
-						cn.id( obj[1] );
-						cn.label( obj[2] );
-						return cn;
-					}
-				);
+				g.volumes = JSON2js( g.data.volumes_temp );
+				g.data.volumes_temp = ''; g.data.stash('volumes_temp');
 
 				var rows = document.getElementById('rows');
 
@@ -97,9 +82,9 @@
 		}
 
 		g.stash_and_close = function() {
-			g.data.temp = js2JSON( g.volumes );
-			g.error.sdump('D_CAT','in modal window, g.data.temp = \n' + g.data.temp + '\n');
-			g.data.stash('temp');
+			g.data.volumes_temp = js2JSON( g.volumes );
+			g.error.sdump('D_CAT','in modal window, g.data.volumes_temp = \n' + g.data.volumes_temp + '\n');
+			g.data.stash('volumes_temp');
 			window.close();
 		}
 

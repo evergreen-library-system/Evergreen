@@ -314,25 +314,24 @@ cat.copy_browser.prototype = {
 										list,
 										function (o) {
 											var my_acn = obj.map_acn['acn_' + o];
-											return [ my_acn.owning_lib(), o, my_acn.label() ];
+											return function(r){return r;}(my_acn);
 										}
 									);
 
 									var title = list.length == 1 ? 'Volume' : 'Volumes';
 
 									JSAN.use('util.window'); var win = new util.window();
-									obj.data.temp = '';
-									obj.data.stash('temp');
+									obj.data.volumes_temp = js2JSON( list );
+									obj.data.stash('volumes_temp');
 									var w = win.open(
-										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR)
-											+'?ou_id_volume_id_callnumber_tuples=' + window.escape( js2JSON(list) ),
+										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
 										title,
 										'chrome,modal,resizable'
 									);
 
 									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 									obj.data.stash_retrieve();
-									var volumes = JSON2js( obj.data.temp );
+									var volumes = JSON2js( obj.data.volumes_temp );
 									obj.error.sdump('D_CAT','in browse, obj.data.temp =\n' + obj.data.temp);
 									if (volumes=='') return;
 								
