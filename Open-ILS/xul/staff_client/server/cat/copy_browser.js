@@ -78,7 +78,7 @@ cat.copy_browser.prototype = {
 		var obj = this;
 		try {
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-			obj.show_libs( org );
+			obj.show_libs( org, true );
 		
 			var p_org = obj.data.hash.aou[ org.parent_ou() ];
 			if (p_org) {
@@ -88,7 +88,7 @@ cat.copy_browser.prototype = {
 					funcs.push(
 						function(o) {
 							return function() {
-								obj.show_libs( o );
+								obj.show_libs( o, true );
 							}
 						}( p_org.children()[i] )
 					);
@@ -103,6 +103,8 @@ cat.copy_browser.prototype = {
 	'show_all_libs' : function() {
 		var obj = this;
 		try {
+			obj.show_my_libs();
+
 			obj.show_libs( obj.data.tree.aou );
 
 			JSAN.use('util.exec'); var exec = new util.exec();
@@ -143,7 +145,7 @@ cat.copy_browser.prototype = {
 				funcs.push(
 					function(o) {
 						return function() {
-							obj.show_libs(o);
+							obj.show_libs(o,true);
 						}
 					}( orgs[i] )
 				);
@@ -154,7 +156,7 @@ cat.copy_browser.prototype = {
 		}
 	},
 
-	'show_libs' : function(start_aou) {
+	'show_libs' : function(start_aou,show_open) {
 		var obj = this;
 		try {
 			if (!start_aou) throw('show_libs: Need a start_aou');
@@ -175,7 +177,11 @@ cat.copy_browser.prototype = {
 				funcs.push(
 					function(o,p) {
 						return function() { 
-							obj.append_org(o,p,{'container':'true'}); 
+							if (show_open) {
+								obj.append_org(o,p,{'container':'true','open':'true'}); 
+							} else {
+								obj.append_org(o,p,{'container':'true'}); 
+							}
 						};
 					}(parents[i], obj.data.hash.aou[ parents[i].parent_ou() ])
 				);
@@ -192,7 +198,7 @@ cat.copy_browser.prototype = {
 					if (start_aou.children()) {
 						var x = obj.map_tree[ 'aou_' + start_aou.id() ];
 						x.setAttribute('container','true');
-						//x.setAttribute('open','true');
+						if (show_open) x.setAttribute('open','true');
 						for (var i = 0; i < start_aou.children().length; i++) {
 							funcs.push(
 								function(o,p) {
@@ -211,7 +217,7 @@ cat.copy_browser.prototype = {
 		}
 	},
 
-	'on_select' : function(list) {
+	'on_select' : function(list,twisty) {
 		var obj = this;
 		for (var i = 0; i < list.length; i++) {
 			var node = obj.map_tree[ list[i] ];
@@ -219,14 +225,14 @@ cat.copy_browser.prototype = {
 			var row_type = list[i].split('_')[0];
 			var id = list[i].split('_')[1];
 			switch(row_type) {
-				case 'aou' : obj.on_select_org(id); break;
-				case 'acn' : obj.on_select_acn(id); break;
+				case 'aou' : obj.on_select_org(id,twisty); break;
+				case 'acn' : obj.on_select_acn(id,twisty); break;
 				default: break;
 			}
 		}
 	},
 
-	'on_select_acn' : function(acn_id) {
+	'on_select_acn' : function(acn_id,twisty) {
 		var obj = this;
 		try {
 			var acn_tree = obj.map_acp[ 'acn_' + acn_id ];
@@ -249,7 +255,7 @@ cat.copy_browser.prototype = {
 		}
 	},
 
-	'on_select_org' : function(org_id) {
+	'on_select_org' : function(org_id,twisty) {
 		var obj = this;
 		var org = obj.data.hash.aou[ org_id ];
 		var funcs = [];
@@ -571,7 +577,7 @@ cat.copy_browser.prototype = {
 						var node = obj.list.node.contentView.getItemAtIndex(row.value);
 						var list = [ node.getAttribute('retrieve_id') ];
 						if (typeof obj.on_select == 'function') {
-							obj.on_select(list);
+							obj.on_select(list,true);
 						}
 						if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
 							window.xulG.on_select(list);
