@@ -205,6 +205,12 @@ sub scrub_metabib_record {
 	my $client = shift;
 	my $rec = shift;
 
+	if ( ref($rec) && ref($rec) =~ /HASH/o ) {
+		$rec = OpenILS::Application::WoRM->storage_req(
+			'open-ils.storage.id_list.biblio.record_entry.search_where', $rec
+		);
+	}
+
 	my $commit = 0;
 	if (!OpenILS::Application::WoRM->in_transaction) {
 		OpenILS::Application::WoRM->begin_transaction($client) || throw OpenSRF::EX::PANIC ("Couldn't BEGIN transaction!");
@@ -268,10 +274,64 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );                      
 
+sub wormize_biblio_metarecord {
+	my $self = shift;
+	my $client = shift;
+	my $mrec = shift;
+
+	my $recs = OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic' => $mrec );
+
+	my $count = 0;
+	for my $r (@$recs) {
+		$client->respond(
+			{ record  => $r->source,
+			  success => wormize_biblio_record($self => $client => $r->source),
+			}
+		);
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.metarecord",
+	method		=> "wormize_biblio_metarecord",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.metarecord.nomap",
+	method		=> "wormize_biblio_metarecord",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.metarecord.noscrub",
+	method		=> "wormize_biblio_metarecord",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.worm.wormize.metarecord.nomap.noscrub",
+	method		=> "wormize_biblio_metarecord",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);
+
+
 sub wormize_biblio_record {
 	my $self = shift;
 	my $client = shift;
 	my $rec = shift;
+
+	if ( ref($rec) && ref($rec) =~ /HASH/o ) {
+		$rec = OpenILS::Application::WoRM->storage_req(
+			'open-ils.storage.id_list.biblio.record_entry.search_where', $rec
+		);
+	}
+
 
 	my $commit = 0;
 	if (!OpenILS::Application::WoRM->in_transaction) {

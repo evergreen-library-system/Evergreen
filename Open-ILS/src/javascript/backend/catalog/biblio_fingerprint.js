@@ -14,7 +14,7 @@ var a = null;
 function extract_typed_title( ti ) {
 
 	try {
-		var types = ['uniform','translated','alternative'];
+		var types = ['uniform','translated'];
 		for ( var j in types ) {
 			for ( var i in ti ) {
 				if (ti[i].attribute("type") == types[j])
@@ -52,24 +52,29 @@ var quality = 0;
 
 // Treat non-text differently
 if (modsdoc.typeOfResource != 'text') {
-	quality = 10;
+	quality += marcdoc.datafield.length() / 2;
 
 	// Look in related items for a good title
-	for ( var index in modsdoc.relatedItem.( hasOwnProperty('@type') && @type != 'series' && @type != 'host' ) ) {
-		var ri = modsdoc.relatedItem[index];
-		if ( ri.(!hasOwnProperty("@type") )) {
-			t = extract_typed_title( ri.titleInfo.(hasOwnProperty('@type')) );
-			if (!t) {
-				t = ri.titleInfo[0];
-				quality += 10;
-			} else {
-				quality += 15;
-			}
-		}
+	for ( var index in modsdoc.relatedItem ) {
+		log_debug('Looking at related items ['+modsdoc.relatedItem[index].toXMLString()+']');
 
-		if (t != null) {
-			log_debug('Found ['+modsdoc.typeOfResource+'] related titleInfo node: ' + t.toXMLString());
-			break;
+		if ( modsdoc.relatedItem[index].hasOwnProperty('@type') ) {
+			if ( modsdoc.relatedItem[index].@type != 'series' && modsdoc.relatedItem[index].@type != 'host' ) {
+				t = extract_typed_title( modsdoc.relatedItem[index].titleInfo.(hasOwnProperty('@type')) );
+				if (!t) {
+					t = modsdoc.relatedItem[index].titleInfo[0];
+					quality += 10;
+				} else {
+					quality += 15;
+				}
+
+				a = extract_author(modsdoc.relatedItem[index].name)
+
+				if (t != null) {
+					log_debug('Found ['+modsdoc.typeOfResource+'] related titleInfo node: ' + t.toXMLString());
+					break;
+				}
+			}
 		}
 	}
 
@@ -82,12 +87,13 @@ if (modsdoc.typeOfResource != 'text') {
 		} else {
 			quality += 10;
 		}
+		log_debug('Found ['+modsdoc.typeOfResource+'] main titleInfo node: ' + t.toXMLString());
 	}
 
-	log_debug('Found ['+modsdoc.typeOfResource+'] main titleInfo node: ' + t.toXMLString());
 
 } else {
 	quality = 20;
+	quality += marcdoc.datafield.length();
 
 	t = extract_typed_title( modsdoc.titleInfo );
 
@@ -95,7 +101,7 @@ if (modsdoc.typeOfResource != 'text') {
 		t = modsdoc.titleInfo[0];
 		quality += 15;
 	} else {
-		quality += 10;
+		quality += 20;
 	}
 
 	log_debug('Found ['+modsdoc.typeOfResource+'] main titleInfo node: ' + t.toXMLString());
@@ -107,12 +113,15 @@ var title = t.title
 	.replace(/\bthe\b|\ban?d?\b|\W+/g,'');
 
 
-var author = (
-	( modsdoc.typeOfResource != 'text' ?
-		extract_author(modsdoc.relatedItem.name) :
-		extract_author(modsdoc.name) ) ||
-	''
-).toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
+log_debug('Related item authors: [' + modsdoc.relatedItem.(hasOwnProperty('@type') && @type != 'series' && @type != 'host').name.toXMLString() + ']');
+log_debug('Main authors: [' + modsdoc.name.toXMLString() + ']');
+
+var author = a;
+if (!author) {
+	author = extract_author(modsdoc.name) || '';
+}
+
+author = author.toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
 
 result.fingerprint = title + author;
 
@@ -136,8 +145,6 @@ if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/
 	quality += 1;
 	log_debug( 'got Local source bump' );
 }
-
-quality += marcdoc.datafield.length();
 
 // XXX this has to be a string ... for now. JS::SM limitation
 result.quality = '' + quality;
