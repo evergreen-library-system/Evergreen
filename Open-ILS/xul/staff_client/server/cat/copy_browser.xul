@@ -73,6 +73,7 @@
 		<command id="cmd_add_items_to_buckets"/>
 		<command id="cmd_edit_items"/>
 		<command id="cmd_delete_items"/>
+		<command id="cmd_print_spine_labels"/>
 		<command id="cmd_add_volumes"/>
 		<command id="cmd_edit_volumes"/>
 		<command id="cmd_delete_volumes"/>
@@ -86,6 +87,7 @@
 			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+			<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 			<menuseparator/>
 			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
 			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
@@ -111,6 +113,7 @@
 							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
 							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+							<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 							<menuseparator/>
 							<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
 							<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
