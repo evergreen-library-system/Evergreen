@@ -177,10 +177,14 @@
 					'show_print_button' : true , 
 					'tab_name' : 'Register Patron Clone for Group' ,
 					'passthru_content_params' : {
-						'spawn_search' : function(s) { obj.spawn_search(s); },
+						'spawn_search' : spawn_search,
 						'spawn_editor' : spawn_editor,
 						'on_save' : function() { refresh(); },
-					}
+						'url_prefix' : xulG.url_prefix,
+						'new_tab' : xulG.new_tab,
+					},
+					'url_prefix' : xulG.url_prefix,
+					'new_tab' : xulG.new_tab,
 				}
 			);
 		}
@@ -200,13 +204,28 @@
 					'show_print_button' : true , 
 					'tab_name' : 'Editing Related Patron' ,
 					'passthru_content_params' : {
-						'spawn_search' : function(s) { obj.spawn_search(s); },
+						'spawn_search' : spawn_search,
 						'spawn_editor' : spawn_editor,
 						'on_save' : function() { refresh(); },
-					}
+						'url_prefix' : xulG.url_prefix,
+						'new_tab' : xulG.new_tab,
+					},
+					'url_prefix' : xulG.url_prefix,
+					'new_tab' : xulG.new_tab,
 				}
 			);
 
+		}
+
+		function spawn_search(s) {
+			try {
+				g.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
+				var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
+					loc += '?doit=1&query=' + window.escape(js2JSON(s));
+				xulG.new_tab( loc, {}, {} );
+			} catch(E) {
+				g.error.standard_unexpected_error_dialog('spawn search',E);
+			}
 		}
 
 	]]>

@@ -152,6 +152,8 @@ patron.display.prototype = {
 											'passthru_content_params' : {
 												'spawn_search' : spawn_search,
 												'spawn_editor' : spawn_editor,
+												'url_prefix' : xulG.url_prefix,
+												'new_tab' : xulG.new_tab,
 											}
 										}
 									);
@@ -177,6 +179,8 @@ patron.display.prototype = {
 										},
 										'spawn_search' : spawn_search,
 										'spawn_editor' : spawn_editor,
+										'url_prefix' : xulG.url_prefix,
+										'new_tab' : xulG.new_tab,
 									}
 								}
 							);
