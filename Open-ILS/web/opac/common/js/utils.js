@@ -462,9 +462,11 @@ function iterate( arr, callback ) {
 
 
 /* taken directly from the JSAN util.date library */
-if (typeof util == 'undefined') var util = {};
-util.date = {};
-util.date.interval_to_seconds = function ( $interval ) {
+/* but changed from the util.date.interval_to_seconds invocation, 
+because JSAN will assume the whole library is already loaded if 
+it sees that, and the staff client uses both this file and the
+JSAN library*/
+function interval_to_seconds( $interval ) {
 
         $interval = $interval.replace( /and/, ',' );
         $interval = $interval.replace( /,/, ' ' );
