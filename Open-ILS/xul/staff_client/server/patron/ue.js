@@ -358,7 +358,10 @@ function uEditSaveUser(clone) {
 	} else {
 
 		var href = location.href;
-		if( clone ) href = href.replace(/usr=\d+/, 'clone=' + clone);
+		if( clone ) {
+			href = href.replace(/usr=\d+/, '');
+			href += 'clone=' + clone;
+		}
 		location.href = href;
 	}
 }
