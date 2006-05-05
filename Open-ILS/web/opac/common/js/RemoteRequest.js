@@ -248,6 +248,15 @@ RemoteRequest.prototype.getResultObject = function() {
 		throw payload;
 	}
 
+
+	if(!isXUL()) {
+		if( checkILSEvent(payload) ) {
+			alertILSEvent(payload);
+			return null;
+		}
+	}
+
+
 	return payload;
 }
 
