@@ -127,6 +127,14 @@ patron.display.prototype = {
 						['command'],
 						function(ev) {
 
+								function spawn_search(s) {
+									obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
+									obj.data.stash_retrieve();
+									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
+									loc += '?doit=1&query=' + window.escape(js2JSON(s));
+									xulG.new_tab( loc, {}, {} );
+								}
+
 								function spawn_editor(p) {
 									var url = urls.XUL_PATRON_EDIT;
 									var param_count = 0;
@@ -142,7 +150,7 @@ patron.display.prototype = {
 											'show_print_button' : true , 
 											'tab_name' : 'Editing Related Patron' ,
 											'passthru_content_params' : {
-												'spawn_search' : function(s) { obj.spawn_search(s); },
+												'spawn_search' : spawn_search,
 												'spawn_editor' : spawn_editor,
 											}
 										}
@@ -167,6 +175,7 @@ patron.display.prototype = {
 												alert(E);
 											}
 										},
+										'spawn_search' : spawn_search,
 										'spawn_editor' : spawn_editor,
 									}
 								}
