@@ -45,11 +45,11 @@
 
 				JSAN.use('cat.copy_browser'); g.copy_browser = new cat.copy_browser();
 
-				g.copy_browser.init( {} );
+				g.copy_browser.init( { 'docid' : g.cgi.param('docid') } );
 
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Holdings Maintenance'); } catch(E) { alert(E); }
-				}
+				//if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+				//	try { window.xulG.set_tab_name('Holdings Maintenance'); } catch(E) { alert(E); }
+				//}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +

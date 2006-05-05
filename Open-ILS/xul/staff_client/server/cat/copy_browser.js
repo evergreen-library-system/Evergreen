@@ -5,7 +5,6 @@ cat.copy_browser = function (params) {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		JSAN.use('util.error'); this.error = new util.error();
-		this.docid = 278434;
 	} catch(E) {
 		dump('cat.copy_browser: ' + E + '\n');
 	}
@@ -22,6 +21,8 @@ cat.copy_browser.prototype = {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var obj = this;
+
+			obj.docid = params.docid;
 
 			JSAN.use('util.network'); obj.network = new util.network();
 			JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
