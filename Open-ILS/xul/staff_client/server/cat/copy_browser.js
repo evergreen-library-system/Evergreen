@@ -182,7 +182,10 @@ cat.copy_browser.prototype = {
 										obj.error.sdump('batch permission check: ' + E);
 									}
 
-									if (edit==0) return; // no read-only view for this interface
+									if (edit==0) {
+										alert("You don't have permission to add volumes to that library.");
+										return; // no read-only view for this interface
+									}
 
 									var title = 'Add Volume/Copy';
 
@@ -757,6 +760,7 @@ cat.copy_browser.prototype = {
 							sel,
 							function(o) { return o.getAttribute('retrieve_id'); }
 						);
+						obj.toggle_actions();
 						if (typeof obj.on_select == 'function') {
 							obj.on_select(obj.sel_list);
 						}
@@ -766,11 +770,53 @@ cat.copy_browser.prototype = {
 					},
 				}
 			);
-	
+
+			obj.controller.render();
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
 			alert(E);
+		}
+	},
+
+	'toggle_actions' : function() {
+		var obj = this;
+		try {
+			var found_aou = false; var found_acn = false; var found_acp = false;
+			for (var i = 0; i < obj.sel_list.length; i++) {
+				var type = obj.sel_list[i].split(/_/)[0];
+				switch(type) {
+					case 'aou' : found_aou = true; break;
+					case 'acn' : found_acn = true; break;
+					case 'acp' : found_acp = true; break;
+				}
+			}
+			obj.controller.view.cmd_add_items.setAttribute('disabled','true');
+			obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','true');
+			obj.controller.view.cmd_edit_items.setAttribute('disabled','true');
+			obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
+			obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','true');
+			obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
+			obj.controller.view.cmd_edit_volumes.setAttribute('disabled','true');
+			obj.controller.view.cmd_delete_volumes.setAttribute('disabled','true');
+			obj.controller.view.cmd_mark_volume.setAttribute('disabled','true');
+			if (found_aou) {
+				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
+			}
+			if (found_acn) {
+				obj.controller.view.cmd_edit_volumes.setAttribute('disabled','false');
+				obj.controller.view.cmd_delete_volumes.setAttribute('disabled','false');
+				obj.controller.view.cmd_mark_volume.setAttribute('disabled','false');
+				obj.controller.view.cmd_add_items.setAttribute('disabled','false');
+			}
+			if (found_acp) {
+				obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
+				obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
+				obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
+				obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Copy Browser Actions',E);
 		}
 	},
 
