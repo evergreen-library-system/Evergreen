@@ -359,14 +359,19 @@
 				}
 
 				try {
-					alert('pause');
 					var r = g.network.request(
 						api.FM_ACN_TREE_UPDATE.app,
 						api.FM_ACN_TREE_UPDATE.method,
 						[ ses(), volumes ]
 					);
 					if (typeof r.ilsevent != 'undefined') {
-						g.error.standard_unexpected_error_alert('volume tree update',r);
+						switch(r.ilsevent) {
+							case 1706 /* ITEM_BARCODE_EXISTS */ :
+								alert('Some of these barcodes are in use.  Please change them.');
+								return;
+							break;
+							default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
+						}
 					} else {
 						JSAN.use('util.functional');
 						var w = win.open(
@@ -376,16 +381,14 @@
 							'chrome,modal,resizable,width=750,height=550'
 						);
 					}
-					/* FIXME -- revisit the return value here */
-					alert('pause');
 				} catch(E) {
-					alert('volume update error: ' + js2JSON(E));
+					g.error.standard_unexpected_error_alert('volume tree update 2',E);
 				}
 
 				window.close();
 
 			} catch(E) {
-				alert(E);
+				g.error.standard_unexpected_error_alert('volume tree update 3',E);
 			}
 		}
 

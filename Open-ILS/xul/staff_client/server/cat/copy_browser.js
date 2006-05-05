@@ -64,7 +64,7 @@ cat.copy_browser.prototype = {
 							['command'],
 							function() {
 								try {
-									JSAN.use('util.widgets'); JSAN.use('util.functional');
+									JSAN.use('util.functional');
 									var list = util.functional.map_list(
 										util.functional.filter_list(
 											obj.sel_list,
@@ -137,6 +137,68 @@ cat.copy_browser.prototype = {
 						'cmd_edit_items' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												util.functional.map_list(
+													list,
+													function (o) {
+														return map_acn[ 'acn_' + map_acp[ 'acp_' + o ].call_number() ].owning_lib();
+													}
+												),
+												[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
+									}
+
+									var title = list.length == 1 ? 'Copy' : 'Copies';
+
+									JSAN.use('util.window'); var win = new util.window();
+									obj.data.temp = '';
+									obj.data.stash('temp');
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
+											+'?copy_ids='+window.escape(js2JSON(list))
+											+'&docid='+window.escape(obj.docid)
+											+'&edit='+edit
+											+'&handle_update=1',
+										title,
+										'chrome,modal,resizable'
+									);
+									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+									obj.data.stash_retrieve();
+									var copies = JSON2js( obj.data.temp );
+									obj.error.sdump('D_CAT','in browse, copies =\n<<' + copies + '>>');
+									if (edit=='1' && copies!='' && typeof copies != 'undefined') {
+										obj.refresh_list();
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Copy Browser -> Edit Items',E);
+								}
 							}
 						],
 						'cmd_delete_items' : [
@@ -153,7 +215,7 @@ cat.copy_browser.prototype = {
 							['command'],
 							function() {
 								try {
-									JSAN.use('util.widgets'); JSAN.use('util.functional');
+									JSAN.use('util.functional');
 									var list = util.functional.filter_list(
 										obj.sel_list,
 										function (o) {
