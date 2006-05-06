@@ -45,6 +45,7 @@ sub ordered_records_from_metarecord {
 
 	my $sm_table = metabib::metarecord_source_map->table;
 	my $rd_table = metabib::record_descriptor->table;
+	my $fr_table = metabib::full_rec->table;
 	my $cn_table = asset::call_number->table;
 	my $cl_table = asset::copy_location->table;
 	my $cp_table = asset::copy->table;
@@ -53,12 +54,13 @@ sub ordered_records_from_metarecord {
 	my $br_table = biblio::record_entry->table;
 
 	my $sql = <<"	SQL";
-	 SELECT	record, item_type, item_form, count
+	 SELECT	record, item_type, item_form, count, title
 	   FROM	(
 		SELECT	rd.record,
 			rd.item_type,
 			rd.item_form,
 			br.quality,
+			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, fr.ind2::text::int )),'zzzzzzzz')) AS title,
 	SQL
 
 	if ($copies_visible) {
@@ -81,8 +83,12 @@ sub ordered_records_from_metarecord {
 		  FROM	$cn_table cn,
 			$sm_table sm,
 			$br_table br,
+			$fr_table fr,
 			$rd_table rd
 		  WHERE	rd.record = sm.source
+			AND fr.record = br.id
+			AND fr.tag = '245'
+			AND fr.subfield = 'a'
 		  	AND br.id = rd.record
 		  	AND cn.record = rd.record
 			AND sm.metarecord = ?
@@ -91,8 +97,12 @@ sub ordered_records_from_metarecord {
 		$sql .= <<"		SQL";
 		  FROM	$sm_table sm,
 			$br_table br,
+			$fr_table fr,
 			$rd_table rd
 		  WHERE	rd.record = sm.source
+			AND fr.record = br.id
+			AND fr.tag = '245'
+			AND fr.subfield = 'a'
 		  	AND br.id = rd.record
 			AND sm.metarecord = ?
 		SQL
@@ -125,6 +135,7 @@ sub ordered_records_from_metarecord {
 				WHEN rd.item_type = 'r' -- 3d
 					THEN 9
 			END,
+			title ASC,
 			count DESC,
 			br.quality DESC
 		) x
@@ -1392,16 +1403,21 @@ sub postfilter_search_multi_class_fts {
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
 
+		my $SQLstring = join('%',$fts->words);
+		my $REstring = '^' . join('\s+',$fts->words) . '\W*$';
+		my $first_word = ($fts->words)[0].'%';
+
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
-		$bonus{'title'} =
-			$bonus{'metabib::series_field_entry'} = [
-				{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-				{ "CASE WHEN $search_class.value ~* ? THEN 2 ELSE 1 END" => $REstring },
-				@{ $bonus{'keyword'} }
-			];
+
+		$bonus{'series'} = [
+			{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+			{ "CASE WHEN $search_class.value ~ ? THEN 1000 ELSE 1 END" => $REstring },
+		];
+
+		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
 
 		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
 		$bonus_list ||= '1';
@@ -1433,8 +1449,20 @@ sub postfilter_search_multi_class_fts {
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
-	$relevance = "AVG( ($relevance) * ($bonuses) )";
+	$relevance = "SUM( ($relevance) * ($bonuses) )/COUNT(DISTINCT m.source)";
 
+
+	my $secondary_sort = <<"	SORT";
+		( FIRST ((
+			SELECT	COALESCE(LTRIM(SUBSTR( sfrt.value, sfrt.ind2::text::int )),'zzzzzzzz')
+			  FROM	$metabib_full_rec sfrt,
+				$metabib_metarecord mr
+			  WHERE	sfrt.record = mr.master_record
+			  	AND sfrt.tag = '245'
+				AND sfrt.subfield = 'a'
+			  LIMIT 1
+		)) )
+	SORT
 
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
@@ -1467,6 +1495,17 @@ sub postfilter_search_multi_class_fts {
 				  LIMIT 1
 			)) )
 		RANK
+		$secondary_sort = <<"		SORT";
+			( FIRST ((
+				SELECT	COALESCE(SUBSTRING(sfrp.value FROM '\\\\d+'),'9999')::INT
+				  FROM	$metabib_full_rec sfrp,
+					$metabib_metarecord mr
+				  WHERE	sfrp.record = mr.master_record
+				  	AND sfrp.tag = '260'
+					AND sfrp.subfield = 'c'
+				  LIMIT 1
+			)) )
+		SORT
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
 			( FIRST((
@@ -1488,18 +1527,17 @@ sub postfilter_search_multi_class_fts {
 	my $select = <<"	SQL";
 		SELECT	m.metarecord,
 			$relevance,
-			CASE WHEN COUNT(DISTINCT smrs.source) = 1 THEN MIN(m.source) ELSE 0 END,
-			$rank
+			CASE WHEN COUNT(DISTINCT smrs.source) = 1 THEN FIRST(m.source) ELSE 0 END,
+			$rank,
+			$secondary_sort
   	  	FROM	$search_table_list
 			$metabib_metarecord_source_map_table m,
-			$metabib_metarecord_source_map_table smrs,
-			$metabib_metarecord mr
-	  	WHERE	m.metarecord = mr.id
-	  		AND smrs.metarecord = mr.id
+			$metabib_metarecord_source_map_table smrs
+	  	WHERE	m.metarecord = smrs.metarecord 
   	  		$fts_list
 			$join_table_list
   	  	GROUP BY m.metarecord
-  	  	ORDER BY 4 $sort_dir
+  	  	-- ORDER BY 4 $sort_dir
 		LIMIT 10000
 	SQL
 
@@ -1538,7 +1576,7 @@ sub postfilter_search_multi_class_fts {
 					$olf_filter
 				  LIMIT 1
 			  	)
-			  ORDER BY 4 $sort_dir
+			  ORDER BY 4 $sort_dir, 5
 		SQL
 	} else {
 		$select = <<"		SQL";
@@ -1580,7 +1618,7 @@ sub postfilter_search_multi_class_fts {
 					$olf_filter
 				  LIMIT 1
 				)
-			  ORDER BY 4 $sort_dir
+			  ORDER BY 4 $sort_dir, 5
 		SQL
 	}
 
@@ -1771,19 +1809,20 @@ sub biblio_search_multi_class_fts {
 		my @fts_ranks = $fts->fts_rank;
 
 		my $SQLstring = join('%',$fts->words);
-		my $REstring = '^' . join('\s+',$fts->words) . '\W*$';
+		my $REstring = '^' . join('\\s+',$fts->words) . '\\W*$';
 		my $first_word = ($fts->words)[0].'%';
 
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
-		$bonus{'title'} =
-			$bonus{'metabib::series_field_entry'} = [
-				{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-				{ "CASE WHEN $search_class.value ~* ? THEN 2 ELSE 1 END" => $REstring },
-				@{ $bonus{'keyword'} }
-			];
+
+		$bonus{'series'} = [
+			{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+			{ "CASE WHEN $search_class.value ~ ? THEN 200 ELSE 1 END" => $REstring },
+		];
+
+		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
 
 		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
 		$bonus_list ||= '1';
