@@ -434,17 +434,54 @@ sub modify_from_fieldmapper {
 	
 	actor::card->has_a( usr => 'actor::user' );
 	
+	actor::workstation->has_a( owning_lib => 'actor::org_unit' );
+	actor::org_unit::closed_date->has_a( org_unit => 'actor::org_unit' );
+	actor::org_unit_setting->has_a( org_unit => 'actor::org_unit' );
+
+	actor::usr_note->has_a( usr => 'actor::user' );
+	actor::user->has_many( notes => 'actor::usr_note' );
+
+	actor::user_standing_penalty->has_a( usr => 'actor::user' );
+	actor::user->has_many( standing_penalties => 'actor::user_standing_penalty' );
+
 	actor::org_unit->has_a( parent_ou => 'actor::org_unit' );
 	actor::org_unit->has_a( ou_type => 'actor::org_unit_type' );
-	#actor::org_unit->has_a( address => 'actor::org_address' );
+	actor::org_unit->has_a( ill_address => 'actor::org_address' );
+	actor::org_unit->has_a( holds_address => 'actor::org_address' );
+	actor::org_unit->has_a( mailing_address => 'actor::org_address' );
+	actor::org_unit->has_a( billing_address => 'actor::org_address' );
+	actor::org_unit->has_many( children => 'actor::org_unit' => 'parent_ou' );
+	actor::org_unit->has_many( workstations => 'actor::workstation' );
+	actor::org_unit->has_many( closed_dates => 'actor::org_unit::closed_date' );
+	actor::org_unit->has_many( settings => 'actor::org_unit_setting' );
+	#actor::org_unit->might_have( hours_of_operation => 'actor::org_unit::hours_of_operation' );
+
+	actor::org_unit_type->has_a( parent => 'actor::org_unit_type' );
+	actor::org_unit_type->has_many( children => 'actor::org_unit_type' => 'parent' );
+
+	actor::org_address->has_a( org_unit => 'actor::org_unit' );
+	actor::org_unit->has_many( addresses => 'actor::org_address' );
+
+	action::transit_copy->has_a( source => 'actor::org_unit' );
+	action::transit_copy->has_a( dest => 'actor::org_unit' );
+	action::transit_copy->has_a( copy_status => 'config::copy_status' );
+
+	action::hold_transit_copy->has_a( source => 'actor::org_unit' );
+	action::hold_transit_copy->has_a( dest => 'actor::org_unit' );
+	action::hold_transit_copy->has_a( copy_status => 'config::copy_status' );
+	action::hold_transit_copy->has_a( hold => 'action::hold_request' );
+
+	action::hold_request->has_many( transits => 'action::hold_transit_copy' );
 
 	actor::stat_cat_entry->has_a( stat_cat => 'actor::stat_cat' );
+	actor::stat_cat->has_a( owner => 'actor::org_unit' );
 	actor::stat_cat->has_many( entries => 'actor::stat_cat_entry' );
 	actor::stat_cat_entry_user_map->has_a( stat_cat => 'actor::stat_cat' );
 	actor::stat_cat_entry_user_map->has_a( stat_cat_entry => 'actor::stat_cat_entry' );
 	actor::stat_cat_entry_user_map->has_a( target_usr => 'actor::user' );
 
 	asset::stat_cat_entry->has_a( stat_cat => 'asset::stat_cat' );
+	asset::stat_cat->has_a( owner => 'actor::org_unit' );
 	asset::stat_cat->has_many( entries => 'asset::stat_cat_entry' );
 	asset::stat_cat_entry_copy_map->has_a( stat_cat => 'asset::stat_cat' );
 	asset::stat_cat_entry_copy_map->has_a( stat_cat_entry => 'asset::stat_cat_entry' );
@@ -457,9 +494,10 @@ sub modify_from_fieldmapper {
 
 	action::survey_question->has_a( survey => 'action::survey' );
 
-	action::survey_answer->has_a( question => 'action::survey' );
+	action::survey_answer->has_a( question => 'action::survey_question' );
 
 	asset::copy_note->has_a( owning_copy => 'asset::copy' );
+	asset::copy_note->has_a( creator => 'actor::user' );
 
 	actor::user->has_many( stat_cat_entries => [ 'actor::stat_cat_entry_user_map' => 'stat_cat_entry' ] );
 	actor::user->has_many( stat_cat_entry_user_maps => 'actor::stat_cat_entry_user_map' );
@@ -515,10 +553,27 @@ sub modify_from_fieldmapper {
 	metabib::metarecord_source_map->has_a( source => 'biblio::record_entry' );
 
 	action::circulation->has_a( usr => 'actor::user' );
+	actor::user->has_many( circulations => 'action::circulation' => 'usr' );
+	
+	action::circulation->has_a( circ_staff => 'actor::user' );
+	actor::user->has_many( performed_circulations => 'action::circulation' => 'circ_staff' );
+
+	action::circulation->has_a( checkin_staff => 'actor::user' );
+	actor::user->has_many( checkins => 'action::circulation' => 'checkin_staff' );
+
 	action::circulation->has_a( target_copy => 'asset::copy' );
+	asset::copy->has_many( circulations => 'action::circulation' => 'target_copy' );
+
 	action::circulation->has_a( circ_lib => 'actor::org_unit' );
+	actor::org_unit->has_many( circulations => 'action::circulation' => 'circ_lib' );
+	
+	action::circulation->has_a( checkin_lib => 'actor::org_unit' );
+	actor::org_unit->has_many( checkins => 'action::circulation' => 'checkin_lib' );
 
 	money::billable_transaction->has_a( usr => 'actor::user' );
+	money::billable_transaction->might_have( circulation => 'action::circulation' );
+	money::billable_transaction->might_have( grocery => 'money::grocery' );
+	actor::user->has_many( billable_transactions => 'action::circulation' => 'usr' );
 	
 	
 	#-------------------------------------------------------------------------------
@@ -555,35 +610,65 @@ sub modify_from_fieldmapper {
 	biblio::record_entry->has_many( series_field_entries => 'metabib::series_field_entry' );
 
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
+	biblio::record_entry->has_many( metarecords => [ 'metabib::metarecord_source_map' => 'metarecord'] );
 
 	money::billable_transaction->has_many( billings => 'money::billing' );
 	money::billable_transaction->has_many( payments => 'money::payment' );
 
-	money::grocery->has_many( billings => 'money::billing' );
-	money::grocery->has_many( payments => 'money::payment' );
+	action::circulation->has_many( billings => 'money::billing' => 'xact' );
+	action::circulation->has_many( payments => 'money::payment' => 'xact' );
+	action::circulation->might_have( billable_transaction => 'money::billable_transaction' );
+
+	action::open_circulation->might_have( circulation => 'action::circulation' );
+
+	action::in_house_use->has_a( org_unit => 'actor::org_unit' );
+	action::in_house_use->has_a( staff => 'actor::user' );
+	action::in_house_use->has_a( item => 'asset::copy' );
+
+	action::non_cataloged_circulation->has_a( circ_lib => 'actor::org_unit' );
+	action::non_cataloged_circulation->has_a( item_type => 'config::non_cataloged_type' );
+	action::non_cataloged_circulation->has_a( patron => 'actor::user' );
+	action::non_cataloged_circulation->has_a( staff => 'actor::user' );
+
+	money::grocery->has_many( billings => 'money::billing' => 'xact' );
+	money::grocery->has_many( payments => 'money::payment' => 'xact' );
+	money::grocery->might_have( billable_transaction => 'money::billable_transaction' );
 
 	money::billing->has_a( xact => 'money::billable_transaction' );
 	money::payment->has_a( xact => 'money::billable_transaction' );
+	money::payment->might_have( cash_payment => 'money::cash_payment' );
+	money::payment->might_have( check_payment => 'money::check_payment' );
+	money::payment->might_have( credit_card_payment => 'money::credit_card_payment' );
+	money::payment->might_have( forgive_payment => 'money::forgive_payment' );
+	money::payment->might_have( work_payment => 'money::work_payment' );
+	money::payment->might_have( credit_payment => 'money::credit_payment' );
 
 	money::cash_payment->has_a( xact => 'money::billable_transaction' );
 	money::cash_payment->has_a( accepting_usr => 'actor::user' );
+	money::cash_payment->might_have( payment => 'money::payment' );
 
 	money::check_payment->has_a( xact => 'money::billable_transaction' );
 	money::check_payment->has_a( accepting_usr => 'actor::user' );
+	money::check_payment->might_have( payment => 'money::payment' );
 
 	money::credit_card_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_card_payment->has_a( accepting_usr => 'actor::user' );
+	money::credit_card_payment->might_have( payment => 'money::payment' );
 
 	money::forgive_payment->has_a( xact => 'money::billable_transaction' );
 	money::forgive_payment->has_a( accepting_usr => 'actor::user' );
+	money::forgive_payment->might_have( payment => 'money::payment' );
 
 	money::work_payment->has_a( xact => 'money::billable_transaction' );
 	money::work_payment->has_a( accepting_usr => 'actor::user' );
+	money::work_payment->might_have( payment => 'money::payment' );
 
 	money::credit_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_payment->has_a( accepting_usr => 'actor::user' );
+	money::credit_payment->might_have( payment => 'money::payment' );
 
 	permission::grp_tree->has_a( parent => 'permission::grp_tree' );
+	permission::grp_tree->has_many( children => 'permission::grp_tree' => 'parent' );
 
 	permission::grp_perm_map->has_a( grp => 'permission::grp_tree' );
 	permission::grp_perm_map->has_a(  perm => 'permission::perm_list' );
@@ -601,15 +686,43 @@ sub modify_from_fieldmapper {
 	action::hold_copy_map->has_a(  hold => 'action::hold_request' );
 	action::hold_copy_map->has_a(  target_copy => 'asset::copy' );
 
+	action::unfulfilled_hold_list->has_a(  current_copy => 'asset::copy' );
+	action::unfulfilled_hold_list->has_a(  hold => 'action::hold_request' );
+	action::unfulfilled_hold_list->has_a(  circ_lib => 'actor::org_unit' );
+
 	action::hold_request->has_a(  current_copy => 'asset::copy' );
 	action::hold_request->has_a(  requestor => 'actor::user' );
 	action::hold_request->has_a(  usr => 'actor::user' );
+	action::hold_request->has_a(  fulfillment_staff => 'actor::user' );
 	action::hold_request->has_a(  pickup_lib => 'actor::org_unit' );
 	action::hold_request->has_a(  request_lib => 'actor::org_unit' );
+	action::hold_request->has_a(  fulfillment_lib => 'actor::org_unit' );
+	action::hold_request->has_a(  selection_ou => 'actor::org_unit' );
 
 	action::hold_request->has_many(  notifications => 'action::hold_notification' );
 	action::hold_request->has_many(  eligible_copies => [ 'action::hold_copy_map' => 'target_copy' ] );
 
 	asset::copy->has_many(  holds => [ 'action::hold_copy_map' => 'hold' ] );
+
+	container::biblio_record_entry_bucket->has_a( owner => 'actor::user' );
+	container::biblio_record_entry_bucket_item->has_a( bucket => 'container::biblio_record_entry_bucket' );
+	container::biblio_record_entry_bucket_item->has_a( target_biblio_record_entry => 'biblio::record_entry' );
+	container::biblio_record_entry_bucket->has_many( items => 'container::biblio_record_entry_bucket_item' );
+
+	container::user_bucket->has_a( owner => 'actor::user' );
+	container::user_bucket_item->has_a( bucket => 'container::user_bucket' );
+	container::user_bucket_item->has_a( target_user => 'actor::user' );
+	container::user_bucket->has_many( items => 'container::user_bucket_item' );
+
+	container::call_number_bucket->has_a( owner => 'actor::user' );
+	container::call_number_bucket_item->has_a( bucket => 'container::call_number_bucket' );
+	container::call_number_bucket_item->has_a( target_call_number => 'asset::call_number' );
+	container::call_number_bucket->has_many( items => 'container::call_number_bucket_item' );
+
+	container::copy_bucket->has_a( owner => 'actor::user' );
+	container::copy_bucket_item->has_a( bucket => 'container::copy_bucket' );
+	container::copy_bucket_item->has_a( target_copy => 'asset::copy' );
+	container::copy_bucket->has_many( items => 'container::copy_bucket_item' );
+
 
 1;
