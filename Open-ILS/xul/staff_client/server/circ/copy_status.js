@@ -318,7 +318,7 @@ circ.copy_status.prototype = {
 						obj.controller.view.copy_status_barcode_entry_textbox.select();
 						obj.controller.view.copy_status_barcode_entry_textbox.focus();
 					break;
-					case 1502 /* COPY_NOT_FOUND */ :
+					case 1502 /* ASSET_COPY_NOT_FOUND */ :
 						obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
 						obj.controller.view.copy_status_barcode_entry_textbox.select();
 						obj.controller.view.copy_status_barcode_entry_textbox.focus();

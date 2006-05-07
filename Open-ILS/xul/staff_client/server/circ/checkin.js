@@ -151,7 +151,7 @@ circ.checkin.prototype = {
 			if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
 				|| checkin.ilsevent == -1 /* offline */
-				|| checkin.ilsevent == 1502 /* COPY_NOT_FOUND */
+				|| checkin.ilsevent == 1502 /* ASSET_COPY_NOT_FOUND */
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
 				|| checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
 				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return;

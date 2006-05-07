@@ -510,7 +510,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			}
 		}
 
-		/* COPY_NOT_FOUND */
+		/* ASSET_COPY_NOT_FOUND */
 		if (check.ilsevent == 1502) {
 			check.route_to = 'CATALOGING';
 			error.yns_alert(
