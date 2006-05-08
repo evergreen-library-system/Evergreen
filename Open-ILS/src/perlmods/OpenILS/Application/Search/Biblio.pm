@@ -130,7 +130,7 @@ __PACKAGE__->register_method(
 sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id, $format ) = @_;
 
-	$format = undef if ($format eq 'all');
+	$format = undef if (!$format or $format eq 'all');
 
 	my $method = "open-ils.storage.biblio.record_entry.copy_count.atomic";
 	my $key = "record";
