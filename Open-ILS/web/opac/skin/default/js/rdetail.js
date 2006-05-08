@@ -147,6 +147,10 @@ function _rdetailDraw(r) {
 
 	rdetailSetExtrasSelector();
 
+	var breq = new Request(FETCH_BRE, [getRid()]);
+	breq.callback( rdetailCheckDeleted );
+	breq.send();
+
 	var req = new Request(FETCH_ACONT_SUMMARY, cleanISBN(record.isbn()));
 	req.callback(rdetailHandleAddedContent);
 	req.send();
@@ -154,6 +158,15 @@ function _rdetailDraw(r) {
 	resultBuildCaches( [ record ] );
 	resultDrawSubjects();
 	resultDrawSeries();
+}
+
+function rdetailCheckDeleted(r) {
+	var br = r.getResultObject()[0];
+	if( br.deleted() == 1 ) {
+		hideMe($('rdetail_place_hold'));
+		$('rdetail_more_actions_selector').disabled = true;
+		unHideMe($('rdetail_deleted_exp'));
+	}
 }
 
 function rdetailSetExtrasSelector() {

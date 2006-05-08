@@ -40,6 +40,13 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<div style='font-weight: bold; padding: 5px; margin: 5px; background: #E0F0E0; width: 100%;' 
+		class='hide_me' id='rdetail_deleted_exp'>
+			This record has been deleted from the database.  
+			We recommend that you remove this title from any bookbags it may have been added to.
+	</div>
+
 	<!--#include virtual="rdetail/rdetail_summary.xml"-->
 	<br/><br/>
 	<!--#include virtual="rdetail/rdetail_extras.xml"-->

@@ -314,6 +314,7 @@ var FETCH_HOLD_STATUS			= 'open-ils.circ:open-ils.circ.hold.status.retrieve';
 var FETCH_NON_CAT_CIRCS			= 'open-ils.circ:open-ils.circ.open_non_cataloged_circulation.user';
 var FETCH_NON_CAT_CIRC			= 'open-ils.circ:open-ils.circ.non_cataloged_circulation.retrieve';
 var FETCH_NON_CAT_TYPES			= "open-ils.circ:open-ils.circ.non_cat_types.retrieve.all";
+var FETCH_BRE						= 'open-ils.search:open-ils.search.biblio.record_entry.slim.retrieve';
 
 /* ---------------------------------------------------------------------------- */
 
