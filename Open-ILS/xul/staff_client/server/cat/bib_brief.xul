@@ -101,6 +101,11 @@
 											util.date.formatted_date(meta.edit_date(),"%D")
 										)
 									);
+									var t = document.getElementById('caption').getAttribute('label');
+									if (meta.deleted()) { t += ' (Deleted) '; } else { 
+										if (meta.active()) { t += ' (Active) '; } else { t += ' (Inactive) '; }
+									}
+									document.getElementById('caption').setAttribute('label',t);
 								} catch(E) {
 									g.error.standard_unexpected_error_alert('meta retrieve',E);
 								}
@@ -123,7 +128,7 @@
 	]]>
 	</script>
 
-	<groupbox flex="1" style="overflow: auto; min-height: 100px;">
+	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
 		<caption label="Record Details" id="caption"/>
 			<html:table width="90%">
 				<html:tr valign="top">
