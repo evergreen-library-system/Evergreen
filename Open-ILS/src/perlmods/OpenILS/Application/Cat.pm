@@ -1259,12 +1259,24 @@ sub delete_copy {
 	if( title_is_empty($editor, $vol->record) ) {
 
 		if( $override ) {
-			return $editor->event unless
-				my $rec = $editor->retrieve_biblio_record_entry($vol->record);	
-			$rec->deleted('t');
 
-			$editor->update_biblio_record_entry($rec, {checkperm=>0})
+			# delete this volume if it's not already marked as deleted
+			if(!$vol->deleted || $vol->deleted =~ /f/io || ! $vol->isdeleted) {
+				$vol->deleted('t');
+				$editor->update_asset_call_number($vol, {checkperm=>0})
+					or return $editor->event;
+			}
+
+			# then delete the record this volume points to
+			my $rec = $editor->retrieve_biblio_record_entry($vol->record)
 				or return $editor->event;
+
+			if( !$rec->deleted ) {
+				$rec->deleted('t');
+				$rec->active('f');
+				$editor->update_biblio_record_entry($rec, {checkperm=>0})
+					or return $editor->event;
+			}
 
 		} else {
 			return OpenILS::Event->new('TITLE_LAST_COPY');
