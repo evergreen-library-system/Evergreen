@@ -244,11 +244,11 @@ cat.copy_browser.prototype = {
 									list = util.functional.map_list(
 										list,
 										function (o) {
-											return obj.map_acp[ 'acp_' + o.split(/_/)[1] ];
+											return JSON2js( js2JSON( obj.map_acp[ 'acp_' + o.split(/_/)[1] ] ) );
 										}
 									);
 
-									var r = obj.error.yns_alert('Are you sure you would like to delete these ' + list.length + ' item' + (list.length != 1 ? 's' : '') + '?', 'Delete Items?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+									var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' items' : 'this one item') + '?', 'Delete Items?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
 
 									if (r == 0) {
 										var acn_hash = {}; var acn_list = [];
@@ -256,8 +256,7 @@ cat.copy_browser.prototype = {
 											list[i].isdeleted('1');
 											var acn_id = list[i].call_number();
 											if ( ! acn_hash[ acn_id ] ) {
-												acn_hash[ acn_id ] = new acn();
-												acn_hash[ acn_id ].id( acn_id );
+												acn_hash[ acn_id ] = obj.map_acn[ 'acn_' + acn_id ];
 												acn_hash[ acn_id ].copies( [] );
 											}
 											var temp = acn_hash[ acn_id ].copies();
@@ -278,14 +277,14 @@ cat.copy_browser.prototype = {
 										);
 										if (robj == null) throw(robj);
 										if (typeof robj.ilsevent != 'undefined') {
-											if (robj.ilsevent != 0) throw(robj);
+											if ( (robj.ilsevent != 0) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
 										}
 										obj.refresh_list();
 									}
 
 									
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('copy browser -> add copies to bucket',E);
+									obj.error.standard_unexpected_error_alert('copy browser -> delete items',E);
 									obj.refresh_list();
 								}
 							}
@@ -293,6 +292,37 @@ cat.copy_browser.prototype = {
 						'cmd_print_spine_labels' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+									
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return obj.map_acp[ o ];
+										}
+									);
+
+									xulG.new_tab(
+										xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
+										+ js2JSON( 
+											util.functional.map_list(
+												list,
+												function(o){return o.barcode();}
+											) 
+										),
+										{ 'tab_name' : 'Spine Labels' },
+										{}
+									);
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> Spine Labels',E);
+								}
 							}
 						],
 						'cmd_add_volumes' : [
@@ -456,11 +486,84 @@ cat.copy_browser.prototype = {
 						'cmd_delete_volumes' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acn';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return JSON2js( js2JSON( obj.map_acn[ 'acn_' + o.split(/_/)[1] ] ) );
+										}
+									);
+
+									var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' volumes' : 'this one volume') + '?', 'Delete Volumes?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+
+									if (r == 0) {
+										for (var i = 0; i < list.length; i++) {
+											list[i].isdeleted('1');
+										}
+										var robj = obj.network.simple_request(
+											'FM_ACN_TREE_UPDATE', 
+											[ ses(), list ],
+											null,
+											{
+												'title' : 'Override Delete Failure?',
+												'overridable_events' : [
+												]
+											}
+										);
+										if (robj == null) throw(robj);
+										if (typeof robj.ilsevent != 'undefined') {
+											if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
+												alert('You must delete all the copies on the volume before you may delete the volume itself.');
+												return;
+											}
+											if (robj.ilsevent != 0) throw(robj);
+										}
+										obj.refresh_list();
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> delete volumes',E);
+									obj.refresh_list();
+								}
+
 							}
 						],
 						'cmd_mark_volume' : [
 							['command'],
 							function() {
+								try {
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acn';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+
+									if (list.length == 1) {
+										obj.data.marked_volume = list[0];
+										obj.data.stash('marked_volume');
+										alert('Volume marked as Copy Transfer Destination');
+									} else {
+										obj.error.yns_alert('Choose just one Volume to mark as Copy Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> mark volume',E);
+								}
 							}
 						],
 						'cmd_refresh_list' : [
