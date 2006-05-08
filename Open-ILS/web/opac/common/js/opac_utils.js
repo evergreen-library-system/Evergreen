@@ -404,6 +404,7 @@ function grabUser(ses, force) {
 
 	/* first make sure the session is valid */
 	var request = new Request(FETCH_SESSION, ses, 1 );
+	request.request.alertEvent = false;
 	request.send(true);
 	var user = request.result();
 

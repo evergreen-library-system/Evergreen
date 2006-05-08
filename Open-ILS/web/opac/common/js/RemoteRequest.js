@@ -58,6 +58,7 @@ function RemoteRequest( service, method ) {
 	this.xmlhttp	= false;
 	this.name		= null;
 	this.sendCount = 0;
+	this.alertEvent = true; /* only used when isXUL is false */
 
 	this.type		= "POST"; /* default */
 	this.id			= service + method + Math.random();
@@ -76,6 +77,13 @@ function RemoteRequest( service, method ) {
 	if(!this.params) { this.params = ""; }
 	this.param_string = "service=" + service + "&method=" + method + this.params;
 	if( this.buildXMLRequest() == null ) alert("Browser is not supported!");
+
+}
+
+RemoteRequest.prototype.event = function(evt) {
+	if( arguments.length > 0 )
+		this.evt = evt;
+	return this.evt;
 }
 
 RemoteRequest.prototype.abort = function() {
@@ -215,6 +223,8 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(this.cancelled) return null;
 	if(!this.xmlhttp) return null;
 
+	this.event(null);
+
 	var text = this.xmlhttp.responseText;
 	if(text == "" || text == " " || text == null) null;
 
@@ -251,9 +261,11 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	if(!isXUL()) {
 		if( checkILSEvent(payload) ) {
-			alertILSEvent(payload);
+			this.event(payload);
+			if( this.alertEvent )
+				alertILSEvent(payload);
 			return null;
-		}
+		} 
 	}
 
 
