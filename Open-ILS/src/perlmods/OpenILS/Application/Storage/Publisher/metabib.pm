@@ -60,7 +60,7 @@ sub ordered_records_from_metarecord {
 			rd.item_type,
 			rd.item_form,
 			br.quality,
-			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, fr.ind2::text::int )),'zzzzzzzz')) AS title,
+			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, COALESCE(SUBSTRING(fr.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')) AS title,
 	SQL
 
 	if ($copies_visible) {
@@ -468,7 +468,7 @@ sub biblio_multi_search_full_rec {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = f.record
 				  	AND frt.tag = '245'
@@ -1087,7 +1087,7 @@ sub postfilter_search_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
@@ -1486,7 +1486,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $secondary_sort = <<"	SORT";
 		( FIRST ((
-			SELECT	COALESCE(LTRIM(SUBSTR( sfrt.value, sfrt.ind2::text::int )),'zzzzzzzz')
+			SELECT	COALESCE(LTRIM(SUBSTR( sfrt.value, COALESCE(SUBSTRING(sfrt.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')
 			  FROM	$metabib_full_rec sfrt,
 				$metabib_metarecord mr
 			  WHERE	sfrt.record = mr.master_record
@@ -1519,7 +1519,7 @@ sub postfilter_search_multi_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
@@ -1912,7 +1912,7 @@ sub biblio_search_multi_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, frt.ind2::text::int )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = b.id
 				  	AND frt.tag = '245'
