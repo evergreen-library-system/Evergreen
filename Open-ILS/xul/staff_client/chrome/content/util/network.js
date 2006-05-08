@@ -12,8 +12,8 @@ util.network.prototype = {
 
 	'link_id' : 0,
 
-	'simple_request' : function(id,params,f) {
-		return this.request(api[id].app,api[id].method,params,f);
+	'simple_request' : function(id,params,f,o_params) {
+		return this.request(api[id].app,api[id].method,params,f,o_params);
 	},
 
 	'request' : function (app,name,params,f,o_params) {
