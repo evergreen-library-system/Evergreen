@@ -231,6 +231,63 @@ cat.copy_browser.prototype = {
 						'cmd_delete_items' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return obj.map_acp[ 'acp_' + o.split(/_/)[1] ];
+										}
+									);
+
+									var r = obj.error.yns_alert('Are you sure you would like to delete these ' + list.length + ' item' + (list.length != 1 ? 's' : '') + '?', 'Delete Items?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+
+									if (r == 0) {
+										var acn_hash = {}; var acn_list = [];
+										for (var i = 0; i < list.length; i++) {
+											list[i].isdeleted('1');
+											var acn_id = list[i].call_number();
+											if ( ! acn_hash[ acn_id ] ) {
+												acn_hash[ acn_id ] = new acn();
+												acn_hash[ acn_id ].id( acn_id );
+												acn_hash[ acn_id ].copies( [] );
+											}
+											var temp = acn_hash[ acn_id ].copies();
+											temp.push( list[i] );
+											acn_hash[ acn_id ].copies( temp );
+										}
+										for (var i in acn_hash) acn_list.push( acn_hash[i] );
+										var robj = obj.network.simple_request(
+											'FM_ACN_TREE_UPDATE', 
+											[ ses(), acn_list ],
+											null,
+											{
+												'title' : 'Override Delete Failure?',
+												'overridable_events' : [
+													1208 /* TITLE_LAST_COPY */
+												]
+											}
+										);
+										if (robj == null) throw(robj);
+										if (typeof robj.ilsevent != 'undefined') {
+											if (robj.ilsevent != 0) throw(robj);
+										}
+										obj.refresh_list();
+									}
+
+									
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> add copies to bucket',E);
+									obj.refresh_list();
+								}
 							}
 						],
 						'cmd_print_spine_labels' : [
