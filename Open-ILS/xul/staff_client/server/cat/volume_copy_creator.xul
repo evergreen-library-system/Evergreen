@@ -367,7 +367,7 @@
 					if (typeof r.ilsevent != 'undefined') {
 						switch(r.ilsevent) {
 							case 1706 /* ITEM_BARCODE_EXISTS */ :
-								alert('Some of these barcodes are in use.  Please change them.');
+								alert('Some of these barcodes are or have been in use.  Please change them.');
 								return;
 							break;
 							default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
