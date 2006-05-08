@@ -76,8 +76,10 @@ sub session {
 	$self->{session} = $session if $session;
 	if(!$self->{session}) {
 		if( $self->{xact} ) {
+			$logger->info("editor: starting new db session");
 			$self->{session} = $U->start_db_session;
 		} else {
+			$logger->info("editor: creating a non-xact session");
 			$self->{session} = 
 				OpenSRF::AppSession->create('open-ils.storage');
 		}
@@ -120,7 +122,7 @@ sub finish {
 # -----------------------------------------------------------------------------
 sub request {
 	my( $self, $method, @params ) = @_;
-	$logger->info("editor: performing simple storage request $method");
+	$logger->info("editor: performing request $method");
 	return $self->session->request($method, @params)->gather(1);
 }
 
@@ -320,7 +322,11 @@ sub runmethod {
 
 
 	if( $action eq 'search' ) {
-		$self->event(_mk_not_found($type, $arg)) unless @$obj;
+		if(@$obj) {
+			$logger->info("editor: search $type=$arg returned ".scalar(@$obj). " result(s)");
+		} else {
+			$self->event(_mk_not_found($type, $arg));
+		}
 	}
 
 	$arg->id($obj) if $action eq 'create';

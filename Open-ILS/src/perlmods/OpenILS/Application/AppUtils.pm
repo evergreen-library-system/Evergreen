@@ -7,6 +7,7 @@ use OpenILS::Perm;
 use OpenSRF::Utils::Logger;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
+use Data::Dumper;
 my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -184,7 +185,9 @@ sub simple_scalar_request {
 	$request->wait_complete;
 
 	if(!$request->complete) {
-		throw OpenSRF::EX::ERROR ("Call to $service for method $method with params @params" . 
+		warn "request did not complete : service=$service : method=$method\n";
+		throw OpenSRF::EX::ERROR 
+			("Call to $service for method $method with params @params" . 
 				"\n did not complete successfully");
 	}
 
@@ -193,8 +196,9 @@ sub simple_scalar_request {
 	}
 
 	if(UNIVERSAL::isa($response,"Error")) {
+		warn "received error : service=$service : method=$method : params=".Dumper(\@params) . "\n $response";
 		throw $response ("Call to $service for method $method with params @params" . 
-				"\n failed with exception: " . $response->stringify );
+				"\n failed with exception: $response : " . Dumper(\@params) );
 	}
 
 
