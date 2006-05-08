@@ -30,6 +30,7 @@ util.network.prototype = {
 		try {
 			var sparams = js2JSON(params);
 			obj.error.sdump('D_SES','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+				'\no_params = ' + o_params + 
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 			var request = new RemoteRequest( app, name );
 			for(var index in params) {
