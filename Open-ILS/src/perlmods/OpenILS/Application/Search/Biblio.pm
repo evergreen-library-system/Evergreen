@@ -888,16 +888,11 @@ __PACKAGE__->register_method(
 
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
-
 	$logger->debug("Searching ISBN $isbn");
-
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-
-	my ($records) = $method->run(  
-		[ {	term => $isbn,
-				restrict => $cat_search_hash->{isbn} } ], 1);
-
-	return $records;
+	my $e = OpenILS::Utils::Editor->new;
+	my $recs = $e->request(
+		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
+	return { ids => $recs, count => scalar(@$recs) };
 }
 
 
@@ -908,16 +903,11 @@ __PACKAGE__->register_method(
 
 sub biblio_search_issn { 
 	my( $self, $client, $issn ) = @_;
-
 	$logger->debug("Searching ISSN $issn");
-
-	my $method = $self->method_lookup("open-ils.search.biblio.marc");
-
-	my ($records) = $method->run(  
-		[ {	term => $issn,
-				restrict => $cat_search_hash->{issn} } ], 1);
-
-	return $records;
+	my $e = OpenILS::Utils::Editor->new;
+	my $recs = $e->request(
+		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
+	return { ids => $recs, count => scalar(@$recs) };
 }
 
 
