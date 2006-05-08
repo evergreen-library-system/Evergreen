@@ -18,13 +18,38 @@ __PACKAGE__->register_method(
 	/
 );
 
-
 sub get_users_from_usergroup {
 	my( $self, $conn, $auth, $usergroup ) = @_;
 	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
 	return $e->search_actor_user({usrgroup => $usergroup}, {idlist => 1});
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'get_leaders_from_usergroup',
+	api_name	=> 'open-ils.actor.usergroup.leaders.retrieve',
+	signature	=> q/
+		Returns a list of ids for users that are leaders of the given usergroup
+	/
+);
+
+sub get_leaders_from_usergroup {
+	my( $self, $conn, $auth, $usergroup ) = @_;
+	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
+	my $users = $e->search_actor_user({usrgroup => $usergroup})
+		or return $e->event;
+
+	my @res;
+	for my $u (@$users) {
+		push( @res, $u->id ) if $u->master_account;
+	}
+
+	return \@res;
 }
 
 

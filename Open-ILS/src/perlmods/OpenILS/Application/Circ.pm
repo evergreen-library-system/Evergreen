@@ -162,10 +162,6 @@ sub checkouts_by_user_opac {
 }
 
 
-
-
-
-
 __PACKAGE__->register_method(
 	method	=> "title_from_transaction",
 	api_name	=> "open-ils.circ.circ_transaction.find_title",

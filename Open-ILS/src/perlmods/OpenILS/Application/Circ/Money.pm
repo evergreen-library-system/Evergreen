@@ -341,7 +341,7 @@ sub fetch_mbts {
 
 	my $sum = $U->storagereq(
 		'open-ils.storage.direct.money.billable_transaction_summary.retrieve', $id );
-	return OpenILS::Event->new('BILLABLE_XACT_SUMMARY_NOT_FOUND', id => $id) unless $sum;
+	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
 	my ($reqr, $evt) = $U->checkses($authtoken);
 	return $evt if $evt;

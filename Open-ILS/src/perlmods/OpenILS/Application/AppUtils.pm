@@ -438,7 +438,7 @@ sub fetch_circulation {
 		"open-ils.storage.direct.action.circulation.retrieve", $circid );
 
 	if(!$circ) {
-		$evt = OpenILS::Event->new('CIRCULATION_NOT_FOUND', circid => $circid );
+		$evt = OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND', circid => $circid );
 	}
 
 	return ( $circ, $evt );
@@ -455,7 +455,7 @@ sub fetch_record_by_copy {
 		'open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy', $copyid );
 
 	if(!$record) {
-		$evt = OpenILS::Event->new('BIBLIO_RECORD_NOT_FOUND');
+		$evt = OpenILS::Event->new('BIBLIO_RECORD_ENTRY_NOT_FOUND');
 	}
 
 	return ($record, $evt);
@@ -481,7 +481,7 @@ sub fetch_hold {
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_request.retrieve', $holdid);
 
-	$evt = OpenILS::Event->new('HOLD_NOT_FOUND', holdid => $holdid) unless $hold;
+	$evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND', holdid => $holdid) unless $hold;
 
 	return ($hold, $evt);
 }
@@ -497,7 +497,7 @@ sub fetch_hold_transit_by_hold {
 		'open-ils.storage',
 		'open-ils.storage.direct.action.hold_transit_copy.search.hold', $holdid );
 
-	$evt = OpenILS::Event->new('HOLD_TRANSIT_NOT_FOUND', holdid => $holdid) unless $transit;
+	$evt = OpenILS::Event->new('ACTION_HOLD_TRANSIT_COPY_NOT_FOUND', holdid => $holdid) unless $transit;
 
 	return ($transit, $evt );
 }
@@ -516,7 +516,7 @@ sub fetch_open_hold_by_copy {
 			fulfillment_time	=> undef 
 		} );
 
-	$evt = OpenILS::Event->new('HOLD_NOT_FOUND', copyid => $copyid) unless $hold;
+	$evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND', copyid => $copyid) unless $hold;
 	return ($hold, $evt);
 }
 
@@ -526,7 +526,7 @@ sub fetch_hold_transit {
 	$logger->debug("Fetching hold transit with hold id $transid");
 	$htransit = $self->storagereq(
 		'open-ils.storage.direct.action.hold_transit_copy.retrieve', $transid );
-	$evt = OpenILS::Event->new('HOLD_TRANSIT_NOT_FOUND', id => $transid) unless $htransit;
+	$evt = OpenILS::Event->new('ACTION_HOLD_TRANSIT_COPY_NOT_FOUND', id => $transid) unless $htransit;
 	return ($htransit, $evt);
 }
 
@@ -556,7 +556,7 @@ sub fetch_open_billable_transaction {
 		'open-ils.storage.direct.money.open_billable_transaction_summary.retrieve',  $transid);
 
 	$evt = OpenILS::Event->new(
-		'TRANSACTION_NOT_FOUND', transid => $transid ) unless $transaction;
+		'MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', transid => $transid ) unless $transaction;
 
 	return ($transaction, $evt);
 }
@@ -575,14 +575,18 @@ sub fetch_container {
 
 	$logger->debug("Fetching container $id with type $type");
 
+	my $e = 'CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND';
+	$e = 'CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND' if $type eq 'biblio';
+	$e = 'CONTAINER_USER_BUCKET_NOT_FOUND' if $type eq 'user';
+	$e = 'CONTAINER_COPY_BUCKET_NOT_FOUND' if $type eq 'copy';
+
 	my $meth = $buckets{$type};
 	$bucket = $self->simplereq(
 		'open-ils.storage',
 		"open-ils.storage.direct.container.$meth.retrieve", $id );
 
 	$evt = OpenILS::Event->new(
-		'CONTAINER_NOT_FOUND', container => $id, 
-			container_type => $type ) unless $bucket;
+		$e, container => $id, container_type => $type ) unless $bucket;
 
 	return ($bucket, $evt);
 }
@@ -600,9 +604,15 @@ sub fetch_container_item {
 		'open-ils.storage',
 		"open-ils.storage.direct.container.$meth.retrieve", $id );
 
+
+	my $e = 'CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND';
+	$e = 'CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND' if $type eq 'biblio';
+	$e = 'CONTAINER_USER_BUCKET_ITEM_NOT_FOUND' if $type eq 'user';
+	$e = 'CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND' if $type eq 'copy';
+
+
 	$evt = OpenILS::Event->new(
-		'CONTAINER_ITEM_NOT_FOUND', itemid => $id, 
-			container_type => $type ) unless $bucket;
+		$e, itemid => $id, container_type => $type ) unless $bucket;
 
 	return ($bucket, $evt);
 }
@@ -655,7 +665,7 @@ sub fetch_copy_location {
 	my $evt;
 	my $cl = $self->storagereq(
 		'open-ils.storage.direct.asset.copy_location.retrieve', $id );
-	$evt = OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless $cl;
+	$evt = OpenILS::Event->new('ASSET_COPY_LOCATION_NOT_FOUND') unless $cl;
 	return ($cl, $evt);
 }
 
@@ -672,7 +682,7 @@ sub fetch_copy_location_by_name {
 	my $cl = $self->storagereq(
 		'open-ils.storage.direct.asset.copy_location.search_where',
 			{ name => $name, owning_lib => $org } );
-	$evt = OpenILS::Event->new('COPY_LOCATION_NOT_FOUND') unless $cl;
+	$evt = OpenILS::Event->new('ASSET_COPY_LOCATION_NOT_FOUND') unless $cl;
 	return ($cl, $evt);
 }
 
@@ -684,7 +694,7 @@ sub fetch_callnumber {
 	my $cn = $self->simplereq(
 		'open-ils.storage',
 		'open-ils.storage.direct.asset.call_number.retrieve', $id );
-	$evt = OpenILS::Event->new( 'VOLUME_NOT_FOUND', id => $id ) unless $cn;
+	$evt = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id ) unless $cn;
 
 	return ( $cn, $evt );
 }
@@ -700,7 +710,7 @@ sub fetch_org_unit {
 	my $org = $self->simplereq(
 		'open-ils.storage', 
 		'open-ils.storage.direct.actor.org_unit.retrieve', $id );
-	$evt = OpenILS::Event->new( 'ORG_UNIT_NOT_FOUND', id => $id ) unless $org;
+	$evt = OpenILS::Event->new( 'ACTOR_ORG_UNIT_NOT_FOUND', id => $id ) unless $org;
 	$ORG_CACHE{$id}  = $org;
 
 	return ($org, $evt);
@@ -713,7 +723,11 @@ sub fetch_stat_cat {
 	$cat = $self->simplereq(
 		'open-ils.storage', 
 		"open-ils.storage.direct.$type.stat_cat.retrieve", $id );
-	$evt = OpenILS::Event->new( 'STAT_CAT_NOT_FOUND', id => $id ) unless $cat;
+
+	my $e = 'ASSET_STAT_CAT_NOT_FOUND';
+	$e = 'ACTOR_STAT_CAT_NOT_FOUND' if $type eq 'actor';
+
+	$evt = OpenILS::Event->new( $e, id => $id ) unless $cat;
 	return ( $cat, $evt );
 }
 
@@ -724,7 +738,11 @@ sub fetch_stat_cat_entry {
 	$entry = $self->simplereq(
 		'open-ils.storage', 
 		"open-ils.storage.direct.$type.stat_cat_entry.retrieve", $id );
-	$evt = OpenILS::Event->new( 'STAT_CAT_ENTRY_NOT_FOUND', id => $id ) unless $entry;
+
+	my $e = 'ASSET_STAT_CAT_ENTRY_NOT_FOUND';
+	$e = 'ACTOR_STAT_CAT_ENTRY_NOT_FOUND' if $type eq 'actor';
+
+	$evt = OpenILS::Event->new( $e, id => $id ) unless $entry;
 	return ( $entry, $evt );
 }
 
@@ -748,7 +766,7 @@ sub fetch_non_cat_type_by_name_and_org {
 		'open-ils.storage.direct.config.non_cataloged_type.search_where.atomic',
 		{ name => $name, owning_lib => $orgId } );
 	return ($types->[0], undef) if($types and @$types);
-	return (undef, OpenILS::Event->new('NON_CAT_TYPE_NOT_FOUND') );
+	return (undef, OpenILS::Event->new('CONFIG_NON_CATALOGED_TYPE_NOT_FOUND') );
 }
 
 sub fetch_non_cat_type {
@@ -758,7 +776,7 @@ sub fetch_non_cat_type {
 	$type = $self->simplereq(
 		'open-ils.storage', 
 		'open-ils.storage.direct.config.non_cataloged_type.retrieve', $id );
-	$evt = OpenILS::Event->new('NON_CAT_TYPE_NOT_FOUND') unless $type;
+	$evt = OpenILS::Event->new('CONFIG_NON_CATALOGED_TYPE_NOT_FOUND') unless $type;
 	return ($type, $evt);
 }
 
@@ -775,7 +793,7 @@ sub fetch_circ_duration_by_name {
 		'open-ils.storage', 
 		'open-ils.storage.direct.config.rules.circ_duration.search.name.atomic', $name );
 	$dur = $dur->[0];
-	$evt = OpenILS::Event->new('CIRC_DURATION_NOT_FOUND') unless $dur;
+	$evt = OpenILS::Event->new('CONFIG_RULES_CIRC_DURATION_NOT_FOUND') unless $dur;
 	return ($dur, $evt);
 }
 
@@ -786,7 +804,7 @@ sub fetch_recurring_fine_by_name {
 		'open-ils.storage', 
 		'open-ils.storage.direct.config.rules.recuring_fine.search.name.atomic', $name );
 	$obj = $obj->[0];
-	$evt = OpenILS::Event->new('RECURRING_FINE_NOT_FOUND') unless $obj;
+	$evt = OpenILS::Event->new('CONFIG_RULES_RECURING_FINE_NOT_FOUND') unless $obj;
 	return ($obj, $evt);
 }
 
@@ -797,7 +815,7 @@ sub fetch_max_fine_by_name {
 		'open-ils.storage', 
 		'open-ils.storage.direct.config.rules.max_fine.search.name.atomic', $name );
 	$obj = $obj->[0];
-	$evt = OpenILS::Event->new('MAX_FINE_NOT_FOUND') unless $obj;
+	$evt = OpenILS::Event->new('CONFIG_RULES_MAX_FINE_NOT_FOUND') unless $obj;
 	return ($obj, $evt);
 }
 
@@ -832,7 +850,7 @@ sub fetch_open_circulation {
 	my $circ = $self->storagereq(
 		'open-ils.storage.direct.action.open_circulation.search_where',
 		{ target_copy => $cid, stop_fines_time => undef } );
-	$evt = OpenILS::Event->new('CIRCULATION_NOT_FOUND') unless $circ;	
+	$evt = OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND') unless $circ;	
 	return ($circ, $evt);
 }
 
@@ -908,7 +926,7 @@ sub fetch_billable_xact {
 	$logger->debug("Fetching billable transaction %id");
 	$xact = $self->storagereq(
 		'open-ils.storage.direct.money.billable_transaction.retrieve', $id );
-	$evt = OpenILS::Event->new('TRANSACTION_NOT_FOUND') unless $xact;
+	$evt = OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_NOT_FOUND') unless $xact;
 	return ($xact, $evt);
 }
 
@@ -943,7 +961,7 @@ sub fetch_copy_note {
 	$logger->debug("Fetching copy note $id");
 	$note = $self->storagereq(
 		'open-ils.storage.direct.asset.copy_note.retrieve', $id );
-	$evt = OpenILS::Event->new('COPY_NOTE_NOT_FOUND', id => $id ) unless $note;
+	$evt = OpenILS::Event->new('ASSET_COPY_NOTE_NOT_FOUND', id => $id ) unless $note;
 	return ($note, $evt);
 }
 
@@ -968,7 +986,7 @@ sub fetch_user_by_barcode {
 	my( $self, $bc ) = @_;
 	my $cardid = $self->storagereq(
 		'open-ils.storage.id_list.actor.card.search.barcode', $bc );
-	return (undef, OpenILS::Event->new('CARD_NOT_FOUND', barcode => $bc)) unless $cardid;
+	return (undef, OpenILS::Event->new('ACTOR_CARD_NOT_FOUND', barcode => $bc)) unless $cardid;
 	my $user = $self->storagereq(
 		'open-ils.storage.direct.actor.user.search.card', $cardid );
 	return (undef, OpenILS::Event->new('ACTOR_USER_NOT_FOUND', card => $cardid)) unless $user;
@@ -994,7 +1012,7 @@ sub fetch_bill {
 	$logger->debug("Fetching billing $billid");
 	my $bill = $self->storagereq(
 		'open-ils.storage.direct.money.billing.retrieve', $billid );
-	my $evt = OpenILS::Event->new('BILLING_NOT_FOUND') unless $bill;
+	my $evt = OpenILS::Event->new('MONEY_BILLING_NOT_FOUND') unless $bill;
 	return($bill, $evt);
 }
 

@@ -498,7 +498,7 @@ sub _find_local_hold_for_copy {
 	my $session = shift;
 	my $copy = shift;
 	my $user = shift;
-	my $evt = OpenILS::Event->new('HOLD_NOT_FOUND');
+	my $evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
 
 	# first see if this copy has already been selected to fulfill a hold
 	my $hold  = $session->request(
