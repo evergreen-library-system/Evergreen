@@ -1360,7 +1360,8 @@ sub create_volume {
 	my $vols = $editor->search_asset_call_number( { 
 			owning_lib	=> $vol->owning_lib,
 			record		=> $vol->record,
-			label			=> $vol->label
+			label			=> $vol->label,
+			deleted		=> 'f'
 		}
 	);
 
