@@ -156,6 +156,7 @@ function myOPACDrawCheckedOutSlim(r) {
 		tbody.appendChild(row);
 
 		var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
+		req.request.alertEvent = false;
 		req.request.circ = circ.id();
 		req.request.copy = circ.target_copy();
 		req.callback(myOPACDrawCheckedTitle);
@@ -183,7 +184,6 @@ function myOPACDrawCheckedTitle(r) {
 }
 
 function myOPACDrawNonCatalogedItem(r) {
-	alert('AHHH');
 	var copy = r.getResultObject();
 	var circid = r.circ;
 
@@ -890,7 +890,9 @@ var nonCatRow;
 function myOPACDrawNonCatCircs2(r) {
 	nonCatTypes = r.getResultObject();
 	nonCatTbody = $('non_cat_circs_tbody');
-	nonCatRow = nonCatTbody.removeChild($('non_cat_circs_row'));
+	if(!nonCatRow) nonCatRow = 
+		nonCatTbody.removeChild($('non_cat_circs_row'));
+	removeChildren(nonCatTbody);
 	for( var i in nonCatCircIds ) {
 		var req = new Request(FETCH_NON_CAT_CIRC, G.user.session, nonCatCircIds[i]);
 		req.callback(myOPACDrawNonCatCirc);
@@ -909,8 +911,8 @@ function myOPACDrawNonCatCirc(r) {
 	)[0];
 
 	var row = nonCatTbody.appendChild(nonCatRow.cloneNode(true));
-	$n(row, 'circ_lib').appendChild(text(findOrgUnit(circ.circ_lib()).name()));
-	$n(row, 'item_type').appendChild(text(type.name()));
+	appendClear($n(row, 'circ_lib'), text(findOrgUnit(circ.circ_lib()).name()));
+	appendClear($n(row, 'item_type'), text(type.name()));
 
 	var duration = interval_to_seconds(type.circ_duration());
 	duration = parseInt(duration + '000');
@@ -918,7 +920,7 @@ function myOPACDrawNonCatCirc(r) {
 	var start = new Date.W3CDTF(circ.circ_time());
 	var due = new Date(  start.getTime() + duration );
 
-	$n(row, 'circ_time').appendChild(text(due));
+	appendClear($n(row, 'circ_time'), text(due));
 }
 
 
