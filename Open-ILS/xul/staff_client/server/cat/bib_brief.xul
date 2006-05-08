@@ -103,7 +103,7 @@
 									);
 									var t = document.getElementById('caption').getAttribute('label');
 									if (meta.deleted()) { t += ' (Deleted) '; } else { 
-										if (meta.active()) { t += ' (Active) '; } else { t += ' (Inactive) '; }
+										if ( ! meta.active()) { t += ' (Inactive) '; }
 									}
 									document.getElementById('caption').setAttribute('label',t);
 								} catch(E) {
