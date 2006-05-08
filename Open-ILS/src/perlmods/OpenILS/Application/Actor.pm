@@ -1943,7 +1943,7 @@ sub delete_user_note {
 
 	my $note = $U->storagereq(
 		'open-ils.storage.direct.actor.usr_note.retrieve', $noteid);
-	return OpenILS::Event->new('USER_NOTE_NOT_FOUND') unless $note;
+	return OpenILS::Event->new('ACTOR_USER_NOTE_NOT_FOUND') unless $note;
 
 	my( $reqr, $patron, $evt ) = 
 		$U->checkses_requestor($authtoken, $note->usr, 'UPDATE_USER');
