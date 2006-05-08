@@ -334,6 +334,7 @@ sub record_copy_status_count {
 		  	AND cp.status = cs.id
 			AND cl.opac_visible IS TRUE
 			AND cp.opac_visible IS TRUE
+			AND cp.deleted IS FALSE
 			AND cs.holdable
 		  GROUP BY 1,2,3;
 	SQL
