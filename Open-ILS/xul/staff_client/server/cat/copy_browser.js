@@ -132,6 +132,33 @@ cat.copy_browser.prototype = {
 						'cmd_add_items_to_buckets' : [
 							['command'],
 							function() {
+								try {
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+									
+									JSAN.use('util.window'); var win = new util.window();
+									win.open( 
+										xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
+										+ '?copy_ids=' + js2JSON( list ),
+										'sel_bucket_win' + win.window_name_increment(),
+										'chrome,resizable,modal,center'
+									);
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> add copies to bucket',E);
+								}
 							}
 						],
 						'cmd_edit_items' : [
