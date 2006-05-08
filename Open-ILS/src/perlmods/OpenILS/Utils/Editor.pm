@@ -261,9 +261,15 @@ sub runmethod {
 
 	my @arg = ($arg);
 	my $method = "open-ils.storage.direct.$type.$action";
+
 	if( $action eq 'search' ) {
 		$method =~ s/search/search_where/o;
 		$method =~ s/direct/id_list/o if $options->{idlist};
+		$method = "$method.atomic";
+		@arg = @$arg if ref($arg) eq 'ARRAY';
+
+	} elsif( $action eq 'batch_retrieve' ) {
+		$method =~ s/batch_retrieve/batch.retrieve/o;
 		$method = "$method.atomic";
 		@arg = @$arg if ref($arg) eq 'ARRAY';
 	}
@@ -271,14 +277,13 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
+	$logger->info("editor: performing $action on $type=$arg");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
-	} else {
-		$logger->info("editor: performing $action on $type=$arg");
 	}
 
 	if($$options{checkperm}) {
-		my $a = ($action eq 'search') ? 'retrieve' : $action;
+		my $a = ($action eq 'search' or $action eq 'batch_retrieve') ? 'retrieve' : $action;
 		my $e = $self->checkperm($type, $a, $$options{permorg});
 		if($e) {
 			$self->event($e);
@@ -321,12 +326,9 @@ sub runmethod {
 	}
 
 
-	if( $action eq 'search' ) {
-		if(@$obj) {
-			$logger->info("editor: search $type=$arg returned ".scalar(@$obj). " result(s)");
-		} else {
-			$self->event(_mk_not_found($type, $arg));
-		}
+	if( $action eq 'search' or $action eq 'batch_retrieve') {
+		$logger->info("editor: $action $type=$arg returned ".scalar(@$obj). " result(s)");
+		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
 
 	$arg->id($obj) if $action eq 'create';
@@ -388,6 +390,12 @@ for my $object (keys %$map) {
 	my $deletef = 
 		"sub $delete {return shift()->runmethod('delete', '$type', \@_);}";
 	eval $deletef;
+
+	my $bretrieve = "batch_retrieve_$obj";
+	my $bretrievef = 
+		"sub $bretrieve {return shift()->runmethod('batch_retrieve', '$type', \@_);}";
+	eval $bretrievef;
+
 }
 
 
