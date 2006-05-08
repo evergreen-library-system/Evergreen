@@ -168,7 +168,14 @@ sub modsdoc_to_values {
 			for my $arr (@value) {
 				if( ref($arr) ) {
 					$data->{$class}->{$type} = shift @$arr;
-					$data->{$class}->{$type} .= ' ' . shift @$arr if (lc($data->{$class}->{$type}) =~ /^the|an?/o);
+
+					my $t = lc($data->{$class}->{$type});
+					if($t and $t =~ /^the|an?/o ) {
+						my $val = shift @$arr || "";
+						$data->{$class}->{$type} .= " $val" if $data->{$class}->{$type};
+						$data->{$class}->{$type} = " $val" unless $data->{$class}->{$type};
+					}
+
 					for my $t (@$arr) {
 						$data->{$class}->{$type} .= ' : ' if ($data->{$class}->{$type} =~ /\w\s*$/o);
 						$data->{$class}->{$type} .= " $t";
@@ -289,10 +296,6 @@ sub start_mods_batch {
 
 	my $xmldoc = $parser->parse_string($master_doc);
 	my $mods = $mods_sheet->transform($xmldoc);
-
-#	warn "-" x 100 . "\n";
-#	warn "MODS " . $mods->toString(1) . "\n";
-#	warn "-" x 100 . "\n";
 
 	$self->{master_doc} = $self->modsdoc_to_values( $mods );
 	$self->{master_doc} = $self->mods_values_to_mods_slim( $self->{master_doc} );
@@ -424,9 +427,6 @@ sub finish_mods_batch {
 	$record->synopsis($perl->{synopsis});
 	$record->physical_description($perl->{physical_description});
 	$record->toc($perl->{toc});
-
-	use Data::Dumper;
-	warn Dumper $self->{master_doc};
 
 	$self->{master_doc} = undef;
 	return $record;
