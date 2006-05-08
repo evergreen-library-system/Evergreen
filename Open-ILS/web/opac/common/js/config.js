@@ -13,7 +13,6 @@ var PARAM_MRID			= "m";			/* metarecord id */
 var PARAM_RID			= "r";			/* record id */
 var PARAM_RLIST		= "rl";
 var PARAM_ORIGLOC		= "ol";			/* the original location */
-//var PARAM_TOPRANK		= "tr";			/* this highest ranking rank */
 var PARAM_AUTHTIME	= "at";			/* inactivity timeout in seconds */
 var PARAM_ADVTERM		= "adv";			/* advanced search term */
 var PARAM_ADVTYPE		= "adt";			/* the advanced search type */
@@ -28,6 +27,7 @@ var PARAM_ITEMTYPE	= 'it';
 var PARAM_AUDIENCE	= 'a';
 var PARAM_SEARCHES	= 'ss';
 var PARAM_LANGUAGE	= 'la';
+var PARAM_TFORM		= 'tf'; /* temporary format for title result pages */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -58,6 +58,7 @@ var ITEMTYPE;
 var AUDIENCE;
 var SEARCHES;
 var LANGUAGE;
+var TFORM;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -119,7 +120,6 @@ var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 
 /* user preferences */
 var PREF_HITS_PER		= 'opac.hits_per_page';
-//var PREF_BOOKBAG		= 'opac.bookbag_enabled';
 var PREF_DEF_FONT		= 'opac.default_font';
 var PREF_HOLD_NOTIFY = 'opac.hold_notify';
 
@@ -283,7 +283,6 @@ var FETCH_REVIEWS					= "open-ils.search:open-ils.search.added_content.review.re
 var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve";
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
-/*var FETCH_ADV_MRIDS				= "open-ils.search:open-ils.search.biblio.multiclass:1";*/
 var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
 var FETCH_ADV_ISBN_MRIDS		= "open-ils.search:open-ils.search.biblio.isbn";
 var FETCH_ADV_ISSN_MRIDS		= "open-ils.search:open-ils.search.biblio.issn";
@@ -302,7 +301,6 @@ var UPDATE_CONTAINER				= 'open-ils.actor:open-ils.actor.container.update';
 var FETCH_COPY						= 'open-ils.search:open-ils.search.asset.copy.retrieve';
 var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible';
 var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
-/*var FETCH_BIBLIO_NOTES			= 'open-ils.circ:open-ils.circ.biblio_notes.public.batch.retrieve';*/
 var FETCH_COPIES_FROM_VOLUME	= 'open-ils.search:open-ils.search.copies_by_call_number.retrieve';
 var FETCH_VOLUME_BY_INFO		= 'open-ils.search:open-ils.search.call_number.retrieve_by_info'; /* XXX staff method? */
 var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';

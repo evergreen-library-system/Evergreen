@@ -440,11 +440,15 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 
 		var args = {};
 		args[PARAM_OFFSET] = 0;
+		/*
 		args[PARAM_FORM] = modsFormatToMARC(res);
+		*/
 
 		if(is_mr) {
 			args.page = RRESULT;
+			args[PARAM_TFORM] = modsFormatToMARC(res);
 			args[PARAM_MRID] = rec.doc_id();
+
 		} else {
 			args.page = RDETAIL
 			args[PARAM_RID] = rec.doc_id();

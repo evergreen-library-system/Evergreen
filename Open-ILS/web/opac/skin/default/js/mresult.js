@@ -18,6 +18,8 @@ hideMe($('copyright_block'));
 function mresultDoSearch() {
 
 
+	TFORM = null; /* clear the rresult tform var so it's not propogated */
+
 	if(getOffset() == 0) {
 		swapCanvas($('loading_alt'));
 		/*

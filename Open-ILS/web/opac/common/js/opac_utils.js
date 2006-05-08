@@ -110,6 +110,7 @@ function initParams() {
 	AUDIENCE	= cgi.param(PARAM_AUDIENCE);
 	SEARCHES = cgi.param(PARAM_SEARCHES);
 	LANGUAGE	= cgi.param(PARAM_LANGUAGE);
+	TFORM		= cgi.param(PARAM_TFORM);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
@@ -162,6 +163,7 @@ function getStype(){return STYPE;}
 function getLocation(){return LOCATION;}
 function getDepth(){return DEPTH;}
 function getForm(){return FORM;}
+function getTform(){return TFORM;}
 function getOffset(){return OFFSET;}
 function getDisplayCount(){return COUNT;}
 function getHitCount(){return HITCOUNT;}
@@ -284,6 +286,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
 	if(getForm() && (getForm() != 'all') ) 
 		string += _appendParam(FORM,		PARAM_FORM, args, getForm, string);
+	if(getTform() && (getTform() != 'all') ) 
+		string += _appendParam(TFORM,		PARAM_TFORM, args, getTform, string);
 	if(getOffset() != 0) 
 		string += _appendParam(OFFSET,	PARAM_OFFSET, args, getOffset, string);
 	if(getDisplayCount() != 10) 

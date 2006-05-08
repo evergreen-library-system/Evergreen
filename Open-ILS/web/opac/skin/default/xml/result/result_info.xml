@@ -42,7 +42,26 @@
 		</tr>
 
 		<tr style='height: 2em;' id='result_thead_row'>
-			<td> </td>
+			<td> 
+				<div class='hide_me' id='no_formats' style='padding: 4px;'>
+					<b>
+						<span style='color:red;'>*</span>
+						No items with the selected format were found in this location.  
+						<div>Listed below are all items in the catalog with the chosen format.</div>
+					</b>
+				</div>
+
+				<div class='hide_me' id='rresult_show_all' style='padding: 4px;'>
+					<a href='javascript:rresultExpandSearch();' id='rresult_show_all_link' 
+						class='classic_link'>Show records for </a>
+				</div>
+
+				<div class='hide_me' id='rresult_show_here' style='padding: 4px;'>
+					<a href='javascript:goTo(buildOPACLink());' id='rresult_show_here_link' 
+						class='classic_link'>Show records for </a>
+				</div>
+
+			</td>
 			<td rowspan='2' style='font-size: 8pt; padding-top: 4px;' class='copy_count_cell' 
 				width='12%' align='center' name='result_thead_ccell'> </td>
 		</tr>

@@ -53,12 +53,51 @@ function rresultCollectIds() {
 		case null :
 		case "" :
 		defaut:
-			var form = (getForm() == "all") ? null : getForm();
-			var req = new Request(FETCH_RIDS, getMrid(), 
-				{ format : form, org : getLocation(), depth : getDepth() } );
+			var form = rresultGetForm();
+			var args = { format : form, org : getLocation(), depth : rresultGetDepth() };
+			var req = new Request(FETCH_RIDS, getMrid(), args);
 			req.callback( rresultHandleRIds );
 			req.send();
+
+			if( rresultGetDepth() != findOrgDepth(globalOrgTree) ) {
+				unHideMe($('rresult_show_all'));
+				var link = $('rresult_show_all_link');
+				link.appendChild( text(
+					findOrgType(globalOrgTree.ou_type()).opac_label()));
+
+			} else {
+				if( rresultGetDepth() != getDepth() ) { /* inside a limited display */
+					var link = $('rresult_show_here_link');
+					link.appendChild( text(
+						findOrgType(findOrgUnit(getLocation()).ou_type()).opac_label()));
+					unHideMe($('rresult_show_here'));
+				}
+			}
 	}
+}
+
+function rresultExpandSearch() {
+	var link = buildOPACLink();
+	link += "&tmpdepth=" + findOrgDepth(globalOrgTree);
+	goTo(link);
+}
+
+
+function rresultGetDepth() {
+	var cgi = new CGI();
+	if(cgi.param('tmpdepth'))
+		return cgi.param('tmpdepth');
+	return getDepth();
+}
+
+
+function rresultGetForm() {
+	var form;
+	if(getTform()) 
+		form = (getTform() == 'all') ? null : getTform();
+	else 
+		form = (getForm() == 'all') ? null : getForm();
+	return form;
 }
 
 
@@ -80,9 +119,27 @@ function rresultHandleList() {
 	if(ids) _rresultHandleIds(ids, ids.length);
 }
 
+var rresultTries = 0;
 function rresultHandleRIds(r) {
 	var res = r.getResultObject();
-	_rresultHandleIds(res.ids, res.count);
+
+	if( res.count == 0 ) {
+
+		if( rresultTries == 0 ) {
+			rresultTries++;
+			var form = rresultGetForm();
+			var args = { format : form, org : getLocation(), depth : findOrgDepth(globalOrgTree) };
+			var req = new Request(FETCH_RIDS, getMrid(), args );
+			req.callback( rresultHandleRIds );
+			req.send();
+			unHideMe($('no_formats'));
+			hideMe($('rresult_show_all'));
+		}
+
+	} else {
+
+		_rresultHandleIds(res.ids, res.count);
+	}
 }
 
 function _rresultHandleIds(ids, count) {
