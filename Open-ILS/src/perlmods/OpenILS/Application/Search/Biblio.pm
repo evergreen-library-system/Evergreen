@@ -229,7 +229,6 @@ sub copy_retrieve {
 }
 
 
-# XXX add last 3 circs and total circ count
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve_batch",
 	api_name	=> "open-ils.search.asset.copy.fleshed.batch.retrieve");
@@ -362,69 +361,6 @@ sub the_quest_for_knowledge {
 
 
 
-# XXX XXX old class search...
-=head old search method
-__PACKAGE__->register_method(
-	method		=> "record_search_class",
-	api_name		=> "open-ils.search.biblio.record.class.search",
-	signature	=> q/
-		Performs a class search for biblio records (not metarecords)
-		@param class The search class to use
-		@param args A hash of named parameters including:
-			term		: The search string,
-			org_unit : The org id to focus the search at
-			depth		: The org depth
-			limit		: The search limit
-			offset	: The search offset
-			format	: The MARC format
-			sort		: What field to sort the results on [ author | title | pubdate ]
-			sort_dir	: What direction do we sort? [ asc | desc ]
-		The only required argument is the term.
-		@return 
-	/);
-
-__PACKAGE__->register_method(
-	method		=> "record_search_class",
-	api_name		=> "open-ils.search.biblio.record.class.search.staff",
-	signature	=> q/@see open-ils.search.biblio.record.class.search/);
-__PACKAGE__->register_method(
-	method	=> "record_search_class",
-	api_name	=> "open-ils.search.biblio.metabib.class.search",
-	signature	=> q/@see open-ils.search.biblio.record.class.search/);
-__PACKAGE__->register_method(
-	method	=> "record_search_class",
-	api_name	=> "open-ils.search.biblio.metabib.class.search.staff",
-	signature	=> q/@see open-ils.search.biblio.record.class.search/);
-
-sub record_search_class {
-	my( $self, $client, $class, $args ) = @_;
-
-	my $type		= ($self->api_name =~ /metabib/) ? 1 : 0;
-	my $method	= "open-ils.storage.metabib.$class.post_filter.search_fts.metarecord.atomic";
-	$method		= "open-ils.storage.biblio.$class.search_fts.record.atomic" unless $type;
-
-	if(!$$args{'sort'}) {
-		delete $$args{'sort'}; 
-		delete $$args{'sort_dir'};
-	}
-	$$args{limit}	= 200 if (!$$args{limit} || $$args{limit} > 1000);
-	$$args{offset} ||= 0;
-
-	$logger->info("Class search with args: ".Dumper($args));
-
-	$method =~ s/\.atomic/.staff.atomic/o if $self->api_name =~ /staff/o;
-	my $result = $U->storagereq( $method, %$args );
-
-	if($result and $result->[0]) {
-		my $recs = [];
-		for my $r (@$result) { push(@$recs, $r) if ($r and $r->[0]); }
-		return { ids => $recs, 
-			count => ($type) ? $result->[0]->[3] : $result->[0]->[2] };
-	}
-	return { count => 0 };
-}
-=cut
-
 
 
 
@@ -524,6 +460,7 @@ sub _grab_metarecord {
 	return $mr;
 }
 
+
 __PACKAGE__->register_method(
 	method	=> "biblio_mrid_make_modsbatch",
 	api_name	=> "open-ils.search.biblio.metarecord.mods_slim.create",
@@ -534,6 +471,67 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub biblio_mrid_make_modsbatch {
+	my( $self, $client, $mrid ) = @_;
+
+	my $e = OpenILS::Utils::Editor->new;
+
+	my $mr;
+	if( ref($mrid) ) {
+		$mr = $mrid;
+		$mrid = $mr->id;
+	} else {
+		$mr = $e->retrieve_metabib_metarecord($mrid) 
+			or return $e->event;
+	}
+
+	my $masterid = $mr->master_record;
+	$logger->info("creating new mods batch for metarecord=$mrid, master record=$masterid");
+
+	my $ids = $e->request(
+		'open-ils.storage.ordered.metabib.metarecord.records.staff.atomic', $mrid);
+	return undef unless @$ids;
+
+	my $master = $e->retrieve_biblio_record_entry($masterid)
+		or return $e->event;
+
+	# start the mods batch
+	my $u = OpenILS::Utils::ModsParser->new();
+	$u->start_mods_batch( $master->marc );
+
+	# grab all of the sub-records and shove them into the batch
+	my @ids = grep { $_ ne $masterid } @$ids;
+	my $subrecs = $e->batch_retrieve_biblio_record_entry(\@ids);
+
+	for(@$subrecs) {
+		$logger->debug("adding record ".$_->id." to mods batch for metarecord=$mrid");
+		$u->push_mods_batch( $_->marc ) if $_->marc;
+	}
+
+
+	# finish up and send to the client
+	my $mods = $u->finish_mods_batch();
+	$mods->doc_id($mrid);
+	$client->respond_complete($mods);
+
+
+	# now update the mods string in the db
+	my $string = JSON->perl2JSON($mods->decast);
+	$mr->mods($string);
+
+	$e = OpenILS::Utils::Editor->new(xact => 1);
+	$e->update_metabib_metarecord($mr) 
+		or $logger->error("Error setting mods text on metarecord $mrid : " . Dumper($e->event));
+	$e->finish;
+
+	return undef;
+}
+
+
+
+
+
+=head deprecated
+sub _biblio_mrid_make_modsbatch {
 
 	my( $self, $client, $mrid ) = @_;
 
@@ -615,6 +613,7 @@ sub biblio_mrid_make_modsbatch {
 
 	return undef;
 }
+=cut
 
 
 
