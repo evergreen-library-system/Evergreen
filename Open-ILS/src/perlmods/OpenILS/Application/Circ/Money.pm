@@ -25,7 +25,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use Data::Dumper;
 use OpenSRF::Utils::Logger qw/:logger/;
-
+use OpenILS::Event;
 
 __PACKAGE__->register_method(
 	method	=> "make_payments",
@@ -85,10 +85,10 @@ sub make_payments {
 				"a different user: " .  $trans->usr . ' for transaction ' . $trans->id  );
 		}
 
-		if($type == 'credit_payment') {
+		if($type eq 'credit_payment') {
 			$credit -= $amount;
-			$logger->activity("user ".$user->id." reducing patron credit to ".
-				"$credit by making a credit_payment on transaction ".$trans->id);
+			$logger->activity("user ".$user->id." reducing patron credit by ".
+				"$credit for making a credit_payment on transaction ".$trans->id);
 		}
 
 
@@ -151,7 +151,8 @@ sub make_payments {
 	$logger->activity("user ".$user->id." applying total ".
 		"credit of $credit to user $userid") if $credit != 0;
 
-	_update_patron_credit( $session, $userid, $credit );
+	$evt = _update_patron_credit( $session, $userid, $credit );
+	return $evt if $evt;
 
 	$apputils->commit_db_session($session);
 
@@ -178,11 +179,17 @@ sub _update_patron_credit {
 
 	$patron->credit_forward_balance( 
 		$patron->credit_forward_balance + $credit);
+
+	if( $patron->credit_forward_balance < 0 ) {
+		return OpenILS::Event->new('NEGATIVE_PATRON_BALANCE');
+	}
 	
 	$logger->info("Total patron credit for $userid is now " . $patron->credit_forward_balance );
 
 	$session->request( 
 		'open-ils.storage.direct.actor.user.update', $patron )->gather(1);
+
+	return undef;
 }
 
 
