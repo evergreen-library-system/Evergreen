@@ -80,10 +80,7 @@
 		</desc>
 	</event>
 	<event code='1501' textcode='BIBLIO_RECORD_ENTRY_NOT_FOUND'>
-		<desc xml:lang="en-US">
-			Someone attempted to retrieve a biblio record entry object from the 
-			system and the object was not found.
-		</desc>
+		<desc xml:lang='en-US'>The requested biblio_record_entry was not found</desc>
 	</event>
 	<event code='1502' textcode='ASSET_COPY_NOT_FOUND'>
 		<desc xml:lang="en-US">
@@ -92,10 +89,7 @@
 		</desc>
 	</event>
 	<event code='1503' textcode='ACTION_HOLD_REQUEST_NOT_FOUND'>
-		<desc xml:lang="en-US">
-			Someone attempted to retrieve a hold object from the 
-			system and the object was not found.
-		</desc>
+		<desc xml:lang='en-US'>The requested action_hold_request was not found</desc>
 	</event>
 	<event code='1504' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
 		<desc xml:lang="en-US">
@@ -103,12 +97,8 @@
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1505' textcode='MONEY_BILLING_NOT_FOUND'>
-		<desc xml:lang="en-US">
-			Someone attempted to retrieve a transit object from the 
-			system and the object was not found.
-		</desc>
-	</event>
+
+
 	<event code='1506' textcode='CONTAINER_NOT_FOUND'>
 		<desc xml:lang="en-US">
 			Someone attempted to retrieve a container object from the 
@@ -127,69 +117,337 @@
 			system and the object was not found.
 		</desc>
 	</event>
-	<event code='1509' textcode='ORG_UNIT_NOT_FOUND'>
-		<desc xml:lang="en-US">
-			Someone attempted to retrieve an org unit object from the 
-			system and the object was not found.
-		</desc>
+
+
+	<event code='1518' textcode='ACTION_HOLD_TRANSIT_COPY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_transit_copy was not found</desc>
 	</event>
-	<event code='1510' textcode='STAT_CAT_NOT_FOUND'>
-		<desc xml:lang="en-US"> Stat cat object does not exist </desc>
-	</event>
-	<event code='1511' textcode='STAT_CAT_ENTRY_NOT_FOUND'>
-		<desc xml:lang="en-US"> Stat cat entry object does not exist </desc>
-	</event>
-	<event code='1512' textcode='STAT_CAT_ENTRY_MAP_NOT_FOUND'>
-		<desc xml:lang="en-US"> Stat cat entry map object does not exist </desc>
-	</event>
-	<event code='1513' textcode='NON_CAT_TYPE_NOT_FOUND'>
-		<desc xml:lang="en-US"> The non cataloged type object does not exist </desc>
-	</event>
-	<event code='1514' textcode='CIRC_DURATION_NOT_FOUND'>
-		<desc xml:lang="en-US"> The circ duration object does not exist </desc>
-	</event>
-	<event code='1515' textcode='RECURRING_FINE_NOT_FOUND'>
-		<desc xml:lang="en-US"> The recurring fines object does not exist </desc>
-	</event>
-	<event code='1516' textcode='MAX_FINE_NOT_FOUND'>
-		<desc xml:lang="en-US"> The max fines object does not exist </desc>
-	</event>
-	<event code='1517' textcode='COPY_LOCATION_NOT_FOUND'>
-		<desc xml:lang="en-US"> The copy location object does not exist </desc>
-	</event>
-	<event code='1518' textcode='HOLD_TRANSIT_NOT_FOUND'>
-		<desc xml:lang="en-US"> The hold transit object does not exist </desc>
-	</event>
-	<event code='1519' textcode='TRANSACTION_NOT_FOUND'>
-		<desc xml:lang="en-US"> Requested transaction object does not exist </desc>
-	</event>
+
+
 	<event code='1520' textcode='WORKSTATION_NOT_FOUND'>
 		<desc xml:lang="en-US"> Requested workstation object does not exist </desc>
-	</event>
-	<event code='1521' textcode='COPY_NOTE_NOT_FOUND'>
-		<desc xml:lang="en-US"> Requested copy note does not exist </desc>
-	</event>
-	<event code='1522' textcode='VOLUME_NOTE_NOT_FOUND'>
-		<desc xml:lang="en-US"> Requested volume note does not exist </desc>
 	</event>
 	<event code='1523' textcode='TITLE_NOTE_NOT_FOUND'>
 		<desc xml:lang="en-US"> Requested title note does not exist </desc>
 	</event>
-	<event code='1524' textcode='CARD_NOT_FOUND'>
-		<desc xml:lang="en-US"> Requested card note does not exist </desc>
-	</event>
 	<event code='1525' textcode='BILLING_NOT_FOUND'>
 		<desc xml:lang="en-US"> Requested billing note does not exist </desc>
 	</event>
-	<event code='1526' textcode='BILLABLE_XACT_SUMMARY_NOT_FOUND'>
-		<desc xml:lang="en-US"> Requested transaction summary does not exist </desc>
-	</event>
+
 	<event code='1527' textcode='OPEN_TCN_NOT_FOUND'>
 		<desc xml:lang="en-US">No TCN could be found that does not collide with existing records</desc>
 	</event>
 	<event code='1528' textcode='ACTOR_USER_ADDRESS_NOT_FOUND'>
 		<desc xml:lang="en-US">Requested address was not found</desc>
 	</event>
+
+
+	<event code='1529' textcode='ACTOR_WORKSTATION_NOT_FOUND'>
+  		<desc xml:lang='en-US'>The requested actor_workstation was not found</desc>
+	</event>
+	<event code='1530' textcode='CONFIG_IDENTIFICATION_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_identification_type was not found</desc>
+	</event>
+	<event code='1531' textcode='ACTION_SURVEY_QUESTION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_question was not found</desc>
+	</event>
+	<event code='1532' textcode='MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billable_transaction_summary was not found</desc>
+	</event>
+	<event code='1533' textcode='ACTOR_USR_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_usr_note was not found</desc>
+	</event>
+	<event code='1534' textcode='ACTOR_USER_SETTING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_setting was not found</desc>
+	</event>
+	<event code='1535' textcode='METABIB_AUTHOR_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_author_field_entry was not found</desc>
+	</event>
+	<event code='1536' textcode='ACTION_IN_HOUSE_USE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_in_house_use was not found</desc>
+	</event>
+	<event code='1537' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_transit_copy was not found</desc>
+	</event>
+	<event code='1538' textcode='ACTION_SURVEY_RESPONSE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_response was not found</desc>
+	</event>
+	<event code='1539' textcode='CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_copy_bucket_item was not found</desc>
+	</event>
+	<event code='1540' textcode='AUTHORITY_RECORD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_entry was not found</desc>
+	</event>
+	<event code='1541' textcode='AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_descriptor was not found</desc>
+	</event>
+	<event code='1542' textcode='CONFIG_LANGUAGE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_language_map was not found</desc>
+	</event>
+	<event code='1543' textcode='MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_credit_card_payment was not found</desc>
+	</event>
+	<event code='1544' textcode='CONFIG_METABIB_FIELD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_metabib_field was not found</desc>
+	</event>
+	<event code='1545' textcode='PERM_EX_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested perm_ex was not found</desc>
+	</event>
+	<event code='1546' textcode='CONFIG_AUDIENCE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_audience_map was not found</desc>
+	</event>
+	<event code='1547' textcode='CONFIG_ITEM_FORM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_item_form_map was not found</desc>
+	</event>
+	<event code='1548' textcode='ASSET_CALL_NUMBER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_call_number was not found</desc>
+	</event>
+	<event code='1549' textcode='CONFIG_STANDING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_standing was not found</desc>
+	</event>
+	<event code='1550' textcode='MONEY_OPEN_USER_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_user_summary was not found</desc>
+	</event>
+
+
+	<event code='1552' textcode='ACTOR_ORG_UNIT_HOURS_OF_OPERATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_hours_of_operation was not found</desc>
+	</event>
+	<event code='1553' textcode='ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_closed_date was not found</desc>
+	</event>
+	<event code='1554' textcode='CONFIG_RULES_CIRC_DURATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_circ_duration was not found</desc>
+	</event>
+	<event code='1555' textcode='MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_billable_transaction_summary was not found</desc>
+	</event>
+	<event code='1556' textcode='ACTOR_USER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user was not found</desc>
+	</event>
+	<event code='1557' textcode='ACTOR_ORG_UNIT_SETTING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_setting was not found</desc>
+	</event>
+	<event code='1558' textcode='ASSET_COPY_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_copy_note was not found</desc>
+	</event>
+	<event code='1559' textcode='METABIB_FULL_REC_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_full_rec was not found</desc>
+	</event>
+	<event code='1560' textcode='METABIB_METARECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_metarecord was not found</desc>
+	</event>
+	<event code='1561' textcode='PERMISSION_PERM_LIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_perm_list was not found</desc>
+	</event>
+	<event code='1562' textcode='METABIB_METARECORD_SOURCE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_metarecord_source_map was not found</desc>
+	</event>
+	<event code='1563' textcode='METABIB_KEYWORD_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_keyword_field_entry was not found</desc>
+	</event>
+	<event code='1564' textcode='MONEY_CASH_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_cash_payment was not found</desc>
+	</event>
+	<event code='1565' textcode='ACTOR_PROFILE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_profile was not found</desc>
+	</event>
+	<event code='1566' textcode='MONEY_FORGIVE_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_forgive_payment was not found</desc>
+	</event>
+	<event code='1567' textcode='METABIB_RECORD_DESCRIPTOR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_record_descriptor was not found</desc>
+	</event>
+	<event code='1568' textcode='CONFIG_COPY_STATUS_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_copy_status was not found</desc>
+	</event>
+	<event code='1569' textcode='ACTOR_USER_STANDING_PENALTY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_standing_penalty was not found</desc>
+	</event>
+	<event code='1570' textcode='ACTOR_USER_ADDRESS_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_address was not found</desc>
+	</event>
+	<event code='1571' textcode='ASSET_CALL_NUMBER_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_call_number_note was not found</desc>
+	</event>
+	<event code='1572' textcode='AUTHORITY_RECORD_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_record_note was not found</desc>
+	</event>
+	<event code='1573' textcode='ACTION_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_circulation was not found</desc>
+	</event>
+	<event code='1574' textcode='CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_call_number_bucket_item was not found</desc>
+	</event>
+	<event code='1575' textcode='CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_biblio_record_entry_bucket was not found</desc>
+	</event>
+	<event code='1576' textcode='EX_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested ex was not found</desc>
+	</event>
+	<event code='1577' textcode='ACTION_HOLD_COPY_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_copy_map was not found</desc>
+	</event>
+	<event code='1578' textcode='ACTION_HOLD_NOTIFICATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_hold_notification was not found</desc>
+	</event>
+	<event code='1579' textcode='ASSET_COPY_LOCATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_copy_location was not found</desc>
+	</event>
+	<event code='1580' textcode='METABIB_VIRTUAL_RECORD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_virtual_record was not found</desc>
+	</event>
+	<event code='1581' textcode='ASSET_STAT_CAT_ENTRY_COPY_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat_entry_copy_map was not found</desc>
+	</event>
+	<event code='1582' textcode='CONFIG_ITEM_TYPE_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_item_type_map was not found</desc>
+	</event>
+	<event code='1583' textcode='ACTION_SURVEY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey was not found</desc>
+	</event>
+	<event code='1584' textcode='ACTOR_ORG_ADDRESS_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_address was not found</desc>
+	</event>
+
+
+	<event code='1586' textcode='ACTOR_ORG_UNIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit was not found</desc>
+	</event>
+	<event code='1587' textcode='CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_call_number_bucket was not found</desc>
+	</event>
+	<event code='1588' textcode='ASSET_STAT_CAT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat was not found</desc>
+	</event>
+	<event code='1589' textcode='ACTOR_CARD_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_card was not found</desc>
+	</event>
+	<event code='1590' textcode='ACTOR_STAT_CAT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat was not found</desc>
+	</event>
+	<event code='1591' textcode='METABIB_SERIES_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_series_field_entry was not found</desc>
+	</event>
+	<event code='1592' textcode='CONTAINER_USER_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_user_bucket was not found</desc>
+	</event>
+	<event code='1593' textcode='MONEY_CREDIT_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_credit_payment was not found</desc>
+	</event>
+	<event code='1594' textcode='AUTHORITY_FULL_REC_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested authority_full_rec was not found</desc>
+	</event>
+	<event code='1595' textcode='CONFIG_NON_CATALOGED_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_non_cataloged_type was not found</desc>
+	</event>
+	<event code='1596' textcode='ACTOR_ORG_UNIT_TYPE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_org_unit_type was not found</desc>
+	</event>
+	<event code='1597' textcode='BIBLIO_RECORD_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested biblio_record_note was not found</desc>
+	</event>
+	<event code='1598' textcode='MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_user_circulation_summary was not found</desc>
+	</event>
+	<event code='1599' textcode='MONEY_GROCERY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_grocery was not found</desc>
+	</event>
+	<event code='1600' textcode='CONFIG_BIB_SOURCE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_bib_source was not found</desc>
+	</event>
+	<event code='1601' textcode='MONEY_BILLABLE_TRANSACTION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billable_transaction was not found</desc>
+	</event>
+	<event code='1602' textcode='ACTOR_STAT_CAT_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry was not found</desc>
+	</event>
+	<event code='1603' textcode='CONTAINER_USER_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_user_bucket_item was not found</desc>
+	</event>
+	<event code='1604' textcode='MONEY_USER_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_user_summary was not found</desc>
+	</event>
+	<event code='1605' textcode='CONFIG_LIT_FORM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_lit_form_map was not found</desc>
+	</event>
+	<event code='1606' textcode='MONEY_WORK_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_work_payment was not found</desc>
+	</event>
+	<event code='1607' textcode='ACTION_OPEN_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_open_circulation was not found</desc>
+	</event>
+	<event code='1608' textcode='METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_subject_field_entry was not found</desc>
+	</event>
+	<event code='1609' textcode='CONFIG_RULES_RECURING_FINE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_recuring_fine was not found</desc>
+	</event>
+	<event code='1610' textcode='MONEY_CHECK_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_check_payment was not found</desc>
+	</event>
+	<event code='1611' textcode='ASSET_COPY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_copy was not found</desc>
+	</event>
+	<event code='1612' textcode='CONFIG_RULES_MAX_FINE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested config_rules_max_fine was not found</desc>
+	</event>
+	<event code='1613' textcode='PERMISSION_GRP_TREE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_tree was not found</desc>
+	</event>
+	<event code='1614' textcode='ACTION_SURVEY_ANSWER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_survey_answer was not found</desc>
+	</event>
+	<event code='1615' textcode='ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_non_cataloged_circulation was not found</desc>
+	</event>
+	<event code='1616' textcode='MONEY_OPEN_USER_CIRCULATION_SUMMARY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_open_user_circulation_summary was not found</desc>
+	</event>
+	<event code='1617' textcode='ACTION_UNFULFILLED_HOLD_LIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested action_unfulfilled_hold_list was not found</desc>
+	</event>
+	<event code='1618' textcode='METABIB_TITLE_FIELD_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested metabib_title_field_entry was not found</desc>
+	</event>
+	<event code='1619' textcode='ACTOR_STAT_CAT_ENTRY_USER_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_stat_cat_entry_user_map was not found</desc>
+	</event>
+	<event code='1620' textcode='PERMISSION_GRP_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_grp_perm_map was not found</desc>
+	</event>
+	<event code='1621' textcode='CONTAINER_COPY_BUCKET_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_copy_bucket was not found</desc>
+	</event>
+	<event code='1622' textcode='BIBLIO_RECORD_NODE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested biblio_record_node was not found</desc>
+	</event>
+	<event code='1623' textcode='PERMISSION_USR_PERM_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_perm_map was not found</desc>
+	</event>
+	<event code='1624' textcode='MONEY_PAYMENT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_payment was not found</desc>
+	</event>
+	<event code='1625' textcode='CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested container_biblio_record_entry_bucket_item was not found</desc>
+	</event>
+	<event code='1626' textcode='ASSET_STAT_CAT_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested asset_stat_cat_entry was not found</desc>
+	</event>
+
+
+	<event code='1628' textcode='MONEY_BILLING_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_billing was not found</desc>
+	</event>
+	<event code='1629' textcode='PERMISSION_USR_GRP_MAP_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested permission_usr_grp_map was not found</desc>
+	</event>
+	<event code='1630' textcode='ACTOR_USER_NOTE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_user_note was not found</desc>
+	</event>
+
+
+
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
 		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>
 	</event>
