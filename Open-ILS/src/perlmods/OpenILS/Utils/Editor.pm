@@ -1,6 +1,7 @@
 use strict; use warnings;
 package OpenILS::Utils::Editor;
 use OpenILS::Application::AppUtils;
+use OpenSRF::AppSession;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
@@ -40,7 +41,7 @@ sub new {
 # -----------------------------------------------------------------------------
 sub checkauth {
 	my $self = shift;
-	$logger->info("editor: checking auth token ".$self->authtoken);
+	$logger->debug("editor: checking auth token ".$self->authtoken);
 	my ($reqr, $evt) = $U->checkses($self->authtoken);
 	$self->event($evt) if $evt;
 	return $self->{requestor} = $reqr;
@@ -74,18 +75,45 @@ sub authtoken {
 sub session {
 	my( $self, $session ) = @_;
 	$self->{session} = $session if $session;
+
 	if(!$self->{session}) {
-		if( $self->{xact} ) {
-			$logger->info("editor: starting new db session");
-			$self->{session} = $U->start_db_session;
-		} else {
-			$logger->info("editor: creating a non-xact session");
-			$self->{session} = 
-				OpenSRF::AppSession->create('open-ils.storage');
+		$self->{session} = OpenSRF::AppSession->create('open-ils.storage');
+
+		if( ! $self->{session} ) {
+			my $str = "Error creating storage session with OpenSRF::AppSession->create()!";
+			$logger->error($str);
+			throw OpenSRF::EX::ERROR ($str);
 		}
+
+		$self->xact_start if $self->{xact};
+		$logger->debug("editor: creating a non-xact session") unless $self->{xact};
 	}
 	return $self->{session};
 }
+
+
+sub xact_start {
+	my $self = shift;
+	$logger->debug("editor: starting new db session");
+	my $stat = $self->request('open-ils.storage.transaction.begin');
+	$logger->error("editor: error starting database transaction") unless $stat;
+	return $stat;
+}
+
+sub xact_commit {
+	my $self = shift;
+	$logger->debug("editor: comitting db session");
+	my $stat = $self->request('open-ils.storage.transaction.commit');
+	$logger->error("editor: error comitting database transaction") unless $stat;
+	return $stat;
+}
+
+sub xact_rollback {
+	my $self = shift;
+	$logger->info("editor: rolling back db session");
+	return $self->request("open-ils.storage.transaction.rollback");
+}
+
 
 # -----------------------------------------------------------------------------
 # commits the db session and destroys the session
@@ -93,8 +121,7 @@ sub session {
 sub commit {
 	my $self = shift;
 	return unless $self->{xact};
-	$logger->info("editor: committing session");
-	$U->commit_db_session( $self->session );
+	$self->xact_commit;
 	$self->{session} = undef;
 }
 
@@ -117,13 +144,27 @@ sub finish {
 }
 
 
+
 # -----------------------------------------------------------------------------
 # Does a simple storage request
 # -----------------------------------------------------------------------------
 sub request {
 	my( $self, $method, @params ) = @_;
-	$logger->info("editor: performing request $method");
-	return $self->session->request($method, @params)->gather(1);
+	$logger->debug("editor: performing request $method");
+
+	my $val;
+	my $err;
+
+	try {
+		$val = $self->session->request($method, @params)->gather(1);
+
+	} catch Error with {
+		my $err = shift;
+		$logger->error("Request error $method=@params : $err");
+	};
+
+	throw $err if $err;
+	return $val;
 }
 
 
