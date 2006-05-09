@@ -151,6 +151,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 		osrfLogInfo( OSRF_LOG_MARK,  "service=%s, method=%s", service, method );
 		osrfAppSession* session = osrf_app_client_session_init(service);
+		double starttime = get_timestamp_millis();
 		int req_id = osrf_app_session_make_req( session, NULL, method, api_level, mparams );
 		osrf_message* omsg = NULL;
 
@@ -196,6 +197,10 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 			osrf_message_free(omsg);
 			if(statusname) break;
 		}
+
+		double duration = get_timestamp_millis() - starttime;
+		osrfLogDebug(OSRF_LOG_MARK, "gateway request took %lf seconds", duration);
+
 
 		if (isXML)
 			ap_rputs("</payload>", r);
