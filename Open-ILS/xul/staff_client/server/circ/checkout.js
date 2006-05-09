@@ -364,7 +364,7 @@ circ.checkout.prototype = {
 						'Cancel',
 						'Pre-Cat',
 						null,
-						null
+						'Check here to confirm this action'
 					) ) {
 
 						obj.data.dummy_title = ''; obj.data.dummy_author = ''; obj.data.stash('dummy_title','dummy_author');
