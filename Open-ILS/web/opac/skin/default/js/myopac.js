@@ -904,6 +904,7 @@ function myOPACDrawNonCatCircs2(r) {
 /* draw a single circ */
 function myOPACDrawNonCatCirc(r) {
 	var circ = r.getResultObject();
+
 	var type = grep(nonCatTypes, 
 		function(i){
 			return (i.id() == circ.item_type());
@@ -917,7 +918,15 @@ function myOPACDrawNonCatCirc(r) {
 	var duration = interval_to_seconds(type.circ_duration());
 	duration = parseInt(duration + '000');
 
-	var start = new Date.W3CDTF(circ.circ_time());
+	var dtf = circ.circ_time();
+
+	/*Date.W3CDTF is not happy with the milliseonds, nor is it
+	happy without minute component of the timezone */
+	dtf = dtf.replace(/\.\d+/,'');
+	dtf += ":00"; 
+
+	var start = new Date.W3CDTF();
+	start.setW3CDTF(dtf);
 	var due = new Date(  start.getTime() + duration );
 
 	appendClear($n(row, 'circ_time'), text(due));
