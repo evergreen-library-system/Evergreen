@@ -283,11 +283,23 @@ sub wormize_biblio_metarecord {
 
 	my $count = 0;
 	for my $r (@$recs) {
-		$client->respond(
-			{ record  => $r->source,
-			  success => wormize_biblio_record($self => $client => $r->source),
-			}
-		);
+		my $success = 0;
+		try {
+			$success = wormize_biblio_record($self => $client => $r->source);
+			$client->respond(
+				{ record  => $r->source,
+				  success => $success,
+				}
+			);
+		} catch Error with {
+			my $e = shift;
+			$client->respond(
+				{ record  => $r->source,
+				  success => $success,
+				  error   => $e,
+				}
+			);
+		};
 	}
 	return undef;
 }
