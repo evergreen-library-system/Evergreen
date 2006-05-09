@@ -89,6 +89,16 @@ int osrfAppInitialize() {
 					if (!strcmp( (char*)_cur->name, "fields" )) {
 						xmlNodePtr _f = _cur->children;
 
+						if( (string_tmp = (char*)xmlGetNsProp(_f, "primary", PERSIST_NS)) ) {
+							osrfHashSet(
+								usrData,
+								strdup( string_tmp ),
+								"primarykey"
+							);
+						}
+						string_tmp = NULL;
+
+
 						while(_f) {
 							if (strcmp( (char*)_f->name, "field" )) {
 								_f = _f->next;
@@ -278,7 +288,7 @@ int osrfAppChildInit() {
 	dbhandle = dbi_conn_new(driver);
 
 	if(!dbhandle) {
-		osrfLogError(OSRF_LOG_MARK, "Error loading database driver %s", driver);
+		osrfLogError(OSRF_LOG_MARK, "Error loading database driver [%s]", driver);
 		return -1;
 	}
 	osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
@@ -357,7 +367,7 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 		sql_buf,
 		"SELECT * FROM %s WHERE %s = %d;",
 		osrfHashGet(meta, "tablename"),
-		xmlGetNsProp( (xmlNode*)osrfHashGet(meta, "fields"), "primary", "http://open-ils.org/spec/opensrf/IDL/persistance/v1" ),
+		osrfHashGet(meta, "primarykey"),
 		atoi(id)
 	);
 
