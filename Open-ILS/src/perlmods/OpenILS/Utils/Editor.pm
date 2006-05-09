@@ -85,6 +85,7 @@ sub session {
 			throw OpenSRF::EX::ERROR ($str);
 		}
 
+		$self->{session}->connect if $self->{xact} or $self->{connect};
 		$self->xact_start if $self->{xact};
 		$logger->debug("editor: creating a non-xact session") unless $self->{xact};
 	}
