@@ -7,10 +7,13 @@ function my_init() {
 		JSAN.use('util.error'); g.error = new util.error();
 		g.error.sdump('D_TRACE','my_init() for offline_register.xul');
 
+		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
 		}
 
+		$('barcode').addEventListener('change',test_patron,false);
 		$('barcode').addEventListener('keypress',handle_keypress,false);
 		$('submit').addEventListener('command',next_patron,false);
 
@@ -77,6 +80,33 @@ function my_init() {
 
 function $(id) { return document.getElementById(id); }
 
+function test_patron(ev) {
+	try {
+		var barcode = ev.target.value;
+		if (g.data.bad_patrons[barcode]) {
+			var msg = 'Warning: As of ' + g.data.bad_patrons_date.substr(0,15) + ', this barcode (' + barcode + ') was flagged ';
+			switch(g.data.bad_patrons[barcode]) {
+				case 'L' : msg += 'Lost'; break;
+				case 'E' : msg += 'Expired'; break;
+				case 'B' : msg += 'Barred'; break;
+				case 'D' : msg += 'Blocked'; break;
+				default : msg += ' with an unknown code: ' + g.data.bad_patrons[barcode]; break;
+			}
+			var r = g.error.yns_alert(msg,'Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			if (r == 1) {
+				setTimeout(
+					function() {
+						ev.target.value = '';
+						ev.target.focus();
+					},0
+				);
+			}
+		}
+	} catch(E) {
+		alert(E);
+	}
+}
+
 function handle_check_date(ev) {
 	ev.target.value = check_date(ev.target.value);
 }
@@ -123,7 +153,7 @@ function render_surveys(node,obj) {
 function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
-		case $('barcode') : $('family_name').focus(); break;
+		case $('barcode') : setTimeout( function() { $('family_name').focus(); },0 ); break;
 		default: break;
 	}
 }

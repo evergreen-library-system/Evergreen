@@ -61,60 +61,92 @@ circ.offline.prototype = {
 				}
 			);
 
-			function backup_receipt_templates() {
-				data.print_list_templates = {
-					'offline_checkout' : {
-						'type' : 'offline_checkout',
-						'header' : 'Patron %patron_barcode%\r\nYou checked out the following items:<hr/><ol>',
-						'line_item' : '<li>Barcode: %barcode%\r\nDue: %due_date%\r\n',
-						'footer' : '</ol><hr />%TODAY%',
-					},
-					'offline_checkin' : {
-						'type' : 'offline_checkin',
-						'header' : 'You checked in the following items:<hr/><ol>',
-						'line_item' : '<li>Barcode: %barcode%\r\n',
-						'footer' : '</ol><hr />%TODAY%',
-					},
-					'offline_renew' : {
-						'type' : 'offline_renew',
-						'header' : 'You renewed the following items:<hr/><ol>',
-						'line_item' : '<li>Barcode: %barcode%\r\n',
-						'footer' : '</ol><hr />%TODAY%',
-					},
-					'offline_inhouse_use' : {
-						'type' : 'offline_inhouse_use',
-						'header' : 'You marked the following in-house items used:<hr/><ol>',
-						'line_item' : '<li>Barcode: %barcode%\r\nUses: %COUNT%',
-						'footer' : '</ol><hr />%TODAY%',
-					},
-				};
-				data.stash('print_list_templates');
-			}
+			obj.receipt_init();
 
-			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-			JSAN.use('util.file'); var file = new util.file('print_list_templates');
-			if (file._file.exists()) {
-				try {
-					var x = file.get_object();
-					if (x) {
-						data.print_list_templates = x;
-						data.stash('print_list_templates');
-					} else {
-						backup_receipt_templates();
-					}
-				} catch(E) {
-					alert(E);
-					backup_receipt_templates();
-				}
-			} else {
-				backup_receipt_templates();
-			}
-			file.close();
+			obj.patron_init();
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','circ.offline.init: ' + E + '\n');
 		}
 	},
+
+	'receipt_init' : function() {
+		function backup_receipt_templates() {
+			data.print_list_templates = {
+				'offline_checkout' : {
+					'type' : 'offline_checkout',
+					'header' : 'Patron %patron_barcode%\r\nYou checked out the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\nDue: %due_date%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
+				'offline_checkin' : {
+					'type' : 'offline_checkin',
+					'header' : 'You checked in the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
+				'offline_renew' : {
+					'type' : 'offline_renew',
+					'header' : 'You renewed the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\n',
+					'footer' : '</ol><hr />%TODAY%',
+				},
+				'offline_inhouse_use' : {
+					'type' : 'offline_inhouse_use',
+					'header' : 'You marked the following in-house items used:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\nUses: %COUNT%',
+					'footer' : '</ol><hr />%TODAY%',
+				},
+			};
+			data.stash('print_list_templates');
+		}
+
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		JSAN.use('util.file'); var file = new util.file('print_list_templates');
+		if (file._file.exists()) {
+			try {
+				var x = file.get_object();
+				if (x) {
+					data.print_list_templates = x;
+					data.stash('print_list_templates');
+				} else {
+					backup_receipt_templates();
+				}
+			} catch(E) {
+				alert(E);
+				backup_receipt_templates();
+			}
+		} else {
+			backup_receipt_templates();
+		}
+		file.close();
+	},
+
+	'patron_init' : function() {
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		JSAN.use('util.file'); var file = new util.file('offline_patron_list');
+		if (file._file.exists()) {
+			var lines = file.get_content().split(/\n/);
+			var hash = {};
+			for (var i = 0; i < lines.length; i++) {
+				hash[ lines[i].split(/\s+/)[0] ] = lines[i].split(/\s+/)[1];
+			}
+			delete(lines);
+			data.bad_patrons = hash;
+			data.stash('bad_patrons');
+			var file2 = new util.file('offline_patron_list.date');
+			if (file2._file.exists()) {
+				data.bad_patrons_date = file2.get_content();
+				data.stash('bad_patrons_date');
+			}
+			file2.close();
+		} else {
+			data.bad_patrons = {};
+			data.stash('bad_patrons');
+		}
+		file.close();
+	},
+
 }
 
 dump('exiting circ.offline.js\n');

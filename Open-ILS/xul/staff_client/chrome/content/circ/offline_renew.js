@@ -28,6 +28,8 @@ function my_init() {
 		$('duedate').setAttribute('value',todayPlus);
 		$('duedate').addEventListener('change',check_date,false);
 
+		$('p_barcode').addEventListener('change',test_patron,false);
+
 		$('p_barcode').addEventListener('keypress',handle_keypress,false);
 		$('p_barcode').focus();	
 
@@ -52,10 +54,37 @@ function my_init() {
 
 function $(id) { return document.getElementById(id); }
 
+function test_patron(ev) {
+	try {
+		var barcode = ev.target.value;
+		if (g.data.bad_patrons[barcode]) {
+			var msg = 'Warning: As of ' + g.data.bad_patrons_date.substr(0,15) + ', this barcode (' + barcode + ') was flagged ';
+			switch(g.data.bad_patrons[barcode]) {
+				case 'L' : msg += 'Lost'; break;
+				case 'E' : msg += 'Expired'; break;
+				case 'B' : msg += 'Barred'; break;
+				case 'D' : msg += 'Blocked'; break;
+				default : msg += ' with an unknown code: ' + g.data.bad_patrons[barcode]; break;
+			}
+			var r = g.error.yns_alert(msg,'Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			if (r == 1) {
+				setTimeout(
+					function() {
+						ev.target.value = '';
+						ev.target.focus();
+					},0
+				);
+			}
+		}
+	} catch(E) {
+		alert(E);
+	}
+}
+
 function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
-		case $('p_barcode') : $('i_barcode').focus(); break;
+		case $('p_barcode') : setTimeout( function() { $('i_barcode').focus(); },0 ); break;
 		case $('i_barcode') : append_to_list('barcode'); break;
 		default: break;
 	}

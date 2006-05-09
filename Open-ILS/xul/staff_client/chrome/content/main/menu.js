@@ -305,6 +305,9 @@ main.menu.prototype = {
 							JSAN.use('util.file'); var file = new util.file('offline_patron_list');
 							file.write_content('truncate',x.responseText);
 							file.close();
+							file = new util.file('offline_patron_list.date');
+							file.write_content('truncate',new Date());
+							file.close();
 							alert('Download completed');
 						} else {
 							alert('There was a problem with the download.  The server returned a status ' + x.status + ' : ' + x.statusText);
