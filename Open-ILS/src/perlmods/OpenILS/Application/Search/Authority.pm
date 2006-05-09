@@ -20,7 +20,6 @@ sub crossref_authority {
 	my $term = shift;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	$session->connect;
 
 	my $freq = $session->request(
 		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
@@ -29,7 +28,6 @@ sub crossref_authority {
 
 	my $fr = $freq->gather(1);
 	my $al = $areq->gather(1);
-	$session->disconnect;
 
 	return _auth_flatten( $term, $fr, $al, 1 );
 }
