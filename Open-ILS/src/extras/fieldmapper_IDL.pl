@@ -63,9 +63,10 @@ for my $object (keys %$map) {
 
 			my $f_key = $col->args->{foreign_key} || ($f_class->columns('Primary'))[0];
 			my $f_hint = $$map{$fm_link}{hint};
+			my $map = join ' ', @{ $col->args->{mapping} } if ( $col->args->{mapping} );
 
 			print <<"			XML";
-			<link field="$colname" reltype="$reltype" key="$f_key" class="$f_hint"/>
+			<link field="$colname" reltype="$reltype" key="$f_key" map="$map" class="$f_hint"/>
 			XML
 		}
 	}

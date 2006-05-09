@@ -88,6 +88,7 @@ struct _osrfMethodStruct {
 	int argc;					/* how many args this method expects */
 	//char* paramNotes;			/* Description of the params expected for this method */
 	int options;				/* describes the various options for this method */
+	void* userData;				/* You can put your weeeeeeed in it ... */
 
 	/*
 	int sysmethod;				
@@ -133,8 +134,11 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 		char* symbolName, char* notes, int argc, int options );
 
 
+int osrfAppRegisterExtendedMethod( char* appName, char* methodName, 
+		char* symbolName, char* notes, int argc, int options, void* );
+
 osrfMethod* _osrfAppBuildMethod( char* methodName, 
-		char* symbolName, char* notes, int argc, int options );
+		char* symbolName, char* notes, int argc, int options, void* );
 
 /**
   Finds the given app in the list of apps

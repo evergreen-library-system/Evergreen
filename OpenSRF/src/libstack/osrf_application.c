@@ -85,6 +85,21 @@ int osrfAppRunChildInit(char* appname) {
 int osrfAppRegisterMethod( char* appName, char* methodName, 
 		char* symbolName, char* notes, int argc, int options ) {
 
+	return osrfAppRegisterExtendedMethod(
+			appName,
+			methodName,
+			symbolName,
+			notes,
+			argc,
+			options,
+			NULL
+	);
+
+}
+
+int osrfAppRegisterExtendedMethod( char* appName, char* methodName, 
+		char* symbolName, char* notes, int argc, int options, void * user_data ) {
+
 	if( !appName || ! methodName  ) return -1;
 
 	osrfApplication* app = _osrfAppFindApplication(appName);
@@ -96,7 +111,7 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 	osrfLogDebug( OSRF_LOG_MARK, "Registering method %s for app %s", methodName, appName );
 
 	osrfMethod* method = _osrfAppBuildMethod(
-		methodName, symbolName, notes, argc, options );		
+		methodName, symbolName, notes, argc, options, user_data );		
 	method->options = options;
 
 	/* plug the method into the list of methods */
@@ -105,7 +120,7 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 	if( options & OSRF_METHOD_STREAMING ) { /* build the atomic counterpart */
 		int newops = options | OSRF_METHOD_ATOMIC;
 		osrfMethod* atomicMethod = _osrfAppBuildMethod(
-			methodName, symbolName, notes, argc, newops );		
+			methodName, symbolName, notes, argc, newops, NULL );		
 		osrfHashSet( app->methods, atomicMethod, atomicMethod->name );
 	}
 
@@ -115,13 +130,14 @@ int osrfAppRegisterMethod( char* appName, char* methodName,
 
 
 osrfMethod* _osrfAppBuildMethod( char* methodName, 
-	char* symbolName, char* notes, int argc, int options ) {
+	char* symbolName, char* notes, int argc, int options, void* user_data ) {
 
 	osrfMethod* method					= safe_malloc(sizeof(osrfMethod));
 
 	if(methodName) method->name		= strdup(methodName);
 	if(symbolName) method->symbol		= strdup(symbolName);
 	if(notes) method->notes				= strdup(notes);
+	if(user_data) method->userData			= user_data;
 
 	method->argc							= argc;
 	method->options						= options;
