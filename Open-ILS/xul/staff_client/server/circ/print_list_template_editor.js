@@ -225,11 +225,14 @@ circ.print_list_template_editor.prototype = {
 
 	'save_template' : function(name) {
 		var obj = this;
-		this.data.print_list_templates[name].header = this.controller.view.header.value;
-		this.data.print_list_templates[name].line_item = this.controller.view.line_item.value;
-		this.data.print_list_templates[name].footer = this.controller.view.footer.value;
-		this.data.print_list_templates[name].type = this.controller.view.template_type_menu.value;
-		this.data.stash( 'print_list_templates' );
+		obj.data.print_list_templates[name].header = obj.controller.view.header.value;
+		obj.data.print_list_templates[name].line_item = obj.controller.view.line_item.value;
+		obj.data.print_list_templates[name].footer = obj.controller.view.footer.value;
+		obj.data.print_list_templates[name].type = obj.controller.view.template_type_menu.value;
+		obj.data.stash( 'print_list_templates' );
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		JSAN.use('util.file'); var file = new util.file('print_list_templates');
+		file.set_object(obj.data.print_list_templates); file.close();
 		alert('Template Saved\n' + js2JSON(obj.data.print_list_templates[name]));
 	},
 

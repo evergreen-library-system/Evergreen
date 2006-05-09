@@ -106,7 +106,7 @@ OpenILS.data.prototype = {
 			obj.print_list_templates = { 
 				'item_status' : {
 					'type' : 'items',
-					'header' : 'The following items are examined:<hr/><ol>',
+					'header' : 'The following items have been examined:<hr/><ol>',
 					'line_item' : '<li>%title%\r\nBarcode: %barcode%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY%\r\n',
 				}, 
@@ -168,7 +168,25 @@ OpenILS.data.prototype = {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
 
-		try { obj.print_list_defaults(); } catch(E) { alert(E); }
+
+		JSAN.use('util.file'); var file = new util.file('print_list_templates');
+		if (file._file.exists()) {
+			try {
+				var x = file.get_object();
+				if (x) {
+					obj.print_list_templates = x;
+					obj.stash('print_list_templates');
+				} else {
+					obj.print_list_defaults();
+				}
+			} catch(E) {
+				alert(E);
+				obj.print_list_defaults();
+			}
+		} else {
+			obj.print_list_defaults();
+		}
+		file.close();
 
 		JSAN.use('util.file');
 		JSAN.use('util.functional');
