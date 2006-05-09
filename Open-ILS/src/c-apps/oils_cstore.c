@@ -435,9 +435,12 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 		/* fetch the fieldmapper index */
 		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
-			if ( !(strcmp( osrfHashGet(_f, "virtual"), "true" )) ) continue;
-			if ( !(stringisnum( osrfHashGet(_f, "array_position") )) ) continue;
-			fmIndex = atoi(osrfHashGet(_f, "array_position"));
+			char* virt = (char*)osrfHashGet(_f, "virtual");
+			char* pos = (char*)osrfHashGet(_f, "array_position");
+
+			if ( !virt || !pos || !(strcmp( virt, "true" )) ) continue;
+
+			fmIndex = atoi( pos );
 		}
 
 		switch( type ) {
