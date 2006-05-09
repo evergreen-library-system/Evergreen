@@ -123,6 +123,7 @@ sub commit {
 	my $self = shift;
 	return unless $self->{xact};
 	$self->xact_commit;
+	$self->session->disconnect;
 	$self->{session} = undef;
 }
 
@@ -132,6 +133,7 @@ sub commit {
 sub reset {
 	my $self = shift;
 	$logger->debug("editor: cleaning up");
+	$self->session->disconnect;
 	$$self{$_} = undef for (keys %$self);
 }
 
