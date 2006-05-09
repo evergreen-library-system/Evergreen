@@ -15,10 +15,13 @@
 #include <libxml/tree.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
-#include <openils/fieldmapper_lookup.h>
+//#include <openils/fieldmapper_lookup.h>
 
 #define OILS_AUTH_CACHE_PRFX "oils_cstore_"
 #define MODULENAME "open-ils.cstore"
+#define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistance/v1"
+#define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
+#define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
 
 int osrfAppChildInit();
 int osrfAppInitialize();
@@ -71,13 +74,86 @@ int osrfAppInitialize() {
 
 				osrfHash * usrData = osrfNewHash();
 				osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
-				osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", "http://open-ils.org/spec/opensrf/IDL/persistance/v1"), "tablename");
-				osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", "http://open-ils.org/spec/opensrf/IDL/objects/v1"), "fieldmapper");
+				osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
+				osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
 
+				osrfHash* links = osrfNewHash();
+				osrfHash* fields = osrfNewHash();
 				xmlNodePtr _cur = kid->children;
 				while (_cur) {
-					if (!strcmp( (char*)_cur->name, "fields" )) osrfHashSet( usrData, _cur, "fields");
-					if (!strcmp( (char*)_cur->name, "links" )) osrfHashSet( usrData, _cur, "links");
+					if (!strcmp( (char*)_cur->name, "fields" )) {
+						osrfHash* _tmp = osrfNewHash();
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "array_position", OBJECT_NS) ),
+							"array_position"
+						);
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "name", BASE_NS) ),
+							"name"
+						);
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "virtual", BASE_NS) ),
+							"virtual"
+						);
+
+						osrfHashSet(
+							fields,
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "name", BASE_NS) )
+						);
+					}
+
+					if (!strcmp( (char*)_cur->name, "links" )) {
+						osrfHash* _tmp = osrfNewHash();
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "reltype", BASE_NS) ),
+							"reltype"
+						);
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "field", BASE_NS) ),
+							"field"
+						);
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "key", BASE_NS) ),
+							"key"
+						);
+
+						osrfHashSet(
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "class", BASE_NS) ),
+							"class"
+						);
+
+						osrfStringArray* map = osrfNewStringArray(0);
+						char* map_list = strdup((char*)xmlGetNsProp(_cur, "map", BASE_NS));
+						if (strlen(map_list) > 0) {
+							char* _map_class = strtok(map_list, " ");
+							osrfStringArrayAdd(map, strdup(_map_class));
+							while ((_map_class = strtok(NULL, " "))) {
+								osrfStringArrayAdd(map, strdup(_map_class));
+							}
+						}
+						osrfHashSet( _tmp, map, "map");
+
+						osrfHashSet(
+							links,
+							_tmp,
+							strdup( (char*)xmlGetNsProp(_cur, "field", BASE_NS) )
+						);
+					}
+
 					_cur = _cur->next;
 				}
 
@@ -261,6 +337,9 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	jsonObject* object = jsonParseString("[]");
 	jsonObjectSetClass(object, osrfHashGet(meta, "classname"));
 
+	osrfHash* fields = osrfHashGet(meta, "fields");
+
+	osrfHash* _f;
 	int attr;
 	int fmIndex;
 	int columnIndex = 1;
@@ -270,12 +349,18 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	/* cycle through the column list */
 	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
 
+		fmIndex = -1; // reset the position
+		
 		/* determine the field type and storage attributes */
 		type = dbi_result_get_field_type(result, columnName);
 		attr = dbi_result_get_field_attribs(result, columnName);
 
 		/* fetch the fieldmapper index */
-		if( (fmIndex = fm_ntop(object->classname, (char*) columnName)) < 0 ) continue;
+		if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+			if ( !(strcmp( osrfHashGet(_f, "virtual"), "true" )) ) continue;
+			if ( !(stringisnum( osrfHashGet(_f, "array_position") )) ) continue;
+			fmIndex = atoi(osrfHashGet(_f, "array_position"));
+		}
 
 		switch( type ) {
 

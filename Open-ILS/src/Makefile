@@ -10,7 +10,7 @@ export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
 all: mod_ils_rest_gateway c_apps client-xul mod_xmlent
 
-install:	perl-install web-install server-xul string-templates-install storage-bootstrap cgi-bootstrap xsl-install c_apps-install circ_rules-install offline-install
+install:	perl-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
 
 web-install:	webcore-install autojs-install mod_ils_rest_gateway-install  mod_xmlent-install offline-install
 
