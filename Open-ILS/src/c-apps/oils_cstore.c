@@ -263,7 +263,9 @@ int osrfAppInitialize() {
  */
 int osrfAppChildInit() {
 
+	osrfLogDebug(OSRF_LOG_MARK, "Attempting to initialize libdbi...");
 	dbi_initialize(NULL);
+	osrfLogDebug(OSRF_LOG_MARK, "... libdbi initialized.");
 
 	char* driver	= osrf_settings_host_value("/apps/%s/app_settings/driver", MODULENAME);
 	char* user	= osrf_settings_host_value("/apps/%s/app_settings/database/user", MODULENAME);
@@ -272,17 +274,17 @@ int osrfAppChildInit() {
 	char* db	= osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
 	char* pw	= osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
 
+	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
 	dbhandle = dbi_conn_new(driver);
 
 	if(!dbhandle) {
-		const char* err;
-		dbi_conn_error(dbhandle, &err);
-		osrfLogError(OSRF_LOG_MARK, "Error creating database driver %s: %s", driver, err);
+		osrfLogError(OSRF_LOG_MARK, "Error loading database driver %s", driver);
 		return -1;
 	}
+	osrfLogDebug(OSRF_LOG_MARK, "Database driver [%s] seems OK", driver);
 
-	osrfLogInfo(OSRF_LOG_MARK, "oils_fetch connecting to database.  host=%s, "
-		"port=%s, user=%s, pw=%s, db=%s", host, port, user, pw, db );
+	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
+		"port=%s, user=%s, pw=%s, db=%s", MODULENAME, host, port, user, pw, db );
 
 	if(host) dbi_conn_set_option(dbhandle, "host", host );
 	if(port) dbi_conn_set_option_numeric( dbhandle, "port", atoi(port) );
@@ -296,8 +298,8 @@ int osrfAppChildInit() {
 	free(db);
 	free(pw);
 
+	const char* err;
 	if (dbi_conn_connect(dbhandle) < 0) {
-		const char* err;
 		dbi_conn_error(dbhandle, &err);
 		osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
 		return -1;
