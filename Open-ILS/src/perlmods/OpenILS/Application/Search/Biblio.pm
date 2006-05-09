@@ -403,8 +403,8 @@ sub biblio_mrid_to_modsbatch {
 
 	warn "Grabbing mvr for $mrid\n";
 
-	my $mr = _grab_metarecord($mrid);
-	return undef unless $mr;
+	my ($mr, $evt) = _grab_metarecord($mrid);
+	return $evt unless $mr;
 
 	if( my $m = $self->biblio_mrid_check_mvr($client, $mr)) {
 		return $m;
@@ -434,8 +434,10 @@ sub biblio_mrid_check_mvr {
 	my( $self, $client, $mrid ) = @_;
 	my $mr; 
 
+	my $evt;
 	if(ref($mrid)) { $mr = $mrid; } 
-	else { $mr = _grab_metarecord($mrid); }
+	else { ($mr, $evt) = _grab_metarecord($mrid); }
+	return $evt if $evt;
 
 	warn "Checking mvr for mr " . $mr->id . "\n";
 
@@ -444,20 +446,10 @@ sub biblio_mrid_check_mvr {
 }
 
 sub _grab_metarecord {
-
 	my $mrid = shift;
-	warn "Grabbing MR $mrid\n";
-
-	my $mr = OpenILS::Application::AppUtils->simple_scalar_request( 
-		"open-ils.storage", 
-		"open-ils.storage.direct.metabib.metarecord.retrieve", $mrid );
-
-	if(!$mr) {
-		throw OpenSRF::EX::ERROR 
-			("No metarecord exists with the given id: $mrid");
-	}
-
-	return $mr;
+	my $e = OpenILS::Utils::Editor->new;
+	my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
+	return ($mr);
 }
 
 
