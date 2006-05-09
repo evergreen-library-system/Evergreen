@@ -15,13 +15,28 @@ util.print = function () {
 
 util.print.prototype = {
 
+	'reprint_last' : function() {
+		try {
+			var obj = this; obj.data.init({'via':'stash'});
+			if (!obj.data.last_print) {
+				alert('Nothing to re-print');
+				return;
+			}
+			var msg = obj.data.last_print.msg;
+			var params = obj.data.last_print.params; params.no_prompt = false;
+			obj.simple( msg, params );
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('util.print.reprint_last',E);
+		}
+	},
+
 	'simple' : function(msg,params) {
 		try {
 			if (!params) params = {};
 
 			var obj = this;
 
-			obj.data.last_print = msg; obj.data.stash('last_print');
+			obj.data.last_print = { 'msg' : msg, 'params' : params}; obj.data.stash('last_print');
 
 			var silent = false;
 			if (params && params.no_prompt && params.no_prompt == true) silent = true;
@@ -57,7 +72,7 @@ util.print.prototype = {
 				}, 0
 			);
 		} catch(E) {
-			alert(E);
+			this.error.standard_unexpected_error_alert('util.print.simple',E);
 		}
 	},
 	
