@@ -137,7 +137,14 @@ util.list.prototype = {
 	},
 
 	'_clear_tree' : function(params) {
-		while (this.treechildren.lastChild) this.treechildren.removeChild( this.treechildren.lastChild );
+		var obj = this;
+		if (obj.error.sdump_levels.D_LIST_DUMP_ON_CLEAR) {
+			obj.error.sdump('D_LIST_DUMP_ON_CLEAR',obj.dump());
+		}
+		if (obj.error.sdump_levels.D_LIST_DUMP_WITH_KEYS_ON_CLEAR) {
+			obj.error.sdump('D_LIST_DUMP_WITH_KEYS_ON_CLEAR',obj.dump_with_keys());
+		}
+		while (obj.treechildren.lastChild) obj.treechildren.removeChild( obj.treechildren.lastChild );
 	},
 
 	'_clear_listbox' : function(params) {
