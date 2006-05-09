@@ -79,6 +79,7 @@ int osrfAppInitialize() {
 
 				osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
 
+				osrfHash* _tmp;
 				osrfHash* links = osrfNewHash();
 				osrfHash* fields = osrfNewHash();
 				xmlNodePtr _cur = kid->children;
@@ -87,7 +88,6 @@ int osrfAppInitialize() {
 					char* string_tmp = NULL;
 
 					if (!strcmp( (char*)_cur->name, "fields" )) {
-						xmlNodePtr _f = _cur->children;
 
 						if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
 							osrfHashSet(
@@ -98,6 +98,7 @@ int osrfAppInitialize() {
 						}
 						string_tmp = NULL;
 
+						xmlNodePtr _f = _cur->children;
 
 						while(_f) {
 							if (strcmp( (char*)_f->name, "field" )) {
@@ -105,7 +106,7 @@ int osrfAppInitialize() {
 								continue;
 							}
 
-							osrfHash* _tmp = osrfNewHash();
+							_tmp = osrfNewHash();
 
 							if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
 								osrfHashSet(
@@ -116,7 +117,6 @@ int osrfAppInitialize() {
 							}
 							string_tmp = NULL;
 
-							char* string_tmp = NULL;
 							if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
 								osrfHashSet(
 									_tmp,
@@ -154,7 +154,7 @@ int osrfAppInitialize() {
 								continue;
 							}
 
-							osrfHash* _tmp = osrfNewHash();
+							_tmp = osrfNewHash();
 
 							if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
 								osrfHashSet(
