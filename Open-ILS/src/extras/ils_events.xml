@@ -544,6 +544,9 @@
 	<event code='7014' textcode='COPY_IN_TRANSIT'>
 		<desc xml:lang="en-US">Copy is in transit</desc>
 	</event>
+	<event code='7015' textcode='NEGATIVE_PATRON_BALANCE'>
+		<desc xml:lang="en-US">This requested action would result in a negative patron balance</desc>
+	</event>
 
 	<!-- ================================================================ -->
 
