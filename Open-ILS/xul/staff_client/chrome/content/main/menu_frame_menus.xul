@@ -39,6 +39,7 @@
 	<command id="cmd_replace_barcode" />
 
 	<command id="cmd_manage_offline_xacts" />
+	<command id="cmd_download_patrons" />
 
 	<command id="cmd_adv_user_edit" />
 	<command id="cmd_console" />
@@ -189,6 +190,7 @@
 <menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="-" old_accesskey="&staff.main.menu.admin.key;">
 	<menupopup id="main.menu.admin.popup">
 		<menuitem label="Offline Transaction Management" accesskey="T" command="cmd_manage_offline_xacts"/>
+		<menuitem label="Download Offline Patron List" accesskey="D" command="cmd_download_patrons"/>
 		<menuseparator />
 		<menuitem label="User Permission Editor" accesskey="U" command="cmd_adv_user_edit"/>
 		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_print_list_template_edit"/>

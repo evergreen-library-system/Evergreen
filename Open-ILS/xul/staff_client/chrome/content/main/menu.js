@@ -292,7 +292,28 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {}, {});
 				}
 			],
-
+			'cmd_download_patrons' : [
+				['oncommand'],
+				function() {
+					try {
+						netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+						var x = new XMLHttpRequest();
+						var url = 'http://' + XML_HTTP_SERVER + '/standalone/list.txt';
+						x.open("GET",url,false);
+						x.send(null);
+						if (x.status == 200) {
+							JSAN.use('util.file'); var file = new util.file('offline_patron_list');
+							file.write_content('truncate',x.responseText);
+							file.close();
+							alert('Download completed');
+						} else {
+							alert('There was a problem with the download.  The server returned a status ' + x.status + ' : ' + x.statusText);
+						}
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('cmd_download_patrons',E);
+					}
+				}
+			],
 			'cmd_adv_user_edit' : [
 				['oncommand'],
 				function() {
