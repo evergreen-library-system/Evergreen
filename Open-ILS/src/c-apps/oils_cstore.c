@@ -89,7 +89,7 @@ int osrfAppInitialize() {
 					if (!strcmp( (char*)_cur->name, "fields" )) {
 						xmlNodePtr _f = _cur->children;
 
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "primary", PERSIST_NS)) ) {
+						if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
 							osrfHashSet(
 								usrData,
 								strdup( string_tmp ),
