@@ -77,94 +77,158 @@ int osrfAppInitialize() {
 				osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
 				osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
 
+				osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
+
 				osrfHash* links = osrfNewHash();
 				osrfHash* fields = osrfNewHash();
 				xmlNodePtr _cur = kid->children;
+
 				while (_cur) {
+					char* string_tmp = NULL;
+
 					if (!strcmp( (char*)_cur->name, "fields" )) {
-						osrfHash* _tmp = osrfNewHash();
+						xmlNodePtr _f = _cur->children;
 
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "array_position", OBJECT_NS) ),
-							"array_position"
-						);
+						while(_f) {
+							if (strcmp( (char*)_f->name, "field" )) {
+								_f = _f->next;
+								continue;
+							}
 
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "name", BASE_NS) ),
-							"name"
-						);
+							osrfHash* _tmp = osrfNewHash();
 
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "virtual", BASE_NS) ),
-							"virtual"
-						);
+							if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"array_position"
+								);
+							}
+							string_tmp = NULL;
 
-						osrfHashSet(
-							fields,
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "name", BASE_NS) )
-						);
+							char* string_tmp = NULL;
+							if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"virtual"
+								);
+							}
+							string_tmp = NULL;
+
+							if( (string_tmp = (char*)xmlGetProp(_f, "name")) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"name"
+								);
+							}
+
+							osrfLogInfo(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+
+							osrfHashSet(
+								fields,
+								_tmp,
+								strdup( string_tmp )
+							);
+							_f = _f->next;
+						}
 					}
 
 					if (!strcmp( (char*)_cur->name, "links" )) {
-						osrfHash* _tmp = osrfNewHash();
+						xmlNodePtr _l = _cur->children;
 
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "reltype", BASE_NS) ),
-							"reltype"
-						);
-
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "field", BASE_NS) ),
-							"field"
-						);
-
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "key", BASE_NS) ),
-							"key"
-						);
-
-						osrfHashSet(
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "class", BASE_NS) ),
-							"class"
-						);
-
-						osrfStringArray* map = osrfNewStringArray(0);
-						char* map_list = strdup((char*)xmlGetNsProp(_cur, "map", BASE_NS));
-						if (strlen(map_list) > 0) {
-							char* _map_class = strtok(map_list, " ");
-							osrfStringArrayAdd(map, strdup(_map_class));
-							while ((_map_class = strtok(NULL, " "))) {
-								osrfStringArrayAdd(map, strdup(_map_class));
+						while(_l) {
+							if (strcmp( (char*)_l->name, "link" )) {
+								_l = _l->next;
+								continue;
 							}
-						}
-						osrfHashSet( _tmp, map, "map");
 
-						osrfHashSet(
-							links,
-							_tmp,
-							strdup( (char*)xmlGetNsProp(_cur, "field", BASE_NS) )
-						);
+							osrfHash* _tmp = osrfNewHash();
+
+							if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"reltype"
+								);
+							}
+							osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
+							string_tmp = NULL;
+
+							if( (string_tmp = (char*)xmlGetProp(_l, "key")) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"key"
+								);
+							}
+							osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
+							string_tmp = NULL;
+
+							if( (string_tmp = (char*)xmlGetProp(_l, "class")) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"class"
+								);
+							}
+							osrfLogInfo(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
+							string_tmp = NULL;
+
+							osrfStringArray* map = osrfNewStringArray(0);
+
+							if( (string_tmp = (char*)xmlGetProp(_l, "map") )) {
+								char* map_list = strdup( string_tmp );
+								osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
+
+								if (strlen( map_list ) > 0) {
+									char* st_tmp;
+									char* _map_class = strtok_r(map_list, " ", &st_tmp);
+									osrfStringArrayAdd(map, strdup(_map_class));
+							
+									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
+										osrfStringArrayAdd(map, strdup(_map_class));
+									}
+								}
+							}
+							osrfHashSet( _tmp, map, "map");
+
+							if( (string_tmp = (char*)xmlGetProp(_l, "field")) ) {
+								osrfHashSet(
+									_tmp,
+									strdup( string_tmp ),
+									"field"
+								);
+							}
+
+							osrfHashSet(
+								links,
+								_tmp,
+								strdup( string_tmp )
+							);
+
+							osrfLogInfo(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+
+							_l = _l->next;
+						}
 					}
 
 					_cur = _cur->next;
 				}
 
 
-				char* _fm = strdup( (char*)osrfHashGet(usrData, "fieldmapper") );
-				char* part = strtok(_fm, ":");
+				char* st_tmp;
+				char* _fm;
+				if (!osrfHashGet(usrData, "fieldmapper")) continue;
+
+				_fm = strdup( (char*)osrfHashGet(usrData, "fieldmapper") );
+				char* part = strtok_r(_fm, ":", &st_tmp);
 
 				growing_buffer* method_name =  buffer_init(64);
 				buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
 
-				while ((part = strtok(NULL, ":"))) {
+				while ((part = strtok_r(NULL, ":", &st_tmp))) {
 					buffer_fadd(method_name, ".%s", part);
 				}
 				buffer_fadd(method_name, ".%s", method_type);
@@ -211,7 +275,9 @@ int osrfAppChildInit() {
 	dbhandle = dbi_conn_new(driver);
 
 	if(!dbhandle) {
-		osrfLogError(OSRF_LOG_MARK, "Error creating database driver %s", driver);
+		const char* err;
+		dbi_conn_error(dbhandle, &err);
+		osrfLogError(OSRF_LOG_MARK, "Error creating database driver %s: %s", driver, err);
 		return -1;
 	}
 
