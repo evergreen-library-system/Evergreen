@@ -417,6 +417,8 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
 
+	osrfLogDebug(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
+
 	osrfHash* _f;
 	int attr;
 	int fmIndex;
@@ -426,6 +428,8 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 	/* cycle through the column list */
 	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+
+		osrfLogDebug(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
 		fmIndex = -1; // reset the position
 		
@@ -441,6 +445,7 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 			if ( !virt || !pos || !(strcmp( virt, "true" )) ) continue;
 
 			fmIndex = atoi( pos );
+			osrfLogDebug(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
 		}
 
 		switch( type ) {
