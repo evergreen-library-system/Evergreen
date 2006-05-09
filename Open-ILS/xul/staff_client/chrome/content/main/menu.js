@@ -276,6 +276,25 @@ main.menu.prototype = {
 				}
 			],
 
+			'cmd_reprint' : [
+				['oncommand'],
+				function() {
+					try {
+						JSAN.use('util.print'); var print = new util.print();
+						print.reprint_last();
+					} catch(E) {
+						alert(E);
+					}
+				}
+			],
+
+			'cmd_retrieve_last_patron' : [
+				['oncommand'],
+				function() {
+					alert('Not Yet Implemented');
+				}
+			],
+
 			/* Cataloging Menu */
 			'cmd_z39_50_import' : [
 				['oncommand'],

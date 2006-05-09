@@ -37,6 +37,8 @@
 	<command id="cmd_z39_50_import" />
 	<command id="cmd_create_new_marc_book" />
 	<command id="cmd_replace_barcode" />
+	<command id="cmd_reprint" />
+	<command id="cmd_retrieve_last_patron" />
 
 	<command id="cmd_manage_offline_xacts" />
 	<command id="cmd_download_patrons" />
@@ -73,6 +75,7 @@
 	<key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
 	<key id="circ-hold-capture-key" keycode="VK_F2" modifiers="shift" command="cmd_circ_hold_capture"/>
 	<key id="patron-register-key" keycode="VK_F1" modifiers="shift" command="cmd_patron_registration"/>
+	<key id="retrieve_last_patron_key" keycode="VK_F9" command="cmd_patron_registration"/>
 </keyset>
 
 
@@ -120,6 +123,9 @@
 		<menuseparator />
 		<menuitem label="Enter Offline Interface" command="cmd_standalone" accesskey="f"/>
 		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.circ.patron_registration.key;" key="patron-register-key" command="cmd_patron_register"/>
+		<menuseparator />
+		<menuitem label="Re-Print Last" accesskey="L" command="cmd_reprint"/>
+		<menuitem label="Retrieve Last Patron" accesskey="L" command="cmd_retrieve_last_patron" key="retrieve_last_patron_key"/>
 	</menupopup>
 </menu>
 
