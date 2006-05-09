@@ -82,6 +82,10 @@ int osrfAppInitialize() {
 				osrfHash* _tmp;
 				osrfHash* links = osrfNewHash();
 				osrfHash* fields = osrfNewHash();
+
+				osrfHashSet( usrData, fields, "fields" );
+				osrfHashSet( usrData, links, "links" );
+
 				xmlNodePtr _cur = kid->children;
 
 				while (_cur) {
