@@ -170,21 +170,17 @@ OpenILS.data.prototype = {
 
 
 		JSAN.use('util.file'); var file = new util.file('print_list_templates');
+		obj.print_list_defaults();
 		if (file._file.exists()) {
 			try {
 				var x = file.get_object();
 				if (x) {
 					obj.print_list_templates = x;
 					obj.stash('print_list_templates');
-				} else {
-					obj.print_list_defaults();
 				}
 			} catch(E) {
 				alert(E);
-				obj.print_list_defaults();
 			}
-		} else {
-			obj.print_list_defaults();
 		}
 		file.close();
 
