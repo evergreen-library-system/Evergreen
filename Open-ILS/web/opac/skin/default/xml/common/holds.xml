@@ -11,6 +11,7 @@
 							id='xul_recipient_barcode_submit'> </input></td>
 						<td><input type='submit' value='Place hold for me' 
 							id='xul_recipient_me'> </input></td>
+						<td><input type='submit' value='Cancel' onclick='showCanvas();'></input></td>
 					</tr>
 
 				</tbody>

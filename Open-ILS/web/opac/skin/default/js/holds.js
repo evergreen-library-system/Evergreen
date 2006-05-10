@@ -50,7 +50,7 @@ function holdsDrawWindow(recid, type, edithold, done_callback) {
 	holdEditHold = edithold;
 	holdEditCallback = done_callback;
 	
-	if(isXUL() && holdRecipient == null ) { 
+	if(isXUL() && holdRecipient == null && holdEditHold == null) { 
 		holdsHandleStaff();
 		return;
 	}
@@ -253,7 +253,6 @@ function holdsBuildHoldFromWindow() {
 function holdsPlaceHold(hold) {
 
 	swapCanvas($('check_holds_box'));
-	alert(currentHoldRecord + ' : ' +  hold.pickup_lib() );
 
 	if( ! holdsCheckPossibility(currentHoldRecord, currentHoldType, hold.pickup_lib() ) ) {
 		alert($('hold_not_allowed').innerHTML);
