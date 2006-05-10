@@ -1887,7 +1887,7 @@ sub register_workstation {
 	my $ws = Fieldmapper::actor::workstation->new;
 	$ws->owning_lib($owner);
 	$ws->name($name);
-	$e->actor_workstation_create($ws) or return $e->event;
+	$e->create_actor_workstation($ws) or return $e->event;
 	return $ws->id; # note: editor sets the id on the new object for us
 }
 
