@@ -109,13 +109,20 @@
 			try {
 				var robj = g.network.simple_request(
 					'AUTH_WORKSTATION',
-					[ xulG.auth.session.key, g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ]
+					[ xulG.auth.session.key, g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ],
+					null,
+					{
+						'title' : 'Override Registration Failure?',
+						'overridable_events' : [ 
+							1703 /* WORKSTATION_NAME_EXISTS */, 
+						],
+					}
 				);
 
 				if (typeof robj.ilsevent != 'undefined') {
 					switch(robj.ilsevent) {
 						case -1 : g.error.standard_network_error_alert(); break;
-						case 1703 /* WORKSTATION_NAME_EXISTS */ : alert('This workstation name and library combination has already been taken.'); break;
+						case 1703 /* WORKSTATION_NAME_EXISTS */ : /* handled with override request */ break;
 						default: g.error.standard_unexpected_error_alert('Workstation Registration',robj); break;
 					}
 				} else {
@@ -131,7 +138,7 @@
 					xulG.auth.logoff();
 				}
 			} catch(E) {
-				alert(E);
+				g.error.standard_unexpected_error_alert('Workstation Registration 2',E);
 			}
 		}
 
