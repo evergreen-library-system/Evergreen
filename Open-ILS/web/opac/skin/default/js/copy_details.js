@@ -58,7 +58,26 @@ var i = cpdCheckExisting(contextRow);
 
 
 function cpdBuildPrintWindow(record, orgid) {
-	var win = window.open('','', 'resizable,width=700,height=500');
+	/*
+	var win;
+
+	if( isXUL() ) {
+
+		win = xulG.window_open(
+			'data:text/html,' +
+			window.escape('<html><head><title></title></head><body>AAHHH</body></html>'),
+			'', 
+			'chrome,resizable,width=700,height=500'); 
+		alert(win.document.getElementsByTagName('body'));
+		alert('obj: ' + win.document.getElementsByTagName('body')[0]);
+		alert(win.document.getElementsByTagName('body')[0].textContent);
+		win.document.getElementsByTagName('body')[0].appendChild(text('TESTING TESTING'));
+
+	} else {
+		win = window.open('','', 'resizable,width=700,height=500'); 
+	}
+	*/
+
 	var div = $('rdetail_print_details').cloneNode(true);
 	div.id = "";
 
@@ -71,7 +90,7 @@ function cpdBuildPrintWindow(record, orgid) {
 	$n(div, 'phys').appendChild(text(record.physical_description()));
 
 
-	return [ win, div ];
+	return div;
 }
 
 function cpdStylePopupWindow(div) {
@@ -83,12 +102,17 @@ function cpdStylePopupWindow(div) {
 	}
 }
 
+
 /* builds a friendly print window for this CNs data */
 function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 
+	/*
 	var arr = cpdBuildPrintWindow( record, orgid);
 	var win = arr[0];
 	var div = arr[1];
+	*/
+
+	var div = cpdBuildPrintWindow( record, orgid);
 
 	$n(div, 'cn').appendChild(text(callnumber));
 
@@ -109,7 +133,10 @@ function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 	}
 
 	cpdStylePopupWindow(div);
+	/*
 	win.document.body.innerHTML = div.innerHTML;
+	*/
+	openWindow( div.innerHTML);
 }
 
 

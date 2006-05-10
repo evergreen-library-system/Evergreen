@@ -439,13 +439,19 @@ function _rdetailRows(node) {
 }
 
 function rdetailCNPrint(orgid, cn) {
+	/*
 	var arr = cpdBuildPrintWindow( record, orgid);
 	var win = arr[0];
 	var div = arr[1];
+	*/
+	var div = cpdBuildPrintWindow( record, orgid);
 	var template = div.removeChild($n(div, 'cnrow'));
 	var rowNode = $("cp_info_" + orgid);
 	cpdStylePopupWindow(div);
+	openWindow(div.innerHTML);
+	/*
 	win.document.body.innerHTML = div.innerHTML;
+	*/
 }
 
 /* walk through the copy info and build rows where necessary */
