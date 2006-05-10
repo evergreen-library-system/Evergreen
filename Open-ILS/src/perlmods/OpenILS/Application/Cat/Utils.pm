@@ -11,10 +11,12 @@ use OpenILS::Utils::ModsParser;
 my $mods_utils = OpenILS::Utils::ModsParser->new();
 
 
-#my $parser		= XML::LibXML->new();
-#my $xslt			= XML::LibXSLT->new();
-#my $xslt_doc	= $parser->parse_file( "/pines/cvs/ILS/Open-ILS/xsl/MARC21slim2MODS.xsl" );
-#my $mods_sheet = $xslt->parse_stylesheet( $xslt_doc );
+
+# -----------------------------------------------------------------------
+# XXX This code is all deprecated.  Remove any traces and delete
+# -----------------------------------------------------------------------
+
+
 
 sub new {
 	my($class) = @_;
