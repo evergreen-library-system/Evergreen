@@ -250,9 +250,16 @@ util.print.prototype = {
 				gPrintSettings.footerStrLeft = '';
 				gPrintSettings.footerStrCenter = '';
 				gPrintSettings.footerStrRight = '';
-				this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
+				//this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 				webBrowserPrint.print(gPrintSettings, null);
+				if (this.gPrintSettingsAreGlobal && this.gSavePrintSettings) {
+					var PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"]
+						.getService(Components.interfaces.nsIPrintSettingsService);
+					PSSVC.savePrintSettingsToPrefs( gPrintSettings, true, gPrintSettings.kInitSaveAll);
+					PSSVC.savePrintSettingsToPrefs( gPrintSettings, false, gPrintSettings.kInitSavePrinterName);
+				}
+				//this.error.sdump('D_PRINT','gPrintSettings 2 = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('Should be printing\n');
 				this.error.sdump('D_PRINT','Should be printing\n');
 			} else {
@@ -296,7 +303,7 @@ util.print.prototype = {
 		return this.gPrintSettings;
 	},
 
-	'setPrinterDefaultsForSelectedPrint' : function (aPrintService) {
+	'setPrinterDefaultsForSelectedPrinter' : function (aPrintService) {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			if (this.gPrintSettings.printerName == "") {
@@ -309,7 +316,7 @@ util.print.prototype = {
 			// now augment them with any values from last time
 			aPrintService.initPrintSettingsFromPrefs(this.gPrintSettings, true, this.gPrintSettings.kInitSaveAll);
 		} catch(E) {
-			this.error.sdump('D_PRINT',"setPrinterDefaultsForSelectedPrint() "+E+"\n");
+			this.error.sdump('D_PRINT',"setPrinterDefaultsForSelectedPrinter() "+E+"\n");
 		}
 	}
 }
