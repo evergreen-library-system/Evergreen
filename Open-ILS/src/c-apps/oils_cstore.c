@@ -36,10 +36,17 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta);
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 
+
+/* parse and store the IDL here */
+osrfHash* idlHash;
+
 /* handy NULL json object to have around */
 static jsonObject* oilsNULL = NULL;
 
 int osrfAppInitialize() {
+
+	idlHash = osrfNewHash();
+
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
@@ -70,12 +77,15 @@ int osrfAppInitialize() {
 		if (!strcmp( (char*)kid->name, "class" )) {
 			int i = 0; 
 			char* method_type;
-			while ( (method_type = osrfStringArrayGetString(global_methods, i)) ) {
+			while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
 
 				osrfHash * usrData = osrfNewHash();
 				osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
 				osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
 				osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
+
+				if(!strcmp(method_type, "retrieve"))
+					osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
 
 				osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
 
@@ -262,8 +272,6 @@ int osrfAppInitialize() {
 					0,
 					(void*)usrData
 				);
-
-				i++;
 			}
 		}
 		kid = kid->next;
@@ -320,6 +328,89 @@ int osrfAppChildInit() {
 	}
 
 	osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
+
+	int attr;
+	unsigned short type;
+	int i = 0; 
+	char* classname;
+	osrfStringArray* classes = osrfHashKeys( idlHash );
+	
+	while ( (classname = osrfStringArrayGetString(classes, i++)) ) {
+		osrfHash* class = osrfHashGet( idlHash, classname );
+		osrfHash* fields = osrfHashGet( class, "fields" );
+		
+		growing_buffer* sql_buf = buffer_init(32);
+		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", osrfHashGet(class, "tablename") );
+
+		char* sql = buffer_data(sql_buf);
+		buffer_free(sql_buf);
+		osrfLogDebug(OSRF_LOG_MARK, "%s Investigatory SQL = %s", MODULENAME, sql);
+
+		dbi_result result = dbi_conn_query(dbhandle, sql);
+		free(sql);
+
+		int columnIndex = 1;
+		const char* columnName;
+		osrfHash* _f;
+		while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+
+			osrfLogDebug(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
+
+			/* fetch the fieldmapper index */
+			if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+
+				osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
+
+				/* determine the field type and storage attributes */
+				type = dbi_result_get_field_type(result, columnName);
+				attr = dbi_result_get_field_attribs(result, columnName);
+
+				switch( type ) {
+
+					case DBI_TYPE_INTEGER :
+
+						osrfHashSet(_f,"number", "primative");
+
+						if( attr & DBI_INTEGER_SIZE8 ) 
+							osrfHashSet(_f,"INT8", "datatype");
+						else 
+							osrfHashSet(_f,"INT", "datatype");
+						break;
+
+					case DBI_TYPE_DECIMAL :
+						osrfHashSet(_f,"number", "primative");
+						osrfHashSet(_f,"NUMERIC", "datatype");
+						break;
+
+					case DBI_TYPE_STRING :
+						osrfHashSet(_f,"string", "primative");
+						osrfHashSet(_f,"TEXT", "datatype");
+						break;
+
+					case DBI_TYPE_DATETIME :
+						osrfHashSet(_f,"string", "primative");
+						osrfHashSet(_f,"TIMESTAMP", "datatype");
+						break;
+
+					case DBI_TYPE_BINARY :
+						osrfHashSet(_f,"string", "primative");
+						osrfHashSet(_f,"BYTEA", "datatype");
+				}
+
+				osrfLogDebug(
+					OSRF_LOG_MARK,
+					"Setting [%s] to primitive [%s] and datatype [%s]...",
+					(char*)columnName,
+					osrfHashGet(_f, "primitive"),
+					osrfHashGet(_f, "datatype")
+				);
+			}
+		}
+
+		dbi_result_free(result);
+	}
+
+	osrfStringArrayFree(classes);
 
 	return 0;
 }
@@ -424,9 +515,9 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	osrfLogDebug(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
 
 	osrfHash* _f;
-	int attr;
 	int fmIndex;
 	int columnIndex = 1;
+	int attr;
 	unsigned short type;
 	const char* columnName;
 
