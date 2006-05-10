@@ -111,8 +111,8 @@ sub ordered_records_from_metarecord {
 
 
 	$sql .= <<"	SQL";
-	  	  OFFSET 0
-		) AS x
+	  		  OFFSET 0
+			) AS x
 	  WHERE	tag = '245'
 	  	AND subfield = 'a'"
 	  GROUP BY record, item_type, item_form, quality
