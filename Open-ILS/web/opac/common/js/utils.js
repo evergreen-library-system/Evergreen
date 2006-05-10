@@ -488,3 +488,20 @@ function interval_to_seconds( $interval ) {
 }
 
 
+function openWindow( data ) {
+	if( isXUL() ) {
+		var data = window.escape(
+			'<html><head><title></title></head><body>' + data + '</body></html>');
+
+		xulG.window_open(
+			'data:text/html,' + data,
+			'', 
+			'chrome,resizable,width=700,height=500'); 
+
+	} else {
+		win = window.open('','', 'resizable,width=700,height=500'); 
+		win.document.body.innerHTML = data;
+	}
+}
+
+
