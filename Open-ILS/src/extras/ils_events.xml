@@ -166,9 +166,8 @@
 	<event code='1536' textcode='ACTION_IN_HOUSE_USE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested action_in_house_use was not found</desc>
 	</event>
-	<event code='1537' textcode='ACTION_TRANSIT_COPY_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested action_transit_copy was not found</desc>
-	</event>
+
+
 	<event code='1538' textcode='ACTION_SURVEY_RESPONSE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested action_survey_response was not found</desc>
 	</event>
@@ -199,9 +198,7 @@
 	<event code='1547' textcode='CONFIG_ITEM_FORM_MAP_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_item_form_map was not found</desc>
 	</event>
-	<event code='1548' textcode='ASSET_CALL_NUMBER_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested asset_call_number was not found</desc>
-	</event>
+
 	<event code='1549' textcode='CONFIG_STANDING_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_standing was not found</desc>
 	</event>
@@ -222,9 +219,8 @@
 	<event code='1555' textcode='MONEY_OPEN_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_open_billable_transaction_summary was not found</desc>
 	</event>
-	<event code='1556' textcode='ACTOR_USER_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested actor_user was not found</desc>
-	</event>
+
+
 	<event code='1557' textcode='ACTOR_ORG_UNIT_SETTING_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested actor_org_unit_setting was not found</desc>
 	</event>
@@ -264,18 +260,16 @@
 	<event code='1569' textcode='ACTOR_USER_STANDING_PENALTY_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested actor_user_standing_penalty was not found</desc>
 	</event>
-	<event code='1570' textcode='ACTOR_USER_ADDRESS_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested actor_user_address was not found</desc>
-	</event>
+
+
 	<event code='1571' textcode='ASSET_CALL_NUMBER_NOTE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested asset_call_number_note was not found</desc>
 	</event>
 	<event code='1572' textcode='AUTHORITY_RECORD_NOTE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested authority_record_note was not found</desc>
 	</event>
-	<event code='1573' textcode='ACTION_CIRCULATION_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested action_circulation was not found</desc>
-	</event>
+
+
 	<event code='1574' textcode='CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested container_call_number_bucket_item was not found</desc>
 	</event>
@@ -386,9 +380,8 @@
 	<event code='1610' textcode='MONEY_CHECK_PAYMENT_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_check_payment was not found</desc>
 	</event>
-	<event code='1611' textcode='ASSET_COPY_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested asset_copy was not found</desc>
-	</event>
+
+
 	<event code='1612' textcode='CONFIG_RULES_MAX_FINE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested config_rules_max_fine was not found</desc>
 	</event>
