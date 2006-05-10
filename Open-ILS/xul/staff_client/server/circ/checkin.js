@@ -120,6 +120,8 @@ circ.checkin.prototype = {
 					'cmd_checkin_reprint' : [
 						['command'],
 						function() {
+							JSAN.use('util.print'); var print = new util.print();
+							print.reprint_last();
 						}
 					],
 					'cmd_checkin_done' : [

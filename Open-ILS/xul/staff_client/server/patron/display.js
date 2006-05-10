@@ -29,10 +29,10 @@ patron.display.prototype = {
 
 		function spawn_checkout_interface() {
 			obj.right_deck.set_iframe(
-				urls.XUL_CHECKOUT
-				+ '?patron_id=' + window.escape( obj.patron.id() ),
+				urls.XUL_CHECKOUT,
 				{},
 				{ 
+					'patron_id' : obj.patron.id(),
 					'on_list_change' : function(checkout) {
 					
 						if (!checkout.circ.id()) return; /* this stops noncats from getting pushed into Items Out */

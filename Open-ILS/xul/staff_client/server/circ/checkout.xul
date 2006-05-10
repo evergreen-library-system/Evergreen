@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/circ/checkout_overlay.xul"?>
 
 <window id="checkout_win" 
-	onload="my_init()"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -43,18 +43,21 @@
 
 				g.cgi = new CGI();
 
+				var patron_id = g.cgi.param('patron_id') || xulG.patron_id;
+
 				JSAN.use('circ.checkout'); g.checkout = new circ.checkout();
 				g.checkout.init( 
 					{ 
-						'patron_id' : g.cgi.param('patron_id'), 
+						'patron_id' : patron_id,
 					} 
 				);
 	
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
+				try {
+					g.error.standard_unexpected_error_alert('circ/checkout.xul',E);
+				} catch(F) {
+					alert('FIXME: circ/checkout.xul -> ' + E);
+				}
 			}
 		}
 

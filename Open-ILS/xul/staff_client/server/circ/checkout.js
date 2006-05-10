@@ -147,21 +147,9 @@ circ.checkout.prototype = {
 						['command'],
 						function() {
 							try {
-								var params = { 
-									'patron' : obj.patron, 
-									'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-									'staff' : obj.data.list.au[0],
-									'header' : obj.data.print_list_templates.checkout.header,
-									'line_item' : obj.data.print_list_templates.checkout.line_item,
-									'footer' : obj.data.print_list_templates.checkout.footer,
-									'type' : obj.data.print_list_templates.checkout.type,
-									'list' : obj.list.dump(),
-								};
-								JSAN.use('util.print'); var print = new util.print();
-								print.tree_list( params );
+								obj.print();
 							} catch(E) {
-								this.error.sdump('D_ERROR','preview: ' + E);
-								alert('preview: ' + E);
+								obj.error.standard_unexpected_error_alert('cmd_checkout_print',E);
 							}
 
 						}
@@ -169,11 +157,19 @@ circ.checkout.prototype = {
 					'cmd_checkout_reprint' : [
 						['command'],
 						function() {
+							JSAN.use('util.print'); var print = new util.print();
+							print.reprint_last();
 						}
 					],
 					'cmd_checkout_done' : [
 						['command'],
 						function() {
+							try {
+								if (document.getElementById('checkout_auto').checked) obj.print(true);
+								obj.list.clear();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('cmd_checkout_done',E);
+							}
 						}
 					],
 				}
@@ -182,6 +178,27 @@ circ.checkout.prototype = {
 		this.controller.render();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 
+	},
+
+	'print' : function(silent) {
+		var obj = this;
+		try {
+				var params = { 
+					'patron' : obj.patron, 
+					'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+					'staff' : obj.data.list.au[0],
+					'header' : obj.data.print_list_templates.checkout.header,
+					'line_item' : obj.data.print_list_templates.checkout.line_item,
+					'footer' : obj.data.print_list_templates.checkout.footer,
+					'type' : obj.data.print_list_templates.checkout.type,
+					'list' : obj.list.dump(),
+				};
+				if (silent) params.no_prompt = true;
+				JSAN.use('util.print'); var print = new util.print();
+				print.tree_list( params );
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('print',E);
+		}
 	},
 
 	'check_date' : function(node) {

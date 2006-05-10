@@ -178,7 +178,7 @@ util.print.prototype = {
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%STAFF_BARCODE%/,'123abc'); } /* FIXME -- cheating */
+		try{s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
