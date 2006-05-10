@@ -130,7 +130,18 @@
 				var content_params = { 
 					'show_nav_buttons' : true,
 					'show_print_button' : true,
-					'passthru_content_params' : { 'authtoken' : ses(), 'authtime' : ses('authtime') },
+					'passthru_content_params' : { 
+						'authtoken' : ses(), 
+						'authtime' : ses('authtime'),
+						'window_open' : function(a,b,c) {
+							try {
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+								window.open(a,b,c);
+							} catch(E) {
+								g.error.standard_unexpected_error_alert('window_open',E);
+							}
+						}
+					},
 					'on_url_load' : function(f) {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var win;
@@ -153,7 +164,7 @@
 									set_brief_view();
 									document.getElementById('nav').setAttribute('hidden','false');
 								} catch(E) {
-									alert(E);
+									g.error.standard_unexpected_error_alert('rdetail -> recordRetrieved',E);
 								}
 							}
 						);
