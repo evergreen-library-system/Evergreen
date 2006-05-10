@@ -78,6 +78,8 @@ util.print.prototype = {
 	
 	'tree_list' : function (params) { 
 		var cols;
+		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
+		// we could do a dump_with_keys instead
 		switch(params.type) {
 			case 'offline_checkout' :
 				JSAN.use('circ.util');
