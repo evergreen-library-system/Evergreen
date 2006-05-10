@@ -135,7 +135,7 @@
 						'authtime' : ses('authtime'),
 						'window_open' : function(a,b,c) {
 							try {
-								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								window.open(a,b,c);
 							} catch(E) {
 								g.error.standard_unexpected_error_alert('window_open',E);
