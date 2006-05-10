@@ -39,7 +39,9 @@ util.print.prototype = {
 			obj.data.last_print = { 'msg' : msg, 'params' : params}; obj.data.stash('last_print');
 
 			var silent = false;
-			if (params && params.no_prompt && params.no_prompt == true) silent = true;
+			if ( params && params.no_prompt && (params.no_prompt == true || params.no_prompt == 'true') ) {
+				silent = true;
+			}
 
 			var content_type;
 			if (params && params.content_type) {
@@ -158,7 +160,7 @@ util.print.prototype = {
 		if (params.sample_frame) {
 			params.sample_frame.setAttribute('src','data:text/html,<html>' + window.escape(s) + '</html>');
 		} else {
-			this.simple(s);
+			this.simple(s,params);
 		}
 	},
 
