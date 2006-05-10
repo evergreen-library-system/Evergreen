@@ -24,7 +24,7 @@ admin.offline_manage_xacts.prototype = {
 		obj.retrieve_seslist(); obj.render_seslist();
 
 		var x = document.getElementById('create');
-		if (obj.check_perm(ses(),'OFFLINE_CREATE_SESSION')) {
+		if (obj.check_perm(['OFFLINE_UPLOAD'])) {
 			x.disabled = false;
 			x.addEventListener('command',function() { try{obj.create_ses();}catch(E){alert(E);} },false);
 		}
@@ -149,14 +149,14 @@ admin.offline_manage_xacts.prototype = {
 									}
 
 									if (upload) {
-										if (obj.check_perm(ses(),'OFFLINE_UPLOAD_XACTS')) {
+										if (obj.check_perm(['OFFLINE_UPLOAD'])) {
 											document.getElementById('upload').disabled = false;
 										}
 									} else {
 										document.getElementById('upload').disabled = true;
 									}
 									if (process) {
-										if (obj.check_perm(ses(),'OFFLINE_EXECUTE_SESSION')) {
+										if (obj.check_perm(['OFFLINE_EXECUTE'])) {
 											document.getElementById('execute').disabled = false;	
 										}
 									} else {
@@ -259,6 +259,11 @@ admin.offline_manage_xacts.prototype = {
 					'render' : "my.event.textcode", 
 				},
 				{
+					'id' : 'desc', 'flex' : '1', 'hidden' : 'true',
+					'label' : 'Event Description',
+					'render' : "my.event.desc",
+				}
+				{
 					'id' : 'i_barcode', 'flex' : '1',
 					'label' : 'Item Barcode',
 					'render' : 'my.command.barcode ? my.command.barcode : ""',
@@ -331,8 +336,14 @@ admin.offline_manage_xacts.prototype = {
 
 	},
 
-	'check_perm' : function(ses,perms) {
-		return true; /* FIXME */
+	'check_perm' : function(perms) {
+		var obj = this;
+		var robj = obj.network.simple_request('PERM_CHECK',[ses(),obj.data.list.au[0].id(),obj.data.list.au[0].ws_ou(),perms]);
+		if (typeof robj.ilsevent != 'undefined') {
+			obj.error.standard_unexpected_error_alert('check permission',E);
+			return false;
+		}
+		return robj.length == 0 ? true : false;
 	},
 
 	'execute_ses' : function() {

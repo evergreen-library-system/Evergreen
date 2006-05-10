@@ -308,7 +308,7 @@ main.menu.prototype = {
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {'tab_name':'Offline Transactions'}, {});
 				}
 			],
 			'cmd_download_patrons' : [
