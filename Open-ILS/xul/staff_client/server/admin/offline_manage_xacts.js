@@ -262,7 +262,7 @@ admin.offline_manage_xacts.prototype = {
 					'id' : 'desc', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Event Description',
 					'render' : "my.event.desc",
-				}
+				},
 				{
 					'id' : 'i_barcode', 'flex' : '1',
 					'label' : 'Item Barcode',
