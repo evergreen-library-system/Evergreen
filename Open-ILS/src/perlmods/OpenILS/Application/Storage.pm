@@ -34,7 +34,7 @@ sub initialize {
 	if ($@) {
 		$log->debug( "Can't load $driver!  :  $@", ERROR );
 		$log->error( "Can't load $driver!  :  $@");
-		throw OpenILS::EX::PANIC ( "Can't load $driver!  :  $@" );
+		throw OpenSRF::EX::PANIC ( "Can't load $driver!  :  $@" );
 	}
 
 	$log->debug("$driver loaded successfully", DEBUG);
@@ -45,13 +45,13 @@ sub initialize {
 	OpenILS::Application::Storage::Publisher->use;
 	if ($@) {
 		$log->debug("FAILURE LOADING Publisher!  $@", ERROR);
-		throw OpenILS::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
+		throw OpenSRF::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
 	}
 
 	OpenILS::Application::WoRM->use;
 	if ($@) {
 		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
-		throw OpenILS::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );
+		throw OpenSRF::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );
 	}
 
 	$log->debug("We seem to be OK...",DEBUG);
