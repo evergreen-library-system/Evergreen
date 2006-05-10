@@ -112,8 +112,12 @@
 					[ xulG.auth.session.key, g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ]
 				);
 
-				if (robj.ilsevent) {
-					alert(js2JSON(robj));
+				if (typeof robj.ilsevent != 'undefined') {
+					switch(robj.ilsevent) {
+						case -1 : g.error.standard_network_error_alert(); break;
+						case 1703 /* WORKSTATION_NAME_EXISTS */ : alert('This workstation name and library combination has already been taken.'); break;
+						default: g.error.standard_unexpected_error_alert('Workstation Registration',robj); break;
+					}
 				} else {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
 					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
