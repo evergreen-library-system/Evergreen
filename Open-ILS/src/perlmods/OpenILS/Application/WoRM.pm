@@ -288,6 +288,7 @@ sub wormize_biblio_metarecord {
 			$success = wormize_biblio_record($self => $client => $r->source);
 			$client->respond(
 				{ record  => $r->source,
+				  metarecord => $rec->metarecord,
 				  success => $success,
 				}
 			);
@@ -295,6 +296,7 @@ sub wormize_biblio_metarecord {
 			my $e = shift;
 			$client->respond(
 				{ record  => $r->source,
+				  metarecord => $rec->metarecord,
 				  success => $success,
 				  error   => $e,
 				}
@@ -1208,15 +1210,68 @@ sub refingerprint_bibrec {
  		for my $b (@$bibs) {
 			my ($fp) = $self->method_lookup( 'open-ils.worm.fingerprint.marc' )->run( $b->marc );
 
-			$log->debug("Updating ".$b->id." with fingerprint [$fp->{fingerprint}], quality [$fp->{quality}]", INFO);;
+			if ($b->fingerprint ne $fp->{fingerprint} || $b->quality != $fp->{quality}) {
 
-			OpenILS::Application::WoRM->storage_req(
-				'open-ils.storage.direct.biblio.record_entry.remote_update',
-				{ id => $b->id },
-				{ fingerprint => $fp->{fingerprint},
-				  quality     => $fp->{quality} }
-			);
+				$log->debug("Updating ".$b->id." with fingerprint [$fp->{fingerprint}], quality [$fp->{quality}]", INFO);;
+
+				OpenILS::Application::WoRM->storage_req(
+					'open-ils.storage.direct.biblio.record_entry.remote_update',
+					{ id => $b->id },
+					{ fingerprint => $fp->{fingerprint},
+					  quality     => $fp->{quality} }
+				);
+
+ 				if ($self->api_name !~ /nomap/o) {
+					my $old_source_map = OpenILS::Application::WoRM->storage_req(
+						'open-ils.storage.direct.metabib.metarecord_source_map.search.source.atomic',
+						$b->id
+					);
+
+					my $old_mrid;
+					if (ref($old_source_map) and @$old_source_map) {
+						for my $m (@$old_source_map) {
+							$old_mrid = $m->metarecord;
+							OpenILS::Application::WoRM->storage_req(
+								'open-ils.storage.direct.metabib.metarecord_source_map.delete',
+								$m->id
+							);
+						}
+					}
+
+					my $old_sm = OpenILS::Application::WoRM->storage_req(
+							'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
+							$old_mrid
+					) if ($old_mrid);
+
+					if (ref($old_sm) and @$old_sm == 0) {
+						OpenILS::Application::WoRM->storage_req(
+							'open-ils.storage.direct.metabib.metarecord.delete',
+							$old_mrid
+						);
+					}
+
+					my $mr = OpenILS::Application::WoRM->storage_req(
+							'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic',
+							$fp->{fingerprint}
+					)->[0];
+				
+					unless ($mr) {
+						$mr = Fieldmapper::metabib::metarecord->new;
+						$mr->fingerprint( $fp->{fingerprint} );
+						$mr->master_record( $b->id );
+						$mr->id( OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord.create', $mr) );
+					}
+
+					my $mr_map = Fieldmapper::metabib::metarecord_source_map->new;
+					$mr_map->metarecord( $mr->id );
+					$mr_map->source( $b->id );
+					OpenILS::Application::WoRM->storage_req( 'open-ils.storage.direct.metabib.metarecord_source_map.create', $mr_map );
+
+				}
+			}
+			$client->respond($b->id);
 		}
+
 	} otherwise {
 		$log->debug('Fingerprinting failed : '.shift(), ERROR);
 		$success = 0;
@@ -1224,10 +1279,18 @@ sub refingerprint_bibrec {
 
 	OpenILS::Application::WoRM->commit_transaction if ($commit && $success);
 	OpenILS::Application::WoRM->rollback_transaction if ($commit && !$success);
-	return $success;
+	return undef;
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.worm.fingerprint.record.update",
+	method		=> "refingerprint_bibrec",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.record.update.nomap",
 	method		=> "refingerprint_bibrec",
 	api_level	=> 1,
 	argc		=> 1,

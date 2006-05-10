@@ -570,6 +570,7 @@
 	package metabib::metarecord_source_map;
 
 	metabib::metarecord_source_map->table( 'metabib.metarecord_source_map' );
+	metabib::metarecord_source_map->sequence( 'metabib.metarecord_source_map_id_seq' );
 	OpenILS::Application::Storage->register_method(
 		api_name	=> 'open-ils.storage.direct.metabib.metarecord_source_map.batch.create',
 		method		=> 'copy_create',
