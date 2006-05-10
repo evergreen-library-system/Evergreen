@@ -193,6 +193,8 @@ util.print.prototype = {
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s=s.replace(/%TODAY_m%/g,(util.date.formatted_date(new Date(),'%m')));}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{s=s.replace(/%TODAY_TRIM%/g,(util.date.formatted_date(new Date(),'')));}
+			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s=s.replace(/%TODAY_d%/g,(util.date.formatted_date(new Date(),'%d')));}
 			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{s=s.replace(/%TODAY_Y%/g,(util.date.formatted_date(new Date(),'%Y')));}
