@@ -114,7 +114,7 @@ sub ordered_records_from_metarecord {
 	  		  OFFSET 0
 			) AS x
 	  WHERE	tag = '245'
-	  	AND subfield = 'a'"
+	  	AND subfield = 'a'
 	  GROUP BY record, item_type, item_form, quality
 	  ORDER BY
 		CASE
