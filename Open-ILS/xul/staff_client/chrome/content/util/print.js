@@ -250,7 +250,7 @@ util.print.prototype = {
 				gPrintSettings.footerStrLeft = '';
 				gPrintSettings.footerStrCenter = '';
 				gPrintSettings.footerStrRight = '';
-				this.error.sdump('D_PRINT','gPrintSettings = ' + js2JSON(gPrintSettings));
+				this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 				webBrowserPrint.print(gPrintSettings, null);
 				//alert('Should be printing\n');
