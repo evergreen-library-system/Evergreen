@@ -64,9 +64,7 @@
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 				XML_HTTP_SERVER = g.data.server_unadorned;
 
-				document.title = g.window.appshell_name_increment() + ': ' 
-					+ g.data.list.au[0].usrname() + ' (' + g.data.ws_name + '@' 
-					+ g.data.hash.aou[ g.data.list.au[0].ws_ou() ].shortname() + ')';
+				document.title = g.window.appshell_name_increment() + ': ' + g.data.list.au[0].usrname() + '@' + g.data.ws_name;
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
