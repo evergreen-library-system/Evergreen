@@ -50,90 +50,99 @@ sub ordered_records_from_metarecord {
 	my $br_table = biblio::record_entry->table;
 
 	my $sql = <<"	SQL";
-		SELECT	rd.record,
-			rd.item_type,
-			rd.item_form,
-			br.quality,
-			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, COALESCE(SUBSTRING(fr.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')) AS title
+		SELECT	record,
+			item_type,
+			item_form,
+			quality,
+			FIRST(COALESCE(LTRIM(SUBSTR( value, COALESCE(SUBSTRING(ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')) AS title
+		FROM	(
+			SELECT	rd.record,
+				rd.item_type,
+				rd.item_form,
+				br.quality,
+				fr.tag,
+				fr.subfield,
+				fr.value,
+				fr.ind2
 	SQL
 
 	if ($copies_visible) {
 		$sql .= <<"		SQL";
-		  FROM	$cn_table cn,
-			$sm_table sm,
-			$br_table br,
-			$fr_table fr,
-			$rd_table rd
-		  WHERE	rd.record = sm.source
-			AND fr.record = br.id
-			AND fr.tag = '245'
-			AND fr.subfield = 'a'
-		  	AND br.id = rd.record
-		  	AND cn.record = rd.record
-			AND sm.metarecord = ?
-                        AND EXISTS ((SELECT	1
-					FROM	$cp_table cp
-				       		JOIN $cs_table cs ON (cp.status = cs.id)
-				       		JOIN $cl_table cl ON (cp.location = cl.id)
-						JOIN $descendants d ON (cp.circ_lib = d.id)
-					WHERE	cn.id = cp.call_number
-		                                $copies_visible
-					LIMIT 1)) 
-
+	  		  FROM	$cn_table cn,
+				$sm_table sm,
+				$br_table br,
+				$fr_table fr,
+				$rd_table rd
+		  	  WHERE	rd.record = sm.source
+				AND fr.record = sm.source
+		  		AND br.id = sm.source
+		  		AND cn.record = sm.source
+				AND sm.metarecord = ?
+                        	AND EXISTS ((SELECT	1
+						FROM	$cp_table cp
+				       			JOIN $cs_table cs ON (cp.status = cs.id)
+				       			JOIN $cl_table cl ON (cp.location = cl.id)
+							JOIN $descendants d ON (cp.circ_lib = d.id)
+						WHERE	cn.id = cp.call_number
+		                                	$copies_visible
+						LIMIT 1)) 
 		SQL
 	} else {
 		$sql .= <<"		SQL";
-		  FROM	$sm_table sm,
-			$br_table br,
-			$fr_table fr,
-			$rd_table rd
-		  WHERE	rd.record = sm.source
-			AND fr.record = br.id
-			AND fr.tag = '245'
-			AND fr.subfield = 'a'
-		  	AND br.id = rd.record
-			AND sm.metarecord = ?
+			  FROM	$sm_table sm,
+				$br_table br,
+				$fr_table fr,
+				$rd_table rd
+			  WHERE	rd.record = sm.source
+				AND fr.record = sm.source
+			  	AND br.id = sm.source
+				AND sm.metarecord = ?
 		SQL
 	}
 
 	if (@types) {
-		$sql .= ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+		$sql .= '				AND rd.item_type IN ('.join(',',map{'?'}@types).')';
 	}
 
 	if (@forms) {
-		$sql .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+		$sql .= '				AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
 	}
 
 
+
 	$sql .= <<"	SQL";
-		  GROUP BY rd.record, rd.item_type, rd.item_form, br.quality
-		  ORDER BY
-			CASE
-				WHEN rd.item_type IS NULL -- default
-					THEN 0
-				WHEN rd.item_type = '' -- default
-					THEN 0
-				WHEN rd.item_type IN ('a','t') -- books
-					THEN 1
-				WHEN rd.item_type = 'g' -- movies
-					THEN 2
-				WHEN rd.item_type IN ('i','j') -- sound recordings
-					THEN 3
-				WHEN rd.item_type = 'm' -- software
-					THEN 4
-				WHEN rd.item_type = 'k' -- images
-					THEN 5
-				WHEN rd.item_type IN ('e','f') -- maps
-					THEN 6
-				WHEN rd.item_type IN ('o','p') -- mixed
-					THEN 7
-				WHEN rd.item_type IN ('c','d') -- music
-					THEN 8
-				WHEN rd.item_type = 'r' -- 3d
-					THEN 9
-			END,
-			title ASC,
-			br.quality DESC
+	  	  OFFSET 0
+		) AS x
+	  WHERE	tag = '245'
+	  	AND subfield = 'a'"
+	  GROUP BY record, item_type, item_form, quality
+	  ORDER BY
+		CASE
+			WHEN item_type IS NULL -- default
+				THEN 0
+			WHEN item_type = '' -- default
+				THEN 0
+			WHEN item_type IN ('a','t') -- books
+				THEN 1
+			WHEN item_type = 'g' -- movies
+				THEN 2
+			WHEN item_type IN ('i','j') -- sound recordings
+				THEN 3
+			WHEN item_type = 'm' -- software
+				THEN 4
+			WHEN item_type = 'k' -- images
+				THEN 5
+			WHEN item_type IN ('e','f') -- maps
+				THEN 6
+			WHEN item_type IN ('o','p') -- mixed
+				THEN 7
+			WHEN item_type IN ('c','d') -- music
+				THEN 8
+			WHEN item_type = 'r' -- 3d
+				THEN 9
+		END,
+		title ASC,
+		quality DESC
 	SQL
 
 	my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr", @types, @forms);
