@@ -210,13 +210,13 @@ util.print.prototype = {
 
 		if (params.row) {
 			for (var i = 0; i < cols.length; i++) {
-				dump('s is "' + s + '"\n');
-				dump('params.row is ' + js2JSON(params.row) + '\n');
-				dump('col is ' + cols[i] + '\n');
+				//dump('s is "' + s + '"\n');
+				//dump('params.row is ' + js2JSON(params.row) + '\n');
+				//dump('col is ' + cols[i] + '\n');
 				var re = new RegExp(cols[i],"g");
 				try{s=s.replace(re, params.row[i]);}
 					catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-				dump('new s is "' + s + '"\n\n');
+				//dump('new s is "' + s + '"\n\n');
 			}
 		}
 
