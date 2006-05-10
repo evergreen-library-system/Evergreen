@@ -1829,6 +1829,11 @@ sub get_user_perm_groups {
 
 __PACKAGE__->register_method (
 	method		=> 'register_workstation',
+	api_name		=> 'open-ils.actor.workstation.register.override',
+	signature	=> q/@see open-ils.actor.workstation.register/);
+
+__PACKAGE__->register_method (
+	method		=> 'register_workstation',
 	api_name		=> 'open-ils.actor.workstation.register',
 	signature	=> q/
 		Registers a new workstion in the system
@@ -1839,7 +1844,7 @@ __PACKAGE__->register_method (
 		if the name is already in use.
 	/);
 
-sub register_workstation {
+sub _register_workstation {
 	my( $self, $connection, $authtoken, $name, $owner ) = @_;
 	my( $requestor, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -1860,6 +1865,30 @@ sub register_workstation {
 
 	$ws->id($id);
 	return $ws->id();
+}
+
+sub register_workstation {
+	my( $self, $conn, $authtoken, $name, $owner ) = @_;
+
+	my $e = OpenILS::Utils::Editor->new(authtoken=>$authtoken, xact=>1); 
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('REGISTER_WORKSTATION'); # XXX rely on editor perms
+	my $existing = $e->search_actor_workstation({name => $name});
+
+	if( @$existing ) {
+		if( $self->api_name =~ /override/o ) {
+			return $e->event unless $e->allowed('DELETE_WORKSTATION'); # XXX rely on editor perms
+			return $e->event unless $e->delete_actor_workstation($$existing[0]);
+		} else {
+			return OpenILS::Event->new('WORKSTATION_NAME_EXISTS')
+		}
+	}
+
+	my $ws = Fieldmapper::actor::workstation->new;
+	$ws->owning_lib($owner);
+	$ws->name($name);
+	$e->actor_workstation_create($ws) or return $e->event;
+	return $ws->id; # note: editor sets the id on the new object for us
 }
 
 
