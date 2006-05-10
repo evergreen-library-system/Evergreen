@@ -8,6 +8,7 @@
 #include "oils_event.h"
 #include <dbi/dbi.h>
 
+#include <time.h>
 #include <string.h>
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
@@ -349,65 +350,69 @@ int osrfAppChildInit() {
 		dbi_result result = dbi_conn_query(dbhandle, sql);
 		free(sql);
 
-		int columnIndex = 1;
-		const char* columnName;
-		osrfHash* _f;
-		while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
+		if (result) {
 
-			osrfLogDebug(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
+			int columnIndex = 1;
+			const char* columnName;
+			osrfHash* _f;
+			while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
 
-			/* fetch the fieldmapper index */
-			if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
+				osrfLogDebug(OSRF_LOG_MARK, "Looking for column named [%s]...", (char*)columnName);
 
-				osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
+				/* fetch the fieldmapper index */
+				if( (_f = osrfHashGet(fields, (char*)columnName)) ) {
 
-				/* determine the field type and storage attributes */
-				type = dbi_result_get_field_type(result, columnName);
-				attr = dbi_result_get_field_attribs(result, columnName);
+					osrfLogDebug(OSRF_LOG_MARK, "Found [%s] in IDL hash...", (char*)columnName);
 
-				switch( type ) {
+					/* determine the field type and storage attributes */
+					type = dbi_result_get_field_type(result, columnName);
+					attr = dbi_result_get_field_attribs(result, columnName);
 
-					case DBI_TYPE_INTEGER :
+					switch( type ) {
 
-						osrfHashSet(_f,"number", "primative");
+						case DBI_TYPE_INTEGER :
 
-						if( attr & DBI_INTEGER_SIZE8 ) 
-							osrfHashSet(_f,"INT8", "datatype");
-						else 
-							osrfHashSet(_f,"INT", "datatype");
-						break;
+							osrfHashSet(_f,"number", "primitive");
 
-					case DBI_TYPE_DECIMAL :
-						osrfHashSet(_f,"number", "primative");
-						osrfHashSet(_f,"NUMERIC", "datatype");
-						break;
+							if( attr & DBI_INTEGER_SIZE8 ) 
+								osrfHashSet(_f,"INT8", "datatype");
+							else 
+								osrfHashSet(_f,"INT", "datatype");
+							break;
 
-					case DBI_TYPE_STRING :
-						osrfHashSet(_f,"string", "primative");
-						osrfHashSet(_f,"TEXT", "datatype");
-						break;
+						case DBI_TYPE_DECIMAL :
+							osrfHashSet(_f,"number", "primitive");
+							osrfHashSet(_f,"NUMERIC", "datatype");
+							break;
 
-					case DBI_TYPE_DATETIME :
-						osrfHashSet(_f,"string", "primative");
-						osrfHashSet(_f,"TIMESTAMP", "datatype");
-						break;
+						case DBI_TYPE_STRING :
+							osrfHashSet(_f,"string", "primitive");
+							osrfHashSet(_f,"TEXT", "datatype");
+							break;
 
-					case DBI_TYPE_BINARY :
-						osrfHashSet(_f,"string", "primative");
-						osrfHashSet(_f,"BYTEA", "datatype");
+						case DBI_TYPE_DATETIME :
+							osrfHashSet(_f,"string", "primitive");
+							osrfHashSet(_f,"TIMESTAMP", "datatype");
+							break;
+
+						case DBI_TYPE_BINARY :
+							osrfHashSet(_f,"string", "primitive");
+							osrfHashSet(_f,"BYTEA", "datatype");
+					}
+
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"Setting [%s] to primitive [%s] and datatype [%s]...",
+						(char*)columnName,
+						osrfHashGet(_f, "primitive"),
+						osrfHashGet(_f, "datatype")
+					);
 				}
-
-				osrfLogDebug(
-					OSRF_LOG_MARK,
-					"Setting [%s] to primitive [%s] and datatype [%s]...",
-					(char*)columnName,
-					osrfHashGet(_f, "primitive"),
-					osrfHashGet(_f, "datatype")
-				);
 			}
+			dbi_result_free(result);
+		} else {
+			osrfLogDebug(OSRF_LOG_MARK, "No data found for class [%s]...", (char*)classname);
 		}
-
-		dbi_result_free(result);
 	}
 
 	osrfStringArrayFree(classes);
@@ -515,6 +520,9 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	osrfLogDebug(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
 
 	osrfHash* _f;
+	struct tm _tmp_tm;
+	time_t _tmp_dt;
+	char dt_string[256];
 	int fmIndex;
 	int columnIndex = 1;
 	int attr;
@@ -543,37 +551,75 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 			osrfLogDebug(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
 		}
 
-		switch( type ) {
+		if (dbi_result_field_is_null(result, columnName)) {
+			jsonObjectSetIndex( object, fmIndex, jsonNewObject(NULL) );
+		} else {
 
-			case DBI_TYPE_INTEGER :
+			switch( type ) {
 
-				if( attr & DBI_INTEGER_SIZE8 ) 
+				case DBI_TYPE_INTEGER :
+
+					if( attr & DBI_INTEGER_SIZE8 ) 
+						jsonObjectSetIndex( object, fmIndex, 
+							jsonNewNumberObject(dbi_result_get_longlong(result, columnName)));
+					else 
+						jsonObjectSetIndex( object, fmIndex, 
+							jsonNewNumberObject(dbi_result_get_long(result, columnName)));
+
+					break;
+
+				case DBI_TYPE_DECIMAL :
 					jsonObjectSetIndex( object, fmIndex, 
-						jsonNewNumberObject(dbi_result_get_longlong(result, columnName)));
-				else 
+							jsonNewNumberObject(dbi_result_get_double(result, columnName)));
+					break;
+
+				case DBI_TYPE_STRING :
 					jsonObjectSetIndex( object, fmIndex, 
-						jsonNewNumberObject(dbi_result_get_long(result, columnName)));
+						jsonNewObject(dbi_result_get_string(result, columnName)));
+					break;
 
-				break;
+				case DBI_TYPE_DATETIME :
+					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
-			case DBI_TYPE_DECIMAL :
-				jsonObjectSetIndex( object, fmIndex, 
-						jsonNewNumberObject(dbi_result_get_double(result, columnName)));
-				break;
+					struct tm* gmdt = gmtime_r( &_tmp_dt, &_tmp_tm );
+					_tmp_dt = mktime( gmdt );
+					gmdt = gmtime_r( &_tmp_dt, &_tmp_tm );
 
-			case DBI_TYPE_STRING :
-				jsonObjectSetIndex( object, fmIndex, 
-					jsonNewObject(dbi_result_get_string(result, columnName)));
-				break;
 
-			case DBI_TYPE_DATETIME :
-				jsonObjectSetIndex( object, fmIndex, 
-					jsonNewNumberObject(dbi_result_get_datetime(result, columnName)));
-				break;
+					if (!(attr & DBI_DATETIME_DATE)) {
+						snprintf(dt_string, 255,
+							"%02d:%02d:%02d",
+							gmdt->tm_hour,
+							gmdt->tm_min,
+							gmdt->tm_sec
+						);
+					} else if (!(attr & DBI_DATETIME_TIME)) {
+						snprintf(dt_string, 255,
+							"%4d-%02d-%02d",
+							gmdt->tm_year + 1900,
+							gmdt->tm_mon + 1,
+							gmdt->tm_mday
+						);
+					} else {
+						snprintf(dt_string, 255,
+							"%4d-%02d-%02dT%02d:%02d:%02dZ",
+							gmdt->tm_year + 1900,
+							gmdt->tm_mon + 1,
+							gmdt->tm_mday,
+							gmdt->tm_hour,
+							gmdt->tm_min,
+							gmdt->tm_sec
+						);
+					}
 
-			case DBI_TYPE_BINARY :
-				osrfLogError( OSRF_LOG_MARK, 
-					"Can't do binary at column %s : index %d", columnName, columnIndex - 1);
+					jsonObjectSetIndex( object, fmIndex, jsonNewObject(dt_string) );
+
+					break;
+
+				case DBI_TYPE_BINARY :
+					osrfLogError( OSRF_LOG_MARK, 
+						"Can't do binary at column %s : index %d", columnName, columnIndex - 1);
+			}
 		}
 	}
 
