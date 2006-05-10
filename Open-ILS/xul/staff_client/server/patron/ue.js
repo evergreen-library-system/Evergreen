@@ -341,6 +341,10 @@ function uEditSaveUser(clone) {
 		return;
 	}
 
+	/* null is unique in the db, but '' is not */
+	if( ! patron.ident_value() ) patron.ident_value(null);
+	if( ! patron.ident_value2() ) patron.ident_value2(null);
+
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.send(true);
 	var newuser = req.result();
