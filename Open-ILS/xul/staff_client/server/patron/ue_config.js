@@ -821,7 +821,7 @@ function _uEditIdentPostchange(type, field, newval) {
 
 function uEditCheckSharedAddr(patron, address, tbody, row) {
 
-	if( patron.isnew() && !clone ) return;
+	if( address.isnew() || (patron.isnew() && !clone) ) return;
 
 	var req = new Request(FETCH_ADDR_MEMS, SESSION, address.id());
 	req.callback( 
