@@ -14,10 +14,6 @@ my $log = 'OpenSRF::Utils::Logger';
 
 $VERSION = 1;
 
-# need to order record IDs by:
-#  1) format - text, movie, sound, software, images, maps, mixed, music, 3d
-#  2) proximity --- XXX Can't do it cheap...
-#  3) count
 sub ordered_records_from_metarecord {
 	my $self = shift;
 	my $client = shift;
@@ -54,29 +50,12 @@ sub ordered_records_from_metarecord {
 	my $br_table = biblio::record_entry->table;
 
 	my $sql = <<"	SQL";
-	 SELECT	record, item_type, item_form, count, title
-	   FROM	(
 		SELECT	rd.record,
 			rd.item_type,
 			rd.item_form,
 			br.quality,
-			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, COALESCE(SUBSTRING(fr.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')) AS title,
+			FIRST(COALESCE(LTRIM(SUBSTR( fr.value, COALESCE(SUBSTRING(fr.ind2 FROM '\\\\d+'),'0')::INT )),'zzzzzzzz')) AS title
 	SQL
-
-	if ($copies_visible) {
-		$sql .= <<"		SQL"; 
-                        sum((SELECT	count(cp.id)
-	                       FROM	$cp_table cp
-			       		JOIN $cs_table cs ON (cp.status = cs.id)
-			       		JOIN $cl_table cl ON (cp.location = cl.id)
-					JOIN $descendants d ON (cp.circ_lib = d.id)
-	                       WHERE	cn.id = cp.call_number
-	                                $copies_visible
-			  )) AS count
-		SQL
-	} else {
-		$sql .= '0 AS count';
-	}
 
 	if ($copies_visible) {
 		$sql .= <<"		SQL";
@@ -92,6 +71,15 @@ sub ordered_records_from_metarecord {
 		  	AND br.id = rd.record
 		  	AND cn.record = rd.record
 			AND sm.metarecord = ?
+                        AND EXISTS ((SELECT	1
+					FROM	$cp_table cp
+				       		JOIN $cs_table cs ON (cp.status = cs.id)
+				       		JOIN $cl_table cl ON (cp.location = cl.id)
+						JOIN $descendants d ON (cp.circ_lib = d.id)
+					WHERE	cn.id = cp.call_number
+		                                $copies_visible
+					LIMIT 1)) 
+
 		SQL
 	} else {
 		$sql .= <<"		SQL";
@@ -107,6 +95,15 @@ sub ordered_records_from_metarecord {
 			AND sm.metarecord = ?
 		SQL
 	}
+
+	if (@types) {
+		$sql .= ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+	if (@forms) {
+		$sql .= ' AND rd.item_form IN ('.join(',',map{'?'}@forms).')';
+	}
+
 
 	$sql .= <<"	SQL";
 		  GROUP BY rd.record, rd.item_type, rd.item_form, br.quality
@@ -136,28 +133,13 @@ sub ordered_records_from_metarecord {
 					THEN 9
 			END,
 			title ASC,
-			count DESC,
 			br.quality DESC
-		) x
 	SQL
 
-	if ($copies_visible) {
-		$sql .= ' WHERE x.count > 0'
-	}
+	my $ids = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$mr", @types, @forms);
+	return $ids if ($self->api_name =~ /atomic$/o);
 
-	if (@types) {
-		$sql .= ' AND x.item_type IN ('.join(',',map{'?'}@types).')';
-	}
-
-	if (@forms) {
-		$sql .= ' AND x.item_form IN ('.join(',',map{'?'}@forms).')';
-	}
-
-	my $sth = metabib::metarecord_source_map->db_Main->prepare_cached($sql);
-	$sth->execute("$mr", @types, @forms);
-	while ( my $row = $sth->fetchrow_arrayref ) {
-		$client->respond( $$row[0] );
-	}
+	$client->respond( $_ ) for ( @$ids );
 	return undef;
 
 }
@@ -165,14 +147,25 @@ __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records',
 	method		=> 'ordered_records_from_metarecord',
 	api_level	=> 1,
-	stream		=> 1,
 	cachable	=> 1,
 );
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records.staff',
 	method		=> 'ordered_records_from_metarecord',
 	api_level	=> 1,
-	stream		=> 1,
+	cachable	=> 1,
+);
+
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records.atomic',
+	method		=> 'ordered_records_from_metarecord',
+	api_level	=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.ordered.metabib.metarecord.records.staff.atomic',
+	method		=> 'ordered_records_from_metarecord',
+	api_level	=> 1,
 	cachable	=> 1,
 );
 
