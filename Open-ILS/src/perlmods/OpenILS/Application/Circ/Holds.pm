@@ -19,7 +19,6 @@ use base qw/OpenSRF::Application/;
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
-use OpenILS::EX;
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;

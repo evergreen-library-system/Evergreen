@@ -8,7 +8,6 @@ use OpenILS::Event;
 use Digest::MD5 qw(md5_hex);
 
 use OpenSRF::EX qw(:try);
-use OpenILS::EX;
 use OpenILS::Perm;
 
 use OpenILS::Application::AppUtils;

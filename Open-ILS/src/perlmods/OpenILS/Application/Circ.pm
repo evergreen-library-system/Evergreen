@@ -3,7 +3,6 @@ use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
 use OpenILS::Application::Circ::Circulate;
-use OpenILS::Application::Circ::Rules;
 use OpenILS::Application::Circ::Survey;
 use OpenILS::Application::Circ::StatCat;
 use OpenILS::Application::Circ::Holds;

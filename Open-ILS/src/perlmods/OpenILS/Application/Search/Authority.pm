@@ -2,8 +2,6 @@ package OpenILS::Application::Search::Authority;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
-use OpenILS::EX;
-
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 

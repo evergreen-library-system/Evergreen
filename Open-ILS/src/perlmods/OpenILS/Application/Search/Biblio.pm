@@ -2,7 +2,6 @@ package OpenILS::Application::Search::Biblio;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
-use OpenILS::EX;
 
 use JSON;
 use OpenILS::Utils::Fieldmapper;
@@ -31,10 +30,10 @@ my $U = $apputils;
 
 
 # useful for MARC based searches
-my $cat_search_hash =  {
-	isbn	=> [ { tag => '020', subfield => 'a' }, ],
-	issn	=> [ { tag => '022', subfield => 'a' }, ],
-};
+#my $cat_search_hash =  {
+	#isbn	=> [ { tag => '020', subfield => 'a' }, ],
+	##issn	=> [ { tag => '022', subfield => 'a' }, ],
+#};
 
 
 
@@ -518,94 +517,6 @@ sub biblio_mrid_make_modsbatch {
 	return undef;
 }
 
-
-
-
-
-=head deprecated
-sub _biblio_mrid_make_modsbatch {
-
-	my( $self, $client, $mrid ) = @_;
-
-	my $mr; 
-	if(ref($mrid)) { $mr = $mrid; }
-	else { $mr = _grab_metarecord($mrid); }
-	$mrid = $mr->id;
-
-	warn "Forcing mvr creation for mr " . $mr->id . "\n";
-	my $master_id = $mr->master_record;
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	# grab the records attached to this metarecod 
-	warn "Creating mods batch for metarecord $mrid\n";
-	my $meth = "open-ils.search.biblio.metarecord_to_records.staff";
-	$meth = $self->method_lookup($meth);
-	my ($id_hash) = $meth->run($mrid);
-	my @ids = @{$id_hash->{ids}};
-	if(@ids < 1) { return undef; }
-
-	warn "Master ID is $master_id\n";
-	# grab the master record to start the mods batch 
-
-	$meth = "open-ils.storage.direct.biblio.record_entry.retrieve";
-
-	my $record = $session->request(
-			"open-ils.storage.direct.biblio.record_entry.retrieve", $master_id );
-	$record = $record->gather(1);
-
-	#my $record = OpenILS::Application::AppUtils->simple_scalar_request( "open-ils.storage", 
-
-	if(!$record) {
-		warn "No record returned with id $master_id";
-		throw OpenSRF::EX::ERROR 
-	}
-
-	my $u = OpenILS::Utils::ModsParser->new();
-	$u->start_mods_batch( $record->marc );
-	my $main_doc_id = $record->id();
-
-	@ids = grep { $_ ne $master_id } @ids;
-
-	# now we have to collect all of the marc objects and push them into a mods batch
-	my $request = $session->request(
-		"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
-
-	while( my $response = $request->recv() ) {
-
-		next unless $response;
-		if(UNIVERSAL::isa( $response,"OpenSRF::EX")) {
-			throw $response ($response->stringify);
-		}
-
-		my $content = $response->content;
-
-		if( $content ) {
-			$u->push_mods_batch( $content->marc );
-		}
-	}
-
-	my $mods = $u->finish_mods_batch();
-	$mods->doc_id($mrid);
-	$request->finish();
-
-	$client->respond_complete($mods);
-
-	my $mods_string = JSON->perl2JSON($mods->decast);
-
-	$mr->mods($mods_string);
-
-	my $req = $session->request( 
-		"open-ils.storage.direct.metabib.metarecord.update", $mr );
-
-
-	$req->gather(1);
-	$session->finish();
-	$session->disconnect();
-
-	return undef;
-}
-=cut
 
 
 

@@ -10,11 +10,26 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
 use OpenILS::Perm;
 use OpenILS::Application::AppUtils;
-use OpenILS::EX;
 
 # memcache handle
 my $cache_handle;
 my $apputils = "OpenILS::Application::AppUtils";
+
+
+# ----------------------------------------------------------------------------
+#
+# XXX This module is deprecated.  Use the oils_auth.so C module.
+#
+# ----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 
 
 # -------------------------------------------------------------
@@ -112,7 +127,6 @@ sub complete_authenticate {
 			"open-ils.storage", $name, $username );
 
 	unless(ref($user_list)) {
-		#return OpenILS::EX->new("UNKNOWN_USER")->ex;
 		return { ilsevent => 1000 };
 	}
 
@@ -122,7 +136,6 @@ sub complete_authenticate {
 	
 
 	if(!$user or !ref($user) ) {
-#		return OpenILS::EX->new("UNKNOWN_USER")->ex();
 		return { ilsevent => 1000 };
 	}
 
