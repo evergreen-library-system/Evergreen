@@ -225,10 +225,12 @@ sub retrieve_record_transform {
 
 	(my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
 
+	warn "Fetching record entry $rid\n";
 	my $marc = $_storage->request(
 		'open-ils.storage.direct.biblio.record_entry.retrieve',
 		$rid
 	)->gather(1)->marc;
+	warn "Fetched record entry $rid\n";
 
 	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $marc ) )->toString);
 }
