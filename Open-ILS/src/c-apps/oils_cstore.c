@@ -525,7 +525,7 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	//struct tm _tmp_tm;
 	time_t _tmp_dt;
 	char dt_string[256];
-	char* str;
+	const char* str;
 	int fmIndex;
 	int columnIndex = 1;
 	int attr;
