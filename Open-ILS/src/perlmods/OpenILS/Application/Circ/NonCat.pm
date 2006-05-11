@@ -174,4 +174,26 @@ sub fetch_open_noncats {
 		'open-ils.storage.action.open_non_cataloged_circulation.user', $userid );
 }
 
+
+__PACKAGE__->register_method(
+	method	=> 'delete_noncat',
+	api_name	=> 'open-ils.circ.non_cataloged_type.delete',
+);
+sub delete_noncat {
+	my( $self, $conn, $auth, $typeid ) = @_;
+	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+
+	my $nc = $e->retrieve_config_non_cataloged_type($typeid)
+		or return $e->event;
+
+	$e->allowed('DELETE_NON_CAT_TYPE', $nc->owning_lib) # XXX rely on editor perm
+		or return $e->event;
+
+	$e->delete_config_non_cataloged_type($nc) or return $e->event;
+	return 1;
+}
+
+
+
 1;

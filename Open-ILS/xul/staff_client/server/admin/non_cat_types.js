@@ -1,6 +1,7 @@
 var FETCH_NON_CAT_TYPES = "open-ils.circ:open-ils.circ.non_cat_types.retrieve.all";
 var CREATE_NON_CAT_TYPE = "open-ils.circ:open-ils.circ.non_cat_type.create";
 var UPDATE_NON_CAT_TYPE = "open-ils.circ:open-ils.circ.non_cat_type.update";
+var DELETE_NON_CAT_TYPE = 'open-ils.circ:open-ils.circ.non_cataloged_type.delete';
 var myPerms = [ 
 	'CREATE_NON_CAT_TYPE', 
 	'UPDATE_NON_CAT_TYPE',
@@ -134,7 +135,18 @@ function ncEditSubmit( type, name ) {
 }
 
 function ncDeleteType( tbody, row, type ) {
-	alert("Deleting type " + type.id() );
+	if( ! confirm($('nc_delete_confirm').innerHTML) ) return;
+	var req = new Request(DELETE_NON_CAT_TYPE, SESSION, type.id());
+	req.callback( 
+		function(r) {
+			var res = r.getResultObject();
+			if(checkILSEvent(res)) alertILSEvent(res);
+			ncFetchTypes();
+		}
+	);
+	req.send();
 }
+
+
 
 
