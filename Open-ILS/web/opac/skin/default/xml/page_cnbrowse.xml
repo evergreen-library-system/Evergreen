@@ -1,0 +1,6 @@
+<div id='canvas_main' style='margin-top: 20px;'>
+	<script language='javascript' src='../js/cn_browse.js'> </script>
+	<!--#include virtual="common/cn_browse.xml"-->
+</div>
+
+
