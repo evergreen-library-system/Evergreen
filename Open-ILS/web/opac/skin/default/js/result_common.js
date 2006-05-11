@@ -427,6 +427,8 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 	for( var i in ress ) {
 
 		var res = ress[i];
+		if(!res) continue;
+
 		var link = $n(row, res + "_link");
 		link.title = res;
 		var img = link.getElementsByTagName("img")[0];
@@ -440,9 +442,6 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 
 		var args = {};
 		args[PARAM_OFFSET] = 0;
-		/*
-		args[PARAM_FORM] = modsFormatToMARC(res);
-		*/
 
 		if(is_mr) {
 			args.page = RRESULT;
