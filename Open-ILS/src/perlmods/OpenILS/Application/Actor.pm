@@ -1888,6 +1888,7 @@ sub register_workstation {
 	$ws->owning_lib($owner);
 	$ws->name($name);
 	$e->create_actor_workstation($ws) or return $e->event;
+	$e->finish;
 	return $ws->id; # note: editor sets the id on the new object for us
 }
 
