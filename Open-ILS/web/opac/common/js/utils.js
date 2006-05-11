@@ -469,12 +469,13 @@ it sees that, and the staff client uses both this file and the
 JSAN library*/
 function interval_to_seconds( $interval ) {
 
-        $interval = $interval.replace( /and/, ',' );
-        $interval = $interval.replace( /,/, ' ' );
-
-        var $amount = 0;
+	$interval = $interval.replace( /and/, ',' );
+	$interval = $interval.replace( /,/, ' ' );
+	
+	var $amount = 0;
 	var results = $interval.match( /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/g);  
-	for (var i in results) {
+	for( var i = 0; i < results.length; i++ ) {
+		if(!results[i]) continue;
 		var result = results[i].match( /\s*\+?\s*(\d+)\s*(\w{1})\w*\s*/ );
 		if (result[2] == 's') $amount += result[1] ;
 		if (result[2] == 'm') $amount += 60 * result[1] ;
@@ -483,8 +484,8 @@ function interval_to_seconds( $interval ) {
 		if (result[2] == 'w') $amount += 60 * 60 * 24 * 7 * result[1] ;
 		if (result[2] == 'M') $amount += ((60 * 60 * 24 * 365)/12) * result[1] ;
 		if (result[2] == 'y') $amount += 60 * 60 * 24 * 365 * result[1] ;
-        }
-        return $amount;
+	}
+	return $amount;
 }
 
 
