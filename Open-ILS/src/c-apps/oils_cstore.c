@@ -9,6 +9,7 @@
 #include <dbi/dbi.h>
 
 #include <time.h>
+#include <stdlib.h>
 #include <string.h>
 #include <libxml/globals.h>
 #include <libxml/xmlerror.h>
@@ -27,12 +28,13 @@
 int osrfAppChildInit();
 int osrfAppInitialize();
 
-int dispatchCRUDMethod ( osrfMethodContext* ctx );
-jsonObject* doCreate ( osrfHash* metadata, jsonObject* params );
-jsonObject* doRetrieve ( osrfHash* metadata, jsonObject* params );
-jsonObject* doUpdate ( osrfHash* metadata, jsonObject* params );
-jsonObject* doDelete ( osrfHash* metadata, jsonObject* params );
-jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta);
+int dispatchCRUDMethod ( osrfMethodContext* );
+jsonObject* doCreate ( osrfHash*, jsonObject* );
+jsonObject* doRetrieve ( osrfHash*, jsonObject* );
+jsonObject* doUpdate ( osrfHash*, jsonObject* );
+jsonObject* doDelete ( osrfHash*, jsonObject* );
+jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
+time_t my_timegm (struct tm*);
 
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
@@ -520,14 +522,16 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	osrfLogDebug(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
 
 	osrfHash* _f;
-	struct tm _tmp_tm;
+	//struct tm _tmp_tm;
 	time_t _tmp_dt;
 	char dt_string[256];
+	char* str;
 	int fmIndex;
 	int columnIndex = 1;
 	int attr;
 	unsigned short type;
 	const char* columnName;
+
 
 	/* cycle through the column list */
 	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
@@ -574,42 +578,44 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 					break;
 
 				case DBI_TYPE_STRING :
-					jsonObjectSetIndex( object, fmIndex, 
-						jsonNewObject(dbi_result_get_string(result, columnName)));
+
+					str = dbi_result_get_string(result, columnName);
+
+					if ( !(strcmp(str,"t")) ) {
+						jsonObjectSetIndex( object, fmIndex, jsonNewNumberObject(1) );
+					} else if ( !(strcmp(str,"f")) ) {
+						jsonObjectSetIndex( object, fmIndex, jsonNewNumberObject(0) );
+					} else {
+						jsonObjectSetIndex( object, fmIndex, jsonNewObject( str ));
+					}
 					break;
 
 				case DBI_TYPE_DATETIME :
+
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
-					struct tm* gmdt = gmtime_r( &_tmp_dt, &_tmp_tm );
-					_tmp_dt = mktime( gmdt );
-					gmdt = gmtime_r( &_tmp_dt, &_tmp_tm );
+					struct tm* gmdt = gmtime( &_tmp_dt );
 
-
-					if (!(attr & DBI_DATETIME_DATE)) {
-						snprintf(dt_string, 255,
-							"%02d:%02d:%02d",
-							gmdt->tm_hour,
-							gmdt->tm_min,
-							gmdt->tm_sec
-						);
-					} else if (!(attr & DBI_DATETIME_TIME)) {
-						snprintf(dt_string, 255,
-							"%4d-%02d-%02d",
-							gmdt->tm_year + 1900,
-							gmdt->tm_mon + 1,
-							gmdt->tm_mday
-						);
+					if (!(attr & DBI_DATETIME_TIME)) {
+						strftime(dt_string, 255, "%F", gmdt);
+					} else if (!(attr & DBI_DATETIME_DATE)) {
+						strftime(dt_string, 255, "%T", gmdt);
 					} else {
-						snprintf(dt_string, 255,
-							"%4d-%02d-%02dT%02d:%02d:%02dZ",
-							gmdt->tm_year + 1900,
-							gmdt->tm_mon + 1,
-							gmdt->tm_mday,
-							gmdt->tm_hour,
-							gmdt->tm_min,
-							gmdt->tm_sec
-						);
+						/* XXX ARG! My eyes! The goggles, they do nothing! */
+
+						char tmp_time[255];
+						strftime(tmp_time, 255, "%FT%T", gmdt);
+
+						time_t tmp_t = time(NULL);
+						struct tm* ldt = localtime( &tmp_t );
+
+						char tz_part[8];
+						strftime(tz_part,7,"%z",ldt);
+						tz_part[5] = tz_part[4];
+						tz_part[4] = tz_part[3];
+						tz_part[3] = ':';
+
+						snprintf(dt_string, 255, "%s%s", tmp_time, tz_part);
 					}
 
 					jsonObjectSetIndex( object, fmIndex, jsonNewObject(dt_string) );
@@ -625,7 +631,4 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 	return object;
 }
-
-
-
 
