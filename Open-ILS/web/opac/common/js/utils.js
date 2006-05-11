@@ -297,7 +297,7 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 		if(action) option.onclick = action;
 	}
 
-	option.onclick = action;
+	if(action) option.onclick = action;
 	return option;
 }
 

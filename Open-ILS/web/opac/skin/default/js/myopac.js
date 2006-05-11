@@ -905,11 +905,13 @@ function myOPACDrawNonCatCircs2(r) {
 function myOPACDrawNonCatCirc(r) {
 	var circ = r.getResultObject();
 
+
 	var type = grep(nonCatTypes, 
 		function(i){
 			return (i.id() == circ.item_type());
 		}
 	)[0];
+
 
 	var row = nonCatTbody.appendChild(nonCatRow.cloneNode(true));
 	appendClear($n(row, 'circ_lib'), text(findOrgUnit(circ.circ_lib()).name()));

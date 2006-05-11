@@ -41,7 +41,7 @@ function advDrawBibExtras(r) {
 		}
 	);
 
-	for( var d in data ) {
+	for( var d = 0; d < data.length; d++ ) {
 		var thing = data[d];
 		var opt = insertSelectorVal( sel, -1, thing.value(), thing.code() );
 		opt.setAttribute('title', thing.value());
@@ -116,7 +116,7 @@ function advBuildSearchBlob() {
 	var tbody    = $('adv_global_tbody');
 	var rows     = tbody.getElementsByTagName('tr');
 
-	for( var i in rows ) {
+	for( var i = 0; i < rows.length; i++ ) {
 
 		var row = rows[i];
 		if(!(row && typeof row == 'object')) continue;
