@@ -133,9 +133,10 @@ sub commit {
 sub reset {
 	my $self = shift;
 	$logger->debug("editor: cleaning up");
-	$self->session->disconnect;
+	$self->session->disconnect if $self->{session};
 	$$self{$_} = undef for (keys %$self);
 }
+
 
 # -----------------------------------------------------------------------------
 # commits and resets
@@ -174,7 +175,6 @@ sub request {
 sub requestor {
 	my($self, $requestor) = @_;
 	$self->{requestor} = $requestor if $requestor;
-	$logger->warn("editor: no requestor defined") unless $self->{requestor};
 	return $self->{requestor};
 }
 
