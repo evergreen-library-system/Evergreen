@@ -108,11 +108,18 @@ var scRow; var scCounter;
 function scDraw( type, cats ) {
 
 	hideMe($('loading'));
-	if(!cats || cats.length == 0) return unHideMe($('sc_none'));
-	var tbody = $('sc_tbody');
 
+	var tbody = $('sc_tbody');
 	if(!scRow) scRow = tbody.removeChild($('sc_tr'));
 	removeChildren(tbody);
+
+	if(!cats || cats.length == 0) {
+		hideMe($('sc_table'));
+		unHideMe($('sc_none'));
+		return;
+	}
+
+	hideMe($('sc_none'));
 	unHideMe($('sc_table'));
 
 	scCounter = 0;
