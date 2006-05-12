@@ -143,9 +143,11 @@ sub fetch_noncat {
 	my( $self, $conn, $auth, $circid ) = @_;
 	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
 	my $c = $e->retrieve_action_non_cataloged_circulation($circid)
 		or return $e->event;
+	if( $c->patron ne $e->requestor->id ) {
+		return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
+	}
 	return $c;
 }
 
@@ -168,8 +170,10 @@ sub fetch_open_noncats {
 	my( $self, $conn, $auth, $userid ) = @_;
 	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
 	$userid ||= $e->requestor->id;
+	if( $e->requestor->id ne $userid ) {
+		return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # XXX rely on editor perm
+	}
 	return $e->request(
 		'open-ils.storage.action.open_non_cataloged_circulation.user', $userid );
 }
