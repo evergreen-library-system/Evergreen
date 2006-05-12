@@ -34,7 +34,6 @@ jsonObject* doRetrieve ( osrfHash*, jsonObject* );
 jsonObject* doUpdate ( osrfHash*, jsonObject* );
 jsonObject* doDelete ( osrfHash*, jsonObject* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
-time_t my_timegm (struct tm*);
 
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
@@ -42,9 +41,6 @@ xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 
 /* parse and store the IDL here */
 osrfHash* idlHash;
-
-/* handy NULL json object to have around */
-static jsonObject* oilsNULL = NULL;
 
 int osrfAppInitialize() {
 
@@ -443,7 +439,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	osrfAppRespondComplete( ctx, obj );
 
-	jsonObjectFree(obj);
+	//jsonObjectFree(obj);
 
 	return 0;
 }
@@ -452,7 +448,8 @@ jsonObject* doCreate( osrfHash* meta, jsonObject* params ) { return NULL; }
 
 jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 
-	char* id	= jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
+	jsonObject* obj;
+	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
@@ -480,26 +477,28 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
-	jsonObject* obj = NULL;
 	if(result) {
+		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 
 		/* there should be one row at the most  */
-		if (!dbi_result_first_row(result)) {
+		if (dbi_result_next_row(result)) {
+			/* JSONify the result */
+			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
+			obj = oilsMakeJSONFromResult( result, meta );
+		} else {
 			osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with key %s", MODULENAME, osrfHashGet(meta, "fieldmapper"), id);
-			dbi_result_free(result); 
-			return oilsNULL;
+			obj = jsonNewObject(NULL);
 		}
-
-		/* JSONify the result */
-		obj = oilsMakeJSONFromResult( result, meta );
 
 		/* clean up the query */
 		dbi_result_free(result); 
 
 	} else {
+		obj = jsonNewObject(NULL);
 		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
 	}
 
+	free(sql);
 	free(id);
 
 	return obj;
@@ -522,15 +521,28 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	osrfLogDebug(OSRF_LOG_MARK, "Setting object class to %s ", object->classname);
 
 	osrfHash* _f;
-	//struct tm _tmp_tm;
 	time_t _tmp_dt;
 	char dt_string[256];
-	const char* str;
+	struct tm gmdt;
+
 	int fmIndex;
 	int columnIndex = 1;
 	int attr;
 	unsigned short type;
 	const char* columnName;
+
+	// this block gets the local timezone. until we can patch libdbi this'll have to do, pig.
+	time_t tmp_t = time(NULL);
+	struct tm ldt;
+	localtime_r( &tmp_t, &ldt );
+
+	char tz_part[8];
+	memset(tz_part,'\0',8);
+
+	strftime(tz_part,7,"%z",&ldt);
+	tz_part[5] = tz_part[4];
+	tz_part[4] = tz_part[3];
+	tz_part[3] = ':';
 
 
 	/* cycle through the column list */
@@ -579,43 +591,33 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 				case DBI_TYPE_STRING :
 
-					str = dbi_result_get_string(result, columnName);
 
-					if ( !(strcmp(str,"t")) ) {
-						jsonObjectSetIndex( object, fmIndex, jsonNewNumberObject(1) );
-					} else if ( !(strcmp(str,"f")) ) {
-						jsonObjectSetIndex( object, fmIndex, jsonNewNumberObject(0) );
-					} else {
-						jsonObjectSetIndex( object, fmIndex, jsonNewObject( str ));
-					}
+					jsonObjectSetIndex(
+						object,
+						fmIndex,
+						jsonNewObject( dbi_result_get_string(result, columnName) )
+					);
+
 					break;
 
 				case DBI_TYPE_DATETIME :
 
+					memset(dt_string, '\0', 256);
+					memset(&gmdt, '\0', sizeof(gmdt));
+					memset(&_tmp_dt, '\0', sizeof(_tmp_dt));
+
 					_tmp_dt = dbi_result_get_datetime(result, columnName);
 
-					struct tm* gmdt = gmtime( &_tmp_dt );
+					localtime_r( &_tmp_dt, &gmdt );
 
-					if (!(attr & DBI_DATETIME_TIME)) {
-						strftime(dt_string, 255, "%F", gmdt);
-					} else if (!(attr & DBI_DATETIME_DATE)) {
-						strftime(dt_string, 255, "%T", gmdt);
+					if (!(attr & DBI_DATETIME_DATE)) {
+						strftime(dt_string, 255, "%T", &gmdt);
+					} else if (!(attr & DBI_DATETIME_TIME)) {
+						strftime(dt_string, 255, "%F", &gmdt);
 					} else {
 						/* XXX ARG! My eyes! The goggles, they do nothing! */
 
-						char tmp_time[255];
-						strftime(tmp_time, 255, "%FT%T", gmdt);
-
-						time_t tmp_t = time(NULL);
-						struct tm* ldt = localtime( &tmp_t );
-
-						char tz_part[8];
-						strftime(tz_part,7,"%z",ldt);
-						tz_part[5] = tz_part[4];
-						tz_part[4] = tz_part[3];
-						tz_part[3] = ':';
-
-						snprintf(dt_string, 255, "%s%s", tmp_time, tz_part);
+						strftime(dt_string, 255, "%FT%T%z", &gmdt);
 					}
 
 					jsonObjectSetIndex( object, fmIndex, jsonNewObject(dt_string) );
