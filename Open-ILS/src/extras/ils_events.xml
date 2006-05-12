@@ -112,10 +112,7 @@
 		</desc>
 	</event>
 	<event code='1508' textcode='ASSET_CALL_NUMBER_NOT_FOUND'>
-		<desc xml:lang="en-US">
-			Someone attempted to retrieve a volume object from the 
-			system and the object was not found.
-		</desc>
+		<desc xml:lang="en-US">Requested asset_call_number was not found</desc>
 	</event>
 
 
