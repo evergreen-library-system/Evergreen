@@ -140,7 +140,7 @@
 					g.data.list.cnct,
 					function(obj) { return [ 
 						obj.name(), 
-						'[' + obj.id() + ',' + obj.circ_duration() + ']'
+						js2JSON( [ obj.id(), obj.circ_duration() ] )
 					]; }
 				)
 			];
