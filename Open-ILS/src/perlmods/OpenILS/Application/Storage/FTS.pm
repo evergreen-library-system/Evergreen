@@ -33,6 +33,7 @@ sub decompose {
 	my $term = shift;
 
 	$term =~ s/:/ /go;
+	$term =~ s/\s+--\s+/ /go;
 	$term =~ s/(?:&[^;]+;)//go;
 	$term =~ s/\s+/ /go;
 	$term =~ s/(^|\s+)-(\w+)/$1!$2/go;
