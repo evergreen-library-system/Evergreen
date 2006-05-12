@@ -41,10 +41,10 @@ function my_init() {
 		$('duedate_menu').addEventListener('command',handle_duedate_menu,false);
 
 		$('submit').addEventListener('command',function(ev){
-			save_xacts(); next_patron(); /* kludge */ ev.target.focus(); next_patron();
+			save_xacts(); next_patron(); /* kludge ev.target.focus(); next_patron(); */
 		},false);
 		$('cancel').addEventListener('command',function(ev){
-			next_patron(); /* kludge */ ev.target.focus(); next_patron();
+			next_patron(); /* kludge ev.target.focus(); next_patron(); */
 		},false);
 
 		var file; var list_data; var ml;
