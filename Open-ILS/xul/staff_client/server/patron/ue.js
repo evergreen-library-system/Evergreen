@@ -334,7 +334,7 @@ function uEditAlertErrors() {
 
 
 /* send the user to the database */
-function uEditSaveUser(clone) {
+function uEditSaveUser(cloneme) {
 
 	if(uEditGetErrorStrings()) {
 		uEditAlertErrors();
@@ -354,10 +354,15 @@ function uEditSaveUser(clone) {
 	else 
 		alert($('ue_success').innerHTML);
 
-	if(clone) clone = newuser.id();
+	if(cloneme) {
+		/* if the user we just created was a clone, and we want to clone it,
+		we really want to clone the original */
+		if( clone ) cloneme = clone;
+		else cloneme = newuser.id();
+	}
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
-		window.xulG.on_save(newuser, clone); 
+		window.xulG.on_save(newuser, cloneme); 
 
 	} else {
 
@@ -366,7 +371,7 @@ function uEditSaveUser(clone) {
 		href = href.replace(/\&?usr=\d+/, '');
 		href = href.replace(/\&?clone=\d+/, '');
 
-		if( clone ) href += '&clone=' + clone;
+		if( cloneme ) href += '&clone=' + cloneme;
 		location.href = href;
 	}
 }
