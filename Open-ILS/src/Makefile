@@ -137,6 +137,7 @@ reporter-install:
 offline-install:
 	@echo "Installing offline CGIs to $(CGIDIR)/offline";
 	mkdir -p $(CGIDIR)/offline;
+	mkdir -p $(DATADIR)/offline;
 	perl -pe "s{##CONFIG##}{$(ETCDIR)}" < offline/offline.pl > $(TMP)/offline.pl;
 	cp offline/offline-config.pl $(ETCDIR)
 	cp $(TMP)/offline.pl $(CGIDIR)/offline/
