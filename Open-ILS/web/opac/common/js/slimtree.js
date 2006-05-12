@@ -1,5 +1,9 @@
+/*
 var stpicopen	= '../../../../images/slimtree/folder.gif';
 var stpicclose = '../../../../images/slimtree/folderopen.gif';
+*/
+var stpicopen	= '../../../../images/slimtree/folder2.gif';
+var stpicclose = '../../../../images/slimtree/folderopen2.gif';
 var stpicblank = '../../../../images/slimtree/page.gif';
 var stpicline	= '../../../../images/slimtree/line.gif';
 var stpicjoin	= '../../../../images/slimtree/join.gif';
