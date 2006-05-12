@@ -43,6 +43,7 @@ util.sound.prototype = {
 			dump('url = ' + url2 + '\n');
 			obj.SOUND.play( url2 );
 		} catch(E) {
+			obj.SOUND.beep();
 			dump('play_url(): ' + E + '\n');
 		}
 	},
