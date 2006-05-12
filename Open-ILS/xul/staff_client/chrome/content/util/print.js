@@ -167,48 +167,48 @@ util.print.prototype = {
 	'template_sub' : function( msg, cols, params ) {
 		if (!msg) { dump('template sub called with empty string\n'); return; }
 		JSAN.use('util.date');
-		var s = msg;
+		var s = msg; var b;
 
-		try{s = s.replace(/%patron_barcode%/,params.patron_barcode);}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%patron_barcode%/,params.patron_barcode);}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-		try{s = s.replace(/%LIBRARY%/,params.lib.name());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%PINES_CODE%/,params.lib.shortname());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%STAFF_FIRSTNAME%/,params.staff.first_given_name());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%PATRON_LASTNAME%/,params.patron.family_name());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s = s.replace(/%PATRON_BARCODE%/,params.patron.card().barcode());}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%LIBRARY%/,params.lib.name());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%PINES_CODE%/,params.lib.shortname());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/,params.staff.first_given_name());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%PATRON_LASTNAME%/,params.patron.family_name());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%PATRON_BARCODE%/,params.patron.card().barcode());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-		try{s=s.replace(/%TODAY%/g,(new Date()));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_m%/g,(util.date.formatted_date(new Date(),'%m')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_TRIM%/g,(util.date.formatted_date(new Date(),'')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_d%/g,(util.date.formatted_date(new Date(),'%d')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_Y%/g,(util.date.formatted_date(new Date(),'%Y')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_H%/g,(util.date.formatted_date(new Date(),'%H')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_I%/g,(util.date.formatted_date(new Date(),'%I')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_M%/g,(util.date.formatted_date(new Date(),'%M')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_D%/g,(util.date.formatted_date(new Date(),'%D')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{s=s.replace(/%TODAY_F%/g,(util.date.formatted_date(new Date(),'%F')));}
-			catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_m%/g,(util.date.formatted_date(new Date(),'%m')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_TRIM%/g,(util.date.formatted_date(new Date(),'')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_d%/g,(util.date.formatted_date(new Date(),'%d')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_Y%/g,(util.date.formatted_date(new Date(),'%Y')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_H%/g,(util.date.formatted_date(new Date(),'%H')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_I%/g,(util.date.formatted_date(new Date(),'%I')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_M%/g,(util.date.formatted_date(new Date(),'%M')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_D%/g,(util.date.formatted_date(new Date(),'%D')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s=s.replace(/%TODAY_F%/g,(util.date.formatted_date(new Date(),'%F')));}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		if (params.row) {
 			for (var i = 0; i < cols.length; i++) {
@@ -216,8 +216,8 @@ util.print.prototype = {
 				//dump('params.row is ' + js2JSON(params.row) + '\n');
 				//dump('col is ' + cols[i] + '\n');
 				var re = new RegExp(cols[i],"g");
-				try{s=s.replace(re, params.row[i]);}
-					catch(E){this.error.sdump('D_ERROR','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+				try{b = s; s=s.replace(re, params.row[i]);}
+					catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 				//dump('new s is "' + s + '"\n\n');
 			}
 		}
@@ -255,12 +255,14 @@ util.print.prototype = {
 				//this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 				webBrowserPrint.print(gPrintSettings, null);
+				/*
 				if (this.gPrintSettingsAreGlobal && this.gSavePrintSettings) {
 					var PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"]
 						.getService(Components.interfaces.nsIPrintSettingsService);
 					PSSVC.savePrintSettingsToPrefs( gPrintSettings, true, gPrintSettings.kInitSaveAll);
 					PSSVC.savePrintSettingsToPrefs( gPrintSettings, false, gPrintSettings.kInitSavePrinterName);
 				}
+				*/
 				//this.error.sdump('D_PRINT','gPrintSettings 2 = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('Should be printing\n');
 				this.error.sdump('D_PRINT','Should be printing\n');
