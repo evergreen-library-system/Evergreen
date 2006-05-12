@@ -86,6 +86,19 @@ function $(id) { return document.getElementById(id); }
 function test_patron(ev) {
 	try {
 		var barcode = ev.target.value;
+		JSAN.use('util.barcode');
+		if ( ($('strict_p_barcode').checked) && (! util.barcode.check(barcode)) ) {
+			var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			if (r == 1) {
+				setTimeout(
+					function() {
+						ev.target.value = '';
+						ev.target.focus();
+					},0
+				);
+			}
+
+		}
 		if (g.data.bad_patrons[barcode]) {
 			var msg = 'Warning: As of ' + g.data.bad_patrons_date.substr(0,15) + ', this barcode (' + barcode + ') was flagged ';
 			switch(g.data.bad_patrons[barcode]) {
@@ -129,13 +142,28 @@ function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
 		case $('p_barcode') : /*$('p_barcode').disabled = true;*/ setTimeout( function() { $('i_barcode').focus(); },0 ); break;
-		case $('i_barcode') : append_to_list('barcode'); break;
+		case $('i_barcode') : handle_enter(); break;
 		default: break;
 	}
 }
 
 function handle_enter(ev) {
-	append_to_list('barcode');
+	JSAN.use('util.barcode');
+	if ( ($('strict_i_barcode').checked) && (! util.barcode.check($('i_barcode').value)) ) {
+		var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+		if (r == 1) {
+			setTimeout(
+				function() {
+					$('i_barcode').value = '';
+					$('i_barcode').focus();
+				},0
+			);
+		} else {
+			append_to_list('barcode');
+		}
+	} else {
+		append_to_list('barcode');
+	}
 }
 
 function handle_duedate_menu(ev) {

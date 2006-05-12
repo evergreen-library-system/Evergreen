@@ -9,6 +9,7 @@ util.barcode.EXPORT_OK	= [
 util.barcode.EXPORT_TAGS	= { ':all' : util.barcode.EXPORT_OK };
 
 util.barcode.check = function(bc) {
+	if (bc != parseInt(bc)) return false;
 	bc = bc.toString();
 	var last_digit = bc.substr(bc.length-1);
 	var stripped_barcode = bc.substr(0,bc.length-1);

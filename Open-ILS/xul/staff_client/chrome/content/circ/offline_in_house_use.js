@@ -43,13 +43,28 @@ function $(id) { return document.getElementById(id); }
 function handle_keypress(ev) {
 	if ( (! ev.keyCode) || (ev.keyCode != 13) ) return;
 	switch(ev.target) {
-		case $('i_barcode') : append_to_list(); break;
+		case $('i_barcode') : handle_enter(); break;
 		default: break;
 	}
 }
 
 function handle_enter(ev) {
-	append_to_list();
+	JSAN.use('util.barcode');
+	if ( ($('strict_i_barcode').checked) && (! util.barcode.check($('i_barcode').value)) ) {
+		var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+		if (r == 1) {
+			setTimeout(
+				function() {
+					$('i_barcode').value = '';
+					$('i_barcode').focus();
+				},0
+			);
+		} else {
+			append_to_list();
+		}
+	} else {
+		append_to_list();
+	}
 }
 
 function append_to_list() {

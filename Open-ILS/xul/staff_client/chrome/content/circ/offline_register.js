@@ -83,6 +83,19 @@ function $(id) { return document.getElementById(id); }
 function test_patron(ev) {
 	try {
 		var barcode = ev.target.value;
+		JSAN.use('util.barcode');
+		if ( ! util.barcode.check(ev.target.value) ) {
+			var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			if (r == 1) {
+				setTimeout(
+					function() {
+						ev.target.value = '';
+						ev.target.focus();
+					},0
+				);
+			}
+
+		}
 		if (g.data.bad_patrons[barcode]) {
 			var msg = 'Warning: As of ' + g.data.bad_patrons_date.substr(0,15) + ', this barcode (' + barcode + ') was flagged ';
 			switch(g.data.bad_patrons[barcode]) {

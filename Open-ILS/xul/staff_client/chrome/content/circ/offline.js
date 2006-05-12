@@ -51,7 +51,10 @@ circ.offline.prototype = {
 						],
 						'cmd_print_last_receipt' : [
 							['command'],
-							function() { alert('Not Yet Implemented'); }
+							function() { 
+								JSAN.use('util.print'); var print = new util.print();
+								print.reprint_last();
+							}
 						],
 						'cmd_exit' : [
 							['command'],
@@ -75,27 +78,27 @@ circ.offline.prototype = {
 			data.print_list_templates = {
 				'offline_checkout' : {
 					'type' : 'offline_checkout',
-					'header' : 'Patron %patron_barcode%\r\nYou checked out the following items:<hr/><ol>',
-					'line_item' : '<li>Barcode: %barcode%\r\nDue: %due_date%\r\n',
-					'footer' : '</ol><hr />%TODAY%',
+					'header' : 'Patron %patron_barcode%<br/>\r\nYou checked out the following items:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%<br/>\r\nDue: %due_date%\r\n',
+					'footer' : '</ol><hr />%TODAY_TRIM%',
 				},
 				'offline_checkin' : {
 					'type' : 'offline_checkin',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY%',
+					'footer' : '</ol><hr />%TODAY_TRIM%',
 				},
 				'offline_renew' : {
 					'type' : 'offline_renew',
 					'header' : 'You renewed the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY%',
+					'footer' : '</ol><hr />%TODAY_TRIM%',
 				},
 				'offline_inhouse_use' : {
 					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
-					'line_item' : '<li>Barcode: %barcode%\r\nUses: %COUNT%',
-					'footer' : '</ol><hr />%TODAY%',
+					'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
+					'footer' : '</ol><hr />%TODAY_TRIM%',
 				},
 			};
 			data.stash('print_list_templates');

@@ -48,7 +48,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<description>Check barcode?</description>
-					<checkbox id="strict_barcode"/>
+					<checkbox id="strict_i_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
 					<label value="Step 3)" style="font-weight: bold"/>
@@ -61,7 +61,7 @@
 				<hbox>
 					<spacer flex="1"/>
 					<description>Print receipt?</description>
-					<checkbox id="print_receipt"/>
+					<checkbox id="print_receipt" persist="checked"/>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -76,7 +76,7 @@
 				<tree id="checkout_list" flex="1" enableColumnDrag="true"/>
 				<hbox id="checkout_bottom_ui">
 					<spacer flex="1"/>
-					<button id="delete" label="Delete selected transaction"/>
+					<button id="delete" label="Delete selected transaction" oncommand="alert('Not Yet Implemented');"/>
 				</hbox>
 			</vbox>
 		</hbox>
