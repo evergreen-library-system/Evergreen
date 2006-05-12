@@ -445,8 +445,22 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 			)
 		);
 	} else {
-		if(!detach) address.isdeleted(1);
+
+		if( detach ) { /* remove the offending address from the list */
+			patron.addresses(
+				grep( 
+					patron.addresses(), 
+					function(i) {
+						return (i.id() != address.id());
+					}
+				)
+			);
+
+		} else {
+			address.isdeleted(1);
+		}
 	}
+
 	tbody.removeChild(row);
 
 	var bid = patron.billing_address();
@@ -485,6 +499,7 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 			}
 		}
 	}
+
 }
 
 

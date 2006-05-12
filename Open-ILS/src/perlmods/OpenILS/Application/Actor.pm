@@ -447,33 +447,52 @@ sub _add_update_addresses {
 
 	for my $address (@{$patron->addresses()}) {
 
-		$address->usr($new_patron->id());
+		next unless ref $address;
+		$current_id = $address->id();
 
-		if(ref($address) and $address->isnew()) {
+		if( $patron->billing_address() and
+			$patron->billing_address() == $current_id ) {
+			$logger->info("setting billing addr to $current_id");
+			$new_patron->billing_address($address->id());
+			$new_patron->ischanged(1);
+		}
+	
+		if( $patron->mailing_address() and
+			$patron->mailing_address() == $current_id ) {
+			$new_patron->mailing_address($address->id());
+			$logger->info("setting mailing addr to $current_id");
+			$new_patron->ischanged(1);
+		}
 
-			$current_id = $address->id();
+
+		if($address->isnew()) {
+
+			$address->usr($new_patron->id());
+
 			($address, $evt) = _add_address($session,$address);
 			return (undef, $evt) if $evt;
 
+			# we need to get the new id
 			if( $patron->billing_address() and 
 					$patron->billing_address() == $current_id ) {
 				$new_patron->billing_address($address->id());
+				$logger->info("setting billing addr to $current_id");
 				$new_patron->ischanged(1);
 			}
 
 			if( $patron->mailing_address() and
 					$patron->mailing_address() == $current_id ) {
 				$new_patron->mailing_address($address->id());
+				$logger->info("setting mailing addr to $current_id");
 				$new_patron->ischanged(1);
 			}
 
-		} elsif( ref($address) and $address->ischanged() ) {
+		} elsif($address->ischanged() ) {
 
-			$address->usr($new_patron->id());
 			($address, $evt) = _update_address($session, $address);
 			return (undef, $evt) if $evt;
 
-		} elsif( ref($address) and $address->isdeleted() ) {
+		} elsif($address->isdeleted() ) {
 
 			if( $address->id() == $new_patron->mailing_address() ) {
 				$new_patron->clear_mailing_address();
@@ -489,7 +508,7 @@ sub _add_update_addresses {
 
 			$evt = _delete_address($session, $address);
 			return (undef, $evt) if $evt;
-		}
+		} 
 	}
 
 	return ( $new_patron, undef );
