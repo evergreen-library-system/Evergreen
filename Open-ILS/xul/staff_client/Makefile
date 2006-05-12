@@ -44,6 +44,8 @@ build_dir:
 	cp application.ini build/
 	cp -R build/chrome/content/util/ build/server/
 	cp build/chrome/content/main/constants.js build/server/main/constants.js
+	cp build/chrome/content/main/lang.js build/server/main/lang.js
+	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	external/prune_dirs.sh build/
 
