@@ -333,7 +333,7 @@ sub ol_fetch_workstation {
 	$logger->debug("offline: Fetching workstation $name");
 	my $ws = $U->storagereq(
 		'open-ils.storage.direct.actor.workstation.search.name', $name);
-	ol_handle_result(OpenILS::Event->new('WORKSTATION_NOT_FOUND')) unless $ws;
+	ol_handle_result(OpenILS::Event->new('ACTOR_WORKSTATION_NOT_FOUND')) unless $ws;
 	return $ws;
 }
 
