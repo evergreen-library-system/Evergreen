@@ -276,6 +276,13 @@ main.menu.prototype = {
 				}
 			],
 
+			'cmd_local_admin' : [
+				['oncommand'],
+				function() { 
+					obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
+				}
+			],
+
 			'cmd_reprint' : [
 				['oncommand'],
 				function() {

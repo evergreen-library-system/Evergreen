@@ -149,6 +149,7 @@ const urls = {
 	'XUL_HOLDS_BROWSER' : '/xul/server/patron/holds.xul',
 	'XUL_HOLD_NOTICES' : '/xul/server/patron/hold_notices.xul',
 	'XUL_IN_HOUSE_USE' : '/xul/server/circ/in_house_use.xul',
+	'XUL_LOCAL_ADMIN' : '/xul/server/admin/index.xhtml',
 	'XUL_MARC_EDIT_LEGACY' : 'chrome://open_ils_staff_client/content/legacy/_marc.xul',
 	'XUL_MARC_EDIT' : '/xul/server/cat/marcedit.xul',
 	'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',

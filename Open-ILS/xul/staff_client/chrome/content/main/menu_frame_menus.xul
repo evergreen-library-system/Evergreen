@@ -42,6 +42,7 @@
 
 	<command id="cmd_manage_offline_xacts" />
 	<command id="cmd_download_patrons" />
+	<command id="cmd_local_admin" />
 
 	<command id="cmd_adv_user_edit" />
 	<command id="cmd_console" />
@@ -198,25 +199,30 @@
 		<menuitem label="Offline Transaction Management" accesskey="T" command="cmd_manage_offline_xacts"/>
 		<menuitem label="Download Offline Patron List" accesskey="D" command="cmd_download_patrons"/>
 		<menuseparator />
+		<menuitem label="Local System Administration" accesskey="L" command="cmd_local_admin"/>
 		<menuitem label="User Permission Editor" accesskey="U" command="cmd_adv_user_edit"/>
 		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_print_list_template_edit"/>
 		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
-		<menuitem label="Statistical Category Editor" accesskey="C" command="cmd_stat_cat_edit"/>
-		<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
-		<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
-		<menuitem label="Browse Unfulfilled Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
 		<menuseparator />
-		<menuitem label="For developers..." disabled="true"/>
-		<menuitem label="Public OPAC" command="cmd_public_opac" accesskey="p"/>
-		<menuitem label="Test Module" old_accesskey="T" command="cmd_test"/>
-		<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
-		<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
-		<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>
-		<menuitem label="Javscript Shell" accesskey="H" command="cmd_shell"/>
-		<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
-		<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
-		<menuitem label="Clear Cache" accesskey="3" command="cmd_clear_cache"/>
-		<menuitem label="Unhide Tabs" command="cmd_restore_all_tabs"/>
+		<menu id="main.menu.admin.sub" label="For developers...">
+			<menupopup id="main.menu.admin.sub.popup">
+				<menuitem label="Statistical Category Editor" accesskey="C" command="cmd_stat_cat_edit"/>
+				<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>
+				<menuitem label="Copy Location Editor" accesskey="L" command="cmd_copy_location_edit"/>
+				<menuitem label="Browse Unfulfilled Holds for this Pickup Lib" command="cmd_browse_holds" accesskey="B"/>
+				<menuseparator />
+				<menuitem label="Public OPAC" command="cmd_public_opac" accesskey="p"/>
+				<menuitem label="Test Module" old_accesskey="T" command="cmd_test"/>
+				<menuitem label="XUL Test" accesskey="X" command="cmd_xuleditor"/>
+				<menuitem label="Fieldmapper" accesskey="m" command="cmd_fieldmapper"/>
+				<menuitem label="Javscript Console" accesskey="J" command="cmd_console"/>
+				<menuitem label="Javscript Shell" accesskey="H" command="cmd_shell"/>
+				<menuitem label="server/main/test.html" accesskey="1" command="cmd_test_html"/>
+				<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
+				<menuitem label="Clear Cache" accesskey="3" command="cmd_clear_cache"/>
+				<menuitem label="Unhide Tabs" command="cmd_restore_all_tabs"/>
+			</menupopup>
+		</menu>
 	</menupopup>
 </menu>
 
