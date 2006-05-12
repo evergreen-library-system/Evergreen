@@ -17,7 +17,6 @@
 #include <libxml/tree.h>
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
-//#include <openils/fieldmapper_lookup.h>
 
 #define OILS_AUTH_CACHE_PRFX "oils_cstore_"
 #define MODULENAME "open-ils.cstore"
@@ -439,7 +438,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	osrfAppRespondComplete( ctx, obj );
 
-	//jsonObjectFree(obj);
+	jsonObjectFree(obj);
 
 	return 0;
 }
@@ -459,16 +458,34 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 		id
 	);
 
+	char* pkey = osrfHashGet(meta, "primarykey");
+	osrfHash* field = osrfHashGet( osrfHashGet(meta, "fields"), pkey );
 
 
 	growing_buffer* sql_buf = buffer_init(128);
-	buffer_fadd(
-		sql_buf,
-		"SELECT * FROM %s WHERE %s = %d;",
-		osrfHashGet(meta, "tablename"),
-		osrfHashGet(meta, "primarykey"),
-		atoi(id)
-	);
+	if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		buffer_fadd(
+			sql_buf,
+			"SELECT * FROM %s WHERE %s = %d;",
+			osrfHashGet(meta, "tablename"),
+			osrfHashGet(meta, "primarykey"),
+			atoi(id)
+		);
+	} else {
+		char* key_string;
+		if ( dbi_conn_quote_string_copy(dbhandle, id, &key_string) ) {
+			buffer_fadd(
+				sql_buf,
+				"SELECT * FROM %s WHERE %s = %s;",
+				osrfHashGet(meta, "tablename"),
+				osrfHashGet(meta, "primarykey"),
+				key_string
+			);
+		} else {
+			obj = jsonNewObject(NULL);
+			osrfLogDebug(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, id);
+		}
+	}
 
 	char* sql = buffer_data(sql_buf);
 	buffer_free(sql_buf);
@@ -481,12 +498,12 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 
 		/* there should be one row at the most  */
-		if (dbi_result_next_row(result)) {
+		if (dbi_result_first_row(result)) {
 			/* JSONify the result */
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
 			obj = oilsMakeJSONFromResult( result, meta );
 		} else {
-			osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with key %s", MODULENAME, osrfHashGet(meta, "fieldmapper"), id);
+			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
 			obj = jsonNewObject(NULL);
 		}
 
@@ -495,7 +512,7 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 
 	} else {
 		obj = jsonNewObject(NULL);
-		osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with key %s", MODULENAME, osrfHashGet(meta, "fieldmapper"), id);
 	}
 
 	free(sql);
@@ -530,20 +547,6 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 	int attr;
 	unsigned short type;
 	const char* columnName;
-
-	// this block gets the local timezone. until we can patch libdbi this'll have to do, pig.
-	time_t tmp_t = time(NULL);
-	struct tm ldt;
-	localtime_r( &tmp_t, &ldt );
-
-	char tz_part[8];
-	memset(tz_part,'\0',8);
-
-	strftime(tz_part,7,"%z",&ldt);
-	tz_part[5] = tz_part[4];
-	tz_part[4] = tz_part[3];
-	tz_part[3] = ':';
-
 
 	/* cycle through the column list */
 	while( (columnName = dbi_result_get_field_name(result, columnIndex++)) ) {
