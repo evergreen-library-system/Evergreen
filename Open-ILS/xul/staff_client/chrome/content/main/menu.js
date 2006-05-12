@@ -279,7 +279,16 @@ main.menu.prototype = {
 			'cmd_local_admin' : [
 				['oncommand'],
 				function() { 
-					obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
+					//obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
+					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+						urls.XUL_LOCAL_ADMIN+'?ses='+window.escape(ses())+'&session='+window.escape(ses())
+					);
+					obj.set_tab( 
+						loc, 
+						{'tab_name':'Local Administration'}, 
+						{ 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true, } 
+					);
+
 				}
 			],
 
