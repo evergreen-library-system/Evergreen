@@ -317,7 +317,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method		=> 'the_quest_for_knowledge',
-	api_name		=> 'open-ils.search.record.multiclass.staff',
+	api_name		=> 'open-ils.search.biblio.multiclass.staff',
 	signature	=> q/@see open-ils.search.biblio.multiclass/);
 __PACKAGE__->register_method(
 	method		=> 'the_quest_for_knowledge',
