@@ -27,6 +27,28 @@ const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 
 
+function uEditUsrnameBlur(field) {
+	var usrname = uEditNodeVal(field);
+	if(!usrname) return;
+	var req = new Request(CHECK_USERNAME, usrname);
+	req.callback( 
+		function(r) {
+			var res = r.getResultObject();
+			if( res == 1 ) {
+				field.widget.onblur = null; /* prevent alert storm */
+				alertId('ue_dup_username');
+				field.widget.onblur = uEditUsrnameBlur;
+				setTimeout( 
+					function() {
+						field.widget.node.focus();
+								field.widget.node.select();
+					}, 10 
+				);
+			}
+	});
+	req.send();
+}
+
 
 function uEditDefineData(patron) {
 	
@@ -50,7 +72,8 @@ function uEditDefineData(patron) {
 			widget	: {
 				id		: 'ue_username',
 				regex	: wordRegex,
-				type	: 'input'
+				type	: 'input',
+				onblur : uEditUsrnameBlur
 			}
 		},
 		{

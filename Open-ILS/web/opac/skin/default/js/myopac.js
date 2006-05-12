@@ -612,6 +612,15 @@ function myOPACUpdateUsername() {
 		alert($('myopac_username_error').innerHTML);
 		return;
 	}
+
+	/* first see if the requested username is taken */
+	var req = new Request(CHECK_USERNAME, username);
+	req.send(true);
+	if( req.result() == 1 ) {
+		alertId('myopac_username_dup');
+		return;
+	}
+
 	var req = new Request(UPDATE_USERNAME, G.user.session, username );
 	req.send(true);
 	if(req.result()) {

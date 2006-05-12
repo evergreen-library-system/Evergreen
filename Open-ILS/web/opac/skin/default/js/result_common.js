@@ -397,10 +397,6 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		}
 
 		if(!isNull(rec.physical_description()) ) {
-			/*
-			unHideMe( $n(r, "result_table_extra_span"));
-			unHideMe($n(r, "result_table_pub_span"));
-			*/
 			unHideMe( $n(r, "result_table_extra_span"));
 			var t = " " + rec.physical_description();
 			//$n(r, "result_table_phys_span").appendChild( text(t.replace(/:.*/g,'')));

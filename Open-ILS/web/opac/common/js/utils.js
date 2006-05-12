@@ -506,3 +506,8 @@ function openWindow( data ) {
 }
 
 
+/* alerts the innerhtml of the node with the given id */
+function alertId(id) {
+	var node = $(id);
+	if(node) alert(node.innerHTML);
+}

@@ -379,6 +379,12 @@ sub _add_patron {
 	my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'CREATE_USER');
 	return (undef, $evt) if $evt;
 
+	my $ex = $session->request(
+		'open-ils.storage.direct.actor.user.search.usrname', $patron->usrrname())->gather(1);
+	if( $ex and @$ex ) {
+		return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
+	}
+
 	$logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
 	my $id = $session->request(
@@ -2045,8 +2051,21 @@ sub delete_closed_date {
 }
 
 
-#__PACKAGE__->register_method(
-#);
+__PACKAGE__->register_method(
+	method => 'usrname_exists',
+	api_name	=> 'open-ils.actor.username.exists',
+	signature => q/
+		Returns 1 if the requested username exists, returns 0 otherwise
+	/
+);
+
+sub usrname_exists {
+	my( $self, $conn, $usrname ) = @_;
+	my $e = OpenILS::Utils::Editor->new;
+	my $a = $e->search_actor_user({usrname => $usrname}, {idlist=>1});
+	return 1 if $a and @$a;
+	return 0;
+}
 
 
 1;
