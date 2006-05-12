@@ -45,14 +45,14 @@
 	</table>
 
 	<div id='non_cat_circs_div' class='hide_me'>
-		<br/><br/>
+		<br/>
 		<div style='text-align: center'><b>Other Circulations</b></div>
 		<table class='data_grid' width='100%'>
 			<thead>
 				<tr>	
 					<td>Circulating Library</td>
 					<td>Circulation Type</td>
-					<td>Please return by</td>
+					<td>Please return by ...</td>
 				</tr>
 			</thead>
 			<tbody id='non_cat_circs_tbody'>
