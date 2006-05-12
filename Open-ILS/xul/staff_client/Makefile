@@ -43,6 +43,7 @@ build_dir:
 	cp -R components build/
 	cp application.ini build/
 	cp -R build/chrome/content/util/ build/server/
+	cp -R build/chrome/content/auth/ build/server/
 	cp build/chrome/content/main/constants.js build/server/main/constants.js
 	cp build/chrome/content/main/lang.js build/server/main/lang.js
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
