@@ -80,25 +80,25 @@ circ.offline.prototype = {
 					'type' : 'offline_checkout',
 					'header' : 'Patron %patron_barcode%<br/>\r\nYou checked out the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%<br/>\r\nDue: %due_date%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				},
 				'offline_checkin' : {
 					'type' : 'offline_checkin',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				},
 				'offline_renew' : {
 					'type' : 'offline_renew',
 					'header' : 'You renewed the following items:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\n',
-					'footer' : '</ol><hr />%TODAY_TRIM%',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				},
 				'offline_inhouse_use' : {
 					'type' : 'offline_inhouse_use',
 					'header' : 'You marked the following in-house items used:<hr/><ol>',
 					'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
-					'footer' : '</ol><hr />%TODAY_TRIM%',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				},
 			};
 			data.stash('print_list_templates');
