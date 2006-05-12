@@ -227,6 +227,11 @@ util.error.prototype = {
 
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
+		if (typeof E.ilsevent != 'undefined') {
+			if (E.ilsevent == 0) {
+				msg = "The action involved likely succeeded, however, this part of the code needs to be updated to better understand success messages from the server.";
+			}
+		}
 		if (!msg) msg = '';
 		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + E.desc : ( typeof E.status != 'undefined' ? 'Status: ' + E.status : '' ) );
 		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
