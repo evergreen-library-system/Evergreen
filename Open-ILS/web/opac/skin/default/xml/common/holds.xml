@@ -27,7 +27,7 @@
 
 	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
 	
-		<br/><br/>
+		<br/>
 		<table width='90%'>
 			<tbody>
 				<tr>
@@ -119,6 +119,6 @@
 			It's possible that changing the pickup library or choosing a 
 			different format will result in a successful hold.
 		</span>
-	
+
 	</div>
 </div>

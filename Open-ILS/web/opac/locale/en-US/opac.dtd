@@ -41,6 +41,18 @@
 	contain at least one letter (a-z/A-Z), 
 	and contain at least one number.">
 
+<!ENTITY holds.where_am_i
+	"PINES is a statewide system with both patrons and items
+	associated with over 250 libraries, holds lists are not as simple as
+	'first come, first served' in PINES.  A complex matrix combining
+	consideration of item ownership, patron home library, and item purchase
+	date determines  priorities for holds; the list is dynamic, changing
+	with every hold placed.  Therefore, any indication of a place in the
+	holds list would be inaccurate.  The PINES holds system is designed to
+	obtain a requested item in the fastest and most efficient way possible.
+	Your PINES library will contact you when you hold items become
+	available.">
+
 
 <!--	================================================================= 
 		Events and Permissions 
