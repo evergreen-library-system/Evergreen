@@ -380,7 +380,7 @@ sub _add_patron {
 	return (undef, $evt) if $evt;
 
 	my $ex = $session->request(
-		'open-ils.storage.direct.actor.user.search.usrname', $patron->usrrname())->gather(1);
+		'open-ils.storage.direct.actor.user.search.usrname', $patron->usrname())->gather(1);
 	if( $ex and @$ex ) {
 		return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
 	}
