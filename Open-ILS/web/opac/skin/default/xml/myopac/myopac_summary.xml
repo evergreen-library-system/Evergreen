@@ -169,6 +169,9 @@
 	</table>
 
 	<div class='hide_me' id='myopac_username_error'>Please enter a username</div>
+	<div class='hide_me' id='myopac_username_dup'>
+		The requested username is not available.  Please choose a different username.
+	</div>
 	<div class='hide_me' id='myopac_username_success'>Username successfully updated</div>
 	<div class='hide_me' id='myopac_username_failure'>Username update failed</div>
 
