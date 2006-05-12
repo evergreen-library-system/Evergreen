@@ -69,14 +69,14 @@ server-xul:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
-	#mkdir -p $(WEBDIR)
-	#cp -r ../web/* $(WEBDIR)
-	#ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
-	#ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
-	#ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
-	#ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
-	#ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
-	#cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/common/js/
+	mkdir -p $(WEBDIR)
+	cp -r ../web/* $(WEBDIR)
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
+	cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/opac/common/js/
 
 libfieldmapper:	
 	make -C apachemods libfieldmapper.so
