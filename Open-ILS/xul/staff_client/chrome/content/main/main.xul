@@ -95,7 +95,7 @@
 					<row>
 						<label value="Hostname" control="server_prompt" accesskey="H"/>
 						<vbox>
-							<textbox id="server_prompt" value="dev.gapines.org"/>
+							<textbox id="server_prompt" value="demo.gapines.org"/>
 							<button label="Re-Test Server" id="retest" accesskey="R" command="cmd_test_server"/>
 						</vbox>
 					</row>
