@@ -625,9 +625,22 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 					osrfHash* links = osrfHashGet(meta, "links");
 					osrfHash* fields = osrfHashGet(meta, "fields");
 
-					char* link_field;
 					int i = 0;
-					osrfStringArray* link_fields = osrfHashKeys( links );
+					char* link_field;
+					osrfStringArray* link_fields;
+					
+					jsonObject* flesh_fields = jsonObjectGetKey( order_hash, "flesh_fields" );
+					if (flesh_fields) {
+						jsonObjectNode* _f;
+						jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
+						link_fields = osrfNewStringArray(1);
+						while ((_f = jsonObjectIteratorNext( _i ))) {
+							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
+						}
+					} else {
+						link_fields = osrfHashKeys( links );
+					}
+
 					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
 
 						osrfLogDebug(OSRF_LOG_MARK, "Starting to flesh %s", link_field);
@@ -687,11 +700,28 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 
 						free(search_key);
 
+
 						jsonObjectSetKey(
 							jsonObjectGetIndex(fake_params, 1),
 							"flesh",
 							jsonNewNumberObject( (double)((int)x - 1) )
 						);
+
+						if (flesh_fields) {
+							jsonObjectSetKey(
+								jsonObjectGetIndex(fake_params, 1),
+								"flesh_fields",
+								jsonObjectClone( flesh_fields )
+							);
+						}
+
+						if (jsonObjectGetKey(order_hash, "order_by")) {
+							jsonObjectSetKey(
+								jsonObjectGetIndex(fake_params, 1),
+								"order_by",
+								jsonObjectClone(jsonObjectGetKey(order_hash, "order_by"))
+							);
+						}
 
 						jsonObject* kids = doSearch(kid_idl, fake_params);
 
@@ -720,6 +750,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 
 						jsonObjectFree( fake_params );
 					}
+					if (flesh_fields) osrfStringArrayFree(link_fields);
 				}
 			}
 		}
