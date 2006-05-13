@@ -423,7 +423,7 @@ sub modify_from_fieldmapper {
 	actor::user->has_a( home_ou => 'actor::org_unit' );
 	actor::user->has_a( card => 'actor::card' );
 	actor::user->has_a( standing => 'config::standing' );
-	actor::user->has_a( profile => 'actor::profile' );
+	actor::user->has_a( profile => 'permission::grp_tree' );
 	actor::user->has_a( mailing_address => 'actor::user_address' );
 	actor::user->has_a( billing_address => 'actor::user_address' );
 	actor::user->has_a( ident_type => 'config::identification_type' );
