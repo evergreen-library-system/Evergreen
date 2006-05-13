@@ -32,6 +32,7 @@ jsonObject* doCreate ( osrfHash*, jsonObject* );
 jsonObject* doRetrieve ( osrfHash*, jsonObject* );
 jsonObject* doUpdate ( osrfHash*, jsonObject* );
 jsonObject* doDelete ( osrfHash*, jsonObject* );
+jsonObject* doSearch ( osrfHash*, jsonObject* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
 
 dbi_conn dbhandle; /* our db connection */
@@ -44,6 +45,7 @@ osrfHash* idlHash;
 int osrfAppInitialize() {
 
 	idlHash = osrfNewHash();
+	osrfHash* usrData = NULL;
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
@@ -68,184 +70,189 @@ int osrfAppInitialize() {
 	osrfStringArrayAdd( global_methods, "retrieve" );
 	//osrfStringArrayAdd( global_methods, "update" );
 	//osrfStringArrayAdd( global_methods, "delete" );
+	osrfStringArrayAdd( global_methods, "search" );
 
 	xmlNodePtr docRoot = xmlDocGetRootElement(idlDoc);
 	xmlNodePtr kid = docRoot->children;
 	while (kid) {
 		if (!strcmp( (char*)kid->name, "class" )) {
-			int i = 0; 
-			char* method_type;
-			while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
 
-				osrfHash * usrData = osrfNewHash();
-				osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
-				osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
-				osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
+			usrData = osrfNewHash();
+			osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
+			osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
+			osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
 
-				if(!strcmp(method_type, "retrieve"))
-					osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
+			osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
 
-				osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
+			osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
 
-				osrfHash* _tmp;
-				osrfHash* links = osrfNewHash();
-				osrfHash* fields = osrfNewHash();
+			osrfHash* _tmp;
+			osrfHash* links = osrfNewHash();
+			osrfHash* fields = osrfNewHash();
 
-				osrfHashSet( usrData, fields, "fields" );
-				osrfHashSet( usrData, links, "links" );
+			osrfHashSet( usrData, fields, "fields" );
+			osrfHashSet( usrData, links, "links" );
 
-				xmlNodePtr _cur = kid->children;
+			xmlNodePtr _cur = kid->children;
 
-				while (_cur) {
-					char* string_tmp = NULL;
+			while (_cur) {
+				char* string_tmp = NULL;
 
-					if (!strcmp( (char*)_cur->name, "fields" )) {
+				if (!strcmp( (char*)_cur->name, "fields" )) {
 
-						if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
+					if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
+						osrfHashSet(
+							usrData,
+							strdup( string_tmp ),
+							"primarykey"
+						);
+					}
+					string_tmp = NULL;
+
+					xmlNodePtr _f = _cur->children;
+
+					while(_f) {
+						if (strcmp( (char*)_f->name, "field" )) {
+							_f = _f->next;
+							continue;
+						}
+
+						_tmp = osrfNewHash();
+
+						if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
 							osrfHashSet(
-								usrData,
+								_tmp,
 								strdup( string_tmp ),
-								"primarykey"
+								"array_position"
 							);
 						}
 						string_tmp = NULL;
 
-						xmlNodePtr _f = _cur->children;
-
-						while(_f) {
-							if (strcmp( (char*)_f->name, "field" )) {
-								_f = _f->next;
-								continue;
-							}
-
-							_tmp = osrfNewHash();
-
-							if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"array_position"
-								);
-							}
-							string_tmp = NULL;
-
-							if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"virtual"
-								);
-							}
-							string_tmp = NULL;
-
-							if( (string_tmp = (char*)xmlGetProp(_f, "name")) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"name"
-								);
-							}
-
-							osrfLogInfo(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
-
+						if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
 							osrfHashSet(
-								fields,
 								_tmp,
-								strdup( string_tmp )
+								strdup( string_tmp ),
+								"virtual"
 							);
-							_f = _f->next;
 						}
-					}
+						string_tmp = NULL;
 
-					if (!strcmp( (char*)_cur->name, "links" )) {
-						xmlNodePtr _l = _cur->children;
-
-						while(_l) {
-							if (strcmp( (char*)_l->name, "link" )) {
-								_l = _l->next;
-								continue;
-							}
-
-							_tmp = osrfNewHash();
-
-							if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"reltype"
-								);
-							}
-							osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
-							string_tmp = NULL;
-
-							if( (string_tmp = (char*)xmlGetProp(_l, "key")) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"key"
-								);
-							}
-							osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
-							string_tmp = NULL;
-
-							if( (string_tmp = (char*)xmlGetProp(_l, "class")) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"class"
-								);
-							}
-							osrfLogInfo(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
-							string_tmp = NULL;
-
-							osrfStringArray* map = osrfNewStringArray(0);
-
-							if( (string_tmp = (char*)xmlGetProp(_l, "map") )) {
-								char* map_list = strdup( string_tmp );
-								osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
-
-								if (strlen( map_list ) > 0) {
-									char* st_tmp;
-									char* _map_class = strtok_r(map_list, " ", &st_tmp);
-									osrfStringArrayAdd(map, strdup(_map_class));
-							
-									while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-										osrfStringArrayAdd(map, strdup(_map_class));
-									}
-								}
-							}
-							osrfHashSet( _tmp, map, "map");
-
-							if( (string_tmp = (char*)xmlGetProp(_l, "field")) ) {
-								osrfHashSet(
-									_tmp,
-									strdup( string_tmp ),
-									"field"
-								);
-							}
-
+						if( (string_tmp = (char*)xmlGetProp(_f, "name")) ) {
 							osrfHashSet(
-								links,
 								_tmp,
-								strdup( string_tmp )
+								strdup( string_tmp ),
+								"name"
 							);
-
-							osrfLogInfo(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
-
-							_l = _l->next;
 						}
-					}
 
-					_cur = _cur->next;
+						osrfLogInfo(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+
+						osrfHashSet(
+							fields,
+							_tmp,
+							strdup( string_tmp )
+						);
+						_f = _f->next;
+					}
 				}
 
+				if (!strcmp( (char*)_cur->name, "links" )) {
+					xmlNodePtr _l = _cur->children;
 
-				char* st_tmp;
-				char* _fm;
+					while(_l) {
+						if (strcmp( (char*)_l->name, "link" )) {
+							_l = _l->next;
+							continue;
+						}
+
+						_tmp = osrfNewHash();
+
+						if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"reltype"
+							);
+						}
+						osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
+						string_tmp = NULL;
+
+						if( (string_tmp = (char*)xmlGetProp(_l, "key")) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"key"
+							);
+						}
+						osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
+						string_tmp = NULL;
+
+						if( (string_tmp = (char*)xmlGetProp(_l, "class")) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"class"
+							);
+						}
+						osrfLogInfo(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
+						string_tmp = NULL;
+
+						osrfStringArray* map = osrfNewStringArray(0);
+
+						if( (string_tmp = (char*)xmlGetProp(_l, "map") )) {
+							char* map_list = strdup( string_tmp );
+							osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
+
+							if (strlen( map_list ) > 0) {
+								char* st_tmp;
+								char* _map_class = strtok_r(map_list, " ", &st_tmp);
+								osrfStringArrayAdd(map, strdup(_map_class));
+						
+								while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
+									osrfStringArrayAdd(map, strdup(_map_class));
+								}
+							}
+						}
+						osrfHashSet( _tmp, map, "map");
+
+						if( (string_tmp = (char*)xmlGetProp(_l, "field")) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"field"
+							);
+						}
+
+						osrfHashSet(
+							links,
+							_tmp,
+							strdup( string_tmp )
+						);
+
+						osrfLogInfo(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+
+						_l = _l->next;
+					}
+				}
+
+				_cur = _cur->next;
+			}
+
+			int i = 0; 
+			char* method_type;
+			char* st_tmp;
+			char* _fm;
+			char* part;
+			osrfHash* method_meta;
+			while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
+
 				if (!osrfHashGet(usrData, "fieldmapper")) continue;
 
+				method_meta = osrfNewHash();
+				osrfHashSet(method_meta, usrData, "class");
+
 				_fm = strdup( (char*)osrfHashGet(usrData, "fieldmapper") );
-				char* part = strtok_r(_fm, ":", &st_tmp);
+				part = strtok_r(_fm, ":", &st_tmp);
 
 				growing_buffer* method_name =  buffer_init(64);
 				buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
@@ -255,11 +262,13 @@ int osrfAppInitialize() {
 				}
 				buffer_fadd(method_name, ".%s", method_type);
 
+
 				char* method = buffer_data(method_name);
 				buffer_free(method_name);
+				free(_fm);
 
-				osrfHashSet( usrData, method, "methodname" );
-				osrfHashSet( usrData, strdup(method_type), "methodtype" );
+				osrfHashSet( method_meta, method, "methodname" );
+				osrfHashSet( method_meta, method_type, "methodtype" );
 
 				osrfAppRegisterExtendedMethod(
 					MODULENAME,
@@ -268,7 +277,7 @@ int osrfAppInitialize() {
 					"",
 					1,
 					0,
-					(void*)usrData
+					(void*)method_meta
 				);
 			}
 		}
@@ -422,19 +431,23 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class_obj = osrfHashGet( meta, "class" );
 
 	jsonObject * obj = NULL;
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "create"))
-		obj = doCreate(meta, ctx->params);
+		obj = doCreate(class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "retrieve"))
-		obj = doRetrieve(meta, ctx->params);
+		obj = doRetrieve(class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "update"))
-		obj = doUpdate(meta, ctx->params);
+		obj = doUpdate(class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "delete"))
-		obj = doDelete(meta, ctx->params);
+		obj = doDelete(class_obj, ctx->params);
+
+	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search"))
+		obj = doSearch(class_obj, ctx->params);
 
 	osrfAppRespondComplete( ctx, obj );
 
@@ -448,7 +461,9 @@ jsonObject* doCreate( osrfHash* meta, jsonObject* params ) { return NULL; }
 jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 
 	jsonObject* obj;
+
 	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
+	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
@@ -458,42 +473,120 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 		id
 	);
 
-	char* pkey = osrfHashGet(meta, "primarykey");
-	osrfHash* field = osrfHashGet( osrfHashGet(meta, "fields"), pkey );
+	jsonObject* fake_params = jsonParseString("[]");
+	jsonObjectPush(fake_params, jsonParseString("{}"));
 
+	jsonObjectSetKey(
+		jsonObjectGetIndex(fake_params, 0),
+		osrfHashGet(meta, "primarykey"),
+		jsonNewObject(id)
+	);
+
+	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
+
+	jsonObject* list = doSearch(meta, fake_params);
+	obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
+
+	jsonObjectFree( list );
+	jsonObjectFree( fake_params );
+
+	return obj;
+}
+
+jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
+
+	jsonObject* _tmp;
+	jsonObject* obj;
+	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
+	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
 	growing_buffer* sql_buf = buffer_init(128);
-	if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-		buffer_fadd(
-			sql_buf,
-			"SELECT * FROM %s WHERE %s = %d;",
-			osrfHashGet(meta, "tablename"),
-			osrfHashGet(meta, "primarykey"),
-			atoi(id)
-		);
-	} else {
-		char* key_string;
-		if ( dbi_conn_quote_string_copy(dbhandle, id, &key_string) ) {
+	buffer_fadd(sql_buf, "SELECT * FROM %s WHERE ", osrfHashGet(meta, "tablename") );
+
+	jsonObjectNode* node = NULL;
+	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
+
+	int first = 1;
+	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
+		osrfHash* field = osrfHashGet( osrfHashGet(meta, "fields"), node->key );
+
+		if (!field) continue;
+
+		if (first) {
+			first = 0;
+		} else {
+			buffer_add(sql_buf, " AND ");
+		}
+
+		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			buffer_fadd(
 				sql_buf,
-				"SELECT * FROM %s WHERE %s = %s;",
-				osrfHashGet(meta, "tablename"),
-				osrfHashGet(meta, "primarykey"),
-				key_string
+				"%s = %d",
+				osrfHashGet(field, "name"),
+				atoi( jsonObjectToSimpleString(node->item) )
 			);
 		} else {
-			obj = jsonNewObject(NULL);
-			osrfLogDebug(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, id);
+			char* key_string = jsonObjectToSimpleString(node->item);
+			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
+				buffer_fadd(
+					sql_buf,
+					"%s = %s",
+					osrfHashGet(field, "name"),
+					key_string
+				);
+				free(key_string);
+			} else {
+				osrfLogDebug(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+				free(key_string);
+			}
 		}
 	}
+
+	if (order_hash) {
+		char* string;
+		_tmp = jsonObjectGetKey( order_hash, "order_by" );
+		if (_tmp) {
+			string = jsonObjectToSimpleString(_tmp);
+			buffer_fadd(
+				sql_buf,
+				" ORDER BY %s",
+				string
+			);
+			free(string);
+		}
+
+		_tmp = jsonObjectGetKey( order_hash, "limit" );
+		if (_tmp) {
+			string = jsonObjectToSimpleString(_tmp);
+			buffer_fadd(
+				sql_buf,
+				" LIMIT %d",
+				atoi(string)
+			);
+			free(string);
+		}
+
+		_tmp = jsonObjectGetKey( order_hash, "offset" );
+		if (_tmp) {
+			string = jsonObjectToSimpleString(_tmp);
+			buffer_fadd(
+				sql_buf,
+				" OFFSET %d",
+				atoi(string)
+			);
+			free(string);
+		}
+	}
+
+	buffer_add(sql_buf, ";");
 
 	char* sql = buffer_data(sql_buf);
 	buffer_free(sql_buf);
 	
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
-
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
+	jsonObject* res_list = jsonParseString("[]");
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 
@@ -501,24 +594,138 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 		if (dbi_result_first_row(result)) {
 			/* JSONify the result */
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
-			obj = oilsMakeJSONFromResult( result, meta );
+			do {
+				obj = oilsMakeJSONFromResult( result, meta );
+				jsonObjectPush(res_list, obj);
+			} while (dbi_result_next_row(result));
 		} else {
 			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
-			obj = jsonNewObject(NULL);
 		}
 
 		/* clean up the query */
 		dbi_result_free(result); 
 
 	} else {
-		obj = jsonNewObject(NULL);
-		osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with key %s", MODULENAME, osrfHashGet(meta, "fieldmapper"), id);
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
 	}
 
 	free(sql);
-	free(id);
 
-	return obj;
+	if (order_hash) {
+		_tmp = jsonObjectGetKey( order_hash, "flesh" );
+		if (_tmp) {
+			double x = jsonObjectGetNumber(_tmp);
+
+			if ((int)x > 0) {
+
+				jsonObjectNode* cur;
+				jsonObjectIterator* itr = jsonNewObjectIterator( res_list );
+				while ((cur = jsonObjectIteratorNext( itr ))) {
+
+					osrfHash* links = osrfHashGet(meta, "links");
+					osrfHash* fields = osrfHashGet(meta, "fields");
+
+					char* link_field;
+					int i = 0;
+					osrfStringArray* link_fields = osrfHashKeys( links );
+					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
+
+						osrfLogDebug(OSRF_LOG_MARK, "Starting to flesh %s", link_field);
+
+						osrfHash* kid_link = osrfHashGet(links, link_field);
+						if (!kid_link) continue;
+
+						osrfHash* field = osrfHashGet(fields, link_field);
+						if (!field) continue;
+
+						osrfHash* value_field = field;
+
+						osrfHash* kid_idl = osrfHashGet(idlHash, osrfHashGet(kid_link, "class"));
+						if (!kid_idl) continue;
+
+						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
+							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
+						}
+							
+						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) { // might_have
+							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
+						}
+
+						osrfLogDebug(
+							OSRF_LOG_MARK,
+							"Link field: %s, remote class: %s, fkey: %s, reltype: %s",
+							osrfHashGet(kid_link, "field"),
+							osrfHashGet(kid_link, "class"),
+							osrfHashGet(kid_link, "key"),
+							osrfHashGet(kid_link, "reltype")
+						);
+
+						jsonObject* fake_params = jsonParseString("[]");
+						jsonObjectPush(fake_params, jsonParseString("{}")); // search hash
+						jsonObjectPush(fake_params, jsonParseString("{}")); // order/flesh hash
+
+						osrfLogDebug(OSRF_LOG_MARK, "Creating dummy params object...");
+
+						char* search_key =
+						jsonObjectToSimpleString(
+							jsonObjectGetIndex(
+								cur->item,
+								atoi( osrfHashGet(value_field, "array_position") )
+							)
+						);
+
+						if (!search_key) {
+							osrfLogDebug(OSRF_LOG_MARK, "Nothing to search for!");
+							continue;
+						}
+							
+						jsonObjectSetKey(
+							jsonObjectGetIndex(fake_params, 0),
+							osrfHashGet(kid_link, "key"),
+							jsonNewObject( search_key )
+						);
+
+						free(search_key);
+
+						jsonObjectSetKey(
+							jsonObjectGetIndex(fake_params, 1),
+							"flesh",
+							jsonNewNumberObject( (double)((int)x - 1) )
+						);
+
+						jsonObject* kids = doSearch(kid_idl, fake_params);
+
+						osrfLogDebug(OSRF_LOG_MARK, "Search for %s return %d linked objects", osrfHashGet(kid_link, "class"), kids->size);
+						
+						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" ))) {
+							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
+							jsonObjectSetIndex(
+								cur->item,
+								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
+								jsonObjectClone( jsonObjectGetIndex(kids, 0) )
+							);
+							jsonObjectFree( kids );
+						}
+
+						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
+							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
+							jsonObjectSetIndex(
+								cur->item,
+								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
+								kids
+							);
+						}
+
+						osrfLogDebug(OSRF_LOG_MARK, "Fleshing of %s complete", osrfHashGet(kid_link, "field"));
+
+						jsonObjectFree( fake_params );
+					}
+				}
+			}
+		}
+	}
+
+	return res_list;
 }
 
 
