@@ -1,124 +1,87 @@
+// so we can tell if it's a book or other type
+load_lib('record_type.js');
+
 var marcdoc = new XML(environment.marc);
 var marc_ns = new Namespace('http://www.loc.gov/MARC21/slim');
 
 var modsdoc = new XML(environment.mods);
 var mods_ns = new Namespace('http://www.loc.gov/mods/');
+default xml namespace = marc_ns;
 
 //var mods3_ns = new Namespace('http://www.loc.gov/mods/v3');
 
-default xml namespace = mods_ns;
 
-var t = null;
-var a = null;
-
-function extract_typed_title( ti ) {
-
-	try {
-		var types = ['uniform','translated'];
-		for ( var j in types ) {
-			for ( var i in ti ) {
-				if (ti[i].attribute("type") == types[j])
-					return  ti[i];
-			}
-		}
-
-	} catch (e) {
-		log_debug(e);
-		return ti[0];
-	}
-}
-
-function extract_author( au ) {
-	log_debug(au.toString());
-
-	try {
-		if ( au..role.length() > 0 ) au = au.(role.text == 'creator' || role.text == 'author');
-	
-		if ( au.(hasOwnProperty("@type")) ) {
-			au = au.(@type == 'personal')[0] ||
-				au.(@type == 'corporate')[0] ||
-				au.(@type == 'conference')[0];
-		}
-	} catch (e) {
-		log_debug(e);
-	}
-
-	return au ? au.namePart[0] : '';
-}
-
-log_debug("typeOfResource is " + modsdoc.typeOfResource);
+var rtype = recordType(marcdoc); // BKS, SER, VIS, MIX, MAP, SCO, REC, COM
 
 var quality = 0;
+var t = '';
+var a = '';
 
-// Treat non-text differently
-if (modsdoc.typeOfResource != 'text') {
-	quality += marcdoc.datafield.length() / 2;
+try {
+	// first, related items entries (700t)
+	var t = marcdoc.datafield.( @tag == '700' ).subfield.( @code == 't');
+	if (!t.length()) throw "No title in 700";
+	
+	a = t.parent().subfield.( @code == 'a' );
 
-	// Look in related items for a good title
-	for ( var index in modsdoc.relatedItem ) {
-		log_debug('Looking at related items ['+modsdoc.relatedItem[index].toXMLString()+']');
+	quality += 10;
 
-		if ( modsdoc.relatedItem[index].hasOwnProperty('@type') ) {
-			if ( modsdoc.relatedItem[index].@type != 'series' && modsdoc.relatedItem[index].@type != 'host' ) {
-				t = extract_typed_title( modsdoc.relatedItem[index].titleInfo.(hasOwnProperty('@type')) );
-				if (!t) {
-					t = modsdoc.relatedItem[index].titleInfo[0];
-					quality += 10;
-				} else {
-					quality += 15;
-				}
-
-				a = extract_author(modsdoc.relatedItem[index].name)
-
-				if (t != null) {
-					log_debug('Found ['+modsdoc.typeOfResource+'] related titleInfo node: ' + t.toXMLString());
-					break;
-				}
-			}
-		}
+	log_debug("title: " + t);
+	log_debug("author: " + a);
+} catch(e) {
+	log_debug(e);
+	try {
+		var _t = marcdoc.datafield.( @tag == '240' || @tag == '242' || @tag == '246').subfield.( @code == 'a' );
+		if (!_t.length()) throw "No title in 240, 242, 246";
+		t = _t[0];
+		log_debug("Title: " + t);
+		quality += 25;
+	} catch(e) {
+		log_debug(e);
+		t = marcdoc.datafield.( @tag == '245' ).subfield.( @code == 'a' );
+		t = t[0];
+		quality += 10;
 	}
 
-	// Couldn't find a usable title in a related item
-	if (t == null) {
-		t = extract_typed_title( modsdoc.titleInfo );
-		if (!t) {
-			t = modsdoc.titleInfo[0];
-			quality += 5;
-		} else {
-			quality += 10;
-		}
-		log_debug('Found ['+modsdoc.typeOfResource+'] main titleInfo node: ' + t.toXMLString());
+	try {
+		var _a = marcdoc.datafield.( @tag == '110' || @tag == '111').subfield.( @code == 'a' );
+		if (!_a.length()) throw "No author in 110, 111";
+		
+		a = _a[0];
+		log_debug("Author: " + a);
+
+	} catch(e) {
+		log_debug(e);
+		a = marcdoc.datafield.( @tag == '100' ).subfield.( @code == 'a' );
+		a = a[0];
 	}
-
-
-} else {
-	quality = 20;
-	quality += marcdoc.datafield.length();
-
-	t = extract_typed_title( modsdoc.titleInfo );
-
-	if (t == null) {
-		t = modsdoc.titleInfo[0];
-		quality += 15;
-	} else {
-		quality += 20;
-	}
-
-	log_debug('Found ['+modsdoc.typeOfResource+'] main titleInfo node: ' + t.toXMLString());
 }
 
-var title = t.title
+if (rtype != 'BKS') {
+	quality += marcdoc.datafield.length() / 2;
+} else {
+	quality += 20 + marcdoc.datafield.length();
+}
+
+var title = t;
+if (!title) {
+	log_debug("no title found");
+	title = '';
+} else {
+	title = title.toString();
+}
+
+title = title
 	.toLowerCase()
 	.replace(/\[.+?\]/,'')
 	.replace(/\bthe\b|\ban?d?\b|\W+/g,'');
 
 
-log_debug('Related item authors: [' + modsdoc.relatedItem.(hasOwnProperty('@type') && @type != 'series' && @type != 'host').name.toXMLString() + ']');
-log_debug('Main authors: [' + modsdoc.name.toXMLString() + ']');
-
 var author = a;
 if (!author) {
-	author = extract_author(modsdoc.name) || '';
+	author = '';
+} else {
+	author = author.toString();
 }
 
 author = author.toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
@@ -147,5 +110,5 @@ if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/
 }
 
 // XXX this has to be a string ... for now. JS::SM limitation
-result.quality = '' + quality;
+result.quality = '' + parseInt( '' + quality );
 
