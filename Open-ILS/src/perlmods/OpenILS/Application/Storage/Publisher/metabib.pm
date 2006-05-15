@@ -1602,6 +1602,8 @@ sub postfilter_search_multi_class_fts {
 					AND cl.opac_visible IS TRUE
 					AND br.active IS TRUE
 					AND br.deleted IS FALSE
+					AND cp.deleted IS FALSE
+					AND cn.deleted IS FALSE
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
@@ -1616,42 +1618,37 @@ sub postfilter_search_multi_class_fts {
 		$select = <<"		SQL";
 
 			SELECT	s.*
-			  FROM	($select) s
-			  WHERE	EXISTS (
-			  	SELECT	1
-				  FROM	$asset_call_number_table cn,
-					$metabib_metarecord_source_map_table mrs,
-					$descendants d,
-					$br_table br,
-					$metabib_record_descriptor ord
-				  WHERE	mrs.metarecord = s.metarecord
-					AND br.id = mrs.source
-					AND cn.record = mrs.source
-					AND cn.owning_lib = d.id
-					AND ord.record = mrs.source
-					AND br.deleted IS FALSE
-					$ot_filter
-					$of_filter
-					$oa_filter
-					$ol_filter
-					$olf_filter
-				  LIMIT 1
+			  FROM	($select) s,
+				$metabib_metarecord_source_map_table omrs,
+				$metabib_record_descriptor ord
+			  WHERE	omrs.metarecord = s.metarecord
+				AND ord.record = omrs.source
+			  	AND (	EXISTS (
+					  	SELECT	1
+						  FROM	$asset_call_number_table cn,
+							$descendants d,
+							$br_table br
+						  WHERE	br.id = omrs.source
+							AND cn.record = omrs.source
+							AND cn.owning_lib = d.id
+							AND br.deleted IS FALSE
+							AND cn.deleted IS FALSE
+						  LIMIT 1
+					)
+					OR NOT EXISTS (
+						SELECT	1
+						  FROM	$asset_call_number_table cn
+						  WHERE	cn.record = omrs.source
+							AND cn.deleted IS FALSE
+						  LIMIT 1
+					)
 				)
-				OR NOT EXISTS (
-				SELECT	1
-				  FROM	$asset_call_number_table cn,
-					$metabib_metarecord_source_map_table mrs,
-					$metabib_record_descriptor ord
-				  WHERE	mrs.metarecord = s.metarecord
-					AND cn.record = mrs.source
-					AND ord.record = mrs.source
-					$ot_filter
-					$of_filter
-					$oa_filter
-					$ol_filter
-					$olf_filter
-				  LIMIT 1
-				)
+				$ot_filter
+				$of_filter
+				$oa_filter
+				$ol_filter
+				$olf_filter
+
 			  ORDER BY 4 $sort_dir, 5
 		SQL
 	}
@@ -1664,7 +1661,7 @@ sub postfilter_search_multi_class_fts {
 			@bonus_values,
 			@types, @forms, @aud, @lang, @lit_form,
 			# @types, @forms, @aud, @lang, @lit_form,
-			($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
+			# ($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
 	);
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
@@ -1983,6 +1980,7 @@ sub biblio_search_multi_class_fts {
 					AND cs.holdable IS TRUE
 					AND cl.opac_visible IS TRUE
 					AND cp.deleted IS FALSE
+					AND cn.deleted IS FALSE
 				  LIMIT 1
 			  	)
 			  ORDER BY 3 $sort_dir
@@ -1998,6 +1996,7 @@ sub biblio_search_multi_class_fts {
 					$descendants d
 				  WHERE	cn.record = s.id
 					AND cn.owning_lib = d.id
+					AND cn.deleted IS FALSE
 				  LIMIT 1
 				)
 				OR NOT EXISTS (
