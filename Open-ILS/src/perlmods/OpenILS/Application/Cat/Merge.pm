@@ -38,19 +38,21 @@ sub rgrep {
 sub merge_records {
 	my( $editor, $master, $records ) = @_;
 
-	my $reqr = $editor->requestor;
-	my @recs = @$records;
-	$logger->activity("merge: user ".$reqr->id." merging bib records: @recs");
-
 	my $vol;
 	my $evt;
+
+	my %r = map { $_ => 1 } ($master, @$records); # unique the ids
+	my @recs = keys %r;
+
+	my $reqr = $editor->requestor;
+	$logger->activity("merge: user ".$reqr->id." merging bib records: @recs");
 
 	# -----------------------------------------------------------
 	# collect all of the volumes, merge any with duplicate 
 	# labels, then move all of the volumes to the master record
 	# -----------------------------------------------------------
 	my @volumes;
-	for (($master, @recs)) {
+	for (@recs) {
 		my $vs = $editor->search_asset_call_number({record => $_});
 		push( @volumes, @$vs );
 	}
@@ -80,14 +82,17 @@ sub merge_records {
 	my $stat;
 	for $vol (@trimmed) {
 		if( $vol->record ne $master ) {
+
+			$logger->debug("merge: moving volume ".
+				$vol->id." from record ".$vol->record. " to $master");
+
 			$vol->record( $master );
-			$evt = $editor->update_asset_call_number(
+			$editor->update_asset_call_number(
 				$vol, { 
 					permorg => $vol->owning_lib, 
 					checkperm => 1 
 				}
-			);
-			return $evt if $evt;
+			) or return $editor->event;
 		}
 	}
 
@@ -98,20 +103,26 @@ sub merge_records {
 			$editor->retrieve_biblio_record_entry($rec);
 		return $evt if $evt;
 
+		$logger->debug("merge: seeing if record $rec needs to be deleted or un-deleted");
+
 		if( $rec == $master ) {
 			# make sure the master record is not deleted
-			if( $record->deleted ne 'f' ) {
+			if( $record->deleted and $record->deleted ne 'f' ) {
 				$logger->info("merge: master record is marked as deleted...un-deleting.");
 				$record->deleted('f');
-				$evt = $editor->update_biblio_record_entry($record, {checkperm => 1});
-				return $evt if $evt;
+				$record->editor($reqr->id);
+				$record->edit_date('now');
+				$editor->update_biblio_record_entry($record, {checkperm => 1})
+					or return $editor->event;
 			}
 
 		} else {
 			$logger->info("merge: deleting record $rec");
 			$record->deleted('t');
-			$evt = $editor->update_biblio_record_entry($record, {checkperm => 1});
-			return $evt if $evt;
+			$record->editor($reqr->id);
+			$record->edit_date('now');
+			$editor->update_biblio_record_entry($record, {checkperm => 1})
+				or return $editor->event;
 		}
 	}
 
@@ -134,9 +145,10 @@ sub merge_volumes {
 
 	# collect all of the copies attached to the selected volumes
 	for( @$volumes ) {
-		$copies{$_->id} = $editor->search_asset_copy({call_number=>$_->id});
+		$copies{$_->id} = $editor->search_asset_copy({call_number=>$_->id, deleted=>'f'});
+		$logger->debug("merge: found ".scalar(@{$copies{$_->id}})." copies for volume ".$_->id);
 	}
-
+	
 	my $bigcn;
 	if( $master ) {
 
@@ -165,8 +177,10 @@ sub merge_volumes {
 		for my $copy (@{$copies{$cn}}) {
 			$logger->debug("merge: setting call_number to $bigcn for copy ".$copy->id);
 			$copy->call_number($bigcn);
-			$evt = $editor->update_asset_copy($copy, {checkperm=>1});
-			return (undef, $evt) if $evt;
+			$copy->editor($editor->requestor->id);
+			$copy->edit_date('now');
+			$editor->update_asset_copy($copy, {checkperm=>1})
+				or return (undef, $editor->event);
 		}
 	}
 
@@ -174,13 +188,15 @@ sub merge_volumes {
 		next if $_->id == $bigcn;
 		$logger->debug("merge: marking call_number as deleted: ".$_->id);
 		$_->deleted('t');
-		$evt = $editor->update_asset_call_number($_,{checkperm=>1});
-		return (undef, $evt) if $evt;
+		$_->editor($editor->requestor->id);
+		$_->edit_date('now');
+		$editor->update_asset_call_number($_,{checkperm=>1});
+			return (undef, $editor->event);
 	}
 
 	my ($mvol) = grep { $_->id == $bigcn } @$volumes;
 	$logger->debug("merge: returning master volume ".$mvol->id);
-	return ( $mvol, undef );
+	return ($mvol);
 }
 
 

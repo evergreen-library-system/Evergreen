@@ -728,8 +728,6 @@ sub merge {
 	my( $self, $conn, $auth, $master, $records ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
-	my %r = map { $_ => 1 } (@$records, $master); # unique the ids
-	$records = [ keys %r ];
 	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
 	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
 	return $v if $v;

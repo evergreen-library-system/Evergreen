@@ -154,7 +154,6 @@ sub finish {
 # -----------------------------------------------------------------------------
 sub request {
 	my( $self, $method, @params ) = @_;
-	$logger->debug("editor: performing request $method");
 
 	my $val;
 	my $err;
@@ -263,13 +262,27 @@ sub log_activity {
 		$str = "$str [requestor=".$self->requestor->id."] : ";
 	} else { $str = "$str : "; }
 
-	my @props = $arg->properties;
+	$str .= _prop_string($arg);
+	$logger->activity($str);
+}
+
+sub _prop_string {
+	my $obj = shift;
+	my @props = $obj->properties;
+	my $str = "";
 	for(@props) {
-		my $prop = $arg->$_() || "";
+		my $prop = $obj->$_() || "";
+		$prop = substr($prop, 0, 128) . "..." if length $prop > 131;
 		$str .= " $_=$prop";
 	}
+	return $str;
+}
 
-	$logger->activity($str);
+sub _hash_string {
+	my $h = shift;
+	my $str = "";
+	$str .= " $_=".$h->{$_} for keys %$h;
+	return $str;
 }
 
 
@@ -321,7 +334,9 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
-	$logger->info("editor: performing $action on $type=$arg");
+	my $ps = $arg;
+	$ps = _hash_string($arg) if ref $arg eq 'HASH';
+	$logger->info("editor: performing $action on $type : $ps");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
 	}
@@ -371,7 +386,7 @@ sub runmethod {
 
 
 	if( $action eq 'search' or $action eq 'batch_retrieve') {
-		$logger->info("editor: $action $type=$arg returned ".scalar(@$obj). " result(s)");
+		$logger->info("editor: $action $type : $ps returned ".scalar(@$obj). " result(s)");
 		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
 
