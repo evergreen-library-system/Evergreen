@@ -1135,7 +1135,7 @@ sub postfilter_search_class_fts {
 			$lf_filter
   	  	GROUP BY m.metarecord
   	  	ORDER BY 4 $sort_dir, MIN(COALESCE(CHAR_LENGTH(f.value),1))
-		LIMIT 10000
+		LIMIT 2000
 	SQL
 
 	if (0) {
@@ -1572,7 +1572,7 @@ sub postfilter_search_multi_class_fts {
 			$join_table_list
   	  	GROUP BY m.metarecord
   	  	-- ORDER BY 4 $sort_dir
-		LIMIT 10000
+		LIMIT 2000
 	SQL
 
 	if ($self->api_name !~ /staff/o) {
@@ -1956,7 +1956,7 @@ sub biblio_search_multi_class_fts {
 			$lf_filter
   	  	GROUP BY b.id
   	  	ORDER BY 3 $sort_dir
-		LIMIT 10000
+		LIMIT 2000
 	SQL
 
 	if ($self->api_name !~ /staff/o) {
