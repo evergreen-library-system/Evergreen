@@ -163,7 +163,7 @@
 <!ENTITY opac.holds.success "Hold was successfully placed">
 <!ENTITY opac.holds.failure "Hold was not successfully placed">
 
-<!ENTITY rdetail.detailMain.headerLabel "Title Details">
+<!ENTITY rdetail.detailMain.headerLabel "Record Summary">
 <!ENTITY rdetail.detailMain.title "Title">
 <!ENTITY rdetail.detailMain.author "Author">
 <!ENTITY rdetail.detailMain.isbn "ISBN">
