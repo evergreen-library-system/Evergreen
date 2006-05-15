@@ -76,6 +76,9 @@ struct osrf_app_session_struct {
 
 	/** SERVER or CLIENT */
 	enum OSRF_SESSION_TYPE type;
+
+	/* let the user use the session to store their own session data */
+	void* userData;
 };
 typedef struct osrf_app_session_struct osrf_app_session;
 typedef struct osrf_app_session_struct osrfAppSession;
