@@ -401,6 +401,11 @@ int osrf_app_session_push_queue(
 	return 0;
 }
 
+int osrfAppSessionConnect( osrf_app_session* session ) { 
+	return osrf_app_session_connect(session);
+}
+
+
 /** Attempts to connect to the remote service */
 int osrf_app_session_connect(osrf_app_session* session){
 	
@@ -486,17 +491,22 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 
 		osrf_app_session_queue_wait( session, 0 );
 
-		/* if we're not stateless and not connected and the first 
-			message is not a connect message, then we do the connect first */
-		if(session->stateless) {
+		if(session->state != OSRF_SESSION_CONNECTED)  {
+
+			if(session->stateless) { /* stateless session always send to the root listener */
 				osrf_app_session_reset_remote(session);
 
-		} else {
+			} else { 
 
-			if( (msg->m_type != CONNECT) && (msg->m_type != DISCONNECT) &&
-				(session->state != OSRF_SESSION_CONNECTED) ) {
-				if(!osrf_app_session_connect( session )) 
-					return 0;
+				/* do an auto-connect if necessary */
+				if( ! session->stateless &&
+					(msg->m_type != CONNECT) && 
+					(msg->m_type != DISCONNECT) &&
+					(session->state != OSRF_SESSION_CONNECTED) ) {
+
+					if(!osrf_app_session_connect( session )) 
+						return 0;
+				}
 			}
 		}
 	}

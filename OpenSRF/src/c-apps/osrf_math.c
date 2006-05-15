@@ -72,6 +72,12 @@ int osrfMathRun( osrfMethodContext* ctx ) {
 			/* connect to db math */
 			osrfAppSession* ses = osrfAppSessionClientInit("opensrf.dbmath");
 
+			/* forcing an explicit connect allows us to talk to one worker backend
+			 * regardless of "stateful" config settings for the server 
+			 * This buys us nothing here since we're only sending one request...
+			 * */
+			/*osrfAppSessionConnect(ses);*/
+
 			/* dbmath uses the same method names that math does */
 			int req_id = osrfAppSessionMakeRequest( ses, newParams, ctx->method->name, 1, NULL );
 			osrfMessage* omsg = osrfAppSessionRequestRecv( ses, req_id, 60 );

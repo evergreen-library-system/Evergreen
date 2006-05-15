@@ -29,6 +29,18 @@ int osrf_prefork_run(char* appname) {
 	jsonObject* min_children = osrf_settings_host_value_object("/apps/%s/unix_config/min_children", appname);
 	jsonObject* max_children = osrf_settings_host_value_object("/apps/%s/unix_config/max_children", appname);
 
+	char* keepalive	= osrf_settings_host_value("/apps/%s/keepalive", appname);
+	time_t kalive;
+	if( keepalive ) {
+		kalive = atoi(keepalive);
+		free(keepalive);
+	} else {
+		kalive = 5; /* give it a default */
+	}
+
+	osrfLogInfo(OSRF_LOG_MARK, "keepalive setting = %d seconds", kalive);
+
+
 	
 	if(!max_req) osrfLogWarning( OSRF_LOG_MARK, "Max requests not defined, assuming 1000");
 	else maxr = (int) jsonObjectGetNumber(max_req);
@@ -58,6 +70,7 @@ int osrf_prefork_run(char* appname) {
 		osrfSystemGetTransportClient(), maxr, minc, maxc);
 
 	forker->appname = strdup(appname);
+	forker->keepalive	= kalive;
 
 	if(forker == NULL) {
 		osrfLogError( OSRF_LOG_MARK, "osrf_prefork_run() failed to create prefork_simple object");
@@ -148,9 +161,46 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 		return;
 	}
 
-	/* keepalive loop for stateful sessions */
+	osrfLogDebug( OSRF_LOG_MARK, "Entering keepalive loop for session %s", session->session_id );
+	int keepalive = child->keepalive;
+	int retval;
+	time_t start;
+	time_t end;
 
-		osrfLogDebug( OSRF_LOG_MARK, "Entering keepalive loop for session %s", session->session_id );
+	while(1) {
+
+		osrfLogDebug(OSRF_LOG_MARK, 
+				"osrf_prefork calling queue_wait [%d] in keepalive loop", keepalive);
+		start		= time(NULL);
+		retval	= osrf_app_session_queue_wait(session, keepalive);
+		end		= time(NULL);
+
+		if(retval) {
+			osrfLogError(OSRF_LOG_MARK, "queue-wait returned non-success %d", retval);
+			break;
+		}
+
+		/* see if the client disconnected from us */
+		if(session->state != OSRF_SESSION_CONNECTED) break;
+
+		/* see if the used up the timeout */
+		if( (end - start) >= keepalive ) {
+
+			osrfLogDebug(OSRF_LOG_MARK, "Keepalive timed out, exiting connected session");
+
+			osrfAppSessionStatus( 
+					session, 
+					OSRF_STATUS_TIMEOUT, 
+					"osrfConnectStatus", 
+					0, "Disconnected on timeout" );
+
+			break;
+		}
+	}
+
+	osrfLogDebug( OSRF_LOG_MARK, "Exiting keepalive loop for session %s", session->session_id );
+	osrfAppSessionFree( session );
+	return;
 }
 
 
@@ -205,6 +255,7 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 			data_fd[1], status_fd[0], status_fd[1] );
 
 	child->appname = strdup(forker->appname);
+	child->keepalive = forker->keepalive;
 
 
 	add_prefork_child( forker, child );

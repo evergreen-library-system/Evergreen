@@ -200,11 +200,14 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 
 		case DISCONNECT:
 				/* session will be freed by the forker */
+				osrfLogDebug(OSRF_LOG_MARK, "Client sent explicit disconnect");
+				session->state = OSRF_SESSION_DISCONNECTED;
 				return NULL;
 
 		case CONNECT:
 				osrfAppSessionStatus( session, OSRF_STATUS_OK, 
 						"osrfConnectStatus", msg->thread_trace, "Connection Successful" );
+				session->state = OSRF_SESSION_CONNECTED;
 				return NULL;
 
 		case REQUEST:
@@ -215,6 +218,7 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 
 		default:
 			osrfLogWarning( OSRF_LOG_MARK, "Server cannot handle message of type %d", msg->m_type );
+			session->state = OSRF_SESSION_DISCONNECTED;
 			return NULL;
 
 	}

@@ -800,6 +800,7 @@ int handle_math( char* words[] ) {
 int do_math( int count, int style ) {
 
 	osrf_app_session* session = osrf_app_client_session_init(  "opensrf.math" );
+	osrf_app_session_connect(session);
 
 	jsonObject* params = json_parse_string("[]");
 	jsonObjectPush(params,jsonNewObject("1"));

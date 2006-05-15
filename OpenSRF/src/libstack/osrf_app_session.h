@@ -144,6 +144,7 @@ int osrf_app_session_push_queue( osrf_app_session*, osrf_message* msg );
   * connection, 0 otherwise.
   */
 int osrf_app_session_connect( osrf_app_session* );
+int osrfAppSessionConnect( osrf_app_session* );
 
 /** Sends a disconnect message to the remote service.  No response is expected */
 int osrf_app_session_disconnect( osrf_app_session* );

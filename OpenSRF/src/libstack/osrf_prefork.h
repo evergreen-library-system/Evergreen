@@ -37,6 +37,7 @@ struct prefork_simple_struct {
 	int data_to_child;
 	int data_to_parent;
 	int current_num_children;
+	int keepalive; /* keepalive time for stateful sessions */
 	char* appname;
 	struct prefork_child_struct* first_child;
 	transport_client* connection;
@@ -53,6 +54,7 @@ struct prefork_child_struct {
 	int available;
 	int max_requests;
 	char* appname;
+	int keepalive;
 	struct prefork_child_struct* next;
 };
 
