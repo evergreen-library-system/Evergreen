@@ -1167,7 +1167,20 @@ cat.copy_browser.prototype = {
 		}
 	},
 
-	'refresh_list' : function() { alert('FIXME: refresh the list now'); },
+	'refresh_list' : function() { 
+		try {
+			var obj = this;
+			obj.list.clear();
+			obj.map_tree = {};
+			obj.map_acn = {};
+			obj.map_acp = {};
+			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+			obj.show_libs( org );
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Problem refreshing the volume/copy tree.',E);
+		}
+	},
 }
 
 dump('exiting cat.copy_browser.js\n');
