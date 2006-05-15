@@ -34,7 +34,6 @@ use JSON;
 our (
   $_parser,
   $_xslt,
-  $_storage,
   %record_xslt,
   %metarecord_xslt,
 );
@@ -143,7 +142,6 @@ sub child_init {
 	$logger->debug("Got here!");
 
 	# and finally, a storage server session
-	$_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
 
 	register_record_transforms();
 
@@ -188,6 +186,8 @@ sub retrieve_record_marcxml {
 	my $client = shift;
 	my $rid = shift;
 
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+
 	return
 	entityize(
 		$_storage
@@ -225,6 +225,8 @@ sub retrieve_record_transform {
 
 	(my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
 
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+
 	warn "Fetching record entry $rid\n";
 	my $marc = $_storage->request(
 		'open-ils.storage.direct.biblio.record_entry.retrieve',
@@ -240,6 +242,8 @@ sub retrieve_metarecord_mods {
 	my $self = shift;
 	my $client = shift;
 	my $rid = shift;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
 
 	# We want a session
 	$_storage->connect;
@@ -493,6 +497,8 @@ sub oISBN {
 
 	throw OpenSRF::EX::InvalidArg ('I need an ISBN please')
 		unless (length($isbn) >= 10);
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
 
 	# Create a storage session, since we'll be making muliple requests.
 	$_storage->connect;
