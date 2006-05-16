@@ -206,6 +206,7 @@
 
 	<vbox flex="1">
 		<deck id="top_pane"/>
+		<splitter><grippy/></splitter>
 		<menubar id="nav" hidden="true">
 			<menu label="Actions for this Record" accesskey="A">
 			<menupopup>
