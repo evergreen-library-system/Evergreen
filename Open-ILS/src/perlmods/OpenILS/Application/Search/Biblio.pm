@@ -760,6 +760,10 @@ sub multiclass_search {
 
 __PACKAGE__->register_method(
 	method		=> "marc_search",
+	api_name	=> "open-ils.search.biblio.marc.staff");
+
+__PACKAGE__->register_method(
+	method		=> "marc_search",
 	api_name	=> "open-ils.search.biblio.marc",
 	notes 		=> <<"	NOTES");
 		Example:
@@ -770,8 +774,12 @@ __PACKAGE__->register_method(
 
 sub marc_search {
 	my( $self, $conn, $args ) = @_;
-	my $records = $U->storagereq(
-		'open-ils.storage.biblio.full_rec.multi_search.atomic', %$args );
+
+	my $method = 'open-ils.storage.biblio.full_rec.multi_search';
+	$method .= ".staff" if $self->api_name =~ /staff/;
+	$method .= ".atomic";
+
+	my $records = $U->storagereq($method, %$args);
 
 	my $count = 0;
 
