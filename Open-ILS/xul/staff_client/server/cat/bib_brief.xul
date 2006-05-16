@@ -129,7 +129,7 @@
 	</script>
 
 	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
-		<caption label="Record Details" id="caption"/>
+		<caption label="Record Summary" id="caption"/>
 			<html:table width="90%">
 				<html:tr valign="top">
 					<html:td colspan="4">
