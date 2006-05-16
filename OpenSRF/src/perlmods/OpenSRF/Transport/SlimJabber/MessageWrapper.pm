@@ -1,5 +1,7 @@
 package OpenSRF::Transport::SlimJabber::MessageWrapper;
 use XML::LibXML;
+use OpenSRF::EX qw/:try/;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 sub new {
 	my $class = shift;
@@ -9,7 +11,17 @@ sub new {
 
 	my ($doc, $msg);
 	if ($xml) {
-		$doc = XML::LibXML->new->parse_string($xml);
+		my $err;
+
+		try {
+			$doc = XML::LibXML->new->parse_string($xml);
+		} catch Error with {
+			$err = shift; 
+			warn "MessageWrapper received bad XML : error = $err\nXML = $xml\n";
+			$logger->error("MessageWrapper received bad XML : error = $err : XML = $xml");
+		};
+		throw $err if $err;
+
 		$msg = $doc->documentElement;
 	} else {
 		$doc = XML::LibXML::Document->createDocument;
