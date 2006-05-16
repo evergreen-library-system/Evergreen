@@ -105,6 +105,7 @@ function _holdsUpdateEditHold(hold) {
 function holdsEditHold() {
 	var hold = holdsBuildHoldFromWindow();
 	//hold.id( holdEditHold.id() );
+	if(!hold) return;
 	holdsUpdate(hold);
 	showCanvas();
 	if(holdEditCallback) holdEditCallback(hold);
@@ -223,9 +224,9 @@ function holdsBuildHoldFromWindow() {
 
 	if( $('holds_enable_phone').checked ) {
 		var phone = $('holds_phone').value;
-		if( !phone.match(REGEX_PHONE) ) {
+		if( !phone || !phone.match(REGEX_PHONE) ) {
 			alert($('holds_bad_phone').innerHTML);
-			return;
+			return null;
 		}
 		hold.phone_notify(phone);
 
@@ -251,6 +252,8 @@ function holdsBuildHoldFromWindow() {
 }
 	
 function holdsPlaceHold(hold) {
+
+	if(!hold) return;
 
 	swapCanvas($('check_holds_box'));
 
