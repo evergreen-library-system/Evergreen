@@ -28,6 +28,7 @@ var PARAM_AUDIENCE	= 'a';
 var PARAM_SEARCHES	= 'ss';
 var PARAM_LANGUAGE	= 'la';
 var PARAM_TFORM		= 'tf'; /* temporary format for title result pages */
+var PARAM_RDEPTH		= 'rd';
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -59,11 +60,11 @@ var AUDIENCE;
 var SEARCHES;
 var LANGUAGE;
 var TFORM;
+var RDEPTH;
 
 /* cookie values */
 var SBEXTRAS; 
 var SKIN;
-
 
 /* cookies */
 var COOKIE_SB = "sbe";

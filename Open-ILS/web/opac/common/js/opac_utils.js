@@ -111,10 +111,12 @@ function initParams() {
 	SEARCHES = cgi.param(PARAM_SEARCHES);
 	LANGUAGE	= cgi.param(PARAM_LANGUAGE);
 	TFORM		= cgi.param(PARAM_TFORM);
+	RDEPTH	= cgi.param(PARAM_RDEPTH);
 
 	/* set up some sane defaults */
 	if(isNaN(LOCATION))	LOCATION	= 1;
 	if(isNaN(DEPTH))		DEPTH		= 0;
+	if(isNaN(RDEPTH))		RDEPTH	= 0;
 	if(isNaN(OFFSET))		OFFSET	= 0;
 	if(isNaN(COUNT))		COUNT		= 10;
 	if(isNaN(HITCOUNT))	HITCOUNT	= 0;
@@ -146,6 +148,7 @@ function clearSearchParams() {
 	AUDIENCE = null;
 	SEARCHES = null;
 	LANGUAGE = null;
+	RDEPTH	= null;
 }
 
 
@@ -187,6 +190,7 @@ function getItemType() { return ITEMTYPE; }
 function getAudience() { return AUDIENCE; }
 function getSearches() { return SEARCHES; }
 function getLanguage() { return LANGUAGE; }
+function getRdepth() { return RDEPTH; }
 
 
 function findBasePath() {
@@ -318,13 +322,17 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(SEARCHES,	PARAM_SEARCHES, args, getSearches, string);
 	if(getLanguage())
 		string += _appendParam(LANGUAGE,	PARAM_LANGUAGE, args, getLanguage, string);
+	if(getRdepth() != null)
+		string += _appendParam(RDEPTH,	PARAM_RDEPTH, args, getRdepth, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
 
+var xx = 1;
 function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 
 	var ret = "";
+
 
 	if(	fieldVar != null && 
 			(fieldVar +'' != 'NaN') && 
@@ -334,6 +342,7 @@ function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 
 		ret = "&" + fieldName + "=" + encodeURIComponent(getFunc());
 	}
+
 	return ret;
 }
 

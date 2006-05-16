@@ -83,16 +83,21 @@ function rresultCollectIds() {
 }
 
 function rresultExpandSearch() {
-	var link = buildOPACLink();
-	link += "&tmpdepth=" + findOrgDepth(globalOrgTree);
-	goTo(link);
+	var args = {};
+	args[PARAM_RDEPTH] = findOrgDepth(globalOrgTree);
+	goTo(buildOPACLink(args));
+}
+
+function rresultContractSearch() {
+	var args = {};
+	RDEPTH = null;
+	args[PARAM_OFFSET] = 0;
+	goTo(buildOPACLink(args));
 }
 
 
 function rresultGetDepth() {
-	var cgi = new CGI();
-	if(cgi.param('tmpdepth'))
-		return cgi.param('tmpdepth');
+	if( getRdepth() != null) return getRdepth();
 	return getDepth();
 }
 

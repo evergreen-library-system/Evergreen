@@ -57,7 +57,7 @@
 				</div>
 
 				<div class='hide_me' id='rresult_show_here' style='padding: 4px;'>
-					<a href='javascript:goTo(buildOPACLink());' id='rresult_show_here_link' 
+					<a href='javascript:rresultContractSearch();' id='rresult_show_here_link' 
 						class='classic_link'>Show records for </a>
 				</div>
 
