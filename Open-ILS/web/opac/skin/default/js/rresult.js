@@ -112,10 +112,13 @@ function rresultGetForm() {
 
 	if(!form) { /* did the user select a format from the advanced search */
 		form = getItemType();
+		var f = getItemForm();
+
 		if(form) {
 			form = form.replace(/,/,'');
-			var f = getItemForm();
 			if(f) form += '-' + f;
+		} else {
+			if(f) form = '-' + f;
 		}
 	}
 
