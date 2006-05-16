@@ -4,6 +4,7 @@
 
 	<!-- Overlays for this XUL file -->
 	<?xul-overlay href="chrome://open_ils_staff_client/content/admin/survey_overlay.xul"?>
+	<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
 
 <!-- This DTD declaration needs to be fixed for Mozilla locales -->
 <!DOCTYPE wizard SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
@@ -18,20 +19,7 @@
 	<script>dump('survey_wizard.xul loading\n');</script>
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
-	<scripts id="openils_util_scripts">
-		<script type="text/javascript" src="../main/constants.js" />
-		<script type="text/javascript" src="../OpenILS/util/utils.js" />
-		<script type="text/javascript" src="../OpenILS/util/CGI.js" />
-		<script type="text/javascript" src="../OpenILS/util/md5.js" />
-		<script type="text/javascript" src="../OpenILS/util/JSON.js" />
-		<script type="text/javascript" src="../OpenILS/util/fmall.js" />
-		<script type="text/javascript" src="../OpenILS/util/fmgen.js" />
-		<script type="text/javascript" src="../OpenILS/util/RemoteRequest.js" />
-		<!--
-		<script type="text/javascript" src="../OpenILS/util/OrgTree.js" />
-		-->
-		<script type="text/javascript" src="../OpenILS/util/org_utils.js" />   
-	</scripts>
+	<scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/admin/survey.js" />
