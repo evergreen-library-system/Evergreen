@@ -39,8 +39,8 @@
 													<span name='note' class='hide_me'><b>Copy Note</b></span>
 													<span name='cat' class='hide_me'><b>Copy Category</b></span>
 												</td>
-												<td name='key'> </td>
-												<td name='value' width='70%'> </td>
+												<td name='key' style='border-right: none;'> </td>
+												<td name='value' width='70%' style='border-left: none;'> </td>
 											</tr>
 										</tbody>
 									</table>

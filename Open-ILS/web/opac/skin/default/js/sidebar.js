@@ -71,6 +71,7 @@ function loggedInOK() {
 	unHideMe(G.ui.sidebar.logoutbox);
 	unHideMe(G.ui.sidebar.logged_in_as);
 	hideMe(G.ui.sidebar.loginbox);
+	runEvt( 'common', 'loggedIn');
 	runEvt( "common", "locationChanged", G.user.home_ou(), findOrgDepth(G.user.home_ou()) );
 }
 
