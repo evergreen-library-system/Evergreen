@@ -228,8 +228,11 @@ util.error.prototype = {
 	'standard_unexpected_error_alert' : function(msg,E) {
 		var obj = this;
 		if (typeof E.ilsevent != 'undefined') {
-			if (E.ilsevent == 0) {
-				msg = "The action involved likely succeeded, however, this part of the code needs to be updated to better understand success messages from the server.";
+			if (E.ilsevent == 0 /* SUCCESS */ ) {
+				msg = "The action involved likely succeeded, however, this part of the software needs to be updated to better understand success messages from the server, so please let us know about it.";
+			}
+			if (E.ilsevent == 5000 /* PERM_FAILURE */ ) {
+				msg = "The action involved likely failed due to insufficient permissions.  However, this part of the software needs to be updated to better understand permission messages from the server, so please let us know about it.";
 			}
 		}
 		if (!msg) msg = '';
