@@ -20,14 +20,7 @@ function mresultDoSearch() {
 
 	TFORM = null; /* clear the rresult tform var so it's not propogated */
 
-	if(getOffset() == 0) {
-		swapCanvas($('loading_alt'));
-		/*
-		searchTimer = new Timer('searchTimer',$('loading_alt_span'));
-		searchTimer.start();
-		*/
-	}
-
+	swapCanvas($('loading_alt'));
 	table = G.ui.result.main_table;
 
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
@@ -215,7 +208,22 @@ function mresultCollectRecords() {
 		if(isNull(records[x])) break;
 		if(isNaN(records[x])) continue;
 		var req = new Request(FETCH_MRMODS, records[x]);
+
 		req.request.userdata = i++;
+
+		/* wait at most 10 seconds for the mods rec to come back */
+		/* this needs more testing  */
+		req.request.timeout(10); 
+		req.request.abortCallback(
+			function(){
+				recordsHandled++;
+				if(resultPageIsDone()) {
+					runEvt('result', 'allRecordsReceived', recordsCache);
+					unHideMe($('copyright_block'));
+				}
+			}
+		);
+
 		req.callback(mresultHandleMods);
 		req.send();
 	}
@@ -225,7 +233,7 @@ function mresultHandleMods(r) {
 	var rec = r.getResultObject();
 	var pagePosition = r.userdata;
 	runEvt('result', 'recordReceived', rec, pagePosition, true);
-	resultCollectCopyCounts(rec, pagePosition, FETCH_MR_COPY_COUNTS);
+	if(rec) resultCollectCopyCounts(rec, pagePosition, FETCH_MR_COPY_COUNTS);
 	if(resultPageIsDone()) {
 		runEvt('result', 'allRecordsReceived', recordsCache);
 		unHideMe($('copyright_block')); /* *** */

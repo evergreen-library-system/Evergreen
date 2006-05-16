@@ -65,6 +65,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(item_type) args.item_type	= item_type;
 	if(item_form) args.item_form	= item_form;
 
+
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);

@@ -27,8 +27,6 @@ function abortAllRequests() {
 	for( var i in _allrequests ) {
 		var r = _allrequests[i];
 		if(r) {	
-			/* this has to come before abort() or IE will puke on you */
-			r.xmlhttp.onreadystatechange = function(){};
 			r.abort();
 			destroyRequest(r);
 		}
@@ -80,6 +78,28 @@ function RemoteRequest( service, method ) {
 
 }
 
+
+RemoteRequest.prototype.timeout = function(t) {
+	t *= 1000
+	var req = this;
+	req.timeoutFunc = setTimeout(
+		function() {
+			if( req && req.xmlhttp ) {
+				req.cancelled = true;
+				req.abort();
+				if( req.abtCallback ) {
+					req.abtCallback(req);
+				}
+			}
+		},
+		t
+	);
+}
+
+RemoteRequest.prototype.abortCallback = function(func) {
+	this.abtCallback = func;
+}
+
 RemoteRequest.prototype.event = function(evt) {
 	if( arguments.length > 0 )
 		this.evt = evt;
@@ -87,7 +107,11 @@ RemoteRequest.prototype.event = function(evt) {
 }
 
 RemoteRequest.prototype.abort = function() {
-	if( this.xmlhttp ) this.xmlhttp.abort();
+	if( this.xmlhttp ) {
+		/* this has to come before abort() or IE will puke on you */
+		this.xmlhttp.onreadystatechange = function(){};
+		this.xmlhttp.abort();
+	}
 }
 
 /* constructs our XMLHTTPRequest object */

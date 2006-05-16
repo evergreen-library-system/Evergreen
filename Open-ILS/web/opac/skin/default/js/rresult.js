@@ -13,6 +13,12 @@ attachEvt("result", "recordDrawn", rresultLaunchDrawn);
 hideMe($('copyright_block')); 
 
 function rresultDoSearch() {
+
+	swapCanvas($('loading_alt'));
+	/*
+	if(getOffset() == 0) swapCanvas($('loading_alt'));
+	*/
+
 	table = G.ui.result.main_table;
 	hideMe(G.ui.result.row_template);
 	while( table.parentNode.rows.length <= (getDisplayCount() +1) ) 
