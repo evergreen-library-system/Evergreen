@@ -92,8 +92,14 @@ sub ordered_records_from_metarecord {
 			  FROM	$sm_table sm,
 				$br_table br,
 				$fr_table fr,
+				$descendants d,
+				$cn_table cn,
+				$cp_table cp,
 				$rd_table rd
 			  WHERE	rd.record = sm.source
+				AND cp.circ_lib = d.id
+				AND cn.id = cp.call_number
+				AND cn.record = sm.source
 				AND fr.record = sm.source
 			  	AND br.id = sm.source
 				AND sm.metarecord = ?
