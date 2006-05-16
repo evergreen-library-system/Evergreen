@@ -29,8 +29,10 @@ function mresultDoSearch() {
 	if( (getSearches() || getAdvTerm()) && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
+		/*
 		if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
 		if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
+		*/
 
 	} else {
 		_mresultCollectIds(); 
@@ -57,31 +59,6 @@ function mresultTryCachedSearch() {
 	return false;
 }
 
-/*
-function _mresultParseQuery() {
-	var term = getTerm();
-	var matches = term.match(/(\w+=\w+)/g);
-	var type = true;
-	if( matches ) {
-		var args = {};
-		for( var i = 0; i < matches.length; i++ ) {
-			var search = matches[i];
-			var stype = search.replace(/=\w+/,"");
-			var term = search.replace(/\w+=/,"");
-			args[stype] = { 'term' : term };
-		}
-		 ADVTERM = js2JSON(args);
-		type = false;
-	}
-	return type;
-}
-*/
-
-/*
-function _mresultCollectIds() { _mresultCollectSearchIds(true); }
-function mresultCollectAdvIds() { _mresultCollectSearchIds(false); }
-*/
-
 function _mresultCollectIds() { 
 	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
 	resultCollectSearchIds(true, SEARCH_MRS, mresultHandleMRIds ); 
@@ -91,55 +68,6 @@ function mresultCollectAdvIds() {
 	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
 	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
 }
-
-/*
-function _mresultCollectSearchIds( type ) {
-
-	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
-
-	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
-
-	var item_type;
-	var item_form;
-	var args = {};
-
-	if( type ) {
-		args.searches = {};
-		args.searches[getStype()] = {};
-		args.searches[getStype()].term = getTerm();
-
-		var form = parseForm(getForm());
-		item_type = form.item_type;
-		item_form = form.item_form;
-
-	} else {
-		args.searches = JSON2js(getSearches());
-		item_type = (getItemType()) ? getItemType().split(/,/) : null;
-		item_form = (getItemForm()) ? getItemForm().split(/,/) : null;
-	}
-
-	args.org_unit = getLocation();
-	args.depth    = getDepth();
-	args.limit    = mresultPreCache;
-	args.offset   = getOffset();
-
-	if(sort) args.sort = sort;
-	if(sortdir) args.sort_dir = sortdir;
-	if(item_type) args.item_type	= item_type;
-	if(item_form) args.item_form	= item_form;
-
-	if(getAudience()) args.audience = getAudience().split(/,/);
-	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
-
-	alert(js2JSON(args));
-
-	var req = new Request(SEARCH_MRS, args);
-	req.callback(mresultHandleMRIds);
-	req.send();
-}
-*/
-
 
 function mresultCollectAdvMARCIds() {
 	if(!mresultTryCachedSearch()) {
@@ -152,6 +80,7 @@ function mresultCollectAdvMARCIds() {
 	}
 }
 
+/*
 function mresultCollectAdvISBNIds() {
 	if(!mresultTryCachedSearch()) {
 		var req = new Request(FETCH_ADV_ISBN_MRIDS, getAdvTerm() );
@@ -167,6 +96,7 @@ function mresultCollectAdvISSNIds() {
 		req.send();
 	}
 }
+*/
 
 
 function mresultHandleMRIds(r) {
@@ -181,6 +111,8 @@ function mresultHandleMRIds(r) {
 function mresultSetRecords(idstruct) {
 	if(!idstruct) return;
 	var o = getOffset();
+
+	alert(js2JSON(idstruct));
 
 	for( var x = o; x < idstruct.length + o; x++ ) {
 		if( idstruct[x-o] != null ) {

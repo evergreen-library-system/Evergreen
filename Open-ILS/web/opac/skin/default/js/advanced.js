@@ -18,12 +18,12 @@ function advISBNRun() {
 	var isbn = $('opac.advanced.quick.isbn').value;
 	if(!isbn) return;
 	var arg					= {};
-	arg.page					= MRESULT;
+	arg.page					= RRESULT;
 	arg[PARAM_STYPE]		= "";
 	arg[PARAM_TERM]		= "";
-	arg[PARAM_ADVTERM]	= isbn;
+	arg[PARAM_RTYPE]		= RTYPE_ISBN;
 	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_ADVTYPE]	= ADVTYPE_ISBN;
+	arg[PARAM_ADVTERM]	= isbn;
 	goTo(buildOPACLink(arg));
 }
 
@@ -31,12 +31,12 @@ function advISSNRun() {
 	var issn = $('opac.advanced.quick.issn').value;
 	if(!issn) return;
 	var arg					= {};
-	arg.page					= MRESULT;
+	arg.page					= RRESULT;
 	arg[PARAM_STYPE]		= "";
 	arg[PARAM_TERM]		= "";
 	arg[PARAM_ADVTERM]	= issn;
 	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_ADVTYPE]	= ADVTYPE_ISSN;
+	arg[PARAM_RTYPE]		= RTYPE_ISSN;
 	goTo(buildOPACLink(arg));
 }
 

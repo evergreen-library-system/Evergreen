@@ -103,6 +103,8 @@ var RTYPE_KEYWORD	= STYPE_KEYWORD;
 var RTYPE_LIST		= "list";
 var RTYPE_MULTI	= 'multi';
 var RTYPE_MARC		= 'marc';
+var RTYPE_ISBN		= 'isbn';
+var RTYPE_ISSN		= 'issn';
 
 var SORT_TYPE_REL			= "rel";
 var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 
@@ -114,8 +116,11 @@ var SORT_DIR_DESC			= "desc";
 /* types of advanced search */
 var ADVTYPE_MULTI = 'ml';
 var ADVTYPE_MARC	= 'ma';
+
+/*
 var ADVTYPE_ISBN	= 'isbn';
 var ADVTYPE_ISSN	= 'issn';
+*/
 
 var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 
@@ -285,8 +290,8 @@ var FETCH_TOC						= "open-ils.search:open-ils.search.added_content.toc.retrieve
 var FETCH_ACONT_SUMMARY			= "open-ils.search:open-ils.search.added_content.summary.retrieve";
 var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve_by_barcode";
 var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
-var FETCH_ADV_ISBN_MRIDS		= "open-ils.search:open-ils.search.biblio.isbn";
-var FETCH_ADV_ISSN_MRIDS		= "open-ils.search:open-ils.search.biblio.issn";
+var FETCH_ADV_ISBN_RIDS			= "open-ils.search:open-ils.search.biblio.isbn";
+var FETCH_ADV_ISSN_RIDS			= "open-ils.search:open-ils.search.biblio.issn";
 var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.target';
 var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
 var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';

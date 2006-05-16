@@ -802,6 +802,7 @@ sub biblio_search_isbn {
 	my $e = OpenILS::Utils::Editor->new;
 	my $recs = $e->request(
 		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
+	#$recs = [ map { [$_] } @$recs ]; # for consistancy
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
@@ -817,6 +818,7 @@ sub biblio_search_issn {
 	my $e = OpenILS::Utils::Editor->new;
 	my $recs = $e->request(
 		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
+	#$recs = [ map { [$_] } @$recs ]; # for consistancy
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
@@ -835,8 +837,6 @@ sub fetch_mods_by_copy {
 	return OpenILS::Event->new('ITEM_NOT_CATALOGED') unless $record->marc;
 	return $apputils->record_to_mvr($record);
 }
-
-
 
 
 

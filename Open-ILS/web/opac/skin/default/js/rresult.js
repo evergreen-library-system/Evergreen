@@ -55,6 +55,15 @@ function rresultCollectIds() {
 			rresultCollectMARCIds();
 			break;
 
+		case RTYPE_ISBN :
+			rresultCollectISBNIds();
+			break;
+
+		case RTYPE_ISSN :
+			rresultCollectISSNIds();
+			break;
+
+
 		case RTYPE_MRID :
 		case null :
 		case "" :
@@ -136,6 +145,29 @@ function rresultCollectMARCIds() {
 
 	var req = new Request(FETCH_ADV_MARC_MRIDS, args);
 	req.callback(rresultHandleRIds);
+	req.send();
+}
+
+
+function rresultCollectISBNIds() {
+	var req = new Request(FETCH_ADV_ISBN_RIDS, getAdvTerm() );
+	req.callback(
+		function(r) {
+			var blob = r.getResultObject();
+			_rresultHandleIds(blob.ids, blob.count);
+		}
+	);
+	req.send();
+}
+
+function rresultCollectISSNIds() {
+	var req = new Request(FETCH_ADV_ISSN_RIDS, getAdvTerm() );
+	req.callback(
+		function(r) {
+			var blob = r.getResultObject();
+			_rresultHandleIds(blob.ids, blob.count);
+		}
+	);
 	req.send();
 }
 
