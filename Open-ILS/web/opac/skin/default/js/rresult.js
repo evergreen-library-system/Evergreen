@@ -99,10 +99,21 @@ function rresultGetDepth() {
 
 function rresultGetForm() {
 	var form;
-	if(getTform()) 
+
+	if(getTform())  /* did the user select a format from the icon list (temporary) */
 		form = (getTform() == 'all') ? null : getTform();
-	else 
+	else  /* did the use select a format from simple search dropdown */
 		form = (getForm() == 'all') ? null : getForm();
+
+	if(!form) { /* did the user select a format from the advanced search */
+		form = getItemType();
+		if(form) {
+			form = form.replace(/,/,'');
+			var f = getItemForm();
+			if(f) form += '-' + f;
+		}
+	}
+
 	return form;
 }
 
