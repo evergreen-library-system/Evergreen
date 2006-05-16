@@ -1625,12 +1625,11 @@ sub checkedout_count {
 		$login_session, $userid, 'VIEW_CIRCULATIONS' );
 	return $evt if $evt;
 	
-
 	my $circs = $apputils->simple_scalar_request(
 			"open-ils.storage",
 			"open-ils.storage.direct.action.circulation.search_where.atomic",
-			{ usr => $userid,
-			  checkin_time => {"=" => undef } }
+			{ usr => $userid, stop_fines => undef }
+			#{ usr => $userid, checkin_time => {"=" => undef } }
 	);
 
 	my $parser = DateTime::Format::ISO8601->new;
