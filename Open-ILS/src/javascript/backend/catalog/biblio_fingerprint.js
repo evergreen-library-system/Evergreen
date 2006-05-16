@@ -20,7 +20,7 @@ var a = '';
 try {
 	// first, related items entries (700t)
 	var t = marcdoc.datafield.( @tag == '700' ).subfield.( @code == 't');
-	if (!t.length()) throw "No title in 700";
+	if (!t.length()) throw "No title in related item added entry (700)";
 	
 	a = t.parent().subfield.( @code == 'a' );
 
@@ -30,6 +30,7 @@ try {
 	log_debug("author: " + a);
 } catch(e) {
 	log_debug(e);
+	log_debug("Looking in main entries");
 	try {
 		var _t = marcdoc.datafield.( @tag == '240' || @tag == '242' || @tag == '246').subfield.( @code == 'a' );
 		if (!_t.length()) throw "No title in 240, 242, 246";
@@ -37,6 +38,7 @@ try {
 		log_debug("Title: " + t);
 		quality += 25;
 	} catch(e) {
+		log_debug("Using title proper (245a)");
 		log_debug(e);
 		t = marcdoc.datafield.( @tag == '245' ).subfield.( @code == 'a' );
 		t = t[0];
@@ -44,15 +46,16 @@ try {
 	}
 
 	try {
-		var _a = marcdoc.datafield.( @tag == '110' || @tag == '111').subfield.( @code == 'a' );
-		if (!_a.length()) throw "No author in 110, 111";
+		var _a = marcdoc.datafield.( @tag == '100' || @tag == '110' || @tag == '111').subfield.( @code == 'a' );
+		if (!_a.length()) throw "No author in 100, 110, 111";
 		
 		a = _a[0];
 		log_debug("Author: " + a);
 
 	} catch(e) {
 		log_debug(e);
-		a = marcdoc.datafield.( @tag == '100' ).subfield.( @code == 'a' );
+		log_debug("Trying to find a publisher (260b)");
+		a = marcdoc.datafield.( @tag == '260' ).subfield.( @code == 'b' );
 		a = a[0];
 	}
 }
@@ -87,9 +90,6 @@ if (!author) {
 author = author.toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
 
 result.fingerprint = title + author;
-
-// now we deal with marc stuff...
-default xml namespace = marc_ns;
 
 if (marcdoc.datafield.(@tag == '040').subfield.(@code == 'a').toString().match(/DLC/)) {
 	quality += 5;
