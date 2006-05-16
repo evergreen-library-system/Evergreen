@@ -20,6 +20,14 @@ my %PERMS = (
 	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
 );
 
+my $logstr;
+use constant E => 'error';
+use constant W => 'warn';
+use constant I => 'info';
+use constant D => 'debug';
+use constant A => 'activity';
+
+
 
 
 
@@ -33,7 +41,23 @@ sub new {
 	$class = ref($class) || $class;
 	my $self = bless( \%params, $class );
 	$self->{checked_perms} = {};
+	$logstr = "editor [0";
+	$logstr = "editor [1" if $self->{xact};
 	return $self;
+}
+
+# -----------------------------------------------------------------------------
+# Log the editor metadata along with the log string
+# -----------------------------------------------------------------------------
+sub log {
+	my( $self, $lev, $str ) = @_;
+	my $s = "editor[";
+	$s .= "0|" unless $self->{xact};
+	$s .= "1|" if $self->{xact};
+	$s .= "0" unless $self->requestor;
+	$s .= $self->requestor->id if $self->requestor;
+	$s .= "]";
+	$logger->$lev("$s $str");
 }
 
 # -----------------------------------------------------------------------------
@@ -41,7 +65,7 @@ sub new {
 # -----------------------------------------------------------------------------
 sub checkauth {
 	my $self = shift;
-	$logger->debug("editor: checking auth token ".$self->authtoken);
+	$self->log(D, "checking auth token ".$self->authtoken);
 	my ($reqr, $evt) = $U->checkses($self->authtoken);
 	$self->event($evt) if $evt;
 	return $self->{requestor} = $reqr;
@@ -57,6 +81,9 @@ sub event {
 	return $self->{event};
 }
 
+# -----------------------------------------------------------------------------
+# Clears the last caught event
+# -----------------------------------------------------------------------------
 sub clear_event {
 	my $self = shift;
 	$self->{event} = undef;
@@ -81,37 +108,45 @@ sub session {
 
 		if( ! $self->{session} ) {
 			my $str = "Error creating storage session with OpenSRF::AppSession->create()!";
-			$logger->error($str);
+			$self->log(E, $str);
 			throw OpenSRF::EX::ERROR ($str);
 		}
 
 		$self->{session}->connect if $self->{xact} or $self->{connect};
 		$self->xact_start if $self->{xact};
-		$logger->debug("editor: creating a non-xact session") unless $self->{xact};
 	}
 	return $self->{session};
 }
 
 
+# -----------------------------------------------------------------------------
+# Starts a storage transaction
+# -----------------------------------------------------------------------------
 sub xact_start {
 	my $self = shift;
-	$logger->debug("editor: starting new db session");
+	$self->log(D, "starting new db session");
 	my $stat = $self->request('open-ils.storage.transaction.begin');
-	$logger->error("editor: error starting database transaction") unless $stat;
+	$self->log(E, "error starting database transaction") unless $stat;
 	return $stat;
 }
 
+# -----------------------------------------------------------------------------
+# Commits a storage transaction
+# -----------------------------------------------------------------------------
 sub xact_commit {
 	my $self = shift;
-	$logger->debug("editor: comitting db session");
+	$self->log(D, "comitting db session");
 	my $stat = $self->request('open-ils.storage.transaction.commit');
-	$logger->error("editor: error comitting database transaction") unless $stat;
+	$self->log(E, "error comitting database transaction") unless $stat;
 	return $stat;
 }
 
+# -----------------------------------------------------------------------------
+# Rolls back a storage stransaction
+# -----------------------------------------------------------------------------
 sub xact_rollback {
 	my $self = shift;
-	$logger->info("editor: rolling back db session");
+	$self->log(I, "rolling back db session");
 	return $self->request("open-ils.storage.transaction.rollback");
 }
 
@@ -132,7 +167,6 @@ sub commit {
 # -----------------------------------------------------------------------------
 sub reset {
 	my $self = shift;
-	$logger->debug("editor: cleaning up");
 	$self->session->disconnect if $self->{session};
 	$$self{$_} = undef for (keys %$self);
 }
@@ -163,7 +197,7 @@ sub request {
 
 	} catch Error with {
 		my $err = shift;
-		$logger->error("Request error $method=@params : $err");
+		$self->log(E, "request error $method=@params : $err");
 	};
 
 	throw $err if $err;
@@ -171,11 +205,16 @@ sub request {
 }
 
 
+# -----------------------------------------------------------------------------
+# Sets / Returns the requstor object.  This is set when checkauth succeeds.
+# -----------------------------------------------------------------------------
 sub requestor {
 	my($self, $requestor) = @_;
 	$self->{requestor} = $requestor if $requestor;
 	return $self->{requestor};
 }
+
+
 
 # -----------------------------------------------------------------------------
 # Holds the last data received from a storage call
@@ -216,7 +255,7 @@ sub allowed {
 	my( $self, $perm, $org ) = @_;
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
-	$logger->info("editor: checking perms user=$uid, org=$org, perm=$perm");
+	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
 	return 1 if $self->perm_checked($perm, $org); 
 
 	my $s = $self->request(
@@ -244,7 +283,7 @@ sub checkperm {
 		return undef if $self->perm_checked($perm, $org);
 		return $self->event unless $self->allowed($perm, $org);
 	} else {
-		$logger->error("editor: no perm provided for $ptype.$action");
+		$self->log(E, "no perm provided for $ptype.$action");
 	}
 	return undef;
 }
@@ -257,14 +296,11 @@ sub checkperm {
 sub log_activity {
 	my( $self, $type, $action, $arg ) = @_;
 	my $str = "$type.$action";
-
-	if( $self->requestor ) {
-		$str = "$str [requestor=".$self->requestor->id."] : ";
-	} else { $str = "$str : "; }
-
 	$str .= _prop_string($arg);
-	$logger->activity($str);
+	$self->log(A, $str);
 }
+
+
 
 sub _prop_string {
 	my $obj = shift;
@@ -278,11 +314,19 @@ sub _prop_string {
 	return $str;
 }
 
-sub _hash_string {
+sub _hash_to_string {
 	my $h = shift;
 	my $str = "";
 	$str .= " $_=".$h->{$_} for keys %$h;
 	return $str;
+}
+
+sub _arg_to_string {
+	my( $action, $arg ) = @_;
+	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
+	return _hash_to_string($arg) if ref $arg eq 'HASH'; # search
+	return "[@$arg]" if ref $arg eq 'ARRAY';
+	return $arg; # retrieve
 }
 
 
@@ -318,6 +362,7 @@ sub runmethod {
 
 	my @arg = ($arg);
 	my $method = "open-ils.storage.direct.$type.$action";
+	my $argstr = _arg_to_string($action, $arg);
 
 	if( $action eq 'search' ) {
 		$method =~ s/search/search_where/o;
@@ -334,9 +379,7 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
-	my $ps = $arg;
-	$ps = _hash_string($arg) if ref $arg eq 'HASH';
-	$logger->info("editor: performing $action on $type : $ps");
+	$self->log(I, "performing $action on $type : $argstr");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
 	}
@@ -355,14 +398,11 @@ sub runmethod {
 
 	try {
 		$obj = $self->request($method, @arg);
-	} catch Error with {
-		$err = shift;
-	};
+	} catch Error with { $err = shift; };
 	
-	# Generate the not-found event in case we need it
 
 	if(!defined $obj) {
-		$logger->info("editor: request returned no data");
+		$self->log(I, "request returned no data");
 
 		if( $action eq 'retrieve' ) {
 			$self->event(_mk_not_found($type, $arg));
@@ -384,14 +424,13 @@ sub runmethod {
 		return undef;
 	}
 
-
 	if( $action eq 'search' or $action eq 'batch_retrieve') {
-		$logger->info("editor: $action $type : $ps returned ".scalar(@$obj). " result(s)");
+		$self->log(I, "$action $type : returned ".scalar(@$obj). " result(s)");
 		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
 
-	$arg->id($obj) if $action eq 'create';
-	$self->data($obj);
+	$arg->id($obj) if $action eq 'create'; # grabs the id on create
+	$self->data($obj); # cache the data for convenience
 
 	return ($obj) ? $obj : 1;
 }
