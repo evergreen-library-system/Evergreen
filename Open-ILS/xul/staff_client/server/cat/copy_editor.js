@@ -72,7 +72,7 @@ function my_init() {
 					"Status",
 					{ 
 						render: 'fm.status().name();', 
-						input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(ev) { g.apply("status",ev.target.value); }, false);',
+						input: 'c = function(v){ g.apply("status",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 					}
 				]
 			);
@@ -132,10 +132,9 @@ function my_init() {
 				{
 					render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
 						+ sc.id() + '; } ); l ? l.value() : null;',
-					input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ); '
-						+ 'x.addEventListener("command",function(ev) { g.apply_stat_cat(' + sc.id()
-						+ ', ev.target.value); } ,false);',
+						+ 'x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
 				}
 			];
 
@@ -340,77 +339,77 @@ g.right_pane_field_names = [
 		"Alert Message",
 		{
 			render: 'fm.alert_message();',
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("alert_message",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("alert_message",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	 [
 		"Circulate as Type",	
 		{ 	
 			render: 'fm.circ_as_type();',
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("circ_as_type",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("circ_as_type",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[
 		"Circulation Library",		
 		{ 	
 			render: 'fm.circ_lib().shortname();',
-			input: 'x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(ev) { g.apply("circ_lib",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("circ_lib",v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[
 		"Circulation Modifier",
 		{	
 			render: 'fm.circ_modifier();',
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("circ_modifier",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("circ_modifier",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Circulate?",
 		{ 	
-			render: 'fm.circulate() ? "Yes" : "No";',
-			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("circulate",ev.target.value); }, false);',
+			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
+			input: 'c = function(v){ g.apply("circulate",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Copy Number",
 		{ 
 			render: 'fm.copy_number();',
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("copy_number",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("copy_number",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Deposit?",
 		{ 
 			render: 'fm.deposit() ? "Yes" : "No";',
-			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("deposit",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("deposit",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Deposit Amount",
 		{ 
 			render: 'util.money.sanitize( fm.deposit_amount() );',
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("deposit_amount",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("deposit_amount",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Fine Level",
 		{
 			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
-			input: 'x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(ev) { g.apply("fine_level",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("fine_level",v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Holdable?",
 		{ 
 			render: 'fm.holdable() ? "Yes" : "No";', 
-			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("holdable",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("holdable",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Loan Duration",
 		{ 
 			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
-			input: 'x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(ev) { g.apply("loan_duration",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("loan_duration",v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
@@ -418,7 +417,7 @@ g.right_pane_field_names = [
 		"Shelving Location",
 		{ 
 			render: 'fm.location().name();', 
-			input: 'x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(ev) { g.apply("location",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("location",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
@@ -426,21 +425,21 @@ g.right_pane_field_names = [
 		"OPAC Visible?",
 		{ 
 			render: 'fm.opac_visible() ? "Yes" : "No";', 
-			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("opac_visible",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("opac_visible",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Price",
 		{ 
 			render: 'util.money.sanitize( fm.price() );', 
-			input: 'x = document.createElement("textbox"); x.addEventListener("change",function(ev) { g.apply("deposit_amount",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("price",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Reference?",
 		{ 
 			render: 'fm.ref() ? "Yes" : "No";', 
-			input: 'x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(ev) { g.apply("ref",ev.target.value); }, false);',
+			input: 'c = function(v){ g.apply("ref",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ];
@@ -735,8 +734,16 @@ g.render_input = function(node,input_cmd) {
 		var btn = document.createElement('button'); deck.appendChild(btn);
 		deck.setAttribute('style','width: 200px; min-width: 200px;');
 		btn.setAttribute('label','Change');
-		btn.setAttribute('oncommand','this.parentNode.selectedIndex = 1;');
-		var x; eval( input_cmd );
+		var x; var c; eval( input_cmd );
+		btn.addEventListener('command',
+			function(f) {
+				return function(ev) {
+					ev.target.parentNode.selectedIndex = 1;
+					c(ev.target.parentNode.lastChild.value);
+				}
+			}(c),
+			false
+		);
 		if (x) deck.appendChild(x);
 
 	} catch(E) {
@@ -750,7 +757,6 @@ g.render_input = function(node,input_cmd) {
 g.stash_and_close = function() {
 	if (g.handle_update) {
 		try {
-			alert('c-pause');
 			var r = g.network.request(
 				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
@@ -760,7 +766,6 @@ g.stash_and_close = function() {
 				g.error.standard_unexpected_error_alert('copy update',r);
 			}
 			/* FIXME -- revisit the return value here */
-			alert('c-pause');
 		} catch(E) {
 			alert('copy update error: ' + js2JSON(E));
 		}

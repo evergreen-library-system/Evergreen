@@ -57,7 +57,7 @@
 		<hbox id="nav">
 			<spacer flex="1"/>
 			<button id="copy_notes" label="Copy Notes" accesskey="N" oncommand="g.copy_notes();"/>
-			<button id="save" label="Modify" hidden="true"
+			<button id="save" label="Modify" hidden="true" accesskey="M"
 				oncommand="g.stash_and_close();"/>
 			<button id="cancel" label="Close" accesskey="C" 
 				oncommand="window.close();"/>
