@@ -41,10 +41,10 @@ function my_init() {
 		$('duedate_menu').addEventListener('command',handle_duedate_menu,false);
 
 		$('submit').addEventListener('command',function(ev){
-			save_xacts(); next_patron(); /* kludge ev.target.focus(); next_patron(); */
+			save_xacts(); next_patron();
 		},false);
 		$('cancel').addEventListener('command',function(ev){
-			next_patron(); /* kludge ev.target.focus(); next_patron(); */
+			next_patron('cancel');
 		},false);
 
 		var file; var list_data; var ml;
@@ -257,10 +257,10 @@ function save_xacts() {
 	file.close();
 }
 
-function next_patron() {
+function next_patron(cancel) {
 	try {
 	
-		if ($('print_receipt').checked) {
+		if ($('print_receipt').checked && (cancel!='cancel')) {
 			try {
 				var params = {
 					'patron_barcode' : $('p_barcode').value,

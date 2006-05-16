@@ -5,7 +5,7 @@ function my_init() {
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
-		g.error.sdump('D_TRACE','my_init() for offline_checkout.xul');
+		g.error.sdump('D_TRACE','my_init() for offline_checkin.xul');
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
@@ -13,7 +13,7 @@ function my_init() {
 
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-		JSAN.use('util.list'); g.list = new util.list('checkout_list');
+		JSAN.use('util.list'); g.list = new util.list('checkin_list');
 		JSAN.use('circ.util');
 		g.list.init( {
 			'columns' : circ.util.offline_checkin_columns(),

@@ -39,6 +39,7 @@ function my_init() {
 		$('duedate_menu').addEventListener('command',handle_duedate_menu,false);
 
 		$('submit').addEventListener('command',next_patron,false);
+		$('cancel').addEventListener('command',function(){next_patron('cancel');},false);
 
 		JSAN.use('util.file');
 		var file = new util.file('offline_delta'); 
@@ -203,35 +204,38 @@ function append_to_list(checkout_type,count) {
 	}
 }
 
-function next_patron() {
+function next_patron(cancel) {
 	try {
-		JSAN.use('util.file'); var file = new util.file('pending_xacts');
-		var rows = g.list.dump_with_keys();
-		for (var i = 0; i < rows.length; i++) {
-			var row = rows[i]; row.delta = g.delta;
-			if (row.patron_barcode == '') {
-				delete(row.patron_barcode);
-			}
-			file.append_object(row);
-		}
-		file.close();
-		
-		if ($('print_receipt').checked) {
-			try {
-				var params = {
-					'patron_barcode' : $('p_barcode').value,
-					'header' : g.data.print_list_templates.offline_renew.header,
-					'line_item' : g.data.print_list_templates.offline_renew.line_item,
-					'footer' : g.data.print_list_templates.offline_renew.footer,
-					'type' : g.data.print_list_templates.offline_renew.type,
-					'list' : g.list.dump(),
-				};
-				JSAN.use('util.print'); var print = new util.print();
-				print.tree_list( params );
-			} catch(E) {
-				g.error.sdump('D_ERROR','print: ' + E);
-				alert('print: ' + E);
-			}
+
+		if (cancel!='cancel') {
+				JSAN.use('util.file'); var file = new util.file('pending_xacts');
+				var rows = g.list.dump_with_keys();
+				for (var i = 0; i < rows.length; i++) {
+					var row = rows[i]; row.delta = g.delta;
+					if (row.patron_barcode == '') {
+						delete(row.patron_barcode);
+					}
+					file.append_object(row);
+				}
+				file.close();
+				
+				if ($('print_receipt').checked) {
+					try {
+						var params = {
+							'patron_barcode' : $('p_barcode').value,
+							'header' : g.data.print_list_templates.offline_renew.header,
+							'line_item' : g.data.print_list_templates.offline_renew.line_item,
+							'footer' : g.data.print_list_templates.offline_renew.footer,
+							'type' : g.data.print_list_templates.offline_renew.type,
+							'list' : g.list.dump(),
+						};
+						JSAN.use('util.print'); var print = new util.print();
+						print.tree_list( params );
+					} catch(E) {
+						g.error.sdump('D_ERROR','print: ' + E);
+						alert('print: ' + E);
+					}
+				}
 		}
 
 		g.list.clear();

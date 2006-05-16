@@ -74,7 +74,7 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<button id="cancel" label="Cancel" />
+					<button id="cancel" label="Cancel" oncommand="g.list.clear()"/>
 					<button id="submit" label="Save these transactions" accesskey="S" />
 				</hbox>
 			</vbox>
