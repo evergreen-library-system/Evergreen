@@ -201,6 +201,10 @@
 				'chrome,resizable,modal,center'
 			);
 		}
+
+		function refresh() {
+			alert('Not yet implemented.  Work around: Choose Duplicate in New Tab option');
+		}
 	]]>
 	</script>
 

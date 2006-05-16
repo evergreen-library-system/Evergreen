@@ -372,7 +372,7 @@ cat.record_buckets.prototype = {
 								}
 								xml += '</tr><tr valign="top">';
 								for (var i = 0; i < record_ids.length; i++) {
-									xml += '<td nowrap="nowrap"><iframe src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ); 
+									xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
 									xml += '?docid=' + record_ids[i] + '"/></td>';
 								}
 								xml += '</tr><tr valign="top">';
@@ -480,6 +480,13 @@ cat.record_buckets.prototype = {
 		);
 		this.controller.render();
 
+		if (typeof xulG == 'undefined') {
+			obj.controller.view.cmd_sel_opac.disabled = true;
+			obj.controller.view.cmd_sel_opac.setAttribute('disabled',true);
+		} else {
+			obj.controller.view.cmd_record_buckets_done.disabled = true;
+			obj.controller.view.cmd_record_buckets_done.setAttribute('disabled',true);
+		}
 	},
 
 	'flesh_item_for_list' : function(docid,bucket_item_id) {

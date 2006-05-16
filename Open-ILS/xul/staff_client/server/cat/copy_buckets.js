@@ -349,7 +349,7 @@ cat.copy_buckets.prototype = {
 								xml += '"' + volume.label() + '" on the following record?</description>';
 								xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
 								xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								xml += '<iframe style="overflow: scroll" flex="1" src="' + xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + volume.record() + '"/>';
+								xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + volume.record() + '"/>';
 								xml += '</vbox>';
 								obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
 								window.open(
@@ -442,6 +442,14 @@ cat.copy_buckets.prototype = {
 		);
 		this.controller.render();
 
+		if (typeof xulG == 'undefined') {
+			obj.controller.view.cmd_export_to_copy_status.disabled = true;
+			obj.controller.view.cmd_export_to_copy_status.setAttribute('disabled',true);
+		} else {
+			obj.controller.view.cmd_copy_buckets_done.disabled = true;
+			obj.controller.view.cmd_copy_buckets_done.setAttribute('disabled',true);
+		}
+	
 	},
 
 	'flesh_item_for_list' : function(acp_id,bucket_item_id) {
