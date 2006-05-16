@@ -1617,7 +1617,7 @@ sub postfilter_search_multi_class_fts {
 	} else {
 		$select = <<"		SQL";
 
-			SELECT	s.*
+			SELECT	DISTINCT s.*
 			  FROM	($select) s,
 				$metabib_metarecord_source_map_table omrs,
 				$metabib_record_descriptor ord
