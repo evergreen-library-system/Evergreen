@@ -111,6 +111,7 @@ __PACKAGE__->register_method(
 	Returns a list of open circulation objects
 	NOTES
 
+# DEPRECAT ME?? XXX
 sub checkouts_by_user_slim {
 	my( $self, $client, $user_session, $user_id ) = @_;
 
