@@ -29,10 +29,6 @@ function mresultDoSearch() {
 	if( (getSearches() || getAdvTerm()) && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
 		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
-		/*
-		if(getAdvType() == ADVTYPE_ISBN ) mresultCollectAdvISBNIds();
-		if(getAdvType() == ADVTYPE_ISSN ) mresultCollectAdvISSNIds();
-		*/
 
 	} else {
 		_mresultCollectIds(); 
@@ -72,31 +68,12 @@ function mresultCollectAdvIds() {
 function mresultCollectAdvMARCIds() {
 	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
-		alert(form + ' : ' + getLocation() + " : " + getAdvTerm());
 		var req = new Request(FETCH_ADV_MARC_MRIDS, 
 			JSON2js(getAdvTerm()), getLocation(), form );
 		req.callback(mresultHandleMRIds);
 		req.send();
 	}
 }
-
-/*
-function mresultCollectAdvISBNIds() {
-	if(!mresultTryCachedSearch()) {
-		var req = new Request(FETCH_ADV_ISBN_MRIDS, getAdvTerm() );
-		req.callback(mresultHandleMRIds);
-		req.send();
-	}
-}
-
-function mresultCollectAdvISSNIds() {
-	if(!mresultTryCachedSearch()) {
-		var req = new Request(FETCH_ADV_ISSN_MRIDS, getAdvTerm() );
-		req.callback(mresultHandleMRIds);
-		req.send();
-	}
-}
-*/
 
 
 function mresultHandleMRIds(r) {
@@ -111,9 +88,6 @@ function mresultHandleMRIds(r) {
 function mresultSetRecords(idstruct) {
 	if(!idstruct) return;
 	var o = getOffset();
-
-	alert(js2JSON(idstruct));
-
 	for( var x = o; x < idstruct.length + o; x++ ) {
 		if( idstruct[x-o] != null ) {
 			var r = parseInt(idstruct[x - o][0]);
