@@ -58,26 +58,6 @@ var i = cpdCheckExisting(contextRow);
 
 
 function cpdBuildPrintWindow(record, orgid) {
-	/*
-	var win;
-
-	if( isXUL() ) {
-
-		win = xulG.window_open(
-			'data:text/html,' +
-			window.escape('<html><head><title></title></head><body>AAHHH</body></html>'),
-			'', 
-			'chrome,resizable,width=700,height=500'); 
-		alert(win.document.getElementsByTagName('body'));
-		alert('obj: ' + win.document.getElementsByTagName('body')[0]);
-		alert(win.document.getElementsByTagName('body')[0].textContent);
-		win.document.getElementsByTagName('body')[0].appendChild(text('TESTING TESTING'));
-
-	} else {
-		win = window.open('','', 'resizable,width=700,height=500'); 
-	}
-	*/
-
 	var div = $('rdetail_print_details').cloneNode(true);
 	div.id = "";
 
@@ -89,16 +69,18 @@ function cpdBuildPrintWindow(record, orgid) {
 	$n(div, 'publisher').appendChild(text(record.publisher()));
 	$n(div, 'phys').appendChild(text(record.physical_description()));
 
-
 	return div;
 }
 
 function cpdStylePopupWindow(div) {
 	var tds = div.getElementsByTagName('td');
 	for( var i = 0; i < tds.length ; i++ ) {
-		var sty = tds[i].getAttribute('style');
+		var td = tds[i];
+		var sty = td.getAttribute('style');
 		if(!sty) sty = "";
-		tds[i].setAttribute('style', sty + 'padding: 2px; border: 1px solid #F0F0E0;');
+		td.setAttribute('style', sty + 'padding: 2px; border: 1px solid #F0F0E0;');
+		if( td.className && td.className.match(/hide_me/) ) 
+			td.parentNode.removeChild(td);
 	}
 }
 
@@ -124,6 +106,8 @@ function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 	for( var r = 0; r < rows.length; r++ ) {
 		var row = rows[r];
 		if(!row) continue;
+		var name = row.getAttribute('name');
+		if( name.match(/extras_row/) ) continue; /* hide the copy notes, stat-cats */
 		var clone = row.cloneNode(true);
 		var links = clone.getElementsByTagName('a');
 		for( var i = 0; i < links.length; i++ ) 
@@ -133,9 +117,6 @@ function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 	}
 
 	cpdStylePopupWindow(div);
-	/*
-	win.document.body.innerHTML = div.innerHTML;
-	*/
 	openWindow( div.innerHTML);
 }
 
