@@ -31,15 +31,31 @@ try {
 } catch(e) {
 	log_debug(e);
 	log_debug("Looking in main entries");
+
+	var _t = '';
 	try {
-		var _t = marcdoc.datafield.( @tag == '240' || @tag == '242' || @tag == '246').subfield.( @code == 'a' );
-		if (!_t.length()) throw "No title in 240, 242, 246";
+		try { 
+			try { // uniform title
+				_t = marcdoc.datafield.( @tag == '240' ).subfield.( @code == 'a' );
+				if (!_t.length()) throw "No title in 240";
+			} catch(e) { // translation of title
+				log_debug(e);
+				_t = marcdoc.datafield.( @tag == '242' ).subfield.( @code == 'a' );
+				if (!_t.length()) throw "No title in 242";
+			}
+		} catch(e) { // alternate title (not as note) 
+			log_debug(e);
+			_t = marcdoc.datafield.( @tag == '246' && !(@ind1.match(/0|1/)) ).subfield.( @code == 'a' );
+			if (!_t.length()) throw "No title in 246";
+		}
+
 		t = _t[0];
 		log_debug("Title: " + t);
 		quality += 25;
+
 	} catch(e) {
-		log_debug("Using title proper (245a)");
 		log_debug(e);
+		log_debug("Using title proper (245a)");
 		t = marcdoc.datafield.( @tag == '245' ).subfield.( @code == 'a' );
 		t = t[0];
 		quality += 10;
