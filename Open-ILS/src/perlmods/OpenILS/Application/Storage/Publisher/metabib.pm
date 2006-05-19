@@ -1454,7 +1454,7 @@ sub postfilter_search_multi_class_fts {
 
 		$bonus{'series'} = [
 			{ "CASE WHEN $search_class.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-			{ "CASE WHEN $search_class.value ~ ? THEN 1000 ELSE 1 END" => $REstring },
+			{ "CASE WHEN $search_class.value ~ ? THEN 20 ELSE 1 END" => $REstring },
 		];
 
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
@@ -1489,7 +1489,7 @@ sub postfilter_search_multi_class_fts {
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
-	$relevance = "SUM( ($relevance) * ($bonuses) )/COUNT(DISTINCT m.source)";
+	$relevance = "SUM( ($relevance) * ($bonuses) )/COUNT(DISTINCT smrs.source)";
 
 
 	my $secondary_sort = <<"	SORT";
