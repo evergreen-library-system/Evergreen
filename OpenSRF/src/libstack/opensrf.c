@@ -19,7 +19,7 @@ int main( int argc, char* argv[] ) {
 	char* context	= strdup( argv[3] );
 
 	init_proc_title( argc, argv );
-	set_proc_title( "OpenSRF System" );
+	set_proc_title( "OpenSRF System-C" );
 
 	osrfSystemBootstrap( host, config, context );
 
