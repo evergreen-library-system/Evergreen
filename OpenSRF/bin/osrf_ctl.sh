@@ -1,22 +1,41 @@
 #!/bin/bash
 
-# NOTE: Eventually, there will be one OpenSRF config file format
-# When this happens, we will only need a single OPT_CONFIG variable
-# Also note that PIDs are collect from ps/grep/awk for C commands because
-# they fork internally and there's no way to find their PIDs at launch time
-# This is hackish and likely non-portable
-
-OPT_ACTION="" 
+OPT_ACTION=""
 OPT_PERL_CONFIG=""
 OPT_C_CONFIG=""
 OPT_PID_DIR=""
 
+# NOTE: Eventually, there will be one OpenSRF config file format
+# When this happens, we will only need a single OPT_CONFIG variable
+
 function usage {
+	echo "";
 	echo "usage: $0 -d <pid_dir> -p <perl_config> -c <c_config> -a <action>";
+	echo "";
+	echo "Actions include:"
+	echo -e "\tstart_router"
+	echo -e "\tstop_router"
+	echo -e "\trestart_router"
+	echo -e "\tstart_perl"
+	echo -e "\tstop_perl"
+	echo -e "\trestart_perl"
+	echo -e "\tstart_c"
+	echo -e "\tstop_c"
+	echo -e "\trestart_c"
+	echo -e "\tstart_osrf"
+	echo -e "\tstop_osrf"
+	echo -e "\trestart_osrf"
+	echo -e "\tstop_all" 
+	echo -e "\tstart_all"
+	echo -e "\trestart_all"
+	echo "";
 	exit;
 }
 
 
+# ---------------------------------------------------------------------------
+# Load the command line options and set the global vars
+# ---------------------------------------------------------------------------
 while getopts  "p:c:a:d:h" flag; do
 	case $flag in	
 		"a")		OPT_ACTION="$OPTARG";;
@@ -27,24 +46,60 @@ while getopts  "p:c:a:d:h" flag; do
 	esac;
 done
 
+
 [ -z "$OPT_PID_DIR" ] && OPT_PID_DIR=/tmp;
 [ -z "$OPT_ACTION" ] && usage;
-
 
 PID_ROUTER="$OPT_PID_DIR/router.pid";
 PID_OSRF_PERL="$OPT_PID_DIR/osrf_perl.pid";
 PID_OSRF_C="$OPT_PID_DIR/osrf_c.pid";
 
 
+
+# ---------------------------------------------------------------------------
+# Utility code for checking the PID files
+# ---------------------------------------------------------------------------
+function do_action {
+
+	action="$1"; 
+	pidfile="$2";
+	item="$3"; 
+
+	if [ $action == "start" ]; then
+
+		if [ -e $pidfile ]; then
+			pid=$(cat $pidfile);
+			echo "$item already started : $pid";
+			return 0;
+		fi;
+		echo "Starting $item";
+	fi;
+
+	if [ $action == "stop" ]; then
+
+		if [ ! -e $pidfile ]; then
+			echo "$item not running";
+			return 0;
+		fi;
+
+		pid=$(cat $pidfile);
+		echo "Stopping $item : $pid";
+		kill -s INT $pid;
+		rm -f $pidfile;
+
+	fi;
+
+	return 0;
+}
+
+
 # ---------------------------------------------------------------------------
 # Start / Stop functions
 # ---------------------------------------------------------------------------
+
+
 function start_router {
-	if [ -e "$PID_ROUTER" ]; then
-		pid=$(cat "$PID_ROUTER");
-		echo "Router is already running : $pid" && return 0;
-	fi;
-	echo "Starting router...";
+	do_action "start" $PID_ROUTER "OpenSRF Router";
 	opensrf_router $OPT_C_CONFIG router
 	pid=$(ps ax | grep "OpenSRF Router" | grep -v grep | awk '{print $1}')
 	echo $pid > $PID_ROUTER;
@@ -52,40 +107,27 @@ function start_router {
 }
 
 function stop_router {
-	[ ! -e "$PID_ROUTER" ] && echo "Router is not running" && return 0;
-	pid=$(cat "$PID_ROUTER");
-	echo "Stopping router : $pid";
-	kill -s INT $pid;
-	rm "$PID_ROUTER";
+	do_action "stop" $PID_ROUTER "OpenSRF Router";
 	return 0;
 }
 
 function start_perl {
-	if [ -e "$PID_OSRF_PERL" ]; then
-		pid=$(cat "$PID_OSRF_PERL");
-		echo "OpenSRF perl is already running : $pid" && return 0;
-	fi;
+	do_action "start" $PID_OSRF_PERL "OpenSRF Perl";
 	perl -MOpenSRF::System="$OPT_PERL_CONFIG" -e 'OpenSRF::System->bootstrap()' & 
 	pid=$!;
 	echo $pid > $PID_OSRF_PERL;
+	sleep 5;
 	return 0;
 }
 
 function stop_perl {
-	[ ! -e "$PID_OSRF_PERL" ] && echo "OpenSRF-Perl is not running" && return 0;
-	pid=$(cat "$PID_OSRF_PERL");
-	echo "Stopping perl : $pid";
-	kill -s INT $pid;
-	rm "$PID_OSRF_PERL";
+	do_action "stop" $PID_OSRF_PERL "OpenSRF Perl";
+	sleep 1;
 	return 0;
 }
 
 function start_c {
-	if [ -e "$PID_OSRF_C" ]; then
-		pid=$(cat "$PID_OSRF_C");
-		echo "OpenSRF-C is already running : $pid" && return 0;
-	fi;
-	echo "Starting OpenSRF C";
+	do_action "start" $PID_OSRF_C "OpenSRF C";
 	opensrf-c $(hostname -f) $OPT_C_CONFIG opensrf;
 	pid=$(ps ax | grep "OpenSRF System-C" | grep -v grep | awk '{print $1}')
 	echo $pid > "$PID_OSRF_C";
@@ -93,12 +135,9 @@ function start_c {
 }
 
 function stop_c {
-	[ ! -e "$PID_OSRF_C" ] && echo "OpenSRF-C is not running" && return 0;
-	pid=$(cat "$PID_OSRF_C");
-	echo "Stopping OpenSRF C : $pid";
-	#kill -9 $pid;
-	killall -9 opensrf-c  # hack for now
-	rm $PID_OSRF_C;
+	do_action "stop" $PID_OSRF_C "OpenSRF C";
+	killall -9 opensrf-c  # hack for now to force kill all C services
+	sleep 1;
 	return 0;
 }
 
@@ -110,18 +149,19 @@ function stop_c {
 case $OPT_ACTION in
 	"start_router") start_router;;
 	"stop_router") stop_router;;
+	"restart_router") stop_router; start_router;;
 	"start_perl") start_perl;;
 	"stop_perl") stop_perl;;
-	"restart_perl") stop_perl && sleep 1 && start_perl;;
+	"restart_perl") stop_perl; start_perl;;
 	"start_c") start_c;;
 	"stop_c") stop_c;;
-	"restart_c") stop_c && sleep 1 && start_c;;
-	"start_osrf") start_perl && sleep 5 && start_c;;
+	"restart_c") stop_c; start_c;;
+	"start_osrf") start_perl; start_c;;
 	"stop_osrf") stop_perl; stop_c;;
 	"restart_osrf") stop_perl; stop_c; start_perl; start_c;;
 	"stop_all") stop_c; stop_perl; stop_router;;
-	"start_all") start_router; start_perl && sleep 5 && start_c;;
-	"restart_all") stop_c; stop_perl; stop_router; start_router; start_perl && sleep 5 && start_c;;
+	"start_all") start_router; start_perl; start_c;;
+	"restart_all") stop_c; stop_perl; stop_router; start_router; start_perl; start_c;;
 	*) usage;;
 esac;
 
