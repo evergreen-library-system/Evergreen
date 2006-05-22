@@ -190,8 +190,8 @@ sub merge_volumes {
 		$_->deleted('t');
 		$_->editor($editor->requestor->id);
 		$_->edit_date('now');
-		$editor->update_asset_call_number($_,{checkperm=>1});
-			return (undef, $editor->event);
+		$editor->update_asset_call_number($_,{checkperm=>1}) 
+			or return (undef, $editor->event);
 	}
 
 	my ($mvol) = grep { $_->id == $bigcn } @$volumes;
