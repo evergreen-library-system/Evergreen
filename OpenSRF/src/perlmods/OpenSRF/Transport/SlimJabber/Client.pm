@@ -578,7 +578,7 @@ sub flush_socket {
 	my $self = shift;
 	my $socket = $self->{_socket};
 
-	if( $socket and $socket->connected() ) {
+	if( $socket ) {
 
 		my $buf;
 		my	$flags = fcntl($socket, F_GETFL, 0);
@@ -586,8 +586,13 @@ sub flush_socket {
 		fcntl($socket, F_SETFL, $flags | O_NONBLOCK);
 		while( my $n = sysread( $socket, $buf, 8192 ) ) {
 			$logger->debug("flush_socket dropped $n bytes of data");
+			if(!$socket->connected()) {
+				$logger->error("flush_socket dropped data on disconnected socket: $buf");
+			}
 		}
 		fcntl($socket, F_SETFL, $flags);
+
+		return 0 unless $socket->connected();
 
 		return 1;
 
