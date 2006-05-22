@@ -208,6 +208,8 @@ sub _log_message {
 
 	$msg = "[$n:"."$$".":::] $msg";
 
+	$msg = substr($msg, 0, 2000); 
+
 	if( $level == ACTIVITY() ) {
 		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
 		elsif( is_act_filelog() ) { _write_file( $msg, 1 ); }
