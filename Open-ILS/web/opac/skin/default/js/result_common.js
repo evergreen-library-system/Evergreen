@@ -114,10 +114,12 @@ function resultSetHitInfo() {
 	if( getDisplayCount() > (getHitCount() - getOffset()))  c = getHitCount();
 	else c = getDisplayCount() + getOffset();
 
-	var pages = getHitCount() / getDisplayCount();
+	var pages = parseInt(getHitCount() / getDisplayCount());
 	if(pages % 1) pages = parseInt(pages) + 1;
 
-	G.ui.result.current_page.appendChild(text( (getOffset()/getDisplayCount()) + 1));
+	var cpage = (getOffset()/getDisplayCount()) + 1;
+
+	G.ui.result.current_page.appendChild(text(cpage));
 	G.ui.result.num_pages.appendChild(text(pages + ")")); /* the ) is dumb */
 
 	G.ui.result.offset_start.appendChild(text(getOffset() + 1));
@@ -260,7 +262,7 @@ function resultSuggestSpelling(r) {
 function resultPaginate() {
 	var o = getOffset();
 
-	if( !((o + getDisplayCount()) >= getHitCount()) ) {
+	if( !(( (o+1) + getDisplayCount()) >= getHitCount()) ) {
 
 		var args = {};
 		args[PARAM_OFFSET]	= o + getDisplayCount();
@@ -271,7 +273,7 @@ function resultPaginate() {
 		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
 
-		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount());
+		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount()) - getDisplayCount();
 		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
 	}
