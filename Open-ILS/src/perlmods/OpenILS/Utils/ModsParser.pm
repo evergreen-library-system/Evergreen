@@ -7,6 +7,7 @@ use XML::LibXSLT;
 use Time::HiRes qw(time);
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Logger qw/$logger/;
 use Data::Dumper;
 
 my $parser		= XML::LibXML->new();
@@ -90,39 +91,46 @@ sub get_field_value {
 	my( $self, $mods, $xpath ) = @_;
 
 	my @string;
+
 	my $root = $mods->documentElement;
 	$root->setNamespace( "http://www.loc.gov/mods/v3", "mods", 1 );
 
-	# grab the set of matching nodes
-	my @nodes = $root->findnodes( $xpath );
-	for my $value (@nodes) {
+	try {
+		# grab the set of matching nodes
+		my @nodes = $root->findnodes( $xpath );
+		for my $value (@nodes) {
 
-		# grab all children of the node
-		my @children = $value->childNodes();
-		my @child_text;
-		for my $child (@children) {
-			next unless( $child->nodeType != 3 );
+			# grab all children of the node
+			my @children = $value->childNodes();
+			my @child_text;
+			for my $child (@children) {
+				next unless( $child->nodeType != 3 );
 
-			if($child->childNodes) {
-				my @a;
-				for my $c (@{$child->childNodes}){
-					push @a, $c->textContent;
+				if($child->childNodes) {
+					my @a;
+					for my $c (@{$child->childNodes}){
+						push @a, $c->textContent;
+					}
+					push(@child_text, join(' ', @a));
+
+				} else {
+					push(@child_text, $child->textContent); 
 				}
-				push(@child_text, join(' ', @a));
 
-			} else {
-				push(@child_text, $child->textContent); 
+			}
+			if(@child_text) {
+				push(@string, \@child_text);
 			}
 
+			if( !@child_text  ) {
+				push(@string, $value->textContent );
+			}
 		}
-		if(@child_text) {
-			push(@string, \@child_text);
-		}
-
-		if( !@child_text  ) {
-			push(@string, $value->textContent );
-		}
-	}
+	} otherwise {
+		$logger->info("MODS-izing failure: ".shift());
+		$logger->info("Failed MODS xml: ".$root->toString);
+		$logger->info("Failed MODS xpath: $xpath");
+	};
 	return @string;
 }
 
