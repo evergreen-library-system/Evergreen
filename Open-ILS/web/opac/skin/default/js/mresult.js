@@ -117,9 +117,9 @@ function mresultCollectRecords() {
 
 		req.request.userdata = i++;
 
-		/* wait at most 10 seconds for the mods rec to come back */
+		/* wait at most 15 seconds for the mods rec to come back */
 		/* this needs more testing  */
-		req.request.timeout(10); 
+		req.request.timeout(15); 
 		req.request.abortCallback(
 			function(){
 				recordsHandled++;
