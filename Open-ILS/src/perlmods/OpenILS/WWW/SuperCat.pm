@@ -88,7 +88,7 @@ sub unapi {
 	my $base = (split 'unapi', $url)[0] . 'unapi';
 
 
-	my $uri = $cgi->param('uri') || '';
+	my $uri = $cgi->param('id') || '';
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my $format = $cgi->param('format');
@@ -108,24 +108,18 @@ sub unapi {
 
 			print "\n";
 
-			my $body =
-				"<formats>
-				 <uri>$uri</uri>
-				   <format>
-				     <name>opac</name>
-				     <type>text/html</type>
-				   </format>";
+			my $body = "<formats id='$uri'><format name='opac' type='text/html'/>";
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				$body .= "<format><name>$type</name><type>application/xml</type>";
+				$body .= "<format name='$type' type='application/xml'";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					$body .= "<$part>$$h{$type}{$part}</$part>"
+					$body .= " $part='$$h{$type}{$part}'"
 						if ($$h{$type}{$part});
 				}
 				
-				$body .= '</format>';
+				$body .= '/>';
 			}
 
 			$body .= "</formats>\n";
@@ -146,22 +140,18 @@ sub unapi {
 			my %hash = map { ( (keys %$_)[0] => (values %$_)[0] ) } @$list;
 			$list = [ map { { $_ => $hash{$_} } } sort keys %hash ];
 
-			print "\n<formats>
-				   <format>
-				     <name>opac</name>
-				     <type>text/html</type>
-				   </format>";
+			print "<formats><format name='opac' type='text/html'/>";
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format><name>$type</name><type>application/xml</type>";
+				print "<format name='$type' type='application/xml'";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					print "<$part>$$h{$type}{$part}</$part>"
+					print " $part='$$h{$type}{$part}'"
 						if ($$h{$type}{$part});
 				}
 				
-				print '</format>';
+				print '/>';
 			}
 
 			print "</formats>\n";
@@ -180,9 +170,9 @@ sub unapi {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: $base/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+		print "Location: /opac/en-US/skin/default/xml/rresult.xml?m=$id\n\n"
 			if ($type eq 'metarecord');
-		print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+		print "Location: /opac/en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
 	} elsif ($format =~ /^html/o) {
@@ -213,7 +203,7 @@ sub unapi {
 			</head>
 			<body>
 				<br/>
-				<center>Sorry, we couldn't $command a $type with the id of $id.</center>
+				<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
 			</body>
 		</html>
 		HTML
@@ -394,7 +384,7 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: $root/../en-US/skin/default/xml/rresult.xml?rt=list&" .
+		print "Location: /opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
 		return Apache2::Const::OK;
@@ -418,8 +408,72 @@ sub bookbag_feed {
 
 	$feed->link(
 		OPAC =>
-		$root . '../en-US/skin/default/xml/rresult.xml?rt=list&' .
+		'/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
 			join('&', map { 'rl=' . $_->target_biblio_record_entry } @{$bucket->items} ),
+		'text/html'
+	);
+
+
+	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
+	print entityize($feed->toString) . "\n";
+
+	return Apache2::Const::OK;
+}
+
+sub changes_feed {
+	my $apache = shift;
+	return Apache2::Const::DECLINED if (-e $apache->filename);
+
+	my $cgi = new CGI;
+
+	my $year = (gmtime())[5] + 1900;
+	my $host = $cgi->virtual_host || $cgi->server_name;
+
+	my $rel_name = quotemeta($cgi->url(-relative=>1));
+
+	my $add_path = 1;
+	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+
+	my $url = $cgi->url(-path_info=>$add_path);
+	my $root = (split 'feed', $url)[0];
+	my $base = (split 'freshmeat', $url)[0] . 'freshmeat';
+	my $path = (split 'freshmeat', $url)[1];
+	my $unapi = (split 'feed', $url)[0] . 'unapi';
+
+
+	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
+
+	$path =~ s/^\///og;
+	
+	my ($type,$rtype,$axis,$date,$limit) = split '/', $path;
+	$date ||= 'today';
+	$limit ||= 10;
+
+	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
+
+	if ($type eq 'opac') {
+		print "Location: /opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
+			join('&', map { "rl=" . $_ } @$list) .
+			"\n\n";
+		return Apache2::Const::OK;
+	}
+
+	my $feed = create_record_feed( $type, $list, $unapi);
+	$feed->root($root);
+
+	$feed->title("$limit most recent $rtype changes from $date forward");
+	$feed->creator($host);
+	$feed->update_ts(gmtime_ISO8601());
+
+	$feed->link(atom => $base . "/atom/$rtype/$axis/$date/$limit" => 'application/atom+xml');
+	$feed->link(rss2 => $base . "/rss2/$rtype/$axis/$date/$limit");
+	$feed->link(html => $base . "/html/$rtype/$axis/$date/$limit" => 'text/html');
+	$feed->link(unapi => $unapi);
+
+	$feed->link(
+		OPAC =>
+		'/opac/en-US/skin/default/xml/rresult.xml?rt=list&' .
+			join('&', map { 'rl=' . $_} @$list ),
 		'text/html'
 	);
 
@@ -693,10 +747,10 @@ sub create_record_feed {
 		my $node = $feed->add_item($xml);
 
 		$node->id($item_tag);
-		$node->link(alternate => $feed->unapi . "?uri=$item_tag&format=opac" => 'text/html');
-		$node->link(opac => $feed->unapi . "?uri=$item_tag&format=opac");
-		$node->link(unapi => $feed->unapi . "?uri=$item_tag");
-		$node->link('unapi-uri' => $item_tag);
+		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=opac" => 'text/html');
+		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
+		$node->link(unapi => $feed->unapi . "?id=$item_tag");
+		$node->link('unapi-id' => $item_tag);
 	}
 
 	return $feed;

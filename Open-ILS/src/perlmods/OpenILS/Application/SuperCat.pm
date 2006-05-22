@@ -42,8 +42,6 @@ sub child_init {
 	# we need an XML parser
 	$_parser = new XML::LibXML;
 
-	$logger->debug("Got here!");
-
 	# and an xslt parser
 	$_xslt = new XML::LibXSLT;
 	
@@ -73,8 +71,6 @@ sub child_init {
 	$record_xslt{mods}{docs} = 'http://www.loc.gov/mods/';
 	$record_xslt{mods}{schema_location} = 'http://www.loc.gov/standards/mods/mods.xsd';
 
-	$logger->debug("Got here!");
-
 	# parse the ATOM entry xslt ...
 	my $atom_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
@@ -99,8 +95,6 @@ sub child_init {
 	$record_xslt{rdf_dc}{namespace_uri} = 'http://purl.org/dc/elements/1.1/';
 	$record_xslt{rdf_dc}{schema_location} = 'http://purl.org/dc/elements/1.1/';
 
-	$logger->debug("Got here!");
-
 	# parse the SRWDC xslt ...
 	my $srw_dc_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
@@ -112,8 +106,6 @@ sub child_init {
 	$record_xslt{srw_dc}{xslt} = $_xslt->parse_stylesheet( $srw_dc_xslt );
 	$record_xslt{srw_dc}{namespace_uri} = 'info:srw/schema/1/dc-schema';
 	$record_xslt{srw_dc}{schema_location} = 'http://www.loc.gov/z3950/agency/zing/srw/dc-schema.xsd';
-
-	$logger->debug("Got here!");
 
 	# parse the OAIDC xslt ...
 	my $oai_dc_xslt = $_parser->parse_file(
@@ -127,8 +119,6 @@ sub child_init {
 	$record_xslt{oai_dc}{namespace_uri} = 'http://www.openarchives.org/OAI/2.0/oai_dc/';
 	$record_xslt{oai_dc}{schema_location} = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
 
-	$logger->debug("Got here!");
-
 	# parse the RSS xslt ...
 	my $rss_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
@@ -138,8 +128,6 @@ sub child_init {
 	);
 	# and stash a transformer
 	$record_xslt{rss2}{xslt} = $_xslt->parse_stylesheet( $rss_xslt );
-
-	$logger->debug("Got here!");
 
 	# and finally, a storage server session
 
@@ -156,9 +144,8 @@ sub register_record_transforms {
 			api_level => 1,
 			argc      => 1,
 			signature =>
-				{ desc     => <<"				  DESC",
-Returns the \U$type\E representation of the requested bibliographic record
-				  DESC
+				{ desc     => "Returns the \U$type\E representation ".
+				              "of the requested bibliographic record",
 				  params   =>
 			  		[
 						{ name => 'bibId',
@@ -178,6 +165,63 @@ sub entityize {
 	my $stuff = NFC(shift());
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
+}
+
+
+sub recent_changes {
+	my $self = shift;
+	my $client = shift;
+	my $when = shift;
+	my $limit = shift;
+
+	if (!$when) {
+		my ($d,$m,$y) = (localtime)[4,5,6];
+		$when = sprintf('%4d-%02d-%02d', $y + 1900, $m + 1, $d);
+	}
+
+	my $type = 'biblio';
+	$type = 'authority' if ($self->api_name =~ /authority/o);
+
+	my $axis = 'create_date';
+	$axis = 'edit_date' if ($self->api_name =~ /edit/o);
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+
+	return $_storage
+		->request(
+			"open-ils.storage.id_list.$type.record_entry.search_where.atomic",
+			{ $axis => { ">" => $when } },
+			{ order_by => "$axis desc", limit => $limit } )
+		->gather(1);
+}
+
+for my $t ( qw/biblio authority/ ) {
+	for my $a ( qw/import edit/ ) {
+
+		__PACKAGE__->register_method(
+			method    => 'recent_changes',
+			api_name  => "open-ils.supercat.$t.record.$a.recent",
+			api_level => 1,
+			argc      => 0,
+			signature =>
+				{ desc     => "Returns a list of recently ${a}ed $t records",
+		  		  params   =>
+		  			[
+						{ name => 'when',
+				  		  desc => "Date to start looking for ${a}ed records",
+				  		  default => 'today',
+				  		  type => 'string' },
+
+						{ name => 'limit',
+				  		  desc => "Maximum count to retrieve",
+				  		  type => 'number' },
+					],
+		  		  'return' =>
+		  			{ desc => "An id list of $t records",
+			  		  type => 'array' }
+				},
+		);
+	}
 }
 
 
