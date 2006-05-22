@@ -170,9 +170,9 @@ sub unapi {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: /opac/en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
 			if ($type eq 'metarecord');
-		print "Location: /opac/en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
 	} elsif ($format =~ /^html/o) {
@@ -310,9 +310,9 @@ sub supercat {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: $base/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
 			if ($type eq 'metarecord');
-		print "Location: $base/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
 	} elsif ($format =~ /^html/o) {
@@ -384,10 +384,10 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: /opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
+		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
-		return Apache2::Const::OK;
+		return 302;
 	}
 
 	my $feed = create_record_feed(
@@ -452,10 +452,10 @@ sub changes_feed {
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
 
 	if ($type eq 'opac') {
-		print "Location: /opac/en-US/skin/default/xml/rresult.xml?rt=list&" .
+		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
 			join('&', map { "rl=" . $_ } @$list) .
 			"\n\n";
-		return Apache2::Const::OK;
+		return 302;
 	}
 
 	my $feed = create_record_feed( $type, $list, $unapi);

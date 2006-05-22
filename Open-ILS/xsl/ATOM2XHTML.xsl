@@ -132,7 +132,7 @@ To-do list:
 				<xsl:for-each select="atom:link[@rel='unapi' and string-length(@href)&gt;0]">
 					<link rel="meta" title="unAPI" type="application/xml">
 						<xsl:attribute name='href'>
-							<xsl:value-of select="./@href"/>
+							<xsl:value-of select="@href"/>
 						</xsl:attribute>
 					</link>
 				</xsl:for-each>
@@ -379,8 +379,8 @@ To-do list:
 		<!-- item url -->
 		<xsl:if test="string-length($url)&gt;0">
 			<dd class="url">
-				<span class="unapi-uri">
-					<xsl:for-each select="atom:link[@rel='unapi-uri']">
+				<abbr class="unapi-id">
+					<xsl:for-each select="atom:link[@rel='unapi-id']">
 						<xsl:attribute name="title">
 							<xsl:value-of select="@href" />
 						</xsl:attribute>
@@ -393,7 +393,7 @@ To-do list:
 							<xsl:value-of select="substring-after($url, 'http://')" />
 						</xsl:otherwise>
 					</xsl:choose>
-				</span>
+				</abbr>
 			</dd>
 		</xsl:if>
 	</xsl:template>

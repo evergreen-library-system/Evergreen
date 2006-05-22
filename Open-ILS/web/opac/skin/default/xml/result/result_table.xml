@@ -41,9 +41,9 @@
 										<!-- Title goes here -->
 									</a>
 									<!-- Empty span used for creating unAPI links -->
-									<span name="unapi" class="unapi-uri hide_me">
+									<abbr name="unapi" class="unapi-id">
 										<!-- unAPI URI goes here -->
-									</span>
+									</abbr>
 								</td>
 
 								<!-- Copy this td for each copy count appended -->

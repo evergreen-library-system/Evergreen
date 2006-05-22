@@ -59,9 +59,8 @@ function buildunAPISpan (span, type, id) {
         var cgi = new CGI();
         var d = new Date();
 
-        addCSSClass(span,'unapi-uri');
+        addCSSClass(span,'unapi-id');
 
-        span.appendChild(text('unAPI'));
         span.setAttribute(
                 'title',
                 'tag:' + cgi.server_name + ',' +
@@ -77,13 +76,12 @@ function rdetailViewMarc(r,id) {
 
 	var d = new Date();
 
-	var div = elem('div', { "class" : 'hide_me' });
-	var span = div.appendChild( elem('span') );
+	var span = div.appendChild( elem('abbr') );
 
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
 	/* add the unapi span inside a hidden div */
-	$('rdetail_view_marc_box').insertBefore(div, $('rdetail_view_marc_box').firstChild);
+	$('rdetail_view_marc_box').insertBefore(span, $('rdetail_view_marc_box').firstChild);
 }
 
 

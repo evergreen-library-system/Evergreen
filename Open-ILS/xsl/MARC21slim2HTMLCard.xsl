@@ -85,7 +85,7 @@
   <xsl:template match="marc:subfield" mode="link">
     <xsl:if test="@code='u'">
       <span class="link">
-        <a class="url" href="{.}"/>
+        <a class="url" href="{.}"><xsl:value-of select="../marc:subfield[@code='y']"/></a>
       </span>
     </xsl:if>
   </xsl:template>

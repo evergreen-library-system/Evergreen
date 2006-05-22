@@ -304,9 +304,8 @@ function buildunAPISpan (span, type, id) {
 	var cgi = new CGI();
 	var d = new Date();
 
-	addCSSClass(span,'unapi-uri');
+	addCSSClass(span,'unapi-id');
 
-	span.appendChild(text('unAPI'));
 	span.setAttribute(
 		'title',
 		'tag:' + cgi.server_name + ',' +
