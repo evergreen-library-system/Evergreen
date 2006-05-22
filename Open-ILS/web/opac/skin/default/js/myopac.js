@@ -153,6 +153,8 @@ function myOPACDrawCheckedOutSlim(r) {
 		rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
 		circsCache.push(circ);
 
+		if( circ.renewal_remaining() < 1 ) hideMe(rnlink);
+
 		tbody.appendChild(row);
 
 		var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
