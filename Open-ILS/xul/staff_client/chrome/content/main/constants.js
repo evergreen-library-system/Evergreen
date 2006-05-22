@@ -194,5 +194,5 @@ const urls = {
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
 	'TEST_HTML' : '/xul/server/main/test.html',
-	'TEST_XUL' : '/xul/server/cat/copy_browser.xul',
+	'TEST_XUL' : '/xul/server/main/test.xul',
 }
