@@ -86,7 +86,7 @@ function _holdsUpdateEditHold(hold, status) {
 	else
 		setSelector($('holds_org_selector'), hold.pickup_lib());
 
-	if( status > 3 ) $('holds_org_selector').disabled = true;
+	if( status > 2 ) $('holds_org_selector').disabled = true;
 
 	$('holds_submit').onclick = holdsEditHold;
 	$('holds_update').onclick = holdsEditHold;
