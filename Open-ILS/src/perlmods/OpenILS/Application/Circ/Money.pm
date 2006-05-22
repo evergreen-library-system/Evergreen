@@ -26,6 +26,7 @@ use OpenILS::Perm;
 use Data::Dumper;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Event;
+use OpenILS::Utils::Editor;
 
 __PACKAGE__->register_method(
 	method	=> "make_payments",
@@ -318,25 +319,56 @@ __PACKAGE__->register_method(
 sub void_bill {
 	my( $s, $c, $authtoken, $billid ) = @_;
 
-	my $reqr;
-	my( $bill, $evt ) = $U->fetch_bill($billid);
-	return $evt if $evt;
+	my $e = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VOID_BILLING');
 
+	my $bill = $e->retrieve_money_billing($billid)
+		or return $e->event;
 
-	($reqr, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$evt = $U->check_perms($reqr->id, $reqr->ws_ou, 'VOID_BILLING');
-	return $evt if $evt;
+	return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill) 
+		if $bill->voided and $bill->voided =~ /t/io;
 
 	$bill->voided('t');
-	$bill->voider($reqr->id);
+	$bill->voider($e->requestor->id);
 	$bill->void_time('now');
 
-	my $stat = $U->storagereq(
-		'open-ils.storage.direct.money.billing.update', $bill);
-	return $U->DB_UPDATE_FAILED($bill) unless defined $stat;
+	$e->update_money_billing($bill) or return $e->event;
+	my $evt = _check_open_xact($e, $bill->xact);
+	return $evt if $evt;
 
+	$e->finish;
 	return 1;
+}
+
+sub _check_open_xact {
+	my( $editor, $xactid ) = @_;
+
+	# Grab the transaction
+	my $xact = $editor->retrieve_money_billable_transaction($xactid)
+		or return $editor->event;
+
+	# if it's still open, good.
+	return undef unless $xact->xact_finish;
+
+	$logger->info("re-opening transaction ".$xact->id);
+	my $finish = $xact->xact_finish;
+
+	# clear the transaction finish time
+	$xact->clear_xact_finish;
+	$editor->update_money_billable_transaction($xact);
+
+	# grab the summary and see how much is owed on this transaction
+	my $summary = $editor->retrieve_money_open_billable_transaction_summary($xactid)
+		or return $editor->event;
+
+	if( $summary->balance_owed == 0 ) {
+		# if nothing is owed, re-close the transaction
+		$xact->xact_finish($finish);
+		$editor->update_money_billable_transaction($xact);
+	}
+
+	return undef;
 }
 
 __PACKAGE__->register_method (

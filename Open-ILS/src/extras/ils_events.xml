@@ -68,6 +68,10 @@
 		<!-- used when updating a password and the original is wrong -->
 		<desc xml:lang="en-US">The provided password is not correct</desc>
 	</event>
+	<event code='1211' textcode='BILL_ALREADY_VOIDED'>
+		<desc xml:lang="en-US">The selecte bill has already been voided</desc>
+	</event>
+
 
 
 
