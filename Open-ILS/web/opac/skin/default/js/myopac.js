@@ -323,6 +323,7 @@ function myOShowHoldStatus(r) {
 		unHideMe($n(row, 'hold_status_available'));
 }
 
+
 function myOPACDrawHoldTitle(hold) {
 	var method;
 	if(hold.hold_type() == "M") method = FETCH_MRMODS;

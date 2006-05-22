@@ -70,16 +70,23 @@ function holdsDrawWindow(recid, type, edithold, done_callback) {
 	if(edithold) {
 		hideMe($('holds_submit'));
 		unHideMe($('holds_update'));
-		_holdsUpdateEditHold(edithold);
+
+		var req = new Request(FETCH_HOLD_STATUS, G.user.session, edithold.id() );
+		req.send(true);
+		status = req.result();
+
+		_holdsUpdateEditHold(edithold, status);
 	}  
 }
 
-function _holdsUpdateEditHold(hold) {
+function _holdsUpdateEditHold(hold, status) {
 
 	if( hold.capture_time() )
 		$('holds_org_selector').disabled = true;
 	else
 		setSelector($('holds_org_selector'), hold.pickup_lib());
+
+	if( status > 3 ) $('holds_org_selector').disabled = true;
 
 	$('holds_submit').onclick = holdsEditHold;
 	$('holds_update').onclick = holdsEditHold;

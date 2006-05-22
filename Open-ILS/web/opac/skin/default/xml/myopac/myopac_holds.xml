@@ -39,7 +39,7 @@
 				<td>
 					<span class='hide_me' name='hold_status_waiting'>Waiting for copy</span>
 					<span class='hide_me' name='hold_status_transit'>In Transit</span>
-					<span class='hide_me' name='hold_status_availbal'>Ready for Pickup</span>
+					<span class='hide_me' name='hold_status_available'><b style='color:red'>Ready for Pickup</b></span>
 				</td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
