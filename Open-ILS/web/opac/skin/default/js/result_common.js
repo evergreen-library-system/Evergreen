@@ -110,20 +110,25 @@ function resultSetHitInfo() {
 		}
 	}
 
-	var c;  
-	if( getDisplayCount() > (getHitCount() - getOffset()))  c = getHitCount();
-	else c = getDisplayCount() + getOffset();
 
-	var pages = parseInt(getHitCount() / getDisplayCount());
+	var pages = getHitCount() / getDisplayCount();
 	if(pages % 1) pages = parseInt(pages) + 1;
+
+	
 
 	var cpage = (getOffset()/getDisplayCount()) + 1;
 
 	G.ui.result.current_page.appendChild(text(cpage));
 	G.ui.result.num_pages.appendChild(text(pages + ")")); /* the ) is dumb */
 
+	/* set the offsets */
+	var offsetEnd = getDisplayCount() + getOffset();  
+	if( getDisplayCount() > (getHitCount() - getOffset()))  
+		offsetEnd = getHitCount();
+
+	G.ui.result.offset_end.appendChild(text(offsetEnd));
 	G.ui.result.offset_start.appendChild(text(getOffset() + 1));
-	G.ui.result.offset_end.appendChild(text(c));
+
 	G.ui.result.result_count.appendChild(text(getHitCount()));
 	unHideMe(G.ui.result.info);
 }
@@ -273,7 +278,12 @@ function resultPaginate() {
 		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
 
-		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount()) - getDisplayCount();
+		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount());
+
+		/* when hit count is divisible by display count, we have to adjust */
+		if( getHitCount() % getDisplayCount() == 0 ) 
+			args[PARAM_OFFSET] -= getDisplayCount();
+
 		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
 	}
@@ -293,6 +303,7 @@ function resultPaginate() {
 		G.ui.result.home_link.setAttribute( "href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.home_link, config.css.result.nav_active);
 	}
+
 	if(getDisplayCount() < getHitCount())
 		unHideMe($('start_end_links_span'));
 
