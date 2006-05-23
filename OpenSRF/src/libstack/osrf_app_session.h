@@ -79,6 +79,8 @@ struct osrf_app_session_struct {
 
 	/* let the user use the session to store their own session data */
 	void* userData;
+
+	void (*userDataFree) (void*);
 };
 typedef struct osrf_app_session_struct osrf_app_session;
 typedef struct osrf_app_session_struct osrfAppSession;
