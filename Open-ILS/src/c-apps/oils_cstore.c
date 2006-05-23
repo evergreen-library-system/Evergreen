@@ -270,13 +270,18 @@ int osrfAppInitialize() {
 				osrfHashSet( method_meta, method, "methodname" );
 				osrfHashSet( method_meta, method_type, "methodtype" );
 
+				int flags = 0;
+				if (!(strcmp( method_type, "search" ))) {
+					flags = flags | OSRF_METHOD_STREAM;
+				}
+
 				osrfAppRegisterExtendedMethod(
 					MODULENAME,
 					method,
 					"dispatchCRUDMethod",
 					"",
 					1,
-					0,
+					flags,
 					(void*)method_meta
 				);
 			}
@@ -446,10 +451,17 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "delete"))
 		obj = doDelete(class_obj, ctx->params);
 
-	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search"))
+	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search")) {
 		obj = doSearch(class_obj, ctx->params);
-
-	osrfAppRespondComplete( ctx, obj );
+		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
+		while ((cur = jsonObjectIteratorNext( itr ))) {
+			osrfAppRespond( ctx, cur );
+		}
+		jsonObjectIteratorFree(itr);
+		
+	} else {
+		osrfAppRespondComplete( ctx, obj );
+	}
 
 	jsonObjectFree(obj);
 
@@ -541,6 +553,8 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 			}
 		}
 	}
+
+	jsonObjectIteratorFree(itr);
 
 	if (order_hash) {
 		char* string;
@@ -752,6 +766,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 					}
 					if (flesh_fields) osrfStringArrayFree(link_fields);
 				}
+				jsonObjectIteratorFree(itr);
 			}
 		}
 	}
