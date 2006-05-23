@@ -300,6 +300,9 @@ osrf_app_session* osrf_app_server_session_init(
 void _osrf_app_session_free( osrf_app_session* session ){
 	if(session==NULL)
 		return;
+
+	if( session->userDataFree && session->userData ) 
+		session->userDataFree(session->userData);
 	
 	free(session->remote_id);
 	free(session->orig_remote_id);
