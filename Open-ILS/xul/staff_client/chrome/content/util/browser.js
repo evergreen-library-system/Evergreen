@@ -22,6 +22,7 @@ util.browser.prototype = {
 			obj.url = params['url'];
 			obj.push_xulG = params['push_xulG'];
 			obj.alt_print = params['alt_print'];
+			obj.browser_id = params['browser_id'];
 
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -72,7 +73,8 @@ util.browser.prototype = {
 					}
 				}
 			);
-			obj.controller.view.browser_browser = document.getElementById('browser_browser');
+			var browser_id = 'browser_browser'; if (obj.browser_id) browser_id = obj.browser_id;
+			obj.controller.view.browser_browser = document.getElementById(browser_id);
 
 			obj.buildProgressListener();
 			dump('obj.controller.view.browser_browser.addProgressListener = ' 
