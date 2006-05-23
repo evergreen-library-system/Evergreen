@@ -58,6 +58,22 @@
 		return join(' AND ', @output) . $phrase_match;
 	}
 
+	sub sql_exact_phrase_match {
+		my $self = shift;
+		my $column = $self->text_col;
+		my $output = '';
+		for my $phrase ( $self->phrases ) {
+			$phrase =~ s/\*/\\*/go;
+			$phrase =~ s/\./\\./go;
+			$phrase =~ s/'/\\'/go;
+			$phrase =~ s/\s+/\\s+/go;
+			$log->debug("Adding phrase [$phrase] to the match list", DEBUG);
+			$output .= " AND $column ~* \$\$(^|\\W+)$phrase(\\W+|\$)\$\$";
+		}
+		$log->debug("Phrase list is [$output]", DEBUG);
+		return $output;
+	}
+
 }
 
 1;
