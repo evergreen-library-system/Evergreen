@@ -5,6 +5,12 @@ OPT_PERL_CONFIG=""
 OPT_C_CONFIG=""
 OPT_PID_DIR=""
 
+# ---------------------------------------------------------------------------
+# Make sure we're running as the correct user
+# ---------------------------------------------------------------------------
+[ $(whoami) != 'openesrf' ] && echo 'Must run as user "opensrf"' && exit;
+
+
 # NOTE: Eventually, there will be one OpenSRF config file format
 # When this happens, we will only need a single OPT_CONFIG variable
 
@@ -53,7 +59,6 @@ done
 PID_ROUTER="$OPT_PID_DIR/router.pid";
 PID_OSRF_PERL="$OPT_PID_DIR/osrf_perl.pid";
 PID_OSRF_C="$OPT_PID_DIR/osrf_c.pid";
-
 
 
 # ---------------------------------------------------------------------------
