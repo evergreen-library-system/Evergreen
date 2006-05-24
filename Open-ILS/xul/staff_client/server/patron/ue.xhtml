@@ -737,7 +737,8 @@
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
 								<input style='margin-left: 5px; margin-right: 5px;' id='ue_save_clone'
 									type='submit' value='Save and Clone User' onclick='uEditSaveUser(true);'/>
-								<button style='margin-left: 5px; margin-right: 5px;' onclick='uEditCancel();'>Cancel</button>
+								<button style='margin-left: 5px; margin-right: 5px;' 
+									onclick='if(confirm($("ue_cancel_confirm").innerHTML)) uEditCancel();'>Cancel</button>
 							</div>
 						</div>
 					</td>
@@ -950,6 +951,10 @@
 			The selected username is in use by another user.  
 			Please choose a different username.
 		</span>
+		<span class='hide_me' id='ue_cancel_confirm'>
+			Are you sure you wish to cancel this editing session?
+			Canceling will destroy any unsaved changes you have made thus far to the user.
+			</span>
 	</div>
 
 
