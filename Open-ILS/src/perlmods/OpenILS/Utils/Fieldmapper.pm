@@ -199,6 +199,7 @@ sub _init {
 		'Fieldmapper::config::non_cataloged_type'	=> { hint => 'cnct'   },
 		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
 		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
+		'Fieldmapper::config::net_access_level'		=> { hint => 'cnal'   },
 
 		'Fieldmapper::config::audience_map'		=> { hint	=> 'cam',
 								     readonly	=> 1 },

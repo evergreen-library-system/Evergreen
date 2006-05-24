@@ -20,7 +20,7 @@ sub retrieve_all {
 for my $class (
 		qw/metabib_field standing identification_type copy_status
 		   non_cataloged_type audience_map item_form_map item_type_map
-		   language_map lit_form_map bib_source/ ) {
+		   language_map lit_form_map bib_source net_access_level/ ) {
 
 	__PACKAGE__->register_method(
 		method		=> 'retrieve_all',
