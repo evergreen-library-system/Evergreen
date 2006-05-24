@@ -649,20 +649,24 @@ main.menu.prototype = {
 				frame = this.w.document.createElement('browser');
 				setTimeout(
 					function() {
-						dump('creating browser with src = ' + url + '\n');
-						frame.setAttribute('type','content');
-						frame.setAttribute('id','frame_'+obj.id_incr);
-						JSAN.use('util.browser');
-						var b = new util.browser();
-						b.init(
-							{
-								'url' : url,
-								'push_xulG' : true,
-								'alt_print' : false,
-								'browser_id' : 'frame_'+obj.id_incr,
-								'passthru_content_params' : content_params,
-							}
-						);
+						try {
+							dump('creating browser with src = ' + url + '\n');
+							frame.setAttribute('type','content');
+							frame.setAttribute('id','frame_'+obj.id_incr);
+							JSAN.use('util.browser');
+							var b = new util.browser();
+							b.init(
+								{
+									'url' : url,
+									'push_xulG' : true,
+									'alt_print' : false,
+									'browser_id' : 'frame_'+obj.id_incr,
+									'passthru_content_params' : content_params,
+								}
+							);
+						} catch(E) {
+							alert(E);
+						}
 					},0
 				);
 			} else {
