@@ -8,7 +8,7 @@ OPT_PID_DIR=""
 # ---------------------------------------------------------------------------
 # Make sure we're running as the correct user
 # ---------------------------------------------------------------------------
-[ $(whoami) != 'openesrf' ] && echo 'Must run as user "opensrf"' && exit;
+[ $(whoami) != 'opensrf' ] && echo 'Must run as user "opensrf"' && exit;
 
 
 # NOTE: Eventually, there will be one OpenSRF config file format
