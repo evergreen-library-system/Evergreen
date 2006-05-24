@@ -31,16 +31,21 @@ int beginTransaction ( osrfMethodContext* );
 int commitTransaction ( osrfMethodContext* );
 int rollbackTransaction ( osrfMethodContext* );
 
+int setSavepoint ( osrfMethodContext* );
+int releaseSavepoint ( osrfMethodContext* );
+int rollbackSavepoint ( osrfMethodContext* );
+
 int dispatchCRUDMethod ( osrfMethodContext* );
-jsonObject* doCreate ( osrfHash*, jsonObject* );
-jsonObject* doRetrieve ( osrfHash*, jsonObject* );
-jsonObject* doUpdate ( osrfHash*, jsonObject* );
-jsonObject* doDelete ( osrfHash*, jsonObject* );
-jsonObject* doSearch ( osrfHash*, jsonObject* );
+jsonObject* doCreate ( osrfMethodContext*, osrfHash*, jsonObject* );
+jsonObject* doRetrieve ( osrfMethodContext*, osrfHash*, jsonObject* );
+jsonObject* doUpdate ( osrfMethodContext*, osrfHash*, jsonObject* );
+jsonObject* doDelete ( osrfMethodContext*, osrfHash*, jsonObject* );
+jsonObject* doSearch ( osrfMethodContext*, osrfHash*, jsonObject* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
 
 
 void userDataFree( void* );
+void sessionDataFree( char*, void* );
 
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
@@ -50,6 +55,16 @@ xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 osrfHash* idlHash;
 
 int osrfAppInitialize() {
+
+	// first we register all the transaction and savepoint methods
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.begin", "beginTransaction", "", 1, 0 );
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.commit", "commitTransaction", "", 1, 0 );
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.rollback", "rollbackTransaction", "", 1, 0 );
+
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.set", "setSavepoint", "", 1, 0 );
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.release", "releaseSavepoint", "", 1, 0 );
+	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.rollback", "rollbackSavepoint", "", 1, 0 );
+
 
 	idlHash = osrfNewHash();
 	osrfHash* usrData = NULL;
@@ -76,7 +91,7 @@ int osrfAppInitialize() {
 	//osrfStringArrayAdd( global_methods, "create" );
 	osrfStringArrayAdd( global_methods, "retrieve" );
 	//osrfStringArrayAdd( global_methods, "update" );
-	//osrfStringArrayAdd( global_methods, "delete" );
+	osrfStringArrayAdd( global_methods, "delete" );
 	osrfStringArrayAdd( global_methods, "search" );
 
 	xmlNodePtr docRoot = xmlDocGetRootElement(idlDoc);
@@ -443,12 +458,19 @@ void userDataFree( void* blob ) {
 	return;
 }
 
+void sessionDataFree( char* key, void* item ) {
+	if (!(strcmp(key,"xact_id")))
+		free(item);
+
+	return;
+}
+
 int beginTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	dbi_result result = dbi_conn_query(dbhandle, "START TRANSACTION;");
 	if (!result) {
-		osrfLogDebug(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
+		osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
 		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error starting transaction", MODULENAME );
 		return 1;
 	} else {
@@ -456,11 +478,122 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
 		
-		if (!ctx->session->userData) ctx->session->userData = osrfNewHash();
+		if (!ctx->session->userData) {
+			ctx->session->userData = osrfNewHash();
+			((osrfHash*)ctx->session->userData)->freeItem = &sessionDataFree;
+		}
 
-		osrfHashSet( ctx->session->userData, strdup( ctx->session->session_id ), "xact_id" );
+		osrfHashSet( (osrfHash*)ctx->session->userData, strdup( ctx->session->session_id ), "xact_id" );
 		ctx->session->userDataFree = &userDataFree;
 		
+	}
+	return 0;
+}
+
+int setSavepoint ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
+		return 1;
+	}
+
+	dbi_result result = dbi_conn_queryf(dbhandle, "SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error creating savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		osrfAppRequestRespondException(
+			ctx->session,
+			ctx->request,
+			"%s: Error creating savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
+}
+
+int releaseSavepoint ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
+		return 1;
+	}
+
+	dbi_result result = dbi_conn_queryf(dbhandle, "RELEASE SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error releasing savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		osrfAppRequestRespondException(
+			ctx->session,
+			ctx->request,
+			"%s: Error releasing savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
+}
+
+int rollbackSavepoint ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
+		return 1;
+	}
+
+	dbi_result result = dbi_conn_queryf(dbhandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
+	if (!result) {
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s: Error rolling back savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		osrfAppRequestRespondException(
+			ctx->session,
+			ctx->request,
+			"%s: Error rolling back savepoint %s in transaction %s",
+			MODULENAME,
+			spName,
+			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
+		);
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(spName);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
 	}
 	return 0;
 }
@@ -468,12 +601,18 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 int commitTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to commit", MODULENAME );
+		return 1;
+	}
+
 	dbi_result result = dbi_conn_query(dbhandle, "COMMIT;");
 	if (!result) {
-		osrfLogDebug(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
+		osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
 		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error committing transaction", MODULENAME );
 		return 1;
 	} else {
+		osrfHashRemove(ctx->session->userData, "xact_id");
 		jsonObject* ret = jsonNewObject(ctx->session->session_id);
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
@@ -484,12 +623,18 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 int rollbackTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
+		return 1;
+	}
+
 	dbi_result result = dbi_conn_query(dbhandle, "ROLLBACK;");
 	if (!result) {
-		osrfLogDebug(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
+		osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
 		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error rolling back transaction", MODULENAME );
 		return 1;
 	} else {
+		osrfHashRemove(ctx->session->userData, "xact_id");
 		jsonObject* ret = jsonNewObject(ctx->session->session_id);
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
@@ -505,20 +650,20 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	jsonObject * obj = NULL;
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "create"))
-		obj = doCreate(class_obj, ctx->params);
+		obj = doCreate(ctx, class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "retrieve"))
-		obj = doRetrieve(class_obj, ctx->params);
+		obj = doRetrieve(ctx, class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "update"))
-		obj = doUpdate(class_obj, ctx->params);
+		obj = doUpdate(ctx, class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "delete"))
-		obj = doDelete(class_obj, ctx->params);
+		obj = doDelete(ctx, class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search")) {
 		jsonObjectNode* cur;
-		obj = doSearch(class_obj, ctx->params);
+		obj = doSearch(ctx, class_obj, ctx->params);
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
 			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
@@ -535,9 +680,18 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	return 0;
 }
 
-jsonObject* doCreate( osrfHash* meta, jsonObject* params ) { return NULL; }
+jsonObject* doCreate(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
 
-jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
+		return 1;
+	}
+
+	return NULL;
+}
+
+
+jsonObject* doRetrieve(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
 
 	jsonObject* obj;
 
@@ -563,7 +717,7 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 
 	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
 
-	jsonObject* list = doSearch(meta, fake_params);
+	jsonObject* list = doSearch( ctx,meta, fake_params);
 	obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 
 	jsonObjectFree( list );
@@ -572,7 +726,7 @@ jsonObject* doRetrieve( osrfHash* meta, jsonObject* params ) {
 	return obj;
 }
 
-jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
+jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
 
 	jsonObject* _tmp;
 	jsonObject* obj;
@@ -615,7 +769,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 				);
 				free(key_string);
 			} else {
-				osrfLogDebug(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
 				free(key_string);
 			}
 		}
@@ -687,7 +841,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 		dbi_result_free(result); 
 
 	} else {
-		osrfLogDebug(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
+		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
 	}
 
 	free(sql);
@@ -804,7 +958,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 							);
 						}
 
-						jsonObject* kids = doSearch(kid_idl, fake_params);
+						jsonObject* kids = doSearch(ctx, kid_idl, fake_params);
 
 						osrfLogDebug(OSRF_LOG_MARK, "Search for %s return %d linked objects", osrfHashGet(kid_link, "class"), kids->size);
 						
@@ -842,9 +996,73 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 }
 
 
-jsonObject* doUpdate( osrfHash* meta, jsonObject* params ) { return NULL; }
+jsonObject* doUpdate(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
 
-jsonObject* doDelete( osrfHash* meta, jsonObject* params ) { return NULL; }
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
+		return 1;
+	}
+
+	return NULL;
+}
+
+jsonObject* doDelete(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction -- required for delete", MODULENAME );
+		return jsonNewObject(NULL);
+	}
+
+	jsonObject* obj;
+
+	char* pkey = osrfHashGet(meta, "primarykey");
+
+	char* id;
+	if (jsonObjectGetIndex(params, 0)->classname) {
+		id = jsonObjectToSimpleString(
+			jsonObjectGetIndex(
+				jsonObjectGetIndex(params, 0),
+				atoi( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "array_position") )
+			)
+		);
+	} else {
+		id = jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
+	}
+
+	osrfLogDebug(
+		OSRF_LOG_MARK,
+		"%s deleting %s object with %s = %s",
+		MODULENAME,
+		osrfHashGet(meta, "fieldmapper"),
+		pkey,
+		id
+	);
+
+	obj = jsonParseString(id);
+
+	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
+		dbi_conn_quote_string(dbhandle, &id);
+
+	dbi_result result = dbi_conn_queryf(dbhandle, "DELETE FROM %s WHERE %s = %s;", osrfHashGet(meta, "tablename"), pkey, id);
+
+	if (!result) {
+		jsonObjectFree(obj);
+		obj = jsonNewObject(NULL);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s ERROR deleting %s object with %s = %s",
+			MODULENAME,
+			osrfHashGet(meta, "fieldmapper"),
+			pkey,
+			id
+		);
+	}
+
+	free(id);
+
+	return obj;
+
+}
 
 
 jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
