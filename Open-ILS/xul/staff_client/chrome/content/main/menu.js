@@ -514,7 +514,7 @@ main.menu.prototype = {
 						try {
 								if (p
 									&& p.firstChild 
-									&& p.firstChild.nodeName == 'iframe' 
+									&& ( p.firstChild.nodeName == 'iframe' || p.firstChild.nodeName == 'browser' )
 									&& p.firstChild.contentWindow 
 								) {
 									if (typeof p.firstChild.contentWindow.default_focus == 'function') {
@@ -647,52 +647,46 @@ main.menu.prototype = {
 			if (params && typeof params.browser != 'undefined') {
 				obj.id_incr++;
 				frame = this.w.document.createElement('browser');
-				setTimeout(
-					function() {
-						try {
-							dump('creating browser with src = ' + url + '\n');
-							frame.setAttribute('type','content');
-							frame.setAttribute('id','frame_'+obj.id_incr);
-							JSAN.use('util.browser');
-							var b = new util.browser();
-							b.init(
-								{
-									'url' : url,
-									'push_xulG' : true,
-									'alt_print' : false,
-									'browser_id' : 'frame_'+obj.id_incr,
-									'passthru_content_params' : content_params,
-								}
-							);
-						} catch(E) {
-							alert(E);
+				frame.setAttribute('flex','1');
+				frame.setAttribute('type','content');
+				frame.setAttribute('id','frame_'+obj.id_incr);
+				panel.appendChild(frame);
+				try {
+					dump('creating browser with src = ' + url + '\n');
+					JSAN.use('util.browser');
+					var b = new util.browser();
+					b.init(
+						{
+							'url' : url,
+							'push_xulG' : true,
+							'alt_print' : false,
+							'browser_id' : 'frame_'+obj.id_incr,
+							'passthru_content_params' : content_params,
 						}
-					},0
-				);
+					);
+				} catch(E) {
+					alert(E);
+				}
 			} else {
 				frame = this.w.document.createElement('iframe');
-				setTimeout(
-					function() {
-						dump('creating iframe with src = ' + url + '\n');
-						frame.setAttribute('src',url);
-						try {
-							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							var cw = frame.contentWindow;
-							if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
-							cw.IAMXUL = true;
-							cw.xulG = content_params;
-						} catch(E) {
-							this.error.sdump('D_ERROR', 'main.menu: ' + E);
-						}
-					},0
-				);
+				frame.setAttribute('flex','1');
+				panel.appendChild(frame);
+				dump('creating iframe with src = ' + url + '\n');
+				frame.setAttribute('src',url);
+				try {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					var cw = frame.contentWindow;
+					if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
+					cw.IAMXUL = true;
+					cw.xulG = content_params;
+				} catch(E) {
+					this.error.sdump('D_ERROR', 'main.menu: ' + E);
+				}
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR', 'main.menu:2: ' + E);
 			alert('pause for error');
 		}
-		frame.setAttribute('flex','1');
-		panel.appendChild(frame);
 
 		return frame;
 	}
