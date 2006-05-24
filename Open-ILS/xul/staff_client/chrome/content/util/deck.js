@@ -44,8 +44,9 @@ util.deck.prototype = {
 				try {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					this.error.sdump('D_DECK', 'set_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
-					iframe.contentWindow.IAMXUL = true;
-					iframe.contentWindow.xulG = content_params;
+					var cw = iframe.contentWindow; 
+					if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
+					cw.IAMXUL = true; cw.xulG = content_params;
 				} catch(E) {
 					this.error.sdump('D_ERROR','E: ' + E + '\n');
 				}
@@ -78,9 +79,10 @@ util.deck.prototype = {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
-				iframe.contentWindow.IAMXUL = true;
-				iframe.contentWindow.xulG = content_params;
-				this.error.sdump('D_DECK', 'contentWindow.xulG = ' + js2JSON(iframe.contentWindow.xulG) );
+				var cw = iframe.contentWindow; 
+				if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
+				cw.IAMXUL = true; cw.xulG = content_params;
+				this.error.sdump('D_DECK', 'cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) );
 			} catch(E) {
 				this.error.sdump('D_ERROR','E: ' + E + '\n');
 			}
