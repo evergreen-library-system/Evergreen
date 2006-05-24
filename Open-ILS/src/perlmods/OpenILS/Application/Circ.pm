@@ -293,34 +293,49 @@ sub _set_circ_lost {
 	}
 
 	# if the copy has a price defined and/or a processing fee, bill the patron
-	my $amount = $copy->price || 0;
-	my $owner = $U->fetch_copy_owner($copy->id);
-	$logger->info("circ fetching org settings for $owner to determine processing fee");
-	my $settings = $U->simplereq(
-		'open-ils.actor',
-		'open-ils.actor.org_unit.settings.retrieve', $owner );
-	my $f = $settings->{'circ.processing_fee'} || 0;
-	$amount += $f;
-	
-	if( $amount > 0 ) {
 
-		$logger->activity("The system is charging $amount ".
-			"for lost materials on circulation ".$circ->id);
+	my $copy_price = $copy->price || 0;
 
-		my $bill = Fieldmapper::money::billing->new;
-
-		$bill->xact( $circ->id );
-		$bill->amount( $amount );
-		$bill->billing_type('Lost materials'); # - these strings should be configurable some day
-		$bill->note('SYSTEM GENERATED');
-
-		my $id = $session->request(
-			'open-ils.storage.direct.money.billing.create', $bill )->gather(1);
-
-		return $U->DB_UPDATE_FAILED($bill) unless defined $id;
+	# If the copy has a price configured, charge said price to the user
+	if($copy_price) {
+		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
+		return $evt if $evt;
 	}
 
+	# if the location that owns the copy has a processing fee, charge the user
+	my $owner = $U->fetch_copy_owner($copy->id);
+	$logger->info("circ fetching org settings for $owner to determine processing fee");
+
+	my $settings = $U->simplereq(
+		'open-ils.actor', 'open-ils.actor.org_unit.settings.retrieve', $owner );
+	my $fee = $settings->{'circ.lost_materials_processing_fee'} || 0;
+
+	if( $fee ) {
+		$evt = _make_bill($session, $fee, 'Lost Materials Processing Fee', $circ->id);
+		return $evt if $evt;
+	}
+	
 	$circ->stop_fines("LOST");		
+	return undef;
+}
+
+sub _make_bill {
+	my( $session, $amount, $type, $xactid ) = @_;
+
+	$logger->activity("The system is charging $amount ".
+		" [$type] for lost materials on circulation $xactid");
+
+	my $bill = Fieldmapper::money::billing->new;
+
+	$bill->xact($xactid);
+	$bill->amount($amount);
+	$bill->billing_type($type); # - XXX these strings should be configurable some day
+	$bill->note('SYSTEM GENERATED');
+
+	my $id = $session->request(
+		'open-ils.storage.direct.money.billing.create', $bill )->gather(1);
+
+	return $U->DB_UPDATE_FAILED($bill) unless defined $id;
 	return undef;
 }
 
