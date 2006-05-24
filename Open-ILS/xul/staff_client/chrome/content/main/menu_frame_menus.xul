@@ -6,6 +6,8 @@
 <script>dump('loading menu_frame_menus.xul\n');</script>
 
 <commandset id="universal_cmds">
+	<command id="cmd_forward"/>
+	<command id="cmd_back"/>
 	<command id="cmd_close_window" key="close-window-key" />
 	<command id="cmd_new_window" key="new-window-key" />
 	<command id="cmd_new_tab" key="new-tab-key" />
