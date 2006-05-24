@@ -40,8 +40,6 @@
 	<script type="text/javascript" src="../OpenILS/util/fmall.js"/>
 	<script type="text/javascript">
 	<![CDATA[
-		var xulG = {};
-
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");

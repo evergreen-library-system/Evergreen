@@ -23,6 +23,7 @@ util.browser.prototype = {
 			obj.push_xulG = params['push_xulG'];
 			obj.alt_print = params['alt_print'];
 			obj.browser_id = params['browser_id'];
+			obj.passthru_content_params = params['passthru_content_params'];
 
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -109,10 +110,8 @@ util.browser.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var cw = this.get_content();
 			cw.IAMXUL = true;
-			if (window.xulG) {
-				cw.xulG = window.xulG.passthru_content_params;
-				dump('xulG = ' + js2JSON(cw.xulG) + '\n');
-			}
+			cw.xulG = obj.passthru_content_params;
+			dump('xulG = ' + js2JSON(cw.xulG) + '\n');
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
 		}

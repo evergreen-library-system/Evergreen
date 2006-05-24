@@ -652,7 +652,6 @@ main.menu.prototype = {
 						dump('creating browser with src = ' + url + '\n');
 						frame.setAttribute('type','content');
 						frame.setAttribute('id','frame_'+obj.id_incr);
-						xulG.passthru_content_params = content_params;
 						JSAN.use('util.browser');
 						var b = new util.browser();
 						b.init(
@@ -661,6 +660,7 @@ main.menu.prototype = {
 								'push_xulG' : true,
 								'alt_print' : false,
 								'browser_id' : 'frame_'+obj.id_incr,
+								'passthru_content_params' : content_params,
 							}
 						);
 					},0

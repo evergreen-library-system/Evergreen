@@ -58,13 +58,16 @@
 				var alt_print = false;
 				if (g.cgi.param('alternate_print') || (typeof xulG == 'object' ? xulG.alternate_print : false)) alt_print = true;
 
-				g.browser.init( 
-					{ 
-						'url' : url,
-						'push_xulG' : push_xulG,
-						'alt_print' : alt_print,
-					} 
-				);
+				var p = { 
+					'url' : url,
+					'push_xulG' : push_xulG,
+					'alt_print' : alt_print,
+				} 
+				if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
+					p.passthru_content_params = window.xulG.passthru_content_params;
+				}
+
+				g.browser.init( p );
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
