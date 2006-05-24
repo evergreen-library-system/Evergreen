@@ -31,7 +31,9 @@
 	<script>
 	<![CDATA[
 
-		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var browser_frame; var browser_obj; var browser_win;
+		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; 
+		var browser_frame; var browser_obj; var browser_win;
+		var editor_obj;
 
 		function my_init() {
 			try {
@@ -97,33 +99,47 @@
 		}
 
 		function set_marc_edit() {
-		try {
-			dump('docid = ' + docid + '\n');
-			bottom_pane.set_iframe( 
-				xulG.url_prefix( urls.XUL_MARC_EDIT ),
-				{},
-				{
-					'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
-					'save' : {
-						'label' : 'Save Record',
-						'func' : function (new_marcxml) {
-							try {
-								var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
-								if (typeof r.ilsevent != 'undefined') {
-									throw(r);
-								} else {
-									alert('Record successfully saved.');
+			try {
+				bottom_pane.node.selectedIndex = 1;
+				var content_params = { 
+					'show_nav_buttons' : false,
+					'show_print_button' : false,
+					'passthru_content_params' : { 
+						'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+						'save' : {
+							'label' : 'Save Record',
+							'func' : function (new_marcxml) {
+								try {
+									var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
+									if (typeof r.ilsevent != 'undefined') {
+										throw(r);
+									} else {
+										alert('Record successfully saved.');
+									}
+								} catch(E) {
+										g.error.standard_unexpected_error_alert('Record not likely updated.',E);
 								}
-							} catch(E) {
-									g.error.standard_unexpected_error_alert('Record not likely updated.',E);
 							}
-						}
+						},
+					},
+					'url' : xulG.url_prefix( urls.XUL_MARC_EDIT ),
+				};
+				if (editor_obj) return;
+				JSAN.use('util.browser');
+				editor_obj = new util.browser();
+				editor_obj.init(
+					{
+						'url' : xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=MarcEditor',
+						'push_xulG' : true,
+						'alt_print' : false,
+						'browser_id' : 'editor',
+						'passthru_content_params' : content_params,
 					}
-				}
-			);
-		} catch(E) {
-			alert(E);
-		}
+				);
+			} catch(E) {
+				g.error.sdump('D_ERROR','set_marc_edit: ' + E);
+				alert('set_marc_edit: ' + E);
+			}
 		}
 
 		function set_copy_browser() {
@@ -253,6 +269,8 @@
 	]]>
 	</script>
 
+	<commandset><command id="cmd_forward"/><command id="cmd_back"/></commandset>
+
 	<vbox flex="1">
 		<deck id="top_pane"/>
 		<splitter><grippy/></splitter>
@@ -275,6 +293,7 @@
 		</menubar>
 		<deck id="bottom_pane" flex="1">
 			<browser id="browser"/>
+			<browser id="editor"/>
 		</deck>
 	</vbox>
 
