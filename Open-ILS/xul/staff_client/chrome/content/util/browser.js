@@ -81,13 +81,15 @@ util.browser.prototype = {
 			obj.controller.view.browser_browser = document.getElementById(browser_id);
 
 			obj.buildProgressListener();
+			/*
 			dump('obj.controller.view.browser_browser.addProgressListener = ' 
 				+ obj.controller.view.browser_browser.addProgressListener + '\n');
+			*/
 			obj.controller.view.browser_browser.addProgressListener(obj.progressListener,
 			                Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 
 			obj.controller.view.browser_browser.setAttribute('src',obj.url);
-			dump('browser url = ' + obj.url + '\n');
+			//dump('browser url = ' + obj.url + '\n');
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
@@ -109,12 +111,15 @@ util.browser.prototype = {
 	'push_variables' : function() {
 		try {
 			var obj = this;
+			var s = '';
+			try { s += obj.url + '\n' + obj.get_content().location.href + '\n'; } catch(E) { s+=E + '\n'; }
 			if (!obj.push_xulG) return;
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var cw = this.get_content();
 			cw.IAMXUL = true;
 			cw.xulG = obj.passthru_content_params;
-			dump('xulG = ' + js2JSON(cw.xulG) + '\n');
+			try { s += ('cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
+			obj.error.sdump('D_BROWSER',s);
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
 		}
@@ -123,7 +128,9 @@ util.browser.prototype = {
 	'getWebNavigation' : function() {
 		try {
 			var wn = this.controller.view.browser_browser.webNavigation;
-			dump('getWebNavigation() = ' + wn + '\n');
+			var s = this.url + '\n' + this.get_content().location.href + '\n';
+			s += ('getWebNavigation() = ' + wn + '\n');
+			this.error.sdump('D_BROWSER',s);
 			return wn;
 		} catch(E) {
 			alert('util.browser.getWebNavigation(): ' + E );
@@ -131,7 +138,8 @@ util.browser.prototype = {
 	},
 
 	'updateNavButtons' : function() {
-		var obj = this; var s = '';
+		var obj = this; 
+		var s = obj.url + '\n' + obj.get_content().location.href + '\n';
 		try {
 			var n = obj.getWebNavigation();
 			s += ('webNavigation = ' + n + '\n');
