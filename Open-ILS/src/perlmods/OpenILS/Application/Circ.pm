@@ -501,8 +501,8 @@ __PACKAGE__->register_method(
 
 sub circ_count {
 	my( $self, $client, $copyid ) = @_; 
-	my $circs = $U->storagereq(
-		'open-ils.storage.id_list.action.circulation.search.target_copy.atomic', $copyid );
+	my $e = OpenILS::Utils::Editor->new;
+	my $circs = $e->search_action_circulation({target_copy => $copyid}, {idlist=>1});
 	return scalar @$circs;
 }
 
