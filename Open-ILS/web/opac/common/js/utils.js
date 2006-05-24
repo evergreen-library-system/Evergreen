@@ -511,3 +511,8 @@ function alertId(id) {
 	var node = $(id);
 	if(node) alert(node.innerHTML);
 }
+
+
+function goBack() { history.back(); }
+function goForward() { history.forward(); }
+
