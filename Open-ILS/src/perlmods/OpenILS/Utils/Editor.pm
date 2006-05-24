@@ -11,6 +11,18 @@ my $U = "OpenILS::Application::AppUtils";
 
 
 # -----------------------------------------------------------------------------
+# Export some useful functions
+# -----------------------------------------------------------------------------
+use vars qw(@EXPORT_OK %EXPORT_TAGS);
+use Exporter;
+use base qw/Exporter/;
+push @EXPORT_OK, 'new_editor';
+%EXPORT_TAGS = ( funcs => [ qw/ new_editor / ] );
+
+sub new_editor { return OpenILS::Utils::Editor->new(@_); }
+
+
+# -----------------------------------------------------------------------------
 # These need to be auto-generated
 # -----------------------------------------------------------------------------
 my %PERMS = (
@@ -323,6 +335,7 @@ sub _hash_to_string {
 
 sub _arg_to_string {
 	my( $action, $arg ) = @_;
+	return "" unless $arg;
 	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
 	return _hash_to_string($arg) if ref $arg eq 'HASH'; # search
 	return "[@$arg]" if ref $arg eq 'ARRAY';
@@ -374,18 +387,22 @@ sub runmethod {
 		$method =~ s/batch_retrieve/batch.retrieve/o;
 		$method = "$method.atomic";
 		@arg = @$arg if ref($arg) eq 'ARRAY';
+
+	} elsif( $action eq 'retrieve_all' ) {
+		$method =~ s/retrieve_all/retrieve.all.atomic/o;
 	}
 
 	# remove any stale events
 	$self->clear_event;
 
-	$self->log(I, "performing $action on $type : $argstr");
+	$self->log(I, "$type.$action : $argstr");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
 	}
 
 	if($$options{checkperm}) {
-		my $a = ($action eq 'search' or $action eq 'batch_retrieve') ? 'retrieve' : $action;
+		my $a = ($action eq 'search' or 
+			$action eq 'batch_retrieve' or $action eq 'retrieve_all') ? 'retrieve' : $action;
 		my $e = $self->checkperm($type, $a, $$options{permorg});
 		if($e) {
 			$self->event($e);
@@ -424,8 +441,8 @@ sub runmethod {
 		return undef;
 	}
 
-	if( $action eq 'search' or $action eq 'batch_retrieve') {
-		$self->log(I, "$action $type : returned ".scalar(@$obj). " result(s)");
+	if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
+		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
 		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
 
@@ -493,6 +510,12 @@ for my $object (keys %$map) {
 	my $bretrievef = 
 		"sub $bretrieve {return shift()->runmethod('batch_retrieve', '$type', \@_);}";
 	eval $bretrievef;
+
+	my $retrieveall = "retrieve_all_$obj";
+	my $retrieveallf = 
+		"sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
+	eval $retrieveallf;
+
 
 }
 
