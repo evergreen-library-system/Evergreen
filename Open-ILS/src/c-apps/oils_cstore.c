@@ -27,6 +27,10 @@
 int osrfAppChildInit();
 int osrfAppInitialize();
 
+int beginTransaction ( osrfMethodContext* );
+int commitTransaction ( osrfMethodContext* );
+int rollbackTransaction ( osrfMethodContext* );
+
 int dispatchCRUDMethod ( osrfMethodContext* );
 jsonObject* doCreate ( osrfHash*, jsonObject* );
 jsonObject* doRetrieve ( osrfHash*, jsonObject* );
@@ -34,6 +38,9 @@ jsonObject* doUpdate ( osrfHash*, jsonObject* );
 jsonObject* doDelete ( osrfHash*, jsonObject* );
 jsonObject* doSearch ( osrfHash*, jsonObject* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
+
+
+void userDataFree( void* );
 
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
@@ -272,7 +279,7 @@ int osrfAppInitialize() {
 
 				int flags = 0;
 				if (!(strcmp( method_type, "search" ))) {
-					flags = flags | OSRF_METHOD_STREAM;
+					flags = flags | OSRF_METHOD_STREAMING;
 				}
 
 				osrfAppRegisterExtendedMethod(
@@ -431,6 +438,64 @@ int osrfAppChildInit() {
 	return 0;
 }
 
+void userDataFree( void* blob ) {
+	osrfHashFree( (osrfHash*)blob );
+	return;
+}
+
+int beginTransaction ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	dbi_result result = dbi_conn_query(dbhandle, "START TRANSACTION;");
+	if (!result) {
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error starting transaction", MODULENAME );
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+		
+		if (!ctx->session->userData) ctx->session->userData = osrfNewHash();
+
+		osrfHashSet( ctx->session->userData, strdup( ctx->session->session_id ), "xact_id" );
+		ctx->session->userDataFree = &userDataFree;
+		
+	}
+	return 0;
+}
+
+int commitTransaction ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	dbi_result result = dbi_conn_query(dbhandle, "COMMIT;");
+	if (!result) {
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error committing transaction", MODULENAME );
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
+}
+
+int rollbackTransaction ( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+
+	dbi_result result = dbi_conn_query(dbhandle, "ROLLBACK;");
+	if (!result) {
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
+		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error rolling back transaction", MODULENAME );
+		return 1;
+	} else {
+		jsonObject* ret = jsonNewObject(ctx->session->session_id);
+		osrfAppRespondComplete( ctx, ret );
+		jsonObjectFree(ret);
+	}
+	return 0;
+}
 
 int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
@@ -452,12 +517,14 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		obj = doDelete(class_obj, ctx->params);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search")) {
+		jsonObjectNode* cur;
 		obj = doSearch(class_obj, ctx->params);
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
-			osrfAppRespond( ctx, cur );
+			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
 		}
 		jsonObjectIteratorFree(itr);
+		osrfAppRespondComplete( ctx, NULL );
 		
 	} else {
 		osrfAppRespondComplete( ctx, obj );
@@ -554,7 +621,7 @@ jsonObject* doSearch( osrfHash* meta, jsonObject* params ) {
 		}
 	}
 
-	jsonObjectIteratorFree(itr);
+	jsonObjectIteratorFree(search_itr);
 
 	if (order_hash) {
 		char* string;
