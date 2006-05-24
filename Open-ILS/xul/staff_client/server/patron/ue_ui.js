@@ -193,10 +193,11 @@ function uEditInsertCat( row, cat, idx ) {
 
 /* draw the surveys */
 function uEditDrawSurveys(surveys) {
+
 	var div = $('uedit_surveys');
 	var table = div.removeChild($('ue_survey_table'));
-	if( surveys.length == 0 ) 
-		unHideMe($('uedit_no_surveys'));
+	if( surveys.length == 0 ) unHideMe($('uedit_no_surveys'));
+
 	for( var s in surveys ) {
 		var survey = surveys[s];
 		surveysCache[survey.id()] = survey;
@@ -208,8 +209,10 @@ function uEditDrawSurveys(surveys) {
 
 /* insert the servey then insert each of that surveys questions */
 function uEditInsertSurvey( div, table, survey, sidx ) {
+
 	$n(table, 'ue_survey_name').appendChild(text(survey.name()));
 	$n(table, 'ue_survey_desc').appendChild(text(survey.description()));
+
 	var tbody = $n(table, 'ue_survey_tbody');
 	var templ = tbody.removeChild($n(table, 'ue_survey_row'));
 
@@ -222,9 +225,11 @@ function uEditInsertSurvey( div, table, survey, sidx ) {
 }
 
 function uEditInsertSurveyQuestion( row, survey, question ) {
+
 	var selector = $n(row, 'ue_survey_answer');
 	row.setAttribute('question', question.id());
 	$n(row, 'ue_survey_question').appendChild(text(question.question()));
+
 	for( var a in question.answers() ) {
 		var answer = question.answers()[a];
 		surveyAnswersCache[answer.id()] = answer;
@@ -232,6 +237,12 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 	}
 
 	surveyQuestionsCache[question.id()] = question;
+
+	/* XXX
+	if( survey.required() && survey.required() != 'f' ) {
+		addCSSClass(selector, 'invalid_value');
+	}
+	*/
 
 	selector.onchange = function() {
 
@@ -244,10 +255,21 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 			)
 		);
 
+
 		if(!patron.survey_responses())
 			patron.survey_responses([]);
 
 		var val = getSelectorVal(selector);
+
+		/* XXX
+		if( survey.required() && survey.required() != 'f' ) {
+			if(val)
+				removeCSSClass(selector, 'invalid_value');
+			else 
+				addCSSClass(selector, 'invalid_value');
+		}
+		*/
+
 		if(!val) return;
 
 		var resp	= new asvr();
