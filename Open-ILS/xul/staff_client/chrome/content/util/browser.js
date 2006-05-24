@@ -186,7 +186,7 @@ util.browser.prototype = {
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
 					try {
 						netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
-						var s = obj.url + '\n';
+						var s = obj.url + '\n' + obj.get_content().location.href + '\n';
 						const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 						const nsIChannel = Components.interfaces.nsIChannel;
 						if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
