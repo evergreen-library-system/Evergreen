@@ -206,7 +206,7 @@
 		<menuitem label="Receipt Template Editor" accesskey="R" command="cmd_print_list_template_edit"/>
 		<menuitem label="Survey Wizard" accesskey="S" command="cmd_survey_wizard"/>
 		<menuseparator />
-		<menu id="main.menu.admin.sub" label="For developers...">
+		<menu id="main.menu.admin.sub" accesskey="-" label="For developers...">
 			<menupopup id="main.menu.admin.sub.popup">
 				<menuitem label="Statistical Category Editor" accesskey="C" command="cmd_stat_cat_edit"/>
 				<menuitem label="Non-Cataloged Type Editor" accesskey="n" command="cmd_non_cat_type_edit"/>

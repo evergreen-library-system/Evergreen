@@ -282,7 +282,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					//obj.set_tab(obj.url_prefix(urls.XUL_LOCAL_ADMIN)+'?ses='+window.escape(ses())+'&session='+window.escape(ses()),{},{});
-					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
 						urls.XUL_LOCAL_ADMIN+'?ses='+window.escape(ses())+'&session='+window.escape(ses())
 					);
 					obj.set_tab( 
@@ -445,7 +445,7 @@ main.menu.prototype = {
 			'cmd_public_opac' : [
 				['oncommand'],
 				function() {
-					var loc = urls.XUL_BROWSER + '?url=' + window.escape(
+					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
 						urls.remote
 					);
 					obj.set_tab( 

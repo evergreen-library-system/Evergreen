@@ -13,7 +13,7 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- OVERLAYS -->
-<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
 
 <window id="util_browser_win" 
 	onload="my_init()"
@@ -67,6 +67,9 @@
 				};
 				if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
 					p.passthru_content_params = window.xulG.passthru_content_params;
+				}
+				if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'function') {
+					p.on_url_load = window.xulG.on_url_load;
 				}
 
 				g.browser.init( p );
