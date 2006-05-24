@@ -9,6 +9,7 @@ var surveyQuestionsCache	= {};
 var surveyAnswersCache		= {};
 var userCache					= {};
 var groupsCache				= {};
+var netLevelsCache			= {};
 
 
 /* fetch the necessary data to start off */
@@ -52,6 +53,12 @@ function uEditFetchGroups() {
 	req.send(true);
 	return req.result();
 }
+
+function uEditFetchNetLevels() {
+	var req = new Request(FETCH_NET_LEVELS, SESSION);
+	req.send(true);
+	return req.result();
+}
 /* ------------------------------------------------------------------------------ */
 
 
@@ -69,7 +76,9 @@ function uEditBuild() {
 		uEditFetchIdentTypes(),
 		uEditFetchGroups(),
 		uEditFetchStatCats(),
-		uEditFetchSurveys() );
+		uEditFetchSurveys(),
+		uEditFetchNetLevels()
+		);
 
 	if(patron.isnew()) {
 		if(clone) 
@@ -81,6 +90,7 @@ function uEditBuild() {
 	if(!patron.isnew()) {
 		$('ue_barcode').disabled = true;
 		unHideMe($('ue_mark_card_lost'));
+		unHideMe($('ue_reset_pw'));
 	}
 }
 
@@ -100,15 +110,25 @@ function uEditNewPatron() {
 	patron.survey_responses([]);
 	patron.addresses([]);
 	patron.home_ou(USER.ws_ou());
-	var rand  = Math.random();
-	rand = parseInt(rand * 10000) + '';
-	while(rand.length < 4) rand += '0';
-	patron.passwd(rand);
-	$('ue_password_plain').appendChild(text(rand));
-	unHideMe($('ue_password_gen'));
+	uEditMakeRandomPw(patron);
 	return patron;
 }
 
+function uEditMakeRandomPw(patron) {
+	var rand  = Math.random();
+	rand = parseInt(rand * 10000) + '';
+	while(rand.length < 4) rand += '0';
+	appendClear($('ue_password_plain'),text(rand));
+	unHideMe($('ue_password_gen'));
+	patron.passwd(rand);
+	return rand;
+}
+
+function uEditResetPw() { 
+	var pw = uEditMakeRandomPw(patron);	
+	$('ue_password1').value = pw;
+	$('ue_password2').value = pw;
+}
 
 function uEditClone(clone) {
 
@@ -163,7 +183,7 @@ function uEditCreateNewAddr() {
 
 
 /* kicks off the UI drawing */
-function uEditDraw(identTypes, groups, statCats, surveys ) {
+function uEditDraw(identTypes, groups, statCats, surveys, netLevels ) {
 	hideMe($('uedit_loading'));
 	unHideMe($('ue_maintd'));
 
@@ -172,6 +192,7 @@ function uEditDraw(identTypes, groups, statCats, surveys ) {
 	uEditDrawGroups(groups);
 	uEditDrawStatCats(statCats);
 	uEditDrawSurveys(surveys);
+	uEditDrawNetLevels(netLevels);
 	uEditDefineData(patron);
 
 	uEditIterateFields(function(f) { uEditActivateField(f) });
@@ -341,6 +362,9 @@ function uEditAlertErrors() {
 
 /* send the user to the database */
 function uEditSaveUser(cloneme) {
+
+	alert(patron.net_access_level());
+	return;
 
 	if(uEditGetErrorStrings()) {
 		uEditAlertErrors();

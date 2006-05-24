@@ -5,6 +5,7 @@ const SC_CREATE_MAP		= 'open-ils.circ:open-ils.circ.stat_cat.actor.user_map.crea
 const SV_FETCH_ALL		= 'open-ils.circ:open-ils.circ.survey.retrieve.all';
 const FETCH_ID_TYPES		= 'open-ils.actor:open-ils.actor.user.ident_types.retrieve';
 const FETCH_GROUPS		= 'open-ils.actor:open-ils.actor.groups.tree.retrieve';
+const FETCH_NET_LEVELS	= 'open-ils.actor:open-ils.actor.net_access_level.retrieve.all';
 const UPDATE_PATRON		= 'open-ils.actor:open-ils.actor.patron.update';
 const PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
 const ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
@@ -12,6 +13,7 @@ const FETCH_ADDR_MEMS	= 'open-ils.actor:open-ils.actor.address.members';
 const FETCH_GRP_MEMS		= 'open-ils.actor:open-ils.actor.usergroup.members.retrieve';
 const defaultState		= 'GA';
 const defaultCountry		= 'USA';
+const defaultNetAccess	= 'None';
 const CSS_INVALID_DATA	= 'invalid_value';
 
 /* if they don't have these perms, they shouldn't be here */
@@ -342,6 +344,15 @@ function uEditDefineData(patron) {
 					var node = $('ue_expire');
 					node.value = year+'-'+month+'-'+day;
 				}
+			}
+		},
+		{
+			required : false,
+			object	: patron,
+			key		: 'net_access_level',
+			widget	: {
+				id		: 'ue_net_level',
+				type	: 'select'
 			}
 		},
 		{

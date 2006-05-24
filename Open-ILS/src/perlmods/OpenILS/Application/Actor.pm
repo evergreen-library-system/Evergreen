@@ -25,7 +25,7 @@ use DateTime::Format::ISO8601;
 
 use OpenILS::Application::Actor::Container;
 
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor qw/:funcs/;
 
 use OpenILS::Application::Actor::UserGroups;
 sub initialize {
@@ -2083,6 +2083,20 @@ sub usrname_exists {
 	return 1 if $a and @$a;
 	return 0;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_net_levels',
+	api_name	=> 'open-ils.actor.net_access_level.retrieve.all',
+);
+
+sub retrieve_net_levels {
+	my( $self, $conn, $auth ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->retrieve_all_config_net_access_level();
+}
+
 
 
 1;

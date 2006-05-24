@@ -212,6 +212,7 @@
 										<td>
 											<div class='wide left'>
 												<input type='password' id='ue_password1'/>
+												<button class='hide_me' onclick='uEditResetPw();' id='ue_reset_pw'>Reset</button>
 												<span style='padding-left: 10px;' class='hide_me' id='ue_password_gen'>
 													Generated password: 
 													<span style='text-decoration:underline;' id='ue_password_plain'/>
@@ -578,12 +579,6 @@
 												</button>
 
 												<span class='pad' style='font-size: 8pt;'>(YYYY-MM-DD)</span>
-												<!--
-												<div style='margin-top: 5px;'>
-													Note: a default will be provided if none is selected
-												</div>
-												-->
-	
 												<script type="text/javascript">
 													Calendar.setup({
 														inputField	: "ue_expire",				// id of the input field
@@ -593,6 +588,16 @@
 														singleClick	: true
 													});
 												</script>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><div class='wide right'>Internet Access Level</div></td>
+										<td>
+											<div class='wide left'>
+												<select id='ue_net_level'>
+													<option value=''> -- None Selected -- </option>
+												</select>
 											</div>
 										</td>
 									</tr>
@@ -625,7 +630,10 @@
 										<td>
 											<div class='wide left'>
 												<input id='ue_claims_returned' type='text' disabled='disabled' size='6'/>
-												<script>$('ue_claims_returned').value = 0;</script>
+												<script>
+													$('ue_claims_returned').value = 0;
+													$('ue_claims_returned').disabled = true;
+												</script>
 												<input class='pad' id='ue_claims_returned_reset' type='submit' value='Reset'/>
 											</div>
 										</td>

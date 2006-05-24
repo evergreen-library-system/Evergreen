@@ -402,3 +402,18 @@ function uEditFleshSummarySurveys( table, patron ) {
 		unHideMe(tbody.parentNode);
 }
 
+
+function uEditDrawNetLevels(netLevels) {
+	var sel = $('ue_net_level');
+	iterate( netLevels, 
+		function(i) {
+			insertSelectorVal( sel, -1, i.name(), i.id() );
+			/*
+			if( i.name() == defaultNetAccess )
+				setSelector( sel, i.id() );
+				*/
+		}
+	);
+}
+
+
