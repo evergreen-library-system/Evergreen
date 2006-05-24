@@ -87,7 +87,7 @@ util.browser.prototype = {
 			                Components.interfaces.nsIWebProgress.NOTIFY_ALL );
 
 			obj.controller.view.browser_browser.setAttribute('src',obj.url);
-			dump('url = ' + obj.url + '\n');
+			dump('browser url = ' + obj.url + '\n');
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
@@ -186,7 +186,7 @@ util.browser.prototype = {
 				onStateChange 		: function ( webProgress, request, stateFlags, status) {
 					try {
 						netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
-						var s = '';
+						var s = obj.url + '\n';
 						const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 						const nsIChannel = Components.interfaces.nsIChannel;
 						if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
@@ -229,7 +229,7 @@ util.browser.prototype = {
 						if (stateFlags & nsIWebProgressListener.STATE_STOP) {
 							s += ('\tSTATE_STOP\n');
 						}
-						obj.error.sdump('D_OPAC',s);	
+						obj.error.sdump('D_BROWSER',s);	
 					} catch(E) {
 						alert('util.browser.progresslistener.onstatechange: ' + js2JSON(E));
 					}
