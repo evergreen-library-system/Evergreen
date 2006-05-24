@@ -31,7 +31,7 @@
 	<script>
 	<![CDATA[
 
-		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame;
+		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var browser_frame; var browser_obj;
 
 		function my_init() {
 			try {
@@ -123,6 +123,7 @@
 
 		function set_opac() {
 			try {
+				alert('in set_opac, typeof xulG == ' + typeof xulG);
 				var content_params = { 
 					'show_nav_buttons' : true,
 					'show_print_button' : true,
@@ -168,9 +169,23 @@
 					'url_prefix' : xulG.url_prefix,
 				};
 				if (opac_url) content_params.url = opac_url;
-				browser_frame = bottom_pane.set_browser( xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog', {}, content_params);
+				if (browser_obj) return;
+				JSAN.use('util.browser');
+				browser_obj = new util.browser();
+				browser_obj.init(
+					{
+						'url' : xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog',
+						'push_xulG' : true,
+						'alt_print' : false,
+						'browser_id' : 'browser',
+						'passthru_content_params' : content_params,
+					}
+				);
+				alert('here');
+				//browser_frame = bottom_pane.set_browser( xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog', {}, content_params);
 			} catch(E) {
 				g.error.sdump('D_ERROR','set_opac: ' + E);
+				alert('set_opac: ' + E);
 			}
 		}
 
@@ -228,7 +243,9 @@
 			</menupopup>
 			</menu>
 		</menubar>
-		<deck id="bottom_pane" flex="1"/>
+		<deck id="bottom_pane" flex="1">
+			<browser id="browser"/>
+		</deck>
 	</vbox>
 
 </window>

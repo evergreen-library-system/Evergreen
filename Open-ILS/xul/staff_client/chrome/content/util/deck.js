@@ -94,6 +94,8 @@ util.deck.prototype = {
 		}
 	},
 
+	/* FIXME -- consider all the browser stuff broken.. very weird behavior in new_browser */
+
 	'set_browser' : function (url,params,content_params) {
 		this.error.sdump('D_TRACE','util.deck.set_browser: url = ' + url);
 		var idx = this.find_index(url);
@@ -104,6 +106,7 @@ util.deck.prototype = {
 
 			if (content_params) {
 				/* FIXME -- we'd need to reach in and change the passthru_content_params for the browser, as well as the xulG for the content */ 
+				alert("we're in set_browser, content_params = true");
 			}
 
 			return browser;
@@ -119,6 +122,9 @@ util.deck.prototype = {
 	},
 
 	'new_browser' : function (url,params,content_params) {
+		try {
+		alert('in new_browser.. typeof xulG == ' + typeof xulG);
+		alert('in new_browser.. typeof content_params == ' + typeof content_params);
 		var obj = this;
 		var idx = this.find_index(url);
 		if (idx>-1) throw('A browser already exists in deck with url = ' + url);
@@ -127,29 +133,27 @@ util.deck.prototype = {
 		obj.id_incr++;
 		browser.setAttribute('type','content');
 		browser.setAttribute('id','frame_'+obj.id_incr);
+		browser.setAttribute('src',url);
 		this.node.appendChild( browser );
+		alert('after append');
 		this.node.selectedIndex = this.node.childNodes.length - 1;
-		setTimeout(
-			function() {
-				try {
-					dump('creating browser with src = ' + url + '\n');
-					JSAN.use('util.browser');
-					var b = new util.browser();
-					b.init(
-						{
-							'url' : url,
-							'push_xulG' : true,
-							'alt_print' : false,
-							'browser_id' : 'frame_'+obj.id_incr,
-							'passthru_content_params' : content_params,
-						}
-					);
-				} catch(E) {
-					alert(E);
+			dump('creating browser with src = ' + url + '\n');
+			alert('content_params = ' + content_params);
+			JSAN.use('util.browser');
+			var b = new util.browser();
+			b.init(
+				{
+					'url' : url,
+					'push_xulG' : true,
+					'alt_print' : false,
+					'browser_id' : 'frame_'+obj.id_incr,
+					'passthru_content_params' : content_params,
 				}
-			}, 0
-		);
+			);
 		return browser;
+		} catch(E) {
+			alert(E);
+		}
 	},
 
 	'remove_browser' : function (url) {

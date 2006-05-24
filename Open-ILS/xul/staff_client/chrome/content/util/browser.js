@@ -24,6 +24,7 @@ util.browser.prototype = {
 			obj.alt_print = params['alt_print'];
 			obj.browser_id = params['browser_id'];
 			obj.passthru_content_params = params['passthru_content_params'];
+			obj.on_url_load = params['on_url_load'];
 
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
@@ -197,10 +198,10 @@ util.browser.prototype = {
 							s += ('\tSTATE_IS_DOCUMENT\n');
 							if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
 								obj.push_variables(); obj.updateNavButtons();
-								if (window.xulG && typeof window.xulG.on_url_load == 'function') {
+								if (obj.on_url_load == 'function') {
 									try {
 										obj.error.sdump('D_TRACE','calling on_url_load');
-										window.xulG.on_url_load( obj.controller.view.browser_browser );
+										obj.on_url_load( obj.controller.view.browser_browser );
 									} catch(E) {
 										obj.error.sdump('D_ERROR','on_url_load: ' + E );
 									}
