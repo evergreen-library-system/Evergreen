@@ -31,7 +31,7 @@
 	<script>
 	<![CDATA[
 
-		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var browser_frame; var browser_obj;
+		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var browser_frame; var browser_obj; var browser_win;
 
 		function my_init() {
 			try {
@@ -67,6 +67,7 @@
 		}
 
 		function set_brief_view() {
+		try {
 			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
 			dump('spawning ' + url + '\n');
 			top_pane.set_iframe( 
@@ -82,13 +83,22 @@
 					}
 				}  
 			);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function set_marc_view() {
+		try {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function set_marc_edit() {
+		try {
+			dump('docid = ' + docid + '\n');
 			bottom_pane.set_iframe( 
 				xulG.url_prefix( urls.XUL_MARC_EDIT ),
 				{},
@@ -111,18 +121,30 @@
 					}
 				}
 			);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function set_copy_browser() {
+		try {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function set_hold_browser() {
+		try {
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function set_opac() {
 			try {
+				bottom_pane.node.selectedIndex = 0;
 				var content_params = { 
 					'show_nav_buttons' : true,
 					'show_print_button' : true,
@@ -150,6 +172,7 @@
 						} catch(E) {
 							win = f.contentWindow;
 						}
+						browser_win = win;
 						win.attachEvt("rdetail", "recordRetrieved",
 							function(id){
 								try {
@@ -190,22 +213,28 @@
 		function bib_in_new_tab() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.location.href;
+				var url = browser_win.location.href;
 				var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : url };
 				xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
 			} catch(E) {
 				g.error.sdump('D_ERROR',E);
+				alert(E);
 			}
 		}
 
 		function remove_me() {
+			try {
 			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid);
 			dump('removing ' + url + '\n');
 			try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
 			document.getElementById('nav').setAttribute('hidden','true');
+			} catch(E) {
+				alert(E);
+			}
 		}
 
 		function add_to_bucket() {
+		try {
 			JSAN.use('util.window'); var win = new util.window();
 			win.open(
 				xulG.url_prefix(urls.XUL_RECORD_BUCKETS)
@@ -213,6 +242,9 @@
 				'sel_bucket_win' + win.window_name_increment(),
 				'chrome,resizable,modal,center'
 			);
+		} catch(E) {
+			alert(E);
+		}
 		}
 
 		function refresh() {
