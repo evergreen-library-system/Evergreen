@@ -92,7 +92,74 @@ util.deck.prototype = {
 		if (idx>-1) {
 			this.node.removeChild( this.node.childNodes[ idx ] );
 		}
-	}
+	},
+
+	'set_browser' : function (url,params,content_params) {
+		this.error.sdump('D_TRACE','util.deck.set_browser: url = ' + url);
+		var idx = this.find_index(url);
+		if (idx>-1) {
+			this.node.selectedIndex = idx;
+
+			var browser = this.node.childNodes[idx];
+
+			if (content_params) {
+				/* FIXME -- we'd need to reach in and change the passthru_content_params for the browser, as well as the xulG for the content */ 
+			}
+
+			return browser;
+		} else {
+			return this.new_browser(url,params,content_params);
+		}
+		
+	},
+
+	'reset_browser' : function (url,params,content_params) {
+		this.remove_browser(url);
+		return this.new_browser(url,params,content_params);
+	},
+
+	'new_browser' : function (url,params,content_params) {
+		var obj = this;
+		var idx = this.find_index(url);
+		if (idx>-1) throw('A browser already exists in deck with url = ' + url);
+
+		var browser = document.createElement('browser');
+		obj.id_incr++;
+		browser.setAttribute('type','content');
+		browser.setAttribute('id','frame_'+obj.id_incr);
+		this.node.appendChild( browser );
+		this.node.selectedIndex = this.node.childNodes.length - 1;
+		setTimeout(
+			function() {
+				try {
+					dump('creating browser with src = ' + url + '\n');
+					JSAN.use('util.browser');
+					var b = new util.browser();
+					b.init(
+						{
+							'url' : url,
+							'push_xulG' : true,
+							'alt_print' : false,
+							'browser_id' : 'frame_'+obj.id_incr,
+							'passthru_content_params' : content_params,
+						}
+					);
+				} catch(E) {
+					alert(E);
+				}
+			}, 0
+		);
+		return browser;
+	},
+
+	'remove_browser' : function (url) {
+		var idx = this.find_index(url);
+		if (idx>-1) {
+			this.node.removeChild( this.node.childNodes[ idx ] );
+		}
+	},
+
+	'id_incr' : 0,
 }	
 
 dump('exiting util/deck.js\n');
