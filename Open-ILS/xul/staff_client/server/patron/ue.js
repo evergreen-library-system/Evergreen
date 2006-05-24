@@ -363,9 +363,6 @@ function uEditAlertErrors() {
 /* send the user to the database */
 function uEditSaveUser(cloneme) {
 
-	alert(patron.net_access_level());
-	return;
-
 	if(uEditGetErrorStrings()) {
 		uEditAlertErrors();
 		return;
@@ -404,6 +401,13 @@ function uEditSaveUser(cloneme) {
 		if( cloneme ) href += '&clone=' + cloneme;
 		location.href = href;
 	}
+}
+
+function uEditCancel() {
+	var href = location.href;
+	href = href.replace(/\&?usr=\d+/, '');
+	href = href.replace(/\&?clone=\d+/, '');
+	location.href = href;
 }
 
 

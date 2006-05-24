@@ -729,12 +729,15 @@
 									To save the user, click on the 'Save User' button.
 								</div>
 								<br/>
-								<a style='margin-right: 30px;' id='ue_view_summary' 
-									href='javascript:uEditShowSummary();'>View Summary</a>
-								<input style='margin-left: 30px;' id='ue_save'
+								<div style='margin-bottom: 15px;'>
+									<a style='margin-right: 30px;' id='ue_view_summary' 
+										href='javascript:uEditShowSummary();'>View Summary</a>
+								</div>
+								<input style='margin-left: 5px; margin-right: 5px;' id='ue_save'
 									type='submit' value='Save User' onclick='uEditSaveUser();'/>
-								<input style='margin-left: 30px;' id='ue_save_clone'
-									type='submit' value='Save and Clone' onclick='uEditSaveUser(true);'/>
+								<input style='margin-left: 5px; margin-right: 5px;' id='ue_save_clone'
+									type='submit' value='Save and Clone User' onclick='uEditSaveUser(true);'/>
+								<button style='margin-left: 5px; margin-right: 5px;' onclick='uEditCancel();'>Cancel</button>
 							</div>
 						</div>
 					</td>
