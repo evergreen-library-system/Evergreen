@@ -122,6 +122,7 @@ int osrfAppRegisterExtendedMethod( char* appName, char* methodName,
 		osrfMethod* atomicMethod = _osrfAppBuildMethod(
 			methodName, symbolName, notes, argc, newops, NULL );		
 		osrfHashSet( app->methods, atomicMethod, atomicMethod->name );
+		atomicMethod->userData = method->userData;
 	}
 
 	return 0;
@@ -137,7 +138,7 @@ osrfMethod* _osrfAppBuildMethod( char* methodName,
 	if(methodName) method->name		= strdup(methodName);
 	if(symbolName) method->symbol		= strdup(symbolName);
 	if(notes) method->notes				= strdup(notes);
-	if(user_data) method->userData			= user_data;
+	if(user_data) method->userData	= user_data;
 
 	method->argc							= argc;
 	method->options						= options;
