@@ -572,7 +572,6 @@ sub _add_update_cards {
 			}
 
 		} elsif( ref($card) and $card->ischanged() ) {
-			$card->usr($new_patron->id());
 			$evt = _update_card($session, $card);
 			return (undef, $evt) if $evt;
 		}
