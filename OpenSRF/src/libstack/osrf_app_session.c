@@ -468,8 +468,8 @@ int osrf_app_session_disconnect( osrf_app_session* session){
 	osrfLogDebug(OSRF_LOG_MARK,  "AppSession disconnecting from %s", session->remote_id );
 
 	osrf_message* dis_msg = osrf_message_init( DISCONNECT, session->thread_trace, 1 );
-	session->state = OSRF_SESSION_DISCONNECTED;
 	_osrf_app_session_send( session, dis_msg );
+	session->state = OSRF_SESSION_DISCONNECTED;
 
 	osrf_message_free( dis_msg );
 	osrf_app_session_reset_remote( session );
