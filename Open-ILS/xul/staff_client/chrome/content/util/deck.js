@@ -80,6 +80,7 @@ util.deck.prototype = {
 				this.error.sdump('D_DECK', 'new_iframe\nurl = ' + url + '\nframe.contentWindow = ' + iframe.contentWindow + '\n' + 'content_params = ' + js2JSON(content_params) );
 				iframe.contentWindow.IAMXUL = true;
 				iframe.contentWindow.xulG = content_params;
+				this.error.sdump('D_DECK', 'contentWindow.xulG = ' + js2JSON(iframe.contentWindow.xulG) );
 			} catch(E) {
 				this.error.sdump('D_ERROR','E: ' + E + '\n');
 			}
