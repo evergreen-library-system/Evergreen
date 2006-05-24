@@ -63,13 +63,10 @@
 					'push_xulG' : push_xulG,
 					'alt_print' : alt_print,
 				} 
-				alert('in rbrowser.xul... typeof window.xulG = ' + typeof window.xulG);
 				if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
-					alert('xulG.passthru_content_params = ' + xulG.passthru_content_params);
 					p.passthru_content_params = window.xulG.passthru_content_params;
 				}
-				if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'object') {
-					alert('xulG.on_url_load = ' + xulG.on_url_load);
+				if (typeof window.xulG == 'object' && typeof window.xulG.on_url_load == 'function') {
 					p.on_url_load = window.xulG.on_url_load;
 				}
 

@@ -198,7 +198,7 @@ util.browser.prototype = {
 							s += ('\tSTATE_IS_DOCUMENT\n');
 							if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
 								obj.push_variables(); obj.updateNavButtons();
-								if (obj.on_url_load == 'function') {
+								if (typeof obj.on_url_load == 'function') {
 									try {
 										obj.error.sdump('D_TRACE','calling on_url_load');
 										obj.on_url_load( obj.controller.view.browser_browser );

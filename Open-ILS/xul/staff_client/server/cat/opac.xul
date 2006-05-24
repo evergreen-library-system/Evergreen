@@ -123,7 +123,6 @@
 
 		function set_opac() {
 			try {
-				alert('in set_opac, typeof xulG == ' + typeof xulG);
 				var content_params = { 
 					'show_nav_buttons' : true,
 					'show_print_button' : true,
@@ -181,7 +180,6 @@
 						'passthru_content_params' : content_params,
 					}
 				);
-				alert('here');
 				//browser_frame = bottom_pane.set_browser( xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Catalog', {}, content_params);
 			} catch(E) {
 				g.error.sdump('D_ERROR','set_opac: ' + E);
