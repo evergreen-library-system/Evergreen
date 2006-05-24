@@ -190,7 +190,7 @@ util.browser.prototype = {
 						const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
 						const nsIChannel = Components.interfaces.nsIChannel;
 						if (stateFlags == 65540 || stateFlags == 65537 || stateFlags == 65552) { return; }
-						s = ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
+						s += ('onStateChange: stateFlags = ' + stateFlags + ' status = ' + status + '\n');
 						if (stateFlags & nsIWebProgressListener.STATE_IS_REQUEST) {
 							s += ('\tSTATE_IS_REQUEST\n');
 						}
