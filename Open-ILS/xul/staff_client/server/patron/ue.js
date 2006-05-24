@@ -77,16 +77,22 @@ function uEditBuild() {
 		else 
 			uEditCreateNewAddr();
 	}
+
+	if(!patron.isnew()) {
+		$('ue_barcode').disabled = true;
+		unHideMe($('ue_mark_card_lost'));
+	}
 }
 
 
 /* creates a new patron object with card attached */
+var uEditCardVirtId = -1;
 function uEditNewPatron() {
 	var patron = new au(); 
 	patron.isnew(1);
 	patron.id(-1);
 	card = new ac();
-	card.id(-1);
+	card.id(uEditCardVirtId--);
 	card.isnew(1);
 	patron.card(card);
 	patron.cards([card]);
@@ -450,4 +456,34 @@ function uEditShowSearch(link) {
 		window.xulG.spawn_search(uEditDupHashes[type]);	
 	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));
 }
+
+function uEditMarkCardLost() {
+
+	for( var c in patron.cards() ) {
+
+		var card = patron.cards()[c];
+		if( patron.card().id() == card.id() ) {
+
+			/* de-activite the current card */
+			card.ischanged(1);
+			card.active(0);
+
+			/* create a new card for the patron */
+			var newcard = new ac();
+			newcard.id(uEditCardVirtId--);
+			newcard.isnew(1);
+			patron.card(newcard);
+			patron.cards().push(newcard);
+
+
+			/* reset the widget */
+			var field = uEditFindFieldByWId('ue_barcode');
+			field.widget.node.disabled = false;
+			field.widget.node.value = "";
+			field.widget.node.onchange();
+			field.object = newcard;
+		}
+	}
+}
+
 
