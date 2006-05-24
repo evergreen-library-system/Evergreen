@@ -287,8 +287,8 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name':'Local Administration'}, 
-						{ 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true, } 
+						{'tab_name':'Local Administration', 'browser' : true }, 
+						{ 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 
 				}
@@ -450,8 +450,8 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name':'OPAC'}, 
-						{ 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true, } 
+						{'tab_name':'OPAC', 'browser' : true}, 
+						{ 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 				}
 			],
