@@ -1067,10 +1067,11 @@ sub _handle_related_holds {
 
 		# for now, just sort by id to get what should be the oldest hold
 		$holds = [ sort { $a->id <=> $b->id } @$holds ];
-		$holds = [ grep { $_->usr eq $patron->id } @$holds ];
+		my @myholds = grep { $_->usr eq $patron->id } @$holds;
+		my @altholds	= grep { $_->usr ne $patron->id } @$holds;
 
-		if(@$holds) {
-			my $hold = $holds->[0];
+		if(@myholds) {
+			my $hold = $myholds[0];
 
 			$logger->debug("Related hold found in checkout: " . $hold->id );
 
@@ -1082,6 +1083,19 @@ sub _handle_related_holds {
 				"open-ils.storage.direct.action.hold_request.update", $hold )->gather(1);
 			return (undef,$U->DB_UPDATE_FAILED( $hold )) unless $r;
 			push( @fulfilled, $hold->id );
+		}
+
+		# If there are any holds placed for other users that point to this copy,
+		# then we need to un-target those holds so the targeter can pick a new copy
+		for(@altholds) {
+
+			$logger->info("Un-targeting hold ".$_->id.
+				" because copy ".$copy->id." is getting checked out");
+
+			$_->clear_current_copy;
+			my $r = $ctx->{session}->request(
+				"open-ils.storage.direct.action.hold_request.update", $_ )->gather(1);
+			return (undef,$U->DB_UPDATE_FAILED( $_ )) unless $r;
 		}
 	}
 
