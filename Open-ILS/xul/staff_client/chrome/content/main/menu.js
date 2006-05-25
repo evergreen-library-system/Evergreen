@@ -401,7 +401,7 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?ses='+window.escape(ses()),{},{});
+					obj.set_tab(obj.url_prefix(urls.TEST_HTML) + '?ses='+window.escape(ses()),{ 'browser' : true },{});
 				}
 			],
 			'cmd_test_xul' : [

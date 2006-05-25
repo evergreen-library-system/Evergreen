@@ -118,7 +118,7 @@ util.browser.prototype = {
 			var cw = this.get_content();
 			cw.IAMXUL = true;
 			cw.xulG = obj.passthru_content_params;
-			try { s += ('cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
+			try { s += ('******** cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
 			obj.error.sdump('D_BROWSER',s);
 		} catch(E) {
 			this.error.sdump('D_ERROR','util.browser.push_variables: ' + E + '\n');
@@ -130,7 +130,7 @@ util.browser.prototype = {
 			var wn = this.controller.view.browser_browser.webNavigation;
 			var s = this.url + '\n' + this.get_content().location.href + '\n';
 			s += ('getWebNavigation() = ' + wn + '\n');
-			this.error.sdump('D_BROWSER',s);
+			//this.error.sdump('D_BROWSER',s);
 			return wn;
 		} catch(E) {
 			alert('util.browser.getWebNavigation(): ' + E );
@@ -177,7 +177,7 @@ util.browser.prototype = {
 			s += E + '\n';
 		}
 
-		dump(s);
+		//this.error.sdump('D_BROWSER',s);
 	},
 
 	'buildProgressListener' : function() {
@@ -237,7 +237,7 @@ util.browser.prototype = {
 						if (stateFlags & nsIWebProgressListener.STATE_STOP) {
 							s += ('\tSTATE_STOP\n');
 						}
-						obj.error.sdump('D_BROWSER',s);	
+						//obj.error.sdump('D_BROWSER',s);	
 					} catch(E) {
 						alert('util.browser.progresslistener.onstatechange: ' + js2JSON(E));
 					}
