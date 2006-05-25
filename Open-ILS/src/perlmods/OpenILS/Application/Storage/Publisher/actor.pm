@@ -12,6 +12,15 @@ my $_dt_parser = DateTime::Format::ISO8601->new;
 
 my $log = 'OpenSRF::Utils::Logger';
 
+sub new_usergroup_id {
+	return actor::user->db_Main->selectrow_array("select nextval('actor.usr_usrgroup_seq'::regclass)");
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.group_id.new',
+	api_level	=> 1,
+	method		=> 'new_usergroup_id',
+);
+
 sub org_closed_overlap {
 	my $self = shift;
 	my $client = shift;
