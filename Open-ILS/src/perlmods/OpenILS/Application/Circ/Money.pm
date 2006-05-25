@@ -56,7 +56,7 @@ sub make_payments {
 
 	( $user, $evt ) = $apputils->checkses($login);
 	return $evt if $evt;
-	$evt = $apputils->check_perms($user->id, $user->home_ou, 'CREATE_PAYMENT');
+	$evt = $apputils->check_perms($user->id, $user->ws_ou, 'CREATE_PAYMENT');
 	return $evt if $evt;
 
 	$logger->info("Creating payment objects: " . Dumper($payments) );
