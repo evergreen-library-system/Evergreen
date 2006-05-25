@@ -269,9 +269,13 @@ sub allowed {
 	$org ||= $self->requestor->ws_ou;
 	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
 	return 1 if $self->perm_checked($perm, $org); 
+	return $self->checkperm($uid, $org, $perm);
+}
 
+sub checkperm {
+	my($self, $userid, $org, $perm) = @_;
 	my $s = $self->request(
-		"open-ils.storage.permission.user_has_perm", $uid, $perm, $org );
+		"open-ils.storage.permission.user_has_perm", $userid, $perm, $org );
 
 	if(!$s) {
 		my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
@@ -287,7 +291,7 @@ sub allowed {
 # -----------------------------------------------------------------------------
 # checks the appropriate perm for the operation
 # -----------------------------------------------------------------------------
-sub checkperm {
+sub _checkperm {
 	my( $self, $ptype, $action, $org ) = @_;
 	$org ||= $self->requestor->ws_ou;
 	my $perm = $PERMS{$ptype}{$action};
@@ -403,7 +407,7 @@ sub runmethod {
 	if($$options{checkperm}) {
 		my $a = ($action eq 'search' or 
 			$action eq 'batch_retrieve' or $action eq 'retrieve_all') ? 'retrieve' : $action;
-		my $e = $self->checkperm($type, $a, $$options{permorg});
+		my $e = $self->_checkperm($type, $a, $$options{permorg});
 		if($e) {
 			$self->event($e);
 			return undef;
@@ -440,6 +444,9 @@ sub runmethod {
 		$self->event($evt);
 		return undef;
 	}
+
+	# If we havn't dealt with the error in a nice way, go ahead and throw it
+	throw $err if $err;
 
 	if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
 		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
