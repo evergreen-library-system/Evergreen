@@ -34,6 +34,8 @@
 		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; 
 		var browser_frame; var browser_obj; var browser_win;
 		var editor_obj;
+		var holdings_obj;
+		var holds_obj;
 
 		function my_init() {
 			try {
@@ -143,19 +145,58 @@
 		}
 
 		function set_copy_browser() {
-		try {
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
-		} catch(E) {
-			alert(E);
-		}
+			try {
+				bottom_pane.node.selectedIndex = 2;
+				var content_params = { 
+					'show_nav_buttons' : false,
+					'show_print_button' : false,
+					'passthru_content_params' : xulG,
+					'url' : xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),
+				};
+				if (holdings_obj) return;
+				JSAN.use('util.browser');
+				holdings_obj = new util.browser();
+				holdings_obj.init(
+					{
+						'url' : xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=HoldingsMaintenance',
+						'push_xulG' : true,
+						'alt_print' : false,
+						'browser_id' : 'holdings',
+						'passthru_content_params' : content_params,
+					}
+				);
+
+				//bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+			} catch(E) {
+				alert(E);
+			}
 		}
 
 		function set_hold_browser() {
-		try {
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
-		} catch(E) {
-			alert(E);
-		}
+			try {
+				bottom_pane.node.selectedIndex = 3;
+				var content_params = { 
+					'show_nav_buttons' : false,
+					'show_print_button' : false,
+					'passthru_content_params' : xulG,
+					'url' : xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),
+				};
+				if (holds_obj) return;
+				JSAN.use('util.browser');
+				holds_obj = new util.browser();
+				holds_obj.init(
+					{
+						'url' : xulG.url_prefix(urls.XUL_REMOTE_BROWSER) + '?name=Holds',
+						'push_xulG' : true,
+						'alt_print' : false,
+						'browser_id' : 'holds',
+						'passthru_content_params' : content_params,
+					}
+				);
+				//bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+			} catch(E) {
+				alert(E);
+			}
 		}
 
 		function set_opac() {
@@ -294,6 +335,8 @@
 		<deck id="bottom_pane" flex="1">
 			<browser id="browser"/>
 			<browser id="editor"/>
+			<browser id="holdings"/>
+			<browser id="holds"/>
 		</deck>
 	</vbox>
 
