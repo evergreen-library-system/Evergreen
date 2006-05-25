@@ -23,7 +23,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor q/:funcs/;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -50,7 +50,92 @@ on a single title and said operation is attempted, a permission
 exception is returned
 NOTE
 
+
+__PACKAGE__->register_method(
+	method	=> "create_hold",
+	api_name	=> "open-ils.circ.holds.create.override",
+	signature	=> q/
+		If the recipient is not allowed to receive the requested hold,
+		call this method to attempt the override
+		@see open-ils.circ.holds.create
+	/
+);
+
 sub create_hold {
+	my( $self, $conn, $auth, @holds ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+
+	my $holds = (ref($holds[0] eq 'ARRAY')) ? $holds[0] : [@holds];
+
+	for my $hold (@$holds) {
+
+		next unless $hold;
+
+		my $requestor = $e->requestor;
+		my $recipient = $requestor;
+
+
+		if( $requestor->id ne $hold->usr ) {
+			# Make sure the requestor is allowed to place holds for 
+			# the recipient if they are not the same people
+			$recipient = $e->retrieve_actor_user($hold->usr) or return $e->event;
+			$e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
+		}
+
+
+		# Now make sure the recipient is allowed to receive the specified hold
+		my $pevt;
+		my $porg		= $recipient->home_ou;
+		my $pid		= $recipient->id;
+		my $t			= $hold->hold_type;
+
+		# See if a duplicate hold already exists
+		my $existing = $e->search_action_hold_request( 
+			{
+				usr			=> $recipient->id, 
+				hold_type	=> $t, 
+				fulfillment_time => undef, 
+				target		=> $hold->target
+			}
+		);
+			
+		my $eevt = OpenILS::Event->new('HOLD_EXISTS') if @$existing;
+
+		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'MR_HOLDS'); }
+		if( $t eq 'T' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'TITLE_HOLDS');  }
+		if( $t eq 'V' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'VOLUME_HOLDS'); }
+		if( $t eq 'C' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'COPY_HOLDS'); }
+
+		if( $pevt ) {
+			if( $self->api_name =~ /override/ ) {
+				# The recipient is not allowed to receive the requested hold 
+				# and the requestor has elected to override - 
+				# let's see if the requestor is allowed
+				return $e->event unless $e->allowed('REQUEST_HOLDS_OVERRIDE', $porg);
+			} else {
+				return $pevt;
+			}
+		}
+
+		if( $eevt ) {
+			if( $self->api_name =~ /override/ ) {
+				return $e->event unless $e->allowed('CREATE_DUPLICATE_HOLDS', $porg);
+			} else {
+				return $eevt;
+			}
+		}
+
+
+		$hold->requestor($e->requestor->id); 
+		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
+		$e->create_action_hold_request($hold) or return $e->event;
+	}
+
+	return 1;
+}
+
+sub __create_hold {
 	my( $self, $client, $login_session, @holds) = @_;
 
 	if(!@holds){return 0;}
