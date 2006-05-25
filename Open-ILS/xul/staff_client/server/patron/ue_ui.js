@@ -430,10 +430,6 @@ function uEditDrawNetLevels(netLevels) {
 	iterate( netLevels, 
 		function(i) {
 			insertSelectorVal( sel, -1, i.name(), i.id() );
-			/*
-			if( i.name() == defaultNetAccess )
-				setSelector( sel, i.id() );
-				*/
 		}
 	);
 }
