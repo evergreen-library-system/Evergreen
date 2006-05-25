@@ -463,7 +463,9 @@
 	<event code='1706' textcode='ITEM_BARCODE_EXISTS'>
 		<desc xml:lang="en-US">An item with the same barcode exists</desc>
 	</event>
-
+	<event code='1707' textcode='HOLD_EXISTS'>
+		<desc xml:lang="en-US">User already has an open hold on the selected item</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
