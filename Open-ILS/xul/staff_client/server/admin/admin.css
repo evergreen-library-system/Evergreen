@@ -1,4 +1,4 @@
-body { font-family: Verdana, Tahoma; font-size: 10pt; }
+body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white;}
 .welcome_box { position:absolute; top: 5px; right: 5px; }
 .title { font-weight: bold; font-size: 14pt; margin: 10px;}
 .hide_me { visibility: hidden; display: none }
