@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Cataloger's Search Result Screen -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window SYSTEM "chrome://open_ils_staff_client/locale/lang.dtd">
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
+
+<window id="opac_win"
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+
+		var docid; var marc_html; var top_pane; var bottom_pane; var opac_frame; var opac_url;
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('..');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat/opac.xul');
+
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				XML_HTTP_SERVER = data.server_unadorned;
+
+				JSAN.use('util.network'); g.network = new util.network();
+
+				g.cgi = new CGI();
+				try { authtime = g.cgi.param('authtime') || xulG.authtime; } catch(E) { g.error.sdump('D_ERROR',E); }
+				try { docid = g.cgi.param('docid') || xulG.docid; } catch(E) { g.error.sdump('D_ERROR',E); }
+				try { opac_url = g.cgi.param('opac_url') || xulG.opac_url; } catch(E) { g.error.sdump('D_ERROR',E); }
+
+				JSAN.use('util.deck');
+				top_pane = new util.deck('top_pane');
+				bottom_pane = new util.deck('bottom_pane');
+
+				set_opac();
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/opac.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function set_brief_view() {
+			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
+			dump('spawning ' + url + '\n');
+			top_pane.set_iframe( 
+				url,
+				{}, 
+				{ 
+					'set_tab_name' : function(n) { 
+						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+							try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+						} else {
+							dump('no set_tab_name\n');
+						}
+					}
+				}  
+			);
+		}
+
+		function set_marc_view() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_marc_edit() {
+			bottom_pane.set_iframe( 
+				xulG.url_prefix( urls.XUL_MARC_EDIT ),
+				{},
+				{
+					'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+					'save' : {
+						'label' : 'Save Record',
+						'func' : function (new_marcxml) {
+							try {
+								var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
+								if (typeof r.ilsevent != 'undefined') {
+									throw(r);
+								} else {
+									alert('Record successfully saved.');
+								}
+							} catch(E) {
+									g.error.standard_unexpected_error_alert('Record not likely updated.',E);
+							}
+						}
+					}
+				}
+			);
+		}
+
+		function set_copy_browser() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_hold_browser() {
+			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+		}
+
+		function set_opac() {
+			try {
+				var content_params = { 
+					'show_nav_buttons' : true,
+					'show_print_button' : true,
+					'passthru_content_params' : { 
+						'authtoken' : ses(), 
+						'authtime' : ses('authtime'),
+						'window_open' : function(a,b,c) {
+							try {
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								return window.open(a,b,c);
+							} catch(E) {
+								g.error.standard_unexpected_error_alert('window_open',E);
+							}
+						}
+					},
+					'on_url_load' : function(f) {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						var win;
+						try {
+							if (typeof f.contentWindow.wrappedJSObject.attachEvt != 'undefined') {
+								win = f.contentWindow.wrappedJSObject;
+							} else {
+								win = f.contentWindow;
+							}
+						} catch(E) {
+							win = f.contentWindow;
+						}
+						win.attachEvt("rdetail", "recordRetrieved",
+							function(id){
+								try {
+									var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid) 
+									dump('removing ' + url + '\n');
+									try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
+									docid = id;
+									set_brief_view();
+									document.getElementById('nav').setAttribute('hidden','false');
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('rdetail -> recordRetrieved',E);
+								}
+							}
+						);
+					},
+					'url_prefix' : xulG.url_prefix,
+				};
+				if (opac_url) { content_params.url = opac_url; } else { content_params.url = xulG.url_prefix( urls.browser ); }
+				browser_frame = bottom_pane.set_iframe( xulG.url_prefix(urls.XUL_BROWSER) + '?name=Catalog', {}, content_params);
+			} catch(E) {
+				g.error.sdump('D_ERROR','set_opac: ' + E);
+			}
+		}
+
+		function bib_in_new_tab() {
+			try {
+				var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.wrappedJSObject.location.href;
+				var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : url };
+				xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
+			} catch(E) {
+				g.error.sdump('D_ERROR',E);
+			}
+		}
+
+		function remove_me() {
+			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid);
+			dump('removing ' + url + '\n');
+			try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
+			document.getElementById('nav').setAttribute('hidden','true');
+		}
+
+		function add_to_bucket() {
+			JSAN.use('util.window'); var win = new util.window();
+			win.open(
+				xulG.url_prefix(urls.XUL_RECORD_BUCKETS)
+				+ '?record_ids=' + js2JSON( [ docid ] ),
+				'sel_bucket_win' + win.window_name_increment(),
+				'chrome,resizable,modal,center'
+			);
+		}
+	]]>
+	</script>
+
+	<vbox flex="1">
+		<deck id="top_pane"/>
+		<menubar id="nav" hidden="true">
+			<menu label="Actions for this Record" accesskey="A">
+			<menupopup>
+			<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
+			<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
+			<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
+			<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
+			<menuitem label="View Holds" accesskey="s" id="view_holds" oncommand="set_hold_browser();"/>
+			<menuseparator/>
+			<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
+			<menuseparator/>
+			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+			</menupopup>
+			</menu>
+		</menubar>
+		<deck id="bottom_pane" flex="1"/>
+	</vbox>
+
+</window>
+

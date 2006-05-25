@@ -123,7 +123,7 @@ main.menu.prototype = {
 				function() {
 					obj.data.stash_retrieve();
 					var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
-					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'browser':true,'tab_name':'Catalog'}, content_params);
+					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
 				}
 			],
 			'cmd_search_tcn' : [
