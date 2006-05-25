@@ -32,22 +32,23 @@ const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 function uEditUsrnameBlur(field) {
 	var usrname = uEditNodeVal(field);
 	if(!usrname) return;
-	var req = new Request(CHECK_USERNAME, usrname);
+	var req = new Request(CHECK_USERNAME, SESSION, usrname);
 	req.callback( 
 		function(r) {
 			var res = r.getResultObject();
-			if( res == 1 ) {
+			if( res && res != patron.id() ) {
 				field.widget.onblur = null; /* prevent alert storm */
 				alertId('ue_dup_username');
 				field.widget.onblur = uEditUsrnameBlur;
 				setTimeout( 
 					function() {
 						field.widget.node.focus();
-								field.widget.node.select();
+						field.widget.node.select();
 					}, 10 
 				);
 			}
-	});
+		}
+	);
 	req.send();
 }
 

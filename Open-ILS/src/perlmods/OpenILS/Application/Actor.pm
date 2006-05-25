@@ -2077,10 +2077,11 @@ __PACKAGE__->register_method(
 );
 
 sub usrname_exists {
-	my( $self, $conn, $usrname ) = @_;
-	my $e = OpenILS::Utils::Editor->new;
+	my( $self, $conn, $auth, $usrname ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
 	my $a = $e->search_actor_user({usrname => $usrname}, {idlist=>1});
-	return 1 if $a and @$a;
+	return $$a[0] if $a and @$a;
 	return 0;
 }
 
