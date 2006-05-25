@@ -1646,6 +1646,94 @@ sub checkedout_count {
 	return { total => scalar(@$circs), overdue => scalar(@overdue) };
 }
 
+
+__PACKAGE__->register_method(
+	method		=> "checked_out",
+	api_name		=> "open-ils.actor.user.checked_out",
+	argc			=> 2,
+	signature	=> q/
+		Returns a structure of circulations objects sorted by
+		out, overdue, lost, claims_returned, long_overdue.
+		A list of IDs are returned of each type.
+		lost, long_overdue, and claims_returned circ will not
+		be "finished" (there is an outstanding balance or some 
+		other pending action on the circ). 
+
+		The .count method also includes a 'total' field which 
+		sums all "open" circs
+	/
+);
+
+__PACKAGE__->register_method(
+	method		=> "checked_out",
+	api_name		=> "open-ils.actor.user.checked_out.count_",
+	argc			=> 2,
+	signature	=> q/@see open-ils.actor.user.checked_out/
+);
+
+sub checked_out {
+	my( $self, $conn, $auth, $userid ) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+
+	my $circs = $e->search_action_circulation( 
+		{ usr => $userid, stop_fines => undef });
+
+	my $parser = DateTime::Format::ISO8601->new;
+
+	# split the circs up into overdue and not-overdue circs
+	my (@out,@overdue);
+	for my $c (@$circs) {
+		my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+		my $due = $due_dt->epoch;
+		if ($due < DateTime->today->epoch) {
+			push @overdue, $c->id;
+		} else {
+			push @out, $c->id;
+		}
+	}
+
+	my $open = $e->search_action_circulation(
+		{usr => $userid, stop_fines => { '!=' => undef }, xact_finish => undef });
+
+	my( @lost, @cr, @lo );
+	for my $c (@$open) {
+		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
+		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
+		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
+	}
+
+
+	if( $self->api_name =~ /count/ ) {
+		return {
+			total		=> (scalar(@$circs) + scalar(@lost) + scalar(@cr) + scalar(@lo)),
+			out		=> scalar(@out),
+			overdue	=> scalar(@overdue),
+			lost		=> scalar(@lost),
+			claims_returned	=> scalar(@cr),
+			long_overdue		=> scalar(@lo)
+		};
+	}
+
+	return {
+		out		=> \@out,
+		overdue	=> \@overdue,
+		lost		=> \@lost,
+		claims_returned	=> \@cr,
+		long_overdue		=> \@lo
+	};
+}
+
+
+
+
+
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history",
