@@ -616,6 +616,11 @@ function myOPACUpdateUsername() {
 		return;
 	}
 
+	if( username.match(/.*\s.*/) ) {
+		alert($('myopac_invalid_username').innerHTML);
+		return;
+	}
+
 	/* first see if the requested username is taken */
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);

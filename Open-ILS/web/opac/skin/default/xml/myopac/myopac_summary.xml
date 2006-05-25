@@ -182,6 +182,7 @@
 	<div class='hide_me' id='myopac_password_error'>Passwords are empty or do not match</div>
 	<div class='hide_me' id='myopac_password_success'>Password successfully updated</div>
 	<div class='hide_me' id='myopac_password_failure'>Password update failed</div>
+	<span class='hide_me' id='myopac_invalid_username'>Username cannot contain spaces</span>
 </div>
 
 
