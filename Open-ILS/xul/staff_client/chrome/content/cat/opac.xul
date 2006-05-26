@@ -42,8 +42,8 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat/opac.xul');
 
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				XML_HTTP_SERVER = data.server_unadorned;
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+				XML_HTTP_SERVER = g.data.server_unadorned;
 
 				JSAN.use('util.network'); g.network = new util.network();
 
@@ -85,10 +85,12 @@
 		}
 
 		function set_marc_view() {
+			g.view = 'marc_view';
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_marc_edit() {
+			g.view = 'marc_edit';
 			bottom_pane.set_iframe( 
 				xulG.url_prefix( urls.XUL_MARC_EDIT ),
 				{},
@@ -114,14 +116,17 @@
 		}
 
 		function set_copy_browser() {
+			g.view = 'copy_browser';
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_hold_browser() {
+			g.view = 'hold_browser';
 			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
 		}
 
 		function set_opac() {
+			g.view = 'opac';
 			try {
 				var content_params = { 
 					'show_nav_buttons' : true,
@@ -153,12 +158,9 @@
 						win.attachEvt("rdetail", "recordRetrieved",
 							function(id){
 								try {
-									var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid) 
-									dump('removing ' + url + '\n');
-									try { top_pane.remove_iframe( url ); } catch(E) { dump(E + '\n'); }
+									if (docid == id) return;
 									docid = id;
-									set_brief_view();
-									document.getElementById('nav').setAttribute('hidden','false');
+									refresh_display(id);
 								} catch(E) {
 									g.error.standard_unexpected_error_alert('rdetail -> recordRetrieved',E);
 								}
@@ -200,6 +202,54 @@
 				'chrome,resizable,modal,center'
 			);
 		}
+		
+		function refresh_display(id) {
+			try { 
+				while(top_pane.node.lastChild) 
+					top_pane.node.removeChild(
+						top_pane.node.lastChild
+					);
+			} catch(E) {
+				dump(E + '\n'); 
+			}	
+			try { 
+				var children = bottom_pane.node.childNodes;
+				for (var i = 0; i < children.length; i++) {
+					if (children[i] != browser_frame) bottom_pane.node.removeChild(children[i]);
+				}
+			} catch(E) {
+				dump(E + '\n'); 
+			}	
+			set_brief_view();
+			document.getElementById('nav').setAttribute('hidden','false');
+			g.network.simple_request(
+				'FM_AUS_RETRIEVE',
+				[ ses(), g.data.list.au[0].id() ],
+				function (req) {
+					var settings = req.getResultObject();
+					var view = settings['staff_client.catalog.record_view.default'];
+					switch(view) {
+						case 'marc_view' : set_marc_view(); break;
+						case 'marc_edit' : set_marc_edit(); break;
+						case 'copy_browser' : set_copy_browser(); break;
+						case 'hold_browser' : set_hold_browser(); break;
+						case 'opac' :
+						default: set_opac(); break;
+					}
+				}
+			);
+		}
+
+		function set_default() {
+			var robj = g.network.simple_request(
+				'FM_AUS_UPDATE',
+				[ ses(), g.data.list.au[0].id(), { 'staff_client.catalog.record_view.default' : g.view } ]
+			)
+			if (typeof robj.ilsevent != 'undefined') {
+				if (robj.ilsevent != 0) g.error.standard_unexpected_error_alert('Preference not likely updated.',robj);
+			}
+		}
+
 	]]>
 	</script>
 
@@ -218,6 +268,9 @@
 			<menuseparator/>
 			<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
 			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+			<menuseparator/>
+			<menuitem label="Set bottom interface as Default" id="default" oncommand="set_default();"/>
+			<menuitem label="Refresh Display" id="refresh_me" oncommand="refresh_display(docid);"/>
 			</menupopup>
 			</menu>
 		</menubar>
