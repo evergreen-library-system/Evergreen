@@ -98,6 +98,12 @@
 						( g.aout_hash[ obj.ou_type() ].can_have_users() == 0),
 						( g.aout_hash[ obj.ou_type() ].depth() ),
 					]; }
+				).sort(
+					function( a, b ) {
+						if (a[0] < b[0]) return -1;
+						if (a[0] > b[0]) return 1;
+						return 0;
+					}
 				),
 				g.my_lib
 			);
