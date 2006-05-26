@@ -585,7 +585,7 @@ function doLogin(suppressEvents) {
 	AUTHTIME = parseInt(auth_result.payload.authtime);
 	var u = grabUser(auth_result.payload.authtoken, true);
 	if(u && ! suppressEvents) 
-		runEvt( "common", "locationChanged", u.home_ou(), findOrgDepth(u.home_ou()) );
+		runEvt( "common", "locationChanged", u.ws_ou(), findOrgDepth(u.ws_ou()) );
 
 	checkUserSkin();
 

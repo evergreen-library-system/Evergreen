@@ -16,7 +16,7 @@ function init() {
 
 	var cgi = new CGI();
 	if( grabUser() && cgi.param(PARAM_LOCATION) == null ) 
-		LOCATION = G.user.home_ou();
+		LOCATION = G.user.ws_ou();
 
 	runEvt("common", "run");
 	//checkUserSkin();
