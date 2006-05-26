@@ -278,6 +278,8 @@ sub metarecord_copy_count {
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
+				  	AND cn.deleted IS FALSE
+				  	AND cp.deleted IS FALSE
 				  	$copies_visible
 					$t_filter
 					$f_filter
@@ -294,11 +296,31 @@ sub metarecord_copy_count {
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
 				  	AND cp.status = 0
+				  	AND cn.deleted IS FALSE
+				  	AND cp.deleted IS FALSE
 					$copies_visible
 					$t_filter
 					$f_filter
 				)
-			) AS available
+			) AS available,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $sm_table r
+					JOIN $cn_table cn ON (cn.record = r.source)
+					JOIN $rd_table rd ON (cn.record = rd.record)
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+			       		JOIN $cs_table cs ON (cp.status = cs.id)
+			       		JOIN $cl_table cl ON (cp.location = cl.id)
+				  WHERE r.metarecord = ?
+				  	AND cn.deleted IS FALSE
+				  	AND cp.deleted IS FALSE
+					AND cp.opac_visible IS TRUE
+					AND cs.holdable IS TRUE
+					AND cl.opac_visible IS TRUE
+					$t_filter
+					$f_filter
+				)
+			) AS unshadow
 
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
@@ -312,6 +334,7 @@ sub metarecord_copy_count {
 			''.$args{metarecord},
 			@types, 
 			@forms,
+			''.$args{metarecord},
 			''.$args{org_unit}, 
 	); 
 

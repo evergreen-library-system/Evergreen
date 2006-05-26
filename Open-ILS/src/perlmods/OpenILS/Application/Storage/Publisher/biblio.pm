@@ -16,9 +16,17 @@ sub record_copy_count {
 
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
+	my $st_table = config::copy_status->table;
+	my $loc_table = asset::copy_location->table;
 	my $out_table = actor::org_unit_type->table;
+
 	my $descendants = "actor.org_unit_descendants(u.id)";
 	my $ancestors = "actor.org_unit_ancestors(?)";
+
+	my $visible = 'AND st.holdable = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
+	if ($self->api_name =~ /staff/o) {
+		$visible = ''
+	}
 
 	my $sql = <<"	SQL";
 		SELECT	t.depth,
@@ -28,23 +36,46 @@ sub record_copy_count {
 				  FROM  $cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
-				  WHERE cn.record = ?)
+					JOIN $st_table st ON (cp.status = st.id)
+					JOIN $loc_table loc ON (cp.location = loc.id)
+				  WHERE cn.record = ?
+					$visible
+				  	AND cn.deleted IS FALSE
+					AND cp.deleted IS FALSE)
 			) AS count,
 			sum(
 				(SELECT count(cp.id)
 				  FROM  $cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
+					JOIN $st_table st ON (cp.status = st.id)
+					JOIN $loc_table loc ON (cp.location = loc.id)
 				  WHERE cn.record = ?
+					$visible
+				  	AND cn.deleted IS FALSE
+					AND cp.deleted IS FALSE
 				  	AND cp.status = 0)
-			) AS available
+			) AS available,
+			sum(
+				(SELECT count(cp.id)
+				  FROM  $cn_table cn
+					JOIN $cp_table cp ON (cn.id = cp.call_number)
+					JOIN $st_table st ON (cp.status = st.id)
+					JOIN $loc_table loc ON (cp.location = loc.id)
+				  WHERE cn.record = ?
+					AND st.holdable = TRUE
+					AND loc.opac_visible = TRUE
+					AND cp.opac_visible = TRUE
+				  	AND cn.deleted IS FALSE
+					AND cp.deleted IS FALSE)
+			) AS unshadow
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
 		  GROUP BY 1,2
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute(''.$args{record}, ''.$args{record}, ''.$args{org_unit});
+	$sth->execute(''.$args{record}, ''.$args{record}, ''.$args{record}, ''.$args{org_unit});
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
 	}
@@ -52,6 +83,13 @@ sub record_copy_count {
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.biblio.record_entry.copy_count',
+	method		=> 'record_copy_count',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.biblio.record_entry.copy_count.staff',
 	method		=> 'record_copy_count',
 	api_level	=> 1,
 	stream		=> 1,
