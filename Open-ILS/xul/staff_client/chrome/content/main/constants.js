@@ -67,6 +67,8 @@ const api = {
 	'FM_AUN_RETRIEVE_ALL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all' },
 	'FM_AUN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.create' },
 	'FM_AUN_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.delete' },
+	'FM_AUS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.retrieve' },
+	'FM_AUS_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.update' },
 	'FM_BRE_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.metadata.retrieve' },
 	'FM_BRE_ID_SEARCH_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.find_by_barcode' },
 	'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn' },
