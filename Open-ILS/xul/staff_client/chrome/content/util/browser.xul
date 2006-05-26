@@ -114,7 +114,7 @@
 			<button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
 			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
 			<spacer flex="1"/>
-			<label id="debug" value="Debug" disabled="true" onclick="alert(this.getAttribute('tooltiptext'));"/>
+			<label id="debug" value="Debug" disabled="true" onclick="var m = (this.getAttribute('tooltiptext')+'\n'); dump(m); alert(m);"/>
 			<button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
 		</hbox>
 		<browser id="browser_browser" flex="1" type="content"/>
