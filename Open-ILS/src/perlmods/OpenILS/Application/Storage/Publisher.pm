@@ -440,6 +440,8 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		);
 	}
 
+=comment
+
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like' ) ) {
 		__PACKAGE__->register_method(
 			api_name	=> $api_prefix.'.search_like',
@@ -494,6 +496,8 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 		}
 	}
 
+=cut
+
 	# Create the retrieve method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.retrieve' ) ) {
 		__PACKAGE__->register_method(
@@ -531,6 +535,9 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				argc		=> 1,
 			);
 		}
+
+=comment
+
 		unless ( __PACKAGE__->is_registered( $api_prefix.'.search_like.'.$field ) ) {
 			__PACKAGE__->register_method(
 				api_name	=> $api_prefix.'.search_like.'.$field,
@@ -581,6 +588,9 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 				);
 			}
 		}
+
+=cut
+
 	}
 
 
