@@ -23,6 +23,7 @@ util.browser.prototype = {
 			obj.push_xulG = params['push_xulG'];
 			obj.alt_print = params['alt_print'];
 			obj.browser_id = params['browser_id'];
+			obj.debug_label = params['debug_label'];
 			obj.passthru_content_params = params['passthru_content_params'];
 			obj.on_url_load = params['on_url_load'];
 
@@ -210,6 +211,13 @@ util.browser.prototype = {
 									try {
 										obj.error.sdump('D_TRACE','calling on_url_load');
 										obj.on_url_load( obj.controller.view.browser_browser );
+										if (obj.debug_label) {
+											try {
+												document.getElementById(obj.debug_label).setAttribute('tooltiptext','url: ' + obj.get_content().location.href);
+											} catch(E) {
+												obj.error.sdump('D_ERROR','on_url_load, debug_label: ' + E );
+											}
+										}
 									} catch(E) {
 										obj.error.sdump('D_ERROR','on_url_load: ' + E );
 									}

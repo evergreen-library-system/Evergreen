@@ -64,6 +64,7 @@
 					'url' : url,
 					'push_xulG' : push_xulG,
 					'alt_print' : alt_print,
+					'debug_label' : 'debug',
 				};
 				if (typeof window.xulG == 'object' && typeof window.xulG.passthru_content_params == 'object') {
 					p.passthru_content_params = window.xulG.passthru_content_params;
@@ -113,6 +114,7 @@
 			<button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
 			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
 			<spacer flex="1"/>
+			<label id="debug" value="Debug" disabled="true" onclick="alert(this.getAttribute('tooltiptext'));"/>
 			<button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
 		</hbox>
 		<browser id="browser_browser" flex="1" type="content"/>
