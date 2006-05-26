@@ -119,6 +119,11 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method	=> "record_id_to_copy_count",
+	api_name	=> "open-ils.search.biblio.record.copy_count.staff",
+);
+
+__PACKAGE__->register_method(
+	method	=> "record_id_to_copy_count",
 	api_name	=> "open-ils.search.biblio.metarecord.copy_count",
 );
 
@@ -129,33 +134,23 @@ __PACKAGE__->register_method(
 sub record_id_to_copy_count {
 	my( $self, $client, $org_id, $record_id, $format ) = @_;
 
+	return [] unless $record_id;
 	$format = undef if (!$format or $format eq 'all');
 
 	my $method = "open-ils.storage.biblio.record_entry.copy_count.atomic";
 	my $key = "record";
+
 	if($self->api_name =~ /metarecord/) {
 		$method = "open-ils.storage.metabib.metarecord.copy_count.atomic";
 		$key = "metarecord";
 	}
 
-	if($self->api_name =~ /staff/ ) {
-		$method =~ s/atomic/staff\.atomic/og;
-		warn "Doing staff search $method\n";
-	}
+	$method =~ s/atomic/staff\.atomic/og if($self->api_name =~ /staff/ );
 
+	my $count = $U->storagereq( $method, 
+		org_unit => $org_id, $key => $record_id, format => $format );
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-	warn "copy_count retrieve $record_id\n";
-	return undef unless(defined $record_id);
-
-	my $request = $session->request(
-		$method, org_unit => $org_id => $key => $record_id, format => $format );
-
-
-	my $count = $request->gather(1);
-	$session->disconnect();
 	return [ sort { $a->{depth} <=> $b->{depth} } @$count ];
-
 }
 
 

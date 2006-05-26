@@ -47,6 +47,8 @@ table { border-collapse: collapse; }
 */
 
 
+.shadowed { background: #F0E0F0; }
+
 
 /*
 .org_tree { height: 500px; padding-left: 2px; padding-right: 2px; }            

@@ -573,10 +573,17 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = $("copy_count_cell_" + i +"_" + pagePosition);
-		/*
-		var span = cell.getElementsByTagName("div")[0];
-		*/
 		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
+
+		if(isXUL()) {
+			/* here we style opac-invisible records for xul */
+			if(!copy_counts[0].unshadow) {
+				_debug("found an opac-shadowed record: " + rec.doc_id());
+				addCSSClass(
+					cell.parentNode.parentNode.parentNode.parentNode.parentNode, 
+					'shadowed');
+			}
+		}
 
 		i++;
 	}
