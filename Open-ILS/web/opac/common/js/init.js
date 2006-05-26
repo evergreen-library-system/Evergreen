@@ -11,12 +11,18 @@ attachEvt("common", "unload", _tree_killer);
 try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 
 function init() {
+
+
 	runEvt('common','init');
 	if( getOrigLocation() == 0 ) ORIGLOC = LOCATION;
 
 	var cgi = new CGI();
-	if( grabUser() && cgi.param(PARAM_LOCATION) == null ) 
-		LOCATION = G.user.ws_ou();
+	if( grabUser() ) {
+		if( cgi.param(PARAM_LOCATION) == null ) {
+			LOCATION = G.user.ws_ou();
+			DEPTH = findOrgDepth(G.user.ws_ou());
+		}
+	}
 
 	runEvt("common", "run");
 	//checkUserSkin();

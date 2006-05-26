@@ -263,7 +263,7 @@ function  buildOPACLink(args, slim, ssl) {
 		var v = args[x];
 		if(x == "page" || v == null || v == undefined || v+'' == 'NaN' ) continue;
 		if(x == PARAM_OFFSET && v == 0) continue;
-		if(x == PARAM_LOCATION && v == 1) continue;
+		/*if(x == PARAM_LOCATION && v == 1) continue;*/
 		if(x == PARAM_DEPTH && v == 0) continue;
 		if(x == PARAM_COUNT && v == 10) continue;
 		if(x == PARAM_FORM && v == 'all' ) continue;
