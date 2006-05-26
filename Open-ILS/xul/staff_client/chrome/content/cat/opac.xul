@@ -66,7 +66,7 @@
 			}
 		}
 
-		function set_brief_view() {
+		function set_brief_view(reset) {
 			var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
 			dump('spawning ' + url + '\n');
 			top_pane.set_iframe( 
@@ -84,17 +84,20 @@
 			);
 		}
 
-		function set_marc_view() {
+		function set_marc_view(reset) {
 			g.view = 'marc_view';
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+			if (reset) {
+				bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+			} else {
+				bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_MARC_VIEW ) + '?docid=' + window.escape(docid),{},xulG);
+			}
 		}
 
-		function set_marc_edit() {
+		function set_marc_edit(reset) {
 			g.view = 'marc_edit';
-			bottom_pane.set_iframe( 
-				xulG.url_prefix( urls.XUL_MARC_EDIT ),
-				{},
-				{
+			var a =	xulG.url_prefix( urls.XUL_MARC_EDIT );
+			var b =	{};
+			var c =	{
 					'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
 					'save' : {
 						'label' : 'Save Record',
@@ -111,21 +114,33 @@
 							}
 						}
 					}
-				}
-			);
+				};
+			if (reset) {
+				bottom_pane.reset_iframe( a,b,c );
+			} else {
+				bottom_pane.set_iframe( a,b,c );
+			}
 		}
 
-		function set_copy_browser() {
+		function set_copy_browser(reset) {
 			g.view = 'copy_browser';
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+			if (reset) {
+				bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+			} else {
+				bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_COPY_VOLUME_BROWSE ) + '?docid=' + window.escape(docid),{},xulG);
+			}
 		}
 
-		function set_hold_browser() {
+		function set_hold_browser(reset) {
 			g.view = 'hold_browser';
-			bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+			if (reset) {
+				bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+			} else {
+				bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_HOLDS_BROWSER ) + '?docid=' + window.escape(docid),{},xulG);
+			}
 		}
 
-		function set_opac() {
+		function set_opac(reset) {
 			g.view = 'opac';
 			try {
 				var content_params = { 
@@ -160,7 +175,7 @@
 								try {
 									if (docid == id) return;
 									docid = id;
-									refresh_display(id);
+									refresh_display(id,true);
 								} catch(E) {
 									g.error.standard_unexpected_error_alert('rdetail -> recordRetrieved',E);
 								}
@@ -203,41 +218,32 @@
 			);
 		}
 		
-		function refresh_display(id) {
+		function refresh_display(id,reset) {
 			try { 
-				while(top_pane.node.lastChild) 
-					top_pane.node.removeChild(
-						top_pane.node.lastChild
-					);
-			} catch(E) {
-				dump(E + '\n'); 
-			}	
-			try { 
+				while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
 				var children = bottom_pane.node.childNodes;
 				for (var i = 0; i < children.length; i++) {
 					if (children[i] != browser_frame) bottom_pane.node.removeChild(children[i]);
 				}
-			} catch(E) {
-				dump(E + '\n'); 
-			}	
-			set_brief_view();
-			document.getElementById('nav').setAttribute('hidden','false');
-			g.network.simple_request(
-				'FM_AUS_RETRIEVE',
-				[ ses(), g.data.list.au[0].id() ],
-				function (req) {
-					var settings = req.getResultObject();
-					var view = settings['staff_client.catalog.record_view.default'];
-					switch(view) {
-						case 'marc_view' : set_marc_view(); break;
-						case 'marc_edit' : set_marc_edit(); break;
-						case 'copy_browser' : set_copy_browser(); break;
-						case 'hold_browser' : set_hold_browser(); break;
-						case 'opac' :
-						default: set_opac(); break;
-					}
+
+				set_brief_view(reset);
+				document.getElementById('nav').setAttribute('hidden','false');
+				var settings = g.network.simple_request(
+					'FM_AUS_RETRIEVE',
+					[ ses(), g.data.list.au[0].id() ]
+				);
+				var view = settings['staff_client.catalog.record_view.default'];
+				switch(view) {
+					case 'marc_view' : set_marc_view(reset); break;
+					case 'marc_edit' : set_marc_edit(reset); break;
+					case 'copy_browser' : set_copy_browser(reset); break;
+					case 'hold_browser' : set_hold_browser(reset); break;
+					case 'opac' :
+					default: set_opac(reset); break;
 				}
-			);
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('in refresh_display',E);
+			}
 		}
 
 		function set_default() {
@@ -270,7 +276,7 @@
 			<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
 			<menuseparator/>
 			<menuitem label="Set bottom interface as Default" id="default" oncommand="set_default();"/>
-			<menuitem label="Refresh Display" id="refresh_me" oncommand="refresh_display(docid);"/>
+			<menuitem label="Reset Display" id="refresh_me" oncommand="refresh_display(docid,true);"/>
 			</menupopup>
 			</menu>
 		</menubar>
