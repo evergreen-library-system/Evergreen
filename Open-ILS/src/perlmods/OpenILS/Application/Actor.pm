@@ -1617,6 +1617,8 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a transaction record
 	NOTES
+
+# XXX Deprecate Me
 sub checkedout_count {
 	my( $self, $client, $login_session, $userid ) = @_;
 
@@ -1676,7 +1678,10 @@ sub checked_out {
 
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+
+	if( $userid ne $e->requestor->id ) {
+		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+	}
 
 	my $circs = $e->search_action_circulation( 
 		{ usr => $userid, stop_fines => undef });
@@ -1695,6 +1700,7 @@ sub checked_out {
 		}
 	}
 
+	# grab all of the lost, claims-returned, and longoverdue circs
 	my $open = $e->search_action_circulation(
 		{usr => $userid, stop_fines => { '!=' => undef }, xact_finish => undef });
 
@@ -1708,7 +1714,7 @@ sub checked_out {
 
 	if( $self->api_name =~ /count/ ) {
 		return {
-			total		=> (scalar(@$circs) + scalar(@lost) + scalar(@cr) + scalar(@lo)),
+			total		=> @$circs + @lost + @cr + @lo,
 			out		=> scalar(@out),
 			overdue	=> scalar(@overdue),
 			lost		=> scalar(@lost),

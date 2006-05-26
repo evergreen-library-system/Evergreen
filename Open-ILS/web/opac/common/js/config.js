@@ -270,8 +270,11 @@ var UPDATE_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.update"
 var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.retrieve.all";
 var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 var FETCH_MARC_HTML				= "open-ils.search:open-ils.search.biblio.record.html";
+/*
 var FETCH_CHECKED_OUT			= "open-ils.circ:open-ils.circ.actor.user.checked_out";
 var FETCH_CHECKED_OUT_SLIM		= "open-ils.circ:open-ils.circ.actor.user.checked_out.opac";
+*/
+var FETCH_CHECKED_OUT_SUM		= "open-ils.actor:open-ils.actor.user.checked_out";
 var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
 var FETCH_TRANSACTIONS			= "open-ils.actor:open-ils.actor.user.transactions.have_charge.fleshed";
@@ -322,6 +325,7 @@ var FETCH_NON_CAT_CIRC			= 'open-ils.circ:open-ils.circ.non_cataloged_circulatio
 var FETCH_NON_CAT_TYPES			= "open-ils.circ:open-ils.circ.non_cat_types.retrieve.all";
 var FETCH_BRE						= 'open-ils.search:open-ils.search.biblio.record_entry.slim.retrieve';
 var CHECK_USERNAME				= 'open-ils.actor:open-ils.actor.username.exists';
+var FETCH_CIRC_BY_ID				= 'open-ils.circ:open-ils.circ.retrieve';
 
 /* ---------------------------------------------------------------------------- */
 

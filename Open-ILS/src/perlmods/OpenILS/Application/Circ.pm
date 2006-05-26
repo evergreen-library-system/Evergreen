@@ -22,7 +22,7 @@ use OpenILS::Event;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor q/:funcs/;
 #my $logger = "OpenSRF::Utils::Logger";
 
 
@@ -47,11 +47,12 @@ __PACKAGE__->register_method(
 );
 sub retrieve_circ {
 	my( $s, $c, $a, $i ) = @_;
-	my($reqr, $evt) = $U->checksesperm($a, 'VIEW_CIRCULATIONS');
-	return $evt if $evt;
-	my $circ;
-	($circ, $evt) = $U->fetch_circulation($i);
-	return $evt if $evt;
+	my $e = new_editor(authtoken => $a);
+	return $e->event unless $e->checkauth;
+	my $circ = $e->retrieve_action_circulation($i);
+	if( $e->requestor->id ne $circ->usr ) {
+		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+	}
 	return $circ;
 }
 
@@ -137,6 +138,7 @@ __PACKAGE__->register_method(
 	method	=> "checkouts_by_user_opac",
 	api_name	=> "open-ils.circ.actor.user.checked_out.opac",);
 
+# XXX Deprecate Me
 sub checkouts_by_user_opac {
 	my( $self, $client, $auth, $user_id ) = @_;
 

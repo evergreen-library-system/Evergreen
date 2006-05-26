@@ -103,7 +103,7 @@ function myOPACChangePage( page ) {
 
 function myOPACShowChecked() {
 	if(checkedDrawn) return;
-	var req = new Request(FETCH_CHECKED_OUT_SLIM, G.user.session);	
+	var req = new Request(FETCH_CHECKED_OUT_SUM, G.user.session, G.user.id());	
 	req.callback(myOPACDrawCheckedOutSlim);
 	req.send();
 
@@ -132,38 +132,63 @@ function myOPACDrawCheckedOutSlim(r) {
 	clearNodes( tbody, [ loading, none ] );
 
 	hideMe(loading); /* remove all children and start over */
-	if(!(checked && checked[0])) unHideMe(none);
+	if(!(checked && (checked.out || checked.overdue))) {
+		unHideMe(none);
+		return;
+	}
 
-	for( var idx in checked ) {
 
-		var circ    = checked[idx]
-		var row = checkedRowTemplate.cloneNode(true);
-		row.id = 'myopac_checked_row_ ' + circ.id();
-
- 		var due = circ.due_date();
-      due = due.replace(/[0-9][0-9]:.*$/,"");
-
-		var dlink = $n( row, "myopac_checked_due" );
-		var rlink = $n( row, "myopac_checked_renewals" );
-		var rnlink = $n( row, "myopac_checked_renew_link" );
-
-		dlink.appendChild(text(due));
-		rlink.appendChild(text(circ.renewal_remaining()));
-		unHideMe(row);
-		rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
-		circsCache.push(circ);
-
-		if( circ.renewal_remaining() < 1 ) hideMe(rnlink);
-
-		tbody.appendChild(row);
-
-		var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
-		req.request.alertEvent = false;
-		req.request.circ = circ.id();
-		req.request.copy = circ.target_copy();
-		req.callback(myOPACDrawCheckedTitle);
+	for( var i = 0; i < checked.out.length; i++ ) {
+		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.out[i]);
+		req.request.tbody = tbody;
+		req.callback(myOPACDrawCheckedItem);
 		req.send();
 	}
+
+	for( var i = 0; i < checked.overdue.length; i++ ) {
+		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.overdue[i]);
+		req.request.tbody = tbody;
+		req.request.od = true;
+		req.callback(myOPACDrawCheckedItem);
+		req.send();
+	}
+}
+
+function myOPACDrawCheckedItem(r) {
+
+	var circ = r.getResultObject();
+	var tbody = r.tbody;
+	var row = checkedRowTemplate.cloneNode(true);
+	row.id = 'myopac_checked_row_ ' + circ.id();
+
+	//if( r.od ) addCSSClass(row, 'overdue_circ');
+
+	var due = circ.due_date();
+   due = due.replace(/[0-9][0-9]:.*$/,"");
+
+	var dlink = $n( row, "myopac_checked_due" );
+	var rlink = $n( row, "myopac_checked_renewals" );
+	var rnlink = $n( row, "myopac_checked_renew_link" );
+
+	if( r.od ) due = elem('b', {style:'color:red;font-size:110%'},due);
+	else due = text(due);
+
+	dlink.appendChild(due);
+	rlink.appendChild(text(circ.renewal_remaining()));
+	unHideMe(row);
+	rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
+	circsCache.push(circ);
+
+	if( circ.renewal_remaining() < 1 ) hideMe(rnlink);
+
+	tbody.appendChild(row);
+
+	var req = new Request(FETCH_MODS_FROM_COPY, circ.target_copy() );
+	req.request.alertEvent = false;
+	req.request.circ = circ.id();
+	req.request.copy = circ.target_copy();
+	req.callback(myOPACDrawCheckedTitle);
+	req.send();
 }
 
 function myOPACDrawCheckedTitle(r) {
