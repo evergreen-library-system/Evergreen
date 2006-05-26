@@ -89,20 +89,33 @@ sub ordered_records_from_metarecord {
 		SQL
 	} else {
 		$sql .= <<"		SQL";
-			  FROM	$sm_table sm,
-				$br_table br,
-				$fr_table fr,
-				$descendants d,
-				$cn_table cn,
-				$cp_table cp,
-				$rd_table rd
-			  WHERE	rd.record = sm.source
-				AND cp.circ_lib = d.id
-				AND cn.id = cp.call_number
-				AND cn.record = sm.source
-				AND fr.record = sm.source
-			  	AND br.id = sm.source
-				AND sm.metarecord = ?
+			  FROM	$sm_table sm
+				JOIN $br_table br ON (sm.source = br.id)
+				JOIN $fr_table fr ON (fr.record = br.id)
+				JOIN $rd_table rd ON (rd.record = br.id)
+			  WHERE	sm.metarecord = ?
+				AND (	EXISTS (
+						SELECT	1
+						  FROM	$cp_table cp,
+							$cn_table cn,
+							$descendants d
+						  WHERE	cn.record = br.id
+							AND cn.deleted = FALSE
+							AND cp.deleted = FALSE
+							AND cp.circ_lib = d.id
+							AND cn.id = cp.call_number
+						  LIMIT 1
+					) OR NOT EXISTS (
+						SELECT	1
+						  FROM	$cp_table cp,
+							$cn_table cn
+						  WHERE	cn.record = br.id
+							AND cn.deleted = FALSE
+							AND cp.deleted = FALSE
+							AND cn.id = cp.call_number
+						  LIMIT 1
+					)
+				)
 		SQL
 	}
 
