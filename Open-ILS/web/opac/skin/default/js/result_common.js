@@ -573,15 +573,21 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = $("copy_count_cell_" + i +"_" + pagePosition);
-		cell.appendChild(text(copy_counts[i].available + " / " + copy_counts[i].count));
+		var cts = copy_counts[i];
+		cell.appendChild(text(cts.available + " / " + cts.count));
 
 		if(isXUL()) {
 			/* here we style opac-invisible records for xul */
-			if(!copy_counts[0].unshadow) {
-				_debug("found an opac-shadowed record: " + rec.doc_id());
-				addCSSClass(
-					cell.parentNode.parentNode.parentNode.parentNode.parentNode, 
-					'shadowed');
+
+			if( cts.depth == 0 ) {
+				if(!cts.unshadow) {
+					_debug("found an opac-shadowed record: " + rec.doc_id());
+					var row = cell.parentNode.parentNode.parentNode.parentNode.parentNode; 
+					if( cts.count == 0 ) 
+						addCSSClass( row, 'no_copies' );
+					else 
+						addCSSClass( row, 'shadowed' );
+				}
 			}
 		}
 

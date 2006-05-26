@@ -48,6 +48,7 @@ table { border-collapse: collapse; }
 
 
 .shadowed { background: #F0F0E0; }
+.no_copies { background: #E0E0E0; }
 .overdue_circ { border: 2px dashed #F0D0E0; }
 
 /*
