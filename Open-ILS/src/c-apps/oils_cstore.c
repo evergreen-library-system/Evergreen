@@ -951,13 +951,14 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 
 char* jsonNumberToDBString ( osrfHash* field, jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init(32);
-	double x = jsonObjectGetNumber(value);
 
 	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", 3) ) {
-		buffer_fadd( val_buf, "%d", (int)x );
+		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
+		else buffer_fadd( val_buf, "%ld", atol(jsonObjectToSimpleString(value)) );
 
 	} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
-		buffer_fadd( val_buf, "%f", x );
+		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
+		else buffer_fadd( val_buf, "%f", atof(jsonObjectToSimpleString(value)) );
 	}
 
 	char* pred = buffer_data(val_buf);
@@ -1511,6 +1512,8 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		int pos = atoi(osrfHashGet(field, "array_position"));
 		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
 
+		osrfLogDebug( OSRF_LOG_MARK, "Updating %s object with %s = %s", osrfHashGet(meta, "fieldmapper"), field_name, value);
+
 		if (jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
 			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) ) && !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
 				if (first) first = 0;
@@ -1521,10 +1524,15 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			if (first) first = 0;
 			else buffer_add(sql, ",");
-			
-			char* v = jsonNumberToDBString( field, jsonObjectGetIndex( target, pos ) );
-			buffer_fadd( sql, " %s = %s", v );
-			free(v);
+
+			if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
+				buffer_fadd( sql, " %s = %ld", field_name, atol(value) );
+			} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+				buffer_fadd( sql, " %s = %f", field_name, atof(value) );
+			}
+
+			osrfLogDebug( OSRF_LOG_MARK, "%s is of type %s", field_name, osrfHashGet(field, "datatype"));
+
 		} else {
 			if ( dbi_conn_quote_string(dbhandle, &value) ) {
 				if (first) first = 0;
