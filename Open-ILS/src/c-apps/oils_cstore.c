@@ -27,6 +27,8 @@
 int osrfAppChildInit();
 int osrfAppInitialize();
 
+int verifyObjectClass ( osrfMethodContext*, jsonObject* );
+
 int beginTransaction ( osrfMethodContext* );
 int commitTransaction ( osrfMethodContext* );
 int rollbackTransaction ( osrfMethodContext* );
@@ -36,19 +38,25 @@ int releaseSavepoint ( osrfMethodContext* );
 int rollbackSavepoint ( osrfMethodContext* );
 
 int dispatchCRUDMethod ( osrfMethodContext* );
-jsonObject* doCreate ( osrfMethodContext*, osrfHash*, jsonObject* );
-jsonObject* doRetrieve ( osrfMethodContext*, osrfHash*, jsonObject* );
-jsonObject* doUpdate ( osrfMethodContext*, osrfHash*, jsonObject* );
-jsonObject* doDelete ( osrfMethodContext*, osrfHash*, jsonObject* );
-jsonObject* doSearch ( osrfMethodContext*, osrfHash*, jsonObject* );
+jsonObject* doCreate ( osrfMethodContext*, int* );
+jsonObject* doRetrieve ( osrfMethodContext*, int* );
+jsonObject* doUpdate ( osrfMethodContext*, int* );
+jsonObject* doDelete ( osrfMethodContext*, int* );
+jsonObject* doSearch ( osrfMethodContext*, osrfHash*, jsonObject*, int* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
 
+char* searchSimplePredicate ( const char*, osrfHash*, jsonObject* );
+char* searchFunctionPredicate ( osrfHash*, jsonObjectNode* );
+char* searchBETWEENPredicate ( osrfHash*, jsonObject* );
+char* searchINPredicate ( osrfHash*, jsonObject* );
+char* searchPredicate ( osrfHash*, jsonObject* );
 
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
 
 dbi_conn dbhandle; /* our db connection */
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
+jsonObject* jsonNULL = NULL; // 
 
 
 /* parse and store the IDL here */
@@ -88,9 +96,9 @@ int osrfAppInitialize() {
 
 	osrfStringArray* global_methods = osrfNewStringArray(1);
 
-	//osrfStringArrayAdd( global_methods, "create" );
+	osrfStringArrayAdd( global_methods, "create" );
 	osrfStringArrayAdd( global_methods, "retrieve" );
-	//osrfStringArrayAdd( global_methods, "update" );
+	osrfStringArrayAdd( global_methods, "update" );
 	osrfStringArrayAdd( global_methods, "delete" );
 	osrfStringArrayAdd( global_methods, "search" );
 
@@ -127,6 +135,15 @@ int osrfAppInitialize() {
 							usrData,
 							strdup( string_tmp ),
 							"primarykey"
+						);
+					}
+					string_tmp = NULL;
+
+					if( (string_tmp = (char*)xmlGetNsProp(_cur, "sequence", PERSIST_NS)) ) {
+						osrfHashSet(
+							usrData,
+							strdup( string_tmp ),
+							"sequence"
 						);
 					}
 					string_tmp = NULL;
@@ -471,8 +488,8 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 	dbi_result result = dbi_conn_query(dbhandle, "START TRANSACTION;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error starting transaction", MODULENAME );
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error starting transaction" );
+		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(ctx->session->session_id);
 		osrfAppRespondComplete( ctx, ret );
@@ -496,8 +513,14 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
-		return 1;
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+		);
+		return -1;
 	}
 
 	dbi_result result = dbi_conn_queryf(dbhandle, "SAVEPOINT \"%s\";", spName);
@@ -509,15 +532,8 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			spName,
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
-		osrfAppRequestRespondException(
-			ctx->session,
-			ctx->request,
-			"%s: Error creating savepoint %s in transaction %s",
-			MODULENAME,
-			spName,
-			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
-		);
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error creating savepoint" );
+		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
@@ -532,8 +548,14 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
-		return 1;
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+		);
+		return -1;
 	}
 
 	dbi_result result = dbi_conn_queryf(dbhandle, "RELEASE SAVEPOINT \"%s\";", spName);
@@ -545,15 +567,8 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			spName,
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
-		osrfAppRequestRespondException(
-			ctx->session,
-			ctx->request,
-			"%s: Error releasing savepoint %s in transaction %s",
-			MODULENAME,
-			spName,
-			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
-		);
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error releasing savepoint" );
+		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
@@ -568,8 +583,14 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction, required for savepoints", MODULENAME );
-		return 1;
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for savepoints"
+		);
+		return -1;
 	}
 
 	dbi_result result = dbi_conn_queryf(dbhandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
@@ -581,15 +602,8 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 			spName,
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
-		osrfAppRequestRespondException(
-			ctx->session,
-			ctx->request,
-			"%s: Error rolling back savepoint %s in transaction %s",
-			MODULENAME,
-			spName,
-			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
-		);
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back savepoint" );
+		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
@@ -602,15 +616,15 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to commit", MODULENAME );
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to commit" );
+		return -1;
 	}
 
 	dbi_result result = dbi_conn_query(dbhandle, "COMMIT;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error committing transaction", MODULENAME );
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error committing transaction" );
+		return -1;
 	} else {
 		osrfHashRemove(ctx->session->userData, "xact_id");
 		jsonObject* ret = jsonNewObject(ctx->session->session_id);
@@ -624,15 +638,15 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "No active transaction to roll back" );
+		return -1;
 	}
 
 	dbi_result result = dbi_conn_query(dbhandle, "ROLLBACK;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: Error rolling back transaction", MODULENAME );
-		return 1;
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back transaction" );
+		return -1;
 	} else {
 		osrfHashRemove(ctx->session->userData, "xact_id");
 		jsonObject* ret = jsonNewObject(ctx->session->session_id);
@@ -647,23 +661,28 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	osrfHash* meta = (osrfHash*) ctx->method->userData;
 	osrfHash* class_obj = osrfHashGet( meta, "class" );
+	
+	int err = 0;
 
 	jsonObject * obj = NULL;
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "create"))
-		obj = doCreate(ctx, class_obj, ctx->params);
+		obj = doCreate(ctx, &err);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "retrieve"))
-		obj = doRetrieve(ctx, class_obj, ctx->params);
+		obj = doRetrieve(ctx, &err);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "update"))
-		obj = doUpdate(ctx, class_obj, ctx->params);
+		obj = doUpdate(ctx, &err);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "delete"))
-		obj = doDelete(ctx, class_obj, ctx->params);
+		obj = doDelete(ctx, &err);
 
 	if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "search")) {
+
+		obj = doSearch(ctx, class_obj, ctx->params, &err);
+		if(err) return err;
+
 		jsonObjectNode* cur;
-		obj = doSearch(ctx, class_obj, ctx->params);
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
 			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
@@ -677,26 +696,224 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 
 	jsonObjectFree(obj);
 
-	return 0;
+	return err;
 }
 
-jsonObject* doCreate(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+int verifyObjectClass ( osrfMethodContext* ctx, jsonObject* param ) {
+	
+	osrfHash* meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class = osrfHashGet( meta, "class" );
+	
+	if ((strcmp( osrfHashGet(class, "classname"), param->classname ))) {
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
-		return 1;
+		growing_buffer* msg = buffer_init(128);
+		buffer_fadd(
+			msg,
+			"%s: %s method for type %s was passed a %s",
+			MODULENAME,
+			osrfHashGet(meta, "methodtype"),
+			osrfHashGet(class, "classname"),
+			param->classname
+		);
+
+		char* m = buffer_data(msg);
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException", ctx->request, m );
+
+		buffer_free(msg);
+		free(m);
+
+		return 0;
+	}
+	return 1;
+}
+
+jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
+
+	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
+
+	if (!verifyObjectClass(ctx, target)) {
+		*err = -1;
+		return jsonNULL;
 	}
 
-	return NULL;
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for CREATE"
+		);
+		*err = -1;
+		return jsonNULL;
+	}
+
+	osrfHash* fields = osrfHashGet(meta, "fields");
+	char* pkey = osrfHashGet(meta, "primarykey");
+	char* seq = osrfHashGet(meta, "sequence");
+
+	growing_buffer* table_buf = buffer_init(128);
+	growing_buffer* col_buf = buffer_init(128);
+	growing_buffer* val_buf = buffer_init(128);
+
+	buffer_fadd(table_buf,"INSERT INTO %s", osrfHashGet(meta, "tablename"));
+	buffer_add(col_buf,"(");
+	buffer_add(val_buf,"VALUES (");
+
+	int i = 0;
+	int first = 1;
+	char* field_name;
+	osrfStringArray* field_list = osrfHashKeys( fields );
+	while ( (field_name = osrfStringArrayGetString(field_list, i++)) ) {
+
+		osrfHash* field = osrfHashGet( fields, field_name );
+
+		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+
+		int pos = atoi(osrfHashGet(field, "array_position"));
+		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
+
+		if (first) {
+			first = 0;
+		} else {
+			buffer_add(col_buf, ",");
+			buffer_add(val_buf, ",");
+		}
+
+		buffer_add(col_buf, field_name);
+
+		if (jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
+			buffer_add( val_buf, "DEFAULT" );
+			
+		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+			if ( !strcmp(osrfHashGet(field, "datatype"), "INT8") ) {
+				buffer_fadd( val_buf, "%lld", atol(value) );
+				
+			} else if ( !strcmp(osrfHashGet(field, "datatype"), "INT") ) {
+				buffer_fadd( val_buf, "%ld", atoll(value) );
+				
+			} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+				buffer_fadd( val_buf, "%f", atof(value) );
+			}
+		} else {
+			if ( dbi_conn_quote_string(dbhandle, &value) ) {
+				buffer_fadd( val_buf, "%s", value );
+
+			} else {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", MODULENAME, value);
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Error quoting string -- please see the error log for more details"
+				);
+				free(value);
+				buffer_free(table_buf);
+				buffer_free(col_buf);
+				buffer_free(val_buf);
+				*err = -1;
+				return jsonNULL;
+			}
+		}
+
+		free(value);
+		
+	}
+
+	buffer_add(col_buf,")");
+	buffer_add(val_buf,")");
+
+	growing_buffer* sql = buffer_init(128);
+	buffer_fadd(
+		sql,
+		"%s %s %s;",
+		buffer_data(table_buf),
+		buffer_data(col_buf),
+		buffer_data(val_buf)
+	);
+	buffer_free(table_buf);
+	buffer_free(col_buf);
+	buffer_free(val_buf);
+
+	char* query = buffer_data(sql);
+	buffer_free(sql);
+
+	osrfLogDebug(OSRF_LOG_MARK, "%s: Insert SQL [%s]", MODULENAME, query);
+
+	
+	dbi_result result = dbi_conn_query(dbhandle, query);
+
+	jsonObject* obj = NULL;
+
+	if (!result) {
+		obj = jsonNewObject(NULL);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s ERROR inserting %s object using query [%s]",
+			MODULENAME,
+			osrfHashGet(meta, "fieldmapper"),
+			query
+		);
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"INSERT error -- please see the error log for more details"
+		);
+		*err = -1;
+	} else {
+
+		int pos = atoi(osrfHashGet( osrfHashGet(fields, pkey), "array_position" ));
+		char* id = jsonObjectToSimpleString(jsonObjectGetIndex(target, pos));
+		if (!id) {
+			unsigned long long new_id = dbi_conn_sequence_last(dbhandle, seq);
+			growing_buffer* _id = buffer_init(10);
+			buffer_fadd(_id, "%lld", new_id);
+			id = buffer_data(_id);
+			buffer_free(_id);
+		}
+
+		jsonObject* fake_params = jsonParseString("[]");
+		jsonObjectPush(fake_params, jsonParseString("{}"));
+
+		jsonObjectSetKey(
+			jsonObjectGetIndex(fake_params, 0),
+			osrfHashGet(meta, "primarykey"),
+			jsonNewObject(id)
+		);
+
+		jsonObject* list = doSearch( ctx,meta, fake_params, err);
+
+		if(*err) {
+			jsonObjectFree( fake_params );
+			obj = jsonNULL;
+		} else {
+			obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
+		}
+
+		jsonObjectFree( list );
+		jsonObjectFree( fake_params );
+
+	}
+
+	free(query);
+
+	return obj;
+
 }
 
 
-jsonObject* doRetrieve(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
+
+	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
 	jsonObject* obj;
 
-	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
-	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
+	char* id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+	jsonObject* order_hash = jsonObjectGetIndex(ctx->params, 1);
 
 	osrfLogDebug(
 		OSRF_LOG_MARK,
@@ -712,12 +929,18 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 	jsonObjectSetKey(
 		jsonObjectGetIndex(fake_params, 0),
 		osrfHashGet(meta, "primarykey"),
-		jsonNewObject(id)
+		jsonParseString(id)
 	);
 
 	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
 
-	jsonObject* list = doSearch( ctx,meta, fake_params);
+	jsonObject* list = doSearch( ctx,meta, fake_params, err);
+
+	if(*err) {
+		jsonObjectFree( fake_params );
+		return jsonNULL;
+	}
+
 	obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
 
 	jsonObjectFree( list );
@@ -726,7 +949,233 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 	return obj;
 }
 
-jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+char* jsonNumberToDBString ( osrfHash* field, jsonObject* value ) {
+	growing_buffer* val_buf = buffer_init(32);
+	double x = jsonObjectGetNumber(value);
+
+	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", 3) ) {
+		buffer_fadd( val_buf, "%d", (int)x );
+
+	} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
+		buffer_fadd( val_buf, "%f", x );
+	}
+
+	char* pred = buffer_data(val_buf);
+	buffer_free(val_buf);
+
+	return pred;
+}
+
+char* searchINPredicate (osrfHash* field, jsonObject* node) {
+	growing_buffer* sql_buf = buffer_init(32);
+	
+	buffer_fadd(
+		sql_buf,
+		"%s IN (",
+		osrfHashGet(field, "name")
+	);
+
+	int in_item_index = 0;
+	int in_item_first = 1;
+	jsonObject* in_item;
+	while ( (in_item = jsonObjectGetIndex(node, in_item_index++)) ) {
+
+		if (in_item_first)
+			in_item_first = 0;
+		else
+			buffer_add(sql_buf, ", ");
+
+		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+			char* val = jsonNumberToDBString( field, in_item );
+			buffer_fadd( sql_buf, "%s", val );
+			free(val);
+
+		} else {
+			char* key_string = jsonObjectToSimpleString(in_item);
+			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
+				buffer_fadd( sql_buf, "%s", key_string );
+				free(key_string);
+			} else {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
+				free(key_string);
+				buffer_free(sql_buf);
+				return NULL;
+			}
+		}
+	}
+
+	buffer_add(
+		sql_buf,
+		")"
+	);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
+char* searchFunctionPredicate (osrfHash* field, jsonObjectNode* node) {
+	growing_buffer* sql_buf = buffer_init(32);
+	
+	buffer_fadd(
+		sql_buf,
+		"%s %s ",
+		osrfHashGet(field, "name"),
+		node->key
+	);
+
+	char* val = NULL;
+	int func_item_index = 0;
+	int func_item_first = 2;
+	jsonObject* func_item;
+	while ( (func_item = jsonObjectGetIndex(node->item, func_item_index++)) ) {
+
+		val = jsonObjectToSimpleString(func_item);
+
+		if (func_item_first == 2) {
+			buffer_fadd(sql_buf, "%s( ", val);
+			free(val);
+			func_item_first--;
+			continue;
+		}
+
+		if (func_item_first)
+			func_item_first--;
+		else
+			buffer_add(sql_buf, ", ");
+
+		if ( dbi_conn_quote_string(dbhandle, &val) ) {
+			buffer_fadd( sql_buf, "%s", val );
+			free(val);
+		} else {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+			free(val);
+			buffer_free(sql_buf);
+			return NULL;
+		}
+	}
+
+	buffer_add(
+		sql_buf,
+		" )"
+	);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
+char* searchSimplePredicate (const char* orig_op, osrfHash* field, jsonObject* node) {
+
+	char* val = NULL;
+	char* op = NULL;
+	if (node->type == JSON_NULL) {
+		val = strdup("NULL");
+
+		if (strcmp( orig_op, "=" ))
+			op = strdup("IS NOT");
+		else
+			op = strdup("IS");
+
+	} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		val = jsonNumberToDBString( field, node );
+		op = strdup (orig_op);
+
+	} else {
+		val = jsonObjectToSimpleString(node);
+		op = strdup (orig_op);
+		if ( !dbi_conn_quote_string(dbhandle, &val) ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+			free(val);
+			return NULL;
+		}
+	}
+
+	growing_buffer* sql_buf = buffer_init(16);
+	buffer_fadd( sql_buf, "%s %s %s", osrfHashGet(field, "name"), op, val );
+	free(val);
+	free(op);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
+char* searchBETWEENPredicate (osrfHash* field, jsonObject* node) {
+
+	char* x_string;
+	char* y_string;
+
+	if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+		x_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,0));
+		y_string = jsonNumberToDBString(field, jsonObjectGetIndex(node,1));
+
+	} else {
+		x_string = jsonObjectToSimpleString(jsonObjectGetIndex(node,0));
+		y_string = jsonObjectToSimpleString(jsonObjectGetIndex(node,1));
+		if ( !(dbi_conn_quote_string(dbhandle, &x_string) && dbi_conn_quote_string(dbhandle, &y_string)) ) {
+			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key strings [%s] and [%s]", MODULENAME, x_string, y_string);
+			free(x_string);
+			free(y_string);
+			return NULL;
+		}
+	}
+
+	growing_buffer* sql_buf = buffer_init(32);
+	buffer_fadd( sql_buf, "%s BETWEEN %s AND %s", osrfHashGet(field, "name"), x_string, y_string );
+	free(x_string);
+	free(y_string);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
+char* searchPredicate ( osrfHash* field, jsonObject* node ) {
+
+	char* pred = NULL;
+	if (node->type == JSON_ARRAY) { // equality IN search
+		pred = searchINPredicate( field, node );
+	} else if (node->type == JSON_HASH) { // non-equality search
+		jsonObjectNode* pred_node;
+		jsonObjectIterator* pred_itr = jsonNewObjectIterator( node );
+		while ( (pred_node = jsonObjectIteratorNext( pred_itr )) ) {
+			if ( !(strcasecmp( pred_node->key,"between" )) )
+				pred = searchBETWEENPredicate( field, pred_node->item );
+			else if ( !(strcasecmp( pred_node->key,"in" )) )
+				pred = searchINPredicate( field, pred_node->item );
+			else if ( pred_node->item->type == JSON_ARRAY )
+				pred = searchFunctionPredicate( field, pred_node );
+			else 
+				pred = searchSimplePredicate( pred_node->key, field, pred_node->item );
+
+			break;
+		}
+	} else if (node->type == JSON_NULL) { // IS NULL search
+		growing_buffer* _p = buffer_init(16);
+		buffer_fadd(
+			_p,
+			"%s IS NULL",
+			osrfHashGet(field, "name")
+		);
+		pred = buffer_data(_p);
+		buffer_free(_p);
+	} else { // equality search
+		pred = searchSimplePredicate( "=", field, node );
+	}
+
+	return pred;
+
+}
+
+jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params, int* err ) {
+
+	osrfHash* links = osrfHashGet(meta, "links");
+	osrfHash* fields = osrfHashGet(meta, "fields");
 
 	jsonObject* _tmp;
 	jsonObject* obj;
@@ -739,11 +1188,19 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 	jsonObjectNode* node = NULL;
 	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
 
+	char* pred;
 	int first = 1;
 	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
-		osrfHash* field = osrfHashGet( osrfHashGet(meta, "fields"), node->key );
+		osrfHash* field = osrfHashGet( fields, node->key );
 
 		if (!field) continue;
+
+		/*
+		if (!field) {
+			field = osrfNewHash();
+			osrfHashSet(field, node->key, "name");
+		}
+		*/
 
 		if (first) {
 			first = 0;
@@ -751,28 +1208,9 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 			buffer_add(sql_buf, " AND ");
 		}
 
-		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-			buffer_fadd(
-				sql_buf,
-				"%s = %d",
-				osrfHashGet(field, "name"),
-				atoi( jsonObjectToSimpleString(node->item) )
-			);
-		} else {
-			char* key_string = jsonObjectToSimpleString(node->item);
-			if ( dbi_conn_quote_string(dbhandle, &key_string) ) {
-				buffer_fadd(
-					sql_buf,
-					"%s = %s",
-					osrfHashGet(field, "name"),
-					key_string
-				);
-				free(key_string);
-			} else {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, key_string);
-				free(key_string);
-			}
-		}
+		pred = searchPredicate( field, node->item);
+		buffer_fadd( sql_buf, "%s", pred );
+		free(pred);
 	}
 
 	jsonObjectIteratorFree(search_itr);
@@ -825,7 +1263,6 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
 
-		/* there should be one row at the most  */
 		if (dbi_result_first_row(result)) {
 			/* JSONify the result */
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
@@ -842,6 +1279,18 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 
 	} else {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]", MODULENAME, osrfHashGet(meta, "fieldmapper"), sql);
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"Severe query error -- see error log for more details"
+		);
+		*err = -1;
+		free(sql);
+		jsonObjectFree(res_list);
+		return jsonNULL;
+
 	}
 
 	free(sql);
@@ -849,16 +1298,13 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 	if (order_hash) {
 		_tmp = jsonObjectGetKey( order_hash, "flesh" );
 		if (_tmp) {
-			double x = jsonObjectGetNumber(_tmp);
+			int x = (int)jsonObjectGetNumber(_tmp);
 
-			if ((int)x > 0) {
+			if (x > 0) {
 
 				jsonObjectNode* cur;
 				jsonObjectIterator* itr = jsonNewObjectIterator( res_list );
 				while ((cur = jsonObjectIteratorNext( itr ))) {
-
-					osrfHash* links = osrfHashGet(meta, "links");
-					osrfHash* fields = osrfHashGet(meta, "fields");
 
 					int i = 0;
 					char* link_field;
@@ -939,7 +1385,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 						jsonObjectSetKey(
 							jsonObjectGetIndex(fake_params, 1),
 							"flesh",
-							jsonNewNumberObject( (double)((int)x - 1) )
+							jsonNewNumberObject( (double)(x - 1) )
 						);
 
 						if (flesh_fields) {
@@ -958,7 +1404,17 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 							);
 						}
 
-						jsonObject* kids = doSearch(ctx, kid_idl, fake_params);
+						jsonObject* kids = doSearch(ctx, kid_idl, fake_params, err);
+
+						if(*err) {
+							jsonObjectFree( fake_params );
+							if (flesh_fields) osrfStringArrayFree(link_fields);
+							jsonObjectIteratorFree(itr);
+							jsonObjectFree(res_list);
+							return jsonNULL;
+						}
+
+
 
 						osrfLogDebug(OSRF_LOG_MARK, "Search for %s return %d linked objects", osrfHashGet(kid_link, "class"), kids->size);
 						
@@ -996,21 +1452,153 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 }
 
 
-jsonObject* doUpdate(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 
-	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction to roll back", MODULENAME );
-		return 1;
+	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+	jsonObject* target = jsonObjectGetIndex(ctx->params, 0);
+
+	if (!verifyObjectClass(ctx, target)) {
+		*err = -1;
+		return jsonNULL;
 	}
 
-	return NULL;
+	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for UPDATE"
+		);
+		*err = -1;
+		return jsonNULL;
+	}
+
+	char* pkey = osrfHashGet(meta, "primarykey");
+	osrfHash* fields = osrfHashGet(meta, "fields");
+
+	char* id =
+		jsonObjectToSimpleString(
+			jsonObjectGetIndex(
+				target,
+				atoi( osrfHashGet( osrfHashGet( fields, pkey ), "array_position" ) )
+			)
+		);
+
+	osrfLogDebug(
+		OSRF_LOG_MARK,
+		"%s updating %s object with %s = %s",
+		MODULENAME,
+		osrfHashGet(meta, "fieldmapper"),
+		pkey,
+		id
+	);
+
+	growing_buffer* sql = buffer_init(128);
+	buffer_fadd(sql,"UPDATE %s SET", osrfHashGet(meta, "tablename"));
+
+	int i = 0;
+	int first = 1;
+	char* field_name;
+	osrfStringArray* field_list = osrfHashKeys( fields );
+	while ( (field_name = osrfStringArrayGetString(field_list, i++)) ) {
+
+		osrfHash* field = osrfHashGet( fields, field_name );
+
+		if(!( strcmp( field_name, pkey ) )) continue;
+		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
+
+		int pos = atoi(osrfHashGet(field, "array_position"));
+		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
+
+		if (jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
+			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) ) && !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
+				if (first) first = 0;
+				else buffer_add(sql, ",");
+				buffer_fadd( sql, " %s = NULL", field_name );
+			}
+			
+		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+			if (first) first = 0;
+			else buffer_add(sql, ",");
+			
+			char* v = jsonNumberToDBString( field, jsonObjectGetIndex( target, pos ) );
+			buffer_fadd( sql, " %s = %s", v );
+			free(v);
+		} else {
+			if ( dbi_conn_quote_string(dbhandle, &value) ) {
+				if (first) first = 0;
+				else buffer_add(sql, ",");
+				buffer_fadd( sql, " %s = %s", field_name, value );
+
+			} else {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting string [%s]", MODULENAME, value);
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Error quoting string -- please see the error log for more details"
+				);
+				free(value);
+				free(id);
+				buffer_free(sql);
+				*err = -1;
+				return jsonNULL;
+			}
+		}
+
+		free(value);
+		
+	}
+
+	jsonObject* obj = jsonParseString(id);
+
+	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
+		dbi_conn_quote_string(dbhandle, &id);
+
+	buffer_fadd( sql, " WHERE %s = %s;", pkey, id );
+
+	char* query = buffer_data(sql);
+	buffer_free(sql);
+
+	osrfLogDebug(OSRF_LOG_MARK, "%s: Update SQL [%s]", MODULENAME, query);
+
+	dbi_result result = dbi_conn_query(dbhandle, query);
+	free(query);
+
+	if (!result) {
+		jsonObjectFree(obj);
+		obj = jsonNewObject(NULL);
+		osrfLogError(
+			OSRF_LOG_MARK,
+			"%s ERROR updating %s object with %s = %s",
+			MODULENAME,
+			osrfHashGet(meta, "fieldmapper"),
+			pkey,
+			id
+		);
+	}
+
+	free(id);
+
+	return obj;
 }
 
-jsonObject* doDelete(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params ) {
+jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
+
+	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
-		osrfAppRequestRespondException( ctx->session, ctx->request, "%s: No active transaction -- required for delete", MODULENAME );
-		return jsonNewObject(NULL);
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"No active transaction -- required for DELETE"
+		);
+		*err = -1;
+		return jsonNULL;
 	}
 
 	jsonObject* obj;
@@ -1018,15 +1606,20 @@ jsonObject* doDelete(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 	char* pkey = osrfHashGet(meta, "primarykey");
 
 	char* id;
-	if (jsonObjectGetIndex(params, 0)->classname) {
+	if (jsonObjectGetIndex(ctx->params, 0)->classname) {
+		if (!verifyObjectClass(ctx, jsonObjectGetIndex( ctx->params, 0 ))) {
+			*err = -1;
+			return jsonNULL;
+		}
+
 		id = jsonObjectToSimpleString(
 			jsonObjectGetIndex(
-				jsonObjectGetIndex(params, 0),
+				jsonObjectGetIndex(ctx->params, 0),
 				atoi( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "array_position") )
 			)
 		);
 	} else {
-		id = jsonObjectToSimpleString(jsonObjectGetIndex(params, 0));
+		id = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 	}
 
 	osrfLogDebug(
@@ -1066,7 +1659,7 @@ jsonObject* doDelete(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params 
 
 
 jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
-	if(!(result && meta)) return NULL;
+	if(!(result && meta)) return jsonNULL;
 
 	jsonObject* object = jsonParseString("[]");
 	jsonObjectSetClass(object, osrfHashGet(meta, "classname"));
