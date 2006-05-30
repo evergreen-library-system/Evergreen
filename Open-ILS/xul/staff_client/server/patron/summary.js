@@ -127,20 +127,19 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value','...');
-								var e2 = document.getElementById(
-									'patron_overdue'
-								);
-								if (e2) e2.setAttribute('value','...');
+								var e2 = document.getElementById( 'patron_overdue' ); if (e2) e2.setAttribute('value','...');
+								var e3 = document.getElementById( 'patron_claimed_returned' ); if (e3) e3.setAttribute('value','...');
+								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) e4.setAttribute('value','...');
+								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
 								obj.network.simple_request(
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 									[ ses(), obj.patron.id() ],
 									function(req) {
-										e.setAttribute('value',
-											req.getResultObject().total	
-										);
-										if (e2) e2.setAttribute('value',
-											req.getResultObject().overdue	
-										);
+										e.setAttribute('value', req.getResultObject().out	);
+										if (e2) e2.setAttribute('value', req.getResultObject().overdue	);
+										if (e3) e3.setAttribute('value', req.getResultObject().claims_returned	);
+										if (e4) e4.setAttribute('value', req.getResultObject().long_overdue	);
+										if (e5) e5.setAttribute('value', req.getResultObject().lost	);
 									}
 								);
 							};
