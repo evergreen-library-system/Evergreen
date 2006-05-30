@@ -200,9 +200,11 @@ patron.items.prototype = {
 										if (util.date.check_past('YYYY-MM-DD',value) ) { 
 											throw('Due date needs to be after today.'); 
 										}
+										/*
 										if ( util.date.formatted_date(new Date(),'%F') == value) { 
 											throw('Due date needs to be after today.'); 
 										}
+										*/
 										return true;
 									} catch(E) {
 										alert(E);
