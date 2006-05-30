@@ -46,7 +46,7 @@ sub permit_copy_hold {
 	# --------------------------------------------------------------
 	my $events = $runner->retrieve('result.events');
 	$events = [ split(/,/, $events) ]; 
-	$logger->activity("circ_permit_hold for user ".$params->{patron}->id." returned events: @$events");
+	$logger->debug("circ_permit_hold for user ".$params->{patron}->id." returned events: @$events");
 
 	my @allevents;
 	push( @allevents, OpenILS::Event->new($_)) for @$events;
