@@ -101,6 +101,7 @@ int osrfAppInitialize() {
 	osrfStringArrayAdd( global_methods, "update" );
 	osrfStringArrayAdd( global_methods, "delete" );
 	osrfStringArrayAdd( global_methods, "search" );
+	osrfStringArrayAdd( global_methods, "id_list" );
 
 	xmlNodePtr docRoot = xmlDocGetRootElement(idlDoc);
 	xmlNodePtr kid = docRoot->children;
@@ -310,7 +311,7 @@ int osrfAppInitialize() {
 				osrfHashSet( method_meta, method_type, "methodtype" );
 
 				int flags = 0;
-				if (!(strcmp( method_type, "search" ))) {
+				if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
 					flags = flags | OSRF_METHOD_STREAMING;
 				}
 
@@ -686,6 +687,52 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
 			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
+		}
+		jsonObjectIteratorFree(itr);
+		osrfAppRespondComplete( ctx, NULL );
+
+	} else if (!strcmp( (char*)osrfHashGet(meta, "methodtype"), "id_list")) {
+
+		jsonObject* _p = jsonObjectClone( ctx->params );
+		if (jsonObjectGetIndex( _p, 1 )) {
+			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
+			jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
+		} else {
+			jsonObjectSetIndex( _p, 1, jsonParseString("{}") );
+		}
+
+		growing_buffer* sel_list = buffer_init(16);
+		buffer_fadd(sel_list, "{ \"%s\":[\"%s\"] }", osrfHashGet( class_obj, "classname" ), osrfHashGet( class_obj, "primarykey" ));
+		char* _s = buffer_data(sel_list);
+		buffer_free(sel_list);
+
+		jsonObjectSetKey( jsonObjectGetIndex( _p, 1 ), "select", jsonParseString(_s) );
+		osrfLogDebug(OSRF_LOG_MARK, "%s: Select qualifer set to [%s]", MODULENAME, _s);
+		free(_s);
+
+		obj = doSearch(ctx, class_obj, _p, &err);
+		if(err) return err;
+
+		jsonObjectNode* cur;
+		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
+		while ((cur = jsonObjectIteratorNext( itr ))) {
+			osrfAppRespond(
+				ctx,
+				jsonObjectClone(
+					jsonObjectGetIndex(
+						cur->item,
+						atoi(
+							osrfHashGet(
+								osrfHashGet(
+									osrfHashGet( class_obj, "fields" ),
+									osrfHashGet( class_obj, "primarykey")
+								),
+								"array_position"
+							)
+						)
+					)
+				)
+			);
 		}
 		jsonObjectIteratorFree(itr);
 		osrfAppRespondComplete( ctx, NULL );
@@ -1177,31 +1224,58 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 	osrfHash* links = osrfHashGet(meta, "links");
 	osrfHash* fields = osrfHashGet(meta, "fields");
+	char* core_class = osrfHashGet(meta, "classname");
 
+	jsonObjectNode* node = NULL;
+	jsonObjectNode* snode = NULL;
 	jsonObject* _tmp;
 	jsonObject* obj;
 	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
 	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
 	growing_buffer* sql_buf = buffer_init(128);
-	buffer_fadd(sql_buf, "SELECT * FROM %s WHERE ", osrfHashGet(meta, "tablename") );
+	buffer_add(sql_buf, "SELECT");
 
-	jsonObjectNode* node = NULL;
-	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
+	int first = 1;
+	if ( (_tmp = jsonObjectGetKey( order_hash, "select" )) ) {
+
+		jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
+		while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
+
+			osrfHash* idlClass = osrfHashGet( idlHash, snode->key );
+			if (!idlClass) continue;
+			char* cname = osrfHashGet(idlClass, "classname");
+
+			jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
+			while ( (node = jsonObjectIteratorNext( select_itr )) ) {
+				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
+				char* fname = osrfHashGet(field, "name");
+
+				if (!field) continue;
+
+				if (first) {
+					first = 0;
+				} else {
+					buffer_add(sql_buf, ",");
+				}
+
+				buffer_fadd(sql_buf, " %s.%s", cname, fname, cname, fname);
+			}
+		}
+	} else {
+		buffer_add(sql_buf, " *");
+	}
+
+	buffer_fadd(sql_buf, " FROM %s AS %s WHERE ", osrfHashGet(meta, "tablename"), core_class );
+
 
 	char* pred;
-	int first = 1;
+	first = 1;
+	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
 	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
 		osrfHash* field = osrfHashGet( fields, node->key );
 
 		if (!field) continue;
-
-		/*
-		if (!field) {
-			field = osrfNewHash();
-			osrfHashSet(field, node->key, "name");
-		}
-		*/
 
 		if (first) {
 			first = 0;
@@ -1218,8 +1292,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 	if (order_hash) {
 		char* string;
-		_tmp = jsonObjectGetKey( order_hash, "order_by" );
-		if (_tmp) {
+		if ( (_tmp = jsonObjectGetKey( order_hash, "order_by" )) ){
 			string = jsonObjectToSimpleString(_tmp);
 			buffer_fadd(
 				sql_buf,
@@ -1229,8 +1302,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 			free(string);
 		}
 
-		_tmp = jsonObjectGetKey( order_hash, "limit" );
-		if (_tmp) {
+		if ( (_tmp = jsonObjectGetKey( order_hash, "limit" )) ){
 			string = jsonObjectToSimpleString(_tmp);
 			buffer_fadd(
 				sql_buf,
