@@ -1,5 +1,9 @@
 function my_init() {
 	try {
+
+		/***********************************************************************************************************/
+		/* Initial setup */
+
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 				if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 		JSAN.errorLevel = "die"; // none, warn, or die
@@ -10,7 +14,12 @@ function my_init() {
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 		JSAN.use('util.widgets'); JSAN.use('util.functional');
 
+		JSAN.use('util.network'); g.network = new util.network();
+
 		g.cgi = new CGI();
+
+		/***********************************************************************************************************/
+		/* What record am I dealing with?  Am I adding just copies or copies and volumes? */
 
 		g.doc_id = g.cgi.param('doc_id');
 		g.copy_shortcut = g.cgi.param('copy_shortcut');
@@ -24,7 +33,8 @@ function my_init() {
 		if (window.xulG && window.xulG.ou_ids) 
 			ou_ids = ou_ids.concat( window.xulG.ou_ids );
 
-		JSAN.use('util.network'); g.network = new util.network();
+		/***********************************************************************************************************/
+		/* For the call number drop down */
 
 		var cn_blob;
 		try {
@@ -67,10 +77,14 @@ function my_init() {
 						if (nl[i].getAttribute('rel_vert_pos')==2 
 							&& !nl[i].disabled) nl[i].value = ml.value;
 					}
+					if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );
 				}, 
 				false
 			);
 		}
+
+		/***********************************************************************************************************/
+		/* render the orgs and volumes/input */
 
 		var rows = document.getElementById('rows');
 
@@ -104,11 +118,13 @@ g.render_volume_count_entry = function(row,ou_id) {
 	var tb = document.createElement('textbox'); hb.appendChild(tb);
 	tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
 	tb.setAttribute('rel_vert_pos','1'); 
+	var node;
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
 		if (! isNaN( parseInt( ev.target.value) ) ) {
-			ev.target.disabled = true;
-			g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
+			if (node) { row.removeChild(node); node = null; }
+			//ev.target.disabled = true;
+			node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
 		}
 	}
 	util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
@@ -150,8 +166,10 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
 		if (tb1.disabled || tb2.disabled) return;
 
-		tb1.disabled = true;
-		tb2.disabled = true;
+		//tb1.disabled = true;
+		//tb2.disabled = true;
+
+		util.widgets.remove_children(hb3);
 
 		g.render_barcode_entry(hb3,tb1.value,parseInt(tb2.value),ou_id);
 	}
@@ -211,6 +229,8 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 			}(i,tb1),0
 		);
 	}
+
+	return grid;
 }
 
 g.render_barcode_entry = function(node,callnumber,count,ou_id) {
