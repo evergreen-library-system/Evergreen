@@ -24,7 +24,10 @@
 
 				<link href='/css/opac_marc.css' rel='stylesheet' type='text/css'></link>
 			</head>
-			<xsl:apply-templates/>
+			<body>
+				<div><button onclick='window.print();'>Print Page</button></div>
+				<xsl:apply-templates/>
+			</body>
 		</html>
 	</xsl:template>
 	
