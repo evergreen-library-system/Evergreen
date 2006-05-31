@@ -1576,8 +1576,7 @@ sub postfilter_search_multi_class_fts {
 		$secondary_sort = <<"		SORT";
 			( FIRST ((
 				SELECT	COALESCE(SUBSTRING(sfrp.value FROM '\\\\d+'),'9999')::INT
-				  FROM	$metabib_full_rec sfrp,
-					$metabib_metarecord mr
+				  FROM	$metabib_full_rec sfrp
 				  WHERE	sfrp.record = mr.master_record
 				  	AND sfrp.tag = '260'
 					AND sfrp.subfield = 'c'
@@ -1609,9 +1608,11 @@ sub postfilter_search_multi_class_fts {
 			$rank,
 			$secondary_sort
   	  	FROM	$search_table_list
+			$metabib_metarecord mr,
 			$metabib_metarecord_source_map_table m,
 			$metabib_metarecord_source_map_table smrs
 	  	WHERE	m.metarecord = smrs.metarecord 
+			AND mr.id = m.metarecord
   	  		$fts_list
 			$join_table_list
   	  	GROUP BY m.metarecord
