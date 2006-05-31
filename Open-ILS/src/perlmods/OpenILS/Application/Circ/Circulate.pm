@@ -511,7 +511,10 @@ sub check_title_hold {
 				'open-ils.storage.biblio.record_entry.ranged_tree', 
 				$titleid, $rangelib, $depth, $limit, $offset ) ) {
 
-		last unless ref($title);
+		last unless 
+			ref($title) and 
+			ref($title->call_numbers) and 
+			@{$title->call_numbers};
 
 		for my $cn (@{$title->call_numbers}) {
 	
