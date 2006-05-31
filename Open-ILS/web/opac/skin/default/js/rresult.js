@@ -26,8 +26,29 @@ function rresultDoSearch() {
 	rresultCollectIds();
 }
 
+function rresultCachedSearch() {
+
+	if(!getOffset()) {
+		cookieManager.remove(COOKIE_SRIDS);
+		return false;
+	}
+
+	var data = JSON2js(cookieManager.read(COOKIE_SRIDS));
+
+	if( data && data.ids[getOffset()] != null && 
+		data.ids[resultFinalPageIndex()] != null ) {
+		_rresultHandleIds( data.ids, data.count );
+		return true;
+	}
+
+	return false;
+}
+
 function rresultCollectIds() {
 	var ids;
+
+	if(rresultCachedSearch()) return;
+
 	switch(getRtype()) {
 
 		case RTYPE_COOKIE:
@@ -214,6 +235,7 @@ function rresultHandleRIds(r) {
 }
 
 function _rresultHandleIds(ids, count) {
+	cookieManager.write(COOKIE_SRIDS, js2JSON({ids:ids,count:count}), '+1d');
 	HITCOUNT = parseInt(count);
 	runEvt('result', 'hitCountReceived');
 	runEvt('result', 'idsReceived', ids);
@@ -241,7 +263,6 @@ function rresultHandleMods(r) {
 	}
 }
 
-
 function rresultLaunchDrawn(id, node) {
 	runEvt("rresult", "recordDrawn", id, node);
 }
@@ -251,42 +272,6 @@ function rresultDoRecordSearch() {
 	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); }
 function rresultDoRecordMultiSearch() { 
 	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); }
-
-/*
-function _rresultCollectSearchIds( type ) {
-
-	var sort		= (getSort() == SORT_TYPE_REL) ? null : getSort(); 
-	var sortdir = (sort) ? ((getSortDir()) ? getSortDir() : SORT_DIR_ASC) : null;
-
-	var form = parseForm(getForm());
-	var item_type = form.item_type;
-	var item_form = form.item_form;
-
-	var args = {};
-
-	if( type ) {
-		args.searches = {};
-		args.searches[getRtype()] = {};
-		args.searches[getRtype()].term = getTerm();
-	} else {
-		args.searches = JSON2js(getAdvTerm());
-	}
-
-	args.org_unit = getLocation();
-	args.depth    = getDepth();
-	args.limit    = rresultLimit;
-	args.offset   = getOffset();
-
-	if(sort) args.sort = sort;
-	if(sortdir) args.sort_dir = sortdir;
-	if(item_type) args.item_type	= item_type;
-	if(item_form) args.item_form	= item_form;
-
-	var req = new Request(SEARCH_RS, args);
-	req.callback(rresultFilterSearchResults);
-	req.send();
-}
-*/
 
 
 function rresultFilterSearchResults(r) {

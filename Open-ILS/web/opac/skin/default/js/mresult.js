@@ -28,7 +28,9 @@ function mresultDoSearch() {
 
 	if( (getSearches() || getAdvTerm()) && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
+		/*
 		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
+		*/
 
 	} else {
 		_mresultCollectIds(); 
@@ -65,6 +67,7 @@ function mresultCollectAdvIds() {
 	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
 }
 
+/*
 function mresultCollectAdvMARCIds() {
 	if(!mresultTryCachedSearch()) {
 		var form = (getForm() == "all") ? null : getForm();
@@ -74,6 +77,7 @@ function mresultCollectAdvMARCIds() {
 		req.send();
 	}
 }
+*/
 
 
 function mresultHandleMRIds(r) {
