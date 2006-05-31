@@ -70,6 +70,8 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
 
+	//alert('form = ' + item_form + ' : type = ' + item_type);
+
 	var req = new Request(method, args);
 	req.callback(handler);
 	req.send();

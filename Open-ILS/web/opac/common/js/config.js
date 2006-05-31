@@ -105,6 +105,7 @@ var RTYPE_MULTI	= 'multi';
 var RTYPE_MARC		= 'marc';
 var RTYPE_ISBN		= 'isbn';
 var RTYPE_ISSN		= 'issn';
+var RTYPE_TCN		= 'tcn';
 
 var SORT_TYPE_REL			= "rel";
 var SORT_TYPE_AUTHOR		= STYPE_AUTHOR; 
@@ -295,6 +296,7 @@ var FETCH_USER_BYBARCODE		= "open-ils.actor:open-ils.actor.user.fleshed.retrieve
 var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
 var FETCH_ADV_ISBN_RIDS			= "open-ils.search:open-ils.search.biblio.isbn";
 var FETCH_ADV_ISSN_RIDS			= "open-ils.search:open-ils.search.biblio.issn";
+var FETCH_ADV_TCN_RIDS			= "open-ils.search:open-ils.search.biblio.tcn";
 var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.target';
 var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
 var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';

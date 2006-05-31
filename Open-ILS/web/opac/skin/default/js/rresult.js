@@ -59,6 +59,10 @@ function rresultCollectIds() {
 			rresultCollectISBNIds();
 			break;
 
+		case RTYPE_TCN :
+			rresultCollectTCNIds();
+			break;
+
 		case RTYPE_ISSN :
 			rresultCollectISSNIds();
 			break;
@@ -152,6 +156,17 @@ function rresultCollectMARCIds() {
 
 function rresultCollectISBNIds() {
 	var req = new Request(FETCH_ADV_ISBN_RIDS, getAdvTerm() );
+	req.callback(
+		function(r) {
+			var blob = r.getResultObject();
+			_rresultHandleIds(blob.ids, blob.count);
+		}
+	);
+	req.send();
+}
+
+function rresultCollectTCNIds() {
+	var req = new Request(FETCH_ADV_TCN_RIDS, getAdvTerm() );
 	req.callback(
 		function(r) {
 			var blob = r.getResultObject();

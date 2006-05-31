@@ -11,11 +11,12 @@
 		<!--#include virtual="advanced/advanced_global.xml"-->
 	</div>
 
+	<!--
 	<hr/>
-
 	<div class='advanced_div'>
-		<!--#include virtual="advanced/advanced_quick.xml"-->
+		<   #include virtual="advanced/advanced_quick.xml"  >
 	</div>
+	-->
 
 	<hr/>
 

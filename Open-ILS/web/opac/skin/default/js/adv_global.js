@@ -29,6 +29,16 @@ function advgInit() {
 	setEnterFunc(input, advSubmitGlobal);
 }
 
+function advAddGblRow() {
+	var tbody = $("adv_global_tbody");
+	var newrow = $("adv_global_trow").cloneNode(true);
+	tbody.insertBefore(newrow, $("adv_global_addrow"));
+	var input = $n(newrow, "term");
+	input.value = "";
+	setEnterFunc(input, advSubmitGlobal);
+	$n(newrow, 'type').focus();
+}
+
 function advDrawBibExtras(r) {
 	var data = r.getResultObject();
 	var sel = r.sel;

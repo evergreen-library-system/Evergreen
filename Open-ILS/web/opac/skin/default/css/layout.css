@@ -11,7 +11,7 @@ body { background-color: white; }
 input:focus:not(.invalid_value) { background: #E0F0E0; color: darkblue;}
 */
 input:focus { background: #E0F0E0; color: darkblue;}
-select:focus { background: #E0F0E0; color: darkblue;}
+/*select:focus { background: #E0F0E0; color: darkblue;}*/ /* this was causing strange behavior */
 a:focus { background: #E0F0E0; color: darkblue;}
 
 table { border-collapse: collapse; }
@@ -26,6 +26,8 @@ table { border-collapse: collapse; }
 .classic_link { text-decoration: underline; color: black;}
 .classic_link:visited { text-decoration: underline; color: black;}
 .classic_link_col { text-decoration: underline; color: red;}
+
+#adv_quick_search_sidebar { background-color: #E0F0E0; }
 
 
 

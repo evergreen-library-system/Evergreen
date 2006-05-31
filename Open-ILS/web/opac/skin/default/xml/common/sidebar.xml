@@ -101,6 +101,29 @@
 		</script>
 	</div>
 
+	<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' style='text-align:center;'> 
+		<hr/>
+		<div id='adv_quick_search'>
+			<div><b>Quick Search</b></div>
+			<div style='margin-top: 8px;'>
+				<select id='adv_quick_type'>
+					<option value='isbn'>ISBN</option>
+					<option value='issn'>ISSN</option>
+					<option value='cn'>Call Number</option>
+					<option value='lccn'>LCCN</option>
+					<option value='tcn'>TCN</option>
+				</select>
+			</div>
+			<div style='margin-top: 8px;'>
+				<input type='text' id='adv_quick_text'> </input>
+			</div>
+			<div style='margin-top: 8px;'>
+				<button id='adv_quick_submit' onclick='advGenericSearch();'>Search</button>
+			</div>
+		</div>
+	</div>
+
+
 
 	<!-- ============================================================================= -->
 	<!-- Our javascript -->

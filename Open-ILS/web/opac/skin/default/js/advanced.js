@@ -12,6 +12,11 @@ function advInit() {
 	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
 	setEnterFunc($('opac.advanced.quick.cn'), advCNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
+
+	unHideMe($('adv_quick_search_sidebar'));
+	if(isXUL()) 
+		setSelector($('adv_quick_type'), 'tcn');
+	setEnterFunc($('adv_quick_text'), advGenericSearch);
 }
 
 function advISBNRun() {
@@ -102,4 +107,54 @@ function advExtractMARC(row) {
 
 	return { 'term' : term, 'restrict' :  [ { 'tag' : tag, 'subfield' : subfield } ] };
 }
+
+function advGenericSearch() {
+	var type = getSelectorVal($('adv_quick_type'));
+	var term = $('adv_quick_text').value;
+	if(!term) return;
+
+	var arg = {};
+
+	switch(type) {
+
+		case 'isbn' :
+			arg.page					= RRESULT;
+			arg[PARAM_STYPE]		= "";
+			arg[PARAM_TERM]		= "";
+			arg[PARAM_RTYPE]		= RTYPE_ISBN;
+			arg[PARAM_OFFSET]		= 0;
+			arg[PARAM_ADVTERM]	= term
+			break;
+		
+		case 'issn' :
+			arg.page					= RRESULT;
+			arg[PARAM_STYPE]		= "";
+			arg[PARAM_TERM]		= "";
+			arg[PARAM_ADVTERM]	= term;
+			arg[PARAM_OFFSET]		= 0;
+			arg[PARAM_RTYPE]		= RTYPE_ISSN;
+			break;
+
+		case 'tcn' :
+			arg.page					= RRESULT;
+			arg[PARAM_STYPE]		= "";
+			arg[PARAM_TERM]		= "";
+			arg[PARAM_ADVTERM]	= term;
+			arg[PARAM_OFFSET]		= 0;
+			arg[PARAM_RTYPE]		= RTYPE_TCN;
+			break;
+
+
+		case 'cn':
+			arg.page			= CNBROWSE;
+			arg[PARAM_CN]	= term;
+			break;
+
+		default: alert('not done yet');
+
+	}
+
+	if(arg.page) goTo(buildOPACLink(arg));
+}
+
 
