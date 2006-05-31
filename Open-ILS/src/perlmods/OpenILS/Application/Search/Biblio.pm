@@ -330,7 +330,7 @@ sub the_quest_for_knowledge {
 	for (keys %$searchhash) { 
 		delete $$searchhash{$_} unless defined $$searchhash{$_}; }
 
-	my $result = $U->storagereq( $method, %$searchhash );
+	my $result = new_editor()->request( $method, %$searchhash );
 
 	return {count => 0} unless ($result && $$result[0]);
 
@@ -773,7 +773,6 @@ sub marc_search {
 }
 
 
-
 __PACKAGE__->register_method(
 	method	=> "biblio_search_isbn",
 	api_name	=> "open-ils.search.biblio.isbn",
@@ -782,10 +781,9 @@ __PACKAGE__->register_method(
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
-	my $e = OpenILS::Utils::Editor->new;
+	my $e = new_editor();
 	my $recs = $e->request(
 		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
-	#$recs = [ map { [$_] } @$recs ]; # for consistancy
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
@@ -798,10 +796,9 @@ __PACKAGE__->register_method(
 sub biblio_search_issn { 
 	my( $self, $client, $issn ) = @_;
 	$logger->debug("Searching ISSN $issn");
-	my $e = OpenILS::Utils::Editor->new;
+	my $e = new_editor();
 	my $recs = $e->request(
 		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
-	#$recs = [ map { [$_] } @$recs ]; # for consistancy
 	return { ids => $recs, count => scalar(@$recs) };
 }
 
