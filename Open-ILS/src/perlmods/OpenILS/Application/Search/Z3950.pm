@@ -3,292 +3,285 @@ package OpenILS::Application::Search::Z3950;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
 
-
 use Net::Z3950;
 use MARC::Record;
 use MARC::File::XML;
-use OpenSRF::Utils::SettingsClient;
 use Unicode::Normalize;
 use XML::LibXML;
-
-use OpenILS::Utils::FlatXML;
-use OpenILS::Application::Cat::Utils;
-use OpenILS::Application::AppUtils;
-use OpenILS::Event;
-
-use OpenSRF::Utils::Logger qw/$logger/;
-
-use OpenSRF::EX qw(:try);
-
-my $utils = "OpenILS::Application::Cat::Utils";
-my $apputils = "OpenILS::Application::AppUtils";
-my $U = $apputils;
-
-use OpenILS::Utils::ModsParser;
 use Data::Dumper;
 
-my $output = "USMARC"; # only support output for now
-my $host;
-my $port;
-my $database;
-my $tcnattr;
-my $isbnattr;
-my $defserv;
+use OpenILS::Event;
+use OpenSRF::EX qw(:try);
+use OpenILS::Utils::ModsParser;
+use OpenSRF::Utils::SettingsClient;
+use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Utils::Editor q/:funcs/;
 
-my $settings_client;
+my $output	= "USMARC"; 
 
-sub entityize {
-        my $stuff = shift;
-        my $form = shift;
+my $sclient;
+my %services;
+my $default_service;
 
-        if ($form eq 'D') {
-                $stuff = NFD($stuff);
-        } else {
-                $stuff = NFC($stuff);
-        }
 
-        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
-        return $stuff;
+__PACKAGE__->register_method(
+	method		=> 'do_class_search',
+	api_name		=> 'open-ils.search.z3950.search_class',
+	signature	=> q/
+		Performs a class based Z search.  The classes available
+		are defined by the 'attr' fields in the config for the
+		requested service.
+		@param auth The login session key
+		@param shash The search hash : { attr : value, attr2: value, ...}
+		@param service The service to connect to
+		@param username The username to use when connecting to the service
+		@param password The password to use when connecting to the service
+	/
+);
+
+__PACKAGE__->register_method(
+	method		=> 'do_service_search',
+	api_name		=> 'open-ils.search.z3950.search_service',
+	signature	=> q/
+		@param auth The login session key
+		@param query The Z3950 search string to use
+		@param service The service to connect to
+		@param username The username to use when connecting to the service
+		@param password The password to use when connecting to the service
+	/
+);
+
+
+__PACKAGE__->register_method(
+	method		=> 'do_service_search',
+	api_name		=> 'open-ils.search.z3950.search_raw',
+	signature	=> q/
+		@param auth The login session key
+		@param args An object of search params which must include:
+			host, port, db and query.  
+			optional fields include username and password
+	/
+);
+
+
+__PACKAGE__->register_method(
+	method	=> "query_services",
+	api_name	=> "open-ils.search.z3950.retrieve_services",
+	signature	=> q/
+		Returns a list of service names that we have config
+		data for
+	/
+);
+
+
+
+# -------------------------------------------------------------------
+# What services do we have config info for?
+# -------------------------------------------------------------------
+sub query_services {
+	my( $self, $client, $auth ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
+	my $services = $sclient->config_value('z3950', 'services');
+	$services = { $services } unless ref($services);
+	return [ keys %$services ];
 }
 
+
+
+# -------------------------------------------------------------------
+# Load the pre-defined Z server configs
+# -------------------------------------------------------------------
 sub initialize {
-	$settings_client = OpenSRF::Utils::SettingsClient->new();
-
-	$defserv		= $settings_client->config_value("z3950", "default" );
-
-	( $host, $port, $database ) = _load_settings($defserv);
-	$tcnattr		= $settings_client->config_value("z3950", $defserv, "tcnattr");
-	$isbnattr	= $settings_client->config_value("z3950", $defserv, "isbnattr");
-
-	$logger->info("z3950: Loading Defaults: service=$defserv, host=$host, port=$port, ".
-		"db=$database, tcnattr=$tcnattr, isbnattr=$isbnattr" );
-}
-
-sub _load_settings {
-	my $service = shift;
-
-	if( $service eq $defserv and $host ) {
-		return ( $host, $port, $database );
-	}
-
-	return (
-		$settings_client->config_value("z3950", $service, "host"),
-		$settings_client->config_value("z3950", $service, "port"),
-		$settings_client->config_value("z3950", $service, "db"),
-		#$settings_client->config_value("z3950", $service, "username"),
-		#$settings_client->config_value("z3950", $service, "password"),
-	);
+	$sclient = OpenSRF::Utils::SettingsClient->new();
+	$default_service = $sclient->config_value("z3950", "default" );
+	my $servs = $sclient->config_value("z3950", "services" );
+	$services{$_} = $$servs{$_} for keys %$servs;
 }
 
 
-=head deprecated
-__PACKAGE__->register_method(
-	method	=> "marcxml_to_brn",
-	api_name	=> "open-ils.search.z3950.marcxml_to_brn",
-);
+# -------------------------------------------------------------------
+# High-level class based search. 
+# -------------------------------------------------------------------
+sub do_class_search {
 
-sub marcxml_to_brn {
-	my( $self, $client, $marcxml ) = @_;
+	my $self			= shift;
+	my $conn			= shift;
+	my $auth			= shift;
+	my $args			= shift;
 
-	my $tree;
-	my $err;
+	$$args{query} = 
+		compile_query('and', $$args{service}, $$args{search});
 
-	# Strip the namespace info from the <collection> node and shove it into
-	# the <record> node, if the collection node exists
-	my ($ns) = ( $marcxml =~ /<collection(.*)?>/og );
-	$logger->info("marcxml_to_brn extracted namespace info: $ns") if $ns;
-	$marcxml =~ s/<collection(.*)?>//og;
-	$marcxml =~ s/<\/collection>//og;
-	$marcxml =~ s/<record>/<record $ns>/og if $ns;
-
-	my $flat = OpenILS::Utils::FlatXML->new( xml => $marcxml ); 
-	my $doc = $flat->xml_to_doc();
-
-	$logger->debug("z3950: Turning doc into a nodeset...");
-
-	try {
-		my $nodes = OpenILS::Utils::FlatXML->new->xmldoc_to_nodeset($doc);
-		$logger->debug("z3950: turning nodeset into tree");
-		$tree = $utils->nodeset2tree( $nodes->nodeset );
-	} catch Error with {
-		$err = shift;
-	};
-
-	if($err) {
-		$logger->error("z3950: Error turning doc into nodeset/node tree: $err");
-		return undef;
-	} else {
-		return $tree;
-	}
+	return $self->do_service_search( $conn, $auth, $args );
 }
-=cut
+
+
+# -------------------------------------------------------------------
+# This handles the host settings, but expects a fully formed z query
+# -------------------------------------------------------------------
+sub do_service_search {
+
+	my $self			= shift;
+	my $conn			= shift;
+	my $auth			= shift;
+	my $args			= shift;
+	
+	my $info = $services{$$args{service}};
+
+	$$args{host}	= $$info{host},
+	$$args{port}	= $$info{port},
+	$$args{db}		= $$info{db},
+
+	return $self->do_search( $conn, $auth, $args );
+}
 
 
 
-__PACKAGE__->register_method(
-	method	=> "z39_search_by_string",
-	api_name	=> "open-ils.search.z3950.raw_string",
-);
+# -------------------------------------------------------------------
+# This is the low level search method.  All config and query
+# data must be provided to this method
+# -------------------------------------------------------------------
+sub do_search {
 
-sub z39_search_by_string {
+	my $self	= shift;
+	my $conn	= shift;
+	my $auth = shift;
+	my $args = shift;
 
-	my( $self, $connection, $authtoken, $params ) = @_;
-	my( $hst, $prt, $db );
+	my $host		= $$args{host} or return undef;
+	my $port		= $$args{port} or return undef;
+	my $db		= $$args{db}	or return undef;
+	my $query	= $$args{query} or return undef;
 
-	my $usr	= $$params{username};
-	my $pw	= $$params{password};
+	my $limit	= $$args{limit} || 10;
+	my $offset	= $$args{offset} || 0;
 
-	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
-	return $evt if $evt;
-	my $service = $$params{service};
-	my $search	= $$params{search};
+	my $username = $$args{username} || "";
+	my $password = $$args{password} || "";
 
-	if( $service ) {
-		($hst, $prt, $db) = _load_settings($$params{service});
+	my $editor = new_editor(authtoken => $auth);
+	return $editor->event unless $editor->checkauth;
+	return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
 
-	} else {
-		$hst	= $$params{host};
-		$prt	= $$params{prt};
-		$db	= $$params{db};
-		$service = "(custom)";
-	}
-
-	$logger->info("z3950:  Search App connecting:  service=$service, ".
-		"host=$hst, port=$prt, db=$db, username=$usr, password=$pw, search=$search" );
-
-	return OpenILS::Event->new('BAD_PARAMS') unless ($hst and $prt and $db);
-
-	$usr ||= ""; $pw	||= "";
-
-	my $conn = new Net::Z3950::Connection(
-		$hst, $prt, 
+	my $connection = new Net::Z3950::Connection(
+		$host, $port,
 		databaseName				=> $db, 
-		user							=> $usr,
-		password						=> $pw,
+		user							=> $username,
+		password						=> $password,
 		preferredRecordSyntax	=> $output, 
 	);
 
-	if(!$conn) {
-		$logger->error("Unable to create Z3950 connection: $hst, $prt, $db, $usr, $pw, $output");
-		return OpenILS::Event->new('Z3950_LOGIN_FAILED');
+	if( ! $connection ) {
+		$logger->error("z3950: Unable to connect to Z server: ".
+			"$host:$port:$db:$username:$password");
+		return OpenILS::Event->new('Z3950_LOGIN_FAILED') unless $connection;
 	}
 
-	my $rs = $conn->search( $search );
-	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $rs;
+	my $start = time;
+	my $results = $connection->search( $query );
+	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
-	# We want nice full records
-	$rs->option(elementSetName => "f");
+	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $results;
 
-	my $records = [];
-	my $hash = {};
+	return process_results($results, $limit, $offset);
+}
 
-	$hash->{count} =  $rs->size();
-	$logger->info("z3950: Search recovered " . $hash->{count} . " records");
 
-	# until there is a more graceful way to handle this
-	if($hash->{count} > 20) { return $hash; }
+# -------------------------------------------------------------------
+# Takes a result batch and returns the hitcount and a list of xml
+# and mvr objects
+# -------------------------------------------------------------------
+sub process_results {
+	my $results	= shift;
+	my $limit	= shift;
+	my $offset	= shift;
 
-	for( my $x = 0; $x != $hash->{count}; $x++ ) {
-		$logger->debug("z3950: Churning on z39 record count $x");
+	$results->option(elementSetName => "FI"); # full records with no holdings
 
-		my $rec = $rs->record($x+1);
-		my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
+	my @records;
+	my $res = {};
+	my $count = $$res{count} = $results->size;
 
-		# parse the XML
-		my $doc = XML::LibXML->new->parse_string($marc->as_xml_record());
+	$logger->info("z3950: search returned $count hits");
 
-		# strip the <xml> declaration and run through entityize
-		my $marcxml = entityize( $doc->documentElement->toString );
+	my $tend = $limit + $offset;
+	$offset++; # records start at 1
+
+	my $end = ($tend <= $count) ? $tend : $count;
+
+	for($offset..$end) {
+
+		my $err;
 		my $mods;
-			
-		my $u = OpenILS::Utils::ModsParser->new();
+		my $marcxml;
 
-		$logger->debug("z3950: creating mvr");
-		$u->start_mods_batch( $marcxml );
-		$mods = $u->finish_mods_batch();
+		$logger->info("z3950: fetching record $_");
 
-		push @$records, { 'mvr' => $mods, 'marcxml' => $marcxml };
+		try {
+
+			my $rec	= $results->record($_);
+			my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
+			my $doc	= XML::LibXML->new->parse_string($marc->as_xml_record);
+			$marcxml = entityize( $doc->documentElement->toString );
+	
+			my $u = OpenILS::Utils::ModsParser->new();
+			$u->start_mods_batch( $marcxml );
+			$mods = $u->finish_mods_batch();
+	
+
+		} catch Error with { $err = shift; };
+
+		push @records, { 'mvr' => $mods, 'marcxml' => $marcxml } unless $err;
+		$logger->error("z3950: bad XML : $err") if $err;
 	}
-
-	$logger->debug("z3950: got here near the end with " . scalar(@$records) . " records." );
-
-	$hash->{records} = $records;
-	return $hash;
-
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "tcn_search",
-	api_name	=> "open-ils.search.z3950.tcn",
-);
-
-sub tcn_search {
-	my($self, $connection, $authtoken, $tcn, $service, $username, $password) = @_;
-
-	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
-	return $evt if $evt;
-	$service ||= $defserv;
-
-	my $attr = $settings_client->config_value("z3950", $service, "tcnattr");
-
-	$logger->info("z3950: Searching for TCN $tcn");
-
-	return $self->z39_search_by_string(
-		$connection, $authtoken, {
-			search	=> "\@attr 1=$attr \"$tcn\"", 
-			service	=> $service,
-			username	=> $username,
-			password	=> $password,
-		}
-	);
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "isbn_search",
-	api_name	=> "open-ils.search.z3950.isbn",
-);
-
-sub isbn_search {
-	my( $self, $connection, $authtoken, $isbn, $service, $username, $password ) = @_;
-
-	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
-	return $evt if $evt;
-	$service ||= $defserv;
-
-	my $attr = $settings_client->config_value("z3950", $service, "isbnattr");
-
-	$logger->info("z3950: Performing ISBN search : $isbn");
-
-	return $self->z39_search_by_string(
-		$connection, $authtoken, {
-			search	=> "\@attr 1=$attr \"$isbn\"", 
-			service	=> $service ,
-			username	=> $username,
-			password	=> $password,
-		}
-	);
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "query_interfaces",
-	api_name	=> "open-ils.search.z3950.services.retrieve",
-);
-
-sub query_interfaces {
-	my( $self, $client, $authtoken ) = @_;
-	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'REMOTE_Z3950_QUERY');
-
-	my $services = $settings_client->config_value("z3950");
-	$services = { $services } unless ref($services);
-
-	return [ grep { $_ ne 'default' } keys %$services ];
+	
+	$res->{records} = \@records;
+	return $res;
 }
 
 
 
+# -------------------------------------------------------------------
+# Compiles the class based search query
+# -------------------------------------------------------------------
+sub compile_query {
+
+	my $seperator	= shift;
+	my $service		= shift;
+	my $hash			= shift;
+
+	my $count = scalar(keys %$hash);
+
+	my $str = "";
+	$str .= "\@$seperator " for (1..$count-1);
+	
+	for( keys %$hash ) {
+		$str .= '@attr 1=' . $services{$service}->{attrs}->{$_} . " \"" . $$hash{$_} . "\" ";		
+	}
+	return $str;
+}
+
+
+
+# -------------------------------------------------------------------
+# Handles the unicode
+# -------------------------------------------------------------------
+sub entityize {
+	my $stuff = shift;
+	my $form = shift || "";
+	
+	if ($form eq 'D') {
+		$stuff = NFD($stuff);
+	} else {
+		$stuff = NFC($stuff);
+	}
+	
+	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+	return $stuff;
+}
 
 
 1;
