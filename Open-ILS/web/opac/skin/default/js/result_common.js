@@ -104,10 +104,11 @@ function resultSetHitInfo() {
 	if( findCurrentPage() == MRESULT ) {
 		if(getHitCount() <= lowHitCount && getTerm())
 			runEvt('result', 'lowHits');
-		if(getHitCount() == 0) {
-			runEvt('result', 'zeroHits');
-			return;
-		}
+	}
+
+	if(getHitCount() == 0) {
+		runEvt('result', 'zeroHits');
+		return;
 	}
 
 
