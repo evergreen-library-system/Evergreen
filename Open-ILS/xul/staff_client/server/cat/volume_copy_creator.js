@@ -118,6 +118,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 	var tb = document.createElement('textbox'); hb.appendChild(tb);
 	tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
 	tb.setAttribute('rel_vert_pos','1'); 
+	if ( ! g.last_focus ) { tb.focus(); g.last_focus = tb; }
 	var node;
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
@@ -129,6 +130,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 	}
 	util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
 	tb.addEventListener( 'change', render_copy_count_entry, false);
+	tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 	setTimeout(
 		function() {
 			try {
@@ -206,7 +208,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		util.widgets.apply_vertical_tab_on_enter_handler( tb2, handle_change_tb2);
 
 		tb1.addEventListener( 'change', handle_change_tb1, false);
+		tb1.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 		tb2.addEventListener( 'change', handle_change_tb2, false);
+		tb2.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 
 		setTimeout(
 			function(idx,tb){
@@ -246,6 +250,7 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			tb.setAttribute('rel_vert_pos','4');
 			util.widgets.apply_vertical_tab_on_enter_handler( tb, ready_to_create);
 			tb.addEventListener('change',ready_to_create,false);
+			tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 		}
 	} catch(E) {
 		g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);
