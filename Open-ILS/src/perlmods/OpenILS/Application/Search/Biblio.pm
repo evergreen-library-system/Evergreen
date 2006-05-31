@@ -7,7 +7,7 @@ use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor q/:funcs/;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -168,24 +168,12 @@ sub biblio_search_tcn {
 	my( $self, $client, $tcn ) = @_;
 
 	$tcn =~ s/.*?(\w+)\s*$/$1/o;
-	warn "Searching TCN $tcn\n";
 
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-	my $request = $session->request( 
-			"open-ils.storage.direct.biblio.record_entry.search_where.atomic", 
-			{ tcn_value => $tcn, deleted => 'f' } );
-			#"open-ils.storage.direct.biblio.record_entry.search.tcn_value.atomic", $tcn );
-	my $record_entry = $request->gather(1);
-
-	my @ids;
-	for my $record (@$record_entry) {
-		push @ids, $record->id;
-	}
-
-	$session->disconnect();
-
-	my $size = @ids;
-	return { count => $size, ids => \@ids };
+	my $e = new_editor();
+	my $recs = $e->search_biblio_record_entry(
+		{deleted => 'f', tcn_value => $tcn}, {idlist =>1});
+	
+	return { count => scalar(@$recs), ids => $recs };
 }
 
 
