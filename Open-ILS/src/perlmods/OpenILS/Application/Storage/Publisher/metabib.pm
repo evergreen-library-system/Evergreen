@@ -335,6 +335,8 @@ sub metarecord_copy_count {
 			@types, 
 			@forms,
 			''.$args{metarecord},
+			@types, 
+			@forms,
 			''.$args{org_unit}, 
 	); 
 
