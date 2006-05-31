@@ -23,7 +23,6 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Editor q/:funcs/;
-#my $logger = "OpenSRF::Utils::Logger";
 
 
 # ------------------------------------------------------------------------
