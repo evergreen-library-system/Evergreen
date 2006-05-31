@@ -1,8 +1,6 @@
 
 <div id='myopac_summary_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<br/>
-
 	<table width='100%' class='light_border data_grid'>
 
 		<tbody id='myopac_summary_tbody'>

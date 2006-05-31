@@ -8,8 +8,6 @@
 		Are you sure you wish to continue?
 	</div>
 
-	<br/>
-
 	<div style='text-align: center; font-weight: bold;' 
 		class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
@@ -19,6 +17,7 @@
 			href='javascript:alert($("myopac_bb_what_are").innerHTML);'>(What are Bookbags?)</a>
 	</div>
 	<br/>
+
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
 			<tr><td>Name</td><td># Items</td><td>Shared</td><td>Share / Hide</td><td>Delete this bookbag?</td></tr>
@@ -47,7 +46,7 @@
 		</tbody>
 	</table>
 
-	<br/><br/>
+	<br/>
 
 	<table width='100%' class='data_grid data_grid_center'>
 		<thead>

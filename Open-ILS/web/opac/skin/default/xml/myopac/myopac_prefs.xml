@@ -1,9 +1,8 @@
 
 <div id='myopac_prefs_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<table width='100%' class='data_grid' style='margin-top: 20px;'>
+	<table width='100%' class='data_grid'>
 
-		<br/>
 		<thead>
 			<tr>
 				<td colspan='2' align='center'>
