@@ -266,7 +266,7 @@ function holdsPlaceHold(hold) {
 
 	if( ! holdsCheckPossibility(currentHoldRecord, currentHoldType, hold.pickup_lib() ) ) {
 		alert($('hold_not_allowed').innerHTML);
-		drawCanvas();
+		swapCanvas($('holds_box'));
 		return;
 	}
 
