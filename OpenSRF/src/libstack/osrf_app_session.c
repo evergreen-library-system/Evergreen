@@ -618,20 +618,25 @@ int osrfAppRequestRespondComplete(
 	osrf_message* payload = osrf_message_init( RESULT, requestId, 1 );
 	osrf_message_set_status_info( payload, NULL, "OK", OSRF_STATUS_OK );
 
-	char* json = jsonObjectToJSON( data );
-	osrf_message_set_result_content( payload, json );
-	free(json);
-
 	osrf_message* status = osrf_message_init( STATUS, requestId, 1);
 	osrf_message_set_status_info( status, "osrfConnectStatus", "Request Complete", OSRF_STATUS_COMPLETE );
+	
+	if (data) {
+		char* json = jsonObjectToJSON( data );
+		osrf_message_set_result_content( payload, json );
+		free(json);
 
-	osrfMessage* ms[2];
-	ms[0] = payload;
-	ms[1] = status;
+		osrfMessage* ms[2];
+		ms[0] = payload;
+		ms[1] = status;
 
-	osrfAppSessionSendBatch( ses, ms, 2 );
+		osrfAppSessionSendBatch( ses, ms, 2 );
 
-	osrf_message_free( payload );
+		osrf_message_free( payload );
+	} else {
+		osrfAppSessionSendBatch( ses, &status, 1 );
+	}
+
 	osrf_message_free( status );
 
 	/* join and free */

@@ -275,7 +275,9 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 
 		if( ctx->responses == NULL )												
 			ctx->responses = jsonParseString("[]");							
-		jsonObjectPush( ctx->responses, jsonObjectClone(data) );	
+
+		if ( data != NULL )
+			jsonObjectPush( ctx->responses, jsonObjectClone(data) );	
 	}
 
 
