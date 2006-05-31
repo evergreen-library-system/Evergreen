@@ -203,13 +203,16 @@ sub request {
 
 	my $val;
 	my $err;
+	my $argstr = _arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
+	$self->log(I, "request $method : $argstr");
+	
 	try {
 		$val = $self->session->request($method, @params)->gather(1);
 
 	} catch Error with {
 		my $err = shift;
-		$self->log(E, "request error $method=@params : $err");
+		$self->log(E, "request error $method : $argstr : $err");
 	};
 
 	throw $err if $err;
@@ -338,7 +341,7 @@ sub _hash_to_string {
 }
 
 sub _arg_to_string {
-	my( $action, $arg ) = @_;
+	my( $arg ) = @_;
 	return "" unless $arg;
 	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
 	return _hash_to_string($arg) if ref $arg eq 'HASH'; # search
@@ -379,7 +382,7 @@ sub runmethod {
 
 	my @arg = ($arg);
 	my $method = "open-ils.storage.direct.$type.$action";
-	my $argstr = _arg_to_string($action, $arg);
+	#my $argstr = _arg_to_string($arg);
 
 	if( $action eq 'search' ) {
 		$method =~ s/search/search_where/o;
@@ -399,7 +402,7 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
-	$self->log(I, "$type.$action : $argstr");
+	#$self->log(I, "$type.$action : $argstr");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
 	}
