@@ -569,6 +569,7 @@ cat.copy_browser.prototype = {
 						'cmd_refresh_list' : [
 							['command'],
 							function() {
+								obj.refresh_list();
 							}
 						],
 					}
@@ -1179,6 +1180,7 @@ cat.copy_browser.prototype = {
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			obj.show_libs( org );
+			obj.show_my_libs();
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Problem refreshing the volume/copy tree.',E);
 		}
