@@ -582,6 +582,8 @@ cat.copy_browser.prototype = {
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			obj.show_libs( org );
 
+			obj.show_my_libs();
+
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
 		}

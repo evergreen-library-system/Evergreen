@@ -102,7 +102,7 @@
 		<caption label="Holdings Maintenance"/>
 		<hbox>
 			<!--<button label="Clear" command="cmd_clear" accesskey="C"/>-->
-			<button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>
+			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
 			<button label="Show Libs With Copies" command="cmd_show_libs_with_copies" accesskey="L"/>
 			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
 			<spacer flex="1"/>
