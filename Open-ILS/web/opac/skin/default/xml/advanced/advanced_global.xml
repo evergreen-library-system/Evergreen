@@ -1,77 +1,47 @@
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
+
 	<style>
-		#adv_global_search select { width: 14em; }
+		#adv_global_search select { width: 13em; }
 		#adv_global_input_table select { width: 7em; }
 		.adv_adv_link { font-size: 8pt; color: red; }
 	</style>
 
 	<script src='../js/adv_global.js'> </script>
 
-
-	<!--
-	<tr style='border: 2px solid #E0F0E0;'>
-		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input></td>
-	</tr>
-	-->
-
-	<tr>
+	<tr style='border-bottom: none;'>
 
 		<!-- Contains the user-addable(?) rows to define search class, containment and text -->
-		<td valign='top' width='65%' style='border-right: 1px solid #E0F0E0;'>
+		<td valign='top' width='65%' style='border-bottom: none;'>
 			<table width='100%' id='adv_global_input_table'>
+	
 				<thead>
 					<tr><td colspan='2' align='center'>Search Input</td></tr>
 				</thead>
 				<tbody id='adv_global_tbody'>
 
-
 					<script language='javascript'>
 						config.ids.common.now_searching = 'now_searching_location';
 					</script>
+
+					<!--
 					<tr>
 						<td align='center' width='100%' nowrap='nowrap'>
 							<b id='now_searching_location'> </b>
 						</td>
 					</tr>
+					-->
 
-					<tr id='adv_global_trow' type='input'>
-						<td align='center' width='100%' nowrap='nowrap'>
+					<!--#set var="adv_global_row_id" value="adv_global_trow"-->
+					<!--#include virtual="adv_global_row.xml"-->
 
-							<!-- select the search class -->
-							<select name='type' style='margin-right: 7px;'>
-								<option value='keyword' selected='selected'>&common.keyword;</option>
-								<option value='title'>&common.title;</option>
-								<option value='author'>&common.author;</option>
-								<option value='subject'>&common.subject;</option>
-								<option value='series'>&common.series;</option>
-							</select>
-				
-							<!-- select how to treat the text -->
-							<select name='contains' style='margin-right: 7px;'>
-								<option value='contains'>&opac.advanced.refined.contains;</option>
-								<option value='nocontains'>&opac.advanced.refined.nocontains;</option>
-								<option value='exact'>&opac.advanced.refined.exact;</option>
-							</select>
-								
-							<!-- search term -->
-							<input type='text' size='22' name='term' style='margin-right: 3px;'> </input>
-
-							<!-- Remove this row -->
-							<input type='submit' value='X'
-								onclick='
-									var row = this.parentNode.parentNode;
-									var tbody = row.parentNode;
-									if( tbody.getElementsByTagName("tr").length > 3 )
-										row.parentNode.removeChild(row);'>
-							</input>
-
-						</td>
-					</tr>
+					<!--#set var="adv_global_row_id" value=""-->
+					<!--#include virtual="adv_global_row.xml"-->
+					<!--#include virtual="adv_global_row.xml"-->
 
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='center'>
-							<input type='submit' value='Add a Row' 
+							<input type='submit' value='Add Search Row' 
 								id='myopac_new_global_row' onclick='advAddGblRow();'> </input>
 							<span style='padding-left: 10px;'> </span>
 							<input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input>
@@ -81,50 +51,28 @@
 				</tbody>
 			</table>
 		</td>
-		<td>
+
+
+		<td rowspan='2'>
 			<table with='100%'>
 				<thead>
 					<tr><td colspan='2' align='center'>Search Filters</td></tr>
 				</thead>
 				<tbody>
 
+					<!--
 					<tr>
 						<td align='right'>Search Range</td>
 						<td aligh='left'>
-							<!--#include virtual="../common/libselect.xml"-->
+							<   #include virtual="../common/libselect.xml"  >
 						</td>
 					</tr>
+					-->
 					<tr>
 						<td align='right'>
 							<span>Item Form</span>
-
-							<!--
-							<a id='adv_global_item_form_link_adv' class='classic_link adv_adv_link'
-								href='javascript:void(0);' onclick='
-								hideMe($("adv_global_item_form_basic"));
-								unHideMe($("adv_global_item_form"));
-								hideMe(this);
-								unHideMe($("adv_global_item_form_link_basic"));
-								'>Advanced</a>
-
-							<a id='adv_global_item_form_link_basic' class='hide_me classic_link adv_adv_link'
-								href='javascript:void(0);' onclick='
-								unHideMe($("adv_global_item_form_basic"));
-								hideMe($("adv_global_item_form"));
-								unHideMe($("adv_global_item_form_link_adv"));
-								hideMe(this);
-							'>Basic</a>
-							-->
-
 						</td>
 						<td aligh='left'>
-							<!--
-							<select multiple='true' size='3' id='adv_global_item_form_basic'>
-								<option value='f'>Braille</option>
-								<option value='d'>Large Print</option>
-								<option value='abcrs'>Other</option>
-							</select>	
-							-->
 							<select multiple='true' size='3' id='adv_global_item_form'>
 							</select>	
 						</td>
@@ -197,23 +145,6 @@
 					<tr>
 						<td align='right'>
 							<span>Language</span>
-							<!--
-							<a id='adv_global_lang_link_adv' class='classic_link adv_adv_link'
-								href='javascript:void(0);' onclick='
-								hideMe($("adv_global_lang_basic"));
-								unHideMe($("adv_global_lang"));
-								hideMe(this);
-								unHideMe($("adv_global_lang_link_basic"));
-								'>Advanced</a>
-
-							<a id='adv_global_lang_link_basic' class='hide_me classic_link adv_adv_link'
-								href='javascript:void(0);' onclick='
-								unHideMe($("adv_global_lang_basic"));
-								hideMe($("adv_global_lang"));
-								unHideMe($("adv_global_lang_link_adv"));
-								hideMe(this);
-								'>Basic</a>
-								-->
 						</td>
 
 						<td align='left'>
@@ -227,6 +158,7 @@
 					<tr>
 						<td align='right'>
 							<span>Audience</span>
+
 							<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								hideMe($("adv_global_audience_basic"));
@@ -240,8 +172,7 @@
 								unHideMe($("adv_global_audience_basic"));
 								hideMe($("adv_global_audience"));
 								unHideMe($("adv_global_audience_link_adv"));
-								hideMe(this);
-								'>Basic</a>
+								hideMe(this);'>Basic</a>
 						</td>
 
 						<td align='left'>
@@ -256,48 +187,72 @@
 					</tr>
 				</tbody>
 			</table>
-
-			<br/>
-
-			<table with='100%'>
-				<thead>
-					<tr><td align='center' colspan='2'>Sort Criteria</td></tr>
-				</thead>
-				<tbody>
-
-					<!-- Sort by selector -->
-					<tr>
-						<td align='right'><span>Sort By </span></td>
-						<td align='left'>
-							<select id='adv_global_sort_by' 
-								onchange='
-								if(this.selectedIndex == 0) {
-									$("adv_global_sort_dir").disabled = true;
-									$("adv_global_sort_dir").selectedIndex = 0;
-								} else $("adv_global_sort_dir").disabled = false;'>
-								<option value='rel'>Relevance</option>
-								<option value='title'>Title</option>
-								<option value='author'>Author</option>
-								<option value='pubdate'>Publication Date</option>
-							</select>
-						</td>
-					</tr>
-
-					<!-- Sort direction -->
-					<tr>
-						<td align='right'><span>Sort Direction </span></td>
-						<td align='left'>
-							<select id='adv_global_sort_dir' disabled='disabled'>
-								<option value='asc'>Ascending / A to Z</option>
-								<option value='desc'>Descending / Z to A</option>
-							</select>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</td>
 	</tr>
+
+	<tr style='border-top: none;'>
+		<td align='center' valign='bottom' style='border-top: none;'>
+
+			<table style='border: none; width: 100%;'>
+				<tr>
+					<td align='center' width='100%'>
+						<table class='' width='100%'>
+			
+							<thead>
+								<tr>
+									<td align='center' width='50%'>Sort Criteria</td>
+									<td align='center'>Search Library</td>
+								</tr>
+							</thead>
+			
+							<tbody>
+								<tr>
+
+									<td align=''>
+										<select id='adv_global_sort_by' 
+											onchange='
+											if(this.selectedIndex == 0) {
+												$("adv_global_sort_dir").disabled = true;
+												$("adv_global_sort_dir").selectedIndex = 0;
+											} else $("adv_global_sort_dir").disabled = false;'>
+											<option value='rel'>Relevance</option>
+											<option value='title'>Title</option>
+											<option value='author'>Author</option>
+											<option value='pubdate'>Publication Date</option>
+										</select>
+									</td>
+
+									<td align='center' width='100%' nowrap='nowrap'>
+										<b id='now_searching_location'> </b>
+									</td>
+
+								</tr>
+			
+								<tr>
+
+									<td>
+										<select id='adv_global_sort_dir' disabled='disabled'>
+											<option value='asc'>Ascending / A to Z</option>
+											<option value='desc'>Descending / Z to A</option>
+										</select>
+									</td>
+
+									<td align='center'>
+										<!--#include virtual="../common/libselect.xml"-->
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+
+	</tr>
+
 	<tr style='border: 2px solid #E0F0E0;'>
 		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input></td>
 	</tr>
+
 </table>

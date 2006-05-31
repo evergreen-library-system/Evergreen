@@ -8,71 +8,36 @@ function advInit() {
 	clearSearchParams();
 
 	depthSelInit(); 
-	setEnterFunc($('opac.advanced.quick.isbn'), advISBNRun );
-	setEnterFunc($('opac.advanced.quick.issn'), advISSNRun );
-	setEnterFunc($('opac.advanced.quick.cn'), advCNRun );
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 
 	unHideMe($('adv_quick_search_sidebar'));
 	if(isXUL()) 
 		setSelector($('adv_quick_type'), 'tcn');
 	setEnterFunc($('adv_quick_text'), advGenericSearch);
-}
 
-function advISBNRun() {
-	var isbn = $('opac.advanced.quick.isbn').value;
-	if(!isbn) return;
-	var arg					= {};
-	arg.page					= RRESULT;
-	arg[PARAM_STYPE]		= "";
-	arg[PARAM_TERM]		= "";
-	arg[PARAM_RTYPE]		= RTYPE_ISBN;
-	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_ADVTERM]	= isbn;
-	goTo(buildOPACLink(arg));
-}
-
-function advISSNRun() {
-	var issn = $('opac.advanced.quick.issn').value;
-	if(!issn) return;
-	var arg					= {};
-	arg.page					= RRESULT;
-	arg[PARAM_STYPE]		= "";
-	arg[PARAM_TERM]		= "";
-	arg[PARAM_ADVTERM]	= issn;
-	arg[PARAM_OFFSET]		= 0;
-	arg[PARAM_RTYPE]		= RTYPE_ISSN;
-	goTo(buildOPACLink(arg));
-}
-
-function advCNRun() {
-	var cn = $('opac.advanced.quick.cn').value;
-	if(!cn) return;
-	var arg			= {};
-	arg.page			= CNBROWSE;
-	arg[PARAM_CN]	= cn;
-	goTo(buildOPACLink(arg));
+	unHideMe($('adv_marc_search_sidebar'));
 }
 
 
 function advAddMARC() {
-	var newrow = $('advanced.marc.template').cloneNode(true);
-	$n(newrow, 'advanced.marc.tag').value = "";
-	$n(newrow, 'advanced.marc.subfield').value = "";
-	$n(newrow, 'advanced.marc.value').value = "";
-	$('advanced.marc.tbody').insertBefore(newrow, $('advanced.marc.submit.row'));
+	var newt = $('adv_sdbar_table').cloneNode(true);
+	newt.id = "";
+	unHideMe($n(newt, 'crow'));
+	$n(newt, 'advanced.marc.tag').value = "";
+	$n(newt, 'advanced.marc.subfield').value = "";
+	$n(newt, 'advanced.marc.value').value = "";
+	$('adv_marc_search_sidebar').insertBefore(newt, $('adv_sdbar_table').nextSibling);
 }
 
 function advMARCRun() {
 
-	var t = $('advanced.marc.tbody');
+	var div = $('adv_marc_search_sidebar');
+	var tbodies = div.getElementsByTagName('tbody');
 	var searches = [];
 
-	var children = t.getElementsByTagName('tr');
-	for( var c in children ) {
-		var child = children[c];
-		if(!(child && child.innerHTML)) continue;
-		var val = advExtractMARC(child);
+	for( var i = 0; i < tbodies.length; i++ ) {
+		var tbody = tbodies[i];
+		var val = advExtractMARC(tbody);
 		if(val) searches.push(val);
 	}
 
@@ -94,15 +59,15 @@ function advMARCRun() {
 
 
 /* EXAMPLE => {"term":"0516011901","restrict":[{"tag":"020","subfield":"a"}]} */
-function advExtractMARC(row) {
-	if(!row || row.id == 'advanced.marc.submit.row') return null;
-	var term = $n(row, 'advanced.marc.value').value;
+function advExtractMARC(tbody) {
+	if(!tbody) return null;
+	var term = $n(tbody, 'advanced.marc.value').value;
 	if(!term) return null;
 
-	var subfield = $n(row, 'advanced.marc.subfield').value;
+	var subfield = $n(tbody, 'advanced.marc.subfield').value;
 	if(!subfield) subfield = "_";
 
-	var tag = $n(row, 'advanced.marc.tag').value;
+	var tag = $n(tbody, 'advanced.marc.tag').value;
 	if(!tag) return null;
 
 	return { 'term' : term, 'restrict' :  [ { 'tag' : tag, 'subfield' : subfield } ] };
@@ -110,6 +75,7 @@ function advExtractMARC(row) {
 
 function advGenericSearch() {
 	var type = getSelectorVal($('adv_quick_type'));
+	
 	var term = $('adv_quick_text').value;
 	if(!term) return;
 

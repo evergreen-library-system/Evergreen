@@ -3,28 +3,12 @@
 	<script language='javascript' src='../js/advanced.js'> </script>
 
 	<style type='text/css'>
-		.advanced_div { text-align: center; margin: 20px; 
-			margin-top: 20px; margin-bottom: 30px; width: 95%; padding: 5px; }
+		.advanced_div { text-align: center; margin: 8px; margin-left: 2px; width: 95%; padding: 5px; }
 	</style>
 
 	<div class='advanced_div'>
 		<!--#include virtual="advanced/advanced_global.xml"-->
 	</div>
-
-	<!--
-	<hr/>
-	<div class='advanced_div'>
-		<   #include virtual="advanced/advanced_quick.xml"  >
-	</div>
-	-->
-
-	<hr/>
-
-	<div class='advanced_div'>
-		<!--#include virtual="advanced/advanced_marc.xml"-->
-	</div>
-
-
 </div>
 
 

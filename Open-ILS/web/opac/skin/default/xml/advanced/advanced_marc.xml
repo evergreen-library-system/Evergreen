@@ -1,4 +1,8 @@
-<table class='data_grid' width='95%'>
+<!--
+XXX Deprecate me
+-->
+
+<table class='data_grid' width='100%'>
 	<thead>
 		<tr>
 			<td colspan='6'>&opac.advanced.marc.title;</td>
@@ -16,7 +20,7 @@
 			</td>
 			<td>
 				<span>&opac.advanced.marc.value;: </span>
-				<input name='advanced.marc.value' size='24'> </input>
+				<input name='advanced.marc.value' size='36'> </input>
 			</td>
 
 			<td>

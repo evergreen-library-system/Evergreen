@@ -55,8 +55,7 @@
 		</div>
 	</div>
 
-	<br/>
-	<div id='subject_tree_sidebar' class='sidebar_chunk hide_me'> 
+	<div id='subject_tree_sidebar' class='sidebar_chunk hide_me' style='margin-top: 12px;'> 
 		<div id='subject_sidebar_tree_div'> </div>
 		<script language='javascript'>
 			removeChildren($('subject_sidebar_tree_div'));
@@ -101,10 +100,11 @@
 		</script>
 	</div>
 
-	<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' style='text-align:center;'> 
+	<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' 
+		style='text-align:center; margin-top: 12px;'> 
 		<hr/>
 		<div id='adv_quick_search'>
-			<div><b>Quick Search</b></div>
+			<div class='adv_quick_search'><b>Quick Search</b></div>
 			<div style='margin-top: 8px;'>
 				<select id='adv_quick_type'>
 					<option value='isbn'>ISBN</option>
@@ -117,11 +117,46 @@
 			<div style='margin-top: 8px;'>
 				<input type='text' id='adv_quick_text'> </input>
 			</div>
-			<div style='margin-top: 8px;'>
-				<button id='adv_quick_submit' onclick='advGenericSearch();'>Search</button>
+			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
+				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>Submit</a>
 			</div>
 		</div>
 	</div>
+
+	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
+		style='text-align:center; margin-top: 12px;'> 
+		<hr/>
+		<div class='adv_quick_search'><b>MARC Expert Search</b></div>
+		<table style='margin: 3px; border: 3px solid #E0E0E0;' id='adv_sdbar_table'>
+			<tbody>
+				<tr>
+					<td>Tag:</td>
+					<td><input name='advanced.marc.tag' maxlength='3' size='3'> </input></td>
+					<td>Subfield:</td>
+					<td><input name='advanced.marc.subfield' maxlength='1' size='1'> </input></td>
+				</tr>
+				<tr>
+					<td>Value:</td>
+					<td colspan='3'><input name='advanced.marc.value' size='18'> </input></td>
+				</tr>
+				<tr name='crow' class='hide_me'>
+					<td colspan='4' align='center'>
+					<a href='javascript:void(0);' class='classic_link'
+						onclick='
+							var div = $("adv_marc_search_sidebar");
+							if( div.getElementsByTagName("table").length > 1 )
+								div.removeChild(this.parentNode.parentNode.parentNode.parentNode);'>close</a>
+					</td>
+				</tr>
+								
+			</tbody>
+		</table>
+		<div class='adv_quick_search_submit'>
+			<a style='margin-right: 4px;' class='classic_link' href='javascript:advAddMARC();'>Add Row</a>
+			<a style='margin-left: 4px;' class='classic_link' href='javascript:advMARCRun();'>Submit</a>
+		</div>
+	</div>
+
 
 
 

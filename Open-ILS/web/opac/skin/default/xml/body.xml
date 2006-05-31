@@ -11,10 +11,12 @@
 				</td>
 				<td id='main_right_cell'>
 					<div id='canvas' class='canvas'>
+
 						<!--#if expr="$OILS_PAGE!='advanced.xml'"-->
-						<!--#include virtual="common/searchbar.xml"-->
-						<!--#include virtual="common/statusbar.xml"-->
+							<!--#include virtual="common/searchbar.xml"-->
+							<!--#include virtual="common/statusbar.xml"-->
 						<!--#endif-->
+
 						<!--#include virtual="common/fonts.xml"-->
 
 						<!--#include virtual="common/altcanvas.xml"-->
