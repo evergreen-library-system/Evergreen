@@ -7,6 +7,13 @@ body { background-color: white; }
 .right			{ position:absolute; right: 0px; }
 .hide_me			{ display:none; visibility: hidden; }
 
+/*
+input:focus:not(.invalid_value) { background: #E0F0E0; color: darkblue;}
+*/
+input:focus { background: #E0F0E0; color: darkblue;}
+select:focus { background: #E0F0E0; color: darkblue;}
+a:focus { background: #E0F0E0; color: darkblue;}
+
 table { border-collapse: collapse; }
 
 /* generic CSS for a table with data */
