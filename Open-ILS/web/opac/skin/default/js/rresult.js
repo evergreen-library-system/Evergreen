@@ -145,6 +145,7 @@ function rresultCollectMARCIds() {
 
 	var req = new Request(FETCH_ADV_MARC_MRIDS, args);
 	req.callback(rresultHandleRIds);
+	req.request.noretry = true;
 	req.send();
 }
 
@@ -180,18 +181,16 @@ var rresultTries = 0;
 function rresultHandleRIds(r) {
 	var res = r.getResultObject();
 
-	if( res.count == 0 ) {
+	if( res.count == 0 && rresultTries == 0 && ! r.noretry) {
 
-		if( rresultTries == 0 ) {
-			rresultTries++;
-			var form = rresultGetForm();
-			var args = { format : form, org : getLocation(), depth : findOrgDepth(globalOrgTree) };
-			var req = new Request(FETCH_RIDS, getMrid(), args );
-			req.callback( rresultHandleRIds );
-			req.send();
-			unHideMe($('no_formats'));
-			hideMe($('rresult_show_all'));
-		}
+		rresultTries++;
+		var form = rresultGetForm();
+		var args = { format : form, org : getLocation(), depth : findOrgDepth(globalOrgTree) };
+		var req = new Request(FETCH_RIDS, getMrid(), args );
+		req.callback( rresultHandleRIds );
+		req.send();
+		unHideMe($('no_formats'));
+		hideMe($('rresult_show_all'));
 
 	} else {
 
