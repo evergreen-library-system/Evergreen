@@ -941,3 +941,11 @@
 <!ENTITY staff.volume.wizard.title "Batch Add Volumes/Copies Wizard">
 <!ENTITY staff.xuleditor_label "XUL TEST">
 <!ENTITY staff.z39_50_import_interface_label "Z39.50 IMPORT">
+<!ENTITY staff.z39_50.search_class.author "Author">
+<!ENTITY staff.z39_50.search_class.isbn "ISBN">
+<!ENTITY staff.z39_50.search_class.issn "ISSN">
+<!ENTITY staff.z39_50.search_class.pubdate "PubDate">
+<!ENTITY staff.z39_50.search_class.publisher "Publisher">
+<!ENTITY staff.z39_50.search_class.tcn "Accession #">
+<!ENTITY staff.z39_50.search_class.title "Title">
+
