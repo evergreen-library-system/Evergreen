@@ -113,6 +113,7 @@ const api = {
 	'MARC_XML_RECORD_IMPORT' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.import' },
 	'MARC_XML_RECORD_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.update' },
 	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
+	'PATRON_BARCODE_EXISTS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists' },
 }
 
 const urls = {

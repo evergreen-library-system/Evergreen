@@ -71,9 +71,24 @@
 
 		function spawn() {
 			try {
-				JSAN.use('util.sound'); var sound = new util.sound(); sound.good();
+				JSAN.use('util.sound'); var sound = new util.sound();
 				var tb = document.getElementById('barcode_tb');
 				var barcode = tb.value;
+
+				if (!barcode) { sound.bad(); return; }
+
+				JSAN.use('util.network'); var net = new util.network();
+
+				var robj = net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ]);
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+				if (robj == 0) {
+					sound.bad();
+					alert('Barcode not found.');
+					return;
+				}
+
+				sound.good();
 
 				var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( 
 					urls.XUL_ADV_PATRON_EDIT
@@ -92,10 +107,7 @@
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
+				g.error.standard_unexpected_error_alert('adv_barcode_entry.xul',E);
 			}
 		}
 
