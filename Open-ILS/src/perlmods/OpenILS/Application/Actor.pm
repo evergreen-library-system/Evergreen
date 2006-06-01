@@ -2179,6 +2179,23 @@ sub usrname_exists {
 	return 0;
 }
 
+__PACKAGE__->register_method(
+	method => 'barcode_exists',
+	api_name	=> 'open-ils.actor.barcode.exists',
+	signature => q/
+		Returns 1 if the requested barcode exists, returns 0 otherwise
+	/
+);
+
+sub barcode_exists {
+	my( $self, $conn, $auth, $barcode ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my $a = $e->search_actor_card({barcode => $barcode}, {idlist=>1});
+	return $$a[0] if $a and @$a;
+	return 0;
+}
+
 
 __PACKAGE__->register_method(
 	method => 'retrieve_net_levels',
