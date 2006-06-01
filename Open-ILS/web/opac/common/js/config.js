@@ -315,6 +315,7 @@ var CHECK_HOLD_POSSIBLE			= 'open-ils.circ:open-ils.circ.title_hold.is_possible'
 var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
 var FETCH_COPIES_FROM_VOLUME	= 'open-ils.search:open-ils.search.copies_by_call_number.retrieve';
 var FETCH_VOLUME_BY_INFO		= 'open-ils.search:open-ils.search.call_number.retrieve_by_info'; /* XXX staff method? */
+var FETCH_VOLUME					= 'open-ils.search:open-ils.search.asset.call_number.retrieve';
 var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
 var FETCH_COPY_NOTES				= 'open-ils.circ:open-ils.circ.copy_note.retrieve.all';
 var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy';
@@ -389,6 +390,8 @@ createEvt('rdetail', 'recordRetrieved');			/* we are about to draw the rdetail p
 createEvt('common', 'depthChanged');
 createEvt('common', 'holdUpdated'); 
 createEvt('common', 'holdUpdateCanceled'); 
+
+createEvt('rdetail', 'nextPrevDrawn');
 
 
 

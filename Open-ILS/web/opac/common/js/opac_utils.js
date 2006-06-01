@@ -605,10 +605,17 @@ function doLogout(noredirect) {
     }
 
 	G.user = null;
-	cookieManager.write(COOKIE_SES, "");
-	cookieManager.write(COOKIE_SKIN, "");
+
+	/* remove any cached data */
+	cookieManager.remove(COOKIE_IDS);
+	cookieManager.remove(COOKIE_SRIDS);
+	cookieManager.remove(COOKIE_RIDS);
+	cookieManager.remove(COOKIE_SES);
+	cookieManager.remove(COOKIE_SKIN);
+
 	checkUserSkin("default");
 	COUNT = 10;
+
 
 	var args = {};
 	args[PARAM_TERM] = "";
@@ -616,6 +623,7 @@ function doLogout(noredirect) {
 	args[PARAM_DEPTH] = findOrgDepth(globalOrgTree);
 	args.page = "home";
 
+	
 	var nored = false;
 	try{ if(isFrontPage) nored = true; } catch(e){nored = false;}
 	if(!nored) goTo(buildOPACLink(args));

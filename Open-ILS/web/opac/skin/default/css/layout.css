@@ -130,6 +130,8 @@ table { border-collapse: collapse; }
 
 .search_page_nav_link { margin-right: 5px; }
 
+.np_nav_link { margin-right: 5px; }
+
 /* ---------------------------------------------------------------------- */
 
 #rdetail_detail_main { width: 100%; }

@@ -17,6 +17,7 @@ var callnumberCache = {};
 var rdetailLocalOnly = true;
 var globalCNCache	= {};
 var localTOC;
+var cachedRecords;
 
 
 
@@ -29,6 +30,59 @@ function rdetailReload() {
 	goTo(buildOPACLink(args));
 }
 
+var nextRecord;
+var prevRecord;
+
+var rdetailPrev = null;
+var rdetailNext = null;
+var rdetailStart = null;
+var rdetailEnd = null;
+
+/* looks to see if we have a next and/or previous record in the
+record cache, if so, set up the nav links */
+function rdetailSetPaging() {
+
+	cachedRecords = JSON2js(cookieManager.read(COOKIE_SRIDS));
+	if(!(cachedRecords && cachedRecords.ids)) return;
+
+	for( var i = 0; i < cachedRecords.ids.length; i++ ) {
+		var rec = cachedRecords.ids[i];
+		if( rec == getRid() ) {
+			if( i > 0 ) prevRecord = cachedRecords.ids[i-1];
+			if( i < cachedRecords.ids.length - 1 )
+				nextRecord = cachedRecords.ids[i+1];
+			break;
+		}
+	}
+
+	$('np_offset').appendChild(text(i+1));
+	$('np_count').appendChild(text(cachedRecords.ids.length));
+
+	if(prevRecord) {
+		unHideMe($('np_table'));
+		unHideMe($('np_prev'));
+		unHideMe($('np_start'));
+		rdetailPrev = function() { _rdetailNav(prevRecord); };
+		rdetailStart = function() { _rdetailNav(cachedRecords.ids[0]); };
+	}
+
+	if(nextRecord) {
+		unHideMe($('np_table'));
+		unHideMe($('np_next'));
+		unHideMe($('np_end'));
+		rdetailNext = function() { _rdetailNav(nextRecord); };
+		rdetailEnd = function() { _rdetailNav(cachedRecords.ids[cachedRecords.ids.length-1]); };
+	}
+
+	runEvt('rdetail', 'nextPrevDrawn', i, cachedRecords.ids.length);
+}
+
+
+function _rdetailNav(id) {
+	var args = {};
+	args[PARAM_RID] = id;
+	goTo(buildOPACLink(args));
+}
 
 function rdetailDraw() {
 
@@ -53,6 +107,8 @@ function rdetailDraw() {
 	var req = new Request(FETCH_RMODS, getRid());
 	req.callback(_rdetailDraw);
 	req.send();
+
+	rdetailSetPaging();
 }
 
 function buildunAPISpan (span, type, id) {
@@ -137,7 +193,7 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
 	$('rdetail_place_hold').setAttribute(
-		'href','javascript:holdsDrawWindow("'+record.doc_id()+'");');
+		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");

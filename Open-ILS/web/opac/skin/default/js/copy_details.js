@@ -188,6 +188,21 @@ function cpdDrawCopy(r) {
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(cpdGetLocation(copy).name()));
 
+	//if(isXUL()) {
+	if(true) {
+		var l = $n(row, 'copy_hold_link');
+		unHideMe(l);
+		l.onclick = function() {
+			holdsDrawEditor( 
+				{ 
+					type			: 'C',
+					copyObject	: copy,
+					onComplete	: function(){}
+				}
+			);
+		}
+	}
+
 	for( i = 0; i < cp_statuses.length; i++ ) {
 		var c = cp_statuses[i];
 		if( c.id() == copy.status() ) {

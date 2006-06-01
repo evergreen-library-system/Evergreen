@@ -12,23 +12,49 @@
 	</script>
 
 
+	<table width='100%' id='np_table' class='hide_me' style='margin-top: 3px;'>
+		<tbody>
+			<tr style='height: 1em; background: #E0F6E0'>
+				<td style='vertical-align: top;'>
+
+					<span>
+						Result <span id='np_offset'> </span>
+						<span> &common.of; </span>
+						<span id='np_count'> </span>
+					</span>
+	
+					<span style='padding-left: 40px;' >
+						<a class='np_nav_link classic_link hide_me' id='np_start'
+							href='javascript:rdetailStart();' title="First results page">Start</a>
+						<a class='np_nav_link classic_link hide_me' id='np_prev'
+							href='javascript:rdetailPrev();' title='Previus page'>&lt;&lt;</a>
+						<span> </span>
+						<a  class='np_nav_link classic_link hide_me' id='np_next'
+							href='javascript:rdetailNext();' title='Next Page'>&gt;&gt;</a>
+						<a class='np_nav_link classic_link hide_me' id='np_end'
+							href='javascript:rdetailEnd();' title="Last results page">End</a>
+					</span>
+	
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 	<table style='' class='rdetail_header color_1' width='100%'>
 		<tbody>
+
 			<tr>
-				<td>
+				<td width='33%' align='left'>
 					<span>&rdetail.detailMain.headerLabel;</span>
 				</td>
-				<td align='right' style='padding-right: 7px;'>
+
+				<td align='right' style='padding-right: 7px;' width='33%'>
 					<span style='padding-right: 7px;'>
 						<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
 					</span>
 					<span style='padding-right: 7px;' class='hide_me' id='rdetail_more_actions'>
 						<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
 							<option value='start'>More Actions...</option>
-							<!--
-							<option value='place_hold' 
-								onclick='holdsDrawWindow(record.doc_id())'>Place a hold on this item</option>
-							-->
 							<option disabled='disabled'>--------------</option>
 							<option disabled='disabled'>Add to Bookbag</option>
 							<option disabled='disabled'>--------------</option>

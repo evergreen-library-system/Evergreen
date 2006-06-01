@@ -390,7 +390,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 
 		unHideMe($n(r,'place_hold_span'));
 		$n(r,'place_hold_link').setAttribute(
-			'href','javascript:holdsDrawWindow("'+rec.doc_id()+'");');
+			'href','javascript:holdsDrawEditor({record:"'+rec.doc_id()+'",type:"T"});');
 	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);

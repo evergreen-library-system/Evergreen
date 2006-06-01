@@ -54,11 +54,25 @@
 					<td class='holds_cell'>Physical Description:</td>
 					<td class='holds_cell' id='holds_physical_desc'> </td>
 				</tr>
+
+				<tr class='hide_me' id='holds_cn_row'>
+					<td class='holds_cell'>Call Number:</td>
+					<td class='holds_cell' id='holds_cn'> </td>
+				</tr>
+
+				<tr class='hide_me' id='holds_copy_row'>
+					<td class='holds_cell'>Copy Barcode:</td>
+					<td class='holds_cell' id='holds_copy'> </td>
+				</tr>
+
+				<tr class='hide_me' id='holds_type_row'>
+					<td class='holds_cell'>Hold Type:</td>
+					<td class='holds_cell hide_me' id='holds_is_cn'>Volume Hold</td>
+					<td class='holds_cell hide_me' id='holds_is_copy'>Copy Hold</td>
+				</tr>
+
 				<tr>
 					<td class='holds_cell'>&opac.holds.contactPhone;:</td>
-					<!--
-					<td class='holds_cell' id='holds_phone'> </td>
-					-->
 					<td class='holds_cell'>
 						<input id='holds_phone' size='13' maxlength='12'/>
 						<span style='margin-left: 4px; font-size: 7pt;'>(XXX-YYY-ZZZZ)</span>

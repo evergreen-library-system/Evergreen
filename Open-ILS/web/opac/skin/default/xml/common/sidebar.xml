@@ -125,6 +125,7 @@
 
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
 		style='text-align:center; margin-top: 12px;'> 
+		<br/>
 		<hr/>
 		<div class='adv_quick_search'><b>MARC Expert Search</b></div>
 		<table style='margin: 3px; border: 3px solid #E0E0E0;' id='adv_sdbar_table'>

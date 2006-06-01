@@ -6,6 +6,14 @@ attachEvt("common", "init", setSidebarLinks);
 
 attachEvt("common", "unload", sidebarTreesFree );
 
+function prevRResults() {
+	return buildOPACLink({ page : RRESULT });
+}
+
+function prevMResults() {
+	return buildOPACLink({ page : MRESULT });
+}
+
 function initSideBar() {
 	var page = findCurrentPage();
 
@@ -15,14 +23,14 @@ function initSideBar() {
 	if( page == RRESULT ) {
 		unHideMe($("sidebar_results_wrapper"));
 		unHideMe(G.ui.sidebar[MRESULT]);
-		$("sidebar_title_group_results").setAttribute("href", buildOPACLink({ page: MRESULT }));
+		$("sidebar_title_group_results").setAttribute("href", prevMResults());
 	}
 
 	if( page == RDETAIL ) {
 		unHideMe($("sidebar_results_wrapper"));
-		$("sidebar_title_group_results").setAttribute("href", buildOPACLink({ page: MRESULT }));
+		$("sidebar_title_group_results").setAttribute("href", prevMResults());
 		unHideMe(G.ui.sidebar[MRESULT]);
-		$("sidebar_title_results").setAttribute("href", buildOPACLink({ page : RRESULT }));
+		$("sidebar_title_results").setAttribute("href", prevRResults());
 		unHideMe(G.ui.sidebar[RRESULT]);
 	}
 

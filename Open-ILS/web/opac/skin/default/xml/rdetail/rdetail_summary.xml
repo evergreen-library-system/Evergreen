@@ -4,6 +4,8 @@
 	<table id='rdetail_details_table'>
 		<tbody id='rdetail_details_tbody'>
 
+
+
 			<tr>
 				<td id='rdetail_image_cell' rowspan='9'><img id='rdetail_image'> </img></td>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		

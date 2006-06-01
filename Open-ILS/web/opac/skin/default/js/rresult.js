@@ -15,9 +15,6 @@ hideMe($('copyright_block'));
 function rresultDoSearch() {
 
 	swapCanvas($('loading_alt'));
-	/*
-	if(getOffset() == 0) swapCanvas($('loading_alt'));
-	*/
 
 	table = G.ui.result.main_table;
 	hideMe(G.ui.result.row_template);
@@ -34,6 +31,7 @@ function rresultCachedSearch() {
 	}
 
 	var data = JSON2js(cookieManager.read(COOKIE_SRIDS));
+	//alert('cached count = ' + data.count);
 
 	if( data && data.ids[getOffset()] != null && 
 		data.ids[resultFinalPageIndex()] != null ) {
@@ -235,7 +233,9 @@ function rresultHandleRIds(r) {
 }
 
 function _rresultHandleIds(ids, count) {
-	cookieManager.write(COOKIE_SRIDS, js2JSON({ids:ids,count:count}), '+1d');
+	var json = js2JSON({ids:ids,count:count});
+	cookieManager.write(COOKIE_SRIDS, json, '+1d');
+
 	HITCOUNT = parseInt(count);
 	runEvt('result', 'hitCountReceived');
 	runEvt('result', 'idsReceived', ids);

@@ -26,6 +26,8 @@
 										class='hide_me classic_link' name='details_link'>more info...</a>
 									<a style='padding-left: 6px; color: #804070;' 
 										class='hide_me classic_link' name='less_details_link'>less info</a>
+									<a style='padding-left: 6px; color: #804070;' 
+										class='hide_me classic_link' name='copy_hold_link' href='javascript:void(0);'>place hold</a>
 								</td>
 								<td name='status'></td>
 								<td name='location'></td>
