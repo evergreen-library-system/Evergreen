@@ -209,8 +209,8 @@ util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure) {
 						ev.preventDefault(); ev.stopPropagation();
 						return true;
 					} else {
-						if (typeof onfailure == 'function') onfailure(ev);
-						return util.widgets.vertical_tab(ev.target);
+						if (typeof onfailure == 'function') return onfailure(ev);
+						return false;
 					}
 				}
 			},

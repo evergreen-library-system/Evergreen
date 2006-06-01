@@ -128,7 +128,10 @@ g.render_volume_count_entry = function(row,ou_id) {
 			node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
 		}
 	}
-	util.widgets.apply_vertical_tab_on_enter_handler( tb, render_copy_count_entry);
+	util.widgets.apply_vertical_tab_on_enter_handler( 
+		tb, 
+		function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+	);
 	tb.addEventListener( 'change', render_copy_count_entry, false);
 	tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 	setTimeout(
@@ -201,11 +204,17 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		var hb3 = document.createElement('vbox'); r.appendChild(hb3);
 		var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
 		tb1.setAttribute('rel_vert_pos','2');
-		util.widgets.apply_vertical_tab_on_enter_handler( tb1, handle_change_tb1);
+		util.widgets.apply_vertical_tab_on_enter_handler( 
+			tb1, 
+			function() { handle_change_tb1({'target':tb1}); setTimeout(function(){util.widgets.vertical_tab(tb1);},0); }
+		);
 		var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
 		tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
 		tb2.setAttribute('rel_vert_pos','3');
-		util.widgets.apply_vertical_tab_on_enter_handler( tb2, handle_change_tb2);
+		util.widgets.apply_vertical_tab_on_enter_handler( 
+			tb2, 
+			function() { handle_change_tb2({'target':tb2}); setTimeout(function(){util.widgets.vertical_tab(tb2);},0); }
+		);
 
 		tb1.addEventListener( 'change', handle_change_tb1, false);
 		tb1.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
@@ -248,7 +257,10 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			tb.setAttribute('ou_id',ou_id);
 			tb.setAttribute('callnumber',callnumber);
 			tb.setAttribute('rel_vert_pos','4');
-			util.widgets.apply_vertical_tab_on_enter_handler( tb, ready_to_create);
+			util.widgets.apply_vertical_tab_on_enter_handler( 
+				tb, 
+				function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+			);
 			tb.addEventListener('change',ready_to_create,false);
 			tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 		}
