@@ -210,6 +210,15 @@ sub copy_retrieve {
 	return $copy;
 }
 
+__PACKAGE__->register_method(
+	method	=> "volume_retrieve", 
+	api_name	=> "open-ils.search.asset.call_number.retrieve");
+sub volume_retrieve {
+	my( $self, $client, $vid ) = @_;
+	my $e = new_editor();
+	my $vol = $e->retrieve_asset_call_number($vid) or return $e->event;
+	return $vol;
+}
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve_batch",
@@ -762,14 +771,13 @@ sub marc_search {
 	$method .= ".staff" if $self->api_name =~ /staff/;
 	$method .= ".atomic";
 
-	my $records = $U->storagereq($method, %$args);
+	my $recs = new_editor()->request($method, %$args);
 
 	my $count = 0;
+	$count = $recs->[0]->[2] if $recs->[0] and $recs->[0]->[2];
+	my @recs = map { $_->[0] } @$recs;
 
-	$count = $records->[0]->[2] if( ref($records) and 
-		$records->[0] and defined($records->[0]->[2]));
-
-	return { ids => $records, count => $count };
+	return { ids => \@recs, count => $count };
 }
 
 
