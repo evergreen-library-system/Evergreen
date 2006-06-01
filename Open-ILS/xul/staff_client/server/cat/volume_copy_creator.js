@@ -49,7 +49,7 @@ function my_init() {
 					cn_blob,
 					function(o) {
 						for (var i in o) {
-							return [ i + ' -> ' + o[i], o[i] ];
+							return [ o[i], o[i] ];
 						}
 					}
 				).sort(
@@ -64,6 +64,7 @@ function my_init() {
 					}
 				)
 			); hbox.appendChild(ml);
+			ml.setAttribute('editable','true');
 			var btn = document.createElement('button');
 			btn.setAttribute('label','Apply');
 			btn.setAttribute('accesskey','A');
