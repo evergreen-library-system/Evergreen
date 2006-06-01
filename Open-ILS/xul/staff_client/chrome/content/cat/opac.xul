@@ -188,23 +188,36 @@
 						$('record_start').disabled = true; $('record_next').disabled = true;
 						$('record_prev').disabled = true; $('record_end').disabled = true;
 						$('record_pos').setAttribute('value','');
+
 						win.attachEvt("rdetail", "nextPrevDrawn",
 							function(rIndex,rCount){
 								$('record_pos').setAttribute('value','Record ' + (1+rIndex) + ' of ' + rCount);
 								if (win.rdetailNext) {
-									g.f_record_next = win.rdetailNext;
+									g.f_record_next = function() { 
+										g.view_override = g.view; 
+										win.rdetailNext(); 
+									}
 									$('record_next').disabled = false;
 								}
 								if (win.rdetailPrev) {
-									g.f_record_prev = win.rdetailPrev;
+									g.f_record_prev = function() { 
+										g.view_override = g.view; 
+										win.rdetailPrev(); 
+									}
 									$('record_prev').disabled = false;
 								}
 								if (win.rdetailStart) {
-									g.f_record_start = win.rdetailStart;
+									g.f_record_start = function() { 
+										g.view_override = g.view; 
+										win.rdetailStart(); 
+									}
 									$('record_start').disabled = false;
 								}
 								if (win.rdetailEnd) {
-									g.f_record_end = win.rdetailEnd;
+									g.f_record_end = function() { 
+										g.view_override = g.view; 
+										win.rdetailEnd(); 
+									}
 									$('record_end').disabled = false;
 								}
 							}
@@ -261,6 +274,10 @@
 					[ ses(), g.data.list.au[0].id() ]
 				);
 				var view = settings['staff_client.catalog.record_view.default'];
+				if (g.view_override) {
+					view = g.view_override;
+					g.view_override = null;
+				}
 				switch(view) {
 					case 'marc_view' : set_marc_view(reset); break;
 					case 'marc_edit' : set_marc_edit(reset); break;
