@@ -84,9 +84,7 @@ sub query_services {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
-	my $services = $sclient->config_value('z3950', 'services');
-	$services = { $services } unless ref($services);
-	return [ keys %$services ];
+	return $sclient->config_value('z3950', 'services');
 }
 
 
@@ -186,7 +184,10 @@ sub do_search {
 
 	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $results;
 
-	return process_results($results, $limit, $offset);
+	my $munged = process_results($results, $limit, $offset);
+	$munged->{query} = $query;
+
+	return $munged;
 }
 
 
