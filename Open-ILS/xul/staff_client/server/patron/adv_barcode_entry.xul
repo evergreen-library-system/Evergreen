@@ -70,12 +70,13 @@
 		}
 
 		function spawn() {
+			var tb;
 			try {
 				JSAN.use('util.sound'); var sound = new util.sound();
-				var tb = document.getElementById('barcode_tb');
+				tb = document.getElementById('barcode_tb');
 				var barcode = tb.value;
 
-				if (!barcode) { sound.bad(); return; }
+				if (!barcode) { sound.bad(); tb.select(); tb.focus(); return; }
 
 				JSAN.use('util.network'); var net = new util.network();
 
@@ -83,7 +84,7 @@
 				if (typeof robj.ilsevent != 'undefined') throw(robj);
 
 				if (robj == 0) {
-					sound.bad();
+					sound.bad(); tb.select(); tb.focus();
 					alert('Barcode not found.');
 					return;
 				}
@@ -107,6 +108,7 @@
 				}
 
 			} catch(E) {
+					tb.select(); tb.focus();
 				g.error.standard_unexpected_error_alert('adv_barcode_entry.xul',E);
 			}
 		}
