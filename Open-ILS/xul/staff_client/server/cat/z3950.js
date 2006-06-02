@@ -88,20 +88,22 @@ cat.z3950.prototype = {
 							['command'],
 							function(ev) {
 								try {
-								var n = obj.controller.view.marc_view;
-								if (n.getAttribute('toggle') == '1') {
-									document.getElementById('deck').selectedIndex = 0;
-									n.setAttribute('toggle','0');
-									n.setAttribute('label','MARC View');
-								} else {
-									document.getElementById('deck').selectedIndex = 1;
-									n.setAttribute('toggle','1');
-									n.setAttribute('label','Results View');
-									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-									var f = document.getElementById('marc_frame').contentWindow;
-									f.xulG = { 'marcxml' : obj.results.records[ n.getAttribute('retrieve_id') ].marcxml };
-									f.my_init();
-								}
+									var n = obj.controller.view.marc_view;
+									if (n.getAttribute('toggle') == '1') {
+										document.getElementById('deck').selectedIndex = 0;
+										n.setAttribute('toggle','0');
+										n.setAttribute('label','MARC View');
+										document.getElementById('results').focus();
+									} else {
+										document.getElementById('deck').selectedIndex = 1;
+										n.setAttribute('toggle','1');
+										n.setAttribute('label','Results View');
+										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+										var f = document.getElementById('marc_frame').contentWindow;
+										f.xulG = { 'marcxml' : obj.results.records[ n.getAttribute('retrieve_id') ].marcxml };
+										f.my_init();
+										f.document.body.firstChild.focus();
+									}
 								} catch(E) {
 									alert(E);
 								}

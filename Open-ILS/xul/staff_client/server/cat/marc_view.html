@@ -31,8 +31,9 @@
 
 	function my_init() {
 		xsl_marc2html_init();
-		document.body.innerHTML = "";
+		document.body.innerHTML = "<button onclick='window.print()'>Print Page</button>";
 		if (typeof xulG != 'undefined' && xulG.marcxml) apply_xsl_marc2html(xulG.marcxml);
+		document.body.firstChild.focus();
 	}
 
 -->
