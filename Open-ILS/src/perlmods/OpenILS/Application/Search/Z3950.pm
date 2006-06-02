@@ -181,6 +181,9 @@ sub do_search {
 	my $start = time;
 	my $results;
 	my $err;
+
+	$logger->info("z3950: query => $query");
+
 	try {
 		$results = $connection->search( $query );
 	} catch Error with { $err = shift; };
@@ -188,7 +191,8 @@ sub do_search {
 	return OpenILS::Event->new(
 		'Z3950_BAD_QUERY', payload => $query, debug => "$err") if $err;
 
-	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $results;
+	return OpenILS::Event->new('Z3950_SEARCH_FAILED', 
+		debug => $connection->errcode.":".$connection->errmsg) unless $results;
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
@@ -268,7 +272,9 @@ sub compile_query {
 	$str .= "\@$seperator " for (1..$count-1);
 	
 	for( keys %$hash ) {
-		$str .= '@attr 1=' . $services{$service}->{attrs}->{$_} . " \"" . $$hash{$_} . "\" ";		
+		$str .= '@attr ' .
+			$services{$service}->{attrs}->{$_}->{format} . '=' .
+			$services{$service}->{attrs}->{$_}->{code} . " \"" . $$hash{$_} . "\" ";		
 	}
 	return $str;
 }

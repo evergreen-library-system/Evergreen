@@ -28,32 +28,72 @@ For non-core config info, see the inline documentation within this file
 		<!-- script for exception strings -->
 		<ils_events>/openils/var/data/ils_events.xml</ils_events>
 
-		<z3950>
-
+      <z3950>
 			<default>oclc</default>
+         <services>
+            <oclc> <!-- service name -->
 
-			<!-- OpenILS currently only searches the 'oclc' database when
-					doing Z39.50 importing... -->
-			<oclc>
-				<host>zcat.oclc.org</host>
-				<port>210</port>
-				<db>OLUCWorldCat</db>
-				<tcnattr>12</tcnattr> 
-				<isbnattr>7</isbnattr>
-				<username>my_username</username>
-				<password>my_password</password>
-			</oclc>
+					<!-- connection info -->
+               <host>zcat.oclc.org</host>
+               <port>210</port>
+               <db>OLUCWorldCat</db>
 
-			<loc> <!-- loc has not been incorporated into the system yet -->
-				<name>loc</name>
-				<host>z3950.loc.gov</host>
-				<port>7090</port>
-				<db>Voyager</db>
-				<username></username>
-				<password></password>
-			</loc>
+					<!-- search attributes -->
+               <attrs>
+                  <tcn>
+							<code>12</code> <!-- attribute code -->
+							<format>6</format> <!-- search term format (word, date, etc.) -->
+						</tcn>
+                  <isbn>
+							<code>7</code>
+							<format>6</format>
+						</isbn>
+						<lccn>
+							<code>9</code>
+							<format>3</format>
+						</lccn>
+                  <author>
+							<code>1003</code>
+							<format>6</format>
+						</author>
+                  <title>
+							<code>4</code>
+							<format>6</format>
+						</title>
+                  <issn>
+							<code>8</code>
+							<format>1</format>
+						</issn>
+                  <publisher>
+							<code>1018</code>
+							<format>6</format>
+						</publisher>
+                  <pubdate>
+							<code>31</code>
+							<format>5</format>
+						</pubdate>
+						<item_type>
+							<code>1001</code>
+							<format>1</format>
+						</item_type>
+						<!--music/publisher numbers?? -->
+               </attrs>
+            </oclc>
 
-		</z3950>
+            <loc>
+               <name>loc</name>
+               <host>z3950.loc.gov</host>
+               <port>7090</port>
+               <db>Voyager</db>
+               <attrs>
+                  <isbn>
+							<code>7</code>
+							<format>1</format>
+						</isbn>
+               </attrs>
+            </loc>
+         </services>
+      </z3950>
 
 
 		<activeapps/> 
