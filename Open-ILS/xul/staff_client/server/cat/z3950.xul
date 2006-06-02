@@ -114,12 +114,30 @@
 						<textbox id="title_input" mytype="search_class" search_class="title" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.author;" control="author_input" onclick="g.z3950.default_attr = 'author'"/>
 						<textbox id="author_input" mytype="search_class" search_class="author" onkeypress="handle_enter(event)"/>
+						<label value="&staff.z39_50.search_class.lccn;" control="lccn_input" onclick="g.z3950.default_attr = 'lccn'"/>
+						<textbox id="lccn_input" mytype="search_class" search_class="lccn" onkeypress="handle_enter(event)"/>
 					</row>
 					<row>
 						<label value="&staff.z39_50.search_class.pubdate;" control="pubdate_input" onclick="g.z3950.default_attr = 'pubdate'"/>
 						<textbox id="pubdate_input" mytype="search_class" search_class="pubdate" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.publisher;" control="publisher_input" onclick="g.z3950.default_attr = 'publisher'"/>
 						<textbox id="publisher_input" mytype="search_class" search_class="publisher" onkeypress="handle_enter(event)"/>
+						<label value="&staff.z39_50.search_class.item_type;" control="item_type_input" onclick="g.z3950.default_attr = 'item_type'"/>
+						<menulist id="item_type_input" mytype="search_class" search_class="item_type">
+							<menupopup>
+								<menuitem label="&staff.z39_50.search_class.item_type.all;" value=""/>
+								<menuitem label="&staff.z39_50.search_class.item_type.bks;" value="bks"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.ser;" value="ser"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.vis;" value="vis"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.rec;" value="rec"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.sco;" value="sco"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.map;" value="map"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.com;" value="com"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.mix;" value="mix"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.url;" value="url"/>
+								<menuitem label="&staff.z39_50.search_class.item_type.art;" value="art"/>
+							</menupopup>
+						</menulist>
 					</row>
 				</rows>
 			</grid>
