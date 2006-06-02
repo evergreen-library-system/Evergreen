@@ -47,7 +47,7 @@
 						<a name='browse' style='font-size: 8pt;'
 							class='classic_link'>browse</a>
 					</div>
-					<div style='margin-top: 2px;' name='hold_div'>
+					<div style='margin-top: 2px;' name='hold_div' class='hide_me'>
 						<a name='hold' style='font-size: 8pt;' href='javascript:void(0);'
 							class='classic_link'>place hold</a>
 					</div>

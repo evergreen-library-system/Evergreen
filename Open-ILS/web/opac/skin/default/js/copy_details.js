@@ -182,8 +182,7 @@ function cpdDrawCopy(r) {
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(cpdGetLocation(copy).name()));
 
-	//if(isXUL()) {
-	if(true) {
+	if(isXUL()) {
 		var l = $n(row, 'copy_hold_link');
 		unHideMe(l);
 		l.onclick = function() {
