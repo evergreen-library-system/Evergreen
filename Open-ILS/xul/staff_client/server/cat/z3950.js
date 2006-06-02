@@ -172,6 +172,7 @@ cat.z3950.prototype = {
 													tb.setAttribute('mytype','search_class');
 													tb.setAttribute('search_class',i);
 													row.appendChild(tb);
+													tb.addEventListener('keypress',obj.handle_enter,false);
 												}
 											}
 											if (obj.creds.services[ service ]) {
@@ -553,6 +554,12 @@ cat.z3950.prototype = {
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Problem storing z39.50 credentials.',E);
 		}
+	},
+
+	'handle_enter' : function(ev) {
+		var obj = this;
+		if (ev.target.tagName != 'textbox') return;
+		if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* enter on a mac */) setTimeout( function() { obj.initial_search(); }, 0);
 	},
 }
 

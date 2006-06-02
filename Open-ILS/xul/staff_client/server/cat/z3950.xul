@@ -66,6 +66,9 @@
 			}
 		}
 
+		function handle_enter(ev) {
+			g.z3950.handle_enter(ev);
+		}
 
 	]]>
 	</script>
@@ -100,23 +103,23 @@
 				<rows id="query_inputs">
 					<row>
 						<label value="&staff.z39_50.search_class.tcn;" control="tcn_input" onclick="g.z3950.default_attr = 'tcn'" accesskey="0"/>
-						<textbox id="tcn_input" mytype="search_class" search_class="tcn"/>
+						<textbox id="tcn_input" mytype="search_class" search_class="tcn" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.isbn;" control="isbn_input" onclick="g.z3950.default_attr = 'isbn'"/>
-						<textbox id="isbn_input" mytype="search_class" search_class="isbn"/>
+						<textbox id="isbn_input" mytype="search_class" search_class="isbn" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.issn;" control="issn_input" onclick="g.z3950.default_attr = 'issn'"/>
-						<textbox id="issn_input" mytype="search_class" search_class="issn"/>
+						<textbox id="issn_input" mytype="search_class" search_class="issn" onkeypress="handle_enter(event)"/>
 					</row>
 					<row>
 						<label value="&staff.z39_50.search_class.title;" control="title_input" onclick="g.z3950.default_attr = 'title'"/>
-						<textbox id="title_input" mytype="search_class" search_class="title"/>
+						<textbox id="title_input" mytype="search_class" search_class="title" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.author;" control="author_input" onclick="g.z3950.default_attr = 'author'"/>
-						<textbox id="author_input" mytype="search_class" search_class="author"/>
+						<textbox id="author_input" mytype="search_class" search_class="author" onkeypress="handle_enter(event)"/>
 					</row>
 					<row>
 						<label value="&staff.z39_50.search_class.pubdate;" control="pubdate_input" onclick="g.z3950.default_attr = 'pubdate'"/>
-						<textbox id="pubdate_input" mytype="search_class" search_class="pubdate"/>
+						<textbox id="pubdate_input" mytype="search_class" search_class="pubdate" onkeypress="handle_enter(event)"/>
 						<label value="&staff.z39_50.search_class.publisher;" control="publisher_input" onclick="g.z3950.default_attr = 'publisher'"/>
-						<textbox id="publisher_input" mytype="search_class" search_class="publisher"/>
+						<textbox id="publisher_input" mytype="search_class" search_class="publisher" onkeypress="handle_enter(event)"/>
 					</row>
 				</rows>
 			</grid>
