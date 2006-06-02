@@ -262,7 +262,6 @@ RemoteRequest.prototype.getResultObject = function() {
 					'\ndebug: '		+ obj.debug + 
 					'\npayload: '	+ js2JSON(obj.payload); 
 
-
 		if(isXUL()) {
 			dump(str);
 			throw obj;
@@ -277,12 +276,6 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(!payload || payload.length == 0) return null;
 	payload = (payload.length == 1) ? payload[0] : payload;
 
-	if(payload.__isfieldmapper && payload.classname == "perm_ex") {
-		if(!isXUL()) alert(payload.err_msg());
-		throw payload;
-	}
-
-
 	if(!isXUL()) {
 		if( checkILSEvent(payload) ) {
 			this.event(payload);
@@ -291,7 +284,6 @@ RemoteRequest.prototype.getResultObject = function() {
 			return null;
 		} 
 	}
-
 
 	return payload;
 }
