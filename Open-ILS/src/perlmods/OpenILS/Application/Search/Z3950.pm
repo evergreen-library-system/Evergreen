@@ -179,10 +179,18 @@ sub do_search {
 	}
 
 	my $start = time;
-	my $results = $connection->search( $query );
-	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
+	my $results;
+	my $err;
+	try {
+		$results = $connection->search( $query );
+	} catch Error with { $err = shift; };
+
+	return OpenILS::Event->new(
+		'Z3950_BAD_QUERY', payload => $query, debug => "$err") if $err;
 
 	return OpenILS::Event->new('Z3950_SEARCH_FAILED') unless $results;
+
+	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
 	my $munged = process_results($results, $limit, $offset);
 	$munged->{query} = $query;
