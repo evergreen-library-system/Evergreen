@@ -384,6 +384,11 @@ cat.z3950.prototype = {
 				if (obj.search_params.offset + obj.search_params.limit <= results.count) {
 					obj.controller.view.page_next.disabled = false;
 				}
+			} else {
+					x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+					x.appendChild(
+						document.createTextNode( results.count + ' records found')
+					);
 			}
 			if (results.records) {
 				obj.results = results;
