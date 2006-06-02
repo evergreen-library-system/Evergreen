@@ -350,6 +350,7 @@ cat.z3950.prototype = {
 					obj.handle_results(req.getResultObject())
 				}
 			);
+			document.getElementById('deck').selectedIndex = 0;
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Failure during actual search.',E);
 		}
