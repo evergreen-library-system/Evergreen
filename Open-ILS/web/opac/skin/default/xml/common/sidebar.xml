@@ -101,22 +101,26 @@
 	</div>
 
 	<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' 
-		style='text-align:center; margin-top: 12px;'> 
+		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
 		<div id='adv_quick_search'>
 			<div class='adv_quick_search'><b>Quick Search</b></div>
 			<div style='margin-top: 8px;'>
-				<select id='adv_quick_type'>
-					<option value='isbn'>ISBN</option>
-					<option value='issn'>ISSN</option>
-					<option value='cn'>Call Number</option>
-					<option value='lccn'>LCCN</option>
-					<option value='tcn'>TCN</option>
-				</select>
+				<table><tbody><tr>
+					<td>
+						<select id='adv_quick_type' style='width: 6em;'>
+							<option value='isbn'>ISBN</option>
+							<option value='issn'>ISSN</option>
+							<option value='cn'>Call Number</option>
+							<option value='lccn'>LCCN</option>
+							<option value='tcn'>TCN</option>
+						</select>
+					</td><td>
+						<input type='text' id='adv_quick_text' size='16'> </input>
+					</td>
+				</tr></tbody></table>
 			</div>
-			<div style='margin-top: 8px;'>
-				<input type='text' id='adv_quick_text'> </input>
-			</div>
+
 			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
 				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>Submit</a>
 			</div>
@@ -124,11 +128,10 @@
 	</div>
 
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
-		style='text-align:center; margin-top: 12px;'> 
-		<br/>
+		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
 		<div class='adv_quick_search'><b>MARC Expert Search</b></div>
-		<table style='margin: 3px; border: 3px solid #E0E0E0;' id='adv_sdbar_table'>
+		<table style='margin: 3px; border: 3px solid #E0E0E0; width: 100%;' id='adv_sdbar_table'>
 			<tbody>
 				<tr>
 					<td>Tag:</td>

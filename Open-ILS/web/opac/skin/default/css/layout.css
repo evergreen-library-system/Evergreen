@@ -34,7 +34,10 @@ table { border-collapse: collapse; }
 .classic_link_col { text-decoration: underline; color: red;}
 
 .adv_quick_search { background-color: #E0F0E0; padding: 3px;}
+/*
 .adv_quick_search_submit { background-color: #F0E0E0; padding: 3px;}
+*/
+.adv_quick_search_submit { border-bottom: 3px solid #A0A0A0; padding: 3px;}
 
 .encircled { border: 1px solid black; }
 
