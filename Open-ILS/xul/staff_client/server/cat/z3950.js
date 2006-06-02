@@ -54,6 +54,8 @@ cat.z3950.prototype = {
 							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
 							obj.controller.view.marc_import.disabled = false;
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
+							obj.controller.view.marc_view.disabled = false;
+							obj.controller.view.marc_view.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert('Failure during list construction.',E);
 						}
@@ -81,6 +83,29 @@ cat.z3950.prototype = {
 							function() {
 								obj.save_creds();
 							}
+						],
+						'marc_view' : [
+							['command'],
+							function(ev) {
+								try {
+								var n = obj.controller.view.marc_view;
+								if (n.getAttribute('toggle') == '1') {
+									document.getElementById('deck').selectedIndex = 0;
+									n.setAttribute('toggle','0');
+									n.setAttribute('label','MARC View');
+								} else {
+									document.getElementById('deck').selectedIndex = 1;
+									n.setAttribute('toggle','1');
+									n.setAttribute('label','Results View');
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+									var f = document.getElementById('marc_frame').contentWindow;
+									f.xulG = { 'marcxml' : obj.results.records[ n.getAttribute('retrieve_id') ].marcxml };
+									f.my_init();
+								}
+								} catch(E) {
+									alert(E);
+								}
+							},
 						],
 						'marc_import' : [
 							['command'],
@@ -331,53 +356,59 @@ cat.z3950.prototype = {
 
 	'handle_results' : function(results) {
 		var obj = this;
-		JSAN.use('util.widgets');
-		util.widgets.remove_children( obj.controller.view.result_message ); var x;
-		if (results == null) {
-			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode( 'Server Error: request returned null' ));
-			return;
-		}
-		if (typeof results.ilsevent != 'undefined') {
-			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc ));
-			return;
-		}
-		if (results.query) {
-			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode( 'Raw query: ' + results.query ));
-		}
-		if (results.count) {
-			if (results.records) {
+		try {
+			JSAN.use('util.widgets');
+			util.widgets.remove_children( obj.controller.view.result_message ); var x;
+			if (results == null) {
 				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild(
-					document.createTextNode( 'Showing ' + (obj.search_params.offset + results.records.length) + ' of ' + results.count)
-				);
+				x.appendChild( document.createTextNode( 'Server Error: request returned null' ));
+				return;
 			}
-			if (obj.search_params.offset + obj.search_params.limit <= results.count) {
-				obj.controller.view.page_next.disabled = false;
+			if (typeof results.ilsevent != 'undefined') {
+				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+				x.appendChild( document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc ));
+				return;
 			}
-		}
-		if (results.records) {
-			obj.results = results;
-			obj.controller.view.marc_import.disabled = true;
-			for (var i = 0; i < obj.results.records.length; i++) {
-				obj.list.append(
-					{
-						'retrieve_id' : i,
-						'row' : {
-							'my' : {
-								'mvr' : function(a){return a;}(obj.results.records[i].mvr),
+			if (results.query) {
+				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+				x.appendChild( document.createTextNode( 'Raw query: ' + results.query ));
+			}
+			if (results.count) {
+				if (results.records) {
+					x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+					x.appendChild(
+						document.createTextNode( 'Showing ' + (obj.search_params.offset + results.records.length) + ' of ' + results.count)
+					);
+				}
+				if (obj.search_params.offset + obj.search_params.limit <= results.count) {
+					obj.controller.view.page_next.disabled = false;
+				}
+			}
+			if (results.records) {
+				obj.results = results;
+				obj.controller.view.marc_import.disabled = true;
+				var x = obj.controller.view.marc_view;
+				if (x.getAttribute('toggle') == '0') x.disabled = true;
+				for (var i = 0; i < obj.results.records.length; i++) {
+					obj.list.append(
+						{
+							'retrieve_id' : i,
+							'row' : {
+								'my' : {
+									'mvr' : function(a){return a;}(obj.results.records[i].mvr),
+								}
 							}
 						}
-					}
+					);
+				}
+			} else {
+				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+				x.appendChild(
+					document.createTextNode( 'Error retrieving results.')
 				);
 			}
-		} else {
-			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild(
-				document.createTextNode( 'Too many results to retrieve. ')
-			);
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Failure during search result handling.',E);
 		}
 	},
 
