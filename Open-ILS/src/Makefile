@@ -179,6 +179,8 @@ xsl-install:
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
 	cp ../xsl/*.xsl $(XSLDIR)
+	mkdir -p $(WEBDIR)/xsl/
+	cp ../xsl/*.xsl $(WEBDIR)/xsl/
 
 clean:
 	@echo $@
