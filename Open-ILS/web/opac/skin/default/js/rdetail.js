@@ -605,6 +605,20 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 
 	$n(row, 'details').setAttribute('href', dHref);
 	$n(row, 'browse').setAttribute('href', bHref);
+
+	if(true) {
+		unHideMe($n(row, 'hold_div'));
+		$n(row, 'hold').onclick = function() {
+			var req = new Request(FETCH_VOLUME_BY_INFO, cn, record.doc_id(), orgNode.id());
+			req.callback(
+				function(r) {
+					var vol = r.getResultObject();
+					holdsDrawEditor({type: 'V', volumeObject : vol});
+				}
+			);
+			req.send();
+		};
+	}
 }
 
 

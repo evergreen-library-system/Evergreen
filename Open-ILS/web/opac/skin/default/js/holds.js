@@ -20,12 +20,7 @@ function _holdsHandleStaffMe() {
 function _holdsHandleStaff() {
 	var barcode = $('xul_recipient_barcode').value;
 	var user = grabUserByBarcode( G.user.session, barcode );
-	var code = checkILSEvent(user);
-	if(code || !user) {
-		alertILSEvent(user, barcode);
-		showCanvas();
-		return;
-	}
+	if(!user) return;
 	holdArgs.recipient = user;
 	holdsDrawEditor();
 }
@@ -55,39 +50,25 @@ function holdsDrawEditor(args) {
 		return;
 	}
 
-	var ehold = holdArgs.editHold;
-	if(ehold) {
-		var type = holdArgs.type = ehold.hold_type();
-		var target = ehold.target();
-		switch(holdArgs.type) {
-			case 'M':
-				holdArgs.metarecord = target;
-				break;
-			case 'T':
-				holdArgs.record = target;
-				break;
-			case 'V':
-				holdArgs.volume = target;
-				break;
-			case 'C':
-				holdArgs.copy = target;
-				break;
-		}
-	}
+	if(holdArgs.editHold) /* flesh the args with the existing hold */
+		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
 	holdsDrawWindow();
 
 	if(holdArgs.editHold) {
 		hideMe($('holds_submit'));
 		unHideMe($('holds_update'));
-		var req = new Request(FETCH_HOLD_STATUS, G.user.session, holdArgs.editHold.id());
+		var req = new Request(FETCH_HOLD_STATUS, 
+			G.user.session, holdArgs.editHold.id());
 		req.send(true);
 		holdArgs.status = req.result();
 		_holdsUpdateEditHold();
 	}  
+
 }
 
 
+/* updates the edit window with the existing hold's data */
 function _holdsUpdateEditHold() {
 
 	var hold = holdArgs.editHold;
@@ -98,6 +79,9 @@ function _holdsUpdateEditHold() {
 
 	if( hold.capture_time() || status > 2 )
 		orgsel.disabled = true;
+	else	
+		orgsel.disabled = false;
+
 
 	$('holds_submit').onclick = holdsEditHold;
 	$('holds_update').onclick = holdsEditHold;
@@ -128,74 +112,111 @@ function holdsEditHold() {
 		holdArgs.onComplete(hold);
 }
 
-function holdFetchObjects(hold) {
+function holdArgsFromHold(hold, oargs) {
+	var args = (oargs) ? oargs : {};
+	args.type = hold.hold_type();
+	var target = hold.target();
 
-	var type;
-	var temp = false;
-	if(!holdArgs) {
-
-		holdArgs = {};
-		temp = true;
-		var target = hold.target();
-		type = holdArgs.type = hold.hold_type();
-
-		switch(type) {
-			case 'M':
-				holdArgs.metarecord = target;
-				break;
-			case 'T':
-				holdArgs.record = target;
-				break;
-			case 'V':
-				holdArgs.volume = target;
-				break;
-			case 'C':
-				holdArgs.copy = target;
-				break;
-		}
+	switch(args.type) {
+		case 'M':
+			args.metarecord = target;
+			break;
+		case 'T':
+			args.record = target;
+			break;
+		case 'V':
+			args.volume = target;
+			break;
+		case 'C':
+			args.copy = target;
+			break;
 	}
-	type = holdArgs.type;
-
-	if( type == 'C' ) {
-		if( holdArgs.copyObject ) {
-			holdArgs.copy = holdArgs.copyObject.id();
-		} else {
-			var creq = new Request(FETCH_COPY, holdArgs.copy);
-			creq.send(true);
-			holdArgs.copyObject = creq.result();
-		}
-		holdArgs.volume = holdArgs.copyObject.call_number();
-	}
-
-	if( type == 'V' || type == 'C' ) {
-		if( holdArgs.volumeObject ) {
-			holdArgs.volume = holdArgs.volumeObject.id();
-		} else {
-			var vreq = new Request(FETCH_VOLUME, holdArgs.volume);
-			vreq.send(true);
-			holdArgs.volumeObject = vreq.result();
-		}
-		holdArgs.record = holdArgs.volumeObject.record();
-	}
-	
-	if( type == 'T' || type == 'V' || type == 'C' ) {
-		if(holdArgs.recordObject) {
-			holdArgs.record = holdArgs.recordObject.id();
-		} else {
-			holdArgs.recordObject = findRecord( holdArgs.record, 'T' );
-		}
-	}
-
-	var args = holdArgs;
-	if( temp ) holdArgs = null;
 	return args;
 }
 
+function holdFetchObjects(hold, doneCallback) {
+
+	var args = (hold) ? holdArgsFromHold(hold) : holdArgs;
+
+	var type = args.type;
+
+	if( type == 'C' ) {
+
+		if( args.copyObject ) {
+
+			args.copy = args.copyObject.id();
+			args.volume = args.copyObject.call_number();
+			_h_set_vol(args, doneCallback);
+
+		} else {
+			var creq = new Request(FETCH_COPY, args.copy);
+
+			creq.callback(
+				function(r) {
+					var cp = r.getResultObject();
+					args.copyObject = cp;
+					args.volume = args.copyObject.call_number();
+					_h_set_vol(args, doneCallback);
+				}
+			);
+			creq.send();
+		}
+	} else {
+		if( type == 'V' ) {
+			_h_set_vol(args, doneCallback);
+
+		} else {
+			if( type == 'T' ) {
+				_h_set_rec(args, doneCallback);
+			}
+		}
+	}
+
+	return args;
+}
+
+function _h_set_vol(args, doneCallback) {
+
+	if( args.volumeObject ) {
+		args.volume = args.volumeObject.id();
+		args.record = args.volumeObject.record();
+		_h_set_rec(args, doneCallback);
+
+	} else {
+
+		var vreq = new Request(FETCH_VOLUME, args.volume);
+		vreq.callback(
+			function(r) {
+				var vol = r.getResultObject();
+				args.volumeObject = vol;
+				args.record = vol.record();
+				_h_set_rec(args, doneCallback);
+			}
+		);
+		vreq.send();
+	}
+}
+
+function _h_set_rec(args, doneCallback) {
+	if(args.recordObject) {
+		args.record = args.recordObject.doc_id();
+	} else {
+		args.recordObject = findRecord( args.record, 'T' );
+	}
+	if(doneCallback) doneCallback(args);
+}
+
+
 
 function holdsDrawWindow() {
-
 	swapCanvas($('holds_box'));
-	holdFetchObjects();
+	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
+	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
+	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
+	holdFetchObjects(null, function(){__holdsDrawWindow();});
+}
+
+function __holdsDrawWindow() {
 
 	var rec = holdArgs.recordObject;
 	var vol = holdArgs.volumeObject;
@@ -276,9 +297,6 @@ function holdsDrawWindow() {
 		}
 	}
 
-	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
-	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
-	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
 	if(holdArgs.type == 'M') hideMe($('hold_physical_desc_row'));
 }

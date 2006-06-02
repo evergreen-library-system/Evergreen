@@ -57,18 +57,18 @@
 
 				<tr class='hide_me' id='holds_cn_row'>
 					<td class='holds_cell'>Call Number:</td>
-					<td class='holds_cell' id='holds_cn'> </td>
+					<td class='holds_cell'><b id='holds_cn'/> </td>
 				</tr>
 
 				<tr class='hide_me' id='holds_copy_row'>
 					<td class='holds_cell'>Copy Barcode:</td>
-					<td class='holds_cell' id='holds_copy'> </td>
+					<td class='holds_cell'><b id='holds_copy'/> </td>
 				</tr>
 
 				<tr class='hide_me' id='holds_type_row'>
 					<td class='holds_cell'>Hold Type:</td>
-					<td class='holds_cell hide_me' id='holds_is_cn'>Volume Hold</td>
-					<td class='holds_cell hide_me' id='holds_is_copy'>Copy Hold</td>
+					<td class='holds_cell hide_me' id='holds_is_cn'><b>Volume Hold</b></td>
+					<td class='holds_cell hide_me' id='holds_is_copy'><b>Copy Hold</b></td>
 				</tr>
 
 				<tr>

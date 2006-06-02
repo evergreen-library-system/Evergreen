@@ -41,11 +41,15 @@
 				<td name='rdetail_actions_cell'> 
 					<div style='padding-bottom: 1px;'>
 						<a style='font-size: 8pt;'
-							name='details' class='classic_link'>Details</a>
+							name='details' class='classic_link'>details</a>
 					</div>
 					<div style='margin-top: 2px;'>
 						<a name='browse' style='font-size: 8pt;'
-							class='classic_link'>Browse</a>
+							class='classic_link'>browse</a>
+					</div>
+					<div style='margin-top: 2px;' name='hold_div'>
+						<a name='hold' style='font-size: 8pt;' href='javascript:void(0);'
+							class='classic_link'>place hold</a>
 					</div>
 				</td>
 				<td nowrap='nowrap' class='rdetail_copy_count_cell vertical' 

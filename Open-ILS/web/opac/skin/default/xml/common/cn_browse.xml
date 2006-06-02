@@ -22,7 +22,7 @@
 			<tbody id='cn_tbody'>
 				<tr id='cn_browse_row'>
 					<td id='cn_browse_td' class='cn_browse_item' width='25%' valign='top'>
-						<a><img height='60' width='50' src='blah' 
+						<a><img height='60' width='50' 
 							class='cn_browse_info' name='cn_browse_pic' border='0'> </img></a>
 						<div style='font-weight: bold;' class='cn_browse_info' name='cn_browse_cn'>  </div>
 						<div class='cn_browse_info'><a name='cn_browse_title' class='classic_link'> </a></div>

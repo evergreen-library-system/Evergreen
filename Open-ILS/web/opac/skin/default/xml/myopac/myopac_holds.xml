@@ -27,6 +27,10 @@
 
 				<td name='myopac_holds_title'>
 					<a href='javascript:void(0);' name='myopac_holds_title_link'> </a>
+					<div name='vol_copy' style='border: 1px solid #808080; width:98%; margin-top: 2px;' class='hide_me'>
+						<div style='font-size: 90%' name='volume'/>
+						<div style='font-size: 90%' name='copy'/>
+					</div>
 				</td>
 
 				<td name='myopac_holds_author'>

@@ -88,12 +88,6 @@ function cpdStylePopupWindow(div) {
 /* builds a friendly print window for this CNs data */
 function cpdBuildPrintPane(contextRow, record, callnumber, orgid, depth) {
 
-	/*
-	var arr = cpdBuildPrintWindow( record, orgid);
-	var win = arr[0];
-	var div = arr[1];
-	*/
-
 	var div = cpdBuildPrintWindow( record, orgid);
 
 	$n(div, 'cn').appendChild(text(callnumber));

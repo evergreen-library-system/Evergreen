@@ -284,7 +284,8 @@ function myOPACDrawHolds(r) {
 
 		var formats = (h.holdable_formats()) ? h.holdable_formats() : null;
 		var form = $n(row, "myopac_holds_formats");
-		form.id = "myopac_holds_form_" + h.id() + '_' + h.target();
+		/*form.id = "myopac_holds_form_" + h.id() + '_' + h.target();*/
+		form.id = "myopac_holds_form_" + h.id();
 		if(formats) form.appendChild(text(formats));
 
 		var orglink = $n(row, "myopac_holds_location");
@@ -312,7 +313,8 @@ function myOPACEditHold(holdid) {
 		{ 
 			editHold : hold,
 			onComplete : function(){ 
-				holdsTemplateRow = null; myOPACShowHolds(); 
+				holdsTemplateRow = null;
+				myOPACShowHolds(); 
 			}
 		}
 	);
@@ -364,10 +366,8 @@ function myOPACDrawHoldTitle(hold) {
 		req.send();
 
 	} else {
-		setTimeout( 
-			function() {
-				_myOPACFleshHoldTitle(hold, holdFetchObjects(hold));
-			}, 800 );
+		holdFetchObjects(hold, 
+			function(a) { _myOPACFleshHoldTitle(hold, a);});
 	}
 }
 
@@ -379,6 +379,9 @@ function myOPACFleshHoldTitle(r) {
 function _myOPACFleshHoldTitle(hold, holdObjects) {
 
 	var record = holdObjects.recordObject;
+	var volume	= holdObjects.volumeObject;
+	var copy	= holdObjects.copyObject;
+
 	var row = $("myopac_holds_row_" + hold.id());
 	var title_link = $n(row, "myopac_holds_title_link");
 	var author_link = $n(row, "myopac_holds_author_link");
@@ -386,7 +389,14 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);
 
-	var form = $("myopac_holds_form_" + hold.id() + '_' + record.doc_id());
+	if( volume ) {
+		$n(row, 'volume').appendChild(text(volume.label()));
+		unHideMe($n(row, 'vol_copy'));
+		if(copy) $n(row, 'copy').appendChild(text(copy.barcode()));
+	}
+
+	/*var form = $("myopac_holds_form_" + hold.id() + '_' + record.doc_id());*/
+	var form = $("myopac_holds_form_" + hold.id());
 
 	if(form) {
 		var img = elem("img");
