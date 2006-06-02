@@ -948,4 +948,17 @@
 <!ENTITY staff.z39_50.search_class.publisher "Publisher">
 <!ENTITY staff.z39_50.search_class.tcn "Accession #">
 <!ENTITY staff.z39_50.search_class.title "Title">
+<!ENTITY staff.z39_50.search_class.lccn "LCCN">
+<!ENTITY staff.z39_50.search_class.item_type "Item Type">
+<!ENTITY staff.z39_50.search_class.item_type.all "All Formats"> 
+<!ENTITY staff.z39_50.search_class.item_type.bks "Books"> 
+<!ENTITY staff.z39_50.search_class.item_type.ser "Serials"> 
+<!ENTITY staff.z39_50.search_class.item_type.vis "Visual materials"> 
+<!ENTITY staff.z39_50.search_class.item_type.rec "Sound recordings"> 
+<!ENTITY staff.z39_50.search_class.item_type.sco "Musical scores"> 
+<!ENTITY staff.z39_50.search_class.item_type.map "Maps"> 
+<!ENTITY staff.z39_50.search_class.item_type.com "Computer files"> 
+<!ENTITY staff.z39_50.search_class.item_type.mix "Mixed material"> 
+<!ENTITY staff.z39_50.search_class.item_type.url "Internet Resources"> 
+<!ENTITY staff.z39_50.search_class.item_type.art "Papers/Articles"> 
 
