@@ -13,6 +13,8 @@ cat.z3950 = function (params) {
 
 cat.z3950.prototype = {
 
+	'creds_version' : 1,
+
 	'init' : function( params ) {
 
 		try {
@@ -20,6 +22,8 @@ cat.z3950.prototype = {
 			JSAN.use('util.widgets');
 
 			var obj = this;
+
+			obj.load_creds();
 
 			JSAN.use('circ.util');
 			var columns = circ.util.columns(
@@ -57,24 +61,6 @@ cat.z3950.prototype = {
 				}
 			);
 
-/*
-			document.getAnonymousNodes(document.getElementById('c1'))[0].addEventListener(
-				'mouseup',
-				function() {
-					util.widgets.click(
-						document.getAnonymousNodes(document.getElementById('c2'))[0]
-					);
-				}, false
-			);
-			document.getAnonymousNodes(document.getElementById('c2'))[0].addEventListener(
-				'mouseup',
-				function() {
-					util.widgets.click(
-						document.getAnonymousNodes(document.getElementById('c1'))[0]
-					);
-				}, false
-			);
-*/
 			JSAN.use('util.controller'); obj.controller = new util.controller();
 			obj.controller.init(
 				{
@@ -84,25 +70,16 @@ cat.z3950.prototype = {
 							function() { alert('Not Yet Implemented'); }
 						],
 						'result_message' : [['render'],function(e){return function(){};}],
-						'server' : [['render'],function(e){return function(){};}],
-						'database' : [['render'],function(e){return function(){};}],
-						'port' : [['render'],function(e){return function(){};}],
-						'username' : [['render'],function(e){return function(){};}],
-						'password' : [['render'],function(e){return function(){};}],
-						'asc_id' : [
-							['render'],
-							function(e){
-								return function(){
-									e.addEventListener(
-										'keypress',
-										function(ev) {
-											if (ev.keyCode && ev.keyCode == 13) {
-												obj.asc_search_async();
-											}
-										},
-										false
-									);
-								};
+						'clear' : [
+							['command'],
+							function() {
+								obj.clear();
+							}
+						],
+						'save_creds' : [
+							['command'],
+							function() {
+								obj.save_creds();
 							}
 						],
 						'marc_import' : [
@@ -115,243 +92,275 @@ cat.z3950.prototype = {
 								);
 							},
 						],
-						'asc_search' : [
+						'search' : [
 							['command'],
 							function() {
-								obj.asc_search_async();
+								obj.initial_search();
 							},
 						],
-						'raw_string' : [
-							['render'],
-							function(e){
-								return function(){
-									e.addEventListener(
-										'keypress',
-										function(ev) {
-											if (ev.keyCode && ev.keyCode == 13) {
-												obj.raw_search_async();
-											}
-										},
-										false
-									);
-								};
-							}
+						'page_next' : [
+							['command'],
+							function() {
+								obj.page_next();
+							},
 						],
 						'raw_search' : [
 							['command'],
 							function() {
-								obj.raw_search_async();
+								var raw = window.prompt('Enter raw z39.50 search string: ','','Raw Z39.50 Search');
+								if (raw) obj.initial_raw_search(raw);
 							},
 						],
-//						'menu_placeholder' : [
-//							['render'],
-//							function(e) {
-//								return function() {
-//									util.widgets.remove_children(e);
-//									var ml = util.widgets.make_menulist( [
-//										[ 'OCLC', 'oclc' ],
-//										[ 'Custom', 1 ],
-//									] );
-//									ml.setAttribute('flex','1');
-//									e.appendChild(ml);
-//									/* An experiment with virtual events.  I could just use a named function
-//									   instead of defining one inline, and then call that once to set things
-//									   up, and let the event handler call it the rest of the time. */
-//									ml.addEventListener(
-//										'set_server_details',
-//										function(ev) { 
-//											/* FIXME - get these values from server */
-//											switch(ev.target.value) {
-//												case 'oclc':
-//													obj.controller.view.server.value = 'zcat.oclc.org';
-//													obj.controller.view.server.disabled = true;
-//													obj.controller.view.database.value = 'OLUCWorldCat';
-//													obj.controller.view.database.disabled = true;
-//													obj.controller.view.port.value = '210';
-//													obj.controller.view.port.disabled = true;
-//													obj.controller.view.username.value = '****';
-//													obj.controller.view.username.disabled = true;
-//													obj.controller.view.password.value = '****';
-//													obj.controller.view.password.disabled = true;
-//													//obj.controller.view.raw_string.value = 'DISABLED';
-//													//obj.controller.view.raw_string.disabled = true;
-//													//obj.controller.view.raw_search.disabled = true;
-//													//obj.controller.view.asc_id.value = '';
-//													//obj.controller.view.asc_id.disabled = false;
-//													//obj.controller.view.asc_search.disabled = false;
-//												break;
-//												default:
-//													obj.controller.view.server.disabled = false;
-//													obj.controller.view.database.disabled = false;
-//													obj.controller.view.server.disabled = false;
-//													obj.controller.view.port.disabled = false;
-//													obj.controller.view.username.value = '';
-//													obj.controller.view.username.disabled = false;
-//													obj.controller.view.password.value = '';
-//													obj.controller.view.password.disabled = false;
-//													//obj.controller.view.raw_string.value = '';
-//													//obj.controller.view.raw_string.disabled = false;
-//													//obj.controller.view.raw_search.disabled = false;
-//													//obj.controller.view.asc_id.value = 'DISABLED';
-//													//obj.controller.view.asc_id.disabled = true;
-//													//obj.controller.view.asc_search.disabled = true;
-//												break;
-//											}
-//										},
-//										false
-//									);
-//									ml.addEventListener(
-//										'command',
-//										function(ev) { util.widgets.dispatch('set_server_details', ev.target); },
-//										false
-//									);
-//									setTimeout( function() { util.widgets.dispatch('set_server_details',ml); }, 0 );
-//									obj.controller.view.server_menu = ml;
-//								}
-//							}
-//						],
+						'menu_placeholder' : [
+							['render'],
+							function(e) {
+								return function() {
+									try {
+
+										function handle_switch(node) {
+											var service = obj.controller.view.service_menu.value;
+											var nl = document.getElementsByAttribute('mytype','search_class');
+											for (var i = 0; i < nl.length; i++) { nl[i].disabled = true; }
+											for (var i in obj.services[service].attrs) {
+												var x = document.getElementById(i + '_input');
+												if (x) {
+													x.disabled = false;
+												} else {
+													var rows = document.getElementById('query_inputs');
+													var row = document.createElement('row'); rows.appendChild(row);
+													var label = document.createElement('label');
+													label.setAttribute('control',i+'_input');
+													label.setAttribute('search_class',i);
+													if (entities['staff.z39_50.search_class.'+i]) {
+														label.setAttribute('value',entities['staff.z39_50.search_class.'+i]);
+													} else {
+														label.setAttribute('value',i);
+													}
+													row.appendChild(label);
+													label.addEventListener('click',function(ev){
+															var a = ev.target.getAttribute('search_class');
+															if (a) obj.default_attr = a;
+														},false
+													);
+													var tb = document.createElement('textbox');
+													tb.setAttribute('id',i+'_input');
+													tb.setAttribute('mytype','search_class');
+													tb.setAttribute('search_class',i);
+													row.appendChild(tb);
+												}
+											}
+											if (obj.creds.services[ service ]) {
+												document.getElementById('username').setAttribute('value',
+													obj.creds.services[service].username
+												);
+												document.getElementById('password').setAttribute('value',
+													obj.creds.services[service].password
+												);
+												obj.focus(service);
+											} else {
+												document.getElementById('username').focus();
+											}
+										}
+
+										var robj = obj.network.simple_request(
+											'RETRIEVE_Z3950_SERVICES',
+											[ ses() ]
+										);
+										if (typeof robj.ilsevent != 'undefined') throw(robj);
+										obj.services = robj;
+										var list = [];
+										for (var i in robj) {
+											list.push(
+												[
+													i + ' : ' + robj[i].db + '@' + robj[i].host + ':' + robj[i].port,
+													i
+												]
+											);
+										}
+										util.widgets.remove_children(e);
+										var ml = util.widgets.make_menulist( list );
+										ml.setAttribute('flex','1');
+										e.appendChild(ml);
+										ml.addEventListener(
+											'command',
+											function(ev) { handle_switch(ev.target); },
+											false
+										);
+										obj.controller.view.service_menu = ml;
+										setTimeout(
+											function() { 
+												if (obj.creds.default_service) ml.value = obj.creds.default_service;
+												handle_switch(ml); 
+											},0
+										);
+									} catch(E) {
+										alert(E);
+										obj.error.standard_unexpected_error_alert('Z39.50 services not likely retrieved.',E);
+									}
+								}
+							}
+						],
 					}
 				}
 			);
 
 			obj.controller.render();
-			obj.controller.view.server.value = 'zcat.oclc.org';
-			obj.controller.view.server.disabled = true;
-			obj.controller.view.database.value = 'OLUCWorldCat';
-			obj.controller.view.database.disabled = true;
-			obj.controller.view.port.value = '210';
-			obj.controller.view.port.disabled = true;
-			obj.controller.view.username.value = '';
-			obj.controller.view.username.disabled = false;
-			obj.controller.view.password.value = '';
-			obj.controller.view.password.disabled = false;
+
+			obj.controller.view.username = document.getElementById('username');
+			obj.controller.view.password = document.getElementById('password');
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
 		}
 	},
 
-	'store_disable_search_buttons' : function() {
+	'focus' : function(service) {
 		var obj = this;
-		JSAN.use('util.widgets');
-		util.widgets.store_disable(
-			obj.controller.view.asc_search,
-			obj.controller.view.raw_search
-		);
-		util.widgets.disable(
-			obj.controller.view.asc_search,
-			obj.controller.view.raw_search
-		);
-	},
-
-	'restore_enable_search_buttons' : function() {
-		var obj = this;
-		JSAN.use('util.widgets');
-		util.widgets.restore_disable(
-			obj.controller.view.asc_search,
-			obj.controller.view.raw_search
-		);
-	},
-
-	'asc_search_async' : function() {
-		try {
-			var obj = this;
-			var search = obj.controller.view.asc_id.value;
-			obj.error.sdump('D_TRACE','search string: ' + search);
-			JSAN.use('util.widgets');
-			util.widgets.remove_children( obj.controller.view.result_message );
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( 'Searching...' )
-			);
-			obj.store_disable_search_buttons();
-			var params;
-			obj.network.simple_request(
-				'FM_BLOB_RETRIEVE_VIA_Z3950_TCN',
-				[ ses(), search, 'oclc', obj.controller.view.username.value, obj.controller.view.password.value ],
-				function(req) {
-					obj.handle_results(req.getResultObject())
-					obj.restore_enable_search_buttons();
-				}
-			);
-		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during search.',E);
+		var x = obj.creds.services[service].default_attr;
+		if (x) {
+			document.getElementById(x+'_input').focus();
+		} else {
+			var y;
+			for (var i in obj.services[service].attr) { y = i; }
+			document.getElementById(y+'_input').focus();
 		}
-
 	},
 
-	'raw_search_async' : function() {
+	'clear' : function() {
+		var obj = this;
+		var nl = document.getElementsByAttribute('mytype','search_class');
+		for (var i = 0; i < nl.length; i++) { nl[i].value = ''; nl[i].setAttribute('value',''); }
+		obj.focus(obj.controller.view.service_menu.value);
+	},
+
+	'search_params' : {},
+
+	'initial_search' : function() {
 		try {
 			var obj = this;
-			var search = obj.controller.view.raw_string.value;
-			obj.error.sdump('D_TRACE','search string: ' + search);
 			JSAN.use('util.widgets');
 			util.widgets.remove_children( obj.controller.view.result_message );
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( 'Searching...' )
-			);
-			obj.store_disable_search_buttons();
-			if (!Number(obj.controller.view.server_menu.value)) {
-				params = [ 
-					ses(), 
-					{
-						'search':search,
-						'service':obj.controller.view.server_menu.value,
-					}
-				];
-			} else {
-				params = [ 
-					ses(), 
-					{
-						'search':search,
-						'server':obj.controller.view.server.value, 
-						'prt':obj.controller.view.port.value, 
-						'db':obj.controller.view.database.value, 
-						'username':obj.controller.view.username.value, 
-						'password':obj.controller.view.password.value 
-					}
+			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Searching...' ));
+			obj.search_params = {}; obj.list.clear();
+			obj.controller.view.page_next.disabled = true;
 
-				];
+			obj.search_params.service = obj.controller.view.service_menu.value;
+			obj.search_params.username = obj.controller.view.username.value;
+			obj.search_params.password = obj.controller.view.password.value;
+			obj.search_params.limit = 10;
+			obj.search_params.offset = 0;
+
+			obj.search_params.search = {};
+			var nl = document.getElementsByAttribute('mytype','search_class');
+			var count = 0;
+			for (var i = 0; i < nl.length; i++) {
+				if (nl[i].disabled) continue;
+				if (nl[i].value == '') continue;
+				count++;
+				obj.search_params.search[ nl[i].getAttribute('search_class') ] = nl[i].value;
+			}
+			if (count>0) {
+				obj.search();
+			} else {
+				util.widgets.remove_children( obj.controller.view.result_message );
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Failure during initial search.',E);
+		}
+	},
+
+	'initial_raw_search' : function(raw) {
+		try {
+			var obj = this;
+			JSAN.use('util.widgets');
+			util.widgets.remove_children( obj.controller.view.result_message );
+			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Searching...' ) );
+			obj.search_params = {}; obj.result_count = 0; obj.list.clear();
+			obj.controller.view.page_next.disabled = true;
+
+			obj.search_params.service = obj.controller.view.service_menu.value;
+			obj.search_params.username = obj.controller.view.username.value;
+			obj.search_params.password = obj.controller.view.password.value;
+			obj.search_params.limit = 10;
+			obj.search_params.offset = 0;
+
+			obj.search_params.query = raw;
+
+			obj.search();
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Failure during initial raw search.',E);
+		}
+	},
+
+	'page_next' : function() {
+		try {
+			var obj = this;
+			JSAN.use('util.widgets');
+			util.widgets.remove_children( obj.controller.view.result_message );
+			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Retrieving more results...' ));
+			obj.search_params.offset += obj.search_params.limit;
+			obj.search();
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Failure during subsequent search.',E);
+		}
+	},
+
+	'search' : function() {
+		try {
+			var obj = this;
+			var method;
+			if (typeof obj.search_params.query == 'undefined') {
+				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH';
+			} else {
+				method = 'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH';
 			}
 			obj.network.simple_request(
-				'FM_BLOB_RETRIEVE_VIA_Z3950_RAW',
-				params,
+				method,
+				[ ses(), obj.search_params ],
 				function(req) {
 					obj.handle_results(req.getResultObject())
-					obj.restore_enable_search_buttons();
 				}
 			);
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during search.',E);
+			this.error.standard_unexpected_error_alert('Failure during actual search.',E);
 		}
 	},
 
 	'handle_results' : function(results) {
 		var obj = this;
 		JSAN.use('util.widgets');
-		util.widgets.remove_children( obj.controller.view.result_message );
+		util.widgets.remove_children( obj.controller.view.result_message ); var x;
 		if (results == null) {
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( 'Server Error: ' + api.FM_BLOB_RETRIEVE_VIA_Z3950_TCN.method + ' returned null' )
-			);
+			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Server Error: request returned null' ));
 			return;
 		}
 		if (typeof results.ilsevent != 'undefined') {
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc )
-			);
+			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc ));
 			return;
 		}
+		if (results.query) {
+			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild( document.createTextNode( 'Raw query: ' + results.query ));
+		}
 		if (results.count) {
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( results.count + (results.count == 1 ? ' result ' : ' results ') + 'found. ' )
-			);
+			if (results.records) {
+				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+				x.appendChild(
+					document.createTextNode( 'Showing ' + (obj.search_params.offset + results.records.length) + ' of ' + results.count)
+				);
+			}
+			if (obj.search_params.offset + obj.search_params.limit <= results.count) {
+				obj.controller.view.page_next.disabled = false;
+			}
 		}
 		if (results.records) {
-			obj.controller.view.result_message.appendChild(
-				document.createTextNode( results.records.length + (results.records.length == 1 ? ' result' : ' results') + ' retrieved. ')
-			);
 			obj.results = results;
-			obj.list.clear(); obj.controller.view.marc_import.disabled = true;
+			obj.controller.view.marc_import.disabled = true;
 			for (var i = 0; i < obj.results.records.length; i++) {
 				obj.list.append(
 					{
@@ -365,7 +374,8 @@ cat.z3950.prototype = {
 				);
 			}
 		} else {
-			obj.controller.view.result_message.appendChild(
+			x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+			x.appendChild(
 				document.createTextNode( 'Too many results to retrieve. ')
 			);
 		}
@@ -453,6 +463,66 @@ cat.z3950.prototype = {
 		);
 	},
 
+	'load_creds' : function() {
+		var obj = this;
+		try {
+			obj.creds = { 'version' : g.save_version, 'services' : {} };
+			/*
+				{
+					'version' : xx,
+					'default_service' : xx,
+					'services' : {
+
+						'xx' : {
+							'username' : xx,
+							'password' : xx,
+							'default_attr' : xx,
+						},
+
+						'xx' : {
+							'username' : xx,
+							'password' : xx,
+							'default_attr' : xx,
+						},
+					},
+				}
+			*/
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('z3950_store');
+			if (file._file.exists()) {
+				var creds = file.get_object(); file.close();
+				if (typeof creds.version != 'undefined') {
+					if (creds.version >= obj.creds_version) {
+						obj.creds = creds;
+					}
+				}
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_dialog('Error retrieving stored z39.50 credentials',E);
+		}
+	},
+
+	'save_creds' : function () {
+		try {
+			var obj = this;
+			obj.creds.default_service = obj.controller.view.service_menu.value;
+			if (typeof obj.creds.services[ obj.creds.default_service ] == 'undefined') {
+				obj.creds.services[ obj.creds.default_service ] = {}
+			}
+			obj.creds.services[obj.creds.default_service].username = document.getElementById('username').value;
+			obj.creds.services[obj.creds.default_service].password = document.getElementById('password').value;
+			if (obj.default_attr) {
+				obj.creds.services[obj.creds.default_service].default_attr = obj.default_attr;
+			}
+			obj.creds.version = obj.creds_version;
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('z3950_store');
+			file.set_object(obj.creds);
+			file.close();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Problem storing z39.50 credentials.',E);
+		}
+	},
 }
 
 dump('exiting cat.z3950.js\n');

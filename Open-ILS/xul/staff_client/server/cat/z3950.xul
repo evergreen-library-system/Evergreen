@@ -48,19 +48,10 @@
 
 				g.z3950.init( 
 					{ 
+						/* this guy grabs most things through the DOM, but I want to move JSAN libraries away from that,
+						or at the very least, push node ID's in through here. */
 					} 
 				);
-
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				JSAN.use('util.file'); var file = new util.file('z3950_store');
-                if (file._file.exists()) {
-                        var creds = file.get_object(); file.close();
-						document.getElementById('username').value = creds[0];
-						document.getElementById('password').value = creds[1];
-						document.getElementById('asc_id').focus();
-				} else {
-						document.getElementById('username').focus();
-				}
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					try { window.xulG.set_tab_name('Z39.50'); } catch(E) { alert(E); }
@@ -74,17 +65,6 @@
 			}
 		}
 
-		function save() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				var creds = [ document.getElementById('username').value, document.getElementById('password').value ];
-				JSAN.use('util.file'); var file = new util.file('z3950_store');
-				file.set_object(creds);
-				file.close();
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('Problem storing z39.50 credentials.',E);
-			}
-		}
 
 	]]>
 	</script>
@@ -95,70 +75,69 @@
 
 	<groupbox flex="1">
 		<caption label="MARC Import via Z39.50"/>
-		<hbox>
-			<groupbox>
-				<caption id="c2" label="Server Details" class="shrinkable_groupbox"/>
-				<grid>
-					<columns><column /><column flex="1" /><column /><column flex="1"/></columns>
-					<rows>
-						<row>
-							<label value="Server:" control="server"/><textbox id="server" value="" disabled="false"/>
-							<label value="Username:" control="username" accesskey="U"/>
-							<!--<textbox id="username" persist="value" onchange="this.setAttribute('value',this.value);" disabled="false"/>-->
-							<textbox id="username" disabled="false"/>
-						</row>
-						<row>
-							<label value="Database:" control="database"/><textbox id="database" value="" disabled="false"/>
-							<label value="Password:" control="password"/>
-							<!--<textbox id="password" persist="value" onchange="this.setAttribute('value',this.value);" disabled="false"/>-->
-							<textbox id="password" disabled="false" onchange="save()"/>
-						</row>
-						<row>
-							<label value="Port:" control="port"/><textbox id="port" value="" disabled="false"/>
-						</row>
-					</rows>
-				</grid>
-			</groupbox>
-		</hbox>
+		<groupbox orient="horizontal">
+			<caption id="c2" label="Service and Credentials" class="shrinkable_groupbox"/>
+			<label value="Service:" />
+			<hbox id="menu_placeholder" flex="1"/>
+			<label value="Username:" control="username" accesskey="U"/>
+			<textbox id="username" />
+			<label value="Password:" control="password"/>
+			<textbox id="password" />
+			<button id="save_creds" label="Save as Default" accesskey="D"/>
+		</groupbox>
 		<groupbox>
-			<caption label="Query" />
+			<caption label="Query" class="shrinkable_groupbox"/>
+			<hbox>
+				<spacer flex="1"/>
+				<description>
+					Tip: Click a search field label and then the "Save as Default" button to have that field focused by default.
+				</description>
+				<spacer flex="1"/>
+			</hbox>
 			<grid>
-				<columns><column /><column flex="1" /></columns>
-				<rows>
+				<columns><column /><column flex="1" /><column /><column flex="1"/><column /><column flex="1"/></columns>
+				<rows id="query_inputs">
 					<row>
-						<label value="Accession ID:" control="asc_id" accesskey="I"/>
-						<hbox>
-							<textbox id="asc_id"/>
-							<label value="ISBN:" hidden="true"/>
-							<textbox disabled="true" hidden="true"/>
-							<label value="ISSN:" hidden="true"/>
-							<textbox disabled="true" hidden="true"/>
-						</hbox>
+						<label value="&staff.z39_50.search_class.tcn;" control="tcn_input" onclick="g.z3950.default_attr = 'tcn'" accesskey="0"/>
+						<textbox id="tcn_input" mytype="search_class" search_class="tcn"/>
+						<label value="&staff.z39_50.search_class.isbn;" control="isbn_input" onclick="g.z3950.default_attr = 'isbn'"/>
+						<textbox id="isbn_input" mytype="search_class" search_class="isbn"/>
+						<label value="&staff.z39_50.search_class.issn;" control="issn_input" onclick="g.z3950.default_attr = 'issn'"/>
+						<textbox id="issn_input" mytype="search_class" search_class="issn"/>
 					</row>
-					<row hidden="true">
-						<label value="Title:" accesskey="T"/>
-						<textbox disabled="true"/>
+					<row>
+						<label value="&staff.z39_50.search_class.title;" control="title_input" onclick="g.z3950.default_attr = 'title'"/>
+						<textbox id="title_input" mytype="search_class" search_class="title"/>
+						<label value="&staff.z39_50.search_class.author;" control="author_input" onclick="g.z3950.default_attr = 'author'"/>
+						<textbox id="author_input" mytype="search_class" search_class="author"/>
 					</row>
-					<row hidden="true">
-						<label value="Author:"/>
-						<textbox disabled="true"/>
-					</row>
-					<row hidden="true">
-						<label value="Raw Z39.50:" control="raw_string" accesskey="R"/>
-						<textbox id="raw_string"/>
-						<button id="raw_search" label="Submit" />
+					<row>
+						<label value="&staff.z39_50.search_class.pubdate;" control="pubdate_input" onclick="g.z3950.default_attr = 'pubdate'"/>
+						<textbox id="pubdate_input" mytype="search_class" search_class="pubdate"/>
+						<label value="&staff.z39_50.search_class.publisher;" control="publisher_input" onclick="g.z3950.default_attr = 'publisher'"/>
+						<textbox id="publisher_input" mytype="search_class" search_class="publisher"/>
 					</row>
 				</rows>
 			</grid>
+			<spacer flex="1"/>
 			<hbox>
+				<button id="raw_search" label="Raw Search" accesskey="w"/>
 				<spacer flex="1"/>
-				<button id="asc_search" label="Search" accesskey="S"/>
+				<button id="clear" label="Clear Form" accesskey="C"/>
+				<button id="search" label="Search" accesskey="S"/>
 			</hbox>
 		</groupbox>
+		<splitter><grippy/></splitter>
 		<groupbox flex="1">
 			<caption label="Results" />
-			<description id="result_message" />
-			<hbox><spacer flex="1"/><button id="marc_import" label="MARC Editor" accesskey="E" disabled="true"/></hbox>
+			<vbox id="result_message" />
+			<hbox>
+				<button id="page_next" label="Fetch More Results" accesskey="M" disabled="true"/>
+				<spacer flex="1"/>
+				<button id="marc_view" label="MARC View" accesskey="V" disabled="true"/>
+				<button id="marc_import_overlay" label="MARC Editor for Overlay" accesskey="O" disabled="true"/>
+				<button id="marc_import" label="MARC Editor for Import" accesskey="I" disabled="true"/>
+			</hbox>
 			<tree id="results" flex="1" enableColumnDrag="true" seltype="single"/>
 		</groupbox>
 	</groupbox>

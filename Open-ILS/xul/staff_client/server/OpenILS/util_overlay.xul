@@ -7,6 +7,7 @@
 	<scripts id="openils_util_scripts">
 		<script>dump('starting openils_util_overlay\n');</script>
 		<script type="text/javascript" src="/xul/server/main/constants.js" />
+		<script type="text/javascript" src="/xul/server/main/lang.js" />
 		<script type="text/javascript" src="/opac/common/js/utils.js" />
 		<script type="text/javascript" src="/opac/common/js/CGI.js" />
 		<script type="text/javascript" src="/opac/common/js/md5.js" />
