@@ -349,8 +349,10 @@ function myOShowHoldStatus(r) {
 	if( status == 3 )
 		unHideMe($n(row, 'hold_status_transit'));
 
-	if( status == 4 )
+	if( status == 4 ) {
 		unHideMe($n(row, 'hold_status_available'));
+		hideMe($n(row, 'myopac_holds_cancel_link'));
+	}
 }
 
 
