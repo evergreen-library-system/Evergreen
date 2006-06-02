@@ -31,6 +31,10 @@
 	<event code='1003' textcode='Z3950_SEARCH_FAILED'>
 		<desc xml:lang="en-US">The Z search did not succeed</desc>
 	</event>
+	<event code='1004' textcode='Z3950_BAD_QUERY'>
+		<desc xml:lang="en-US">The Z query is not formatted correctly</desc>
+	</event>
+
 	<event code='1200' textcode='USERNAME_EXISTS'>
 		<desc xml:lang="en-US">The given username already exists in the database</desc>
 	</event>
