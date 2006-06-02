@@ -15,7 +15,7 @@ use XML::LibXML;
 use Unicode::Normalize;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor q/:funcs/;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
@@ -115,6 +115,51 @@ sub create_record_xml {
 
 
 
+__PACKAGE__->register_method(
+	method		=> 'biblio_record_replace_marc',
+	api_name		=> 'open-ils.cat.biblio.record.marc.replace',
+	signature	=> q/
+		@param auth The authtoken
+		@param recid The record whose MARC we're replacing
+		@param newxml The new xml to use
+	/
+);
+
+__PACKAGE__->register_method(
+	method		=> 'biblio_record_replace_marc',
+	api_name		=> 'open-ils.cat.biblio.record.marc.replace.override',
+	signature	=> q/@see open-ils.cat.biblio.record.marc.replace/
+);
+
+
+sub biblio_record_replace_marc  {
+	my( $self, $conn, $auth, $recid, $newxml ) = @_;
+
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('CREATE_MARC');
+
+	my( $tcn, $tsource, $marcdoc, $evt) = 
+		_find_tcn_info($e->session, $newxml, $self->api_name =~ /override/);
+
+	return $evt if $evt;
+
+	my $rec = $e->retrieve_biblio_record_entry($recid)
+		or return $e->event;
+
+	$rec->tcn_value($tcn);
+	$rec->tcn_source($tcn);
+	$rec->editor($e->requestor->id);
+	$rec->edit_date('now');
+
+	$logger->activity("user ".$e->requestor->id." replacing MARC for record $recid");
+
+	$e->update_biblio_record_entry($rec) or return $e->event;
+	return $rec;
+}
+
+
+
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_xml_import",
@@ -137,61 +182,19 @@ __PACKAGE__->register_method(
 sub biblio_record_xml_import {
 	my( $self, $client, $authtoken, $xml, $source) = @_;
 
-	my ($tcn, $tcn_source);
-
 	my $override = 1 if $self->api_name =~ /override/;
 
+	my( $tcn, $tcn_source, $marcdoc );
 	my( $requestor, $evt ) = $U->checksesperm($authtoken, 'IMPORT_MARC');
 	return $evt if $evt;
 
 	my $session = $apputils->start_db_session();
 
-	# parse the XML
-	my $marcxml = XML::LibXML->new->parse_string( $xml );
-	$marcxml->documentElement->setNamespace( 
-		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+	( $tcn, $tcn_source, $marcdoc, $evt ) = _find_tcn_info($session, $xml, $override);
+	return $evt if $evt;
 
-	my $xpath = '//marc:controlfield[@tag="001"]';
-	$tcn = $marcxml->documentElement->findvalue($xpath);
-	$logger->info("biblio import located 001 (tcn) value of $tcn");
-
-	$xpath = '//marc:controlfield[@tag="003"]';
-	$tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
-
-	if(my $rec = _tcn_exists($session, $tcn, $tcn_source)) {
-
-		my $origtcn = $tcn;
-		$tcn = find_free_tcn( $marcxml, $session );
-
-		# if we're overriding, try to find a different TCN to use
-		if( $override ) {
-
-			$logger->activity("tcn value $tcn already exists, attempting to override");
-
-			if(!$tcn) {
-				return OpenILS::Event->new(
-					'OPEN_TCN_NOT_FOUND', payload => $marcxml->toString());
-			}
-
-		} else {
-
-			$logger->warn("tcn value $origtcn already exists in import/create");
-
-			# otherwise, return event
-			return OpenILS::Event->new( 
-				'TCN_EXISTS', payload => { 
-					dup_record	=> $rec, 
-					tcn			=> $origtcn,
-					new_tcn		=> $tcn
-					} );
-		}
-
-	} else {
-
-		$logger->activity("user ".$requestor->id.
+	$logger->activity("user ".$requestor->id.
 		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
-	}
-
 
 	my $record = Fieldmapper::biblio::record_entry->new;
 
@@ -200,7 +203,9 @@ sub biblio_record_xml_import {
 	$record->tcn_value($tcn);
 	$record->creator($requestor->id);
 	$record->editor($requestor->id);
-	$record->marc( entityize( $marcxml->documentElement->toString ) );
+	$record->create_date('now');
+	$record->edit_date('now');
+	$record->marc( entityize( $marcdoc->documentElement->toString ) );
 
 	my $id = $session->request(
 		"open-ils.storage.direct.biblio.record_entry.create", $record )->gather(1);
@@ -219,6 +224,69 @@ sub biblio_record_xml_import {
 		("Unable to wormize imported record") unless $stat;
 
 	return $record;
+}
+
+
+sub _find_tcn_info {
+
+	my $session		= shift;
+	my $xml			= shift;
+	my $override	= shift;;
+
+	# parse the XML
+	my $marcxml = XML::LibXML->new->parse_string( $xml );
+	$marcxml->documentElement->setNamespace( 
+		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+
+	my $xpath = '//marc:controlfield[@tag="001"]';
+	my $tcn = $marcxml->documentElement->findvalue($xpath);
+	$logger->info("biblio import located 001 (tcn) value of $tcn");
+
+	$xpath = '//marc:controlfield[@tag="003"]';
+	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
+
+	if(my $rec = _tcn_exists($session, $tcn, $tcn_source)) {
+
+		my $origtcn = $tcn;
+		$tcn = find_free_tcn( $marcxml, $session );
+
+		# if we're overriding, try to find a different TCN to use
+		if( $override ) {
+
+			$logger->activity("tcn value $tcn already exists, attempting to override");
+
+			if(!$tcn) {
+				return ( 
+					undef, 
+					undef, 
+					undef,
+					OpenILS::Event->new(
+						'OPEN_TCN_NOT_FOUND', 
+							payload => $marcxml->toString())
+					);
+			}
+
+		} else {
+
+			$logger->warn("tcn value $origtcn already exists in import/create");
+
+			# otherwise, return event
+			return ( 
+				undef, 
+				undef, 
+				undef,
+				OpenILS::Event->new( 
+					'TCN_EXISTS', payload => { 
+						dup_record	=> $rec, 
+						tcn			=> $origtcn,
+						new_tcn		=> $tcn
+						}
+					)
+				);
+		}
+	}
+
+	return ($tcn, $tcn_source, $marcxml);
 }
 
 sub find_free_tcn {
@@ -306,9 +374,14 @@ sub _tcn_exists {
 
 	$logger->debug("tcn_exists search for tcn $tcn and source $source");
 
+	# XXX why does the source matter?
+#	my $req = $session->request(      
+#		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
+#		{ tcn_value => $tcn, tcn_source => $source, deleted => 'f' } );
+
 	my $req = $session->request(      
 		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
-		{ tcn_value => $tcn, tcn_source => $source, deleted => 'f' } );
+		{ tcn_value => $tcn, deleted => 'f' } );
 
 	my $recs = $req->gather(1);
 
