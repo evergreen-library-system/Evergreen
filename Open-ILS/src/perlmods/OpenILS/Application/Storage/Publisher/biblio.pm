@@ -353,6 +353,11 @@ sub record_copy_status_count {
 	my $client = shift;
 
 	my $rec = shift;
+	my $ou = shift || 1;
+	my $depth = shift || 0;
+
+
+	my $descendants = "actor.org_unit_descendants(?,?)";
 
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
@@ -365,10 +370,12 @@ sub record_copy_status_count {
 		  FROM	$cp_table cp,
 		  	$cn_table cn,
 			$cl_table cl,
-			$cs_table cs
+			$cs_table cs,
+			$descendants d
 		  WHERE	cn.record = ?
 		  	AND cp.call_number = cn.id
 		  	AND cp.location = cl.id
+			AND cp.circ_lib = d.id
 		  	AND cp.status = cs.id
 			AND cl.opac_visible IS TRUE
 			AND cp.opac_visible IS TRUE
@@ -378,7 +385,7 @@ sub record_copy_status_count {
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute("$rec");
+	$sth->execute($ou, $depth, "$rec" );
 
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {
