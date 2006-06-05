@@ -335,8 +335,9 @@ sub _prop_string {
 
 sub _hash_to_string {
 	my $h = shift;
-	my $str = "";
+	my $str = "{";
 	$str .= " $_=".$h->{$_} for keys %$h;
+	$str .= " }";
 	return $str;
 }
 
