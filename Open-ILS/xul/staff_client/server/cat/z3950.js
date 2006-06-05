@@ -134,7 +134,7 @@ cat.z3950.prototype = {
 						'raw_search' : [
 							['command'],
 							function() {
-								var raw = window.prompt('Enter raw z39.50 search string: ','','Raw Z39.50 Search');
+								var raw = window.prompt('WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search string: ','','Raw Z39.50 PQN Search');
 								if (raw) obj.initial_raw_search(raw);
 							},
 						],
