@@ -24,6 +24,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 
 use OpenILS::Application::Actor::Container;
+use OpenILS::Application::Actor::ClosedDates;
 
 use OpenILS::Utils::Editor qw/:funcs/;
 
@@ -31,6 +32,7 @@ use OpenILS::Application::Actor::UserGroups;
 sub initialize {
 	OpenILS::Application::Actor::Container->initialize();
 	OpenILS::Application::Actor::UserGroups->initialize();
+	OpenILS::Application::Actor::ClosedDates->initialize();
 }
 
 my $apputils = "OpenILS::Application::AppUtils";
