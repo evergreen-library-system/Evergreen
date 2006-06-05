@@ -211,7 +211,7 @@ sub request {
 		$val = $self->session->request($method, @params)->gather(1);
 
 	} catch Error with {
-		my $err = shift;
+		$err = shift;
 		$self->log(E, "request error $method : $argstr : $err");
 	};
 
