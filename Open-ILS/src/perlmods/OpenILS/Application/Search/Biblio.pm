@@ -644,9 +644,11 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub copy_count_summary {
-	my( $self, $client, $rid ) = @_;
+	my( $self, $client, $rid, $org, $depth ) = @_;
+	$org ||= 1;
+	$depth ||= 0;
 	return $U->storagereq(
-		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid );
+		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
 }
 
 
