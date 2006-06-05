@@ -116,8 +116,20 @@ function advGenericSearch() {
 			arg[PARAM_CN]	= term;
 			break;
 
-		default: alert('not done yet');
+		case 'lccn':
+			arg.page = RRESULT;
+			arg[PARAM_FORM] = 'all'
+			arg[PARAM_RTYPE] = RTYPE_MARC;
+			arg[PARAM_OFFSET] = 0;
+			arg[PARAM_DEPTH]	= depthSelGetDepth();
+			arg[PARAM_LOCATION]	= depthSelGetNewLoc();
+			arg[PARAM_SEARCHES] = js2JSON([{ 'term' : term, 'restrict' :  [ { 'tag' : '010', 'subfield' : '_' } ] }]);
+			arg[PARAM_ADVTYPE] = ADVTYPE_MARC;
+			arg[PARAM_TERM] = "";
+			break;
 
+
+		default: alert('not done');
 	}
 
 	if(arg.page) goTo(buildOPACLink(arg));
