@@ -50,6 +50,9 @@
 
 				document.getElementById('caption').setAttribute('tooltiptext','Record ID = ' + docid);
 
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+				data.last_record = docid; data.stash('last_record');
+
 				g.network.request(
 					api.MODS_SLIM_RECORD_RETRIEVE.app,
 					api.MODS_SLIM_RECORD_RETRIEVE.method,
