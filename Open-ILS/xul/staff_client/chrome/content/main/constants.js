@@ -112,6 +112,7 @@ const api = {
 	'PERM_MULTI_ORG_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.perm.check.multi_org' },
 	'MARC_XML_RECORD_CREATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.create' },
 	'MARC_XML_RECORD_IMPORT' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.import' },
+	'MARC_XML_RECORD_REPLACE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc.replace' },
 	'MARC_XML_RECORD_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.update' },
 	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
 	'PATRON_BARCODE_EXISTS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists' },
