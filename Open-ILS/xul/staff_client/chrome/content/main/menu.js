@@ -315,7 +315,7 @@ main.menu.prototype = {
 						return;
 					}
 					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( obj.data.last_patron ) );
-					obj.new_tab( url );
+					obj.set_tab( url );
 				}
 			],
 			
