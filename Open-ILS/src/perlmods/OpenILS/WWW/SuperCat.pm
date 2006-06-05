@@ -13,6 +13,7 @@ use Data::Dumper;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use XML::LibXML;
@@ -562,6 +563,7 @@ sub opensearch_feed {
 	my $base = (split 'opensearch', $url)[0] . 'opensearch';
 	my $unapi = (split 'opensearch', $url)[0] . 'unapi';
 
+
 	my $path = (split 'opensearch', $url)[1];
 
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
@@ -634,18 +636,32 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
-	my $recs = $search->request(
-		'open-ils.search.biblio.multiclass' => {
-			searches	=> { $class => { term => $terms, }, },
-			org_unit	=> $org_unit->[0]->id,
-			limit		=> $limit,
-			offset		=> $offset,
-		}
-	)->gather(1);
+	my $rs_name = $cgi->cookie('os_session');
+	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
+
+	my $recs;
+	if (!($recs = $$cached_res{os_results}{$class}{$terms}{$org})) {
+		warn "NOT pulling results from cache";
+		$rs_name = $cgi->remote_host . '::' . rand(time);
+		$recs = $search->request(
+			'open-ils.search.biblio.multiclass' => {
+				searches	=> { $class => { term => $terms, }, },
+				org_unit	=> $org_unit->[0]->id,
+				offset		=> 0,
+				limit		=> 5000,
+			}
+		)->gather(1);
+		try {
+			$$cached_res{os_results}{$class}{$terms}{$org} = $recs;
+			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
+		} catch Error with {
+			warn shift();
+		};
+	}
 
 	my $feed = create_record_feed(
 		$type,
-		[ map { $_->[0] } @{$recs->{ids}} ],
+		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
 		$unapi,
 	);
 	$feed->root($root);
@@ -707,11 +723,16 @@ sub opensearch_feed {
 	$feed->link(
 		opac =>
 		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
-			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
+			join('&', map { 'rl=' . $_->[0] } grep { defined $_ } @{$recs->{ids}} ),
 		'text/html'
 	);
 
-	print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
+	print $cgi->header(
+		-type		=> $feed->type,
+		-charset	=> 'UTF-8',
+		-cookie		=> $cgi->cookie( -name => 'os_session', -value => $rs_name, -expires => '+30m' ),
+	);
+
 	print entityize($feed->toString) . "\n";
 
 	return Apache2::Const::OK;
@@ -736,6 +757,8 @@ sub create_record_feed {
 	$type = 'marcxml' if ($type eq 'htmlcard');
 
 	for my $rec (@$records) {
+		next unless($rec);
+
 		my $item_tag = "tag:$host,$year:biblio-record_entry/" . $rec;
 
 
