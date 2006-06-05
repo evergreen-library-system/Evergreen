@@ -309,9 +309,38 @@ main.menu.prototype = {
 			'cmd_retrieve_last_patron' : [
 				['oncommand'],
 				function() {
-					alert('Not Yet Implemented');
+					obj.data.stash_retrieve();
+					if (!obj.data.last_patron) {
+						alert('No patron visited yet this session.');
+						return;
+					}
+					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( obj.data.last_patron ) );
+					obj.new_tab( url );
 				}
 			],
+			
+			'cmd_retrieve_last_record' : [
+				['oncommand'],
+				function() {
+					obj.data.stash_retrieve();
+					if (!obj.data.last_record) {
+						alert('No record visited yet this session.');
+						return;
+					}
+					var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + obj.data.last_record;
+					var content_params = {
+						'session' : ses(),
+						'authtime' : ses('authtime'),
+						'opac_url' : opac_url,
+					};
+					obj.set_tab(
+						obj.url_prefix(urls.XUL_OPAC_WRAPPER),
+						{'tab_name':'Retrieving title...'},
+						content_params
+					);
+				}
+			],
+
 
 			/* Cataloging Menu */
 			'cmd_z39_50_import' : [
