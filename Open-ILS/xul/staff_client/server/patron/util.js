@@ -399,6 +399,8 @@ var TIME = { minute : 60, hour : 60*60, day : 60*60*24, year : 60*60*24*365 };
 
 patron.util.set_penalty_css = function(patron) {
 	try {
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		data.last_patron = patron.id(); data.stash('last_patron');
 
 		var penalties = patron.standing_penalties();
 		for (var i = 0; i < penalties.length; i++) {
