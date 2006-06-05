@@ -258,6 +258,11 @@
 				'chrome,resizable,modal,center'
 			);
 		}
+
+		function mark_for_overlay() {
+			g.data.marked_record = docid;
+			g.data.stash('marked_record');
+		}
 		
 		function refresh_display(id,reset) {
 			try { 
@@ -323,6 +328,7 @@
 				<menuitem label="View Holds" accesskey="s" id="view_holds" oncommand="set_hold_browser();"/>
 				<menuseparator/>
 				<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
+				<menuitem label="Mark for Overlay" accesskey="M" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
 				<menuseparator/>
 				<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
 				<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
