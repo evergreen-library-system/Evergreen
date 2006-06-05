@@ -158,6 +158,7 @@ cat.z3950.prototype = {
 													var label = document.createElement('label');
 													label.setAttribute('control',i+'_input');
 													label.setAttribute('search_class',i);
+													label.setAttribute('style','-moz-user-focus: ignore');
 													if (entities['staff.z39_50.search_class.'+i]) {
 														label.setAttribute('value',entities['staff.z39_50.search_class.'+i]);
 													} else {

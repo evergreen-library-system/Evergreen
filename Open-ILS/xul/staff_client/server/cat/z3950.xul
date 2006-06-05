@@ -102,27 +102,27 @@
 				<columns><column /><column flex="1" /><column /><column flex="1"/><column /><column flex="1"/></columns>
 				<rows id="query_inputs">
 					<row>
-						<label value="&staff.z39_50.search_class.tcn;" control="tcn_input" onclick="g.z3950.default_attr = 'tcn'" accesskey="0"/>
+						<label value="&staff.z39_50.search_class.tcn;" control="tcn_input" onclick="g.z3950.default_attr = 'tcn'" accesskey="0" style="-moz-user-focus: ignore"/>
 						<textbox id="tcn_input" mytype="search_class" search_class="tcn" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.isbn;" control="isbn_input" onclick="g.z3950.default_attr = 'isbn'"/>
+						<label value="&staff.z39_50.search_class.isbn;" control="isbn_input" onclick="g.z3950.default_attr = 'isbn'" style="-moz-user-focus: ignore"/>
 						<textbox id="isbn_input" mytype="search_class" search_class="isbn" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.issn;" control="issn_input" onclick="g.z3950.default_attr = 'issn'"/>
+						<label value="&staff.z39_50.search_class.issn;" control="issn_input" onclick="g.z3950.default_attr = 'issn'" style="-moz-user-focus: ignore"/>
 						<textbox id="issn_input" mytype="search_class" search_class="issn" onkeypress="handle_enter(event)"/>
 					</row>
 					<row>
-						<label value="&staff.z39_50.search_class.title;" control="title_input" onclick="g.z3950.default_attr = 'title'"/>
+						<label value="&staff.z39_50.search_class.title;" control="title_input" onclick="g.z3950.default_attr = 'title'" style="-moz-user-focus: ignore"/>
 						<textbox id="title_input" mytype="search_class" search_class="title" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.author;" control="author_input" onclick="g.z3950.default_attr = 'author'"/>
+						<label value="&staff.z39_50.search_class.author;" control="author_input" onclick="g.z3950.default_attr = 'author'" style="-moz-user-focus: ignore"/>
 						<textbox id="author_input" mytype="search_class" search_class="author" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.lccn;" control="lccn_input" onclick="g.z3950.default_attr = 'lccn'"/>
+						<label value="&staff.z39_50.search_class.lccn;" control="lccn_input" onclick="g.z3950.default_attr = 'lccn'" style="-moz-user-focus: ignore"/>
 						<textbox id="lccn_input" mytype="search_class" search_class="lccn" onkeypress="handle_enter(event)"/>
 					</row>
 					<row>
-						<label value="&staff.z39_50.search_class.pubdate;" control="pubdate_input" onclick="g.z3950.default_attr = 'pubdate'"/>
+						<label value="&staff.z39_50.search_class.pubdate;" control="pubdate_input" onclick="g.z3950.default_attr = 'pubdate'" style="-moz-user-focus: ignore"/>
 						<textbox id="pubdate_input" mytype="search_class" search_class="pubdate" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.publisher;" control="publisher_input" onclick="g.z3950.default_attr = 'publisher'"/>
+						<label value="&staff.z39_50.search_class.publisher;" control="publisher_input" onclick="g.z3950.default_attr = 'publisher'" style="-moz-user-focus: ignore"/>
 						<textbox id="publisher_input" mytype="search_class" search_class="publisher" onkeypress="handle_enter(event)"/>
-						<label value="&staff.z39_50.search_class.item_type;" control="item_type_input" onclick="g.z3950.default_attr = 'item_type'"/>
+						<label value="&staff.z39_50.search_class.item_type;" control="item_type_input" onclick="g.z3950.default_attr = 'item_type'" style="-moz-user-focus: ignore"/>
 						<menulist id="item_type_input" mytype="search_class" search_class="item_type">
 							<menupopup>
 								<menuitem label="&staff.z39_50.search_class.item_type.all;" value=""/>
