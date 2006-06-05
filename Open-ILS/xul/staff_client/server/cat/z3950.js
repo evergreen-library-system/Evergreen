@@ -54,6 +54,8 @@ cat.z3950.prototype = {
 							obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
 							obj.controller.view.marc_import.disabled = false;
 							obj.controller.view.marc_import.setAttribute('retrieve_id',list[0]);
+							obj.controller.view.marc_import_overlay.disabled = false;
+							obj.controller.view.marc_import_overlay.setAttribute('retrieve_id',list[0]);
 							obj.controller.view.marc_view.disabled = false;
 							obj.controller.view.marc_view.setAttribute('retrieve_id',list[0]);
 						} catch(E) {
@@ -117,6 +119,20 @@ cat.z3950.prototype = {
 										obj.controller.view.marc_import.getAttribute('retrieve_id')
 									].marcxml
 								);
+							},
+						],
+						'marc_import_overlay' : [ 
+							['command'],
+							function() {
+								try {
+								obj.spawn_marc_editor_for_overlay(
+									obj.results.records[
+										obj.controller.view.marc_import_overlay.getAttribute('retrieve_id')
+									].marcxml
+								);
+								} catch(E) {
+									alert(E);
+								}
 							},
 						],
 						'search' : [
@@ -397,6 +413,7 @@ cat.z3950.prototype = {
 			if (results.records) {
 				obj.results = results;
 				obj.controller.view.marc_import.disabled = true;
+				obj.controller.view.marc_import_overlay.disabled = true;
 				var x = obj.controller.view.marc_view;
 				if (x.getAttribute('toggle') == '0') x.disabled = true;
 				for (var i = 0; i < obj.results.records.length; i++) {
@@ -503,6 +520,105 @@ cat.z3950.prototype = {
 			} 
 		);
 	},
+
+	'confirm_overlay' : function(record_ids) {
+		var obj = this; JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+		var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+		top_xml += '<description>Overlay this record?</description>';
+		top_xml += '<hbox><button id="lead" disabled="false" label="Overlay" name="fancy_submit" accesskey="O"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+
+		var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
+		xml += '<table width="100%"><tr valign="top">';
+		for (var i = 0; i < record_ids.length; i++) {
+			xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
+			xml += '?docid=' + record_ids[i] + '"/></td>';
+		}
+		xml += '</tr><tr valign="top">';
+		for (var i = 0; i < record_ids.length; i++) {
+			html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
+			xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
+		}
+		xml += '</tr></table></form>';
+		data.temp_merge_top = top_xml; data.stash('temp_merge_top');
+		data.temp_merge_mid = xml; data.stash('temp_merge_mid');
+		window.open(
+			urls.XUL_FANCY_PROMPT
+			+ '?xml_in_stash=temp_merge_mid'
+			+ '&top_xml_in_stash=temp_merge_top'
+			+ '&title=' + window.escape('Record Overlay'),
+			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		);
+		data.stash_retrieve();
+		if (data.fancy_prompt_data == '') { alert('Overlay Aborted'); return false; }
+		return true;
+	},
+
+	'spawn_marc_editor_for_overlay' : function(my_marcxml) {
+		var obj = this;
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (!data.marked_record) {
+			alert('Please mark a record for overlay from within the catalog and try this again.');
+			return;
+		}
+
+		xulG.new_tab(
+			xulG.url_prefix(urls.XUL_MARC_EDIT), 
+			{ 'tab_name' : 'MARC Editor' }, 
+			{ 
+				'record' : { 'marc' : my_marcxml },
+				'save' : {
+					'label' : 'Overlay Record',
+					'func' : function (new_marcxml) {
+						try {
+							if (! obj.confirm_overlay( [ data.marked_record ] ) ) { return; }
+							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), data.marked_record, new_marcxml ]);
+							if (typeof r.ilsevent != 'undefined') {
+								switch(r.ilsevent) {
+									case 1704 /* TCN_EXISTS */ :
+										var msg = 'A record with with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
+										var title = 'Import Collision';
+										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : 'Overlay with alternate TCN ' + r.payload.new_tcn;
+										var btn2 = 'Cancel Import';
+										var p = obj.error.yns_alert(msg,title,btn1,btn2,null,'Check here to confirm this action');
+										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+										switch(p) {
+											case 0:
+												var r2 = obj.network.request(
+													api.MARC_XML_RECORD_REPLACE.app,
+													api.MARC_XML_RECORD_REPLACE.method + '.override',
+													[ ses(), data.marked_record, new_marcxml ]
+												);
+												if (typeof r2.ilsevent != 'undefined') {
+													throw(r2);
+												} else {
+													alert('Record successfully overlayed with alternate TCN.');
+													obj.replace_tab_with_opac(r2.id());
+												}
+											break;
+											case 1:
+											default:
+												alert('Record overlay cancelled');
+											break;
+										}
+									break;
+									default:
+										throw(r);
+									break;
+								}
+							} else {
+								alert('Record successfully overlayed.');
+								obj.replace_tab_with_opac(r.id());
+							}
+						} catch(E) {
+							obj.error.standard_unexpected_error_alert('Record not likely overlayed.',E);
+						}
+					}
+				}
+			} 
+		);
+	},
+
 
 	'load_creds' : function() {
 		var obj = this;
