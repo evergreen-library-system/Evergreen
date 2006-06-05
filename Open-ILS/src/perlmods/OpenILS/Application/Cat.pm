@@ -116,6 +116,18 @@ sub create_record_xml {
 
 
 __PACKAGE__->register_method(
+	method	=> "biblio_record_replace_marc",
+	api_name	=> "open-ils.cat.biblio.record.xml.update",
+	argc		=> 3, 
+	signature	=> q/
+		Updates the XML for a given biblio record.
+		This does not change any other aspect of the record entry
+		exception the XML, the editor, and the edit date.
+		@return The update record object
+	/
+);
+
+__PACKAGE__->register_method(
 	method		=> 'biblio_record_replace_marc',
 	api_name		=> 'open-ils.cat.biblio.record.marc.replace',
 	signature	=> q/
@@ -135,26 +147,39 @@ __PACKAGE__->register_method(
 sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml ) = @_;
 
-	my $e = new_editor(authtoken => $auth);
+	my $e = new_editor(authtoken => $auth, xact => 1);
+	warn "EDITOR : xact = " . $e->{xact} . "\n";
+
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('CREATE_MARC');
 
+	my $fixtcn = $self->api_name =~ /replace/o;
+
+	# See if there is a different record in the database that has our TCN value
+	# If we're not updating the TCN, all we care about it the marcdoc
 	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info($e->session, $newxml, $self->api_name =~ /override/);
+		_find_tcn_info($e->session, $newxml, $self->api_name =~ /override/, $recid);
 
 	return $evt if $evt;
 
 	my $rec = $e->retrieve_biblio_record_entry($recid)
 		or return $e->event;
 
-	$rec->tcn_value($tcn);
-	$rec->tcn_source($tcn);
+	if( $fixtcn ) {
+		$rec->tcn_value($tcn);
+		$rec->tcn_source($tcn);
+	}
+
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
+	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
 
 	$logger->activity("user ".$e->requestor->id." replacing MARC for record $recid");
 
 	$e->update_biblio_record_entry($rec) or return $e->event;
+	$e->request('open-ils.worm.wormize.biblio', $recid) or return $e->event;
+	$e->commit;
+
 	return $rec;
 }
 
@@ -231,7 +256,8 @@ sub _find_tcn_info {
 
 	my $session		= shift;
 	my $xml			= shift;
-	my $override	= shift;;
+	my $override	= shift;
+	my $existing_rec	= shift || 0;
 
 	# parse the XML
 	my $marcxml = XML::LibXML->new->parse_string( $xml );
@@ -245,10 +271,10 @@ sub _find_tcn_info {
 	$xpath = '//marc:controlfield[@tag="003"]';
 	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
 
-	if(my $rec = _tcn_exists($session, $tcn, $tcn_source)) {
+	if(my $rec = _tcn_exists($session, $tcn, $tcn_source, $existing_rec) ) {
 
 		my $origtcn = $tcn;
-		$tcn = find_free_tcn( $marcxml, $session );
+		$tcn = find_free_tcn( $marcxml, $session, $existing_rec );
 
 		# if we're overriding, try to find a different TCN to use
 		if( $override ) {
@@ -293,6 +319,7 @@ sub find_free_tcn {
 
 	my $marcxml = shift;
 	my $session = shift;
+	my $existing_rec = shift;
 
 	my $add_039 = 0;
 
@@ -301,7 +328,7 @@ sub find_free_tcn {
 	$xpath = '//marc:datafield[@tag="039"]/subfield[@code="b"]';
 	my $tcn_source = $marcxml->documentElement->findvalue($xpath) || "System Local";
 
-	if(_tcn_exists($session, $tcn, $tcn_source)) {
+	if(_tcn_exists($session, $tcn, $tcn_source, $existing_rec)) {
 		$tcn = undef;
 	} else {
 		$add_039++;
@@ -312,28 +339,28 @@ sub find_free_tcn {
 		$xpath = '//marc:datafield[@tag="020"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISBN";
-		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
 	}
 
 	if(!$tcn) { 
 		$xpath = '//marc:datafield[@tag="022"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "ISSN";
-		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
 		$xpath = '//marc:datafield[@tag="010"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "LCCN";
-		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
 	}
 
 	if(!$tcn) {
 		$xpath = '//marc:datafield[@tag="035"]/subfield[@code="a"]';
 		($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 		$tcn_source = "System Legacy";
-		if(_tcn_exists($session, $tcn, $tcn_source)) {$tcn = undef;}
+		if(_tcn_exists($session, $tcn, $tcn_source, $existing_rec)) {$tcn = undef;}
 
 		if($tcn) {
 			$marcxml->documentElement->removeChild(
@@ -341,6 +368,8 @@ sub find_free_tcn {
 			);
 		}
 	}
+
+	return undef unless $tcn;
 
 	if ($add_039) {
 		my $df = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'datafield');
@@ -369,6 +398,7 @@ sub _tcn_exists {
 	my $session = shift;
 	my $tcn = shift;
 	my $source = shift;
+	my $existing_rec ||= 0;
 
 	if(!$tcn) {return 0;}
 
@@ -381,7 +411,7 @@ sub _tcn_exists {
 
 	my $req = $session->request(      
 		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
-		{ tcn_value => $tcn, deleted => 'f' } );
+		{ tcn_value => $tcn, deleted => 'f', id => {'!=' => $existing_rec} } );
 
 	my $recs = $req->gather(1);
 
@@ -396,7 +426,10 @@ sub _tcn_exists {
 
 
 
+
 # XXX deprecated. Remove me.
+
+=head deprecated
 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_tree_retrieve",
@@ -431,7 +464,10 @@ sub biblio_record_tree_retrieve {
 
 	return $tree;
 }
+=cut
 
+
+=head deprecate 
 __PACKAGE__->register_method(
 	method	=> "biblio_record_xml_update",
 	api_name	=> "open-ils.cat.biblio.record.xml.update",
@@ -523,6 +559,8 @@ sub biblio_record_xml_update {
 	return $biblio;
 
 }
+
+=cut
 
 
 
