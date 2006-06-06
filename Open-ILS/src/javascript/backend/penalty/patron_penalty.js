@@ -5,10 +5,11 @@ load_lib('../circ/circ_lib.js');
 
 
 /* collect some useful variables */
-var patron				= environment.patron;
-var patronProfile		= patron.profile.name.toLowerCase();
-var patronItemsOut	= environment.patronItemsOut;
-var patronFines		= environment.patronFines;
+var patron					= environment.patron;
+var patronProfile			= patron.profile.name.toLowerCase();
+var patronItemsOut		= environment.patronItemsOut;
+var patronFines			= environment.patronFines;
+var patronOverdueCount	= environment.patronOverdueCount;
 
 
 log_debug('circ_permit_patron: permit circ on ' +
@@ -21,11 +22,38 @@ log_debug('circ_permit_patron: permit circ on ' +
 	'');
 
 
-if( patronProfile == 'patrons' && patronItemsOut > 10 )
-	result.fatalEvents.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
+var PROFILES = {
+	restricted : {
+		fineLimit : 0,
+		overdueLimit : 0,
+	},
+	patrons : {
+		fineLimit : 10,
+		overdueLimit : 10,
+	},
+	class : {
+		fineLimit : 10,
+		overdueLimit : 10,
+	}
 
-if( patronProfile == 'staff' && patronItemsOut > 30 )
-	result.fatalEvents.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
+	/* Add profiles as necessary ... */
+}
+
+
+
+
+/** Find the patron's profile and check the fine and overdue limits */
+for( var p in PROFILES ) {
+	var profile = PROFILES[p];
+	if( patronProfile != profile ) continue;
+
+	if( patronFiles >= profile.fineLimit )
+		result.events.push('PATRON_EXCEEDS_FINES');
+	if( patronOverdueCount > profile.overdueLimit )
+		result.events.puth('REFUND_EXCEEDS_OVERDUE_COUNT');
+}
+
+
 
 
 } go();
