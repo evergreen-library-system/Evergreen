@@ -79,7 +79,7 @@ const api = {
 	'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out' },
 	'FM_CIRC_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_checkout_history.retrieve' },
 	/*'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count' },*/
-	'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count_' },
+	'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count' },
 	'FM_CIRC_EDIT_DUE_DATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.due_date.update' },
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'FM_CNCT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cat_types.retrieve.all' },
