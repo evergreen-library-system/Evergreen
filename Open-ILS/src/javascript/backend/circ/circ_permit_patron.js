@@ -25,13 +25,28 @@ log_debug('circ_permit_patron: permit circ on ' +
 	'');
 
 
-if( patronStanding != 'good' ) 
-	result.events.push('PATRON_BAD_STANDING');
+if( patron.barred() ) 
+	result.events.push('PATRON_BARRED');
 
-if( patronProfile == 'patrons' && patronItemsOut > 10 )
-	result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
 
-if( patronProfile == 'staff' && patronItemsOut > 30 )
+/* define the items out limits */
+var PROFILES = {
+	restricted : {
+		itemsOutLimit : 2,
+	},
+	patrons : {
+		itemsOutLimit : 10,
+	},
+	class : {
+		itemsOutLimit : 10,
+	}
+
+	/* Add profiles as necessary ... */
+}
+
+
+var profile = PROFILES[patronProfile];
+if( patronItemsOut > profile.itemsOutLimit )
 	result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
 
 
