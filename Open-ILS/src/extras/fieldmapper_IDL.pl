@@ -30,11 +30,12 @@ for my $object (keys %$map) {
 	my $fm = $$map{$object}{cdbi};
 	my $short_name= $map->{$object}->{hint};
 	my ($primary) = $map->{$object}->{cdbi}->columns('Primary');
+	my ($seq) = $map->{$object}->{cdbi}->sequence;
 	my $table = $map->{$object}->{cdbi}->table;
 
 	print <<"	XML";
 	<class id="$short_name" oils_obj:fieldmapper="$fm" oils_persist:tablename="$table">
-		<fields oils_persist:primary="$primary">
+		<fields oils_persist:primary="$primary" oils_persist:sequence="$seq">
 	XML
 
 	for my $field (sort { $$map{$object}{fields}{$a}{position} <=> $$map{$object}{fields}{$b}{position}} keys %{$map->{$object}->{fields}}) {
