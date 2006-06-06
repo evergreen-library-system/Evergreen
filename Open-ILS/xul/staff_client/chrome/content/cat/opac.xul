@@ -313,10 +313,10 @@
 		<deck id="top_pane"/>
 		<hbox id="nav" hidden="true">
 			<label id="record_pos"/>
-			<button id="record_start" label="Start" oncommand="if (g.f_record_start) g.f_record_start();"/>
-			<button id="record_prev" label="Previous" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
-			<button id="record_next" label="Next" oncommand="if (g.f_record_next) g.f_record_next();"/>
-			<button id="record_end" label="End" oncommand="if (g.f_record_end) g.f_record_end();"/>
+			<button id="record_start" accesskey="S" label="Start" oncommand="if (g.f_record_start) g.f_record_start();"/>
+			<button id="record_prev" accesskey="P" label="Previous" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
+			<button id="record_next" accesskey="N" label="Next" oncommand="if (g.f_record_next) g.f_record_next();"/>
+			<button id="record_end" accesskey="E" label="End" oncommand="if (g.f_record_end) g.f_record_end();"/>
 			<spacer flex="1"/>
 			<menubar>
 				<menu label="Actions for this Record" accesskey="A">
