@@ -374,16 +374,25 @@ patron.items.prototype = {
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
 		} else {
-			obj.checkouts = obj.network.request(
+			var robj = obj.network.request(
 				api.FM_CIRC_RETRIEVE_VIA_USER.app,
 				api.FM_CIRC_RETRIEVE_VIA_USER.method,
 				[ ses(), obj.patron_id ]
 			);
-				
+			if (typeof robj.ilsevent!='undefined') {
+				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
+			}
+			obj.checkouts = [];
+			obj.checkouts = obj.checkouts.concat( robj.long_overdue );
+			obj.checkouts = obj.checkouts.concat( robj.overdue );
+			obj.checkouts = obj.checkouts.concat( robj.lost );
+			obj.checkouts = obj.checkouts.concat( robj.claims_returned );
+			obj.checkouts = obj.checkouts.concat( robj.out );
 		}
 
-		function gen_list_append(checkout) {
+		function gen_list_append(circ_id) {
 			return function() {
+				var checkout = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), circ_id]);
 				obj.list.append(
 					{
 						'row' : {

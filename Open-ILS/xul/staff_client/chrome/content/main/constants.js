@@ -76,7 +76,7 @@ const api = {
 	'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all' },
 	'FM_CIRC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.retrieve' },
 	/*'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out.slim' },*/
-	'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out.opac' },
+	'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out' },
 	'FM_CIRC_RETRIEVE_VIA_COPY' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_checkout_history.retrieve' },
 	/*'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count' },*/
 	'FM_CIRC_COUNT_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_out.count_' },
