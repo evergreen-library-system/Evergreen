@@ -101,18 +101,22 @@ sub record_ranged_tree {
 	my $client = shift;
 	my $r = shift;
 	my $ou = shift;
-	my $depth = shift || 0;
+	my $depth = shift;
 	my $limit = shift || 0;
 	my $offset = shift || 0;
+
+	my $ou_sql = defined($depth) ?
+			"SELECT id FROM actor.org_unit_descendants(?,?)":
+			"SELECT id FROM actor.org_unit_descendants(?)";
 
 	my $ou_list =
 		actor::org_unit
 			->db_Main
 			->selectcol_arrayref(
-				'SELECT id FROM actor.org_unit_descendants(?,?)',
+				$ou_sql,
 				{},
 				$ou,
-				$depth
+				(defined($depth) ? ($depth) : ()),
 			);
 
 	return undef unless ($ou_list and @$ou_list);
@@ -142,7 +146,7 @@ sub record_ranged_tree {
 
 			my $copy = $cp->to_fieldmapper;
 			$copy->status( $cp->status->to_fieldmapper );
-			$copy->location( $cp->status->to_fieldmapper );
+			$copy->location( $cp->location->to_fieldmapper );
 			push @{ $call_number->copies }, $copy;
 
 			$limit_count++;
