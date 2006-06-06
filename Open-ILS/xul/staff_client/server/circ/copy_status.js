@@ -368,7 +368,35 @@ circ.copy_status.prototype = {
 			}
 		);
 
-		JSAN.use('cat.util'); cat.util.spawn_copy_editor(list);
+		var copies = util.functional.map_list(
+			list,
+			function (acp_id) {
+				return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
+			}
+		);
+
+		var edit = 0;
+		try {
+			edit = obj.network.request(
+				api.PERM_MULTI_ORG_CHECK.app,
+				api.PERM_MULTI_ORG_CHECK.method,
+				[ 
+					ses(), 
+					obj.data.list.au[0].id(), 
+					util.functional.map_list(
+						copies,
+						function (o) {
+							return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
+						}
+					),
+					[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+				]
+			).length == 0 ? 1 : 0;
+		} catch(E) {
+			obj.error.sdump('D_ERROR','batch permission check: ' + E);
+		}
+
+		JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
 
 	},
 

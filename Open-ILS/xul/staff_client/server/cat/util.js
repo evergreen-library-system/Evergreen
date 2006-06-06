@@ -8,41 +8,16 @@ cat.util.EXPORT_OK	= [
 ];
 cat.util.EXPORT_TAGS	= { ':all' : cat.util.EXPORT_OK };
 
-cat.util.spawn_copy_editor = function(list) {
+cat.util.spawn_copy_editor = function(list,edit) {
+	try {
 	var obj = {};
 	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 	JSAN.use('util.network'); obj.network = new util.network();
 	JSAN.use('util.error'); obj.error = new util.error();
 
-	var copies = util.functional.map_list(
-		list,
-		function (acp_id) {
-			return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-		}
-	);
-
-	var edit = 0;
-	try {
-		edit = obj.network.request(
-			api.PERM_MULTI_ORG_CHECK.app,
-			api.PERM_MULTI_ORG_CHECK.method,
-			[ 
-				ses(), 
-				obj.data.list.au[0].id(), 
-				util.functional.map_list(
-					copies,
-					function (o) {
-						return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
-					}
-				),
-				[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-			]
-		).length == 0 ? 1 : 0;
-	} catch(E) {
-		obj.error.sdump('D_ERROR','batch permission check: ' + E);
-	}
-
-	var title = list.length == 1 ? 'Copy' : 'Copies';
+	var title = list.length == 1 ? '' : 'Batch '; 
+	title += edit == 1 ? 'Edit' : 'View';
+	title += ' Copy Attributes';
 
 	JSAN.use('util.window'); var win = new util.window();
 	obj.data.temp = '';
@@ -56,7 +31,7 @@ cat.util.spawn_copy_editor = function(list) {
 	);
 	/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 	obj.data.stash_retrieve();
-	copies = JSON2js( obj.data.temp );
+	var copies = JSON2js( obj.data.temp_copies );
 	obj.error.sdump('D_CAT','in cat/copy_status, copy editor, copies =\n<<' + copies + '>>');
 	if (edit=='1' && copies!='' && typeof copies != 'undefined') {
 		try {
@@ -69,6 +44,11 @@ cat.util.spawn_copy_editor = function(list) {
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('copy update error',E);
 		}
+	} else {
+		alert('not updating');
+	}
+	} catch(E) {
+		alert(E);
 	}
 }
 
