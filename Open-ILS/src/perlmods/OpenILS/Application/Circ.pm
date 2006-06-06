@@ -48,7 +48,7 @@ sub retrieve_circ {
 	my( $s, $c, $a, $i ) = @_;
 	my $e = new_editor(authtoken => $a);
 	return $e->event unless $e->checkauth;
-	my $circ = $e->retrieve_action_circulation($i);
+	my $circ = $e->retrieve_action_circulation($i) or return $e->event;
 	if( $e->requestor->id ne $circ->usr ) {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 	}
