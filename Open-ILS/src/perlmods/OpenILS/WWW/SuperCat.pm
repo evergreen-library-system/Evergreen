@@ -93,13 +93,14 @@ sub unapi {
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my $format = $cgi->param('format');
-	my ($id,$type,$command) = ('','','');
+	my ($id,$type,$command,$lib) = ('','','');
 
 	if (!$format) {
 		print "Content-type: application/xml; charset=utf-8\n";
 	
 		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
 			$id = $2;
+			$lib = $3;
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
 
@@ -163,8 +164,9 @@ sub unapi {
 	}
 
 		
-	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:/(.+))?}o) {
 		$id = $2;
+		$lib = $3;
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^m/o);
 		$command = 'retrieve';
@@ -176,10 +178,12 @@ sub unapi {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif ($format =~ /^html/o) {
+	} else {
+	#} elsif ($format =~ /^html/o) {
 		my $feed = create_record_feed(
 			$format => [ $id ],
 			$base,
+			$lib,
 		);
 
 		$feed->root($root);
@@ -663,6 +667,7 @@ sub opensearch_feed {
 		$type,
 		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
 		$unapi,
+		$org
 	);
 	$feed->root($root);
 	$feed->lib($org);
@@ -743,6 +748,8 @@ sub create_record_feed {
 	my $records = shift;
 	my $unapi = shift;
 
+	my $lib = shift || '';
+
 	my $cgi = new CGI;
 	my $base = $cgi->url;
 	my $host = $cgi->virtual_host || $cgi->server_name;
@@ -759,7 +766,7 @@ sub create_record_feed {
 	for my $rec (@$records) {
 		next unless($rec);
 
-		my $item_tag = "tag:$host,$year:biblio-record_entry/" . $rec;
+		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 
 
 		my $xml = $supercat->request(
@@ -769,8 +776,13 @@ sub create_record_feed {
 
 		my $node = $feed->add_item($xml);
 
+		if ($lib && $type eq 'marcxml') {
+			$xml = $supercat->request( "open-ils.supercat.record.holdings_xml.retrieve", $rec, $lib )->gather(1);
+			$node->add_holdings($xml);
+		}
+
 		$node->id($item_tag);
-		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=opac" => 'text/html');
+		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlcard" => 'text/html');
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?id=$item_tag");
 		$node->link('unapi-id' => $item_tag);

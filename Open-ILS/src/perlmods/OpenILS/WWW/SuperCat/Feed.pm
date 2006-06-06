@@ -136,6 +136,20 @@ sub add_item {
 	return $entry;
 }
 
+sub add_holdings {
+	my $self = shift;
+	my $holdings_xml = shift;
+
+	$parser = new XML::LibXML if (!$parser);
+	my $new_doc = $parser->parse_string($holdings_xml);
+
+	for my $root ( $self->{doc}->findnodes($self->{holdings_xpath}) ) {
+		$root->appendChild($new_doc->documentElement);
+		last;
+	}
+	return $self;
+}
+
 sub composeDoc {
 	my $self = shift;
 	for my $root ( $self->{doc}->findnodes($self->{item_xpath}) ) {
@@ -228,6 +242,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', 'atom');
 	$self->{item_xpath} = '/atom:entry';
+	$self->{holdings_xpath} = '/atom:entry';
 	$self->{type} = 'application/xml';
 	return $self;
 }
@@ -292,6 +307,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/item';
+	$self->{holdings_xpath} = '/item';
 	return $self;
 }
 
@@ -318,6 +334,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
 	$self->{type} = 'application/xml';
+	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
 }
 
@@ -369,6 +386,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', 'mods');
 	$self->{type} = 'application/xml';
+	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
 }
 
@@ -395,6 +413,7 @@ sub new {
 	my $self = $class->SUPER::build($xml);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
 	$self->{type} = 'application/xml';
+	$self->{holdings_xpath} = '/marc:record';
 	return $self;
 }
 

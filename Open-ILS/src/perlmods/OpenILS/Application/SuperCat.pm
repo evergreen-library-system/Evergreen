@@ -168,6 +168,107 @@ sub entityize {
 	return $stuff;
 }
 
+sub new_record_holdings {
+	my $self = shift;
+	my $client = shift;
+	my $bib = shift;
+	my $ou = shift;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $tree = $_cstore->request(
+		"open-ils.cstore.direct.biblio.record_entry.retrieve",
+		$bib,
+		{flesh => 3, flesh_fields => [qw/call_numbers copies location status owning_lib circ_lib/] }
+	)->gather(1);
+
+	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
+	$year += 1900;
+	$month += 1;
+
+	my $xml = "<hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'>";
+
+	for my $cn (@{$tree->call_numbers}) {
+
+		if ($ou ne '-') {
+			next unless grep {$_->circ_lib->shortname =~ /^$ou/} @{$cn->copies};
+		}
+
+		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
+		$cn_class =~ s/Fieldmapper-//gso;
+		my $cn_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cn_class/".$cn->id, $month, $day);
+
+		my $cn_lib = $cn->owning_lib->shortname;
+
+		my $cn_label = $cn->label;
+
+		$xml .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><hold:copies>";
+		
+		for my $cp (@{$cn->copies}) {
+
+			if ($ou ne '-') {
+				next unless $cp->circ_lib->shortname =~ /^$ou/;
+			}
+
+			(my $cp_class = $cp->class_name) =~ s/::/-/gso;
+			$cp_class =~ s/Fieldmapper-//gso;
+			my $cp_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cp_class/".$cp->id, $month, $day);
+
+			my $cp_stat = $cp->status->name;
+
+			my $cp_loc = $cp->location->name;
+
+			my $cp_lib = $cp->circ_lib->shortname;
+
+			my $cp_bc = $cp->barcode;
+
+			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status><hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:notes>";
+
+			#for my $note ( @{$_storage->request( "open-ils.storage.direct.asset.copy_note.search.atomic" => {id => $cp->id, pub => "t" })->gather(1)} ) {
+			#	$xml .= sprintf('<hold:note date="%s" title="%s">%s</hold:note>',$note->create_date, escape($note->title), escape($note->value));
+			#}
+
+			$xml .= "</hold:notes><hold:statcats>";
+
+			#for my $sce ( @{$_storage->request( "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
+			#	my $sc = $holdings_data_cache{statcat}{$sce->stat_cat_entry};
+			#	$xml .= sprintf('<hold:statcat>%s</hold:statcat>',escape($sc->value));
+			#}
+
+			$xml .= "</hold:statcats></hold:copy>";
+		}
+		
+		$xml .= "</hold:copies></hold:volume>";
+	}
+
+	$xml .= "</hold:volumes>";
+
+	return $xml;
+}
+__PACKAGE__->register_method(
+	method    => 'new_record_holdings',
+	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'bibId',
+				  desc => 'An OpenILS biblio::record_entry id',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'The bib record holdings hierarchy in XML',
+			  type => 'string' }
+		}
+);
+
+
+
 sub record_holdings {
 	my $self = shift;
 	my $client = shift;
@@ -246,27 +347,6 @@ sub record_holdings {
 
 	return $xml;
 }
-__PACKAGE__->register_method(
-	method    => 'record_holdings',
-	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
-	api_level => 1,
-	argc      => 1,
-	signature =>
-		{ desc     => <<"		  DESC",
-Returns the XML representation of the requested bibliographic record's holdings
-		  DESC
-		  params   =>
-		  	[
-				{ name => 'bibId',
-				  desc => 'An OpenILS biblio::record_entry id',
-				  type => 'number' },
-			],
-		  'return' =>
-		  	{ desc => 'The bib record holdings hierarchy in XML',
-			  type => 'string' }
-		}
-);
-
 
 sub escape {
 	my $text = shift;

@@ -3,7 +3,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:marc="http://www.loc.gov/MARC21/slim" 
+  xmlns:marc="http://www.loc.gov/MARC21/slim"
+  xmlns:hold="http://open-ils.org/spec/holdings/v1"
   version="1.0">
   <xsl:output method="html" doctype-public="-//W3C/DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/strict.dtd" />    
   <xsl:template match="/">
@@ -27,8 +28,43 @@
      </span>
     </div>
     <br/>
+    <u>Holdings</u>
+    <xsl:apply-templates select="hold:volumes"/>
+    <br/>
   </xsl:template>
-      
+
+  <xsl:template match="hold:volumes">
+    <ul>
+    <xsl:apply-templates select="hold:volume">
+      <xsl:sort select="@lib"/>
+    </xsl:apply-templates>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="hold:volume">
+      <li> <b><xsl:value-of select="./@label"/></b>
+        <xsl:apply-templates select="hold:copies"/>
+      </li>
+  </xsl:template>
+
+  <xsl:template match="hold:copies">
+    <ul>
+    <xsl:apply-templates select="hold:copy">
+      <xsl:sort select="hold:location"/>
+    </xsl:apply-templates>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="hold:copy">
+      <li> <xsl:value-of select="./@barcode"/>
+        <ul>
+	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
+	  <li>Located at <b><xsl:value-of select="hold:location"/></b></li>
+	  <li>Status is <b><xsl:value-of select="hold:status"/></b></li>
+	</ul>
+      </li>
+  </xsl:template>
+
   <xsl:template match="marc:controlfield">
       <span class="oclc">#<xsl:value-of select="substring(.,4)"/></span>
   </xsl:template>
