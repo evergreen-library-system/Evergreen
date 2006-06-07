@@ -14,6 +14,21 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
 
+sub search_authority {
+	my $self = shift;
+	my $client = shift;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	return $session->request( 'open-ils.storage.authority.search.marc.atomic' => @_ )->gather(1);
+}
+__PACKAGE__->register_method(
+        method		=> "search_authority",
+        api_name	=> "open-ils.search.authority.fts",
+        argc		=> 2, 
+        note		=> "Searches authority data for existing controlled terms and crossrefs",
+);              
+
+
 sub crossref_authority {
 	my $self = shift;
 	my $client = shift;
