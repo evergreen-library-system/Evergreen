@@ -75,6 +75,14 @@
 	<event code='1211' textcode='BILL_ALREADY_VOIDED'>
 		<desc xml:lang="en-US">The selecte bill has already been voided</desc>
 	</event>
+	<event code='1212' textcode='REFUND_EXCEEDS_OVERDUE_COUNT'>
+		<desc xml:lang="en-US">The patron has too many overdue items</desc>
+	</event>
+
+	<event code='1213' textcode='PATRON_BARRED'>
+		<desc xml:lang="en-US">The patron has too many overdue items</desc>
+	</event>
+
 
 
 
