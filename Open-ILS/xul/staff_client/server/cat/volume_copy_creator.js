@@ -179,6 +179,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		util.widgets.remove_children(hb3);
 
 		g.render_barcode_entry(hb3,tb1.value,parseInt(tb2.value),ou_id);
+		document.getElementById("Create").disabled = false;
 	}
 
 	function handle_change_tb1(ev) {
@@ -206,6 +207,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		var hb3 = document.createElement('vbox'); r.appendChild(hb3);
 		var tb1 = document.createElement('textbox'); hb1.appendChild(tb1);
 		tb1.setAttribute('rel_vert_pos','2');
+		tb1.setAttribute('ou_id',ou_id);
 		util.widgets.apply_vertical_tab_on_enter_handler( 
 			tb1, 
 			function() { handle_change_tb1({'target':tb1}); setTimeout(function(){util.widgets.vertical_tab(tb1);},0); }
@@ -213,6 +215,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		var tb2 = document.createElement('textbox'); hb2.appendChild(tb2);
 		tb2.setAttribute('size','3'); tb2.setAttribute('cols','3');
 		tb2.setAttribute('rel_vert_pos','3');
+		tb2.setAttribute('ou_id',ou_id);
 		util.widgets.apply_vertical_tab_on_enter_handler( 
 			tb2, 
 			function() { handle_change_tb2({'target':tb2}); setTimeout(function(){util.widgets.vertical_tab(tb2);},0); }
@@ -287,6 +290,12 @@ g.stash_and_close = function() {
 		
 		for (var i = 0; i < nl.length; i++) {
 			if ( nl[i].getAttribute('rel_vert_pos') == 4 ) barcodes.push( nl[i] );
+			if ( nl[i].getAttribute('rel_vert_pos') == 2 )  {
+				var ou_id = nl[i].getAttribute('ou_id');
+				var callnumber = nl[i].value;
+				if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
+				if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
+			}
 		};
 	
 		for (var i = 0; i < barcodes.length; i++) {
@@ -342,17 +351,19 @@ g.stash_and_close = function() {
 		}
 
 		JSAN.use('util.window'); var win = new util.window();
-		var w = win.open(
-			urls.XUL_COPY_EDITOR
-				+'?copies='+window.escape(js2JSON(copies))
-				+'&callnumbers='+window.escape(js2JSON(volume_labels))
-				+'&edit=1',
-			title,
-			'chrome,modal,resizable'
-		);
-		/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-		g.data.stash_retrieve();
-		copies = JSON2js( g.data.temp_copies );
+		if (copies.length > 0) {
+			var w = win.open(
+				urls.XUL_COPY_EDITOR
+					+'?copies='+window.escape(js2JSON(copies))
+					+'&callnumbers='+window.escape(js2JSON(volume_labels))
+					+'&edit=1',
+				title,
+				'chrome,modal,resizable'
+			);
+			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+			g.data.stash_retrieve();
+			copies = JSON2js( g.data.temp_copies );
+		}
 
 		for (var i = 0; i < copies.length; i++) {
 			var copy = copies[i];
@@ -377,13 +388,15 @@ g.stash_and_close = function() {
 					default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
 				}
 			} else {
-				JSAN.use('util.functional');
-				var w = win.open(
-					urls.XUL_SPINE_LABEL
-					+ '?barcodes=' + window.escape( js2JSON( util.functional.map_list(copies,function(o){return o.barcode();}) ) ),
-					'spine_labels',
-					'chrome,modal,resizable,width=750,height=550'
-				);
+				if (copies.length > 0) {
+					JSAN.use('util.functional');
+					var w = win.open(
+						urls.XUL_SPINE_LABEL
+						+ '?barcodes=' + window.escape( js2JSON( util.functional.map_list(copies,function(o){return o.barcode();}) ) ),
+						'spine_labels',
+						'chrome,modal,resizable,width=750,height=550'
+					);
+				}
 			}
 		} catch(E) {
 			g.error.standard_unexpected_error_alert('volume tree update 2',E);
