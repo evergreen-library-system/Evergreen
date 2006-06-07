@@ -555,14 +555,35 @@ sub _run_permit_scripts {
 	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
 	my $key			= $ctx->{permit_key};
 
+
+
+	# ---------------------------------------------------------------------
+	# Find all of the fatal penalties currently set on the user
+	# ---------------------------------------------------------------------
 	my $penalties = $U->update_patron_penalties( 
 		authtoken => $ctx->{authtoken}, 
 		patron    => $ctx->{patron} 
 	);
 
 	$penalties = $penalties->{fatal_penalties};
-
 	$logger->info("circ patron penalties user $patronid: @$penalties");
+
+
+	# ---------------------------------------------------------------------
+	# Now run the patron permit script 
+	# ---------------------------------------------------------------------
+	$runner->load($scripts{circ_permit_patron});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
+
+	my $patron_events = $runner->retrieve('result.events');
+	$patron_events = [ split(/,/, $patron_events) ]; 
+	$ctx->{circ_permit_patron_events} = $patron_events;
+	$logger->activity("circ_permit_patron for returned @$patron_events") if @$patron_events;
+
+	my @evts_so_far = (@$penalties, @$patron_events);
+
+	return \@evts_so_far if @evts_so_far;
+
 
 	if( $ctx->{noncat} ) {
 		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
@@ -579,28 +600,37 @@ sub _run_permit_scripts {
 		return OpenILS::Event->new('SUCCESS');
 	}
 
-	$runner->load($scripts{circ_permit_copy});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+
 
 	# ---------------------------------------------------------------------
 	# Capture all of the copy permit events
 	# ---------------------------------------------------------------------
+	$runner->load($scripts{circ_permit_copy});
+	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+
 	my $copy_events = $runner->retrieve('result.events');
 	$copy_events = [ split(/,/, $copy_events) ]; 
 	$ctx->{circ_permit_copy_events} = $copy_events;
 	$logger->activity("circ_permit_copy for copy ".
 		"$barcode returned events: @$copy_events") if @$copy_events;
 
-	my @allevents;
-	push( @allevents, OpenILS::Event->new($_)) for @$penalties;
-	push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
+
+
+
+	# ---------------------------------------------------------------------
+	# Now collect all of the events together
+	# ---------------------------------------------------------------------
+	my @allevents = ( @evts_so_far, @$copy_events );
+
+	#push( @allevents, OpenILS::Event->new($_)) for @$penalties;
+	#push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
 
 	my $ae = _check_copy_alert($ctx->{copy});
 	push( @allevents, $ae ) if $ae;
 
 	return OpenILS::Event->new('SUCCESS', payload => $key) unless (@allevents);
 
-	# uniquify the events
+	# uniquify 
 	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
 	@allevents = values %hash;
 
@@ -1350,7 +1380,9 @@ sub checkin_do_receive {
 
 		$evt = OpenILS::Event->new('NO_CHANGE');
 		($ctx->{hold}) = $U->fetch_open_hold_by_copy($copy->id) 
-			if( $copy->status == $U->copy_status_from_name('on holds shelf')->id );
+
+		# what is this?
+		if( $copy->status == $U->copy_status_from_name('on holds shelf')->id );
 
 	} else {
 

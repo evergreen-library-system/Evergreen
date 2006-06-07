@@ -25,9 +25,9 @@ log_debug('circ_permit_patron: permit circ on ' +
 	'');
 
 
-log_debug("BARRED: " + patron.barred() );
+log_debug("BARRED: " + patron.barred );
 
-if( patron.barred() ) 
+if( isTrue(patron.barred) ) 
 	result.events.push('PATRON_BARRED');
 
 

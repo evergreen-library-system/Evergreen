@@ -20,3 +20,14 @@ try {
 	} 
 } catch(e) {}
 
+
+/* note: returns false if the value is 'f' or 'F' ... */
+function isTrue(d) {
+	if(	d && 
+			d != "0" && 
+			d != "f" &&
+			d != "F" )
+			return true;
+	return false;
+}
+
