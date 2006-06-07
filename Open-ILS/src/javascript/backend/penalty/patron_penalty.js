@@ -42,11 +42,15 @@ var PROFILES = {
 
 
 /** Find the patron's profile and check the fine and overdue limits */
+log_info(patronProfile);
+
 var profile = PROFILES[patronProfile];
-if( patronFiles >= profile.fineLimit )
-	result.events.push('PATRON_EXCEEDS_FINES');
-if( patronOverdueCount > profile.overdueLimit )
-	result.events.puth('REFUND_EXCEEDS_OVERDUE_COUNT');
+if( profile ) {
+	if( patronFines >= profile.fineLimit )
+		result.events.push('PATRON_EXCEEDS_FINES');
+	if( patronOverdueCount > profile.overdueLimit )
+		result.events.puth('REFUND_EXCEEDS_OVERDUE_COUNT');
+}
 
 
 
