@@ -1,0 +1,79 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Libray Closed Dates Editor</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script>
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='closed_dates.js'> </script>
+
+		<link type='text/css' rel='stylesheet' href='admin.css'/>
+	</head>
+
+	<body onload='try{cdEditorInit();}catch(e){alert(js2JSON(e));}'>
+
+		<div class='welcome_box'>
+			<span>Welcome </span><b><span id='cd_user'/></b>
+		</div>
+
+		<center>
+			<div class='title'> Closed Dates Editor </div>
+
+			<table class='data_grid' style='width: 90%'>
+				<thead>
+					<tr>
+						<td>Start Time</td>
+						<td>Start Date</td>
+						<td>End Time</td>
+						<td>End Date</td>
+					</tr>
+				</thead>
+				<tbody id='cd_tbody'>
+
+					<tr id='cd_edit_row'>
+						<td>
+							<input name='edit_start_time' type='text'/>
+						</td>
+						<td>
+							<input name='edit_start_date' type='text'/>
+							<span name='edit_start_cal'>
+							</span>
+						</td>
+						<td>
+							<input name='edit_end_time' type='text'/>
+						</td>
+						<td>
+							<input name='edit_end_date' type='text'/>
+							<span name='edit_end_cal'>
+							</span>
+						</td>
+					</tr>
+
+					<tr id='cd_row'>
+						<td name='start_time'/>
+						<td name='start_date'/>
+						<td name='end_time'/>
+						<td name='end_date'/>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</center>
+	</body>
+</html>
+
