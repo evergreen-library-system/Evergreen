@@ -25,7 +25,6 @@ use OpenSRF::EX qw(:try);
 
 use Text::Aspell; # spell checking...
 
-
 # Houses generic search utilites 
 
 sub initialize {
@@ -50,77 +49,7 @@ sub initialize {
 
 	eval { $implementation->initialize(); };
 }
-
-sub filter_search {
-	my($self, $str, $full) = @_;
-
-	my $string = $str;	
-
-	$string =~ s/\s+the\s+/ /oi;
-	$string =~ s/\s+an\s+/ /oi;
-	$string =~ s/\s+a\s+/ /oi;
-
-	$string =~ s/^the\s+//io;
-	$string =~ s/^an\s+//io;
-	$string =~ s/^a\s+//io;
-
-	$string =~ s/\s+the$//io;
-	$string =~ s/\s+an$//io;
-	$string =~ s/\s+a$//io;
-
-	$string =~ s/^the$//io;
-	$string =~ s/^an$//io;
-	$string =~ s/^a$//io;
-
-
-	if(!$full) {
-		if($string =~ /^\s*$/o) {
-			return "";
-		} else {
-			return $str;
-		}
-	}
-
-	my @words = qw/ 
-	fiction
- 	bibliograph
- 	juvenil    
- 	histor   
- 	literatur
- 	biograph
- 	stor    
- 	american 
- 	videorecord
- 	count  
- 	film   
- 	life  
- 	book 
- 	children 
- 	centur 
- 	war    
- 	genealog
- 	etc    
-	state
-	unit
-	/;
-
-	push @words, "united state";
-
-	for my $word (@words) {
-		if($string =~ /^\s*"?\s*$word\w*\s*"?\s*$/i) {
-			return "";
-		}
-	}
-
-	warn "Cleansed string to: $string\n";
-	if($string =~ /^\s*$/o) {
-		return "";
-	} else {
-		return $str;
-	}
 	
-	return $string;
-}	
 
 
 __PACKAGE__->register_method(
@@ -140,7 +69,6 @@ sub check_spelling {
 	for my $word (split(' ',$phrase) ) {
 		if( ! $speller->check($word) ) {
 			if( $speller->suggest($word) ) { $return_something = 1; }
-#			$return_something = 1;
 			my $word_stuff = {};
 			$word_stuff->{'word'} = $word;
 			$word_stuff->{'suggestions'} = [ $speller->suggest( $word ) ];
@@ -157,5 +85,31 @@ sub check_spelling {
 	return 0;
 
 }
+
+
+
+__PACKAGE__->register_method(
+	method	=> "spellcheck",
+	api_name	=> "open-ils.search.spellcheck");
+
+my $speller = Text::Aspell->new();
+$speller->set_option('lang', 'en_US'); # default
+
+sub spellcheck {
+	my( $self, $client, $phrase ) = @_;
+	my @resp;
+	return \@resp unless $phrase;
+	for my $word (split(/\s+/,$phrase) ) {
+		push( @resp, 
+			{
+				word => $word, 
+				suggestions => ($speller->check($word)) ? undef : [$speller->suggest($word)]
+			} 
+		); 
+	}
+	return \@resp;
+}
+
+
 
 1;
