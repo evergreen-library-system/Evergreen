@@ -49,7 +49,7 @@ if( profile ) {
 	if( patronFines >= profile.fineLimit )
 		result.events.push('PATRON_EXCEEDS_FINES');
 	if( patronOverdueCount > profile.overdueLimit )
-		result.events.puth('REFUND_EXCEEDS_OVERDUE_COUNT');
+		result.events.puth('PATRON_EXCEEDS_OVERDUE_COUNT');
 }
 
 
