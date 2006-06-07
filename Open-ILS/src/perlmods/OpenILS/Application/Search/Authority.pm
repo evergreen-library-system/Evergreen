@@ -180,7 +180,7 @@ sub authority_to_html {
 	my $xmldoc = $parser->parse_string($rec->marc);
 	my $html = $stylesheet->transform($xmldoc);
 
-	return  $html->toString();
+	return $html->toString();
 }
 
 
