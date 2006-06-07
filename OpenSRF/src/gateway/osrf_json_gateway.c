@@ -149,8 +149,11 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		}
 
 
-		osrfLogInfo( OSRF_LOG_MARK,  "service=%s, method=%s", service, method );
+		osrfLogInfo( OSRF_LOG_MARK,  "[%s] service=%s, method=%s", 
+				r->connection->remote_ip, service, method );
+
 		osrfAppSession* session = osrf_app_client_session_init(service);
+
 		double starttime = get_timestamp_millis();
 		int req_id = osrf_app_session_make_req( session, NULL, method, api_level, mparams );
 		osrf_message* omsg = NULL;
