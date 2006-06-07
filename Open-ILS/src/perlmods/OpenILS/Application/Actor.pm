@@ -1614,7 +1614,7 @@ sub hold_request_count {
 
 __PACKAGE__->register_method(
 	method	=> "checkedout_count",
-	api_name	=> "open-ils.actor.user.checked_out.count",
+	api_name	=> "open-ils.actor.user.checked_out.count__",
 	argc		=> 1,
 	notes		=> <<"	NOTES");
 	Returns a transaction record
@@ -1670,7 +1670,7 @@ __PACKAGE__->register_method(
 
 __PACKAGE__->register_method(
 	method		=> "checked_out",
-	api_name		=> "open-ils.actor.user.checked_out.count_",
+	api_name		=> "open-ils.actor.user.checked_out.count",
 	argc			=> 2,
 	signature	=> q/@see open-ils.actor.user.checked_out/
 );
