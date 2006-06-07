@@ -19,13 +19,14 @@ sub crossref_authority {
 	my $client = shift;
 	my $class = shift;
 	my $term = shift;
+	my $limit = shift || 10;
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
 	my $freq = $session->request(
-		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
+		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, $limit);
 	my $areq = $session->request(
-		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
+		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, $limit);
 
 	my $fr = $freq->gather(1);
 	my $al = $areq->gather(1);
