@@ -18,10 +18,25 @@
 		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
 		<script language='javascript' src='/opac/common/js/init.js'> </script>
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='/opac/common/js/Date.W3CDTF.js'> </script>
 		<script language='javascript' src='adminlib.js'> </script>
 		<script language='javascript' src='closed_dates.js'> </script>
 
+		<link rel="stylesheet" type="text/css" media="all" 
+			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
+
+
+
+
 		<link type='text/css' rel='stylesheet' href='admin.css'/>
+
+		<style type='text/css'>
+			span { padding: 6px; }
+			b { padding: 6px; }
+		</style>
 	</head>
 
 	<body onload='try{cdEditorInit();}catch(e){alert(js2JSON(e));}'>
@@ -33,47 +48,140 @@
 		<center>
 			<div class='title'> Closed Dates Editor </div>
 
-			<table class='data_grid' style='width: 90%'>
+			<br/>
+
+			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
 				<thead>
 					<tr>
-						<td>Start Time</td>
-						<td>Start Date</td>
-						<td>End Time</td>
-						<td>End Date</td>
+						<td>Closed Duration</td>
+						<td>Delete</td>
 					</tr>
 				</thead>
 				<tbody id='cd_tbody'>
 
-					<tr id='cd_edit_row'>
-						<td>
-							<input name='edit_start_time' type='text'/>
-						</td>
-						<td>
-							<input name='edit_start_date' type='text'/>
-							<span name='edit_start_cal'>
-							</span>
-						</td>
-						<td>
-							<input name='edit_end_time' type='text'/>
-						</td>
-						<td>
-							<input name='edit_end_date' type='text'/>
-							<span name='edit_end_cal'>
-							</span>
-						</td>
-					</tr>
 
 					<tr id='cd_row'>
-						<td name='start_time'/>
-						<td name='start_date'/>
-						<td name='end_time'/>
-						<td name='end_date'/>
+						<td>
+							From
+							<b name='start_date'/> at <b name='start_time'/>
+							<span> until </span>
+							<b name='end_date'/> at <b name='end_time'/>
+						</td>
+						<td><button name='delete'>delete</button></td>
+					</tr>
+
+					<tr id='cd_allday_row'>
+						<td>
+							All Day <b name='start_date'/>
+						</td>
+						<td><button name='delete'>delete</button></td>
+					</tr>
+
+
+					<tr id='cd_allmultiday_row'>
+						<td>
+							All Day From <b name='start_date'/> until <b name='end_date'/>
+						</td>
+						<td><button name='delete'>delete</button></td>
 					</tr>
 
 				</tbody>
 			</table>
 
+			<br/>
+			<div style='width: 80%'>
+				Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the form <b>HH:MM</b>
+			</div>
+
+			<br/>
+		
+			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
+				<tr>
+					<td width='100%' align='center' style='border: 1px solid #F0E0F0;'>
+						<button id='cd_new_allday' 
+							onclick='cdShowEditRow("cd_edit_allday_row");'>Add Single Day Closing</button>
+						<button id='cd_new_multiday' 
+							onclick='cdShowEditRow("cd_edit_allmultiday_row");'>Add Mult-Date Closing</button>
+						<button id='cd_new' 
+							onclick='cdShowEditRow("cd_edit_row");'>Add Detailed Closing</button>
+					</td>
+				</tr>
+			</table>
+		
+			<table class='data_grid data_grid_center' style='width: 80%; padding: 8px;'>
+				<tbody id='cd_edit_tbody'>
+		
+					<tr id='cd_edit_row' class='hide_me'>
+						<table class='data_grid data_grid_center' style='width: 100%;'>
+							<thead>
+								<tr>
+									<td>Start Date</td>
+									<td>Start Time</td>
+									<td>End Date</td>
+									<td>End Time</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<input name='start_date' type='text' size='10' maxlength='10'/>
+									</td>
+									<td>
+										<input name='start_time' type='text' size='5' maxlength='5'/>
+									</td>
+									<td>
+										<input name='end_date' type='text' size='10' maxlength='10'/>
+									</td>
+									<td>
+										<input name='end_time' type='text' size='5' maxlength='5'/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</tr>
+		
+					<tr id='cd_edit_allday_row' class='hide_me'>
+						<td>	
+							<span> All Day </span>
+							<input id='cd_edit_allday_start_date' type='text' size='10' maxlength='10'/>
+							<img src="/opac/common/js/jscalendar/img.gif"  
+								id='cd_edit_allday_start_date_img' class='cal_img'/>
+						</td>
+					</tr>
+		
+					<tr id='cd_edit_allmultiday_row' class='hide_me'>
+						<td>	
+
+							<span> All Day From </span>
+							<input id='cd_edit_allmultiday_start_date' type='text' size='10' maxlength='10'/>
+							<img src="/opac/common/js/jscalendar/img.gif"  
+								id='cd_edit_allmultiday_start_date_img' class='cal_img'/>
+
+							<span> Until</span>
+
+							<input id='cd_edit_allmultiday_end_date' type='text' size='10' maxlength='10'/>
+							<img src="/opac/common/js/jscalendar/img.gif"  
+								id='cd_edit_allmultiday_end_date_img' class='cal_img'/>
+						</td>
+					</tr>
+
+					<tr id='cd_edit_submit' class='hide_me'>
+						<td>
+							<button onclick='cdNew();'>Save</button>
+							<button onclick='cdCancelEdit();'>Cancel</button>
+						</td>
+					</tr>
+		
+				</tbody>
+			</table>
+
+			<span class='hide_me' id='cd_all_day'>All Day</span>
+			<span class='hide_me' id='cd_confirm_delete'>Are you sure you wish to delete the selected close date?</span>
+			<span class='hide_me' id='cd_invalid_date'>Invalid date format</span>
+			<span class='hide_me' id='cd_invalid_time'>Invalid time format</span>
+		
 		</center>
 	</body>
 </html>
+
 
