@@ -63,7 +63,7 @@ function my_init() {
 			document.getElementById('save').setAttribute('hidden','false'); 
 		}
 
-		if (g.copies[0].id() < 0) {
+		if (g.copies.length > 0 && g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 			g.apply("status",5 /* In Process */);
 		} else {
