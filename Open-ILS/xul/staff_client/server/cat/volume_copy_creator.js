@@ -42,7 +42,7 @@ function my_init() {
 		} catch(E) {
 			cn_blob = [];
 		}
-		if (cn_blob.length > 0) {
+		if ((!g.copy_shortcut) && (cn_blob.length > 0)) {
 			var hbox = document.getElementById('marc_cn');
 			var ml = util.widgets.make_menulist(
 				util.functional.map_list(
@@ -119,7 +119,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 	var tb = document.createElement('textbox'); hb.appendChild(tb);
 	tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
 	tb.setAttribute('rel_vert_pos','1'); 
-	if ( ! g.last_focus ) { tb.focus(); g.last_focus = tb; }
+	if ( (!g.copy_shortcut) && (!g.last_focus) ) { tb.focus(); g.last_focus = tb; }
 	var node;
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
@@ -147,6 +147,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 					}
 				).length
 				render_copy_count_entry({'target':tb});
+				tb.disabled = true;
 			}
 			} catch(E) {
 				alert(E);
@@ -170,7 +171,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		if (tb1.value == '') return;
 		if (isNaN( parseInt( tb2.value ) )) return;
 
-		if (tb1.disabled || tb2.disabled) return;
+		//if (tb1.disabled || tb2.disabled) return;
 
 		//tb1.disabled = true;
 		//tb2.disabled = true;
@@ -221,6 +222,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 		tb1.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 		tb2.addEventListener( 'change', handle_change_tb2, false);
 		tb2.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+		if ( !g.last_focus ) { tb2.focus(); g.last_focus = tb2; }
 
 		setTimeout(
 			function(idx,tb){
@@ -235,6 +237,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 							}
 						)[idx];
 						tb.value = label; handle_change_tb1({'target':tb});
+						tb.disabled = true;
 					}
 					} catch(E) {
 						alert(E);

@@ -29,8 +29,14 @@ function createComplexXULElement (e, attrs, objects) {
 	var l = document.createElementNS('http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',e);
 
 	if (attrs) {
-		for (var i in attrs) l.setAttribute(i,attrs[i]);
-	}
+		for (var i in attrs) {
+			if (typeof attrs[i] == 'function') {
+				l.addEventListener( i, attrs[i], true );
+			} else {
+				l.setAttribute(i,attrs[i]);
+			}
+		}
+	} 
 
 	if (objects) {
 		for ( var i in objects ) l.appendChild( objects[i] );
@@ -65,6 +71,14 @@ function createRow (attrs) {
 
 function createTextbox (attrs) {
 	return createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [1]) );
+}
+
+function createMenu (attrs) {
+	return createComplexXULElement('menu', attrs, Array.prototype.slice.apply(arguments, [1]) );
+}
+
+function createMenuPopup (attrs) {
+	return createComplexXULElement('menupopup', attrs, Array.prototype.slice.apply(arguments, [1]) );
 }
 
 function createPopup (attrs) {
@@ -812,8 +826,10 @@ function marcSubfield (sf) {
 		createMARCTextbox(
 			sf,
 			{ value : sf.text(),
+			  name : sf.parent().@tag + ':' + sf.@code,
 			  class : 'plain marcSubfield', 
 			  onmouseover : 'getTooltip(this, "subfield");',
+			  contextmenu : function (event) { getAuthorityContextMenu(event.target, sf) },
 			  size : new String(sf.text()).length + 2,
 			  oninput : "this.setAttribute('size', this.value.length + 2);",
 			} )
@@ -999,6 +1015,37 @@ function getContextMenu (target, type) {
 		tt = 't' + target.parentNode.firstChild.value + 'i2';
 
 	target.setAttribute('context', tt);
+	return true;
+}
+
+function getAuthorityContextMenu (target, sf) {
+	var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context';
+
+	if (target.getAttribute('context')) return true;
+
+	var sf_popup = createPopup({position : 'after_start', id : menu_id });
+	context_menus.appendChild( sf_popup );
+
+	var val = 'foo';
+	sf_popup.appendChild(
+		createMenu(
+			{ label : 'bar' },
+			createMenuPopup( {},
+				createMenuitem(
+					{ label : val,
+					  oncommand : 
+  						'current_focus.value = "' + val + '";' +
+						'var e = document.createEvent("MutationEvents");' +
+						'e.initMutationEvent("change",1,1,null,0,0,0,0);' +
+						'current_focus.inputField.dispatchEvent(e);',
+					  tooltiptext : val + ' description'
+					}
+				)
+			)
+		)
+	);
+
+	target.setAttribute('context', menu_id);
 	return true;
 }
 
