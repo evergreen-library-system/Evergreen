@@ -342,6 +342,12 @@ char* uescape( const char* string, int size, int full_escape ) {
 						OSRF_BUFFER_ADD_CHAR(buf, 'r');
 						break;
 
+					case '\\':
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						OSRF_BUFFER_ADD_CHAR(buf, '\\');
+						break;
+
+
 					default:
 						OSRF_BUFFER_ADD_CHAR(buf, c);
 				}
