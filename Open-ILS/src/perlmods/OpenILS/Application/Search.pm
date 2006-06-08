@@ -93,10 +93,18 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.search.spellcheck");
 
 my $speller = Text::Aspell->new();
-$speller->set_option('lang', 'en_US'); # default
 
 sub spellcheck {
 	my( $self, $client, $phrase ) = @_;
+
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+
+	if( my $dict = $conf->config_value(
+			"apps", "open-ils.search", "app_settings", "spelling_dictionary")) {
+		$speller->set_option('master', $dict);
+		$logger->debug("spelling dictionary set to $dict");
+	}
+
 	my @resp;
 	return \@resp unless $phrase;
 	for my $word (split(/\s+/,$phrase) ) {
