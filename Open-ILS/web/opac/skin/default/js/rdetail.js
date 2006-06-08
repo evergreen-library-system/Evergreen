@@ -449,7 +449,8 @@ function rdetailShowTOC(r) {
 
 
 function rdetailBuildInfoRows() {
-	var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id())
+	//var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id(), getLocation(), getDepth())
+	var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id());
 	req.callback(_rdetailBuildInfoRows);
 	req.send();
 }
@@ -530,7 +531,7 @@ function _rdetailBuildInfoRows(r) {
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
 
-		/* set up the print link */
+		/* set up the print link (not done) */
 		var pn = rowNode.previousSibling;
 		if( pn && pn.getAttribute('novols') ) {
 			var a = $n(pn, 'lib_print_link');
