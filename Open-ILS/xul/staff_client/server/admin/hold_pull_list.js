@@ -57,6 +57,13 @@ function pullListDrawHolds(r) {
 function pullListDrawHold( tbody, row, hold, idx ) {
 
 	$n(row, 'date').appendChild(text(hold.request_time().replace(/\ .*/, "")));
+
+	switch( hold.hold_type() ) {
+		case 'C' : unHideMe($n(row, 'copy_hold')); break;
+		case 'V' : unHideMe($n(row, 'volume_hold')); break;
+		case 'T' : unHideMe($n(row, 'title_hold')); break;
+		case 'M' : unHideMe($n(row, 'mr_hold')); break;
+	}
 	
 	var treq = new Request( FETCH_MODS_FROM_COPY, hold.current_copy() );
 	treq.callback(
