@@ -874,24 +874,15 @@ __PACKAGE__->register_method(
 );
 
 sub get_org_unit {
-
 	my( $self, $client, $user_session, $org_id ) = @_;
-
-	if(defined($user_session) && !defined($org_id)) {
-		my $user_obj = 
-			OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
-		if(!defined($org_id)) {
-			$org_id = $user_obj->home_ou;
-		}
+	my $e = new_editor(authtoken => $user_session);
+	if(!$org_id) {
+		return $e->event unless $e->checkauth;
+		$org_id = $e->requestor->ws_ou;
 	}
-
-
-	my $home_ou = OpenILS::Application::AppUtils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.org_unit.retrieve", 
-		$org_id );
-
-	return $home_ou;
+	my $o = $e->retrieve_actor_org_unit($org_id)
+		or return $e->event;
+	return $o;
 }
 
 __PACKAGE__->register_method(
@@ -1221,7 +1212,7 @@ sub check_user_perms3 {
 	return $evt if $evt;
 
 	my $tree = $self->get_org_tree();
-	return _find_highest_perm_org( $perm, $userid, $target->home_ou, $tree );
+	return _find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
 }
 
 
@@ -1685,6 +1676,12 @@ sub checked_out {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 	}
 
+	return _checked_out( $self->api_name =~ /count/, $e, $userid );
+}
+
+sub _checked_out {
+	my( $iscount, $e, $userid ) = @_;
+
 	my $circs = $e->search_action_circulation( 
 		{ usr => $userid, stop_fines => undef });
 
@@ -1714,7 +1711,7 @@ sub checked_out {
 	}
 
 
-	if( $self->api_name =~ /count/ ) {
+	if( $iscount ) {
 		return {
 			total		=> @$circs + @lost + @cr + @lo,
 			out		=> scalar(@out),
