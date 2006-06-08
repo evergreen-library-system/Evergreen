@@ -128,8 +128,11 @@
 
 			for (var i in scem_hash) {
 
+				try {
+
 				var sc = g.network.simple_request('FM_ACTSC_RETRIEVE_BATCH', [ ses(), [ scem_hash[i].stat_cat() ] ]);
-				if (!sc || sc.ilsevent) { g.error.sdump('D_ERROR',sc); continue; }
+				if (!sc || typeof sc.ilsevent != 'undefined') { throw(sc); continue; }
+				sc = sc[0];
 
 				/* template */
 				var actsc_node = $('actsc_template').cloneNode(true); sp.appendChild(actsc_node); actsc_node.hidden = false;
@@ -150,6 +153,9 @@
 
 				}
 
+				} catch(E) {
+					g.error.standard_unexpected_error_alert('rendering/retrieving stat cat',E);
+				}
 			}
 		}
 		
