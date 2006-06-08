@@ -204,7 +204,6 @@ function findBaseURL(ssl) {
 	var path = findBasePath();
 	var proto = (ssl) ? "https:" : "http:";
 	return proto + "//" + location.host + path;
-	dump( 'ssl: ' + ssl + 'proto ' + proto );
 }
 
 /*
