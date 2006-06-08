@@ -114,6 +114,16 @@
 	</vbox>
 </groupbox>
 
+<grid name="authority-marc-template" hidden="true">
+	<columns>
+		<column/>
+		<column/>
+		<column/>
+		<column flex="1"/>
+	</columns>
+	<rows/>
+</grid>
+
 <popupset>
 	<popup id="recordTypeMenu" position="after_start">
 		<menuitem label="BKS" oncommand="changeFFEditor('BKS');"/>

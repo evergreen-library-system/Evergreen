@@ -1,4 +1,6 @@
+var serializer = new XMLSerializer();
 var marcns = new Namespace("http://www.loc.gov/MARC21/slim");
+var gw = new Namespace("http://opensrf.org/-/namespaces/gateway/v1");
 var xulns = new Namespace("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 default xml namespace = marcns;
 
@@ -87,6 +89,10 @@ function createPopup (attrs) {
 
 function createMenuitem (attrs) {
 	return createComplexXULElement('menuitem', attrs, Array.prototype.slice.apply(arguments, [1]) );
+}
+
+function createCheckbox (attrs) {
+	return createComplexXULElement('checkbox', attrs, Array.prototype.slice.apply(arguments, [1]) );
 }
 
 function createMARCTextbox (element,attrs) {
@@ -1018,35 +1024,157 @@ function getContextMenu (target, type) {
 	return true;
 }
 
+var authority_tag_map = {
+	100 : ['[100,400,500,700]',100],
+	110 : ['[110,410,510,710]',110],
+	111 : ['[111,411,511,711]',111],
+	240 : ['[130,430,530,730]',130],
+	650 : ['[150,450,550,750]',150],
+	651 : ['[151,451,551,751]',151],
+	655 : ['[155,455,555,755]',155],
+};
+
 function getAuthorityContextMenu (target, sf) {
-	var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context';
+	var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
 
-	if (target.getAttribute('context')) return true;
+	if (!authority_tag_map[sf.parent().@tag]) return false;
 
-	var sf_popup = createPopup({position : 'after_start', id : menu_id });
+	var old = document.getElementById( menu_id );
+	if (old) old.parentNode.removeChild(old);
+
+	var sf_popup = createPopup({ id : menu_id, flex : 1 });
 	context_menus.appendChild( sf_popup );
 
-	var val = 'foo';
-	sf_popup.appendChild(
-		createMenu(
-			{ label : 'bar' },
-			createMenuPopup( {},
-				createMenuitem(
-					{ label : val,
-					  oncommand : 
-  						'current_focus.value = "' + val + '";' +
-						'var e = document.createEvent("MutationEvents");' +
-						'e.initMutationEvent("change",1,1,null,0,0,0,0);' +
-						'current_focus.inputField.dispatchEvent(e);',
-					  tooltiptext : val + ' description'
-					}
-				)
+	var auth_data = searchAuthority( sf, authority_tag_map[sf.parent().@tag][0], sf.@code, 25);
+
+	var res = new XML( auth_data.responseText );
+
+	var recs = res.gw::payload.gw::array.gw::string;
+	for (var i in recs) {
+		var x = recs[i];
+		var xml = new XML(x.toString());
+		var main = xml.datafield.(@tag.toString().match(/^1/)).subfield;
+
+		if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) continue;
+
+		var grid = document.getElementsByAttribute('name','authority-marc-template')[0].cloneNode(true);
+		grid.setAttribute('name','-none-');
+		grid.setAttribute('style','overflow:scroll');
+
+		var main_text = '';
+		for (var i in main) {
+			if (main_text) main_text += ' / ';
+			main_text += main[i];
+		}
+
+		var submenu = createMenu( { label : main_text } );
+
+		var popup = createMenuPopup({ flex : "1" });
+		submenu.appendChild(popup);
+
+		var fields = xml.datafield;
+		for (var j in fields) {
+
+			var row = createRow(
+				{},
+				createLabel( { value : fields[j].@tag } ),
+				createLabel( { value : fields[j].@ind1 } ),
+				createLabel( { value : fields[j].@ind2 } )
+			);
+
+			var sf_box = createHbox();
+
+			var subfields = fields[j].subfield;
+			for (var k in subfields) {
+				sf_box.appendChild(
+					createCheckbox(
+						{ label    : '\u2021' + subfields[k].@code + ' ' + subfields[k],
+						  subfield : subfields[k].@code,
+						  tag      : subfields[k].parent().@tag,
+						  value    : subfields[k]
+						}
+					)
+				);
+				row.appendChild(sf_box);
+			}
+
+			grid.lastChild.appendChild(row);
+		}
+
+		grid.hidden = false;
+		popup.appendChild( grid );
+
+		popup.appendChild(
+			createMenuitem(
+				{ label : 'Apply Selected',
+				  command : function (event) {
+						applyAuthority(event.target.previousSibling, target, sf);
+						return true;
+				  },
+				}
 			)
-		)
-	);
+		);
+
+		sf_popup.appendChild( submenu );
+	}
 
 	target.setAttribute('context', menu_id);
 	return true;
 }
 
+function applyAuthority ( target, ui_sf, e4x_sf ) {
+
+	var new_vals = target.getElementsByAttribute('checked','true');
+	var field = e4x_sf.parent();
+
+	for (var i = 0; i < new_vals.length; i++) {
+
+		var sf_list = field.subfield;
+		for (var j in sf_list) {
+
+			if (sf_list[j].@code == new_vals[i].getAttribute('subfield')) {
+				sf_list[j] = new_vals[i].getAttribute('value');
+				new_vals[i].setAttribute('subfield','');
+				break;
+			}
+		}
+	}
+
+	for (var i = 0; i < new_vals.length; i++) {
+		if (!new_vals[i].getAttribute('subfield')) continue;
+
+		var val = new_vals[i].getAttribute('value');
+
+		var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{val}</subfield>;
+		sf.@code = new_vals[i].getAttribute('subfield');
+
+		field.insertChildAfter(field.subfield[field.subfield.length() - 1], sf);
+	}
+
+	var row = marcDatafield( field );
+
+	var node = ui_sf;
+	while (node.nodeName != 'row') {
+		node = node.parentNode;
+	}
+
+	node.parentNode.replaceChild( row, node );
+	return true;
+}
+
+function searchAuthority (term, tag, sf, limit) {
+	var url = "/gateway?format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
+	url += '&param="term"&param="' + term + '"';
+	url += '&param="limit"&param=' + limit;
+	url += '&param="tag"&param=' + tag + '';
+	url += '&param="subfield"&param="' + sf + '"';
+
+
+	var req = new XMLHttpRequest();
+	req.open('GET',url,false);
+	req.send(null);
+
+	return req;
+
+}
 
