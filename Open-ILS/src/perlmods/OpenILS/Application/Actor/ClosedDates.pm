@@ -26,11 +26,18 @@ sub fetch_dates {
 		($date[5] + 1900) .'-'. ($date[4] + 1) .'-'. $date[3];
 	my $end = $$args{end_date} || '3000-01-01'; # Y3K, here I come..
 
-	return $e->search_actor_org_unit_closed_date( 
+	my $dates = $e->search_actor_org_unit_closed_date( 
 		{ 
 			close_start => { ">=" => $start }, 
-			close_end => { "<=" => $end }
-		}, {idlist => 1} );
+			close_end	=> { "<=" => $end },
+			org_unit		=> $org,
+		}, { idlist		=> $$args{idlist} } ) or return $e->event;
+
+	if(!$$args{idlist} and @$dates) {
+		$dates = [ sort { $a->close_start cmp $b->close_start } @$dates ];
+	}
+
+	return $dates;
 }
 
 __PACKAGE__->register_method( 
@@ -48,6 +55,28 @@ sub fetch_date {
 	my $date = $e->retrieve_actor_org_unit_closed_date($id) or return $e->event;
 	return $date;
 }
+
+
+__PACKAGE__->register_method( 
+	method => 'delete_date',
+	api_name	=> 'open-ils.actor.org_unit.closed.delete',
+	signature	=> q/
+		Removes a single date object
+	/
+);
+
+sub delete_date {
+	my( $self, $conn, $auth, $id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my $date = $e->retrieve_actor_org_unit_closed_date($id) or return $e->event;
+	return $e->event unless $e->allowed( # rely on the editor perm eventually
+		'actor.org_unit.closed_date.delete', $date->org_unit);
+	$e->delete_actor_org_unit_closed_date($date) or return $e->event;
+	return 1;
+}
+
+
 
 
 __PACKAGE__->register_method( 
@@ -74,6 +103,32 @@ sub create_date {
 
 	$e->commit;
 	return $newobj;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'edit_date',
+	api_name	=> 'open-ils.actor.org_unit.closed.update',
+	signature	=> q/
+		Updates a closed date object
+	/
+);
+
+sub edit_date {
+	my( $self, $conn, $auth, $date ) = @_;
+	my $e = new_editor(authtoken=>$auth, xact =>1);
+	return $e->event unless $e->checkauth;
+	
+	# First make sure they have the right to update the selected date object
+	my $odate = $e->retrieve_actor_org_unit_closed_date($date->id) 
+		or return $e->event;
+
+	return $e->event unless $e->allowed( # rely on the editor perm eventually
+		'actor.org_unit.closed_date.update', $odate->org_unit);
+
+	$e->update_actor_org_unit_closed_date($date) or return $e->event;
+
+	return 1;
 }
 
 
