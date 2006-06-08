@@ -6,6 +6,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
 use Data::Dumper;
+use JSON;
 use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 
@@ -38,8 +39,6 @@ use constant W => 'warn';
 use constant I => 'info';
 use constant D => 'debug';
 use constant A => 'activity';
-
-
 
 
 
@@ -203,7 +202,7 @@ sub request {
 
 	my $val;
 	my $err;
-	my $argstr = _arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
+	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
 	$self->log(I, "request $method : $argstr");
 	
@@ -333,23 +332,13 @@ sub _prop_string {
 	return $str;
 }
 
-sub _hash_to_string {
-	my $h = shift;
-	my $str = "{";
-	$str .= " $_=".$h->{$_} for keys %$h;
-	$str .= " }";
-	return $str;
-}
 
-sub _arg_to_string {
-	my( $arg ) = @_;
-	return "" unless $arg;
+sub __arg_to_string {
+	my $arg = shift;
+	return "" unless defined $arg;
 	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
-	return _hash_to_string($arg) if ref $arg eq 'HASH'; # search
-	return "[@$arg]" if ref $arg eq 'ARRAY';
-	return $arg; # retrieve
+	return JSON->perl2JSON($arg);
 }
-
 
 
 # -----------------------------------------------------------------------------
@@ -439,6 +428,13 @@ sub runmethod {
 			$self->event($evt);
 		}
 
+		if( $err ) {
+			$self->event( 
+				OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+					payload => $arg, debug => "$err" ));
+			return undef;
+		}
+
 		return undef;
 	}
 
@@ -450,7 +446,12 @@ sub runmethod {
 	}
 
 	# If we havn't dealt with the error in a nice way, go ahead and throw it
-	throw $err if $err;
+	if( $err ) {
+		$self->event( 
+			OpenILS::Event->new( 'DATABASE_QUERY_FAILED', 
+				payload => $arg, debug => "$err" ));
+		return undef;
+	}
 
 	if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
 		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
@@ -470,7 +471,6 @@ sub _mk_not_found {
 	$t = uc($t);
 	return OpenILS::Event->new("${t}_NOT_FOUND", payload => $arg);
 }
-
 
 
 
