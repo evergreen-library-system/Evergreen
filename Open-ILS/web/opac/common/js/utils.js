@@ -512,6 +512,11 @@ function alertId(id) {
 	if(node) alert(node.innerHTML);
 }
 
+function confirmId(id) {
+	var node = $(id);
+	if(node) return confirm(node.innerHTML);
+}
+
 
 function goBack() { history.back(); }
 function goForward() { history.forward(); }
