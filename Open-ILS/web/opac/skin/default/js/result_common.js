@@ -256,14 +256,28 @@ function resultSuggestSearchClass() {
 
 function resultSuggestSpelling(r) {
 	var res = r.getResultObject();
-	if(res) {
-		unHideMe($('did_you_mean'));
-		var arg = {};
-		arg[PARAM_TERM] = res;
-		$('spell_check_link').setAttribute(
-			'href', buildOPACLink(arg) );
-		$('spell_check_link').appendChild(text(res));
+	var phrase = getTerm();
+	var words = phrase.split(/ /);
+
+	var newterm = "";
+
+	for( var w = 0; w < words.length; w++ ) {
+		var word = words[w];
+		var blob = grep(res, function(i){return (i.word == word);})[0];
+		if( blob.word == word ) {
+			if( blob.suggestions ) {
+				newterm += " " + blob.suggestions[0];
+				unHideMe($('did_you_mean'));
+			} else {
+				newterm += " " + word;
+			}
+		}
 	}
+
+	var arg = {};
+	arg[PARAM_TERM] = newterm;
+	$('spell_check_link').setAttribute('href', buildOPACLink(arg));
+	$('spell_check_link').appendChild(text(newterm));
 }
 
 
