@@ -49,20 +49,19 @@ function my_init() {
 					cn_blob,
 					function(o) {
 						for (var i in o) {
-							return [ o[i], o[i] ];
+							return [ o[i], i ];
 						}
 					}
 				).sort(
-					function(b,a) {
-						if (a == 82 && b == 92) return -1;
-						if (a == 92 && b == 82) return 1;
-						if (a == 82) return -1;
-						if (a == 92) return -1;
-						if (a < b) return -1;
-						if (a > b) return 1;
+					function(a,b) {
+						a = a[1]; b = b[1];
+						if (a == '082' || b == '082') return -1; 
+						if (a == '092' || b == '092') return -1; 
+						if (a < b) return -1; 
+						if (a > b) return 1; 
 						return 0;
 					}
-				)
+				).reverse()
 			); hbox.appendChild(ml);
 			ml.setAttribute('editable','true');
 			var btn = document.createElement('button');
