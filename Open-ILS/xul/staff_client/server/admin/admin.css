@@ -14,3 +14,30 @@ body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white;}
 select { width: 12em; }
 .select_big { width: 15em; }
 .context_help { font-weight: bold; color: blue; }
+
+button {
+	color:#050;
+	font-family:'trebuchet ms',helvetica,sans-serif;
+	font-size:84%;
+	font-weight:bold;
+	background-color:#fed;
+	border:1px solid;
+	border-top-color:#696;
+	border-left-color:#696;
+	border-right-color:#363;
+	border-bottom-color:#363;
+	margin: 4px;
+}
+
+button:disabled  { 
+	color: #808080; 
+	background: #E0E0E0; 
+	border: 1px solid #808080;
+}
+
+.cal_img {
+	cursor: pointer; 
+	border: 1px solid red; 
+	padding: 0px; margin: 0px; 
+}
+.cal_img:hover { background: red ; }
