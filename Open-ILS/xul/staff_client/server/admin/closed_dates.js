@@ -66,6 +66,24 @@ function cdInitCals() {
 		align       : "Tl",
 		singleClick : true
 	});
+
+	Calendar.setup({
+		inputField  : "cd_edit_end_date",
+		ifFormat    : "%Y-%m-%d",
+		button      : "cd_edit_end_date_img",
+		align       : "Tl",
+		singleClick : true
+	});
+
+	Calendar.setup({
+		inputField  : "cd_edit_start_date",
+		ifFormat    : "%Y-%m-%d",
+		button      : "cd_edit_start_date_img",
+		align       : "Tl",
+		singleClick : true
+	});
+
+
 }
 
 function cdDrawRange( start, end ) {
@@ -161,6 +179,8 @@ function cdBuildRow( date ) {
 		cdEditFleshRow(row, date);
 	}
 
+	$n(row, 'note').appendChild(text(date.reason()));
+
 	return row;
 }
 
@@ -177,6 +197,7 @@ function cdShowEditRow(id) {
 	cdCancelEdit();
 	unHideMe($(id));
 	unHideMe($('cd_edit_submit'));
+	unHideMe($('cd_edit_note_row'));
 }
 
 function cdCancelEdit() {
@@ -184,6 +205,7 @@ function cdCancelEdit() {
 	hideMe($('cd_edit_allday_row'));
 	hideMe($('cd_edit_allmultiday_row'));
 	hideMe($('cd_edit_submit'));
+	hideMe($('cd_edit_note_row'));
 }
 
 
@@ -210,7 +232,7 @@ function cdVerifyDate(d) {
 }
 
 function cdVerifyTime(t) {
-	return t && t.match(/\d{2}:\d{2}/);
+	return t && t.match(/\d{2}:\d{2}:\d{2}/);
 }
 
 function cdDateStrToDate( str ) {
@@ -233,6 +255,7 @@ function cdDateStrToDate( str ) {
 
 	date.setHours(timedata[0]);
 	date.setMinutes(timedata[1]);
+	date.setSeconds(timedata[2]);
 
 	return date;
 }
@@ -245,30 +268,62 @@ function cdNew() {
 	if( ! $('cd_edit_allday_row').className.match(/hide_me/) ) {
 
 		var date = $('cd_edit_allday_start_date').value;
-		start = cdDateStrToDate(date + ' 00:00');
-		end = cdDateStrToDate(date + ' 23:59');
-
-		alert(start.getFullYear());
+		start = cdDateStrToDate(date + ' 00:00:00');
+		end = cdDateStrToDate(date + ' 23:59:59');
 
 	} else if( ! $('cd_edit_allmultiday_row').className.match(/hide_me/) ) {
 
 		var sdate = $('cd_edit_allmultiday_start_date').value;
 		var edate = $('cd_edit_allmultiday_end_date').value;
-		start = cdDateStrToDate(sdate + ' 00:00');
-		end = cdDateStrToDate(edate + ' 23:59');
+		start = cdDateStrToDate(sdate + ' 00:00:00');
+		end = cdDateStrToDate(edate + ' 23:59:59');
 
 	} else {
 
 		var sdate = $('cd_edit_start_date').value;
 		var edate = $('cd_edit_end_date').value;
-		var stime = $('cd_edit_start_time').value;
-		var etime = $('cd_edit_end_time').value;
+		var stime;
+		var etime;
+
+		if($('cd_edit_start_time_allday').checked) {
+			stime = '00:00';
+		} else {
+			stime = $('cd_edit_start_time').value;
+		}
+
+		stime += ':00';
+
+		if($('cd_edit_end_time_allday').checked) {
+			etime = '23:59:59';
+		} else {
+			etime = $('cd_edit_end_time').value;
+			etime += ':00';
+		}
 
 		start = cdDateStrToDate(sdate + ' ' + stime);
 		end = cdDateStrToDate(edate + ' ' + etime);
 	}
 
-	alert(start.getW3CDTF() + '  :  ' + end.getW3CDTF());
+	cdCreate(start, end, $('cd_edit_note').value);
+}
+
+function cdCreate(start, end, note) {
+
+	var date = new aoucd();
+	date.close_start(start.getW3CDTF());
+	date.close_end(end.getW3CDTF());
+	date.org_unit(USER.ws_ou());
+	date.reason(note);
+
+	var req = new Request(CREATE_CLOSED_DATE, SESSION, date);
+	req.callback(
+		function(r) {
+			var res = r.getResultObject();
+			if( checkILSEvent(res) ) alertILSEvent(res);
+			cdDrawRange(selectedStart, selectedEnd);
+		}
+	);
+	req.send();
 }
 
 

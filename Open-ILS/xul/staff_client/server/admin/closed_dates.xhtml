@@ -54,34 +54,37 @@
 				<thead>
 					<tr>
 						<td>Closed Duration</td>
+						<td>Reason for Closing</td>
 						<td>Delete</td>
 					</tr>
 				</thead>
 				<tbody id='cd_tbody'>
 
-
 					<tr id='cd_row'>
-						<td>
+						<td align='left'>
 							From
 							<b name='start_date'/> at <b name='start_time'/>
-							<span> until </span>
+							<span> through </span>
 							<b name='end_date'/> at <b name='end_time'/>
 						</td>
+						<td><div name='note'/></td>
 						<td><button name='delete'>delete</button></td>
 					</tr>
 
 					<tr id='cd_allday_row'>
-						<td>
+						<td align='left'>
 							All Day <b name='start_date'/>
 						</td>
+						<td><div name='note'/></td>
 						<td><button name='delete'>delete</button></td>
 					</tr>
 
 
 					<tr id='cd_allmultiday_row'>
-						<td>
-							All Day From <b name='start_date'/> until <b name='end_date'/>
+						<td align='left'>
+							Every Day From <b name='start_date'/> through <b name='end_date'/>
 						</td>
+						<td><div name='note'/></td>
 						<td><button name='delete'>delete</button></td>
 					</tr>
 
@@ -124,17 +127,43 @@
 							<tbody>
 								<tr>
 									<td>
-										<input name='start_date' type='text' size='10' maxlength='10'/>
+										<input id='cd_edit_start_date' type='text' size='10' maxlength='10'/>
+										<img src="/opac/common/js/jscalendar/img.gif"  
+											id='cd_edit_start_date_img' class='cal_img'/>
 									</td>
+
 									<td>
-										<input name='start_time' type='text' size='5' maxlength='5'/>
+										<table width='100%'><tbody><tr><td>
+											<input id='cd_edit_start_time' type='text' size='5' maxlength='5'/>
+										</td>
+										<td>
+											<div style='font-size: 80%;'>All Day</div>
+											<input type='checkbox' id='cd_edit_start_time_allday'
+												onclick='
+													var input = $("cd_edit_start_time");
+													input.disabled = !input.disabled;'/>
+										</td></tr></tbody></table>
 									</td>
+
 									<td>
-										<input name='end_date' type='text' size='10' maxlength='10'/>
+										<input id='cd_edit_end_date' type='text' size='10' maxlength='10'/>
+										<img src="/opac/common/js/jscalendar/img.gif"  
+											id='cd_edit_end_date_img' class='cal_img'/>
 									</td>
+
 									<td>
-										<input name='end_time' type='text' size='5' maxlength='5'/>
+										<table width='100%'><tbody><tr><td>
+											<input id='cd_edit_end_time' type='text' size='5' maxlength='5'/>
+										</td>
+										<td>
+											<div style='font-size: 80%;'>All Day</div>
+											<input type='checkbox' id='cd_edit_end_time_allday'
+												onclick='
+													var input = $("cd_edit_end_time");
+													input.disabled = !input.disabled;'/>
+										</td></tr></tbody></table>
 									</td>
+
 								</tr>
 							</tbody>
 						</table>
@@ -165,12 +194,21 @@
 						</td>
 					</tr>
 
+					<tr id='cd_edit_note_row' class='hide_me' valign='middle'>
+						<td>
+							<div>Reason for closing: </div>
+							<textarea style='border: 1px solid blue; background: #E0F0E0; margin: 5px;' 
+								id='cd_edit_note' wrap='soft' cols='40' rows='3'/>
+						</td>
+					</tr>
+
 					<tr id='cd_edit_submit' class='hide_me'>
 						<td>
 							<button onclick='cdNew();'>Save</button>
 							<button onclick='cdCancelEdit();'>Cancel</button>
 						</td>
 					</tr>
+
 		
 				</tbody>
 			</table>
