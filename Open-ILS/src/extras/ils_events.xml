@@ -486,6 +486,9 @@
 	<event code='2001' textcode='DATABASE_UPDATE_FAILED'>
 		<desc xml:lang="en-US">The attempt to write to the DB failed</desc>
 	</event>
+	<event code='2002' textcode='DATABASE_QUERY_FAILED'>
+		<desc xml:lang="en-US">The attempt to query to the DB failed</desc>
+	</event>
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc xml:lang="en-US">Permission Denied</desc>
 	</event>

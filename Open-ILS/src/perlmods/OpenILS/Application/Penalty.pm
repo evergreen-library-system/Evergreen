@@ -10,6 +10,8 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use base 'OpenSRF::Application';
+use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Application::Actor;
 
 my $U = "OpenILS::Application::AppUtils";
 my $script;
@@ -49,7 +51,8 @@ sub build_runner {
 
 	my %args = @_;
 	my $patron = $args{patron};
-	my $patron_summary = $args{patron_summary};
+	my $fines = $args{fines};
+	my $circ_counts = $args{circ_counts};
 
 	my $pgroup = find_profile($patron);
 	$patron->profile( $pgroup );
@@ -65,8 +68,8 @@ sub build_runner {
 	$runner->insert( 'environment.patron',	$patron, 1);
 	$runner->insert( $fatal_key, [] );
 	$runner->insert( $info_key, [] );
-	$runner->insert( 'environment.patronItemsOut', $patron_summary->[0] );
-	$runner->insert( 'environment.patronFines', $patron_summary->[1] );
+	$runner->insert( 'environment.patronOverdueCount', $circ_counts->{overdue});
+	$runner->insert( 'environment.patronFines', $fines );
 
 	return $runner;
 }
@@ -117,23 +120,36 @@ sub patron_penalty {
 	my( $patron, $evt );
 
 	$conn->respond_complete(1) if $$args{background};
+	
+	my $e = new_editor(xact => 1);
 
 	if( $patron = $$args{patron} ) { # - unflesh if necessary
 		$patron->home_ou( $patron->home_ou->id ) if ref($patron->home_ou);
 		$patron->profile( $patron->profile->id ) if ref($patron->profile);
 
 	} else {
-		( $patron, $evt ) = $U->fetch_user($$args{patronid});
-		return $evt if $evt;
+		$patron = $e->retrieve_actor_user($$args{patronid})
+			or return $e->event;
 	}
 
 	# - fetch the circulation summary info for the user
 	my $summary = $U->fetch_patron_circ_summary($patron->id);
 
+	# Note, that this ignores any negative balances
+	my $fxacts = $e->search_money_open_billable_transaction_summary(
+		{ usr => $patron->id, balance_owed => { ">" => 0 } });
+	my $fines = 0;
+	$fines += $_->balance_owed for @$fxacts;
+
+	# - retrieve the number of open circulations the user has by type
+	# - we have to call this method directly because we don't have an auth session
+	my $circ_counts = OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
+
 	# - build the script runner
 	my $runner = build_runner( 
-		patron			=> $patron, 
-		patron_summary => $summary 
+		patron		=> $patron, 
+		fines			=> $fines,
+		circ_counts	=> $circ_counts,
 		);
 
 	# - Load up the script and run it

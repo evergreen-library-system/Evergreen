@@ -329,10 +329,9 @@ sub _build_circ_script_runner {
 		$runner->insert('environment.isNonCat', undef);
 	}
 
-#	if(ref($ctx->{patron_circ_summary})) {
-#		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
-#		$runner->insert( 'environment.patronFines', $ctx->{patron_circ_summary}->[1], 1 );
-#	}
+	if(ref($ctx->{patron_circ_summary})) {
+		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
+	}
 
 	$ctx->{runner} = $runner;
 	return $runner;
