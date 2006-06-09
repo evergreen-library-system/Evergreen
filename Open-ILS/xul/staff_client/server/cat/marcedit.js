@@ -733,7 +733,7 @@ function stackSubfields(checkbox) {
 	var o = 'vertical';
 	if (checkbox.checked) o = 'horizontal';
 	
-	for (var i in list) {
+	for (var i = 0; i < list.length; i++) {
 		if (list[i]) list[i].setAttribute('orient',o);
 	}
 }
@@ -1026,16 +1026,22 @@ function getContextMenu (target, type) {
 
 var authority_tag_map = {
 	100 : ['[100,400,500,700]',100],
+	400 : ['[100,400,500,700]',100],
 	700 : ['[100,400,500,700]',100],
 	800 : ['[100,400,500,700]',100],
 	110 : ['[110,410,510,710]',110],
+	410 : ['[110,410,510,710]',110],
 	710 : ['[110,410,510,710]',110],
 	810 : ['[110,410,510,710]',110],
 	111 : ['[111,411,511,711]',111],
+	411 : ['[111,411,511,711]',111],
 	711 : ['[111,411,511,711]',111],
 	811 : ['[111,411,511,711]',111],
 	240 : ['[130,430,530,730]',130],
+	440 : ['[130,430,530,730]',130],
+	130 : ['[130,430,530,730]',130],
 	730 : ['[130,430,530,730]',130],
+	830 : ['[130,430,530,730]',130],
 	600 : ['[100,400,480,481,482,485,500,580,581,582,585,700,780,781,782,785]',100],
 	650 : ['[150,450,480,481,482,485,550,580,581,582,585,750,780,781,782,785]',150],
 	651 : ['[151,451,480,481,482,485,551,580,581,582,585,751,780,781,782,785]',151],
@@ -1170,11 +1176,242 @@ function applyAuthority ( target, ui_sf, e4x_sf ) {
 	return true;
 }
 
+var control_map = {
+	100 : {
+		'a' : { 100 : 'a' },
+		'd' : { 100 : 'd' },
+	},
+	110 : {
+		'a' : { 110 : 'a' },
+		'd' : { 110 : 'd' },
+	},
+	111 : {
+		'a' : { 111 : 'a' },
+		'd' : { 111 : 'd' },
+	},
+	130 : {
+		'a' : { 130 : 'a' },
+		'd' : { 130 : 'd' },
+	},
+	240 : {
+		'a' : { 130 : 'a' },
+		'd' : { 130 : 'd' },
+	},
+	400 : {
+		'a' : { 100 : 'a' },
+		'd' : { 100 : 'd' },
+	},
+	410 : {
+		'a' : { 110 : 'a' },
+		'd' : { 110 : 'd' },
+	},
+	411 : {
+		'a' : { 111 : 'a' },
+		'd' : { 111 : 'd' },
+	},
+	440 : {
+		'a' : { 130 : 'a' },
+		'n' : { 130 : 'n' },
+		'p' : { 130 : 'p' },
+	},
+	700 : {
+		'a' : { 100 : 'a' },
+		'd' : { 100 : 'd' },
+	},
+	710 : {
+		'a' : { 110 : 'a' },
+		'd' : { 110 : 'd' },
+	},
+	711 : {
+		'a' : { 111 : 'a' },
+		'd' : { 111 : 'd' },
+	},
+	730 : {
+		'a' : { 130 : 'a' },
+		'd' : { 130 : 'd' },
+	},
+	800 : {
+		'a' : { 100 : 'a' },
+		'd' : { 100 : 'd' },
+	},
+	810 : {
+		'a' : { 110 : 'a' },
+		'd' : { 110 : 'd' },
+	},
+	811 : {
+		'a' : { 111 : 'a' },
+		'd' : { 111 : 'd' },
+	},
+	830 : {
+		'a' : { 130 : 'a' },
+		'd' : { 130 : 'd' },
+	},
+	600 : {
+		'a' : { 100 : 'a' },
+		'd' : { 100 : 'd' },
+		't' : { 100 : 't' },
+		'v' : { 180 : 'v',
+			100 : 'v',
+			181 : 'v',
+			182 : 'v',
+			185 : 'v',
+		},
+		'x' : { 180 : 'x',
+			100 : 'x',
+			181 : 'x',
+			182 : 'x',
+			185 : 'x',
+		},
+		'y' : { 180 : 'y',
+			100 : 'y',
+			181 : 'y',
+			182 : 'y',
+			185 : 'y',
+		},
+		'z' : { 180 : 'z',
+			100 : 'z',
+			181 : 'z',
+			182 : 'z',
+			185 : 'z',
+		},
+	},
+	650 : {
+		'a' : { 150 : 'a' },
+		'b' : { 150 : 'b' },
+		'v' : { 180 : 'v',
+			150 : 'v',
+			181 : 'v',
+			182 : 'v',
+			185 : 'v',
+		},
+		'x' : { 180 : 'x',
+			150 : 'x',
+			181 : 'x',
+			182 : 'x',
+			185 : 'x',
+		},
+		'y' : { 180 : 'y',
+			150 : 'y',
+			181 : 'y',
+			182 : 'y',
+			185 : 'y',
+		},
+		'z' : { 180 : 'z',
+			150 : 'z',
+			181 : 'z',
+			182 : 'z',
+			185 : 'z',
+		},
+	},
+	651 : {
+		'a' : { 151 : 'a' },
+		'v' : { 180 : 'v',
+			151 : 'v',
+			181 : 'v',
+			182 : 'v',
+			185 : 'v',
+		},
+		'x' : { 180 : 'x',
+			151 : 'x',
+			181 : 'x',
+			182 : 'x',
+			185 : 'x',
+		},
+		'y' : { 180 : 'y',
+			151 : 'y',
+			181 : 'y',
+			182 : 'y',
+			185 : 'y',
+		},
+		'z' : { 180 : 'z',
+			151 : 'z',
+			181 : 'z',
+			182 : 'z',
+			185 : 'z',
+		},
+	},
+	655 : {
+		'a' : { 155 : 'a' },
+		'v' : { 180 : 'v',
+			155 : 'v',
+			181 : 'v',
+			182 : 'v',
+			185 : 'v',
+		},
+		'x' : { 180 : 'x',
+			155 : 'x',
+			181 : 'x',
+			182 : 'x',
+			185 : 'x',
+		},
+		'y' : { 180 : 'y',
+			155 : 'y',
+			181 : 'y',
+			182 : 'y',
+			185 : 'y',
+		},
+		'z' : { 180 : 'z',
+			155 : 'z',
+			181 : 'z',
+			182 : 'z',
+			185 : 'z',
+		},
+	},
+};
+
+function validateAuthority (button) {
+	var grid = document.getElementById('recGrid');
+	var label = button.getAttribute('label');
+
+	//loop over rows
+	var rows = grid.lastChild.childNodes;
+	for (var i = 0; i < rows.length; i++) {
+		var row = rows[i];
+		var tag = row.firstChild;
+
+		if (!control_map[tag.value]) continue
+
+		var ind1 = tag.nextSibling;
+		var ind2 = ind1.nextSibling;
+		var subfields = ind2.nextSibling.childNodes;
+
+		for (var j = 0; j < subfields.length; j++) {
+			var sf = subfields[j];
+
+			if (!control_map[tag.value][sf.childNodes[1].value]) continue;
+
+			button.setAttribute('label', label + ' - ' + tag.value + sf.childNodes[1].value);
+
+			var found = 0;
+			for (var k in control_map[tag.value][sf.childNodes[1].value]) {
+				var x = searchAuthority(sf.childNodes[2].value, k, control_map[tag.value][sf.childNodes[1].value][k], 1);
+				var res = new XML( x.responseText );
+
+				if (res.gw::payload.gw::array.gw::string.length()) {
+					found = 1;
+					break;
+				}
+			}
+
+			if (!found) {
+				sf.childNodes[2].inputField.style.color = 'red';
+			} else {
+				sf.childNodes[2].inputField.style.color = 'black';
+			}
+		}
+	}
+
+	button.setAttribute('label', label);
+
+	return true;
+}
+
+
 function searchAuthority (term, tag, sf, limit) {
 	var url = "/gateway?format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
 	url += '&param="term"&param="' + term + '"';
 	url += '&param="limit"&param=' + limit;
-	url += '&param="tag"&param=' + tag + '';
+	url += '&param="tag"&param=' + tag;
 	url += '&param="subfield"&param="' + sf + '"';
 
 

@@ -11,6 +11,7 @@
 	<caption label="Options"/>
 	<hbox flex="1">
 		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
+		<button label="Validate" oncommand="validateAuthority(this);"/>
 		<button id="save-button"/>
 		<button label="Help" oncommand="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del');"/>
 	</hbox>
