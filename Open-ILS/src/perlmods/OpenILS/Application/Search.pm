@@ -9,11 +9,8 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
 
-
-#use OpenILS::Application::Search::StaffClient;
 use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Authority;
-#use OpenILS::Application::Search::Actor;
 use OpenILS::Application::Search::Z3950;
 use OpenILS::Application::Search::Zips;
 
@@ -23,7 +20,7 @@ use OpenILS::Application::AppUtils;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 
-use Text::Aspell; # spell checking...
+use Text::Aspell; 
 
 # Houses generic search utilites 
 
@@ -52,6 +49,7 @@ sub initialize {
 	
 
 
+=head deprecated
 __PACKAGE__->register_method(
 	method	=> "check_spelling",
 	api_name	=> "open-ils.search.spell_check");
@@ -83,9 +81,16 @@ sub check_spelling {
 
 	if( $return_something ) { return $return_phrase; }
 	return 0;
-
 }
+=cut
 
+
+
+# ------------------------------------------------------------------
+# Create custome dictionaries like so:
+# aspell --lang=en create  master ./oils_authority.dict < /tmp/words
+# where /tmp/words is a space separated list of words
+# ------------------------------------------------------------------
 
 
 __PACKAGE__->register_method(
