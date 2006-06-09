@@ -1490,7 +1490,7 @@ sub postfilter_search_multi_class_fts {
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
-		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value LIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
+		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value LIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
 		$bonus{'series'} = [
 			{ "CASE WHEN $search_class.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
