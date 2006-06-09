@@ -54,7 +54,7 @@ if( profile ) {
 
 	/* check the overdue limit */
 	if( profile.overdueLimit > 0 && patronOverdueCount > profile.overdueLimit )
-		result.fatalEvents.puth('PATRON_EXCEEDS_OVERDUE_COUNT');
+		result.fatalEvents.push('PATRON_EXCEEDS_OVERDUE_COUNT');
 
 } else {
 	log_warn("profile has no configured information: " + patronProfile);
