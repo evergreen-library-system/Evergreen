@@ -1063,6 +1063,8 @@ function getAuthorityContextMenu (target, sf) {
 
 	var res = new XML( auth_data.responseText );
 
+	var rec_list = [];
+
 	var recs = res.gw::payload.gw::array.gw::string;
 	for (var i in recs) {
 		var x = recs[i];
@@ -1071,15 +1073,27 @@ function getAuthorityContextMenu (target, sf) {
 
 		if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) continue;
 
-		var grid = document.getElementsByAttribute('name','authority-marc-template')[0].cloneNode(true);
-		grid.setAttribute('name','-none-');
-		grid.setAttribute('style','overflow:scroll');
-
 		var main_text = '';
 		for (var i in main) {
 			if (main_text) main_text += ' / ';
 			main_text += main[i];
 		}
+
+		rec_list.push( [ main_text, xml ] );
+	}
+	
+	for (var i in rec_list.sort( function (a, b) { if(a[0] > b[0]) return 1; return -1; } )) {
+
+		var main_text = rec_list[i][0];
+		var xml = rec_list[i][1];
+		var main = xml.datafield.(@tag.toString().match(/^1/)).subfield;
+
+		if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) continue;
+
+		var grid = document.getElementsByAttribute('name','authority-marc-template')[0].cloneNode(true);
+		grid.setAttribute('name','-none-');
+		grid.setAttribute('style','overflow:scroll');
+
 
 		var submenu = createMenu( { label : main_text } );
 
