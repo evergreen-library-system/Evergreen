@@ -24,7 +24,7 @@ package config::bib_source;
 use base qw/config/;
 __PACKAGE__->table('config_bib_source');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/quality source/);
+__PACKAGE__->columns(Essential => qw/quality source transcendant/);
 #-------------------------------------------------------------------------------
 
 package config::metabib_field;

@@ -46,6 +46,7 @@ sub ordered_records_from_metarecord {
 	my $cl_table = asset::copy_location->table;
 	my $cp_table = asset::copy->table;
 	my $cs_table = config::copy_status->table;
+	my $src_table = config::bib_source->table;
 	my $out_table = actor::org_unit_type->table;
 	my $br_table = biblio::record_entry->table;
 
@@ -68,24 +69,30 @@ sub ordered_records_from_metarecord {
 
 	if ($copies_visible) {
 		$sql .= <<"		SQL";
-	  		  FROM	$cn_table cn,
-				$sm_table sm,
+	  		  FROM	$sm_table sm,
 				$br_table br,
 				$fr_table fr,
 				$rd_table rd
 		  	  WHERE	rd.record = sm.source
 				AND fr.record = sm.source
 		  		AND br.id = sm.source
-		  		AND cn.record = sm.source
 				AND sm.metarecord = ?
-                        	AND EXISTS ((SELECT	1
+                        	AND (EXISTS ((SELECT	1
 						FROM	$cp_table cp
+							JOIN $cn_table cn ON (cp.call_number = cn.id)
 				       			JOIN $cs_table cs ON (cp.status = cs.id)
 				       			JOIN $cl_table cl ON (cp.location = cl.id)
 							JOIN $descendants d ON (cp.circ_lib = d.id)
-						WHERE	cn.id = cp.call_number
+						WHERE	cn.record = sm.source
 		                                	$copies_visible
-						LIMIT 1)) 
+						LIMIT 1))
+					OR EXISTS ((
+					    SELECT	1
+					      FROM	$src_table src
+					      WHERE	src.id = br.source
+					      		AND src.transcendant IS TRUE))
+				)
+					  
 		SQL
 	} else {
 		$sql .= <<"		SQL";
@@ -94,7 +101,7 @@ sub ordered_records_from_metarecord {
 				JOIN $fr_table fr ON (fr.record = br.id)
 				JOIN $rd_table rd ON (rd.record = br.id)
 			  WHERE	sm.metarecord = ?
-				AND (	EXISTS (
+				AND ((	EXISTS (
 						SELECT	1
 						  FROM	$cp_table cp,
 							$cn_table cn,
@@ -114,7 +121,12 @@ sub ordered_records_from_metarecord {
 							AND cp.deleted = FALSE
 							AND cn.id = cp.call_number
 						  LIMIT 1
-					)
+					))
+					OR EXISTS ((
+					    SELECT	1
+					      FROM	$src_table src
+					      WHERE	src.id = br.source
+					      		AND src.transcendant IS TRUE))
 				)
 		SQL
 	}
@@ -1526,6 +1538,7 @@ sub postfilter_search_multi_class_fts {
 	my $cs_table = config::copy_status->table;
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
+	my $source_table = config::bib_source->table;
 
 	my $bonuses = join (' * ', @bonus_lists);
 	my $relevance = join (' + ', @rank_list);
@@ -1659,6 +1672,16 @@ sub postfilter_search_multi_class_fts {
 					$olf_filter
 				  LIMIT 1
 			  	)
+				OR EXISTS (
+				SELECT	1
+				  FROM	$br_table br,
+					$metabib_metarecord_source_map_table mrs,
+					$source_table src
+				  WHERE	mrs.metarecord = s.metarecord
+					AND br.id = mrs.source
+					AND br.source = src.id
+					AND src.transcendant IS TRUE
+				)
 			  ORDER BY 4 $sort_dir, 5
 		SQL
 	} else {
@@ -1688,6 +1711,16 @@ sub postfilter_search_multi_class_fts {
 						  WHERE	cn.record = omrs.source
 							AND cn.deleted IS FALSE
 						  LIMIT 1
+					)
+					OR EXISTS (
+					SELECT	1
+					  FROM	$br_table br,
+						$metabib_metarecord_source_map_table mrs,
+						$source_table src
+					  WHERE	mrs.metarecord = s.metarecord
+						AND br.id = mrs.source
+						AND br.source = src.id
+						AND src.transcendant IS TRUE
 					)
 				)
 				$ot_filter
@@ -1929,6 +1962,7 @@ sub biblio_search_multi_class_fts {
 	my $cs_table = config::copy_status->table;
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
+	my $source_table = config::bib_source->table;
 
 
 	my $bonuses = join (' * ', @bonus_lists);
@@ -1988,11 +2022,14 @@ sub biblio_search_multi_class_fts {
 	my $select = <<"	SQL";
 		SELECT	b.id,
 			$relevance AS rel,
-			$rank AS rank
+			$rank AS rank,
+			src.transcendant
   	  	FROM	$search_table_list
 			$metabib_record_descriptor rd,
+			$source_table src,
 			$br_table b
 	  	WHERE	rd.record = b.id
+			AND src.id = b.source
 			AND b.active IS TRUE
 			AND b.deleted IS FALSE
 			$fts_list
@@ -2002,7 +2039,7 @@ sub biblio_search_multi_class_fts {
 			$a_filter
 			$l_filter
 			$lf_filter
-  	  	GROUP BY b.id
+  	  	GROUP BY b.id, src.transcendant
   	  	ORDER BY 3 $sort_dir
 		LIMIT $visiblity_limit
 	SQL
@@ -2031,6 +2068,7 @@ sub biblio_search_multi_class_fts {
 					AND cn.deleted IS FALSE
 				  LIMIT 1
 			  	)
+				OR transcendant IS TRUE
 			  ORDER BY 3 $sort_dir
 		SQL
 	} else {
@@ -2053,6 +2091,7 @@ sub biblio_search_multi_class_fts {
 				  WHERE	cn.record = s.id
 				  LIMIT 1
 				)
+				OR transcendant IS TRUE
 			  ORDER BY 3 $sort_dir
 		SQL
 	}
