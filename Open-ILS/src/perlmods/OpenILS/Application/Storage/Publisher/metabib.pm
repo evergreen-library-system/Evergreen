@@ -2023,13 +2023,12 @@ sub biblio_search_multi_class_fts {
 		SELECT	b.id,
 			$relevance AS rel,
 			$rank AS rank,
-			src.transcendant
+			b.source
   	  	FROM	$search_table_list
 			$metabib_record_descriptor rd,
 			$source_table src,
 			$br_table b
 	  	WHERE	rd.record = b.id
-			AND src.id = b.source
 			AND b.active IS TRUE
 			AND b.deleted IS FALSE
 			$fts_list
@@ -2039,7 +2038,7 @@ sub biblio_search_multi_class_fts {
 			$a_filter
 			$l_filter
 			$lf_filter
-  	  	GROUP BY b.id, src.transcendant
+  	  	GROUP BY b.id, b.source
   	  	ORDER BY 3 $sort_dir
 		LIMIT $visiblity_limit
 	SQL
@@ -2049,6 +2048,7 @@ sub biblio_search_multi_class_fts {
 
 			SELECT	s.*
 			  FROM	($select) s
+			  	LEFT OUTER JOIN $source_table src ON (s.source = src.id)
 			  WHERE	EXISTS (
 			  	SELECT	1
 				  FROM	$asset_call_number_table cn,
@@ -2068,7 +2068,7 @@ sub biblio_search_multi_class_fts {
 					AND cn.deleted IS FALSE
 				  LIMIT 1
 			  	)
-				OR transcendant IS TRUE
+				OR src.transcendant IS TRUE
 			  ORDER BY 3 $sort_dir
 		SQL
 	} else {
@@ -2076,6 +2076,7 @@ sub biblio_search_multi_class_fts {
 
 			SELECT	s.*
 			  FROM	($select) s
+			  	LEFT OUTER JOIN $source_table src ON (s.source = src.id)
 			  WHERE	EXISTS (
 			  	SELECT	1
 				  FROM	$asset_call_number_table cn,
@@ -2091,7 +2092,7 @@ sub biblio_search_multi_class_fts {
 				  WHERE	cn.record = s.id
 				  LIMIT 1
 				)
-				OR transcendant IS TRUE
+				OR src.transcendant IS TRUE
 			  ORDER BY 3 $sort_dir
 		SQL
 	}

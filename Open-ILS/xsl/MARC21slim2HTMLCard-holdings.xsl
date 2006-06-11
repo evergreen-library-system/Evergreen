@@ -27,6 +27,44 @@
       <xsl:apply-templates select="marc:datafield[@tag='082' or @tag='092' or @tag='010']"/>
      </span>
     </div>
+    <br/>
+    <xsl:apply-templates select="hold:volumes"/>
+    <br/>
+  </xsl:template>
+
+  <xsl:template match="hold:volumes">
+    <xsl:if test="count(hold:volume) &gt; 0">
+    	<u>Holdings</u>
+    </xsl:if>
+    <ul>
+    <xsl:apply-templates select="hold:volume">
+      <xsl:sort select="@lib"/>
+    </xsl:apply-templates>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="hold:volume">
+      <li> <b><xsl:value-of select="./@label"/></b>
+        <xsl:apply-templates select="hold:copies"/>
+      </li>
+  </xsl:template>
+
+  <xsl:template match="hold:copies">
+    <ul>
+    <xsl:apply-templates select="hold:copy">
+      <xsl:sort select="hold:location"/>
+    </xsl:apply-templates>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="hold:copy">
+      <li> <xsl:value-of select="./@barcode"/>
+        <ul>
+	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
+	  <li>Located at <b><xsl:value-of select="hold:location"/></b></li>
+	  <li>Status is <b><xsl:value-of select="hold:status"/></b></li>
+	</ul>
+      </li>
   </xsl:template>
 
   <xsl:template match="marc:controlfield">
@@ -86,18 +124,18 @@
     <xsl:if test="@code='u'">
       <span class="link">
         <a class="url" href="{.}">
-		<xsl:choose>
-			<xsl:when test="../marc:subfield[@code='y']">
-				<xsl:value-of select="../marc:subfield[@code='y']"/>
-			</xsl:when>
-			<xsl:when test="../marc:subfield[@code='3']">
-				<xsl:value-of select="../marc:subfield[@code='3']"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</a>
+                <xsl:choose>
+                        <xsl:when test="../marc:subfield[@code='y']">
+                                <xsl:value-of select="../marc:subfield[@code='y']"/>
+                        </xsl:when>
+                        <xsl:when test="../marc:subfield[@code='3']">
+                                <xsl:value-of select="../marc:subfield[@code='3']"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                                <xsl:value-of select="."/>
+                        </xsl:otherwise>
+                </xsl:choose>
+        </a>
       </span>
     </xsl:if>
   </xsl:template>

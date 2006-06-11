@@ -761,7 +761,7 @@ sub create_record_feed {
 	$feed->unapi($unapi);
 
 	$type = 'atom' if ($type eq 'html');
-	$type = 'marcxml' if ($type eq 'htmlcard');
+	$type = 'marcxml' if ($type eq 'htmlcard' or $type eq 'htmlholdings');
 
 	for my $rec (@$records) {
 		next unless($rec);
@@ -782,7 +782,7 @@ sub create_record_feed {
 		}
 
 		$node->id($item_tag);
-		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlcard" => 'text/html');
+		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings" => 'text/html');
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?id=$item_tag");
 		$node->link('unapi-id' => $item_tag);

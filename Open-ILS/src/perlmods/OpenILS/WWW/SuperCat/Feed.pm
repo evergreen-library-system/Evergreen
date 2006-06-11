@@ -475,6 +475,7 @@ sub new {
 	my $class = shift;
 	my $self = $class->SUPER::new;
 	$self->type('text/html');
+	$self->{xsl} = "/MARC21slim2HTMLCard.xsl";
 	return $self;
 }
 
@@ -495,8 +496,7 @@ sub toString {
 	$xslt_file ||=
                 OpenSRF::Utils::SettingsClient
        	                ->new
-               	        ->config_value( dirs => 'xsl' ).
-                "/MARC21slim2HTMLCard.xsl";
+               	        ->config_value( dirs => 'xsl' ).$self->{xsl};
 
         # parse the MODS xslt ...
         my $atom2html_xslt = $_xslt->parse_stylesheet( $_parser->parse_file($xslt_file) );
@@ -511,8 +511,20 @@ sub toString {
 	return $new_doc->toString(1); 
 }
 
+package OpenILS::WWW::SuperCat::Feed::htmlholdings;
+use base 'OpenILS::WWW::SuperCat::Feed::htmlcard';
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new;
+	$self->{xsl} = "/MARC21slim2HTMLCard-holdings.xsl";
+	return $self;
+}
 
 package OpenILS::WWW::SuperCat::Feed::htmlcard::item;
 use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
+
+package OpenILS::WWW::SuperCat::Feed::htmlholdings::item;
+use base 'OpenILS::WWW::SuperCat::Feed::htmlcard::item';
 
 1;
