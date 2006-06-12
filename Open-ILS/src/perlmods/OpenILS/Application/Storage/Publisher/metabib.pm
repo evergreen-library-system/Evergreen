@@ -1676,11 +1676,18 @@ sub postfilter_search_multi_class_fts {
 				SELECT	1
 				  FROM	$br_table br,
 					$metabib_metarecord_source_map_table mrs,
+					$metabib_record_descriptor ord,
 					$source_table src
 				  WHERE	mrs.metarecord = s.metarecord
+					AND ord.record = mrs.source
 					AND br.id = mrs.source
 					AND br.source = src.id
 					AND src.transcendant IS TRUE
+					$ot_filter
+					$of_filter
+					$oa_filter
+					$ol_filter
+					$olf_filter
 				)
 			  ORDER BY 4 $sort_dir, 5
 		SQL
@@ -1716,11 +1723,17 @@ sub postfilter_search_multi_class_fts {
 					SELECT	1
 					  FROM	$br_table br,
 						$metabib_metarecord_source_map_table mrs,
+						$metabib_record_descriptor ord,
 						$source_table src
 					  WHERE	mrs.metarecord = s.metarecord
 						AND br.id = mrs.source
 						AND br.source = src.id
 						AND src.transcendant IS TRUE
+						$ot_filter
+						$of_filter
+						$oa_filter
+						$ol_filter
+						$olf_filter
 					)
 				)
 				$ot_filter
@@ -1740,7 +1753,7 @@ sub postfilter_search_multi_class_fts {
 			$select, {},
 			@bonus_values,
 			@types, @forms, @aud, @lang, @lit_form,
-			# @types, @forms, @aud, @lang, @lit_form,
+			@types, @forms, @aud, @lang, @lit_form,
 			# ($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
 	);
 	
