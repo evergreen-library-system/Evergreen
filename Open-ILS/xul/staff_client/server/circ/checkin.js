@@ -7,9 +7,12 @@ circ.checkin = function (params) {
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.date');
 	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
+	this.data = this.OpenILS.data;
 }
 
 circ.checkin.prototype = {
+
+	'selection_list' : [],
 
 	'init' : function( params ) {
 
@@ -33,6 +36,35 @@ circ.checkin.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'on_select' : function(ev) {
+					try {
+						JSAN.use('util.functional');
+						var sel = obj.list.retrieve_selection();
+						obj.selection_list = util.functional.map_list(
+							sel,
+							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
+						);
+						obj.error.sdump('D_TRACE', 'circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
+						if (obj.selection_list.length == 0) {
+							obj.controller.view.sel_edit.setAttribute('disabled','true');
+							obj.controller.view.sel_opac.setAttribute('disabled','true');
+							obj.controller.view.sel_patron.setAttribute('disabled','true');
+							obj.controller.view.sel_bucket.setAttribute('disabled','true');
+							obj.controller.view.sel_spine.setAttribute('disabled','true');
+							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
+						} else {
+							obj.controller.view.sel_edit.setAttribute('disabled','false');
+							obj.controller.view.sel_opac.setAttribute('disabled','false');
+							obj.controller.view.sel_patron.setAttribute('disabled','false');
+							obj.controller.view.sel_bucket.setAttribute('disabled','false');
+							obj.controller.view.sel_spine.setAttribute('disabled','false');
+							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
+						}
+					} catch(E) {
+						alert('FIXME: ' + E);
+					}
+				},
+
 			}
 		);
 		
@@ -40,6 +72,52 @@ circ.checkin.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_edit' : [
+						['command'],
+						function() {
+							try {
+								obj.spawn_copy_editor();
+							} catch(E) {
+								alert(E);
+							}
+						}
+					],
+					'sel_spine' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.spawn_spine_editor(obj.selection_list);
+						}
+					],
+					'sel_opac' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.show_in_opac(obj.selection_list);
+						}
+					],
+					'sel_transit_abort' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							circ.util.abort_transits(obj.selection_list);
+						}
+					],
+					'sel_patron' : [
+						['command'],
+						function() {
+							var count = 5;
+							JSAN.use('circ.util');
+							circ.util.show_last_few_circs(obj.selection_list,count);
+						}
+					],
+					'sel_bucket' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(obj.selection_list);
+						}
+					],
 					'checkin_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {
@@ -157,8 +235,10 @@ circ.checkin.prototype = {
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
 				|| checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
 				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return;
+			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) } );
 			obj.list.append(
 				{
+					'retrieve_id' : retrieve_id,
 					'row' : {
 						'my' : {
 							'circ' : checkin.circ,
@@ -208,7 +288,57 @@ circ.checkin.prototype = {
 	'on_failure' : function() {
 		this.controller.view.checkin_barcode_entry_textbox.select();
 		this.controller.view.checkin_barcode_entry_textbox.focus();
-	}
+	},
+	
+	'spawn_copy_editor' : function() {
+
+		/* FIXME -  a lot of redundant calls here */
+
+		var obj = this;
+
+		JSAN.use('util.widgets'); JSAN.use('util.functional');
+
+		var list = obj.selection_list;
+
+		list = util.functional.map_list(
+			list,
+			function (o) {
+				return o.copy_id;
+			}
+		);
+
+		var copies = util.functional.map_list(
+			list,
+			function (acp_id) {
+				return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
+			}
+		);
+
+		var edit = 0;
+		try {
+			edit = obj.network.request(
+				api.PERM_MULTI_ORG_CHECK.app,
+				api.PERM_MULTI_ORG_CHECK.method,
+				[ 
+					ses(), 
+					obj.data.list.au[0].id(), 
+					util.functional.map_list(
+						copies,
+						function (o) {
+							return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
+						}
+					),
+					[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+				]
+			).length == 0 ? 1 : 0;
+		} catch(E) {
+			obj.error.sdump('D_ERROR','batch permission check: ' + E);
+		}
+
+		JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+
+	},
+
 }
 
 dump('exiting circ.checkin.js\n');

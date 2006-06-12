@@ -74,11 +74,21 @@
 	]]>
 	</script>
 
+	<popupset id="copy_status_popupset"/>
+
 	<commandset id="checkin_cmds">
 		<command id="cmd_checkin_submit_barcode" />
 		<command id="cmd_checkin_print" />
 		<command id="cmd_checkin_reprint" />
 		<command id="cmd_checkin_done" />
+		
+		<command id="sel_edit" disabled="true"/>
+		<command id="sel_opac" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
+		<command id="sel_bucket" disabled="true"/>
+		<command id="sel_spine" disabled="true"/>
+		<command id="sel_transit_abort" disabled="true"/>
+
 	</commandset>
 
 	<box id="checkin_main" />

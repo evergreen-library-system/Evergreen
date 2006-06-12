@@ -4,9 +4,69 @@ if (typeof cat == 'undefined') var cat = {};
 cat.util = {};
 
 cat.util.EXPORT_OK	= [ 
-	'spawn_copy_editor',
+	'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor',
 ];
 cat.util.EXPORT_TAGS	= { ':all' : cat.util.EXPORT_OK };
+
+cat.util.spawn_spine_editor = function(selection_list) {
+	JSAN.use('util.error'); var error = new util.error();
+	try {
+		JSAN.use('util.functional');
+		xulG.new_tab(
+			xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
+			+ js2JSON( util.functional.map_list(selection_list,function(o){return o.barcode;}) ),
+			{ 'tab_name' : 'Spine Labels' },
+			{}
+		);
+	} catch(E) {
+		error.standard_unexpected_error_alert('Spine Labels',E);
+	}
+}
+
+cat.util.show_in_opac = function(selection_list) {
+	JSAN.use('util.error'); var error = new util.error();
+	var doc_id;
+	try {
+		for (var i = 0; i < selection_list.length; i++) {
+			doc_id = selection_list[i].doc_id;
+			if (!doc_id) {
+				alert(selection_list[i].barcode + ' is not cataloged');
+				continue;
+			}
+			var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+			var content_params = { 
+				'session' : ses(),
+				'authtime' : ses('authtime'),
+				'opac_url' : opac_url,
+			};
+			xulG.new_tab(
+				xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+				{'tab_name':'Retrieving title...'}, 
+				content_params
+			);
+		}
+	} catch(E) {
+		error.standard_unexpected_error_alert('Error opening catalog for document id = ' + doc_id,E);
+	}
+}
+
+cat.util.add_copies_to_bucket = function(selection_list) {
+	JSAN.use('util.functional');
+	JSAN.use('util.window'); var win = new util.window();
+	win.open( 
+		xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
+		+ '?copy_ids=' + js2JSON(
+			util.functional.map_list(
+				selection_list,
+				function (o) {
+					return o.copy_id;
+				}
+			)
+		),
+		'sel_bucket_win' + win.window_name_increment(),
+		'chrome,resizable,modal,center'
+	);
+}
 
 cat.util.spawn_copy_editor = function(list,edit) {
 	try {

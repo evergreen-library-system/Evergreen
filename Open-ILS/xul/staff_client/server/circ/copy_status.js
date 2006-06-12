@@ -97,63 +97,22 @@ circ.copy_status.prototype = {
 					'sel_spine' : [
 						['command'],
 						function() {
-							try {
-								JSAN.use('util.functional');
-								xulG.new_tab(
-									xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
-									+ js2JSON( util.functional.map_list(obj.selection_list,function(o){return o.barcode;}) ),
-									{ 'tab_name' : 'Spine Labels' },
-									{}
-								);
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Spine Labels',E);
-							}
+							JSAN.use('cat.util');
+							cat.util.spawn_spine_editor(obj.selection_list);
 						}
 					],
 					'sel_opac' : [
 						['command'],
 						function() {
-							try {
-								for (var i = 0; i < obj.selection_list.length; i++) {
-									var doc_id = obj.selection_list[i].doc_id;
-									if (!doc_id) {
-										alert(obj.selection_list[i].barcode + ' is not cataloged');
-										continue;
-									}
-									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
-									var content_params = { 
-										'session' : ses(),
-										'authtime' : ses('authtime'),
-										'opac_url' : opac_url,
-									};
-									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':'Retrieving title...'}, 
-										content_params
-									);
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('',E);
-							}
+							JSAN.use('cat.util');
+							cat.util.show_in_opac(obj.selection_list);
 						}
 					],
 					'sel_transit_abort' : [
 						['command'],
 						function() {
-							JSAN.use('util.functional');
-							var msg = 'Are you sure you would like to abort transits for copies:' + util.functional.map_list( obj.selection_list, function(o){return o.copy_id;}).join(', ') + '?';
-							var r = obj.error.yns_alert(msg,'Aborting Transits','Yes','No',null,'Check here to confirm this action');
-							if (r == 0) {
-								try {
-									for (var i = 0; i < obj.selection_list.length; i++) {
-										var copy_id = obj.selection_list[i].copy_id;
-										var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'copyid' : copy_id } ]);
-										if (typeof robj.ilsevent != 'undefined') throw(robj);
-									}
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Transit not likely aborted.',E);
-								}
-							}
+							JSAN.use('circ.util');
+							circ.util.abort_transits(obj.selection_list);
 						}
 					],
 					'sel_patron' : [
@@ -167,21 +126,8 @@ circ.copy_status.prototype = {
 					'sel_bucket' : [
 						['command'],
 						function() {
-							JSAN.use('util.functional');
-							JSAN.use('util.window'); var win = new util.window();
-							win.open( 
-								xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
-								+ '?copy_ids=' + js2JSON(
-									util.functional.map_list(
-										obj.selection_list,
-										function (o) {
-											return o.copy_id;
-										}
-									)
-								),
-								'sel_bucket_win' + win.window_name_increment(),
-								'chrome,resizable,modal,center'
-							);
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(obj.selection_list);
 						}
 					],
 					'copy_status_barcode_entry_textbox' : [

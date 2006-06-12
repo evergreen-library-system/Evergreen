@@ -6,9 +6,30 @@ circ.util = {};
 circ.util.EXPORT_OK	= [ 
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns', 
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode',
-	'show_last_few_circs',
+	'show_last_few_circs', 'abort_transits'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
+
+circ.util.abort_transits = function(selection_list) {
+	var obj = {};
+	JSAN.use('util.error'); obj.error = new util.error();
+	JSAN.use('util.network'); obj.network = new util.network();
+	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+	JSAN.use('util.functional');
+	var msg = 'Are you sure you would like to abort transits for copies:' + util.functional.map_list( selection_list, function(o){return o.copy_id;}).join(', ') + '?';
+	var r = obj.error.yns_alert(msg,'Aborting Transits','Yes','No',null,'Check here to confirm this action');
+	if (r == 0) {
+		try {
+			for (var i = 0; i < selection_list.length; i++) {
+				var copy_id = selection_list[i].copy_id;
+				var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'copyid' : copy_id } ]);
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Transit not likely aborted.',E);
+		}
+	}
+}
 
 circ.util.show_last_few_circs = function(selection_list,count) {
 	var obj = {};
