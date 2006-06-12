@@ -248,7 +248,7 @@ util.error.prototype = {
 			win.open(
 				'data:text/plain,' + window.escape( msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
 				'error_alert',
-				'chrome,resizable'
+				'chrome,resizable,width=700,height=500'
 			);
 		}
 		if (r==2) {
