@@ -29,7 +29,7 @@ use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
-my $pfx = "open-ils.search";
+my $pfx = "open-ils.search_";
 
 my $cache;
 sub initialize {
