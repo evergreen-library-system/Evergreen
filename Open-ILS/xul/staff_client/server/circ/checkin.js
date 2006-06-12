@@ -153,6 +153,14 @@ circ.checkin.prototype = {
 									if (d.toString() == 'Invalid Date') throw('Invalid Date');
 									if ( d > new Date() ) throw('Future Date');
 									ev.target.value = util.date.formatted_date(d,'%F');
+									var x = document.getElementById('background');
+									if (x) {
+										if ( ev.target.value == util.date.formatted_date(new Date(),'%F') ) {
+											x.setAttribute('style','background-color: green');
+										} else {
+											x.setAttribute('style','background-color: red');
+										}
+									}
 
 								} catch(E) {
 									dump('checkin:effective_date: ' + E + '\n');
