@@ -178,46 +178,43 @@ To-do list:
 				</div>
 
 				<div id="searchdiv">
-					<b>Search:</b>
 					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/keyword')" /></xsl:attribute>
-						<input class="searchbox"
-							type="text" name="searchTerms"
-							value="keywords"
-							title="keywords"
-							onfocus="if (this.value=='keywords') this.value='{$searchTerms}';"/>
-					</form>
-					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/title')" /></xsl:attribute>
-						<input class="searchbox"
-							type="text" name="searchTerms"
-							value="titles"
-							title="titles"
-							onfocus="if (this.value=='titles') this.value='{$searchTerms}';"/>
-					</form>
-					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/author')" /></xsl:attribute>
-						<input class="searchbox"
-							type="text" name="searchTerms"
-							value="authors"
-							title="authors"
-							onfocus="if (this.value=='authors') this.value='{$searchTerms}';"/>
-					</form>
-					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject')" /></xsl:attribute>
-						<input class="searchbox"
-							type="text" name="searchTerms"
-							value="subjects"
-							title="subjects"
-							onfocus="if (this.value=='subjects') this.value='{$searchTerms}';"/>
-					</form>
-					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/series')" /></xsl:attribute>
-						<input class="searchbox"
-							type="text" name="searchTerms"
-							value="series"
-							title="series"
-							onfocus="if (this.value=='series') this.value='{$searchTerms}';"/>
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html')" /></xsl:attribute>
+						<b>Search:</b>
+						<input class="searchbox" type="text" name="searchTerms" value="{$searchTerms}"/>
+						<select name="searchClass">
+							<option value="keyword">
+								<xsl:if test="$searchClass = 'keyword'">
+									<xsl:attribute name="selected"><xsl:value-of select="1"/></xsl:attribute>
+								</xsl:if>
+								<xsl:text>Keyword</xsl:text>
+							</option>
+							<option value="title">
+								<xsl:if test="$searchClass = 'title'">
+									<xsl:attribute name="selected"><xsl:value-of select="1"/></xsl:attribute>
+								</xsl:if>
+								<xsl:text>Title</xsl:text>
+							</option>
+							<option value="author">
+								<xsl:if test="$searchClass = 'author'">
+									<xsl:attribute name="selected"><xsl:value-of select="1"/></xsl:attribute>
+								</xsl:if>
+								<xsl:text>Author</xsl:text>
+							</option>
+							<option value="subject">
+								<xsl:if test="$searchClass = 'subject'">
+									<xsl:attribute name="selected"><xsl:value-of select="1"/></xsl:attribute>
+								</xsl:if>
+								<xsl:text>Subject</xsl:text>
+							</option>
+							<option value="series">
+								<xsl:if test="$searchClass = 'series'">
+									<xsl:attribute name="selected"><xsl:value-of select="1"/></xsl:attribute>
+								</xsl:if>
+								<xsl:text>Series</xsl:text>
+							</option>
+						</select>
+						<input type="submit" value="Go!"/>
 					</form>
 					<br/>
 				</div>

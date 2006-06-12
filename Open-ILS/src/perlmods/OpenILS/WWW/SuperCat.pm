@@ -672,6 +672,7 @@ sub opensearch_feed {
 	$feed->root($root);
 	$feed->lib($org);
 	$feed->search($terms);
+	$feed->class($class);
 
 	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
 	$feed->creator($host);

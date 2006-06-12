@@ -42,6 +42,13 @@ sub search {
 	return $self->{search};
 }
 
+sub class {
+	my $self = shift;
+	my $search = shift;
+	$self->{class} = $search if ($search);
+	return $self->{class};
+}
+
 sub lib {
 	my $self = shift;
 	my $lib = shift;
@@ -436,6 +443,7 @@ sub toString {
 	my $base = $self->base || '';
 	my $root = $self->root || '';
 	my $search = $self->search || '';
+	my $class = $self->class || '';
 	my $lib = $self->lib || '-';
 
 	$self->composeDoc;
@@ -457,6 +465,7 @@ sub toString {
 		base_dir => "'$root'",
 		lib => "'$lib'",
 		searchTerms => "'$search'",
+		searchClass => "'$class'",
 	);
 
 	return $new_doc->toString(1); 

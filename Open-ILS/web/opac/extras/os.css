@@ -21,7 +21,7 @@ div#searchdiv {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width:11em;
+	/*width:11em;*/
 	background-color: lightgray;
 	border:2px solid lightblue;
 	border-right: 0px;
