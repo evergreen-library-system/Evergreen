@@ -17,6 +17,8 @@ sub record_copy_count {
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
 	my $st_table = config::copy_status->table;
+	my $src_table = config::bib_source->table;
+	my $br_table = biblio::record_entry->table;
 	my $loc_table = asset::copy_location->table;
 	my $out_table = actor::org_unit_type->table;
 
@@ -57,12 +59,14 @@ sub record_copy_count {
 				  	AND cp.status = 0)
 			) AS available,
 			sum(
-				(SELECT count(cp.id)
-				  FROM  $cn_table cn
+				(SELECT count(cp.id) + sum(CASE WHEN src.transcendant IS TRUE THEN 1 ELSE 0 END)
+				  FROM  $br_table br
+				  	JOIN $cn_table cn ON (cn.record = br.id)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $st_table st ON (cp.status = st.id)
 					JOIN $loc_table loc ON (cp.location = loc.id)
-				  WHERE cn.record = ?
+					JOIN $src_table src ON (br.source = src.id)
+				  WHERE br.id = ?
 					AND st.holdable = TRUE
 					AND loc.opac_visible = TRUE
 					AND cp.opac_visible = TRUE

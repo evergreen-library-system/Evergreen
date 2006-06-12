@@ -252,6 +252,8 @@ sub metarecord_copy_count {
 	my $rd_table = metabib::record_descriptor->table;
 	my $cn_table = asset::call_number->table;
 	my $cp_table = asset::copy->table;
+	my $br_table = biblio::record_entry->table;
+	my $src_table = config::bib_source->table;
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 	my $out_table = actor::org_unit_type->table;
@@ -316,13 +318,15 @@ sub metarecord_copy_count {
 				)
 			) AS available,
 			sum(
-				(SELECT count(cp.id)
+				(SELECT count(cp.id) + sum(CASE WHEN src.transcendant IS TRUE THEN 1 ELSE 0 END)
 				  FROM  $sm_table r
 					JOIN $cn_table cn ON (cn.record = r.source)
 					JOIN $rd_table rd ON (cn.record = rd.record)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
+			       		JOIN $br_table br ON (br.id = r.source)
+			       		JOIN $src_table src ON (src.id = br.source)
 				  WHERE r.metarecord = ?
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
