@@ -703,6 +703,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				'title' : 'Override Checkin Failure?',
 				'overridable_events' : [ 
 					1203 /* COPY_BAD_STATUS */, 
+					7009 /* CIRC_CLAIMS_RETURNED */,
 					7010 /* COPY_ALERT_MESSAGE */, 
 					7011 /* COPY_STATUS_LOST */, 
 					7012 /* COPY_STATUS_MISSING */, 
