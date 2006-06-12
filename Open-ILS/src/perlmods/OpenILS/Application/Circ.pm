@@ -477,6 +477,10 @@ __PACKAGE__->register_method(
 		@return An array of circ ids
 	/);
 
+
+# XXX ?? move to request open-ils.storage 
+# open-ils.storage.asset.copy.circ_count 7999959, null/"year"/"month"/"day" 
+
 sub view_circs {
 	my( $self, $client, $authtoken, $copyid, $count ) = @_; 
 
