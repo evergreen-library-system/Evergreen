@@ -318,15 +318,13 @@ sub metarecord_copy_count {
 				)
 			) AS available,
 			sum(
-				(SELECT count(cp.id) + sum(CASE WHEN src.transcendant IS TRUE THEN 1 ELSE 0 END)
+				(SELECT count(cp.id)
 				  FROM  $sm_table r
 					JOIN $cn_table cn ON (cn.record = r.source)
 					JOIN $rd_table rd ON (cn.record = rd.record)
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
-			       		JOIN $br_table br ON (br.id = r.source)
-			       		LEFT JOIN $src_table src ON (src.id = br.source)
 				  WHERE r.metarecord = ?
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
@@ -335,6 +333,14 @@ sub metarecord_copy_count {
 					AND cl.opac_visible IS TRUE
 					$t_filter
 					$f_filter
+				)
+				+
+				(SELECT sum(1)
+				  FROM  $sm_table r
+			       		JOIN $br_table br ON (br.id = r.source)
+			       		LEFT JOIN $src_table src ON (src.id = br.source)
+				  WHERE r.metarecord = ?
+				  	AND src.transcendant IS TRUE
 				)
 			) AS unshadow
 
@@ -353,6 +359,7 @@ sub metarecord_copy_count {
 			''.$args{metarecord},
 			@types, 
 			@forms,
+			''.$args{metarecord},
 			''.$args{org_unit}, 
 	); 
 
