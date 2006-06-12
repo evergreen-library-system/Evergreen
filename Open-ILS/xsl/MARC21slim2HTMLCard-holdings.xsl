@@ -2,6 +2,7 @@
   
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:marc="http://www.loc.gov/MARC21/slim"
   xmlns:hold="http://open-ils.org/spec/holdings/v1"
@@ -23,6 +24,7 @@
     <div class="cardimage">
      <xsl:apply-templates select="marc:datafield[@tag!='082' and @tag!='092' and @tag!='010']"/>
      <span class="bottom">
+      <xsl:apply-templates select="xhtml:link[@rel='otherFormat' and contains(@href,'format=')]"/>
       <xsl:apply-templates select="marc:controlfield[@tag='001']"/>
       <xsl:apply-templates select="marc:datafield[@tag='082' or @tag='092' or @tag='010']"/>
      </span>
@@ -32,8 +34,18 @@
     <br/>
   </xsl:template>
 
+  <xsl:template match="xhtml:link">
+    <a>
+      <xsl:attribute name="href">
+        <xsl:value-of select="@href"/>
+      </xsl:attribute>
+      <xsl:value-of select="@title"/>
+    </a>
+    <br/>
+  </xsl:template>
+
   <xsl:template match="hold:volumes">
-    <xsl:if test="count(hold:volume) &gt; 0">
+    <xsl:if test="count(hold:volume/hold:copies/hold:copy) &gt; 0">
     	<u>Holdings</u>
     </xsl:if>
     <ul>

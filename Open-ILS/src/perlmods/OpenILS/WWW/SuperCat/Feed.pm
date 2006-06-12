@@ -374,7 +374,7 @@ sub link {
 #----------------------------------------------------------
 
 package OpenILS::WWW::SuperCat::Feed::mods3;
-use base 'OpenILS::WWW::SuperCat::Feed';
+use base 'OpenILS::WWW::SuperCat::Feed::mods';
 
 sub new {
 	my $class = shift;
@@ -385,7 +385,7 @@ sub new {
 }
 
 package OpenILS::WWW::SuperCat::Feed::mods3::item;
-use base 'OpenILS::WWW::SuperCat::Feed::mods3';
+use base 'OpenILS::WWW::SuperCat::Feed::mods::item';
 
 sub new {
 	my $class = shift;
@@ -395,6 +395,29 @@ sub new {
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
+}
+
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+
+	if ($type eq 'unapi' || $type eq 'opac') {
+		$self->_create_node(
+			'mods:mods',
+			'http://www.loc.gov/mods/v3',
+			'mods:relatedItem',
+			undef,
+			{ type => 'otherFormat', id => 'link-'.$linkid }
+		);
+		$self->_create_node(
+			"mods:mods/mods:relatedItem[\@id='link-$linkid']",
+			'http://www.loc.gov/mods/v3',
+			'mods:recordIdentifier',
+			$id
+		);
+		$linkid++;
+	}
 }
 
 
@@ -423,6 +446,24 @@ sub new {
 	$self->{holdings_xpath} = '/marc:record';
 	return $self;
 }
+
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+
+	if ($type eq 'unapi' || $type eq 'opac') {
+		$self->_create_node(
+			'marc:record',
+			'http://www.w3.org/1999/xhtml',
+			'xhtml:link',
+			undef,
+			{ rel => 'otherFormat', href => $id, title => "Dynamic Details" }
+		);
+		$linkid++;
+	}
+}
+
 
 #----------------------------------------------------------
 
@@ -502,7 +543,7 @@ sub toString {
         $_parser ||= new XML::LibXML;
         $_xslt ||= new XML::LibXSLT;
 
-	$xslt_file ||=
+	$xslt_file =
                 OpenSRF::Utils::SettingsClient
        	                ->new
                	        ->config_value( dirs => 'xsl' ).$self->{xsl};
@@ -520,6 +561,9 @@ sub toString {
 	return $new_doc->toString(1); 
 }
 
+package OpenILS::WWW::SuperCat::Feed::htmlcard::item;
+use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
+
 package OpenILS::WWW::SuperCat::Feed::htmlholdings;
 use base 'OpenILS::WWW::SuperCat::Feed::htmlcard';
 
@@ -529,9 +573,6 @@ sub new {
 	$self->{xsl} = "/MARC21slim2HTMLCard-holdings.xsl";
 	return $self;
 }
-
-package OpenILS::WWW::SuperCat::Feed::htmlcard::item;
-use base 'OpenILS::WWW::SuperCat::Feed::marcxml::item';
 
 package OpenILS::WWW::SuperCat::Feed::htmlholdings::item;
 use base 'OpenILS::WWW::SuperCat::Feed::htmlcard::item';

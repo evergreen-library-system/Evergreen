@@ -179,7 +179,6 @@ sub unapi {
 			if ($type eq 'record');
 		return 302;
 	} else {
-	#} elsif ($format =~ /^html/o) {
 		my $feed = create_record_feed(
 			$format => [ $id ],
 			$base,
