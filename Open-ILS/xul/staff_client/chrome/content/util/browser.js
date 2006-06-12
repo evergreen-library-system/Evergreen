@@ -105,7 +105,7 @@ util.browser.prototype = {
 				return this.controller.view.browser_browser.contentWindow;
 			}
 		} catch(E) {
-			alert('util.browser.get_content(): ' + E);
+			this.error.sdump('D_ERROR','util.browser.get_content(): ' + E);
 		}
 	},
 
@@ -134,7 +134,7 @@ util.browser.prototype = {
 			//this.error.sdump('D_BROWSER',s);
 			return wn;
 		} catch(E) {
-			alert('util.browser.getWebNavigation(): ' + E );
+			this.error.sdump('D_ERROR','util.browser.getWebNavigation(): ' + E );
 		}
 	},
 
@@ -247,7 +247,7 @@ util.browser.prototype = {
 						}
 						//obj.error.sdump('D_BROWSER',s);	
 					} catch(E) {
-						alert('util.browser.progresslistener.onstatechange: ' + js2JSON(E));
+						obj.error.sdump('D_ERROR','util.browser.progresslistener.onstatechange: ' + js2JSON(E));
 					}
 				}
 			}
