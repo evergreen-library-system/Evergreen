@@ -1243,13 +1243,14 @@ sub checkin_do_receive {
 
 
 	# - see if the copy has an open circ attached
-	($ctx->{circ}, $evt)	= $U->fetch_open_circulation($copy->id);
+	#($ctx->{circ}, $evt)	= $U->fetch_open_circulation($copy->id);
+	($ctx->{circ}, $evt)	= $U->fetch_all_open_circulation($copy->id); # - get ones with stop fines as well
 	return $evt if ($evt and $__isrenewal); # renewals require a circulation
 	$evt = undef;
 	$circ = $ctx->{circ};
 
 	# if the circ is marked as 'claims returned', add the event to the list
-	push( @eventlist, 'CIRC_CLAIMS_RETURNED' ) 
+	push( @eventlist, OpenILS::Event->new('CIRC_CLAIMS_RETURNED') ) 
 		if ($circ and $circ->stop_fines and $circ->stop_fines eq 'CLAIMSRETURNED');
 
 	# override or die
@@ -1751,7 +1752,7 @@ sub _checkin_handle_circ {
 	# see if there are any fines owed on this circ.  if not, close it
 	( $obt, $evt ) = $U->fetch_open_billable_transaction($circ->id);
 	return $evt if $evt;
-	$circ->xact_finish('now') if( $obt->balance_owed != 0 );
+	$circ->xact_finish('now') if( $obt->balance_owed == 0 );
 
 	# Set the checkin vars since we have the item
 	$circ->checkin_time('now');
