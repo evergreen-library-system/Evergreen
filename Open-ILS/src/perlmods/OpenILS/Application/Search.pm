@@ -27,6 +27,7 @@ use Text::Aspell;
 sub initialize {
 	OpenILS::Application::Search::Z3950->initialize();
 	OpenILS::Application::Search::Zips->initialize();
+	OpenILS::Application::Search::Biblio->initialize();
 
 	# try to load the added content handler
 	my $conf = OpenSRF::Utils::SettingsClient->new;

@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Editor q/:funcs/;
+use OpenSRF::Utils::Cache;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -28,13 +29,12 @@ use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
+my $pfx = "open-ils.search";
 
-# useful for MARC based searches
-#my $cat_search_hash =  {
-	#isbn	=> [ { tag => '020', subfield => 'a' }, ],
-	##issn	=> [ { tag => '022', subfield => 'a' }, ],
-#};
-
+my $cache;
+sub initialize {
+	$cache = OpenSRF::Utils::Cache->new('global');
+}
 
 
 
@@ -321,6 +321,7 @@ __PACKAGE__->register_method(
 	signature	=> q/@see open-ils.search.biblio.multiclass/);
 
 
+
 sub the_quest_for_knowledge {
 	my( $self, $conn, $searchhash ) = @_;
 
@@ -328,27 +329,84 @@ sub the_quest_for_knowledge {
 	my $ismeta = 0;
 	my @recs;
 
+	my $maxlimit = 500;
+
+	my $o = $searchhash->{offset} || 0;
+	my $l = $searchhash->{limit} || 10;
+	$searchhash->{offset} = 0;
+	$searchhash->{limit} = 0;
+
+	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON($searchhash));
+
+	$searchhash->{offset} = $o;
+	$searchhash->{limit} = $l;
+
+
 	if($self->api_name =~ /metabib/) {
 		$ismeta = 1;
 		$method =~ s/biblio/metabib/o;
 	}
 
-	$method .= ".staff" if($self->api_name =~ /staff/);
-	$method .= ".atomic";
+	# don't cache past max limit
+	my $result = ($o < $maxlimit) ? search_cache($ckey, $o, $l) : undef; 
+	my $docache = 1;
 
-	for (keys %$searchhash) { 
-		delete $$searchhash{$_} unless defined $$searchhash{$_}; }
+	if(!$result) {
 
-	my $result = new_editor()->request( $method, %$searchhash );
+		$method .= ".staff" if($self->api_name =~ /staff/);
+		$method .= ".atomic";
+	
+		for (keys %$searchhash) { 
+			delete $$searchhash{$_} unless defined $$searchhash{$_}; }
+	
+		$searchhash->{limit} = $maxlimit;
+		$result = new_editor()->request( $method, %$searchhash );
+
+
+	} else { 
+		$logger->debug("cache returned results: " . JSON->perl2JSON($result));
+		$docache = 0; 
+	}
 
 	return {count => 0} unless ($result && $$result[0]);
 
 	for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
+
+	if( $docache ) {
+		$logger->debug("putting search cache $ckey\n");
+		$cache->put_cache($ckey, \@recs, 900);
+	}
+
 	return { ids => \@recs, 
 		count => ($ismeta) ? $result->[0]->[3] : $result->[0]->[2] };
 }
 
 
+
+#$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 30 );
+#my $current_seed = $cache_handle->get_cache("_open-ils_seed_$username");
+#$cache_handle->delete_cache( "_open-ils_seed_$username" );
+
+sub search_cache {
+
+	my $key		= shift;
+	my $offset	= shift;
+	my $limit	= shift;
+
+	$logger->debug("fetching search cache $key\n");
+
+	my $data = $cache->get_cache($key);
+	return undef unless $data;
+
+	$logger->debug("search_cache found some data: o=$offset, l=$limit");
+
+	#$data = JSON->JSON2perl($data);
+	return undef unless $data and ref $data eq 'ARRAY';
+	return undef unless $$data[$offset] and $$data[$offset+($limit-1)];
+
+	$logger->debug("search_cache found data..$offset - " . ($offset + ($limit - 1)));
+	return [ @$data[$offset..($offset+$limit)] ];
+}
 
 
 
@@ -767,13 +825,23 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub marc_search {
-	my( $self, $conn, $args ) = @_;
+	my( $self, $conn, $args, $limit, $offset ) = @_;
 
 	my $method = 'open-ils.storage.biblio.full_rec.multi_search';
 	$method .= ".staff" if $self->api_name =~ /staff/;
 	$method .= ".atomic";
 
-	my $recs = new_editor()->request($method, %$args);
+	$limit ||= 10;
+	$offset ||= 0;
+
+	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON($args));
+	my $recs = search_cache($ckey, $offset, $limit);
+
+	if(!$recs) {
+		$recs = new_editor()->request($method, %$args);
+		$cache->put_cache($ckey, $recs, 900);
+		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+	}
 
 	my $count = 0;
 	$count = $recs->[0]->[2] if $recs->[0] and $recs->[0]->[2];

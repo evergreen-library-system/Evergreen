@@ -1,6 +1,8 @@
 <div id='canvas_main'>
 
 	<script language='javascript' src='../js/sidebar_extras.js'> </script>
+	<script language='javascript' src='../js/result_common.js'> </script>
+	<script language='javascript' src='../js/rresult.js'> </script>
 	<script language='javascript' src='../js/rdetail.js'> </script>
 	<script language='javascript' src='../js/holds.js'> </script>
 	<script language='javascript' src='../js/cn_browse.js'> </script>

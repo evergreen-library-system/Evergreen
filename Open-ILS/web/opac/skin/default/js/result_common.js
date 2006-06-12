@@ -3,6 +3,8 @@ var recordsHandled = 0;
 var recordsCache = [];
 var lowHitCount = 4;
 
+var resultFetchAllRecords = false;
+
 /* set up the event handlers */
 G.evt.result.hitCountReceived.push(resultSetHitInfo);
 G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
@@ -57,7 +59,9 @@ function resultCollectSearchIds( type, method, handler ) {
 
 	args.org_unit = getLocation();
 	args.depth    = getDepth();
-	args.limit    = 200;
+	/*args.limit    = 200;*/
+	args.limit    = (resultFetchAllRecords) ? 1000 : getDisplayCount();
+	/*args.limit    = 500;*/
 	args.offset   = getOffset();
 
 	if(sort) args.sort = sort;
@@ -72,6 +76,7 @@ function resultCollectSearchIds( type, method, handler ) {
 
 	//alert('form = ' + item_form + ' : type = ' + item_type);
 
+	//alert(js2JSON(args));
 	var req = new Request(method, args);
 	req.callback(handler);
 	req.send();

@@ -69,8 +69,8 @@ var SKIN;
 /* cookies */
 var COOKIE_SB		= "sbe";
 var COOKIE_SES		= "ses";
-var COOKIE_IDS		= "ids"; /* list of mrecord ids */
-var COOKIE_SRIDS	= "srids"; /* record ids cached from a search */
+//var COOKIE_IDS		= "ids"; /* list of mrecord ids */
+//var COOKIE_SRIDS	= "srids"; /* record ids cached from a search */
 var COOKIE_FONT	= "fnt";
 var COOKIE_SKIN	= "skin";
 var COOKIE_RIDS	= "rids"; /* list of record ids */

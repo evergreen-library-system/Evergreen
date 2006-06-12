@@ -276,7 +276,7 @@ function  buildOPACLink(args, slim, ssl) {
 	}
 
 	if(getDebug())
-		string += _appendParam(DEBUG,	PARAM_DEBUG, args, getDebug, string);
+		string += _appendParam(DEBUG,		PARAM_DEBUG, args, getDebug, string);
 	if(getOrigLocation() != 1) 
 		string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
 	if(getTerm()) 
@@ -323,6 +323,10 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(LANGUAGE,	PARAM_LANGUAGE, args, getLanguage, string);
 	if(getRdepth() != null)
 		string += _appendParam(RDEPTH,	PARAM_RDEPTH, args, getRdepth, string);
+	if(getSort() != null)
+		string += _appendParam(SORT,	PARAM_SORT, args, getSort, string);
+	if(getSortDir() != null)
+		string += _appendParam(SORT_DIR,	PARAM_SORT_DIR, args, getSortDir, string);
 
 	return string.replace(/\&$/,'').replace(/\?\&/,"?");	
 }
@@ -373,7 +377,7 @@ function buildTitleDetailLink(rec, link) {
 	link.appendChild(text(normalize(truncate(rec.title(), 65))));
 	var args = {};
 	args.page = RDETAIL;
-	args[PARAM_OFFSET] = 0;
+	//args[PARAM_OFFSET] = 0;
 	args[PARAM_RID] = rec.doc_id();
 	link.setAttribute("href", buildOPACLink(args));
 }

@@ -39,14 +39,20 @@ function mresultDoSearch() {
 	}
 }
 
+/*
 function mresultLoadCachedSearch() {
 	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
 		var c = JSON2js(cookieManager.read(COOKIE_IDS));
 		if(c) { records = c[0]; ranks = c[1]; }
 	}
 }
+*/
 
 function mresultTryCachedSearch() {
+	/* XXX */
+	return false;
+
+	/*
 	mresultLoadCachedSearch();
 	if(	getOffset() != 0 && records[getOffset()] != null && 
 			records[resultFinalPageIndex()] != null) {
@@ -55,6 +61,7 @@ function mresultTryCachedSearch() {
 		return true;
 	}
 	return false;
+	*/
 }
 
 function _mresultCollectIds() { 
@@ -89,6 +96,8 @@ function mresultHandleMRIds(r) {
 	runEvt('result', 'idsReceived', res.ids);
 }
 
+
+
 function mresultSetRecords(idstruct) {
 	if(!idstruct) return;
 	var o = getOffset();
@@ -103,13 +112,17 @@ function mresultSetRecords(idstruct) {
 		}
 	}
 
+	/*
 	if(getOffset() == 0) {
 		cookieManager.remove(COOKIE_IDS);
 		cookieManager.write(COOKIE_IDS, js2JSON([ records, ranks ]), '+1d' );
 	}
+	*/
 
 	TOPRANK = ranks[getOffset()];
 }
+
+
 
 function mresultCollectRecords() {
 	if(getHitCount() > 0 ) runEvt("result", "preCollectRecords");

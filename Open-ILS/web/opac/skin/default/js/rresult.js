@@ -3,6 +3,8 @@ var table;
 var rowtemplate;
 var rresultLimit = 200;
 
+var rresultIsPaged = false;
+
 function rresultUnload() { removeChildren(table); table = null;}
 
 attachEvt("common", "unload", rresultUnload);
@@ -25,6 +27,10 @@ function rresultDoSearch() {
 
 function rresultCachedSearch() {
 
+	/* XXX */
+	return false;
+
+	/*
 	if(!getOffset()) {
 		cookieManager.remove(COOKIE_SRIDS);
 		return false;
@@ -40,6 +46,7 @@ function rresultCachedSearch() {
 	}
 
 	return false;
+	*/
 }
 
 function rresultCollectIds() {
@@ -98,17 +105,21 @@ function rresultCollectIds() {
 			req.send();
 
 			if( rresultGetDepth() != findOrgDepth(globalOrgTree) ) {
-				unHideMe($('rresult_show_all'));
 				var link = $('rresult_show_all_link');
-				link.appendChild( text(
-					findOrgType(globalOrgTree.ou_type()).opac_label()));
+				if(link) {
+					unHideMe($('rresult_show_all'));
+					link.appendChild( text(
+						findOrgType(globalOrgTree.ou_type()).opac_label()));
+				}
 
 			} else {
 				if( rresultGetDepth() != getDepth() ) { /* inside a limited display */
 					var link = $('rresult_show_here_link');
-					link.appendChild( text(
-						findOrgType(findOrgUnit(getLocation()).ou_type()).opac_label()));
-					unHideMe($('rresult_show_here'));
+					if(link) {
+						link.appendChild( text(
+							findOrgType(findOrgUnit(getLocation()).ou_type()).opac_label()));
+						unHideMe($('rresult_show_here'));
+					}
 				}
 			}
 	}
@@ -166,7 +177,8 @@ function rresultCollectMARCIds() {
 	args.org_unit	= globalOrgTree.id();
 	args.depth		= 0;
 
-	var req = new Request(FETCH_ADV_MARC_MRIDS, args);
+	rresultIsPaged = true;
+	var req = new Request(FETCH_ADV_MARC_MRIDS, args, getDisplayCount(), getOffset());
 	req.callback(rresultHandleRIds);
 	req.request.noretry = true;
 	req.send();
@@ -234,13 +246,16 @@ function rresultHandleRIds(r) {
 
 function _rresultHandleIds(ids, count) {
 	var json = js2JSON({ids:ids,count:count});
+	/*
 	cookieManager.write(COOKIE_SRIDS, json, '+1d');
+	*/
 
 	HITCOUNT = parseInt(count);
 	runEvt('result', 'hitCountReceived');
 	runEvt('result', 'idsReceived', ids);
 }
 
+/*
 function rresultCollectRecords(ids) {
 	runEvt("result", "preCollectRecords");
 	var x = 0;
@@ -252,6 +267,25 @@ function rresultCollectRecords(ids) {
 		req.send();
 	}
 }
+*/
+
+
+function rresultCollectRecords(ids) {
+	runEvt("result", "preCollectRecords");
+	var x = 0;
+
+	var base = getOffset();
+	if( rresultIsPaged )  base = 0;
+
+	for( var i = base; i!= getDisplayCount() + base; i++ ) {
+		if(ids[i] == null) break;
+		var req = new Request(FETCH_RMODS, parseInt(ids[i]));
+		req.callback(rresultHandleMods);
+		req.request.userdata = x++;
+		req.send();
+	}
+}
+
 
 function rresultHandleMods(r) {
 	var rec = r.getResultObject();
@@ -269,13 +303,19 @@ function rresultLaunchDrawn(id, node) {
 
 
 function rresultDoRecordSearch() { 
-	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); }
+	rresultIsPaged = true;
+	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); 
+}
+
 function rresultDoRecordMultiSearch() { 
-	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); }
+	rresultIsPaged = true;
+	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); 
+}
 
 
 function rresultFilterSearchResults(r) {
 	var result = r.getResultObject();
+
 	var ids = [];
 	for( var i = 0; i != result.ids.length; i++ ) 
 		ids.push(result.ids[i][0]);

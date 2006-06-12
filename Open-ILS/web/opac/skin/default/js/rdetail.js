@@ -1,5 +1,6 @@
 /* */
 
+detachAllEvt('common', 'run');
 attachEvt("common", "run", rdetailDraw);
 attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
@@ -18,6 +19,8 @@ var rdetailLocalOnly = true;
 var globalCNCache	= {};
 var localTOC;
 var cachedRecords;
+
+var rdetailShowLocal = true;
 
 
 
@@ -38,12 +41,20 @@ var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
 
+
+
 /* looks to see if we have a next and/or previous record in the
 record cache, if so, set up the nav links */
-function rdetailSetPaging() {
+function rdetailSetPaging(ids) {
 
+	/*
 	cachedRecords = JSON2js(cookieManager.read(COOKIE_SRIDS));
 	if(!(cachedRecords && cachedRecords.ids)) return;
+	*/
+
+	//alert(getOffset());
+	cachedRecords = {};
+	cachedRecords.ids = ids;
 
 	for( var i = 0; i < cachedRecords.ids.length; i++ ) {
 		var rec = cachedRecords.ids[i];
@@ -55,8 +66,8 @@ function rdetailSetPaging() {
 		}
 	}
 
-	$('np_offset').appendChild(text(i+1));
-	$('np_count').appendChild(text(cachedRecords.ids.length));
+	$('np_offset').appendChild(text(i + 1));
+	$('np_count').appendChild(text(getHitCount()));
 
 	if(prevRecord) {
 		unHideMe($('np_table'));
@@ -108,7 +119,18 @@ function rdetailDraw() {
 	req.callback(_rdetailDraw);
 	req.send();
 
-	rdetailSetPaging();
+	detachAllEvt("result", "idsReceived");
+	G.evt.result.hitCountReceived = [];
+	G.evt.result.recordReceived = [];
+	G.evt.result.copyCountsReceived = [];
+	G.evt.result.allRecordsReceived = [];
+
+	attachEvt("result", "idsReceived", rdetailSetPaging );
+
+	resultFetchAllRecords = true;
+	rresultCollectIds();
+
+	//rdetailSetPaging();
 }
 
 function buildunAPISpan (span, type, id) {
@@ -143,11 +165,21 @@ function rdetailViewMarc(r,id) {
 
 function rdetailShowLocalCopies() {
 
+	/* XXX */
+	rdetailShowLocal = true;
+	rdetailBuildInfoRows();
+	hideMe(G.ui.rdetail.cp_info_local);
+	unHideMe(G.ui.rdetail.cp_info_all);
+	hideMe(G.ui.rdetail.cp_info_none); /* XXX */
+	return;
+
+
+
 	var found = false;
 	var rows = copyRowParent.getElementsByTagName("tr");
 	for( var r in rows ) {
 		var row = rows[r];
-		if( row.parentNode != copyRowParent ) continue; /* don't hide copy details sub-rows */
+		if( row.parentNode != copyRowParent ) continue; 
 		if(row.id == "__rdsrow") continue;
 		if(row.getAttribute && row.getAttribute("local")) {
 			unHideMe(row);
@@ -164,6 +196,18 @@ function rdetailShowLocalCopies() {
 }
 
 function rdetailShowAllCopies() {
+
+	/* XXX */
+	rdetailShowLocal = false;
+	rdetailBuildInfoRows();
+	hideMe(G.ui.rdetail.cp_info_all);
+	unHideMe(G.ui.rdetail.cp_info_local);
+	hideMe(G.ui.rdetail.cp_info_none); /* XXX */
+	return;
+
+
+
+
 	var rows = copyRowParent.getElementsByTagName("tr");
 	for( var r in rows ) 
 		if(rows[r].getAttribute && rows[r].getAttribute("hasinfo"))
@@ -449,14 +493,38 @@ function rdetailShowTOC(r) {
 
 
 function rdetailBuildInfoRows() {
-	//var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id(), getLocation(), getDepth())
-	var req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id());
+	var req;
+	if( rdetailShowLocal ) 
+		req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id(), getLocation(), getDepth())
+	else
+		req = new Request(FETCH_COPY_COUNTS_SUMMARY, record.doc_id());
 	req.callback(_rdetailBuildInfoRows);
 	req.send();
 }
 
 /* pre-allocate the copy info table with all org units in correct order */
 function _rdetailRows(node) {
+
+	if( rdetailShowLocal && getLocation() != globalOrgTree.id() ) {
+
+		var loc = findOrgUnit(getLocation());
+
+		if( !node ) {
+			for( var i = 0; i < globalOrgTree.children().length; i++ ) {
+				var org = findOrgUnit(globalOrgTree.children()[i]);
+				if( orgIsMine(org, loc) ) {
+					node = org;
+					break;
+				}
+			}
+		} else {
+			/* if the current node is not in our node trail */
+			var trail = orgNodeTrail(loc);
+			var intrail = grep( trail, function(i) { return (i.id() == node.id()); } );
+			if(!intrail) return;
+		}
+	}
+
 
 	if(node) {
 
@@ -514,13 +582,18 @@ var localCNFound = false;
 var ctr = 0;
 function _rdetailBuildInfoRows(r) {
 
+	/* XXX */
+	removeChildren(copyRowParent);
+
 	_rdetailRows();
 
 	var summary = r.getResultObject();
 	if(!summary) return;
 
+	/* XXX
 	G.ui.rdetail.cp_info_loading.parentNode.removeChild(
 		G.ui.rdetail.cp_info_loading);
+		*/
 
 	var found = false;
 	for( var i = 0; i < summary.length; i++ ) {
@@ -629,10 +702,15 @@ function rdetailSetPath(org, local) {
 	if( findOrgDepth(org) == 0 ) return;
 	var row = $("cp_info_" + org.id());
 	row.setAttribute("hasinfo", "1");
+	/*
 	if(local) {
 		unHideMe(row);
 		row.setAttribute("local", "1");
 	}
+	*/
+	/* XXX */
+	unHideMe(row);
+
 	rdetailSetPath(findOrgUnit(org.parent_ou()), local);
 }
 
