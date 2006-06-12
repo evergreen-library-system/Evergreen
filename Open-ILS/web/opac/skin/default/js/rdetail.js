@@ -236,6 +236,19 @@ function _rdetailDraw(r) {
 	setResourcePic( G.ui.rdetail.tor_pic, record.types_of_resource()[0]);
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
+
+	/* see if the record has any external links */
+	var links = record.online_loc();
+	for( var i = 0; links && links.length > 0 && i < links.length; i++ ) {
+		var href = links[i];
+		if( href.match(/http/) ) {
+			unHideMe($('rdetail_online_row'));
+			$('rdetail_online').appendChild(elem('a', {href:href,class:'classic_link'}, href));
+			$('rdetail_online').appendChild(elem('br'));
+		}
+	}
+
+
 	$('rdetail_place_hold').setAttribute(
 		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 

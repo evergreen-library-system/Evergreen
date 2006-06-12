@@ -7,7 +7,7 @@
 
 
 			<tr>
-				<td id='rdetail_image_cell' rowspan='9'><img id='rdetail_image'> </img></td>
+				<td id='rdetail_image_cell' rowspan='10'><img id='rdetail_image'> </img></td>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		
 				<td class='rdetail_item' id='rdetail_title'> </td>
 			</tr>
@@ -56,6 +56,11 @@
 			<tr>
 				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.abstract;</td>	
 				<td class='rdetail_item' id='rdetail_abstract'> </td>
+			</tr>
+
+			<tr class='hide_me' id='rdetail_online_row'>
+				<td nowrap='nowrap' class='rdetail_desc'>Online Resources</td>
+				<td class='rdetail_item' id='rdetail_online'> </td>
 			</tr>
 
 		</tbody>
