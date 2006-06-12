@@ -164,6 +164,7 @@ circ.checkin.prototype = {
 
 								} catch(E) {
 									dump('checkin:effective_date: ' + E + '\n');
+									alert('Problem setting backdate: ' + E);
 									ev.target.value = util.date.formatted_date(new Date(),'%F');
 								}
 							}
