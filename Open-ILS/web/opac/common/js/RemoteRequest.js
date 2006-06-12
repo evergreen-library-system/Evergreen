@@ -205,6 +205,10 @@ RemoteRequest.prototype.send = function(blocking) {
 			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
 	}
 
+	/* this number could be a lot higher.. */
+	var whole = url + this.param_string + 1;
+	if( whole.length < 256 ) this.type = 'GET';
+
 	var data = null;
 	if( this.type == 'GET' ) url +=  "?" + this.param_string; 
 
