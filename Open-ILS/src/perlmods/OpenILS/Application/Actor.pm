@@ -1676,7 +1676,8 @@ sub checked_out {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 	}
 
-	return _checked_out( $self->api_name =~ /count/, $e, $userid );
+	my $count = $self->api_name =~ /count/;
+	return _checked_out( $count, $e, $userid );
 }
 
 sub _checked_out {
