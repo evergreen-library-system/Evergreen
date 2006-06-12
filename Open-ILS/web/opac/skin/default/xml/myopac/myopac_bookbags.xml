@@ -72,13 +72,10 @@
 		</tbody>
 	</table>
 
-	<br/><br/>
-
 	<!--
 	<div style='overflow: auto; max-height: 200px;' class='hide_me'>
 	-->
 	<div style='width: 99%; text-align: center'> <b id='myopac_bookbag_items_name'> </b></div>
-	<br/>
 
 	<div class='hide_me' style='width: 100%; text-align: center; font-weight: 700; margin-top: 10px;'
 		id='myopac_bookbag_no_items'>The selected bookbag contains no items...</div>
