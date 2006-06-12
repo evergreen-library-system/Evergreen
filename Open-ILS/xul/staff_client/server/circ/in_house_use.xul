@@ -107,9 +107,6 @@
 			command="cmd_in_house_use_reprint"
 			accesskey="L"/>
 		<spacer id="pcii3s" flex="1"/>
-		<checkbox id="in_house_use_auto" 
-			label="Auto-Print" 
-			accesskey_disabled="A"/> 
 	</hbox>
 
 </groupbox>
