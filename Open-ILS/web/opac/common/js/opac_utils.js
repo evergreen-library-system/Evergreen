@@ -610,8 +610,8 @@ function doLogout(noredirect) {
 	G.user = null;
 
 	/* remove any cached data */
-	cookieManager.remove(COOKIE_IDS);
-	cookieManager.remove(COOKIE_SRIDS);
+	//cookieManager.remove(COOKIE_IDS);
+	//cookieManager.remove(COOKIE_SRIDS);
 	cookieManager.remove(COOKIE_RIDS);
 	cookieManager.remove(COOKIE_SES);
 	cookieManager.remove(COOKIE_SKIN);
