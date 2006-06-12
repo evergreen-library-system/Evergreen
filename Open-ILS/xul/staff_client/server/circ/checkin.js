@@ -244,7 +244,7 @@ circ.checkin.prototype = {
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
 				|| checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
 				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return;
-			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) } );
+			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
 			obj.list.append(
 				{
 					'retrieve_id' : retrieve_id,
