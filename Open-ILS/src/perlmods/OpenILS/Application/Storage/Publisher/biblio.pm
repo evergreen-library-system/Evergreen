@@ -65,7 +65,7 @@ sub record_copy_count {
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $st_table st ON (cp.status = st.id)
 					JOIN $loc_table loc ON (cp.location = loc.id)
-					JOIN $src_table src ON (br.source = src.id)
+					LEFT JOIN $src_table src ON (br.source = src.id)
 				  WHERE br.id = ?
 					AND st.holdable = TRUE
 					AND loc.opac_visible = TRUE

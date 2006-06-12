@@ -326,7 +326,7 @@ sub metarecord_copy_count {
 			       		JOIN $cs_table cs ON (cp.status = cs.id)
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
 			       		JOIN $br_table br ON (br.id = r.source)
-			       		JOIN $src_table src ON (src.id = br.source)
+			       		LEFT JOIN $src_table src ON (src.id = br.source)
 				  WHERE r.metarecord = ?
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
