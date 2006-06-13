@@ -1,6 +1,8 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
+description { -moz-user-select: text; }
+
 *|textarea:focus { background-color: #DDFFDD; }
 *|input:focus { background-color: #DDFFDD; }
 
