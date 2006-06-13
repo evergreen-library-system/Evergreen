@@ -4,6 +4,7 @@ detachAllEvt('common', 'run');
 attachEvt("common", "run", rdetailDraw);
 attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
+attachEvt("rdetail", "recordDrawn", rdetailGetPageIds);
 
 var record = null;
 var cp_statuses = null;
@@ -124,13 +125,11 @@ function rdetailDraw() {
 	G.evt.result.recordReceived = [];
 	G.evt.result.copyCountsReceived = [];
 	G.evt.result.allRecordsReceived = [];
+}
 
+function rdetailGetPageIds() {
 	attachEvt("result", "idsReceived", rdetailSetPaging );
-
-	resultFetchAllRecords = true;
 	rresultCollectIds();
-
-	//rdetailSetPaging();
 }
 
 function buildunAPISpan (span, type, id) {

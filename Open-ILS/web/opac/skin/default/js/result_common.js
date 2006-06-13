@@ -612,7 +612,6 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 				}
 			}
 		}
-
 		i++;
 	}
 }
