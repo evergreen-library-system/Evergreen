@@ -54,6 +54,7 @@ function buildConfig {
 	CGIDIR="$PREFIX/var/cgi-bin";
 	TEMPLATEDIR="$PREFIX/var/templates";
 	CIRCRULESDIR="$PREFIX/var/circ";
+	CATALOGSCRIPTDIR="$PREFIX/var/catalog";
 	PENALTYRULESDIR="$PREFIX/var/penalty";
 	XSLDIR="$PREFIX/var/xsl";
 	REPORTERDIR="$PREFIX/var/reporter";
@@ -134,6 +135,7 @@ function writeConfig {
 	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
 	_write "ETCDIR=\"$ETCDIR\"";
 	_write "CIRCRULESDIR=\"$CIRCRULESDIR\"";
+	_write "CATALOGSCRIPTDIR=\"$CATALOGSCRIPTDIR\"";
 	_write "PENALTYRULESDIR=\"$PENALTYRULESDIR\"";
 	_write "XSLDIR=\"$XSLDIR\"";
 

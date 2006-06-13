@@ -18,8 +18,10 @@ circ_rules-install:
 	@echo $@
 	mkdir -p $(CIRCRULESDIR)
 	mkdir -p $(PENALTYRULESDIR)
+	mkdir -p $(CATALOGSCRIPTDIR)
 	cp javascript/backend/circ/*.js $(CIRCRULESDIR)
 	cp javascript/backend/penalty/*.js $(PENALTYRULESDIR)
+	cp javascript/backend/catalog/*.js $(CATALOGSCRIPTDIR)
 
 
 # -----------------------------------------------------------------------------------
@@ -179,8 +181,8 @@ xsl-install:
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
 	cp ../xsl/*.xsl $(XSLDIR)
-	mkdir -p $(WEBDIR)/xsl/
-	cp ../xsl/*.xsl $(WEBDIR)/xsl/
+#	mkdir -p $(WEBDIR)/xsl/
+#	cp ../xsl/*.xsl $(WEBDIR)/xsl/
 
 clean:
 	@echo $@
