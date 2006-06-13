@@ -16,97 +16,8 @@ patron.items.prototype = {
 
 		obj.patron_id = params['patron_id'];
 
-		JSAN.use('circ.util');
-		var columns = circ.util.columns( 
-			{ 
-				'barcode' : { 'hidden' : false },
-				'title' : { 'hidden' : false, 'flex' : '3' },
-				'due_date' : { 'hidden' : false },
-				'renewal_remaining' : { 'hidden' : false },
-				'stop_fines' : { 'hidden' : false },
-			} 
-		);
+		obj.init_lists();
 
-		JSAN.use('util.list'); obj.list = new util.list('items_list');
-		obj.list.init(
-			{
-				'columns' : columns,
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
-				'retrieve_row' : function(params) {
-
-					var row = params.row;
-
-					var funcs = [];
-					
-					if (!row.my.mvr) funcs.push(
-						function() {
-
-							row.my.mvr = obj.network.request(
-								api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.app,
-								api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.method,
-								[ row.my.circ.target_copy() ]
-							);
-
-						}
-					);
-					if (!row.my.acp) {
-						funcs.push(	
-							function() {
-
-								row.my.acp = obj.network.request(
-									api.FM_ACP_RETRIEVE.app,
-									api.FM_ACP_RETRIEVE.method,
-									[ row.my.circ.target_copy() ]
-								);
-
-								params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null )}) );
-
-							}
-						);
-					} else {
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null) }) );
-					}
-
-					funcs.push(
-						function() {
-
-							if (typeof params.on_retrieve == 'function') {
-								params.on_retrieve(row);
-							}
-
-						}
-					);
-
-					JSAN.use('util.exec'); var exec = new util.exec();
-					exec.on_error = function(E) {
-						//var err = 'items chain: ' + js2JSON(E);
-						//obj.error.sdump('D_ERROR',err);
-						return true; /* keep going */
-					}
-					exec.chain( funcs );
-
-					return row;
-				},
-				'on_select' : function(ev) {
-					JSAN.use('util.functional');
-					var sel = obj.list.retrieve_selection();
-					var list = util.functional.map_list(
-						sel,
-						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
-					);
-					if (typeof obj.on_select == 'function') {
-						obj.on_select(list);
-					}
-					if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
-						obj.error.sdump('D_PATRON','patron.items: Calling external .on_select()\n');
-						window.xulG.on_select(list);
-					} else {
-						obj.error.sdump('D_PATRON','patron.items: No external .on_select()\n');
-					}
-				},
-			}
-		);
-		
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
 			{
@@ -355,6 +266,33 @@ patron.items.prototype = {
 							}
 						}
 					],
+					'cmd_show_catalog2' : [
+						['command'],
+						function() {
+							try {
+								for (var i = 0; i < obj.retrieve_ids2.length; i++) {
+									var doc_id = obj.retrieve_ids2[i].doc_id;
+									if (!doc_id) {
+										alert(obj.retrieve_ids2[i].barcode + ' is not cataloged');
+										continue;
+									}
+									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+									var content_params = { 
+										'session' : ses(),
+										'authtime' : ses('authtime'),
+										'opac_url' : opac_url,
+									};
+									xulG.new_tab(
+										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+										{'tab_name':'Retrieving title...'}, 
+										content_params
+									);
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('',E);
+							}
+						}
+					],
 				}
 			}
 		);
@@ -367,6 +305,131 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_edit.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','true');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+	},
+
+	'init_lists' : function() {
+		var obj = this;
+
+		JSAN.use('circ.util');
+		var columns = circ.util.columns( 
+			{ 
+				'barcode' : { 'hidden' : false },
+				'title' : { 'hidden' : false, 'flex' : '3' },
+				'due_date' : { 'hidden' : false },
+				'renewal_remaining' : { 'hidden' : false },
+				'stop_fines' : { 'hidden' : false },
+			} 
+		);
+		var columns2 = circ.util.columns( 
+			{ 
+				'barcode' : { 'hidden' : false },
+				'title' : { 'hidden' : false, 'flex' : '3' },
+				'checkin_time' : { 'hidden' : false },
+				'stop_fines' : { 'hidden' : false },
+			} 
+		);
+
+		function retrieve_row(params) {
+			var row = params.row;
+
+			var funcs = [];
+			
+			if (!row.my.mvr) funcs.push(
+				function() {
+
+					row.my.mvr = obj.network.request(
+						api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.app,
+						api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.method,
+						[ row.my.circ.target_copy() ]
+					);
+
+				}
+			);
+			if (!row.my.acp) {
+				funcs.push(	
+					function() {
+
+						row.my.acp = obj.network.request(
+							api.FM_ACP_RETRIEVE.app,
+							api.FM_ACP_RETRIEVE.method,
+							[ row.my.circ.target_copy() ]
+						);
+
+						params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null )}) );
+
+					}
+				);
+			} else {
+				params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null) }) );
+			}
+
+			funcs.push(
+				function() {
+
+					if (typeof params.on_retrieve == 'function') {
+						params.on_retrieve(row);
+					}
+
+				}
+			);
+
+			JSAN.use('util.exec'); var exec = new util.exec();
+			exec.on_error = function(E) {
+				//var err = 'items chain: ' + js2JSON(E);
+				//obj.error.sdump('D_ERROR',err);
+				return true; /* keep going */
+			}
+			exec.chain( funcs );
+
+			return row;
+
+		}
+
+		JSAN.use('util.list'); obj.list = new util.list('items_list');
+		obj.list.init(
+			{
+				'columns' : columns,
+				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'retrieve_row' : retrieve_row,
+				'on_select' : function(ev) {
+					JSAN.use('util.functional');
+					var sel = obj.list.retrieve_selection();
+					var list = util.functional.map_list(
+						sel,
+						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
+					);
+					if (typeof obj.on_select == 'function') {
+						obj.on_select(list);
+					}
+					if (typeof window.xulG == 'object' && typeof window.xulG.on_select == 'function') {
+						obj.error.sdump('D_PATRON','patron.items: Calling external .on_select()\n');
+						window.xulG.on_select(list);
+					} else {
+						obj.error.sdump('D_PATRON','patron.items: No external .on_select()\n');
+					}
+				},
+			}
+		);
+		
+		obj.list2 = new util.list('items_list2');
+		obj.list2.init(
+			{
+				'columns' : columns2,
+				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'retrieve_row' : retrieve_row,
+				'on_select' : function(ev) {
+					JSAN.use('util.functional');
+					var sel = obj.list2.retrieve_selection();
+					var list = util.functional.map_list(
+						sel,
+						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
+					);
+					if (typeof obj.on_select2 == 'function') {
+						obj.on_select2(list);
+					}
+				},
+			}
+		);
 	},
 
 	'retrieve' : function(dont_show_me_the_list_change) {
@@ -392,20 +455,23 @@ patron.items.prototype = {
 
 		function gen_list_append(circ_id) {
 			return function() {
+				try {
 				var checkout = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), circ_id]);
-				obj.list.append(
-					{
-						'row' : {
-							'my' : {
-								'circ' : checkout,
-							}
-						},
-					}
-				);
+						switch( checkout.checkin_time() ? 1 : 0 ) {
+							case 1:
+								obj.list2.append( { 'row' : { 'my' : { 'circ' : checkout, } }, } );
+							break;
+							default:
+								obj.list.append( { 'row' : { 'my' : { 'circ' : checkout, } }, } );
+							break;
+						}
+				} catch(E) {
+					alert(E);
+				}
 			};
 		}
 
-		obj.list.clear();
+		obj.list.clear(); obj.list2.clear();
 
 		JSAN.use('util.exec'); var exec = new util.exec();
 		var rows = [];
@@ -434,7 +500,12 @@ patron.items.prototype = {
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 
 		obj.retrieve_ids = list;
-	}
+	},
+
+	'on_select2' : function(list) {
+		this.retrieve_ids2 = list;
+	},
+
 }
 
 dump('exiting patron.items.js\n');

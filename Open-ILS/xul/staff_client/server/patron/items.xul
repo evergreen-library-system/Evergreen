@@ -71,6 +71,7 @@
 		<command id="cmd_items_edit" />
 		<command id="cmd_items_mark_lost" />
 		<command id="cmd_show_catalog" />
+		<command id="cmd_show_catalog2" />
 	</commandset>
 
 	<popupset id="items_popupset"/>

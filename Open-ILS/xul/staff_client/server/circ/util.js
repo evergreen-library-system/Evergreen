@@ -441,7 +441,11 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_start()'
 		},
 		{
-			'persist' : 'hidden width', 'id' : 'xact_finish', 'label' : getString('staff.circ_label_xact_finish'), 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'checkin_time', 'label' : 'Checkin Time', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time().substr(0,16)'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'xact_finish', 'label' : 'Transaction Finished', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_finish()'
 		},
 		{
