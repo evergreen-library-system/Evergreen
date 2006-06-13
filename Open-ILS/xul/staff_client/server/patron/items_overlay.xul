@@ -13,7 +13,7 @@
 	<popup id="items_actions" position="at_pointer"> 
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
 		<menuitem label="Edit Due Date" command="cmd_items_edit" />
-		<menuitem label="Mark Patron Lost" command="cmd_items_mark_lost" />
+		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
 		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
 		<menuitem label="Renew" command="cmd_items_renew" />
 		<menuitem label="Check In" command="cmd_items_checkin" />
