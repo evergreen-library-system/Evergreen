@@ -621,12 +621,43 @@ sub opensearch_feed {
 	}
 
 
-	$class = 'keyword' if ($class eq '-');
 	$terms = decode_utf8($terms);
 	$terms =~ s/\+/ /go;
 	$terms =~ s/'//go;
+	my $term_copy = $terms;
 
-	#warn "searching for $class -> [$terms] via OS $version, response type $type";
+	if ($terms eq 'help') {
+		print $cgi->header(-type => 'text/html');
+		print <<HTML;
+<html>
+ <head>
+  <title>just type something!</title>
+ </head>
+ <body>
+  <p>You are in a maze of dark, twisty stacks, all alike.</p>
+ </body>
+</html>
+HTML
+	return Apache2::Const::OK;
+	}
+
+	my $cache_key = '';
+	my $searches = {};
+	while ($term_copy =~ /(keyword|title|author|subject|series):(.+)/ogc) {
+		my $c = $1;
+		my $t = $2;
+		($term_copy = $t) =~ s/(keyword|title|author|subject|series):(.+)//o;
+		$$searches{$c} = { term => $term_copy };
+		$cache_key .= $c . $term_copy;
+		warn "searching for $c -> [$term_copy] via OS $version, response type $type";
+		$term_copy = $t;
+	}
+
+	if (!keys(%$searches)) {
+		$class = 'keyword' if ($class eq '-');
+		$$searches{$class} = { term => $terms };
+		$cache_key .= $class . $terms;
+	}
 
 	my $org_unit;
 	if ($org eq '-') {
@@ -639,23 +670,25 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
+	$cache_key .= $org;
+
 	my $rs_name = $cgi->cookie('os_session');
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
 
 	my $recs;
-	if (!($recs = $$cached_res{os_results}{$class}{$terms}{$org})) {
+	if (!($recs = $$cached_res{os_results}{$cache_key})) {
 		warn "NOT pulling results from cache";
 		$rs_name = $cgi->remote_host . '::' . rand(time);
 		$recs = $search->request(
 			'open-ils.search.biblio.multiclass' => {
-				searches	=> { $class => { term => $terms, }, },
+				searches	=> $searches,
 				org_unit	=> $org_unit->[0]->id,
 				offset		=> 0,
 				limit		=> 5000,
 			}
 		)->gather(1);
 		try {
-			$$cached_res{os_results}{$class}{$terms}{$org} = $recs;
+			$$cached_res{os_results}{$cache_key} = $recs;
 			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
 		} catch Error with {
 			warn shift();
@@ -673,7 +706,12 @@ sub opensearch_feed {
 	$feed->search($terms);
 	$feed->class($class);
 
-	$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
+	if (keys(%$searches) > 1) {
+		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
+	} else {
+		$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
+	}
+
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
@@ -728,7 +766,7 @@ sub opensearch_feed {
 	$feed->link(
 		opac =>
 		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
-			join('&', map { 'rl=' . $_->[0] } grep { defined $_ } @{$recs->{ids}} ),
+			join('&', map { 'rl=' . $_->[0] } grep { ref $_ && defined $_->[0] } @{$recs->{ids}} ),
 		'text/html'
 	);
 
