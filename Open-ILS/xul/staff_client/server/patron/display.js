@@ -114,6 +114,8 @@ patron.display.prototype = {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 										obj.summary_window.g.summary.controller.render('patron_checkouts');
 										obj.summary_window.g.summary.controller.render('patron_standing');
+										obj.summary_window.g.summary.controller.render('patron_bill');
+										obj.bill_window.g.bills.refresh(true);
 									},
 									'url_prefix' : xulG.url_prefix,
 									'new_tab' : xulG.new_tab,
@@ -230,9 +232,12 @@ patron.display.prototype = {
 										//alert('test');
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 										obj.summary_window.g.summary.retrieve(true);
+										obj.items_window.g.items.retrieve(true);
 									}
 								}
 							);
+							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+							obj.bill_window = f.contentWindow;
 						}
 					],
 					'patron_name' : [
