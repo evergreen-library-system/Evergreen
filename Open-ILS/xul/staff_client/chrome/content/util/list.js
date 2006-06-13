@@ -102,6 +102,7 @@ util.list.prototype = {
 			function(ev) { obj.auto_retrieve(); },
 			false
 		);
+		/* FIXME -- find events on scrollbar to trigger this */
 		obj.detect_visible_polling();	
 	},
 
@@ -315,7 +316,7 @@ util.list.prototype = {
 			//alert('detect_visible_polling');
 			var obj = this;
 			obj.detect_visible();
-			setTimeout(function() { try { obj.detect_visible_polling(); } catch(E) { alert(E); } },1);
+			setTimeout(function() { try { obj.detect_visible_polling(); } catch(E) { alert(E); } },1000);
 		} catch(E) {
 			alert(E);
 		}
