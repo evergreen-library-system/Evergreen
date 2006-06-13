@@ -157,8 +157,9 @@ sub biblio_record_replace_marc  {
 
 	# See if there is a different record in the database that has our TCN value
 	# If we're not updating the TCN, all we care about it the marcdoc
+	my $override = $self->api_name =~ /override/;
 	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info($e->session, $newxml, $self->api_name =~ /override/, $recid);
+		_find_tcn_info($e->session, $newxml, $override, $recid);
 
 	return $evt if $evt;
 
@@ -252,8 +253,7 @@ sub biblio_record_xml_import {
 }
 
 
-sub _find_tcn_info {
-
+sub _find_tcn_info { 
 	my $session		= shift;
 	my $xml			= shift;
 	my $override	= shift;
