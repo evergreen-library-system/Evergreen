@@ -1208,6 +1208,9 @@ sub generic_receive {
 	$logger->info("Checkin copy called by user ".
 		$requestor->id." for copy ".$copy->id);
 
+
+	my $val = $self->checkin_do_receive($conn, $ctx);
+
 	# ------------------------------------------------------------------------------
 	# Update the patron penalty info in the DB
 	# ------------------------------------------------------------------------------
@@ -1217,7 +1220,7 @@ sub generic_receive {
 		background => 1
 	);
 
-	return $self->checkin_do_receive($conn, $ctx);
+	return $val;
 }
 
 sub checkin_do_receive {
