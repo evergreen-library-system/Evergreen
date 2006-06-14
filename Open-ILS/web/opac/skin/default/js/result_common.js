@@ -270,7 +270,7 @@ function resultSuggestSpelling(r) {
 		var word = words[w];
 		var blob = grep(res, function(i){return (i.word == word);})[0];
 		if( blob.word == word ) {
-			if( blob.suggestions ) {
+			if( blob.suggestions && blob.suggestions[0] ) {
 				newterm += " " + blob.suggestions[0];
 				unHideMe($('did_you_mean'));
 			} else {
