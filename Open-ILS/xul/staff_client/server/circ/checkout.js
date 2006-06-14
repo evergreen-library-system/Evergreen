@@ -430,12 +430,42 @@ circ.checkout.prototype = {
 						case 1702 /* OPEN_CIRCULATION_EXISTS */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+
+							var my_copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[params.barcode]);
+							if (typeof my_copy.ilsevent != 'undefined') throw(my_copy);
+							var my_circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),my_copy.id(),1]);
+							if (typeof my_circ.ilsevent != 'undefined') throw(my_copy);
+							my_circ = my_circ[0];
+							var due_date = my_circ.due_date().substr(0,10);
+							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
+							if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
+							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', today > due_date ? 'Forgiving Checkin then Checkout' : null,'Check here to confirm this message');
+							JSAN.use('circ.util');
+							switch(r) {
+								case 1:
+									circ.util.checkin_via_barcode( ses(), params.barcode );
+									obj.checkout(params);
+								break;
+								case 2:
+									circ.util.checkin_via_barcode( ses(), params.barcode, due_date );
+									obj.checkout(params);
+								break;
+							}
 						break;
 						case 7014 /* COPY_IN_TRANSIT */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Abort Transit then Checkout',null,'Check here to confirm this message');
+							switch(r) {
+								case 1:
+									var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
+									if (typeof robj.ilsevent == 'undefined') {
+										obj.checkout(params);
+									} else {
+										if (robj.ilsevent != 5000 /* PERM_FAILURE */) throw(robj);
+									}
+								break;
+							}
 						break;
 						case -1 /* NETWORK_FAILURE */ :
 							msg += 'There was a network failure.\n';
@@ -453,6 +483,8 @@ circ.checkout.prototype = {
 					obj.error.standard_unexpected_error_alert(msg,permit);
 				}
 
+				obj.controller.view.checkout_barcode_entry_textbox.select();
+				obj.controller.view.checkout_barcode_entry_textbox.focus();
 			}
 
 		} catch(E) {
