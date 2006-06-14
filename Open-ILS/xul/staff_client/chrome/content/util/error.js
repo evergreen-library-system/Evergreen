@@ -268,6 +268,7 @@ util.error.prototype = {
 			c	= Text for confirmation checkbox.  null for no confirm
 		*/
 
+		dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 		this.sound.bad();
