@@ -334,15 +334,16 @@ sub metarecord_copy_count {
 					$t_filter
 					$f_filter
 				)
-				+
+			) AS unshadow,
+			sum(	
 				(SELECT sum(1)
 				  FROM  $sm_table r
 			       		JOIN $br_table br ON (br.id = r.source)
-			       		LEFT JOIN $src_table src ON (src.id = br.source)
+			       		JOIN $src_table src ON (src.id = br.source)
 				  WHERE r.metarecord = ?
 				  	AND src.transcendant IS TRUE
 				)
-			) AS unshadow
+			) AS transcendant
 
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)

@@ -59,27 +59,33 @@ sub record_copy_count {
 				  	AND cp.status = 0)
 			) AS available,
 			sum(
-				(SELECT count(cp.id) + sum(CASE WHEN src.transcendant IS TRUE THEN 1 ELSE 0 END)
-				  FROM  $br_table br
-				  	JOIN $cn_table cn ON (cn.record = br.id)
+				(SELECT count(cp.id)
+				  FROM  $cn_table cn
 					JOIN $cp_table cp ON (cn.id = cp.call_number)
 					JOIN $st_table st ON (cp.status = st.id)
 					JOIN $loc_table loc ON (cp.location = loc.id)
-					LEFT JOIN $src_table src ON (br.source = src.id)
-				  WHERE br.id = ?
+				  WHERE cn.record = ?
 					AND st.holdable = TRUE
 					AND loc.opac_visible = TRUE
 					AND cp.opac_visible = TRUE
 				  	AND cn.deleted IS FALSE
 					AND cp.deleted IS FALSE)
-			) AS unshadow
+			) AS unshadow,
+                        sum(    
+                                (SELECT sum(1)
+                                  FROM	$br_table br
+                                        JOIN $src_table src ON (src.id = br.source)
+                                  WHERE br.id = ?
+                                        AND src.transcendant IS TRUE
+                                )
+                        ) AS transcendant
 		  FROM  $ancestors u
 			JOIN $out_table t ON (u.ou_type = t.id)
 		  GROUP BY 1,2
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute(''.$args{record}, ''.$args{record}, ''.$args{record}, ''.$args{org_unit});
+	$sth->execute(''.$args{record}, ''.$args{record}, ''.$args{record}, ''.$args{record}, ''.$args{org_unit});
 	while ( my $row = $sth->fetchrow_hashref ) {
 		$client->respond( $row );
 	}
