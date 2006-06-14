@@ -13,7 +13,6 @@ use OpenILS::Perm;
 use OpenILS::Application::AppUtils;
 
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Application::Search::Actor;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils qw/:datetime/;
