@@ -89,12 +89,12 @@ util.list.prototype = {
 		*/
 		this.node.addEventListener(
 			'keypress',
-			function(ev) { obj.detect_visible(); },
+			function(ev) { obj.auto_retrieve(); },
 			false
 		);
 		this.node.addEventListener(
 			'click',
-			function(ev) { obj.detect_visible(); },
+			function(ev) { obj.auto_retrieve(); },
 			false
 		);
 		window.addEventListener(
@@ -103,7 +103,19 @@ util.list.prototype = {
 			false
 		);
 		/* FIXME -- find events on scrollbar to trigger this */
-		obj.detect_visible_polling();	
+		//obj.detect_visible_polling();	
+		/*
+		var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(this.node)[1] )[1];
+		var slider = document.getAnonymousNodes( scrollbar )[2];
+		alert('scrollbar = ' + scrollbar.nodeName + ' grippy = ' + slider.nodeName);
+		scrollbar.addEventListener('click',function(){alert('sb click');},false);
+		scrollbar.addEventListener('command',function(){alert('sb command');},false);
+		scrollbar.addEventListener('scroll',function(){alert('sb scroll');},false);
+		slider.addEventListener('click',function(){alert('slider click');},false);
+		slider.addEventListener('command',function(){alert('slider command');},false);
+		slider.addEventListener('scroll',function(){alert('slider scroll');},false);
+		*/
+		this.node.addEventListener('scroll',function(){ obj.auto_retrieve(); },false);
 	},
 
 	'_init_listbox' : function (params) {
@@ -316,34 +328,43 @@ util.list.prototype = {
 			//alert('detect_visible_polling');
 			var obj = this;
 			obj.detect_visible();
-			setTimeout(function() { try { obj.detect_visible_polling(); } catch(E) { alert(E); } },1000);
+			setTimeout(function() { try { obj.detect_visible_polling(); } catch(E) { alert(E); } },2000);
 		} catch(E) {
 			alert(E);
 		}
 	},
 
 	'auto_retrieve' : function () {
-		try {
-				//alert('auto_retrieve\n');
-				var obj = this; var count = 0;
-				var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
-				var endpos = obj.node.treeBoxObject.getLastVisibleRow();
-				if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
-				//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
-				for (var i = startpos; i < endpos + 2; i++) {
+		var obj = this;
+		if (!obj.auto_retrieve_in_progress) {
+			obj.auto_retrieve_in_progress = true;
+			setTimeout(
+				function() {
 					try {
-						//dump('trying index ' + i + '\n');
-						var item = obj.node.contentView.getItemAtIndex(i).firstChild;
-						if (item && item.getAttribute('retrieved') != 'true' ) {
-							//dump('\tgot an unfleshed item = ' + item + ' = ' + item.nodeName + '\n');
-							util.widgets.dispatch('flesh',item); count++;
-						}
-					} catch(E) {
-						//dump(i + ' : ' + E + '\n');
-					}
-				}
-				return count;
-		} catch(E) { alert(E); }
+							//alert('auto_retrieve\n');
+							var count = 0;
+							var startpos = obj.node.treeBoxObject.getFirstVisibleRow();
+							var endpos = obj.node.treeBoxObject.getLastVisibleRow();
+							if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
+							//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
+							for (var i = startpos; i < endpos + 2; i++) {
+								try {
+									//dump('trying index ' + i + '\n');
+									var item = obj.node.contentView.getItemAtIndex(i).firstChild;
+									if (item && item.getAttribute('retrieved') != 'true' ) {
+										//dump('\tgot an unfleshed item = ' + item + ' = ' + item.nodeName + '\n');
+										util.widgets.dispatch('flesh',item); count++;
+									}
+								} catch(E) {
+									//dump(i + ' : ' + E + '\n');
+								}
+							}
+							obj.auto_retrieve_in_progress = false;
+							return count;
+					} catch(E) { alert(E); }
+				}, 1
+			);
+		}
 	},
 
 	'_append_to_listbox' : function (params) {
