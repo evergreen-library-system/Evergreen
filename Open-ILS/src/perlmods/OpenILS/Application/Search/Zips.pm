@@ -21,7 +21,7 @@ sub initialize {
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	my $zfile = $conf->config_value(
 		"apps", "open-ils.search", "app_settings", "zips_file");
-	return 1 unless $zfile;
+	return 1 unless $zfile and -f $zfile;
 
 	$logger->info("search loaded zips file $zfile");
 	open(F,$zfile);
