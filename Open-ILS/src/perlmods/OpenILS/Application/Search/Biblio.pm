@@ -498,6 +498,13 @@ sub _grab_metarecord {
 	my $mrid = shift;
 	my $e = OpenILS::Utils::Editor->new;
 	my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
+
+	# XXX - test
+#	my $mr = $U->simplereq(
+#		'open-ils.cstore', 
+#		'open-ils.cstore.direct.metabib.metarecord.retrieve', 
+#		$mrid);
+
 	return ($mr);
 }
 
@@ -1048,6 +1055,50 @@ sub fetch_slim_record {
 }
 
 
+
+__PACKAGE__->register_method(
+	method => 'rec_to_mr_rec_descriptors',
+	api_name	=> 'open-ils.search.metabib.record_to_descriptors',
+	signature	=> q/
+		specialized method...
+		Given a biblio record id or a metarecord id, 
+		this returns a list of metabib.record_descriptor
+		objects that live within the same metarecord
+		@param args Object of args including:
+	/
+);
+
+sub rec_to_mr_rec_descriptors {
+	my( $self, $conn, $args ) = @_;
+
+	my $rec = $$args{record};
+	my $mrec	= $$args{metarecord};
+	my $item_forms = $$args{item_forms};
+	my $item_types	= $$args{item_types};
+	my $item_lang	= $$args{item_lang};
+
+	my $e = new_editor();
+	my $recs;
+
+	if( $rec ) {
+		my $map = $e->search_metabib_metarecord_source_map({source => $rec});
+		return $e->event unless @$map;
+		$recs = $e->search_metabib_metarecord_source_map({metarecord => $$map[0]->metarecord});
+
+	} else {
+		$recs = $e->search_metabib_metarecord_source_map({metarecord => $mrec});
+	}
+
+	return $e->event unless @$recs;
+
+	my @recs = map { $_->source } @$recs;
+	my $search = { record => \@recs };
+	$search->{item_form} = $item_forms if $item_forms and @$item_forms;
+	$search->{item_type} = $item_types if $item_types and @$item_types;
+	$search->{item_lang} = $item_lang if $item_lang;
+
+	return $e->search_metabib_record_descriptor($search);
+}
 
 
 
