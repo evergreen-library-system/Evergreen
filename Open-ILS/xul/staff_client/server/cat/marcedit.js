@@ -1051,13 +1051,17 @@ var authority_tag_map = {
 function getAuthorityContextMenu (target, sf) {
 	var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
 
-	if (!authority_tag_map[sf.parent().@tag]) return false;
-
 	var old = document.getElementById( menu_id );
 	if (old) old.parentNode.removeChild(old);
 
 	var sf_popup = createPopup({ id : menu_id, flex : 1 });
 	context_menus.appendChild( sf_popup );
+
+	if (!authority_tag_map[sf.parent().@tag]) {
+		sf_popup.appendChild(createLabel( { value : "Not a controlled subfield" } ) );
+		target.setAttribute('context', menu_id);
+		return false;
+	}
 
 	var auth_data = searchAuthority( sf, authority_tag_map[sf.parent().@tag][0], sf.@code, 50);
 
