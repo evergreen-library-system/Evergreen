@@ -602,7 +602,7 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 			/* here we style opac-invisible records for xul */
 
 			if( cts.depth == 0 ) {
-				if(!cts.unshadow) {
+				if(!cts.transcendant && !cts.unshadow) {
 					_debug("found an opac-shadowed record: " + rec.doc_id());
 					var row = cell.parentNode.parentNode.parentNode.parentNode.parentNode; 
 					if( cts.count == 0 ) 
