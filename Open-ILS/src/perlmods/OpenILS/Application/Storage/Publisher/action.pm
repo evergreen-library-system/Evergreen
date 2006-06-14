@@ -613,16 +613,18 @@ sub new_hold_copy_targeter {
 	
 			my $all_copies = [];
 
+			my ($types, $formats, $lang) = split '-', $hold->holdable_formats;
+
 			# find all the potential copies
 			if ($hold->hold_type eq 'M') {
 				for my $r ( map
 						{$_->record}
 						metabib::record_descriptor
 							->search(
-								record => [ map { $_->id } metabib::metarecord
-											->retrieve($hold->target)
-											->source_records ],
-								item_type => [split '', $hold->holdable_formats]
+								record => [ map { $_->id } metabib::metarecord->retrieve($hold->target)->source_records ],
+								( $types   ? (item_type => [split '', $types])   : () ),
+								( $formats ? (item_form => [split '', $formats]) : () ),
+								( $lang    ? (item_lang => $lang)                : () ),
 							)
 				) {
 					my ($rtree) = $self
