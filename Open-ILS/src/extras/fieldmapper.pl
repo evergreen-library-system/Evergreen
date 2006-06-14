@@ -16,7 +16,7 @@ my @web_core = qw/
 	cbrebi acpn acp acnn acn bren asc asce 
 	clfm cifm citm cam ahtc
 	asv asva asvr asvq 
-	circ ccs ahn bre
+	circ ccs ahn bre mrd
 	crcd crmf crrf mbts aoc aus 
 	mous mobts mb ancc cnct cnal
 	/;
