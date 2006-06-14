@@ -26,7 +26,7 @@ use OpenILS::Perm;
 use Data::Dumper;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Event;
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::Editor qw/:funcs/;
 
 __PACKAGE__->register_method(
 	method	=> "make_payments",
@@ -290,19 +290,24 @@ __PACKAGE__->register_method(
 sub billing_items_create {
 	my( $self, $client, $login, $billing ) = @_;
 
-	my( $staff, $evt ) = $apputils->checksesperm($login, 'CREATE_BILL');
-	return $evt if $evt;
+	my $e = new_editor(authtoken => $login, xact => 1);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('CREATE_BILL');
 
-	my $session = $apputils->start_db_session;
+	my $xact = $e->retrieve_money_billable_transaction($billing->xact)
+		or return $e->event;
 
-	my $id = $session->request(
-		'open-ils.storage.direct.money.billing.create', $billing )->gather(1);
+	# if the transaction was closed, re-open it
+	if($xact->xact_finish) {
+		$xact->clear_xact_finish;
+		$e->update_money_billable_transaction($xact)
+			or return $e->event;
+	}
 
-	return $U->DB_UPDATE_FAILED($billing) unless defined $id;
+	$e->create_money_billing($billing) or return $e->event;
 
-	$apputils->commit_db_session($session);
-
-	return $id;
+	$e->commit;
+	return $billing->id;
 }
 
 __PACKAGE__->register_method(
@@ -370,6 +375,7 @@ sub _check_open_xact {
 
 	return undef;
 }
+
 
 __PACKAGE__->register_method (
 	method => 'fetch_mbts',
