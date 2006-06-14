@@ -517,6 +517,7 @@ sub modify_from_fieldmapper {
 	asset::call_number->has_a( record => 'biblio::record_entry' );
 	asset::call_number->has_a( creator => 'actor::user' );
 	asset::call_number->has_a( editor => 'actor::user' );
+	asset::call_number->has_a( owning_lib => 'actor::org_unit' );
 
 	authority::record_note->has_a( record => 'authority::record_entry' );
 	biblio::record_note->has_a( record => 'biblio::record_entry' );
