@@ -372,7 +372,6 @@ sub runmethod {
 
 	my @arg = ($arg);
 	my $method = "open-ils.storage.direct.$type.$action";
-	#my $argstr = _arg_to_string($arg);
 
 	if( $action eq 'search' ) {
 		$method =~ s/search/search_where/o;
@@ -392,7 +391,6 @@ sub runmethod {
 	# remove any stale events
 	$self->clear_event;
 
-	#$self->log(I, "$type.$action : $argstr");
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
 		$self->log_activity($type, $action, $arg);
 	}
