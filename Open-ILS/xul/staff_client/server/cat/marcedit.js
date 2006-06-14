@@ -1146,6 +1146,9 @@ function getAuthorityContextMenu (target, sf) {
 		sf_popup.appendChild( submenu );
 	}
 
+	if (sf_popup.childNodes.length == 0)
+		sf_popup.appendChild(createLabel( { value : "No matching authority records found" } ) );
+
 	target.setAttribute('context', menu_id);
 	return true;
 }
