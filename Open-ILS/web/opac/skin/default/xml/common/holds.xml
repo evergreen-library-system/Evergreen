@@ -110,6 +110,14 @@
 						<select id='holds_org_selector'> </select>
 					</td>
 				</tr>
+				<tr id='holds_alt_formats_row' class='hide_me'>
+					<td class='holds_cell'>
+						I would also be interested in receiving my hold in the following alternate formats:
+					</td>
+					<td class='holds_cell'>
+					</td>
+				</tr>
+
 				<tr>
 					<td class='holds_cell' align='center' colspan='2'>
 						<button id='holds_submit'>&opac.holds.placeHold;</button>

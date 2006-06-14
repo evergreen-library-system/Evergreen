@@ -1,7 +1,12 @@
 var holdsOrgSelectorBuilt = false;
 var holdArgs;
 
-
+/* 
+note: metarecord holds have a holdable_formats field that contains
+item_type(s)-item_forms(s)-language
+item_form and language are optional - if language exist and no 
+item_form is specified, use item_type(s)--language
+*/
 
 function holdsHandleStaff() {
 	swapCanvas($('xulholds_box'));
@@ -64,7 +69,6 @@ function holdsDrawEditor(args) {
 		holdArgs.status = req.result();
 		_holdsUpdateEditHold();
 	}  
-
 }
 
 
@@ -203,7 +207,39 @@ function _h_set_rec(args, doneCallback) {
 	} else {
 		args.recordObject = findRecord( args.record, 'T' );
 	}
-	if(doneCallback) doneCallback(args);
+
+	if( args.type == 'T' || args.type == 'M' ) {
+		_h_set_rec_descriptors(args, doneCallback);
+	} else {
+		if(doneCallback) doneCallback(args);
+	}
+}
+
+function _h_set_rec_descriptors(args, doneCallback) {
+
+	/* grab the list of record desciptors attached to this records metarecord */
+	if( ! args.recordDescriptors )  {
+		var params = { record: args.record };
+
+		if( ! args.record ) {
+			if( args.metarecord )
+				params = { metarecord : args.metarecord };
+			else 
+				params = { metarecord : args.metarecordObject.id() };
+		}
+
+		var req = new Request(FETCH_MR_DESCRIPTORS, params );
+		req.callback(
+			function(r) {
+				args.recordDescriptors = r.getResultObject();
+				if(doneCallback) doneCallback(args);
+			}
+		);
+		req.send();
+
+	} else {
+		if(doneCallback) doneCallback(args);
+	}
 }
 
 
@@ -298,7 +334,68 @@ function __holdsDrawWindow() {
 	}
 
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
+
 	if(holdArgs.type == 'M') hideMe($('hold_physical_desc_row'));
+
+	holdsSetFormatSelector();
+}
+
+function holdsSetFormatSelector() {
+	var type = holdArgs.type;
+	if( type == 'C' || type == 'V' ) return;
+
+	var data = holdGetAvailableTypesAndForms();
+	var avail_types = data.avail_types;
+	var avail_forms = data.avail_forms;
+	var item_lang	= data.item_lang;
+
+	/*
+	if( avail_types.length > 1 || avail_forms.length > 1 ) {
+		unHideMe($('holds_alt_formats_row'));
+		alert('lang: ' + item_lang + '\navail types: ' + avail_types + '\navail forms: ' + avail_forms);
+	}
+	*/
+}
+
+
+function holdGetAvailableTypesAndForms() {
+
+	var item_types = [];
+	var item_forms	= [];
+	var item_lang;
+
+	var type = holdArgs.type;
+	var desc = holdArgs.recordDescriptors;
+	var rec	= holdArgs.record;
+	var mrec = holdArgs.metarecord;
+
+	if( type == 'T' ) {
+
+		/* find our language */
+		for( var i = 0; i < desc.length; i++ ) {
+			var d = desc[i];
+			if( d.record() == holdArgs.record ) {
+				item_lang = d.item_lang();
+				break;
+			}
+		}
+	}
+
+	for( var i = 0; i < desc.length; i++ ) {
+		var d = desc[i];
+		if( d.item_lang() != item_lang ) continue;
+		item_types.push(d.item_type());
+		item_forms.push(d.item_form());
+	}
+
+	item_types = uniquify(item_types);
+	item_forms = uniquify(item_forms);
+
+	return { 
+		avail_types : item_types, 
+		avail_forms	: item_forms, 
+		item_lang : item_lang 
+	};
 }
 
 

@@ -521,3 +521,14 @@ function confirmId(id) {
 function goBack() { history.back(); }
 function goForward() { history.forward(); }
 
+
+function uniquify(arr) {
+	if(!arr) return [];
+	var newarr = [];
+	for( var i = 0; i < arr.length; i++ ) {
+		var item = arr[i];
+		if( ! grep( newarr, function(x) {return (x == item);}))
+			newarr.push(item);
+	}
+	return newarr;
+}

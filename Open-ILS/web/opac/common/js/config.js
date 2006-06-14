@@ -330,6 +330,7 @@ var FETCH_NON_CAT_TYPES			= "open-ils.circ:open-ils.circ.non_cat_types.retrieve.
 var FETCH_BRE						= 'open-ils.search:open-ils.search.biblio.record_entry.slim.retrieve';
 var CHECK_USERNAME				= 'open-ils.actor:open-ils.actor.username.exists';
 var FETCH_CIRC_BY_ID				= 'open-ils.circ:open-ils.circ.retrieve';
+var FETCH_MR_DESCRIPTORS		= 'open-ils.search:open-ils.search.metabib.record_to_descriptors';
 
 /* ---------------------------------------------------------------------------- */
 
