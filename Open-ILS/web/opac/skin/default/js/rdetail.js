@@ -48,12 +48,6 @@ var rdetailEnd = null;
 record cache, if so, set up the nav links */
 function rdetailSetPaging(ids) {
 
-	/*
-	cachedRecords = JSON2js(cookieManager.read(COOKIE_SRIDS));
-	if(!(cachedRecords && cachedRecords.ids)) return;
-	*/
-
-	//alert(getOffset());
 	cachedRecords = {};
 	cachedRecords.ids = ids;
 
@@ -242,7 +236,9 @@ function _rdetailDraw(r) {
 		var href = links[i];
 		if( href.match(/http/) ) {
 			unHideMe($('rdetail_online_row'));
-			$('rdetail_online').appendChild(elem('a', {href:href,class:'classic_link'}, href));
+			var name = links[i+1];
+			if(!name || name.match(/http/)) name = href;
+			$('rdetail_online').appendChild(elem('a', {href:href,class:'classic_link'}, name));
 			$('rdetail_online').appendChild(elem('br'));
 		}
 	}
