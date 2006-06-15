@@ -1735,10 +1735,6 @@ sub _checked_out {
 
 
 
-
-
-
-
 __PACKAGE__->register_method(
 	method	=> "user_transaction_history",
 	api_name	=> "open-ils.actor.user.transactions.history",
@@ -1760,21 +1756,25 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that have a balance, optionally by type
 	NOTES
-sub user_transaction_history {
+
+=head old
+sub _user_transaction_history {
 	my( $self, $client, $login_session, $user_id, $type ) = @_;
 
 	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
 		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
 	return $evt if $evt;
-	
+
 	my $api = $self->api_name();
 	my @xact;
 	my @charge;
 	my @balance;
 
 	@xact = (xact_type =>  $type) if(defined($type));
-	@charge = (total_owed => { ">" => 0}) if($api =~ /have_charge/);
 	@balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
+	@charge  = (last_billing_ts => { "<>" => undef }) if $api =~ /have_charge/;
+
+	$logger->debug("searching for transaction history: @xact : @balance, @charge");
 
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.storage",
@@ -1783,6 +1783,27 @@ sub user_transaction_history {
 
 	return [ map { $_->id } @$trans ];
 }
+=cut
+
+
+sub user_transaction_history {
+	my( $self, $conn, $auth, $userid, $type ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
+
+	my $api = $self->api_name;
+	my @xact = (xact_type =>  $type) if(defined($type));
+	my @balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
+	my @charge  = (last_billing_ts => { "!=" => undef }) if $api =~ /have_charge/;
+
+	return $e->search_money_billable_transaction_summary(
+		[
+			{ usr => $userid, @xact, @charge, @balance }, 
+			{ order_by => 'xact_start DESC' }
+		], {idlist => 1});
+}
+
 
 
 __PACKAGE__->register_method(
