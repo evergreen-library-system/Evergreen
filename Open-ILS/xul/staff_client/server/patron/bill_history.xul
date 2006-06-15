@@ -60,7 +60,7 @@
 			} else if (g.mbts_ids == null) {
 				g.error.standard_unexpected_error_alert('Please close this window and try again.',null);
 			} else {
-				g.mbts_ids.reverse();
+				//g.mbts_ids.reverse();
 				var funcs = [];
 			
 						function gen_func(r) {
