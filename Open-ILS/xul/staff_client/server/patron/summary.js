@@ -95,6 +95,7 @@ patron.summary.prototype = {
 							return function() { 
 								JSAN.use('util.money');
 								e.setAttribute('value',
+									'$' + 
 									util.money.sanitize(
 										obj.patron.credit_forward_balance()
 									)
@@ -113,6 +114,7 @@ patron.summary.prototype = {
 									function(req) {
 										JSAN.use('util.money');
 										e.setAttribute('value',
+											'$' + 
 											util.money.sanitize( 
 												req.getResultObject() 
 											)
