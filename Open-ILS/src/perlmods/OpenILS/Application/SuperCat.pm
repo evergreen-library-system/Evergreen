@@ -130,8 +130,6 @@ sub child_init {
 	# and stash a transformer
 	$record_xslt{rss2}{xslt} = $_xslt->parse_stylesheet( $rss_xslt );
 
-	# and finally, a storage server session
-
 	register_record_transforms();
 
 	return 1;
@@ -174,10 +172,9 @@ sub new_record_holdings {
 	my $bib = shift;
 	my $ou = shift;
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
-	my $_cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	my $tree = $_cstore->request(
+	my $tree = $_storage->request(
 		"open-ils.cstore.direct.biblio.record_entry.retrieve",
 		$bib,
 		{flesh => 3, flesh_fields => [qw/call_numbers copies location status owning_lib circ_lib/] }
@@ -225,13 +222,13 @@ sub new_record_holdings {
 
 			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status><hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:notes>";
 
-			#for my $note ( @{$_storage->request( "open-ils.storage.direct.asset.copy_note.search.atomic" => {id => $cp->id, pub => "t" })->gather(1)} ) {
+			#for my $note ( @{$_storage->request( "open-ils.cstore.direct.asset.copy_note.search.atomic" => {owning_copy => $cp->id, pub => "t" })->gather(1)} ) {
 			#	$xml .= sprintf('<hold:note date="%s" title="%s">%s</hold:note>',$note->create_date, escape($note->title), escape($note->value));
 			#}
 
 			$xml .= "</hold:notes><hold:statcats>";
 
-			#for my $sce ( @{$_storage->request( "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
+			#for my $sce ( @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
 			#	my $sc = $holdings_data_cache{statcat}{$sce->stat_cat_entry};
 			#	$xml .= sprintf('<hold:statcat>%s</hold:statcat>',escape($sc->value));
 			#}
@@ -274,22 +271,26 @@ sub record_holdings {
 	my $client = shift;
 	my $bib = shift;
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	if (!$holdings_data_cache{status}) {
-		$holdings_data_cache{status} = { map { ($_->id => $_) } @{ $_storage->request( "open-ils.storage.direct.config.copy_status.retrieve.all.atomic" )->gather(1) } };
-		$holdings_data_cache{location} = { map { ($_->id => $_) } @{ $_storage->request( "open-ils.storage.direct.asset.copy_location.retrieve.all.atomic" )->gather(1) } };
+		$holdings_data_cache{status} = {
+			map { ($_->id => $_) } @{ $_storage->request( "open-ils.cstore.direct.config.copy_status.search.atomic", {id => {'<>' => undef}} )->gather(1) }
+		};
+		$holdings_data_cache{location} = {
+			map { ($_->id => $_) } @{ $_storage->request( "open-ils.cstore.direct.asset.copy_location.retrieve.all.atomic", {id => {'<>' => undef}} )->gather(1) }
+		};
 		$holdings_data_cache{ou} =
 		{
 			map {
 				($_->id => $_)
-			} @{$_storage->request( "open-ils.storage.direct.actor.org_unit.search_where.atomic" => { id => { '>' => 0 } } )->gather(1)}
+			} @{$_storage->request( "open-ils.cstore.direct.actor.org_unit.search.atomic" => { id => { '<>' => undef } } )->gather(1)}
 		};
 		$holdings_data_cache{statcat} =
 		{
 			map {
 				($_->id => $_)
-			} @{$_storage->request( "open-ils.storage.direct.asset.stat_cat_entry.search_where.atomic" => { id => { '>' => 0 } } )->gather(1)}
+			} @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry.search.atomic" => { id => { '<>' => undef } } )->gather(1)}
 		};
 	}
 
@@ -300,7 +301,7 @@ sub record_holdings {
 
 	my $xml = "<volumes xmlns='http://open-ils.org/spec/holdings/v1'>";
 	
-	for my $cn ( @{$_storage->request( "open-ils.storage.direct.asset.call_number.search.record.atomic" => $bib )->gather(1)} ) {
+	for my $cn ( @{$_storage->request( "open-ils.cstore.direct.asset.call_number.search.atomic" => {record => $bib} )->gather(1)} ) {
 		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
 		$cn_class =~ s/Fieldmapper-//gso;
 		my $cn_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cn_class/".$cn->id, $month, $day);
@@ -311,7 +312,7 @@ sub record_holdings {
 
 		$xml .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><copies>";
 		
-		for my $cp ( @{$_storage->request( "open-ils.storage.direct.asset.copy.search.call_number.atomic" => $cn->id )->gather(1)} ) {
+		for my $cp ( @{$_storage->request( "open-ils.cstore.direct.asset.copy.search.atomic" => {call_number => $cn->id} )->gather(1)} ) {
 			(my $cp_class = $cn->class_name) =~ s/::/-/gso;
 			$cp_class =~ s/Fieldmapper-//gso;
 			my $cp_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cp_class/".$cp->id, $month, $day);
@@ -326,13 +327,13 @@ sub record_holdings {
 
 			$xml .= "<copy id='$cp_tag' barcode='$cp_bc'><status>$cp_stat</status><location>$cp_loc</location><circlib>$cp_lib</circlib><notes>";
 
-			for my $note ( @{$_storage->request( "open-ils.storage.direct.asset.copy_note.search.atomic" => {id => $cp->id, pub => "t" })->gather(1)} ) {
+			for my $note ( @{$_storage->request( "open-ils.cstore.direct.asset.copy_note.search.atomic" => {id => $cp->id, pub => "t" })->gather(1)} ) {
 				$xml .= sprintf('<note date="%s" title="%s">%s</note>',$note->create_date, escape($note->title), escape($note->value));
 			}
 
 			$xml .= "</notes><statcats>";
 
-			for my $sce ( @{$_storage->request( "open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
+			for my $sce ( @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
 				my $sc = $holdings_data_cache{statcat}{$sce->stat_cat_entry};
 				$xml .= sprintf('<statcat>%s</statcat>',escape($sc->value));
 			}
@@ -353,6 +354,7 @@ sub escape {
 	$text =~ s/&/&amp;/gsom;
 	$text =~ s/</&lt;/gsom;
 	$text =~ s/>/&gt;/gsom;
+	$text =~ s/"/\\"/gsom;
 	return $text;
 }
 
@@ -373,11 +375,11 @@ sub recent_changes {
 	my $axis = 'create_date';
 	$axis = 'edit_date' if ($self->api_name =~ /edit/o);
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	return $_storage
 		->request(
-			"open-ils.storage.id_list.$type.record_entry.search_where.atomic",
+			"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
 			{ $axis => { ">" => $when } },
 			{ order_by => "$axis desc", limit => $limit } )
 		->gather(1);
@@ -418,12 +420,12 @@ sub retrieve_record_marcxml {
 	my $client = shift;
 	my $rid = shift;
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	return
 	entityize(
 		$_storage
-			->request( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rid )
+			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rid )
 			->gather(1)
 			->marc
 	);
@@ -457,14 +459,17 @@ sub retrieve_record_transform {
 
 	(my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+	$_storage->connect;
 
 	warn "Fetching record entry $rid\n";
 	my $marc = $_storage->request(
-		'open-ils.storage.direct.biblio.record_entry.retrieve',
+		'open-ils.cstore.direct.biblio.record_entry.retrieve',
 		$rid
 	)->gather(1)->marc;
 	warn "Fetched record entry $rid\n";
+
+	$_storage->disconnect;
 
 	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $marc ) )->toString);
 }
@@ -475,22 +480,19 @@ sub retrieve_metarecord_mods {
 	my $client = shift;
 	my $rid = shift;
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
-
-	# We want a session
-	$_storage->connect;
+	my $_storage = OpenSRF::AppSession->connect( 'open-ils.cstore' );
 
 	# Get the metarecord in question
 	my $mr =
 	$_storage->request(
-		'open-ils.storage.direct.metabib.metarecord.retrieve' => $rid
+		'open-ils.cstore.direct.metabib.metarecord.retrieve' => $rid
 	)->gather(1);
 
 	# Now get the map of all bib records for the metarecord
 	my $recs =
 	$_storage->request(
-		'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
-		$rid
+		'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
+		{metarecord => $rid}
 	)->gather(1);
 
 	$logger->debug("Adding ".scalar(@$recs)." bib record to the MODS of the metarecord");
@@ -730,14 +732,14 @@ sub oISBN {
 	throw OpenSRF::EX::InvalidArg ('I need an ISBN please')
 		unless (length($isbn) >= 10);
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.storage' );
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	# Create a storage session, since we'll be making muliple requests.
 	$_storage->connect;
 
 	# Find the record that has that ISBN.
 	my $bibrec = $_storage->request(
-		'open-ils.storage.direct.metabib.full_rec.search_where.atomic',
+		'open-ils.cstore.direct.metabib.full_rec.search.atomic',
 		{ tag => '020', subfield => 'a', value => { ilike => $isbn.'%'} }
 	)->gather(1);
 
@@ -746,14 +748,14 @@ sub oISBN {
 
 	# Find the metarecord for that bib record.
 	my $mr = $_storage->request(
-		'open-ils.storage.direct.metabib.metarecord_source_map.search.source.atomic',
-		$bibrec->[0]->record
+		'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
+		{source => $bibrec->[0]->record}
 	)->gather(1);
 
 	# Find the other records for that metarecord.
 	my $records = $_storage->request(
-		'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
-		$mr->[0]->metarecord
+		'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
+		{metarecord => $mr->[0]->metarecord}
 	)->gather(1);
 
 	# Just to be safe.  There's currently no unique constraint on sources...
@@ -762,7 +764,7 @@ sub oISBN {
 
 	# And now fetch the ISBNs for thos records.
 	my $recs = $_storage->request(
-		'open-ils.storage.direct.metabib.full_rec.search_where.atomic',
+		'open-ils.cstore.direct.metabib.full_rec.search.atomic',
 		{ tag => '020', subfield => 'a', record => \@rec_list }
 	)->gather(1);
 
