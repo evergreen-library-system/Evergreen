@@ -11,7 +11,14 @@
 
 <box id="bills_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="bills_top_ui" />
+	<hbox><label style="font-weight: bold;" value="Selected Balance:"/><label id="selected_balance"/></hbox>
 	<listbox id="bill_list" flex="1"/>
+	<hbox>
+		<button command="cmd_uncheck_all" label="Uncheck All"/>
+		<button command="cmd_check_all" label="Check All"/>
+		<spacer flex="1"/>
+		<button command="cmd_alternate_view" label="Alternate View" accesskey="V"/>
+	</hbox>
 </box>
 
 <vbox id="bills_top_ui">

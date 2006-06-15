@@ -76,6 +76,9 @@
 		<command id="cmd_bill_history" />
 		<command id="cmd_bill_apply_payment" />
 		<command id="cmd_change_to_credit" />
+		<command id="cmd_uncheck_all" />
+		<command id="cmd_check_all" />
+		<command id="cmd_alternate_view" />
 	</commandset>
 
 	<box id="bills_main" />

@@ -49,6 +49,7 @@ patron.bills.prototype = {
 				}
 				obj.init();
 				obj.controller.view.bill_payment_amount.focus();
+				obj.distribute_payment(obj.controller.view.bill_payment_amount);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> refresh',E);	
 		}
@@ -87,6 +88,8 @@ patron.bills.prototype = {
 				}
 				obj.controller.view.bill_total_owed.value = util.money.cents_as_dollars( total_owed );
 				obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
+				obj.distribute_payment(obj.controller.view.bill_payment_amount);
+				obj.controller.view.bill_payment_amount.select();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> init',E);	
 		}
@@ -196,6 +199,28 @@ patron.bills.prototype = {
 									}
 								}
 							],
+							'cmd_check_all' : [
+								['command'],
+								function() {
+									for (var i = 0; i < obj.current_payments.length; i++) {
+										obj.current_payments[i].checkbox.checked = true;
+									}
+									obj.distribute_payment(obj.controller.view.bill_payment_amount);
+								}
+							],
+							'cmd_uncheck_all' : [
+								['command'],
+								function() {
+									for (var i = 0; i < obj.current_payments.length; i++) {
+										obj.current_payments[i].checkbox.checked = false;
+									}
+									obj.distribute_payment(obj.controller.view.bill_payment_amount);
+								}
+							],
+							'selected_balance' : [
+								['render'],
+								function(e) { return function() {}; }
+							],
 							'bill_total_owed' : [
 								['render'],
 								function(e) { return function() {}; }
@@ -225,6 +250,7 @@ patron.bills.prototype = {
 												}
 											}
 											obj.distribute_payment(ev.target);
+											ev.target.select();
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> bill_payment_amount',E);	
 									}
@@ -287,6 +313,7 @@ patron.bills.prototype = {
 	'distribute_payment' : function(node) {
 		try {
 			var obj = this;
+			var selected_total = 0;
 			JSAN.use('util.money');
 			var tb = node;
 			tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
@@ -296,6 +323,7 @@ patron.bills.prototype = {
 			for (var i = 0; i < obj.current_payments.length; i++) {
 					var bill = obj.current_payments[i];
 					if (bill.checkbox.checked) {
+						selected_total += bill.balance_owed;
 						var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
 						if ( bo > total ) {
 							bill.textbox.value = util.money.cents_as_dollars( total );
@@ -310,6 +338,7 @@ patron.bills.prototype = {
 					bill.textbox.setAttribute('value',bill.textbox.value);
 			}
 			obj.update_payment_applied();
+			obj.controller.view.selected_balance.setAttribute('value', '$' + util.money.sanitize( selected_total ) );
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> distribute payment',E);
 		}
@@ -548,7 +577,7 @@ patron.bills.prototype = {
 							label_r1_1.setAttribute('value',getString('staff.mbts_total_owed_label'));
 							var label_r1_2 = document.createElement('label');
 							row1.appendChild( label_r1_2 );
-							label_r1_2.setAttribute('value',mobts.total_owed());
+							label_r1_2.setAttribute('value','$' + (mobts.total_owed() || '0') );
 						var row2 = document.createElement('row');
 						rows.appendChild( row2 );
 							var label_r2_1 = document.createElement('label');
@@ -556,7 +585,7 @@ patron.bills.prototype = {
 							label_r2_1.setAttribute('value',getString('staff.mbts_total_paid_label'));
 							var label_r2_2 = document.createElement('label');
 							row2.appendChild( label_r2_2 );
-							label_r2_2.setAttribute('value',mobts.total_paid());
+							label_r2_2.setAttribute('value','$' + (mobts.total_paid() || '0') );
 						var row3 = document.createElement('row');
 						rows.appendChild( row3 );
 							var label_r3_1 = document.createElement('label');
@@ -565,7 +594,7 @@ patron.bills.prototype = {
 							label_r3_1.setAttribute('style','font-weight: bold');
 							var label_r3_2 = document.createElement('label');
 							row3.appendChild( label_r3_2 );
-							label_r3_2.setAttribute('value',mobts.balance_owed());
+							label_r3_2.setAttribute('value','$' + (mobts.balance_owed() || '0') );
 							label_r3_2.setAttribute('style','font-weight: bold');
 
 				return grid;
