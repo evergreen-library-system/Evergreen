@@ -176,6 +176,23 @@ function setSelector( sel, value ) {
 	}
 }
 
+function setSelectorRegex( sel, regex ) {
+	if(sel && regex != null) {
+		for( var i = 0; i!= sel.options.length; i++ ) { 
+			if( sel.options[i] ) {
+				var val = sel.options[i].value;
+				if( val == null || val == "" ) /* for IE */
+					val = sel.options[i].innerHTML;
+				value += ""; /* in case of number */ 
+				if( val && val.match(regex) ) {
+					sel.selectedIndex = i;
+					sel.options[i].selected = true;
+				}
+			}
+		}
+	}
+}
+
 function getSelectorVal( sel ) {
 	if(!sel) return null;
 	var o = sel.options[sel.selectedIndex];
@@ -199,6 +216,14 @@ function setSelectorByName( sel, name ) {
 			opt.selected = true;
 		}
 	}
+}
+
+function findSelectorOptByValue( sel, val ) {
+	for( var i = 0; i < sel.options.length; i++ ) {
+		var opt = sel.options[i];
+		if( opt.value == val ) return opt;
+	}
+	return null;
 }
 
 function debugSelector(sel) {
@@ -273,6 +298,7 @@ function insertSelectorVal( selector, index, name, value, action, indent ) {
 	return opt;
 }
 
+/* changes the value of the option at the specified index */
 function setSelectorVal( selector, index, name, value, action, indent ) {
 	if(!indent || indent < 0) indent = 0;
 	indent = parseInt(indent);

@@ -112,9 +112,19 @@
 				</tr>
 				<tr id='holds_alt_formats_row' class='hide_me'>
 					<td class='holds_cell'>
-						I would also be interested in receiving my hold in the following alternate formats:
+						<div style='margin-bottom: 5px;'>
+							Any of the following formats are acceptible for this hold: 
+						</div>
+						<div>(control-click to select multiple formats)</div>
 					</td>
 					<td class='holds_cell'>
+						<select id='hold_alt_form_selector' multiple='true' style='width: 13em;'>
+							<option value='at'	class='hide_me'>&opac.search.books;</option>
+							<option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
+							<option value='i'		class='hide_me'>&opac.search.audioBooks;</option>
+							<option value='g'		class='hide_me'>&opac.search.videoRecordings;</option>
+							<option value='j'		class='hide_me'>&opac.search.music;</option>
+						</select>
 					</td>
 				</tr>
 

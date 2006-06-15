@@ -344,25 +344,48 @@ function holdsSetFormatSelector() {
 	var type = holdArgs.type;
 	if( type == 'C' || type == 'V' ) return;
 
-	var data = holdGetAvailableTypesAndForms();
-	var avail_types = data.avail_types;
-	var avail_forms = data.avail_forms;
-	var item_lang	= data.item_lang;
+	var data = holdGetTypesAndForms();
+	var item_lang		= data.item_lang;
+	var avail_types	= data.avail_types;
+	var avail_forms	= data.avail_forms;
+	var selected_forms = data.selected_forms;
+	var selected_types = data.selected_types;
 
-	/*
-	if( avail_types.length > 1 || avail_forms.length > 1 ) {
+
+	if( avail_types.length > 1 ) {
+
 		unHideMe($('holds_alt_formats_row'));
-		alert('lang: ' + item_lang + '\navail types: ' + avail_types + '\navail forms: ' + avail_forms);
+
+		var selector = $('hold_alt_form_selector');
+
+		if( avail_forms.length > 0 ) 
+			unHideMe(findSelectorOptByValue(selector, 'at-d'));
+
+		if( selected_forms.length > 0 ) 
+			setSelector(selector, 'at-d');
+
+		for( var i = 0; i < avail_types.length; i++ ) {
+			var t = avail_types[i];
+			if( t == 'a' || t == 't' ) t = 'at'
+			unHideMe(findSelectorOptByValue(selector, t));
+		}
+
+		for( var i = 0; i < selected_types.length; i++ ) {
+			var t = selected_types[i];
+			if( t == 'a' || t == 't' ) t = 'at'
+			setSelector(selector, t);
+		}
 	}
-	*/
 }
 
 
-function holdGetAvailableTypesAndForms() {
+function holdGetTypesAndForms() {
 
+	var item_lang;
 	var item_types = [];
 	var item_forms	= [];
-	var item_lang;
+	var selected_forms = [];
+	var selected_types = [];
 
 	var type = holdArgs.type;
 	var desc = holdArgs.recordDescriptors;
@@ -376,6 +399,8 @@ function holdGetAvailableTypesAndForms() {
 			var d = desc[i];
 			if( d.record() == holdArgs.record ) {
 				item_lang = d.item_lang();
+				selected_forms.push(d.item_form());
+				selected_types.push(d.item_type());
 				break;
 			}
 		}
@@ -394,7 +419,9 @@ function holdGetAvailableTypesAndForms() {
 	return { 
 		avail_types : item_types, 
 		avail_forms	: item_forms, 
-		item_lang : item_lang 
+		item_lang : item_lang,
+		selected_forms : selected_forms,
+		selected_types : selected_types,
 	};
 }
 
