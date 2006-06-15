@@ -54,7 +54,9 @@ char* searchPredicate ( osrfHash*, jsonObject* );
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
 
-dbi_conn dbhandle; /* our db connection */
+dbi_conn writehandle; /* our MASTER db connection */
+dbi_conn dbhandle; /* our CURRENT db connection */
+osrfHash readHandles;
 xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 jsonObject* jsonNULL = NULL; // 
 
@@ -173,6 +175,15 @@ int osrfAppInitialize() {
 								_tmp,
 								strdup( string_tmp ),
 								"virtual"
+							);
+						}
+						string_tmp = NULL;
+
+						if( (string_tmp = (char*)xmlGetNsProp(_f, "primitive", PERSIST_NS)) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"primitive"
 							);
 						}
 						string_tmp = NULL;
@@ -349,9 +360,9 @@ int osrfAppChildInit() {
 	char* pw	= osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
 
 	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
-	dbhandle = dbi_conn_new(driver);
+	writehandle = dbi_conn_new(driver);
 
-	if(!dbhandle) {
+	if(!writehandle) {
 		osrfLogError(OSRF_LOG_MARK, "Error loading database driver [%s]", driver);
 		return -1;
 	}
@@ -360,11 +371,11 @@ int osrfAppChildInit() {
 	osrfLogInfo(OSRF_LOG_MARK, "%s connecting to database.  host=%s, "
 		"port=%s, user=%s, pw=%s, db=%s", MODULENAME, host, port, user, pw, db );
 
-	if(host) dbi_conn_set_option(dbhandle, "host", host );
-	if(port) dbi_conn_set_option_numeric( dbhandle, "port", atoi(port) );
-	if(user) dbi_conn_set_option(dbhandle, "username", user);
-	if(pw) dbi_conn_set_option(dbhandle, "password", pw );
-	if(db) dbi_conn_set_option(dbhandle, "dbname", db );
+	if(host) dbi_conn_set_option(writehandle, "host", host );
+	if(port) dbi_conn_set_option_numeric( writehandle, "port", atoi(port) );
+	if(user) dbi_conn_set_option(writehandle, "username", user);
+	if(pw) dbi_conn_set_option(writehandle, "password", pw );
+	if(db) dbi_conn_set_option(writehandle, "dbname", db );
 
 	free(user);
 	free(host);
@@ -373,8 +384,8 @@ int osrfAppChildInit() {
 	free(pw);
 
 	const char* err;
-	if (dbi_conn_connect(dbhandle) < 0) {
-		dbi_conn_error(dbhandle, &err);
+	if (dbi_conn_connect(writehandle) < 0) {
+		dbi_conn_error(writehandle, &err);
 		osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
 		return -1;
 	}
@@ -398,7 +409,7 @@ int osrfAppChildInit() {
 		buffer_free(sql_buf);
 		osrfLogDebug(OSRF_LOG_MARK, "%s Investigatory SQL = %s", MODULENAME, sql);
 
-		dbi_result result = dbi_conn_query(dbhandle, sql);
+		dbi_result result = dbi_conn_query(writehandle, sql);
 		free(sql);
 
 		if (result) {
@@ -423,7 +434,8 @@ int osrfAppChildInit() {
 
 						case DBI_TYPE_INTEGER :
 
-							osrfHashSet(_f,"number", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"number", "primitive");
 
 							if( attr & DBI_INTEGER_SIZE8 ) 
 								osrfHashSet(_f,"INT8", "datatype");
@@ -432,22 +444,29 @@ int osrfAppChildInit() {
 							break;
 
 						case DBI_TYPE_DECIMAL :
-							osrfHashSet(_f,"number", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"number", "primitive");
+
 							osrfHashSet(_f,"NUMERIC", "datatype");
 							break;
 
 						case DBI_TYPE_STRING :
-							osrfHashSet(_f,"string", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
 							osrfHashSet(_f,"TEXT", "datatype");
 							break;
 
 						case DBI_TYPE_DATETIME :
-							osrfHashSet(_f,"string", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
+
 							osrfHashSet(_f,"TIMESTAMP", "datatype");
 							break;
 
 						case DBI_TYPE_BINARY :
-							osrfHashSet(_f,"string", "primitive");
+							if ( !osrfHashGet(_f, "primitive") )
+								osrfHashSet(_f,"string", "primitive");
+
 							osrfHashSet(_f,"BYTEA", "datatype");
 					}
 
@@ -486,7 +505,7 @@ void sessionDataFree( char* key, void* item ) {
 int beginTransaction ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-	dbi_result result = dbi_conn_query(dbhandle, "START TRANSACTION;");
+	dbi_result result = dbi_conn_query(writehandle, "START TRANSACTION;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error starting transaction", MODULENAME );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error starting transaction" );
@@ -524,7 +543,7 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbi_result result = dbi_conn_queryf(dbhandle, "SAVEPOINT \"%s\";", spName);
+	dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
 	if (!result) {
 		osrfLogError(
 			OSRF_LOG_MARK,
@@ -559,7 +578,7 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbi_result result = dbi_conn_queryf(dbhandle, "RELEASE SAVEPOINT \"%s\";", spName);
+	dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
 	if (!result) {
 		osrfLogError(
 			OSRF_LOG_MARK,
@@ -594,7 +613,7 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbi_result result = dbi_conn_queryf(dbhandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
+	dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
 	if (!result) {
 		osrfLogError(
 			OSRF_LOG_MARK,
@@ -621,7 +640,7 @@ int commitTransaction ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbi_result result = dbi_conn_query(dbhandle, "COMMIT;");
+	dbi_result result = dbi_conn_query(writehandle, "COMMIT;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error committing transaction", MODULENAME );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error committing transaction" );
@@ -643,7 +662,7 @@ int rollbackTransaction ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbi_result result = dbi_conn_query(dbhandle, "ROLLBACK;");
+	dbi_result result = dbi_conn_query(writehandle, "ROLLBACK;");
 	if (!result) {
 		osrfLogError(OSRF_LOG_MARK, "%s: Error rolling back transaction", MODULENAME );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back transaction" );
@@ -796,6 +815,8 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
+	dbhandle = writehandle;
+
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* pkey = osrfHashGet(meta, "primarykey");
 	char* seq = osrfHashGet(meta, "sequence");
@@ -844,7 +865,7 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				buffer_fadd( val_buf, "%f", atof(value) );
 			}
 		} else {
-			if ( dbi_conn_quote_string(dbhandle, &value) ) {
+			if ( dbi_conn_quote_string(writehandle, &value) ) {
 				buffer_fadd( val_buf, "%s", value );
 
 			} else {
@@ -890,7 +911,7 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 	osrfLogDebug(OSRF_LOG_MARK, "%s: Insert SQL [%s]", MODULENAME, query);
 
 	
-	dbi_result result = dbi_conn_query(dbhandle, query);
+	dbi_result result = dbi_conn_query(writehandle, query);
 
 	jsonObject* obj = NULL;
 
@@ -916,7 +937,7 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		int pos = atoi(osrfHashGet( osrfHashGet(fields, pkey), "array_position" ));
 		char* id = jsonObjectToSimpleString(jsonObjectGetIndex(target, pos));
 		if (!id) {
-			unsigned long long new_id = dbi_conn_sequence_last(dbhandle, seq);
+			unsigned long long new_id = dbi_conn_sequence_last(writehandle, seq);
 			growing_buffer* _id = buffer_init(10);
 			buffer_fadd(_id, "%lld", new_id);
 			id = buffer_data(_id);
@@ -1221,6 +1242,9 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 }
 
 jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params, int* err ) {
+
+	// XXX for now...
+	dbhandle = writehandle;
 
 	osrfHash* links = osrfHashGet(meta, "links");
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -1547,6 +1571,8 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
+	dbhandle = writehandle;
+
 	char* pkey = osrfHashGet(meta, "primarykey");
 	osrfHash* fields = osrfHashGet(meta, "fields");
 
@@ -1681,6 +1707,8 @@ jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
+	dbhandle = writehandle;
+
 	jsonObject* obj;
 
 	char* pkey = osrfHashGet(meta, "primarykey");
@@ -1714,9 +1742,9 @@ jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 	obj = jsonParseString(id);
 
 	if ( strcmp( osrfHashGet( osrfHashGet( osrfHashGet(meta, "fields"), pkey ), "primitive" ), "number" ) )
-		dbi_conn_quote_string(dbhandle, &id);
+		dbi_conn_quote_string(writehandle, &id);
 
-	dbi_result result = dbi_conn_queryf(dbhandle, "DELETE FROM %s WHERE %s = %s;", osrfHashGet(meta, "tablename"), pkey, id);
+	dbi_result result = dbi_conn_queryf(writehandle, "DELETE FROM %s WHERE %s = %s;", osrfHashGet(meta, "tablename"), pkey, id);
 
 	if (!result) {
 		jsonObjectFree(obj);
@@ -1779,6 +1807,8 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 
 			fmIndex = atoi( pos );
 			osrfLogDebug(OSRF_LOG_MARK, "... Found column at position [%s]...", pos);
+		} else {
+			continue;
 		}
 
 		if (dbi_result_field_is_null(result, columnName)) {
