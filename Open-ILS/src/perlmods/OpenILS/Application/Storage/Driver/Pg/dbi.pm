@@ -115,7 +115,7 @@
 	#---------------------------------------------------------------------
 	package money::billable_transaction_summary;
 	
-	money::billable_transaction_summary->table( 'money.billable_xact_summary' );
+	money::billable_transaction_summary->table( 'money.billable_xact_with_void_summary' );
 
 	#---------------------------------------------------------------------
 	package money::open_user_summary;
