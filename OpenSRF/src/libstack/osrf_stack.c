@@ -17,6 +17,8 @@ int osrf_stack_process( transport_client* client, int timeout ) {
 		timeout = 0;
 	}
 
+	if( ! client_connected( client ) ) return -1;
+
 	return 0;
 }
 
