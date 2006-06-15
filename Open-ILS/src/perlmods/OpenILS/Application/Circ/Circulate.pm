@@ -1807,6 +1807,8 @@ sub _checkin_handle_backdate {
 	if($bills) {
 		for my $bill (@$bills) {
 			$bill->voided('t');
+			my $n = $bill->note || "";
+			$bill->note($n . "\nSYSTEM VOIDED FOR BACKDATE");
 			my $s = $session->request(
 				"open-ils.storage.direct.money.billing.update", $bill)->gather(1);
 			return $U->DB_UPDATE_FAILED($bill) unless $s;
