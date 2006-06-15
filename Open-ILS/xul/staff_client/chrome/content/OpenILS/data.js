@@ -93,13 +93,15 @@ OpenILS.data.prototype = {
 
 	'print_list_defaults' : function() {
 		var obj = this;
-		if (typeof obj.print_list_templates == 'undefined') {
+		//if (typeof obj.print_list_templates == 'undefined') {
+		{
 			obj.print_list_types = [ 
 				'offline_checkout', 
 				'offline_checkin', 
 				'offline_renew', 
 				'offline_inhouse_use', 
 				'items', 
+				'bills', 
 				'holds', 
 				'patrons' 
 			];
@@ -132,6 +134,12 @@ OpenILS.data.prototype = {
 					'type' : 'items',
 					'header' : 'You checked in the following items:<hr/><ol>',
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+				}, 
+				'bills' : {
+					'type' : 'bills',
+					'header' : 'You have or had the following bills:<hr/><ol>',
+					'line_item' : '<li>test\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				}, 
 				'offline_checkin' : {
@@ -175,7 +183,9 @@ OpenILS.data.prototype = {
 			try {
 				var x = file.get_object();
 				if (x) {
-					obj.print_list_templates = x;
+					for (var i in x) {
+						obj.print_list_templates[i] = x[i];
+					}
 					obj.stash('print_list_templates');
 				}
 			} catch(E) {

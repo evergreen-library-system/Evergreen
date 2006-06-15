@@ -29,8 +29,9 @@ circ.print_list_template_editor.prototype = {
 
 			this.test_list = {
 			
-				'items' : { 'dump' : function() { return JSON2js('[["1858348","421","268297","31001000418112","AC KRENTZ","1","Stacks","Normal","ARL-ATH","Normal","Yes","Yes","Yes","No","No","0","18","","","2006-02-13 15:31:30.730986-05","","2006-02-27","Deep waters ","Krentz, Jayne Ann.","","0671575236 :","p1997","Simon & Schuster Audio","PIN01074166   ","1","Checked out","???","???"]]'); } },
-				'holds' : { 'dump' : function() { return; } },
+				'items' : { 'dump' : function() { return JSON2js('[["7608453","???","1497190","31033007616786","J 551.48 ARATO R","MGRL-RC","1","Stacks","Short","MGRL-RC","Low","Yes","Yes","Yes","No","No","0","19.95","","","???","???","???","???","World of water ","Arato, Rona.","","0778714160 (rlb : alk. paper)","c2005","Crabtree Pub. Co.","ocm55600795 ","???","???","Available","???","???","undefined",""],["7136201","???","1424085","31001000224056","YA ROWLING","ARL-ATH","3","Stacks","Short","ARL-ATH","Low","Yes","Yes","Yes","No","No","0","7.99","","","???","???","???","???","Harry Potter and the prisoner of Azkaban ","Rowling, J. K.","","0439136350 (hc)","1999","Arthur A. Levine Books","ocm41266045 ","???","???","Available","???","???","undefined",""],["6577928","???","1301532","31041005919235","975.8784 HAG","OHOOP-LADS","1","Stacks","Short","OHOOP-LADS","Low","Yes","Yes","Yes","No","No","0","10","","","???","???","???","???","Georgia genealogical sources series marriages 1869-1879, Appling County Georgia","Hageness, MariLee Beatty.","","","c1998","MLH Research","ocm49507123 ","???","???","Available","???","???","undefined",""]]'); } },
+				'holds' : { 'dump' : function() { return JSON2js('[["2006-05-13","2006-05-18 16:37:47.062916-04","","T","Athens-Clarke County Library","ARL-ATH","33207004749414","No","","","","7","999-999-9999","2006-05-15 00:37:28.269456-04","3","0","818781","3","Harry Potter and the goblet of fire ","Rowling, J. K.","Large print ed.","0786229276 (lg. print : hc : alk. paper)","2000","Thorndike Press","i0786229276"],["2006-05-16","2006-05-18 20:07:04.474747-04","","T","Athens-Clarke County Library","ARL-ATH","33207004347359","Yes","","","","8","777-777-7777","2006-05-18 16:52:23.866001-04","1000000","0","551071","1000524","Cats ","Arnold, Caroline.","","0822530325 (alk. paper)","1999","Lerner Publications","i0822530325"],["2006-05-17","2006-05-18 20:08:32.882203-04","","T","Athens-Clarke County Library","ARL-ATH","33207002398776","Yes","","","","28","999-999-9999","2006-05-18 16:52:58.020117-04","1000000","0","1274439","3","Tortilla Flat ","Steinbeck, John","","0140042407 (pbk.) :","1986, c1935","Penguin Books","a2095783"],["2006-05-10","2006-05-20 21:02:57.318012-04","","T","Athens-Clarke County Library","ARL-ATH","33207003330208","No","","","","4","222-333-4444","2006-05-18 16:52:23.362607-04","3","0","315900","3","Spreadin\' rhythm around Black popular songwriters, 1880-1930","Jasen, David A.","","0028647424","c1998","Schirmer Books","i0028647424"],["2006-05-20","2006-05-20 21:11:42.124176-04","","T","Athens-Clarke County Library","ARL-ATH","33207001049453","Yes","","","","54","218-233-3757","2006-05-20 19:48:12.101796-04","1000000","0","323269","1000567","Foundation and empire ","Asimov, Isaac","","0893402109","1979","J. Curley","i0893402109"],["2006-05-20","2006-05-20 21:19:15.209143-04","","T","Athens-Clarke County Library","ARL-ATH","33207001502782","Yes","","","","63","218-233-3757","2006-05-20 19:48:37.645795-04","1000567","0","427831","1000567","The  Caine mutiny :  a novel of World War II","Wouk, Herman","","","1952 [c1951]","Doubleday","PIN24075557"],["2006-06-03","2006-06-07 17:03:32.676709-04","","V","Athens-Clarke County Library","ARL-ATH","No Copy","No","","","","135","999-999-9999","2006-06-05 23:45:18.078505-04","3","0","6592393","3","No Title?","No Author?","???","???","???","???","???"]]');  } },
+				'bills' : { 'dump' : function() { return JSON2js('[["248","Id = 3","grocery","-2.00","0.00","2.00","","Fee for copies","2006-05-27 22:56","","cash_payment","2006-06-10 17:01","2006-05-27",""],["239","Id = 3","circulation","17.00","17.00","0.00","SYSTEM GENERATED","Lost Materials Processing Fee","2006-05-27 22:07","",""," ","2006-05-26",""],["173","Id = 3","grocery","1.00","17.25","16.25","","Lost materials","2006-05-20 16:36","","cash_payment","2006-05-27 01:31","2006-05-20",""]]'); } },
 				'patrons' : { 'dump' : function() { return; } },
 				'offline_checkout' : { 'dump' : function() { return; } },
 				'offline_checkin' : { 'dump' : function() { return; } },
@@ -98,6 +99,15 @@ circ.print_list_template_editor.prototype = {
 											JSAN.use('circ.util');
 											macros = util.functional.map_list(
 												circ.util.hold_columns( {} ),
+												function(o) {
+													return '%' + o.id + '%';
+												}
+											);
+										break;
+										case 'bills':
+											JSAN.use('patron.util');
+											macros = util.functional.map_list(
+												patron.util.mbts_columns( {} ),
 												function(o) {
 													return '%' + o.id + '%';
 												}

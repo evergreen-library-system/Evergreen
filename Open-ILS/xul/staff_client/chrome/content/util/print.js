@@ -79,6 +79,8 @@ util.print.prototype = {
 	},
 	
 	'tree_list' : function (params) { 
+		dump('print.tree_list.params.list = ' + js2JSON(params.list) + '\n');
+		alert('print pause');
 		var cols;
 		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
 		// we could do a dump_with_keys instead
@@ -125,6 +127,15 @@ util.print.prototype = {
 				JSAN.use('circ.util');
 				cols = util.functional.map_list(
 					circ.util.columns( {} ),
+					function(o) {
+						return '%' + o.id + '%';
+					}
+				);
+			break;
+			case 'bills':
+				JSAN.use('patron.util');
+				cols = util.functional.map_list(
+					patron.util.mbts_columns( {} ),
 					function(o) {
 						return '%' + o.id + '%';
 					}

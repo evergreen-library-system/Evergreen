@@ -276,6 +276,27 @@
 			);
 		}
 
+		function print_bills() {
+			dump(js2JSON(g.bill_list.dump()) + '\n');
+			try {
+				JSAN.use('patron.util');
+				var params = { 
+					'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
+					'lib' : g.data.hash.aou[ g.data.list.au[0].ws_ou() ],
+					'staff' : g.data.list.au[0],
+					'header' : g.data.print_list_templates.bills.header,
+					'line_item' : g.data.print_list_templates.bills.line_item,
+					'footer' : g.data.print_list_templates.bills.footer,
+					'type' : g.data.print_list_templates.bills.type,
+					'list' : g.bill_list.dump(),
+				};
+				JSAN.use('util.print'); var print = new util.print();
+				print.tree_list( params );
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('printing bills', E);
+			}
+		}
+
 	]]>
 	</script>
 
@@ -298,6 +319,7 @@
 
 		<hbox>
 			<button id="opac" label="Show in Catalog" accesskey="S" hidden="true" oncommand="alert('Not Yet Implemented');"/>
+			<button id="print" label="Print" accesskey="P" hidden="false" oncommand="print_bills();"/>
 			<spacer flex="1"/>
 			<button label="Close Window" oncommand="window.close()" accesskey="c"/>
 		</hbox>
