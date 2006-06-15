@@ -178,6 +178,26 @@ patron.bills.prototype = {
 									}
 								}
 							],
+							'cmd_alternate_view' : [
+								['command'],
+								function() { 
+									try {
+										JSAN.use('util.window');
+										var win = new util.window();
+										obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
+										var w = win.open(
+											urls.XUL_PATRON_BILL_HISTORY
+												+ '?current=1&patron_id=' + window.escape(obj.patron_id),
+											'billhistory',
+											'chrome,resizable,modal'
+										);
+										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
+									}
+								}
+							],
+
 
 							'cmd_change_to_credit' : [
 								['command'],
