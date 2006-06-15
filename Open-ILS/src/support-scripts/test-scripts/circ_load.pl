@@ -1,19 +1,15 @@
 #!/usr/bin/perl
-
-#----------------------------------------------------------------
-# Code for testing the container API
-#----------------------------------------------------------------
-
 require '../oils_header.pl';
 use vars qw/ $authtoken /;
 use strict; use warnings;
 use Time::HiRes qw/time usleep/;
 
-#----------------------------------------------------------------
-err("\nusage: $0 <config> <oils_login_username> <oils_login_password> ".
-	"<patronid> <barcode_file> <num_iterations> <num_processes>\n" .
-	"<barcode_file> is a file with a single copy barcode per line") unless $ARGV[6];
-#----------------------------------------------------------------
+#------------------------------------------------------------------------
+err("\nusage: $0 <config> <oils_login_username> ".
+	"<oils_login_password> <patronid> <barcode_file> ".
+	"<num_iterations> <num_processes> <barcode_file> ".
+	"is a file with a single copy barcode per line") unless $ARGV[6];
+#------------------------------------------------------------------------
 
 my $config		= shift; 
 my $username	= shift;
@@ -60,10 +56,11 @@ sub go {
 		printl("checkout time = " . (time - $start));
 		$start = time;
 		do_checkin($barcode);
-		printl("checkin time = " . (time - $start));
+		printl("checkin  time = " . (time - $start));
 	}
 
-	print "\nchild $index, iterations = $numiters, total time = " . (time - $s) . ", current time = " . time . "\n";
+	print "\nchild $index, iterations = $numiters, ".
+		"total time = " . (time - $s) . ", current time = " . time . "\n";
 }
 
 #----------------------------------------------------------------
