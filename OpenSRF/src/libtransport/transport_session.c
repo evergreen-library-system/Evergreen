@@ -374,6 +374,7 @@ void startElementHandler(
 
 	if( strcmp( name, "stream:error" ) == 0 ) {
 		ses->state_machine->in_error = 1;
+		ses->state_machine->connected = 0;
 		osrfLogWarning(  OSRF_LOG_MARK, "Received <stream:error> message from Jabber server" );
 		return;
 	}

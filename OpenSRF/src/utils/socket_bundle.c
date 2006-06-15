@@ -597,7 +597,10 @@ int _socket_route_data_id( socket_manager* mgr, int sock_id) {
 		if(node->endpoint == CLIENT_SOCKET ) 
 			status = _socket_handle_client_data(mgr, node);
 
-		if(status == -1) socket_remove_node(mgr, sock_id);
+		if(status == -1) {
+			socket_remove_node(mgr, sock_id);
+			return -1;
+		}
 		return 0;
 	} 
 
