@@ -30,9 +30,10 @@ $$;
 
 
 CREATE TABLE config.bib_source (
-	id	SERIAL	PRIMARY KEY,
-	quality	INT	CHECK ( quality BETWEEN 0 AND 100 ),
-	source	TEXT	NOT NULL UNIQUE
+	id		SERIAL	PRIMARY KEY,
+	quality		INT	CHECK ( quality BETWEEN 0 AND 100 ),
+	source		TEXT	NOT NULL UNIQUE,
+	transcendant	BOOL	NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.bib_source IS $$
 /*
@@ -61,6 +62,7 @@ $$;
 
 INSERT INTO config.bib_source (quality, source) VALUES (90, 'OcLC');
 INSERT INTO config.bib_source (quality, source) VALUES (10, 'System Local');
+INSERT INTO config.bib_source (quality, source, transcendant) VALUES (1, 'Project Gutenberg', TRUE);
 
 CREATE TABLE config.standing (
 	id		SERIAL	PRIMARY KEY,
