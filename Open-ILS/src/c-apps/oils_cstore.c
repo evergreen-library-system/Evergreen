@@ -1283,14 +1283,14 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 					buffer_add(sql_buf, ",");
 				}
 
-				buffer_fadd(sql_buf, " %s.%s", cname, fname, cname, fname);
+				buffer_fadd(sql_buf, " \"%s\".%s", cname, fname, cname, fname);
 			}
 		}
 	} else {
 		buffer_add(sql_buf, " *");
 	}
 
-	buffer_fadd(sql_buf, " FROM %s AS %s WHERE ", osrfHashGet(meta, "tablename"), core_class );
+	buffer_fadd(sql_buf, " FROM %s AS \"%s\" WHERE ", osrfHashGet(meta, "tablename"), core_class );
 
 
 	char* pred;
@@ -1397,22 +1397,29 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 		if (_tmp) {
 			int x = (int)jsonObjectGetNumber(_tmp);
 
-			if (x > 0) {
+			jsonObject* flesh_blob = NULL;
+			if ((flesh_blob = jsonObjectGetKey( order_hash, "flesh_fields" )) && x > 0) {
 
-				jsonObject* flesh_blob = jsonObjectClone( jsonObjectGetKey( order_hash, "flesh_fields" ) );
+				flesh_blob = jsonObjectClone( flesh_blob );
 				jsonObject* flesh_fields = jsonObjectGetKey( flesh_blob, core_class );
 
-				osrfStringArray* link_fields;
+				osrfStringArray* link_fields = NULL;
 
 				if (flesh_fields) {
-					jsonObjectNode* _f;
-					link_fields = osrfNewStringArray(1);
-					jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
-					while ((_f = jsonObjectIteratorNext( _i ))) {
-						osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
+					if (flesh_fields->size == 1) {
+						char* _t = jsonObjectToSimpleString( jsonObjectGetIndex( flesh_fields, 0 ) );
+						if (!strcmp(_t,"*")) link_fields = osrfHashKeys( links );
+						free(_t);
 					}
-				} else {
-					link_fields = osrfHashKeys( links );
+
+					if (!link_fields) {
+						jsonObjectNode* _f;
+						link_fields = osrfNewStringArray(1);
+						jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
+						while ((_f = jsonObjectIteratorNext( _i ))) {
+							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
+						}
+					}
 				}
 
 				jsonObjectNode* cur;
@@ -1592,8 +1599,8 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 					}
 				}
-				osrfStringArrayFree(link_fields);
 				jsonObjectFree( flesh_blob );
+				osrfStringArrayFree(link_fields);
 				jsonObjectIteratorFree(itr);
 			}
 		}
