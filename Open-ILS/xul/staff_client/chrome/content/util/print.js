@@ -53,7 +53,8 @@ util.print.prototype = {
 			var w;
 			switch(content_type) {
 				case 'text/html' :
-					w = obj.win.open('data:text/html,<html>' + window.escape(msg) + '</html>','receipt_temp','chrome,resizable');
+					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
+					w = obj.win.open('data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body>' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
 				break;
 				default:
 					w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
@@ -144,6 +145,9 @@ util.print.prototype = {
 					}
 				);
 			break;
+			case 'payment':
+				cols = [ '%bill_id%','%payment%'];
+			break;
 			case 'holds':
 				JSAN.use('circ.util');
 				cols = util.functional.map_list(
@@ -172,7 +176,8 @@ util.print.prototype = {
 		s += this.template_sub( params.footer, cols, params );
 
 		if (params.sample_frame) {
-			params.sample_frame.setAttribute('src','data:text/html,<html>' + window.escape(s) + '</html>');
+			var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
+			params.sample_frame.setAttribute('src','data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body>' + window.escape(s) + '</body></html>');
 		} else {
 			this.simple(s,params);
 		}
@@ -225,7 +230,7 @@ util.print.prototype = {
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		try {
-			if (params.row) {
+			if (typeof params.row != 'undefined') {
 				if (params.row.length >= 0) {
 					for (var i = 0; i < cols.length; i++) {
 						var re = new RegExp(cols[i],"g");
@@ -239,6 +244,14 @@ util.print.prototype = {
 						try{b = s; s=s.replace(re, params.row[i]);}
 							catch(E){s = b; this.error.standard_unexpected_error_alert('string = <' + s + '> error = ' + js2JSON(E)+'\n',E);}
 					}
+				}
+			}
+
+			if (typeof params.data != 'undefined') {
+				for (var i in params.data) {
+					var re = new RegExp('%'+i+'%',"g");
+					try{b = s; s=s.replace(re, params.data[i]);}
+						catch(E){s = b; this.error.standard_unexpected_error_alert('string = <' + s + '> error = ' + js2JSON(E)+'\n',E);}
 				}
 			}
 		} catch(E) { dump(E+'\n'); }
