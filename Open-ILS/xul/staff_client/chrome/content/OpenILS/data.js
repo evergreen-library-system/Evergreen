@@ -136,10 +136,16 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				}, 
-				'bills' : {
+				'bills_historical' : {
 					'type' : 'bills',
-					'header' : 'You have or had the following bills:<hr/><ol>',
-					'line_item' : '<li>test\r\n',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!<br/>You had the following bills:<hr/><ol>',
+					'line_item' : '<dt><b>Bill #%id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+				}, 
+				'bills_current' : {
+					'type' : 'bills',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!<br/>You have the following bills:<hr/><ol>',
+					'line_item' : '<dt><b>Bill #%id%</b></dt> <dd> <table> <tr valign="top"><td>Date:</td><td>%xact_start%</td></tr> <tr valign="top"><td>Type:</td><td>%xact_type%</td></tr> <tr valign="top"><td>Last Billing:</td><td>%last_billing_type%<br/>%last_billing_note%</td></tr> <tr valign="top"><td>Total Billed:</td><td>$%total_owed%</td></tr> <tr valign="top"><td>Last Payment:</td><td>%last_payment_type%<br/>%last_payment_note%</td></tr> <tr valign="top"><td>Total Paid:</td><td>$%total_paid%</td></tr> <tr valign="top"><td><b>Balance:</b></td><td><b>$%balance_owed%</b></td></tr> </table><br/>',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				}, 
 				'offline_checkin' : {

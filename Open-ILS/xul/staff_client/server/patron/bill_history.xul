@@ -277,17 +277,17 @@
 		}
 
 		function print_bills() {
-			dump(js2JSON(g.bill_list.dump()) + '\n');
 			try {
+				var template = 'bills_historical'; if (g.cgi.param('current')) template = 'bills_current';
 				JSAN.use('patron.util');
 				var params = { 
 					'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
 					'lib' : g.data.hash.aou[ g.data.list.au[0].ws_ou() ],
 					'staff' : g.data.list.au[0],
-					'header' : g.data.print_list_templates.bills.header,
-					'line_item' : g.data.print_list_templates.bills.line_item,
-					'footer' : g.data.print_list_templates.bills.footer,
-					'type' : g.data.print_list_templates.bills.type,
+					'header' : g.data.print_list_templates[template].header,
+					'line_item' : g.data.print_list_templates[template].line_item,
+					'footer' : g.data.print_list_templates[template].footer,
+					'type' : g.data.print_list_templates[template].type,
 					'list' : g.bill_list.dump(),
 				};
 				JSAN.use('util.print'); var print = new util.print();
