@@ -171,7 +171,7 @@ sub tree_walker {
 	my $field = shift;
 	my $filter = shift;
 
-	my @things;
+	my @things = $filter->($tree);
 	for my $v ( @{$tree->$field} ){
 		push @things, $filter->($v);
 		push @things, tree_walker($v, $field, $filter);
@@ -215,7 +215,7 @@ sub new_record_holdings {
 
 	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id});
 
-	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."]");
+	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
 
 	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
 	$year += 1900;
