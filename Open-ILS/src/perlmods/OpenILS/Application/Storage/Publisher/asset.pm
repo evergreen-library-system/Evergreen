@@ -218,6 +218,8 @@ sub cn_browse_pagedown {
 		$descendants = "actor.org_unit_descendants($org,$depth)";
 	}
 
+	my $orgs = join(',', @{ asset::call_number->db_Main->selectcol_arrayref("SELECT DISTINCT id FROM $descendants;") });
+	
 	my $sql = <<"	SQL";
 		select
 		        cn.label,
@@ -226,11 +228,10 @@ sub cn_browse_pagedown {
 		        cn.id
 		from
 		        $table cn
-		        join $descendants d
-	        	        on (d.id = cn.owning_lib)
 		where
-		        upper(label) > ?
-		        or ( cn.id > ? and upper(label) = ? )
+		        (upper(label) > ?
+		        or ( cn.id > ? and upper(label) = ? ))
+			and owning_lib in ($orgs)
 		order by upper(label), 4, 2
 		limit $size;
 	SQL
@@ -271,6 +272,8 @@ sub cn_browse_pageup {
 		$descendants = "actor.org_unit_descendants($org,$depth)";
 	}
 
+	my $orgs = join(',', @{ asset::call_number->db_Main->selectcol_arrayref("SELECT DISTINCT id FROM $descendants;") });
+
 	my $sql = <<"	SQL";
 		select * from (
 			select
@@ -280,11 +283,10 @@ sub cn_browse_pageup {
 			        cn.id
 			from
 			        $table cn
-			        join $descendants d
-		        	        on (d.id = cn.owning_lib)
 			where
-			        upper(label) < ?
-			        or ( cn.id < ? and upper(label) = ? )
+			        (upper(label) < ?
+			        or ( cn.id < ? and upper(label) = ? ))
+				and owning_lib in ($orgs)
 			order by upper(label) desc, 4 desc, 2 desc
 			limit $size
 		) as bar
