@@ -610,6 +610,10 @@ sub opensearch_feed {
 
 	my (undef,$version,$org,$type,$class,$terms) = split '/', $path;
 
+	my $lang = $cgi->param('searchLang');
+	my $sort = $cgi->param('searchSort');
+	my $site = $cgi->param('searchSite');
+	
 	$terms ||= $cgi->param('searchTerms');
 	$class ||= $cgi->param('searchClass') || '-';
 	$type ||= $cgi->param('responseType') || '-';
@@ -645,27 +649,27 @@ sub opensearch_feed {
 
 	my $cache_key = '';
 	my $searches = {};
-	while ($term_copy =~ /(keyword|title|author|subject|series|site):([^:]+?)$/o) {
+	while ($term_copy =~ /(keyword|title|author|subject|series|site|sort|lang):([^:]+?)$/o) {
 		my $c = $1;
 		my $t = $2;
-		$term_copy =~ s/(keyword|title|author|subject|series|site):([^:]+?)$//o;
+		$term_copy =~ s/(keyword|title|author|subject|series|site|sort|lang):([^:]+?)$//o;
 		if ($c eq 'site') {
 			($org = uc($t)) =~ s/\s+//go;
-			warn "searching at site -> [$org] via OS $version, response type $type";
-			next;
+		} elsif ($c eq 'sort') {
+			($sort = lc($t)) =~ s/^\s*(\w+)/$1/go;
+		} elsif ($c eq 'lang') {
+			($lang = lc($t)) =~ s/^\s*(\w+)/$1/go;
 		} else {
 			$$searches{$c} = { term => $t };
+			$cache_key .= $c . $t;
 			$complex_terms = 1;
 		}
-		$cache_key .= $c . $t;
-		warn "searching for $c -> [$t] via OS $version, response type $type";
 	}
 
 	if ($term_copy) {
 		no warnings;
 		$class = 'keyword' if ($class eq '-');
 		$$searches{$class}{term} .= " $term_copy";
-		warn "simple search for $class -> [$term_copy] via OS $version, response type $type";
 		$cache_key .= $class . $term_copy;
 	}
 
@@ -680,19 +684,20 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
-	$cache_key .= $org;
+	$cache_key .= $org.$sort.$lang;
 
 	my $rs_name = $cgi->cookie('os_session');
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
 
 	my $recs;
 	if (!($recs = $$cached_res{os_results}{$cache_key})) {
-		warn "NOT pulling results from cache";
 		$rs_name = $cgi->remote_host . '::' . rand(time);
 		$recs = $search->request(
 			'open-ils.search.biblio.multiclass' => {
 				searches	=> $searches,
 				org_unit	=> $org_unit->[0]->id,
+				($sort ? ( 'sort' => $sort, sort_dir => 'asc' ) : ()),
+				($lang ? ( 'language' => $lang) : ()),
 				offset		=> 0,
 				limit		=> 5000,
 			}
