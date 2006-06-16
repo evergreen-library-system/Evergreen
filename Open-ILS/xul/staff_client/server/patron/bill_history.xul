@@ -288,7 +288,7 @@
 					'line_item' : g.data.print_list_templates[template].line_item,
 					'footer' : g.data.print_list_templates[template].footer,
 					'type' : g.data.print_list_templates[template].type,
-					'list' : g.bill_list.dump(),
+					'list' : g.bill_list.dump_with_keys(),
 				};
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );
