@@ -87,8 +87,8 @@
 			<groupbox>
 				<caption label="Actions" />
 				<button id="preview" label="Preview" accesskey="P" />
-				<button id="save" label="Save" accesskey="S" />
-				<button id="delete" label="Delete" accesskey="D" />
+				<button id="save" label="Save To Disk" accesskey="S" />
+				<button id="default" label="Default" accesskey="D" />
 				<button id="macros" label="Macros" accesskey="M" />
 			</groupbox>
 		</hbox>
