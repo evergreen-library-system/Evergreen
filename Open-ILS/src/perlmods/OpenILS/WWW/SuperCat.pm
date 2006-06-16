@@ -535,6 +535,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
+  <Contact>feedback\@open-ils.org</Contact>
   <SyndicationRight>open</SyndicationRight>
   <AdultContent>false</AdultContent>
   <Language>en-US</Language>
