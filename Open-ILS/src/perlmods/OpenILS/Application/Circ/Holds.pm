@@ -91,15 +91,16 @@ sub create_hold {
 		my $t			= $hold->hold_type;
 
 		# See if a duplicate hold already exists
-		my $existing = $e->search_action_hold_request( 
-			{
-				usr			=> $recipient->id, 
-				hold_type	=> $t, 
-				fulfillment_time => undef, 
-				target		=> $hold->target
-			}
-		);
+		my $sargs = {
+			usr			=> $recipient->id, 
+			hold_type	=> $t, 
+			fulfillment_time => undef, 
+			target		=> $hold->target
+		};
+
+		$sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
 			
+		my $existing = $e->search_action_hold_request($sargs); 
 		my $eevt = OpenILS::Event->new('HOLD_EXISTS') if @$existing;
 
 		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'MR_HOLDS'); }
