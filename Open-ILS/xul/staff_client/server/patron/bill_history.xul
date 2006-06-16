@@ -289,6 +289,7 @@
 					'footer' : g.data.print_list_templates[template].footer,
 					'type' : g.data.print_list_templates[template].type,
 					'list' : g.bill_list.dump_with_keys(),
+					'modal' : true,
 				};
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );
