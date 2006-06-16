@@ -166,6 +166,19 @@ sub entityize {
 	return $stuff;
 }
 
+sub tree_walker {
+	my $tree = shift;
+	my $field = shift;
+	my $filter = shift;
+
+	my @things;
+	for my $v ( @{$tree->$field} ){
+		push @things, $filter->($v);
+		push @things, tree_walker($v, $field, $filter);
+	}
+	return @things
+}
+
 sub new_record_holdings {
 	my $self = shift;
 	my $client = shift;
@@ -187,6 +200,23 @@ sub new_record_holdings {
 		}
 	)->gather(1);
 
+	my $o_search = { shortname => $ou };
+	if (!$ou || $ou eq '-') {
+		$o_search = { parent_ou => undef };
+	}
+
+	my $orgs = $_storage->request(
+		"open-ils.cstore.direct.actor.org_unit.search",
+		$o_search,
+		{ flesh		=> 3,
+		  flesh_fields	=> { aou	=> [qw/children/] }
+		}
+	)->gather(1);
+
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id});
+
+	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."]");
+
 	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
 	$year += 1900;
 	$month += 1;
@@ -195,9 +225,12 @@ sub new_record_holdings {
 
 	for my $cn (@{$tree->call_numbers}) {
 
-		if ($ou ne '-') {
-			next unless grep {$_->circ_lib->shortname =~ /^$ou/} @{$cn->copies};
+		my $found = 0;
+		for my $c (@{$cn->copies}) {
+			next unless grep {$c->circ_lib->id == $_} @ou_ids;
+			$found = 1;
 		}
+		next unless $found;
 
 		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
 		$cn_class =~ s/Fieldmapper-//gso;
@@ -211,9 +244,7 @@ sub new_record_holdings {
 		
 		for my $cp (@{$cn->copies}) {
 
-			if ($ou ne '-') {
-				next unless $cp->circ_lib->shortname =~ /^$ou/;
-			}
+			next unless grep { $cp->circ_lib->id == $_ } @ou_ids;
 
 			(my $cp_class = $cp->class_name) =~ s/::/-/gso;
 			$cp_class =~ s/Fieldmapper-//gso;

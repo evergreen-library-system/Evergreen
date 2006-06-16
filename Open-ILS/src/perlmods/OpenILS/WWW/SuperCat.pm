@@ -626,19 +626,20 @@ sub opensearch_feed {
 	$terms =~ s/'//go;
 	my $term_copy = $terms;
 
+	my $complex_terms = 0;
 	if ($terms eq 'help') {
 		print $cgi->header(-type => 'text/html');
-		print <<HTML;
-<html>
- <head>
-  <title>just type something!</title>
- </head>
- <body>
-  <p>You are in a maze of dark, twisty stacks, all alike.</p>
- </body>
-</html>
-HTML
-	return Apache2::Const::OK;
+		print <<"		HTML";
+			<html>
+			 <head>
+			  <title>just type something!</title>
+			 </head>
+			 <body>
+			  <p>You are in a maze of dark, twisty stacks, all alike.</p>
+			 </body>
+			</html>
+		HTML
+		return Apache2::Const::OK;
 	}
 
 	my $cache_key = '';
@@ -651,6 +652,7 @@ HTML
 		$cache_key .= $c . $term_copy;
 		warn "searching for $c -> [$term_copy] via OS $version, response type $type";
 		$term_copy = $t;
+		$complex_terms = 1;
 	}
 
 	if (!keys(%$searches)) {
@@ -706,7 +708,7 @@ HTML
 	$feed->search($terms);
 	$feed->class($class);
 
-	if (keys(%$searches) > 1) {
+	if ($complex_terms) {
 		$feed->title("Search results for [$terms] at ".$org_unit->[0]->name);
 	} else {
 		$feed->title("Search results for [$class => $terms] at ".$org_unit->[0]->name);
