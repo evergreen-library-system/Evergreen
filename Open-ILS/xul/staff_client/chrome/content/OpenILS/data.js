@@ -102,8 +102,9 @@ OpenILS.data.prototype = {
 				'offline_inhouse_use', 
 				'items', 
 				'bills', 
+				'payment', 
 				'holds', 
-				'patrons' 
+				/* 'patrons' */
 			];
 			obj.print_list_templates = { 
 				'item_status' : {
@@ -136,6 +137,12 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%  Call Number: %call_number%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				}, 
+				'bill_payment' : {
+					'type' : 'payment',
+					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!<br/>A receipt of your  transaction:<hr/> <table width="100%"> <tr> <td>Original Balance:</td> <td align="right">$%original_balance%</td> </tr> <tr> <td>Payment Method:</td> <td align="right">%payment_type%</td> </tr> <tr> <td>Payment Received:</td> <td align="right">$%payment_received%</td> </tr> <tr> <td>Payment Applied:</td> <td align="right">$%payment_applied%</td> </tr> <tr> <td>Change Given:</td> <td align="right">$%change_given%</td> </tr> <tr> <td>Credit Given:</td> <td align="right">$%credit_given%</td> </tr> <tr> <td>New Balance:</td> <td align="right">$%new_balance%</td> </tr> </table> <p> Note: %note% </p> <p> Specific bills: <blockquote>',
+					'line_item' : 'Bill #%bill_id%  Received: $%payment%<br />',
+					'footer' : '</blockquote> </p> <hr />%PINES_CODE% %TODAY_TRIM%<br/> <br/> ',
+				},
 				'bills_historical' : {
 					'type' : 'bills',
 					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!<br/>You had the following bills:<hr/><ol>',
