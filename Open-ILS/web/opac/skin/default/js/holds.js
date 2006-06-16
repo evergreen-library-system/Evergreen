@@ -202,17 +202,16 @@ function _h_set_vol(args, doneCallback) {
 }
 
 function _h_set_rec(args, doneCallback) {
-	if(args.recordObject) {
-		args.record = args.recordObject.doc_id();
-	} else {
-		args.recordObject = findRecord( args.record, 'T' );
-	}
 
-	if( args.type == 'T' || args.type == 'M' ) {
+	if(args.recordObject) 
+		args.record = args.recordObject.doc_id();
+	else 
+		args.recordObject = findRecord( args.record, 'T' );
+	
+	if( args.type == 'T' || args.type == 'M' ) 
 		_h_set_rec_descriptors(args, doneCallback);
-	} else {
+	else 
 		if(doneCallback) doneCallback(args);
-	}
 }
 
 function _h_set_rec_descriptors(args, doneCallback) {
@@ -231,7 +230,9 @@ function _h_set_rec_descriptors(args, doneCallback) {
 		var req = new Request(FETCH_MR_DESCRIPTORS, params );
 		req.callback(
 			function(r) {
-				args.recordDescriptors = r.getResultObject();
+				var data = r.getResultObject();
+				args.recordDescriptors = data.descriptors;
+				args.metarecord = data.metarecord;
 				if(doneCallback) doneCallback(args);
 			}
 		);
@@ -308,8 +309,16 @@ function __holdsDrawWindow() {
 	}
 
 	removeChildren($('holds_format'));
-	for( var i in rec.types_of_resource() ) {
-		var res = rec.types_of_resource()[i];
+	var formats = rec.types_of_resource();
+
+	if( holdArgs.type == 'M' ) {
+		var data = holdsParseMRFormats(holdArgs.editHold.holdable_formats());
+		formats = data.formats;
+	}
+
+
+	for( var i in formats ) {
+		var res = formats[i];
 		var img = elem("img");
 		setResourcePic(img, res);
 		$('holds_format').appendChild(text(' '+res+' '));
@@ -340,52 +349,51 @@ function __holdsDrawWindow() {
 	holdsSetFormatSelector();
 }
 
+function holdsParseMRFormats(str) {
+	var data = str.split(/-/);	
+
+	var formats = [];
+	for( var i = 0; i < data[0].length; i++ ) 
+		formats.push(MARCFormatToMods(data[0].charAt(i)));
+	
+	formats = uniquify(formats);
+
+	return {
+		formats		: formats,
+		lang			: data[2],
+		largeprint	: data[1],	
+	}
+}
+
+
 function holdsSetFormatSelector() {
 	var type = holdArgs.type;
 	if( type == 'C' || type == 'V' ) return;
 
-	var data = holdGetTypesAndForms();
-	var item_lang		= data.item_lang;
-	var avail_types	= data.avail_types;
-	var avail_forms	= data.avail_forms;
-	var selected_forms = data.selected_forms;
-	var selected_types = data.selected_types;
+	var data				= holdsGetFormats();
+	var avail_formats	= data.avail_formats;
+	var sel_formats	= data.sel_formats;
+	holdArgs.language = data.lang;
 
-
-	if( avail_types.length > 1 ) {
+	if( avail_formats.length > 1 ) {
 
 		unHideMe($('holds_alt_formats_row'));
-
 		var selector = $('hold_alt_form_selector');
 
-		if( avail_forms.length > 0 ) 
-			unHideMe(findSelectorOptByValue(selector, 'at-d'));
-
-		if( selected_forms.length > 0 ) 
-			setSelector(selector, 'at-d');
-
-		for( var i = 0; i < avail_types.length; i++ ) {
-			var t = avail_types[i];
-			if( t == 'a' || t == 't' ) t = 'at'
-			unHideMe(findSelectorOptByValue(selector, t));
-		}
-
-		for( var i = 0; i < selected_types.length; i++ ) {
-			var t = selected_types[i];
-			if( t == 'a' || t == 't' ) t = 'at'
-			setSelector(selector, t);
+		for( var i = 0; i < avail_formats.length; i++ ) {
+			var form = avail_formats[i];
+			if( contains(sel_formats, form) ) continue;
+			unHideMe(findSelectorOptByValue(selector, form));
 		}
 	}
 }
 
 
-function holdGetTypesAndForms() {
+function holdsGetFormats() {
 
-	var item_lang;
-	var item_types = [];
-	var item_forms	= [];
-	var selected_forms = [];
-	var selected_types = [];
+	var lang;
+	var formats = [];
+	var sformats = []; /* selected formats */
 
 	var type = holdArgs.type;
 	var desc = holdArgs.recordDescriptors;
@@ -394,13 +402,12 @@ function holdGetTypesAndForms() {
 
 	if( type == 'T' ) {
 
-		/* find our language */
 		for( var i = 0; i < desc.length; i++ ) {
 			var d = desc[i];
 			if( d.record() == holdArgs.record ) {
-				item_lang = d.item_lang();
-				selected_forms.push(d.item_form());
-				selected_types.push(d.item_type());
+				lang = d.item_lang();
+				holdArgs.myFormat =  _t_f_2_format(d.item_type(), d.item_form());
+				sformats.push(holdArgs.myFormat);
 				break;
 			}
 		}
@@ -408,21 +415,66 @@ function holdGetTypesAndForms() {
 
 	for( var i = 0; i < desc.length; i++ ) {
 		var d = desc[i];
-		if( d.item_lang() != item_lang ) continue;
-		item_types.push(d.item_type());
-		item_forms.push(d.item_form());
+		if( d.item_lang() != lang ) continue;
+		formats.push( _t_f_2_format(d.item_type(), d.item_form()));
 	}
 
-	item_types = uniquify(item_types);
-	item_forms = uniquify(item_forms);
+	formats = uniquify(formats);
 
-	return { 
-		avail_types : item_types, 
-		avail_forms	: item_forms, 
-		item_lang : item_lang,
-		selected_forms : selected_forms,
-		selected_types : selected_types,
-	};
+	return {
+		lang : lang,
+		avail_formats : formats, 
+		sel_formats : sformats,
+	}
+}
+
+
+
+function _t_f_2_format(type, form) {
+	if( form == 'd' ) return 'at-d';
+	return (type == 'a' || type == 't') ? 'at' : 
+		( type == 'i' || type == 'g' || type == 'j' ) ? type : null;
+}
+
+function holdsSetSelectedFormats() {
+
+	var cn = $('holds_alt_formats_row').className;
+	if( cn && cn.match(/hide_me/) ) return;
+
+	var selector = $('hold_alt_form_selector');
+	var vals = getSelectedList(selector);
+
+	if(vals.length == 0) return;
+
+	if( holdArgs.type == 'T' ) 
+		vals.push(holdArgs.myFormat);
+
+	var fstring = "";
+
+	if( contains(vals, 'at-d') ) {
+		if( contains(vals, 'at') )
+			fstring = 'at';
+		else 
+			fstring = 'at-d';
+	} else {
+		if( contains(vals, 'at') )
+			fstring = 'at';
+	}
+
+	for( var i = 0; i < vals.length; i++ ) {
+		var val = vals[i];
+		if( !val.match(/at/) ) fstring = val + fstring;
+	}
+
+	if( holdArgs.language ) {
+		if( fstring.match(/-/) )
+			fstring = fstring + '-' + holdArgs.language;
+		else
+			fstring = fstring + '--' + holdArgs.language;
+	}
+
+
+	return fstring;
 }
 
 
@@ -491,29 +543,35 @@ function holdsBuildHoldFromWindow() {
 
 	switch(holdArgs.type) {
 		case 'M':
-			target = holdArgs.metarecord;
-			break;
+			target = holdArgs.metarecord; break;
 		case 'T':
-			target = holdArgs.record;
-			break;
+			target = holdArgs.record; break;
 		case 'V':
-			target = holdArgs.volume;
-			break;
+			target = holdArgs.volume; break;
 		case 'C':
-			target = holdArgs.copy;
-			break;
+			target = holdArgs.copy; break;
 	}
+
 
 
 	hold.pickup_lib(org); 
 	hold.request_lib(org); 
 	hold.requestor(holdArgs.requestor.id());
 	hold.usr(holdArgs.recipient.id());
-	hold.hold_type(holdArgs.type);
 	hold.target(target);
+	hold.hold_type(holdArgs.type);
+
+	/* check for alternate hold formats */
+	var fstring = holdsSetSelectedFormats();
+	if(fstring) { 
+		hold.hold_type('M'); 
+		hold.holdable_formats(fstring);
+		hold.target(holdArgs.metarecord);
+	}
 
 	if(isXUL())		
 		hold.selection_depth(getSelectorVal($('holds_depth_selector')));
+
 	return hold;
 }
 	

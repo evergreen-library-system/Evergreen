@@ -286,7 +286,7 @@ function myOPACDrawHolds(r) {
 		var form = $n(row, "myopac_holds_formats");
 		/*form.id = "myopac_holds_form_" + h.id() + '_' + h.target();*/
 		form.id = "myopac_holds_form_" + h.id();
-		if(formats) form.appendChild(text(formats));
+		//if(formats) form.appendChild(text(formats));
 
 		var orglink = $n(row, "myopac_holds_location");
 		orglink.appendChild(text(findOrgUnit(h.pickup_lib()).name()));
@@ -401,11 +401,18 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 	var form = $("myopac_holds_form_" + hold.id());
 
 	if(form) {
-		var img = elem("img");
-		img.setAttribute("src", 
-			buildImageLink('tor/' + record.types_of_resource()[0] + ".jpg"));
-		addCSSClass(img, "myopac_form_pic");
-		form.appendChild(img);
+		var formats = record.types_of_resource();
+
+		if( hold.hold_type() == 'M' ) {
+			var data = holdsParseMRFormats(hold.holdable_formats());
+			formats = data.formats;
+		}
+
+		for( var i = 0; i < formats.length; i++ ) {
+			var img = elem("img");
+			setResourcePic(img, formats[i]);
+			form.appendChild(img);
+		}
 	}
 }
 

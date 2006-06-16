@@ -1080,15 +1080,13 @@ sub rec_to_mr_rec_descriptors {
 	my $e = new_editor();
 	my $recs;
 
-	if( $rec ) {
+	if( !$mrec ) {
 		my $map = $e->search_metabib_metarecord_source_map({source => $rec});
 		return $e->event unless @$map;
-		$recs = $e->search_metabib_metarecord_source_map({metarecord => $$map[0]->metarecord});
-
-	} else {
-		$recs = $e->search_metabib_metarecord_source_map({metarecord => $mrec});
+		$mrec = $$map[0]->metarecord;
 	}
 
+	$recs = $e->search_metabib_metarecord_source_map({metarecord => $mrec});
 	return $e->event unless @$recs;
 
 	my @recs = map { $_->source } @$recs;
@@ -1097,7 +1095,9 @@ sub rec_to_mr_rec_descriptors {
 	$search->{item_type} = $item_types if $item_types and @$item_types;
 	$search->{item_lang} = $item_lang if $item_lang;
 
-	return $e->search_metabib_record_descriptor($search);
+	my $desc = $e->search_metabib_record_descriptor($search);
+
+	return { metarecord => $mrec, descriptors => $desc };
 }
 
 

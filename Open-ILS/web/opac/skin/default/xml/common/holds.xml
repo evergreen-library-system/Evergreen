@@ -113,12 +113,15 @@
 				<tr id='holds_alt_formats_row' class='hide_me'>
 					<td class='holds_cell'>
 						<div style='margin-bottom: 5px;'>
+							<!--
 							Any of the following formats are acceptible for this hold: 
+							-->
+							I would be interested in receiving my hold in the following alternate formats:
 						</div>
 						<div>(control-click to select multiple formats)</div>
 					</td>
 					<td class='holds_cell'>
-						<select id='hold_alt_form_selector' multiple='true' style='width: 13em;'>
+						<select id='hold_alt_form_selector' multiple='true' style='width: 14em;'>
 							<option value='at'	class='hide_me'>&opac.search.books;</option>
 							<option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
 							<option value='i'		class='hide_me'>&opac.search.audioBooks;</option>
