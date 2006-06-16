@@ -69,7 +69,7 @@ patron.util.mbts_columns = function(modify,params) {
 			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""'
 		},
 		{
-			'persist' : 'hidden width', 'id' : 'xact_start', 'label' : 'Closed', 'flex' : 1,
+			'persist' : 'hidden width', 'id' : 'xact_finish', 'label' : 'Closed', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""'
 		},
 	];
