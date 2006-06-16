@@ -70,13 +70,30 @@
   </xsl:template>
 
   <xsl:template match="hold:copy">
-      <li> <xsl:value-of select="./@barcode"/>
+      <li> <xsl:value-of select="@barcode"/>
         <ul>
 	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
 	  <li>Located at <b><xsl:value-of select="hold:location"/></b></li>
 	  <li>Status is <b><xsl:value-of select="hold:status"/></b></li>
+	  <xsl:apply-templates select="hold:statcats"/>
 	</ul>
       </li>
+  </xsl:template>
+
+  <xsl:template match="hold:statcats">
+    <xsl:if test="count(hold:statcat) &gt; 0">
+      <li>Statistical Catagories
+        <ul>
+        <xsl:apply-templates select="hold:statcat">
+          <xsl:sort select="@name"/>
+        </xsl:apply-templates>
+        </ul>
+      </li>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="hold:statcat">
+      <li> <b><xsl:value-of select="@name"/></b>: <xsl:value-of select="."/> </li>
   </xsl:template>
 
   <xsl:template match="marc:controlfield">

@@ -177,7 +177,14 @@ sub new_record_holdings {
 	my $tree = $_storage->request(
 		"open-ils.cstore.direct.biblio.record_entry.retrieve",
 		$bib,
-		{flesh => 3, flesh_fields => [qw/call_numbers copies location status owning_lib circ_lib/] }
+		{ flesh		=> 5,
+		  flesh_fields	=> {
+					bre	=> [qw/call_numbers/],
+		  			acn	=> [qw/copies owning_lib/],
+					acp	=> [qw/location status circ_lib stat_cat_entries notes/],
+					asce	=> [qw/stat_cat/],
+				}
+		}
 	)->gather(1);
 
 	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
@@ -220,18 +227,24 @@ sub new_record_holdings {
 
 			my $cp_bc = $cp->barcode;
 
-			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status><hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:notes>";
+			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status>".
+				"<hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:notes>";
 
-			#for my $note ( @{$_storage->request( "open-ils.cstore.direct.asset.copy_note.search.atomic" => {owning_copy => $cp->id, pub => "t" })->gather(1)} ) {
-			#	$xml .= sprintf('<hold:note date="%s" title="%s">%s</hold:note>',$note->create_date, escape($note->title), escape($note->value));
+			#if ($cp->notes) {
+			#	for my $note ( @{$cp->notes} ) {
+			#		next unless ( $sce->stat_cat->pub eq 't' );
+			#		$xml .= sprintf('<hold:note date="%s" title="%s">%s</hold:note>',$note->create_date, escape($note->title), escape($note->value));
+			#	}
 			#}
 
 			$xml .= "</hold:notes><hold:statcats>";
 
-			#for my $sce ( @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
-			#	my $sc = $holdings_data_cache{statcat}{$sce->stat_cat_entry};
-			#	$xml .= sprintf('<hold:statcat>%s</hold:statcat>',escape($sc->value));
-			#}
+			if ($cp->stat_cat_entries) {
+				for my $sce ( @{$cp->stat_cat_entries} ) {
+					next unless ( $sce->stat_cat->opac_visible eq 't' );
+					$xml .= sprintf('<hold:statcat name="%s">%s</hold:statcat>',escape($sce->stat_cat->name) ,escape($sce->value));
+				}
+			}
 
 			$xml .= "</hold:statcats></hold:copy>";
 		}
