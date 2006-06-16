@@ -8,6 +8,7 @@ patron.bills = function (params) {
 	try { JSAN.use('util.network'); obj.network = new util.network(); } catch(E) { alert(E); }
 	try { 
 		obj.OpenILS = {}; JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'}); 
+		obj.data = obj.OpenILS.data;
 	} catch(E) { 
 		alert(E); 
 	}
@@ -420,8 +421,27 @@ patron.bills.prototype = {
 				if ( obj.pay( payment_blob ) ) {
 
 					obj.refresh();
-					alert('FIXME: Receipt goes here\n' + js2JSON(payment_blob));
-
+					//alert('FIXME: Receipt goes here\n' + js2JSON(payment_blob)); 
+					try {
+						obj.data.stash_retrieve();
+						var template = 'bill_payment';
+						JSAN.use('patron.util');
+						var params = { 
+							'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+							'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+							'staff' : obj.data.list.au[0],
+							'header' : obj.data.print_list_templates[template].header,
+							'line_item' : obj.data.print_list_templates[template].line_item,
+							'footer' : obj.data.print_list_templates[template].footer,
+							'type' : obj.data.print_list_templates[template].type,
+							'list' : payment_blob.payments,
+							'data' : obj.previous_summary,
+						};
+						JSAN.use('util.print'); var print = new util.print();
+						print.tree_list( params );
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('bill receipt', E);
+					}
 				}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> apply_payment',E);	
@@ -431,6 +451,16 @@ patron.bills.prototype = {
 	'pay' : function(payment_blob) {
 		var obj = this;
 		try {
+			obj.previous_summary = {
+				original_balance : obj.controller.view.bill_total_owed.value,
+				payment_received : obj.controller.view.bill_payment_amount.value,
+				payment_applied : obj.controller.view.bill_payment_applied.value,
+				change_given : obj.controller.view.bill_change_amount.value,
+				credit_given : obj.controller.view.bill_credit_amount.value,
+				new_balance : obj.controller.view.bill_new_balance.value,
+				payment_type : obj.controller.view.payment_type.getAttribute('label'),
+				note : payment_blob.note,
+			}
 			var robj = obj.network.request(
 				api.BILL_PAY.app,	
 				api.BILL_PAY.method,
