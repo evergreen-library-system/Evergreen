@@ -1392,12 +1392,28 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 	free(sql);
 
-	if (order_hash) {
+	if (res_list->size && order_hash) {
 		_tmp = jsonObjectGetKey( order_hash, "flesh" );
 		if (_tmp) {
 			int x = (int)jsonObjectGetNumber(_tmp);
 
 			if (x > 0) {
+
+				jsonObject* flesh_blob = jsonObjectClone( jsonObjectGetKey( order_hash, "flesh_fields" ) );
+				jsonObject* flesh_fields = jsonObjectGetKey( flesh_blob, core_class );
+
+				osrfStringArray* link_fields;
+
+				if (flesh_fields) {
+					jsonObjectNode* _f;
+					link_fields = osrfNewStringArray(1);
+					jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
+					while ((_f = jsonObjectIteratorNext( _i ))) {
+						osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
+					}
+				} else {
+					link_fields = osrfHashKeys( links );
+				}
 
 				jsonObjectNode* cur;
 				jsonObjectIterator* itr = jsonNewObjectIterator( res_list );
@@ -1405,20 +1421,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 					int i = 0;
 					char* link_field;
-					osrfStringArray* link_fields;
 					
-					jsonObject* flesh_fields = jsonObjectGetKey( order_hash, "flesh_fields" );
-					if (flesh_fields) {
-						jsonObjectNode* _f;
-						jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
-						link_fields = osrfNewStringArray(1);
-						while ((_f = jsonObjectIteratorNext( _i ))) {
-							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
-						}
-					} else {
-						link_fields = osrfHashKeys( links );
-					}
-
 					while ( (link_field = osrfStringArrayGetString(link_fields, i++)) ) {
 
 						osrfLogDebug(OSRF_LOG_MARK, "Starting to flesh %s", link_field);
@@ -1441,6 +1444,22 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) { // might_have
 							value_field = osrfHashGet( fields, osrfHashGet(meta, "primarykey") );
 						}
+
+						osrfStringArray* link_map = osrfHashGet( kid_link, "map" );
+
+						if (link_map->size > 0) {
+							jsonObject* _kid_key = jsonParseString("[]");
+							jsonObjectPush(
+								_kid_key,
+								jsonNewObject( osrfStringArrayGetString( link_map, 0 ) )
+							);
+
+							jsonObjectSetKey(
+								flesh_blob,
+								osrfHashGet(kid_link, "class"),
+								_kid_key
+							);
+						};
 
 						osrfLogDebug(
 							OSRF_LOG_MARK,
@@ -1482,16 +1501,11 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 						jsonObjectSetKey(
 							jsonObjectGetIndex(fake_params, 1),
 							"flesh",
-							jsonNewNumberObject( (double)(x - 1) )
+							jsonNewNumberObject( (double)(x - 1 + link_map->size) )
 						);
 
-						if (flesh_fields) {
-							jsonObjectSetKey(
-								jsonObjectGetIndex(fake_params, 1),
-								"flesh_fields",
-								jsonObjectClone( flesh_fields )
-							);
-						}
+						if (flesh_blob)
+							jsonObjectSetKey( jsonObjectGetIndex(fake_params, 1), "flesh_fields", jsonObjectClone(flesh_blob) );
 
 						if (jsonObjectGetKey(order_hash, "order_by")) {
 							jsonObjectSetKey(
@@ -1505,16 +1519,48 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 						if(*err) {
 							jsonObjectFree( fake_params );
-							if (flesh_fields) osrfStringArrayFree(link_fields);
+							osrfStringArrayFree(link_fields);
 							jsonObjectIteratorFree(itr);
 							jsonObjectFree(res_list);
 							return jsonNULL;
 						}
 
-
-
 						osrfLogDebug(OSRF_LOG_MARK, "Search for %s return %d linked objects", osrfHashGet(kid_link, "class"), kids->size);
-						
+
+						jsonObject* X = NULL;
+						if ( link_map->size > 0 && kids->size > 0 ) {
+							X = kids;
+							kids = jsonParseString("[]");
+
+							jsonObjectNode* _k_node;
+							jsonObjectIterator* _k = jsonNewObjectIterator( X );
+							while ((_k_node = jsonObjectIteratorNext( _k ))) {
+								jsonObjectPush(
+									kids,
+									jsonObjectClone(
+										jsonObjectGetIndex(
+											_k_node->item,
+											(unsigned long)atoi(
+												osrfHashGet(
+													osrfHashGet(
+														osrfHashGet(
+															osrfHashGet(
+																idlHash,
+																osrfHashGet(kid_link, "class")
+															),
+															"fields"
+														),
+														osrfStringArrayGetString( link_map, 0 )
+													),
+													"array_position"
+												)
+											)
+										)
+									)
+								);
+							}
+						}
+
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" ))) {
 							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
 							jsonObjectSetIndex(
@@ -1522,7 +1568,6 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
 								jsonObjectClone( jsonObjectGetIndex(kids, 0) )
 							);
-							jsonObjectFree( kids );
 						}
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
@@ -1530,16 +1575,25 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 							jsonObjectSetIndex(
 								cur->item,
 								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
-								kids
+								jsonObjectClone( kids )
 							);
 						}
 
-						osrfLogDebug(OSRF_LOG_MARK, "Fleshing of %s complete", osrfHashGet(kid_link, "field"));
+						if (X) {
+							jsonObjectFree(kids);
+							kids = X;
+						}
 
+						jsonObjectFree( kids );
 						jsonObjectFree( fake_params );
+
+						osrfLogDebug(OSRF_LOG_MARK, "Fleshing of %s complete", osrfHashGet(kid_link, "field"));
+						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur->item));
+
 					}
-					if (flesh_fields) osrfStringArrayFree(link_fields);
 				}
+				osrfStringArrayFree(link_fields);
+				jsonObjectFree( flesh_blob );
 				jsonObjectIteratorFree(itr);
 			}
 		}
@@ -1859,8 +1913,6 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result, osrfHash* meta) {
 					} else if (!(attr & DBI_DATETIME_TIME)) {
 						strftime(dt_string, 255, "%F", &gmdt);
 					} else {
-						/* XXX ARG! My eyes! The goggles, they do nothing! */
-
 						strftime(dt_string, 255, "%FT%T%z", &gmdt);
 					}
 
