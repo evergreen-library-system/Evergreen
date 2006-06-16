@@ -187,7 +187,7 @@ sub simple_scalar_request {
 	if(!$request->complete) {
 		warn "request did not complete : service=$service : method=$method\n";
 		throw OpenSRF::EX::ERROR 
-			("Call to $service for method $method with params @params" . 
+			("Call to $service for method $method with params ". Dumper(\@params) . 
 				"\n did not complete successfully");
 	}
 
