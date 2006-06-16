@@ -79,8 +79,11 @@ util.print.prototype = {
 	},
 	
 	'tree_list' : function (params) { 
-		dump('print.tree_list.params.list = ' + js2JSON(params.list) + '\n');
-		alert('print pause');
+		try {
+			dump('print.tree_list.params.list = \n' + this.error.pretty_print(js2JSON(params.list)) + '\n');
+		} catch(E) {
+			dump(E+'\n');
+		}
 		var cols;
 		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
 		// we could do a dump_with_keys instead
@@ -221,17 +224,24 @@ util.print.prototype = {
 		try{b = s; s=s.replace(/%TODAY_F%/g,(util.date.formatted_date(new Date(),'%F')));}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
-		if (params.row) {
-			for (var i = 0; i < cols.length; i++) {
-				//dump('s is "' + s + '"\n');
-				//dump('params.row is ' + js2JSON(params.row) + '\n');
-				//dump('col is ' + cols[i] + '\n');
-				var re = new RegExp(cols[i],"g");
-				try{b = s; s=s.replace(re, params.row[i]);}
-					catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-				//dump('new s is "' + s + '"\n\n');
+		try {
+			if (params.row) {
+				if (params.row.length >= 0) {
+					for (var i = 0; i < cols.length; i++) {
+						var re = new RegExp(cols[i],"g");
+						try{b = s; s=s.replace(re, params.row[i]);}
+							catch(E){s = b; this.error.standard_unexpected_error_alert('string = <' + s + '> error = ' + js2JSON(E)+'\n',E);}
+					}
+				} else { 
+					/* for dump_with_keys */
+					for (var i in params.row) {
+						var re = new RegExp('%'+i+'%',"g");
+						try{b = s; s=s.replace(re, params.row[i]);}
+							catch(E){s = b; this.error.standard_unexpected_error_alert('string = <' + s + '> error = ' + js2JSON(E)+'\n',E);}
+					}
+				}
 			}
-		}
+		} catch(E) { dump(E+'\n'); }
 
 		return s;
 	},
