@@ -152,7 +152,7 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_WIZARD
 												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billwizard',
-											'chrome,resizable,modal'
+											'chrome,resizable'
 										);
 										obj.refresh();
 									} catch(E) {
@@ -171,7 +171,7 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable,modal'
+											'chrome,resizable'
 										);
 										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 									} catch(E) {
@@ -190,7 +190,7 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?current=1&patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable,modal'
+											'chrome,resizable'
 										);
 										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 									} catch(E) {
@@ -805,7 +805,7 @@ patron.bills.prototype = {
 											+ '?patron_id=' + window.escape(obj.patron_id)
 											+ '&mbts_id=' + window.escape(my.mobts.id()),
 											'test' + my.mobts.id(),
-											'modal,chrome,resizable'
+											'chrome,resizable'
 										);
 										obj.OpenILS.data.init({'via':'stash'}); 
 										if (obj.OpenILS.data.temp == 'refresh') {
@@ -829,7 +829,7 @@ patron.bills.prototype = {
 												+ '?patron_id=' + window.escape(obj.patron_id)
 												+ '&xact_id=' + window.escape( my.mobts.id() ),
 											'billwizard',
-											'chrome,resizable,modal'
+											'chrome,resizable'
 										);
 										obj.refresh();
 									},

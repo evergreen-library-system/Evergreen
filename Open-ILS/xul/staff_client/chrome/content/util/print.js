@@ -54,7 +54,7 @@ util.print.prototype = {
 			switch(content_type) {
 				case 'text/html' :
 					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') window.print(); }');
-					w = obj.win.open('data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body onload="my_init();">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
+					w = obj.win.open('data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body onload="">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
 				break;
 				default:
 					w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
