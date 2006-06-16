@@ -644,21 +644,28 @@ sub opensearch_feed {
 
 	my $cache_key = '';
 	my $searches = {};
-	while ($term_copy =~ /(keyword|title|author|subject|series):(.+)/ogc) {
+	while ($term_copy =~ /(keyword|title|author|subject|series|site):([^:]+?)$/o) {
 		my $c = $1;
 		my $t = $2;
-		($term_copy = $t) =~ s/(keyword|title|author|subject|series):(.+)//o;
-		$$searches{$c} = { term => $term_copy };
-		$cache_key .= $c . $term_copy;
-		warn "searching for $c -> [$term_copy] via OS $version, response type $type";
-		$term_copy = $t;
-		$complex_terms = 1;
+		$term_copy =~ s/(keyword|title|author|subject|series|site):([^:]+?)$//o;
+		if ($c eq 'site') {
+			($org = uc($t)) =~ s/\s+//go;
+			warn "searching at site -> [$org] via OS $version, response type $type";
+			next;
+		} else {
+			$$searches{$c} = { term => $t };
+			$complex_terms = 1;
+		}
+		$cache_key .= $c . $t;
+		warn "searching for $c -> [$t] via OS $version, response type $type";
 	}
 
-	if (!keys(%$searches)) {
+	if ($term_copy) {
+		no warnings;
 		$class = 'keyword' if ($class eq '-');
-		$$searches{$class} = { term => $terms };
-		$cache_key .= $class . $terms;
+		$$searches{$class}{term} .= " $term_copy";
+		warn "simple search for $class -> [$term_copy] via OS $version, response type $type";
+		$cache_key .= $class . $term_copy;
 	}
 
 	my $org_unit;

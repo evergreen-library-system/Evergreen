@@ -13,7 +13,7 @@ h1 {
 
 input.searchbox {
 	font-size: 0.9em;
-	max-width: 10em;
+	width: 20em;
 }
 
 div#searchdiv {
