@@ -110,16 +110,27 @@
 						<select id='holds_org_selector'> </select>
 					</td>
 				</tr>
+
+				<tr id='holds_alt_formats_row_extras' class='hide_me'>
+					<td colspan='2' align='center'>
+						<div style='padding: 8px;'>
+							<a class='classic_link' href='javascript:void(0);' style='padding: 5px;'
+								onclick='unHideMe($("holds_alt_formats_row"));'>Advanced Hold Options</a>
+						</div>
+					</td>
+				</tr>
+
 				<tr id='holds_alt_formats_row' class='hide_me'>
+
 					<td class='holds_cell'>
 						<div style='margin-bottom: 5px;'>
-							<!--
-							Any of the following formats are acceptible for this hold: 
-							-->
-							I would be interested in receiving my hold in the following alternate formats:
+							<span>Acceptable Alternative Formats: </span>
+							<span> <a class='classic_link' style='color:red;' href='javascript:void(0);' 
+								onclick='alert($("holds_explain_adv").innerHTML)'>(??)</a></span>
 						</div>
 						<div>(control-click to select multiple formats)</div>
 					</td>
+
 					<td class='holds_cell'>
 						<select id='hold_alt_form_selector' multiple='true' style='width: 14em;'>
 							<option value='at'	class='hide_me'>&opac.search.books;</option>
@@ -156,4 +167,18 @@
 		</span>
 
 	</div>
+
+	<span class='hide_me' id='format_words'>
+		<span name='at'>&opac.search.books;</span>
+		<span name='at-d'>&opac.search.largePrint;</span>
+		<span name='i'>&opac.search.audioBooks;</span>
+		<span name='g'>&opac.search.videoRecordings;</span>
+		<span name='j'>&opac.search.music;</span>
+		<span name='m'>&opac.search.electronic;</span>
+	</span>
+
+	<span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
+
 </div>
+
+

@@ -53,6 +53,10 @@
 	Your PINES library will contact you when you hold items become
 	available.">
 
+<!ENTITY holds.advanced_options 
+	"If you wish to broaden the scope of your hold to include other 
+	versions of this title, select the formats that would be acceptable. 
+	The first available copy will be sent to you.">
 
 <!--	================================================================= 
 		Events and Permissions 

@@ -63,6 +63,11 @@
 		</div>
 
 		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
+
+			<div id='cn_browse_none' class='hide_me color_4' style='width: 90%; text-align: center; margin: 10px;'>
+				There are no call numbers for this item at this location.
+			</div>
+
 			<div id='rdetail_cn_browse_select_div' 
 				style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
 				<span>Local Call Numbers: </span>

@@ -69,6 +69,7 @@ function holdsDrawEditor(args) {
 		holdArgs.status = req.result();
 		_holdsUpdateEditHold();
 	}  
+
 }
 
 
@@ -172,6 +173,8 @@ function holdFetchObjects(hold, doneCallback) {
 		} else {
 			if( type == 'T' ) {
 				_h_set_rec(args, doneCallback);
+			} else {
+				_h_set_rec_descriptors(args, doneCallback);
 			}
 		}
 	}
@@ -214,6 +217,7 @@ function _h_set_rec(args, doneCallback) {
 		if(doneCallback) doneCallback(args);
 }
 
+
 function _h_set_rec_descriptors(args, doneCallback) {
 
 	/* grab the list of record desciptors attached to this records metarecord */
@@ -224,7 +228,7 @@ function _h_set_rec_descriptors(args, doneCallback) {
 			if( args.metarecord )
 				params = { metarecord : args.metarecord };
 			else 
-				params = { metarecord : args.metarecordObject.id() };
+				params = { metarecord : args.metarecordObject.doc_id() };
 		}
 
 		var req = new Request(FETCH_MR_DESCRIPTORS, params );
@@ -233,6 +237,9 @@ function _h_set_rec_descriptors(args, doneCallback) {
 				var data = r.getResultObject();
 				args.recordDescriptors = data.descriptors;
 				args.metarecord = data.metarecord;
+				if( args.type == 'M' && ! args.metarecordObject) 
+					args.metarecordObject = findRecord(args.metarecord, 'M');	
+				 
 				if(doneCallback) doneCallback(args);
 			}
 		);
@@ -241,7 +248,10 @@ function _h_set_rec_descriptors(args, doneCallback) {
 	} else {
 		if(doneCallback) doneCallback(args);
 	}
+
+	return args;
 }
+
 
 
 
@@ -258,6 +268,9 @@ function __holdsDrawWindow() {
 	var rec = holdArgs.recordObject;
 	var vol = holdArgs.volumeObject;
 	var copy = holdArgs.copyObject;
+	var mr = holdArgs.metarecordObject;
+
+	rec = (rec) ? rec : mr;
 
 	if(!holdsOrgSelectorBuilt) {
 		holdsBuildOrgSelector(null,0);
@@ -309,21 +322,39 @@ function __holdsDrawWindow() {
 	}
 
 	removeChildren($('holds_format'));
-	var formats = rec.types_of_resource();
+
+	var mods_formats = rec.types_of_resource();
+	var formats;
+
+	if(holdArgs.recordDescriptors)
+		formats = holdArgs.recordDescriptors[0].item_type();
+
+	if( holdArgs.type == 'T' ) {
+		var desc = grep( holdArgs.recordDescriptors,
+			function(i) {
+				return (i.record() == holdArgs.record);	
+			}
+		);
+		formats = desc[0].item_type();
+	}
 
 	if( holdArgs.type == 'M' ) {
 		var data = holdsParseMRFormats(holdArgs.editHold.holdable_formats());
+		mods_formats = data.mods_formats;
 		formats = data.formats;
 	}
 
 
-	for( var i in formats ) {
-		var res = formats[i];
+	for( var i in mods_formats ) {
+		var res = mods_formats[i];
 		var img = elem("img");
 		setResourcePic(img, res);
-		$('holds_format').appendChild(text(' '+res+' '));
 		$('holds_format').appendChild(img);
-		$('holds_format').appendChild(text(' '));
+		if(formats)
+			$('holds_format').appendChild(text(' '+ MARCTypeToFriendly(formats[i]) +' '));
+		else
+			$('holds_format').appendChild(text(' '+ mods_formats[i] +' '));
+		$('holds_format').appendChild(elem('br'));
 	}
 
 
@@ -353,38 +384,40 @@ function holdsParseMRFormats(str) {
 	var data = str.split(/-/);	
 
 	var formats = [];
-	for( var i = 0; i < data[0].length; i++ ) 
-		formats.push(MARCFormatToMods(data[0].charAt(i)));
+	var mods_formats = [];
+
+	for( var i = 0; i < data[0].length; i++ ) {
+		formats.push( data[0].charAt(i) );
+		mods_formats.push( MARCFormatToMods( formats[i] ) );
+	}
 	
 	formats = uniquify(formats);
+	mods_formats = uniquify(mods_formats);
 
 	return {
-		formats		: formats,
-		lang			: data[2],
-		largeprint	: data[1],	
+		formats			: formats,
+		mods_formats	: mods_formats,
+		lang				: data[2],
+		largeprint		: data[1],	
 	}
 }
 
 
 function holdsSetFormatSelector() {
 	var type = holdArgs.type;
-	if( type == 'C' || type == 'V' ) return;
+	if( type == 'C' || type == 'V' || holdArgs.editHold ) return;
 
 	var data				= holdsGetFormats();
 	var avail_formats	= data.avail_formats;
 	var sel_formats	= data.sel_formats;
 	holdArgs.language = data.lang;
 
-	if( avail_formats.length > 1 ) {
+	unHideMe($('holds_alt_formats_row_extras'));
+	var selector = $('hold_alt_form_selector');
 
-		unHideMe($('holds_alt_formats_row'));
-		var selector = $('hold_alt_form_selector');
-
-		for( var i = 0; i < avail_formats.length; i++ ) {
-			var form = avail_formats[i];
-			if( contains(sel_formats, form) ) continue;
-			unHideMe(findSelectorOptByValue(selector, form));
-		}
+	for( var i = 0; i < avail_formats.length; i++ ) {
+		var form = avail_formats[i];
+		unHideMe(findSelectorOptByValue(selector, form));
 	}
 }
 
@@ -446,8 +479,10 @@ function holdsSetSelectedFormats() {
 
 	if(vals.length == 0) return;
 
+	/*
 	if( holdArgs.type == 'T' ) 
 		vals.push(holdArgs.myFormat);
+		*/
 
 	var fstring = "";
 
@@ -568,6 +603,8 @@ function holdsBuildHoldFromWindow() {
 		hold.holdable_formats(fstring);
 		hold.target(holdArgs.metarecord);
 	}
+
+	//alert(fstring); return;
 
 	if(isXUL())		
 		hold.selection_depth(getSelectorVal($('holds_depth_selector')));

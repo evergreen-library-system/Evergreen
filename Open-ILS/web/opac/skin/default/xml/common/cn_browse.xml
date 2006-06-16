@@ -6,6 +6,8 @@
 	style='width: 95%; text-align: center; padding: 15px;'>
 	<div id='cn_browse_loading'  class='cn_browse_loading hide_me'>Loading Callnumber Page...</div>
 	<div id='cn_browse_div'> 
+
+
 		<div style='width: 90%; text-align: center; margin: 10px;' class='color_4'>
 			<span>You are now browsing</span><b style='margin-left: 6px;' id='cn_browse_where'> </b>
 		</div>

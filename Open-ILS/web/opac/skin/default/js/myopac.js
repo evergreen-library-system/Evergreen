@@ -282,11 +282,8 @@ function myOPACDrawHolds(r) {
 		var row = holdsTemplateRow.cloneNode(true);
 		row.id = "myopac_holds_row_" + h.id();
 
-		var formats = (h.holdable_formats()) ? h.holdable_formats() : null;
 		var form = $n(row, "myopac_holds_formats");
-		/*form.id = "myopac_holds_form_" + h.id() + '_' + h.target();*/
 		form.id = "myopac_holds_form_" + h.id();
-		//if(formats) form.appendChild(text(formats));
 
 		var orglink = $n(row, "myopac_holds_location");
 		orglink.appendChild(text(findOrgUnit(h.pickup_lib()).name()));
@@ -401,16 +398,16 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 	var form = $("myopac_holds_form_" + hold.id());
 
 	if(form) {
-		var formats = record.types_of_resource();
+		var mods_formats = record.types_of_resource();
 
 		if( hold.hold_type() == 'M' ) {
 			var data = holdsParseMRFormats(hold.holdable_formats());
-			formats = data.formats;
+			mods_formats = data.mods_formats;
 		}
 
-		for( var i = 0; i < formats.length; i++ ) {
+		for( var i = 0; i < mods_formats.length; i++ ) {
 			var img = elem("img");
-			setResourcePic(img, formats[i]);
+			setResourcePic(img, mods_formats[i]);
 			form.appendChild(img);
 		}
 	}

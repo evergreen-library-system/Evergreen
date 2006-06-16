@@ -42,7 +42,7 @@
 			<!-- default hold notification type -->
 			<tr>
 				<td>
-					<span>Default Hold Notification Style</span>
+					<span>Default Hold Notification Method</span>
 					<a class='classic_link' href='javascript:void(0);' 
 						onclick='alert($("myopac_pref_hold_notify_alert").textContent);' >(??)</a>
 				</td>

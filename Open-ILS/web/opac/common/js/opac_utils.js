@@ -749,6 +749,18 @@ function MARCFormatToMods(format) {
    return "text";
 }
 
+function MARCTypeToFriendly(format) {
+	var words = $('format_words');
+	switch(format) {
+		case 'a' :
+		case 't' : return $n(words, 'at').innerHTML;
+		default:
+			var node = $n(words,format);
+			if( node ) return node.innerHTML;
+	}
+	return "";
+}
+
 function setResourcePic( img, resource ) {
 	img.setAttribute( "src", "../../../../images/tor/" + resource + ".jpg");
 	img.title = resource;

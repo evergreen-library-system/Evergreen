@@ -147,6 +147,7 @@ function rdetailViewMarc(r,id) {
 
 	var d = new Date();
 
+	var div = elem('div', { "class" : 'hide_me' });
 	var span = div.appendChild( elem('abbr') );
 
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
@@ -444,7 +445,14 @@ function rdetailGatherCN() {
 
 
 function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
-	if(!cn) return;
+
+	if(!cn) {
+		unHideMe($('cn_browse_none'));
+		hideMe($('rdetail_cn_browse_select_div'));
+		return;
+	}
+		
+	unHideMe($('rdetail_cn_browse_select_div'));
 	rdetailBuildCNList();
 	setSelector( $('cn_browse_selector'), cn );
 	hideMe($('rdetail_copy_info_div'));
