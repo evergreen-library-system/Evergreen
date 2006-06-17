@@ -700,6 +700,13 @@ sub new_hold_copy_targeter {
 			my @good_copies;
 			for my $c (@$copies) {
 				next if ($c->id == $hold->current_copy);
+				next if (action::hold_request
+						->search_where(
+							{ current_copy => $c->id,
+							  capture_time => undef,
+							}
+						)
+				);
 				push @good_copies, $c if ($c);
 			}
 
@@ -710,7 +717,11 @@ sub new_hold_copy_targeter {
 	
 			if (!scalar(@good_copies)) {
 				$log->info("\tNo (non-current) copies eligible to fill the hold.");
-				if ( $old_best && grep { $old_best == $_ } @$copies ) {
+				if (
+				  $old_best &&
+				  grep { $old_best eq $_ } @$copies &&
+				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef })
+				) {
 					$log->debug("\tPushing current_copy back onto the targeting list");
 					push @good_copies, $old_best;
 				} else {
