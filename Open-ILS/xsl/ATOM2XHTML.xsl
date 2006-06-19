@@ -173,7 +173,7 @@ To-do list:
  					<xsl:if test="$absimgurl"><img src="{$absimgurl}" width="{image/width}" height="{image/height}" alt="{image/title}" /></xsl:if>
 					<xsl:variable name="subtitle" select="(atom:subtitle | description | //rss1:channel/rss1:description | //rss9:channel/rss9:description)[1]" />
 					<xsl:if test="$subtitle and ($subtitle != $title)"><p><xsl:value-of select="$subtitle" /></p></xsl:if>
-					<xsl:if test="$t-authors and (managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor)"><p><xsl:value-of select="concat($t-authors,' ')" /><xsl:apply-templates select="managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor" /></p></xsl:if>
+					<!--<xsl:if test="$t-authors and (managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor)"><p><xsl:value-of select="concat($t-authors,' ')" /><xsl:apply-templates select="managingEditor | atom:author | dc:creator | dc:publisher | atom:contributor | dc:contributor" /></p></xsl:if> -->
 					<xsl:if test="$t-categories and (atom:category | category)"><xsl:value-of select="concat($t-categories, ' ')" /><p><xsl:apply-templates select="atom:category | category" /></p></xsl:if>
 				</div>
 
