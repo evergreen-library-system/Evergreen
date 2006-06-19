@@ -291,6 +291,14 @@ To-do list:
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="dc:identifier">
+		<xsl:if test="position() &lt; 2 and string-length(.) &gt; 9">
+			<xsl:attribute name="src">
+				<xsl:value-of select="concat('/opac/jackets/',substring-after(.,'ISBN:'))"/>
+			</xsl:attribute>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="atom:entry | item | //rss1:item | //rss9:item"> <!-- match="" must match the select="" earlier on -->
 		<xsl:variable name="url"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="(atom:link[not(@rel) or @rel='alternate' or @rel='']/@href | link | guid[@isPermaLink='true'] | rss1:link | rss9:link)[1]" /></xsl:call-template></xsl:variable>
 		<!-- item title -->
@@ -322,6 +330,13 @@ To-do list:
 		<!-- item description -->
 		<xsl:if test="atom:content[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml'] | content:encoded | description | rss1:description | rss9:description | atom:summary[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml']">
 			<dd class="desc">
+				<xsl:if test="string-length($url)&gt;0">
+					<a href="{$url}" style="text-decoration: none;">
+						<img align="left" style="margin:5px; border: 0px;" height="50" width="40">
+							<xsl:apply-templates select="dc:identifier"/>
+						</img>
+					</a>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="atom:content[(not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml') and not(@src)] | content:encoded"><xsl:call-template name="showtext"><xsl:with-param name="node" select="atom:content[(not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml') and not(@src)] | content:encoded" /></xsl:call-template></xsl:when>
 					<xsl:when test="description | rss1:description | rss9:description | atom:summary[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml']"><xsl:call-template name="showtext"><xsl:with-param name="node" select="description | rss1:description | rss9:description | atom:summary[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml']" /></xsl:call-template></xsl:when>
@@ -393,6 +408,7 @@ To-do list:
 				</abbr>
 			</dd>
 		</xsl:if>
+		<br clear="all"/>
 	</xsl:template>
 
 	<xsl:template match="atom:link[@rel='enclosure'] | enclosure">
