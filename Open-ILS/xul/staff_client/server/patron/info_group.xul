@@ -105,15 +105,36 @@
 								function(o) { return o.getAttribute('retrieve_id'); }
 							);
 							if (g.sel_list.length > 0) {
-								document.getElementById('retrieve_p').disabled = false;
+								$('retrieve_p').disabled = false;
+								$('retrieve_p').setAttribute('disabled','false');
+								$('clone').disabled = false;
+								$('clone').setAttribute('disabled','false');
+								$('remove').disabled = false;
+								$('remove').setAttribute('disabled','false');
+								$('move').disabled = false;
+								$('move').setAttribute('disabled','false');
 							} else {
-								document.getElementById('retrieve_p').disabled = true;
+								$('retrieve_p').disabled = true;
+								$('retrieve_p').setAttribute('disabled','true');
+								$('clone').disabled = true;
+								$('clone').setAttribute('disabled','true');
+								$('remove').disabled = true;
+								$('remove').setAttribute('disabled','true');
+								$('move').disabled = true;
+								$('move').setAttribute('disabled','true');
 							}
 						}
 					}
 				);
-				document.getElementById('retrieve_p').disabled = true;
-				document.getElementById('ml').focus();
+				$('retrieve_p').disabled = true;
+				$('retrieve_p').setAttribute('disabled','true');
+				$('clone').disabled = true;
+				$('clone').setAttribute('disabled','true');
+				$('remove').disabled = true;
+				$('remove').setAttribute('disabled','true');
+				$('move').disabled = true;
+				$('move').setAttribute('disabled','true');
+				setTimeout( function() { $('patron_list').focus(); }, 0 );
 		}
 
 		function refresh() {
@@ -143,6 +164,7 @@
 						}
 					}
 
+				funcs.push( gen_func(g.patron_id) );
 				for (var i = 0; i < ids.length; i++) {
 					funcs.push( gen_func(ids[i]) );
 				}
@@ -176,25 +198,33 @@
 		}
 
 		function clone_patron() {
-			var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-				+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( ses() ) + '&clone=' + g.patron_id );
-			xulG.new_tab(
-				loc, 
-				{}, 
-				{ 
-					'show_print_button' : true , 
-					'tab_name' : 'Register Patron Clone for Group' ,
-					'passthru_content_params' : {
-						'spawn_search' : spawn_search,
-						'spawn_editor' : spawn_editor,
-						'on_save' : function() { refresh(); },
-						'url_prefix' : xulG.url_prefix,
-						'new_tab' : xulG.new_tab,
-					},
-					'url_prefix' : xulG.url_prefix,
-					'new_tab' : xulG.new_tab,
+			if (! g.sel_list ) return;
+			try {
+				for (var i = 0; i < g.sel_list.length; i++) {	
+					var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) 
+						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
+						+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
+					xulG.new_tab(
+						loc, 
+						{}, 
+						{ 
+							'show_print_button' : true , 
+							'tab_name' : 'Register Patron Clone for Group' ,
+							'passthru_content_params' : {
+								'spawn_search' : spawn_search,
+								'spawn_editor' : spawn_editor,
+								'on_save' : function() { refresh(); },
+								'url_prefix' : xulG.url_prefix,
+								'new_tab' : xulG.new_tab,
+							},
+							'url_prefix' : xulG.url_prefix,
+							'new_tab' : xulG.new_tab,
+						}
+					);
 				}
-			);
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('error spawning user editors',E);
+			}
 		}
 
 		function spawn_editor(p) {
@@ -237,14 +267,19 @@
 		}
 
 		function remove_patron() {
-			var c = window.confirm('Remove this patron from their existing group?');
+			if (! g.sel_list ) return;
+			var msg = ''; for (var i = 0 ; i < g.sel_list.length; i++) if (g.sel_list[i] == g.patron_id) msg =
+				'WARNING: If you remove the currently displayed patron, a NEW group will be displayed in this interface.';
+			var c = window.confirm('Remove selected patrons from this group?  ' + msg);
 			if (c) {
-				var robj = g.network.simple_request('FM_AU_NEW_USERGROUP', [ ses(), g.patron_id, 't' ]);
-				if (typeof robj.ilsevent != 'undefined') {
-					g.error.standard_unexpected_error_alert('error removing patron from usergroup',robj);
+				for (var i = 0; i < g.sel_list.length; i++) {	
+					var robj = g.network.simple_request('FM_AU_NEW_USERGROUP', [ ses(), g.sel_list[i], 't' ]);
+					if (typeof robj.ilsevent != 'undefined') {
+						g.error.standard_unexpected_error_alert('error removing patron (id=' + g.sel_list[i] + ') from usergroup',robj);
+					}
 				}
+				alert('Patrons removed from group.'); /* FIXME - xulrunner bug if this alert comes after refresh? */
 				refresh();
-				alert('Patron removed from group.');
 			} else {
 				alert('Patron not removed from group.');
 			}
@@ -252,88 +287,95 @@
 
 		function link_patron(direction) {
 			try {
+				if (! g.sel_list ) { g.sel_list = []; g.sel_list[0] = g.patron_id; }
 				if (direction == null) throw('null paramater not allowed');
 				var first_msg; var second_msg;
 				switch(direction) {
-					case true: first_msg = "Move into this patron's usergroup..."; break;
-					case false: first_msg = "Move this patron into the current usergroup..."; break;
+					case true: first_msg = "-->"; break;
+					case false: first_msg = "<--"; break;
 					default: throw('Invalid parameter.  Expected boolean.'); break;
 				}
 				var barcode = window.prompt('Please scan a patron barcode:','',first_msg);
+				if (!barcode) return;
 				JSAN.use('patron.util');
 				var patron_b = patron.util.retrieve_fleshed_au_via_barcode(ses(),barcode);
 				if (typeof patron_b.ilsevent != 'undefined') throw(patron_b);
-				var patron_a = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id);
-				if (typeof patron_a.ilsevent != 'undefined') throw(patron_a);
-				switch(direction) {
-					case true: second_msg = "Move patron " + patron_a.card().barcode() + " into patron " + patron_b.card().barcode() + "'s usergroup..."; break;
-					case false: second_msg = "Move patron " + patron_b.card().barcode() + " into patron " + patron_a.card().barcode() + "'s usergroup..."; break;
-				}
 
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-				var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><description>' + second_msg + '</description><hbox><spacer flex="1"/><button label="Move" accesskey="M" name="fancy_submit"/><button label="Done" accesskey="D" name="fancy_cancel"/></hbox></vbox>';
-				var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical"><hbox flex="1">';
-				/************/
-				xml += '<vbox flex="1">';
-				xml += '<hbox><spacer flex="1"/>';
-				if (direction) {
-					xml += '<image src="/xul/server/skin/media/images/patron_right_arrow.png"/>';
-				} else {
-					xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
-				}
-				xml += '</hbox>';
-				xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
-				xml += '?show_name=1&amp;id=' + g.patron_id + '"/>';
-				xml += '</vbox>';
-				xml += '<vbox flex="1">';
-				xml += '<hbox>';
-				if (direction) {
-					xml += '<image src="/xul/server/skin/media/images/patron_right_arrow.png"/>';
-				} else {
-					xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
-				}
-				xml += '<spacer flex="1"/></hbox>';
-				xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
-				xml += '?show_name=1&amp;id=' + patron_b.id() + '"/>';
-				xml += '</vbox>';
-				/************/
-				xml += '</hbox></vbox>';
-				
-				var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
-				bot_xml += '</hbox></vbox>';
-	
-				g.data.temp_top = top_xml; g.data.stash('temp_top');
-				g.data.temp_mid = xml; g.data.stash('temp_mid');
-				g.data.temp_bot = bot_xml; g.data.stash('temp_bot');
-				window.open(
-					urls.XUL_FANCY_PROMPT
-					+ '?xml_in_stash=temp_mid'
-					+ '&top_xml_in_stash=temp_top'
-					+ '&bottom_xml_in_stash=temp_bot'
-					+ '&title=' + window.escape('Move Patron into a Usergroup'),
-					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
-				);
-				g.data.init({'via':'stash'});
-				if (g.data.fancy_prompt_data == '') { alert('No data'); }
-				else {
-					var patron_c;
+				if (g.sel_list.length == 0) g.sel_list[0] = g.patron_id;
+				for (var i = 0; i < g.sel_list.length; i++) {	
+
+					var patron_a = patron.util.retrieve_fleshed_au_via_id(ses(),g.sel_list[i]);
+					if (typeof patron_a.ilsevent != 'undefined') throw(patron_a);
 					switch(direction) {
-						case true:
-							patron_a.usrgroup( patron_b.usrgroup() );
-							patron_a.ischanged( '1' );
-							patron_c = patron_a;
-						break;
-						case false:
-							patron_b.usrgroup( patron_a.usrgroup() );
-							patron_b.ischanged( '1' );
-							patron_c = patron_b;
-						break;
+						case true: second_msg = "Move patron " + patron_a.card().barcode() + " into patron " + patron_b.card().barcode() + "'s usergroup..."; break;
+						case false: second_msg = "Move patron " + patron_b.card().barcode() + " into patron " + patron_a.card().barcode() + "'s usergroup..."; break;
 					}
-					var robj = g.network.simple_request('FM_AU_UPDATE',[ ses(), patron_c ]);
-					if (typeof robj.ilsevent != 'undefined') throw(robj);
-					alert('User groups updated.');
+
+					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+					var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><description>' + second_msg + '</description><hbox><spacer flex="1"/><button label="Move" accesskey="M" name="fancy_submit"/><button label="Done" accesskey="D" name="fancy_cancel"/></hbox></vbox>';
+					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical"><hbox flex="1">';
+					/************/
+					xml += '<vbox flex="1">';
+					xml += '<hbox><spacer flex="1"/>';
+					if (direction) {
+						xml += '<image src="/xul/server/skin/media/images/patron_right_arrow.png"/>';
+					} else {
+						xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
+					}
+					xml += '</hbox>';
+					xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
+					xml += '?show_name=1&amp;id=' + g.sel_list[i] + '"/>';
+					xml += '</vbox>';
+					xml += '<vbox flex="1">';
+					xml += '<hbox>';
+					if (direction) {
+						xml += '<image src="/xul/server/skin/media/images/patron_right_arrow.png"/>';
+					} else {
+						xml += '<image src="/xul/server/skin/media/images/patron_left_arrow.png"/>';
+					}
+					xml += '<spacer flex="1"/></hbox>';
+					xml += '<iframe style="min-height: 100px" flex="1" src="' + xulG.url_prefix( urls.XUL_PATRON_SUMMARY );
+					xml += '?show_name=1&amp;id=' + patron_b.id() + '"/>';
+					xml += '</vbox>';
+					/************/
+					xml += '</hbox></vbox>';
+					
+					var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
+					bot_xml += '</hbox></vbox>';
+		
+					g.data.temp_top = top_xml; g.data.stash('temp_top');
+					g.data.temp_mid = xml; g.data.stash('temp_mid');
+					g.data.temp_bot = bot_xml; g.data.stash('temp_bot');
+					window.open(
+						urls.XUL_FANCY_PROMPT
+						+ '?xml_in_stash=temp_mid'
+						+ '&top_xml_in_stash=temp_top'
+						+ '&bottom_xml_in_stash=temp_bot'
+						+ '&title=' + window.escape('Move Patron into a Usergroup'),
+						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+					);
+					g.data.init({'via':'stash'});
+					if (g.data.fancy_prompt_data == '') { continue; }
+					else {
+						var patron_c;
+						switch(direction) {
+							case true:
+								patron_a.usrgroup( patron_b.usrgroup() );
+								patron_a.ischanged( '1' );
+								patron_c = patron_a;
+							break;
+							case false:
+								patron_b.usrgroup( patron_a.usrgroup() );
+								patron_b.ischanged( '1' );
+								patron_c = patron_b;
+							break;
+						}
+						var robj = g.network.simple_request('FM_AU_UPDATE',[ ses(), patron_c ]);
+						if (typeof robj.ilsevent != 'undefined') g.error.standard_unexpected_error_alert('error linking patron (id=' + g.sel_list[i] + ')', robj);
+					}
 				}
 				refresh();
+				alert('User groups updated.');
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('error linking patrons',E);
 				refresh();
@@ -343,27 +385,42 @@
 	]]>
 	</script>
 
+	<commandset id="info_group_cmds">
+		<command id="clone" accesskey="N" label="Register a New Group Member by Cloning Selected Patrons" oncommand="try{clone_patron();}catch(E){alert('FIXME:'+E);}"/>
+		<command id="remove" accesskey="R" label="Remove Selected Patrons from the Group" oncommand="try{remove_patron();}catch(E){alert('FIXME:'+E);}"/>
+		<command id="move" accesskey="M" label="Move Selected Patrons to ANOTHER patron's group." oncommand="try{link_patron(true);}catch(E){alert('FIXME:'+E);}"/>	
+		<command id="add" accesskey="A" label="Move ANOTHER patron to this patron group." oncommand="try{link_patron(false);}catch(E){alert('FIXME:'+E);}"/>	
+		<command id="retrieve_p" label="Retrieve Selected Patrons" accesskey="P" oncommand="try{retrieve_patron();}catch(E){alert(E);}"/>
+	</commandset>
+
+	<popupset id="info_group_popupset">
+		<popup id="info_group_actions" position="at_pointer"> 
+			<menuitem command="clone" />
+			<menuitem command="remove" />
+			<menuitem command="move" />
+			<menuitem command="add" />
+			<menuitem command="retrieve_p" />
+		</popup>
+	</popupset>
+
 	<vbox flex="1" class="my_overflow" id="group_panel">
-		<groupbox>
-			<caption label="Group Actions"/>
-			<menubar id="ml">
-				<menu label="Choose an Action..." accesskey="A" value="0">
-					<menupopup>
-						<menuitem accesskey="N" label="Register a New Group Member by Cloning this Patron" oncommand="try{clone_patron();}catch(E){alert('FIXME:'+E);}"/>
-						<menuitem accesskey="R" label="Remove this Patron from the Group" oncommand="try{remove_patron();}catch(E){alert('FIXME:'+E);}"/>
-						<menuitem accesskey="T" label="Link THIS patron to ANOTHER patron's group." oncommand="try{link_patron(true);}catch(E){alert('FIXME:'+E);}"/>	
-						<menuitem accesskey="A" label="Link ANOTHER patron to THIS patron's group." oncommand="try{link_patron(false);}catch(E){alert('FIXME:'+E);}"/>	
-					</menupopup>
-				</menu>
-			</menubar>
-		</groupbox>
 		<groupbox flex="1">
 			<caption label="Group Members"/>
 			<hbox>
 				<spacer flex="1"/>
-				<button id="retrieve_p" label="Retrieve Selected Patrons" accesskey="P" oncommand="try{retrieve_patron();}catch(E){alert(E);}"/>
+				<menubar id="ml">
+					<menu label="Choose an Action..." accesskey="A" value="0">
+						<menupopup>
+							<menuitem command="clone" />
+							<menuitem command="remove" />
+							<menuitem command="move" />
+							<menuitem command="add" />
+							<menuitem command="retrieve_p" />
+						</menupopup>
+					</menu>
+				</menubar>
 			</hbox>
-			<tree id="patron_list" flex="1" enableColumnDrag="true" seltype="multiple"/>
+			<tree id="patron_list" flex="1" enableColumnDrag="true" seltype="multiple" context="info_group_actions"/>
 		</groupbox>
 	</vbox>
 
