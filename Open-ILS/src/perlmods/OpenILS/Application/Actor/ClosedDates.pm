@@ -132,6 +132,27 @@ sub edit_date {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> 'closed_dates_overlap',
+	api_name	=> 'open-ils.actor.org_unit.closed_date.overlap',
+	signature	=> q/
+		Returns an object with 'start' and 'end' fields 
+		start is the first day the org is open going backwards from 
+		'date'.  end is the next day the org is open going
+		forward from 'date'.
+		@param orgid The org unit in question
+		@param date The date to search
+	/
+);
+sub closed_dates_overlap {
+	my( $self, $conn, $auth, $orgid, $date ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->request(
+		'open-ils.storage.actor.org_unit.closed_date.overlap', $orgid, $date );
+}
+
+
 
 
 1;
