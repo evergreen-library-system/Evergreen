@@ -41,7 +41,7 @@
 	<button id="record_buckets_delete_bucket" label="Delete Bucket"/>
 	<spacer flex="1"/>
 	<button id="record_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button id="record_buckets_export" label="Add Selected" image="/xul/server/skin/media/images/up_arrow.gif"/>
+	<button id="record_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">

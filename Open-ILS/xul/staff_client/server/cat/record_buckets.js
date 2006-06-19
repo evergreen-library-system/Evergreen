@@ -89,8 +89,14 @@ cat.record_buckets.prototype = {
 						obj.error.sdump('D_TRACE','circ/record_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
 						if (obj.selection_list2.length == 0) {
 							obj.controller.view.record_buckets_delete_item.disabled = true;
+							obj.controller.view.record_buckets_delete_item.setAttribute('disabled','true');
+							obj.controller.view.record_buckets_export.disabled = true;
+							obj.controller.view.record_buckets_export.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.record_buckets_delete_item.disabled = false;
+							obj.controller.view.record_buckets_delete_item.setAttribute('disabled','false');
+							obj.controller.view.record_buckets_export.disabled = false;
+							obj.controller.view.record_buckets_export.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);

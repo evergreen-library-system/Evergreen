@@ -41,7 +41,7 @@
 	<button command="copy_buckets_delete_bucket" label="Delete Bucket"/>
 	<spacer flex="1"/>
 	<button command="copy_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
-	<button command="copy_buckets_export" label="Add Selected" image="/xul/server/skin/media/images/up_arrow.gif"/>
+	<button command="copy_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
 <hbox id="copy_buckets_bottom_ui">

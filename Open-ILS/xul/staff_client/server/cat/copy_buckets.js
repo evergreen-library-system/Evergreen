@@ -87,8 +87,14 @@ cat.copy_buckets.prototype = {
 						obj.error.sdump('D_TRACE','circ/copy_buckets: selection list 2 = ' + js2JSON(obj.selection_list2) );
 						if (obj.selection_list2.length == 0) {
 							obj.controller.view.copy_buckets_delete_item.disabled = true;
+							obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','true');
+							obj.controller.view.copy_buckets_export.disabled = true;
+							obj.controller.view.copy_buckets_export.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.copy_buckets_delete_item.disabled = false;
+							obj.controller.view.copy_buckets_delete_item.setAttribute('disabled','false');
+							obj.controller.view.copy_buckets_export.disabled = false;
+							obj.controller.view.copy_buckets_export.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -214,7 +220,7 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {                                                        
 							for (var i = 0; i < obj.selection_list2.length; i++) {
-	                                                        var acp_id = obj.selection_list2[i][0];
+								var acp_id = obj.selection_list2[i][0];
 								//var barcode = obj.selection_list1[i][1];
 								//var bucket_item_id = obj.selection_list1[i][2];
 								var item = obj.flesh_item_for_list( acp_id );
@@ -229,9 +235,9 @@ cat.copy_buckets.prototype = {
 					'copy_buckets_delete_item' : [
 						['command'],
 						function() {
-                                                        for (var i = 0; i < obj.selection_list2.length; i++) {
+							for (var i = 0; i < obj.selection_list2.length; i++) {
 								try {
-	                                                                //var acp_id = obj.selection_list2[i][0];
+									//var acp_id = obj.selection_list2[i][0];
 									//var barcode = obj.selection_list2[i][1];
 									var bucket_item_id = obj.selection_list2[i][2];
 									var robj = obj.network.simple_request('BUCKET_ITEM_DELETE',
