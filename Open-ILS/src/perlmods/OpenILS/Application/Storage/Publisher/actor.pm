@@ -2,6 +2,7 @@ package OpenILS::Application::Storage::Publisher::actor;
 use base qw/OpenILS::Application::Storage/;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::Fieldmapper;
 
 use DateTime;           
@@ -47,25 +48,25 @@ sub org_closed_overlap {
 		$begin ||= $closure->{close_start};
 		$end = $closure->{close_end};
 
-		my $before = $_dt_parser->parse_datetime( $begin );
-		$before->subtract( days => 1 );
-		my $after = $_dt_parser->parse_datetime( $end );
-		$after->add( days => 1 );
+		my $before = $_dt_parser->parse_datetime( clense_ISO8601($begin) );
+		$before->subtract( seconds => 1 );
+		my $after = $_dt_parser->parse_datetime( clense_ISO8601($end) );
+		$after->add( seconds => 1 );
 
 		if ( $direction <= 0 ) {
-			while ( my $_b = org_closed_overlap($self, $client, $ou, $before->ymd, -1 ) ) {
-				$before = $_dt_parser->parse_datetime( $_b->{start} );
+			while ( my $_b = org_closed_overlap($self, $client, $ou, $before->iso8601, -1 ) ) {
+				$before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
 			}
 		}
 
 		if ( $direction >= 0 ) {
-			while ( my $_a = org_closed_overlap($self, $client, $ou, $after->ymd, 1 ) ) {
-				$after = $_dt_parser->parse_datetime( $_a->{end} );
+			while ( my $_a = org_closed_overlap($self, $client, $ou, $after->iso8601, 1 ) ) {
+				$after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
 			}
 		}
 
-		$begin = $before->ymd;
-		$end = $after->ymd;
+		$begin = clense_ISO8601($before->iso8601);
+		$end = clense_ISO8601($after->iso8601);
 	}
 
 	if ($begin && $end) {
