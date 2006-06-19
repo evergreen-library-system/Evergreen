@@ -1196,11 +1196,6 @@ char* searchSimplePredicate (const char* orig_op, osrfHash* field, jsonObject* n
 			val = jsonNumberToDBString( field, node );
 		} else {
 			val = jsonObjectToSimpleString(node);
-			if ( !dbi_conn_quote_string(dbhandle, &val) ) {
-				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-				free(val);
-				return NULL;
-			}
 		}
 	}
 
