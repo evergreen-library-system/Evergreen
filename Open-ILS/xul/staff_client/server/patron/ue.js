@@ -403,10 +403,14 @@ function uEditSaveUser(cloneme) {
 	req.send(true);
 	var newuser = req.result();
 
-	if( checkILSEvent(newuser) ) 
-		alert(js2JSON(newuser));
-	else 
+	var evt;
+	if( (evt = checkILSEvent(newuser)) || ! newuser ) {
+		if(evt) alert(js2JSON(newuser));
+		return;
+
+	} else {
 		alert($('ue_success').innerHTML);
+	}
 
 	if(cloneme) {
 		/* if the user we just created was a clone, and we want to clone it,
@@ -463,7 +467,6 @@ function uEditRunDupeSearch(type, search_hash) {
 		}
 	);
 
-	/*req.callback(uEditHandleDupResults);*/
 	req.callback(
 		function(r) {
 			uEditHandleDupResults( r.getResultObject(), search_hash, type, container );
@@ -497,16 +500,16 @@ function uEditHandleDupResults(ids, search_hash, type, container) {
 	uEditDupHashes[type] = search_hash;
 
 	switch(type) {
-		case 'ident1' :
+		case 'ident' :
 			if(confirm($('ue_dup_ident1').innerHTML)) 
-				uEditShowSearch(type);
+				uEditShowSearch(null, type);
 			break;
 	}
 }
 
 
-function uEditShowSearch(link) {
-	var type = link.getAttribute('type');
+function uEditShowSearch(link,type) {
+	if(!type) type = link.getAttribute('type');
 	if(window.xulG)
 		window.xulG.spawn_search(uEditDupHashes[type]);	
 	else alert('Search would be:\n' + js2JSON(uEditDupHashes[type]));

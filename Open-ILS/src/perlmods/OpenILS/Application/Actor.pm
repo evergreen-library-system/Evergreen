@@ -386,6 +386,9 @@ sub _add_patron {
 		return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
 	}
 
+	$evt = _check_dup_ident($session, $patron);
+	return (undef, $evt) if $evt;
+
 	$logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
 	my $id = $session->request(
@@ -404,10 +407,16 @@ sub _update_patron {
 
 	$logger->info("Updating patron ".$patron->id." in DB");
 
+	my $evt;
+
 	if(!$noperm) {
-		my $evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
+		$evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
 		return (undef, $evt) if $evt;
 	}
+
+	$evt = _check_dup_ident($session, $patron);
+	return (undef, $evt) if $evt;
+
 
 	# update the password by itself to avoid the password protection magic
 	if( $patron->passwd ) {
@@ -433,6 +442,29 @@ sub _update_patron {
 	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
 
 	return ($patron);
+}
+
+sub _check_dup_ident {
+	my( $session, $patron ) = @_;
+
+	my $search = {
+		ident_type	=> $patron->ident_type, 
+		ident_value => $patron->ident_value,
+	};
+
+	$logger->debug("patron update searching for dup ident values: " . 
+		$patron->ident_type . ':' . $patron->ident_value);
+
+	$search->{id} = {'!=' => $patron->id} if $patron->id and $patron->id > 0;
+
+	my $dups = $session->request(
+		'open-ils.storage.direct.actor.user.search_where.atomic', $search )->gather(1);
+
+
+	return OpenILS::Event->new('PATRON_DUP_IDENT1', payload => $patron )
+		if $dups and @$dups;
+
+	return undef;
 }
 
 

@@ -83,6 +83,10 @@
 		<desc xml:lang="en-US">The patron has too many overdue items</desc>
 	</event>
 
+	<event code='1214' textcode='PATRON_DUP_IDENT1'>
+		<desc xml:lang="en-US">The selected primary identification type and value are in use by another patron</desc>
+	</event>
+
 
 
 
