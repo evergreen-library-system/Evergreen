@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'set_penalty_css'
+	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -389,6 +389,17 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 	var network = new util.network();
 	var patron_obj = network.simple_request(
 		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
+		[ session, id ]
+	);
+	patron.util.set_penalty_css(patron_obj);
+	return patron_obj;
+}
+
+patron.util.retrieve_fleshed_au_via_barcode = function(session, id) {
+	JSAN.use('util.network');
+	var network = new util.network();
+	var patron_obj = network.simple_request(
+		'FM_AU_RETRIEVE_VIA_BARCODE',
 		[ session, id ]
 	);
 	patron.util.set_penalty_css(patron_obj);
