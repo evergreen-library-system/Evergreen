@@ -32,8 +32,13 @@ my $U = $apputils;
 my $pfx = "open-ils.search_";
 
 my $cache;
+my $cache_timeout;
 sub initialize {
 	$cache = OpenSRF::Utils::Cache->new('global');
+	my $sclient = OpenSRF::Utils::SettingsClient->new();
+	$cache_timeout = $sclient->config_value(
+			"apps", "open-ils.search", "app_settings", "cache_timeout" ) || 300;
+	$logger->info("Search cache timeout is $cache_timeout");
 }
 
 
@@ -374,7 +379,7 @@ sub the_quest_for_knowledge {
 
 	if( $docache ) {
 		$logger->debug("putting search cache $ckey\n");
-		$cache->put_cache($ckey, \@recs, 900);
+		$cache->put_cache($ckey, \@recs, $cache_timeout);
 	}
 
 	return { ids => \@recs, 
@@ -382,10 +387,6 @@ sub the_quest_for_knowledge {
 }
 
 
-
-#$cache_handle->put_cache( "_open-ils_seed_$username", $seed, 30 );
-#my $current_seed = $cache_handle->get_cache("_open-ils_seed_$username");
-#$cache_handle->delete_cache( "_open-ils_seed_$username" );
 
 sub search_cache {
 
@@ -846,7 +847,7 @@ sub marc_search {
 
 	if(!$recs) {
 		$recs = new_editor()->request($method, %$args);
-		$cache->put_cache($ckey, $recs, 900);
+		$cache->put_cache($ckey, $recs, $cache_timeout);
 		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
 	}
 

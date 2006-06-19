@@ -203,6 +203,9 @@ For non-core config info, see the inline documentation within this file
 						<password>MY_CONTENT_PASSWORD</password>
 						-->
 					</added_content>
+					<zips_file>/openils/var/data/zips.txt</zips_file>
+					<spelling_dictionary>/openils/var/data/oils_authority.dict</spelling_dictionary>
+					<cache_timeout>600</cache_timeout>
 
 				</app_settings>
 
