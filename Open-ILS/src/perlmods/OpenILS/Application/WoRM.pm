@@ -1239,8 +1239,8 @@ sub refingerprint_bibrec {
 					}
 
 					my $old_sm = OpenILS::Application::WoRM->storage_req(
-							'open-ils.storage.direct.metabib.metarecord_source_map.search.metarecord.atomic',
-							$old_mrid
+							'open-ils.storage.direct.metabib.metarecord_source_map.search.atomic',
+							{ metarecord => $old_mrid }
 					) if ($old_mrid);
 
 					if (ref($old_sm) and @$old_sm == 0) {
@@ -1252,7 +1252,7 @@ sub refingerprint_bibrec {
 
 					my $mr = OpenILS::Application::WoRM->storage_req(
 							'open-ils.storage.direct.metabib.metarecord.search.fingerprint.atomic',
-							$fp->{fingerprint}
+							{ fingerprint => $fp->{fingerprint} }
 					)->[0];
 				
 					unless ($mr) {

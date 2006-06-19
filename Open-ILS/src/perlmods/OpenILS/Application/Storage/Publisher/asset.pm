@@ -330,6 +330,8 @@ sub cn_browse_target {
 		$descendants = "actor.org_unit_descendants($org,$depth)";
 	}
 
+	my $orgs = join(',', @{ asset::call_number->db_Main->selectcol_arrayref("SELECT DISTINCT id FROM $descendants;") });
+
 	my $top_sql = <<"	SQL";
 		select * from (
 			select
@@ -339,10 +341,9 @@ sub cn_browse_target {
 			        cn.id
 			from
 			        $table cn
-			        join $descendants d
-			       	        on (d.id = cn.owning_lib)
 			where
 			        upper(label) < ?
+				and owning_lib in ($orgs)
 			order by upper(label) desc, 4 desc, 2 desc
 			limit $topsize
 		) as bar
@@ -357,10 +358,9 @@ sub cn_browse_target {
 	        	cn.id
 		from
 		        $table cn
-		        join $descendants d
-	        	        on (d.id = cn.owning_lib)
 		where
 		        upper(label) >= ?
+			and owning_lib in ($orgs)
 		order by upper(label),4,2
 		limit $bottomsize;
 	SQL

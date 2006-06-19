@@ -179,6 +179,113 @@ sub tree_walker {
 	return @things
 }
 
+sub cn_browse {
+	my $self = shift;
+	my $client = shift;
+
+	my $label = shift;
+	my $ou = shift;
+	my $page_size = shift || 9;
+	my $page = shift || 0;
+
+	my ($before_limit,$after_limit) = (0,0);
+	my ($before_offset,$after_offset) = (0,0);
+
+	if (!$page) {
+		$before_limit = $after_limit = int($page_size / 2);
+		$after_limit += 1 if ($page_size % 2);
+	} else {
+		$before_offset = $after_offset = int($page_size / 2);
+		$before_offset += 1 if ($page_size % 2);
+		$before_limit = $after_limit = $page_size;
+	}
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $o_search = { shortname => $ou };
+	if (!$ou || $ou eq '-') {
+		$o_search = { parent_ou => undef };
+	}
+
+	my $orgs = $_storage->request(
+		"open-ils.cstore.direct.actor.org_unit.search",
+		$o_search,
+		{ flesh		=> 3,
+		  flesh_fields	=> { aou	=> [qw/children/] }
+		}
+	)->gather(1);
+
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id});
+
+	$logger->debug("Searching for CNs at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	my @list = ();
+
+	if ($page <= 0) {
+		my $before = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label		=> { "<" => { transform => "upper", value => ["upper", $label] } },
+			  owning_lib	=> \@ou_ids,
+			},
+			{ flesh		=> 1,
+			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  order_by	=> { acn => "upper(label) desc, id desc, owning_lib desc" },
+			  limit		=> $before_limit,
+			  offset	=> abs($page) * $page_size - $before_offset,
+			}
+		)->gather(1);
+		push @list, reverse(@$before);
+	}
+
+	if ($page >= 0) {
+		my $after = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label		=> { ">=" => { transform => "upper", value => ["upper", $label] } },
+			  owning_lib	=> \@ou_ids,
+			},
+			{ flesh		=> 1,
+			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  order_by	=> { acn => "upper(label), id, owning_lib" },
+			  limit		=> $after_limit,
+			  offset	=> abs($page) * $page_size - $after_offset,
+			}
+		)->gather(1);
+		push @list, @$after;
+	}
+
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'cn_browse',
+	api_name  => 'open-ils.supercat.call_number.browse',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'label',
+				  desc => 'The target call number lable',
+				  type => 'string' },
+				{ name => 'org_unit',
+				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of call numbers to retrieve, default is 9',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Call numbers with owning_lib and record fleshed',
+			  type => 'array' }
+		}
+);
+
+
 sub new_record_holdings {
 	my $self = shift;
 	my $client = shift;

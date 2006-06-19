@@ -410,10 +410,10 @@ CREATE TABLE actor.hours_of_operation (
 );
 
 CREATE TABLE actor.org_unit_closed (
-	id		SERIAL	PRIMARY KEY,
-	org_unit	INT	NOT NULL REFERENCES actor.org_unit (id),
-	close_start	DATE	NOT NULL,
-	close_end	DATE	NOT NULL,
+	id		SERIAL				PRIMARY KEY,
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	close_start	TIMESTAMP WITH TIME ZONE	NOT NULL,
+	close_end	TIMESTAMP WITH TIME ZONE	NOT NULL,
 	reason		TEXT
 );
 
