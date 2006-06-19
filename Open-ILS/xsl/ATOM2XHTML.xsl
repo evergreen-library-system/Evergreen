@@ -262,7 +262,7 @@ To-do list:
 						</p>
 					</xsl:when>
 					<xsl:when test="(opensearch:startIndex&gt;1 or opensearchOld&gt;1) and not($totalresults=0)"><xsl:value-of select="$t-nomoreresults" /></xsl:when>
-					<xsl:otherwise><p><xsl:value-of select="$t-noresults" /></p></xsl:otherwise>
+					<xsl:otherwise><!-- <p><xsl:value-of select="$t-noresults" /></p> --></xsl:otherwise>
 				</xsl:choose>
 
 				<!-- display the copyright -->
@@ -292,11 +292,25 @@ To-do list:
 	</xsl:template>
 
 	<xsl:template match="dc:identifier">
-		<xsl:if test="position() &lt; 2 and string-length(.) &gt; 9">
-			<xsl:attribute name="src">
-				<xsl:value-of select="concat('/opac/jackets/',substring-after(.,'ISBN:'))"/>
-			</xsl:attribute>
-		</xsl:if>
+		<xsl:attribute name="src">
+			<xsl:choose>
+				<xsl:when test="position() &lt; 2 and string-length(.) &gt; 9">
+					<xsl:variable name="isbnraw"><xsl:value-of select="substring-after(.,'ISBN:')"/></xsl:variable>
+					<xsl:choose>
+						<xsl:when test="substring-before($isbnraw,' ')">
+							<xsl:variable name="isbntrimmed"><xsl:value-of select="substring-before($isbnraw,' ')"/></xsl:variable>
+							<xsl:value-of select="concat('/opac/jackets/',$isbntrimmed)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('/opac/jackets/',$isbnraw)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat('/opac/jackets/','---')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>		
 	</xsl:template>
 
 	<xsl:template match="atom:entry | item | //rss1:item | //rss9:item"> <!-- match="" must match the select="" earlier on -->
