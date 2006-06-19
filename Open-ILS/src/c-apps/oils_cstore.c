@@ -45,8 +45,10 @@ jsonObject* doDelete ( osrfMethodContext*, int* );
 jsonObject* doSearch ( osrfMethodContext*, osrfHash*, jsonObject*, int* );
 jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
 
+char* searchWriteSimplePredicate ( osrfHash*, const char*, const char*, const char* );
 char* searchSimplePredicate ( const char*, osrfHash*, jsonObject* );
 char* searchFunctionPredicate ( osrfHash*, jsonObjectNode* );
+char* searchFieldTransformPredicate ( osrfHash*, jsonObjectNode* );
 char* searchBETWEENPredicate ( osrfHash*, jsonObject* );
 char* searchINPredicate ( osrfHash*, jsonObject* );
 char* searchPredicate ( osrfHash*, jsonObject* );
@@ -1084,21 +1086,14 @@ char* searchINPredicate (osrfHash* field, jsonObject* node) {
 	return pred;
 }
 
-char* searchFunctionPredicate (osrfHash* field, jsonObjectNode* node) {
+char* searchValueTransform( jsonObject* array ) {
 	growing_buffer* sql_buf = buffer_init(32);
-	
-	buffer_fadd(
-		sql_buf,
-		"%s %s ",
-		osrfHashGet(field, "name"),
-		node->key
-	);
 
 	char* val = NULL;
 	int func_item_index = 0;
 	int func_item_first = 2;
 	jsonObject* func_item;
-	while ( (func_item = jsonObjectGetIndex(node->item, func_item_index++)) ) {
+	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
 		val = jsonObjectToSimpleString(func_item);
 
@@ -1136,11 +1131,91 @@ char* searchFunctionPredicate (osrfHash* field, jsonObjectNode* node) {
 	return pred;
 }
 
+char* searchFunctionPredicate (osrfHash* field, jsonObjectNode* node) {
+	growing_buffer* sql_buf = buffer_init(32);
+
+	char* val = searchValueTransform(node->item);
+	
+	buffer_fadd(
+		sql_buf,
+		"%s %s %s",
+		osrfHashGet(field, "name"),
+		node->key,
+		val
+	);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+	free(val);
+
+	return pred;
+}
+
+char* searchFieldTransformPredicate (osrfHash* field, jsonObjectNode* node) {
+	growing_buffer* sql_buf = buffer_init(32);
+	
+	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKey( node->item, "transform" ) );
+	char* value = NULL;
+
+	if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
+		value = searchValueTransform(jsonObjectGetKey( node->item, "value" ));
+	} else if (jsonObjectGetKey( node->item, "value" )->type != JSON_NULL) {
+		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+			value = jsonNumberToDBString( field, jsonObjectGetKey( node->item, "value" ) );
+		} else {
+			value = jsonObjectToSimpleString(jsonObjectGetKey( node->item, "value" ));
+			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, value);
+				free(value);
+				return NULL;
+			}
+		}
+	}
+
+	buffer_fadd(
+		sql_buf,
+		"%s(%s) %s %s",
+		field_transform,
+		osrfHashGet(field, "name"),
+		node->key,
+		value
+	);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
 char* searchSimplePredicate (const char* orig_op, osrfHash* field, jsonObject* node) {
 
 	char* val = NULL;
+
+	if (node->type != JSON_NULL) {
+		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
+			val = jsonNumberToDBString( field, node );
+		} else {
+			val = jsonObjectToSimpleString(node);
+			if ( !dbi_conn_quote_string(dbhandle, &val) ) {
+				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+				free(val);
+				return NULL;
+			}
+		}
+	}
+
+	char* pred = searchWriteSimplePredicate( field, osrfHashGet(field, "name"), orig_op, val );
+
+	if (val) free(val);
+
+	return pred;
+}
+
+char* searchWriteSimplePredicate ( osrfHash* field, const char* left, const char* orig_op, const char* right ) {
+
+	char* val = NULL;
 	char* op = NULL;
-	if (node->type == JSON_NULL) {
+	if (right == NULL) {
 		val = strdup("NULL");
 
 		if (strcmp( orig_op, "=" ))
@@ -1149,21 +1224,21 @@ char* searchSimplePredicate (const char* orig_op, osrfHash* field, jsonObject* n
 			op = strdup("IS");
 
 	} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-		val = jsonNumberToDBString( field, node );
-		op = strdup (orig_op);
+		val = strdup(right);
+		op = strdup(orig_op);
 
 	} else {
-		val = jsonObjectToSimpleString(node);
-		op = strdup (orig_op);
+		val = strdup(right);
 		if ( !dbi_conn_quote_string(dbhandle, &val) ) {
 			osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 			free(val);
 			return NULL;
 		}
+		op = strdup(orig_op);
 	}
 
 	growing_buffer* sql_buf = buffer_init(16);
-	buffer_fadd( sql_buf, "%s %s %s", osrfHashGet(field, "name"), op, val );
+	buffer_fadd( sql_buf, "%s %s %s", left, op, val );
 	free(val);
 	free(op);
 
@@ -1171,6 +1246,7 @@ char* searchSimplePredicate (const char* orig_op, osrfHash* field, jsonObject* n
 	buffer_free(sql_buf);
 
 	return pred;
+
 }
 
 char* searchBETWEENPredicate (osrfHash* field, jsonObject* node) {
@@ -1219,6 +1295,8 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 				pred = searchINPredicate( field, pred_node->item );
 			else if ( pred_node->item->type == JSON_ARRAY )
 				pred = searchFunctionPredicate( field, pred_node );
+			else if ( pred_node->item->type == JSON_HASH )
+				pred = searchFieldTransformPredicate( field, pred_node );
 			else 
 				pred = searchSimplePredicate( pred_node->key, field, pred_node->item );
 
@@ -1316,7 +1394,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 	if (order_hash) {
 		char* string;
-		if ( (_tmp = jsonObjectGetKey( order_hash, "order_by" )) ){
+		if ( (_tmp = jsonObjectGetKey( jsonObjectGetKey( order_hash, "order_by" ), core_class ) ) ){
 			string = jsonObjectToSimpleString(_tmp);
 			buffer_fadd(
 				sql_buf,
