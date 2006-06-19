@@ -48,6 +48,7 @@
 				g.summary.init( { 
 					'barcode' : g.cgi.param('barcode') , 
 					'id' : g.cgi.param('id') , 
+					'show_name' : g.cgi.param('show_name'),
 				} );
 
 				window.refresh = function () { g.summary.retrieve(); }

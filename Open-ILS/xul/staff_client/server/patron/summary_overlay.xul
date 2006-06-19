@@ -14,6 +14,7 @@
 </box>
 
 <vbox id="patron_info_sidebar" flex="1">
+	<label id="patron_name" hidden="true" class="patronNameLarge"/>
 	<groupbox id="PatronSummaryAlert_groupbox" flex="0" hidden="true" class="alert">
 		<caption id="psagbc" label="Alert" class="shrinkable_groupbox"/>
 		<description id="patron_alert"/>

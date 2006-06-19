@@ -17,6 +17,10 @@ patron.summary.prototype = {
 
 		obj.barcode = params['barcode'];
 		obj.id = params['id'];
+		if (params['show_name']) {
+			document.getElementById('patron_name').hidden = false;
+			document.getElementById('patron_name').setAttribute('hidden','false');
+		}
 
 		JSAN.use('OpenILS.data'); this.OpenILS = {}; 
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
@@ -479,6 +483,10 @@ patron.summary.prototype = {
 
 								obj.patron = robj;
 								JSAN.use('patron.util');
+								document.getElementById('patron_name').setAttribute('value',
+									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
+									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
+								);
 								patron.util.set_penalty_css(obj.patron);
 
 							} else {
