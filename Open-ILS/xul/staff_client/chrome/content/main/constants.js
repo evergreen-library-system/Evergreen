@@ -64,6 +64,7 @@ const api = {
 	'FM_AU_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve_by_barcode' },
 	'FM_AU_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.retrieve' },
 	'FM_AU_FLESHED_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve' },
+	'FM_AU_NEW_USERGROUP' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.new' },
 	'FM_AUN_RETRIEVE_ALL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all' },
 	'FM_AUN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.create' },
 	'FM_AUN_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.delete' },

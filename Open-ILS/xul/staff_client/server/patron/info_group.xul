@@ -228,6 +228,20 @@
 			}
 		}
 
+		function remove_patron() {
+			var c = window.confirm('Remove this patron from their existing group?');
+			if (c) {
+				var robj = g.network.simple_request('FM_AU_NEW_USERGROUP', [ ses(), g.patron_id, 't' ]);
+				if (typeof robj.ilsevent != 'undefined') {
+					g.error.standard_unexpected_error_dialog('error removing patron from usergroup',robj);
+				}
+				refresh();
+				alert('Patron removed from group.');
+			} else {
+				alert('Patron not removed from group.');
+			}
+		}
+
 	]]>
 	</script>
 
