@@ -655,7 +655,7 @@ cat.z3950.prototype = {
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_dialog('Error retrieving stored z39.50 credentials',E);
+			obj.error.standard_unexpected_error_alert('Error retrieving stored z39.50 credentials',E);
 		}
 	},
 
