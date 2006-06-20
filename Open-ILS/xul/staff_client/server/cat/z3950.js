@@ -162,6 +162,7 @@ cat.z3950.prototype = {
 
 										function handle_switch(node) {
 											var service = obj.controller.view.service_menu.value;
+											obj.current_service = service;
 											var nl = document.getElementsByAttribute('mytype','search_class');
 											for (var i = 0; i < nl.length; i++) { nl[i].disabled = true; }
 											for (var i in obj.services[service].attrs) {
@@ -464,7 +465,7 @@ cat.z3950.prototype = {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
 						try {
-							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml ]);
+							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, obj.current_service ]);
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
@@ -477,7 +478,7 @@ cat.z3950.prototype = {
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
 											case 0:
-												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml ]);
+												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, obj.current_service ]);
 												if (typeof r3.ilsevent != 'undefined') {
 													throw(r3);
 												} else {
@@ -489,7 +490,7 @@ cat.z3950.prototype = {
 												var r2 = obj.network.request(
 													api.MARC_XML_RECORD_IMPORT.app,
 													api.MARC_XML_RECORD_IMPORT.method + '.override',
-													[ ses(), new_marcxml ]
+													[ ses(), new_marcxml, obj.current_service ]
 												);
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
@@ -572,7 +573,7 @@ cat.z3950.prototype = {
 					'func' : function (new_marcxml) {
 						try {
 							if (! obj.confirm_overlay( [ data.marked_record ] ) ) { return; }
-							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), data.marked_record, new_marcxml ]);
+							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), data.marked_record, new_marcxml, obj.current_service ]);
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
@@ -587,7 +588,7 @@ cat.z3950.prototype = {
 												var r2 = obj.network.request(
 													api.MARC_XML_RECORD_REPLACE.app,
 													api.MARC_XML_RECORD_REPLACE.method + '.override',
-													[ ses(), data.marked_record, new_marcxml ]
+													[ ses(), data.marked_record, new_marcxml, obj.current_service ]
 												);
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
