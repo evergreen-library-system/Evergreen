@@ -3,7 +3,7 @@
 #include "http_core.h"
 #include "http_protocol.h"
 #include "http_request.h"
-#include "apr_compat.h"
+//#include "apr_compat.h"
 #include "apr_strings.h"
 #include "apr_reslist.h"
 #include "http_log.h"
@@ -172,8 +172,18 @@ static void printAttr( ap_filter_t* filter, const char** atts ) {
 		const char* name = atts[i];
 		const char* value = atts[i+1];
 		char* escaped = ap_escape_html(filter->r->pool, value); 
-		OSRF_UTILS_REPLACE_CHAR(escaped,'\'','"');
-		_fwrite( filter, " %s='%s'", name, escaped );
+
+		/* we make a big assumption here that if the string contains a ', 
+		 * then the original attribute was wrapped in "s - so recreate that */
+		if( strchr( escaped, '\'' ) ) {
+			OSRF_UTILS_REPLACE_CHAR(escaped,'"','\'');
+			_fwrite( filter, " %s=\"%s\"", name, escaped );
+
+		} else {
+			OSRF_UTILS_REPLACE_CHAR(escaped,'\'','"');
+			_fwrite( filter, " %s='%s'", name, escaped );
+		}
+
 		i++;
 	}
 }

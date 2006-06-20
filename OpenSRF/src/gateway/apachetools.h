@@ -2,7 +2,7 @@
 #include "http_config.h"
 #include "http_core.h"
 #include "http_protocol.h"
-#include "apr_compat.h"
+//#include "apr_compat.h"
 #include "apr_strings.h"
 #include "apr_reslist.h"
 #include "http_log.h"
@@ -49,7 +49,9 @@ int apacheError( char* msg, ... );
 /*
  * Creates an apache table* of cookie name / value pairs 
  */
+/*
 apr_table_t* apacheParseCookies(request_rec *r);
+*/
 
 
 #endif

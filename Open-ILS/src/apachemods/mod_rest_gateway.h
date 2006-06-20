@@ -2,7 +2,7 @@
 #include "http_config.h"
 #include "http_core.h"
 #include "http_protocol.h"
-#include "apr_compat.h"
+//#include "apr_compat.h"
 #include "apr_strings.h"
 
 /* our stuff */
