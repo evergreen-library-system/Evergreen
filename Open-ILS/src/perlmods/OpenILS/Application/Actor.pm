@@ -447,6 +447,8 @@ sub _update_patron {
 sub _check_dup_ident {
 	my( $session, $patron ) = @_;
 
+	return undef unless $patron->ident_value;
+
 	my $search = {
 		ident_type	=> $patron->ident_type, 
 		ident_value => $patron->ident_value,
