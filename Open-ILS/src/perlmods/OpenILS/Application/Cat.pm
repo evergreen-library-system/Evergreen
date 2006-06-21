@@ -143,9 +143,8 @@ __PACKAGE__->register_method(
 	signature	=> q/@see open-ils.cat.biblio.record.marc.replace/
 );
 
-
 sub biblio_record_replace_marc  {
-	my( $self, $conn, $auth, $recid, $newxml ) = @_;
+	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
 	warn "EDITOR : xact = " . $e->{xact} . "\n";
@@ -167,10 +166,13 @@ sub biblio_record_replace_marc  {
 		or return $e->event;
 
 	if( $fixtcn ) {
+		# If we're here, it means we have new MARC and a new source for the MARC for this record
 		$rec->tcn_value($tcn);
 		$rec->tcn_source($tcn);
 	}
 
+	# XXX Make the source the ID from config.bib_source
+	$record->source($source) if ($source);
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
 	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
@@ -207,6 +209,9 @@ __PACKAGE__->register_method(
 
 sub biblio_record_xml_import {
 	my( $self, $client, $authtoken, $xml, $source) = @_;
+
+
+	# XXX Make the source the ID from config.bib_source
 
 	my $override = 1 if $self->api_name =~ /override/;
 
