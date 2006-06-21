@@ -33,6 +33,7 @@ my $pfx = "open-ils.search_";
 
 my $cache;
 my $cache_timeout;
+
 sub initialize {
 	$cache = OpenSRF::Utils::Cache->new('global');
 	my $sclient = OpenSRF::Utils::SettingsClient->new();
@@ -341,7 +342,9 @@ sub the_quest_for_knowledge {
 	$searchhash->{offset} = 0;
 	$searchhash->{limit} = 0;
 
-	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON($searchhash));
+	my @search;
+	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
+	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
 
 	$searchhash->{offset} = $o;
 	$searchhash->{limit} = $l;
@@ -369,7 +372,6 @@ sub the_quest_for_knowledge {
 
 
 	} else { 
-		$logger->debug("cache returned results: " . JSON->perl2JSON($result));
 		$docache = 0; 
 	}
 
@@ -379,7 +381,7 @@ sub the_quest_for_knowledge {
 
 	if( $docache ) {
 		$logger->debug("putting search cache $ckey\n");
-		$cache->put_cache($ckey, \@recs, $cache_timeout);
+		put_cache($ckey, \@recs);
 	}
 
 	return { ids => \@recs, 
@@ -394,19 +396,32 @@ sub search_cache {
 	my $offset	= shift;
 	my $limit	= shift;
 
-	$logger->debug("fetching search cache $key\n");
+	$logger->debug("searching cache for $key\n");
+
+	my $start = $offset;
+	my $end = $offset + $limit - 1;
 
 	my $data = $cache->get_cache($key);
-	return undef unless $data;
 
-	$logger->debug("search_cache found some data: o=$offset, l=$limit");
+	return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
 
-	#$data = JSON->JSON2perl($data);
-	return undef unless $data and ref $data eq 'ARRAY';
-	return undef unless $$data[$offset] and $$data[$offset+($limit-1)];
+	$logger->debug("search_cache found data for indices $start..$end");
 
-	$logger->debug("search_cache found data..$offset - " . ($offset + ($limit - 1)));
-	return [ @$data[$offset..($offset+$limit)] ];
+	my $result = [ (@$data[$start..$end]) ];
+
+	$logger->debug("cache returning results: [". 
+		JSON->perl2JSON($$result[0]) . '...' . 
+		JSON->perl2JSON($$result[$limit-1]) .']' );
+
+	return $result;
+}
+
+
+sub put_cache {
+	my( $key, $data ) = @_;
+	$logger->debug("search_cache putting ".
+		scalar(@$data)." items at key $key with timeout $cache_timeout");
+	$cache->put_cache($key, $data, $cache_timeout);
 }
 
 
@@ -842,12 +857,15 @@ sub marc_search {
 	$limit ||= 10;
 	$offset ||= 0;
 
-	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON($args));
+	my @search;
+	push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
+	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
+
 	my $recs = search_cache($ckey, $offset, $limit);
 
 	if(!$recs) {
 		$recs = new_editor()->request($method, %$args);
-		$cache->put_cache($ckey, $recs, $cache_timeout);
+		put_cache($ckey, $recs);
 		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
 	}
 
