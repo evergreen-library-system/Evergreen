@@ -478,8 +478,6 @@ __PACKAGE__->register_method(
 	/);
 
 
-# XXX ?? move to request open-ils.storage 
-# open-ils.storage.asset.copy.circ_count 7999959, null/"year"/"month"/"day" 
 
 sub view_circs {
 	my( $self, $client, $authtoken, $copyid, $count ) = @_; 
@@ -494,18 +492,12 @@ sub view_circs {
 		'open-ils.storage.direct.action.circulation.search_where.atomic',
 			{ 
 				target_copy => $copyid, 
-#				opac_renewal => 'f',   
-#				desk_renewal => 'f',
-#				phone_renewal => 'f',
 			}, 
 			{ 
 				limit => $count, 
 				order_by => "xact_start DESC" 
-			} );
-
-#	my @users;
-#	push(@users, $_->usr) for @$circs;
-#	return \@users;
+			} 
+	);
 
 	return $circs;
 }
@@ -520,10 +512,9 @@ __PACKAGE__->register_method(
 	/);
 
 sub circ_count {
-	my( $self, $client, $copyid ) = @_; 
+	my( $self, $client, $copyid, $range ) = @_; 
 	my $e = OpenILS::Utils::Editor->new;
-	my $circs = $e->search_action_circulation({target_copy => $copyid}, {idlist=>1});
-	return scalar @$circs;
+	return $e->request('open-ils.storage.asset.copy.circ_count', $copyid, $range);
 }
 
 
