@@ -90,11 +90,13 @@ patron.items.prototype = {
 										}
 									}
 								);
-								if (typeof renew.ilsevent != 'undefined') throw(renew);
+								if (typeof renew.ilsevent != 'undefined') { if (renew.ilsevent != 0) throw(robj); }
+								obj.retrieve();
 							}
 							obj.retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
+								obj.retrieve();
 							}
 						}
 					],
@@ -147,6 +149,7 @@ patron.items.prototype = {
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
+								obj.retrieve();
 							}
 						}
 					],
@@ -163,6 +166,7 @@ patron.items.prototype = {
 							obj.retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
+								obj.retrieve();
 							}
 						}
 					],
@@ -217,6 +221,7 @@ patron.items.prototype = {
 							}
 						} catch(E) {
 							obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
+							obj.retrieve();
 						}
 						}
 					],
@@ -236,6 +241,7 @@ patron.items.prototype = {
 								obj.retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
+								obj.retrieve();
 							}
 						}
 					],
