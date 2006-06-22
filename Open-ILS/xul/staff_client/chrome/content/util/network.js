@@ -53,7 +53,11 @@ util.network.prototype = {
 							req = obj.check_for_offline(app,name,params,req,o_params);
 							f(req);
 						} catch(E) {
-							alert(E);
+							try {
+								E.ilsevent = -2;
+								E.textcode = 'Server/Method Error';
+							} catch(F) {}
+							f( { 'getResultObject' : function() { return E; } } );
 						}
 					}
 				);
@@ -75,7 +79,7 @@ util.network.prototype = {
 
 		} catch(E) {
 			if (instanceOf(E,perm_ex)) {
-				alert('permission exception: ' + js2JSON(E));
+				alert('in util.network, _request : permission exception: ' + js2JSON(E));
 			}
 			throw(E);
 		}
@@ -218,7 +222,7 @@ util.network.prototype = {
 					}
 					return req;
 				} catch(E) {
-					alert(E);
+					alert('in util.network, rerequest_on_override, override:' + E);
 				}
 			}
 
