@@ -58,9 +58,14 @@ function cdBuildOrgs() {
 	buildOrgSel(selector, org, type.depth());
 	if(!type.can_have_users()) selector.options[0].disabled = true;
 
+
 	selector.onchange = function() { cdDrawRange(); };
 
 	cdBaseOrg = org;
+
+	if( cdBaseOrg.children() && cdBaseOrg.children().length > 0 )
+		unHideMe($('cd_apply_all_div'));
+
 	var gotoOrg = USER.ws_ou();
 	if( ! setSelector( selector, gotoOrg ) ) {
 		gotoOrg = USER.home_ou();
@@ -349,11 +354,47 @@ function cdNew() {
 
 function cdCreate(start, end, note) {
 
+	if( $('cd_apply_all').checked ) {
+		var list = cdGetOrgList();
+		for( var o = 0; o < list.length; o++ ) {
+			var id = list[o].id();
+			cdCreateOne( id, start, end, note, (id == cdCurrentOrg()) );
+		}
+
+	} else {
+
+		cdCreateOne( cdCurrentOrg(), start, end, note, true );
+	}
+}
+
+function cdGetOrgList(org) {
+	if(!org) org = cdBaseOrg;
+
+	var list = [];
+	var type = findOrgType(org.ou_type()) ;
+	if( type.can_have_users() ) list.push(org);
+
+	if( org.children() ) {
+		for( var i = 0; i < org.children().length; i++ ) {
+			var child = org.children()[i];
+			if( child ) {
+				var l = cdGetOrgList(child);
+				for( var j = 0; j < l.length; j++ )
+					list.push(l[j]);
+			}
+		}
+	}
+
+	return list;
+}
+
+
+function cdCreateOne( org, start, end, note, refresh ) {
 	var date = new aoucd();
 
 	date.close_start(start.getW3CDTF());
 	date.close_end(end.getW3CDTF());
-	date.org_unit(cdCurrentOrg());
+	date.org_unit(org);
 	date.reason(note);
 
 	var req = new Request(CREATE_CLOSED_DATE, SESSION, date);
@@ -361,7 +402,7 @@ function cdCreate(start, end, note) {
 		function(r) {
 			var res = r.getResultObject();
 			if( checkILSEvent(res) ) alertILSEvent(res);
-			cdDrawRange(selectedStart, selectedEnd);
+			if(refresh) cdDrawRange(selectedStart, selectedEnd);
 		}
 	);
 	req.send();
