@@ -130,7 +130,9 @@
 
 				try {
 
-				var sc = g.network.simple_request('FM_ACTSC_RETRIEVE_BATCH', [ ses(), [ scem_hash[i].stat_cat() ] ]);
+				var sc_id = scem_hash[i].stat_cat();
+				if (sc_id == null || sc_id == '') throw(scem_hash[i]);
+				var sc = g.network.simple_request('FM_ACTSC_RETRIEVE_BATCH', [ ses(), [ sc_id ] ]);
 				if (!sc || typeof sc.ilsevent != 'undefined') { throw(sc); continue; }
 				sc = sc[0];
 
