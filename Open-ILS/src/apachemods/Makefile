@@ -1,17 +1,18 @@
 
 LDLIBS	+= -lxml2 -lopensrf -lxslt
 
-all:	mod_ils_rest_gateway.so mod_xmlent.so
+all:	mod_xmlent.so libfieldmapper.so
 
-install:	mod_ils_rest_gateway-install libfieldmapper-install mod_xmlent-install
+install: libfieldmapper-install mod_xmlent-install
 
 
 apachetools.o: 
 	cp ../../../OpenSRF/src/gateway/apachetools.o .
+
 json_xml.o:	json_xml.c json_xml.h
-fieldmapper_lookup.o:	fieldmapper_lookup.c fieldmapper_lookup.h
-ils_rest_gateway.o:	mod_rest_gateway.c mod_rest_gateway.h
-	$(CC) -c $(CFLAGS) mod_rest_gateway.c -o $@
+
+fieldmapper_lookup.o:	fieldmapper_lookup.c fieldmapper_lookup.h 
+
 
 fieldmapper_lookup.c:	
 	./fieldmapper_lookup-gen.pl fieldmapper_lookup.c
@@ -32,10 +33,6 @@ libfieldmapper.so:	fieldmapper_lookup.o
 	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 fieldmapper_lookup.o -o $@
 	cp libfieldmapper.so $(TMPDIR)/libfieldmapper.so
 
-mod_ils_rest_gateway.so:	libfieldmapper.so ils_rest_gateway.o json_xml.o
-	@echo $@
-	$(CC) $(LDFLAGS) $(LDLIBS) -shared -W1 json_xml.o ils_rest_gateway.o -lfieldmapper -o $@
-
 # ------------------------------------------------------
 
 
@@ -47,18 +44,6 @@ libfieldmapper-install:	libfieldmapper.so
 	cp libfieldmapper.so $(LIBDIR)/libfieldmapper.so
 
 
-mod_ils_rest_gateway-install:
-	$(APXS2) -i -a -n ils_rest_gateway mod_ils_rest_gateway.so
-	echo "-----------------------------------------------";
-	echo -e "* Important * : Change httpd.conf from this: \n \
-		LoadModule mod_ils_rest_gateway_module modules/mod_ils_rest_gateway.so \n \
-		to this: \n \
-		LoadModule mod_ils_rest_gateway    modules/mod_ils_rest_gateway.so"
-	echo -e "Supported configuration options:\
-			\nILSRestGatewayConfig <config-file>"
-	echo "-----------------------------------------------";
-	echo ""
-
 mod_xmlent-install:
 	$(APXS2) -i -a -n xmlent mod_xmlent.so
 
@@ -67,4 +52,5 @@ clean:
 	echo $@
 	/bin/rm -f *.o *.so 
 	/bin/rm -f fieldmapper_lookup.c
+
 
