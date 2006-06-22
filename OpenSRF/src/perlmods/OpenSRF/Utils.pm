@@ -39,7 +39,7 @@ our $date_parser = DateTime::Format::ISO8601->new;
 #$Storable::forgive_me = 1;
 
 %EXPORT_TAGS = (
-	common		=> [qw(interval_to_seconds seconds_to_interval sendmail)],
+	common		=> [qw(interval_to_seconds seconds_to_interval sendmail tree_filter)],
 	daemon		=> [qw(safe_fork set_psname daemonize)],
 	datetime	=> [qw(clense_ISO8601 gmtime_ISO8601 interval_to_seconds seconds_to_interval)],
 );
@@ -75,6 +75,19 @@ sub _sub_builder {
 				return $$self{$part};
 		};
 	}
+}
+
+sub tree_filter {
+	my $tree = shift;
+	my $field = shift;
+	my $filter = shift;
+
+	my @things = $filter->($tree);
+	for my $v ( @{$tree->$field} ){
+		push @things, $filter->($v);
+		push @things, tree_filter($v, $field, $filter);
+	}
+	return @things
 }
 
 #sub standalone_ipc_cache {
