@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Brief Bib Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="circ_circ_brief_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	width="750" height="550"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
+
+				g.cgi = new CGI();
+				g.copy_id = g.cgi.param('copy_id');
+				g.count = g.cgi.param('count');
+
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.copy = g.network.simple_request('FM_ACP_RETRIEVE',[ g.copy_id ]);
+				if (typeof g.copy.ilsevent != 'undefined') throw(g.copy);
+				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
+				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
+
+				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
+				$('mid').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + g.copy.id());
+
+				show_circs();
+
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Error in circ_brief.xul, my_init()',E);
+			}
+		}
+
+		function show_circs() {
+			try {
+				$('r_last').disabled = true; $('r_all').disabled = true;	
+				g.circs = g.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',
+					[ ses(), g.copy_id, g.count ]);
+				if (g.circs == null || typeof g.circs.ilsevent != 'undefined') throw(circs);
+				if (g.circs.length == 0) return;
+				$('r_last').disabled = false; $('r_all').disabled = false;	
+
+				var gb = $('circs');
+				for (var j = 0; j < g.circs.length; j++) {
+					var iframe = document.createElement('iframe');
+					iframe.setAttribute('style','min-height: 100px;');
+					iframe.setAttribute('flex','1');
+					gb.appendChild(iframe);
+					iframe.setAttribute('src', urls.XUL_CIRC_BRIEF + '?circ_id=' + g.circs[j].id() );
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('error showing circs',E);
+			}
+		}
+
+		function retrieve_last() {
+			g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
+			g.data.stash('fancy_prompt_data');
+			window.close();
+		}
+
+		function retrieve_all() {
+			var patrons = []; var p_hash = {};
+			for (var i = 0; i < g.circs.length; i++) {
+				var usr = g.circs[i].usr();
+				if (typeof p_hash[usr] != 'undefined') { continue; }
+				p_hash[usr] = true;
+				patrons.push( function(a){return a;}(usr) );
+			}
+			g.data.fancy_prompt_data = js2JSON(patrons);
+			g.data.stash('fancy_prompt_data');
+			window.close();
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" style="overflow: auto;">
+		<iframe id="top" style="overflow: auto;"/>
+		<splitter><grippy/></splitter>
+		<iframe id="mid" style="overflow: auto;"/>
+		<splitter><grippy/></splitter>
+		<groupbox flex="1" id="circs" style="overflow: auto;">
+			<caption label="Last Few Circulations"/>
+		</groupbox>
+		<hbox>
+			<button id="r_last" label="Retrieve Last Patron" accesskey="L" oncommand="retrieve_last();"/>
+			<button id="r_all" label="Retrieve All These Patrons" accesskey="A" oncommand="retrieve_all();"/>
+			<spacer flex="1"/>
+			<button label="Done" accesskey="D" oncommand="window.close();"/>
+		</hbox>
+	</vbox>
+
+</window>
+
