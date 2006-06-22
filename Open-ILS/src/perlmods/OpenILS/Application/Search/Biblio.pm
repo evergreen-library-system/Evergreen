@@ -430,6 +430,7 @@ sub search_cache {
 	my $start = $offset;
 	my $end = $offset + $limit - 1;
 
+	return undef unless $cache;
 	my $data = $cache->get_cache($key);
 
 	return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
@@ -449,6 +450,7 @@ sub search_cache {
 
 sub put_cache {
 	my( $key, $data ) = @_;
+	return undef unless $cache;
 	$logger->debug("search_cache putting ".
 		scalar(@$data)." items at key $key with timeout $cache_timeout");
 	$cache->put_cache($key, $data, $cache_timeout);
