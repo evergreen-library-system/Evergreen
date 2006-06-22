@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Brief Bib Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="cat_copy_summary_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+		function $w(id,text) { if ($(id)) util.widgets.set_text($(id),text); }
+		function my_bool(b) {
+			switch(b) {
+				case 't' :
+				case '1' :
+				case 1 :
+				case true:
+					return true;
+				break;
+				default:
+					return false;
+				break;
+			}
+		}
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for cat_copy_summary.xul');
+
+				g.cgi = new CGI();
+				var copy_id = g.cgi.param('copy_id');
+
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date'); JSAN.use('util.widgets');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+
+				$('caption').setAttribute('tooltiptext','Copy ID = ' + copy_id);
+
+				g.network.simple_request(
+					'FM_ACP_RETRIEVE',
+					[ copy_id ],
+					function (req) {
+						try {
+							var copy = req.getResultObject();
+							if (typeof copy.ilsevent != 'undefined') throw(copy);
+							g.network.simple_request(
+								'FM_ACN_RETRIEVE',
+								[ copy.call_number ],
+								function (rreq) {
+									try {
+										$w('barcode',copy.barcode());	
+										$w('ref',my_bool(copy.ref()) ? 'Yes' : 'No');	
+										$w('opac_visible',my_bool(copy.opac_visible()) ? 'Yes' : 'No');	
+										$w('circulate',my_bool(copy.circulate()) ? 'Yes' : 'No');	
+										$w('holdable',my_bool(copy.holdable()) ? 'Yes' : 'No');	
+										$w('location',copy.location().name());	
+										$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
+										$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+										$w('status',copy.status().name());	
+									} catch(E) {
+										g.error.standard_unexpected_error_alert('rendering copy',E);
+									}
+									try {
+										var cn = rreq.getResultObject();
+										if (typeof cn.ilsevent != 'undefined') {
+											switch(cn.ilsevent) {
+												case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
+													$w('callnumber','Not Cataloged');	
+												break;
+												default:
+													throw(cn);
+												break;
+											}
+										} else {
+											$w('callnumber',g.data.hash.acpl[ copy.location() ].name());	
+										}
+									} catch(E) {
+										g.error.standard_unexpected_error_alert('retrieving volume',E);
+									}
+								}
+							);
+						} catch(E) {
+							g.error.standard_unexpected_error_alert('retrieving copy',E);
+						}
+					}
+				);
+
+
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\ncat/copy_summary.xul\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+	]]>
+	</script>
+
+	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
+		<caption label="Item Summary" id="caption"/>
+		<grid>
+			<columns>
+				<column/>
+				<column/>
+				<column/>
+				<column/>
+				<column/>
+				<column/>
+				<column/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label style="font-weight: bold" value="Barcode:"/>
+					<label id="barcode"/>
+					<label style="font-weight: bold" value="Location:"/>
+					<label id="location"/>
+					<label style="font-weight: bold" value="Call Number:"/>
+					<label id="callnumber"/>
+					<label style="font-weight: bold" value="Status:"/>
+					<label id="status"/>
+				</row>
+				<row>
+					<label style="font-weight: bold" value="Circulate:"/>
+					<label id="circulate"/>
+					<label style="font-weight: bold" value="Reference:"/>
+					<label id="ref"/>
+					<label style="font-weight: bold" value="Opac Visible:"/>
+					<label id="opac_visible"/>
+					<label style="font-weight: bold" value="Holdable:"/>
+					<label id="holdable"/>
+				</row>
+				<row>
+					<label style="font-weight: bold" value="Created:"/>
+					<label id="create_date"/>
+					<label style="font-weight: bold" value="Edited:"/>
+					<label id="edit_date"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+
+</window>
+
