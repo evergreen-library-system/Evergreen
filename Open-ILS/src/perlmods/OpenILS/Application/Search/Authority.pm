@@ -7,6 +7,7 @@ use OpenILS::Application::AppUtils;
 use XML::LibXML;
 use XML::LibXSLT;
 use OpenILS::Utils::Editor q/:funcs/;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 use JSON;
 
@@ -38,15 +39,20 @@ sub crossref_authority {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
+	$logger->info("authority xref search for $class=$term, limit=$limit");
+
 	my $freq = $session->request(
 		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, $limit);
+	my $fr = $freq->gather(1);
+
 	my $areq = $session->request(
 		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, $limit);
-
-	my $fr = $freq->gather(1);
 	my $al = $areq->gather(1);
 
-	return _auth_flatten( $term, $fr, $al, 1 );
+
+	my $data = _auth_flatten( $term, $fr, $al, 1 );
+
+	return $data;
 }
 
 sub _auth_flatten {
