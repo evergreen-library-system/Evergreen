@@ -331,24 +331,27 @@ __PACKAGE__->register_method(
 sub the_quest_for_knowledge {
 	my( $self, $conn, $searchhash ) = @_;
 
+	return { count => 0 } unless $searchhash and
+		ref $searchhash->{searches} eq 'HASH';
+
 	my $method = 'open-ils.storage.biblio.multiclass.search_fts';
 	my $ismeta = 0;
 	my @recs;
 
 	my $maxlimit = 500;
 
-	my $o = $searchhash->{offset} || 0;
-	my $l = $searchhash->{limit} || 10;
+	my $offset = $searchhash->{offset} || 0;
+	my $limit = $searchhash->{limit} || 10;
+	my $end = $offset + $limit - 1;
 	$searchhash->{offset} = 0;
-	$searchhash->{limit} = 0;
+	$searchhash->{limit} = $maxlimit;
 
 	my @search;
 	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
 	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
 
-	$searchhash->{offset} = $o;
-	$searchhash->{limit} = $l;
-
+	#$searchhash->{offset} = $offset;
+	#$searchhash->{limit} = $limit;
 
 	if($self->api_name =~ /metabib/) {
 		$ismeta = 1;
@@ -356,7 +359,7 @@ sub the_quest_for_knowledge {
 	}
 
 	# don't cache past max limit
-	my $result = ($o < $maxlimit) ? search_cache($ckey, $o, $l) : undef; 
+	my $result = ($end < $maxlimit) ? search_cache($ckey, $offset, $limit) : undef; 
 	my $docache = 1;
 
 	if(!$result) {
@@ -367,8 +370,25 @@ sub the_quest_for_knowledge {
 		for (keys %$searchhash) { 
 			delete $$searchhash{$_} unless defined $$searchhash{$_}; }
 	
-		$searchhash->{limit} = $maxlimit;
-		$result = new_editor()->request( $method, %$searchhash );
+		#$searchhash->{limit} = $maxlimit;
+
+		my $err;
+		my $errstr;
+
+		try {
+			$result = new_editor()->request( $method, %$searchhash );
+
+		} catch Error with {
+			my $err = shift;
+
+			my $errstr = "Multiclass search failed.  Args = " . 
+				JSON->perl2JSON($searchhash) . "\nError = $err";
+
+			$logger->error($errstr);
+			warn "$errstr\n";
+		};
+
+		throw $err ($errstr) if $err;
 
 
 	} else { 
@@ -379,9 +399,18 @@ sub the_quest_for_knowledge {
 
 	for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
 
-	if( $docache ) {
+
+	if( $docache and ($end < $maxlimit) ) {
+		# If we didn't get this data from the cache, put it into the cache
+		# then return the correct offset of records
 		$logger->debug("putting search cache $ckey\n");
 		put_cache($ckey, \@recs);
+
+		my @t;
+		push(@t, $recs[$_]) for ($offset..$end);
+		@recs = @t;
+
+		$logger->debug("cache done .. returning $offset..$end : " . JSON->perl2JSON(\@recs));
 	}
 
 	return { ids => \@recs, 
@@ -405,6 +434,7 @@ sub search_cache {
 
 	return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
 
+	#$logger->debug("search_cache found data " . JSON->perl2JSON($data));
 	$logger->debug("search_cache found data for indices $start..$end");
 
 	my $result = [ (@$data[$start..$end]) ];
