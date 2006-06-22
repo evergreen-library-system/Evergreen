@@ -312,6 +312,10 @@ function uEditShowSummary() {
 			var node = $('ue_summary_'+field.key);
 			if(node) appendClear(node, text(val));
 		}
+
+		if( field.object == patron.card() )
+			appendClear($('ue_summary_barcode'), text(uEditNodeVal(field)));
+
 	}
 
 	var table = $('ue_summary_table');
