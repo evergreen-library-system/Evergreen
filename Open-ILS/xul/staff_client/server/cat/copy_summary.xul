@@ -76,7 +76,7 @@
 							if (typeof copy.ilsevent != 'undefined') throw(copy);
 							g.network.simple_request(
 								'FM_ACN_RETRIEVE',
-								[ copy.call_number ],
+								[ copy.call_number() ],
 								function (rreq) {
 									try {
 										$w('barcode',copy.barcode());	
@@ -103,7 +103,7 @@
 												break;
 											}
 										} else {
-											$w('callnumber',g.data.hash.acpl[ copy.location() ].name());	
+											$w('callnumber',cn.label());	
 										}
 									} catch(E) {
 										g.error.standard_unexpected_error_alert('retrieving volume',E);
@@ -115,6 +115,16 @@
 						}
 					}
 				);
+
+				g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ g.copy_id ],function(req) {
+					try {
+						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						$w('total_circs',robj.total.count);
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('retrieving circ total',E);
+					}
+				});
 
 
 
@@ -168,6 +178,10 @@
 					<label id="create_date"/>
 					<label style="font-weight: bold" value="Edited:"/>
 					<label id="edit_date"/>
+					<spacer/>
+					<spacer/>
+					<label style="font-weight: bold" value="Total Circs:"/>
+					<label id="total_circs"/>
 				</row>
 			</rows>
 		</grid>
