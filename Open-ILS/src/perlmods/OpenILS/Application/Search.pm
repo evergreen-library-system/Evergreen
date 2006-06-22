@@ -28,63 +28,8 @@ sub initialize {
 	OpenILS::Application::Search::Z3950->initialize();
 	OpenILS::Application::Search::Zips->initialize();
 	OpenILS::Application::Search::Biblio->initialize();
-
-	# try to load the added content handler
-	my $conf = OpenSRF::Utils::SettingsClient->new;
-	my $implementation = $conf->config_value(					
-		"apps", "open-ils.search","app_settings", "added_content", "implementation" );
-
-	$implementation = "OpenILS::Application::Search::AddedContent" unless $implementation;
-
-	$logger->debug("Attempting to load Added Content handler: $implementation");
-
-	eval "use $implementation";
-
-	if($@) {	
-		$logger->error("Unable to load Added Content handler [$implementation]: $@"); 
-		return; 
-	}
-
-	eval { $implementation->initialize(); };
 }
 	
-
-
-=head deprecated
-__PACKAGE__->register_method(
-	method	=> "check_spelling",
-	api_name	=> "open-ils.search.spell_check");
-
-sub check_spelling {
-	my( $self, $client, $phrase ) = @_;
-
-	my @resp_objects = ();
-	my $speller = Text::Aspell->new();
-	$speller->set_option('lang', 'en_US');
-	my $return_something = 0;
-
-	my $return_phrase = "";
-
-	for my $word (split(' ',$phrase) ) {
-		if( ! $speller->check($word) ) {
-			if( $speller->suggest($word) ) { $return_something = 1; }
-			my $word_stuff = {};
-			$word_stuff->{'word'} = $word;
-			$word_stuff->{'suggestions'} = [ $speller->suggest( $word ) ];
-			if( ! $return_phrase ) { $return_phrase = ($speller->suggest($word))[0]; }
-			else { $return_phrase .= " " . ($speller->suggest($word))[0];}
-			
-		} else { 
-			if( ! $return_phrase ) { $return_phrase = $word; }
-			else { $return_phrase .= " $word"; }
-		}
-	}
-
-	if( $return_something ) { return $return_phrase; }
-	return 0;
-}
-=cut
-
 
 
 # ------------------------------------------------------------------
@@ -92,7 +37,6 @@ sub check_spelling {
 # aspell --lang=en create  master ./oils_authority.dict < /tmp/words
 # where /tmp/words is a space separated list of words
 # ------------------------------------------------------------------
-
 
 __PACKAGE__->register_method(
 	method	=> "spellcheck",
