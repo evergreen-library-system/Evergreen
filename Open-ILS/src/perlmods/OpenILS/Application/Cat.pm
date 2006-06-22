@@ -172,7 +172,7 @@ sub biblio_record_replace_marc  {
 	}
 
 	# XXX Make the source the ID from config.bib_source
-	$record->source($source) if ($source);
+	$rec->source($source) if ($source);
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
 	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
