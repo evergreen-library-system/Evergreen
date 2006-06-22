@@ -58,10 +58,10 @@
 						try {
 						var r_circ = req.getResultObject();
 						$('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
-						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
+						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16) : '';
 						$('circ_staff').value = r_circ.circ_staff() ? r_circ.circ_staff() : '';
 						$('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
-						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
+						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16) : '';
 						$('checkin_staff').value = r_circ.checkin_staff() ? r_circ.checkin_staff() : '';
 						$('id').value = r_circ.id() ? r_circ.id() : '';
 						$('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
@@ -114,19 +114,19 @@
 			</columns>
 			<rows>
 				<row>
-					<label value="Circ Id"/><label id="id"/>
-					<label value="Renewal"/><label id="renewal"/>
-					<label value="Stop Fines Reason"/><label id="stop_fines"/>
+					<label style="font-weight: bold" value="Circ Id"/><label id="id"/>
+					<label style="font-weight: bold" value="Renewal"/><label id="renewal"/>
+					<label style="font-weight: bold" value="Stop Fines Reason"/><label id="stop_fines"/>
 				</row>
 				<row>
-					<label value="Check Out Lib"/><label id="circ_lib"/>
-					<label value="Check Out Time"/><label id="xact_start"/>
-					<label value="Check Out Staff ID"/><label id="circ_staff"/>
+					<label style="font-weight: bold" value="Check Out Lib"/><label id="circ_lib"/>
+					<label style="font-weight: bold" value="Check Out Time"/><label id="xact_start"/>
+					<label style="font-weight: bold" value="Check Out Staff ID"/><label id="circ_staff"/>
 				</row>
 				<row>
-					<label value="Check In Lib"/><label id="checkin_lib"/>
-					<label value="Check In Time"/><label id="checkin_time"/>
-					<label value="Check In Staff ID"/><label id="checkin_staff"/>
+					<label style="font-weight: bold" value="Check In Lib"/><label id="checkin_lib"/>
+					<label style="font-weight: bold" value="Check In Time"/><label id="checkin_time"/>
+					<label style="font-weight: bold" value="Check In Staff ID"/><label id="checkin_staff"/>
 				</row>
 			</rows>
 		</grid>
