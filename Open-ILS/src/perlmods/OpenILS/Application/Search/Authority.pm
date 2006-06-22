@@ -40,15 +40,10 @@ sub crossref_authority {
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
 	$logger->info("authority xref search for $class=$term, limit=$limit");
-
-	my $freq = $session->request(
-		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, $limit);
-	my $fr = $freq->gather(1);
-
-	my $areq = $session->request(
-		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, $limit);
-	my $al = $areq->gather(1);
-
+	my $fr = $session->request(
+		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, $limit)->gather(1);
+	my $al = $session->request(
+		"open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, $limit)->gather(1);
 
 	my $data = _auth_flatten( $term, $fr, $al, 1 );
 
@@ -76,7 +71,7 @@ sub _auth_flatten {
 		$hash{$string}++;
 		$hash{$string}++ if (lc($$x[0]) eq lc($term));
 	}
-	my $from = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
+	my $from = [keys %hash]; #[ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
 #	$from = [ @$from[0..4] ] if $limit;
 
@@ -95,10 +90,11 @@ sub _auth_flatten {
 		$hash{$string}++;
 		$hash{$string}++ if (lc($$x[0]) eq lc($term));
 	}
-	my $also = [ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
+	my $also = [keys %hash]; #[ sort { $hash{$b} <=> $hash{$a} || $a cmp $b } keys %hash ];
 
 #	$also = [ @$also[0..4] ] if $limit;
 
+	warn Dumper( { from => $from, also => $also } );
 
 	return { from => $from, also => $also };
 }
@@ -111,10 +107,10 @@ __PACKAGE__->register_method(
 );              
 
 __PACKAGE__->register_method(
-	method		=> "crossref_authority_batch",
-   api_name	=> "open-ils.search.authority.crossref.batch",
-   argc		=> 1, 
-   note		=> <<"	NOTE");
+	method		=> "new_crossref_authority_batch",
+	api_name	=> "open-ils.search.authority.crossref.batch",
+	argc		=> 1, 
+	note		=> <<"	NOTE");
 	Takes an array of class,term pair sub-arrays and performs an authority lookup for each
 
 	PARAMS( [ ["subject", "earth"], ["author","shakespeare"] ] );
@@ -127,6 +123,32 @@ __PACKAGE__->register_method(
 		}
 	}
 	NOTE
+
+sub new_crossref_authority_batch {
+	my( $self, $client, $reqs ) = @_;
+
+	my $response = {};
+	my $lastr = [];
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	for my $req (@$reqs) {
+
+		my $class = $req->[0];
+		my $term = $req->[1];
+		next unless $class and $term;
+		warn "Sending authority request for $class : $term\n";
+		my $fr = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10)->gather(1);
+		my $al = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10)->gather(1);
+
+		warn "Flattening $class : $term\n";
+		$response->{$class} = {} unless exists $response->{$class};
+		$response->{$class}->{$term} = _auth_flatten( $term, $fr, $al, 1 );
+
+	}
+
+	warn Dumper( $response );
+	return $response;
+}
 
 sub crossref_authority_batch {
 	my( $self, $client, $reqs ) = @_;
