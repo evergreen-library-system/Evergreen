@@ -1,119 +1,65 @@
-var cnBrowseCurrent;
-var cnBrowseTopCn;
-var cnBrowseTopId;
-var cnBrowseBottomCn;
-var cnBrowseBottomId;
-var cnBrowseDepth;
-var cnBrowseCache = {};
-var cnBrowseShowNext = false;
-var cnBrowseShowPrev = false;
-var MAX_CN = 9;
+var cnOffset = 0;
+var cnCount = 9;
+var cnBrowseCN;
+var cnBrowseOrg;
 
 if( findCurrentPage() == CNBROWSE ) {
 	attachEvt("common", "run", cnBrowseLoadSearch);
 	attachEvt( "common", "locationUpdated", cnBrowseResubmit );
+	attachEvt( "common", "depthChanged", cnBrowseResubmit );
 }
+
 
 function cnBrowseLoadSearch() {
 	unHideMe($('cn_browse'));
 	cnBrowseGo(getCallnumber(), getLocation(), getDepth());
 }
 
+
 function cnBrowseResubmit() {
 	var args = {}
-	args[PARAM_CN] = cnBrowseCurrent;
-	args[PARAM_DEPTH] = getNewSearchDepth();
+	args[PARAM_CN] = cnBrowseCN;
+	args[PARAM_DEPTH] = depthSelGetDepth();
 	args[PARAM_LOCATION] = getNewSearchLocation();
 	goTo(buildOPACLink(args));
 }
 
+
+
 function cnBrowseGo(cn, org, depth) { 
 	if(depth == null) depth = getDepth();
-	cnBrowseDepth = depth;
-	cnBrowseCurrent = cn;
-	var req = new Request( FETCH_CNBROWSE_TARGET, 
-		'org_unit', org, 
-		'depth', cnBrowseDepth, 
-		'label', cnBrowseCurrent,
-		'page_size', MAX_CN );
+
+	org = findOrgUnit(org);
+
+	do {
+		var t = findOrgType(org.ou_type());
+		if( t.depth() > depth ) 
+			org = findOrgUnit(org.parent_ou());
+		else break;
+	} while(true); 
+
+	cnBrowseOrg = org;
+	cnBrowseCN = cn;
+
+	_cnBrowseGo( cn, org );
+	appendClear($('cn_browse_where'), text(org.name()));
+}
+
+
+function _cnBrowseGo( cn, org ) {
+	var req = new Request( FETCH_CNBROWSE, cn, org.id(), cnCount, cnOffset );
 	req.callback( cnBrowseDraw );
 	req.send();
-
-	var o = findOrgUnit(getLocation());
-	var d = findOrgDepth(o);
-	var x = 0;
-	while( d > depth ) {
-		o = findOrgUnit(o.parent_ou());
-		d = findOrgDepth(o);
-	}
-	appendClear($('cn_browse_where'), text(o.name()));
 }
 
 function cnBrowseNext() {
-	cnBrowseShowNext = true;
-	if( cnBrowseCache.next )  /* if we have it, show it */
-		cnBrowseClearNext(cnBrowseCache.next);
+	cnOffset++;
+	_cnBrowseGo( cnBrowseCN, cnBrowseOrg );
 }
 
 function cnBrowsePrev() {
-	cnBrowseShowPrev = true;
-	if( cnBrowseCache.prev ) 
-		cnBrowseClearPrev(cnBrowseCache.prev);
-}
-
-function cnBrowseGrabNext() {
-	var req = new Request( FETCH_CNBROWSE_NEXT, 
-		'org_unit', getLocation(), 
-		'depth', cnBrowseDepth,
-		'label', cnBrowseBottomCn, 
-		'boundry_id', cnBrowseBottomId,
-		'page_size', MAX_CN );
-	req.callback( cnBrowseCacheMe );
-	req.request.next = true;
-	req.send();
-}
-
-
-function cnBrowseGrabPrev() {
-	var req = new Request( FETCH_CNBROWSE_PREV,
-		'org_unit', getLocation(), 
-		'depth', cnBrowseDepth,
-		'label', cnBrowseTopCn, 
-		'boundry_id', cnBrowseTopId,
-		'page_size', MAX_CN );
-	req.callback( cnBrowseCacheMe );
-	req.request.prev = true;
-	req.send();
-}
-
-function cnBrowseClearNext(list) {
-	cnBrowseCache.next = null; 
-	cnBrowseShowNext = false;
-	_cnBrowseDraw(list);
-}
-
-function cnBrowseClearPrev(list) {
-	cnBrowseCache.prev = null; 
-	cnBrowseShowPrev = false;
-	_cnBrowseDraw(list);
-}
-
-/* cache next and previous calls unless they are 
-needed immediately */
-function cnBrowseCacheMe(r) {
-	var list = r.getResultObject();
-	if( r.next ) {
-		cnBrowseCache.next = list;
-		if( cnBrowseShowNext ) {
-			cnBrowseClearNext(list);
-		} 
-
-	} else if( r.prev ) {
-		cnBrowseCache.prev = list;
-		if( cnBrowseShowPrev )  {
-			cnBrowseClearPrev(list);
-		} 
-	}
+	cnOffset--;
+	_cnBrowseGo( cnBrowseCN, cnBrowseOrg );
 }
 
 
@@ -147,14 +93,10 @@ function _cnBrowseDraw( list ) {
 		currentRow.appendChild(currentTd);
 
 		var td = cnTdT.cloneNode(true);
-		var label	= list[idx][0];
-		var lib		= list[idx][1];
-		var record	= list[idx][2];
-		var id		= list[idx][3];
 
-		if( idx == 0 ) { cnBrowseTopCn = label; cnBrowseTopId = id; } 
-		cnBrowseBottomCn = label;
-		cnBrowseBottomId = id;
+		var obj	= list[idx];
+		var cn	= obj.cn;
+		var mods = obj.mods;
 
 		var cn_td			= $n(currentTd, 'cn_browse_cn');
 		var lib_td			= $n(currentTd, 'cn_browse_lib');
@@ -162,39 +104,30 @@ function _cnBrowseDraw( list ) {
 		var author_td		= $n(currentTd, 'cn_browse_author');
 		var pic_td			= $n(currentTd, 'cn_browse_pic');
 
-		cn_td.appendChild(text(label));
-		lib_td.appendChild(text(findOrgUnit(lib).name()));
+		cn_td.appendChild(text(cn.label()));
+		lib_td.appendChild(text(findOrgUnit(cn.owning_lib()).name()));
+		cnBrowseDrawTitle(mods, title_td, author_td, pic_td);
 
-		var req = new Request( FETCH_RMODS, record );
-		req.request.title_td		= title_td;
-		req.request.author_td	= author_td;
-		req.request.pic_td		= pic_td;
-		req.callback( cnBrowseDrawTitle );
-		req.send();
-
-	
 		if( counter++ % 3 == 0 ) {
 			counter = 1;
 			currentRow = cnRowT.cloneNode(true);
 			cnTbody.appendChild(currentRow);
 		}
 	}
-	cnBrowseGrabNext();
-	cnBrowseGrabPrev();
 }
 
-function cnBrowseDrawTitle(r) {
-	var mods = r.getResultObject();
 
-	buildTitleDetailLink(mods, r.title_td); 
-	buildSearchLink(STYPE_AUTHOR, mods.author(), r.author_td);
-	r.pic_td.setAttribute("src", buildISBNSrc(cleanISBN(mods.isbn())));
+function cnBrowseDrawTitle(mods, title_td, author_td, pic_td) {
+
+	buildTitleDetailLink(mods, title_td); 
+	buildSearchLink(STYPE_AUTHOR, mods.author(), author_td);
+	pic_td.setAttribute("src", buildISBNSrc(cleanISBN(mods.isbn())));
 
 	var args = {};
 	args.page = RDETAIL;
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_RID] = mods.doc_id();
 	args[PARAM_MRID] = 0;
-	r.pic_td.parentNode.setAttribute("href", buildOPACLink(args));
+	pic_td.parentNode.setAttribute("href", buildOPACLink(args));
 }
 

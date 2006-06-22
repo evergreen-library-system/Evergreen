@@ -13,6 +13,7 @@ use OpenILS::Application::Search::Biblio;
 use OpenILS::Application::Search::Authority;
 use OpenILS::Application::Search::Z3950;
 use OpenILS::Application::Search::Zips;
+use OpenILS::Application::Search::CNBrowse;
 
 
 use OpenILS::Application::AppUtils;

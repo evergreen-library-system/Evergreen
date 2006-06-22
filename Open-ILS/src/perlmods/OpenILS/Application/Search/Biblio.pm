@@ -1154,6 +1154,17 @@ sub rec_to_mr_rec_descriptors {
 
 
 
+__PACKAGE__->register_method(
+	method => 'copies_created_on',	
+);
+
+
+sub copies_created_on {
+	my( $self, $conn, $auth, $org, $date ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+}
+
 
 1;
 
