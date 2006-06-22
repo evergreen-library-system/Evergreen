@@ -170,10 +170,12 @@ function setSelector( sel, value ) {
 				if( val && val.toLowerCase() == value.toLowerCase() ) {
 					sel.selectedIndex = i;
 					sel.options[i].selected = true;
+					return true;
 				}
 			}
 		}
 	}
+	return false;
 }
 
 function setSelectorRegex( sel, regex ) {
@@ -187,10 +189,12 @@ function setSelectorRegex( sel, regex ) {
 				if( val && val.match(regex) ) {
 					sel.selectedIndex = i;
 					sel.options[i].selected = true;
+					return true;
 				}
 			}
 		}
 	}
+	return false;
 }
 
 function getSelectorVal( sel ) {

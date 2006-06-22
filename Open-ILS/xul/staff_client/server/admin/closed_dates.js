@@ -13,6 +13,8 @@ var cdDateCache = {};
 var selectedStart;
 var selectedEnd;
 
+var cdBaseOrg;
+
 
 var myPerms = [ 
 	'actor.org_unit.closed_date.delete',
@@ -35,10 +37,44 @@ function cdEditorInit() {
 	setTimeout( 
 		function() { 
 			fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
+			cdBuildOrgs();
 			cdDrawRange();
 		}, 
 		20 
 	);
+}
+
+function cdCurrentOrg() {
+	var selector = $('cd_orgs');
+	return getSelectorVal(selector);
+}
+
+function cdBuildOrgs() {
+	var org = findOrgUnit(PERMS['actor.org_unit.closed_date.create']);
+	if( !org || org == -1 ) org = findOrgUnit(USER.ws_ou());
+	var type = findOrgType(org.ou_type()) ;
+
+	var selector = $('cd_orgs');
+	buildOrgSel(selector, org, type.depth());
+	if(!type.can_have_users()) selector.options[0].disabled = true;
+
+	selector.onchange = function() { cdDrawRange(); };
+
+	cdBaseOrg = org;
+	var gotoOrg = USER.ws_ou();
+	if( ! setSelector( selector, gotoOrg ) ) {
+		gotoOrg = USER.home_ou();
+		setSelector( selector, gotoOrg );
+	}
+
+	var neworg = findOrgUnit(PERMS['actor.org_unit.closed_date.create']);
+	if(!neworg || neworg == -1 || !orgIsMine(neworg, findOrgUnit(cdCurrentOrg()))) {
+		$('cd_new_allday').disabled = true;
+		$('cd_new_multiday').disabled = true;
+		$('cd_new').disabled = true;
+	}
+
+	return gotoOrg;
 }
 
 function cdInitCals() {
@@ -96,7 +132,7 @@ function cdDrawRange( start, end ) {
 	var req = new Request(
 		FETCH_CLOSED_DATES, SESSION, 
 		{
-			orgid			: USER.ws_ou(), 
+			orgid			: cdCurrentOrg(),
 			start_date	: start,
 			end_date		: end,
 			idlist		: 0
@@ -179,7 +215,12 @@ function cdBuildRow( date ) {
 		cdEditFleshRow(row, date);
 	}
 
+	$n(row,'delete').onclick = function() { cdDelete(row, date); };
 	$n(row, 'note').appendChild(text(date.reason()));
+
+	/* if we don't have delete perms for this location, disable the button */
+	var delorg = findOrgUnit(PERMS['actor.org_unit.closed_date.delete']);
+	if(!orgIsMine(delorg, findOrgUnit(cdCurrentOrg()))) $n(row,'delete').disabled = true;
 
 	return row;
 }
@@ -189,7 +230,6 @@ function cdEditFleshRow(row, date) {
 	$n(row, 'start_date').appendChild(text(cdDateToDate(date.close_start())));
 	$n(row, 'end_time').appendChild(text(cdDateToHours(date.close_end())));
 	$n(row, 'end_date').appendChild(text(cdDateToDate(date.close_end())));
-	$n(row,'delete').onclick = function() { cdDelete(row, date); };
 }
 
 
@@ -310,9 +350,10 @@ function cdNew() {
 function cdCreate(start, end, note) {
 
 	var date = new aoucd();
+
 	date.close_start(start.getW3CDTF());
 	date.close_end(end.getW3CDTF());
-	date.org_unit(USER.ws_ou());
+	date.org_unit(cdCurrentOrg());
 	date.reason(note);
 
 	var req = new Request(CREATE_CLOSED_DATE, SESSION, date);
