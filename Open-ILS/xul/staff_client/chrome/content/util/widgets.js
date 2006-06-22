@@ -24,6 +24,7 @@ util.widgets.EXPORT_OK	= [
 	'click',
 	'dispatch',
 	'stop_event',
+	'set_text',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -279,6 +280,28 @@ util.widgets.vertical_tab = function(node) {
 util.widgets.stop_event = function(ev) {
 	ev.preventDefault();
 	return false;
+}
+
+util.widgets.set_text = function(n,t) {
+	switch(n.nodeName) {
+		case 'button' :
+		case 'caption' :
+			n.setAttribute('label',t);
+		break;
+		case 'label' : 
+			n.setAttribute('value',t); 
+		break;
+		case 'description' : 
+			util.widgets.remove_children(n); 
+			n.appendChild( document.createTextNode(t) );
+		break;
+		case 'textbox' :
+			n.value = t; n.setAttribute('value',t);
+		break;
+		default:
+			alert("FIXME: util.widgets.set_text doesn't know how to handle " + n.nodeName);
+		break;
+	}
 }
 
 dump('exiting util/widgets.js\n');
