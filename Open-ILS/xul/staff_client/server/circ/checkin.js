@@ -106,9 +106,8 @@ circ.checkin.prototype = {
 					'sel_patron' : [
 						['command'],
 						function() {
-							var count = 5;
 							JSAN.use('circ.util');
-							circ.util.show_last_few_circs(obj.selection_list,count);
+							circ.util.show_last_few_circs(obj.selection_list);
 						}
 					],
 					'sel_bucket' : [
