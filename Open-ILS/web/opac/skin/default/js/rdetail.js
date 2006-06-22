@@ -140,7 +140,6 @@ function buildunAPISpan (span, type, id) {
         );
 }
 
-var rdeatilMarcFetched = false;
 function rdetailViewMarc(r,id) {
 	hideMe($('rdetail_extras_loading'));
 	$('rdetail_view_marc_box').innerHTML = r.getResultObject();
@@ -258,14 +257,15 @@ function _rdetailDraw(r) {
 	breq.callback( rdetailCheckDeleted );
 	breq.send();
 
-	var req = new Request(FETCH_ACONT_SUMMARY, cleanISBN(record.isbn()));
-	req.callback(rdetailHandleAddedContent);
-	req.send();
-
 	resultBuildCaches( [ record ] );
 	resultDrawSubjects();
 	resultDrawSeries();
+
+	/* grab added content */
+	acCollectData(cleanISBN(record.isbn()), rdetailhandleAC);
 }
+
+
 
 function rdetailCheckDeleted(r) {
 	var br = r.getResultObject()[0];
@@ -331,16 +331,14 @@ function rdetailAddToBookbag() {
 }
 
 
-
-var rdetailTocFetched		= false;
-var rdetailReviewFetched	= false;
-var rdetailMarcFetched		= false;
-
+var rdetailMarcFetched = false;
 function rdetailShowExtra(type, args) {
 
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
+	hideMe($('rdetail_anotes_div'));
+	hideMe($('rdetail_excerpt_div'));
 	hideMe($('rdetail_marc_div'));
 	hideMe($('cn_browse'));
 	hideMe($('rdetail_cn_browse_div'));
@@ -350,10 +348,11 @@ function rdetailShowExtra(type, args) {
 	removeCSSClass($('rdetail_viewcn_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
 
-	var req;
 	switch(type) {
 
 		case "copyinfo": 
@@ -364,28 +363,23 @@ function rdetailShowExtra(type, args) {
 		case "reviews": 
 			addCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_reviews_div')); 
-			if(rdetailReviewFetched) break;
-			unHideMe($('rdetail_extras_loading'));
-			rdetailReviewFetched = true;
-			req = new Request(FETCH_REVIEWS, cleanISBN(record.isbn()));
-			req.callback(rdetailShowReviews);
-			req.send();
 			break;
+
+
+		case "excerpt": 
+			addCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
+			unHideMe($('rdetail_excerpt_div'));
+			break;
+
+		case "anotes": 
+			addCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
+			unHideMe($('rdetail_anotes_div'));
+			break;
+
 
 		case "toc": 
 			addCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
 			unHideMe($('rdetail_toc_div'));
-			if(rdetailTocFetched) break;
-			unHideMe($('rdetail_extras_loading'));
-			rdetailTocFetched = true;
-			if(localTOC) {
-				hideMe($('rdetail_extras_loading'));
-				$('rdetail_toc_div').innerHTML = record.toc().replace(/--/g, "<br/>");
-			} else {
-				req = new Request(FETCH_TOC, cleanISBN(record.isbn()));
-				req.callback(rdetailShowTOC);
-				req.send();
-			}
 			break;
 
 		case "marc": 
@@ -394,7 +388,7 @@ function rdetailShowExtra(type, args) {
 			if(rdetailMarcFetched) return;
 			unHideMe($('rdetail_extras_loading'));
 			rdetailMarcFetched = true;
-			req = new Request( FETCH_MARC_HTML, record.doc_id() );
+			var req = new Request( FETCH_MARC_HTML, record.doc_id() );
 			req.callback(rdetailViewMarc); 
 			req.send();
 			break;
@@ -465,19 +459,28 @@ function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 	cnBrowseGo(cn, loc, depth);
 }
 
-function rdetailHandleAddedContent(r) {
-	var resp = r.getResultObject();
-	if( resp.Review == 'true' ) unHideMe($('rdetail_reviews_link'));
-	if( resp.TOC == 'true' ) {
+function rdetailhandleAC(data) {
+
+	if( data.reviews.html ) {
+		$('rdetail_review_container').innerHTML = data.reviews.html;
+		unHideMe($('rdetail_reviews_link'));
+	}
+
+	if( data.toc.html ) {
+		$('rdetail_toc_div').innerHTML = data.toc.html;
 		unHideMe($('rdetail_toc_link'));
-	} else {
-		if( record.toc() ) {
-			localTOC = true;
-			unHideMe($('rdetail_toc_link'));
-		}
+	}
+
+	if( data.excerpt.html ) {
+		$('rdetail_excerpt_div').innerHTML = data.excerpt.html;
+		unHideMe($('rdetail_excerpt_link'));
+	}
+
+	if( data.anotes.html ) {
+		$('rdetail_anotes_div').innerHTML = data.anotes.html;
+		unHideMe($('rdetail_anotes_link'));
 	}
 }
-
 
 function rdetailShowReviews(r) {
 	hideMe($('rdetail_extras_loading'));
@@ -497,6 +500,7 @@ function rdetailShowReviews(r) {
 		}
 	}
 }
+
 
 function rdetailShowTOC(r) {
 	hideMe($('rdetail_extras_loading'));
@@ -518,7 +522,7 @@ function rdetailBuildInfoRows() {
 	req.send();
 }
 
-/* pre-allocate the copy info table with all org units in correct order */
+/* pre-allocate the copy info table with all the appropriate org units in correct order */
 function _rdetailRows(node) {
 
 	if( rdetailShowLocal && getLocation() != globalOrgTree.id() ) {
@@ -554,7 +558,6 @@ function _rdetailRows(node) {
 	
 		var p = libtd.getElementsByTagName('a')[0];
 		libtd.insertBefore(text(node.name()), p);
-		//libtd.appendChild(text(node.name()));
 		libtd.setAttribute("style", "padding-left: " + ((findOrgDepth(node) - 1)  * 9) + "px;");
 	
 		if(!findOrgType(node.ou_type()).can_have_vols()) {
@@ -578,19 +581,11 @@ function _rdetailRows(node) {
 }
 
 function rdetailCNPrint(orgid, cn) {
-	/*
-	var arr = cpdBuildPrintWindow( record, orgid);
-	var win = arr[0];
-	var div = arr[1];
-	*/
 	var div = cpdBuildPrintWindow( record, orgid);
 	var template = div.removeChild($n(div, 'cnrow'));
 	var rowNode = $("cp_info_" + orgid);
 	cpdStylePopupWindow(div);
 	openWindow(div.innerHTML);
-	/*
-	win.document.body.innerHTML = div.innerHTML;
-	*/
 }
 
 /* walk through the copy info and build rows where necessary */
@@ -598,7 +593,6 @@ var localCNFound = false;
 var ctr = 0;
 function _rdetailBuildInfoRows(r) {
 
-	/* XXX */
 	removeChildren(copyRowParent);
 
 	_rdetailRows();
@@ -718,15 +712,7 @@ function rdetailSetPath(org, local) {
 	if( findOrgDepth(org) == 0 ) return;
 	var row = $("cp_info_" + org.id());
 	row.setAttribute("hasinfo", "1");
-	/*
-	if(local) {
-		unHideMe(row);
-		row.setAttribute("local", "1");
-	}
-	*/
-	/* XXX */
 	unHideMe(row);
-
 	rdetailSetPath(findOrgUnit(org.parent_ou()), local);
 }
 

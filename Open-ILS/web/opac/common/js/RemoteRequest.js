@@ -116,7 +116,12 @@ RemoteRequest.prototype.abort = function() {
 
 /* constructs our XMLHTTPRequest object */
 RemoteRequest.prototype.buildXMLRequest = function() {
+	this.xmlhttp = buildXMLRequest();
+	return true;
+}
 
+
+function buildXMLRequest() {
 	var x;
 	try { 
 		x = new ActiveXObject("Msxml2.XMLHTTP"); 
@@ -135,8 +140,7 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 		return null;
 	}
 
-	this.xmlhttp = x;
-	return true;
+	return x;
 }
 
 

@@ -60,6 +60,7 @@ sub handler {
 	my $path = $r->path_info;
 
 	child_init() unless $handler; # why isn't apache doing this for us?
+	return Apache2::Const::NOT_FOUND unless $handler;
 
 	my( undef, $data, $format, $key ) = split(/\//, $r->path_info);
 

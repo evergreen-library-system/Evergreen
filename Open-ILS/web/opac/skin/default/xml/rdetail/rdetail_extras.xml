@@ -27,6 +27,20 @@
 					<a href='javascript:rdetailShowExtra("toc");' 
 						class='classic_link'>Table of Contents</a>
 				</td>
+
+				<td id='rdetail_excerpt_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("excerpt");' 
+						class='classic_link'>Excerpt</a>
+				</td>
+
+				<td id='rdetail_anotes_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("anotes");' 
+						class='classic_link'>Author Notes</a>
+				</td>
+
+
 				<td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("annotation");' 
@@ -50,13 +64,20 @@
 		<!--#include virtual="rdetail_copyinfo.xml"-->
 
 		<div id='rdetail_reviews_div' class='rdetail_extras_div hide_me'> 
+			<div id='rdetail_review_container'/>
+			<!--
 			<div id='rdetail_review_template' style='width: 100%;'>
 				<div name='review_header' style='width: 100%; padding: 15px; border: 1px solid #E0E0E0;'> </div>
 				<div name='review_text' style='width: 100%; padding: 15px; border: 1px solid #E0E0E0;'> </div>
 			</div>
+			-->
 		</div>
 		
 		<div id='rdetail_toc_div' class='rdetail_extras_div hide_me'> </div>
+
+		<div id='rdetail_excerpt_div' class='rdetail_extras_div hide_me'> </div>
+
+		<div id='rdetail_anotes_div' class='rdetail_extras_div hide_me'> </div>
 
 		<div id='rdetail_marc_div' class='rdetail_extras_div hide_me'> 
 			<div id='rdetail_view_marc_box'> </div>
