@@ -222,3 +222,7 @@ table { border-collapse: collapse; }
 .rdetail_context_row { background: #F0E0E0; }
 
 .unadorned_link { text-decoration: none; vertical-align: bottom; }
+
+
+/* ie does not support disabling <option> elements */
+.disabled_option { color: #808080; }
