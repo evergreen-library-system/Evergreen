@@ -211,7 +211,13 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	/* this number could be a lot higher.. */
 	var whole = url + this.param_string + 1;
-	if( whole.length < 256 ) this.type = 'GET';
+
+
+	if(!IE) {
+		/* IE will cache this, so don't use it if IE.
+		useful for debugging */
+		if( whole.length < 256 ) this.type = 'GET';
+	}
 
 	var data = null;
 	if( this.type == 'GET' ) url +=  "?" + this.param_string; 
