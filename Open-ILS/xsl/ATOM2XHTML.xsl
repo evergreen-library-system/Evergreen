@@ -76,7 +76,7 @@ To-do list:
 
 	
 	<xsl:template match="/">
-		<xsl:comment>For information about the XSLT file that generated this, see http://opensearch.a9.com/docs/stylesheet.jsp</xsl:comment>
+		<!-- <xsl:comment>For information about the XSLT file that generated this, see http://opensearch.a9.com/docs/stylesheet.jsp</xsl:comment> -->
 		<xsl:choose>
 			<xsl:when test="not(atom:feed | rss/channel | //rss1:item | //rss9:item)">
 				<html xml:lang="{$t-lang}" lang="{$t-lang}">
