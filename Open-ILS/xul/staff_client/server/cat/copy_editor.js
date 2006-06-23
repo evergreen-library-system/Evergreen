@@ -316,13 +316,6 @@ g.left_pane_field_names = [
 			render: 'util.date.formatted_date( fm.edit_date(), "%F");',
 		}
 	],
-
-];
-
-/******************************************************************************************************/
-/* These get shown in the right panel */
-
-g.right_pane_field_names = [
 	[
 		"Creator",
 		{ 
@@ -335,6 +328,13 @@ g.right_pane_field_names = [
 			render: 'fm.editor();',
 		}
 	],
+
+];
+
+/******************************************************************************************************/
+/* These get shown in the right panel */
+
+g.right_pane_field_names = [
 	[
 		"Alert Message",
 		{
