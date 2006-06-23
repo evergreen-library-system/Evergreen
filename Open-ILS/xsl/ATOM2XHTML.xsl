@@ -40,7 +40,7 @@ To-do list:
  xmlns:xhtml="http://www.w3.org/1999/xhtml"
  exclude-result-prefixes="xsl opensearch opensearchOld atom rss9 rdf rss1 content dc xhtml"
  >
-	<xsl:output omit-xml-declaration="yes" method="html" doctype-public="-//W3C//DTD HTML 4.01//EN" encoding="UTF-8" media-type="text/html" />
+	<xsl:output omit-xml-declaration="yes" method="html" doctype-public="-//W3C/DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/strict.dtd" encoding="UTF-8" media-type="text/html" />
 	
 	<!-- START SETTINGS -->
 	<!-- text used; change this for translation and also some settings -->
