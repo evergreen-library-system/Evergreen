@@ -25,7 +25,7 @@ cat.util.spawn_spine_editor = function(selection_list) {
 
 cat.util.show_in_opac = function(selection_list) {
 	JSAN.use('util.error'); var error = new util.error();
-	var doc_id;
+	var doc_id; var seen = {};
 	try {
 		for (var i = 0; i < selection_list.length; i++) {
 			doc_id = selection_list[i].doc_id;
@@ -33,6 +33,10 @@ cat.util.show_in_opac = function(selection_list) {
 				alert(selection_list[i].barcode + ' is not cataloged');
 				continue;
 			}
+			if (typeof seen[doc_id] != 'undefined') {
+				continue;
+			}
+			seen[doc_id] = true;
 			var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
 			var content_params = { 
 				'session' : ses(),
