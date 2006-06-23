@@ -1474,35 +1474,37 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="stat_cat_entries" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="alert_message" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="barcode" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="call_number" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="circ_as_type" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="circ_lib" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="circ_modifier" oils_obj:array_position="9" oils_persist:virtual="false" />
-			<field name="circulate" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="copy_number" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="create_date" oils_obj:array_position="12" oils_persist:virtual="false" />
-			<field name="creator" oils_obj:array_position="13" oils_persist:virtual="false" />
-			<field name="deleted" oils_obj:array_position="14" oils_persist:virtual="false" />
-			<field name="deposit" oils_obj:array_position="15" oils_persist:virtual="false" />
-			<field name="deposit_amount" oils_obj:array_position="16" oils_persist:virtual="false" />
-			<field name="dummy_author" oils_obj:array_position="17" oils_persist:virtual="false" />
-			<field name="dummy_title" oils_obj:array_position="18" oils_persist:virtual="false" />
-			<field name="edit_date" oils_obj:array_position="19" oils_persist:virtual="false" />
-			<field name="editor" oils_obj:array_position="20" oils_persist:virtual="false" />
-			<field name="fine_level" oils_obj:array_position="21" oils_persist:virtual="false" />
-			<field name="holdable" oils_obj:array_position="22" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="23" oils_persist:virtual="false" />
-			<field name="loan_duration" oils_obj:array_position="24" oils_persist:virtual="false" />
-			<field name="location" oils_obj:array_position="25" oils_persist:virtual="false" />
-			<field name="opac_visible" oils_obj:array_position="26" oils_persist:virtual="false" />
-			<field name="price" oils_obj:array_position="27" oils_persist:virtual="false" />
-			<field name="ref" oils_obj:array_position="28" oils_persist:virtual="false" />
-			<field name="status" oils_obj:array_position="29" oils_persist:virtual="false" />
-			<field name="notes" oils_obj:array_position="30" oils_persist:virtual="true" />
+			<field name="age_protect" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="alert_message" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="barcode" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="call_number" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="circ_as_type" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="circ_lib" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="circ_modifier" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="circulate" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="copy_number" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="deposit" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="deposit_amount" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="dummy_author" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="dummy_title" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="fine_level" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="holdable" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="loan_duration" oils_obj:array_position="25" oils_persist:virtual="false" />
+			<field name="location" oils_obj:array_position="26" oils_persist:virtual="false" />
+			<field name="opac_visible" oils_obj:array_position="27" oils_persist:virtual="false" />
+			<field name="price" oils_obj:array_position="28" oils_persist:virtual="false" />
+			<field name="ref" oils_obj:array_position="29" oils_persist:virtual="false" />
+			<field name="status" oils_obj:array_position="30" oils_persist:virtual="false" />
+			<field name="notes" oils_obj:array_position="31" oils_persist:virtual="true" />
 		</fields>
 		<links>
+			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -1514,6 +1516,19 @@
 			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+		</links>
+	</class>
+	<class id="crahp" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="age" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="prox" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
 		</links>
 	</class>
 	<class id="crmf" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine">

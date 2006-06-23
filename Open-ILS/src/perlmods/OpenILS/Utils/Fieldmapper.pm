@@ -193,6 +193,7 @@ sub _init {
 		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
 		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
 		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
+		'Fieldmapper::config::rules::age_hold_protect'	=> { hint => 'crahp'  },
 		'Fieldmapper::config::rules::recuring_fine'	=> { hint => 'crrf'  },
 		'Fieldmapper::config::rules::circ_duration'	=> { hint => 'crcd'  },
 		'Fieldmapper::config::rules::max_fine'		=> { hint => 'crmf'  },
