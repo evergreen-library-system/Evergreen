@@ -254,7 +254,7 @@ g.special_exception = {
 				var p = '??? id = ' + value;
 				try {
 					p = req.getResultObject();
-					p = p.usrname() + ' : ' + p.family_name() + ', ' + p.first_given_name();
+					p = p.usrname();
 
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
@@ -272,7 +272,7 @@ g.special_exception = {
 				var p = '??? id = ' + value;
 				try {
 					p = req.getResultObject();
-					p = p.usrname() + ' : ' + p.family_name() + ', ' + p.first_given_name();
+					p = p.usrname();
 
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
