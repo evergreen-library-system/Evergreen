@@ -57,17 +57,18 @@ function my_init() {
 			document.getElementById('save').setAttribute('hidden','false'); 
 		}
 
-		if (g.cgi.param('single_edit') == '1') {
+		//if (g.cgi.param('single_edit') == '1') {
+		//{
 			g.single_edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('save').setAttribute('hidden','false'); 
-		}
+		//}
 
 		if (g.copies.length > 0 && g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 			g.apply("status",5 /* In Process */);
 		} else {
-			g.right_pane_field_names.push(
+			g.panes_and_field_names.right_pane4.push(
 				[
 					"Status",
 					{ 
@@ -95,7 +96,7 @@ function my_init() {
 		}
 
 		/******************************************************************************************************/
-		/* Add stat cats to the right_pane_field_names */
+		/* Add stat cats to the panes_and_field_names.right_pane4 */
 
 		var stat_cat_seen = {};
 
@@ -140,7 +141,7 @@ function my_init() {
 
 			dump('temp_array = ' + js2JSON(temp_array) + '\n');
 
-			g.right_pane_field_names.push( temp_array );
+			g.panes_and_field_names.right_pane4.push( temp_array );
 		}
 
 		/* The stat cats for the pertinent library */
@@ -291,19 +292,24 @@ g.editable_stat_cat_names = [];
 /******************************************************************************************************/
 /* These get show in the left panel */
 
-g.left_pane_field_names = [
+g.panes_and_field_names = {
+
+	'left_pane' :
+[
+	[
+		"Alert Message",
+		{
+			render: 'fm.alert_message();',
+			input: 'c = function(v){ g.apply("alert_message",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+
 	[
 		"Barcode",		 
 		{
 			render: 'fm.barcode();',
 		}
 	], 
-	[
-		"Call Number", 	
-		{
-			render: 'fm.call_number();',
-		}
-	],
 	[
 		"Creation Date",
 		{ 
@@ -329,17 +335,77 @@ g.left_pane_field_names = [
 		}
 	],
 
-];
+],
 
-/******************************************************************************************************/
-/* These get shown in the right panel */
-
-g.right_pane_field_names = [
+'right_pane' :
+[
 	[
-		"Alert Message",
+		"Call Number", 	
 		{
-			render: 'fm.alert_message();',
-			input: 'c = function(v){ g.apply("alert_message",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.call_number();',
+		}
+	],
+	[
+		"OPAC Visible?",
+		{ 
+			render: 'fm.opac_visible() ? "Yes" : "No";', 
+			input: 'c = function(v){ g.apply("opac_visible",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+	[
+		"Reference?",
+		{ 
+			render: 'fm.ref() ? "Yes" : "No";', 
+			input: 'c = function(v){ g.apply("ref",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+	[
+		"Shelving Location",
+		{ 
+			render: 'fm.location().name();', 
+			input: 'c = function(v){ g.apply("location",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+
+		}
+	],
+	[
+		"Circulation Library",		
+		{ 	
+			render: 'fm.circ_lib().shortname();',
+			input: 'c = function(v){ g.apply("circ_lib",v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		} 
+	],
+
+	[
+		"Copy Number",
+		{ 
+			render: 'fm.copy_number();',
+			input: 'c = function(v){ g.apply("copy_number",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+],
+
+'right_pane2' :
+[
+	[
+		"Loan Duration",
+		{ 
+			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
+			input: 'c = function(v){ g.apply("loan_duration",v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+
+		}
+	],
+	[
+		"Holdable?",
+		{ 
+			render: 'fm.holdable() ? "Yes" : "No";', 
+			input: 'c = function(v){ g.apply("holdable",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+	[
+		"Circulate?",
+		{ 	
+			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
+			input: 'c = function(v){ g.apply("circulate",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	 [
@@ -350,31 +416,21 @@ g.right_pane_field_names = [
 		} 
 	],
 	[
-		"Circulation Library",		
-		{ 	
-			render: 'fm.circ_lib().shortname();',
-			input: 'c = function(v){ g.apply("circ_lib",v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		} 
-	],
-	[
 		"Circulation Modifier",
 		{	
 			render: 'fm.circ_modifier();',
 			input: 'c = function(v){ g.apply("circ_modifier",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
+],
+
+'right_pane3' :
+[
 	[
-		"Circulate?",
-		{ 	
-			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
-			input: 'c = function(v){ g.apply("circulate",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-	[
-		"Copy Number",
-		{ 
-			render: 'fm.copy_number();',
-			input: 'c = function(v){ g.apply("copy_number",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		"Fine Level",
+		{
+			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
+			input: 'c = function(v){ g.apply("fine_level",v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
@@ -392,57 +448,19 @@ g.right_pane_field_names = [
 		}
 	],
 	[
-		"Fine Level",
-		{
-			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
-			input: 'c = function(v){ g.apply("fine_level",v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-	[
-		"Holdable?",
-		{ 
-			render: 'fm.holdable() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("holdable",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-	[
-		"Loan Duration",
-		{ 
-			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
-			input: 'c = function(v){ g.apply("loan_duration",v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-
-		}
-	],
-	[
-		"Shelving Location",
-		{ 
-			render: 'fm.location().name();', 
-			input: 'c = function(v){ g.apply("location",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-
-		}
-	],
-	[
-		"OPAC Visible?",
-		{ 
-			render: 'fm.opac_visible() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("opac_visible",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-	[
 		"Price",
 		{ 
 			render: 'util.money.sanitize( fm.price() );', 
 			input: 'c = function(v){ g.apply("price",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
-	[
-		"Reference?",
-		{ 
-			render: 'fm.ref() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("ref",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-];
+],
+
+'right_pane4' : 
+[
+]
+
+};
 
 /******************************************************************************************************/
 /* This loops through all our fieldnames and all the copies, tallying up counts for the different values */
@@ -453,8 +471,10 @@ g.summarize = function( copies ) {
 
 	JSAN.use('util.date'); JSAN.use('util.money');
 	g.summary = {};
-	g.field_names = g.left_pane_field_names;
-	g.field_names = g.field_names.concat( g.right_pane_field_names );
+	g.field_names = [];
+	for (var i in g.panes_and_field_names) {
+		g.field_names = g.field_names.concat( g.panes_and_field_names[i] );
+	}
 	g.field_names = g.field_names.concat( g.editable_stat_cat_names );
 	g.field_names = g.field_names.concat( g.readonly_stat_cat_names );
 
@@ -511,93 +531,26 @@ g.render = function() {
 
 	JSAN.use('util.widgets'); JSAN.use('util.date'); JSAN.use('util.money'); JSAN.use('util.functional');
 
-	var cns = document.getElementById('call_number_summary');
-	util.widgets.remove_children( cns );
-	var bcs = document.getElementById('barcode_summary');
-	util.widgets.remove_children( bcs );
-	var rp = document.getElementById('right_pane');
-	util.widgets.remove_children( rp );
-
-	/******************************************************************************************************/
-	/* Make the call number summary */
-
-	var grid = util.widgets.make_grid( [ { 'flex' : '1' } ] );
-	cns.appendChild(grid);
-	for (var i in g.summary['Call Number']) {
-		var cn_id = i; var count = g.summary['Call Number'][i];
-		var row = document.createElement('row'); grid.lastChild.appendChild(row);
-		var cn_label = document.createElement('description'); row.appendChild(cn_label);
-		g.special_exception['Call Number']( cn_label, cn_id );
-		var count_label = document.createElement('description'); row.appendChild(count_label);
-		var unit = count == 1 ? 'copy' : 'copies';
-		count_label.appendChild( document.createTextNode(count + ' ' + unit) );
+	for (var i in g.panes_and_field_names) {
+		var p = document.getElementById(i);
+		if (p) util.widgets.remove_children(p);
 	}
 
 	/******************************************************************************************************/
-	/* List the copy barcodes */
-
-	for (var i in g.summary['Barcode']) {
-		var bc = i;
-		var hbox = document.createElement('hbox'); bcs.appendChild(hbox);
-		var bc_label = document.createElement('description'); hbox.appendChild(bc_label);
-		bc_label.appendChild( document.createTextNode(bc) );
-	}
-
-	/******************************************************************************************************/
-	/* List the other non-editable fields in this pane */
-
-	var groupbox; var caption; var vbox; var grid; var rows;
-	for (var i = 0; i < g.left_pane_field_names.length; i++) {
-		try {
-			var f = g.left_pane_field_names[i]; var fn = f[0];
-			if (fn == 'Call Number' || fn == 'Barcode') continue;
-			groupbox = document.createElement('groupbox'); bcs.parentNode.parentNode.appendChild(groupbox);
-			caption = document.createElement('caption'); groupbox.appendChild(caption);
-			caption.setAttribute('label',fn);
-			vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
-			grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
-			grid.setAttribute('flex','1');
-			rows = grid.lastChild;
-			var row;
-			
-			/**************************************************************************************/
-			/* Loop through each value for the field */
-
-			for (var j in g.summary[fn]) {
-				var value = j; var count = g.summary[fn][j];
-				row = document.createElement('row'); rows.appendChild(row);
-				var label1 = document.createElement('description'); row.appendChild(label1);
-				if (g.special_exception[ fn ]) {
-					g.special_exception[ fn ]( label1, value );
-				} else {
-					label1.appendChild( document.createTextNode(value) );
-				}
-				var label2 = document.createElement('description'); row.appendChild(label2);
-				var unit = count == 1 ? 'copy' : 'copies';
-				label2.appendChild( document.createTextNode(count + ' ' + unit) );
-			}
-			var hbox = document.createElement('hbox'); 
-			vbox.appendChild(hbox);
-		} catch(E) {
-			g.error.sdump('D_ERROR','copy editor: ' + E + '\n');
-		}
-	}
-
-	/******************************************************************************************************/
-	/* Prepare the right panel, which is different for 1-copy view and multi-copy view */
+	/* Prepare the panes */
 
 	if (g.single_edit) {
 		
 		/******************************************************************************************************/
 		/* For a less dangerous batch edit, choose one field here */
 
-		var gb = document.createElement('groupbox'); rp.appendChild(gb);
+		var gb = document.createElement('groupbox'); document.getElementById('input_placeholder').appendChild(gb);
 		var c = document.createElement('caption'); gb.appendChild(c);
 		c.setAttribute('label','Choose a field to edit');
 		JSAN.use('util.widgets'); JSAN.use('util.functional');
 		var ml = util.widgets.make_menulist(
 			util.functional.map_list(
-				g.right_pane_field_names,
+				g.panes_and_field_names.right_pane,
 				function(o,i) { return [ o[0], i ]; }
 			)
 		);
@@ -605,7 +558,7 @@ g.render = function() {
 		ml.addEventListener(
 			'command',
 			function(ev) {
-				g.render_input(gb, g.right_pane_field_names[ ev.target.value ][1].input);
+				g.render_input(gb, g.panes_and_field_names.right_pane[ ev.target.value ][1].input);
 				ml.disabled = true;
 			}, 
 			false
@@ -613,76 +566,20 @@ g.render = function() {
 
 	}
 
-	if (g.copies.length == 1) {
+	/******************************************************************************************************/
+	/* multi-copy mode has a groupbox for each field */
 
-		/******************************************************************************************************/
-		/* 1-copy mode has a single groupbox and each field is a row on a grid */
+	var groupbox; var caption; var vbox; var grid; var rows;
+	
+	/******************************************************************************************************/
+	/* Loop through the field names */
 
-		var groupbox; var caption; var vbox; var grid; var rows;
-		groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
-		caption = document.createElement('caption'); groupbox.appendChild(caption);
-		caption.setAttribute('label','Fields');
-		vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
-		grid = util.widgets.make_grid( [ {}, { 'flex' : 1 } ] ); vbox.appendChild(grid);
-		grid.setAttribute('flex','1');
-		rows = grid.lastChild;
-
-		/******************************************************************************************************/
-		/* Loop through the field names */
-
-		for (var i = 0; i < g.right_pane_field_names.length; i++) {
+	for (h in g.panes_and_field_names) {
+		if (!document.getElementById(h)) continue;
+		for (var i = 0; i < g.panes_and_field_names[h].length; i++) {
 			try {
-				var f = g.right_pane_field_names[i]; var fn = f[0];
-				var row;
-
-				/**************************************************************************************/
-				/* Loop through each value for the field */
-
-				for (var j in g.summary[fn]) {
-					var value = j; var count = g.summary[fn][j];
-					row = document.createElement('row'); rows.appendChild(row);
-					var label0 = document.createElement('description'); row.appendChild(label0);
-					label0.appendChild( document.createTextNode(fn) );
-					label0.setAttribute('style','font-weight: bold');
-					var label1 = document.createElement('description'); row.appendChild(label1);
-					if (g.special_exception[ fn ]) {
-						g.special_exception[ fn ]( label1, value );
-					} else {
-						label1.appendChild( document.createTextNode(value) );
-					}
-
-				}
-
-				/**************************************************************************************/
-				/* Render the input widget */
-
-				var hbox = document.createElement('hbox'); 
-				hbox.setAttribute('id',fn);
-				row.setAttribute('style','border-bottom: dotted black thin');
-				row.appendChild(hbox);
-				if (f[1].input && g.edit) {
-					g.render_input(hbox,f[1].input);
-				}
-
-			} catch(E) {
-				g.error.sdump('D_ERROR','copy editor: ' + E + '\n');
-			}
-		}
-
-	} else {
-
-		/******************************************************************************************************/
-		/* multi-copy mode has a groupbox for each field */
-
-		var groupbox; var caption; var vbox; var grid; var rows;
-		
-		/******************************************************************************************************/
-		/* Loop through the field names */
-
-		for (var i = 0; i < g.right_pane_field_names.length; i++) {
-			try {
-				var f = g.right_pane_field_names[i]; var fn = f[0];
-				groupbox = document.createElement('groupbox'); rp.appendChild(groupbox);
+				var f = g.panes_and_field_names[h][i]; var fn = f[0];
+				groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
 				caption = document.createElement('caption'); groupbox.appendChild(caption);
 				caption.setAttribute('label',fn);
 				vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
@@ -714,9 +611,12 @@ g.render = function() {
 				/**************************************************************************************/
 				/* Render the input widget */
 
-				if (f[1].input && g.edit) {
-					g.render_input(hbox,f[1].input);
+				if (!g.single_edit) {
+					if (f[1].input && g.edit) {
+						g.render_input(hbox,f[1].input);
+					}
 				}
+
 			} catch(E) {
 				g.error.sdump('D_ERROR','copy editor: ' + E + '\n');
 			}

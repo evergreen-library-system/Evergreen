@@ -39,19 +39,18 @@
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Copy Viewer"/>
 
-		<hbox flex="1">
-			<vbox style="overflow: scroll"> <!-- left pane -->
-				<groupbox id="gb_callnumbers">
-					<caption label="Call Numbers"/>
-					<vbox id="call_number_summary" flex="1"/>
-				</groupbox>
-				<groupbox id="gb_barcodes">
-					<caption label="Barcodes"/>
-					<vbox id="barcode_summary" flex="1"/>
-				</groupbox>
-			</vbox>
+		<hbox id="input_placeholder"/>
+
+		<hbox flex="1" style="overflow: scroll">
+			<vbox id="left_pane"/>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane" style="overflow: scroll" flex="1"/> <!-- right pane -->
+			<vbox id="right_pane"/>
+			<splitter><grippy /></splitter>
+			<vbox id="right_pane2"/>
+			<splitter><grippy /></splitter>
+			<vbox id="right_pane3"/>
+			<splitter><grippy /></splitter>
+			<vbox id="right_pane4"/>
 		</hbox>
 
 		<hbox id="nav">
