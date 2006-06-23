@@ -149,7 +149,7 @@ To-do list:
 				</xsl:if>
 				<xsl:for-each select="atom:link[(@rel='alternate' or @rel='self' or @rel='description') and @href]">
 					<xsl:variable name="linkurl"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="@href" /></xsl:call-template></xsl:variable>
-					<link rel="{@rel}" href="{$linkurl}" hreflang="{@hreflang}" title="{@title}" />
+					<link rel="alternate" href="{$linkurl}" hreflang="{@hreflang}" title="{@title}" type="{@type}"/>
 				</xsl:for-each>
 			</head>
 			<body>
