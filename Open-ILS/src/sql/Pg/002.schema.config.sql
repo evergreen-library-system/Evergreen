@@ -152,7 +152,8 @@ CREATE TABLE config.non_cataloged_type (
 	id		SERIAL		PRIMARY KEY,
 	owning_lib	INT		NOT NULL, -- REFERENCES actor.org_unit (id),
 	name		TEXT		NOT NULL UNIQUE,
-	circ_duration	INTERVAL	NOT NULL DEFAULT '14 days'::INTERVAL
+	circ_duration	INTERVAL	NOT NULL DEFAULT '14 days'::INTERVAL,
+	in_house	BOOL		NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.non_cataloged_type IS $$
 /*
