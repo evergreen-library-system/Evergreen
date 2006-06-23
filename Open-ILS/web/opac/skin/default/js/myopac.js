@@ -797,6 +797,11 @@ function myOPACShowBookbags(force) {
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
+			link = $n(row, 'myopac_bb_published_atom');
+			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/atom/'+cont.id(), false));  
+			link.setAttribute('target', '_blank' );
+			unHideMe(link);
+
 			link = $n(row, 'myopac_bb_make_unpublished');
 			link.setAttribute('href', 'javascript:myOPACMakeBBPublished("'+cont.id()+'", true);');
 			unHideMe(link);

@@ -32,6 +32,9 @@
 					<span name='myopac_bb_published_no' class='hide_me'>No</span>
 					<span name='myopac_bb_published_yes' class='hide_me'>Yes</span>
 					<a name='myopac_bb_published_view' class='classic_link hide_me'>(View)</a>
+					<a name='myopac_bb_published_atom' class='unadorned_link hide_me'>
+						<img border="0" src="/opac/images/small-rss.png" title="ATOM Feed" alt="ATOM Feed"/>
+					</a>
 				</td>
 
 				<td>
