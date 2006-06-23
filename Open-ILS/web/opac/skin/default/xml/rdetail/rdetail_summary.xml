@@ -8,7 +8,7 @@
 
 			<tr>
 				<td id='rdetail_image_cell' rowspan='10'>
-					<a style='border: none;' id='rdetail_img_link'>
+					<a id='rdetail_img_link'>
 						<img style='border: none;' id='rdetail_image'> </img>
 					</a>
 				</td>
