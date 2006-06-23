@@ -209,6 +209,7 @@ function _rdetailDraw(r) {
 	$('rdetail_place_hold').setAttribute(
 		'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
 
+	$('rdetail_img_link').setAttribute('href', buildISBNSrc(cleanISBN(record.isbn()), 'large'));
 	G.ui.rdetail.image.setAttribute("src", buildISBNSrc(cleanISBN(record.isbn())));
 	runEvt("rdetail", "recordDrawn");
 	recordsCache.push(record);
