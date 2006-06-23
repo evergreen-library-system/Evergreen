@@ -798,7 +798,7 @@ function myOPACShowBookbags(force) {
 			unHideMe(link);
 
 			link = $n(row, 'myopac_bb_published_atom');
-			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/atom/'+cont.id(), false));  
+			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/rss2/'+cont.id(), false));  
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
