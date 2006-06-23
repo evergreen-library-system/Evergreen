@@ -104,7 +104,7 @@ util.network.prototype = {
 				r = 1;
 
 			} else {
-				r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message "' + name + '".','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
+				r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
 				if (r == 1) {
 					data.proceed_offline = true; data.stash('proceed_offline');
 					dump('Remembering proceed_offline for 200000 ms.\n');
