@@ -619,10 +619,10 @@ sub _run_permit_scripts {
 	# ---------------------------------------------------------------------
 	# Now collect all of the events together
 	# ---------------------------------------------------------------------
-	my @allevents = ( @evts_so_far, @$copy_events );
 
-	#push( @allevents, OpenILS::Event->new($_)) for @$penalties;
-	#push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
+	my @allevents; #= ( @evts_so_far, @$copy_events );
+	push( @allevents, OpenILS::Event->new($_)) for @evts_so_far;
+	push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
 
 	my $ae = _check_copy_alert($ctx->{copy});
 	push( @allevents, $ae ) if $ae;
