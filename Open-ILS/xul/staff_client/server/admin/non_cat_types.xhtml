@@ -35,21 +35,26 @@
 
 			<br/>
 
-			<table class='data_grid data_grid_center' width='65%'>
+			<table class='data_grid data_grid_center' width='85%'>
 				<thead>
-					<tr><td colspan='3'>Create a new non-cataloged type</td></tr>
+					<tr><td colspan='5'>Create a new non-cataloged type</td></tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td><input id='nc_new_name'> </input></td>
 						<td>
-							<input id='nc_new_interval_count' type='text' size='2' maxlength='2' value='14'/>
+							<input id='nc_new_interval_count' type='text' size='3' maxlength='3' value='14'/>
 							<select id='nc_new_interval_type' style='width: 6em;'>
+								<option value='minutes'>Minutes</option>
 								<option value='hours'>Hours</option>
 								<option value='days' selected='selected'>Days</option>
 								<option value='weeks'>Weeks</option>
 								<option value='months'>Months</option>
 							</select>
+						</td>
+						<td>Circulate In-House? 
+							<a href='javascript:alert($("cd_in_house_exp").innerHTML);' style='color:red'>(??)</a>
+							<input id='nc_new_inhouse' type='checkbox'/>
 						</td>
 						<td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
 						<td><input id='nc_new_submit' type='submit' value='Create' disabled='disabled'> </input></td>
@@ -65,6 +70,7 @@
 						<td>Name</td>
 						<td>Owning Location</td>
 						<td>Duration</td>
+						<td>Circulate In House</td>
 						<td>Edit</td>
 						<td>Delete</td>
 					</tr>
@@ -74,13 +80,17 @@
 						<td><b name='nc_name'> </b></td>
 						<td name='nc_owner'/>
 						<td>
-							<input name='nc_interval_count' type='text' size='2' maxlength='2' disabled='disabled'/>
+							<input name='nc_interval_count' type='text' size='3' maxlength='3' disabled='disabled'/>
 							<select name='nc_interval_type' style='width: 6em;' disabled='disabled'>
+								<option value='minutes'>Minutes</option>
 								<option value='hours'>Hours</option>
 								<option value='days'>Days</option>
 								<option value='weeks'>Weeks</option>
 								<option value='months'>Months</option>
 							</select>
+						</td>
+						<td>
+							<input name='nc_inhouse' type='checkbox' disabled='disabled'/>
 						</td>
 						<td><input name='nc_edit' type='submit' value='Edit' disabled='disabled'/></td>
 						<td><input name='nc_delete' type='submit' value='Delete' disabled='disabled'/></td>
@@ -92,22 +102,33 @@
 		<table class='hide_me'> <!-- repository for template rows -->
 			<tbody>
 				<tr id='nc_edit_row_temaplate' class='insert_row' edit='1'>
-					<td colspan='4' align='center'>
+					<td align='center'>
 						<span class='padded'>
 							<input name='nc_edit_name' type='text'> </input>
 						</span>
+					</td>
+					<td name='nc_edit_owner'/>
+					<td>
 						<span>
-							<input name='nc_edit_interval_count' type='text' size='2' maxlength='2'/>
+							<input name='nc_edit_interval_count' type='text' size='3' maxlength='3'/>
 							<select name='nc_edit_interval_type' style='width: 6em;'>
+								<option value='minutes'>Minutes</option>
 								<option value='hours'>Hours</option>
 								<option value='days'>Days</option>
 								<option value='weeks'>Weeks</option>
 								<option value='months'>Months</option>
 							</select>
 						</span>
+					</td>
+
+					<td><input name='nc_edit_inhouse' type='checkbox'/></td>
+
+					<td>
 						<span class='padded'>
 							<input name='nc_edit_submit' type='submit' value='Submit'> </input>
 						</span>
+					</td>
+					<td>
 						<span class='padded'>
 							<input name='nc_edit_cancel' type='submit' value='Cancel'> </input>
 						</span>
@@ -119,6 +140,12 @@
 
 	<span class='hide_me' id='nc_delete_confirm'>
 		Are you sure you wish to delete the select non cataloged type?
+	</span>
+
+	<span class='hide_me' id='cd_in_house_exp'>
+		If the 'In-House' flag is set on a non-cataloged type, items that circulate as
+		that type will create "In-House" circulations.  This is ideal for computer use, 
+		room "rentals", etc.
 	</span>
 
 </html>

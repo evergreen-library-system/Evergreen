@@ -49,7 +49,9 @@ function ncCreateNew() {
 	var org = getSelectorVal($('nc_new_owner'));
 	var time = $('nc_new_interval_count').value;
 	var type = getSelectorVal($('nc_new_interval_type'));
-	var req = new Request(CREATE_NON_CAT_TYPE, SESSION, name, org, time + ' ' + type );
+	var inh = $('nc_new_inhouse').checked ? 1 : null;
+
+	var req = new Request(CREATE_NON_CAT_TYPE, SESSION, name, org, time + ' ' + type, inh );
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
@@ -79,9 +81,11 @@ function ncDisplayTypes(r) {
 		var org = findOrgUnit( type.owning_lib() );
 		var row = rowTemplate.cloneNode(true);
 
+
 		row.id = 'nc_row_' + type.id();
 		$n(row, 'nc_name').appendChild(text(type.name()));
 		$n(row, 'nc_owner').appendChild(text(org.name()));
+		$n(row, 'nc_inhouse').checked = isTrue(type.in_house());
 
 		var idata = _splitInterval(type.circ_duration());
 		$n(row, 'nc_interval_count').value = idata[0];
@@ -97,21 +101,26 @@ function _splitInterval( interval ) {
 	interval = interval.split(/ /);
 	var time = interval[0];
 	var type = interval[1];
-	if( time.match(/:/) ) return [ time.replace(/(\d{2}):\d{2}:\d{2}/,'$1'), 'hours' ];
-	if( type.match(/h/) ) return [ time, 'hours' ];
-	if( type.match(/d/) ) return [ time, 'days' ];
-	if( type.match(/w/) ) return [ time, 'weeks' ];
-	if( type.match(/m/) ) return [ time, 'months' ];
+	 
+	if( time.match(/:/) ) {
+		var d = time.split(/:/);
+		if(d[0] == '00') return [ d[1], 'minutes' ];
+		if(d[0] != '00' && d[1] != '00')
+			return [ parseInt(d[1]) + (d[0]*60), 'minutes' ];
+		return [ d[0], 'hours' ]
+	}
+
+	if( type.match(/mi/i) ) return [ time, 'minutes' ];
+	if( type.match(/h/i) ) return [ time, 'hours' ];
+	if( type.match(/d/i) ) return [ time, 'days' ];
+	if( type.match(/w/i) ) return [ time, 'weeks' ];
+	if( type.match(/mo/i) ) return [ time, 'months' ];
 }
 
 function ncSetRowCallbacks( type, owner, tbody, row ) {
 
 	checkDisabled( $n(row, 'nc_edit'), owner, 'UPDATE_NON_CAT_TYPE');
 
-	/*
-	mydepth = findOrgDepth( PERMS['DELETE_NON_CAT_TYPE'] );
-	if( mydepth != -1 && mydepth <= tdepth ) $n(row, 'nc_delete').disabled = false;
-	*/
 	checkDisabled( $n(row, 'nc_delete'), owner, 'DELETE_NON_CAT_TYPE' );
 
 	$n(row, 'nc_edit').onclick = 
@@ -132,11 +141,15 @@ function ncEditType( tbody, row, type ) {
 	$n(row, 'nc_edit_interval_count').value = idata[0];
 	setSelector( $n(row, 'nc_edit_interval_type'), idata[1]);
 
+	$n(row, 'nc_edit_inhouse').checked = isTrue(type.in_house());
+	$n(row, 'nc_edit_owner').appendChild(text( findOrgUnit(type.owning_lib()).name() ));
+
 	$n(row, 'nc_edit_submit').onclick = function() { 
 		var name = $n(row, 'nc_edit_name').value;
 		var time = $n(row, 'nc_edit_interval_count').value;
 		var tp = getSelectorVal($n(row, 'nc_edit_interval_type'));
-		ncEditSubmit( type, name, time + ' ' + tp );
+		var inh = $n(row, 'nc_edit_inhouse').checked ? 't' : 'f';
+		ncEditSubmit( type, name, time + ' ' + tp, inh );
 	};
 
 	$n(row, 'nc_edit_cancel').onclick = 
@@ -150,10 +163,11 @@ function ncEditType( tbody, row, type ) {
 	name.select();
 }
 
-function ncEditSubmit( type, name, interval ) {
+function ncEditSubmit( type, name, interval, inhouse ) {
 	if(!name) return;
 	type.name(name);
 	type.circ_duration(interval);
+	type.in_house(inhouse);
 	var req = new Request( UPDATE_NON_CAT_TYPE, SESSION, type );
 	req.send(true);
 	var res = req.result();
