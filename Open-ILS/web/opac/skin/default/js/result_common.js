@@ -6,20 +6,19 @@ var lowHitCount = 4;
 var resultFetchAllRecords = false;
 
 /* set up the event handlers */
-G.evt.result.hitCountReceived.push(resultSetHitInfo);
-G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
-G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
-G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
-//G.evt.result.allRecordsReceived.push(resultBuildCaches );
+if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
+	G.evt.result.hitCountReceived.push(resultSetHitInfo);
+	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
+	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
+	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
+	attachEvt('result','lowHits',resultLowHits);
+	attachEvt('result','zeroHits',resultZeroHits);
+	attachEvt( "common", "locationUpdated", resultSBSubmit );
+	/* do this after we have ID's so the rank for mr pages will be correct */
+	attachEvt("result", "preCollectRecords", resultPaginate);
+}
 
-attachEvt('result','lowHits',resultLowHits);
-attachEvt('result','zeroHits',resultZeroHits);
-
-attachEvt( "common", "locationUpdated", resultSBSubmit );
 function resultSBSubmit(){searchBarSubmit();}
-
-/* do this after we have ID's so the rank for mr pages will be correct */
-attachEvt("result", "preCollectRecords", resultPaginate);
 
 /* returns the last 'index' postion ocurring in this page */
 function resultFinalPageIndex() {
@@ -27,7 +26,6 @@ function resultFinalPageIndex() {
 		return getHitCount() - 1;
 	return getOffset() + getDisplayCount() - 1;
 }
-
 
 
 

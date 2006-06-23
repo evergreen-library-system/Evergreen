@@ -20,8 +20,10 @@ function rresultDoSearch() {
 
 	table = G.ui.result.main_table;
 	hideMe(G.ui.result.row_template);
-	while( table.parentNode.rows.length <= (getDisplayCount() +1) ) 
-		hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
+	if( table && table.parentNode ) {
+		while( table.parentNode.rows.length <= (getDisplayCount() +1) ) 
+			hideMe(table.appendChild(G.ui.result.row_template.cloneNode(true)));
+	}
 	rresultCollectIds();
 }
 
@@ -321,5 +323,6 @@ function rresultFilterSearchResults(r) {
 		ids.push(result.ids[i][0]);
 	_rresultHandleIds( ids, result.count );
 }
+
 
 
