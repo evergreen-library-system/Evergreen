@@ -31,10 +31,12 @@ function _holdsHandleStaff() {
 }
 
 
+
 /** args:
   * record, volume, copy (ids)
   * request, recipient, editHold (objects)
   */
+
 function holdsDrawEditor(args) {
 
 	holdArgs = (args) ? args : holdArgs;
@@ -55,25 +57,14 @@ function holdsDrawEditor(args) {
 		return;
 	}
 
-	if(holdArgs.editHold) /* flesh the args with the existing hold */
+	if(holdArgs.editHold) // flesh the args with the existing hold 
 		holdArgsFromHold(holdArgs.editHold, holdArgs);
 
 	holdsDrawWindow();
-
-	if(holdArgs.editHold) {
-		hideMe($('holds_submit'));
-		unHideMe($('holds_update'));
-		var req = new Request(FETCH_HOLD_STATUS, 
-			G.user.session, holdArgs.editHold.id());
-		req.send(true);
-		holdArgs.status = req.result();
-		_holdsUpdateEditHold();
-	}  
-
 }
 
 
-/* updates the edit window with the existing hold's data */
+// updates the edit window with the existing hold's data 
 function _holdsUpdateEditHold() {
 
 	var hold = holdArgs.editHold;
@@ -220,7 +211,7 @@ function _h_set_rec(args, doneCallback) {
 
 function _h_set_rec_descriptors(args, doneCallback) {
 
-	/* grab the list of record desciptors attached to this records metarecord */
+	// grab the list of record desciptors attached to this records metarecord 
 	if( ! args.recordDescriptors )  {
 		var params = { record: args.record };
 
@@ -254,13 +245,26 @@ function _h_set_rec_descriptors(args, doneCallback) {
 
 
 
-
 function holdsDrawWindow() {
 	swapCanvas($('holds_box'));
 	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
 	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
-	holdFetchObjects(null, function(){__holdsDrawWindow();});
+	holdFetchObjects(null, 
+		function(){
+			__holdsDrawWindow();
+
+			if(holdArgs.editHold) {
+				hideMe($('holds_submit'));
+				unHideMe($('holds_update'));
+				var req = new Request(FETCH_HOLD_STATUS, 
+					G.user.session, holdArgs.editHold.id());
+				req.send(true);
+				holdArgs.status = req.result();
+				_holdsUpdateEditHold();
+			}  
+		}
+	);
 }
 
 function __holdsDrawWindow() {
@@ -398,8 +402,8 @@ function holdsParseMRFormats(str) {
 		formats			: formats,
 		mods_formats	: mods_formats,
 		lang				: data[2],
-		largeprint		: data[1],	
-	}
+		largeprint		: data[1]
+	};
 }
 
 
@@ -426,7 +430,7 @@ function holdsGetFormats() {
 
 	var lang;
 	var formats = [];
-	var sformats = []; /* selected formats */
+	var sformats = []; // selected formats 
 
 	var type = holdArgs.type;
 	var desc = holdArgs.recordDescriptors;
@@ -457,8 +461,8 @@ function holdsGetFormats() {
 	return {
 		lang : lang,
 		avail_formats : formats, 
-		sel_formats : sformats,
-	}
+		sel_formats : sformats
+	};
 }
 
 
@@ -478,11 +482,6 @@ function holdsSetSelectedFormats() {
 	var vals = getSelectedList(selector);
 
 	if(vals.length == 0) return;
-
-	/*
-	if( holdArgs.type == 'T' ) 
-		vals.push(holdArgs.myFormat);
-		*/
 
 	var fstring = "";
 
@@ -596,7 +595,7 @@ function holdsBuildHoldFromWindow() {
 	hold.target(target);
 	hold.hold_type(holdArgs.type);
 
-	/* check for alternate hold formats */
+	//check for alternate hold formats 
 	var fstring = holdsSetSelectedFormats();
 	if(fstring) { 
 		hold.hold_type('M'); 
@@ -651,10 +650,8 @@ function holdsUpdate(hold, user) {
 	if(!user) user = G.user;
 	var req = new Request(UPDATE_HOLD, user.session, hold);
 	req.send(true);
-	var x = req.result(); /* cause an exception if there is one */
+	var x = req.result(); // cause an exception if there is one 
 	runEvt('common', 'holdUpdated');
 }
-
-
 
 
