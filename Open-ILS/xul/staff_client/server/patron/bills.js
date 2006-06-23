@@ -152,9 +152,9 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_WIZARD
 												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billwizard',
-											'chrome,resizable'
+											'chrome,resizable,modal'
 										);
-										w.addEventListener('unload',function(){ obj.refresh(); },false);
+										obj.refresh();
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_wizard',E);	
 									}
@@ -171,12 +171,9 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable'
+											'chrome,resizable,modal'
 										);
-										w.addEventListener('unload',function() {
-											obj.OpenILS.data.init({'via':'stash'}); 
-											if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
-										},false);
+										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_history',E);	
 									}
@@ -193,12 +190,9 @@ patron.bills.prototype = {
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?current=1&patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable'
+											'chrome,resizable,modal'
 										);
-										w.addEventListener('unload',function() {
-											obj.OpenILS.data.init({'via':'stash'}); 
-											if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
-										}, false);
+										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
 									}
@@ -806,19 +800,17 @@ patron.bills.prototype = {
 									'command',
 									function(ev) {
 										JSAN.use('util.window'); var w = new util.window();
-										var wf = w.open(
+										w.open(
 											urls.XUL_PATRON_BILL_DETAILS 
 											+ '?patron_id=' + window.escape(obj.patron_id)
 											+ '&mbts_id=' + window.escape(my.mobts.id()),
 											'test' + my.mobts.id(),
-											'chrome,resizable'
+											'modal,chrome,resizable'
 										);
-										wf.addEventListener('unload',function(){
-											obj.OpenILS.data.init({'via':'stash'}); 
-											if (obj.OpenILS.data.temp == 'refresh') {
-												obj.refresh();
-											}
-										},false);
+										obj.OpenILS.data.init({'via':'stash'}); 
+										if (obj.OpenILS.data.temp == 'refresh') {
+											obj.refresh();
+										}
 
 									},
 									false
@@ -837,9 +829,9 @@ patron.bills.prototype = {
 												+ '?patron_id=' + window.escape(obj.patron_id)
 												+ '&xact_id=' + window.escape( my.mobts.id() ),
 											'billwizard',
-											'chrome,resizable'
+											'chrome,resizable,modal'
 										);
-										w.addEventListener('unload',function(){ obj.refresh(); },false);
+										obj.refresh();
 									},
 									false
 								);
