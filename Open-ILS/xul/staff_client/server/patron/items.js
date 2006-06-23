@@ -72,6 +72,7 @@ patron.items.prototype = {
 											7012 /* COPY_STATUS_MISSING */, 
 											7004 /* COPY_NOT_AVAILABLE */, 
 											7006 /* COPY_IS_REFERENCE */, 
+											7008 /* MAX_RENEWALS_REACHED */, 
 											7010 /* COPY_ALERT_MESSAGE */,
 										],
 										'text' : {
@@ -90,7 +91,16 @@ patron.items.prototype = {
 										}
 									}
 								);
-								if (typeof renew.ilsevent != 'undefined') { if (renew.ilsevent != 0) throw(robj); }
+								if (typeof renew.ilsevent != 'undefined') { 
+									switch(renew.ilsevent) {
+										case 0 /* SUCCESS */ : break;
+										case 5000 /* PERM_FAILURE */: break;
+										case 7008 /* MAX_RENEWALS_REACHED */ : break;
+										default:
+											throw(renew);
+										break;
+									}
+								}
 								obj.retrieve();
 							}
 							obj.retrieve();
