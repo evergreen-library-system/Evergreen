@@ -40,7 +40,7 @@
 			<link field="answers" reltype="has_many" key="question" map="" class="asva"/>
 		</links>
 	</class>
-	<class id="mbts" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_summary">
+	<class id="mbts" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_with_void_summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
