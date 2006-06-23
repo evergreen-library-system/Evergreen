@@ -109,7 +109,7 @@ cat.util.spawn_copy_editor = function(list,edit) {
 			obj.error.standard_unexpected_error_alert('copy update error',E);
 		}
 	} else {
-		alert('not updating');
+		//alert('not updating');
 	}
 	} catch(E) {
 		alert(E);

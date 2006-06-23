@@ -57,12 +57,11 @@ function my_init() {
 			document.getElementById('save').setAttribute('hidden','false'); 
 		}
 
-		//if (g.cgi.param('single_edit') == '1') {
-		//{
+		if (g.cgi.param('single_edit') == '1') {
 			g.single_edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('save').setAttribute('hidden','false'); 
-		//}
+		}
 
 		if (g.copies.length > 0 && g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
@@ -73,7 +72,7 @@ function my_init() {
 					"Status",
 					{ 
 						render: 'fm.status().name();', 
-						input: 'c = function(v){ g.apply("status",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+						input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 					}
 				]
 			);
@@ -132,8 +131,8 @@ function my_init() {
 				label_name,
 				{
 					render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
-						+ sc.id() + '; } ); l ? l.value() : null;',
-					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+						+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
+					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ); '
 						+ 'x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
 				}
@@ -297,14 +296,6 @@ g.panes_and_field_names = {
 	'left_pane' :
 [
 	[
-		"Alert Message",
-		{
-			render: 'fm.alert_message();',
-			input: 'c = function(v){ g.apply("alert_message",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-
-	[
 		"Barcode",		 
 		{
 			render: 'fm.barcode();',
@@ -348,22 +339,22 @@ g.panes_and_field_names = {
 	[
 		"OPAC Visible?",
 		{ 
-			render: 'fm.opac_visible() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("opac_visible",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.opac_visible() == null ? "<Unset>" : ( fm.opac_visible() == 1 ? "Yes" : "No" )', 
+			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Reference?",
 		{ 
-			render: 'fm.ref() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("ref",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.ref() == null ? "<Unset>" : ( fm.ref() == 1 ? "Yes" : "No" )', 
+			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Shelving Location",
 		{ 
 			render: 'fm.location().name();', 
-			input: 'c = function(v){ g.apply("location",v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
@@ -371,15 +362,15 @@ g.panes_and_field_names = {
 		"Circulation Library",		
 		{ 	
 			render: 'fm.circ_lib().shortname();',
-			input: 'c = function(v){ g.apply("circ_lib",v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 
 	[
 		"Copy Number",
 		{ 
-			render: 'fm.copy_number();',
-			input: 'c = function(v){ g.apply("copy_number",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.copy_number() == null ? "<Unset>" : fm.copy_number()',
+			input: 'c = function(v){ g.apply("copy_number",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],
@@ -390,36 +381,36 @@ g.panes_and_field_names = {
 		"Loan Duration",
 		{ 
 			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
-			input: 'c = function(v){ g.apply("loan_duration",v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
 	[
 		"Holdable?",
 		{ 
-			render: 'fm.holdable() ? "Yes" : "No";', 
-			input: 'c = function(v){ g.apply("holdable",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.holdable() == null ? "<Unset>" : ( fm.holdable() == 1? "Yes" : "No" )', 
+			input: 'c = function(v){ g.apply("holdable",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Circulate?",
 		{ 	
 			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
-			input: 'c = function(v){ g.apply("circulate",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	 [
 		"Circulate as Type",	
 		{ 	
-			render: 'fm.circ_as_type();',
-			input: 'c = function(v){ g.apply("circ_as_type",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.circ_as_type() == null ? "<Unset>" : fm.circ_as_type()',
+			input: 'c = function(v){ g.apply("circ_as_type",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[
 		"Circulation Modifier",
 		{	
-			render: 'fm.circ_modifier();',
-			input: 'c = function(v){ g.apply("circ_modifier",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.circ_modifier() == null ? "<Unset>" : fm.circ_modifier()',
+			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],
@@ -430,34 +421,41 @@ g.panes_and_field_names = {
 		"Fine Level",
 		{
 			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
-			input: 'c = function(v){ g.apply("fine_level",v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Deposit?",
 		{ 
-			render: 'fm.deposit() ? "Yes" : "No";',
-			input: 'c = function(v){ g.apply("deposit",v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.deposit() == null ? "<Unset>" : ( fm.deposit() == 1 ? "Yes" : "No" )',
+			input: 'c = function(v){ g.apply("deposit",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Deposit Amount",
 		{ 
 			render: 'util.money.sanitize( fm.deposit_amount() );',
-			input: 'c = function(v){ g.apply("deposit_amount",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("deposit_amount",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Price",
 		{ 
 			render: 'util.money.sanitize( fm.price() );', 
-			input: 'c = function(v){ g.apply("price",v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("price",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],
 
 'right_pane4' : 
 [
+	[
+		"Alert Message",
+		{
+			render: 'fm.alert_message();',
+			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
 ]
 
 };
@@ -539,7 +537,8 @@ g.render = function() {
 	/******************************************************************************************************/
 	/* Prepare the panes */
 
-	if (g.single_edit) {
+	//if (g.single_edit) {
+	if (false) {
 		
 		/******************************************************************************************************/
 		/* For a less dangerous batch edit, choose one field here */
@@ -558,7 +557,7 @@ g.render = function() {
 		ml.addEventListener(
 			'command',
 			function(ev) {
-				g.render_input(gb, g.panes_and_field_names.right_pane[ ev.target.value ][1].input);
+				g.render_input(gb, g.panes_and_field_names.right_pane[ ev.target.value ][1]);
 				ml.disabled = true;
 			}, 
 			false
@@ -606,15 +605,15 @@ g.render = function() {
 				}
 				var hbox = document.createElement('hbox'); 
 				hbox.setAttribute('id',fn);
-				vbox.appendChild(hbox);
+				groupbox.appendChild(hbox);
+				var hbox2 = document.createElement('hbox');
+				groupbox.appendChild(hbox2);
 
 				/**************************************************************************************/
 				/* Render the input widget */
 
-				if (!g.single_edit) {
-					if (f[1].input && g.edit) {
-						g.render_input(hbox,f[1].input);
-					}
+				if (f[1].input && g.edit) {
+					g.render_input(hbox,f[1]);
 				}
 
 			} catch(E) {
@@ -626,25 +625,81 @@ g.render = function() {
 
 /******************************************************************************************************/
 /* This actually draws the change button and input widget for a given field */
-g.render_input = function(node,input_cmd) {
+g.render_input = function(node,blob) {
 	try {
-		var spacer = document.createElement('spacer'); node.appendChild(spacer);
-		spacer.setAttribute('flex','1');
-		var deck = document.createElement('deck'); node.appendChild(deck);
-		var btn = document.createElement('button'); deck.appendChild(btn);
-		deck.setAttribute('style','width: 200px; min-width: 200px;');
-		btn.setAttribute('label','Change');
-		var x; var c; eval( input_cmd );
-		btn.addEventListener('command',
-			function(f) {
-				return function(ev) {
-					ev.target.parentNode.selectedIndex = 1;
-					c(ev.target.parentNode.lastChild.value);
+		// node = hbox ;    groupbox ->  hbox, hbox
+
+		var groupbox = node.parentNode;
+		var vbox = node.previousSibling;
+		var hbox = node;
+		var hbox2 = node.nextSibling;
+
+		var input_cmd = blob.input;
+		var render_cmd = blob.render;
+
+		var block = false; var first = true;
+
+		function on_mouseover(ev) {
+			groupbox.setAttribute('style','background: white');
+		}
+
+		function on_mouseout(ev) {
+			groupbox.setAttribute('style', groupbox.getAttribute('normal_style'));
+		}
+
+		vbox.addEventListener('mouseover',on_mouseover,false);
+		vbox.addEventListener('mouseout',on_mouseout,false);
+		groupbox.addEventListener('mouseover',on_mouseover,false);
+		groupbox.addEventListener('mouseout',on_mouseout,false);
+		groupbox.firstChild.addEventListener('mouseover',on_mouseover,false);
+		groupbox.firstChild.addEventListener('mouseout',on_mouseout,false);
+
+		function on_click(ev){
+			try {
+				if (block) return; block = true;
+
+				function post_c(v) {
+					groupbox.setAttribute('normal_style','background: lightgreen');
+					groupbox.setAttribute('style',groupbox.getAttribute('normal_style'));
 				}
-			}(c),
-			false
-		);
-		if (x) deck.appendChild(x);
+			/*
+				function post_c(v) {
+					var label = document.createElement('label');
+					var fm = {}; // kludgey
+					fm[ render_cmd.match(/fm\.(.+?)\(\)/)[1] ] = function() { return v; }
+					label.setAttribute('value','New Value: ' + eval(render_cmd) );
+					label.setAttribute('style','color: green');
+					groupbox.setAttribute('normal_style','background: lightgreen');
+					setTimeout(
+						function() {
+							util.widgets.remove_children(hbox);
+							hbox.appendChild(label);
+							if (first) { 
+								first = false;
+							} else {
+								util.widgets.remove_children(hbox2);
+								first = true;
+							}
+							block = false;
+							groupbox.setAttribute('style',groupbox.getAttribute('normal_style'));
+						}, 0
+					);
+				}
+			*/
+				var x; var c; eval( input_cmd );
+				if (x) {
+					util.widgets.remove_children(hbox2);
+					hbox2.appendChild(x);
+					setTimeout( function() { x.focus(); }, 0 );
+				}
+				c(x.value);
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('render_input',E);
+			}
+		}
+		vbox.addEventListener('click',on_click, false);
+		hbox.addEventListener('click',on_click, false);
+		groupbox.firstChild.addEventListener('click',on_click, false);
 
 	} catch(E) {
 		g.error.sdump('D_ERROR',E + '\n');
