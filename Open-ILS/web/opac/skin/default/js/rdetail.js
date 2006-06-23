@@ -1,5 +1,6 @@
 /* */
 
+
 detachAllEvt('common', 'run');
 attachEvt("common", "run", rdetailDraw);
 attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
@@ -151,65 +152,25 @@ function rdetailViewMarc(r,id) {
 
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
-	/* add the unapi span inside a hidden div */
 	$('rdetail_view_marc_box').insertBefore(span, $('rdetail_view_marc_box').firstChild);
 }
 
 
 function rdetailShowLocalCopies() {
-
-	/* XXX */
 	rdetailShowLocal = true;
 	rdetailBuildInfoRows();
 	hideMe(G.ui.rdetail.cp_info_local);
 	unHideMe(G.ui.rdetail.cp_info_all);
-	hideMe(G.ui.rdetail.cp_info_none); /* XXX */
-	return;
-
-
-
-	var found = false;
-	var rows = copyRowParent.getElementsByTagName("tr");
-	for( var r in rows ) {
-		var row = rows[r];
-		if( row.parentNode != copyRowParent ) continue; 
-		if(row.id == "__rdsrow") continue;
-		if(row.getAttribute && row.getAttribute("local")) {
-			unHideMe(row);
-			found = true;
-		} else {
-			hideMe(row);
-		}
-	}
-
-	if(!found) unHideMe(G.ui.rdetail.cp_info_none);
-	hideMe(G.ui.rdetail.cp_info_local);
-	unHideMe(G.ui.rdetail.cp_info_all);
-	rdetailLocalOnly = true;
+	hideMe(G.ui.rdetail.cp_info_none); 
 }
 
 function rdetailShowAllCopies() {
 
-	/* XXX */
 	rdetailShowLocal = false;
 	rdetailBuildInfoRows();
 	hideMe(G.ui.rdetail.cp_info_all);
 	unHideMe(G.ui.rdetail.cp_info_local);
-	hideMe(G.ui.rdetail.cp_info_none); /* XXX */
-	return;
-
-
-
-
-	var rows = copyRowParent.getElementsByTagName("tr");
-	for( var r in rows ) 
-		if(rows[r].getAttribute && rows[r].getAttribute("hasinfo"))
-			unHideMe(rows[r]);
-
-	hideMe(G.ui.rdetail.cp_info_all);
-	unHideMe(G.ui.rdetail.cp_info_local);
-	hideMe(G.ui.rdetail.cp_info_none);
-	rdetailLocalOnly = false;
+	hideMe(G.ui.rdetail.cp_info_none); 
 }
 
 
@@ -230,7 +191,7 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
 
-	/* see if the record has any external links */
+	// see if the record has any external links 
 	var links = record.online_loc();
 	for( var i = 0; links && links.length > 0 && i < links.length; i++ ) {
 		var href = links[i];
@@ -238,10 +199,11 @@ function _rdetailDraw(r) {
 			unHideMe($('rdetail_online_row'));
 			var name = links[i+1];
 			if(!name || name.match(/http/)) name = href;
-			$('rdetail_online').appendChild(elem('a', {href:href,class:'classic_link'}, name));
+			$('rdetail_online').appendChild(elem('a', {href:href,'class':'classic_link'}, name));
 			$('rdetail_online').appendChild(elem('br'));
 		}
 	}
+
 
 
 	$('rdetail_place_hold').setAttribute(
@@ -261,7 +223,7 @@ function _rdetailDraw(r) {
 	resultDrawSubjects();
 	resultDrawSeries();
 
-	/* grab added content */
+	// grab added content 
 	acCollectData(cleanISBN(record.isbn()), rdetailhandleAC);
 }
 
@@ -522,7 +484,6 @@ function rdetailBuildInfoRows() {
 	req.send();
 }
 
-/* pre-allocate the copy info table with all the appropriate org units in correct order */
 function _rdetailRows(node) {
 
 	if( rdetailShowLocal && getLocation() != globalOrgTree.id() ) {
@@ -538,7 +499,7 @@ function _rdetailRows(node) {
 				}
 			}
 		} else {
-			/* if the current node is not in our node trail */
+			// if the current node is not in our node trail 
 			var trail = orgNodeTrail(loc);
 			var intrail = grep( trail, function(i) { return (i.id() == node.id()); } );
 			if(!intrail) return;
@@ -588,7 +549,6 @@ function rdetailCNPrint(orgid, cn) {
 	openWindow(div.innerHTML);
 }
 
-/* walk through the copy info and build rows where necessary */
 var localCNFound = false;
 var ctr = 0;
 function _rdetailBuildInfoRows(r) {
@@ -600,11 +560,6 @@ function _rdetailBuildInfoRows(r) {
 	var summary = r.getResultObject();
 	if(!summary) return;
 
-	/* XXX
-	G.ui.rdetail.cp_info_loading.parentNode.removeChild(
-		G.ui.rdetail.cp_info_loading);
-		*/
-
 	var found = false;
 	for( var i = 0; i < summary.length; i++ ) {
 
@@ -613,16 +568,6 @@ function _rdetailBuildInfoRows(r) {
 		var thisOrg = findOrgUnit(arr[0]);
 		var rowNode = $("cp_info_" + thisOrg.id());
 		if(!rowNode) continue;
-
-		/* set up the print link (not done) */
-		var pn = rowNode.previousSibling;
-		if( pn && pn.getAttribute('novols') ) {
-			var a = $n(pn, 'lib_print_link');
-			a.setAttribute('href',
-				'javascript:rdetailCNPrint('+thisOrg.id()+',"'+arr[1]+'");');
-			/*unHideMe(a);*/
-			/* make this more smarter */
-		}
 
 		if(rowNode.getAttribute("used")) {
 
@@ -633,7 +578,7 @@ function _rdetailBuildInfoRows(r) {
 			var n = findNodeByName( rowNode, config.names.rdetail.lib_cell );
 			n.appendChild(text(thisOrg.name()));
 			n.setAttribute("style", "padding-left: " + ((findOrgDepth(thisOrg) - 1)  * 9) + "px;");
-			rowNode.id = "cp_info_" + thisOrg.id() + '_' + (++ctr); /* ensure a unique id */
+			rowNode.id = "cp_info_" + thisOrg.id() + '_' + (++ctr); //
 
 		} else {
 			rowNode.setAttribute("used", "1");
@@ -668,7 +613,6 @@ function _rdetailBuildInfoRows(r) {
 
 function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 
-	/* used for building the shelf browser */
 	if(local) {
 		var cache = callnumberCache[cn];
 		if( cache ) cache.count++;
@@ -706,8 +650,7 @@ function rdetailBuildBrowseInfo(row, cn, local, orgNode) {
 }
 
 
-/* sets the path to org as 'active' and displays the 
-	path if it's local */
+// sets the path to org as 'active' and displays the path if it's local 
 function rdetailSetPath(org, local) {
 	if( findOrgDepth(org) == 0 ) return;
 	var row = $("cp_info_" + org.id());
@@ -718,9 +661,9 @@ function rdetailSetPath(org, local) {
 
 
 
-/**
- * Append all the statuses for a give summary to the 
- * copy summary table */
+
+//Append all the statuses for a give summary to the 
+//copy summary table 
 function rdetailApplyStatuses( row, template, statuses ) {
 	for( var j in _statusPositions ) {
 		var stat = _statusPositions[j];
@@ -733,13 +676,11 @@ function rdetailApplyStatuses( row, template, statuses ) {
 }
 
 
-/* --------------------------------------------------------------------- */
 var _statusPositions = {};
 
-/**
- * Add one td (creating a new column) to the copy summary
- * table for each holdable copy status
- */
+//Add one td (creating a new column) to the copy summary
+//table for each holdable copy status
+
 function rdetailBuildStatusColumns() {
 
 	rdetailGrabCopyStatuses();
@@ -778,5 +719,4 @@ function rdetailGrabCopyStatuses() {
 function _rdetailSortStatuses(a, b) {
 	return parseInt(a.id()) - parseInt(b.id());
 }
-
 
