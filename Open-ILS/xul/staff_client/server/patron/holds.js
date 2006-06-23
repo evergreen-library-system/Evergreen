@@ -423,11 +423,12 @@ patron.holds.prototype = {
 							try {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
 									var doc_id = obj.retrieve_ids[i].target;
+									var htype = obj.retrieve_ids[i].type;
 									if (!doc_id) {
 										alert(obj.retrieve_ids[i].barcode + ' is not cataloged');
 										continue;
 									}
-									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+									var opac_url = ( htype == 'M' ?  (xulG.url_prefix( urls.opac_rresult ) + '?m=') : (xulG.url_prefix( urls.opac_rdetail) + '?r=')  ) + doc_id;
 									var content_params = { 
 										'session' : ses(),
 										'authtime' : ses('authtime'),
@@ -435,7 +436,7 @@ patron.holds.prototype = {
 									};
 									xulG.new_tab(
 										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':'Retrieving title...'}, 
+										{'tab_name': htype == 'M' ? 'Catalog' : 'Retrieving title...'}, 
 										content_params
 									);
 								}
@@ -493,7 +494,7 @@ patron.holds.prototype = {
 				obj.holds_map[ hold.id() ] = hold;
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON({'id':hold.id(),'target':hold.target(),'usr':hold.usr(),}),
+						'retrieve_id' : js2JSON({'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
 						'row' : {
 							'my' : {
 								'ahr' : hold,
