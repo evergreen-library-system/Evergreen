@@ -67,15 +67,16 @@ function my_init() {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 			g.apply("status",5 /* In Process */);
 		} else {
-			g.panes_and_field_names.right_pane4.push(
+			g.panes_and_field_names.left_pane = 
 				[
-					"Status",
-					{ 
-						render: 'fm.status().name();', 
-						input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-					}
-				]
-			);
+					[
+						"Status",
+						{ 
+							render: 'fm.status().name();', 
+							input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+						}
+					]
+				].concat(g.panes_and_field_names.left_pane);
 		}
 
 		if (g.copies.length != 1) {
@@ -308,15 +309,15 @@ g.panes_and_field_names = {
 		}
 	],
 	[
-		"Last Edit Date",
-		{ 
-			render: 'util.date.formatted_date( fm.edit_date(), "%F");',
-		}
-	],
-	[
 		"Creator",
 		{ 
 			render: 'fm.creator();',
+		}
+	],
+	[
+		"Last Edit Date",
+		{ 
+			render: 'util.date.formatted_date( fm.edit_date(), "%F");',
 		}
 	],
 	[
@@ -330,26 +331,6 @@ g.panes_and_field_names = {
 
 'right_pane' :
 [
-	[
-		"Call Number", 	
-		{
-			render: 'fm.call_number();',
-		}
-	],
-	[
-		"OPAC Visible?",
-		{ 
-			render: 'fm.opac_visible() == null ? "<Unset>" : ( fm.opac_visible() == 1 ? "Yes" : "No" )', 
-			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
-	[
-		"Reference?",
-		{ 
-			render: 'fm.ref() == null ? "<Unset>" : ( fm.ref() == 1 ? "Yes" : "No" )', 
-			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
 	[
 		"Shelving Location",
 		{ 
@@ -365,7 +346,12 @@ g.panes_and_field_names = {
 			input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
-
+	[
+		"Call Number", 	
+		{
+			render: 'fm.call_number();',
+		}
+	],
 	[
 		"Copy Number",
 		{ 
@@ -373,16 +359,17 @@ g.panes_and_field_names = {
 			input: 'c = function(v){ g.apply("copy_number",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
+
+
 ],
 
 'right_pane2' :
 [
 	[
-		"Loan Duration",
-		{ 
-			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
-			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-
+		"Circulate?",
+		{ 	
+			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
+			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
@@ -392,13 +379,23 @@ g.panes_and_field_names = {
 			input: 'c = function(v){ g.apply("holdable",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
+
 	[
-		"Circulate?",
-		{ 	
-			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
-			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		"Loan Duration",
+		{ 
+			render: 'switch(fm.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }',
+			input: 'c = function(v){ g.apply("loan_duration",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Short", "1" ], [ "Normal", "2" ], [ "Long", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+
 		}
 	],
+	[
+		"Fine Level",
+		{
+			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
+			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+
 	 [
 		"Circulate as Type",	
 		{ 	
@@ -416,14 +413,14 @@ g.panes_and_field_names = {
 ],
 
 'right_pane3' :
-[
-	[
-		"Fine Level",
+[	[
+		"Alert Message",
 		{
-			render: 'switch(fm.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }',
-			input: 'c = function(v){ g.apply("fine_level",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Low", "1" ], [ "Normal", "2" ], [ "High", "3" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.alert_message();',
+			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
+
 	[
 		"Deposit?",
 		{ 
@@ -445,17 +442,25 @@ g.panes_and_field_names = {
 			input: 'c = function(v){ g.apply("price",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
+
+	[
+		"OPAC Visible?",
+		{ 
+			render: 'fm.opac_visible() == null ? "<Unset>" : ( fm.opac_visible() == 1 ? "Yes" : "No" )', 
+			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
+	[
+		"Reference?",
+		{ 
+			render: 'fm.ref() == null ? "<Unset>" : ( fm.ref() == 1 ? "Yes" : "No" )', 
+			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("command",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+		}
+	],
 ],
 
 'right_pane4' : 
 [
-	[
-		"Alert Message",
-		{
-			render: 'fm.alert_message();',
-			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("change",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-		}
-	],
 ]
 
 };
@@ -688,6 +693,7 @@ g.render_input = function(node,blob) {
 			*/
 				var x; var c; eval( input_cmd );
 				if (x) {
+					util.widgets.remove_children(vbox);
 					util.widgets.remove_children(hbox2);
 					hbox2.appendChild(x);
 					setTimeout( function() { x.focus(); }, 0 );

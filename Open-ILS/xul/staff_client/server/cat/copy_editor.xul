@@ -42,15 +42,30 @@
 		<hbox id="input_placeholder"/>
 
 		<hbox flex="1" style="overflow: scroll">
-			<vbox id="left_pane"/>
+			<vbox flex="1">
+				<label value="Identification" style="font-weight: bold; font-size: large"/>
+				<vbox id="left_pane" flex="1"/>
+			</vbox>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane"/>
+			<vbox flex="1">
+				<label value="Location" style="font-weight: bold; font-size: large"/>
+				<vbox id="right_pane" flex="1"/>
+			</vbox>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane2"/>
+			<vbox flex="1">
+				<label value="Circulation" style="font-weight: bold; font-size: large"/>
+				<vbox id="right_pane2" flex="1"/>
+			</vbox>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane3"/>
+			<vbox flex="1">
+				<label value="Miscellaneous" style="font-weight: bold; font-size: large"/>
+				<vbox id="right_pane3" flex="1"/>
+			</vbox>
 			<splitter><grippy /></splitter>
-			<vbox id="right_pane4"/>
+			<vbox flex="1">
+				<label value="Statistics" style="font-weight: bold; font-size: large"/>
+				<vbox id="right_pane4" flex="1"/>
+			</vbox>
 		</hbox>
 
 		<hbox id="nav">
