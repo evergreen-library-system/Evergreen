@@ -532,7 +532,10 @@ function holdsBuildOrgSelector(node) {
 	var type = findOrgType(node.ou_type());
 	var indent = type.depth() - 1;
 	var opt = setSelectorVal( selector, index, node.name(), node.id(), null, indent );
-	if(!type.can_have_vols()) opt.disabled = true;
+	if(!type.can_have_users()) {
+		opt.disabled = true;
+		addCSSClass(opt, 'disabled_option');
+	}
 	
 	if( node.id() == holdArgs.recipient.home_ou() ) {
 		selector.selectedIndex = index;
@@ -547,8 +550,13 @@ function holdsBuildOrgSelector(node) {
 
 function holdsBuildHoldFromWindow() {
 
-	var org = $('holds_org_selector').options[
-		$('holds_org_selector').selectedIndex].value;
+	var org = getSelectorVal($('holds_org_selector'));
+	var node = findOrgUnit(org);
+	var ntype = findOrgType(node.ou_type());
+	if(!ntype.can_have_users()) {
+		alertId('holds_pick_good_org');
+		return;
+	}
 
 	var hold = new ahr();
 	if(holdArgs.editHold) {

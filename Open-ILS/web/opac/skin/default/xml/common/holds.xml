@@ -179,6 +179,10 @@
 
 	<span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
 
+	<span class='hide_me' id='holds_pick_good_org'>
+		Please select a physical location where your hold can be delivered.
+	</span>
+
 </div>
 
 
