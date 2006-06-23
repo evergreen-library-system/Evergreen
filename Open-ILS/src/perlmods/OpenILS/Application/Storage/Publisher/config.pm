@@ -61,6 +61,7 @@ sub ranged_config_non_cat {
 		$cnct->owning_lib($rec->{owning_lib});
 		$cnct->id($rec->{id});
 		$cnct->circ_duration($rec->{circ_duration});
+		$cnct->in_house($rec->{in_house});
 
 		$client->respond( $cnct );
 	}
