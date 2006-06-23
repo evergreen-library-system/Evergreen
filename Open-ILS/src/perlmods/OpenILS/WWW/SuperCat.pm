@@ -661,16 +661,12 @@ sub opensearch_feed {
 			$org = $t;
 			$org =~ s/^\s*//o;
 			$org =~ s/\s*$//o;
-			warn $org . "  >>> ";
 		} elsif ($c eq 'sort') {
 			($sort = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-			warn $sort . "  >>> ";
 		} elsif ($c eq 'dir') {
 			($sortdir = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-			warn $sortdir . "  >>> ";
 		} elsif ($c eq 'lang') {
 			($lang = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
-			warn $lang . "  >>> ";
 		} else {
 			$$searches{$c}{term} .= ' '.$t;
 			$cache_key .= $c . $t;
@@ -841,12 +837,13 @@ sub create_record_feed {
 	$type = 'atom' if ($type eq 'html');
 	$type = 'marcxml' if ($type eq 'htmlcard' or $type eq 'htmlholdings');
 
-	$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
+	#$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 
 	for my $record (@$records) {
-		#next unless($record);
-		my $rec = $record->id;
-		#my $record = $supercat->request( "open-ils.supercat.record.object.retrieve", $rec )->gather(1)->[0];
+		next unless($record);
+
+		#my $rec = $record->id;
+		my $rec = $record;
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 
@@ -865,7 +862,7 @@ sub create_record_feed {
 		}
 
 		$node->id($item_tag);
-		$node->update_ts(clense_ISO8601($record->edit_date));
+		#$node->update_ts(clense_ISO8601($record->edit_date));
 		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings" => 'text/html');
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?id=$item_tag");
