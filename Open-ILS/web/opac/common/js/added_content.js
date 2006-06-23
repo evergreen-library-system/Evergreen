@@ -4,10 +4,11 @@
 * The example below uses Amazon... *use at own risk*
 */
 
-function buildISBNSrc(isbn) {
+function buildISBNSrc(isbn, size) {
 	//return "http://images.amazon.com/images/P/" + isbn + ".01._SCMZZZZZZZ_.jpg";
 	//return '../../../../jackets/'+isbn;
-	return '../../../../extras/jacket/'+isbn;
+	size = (size) ? size : 'small';
+	return '../../../../extras/jacket/'+size+'/'+isbn;
 }      
 
 
@@ -41,8 +42,20 @@ function acCollectItem(context, type) {
 	req.onreadystatechange = function() {
 		if( req.readyState == 4 ) {
 			context.data[type] = { done : true }
-			if( req.status != 404 ) 
-				context.data[type].html = req.responseText;
+
+			if(IE) {
+
+				/* Someone please explain why IE treats status 404 as status 200?? 
+					On second thought, don't bother.
+				*/
+				if( ! req.responseText.match(
+					/The requested URL.*was not found on this server/) )
+					context.data[type].html = req.responseText;
+
+			} else {
+				if( req.status != 404 ) 
+					context.data[type].html = req.responseText;
+			}
 			acCheckDone(context);
 		}
 	}
