@@ -55,55 +55,54 @@ patron.items.prototype = {
 					'cmd_items_renew' : [
 						['command'],
 						function() {
-							try {
-							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i].barcode;
-								dump('Renew barcode = ' + barcode);
-								var renew = obj.network.simple_request(
-									'CHECKOUT_RENEW', 
-									[ ses(), { barcode: barcode, patron: obj.patron_id } ],
-									null,
-									{
-										'title' : 'Override Checkin Failure?',
-										'overridable_events' : [ 
-											1203 /* COPY_BAD_STATUS */, 
-											7010 /* COPY_ALERT_MESSAGE */, 
-											7011 /* COPY_STATUS_LOST */, 
-											7012 /* COPY_STATUS_MISSING */, 
-											7004 /* COPY_NOT_AVAILABLE */, 
-											7006 /* COPY_IS_REFERENCE */, 
-											7008 /* MAX_RENEWALS_REACHED */, 
-											7010 /* COPY_ALERT_MESSAGE */,
-										],
-										'text' : {
-											'1203' : function(r) {
-												return obj.OpenILS.data.hash.ccs[ r.payload.status() ].name();
-											},
-											'7010' : function(r) {
-												return r.payload;
-											},
-											'7004' : function(r) {
-												return obj.OpenILS.data.hash.ccs[ r.payload ].name();
-											},
-											'7010' : function(r) {
-												return r.payload;
-											},
+							try{
+								for (var i = 0; i < obj.retrieve_ids.length; i++) {
+									var barcode = obj.retrieve_ids[i].barcode;
+									dump('Renew barcode = ' + barcode);
+									var renew = obj.network.simple_request(
+										'CHECKOUT_RENEW', 
+										[ ses(), { barcode: barcode, patron: obj.patron_id } ],
+										null,
+										{
+											'title' : 'Override Checkin Failure?',
+											'overridable_events' : [ 
+												1203 /* COPY_BAD_STATUS */, 
+												7010 /* COPY_ALERT_MESSAGE */, 
+												7011 /* COPY_STATUS_LOST */, 
+												7012 /* COPY_STATUS_MISSING */, 
+												7004 /* COPY_NOT_AVAILABLE */, 
+												7006 /* COPY_IS_REFERENCE */, 
+												7008 /* MAX_RENEWALS_REACHED */, 
+												7010 /* COPY_ALERT_MESSAGE */,
+											],
+											'text' : {
+												'1203' : function(r) {
+													return obj.OpenILS.data.hash.ccs[ r.payload.status() ].name();
+												},
+												'7010' : function(r) {
+													return r.payload;
+												},
+												'7004' : function(r) {
+													return obj.OpenILS.data.hash.ccs[ r.payload ].name();
+												},
+												'7010' : function(r) {
+													return r.payload;
+												},
+											}
 										}
-									}
-								);
-								if (typeof renew.ilsevent != 'undefined') { 
-									switch(renew.ilsevent) {
-										case 0 /* SUCCESS */ : break;
-										case 5000 /* PERM_FAILURE */: break;
-										case 7008 /* MAX_RENEWALS_REACHED */ : break;
-										default:
-											throw(renew);
-										break;
+									);
+									if (typeof renew.ilsevent != 'undefined') { 
+										switch(renew.ilsevent) {
+											case 0 /* SUCCESS */ : break;
+											case 5000 /* PERM_FAILURE */: break;
+											case 7008 /* MAX_RENEWALS_REACHED */ : break;
+											default:
+												throw(renew);
+											break;
+										}
 									}
 								}
 								obj.retrieve();
-							}
-							obj.retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
 								obj.retrieve();
