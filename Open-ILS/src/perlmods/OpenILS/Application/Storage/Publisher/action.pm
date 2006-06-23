@@ -477,7 +477,9 @@ sub generate_fines {
 				$last_fine = $parser->parse_datetime( clense_ISO8601( $fine->billing_ts ) )->epoch;
 			} else {
 				$last_fine = $due;
-				$last_fine += $fine_interval * $grace;
+
+				# XXX There is some contention over this ... it basically makes the grace period "hard" (non-fining)
+				#$last_fine += $fine_interval * $grace;
 			}
 	
 			my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
