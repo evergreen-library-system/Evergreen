@@ -52,7 +52,7 @@ __PACKAGE__->register_method(
 	/);
 
 sub create_noncat_type {
-	my( $self, $client, $authtoken, $name, $orgId, $interval ) = @_;
+	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
 	my( $staff, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
 
@@ -72,6 +72,7 @@ sub create_noncat_type {
 	$type->name($name);
 	$type->owning_lib($orgId);
 	$type->circ_duration($interval);
+	$type->in_house( ($inhouse) ? 't' : 'f' );
 
 	my $id = $U->simplereq(
 		'open-ils.storage',
