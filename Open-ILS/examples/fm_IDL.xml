@@ -1,0 +1,1800 @@
+<IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistance/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1">
+	<class id="aws" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="owning_lib" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="cit" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="asvq" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_question_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="answers" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="responses" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="question" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="survey" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="survey" reltype="has_a" key="id" map="" class="asv"/>
+			<link field="responses" reltype="has_many" key="question" map="" class="asvr"/>
+			<link field="answers" reltype="has_many" key="question" map="" class="asva"/>
+		</links>
+	</class>
+	<class id="mbts" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_summary">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="last_billing_note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="last_billing_ts" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="last_billing_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="last_payment_note" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="last_payment_ts" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="last_payment_type" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="xact_type" oils_obj:array_position="16" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="aun" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="title" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="aus" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mafe" oils_obj:fieldmapper="metabib::author_field_entry" oils_persist:tablename="metabib.author_field_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.author_field_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="aihu" oils_obj:fieldmapper="action::in_house_use" oils_persist:tablename="action.in_house_use">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.in_house_use_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="use_time" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="item" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="atc" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="copy_status" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="dest" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="dest_recv_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="persistant_transfer" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="prev_hop" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="source_send_time" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="11" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
+			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="asvr" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_response_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="answer" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="answer_date" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="effective_date" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="question" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="response_group_id" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="survey" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="10" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="question" reltype="has_a" key="id" map="" class="asvq"/>
+			<link field="survey" reltype="has_a" key="id" map="" class="asv"/>
+			<link field="answer" reltype="has_a" key="id" map="" class="asva"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="ccbi" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="ccb"/>
+		</links>
+	</class>
+	<class id="are" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="arn_source" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="arn_value" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="last_xact_id" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="marc" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="14" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="notes" reltype="has_many" key="record" map="" class="arn"/>
+			<link field="record_descriptor" reltype="has_many" key="record" map="" class="ard"/>
+		</links>
+	</class>
+	<class id="ard" oils_obj:fieldmapper="authority::record_descriptor" oils_persist:tablename="authority.rec_descriptor">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.rec_descriptor_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="char_encoding" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="record_status" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="clm" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map">
+		<fields oils_persist:primary="code" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mccp" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="approval_code" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="cash_drawer" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="cc_number" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="cc_type" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="expire_month" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="expire_year" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="15" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="cmf" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field_class" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="cam" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map">
+		<fields oils_persist:primary="code" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="cifm" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map">
+		<fields oils_persist:primary="code" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="acn" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="copies" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="create_date" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="label" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="12" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="notes" reltype="has_many" key="call_number" map="" class="acnn"/>
+			<link field="copies" reltype="has_many" key="call_number" map="" class="acp"/>
+		</links>
+	</class>
+	<class id="cst" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mous" oils_obj:fieldmapper="money::open_user_summary" oils_persist:tablename="money.open_usr_summary">
+		<fields oils_persist:primary="usr" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="bre" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="call_numbers" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="fixed_fields" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="fingerprint" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="last_xact_id" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="marc" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="quality" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="tcn_source" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="tcn_value" oils_obj:array_position="18" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="metarecords" reltype="has_many" key="source" map="metarecord" class="mmrsm"/>
+			<link field="call_numbers" reltype="has_many" key="record" map="" class="acn"/>
+			<link field="keyword_field_entries" reltype="has_many" key="source" map="" class="mkfe"/>
+			<link field="record_descriptor" reltype="has_many" key="record" map="" class="mrd"/>
+			<link field="subject_field_entries" reltype="has_many" key="source" map="" class="msfe"/>
+			<link field="title_field_entries" reltype="has_many" key="source" map="" class="mtfe"/>
+			<link field="notes" reltype="has_many" key="record" map="" class="bren"/>
+			<link field="author_field_entries" reltype="has_many" key="source" map="" class="mafe"/>
+			<link field="series_field_entries" reltype="has_many" key="source" map="" class="msefe"/>
+			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
+		</links>
+	</class>
+	<class id="aouhoo" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="dow_0_close" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="dow_0_open" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="dow_1_close" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="dow_1_open" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="dow_2_close" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="dow_2_open" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="dow_3_close" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="dow_3_open" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="dow_4_close" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="dow_4_open" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="dow_5_close" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="dow_5_open" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="dow_6_close" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="dow_6_open" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="17" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="aoucd" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_closed_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="close_end" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="close_start" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="org_unit" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="reason" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="crcd" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_circ_duration_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="extended" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="max_renewals" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="shrt" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mobts" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="last_billing_note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="last_billing_ts" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="last_billing_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="last_payment_note" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="last_payment_ts" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="last_payment_type" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="xact_type" oils_obj:array_position="16" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="au" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="addresses" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="cards" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="checkouts" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field name="hold_requests" oils_obj:array_position="6" oils_persist:virtual="true" />
+			<field name="permissions" oils_obj:array_position="7" oils_persist:virtual="true" />
+			<field name="settings" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="standing_penalties" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="stat_cat_entries" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field name="survey_responses" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field name="ws_ou" oils_obj:array_position="12" oils_persist:virtual="true" />
+			<field name="wsid" oils_obj:array_position="13" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="alert_message" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="barred" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="billing_address" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="card" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="claims_returned_count" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="credit_forward_balance" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="day_phone" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="dob" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="email" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="evening_phone" oils_obj:array_position="25" oils_persist:virtual="false" />
+			<field name="expire_date" oils_obj:array_position="26" oils_persist:virtual="false" />
+			<field name="family_name" oils_obj:array_position="27" oils_persist:virtual="false" />
+			<field name="first_given_name" oils_obj:array_position="28" oils_persist:virtual="false" />
+			<field name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="30" oils_persist:virtual="false" />
+			<field name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" />
+			<field name="ident_type2" oils_obj:array_position="32" oils_persist:virtual="false" />
+			<field name="ident_value" oils_obj:array_position="33" oils_persist:virtual="false" />
+			<field name="ident_value2" oils_obj:array_position="34" oils_persist:virtual="false" />
+			<field name="last_xact_id" oils_obj:array_position="35" oils_persist:virtual="false" />
+			<field name="mailing_address" oils_obj:array_position="36" oils_persist:virtual="false" />
+			<field name="master_account" oils_obj:array_position="37" oils_persist:virtual="false" />
+			<field name="net_access_level" oils_obj:array_position="38" oils_persist:virtual="false" />
+			<field name="other_phone" oils_obj:array_position="39" oils_persist:virtual="false" />
+			<field name="passwd" oils_obj:array_position="40" oils_persist:virtual="false" />
+			<field name="photo_url" oils_obj:array_position="41" oils_persist:virtual="false" />
+			<field name="prefix" oils_obj:array_position="42" oils_persist:virtual="false" />
+			<field name="profile" oils_obj:array_position="43" oils_persist:virtual="false" />
+			<field name="second_given_name" oils_obj:array_position="44" oils_persist:virtual="false" />
+			<field name="standing" oils_obj:array_position="45" oils_persist:virtual="false" />
+			<field name="suffix" oils_obj:array_position="46" oils_persist:virtual="false" />
+			<field name="super_user" oils_obj:array_position="47" oils_persist:virtual="false" />
+			<field name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" />
+			<field name="usrname" oils_obj:array_position="49" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="net_access_level" reltype="has_a" key="id" map="" class="cnal"/>
+			<link field="profile" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="ident_type" reltype="has_a" key="id" map="" class="cit"/>
+			<link field="billing_address" reltype="has_a" key="id" map="" class="aua"/>
+			<link field="mailing_address" reltype="has_a" key="id" map="" class="aua"/>
+			<link field="home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="standing" reltype="has_a" key="id" map="" class="cst"/>
+			<link field="card" reltype="has_a" key="id" map="" class="ac"/>
+			<link field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
+			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="stat_cat_entry" class="actscecm"/>
+			<link field="circulations" reltype="has_many" key="usr" map="" class="circ"/>
+			<link field="billable_transactions" reltype="has_many" key="usr" map="" class="circ"/>
+			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
+			<link field="stat_cat_entry_user_maps" reltype="has_many" key="target_usr" map="" class="actscecm"/>
+			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
+			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
+			<link field="notes" reltype="has_many" key="usr" map="" class="aun"/>
+			<link field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
+			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
+			<link field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
+		</links>
+	</class>
+	<class id="aous" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:tablename="actor.org_unit_setting">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_setting_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="acpn" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="owning_copy" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="title" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owning_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="mfr" oils_obj:fieldmapper="metabib::full_rec" oils_persist:tablename="metabib.full_rec">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.full_rec_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="subfield" oils_obj:array_position="7" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="tag" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="mmr" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="fingerprint" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="master_record" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="mods" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="master_record" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="source_records" reltype="has_many" key="metarecord" map="source" class="mmrsm"/>
+		</links>
+	</class>
+	<class id="cnal" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="ppl" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.perm_list_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mmrsm" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_source_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="metarecord" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
+		</links>
+	</class>
+	<class id="mkfe" oils_obj:fieldmapper="metabib::keyword_field_entry" oils_persist:tablename="metabib.keyword_field_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.keyword_field_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="mcp" oils_obj:fieldmapper="money::cash_payment" oils_persist:tablename="money.cash_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="cash_drawer" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="10" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="ap" oils_obj:fieldmapper="actor::profile" oils_persist:tablename="actor.profile">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.profile_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="users" reltype="has_many" key="profile" map="" class="au"/>
+		</links>
+	</class>
+	<class id="mfp" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="mrd" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.rec_descriptor_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="audience" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="bib_level" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="cat_form" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="char_encoding" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="control_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="enc_level" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="item_form" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="item_lang" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="item_type" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="lit_form" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="pub_status" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="type_mat" oils_obj:array_position="16" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="ccs" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="holdable" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="ausp" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_standing_penalty_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="penalty_type" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="aua" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="address_type" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="city" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="country" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="county" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="post_code" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="state" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="street1" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="street2" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="valid" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="within_city_limits" oils_obj:array_position="14" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="acnn" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="call_number" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="title" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
+		</links>
+	</class>
+	<class id="arn" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="circ" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="checkin_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="desk_renewal" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="due_date" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="duration" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+		</links>
+	</class>
+	<class id="ccnbi" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_item_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="target_call_number" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="target_call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
+		</links>
+	</class>
+	<class id="cbreb" oils_obj:fieldmapper="container::biblio_record_entry_bucket" oils_persist:tablename="container.biblio_record_entry_bucket">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
+		</links>
+	</class>
+	<class id="ahcm" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_copy_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="hold" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+		</links>
+	</class>
+	<class id="ahn" oils_obj:fieldmapper="action::hold_notification" oils_persist:tablename="action.hold_notification">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_notification_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="hold" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="method" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="notify_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="notify_time" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+		</links>
+	</class>
+	<class id="acpl" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="circulate" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="holdable" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="opac_visible" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="owning_lib" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="ascecm" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="owning_copy" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="stat_cat_entry" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owning_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="stat_cat_entry" reltype="has_a" key="id" map="" class="asce"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
+		</links>
+	</class>
+	<class id="citm" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map">
+		<fields oils_persist:primary="code" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="4" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="asv" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="questions" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="responses" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="description" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="end_date" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="opac" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="poll" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="required" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="start_date" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="usr_summary" oils_obj:array_position="14" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="responses" reltype="has_many" key="survey" map="" class="asvr"/>
+			<link field="questions" reltype="has_many" key="survey" map="" class="asvq"/>
+		</links>
+	</class>
+	<class id="aoa" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_address_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="address_type" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="city" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="country" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="county" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="org_unit" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="post_code" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="state" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="street1" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="street2" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="valid" oils_obj:array_position="13" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="ahr" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="status" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="transit" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="capture_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="current_copy" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="email_notify" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="expire_time" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="fulfillment_lib" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="fulfillment_staff" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="fulfillment_time" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="hold_type" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="holdable_formats" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="phone_notify" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="pickup_lib" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="prev_check_time" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="request_lib" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="request_time" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="requestor" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="selection_depth" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="selection_ou" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="target" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="fulfillment_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="selection_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="requestor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="transits" reltype="has_many" key="hold" map="" class="ahtc"/>
+			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
+			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
+		</links>
+	</class>
+	<class id="aou" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="billing_address" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="holds_address" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="ill_address" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="mailing_address" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="ou_type" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="parent_ou" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="shortname" oils_obj:array_position="12" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
+			<link field="holds_address" reltype="has_a" key="id" map="" class="aoa"/>
+			<link field="ou_type" reltype="has_a" key="id" map="" class="aout"/>
+			<link field="mailing_address" reltype="has_a" key="id" map="" class="aoa"/>
+			<link field="parent_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="ill_address" reltype="has_a" key="id" map="" class="aoa"/>
+			<link field="users" reltype="has_many" key="home_ou" map="" class="au"/>
+			<link field="closed_dates" reltype="has_many" key="org_unit" map="" class="aoucd"/>
+			<link field="children" reltype="has_many" key="parent_ou" map="" class="aou"/>
+			<link field="circulations" reltype="has_many" key="circ_lib" map="" class="circ"/>
+			<link field="settings" reltype="has_many" key="org_unit" map="" class="aous"/>
+			<link field="addresses" reltype="has_many" key="org_unit" map="" class="aoa"/>
+			<link field="checkins" reltype="has_many" key="checkin_lib" map="" class="circ"/>
+			<link field="workstations" reltype="has_many" key="owning_lib" map="" class="aws"/>
+		</links>
+	</class>
+	<class id="ccnb" oils_obj:fieldmapper="container::call_number_bucket" oils_persist:tablename="container.call_number_bucket">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="items" reltype="has_many" key="bucket" map="" class="ccnbi"/>
+		</links>
+	</class>
+	<class id="asc" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="entries" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="opac_visible" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="entries" reltype="has_many" key="stat_cat" map="" class="asce"/>
+		</links>
+	</class>
+	<class id="ac" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="barcode" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+	<class id="actsc" oils_obj:fieldmapper="actor::stat_cat" oils_persist:tablename="actor.stat_cat">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="entries" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="opac_visible" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="entries" reltype="has_many" key="stat_cat" map="" class="actsce"/>
+		</links>
+	</class>
+	<class id="msefe" oils_obj:fieldmapper="metabib::series_field_entry" oils_persist:tablename="metabib.series_field_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.series_field_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="cub" oils_obj:fieldmapper="container::user_bucket" oils_persist:tablename="container.user_bucket">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="items" reltype="has_many" key="bucket" map="" class="cubi"/>
+		</links>
+	</class>
+	<class id="mcrp" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="afr" oils_obj:fieldmapper="authority::full_rec" oils_persist:tablename="authority.full_rec">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.full_rec_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="subfield" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="tag" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="cnct" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.non_cataloged_type_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="circ_duration" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="in_house" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owning_lib" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="aout" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_type_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="can_have_users" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="can_have_vols" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="depth" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="opac_label" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="parent" oils_obj:array_position="10" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="parent" reltype="has_a" key="id" map="" class="aout"/>
+			<link field="children" reltype="has_many" key="parent" map="" class="aout"/>
+		</links>
+	</class>
+	<class id="bren" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note">
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_note_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="record" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="10" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="mucs" oils_obj:fieldmapper="money::user_circulation_summary" oils_persist:tablename="money.usr_circulation_summary">
+		<fields oils_persist:primary="usr" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mg" oils_obj:fieldmapper="money::grocery" oils_persist:tablename="money.grocery">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="billing_location" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+		</links>
+	</class>
+	<class id="cbs" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.bib_source_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="quality" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="transcendant" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mbt" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
+			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="payments" reltype="has_many" key="billable_transaction" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="billable_transaction" map="" class="mb"/>
+		</links>
+	</class>
+	<class id="actsce" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
+		</links>
+	</class>
+	<class id="cubi" oils_obj:fieldmapper="container::user_bucket_item" oils_persist:tablename="container.user_bucket_item">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_item_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="target_user" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="target_user" reltype="has_a" key="id" map="" class="au"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
+		</links>
+	</class>
+	<class id="mus" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary">
+		<fields oils_persist:primary="usr" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="clfm" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map">
+		<fields oils_persist:primary="code" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mwp" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="aoc" oils_obj:fieldmapper="action::open_circulation" oils_persist:tablename="action.open_circulation">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="checkin_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="desk_renewal" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="due_date" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="duration" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" />
+			<field name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
+		</links>
+	</class>
+	<class id="msfe" oils_obj:fieldmapper="metabib::subject_field_entry" oils_persist:tablename="metabib.subject_field_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.subject_field_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="crrf" oils_obj:fieldmapper="config::rules::recuring_fine" oils_persist:tablename="config.rule_recuring_fine">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_recuring_fine_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="high" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="low" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="recurance_interval" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="mckp" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="cash_drawer" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="check_number" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="11" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="acp" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="stat_cat_entries" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="alert_message" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="barcode" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="call_number" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="circ_as_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="circ_lib" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="circ_modifier" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="circulate" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="copy_number" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="create_date" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="creator" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="deleted" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="deposit" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="deposit_amount" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="dummy_author" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="dummy_title" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="edit_date" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field name="editor" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="fine_level" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field name="holdable" oils_obj:array_position="22" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field name="loan_duration" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="location" oils_obj:array_position="25" oils_persist:virtual="false" />
+			<field name="opac_visible" oils_obj:array_position="26" oils_persist:virtual="false" />
+			<field name="price" oils_obj:array_position="27" oils_persist:virtual="false" />
+			<field name="ref" oils_obj:array_position="28" oils_persist:virtual="false" />
+			<field name="status" oils_obj:array_position="29" oils_persist:virtual="false" />
+			<field name="notes" oils_obj:array_position="30" oils_persist:virtual="true" />
+		</fields>
+		<links>
+			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
+			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="status" reltype="has_a" key="id" map="" class="ccs"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="holds" reltype="has_many" key="target_copy" map="hold" class="ahcm"/>
+			<link field="stat_cat_entry_copy_maps" reltype="has_many" key="owning_copy" map="" class="ascecm"/>
+			<link field="notes" reltype="has_many" key="owning_copy" map="" class="acpn"/>
+			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
+			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
+		</links>
+	</class>
+	<class id="crmf" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_max_fine_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="pgt" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="parent" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="perm_interval" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="children" reltype="has_many" key="parent" map="" class="pgt"/>
+		</links>
+	</class>
+	<class id="asva" oils_obj:fieldmapper="action::survey_answer" oils_persist:tablename="action.survey_answer">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_answer_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="responses" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="answer" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="question" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="question" reltype="has_a" key="id" map="" class="asvq"/>
+			<link field="responses" reltype="has_many" key="answer" map="" class="asvr"/>
+		</links>
+	</class>
+	<class id="ancc" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cataloged_circulation_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="circ_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="circ_time" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="item_type" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="patron" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="staff" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="item_type" reltype="has_a" key="id" map="" class="cnct"/>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="patron" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="moucs" oils_obj:fieldmapper="money::open_user_circulation_summary" oils_persist:tablename="money.open_usr_circulation_summary">
+		<fields oils_persist:primary="usr" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+		</links>
+	</class>
+	<class id="aufh" oils_obj:fieldmapper="action::unfulfilled_hold_list" oils_persist:tablename="action.unfulfilled_hold_list">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.unfulfilled_hold_list_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="circ_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="current_copy" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="fail_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="hold" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<class id="mtfe" oils_obj:fieldmapper="metabib::title_field_entry" oils_persist:tablename="metabib.title_field_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.title_field_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+	</class>
+	<class id="actscecm" oils_obj:fieldmapper="actor::stat_cat_entry_user_map" oils_persist:tablename="actor.stat_cat_entry_usr_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_usr_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="stat_cat" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="stat_cat_entry" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="target_usr" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="target_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="stat_cat_entry" reltype="has_a" key="id" map="" class="actsce"/>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
+		</links>
+	</class>
+	<class id="pgpm" oils_obj:fieldmapper="permission::grp_perm_map" oils_persist:tablename="permission.grp_perm_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_perm_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="depth" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="grantable" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="grp" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="perm" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="depth" reltype="has_a" key="id" map="" class="aout"/>
+			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+		</links>
+	</class>
+	<class id="ccb" oils_obj:fieldmapper="container::copy_bucket" oils_persist:tablename="container.copy_bucket">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="items" reltype="has_many" key="bucket" map="" class="ccbi"/>
+		</links>
+	</class>
+	<class id="pupm" oils_obj:fieldmapper="permission::usr_perm_map" oils_persist:tablename="permission.usr_perm_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_perm_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="depth" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="grantable" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="perm" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="depth" reltype="has_a" key="id" map="" class="aout"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+		</links>
+	</class>
+	<class id="mp" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
+			<link field="credit_card_payment" reltype="might_have" key="id" map="" class="mccp"/>
+			<link field="credit_payment" reltype="might_have" key="id" map="" class="mcrp"/>
+			<link field="check_payment" reltype="might_have" key="id" map="" class="mckp"/>
+			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
+			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="cbrebi" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="target_biblio_record_entry" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="target_biblio_record_entry" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+		</links>
+	</class>
+	<class id="asce" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
+		</links>
+	</class>
+	<class id="ahtc" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="copy_status" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="dest" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="dest_recv_time" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="hold" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="persistant_transfer" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="prev_hop" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="source" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="source_send_time" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="target_copy" oils_obj:array_position="12" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="source" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
+			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+		</links>
+	</class>
+	<class id="mb" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="billing_ts" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="billing_type" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="void_time" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="voided" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="voider" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="11" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="pugm" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_grp_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="grp" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
+</IDL>
