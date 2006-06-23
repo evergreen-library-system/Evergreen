@@ -52,7 +52,7 @@ __PACKAGE__->register_method(
 	/);
 
 sub create_noncat_type {
-	my( $self, $client, $authtoken, $name, $orgId ) = @_;
+	my( $self, $client, $authtoken, $name, $orgId, $interval ) = @_;
 	my( $staff, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
 
@@ -71,6 +71,7 @@ sub create_noncat_type {
 	my $type = Fieldmapper::config::non_cataloged_type->new;
 	$type->name($name);
 	$type->owning_lib($orgId);
+	$type->circ_duration($interval);
 
 	my $id = $U->simplereq(
 		'open-ils.storage',

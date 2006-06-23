@@ -42,6 +42,15 @@
 				<tbody>
 					<tr>
 						<td><input id='nc_new_name'> </input></td>
+						<td>
+							<input id='nc_new_interval_count' type='text' size='2' maxlength='2' value='14'/>
+							<select id='nc_new_interval_type' style='width: 6em;'>
+								<option value='hours'>Hours</option>
+								<option value='days' selected='selected'>Days</option>
+								<option value='weeks'>Weeks</option>
+								<option value='months'>Months</option>
+							</select>
+						</td>
 						<td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
 						<td><input id='nc_new_submit' type='submit' value='Create' disabled='disabled'> </input></td>
 					</tr>
@@ -55,6 +64,7 @@
 					<tr>
 						<td>Name</td>
 						<td>Owning Location</td>
+						<td>Duration</td>
 						<td>Edit</td>
 						<td>Delete</td>
 					</tr>
@@ -63,6 +73,15 @@
 					<tr id='nc_row_template'>
 						<td><b name='nc_name'> </b></td>
 						<td name='nc_owner'/>
+						<td>
+							<input name='nc_interval_count' type='text' size='2' maxlength='2' disabled='disabled'/>
+							<select name='nc_interval_type' style='width: 6em;' disabled='disabled'>
+								<option value='hours'>Hours</option>
+								<option value='days'>Days</option>
+								<option value='weeks'>Weeks</option>
+								<option value='months'>Months</option>
+							</select>
+						</td>
 						<td><input name='nc_edit' type='submit' value='Edit' disabled='disabled'/></td>
 						<td><input name='nc_delete' type='submit' value='Delete' disabled='disabled'/></td>
 					</tr>
@@ -76,6 +95,15 @@
 					<td colspan='4' align='center'>
 						<span class='padded'>
 							<input name='nc_edit_name' type='text'> </input>
+						</span>
+						<span>
+							<input name='nc_edit_interval_count' type='text' size='2' maxlength='2'/>
+							<select name='nc_edit_interval_type' style='width: 6em;'>
+								<option value='hours'>Hours</option>
+								<option value='days'>Days</option>
+								<option value='weeks'>Weeks</option>
+								<option value='months'>Months</option>
+							</select>
 						</span>
 						<span class='padded'>
 							<input name='nc_edit_submit' type='submit' value='Submit'> </input>
