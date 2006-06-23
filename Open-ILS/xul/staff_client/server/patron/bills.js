@@ -154,7 +154,7 @@ patron.bills.prototype = {
 											'billwizard',
 											'chrome,resizable'
 										);
-										obj.refresh();
+										w.addEventListener('unload',function(){ obj.refresh(); },false);
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_wizard',E);	
 									}
@@ -173,7 +173,10 @@ patron.bills.prototype = {
 											'billhistory',
 											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										w.addEventListener('unload',function() {
+											obj.OpenILS.data.init({'via':'stash'}); 
+											if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										},false);
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_history',E);	
 									}
@@ -192,7 +195,10 @@ patron.bills.prototype = {
 											'billhistory',
 											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										w.addEventListener('unload',function() {
+											obj.OpenILS.data.init({'via':'stash'}); 
+											if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										}, false);
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
 									}
@@ -800,17 +806,19 @@ patron.bills.prototype = {
 									'command',
 									function(ev) {
 										JSAN.use('util.window'); var w = new util.window();
-										w.open(
+										var wf = w.open(
 											urls.XUL_PATRON_BILL_DETAILS 
 											+ '?patron_id=' + window.escape(obj.patron_id)
 											+ '&mbts_id=' + window.escape(my.mobts.id()),
 											'test' + my.mobts.id(),
 											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); 
-										if (obj.OpenILS.data.temp == 'refresh') {
-											obj.refresh();
-										}
+										wf.addEventListener('unload',function(){
+											obj.OpenILS.data.init({'via':'stash'}); 
+											if (obj.OpenILS.data.temp == 'refresh') {
+												obj.refresh();
+											}
+										},false);
 
 									},
 									false
@@ -831,7 +839,7 @@ patron.bills.prototype = {
 											'billwizard',
 											'chrome,resizable'
 										);
-										obj.refresh();
+										w.addEventListener('unload',function(){ obj.refresh(); },false);
 									},
 									false
 								);
