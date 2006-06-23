@@ -33,7 +33,11 @@ if (my $action = $cgi->param('action')) {
 			my $u = actor::org_unit->retrieve($id);
 			for my $col ( keys %org_cols ) {
 				next if ($cgi->param($col."_$id") =~ /Select One/o);
-				$u->$col( $cgi->param($col."_$id") );
+				if ($col eq 'shortname') {
+					$u->$col( uc( $cgi->param($col."_$id") ) );
+				} else {
+					$u->$col( $cgi->param($col."_$id") );
+				}
 			}
 			$u->update;
 		}
