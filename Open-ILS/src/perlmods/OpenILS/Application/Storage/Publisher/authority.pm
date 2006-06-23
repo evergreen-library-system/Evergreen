@@ -59,6 +59,7 @@ sub find_authority_marc {
 
 	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
 
+	$term =~ s/\W+$//gso;
 	$term =~ s/'/''/gso;
 	$term =~ s/\pM//gso;
 
