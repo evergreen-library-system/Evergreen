@@ -20,6 +20,7 @@ sub new {
 sub build {
 	my $class = shift;
 	my $xml = shift;
+	return undef unless $xml;
 
 	$parser = new XML::LibXML if (!$parser);
 
@@ -135,6 +136,7 @@ sub add_item {
 
 	my $item_xml = shift;
 	my $entry = $class->new($item_xml);
+	return undef unless $entry;
 
 	$entry->base($self->base);
 	$entry->unapi($self->unapi);
@@ -441,6 +443,7 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
+	return undef unless $self;
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/MARC21/slim', 'marc');
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/marc:record';

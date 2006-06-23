@@ -449,8 +449,7 @@ sub changes_feed {
 
 	$path =~ s/^\///og;
 	
-	my ($type,$rtype,$axis,$date,$limit) = split '/', $path;
-	$date ||= 'today';
+	my ($type,$rtype,$axis,$limit,$date) = split '/', $path;
 	$limit ||= 10;
 
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
@@ -465,7 +464,12 @@ sub changes_feed {
 	my $feed = create_record_feed( $type, $list, $unapi);
 	$feed->root($root);
 
-	$feed->title("$limit most recent $rtype changes from $date forward");
+	if ($date) {
+		$feed->title("Up to $limit recent $rtype ${axis}s from $date forward");
+	} else {
+		$feed->title("$limit most recent $rtype ${axis}s");
+	}
+
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
@@ -820,13 +824,14 @@ sub create_record_feed {
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 
-
 		my $xml = $supercat->request(
 			"open-ils.supercat.record.$type.retrieve",
 			$rec
 		)->gather(1);
+		next unless $xml;
 
 		my $node = $feed->add_item($xml);
+		next unless $node;
 
 		if ($lib && $type eq 'marcxml') {
 			$xml = $supercat->request( "open-ils.supercat.record.holdings_xml.retrieve", $rec, $lib )->gather(1);

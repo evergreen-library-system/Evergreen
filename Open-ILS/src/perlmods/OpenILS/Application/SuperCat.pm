@@ -512,13 +512,8 @@ sub escape {
 sub recent_changes {
 	my $self = shift;
 	my $client = shift;
-	my $when = shift;
+	my $when = shift || '1-01-01';
 	my $limit = shift;
-
-	if (!$when) {
-		my ($d,$m,$y) = (localtime)[4,5,6];
-		$when = sprintf('%4d-%02d-%02d', $y + 1900, $m + 1, $d);
-	}
 
 	my $type = 'biblio';
 	$type = 'authority' if ($self->api_name =~ /authority/o);
@@ -531,7 +526,7 @@ sub recent_changes {
 	return $_storage
 		->request(
 			"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
-			{ $axis => { ">" => $when } },
+			{ $axis => { ">" => $when }, id => { '>' => 0 } },
 			{ order_by => "$axis desc", limit => $limit } )
 		->gather(1);
 }
