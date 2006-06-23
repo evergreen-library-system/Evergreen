@@ -708,7 +708,7 @@ sub opensearch_feed {
 				offset		=> 0,
 				limit		=> 5000,
 				($sort ?    ( 'sort'     => $sort    ) : ()),
-				($sortdir ? ( 'sort_dir' => $sortdir ) : ( sort_dir => 'asc' )),
+				($sortdir ? ( 'sort_dir' => $sortdir ) : ($sort ? (sort_dir => 'asc') : (sort_dir => 'desc') )),
 				($lang ?    ( 'language' => $lang    ) : ()),
 			}
 		)->gather(1);

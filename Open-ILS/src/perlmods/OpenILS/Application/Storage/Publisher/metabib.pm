@@ -1945,18 +1945,18 @@ sub biblio_search_multi_class_fts {
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
 
-		my $SQLstring = join('%',map { lc($_) } $fts->words);
+		my $SQLstring = join('%',map { lc($_) } $fts->words) .'%';
 		my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
 		my $first_word = lc(($fts->words)[0]).'%';
 
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
-		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.2 ELSE 1 END" => $SQLstring } ];
+		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
 		$bonus{'series'} = [
 			{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-			{ "CASE WHEN $search_class.value ~ ? THEN 200 ELSE 1 END" => $REstring },
+			{ "CASE WHEN $search_class.value ~ ? THEN 20 ELSE 1 END" => $REstring },
 		];
 
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
