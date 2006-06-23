@@ -307,7 +307,7 @@ sub new_record_holdings {
 		}
 	)->gather(1);
 
-	my $o_search = { shortname => $ou };
+	my $o_search = { shortname => uc($ou) };
 	if (!$ou || $ou eq '-') {
 		$o_search = { parent_ou => undef };
 	}
@@ -619,6 +619,41 @@ sub retrieve_record_transform {
 
 	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $marc ) )->toString);
 }
+
+sub retrieve_record_objects {
+	my $self = shift;
+	my $client = shift;
+	my $ids = shift;
+
+	$ids = [$ids] unless (ref $ids);
+	$ids = [grep {$_} @$ids];
+
+	return [] unless (@$ids);
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+	return $_storage->request('open-ils.cstore.direct.biblio.record_entry.search.atomic' => { id => [grep {$_} @$ids] })->gather(1);
+}
+__PACKAGE__->register_method(
+	method    => 'retrieve_record_objects',
+	api_name  => 'open-ils.supercat.record.object.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the Fieldmapper object representation of the requested bibliographic records
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'bibIds',
+				  desc => 'OpenILS biblio::record_entry ids',
+				  type => 'array' },
+			],
+		  'return' =>
+		  	{ desc => 'The bib records',
+			  type => 'array' }
+		}
+);
+
 
 
 sub retrieve_metarecord_mods {

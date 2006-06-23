@@ -25,7 +25,7 @@ use OpenILS::WWW::SuperCat::Feed;
 
 
 # set the bootstrap config when this module is loaded
-my ($bootstrap, $supercat, $actor, $parser, $search);
+my ($bootstrap, $cstore, $supercat, $actor, $parser, $search);
 
 sub import {
 	my $self = shift;
@@ -36,6 +36,7 @@ sub import {
 sub child_init {
 	OpenSRF::System->bootstrap_client( config_file => $bootstrap );
 	$supercat = OpenSRF::AppSession->create('open-ils.supercat');
+	$cstore = OpenSRF::AppSession->create('open-ils.cstore');
 	$actor = OpenSRF::AppSession->create('open-ils.actor');
 	$search = OpenSRF::AppSession->create('open-ils.search');
 	$parser = new XML::LibXML;
@@ -405,8 +406,8 @@ sub bookbag_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(atom => $base . "/atom/$id" => 'application/atom+xml');
-	$feed->link(rss2 => $base . "/rss2/$id");
+	$feed->link(rss => $base . "/rss2/$id" => 'application/rss+xml');
+	$feed->link(alternate => $base . "/atom/$id" => 'application/atom+xml');
 	$feed->link(html => $base . "/html/$id" => 'text/html');
 	$feed->link(unapi => $unapi);
 
@@ -473,9 +474,9 @@ sub changes_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(atom => $base . "/atom/$rtype/$axis/$date/$limit" => 'application/atom+xml');
-	$feed->link(rss2 => $base . "/rss2/$rtype/$axis/$date/$limit");
-	$feed->link(html => $base . "/html/$rtype/$axis/$date/$limit" => 'text/html');
+	$feed->link(rss => $base . "/rss2/$rtype/$axis/$limit/$date" => 'application/rss+xml');
+	$feed->link(alternate => $base . "/atom/$rtype/$axis/$limit/$date" => 'application/atom+xml');
+	$feed->link(html => $base . "/html/$rtype/$axis/$limit/$date" => 'text/html');
 	$feed->link(unapi => $unapi);
 
 	$feed->link(
@@ -526,10 +527,10 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <ShortName>$lib</ShortName>
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
+  <Url type="application/rss+xml"
+       template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/atom+xml"
        template="$base/1.1/$lib/atom/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
-  <Url type="application/x-rss+xml"
-       template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/x-mods3+xml"
        template="$base/1.1/$lib/mods3/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
   <Url type="application/x-mods+xml"
@@ -612,11 +613,12 @@ sub opensearch_feed {
 		$offset -= 1;
 	}
 
-	my ($version,$org,$type,$class,$terms,$sort);
-	(undef,$version,$org,$type,$class,$terms,$sort,$lang) = split '/', $path;
+	my ($version,$org,$type,$class,$terms,$sort,$sortdir);
+	(undef,$version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = split '/', $path;
 
 	$lang ||= $cgi->param('searchLang');
 	$sort ||= $cgi->param('searchSort');
+	$sortdir ||= $cgi->param('searchSortDir');
 	$terms ||= $cgi->param('searchTerms');
 	$class ||= $cgi->param('searchClass') || '-';
 	$type ||= $cgi->param('responseType') || '-';
@@ -652,20 +654,28 @@ sub opensearch_feed {
 
 	my $cache_key = '';
 	my $searches = {};
-	while ($term_copy =~ /(keyword|title|author|subject|series|site|sort|lang):([^:]+?)$/o) {
-		my $c = $1;
-		my $t = $2;
-		$term_copy =~ s/(keyword|title|author|subject|series|site|sort|lang):([^:]+?)$//o;
+	while ($term_copy =~ s/((?:keyword|title|author|subject|series|site|dir|sort|lang):[^:]+)$//so) {
+		warn $1 . "  <<< ";
+		my ($c,$t) = split ':' => $1;
 		if ($c eq 'site') {
-			($org = uc($t)) =~ s/\s+//go;
+			$org = $t;
+			$org =~ s/^\s*//o;
+			$org =~ s/\s*$//o;
+			warn $org . "  >>> ";
 		} elsif ($c eq 'sort') {
-			($sort = lc($t)) =~ s/^\s*(\w+)/$1/go;
+			($sort = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
+			warn $sort . "  >>> ";
+		} elsif ($c eq 'dir') {
+			($sortdir = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
+			warn $sortdir . "  >>> ";
 		} elsif ($c eq 'lang') {
-			($lang = lc($t)) =~ s/^\s*(\w+)/$1/go;
+			($lang = lc($t)) =~ s/^\s*(\w+)\s*$/$1/go;
+			warn $lang . "  >>> ";
 		} else {
-			$$searches{$c} = { term => $t };
+			$$searches{$c}{term} .= ' '.$t;
 			$cache_key .= $c . $t;
 			$complex_terms = 1;
+			warn $t . "  >>> ";
 		}
 	}
 
@@ -683,11 +693,11 @@ sub opensearch_feed {
 		)->gather(1);
 	} else {
 	 	$org_unit = $actor->request(
-			'open-ils.actor.org_unit_list.search' => shortname => $org
+			'open-ils.actor.org_unit_list.search' => shortname => uc($org)
 		)->gather(1);
 	}
 
-	$cache_key .= $org.$sort.$lang;
+	$cache_key .= $org.$sort.$sortdir.$lang;
 
 	my $rs_name = $cgi->cookie('os_session');
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);
@@ -699,10 +709,11 @@ sub opensearch_feed {
 			'open-ils.search.biblio.multiclass' => {
 				searches	=> $searches,
 				org_unit	=> $org_unit->[0]->id,
-				($sort ? ( 'sort' => $sort, sort_dir => 'asc' ) : ()),
-				($lang ? ( 'language' => $lang) : ()),
 				offset		=> 0,
 				limit		=> 5000,
+				($sort ?    ( 'sort'     => $sort    ) : ()),
+				($sortdir ? ( 'sort_dir' => $sortdir ) : ( sort_dir => 'asc' )),
+				($lang ?    ( 'language' => $lang    ) : ()),
 			}
 		)->gather(1);
 		try {
@@ -772,14 +783,25 @@ sub opensearch_feed {
 		'application/opensearch+xml'
 	);
 
-	$feed->link( unapi => $unapi);
+	$feed->link(
+		rss =>
+		$base .  "/$version/$org/rss2/$class?searchTerms=$terms" =>
+		'application/rss+xml'
+	);
 
-#	$feed->link(
-#		alternate =>
-#		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
-#			join('&', map { 'rl=' . $_->[0] } @{$recs->{ids}} ),
-#		'text/html'
-#	);
+	$feed->link(
+		alternate =>
+		$base .  "/$version/$org/atom/$class?searchTerms=$terms" =>
+		'application/atom+xml'
+	);
+
+	$feed->link(
+		html =>
+		$base .  "/$version/$org/html/$class?searchTerms=$terms" =>
+		'text/html'
+	);
+
+	$feed->link( unapi => $unapi);
 
 	$feed->link(
 		opac =>
@@ -804,7 +826,7 @@ sub create_record_feed {
 	my $records = shift;
 	my $unapi = shift;
 
-	my $lib = shift || '';
+	my $lib = shift || '-';
 
 	my $cgi = new CGI;
 	my $base = $cgi->url;
@@ -819,8 +841,12 @@ sub create_record_feed {
 	$type = 'atom' if ($type eq 'html');
 	$type = 'marcxml' if ($type eq 'htmlcard' or $type eq 'htmlholdings');
 
-	for my $rec (@$records) {
-		next unless($rec);
+	$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
+
+	for my $record (@$records) {
+		#next unless($record);
+		my $rec = $record->id;
+		#my $record = $supercat->request( "open-ils.supercat.record.object.retrieve", $rec )->gather(1)->[0];
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 
@@ -839,6 +865,7 @@ sub create_record_feed {
 		}
 
 		$node->id($item_tag);
+		$node->update_ts(clense_ISO8601($record->edit_date));
 		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings" => 'text/html');
 		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
 		$node->link(unapi => $feed->unapi . "?id=$item_tag");

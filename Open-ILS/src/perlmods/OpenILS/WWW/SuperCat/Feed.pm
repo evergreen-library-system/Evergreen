@@ -119,6 +119,7 @@ sub _create_node {
 
 		if (ref($attrs)) {
 			for my $key (keys %$attrs) {
+				next unless $$attrs{$key};
 				$new->setAttribute( $key => $$attrs{$key} );
 			}
 		}
@@ -188,7 +189,8 @@ use base 'OpenILS::WWW::SuperCat::Feed';
 
 sub new {
 	my $class = shift;
-	my $self = $class->SUPER::build('<atom:feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
+	my $self = $class->SUPER::build('<feed xmlns:atom="http://www.w3.org/2005/Atom"/>');
+	$self->{doc}->documentElement->setNamespace('http://www.w3.org/2005/Atom', undef);
 	$self->{type} = 'application/xml';
 	$self->{item_xpath} = '/atom:feed';
 	return $self;
@@ -197,20 +199,20 @@ sub new {
 sub title {
 	my $self = shift;
 	my $text = shift;
-	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:title', $text);
+	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','title', $text);
 }
 
 sub update_ts {
 	my $self = shift;
 	my $text = shift;
-	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:updated', $text);
+	$self->_create_node($self->{item_xpath},'http://www.w3.org/2005/Atom','updated', $text);
 }
 
 sub creator {
 	my $self = shift;
 	my $text = shift;
-	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','atom:author');
-	$self->_create_node('/atom:feed/atom:author', 'http://www.w3.org/2005/Atom','atom:name', $text);
+	$self->_create_node('/atom:feed','http://www.w3.org/2005/Atom','author');
+	$self->_create_node('/atom:feed/atom:author', 'http://www.w3.org/2005/Atom','name', $text);
 }
 
 sub link {
@@ -225,7 +227,7 @@ sub link {
 	$self->_create_node(
 		$self->{item_xpath},
 		'http://www.w3.org/2005/Atom',
-		'atom:link',
+		'link',
 		undef,
 		{ rel => $type,
 		  href => $id,
@@ -239,7 +241,7 @@ sub id {
 	my $self = shift;
 	my $id = shift;
 
-	$self->_create_node( '/atom:feed', 'http://www.w3.org/2005/Atom', 'atom:id', $id );
+	$self->_create_node( '/atom:feed', 'http://www.w3.org/2005/Atom', 'id', $id );
 }
 
 package OpenILS::WWW::SuperCat::Feed::atom::item;
@@ -279,7 +281,7 @@ sub title {
 sub update_ts {
 	my $self = shift;
 	my $text = shift;
-	$self->_create_node('/rss/channel',undef,'lastBuildDate', $text);
+	$self->_create_node($self->{item_xpath},undef,'lastBuildDate', $text);
 }
 
 sub creator {
@@ -319,6 +321,13 @@ sub new {
 	$self->{holdings_xpath} = '/item';
 	return $self;
 }
+
+sub update_ts {
+	my $self = shift;
+	my $text = shift;
+	$self->_create_node($self->{item_xpath},undef,'pubDate', $text);
+}
+
 
 
 #----------------------------------------------------------

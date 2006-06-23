@@ -149,7 +149,7 @@ To-do list:
 				</xsl:if>
 				<xsl:for-each select="atom:link[(@rel='alternate' or @rel='self' or @rel='description') and @href]">
 					<xsl:variable name="linkurl"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="@href" /></xsl:call-template></xsl:variable>
-					<link rel="alternate" href="{$linkurl}" hreflang="{@hreflang}" title="{@title}" type="{@type}"/>
+					<link rel="{@rel}" href="{$linkurl}" hreflang="{@hreflang}" title="{@title}" type="{@type}"/>
 				</xsl:for-each>
 			</head>
 			<body>
@@ -160,6 +160,7 @@ To-do list:
 
 					<xsl:variable name="htmllink" select="(atom:link[@rel='alternate' or not(@rel)]/@href | link | rss1:link)[1]" />
 					<h1>
+						<!--
 						<xsl:choose>
 							<xsl:when test="$htmllink">
 								<xsl:variable name="htmlversion"><xsl:if test="$htmllink"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="$htmllink" /></xsl:call-template></xsl:if></xsl:variable>
@@ -167,6 +168,8 @@ To-do list:
 							</xsl:when>
 							<xsl:otherwise><xsl:value-of select="$title" /></xsl:otherwise>
 						</xsl:choose>
+						-->
+						<xsl:value-of select="$title" />
 					</h1>
  					<xsl:variable name="imgurl" select="(atom:logo | image/url | rss1:image/rss1:url | rss9:image/rss9:url)[1]" />
  					<xsl:variable name="absimgurl"><xsl:if test="$imgurl"><xsl:call-template name="resolvelink"><xsl:with-param name="url" select="$imgurl" /></xsl:call-template></xsl:if></xsl:variable>
