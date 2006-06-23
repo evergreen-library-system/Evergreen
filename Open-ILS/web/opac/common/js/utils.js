@@ -568,3 +568,7 @@ function contains(arr, item) {
 		if( arr[i] == item ) return true;
 	return false;
 }
+
+function isTrue(i) {
+	return (i && !(i+'').match(/f/i) );
+}
