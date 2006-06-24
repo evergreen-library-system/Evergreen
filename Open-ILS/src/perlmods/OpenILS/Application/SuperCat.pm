@@ -921,7 +921,7 @@ sub oISBN {
 	# Find the record that has that ISBN.
 	my $bibrec = $_storage->request(
 		'open-ils.cstore.direct.metabib.full_rec.search.atomic',
-		{ tag => '020', subfield => 'a', value => { ilike => $isbn.'%'} }
+		{ tag => '020', subfield => 'a', value => { like => lc($isbn).'%'} }
 	)->gather(1);
 
 	# Go away if we don't have one.
@@ -944,10 +944,12 @@ sub oISBN {
 	my @rec_list = sort keys %unique_recs;
 
 	# And now fetch the ISBNs for thos records.
-	my $recs = $_storage->request(
-		'open-ils.cstore.direct.metabib.full_rec.search.atomic',
-		{ tag => '020', subfield => 'a', record => \@rec_list }
-	)->gather(1);
+	my $recs = [];
+	push @$recs,
+		$_storage->request(
+			'open-ils.cstore.direct.metabib.full_rec.search',
+			{ tag => '020', subfield => 'a', record => $_ }
+		)->gather(1) for (@rec_list);
 
 	# We're done with the storage server session.
 	$_storage->disconnect;
