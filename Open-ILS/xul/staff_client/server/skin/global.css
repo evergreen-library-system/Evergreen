@@ -46,4 +46,5 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 
 listitem { border-bottom: solid thin black; }
 
+.copy_editor_field_changed { background: lightgreen; }
 
