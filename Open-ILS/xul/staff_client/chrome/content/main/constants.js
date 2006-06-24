@@ -126,6 +126,7 @@ const urls = {
 
 	'opac' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'opac_rdetail' : '/opac/en-US/skin/default/xml/rdetail.xml',
+	'opac_rresult' : '/opac/en-US/skin/default/xml/rresult.xml',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'fieldmapper' : '/opac/common/js/fmall.js',
 	'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
