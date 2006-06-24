@@ -326,6 +326,7 @@ circ.checkout.prototype = {
 					'title' : 'Override Checkout Failure?',
 					'overridable_events' : [ 
 						7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
+						7003 /* COPY_CIRC_NOT_ALLOWED */,
 						7004 /* COPY_NOT_AVAILABLE */, 
 						7006 /* COPY_IS_REFERENCE */, 
 						7010 /* COPY_ALERT_MESSAGE */,
@@ -406,6 +407,9 @@ circ.checkout.prototype = {
 					dump('found [' + test_permit[i].ilsevent + ']\n');
 					switch(test_permit[i].ilsevent) {
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ :
+							found_handled = true;
+						break;
+						case 7003 /* COPY_CIRC_NOT_ALLOWED */ :
 							found_handled = true;
 						break;
 						case 7004 /* COPY_NOT_AVAILABLE */ :
