@@ -157,7 +157,7 @@ function resultLowHits() {
 		areq.send();
 	}
 
-	if( !(getForm() == null || getForm() == 'all' || getForm == "") ) {
+	if( !(getForm() == null || getForm() == 'all' || getForm() == "") ) {
 		var a = {};
 		a[PARAM_FORM] = "all";
 		$('low_hits_remove_format_link').setAttribute('href',buildOPACLink(a));
@@ -266,7 +266,9 @@ function resultSuggestSpelling(r) {
 
 	for( var w = 0; w < words.length; w++ ) {
 		var word = words[w];
-		var blob = grep(res, function(i){return (i.word == word);})[0];
+		var blob = grep(res, function(i){return (i.word == word);});
+		if( blob ) blob = blob[0];
+		else continue;
 		if( blob.word == word ) {
 			if( blob.suggestions && blob.suggestions[0] ) {
 				newterm += " " + blob.suggestions[0];
