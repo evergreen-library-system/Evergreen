@@ -62,7 +62,9 @@
 						g.volume_count[ copy.call_number() ] += 1;
 					}
 				}
-	
+
+				generate();
+
 			} catch(E) {
 				try {
 					g.error.standard_unexpected_error_alert('/xul/server/cat/spine_labels.xul',E);
