@@ -16,13 +16,13 @@
 <!-- OVERLAYS -->
 <!--
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
-	width="700" height="580"
 -->
 
 <window id="main_win" 
 	onload="try { main_init(); } catch(E) { alert(E); }"
 	onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
 	title="&staff.auth.title;"
+	width="640" height="480"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
@@ -84,9 +84,9 @@
 		<label value=" "/>
 
 <grid flex="1">
-	<columns><column flex="0"/><column flex="1"/></columns>
-	<rows>
-<row>
+	<columns><column flex="1"/><column flex="1"/></columns>
+	<rows flex="1">
+<row flex="1">
 		<groupbox flex="1">
 			<caption label="Server"/>
 			<grid>
@@ -113,12 +113,12 @@
 
 		<groupbox flex="1">
 			<caption label="Workstation"/>
-			<deck id="ws_deck">
+			<deck id="ws_deck" flex="1">
 			</deck>
 		</groupbox>
 
 </row>
-<row>
+<row flex="1">
 		<groupbox flex="1">
 			<caption label="Authentication"/>
 			<grid>
