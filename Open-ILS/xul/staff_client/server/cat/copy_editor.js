@@ -55,6 +55,7 @@ function my_init() {
 			g.edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('save').setAttribute('hidden','false'); 
+			g.retrieve_templates();
 		}
 
 		if (g.cgi.param('single_edit') == '1') {
@@ -176,6 +177,115 @@ function my_init() {
 			"system administrator or software developer the following:\ncat/copy_editor.xul\n" + E + '\n';
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 		alert(err_msg);
+	}
+}
+
+/******************************************************************************************************/
+/* Retrieve Templates */
+
+g.retrieve_templates = function() {
+	try {
+		JSAN.use('util.widgets'); JSAN.use('util.functional');
+		g.templates = {};
+		var robj = g.network.simple_request('FM_AUS_RETRIEVE',[ses(),g.data.list.au[0].id()]);
+		if (typeof robj['staff_client.copy_editor.templates'] != 'undefined') {
+			g.templates = JSON2js( robj['staff_client.copy_editor.templates'] );
+		}
+		util.widgets.remove_children('template_placeholder');
+		var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
+
+		g.template_menu = util.widgets.make_menulist( list );
+		$('template_placeholder').appendChild(g.template_menu);
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error retrieving templates',E);
+	}
+}
+
+/******************************************************************************************************/
+/* Apply Template */
+
+g.apply_template = function() {
+	try {
+		var name = g.template_menu.value;
+		if (g.templates[ name ] != 'undefined') {
+			var template = g.templates[ name ];
+			for (var i in template) {
+				g.changed[ i ] = template[ i ];
+				switch( template[i].type ) {
+					case 'attribute' :
+						g.apply(template[i].field,template[i].value);
+					break;
+					case 'stat_cat' :
+						g.apply_stat_cat(template[i].field,template[i].value);
+					break;
+				}
+			}
+			g.summarize( g.copies );
+			g.render();
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error applying template',E);
+	}
+}
+
+/******************************************************************************************************/
+/* Save as Template */
+
+g.save_template = function() {
+	try {
+		var name = window.prompt('Enter template name:','','Save As Template');
+		if (!name) return;
+		g.templates[name] = g.changed;
+		var robj = g.network.simple_request(
+			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : js2JSON(g.templates) }]
+		);
+		if (typeof robj.ilsevent != 'undefined') {
+			throw(robj);
+		} else {
+			alert('Template "' + name + '" saved.');
+			setTimeout(
+				function() {
+					try {
+						g.retrieve_templates();
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('Error saving template',E);
+					}
+				},0
+			);
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error saving template',E);
+	}
+}
+
+/******************************************************************************************************/
+/* Delete Template */
+
+g.delete_template = function() {
+	try {
+		var name = g.template_menu.value;
+		if (!name) return;
+		if (! window.confirm('Delete template "' + name + '"?') ) return;
+		delete(g.templates[name]);
+		var robj = g.network.simple_request(
+			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : js2JSON(g.templates) }]
+		);
+		if (typeof robj.ilsevent != 'undefined') {
+			throw(robj);
+		} else {
+			alert('Template "' + name + '" deleted.');
+			setTimeout(
+				function() {
+					try {
+						g.retrieve_templates();
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('Error deleting template',E);
+					}
+				},0
+			);
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error deleting template',E);
 	}
 }
 
@@ -573,7 +683,7 @@ g.render = function() {
 			try {
 				var f = g.panes_and_field_names[h][i]; var fn = f[0];
 				groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
-				if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class',g.changed[fn]);
+				if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class','copy_editor_field_changed');
 				caption = document.createElement('caption'); groupbox.appendChild(caption);
 				caption.setAttribute('label',fn);
 				vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
@@ -654,14 +764,29 @@ g.render_input = function(node,blob) {
 				if (block) return; block = true;
 
 				function post_c(v) {
-					g.changed[ hbox.id ] = 'copy_editor_field_changed';
-					block = false;
-					setTimeout(
-						function() {
-							g.summarize( g.copies );
-							g.render();
-						}, 0
-					);
+					try {
+						/* FIXME - kludgy */
+						var t = input_cmd.match('apply_stat_cat') ? 'stat_cat' : 'attribute';
+						var f;
+						switch(t) {
+							case 'attribute' :
+								f = input_cmd.match(/apply\("(.+?)",/)[1];
+							break;
+							case 'stat_cat' :
+								f = input_cmd.match(/apply_stat_cat\((.+?),/)[1];
+							break;
+						}
+						g.changed[ hbox.id ] = { 'type' : t, 'field' : f, 'value' : v };
+						block = false;
+						setTimeout(
+							function() {
+								g.summarize( g.copies );
+								g.render();
+							}, 0
+						);
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('post_c',E);
+					}
 				}
 				var x; var c; eval( input_cmd );
 				if (x) {

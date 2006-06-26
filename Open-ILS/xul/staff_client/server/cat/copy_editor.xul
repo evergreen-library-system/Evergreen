@@ -40,6 +40,12 @@
 		<caption id="caption" label="Copy Viewer"/>
 
 		<hbox id="top_nav">
+			<label value="Templates:"/>
+			<hbox id="template_placeholder"/>
+			<button id="apply_template" label="Apply" accesskey="y" oncommand="g.apply_template()"/>
+			<button id="delete_template" label="Delete" oncommand="g.delete_template()"/>
+			<button id="save_template" label="Save" oncommand="g.save_template()"/>
+			<spacer flex="1"/>
 			<button label="Reset" accesskey="R" oncommand="g.reset()"/>
 		</hbox>
 
