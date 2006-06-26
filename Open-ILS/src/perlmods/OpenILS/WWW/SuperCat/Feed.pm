@@ -7,6 +7,14 @@ use XML::LibXSLT;
 use OpenSRF::Utils::SettingsClient;
 use CGI;
 
+sub exists {
+	my $class = shift;
+	my $type = shift;
+
+	return 1 if UNIVERSAL::can("OpenILS::WWW::SuperCat::Feed::$type" => 'new');
+	return 0;
+}
+
 sub new {
 	my $class = shift;
 	my $type = shift;
@@ -444,6 +452,23 @@ sub new {
 	$self->{item_xpath} = '/marc:collection';
 	return $self;
 }
+sub link {
+	my $self = shift;
+	my $type = shift;
+	my $id = shift;
+
+	if ($type eq 'unapi') {
+		$self->_create_node(
+			'marc:collection',
+			'http://www.w3.org/1999/xhtml',
+			'xhtml:link',
+			undef,
+			{ rel => 'meta', href => $id, title => "unapi" }
+		);
+		$linkid++;
+	}
+}
+
 
 package OpenILS::WWW::SuperCat::Feed::marcxml::item;
 use base 'OpenILS::WWW::SuperCat::Feed::marcxml';
@@ -464,13 +489,22 @@ sub link {
 	my $type = shift;
 	my $id = shift;
 
-	if ($type eq 'unapi' || $type eq 'opac') {
+	if ($type eq 'opac') {
 		$self->_create_node(
 			'marc:record',
 			'http://www.w3.org/1999/xhtml',
 			'xhtml:link',
 			undef,
 			{ rel => 'otherFormat', href => $id, title => "Dynamic Details" }
+		);
+		$linkid++;
+	} elsif ($type eq 'unapi-id') {
+		$self->_create_node(
+			'marc:record',
+			'http://www.w3.org/1999/xhtml',
+			'xhtml:abbr',
+			undef,
+			{  title => $id, class => "unapi-id" }
 		);
 		$linkid++;
 	}

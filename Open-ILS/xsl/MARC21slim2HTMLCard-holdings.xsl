@@ -13,6 +13,7 @@
        <head>
          <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
          <link href="{$base_dir}/htmlcard.css" rel="stylesheet" type="text/css" />
+      	 <xsl:apply-templates select="/marc:collection/xhtml:link"/>
        </head>
        <body>
         <xsl:apply-templates select="//marc:record"/>
@@ -25,6 +26,7 @@
      <xsl:apply-templates select="marc:datafield[@tag!='082' and @tag!='092' and @tag!='010']"/>
      <span class="bottom">
       <xsl:apply-templates select="xhtml:link[@rel='otherFormat' and contains(@href,'format=')]"/>
+      <xsl:apply-templates select="xhtml:abbr[@class='unapi-id']"/>
       <xsl:apply-templates select="marc:controlfield[@tag='001']"/>
       <xsl:apply-templates select="marc:datafield[@tag='082' or @tag='092' or @tag='010']"/>
      </span>
@@ -34,14 +36,44 @@
     <br/>
   </xsl:template>
 
-  <xsl:template match="xhtml:link">
-    <a>
-      <xsl:attribute name="href">
-        <xsl:value-of select="@href"/>
+  <xsl:template match="xhtml:abbr">
+    <abbr>
+      <xsl:attribute name="title">
+        <xsl:value-of select="@title"/>
       </xsl:attribute>
-      <xsl:value-of select="@title"/>
-    </a>
-    <br/>
+      <xsl:attribute name="class">
+        <xsl:value-of select="@class"/>
+      </xsl:attribute>
+      <xsl:value-of select="."/>
+    </abbr>
+  </xsl:template>
+
+  <xsl:template match="xhtml:link">
+    <xsl:choose>
+      <xsl:when test="@title='unapi'">
+        <link>
+          <xsl:attribute name="title">
+            <xsl:value-of select="@title"/>
+          </xsl:attribute>
+          <xsl:attribute name="rel">
+            <xsl:value-of select="@rel"/>
+          </xsl:attribute>
+          <xsl:attribute name="href">
+            <xsl:value-of select="@href"/>
+          </xsl:attribute>
+          <xsl:value-of select="."/>
+        </link>
+      </xsl:when>
+      <xsl:when test="@rel='otherFormat' and contains(@href,'format=')">
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="@href"/>
+          </xsl:attribute>
+          <xsl:value-of select="@title"/>
+        </a>
+        <br/>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="hold:volumes">

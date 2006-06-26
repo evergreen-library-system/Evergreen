@@ -180,7 +180,7 @@ sub unapi {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
-	} else {
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($format)) {
 		my $feed = create_record_feed(
 			$format => [ $id ],
 			$base,
@@ -190,6 +190,7 @@ sub unapi {
 		$feed->root($root);
 		$feed->creator($host);
 		$feed->update_ts(gmtime_ISO8601());
+		$feed->link( unapi => $base);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 		print entityize($feed->toString) . "\n";
