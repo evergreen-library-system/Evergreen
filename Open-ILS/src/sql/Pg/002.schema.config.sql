@@ -451,7 +451,7 @@ INSERT INTO config.net_access_level (name) VALUES ('Full');
 INSERT INTO config.net_access_level (name) VALUES ('None');
 
 CREATE TABLE config.audience_map (
-	code		"char"	PRIMARY KEY,
+	code		TEXT	PRIMARY KEY,
 	value		TEXT	NOT NULL,
 	description	TEXT
 );
@@ -470,7 +470,7 @@ j	Juvenile	The item is intended for children and young people, approximate ages 
 
 
 CREATE TABLE config.lit_form_map (
-	code		"char"	PRIMARY KEY,
+	code		TEXT	PRIMARY KEY,
 	value		TEXT	NOT NULL,
 	description	TEXT
 );

@@ -163,7 +163,7 @@ CREATE TABLE action.hold_request (
 	selection_ou		INT				NOT NULL,
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit,
-	hold_type		"char"				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
+	hold_type		TEXT				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
 	email_notify		BOOL				NOT NULL DEFAULT TRUE

@@ -9,7 +9,7 @@ BEGIN
 	EXECUTE $$
 			CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
 				audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
-				audit_action	"char"				NOT NULL,
+				audit_action	TEXT				NOT NULL,
 				LIKE $$ || sch || $$.$$ || tbl || $$
 			);
 	$$;
