@@ -577,7 +577,7 @@ sub opensearch_feed {
 	my $unapi = (split 'opensearch', $url)[0] . 'unapi';
 
 
-	my $path = (split 'opensearch', $url)[1];
+	my $path = $cgi->path_info;
 
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
 
