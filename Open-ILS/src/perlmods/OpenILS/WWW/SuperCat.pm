@@ -562,10 +562,11 @@ sub opensearch_feed {
 
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
-
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'opensearch', $url)[0];
