@@ -408,6 +408,12 @@ circ.checkout.prototype = {
 				for (var i = 0; i < test_permit.length; i++) {
 					dump('found [' + test_permit[i].ilsevent + ']\n');
 					switch(test_permit[i].ilsevent) {
+						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ :
+							found_handled = true;
+						break;
+						case 7013 /* PATRON_EXCEEDS_FINES */ :
+							found_handled = true;
+						break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ :
 							found_handled = true;
 						break;
