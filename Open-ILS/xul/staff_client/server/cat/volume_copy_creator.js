@@ -351,17 +351,20 @@ g.stash_and_close = function() {
 
 		JSAN.use('util.window'); var win = new util.window();
 		if (copies.length > 0) {
+			g.data.temp_copies = js2JSON(copies); g.data.stash('temp_copies');
+			g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
 			var w = win.open(
 				urls.XUL_COPY_EDITOR
-					+'?copies='+window.escape(js2JSON(copies))
-					+'&callnumbers='+window.escape(js2JSON(volume_labels))
-					+'&edit=1',
+					+'?edit=1',
 				title,
 				'chrome,modal,resizable'
 			);
 			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 			g.data.stash_retrieve();
+			g.data.temp_copy_ids = null; g.data.stash('temp_copy_ids');
 			copies = JSON2js( g.data.temp_copies );
+			g.data.temp_copies = null; g.data.stash('temp_copies');
+			g.data.temp_callnumbers = null; g.data.stash('temp_callnumbers');
 			if (!copies) {
 				alert('Items were not created.');
 				return;

@@ -28,6 +28,7 @@ function my_init() {
 		if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
 		if (!copy_ids) copy_ids = [];
 		if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
+		if (g.data.temp_copy_ids != 'undefined') copy_ids = copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
 
 		if (copy_ids.length > 0) g.copies = g.network.request(
 			api.FM_ACP_FLESHED_BATCH_RETRIEVE.app,
@@ -41,12 +42,14 @@ function my_init() {
 		if (!g.copies) g.copies = [];
 		if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
 		if (g.cgi.param('copies')) g.copies = g.copies.concat( JSON2js( g.cgi.param('copies') ) );
+		if (g.data.temp_copies != 'undefined') g.copies = g.copies.concat( JSON2js( g.data.temp_copies ) );
 
 		/******************************************************************************************************/
 		/* We try to retrieve callnumbers for existing copies, but for new copies, we rely on this */
 
 		if (window.xulG && window.xulG.callnumbers) g.callnumbers = window.xulG.callnumbers;
 		if (g.cgi.param('callnumbers')) g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
+		if (g.data.temp_callnumbers != 'undefined') g.callnumbers = JSON2js( g.data.temp_callnumbers );
 
 		/******************************************************************************************************/
 		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
@@ -189,7 +192,7 @@ g.retrieve_templates = function() {
 		g.templates = {};
 		var robj = g.network.simple_request('FM_AUS_RETRIEVE',[ses(),g.data.list.au[0].id()]);
 		if (typeof robj['staff_client.copy_editor.templates'] != 'undefined') {
-			g.templates = JSON2js( robj['staff_client.copy_editor.templates'] );
+			g.templates = robj['staff_client.copy_editor.templates'];
 		}
 		util.widgets.remove_children('template_placeholder');
 		var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
@@ -237,7 +240,7 @@ g.save_template = function() {
 		if (!name) return;
 		g.templates[name] = g.changed;
 		var robj = g.network.simple_request(
-			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : js2JSON(g.templates) }]
+			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : g.templates }]
 		);
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
@@ -268,7 +271,7 @@ g.delete_template = function() {
 		if (! window.confirm('Delete template "' + name + '"?') ) return;
 		delete(g.templates[name]);
 		var robj = g.network.simple_request(
-			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : js2JSON(g.templates) }]
+			'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : g.templates }]
 		);
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
