@@ -79,11 +79,12 @@ sub unapi {
 	return Apache2::Const::DECLINED if (-e $apache->filename);
 
 	my $cgi = new CGI;
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
 
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
-
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'unapi', $url)[0];
@@ -228,11 +229,11 @@ sub supercat {
 
 	my $cgi = new CGI;
 
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
-
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
-
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'supercat', $url)[0];
@@ -368,10 +369,11 @@ sub bookbag_feed {
 	my $year = (gmtime())[5] + 1900;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
-
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
@@ -434,10 +436,11 @@ sub changes_feed {
 	my $year = (gmtime())[5] + 1900;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
-
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
@@ -656,7 +659,6 @@ sub opensearch_feed {
 	my $cache_key = '';
 	my $searches = {};
 	while ($term_copy =~ s/((?:keyword|title|author|subject|series|site|dir|sort|lang):[^:]+)$//so) {
-		warn $1 . "  <<< ";
 		my ($c,$t) = split ':' => $1;
 		if ($c eq 'site') {
 			$org = $t;
@@ -672,7 +674,6 @@ sub opensearch_feed {
 			$$searches{$c}{term} .= ' '.$t;
 			$cache_key .= $c . $t;
 			$complex_terms = 1;
-			warn $t . "  >>> ";
 		}
 	}
 
@@ -926,10 +927,11 @@ sub string_browse {
 
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $rel_name = quotemeta($cgi->url(-relative=>1));
-
-	my $add_path = 1;
-	$add_path = 0 if ($cgi->url(-path_info=>1) =~ /$rel_name$/);
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'browse', $url)[0];
