@@ -48,14 +48,31 @@ auth.session.prototype = {
 					[ params ]
 				);
 
-				if (robj.ilsevent == 0) {
-					this.key = robj.payload.authtoken;
-					this.authtime = robj.payload.authtime;
-				} else {
-					var error = robj.ilsevent + ' : ' + this.error.get_ilsevent( robj.ilsevent );
-					this.error.sdump('D_AUTH','auth.session.init: ' + error + '\n');
-					alert( error );
+				switch (robj.ilsevent) {
+					case 0:
+						this.key = robj.payload.authtoken;
+						this.authtime = robj.payload.authtime;
+					break;
+					case 1520 /* WORKSTATION_NOT_FOUND */:
+						alert(params.workstation + ' is not registered with this server.');
+						delete(params.workstation);
+						delete(data.ws_info[ this.view.server_prompt.value ]);
+						data.stash('ws_info');
+						data.ws_name = null; data.stash('ws_name');
+						params.type = 'temp';
+						robj = this.network.simple_request('AUTH_COMPLETE',[ params ]);
+						if (robj.ilsevent == 0) {
+							this.key = robj.payload.authtoken;
+							this.authtime = robj.payload.authtime;
+						} else {
+							this.error.standard_unexpected_error_alert('auth.session.init',robj);
+							throw(robj);
+						}
+					break;
+					default:
+					this.error.standard_unexpected_error_alert('auth.session.init',robj);
 					throw(robj);
+					break;
 				}
 
 				this.error.sdump('D_AUTH','auth.session.key = ' + this.key + '\n');
