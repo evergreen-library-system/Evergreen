@@ -362,6 +362,10 @@ g.stash_and_close = function() {
 			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 			g.data.stash_retrieve();
 			copies = JSON2js( g.data.temp_copies );
+			if (!copies) {
+				alert('Items were not created.');
+				return;
+			}
 		}
 
 		for (var i = 0; i < copies.length; i++) {
