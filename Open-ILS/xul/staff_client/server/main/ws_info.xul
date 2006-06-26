@@ -151,13 +151,16 @@
 	]]>
 	</script>
 
-	<vbox flex="1">
+	<vbox flex="1" style="background: #993333">
+		<description>
+			Enter a workstation name and library to register this client under:
+		</description>
 		<hbox>
 			<label value="Name" control="wsname"/>
 			<textbox id="wsname" />
 		</hbox>
+		<hbox id="placeholder"/>
 		<hbox>
-			<hbox id="placeholder"/>
 			<button label="Register" accesskey="R" oncommand="register();"/>
 		</hbox>
 	</vbox>
