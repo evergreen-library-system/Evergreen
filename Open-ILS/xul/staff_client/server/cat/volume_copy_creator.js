@@ -387,7 +387,7 @@ g.stash_and_close = function() {
 					default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
 				}
 			} else {
-				if (copies.length > 0) {
+				if (copies.length > 0 && $('print_labels').checked) {
 					JSAN.use('util.functional');
 					var w = win.open(
 						urls.XUL_SPINE_LABEL

@@ -39,6 +39,7 @@
 		<hbox style="border-bottom: solid black thin">
 			<hbox id="marc_cn"/>
 			<spacer flex="1" />
+			<checkbox id="print_labels" label="Print Labels" persist="checked"/>
 			<button id="Create" accesskey="C" label="Create" disabled="true" oncommand="g.stash_and_close();"/>
 		</hbox>
 		<grid flex="1">
