@@ -703,20 +703,20 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="audience" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="bib_level" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="cat_form" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="char_encoding" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="control_type" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="enc_level" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="audience" oils_obj:array_position="3" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="bib_level" oils_obj:array_position="4" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="cat_form" oils_obj:array_position="5" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="char_encoding" oils_obj:array_position="6" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="control_type" oils_obj:array_position="7" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="enc_level" oils_obj:array_position="8" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" />
-			<field name="item_form" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="item_lang" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="item_type" oils_obj:array_position="12" oils_persist:virtual="false" />
-			<field name="lit_form" oils_obj:array_position="13" oils_persist:virtual="false" />
-			<field name="pub_status" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="item_form" oils_obj:array_position="10" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="item_lang" oils_obj:array_position="11" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="item_type" oils_obj:array_position="12" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="lit_form" oils_obj:array_position="13" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="pub_status" oils_obj:array_position="14" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="record" oils_obj:array_position="15" oils_persist:virtual="false" />
-			<field name="type_mat" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field name="type_mat" oils_obj:array_position="16" oils_persist:virtual="false" oils_persist:primitive="string" />
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
