@@ -39,7 +39,9 @@
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Copy Viewer"/>
 
-		<hbox id="input_placeholder"/>
+		<hbox id="top_nav">
+			<button label="Reset" accesskey="R" oncommand="g.reset()"/>
+		</hbox>
 
 		<hbox flex="1" style="overflow: scroll">
 			<vbox flex="1">
@@ -71,10 +73,8 @@
 		<hbox id="nav">
 			<spacer flex="1"/>
 			<button id="copy_notes" label="Copy Notes" accesskey="N" oncommand="g.copy_notes();"/>
-			<button id="save" label="Modify" hidden="true" accesskey="M"
-				oncommand="g.stash_and_close();"/>
-			<button id="cancel" label="Close" accesskey="C" 
-				oncommand="window.close();"/>
+			<button id="save" label="Modify Copies" hidden="true" accesskey="M" oncommand="g.stash_and_close();"/>
+			<button id="cancel" label="Close" accesskey="C" oncommand="window.close();"/>
 		</hbox>
 
 		<spacer/>

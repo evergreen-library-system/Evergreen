@@ -66,6 +66,7 @@ function my_init() {
 		if (g.copies.length > 0 && g.copies[0].id() < 0) {
 			document.getElementById('copy_notes').setAttribute('hidden','true');
 			g.apply("status",5 /* In Process */);
+			$('save').setAttribute('label','Create Copies');
 		} else {
 			g.panes_and_field_names.left_pane = 
 				[
@@ -160,6 +161,11 @@ function my_init() {
 		}
 
 		/******************************************************************************************************/
+		/* Backup copies :) */
+
+		g.original_copies = js2JSON( g.copies );
+
+		/******************************************************************************************************/
 		/* Do it */
 
 		g.summarize( g.copies );
@@ -171,6 +177,16 @@ function my_init() {
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
 		alert(err_msg);
 	}
+}
+
+/******************************************************************************************************/
+/* Restore backup copies */
+
+g.reset = function() {
+	g.changed = {};
+	g.copies = JSON2js( g.original_copies );
+	g.summarize( g.copies );
+	g.render();
 }
 
 /******************************************************************************************************/
