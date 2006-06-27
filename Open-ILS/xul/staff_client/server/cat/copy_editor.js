@@ -26,9 +26,9 @@ function my_init() {
 
 		var copy_ids = [];
 		if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
-		if (!copy_ids) copy_ids = [];
 		if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
 		if (g.data.temp_copy_ids != 'undefined') copy_ids = copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
+		if (!copy_ids) copy_ids = [];
 
 		if (copy_ids.length > 0) g.copies = g.network.request(
 			api.FM_ACP_FLESHED_BATCH_RETRIEVE.app,
@@ -42,7 +42,7 @@ function my_init() {
 		if (!g.copies) g.copies = [];
 		if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
 		if (g.cgi.param('copies')) g.copies = g.copies.concat( JSON2js( g.cgi.param('copies') ) );
-		if (g.data.temp_copies != 'undefined') g.copies = g.copies.concat( JSON2js( g.data.temp_copies ) );
+		if (g.data.temp_copies != 'undefined' && g.data.temp_copies) g.copies = g.copies.concat( JSON2js( g.data.temp_copies ) );
 
 		/******************************************************************************************************/
 		/* We try to retrieve callnumbers for existing copies, but for new copies, we rely on this */

@@ -90,17 +90,17 @@ cat.util.spawn_copy_editor = function(list,edit) {
 	obj.data.stash('temp_copy_ids');
 	var w = win.open(
 		window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
-			+'?copy_ids='+window.escape(js2JSON(list))
-			+'&edit='+edit,
+			+'?edit='+edit,
 		title,
 		'chrome,modal,resizable'
 	);
 	/* FIXME -- need to unique the temp space, and not rely on modalness of window */
 	obj.data.stash_retrieve();
-	obj.data.temp_copy_ids = null; obj.data.stash('temp_copy_ids');
+	if (!obj.data.temp_copies) return;
 	var copies = JSON2js( obj.data.temp_copies );
 	obj.data.temp_copies = null; obj.data.stash('temp_copies');
 	obj.data.temp_callnumbers = null; obj.data.stash('temp_callnumbers');
+	obj.data.temp_copy_ids = null; obj.data.stash('temp_copy_ids');
 	obj.error.sdump('D_CAT','in cat/copy_status, copy editor, copies =\n<<' + copies + '>>');
 	if (edit=='1' && copies!='' && typeof copies != 'undefined') {
 		try {
