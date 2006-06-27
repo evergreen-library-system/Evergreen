@@ -98,7 +98,7 @@ sub unapi {
 	my ($id,$type,$command,$lib) = ('','','');
 
 	if (!$format) {
-		print "Content-type: application/xml; charset=utf-8\n";
+		my $body = "Content-type: application/xml; charset=utf-8\n\n";
 	
 		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
 			$id = $2;
@@ -110,26 +110,35 @@ sub unapi {
 				->request("open-ils.supercat.$type.formats")
 				->gather(1);
 
-			print "\n";
-
-			my $body = "<formats id='$uri'><format name='opac' type='text/html'/>";
+			if ($type eq 'record') {
+				$body = <<"				FORMATS";
+<formats id='$uri'>
+	<format name='opac' type='text/html'/>
+	<format name='html' type='text/html'/>
+	<format name='htmlcard' type='text/html'/>
+	<format name='htmlholdings' type='text/html'/>
+				FORMATS
+			} elsif ($type eq 'metarecord') {
+				$body = <<"				FORMATS";
+				<formats id='$uri'>
+					<format name='opac' type='text/html'/>
+				FORMATS
+			}
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				$body .= "<format name='$type' type='application/xml'";
+				$body .= "\t<format name='$type' type='application/xml'";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
 					$body .= " $part='$$h{$type}{$part}'"
 						if ($$h{$type}{$part});
 				}
 				
-				$body .= '/>';
+				$body .= "/>\n";
 			}
 
 			$body .= "</formats>\n";
 
-			$apache->custom_response( 300, $body);
-			return 300;
 		} else {
 			my $list = $supercat
 				->request("open-ils.supercat.record.formats")
@@ -144,25 +153,32 @@ sub unapi {
 			my %hash = map { ( (keys %$_)[0] => (values %$_)[0] ) } @$list;
 			$list = [ map { { $_ => $hash{$_} } } sort keys %hash ];
 
-			print "<formats><format name='opac' type='text/html'/>";
+			$body = <<"			FORMATS";
+<formats>
+	<format name='opac' type='text/html'/>
+	<format name='html' type='text/html'/>
+	<format name='htmlcard' type='text/html'/>
+	<format name='htmlholdings' type='text/html'/>
+			FORMATS
+
 
 			for my $h (@$list) {
 				my ($type) = keys %$h;
-				print "<format name='$type' type='application/xml'";
+				$body .= "\t<format name='$type' type='application/xml'";
 
 				for my $part ( qw/namespace_uri docs schema_location/ ) {
-					print " $part='$$h{$type}{$part}'"
+					$body .= " $part='$$h{$type}{$part}'"
 						if ($$h{$type}{$part});
 				}
 				
-				print '/>';
+				$body .= "/>\n";
 			}
 
-			print "</formats>\n";
+			$body .= "</formats>\n";
 
-
-			return Apache2::Const::OK;
 		}
+		$apache->custom_response( 300, $body);
+		return 300;
 	}
 
 		
@@ -184,7 +200,7 @@ sub unapi {
 		my $feed = create_record_feed(
 			$format => [ $id ],
 			$base,
-			$lib,
+			$lib
 		);
 
 		$feed->root($root);
@@ -262,6 +278,21 @@ sub supercat {
 				     <type>text/html</type>
 				   </format>";
 
+			if ($1 eq 'record') {
+				print "<format>
+				     <name>htmlcard</name>
+				     <type>text/html</type>
+				   </format>
+				   <format>
+				     <name>htmlholdings</name>
+				     <type>text/html</type>
+				   </format>
+				   <format>
+				     <name>html</name>
+				     <type>text/html</type>
+				   </format>";
+			}
+
 			for my $h (@$list) {
 				my ($type) = keys %$h;
 				print "<format><name>$type</name><type>application/xml</type>";
@@ -296,6 +327,18 @@ sub supercat {
 			   <format>
 			     <name>opac</name>
 			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>htmlcard</name>
+			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>htmlholdings</name>
+			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>html</name>
+			     <type>text/html</type>
 			   </format>";
 
 		for my $h (@$list) {
@@ -322,12 +365,16 @@ sub supercat {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif ($format =~ /^html/o) {
-		my $feed = create_record_feed( $format => [ $id ], $unapi,);
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($format)) {
+		my $feed = create_record_feed(
+			$format => [ $id ],
+			$base
+		);
 
 		$feed->root($root);
 		$feed->creator($host);
 		$feed->update_ts(gmtime_ISO8601());
+		$feed->link( unapi => $base);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 		print entityize($feed->toString) . "\n";
@@ -347,7 +394,7 @@ sub supercat {
 			</head>
 			<body>
 				<br/>
-				<center>Sorry, we couldn't $command a $type with the id of $id.</center>
+				<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
 			</body>
 		</html>
 		HTML
@@ -509,7 +556,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
-  <Url>$base/1.0/$lib/-/$class/{searchTerms}?startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
+  <Url>$base/1.0/$lib/-/$class/?searchTerms={searchTerms}&startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
   <ShortName>$lib</ShortName>
   <LongName>Search $lib</LongName>
@@ -532,15 +579,15 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <Url type="application/rss+xml"
-       template="$base/1.1/$lib/rss2/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+       template="$base/1.1/$lib/rss2/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/atom+xml"
-       template="$base/1.1/$lib/atom/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+       template="$base/1.1/$lib/atom/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods3+xml"
-       template="$base/1.1/$lib/mods3/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+       template="$base/1.1/$lib/mods3/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods+xml"
-       template="$base/1.1/$lib/mods/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+       template="$base/1.1/$lib/mods/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-marcxml+xml"
-       template="$base/1.1/$lib/marcxml/$class/{searchTerms}?startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;language={language?}"/>
+       template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
@@ -605,12 +652,10 @@ sub opensearch_feed {
 	my $page = $cgi->param('startPage') || 1;
 	my $offset = $cgi->param('startIndex') || 1;
 	my $limit = $cgi->param('count') || 10;
-	my $lang = $cgi->param('language') || 'en-US';
 
 	$page = 1 if ($page !~ /^\d+$/);
 	$offset = 1 if ($offset !~ /^\d+$/);
 	$limit = 10 if ($limit !~ /^\d+$/); $limit = 25 if ($limit > 25);
-	$lang = 'en-US' if ($lang =~ /^{/ or $lang eq '*');
 
 	if ($page > 1) {
 		$offset = ($page - 1) * $limit;
@@ -618,7 +663,7 @@ sub opensearch_feed {
 		$offset -= 1;
 	}
 
-	my ($version,$org,$type,$class,$terms,$sort,$sortdir);
+	my ($version,$org,$type,$class,$terms,$sort,$sortdir,$lang);
 	(undef,$version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = split '/', $path;
 
 	$lang ||= $cgi->param('searchLang');
