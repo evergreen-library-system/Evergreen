@@ -160,7 +160,7 @@ util.network.prototype = {
 						var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
 						var enumerator = windowManagerInterface.getEnumerator(null);
 
-						var w; // close all other windows
+						var w; // set title on all appshell windows
 						while ( w = enumerator.getNext() ) {
 							if (w.document.title.match(/^\d/)) {
 								w.document.title = 
