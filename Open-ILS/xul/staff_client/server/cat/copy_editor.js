@@ -59,12 +59,8 @@ function my_init() {
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('save').setAttribute('hidden','false'); 
 			g.retrieve_templates();
-		}
-
-		if (g.cgi.param('single_edit') == '1') {
-			g.single_edit = true;
-			document.getElementById('caption').setAttribute('label','Copy Editor'); 
-			document.getElementById('save').setAttribute('hidden','false'); 
+		} else {
+			$('top_nav').setAttribute('hidden','true');
 		}
 
 		if (g.copies.length > 0 && g.copies[0].id() < 0) {
