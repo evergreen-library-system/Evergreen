@@ -306,22 +306,15 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
-								JSAN.use('util.functional');
-								JSAN.use('util.window'); var win = new util.window();
-								win.open(
-									urls.XUL_COPY_EDITOR 
-									+ '?copy_ids=' + window.escape( js2JSON(
-										util.functional.map_list(
-											obj.list2.dump_retrieve_ids(),
-											function (o) {
-												return JSON2js(o)[0]; // acp_id
-											}
-										)
-									) )
-									+ '&single_edit=1'
-									+ '&handle_update=1',
-									'batch_copy_editor_win_' + win.window_name_increment(),
-									'chrome,resizable,modal'
+								JSAN.use('cat.util');
+								cat.util.spawn_copy_editor(
+									util.functional.map_list(
+										obj.list2.dump_retrieve_ids(),
+										function (o) {
+											return JSON2js(o)[0]; // acp_id
+										}
+									),
+									true
 								);
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
