@@ -94,7 +94,9 @@
 					g.cgi.param('login_type') || 'temp'
 				);
 				g.session.on_init = function() { 
-					g.data.temporary_session = { 'key' : g.session.key, 'authtime' : g.session.authtime };
+					JSAN.use('util.network'); var n = new util.network();
+					var staff = n.simple_request('FM_AU_RETRIEVE_VIA_SESSION',[ g.session.key ]);
+					g.data.temporary_session = { 'key' : g.session.key, 'authtime' : g.session.authtime, 'usr' : js2JSON(staff) };
 					g.data.stash('temporary_session');
 					window.close();
 				}

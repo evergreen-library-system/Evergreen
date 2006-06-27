@@ -152,6 +152,28 @@ util.network.prototype = {
 					data.session.key = data.temporary_session.key; 
 					data.session.authtime = data.temporary_session.authtime; 
 					data.stash('session');
+					data.list.au[0] = JSON2js(data.temporary_session.usr);
+					data.stash('list');
+					try {
+						JSAN.use('util.window'); var win =  new util.window();
+						var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+						var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+						var enumerator = windowManagerInterface.getEnumerator(null);
+
+						var w; // close all other windows
+						while ( w = enumerator.getNext() ) {
+							if (w.document.title.match(/^\d/)) {
+								w.document.title = 
+									win.appshell_name_increment() 
+									+ ': ' + data.list.au[0].usrname() 
+									+ '@' + data.ws_name;
+									+ '.' + data.server_unadorned 
+							}
+						}
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('Error setting window titles to match new login',E);
+					}
+
 					params[0] = data.session.key;
 					req = obj._request(app,name,params,null,o_params);
 				}
