@@ -283,6 +283,7 @@ util.widgets.stop_event = function(ev) {
 }
 
 util.widgets.set_text = function(n,t) {
+	n = util.widgets.get(n);
 	switch(n.nodeName) {
 		case 'button' :
 		case 'caption' :
