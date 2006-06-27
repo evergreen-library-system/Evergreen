@@ -532,8 +532,8 @@ g.panes_and_field_names = {
 	 [
 		"Circulate as Type",	
 		{ 	
-			render: 'fm.circ_as_type() == null ? "<Unset>" : fm.circ_as_type()',
-			input: 'c = function(v){ g.apply("circ_as_type",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'fm.circ_as_type() == null ? "<Unset>" : g.data.hash.citm[ fm.circ_as_type() ].value()',
+			input: 'c = function(v){ g.apply("circ_as_type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.citm, function(n){return [ n.code() + " - " + n.value(), n.code()];} ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[

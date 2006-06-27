@@ -93,7 +93,11 @@ util.functional.convert_object_list_to_hash = function(list) {
 	var my_hash = new Object();
 	if (list) {
 		for (var i = 0; i < list.length; i++) {
-			my_hash[ list[i].id() ] = list[i];
+			if (typeof list[i].id == 'function') {
+				my_hash[ list[i].id() ] = list[i];
+			} else if (typeof list[i].code == 'function') {
+				my_hash[ list[i].code() ] = list[i];
+			}
 		}
 	}
 	return my_hash;
