@@ -354,6 +354,7 @@ g.changed = {};
 
 g.special_exception = {
 	'Call Number' : function(label,value) {
+		JSAN.use('util.widgets');
 		if (value>0) { /* an existing call number */
 			g.network.request(
 				api.FM_ACN_RETRIEVE.app,
@@ -366,12 +367,12 @@ g.special_exception = {
 					} catch(E) {
 						g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
 					}
-					label.setAttribute('value',cn);
+					util.widgets.set_text(label,cn);
 				}
 			);
 		} else { /* a yet to be created call number */
 			if (g.callnumbers) {
-				label.setAttribute('value',g.callnumbers[value]);
+				util.widgets.set_text(label,g.callnumbers[value]);
 			}
 		}
 	},
@@ -389,7 +390,8 @@ g.special_exception = {
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
 				}
-				label.setAttribute('value',p);
+				JSAN.use('util.widgets');
+				util.widgets.set_text(label,p);
 			}
 		);
 	},
@@ -407,7 +409,7 @@ g.special_exception = {
 				} catch(E) {
 					g.error.sdump('D_ERROR','patron retrieve: ' + E);
 				}
-				label.setAttribute('value',p);
+				util.widgets.set_text(label,p);
 			}
 		);
 	}
