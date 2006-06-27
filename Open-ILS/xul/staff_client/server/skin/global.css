@@ -6,6 +6,8 @@ description { -moz-user-select: text; }
 *|textarea:focus { background-color: #DDFFDD; }
 *|input:focus { background-color: #DDFFDD; }
 
+.outline_me { -moz-outline: solid; }
+
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 

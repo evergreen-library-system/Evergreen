@@ -688,7 +688,7 @@ g.render = function() {
 				groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
 				if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class','copy_editor_field_changed');
 				caption = document.createElement('caption'); groupbox.appendChild(caption);
-				caption.setAttribute('label',fn);
+				caption.setAttribute('label',fn); 
 				vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
 				grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
 				grid.setAttribute('flex','1');
@@ -738,6 +738,7 @@ g.render_input = function(node,blob) {
 		// node = hbox ;    groupbox ->  hbox, hbox
 
 		var groupbox = node.parentNode;
+		var caption = groupbox.firstChild;
 		var vbox = node.previousSibling;
 		var hbox = node;
 		var hbox2 = node.nextSibling;
@@ -814,7 +815,13 @@ g.render_input = function(node,blob) {
 		}
 		vbox.addEventListener('click',on_click, false);
 		hbox.addEventListener('click',on_click, false);
-		groupbox.firstChild.addEventListener('click',on_click, false);
+		caption.addEventListener('click',on_click, false);
+		caption.addEventListener('keypress',function(ev) {
+			if (ev.keyCode == 13 /* enter */ || ev.keyCode == 77 /* mac enter */) on_click();
+		}, false);
+		caption.setAttribute('style','-moz-user-focus: normal');
+		caption.setAttribute('onfocus','this.setAttribute("class","outline_me")');
+		caption.setAttribute('onblur','this.setAttribute("class","")');
 
 	} catch(E) {
 		g.error.sdump('D_ERROR',E + '\n');
