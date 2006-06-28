@@ -1,3 +1,5 @@
+var xmlDeclaration = /^<\?xml version[^>]+?>/;
+
 var serializer = new XMLSerializer();
 var marcns = new Namespace("http://www.loc.gov/MARC21/slim");
 var gw = new Namespace("http://opensrf.org/-/namespaces/gateway/v1");
@@ -8,6 +10,60 @@ var tooltip_hash = {};
 var current_focus;
 var _record_type;
 var bib_data;
+
+var xml_record;
+
+function my_init() {
+	try {
+		// Fake xulG for standalone...
+		try {
+			window.xulG.record;
+		} catch (e) {
+			window.xulG = {};
+			window.xulG.record = {};
+			window.xulG.save = {};
+
+			window.xulG.save.label = 'Save Record';
+			window.xulG.save.func = function (r) { alert(r); }
+
+			var cgi = new CGI();
+			var _rid = cgi.param('record');
+			if (_rid) {
+				window.xulG.record.url = '/opac/extras/supercat/retrieve/marcxml/record/' + _rid;
+			}
+		}
+		// End faking part...
+
+		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
+		document.getElementById('save-button').setAttribute('oncommand', 'window.xulG.save.func(xml_record.toXMLString())');
+
+		if (window.xulG.record.url) {
+			var req =  new XMLHttpRequest();
+			req.open('GET',window.xulG.record.url,false);
+			req.send(null);
+			window.xulG.record.marc = req.responseText.replace(xmlDeclaration, '');
+		}
+
+		xml_record = new XML( window.xulG.record.marc );
+		xml_record = xml_record..record[0];
+
+		// Get the tooltip xml all async like
+		req =  new XMLHttpRequest();
+		req.open('GET','marcedit-tooltips.xml',true);
+		req.onreadystatechange = function () {
+			if (req.readyState == 4) {
+				bib_data = new XML( req.responseText.replace(xmlDeclaration, '') );
+				genToolTips();
+			}
+		}
+		req.send(null);
+
+		loadRecord(xml_record);
+	} catch(E) {
+		alert('FIXME, MARC Editor: ' + E);
+	}
+}
+
 
 function createComplexHTMLElement (e, attrs, objects, text) {
 	var l = document.createElementNS('http://www.w3.org/1999/xhtml',e);

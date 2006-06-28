@@ -2,7 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="marcedit.css" type="text/css"?>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="try{my_init();loadRecord(xml_record);}catch(E){alert('FIXME: '+E);}">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="my_init()">
 
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
@@ -137,60 +137,6 @@
 		<menuitem label="COM" oncommand="changeFFEditor('COM');"/>
 	</popup>
 </popupset>
-
-<script type="application/x-javascript; e4x=1"><![CDATA[
-
-var xml_record;
-
-function my_init() {
-	try {
-		// Fake xulG for standalone...
-		try {
-			window.xulG.record;
-		} catch (e) {
-			window.xulG = {};
-			window.xulG.record = {};
-			window.xulG.save = {};
-
-			window.xulG.save.label = 'Save Record';
-			window.xulG.save.func = function (r) { alert(r); }
-
-			var cgi = new CGI();
-			var _rid = cgi.param('record');
-			if (_rid) {
-				window.xulG.record.url = '/opac/extras/supercat/retrieve/marcxml/record/' + _rid;
-			}
-		}
-		// End faking part...
-
-		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
-		document.getElementById('save-button').setAttribute('oncommand', 'window.xulG.save.func(xml_record.toXMLString())');
-
-		if (window.xulG.record.url) {
-			var req =  new XMLHttpRequest();
-			req.open('GET',window.xulG.record.url,false);
-			req.send(null);
-			window.xulG.record.marc = req.responseText
-		}
-
-		xml_record = new XML( window.xulG.record.marc );
-
-		// Get the tooltip xml all async like
-		req =  new XMLHttpRequest();
-		req.open('GET','marcedit-tooltips.xml',true);
-		req.onreadystatechange = function () {
-			if (req.readyState == 4) {
-				bib_data = new XML( req.responseText );
-				genToolTips();
-			}
-		}
-		req.send(null);
-	} catch(E) {
-		alert('FIXME, MARC Editor: ' + E);
-	}
-}
-
-]]></script>
 
 </window>
 
