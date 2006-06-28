@@ -122,6 +122,29 @@ sub cachable_wrapper {
 	return undef;
 }
 
+sub random_object {
+	my $self = shift;
+	my $client = shift;
+
+	my $cdbi = $self->{cdbi};
+	my $table = $cdbi->table;
+	my $sql = <<"	SQL";
+		SELECT	id
+		  FROM	$table
+		  WHERE	id IN (( SELECT	(RANDOM() * (SELECT MAX(id) FROM $table))::INT LIMIT 1 ));
+	SQL
+
+	my $trys = 100;
+	while ($trys--) {
+
+		my $id = $cdbi->db_Main->selectcol_arrayref($sql);
+		next unless (@$id);
+
+		return ($cdbi->fast_fieldmapper(@$id))[0];
+	}
+	return undef;
+}
+
 sub retrieve_node {
 	my $self = shift;
 	my $client = shift;
@@ -497,6 +520,17 @@ for my $fmclass ( (Fieldmapper->classes) ) {
 	}
 
 =cut
+
+	# Create the random method
+	unless ( __PACKAGE__->is_registered( $api_prefix.'.random' ) ) {
+		__PACKAGE__->register_method(
+			api_name	=> $api_prefix.'.random',
+			method		=> 'random_object',
+			api_level	=> 1,
+			cdbi		=> $cdbi,
+			argc		=> 0,
+		);
+	}
 
 	# Create the retrieve method
 	unless ( __PACKAGE__->is_registered( $api_prefix.'.retrieve' ) ) {
