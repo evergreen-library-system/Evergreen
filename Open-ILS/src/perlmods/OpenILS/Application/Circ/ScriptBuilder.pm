@@ -5,6 +5,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 my $U = "OpenILS::Application::AppUtils";
+use Data::Dumper;
 
 my $evt = "environment";
 my @COPY_STATUSES;
@@ -30,12 +31,18 @@ my @GROUP_LIST;
 sub build {
 	my( $class, $args ) = @_;
 
+	my $evt;
+	my @evts;
+
 	my $editor = $$args{editor} || new_editor();
 
 	$args->{_direct} = {} unless $args->{_direct};
 	
-	fetch_bib_data($editor, $args);
-	fetch_user_data($editor, $args);
+	$evt = fetch_bib_data($editor, $args);
+	push(@evts, $evt) if $evt;
+	$evt = fetch_user_data($editor, $args);
+	push(@evts, $evt) if $evt;
+	$args->{_event} = \@evts;
 	return build_runner($editor, $args);
 }
 
@@ -48,9 +55,9 @@ sub build_runner {
 	$runner->insert( "$evt.patron",		$ctx->{patron}, 1);
 	$runner->insert( "$evt.copy",			$ctx->{copy}, 1);
 	$runner->insert( "$evt.volume",		$ctx->{volume}, 1);
-	$runner->insert( "$evt.record",		$ctx->{title}, 1);
+	$runner->insert( "$evt.title",		$ctx->{title}, 1);
 	$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
-	$runner->insert( "$evt.recordDescriptor", $ctx->{recordDescriptor}, 1);
+	$runner->insert( "$evt.titleDescriptor", $ctx->{titleDescriptor}, 1);
 
 	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut} );
 	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue} );
@@ -58,6 +65,7 @@ sub build_runner {
 
 	# circ script result
 	$runner->insert("result", {});
+	$runner->insert("result.event", 'SUCCESS');
 	$runner->insert("result.events", []);
 	$runner->insert('result.fatalEvents', []);
 	$runner->insert('result.infoEvents', []);
@@ -96,24 +104,33 @@ sub fetch_bib_data {
 		@COPY_STATUSES = @$s;
 		$s = $e->retrieve_all_asset_copy_location();
 		@COPY_LOCATIONS = @$s;
-		$s = $e->retrieve_all_permission_grp_tree();
-		@GROUP_LIST = @$s;
 	}
 
 	# Flesh the status and location
-	$copy->status( grep { $_->id == $copy->status } @COPY_STATUSES );
-	$copy->location( grep { $_->id == $copy->location } @COPY_LOCATIONS );
+	$copy->status( 
+		grep { $_->id == $copy->status } @COPY_STATUSES ) 
+		unless ref $copy->status;
+
+	$copy->location( 
+		grep { $_->id == $copy->location } @COPY_LOCATIONS ) 
+		unless ref $copy->location;
+
+	$copy->circ_lib( 
+		$e->retrieve_actor_org_unit($copy->circ_lib)) 
+		unless ref $copy->circ_lib;
 
 	$ctx->{volume} = $e->retrieve_asset_call_number(
 		$ctx->{copy}->call_number) or return $e->event;
 
-	$ctx->{record} = $e->retrieve_biblio_record_entry(
+	$ctx->{title} = $e->retrieve_biblio_record_entry(
 		$ctx->{volume}->record) or return $e->event;
 
-	$ctx->{recordDescriptor} = $e->search_metabib_record_descriptor( 
-		{ record => $ctx->{record}->id }) or return $e->event;
+	if(!$ctx->{titleDescriptor}) {
+		$ctx->{titleDescriptor} = $e->search_metabib_record_descriptor( 
+			{ record => $ctx->{title}->id }) or return $e->event;
 
-	$ctx->{recordDescriptor} = $ctx->{recordDescriptor}->[0];
+		$ctx->{titleDescriptor} = $ctx->{titleDescriptor}->[0];
+	}
 
 	return undef;
 }
@@ -141,8 +158,21 @@ sub fetch_user_data {
 
 	return undef unless my $patron = $ctx->{patron};
 
-	$patron->home_ou( $e->retrieve_actor_org_unit($patron->home_ou) );	
-	$patron->profile( grep { $_->id == $patron->profile } @GROUP_LIST );
+	$patron->home_ou( 
+		$e->retrieve_actor_org_unit($patron->home_ou) ) 
+		unless ref $patron->home_ou;
+
+
+	if(!@GROUP_LIST) {
+		my $s = $e->retrieve_all_permission_grp_tree();
+		@GROUP_LIST = @$s;
+	}
+
+	warn 'patron profile = ' . $patron->profile . "\n";
+	$patron->profile( 
+		grep { $_->id == $patron->profile } @GROUP_LIST ) 
+		unless ref $patron->profile;
+	warn 'patron profile = ' . $patron->profile->name . "\n";
 
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 

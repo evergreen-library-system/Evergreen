@@ -12,26 +12,26 @@ use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Transit;
 use OpenILS::Utils::PermitHold;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Utils::Editor qw/:funcs/;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Application::Circ::ScriptBuilder;
 
 $Data::Dumper::Indent = 0;
-my $apputils	= "OpenILS::Application::AppUtils";
-my $U				= $apputils;
+my $U				= "OpenILS::Application::AppUtils";
 my $holdcode	= "OpenILS::Application::Circ::Holds";
 my $transcode	= "OpenILS::Application::Circ::Transit";
 
 my %scripts;			# - circulation script filenames
 my $script_libs;		# - any additional script libraries
-my %cache;				# - db objects cache
-my %contexts;			# - Script runner contexts
+#my %cache;				# - db objects cache
 my $cache_handle;		# - memcache handle
 
 sub PRECAT_FINE_LEVEL { return 2; }
 sub PRECAT_LOAN_DURATION { return 2; }
 
-my %RECORD_FROM_COPY_CACHE;
+#my %RECORD_FROM_COPY_CACHE;
 
 
 # for security, this is a process-defined and not
@@ -70,10 +70,15 @@ sub initialize {
 	$lb = [ $lb ] unless ref($lb);
 	$script_libs = $lb;
 
-	$logger->debug("Loaded rules scripts for circ: " .
-		"circ permit patron: $p, circ permit copy: $c, ".
-		"circ duration :$d , circ recurring fines : $f, " .
-		"circ max fines : $m, circ renew permit : $pr");
+	$logger->debug(
+		"Loaded rules scripts for circ: " .
+		"circ permit patron = $p, ".
+		"circ permit copy = $c, ".
+		"circ duration = $d, ".
+		"circ recurring fines = $f, " .
+		"circ max fines = $m, ".
+		"circ renew permit = $pr.  ".
+		"lib paths = @$lb");
 }
 
 
@@ -89,191 +94,202 @@ sub create_circ_ctx {
 	my $evt;
 	my $ctx = \%params;
 
-	$evt = _ctx_add_patron_objects($ctx, %params);
-	return (undef,$evt) if $evt;
+	$ctx->{copy_id}		= $ctx->{copyid};
+	$ctx->{patron_id}		= $ctx->{patronid};
+	$ctx->{copy_barcode} = $ctx->{barcode};
+	$ctx->{fetch_patron_circ_info} = 1;
+
+	my @evts = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 
 	if(!$params{noncat}) {
-		if( $evt = _ctx_add_copy_objects($ctx, %params) ) {
-			$ctx->{precat} = 1 if($evt->{textcode} eq 'ASSET_COPY_NOT_FOUND')
+		if( @evts and grep { $_->{textcode} eq 'ASSET_COPY_NOT_FOUND' } @evts) {
+			$ctx->{precat} = 1;
 		} else {
 			$ctx->{precat} = 1 if ( $ctx->{copy}->call_number == -1 ); # special case copy
 		}
 	}
 
-	_doctor_patron_object($ctx) if $ctx->{patron};
-	_doctor_copy_object($ctx) if $ctx->{copy};
+	_build_circ_script_runner($ctx);
+	return ($ctx);
 
-	if(!$ctx->{no_runner}) {
-		_build_circ_script_runner($ctx);
-		_add_script_runner_methods($ctx);
-	}
-
-	return $ctx;
-}
-
-sub _ctx_add_patron_objects {
-	my( $ctx, %params) = @_;
-	$U->logmark;
-
-	# - patron standings are now handled in the penalty server...
-
-	#if(!defined($cache{patron_standings})) {
-	#	$cache{patron_standings} = $U->fetch_patron_standings();
-	#}
-	#$ctx->{patron_standings} = $cache{patron_standings};
-
-	$cache{group_tree} = $U->fetch_permission_group_tree() unless $cache{group_tree};
-	$ctx->{group_tree} = $cache{group_tree};
-
-	$ctx->{patron_circ_summary} = 
-		$U->fetch_patron_circ_summary($ctx->{patron}->id) 
-		if $params{fetch_patron_circsummary};
-
-	return undef;
-}
-
-
-sub _find_copy_by_attr {
-	my %params = @_;
-	$U->logmark;
-	my $evt;
-
-	my $copy = $params{copy} || undef;
-
-	if(!$copy) {
-
-		( $copy, $evt ) = 
-			$U->fetch_copy($params{copyid}) if $params{copyid};
-		return (undef,$evt) if $evt;
-
-		if(!$copy) {
-			( $copy, $evt ) = 
-				$U->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
-			return (undef,$evt) if $evt;
-		}
-	}
-	return ( $copy, $evt );
-}
-
-sub _ctx_add_copy_objects {
-	my($ctx, %params)  = @_;
-	$U->logmark;
-	my $evt;
-	my $copy;
-
-	$cache{copy_statuses} = $U->fetch_copy_statuses 
-		if( $params{fetch_copy_statuses} and !defined($cache{copy_statuses}) );
-
-	$cache{copy_locations} = $U->fetch_copy_locations 
-		if( $params{fetch_copy_locations} and !defined($cache{copy_locations}));
-
-	$ctx->{copy_statuses} = $cache{copy_statuses};
-	$ctx->{copy_locations} = $cache{copy_locations};
-
-	($copy, $evt) = _find_copy_by_attr(%params);
-	return $evt if $evt;
-
-	if( $copy and !$ctx->{title} ) {
-		$logger->debug("Copy status: " . $copy->status);
-
-		my $r = $RECORD_FROM_COPY_CACHE{$copy->id};
-		($r, $evt) = $U->fetch_record_by_copy( $copy->id ) unless $r;
-		return $evt if $evt;
-		$RECORD_FROM_COPY_CACHE{$copy->id} = $r;
-
-		$ctx->{title} = $r;
-		$ctx->{copy} = $copy;
-	}
-
-	return undef;
-}
-
-
-# ------------------------------------------------------------------------------
-# Fleshes parts of the patron object
-# ------------------------------------------------------------------------------
-sub _doctor_copy_object {
-	my $ctx = shift;
-	$U->logmark;
-	my $copy = $ctx->{copy} || return undef;
-
-	$logger->debug("Doctoring copy object...");
-
-	# set the copy status to a status name
-	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) );
-
-	# set the copy location to the location object
-	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) );
-
-	$copy->circ_lib( $U->fetch_org_unit($copy->circ_lib) );
-}
-
-
-# ------------------------------------------------------------------------------
-# Fleshes parts of the patron object
-# ------------------------------------------------------------------------------
-sub _doctor_patron_object {
-	my $ctx = shift;
-	$U->logmark;
-	my $patron = $ctx->{patron} || return undef;
-
-	# push the standing object into the patron
-#	if(ref($ctx->{patron_standings})) {
-#		for my $s (@{$ctx->{patron_standings}}) {
-#			if( $s->id eq $ctx->{patron}->standing ) {
-#				$patron->standing($s);
-#				$logger->debug("Set patron standing to ". $s->value);
-#			}
+#	# XXX XXX
+#
+#	$evt = _ctx_add_patron_objects($ctx, %params);
+#	return (undef,$evt) if $evt;
+#
+#	if(!$params{noncat}) {
+#		if( $evt = _ctx_add_copy_objects($ctx, %params) ) {
+#			$ctx->{precat} = 1 if($evt->{textcode} eq 'ASSET_COPY_NOT_FOUND')
+#		} else {
+#			$ctx->{precat} = 1 if ( $ctx->{copy}->call_number == -1 ); # special case copy
 #		}
 #	}
-
-	# set the patron ptofile to the profile name
-	$patron->profile( _get_patron_profile( 
-		$patron, $ctx->{group_tree} ) ) if $ctx->{group_tree};
-
-	# flesh the org unit
-	$patron->home_ou( 
-		$U->fetch_org_unit( $patron->home_ou ) ) if $patron;
+#
+#	_doctor_patron_object($ctx) if $ctx->{patron};
+#	_doctor_copy_object($ctx) if $ctx->{copy};
+#
+#	if(!$ctx->{no_runner}) {
+#		_build_circ_script_runner($ctx);
+#		_add_script_runner_methods($ctx);
+#	}
+#
+#	return $ctx;
 
 }
 
-# recurse and find the patron profile name from the tree
-# another option would be to grab the groups for the patron
-# and cycle through those until the "profile" group has been found
-sub _get_patron_profile { 
-	my( $patron, $group_tree ) = @_;
-	return $group_tree if ($group_tree->id eq $patron->profile);
-	return undef unless ($group_tree->children);
-
-	for my $child (@{$group_tree->children}) {
-		my $ret = _get_patron_profile( $patron, $child );
-		return $ret if $ret;
-	}
-	return undef;
-}
-
-sub _get_copy_status {
-	my( $copy, $cstatus ) = @_;
-	$U->logmark;
-	my $s = undef;
-	for my $status (@$cstatus) {
-		$s = $status if( $status->id eq $copy->status ) 
-	}
-	$logger->debug("Retrieving copy status: " . $s->name) if $s;
-	return $s;
-}
-
-sub _get_copy_location {
-	my( $copy, $locations ) = @_;
-	$U->logmark;
-	my $l = undef;
-	for my $loc (@$locations) {
-		$l = $loc if $loc->id eq $copy->location;
-	}
-	$logger->debug("Retrieving copy location: " . $l->name ) if $l;
-	return $l;
-}
-
+#sub _ctx_add_patron_objects {
+#	my( $ctx, %params) = @_;
+#	$U->logmark;
+#
+#	$cache{group_tree} = $U->fetch_permission_group_tree() unless $cache{group_tree};
+#	$ctx->{group_tree} = $cache{group_tree};
+#
+#	$ctx->{patron_circ_summary} = 
+#		$U->fetch_patron_circ_summary($ctx->{patron}->id) 
+#		if $params{fetch_patron_circsummary};
+#
+#	return undef;
+#}
+#
+#
+#sub _find_copy_by_attr {
+#	my %params = @_;
+#	$U->logmark;
+#	my $evt;
+#
+#	my $copy = $params{copy} || undef;
+#
+#	if(!$copy) {
+#
+#		( $copy, $evt ) = 
+#			$U->fetch_copy($params{copyid}) if $params{copyid};
+#		return (undef,$evt) if $evt;
+#
+#		if(!$copy) {
+#			( $copy, $evt ) = 
+#				$U->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
+#			return (undef,$evt) if $evt;
+#		}
+#	}
+#	return ( $copy, $evt );
+#}
+#
+#sub _ctx_add_copy_objects {
+#	my($ctx, %params)  = @_;
+#	$U->logmark;
+#	my $evt;
+#	my $copy;
+#
+#	$cache{copy_statuses} = $U->fetch_copy_statuses 
+#		if( $params{fetch_copy_statuses} and !defined($cache{copy_statuses}) );
+#
+#	$cache{copy_locations} = $U->fetch_copy_locations 
+#		if( $params{fetch_copy_locations} and !defined($cache{copy_locations}));
+#
+#	$ctx->{copy_statuses} = $cache{copy_statuses};
+#	$ctx->{copy_locations} = $cache{copy_locations};
+#
+#	($copy, $evt) = _find_copy_by_attr(%params);
+#	return $evt if $evt;
+#
+#	if( $copy and !$ctx->{title} ) {
+#
+#		my $r = $RECORD_FROM_COPY_CACHE{$copy->id};
+#		($r, $evt) = $U->fetch_record_by_copy( $copy->id ) unless $r;
+#		return $evt if $evt;
+#		$RECORD_FROM_COPY_CACHE{$copy->id} = $r;
+#
+#		$ctx->{title} = $r;
+#		$ctx->{copy} = $copy;
+#
+#		($ctx->{volume}) = $U->fetch_callnumber($copy->call_number);
+#		$ctx->{recordDescriptor} = $U->storagereq(
+#			'open-ils.storage.direct.metabib.record_descriptor.search_where', 
+#			{ record => $ctx->{title}->id });
+#
+#
+#	}
+#
+#	return undef;
+#}
+#
+#
+## ------------------------------------------------------------------------------
+## Fleshes parts of the patron object
+## ------------------------------------------------------------------------------
+#sub _doctor_copy_object {
+#	my $ctx = shift;
+#	$U->logmark;
+#	my $copy = $ctx->{copy} || return undef;
+#
+#	$logger->debug("Doctoring copy object...");
+#
+#	# set the copy status to a status name
+#	$copy->status( _get_copy_status( $copy, $ctx->{copy_statuses} ) );
+#
+#	# set the copy location to the location object
+#	$copy->location( _get_copy_location( $copy, $ctx->{copy_locations} ) );
+#
+#	$copy->circ_lib( $U->fetch_org_unit($copy->circ_lib) );
+#
+#}
+#
+#
+## ------------------------------------------------------------------------------
+## Fleshes parts of the patron object
+## ------------------------------------------------------------------------------
+#sub _doctor_patron_object {
+#	my $ctx = shift;
+#	$U->logmark;
+#	my $patron = $ctx->{patron} || return undef;
+#
+#	# set the patron ptofile to the profile name
+#	$patron->profile( _get_patron_profile( 
+#		$patron, $ctx->{group_tree} ) ) if $ctx->{group_tree};
+#
+#	# flesh the org unit
+#	$patron->home_ou( 
+#		$U->fetch_org_unit( $patron->home_ou ) ) if $patron;
+#
+#}
+#
+## recurse and find the patron profile name from the tree
+## another option would be to grab the groups for the patron
+## and cycle through those until the "profile" group has been found
+#sub _get_patron_profile { 
+#	my( $patron, $group_tree ) = @_;
+#	return $group_tree if ($group_tree->id eq $patron->profile);
+#	return undef unless ($group_tree->children);
+#
+#	for my $child (@{$group_tree->children}) {
+#		my $ret = _get_patron_profile( $patron, $child );
+#		return $ret if $ret;
+#	}
+#	return undef;
+#}
+#
+#sub _get_copy_status {
+#	my( $copy, $cstatus ) = @_;
+#	$U->logmark;
+#	my $s = undef;
+#	for my $status (@$cstatus) {
+#		$s = $status if( $status->id eq $copy->status ) 
+#	}
+#	$logger->debug("Retrieving copy status: " . $s->name) if $s;
+#	return $s;
+#}
+#
+#sub _get_copy_location {
+#	my( $copy, $locations ) = @_;
+#	$U->logmark;
+#	my $l = undef;
+#	for my $loc (@$locations) {
+#		$l = $loc if $loc->id eq $copy->location;
+#	}
+#	$logger->debug("Retrieving copy location: " . $l->name ) if $l;
+#	return $l;
+#}
+#
 
 # ------------------------------------------------------------------------------
 # Constructs and shoves data into the script environment
@@ -284,31 +300,8 @@ sub _build_circ_script_runner {
 
 	$logger->debug("Loading script environment for circulation");
 
-	my $runner;
-	if( $runner = $contexts{$ctx->{type}} ) {
-		$runner->refresh_context;
-	} else {
-		$runner = OpenILS::Utils::ScriptRunner->new;
-		$contexts{type} = $runner;
-	}
 
-	for(@$script_libs) {
-		$logger->debug("Loading circ script lib path $_");
-		$runner->add_path( $_ );
-	}
-
-	# Note: inserting the number 0 into the script turns into the
-	# string "0", and thus evaluates to true in JS land
-	# inserting undef will insert "", which evaluates to false
-
-	$runner->insert( 'environment.patron',	$ctx->{patron}, 1);
-	$runner->insert( 'environment.title',	$ctx->{title}, 1);
-	$runner->insert( 'environment.copy',	$ctx->{copy}, 1);
-
-	# circ script result
-	$runner->insert( 'result', {} );
-	#$runner->insert( 'result.event', 'SUCCESS' );
-	$runner->insert( 'result.events', [] );
+	my $runner = $ctx->{runner};
 
 	if($__isrenewal) {
 		$runner->insert('environment.isRenewal', 1);
@@ -329,35 +322,96 @@ sub _build_circ_script_runner {
 		$runner->insert('environment.isNonCat', undef);
 	}
 
-	if(ref($ctx->{patron_circ_summary})) {
-		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
+	for(@$script_libs) {
+		$logger->debug("Loading circ script lib path $_");
+		$runner->add_path( $_ );
 	}
 
-	$ctx->{runner} = $runner;
+
 	return $runner;
+
+
+#	# XXX XXX
+#
+#
+#
+#
+#	for(@$script_libs) {
+#		$logger->debug("Loading circ script lib path $_");
+#		$runner->add_path( $_ );
+#	}
+#
+#	# Note: inserting the number 0 into the script turns into the
+#	# string "0", and thus evaluates to true in JS land
+#	# inserting undef will insert "", which evaluates to false
+#
+#	$runner->insert( 'environment.patron',	$ctx->{patron}, 1);
+#	$runner->insert( 'environment.record',	$ctx->{title}, 1);
+#	$runner->insert( 'environment.copy',	$ctx->{copy}, 1);
+#	$runner->insert( 'environment.volume',	$ctx->{volume}, 1);
+#	$runner->insert( 'environment.recordDescriptor', $ctx->{recordDescriptor}, 1);
+#	$runner->insert( 'environment.requestor', $ctx->{requestor}, 1);
+#
+#	# circ script result
+#	$runner->insert( 'result', {} );
+#	#$runner->insert( 'result.event', 'SUCCESS' );
+#	$runner->insert( 'result.events', [] );
+#
+#	if($__isrenewal) {
+#		$runner->insert('environment.isRenewal', 1);
+#	} else {
+#		$runner->insert('environment.isRenewal', undef);
+#	}
+#
+#	if($ctx->{ishold} ) { 
+#		$runner->insert('environment.isHold', 1); 
+#	} else{ 
+#		$runner->insert('environment.isHold', undef) 
+#	}
+#
+#	if( $ctx->{noncat} ) {
+#		$runner->insert('environment.isNonCat', 1);
+#		$runner->insert('environment.nonCatType', $ctx->{noncat_type});
+#	} else {
+#		$runner->insert('environment.isNonCat', undef);
+#	}
+#
+#	if(ref($ctx->{patron_circ_summary})) {
+#		$runner->insert( 'environment.patronItemsOut', $ctx->{patron_circ_summary}->[0], 1 );
+#	}
+#
+#	$ctx->{runner} = $runner;
+#	return $runner;
+
+
+
 }
 
 
-sub _add_script_runner_methods {
-	my $ctx = shift;
-	$U->logmark;
-	my $runner = $ctx->{runner};
 
-	if( $ctx->{copy} ) {
-		
-		# allows a script to fetch a hold that is currently targeting the
-		# copy in question
-		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
-				my $key = shift;
-				my $hold = $holdcode->fetch_related_holds($ctx->{copy}->id);
-				$hold = undef unless $hold;
-				$runner->insert( $key, $hold, 1 );
-			}
-		);
-	}
-}
-
+#
+#
+#sub _add_script_runner_methods {
+#	my $ctx = shift;
+#	$U->logmark;
+#	my $runner = $ctx->{runner};
+#
+#	if( $ctx->{copy} ) {
+#		
+#		# allows a script to fetch a hold that is currently targeting the
+#		# copy in question
+#		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
+#				my $key = shift;
+#				my $hold = $holdcode->fetch_related_holds($ctx->{copy}->id);
+#				$hold = undef unless $hold;
+#				$runner->insert( $key, $hold, 1 );
+#			}
+#		);
+#	}
+#}
+#
 # ------------------------------------------------------------------------------
+
 
 __PACKAGE__->register_method(
 	method	=> "permit_circ",
@@ -406,6 +460,7 @@ sub permit_circ {
 			);
 		return $evt if $evt;
 	}
+
 
 	my $copy = $ctx->{copy};
 	if($copy) {
@@ -466,81 +521,6 @@ sub override_events {
 }
 
 
-__PACKAGE__->register_method(
-	method	=> "check_title_hold",
-	api_name	=> "open-ils.circ.title_hold.is_possible",
-	notes		=> q/
-		Determines if a hold were to be placed by a given user,
-		whether or not said hold would have any potential copies
-		to fulfill it.
-		@param authtoken The login session key
-		@param params A hash of named params including:
-			patronid  - the id of the hold recipient
-			titleid (brn) - the id of the title to be held
-			depth	- the hold range depth (defaults to 0)
-	/);
-
-# XXX add pickup lib to the call to test for perms
-
-sub check_title_hold {
-	my( $self, $client, $authtoken, $params ) = @_;
-	my %params = %$params;
-	my $titleid = $params{titleid};
-
-	my ( $requestor, $patron, $evt ) = $U->checkses_requestor( 
-		$authtoken, $params{patronid}, 'VIEW_HOLD_PERMIT' );
-	return $evt if $evt;
-
-	my $rangelib	= $patron->home_ou;
-	my $depth		= $params{depth} || 0;
-	my $pickup		= $params{pickup_lib};
-
-	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
-
-	my $org = $U->simplereq(
-		'open-ils.actor', 
-		'open-ils.actor.org_unit.retrieve', 
-		$authtoken, $requestor->home_ou );
-
-	my $limit	= 10;
-	my $offset	= 0;
-	my $title;
-
-	while( $title = $U->storagereq(
-				'open-ils.storage.biblio.record_entry.ranged_tree', 
-				$titleid, $rangelib, $depth, $limit, $offset ) ) {
-
-		last unless 
-			ref($title) and 
-			ref($title->call_numbers) and 
-			@{$title->call_numbers};
-
-		for my $cn (@{$title->call_numbers}) {
-	
-			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
-	
-			for my $copy (@{$cn->copies}) {
-	
-				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
-	
-				return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
-					{	patron				=> $patron, 
-						requestor			=> $requestor, 
-						copy					=> $copy,
-						title					=> $title, 
-						title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
-						pickup_lib			=> $pickup,
-						request_lib			=> $org } );
-	
-				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
-			}
-		}
-
-		$offset += $limit;
-	}
-
-	return 0;
-}
 
 
 # Runs the patron and copy permit scripts
@@ -553,7 +533,6 @@ sub _run_permit_scripts {
 	my $patronid	= $ctx->{patron}->id;
 	my $barcode		= ($ctx->{copy}) ? $ctx->{copy}->barcode : undef;
 	my $key			= $ctx->{permit_key};
-
 
 
 	# ---------------------------------------------------------------------
@@ -571,8 +550,11 @@ sub _run_permit_scripts {
 	# ---------------------------------------------------------------------
 	# Now run the patron permit script 
 	# ---------------------------------------------------------------------
-	$runner->load($scripts{circ_permit_patron});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
+	$logger->debug("Running circ script: " . $scripts{circ_permit_patron});
+
+	#$runner->load($scripts{circ_permit_patron});
+	$runner->run($scripts{circ_permit_patron}) or 
+		throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
 
 	my $patron_events = $runner->retrieve('result.events');
 	$patron_events = [ split(/,/, $patron_events) ]; 
@@ -580,8 +562,10 @@ sub _run_permit_scripts {
 	$logger->activity("circ_permit_patron for returned @$patron_events") if @$patron_events;
 
 	my @evts_so_far = (@$penalties, @$patron_events);
+	my @allevents; 
+	push( @allevents, OpenILS::Event->new($_)) for @evts_so_far;
 
-	return \@evts_so_far if @evts_so_far;
+	return \@allevents if @allevents;
 
 
 	if( $ctx->{noncat} ) {
@@ -620,8 +604,6 @@ sub _run_permit_scripts {
 	# Now collect all of the events together
 	# ---------------------------------------------------------------------
 
-	my @allevents; #= ( @evts_so_far, @$copy_events );
-	push( @allevents, OpenILS::Event->new($_)) for @evts_so_far;
 	push( @allevents, OpenILS::Event->new($_)) for @$copy_events;
 
 	my $ae = _check_copy_alert($ctx->{copy});
@@ -744,7 +726,6 @@ sub checkout {
 			requestor						=> $requestor, 
 			session							=> $U->start_db_session(),
 			type								=> 'circ',
-			#fetch_patron_circ_summary	=> 1,
 			fetch_copy_statuses			=> 1, 
 			fetch_copy_locations			=> 1, 
 			);
@@ -1184,6 +1165,10 @@ sub generic_receive {
 		$authtoken, 'COPY_CHECKIN' ) unless $__isrenewal;
 	return $evt if $evt;
 
+
+	my ($patron) = _find_patron_from_params($params);
+	$ctx->{patron} = $patron if $patron;
+
 	# load up the circ objects
 	if( !( $ctx = $params->{_ctx}) ) {
 		( $ctx, $evt ) = create_circ_ctx( %$params, 
@@ -1217,7 +1202,7 @@ sub generic_receive {
 	$U->update_patron_penalties( 
 		authtoken => $authtoken, 
 		patron    => $ctx->{patron},
-		background => 1
+		background => 1,
 	);
 
 	return $val;
@@ -1315,10 +1300,6 @@ sub checkin_do_receive {
 
 	# If it's a renewal, we're done
 	if($__isrenewal) {
-		#$$ctx{force} = 1;
-		#my ($cc, $ee) = _reshelve_copy($ctx);
-		#return $ee if $ee;
-		#delete $$ctx{force};
 		$U->commit_db_session($session);
 		return OpenILS::Event->new('SUCCESS');
 	}
@@ -1400,7 +1381,7 @@ sub checkin_do_receive {
 
 sub _reshelve_copy {
 
-	my $ctx = shift;
+	my $ctx		= shift;
 	my $copy		= $ctx->{copy};
 	my $reqr		= $ctx->{requestor};
 	my $session	= $ctx->{session};
@@ -1475,32 +1456,6 @@ sub _fetch_open_claims_returned {
 	return undef;
 }
 
-# - if the copy is has the 'in process' status, set it to reshelving
-#sub _check_in_process {
-	#my $ctx = shift;
-#
-	#my $copy = $ctx->{copy};
-	#my $reqr	= $ctx->{requestor};
-	#my $ses	= $ctx->{session};
-##
-	#my $stat = $U->copy_status_from_name('in process');
-	#my $rstat = $U->copy_status_from_name('reshelving');
-#
-	#if( $stat->id == $copy->status->id ) {
-		#$logger->info("marking 'in-process' copy ".$copy->id." as 'reshelving'");
-		#$copy->status( $rstat->id );
-		#my $evt = $U->update_copy( 
-			#copy		=> $copy,
-			#editor	=> $reqr->id,
-			#session	=> $ses
-			#);
-		#return $evt if $evt;
-#
-		#$copy->status( $rstat ); # - reflesh the copy status
-	#}
-	#return undef;
-#}
-
 
 # returns (ITEM_NOT_CATALOGED, change_occurred, $error_event) where necessary
 sub _checkin_handle_precat {
@@ -1564,63 +1519,6 @@ sub _checkin_check_copy_status {
 	return OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
 
 
-
-#	my $rstat = $U->copy_status_from_name('reshelving');
-#	my $stat = (ref($copy->status)) ? $copy->status->id : $copy->status;
-#
-#	if( $stat == $U->copy_status_from_name('lost')->id ) {
-#		$islost = 1;
-#		$evt = OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy );
-#
-#	} elsif( $stat == $U->copy_status_from_name('missing')->id) {
-#		$ismissing = 1;
-#		$evt = OpenILS::Event->new('COPY_STATUS_MISSING', payload => $copy );
-#	}
-#
-#	return (undef,$evt) if(!$ctx->{override});
-#
-#	# we're are now going to attempt to override the failure 
-#	# and set the copy to reshelving
-#	my $e;
-#	my $copyid = $copy->id;
-#	my $userid = $reqr->id;
-#	if( $islost ) {
-#
-#		# - make sure we have permission
-#		$e = $U->check_perms( $reqr->id, 
-#			$copy->circ_lib, 'COPY_STATUS_LOST.override');
-#		return (undef,$e) if $e;
-#		$copy->status( $rstat->id );
-#
-#		# XXX if no fines are owed in the circ, close it out - will this happen later anyway?
-#		#my $circ = $U->storagereq(
-#		#	'open-ils.storage.direct.action.circulation
-#
-#		$logger->activity("user $userid overriding 'lost' copy status for copy $copyid");
-#
-#	} elsif( $ismissing ) {
-#
-#		# - make sure we have permission
-#		$e = $U->check_perms( $reqr->id, 
-#			$copy->circ_lib, 'COPY_STATUS_MISSING.override');
-#		return (undef,$e) if $e;
-#		$copy->status( $rstat->id );
-#		$logger->activity("user $userid overriding 'missing' copy status for copy $copyid");
-#	}
-#
-#	if( $islost or $ismissing ) {
-#
-#		# - update the copy with the new status
-#		$evt = $U->update_copy(
-#			copy		=> $copy,
-#			editor	=> $reqr->id,
-#			session	=> $ses
-#		);
-#		return (undef,$evt) if $evt;
-#		$copy->status( $rstat );
-#	}
-#
-#	return (1);
 
 
 }
@@ -1765,11 +1663,6 @@ sub _checkin_handle_circ {
 	$evt = _set_copy_reshelving($copy, $requestor->id, $ctx->{session}); 
 	return $evt if $evt;
 
-#	$copy->status($U->copy_status_from_name('reshelving')->id);
-#	$evt = $U->update_copy( session => $session, 
-#		copy => $copy, editor => $requestor->id );
-#	return $evt if $evt;
-
 	$ctx->{session}->request(
 		'open-ils.storage.direct.action.circulation.update', $circ )->gather(1);
 
@@ -1889,7 +1782,7 @@ sub renew {
 
 	} else {
 		($patron, $copy, $evt) = _find_patron_from_params($params);
-		return $evt if $evt;
+		if($evt) { $__isrenewal = 0; return $evt; }
 		$params->{copy} = $copy;
 	}
 
@@ -1910,7 +1803,6 @@ sub renew {
 		requestor						=> $requestor, 
 		patron							=> $patron, 
 		type								=> 'circ',
-		#fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
@@ -1937,12 +1829,12 @@ sub renew {
 	}
 
 	# re-fetch the context since objects have changed in the checkin
+	# XXX Do we really need to do this - what changes that we don't control??
 	( $ctx, $evt ) = create_circ_ctx( %$params, 
 		patron							=> $patron, 
 		requestor						=> $requestor, 
 		patron							=> $patron, 
 		type								=> 'circ',
-		#fetch_patron_circ_summary	=> 1,
 		fetch_copy_statuses			=> 1, 
 		fetch_copy_locations			=> 1, 
 		);
@@ -1959,7 +1851,6 @@ sub renew {
 	} else {
 		$evt = $self->permit_circ( $client, $authtoken, $params );
 		if( $U->event_equals($evt, 'ITEM_NOT_CATALOGED')) {
-			#$ctx->{precat} = 1;
 			$params->{precat} = 1;
 
 		} else {

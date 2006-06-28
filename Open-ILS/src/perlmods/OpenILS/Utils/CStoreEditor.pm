@@ -377,7 +377,7 @@ sub runmethod {
 	} elsif( $action eq 'retrieve_all' ) {
 		$action = 'search';
 		$method =~ s/retrieve_all/search/o;
-		@arg = ( { id => { '!=' => 0 } } );
+		@arg = ( { id => { '!=' => undef } } );
 		$method = "$method.atomic";
 	}
 

@@ -19,6 +19,7 @@ use OpenSRF::Utils qw/:datetime/;
 
 use OpenSRF::Utils::Cache;
 
+use JSON;
 use DateTime;
 use DateTime::Format::ISO8601;
 
@@ -58,12 +59,10 @@ sub set_user_settings {
 		$apputils->checkses_requestor( $user_session, $uid, 'UPDATE_USER' );	
 	return $evt if $evt;
 	
-
-	#my ($params) = map { 
-	#	[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
-
 	my @params = map { 
 		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
+		
+	$_->[1]->{value} = JSON->perl2JSON($_->[1]->{value}) for @params;
 
 	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
 
@@ -88,14 +87,16 @@ sub set_ou_settings {
 	return $evt if $evt;
 
 
-	my ($params) = 
+	my @params = 
 		map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings;
 
-	$logger->activity("Updating org unit [$ouid] settings with: " . Dumper($params));
+	$_->[1]->{value} = JSON->perl2JSON($_->[1]->{value}) for @params;
+
+	$logger->activity("Updating org unit [$ouid] settings with: " . Dumper(\@params));
 
 	return $apputils->simplereq(
 		'open-ils.storage',
-		'open-ils.storage.direct.actor.org_unit_setting.merge', @$params );
+		'open-ils.storage.direct.actor.org_unit_setting.merge', @params );
 }
 
 
@@ -118,7 +119,7 @@ sub user_settings {
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.user_setting.search.usr.atomic',$uid );
 
-	return { map { ($_->name,$_->value) } @$s };
+	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
 
 
@@ -136,7 +137,7 @@ sub ou_settings {
 		'open-ils.storage',
 		'open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic', $ouid);
 
-	return { map { ($_->name,$_->value) } @$s };
+	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
 
 __PACKAGE__->register_method (

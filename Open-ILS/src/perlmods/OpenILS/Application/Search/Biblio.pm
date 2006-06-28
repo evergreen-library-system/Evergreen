@@ -7,7 +7,8 @@ use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
-use OpenILS::Utils::Editor q/:funcs/;
+#use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Cache;
 
 use OpenSRF::Utils::Logger qw/:logger/;
@@ -376,7 +377,7 @@ sub the_quest_for_knowledge {
 		my $errstr;
 
 		try {
-			$result = new_editor()->request( $method, %$searchhash );
+			$result = $U->storagereq( $method, %$searchhash );
 
 		} catch Error with {
 			my $err = shift;
@@ -544,15 +545,9 @@ sub biblio_mrid_check_mvr {
 
 sub _grab_metarecord {
 	my $mrid = shift;
-	my $e = OpenILS::Utils::Editor->new;
+	#my $e = OpenILS::Utils::Editor->new;
+	my $e = new_editor();
 	my $mr = $e->retrieve_metabib_metarecord($mrid) or return ( undef, $e->event );
-
-	# XXX - test
-#	my $mr = $U->simplereq(
-#		'open-ils.cstore', 
-#		'open-ils.cstore.direct.metabib.metarecord.retrieve', 
-#		$mrid);
-
 	return ($mr);
 }
 
@@ -569,7 +564,8 @@ __PACKAGE__->register_method(
 sub biblio_mrid_make_modsbatch {
 	my( $self, $client, $mrid ) = @_;
 
-	my $e = OpenILS::Utils::Editor->new;
+	#my $e = OpenILS::Utils::Editor->new;
+	my $e = new_editor();
 
 	my $mr;
 	if( ref($mrid) ) {
@@ -583,7 +579,7 @@ sub biblio_mrid_make_modsbatch {
 	my $masterid = $mr->master_record;
 	$logger->info("creating new mods batch for metarecord=$mrid, master record=$masterid");
 
-	my $ids = $e->request(
+	my $ids = $U->storagereq(
 		'open-ils.storage.ordered.metabib.metarecord.records.staff.atomic', $mrid);
 	return undef unless @$ids;
 
@@ -614,7 +610,8 @@ sub biblio_mrid_make_modsbatch {
 	my $string = JSON->perl2JSON($mods->decast);
 	$mr->mods($string);
 
-	$e = OpenILS::Utils::Editor->new(xact => 1);
+	#$e = OpenILS::Utils::Editor->new(xact => 1);
+	$e = new_editor(xact => 1);
 	$e->update_metabib_metarecord($mr) 
 		or $logger->error("Error setting mods text on metarecord $mrid : " . Dumper($e->event));
 	$e->finish;
@@ -918,7 +915,7 @@ sub biblio_search_isbn {
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
 	my $e = new_editor();
-	my $recs = $e->request(
+	my $recs = $U->storagereq(
 		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
 	return { ids => $recs, count => scalar(@$recs) };
 }
@@ -933,7 +930,7 @@ sub biblio_search_issn {
 	my( $self, $client, $issn ) = @_;
 	$logger->debug("Searching ISSN $issn");
 	my $e = new_editor();
-	my $recs = $e->request(
+	my $recs = $U->storagereq(
 		'open-ils.storage.id_list.biblio.record_entry.search.issn.atomic', $issn );
 	return { ids => $recs, count => scalar(@$recs) };
 }
@@ -1094,7 +1091,8 @@ __PACKAGE__->register_method(
 sub fetch_slim_record {
 	my( $self, $conn, $ids ) = @_;
 
-	my $editor = OpenILS::Utils::Editor->new;
+	#my $editor = OpenILS::Utils::Editor->new;
+	my $editor = new_editor();
 	my @res;
 	for( @$ids ) {
 		return $editor->event unless

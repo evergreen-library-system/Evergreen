@@ -6,7 +6,6 @@ use Data::Dumper;
 use OpenSRF::Utils;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
-use OpenILS::Utils::ScriptRunner;
 use OpenILS::Utils::Editor;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;

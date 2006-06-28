@@ -30,9 +30,13 @@ var PROFILES = {
 		fineLimit : 10,
 		overdueLimit : 10,
 	},
-	class : {
+	'class' : {
 		fineLimit : 10,
 		overdueLimit : 10,
+	},
+	circulators : {
+		fineLimit : -1,
+		overdueLimit : -1,
 	},
 	'local system administrator' : {
 		fineLimit : -1,

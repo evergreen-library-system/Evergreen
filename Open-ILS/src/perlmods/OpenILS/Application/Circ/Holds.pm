@@ -24,6 +24,7 @@ use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::PermitHold;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -857,6 +858,108 @@ sub fetch_captured_holds {
 	}
 
 	return \@res;
+}
+
+
+
+
+
+__PACKAGE__->register_method(
+	method	=> "check_title_hold",
+	api_name	=> "open-ils.circ.title_hold.is_possible",
+	notes		=> q/
+		Determines if a hold were to be placed by a given user,
+		whether or not said hold would have any potential copies
+		to fulfill it.
+		@param authtoken The login session key
+		@param params A hash of named params including:
+			patronid  - the id of the hold recipient
+			titleid (brn) - the id of the title to be held
+			depth	- the hold range depth (defaults to 0)
+	/);
+
+sub check_title_hold {
+	my( $self, $client, $authtoken, $params ) = @_;
+
+	my %params		= %$params;
+	my $titleid		= $params{titleid} ||"";
+	my $mrid			= $params{mrid} ||"";
+	my $depth		= $params{depth} || 0;
+	my $pickup_lib	= $params{pickup_lib};
+	my $hold_type	= $params{hold_type} || 'T';
+
+	my $e = new_editor(authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
+	my $patron = $e->retrieve_actor_user($params{patronid})
+		or return $e->event;
+	return $e->event unless $e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
+
+	my $rangelib	= $params{range_lib} || $patron->home_ou;
+
+	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
+		or return $e->event;
+
+	if( $hold_type eq 'T' ) {
+		return _check_title_hold_is_possible(
+			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+	}
+
+	if( $hold_type eq 'M' ) {
+		my $maps = $e->search_metabib_source_map({metarecord=>$mrid});
+		my @recs = map { $_->source } @$maps;
+		for my $rec (@recs) {
+			return 1 if (_check_title_hold_is_possible(
+				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib));
+		}
+	}
+}
+
+
+
+sub _check_title_hold_is_possible {
+	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+
+	my $limit	= 10;
+	my $offset	= 0;
+	my $title;
+
+	$logger->debug("Fetching ranged title tree for title $titleid, org $rangelib, depth $depth");
+
+	while( $title = $U->storagereq(
+				'open-ils.storage.biblio.record_entry.ranged_tree', 
+				$titleid, $rangelib, $depth, $limit, $offset ) ) {
+
+		last unless 
+			ref($title) and 
+			ref($title->call_numbers) and 
+			@{$title->call_numbers};
+
+		for my $cn (@{$title->call_numbers}) {
+	
+			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
+	
+			for my $copy (@{$cn->copies}) {
+	
+				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
+	
+				return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
+					{	patron				=> $patron, 
+						requestor			=> $requestor, 
+						copy					=> $copy,
+						title					=> $title, 
+						title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
+						pickup_lib			=> $pickup_lib,
+						request_lib			=> $request_lib 
+					} 
+				);
+	
+				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
+			}
+		}
+
+		$offset += $limit;
+	}
+	return 0;
 }
 
 

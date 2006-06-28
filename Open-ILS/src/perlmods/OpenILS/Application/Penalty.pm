@@ -5,13 +5,11 @@ use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils qw/:datetime/;
-use OpenILS::Utils::ScriptRunner;
+use OpenILS::Application::Circ::ScriptBuilder;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use base 'OpenSRF::Application';
-use OpenILS::Utils::Editor q/:funcs/;
-use OpenILS::Application::Actor;
 
 my $U = "OpenILS::Application::AppUtils";
 my $script;
@@ -40,51 +38,6 @@ sub initialize {
 	}
 
 	$logger->info("penalty: Loading patron penalty script $script with path $path");
-}
-
-
-# --------------------------------------------------------------
-# Builds the script runner and shoves data into the script 
-# context
-# --------------------------------------------------------------
-sub build_runner {
-
-	my %args = @_;
-	my $patron = $args{patron};
-	my $fines = $args{fines};
-	my $circ_counts = $args{circ_counts};
-
-	my $pgroup = find_profile($patron);
-	$patron->profile( $pgroup );
-
-	if($runner) {
-		$runner->refresh_context if $runner;
-
-	} else {
-		$runner = OpenILS::Utils::ScriptRunner->new unless $runner;
-		$runner->add_path( $_ );
-	}
-
-	$runner->insert( 'environment.patron',	$patron, 1);
-	$runner->insert( $fatal_key, [] );
-	$runner->insert( $info_key, [] );
-	$runner->insert( 'environment.patronOverdueCount', $circ_counts->{overdue});
-	$runner->insert( 'environment.patronFines', $fines );
-
-	return $runner;
-}
-
-
-sub find_profile {
-	my $patron = shift;
-
-	if(!%groups) {
-		my $groups = $U->storagereq(
-			'open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic');
-		%groups = map { $_->id => $_ } @$groups;
-	}
-
-	return $groups{$patron->profile};
 }
 
 
@@ -120,40 +73,17 @@ sub patron_penalty {
 	my( $patron, $evt );
 
 	$conn->respond_complete(1) if $$args{background};
-	
-	my $e = new_editor(xact => 1);
 
-	if( $patron = $$args{patron} ) { # - unflesh if necessary
-		$patron->home_ou( $patron->home_ou->id ) if ref($patron->home_ou);
-		$patron->profile( $patron->profile->id ) if ref($patron->profile);
+	return { fatal_penalties => [], info_penalties => [] }
+		unless ($args->{patron} || $args->{patronid});
 
-	} else {
-		$patron = $e->retrieve_actor_user($$args{patronid})
-			or return $e->event;
-	}
-
-	# - fetch the circulation summary info for the user
-	my $summary = $U->fetch_patron_circ_summary($patron->id);
-
-	# Note, that this ignores any negative balances
-	my $fxacts = $e->search_money_open_billable_transaction_summary(
-		{ usr => $patron->id, balance_owed => { ">" => 0 } });
-	my $fines = 0;
-	$fines += $_->balance_owed for @$fxacts;
-
-	# - retrieve the number of open circulations the user has by type
-	# - we have to call this method directly because we don't have an auth session
-	my $circ_counts = OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
-
-	# - build the script runner
-	my $runner = build_runner( 
-		patron		=> $patron, 
-		fines			=> $fines,
-		circ_counts	=> $circ_counts,
-		);
+	$args->{patron_id} = $args->{patronid};
+	$args->{fetch_patron_circ_info} = 1;
+	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
 
 	# - Load up the script and run it
 	$runner->add_path($path);
+
 	$runner->run($script) or 
 		throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
 
@@ -191,14 +121,14 @@ sub update_patron_penalties {
 	my $penalties = $args{penalties};
 
 	my $session   = $U->start_db_session();
+	my $pid = ($patron) ? $patron->id : $args{patronid};
 
 	# - fetch the current penalties
 	my $existing = $session->request(
 		'open-ils.storage.direct.actor.'.
-		'user_standing_penalty.search.usr.atomic', $patron->id )->gather(1);
+		'user_standing_penalty.search.usr.atomic', $pid )->gather(1);
 
 	my @deleted;
-	my $patronid = $patron->id;
 
 	# If an existing penalty is not in the newly generated 
 	# list of penalties, remove it from the DB
@@ -206,7 +136,7 @@ sub update_patron_penalties {
 		if( ! grep { $_ eq $e->penalty_type } @$penalties ) {
 
 			$logger->activity("penalty: removing user penalty ".
-				$e->penalty_type . " from user $patronid");
+				$e->penalty_type . " from user $pid");
 
 			my $s = $session->request(
 				'open-ils.storage.direct.actor.user_standing_penalty.delete', $e->id )->gather(1);
@@ -218,11 +148,11 @@ sub update_patron_penalties {
 	for my $p (@$penalties) {
 		if( ! grep { $_->penalty_type eq $p } @$existing ) {
 
-			$logger->activity("penalty: adding user penalty $p to user $patronid");
+			$logger->activity("penalty: adding user penalty $p to user $pid");
 
 			my $newp = Fieldmapper::actor::user_standing_penalty->new;
 			$newp->penalty_type( $p );
-			$newp->usr( $patronid );
+			$newp->usr( $pid );
 
 			my $s = $session->request(
 				'open-ils.storage.direct.actor.user_standing_penalty.create', $newp )->gather(1);

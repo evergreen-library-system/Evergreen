@@ -169,6 +169,7 @@ sub simple_scalar_request {
 	my($self, $service, $method, @params) = @_;
 
 	my $session = undef;
+
 	if( $service eq 'open-ils.storage' ) {
 		if( $session = get_storage_session() ) {
 			$logger->debug("simple request using existing storage session ".$session->session_id);
@@ -182,17 +183,20 @@ sub simple_scalar_request {
 	my $request = $session->request( $method, @params );
 	my $response = $request->recv(60);
 
-	$request->wait_complete;
+#	$request->wait_complete;
 
-	if(!$request->complete) {
-		warn "request did not complete : service=$service : method=$method\n";
-		throw OpenSRF::EX::ERROR 
-			("Call to $service for method $method with params ". Dumper(\@params) . 
-				"\n did not complete successfully");
-	}
+#	if(!$request->complete) {
+#		warn "request did not complete : service=$service : method=$method\n";
+#		throw OpenSRF::EX::ERROR 
+#			("Call to $service for method $method with params ". Dumper(\@params) . 
+#				"\n did not complete successfully");
+#	}
+
 
 	if(!$response) {
-		warn "No response from $service for method $method with params @params";
+		warn "No response from $service for method $method with params " . Dumper(\@params);
+		$logger->error("No response from $service for method $method with params " . Dumper(\@params));
+		return undef;
 	}
 
 	if(UNIVERSAL::isa($response,"Error")) {
@@ -209,12 +213,7 @@ sub simple_scalar_request {
 		$session->disconnect();
 	}
 
-	my $value;
-
-	if($response) { $value = $response->content; }
-	else { $value = undef; }
-
-	return $value;
+	return $response->content;
 }
 
 
