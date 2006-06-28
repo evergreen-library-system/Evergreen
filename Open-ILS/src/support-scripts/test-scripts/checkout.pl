@@ -29,9 +29,28 @@ my $nc_type		= shift;
 
 my $start;
 
+
+
+
 sub go {
 	osrf_connect($config);
 	oils_login($username, $password);
+
+	if( $patronid eq 'random' ) {
+		my $p;
+		while( !($p = $apputils->storagereq(
+			'open-ils.storage.direct.actor.user.random'))) {}
+		$patronid = $p->id;
+		print "Fetched random user : $patronid\n";
+	}
+	
+	if( $barcode eq 'random' ) {
+		my $p;
+		while( !($p = $apputils->storagereq(
+			'open-ils.storage.direct.asset.copy.random'))) {}
+		$barcode = $p->barcode;
+		print "Fetched random barcode: $barcode\n";
+	}
 
 	if($type eq 'renew') {
 		do_renew($patronid, $barcode);
