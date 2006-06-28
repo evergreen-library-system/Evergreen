@@ -95,6 +95,8 @@ sub unapi {
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
 	my $format = $cgi->param('format');
+	my $flesh_feed = ($format =~ /-full$/o) ? 1 : 0;
+	(my $base_format = $format) =~ s/-full$//o;
 	my ($id,$type,$command,$lib) = ('','','');
 
 	if (!$format) {
@@ -115,8 +117,9 @@ sub unapi {
 <formats id='$uri'>
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
-	<format name='htmlcard' type='text/html'/>
 	<format name='htmlholdings' type='text/html'/>
+	<format name='html-full' type='text/html'/>
+	<format name='htmlholdings-full' type='text/html'/>
 				FORMATS
 			} elsif ($type eq 'metarecord') {
 				$body = <<"				FORMATS";
@@ -135,6 +138,17 @@ sub unapi {
 				}
 				
 				$body .= "/>\n";
+
+				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
+					$body .= "\t<format name='$type-full' type='application/xml'";
+
+					for my $part ( qw/namespace_uri docs schema_location/ ) {
+						$body .= " $part='$$h{$type}{$part}'"
+							if ($$h{$type}{$part});
+					}
+				
+					$body .= "/>\n";
+				}
 			}
 
 			$body .= "</formats>\n";
@@ -157,8 +171,9 @@ sub unapi {
 <formats>
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
-	<format name='htmlcard' type='text/html'/>
 	<format name='htmlholdings' type='text/html'/>
+	<format name='html-full' type='text/html'/>
+	<format name='htmlholdings-full' type='text/html'/>
 			FORMATS
 
 
@@ -172,6 +187,17 @@ sub unapi {
 				}
 				
 				$body .= "/>\n";
+
+				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
+					$body .= "\t<format name='$type-full' type='application/xml'";
+
+					for my $part ( qw/namespace_uri docs schema_location/ ) {
+						$body .= " $part='$$h{$type}{$part}'"
+							if ($$h{$type}{$part});
+					}
+				
+					$body .= "/>\n";
+				}
 			}
 
 			$body .= "</formats>\n";
@@ -196,17 +222,18 @@ sub unapi {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif (OpenILS::WWW::SuperCat::Feed->exists($format)) {
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
 			$format => [ $id ],
 			$base,
-			$lib
+			$lib,
+			$flesh_feed
 		);
 
 		$feed->root($root);
 		$feed->creator($host);
 		$feed->update_ts(gmtime_ISO8601());
-		$feed->link( unapi => $base);
+		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 		print entityize($feed->toString) . "\n";
@@ -261,7 +288,8 @@ sub supercat {
 
 	my $path = $cgi->path_info;
 	my ($id,$type,$format,$command) = reverse split '/', $path;
-
+	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
+	(my $base_format = $format) =~ s/-full$//o;
 	
 	if ( $path =~ m{^/formats(?:/([^\/]+))?$}o ) {
 		print "Content-type: application/xml; charset=utf-8\n";
@@ -280,15 +308,19 @@ sub supercat {
 
 			if ($1 eq 'record') {
 				print "<format>
-				     <name>htmlcard</name>
-				     <type>text/html</type>
-				   </format>
-				   <format>
 				     <name>htmlholdings</name>
 				     <type>text/html</type>
 				   </format>
 				   <format>
 				     <name>html</name>
+				     <type>text/html</type>
+				   </format>
+				   <format>
+				     <name>htmlholdings-full</name>
+				     <type>text/html</type>
+				   </format>
+				   <format>
+				     <name>html-full</name>
 				     <type>text/html</type>
 				   </format>";
 			}
@@ -303,6 +335,18 @@ sub supercat {
 				}
 				
 				print '</format>';
+
+				if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
+					print "<format><name>$type-full</name><type>application/xml</type>";
+
+					for my $part ( qw/namespace_uri docs schema_location/ ) {
+						print "<$part>$$h{$type}{$part}</$part>"
+							if ($$h{$type}{$part});
+					}
+				
+					print '</format>';
+				}
+
 			}
 
 			print "</formats>\n";
@@ -329,15 +373,19 @@ sub supercat {
 			     <type>text/html</type>
 			   </format>
 			   <format>
-			     <name>htmlcard</name>
-			     <type>text/html</type>
-			   </format>
-			   <format>
 			     <name>htmlholdings</name>
 			     <type>text/html</type>
 			   </format>
 			   <format>
 			     <name>html</name>
+			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>htmlholdings-full</name>
+			     <type>text/html</type>
+			   </format>
+			   <format>
+			     <name>html-full</name>
 			     <type>text/html</type>
 			   </format>";
 
@@ -351,6 +399,18 @@ sub supercat {
 			}
 			
 			print '</format>';
+
+			if (OpenILS::WWW::SuperCat::Feed->exists($type)) {
+				print "<format><name>$type-full</name><type>application/xml</type>";
+
+				for my $part ( qw/namespace_uri docs schema_location/ ) {
+					print "<$part>$$h{$type}{$part}</$part>"
+						if ($$h{$type}{$part});
+				}
+				
+				print '</format>';
+			}
+
 		}
 
 		print "</formats>\n";
@@ -365,16 +425,17 @@ sub supercat {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
-	} elsif (OpenILS::WWW::SuperCat::Feed->exists($format)) {
+	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
 			$format => [ $id ],
-			$base
+			undef, undef,
+			$flesh_feed
 		);
 
 		$feed->root($root);
 		$feed->creator($host);
 		$feed->update_ts(gmtime_ISO8601());
-		$feed->link( unapi => $base);
+		$feed->link( unapi => $base) if ($flesh_feed);
 
 		print "Content-type: ". $feed->type ."; charset=utf-8\n\n";
 		print entityize($feed->toString) . "\n";
@@ -433,6 +494,7 @@ sub bookbag_feed {
 	#warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
 
 	my ($id,$type) = reverse split '/', $path;
+	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
 	my $bucket = $actor->request("open-ils.actor.container.public.flesh", 'biblio', $id)->gather(1);
 	return Apache2::Const::NOT_FOUND unless($bucket);
@@ -449,6 +511,8 @@ sub bookbag_feed {
 		$type,
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
+		undef,
+		$flesh_feed
 	);
 	$feed->root($root);
 
@@ -501,6 +565,7 @@ sub changes_feed {
 	$path =~ s/^\/(?:feed\/)?freshmeat\///og;
 	
 	my ($type,$rtype,$axis,$limit,$date) = split '/', $path;
+	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 	$limit ||= 10;
 
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
@@ -512,7 +577,7 @@ sub changes_feed {
 		return 302;
 	}
 
-	my $feed = create_record_feed( $type, $list, $unapi);
+	my $feed = create_record_feed( $type, $list, $unapi, undef, $flesh_feed);
 	$feed->root($root);
 
 	if ($date) {
@@ -676,7 +741,7 @@ sub opensearch_feed {
 	} elsif ($type eq '-') {
 		$type = 'atom';
 	}
-
+	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 
 	$terms = decode_utf8($terms);
 	$terms =~ s/\+/ /go;
@@ -769,7 +834,8 @@ sub opensearch_feed {
 		$type,
 		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
 		$unapi,
-		$org
+		$org,
+		$flesh_feed
 	);
 	$feed->root($root);
 	$feed->lib($org);
@@ -837,8 +903,14 @@ sub opensearch_feed {
 	);
 
 	$feed->link(
-		html =>
+		'html' =>
 		$base .  "/$version/$org/html/$class?searchTerms=$terms" =>
+		'text/html'
+	);
+
+	$feed->link(
+		'html-full' =>
+		$base .  "/$version/$org/html-full/$class?searchTerms=$terms" =>
 		'text/html'
 	);
 
@@ -868,6 +940,8 @@ sub create_record_feed {
 	my $unapi = shift;
 
 	my $lib = shift || '-';
+	my $flesh = shift;
+	$flesh = 1 if (!defined($flesh));
 
 	my $cgi = new CGI;
 	my $base = $cgi->url;
@@ -875,12 +949,14 @@ sub create_record_feed {
 
 	my $year = (gmtime())[5] + 1900;
 
+	my $flesh_feed = ($type =~ s/-full$//o) ? 1 : 0;
+
 	my $feed = new OpenILS::WWW::SuperCat::Feed ($type);
-	$feed->base($base);
-	$feed->unapi($unapi);
+	$feed->base($base) if ($flesh);
+	$feed->unapi($unapi) if ($flesh);
 
 	$type = 'atom' if ($type eq 'html');
-	$type = 'marcxml' if ($type eq 'htmlcard' or $type eq 'htmlholdings');
+	$type = 'marcxml' if ($type eq 'htmlholdings');
 
 	#$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 
@@ -901,17 +977,17 @@ sub create_record_feed {
 		my $node = $feed->add_item($xml);
 		next unless $node;
 
-		if ($lib && $type eq 'marcxml') {
+		if ($lib && $type eq 'marcxml' &&  $flesh) {
 			$xml = $supercat->request( "open-ils.supercat.record.holdings_xml.retrieve", $rec, $lib )->gather(1);
 			$node->add_holdings($xml);
 		}
 
-		$node->id($item_tag);
+		$node->id($item_tag) if ($flesh);
 		#$node->update_ts(clense_ISO8601($record->edit_date));
-		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings" => 'text/html');
-		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac");
-		$node->link(unapi => $feed->unapi . "?id=$item_tag");
-		$node->link('unapi-id' => $item_tag);
+		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh);
+		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh);
+		$node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);
+		$node->link('unapi-id' => $item_tag) if ($flesh);
 	}
 
 	return $feed;

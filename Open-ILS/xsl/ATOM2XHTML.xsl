@@ -182,7 +182,7 @@ To-do list:
 
 				<div id="searchdiv">
 					<form method="GET">
-						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html')" /></xsl:attribute>
+						<xsl:attribute name="action"><xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html-full')" /></xsl:attribute>
 						<b>Search:</b>
 						<input class="searchbox" type="text" name="searchTerms" value="{$searchTerms}"/>
 						<select name="searchClass">
@@ -462,7 +462,7 @@ To-do list:
 						<xsl:value-of select="concat($maybeurl, '#', $category)" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/subject?searchTerms=', $name)" />
+						<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html-full/subject?searchTerms=', $name)" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -514,7 +514,7 @@ To-do list:
 				<xsl:otherwise>
 					<a>
 						<xsl:attribute name="href">
-							<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html/author?searchTerms=', $showname)" />
+							<xsl:value-of select="concat($base_dir, 'opensearch/1.1/', $lib, '/html-full/author?searchTerms=', $showname)" />
 						</xsl:attribute>
 						<xsl:value-of select="$showname" />
 					</a>
