@@ -87,6 +87,13 @@
 		<desc xml:lang="en-US">The selected primary identification type and value are in use by another patron</desc>
 	</event>
 
+	<event code='1215' textcode='CIRC_EXCEEDS_COPY_RANGE'>
+		<desc xml:lang="en-US">
+			The selected copy may not circulate because the recipient's home 
+			location is not within the copy's circulation range
+		</desc>
+	</event>
+
 
 
 
