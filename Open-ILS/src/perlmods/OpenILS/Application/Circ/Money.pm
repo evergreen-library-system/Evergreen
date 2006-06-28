@@ -130,13 +130,19 @@ sub make_payments {
 			$trans = $session->request(
 				"open-ils.storage.direct.money.billable_transaction.retrieve", $transid )->gather(1);
 
-			$trans->xact_finish("now");
-			my $s = $session->request(
-				"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
+			# If this is a circulation, we can't close the transaction unless stop_fines is set
+			my $circ = $session->request(
+				'open-ils.storage.direct.action.circulation.retrieve', $transid )->gather(1);
 
-			if(!$s) { throw OpenSRF::EX::ERROR 
-				("Error updating billable_xact in circ.money.payment"); }
-					
+			if( !$circ || $circ->stop_fines ) {
+
+				$trans->xact_finish("now");
+				my $s = $session->request(
+					"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
+	
+				if(!$s) { throw OpenSRF::EX::ERROR 
+					("Error updating billable_xact in circ.money.payment"); }
+			}
 		}
 
 
