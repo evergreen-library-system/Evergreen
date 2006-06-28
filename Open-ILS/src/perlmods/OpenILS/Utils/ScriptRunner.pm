@@ -43,15 +43,15 @@ sub init {
 
 	# eating our own dog food with insert
 	$self->insert(perl_print	=> sub { print "@_\n"; } );
-	$self->insert(perl_warn		=> sub { warn @_; } );
-	$self->insert(log_activity	=> sub { $logger->activity(@_); return 1;} );
-	$self->insert(log_error		=> sub { $logger->error(@_); return 1;} );
-	$self->insert(log_warn		=> sub { $logger->warn(@_); return 1;} );
-	$self->insert(log_info		=> sub { $logger->info(@_); return 1;} );
-	$self->insert(log_debug		=> sub { $logger->debug(@_); return 1;} );
-	$self->insert(log_internal	=> sub { $logger->internal(@_); return 1;} );
-	$self->insert(debug		=> sub { $logger->debug(@_); return 1;} );
-	$self->insert(alert		=> sub { $logger->warn(@_); return 1;} );
+	$self->insert(perl_warn		=> sub { warn "@_\n"; } );
+	$self->insert(log_activity	=> sub { $logger->activity("script_runner: @_"); return 1;} );
+	$self->insert(log_error		=> sub { $logger->error("script_runner: @_"); return 1;} );
+	$self->insert(log_warn		=> sub { $logger->warn("script_runner: @_"); return 1;} );
+	$self->insert(log_info		=> sub { $logger->info("script_runner: @_"); return 1;} );
+	$self->insert(log_debug		=> sub { $logger->debug("script_runner: @_"); return 1;} );
+	$self->insert(log_internal	=> sub { $logger->internal("script_runner: @_"); return 1;} );
+	$self->insert(debug		=> sub { $logger->debug("script_runner: @_"); return 1;} );
+	$self->insert(alert		=> sub { $logger->warn("script_runner: @_"); return 1;} );
 	$self->insert(load_lib		=> sub { $self->load_lib(@_); });
 
 	# OpenSRF support function
@@ -102,12 +102,15 @@ sub run {
 	my $file = shift() || $self->{file};
 	my $js = $self->context;
 
+
+
 	$self->refresh_context
 		if ($self->reset_count && $self->runs > $self->reset_count);
 
 	$self->{_runs}++;
 
 	$file = $self->_find_file($file);
+	$logger->debug("full script file path: $file");
 
 	if( ! open(F, $file) ) {
 		$logger->error("Error opening script file: $file");
