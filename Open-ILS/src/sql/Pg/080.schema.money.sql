@@ -4,6 +4,14 @@ BEGIN;
 
 CREATE SCHEMA money;
 
+CREATE TABLE money.collections_tracker (
+	id		BIGSERIAL			PRIMARY KEY,
+	usr		INT				NOT NULL REFERENCES actor.usr (id), -- actor.usr.id
+	collector	INT				NOT NULL REFERENCES actor.usr (id),
+	location	INT				NOT NULL REFERENCES actor.org_unit (id),
+	enter_time	TIMESTAMP WITH TIME ZONE
+);
+
 CREATE TABLE money.billable_xact (
 	id		BIGSERIAL			PRIMARY KEY,
 	usr		INT				NOT NULL, -- actor.usr.id

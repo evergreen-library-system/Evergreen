@@ -55,6 +55,12 @@
 	money::grocery->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package money::collections_tracker;
+	
+	money::collections_tracker->table( 'money.collections_tracker' );
+	money::collections_tracker->sequence( 'money.collections_tracker_id_seq' );
+
+	#---------------------------------------------------------------------
 	package money::billable_transaction;
 	
 	money::billable_transaction->table( 'money.billable_xact' );

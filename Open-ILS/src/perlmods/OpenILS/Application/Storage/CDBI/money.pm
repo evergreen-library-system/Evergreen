@@ -6,6 +6,13 @@ package money;
 use base qw/OpenILS::Application::Storage::CDBI/;
 #-------------------------------------------------------------------------------
 
+package money::collections_tracker;
+use base qw/money/;
+__PACKAGE__->table('money_collections_tracker');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/usr collector location enter_time/);
+#-------------------------------------------------------------------------------
+
 package money::billable_transaction;
 use base qw/money/;
 __PACKAGE__->table('money_billable_xact');

@@ -170,6 +170,7 @@ sub _init {
 		'Fieldmapper::money::credit_card_payment'	=> { hint => 'mccp'  },
 		'Fieldmapper::money::forgive_payment'		=> { hint => 'mfp'  },
 		'Fieldmapper::money::work_payment'		=> { hint => 'mwp'  },
+		'Fieldmapper::money::collections_tracker'	=> { hint => 'mct'  },
 
 		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
 		'Fieldmapper::money::billable_transaction'	=> { hint => 'mbt'  },

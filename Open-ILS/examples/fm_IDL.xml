@@ -341,6 +341,23 @@
 		<links>
 		</links>
 	</class>
+	<class id="mct" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.collections_tracker_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="collector" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="enter_time" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="location" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="usr" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="collector" reltype="has_a" key="id" map="" class="au"/>
+			<link field="location" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 	<class id="bre" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
