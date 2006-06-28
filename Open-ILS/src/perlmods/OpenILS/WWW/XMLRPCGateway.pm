@@ -57,17 +57,7 @@ sub handler {
 
 	return Apache2::Const::NOT_FOUND unless grep { $_ eq $service } @$services;
 
-	my $request = RPC::XML::Parser->new->parse($cgi->param('POSTDATA'))
-
-	# this is noticably wacky, however if(!$request) causes strange 
-	# runtime errors : Can't locate auto/XML/Parser/ExpatNB/name.al
-	my $exit = 1 unless $request;	
-	if(!$exit) {
-		print "Content-type: text/plain;\n\n";
-		print "where is your method?\n";
-		return Apache2::Const::OK;
-	}
-
+	my $request = RPC::XML::Parser->new->parse($cgi->param('POSTDATA'));
 
 	my @args;
 	push( @args, unwrap_perl($_->value) ) for @{$request->args};
