@@ -16,7 +16,8 @@ my $info_events	= 'result.infoEvents';
 # ---------------------------------------------------------------------
 # SCRIPT VARS
 # ----------------------------------------------------------------------
-my $patronid					= 3;
+#my $patronid					= 3;
+my $patronid					= 1000502;
 my $copyid						= 8000107;
 my $patron_items_out			= 11;
 my $patron_overdue_count	= 11;

@@ -2,51 +2,16 @@ function go() {
 
 /* load the lib script */
 load_lib('../circ/circ_lib.js');
+log_vars('patron_penalty');
 
 
-/* collect some useful variables */
-var patron					= environment.patron;
-var patronProfile			= patron.profile.name.toLowerCase();
-var patronFines			= environment.patronFines;
-var patronOverdueCount	= environment.patronOverdueCount;
-
-
-log_debug('Patron penalty script: ' +
-	', Patron:'					+ patron.id +
-	', Patron Username:'		+ patron.usrname +
-	', Patron Profile: '		+ patronProfile +
-	', Patron Library: '		+ patron.home_ou.name +
-	', Patron fines: '		+ patronFines +
-	', Patron overdue: '		+ patronOverdueCount +
-	'');
-
-
-var PROFILES = {
-	restricted : {
-		fineLimit : 0,
-		overdueLimit : 0,
-	},
-	patrons : {
-		fineLimit : 10,
-		overdueLimit : 10,
-	},
-	'class' : {
-		fineLimit : 10,
-		overdueLimit : 10,
-	},
-	circulators : {
-		fineLimit : -1,
-		overdueLimit : -1,
-	},
-	'local system administrator' : {
-		fineLimit : -1,
-		overdueLimit : -1,
-	}
-
-	/* Add profiles as necessary ... */
-}
-
-
+var PROFILES = {};
+PROFILES['class']			= { fineLimit : 10, overdueLimit : 10 };
+PROFILES['patrons']		= { fineLimit : 10, overdueLimit : 10 };
+PROFILES['restricted']	= { fineLimit : 0, overdueLimit : 0 };
+PROFILES['circulators'] = { fineLimit : -1, overdueLimit : -1 };
+PROFILES['local system administrator'] = { fineLimit : -1, overdueLimit : -1 };
+/* add profiles as necessary ... */
 
 var profile = PROFILES[patronProfile];
 

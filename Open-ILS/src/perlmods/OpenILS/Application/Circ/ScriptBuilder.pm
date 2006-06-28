@@ -4,6 +4,7 @@ use OpenILS::Utils::ScriptRunner;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
+use OpenSRF::Utils::Logger qw/$logger/;
 my $U = "OpenILS::Application::AppUtils";
 use Data::Dumper;
 
@@ -59,9 +60,9 @@ sub build_runner {
 	$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
 	$runner->insert( "$evt.titleDescriptor", $ctx->{titleDescriptor}, 1);
 
-	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut} );
-	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue} );
-	$runner->insert( "$evt.patronFines", $ctx->{patronFines} );
+	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut}, 1 );
+	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue}, 1 );
+	$runner->insert( "$evt.patronFines", $ctx->{patronFines}, 1 );
 
 	# circ script result
 	$runner->insert("result", {});
@@ -168,11 +169,11 @@ sub fetch_user_data {
 		@GROUP_LIST = @$s;
 	}
 
-	warn 'patron profile = ' . $patron->profile . "\n";
 	$patron->profile( 
 		grep { $_->id == $patron->profile } @GROUP_LIST ) 
 		unless ref $patron->profile;
-	warn 'patron profile = ' . $patron->profile->name . "\n";
+
+	$patron->card($e->retrieve_actor_card($patron->card));
 
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
@@ -197,6 +198,9 @@ sub fetch_user_data {
 		my $fines = 0;
 		$fines += $_->balance_owed for @$fxacts;
 		$ctx->{patronFines} = $fines;
+
+		$logger->debug("script_builder: patron fines determined to be $fines");
+		$logger->debug("script_builder: patron overdue count is " . $ctx->{patronOverdue});
 	}
 
 	return undef;

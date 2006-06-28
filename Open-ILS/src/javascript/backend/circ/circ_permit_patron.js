@@ -1,56 +1,34 @@
 function go() {
 
-/* load the lib script */
+/* load the script library */
 load_lib('circ_lib.js');
+log_vars('circ_permit_patron');
 
 
-/* collect some useful variables */
-var patron				= environment.patron;
-var patronProfile		= patron.profile.name.toLowerCase();
-var patronItemsOut	= environment.patronItemsOut;
-var patronFines		= environment.patronFines;
-var isRenewal			= environment.isRenewal;
 
-
-log_debug('circ_permit_patron: permit circ on ' +
-	', Patron:'					+ patron.id +
-	', Patron Username:'		+ patron.usrname +
-	', Patron Profile: '		+ patronProfile +
-	', Patron copies: '		+ patronItemsOut +
-	', Patron Library: '		+ patron.home_ou.name +
-	', Patron fines: '		+ patronFines +
-	', Is Renewal: '			+ ( (isRenewal) ? "yes" : "no" ) +
-	'');
-
-
+/* make sure they are not barred */
 if( isTrue(patron.barred) ) 
 	result.events.push('PATRON_BARRED');
 
 
-/* define the items out limits */
-var PROFILES = {
-
-	restricted : {
-		itemsOutLimit : 2,
-	},
-	patrons : {
-		itemsOutLimit : 10,
-	},
-	'class' : {
-		itemsOutLimit : 10,
-	},
-	'local system administrator' : {
-		itemsOut : -1,
-	},
-	circulators : {
-		itemsOut : -1,
-	}
+/* ---------------------------------------------------------------------
+	Set up the limits for the various profiles.
+	values of -1 mean there is no limit 
+	--------------------------------------------------------------------- */
+var PROFILES = {};
+PROFILES['class']			= { itemsOutLimit : 10 };
+PROFILES['patrons']		= { itemsOutLimit : 10 };
+PROFILES['restricted']	= { itemsOutLimit : 2 };
+PROFILES['circulators'] = { itemsOutLimit : -1 };
+PROFILES['local system administrator'] = { itemsOutLimit : -1 };
+/* add profiles as necessary ... */
 
 
-	/* Add profiles as necessary ... */
-}
 
 
+/* ---------------------------------------------------------------------
+	Check the items out count 
+	--------------------------------------------------------------------- */
 var profile = PROFILES[patronProfile];
 if( profile ) {
 	if( patronItemsOut > 0 && patronItemsOut > profile.itemsOutLimit )

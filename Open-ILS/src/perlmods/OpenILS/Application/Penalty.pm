@@ -98,8 +98,10 @@ sub patron_penalty {
 		{ fatal_penalties => \@fatals, info_penalties => \@infos });
 
 	# - update the penalty info in the db if necessary
+	$logger->debug("update penalty settings = " . $$args{update});
+
 	$evt = update_patron_penalties( 
-		patron    => $patron, 
+		patron    => $args->{patron}, 
 		penalties => $all ) if $$args{update};
 
 	# - The caller won't know it failed, so log it
@@ -119,9 +121,11 @@ sub update_patron_penalties {
 	my %args      = @_;
 	my $patron    = $args{patron};
 	my $penalties = $args{penalties};
+	my $pid = $patron->id;
+
+	$logger->debug("updating penalties for patron $pid => @$penalties");
 
 	my $session   = $U->start_db_session();
-	my $pid = ($patron) ? $patron->id : $args{patronid};
 
 	# - fetch the current penalties
 	my $existing = $session->request(
