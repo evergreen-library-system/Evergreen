@@ -272,10 +272,6 @@ var UPDATE_USER_PREFS			= "open-ils.actor:open-ils.actor.patron.settings.update"
 var FETCH_COPY_STATUSES			= "open-ils.search:open-ils.search.config.copy_status.retrieve.all";
 var FETCH_COPY_COUNTS_SUMMARY	= "open-ils.search:open-ils.search.biblio.copy_counts.summary.retrieve";
 var FETCH_MARC_HTML				= "open-ils.search:open-ils.search.biblio.record.html";
-/*
-var FETCH_CHECKED_OUT			= "open-ils.circ:open-ils.circ.actor.user.checked_out";
-var FETCH_CHECKED_OUT_SLIM		= "open-ils.circ:open-ils.circ.actor.user.checked_out.opac";
-*/
 var FETCH_CHECKED_OUT_SUM		= "open-ils.actor:open-ils.actor.user.checked_out";
 var FETCH_HOLDS					= "open-ils.circ:open-ils.circ.holds.retrieve";
 var FETCH_FINES_SUMMARY			= "open-ils.actor:open-ils.actor.user.fines.summary";
@@ -298,11 +294,6 @@ var FETCH_ADV_MARC_MRIDS		= "open-ils.search:open-ils.search.biblio.marc:1";
 var FETCH_ADV_ISBN_RIDS			= "open-ils.search:open-ils.search.biblio.isbn";
 var FETCH_ADV_ISSN_RIDS			= "open-ils.search:open-ils.search.biblio.issn";
 var FETCH_ADV_TCN_RIDS			= "open-ils.search:open-ils.search.biblio.tcn";
-/*
-var FETCH_CNBROWSE_TARGET		= 'open-ils.search:open-ils.search.callnumber.browse.target';
-var FETCH_CNBROWSE_PREV			= 'open-ils.search:open-ils.search.callnumber.browse.page_up';
-var FETCH_CNBROWSE_NEXT			= 'open-ils.search:open-ils.search.callnumber.browse.page_down';
-*/
 var FETCH_CNBROWSE				= 'open-ils.search:open-ils.search.callnumber.browse';
 var FETCH_CONTAINERS				= 'open-ils.actor:open-ils.actor.container.retrieve_by_class';
 var FETCH_CONTAINERS				= 'open-ils.actor:open-ils.actor.container.retrieve_by_class';
