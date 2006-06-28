@@ -255,11 +255,11 @@ sub supercat {
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'supercat', $url)[0];
 	my $base = (split 'supercat', $url)[0] . 'supercat';
-	my $path = (split 'supercat', $url)[1];
 	my $unapi = (split 'supercat', $url)[0] . 'unapi';
 
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
+	my $path = $cgi->path_info;
 	my ($id,$type,$format,$command) = reverse split '/', $path;
 
 	
@@ -426,11 +426,11 @@ sub bookbag_feed {
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
 	my $base = (split 'bookbag', $url)[0] . 'bookbag';
-	my $path = (split 'bookbag', $url)[1];
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
 
-	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
+	my $path = $cgi->path_info;
+	warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
 
 	my ($id,$type) = reverse split '/', $path;
 
@@ -493,13 +493,12 @@ sub changes_feed {
 	my $url = $cgi->url(-path_info=>$add_path);
 	my $root = (split 'feed', $url)[0];
 	my $base = (split 'freshmeat', $url)[0] . 'freshmeat';
-	my $path = (split 'freshmeat', $url)[1];
 	my $unapi = (split 'feed', $url)[0] . 'unapi';
 
-
+	my $path = $cgi->path_info;
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
 
-	$path =~ s/^\///og;
+	$path =~ s/^\/(?:feed\/)?freshmeat\///og;
 	
 	my ($type,$rtype,$axis,$limit,$date) = split '/', $path;
 	$limit ||= 10;
@@ -624,9 +623,7 @@ sub opensearch_feed {
 	my $base = (split 'opensearch', $url)[0] . 'opensearch';
 	my $unapi = (split 'opensearch', $url)[0] . 'unapi';
 
-
 	my $path = $cgi->path_info;
-
 	#warn "URL breakdown: $url ($rel_name) -> $root -> $base -> $path -> $unapi";
 
 	if ($path =~ m{^/?(1\.\d{1})/(?:([^/]+)/)?([^/]+)/osd.xml}o) {
@@ -984,10 +981,11 @@ sub string_browse {
 	my $base = (split 'browse', $url)[0] . 'browse';
 	my $unapi = (split 'browse', $url)[0] . 'unapi';
 
+	my $path = $cgi->path_info;
+	$path =~ s/^\///og;
 
-	my $path = (split 'browse', $url)[1];
-
-	my (undef,$format,$axis,$site,$string,$page,$page_size) = split '/', $path;
+	my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
+	warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
 
 
 	$site ||= $cgi->param('searchOrg');

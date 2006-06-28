@@ -569,8 +569,8 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" oils_persist:primitive="string" />
+			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="subfield" oils_obj:array_position="7" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="tag" oils_obj:array_position="8" oils_persist:virtual="false" />
