@@ -1025,9 +1025,18 @@ my %browse_types = (
 				my $ou_tag = "tag:open-ils.org,$year:$ou_class/".$cn->owning_lib->id;
 				my $ou_name = $cn->owning_lib->name;
 
+				(my $rec_class = $cn->record->class_name) =~ s/::/-/gso;
+				$rec_class =~ s/Fieldmapper-//gso;
+
+				my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
+
 				$content .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
 				$content .= "<act:owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
-				$content .= $cn->record->marc;
+
+				my $r_doc = $parser->parse_string($cn->record->marc);
+				$r_doc->documentElement->setAttribute( id => $rec_tag );
+				$content .= entityize($r_doc->documentElement->toString);
+
 				$content .= "</hold:volume>";
 			}
 
