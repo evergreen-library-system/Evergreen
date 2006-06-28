@@ -430,7 +430,7 @@ sub bookbag_feed {
 
 
 	my $path = $cgi->path_info;
-	warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
+	#warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
 
 	my ($id,$type) = reverse split '/', $path;
 
@@ -985,7 +985,7 @@ sub string_browse {
 	$path =~ s/^\///og;
 
 	my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
-	warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
+	#warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
 
 
 	$site ||= $cgi->param('searchOrg');
@@ -996,6 +996,7 @@ sub string_browse {
 
 	unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
 		warn "something's wrong...";
+		warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
 		return undef;
 	}
 
