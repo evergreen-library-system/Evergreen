@@ -178,42 +178,24 @@ sub simple_scalar_request {
 
 	$session = OpenSRF::AppSession->create( $service ) unless $session;
 
-	$logger->debug("simple request for service $service using session " .$session->app);
-
 	my $request = $session->request( $method, @params );
-	my $response = $request->recv(60);
 
-#	$request->wait_complete;
+	my $val;
+	my $err;
+	try  {
 
-#	if(!$request->complete) {
-#		warn "request did not complete : service=$service : method=$method\n";
-#		throw OpenSRF::EX::ERROR 
-#			("Call to $service for method $method with params ". Dumper(\@params) . 
-#				"\n did not complete successfully");
-#	}
+		$val = $request->gather(1);	
 
+	} catch Error with {
+		$err = shift;
+	};
 
-	if(!$response) {
-		warn "No response from $service for method $method with params " . Dumper(\@params);
-		$logger->error("No response from $service for method $method with params " . Dumper(\@params));
-		return undef;
+	if( $err ) {
+		warn "received error : service=$service : method=$method : params=".Dumper(\@params) . "\n $err";
+		throw $err ("Call to $service for method $method \n failed with exception: $err : " );
 	}
 
-	if(UNIVERSAL::isa($response,"Error")) {
-		warn "received error : service=$service : method=$method : params=".Dumper(\@params) . "\n $response";
-		throw $response ("Call to $service for method $method with params @params" . 
-				"\n failed with exception: $response : " . Dumper(\@params) );
-	}
-
-
-	$request->finish();
-
-	if($service ne 'open-ils.storage' or !get_storage_session() ) {
-		$session->finish();
-		$session->disconnect();
-	}
-
-	return $response->content;
+	return $val;
 }
 
 
