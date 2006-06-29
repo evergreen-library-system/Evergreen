@@ -1,13 +1,10 @@
 #!/usr/bin/perl
 use strict;
-use lib '../perlmods/';
+use lib '../perlmods/OpenILS/Utils/';
+
+use Fieldmapper (IDL => '../../examples/fm_IDL.xml');  
 
 my $map = {};
-eval "
-	use lib '../perlmods/';
-	use lib '../../../OpenSRF/src/perlmods/';
-	use OpenILS::Utils::Fieldmapper;  
-";
 $map = $Fieldmapper::fieldmap unless ($@);
 
 die $@ if ($@);

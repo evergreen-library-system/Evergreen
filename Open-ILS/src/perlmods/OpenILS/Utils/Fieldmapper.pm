@@ -4,13 +4,12 @@ use Data::Dumper;
 use base 'OpenSRF::Application';
 use OpenSRF::Utils::Logger;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::System;
 use XML::Simple;
 
 my $log = 'OpenSRF::Utils::Logger';
 
 use vars qw/$fieldmap $VERSION/;
-
-_init();
 
 sub publish_fieldmapper {
 	my ($self,$client,$class) = @_;
@@ -38,11 +37,16 @@ sub classes {
 	return keys %$fieldmap;
 }
 
-sub _init {
+import();
+sub import {
+	my $class = shift;
+	my %args = @_;
+
 	return if (keys %$fieldmap);
+	return if (!OpenSRF::System->connected && !$args{IDL});
 
         # parse the IDL ...
-        my $file = OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
+        my $file = $args{IDL} || OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
         my $idl = XMLin( $file )->{class};
 	for my $c ( keys %$idl ) {
 		next unless ($idl->{$c}{'oils_obj:fieldmapper'});

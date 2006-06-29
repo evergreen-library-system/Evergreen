@@ -257,6 +257,13 @@ sub bootstrap_client {
 
 }
 
+sub connected {
+	if (my $con = OpenSRF::Transport::PeerHandle->retrieve) {
+		return 1 if ($con->tcp_connected);
+	}
+	return 0;
+}
+
 sub bootstrap_logger {
 	$0 = "Log Server";
 	OpenSRF::Utils::LogServer->serve();
