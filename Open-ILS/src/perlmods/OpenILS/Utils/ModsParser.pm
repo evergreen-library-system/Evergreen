@@ -387,7 +387,7 @@ sub push_mods_batch {
 # Completes a MARC -> Unified MODS batch process and returns the perl hash
 # ---------------------------------------------------------------------------
 sub init_virtual_record {
-	my $record = new Fieldmapper::metabib::virtual_record;
+	my $record = Fieldmapper::metabib::virtual_record->new;
 	$record->subject([]);
 	$record->types_of_resource([]);
 	$record->call_numbers([]);
