@@ -56,8 +56,11 @@ function resultCollectSearchIds( type, method, handler ) {
 	}
 
 	var limit = (resultFetchAllRecords) ? 1000 : getDisplayCount();
-	if( getHitCount() > 0 && (getOffset() + getDisplayCount()) > getHitCount() ) 
-		limit = getHitCount() - getOffset();
+
+	if( getOffset() > 0 ) {
+		if( getHitCount() > 0 && (getOffset() + getDisplayCount()) > getHitCount() ) 
+			limit = getHitCount() - getOffset();
+	}
 
 	args.org_unit = getLocation();
 	args.depth    = getDepth();
