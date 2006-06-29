@@ -26,7 +26,7 @@ use DateTime::Format::ISO8601;
 use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
 
-use OpenILS::Utils::Editor qw/:funcs/;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 use OpenILS::Application::Actor::UserGroups;
 sub initialize {
@@ -262,7 +262,8 @@ sub user_retrieve_fleshed_by_id {
 
 
 # fleshes: card, cards, address, addresses, stat_cat_entries, standing_penalties
-sub flesh_user {
+# XXX DEPRECATE  ME
+sub __flesh_user {
 	my $id = shift;
 	my $session = shift;
 
@@ -335,6 +336,37 @@ sub flesh_user {
 
 	return $user;
 }
+
+sub flesh_user {
+	my $id 	= shift;
+	my $e 	= new_editor();
+	my $user = $e->retrieve_actor_user(
+   	[
+      	$id,
+      	{
+         	"flesh" 			=> 1,
+         	"flesh_fields" =>  {
+            	"au" => [ 
+						"cards",
+						"card",
+						"standing_penalties",
+						"addresses",
+						"billing_address",
+						"mailing_address",
+						"stat_cat_entries"
+					]
+         	}
+      	}
+   	]
+	) or return $e->event;
+
+	$user->clear_passwd();
+	return $user;
+}
+
+
+
+
 
 
 # clone and clear stuff that would break the database
@@ -840,14 +872,13 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.user.retrieve",);
 
 sub get_user_by_id {
-	my ($self, $client, $user_session, $id) = @_;
-
-	my $user_obj = $apputils->check_user_session( $user_session ); 
-
-	return $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.user.retrieve",
-		$id );
+	my ($self, $client, $auth, $id) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my $user = $e->retrieve_actor_user($id)
+		or return $e->event;
+	return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);	
+	return $user;
 }
 
 
@@ -1072,10 +1103,10 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.search.advanced" );
 sub patron_adv_search {
 	my( $self, $client, $auth, $search_hash, $search_limit, $search_sort ) = @_;
-	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
-	return $e->request(
+	return $U->storagereq(
 		"open-ils.storage.actor.user.crazy_search", 
 		$search_hash, $search_limit, $search_sort);
 }
@@ -2051,7 +2082,7 @@ sub _register_workstation {
 sub register_workstation {
 	my( $self, $conn, $authtoken, $name, $owner ) = @_;
 
-	my $e = OpenILS::Utils::Editor->new(authtoken=>$authtoken, xact=>1); 
+	my $e = new_editor(authtoken=>$authtoken, xact=>1);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REGISTER_WORKSTATION'); # XXX rely on editor perms
 	my $existing = $e->search_actor_workstation({name => $name});
@@ -2069,7 +2100,7 @@ sub register_workstation {
 	$ws->owning_lib($owner);
 	$ws->name($name);
 	$e->create_actor_workstation($ws) or return $e->event;
-	$e->finish;
+	$e->commit;
 	return $ws->id; # note: editor sets the id on the new object for us
 }
 

@@ -25,7 +25,7 @@ sub new_editor { return OpenILS::Utils::CStoreEditor->new(@_); }
 
 
 # -----------------------------------------------------------------------------
-# These need to be auto-generated
+# Log levels
 # -----------------------------------------------------------------------------
 use constant E => 'error';
 use constant W => 'warn';
@@ -361,12 +361,11 @@ sub __arg_to_string {
 sub runmethod {
 	my( $self, $action, $type, $arg, $options ) = @_;
 
-	my @arg = ($arg);
+	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
 	my $method = "open-ils.cstore.direct.$type.$action";
 
 	if( $action eq 'search' ) {
 		$method = "$method.atomic";
-		@arg = @$arg if ref($arg) eq 'ARRAY';
 
 	} elsif( $action eq 'batch_retrieve' ) {
 		$action = 'search';
@@ -522,8 +521,6 @@ for my $object (keys %$map) {
 	my $retrieveallf = 
 		"sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
 	eval $retrieveallf;
-
-
 }
 
 
