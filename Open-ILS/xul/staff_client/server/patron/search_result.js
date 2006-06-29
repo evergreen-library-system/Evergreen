@@ -39,15 +39,22 @@ patron.search_result.prototype = {
 				'map_row_to_column' : patron.util.std_map_row_to_column(),
 				'retrieve_row' : function(params) {
 					var id = params.retrieve_id;
-					var au_obj = patron.util.retrieve_au_via_id( ses(), id );
-
-					var row = params.row;
-					if (typeof row.my == 'undefined') row.my = {};
-					row.my.au = au_obj;
-					if (typeof params.on_retrieve == 'function') {
-						params.on_retrieve(row);
-					}
-					return row;
+					var au_obj = patron.util.retrieve_au_via_id( ses(), id,
+						function(req) {
+							try {
+								var row = params.row;
+								if (typeof row.my == 'undefined') row.my = {};
+								row.my.au = req.getResultObject();
+								if (typeof params.on_retrieve == 'function') {
+									params.on_retrieve(row);
+								} else {
+									alert('typeof params.on_retrieve == ' + typeof params.on_retrieve);
+								}
+							} catch(E) {
+								alert('error: ' + E);
+							}
+						}
+					);
 				},
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');

@@ -373,13 +373,14 @@ patron.util.std_map_row_to_column = function(error_value) {
 	}
 }
 
-patron.util.retrieve_au_via_id = function(session, id) {
+patron.util.retrieve_au_via_id = function(session, id, f) {
 	JSAN.use('util.network');
 	var network = new util.network();
 	var patron_obj = network.request(
 		api.FM_AU_RETRIEVE_VIA_ID.app,
 		api.FM_AU_RETRIEVE_VIA_ID.method,
-		[ session, id ]
+		[ session, id ],
+		f
 	);
 	return patron_obj;
 }

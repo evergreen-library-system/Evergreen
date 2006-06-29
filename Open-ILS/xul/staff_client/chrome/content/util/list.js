@@ -223,23 +223,26 @@ util.list.prototype = {
 				'flesh',
 				function() {
 					//dump('fleshing = ' + params.retrieve_id + '\n');
-					var row;
 
 					params.row_node = treeitem;
-					params.on_retrieve = function(row) {
-						params.row = row;
-						obj._map_row_to_treecell(params,treerow);
+					params.on_retrieve = function(p) {
+						try {
+							p.row = params.row;
+							obj._map_row_to_treecell(p,treerow);
+						} catch(E) {
+							alert('fixme2: ' + E);
+						}
 					}
 
 					if (typeof params.retrieve_row == 'function') {
 
-						row = params.retrieve_row( params );
+						params.retrieve_row( params );
 
 					} else {
 
 						if (typeof obj.retrieve_row == 'function') {
 
-							row = obj.retrieve_row( params );
+							obj.retrieve_row( params );
 
 						}
 					}
