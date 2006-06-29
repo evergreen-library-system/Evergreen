@@ -55,11 +55,13 @@ function resultCollectSearchIds( type, method, handler ) {
 		item_form = (getItemForm()) ? getItemForm().split(/,/) : null;
 	}
 
+	var limit = (resultFetchAllRecords) ? 1000 : getDisplayCount();
+	if( getHitCount() > 0 && (getOffset() + getDisplayCount()) > getHitCount() ) 
+		limit = getHitCount() - getOffset();
+
 	args.org_unit = getLocation();
 	args.depth    = getDepth();
-	/*args.limit    = 200;*/
-	args.limit    = (resultFetchAllRecords) ? 1000 : getDisplayCount();
-	/*args.limit    = 500;*/
+	args.limit    = limit;
 	args.offset   = getOffset();
 
 	if(sort) args.sort = sort;
@@ -71,8 +73,6 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
-
-	//alert('form = ' + item_form + ' : type = ' + item_type);
 
 	//alert(js2JSON(args));
 	var req = new Request(method, args);
