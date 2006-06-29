@@ -112,6 +112,9 @@ int osrfAppInitialize() {
 	while (kid) {
 		if (!strcmp( (char*)kid->name, "class" )) {
 
+			if (!strcmp(xmlGetNsProp(kid, "virtual", PERSIST_NS), "true"))
+				continue;
+			
 			usrData = osrfNewHash();
 			osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
 			osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");

@@ -1,4 +1,73 @@
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistance/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1">
+
+	<!-- Virutal classes -->
+	<class id="brn" oils_obj:fieldmapper="biblio::record_node" oils_persist:virtual="true">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="owner_doc" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="intra_doc_id" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field name="parent_node" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field name="node_type" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="namespace_uri" oils_obj:array_position="7" oils_persist:virtual="true" />
+			<field name="name" oils_obj:array_position="6" oils_persist:virtual="true" />
+			<field name="value" oils_obj:array_position="11" oils_persist:virtual="true" />
+		</fields>
+	</class>
+
+	<class id="mvr" oils_obj:fieldmapper="metabib::virtual_record" oils_persist:virtual="true">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="title" oils_obj:array_position="19" oils_persist:virtual="true" />
+			<field name="author" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="doc_id" oils_obj:array_position="6" oils_persist:virtual="true" />
+			<field name="doc_type" oils_obj:array_position="7" oils_persist:virtual="true" />
+			<field name="pubdate" oils_obj:array_position="12" oils_persist:virtual="true" />
+			<field name="isbn" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="publisher" oils_obj:array_position="13" oils_persist:virtual="true" />
+			<field name="tcn" oils_obj:array_position="18" oils_persist:virtual="true" />
+			<field name="subject" oils_obj:array_position="16" oils_persist:virtual="true" />
+			<field name="types_of_resource" oils_obj:array_position="21" oils_persist:virtual="true" />
+			<field name="call_numbers" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="edition" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="online_loc" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field name="synopsis" oils_obj:array_position="17" oils_persist:virtual="true" />
+			<field name="physical_description" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field name="toc" oils_obj:array_position="20" oils_persist:virtual="true" />
+			<field name="copy_count" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field name="series" oils_obj:array_position="15" oils_persist:virtual="true" />
+			<field name="serials" oils_obj:array_position="14" oils_persist:virtual="true" />
+		</fields>
+	</class>
+
+	<class id="ex" oils_obj:fieldmapper="ex" oils_persist:virtual="true">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="err_msg" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="type" oils_obj:array_position="4" oils_persist:virtual="true" />
+		</fields>
+	</class>
+
+	<class id="perm_ex" oils_obj:fieldmapper="perm_ex" oils_persist:virtual="true">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="err_msg" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="type" oils_obj:array_position="4" oils_persist:virtual="true" />
+		</fields>
+	</class>
+
+
+
+	<!-- Actually in the DB -->
 	<class id="aws" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -12,6 +81,7 @@
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+
 	<class id="cit" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

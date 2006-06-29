@@ -2,20 +2,11 @@ package Fieldmapper;
 use JSON;
 use Data::Dumper;
 use base 'OpenSRF::Application';
-
 use OpenSRF::Utils::Logger;
-my $log = 'OpenSRF::Utils::Logger';
+use OpenSRF::Utils::SettingsClient;
+use XML::Simple;
 
-use OpenILS::Application::Storage::CDBI;
-use OpenILS::Application::Storage::CDBI::actor;
-use OpenILS::Application::Storage::CDBI::action;
-use OpenILS::Application::Storage::CDBI::asset;
-use OpenILS::Application::Storage::CDBI::biblio;
-use OpenILS::Application::Storage::CDBI::config;
-use OpenILS::Application::Storage::CDBI::metabib;
-use OpenILS::Application::Storage::CDBI::money;
-use OpenILS::Application::Storage::CDBI::container;
-use OpenILS::Application::Storage::CDBI::config;
+my $log = 'OpenSRF::Utils::Logger';
 
 use vars qw/$fieldmap $VERSION/;
 
@@ -50,226 +41,26 @@ sub classes {
 sub _init {
 	return if (keys %$fieldmap);
 
-	$fieldmap = 
-	{
-		'Fieldmapper::container::user_bucket'		=> { hint => 'cub',
-								     proto_fields	=> { items => 1 } },
-		'Fieldmapper::container::copy_bucket'		=> { hint => 'ccb',
-								     proto_fields	=> { items => 1 } },
-		'Fieldmapper::container::call_number_bucket'	=> { hint => 'ccnb',
-								     proto_fields	=> { items => 1 } },
-		'Fieldmapper::container::biblio_record_entry_bucket'		=> { hint => 'cbreb',
-										     proto_fields	=> { items => 1 } },
+        # parse the IDL ...
+        my $file = OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
+        my $idl = XMLin( $file )->{class};
+	for my $c ( keys %$idl ) {
+		next unless ($idl->{$c}{'oils_obj:fieldmapper'});
+		my $n = 'Fieldmapper::'.$idl->{$c}{'oils_obj:fieldmapper'};
 
-		'Fieldmapper::container::user_bucket_item'		=> { hint => 'cubi'   },
-		'Fieldmapper::container::copy_bucket_item'		=> { hint => 'ccbi'   },
-		'Fieldmapper::container::call_number_bucket_item'	=> { hint => 'ccnbi'   },
-		'Fieldmapper::container::biblio_record_entry_bucket_item'		=> { hint => 'cbrebi'   },
+		$log->debug("Building Fieldmapper clas for [$n] from IDL");
 
-		'Fieldmapper::action::in_house_use'		=> { hint => 'aihu'   },
-		'Fieldmapper::action::non_cataloged_circulation'=> { hint => 'ancc'   },
+		$$fieldmap{$n}{hint} = $c;
+		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
 
-		'Fieldmapper::action::survey'			=> { hint		=> 'asv',
-								     proto_fields	=> { questions	=> 1,
-								     			     responses	=> 1 } },
-		'Fieldmapper::action::survey_question'		=> { hint		=> 'asvq',
-								     proto_fields	=> { answers	=> 1,
-								     			     responses	=> 1 } },
-		'Fieldmapper::action::survey_answer'		=> { hint		=> 'asva',
-								     proto_fields	=> { responses => 1 } },
-		'Fieldmapper::action::survey_response'		=> { hint		=> 'asvr'  },
-		'Fieldmapper::action::circulation'		=> { hint		=> 'circ',
-								     proto_fields	=> {} },
+		for my $f ( keys %{ $idl->{$c}{fields}{field} } ) {
+			$$fieldmap{$n}{fields}{$f} =
+				{ virtual => ($idl->{$c}{fields}{field}{$f}{'oils_persist:virtual'} eq 'true') ? 1 : 0,
+				  position => $idl->{$c}{fields}{field}{$f}{'oils_obj:array_position'}
+				};
+		}
+	}
 
-		'Fieldmapper::action::open_circulation'		=> { hint	=> 'aoc',
-								     readonly	=> 1 },
-
-		'Fieldmapper::actor::workstation'		=> { hint	=> 'aws' },
-
-		'Fieldmapper::actor::user'			=> { hint		=> 'au',
-								     proto_fields	=> { cards		=> 1,
-								     			     survey_responses	=> 1,
-								     			     stat_cat_entries	=> 1,
-								     			     checkouts		=> 1,
-								     			     wsid		=> 1,
-								     			     ws_ou		=> 1,
-								     			     hold_requests	=> 1,
-								     			     settings		=> 1,
-								     			     permissions	=> 1,
-								     			     standing_penalties	=> 1,
-								     			     addresses		=> 1 } },
-		'Fieldmapper::actor::usr_note'			=> { hint => 'aun'    },
-		'Fieldmapper::actor::user_setting'		=> { hint => 'aus'    },
-		'Fieldmapper::actor::user_standing_penalty'	=> { hint => 'ausp'    },
-		'Fieldmapper::actor::org_unit_setting'		=> { hint => 'aous'    },
-		'Fieldmapper::actor::user_address'		=> { hint => 'aua'    },
-		'Fieldmapper::actor::org_address'		=> { hint => 'aoa'    },
-		'Fieldmapper::actor::profile'			=> { hint => 'ap'    },
-		'Fieldmapper::actor::card'			=> { hint => 'ac'    },
-		'Fieldmapper::actor::stat_cat'			=> { hint 		=> 'actsc',
-								     proto_fields	=> { entries => 1 } },
-		'Fieldmapper::actor::stat_cat_entry'		=> { hint => 'actsce'    },
-		'Fieldmapper::actor::stat_cat_entry_user_map'	=> { hint => 'actscecm'  },
-		'Fieldmapper::actor::org_unit'			=> { hint 		=> 'aou',
-								     proto_fields	=> { children => 1 } },
-		'Fieldmapper::actor::org_unit::closed_date'	=> { hint => 'aoucd'    },
-		'Fieldmapper::actor::org_unit::hours_of_operation'	=> { hint => 'aouhoo'    },
-		'Fieldmapper::actor::org_unit_type'		=> { hint 		=> 'aout',
-								     proto_fields	=> { children => 1 } },
-		
-		'Fieldmapper::biblio::record_node'		=> { hint		=> 'brn',
-								     virtual		=> 1,
-								     proto_fields	=> { children		=> 1,
-								     			     id			=> 1,
-								     			     owner_doc		=> 1,
-								     			     intra_doc_id	=> 1,
-								     			     parent_node	=> 1,
-								     			     node_type		=> 1,
-								     			     namespace_uri	=> 1,
-								     			     name		=> 1,
-								     			     value		=> 1,
-											   } },
-
-		'Fieldmapper::metabib::virtual_record'		=> { hint		=> 'mvr',
-								     virtual		=> 1,
-								     proto_fields	=> { title		=> 1,
-											     author	        => 1,
-								     			     doc_id	 	=> 1,
-								     			     doc_type		=> 1,
-								     			     isbn	 	=> 1,
-								     			     pubdate		=> 1,
-								     			     publisher	    	=> 1,
-								     			     tcn		=> 1,
-								     			     subject		=> 1,
-								     			     types_of_resource	=> 1,
-								     			     call_numbers	=> 1,
-													  edition	=> 1,
-													  online_loc	=> 1,
-													  synopsis	=> 1,
-													  physical_description	=> 1,
-													  toc => 1,
-											     copy_count	        => 1,
-											     series	        => 1,
-											     serials	        => 1,
-											   } },
-
-		'Fieldmapper::authority::record_entry'		=> { hint		=> 'are', },
-		'Fieldmapper::authority::record_note'		=> { hint		=> 'arn', },
-		'Fieldmapper::biblio::record_note'		=> { hint		=> 'bren', },
-		'Fieldmapper::biblio::record_entry'		=> { hint		=> 'bre',
-								     proto_fields	=> { call_numbers => 1,
-								     			     fixed_fields => 1 } },
-		#'Fieldmapper::biblio::record_marc'		=> { hint => 'brx'  }, # now it's inside record_entry
-
-		'Fieldmapper::money::payment'			=> { hint => 'mp',
-								     readonly	=> 1 },
-
-		'Fieldmapper::money::cash_payment'		=> { hint => 'mcp'  },
-		'Fieldmapper::money::check_payment'		=> { hint => 'mckp'  },
-		'Fieldmapper::money::credit_payment'		=> { hint => 'mcrp'  },
-		'Fieldmapper::money::credit_card_payment'	=> { hint => 'mccp'  },
-		'Fieldmapper::money::forgive_payment'		=> { hint => 'mfp'  },
-		'Fieldmapper::money::work_payment'		=> { hint => 'mwp'  },
-		'Fieldmapper::money::collections_tracker'	=> { hint => 'mct'  },
-
-		'Fieldmapper::money::billing'			=> { hint => 'mb'  },
-		'Fieldmapper::money::billable_transaction'	=> { hint => 'mbt'  },
-		'Fieldmapper::money::grocery'			=> { hint => 'mg'  },
-
-		'Fieldmapper::money::open_user_summary'		=> { hint	=> 'mous',
-								     readonly	=> 1 },
-		'Fieldmapper::money::user_summary'		=> { hint	=> 'mus',
-								     readonly	=> 1 },
-
-		'Fieldmapper::money::open_user_circulation_summary'	=> { hint	=> 'moucs',
-									     readonly	=> 1 },
-		'Fieldmapper::money::user_circulation_summary'	=> { hint	=> 'mucs',
-								     readonly	=> 1 },
-
-		'Fieldmapper::money::open_billable_transaction_summary'	=> { hint	=> 'mobts',
-									     readonly	=> 1 },
-		'Fieldmapper::money::billable_transaction_summary'	=> { hint	=> 'mbts',
-									     readonly	=> 1 },
-
-		'Fieldmapper::config::identification_type'	=> { hint => 'cit'  },
-		'Fieldmapper::config::bib_source'		=> { hint => 'cbs'  },
-		'Fieldmapper::config::metabib_field'		=> { hint => 'cmf'  },
-		'Fieldmapper::config::rules::age_hold_protect'	=> { hint => 'crahp'  },
-		'Fieldmapper::config::rules::recuring_fine'	=> { hint => 'crrf'  },
-		'Fieldmapper::config::rules::circ_duration'	=> { hint => 'crcd'  },
-		'Fieldmapper::config::rules::max_fine'		=> { hint => 'crmf'  },
-		'Fieldmapper::config::non_cataloged_type'	=> { hint => 'cnct'   },
-		'Fieldmapper::config::standing'			=> { hint => 'cst'   },
-		'Fieldmapper::config::copy_status'		=> { hint => 'ccs'   },
-		'Fieldmapper::config::net_access_level'		=> { hint => 'cnal'   },
-
-		'Fieldmapper::config::audience_map'		=> { hint	=> 'cam',
-								     readonly	=> 1 },
-		'Fieldmapper::config::language_map'		=> { hint	=> 'clm',
-								     readonly	=> 1 },
-		'Fieldmapper::config::item_form_map'		=> { hint	=> 'cifm',
-								     readonly	=> 1 },
-		'Fieldmapper::config::item_type_map'		=> { hint	=> 'citm',
-								     readonly	=> 1 },
-		'Fieldmapper::config::lit_form_map'		=> { hint	=> 'clfm',
-								     readonly	=> 1 },
-
-		'Fieldmapper::authority::full_rec'		=> { hint => 'afr'  },
-		'Fieldmapper::authority::record_descriptor'	=> { hint => 'ard'  },
-
-		'Fieldmapper::metabib::metarecord'		=> { hint => 'mmr'  },
-		'Fieldmapper::metabib::title_field_entry'	=> { hint => 'mtfe' },
-		'Fieldmapper::metabib::author_field_entry'	=> { hint => 'mafe' },
-		'Fieldmapper::metabib::subject_field_entry'	=> { hint => 'msfe' },
-		'Fieldmapper::metabib::keyword_field_entry'	=> { hint => 'mkfe' },
-		'Fieldmapper::metabib::series_field_entry'	=> { hint => 'msefe' },
-		'Fieldmapper::metabib::full_rec'		=> { hint => 'mfr'  },
-		'Fieldmapper::metabib::record_descriptor'	=> { hint => 'mrd'  },
-		'Fieldmapper::metabib::metarecord_source_map'	=> { hint => 'mmrsm'},
-
-		'Fieldmapper::asset::copy'			=> { hint 		=> 'acp',
-								     proto_fields	=> { stat_cat_entries => 1 } },
-		'Fieldmapper::asset::stat_cat'			=> { hint 		=> 'asc',
-								     proto_fields	=> { entries => 1 } },
-		'Fieldmapper::asset::stat_cat_entry'		=> { hint => 'asce'    },
-		'Fieldmapper::asset::stat_cat_entry_copy_map'	=> { hint => 'ascecm'  },
-		'Fieldmapper::asset::copy_note'			=> { hint => 'acpn'    },
-		'Fieldmapper::asset::copy_location'		=> { hint => 'acpl'    },
-		'Fieldmapper::asset::call_number'		=> { hint		=> 'acn',
-								     proto_fields	=> { copies => 1 } },
-		'Fieldmapper::asset::call_number_note'		=> { hint => 'acnn'    },
-
-		'Fieldmapper::permission::perm_list'		=> { hint => 'ppl'    },
-		'Fieldmapper::permission::grp_tree'		=> { hint => 'pgt', proto_fields => { children => 1 } },
-		'Fieldmapper::permission::usr_grp_map'		=> { hint => 'pugm'   },
-		'Fieldmapper::permission::usr_perm_map'		=> { hint => 'pupm'   },
-		'Fieldmapper::permission::grp_perm_map'		=> { hint => 'pgpm'   },
-		'Fieldmapper::action::hold_request'		=> { hint => 'ahr', proto_fields => { status => 1, transit => 1 } },
-		'Fieldmapper::action::hold_notification'	=> { hint => 'ahn'    },
-		'Fieldmapper::action::hold_copy_map'		=> { hint => 'ahcm'   },
-		'Fieldmapper::action::hold_transit_copy'	=> { hint => 'ahtc'   },
-		'Fieldmapper::action::transit_copy'		=> { hint => 'atc'    },
-		'Fieldmapper::action::unfulfilled_hold_list'	=> { hint => 'aufh'   },
-
-
-		'Fieldmapper::ex'				=> { hint	    => 'ex',
-								     virtual	    => 1,
-								     proto_fields   => {
-									err_msg	 => 1,
-									type	 => 1,
-								     } },
-
-
-		'Fieldmapper::perm_ex'				=> { hint	    => 'perm_ex',
-								     virtual	    => 1,
-								     proto_fields   => {
-									err_msg	=> 1,
-									type	=> 1,
-								     } },
-
-
-      
-	};
 
 	#-------------------------------------------------------------------------------
 	# Now comes the evil!  Generate classes
@@ -291,14 +82,6 @@ sub _init {
 		if (exists $$fieldmap{$pkg}{proto_fields}) {
 			for my $pfield ( sort keys %{ $$fieldmap{$pkg}{proto_fields} } ) {
 				$$fieldmap{$pkg}{fields}{$pfield} = { position => $pos, virtual => $$fieldmap{$pkg}{proto_fields}{$pfield} };
-				$pos++;
-			}
-		}
-
-		unless ( $$fieldmap{$pkg}{virtual} ) {
-			$$fieldmap{$pkg}{cdbi} = $cdbi;
-			for my $col ( sort $cdbi->columns('Essential') ) {
-				$$fieldmap{$pkg}{fields}{$col} = { position => $pos, virtual => 0 };
 				$pos++;
 			}
 		}
