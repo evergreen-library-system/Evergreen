@@ -8,11 +8,11 @@ export INCDIR = "$(INCLUDEDIR)/openils/"
 
 export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
-all: mod_ils_rest_gateway c_apps client-xul mod_xmlent
+all:  c_apps client-xul mod_xmlent
 
 install:	perl-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
 
-web-install:	webcore-install autojs-install mod_ils_rest_gateway-install  mod_xmlent-install offline-install
+web-install:	webcore-install autojs-install mod_xmlent-install offline-install
 
 circ_rules-install:
 	@echo $@
@@ -27,15 +27,6 @@ circ_rules-install:
 # -----------------------------------------------------------------------------------
 # Web stuff
 # -----------------------------------------------------------------------------------
-mod_ils_rest_gateway:
-	@echo $@
-	make -C apachemods mod_ils_rest_gateway.so
-
-mod_ils_rest_gateway-install:
-	@echo $@
-	make -C apachemods libfieldmapper-install
-	make -C apachemods mod_ils_rest_gateway-install
-
 mod_xmlent:
 	@echo $@
 	make -C apachemods mod_xmlent.so
@@ -122,6 +113,7 @@ perl-install:
 	cp extras/ils_events.xml $(DATADIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/openils.xml.example $(ETCDIR)
+	cp ../examples/fm_IDL.xml $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
