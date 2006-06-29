@@ -20,6 +20,7 @@ use OpenSRF::EX qw/:try/;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
 use Time::HiRes qw(time);
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -251,8 +252,6 @@ sub get_fleshed_survey {
 		$survey->id() );
 
 	my $questions = $qreq->gather(1); 
-	use Data::Dumper;
-	warn "Question: " . Dumper($questions);
 
 	if($questions) {
 

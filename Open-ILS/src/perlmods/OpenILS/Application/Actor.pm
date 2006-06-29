@@ -40,7 +40,7 @@ my $U = $apputils;
 
 sub _d { warn "Patron:\n" . Dumper(shift()); }
 
-my $cache_client;
+my $cache;
 
 
 my $set_user_settings;
@@ -890,12 +890,8 @@ __PACKAGE__->register_method(
 my $org_types;
 sub get_org_types {
 	my($self, $client) = @_;
-
 	return $org_types if $org_types;
-	 return $org_types = 
-		 $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
+	return $org_types = new_editor()->retrieve_all_actor_org_unit_type();
 }
 
 
@@ -925,9 +921,7 @@ my $ident_types;
 sub get_user_ident_types {
 	return $ident_types if $ident_types;
 	return $ident_types = 
-		$apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.config.identification_type.retrieve.all.atomic" );
+		new_editor()->retrieve_all_config_identification_type();
 }
 
 
@@ -980,31 +974,25 @@ __PACKAGE__->register_method(
 sub get_org_tree {
 	my( $self, $client) = @_;
 
-	if(!$cache_client) {
-		$cache_client = OpenSRF::Utils::Cache->new("global", 0);
-	}
-	# see if it's in the cache
-	#warn "Getting ORG Tree\n";
-	my $tree = $cache_client->get_cache('orgtree');
-	if($tree) { 
-		#warn "Found orgtree in cache. returning...\n";
-		return $tree; 
-	}
+	$cache	= OpenSRF::Utils::Cache->new("global", 0) unless $cache;
+	my $tree = $cache->get_cache('orgtree');
+	return $tree if $tree;
 
-	my $orglist = $apputils->simple_scalar_request( 
-		"open-ils.storage", 
-		"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
+	$tree = new_editor()->search_actor_org_unit( 
+		[
+			{"parent_ou" => undef },
+			{
+				flesh				=> 2,
+				flesh_fields	=> { aou =>  ['children'] },
+				order_by			=> { aou => 'shortname'}
+			}
+		]
+	)->[0];
 
-	#if($orglist) {
-		#warn "found org list\n";
-	#}
-
-	$tree = $self->build_org_tree($orglist);
-	$cache_client->put_cache('orgtree', $tree);
-
+	$cache->put_cache('orgtree', $tree);
 	return $tree;
-
 }
+
 
 # turns an org list into an org tree
 sub build_org_tree {
@@ -1918,9 +1906,7 @@ __PACKAGE__->register_method(
 	NOTES
 sub retrieve_groups {
 	my( $self, $client ) = @_;
-	return $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+	return new_editor()->retrieve_all_permission_grp_tree();
 }
 
 __PACKAGE__->register_method(

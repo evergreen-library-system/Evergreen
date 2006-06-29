@@ -7,7 +7,6 @@ use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
-#use OpenILS::Utils::Editor q/:funcs/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Cache;
 
@@ -712,12 +711,9 @@ __PACKAGE__->register_method(
 my $copy_statuses;
 sub retrieve_all_copy_statuses {
 	my( $self, $client ) = @_;
-	if(!$copy_statuses) {
-		$copy_statuses = $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.config.copy_status.retrieve.all.atomic" );
-	}
-	return $copy_statuses;
+	return $copy_statuses if $copy_statuses;
+	return $copy_statuses = 
+		new_editor()->retrieve_all_config_copy_status();
 }
 
 
@@ -1060,22 +1056,20 @@ __PACKAGE__->register_method (
 
 sub bib_extras {
 	my $self = shift;
-	
-	return $U->storagereq(
-		'open-ils.storage.direct.config.lit_form_map.retrieve.all.atomic')
-			if( $self->api_name =~ /lit_form/ );
 
-	return $U->storagereq(
-		'open-ils.storage.direct.config.item_form_map.retrieve.all.atomic')
-			if( $self->api_name =~ /item_form_map/ );
+	my $e = new_editor();
 
-	return $U->storagereq(
-		'open-ils.storage.direct.config.item_type_map.retrieve.all.atomic')
-			if( $self->api_name =~ /item_type_map/ );
+	return $e->retrieve_all_config_lit_form_map()
+		if( $self->api_name =~ /lit_form/ );
 
-	return $U->storagereq(
-		'open-ils.storage.direct.config.audience_map.retrieve.all.atomic')
-			if( $self->api_name =~ /audience/ );
+	return $e->retrieve_all_config_item_form_map()
+		if( $self->api_name =~ /item_form_map/ );
+
+	return $e->retrieve_all_config_item_type_map()
+		if( $self->api_name =~ /item_type_map/ );
+
+	return $e->retrieve_all_config_audience_map()
+		if( $self->api_name =~ /audience_map/ );
 
 	return [];
 }
