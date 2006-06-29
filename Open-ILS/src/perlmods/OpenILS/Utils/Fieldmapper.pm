@@ -56,11 +56,12 @@ sub import {
 
 		$$fieldmap{$n}{hint} = $c;
 		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
+		$$fieldmap{$n}{identity} = $idl->{$c}{fields}{'oils_persist:primary'};
 
 		for my $f ( keys %{ $idl->{$c}{fields}{field} } ) {
 			$$fieldmap{$n}{fields}{$f} =
 				{ virtual => ($idl->{$c}{fields}{field}{$f}{'oils_persist:virtual'} eq 'true') ? 1 : 0,
-				  position => $idl->{$c}{fields}{field}{$f}{'oils_obj:array_position'}
+				  position => $idl->{$c}{fields}{field}{$f}{'oils_obj:array_position'},
 				};
 		}
 	}
@@ -148,6 +149,11 @@ sub AUTOLOAD {
 		};
 	}
 	return $obj->$field($value);
+}
+
+sub Identity {
+	my $class_name = shift;
+	return $$fieldmap{$class_name}{identity};
 }
 
 sub class_name {
