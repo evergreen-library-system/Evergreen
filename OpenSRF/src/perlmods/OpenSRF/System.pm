@@ -236,8 +236,8 @@ sub bootstrap_client {
 	my $self = shift;
 
 	my $con = OpenSRF::Transport::PeerHandle->retrieve;
+
 	if($con and $con->tcp_connected) {
-		warn "PeerHandle is already connected in 'bootstrap_client'... returning\n";
 		return;
 	}
 
