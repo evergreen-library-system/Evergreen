@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use lib '../perlmods/OpenILS/Utils/';
+use lib qw(../perlmods/OpenILS/Utils/ ../../../OpenSRF/src/perlmods);
 
 use Fieldmapper (IDL => '../../examples/fm_IDL.xml');  
 
