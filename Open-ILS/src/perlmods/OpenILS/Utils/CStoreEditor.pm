@@ -376,7 +376,10 @@ sub runmethod {
 	} elsif( $action eq 'retrieve_all' ) {
 		$action = 'search';
 		$method =~ s/retrieve_all/search/o;
-		@arg = ( { id => { '!=' => undef } } );
+		my $tt = $type;
+		$tt =~ s/\./::/og;
+		my $fmobj = "Fieldmapper::$tt";
+		@arg = ( { $fmobj->Identity => { '!=' => undef } } );
 		$method = "$method.atomic";
 	}
 
