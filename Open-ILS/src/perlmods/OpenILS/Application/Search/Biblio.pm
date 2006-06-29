@@ -339,20 +339,20 @@ sub the_quest_for_knowledge {
 	my $ismeta = 0;
 	my @recs;
 
-	my $maxlimit = 500;
 
-	my $offset = $searchhash->{offset} || 0;
-	my $limit = $searchhash->{limit} || 10;
-	my $end = $offset + $limit - 1;
-	$searchhash->{offset} = 0;
-	$searchhash->{limit} = $maxlimit;
+	my $offset	= $searchhash->{offset} || 0;
+	my $limit	= $searchhash->{limit} || 10;
+	my $end		= $offset + $limit - 1;
+
+	my $maxlimit = 5000;
+	$searchhash->{offset}	= 0;
+	$searchhash->{limit}		= $maxlimit;
 
 	my @search;
 	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
 	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
 
-	#$searchhash->{offset} = $offset;
-	#$searchhash->{limit} = $limit;
+	$searchhash->{limit} -= $offset;
 
 	if($self->api_name =~ /metabib/) {
 		$ismeta = 1;
@@ -360,7 +360,8 @@ sub the_quest_for_knowledge {
 	}
 
 	# don't cache past max limit
-	my $result = ($end < $maxlimit) ? search_cache($ckey, $offset, $limit) : undef; 
+	my $result = ($end < $searchhash->{limit}) ? 
+		search_cache($ckey, $offset, $limit) : undef; 
 	my $docache = 1;
 
 	if(!$result) {
@@ -426,10 +427,11 @@ sub search_cache {
 	my $offset	= shift;
 	my $limit	= shift;
 
-	$logger->debug("searching cache for $key\n");
 
 	my $start = $offset;
 	my $end = $offset + $limit - 1;
+
+	$logger->debug("searching cache for $key : $start..$end\n");
 
 	return undef unless $cache;
 	my $data = $cache->get_cache($key);
