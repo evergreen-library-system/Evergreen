@@ -94,7 +94,7 @@ sub _auth_flatten {
 
 #	$also = [ @$also[0..4] ] if $limit;
 
-	warn Dumper( { from => $from, also => $also } );
+	#warn Dumper( { from => $from, also => $also } );
 
 	return { from => $from, also => $also };
 }
@@ -146,7 +146,7 @@ sub new_crossref_authority_batch {
 
 	}
 
-	warn Dumper( $response );
+	#warn Dumper( $response );
 	return $response;
 }
 
