@@ -605,11 +605,10 @@
 			<link field="standing" reltype="has_a" key="id" map="" class="cst"/>
 			<link field="card" reltype="has_a" key="id" map="" class="ac"/>
 			<link field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
-			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="stat_cat_entry" class="actscecm"/>
+			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="" class="actscecm"/>
 			<link field="circulations" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="billable_transactions" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
-			<link field="stat_cat_entry_user_maps" reltype="has_many" key="target_usr" map="" class="actscecm"/>
 			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
 			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
 			<link field="notes" reltype="has_many" key="usr" map="" class="aun"/>
@@ -1738,7 +1737,6 @@
 		</fields>
 		<links>
 			<link field="target_usr" reltype="has_a" key="id" map="" class="au"/>
-			<link field="stat_cat_entry" reltype="has_a" key="id" map="" class="actsce"/>
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
 		</links>
 	</class>
