@@ -146,6 +146,7 @@ const urls = {
 	'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
 	'XUL_CIRC_BRIEF' : '/xul/server/circ/circ_brief.xul',
 	'XUL_CIRC_SUMMARY' : '/xul/server/circ/circ_summary.xul',
+	'XUL_COPY_BUCKETS_QUICK' : '/xul/server/cat/copy_buckets_quick.xul',
 	'XUL_COPY_BUCKETS' : '/xul/server/cat/copy_buckets.xul',
 	'XUL_COPY_EDITOR' : '/xul/server/cat/copy_editor.xul',
 	'XUL_COPY_LOCATION_EDIT' : '/xul/server/admin/copy_locations.xhtml',

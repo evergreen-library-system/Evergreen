@@ -57,16 +57,18 @@ cat.util.show_in_opac = function(selection_list) {
 cat.util.add_copies_to_bucket = function(selection_list) {
 	JSAN.use('util.functional');
 	JSAN.use('util.window'); var win = new util.window();
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+	data.temp_copy_ids = js2JSON(
+		util.functional.map_list(
+			selection_list,
+			function (o) {
+				return o.copy_id;
+			}
+		)
+	);
+	data.stash('temp_copy_ids');
 	win.open( 
-		xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
-		+ '?copy_ids=' + js2JSON(
-			util.functional.map_list(
-				selection_list,
-				function (o) {
-					return o.copy_id;
-				}
-			)
-		),
+		xulG.url_prefix(urls.XUL_COPY_BUCKETS_QUICK),
 		'sel_bucket_win' + win.window_name_increment(),
 		'chrome,resizable,modal,center'
 	);
