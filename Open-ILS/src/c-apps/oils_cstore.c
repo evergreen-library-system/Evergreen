@@ -113,7 +113,7 @@ int osrfAppInitialize() {
 		if (!strcmp( (char*)kid->name, "class" )) {
 
 			char* virt_class = xmlGetNsProp(kid, "virtual", PERSIST_NS);
-			if (!strcmp(virt_class, "true")) {
+			if (virt_class && !strcmp(virt_class, "true")) {
 				free(virt_class);
 				kid = kid->next;
 				continue;
