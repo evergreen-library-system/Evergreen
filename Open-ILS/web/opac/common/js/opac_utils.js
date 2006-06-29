@@ -890,3 +890,4 @@ function parseForm(form) {
 }
 
 
+function isTrue(x) { return ( x && x != "0" && x != 'f' ); }

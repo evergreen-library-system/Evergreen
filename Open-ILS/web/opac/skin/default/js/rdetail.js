@@ -692,17 +692,15 @@ function rdetailBuildStatusColumns() {
 	for( i = 0; i < cp_statuses.length; i++ ) {
 
 		var c = cp_statuses[i];
-
-		if(c && c.holdable()) {
-
+		if( c && isTrue(c.holdable()) ) {
 			var name = c.name();
 			_statusPositions[i] = c;
 			var node = template.cloneNode(true);
 			var data = findNodeByName( node, config.names.rdetail.cp_status);
-
+	
 			data.appendChild(text(name));
 			parent.appendChild(node);
-		}	
+		}
 	}	
 
 	numStatuses = 0;
