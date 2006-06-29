@@ -44,7 +44,9 @@ util.network.prototype = {
 							var json_string = js2JSON(req.getResultObject());
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
-								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) );
+								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
+								+ '\n\nOriginal Request:\n\n' 
+								+ 'request '+app+' '+name+' '+ sparams);
 							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params);
 							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params);
 							if (o_params) {
@@ -67,7 +69,10 @@ util.network.prototype = {
 				request.send(true);
 				var result = request.getResultObject();
 				var json_string = js2JSON(result);
-				this.error.sdump('D_SES_RESULT','synced result #' + obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) );
+				this.error.sdump('D_SES_RESULT','synced result #' 
+					+ obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
+					+ '\n\nOriginal Request:\n\n' 
+					+ 'request '+app+' '+name+' '+ sparams);
 				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params);
 				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params);
 				if (o_params) {
