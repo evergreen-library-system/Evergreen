@@ -8,6 +8,10 @@ pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/ma
 // This one just makes things speedier.  We use a lot of XMLHttpRequest
 pref("network.http.max-persistent-connections-per-server",8);
 
+// more speed-up attempts
+pref("content.maxtextrun",16385);
+pref("browser.display.show_image_placeholders", false);
+
 // This stops the unresponsive script warning, but the code is still too slow for some reason.
 // However, it's better than POEM, which I wasted a day on :)
 pref("dom.max_script_run_time",60);
