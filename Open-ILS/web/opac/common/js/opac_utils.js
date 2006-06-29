@@ -122,7 +122,8 @@ function initParams() {
 	if(isNaN(HITCOUNT))	HITCOUNT	= 0;
 	if(isNaN(MRID))		MRID		= 0;
 	if(isNaN(RID))			RID		= 0;
-	if(isNaN(ORIGLOC))	ORIGLOC	= 1;
+	//if(isNaN(ORIGLOC))	ORIGLOC	= 1;
+	if(isNaN(ORIGLOC))	ORIGLOC	= 0; /* so we know it hasn't been set */
 	if(isNaN(AUTHTIME))	AUTHTIME	= 0;
 	if(ADVTERM==null)		ADVTERM	= "";
 }
