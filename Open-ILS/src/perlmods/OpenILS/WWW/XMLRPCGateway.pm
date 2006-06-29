@@ -10,6 +10,7 @@ use Apache2::RequestRec ();
 use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use Data::Dumper;
+use UNIVERSAL::require;
 
 use XML::LibXML;
 use OpenSRF::EX qw(:try);
@@ -40,9 +41,12 @@ sub child_init {
 	$__inited = 1;
 	OpenSRF::System->bootstrap_client( config_file => $bs_config );
 	my $sclient	= OpenSRF::Utils::SettingsClient->new();
+	my $idl = $sclient->config_value("IDL");
 	$services = $sclient->config_value("xml-rpc", "allowed_services", "service");
 	$services = ref $services ? $services : [ $services ];
 	$logger->debug("XML-RPC: allowed services @$services");
+	OpenILS::Utils::Fieldmapper->require;
+	Fieldmapper->import(IDL => $idl);
 }
 
 
@@ -82,13 +86,17 @@ sub run_request {
 	return wrap_perl($data);
 }
 
-
-
 # These should probably be moved out to a library somewhere
 
 sub wrap_perl {
    my $obj = shift;
    my $ref = ref($obj);
+
+   if ($ref =~ /^Fieldmapper/o) {
+      $ref = $obj->json_hint;
+      $obj = $obj->to_bare_hash;
+   }
+
    if( $ref eq 'HASH' ) {
       $obj->{$_} = wrap_perl( $obj->{$_} ) for (keys %$obj);
    } elsif( $ref eq 'ARRAY' ) {

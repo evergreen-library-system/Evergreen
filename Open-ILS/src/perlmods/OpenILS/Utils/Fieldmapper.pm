@@ -187,6 +187,18 @@ sub properties {
 	return keys %{$$fieldmap{$class_name}{fields}};
 }
 
+sub to_bare_hash {
+	my $self = shift;
+
+	my %hash = ();
+	for my $f ($self->properties) {
+		my $val = $self->$f;
+		$hash{$f} = $val;
+	}
+
+	return \%hash;
+}
+
 sub clone {
 	my $self = shift;
 	return $self->new( [@$self] );
