@@ -217,10 +217,9 @@ sub bootstrap {
 
 	_log( " * System is ready..." );
 
-	sleep 1;
-	my $ps = `ps ax | grep " Open" | grep -v grep | sort -r -k5`;
-
-	print "\n --- PS --- \n$ps --- PS ---\n\n";
+#	sleep 1;
+#	my $ps = `ps ax | grep " Open" | grep -v grep | sort -r -k5`;
+#	print "\n --- PS --- \n$ps --- PS ---\n\n";
 
 	while( 1 ) { sleep; }
 	exit;
@@ -465,7 +464,7 @@ sub hupall {
 sub _log {
 	my $string = shift;
 	OpenSRF::Utils::Logger->debug( $string, INFO );
-	#print $string . "\n";
+	print $string . "\n";
 }
 
 # ----------------------------------------------
