@@ -107,8 +107,6 @@ function loadConfig {
 
 function runInstall {
 
-
-
 	# pass the collected variables to make
 	for target in ${TARGETS[@]:0}; do
 
@@ -182,7 +180,7 @@ function runInstall {
 
 			"openils_web" )
 				if building; then $MAKE -C "$OPENILSDIR" "mod_xmlent"; fi;
-				if building; then $MAKE -C "$OPENILSDIR" "mod_ils_rest_gateway"; fi;
+				#if building; then $MAKE -C "$OPENILSDIR" "mod_ils_rest_gateway"; fi;
 				if installing; then
 					$MAKE -C "$OPENILSDIR" "web-install";
 					$MAKE -C "$OPENILSDIR" "cgi-bootstrap";
