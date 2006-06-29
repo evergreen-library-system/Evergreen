@@ -572,8 +572,8 @@ sub modify_from_fieldmapper {
 	actor::org_unit->has_many( checkins => 'action::circulation' => 'checkin_lib' );
 
 	money::billable_transaction->has_a( usr => 'actor::user' );
-	money::billable_transaction->might_have( circulation => 'action::circulation' );
-	money::billable_transaction->might_have( grocery => 'money::grocery' );
+	#money::billable_transaction->might_have( circulation => 'action::circulation' );
+	#money::billable_transaction->might_have( grocery => 'money::grocery' );
 	actor::user->has_many( billable_transactions => 'action::circulation' => 'usr' );
 	
 	
@@ -618,9 +618,9 @@ sub modify_from_fieldmapper {
 
 	action::circulation->has_many( billings => 'money::billing' => 'xact' );
 	action::circulation->has_many( payments => 'money::payment' => 'xact' );
-	action::circulation->might_have( billable_transaction => 'money::billable_transaction' );
+	#action::circulation->might_have( billable_transaction => 'money::billable_transaction' );
 
-	action::open_circulation->might_have( circulation => 'action::circulation' );
+	#action::open_circulation->might_have( circulation => 'action::circulation' );
 
 	action::in_house_use->has_a( org_unit => 'actor::org_unit' );
 	action::in_house_use->has_a( staff => 'actor::user' );
@@ -633,40 +633,40 @@ sub modify_from_fieldmapper {
 
 	money::grocery->has_many( billings => 'money::billing' => 'xact' );
 	money::grocery->has_many( payments => 'money::payment' => 'xact' );
-	money::grocery->might_have( billable_transaction => 'money::billable_transaction' );
+	#money::grocery->might_have( billable_transaction => 'money::billable_transaction' );
 
 	money::billing->has_a( xact => 'money::billable_transaction' );
 	money::payment->has_a( xact => 'money::billable_transaction' );
-	money::payment->might_have( cash_payment => 'money::cash_payment' );
-	money::payment->might_have( check_payment => 'money::check_payment' );
-	money::payment->might_have( credit_card_payment => 'money::credit_card_payment' );
-	money::payment->might_have( forgive_payment => 'money::forgive_payment' );
-	money::payment->might_have( work_payment => 'money::work_payment' );
-	money::payment->might_have( credit_payment => 'money::credit_payment' );
+	#money::payment->might_have( cash_payment => 'money::cash_payment' );
+	#money::payment->might_have( check_payment => 'money::check_payment' );
+	#money::payment->might_have( credit_card_payment => 'money::credit_card_payment' );
+	#money::payment->might_have( forgive_payment => 'money::forgive_payment' );
+	#money::payment->might_have( work_payment => 'money::work_payment' );
+	#money::payment->might_have( credit_payment => 'money::credit_payment' );
 
 	money::cash_payment->has_a( xact => 'money::billable_transaction' );
 	money::cash_payment->has_a( accepting_usr => 'actor::user' );
-	money::cash_payment->might_have( payment => 'money::payment' );
+	#money::cash_payment->might_have( payment => 'money::payment' );
 
 	money::check_payment->has_a( xact => 'money::billable_transaction' );
 	money::check_payment->has_a( accepting_usr => 'actor::user' );
-	money::check_payment->might_have( payment => 'money::payment' );
+	#money::check_payment->might_have( payment => 'money::payment' );
 
 	money::credit_card_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_card_payment->has_a( accepting_usr => 'actor::user' );
-	money::credit_card_payment->might_have( payment => 'money::payment' );
+	#money::credit_card_payment->might_have( payment => 'money::payment' );
 
 	money::forgive_payment->has_a( xact => 'money::billable_transaction' );
 	money::forgive_payment->has_a( accepting_usr => 'actor::user' );
-	money::forgive_payment->might_have( payment => 'money::payment' );
+	#money::forgive_payment->might_have( payment => 'money::payment' );
 
 	money::work_payment->has_a( xact => 'money::billable_transaction' );
 	money::work_payment->has_a( accepting_usr => 'actor::user' );
-	money::work_payment->might_have( payment => 'money::payment' );
+	#money::work_payment->might_have( payment => 'money::payment' );
 
 	money::credit_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_payment->has_a( accepting_usr => 'actor::user' );
-	money::credit_payment->might_have( payment => 'money::payment' );
+	#money::credit_payment->might_have( payment => 'money::payment' );
 
 	permission::grp_tree->has_a( parent => 'permission::grp_tree' );
 	permission::grp_tree->has_many( children => 'permission::grp_tree' => 'parent' );

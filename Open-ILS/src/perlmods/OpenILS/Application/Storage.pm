@@ -14,7 +14,7 @@ use OpenILS::Application::Storage::FTS;
 my $log = "OpenSRF::Utils::Logger";
 
 our $WRITE = 0;
-our $IGNORE_XACT_ID_FAILURE = 1;
+our $IGNORE_XACT_ID_FAILURE = 0;
 
 sub DESTROY {};
 
