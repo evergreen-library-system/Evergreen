@@ -279,6 +279,16 @@ function __holdsDrawWindow() {
 	if(!holdsOrgSelectorBuilt) {
 		holdsBuildOrgSelector(null,0);
 		holdsOrgSelectorBuilt = true;
+
+		var selector = $('holds_org_selector');
+		var o_loc = findOrgUnit(getOrigLocation());
+		var t = findOrgType(o_loc.ou_type());
+
+		if( t.can_have_users() ) 
+			setSelector(selector, o_loc.id());
+		else 
+			setSelector(selector, holdArgs.recipient.home_ou());
+	
 	}
 
 	if(isXUL()) {
@@ -537,11 +547,6 @@ function holdsBuildOrgSelector(node) {
 		addCSSClass(opt, 'disabled_option');
 	}
 	
-	if( node.id() == holdArgs.recipient.home_ou() ) {
-		selector.selectedIndex = index;
-		selector.options[index].selected = true;	
-	}
-
 	for( var i in node.children() ) {
 		var child = node.children()[i];
 		if(child) holdsBuildOrgSelector(child);
