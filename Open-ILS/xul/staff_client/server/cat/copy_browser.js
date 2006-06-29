@@ -148,14 +148,10 @@ cat.copy_browser.prototype = {
 											return o.split(/_/)[1];
 										}
 									);
-									
-									JSAN.use('util.window'); var win = new util.window();
-									win.open( 
-										xulG.url_prefix(urls.XUL_COPY_BUCKETS) 
-										+ '?copy_ids=' + js2JSON( list ),
-										'sel_bucket_win' + win.window_name_increment(),
-										'chrome,resizable,modal,center'
-									);
+								
+									JSAN.use('cat.util');
+									cat.util.add_copies_to_bucket( list );
+
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> add copies to bucket',E);
 								}

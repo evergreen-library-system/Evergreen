@@ -62,7 +62,11 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 		util.functional.map_list(
 			selection_list,
 			function (o) {
-				return o.copy_id;
+				if (typeof o.copy_id != 'undefined' && o.copy_id != null) {
+					return o.copy_id;
+				} else {
+					return o;
+				}
 			}
 		)
 	);
