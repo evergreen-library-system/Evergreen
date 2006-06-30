@@ -293,7 +293,7 @@ sub fetch_circ_xacts {
 					{
 						flesh => 1,
 						flesh_fields => { 
-							circ => [ "billings", "payments" ]
+							circ => [ "billings", "payments", "circ_lib" ]
 						}
 					}
 				]
@@ -343,7 +343,7 @@ sub fetch_grocery_xacts {
 					{
 						flesh => 1,
 						flesh_fields => { 
-							mg => [ "billings", "payments" ] }
+							mg => [ "billings", "payments", "billing_location" ] }
 					}
 				]
 			)
