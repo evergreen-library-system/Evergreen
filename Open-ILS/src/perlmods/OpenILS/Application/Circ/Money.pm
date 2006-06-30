@@ -24,8 +24,8 @@ my $U = "OpenILS::Application::AppUtils";
 use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use Data::Dumper;
-use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Event;
+use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::Editor qw/:funcs/;
 
 __PACKAGE__->register_method(
@@ -137,6 +137,12 @@ sub make_payments {
 			if( !$circ || $circ->stop_fines ) {
 
 				$trans->xact_finish("now");
+
+				use Data::Dumper;
+				warn Dumper($trans);
+
+				warn "calling open-ils.storage.direct.money.billable_transaction.update\n";
+
 				my $s = $session->request(
 					"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
 	
@@ -352,7 +358,8 @@ sub void_bill {
 	return 1;
 }
 
-sub _check_open_xact {
+# refactored below XXX
+sub ___check_open_xact {
 	my( $editor, $xactid ) = @_;
 
 	# Grab the transaction
@@ -381,6 +388,43 @@ sub _check_open_xact {
 
 	return undef;
 }
+
+
+
+sub _check_open_xact {
+	my( $editor, $xactid ) = @_;
+
+	# Grab the transaction
+	my $xact = $editor->retrieve_money_billable_transaction($xactid)
+		or return $editor->event;
+
+	# grab the summary and see how much is owed on this transaction
+	my $summary = $editor->retrieve_money_open_billable_transaction_summary($xactid)
+		or return $editor->event;
+
+	# If nothing is owed on the transaction but xact_finish has
+	# not been set, set it and update
+	if( $summary->balance_owed == 0 and ! $xact->xact_finish ) {
+		$logger->info("closing transaction ".$xact->id. ' becauase balance_owed == 0');
+		$xact->xact_finish('now');
+		$editor->update_money_billable_transaction($xact)
+			or return $editor->event;
+		return undef;
+	}
+
+	# If money is owed or a refund is due on the xact and xact_finish
+	# is set, clear it (to reopen the xact) and update
+	if( $summary->balance_owed != 0 and $xact->xact_finish ) {
+		$logger->info("re-opening transaction ".$xact->id. ' becauase balance_owed != 0');
+		$xact->clear_xact_finish;
+		$editor->update_money_billable_transaction($xact)
+			or return $editor->event;
+		return undef;
+	}
+
+	return undef;
+}
+
 
 
 __PACKAGE__->register_method (
