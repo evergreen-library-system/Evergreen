@@ -125,6 +125,12 @@ if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/
 	log_debug( 'got Local source bump' );
 }
 
+if (extractFixedField(marcdoc, 'Lang') == 'eng') {
+	quality *= 2;
+	log_debug( 'got language bump for ' + extractFixedField(marcdoc, 'Lang') );
+}
+
+
 // XXX this has to be a string ... for now. JS::SM limitation
 result.quality = '' + parseInt( '' + quality );
 

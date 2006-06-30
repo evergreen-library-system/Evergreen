@@ -282,3 +282,37 @@ function recordType (rec) {
 	}
 }
 
+function extractFixedField (rec, field) {
+
+	var marcns = new Namespace("http://www.loc.gov/MARC21/slim");
+	var _l = rec.marcns::leader.toString();
+	var _8 = rec.marcns::controlfield.(@tag.match(/008/)).text().toString();
+	var _6 = rec.marcns::controlfield.(@tag.match(/006/)).text().toString();
+	var _7 = rec.marcns::controlfield.(@tag.match(/007/)).text().toString();
+
+	var rtype = recordType(rec);
+
+	var val;
+
+	if (ff_pos[field].ldr) {
+		val = _l.substr(
+			ff_pos[field].ldr[rtype].start,
+			ff_pos[field].ldr[rtype].len
+		);
+	} else if (ff_pos[field]._8) {
+		val = _8.substr(
+			ff_pos[field]._8[rtype].start,
+			ff_pos[field]._8[rtype].len
+		);
+	}
+
+	if (!val && ff_pos[field]._6) {
+		val = _6.substr(
+			ff_pos[field]._6[rtype].start,
+			ff_pos[field]._6[rtype].len
+		);
+	}
+		
+	return val;
+}
+
