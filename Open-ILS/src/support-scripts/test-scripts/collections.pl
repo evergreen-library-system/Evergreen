@@ -29,26 +29,83 @@ my $user_data = $resp->value;
 
 
 for my $d (@$user_data) {
-	print "last billing = " .		$d->{last_pertinent_billing} . "\n";
-	print "location id = " .		$d->{location} . "\n";
-	print "threshold_amount = " . $d->{threshold_amount} . "\n";
+
+
+	# --------------------------------------------------------------------
 	print "user id = " .				$d->{usr}->{id} . "\n";
 	print "user dob = " .			$d->{usr}->{dob} . "\n";
 	print "user profile = " .		$d->{usr}->{profile} . "\n";
 	print "additional groups = ". join(', ', @{$d->{usr}->{groups}}) . "\n";
-	print '-'x60 . "\n";
+	print "last billing = " .		$d->{last_pertinent_billing} . "\n";
+	print "location id = " .		$d->{location} . "\n";
+	print "threshold_amount = " . $d->{threshold_amount} . "\n";
+	# --------------------------------------------------------------------
+
+
+	# --------------------------------------------------------------------
+	# Now "flesh" the user object and grab all of the transaction details
+	# --------------------------------------------------------------------
+	my $xact_data = request(
+		'open-ils.collections',
+		'open-ils.collections.user_transaction_details.retrieve',
+		$authkey, '2006-01-01', '2006-12-12', $location, [ $d->{usr}->{id} ] );
+	$xact_data = $xact_data->value->[0];
+
+	my $user		= $xact_data->{usr}->{__data__};
+	my $circs	= $xact_data->{transactions}->{circulations};
+	my $grocery = $xact_data->{transactions}->{grocery};
+
+
+
+	# --------------------------------------------------------------------
+	# Print out the user's addresses
+	# --------------------------------------------------------------------
+	for my $addr (@{$user->{addresses}}) {
+		my $a = $addr->{__data__};
+
+		print join(' ', 
+			$a->{street1}, 
+			$a->{street2}, 
+			$a->{city}, 
+			$a->{state}, 
+			$a->{post_code}) . "\n";
+	}
+
+	print_xact_details($_->{__data__}) for (@$circs, @$grocery);
+
+	print "\n" . '-'x60 . "\n";
 }
 
 
+sub print_xact_details {
+	my $xact = shift;
 
-#request open-ils.collections open-ils.collections.user_transaction_details.retrieve "0d8681807cfa142310fec267c729641a", "2006-01-01", "WGRL-VR", [ 1000500 ]      	
+	my $loc = ($xact->{circ_lib}) ? $xact->{circ_lib} : $xact->{billing_location};
+	print " - transaction ".$xact->{id}. " started at " . $xact->{xact_start} . " at " . $loc->{__data__}->{shortname} ."\n";
 
+	# --------------------------------------------------------------------
+	# Print some info on any bills attached to this transaction
+	# --------------------------------------------------------------------
+	for my $bill (@{$xact->{billings}}) {
+		my $b = $bill->{__data__};
+		print "\tbill ".$b->{id}. " created on " . $b->{billing_ts} . "\n";
+		print "\tamount = ".$b->{amount} . "\n";
+		print "\ttype = ".$b->{billing_type} . "\n";
+		print "\t" . '-'x30 . "\n";
+	}
 
-#print Dumper $user_data;
+	# --------------------------------------------------------------------
+	# Print some info on any payments made on this transaction
+	# --------------------------------------------------------------------
+	for my $payment (@{$xact->{payments}}) {
+		my $p = $payment->{__data__};
+		print "\tpayment ".$p->{id}. " made on " . $p->{payment_ts} . "\n";
+		print "\tamount = ".$p->{amount} . "\n";
+		print "\t" . '-'x30 . "\n";
 
+	}
+}
 
-
-# --------------------------------------------------------------------
 
 
 
