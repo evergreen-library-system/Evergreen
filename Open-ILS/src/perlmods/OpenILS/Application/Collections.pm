@@ -5,16 +5,17 @@ use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Application;
 use base 'OpenSRF::Application';
-my $U = "OpenILS::Application::AppUtils";
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
+my $U = "OpenILS::Application::AppUtils";
 
 
 # --------------------------------------------------------------
 # Loads the config info
 # --------------------------------------------------------------
 sub initialize { return 1; }
+
 
 
 __PACKAGE__->register_method(
@@ -204,6 +205,9 @@ sub transaction_details {
 	my $org = $e->search_actor_org_unit({shortname => $location})
 		or return $e->event; $org = $org->[0];
 
+	# get a reference to the org inside of the tree
+	$org = $U->find_org($U->fetch_org_tree(), $org->id);
+
 	my @data;
 	for my $uid (@$user_list) {
 		my $blob = {};
@@ -230,9 +234,9 @@ sub transaction_details {
 
 		$blob->{transactions} = {
 			circulations	=> 
-				fetch_circ_xacts($e, $uid, $org->id, $start_date, $end_date),
+				fetch_circ_xacts($e, $uid, $org, $start_date, $end_date),
 			grocery			=> 
-				fetch_grocery_xacts($e, $uid, $org->id, $start_date, $end_date)
+				fetch_grocery_xacts($e, $uid, $org, $start_date, $end_date)
 		};
 
 		push( @data, $blob );
@@ -250,22 +254,36 @@ sub transaction_details {
 sub fetch_circ_xacts {
 	my $e				= shift;
 	my $uid			= shift;
-	my $orgid		= shift;
+	my $org			= shift;
 	my $start_date = shift;
 	my $end_date	= shift;
 
-	# first get all open circs for this user
-	my $circs = $e->search_action_circulation(
-		{
-			usr			=> $uid, 
-			circ_lib		=> $orgid, 
-			xact_finish	=> undef, 
-		}, 
-		{idlist => 1}
+	my @circs;
+
+	# at the specified org and each descendent org, 
+	# fetch the open circs for this user
+	$U->walk_org_tree( $org, 
+		sub {
+			my $n = shift;
+			$logger->debug("collect: searching for open circs at " . $n->shortname);
+			push( @circs, 
+				@{
+					$e->search_action_circulation(
+						{
+							usr			=> $uid, 
+							circ_lib		=> $n->id,
+							xact_finish	=> undef, 
+						}, 
+						{idlist => 1}
+					)
+				}
+			);
+		}
 	);
 
+
 	my @data;
-	my $active_ids = fetch_active($e, $circs, $start_date, $end_date);
+	my $active_ids = fetch_active($e, \@circs, $start_date, $end_date);
 
 	for my $cid (@$active_ids) {
 		push( @data, 
@@ -290,21 +308,32 @@ sub fetch_circ_xacts {
 sub fetch_grocery_xacts {
 	my $e				= shift;
 	my $uid			= shift;
-	my $orgid		= shift;
+	my $org			= shift;
 	my $start_date = shift;
 	my $end_date	= shift;
 
-	my $xacts = $e->search_money_grocery(
-		{
-			usr			=> $uid, 
-			circ_lib		=> $orgid, 
-			xact_finish	=> undef, 
-		}, 
-		{idlist => 1}
+	my @xacts;
+	$U->walk_org_tree( $org, 
+		sub {
+			my $n = shift;
+			$logger->debug("collect: searching for open grocery xacts at " . $n->shortname);
+			push( @xacts, 
+				@{
+					$e->search_money_grocery(
+						{
+							usr					=> $uid, 
+							billing_location	=> $n->id,
+							xact_finish			=> undef, 
+						}, 
+						{idlist => 1}
+					)
+				}
+			);
+		}
 	);
 
 	my @data;
-	my $active_ids = fetch_active($e, $xacts, $start_date, $end_date);
+	my $active_ids = fetch_active($e, \@xacts, $start_date, $end_date);
 
 	for my $id (@$active_ids) {
 		push( @data, 
@@ -333,6 +362,9 @@ sub fetch_grocery_xacts {
 sub fetch_active {
 	my( $e, $ids, $start_date, $end_date ) = @_;
 
+	# use this..
+	# { payment_ts => { between => [ $start, $end ] } } ' ;) 
+
 	my @active;
 	for my $id (@$ids) {
 
@@ -340,8 +372,7 @@ sub fetch_active {
 		my $bills = $e->search_money_billing (
 			{
 				xact			=> $id,
-				billing_ts	=> { ">=" => $start_date },
-				billing_ts	=> { "<=" => $end_date },
+				billing_ts	=> { between => [ $start_date, $end_date ] },
 			},
 			{idlist =>1}
 		);
@@ -354,8 +385,7 @@ sub fetch_active {
 			$payments = $e->search_money_payment (
 				{
 					xact			=> $id,
-					payment_ts	=> { ">=" => $start_date },
-					payment_ts	=> { "<=" => $end_date },
+					payment_ts	=> { between => [ $start_date, $end_date ] },
 				},
 				{idlist =>1}
 			);

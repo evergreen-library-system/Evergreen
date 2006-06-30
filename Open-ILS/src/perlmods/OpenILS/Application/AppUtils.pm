@@ -2,13 +2,12 @@ package OpenILS::Application::AppUtils;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
-use OpenSRF::EX qw(:try);
-use OpenILS::Perm;
-use OpenSRF::Utils::Logger;
+use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::ModsParser;
+use OpenSRF::EX qw(:try);
 use OpenILS::Event;
 use Data::Dumper;
-my $logger = "OpenSRF::Utils::Logger";
+use OpenILS::Utils::CStoreEditor;
 
 
 my $cache_client = "OpenSRF::Utils::Cache";
@@ -59,7 +58,6 @@ sub check_user_perms {
 }
 
 # checks the list of user perms.  The first one that fails returns a new
-# OpenILS::Perm object of that type.  Returns undef if all perms are allowed
 sub check_perms {
 	my( $self, $user_id, $org_id, @perm_types ) = @_;
 	my $t = $self->check_user_perms( $user_id, $org_id, @perm_types );
@@ -1010,6 +1008,33 @@ sub fetch_bill {
 		'open-ils.storage.direct.money.billing.retrieve', $billid );
 	my $evt = OpenILS::Event->new('MONEY_BILLING_NOT_FOUND') unless $bill;
 	return($bill, $evt);
+}
+
+
+
+my $ORG_TREE;
+sub fetch_org_tree {
+	my $self = shift;
+	return $ORG_TREE if $ORG_TREE;
+	return $ORG_TREE = OpenILS::Utils::CStoreEditor->new->search_actor_org_unit( 
+		[
+			{"parent_ou" => undef },
+			{
+				flesh				=> 2,
+				flesh_fields	=> { aou =>  ['children'] },
+				order_by       => { aou => 'name'}
+			}
+		]
+	)->[0];
+}
+
+sub walk_org_tree {
+	my( $self, $node, $callback ) = @_;
+	return unless $node;
+	$callback->($node);
+	if( $node->children ) {
+		$self->walk_org_tree($_, $callback) for @{$node->children};
+	}
 }
 
 
