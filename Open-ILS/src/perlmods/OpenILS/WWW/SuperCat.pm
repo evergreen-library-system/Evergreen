@@ -35,6 +35,10 @@ sub import {
 
 sub child_init {
 	OpenSRF::System->bootstrap_client( config_file => $bootstrap );
+	
+	my $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+	Fieldmapper->import(IDL => $idl);
+
 	$supercat = OpenSRF::AppSession->create('open-ils.supercat');
 	$cstore = OpenSRF::AppSession->create('open-ils.cstore');
 	$actor = OpenSRF::AppSession->create('open-ils.actor');
