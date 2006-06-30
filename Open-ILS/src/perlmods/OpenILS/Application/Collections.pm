@@ -244,8 +244,8 @@ sub transaction_details {
 
 # --------------------------------------------------------------
 # Collect all open circs for the user 
-# For each circ, see if any billing were created or payments
-# were made during the given time period
+# For each circ, see if any billings or payments were created
+# during the given time period.  
 # --------------------------------------------------------------
 sub fetch_circ_xacts {
 	my $e				= shift;
@@ -253,8 +253,6 @@ sub fetch_circ_xacts {
 	my $orgid		= shift;
 	my $start_date = shift;
 	my $end_date	= shift;
-
-	my @data;
 
 	# first get all open circs for this user
 	my $circs = $e->search_action_circulation(
@@ -266,52 +264,23 @@ sub fetch_circ_xacts {
 		{idlist => 1}
 	);
 
-	for my $cid (@$circs) {
+	my @data;
+	my $active_ids = fetch_active($e, $circs, $start_date, $end_date);
 
-		# see if any billings were created in the given time range
-		my $bills = $e->search_money_billing (
-			{
-				xact			=> $cid,
-				billing_ts	=> { ">=" => $start_date },
-				billing_ts	=> { "<=" => $end_date },
-			},
-			{idlist =>1}
-		);
-
-		my $payments = [];
-
-		if( !@$bills ) {
-
-			# see if any payments were created in the given range
-			$payments = $e->search_money_payment (
-				{
-					xact			=> $cid,
-					payment_ts	=> { ">=" => $start_date },
-					payment_ts	=> { "<=" => $end_date },
-				},
-				{idlist =>1}
-			);
-		}
-
-
-		if( @$bills or @$payments ) {
-			
-			# if any payments or bills were created in the given range,
-			# flesh the circ and add it to the set
-			push( @data, 
-				$e->retrieve_action_circulation(
-					[
-						$cid,
-						{
-							flesh => 1,
-							flesh_fields => { 
-								circ => [ "billings", "payments", "circ_lib" ]
-							}
+	for my $cid (@$active_ids) {
+		push( @data, 
+			$e->retrieve_action_circulation(
+				[
+					$cid,
+					{
+						flesh => 1,
+						flesh_fields => { 
+							circ => [ "billings", "payments" ]
 						}
-					]
-				)
-			);
-		}
+					}
+				]
+			)
+		);
 	}
 
 	return \@data;
@@ -325,9 +294,78 @@ sub fetch_grocery_xacts {
 	my $start_date = shift;
 	my $end_date	= shift;
 
-	return [];
+	my $xacts = $e->search_money_grocery(
+		{
+			usr			=> $uid, 
+			circ_lib		=> $orgid, 
+			xact_finish	=> undef, 
+		}, 
+		{idlist => 1}
+	);
+
+	my @data;
+	my $active_ids = fetch_active($e, $xacts, $start_date, $end_date);
+
+	for my $id (@$active_ids) {
+		push( @data, 
+			$e->retrieve_money_grocery(
+				[
+					$id,
+					{
+						flesh => 1,
+						flesh_fields => { 
+							mg => [ "billings", "payments" ] }
+					}
+				]
+			)
+		);
+	}
+
+	return \@data;
 }
 
 
+
+# --------------------------------------------------------------
+# Given a list of xact id's, this returns a list of id's that
+# had any activity within the given time span
+# --------------------------------------------------------------
+sub fetch_active {
+	my( $e, $ids, $start_date, $end_date ) = @_;
+
+	my @active;
+	for my $id (@$ids) {
+
+		# see if any billings were created in the given time range
+		my $bills = $e->search_money_billing (
+			{
+				xact			=> $id,
+				billing_ts	=> { ">=" => $start_date },
+				billing_ts	=> { "<=" => $end_date },
+			},
+			{idlist =>1}
+		);
+
+		my $payments = [];
+
+		if( !@$bills ) {
+
+			# see if any payments were created in the given range
+			$payments = $e->search_money_payment (
+				{
+					xact			=> $id,
+					payment_ts	=> { ">=" => $start_date },
+					payment_ts	=> { "<=" => $end_date },
+				},
+				{idlist =>1}
+			);
+		}
+
+
+		push( @active, $id ) if @$bills or @$payments;
+	}
+
+	return \@active;
+}
 
 1;
