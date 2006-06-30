@@ -1933,14 +1933,27 @@ __PACKAGE__->register_method(
 	NOTES
 sub retrieve_groups_tree {
 	my( $self, $client ) = @_;
-	my $groups = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
-	return $self->build_group_tree($groups);	
+	return new_editor()->search_permission_grp_tree(
+		[
+			{ parent => undef},
+			{	
+				flesh				=> 10, 
+				flesh_fields	=> { pgt => ["children"] }, 
+				order_by			=> {pgt => 'name'}
+			}
+		]
+	);
+
+#	my $groups = $apputils->simple_scalar_request(
+#		"open-ils.storage",
+#		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
+#	return $self->build_group_tree($groups);	
+
 }
 
 
 # turns an org list into an org tree
+=head old code
 sub build_group_tree {
 
 	my( $self, $grplist) = @_;
@@ -1964,8 +1977,8 @@ sub build_group_tree {
 	}
 
 	return $root;
-
 }
+=cut
 
 
 __PACKAGE__->register_method(
