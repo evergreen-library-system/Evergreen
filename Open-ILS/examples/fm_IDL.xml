@@ -594,6 +594,7 @@
 			<field name="super_user" oils_obj:array_position="47" oils_persist:virtual="false" />
 			<field name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" />
 			<field name="usrname" oils_obj:array_position="49" oils_persist:virtual="false" />
+			<field name="groups" oils_obj:array_position="50" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="net_access_level" reltype="has_a" key="id" map="" class="cnal"/>
@@ -606,6 +607,7 @@
 			<link field="card" reltype="has_a" key="id" map="" class="ac"/>
 			<link field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
 			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="" class="actscecm"/>
+			<link field="groups" reltype="has_many" key="usr" map="grp" class="pugm"/>
 			<link field="circulations" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="billable_transactions" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
