@@ -54,10 +54,22 @@ sub init {
 	$self->insert(alert		=> sub { $logger->warn("script_runner: @_"); return 1;} );
 	$self->insert(load_lib		=> sub { $self->load_lib(@_); });
 
-	# OpenSRF support function
+	# OpenSRF support functions
 	$self->insert(
 		_OILS_FUNC_jsonopensrfrequest_send =>
 			sub { $self->_jsonopensrfrequest_send(@_); }
+	);
+	$self->insert(
+		_OILS_FUNC_jsonopensrfrequest_connect =>
+			sub { $self->_jsonopensrfrequest_connect(@_); }
+	);
+	$self->insert(
+		_OILS_FUNC_jsonopensrfrequest_disconnect =>
+			sub { $self->_jsonopensrfrequest_disconnect(@_); }
+	);
+	$self->insert(
+		_OILS_FUNC_jsonopensrfrequest_finish =>
+			sub { $self->_jsonopensrfrequest_finish(@_); }
 	);
 
 	# XML support functions
@@ -355,6 +367,53 @@ sub _xmlhttprequest_send {
 		
 }
 
+our %_jsonopensrfrequest_cache = ();
+
+sub _jsonopensrfrequest_connect {
+	my $self = shift;
+	my $id = shift;
+	my $service = shift;
+
+	my $ctx = $self->context;
+	$ctx->object_by_path('__jsonopensrfreq_hash.id'.$id);
+
+	my $ses = $_jsonopensrfrequest_cache{$id} ||
+			do { $_jsonopensrfrequest_cache{$id} = OpenSRF::AppSession->create($service) };
+
+	if($ses->connect) {
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.connected', 1);
+	} else {
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.connected', 0);
+	}
+}
+
+sub _jsonopensrfrequest_disconnect {
+	my $self = shift;
+	my $id = shift;
+
+	my $ctx = $self->context;
+	$ctx->object_by_path('__jsonopensrfreq_hash.id'.$id);
+
+	my $ses = $_jsonopensrfrequest_cache{$id};
+	return unless $ses;
+
+	$ses->disconnect;
+}
+
+sub _jsonopensrfrequest_finish {
+	my $self = shift;
+	my $id = shift;
+
+	my $ctx = $self->context;
+	$ctx->object_by_path('__jsonopensrfreq_hash.id'.$id);
+
+	my $ses = $_jsonopensrfrequest_cache{$id};
+	return unless $ses;
+
+	$ses->finish;
+	delete $_jsonopensrfrequest_cache{$id};
+}
+
 sub _jsonopensrfrequest_send {
 	my $self = shift;
 	my $id = shift;
@@ -370,14 +429,15 @@ sub _jsonopensrfrequest_send {
 	# just so perl has access to it...
 	$ctx->object_by_path('__jsonopensrfreq_hash.id'.$id);
 
-	my $ses = OpenSRF::AppSession->create($service);
+	my $ses = $_jsonopensrfrequest_cache{$id} ||
+			do { $_jsonopensrfrequest_cache{$id} = OpenSRF::AppSession->create($service) };
 	my $req = $ses->request($method,@p);
 
 	$req->wait_complete;
 	if (!$req->failed) {
-		my $res = $req->content;
+		my $res = $req->recv->content;
 		
-		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', $res);
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', JSON->perl2JSON($res));
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.readyState', 4);
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.statusText', 'OK');
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.status', '200');
