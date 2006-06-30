@@ -409,7 +409,7 @@ sub the_quest_for_knowledge {
 
 		my @t;
 		for ($offset..$end) {
-			last if $end > scalar(@recs);
+			last if $_ > scalar(@recs);
 			push(@t, $recs[$_]) if $recs[$_];
 		}
 		@recs = @t;
@@ -438,6 +438,7 @@ sub search_cache {
 	return undef unless $cache;
 	my $data = $cache->get_cache($key);
 
+	#return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
 	return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
 
 	#$logger->debug("search_cache found data " . JSON->perl2JSON($data));
@@ -894,7 +895,7 @@ sub marc_search {
 	my $recs = search_cache($ckey, $offset, $limit);
 
 	if(!$recs) {
-		$recs = new_editor()->request($method, %$args);
+		$recs = $U->storagereq($method, %$args);
 		put_cache($ckey, $recs);
 		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
 	}
