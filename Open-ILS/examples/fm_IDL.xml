@@ -1363,11 +1363,14 @@
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="xact_finish" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="xact_start" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="billings" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
 			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
 	<class id="cbs" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
