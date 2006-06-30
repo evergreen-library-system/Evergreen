@@ -408,10 +408,13 @@ sub the_quest_for_knowledge {
 		put_cache($ckey, \@recs);
 
 		my @t;
-		push(@t, $recs[$_]) for ($offset..$end);
+		for ($offset..$end) {
+			last if $end > scalar(@recs);
+			push(@t, $recs[$_]) if $recs[$_];
+		}
 		@recs = @t;
 
-		$logger->debug("cache done .. returning $offset..$end : " . JSON->perl2JSON(\@recs));
+		#$logger->debug("cache done .. returning $offset..$end : " . JSON->perl2JSON(\@recs));
 	}
 
 	return { ids => \@recs, 
