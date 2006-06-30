@@ -920,6 +920,8 @@
 			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
 			<field name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" />
+			<field name="billings" oils_obj:array_position="27" oils_persist:virtual="true" />
+			<field name="payments" oils_obj:array_position="28" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
