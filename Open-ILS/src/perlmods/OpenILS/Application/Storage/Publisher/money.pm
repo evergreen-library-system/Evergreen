@@ -39,7 +39,7 @@ sub new_collections {
 		my $sth = money::collections_tracker->db_Main->prepare($SQL);
 		$sth->execute(uc($l), $age, $amount );
 		while (my $row = $sth->fetchrow_hashref) {
-			$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
+			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
 		}
 	}
