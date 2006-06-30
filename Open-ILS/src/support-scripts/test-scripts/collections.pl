@@ -6,6 +6,8 @@ use RPC::XML qw/smart_encode/;
 use RPC::XML::Client;
 use Data::Dumper; # for debugging
 
+die "usage: $0 <username> <password>\n" unless $ARGV[1];
+
 
 my $host			= 'http://10.4.0.122/xml-rpc/';
 my $fine_age	= '1 day';
@@ -17,34 +19,44 @@ my $password	= shift;
 
 my $authkey = login( $username, $password );
 
-die "login failed\n" unless $authkey;
 
 my $resp = request(
 	'open-ils.collections',
 	'open-ils.collections.users_of_interest.retrieve',
 	$authkey, $fine_age, $fine_limit, $location );
 
-my $data = $resp->value;
+my $user_data = $resp->value;
 
 
-for my $d (@$data) {
-	print "last billing = " . $d->{last_pertinent_billing} . "\n";
-	print "location id = " . $d->{location} . "\n";
+for my $d (@$user_data) {
+	print "last billing = " .		$d->{last_pertinent_billing} . "\n";
+	print "location id = " .		$d->{location} . "\n";
 	print "threshold_amount = " . $d->{threshold_amount} . "\n";
-	print "user barcode = " . $d->{usr} . "\n";
+	print "user id = " .				$d->{usr}->{id} . "\n";
+	print "user dob = " .			$d->{usr}->{dob} . "\n";
+	print "user profile = " .		$d->{usr}->{profile} . "\n";
+	print "additional groups = ". join(', ', @{$d->{usr}->{groups}}) . "\n";
 	print '-'x60 . "\n";
 }
 
 
 
-# --------------------------------------------------------------------
+#request open-ils.collections open-ils.collections.user_transaction_details.retrieve "0d8681807cfa142310fec267c729641a", "2006-01-01", "WGRL-VR", [ 1000500 ]      	
 
+
+#print Dumper $user_data;
+
+
+
+# --------------------------------------------------------------------
 
 
 
 # --------------------------------------------------------------------
 # This sends an XML-RPC request and returns the RPC::XML::response
-# object.  $obj->value gives the Perl, $obj->as_string gives the XML
+# object.  
+# $resp->value gives the Perl, 
+# $resp->as_string gives the XML
 # --------------------------------------------------------------------
 sub request {
 	my( $service, $method, @args ) = @_;
@@ -81,7 +93,11 @@ sub login {
 
 	die "No login response returned\n" unless $response;
 
-	return $response->{payload}->{authtoken};
+	my $key = $response->{payload}->{authtoken};
+
+	die "Login failed\n" unless $key;
+
+	return $key;
 }
 
 

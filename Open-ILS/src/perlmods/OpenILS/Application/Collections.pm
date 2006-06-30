@@ -38,11 +38,37 @@ sub users_of_interest {
 
 	my $org = $e->search_actor_org_unit({shortname => $location})
 		or return $e->event; $org = $org->[0];
-	return $e->event unless $e->allowed('VIEW_USER', $org->id);
 
-	return $U->storagereq(
+	# they need global perms to view users so no org is provided
+	return $e->event unless $e->allowed('VIEW_USER'); 
+
+	my $data = $U->storagereq(
 		'open-ils.storage.money.collections.users_of_interest.atomic', 
 		$age, $fine_level, $location);
+
+	return [] unless $data and @$data;
+
+	for (@$data) {
+		my $u = $e->retrieve_actor_user(
+			[
+				$_->{usr},
+				{
+					flesh				=> 1,
+					flesh_fields	=> {au => ["groups","profile"]},
+					select			=> {au => ["profile","id","dob"]}
+				}
+			]
+		);
+
+		$_->{usr} = {
+			id			=> $u->id,
+			dob		=> $u->dob,
+			profile	=> $u->profile->name,
+			groups	=> [ map { $_->name } @{$u->groups} ],
+		};
+	}
+
+	return $data;
 }
 
 
@@ -154,5 +180,154 @@ sub remove_from_collections {
 	$e->commit;
 	return OpenILS::Event->new('SUCCESS');
 }
+
+
+__PACKAGE__->register_method(
+	method		=> 'transaction_details',
+	api_name		=> 'open-ils.collections.user_transaction_details.retrieve',
+	signature	=> q/
+	/
+);
+
+sub transaction_details {
+	my( $self, $conn, $auth, $start_date, $end_date, $location, $user_list ) = @_;
+
+	return OpenILS::Event->new('BAD_PARAMS') 
+		unless ($auth and $start_date and $end_date and $location and $user_list);
+
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+
+	# they need global perms to view users so no org is provided
+	return $e->event unless $e->allowed('VIEW_USER'); 
+
+	my $org = $e->search_actor_org_unit({shortname => $location})
+		or return $e->event; $org = $org->[0];
+
+	my @data;
+	for my $uid (@$user_list) {
+		my $blob = {};
+
+		$blob->{usr} = $e->retrieve_actor_user(
+			[
+				$uid,
+         	{
+            	"flesh"        => 1,
+            	"flesh_fields" =>  {
+               	"au" => [
+                  	"cards",
+                  	"card",
+                  	"standing_penalties",
+                  	"addresses",
+                  	"billing_address",
+                  	"mailing_address",
+                  	"stat_cat_entries"
+               	]
+            	}
+         	}
+			]
+		);
+
+		$blob->{transactions} = {
+			circulations	=> 
+				fetch_circ_xacts($e, $uid, $org->id, $start_date, $end_date),
+			grocery			=> 
+				fetch_grocery_xacts($e, $uid, $org->id, $start_date, $end_date)
+		};
+
+		push( @data, $blob );
+	}
+
+	return \@data;
+}
+
+
+# --------------------------------------------------------------
+# Collect all open circs for the user 
+# For each circ, see if any billing were created or payments
+# were made during the given time period
+# --------------------------------------------------------------
+sub fetch_circ_xacts {
+	my $e				= shift;
+	my $uid			= shift;
+	my $orgid		= shift;
+	my $start_date = shift;
+	my $end_date	= shift;
+
+	my @data;
+
+	# first get all open circs for this user
+	my $circs = $e->search_action_circulation(
+		{
+			usr			=> $uid, 
+			circ_lib		=> $orgid, 
+			xact_finish	=> undef, 
+		}, 
+		{idlist => 1}
+	);
+
+	for my $cid (@$circs) {
+
+		# see if any billings were created in the given time range
+		my $bills = $e->search_money_billing (
+			{
+				xact			=> $cid,
+				billing_ts	=> { ">=" => $start_date },
+				billing_ts	=> { "<=" => $end_date },
+			},
+			{idlist =>1}
+		);
+
+		my $payments = [];
+
+		if( !@$bills ) {
+
+			# see if any payments were created in the given range
+			$payments = $e->search_money_payment (
+				{
+					xact			=> $cid,
+					payment_ts	=> { ">=" => $start_date },
+					payment_ts	=> { "<=" => $end_date },
+				},
+				{idlist =>1}
+			);
+		}
+
+
+		if( @$bills or @$payments ) {
+			
+			# if any payments or bills were created in the given range,
+			# flesh the circ and add it to the set
+			push( @data, 
+				$e->retrieve_action_circulation(
+					[
+						$cid,
+						{
+							flesh => 1,
+							flesh_fields => { 
+								circ => [ "billings", "payments", "circ_lib" ]
+							}
+						}
+					]
+				)
+			);
+		}
+	}
+
+	return \@data;
+}
+
+
+sub fetch_grocery_xacts {
+	my $e				= shift;
+	my $uid			= shift;
+	my $orgid		= shift;
+	my $start_date = shift;
+	my $end_date	= shift;
+
+	return [];
+}
+
+
 
 1;
