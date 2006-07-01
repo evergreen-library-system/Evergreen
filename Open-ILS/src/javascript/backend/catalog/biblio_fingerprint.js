@@ -1,6 +1,8 @@
 // so we can tell if it's a book or other type
 load_lib('record_type.js');
 
+environment.result = {};
+
 var marcdoc = new XML(environment.marc);
 var marc_ns = new Namespace('http://www.loc.gov/MARC21/slim');
 
@@ -105,7 +107,7 @@ if (!author) {
 
 author = author.toLowerCase().replace(/^\s*(\w+).*?$/,"$1");
 
-result.fingerprint = title + author;
+environment.result.fingerprint = title + author;
 
 if (marcdoc.datafield.(@tag == '040').subfield.(@code == 'a').toString().match(/DLC/)) {
 	quality += 5;
@@ -131,6 +133,5 @@ if (extractFixedField(marcdoc, 'Lang') == 'eng') {
 }
 
 
-// XXX this has to be a string ... for now. JS::SM limitation
-result.quality = '' + parseInt( '' + quality );
+environment.result.quality = quality;
 

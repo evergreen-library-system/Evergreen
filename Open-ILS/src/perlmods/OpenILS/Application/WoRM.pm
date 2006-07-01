@@ -1423,14 +1423,14 @@ sub biblio_fingerprint {
 	$log->debug("Applying environment for biblio fingerprinting...");
 
 	my $env = {marc => $marc, mods => $mods};
-	my $res = {fingerprint => '', quality => '0'};
+	#my $res = {fingerprint => '', quality => '0'};
 
 	$fp_script->insert('environment' => $env);
-	$fp_script->insert('result' => $res);
+	#$fp_script->insert('result' => $res);
 
 	$log->debug("Running script for biblio fingerprinting...");
 
-	$fp_script->run || ($log->error( "Fingerprint script died!  $@" ) && return 0);
+	my $res = $fp_script->run || ($log->error( "Fingerprint script died!  $@" ) && return 0);
 
 	$log->debug("Script for biblio fingerprinting completed successfully...");
 
