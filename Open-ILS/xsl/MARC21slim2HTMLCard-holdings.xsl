@@ -51,17 +51,10 @@
   <xsl:template match="xhtml:link">
     <xsl:choose>
       <xsl:when test="@title='unapi'">
-        <link>
-          <xsl:attribute name="title">
-            <xsl:value-of select="@title"/>
-          </xsl:attribute>
-          <xsl:attribute name="rel">
-            <xsl:value-of select="@rel"/>
-          </xsl:attribute>
+        <link rel="unapi-server" title="unAPI" type="application/xml">
           <xsl:attribute name="href">
             <xsl:value-of select="@href"/>
           </xsl:attribute>
-          <xsl:value-of select="."/>
         </link>
       </xsl:when>
       <xsl:when test="@rel='otherFormat' and contains(@href,'format=')">
