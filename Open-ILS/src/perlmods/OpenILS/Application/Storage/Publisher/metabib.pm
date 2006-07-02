@@ -1486,6 +1486,8 @@ sub postfilter_search_multi_class_fts {
 	my $join_table_list = '';
 	my @rank_list;
 
+	my $field_table = config::metabib_field->table;
+
 	my @bonus_lists;
 	my @bonus_values;
 	my $prev_search_class;
@@ -1511,6 +1513,7 @@ sub postfilter_search_multi_class_fts {
 		my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
 		my $first_word = lc(($fts->words)[0]).'%';
 
+		$_.=" * (SELECT weight FROM $field_table WHERE $search_class.field = id)" for (@fts_ranks);
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
@@ -1896,7 +1899,6 @@ sub biblio_search_multi_class_fts {
 		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
 	}
 
-
 	# XXX legacy format and item type support
 	if ($args{format}) {
 		my ($t, $f) = split '-', $args{format};
@@ -1923,6 +1925,7 @@ sub biblio_search_multi_class_fts {
 	my $join_table_list = '';
 	my @rank_list;
 
+	my $field_table = config::metabib_field->table;
 
 	my @bonus_lists;
 	my @bonus_values;
@@ -1949,7 +1952,8 @@ sub biblio_search_multi_class_fts {
 		my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
 		my $first_word = lc(($fts->words)[0]).'%';
 
-		my $rank = join(' + ', @fts_ranks);
+		$_.=" * (SELECT weight FROM $field_table WHERE $search_class.field = id)" for (@fts_ranks);
+		my $rank = join('  + ', @fts_ranks);
 
 		my %bonus = ();
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
@@ -1964,7 +1968,7 @@ sub biblio_search_multi_class_fts {
 		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
 		$bonus_list ||= '1';
 
-		push @bonus_lists, $bonus_list;
+		push @bonus_lists, $bonus_list,;
 		push @bonus_values, map { values %$_ } @{ $bonus{$search_class} };
 
 		#---------------------

@@ -103,7 +103,8 @@ CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
 	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
 	name		TEXT	NOT NULL UNIQUE,
-	xpath		TEXT	NOT NULL
+	xpath		TEXT	NOT NULL,
+	weight		INT	NOT NULL DEFUALT 1,
 );
 COMMENT ON TABLE config.metabib_field IS $$
 /*

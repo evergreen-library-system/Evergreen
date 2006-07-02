@@ -31,7 +31,7 @@ package config::metabib_field;
 use base qw/config/;
 __PACKAGE__->table('config_metabib_field');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/field_class name xpath/);
+__PACKAGE__->columns(Essential => qw/field_class name xpath wieght/);
 #-------------------------------------------------------------------------------
 
 package config::identification_type;
