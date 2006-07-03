@@ -129,7 +129,7 @@ To-do list:
 				</link>
 				<!-- rel links -->
 
-				<xsl:for-each select="atom:link[@rel='unapi' and string-length(@href)&gt;0]">
+				<xsl:for-each select="atom:link[@rel='unapi-server' and string-length(@href)&gt;0]">
 					<link rel="unapi-server" title="unAPI" type="application/xml">
 						<xsl:attribute name='href'>
 							<xsl:value-of select="@href"/>
