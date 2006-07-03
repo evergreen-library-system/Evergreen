@@ -463,7 +463,7 @@ sub link {
 			'http://www.w3.org/1999/xhtml',
 			'xhtml:link',
 			undef,
-			{ rel => 'meta', href => $id, title => "unapi" }
+			{ rel => 'unapi-server', href => $id, title => "unapi" }
 		);
 		$linkid++;
 	}

@@ -896,13 +896,13 @@ sub opensearch_feed {
 
 	$feed->link(
 		rss =>
-		$base .  "/$version/$org/rss2/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/rss2-full/$class?searchTerms=$terms" =>
 		'application/rss+xml'
 	);
 
 	$feed->link(
 		alternate =>
-		$base .  "/$version/$org/atom/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/atom-full/$class?searchTerms=$terms" =>
 		'application/atom+xml'
 	);
 
@@ -918,14 +918,14 @@ sub opensearch_feed {
 		'text/html'
 	);
 
-	$feed->link( unapi => $unapi);
+	$feed->link( 'unapi-server' => $unapi);
 
-	$feed->link(
-		opac =>
-		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
-			join('&', map { 'rl=' . $_->[0] } grep { ref $_ && defined $_->[0] } @{$recs->{ids}} ),
-		'text/html'
-	);
+#	$feed->link(
+#		opac =>
+#		$root . "../$lang/skin/default/xml/rresult.xml?rt=list&" .
+#			join('&', map { 'rl=' . $_->[0] } grep { ref $_ && defined $_->[0] } @{$recs->{ids}} ),
+#		'text/html'
+#	);
 
 	print $cgi->header(
 		-type		=> $feed->type,
