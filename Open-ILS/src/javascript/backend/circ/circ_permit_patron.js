@@ -5,7 +5,6 @@ load_lib('circ_lib.js');
 log_vars('circ_permit_patron');
 
 
-
 /* make sure they are not barred */
 if( isTrue(patron.barred) ) 
 	result.events.push('PATRON_BARRED');

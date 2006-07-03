@@ -84,12 +84,11 @@ sub patron_penalty {
 	# - Load up the script and run it
 	$runner->add_path($path);
 
-	$runner->run($script) or 
-		throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
+	$runner->load($script);
+	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
 
-	# array items are returned as a comma-separated list of strings
-	my @fatals = split( /,/, $runner->retrieve($fatal_key) );
-	my @infos = split( /,/, $runner->retrieve($info_key) );
+	my @fatals = @{$result->{fatalEvents}};
+	my @infos = @{$result->{infoEvents}};
 	my $all = [ @fatals, @infos ];
 
 	$logger->info("penalty: script returned fatal events [@fatals] and info events [@infos]");

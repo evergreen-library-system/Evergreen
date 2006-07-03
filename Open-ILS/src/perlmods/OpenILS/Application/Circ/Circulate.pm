@@ -552,12 +552,11 @@ sub _run_permit_scripts {
 	# ---------------------------------------------------------------------
 	$logger->debug("Running circ script: " . $scripts{circ_permit_patron});
 
-	#$runner->load($scripts{circ_permit_patron});
-	$runner->run($scripts{circ_permit_patron}) or 
+	$runner->load($scripts{circ_permit_patron});
+	my $result = $runner->run or 
 		throw OpenSRF::EX::ERROR ("Circ Permit Patron Script Died: $@");
 
-	my $patron_events = $runner->retrieve('result.events');
-	$patron_events = [ split(/,/, $patron_events) ]; 
+	my $patron_events = $result->{events};
 	$ctx->{circ_permit_patron_events} = $patron_events;
 	$logger->activity("circ_permit_patron for returned @$patron_events") if @$patron_events;
 
@@ -589,10 +588,9 @@ sub _run_permit_scripts {
 	# Capture all of the copy permit events
 	# ---------------------------------------------------------------------
 	$runner->load($scripts{circ_permit_copy});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Copy Script Died: $@");
+	my $copy_events = $result->{events};
 
-	my $copy_events = $runner->retrieve('result.events');
-	$copy_events = [ split(/,/, $copy_events) ]; 
 	$ctx->{circ_permit_copy_events} = $copy_events;
 	$logger->activity("circ_permit_copy for copy ".
 		"$barcode returned events: @$copy_events") if @$copy_events;
@@ -868,18 +866,20 @@ sub _run_checkout_scripts {
 	$runner->insert('result.maxFine');
 
 	$runner->load($scripts{circ_duration});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
-	my $duration = $runner->retrieve('result.durationRule');
+	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+	my $duration = $result->{durationRule};
+	my $dur_level = $result->{durationLevel};
 	$logger->debug("Circ duration script yielded a duration rule of: $duration");
 
 	$runner->load($scripts{circ_recurring_fines});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Recurring Fines Script Died: $@");
-	my $recurring = $runner->retrieve('result.recurringFinesRule');
+	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Recurring Fines Script Died: $@");
+	my $recurring = $result->{recurringFinesRule};
+	my $rec_fines_level = $result->{recurringFinesLevel};
 	$logger->debug("Circ recurring fines script yielded a rule of: $recurring");
 
 	$runner->load($scripts{circ_max_fines});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Max Fine Script Died: $@");
-	my $max_fine = $runner->retrieve('result.maxFine');
+	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Max Fine Script Died: $@");
+	my $max_fine = $result->{maxFine};
 	$logger->debug("Circ max_fine fines script yielded a rule of: $max_fine");
 
 	($duration, $evt) = $U->fetch_circ_duration_by_name($duration);
@@ -889,8 +889,8 @@ sub _run_checkout_scripts {
 	($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine);
 	return $evt if $evt;
 
-	$ctx->{duration_level}			= $runner->retrieve('result.durationLevel');
-	$ctx->{recurring_fines_level} = $runner->retrieve('result.recurringFinesLevel');
+	$ctx->{duration_level}			= $dur_level;
+	$ctx->{recurring_fines_level} = $rec_fines_level;
 	$ctx->{duration_rule}			= $duration;
 	$ctx->{recurring_fines_rule}	= $recurring;
 	$ctx->{max_fine_rule}			= $max_fine;
@@ -1889,10 +1889,9 @@ sub _run_renew_scripts {
 	$U->logmark;
 
 	$runner->load($scripts{circ_permit_renew});
-	$runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
+	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
+	my $events = $result->{events};
 
-	my $events = $runner->retrieve('result.events');
-	$events = [ split(/,/, $events) ]; 
 	$logger->activity("circ_permit_renew for user ".
 		$ctx->{patron}->id." returned events: @$events") if @$events;
 

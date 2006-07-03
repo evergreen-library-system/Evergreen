@@ -65,11 +65,11 @@ sub build_runner {
 	$runner->insert( "$evt.patronFines", $ctx->{patronFines}, 1 );
 
 	# circ script result
-	$runner->insert("result", {});
-	$runner->insert("result.event", 'SUCCESS');
-	$runner->insert("result.events", []);
-	$runner->insert('result.fatalEvents', []);
-	$runner->insert('result.infoEvents', []);
+	#$runner->insert("result", {});
+	#$runner->insert("result.event", 'SUCCESS');
+	#$runner->insert("result.events", []);
+	#$runner->insert('result.fatalEvents', []);
+	#$runner->insert('result.infoEvents', []);
 
 	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}) for keys %{$ctx->{_direct}};
 

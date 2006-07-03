@@ -35,32 +35,15 @@ sub permit_copy_hold {
 		}
 	);
 
-#	my $runner	= OpenILS::Utils::ScriptRunner->new;
-#
-#	$runner->insert( "$k.patron",				$$params{patron},				1);
-#	$runner->insert( "$k.title",				$$params{title},				1);
-#	$runner->insert( "$k.copy",				$$params{copy},				1);
-#	$runner->insert( "$k.requestor",			$$params{requestor},			1);
-#	$runner->insert( "$k.requestLib",		$$params{request_lib},		1);
-#	$runner->insert( "$k.pickupLib",			$$params{pickup_lib},		1);
-#	$runner->insert( "$k.titleDescriptor",	$$params{title_descriptor},1);
-
-#	# we get the script result from the event 
-#	$runner->insert( "result.event",	'SUCCESS' );
-#	$runner->insert( "result.events", [] );
-
 	$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
 
 	load_scripts($runner);
-	$runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
-	my $evtname = $runner->retrieve('result.event');
-
+	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
 
 	# --------------------------------------------------------------
 	# Extract and uniquify the event list
 	# --------------------------------------------------------------
-	my $events = $runner->retrieve('result.events');
-	$events = [ split(/,/, $events) ]; 
+	my $events = $result->{events};
 	$logger->debug("circ_permit_hold for user ".$params->{patron}->id." returned events: @$events");
 
 	my @allevents;

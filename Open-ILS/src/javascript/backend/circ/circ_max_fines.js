@@ -3,19 +3,9 @@ function go() {
 
 /* load the lib script */
 load_lib('circ_lib.js');
-
-/* collect some useful variables */
-var copy					= environment.copy;
-var patron				= environment.patron;
-var patronProfile		= patron.profile.name.toLowerCase();
-var copyStatus			= copy.status.name.toLowerCase();
-var patronItemsOut	= environment.patronItemsOut;
-var patronFines		= environment.patronFines;
-var isRenewal			= environment.isRenewal;
+log_vars('circ_max_fine');
 
 
 return result.maxFine = "books";
-
-
 
 } go();
