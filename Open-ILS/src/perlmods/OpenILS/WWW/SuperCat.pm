@@ -22,6 +22,7 @@ use Encode;
 use Unicode::Normalize;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 
 # set the bootstrap config when this module is loaded
@@ -830,7 +831,8 @@ sub opensearch_feed {
 			$$cached_res{os_results}{$cache_key} = $recs;
 			OpenSRF::Utils::Cache->new->put_cache( "os_session:$rs_name", $cached_res, 1800 );
 		} catch Error with {
-			warn shift();
+			warn "supercat unable to store IDs in memcache server\n";
+			$logger->error("supercat unable to store IDs in memcache server");
 		};
 	}
 
