@@ -15,6 +15,7 @@ use Time::HiRes qw/time/;
 use Digest::MD5 qw(md5_hex);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:logger/;
 
 
@@ -86,6 +87,10 @@ sub osrf_connect {
 	my $config = shift;
 	err("Bootstrap config required") unless $config;
 	OpenSRF::System->bootstrap_client( config_file => $config );
+	Fieldmapper->import(IDL =>
+		OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
+		
 }
 
 #----------------------------------------------------------------
