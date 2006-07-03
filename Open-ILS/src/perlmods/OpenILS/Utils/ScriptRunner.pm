@@ -53,7 +53,7 @@ sub init {
 	$self->insert(log_internal	=> sub { $logger->internal("script_runner: @_"); return 1;} );
 	$self->insert(debug		=> sub { $logger->debug("script_runner: @_"); return 1;} );
 	$self->insert(alert		=> sub { $logger->warn("script_runner: @_"); return 1;} );
-	$self->insert(load_lib		=> sub { $self->load_lib(@_); });
+	$self->insert(load_lib		=> sub { $self->load_lib(@_); return 1;});
 
 	# OpenSRF support functions
 	$self->insert(
@@ -143,7 +143,7 @@ sub run {
 		$self->insert('environment.result' => {});
 
 		my $content = <F>;
-		print ( "full script is [$content]" );
+		#print ( "full script is [$content]" );
 
 		my $s = time();
 		if( !$js || !$content || !$js->eval($content) ) {
