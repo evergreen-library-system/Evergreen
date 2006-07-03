@@ -1,17 +1,10 @@
 #/usr/bin/perl
 use strict; use warnings;
 use lib q|../../../perlmods/|;
-use OpenILS::Utils::ScriptRunner;
-use OpenILS::Utils::CStoreEditor qw/:funcs/;
-use OpenILS::Application::Circ::ScriptBuilder;
 use Time::HiRes qw/time/;
+use OpenILS::Application::Circ::ScriptBuilder;
 require '../oils_header.pl';
 use vars qw/ $user $authtoken $apputils /;
-
-my $events			= 'result.events';
-my $fatal_events	= 'result.fatalEvents';
-my $info_events	= 'result.infoEvents';
-
 
 # ---------------------------------------------------------------------
 # SCRIPT VARS
@@ -42,6 +35,16 @@ my $path;
 ($path, $script) = ($script =~ m#(/.*/)(.*)#);
 
 osrf_connect($bsconfig);
+
+reset_cstore();
+
+#use OpenILS::Utils::ScriptRunner;
+#my $r = OpenILS::Utils::ScriptRunner->new;
+#$r->add_path($path);
+#$r->load($script) or die "Script died: $@";
+#$r->run or die "Script died: $@";
+#exit;
+
 
 my $s = time;
 my $runner = OpenILS::Application::Circ::ScriptBuilder->build(
@@ -79,7 +82,8 @@ print "\nLoading script: $script\n";
 print "\n" . '-'x70 . "\n";
 
 $runner->load($script);
-$runner->run or die "Script died: $@";
+my $result = $runner->run or die "Script died: $@";
+
 my $end = time - $s;
 
 
@@ -88,9 +92,17 @@ my $end = time - $s;
 # ---------------------------------------------------------------------
 print "\n" . '-'x70 . "\n";
 
-show_events( 'events', $runner->retrieve($events));
-show_events( 'fatal_events', $runner->retrieve($fatal_events));
-show_events( 'info_events', $runner->retrieve($info_events));
+my $events = $result->{events};
+my $ievents = $result->{infoEvents};
+my $fevents = $result->{fatalEvents};
+
+print "events = @$events\n";
+print "info events = @$ievents\n";
+print "fatal events = @$fevents\n";
+
+#show_events( 'events', $result->{events} );
+#show_events( 'fatal_events', $result->{fatalEvents} ); 
+#show_events( 'info_events', $result->{infoEvents} );
 
 print "\ntime = $end\n";
 
@@ -117,4 +129,13 @@ print "\n";
 #$runner->insert( "$evt.isNonCat", $is_non_cat );
 #$runner->insert( "$evt.isHold", $is_hold );
 #$runner->insert( "$evt.nonCatType", $non_cat_type );
+
+
+sub reset_cstore {
+	my ($key) = grep { $_ =~ /CStoreEditor/o } keys %INC;
+	delete $INC{$key};
+	no warnings;
+	require OpenILS::Utils::CStoreEditor;
+	use warnings;
+}
 
