@@ -4,7 +4,7 @@
 	<!--#include virtual="common/css_common.xml"-->
 
 	<title>&<!--#echo var="OILS_TITLE"-->;</title>
-	<link rel="meta" type="application/xml" title="unAPI" href="/opac/extras/unapi"/>
+	<link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi"/>
 
 	<!--#if expr="$slimpac!='true'"-->
 		<!--#include virtual="common/js_common.xml"-->
