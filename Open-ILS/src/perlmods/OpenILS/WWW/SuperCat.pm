@@ -118,7 +118,7 @@ sub unapi {
 				->gather(1);
 
 			if ($type eq 'record') {
-				$body = <<"				FORMATS";
+				$body .= <<"				FORMATS";
 <formats id='$uri'>
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
@@ -127,7 +127,7 @@ sub unapi {
 	<format name='htmlholdings-full' type='text/html'/>
 				FORMATS
 			} elsif ($type eq 'metarecord') {
-				$body = <<"				FORMATS";
+				$body .= <<"				FORMATS";
 				<formats id='$uri'>
 					<format name='opac' type='text/html'/>
 				FORMATS
@@ -172,7 +172,7 @@ sub unapi {
 			my %hash = map { ( (keys %$_)[0] => (values %$_)[0] ) } @$list;
 			$list = [ map { { $_ => $hash{$_} } } sort keys %hash ];
 
-			$body = <<"			FORMATS";
+			$body .= <<"			FORMATS";
 <formats>
 	<format name='opac' type='text/html'/>
 	<format name='html' type='text/html'/>
@@ -208,17 +208,38 @@ sub unapi {
 			$body .= "</formats>\n";
 
 		}
-		$apache->custom_response( 300, $body);
-		return 300;
+		print $body;
+		return Apache2::Const::OK;
 	}
 
-		
 	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:/(.+))?}o) {
 		$id = $2;
 		$lib = $3;
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^m/o);
 		$command = 'retrieve';
+	}
+
+	if ( !grep
+	       { (keys(%$_))[0] eq $base_format }
+	       @{ $supercat->request("open-ils.supercat.$type.formats")->gather(1) }
+	     and !grep
+	       { $_ eq $base_format }
+	       qw/opac html htmlholdings/
+	) {
+		print "Content-type: text/html; charset=utf-8\n\n";
+		$apache->custom_response( 406, <<"		HTML");
+		<html>
+			<head>
+				<title>Invalid format [$format] for type [$type]!</title>
+			</head>
+			<body>
+				<br/>
+				<center>Sorry, format $format is not valid for type $type.</center>
+			</body>
+		</html>
+		HTML
+		return 406;
 	}
 
 	if ($format eq 'opac') {
@@ -235,6 +256,22 @@ sub unapi {
 			$flesh_feed
 		);
 
+		if (!$feed->count) {
+			print "Content-type: text/html; charset=utf-8\n\n";
+			$apache->custom_response( 404, <<"			HTML");
+			<html>
+				<head>
+					<title>Type [$type] with id [$id] not found!</title>
+				</head>
+				<body>
+					<br/>
+					<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
+				</body>
+			</html>
+			HTML
+			return 404;
+		}
+
 		$feed->root($root);
 		$feed->creator($host);
 		$feed->update_ts(gmtime_ISO8601());
@@ -247,9 +284,9 @@ sub unapi {
 	}
 
 	my $req = $supercat->request("open-ils.supercat.$type.$format.$command",$id);
-	$req->wait_complete;
+	my $data = $req->gather(1);
 
-	if ($req->failed) {
+	if ($req->failed || !$data) {
 		print "Content-type: text/html; charset=utf-8\n\n";
 		$apache->custom_response( 404, <<"		HTML");
 		<html>
@@ -265,8 +302,7 @@ sub unapi {
 		return 404;
 	}
 
-	print "Content-type: application/xml; charset=utf-8\n\n";
-	print $req->gather(1);
+	print "Content-type: application/xml; charset=utf-8\n\n$data";
 
 	return Apache2::Const::OK;
 }
@@ -966,6 +1002,7 @@ sub create_record_feed {
 
 	#$records = $supercat->request( "open-ils.supercat.record.object.retrieve", $records )->gather(1);
 
+	my $count = 0;
 	for my $record (@$records) {
 		next unless($record);
 

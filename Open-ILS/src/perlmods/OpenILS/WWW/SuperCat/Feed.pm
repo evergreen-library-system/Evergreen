@@ -34,7 +34,9 @@ sub build {
 
 	my $self = { doc => $parser->parse_string($xml), items => [] };
 
-	return bless $self => $class;
+	$self = bless $self => $class;
+	$self->{count} = 0;
+	return $self;
 }
 
 sub type {
@@ -42,6 +44,11 @@ sub type {
 	my $type = shift;
 	$self->{type} = $type if ($type);
 	return $self->{type};
+}
+
+sub count {
+	my $self = shift;
+	return $self->{count};
 }
 
 sub search {
@@ -88,6 +95,7 @@ sub unapi {
 
 sub push_item {
 	my $self = shift;
+	$self->{count} += scalar(@_);
 	push @{ $self->{items} }, @_;
 }
 

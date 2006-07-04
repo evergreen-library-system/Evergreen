@@ -568,13 +568,9 @@ sub retrieve_record_marcxml {
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	return
-	entityize(
-		$_storage
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rid )
-			->gather(1)
-			->marc
-	);
+	my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rid )->gather(1);
+	return entityize( $record->marc ) if ($record);
+	return undef;
 }
 
 __PACKAGE__->register_method(
@@ -608,16 +604,14 @@ sub retrieve_record_transform {
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 	$_storage->connect;
 
-	warn "Fetching record entry $rid\n";
-	my $marc = $_storage->request(
+	my $record = $_storage->request(
 		'open-ils.cstore.direct.biblio.record_entry.retrieve',
 		$rid
-	)->gather(1)->marc;
-	warn "Fetched record entry $rid\n";
+	)->gather(1);
 
-	$_storage->disconnect;
+	return undef unless ($record);
 
-	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $marc ) )->toString);
+	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
 }
 
 sub retrieve_record_objects {
