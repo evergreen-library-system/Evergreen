@@ -575,6 +575,7 @@ sub _JS_DOM {
 1;
 
 __DATA__
+
 // in case we run on an implimentation that doesn't have "undefined";
 var undefined;
 

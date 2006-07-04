@@ -28,6 +28,7 @@ try {
         OpenILS::Utils::ScriptRunner->add_path('./');
 
 	print JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new( file => shift(@ARGV) )->run );
+	#print JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new->run( shift(@ARGV) ) );
 
 } otherwise {
         warn 'crap:'.shift();
