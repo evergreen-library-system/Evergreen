@@ -107,7 +107,7 @@ sub unapi {
 	if (!$format) {
 		my $body = "Content-type: application/xml; charset=utf-8\n\n";
 	
-		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)}o) {
+		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))$}o) {
 			$id = $2;
 			$lib = $3;
 			$type = 'record';
@@ -117,7 +117,7 @@ sub unapi {
 				->request("open-ils.supercat.$type.formats")
 				->gather(1);
 
-			if ($type eq 'record') {
+			if ($type eq 'record' or $type eq 'isbn') {
 				$body .= <<"				FORMATS";
 <formats id='$uri'>
 	<format name='opac' type='text/html'/>
@@ -212,11 +212,12 @@ sub unapi {
 		return Apache2::Const::OK;
 	}
 
-	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:/(.+))?}o) {
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))?}o) {
 		$id = $2;
 		$lib = $3;
 		$type = 'record';
-		$type = 'metarecord' if ($1 =~ /^m/o);
+		$type = 'metarecord' if ($1 =~ /^metabib/o);
+		$type = 'isbn' if ($1 =~ /^isbn/o);
 		$command = 'retrieve';
 	}
 
@@ -250,6 +251,7 @@ sub unapi {
 		return 302;
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
+			$type,
 			$format => [ $id ],
 			$base,
 			$lib,
@@ -347,7 +349,7 @@ sub supercat {
 				     <type>text/html</type>
 				   </format>";
 
-			if ($1 eq 'record') {
+			if ($1 eq 'record' or $1 eq 'isbn') {
 				print "<format>
 				     <name>htmlholdings</name>
 				     <type>text/html</type>
@@ -468,6 +470,7 @@ sub supercat {
 		return 302;
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
+			$type,
 			$format => [ $id ],
 			undef, undef,
 			$flesh_feed
@@ -549,6 +552,7 @@ sub bookbag_feed {
 	}
 
 	my $feed = create_record_feed(
+		'record',
 		$type,
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
@@ -611,14 +615,14 @@ sub changes_feed {
 
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
 
-	if ($type eq 'opac') {
-		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
-			join('&', map { "rl=" . $_ } @$list) .
-			"\n\n";
-		return 302;
-	}
+	#if ($type eq 'opac') {
+	#	print "Location: $root/../../en-US/skin/default/xml/rresult.xml?rt=list&" .
+	#		join('&', map { "rl=" . $_ } @$list) .
+	#		"\n\n";
+	#	return 302;
+	#}
 
-	my $feed = create_record_feed( $type, $list, $unapi, undef, $flesh_feed);
+	my $feed = create_record_feed( 'record', $type, $list, $unapi, undef, $flesh_feed);
 	$feed->root($root);
 
 	if ($date) {
@@ -873,6 +877,7 @@ sub opensearch_feed {
 	}
 
 	my $feed = create_record_feed(
+		'record',
 		$type,
 		[ map { $_->[0] } @{$recs->{ids}}[$offset .. $offset + $limit - 1] ],
 		$unapi,
@@ -977,6 +982,7 @@ sub opensearch_feed {
 }
 
 sub create_record_feed {
+	my $search = shift;
 	my $type = shift;
 	my $records = shift;
 	my $unapi = shift;
@@ -1010,9 +1016,10 @@ sub create_record_feed {
 		my $rec = $record;
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
+		$item_tag = "tag:$host,$year:isbn/$rec/$lib" if ($search eq 'isbn');
 
 		my $xml = $supercat->request(
-			"open-ils.supercat.record.$type.retrieve",
+			"open-ils.supercat.$search.$type.retrieve",
 			$rec
 		)->gather(1);
 		next unless $xml;
@@ -1021,7 +1028,7 @@ sub create_record_feed {
 		next unless $node;
 
 		if ($lib && $type eq 'marcxml' &&  $flesh) {
-			$xml = $supercat->request( "open-ils.supercat.record.holdings_xml.retrieve", $rec, $lib )->gather(1);
+			$xml = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib )->gather(1);
 			$node->add_holdings($xml);
 		}
 

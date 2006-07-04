@@ -156,6 +156,26 @@ sub register_record_transforms {
 					  type => 'string' }
 				}
 		);
+
+		__PACKAGE__->register_method(
+			method    => 'retrieve_isbn_transform',
+			api_name  => "open-ils.supercat.isbn.$type.retrieve",
+			api_level => 1,
+			argc      => 1,
+			signature =>
+				{ desc     => "Returns the \U$type\E representation ".
+				              "of the requested bibliographic record",
+				  params   =>
+			  		[
+						{ name => 'isbn',
+						  desc => 'An ISBN',
+						  type => 'string' },
+					],
+			  	'return' =>
+		  			{ desc => "The bib record in \U$type\E",
+					  type => 'string' }
+				}
+		);
 	}
 }
 
@@ -415,90 +435,42 @@ Returns the XML representation of the requested bibliographic record's holdings
 		}
 );
 
-
-
-sub record_holdings {
+sub isbn_holdings {
 	my $self = shift;
 	my $client = shift;
-	my $bib = shift;
+	my $isbn = shift;
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	if (!$holdings_data_cache{status}) {
-		$holdings_data_cache{status} = {
-			map { ($_->id => $_) } @{ $_storage->request( "open-ils.cstore.direct.config.copy_status.search.atomic", {id => {'<>' => undef}} )->gather(1) }
-		};
-		$holdings_data_cache{location} = {
-			map { ($_->id => $_) } @{ $_storage->request( "open-ils.cstore.direct.asset.copy_location.retrieve.all.atomic", {id => {'<>' => undef}} )->gather(1) }
-		};
-		$holdings_data_cache{ou} =
-		{
-			map {
-				($_->id => $_)
-			} @{$_storage->request( "open-ils.cstore.direct.actor.org_unit.search.atomic" => { id => { '<>' => undef } } )->gather(1)}
-		};
-		$holdings_data_cache{statcat} =
-		{
-			map {
-				($_->id => $_)
-			} @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry.search.atomic" => { id => { '<>' => undef } } )->gather(1)}
-		};
-	}
+	my $recs = $_storage->request(
+			'open-ils.cstore.direct.metabib.full_rec.search.atomic',
+			{ tag => { like => '02%'}, value => {like => "$isbn\%"}}
+	)->gather(1);
 
+	return undef unless (@$recs);
 
-	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
-	$year += 1900;
-	$month += 1;
-
-	my $xml = "<volumes xmlns='http://open-ils.org/spec/holdings/v1'>";
-	
-	for my $cn ( @{$_storage->request( "open-ils.cstore.direct.asset.call_number.search.atomic" => {record => $bib} )->gather(1)} ) {
-		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
-		$cn_class =~ s/Fieldmapper-//gso;
-		my $cn_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cn_class/".$cn->id, $month, $day);
-
-		my $cn_lib = $holdings_data_cache{ou}{$cn->owning_lib}->shortname;
-
-		my $cn_label = $cn->label;
-
-		$xml .= "<volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><copies>";
-		
-		for my $cp ( @{$_storage->request( "open-ils.cstore.direct.asset.copy.search.atomic" => {call_number => $cn->id} )->gather(1)} ) {
-			(my $cp_class = $cn->class_name) =~ s/::/-/gso;
-			$cp_class =~ s/Fieldmapper-//gso;
-			my $cp_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cp_class/".$cp->id, $month, $day);
-
-			my $cp_stat = $holdings_data_cache{status}{$cp->status}->name;
-
-			my $cp_loc = $holdings_data_cache{location}{$cp->location}->name;
-
-			my $cp_lib = $holdings_data_cache{ou}{$cp->circ_lib}->shortname;
-
-			my $cp_bc = $cp->barcode;
-
-			$xml .= "<copy id='$cp_tag' barcode='$cp_bc'><status>$cp_stat</status><location>$cp_loc</location><circlib>$cp_lib</circlib><notes>";
-
-			for my $note ( @{$_storage->request( "open-ils.cstore.direct.asset.copy_note.search.atomic" => {id => $cp->id, pub => "t" })->gather(1)} ) {
-				$xml .= sprintf('<note date="%s" title="%s">%s</note>',$note->create_date, escape($note->title), escape($note->value));
-			}
-
-			$xml .= "</notes><statcats>";
-
-			for my $sce ( @{$_storage->request( "open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic" => { owning_copy => $cp->id })->gather(1)} ) {
-				my $sc = $holdings_data_cache{statcat}{$sce->stat_cat_entry};
-				$xml .= sprintf('<statcat>%s</statcat>',escape($sc->value));
-			}
-
-			$xml .= "</statcats></copy>";
-		}
-		
-		$xml .= "</volume>";
-	}
-
-	$xml .= "</volumes>";
-
-	return $xml;
+	return ($self->method_lookup( 'open-ils.supercat.record.holdings_xml.retrieve')->run( $recs->[0]->record ))[0];
 }
+__PACKAGE__->register_method(
+	method    => 'isbn_holdings',
+	api_name  => 'open-ils.supercat.isbn.holdings_xml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'isbn',
+				  desc => 'An isbn',
+				  type => 'string' },
+			],
+		  'return' =>
+		  	{ desc => 'The bib record holdings hierarchy in XML',
+			  type => 'string' }
+		}
+);
 
 sub escape {
 	my $text = shift;
@@ -594,6 +566,46 @@ Returns the MARCXML representation of the requested bibliographic record
 		}
 );
 
+sub retrieve_isbn_marcxml {
+	my $self = shift;
+	my $client = shift;
+	my $isbn = shift;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $recs = $_storage->request(
+			'open-ils.cstore.direct.metabib.full_rec.search.atomic',
+			{ tag => { like => '02%'}, value => {like => "$isbn\%"}}
+	)->gather(1);
+
+	return undef unless (@$recs);
+
+	my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $recs->[0]->record )->gather(1);
+	return entityize( $record->marc ) if ($record);
+	return undef;
+}
+
+__PACKAGE__->register_method(
+	method    => 'retrieve_isbn_marcxml',
+	api_name  => 'open-ils.supercat.isbn.marcxml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the MARCXML representation of the requested ISBN
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'ISBN',
+				  desc => 'An ... um ... ISBN',
+				  type => 'string' },
+			],
+		  'return' =>
+		  	{ desc => 'The bib record in MARCXML',
+			  type => 'string' }
+		}
+);
+
 sub retrieve_record_transform {
 	my $self = shift;
 	my $client = shift;
@@ -608,6 +620,29 @@ sub retrieve_record_transform {
 		'open-ils.cstore.direct.biblio.record_entry.retrieve',
 		$rid
 	)->gather(1);
+
+	return undef unless ($record);
+
+	return entityize($record_xslt{$transform}{xslt}->transform( $_parser->parse_string( $record->marc ) )->toString);
+}
+
+sub retrieve_isbn_transform {
+	my $self = shift;
+	my $client = shift;
+	my $isbn = shift;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $recs = $_storage->request(
+			'open-ils.cstore.direct.metabib.full_rec.search.atomic',
+			{ tag => { like => '02%'}, value => {like => "$isbn\%"}}
+	)->gather(1);
+
+	return undef unless (@$recs);
+
+	(my $transform = $self->api_name) =~ s/^.+isbn\.([^\.]+)\.retrieve$/$1/o;
+
+	my $record = $_storage->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $recs->[0]->record )->gather(1);
 
 	return undef unless ($record);
 
@@ -886,6 +921,20 @@ sub list_record_formats {
 __PACKAGE__->register_method(
 	method    => 'list_record_formats',
 	api_name  => 'open-ils.supercat.record.formats',
+	api_level => 1,
+	argc      => 0,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the list of valid record formats that supercat understands.
+		  DESC
+		  'return' =>
+		  	{ desc => 'The format list',
+			  type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'list_record_formats',
+	api_name  => 'open-ils.supercat.isbn.formats',
 	api_level => 1,
 	argc      => 0,
 	signature =>
