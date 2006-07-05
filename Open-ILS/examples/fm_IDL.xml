@@ -1648,7 +1648,6 @@
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="parent" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="perm_interval" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="children" oils_obj:array_position="9" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
