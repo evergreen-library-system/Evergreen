@@ -99,7 +99,8 @@ sub create_circ_ctx {
 	$ctx->{copy_barcode} = $ctx->{barcode};
 	$ctx->{fetch_patron_circ_info} = 1;
 
-	my @evts = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
+	OpenILS::Application::Circ::ScriptBuilder->build($ctx);
+	my @evts = @{$ctx->{_events}} if $ctx->{_events};
 
 	if(!$params{noncat}) {
 		if( @evts and grep { $_->{textcode} eq 'ASSET_COPY_NOT_FOUND' } @evts) {
@@ -108,6 +109,8 @@ sub create_circ_ctx {
 			$ctx->{precat} = 1 if ( $ctx->{copy}->call_number == -1 ); # special case copy
 		}
 	}
+
+	warn "PRECAT = TRUE\n" if $ctx->{precat};
 
 	_build_circ_script_runner($ctx);
 	return ($ctx);
@@ -152,27 +155,28 @@ sub create_circ_ctx {
 #}
 #
 #
-#sub _find_copy_by_attr {
-#	my %params = @_;
-#	$U->logmark;
-#	my $evt;
-#
-#	my $copy = $params{copy} || undef;
-#
-#	if(!$copy) {
-#
-#		( $copy, $evt ) = 
-#			$U->fetch_copy($params{copyid}) if $params{copyid};
-#		return (undef,$evt) if $evt;
-#
-#		if(!$copy) {
-#			( $copy, $evt ) = 
-#				$U->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
-#			return (undef,$evt) if $evt;
-#		}
-#	}
-#	return ( $copy, $evt );
-#}
+sub _find_copy_by_attr {
+	my %params = @_;
+	$U->logmark;
+	my $evt;
+
+	my $copy = $params{copy} || undef;
+
+	if(!$copy) {
+
+		( $copy, $evt ) = 
+			$U->fetch_copy($params{copyid}) if $params{copyid};
+		return (undef,$evt) if $evt;
+
+		if(!$copy) {
+			( $copy, $evt ) = 
+				$U->fetch_copy_by_barcode( $params{barcode} ) if $params{barcode};
+			return (undef,$evt) if $evt;
+		}
+	}
+	return ( $copy, $evt );
+}
+
 #
 #sub _ctx_add_copy_objects {
 #	my($ctx, %params)  = @_;
@@ -494,8 +498,10 @@ sub permit_circ {
 
 	if( $override ) {
 		$evt = override_events($requestor, $requestor->ws_ou, 
-			$events, $authtoken, $ctx->{copy}->id, $client);
+			$events, $authtoken, $client);
 		return $evt if $evt;
+		return OpenILS::Event->new(
+			'ITEM_NOT_CATALOGED', payload => $ctx->{permit_key}) if $ctx->{precat};
 		return OpenILS::Event->new('SUCCESS', payload => $ctx->{permit_key} );
 	}
 
@@ -504,7 +510,7 @@ sub permit_circ {
 
 sub override_events {
 
-	my( $requestor, $org, $events, $authtoken, $copyid, $conn ) = @_;
+	my( $requestor, $org, $events, $authtoken, $conn ) = @_;
 	$events = [ $events ] unless ref($events) eq 'ARRAY';
 	my @failed;
 
@@ -564,18 +570,21 @@ sub _run_permit_scripts {
 	my @allevents; 
 	push( @allevents, OpenILS::Event->new($_)) for @evts_so_far;
 
+
 	return \@allevents if @allevents;
 
+	if($ctx->{precat}) {
+		warn "Item is precat in checkout permit\n";
+		$logger->debug("Exiting circ permit early because copy is pre-cataloged");
+		#push( @allevents, OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key));
+		return OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key);
+	}
 
 	if( $ctx->{noncat} ) {
 		$logger->debug("Exiting circ permit early because item is a non-cataloged item");
 		return OpenILS::Event->new('SUCCESS', payload => $key);
 	}
 
-	if($ctx->{precat}) {
-		$logger->debug("Exiting circ permit early because copy is pre-cataloged");
-		return OpenILS::Event->new('ITEM_NOT_CATALOGED', payload => $key);
-	}
 
 	if($ctx->{ishold}) {
 		$logger->debug("Exiting circ permit early because request is for hold patron permit");
