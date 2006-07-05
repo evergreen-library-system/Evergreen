@@ -336,6 +336,7 @@
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="weight" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="format" oils_obj:array_position="8" oils_persist:virtual="false" />
 		</fields>
 		<links>
 		</links>
