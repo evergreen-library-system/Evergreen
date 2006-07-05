@@ -338,10 +338,10 @@ sub insert_array {
 	my $ind = 0;
 	for my $v ( @$array ) {
 		if (ref $v) {
-			my $elobj = $ctx->object_by_path('__tmp_arr_el'.$__array_id);
-			$self->insert('__tmp_arr_el'.$__array_id, $v);
+			my $tmp_index = $__array_id++;
+			my $elobj = $ctx->object_by_path('__tmp_arr_el'.$tmp_index);
+			$self->insert('__tmp_arr_el'.$tmp_index, $v);
 			$ctx->array_set_element_as_object( $a, $ind, $elobj );
-			$__array_id++;
 		} else {
 			$ctx->array_set_element( $a, $ind, $v ) if defined($v);
 		}
