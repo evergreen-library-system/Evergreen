@@ -984,7 +984,7 @@ sub get_org_tree {
 			{
 				flesh				=> 2,
 				flesh_fields	=> { aou =>  ['children'] },
-				order_by			=> { aou => 'shortname'}
+				order_by			=> { aou => 'name'}
 			}
 		]
 	)->[0];
@@ -1939,7 +1939,7 @@ sub retrieve_groups_tree {
 			{	
 				flesh				=> 10, 
 				flesh_fields	=> { pgt => ["children"] }, 
-				order_by			=> {pgt => 'name'}
+				order_by			=> { pgt => 'name'}
 			}
 		]
 	);
