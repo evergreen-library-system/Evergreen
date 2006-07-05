@@ -89,9 +89,19 @@ sub osrf_connect {
 	OpenSRF::System->bootstrap_client( config_file => $config );
 	Fieldmapper->import(IDL =>
 		OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
-
-		
+	reset_cstore();
 }
+
+sub reset_cstore {
+	my ($key) = grep { $_ =~ /OpenILS.*CStoreEditor/o } keys %INC;
+	return unless $key;
+	delete $INC{$key};
+	my $h = $SIG{__WARN__};
+	$SIG{__WARN__} = sub {};
+	require OpenILS::Utils::CStoreEditor;
+	$SIG{__WARN__} = $h;
+}
+
 
 #----------------------------------------------------------------
 # Get a handle for the memcache object
