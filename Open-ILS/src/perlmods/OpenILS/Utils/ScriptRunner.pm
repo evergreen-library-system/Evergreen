@@ -41,10 +41,9 @@ sub init {
 
 	$self->{_runs} = 0;
 
-
 	# eating our own dog food with insert
-	$self->insert(perl_print	=> sub { print "@_\n"; } );
-	$self->insert(perl_warn		=> sub { warn "@_\n"; } );
+	$self->insert(log_stdout	=> sub { print "@_\n"; } );
+	$self->insert(log_stderr	=> sub { warn "@_\n"; } );
 	$self->insert(log_activity	=> sub { $logger->activity("script_runner: @_"); return 1;} );
 	$self->insert(log_error		=> sub { $logger->error("script_runner: @_"); return 1;} );
 	$self->insert(log_warn		=> sub { $logger->warn("script_runner: @_"); return 1;} );
