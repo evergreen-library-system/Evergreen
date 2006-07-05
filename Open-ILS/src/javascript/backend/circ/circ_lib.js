@@ -1,8 +1,68 @@
+load_lib('../catalog/record_type.js');
+load_lib('../circ/circ_groups.js');
 
-var __scratchKey = 0;
-var __SCRATCH = {};
+/* ----------------------------------------------------------------------------- 
+	Collect all of the global variables
+	----------------------------------------------------------------------------- */
+
+/* the global result object.  Any data returned to the 
+	caller must be put into this object.  */
+var result				= environment.result = {};
+result.event			= 'SUCCESS';
+result.events			= [];
+result.fatalEvents	= [];
+result.infoEvents		= [];
+
+
+/* Pull in any variables passed in from the calling process */
+var copy					= environment.copy;
+var volume				= environment.volume;
+var title				= environment.title;
+var recDescriptor		= environment.titleDescriptor;
+var patron				= environment.patron;
+var isRenewal			= environment.isRenewal;
+var patronItemsOut	= environment.patronItemsOut;
+var patronOverdueCount	= environment.patronOverdueCount;
+var patronFines		= environment.patronFines;
+
+
+
+/* create some new vars based on the data we have wherever possible */
+var patronProfile;
+var copyStatus;
+var marcXMLDoc;
+
+if( patron && patron.profile ) 
+	patronProfile = patron.profile.name;
+if( copy && copy.status ) 
+	copyStatus = copy.status.name;
+if( title && title.marc )
+	marcXMLDoc = new XML(title.marc);
+
+
+
+
+/* copy the group tree into some other useful data structures */
+var groupTree		= environment.groupTree;
+var groupList		= {};
+var groupIDList	= {};
+flattenGroupTree(groupTree);
+
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------- 
+	Define all of the utility functions
+	----------------------------------------------------------------------------- */
+
+
 
 /* useful functions for creating wrappers around system functions */
+var __scratchKey = 0;
+var __SCRATCH = {};
 function scratchKey()		{ return '_' + __scratchKey++; };
 function scratchPad(key)	{ return '__SCRATCH.'+ key; }
 function getScratch(key)	{ return __SCRATCH[ key ]; }
@@ -19,29 +79,77 @@ function isTrue(d) {
 	return false;
 }
 
+/* Utility function for iterating over array */
+function iterate( arr, callback ) {
+	for( var i = 0; i < arr.length; i++ ) 
+		callback(arr[i]);
+}
 
 
-/* collect the useful variables */
-var result				= environment.result = {};
-result.event			= 'SUCCESS';
-result.events			= [];
-result.fatalEvents	= [];
-result.infoEvents		= [];
+/**
+  * returns a list of items that when passed to the callback 
+  * 'func' returned true returns null if none were found
+  */
+function grep( arr, func ) {
+	var results = [];
+	iterate( arr, 
+		function(d) {
+			if( func(d) ) 
+				results.push(d);
+		}
+	);
+	if(results.length > 0)	
+		return results;
+	return null;
+}
 
-var copy					= environment.copy;
-var volume				= environment.volume;
-var title				= environment.title;
-var recDescriptor		= environment.titleDescriptor;
-var patron				= environment.patron;
-var isRenewal			= environment.isRenewal;
-var patronItemsOut	= environment.patronItemsOut;
-var patronOverdueCount	= environment.patronOverdueCount;
-var patronFines		= environment.patronFines;
-var patronProfile;
-var copyStatus;
 
-if( patron.profile ) patronProfile = patron.profile.name.toLowerCase();
-if( copy.status ) copyStatus = copy.status.name.toLowerCase();
+
+function flattenGroupTree(node) {
+	if(!node) return null;
+	groupList[node.name] = node;
+	groupIDList[node.id] = node;
+	iterate( node.children,
+		function(n) {
+			flattenGroupTree(n);
+		}
+	);
+}
+
+
+
+/**
+  * Returns true if 'child' is equal or descends from 'parent'
+  * @param parent The name of the parent group
+  * @param child The name of the child group
+  */
+function isGroupDescendant( parent, child ) {
+	return __isGroupDescendant(
+		groupList[parent],
+		groupList[child]);
+}
+
+
+
+/**
+  * Returns true if 'child' is equal or descends from 'parent'
+  * @param parent The node of the parent group
+  * @param child The node of the child group
+  */
+function __isGroupDescendant( parent, child ) {
+	if (parent.id == child.id) return true;
+	var node = child;
+	while( (node = groupIDList[node.parent]) ) {
+		if( node.id == parent.id ) 
+			return true;
+	}
+	return false;
+}
+
+
+
+
+	
 
 
 
@@ -63,6 +171,7 @@ function log_vars( prefix ) {
 		str += ' Patron=' + patron.id;
 		str += ', Patron Barcode='	+ patron.card.barcode;
 		str += ', Patron Username='+ patron.usrname;
+		str += ', Patron Profile Group='+ patronProfile;
 		str += ', Patron Library='	+ patron.home_ou.name;
 		str += ', Patron Fines='	+ patronFines;
 		str += ', Patron OverdueCount='	+ patronOverdueCount;

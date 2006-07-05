@@ -36,7 +36,6 @@ my $path;
 
 osrf_connect($bsconfig);
 
-reset_cstore();
 
 #use OpenILS::Utils::ScriptRunner;
 #my $r = OpenILS::Utils::ScriptRunner->new;
@@ -72,7 +71,9 @@ $runner->insert(log_debug		=> sub { print "@_\n"; return 1;} );
 $runner->insert(log_internal	=> sub { print "@_\n"; return 1;} );
 
 
+$runner->add_path('/openils/var/web/opac/common/js');
 $runner->add_path($path);
+$runner->add_path("$path/../catalog/");
 
 
 # ---------------------------------------------------------------------
@@ -100,12 +101,7 @@ print "events = @$events\n";
 print "info events = @$ievents\n";
 print "fatal events = @$fevents\n";
 
-#show_events( 'events', $result->{events} );
-#show_events( 'fatal_events', $result->{fatalEvents} ); 
-#show_events( 'info_events', $result->{infoEvents} );
-
 print "\ntime = $end\n";
-
 
 sub show_events {
 	my $t = shift;
@@ -124,18 +120,4 @@ print "\n";
 
 
 
-# don't forget these..
-#$runner->insert( "$evt.isRenewal", $is_renewal );
-#$runner->insert( "$evt.isNonCat", $is_non_cat );
-#$runner->insert( "$evt.isHold", $is_hold );
-#$runner->insert( "$evt.nonCatType", $non_cat_type );
-
-
-sub reset_cstore {
-	my ($key) = grep { $_ =~ /CStoreEditor/o } keys %INC;
-	delete $INC{$key};
-	no warnings;
-	require OpenILS::Utils::CStoreEditor;
-	use warnings;
-}
 

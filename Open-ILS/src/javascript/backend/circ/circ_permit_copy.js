@@ -2,8 +2,10 @@ function go() {
 
 /* load the lib script */
 load_lib('circ_lib.js');
-log_vars('circ_permit_copy');
+load_lib('circ_groups.js');
+load_lib('../catalog/record_type.js');
 
+log_vars('circ_permit_copy');
 
 
 if( ! isTrue(copy.circulate) ) 
@@ -14,16 +16,18 @@ if( isTrue(copy.ref) )
 
 
 
-if(copyStatus != 'available' && 
-	copyStatus != 'on holds shelf' && copyStatus != 'reshelving' ) {
+if(copyStatus != 'Available' && 
+	copyStatus != 'On holds shelf' && copyStatus != 'Reshelving' ) {
 		result.events.push('COPY_NOT_AVAILABLE');
 }
 
-/* this should happen very rarely .. but it needs to be protected */
-if( recDescriptor.item_type == 'g'  /* projected medium */
+var type = extractFixedField(marcXMLDoc, 'Type');
+log_stdout('type = ' + type);
+
+/* this should happen very rarely .. but it should at least require an override */
+if( extractFixedField(marcXMLDoc, 'Type') == 'g' 
 	&& copy.circ_lib != patron.home_ou.id )
 	result.events.push('CIRC_EXCEEDS_COPY_RANGE');
-
 
 
 	

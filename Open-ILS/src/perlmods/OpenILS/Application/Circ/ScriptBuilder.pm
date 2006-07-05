@@ -11,7 +11,8 @@ use Data::Dumper;
 my $evt = "environment";
 my @COPY_STATUSES;
 my @COPY_LOCATIONS;
-my @GROUP_LIST;
+my %GROUP_SET;
+my $GROUP_TREE;
 
 
 # -----------------------------------------------------------------------
@@ -53,6 +54,8 @@ sub build_runner {
 	my $ctx		= shift;
 	my $runner	= OpenILS::Utils::ScriptRunner->new;
 
+	$runner->insert( "$evt.groupTree",	$GROUP_TREE, 1);
+
 	$runner->insert( "$evt.patron",		$ctx->{patron}, 1);
 	$runner->insert( "$evt.copy",			$ctx->{copy}, 1);
 	$runner->insert( "$evt.volume",		$ctx->{volume}, 1);
@@ -63,13 +66,6 @@ sub build_runner {
 	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut}, 1 );
 	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue}, 1 );
 	$runner->insert( "$evt.patronFines", $ctx->{patronFines}, 1 );
-
-	# circ script result
-	#$runner->insert("result", {});
-	#$runner->insert("result.event", 'SUCCESS');
-	#$runner->insert("result.events", []);
-	#$runner->insert('result.fatalEvents', []);
-	#$runner->insert('result.infoEvents', []);
 
 	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}) for keys %{$ctx->{_direct}};
 
@@ -164,14 +160,26 @@ sub fetch_user_data {
 		unless ref $patron->home_ou;
 
 
-	if(!@GROUP_LIST) {
-		my $s = $e->retrieve_all_permission_grp_tree();
-		@GROUP_LIST = @$s;
+	if(!%GROUP_SET) {
+		$GROUP_TREE = $e->search_permission_grp_tree(
+			[
+				{ parent => undef }, 
+				{ 
+					flesh => 100,
+					flesh_fields => { pgt => ['children'] }
+				} 
+			]
+		)->[0];
+
+		_flatten_groups($GROUP_TREE);
 	}
 
-	$patron->profile( 
-		grep { $_->id == $patron->profile } @GROUP_LIST ) 
+	$patron->profile( $GROUP_SET{$patron->profile} )
 		unless ref $patron->profile;
+
+#	$patron->profile( 
+#		grep { $_->id == $patron->profile } @GROUP_LIST ) 
+#		unless ref $patron->profile;
 
 	$patron->card($e->retrieve_actor_card($patron->card));
 
@@ -206,5 +214,17 @@ sub fetch_user_data {
 	return undef;
 }
 
+
+sub _flatten_groups {
+	my $tree = shift;
+	return undef unless $tree;
+	$GROUP_SET{$tree->id} = $tree;
+	if( $tree->children ) {
+		_flatten_groups($_) for @{$tree->children};
+	}
+}
+
+
 1;
+
 
