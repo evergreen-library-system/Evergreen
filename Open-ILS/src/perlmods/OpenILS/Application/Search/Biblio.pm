@@ -329,7 +329,7 @@ __PACKAGE__->register_method(
 
 
 sub the_quest_for_knowledge {
-	my( $self, $conn, $searchhash ) = @_;
+	my( $self, $conn, $searchhash, $docache ) = @_;
 
 	return { count => 0 } unless $searchhash and
 		ref $searchhash->{searches} eq 'HASH';
@@ -343,9 +343,12 @@ sub the_quest_for_knowledge {
 	my $limit	= $searchhash->{limit} || 10;
 	my $end		= $offset + $limit - 1;
 
+
 	my $maxlimit = 5000;
 	$searchhash->{offset}	= 0;
 	$searchhash->{limit}		= $maxlimit;
+
+	return { count => 0 } if $offset > $maxlimit;
 
 	my @search;
 	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
@@ -358,10 +361,7 @@ sub the_quest_for_knowledge {
 		$method =~ s/biblio/metabib/o;
 	}
 
-	# don't cache past max limit
-	my $result = ($end < $searchhash->{limit}) ? 
-		search_cache($ckey, $offset, $limit) : undef; 
-	my $docache = 1;
+	my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
 
 	if(!$result) {
 
@@ -369,28 +369,11 @@ sub the_quest_for_knowledge {
 		$method .= ".atomic";
 	
 		for (keys %$searchhash) { 
-			delete $$searchhash{$_} unless defined $$searchhash{$_}; }
+			delete $$searchhash{$_} 
+				unless defined $$searchhash{$_}; 
+		}
 	
-		#$searchhash->{limit} = $maxlimit;
-
-		my $err;
-		my $errstr;
-
-		try {
-			$result = $U->storagereq( $method, %$searchhash );
-
-		} catch Error with {
-			my $err = shift;
-
-			my $errstr = "Multiclass search failed.  Args = " . 
-				JSON->perl2JSON($searchhash) . "\nError = $err";
-
-			$logger->error($errstr);
-			warn "$errstr\n";
-		};
-
-		throw $err ($errstr) if $err;
-
+		$result = $U->storagereq( $method, %$searchhash );
 
 	} else { 
 		$docache = 0; 
@@ -398,27 +381,30 @@ sub the_quest_for_knowledge {
 
 	return {count => 0} unless ($result && $$result[0]);
 
-	for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
+	#for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
+	@recs = @$result;
+
+	my $count = ($ismeta) ? $result->[0]->[3] : $result->[0]->[2];
 
 
-	if( $docache and ($end < $maxlimit) ) {
+	if( $docache ) {
+
 		# If we didn't get this data from the cache, put it into the cache
 		# then return the correct offset of records
 		$logger->debug("putting search cache $ckey\n");
-		put_cache($ckey, \@recs);
+		put_cache($ckey, $count, \@recs);
 
 		my @t;
 		for ($offset..$end) {
-			last if $_ > scalar(@recs);
-			push(@t, $recs[$_]) if $recs[$_];
+			last unless $recs[$_];
+			push(@t, $recs[$_]);
 		}
 		@recs = @t;
 
 		#$logger->debug("cache done .. returning $offset..$end : " . JSON->perl2JSON(\@recs));
 	}
 
-	return { ids => \@recs, 
-		count => ($ismeta) ? $result->[0]->[3] : $result->[0]->[2] };
+	return { ids => \@recs, count => $count };
 }
 
 
@@ -428,38 +414,40 @@ sub search_cache {
 	my $key		= shift;
 	my $offset	= shift;
 	my $limit	= shift;
-
-
-	my $start = $offset;
-	my $end = $offset + $limit - 1;
+	my $start	= $offset;
+	my $end		= $offset + $limit - 1;
 
 	$logger->debug("searching cache for $key : $start..$end\n");
 
 	return undef unless $cache;
 	my $data = $cache->get_cache($key);
 
-	#return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
-	return undef unless $data and ref $data eq 'ARRAY' and $$data[$start] and $$data[$end];
+	return undef unless $data;
 
-	#$logger->debug("search_cache found data " . JSON->perl2JSON($data));
-	$logger->debug("search_cache found data for indices $start..$end");
+	my $count = $data->[0];
+	$data = $data->[1];
 
-	my $result = [ (@$data[$start..$end]) ];
+	return undef unless $offset < $count;
 
-	$logger->debug("cache returning results: [". 
-		JSON->perl2JSON($$result[0]) . '...' . 
-		JSON->perl2JSON($$result[$limit-1]) .']' );
 
-	return $result;
+	my @result;
+	for( my $i = $offset; $i <= $end; $i++ ) {
+		last unless my $d = $$data[$i];
+		push( @result, $d );
+	}
+
+	$logger->debug("search_cache found ".scalar(@result)." items for count=$count, start=$start, end=$end");
+
+	return \@result;
 }
 
 
 sub put_cache {
-	my( $key, $data ) = @_;
+	my( $key, $count, $data ) = @_;
 	return undef unless $cache;
 	$logger->debug("search_cache putting ".
 		scalar(@$data)." items at key $key with timeout $cache_timeout");
-	$cache->put_cache($key, $data, $cache_timeout);
+	$cache->put_cache($key, [ $count, $data ], $cache_timeout);
 }
 
 
@@ -896,7 +884,7 @@ sub marc_search {
 
 	if(!$recs) {
 		$recs = $U->storagereq($method, %$args);
-		put_cache($ckey, $recs);
+		put_cache($ckey, scalar(@$recs), $recs);
 		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
 	}
 
