@@ -147,28 +147,27 @@ sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
 
 	my $e = new_editor(authtoken => $auth, xact => 1);
-	warn "EDITOR : xact = " . $e->{xact} . "\n";
 
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('CREATE_MARC');
 
-	my $fixtcn = $self->api_name =~ /replace/o;
+	my $rec = $e->retrieve_biblio_record_entry($recid)
+		or return $e->event;
+
+	my $fixtcn = 1 if $self->api_name =~ /replace/o;
 
 	# See if there is a different record in the database that has our TCN value
 	# If we're not updating the TCN, all we care about it the marcdoc
 	my $override = $self->api_name =~ /override/;
+
 	my( $tcn, $tsource, $marcdoc, $evt) = 
 		_find_tcn_info($e->session, $newxml, $override, $recid);
 
 	return $evt if $evt;
 
-	my $rec = $e->retrieve_biblio_record_entry($recid)
-		or return $e->event;
-
 	if( $fixtcn ) {
-		# If we're here, it means we have new MARC and a new source for the MARC for this record
 		$rec->tcn_value($tcn);
-		$rec->tcn_source($tcn);
+		$rec->tcn_source($tsource);
 	}
 
 	# XXX Make the source the ID from config.bib_source
@@ -403,15 +402,14 @@ sub _tcn_exists {
 	my $session = shift;
 	my $tcn = shift;
 	my $source = shift;
-	my $existing_rec ||= 0;
+	my $existing_rec = shift || 0;
 
 	if(!$tcn) {return 0;}
 
-	$logger->debug("tcn_exists search for tcn $tcn and source $source");
+	$logger->debug("tcn_exists search for tcn $tcn and source $source and id $existing_rec");
 
 	# XXX why does the source matter?
 #	my $req = $session->request(      
-#		"open-ils.storage.id_list.biblio.record_entry.search_where.atomic",
 #		{ tcn_value => $tcn, tcn_source => $source, deleted => 'f' } );
 
 	my $req = $session->request(      
@@ -815,6 +813,7 @@ __PACKAGE__->register_method(
 
 sub fleshed_copy_update {
 	my( $self, $conn, $auth, $copies ) = @_;
+	return 1 unless ref $copies;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
 	my $editor = OpenILS::Utils::Editor->new(requestor => $reqr, xact => 1);
