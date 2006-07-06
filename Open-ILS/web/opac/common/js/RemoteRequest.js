@@ -149,6 +149,12 @@ function _remoteRequestCallback(id) {
 	var object = _allrequests[id];
 	if(object.cancelled) return;
 
+	if( isXUL() ) {
+		try {
+			dump('xmlhttprequest status = ' + object.xmlhttp.status + '\n');
+		} catch(e) {}
+	}
+
 	if( object.xmlhttp.readyState == 4 ) {
 		try {
 			object.callback(object);
