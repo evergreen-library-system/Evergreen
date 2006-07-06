@@ -58,7 +58,13 @@ sub post_init {
 		}
 
 
-		my $req = __PACKAGE__->storage_req('open-ils.cstore.direct.config.metabib_field.search.atomic', { id => { '!=' => undef } });
+		my $req = OpenSRF::AppSession
+				->create('open-ils.cstore')
+				->request(
+					'open-ils.cstore.direct.config.metabib_field.search.atomic',
+					{ id => { '!=' => undef } }
+		);
+
 		for my $f (@$req) {
 			$xpathset->{ $f->field_class }->{ $f->name }->{xpath} = $f->xpath;
 			$xpathset->{ $f->field_class }->{ $f->name }->{id} = $f->id;
@@ -89,7 +95,7 @@ package OpenILS::Application::Ingest::XPATH;
 use base qw/OpenILS::Application::Ingest/;
 use Unicode::Normalize;
 
-# give this a MODS documentElement and an XPATH expression
+# give this an XML documentElement and an XPATH expression
 sub xpath_to_string {
 	my $xml = shift;
 	my $xpath = shift;
@@ -175,7 +181,13 @@ sub class_index_string_record {
 	my @classes = shift;
 
 	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession->create('open-ils.cstore')->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )->gather(1);
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request(
+				'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec
+			)->gather(1);
+
+	return undef unless ($r and @$r)
 
 	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($r->marc, @classes)) {
 		$fm->source($rec);
@@ -184,11 +196,265 @@ sub class_index_string_record {
 	return undef;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.worm.field_entry.class.record",
+	api_name	=> "open-ils.ingest.field_entry.class.record",
 	method		=> "class_index_string_record",
 	api_level	=> 1,
 	argc		=> 2,
 	stream		=> 1,
+);                      
+
+sub all_index_string_xml {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+
+	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($xml, keys(%$xpathset))) {
+		$client->respond($fm);
+	}
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.extract.field_entry.all.xml",
+	method		=> "all_index_string_xml",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+sub all_index_string_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::Ingest->post_init();
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request(
+				'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec
+			)
+			->gather(1);
+
+	return undef unless ($r and @$r)
+
+	for my $fm ($self->method_lookup("open-ils.ingest.field_entry.class.xml")->run($r->marc, keys(%$xpathset))) {
+		$fm->source($rec);
+		$client->respond($fm);
+	}
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.extract.field_entry.all.record",
+	method		=> "all_index_string_record",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+# --------------------------------------------------------------------------------
+# Flat MARC
+
+package OpenILS::Application::Ingest::FlatMARC;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
+
+
+sub _marcxml_to_full_rows {
+
+	my $marcxml = shift;
+	my $xmltype = shift || 'metabib';
+
+	my $type = "Fieldmapper::${xmltype}::full_rec";
+
+	my @ns_list;
+	
+	my ($root) = $marcxml->findnodes('//*[local-name()="record"]');
+
+	for my $tagline ( @{$root->getChildrenByTagName("leader")} ) {
+		next unless $tagline;
+
+		my $ns = $type->new;
+
+		$ns->tag( 'LDR' );
+		my $val = $tagline->textContent;
+		$val = NFD($val);
+		$val =~ s/(\pM+)//gso;
+		$ns->value( $val );
+
+		push @ns_list, $ns;
+	}
+
+	for my $tagline ( @{$root->getChildrenByTagName("controlfield")} ) {
+		next unless $tagline;
+
+		my $ns = $type->new;
+
+		$ns->tag( $tagline->getAttribute( "tag" ) );
+		my $val = $tagline->textContent;
+		$val = NFD($val);
+		$val =~ s/(\pM+)//gso;
+		$ns->value( $val );
+
+		push @ns_list, $ns;
+	}
+
+	for my $tagline ( @{$root->getChildrenByTagName("datafield")} ) {
+		next unless $tagline;
+
+		my $tag = $tagline->getAttribute( "tag" );
+		my $ind1 = $tagline->getAttribute( "ind1" );
+		my $ind2 = $tagline->getAttribute( "ind2" );
+
+		for my $data ( @{$tagline->getChildrenByTagName('subfield')} ) {
+			next unless $data;
+
+			my $ns = $type->new;
+
+			$ns->tag( $tag );
+			$ns->ind1( $ind1 );
+			$ns->ind2( $ind2 );
+			$ns->subfield( $data->getAttribute( "code" ) );
+			my $val = $data->textContent;
+			$val = NFD($val);
+			$val =~ s/(\pM+)//gso;
+			$ns->value( lc($val) );
+
+			push @ns_list, $ns;
+		}
+	}
+
+	$log->debug("Returning ".scalar(@ns_list)." Fieldmapper nodes from $xmltype xml", DEBUG);
+	return @ns_list;
+}
+
+sub flat_marc_xml {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+
+	$xml = $parser->parse_string($xml) unless (ref $xml);
+
+	my $type = 'metabib';
+	$type = 'authority' if ($self->api_name =~ /authority/o);
+
+	OpenILS::Application::Ingest->post_init();
+
+	$client->respond($_) for (_marcxml_to_full_rows($xml, $type));
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.flat_marc.authority.xml",
+	method		=> "flat_marc_xml",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.flat_marc.biblio.xml",
+	method		=> "flat_marc_xml",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+sub flat_marc_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	my $type = 'biblio';
+	$type = 'authority' if ($self->api_name =~ /authority/o);
+
+	OpenILS::Application::Ingest->post_init();
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request( "open-ils.cstore.direct.${type}.record_entry.retrieve" => $rec );
+
+	$client->respond($_) for ($self->method_lookup("open-ils.ingest.flat_marc.$type.xml")->run($r->marc));
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.flat_marc.biblio.record_entry",
+	method		=> "flat_marc_record",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.flat_marc.authority.record_entry",
+	method		=> "flat_marc_record",
+	api_level	=> 1,
+	argc		=> 1,
+	stream		=> 1,
+);                      
+
+# --------------------------------------------------------------------------------
+# Fingerprinting
+
+package OpenILS::Application::Ingest::Biblio::Fingerprint;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
+use OpenSRF::EX qw/:try/;
+
+sub biblio_fingerprint_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::Ingest->post_init();
+
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request( 'open-ils.storage.direct.biblio.record_entry.retrieve' => $rec );
+
+	return undef unless ($r and $r->marc);
+
+	my ($fp) = $self->method_lookup('open-ils.worm.fingerprint.marc')->run($r->marc);
+	$log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
+	return $fp;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.worm.fingerprint.record",
+	method		=> "biblio_fingerprint_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+our $fp_script;
+sub biblio_fingerprint {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+
+	$log->internal("Got MARC [$xml]");
+
+	if(!$fp_script) {
+		my @pfx = ( "apps", "open-ils.storage","app_settings" );
+		my $conf = OpenSRF::Utils::SettingsClient->new;
+
+		my $libs        = $conf->config_value(@pfx, 'script_path');
+		my $script_file = $conf->config_value(@pfx, 'scripts', 'biblio_fingerprint');
+		my $script_libs = (ref($libs)) ? $libs : [$libs];
+
+		$log->debug("Loading script $script_file for biblio fingerprinting...");
+		
+		$fp_script = new OpenILS::Utils::ScriptRunner
+			( file		=> $script_file,
+			  paths		=> $script_libs,
+			  reset_count	=> 1000 );
+	}
+
+	$fp_script->insert('environment' => {marc => $marc} => 1);
+
+	my $res = $fp_script->run || ($log->error( "Fingerprint script died!  $@" ) && return undef);
+	$log->debug("Script for biblio fingerprinting completed successfully...");
+
+	return $res;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.fingerprint.xml",
+	method		=> "biblio_fingerprint",
+	api_level	=> 1,
+	argc		=> 1,
 );                      
 
 

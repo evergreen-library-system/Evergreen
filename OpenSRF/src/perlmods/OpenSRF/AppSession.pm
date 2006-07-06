@@ -936,6 +936,12 @@ sub status {
 	$self->session->send( 'STATUS',$msg, $self->threadTrace );
 }
 
+sub stream_push {
+	my $self = shift;
+	my $msg = shift;
+	$self->respond( $msg );
+}
+
 sub respond {
 	my $self = shift;
 	my $msg = shift;
