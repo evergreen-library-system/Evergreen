@@ -173,7 +173,7 @@ sub login {
 		{	
 			username => $username, 
 			password => md5_hex($seed . md5_hex($password)), 
-			type		=> 'temp',
+			type		=> 'opac',
 		}
 	)->value;
 
