@@ -540,23 +540,33 @@ admin.offline_manage_xacts.prototype = {
 
 		var obj = this;
 
-		obj.data.stash_retrieve();
+		try {
 
-		var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
-			+ "?ses=" + window.escape(ses())
-			+ "&action=status"
-			+ "&org=" + window.escape(obj.data.list.au[0].ws_ou())
-			+ "&status_type=sessions";
-		var x = new XMLHttpRequest();
-		x.open("GET",url,false);
-		x.send(null);
+			obj.data.stash_retrieve();
 
-		dump(url + ' = ' + x.responseText + '\n' );
-		obj.seslist = JSON2js( x.responseText ).sort(
-			function(a,b) {
-				return b.create_time - a.create_time;
-			}
-		);
+			var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
+				+ "?ses=" + window.escape(ses())
+				+ "&action=status"
+				+ "&org=" + window.escape(obj.data.list.au[0].ws_ou())
+				+ "&status_type=sessions";
+			var x = new XMLHttpRequest();
+			x.open("GET",url,false);
+			x.send(null);
+
+			dump(url + ' = ' + x.responseText + '\n' );
+
+			var robj = JSON2js( x.responseText );
+			if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+			obj.seslist = robj.sort(
+				function(a,b) {
+					return b.create_time - a.create_time;
+				}
+			);
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error retrieving offline sessions.',E);
+		}
 	},
 
 	'render_seslist' : function() {
