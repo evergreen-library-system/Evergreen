@@ -12,6 +12,7 @@
 	<command id="cmd_new_window" key="new-window-key" />
 	<command id="cmd_new_tab" key="new-tab-key" />
 	<command id="cmd_close_tab" key="close-tab-key" />
+	<command id="cmd_close_all_tabs" key="close-all-tabs-key" />
 
 	<command id="cmd_edit_copy_buckets" />
 	<command id="cmd_edit_record_buckets" />
@@ -69,6 +70,7 @@
 	<key id="open-key" modifiers="accel" key="O" command=""/>
 	<key id="save-key" modifiers="accel" key="S" command=""/>
 	<key id="close-tab-key" modifiers="accel" key="W" command="cmd_close_tab"/>
+	<key id="close-all-tabs-key" modifiers="accel,shift" key="W" command="cmd_close_all_tabs"/>
 	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
 	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
 	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
@@ -90,13 +92,11 @@
 		<menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.key;" key="new-window-key" command="cmd_new_window"/>
 		<menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.key;" key="new-tab-key" command="cmd_new_tab"/>
 		<menuseparator />
-	<!--
-		<menuitem label="&staff.main.menu.file.open.label;" accesskey="&staff.main.menu.file.open.key;" key="file-open-key" command="cmd_broken" disabled="true"/>
-		<menuitem label="&staff.main.menu.file.save.label;" accesskey="&staff.main.menu.file.save.key;" key="file-save-key" command="cmd_broken"/>
+		<menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="C" oldaccesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
+		<menuitem label="Close All Tabs" accesskey="A" key="close-all-tabs-key" command="cmd_close_all_tabs"/>
+		<menuitem label="&staff.main.menu.file.close.label;" accesskey="W" oldaccesskey="&staff.main.menu.file.close.key;" key="close-window-key" command="cmd_close_window"/>
 		<menuseparator />
-	-->
-		<menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
-		<menuitem label="&staff.main.menu.file.close.label;" accesskey="&staff.main.menu.file.close.key;" key="close-window-key" command="cmd_close_window"/>
+		<menuitem label="Quit Program" accesskey="Q" command="cmd_shutdown"/>
 	</menupopup>
 </menu>
 

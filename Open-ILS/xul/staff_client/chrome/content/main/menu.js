@@ -58,6 +58,10 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { obj.close_tab(); }
 			],
+			'cmd_close_all_tabs' : [
+				['oncommand'],
+				function() { obj.close_all_tabs(); }
+			],
 
 			/* Edit Menu */
 			'cmd_edit_copy_buckets' : [
@@ -562,6 +566,16 @@ main.menu.prototype = {
 		}
 	},
 
+	'close_all_tabs' : function() {
+		var obj = this;
+		try {
+			var count = obj.controller.view.tabs.childNodes.length;
+			for (var i = 0; i < count; i++) obj.close_tab();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error closing all tabs',E);
+		}
+	},
+
 	'close_tab' : function () {
 		var idx = this.controller.view.tabs.selectedIndex;
 		var tab = this.controller.view.tabs.childNodes[idx];
@@ -643,6 +657,7 @@ main.menu.prototype = {
 		tab.hidden = false;
 		if (!content_params) content_params = {};
 		if (!params) params = { 'tab_name' : 'Tab ' + (tc+1) };
+		if (!params.nofocus) params.focus = true; /* make focus the default */
 		try {
 			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
 			params.index = tc;
