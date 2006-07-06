@@ -17,16 +17,62 @@ my $U = "OpenILS::Application::AppUtils";
 sub initialize { return 1; }
 
 
-
 __PACKAGE__->register_method(
-	method		=> 'users_of_interest',
-	api_name		=> 'open-ils.collections.users_of_interest.retrieve',
-	signature	=> q/
-		@param age This is the age before which the fine_level was exceeded.
-		@param fine_level The minimum fine to exceed.
-		@param location The location at which the fines were created
-	/
+	method    => 'users_of_interest',
+	api_name  => 'open-ils.collections.users_of_interest.retrieve',
+	api_level => 1,
+	argc      => 4,
+	signature => { 
+		desc     => q/
+			Returns an array of user information objects that the system 
+			based on the search criteria provided.  If the total fines
+			a user owes reaches or exceeds "fine_level" on or befre "age"
+			and the fines were created at "location", the user will be 
+			included in the return set/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'age',
+				desc => q/The date before or at which the user's fine level exceeded the fine_level param/,
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+
+			{	name => 'fine_level',
+				desc => q/The fine threshold at which users will be included in the search results /,
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+			{	name => 'location',
+				desc => q/The short-name of the orginization unit (library) at which the fines were created.  
+							If a selected location has 'child' locations (e.g. a library region), the
+							child locations will be included in the search/,
+				type => q/string/,
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/An array of user information objects.  
+						usr : Array of user information objects containing id, dob, profile, and groups
+						threshold_amount : The total amount the patron owes that is at least as old
+							as the fine "age" and whose transaction was created at the searched location
+						last_pertinent_billing : The time of the last billing that relates to this query
+						/,
+			type		=> 'array',
+			example	=> {
+				usr	=> {
+					id			=> 'id',
+					dob		=> '1970-01-01',
+					profile	=> 'Patron',
+					groups	=> [ 'Patron', 'Staff' ],
+				},
+				threshold_amount => 99,
+			}
+		}
+	}
 );
+
 
 sub users_of_interest {
 	my( $self, $conn, $auth, $age, $fine_level, $location ) = @_;
@@ -74,15 +120,44 @@ sub users_of_interest {
 
 
 __PACKAGE__->register_method(
-	method		=> 'users_with_activity',
-	api_name		=> 'open-ils.collections.users_with_activity.retrieve',
-	signature	=> q/
-		Returns the users that are currently in collections and
-		had activity during the provided interval.  Dates are inclusive.
-		@param start_date The beginning of the activity interval
-		@param end_date The end of the activity interval
-		@param location The location at which the fines were created
-	/
+	method    => 'users_with_activity',
+	api_name  => 'open-ils.collections.users_with_activity.retrieve',
+	api_level => 1,
+	argc      => 4,
+	signature => { 
+		desc     => q/
+			Returns an array of users that are already in collections 
+			and had any type of billing or payment activity within
+			the given time frame at the location (or child locations)
+			provided/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'start_date',
+				desc => 'The start of the time interval to check',
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+
+			{	name => 'end_date',
+				desc => q/Then end date of the time interval to check/,
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+			{	name => 'location',
+				desc => q/The short-name of the orginization unit (library) at which the activity occurred.
+							If a selected location has 'child' locations (e.g. a library region), the
+							child locations will be included in the search/,
+				type => q'string',
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/An array of user information objects/,
+			type		=> 'array',
+		}
+	}
 );
 
 sub users_with_activity {
@@ -105,17 +180,38 @@ sub users_with_activity {
 
 
 __PACKAGE__->register_method(
-	method		=> 'put_into_collections',
-	api_name		=> 'open-ils.collections.put_into_collections',
-	signature	=> q/
-		Returns the users that are currently in collections and
-		had activity during the provided interval.  Dates are inclusive.
-		@param start_date The beginning of the activity interval
-		@param end_date The end of the activity interval
-		@param location The location at which the fines were created
-	/
-);
+	method    => 'put_into_collections',
+	api_name  => 'open-ils.collections.put_into_collections',
+	api_level => 1,
+	argc      => 3,
+	signature => { 
+		desc     => q/
+			Marks a user as being "in collections" at a given location
+			/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
 
+			{	name => 'user_id',
+				desc => 'The id of the user to plact into collections',
+				type => 'number',
+			},
+
+			{	name => 'location',
+				desc => q/The short-name of the orginization unit (library) 
+					for which the user is being placed in collections/,
+				type => q'string',
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/A SUCCESS event on success, error event on failure/,
+			type		=> 'object',
+		}
+	}
+);
 sub put_into_collections {
 	my( $self, $conn, $auth, $user_id, $location ) = @_;
 
@@ -158,6 +254,41 @@ __PACKAGE__->register_method(
 	/
 );
 
+
+__PACKAGE__->register_method(
+	method    => 'remove_from_collections',
+	api_name  => 'open-ils.collections.remove_from_collections',
+	api_level => 1,
+	argc      => 3,
+	signature => { 
+		desc     => q/
+			Removes a user from the collections table for the given location
+			/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'user_id',
+				desc => 'The id of the user to plact into collections',
+				type => 'number',
+			},
+
+			{	name => 'location',
+				desc => q/The short-name of the orginization unit (library) 
+					for which the user is being removed from collections/,
+				type => q'string',
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/A SUCCESS event on success, error event on failure/,
+			type		=> 'object',
+		}
+	}
+);
+
 sub remove_from_collections {
 	my( $self, $conn, $auth, $user_id, $location ) = @_;
 
@@ -188,6 +319,56 @@ __PACKAGE__->register_method(
 	api_name		=> 'open-ils.collections.user_transaction_details.retrieve',
 	signature	=> q/
 	/
+);
+
+
+__PACKAGE__->register_method(
+	method    => 'transaction_details',
+	api_name  => 'open-ils.collections.user_transaction_details.retrieve',
+	api_level => 1,
+	argc      => 5,
+	signature => { 
+		desc     => q/
+			Returns a list of fleshed user objects with transaction details
+			/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'start_date',
+				desc => 'The start of the time interval to check',
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+
+			{	name => 'end_date',
+				desc => q/Then end date of the time interval to check/,
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+			{	name => 'location',
+				desc => q/The short-name of the orginization unit (library) at which the activity occurred.
+							If a selected location has 'child' locations (e.g. a library region), the
+							child locations will be included in the search/,
+				type => q'string',
+			},
+			{
+				name => 'user_list',
+				desc => 'An array of user ids',
+				type => 'array',
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/A list of objects.  Object keys include:
+				usr :
+				transactions : An object with keys :
+					circulations : Fleshed circulation objects
+					grocery : Fleshed 'grocery' transaction objects
+				/,
+			type		=> 'object'
+		}
+	}
 );
 
 sub transaction_details {
@@ -323,7 +504,7 @@ sub fetch_grocery_xacts {
 						{
 							usr					=> $uid, 
 							billing_location	=> $n->id,
-							xact_finish			=> undef, 
+							#xact_finish			=> undef, 
 						}, 
 						{idlist => 1}
 					)
