@@ -101,8 +101,8 @@ sub users_of_interest {
 				$_->{usr},
 				{
 					flesh				=> 1,
-					flesh_fields	=> {au => ["groups","profile"]},
-					select			=> {au => ["profile","id","dob"]}
+					flesh_fields	=> {au => ["groups","profile", "card"]},
+					select			=> {au => ["profile","id","dob", "card"]}
 				}
 			]
 		);
@@ -111,6 +111,7 @@ sub users_of_interest {
 			id			=> $u->id,
 			dob		=> $u->dob,
 			profile	=> $u->profile->name,
+			barcode	=> $u->card->barcode,
 			groups	=> [ map { $_->name } @{$u->groups} ],
 		};
 	}
