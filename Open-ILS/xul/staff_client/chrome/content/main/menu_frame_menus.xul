@@ -13,6 +13,7 @@
 	<command id="cmd_new_tab" key="new-tab-key" />
 	<command id="cmd_close_tab" key="close-tab-key" />
 	<command id="cmd_close_all_tabs" key="close-all-tabs-key" />
+	<command id="cmd_shutdown" />
 
 	<command id="cmd_edit_copy_buckets" />
 	<command id="cmd_edit_record_buckets" />

@@ -510,6 +510,21 @@ main.menu.prototype = {
 					}
 				}
 			],
+			'cmd_shutdown' : [
+				['oncommand'],
+				function() {
+					var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+					var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+					var enumerator = windowManagerInterface.getEnumerator(null);
+
+					var w; // close all other windows
+					while ( w = enumerator.getNext() ) {
+						if (w != window) w.close();
+					
+					}
+					window.close();
+				}
+			],
 		};
 
 		JSAN.use('util.controller');
