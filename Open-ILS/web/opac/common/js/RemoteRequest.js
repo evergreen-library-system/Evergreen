@@ -149,14 +149,6 @@ function _remoteRequestCallback(id) {
 	var object = _allrequests[id];
 	if(object.cancelled) return;
 
-	/*
-	if( isXUL() ) {
-		try {
-			dump('xmlhttprequest status = ' + object.xmlhttp.status + '\n');
-		} catch(e) {}
-	}
-	*/
-
 	if( object.xmlhttp.readyState == 4 ) {
 		try {
 			object.callback(object);
@@ -262,11 +254,13 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(this.cancelled) return null;
 	if(!this.xmlhttp) return null;
 
-	if( isXUL() ) {
-		try {
-			dump('xmlhttprequest status = ' + this.xmlhttp.status + '\n');
-		} catch(e) {}
-	}
+	try {
+		if( this.xmlhttp.status != 200 ) {
+			try{dump('! Returning NULL.  HTTP STATUS = ' + this.xmlhttp.status);}catch(e){}
+			return null;
+		}
+	} catch(e) {}
+
 
 	this.event(null);
 
