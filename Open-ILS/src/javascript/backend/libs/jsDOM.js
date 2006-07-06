@@ -70,7 +70,7 @@ DOMImplementation.parseString = function (xml) {
 // NodeList interface
 function NodeList () {
 	this.length = 0;
-	//perl_print(' --  NodeList constructor');
+	//log_stdout(' --  NodeList constructor');
 }
 
 NodeList.method('item', function (idx) {
@@ -91,7 +91,7 @@ function NamedNodeMap () {
 	this.length = 0;
 	this._nodes = {};
 	this._ns_nodes = {};
-	//perl_print(' --  NamedNodeMap constructor');
+	//log_stdout(' --  NamedNodeMap constructor');
 }
 
 NamedNodeMap.method('item', function (idx) {
@@ -170,7 +170,7 @@ function Node (name) {
 		}
 	}
 
-	//perl_print(' --  Node constructor');
+	//log_stdout(' --  Node constructor');
 }
 Node.ELEMENT_NODE = 1;
 Node.ATTRIBUTE_NODE = 2;
@@ -281,7 +281,7 @@ Node.method('hasAttributes', function () {
 });
 
 Node.method('cloneNode', function (deep) {
-	//perl_print(this.constructor);
+	//log_stdout(this.constructor);
 	var newNode = new this.constructor( this.nodeName );
 	newNode.ownerDocument = this.ownerDocument;
 	newNode.namespaceURI = this.namespaceURI;
@@ -355,7 +355,7 @@ function Document (dt) {
 	this.documentElement = null;
 	this.implementation = new DOMImplementation();
 	this._nodes = [];
-	//perl_print(' --  Document constructor');
+	//log_stdout(' --  Document constructor');
 }
 
 Document.inherits(Node);
@@ -418,7 +418,7 @@ Document.method('createCDATASection', function (content) {
 
 Document.method('getElementById', function (id) {
 	for (var i in this._nodes) {
-		//perl_print(' id = ' + this._nodes[i].attributes.id);
+		//log_stdout(' id = ' + this._nodes[i].attributes.id);
 		if (this._nodes[i] && this._nodes[i].attributes.id == id)
 			return this._nodes[i];
 	}
@@ -446,7 +446,7 @@ function Attr ( name, value ) {
 	this.value = this.nodeValue = value;
 	this.specified = (this.value ? true : false);
 	this.ownerElement = null;
-	//perl_print(' --  Attr constructor');
+	//log_stdout(' --  Attr constructor');
 }
 Attr.inherits(Node);
 
@@ -457,7 +457,7 @@ function Element ( name ) {
 	this.constructor = Element;
 	this.nodeType = Node.ELEMENT_NODE;
 	this.tagName = name;
-	//perl_print(' --  Element constructor')
+	//log_stdout(' --  Element constructor')
 }
 Element.inherits(Node);
 
@@ -535,7 +535,7 @@ Element.method('hasAttributeNS', function (ns, name) {
 Element.method('getElementsByTagName', function (tname, list) {
 	if (!list) list = new NodeList();
 	if (this.tagName == tname) list.push(this);
-	//perl_print(' --  ' + this.tagName + ' :: ' + this.childNodes.length);
+	//log_stdout(' --  ' + this.tagName + ' :: ' + this.childNodes.length);
 	for (var i = 0;  i < this.childNodes.length; i++) {
 		if (this.childNodes.item(i).nodeType == 1)
 			this.childNodes.item(i).getElementsByTagName(tname, list);
@@ -546,7 +546,7 @@ Element.method('getElementsByTagName', function (tname, list) {
 Element.method('getElementsByTagNameNS', function (ns, tname, list) {
 	if (!list) list = new NodeList();
 	if (this.localName == tname && this.namespaceURI == ns) list.push(this);
-	//perl_print(' --  {' + this.namespaceURI + '}:' + this.localName + ' :: ' + this.childNodes.length);
+	//log_stdout(' --  {' + this.namespaceURI + '}:' + this.localName + ' :: ' + this.childNodes.length);
 	for (var i = 0;  i < this.childNodes.length; i++) {
 		if (this.childNodes.item(i).nodeType == 1)
 			this.childNodes.item(i).getElementsByTagNameNS(ns, tname, list);
@@ -560,8 +560,8 @@ function CharacterData ( name, content ) {
 	this.uber('constructor', name);
 	this.constructor = CharacterData;
 	this.setData(content);
-	//perl_print(' --  CharacterData constructor');
-	//perl_print(' --  CharacterData length == ' + this.length + ' :: ' + this.data);
+	//log_stdout(' --  CharacterData constructor');
+	//log_stdout(' --  CharacterData length == ' + this.length + ' :: ' + this.data);
 }
 CharacterData.inherits(Node);
 
@@ -603,7 +603,7 @@ function Text ( content ) {
 	this.superclass.constructor.call(this, '#text', content);
 	this.constructor = Text;
 	this.nodeType = Node.TEXT_NODE;
-	//perl_print(' --  Text constructor :: ' + this.data);
+	//log_stdout(' --  Text constructor :: ' + this.data);
 }
 Text.inherits(CharacterData);
 
@@ -613,7 +613,7 @@ function CDATASection ( content ) {
 	this.uber('constructor', '#cdata', content);
 	this.constructor = CDATASection;
 	this.nodeType = Node.COMMENT_NODE;
-	//perl_print(' --  Comment constructor');
+	//log_stdout(' --  Comment constructor');
 }
 CDATASection.inherits(Text);
 
@@ -622,7 +622,7 @@ function Comment ( content ) {
 	this.uber('constructor', '#comment', content);
 	this.constructor = Comment;
 	this.nodeType = Node.COMMENT_NODE;
-	//perl_print(' --  Comment constructor');
+	//log_stdout(' --  Comment constructor');
 }
 Comment.inherits(Text);
 

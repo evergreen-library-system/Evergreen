@@ -1,10 +1,10 @@
 // suck in what we need
-perl_print('------------------------------LOAD---------------------------------------');
+log_stdout('------------------------------LOAD---------------------------------------');
 load_lib('xmlhttprequest.js');
 
-perl_print('------------------------------START---------------------------------------');
+log_stdout('------------------------------START---------------------------------------');
 
-perl_print("recordID is",params.recordID);
+log_stdout("recordID is",params.recordID);
 
 // xpath namespace resolver
 var ns_res = new XPathNamespaceResolver(
@@ -32,7 +32,7 @@ var res = marc.evaluate(
 );
 
 // print the title we just grabbed
-perl_print(res.singleNodeValue.data);
+log_stdout(res.singleNodeValue.data);
 
-perl_print('------------------------------END---------------------------------------');
+log_stdout('------------------------------END---------------------------------------');
 
