@@ -19,7 +19,6 @@ sub new_collections {
 
 	my $SQL = <<"	SQL";
 		SELECT	lt.usr,
-			lt.location,
 			MAX(bl.billing_ts) AS last_pertinent_billing,
 			SUM(bl.amount) - SUM(COALESCE(pm.amount,0)) AS threshold_amount
 		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
@@ -31,7 +30,7 @@ sub new_collections {
 			LEFT JOIN money.collections_tracker cl USING (usr,location)
 		  WHERE	AGE(bl.billing_ts) > ?
 			AND cl.usr IS NULL
-		  GROUP BY 1, 2 HAVING (SUM(bl.amount) - SUM(COALESCE(pm.amount,0))) > ? 
+		  GROUP BY lt.usr HAVING (SUM(bl.amount) - SUM(COALESCE(pm.amount,0))) > ? 
 	SQL
 
 	my @l_ids;
