@@ -6,38 +6,64 @@ use RPC::XML qw/smart_encode/;
 use RPC::XML::Client;
 use Data::Dumper; # for debugging
 
-die "usage: $0 <username> <password>\n" unless $ARGV[1];
+die "usage: $0 <host> <location> <username> <password>\n" unless $ARGV[3];
 
 
-my $host			= 'http://10.4.0.122/xml-rpc/';
-my $fine_age	= '1 day';
-my $fine_limit	= 10;
-my $location	= 'ARL';
-
+# some example query params
+my $host			= shift;
+my $location	= shift;
 my $username	= shift;
 my $password	= shift;
 
+
+$host				= "http://$host/xml-rpc/";
+my $fine_age	= '1 day';
+my $fine_limit	= 10;
+
+
+
+
+# --------------------------------------------------------------------
+# Login to the system so we can get an authentication token
+# --------------------------------------------------------------------
 my $authkey = login( $username, $password );
 
 
+
+
+# --------------------------------------------------------------------
+# First get the list of users that should be placed into collections
+# --------------------------------------------------------------------
 my $resp = request(
 	'open-ils.collections',
 	'open-ils.collections.users_of_interest.retrieve',
 	$authkey, $fine_age, $fine_limit, $location );
 
+
+
+# --------------------------------------------------------------------
+# Get the Perl-ized version of the data
+# --------------------------------------------------------------------
 my $user_data = $resp->value;
 
 
+
+# --------------------------------------------------------------------
+# For each user in the response, print some preliminary info on the 
+# user, then fetch the full user/transaction details and print 
+# info on those
+# --------------------------------------------------------------------
 for my $d (@$user_data) {
 
 
+	# --------------------------------------------------------------------
+	# Print some basic info about the user	
 	# --------------------------------------------------------------------
 	print "user id = " .				$d->{usr}->{id} . "\n";
 	print "user dob = " .			$d->{usr}->{dob} . "\n";
 	print "user profile = " .		$d->{usr}->{profile} . "\n";
 	print "additional groups = ". join(', ', @{$d->{usr}->{groups}}) . "\n";
 	print "last billing = " .		$d->{last_pertinent_billing} . "\n";
-	print "location id = " .		$d->{location} . "\n";
 	print "threshold_amount = " . $d->{threshold_amount} . "\n";
 	# --------------------------------------------------------------------
 
@@ -54,7 +80,6 @@ for my $d (@$user_data) {
 	my $user		= $xact_data->{usr}->{__data__};
 	my $circs	= $xact_data->{transactions}->{circulations};
 	my $grocery = $xact_data->{transactions}->{grocery};
-
 
 
 	# --------------------------------------------------------------------
@@ -77,11 +102,15 @@ for my $d (@$user_data) {
 }
 
 
+# --------------------------------------------------------------------
+# Prints details on transactions, billings, and payments
+# --------------------------------------------------------------------
 sub print_xact_details {
 	my $xact = shift;
 
 	my $loc = ($xact->{circ_lib}) ? $xact->{circ_lib} : $xact->{billing_location};
-	print " - transaction ".$xact->{id}. " started at " . $xact->{xact_start} . " at " . $loc->{__data__}->{shortname} ."\n";
+	print " - transaction ".$xact->{id}. " started at " . 
+		$xact->{xact_start} . " at " . $loc->{__data__}->{shortname} ."\n";
 
 	# --------------------------------------------------------------------
 	# Print some info on any bills attached to this transaction
