@@ -571,6 +571,7 @@ main.menu.prototype = {
 		try {
 			var count = obj.controller.view.tabs.childNodes.length;
 			for (var i = 0; i < count; i++) obj.close_tab();
+			setTimeout( function(){ obj.controller.view.tabs.firstChild.focus(); }, 0);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Error closing all tabs',E);
 		}
