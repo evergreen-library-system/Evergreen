@@ -12,6 +12,7 @@ use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use OpenSRF::Utils qw/:daemon/;
 use OpenILS::Utils::OfflineStore;
+use OpenSRF::Utils::SettingsClient;
 
 use DBI;
 $DBI::trace = 1;
@@ -56,6 +57,8 @@ sub ol_init {
 	#_ol_debug_params();
 	$DB->DBFile($config{db});
 	OpenSRF::System->bootstrap_client(config_file => $bootstrap ); 
+	Fieldmapper->import(IDL => 
+		OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 }
 
 
@@ -220,6 +223,9 @@ sub ol_load {
 sub ol_handle_result {
 	my $obj = shift;
 	my $json = JSON->perl2JSON($obj);
+
+	# Clear this so it's not remembered
+	$evt = undef;
 
 	if( $cgi->param('html')) {
 		my $html = "<html><body onload='xulG.handle_event($json)'></body></html>";
