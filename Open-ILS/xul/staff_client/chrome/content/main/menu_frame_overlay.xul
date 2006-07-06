@@ -50,69 +50,10 @@
 		<menu id="main.menu.search" />
 		<menu id="main.menu.circ" />
 		<menu id="main.menu.cat" />
-		<menu id="main.menu.serials" />
-		<menu id="main.menu.acquisitions" />
-		<menu id="main.menu.reports" />
 		<spacer flex="1" />
 		<menu id="main.menu.admin" />
 		<menu id="main.menu.help" />
 	</menubar>
 </toolbox>
-
-<!-- The Entity top level menubar -->
-<!--
-<toolbox id="entity_toolbox">
-	<menubar id="entity_menubar">
-		<menu id="patron-menu" label="&staff.main.menu.entity.patron.label;" accesskey="&staff.main.menu.entity.patron.key;" command="cmd_broken"/>
-		<menu id="copy-menu" label="&staff.main.menu.entity.copy.label;" accesskey="&staff.main.menu.entity.copy.key;" command="cmd_broken"/>
-		<menu id="volume-menu" label="&staff.main.menu.entity.volume.label;" accesskey="&staff.main.menu.entity.volume.key;" command="cmd_broken"/>
-		<menu id="bib-menu" label="&staff.main.menu.entity.bib.label;" accesskey="&staff.main.menu.entity.bib.key;" command="cmd_broken"/>
-	</menubar>
-</toolbox>
--->
-
-<!-- The Patron menu on the Entity menubar -->
-<!--
-<menu id="patron-menu">
-	<menupopup id="patron-popup">
-		<menuitem label="&staff.main.menu.circ.patron_registration.label;" accesskey="&staff.main.menu.entity.patron.register.key;" command="cmd_patron_register"/>
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-	</menupopup>
-</menu>
--->
-
-<!-- The Items menu on the Entity menubar -->
-<!--
-<menu id="copy-menu">
-	<menupopup id="copy-popup">
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-	</menupopup>
-</menu>
--->
-
-<!-- The Volumes menu on the Entity menubar -->
-<!--
-<menu id="volume-menu">
-	<menupopup id="volume-popup">
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-	</menupopup>
-</menu>
--->
-
-<!-- The Bib Records menu on the Entity menubar -->
-<!--
-<menu id="bib-menu">
-	<menupopup id="bib-popup">
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-		<menuitem label="stub" />
-	</menupopup>
-</menu>
--->
 
 </overlay>
