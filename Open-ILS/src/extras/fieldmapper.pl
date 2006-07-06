@@ -2,6 +2,10 @@
 use strict; use warnings;
 use Data::Dumper; 
 use OpenILS::Utils::Fieldmapper;  
+use OpenSRF::Utils::SettingsClient;
+
+OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
+Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
 my $map = $Fieldmapper::fieldmap;
 
