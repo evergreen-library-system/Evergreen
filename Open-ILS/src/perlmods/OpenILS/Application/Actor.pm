@@ -1942,7 +1942,7 @@ sub retrieve_groups_tree {
 				order_by			=> { pgt => 'name'}
 			}
 		]
-	);
+	)->[0];
 
 #	my $groups = $apputils->simple_scalar_request(
 #		"open-ils.storage",
