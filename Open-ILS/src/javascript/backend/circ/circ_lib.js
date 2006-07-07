@@ -1,5 +1,5 @@
-load_lib('../catalog/record_type.js');
-load_lib('../circ/circ_groups.js');
+load_lib('catalog/record_type.js');
+load_lib('circ/circ_groups.js');
 
 /* ----------------------------------------------------------------------------- 
 	Collect all of the global variables
@@ -147,8 +147,22 @@ function __isGroupDescendant( parent, child ) {
 }
 
 
+function getMARCItemType() {
+
+	if(	copy &&
+			copy.circ_as_type &&
+			copy.circ_as_type != 'undef' )
+		return copy.circ_as_type;
+	
+	return extractFixedField(marcXMLDoc, 'Type');
+}
 
 
+function isOrgDescendent( parentName, childId ) {
+	var val = environment.__OILS_FUNC_isOrgDescendent(parentName, childId);
+	if( val == '1' ) return true;
+	return false;
+}
 	
 
 
@@ -164,7 +178,6 @@ var form_name = item_form_map[env.record_descriptor.item_form];
 
 /* logs a load of info */
 function log_vars( prefix ) {
-
 	var str = prefix + ' : ';
 
 	if(patron) {

@@ -1,7 +1,7 @@
 function go() {
 
 /* load the lib script */
-load_lib('circ_lib.js');
+load_lib('circ/circ_lib.js');
 
 /* collect some useful variables */
 var copy					= environment.copy;

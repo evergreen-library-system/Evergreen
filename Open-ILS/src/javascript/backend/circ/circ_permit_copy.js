@@ -1,10 +1,7 @@
 function go() {
 
 /* load the lib script */
-load_lib('circ_lib.js');
-load_lib('circ_groups.js');
-load_lib('../catalog/record_type.js');
-
+load_lib('circ/circ_lib.js');
 log_vars('circ_permit_copy');
 
 
@@ -21,12 +18,13 @@ if(copyStatus != 'Available' &&
 		result.events.push('COPY_NOT_AVAILABLE');
 }
 
-var type = extractFixedField(marcXMLDoc, 'Type');
-log_stdout('type = ' + type);
 
-/* this should happen very rarely .. but it should at least require an override */
-if( extractFixedField(marcXMLDoc, 'Type') == 'g' 
-	&& copy.circ_lib != patron.home_ou.id )
+/* this should happen very rarely .. 
+	but it should at least require an override */
+
+
+if( getMARCItemType() == 'g' 
+	&& copy.circ_lib.id != patron.home_ou.id )
 	result.events.push('CIRC_EXCEEDS_COPY_RANGE');
 
 

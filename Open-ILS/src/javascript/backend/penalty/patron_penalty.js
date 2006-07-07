@@ -1,9 +1,7 @@
 function go() {
 
 /* load the lib script */
-load_lib('../circ/circ_lib.js');
-load_lib('../catalog/record_type.js');
-load_lib('../circ/circ_groups.js');
+load_lib('circ/circ_lib.js');
 log_vars('patron_penalty');
 
 var config = findGroupConfig(patronProfile);
