@@ -137,48 +137,73 @@ util.network.prototype = {
 		}
 	},
 
+	'reset_titlebars' : function(data) {
+		var obj = this;
+		data.stash_retrieve();
+		try {
+			JSAN.use('util.window'); var win =  new util.window();
+			var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
+			var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
+			var enumerator = windowManagerInterface.getEnumerator(null);
+
+			var w; // set title on all appshell windows
+			while ( w = enumerator.getNext() ) {
+				if (w.document.title.match(/^\d/)) {
+					w.document.title = 
+						win.appshell_name_increment() 
+						+ ': ' + data.list.au[0].usrname() 
+						+ '@' + data.ws_name;
+						+ '.' + data.server_unadorned 
+				}
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error setting window titles to match new login',E);
+		}
+	},
+
+	'get_new_session' : function(name,xulG) {
+		var obj = this;
+		try {
+
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+		var url = urls.XUL_AUTH_SIMPLE;
+		if (typeof xulG != 'undefined' && typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
+		window.open(
+			url
+			+ '?login_type=staff'
+			+ '&desc_brief=' + window.escape('Your session has expired')
+			+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and inform your friendly Evergreen developers of this debug information: ' + name),
+			'simple_auth' + (new Date()).toString(),
+			'chrome,resizable,modal,width=700,height=500'
+		);
+		JSAN.use('OpenILS.data');
+		var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
+			data.session.key = data.temporary_session.key; 
+			data.session.authtime = data.temporary_session.authtime; 
+			data.stash('session');
+			alert('data.temporary_session = ' + js2JSON(data.temporary_session));
+			data.list.au[0] = JSON2js(data.temporary_session.usr);
+			alert('data.list.au[0] = ' + data.list.au[0]);
+			data.stash('list');
+			obj.reset_titlebars(data);
+			return true;
+		}
+		return false;
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('util.network.get_new_session',E);
+		}
+	},
+
 	'rerequest_on_session_timeout' : function(app,name,params,req,o_params) {
 		try {
 			var obj = this;
 			var robj = req.getResultObject();
 			if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
-				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-				window.open(
-					urls.XUL_AUTH_SIMPLE
-					+ '?login_type=staff'
-					+ '&desc_brief=' + window.escape('Your session has expired')
-					+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and inform your friendly Evergreen developers of this debug information: ' + name),
-					'simple_auth' + (new Date()).toString(),
-					'chrome,resizable,modal,width=700,height=500'
-				);
-				JSAN.use('OpenILS.data');
-				var data = new OpenILS.data(); data.init({'via':'stash'});
-				if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
-					data.session.key = data.temporary_session.key; 
-					data.session.authtime = data.temporary_session.authtime; 
-					data.stash('session');
-					data.list.au[0] = JSON2js(data.temporary_session.usr);
-					data.stash('list');
-					try {
-						JSAN.use('util.window'); var win =  new util.window();
-						var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
-						var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
-						var enumerator = windowManagerInterface.getEnumerator(null);
 
-						var w; // set title on all appshell windows
-						while ( w = enumerator.getNext() ) {
-							if (w.document.title.match(/^\d/)) {
-								w.document.title = 
-									win.appshell_name_increment() 
-									+ ': ' + data.list.au[0].usrname() 
-									+ '@' + data.ws_name;
-									+ '.' + data.server_unadorned 
-							}
-						}
-					} catch(E) {
-						obj.error.standard_unexpected_error_alert('Error setting window titles to match new login',E);
-					}
-
+				if (obj.get_new_session(name)) {
+					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 					params[0] = data.session.key;
 					req = obj._request(app,name,params,null,o_params);
 				}

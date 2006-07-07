@@ -45,6 +45,7 @@
 	<command id="cmd_retrieve_last_patron" />
 	<command id="cmd_retrieve_last_record" />
 
+	<command id="cmd_change_session" />
 	<command id="cmd_manage_offline_xacts" />
 	<command id="cmd_download_patrons" />
 	<command id="cmd_local_admin" />
@@ -178,6 +179,8 @@
 <!-- The Help menu on the main menu -->
 <menu id="main.menu.admin" label="&staff.main.menu.admin.label;" accesskey="-" old_accesskey="&staff.main.menu.admin.key;">
 	<menupopup id="main.menu.admin.popup">
+		<menuitem id="oc_menuitem" label="Operator Change: New" label_orig="Operator Change: New" 
+			accesskey="O" command="cmd_change_session"/>
 		<menuitem label="Offline Transaction Management" accesskey="T" command="cmd_manage_offline_xacts"/>
 		<menuitem label="Download Offline Patron List" accesskey="D" command="cmd_download_patrons"/>
 		<menuseparator />

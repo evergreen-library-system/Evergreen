@@ -356,6 +356,39 @@ main.menu.prototype = {
 			],
 
 			/* Admin menu */
+			'cmd_change_session' : [
+				['oncommand'],
+				function() {
+					try {
+						obj.data.stash_retrieve();
+						JSAN.use('util.network'); var network = new util.network();
+						var x = document.getElementById('oc_menuitem');
+						var x_label = x.getAttribute('label_orig');
+						var temp_au = js2JSON( obj.data.list.au[0] );
+						var temp_ses = js2JSON( obj.data.session );
+						if (obj.data.list.au.length > 1) {
+							obj.data.list.au = [ obj.data.list.au[1] ];
+							obj.data.stash('list');
+							network.reset_titlebars( obj.data );
+							x.setAttribute('label', x_label );
+							network.simple_request('AUTH_DESTROY', [ obj.data.session.key ] );
+							obj.data.session = obj.data.previous_session;
+							obj.data.stash('session');
+						} else {
+							if (network.get_new_session('Change Login',{'url_prefix':obj.url_prefix})) {
+								obj.data.stash_retrieve();
+								obj.data.list.au[1] = JSON2js( temp_au );
+								obj.data.stash('list');
+								obj.data.previous_session = JSON2js( temp_ses );
+								obj.data.stash('previous_session');
+								x.setAttribute('label', 'Change Operator: ' + obj.data.list.au[1].usrname() );
+							}
+						}
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('cmd_change_session',E);
+					}
+				}
+			],
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
