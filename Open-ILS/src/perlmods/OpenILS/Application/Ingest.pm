@@ -194,6 +194,37 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 );                      
 
+sub rw_biblio_ingest_stream_import {
+	my $self = shift;
+	my $client = shift;
+
+	OpenILS::Application::Ingest->post_init();
+
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+	
+		my $bib = $resp->content;
+		last unless (defined $bib);
+
+		$log->debug("Running open-ils.ingest.full.biblio.xml.readonly ...");
+		my ($res) = $self->method_lookup("open-ils.ingest.full.biblio.xml.readonly")->run($bib->marc);
+
+		$_->source($bib->id) for (@{$res->{field_entries}});
+		$_->record($bib->id) for (@{$res->{full_rec}});
+
+		$client->respond( @{$res->{field_entries}} + @{$res->{full_rec}} );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.biblio.bib_stream.import",
+	method		=> "rw_biblio_ingest_stream_import",
+	api_level	=> 1,
+	stream		=> 1,
+);                      
+
 
 # --------------------------------------------------------------------------------
 # MARC index extraction
