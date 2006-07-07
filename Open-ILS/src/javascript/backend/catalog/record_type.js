@@ -119,6 +119,14 @@ var ff_pos = {
 			COM : {start : 17, len : 1, def : ' ' },
 		}
 	},
+	TMat : {
+		_8 : {
+			VIS : {start : 33, len : 1, def : ' ' },
+		},
+		_6 : {
+			VIS : {start : 16, len : 1, def : ' ' },
+		}
+	},
 	Indx : {
 		_8 : {
 			BKS : {start : 31, len : 1, def : '0' },
@@ -295,22 +303,28 @@ function extractFixedField (rec, field) {
 	var val;
 
 	if (ff_pos[field].ldr) {
-		val = _l.substr(
-			ff_pos[field].ldr[rtype].start,
-			ff_pos[field].ldr[rtype].len
-		);
+		if (ff_pos[field].ldr[rtype]) {
+			val = _l.substr(
+				ff_pos[field].ldr[rtype].start,
+				ff_pos[field].ldr[rtype].len
+			);
+		}
 	} else if (ff_pos[field]._8) {
-		val = _8.substr(
-			ff_pos[field]._8[rtype].start,
-			ff_pos[field]._8[rtype].len
-		);
+		if (ff_pos[field]._8[rtype]) {
+			val = _8.substr(
+				ff_pos[field]._8[rtype].start,
+				ff_pos[field]._8[rtype].len
+			);
+		}
 	}
 
 	if (!val && ff_pos[field]._6) {
-		val = _6.substr(
-			ff_pos[field]._6[rtype].start,
-			ff_pos[field]._6[rtype].len
-		);
+		if (ff_pos[field]._6[rtype]) {
+			val = _6.substr(
+				ff_pos[field]._6[rtype].start,
+				ff_pos[field]._6[rtype].len
+			);
+		}
 	}
 		
 	return val;

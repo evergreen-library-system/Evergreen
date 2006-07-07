@@ -88,6 +88,32 @@ sub entityize {
 	return $stuff;
 }
 
+sub ro_biblio_ingest_single_object {
+	my $self = shift;
+	my $client = shift;
+	my $bib = shift;
+	my $xml = $bib->marc;
+
+	my $document = $parser->parse_string($xml);
+
+	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
+	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
+	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
+	my ($rd) = $self->method_lookup("open-ils.ingest.descriptor.xml")->run($xml);
+
+	$_->source($bib->id) for (@mXfe);
+	$_->record($bib->id) for (@mfr);
+	$rd->record($bib->id);
+
+	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.biblio.object.readonly",
+	method		=> "ro_biblio_ingest_single_object",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
 sub ro_biblio_ingest_single_xml {
 	my $self = shift;
 	my $client = shift;
@@ -98,8 +124,9 @@ sub ro_biblio_ingest_single_xml {
 	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.biblio.xml")->run($document);
 	my @mXfe = $self->method_lookup("open-ils.ingest.extract.field_entry.all.xml")->run($document);
 	my ($fp) = $self->method_lookup("open-ils.ingest.fingerprint.xml")->run($xml);
+	my ($rd) = $self->method_lookup("open-ils.ingest.descriptor.xml")->run($xml);
 
-	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp };
+	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.ingest.full.biblio.xml.readonly",
@@ -125,6 +152,7 @@ sub ro_biblio_ingest_single_record {
 
 	$_->source($rec) for (@{$res->{field_entries}});
 	$_->record($rec) for (@{$res->{full_rec}});
+	$res->{descriptor}->record($rec);
 
 	return $res;
 }
@@ -213,7 +241,7 @@ sub rw_biblio_ingest_stream_import {
 		$_->source($bib->id) for (@{$res->{field_entries}});
 		$_->record($bib->id) for (@{$res->{full_rec}});
 
-		$client->respond( @{$res->{field_entries}} + @{$res->{full_rec}} );
+		$client->respond( $res );
 	}
 
 	return undef;
@@ -608,6 +636,44 @@ sub biblio_fingerprint {
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.ingest.fingerprint.xml",
 	method		=> "biblio_fingerprint",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+our $rd_script;
+sub biblio_descriptor {
+	my $self = shift;
+	my $client = shift;
+	my $xml = shift;
+
+	$log->internal("Got MARC [$xml]");
+
+	if(!$rd_script) {
+		my @pfx = ( "apps", "open-ils.ingest","app_settings" );
+		my $conf = OpenSRF::Utils::SettingsClient->new;
+
+		my $libs        = $conf->config_value(@pfx, 'script_path');
+		my $script_file = $conf->config_value(@pfx, 'scripts', 'biblio_descriptor');
+		my $script_libs = (ref($libs)) ? $libs : [$libs];
+
+		$log->debug("Loading script $script_file for biblio descriptor extraction...");
+		
+		$rd_script = new OpenILS::Utils::ScriptRunner
+			( file		=> $script_file,
+			  paths		=> $script_libs,
+			  reset_count	=> 1000 );
+	}
+
+	$rd_script->insert('environment' => {marc => $xml} => 1);
+
+	my $res = $rd_script->run || ($log->error( "Descriptor script died!  $@" ) && return undef);
+	$log->debug("Script for biblio descriptor extraction completed successfully...");
+
+	return $res;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.descriptor.xml",
+	method		=> "biblio_descriptor",
 	api_level	=> 1,
 	argc		=> 1,
 );                      
