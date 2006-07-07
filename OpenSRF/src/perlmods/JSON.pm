@@ -123,6 +123,488 @@ sub JSON2perl {
 	return eval '$ret = '.$_;
 }
 
+my $_json_index;
+sub ___JSON2perl {
+	my $class = shift;
+	my $data = shift;
+
+	$data = [ split //, $data ];
+
+	$_json_index = 0;
+
+	return _json_parse_data($data);
+}
+
+sub _eat_WS {
+	my $data = shift;
+	while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+}
+
+sub _json_parse_data {
+	my $data = shift;
+
+	my $out; 
+
+	#warn "parse_data";
+
+	while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+
+	my $class = '';
+
+	my $c = $$data[$_json_index];
+
+	if ($c eq '/') {
+		$_json_index++;
+		$class = _json_parse_comment($data);
+		
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		$c = $$data[$_json_index];
+	}
+
+	if ($c eq '"') {
+		$_json_index++;
+		my $val = '';
+
+		my $seen_slash = 0;
+		my $done = 0;
+		while (!$done) {
+			my $c = $$data[$_json_index];
+			#warn "c is $c";
+
+			if ($c eq '\\') {
+				if ($seen_slash) {
+					$val .= '\\';
+					$seen_slash = 0;
+				} else {
+					$seen_slash = 1;
+				}
+			} elsif ($c eq '"') {
+				if ($seen_slash) {
+					$val .= '"';
+					$seen_slash = 0;
+				} else {
+					$done = 1;
+				}
+			} elsif ($c eq 't') {
+				if ($seen_slash) {
+					$val .= "\t";
+					$seen_slash = 0;
+				} else {
+					$val .= 't';
+				}
+			} elsif ($c eq 'b') {
+				if ($seen_slash) {
+					$val .= "\b";
+					$seen_slash = 0;
+				} else {
+					$val .= 'b';
+				}
+			} elsif ($c eq 'f') {
+				if ($seen_slash) {
+					$val .= "\f";
+					$seen_slash = 0;
+				} else {
+					$val .= 'f';
+				}
+			} elsif ($c eq 'r') {
+				if ($seen_slash) {
+					$val .= "\r";
+					$seen_slash = 0;
+				} else {
+					$val .= 'r';
+				}
+			} elsif ($c eq 'n') {
+				if ($seen_slash) {
+					$val .= "\n";
+					$seen_slash = 0;
+				} else {
+					$val .= 'n';
+				}
+			} elsif ($c eq 'u') {
+				if ($seen_slash) {
+					$_json_index++;
+					$val .= chr(hex(join('',$$data[$_json_index .. $_json_index + 3])));
+					$_json_index += 3;
+					$seen_slash = 0;
+				} else {
+					$val .= 'u';
+				}
+			} else {
+				$val .= $c;
+			}
+			$_json_index++;
+
+			#warn "string is $val";
+		}
+
+		$out = $val;
+
+		#$out = _json_parse_string($data);
+	} elsif ($c eq '[') {
+		$_json_index++;
+		$out = [];
+
+		my $in_parse = 0;
+		my $done = 0;
+		while(!$done) {
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+
+			if ($$data[$_json_index] eq ']') {
+				$done = 1;
+				$_json_index++;
+				last;
+			}
+
+			if ($in_parse) {
+				if ($$data[$_json_index] ne ',') {
+					#warn "_json_parse_array: bad data, leaving array parser";
+					last;
+				}
+				$_json_index++;
+				while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+			}
+
+			my $item = _json_parse_data($data);
+
+			push @$out, $item;
+			$in_parse++;
+		}
+
+		#$out = _json_parse_array($data);
+	} elsif ($c eq '{') {
+		$_json_index++;
+		$out = {};
+
+		my $in_parse = 0;
+		my $done = 0;
+		while(!$done) {
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+
+			if ($$data[$_json_index] eq '}') {
+				$done = 1;
+				$_json_index++;
+				last;
+			}
+
+			if ($in_parse) {
+				if ($$data[$_json_index] ne ',') {
+					#warn "_json_parse_object: bad data, leaving object parser";
+					last;
+				}
+				$_json_index++;
+				while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+			}
+
+			my ($key,$value);
+			$key = _json_parse_data($data);
+
+			#warn "object key is $key";
+
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		
+			if ($$data[$_json_index] ne ':') {
+				#warn "_json_parse_object: bad data, leaving object parser";
+				last;
+			}
+			$_json_index++;
+			$value = _json_parse_data($data);
+
+			$out->{$key} = $value;
+			$in_parse++;
+		}
+		#$out = _json_parse_object($data);
+	} elsif (lc($c) eq 'n') {
+		if (lc(join('',$$data[$_json_index .. $_json_index + 3])) eq 'null') {
+			$_json_index += 4;
+		} else {
+			warn "CRAP! bad null parsing...";
+		}
+		$out = undef;
+		#$out = _json_parse_null($data);
+	} elsif (lc($c) eq 't' or lc($c) eq 'f') {
+		if (lc(join('',$$data[$_json_index .. $_json_index + 3])) eq 'true') {
+			$out = 1;
+			$_json_index += 4;
+		} elsif (lc(join('',$$data[$_json_index .. $_json_index + 4])) eq 'false') {
+			$out = 0;
+			$_json_index += 5;
+		} else {
+			#warn "CRAP! bad bool parsing...";
+			$out = undef;
+		}
+		#$out = _json_parse_bool($data);
+	} elsif ($c =~ /\d+/o or $c eq '.' or $c eq '-') {
+		my $val;
+		while ($$data[$_json_index] =~ /[-\.0-9]+/io) {
+			$val .= $$data[$_json_index];
+			$_json_index++;
+		}
+		$out = 0+$val;
+		#$out = _json_parse_number($data);
+	}
+
+	if ($class) {
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		my $c = $$data[$_json_index];
+
+		if ($c eq '/') {
+			$_json_index++;
+			_json_parse_comment($data)
+		}
+
+		bless( $out => lookup_class($class) );
+	}
+
+	$out;
+}
+
+sub _json_parse_null {
+	my $data = shift;
+
+	#warn "parse_null";
+
+	if (lc(join('',$$data[$_json_index .. $_json_index + 3])) eq 'null') {
+		$_json_index += 4;
+	} else {
+		#warn "CRAP! bad null parsing...";
+	}
+	return undef;
+}
+
+sub _json_parse_bool {
+	my $data = shift;
+
+	my $out;
+
+	#warn "parse_bool";
+
+	if (lc(join('',$$data[$_json_index .. $_json_index + 3])) eq 'true') {
+		$out = 1;
+		$_json_index += 4;
+	} elsif (lc(join('',$$data[$_json_index .. $_json_index + 4])) eq 'false') {
+		$out = 0;
+		$_json_index += 5;
+	} else {
+		#warn "CRAP! bad bool parsing...";
+		$out = undef;
+	}
+	return $out;
+}
+
+sub _json_parse_number {
+	my $data = shift;
+
+	#warn "parse_number";
+
+	my $val;
+	while ($$data[$_json_index] =~ /[-\.0-9]+/io) {
+		$val .= $$data[$_json_index];
+		$_json_index++;
+	}
+
+	return 0+$val;
+}
+
+sub _json_parse_object {
+	my $data = shift;
+
+	#warn "parse_object";
+
+	my $out = {};
+
+	my $in_parse = 0;
+	my $done = 0;
+	while(!$done) {
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+
+		if ($$data[$_json_index] eq '}') {
+			$done = 1;
+			$_json_index++;
+			last;
+		}
+
+		if ($in_parse) {
+			if ($$data[$_json_index] ne ',') {
+				#warn "_json_parse_object: bad data, leaving object parser";
+				last;
+			}
+			$_json_index++;
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		}
+
+		my ($key,$value);
+		$key = _json_parse_data($data);
+
+		#warn "object key is $key";
+
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		
+		if ($$data[$_json_index] ne ':') {
+			#warn "_json_parse_object: bad data, leaving object parser";
+			last;
+		}
+		$_json_index++;
+		$value = _json_parse_data($data);
+
+		$out->{$key} = $value;
+		$in_parse++;
+	}
+
+	return $out;
+}
+
+sub _json_parse_array {
+	my $data = shift;
+
+	#warn "parse_array";
+
+	my $out = [];
+
+	my $in_parse = 0;
+	my $done = 0;
+	while(!$done) {
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+
+		if ($$data[$_json_index] eq ']') {
+			$done = 1;
+			$_json_index++;
+			last;
+		}
+
+		if ($in_parse) {
+			if ($$data[$_json_index] ne ',') {
+				#warn "_json_parse_array: bad data, leaving array parser";
+				last;
+			}
+			$_json_index++;
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		}
+
+		my $item = _json_parse_data($data);
+
+		push @$out, $item;
+		$in_parse++;
+	}
+
+	return $out;
+}
+
+
+sub _json_parse_string {
+	my $data = shift;
+
+	#warn "parse_string";
+
+	my $val = '';
+
+	my $seen_slash = 0;
+	my $done = 0;
+	while (!$done) {
+		my $c = $$data[$_json_index];
+		#warn "c is $c";
+
+		if ($c eq '\\') {
+			if ($seen_slash) {
+				$val .= '\\';
+				$seen_slash = 0;
+			} else {
+				$seen_slash = 1;
+			}
+		} elsif ($c eq '"') {
+			if ($seen_slash) {
+				$val .= '"';
+				$seen_slash = 0;
+			} else {
+				$done = 1;
+			}
+		} elsif ($c eq 't') {
+			if ($seen_slash) {
+				$val .= "\t";
+				$seen_slash = 0;
+			} else {
+				$val .= 't';
+			}
+		} elsif ($c eq 'b') {
+			if ($seen_slash) {
+				$val .= "\b";
+				$seen_slash = 0;
+			} else {
+				$val .= 'b';
+			}
+		} elsif ($c eq 'f') {
+			if ($seen_slash) {
+				$val .= "\f";
+				$seen_slash = 0;
+			} else {
+				$val .= 'f';
+			}
+		} elsif ($c eq 'r') {
+			if ($seen_slash) {
+				$val .= "\r";
+				$seen_slash = 0;
+			} else {
+				$val .= 'r';
+			}
+		} elsif ($c eq 'n') {
+			if ($seen_slash) {
+				$val .= "\n";
+				$seen_slash = 0;
+			} else {
+				$val .= 'n';
+			}
+		} elsif ($c eq 'u') {
+			if ($seen_slash) {
+				$_json_index++;
+				$val .= chr(hex(join('',$$data[$_json_index .. $_json_index + 3])));
+				$_json_index += 3;
+				$seen_slash = 0;
+			} else {
+				$val .= 'u';
+			}
+		} else {
+			$val .= $c;
+		}
+		$_json_index++;
+
+		#warn "string is $val";
+	}
+
+	return $val;
+}
+
+sub _json_parse_comment {
+	my $data = shift;
+
+	#warn "parse_comment";
+
+	if ($$data[$_json_index] eq '/') {
+		$_json_index++;
+		while (!($$data[$_json_index] eq "\n")) { $_json_index++ }
+		$_json_index++;
+		return undef;
+	}
+
+	my $class = '';
+
+	if (join('',$$data[$_json_index .. $_json_index + 2]) eq '*--') {
+		$_json_index += 3;
+		while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		if ($$data[$_json_index] eq 'S') {
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+			while ($$data[$_json_index] !~ /[-\s]+/o) {
+				$class .= $$data[$_json_index];
+				$_json_index++;
+			}
+			while ($$data[$_json_index] =~ /\s+/o) { $_json_index++ }
+		}
+	}
+
+	while ($$data[$_json_index] ne '/') { $_json_index++ };
+	$_json_index++;
+
+	return $class;
+}
+
 sub old_JSON2perl {
 	my ($class, $json) = @_;
 
