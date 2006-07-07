@@ -20,7 +20,7 @@ sub new_collections {
 	my $SQL = <<"	SQL";
 		SELECT	lt.usr,
 			MAX(bl.billing_ts) AS last_pertinent_billing,
-			SUM(bl.amount) - SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)) AS threshold_amount
+			SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0) AS threshold_amount
 		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
 		  		UNION ALL
 			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
@@ -31,12 +31,13 @@ sub new_collections {
 		  HAVING  SUM(
 		  		(SELECT	COUNT(*)
 				  FROM	money.collections_tracker
-				  WHERE	location in (
+				  WHERE	usr = lt.usr
+				  	AND location in (
 				  		(SELECT	id
 						  FROM	$descendants )
 					)
 				) ) = 0
-		  	AND (SUM(bl.amount) - SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id))) > ? 
+		  	AND (SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0)) > ? 
 	SQL
 
 	my @l_ids;
