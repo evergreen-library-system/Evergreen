@@ -868,28 +868,30 @@ sub _run_checkout_scripts {
 
 	my $runner = $ctx->{runner};
 
-	$runner->insert('result.durationLevel');
-	$runner->insert('result.durationRule');
-	$runner->insert('result.recurringFinesRule');
-	$runner->insert('result.recurringFinesLevel');
-	$runner->insert('result.maxFine');
+#	$runner->insert('result.durationLevel');
+#	$runner->insert('result.durationRule');
+#	$runner->insert('result.recurringFinesRule');
+#	$runner->insert('result.recurringFinesLevel');
+#	$runner->insert('result.maxFine');
 
 	$runner->load($scripts{circ_duration});
-	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
-	my $duration = $result->{durationRule};
-	my $dur_level = $result->{durationLevel};
-	$logger->debug("Circ duration script yielded a duration rule of: $duration");
-
-	$runner->load($scripts{circ_recurring_fines});
-	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Recurring Fines Script Died: $@");
-	my $recurring = $result->{recurringFinesRule};
+	my $result		= $runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
+	my $duration	= $result->{durationRule};
+	my $dur_level	= $result->{durationLevel};
+	my $recurring	= $result->{recurringFinesRule};
 	my $rec_fines_level = $result->{recurringFinesLevel};
-	$logger->debug("Circ recurring fines script yielded a rule of: $recurring");
+	my $max_fine	= $result->{maxFine};
 
-	$runner->load($scripts{circ_max_fines});
-	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Max Fine Script Died: $@");
-	my $max_fine = $result->{maxFine};
-	$logger->debug("Circ max_fine fines script yielded a rule of: $max_fine");
+#	$runner->load($scripts{circ_recurring_fines});
+#	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Recurring Fines Script Died: $@");
+#	my $recurring = $result->{recurringFinesRule};
+#	my $rec_fines_level = $result->{recurringFinesLevel};
+#	$logger->debug("Circ recurring fines script yielded a rule of: $recurring");
+
+#	$runner->load($scripts{circ_max_fines});
+#	$result = $runner->run or throw OpenSRF::EX::ERROR ("Circ Max Fine Script Died: $@");
+#	my $max_fine = $result->{maxFine};
+#	$logger->debug("Circ max_fine fines script yielded a rule of: $max_fine");
 
 	($duration, $evt) = $U->fetch_circ_duration_by_name($duration);
 	return $evt if $evt;
