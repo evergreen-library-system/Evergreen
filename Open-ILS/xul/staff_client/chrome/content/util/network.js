@@ -153,7 +153,7 @@ util.network.prototype = {
 				);
 				JSAN.use('OpenILS.data');
 				var data = new OpenILS.data(); data.init({'via':'stash'});
-				if (data.temporary_session != '') {
+				if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
 					data.session.key = data.temporary_session.key; 
 					data.session.authtime = data.temporary_session.authtime; 
 					data.stash('session');
@@ -184,7 +184,7 @@ util.network.prototype = {
 				}
 			}
 		} catch(E) {
-			this.error.sdump('D_ERROR',E);
+			this.error.standard_unexpected_error_alert('rerequest_on_session_timeout',E);
 		}
 		return req;
 	},
@@ -195,19 +195,23 @@ util.network.prototype = {
 			var robj = req.getResultObject();
 			if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-				window.open(
-					urls.XUL_AUTH_SIMPLE
-					+ '?login_type=temp'
-					+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
-					+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
-					'simple_auth' + (new Date()).toString(),
-					'chrome,resizable,modal,width=700,height=500'
-				);
-				JSAN.use('OpenILS.data');
-				var data = new OpenILS.data(); data.init({'via':'stash'});
-				if (data.temporary_session != '') {
-					params[0] = data.temporary_session.key;
-					req = obj._request(app,name,params,null,o_params);
+				if (location.href.match(/^chrome/)) {
+					//alert('Permission denied.');
+				} else {
+					window.open(
+						urls.XUL_AUTH_SIMPLE
+						+ '?login_type=temp'
+						+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
+						+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
+						'simple_auth' + (new Date()).toString(),
+						'chrome,resizable,modal,width=700,height=500'
+					);
+					JSAN.use('OpenILS.data');
+					var data = new OpenILS.data(); data.init({'via':'stash'});
+					if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
+						params[0] = data.temporary_session.key;
+						req = obj._request(app,name,params,null,o_params);
+					}
 				}
 			}
 		} catch(E) {

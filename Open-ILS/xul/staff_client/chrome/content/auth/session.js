@@ -15,6 +15,8 @@ auth.session.prototype = {
 
 	'init' : function () {
 
+		var obj = this;
+
 		try {
 			var init = this.network.request(
 				api.AUTH_INIT.app,
@@ -42,11 +44,7 @@ auth.session.prototype = {
 					data.ws_name = params.workstation; data.stash('ws_name');
 				}
 
-				var robj = this.network.request(
-					api.AUTH_COMPLETE.app,
-					api.AUTH_COMPLETE.method,
-					[ params ]
-				);
+				var robj = this.network.simple_request( 'AUTH_COMPLETE', [ params ]);
 
 				switch (robj.ilsevent) {
 					case 0:
@@ -70,7 +68,7 @@ auth.session.prototype = {
 						}
 					break;
 					default:
-					this.error.standard_unexpected_error_alert('auth.session.init',robj);
+					obj.error.standard_unexpected_error_alert('auth.session.init',robj);
 					throw(robj);
 					break;
 				}
@@ -90,8 +88,7 @@ auth.session.prototype = {
 			}
 
 		} catch(E) {
-			var error = 'Error on auth.session.init(): ' + js2JSON(E) + '\n';
-			this.error.sdump('D_ERROR',error); 
+			obj.error.standard_unexpected_error_alert('Error on auth.session.init()',E); 
 
 			if (typeof this.on_init_error == 'function') {
 				this.error.sdump('D_AUTH','auth.session.on_init_error()\n');
