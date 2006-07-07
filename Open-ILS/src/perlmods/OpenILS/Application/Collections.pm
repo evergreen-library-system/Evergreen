@@ -226,6 +226,18 @@ sub put_into_collections {
 		or return $e->event; $org = $org->[0];
 	return $e->event unless $e->allowed('money.collections_tracker.create', $org->id);
 
+
+	my $existing = $e->search_money_collections_tracker(
+		{
+			location		=> $org->id,
+			usr			=> $user_id,
+			collector	=> $e->requestor->id
+		},
+		{idlist => 1}
+	);
+
+	return OpenILS::Event->new('MONEY_COLLECTIONS_TRACKER_EXISTS') if @$existing;
+
 	my $tracker = Fieldmapper::money::collections_tracker->new;
 
 	$tracker->usr($user_id);
