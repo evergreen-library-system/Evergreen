@@ -159,7 +159,9 @@ function getMARCItemType() {
 
 
 function isOrgDescendent( parentName, childId ) {
-	var val = environment.__OILS_FUNC_isOrgDescendent(parentName, childId);
+	var key = scratchKey();
+	__OILS_FUNC_isOrgDescendent(scratchPad(key), parentName, childId);
+	var val = getScratch(key);
 	if( val == '1' ) return true;
 	return false;
 }

@@ -8,8 +8,11 @@ log_vars('circ_permit_copy');
 if( ! isTrue(copy.circulate) ) 
 	result.events.push('COPY_CIRC_NOT_ALLOWED');
 
-if( isTrue(copy.ref) ) 
-	result.events.push('COPY_IS_REFERENCE');
+
+if( ! isOrgDescendent( 'STATELIB', copy.circ_lib.id ) ) {
+	if( isTrue(copy.ref) ) 
+		result.events.push('COPY_IS_REFERENCE');
+}
 
 
 

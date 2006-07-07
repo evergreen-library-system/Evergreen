@@ -263,6 +263,8 @@ result.durationLevel	= copy.loan_duration;
 	----------------------------------------------------------------------------- */
 var marcType = getMARCItemType();
 var circMod = copy.circ_modifier;
+var itemForm = extractFixedField(marcXMLDoc,'Form');
+
 var config = 
 	( circMod && CIRC_MOD_MAP[circMod] ) ?
 	CIRC_MOD_MAP[circMod] : 
@@ -286,6 +288,7 @@ log_debug("Copy circ modifier = " + circMod + " and item type = " + marcType );
 	on this copy, fall back on defaults.
 	----------------------------------------------------------------------------- */
 if( config ) {
+
 	log_debug("circ_duration found a config for the copy");
 	result.durationRule			= config.durationRule;
 	result.recurringFinesRule	= config.recurringFinesRule;
@@ -293,6 +296,7 @@ if( config ) {
 	result.maxFine					= config.maxFine;
 
 } else {
+
 	result.durationRule			= '14_days_2_renew';
 	result.recurringFinesRule	= "10_cent_per_day";
 	result.recurringFinesLevel = 'normal';
@@ -300,10 +304,31 @@ if( config ) {
 }
 
 
+
+
 /* ----------------------------------------------------------------------------- 
-	Add custom rules here.
+	Add custom rules here.  
 	----------------------------------------------------------------------------- */
+
+/* statelib has some special circ rules */
+
+if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
+
+	result.durationRule			= '35_days_1_renew';
+	result.recurringFinesRule	= "10_cent_per_day";
+	result.recurringFinesLevel = 'normal';
+	result.maxFine					= "overdue_mid";
+
+	/* reference, microfiche, microfilm */
+	if(	isTrue(copy.ref)	|| 
+			itemForm == 'a'	|| 
+			itemForm == 'b' ) {
+
+		result.durationRule		= '14_days_2_renew';
+	}	
+}
 
 
 
 } go();
+

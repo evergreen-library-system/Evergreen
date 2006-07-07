@@ -1,3 +1,4 @@
+/** XXX DEPRECATED */
 
 function go() {
 

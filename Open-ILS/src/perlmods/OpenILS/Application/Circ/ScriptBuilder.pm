@@ -241,7 +241,6 @@ sub insert_org_methods {
 	my ( $editor, $ctx ) = @_;
 	my $runner = $ctx->{runner};
 
-
 	if(!$ORG_TREE) {
 		$ORG_TREE = $editor->search_actor_org_unit(
 			[
@@ -256,12 +255,17 @@ sub insert_org_methods {
 		flatten_org_tree($ORG_TREE);
 	}
 
-	$runner->insert("$evt.__OILS_FUNC_isOrgDescendent", 
+	$runner->insert(__OILS_FUNC_isOrgDescendent  => 
 		sub {
-			my( $sname, $id ) = @_;
+			my( $write_key, $sname, $id ) = @_;
+			$logger->debug("script_builder: org descendent: $sname - $id");
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
-			return is_org_descendent( $parent, $child );
+			$logger->debug("script_builder: org descendent: $parent = $child");
+			my $val = is_org_descendent( $parent, $child );
+			$logger->debug("script_builder: ord desc = $val");
+			$runner->insert($write_key, $val);
+			return $val;
 		}
 	);
 }
@@ -277,5 +281,6 @@ sub is_org_descendent {
 }
 
 1;
+
 
 
