@@ -371,7 +371,7 @@ main.menu.prototype = {
 							obj.data.stash('list');
 							network.reset_titlebars( obj.data );
 							x.setAttribute('label', x_label );
-							network.simple_request('AUTH_DESTROY', [ obj.data.session.key ] );
+							network.simple_request('AUTH_DELETE', [ obj.data.session.key ] );
 							obj.data.session = obj.data.previous_session;
 							obj.data.stash('session');
 						} else {
