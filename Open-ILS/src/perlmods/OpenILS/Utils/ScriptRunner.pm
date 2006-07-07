@@ -208,7 +208,8 @@ sub load_lib {
 	push @{ $self->{libs} }, $file
 		if (! grep {$_ eq $file} @{ $self->{libs} });
 
-	if (!$self->{_loaded}{$file} && $self->run( $file )) {
+	if (!$self->{_loaded}{$file}) {
+		$self->run( $file );
 		$self->{_loaded}{$file} = 1;
 	}
 	return $self->{_loaded}{$file};
