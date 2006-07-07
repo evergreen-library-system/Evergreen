@@ -463,6 +463,10 @@
 		<desc xml:lang='en-US'>The requested actor_user_note was not found</desc>
 	</event>
 
+	<event code='1631' textcode='MONEY_COLLECTIONS_TRACKER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
+
 
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
@@ -488,6 +492,9 @@
 	</event>
 	<event code='1707' textcode='HOLD_EXISTS'>
 		<desc xml:lang="en-US">User already has an open hold on the selected item</desc>
+	</event>
+	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
+		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
 	</event>
 
 
