@@ -13,6 +13,8 @@ my @COPY_STATUSES;
 my @COPY_LOCATIONS;
 my %GROUP_SET;
 my $GROUP_TREE;
+my $ORG_TREE;
+my @ORG_LIST;
 
 
 # -----------------------------------------------------------------------
@@ -52,7 +54,8 @@ sub build {
 sub build_runner {
 	my $editor	= shift;
 	my $ctx		= shift;
-	my $runner	= OpenILS::Utils::ScriptRunner->new;
+
+	my $runner = OpenILS::Utils::ScriptRunner->new;
 
 	$runner->insert( "$evt.groupTree",	$GROUP_TREE, 1);
 
@@ -70,6 +73,9 @@ sub build_runner {
 	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}) for keys %{$ctx->{_direct}};
 
 	$ctx->{runner} = $runner;
+
+	insert_org_methods( $editor, $ctx );
+
 	return $runner;
 }
 
@@ -171,15 +177,11 @@ sub fetch_user_data {
 			]
 		)->[0];
 
-		_flatten_groups($GROUP_TREE);
+		flatten_groups($GROUP_TREE);
 	}
 
 	$patron->profile( $GROUP_SET{$patron->profile} )
 		unless ref $patron->profile;
-
-#	$patron->profile( 
-#		grep { $_->id == $patron->profile } @GROUP_LIST ) 
-#		unless ref $patron->profile;
 
 	$patron->card($e->retrieve_actor_card($patron->card));
 
@@ -215,15 +217,64 @@ sub fetch_user_data {
 }
 
 
-sub _flatten_groups {
+sub flatten_groups {
 	my $tree = shift;
 	return undef unless $tree;
 	$GROUP_SET{$tree->id} = $tree;
 	if( $tree->children ) {
-		_flatten_groups($_) for @{$tree->children};
+		flatten_groups($_) for @{$tree->children};
 	}
 }
 
+sub flatten_org_tree {
+	my $tree = shift;
+	return undef unless $tree;
+	push( @ORG_LIST, $tree );
+	if( $tree->children ) {
+		flatten_org_tree($_) for @{$tree->children};
+	}
+}
+
+
+
+sub insert_org_methods {
+	my ( $editor, $ctx ) = @_;
+	my $runner = $ctx->{runner};
+
+
+	if(!$ORG_TREE) {
+		$ORG_TREE = $editor->search_actor_org_unit(
+			[
+				{"parent_ou" => undef },
+				{
+					flesh				=> 2,
+					flesh_fields	=> { aou =>  ['children'] },
+					order_by			=> { aou => 'name'}
+				}
+			]
+		)->[0];
+		flatten_org_tree($ORG_TREE);
+	}
+
+	$runner->insert("$evt.__OILS_FUNC_isOrgDescendent", 
+		sub {
+			my( $sname, $id ) = @_;
+			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
+			my ($child)		= grep { $_->id == $id } @ORG_LIST;
+			return is_org_descendent( $parent, $child );
+		}
+	);
+}
+
+
+sub is_org_descendent {
+	my( $parent, $child ) = @_;
+	return 0 unless $parent and $child;
+	do {
+		return 1 if $parent->id == $child->id;
+	} while( ($child) = grep { $_->id == $child->parent_ou } @ORG_LIST );
+	return 0;
+}
 
 1;
 
