@@ -15,7 +15,7 @@ sub new_collections {
 	my $mb = money::billing->table;
 	my $circ = action::circulation->table;
 	my $mg = money::grocery->table;
-	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname=?))";
+	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
 		SELECT	lt.usr,
@@ -26,16 +26,23 @@ sub new_collections {
 			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
 			JOIN $descendants d ON (lt.location = d.id)
 			JOIN money.billing bl ON (lt.id = bl.xact AND bl.voided IS FALSE)
-			LEFT JOIN money.collections_tracker cl USING (usr,location)
 		  WHERE	AGE(bl.billing_ts) > ?
-			AND cl.usr IS NULL
-		  GROUP BY lt.usr HAVING (SUM(bl.amount) - SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id))) > ? 
+		  GROUP BY lt.usr
+		  HAVING  SUM(
+		  		(SELECT	COUNT(*)
+				  FROM	money.collections_tracker
+				  WHERE	location in (
+				  		(SELECT	id
+						  FROM	$descendants )
+					)
+				) ) = 0
+		  	AND (SUM(bl.amount) - SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id))) > ? 
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
 		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), $age, $amount );
+		$sth->execute(uc($l), $age, uc($l), $amount );
 		while (my $row = $sth->fetchrow_hashref) {
 			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
@@ -61,29 +68,29 @@ sub active_in_collections {
 	my $mb = money::billing->table;
 	my $circ = action::circulation->table;
 	my $mg = money::grocery->table;
-	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname=?))";
+	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
 		SELECT	lt.usr,
-			lt.location,
 			MAX(bl.billing_ts) AS last_pertinent_billing,
 			MAX(pm.payment_ts) AS last_pertinent_payment
 		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
 		  		UNION ALL
 			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
 			JOIN $descendants d ON (lt.location = d.id)
-			JOIN money.collections_tracker cl USING (usr,location)
+			JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
 			LEFT JOIN money.billing bl ON (lt.id = bl.xact)
 			LEFT JOIN money.payment pm ON (lt.id = pm.xact)
-		  WHERE	bl.billing_ts between ? and ?
-			OR pm.payment_ts between ? and ?
-		  GROUP BY 1, 2
+		  WHERE	cl.location IN ((SELECT id FROM $descendants))
+		  	AND (	bl.billing_ts between ? and ?
+				OR pm.payment_ts between ? and ? )
+		  GROUP BY 1
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
 		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), $startdate, $enddate, $startdate, $enddate );
+		$sth->execute(uc($l), uc($l), $startdate, $enddate, $startdate, $enddate );
 		while (my $row = $sth->fetchrow_hashref) {
 			$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
