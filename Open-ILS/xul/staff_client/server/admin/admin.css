@@ -12,6 +12,7 @@ body { font-family: Verdana, Tahoma; font-size: 10pt; background-color: white;}
 .insert_row { border: 2px solid #A0B0A0; padding: 50px;}
 .padded { padding-left: 7px; padding-right: 7px; }
 .select_big { width: 15em; }
+.select_bigger { width: 18em; }
 .context_help { font-weight: bold; color: blue; }
 
 select { width: 12em; }

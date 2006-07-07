@@ -1,0 +1,70 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Library Settings Editor</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script>
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='org_settings.js'> </script>
+
+		<link type='text/css' rel='stylesheet' href='admin.css' />
+	</head>
+
+	<body onload='osEditorInit();'>
+
+		<div class='welcome_box'>
+			<span>Welcome </span><b><span id='user'/></b>
+		</div>
+
+		<center>
+			<div class='title'> Library Settings Editor </div>
+
+			<br/><br/>
+			Edit Settings for : <select id='os_orgs' style='width:auto;'/>
+			<br/><br/>
+
+			<table class='data_grid data_grid_center' width='85%'>
+				<thead>
+					<tr><td colspan='4' style='padding: 8px;'>Library Settings for <b id='osCurrentOrg'/></td></tr>
+				</thead>
+				<tbody id='os_tbody'>
+					<tr>
+						<td>Lost Materials Processing Fee</td>
+						<td>&#036;<input ismoney='1' type='text' id='circ.lost_materials_processing_fee' value='0.00'/></td>
+						<td><button id='circ.lost_materials_processing_fee.apply'>Apply</button></td>
+						<td><button id='circ.lost_materials_processing_fee.apply_all'>Apply to all Locations</button></td>
+					</tr>
+					<tr>
+						<td>Default Item Price</td>
+						<td>&#036;<input ismoney='1' type='text' id='cat.default_item_price' value='0.00'/></td>
+						<td><button id='cat.default_item_price.apply'>Apply</button></td>
+						<td><button id='cat.default_item_price.apply_all'>Apply to all Locations</button></td>
+					</tr>
+					<tr>
+						<td>Collections Fee</td>
+						<td>&#036;<input ismoney='1' type='text' id='circ.collections_fee' value='0.00'/></td>
+						<td><button id='circ.collections_fee.apply'>Apply</button></td>
+						<td><button id='circ.collections_fee.apply_all'>Apply to all Locations</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</center>
+	</body>
+</html>
+
+
+
