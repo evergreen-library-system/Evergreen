@@ -92,7 +92,7 @@ sub ro_biblio_ingest_single_object {
 	my $self = shift;
 	my $client = shift;
 	my $bib = shift;
-	my $xml = $bib->marc;
+	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
 
 	my $document = $parser->parse_string($xml);
 
@@ -103,7 +103,7 @@ sub ro_biblio_ingest_single_object {
 
 	$_->source($bib->id) for (@mXfe);
 	$_->record($bib->id) for (@mfr);
-	$rd->record($bib->id);
+	$rd->record($bib->id) if ($rd);
 
 	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
 }
@@ -117,7 +117,7 @@ __PACKAGE__->register_method(
 sub ro_biblio_ingest_single_xml {
 	my $self = shift;
 	my $client = shift;
-	my $xml = shift;
+	my $xml = OpenILS::Application::Ingest::entityize(shift);
 
 	my $document = $parser->parse_string($xml);
 
@@ -300,7 +300,7 @@ sub class_index_string_xml {
 	my @classes = @_;
 
 	OpenILS::Application::Ingest->post_init();
-	$xml = $parser->parse_string($xml) unless (ref $xml);
+	$xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
 
 	my %transform_cache;
 	
@@ -505,7 +505,7 @@ sub flat_marc_xml {
 
 	$log->debug("processing [$xml]");
 
-	$xml = $parser->parse_string($xml) unless (ref $xml);
+	$xml = $parser->parse_string(OpenILS::Application::Ingest::entityize($xml)) unless (ref $xml);
 
 	my $type = 'metabib';
 	$type = 'authority' if ($self->api_name =~ /authority/o);
@@ -606,7 +606,7 @@ our $fp_script;
 sub biblio_fingerprint {
 	my $self = shift;
 	my $client = shift;
-	my $xml = shift;
+	my $xml = OpenILS::Application::Ingest::entityize(shift);
 
 	$log->internal("Got MARC [$xml]");
 
@@ -623,7 +623,7 @@ sub biblio_fingerprint {
 		$fp_script = new OpenILS::Utils::ScriptRunner
 			( file		=> $script_file,
 			  paths		=> $script_libs,
-			  reset_count	=> 1000 );
+			  reset_count	=> 100 );
 	}
 
 	$fp_script->insert('environment' => {marc => $xml} => 1);
@@ -644,7 +644,7 @@ our $rd_script;
 sub biblio_descriptor {
 	my $self = shift;
 	my $client = shift;
-	my $xml = shift;
+	my $xml = OpenILS::Application::Ingest::entityize(shift);
 
 	$log->internal("Got MARC [$xml]");
 
@@ -661,13 +661,15 @@ sub biblio_descriptor {
 		$rd_script = new OpenILS::Utils::ScriptRunner
 			( file		=> $script_file,
 			  paths		=> $script_libs,
-			  reset_count	=> 1000 );
+			  reset_count	=> 100 );
 	}
 
-	$rd_script->insert('environment' => {marc => $xml} => 1);
+	$log->debug("Setting up environment for descriptor extraction script...");
+	$rd_script->insert('environment.marc' => $xml => 1);
+	$log->debug("Environment building complete...");
 
 	my $res = $rd_script->run || ($log->error( "Descriptor script died!  $@" ) && return undef);
-	$log->debug("Script for biblio descriptor extraction completed successfully...");
+	$log->debug("Script for biblio descriptor extraction completed successfully");
 
 	return $res;
 }
