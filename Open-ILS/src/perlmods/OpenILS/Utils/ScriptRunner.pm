@@ -89,9 +89,14 @@ sub init {
 
 sub refresh_context {
 	my $self = shift;
+	$logger->debug("Refreshing JavaScript Context...");
 	$self->context->destroy;
+	$logger->debug("Context destroyed");
 	$self->{_loaded} = {};
+	$logger->debug("Loaded scripts removed");
 	$self->init;
+	$logger->debug("New Context initialized");
+	return $self;
 }
 
 sub load {
@@ -126,7 +131,7 @@ sub run {
 	$self->refresh_context
 		if ($self->reset_count && $self->runs > $self->reset_count);
 
-	$self->{_runs}++;
+	$self->{_runs}++ if ($_real);
 
 	$file = $self->_find_file($file);
 	$logger->debug("full script file path: $file");
