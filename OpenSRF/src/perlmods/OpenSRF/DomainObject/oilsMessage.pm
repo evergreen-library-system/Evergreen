@@ -308,7 +308,7 @@ sub do_client {
 	}
 
 	if( $self->payload and $self->payload->isa( "ERROR" ) ) { 
-		if ($session->raise_error) {
+		if ($session->raise_remote_errors) {
 			$self->payload->throw();
 		}
 	}
