@@ -82,6 +82,14 @@ sub init {
 			sub { $self->_parse_xml_string(@_); }
 	);
 	
+	for my $e ( @{$self->{_env}} ) {
+		$self->insert( @$e{ qw/key value readonly/ } => 1 );
+	}
+
+	for my $e ( @{$self->{_methods}} ) {
+		$self->insert_method( @$e{ qw/key name meth/ } => 1 );
+	}
+
 	$self->load_lib($_) for @{$self->{libs}};
 
 	return $self;
@@ -124,10 +132,6 @@ sub run {
 		$file = $self->{file};
 	}
 
-	my $js = $self->context;
-
-
-
 	$self->refresh_context
 		if ($self->reset_count && $self->runs > $self->reset_count);
 
@@ -140,6 +144,8 @@ sub run {
 		$logger->error("Error opening script file: $file");
 		return 0;
 	}
+
+	my $js = $self->context;
 
 	my $res = '';
 	{	local $/ = undef;
@@ -232,15 +238,20 @@ sub retrieve {
 }
 
 sub insert_method {
-	my( $self, $obj_key, $meth_name, $sub ) = @_;
+	my( $self, $obj_key, $meth_name, $sub, $stop) = @_;
+
+	push @{$self->{_methods}}, { key => $obj_key => name => $meth_name, meth => $sub } unless ($stop);
+	
 	my $obj = $self->context->object_by_path( $obj_key );
 	$self->context->function_set( $meth_name, $sub, $obj ) if $obj;
 }
 
 
 sub insert {
-	my( $self, $key, $val, $RO ) = @_;
+	my( $self, $key, $val, $RO, $stop ) = @_;
 	return unless defined($key);
+
+	push @{$self->{_env}}, { key => $key => value => $val, readonly => $RO } unless ($stop);
 
 	if (ref($val) =~ /^Fieldmapper/o) {
 		$self->insert_fm($key, $val, $RO);
