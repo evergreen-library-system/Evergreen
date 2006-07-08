@@ -11,6 +11,7 @@ CREATE TABLE money.collections_tracker (
 	location	INT				NOT NULL REFERENCES actor.org_unit (id),
 	enter_time	TIMESTAMP WITH TIME ZONE
 );
+CREATE UNIQUE INDEX m_c_t_usr_collector_location_once_idx ON money.collections_tracker (usr, collector, location);
 
 CREATE TABLE money.billable_xact (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -18,7 +19,7 @@ CREATE TABLE money.billable_xact (
 	xact_start	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	xact_finish	TIMESTAMP WITH TIME ZONE
 );
-CREATE INDEX m_b_x_open_xacts_idx ON money.billable_xact (usr) WHERE xact_finish IS NULL;
+CREATE INDEX m_b_x_open_xacts_idx ON money.billable_xact (usr);
 
 CREATE TABLE money.grocery ( -- Catchall table for local billing
 	billing_location	INT	NOT NULL, -- library creating transaction

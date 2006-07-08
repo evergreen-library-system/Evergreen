@@ -104,7 +104,8 @@ CREATE TABLE config.metabib_field (
 	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
 	name		TEXT	NOT NULL UNIQUE,
 	xpath		TEXT	NOT NULL,
-	weight		INT	NOT NULL DEFUALT 1,
+	weight		INT	NOT NULL DEFAULT 1,
+	format		TEXT	NOT NULL DEFAULT 'mods'
 );
 COMMENT ON TABLE config.metabib_field IS $$
 /*
