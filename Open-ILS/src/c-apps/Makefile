@@ -9,17 +9,26 @@ oils_event.o:	oils_event.c oils_event.h
 oils_utils.o:	oils_utils.c oils_utils.h
 oils_auth.o:	oils_auth.c
 oils_fetch.o:	oils_fetch.c oils_utils.h 
-oils_cstore.o:	oils_cstore.c oils_utils.h 
+oils_cstore.o:	oils_cstore.c oils_utils.h
 
-oils_cstore.so:	oils_cstore.o liboils_utils.so
+oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_utils -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
 
 oils_fetch.so:	oils_fetch.o liboils_utils.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
 		$(LDLIBS) $(LDFLAGS) -ldbi -ldbdpgsql -loils_utils oils_fetch.o -o $(TMPDIR)/$@
+
+oils_idl-core.o:	oils_idl-core.c oils_idl.h
+
+liboils_idl.so:	oils_idl-core.o
+	@echo $@
+	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_idl-core.o -o $@
+	cp $@ $(TMPDIR)/
+	mkdir -p $(TMPDIR)/openils/
+	cp oils_idl.h $(TMPDIR)/openils/
 
 oils_auth.so:	oils_auth.o liboils_utils.so
 	@echo $@
@@ -42,8 +51,10 @@ install:
 	#cp $(TMPDIR)/oils_fetch.so $(LIBDIR)/
 	cp $(TMPDIR)/oils_cstore.so $(LIBDIR)/
 	cp $(TMPDIR)/liboils_utils.so $(LIBDIR)/
+	cp $(TMPDIR)/liboils_idl.so $(LIBDIR)/
 	mkdir -p $(INCDIR)/
 	cp oils_utils.h $(INCDIR)
+	cp oils_idl.h $(INCDIR)
 	cp oils_event.h $(INCDIR)
 	cp oils_constants.h $(INCDIR)
 

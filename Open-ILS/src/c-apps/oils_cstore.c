@@ -6,17 +6,12 @@
 #include "oils_utils.h"
 #include "oils_constants.h"
 #include "oils_event.h"
+#include "oils_idl.h"
 #include <dbi/dbi.h>
 
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libxml/globals.h>
-#include <libxml/xmlerror.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/debugXML.h>
-#include <libxml/xmlmemory.h>
 
 #define OILS_AUTH_CACHE_PRFX "oils_cstore_"
 #define MODULENAME "open-ils.cstore"
@@ -59,12 +54,11 @@ void sessionDataFree( char*, void* );
 dbi_conn writehandle; /* our MASTER db connection */
 dbi_conn dbhandle; /* our CURRENT db connection */
 osrfHash readHandles;
-xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 jsonObject* jsonNULL = NULL; // 
 
 
 /* parse and store the IDL here */
-osrfHash* idlHash;
+osrfHash* idl;
 
 int osrfAppInitialize() {
 
@@ -78,9 +72,6 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.rollback", "rollbackSavepoint", "", 1, 0 );
 
 
-	idlHash = osrfNewHash();
-	osrfHash* usrData = NULL;
-
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
@@ -88,17 +79,14 @@ int osrfAppInitialize() {
 	osrfLogInfo(OSRF_LOG_MARK, "Found file:");
 	osrfLogInfo(OSRF_LOG_MARK, idl_filename);
 
-	osrfLogInfo(OSRF_LOG_MARK, "Parsing the IDL XML...");
-	idlDoc = xmlReadFile( idl_filename, NULL, XML_PARSE_XINCLUDE );
-	
-	if (!idlDoc) {
-		osrfLogError(OSRF_LOG_MARK, "Could not load or parse the IDL XML file!");
+	idl = oilsIDLInit( idl_filename );
+
+	if (!idl) {
+		osrfLogError(OSRF_LOG_MARK, "Problem loading the IDL.  Seacrest out!");
 		exit(1);
 	}
 
-	osrfLogInfo(OSRF_LOG_MARK, "...IDL XML parsed");
-
-	osrfStringArray* global_methods = osrfNewStringArray(1);
+	osrfStringArray* global_methods = osrfNewStringArray(6);
 
 	osrfStringArrayAdd( global_methods, "create" );
 	osrfStringArrayAdd( global_methods, "retrieve" );
@@ -107,247 +95,73 @@ int osrfAppInitialize() {
 	osrfStringArrayAdd( global_methods, "search" );
 	osrfStringArrayAdd( global_methods, "id_list" );
 
-	xmlNodePtr docRoot = xmlDocGetRootElement(idlDoc);
-	xmlNodePtr kid = docRoot->children;
-	while (kid) {
-		if (!strcmp( (char*)kid->name, "class" )) {
+	int c_index = 0; 
+	char* classname;
+	osrfStringArray* classes = osrfHashKeys( idl );
+	osrfLogDebug(OSRF_LOG_MARK, "%d classes loaded", classes->size );
+	osrfLogDebug(OSRF_LOG_MARK, "At least %d methods will be generated", classes->size * global_methods->size);
+	
+	while ( (classname = osrfStringArrayGetString(classes, c_index++)) ) {
+		osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
+		
+		osrfHash* idlClass = osrfHashGet(idl, classname);
 
-			char* virt_class = xmlGetNsProp(kid, "virtual", PERSIST_NS);
-			if (virt_class && !strcmp(virt_class, "true")) {
-				free(virt_class);
-				kid = kid->next;
-				continue;
-			}
-			free(virt_class);
-			
-			usrData = osrfNewHash();
-			osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
-			osrfHashSet( usrData, xmlGetNsProp(kid, "tablename", PERSIST_NS), "tablename");
-			osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
-
-			osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
-
-			osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", osrfHashGet(usrData, "fieldmapper") );
-
-			osrfHash* _tmp;
-			osrfHash* links = osrfNewHash();
-			osrfHash* fields = osrfNewHash();
-
-			osrfHashSet( usrData, fields, "fields" );
-			osrfHashSet( usrData, links, "links" );
-
-			xmlNodePtr _cur = kid->children;
-
-			while (_cur) {
-				char* string_tmp = NULL;
-
-				if (!strcmp( (char*)_cur->name, "fields" )) {
-
-					if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
-						osrfHashSet(
-							usrData,
-							strdup( string_tmp ),
-							"primarykey"
-						);
-					}
-					string_tmp = NULL;
-
-					if( (string_tmp = (char*)xmlGetNsProp(_cur, "sequence", PERSIST_NS)) ) {
-						osrfHashSet(
-							usrData,
-							strdup( string_tmp ),
-							"sequence"
-						);
-					}
-					string_tmp = NULL;
-
-					xmlNodePtr _f = _cur->children;
-
-					while(_f) {
-						if (strcmp( (char*)_f->name, "field" )) {
-							_f = _f->next;
-							continue;
-						}
-
-						_tmp = osrfNewHash();
-
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"array_position"
-							);
-						}
-						string_tmp = NULL;
-
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"virtual"
-							);
-						}
-						string_tmp = NULL;
-
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "primitive", PERSIST_NS)) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"primitive"
-							);
-						}
-						string_tmp = NULL;
-
-						if( (string_tmp = (char*)xmlGetProp(_f, "name")) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"name"
-							);
-						}
-
-						osrfLogInfo(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
-
-						osrfHashSet(
-							fields,
-							_tmp,
-							strdup( string_tmp )
-						);
-						_f = _f->next;
-					}
-				}
-
-				if (!strcmp( (char*)_cur->name, "links" )) {
-					xmlNodePtr _l = _cur->children;
-
-					while(_l) {
-						if (strcmp( (char*)_l->name, "link" )) {
-							_l = _l->next;
-							continue;
-						}
-
-						_tmp = osrfNewHash();
-
-						if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"reltype"
-							);
-						}
-						osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
-						string_tmp = NULL;
-
-						if( (string_tmp = (char*)xmlGetProp(_l, "key")) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"key"
-							);
-						}
-						osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
-						string_tmp = NULL;
-
-						if( (string_tmp = (char*)xmlGetProp(_l, "class")) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"class"
-							);
-						}
-						osrfLogInfo(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
-						string_tmp = NULL;
-
-						osrfStringArray* map = osrfNewStringArray(0);
-
-						if( (string_tmp = (char*)xmlGetProp(_l, "map") )) {
-							char* map_list = strdup( string_tmp );
-							osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
-
-							if (strlen( map_list ) > 0) {
-								char* st_tmp;
-								char* _map_class = strtok_r(map_list, " ", &st_tmp);
-								osrfStringArrayAdd(map, strdup(_map_class));
-						
-								while ((_map_class = strtok_r(NULL, " ", &st_tmp))) {
-									osrfStringArrayAdd(map, strdup(_map_class));
-								}
-							}
-						}
-						osrfHashSet( _tmp, map, "map");
-
-						if( (string_tmp = (char*)xmlGetProp(_l, "field")) ) {
-							osrfHashSet(
-								_tmp,
-								strdup( string_tmp ),
-								"field"
-							);
-						}
-
-						osrfHashSet(
-							links,
-							_tmp,
-							strdup( string_tmp )
-						);
-
-						osrfLogInfo(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
-
-						_l = _l->next;
-					}
-				}
-
-				_cur = _cur->next;
-			}
-
-			int i = 0; 
-			char* method_type;
-			char* st_tmp;
-			char* _fm;
-			char* part;
-			osrfHash* method_meta;
-			while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
-
-				if (!osrfHashGet(usrData, "fieldmapper")) continue;
-
-				method_meta = osrfNewHash();
-				osrfHashSet(method_meta, usrData, "class");
-
-				_fm = strdup( (char*)osrfHashGet(usrData, "fieldmapper") );
-				part = strtok_r(_fm, ":", &st_tmp);
-
-				growing_buffer* method_name =  buffer_init(64);
-				buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
-
-				while ((part = strtok_r(NULL, ":", &st_tmp))) {
-					buffer_fadd(method_name, ".%s", part);
-				}
-				buffer_fadd(method_name, ".%s", method_type);
-
-
-				char* method = buffer_data(method_name);
-				buffer_free(method_name);
-				free(_fm);
-
-				osrfHashSet( method_meta, method, "methodname" );
-				osrfHashSet( method_meta, method_type, "methodtype" );
-
-				int flags = 0;
-				if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
-					flags = flags | OSRF_METHOD_STREAMING;
-				}
-
-				osrfAppRegisterExtendedMethod(
-					MODULENAME,
-					method,
-					"dispatchCRUDMethod",
-					"",
-					1,
-					flags,
-					(void*)method_meta
-				);
-			}
+		char* virt = osrfHashGet(idlClass, "virtual");
+		if (virt && !strcmp( virt, "true")) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
 		}
-		kid = kid->next;
+
+		osrfLogDebug(OSRF_LOG_MARK, "HERE");
+		
+		int i = 0; 
+		char* method_type;
+		char* st_tmp;
+		char* _fm;
+		char* part;
+		osrfHash* method_meta;
+		while ( (method_type = osrfStringArrayGetString(global_methods, i++)) ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Using files to build %s class methods for %s", method_type, classname);
+
+			if (!osrfHashGet(idlClass, "fieldmapper")) continue;
+
+			method_meta = osrfNewHash();
+			osrfHashSet(method_meta, idlClass, "class");
+
+			_fm = strdup( (char*)osrfHashGet(idlClass, "fieldmapper") );
+			part = strtok_r(_fm, ":", &st_tmp);
+
+			growing_buffer* method_name =  buffer_init(64);
+			buffer_fadd(method_name, "%s.direct.%s", MODULENAME, part);
+
+			while ((part = strtok_r(NULL, ":", &st_tmp))) {
+				buffer_fadd(method_name, ".%s", part);
+			}
+			buffer_fadd(method_name, ".%s", method_type);
+
+
+			char* method = buffer_data(method_name);
+			buffer_free(method_name);
+			free(_fm);
+
+			osrfHashSet( method_meta, method, "methodname" );
+			osrfHashSet( method_meta, method_type, "methodtype" );
+
+			int flags = 0;
+			if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
+				flags = flags | OSRF_METHOD_STREAMING;
+			}
+
+			osrfAppRegisterExtendedMethod(
+				MODULENAME,
+				method,
+				"dispatchCRUDMethod",
+				"",
+				1,
+				flags,
+				(void*)method_meta
+			);
+		}
 	}
 
 	return 0;
@@ -406,12 +220,19 @@ int osrfAppChildInit() {
 	unsigned short type;
 	int i = 0; 
 	char* classname;
-	osrfStringArray* classes = osrfHashKeys( idlHash );
+	osrfStringArray* classes = osrfHashKeys( idl );
 	
 	while ( (classname = osrfStringArrayGetString(classes, i++)) ) {
-		osrfHash* class = osrfHashGet( idlHash, classname );
+		osrfHash* class = osrfHashGet( idl, classname );
 		osrfHash* fields = osrfHashGet( class, "fields" );
-		
+
+		char* virt = osrfHashGet(class, "virtual");
+		if (virt && !strcmp( virt, "true")) {
+			osrfLogDebug(OSRF_LOG_MARK, "Class %s is virtual, skipping", classname );
+			continue;
+		}
+
+	
 		growing_buffer* sql_buf = buffer_init(32);
 		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", osrfHashGet(class, "tablename") );
 
@@ -1347,7 +1168,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 		jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
 		while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
 
-			osrfHash* idlClass = osrfHashGet( idlHash, snode->key );
+			osrfHash* idlClass = osrfHashGet( idl, snode->key );
 			if (!idlClass) continue;
 			char* cname = osrfHashGet(idlClass, "classname");
 
@@ -1522,7 +1343,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 						osrfHash* value_field = field;
 
-						osrfHash* kid_idl = osrfHashGet(idlHash, osrfHashGet(kid_link, "class"));
+						osrfHash* kid_idl = osrfHashGet(idl, osrfHashGet(kid_link, "class"));
 						if (!kid_idl) continue;
 
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
@@ -1633,7 +1454,7 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 													osrfHashGet(
 														osrfHashGet(
 															osrfHashGet(
-																idlHash,
+																idl,
 																osrfHashGet(kid_link, "class")
 															),
 															"fields"
