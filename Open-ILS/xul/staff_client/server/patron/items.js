@@ -308,6 +308,24 @@ patron.items.prototype = {
 							}
 						}
 					],
+					'cmd_add_billing' : [
+						['command'],
+						function() {
+							JSAN.use('util.window');
+							var win = new util.window();
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								var circ_id = obj.retrieve_ids[i].circ_id;
+								var w = win.open(
+									urls.XUL_PATRON_BILL_WIZARD
+										+ '?patron_id=' + window.escape(obj.patron_id)
+										+ '&xact_id=' + window.escape( circ_id ),
+									'billwizard',
+									'chrome,resizable,modal'
+								);
+							}
+							obj.retrieve();
+						}
+					],
 				}
 			}
 		);

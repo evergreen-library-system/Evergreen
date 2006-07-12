@@ -44,7 +44,7 @@
 				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
 				g.cgi = new CGI();
-				var circ_id = g.cgi.param('circ_id');
+				g.circ_id = g.cgi.param('circ_id');
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -53,7 +53,7 @@
 				g.network.request(
 					api.FM_CIRC_RETRIEVE_VIA_ID.app,
 					api.FM_CIRC_RETRIEVE_VIA_ID.method,
-					[ ses(), circ_id ],
+					[ ses(), g.circ_id ],
 					function (req) {
 						try {
 						var r_circ = req.getResultObject();
@@ -73,6 +73,7 @@
 						} catch(E) {
 							g.error.standard_unexpected_error_alert('Failure rendering circ.',E);
 						}
+						g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
 						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
 							var r_au = preq.getResultObject();
 							$('barcode').value = r_au.card().barcode();
@@ -94,14 +95,27 @@
 
 		function $(id) { return document.getElementById(id); }
 
+		g.add_billing = function() {
+			JSAN.use('util.window');
+			var win = new util.window();
+			var w = win.open(
+				urls.XUL_PATRON_BILL_WIZARD
+					+ '?patron_id=' + window.escape(g.patron_id)
+					+ '&xact_id=' + window.escape( g.circ_id ),
+				'billwizard',
+				'chrome,resizable,modal'
+			);
+		}
+
 	]]>
 	</script>
 
 	<groupbox flex="1" style="overflow: auto;">
 		<hbox>
 			<label id="patron_name" class="patronNameLarge"/>
-			<spacer flex="1"/>
 			<textbox id="barcode" class="plain" readonly="true" onclick="this.select()"/>
+			<spacer flex="1"/>
+			<button id="add_billing" disabled="true" label="Add Billing" oncommand="g.add_billing();"/>
 		</hbox>
 		<grid flex="1">
 			<columns>

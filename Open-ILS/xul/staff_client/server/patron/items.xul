@@ -72,6 +72,7 @@
 		<command id="cmd_items_mark_lost" />
 		<command id="cmd_show_catalog" />
 		<command id="cmd_show_catalog2" />
+		<command id="cmd_add_billing" />
 	</commandset>
 
 	<popupset id="items_popupset"/>

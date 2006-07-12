@@ -17,6 +17,7 @@
 		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
 		<menuitem label="Renew" command="cmd_items_renew" />
 		<menuitem label="Check In" command="cmd_items_checkin" />
+		<menuitem label="Add Billing" command="cmd_add_billing" />
 	</popup>
 	<popup id="items_actions2" position="at_pointer"> 
 		<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
@@ -58,6 +59,7 @@
 				<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
 				<menuitem label="Renew" command="cmd_items_renew" />
 				<menuitem label="Check In" command="cmd_items_checkin" />
+				<menuitem label="Add Billing" command="cmd_add_billing" />
 			</menupopup>
 		</menu>
 	</menubar>
