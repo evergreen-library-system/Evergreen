@@ -304,7 +304,7 @@ g.reset = function() {
 /* Apply a value to a specific field on all the copies being edited */
 
 g.apply = function(field,value) {
-	g.error.sdump('D_TRACE','field = ' + field + '  value = ' + value + '\n');
+	g.error.sdump('D_TRACE','field = <' + field + '>  value = <' + value + '>\n');
 	for (var i = 0; i < g.copies.length; i++) {
 		var copy = g.copies[i];
 		try {
@@ -648,7 +648,7 @@ g.summarize = function( copies ) {
 				g.error.sdump('D_ERROR','Attempted ' + cmd + '\n' +  E + '\n'); 
 			}
 			if (typeof value == 'object' && value != null) {
-				alert('FIXME: field_name = ' + field_name + '  value = ' + js2JSON(value) + '\n');
+				alert('FIXME: field_name = <' + field_name + '>  value = <' + js2JSON(value) + '>\n');
 			}
 
 			/**********************************************************************************************/
