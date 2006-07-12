@@ -77,7 +77,7 @@ auth.controller.prototype = {
 							obj.close()
 						}
 					],
-					'test_server' : [
+					'cmd_test_server' : [
 						['command'],
 						function() {
 							obj.test_server( obj.controller.view.server_prompt.value );
