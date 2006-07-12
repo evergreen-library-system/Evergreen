@@ -374,6 +374,7 @@ main.menu.prototype = {
 							network.simple_request('AUTH_DELETE', [ obj.data.session.key ] );
 							obj.data.session = obj.data.previous_session;
 							obj.data.stash('session');
+							removeCSSClass(document.getElementById('main_tabbox'),'operator_change');
 						} else {
 							if (network.get_new_session('Change Login',{'url_prefix':obj.url_prefix})) {
 								obj.data.stash_retrieve();
@@ -382,6 +383,7 @@ main.menu.prototype = {
 								obj.data.previous_session = JSON2js( temp_ses );
 								obj.data.stash('previous_session');
 								x.setAttribute('label', 'Change Operator: ' + obj.data.list.au[1].usrname() );
+								addCSSClass(document.getElementById('main_tabbox'),'operator_change');
 							}
 						}
 					} catch(E) {

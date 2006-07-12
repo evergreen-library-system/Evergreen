@@ -171,8 +171,8 @@ util.network.prototype = {
 		window.open(
 			url
 			+ '?login_type=staff'
-			+ '&desc_brief=' + window.escape('Your session has expired')
-			+ '&desc_full=' + window.escape('Please re-login.  If after you have re-authenticated, you still see session expired dialogs like this one, please note where they are occuring and inform your friendly Evergreen developers of this debug information: ' + name),
+			+ '&desc_brief=' + window.escape('Operator Change')
+			+ '&desc_full=' + window.escape('Please enter the credentials for the new login session.  Note that the previous session is still active.'),
 			'simple_auth' + (new Date()).toString(),
 			'chrome,resizable,modal,width=700,height=500'
 		);
