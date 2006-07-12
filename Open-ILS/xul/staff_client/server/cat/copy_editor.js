@@ -304,7 +304,8 @@ g.reset = function() {
 /* Apply a value to a specific field on all the copies being edited */
 
 g.apply = function(field,value) {
-	g.error.sdump('D_TRACE','field = <' + field + '>  value = <' + value + '>\n');
+	g.error.sdump('D_TRACE','applying field = <' + field + '>  value = <' + value + '>\n');
+	if (value == '<HACK:KLUDGE:NULL>') value = null;
 	for (var i = 0; i < g.copies.length; i++) {
 		var copy = g.copies[i];
 		try {
@@ -516,7 +517,7 @@ g.panes_and_field_names = {
 		"Age Protection",
 		{
 			render: 'fm.age_protect() == null ? "<Unset>" : ( typeof fm.age_protect() == "object" ? fm.age_protect().name() : g.data.hash.crahp[ fm.age_protect() ].name() )', 
-			input: 'c = function(v){ g.apply("age_protect",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Protection>", null ] ].concat( util.functional.map_list( g.data.list.crahp, function(obj) { return [ obj.name(), obj.id() ]; }).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("age_protect",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Protection>", "<HACK:KLUDGE:NULL>" ] ].concat( util.functional.map_list( g.data.list.crahp, function(obj) { return [ obj.name(), obj.id() ]; }).sort() ) ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 
 	],
