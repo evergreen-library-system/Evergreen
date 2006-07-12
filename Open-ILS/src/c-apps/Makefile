@@ -2,7 +2,7 @@ LDLIBS += -lobjson -lopensrf -lfieldmapper
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
-all:	oils_auth.so oils_cstore.so
+all:	oils_auth.so oils_cstore.so oils_dataloader
 #all:	oils_auth.so
 
 oils_event.o:	oils_event.c oils_event.h
@@ -10,6 +10,11 @@ oils_utils.o:	oils_utils.c oils_utils.h
 oils_auth.o:	oils_auth.c
 oils_fetch.o:	oils_fetch.c oils_utils.h 
 oils_cstore.o:	oils_cstore.c oils_utils.h
+oils_dataloader.o:	oils_dataloader.c
+
+oils_dataloader:	oils_dataloader.o
+	@echo $@
+	$(CC) $(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils oils_dataloader.o -o $(TMPDIR)/$@
 
 oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
@@ -52,6 +57,7 @@ install:
 	cp $(TMPDIR)/oils_cstore.so $(LIBDIR)/
 	cp $(TMPDIR)/liboils_utils.so $(LIBDIR)/
 	cp $(TMPDIR)/liboils_idl.so $(LIBDIR)/
+	cp $(TMPDIR)/oils_dataloader $(BINDIR)/
 	mkdir -p $(INCDIR)/
 	cp oils_utils.h $(INCDIR)
 	cp oils_idl.h $(INCDIR)
@@ -60,5 +66,5 @@ install:
 
 clean:
 	@echo $@;
-	rm -f *.o *.so
+	rm -f *.o *.so oils_dataloader
 
