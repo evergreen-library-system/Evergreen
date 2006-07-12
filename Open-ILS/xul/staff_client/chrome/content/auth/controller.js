@@ -123,6 +123,10 @@ auth.controller.prototype = {
 											ws.name /*+ ' @  ' + ws.lib_shortname*/
 										)
 									);
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+									JSAN.use('util.file'); var file = new util.file('last_ws_server');
+									file.set_object(obj.controller.view.server_prompt.value);
+									file.close();
 								} else {
 									x.appendChild(
 										document.createTextNode(
@@ -174,8 +178,8 @@ auth.controller.prototype = {
 		obj.controller.view.server_prompt.addEventListener(
 			'change',
 			function (ev) { 
-				obj.controller.render('ws_deck'); 
 				obj.test_server(ev.target.value);
+				obj.controller.render('ws_deck'); 
 			},
 			false
 		);
@@ -186,6 +190,7 @@ auth.controller.prototype = {
 
 		obj.controller.render();
 		obj.test_server( obj.controller.view.server_prompt.value );
+		obj.controller.render('ws_deck'); 
 
 		if (typeof this.on_init == 'function') {
 			this.error.sdump('D_AUTH','auth.controller.on_init()\n');
@@ -195,6 +200,14 @@ auth.controller.prototype = {
 
 	'test_server' : function(url) {
 		var obj = this;
+		if (!url) {
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('last_ws_server');
+			if (file._file.exists()) {
+				url = file.get_object(); file.close();
+				obj.controller.view.server_prompt.value = url;
+			}
+		}
 		obj.controller.view.submit_button.disabled = true;
 		obj.controller.view.server_prompt.disabled = true;
 		var s = document.getElementById('status');
@@ -205,6 +218,7 @@ auth.controller.prototype = {
 			s.setAttribute('value','Please enter a server hostname.');
 			s.setAttribute('style','color: red;');
 			obj.controller.view.server_prompt.disabled = false;
+			obj.controller.view.server_prompt.focus();
 			return;
 		}
 		try {
@@ -224,6 +238,7 @@ auth.controller.prototype = {
 					obj.test_version(url);
 				} catch(E) {
 					obj.controller.view.server_prompt.disabled = false;
+					obj.controller.view.server_prompt.focus();
 					s.setAttribute('value','There was an error testing this hostname.');
 					s.setAttribute('style','color: red;');
 					obj.error.sdump('D_ERROR',E);
@@ -235,6 +250,7 @@ auth.controller.prototype = {
 			s.setAttribute('style','color: brown;');
 			obj.error.sdump('D_ERROR',E);
 			obj.controller.view.server_prompt.disabled = false;
+			obj.controller.view.server_prompt.focus();
 		}
 	},
 
