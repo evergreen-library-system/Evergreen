@@ -72,7 +72,8 @@ OpenILS.data.prototype = {
 		'acpl' : [ api.FM_ACPL_RETRIEVE.app, api.FM_ACPL_RETRIEVE.method, [], true ],
 		'ccs' : [ api.FM_CCS_RETRIEVE.app, api.FM_CCS_RETRIEVE.method, [], true ],
 		'aou' : [ api.FM_AOU_RETRIEVE.app, api.FM_AOU_RETRIEVE.method, [], true ],
-		'aout' : [ api.FM_AOUT_RETRIEVE.app, api.FM_AOUT_RETRIEVE.method, [], true ]	
+		'aout' : [ api.FM_AOUT_RETRIEVE.app, api.FM_AOUT_RETRIEVE.method, [], true ],
+		'crahp' : [ api.FM_CRAHP_RETRIEVE.app, api.FM_CRAHP_RETRIEVE.method, [], true ],
 	},
 
 	'stash_retrieve' : function() {

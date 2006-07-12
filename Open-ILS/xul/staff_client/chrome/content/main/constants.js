@@ -87,6 +87,7 @@ const api = {
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'FM_CITM_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.item_type_map.retrieve.all' },
 	'FM_CNCT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cat_types.retrieve.all' },
+	'FM_CRAHP_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.config.rules.age_hold_protect.retrieve.all' },
 	'FM_CST_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },
 	'FM_MB_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.create' },
 	'FM_MB_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.billing.retrieve.all' },
