@@ -136,6 +136,8 @@ function my_init() {
 						+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
 					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ); '
+					//input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", null ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+					//	+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ) ); '
 						+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
 				}
 			];
