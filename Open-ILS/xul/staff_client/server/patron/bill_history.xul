@@ -129,13 +129,16 @@
 						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
 
+						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
+						$('copy_summary').hidden=false;
+
 						g.network.simple_request(
 							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
 							[ r_circ.target_copy() ],
 							function (rreq) {
 								var r_mvr = rreq.getResultObject();
 								if (instanceOf(r_mvr,mvr)) {
-									$('title').appendChild( document.createTextNode( r_mvr.title() ) );
+									$('title').appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
 								} else {
 									g.network.simple_request(
 										'FM_ACP_RETRIEVE',
@@ -172,6 +175,7 @@
 					$('details').disabled = g.bill_list_selection.length == 0;
 					$('add').disabled = g.bill_list_selection.length == 0;
 					$('summary').hidden = g.bill_list_selection.length == 0;
+					$('copy_summary').hidden = g.bill_list_selection.length == 0;
 					g.mbts_id = g.bill_list_selection[0];
 					retrieve_specific_mbts();
 					retrieve_circ();
@@ -305,6 +309,7 @@
 		<label id="patron_name" class="patronNameLarge"/>
 
 		<groupbox orient="vertical" flex="1" id="summary" hidden="true"/>
+		<iframe id="copy_summary" hidden="true"/>
 
 		<splitter><grippy/></splitter>
 

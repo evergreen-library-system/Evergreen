@@ -82,6 +82,9 @@
 						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
 
+						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
+						$('copy_summary').hidden=false;
+
 						g.network.simple_request(
 							'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
 							[ r_circ.target_copy() ],
@@ -89,7 +92,7 @@
 								var r_mvr = rreq.getResultObject();
 								if (instanceOf(r_mvr,mvr)) {
 									util.widgets.remove_children('title');
-									$('title').appendChild( document.createTextNode( r_mvr.title() ) );
+									$('title').appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
 								} else {
 									g.network.simple_request(
 										'FM_ACP_RETRIEVE',
@@ -252,6 +255,10 @@
 		<label id="patron_name" class="patronNameLarge"/>
 
 		<groupbox orient="vertical" flex="1" id="summary" />
+
+		<splitter><grippy/></splitter>
+
+		<iframe id="copy_summary" flex="1" hidden="true"/>
 
 		<splitter><grippy/></splitter>
 
