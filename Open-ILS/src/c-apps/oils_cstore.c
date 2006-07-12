@@ -628,6 +628,7 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
 	jsonObject* target = jsonObjectGetIndex( ctx->params, 0 );
+	jsonObject* options = jsonObjectGetIndex( ctx->params, 1 );
 
 	if (!verifyObjectClass(ctx, target)) {
 		*err = -1;
@@ -775,26 +776,35 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			buffer_free(_id);
 		}
 
-		jsonObject* fake_params = jsonParseString("[]");
-		jsonObjectPush(fake_params, jsonParseString("{}"));
+		if (	!options
+			|| !jsonObjectGetKey( options, "quiet")
+			|| strcmp( jsonObjectToSimpleString(jsonObjectGetKey( options, "quiet")), "true" )
+		) {
 
-		jsonObjectSetKey(
-			jsonObjectGetIndex(fake_params, 0),
-			osrfHashGet(meta, "primarykey"),
-			jsonNewObject(id)
-		);
+			jsonObject* fake_params = jsonParseString("[]");
+			jsonObjectPush(fake_params, jsonParseString("{}"));
 
-		jsonObject* list = doSearch( ctx,meta, fake_params, err);
+			jsonObjectSetKey(
+				jsonObjectGetIndex(fake_params, 0),
+				osrfHashGet(meta, "primarykey"),
+				jsonNewObject(id)
+			);
 
-		if(*err) {
+			jsonObject* list = doSearch( ctx,meta, fake_params, err);
+
+			if(*err) {
+				jsonObjectFree( fake_params );
+				obj = jsonNULL;
+			} else {
+				obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
+			}
+
+			jsonObjectFree( list );
 			jsonObjectFree( fake_params );
-			obj = jsonNULL;
-		} else {
-			obj = jsonObjectClone( jsonObjectGetIndex(list, 0) );
-		}
 
-		jsonObjectFree( list );
-		jsonObjectFree( fake_params );
+		} else {
+			obj = jsonNewObject(id);
+		}
 
 	}
 
