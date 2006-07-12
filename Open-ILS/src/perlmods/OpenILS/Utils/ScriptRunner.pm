@@ -82,11 +82,11 @@ sub init {
 			sub { $self->_parse_xml_string(@_); }
 	);
 	
-	for my $e ( @{$self->{_env}} ) {
+	while ( my $e = shift @{$self->{_env}} ) {
 		$self->insert( @$e{ qw/key value readonly/ } => 1 );
 	}
 
-	for my $e ( @{$self->{_methods}} ) {
+	while ( my $e = shift @{$self->{_methods}} ) {
 		$self->insert_method( @$e{ qw/key name meth/ } => 1 );
 	}
 
@@ -265,11 +265,7 @@ sub insert {
 		if( defined($val) ) {
 			$self->context->property_by_path(
 				$key, $val,
-				sub { $val },
-				( !$RO ?
-					sub { my( $k, $v ) = @_; $val = $v; } :
-					sub{}
-				)
+				( !$RO ?  (sub { $val }, sub { my( $k, $v ) = @_; $val = $v; }) : () )
 			);
 		} else {
 			$self->context->property_by_path($key, "");
@@ -297,18 +293,17 @@ sub insert_fm {
 			$ctx->property_by_path(
 				"$key.$f",
 				$val,
-				sub {
-					my $k = _js_prop_name(shift());
-					$fm->$k();
-				}, 
-
 				( !$RO ? 
+					(sub {
+						my $k = _js_prop_name(shift());
+						$fm->$k();
+					}, 
 					sub {
 						my $k = _js_prop_name(shift());
 						$fm->ischanged(1);
 						$fm->$k(@_);
-					} :
-					sub {}
+					}) :
+					()
 				)
 			);
 		}
@@ -329,13 +324,13 @@ sub insert_hash {
 		} else {
 			$ctx->property_by_path(
 				"$key.$k", $v,
-				sub { $hash->{_js_prop_name(shift())} },
 				( !$RO ? 
+					(sub { $hash->{_js_prop_name(shift())} },
 					sub {
 						my( $hashkey, $val ) = @_;
 						$hash->{_js_prop_name($hashkey)} = $val;
-					} :
-					sub {}
+					}) :
+					()
 				)
 			);
 		}
