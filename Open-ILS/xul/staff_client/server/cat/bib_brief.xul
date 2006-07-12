@@ -61,7 +61,7 @@
 						var mods = req.getResultObject();
 						
 						if (mods.title()) document.getElementById('title').appendChild(
-							document.createTextNode(mods.title())
+							document.createTextNode(mods.title().substr(0,50))
 						);
 						if (mods.author()) document.getElementById('author').appendChild(
 							document.createTextNode(mods.author())

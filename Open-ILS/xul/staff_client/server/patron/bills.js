@@ -739,7 +739,7 @@ patron.bills.prototype = {
 											function (rreq) {
 												var r_mvr = rreq.getResultObject();
 												if (instanceOf(r_mvr,mvr)) {
-													xt_value.appendChild( document.createTextNode( r_mvr.title() ) );
+													xt_value.appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
 												} else {
 													obj.network.simple_request(
 														'FM_ACP_RETRIEVE',
