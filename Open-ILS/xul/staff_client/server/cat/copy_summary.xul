@@ -84,6 +84,7 @@
 										$w('opac_visible',my_bool(copy.opac_visible()) ? 'Yes' : 'No');	
 										$w('circulate',my_bool(copy.circulate()) ? 'Yes' : 'No');	
 										$w('holdable',my_bool(copy.holdable()) ? 'Yes' : 'No');	
+										$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
 										$w('location',copy.location().name());	
 										$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
 										$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
@@ -168,18 +169,18 @@
 					<label id="circulate"/>
 					<label style="font-weight: bold" value="Reference:"/>
 					<label id="ref"/>
-					<label style="font-weight: bold" value="Opac Visible:"/>
-					<label id="opac_visible"/>
 					<label style="font-weight: bold" value="Holdable:"/>
 					<label id="holdable"/>
+					<label style="font-weight: bold" value="Opac Visible:"/>
+					<label id="opac_visible"/>
 				</row>
 				<row>
 					<label style="font-weight: bold" value="Created:"/>
 					<label id="create_date"/>
 					<label style="font-weight: bold" value="Edited:"/>
 					<label id="edit_date"/>
-					<spacer/>
-					<spacer/>
+					<label style="font-weight: bold" value="Age Protect:"/>
+					<label id="age_protect"/>
 					<label style="font-weight: bold" value="Total Circs:"/>
 					<label id="total_circs"/>
 				</row>
