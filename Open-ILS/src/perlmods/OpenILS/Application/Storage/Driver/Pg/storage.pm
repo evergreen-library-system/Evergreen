@@ -1,6 +1,8 @@
+
 {
 	package OpenILS::Application::Storage;
 	use OpenSRF::Utils::Logger;
+	our $NOPRIMARY = 0;
 	my $log = 'OpenSRF::Utils::Logger';
 
 	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
@@ -218,7 +220,29 @@
 	);
 
 
-	sub copy_create {
+	sub copy_create_start {
+		my $self = shift;
+		my $client = shift;
+
+		local $OpenILS::Application::Storage::WRITE = 1;
+
+		#return undef unless ($pg->current_xact_session);
+
+		my @cols = $self->{cdbi}->columns('Essential');
+		if ($NOPRIMARY) {
+			my ($p) = $self->{cdbi}->columns('Primary');
+			@cols = grep { $_ ne $p } @cols;
+		}
+
+		my $col_list = join ',', @cols;
+
+		$log->debug('Starting COPY import for '.$self->{cdbi}->table." ($col_list)", DEBUG);
+		$self->{cdbi}->sql_copy_start($self->{cdbi}->table, $col_list)->execute;
+
+		return 1;
+	}
+
+	sub copy_create_push {
 		my $self = shift;
 		my $client = shift;
 		my @fm_nodes = @_;
@@ -227,18 +251,13 @@
 
 		#return undef unless ($pg->current_xact_session);
 
-		my $cdbi = $self->{cdbi};
+		my @cols = $self->{cdbi}->columns('Essential');
+		if ($NOPRIMARY) {
+			my ($p) = $self->{cdbi}->columns('Primary');
+			@cols = grep { $_ ne $p } @cols;
+		}
 
-		my $pri = $cdbi->columns('Primary');
-
-		my @cols = grep {$_ ne $pri} $cdbi->columns('Essential');
-
-		my $col_list = join ',', @cols;
-
-		$log->debug('Starting COPY import for '.$cdbi->table." ($col_list)", DEBUG);
-		$cdbi->sql_copy_start($cdbi->table, $col_list)->execute;
-
-		my $dbh = $cdbi->db_Main;
+		my $dbh = $self->{cdbi}->db_Main;
 		for my $node ( @fm_nodes ) {
 			next unless ($node);
 			my $line = join("\t", map { defined($node->$_()) ? $node->$_() : '\N' } @cols);
@@ -246,11 +265,46 @@
 			$dbh->pg_putline($line."\n");
 		}
 
+		return scalar(@fm_nodes);
+	}
+
+	sub copy_create_finish {
+		my $self = shift;
+		my $client = shift;
+		my @fm_nodes = @_;
+
+		local $OpenILS::Application::Storage::WRITE = 1;
+
+		#return undef unless ($pg->current_xact_session);
+
+		my $dbh = $self->{cdbi}->db_Main;
+
 		$dbh->pg_endcopy || $log->debug("Could not end COPY with pg_endcopy", WARN);
 
-		$log->debug('COPY import for '.$cdbi->table." ($col_list) complete", DEBUG);
+		$log->debug('COPY import for '.$self->{cdbi}->table." ($col_list) complete", DEBUG);
+
+		return 1;
+	}
+
+	sub copy_create {
+		my $self = shift;
+		my $client = shift;
+		my @fm_nodes = @_;
+
+		local $NOPRIMARY = 1;
+
+		copy_create_start(  $self => $client );
+		copy_create_push(   $self => $client => @fm_nodes );
+		copy_create_finish( $self => $client );
 
 		return scalar(@fm_nodes);
+	}
+
+	sub autoprimary {
+		my $class = shift;
+		my $val = shift;
+		$NOPRIMARY = $val if (defined $val);
+		return $NOPRIMARY;
 	}
 
 }
