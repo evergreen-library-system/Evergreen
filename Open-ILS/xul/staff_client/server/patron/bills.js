@@ -51,6 +51,7 @@ patron.bills.prototype = {
 				obj.init();
 				obj.controller.view.bill_payment_amount.focus();
 				obj.distribute_payment(obj.controller.view.bill_payment_amount);
+				obj.tally_selected();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> refresh',E);	
 		}
@@ -91,6 +92,7 @@ patron.bills.prototype = {
 				obj.controller.view.bill_total_owed.setAttribute('value',obj.controller.view.bill_total_owed.value);
 				obj.distribute_payment(obj.controller.view.bill_payment_amount);
 				obj.controller.view.bill_payment_amount.select();
+				obj.tally_selected();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> init',E);	
 		}
@@ -224,18 +226,20 @@ patron.bills.prototype = {
 								['command'],
 								function() {
 									for (var i = 0; i < obj.current_payments.length; i++) {
-										obj.current_payments[i].checkbox.checked = true;
+										obj.current_payments[i].checkbox.setAttribute('checked',true); //checked = true;
 									}
 									obj.distribute_payment(obj.controller.view.bill_payment_amount);
+									obj.tally_selected();
 								}
 							],
 							'cmd_uncheck_all' : [
 								['command'],
 								function() {
 									for (var i = 0; i < obj.current_payments.length; i++) {
-										obj.current_payments[i].checkbox.checked = false;
+										obj.current_payments[i].checkbox.setAttribute('checked',false); //checked = false;
 									}
 									obj.distribute_payment(obj.controller.view.bill_payment_amount);
+									obj.tally_selected();
 								}
 							],
 							'selected_balance' : [
@@ -272,6 +276,7 @@ patron.bills.prototype = {
 											}
 											obj.distribute_payment(ev.target);
 											ev.target.select();
+											obj.tally_selected();
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> bill_payment_amount',E);	
 									}
@@ -334,7 +339,6 @@ patron.bills.prototype = {
 	'distribute_payment' : function(node) {
 		try {
 			var obj = this;
-			var selected_total = 0;
 			JSAN.use('util.money');
 			var tb = node;
 			tb.value = util.money.cents_as_dollars( util.money.dollars_float_to_cents_integer( tb.value ) );
@@ -343,8 +347,7 @@ patron.bills.prototype = {
 			if (total < 0) { tb.value = '0.00'; tb.setAttribute('value','0.00'); total = 0; }
 			for (var i = 0; i < obj.current_payments.length; i++) {
 					var bill = obj.current_payments[i];
-					if (bill.checkbox.checked) {
-						selected_total += bill.balance_owed;
+					if (bill.checkbox.checked || bill.checkbox.getAttribute('checked') == 'true') {
 						var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
 						if ( bo > total ) {
 							bill.textbox.value = util.money.cents_as_dollars( total );
@@ -359,10 +362,32 @@ patron.bills.prototype = {
 					bill.textbox.setAttribute('value',bill.textbox.value);
 			}
 			obj.update_payment_applied();
-			obj.controller.view.selected_balance.setAttribute('value', '$' + util.money.sanitize( selected_total ) );
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> distribute payment',E);
 		}
+	},
+
+	/*****************************************************************************************************************************/
+
+	'tally_selected' : function() {
+
+			var obj = this;
+			JSAN.use('util.money');
+			var selected_total = 0;
+			//var s = '';
+
+			for (var i = 0; i < obj.current_payments.length; i++) {
+				var bill = obj.current_payments[i];
+				if (bill.checkbox.checked || bill.checkbox.getAttribute('checked') == 'true') {
+					var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
+					selected_total += bo;
+					//s += ('tallying ' + i + ' : checked, bo = ' + bo + '  total = ' + selected_total + '\n');
+				} else {
+					//s += ('tallying ' + i + ' : not checked, total = ' + selected_total + '\n');
+				}
+			}
+			obj.controller.view.selected_balance.setAttribute('value', '$' + util.money.cents_as_dollars( selected_total ) );
+			//dump(s); alert(s);
 	},
 
 	/*****************************************************************************************************************************/
@@ -576,7 +601,7 @@ patron.bills.prototype = {
 						rows.appendChild( row0 );
 							var cb_r0_0 = document.createElement('checkbox');
 							row0.appendChild( cb_r0_0 );
-							cb_r0_0.setAttribute('checked','true');
+							cb_r0_0.setAttribute('checked',true);
 							var hb_r0_1 = document.createElement('hbox');
 							row0.appendChild( hb_r0_1 );
 								var label_r0_1 = document.createElement('label');
@@ -668,7 +693,7 @@ patron.bills.prototype = {
 							cb.setAttribute('disabled', 'true'); 
 						} else { 
 							if (my.mobts.balance_owed() > 0) {
-								cb.setAttribute('checked', 'true'); 
+								cb.setAttribute('checked', true); 
 							}
 						}
 						cb.addEventListener(
@@ -677,6 +702,7 @@ patron.bills.prototype = {
 								setTimeout(
 									function() {
 										obj.distribute_payment(obj.controller.view.bill_payment_amount);
+										obj.tally_selected();
 									}, 0
 								);
 							},
@@ -830,8 +856,9 @@ patron.bills.prototype = {
 					btn3.addEventListener(
 						'command',
 						function(ev) {
-							cb.setAttribute('checked','true');
+							cb.setAttribute('checked',true);
 							obj.distribute_payment(obj.controller.view.bill_payment_amount);
+							obj.tally_selected();
 						},
 						false
 					);
