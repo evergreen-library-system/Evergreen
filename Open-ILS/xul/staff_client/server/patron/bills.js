@@ -684,23 +684,8 @@ patron.bills.prototype = {
 						);
 
 
-						try {
-							var xt_id = document.createElement('label');
-							hbox.appendChild(xt_id); xt_id.setAttribute('value','Bill #' + my.mobts.id());
-						} catch(E) { alert(E); }
-
-						try {
-							var xt_start = document.createElement('label');
-							hbox.appendChild(xt_start); xt_start.setAttribute('value', 'First Billing: ' + (my.mobts.xact_start() ? my.mobts.xact_start().toString().substr(0,10) : '') );
-						} catch(E) { alert(E); }
-
-						try {
-							var xt_finish = document.createElement('label');
-							hbox.appendChild(xt_finish); xt_finish.setAttribute('value', (my.mobts.xact_finish() ? 'Finish: ' + my.mobts.xact_finish().toString().substr(0,10) : '') );
-						} catch(E) { alert(E); }
-
 					var grid = document.createElement('grid');
-						vbox.appendChild( grid );
+						hbox.appendChild( grid );
 
 						var cols = document.createElement('columns');
 							grid.appendChild( cols );
@@ -720,19 +705,21 @@ patron.bills.prototype = {
 					try {
 					switch(my.mobts.xact_type()) {
 						case 'circulation':
-							xt_label.setAttribute( 'value', 'Title' );
+							xt_label.setAttribute( 'value', 'Title:' );
 							obj.network.simple_request(
 								'FM_CIRC_RETRIEVE_VIA_ID',
 								[ ses(), my.mobts.id() ],
 								function (req) {
 									var r_circ = req.getResultObject();
 									if (instanceOf(r_circ,circ)) {
+										/*
 										xt_start.setAttribute('value','Checked Out: ' + r_circ.xact_start().toString().substr(0,10) );
 										if (r_circ.checkin_time()) {
 											xt_finish.setAttribute('value','Returned: ' + r_circ.checkin_time().toString().substr(0,10) );
 										} else {
 											xt_finish.setAttribute('value','Due: ' + r_circ.due_date().toString().substr(0,10) );
 										}
+										*/
 										obj.network.simple_request(
 											'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
 											[ r_circ.target_copy() ],
