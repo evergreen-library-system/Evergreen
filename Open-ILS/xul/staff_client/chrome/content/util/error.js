@@ -27,6 +27,7 @@ util.error.prototype = {
 	'consoleDump' : false,
 	'debugDump' : true,
 	'fileDump' : false,
+	'alertDump' : false,
 	'arg_dump_full' : false,
 
 	'debug' : function(e){
@@ -36,10 +37,11 @@ util.error.prototype = {
 
 	'sdump_levels' : {
 
-		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : { 'dump' : true, 'console' : true }, 'D_DEBUG' : { 'dump' : true, 'console' : true }, 'D_TRACE' :  { 'dump' : true },
+		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : { 'dump' : true, 'console' : true }, 'D_DEBUG' : { 'dump' : true, 'console' : true }, 'D_TRACE' :  { 'dump' : true }, 'D_ALERT' : { 'alert' : true, 'dump' : true },
 		'D_WARN' : false, 'D_DECK' : { 'dump' : true },
 		'D_TRACE_ENTER' :  false, 'D_TRACE_EXIT' :  false, 'D_TIMEOUT' :  false, 'D_FILTER' : false,
-		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : false,
+		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 
+		'D_DATA_STASH' : { 'alert' : false }, 'D_DATA_RETRIEVE' : false,
 
 		'D_CLAM' : false, 'D_PAGED_TREE' : false, 'D_GRID_LIST' : false, 'D_HTML_TABLE' : false,
 		'D_TAB' : false, 'D_LIST' : false, 'D_LIST_DUMP_WITH_KEYS_ON_CLEAR' : false, 'D_LIST_DUMP_ON_CLEAR' : false,
@@ -101,6 +103,7 @@ util.error.prototype = {
 			if (this.sdump_levels[level]||this.sdump_levels['D_ALL']) {
 				this.sdump_last_time = now;
 				if (this.debugDump || ( this.sdump_levels[level] && this.sdump_levels[level].debug ) ) this.debug(message);
+				if (this.alertDump || ( this.sdump_levels[level] && this.sdump_levels[level].alert ) ) alert(message);
 				if (this.consoleDump || ( this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					this.consoleService.logStringMessage(message);
