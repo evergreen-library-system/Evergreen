@@ -952,7 +952,11 @@ sub fetch_fleshed_copy {
 	my( $copy, $evt );
 	$logger->info("Fetching fleshed copy $id");
 	$copy = $self->cstorereq(
-		"open-ils.cstore.fleshed.asset.copy.retrieve", $id );
+		"open-ils.cstore.direct.asset.copy.retrieve", $id,
+		{ flesh => 1,
+		  flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries / ] }
+		}
+	);
 	$evt = OpenILS::Event->new('ASSET_COPY_NOT_FOUND', id => $id) unless $copy;
 	return ($copy, $evt);
 }
