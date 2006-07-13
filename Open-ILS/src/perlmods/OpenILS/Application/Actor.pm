@@ -1193,7 +1193,7 @@ sub check_user_perms {
 	return $evt if $evt;
 
 	if($staff->id ne $user_id) {
-		if( my $evt = $apputils->check_perms(
+		if( $evt = $apputils->check_perms(
 			$staff->id, $org_id, 'VIEW_PERMISSION') ) {
 			return $evt;
 		}

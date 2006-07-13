@@ -893,7 +893,7 @@ sub fetch_open_transit_by_copy {
 	my( $self, $copyid ) = @_;
 	my($transit, $evt);
 	$transit = $self->cstorereq(
-		'open-ils.cstore.direct.action.transit_copy.search_where',
+		'open-ils.cstore.direct.action.transit_copy.search',
 		{ target_copy => $copyid, dest_recv_time => undef });
 	$evt = OpenILS::Event->new('ACTION_TRANSIT_COPY_NOT_FOUND') unless $transit;
 	return ($transit, $evt);
