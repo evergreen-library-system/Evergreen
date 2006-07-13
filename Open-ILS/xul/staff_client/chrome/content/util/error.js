@@ -36,15 +36,15 @@ util.error.prototype = {
 
 	'sdump_levels' : {
 
-		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : true, 'D_DEBUG' : true, 'D_TRACE' :  true,
-		'D_WARN' : false, 'D_DECK' : true,
+		'D_NONE' : false, 'D_ALL' : false, 'D_ERROR' : { 'dump' : true, 'console' : true }, 'D_DEBUG' : { 'dump' : true, 'console' : true }, 'D_TRACE' :  { 'dump' : true },
+		'D_WARN' : false, 'D_DECK' : { 'dump' : true },
 		'D_TRACE_ENTER' :  false, 'D_TRACE_EXIT' :  false, 'D_TIMEOUT' :  false, 'D_FILTER' : false,
 		'D_CONSTRUCTOR' : false, 'D_FIREFOX' : false, 'D_LEGACY' : false, 'D_DATA' : false,
 
 		'D_CLAM' : false, 'D_PAGED_TREE' : false, 'D_GRID_LIST' : false, 'D_HTML_TABLE' : false,
 		'D_TAB' : false, 'D_LIST' : false, 'D_LIST_DUMP_WITH_KEYS_ON_CLEAR' : false, 'D_LIST_DUMP_ON_CLEAR' : false,
 
-		'D_AUTH' : true, 'D_OPAC' : true, 'D_CAT' : false, 'D_BROWSER' : true,
+		'D_AUTH' : { 'dump' : true }, 'D_OPAC' : { 'dump' : true }, 'D_CAT' : false, 'D_BROWSER' : { 'dump' : true },
 
 		'D_PATRON_SEARCH' : false, 'D_PATRON_SEARCH_FORM' : false, 'D_PATRON_SEARCH_RESULTS' : false,
 
@@ -59,8 +59,9 @@ util.error.prototype = {
 
 		'D_PATRON_UTILS' : false, 'D_CIRC_UTILS' : false,
 
-		'D_FILE' : false, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : true, 'D_SES' : true,
-		'D_SES_FUNC' : false, 'D_SES_RESULT' : true, 'D_SPAWN' : false, 'D_STRING' : false,
+		'D_FILE' : false, 'D_EXPLODE' : false, 'D_FM_UTILS' : false, 'D_PRINT' : { 'dump' : true }, 'D_SES' : { 'dump' : true },
+		'D_SES_FUNC' : false, 'D_SES_RESULT' : { 'dump' : true }, 'D_SES_ERROR' : { 'dump' : true, 'console' : true }, 
+		'D_SPAWN' : false, 'D_STRING' : false,
 		'D_UTIL' : false, 'D_WIN' : false, 'D_WIDGETS' : false
 	},
 
@@ -99,13 +100,12 @@ util.error.prototype = {
 			if (this.sdump_levels['D_NONE']) return null;
 			if (this.sdump_levels[level]||this.sdump_levels['D_ALL']) {
 				this.sdump_last_time = now;
-				if (this.debugDump)
-					this.debug(message);
-				if (this.consoleDump) {
+				if (this.debugDump || ( this.sdump_levels[level] && this.sdump_levels[level].debug ) ) this.debug(message);
+				if (this.consoleDump || ( this.sdump_levels[level] && this.sdump_levels[level].console ) ) {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 					this.consoleService.logStringMessage(message);
 				}
-				if (this.fileDump) {
+				if (this.fileDump || ( this.sdump_levels[level] && this.sdump_levels[level].file ) ) {
 					if (level!='D_FILE') {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						JSAN.use('util.file'); var master_log = new util.file('log');
