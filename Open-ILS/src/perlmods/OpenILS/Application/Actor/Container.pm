@@ -53,7 +53,7 @@ sub bucket_retrieve_all {
 	my %buckets;
 
 	$buckets{$_} = $apputils->simplereq( 
-		$svc, $types{$_} . ".search.owner.atomic", $userid ) for keys %types;
+		$svc, $types{$_} . ".search.atomic", { owner => $userid } ) for keys %types;
 
 	return \%buckets;
 }
@@ -91,7 +91,7 @@ sub bucket_flesh {
 	}
 
 	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.bucket.atomic", $bucket ) );
+		"$meth"."_item.search.atomic", { bucket => $bucket } ) );
 
 	return $bkt;
 }
@@ -119,7 +119,7 @@ sub bucket_flesh_public {
 	return undef unless ($bkt and $bkt->pub);
 
 	$bkt->items( $apputils->simplereq( $svc,
-		"$meth"."_item.search.bucket.atomic", $bucket ) );
+		"$meth"."_item.search.atomic", { bucket => $bucket } ) );
 
 	return $bkt;
 }
@@ -321,7 +321,7 @@ sub full_delete {
 	$logger->activity("User " . $staff->id . " deleting full container $containerId");
 
 	my $meth = $types{$class};
-	my $items = $apputils->simplereq( $svc, "$meth"."_item.search.bucket.atomic", $containerId );
+	my $items = $apputils->simplereq( $svc, "$meth"."_item.search.atomic", { bucket => $containerId } );
 
 	$self->item_delete( $client, $authtoken, $class, $_->id ) for @$items;
 
