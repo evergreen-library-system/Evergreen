@@ -458,7 +458,7 @@
 			<link field="metarecords" reltype="has_many" key="source" map="metarecord" class="mmrsm"/>
 			<link field="call_numbers" reltype="has_many" key="record" map="" class="acn"/>
 			<link field="keyword_field_entries" reltype="has_many" key="source" map="" class="mkfe"/>
-			<link field="record_descriptor" reltype="has_many" key="record" map="" class="mrd"/>
+			<link field="fixed_fields" reltype="has_many" key="record" map="" class="mrd"/>
 			<link field="subject_field_entries" reltype="has_many" key="source" map="" class="msfe"/>
 			<link field="title_field_entries" reltype="has_many" key="source" map="" class="mtfe"/>
 			<link field="notes" reltype="has_many" key="record" map="" class="bren"/>
