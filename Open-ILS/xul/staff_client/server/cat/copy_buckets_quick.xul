@@ -50,9 +50,9 @@
 				if (g.cgi.param('copy_ids')) g.copy_ids = g.copy_ids.concat( JSON2js( g.cgi.param('copy_ids') ) );
 				if (typeof window.xuLG == 'object' && typeof window.xulG.copy_ids != 'undefined')
 					g.copy_ids = g.copy_ids.concat( window.xulG.copy_ids );
-				if (g.data.temp_copy_ids != 'undefined' && g.data.temp_copy_ids != null) {
+				if (typeof g.data.temp_copy_ids != 'undefined' && g.data.temp_copy_ids != null) {
 					g.copy_ids = g.copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
-					g.data.temp_copy_ids = null; g.data.stash('temp_copy_ids');
+					g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
 				}
 
 				$('desc').appendChild( document.createTextNode( 

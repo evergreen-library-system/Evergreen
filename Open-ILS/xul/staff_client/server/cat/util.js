@@ -90,8 +90,8 @@ cat.util.spawn_copy_editor = function(list,edit) {
 	title += ' Copy Attributes';
 
 	JSAN.use('util.window'); var win = new util.window();
-	obj.data.temp = '';
-	obj.data.stash('temp');
+	obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+	obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
 	obj.data.temp_copy_ids = js2JSON(list);
 	obj.data.stash('temp_copy_ids');
 	var w = win.open(
@@ -104,9 +104,9 @@ cat.util.spawn_copy_editor = function(list,edit) {
 	obj.data.stash_retrieve();
 	if (!obj.data.temp_copies) return;
 	var copies = JSON2js( obj.data.temp_copies );
-	obj.data.temp_copies = null; obj.data.stash('temp_copies');
-	obj.data.temp_callnumbers = null; obj.data.stash('temp_callnumbers');
-	obj.data.temp_copy_ids = null; obj.data.stash('temp_copy_ids');
+	obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+	obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
+	obj.data.temp_copy_ids = undefined; obj.data.stash('temp_copy_ids');
 	obj.error.sdump('D_CAT','in cat/copy_status, copy editor, copies =\n<<' + copies + '>>');
 	if (edit=='1' && copies!='' && typeof copies != 'undefined') {
 		try {

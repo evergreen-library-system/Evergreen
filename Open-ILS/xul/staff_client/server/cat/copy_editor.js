@@ -27,7 +27,7 @@ function my_init() {
 		var copy_ids = [];
 		if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
 		if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
-		if (g.data.temp_copy_ids != 'undefined') copy_ids = copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
+		if (typeof g.data.temp_copy_ids != 'undefined' && g.data.temp_copy_ids != null) copy_ids = copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
 		if (!copy_ids) copy_ids = [];
 
 		if (copy_ids.length > 0) g.copies = g.network.request(
