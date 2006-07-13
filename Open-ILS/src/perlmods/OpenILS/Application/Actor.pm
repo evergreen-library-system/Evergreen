@@ -850,12 +850,11 @@ sub user_retrieve_by_barcode {
 	);
 
 	if(!$card || !$card->[0]) {
-		$session->disconnect();
 		return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
 	}
 
 	$card = $card->[0];
-	my $user = flesh_user($card->usr(), $session);
+	my $user = flesh_user($card->usr());
 
 	$evt = $U->check_perms($user_obj->id, $user->home_ou, 'VIEW_USER');
 	return $evt if $evt;
