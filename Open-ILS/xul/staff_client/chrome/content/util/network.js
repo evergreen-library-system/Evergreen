@@ -109,7 +109,7 @@ util.network.prototype = {
 				r = 1;
 
 			} else {
-				try { obj.error.sdump('D_SES_ERROR','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+				try { obj.error.sdump('D_SES_ERROR','request '+app+' '+name+' '+obj.error.pretty_print(params.slice(1,params.length-1))+
 					'\no_params = ' + o_params + '\nReturned null\n'); } catch(E) { alert(E); }
 				r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
 				if (r == 1) {
