@@ -14,7 +14,6 @@ log_vars('circ_duration');
 
 
 
-
 var MARC_ITEM_TYPE_MAP = {
 
 	a : { /* Language material [Books] */
@@ -250,8 +249,6 @@ var CIRC_MOD_MAP = {
 
 
 
-
-
 /* Get the load duration level directly from the copy */
 result.durationLevel	= copy.loan_duration;
 
@@ -261,9 +258,10 @@ result.durationLevel	= copy.loan_duration;
 	provided circ_modifier, use that config.  Otherwise fall back on the MARC 
 	item type
 	----------------------------------------------------------------------------- */
-var marcType = getMARCItemType();
-var circMod = copy.circ_modifier;
-var itemForm = extractFixedField(marcXMLDoc,'Form');
+var marcType	= getMARCItemType();
+var circMod		= copy.circ_modifier;
+var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
+
 
 var config = 
 	( circMod && CIRC_MOD_MAP[circMod] ) ?
@@ -279,8 +277,6 @@ if( MARC_ITEM_TYPE_MAP[marcType] )
 
 
 log_debug("Copy circ modifier = " + circMod + " and item type = " + marcType );
-
-
 
 
 /* ----------------------------------------------------------------------------- 

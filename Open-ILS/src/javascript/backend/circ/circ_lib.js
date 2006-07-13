@@ -154,7 +154,7 @@ function getMARCItemType() {
 			copy.circ_as_type != 'undef' )
 		return copy.circ_as_type;
 	
-	return extractFixedField(marcXMLDoc, 'Type');
+	return (marcXMLDoc) ? extractFixedField(marcXMLDoc, 'Type') : "";
 }
 
 
@@ -198,6 +198,7 @@ function log_vars( prefix ) {
 		str += ', Copy Barcode=' + copy.barcode;
 		str += ', Copy status='	+ copyStatus;
 		str += ', Copy location=' + copy.location.name;
+		str += ', Circ Lib=' + copy.circ_lib.shortname;
 	}
 
 	if(volume)			str += ', Volume='	+ volume.id;
