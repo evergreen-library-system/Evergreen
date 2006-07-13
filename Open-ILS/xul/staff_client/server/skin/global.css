@@ -11,6 +11,13 @@ description { -moz-user-select: text; }
 tabpanel { border: 2px groove black; }
 caption { font-weight: bold; }
 
+/*
+Enable for the windows build.  This slows linux down too much.
+*/
+/*
+.circ_opacity { -moz-opacity: 0.7; }
+*/
+
 .nav { 
 	-moz-appearance: none;
 	margin: 0px;
