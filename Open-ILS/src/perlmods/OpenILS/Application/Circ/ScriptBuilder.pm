@@ -46,7 +46,8 @@ sub build {
 	push(@evts, $evt) if $evt;
 	$evt = fetch_user_data($editor, $args);
 	push(@evts, $evt) if $evt;
-	$args->{_event} = \@evts;
+	$logger->debug("script_builder: some events occurred: @evts") if @evts;
+	$args->{_events} = \@evts;
 	return build_runner($editor, $args);
 }
 
@@ -91,9 +92,9 @@ sub fetch_bib_data {
 
 		} elsif( $ctx->{copy_barcode} ) {
 
-			$ctx->{copy} = $e->search_asset_copy(
-				{barcode => $ctx->{copy_barcode}}) or return $e->event;
-			$ctx->{copy} = $ctx->{copy}->[0];
+			my $cps = $e->search_asset_copy({barcode => $ctx->{copy_barcode}});
+			return $e->event unless @$cps;
+			$ctx->{copy} = $$cps[0];
 		}
 	}
 
@@ -134,6 +135,8 @@ sub fetch_bib_data {
 
 		$ctx->{titleDescriptor} = $ctx->{titleDescriptor}->[0];
 	}
+
+	#insert_copy_method();	
 
 	return undef;
 }
@@ -258,12 +261,9 @@ sub insert_org_methods {
 	$runner->insert(__OILS_FUNC_isOrgDescendent  => 
 		sub {
 			my( $write_key, $sname, $id ) = @_;
-			$logger->debug("script_builder: org descendent: $sname - $id");
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
-			$logger->debug("script_builder: org descendent: $parent = $child");
 			my $val = is_org_descendent( $parent, $child );
-			$logger->debug("script_builder: ord desc = $val");
 			$runner->insert($write_key, $val);
 			return $val;
 		}
@@ -280,7 +280,21 @@ sub is_org_descendent {
 	return 0;
 }
 
+
+
+#	if( $ctx->{copy} ) {
+#		
+#		# allows a script to fetch a hold that is currently targeting the
+#		# copy in question
+#		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
+#				my $key = shift;
+#				my $hold = $holdcode->fetch_related_holds($ctx->{copy}->id);
+#				$hold = undef unless $hold;
+#				$runner->insert( $key, $hold, 1 );
+#			}
+#		);
+#	}
+
+
+
 1;
-
-
-
