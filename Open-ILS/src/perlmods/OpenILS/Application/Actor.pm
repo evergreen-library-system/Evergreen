@@ -843,10 +843,7 @@ sub user_retrieve_by_barcode {
 	my $card = OpenILS::Application::AppUtils->simple_scalar_request(
 			"open-ils.cstore", 
 			"open-ils.cstore.direct.actor.card.search.atomic",
-			{ barcode => $barcode },
-			{ flesh => 1,
-			  flesh_fields => { ac => [ 'usr' ] }
-			}
+			{ barcode => $barcode }
 	);
 
 	if(!$card || !$card->[0]) {

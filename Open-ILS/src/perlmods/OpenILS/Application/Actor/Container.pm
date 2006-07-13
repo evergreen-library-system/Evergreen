@@ -151,7 +151,7 @@ sub bucket_retrieve_class {
 	$logger->debug("User " . $staff->id . 
 		" retrieving buckets for user $userid [class=$class, type=$type]");
 
-	my $meth = $types{$class} . ".search_where.atomic";
+	my $meth = $types{$class} . ".search.atomic";
 	my $buckets;
 
 	if( $type ) {
