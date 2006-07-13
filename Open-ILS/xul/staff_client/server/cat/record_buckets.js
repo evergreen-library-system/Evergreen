@@ -316,39 +316,6 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
-					'record_buckets_batch_record_edit' : [
-						['command'],
-						function() {
-							try {
-								JSAN.use('util.functional');
-								JSAN.use('util.window'); var win = new util.window();
-								win.open(
-									urls.XUL_COPY_EDITOR 
-									+ '?record_ids=' + window.escape( js2JSON(
-										util.functional.map_list(
-											obj.list2.dump_retrieve_ids(),
-											function (o) {
-												return JSON2js(o).docid; // docid
-											}
-										)
-									) )
-									+ '&single_edit=1'
-									+ '&handle_update=1',
-									'batch_record_editor_win_' + win.window_name_increment(),
-									'chrome,resizable,modal'
-								);
-								setTimeout(
-									function() {
-										JSAN.use('util.widgets'); 
-										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-									}, 0
-								);
-								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
-							} catch(E) {
-								alert( js2JSON(E) );
-							}
-						}
-					],
 					'cmd_merge_records' : [
 						['command'],
 						function() {
@@ -431,18 +398,6 @@ cat.record_buckets.prototype = {
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
-					],
-					'cmd_record_buckets_print' : [
-						['command'],
-						function() {
-							dump( js2JSON( obj.list2.dump() ) );
-							alert( js2JSON( obj.list2.dump() ) );
-						}
-					],
-					'cmd_record_buckets_reprint' : [
-						['command'],
-						function() {
-						}
 					],
 					'cmd_record_buckets_done' : [
 						['command'],

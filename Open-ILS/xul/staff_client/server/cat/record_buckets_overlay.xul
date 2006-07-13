@@ -45,17 +45,9 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
-<!--
-	<button id="record_buckets_print" label="Print" command="cmd_record_buckets_print" accesskey="P"/>
-	<button id="record_buckets_reprint" label="Print Last" command="cmd_record_buckets_reprint" accesskey_disabled="L"/>
--->
 	<spacer flex="1"/>
 	<button command="cmd_sel_opac" label="Show All in Catalog" accesskey="S"/>
 	<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
-<!--
-	<button id="record_buckets_transfer_to_volume" label="Transfer to Volume"/>
-	<button id="record_buckets_batch_record_edit" label="Batch Edit" image="/xul/server/skin/media/images/grinder.gif"/>
--->
 	<button id="record_buckets_done" label="Done" command="cmd_record_buckets_done" accesskey="D"/>
 </hbox>
 
