@@ -159,8 +159,8 @@ sub ou_setting_delete {
 	$evt = $U->check_perms($reqr->id, $orgid, 'UPDATE_ORG_SETTING');
 	return $evt if $evt;
 
-	my $id = $U->storagereq(
-		'open-ils.storage.id_list.actor.org_unit_setting.search_where', 
+	my $id = $U->cstorereq(
+		'open-ils.cstore.direct.actor.org_unit_setting.id_list', 
 		{ name => $setting, org_unit => $orgid } );
 
 	$logger->debug("Retrieved setting $id in org unit setting delete");
@@ -2062,8 +2062,8 @@ sub _register_workstation {
 	$evt = $U->check_perms($requestor->id, $owner, 'REGISTER_WORKSTATION');
 	return $evt if $evt;
 
-	my $ws = $U->storagereq(
-		'open-ils.storage.direct.actor.workstation.search.name', $name );
+	my $ws = $U->cstorereq(
+		'open-ils.cstore.direct.actor.workstation.search', { name => $name } );
 	return OpenILS::Event->new('WORKSTATION_NAME_EXISTS') if $ws;
 
 	$ws = Fieldmapper::actor::workstation->new;
@@ -2132,16 +2132,16 @@ sub fetch_patron_note {
 			$evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
 			return $evt if $evt;
 		}
-		return $U->storagereq(
-			'open-ils.storage.direct.actor.usr_note.search_where.atomic', 
+		return $U->cstorereq(
+			'open-ils.cstore.direct.actor.usr_note.search.atomic', 
 			{ usr => $patronid, pub => 't' } );
 	}
 
 	$evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
 	return $evt if $evt;
 
-	return $U->storagereq(
-		'open-ils.storage.direct.actor.usr_note.search.usr.atomic', $patronid );
+	return $U->cstorereq(
+		'open-ils.cstore.direct.actor.usr_note.search.atomic', { usr => $patronid } );
 }
 
 __PACKAGE__->register_method (
@@ -2181,8 +2181,8 @@ __PACKAGE__->register_method (
 sub delete_user_note {
 	my( $self, $conn, $authtoken, $noteid ) = @_;
 
-	my $note = $U->storagereq(
-		'open-ils.storage.direct.actor.usr_note.retrieve', $noteid);
+	my $note = $U->cstorereq(
+		'open-ils.cstore.direct.actor.usr_note.retrieve', $noteid);
 	return OpenILS::Event->new('ACTOR_USER_NOTE_NOT_FOUND') unless $note;
 
 	my( $reqr, $patron, $evt ) = 

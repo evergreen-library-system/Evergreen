@@ -597,8 +597,8 @@ sub fetch_stats_by_copy {
 	my @entries;
 
 	if( $$args{public} ) {
-		my $maps = $U->storagereq(
-			'open-ils.storage.direct.asset.stat_cat_entry_copy_map.search.owning_copy.atomic', $$args{copyid});
+		my $maps = $U->cstorereq(
+			'open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic', { owning_copy => $$args{copyid} });
 
 
 		warn "here\n";
@@ -607,13 +607,13 @@ sub fetch_stats_by_copy {
 			warn "map ".$map->id."\n";
 			warn "map ".$map->stat_cat_entry."\n";
 
-			my $entry = $U->storagereq(
-				'open-ils.storage.direct.asset.stat_cat_entry.retrieve', $map->stat_cat_entry);
+			my $entry = $U->cstorereq(
+				'open-ils.cstore.direct.asset.stat_cat_entry.retrieve', $map->stat_cat_entry);
 
 			warn "Found entry ".$entry->id."\n";
 
-			my $cat = $U->storagereq(
-				'open-ils.storage.direct.asset.stat_cat.retrieve', $entry->stat_cat );
+			my $cat = $U->cstorereq(
+				'open-ils.cstore.direct.asset.stat_cat.retrieve', $entry->stat_cat );
 			$entry->stat_cat( $cat );
 			push( @entries, $entry );
 		}

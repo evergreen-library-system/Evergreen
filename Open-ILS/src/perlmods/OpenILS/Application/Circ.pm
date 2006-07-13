@@ -77,8 +77,8 @@ sub checkouts_by_user {
 	return $evt if $evt;
 
 	my $circs = $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.open_circulation.search.atomic", 
+		'open-ils.cstore',
+		"open-ils.cstore.direct.action.open_circulation.search.atomic", 
 		{ usr => $target->id, checkin_time => undef } );
 #		{ usr => $target->id } );
 
@@ -126,8 +126,8 @@ sub checkouts_by_user_slim {
 
 	# XXX Make the call correct..
 	return $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.open_circulation.search.atomic", 
+		'open-ils.cstore',
+		"open-ils.cstore.direct.action.open_circulation.search.atomic", 
 		{ usr => $target->id, checkin_time => undef } );
 #		{ usr => $target->id } );
 }
@@ -488,14 +488,14 @@ sub view_circs {
 
 	return [] unless $count;
 
-	my $circs = $U->storagereq(
-		'open-ils.storage.direct.action.circulation.search_where.atomic',
+	my $circs = $U->cstorereq(
+		'open-ils.cstore.direct.action.circulation.search.atomic',
 			{ 
 				target_copy => $copyid, 
 			}, 
 			{ 
 				limit => $count, 
-				order_by => "xact_start DESC" 
+				order_by => { ac => "xact_start DESC" }
 			} 
 	);
 
@@ -552,38 +552,38 @@ sub fetch_notes {
 
 	if( $self->api_name =~ /copy/ ) {
 		if( $$args{pub} ) {
-			return $U->storagereq(
-				'open-ils.storage.direct.asset.copy_note.search_where.atomic',
+			return $U->cstorereq(
+				'open-ils.cstore.direct.asset.copy_note.search.atomic',
 				{ owning_copy => $id, pub => 't' } );
 		} else {
 			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_COPY_NOTES');
 			return $evt if $evt;
-			return $U->storagereq(
-				'open-ils.storage.direct.asset.copy_note.search.owning_copy.atomic', $id );
+			return $U->cstorereq(
+				'open-ils.cstore.direct.asset.copy_note.search.atomic', {owning_copy => $id} );
 		}
 
 	} elsif( $self->api_name =~ /call_number/ ) {
 		if( $$args{pub} ) {
-			return $U->storagereq(
-				'open-ils.storage.direct.asset.call_number_note.search_where.atomic',
+			return $U->cstorereq(
+				'open-ils.cstore.direct.asset.call_number_note.search.atomic',
 				{ call_number => $id, pub => 't' } );
 		} else {
 			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_VOLUME_NOTES');
 			return $evt if $evt;
-			return $U->storagereq(
-				'open-ils.storage.direct.asset.call_number_note.search.call_number.atomic', $id );
+			return $U->cstorereq(
+				'open-ils.cstore.direct.asset.call_number_note.search.atomic', { call_number => $id } );
 		}
 
 	} elsif( $self->api_name =~ /title/ ) {
 		if( $$args{pub} ) {
-			return $U->storagereq(
-				'open-ils.storage.direct.bilbio.record_note.search_where.atomic',
+			return $U->cstorereq(
+				'open-ils.cstore.direct.bilbio.record_note.search.atomic',
 				{ record => $id, pub => 't' } );
 		} else {
 			( $r, $evt ) = $U->checksesperm($authtoken, 'VIEW_TITLE_NOTES');
 			return $evt if $evt;
-			return $U->storagereq(
-				'open-ils.storage.direct.biblio.record_note.search.record.atomic', $id );
+			return $U->cstorereq(
+				'open-ils.cstore.direct.biblio.record_note.search.atomic', { record => $id } );
 		}
 	}
 

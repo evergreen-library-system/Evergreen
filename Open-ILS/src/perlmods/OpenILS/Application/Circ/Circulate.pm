@@ -207,8 +207,8 @@ sub _find_copy_by_attr {
 #		$ctx->{copy} = $copy;
 #
 #		($ctx->{volume}) = $U->fetch_callnumber($copy->call_number);
-#		$ctx->{recordDescriptor} = $U->storagereq(
-#			'open-ils.storage.direct.metabib.record_descriptor.search_where', 
+#		$ctx->{recordDescriptor} = $U->cstorereq(
+#			'open-ils.cstore.direct.metabib.record_descriptor.search', 
 #			{ record => $ctx->{title}->id });
 #
 #
@@ -1455,8 +1455,8 @@ sub _handle_claims_returned {
 
 sub _fetch_open_claims_returned {
 	my $copyid = shift;
-	my $trans = $U->storagereq(
-		'open-ils.storage.direct.action.circulation.search_where',
+	my $trans = $U->cstorereq(
+		'open-ils.cstore.direct.action.circulation.search',
 		{	
 			target_copy		=> $copyid, 
 			stop_fines		=> 'CLAIMSRETURNED',

@@ -54,9 +54,9 @@ sub _records_to_mods {
 	my @results;
 	my @marcxml_objs;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $session = OpenSRF::AppSession->create("open-ils.cstore");
 	my $request = $session->request(
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve",  @ids );
+			"open-ils.cstore.direct.biblio.record_entry.search", { id => \@ids } );
 
 	while( my $resp = $request->recv ) {
 		my $content = $resp->content;
@@ -201,8 +201,8 @@ __PACKAGE__->register_method(
 sub biblio_id_to_copy { 
 	my( $self, $client, $ids ) = @_;
 	$logger->info("Fetching copies @$ids");
-	return $U->storagereq(
-		"open-ils.storage.direct.asset.copy.batch.retrieve.atomic", @$ids );
+	return $U->cstorereq(
+		"open-ils.cstore.direct.asset.copy.search.atomic", { id => $ids } );
 }
 
 
@@ -233,8 +233,12 @@ __PACKAGE__->register_method(
 sub fleshed_copy_retrieve_batch { 
 	my( $self, $client, $ids ) = @_;
 	$logger->info("Fetching fleshed copies @$ids");
-	return $U->storagereq(
-		"open-ils.storage.fleshed.asset.copy.batch.retrieve.atomic", @$ids );
+	return $U->cstorereq(
+		"open-ils.cstore.direct.asset.copy.search.atomic",
+		{ id => $ids },
+		{ flesh => 1, 
+		  flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries / ] }
+		});
 }
 
 
@@ -277,8 +281,8 @@ __PACKAGE__->register_method(
 sub biblio_copy_to_mods {
 	my( $self, $client, $copy ) = @_;
 
-	my $volume = $U->storagereq( 
-		"open-ils.storage.direct.asset.call_number.retrieve",
+	my $volume = $U->cstorereq( 
+		"open-ils.cstore.direct.asset.call_number.retrieve",
 		$copy->call_number() );
 
 	my $mods = _records_to_mods($volume->record());
@@ -665,8 +669,8 @@ sub biblio_record_to_marc_html {
 
 
 	my $record = $apputils->simple_scalar_request(
-		"open-ils.storage", 
-		"open-ils.storage.direct.biblio.record_entry.retrieve",
+		"open-ils.cstore", 
+		"open-ils.cstore.direct.biblio.record_entry.retrieve",
 		$recordid );
 
 	my $xmldoc = $parser->parse_string($record->marc);
@@ -687,8 +691,10 @@ sub retrieve_all_copy_locations {
 	my( $self, $client ) = @_;
 	if(!$shelving_locations) {
 		$shelving_locations = $apputils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.direct.asset.copy_location.retrieve.all.atomic");
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.asset.copy_location.search.atomic",
+			{ id => { "!=" => undef } }
+		);
 	}
 	return $shelving_locations;
 }
@@ -1005,8 +1011,8 @@ __PACKAGE__->register_method (
 
 sub fetch_copy_by_cn {
 	my( $self, $conn, $cnid ) = @_;
-	return $U->storagereq(
-		'open-ils.storage.id_list.asset.copy.search_where.atomic', 
+	return $U->cstorereq(
+		'open-ils.cstore.search.asset.copy.id_list.atomic', 
 		{ call_number => $cnid, deleted => 'f' } );
 }
 
@@ -1024,8 +1030,8 @@ __PACKAGE__->register_method (
 
 sub fetch_cn_by_info {
 	my( $self, $conn, $label, $record, $org ) = @_;
-	return $U->storagereq(
-		'open-ils.storage.direct.asset.call_number.search_where',
+	return $U->cstorereq(
+		'open-ils.cstore.direct.asset.call_number.search',
 		{ label => $label, record => $record, owning_lib => $org, deleted => 'f' });
 }
 

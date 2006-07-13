@@ -704,8 +704,8 @@ sub fetch_hold_notify {
 	return $evt if $evt;
 
 	$logger->info("User ".$requestor->id." fetching hold notifications for hold $holdid");
-	return $U->storagereq(
-		'open-ils.storage.direct.action.hold_notification.search.hold.atomic', $holdid );
+	return $U->cstorereq(
+		'open-ils.cstore.direct.action.hold_notification.search.atomic', {hold => $holdid} );
 }
 
 

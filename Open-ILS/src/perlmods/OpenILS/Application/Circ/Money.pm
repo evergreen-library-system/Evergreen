@@ -434,8 +434,8 @@ __PACKAGE__->register_method (
 sub fetch_mbts {
 	my($s, $c, $authtoken, $id) = @_;
 
-	my $sum = $U->storagereq(
-		'open-ils.storage.direct.money.billable_transaction_summary.retrieve', $id );
+	my $sum = $U->cstorereq(
+		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
 	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
 	my ($reqr, $evt) = $U->checkses($authtoken);
