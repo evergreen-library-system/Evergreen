@@ -1,0 +1,59 @@
+<acsconfig xmlns="http://openncip.org/acs-config/1.0/">
+
+	<error-detect enabled="true" />
+
+  <!-- Set Net::Server::PreFork runtime parameters -->
+	<!--  <server-params
+           min_servers='1'
+           min_spare_servers='0' /> -->
+  
+  
+	<listeners>
+		<service
+			port="0:8080/tcp"
+			transport="http"
+			protocol="NCIP/1.0" />
+
+		<service
+			port="8023/tcp"
+			transport="telnet"
+			protocol="SIP/1.00"
+			timeout="60" />
+
+		<service
+			port="127.0.0.1:6001/tcp"
+			transport="RAW" 
+			protocol="SIP/2.00"
+			timeout="60" />
+	</listeners>
+
+	<accounts>
+		<login id="scclient" password="clientpwd" institution="gapines"/>
+	</accounts>
+
+	<!-- Institution tags will hold stuff used to interface to -->
+	<!-- the rest of the ILS: authentication parameters, etc.  I -->
+	<!-- don't know what yet, so it'll just be blank.  But there -->
+	<!-- needs to be one institution stanza for each institution -->
+	<!-- named in the accounts above. -->
+	<institutions>
+		<institution id="gapines" implementation="OpenILS::SIP">
+			<policy checkin="true" renewal="false" 
+				status_update="false" offline="false" timeout="600" retries="3"/>
+	
+			<!-- implementation specific config options go here -->
+			<implementation_config>
+				<bootstrap>/openils/conf/bootstrap.conf</bootstrap>
+				<supports>
+					<!--
+					magnetic media' => 1,
+					security inhibit' => 0,
+					offline operation' => 0
+					-->
+				</supports>
+			</implementation_config>
+	
+		</institution>
+	
+	</institutions>
+</acsconfig>
