@@ -494,7 +494,7 @@ sub fetch_hold_transit_by_hold {
 
 	$transit = $self->simplereq(
 		'open-ils.cstore',
-		'open-ils.cstore.direct.action.hold_transit_copy.search.hold', $holdid );
+		'open-ils.cstore.direct.action.hold_transit_copy.search', { hold => $holdid } );
 
 	$evt = OpenILS::Event->new('ACTION_HOLD_TRANSIT_COPY_NOT_FOUND', holdid => $holdid) unless $transit;
 
