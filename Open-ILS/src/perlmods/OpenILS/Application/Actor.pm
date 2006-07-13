@@ -116,8 +116,8 @@ sub user_settings {
 
 	$logger->debug("User " . $staff->id . " fetching user $uid\n");
 	my $s = $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.user_setting.search.usr.atomic',$uid );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
 
 	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
@@ -134,8 +134,8 @@ sub ou_settings {
 	$logger->info("Fetching org unit settings for org $ouid");
 
 	my $s = $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.org_unit_setting.search.org_unit.atomic', $ouid);
+		'open-ils.cstore',
+		'open-ils.cstore.direct.actor.org_unit_setting.search.atomic', {org_unit => $ouid});
 
 	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
@@ -165,8 +165,8 @@ sub ou_setting_delete {
 
 	$logger->debug("Retrieved setting $id in org unit setting delete");
 
-	my $s = $U->storagereq(
-		'open-ils.storage.direct.actor.org_unit_setting.delete', $id );
+	my $s = $U->cstorereq(
+		'open-ils.cstore.direct.actor.org_unit_setting.delete', $id );
 
 	$logger->activity("User ".$reqr->id." deleted org unit setting $id") if $s;
 	return $s;
@@ -819,9 +819,10 @@ __PACKAGE__->register_method(
 sub search_username {
 	my($self, $client, $username) = @_;
 	my $users = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.direct.actor.user.search.usrname.atomic",
-			$username );
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.actor.user.search.atomic",
+			{ usrname => $username }
+	);
 	return $users;
 }
 
@@ -839,14 +840,14 @@ sub user_retrieve_by_barcode {
 	my ($user_obj, $evt) = $apputils->checkses($user_session);
 	return $evt if $evt;
 
-
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
-
-	# find the card with the given barcode
-	my $creq	= $session->request(
-			"open-ils.storage.direct.actor.card.search.barcode.atomic",
-			$barcode );
-	my $card = $creq->gather(1);
+	my $card = OpenILS::Application::AppUtils->simple_scalar_request(
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.actor.card.search.atomic",
+			{ barcode => $barcode },
+			{ flesh => 1,
+			  flesh_fields => { ac => [ 'usr' ] }
+			}
+	);
 
 	if(!$card || !$card->[0]) {
 		$session->disconnect();
@@ -859,7 +860,6 @@ sub user_retrieve_by_barcode {
 	$evt = $U->check_perms($user_obj->id, $user->home_ou, 'VIEW_USER');
 	return $evt if $evt;
 
-	$session->disconnect();
 	if(!$user) { return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ); }
 	return $user;
 
@@ -907,8 +907,8 @@ sub get_user_profiles {
 
 	return $user_profiles = 
 		$apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.actor.profile.retrieve.all.atomic");
+			"open-ils.cstore",
+			"open-ils.cstore.direct.actor.profile.search.atomic", { id => { "!=" => undef });
 }
 
 
@@ -954,9 +954,9 @@ sub search_org_unit {
 	my( $self, $client, $field, $value ) = @_;
 
 	my $list = OpenILS::Application::AppUtils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.org_unit.search.$field.atomic", 
-		$value );
+		"open-ils.cstore",
+		"open-ils.cstore.direct.actor.org_unit.search.atomic", 
+		{ $field => $value } );
 
 	return $list;
 }
@@ -1063,8 +1063,10 @@ sub get_standings {
 	return $user_standings if $user_standings;
 	return $user_standings = 
 		$apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.config.standing.retrieve.all.atomic" );
+			"open-ils.cstore",
+			"open-ils.cstore.direct.config.standing.search.atomic",
+			{ id => { "!=" => undef } }
+		);
 }
 
 
@@ -1107,8 +1109,8 @@ sub _verify_password {
 
 	#grab the user with password
 	$user_obj = $apputils->simple_scalar_request(
-		"open-ils.storage", 
-		"open-ils.storage.direct.actor.user.retrieve",
+		"open-ils.cstore", 
+		"open-ils.cstore.direct.actor.user.retrieve",
 		$user_obj->id );
 
 	if($user_obj->passwd eq $password) {
@@ -1340,9 +1342,9 @@ sub user_fines_summary {
 	}
 
 	return $apputils->simple_scalar_request( 
-		"open-ils.storage",
-		"open-ils.storage.direct.money.open_user_summary.search.usr",
-		$user_id );
+		"open-ils.cstore",
+		"open-ils.cstore.direct.money.open_user_summary.search",
+		{ usr => $user_id } );
 
 }
 
@@ -1473,22 +1475,22 @@ sub user_transactions {
 	if($api =~ /have_charge/o) {
 
 		$trans = $apputils->simple_scalar_request( 
-			"open-ils.storage",
-			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
 			{ usr => $user_id, total_owed => { ">" => 0 }, @xact });
 
 	} elsif($api =~ /have_balance/o) {
 
 		$trans =  $apputils->simple_scalar_request( 
-			"open-ils.storage",
-			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
 			{ usr => $user_id, balance_owed => { "<>" => 0 }, @xact });
 
 	} else {
 
 		$trans =  $apputils->simple_scalar_request( 
-			"open-ils.storage",
-			"open-ils.storage.direct.money.open_billable_transaction_summary.search_where.atomic",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
 			{ usr => $user_id, @xact });
 	}
 
@@ -1514,8 +1516,8 @@ sub user_transactions {
 		}
 
 		my $circ = $apputils->simple_scalar_request(
-				"open-ils.storage",
-				"open-ils.storage.direct.action.circulation.retrieve",
+				"open-ils.cstore",
+				"open-ils.cstore.direct.action.circulation.retrieve",
 				$t->id );
 
 		next unless $circ;
@@ -1557,8 +1559,8 @@ sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
 
 	my $trans = $apputils->simple_scalar_request( 
-		"open-ils.storage",
-		"open-ils.storage.direct.money.billable_transaction_summary.retrieve",
+		"open-ils.cstore",
+		"open-ils.cstore.direct.money.billable_transaction_summary.retrieve",
 		$bill_id
 	);
 
@@ -1575,8 +1577,8 @@ sub user_transaction_retrieve {
 	}
 
 	my $circ = $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.action.circulation.retrieve",
+			"open-ils.cstore",
+			"open-ils..direct.action.circulation.retrieve",
 			$trans->id );
 
 	return {transaction => $trans} unless $circ;
@@ -1598,8 +1600,8 @@ sub user_transaction_retrieve {
 	} otherwise {
 		if ($title->id == -1) {
 			my $copy = $apputils->simple_scalar_request(
-				"open-ils.storage",
-				"open-ils.storage.direct.asset.copy.retrieve",
+				"open-ils.cstore",
+				"open-ils.cstore.direct.asset.copy.retrieve",
 				$circ->target_copy );
 
 			$mods = new Fieldmapper::metabib::virtual_record;
@@ -1631,8 +1633,8 @@ sub hold_request_count {
 	
 
 	my $holds = $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.action.hold_request.search_where.atomic",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.action.hold_request.search.atomic",
 			{ usr => $userid,
 			  fulfillment_time => {"=" => undef } }
 	);
@@ -1642,8 +1644,8 @@ sub hold_request_count {
 		next unless $h->capture_time;
 
 		my $copy = $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.asset.copy.retrieve",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.asset.copy.retrieve",
 			$h->current_copy
 		);
 
@@ -1673,8 +1675,8 @@ sub checkedout_count {
 	return $evt if $evt;
 	
 	my $circs = $apputils->simple_scalar_request(
-			"open-ils.storage",
-			"open-ils.storage.direct.action.circulation.search_where.atomic",
+			"open-ils.cstore",
+			"open-ils.cstore.direct.action.circulation.search.atomic",
 			{ usr => $userid, stop_fines => undef }
 			#{ usr => $userid, checkin_time => {"=" => undef } }
 	);
@@ -1831,9 +1833,9 @@ sub _user_transaction_history {
 	$logger->debug("searching for transaction history: @xact : @balance, @charge");
 
 	my $trans = $apputils->simple_scalar_request( 
-		"open-ils.storage",
-		"open-ils.storage.direct.money.billable_transaction_summary.search_where.atomic",
-		{ usr => $user_id, @xact, @charge, @balance }, { order_by => 'xact_start DESC' });
+		"open-ils.cstore",
+		"open-ils.cstore.direct.money.billable_transaction_summary.search.atomic",
+		{ usr => $user_id, @xact, @charge, @balance }, { order_by => { mbts => 'xact_start DESC' } });
 
 	return [ map { $_->id } @$trans ];
 }
@@ -1894,8 +1896,10 @@ __PACKAGE__->register_method(
 sub retrieve_perms {
 	my( $self, $client ) = @_;
 	return $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.permission.perm_list.retrieve.all.atomic");
+		"open-ils.cstore",
+		"open-ils.cstore.direct.permission.perm_list.search.atomic",
+		{ id => { '!=' => undef } }
+	);
 }
 
 __PACKAGE__->register_method(
@@ -1919,8 +1923,8 @@ __PACKAGE__->register_method(
 sub retrieve_org_address {
 	my( $self, $client, $id ) = @_;
 	return $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.actor.org_address.retrieve",
+		"open-ils.cstore",
+		"open-ils.cstore.direct.actor.org_address.retrieve",
 		$id
 	);
 }
@@ -2032,8 +2036,8 @@ sub get_user_perm_groups {
 	return $evt if $evt;
 
 	return $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.permission.usr_grp_map.search.usr.atomic', $userid );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.permission.usr_grp_map.search.atomic', { usr => $userid } );
 }	
 
 

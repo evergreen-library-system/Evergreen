@@ -13,8 +13,8 @@ my $logger = "OpenSRF::Utils::Logger";
 
 sub initialize { return 1; }
 
-my $svc = 'open-ils.storage';
-my $meth = 'open-ils.storage.direct.container';
+my $svc = 'open-ils.cstore';
+my $meth = 'open-ils.cstore.direct.container';
 my %types;
 $types{'biblio'} = "$meth.biblio_record_entry_bucket";
 $types{'callnumber'} = "$meth.call_number_bucket";
@@ -356,7 +356,7 @@ sub container_update {
 	$logger->activity("User " . $staff->id . " updating container ". $container->id);
 
 	my $meth = $types{$class}.".update";
-	return $U->storagereq($meth, $container);
+	return $U->cstorereq($meth, $container);
 }
 
 

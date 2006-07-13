@@ -609,9 +609,9 @@ __PACKAGE__->register_method(
 sub biblio_record_marc_cn {
 	my( $self, $client, $id ) = @_;
 
-	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	my $session = OpenSRF::AppSession->create("open-ils.cstore");
 	my $marc = $session
-		->request("open-ils.storage.direct.biblio.record_entry.retrieve", $id )
+		->request("open-ils.cstore.direct.biblio.record_entry.retrieve", $id )
 		->gather(1)
 		->marc;
 
@@ -635,14 +635,14 @@ sub _get_id_by_userid {
 	my @users = @_;
 	my @ids;
 
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
+	my $session = OpenSRF::AppSession->create( "open-ils.cstore" );
 	my $request = $session->request( 
-		"open-ils.storage.direct.actor.user.search.usrname.atomic", @users );
+		"open-ils.cstore.direct.actor.user.search.atomic", { usrname => \@users } );
 
 	$request->wait_complete;
 	my $response = $request->recv();
 	if(!$request->complete) { 
-		throw OpenSRF::EX::ERROR ("no response from storage on user retrieve");
+		throw OpenSRF::EX::ERROR ("no response from cstore on user retrieve");
 	}
 
 	if(UNIVERSAL::isa( $response, "Error")){
@@ -707,8 +707,8 @@ sub orgs_for_title {
 	my( $self, $client, $record_id ) = @_;
 
 	my $vols = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.asset.call_number.search_where.atomic",
+		"open-ils.cstore",
+		"open-ils.cstore.direct.asset.call_number.search.atomic",
 		{ record => $record_id, deleted => 'f' });
 
 	my $orgs = { map {$_->owning_lib => 1 } @$vols };
@@ -769,11 +769,11 @@ sub _build_volume_list {
 
 	$search_hash->{deleted} = 'f';
 
-	my	$session = OpenSRF::AppSession->create( "open-ils.storage" );
+	my	$session = OpenSRF::AppSession->create( "open-ils.cstore" );
 	
 
 	my $request = $session->request( 
-			"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
+			"open-ils.cstore.direct.asset.call_number.search.atomic", $search_hash );
 			#"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
 
 	my $vols = $request->gather(1);
@@ -783,7 +783,7 @@ sub _build_volume_list {
 
 		warn "Grabbing copies for volume: " . $volume->id . "\n";
 		my $creq = $session->request(
-			"open-ils.storage.direct.asset.copy.search_where.atomic", 
+			"open-ils.cstore.direct.asset.copy.search.atomic", 
 			{ call_number => $volume->id , deleted => 'f' });
 			#"open-ils.storage.direct.asset.copy.search.call_number.atomic", $volume->id );
 

@@ -118,19 +118,19 @@ sub init_authenticate {
 sub complete_authenticate {
 	my( $self, $client, $username, $passwdhash, $type ) = @_;
 
-	my $name = "open-ils.storage.direct.actor.user.search.usrname.atomic";
+	my $name = "open-ils.cstore.direct.actor.user.search.atomic";
 
 	warn "Completing Authentication\n";
 
-	warn "Retrieving user from storage..\n";
+	warn "Retrieving user from cstore..\n";
 	my $user_list = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.storage", $name, $username );
+			"open-ils.cstore", $name, { usrname => $username } );
 
 	unless(ref($user_list)) {
 		return { ilsevent => 1000 };
 	}
 
-	warn "We have the user from storage with usrname $username\n";
+	warn "We have the user from cstore with usrname $username\n";
 
 	my $user = $user_list->[0];
 	

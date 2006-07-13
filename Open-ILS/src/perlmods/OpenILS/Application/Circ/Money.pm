@@ -223,8 +223,8 @@ sub retrieve_payments {
 	# to make sure the requestor has access
 
 	return $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.money.payment.search.xact.atomic', $transid );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.money.payment.search.atomic', { xact => $transid } );
 }
 
 
@@ -286,8 +286,8 @@ sub billing_items {
 		return $evt if $evt;
 	}
 	
-	return $apputils->simplereq( 'open-ils.storage',
-		'open-ils.storage.direct.money.billing.search.xact.atomic', $transid )
+	return $apputils->simplereq( 'open-ils.cstore',
+		'open-ils.cstore.direct.money.billing.search.atomic', { xact => $transid } )
 }
 
 

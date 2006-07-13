@@ -181,8 +181,8 @@ sub get_survey_responses {
 	}
 
 	my $res = $apputils->simple_scalar_request(
-		"open-ils.storage",
-		"open-ils.storage.direct.action.survey_response.search.atomic",
+		"open-ils.cstore",
+		"open-ils.cstore.direct.action.survey_response.search.atomic",
 		{ usr => $user_id, survey => $survey_id } );
 
 	warn "Surveys: " .  Dumper($res);

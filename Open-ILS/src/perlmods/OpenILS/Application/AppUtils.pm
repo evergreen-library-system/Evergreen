@@ -216,15 +216,19 @@ sub get_org_tree {
 	if(!$orglist) {
 		warn "Retrieving Org Tree\n";
 		$orglist = $self->simple_scalar_request( 
-			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.actor.org_unit.search.atomic",
+			{ id => { '!=' => undef } }
+		);
 	}
 
 	if( ! $org_typelist ) {
 		warn "Retrieving org types\n";
 		$org_typelist = $self->simple_scalar_request( 
-			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic" );
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.actor.org_unit_type.search.atomic",
+			{ id => { '!=' => undef } }
+		);
 		$self->build_org_type($org_typelist);
 	}
 
@@ -247,8 +251,10 @@ sub get_slim_org_tree {
 	if(!$orglist) {
 		warn "Retrieving Org Tree\n";
 		$orglist = $self->simple_scalar_request( 
-			"open-ils.storage", 
-			"open-ils.storage.direct.actor.org_unit.retrieve.all.atomic" );
+			"open-ils.cstore", 
+			"open-ils.cstore.direct.actor.org_unit.search.atomic",
+			{ id => { '!=' => undef } }
+		);
 	}
 
 	$slimtree = $self->build_org_tree($orglist);
@@ -302,11 +308,11 @@ sub fetch_closed_date {
 	my( $self, $cd ) = @_;
 	my $evt;
 	
-	$logger->debug("Fetching closed_date $cd from storage");
+	$logger->debug("Fetching closed_date $cd from cstore");
 
 	my $cd_obj = $self->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.org_unit.closed_date.retrieve', $cd );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.actor.org_unit.closed_date.retrieve', $cd );
 
 	if(!$cd_obj) {
 		$logger->info("closed_date $cd not found in the db");
@@ -320,11 +326,11 @@ sub fetch_user {
 	my( $self, $userid ) = @_;
 	my( $user, $evt );
 	
-	$logger->debug("Fetching user $userid from storage");
+	$logger->debug("Fetching user $userid from cstore");
 
 	$user = $self->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.user.retrieve', $userid );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.actor.user.retrieve', $userid );
 
 	if(!$user) {
 		$logger->info("User $userid not found in the db");
@@ -398,11 +404,11 @@ sub fetch_copy {
 	my( $self, $copyid ) = @_;
 	my( $copy, $evt );
 
-	$logger->debug("Fetching copy $copyid from storage");
+	$logger->debug("Fetching copy $copyid from cstore");
 
 	$copy = $self->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.asset.copy.retrieve', $copyid );
+		'open-ils.cstore',
+		'open-ils.cstore.direct.asset.copy.retrieve', $copyid );
 
 	if(!$copy) { $evt = OpenILS::Event->new('ASSET_COPY_NOT_FOUND'); }
 
@@ -846,8 +852,8 @@ sub fetch_open_circulation {
 	my( $self, $cid ) = @_;
 	my $evt;
 	$self->logmark;
-	my $circ = $self->storagereq(
-		'open-ils.storage.direct.action.open_circulation.search_where',
+	my $circ = $self->cstorereq(
+		'open-ils.cstore.direct.action.open_circulation.search',
 		{ target_copy => $cid, stop_fines_time => undef } );
 	$evt = OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND') unless $circ;	
 	return ($circ, $evt);

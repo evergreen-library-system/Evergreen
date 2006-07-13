@@ -278,16 +278,17 @@ sub retrieve_holds_by_id {
 	#return $evt if $evt;
 
 	my $holds = $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.hold_request.search.atomic",
-		"id" =>  $hold_id , fulfillment_time => undef, { order_by => "request_time" });
+		'open-ils.cstore',
+		"open-ils.cstore.direct.action.hold_request.search.atomic",
+		{ id =>  $hold_id , fulfillment_time => undef, { order_by => { ahr => "request_time" } });
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
 			$apputils->simplereq(
-				'open-ils.storage',
-				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
-				{ order_by => 'id desc', limit => 1 }
+				'open-ils.cstore',
+				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
+				{ hold => $hold->id },
+				{ order_by => { ahtc => 'id desc' }, limit => 1 }
 			)->[0]
 		);
 	}
@@ -314,16 +315,17 @@ sub retrieve_holds {
 	return $evt if $evt;
 
 	my $holds = $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.hold_request.search.atomic",
-		"usr" =>  $user_id , fulfillment_time => undef, { order_by => "request_time" });
+		'open-ils.cstore',
+		"open-ils.cstore.direct.action.hold_request.search.atomic",
+		{ usr =>  $user_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
 			$apputils->simplereq(
-				'open-ils.storage',
-				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
-				{ order_by => 'id desc', limit => 1 }
+				'open-ils.cstore',
+				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
+				{ hold => $hold->id },
+				{ order_by => { ahtc => 'id desc' }, limit => 1 }
 			)->[0]
 		);
 	}
@@ -349,16 +351,17 @@ sub retrieve_holds_by_pickup_lib {
 	#return $evt if $evt;
 
 	my $holds = $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.hold_request.search.atomic",
-		"pickup_lib" =>  $ou_id , fulfillment_time => undef, { order_by => "request_time" });
+		'open-ils.cstore',
+		"open-ils.cstore.direct.action.hold_request.search.atomic",
+		{ pickup_lib =>  $ou_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
 			$apputils->simplereq(
-				'open-ils.storage',
-				"open-ils.storage.direct.action.hold_transit_copy.search.hold.atomic" => $hold->id,
-				{ order_by => 'id desc', limit => 1 }
+				'open-ils.cstore',
+				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
+				{ hold => $hold->id },
+				{ order_by => { ahtc => 'id desc' }, limit => 1 }
 			)->[0]
 		);
 	}
@@ -637,9 +640,9 @@ sub fetch_open_hold_by_current_copy {
 	my $class = shift;
 	my $copyid = shift;
 	my $hold = $apputils->simplereq(
-		'open-ils.storage', 
-		'open-ils.storage.direct.action.hold_request.search.atomic',
-			 current_copy =>  $copyid , fulfillment_time => undef );
+		'open-ils.cstore', 
+		'open-ils.cstore.direct.action.hold_request.search.atomic',
+		{ current_copy =>  $copyid , fulfillment_time => undef });
 	return $hold->[0] if ref($hold);
 	return undef;
 }
@@ -648,9 +651,9 @@ sub fetch_related_holds {
 	my $class = shift;
 	my $copyid = shift;
 	return $apputils->simplereq(
-		'open-ils.storage', 
-		'open-ils.storage.direct.action.hold_request.search.atomic',
-			 current_copy =>  $copyid , fulfillment_time => undef );
+		'open-ils.cstore', 
+		'open-ils.cstore.direct.action.hold_request.search.atomic',
+		{ current_copy =>  $copyid , fulfillment_time => undef });
 }
 
 
