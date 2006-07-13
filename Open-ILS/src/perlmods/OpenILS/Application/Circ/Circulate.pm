@@ -102,6 +102,8 @@ sub create_circ_ctx {
 	OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 	my @evts = @{$ctx->{_events}} if $ctx->{_events};
 
+	#warn "SCRIPT BUILDER EVENTS: @evts\n";
+
 	if(!$params{noncat}) {
 		if( @evts and grep { $_->{textcode} eq 'ASSET_COPY_NOT_FOUND' } @evts) {
 			$ctx->{precat} = 1;
@@ -875,6 +877,7 @@ sub _run_checkout_scripts {
 #	$runner->insert('result.maxFine');
 
 	$runner->load($scripts{circ_duration});
+
 	my $result		= $runner->run or throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
 	my $duration	= $result->{durationRule};
 	my $dur_level	= $result->{durationLevel};
