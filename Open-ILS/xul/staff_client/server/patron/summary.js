@@ -76,11 +76,13 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() {
+							/*
 								e.setAttribute('value',
 									obj.OpenILS.data.hash.cst[
 										obj.patron.standing()
 									].value()
 								);
+							*/
 								var e2 = document.getElementById('patron_standing_penalties');
 								JSAN.use('util.widgets');
 								util.widgets.remove_children(e2);
