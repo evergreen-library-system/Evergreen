@@ -128,7 +128,6 @@ sub check_user_session {
 		'open-ils.auth', 
 		'open-ils.auth.session.retrieve', $user_session );
 
-
 	if(! $content or $self->event_code($content)) {
 		throw OpenSRF::EX::ERROR 
 			("Session [$user_session] cannot be authenticated" );
@@ -344,6 +343,8 @@ sub checkses {
 	try {
 		$user = $self->check_user_session($session);
 	} catch Error with { $e = 1; };
+
+	$logger->debug("Done checking user session $session " . (($e) ? "error = $e" : "") );
 
 	if( $e or !$user ) { $evt = OpenILS::Event->new('NO_SESSION'); }
 	return ( $user, $evt );
@@ -794,7 +795,7 @@ sub fetch_recurring_fine_by_name {
 	my( $obj, $evt );
 	$obj = $self->simplereq(
 		'open-ils.cstore', 
-		'open-ils.cstore.direct.config.rules.recuring_fine.search.atomic', { name => $name | );
+		'open-ils.cstore.direct.config.rules.recuring_fine.search.atomic', { name => $name } );
 	$obj = $obj->[0];
 	$evt = OpenILS::Event->new('CONFIG_RULES_RECURING_FINE_NOT_FOUND') unless $obj;
 	return ($obj, $evt);
