@@ -47,7 +47,7 @@ sub import {
 
         # parse the IDL ...
         my $file = $args{IDL} || OpenSRF::Utils::SettingsClient->new->config_value( 'IDL' );
-        my $idl = XMLin( $file, ForceArray => 0 )->{class};
+        my $idl = XMLin( $file, ForceArray => 0, KeyAttr => ['name', 'key', 'id'] )->{class};
 	for my $c ( keys %$idl ) {
 		next unless ($idl->{$c}{'oils_obj:fieldmapper'});
 		my $n = 'Fieldmapper::'.$idl->{$c}{'oils_obj:fieldmapper'};
