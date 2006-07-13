@@ -40,7 +40,9 @@ OpenILS.data.prototype = {
 			const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
 			var data_cache=new OpenILS( );
 			for (var i = 0; i < arguments.length; i++) {
-				this.error.sdump('D_DATA','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + '\n');
+				try {
+					if (arguments[i] != 'hash' && arguments[i] != 'list') this.error.sdump('D_DATA_STASH','stashing ' + arguments[i] + ' : ' + this[arguments[i]] + (typeof this[arguments[i]] == 'object' ? ' = ' + js2JSON(this[arguments[i]]) : '') + '\n');
+				} catch(F) { alert(F); }
 				data_cache.wrappedJSObject.OpenILS.prototype.data[arguments[i]] = this[arguments[i]];
 			}
 		} catch(E) {
@@ -83,7 +85,7 @@ OpenILS.data.prototype = {
 			var data_cache=new OpenILS( );
 			var dc = data_cache.wrappedJSObject.OpenILS.prototype.data;
 			for (var i in dc) {
-				this.error.sdump('D_DATA','Retrieving ' + i + ' : ' + dc[i] + '\n');
+				this.error.sdump('D_DATA_RETRIEVE','Retrieving ' + i + ' : ' + dc[i] + '\n');
 				this[i] = dc[i];
 			}
 			if (typeof this.on_complete == 'function') {
