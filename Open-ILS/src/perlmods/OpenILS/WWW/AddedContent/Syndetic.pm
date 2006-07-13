@@ -226,7 +226,7 @@ sub fetch_content {
 	$logger->info("added content URL = $url");
 	my $agent = LWP::UserAgent->new;
 	my $res = $agent->get($url);
-	die "added content request failed: $res->status_line\n" unless $res->is_success;
+	die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
 	return $res->content;
 }
 
