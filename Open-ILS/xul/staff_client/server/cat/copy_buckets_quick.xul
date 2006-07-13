@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Patron Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="copy_buckets_win" title="Add to Bucket"
+	onload="try { my_init(); } catch(E) { alert(E); }" persist="height,width"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+		function $c(n) { return document.createElement(n); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				g.cgi = new CGI();
+				g.copy_ids = [];
+				if (g.cgi.param('copy_ids')) g.copy_ids = g.copy_ids.concat( JSON2js( g.cgi.param('copy_ids') ) );
+				if (typeof window.xuLG == 'object' && typeof window.xulG.copy_ids != 'undefined')
+					g.copy_ids = g.copy_ids.concat( window.xulG.copy_ids );
+				if (g.data.temp_copy_ids != 'undefined' && g.data.temp_copy_ids != null) {
+					g.copy_ids = g.copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
+					g.data.temp_copy_ids = null; g.data.stash('temp_copy_ids');
+				}
+
+				$('desc').appendChild( document.createTextNode( 
+					(g.copy_ids.length == 1 ?
+						'Copy this 1 item into which bucket?' :
+						'Copy these ' + g.copy_ids.length + ' items into which bucket?') 
+				) );
+				var robj = g.network.simple_request('BUCKET_RETRIEVE_VIA_USER',[ ses(), g.data.list.au[0].id() ]);
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+				for (var i = 0; i < robj.copy.length; i++) {
+					var listitem = $c('listitem');
+					listitem.setAttribute('label', robj.copy[i].name());
+					listitem.setAttribute('id', robj.copy[i].id());
+					$('bucket_list').appendChild(listitem);
+				}
+				$('bucket_list').selectedIndex = 0;
+				$('bucket_list').focus();
+
+			} catch(E) {
+				try { 
+					g.error.standard_unexpected_error_alert('Trying to init copy_buckets_quick.xul',E); 
+				} catch(F) { 
+					alert(E); 
+				}
+			}
+		}
+
+		g.new_bucket = function() {
+			try {
+				var name = prompt('What would you like to name the bucket?','','Bucket Creation');
+				if (name) {
+					var bucket = new ccb();
+					bucket.btype('staff_client');
+					bucket.owner( g.data.list.au[0].id() );
+					bucket.name( name );
+
+					var bucket_id = g.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
+					if (typeof bucket_id == 'object') throw bucket_id;
+
+					g.add_to_bucket(bucket_id);
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Bucket creation failed.',E);
+			}
+		}
+
+		g.add_to_bucket = function(b) {
+			var bucket_id;
+			if (b) {
+				bucket_id = b;
+			} else {
+				if ($('bucket_list').selectedItem) bucket_id = $('bucket_list').selectedItem.getAttribute('id');
+			}
+			if (!bucket_id) return;
+			for (var i = 0; i < g.copy_ids.length; i++) {
+				var bucket_item = new ccbi();
+				bucket_item.isnew('1');
+				bucket_item.bucket(bucket_id);
+				bucket_item.target_copy( g.copy_ids[i] );
+				try {
+					var robj = g.network.simple_request('BUCKET_ITEM_CREATE', [ ses(), 'copy', bucket_item ]);
+					if (typeof robj == 'object') throw robj;
+
+				} catch(E) {
+					g.error.standard_unexpected_error_alert('Addition likely failed for bucket = ' + bucket_id + ' and copy id = ' + g.copy_ids[i],E);
+				}
+			}
+			window.close();
+		}
+
+		g.advanced = function() {
+			JSAN.use('util.window'); var win = new util.window();
+			g.data.temp_copy_ids = js2JSON( g.copy_ids ); g.data.stash('temp_copy_ids');
+			win.open(urls.XUL_COPY_BUCKETS,'adv_copy_buckets','chrome,resizable,modal');
+			window.close();
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" style="overflow: auto">
+	<groupbox flex="1">
+		<caption label="Item Buckets"/>
+		<description id="desc"/>
+		<listbox id="bucket_list" rows="5" flex="1" style="overflow: auto"/>
+		<hbox>
+			<button label="Add to Selected Bucket" accesskey="A" oncommand="g.add_to_bucket()"/>
+			<button label="Add to New Bucket" accesskey="N" oncommand="g.new_bucket()"/>
+		</hbox>
+		<hbox>
+			<button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
+			<button label="Cancel" accesskey="C" oncommand="window.close()"/>
+		</hbox>
+	</groupbox>
+	</vbox>
+
+</window>
+
