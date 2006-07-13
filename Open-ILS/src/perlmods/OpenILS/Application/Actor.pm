@@ -908,7 +908,7 @@ sub get_user_profiles {
 	return $user_profiles = 
 		$apputils->simple_scalar_request(
 			"open-ils.cstore",
-			"open-ils.cstore.direct.actor.profile.search.atomic", { id => { "!=" => undef });
+			"open-ils.cstore.direct.actor.profile.search.atomic", { id => { "!=" => undef }});
 }
 
 
@@ -1649,7 +1649,7 @@ sub hold_request_count {
 			$h->current_copy
 		);
 
-		if ($copy->status == 8) {
+		if ($copy and $copy->status == 8) {
 			push @ready, $h;
 		}
 	}
@@ -1947,12 +1947,6 @@ sub retrieve_groups_tree {
 			}
 		]
 	)->[0];
-
-#	my $groups = $apputils->simple_scalar_request(
-#		"open-ils.storage",
-#		"open-ils.storage.direct.permission.grp_tree.retrieve.all.atomic");
-#	return $self->build_group_tree($groups);	
-
 }
 
 
