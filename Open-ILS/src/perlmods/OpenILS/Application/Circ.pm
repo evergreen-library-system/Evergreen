@@ -23,6 +23,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 
 # ------------------------------------------------------------------------
@@ -686,6 +687,17 @@ sub delete_copy_note {
 
 	$logger->activity("User ".$requestor->id." deleted copy note $noteid");
 	return 1;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'age_hold_rules',
+	api_name	=>  'open-ils.circ.config.rules.age_hold_protect.retrieve.all',
+);
+
+sub age_hold_rules {
+	my( $self, $conn ) = @_;
+	return new_editor()->retrieve_all_config_rules_age_hold_protect();
 }
 
 
