@@ -280,7 +280,7 @@ sub retrieve_holds_by_id {
 	my $holds = $apputils->simplereq(
 		'open-ils.cstore',
 		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ id =>  $hold_id , fulfillment_time => undef, { order_by => { ahr => "request_time" } });
+		{ id =>  $hold_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
