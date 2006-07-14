@@ -109,7 +109,7 @@ sub session {
 		$self->{session} = OpenSRF::AppSession->create('open-ils.cstore');
 
 		if( ! $self->{session} ) {
-			my $str = "Error creating storage session with OpenSRF::AppSession->create()!";
+			my $str = "Error creating cstore session with OpenSRF::AppSession->create()!";
 			$self->log(E, $str);
 			throw OpenSRF::EX::ERROR ($str);
 		}

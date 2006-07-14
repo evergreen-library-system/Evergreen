@@ -429,11 +429,9 @@ sub block {
 	my ($self, $card_retained, $blocked_card_msg) = @_;
 
 	my $u = $self->{user};
-	my $e = $self->{editor};
+	my $e = $self->{editor} = OpenILS::SIP->reset_editor();
 
 	syslog('LOG_INFO', "Blocking user %s", $u->card->barcode );
-
-	if(!$e->{xact}) { $e->reset; $e->{xact} = 1; }
 
 	return $self if $u->card->active eq 'f';
 
