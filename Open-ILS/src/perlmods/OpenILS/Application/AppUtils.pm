@@ -1005,7 +1005,7 @@ sub fetch_copies_by_call_number {
 sub fetch_user_by_barcode {
 	my( $self, $bc ) = @_;
 	my $cardid = $self->cstorereq(
-		'open-ils.cstore.id_list.actor.card.search', { barcode => $bc } );
+		'open-ils.cstore.direct.actor.card.id_list', { barcode => $bc } );
 	return (undef, OpenILS::Event->new('ACTOR_CARD_NOT_FOUND', barcode => $bc)) unless $cardid;
 	my $user = $self->cstorereq(
 		'open-ils.cstore.direct.actor.user.search', { card => $cardid } );
