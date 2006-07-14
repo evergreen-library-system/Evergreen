@@ -21,24 +21,39 @@ util.list = function (id) {
 
 util.list.prototype = {
 
+	'row_count' : { 'total' : 0, 'fleshed' : 0, 'all_fleshed' : true },
+
 	'init' : function (params) {
+
+		var obj = this;
 
 		JSAN.use('util.widgets');
 
-		if (typeof params.map_row_to_column == 'function') this.map_row_to_column = params.map_row_to_column;
-		if (typeof params.retrieve_row == 'function') this.retrieve_row = params.retrieve_row;
+		if (typeof params.map_row_to_column == 'function') obj.map_row_to_column = params.map_row_to_column;
+		if (typeof params.retrieve_row == 'function') obj.retrieve_row = params.retrieve_row;
 
-		this.prebuilt = false;
-		if (typeof params.prebuilt != 'undefined') this.prebuilt = params.prebuilt;
+		obj.prebuilt = false;
+		if (typeof params.prebuilt != 'undefined') obj.prebuilt = params.prebuilt;
 
 		if (typeof params.columns == 'undefined') throw('util.list.init: No columns');
-		this.columns = params.columns;
+		obj.columns = params.columns;
 
-		switch(this.node.nodeName) {
-			case 'tree' : this._init_tree(params); break;
-			case 'listbox' : this._init_listbox(params); break;
-			default: throw('NYI: Need ._init() for ' + this.node.nodeName); break;
+		switch(obj.node.nodeName) {
+			case 'tree' : obj._init_tree(params); break;
+			case 'listbox' : obj._init_listbox(params); break;
+			default: throw('NYI: Need ._init() for ' + obj.node.nodeName); break;
 		}
+
+		obj.row_count.watch(
+			'all_fleshed',
+			function(a,b,c) {
+				if (c) {
+					if (typeof obj.on_all_fleshed == 'function') {
+						obj.on_all_fleshed(a,b,c);
+					}
+				}
+			}
+		);
 	},
 
 	'_init_tree' : function (params) {
@@ -147,6 +162,9 @@ util.list.prototype = {
 			default: throw('NYI: Need .clear() for ' + this.node.nodeName); break;
 		}
 		this.error.sdump('D_LIST','Clearing list ' + this.node.getAttribute('id') + '\n');
+		this.row_count.total = 0;
+		this.row_count.fleshed = 0;
+		this.row_count.all_fleshed = true;
 	},
 
 	'_clear_tree' : function(params) {
@@ -183,6 +201,12 @@ util.list.prototype = {
 				rnode.setAttribute(i,params.attributes[i]);
 			}
 		}
+		this.row_count.total++;
+		if (this.row_count.fleshed == this.row_count.total) {
+			this.row_count.all_fleshed = true;
+		} else {
+			this.row_count.all_fleshed = false;
+		}
 		return rnode;
 	},
 
@@ -211,13 +235,13 @@ util.list.prototype = {
 		treechildren_node.appendChild( treeitem );
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
+		treerow.setAttribute('retrieve_id',params.retrieve_id);
 
 		s += ('tree = ' + this.node + '  treechildren = ' + treechildren_node + '\n');
 		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
 		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
-			treerow.setAttribute('retrieve_id',params.retrieve_id);
 			obj.put_retrieving_label(treerow);
 			treerow.addEventListener(
 				'flesh',
@@ -229,6 +253,13 @@ util.list.prototype = {
 						try {
 							p.row = params.row;
 							obj._map_row_to_treecell(p,treerow);
+							treerow.setAttribute('fleshed','true');
+							obj.row_count.fleshed++;
+							if (obj.row_count.fleshed == obj.row_count.total) {
+								obj.row_count.all_fleshed = true;
+							} else {
+								obj.row_count.all_fleshed = false;
+							}
 						} catch(E) {
 							alert('fixme2: ' + E);
 						}
@@ -266,6 +297,13 @@ util.list.prototype = {
 					//dump('fleshing anon\n');
 					obj._map_row_to_treecell(params,treerow);
 					treerow.setAttribute('retrieved','true');
+					treerow.setAttribute('fleshed','true');
+					obj.row_count.fleshed++;
+					if (obj.row_count.fleshed == obj.row_count.total) {
+						obj.row_count.all_fleshed = true;
+					} else {
+						obj.row_count.all_fleshed = false;
+					}
 				},
 				false
 			);
@@ -337,7 +375,16 @@ util.list.prototype = {
 		}
 	},
 
-	'auto_retrieve' : function () {
+
+	'auto_retrieve' : function(params) {
+		var obj = this;
+		switch (this.node.nodeName) {
+			case 'tree' : obj._auto_retrieve_tree(params); break;
+			default: throw('NYI: Need .auto_retrieve() for ' + obj.node.nodeName); break;
+		}
+	},
+
+	'_auto_retrieve_tree' : function (params) {
 		var obj = this;
 		if (!obj.auto_retrieve_in_progress) {
 			obj.auto_retrieve_in_progress = true;
@@ -368,6 +415,20 @@ util.list.prototype = {
 				}, 1
 			);
 		}
+	},
+
+	'full_retrieve' : function(params) {
+		var obj = this;
+		switch (this.node.nodeName) {
+			case 'tree' : obj._full_retrieve_tree(params); break;
+			default: throw('NYI: Need .full_retrieve() for ' + obj.node.nodeName); break;
+		}
+	},
+
+	'_full_retrieve_tree' : function(params) {
+		var obj = this;
+		var nodes = obj.treechildren.childNodes;
+		for (var i = 0; i < nodes.length; i++) util.widgets.dispatch('flesh',nodes[i]);
 	},
 
 	'_append_to_listbox' : function (params) {
