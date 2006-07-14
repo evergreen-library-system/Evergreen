@@ -183,19 +183,27 @@ circ.checkout.prototype = {
 	'print' : function(silent) {
 		var obj = this;
 		try {
-				var params = { 
-					'patron' : obj.patron, 
-					'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-					'staff' : obj.data.list.au[0],
-					'header' : obj.data.print_list_templates.checkout.header,
-					'line_item' : obj.data.print_list_templates.checkout.line_item,
-					'footer' : obj.data.print_list_templates.checkout.footer,
-					'type' : obj.data.print_list_templates.checkout.type,
-					'list' : obj.list.dump(),
-				};
-				if (silent) params.no_prompt = true;
-				JSAN.use('util.print'); var print = new util.print();
-				print.tree_list( params );
+			obj.list.on_all_fleshed = function() {
+				try {
+					var params = { 
+						'patron' : obj.patron, 
+						'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+						'staff' : obj.data.list.au[0],
+						'header' : obj.data.print_list_templates.checkout.header,
+						'line_item' : obj.data.print_list_templates.checkout.line_item,
+						'footer' : obj.data.print_list_templates.checkout.footer,
+						'type' : obj.data.print_list_templates.checkout.type,
+						'list' : obj.list.dump(),
+					};
+					if (silent) params.no_prompt = true;
+					JSAN.use('util.print'); var print = new util.print();
+					print.tree_list( params );
+					setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('print',E);
+				}
+			}
+			obj.list.full_retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('print',E);
 		}

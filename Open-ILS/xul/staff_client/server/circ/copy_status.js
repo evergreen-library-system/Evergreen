@@ -151,23 +151,32 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
-							dump( js2JSON( obj.list.dump() ) + '\n' );
-							obj.data.stash_retrieve();
-							var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-							lib.children(null);
-							var p = { 
-								'lib' : lib,
-								'staff' : obj.data.list.au[0],
-								'header' : obj.data.print_list_templates.item_status.header,
-								'line_item' : obj.data.print_list_templates.item_status.line_item,
-								'footer' : obj.data.print_list_templates.item_status.footer,
-								'type' : obj.data.print_list_templates.item_status.type,
-								'list' : obj.list.dump(),
-							};
-							JSAN.use('util.print'); var print = new util.print();
-							print.tree_list( p );
+								obj.list.on_all_fleshed =
+									function() {
+										try {
+											dump( js2JSON( obj.list.dump() ) + '\n' );
+											obj.data.stash_retrieve();
+											var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+											lib.children(null);
+											var p = { 
+												'lib' : lib,
+												'staff' : obj.data.list.au[0],
+												'header' : obj.data.print_list_templates.item_status.header,
+												'line_item' : obj.data.print_list_templates.item_status.line_item,
+												'footer' : obj.data.print_list_templates.item_status.footer,
+												'type' : obj.data.print_list_templates.item_status.type,
+												'list' : obj.list.dump(),
+											};
+											JSAN.use('util.print'); var print = new util.print();
+											print.tree_list( p );
+											setTimeout(function(){ obj.list.on_all_fleshed = null; },0);
+										} catch(E) {
+											obj.error.standard_unexpected_error_alert('print',E); 
+										}
+									}
+								obj.list.full_retrieve();
 							} catch(E) {
-								alert(E); 
+								obj.error.standard_unexpected_error_alert('print',E); 
 							}
 						}
 					],

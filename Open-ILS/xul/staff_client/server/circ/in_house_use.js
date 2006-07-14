@@ -87,6 +87,29 @@ circ.in_house_use.prototype = {
 					'cmd_in_house_use_print' : [
 						['command'],
 						function() {
+							obj.list.on_all_fleshed = function() {
+								try {
+									dump( js2JSON( obj.list.dump() ) + '\n' );
+									obj.OpenILS.data.stash_retrieve();
+									var lib = obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ];
+									lib.children(null);
+									var p = { 
+										'lib' : lib,
+										'staff' : obj.OpenILS.data.list.au[0],
+										'header' : obj.OpenILS.data.print_list_templates.in_house_use.header,
+										'line_item' : obj.OpenILS.data.print_list_templates.in_house_use.line_item,
+										'footer' : obj.OpenILS.data.print_list_templates.in_house_use.footer,
+										'type' : obj.OpenILS.data.print_list_templates.in_house_use.type,
+										'list' : obj.list.dump(),
+									};
+									JSAN.use('util.print'); var print = new util.print();
+									print.tree_list( p );
+									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list.full_retrieve();
 						}
 					],
 					'cmd_in_house_use_reprint' : [
