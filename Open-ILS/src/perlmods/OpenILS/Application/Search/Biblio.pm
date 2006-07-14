@@ -1012,7 +1012,7 @@ __PACKAGE__->register_method (
 sub fetch_copy_by_cn {
 	my( $self, $conn, $cnid ) = @_;
 	return $U->cstorereq(
-		'open-ils.cstore.search.asset.copy.id_list.atomic', 
+		'open-ils.cstore.direct.asset.copy.id_list.atomic', 
 		{ call_number => $cnid, deleted => 'f' } );
 }
 
