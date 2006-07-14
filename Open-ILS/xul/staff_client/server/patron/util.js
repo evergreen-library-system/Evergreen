@@ -279,7 +279,7 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'expire_date', 'label' : 'Expires On', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.expire_date()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.expire_date().substr(0,10)'
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'home_ou', 'label' : 'Home Lib', 'flex' : 1, 
@@ -307,7 +307,7 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'dob', 'label' : 'Birth Date', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.dob()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.dob().substr(0,10)'
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'ident_type', 'label' : 'Ident Type', 'flex' : 1, 

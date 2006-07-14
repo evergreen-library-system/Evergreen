@@ -256,7 +256,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.dob()
+									obj.patron.dob().substr(0,10)
 								);
 							};
 						}
