@@ -22,7 +22,6 @@ util.list = function (id) {
 util.list.prototype = {
 
 	'row_count' : { 'total' : 0, 'fleshed' : 0 },
-	'all_fleshed' : true,
 
 	'init' : function (params) {
 
@@ -44,17 +43,6 @@ util.list.prototype = {
 			case 'listbox' : obj._init_listbox(params); break;
 			default: throw('NYI: Need ._init() for ' + obj.node.nodeName); break;
 		}
-
-		obj.row_count.watch(
-			'all_fleshed',
-			function(a,b,c) {
-				if (c) {
-					if (typeof obj.on_all_fleshed == 'function') {
-						obj.on_all_fleshed(a,b,c);
-					}
-				}
-			}
-		);
 	},
 
 	'register_all_fleshed_callback' : function(f) {
@@ -169,7 +157,9 @@ util.list.prototype = {
 		this.error.sdump('D_LIST','Clearing list ' + this.node.getAttribute('id') + '\n');
 		this.row_count.total = 0;
 		this.row_count.fleshed = 0;
-		this.all_fleshed = true;
+		if (typeof obj.on_all_fleshed == 'function') {
+			setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+		}
 	},
 
 	'_clear_tree' : function(params) {
@@ -196,6 +186,7 @@ util.list.prototype = {
 
 	'append' : function (params) {
 		var rnode;
+		var obj = this;
 		switch (this.node.nodeName) {
 			case 'tree' : rnode = this._append_to_tree(params); break;
 			case 'listbox' : rnode = this._append_to_listbox(params); break;
@@ -208,9 +199,9 @@ util.list.prototype = {
 		}
 		this.row_count.total++;
 		if (this.row_count.fleshed == this.row_count.total) {
-			this.all_fleshed = true;
-		} else {
-			this.all_fleshed = false;
+			if (typeof this.on_all_fleshed == 'function') {
+				setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+			}
 		}
 		return rnode;
 	},
@@ -251,20 +242,30 @@ util.list.prototype = {
 			treerow.addEventListener(
 				'flesh',
 				function() {
+
+					if (treerow.getAttribute('retrieved') == 'true') return; /* already running */
+
+					treerow.setAttribute('retrieved','true');
+
 					//dump('fleshing = ' + params.retrieve_id + '\n');
+
+					function inc_fleshed() {
+						if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
+						treerow.setAttribute('fleshed','true');
+						obj.row_count.fleshed++;
+						if (obj.row_count.fleshed == obj.row_count.total) {
+							if (typeof obj.on_all_fleshed == 'function') {
+								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+							}
+						}
+					}
 
 					params.row_node = treeitem;
 					params.on_retrieve = function(p) {
 						try {
 							p.row = params.row;
 							obj._map_row_to_treecell(p,treerow);
-							treerow.setAttribute('fleshed','true');
-							obj.row_count.fleshed++;
-							if (obj.row_count.fleshed == obj.row_count.total) {
-								obj.all_fleshed = true;
-							} else {
-								obj.all_fleshed = false;
-							}
+							inc_fleshed();
 						} catch(E) {
 							alert('fixme2: ' + E);
 						}
@@ -274,16 +275,14 @@ util.list.prototype = {
 
 						params.retrieve_row( params );
 
-					} else {
-
-						if (typeof obj.retrieve_row == 'function') {
+					} else if (typeof obj.retrieve_row == 'function') {
 
 							obj.retrieve_row( params );
 
-						}
+					} else {
+					
+							inc_fleshed();
 					}
-
-					treerow.setAttribute('retrieved','true');
 				},
 				false
 			);
@@ -300,14 +299,15 @@ util.list.prototype = {
 				'flesh',
 				function() {
 					//dump('fleshing anon\n');
+					if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
 					obj._map_row_to_treecell(params,treerow);
 					treerow.setAttribute('retrieved','true');
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
 					if (obj.row_count.fleshed == obj.row_count.total) {
-						obj.all_fleshed = true;
-					} else {
-						obj.all_fleshed = false;
+						if (typeof obj.on_all_fleshed == 'function') {
+							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+						}
 					}
 				},
 				false
@@ -432,17 +432,24 @@ util.list.prototype = {
 
 	'_full_retrieve_tree' : function(params) {
 		var obj = this;
-		if (obj.all_fleshed) {
-			setTimeout(
-				function() {
-					if (typeof obj.on_all_fleshed == 'function') {
-						obj.on_all_fleshed();
-					}
-				}, 0
-			);
-		} else {
-			var nodes = obj.treechildren.childNodes;
-			for (var i = 0; i < nodes.length; i++) util.widgets.dispatch('flesh',nodes[i]);
+		try {
+			if (obj.row_count.total == obj.row_count.fleshed) {
+				//alert('Full retrieve... tree seems to be in sync\n' + js2JSON(obj.row_count));
+				if (typeof obj.on_all_fleshed == 'function') {
+					setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+				} else {
+					alert('.full_retrieve called with no callback?');
+				}
+			} else {
+				//alert('Full retrieve... syncing tree' + js2JSON(obj.row_count));
+				JSAN.use('util.widgets');
+				var nodes = obj.treechildren.childNodes;
+				for (var i = 0; i < nodes.length; i++) {
+					util.widgets.dispatch('flesh',nodes[i].firstChild);
+				}
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('_full_retrieve_tree',E);
 		}
 	},
 
