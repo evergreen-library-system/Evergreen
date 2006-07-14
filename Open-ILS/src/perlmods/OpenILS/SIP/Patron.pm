@@ -15,6 +15,7 @@ use Data::Dumper;
 use Digest::MD5 qw(md5_hex);
 
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::Actor;
 my $U = 'OpenILS::Application::AppUtils';
 
 our (@ISA, @EXPORT_OK);
@@ -192,7 +193,6 @@ sub currency {
 	return 'USD';
 }
 
-
 sub fee_amount {
 	my $self = shift;
 	return 0;
@@ -294,32 +294,51 @@ sub __hold_to_title {
 
 	my( $id, $mods, $title, $volume, $copy );
 
-	if( $hold->hold_type eq 'C' ) {
-		$copy = $e->retrieve_asset_copy($hold->target);
-	}
+	return __copy_to_title($e, 
+		$e->retrieve_asset_copy($hold->target)) 
+		if $hold->hold_type eq 'C';
 
-	if( $copy || $hold->hold_type eq 'V' ) {
-		return $copy->dummy_title if $copy and $copy->call_number == -1;
-		$id = ($copy) ? $copy->call_number : $hold->target;
-		$volume = $e->retrieve_asset_call_number($id);
-	}
+	return __volume_to_title($e, 
+		$e->retrieve_asset_call_number($hold->target))
+		if $hold->hold_type eq 'V';
 
-	if( $volume || $hold->hold_type eq 'T' ) {
-		$id = ($volume) ? $volume->record : $hold->target;
-		$mods = $U->simplereq(
-			'open-ils.search',
-			'open-ils.search.biblio.record.mods_slim.retrieve', $id );
-	}
+	return __record_to_title(
+		$e, $hold->target) if $hold->hold_type eq 'T';
 
-	if( $hold->hold_type eq 'M' ) {
-		$mods = $U->simplereq(
-			'open-ils.search',
-			'open-ils.search.biblio.metarecord.mods_slim.retrieve', $hold->target);
-	}
+	return __metarecord_to_title(
+		$e, $hold->target) if $hold->hold_type eq 'M';
+}
+
+sub __copy_to_title {
+	my( $e, $copy ) = @_;
+	return $copy->dummy_title if $copy->call_number == -1;	
+	my $vol = $e->retrieve_asset_call_number($copy->call_number);
+	return __volume_to_title($e, $vol);
+}
 
 
+sub __volume_to_title {
+	my( $e, $volume ) = @_;
+	return __record_to_title($e, $volume->record);
+}
+
+
+sub __record_to_title {
+	my( $e, $title_id ) = @_;
+	my $mods = $U->simplereq(
+		'open-ils.search',
+		'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
 	return ($mods) ? $mods->title : "";
 }
+
+sub __metarecord_to_title {
+	my( $e, $m_id ) = @_;
+	my $mods = $U->simplereq(
+		'open-ils.search',
+		'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
+	return ($mods) ? $mods->title : "";
+}
+
 
 #
 # remove the hold on item item_id from my hold queue.
@@ -330,18 +349,60 @@ sub drop_hold {
     return 0;
 }
 
+sub __patron_items_info {
+	my $self = shift;
+	return if $self->{items_info};
+	$self->{item_info} = 
+		OpenILS::Application::Actor::_checked_out(
+			0, $self->{editor}, $self->{user}->id);;
+}
+
 sub overdue_items {
-    my ($self, $start, $end) = @_;
-	 my @overdues;
+	my ($self, $start, $end) = @_;
+
+	$self->__patron_items_info();
+	my @overdues = @{$self->{item_info}->{overdue}};
+	#$overdues[$_] = __circ_to_title($self->{editor}, $overdues[$_]) for @overdues;
+
+	my @o;
+	for my $circid (@overdues) {
+		next unless $circid;
+		syslog('LOG_DEBUG', "overdue_items() fleshing circ $circid");
+		push( @o, __circ_to_title($self->{editor}, $circid) );
+	}
+	@overdues = @o;
 
 	return (defined $start and defined $end) ? 
-		[ $overdues[($start-1)..($end-1)] ] : 
-		\@overdues;
+		[ $overdues[($start-1)..($end-1)] ] : \@overdues;
+}
+
+sub __circ_to_title {
+	my( $e, $circ ) = @_;
+	return unless $circ;
+	$circ = $e->retrieve_action_circulation($circ);
+	return __copy_to_title( $e, 
+		$e->retrieve_asset_copy($circ->target_copy) );
 }
 
 sub charged_items {
 	my ($self, $start, $end) = shift;
-	my @charges;
+
+	$self->__patron_items_info();
+
+	my @charges = (
+		@{$self->{item_info}->{out}},
+		@{$self->{item_info}->{overdue}}
+		);
+
+	#$charges[$_] = __circ_to_title($self->{editor}, $charges[$_]) for @charges;
+
+	my @c;
+	for my $circid (@charges) {
+		next unless $circid;
+		syslog('LOG_DEBUG', "charged_items() fleshing circ $circid");
+		push( @c, __circ_to_title($self->{editor}, $circid) );
+	}
+	@charges = @c;
 
 	return (defined $start and defined $end) ? 
 		[ $charges[($start-1)..($end-1)] ] : 
@@ -375,9 +436,6 @@ sub block {
 	my $e = $self->{editor};
 
 	syslog('LOG_INFO', "Blocking user %s", $u->card->barcode );
-
-#	$self->{editor} = $e = 
-#		OpenILS::Utils::CStoreEditor->new(xact =>1) unless $e->{xact};
 
 	if(!$e->{xact}) { $e->reset; $e->{xact} = 1; }
 
