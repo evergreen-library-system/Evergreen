@@ -111,7 +111,7 @@ util.list.prototype = {
 			false
 		);
 		/* FIXME -- find events on scrollbar to trigger this */
-		//obj.detect_visible_polling();	
+		obj.detect_visible_polling();	
 		/*
 		var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(this.node)[1] )[1];
 		var slider = document.getAnonymousNodes( scrollbar )[2];
