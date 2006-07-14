@@ -4,26 +4,6 @@ use warnings;
 
 use lib '/openils/lib/perl5/';
 
-#use OpenSRF::System;
-#use OpenILS::Utils::Fieldmapper;
-#use OpenSRF::Utils::SettingsClient;
-#
-#OpenSRF::System->bootstrap_client(config_file =>
-#'/openils/conf/bootstrap.conf');
-#Fieldmapper->import(IDL =>
-#  OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
-#
-#  # do this after bootstrapping/importing IDL
-#  require OpenILS::Application::Search;
-#
-#  my $meth = OpenSRF::Application->method_lookup(
-#    'open-ils.search.biblio.metarecord.mods_slim.retrieve');
-#    my @data = $meth->run(1);
-#    my $mods = shift @data;
-#    print "Got mvr: " . $mods->title . "\n";
-
-
-
 use OpenSRF::System;
 use OpenSRF::Application;
 use OpenSRF::EX qw/:try/;
@@ -35,6 +15,7 @@ use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use JSON;
 use Data::Dumper;
+use Unicode::Normalize;
 
 use Time::HiRes qw/time/;
 use Getopt::Long;
@@ -45,7 +26,7 @@ use UNIVERSAL::require;
 
 MARC::Charset->ignore_errors(1);
 
-my ($id_field, $count, $user, $password, $config, $keyfile,  @files) =
+my ($id_field, $count, $user, $password, $config, $keyfile,  @files, @trash_fields) =
 	('998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
 
 GetOptions(
@@ -56,6 +37,7 @@ GetOptions(
 	'keyfile=s'	=> \$keyfile,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
+	'trash=s'	=> \@trash_fields,
 );
 
 @files = @ARGV if (!@files);
@@ -98,33 +80,47 @@ $batch->warnings_off();
 my $starttime = time;
 while ( my $rec = $batch->next ) {
 
-	my $id = $rec->subfield($id_field => 'a') || $count;
+	my $id;
+	my $field = $rec->field($id_field);
+
+	if ($field) {
+		if ($field->is_control_field) {
+			$id = $field->data;
+		} else {
+			$id = $field->subfield('a');
+		}
+	} else {
+		$id = $count;
+	}
+		
 	if ($id =~ /(\d+)/o) {
 		$id = $1;
 	}
 
 	if ($keyfile) {
 		if (my $tcn = $keymap{$id}) {
-			$rec->delete_field( $_ ) for ($rec->field('035'));
-			$rec->append_fields( MARC::Field->new( '035', '', '', 'a', $tcn ) );
+			$rec->delete_field( $_ ) for ($rec->field($id_field));
+			$rec->append_fields( MARC::Field->new( $id_field, '', '', 'a', $tcn ) );
 		} else {
 			$count++;
 			next;
 		}
 	}
 
-	$rec = preprocess($rec, $id);
+	$rec = preprocess($rec);
 
 	if (!$rec) {
 		next;
 	}
 
-	my $tcn_value = $rec->subfield('039' => 'a');
-	my $tcn_source = $rec->subfield('039' => 'b');
+	my $tcn_value = $rec->subfield($id_field => 'a');
+	my $tcn_source = $rec->subfield($id_field => 'b');
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
 	$xml =~ s/>\s+</></go;
+	$xml =~ s/\p{Cc}//go;
+	$xml = entityize($xml);
 
 	my $bib = new Fieldmapper::biblio::record_entry;
 	$bib->id($id);
@@ -183,7 +179,7 @@ sub preprocess {
         }
 
         if (!$id) {
-                my $f = $rec->field('035');
+                my $f = $rec->field($id_field);
                 $id = $f->subfield('a') if ($f);
 		$source = 's';
         }
@@ -193,6 +189,8 @@ sub preprocess {
 		warn "\n !!! Record with no TCN : $count\n".$rec->as_formatted;
 		return undef;
 	}
+
+	$rec->delete_field($_) for ($rec->field($id_field, @trash_fields));
 
 	$id =~ s/\s*$//o;
 	$id =~ s/^\s*//o;
@@ -207,13 +205,12 @@ sub preprocess {
 	}
 
 	my $tcn = MARC::Field->new(
-		'039',
+		$id_field,
 		'', '',
 		'a', $id,
 		'b', do { $source_map{$source} || 'System' },
 	);
 
-	$rec->delete_field($_) for ($rec->field('035','948','998'));
 	$rec->append_fields($tcn);
 
 	return $rec;
@@ -248,4 +245,18 @@ sub login {
 
         return $authtoken;
 }       
+
+sub entityize {
+        my $stuff = shift;
+        my $form = shift;
+
+        if ($form and $form eq 'D') {
+                $stuff = NFD($stuff);
+        } else {
+                $stuff = NFC($stuff);
+        }
+
+        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+        return $stuff;
+}
 

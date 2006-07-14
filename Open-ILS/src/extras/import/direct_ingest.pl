@@ -50,7 +50,11 @@ for (1 .. $workers) {
 		push @ses, $w;
 	} else {
 		$0 = "Local Ingest Worker $_";
-		worker($r, $_);
+		if ($workers == 1) {
+			worker($r, -1);
+		} else {
+			worker($r, $_);
+		}
 		exit;
 	}
 }
@@ -63,9 +67,17 @@ sub worker {
 	OpenSRF::System->bootstrap_client( config_file => $config );
 	Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
+	sleep 1;
+
 	OpenILS::Application::Ingest->use;
 
-	my $f = new FileHandle(">${prefix}$file");
+	my $fname = "${prefix}$file";
+	if ($file == -1) {
+		$fname = '&STDOUT';
+	}
+
+	my $f = new FileHandle(">$fname");
+
 	while (my $rec = <$pipe>) {
 
 		my $bib = JSON->JSON2perl($rec);

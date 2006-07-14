@@ -67,7 +67,10 @@ while ( my $rec = <> ) {
 	}
 
 	$count++;
+
+	last if ($count > 10000);
 }
-OpenSRF::Application->method_lookup( "$base.finish" )->run; 
+
+#OpenSRF::Application->method_lookup( "$base.finish" )->run; 
 
 
