@@ -8,6 +8,8 @@ use Carp;
 use strict; use warnings;
 use Sys::Syslog qw(syslog);
 
+use OpenILS::SIP;
+
 
 my %fields = (
 	      ok            => 0,
@@ -27,55 +29,6 @@ my %fields = (
 
 our $AUTOLOAD;
 
-# returns the global transaction pointer
-#sub get_xact {
-#	my $class = shift;
-#	return $XACT;
-#}
-#
-#sub session {
-#	my( $self, $session ) = @_;
-#	$self->{session} = $session if $session;
-#	return $self->{session};
-#}
-#
-#
-#sub create_session {
-#	my( $self, $patron ) = @_;
-#	$self->commit_session if $self->session_is_alive;
-#	require OpenILS::Utils::CStoreEditor;
-#	return $self->{session} = {
-#		editor => OpenILS::Utils::CStoreEditor->new(xact=>1),
-#		patron => $patron
-#	}
-#}
-#
-#sub commit_session {
-#	my $self = shift;
-#	if( my $session = $self->session ) {
-#		$session->{editor}->commit;
-#		delete $$session{editor};
-#		delete $$session{patron};
-#	}
-#}
-#
-#
-#sub rollback_session {
-#	my $self = shift;
-#	if( my $session = $self->session ) {
-#		$session->{editor}->xact_rollback;
-#		delete $$session{editor};
-#		delete $$session{patron};
-#	}
-#}
-#
-#sub session_is_alive {
-#	my $self = shift;
-#	return $self->session and $self->session->{editor};
-#}
-
-
-
 sub new {
     my( $class, %args ) = @_;
 
@@ -86,33 +39,32 @@ sub new {
 
 	syslog('LOG_DEBUG', "OpenILS: Created new transaction with authtoken %s", $self->authtoken);
 
-	require OpenILS::Utils::CStoreEditor;
-	$self->editor(OpenILS::Utils::CStoreEditor->new(
-		xact=>1, authtoken => $self->authtoken));
+	my $e = OpenILS::SIP->editor();
+	$e->{authtoken} = $self->authtoken;
 
 	return $self;
 }
 
-sub DESTROY {
-    # be cool
+sub DESTROY { 
+	# be cool
 }
 
 sub AUTOLOAD {
-    my $self = shift;
-    my $class = ref($self) or croak "$self is not an object";
-    my $name = $AUTOLOAD;
+	my $self = shift;
+	my $class = ref($self) or croak "$self is not an object";
+	my $name = $AUTOLOAD;
 
-    $name =~ s/.*://;
+	$name =~ s/.*://;
 
-    unless (exists $self->{_permitted}->{$name}) {
-	croak "Can't access '$name' field of class '$class'";
-    }
+	unless (exists $self->{_permitted}->{$name}) {
+		croak "Can't access '$name' field of class '$class'";
+	}
 
-    if (@_) {
-	return $self->{$name} = shift;
-    } else {
-	return $self->{$name};
-    }
+	if (@_) {
+		return $self->{$name} = shift;
+	} else {
+		return $self->{$name};
+	}
 }
 
 1;

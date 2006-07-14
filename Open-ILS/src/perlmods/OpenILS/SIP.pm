@@ -12,11 +12,7 @@ use OpenILS::SIP::Patron;
 use OpenILS::SIP::Transaction;
 use OpenILS::SIP::Transaction::Checkout;
 use OpenILS::SIP::Transaction::Checkin;
-#use OpenILS::SIP::Transaction::FeePayment;
-#use OpenILS::SIP::Transaction::Hold;
 use OpenILS::SIP::Transaction::Renew;
-#use OpenILS::SIP::Transaction::RenewAll;
-
 
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
@@ -24,30 +20,26 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
+my $editor;
+my $config;
+
 use Digest::MD5 qw(md5_hex);
-
-# PUT ME IN THE CONFIG XXX
-my %supports = (
-	'magnetic media'		=> 1,
-	'security inhibit'	=> 0,
-	'offline operation'	=> 0
-	);
-
 
 sub new {
 	my ($class, $institution, $login) = @_;
 	my $type = ref($class) || $class;
 	my $self = {};
 
+	$config = $institution;
 	syslog("LOG_DEBUG", "new ILS '%s'", $institution->{id});
 	$self->{institution} = $institution;
 
-	my $config = $institution->{implementation_config}->{bootstrap};
+	my $bsconfig = $institution->{implementation_config}->{bootstrap};
 
-	syslog('LOG_DEBUG', "loading bootstrap config: $config");
+	syslog('LOG_DEBUG', "loading bootstrap config: $bsconfig");
 	
 	local $/ = "\n";
-	OpenSRF::System->bootstrap_client(config_file => $config);
+	OpenSRF::System->bootstrap_client(config_file => $bsconfig);
 	syslog('LOG_DEBUG', "bootstrap loaded..");
 
 	$self->{osrf_config} = OpenSRF::Utils::SettingsClient->new;
@@ -61,6 +53,37 @@ sub new {
 
 	return $self;
 }
+
+sub to_bool {
+	my $val = shift;
+	return ($val and $val =~ /true/io);
+}
+
+sub editor {
+	$editor = make_editor() unless $editor;
+	return $editor;
+}
+sub reset_editor {
+	$editor = undef;
+	return editor();
+}
+
+
+# Creates the global editor object
+sub make_editor {
+	require OpenILS::Utils::CStoreEditor;
+	my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
+	# gnarly cstore hack to re-gen autogen methods after IDL is loaded
+	if(!UNIVERSAL::can($e, 'search_actor_card')) {
+		syslog("LOG_WARNING", "Reloading CStoreEditor...");
+		delete $INC{'OpenILS/Utils/CStoreEditor.pm'};
+		require OpenILS::Utils::CStoreEditor;
+		$e = OpenILS::Utils::CStoreEditor->new(xact =>1);
+	}
+	return $e;
+}
+
+
 
 sub login {
 	my( $self, $username, $password ) = @_;
@@ -80,15 +103,14 @@ sub login {
 		}
 	);
 
-	my $key;
-	if( ref($response) eq 'HASH' and $response->{payload} 
-		and $key = $response->{payload}->{authtoken} ) {
-		syslog('LOG_INFO', "OpenILS: Login succeeded for $username : authkey = $key");
-
-	} else {
-		syslog('LOG_WARN', "OpenILS: Login failed for $username");
+	if( my $code = $U->event_code($response) ) {
+		my $txt = $response->{textcode};
+		syslog('LOG_WARN', "OpenILS: Login failed for $username.  $txt:$code");
+		return undef;
 	}
 
+	my $key = $response->{payload}->{authtoken};
+	syslog('LOG_INFO', "OpenILS: Login succeeded for $username : authkey = $key");
 	return $self->{authtoken} = $key;
 }
 
@@ -107,43 +129,46 @@ sub find_item {
 
 sub institution {
     my $self = shift;
-
     return $self->{institution}->{id};
 }
 
-
-# XXX Get me from the config?
 sub supports {
-    my ($self, $op) = @_;
-    return exists($supports{$op}) ? $supports{$op} : 0;
+	my ($self, $op) = @_;
+	my ($i) = grep { $_->{name} eq $op }  
+		@{$config->{implementation_config}->{supports}->{item}};
+	return to_bool($i->{value});
 }
 
 sub check_inst_id {
-    my ($self, $id, $whence) = @_;
-
-    if ($id ne $self->{institution}->{id}) {
-	syslog("LOG_WARNING", "%s: received institution '%s', expected '%s'",
-	       $whence, $id, $self->{institution}->{id});
-    }
+	my ($self, $id, $whence) = @_;
+	if ($id ne $self->{institution}->{id}) {
+		syslog("LOG_WARNING", 
+			"%s: received institution '%s', expected '%s'",
+			$whence, $id, $self->{institution}->{id});
+	}
 }
 
-
-# XXX by default, these should come from the config
 sub checkout_ok {
-    return 1;
+	return to_bool($config->{policy}->{checkout});
 }
 
 sub checkin_ok {
+	return to_bool($config->{policy}->{checkin});
     return 0;
+}
+
+sub renew_ok {
+	return to_bool($config->{policy}->{renew});
 }
 
 sub status_update_ok {
-    return 1;
+	return to_bool($config->{policy}->{status_update});
 }
 
 sub offline_ok {
-    return 0;
+	return to_bool($config->{policy}->{offline});
 }
+
 
 
 ##
@@ -161,8 +186,8 @@ sub checkout {
 	syslog('LOG_DEBUG', "OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
 	
 	my $xact		= OpenILS::SIP::Transaction::Checkout->new( authtoken => $self->{authtoken} );
-	my $patron	= OpenILS::SIP::Patron->new($patron_id);
-	my $item		= OpenILS::SIP::Item->new($item_id);
+	my $patron	= $self->find_patron($patron_id);
+	my $item		= $self->find_item($item_id);
 	
 	$xact->patron($patron);
 	$xact->item($item);
@@ -196,13 +221,13 @@ sub checkout {
 
 	if( $xact->ok ) {
 
-		$xact->editor->commit;
+		#editor()->commit;
 		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
 			"patron %s checkout %s succeeded", $patron_id, $item_id);
 
 	} else {
 
-		$xact->editor->xact_rollback;
+		#editor()->xact_rollback;
 		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
 			"patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
 	}
@@ -219,32 +244,35 @@ sub checkin {
 	
 	my $patron;
 	my $xact		= OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
-	my $item		= OpenILS::SIP::Item->new($item_id);
+	my $item		= $self->find_item($item_id);
 
 	$xact->item($item);
+
+	if(!$xact->item) {
+		$xact->screen_msg("Invalid item barcode: $item_id");
+		$xact->ok(0);
+		return $xact;
+	}
 
 	$xact->do_checkin( $trans_date, $return_date, $current_loc, $item_props );
 	
 	if ($xact->ok) {
 
-		$xact->patron($patron = OpenILS::SIP::Patron->new($item->{patron}));
+		$xact->patron($patron = $self->find_patron($item->{patron}));
 		delete $item->{patron};
 		delete $item->{due_date};
 		syslog('LOG_INFO', "OpenILS: Checkin succeeded");
-		$xact->editor->commit;
+		#editor()->commit;
 
 	} else {
 
-		$xact->editor->xact_rollback;
+		#editor()->xact_rollback;
 		syslog('LOG_WARNING', "OpenILS: Checkin failed");
 	}
 	# END TRANSACTION
 
 	return $xact;
 }
-
-
-
 
 ## If the ILS caches patron information, this lets it free it up
 sub end_patron_session {
@@ -435,8 +463,8 @@ sub renew {
 		$no_block, $nb_due_date, $third_party, $item_props, $fee_ack) = @_;
 
 	my $trans = OpenILS::SIP::Transaction::Renew->new( authtoken => $self->{authtoken} );
-	$trans->patron(OpenILS::SIP::Patron->new($patron_id));
-	$trans->item(OpenILS::SIP::Item->new($item_id));
+	$trans->patron($self->find_patron($patron_id));
+	$trans->item($self->find_item($item_id));
 
 	if(!$trans->patron) {
 		$trans->screen_msg("Invalid patron barcode.");

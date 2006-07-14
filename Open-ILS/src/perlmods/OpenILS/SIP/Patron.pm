@@ -14,6 +14,7 @@ use Sys::Syslog qw(syslog);
 use Data::Dumper;
 use Digest::MD5 qw(md5_hex);
 
+use OpenILS::SIP;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 my $U = 'OpenILS::Application::AppUtils';
@@ -31,21 +32,12 @@ sub new {
 
 	syslog("LOG_DEBUG", "new OpenILS Patron(%s): searching...", $patron_id);
 
-	require OpenILS::Utils::CStoreEditor;
-	my $e = OpenILS::Utils::CStoreEditor->new;
+	my $e = OpenILS::SIP->editor();
 
-	if(!UNIVERSAL::can($e, 'search_actor_card')) {
-		syslog("LOG_WARNING", "Reloading CStoreEditor...");
-		delete $INC{'OpenILS/Utils/CStoreEditor.pm'};
-		require OpenILS::Utils::CStoreEditor;
-		$e = OpenILS::Utils::CStoreEditor->new;
-	}
+	my $c = $e->search_actor_card({barcode => $patron_id}, {idlist=>1});
+	my $user;
 
-
-	 my $c = $e->search_actor_card({barcode => $patron_id}, {idlist=>1});
-	 my $user;
-
-	 if( @$c ) {
+	if( @$c ) {
 
 		$user = $e->search_actor_user(
 			[
@@ -311,6 +303,7 @@ sub __hold_to_title {
 
 sub __copy_to_title {
 	my( $e, $copy ) = @_;
+	syslog('LOG_DEBUG', "copy_to_title(%s)", $copy->id);
 	return $copy->dummy_title if $copy->call_number == -1;	
 	my $vol = $e->retrieve_asset_call_number($copy->call_number);
 	return __volume_to_title($e, $vol);
@@ -319,12 +312,14 @@ sub __copy_to_title {
 
 sub __volume_to_title {
 	my( $e, $volume ) = @_;
+	syslog('LOG_DEBUG', "volume_to_title(%s)", $volume->id);
 	return __record_to_title($e, $volume->record);
 }
 
 
 sub __record_to_title {
 	my( $e, $title_id ) = @_;
+	syslog('LOG_DEBUG', "record_to_title($title_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
@@ -333,6 +328,7 @@ sub __record_to_title {
 
 sub __metarecord_to_title {
 	my( $e, $m_id ) = @_;
+	syslog('LOG_DEBUG', "metarecord_to_title($m_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
@@ -464,7 +460,8 @@ sub block {
 	# stay in synch
 	$self->{user}->alert_message( $note );
 
-	$e->finish; # commits and resets
+	$e->commit; # commits and resets
+	$self->{editor} = OpenILS::SIP->reset_editor();
 	return $self;
 }
 

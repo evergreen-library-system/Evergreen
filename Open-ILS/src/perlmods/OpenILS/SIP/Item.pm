@@ -5,12 +5,11 @@
 #
 
 package OpenILS::SIP::Item;
-
-use strict;
-use warnings;
+use strict; use warnings;
 
 use Sys::Syslog qw(syslog);
 
+use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
@@ -20,22 +19,15 @@ my %item_db;
 sub new {
     my ($class, $item_id) = @_;
     my $type = ref($class) || $class;
-    my $self = {};
-    bless $self, $type;
+    my $self = bless( {}, $type );
 
-	require OpenILS::Utils::CStoreEditor;
-	my $e = OpenILS::Utils::CStoreEditor->new;
+	syslog('LOG_DEBUG', "Loading item $item_id...");
+	return undef unless $item_id;
 
-	if(!UNIVERSAL::can($e, 'search_actor_card')) {
-		syslog("LOG_WARNING", "Reloading CStoreEditor...");
-		delete $INC{'OpenILS/Utils/CStoreEditor.pm'};
-		require OpenILS::Utils::CStoreEditor;
-		$e = OpenILS::Utils::CStoreEditor->new;
-	}
-
+	my $e = OpenILS::SIP->editor();
 
 	 # FLESH ME
-	 my $copy = $e->search_asset_copy(
+	my $copy = $e->search_asset_copy(
 		[
 			{ barcode => $item_id },
 			{
@@ -48,25 +40,20 @@ sub new {
 		]
 	);
 
-	if(!@$copy) {
-		syslog("LOG_DEBUG", "OpenILS: Item '%s' : not found", $item_id);
-		return undef;
-    }
-
 	$copy = $$copy[0];
 
-	 # XXX See if i am checked out, if so set $self->{patron} to the user's barcode
+	if(!$copy) {
+		syslog("LOG_DEBUG", "OpenILS: Item '%s' : not found", $item_id);
+		return undef;
+	}
+
 	my ($circ) = $U->fetch_open_circulation($copy->id);
 	if($circ) {
+		# if i am checked out, set $self->{patron} to the user's barcode
 		my $user = $e->retrieve_actor_user(
 			[
 				$circ->usr,
-				{
-					flesh => 1,
-					flesh_fields => {
-						"au" => [ 'card' ],
-					}
-				}
+				{ flesh => 1, flesh_fields => { "au" => [ 'card' ] } }
 			]
 		);
 
@@ -81,13 +68,11 @@ sub new {
 	$self->{copy}		= $copy;
 	$self->{volume}	= $copy->call_number;
 	$self->{record}	= $copy->call_number->record;
-	
-	$self->{mods}	= $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+	$self->{mods}		= $U->record_to_mvr($self->{record}) if $self->{record}->marc;
 
-    syslog("LOG_DEBUG", "new OpenILS Item('%s'): found with title '%s'",
-	   $item_id, $self->title_id);
+	syslog("LOG_DEBUG", "Item('$item_id'): found with title '%s'", $self->title_id);
 
-    return $self;
+	return $self;
 }
 
 sub magnetic {
@@ -107,7 +92,7 @@ sub sip_item_properties {
 
 sub status_update {
     my ($self, $props) = @_;
-    my $status = new OpenILS::SIP::Transaction;
+    my $status = OpenILS::SIP::Transaction->new;
     $self->{sip_item_properties} = $props;
     $status->{ok} = 1;
     return $status;

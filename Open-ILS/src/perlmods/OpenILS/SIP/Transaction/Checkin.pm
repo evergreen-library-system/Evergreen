@@ -12,6 +12,7 @@ use POSIX qw(strftime);
 use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
 use Data::Dumper;
+use Sys::Syslog qw(syslog);
 
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
@@ -61,7 +62,7 @@ sub do_checkin {
 	my $circ = $resp->{payload}->{circ};
 
 	$self->{item}->{patron} = 
-		$self->editor->search_actor_card(
+		OpenILS::SIP->editor->search_actor_card(
 		{ usr => $circ->usr, active => 't' } )->[0]->barcode;
 
 	$self->ok(1);
