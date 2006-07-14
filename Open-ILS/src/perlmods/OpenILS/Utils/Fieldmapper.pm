@@ -56,6 +56,7 @@ sub import {
 
 		$$fieldmap{$n}{hint} = $c;
 		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
+		$$fieldmap{$n}{table} = $idl->{$c}{'oils_persist:tablename'};
 		$$fieldmap{$n}{identity} = $idl->{$c}{fields}{'oils_persist:primary'};
 
 		for my $f ( keys %{ $idl->{$c}{fields}{field} } ) {
@@ -154,6 +155,11 @@ sub AUTOLOAD {
 sub Identity {
 	my $class_name = shift;
 	return $$fieldmap{$class_name}{identity};
+}
+
+sub Table {
+	my $class_name = shift;
+	return $$fieldmap{$class_name}{table};
 }
 
 sub class_name {
