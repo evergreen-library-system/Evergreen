@@ -21,20 +21,28 @@ our %supported_formats = (
 	mods3	=> {ns => 'http://www.loc.gov/mods/v3'},
 	mods	=> {ns => 'http://www.loc.gov/mods/'},
 	marcxml	=> {ns => 'http://www.loc.gov/MARC21/slim'},
-	srw_dc	=> {ns => ''},
-	oai_dc	=> {ns => ''},
-	rdf_dc	=> {ns => ''},
+	srw_dc	=> {ns => 'info:srw/schema/1/dc-schema'},
+	oai_dc	=> {ns => 'http://www.openarchives.org/OAI/2.0/oai_dc/'},
+	rdf_dc	=> {ns => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
+	atom	=> {ns => 'http://www.w3.org/2005/Atom'},
+	rss091	=> {ns => 'http://my.netscape.com/rdf/simple/0.9/'},
+	rss092	=> {ns => ''},
+	rss093	=> {ns => ''},
+	rss094	=> {ns => ''},
+	rss10	=> {ns => 'http://purl.org/rss/1.0/'},
+	rss11	=> {ns => 'http://purl.org/net/rss1.1#'},
+	rss2	=> {ns => ''},
 );
 
 
-our $log = 'OpenSRF::Utils::Logger';
+my $log = 'OpenSRF::Utils::Logger';
 
-our $parser = XML::LibXML->new();
-our $xslt = XML::LibXSLT->new();
+my  $parser = XML::LibXML->new();
+my  $xslt = XML::LibXSLT->new();
 
-our $mods_sheet;
-our $mads_sheet;
-our $xpathset = {};
+my  $mods_sheet;
+my  $mads_sheet;
+my  $xpathset = {};
 sub initialize {}
 sub child_init {}
 
@@ -87,6 +95,13 @@ sub entityize {
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
 	return $stuff;
 }
+
+# --------------------------------------------------------------------------------
+# Biblio ingest
+
+package OpenILS::Application::Ingest::Biblio;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
 
 sub ro_biblio_ingest_single_object {
 	my $self = shift;
@@ -255,6 +270,170 @@ __PACKAGE__->register_method(
 
 
 # --------------------------------------------------------------------------------
+# Authority ingest
+
+package OpenILS::Application::Ingest::Authority;
+use base qw/OpenILS::Application::Ingest/;
+use Unicode::Normalize;
+
+sub ro_authority_ingest_single_object {
+	my $self = shift;
+	my $client = shift;
+	my $bib = shift;
+	my $xml = OpenILS::Application::Ingest::entityize($bib->marc);
+
+	my $document = $parser->parse_string($xml);
+
+	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.authority.xml")->run($document);
+
+	$_->record($bib->id) for (@mfr);
+
+	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.object.readonly",
+	method		=> "ro_authority_ingest_single_object",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub ro_authority_ingest_single_xml {
+	my $self = shift;
+	my $client = shift;
+	my $xml = OpenILS::Application::Ingest::entityize(shift);
+
+	my $document = $parser->parse_string($xml);
+
+	my @mfr = $self->method_lookup("open-ils.ingest.flat_marc.authority.xml")->run($document);
+
+	return { full_rec => \@mfr };
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.xml.readonly",
+	method		=> "ro_authority_ingest_single_xml",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub ro_authority_ingest_single_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::Ingest->post_init();
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rec )
+			->gather(1);
+
+	return undef unless ($r and @$r);
+
+	my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($r->marc);
+
+	$_->record($rec) for (@{$res->{full_rec}});
+	$res->{descriptor}->record($rec);
+
+	return $res;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.record.readonly",
+	method		=> "ro_authority_ingest_single_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub ro_authority_ingest_stream_record {
+	my $self = shift;
+	my $client = shift;
+
+	OpenILS::Application::Ingest->post_init();
+
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+	
+		my $rec = $resp->content;
+		last unless (defined $rec);
+
+		$log->debug("Running open-ils.ingest.full.authority.record.readonly ...");
+		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.record.readonly")->run($rec);
+
+		$_->source($rec) for (@{$res->{field_entries}});
+		$_->record($rec) for (@{$res->{full_rec}});
+
+		$client->respond( $res );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.record_stream.readonly",
+	method		=> "ro_authority_ingest_stream_record",
+	api_level	=> 1,
+	stream		=> 1,
+);                      
+
+sub ro_authority_ingest_stream_xml {
+	my $self = shift;
+	my $client = shift;
+
+	OpenILS::Application::Ingest->post_init();
+
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+	
+		my $xml = $resp->content;
+		last unless (defined $xml);
+
+		$log->debug("Running open-ils.ingest.full.authority.xml.readonly ...");
+		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($xml);
+
+		$client->respond( $res );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.xml_stream.readonly",
+	method		=> "ro_authority_ingest_stream_xml",
+	api_level	=> 1,
+	stream		=> 1,
+);                      
+
+sub rw_authority_ingest_stream_import {
+	my $self = shift;
+	my $client = shift;
+
+	OpenILS::Application::Ingest->post_init();
+
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+	while (my ($resp) = $client->recv( count => 1, timeout => 5 )) {
+	
+		my $bib = $resp->content;
+		last unless (defined $bib);
+
+		$log->debug("Running open-ils.ingest.full.authority.xml.readonly ...");
+		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($bib->marc);
+
+		$_->source($bib->id) for (@{$res->{field_entries}});
+		$_->record($bib->id) for (@{$res->{full_rec}});
+
+		$client->respond( $res );
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.authority.bib_stream.import",
+	method		=> "rw_authority_ingest_stream_import",
+	api_level	=> 1,
+	stream		=> 1,
+);                      
+
+
+# --------------------------------------------------------------------------------
 # MARC index extraction
 
 package OpenILS::Application::Ingest::XPATH;
@@ -309,7 +488,7 @@ sub class_index_string_xml {
 		for my $type ( keys %{ $xpathset->{$class} } ) {
 
 			my $def = $xpathset->{$class}->{$type};
-			my $sf = $supported_formats{$def->{format}};
+			my $sf = $OpenILS::Application::Ingest::supported_formats{$def->{format}};
 
 			my $document = $xml;
 
@@ -326,11 +505,12 @@ sub class_index_string_xml {
 
 			next unless $value;
 
+			$value = NFD($value);
 			$value =~ s/\pM+//sgo;
 			$value =~ s/\pC+//sgo;
-			#$value =~ s/[\x{0080}-\x{fffd}]//sgoe;
+			$value =~ s/\W+$//sgo;
 
-			$value =~ s/(\w)\./$1/sgo;
+			$value =~ s/(\w)\.+(\w)/$1$2/sgo;
 			$value = lc($value);
 
 			my $fm = $class_constructor->new;
@@ -358,7 +538,7 @@ sub class_index_string_record {
 	OpenILS::Application::Ingest->post_init();
 	my $r = OpenSRF::AppSession
 			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
+			->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rec )
 			->gather(1);
 
 	return undef unless ($r and @$r);
@@ -449,7 +629,9 @@ sub _marcxml_to_full_rows {
 		$ns->tag( 'LDR' );
 		my $val = $tagline->textContent;
 		$val = NFD($val);
-		$val =~ s/(\pM+)//gso;
+		$val =~ s/\pM+//sgo;
+		$val =~ s/\pC+//sgo;
+		$val =~ s/\W+$//sgo;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -463,7 +645,9 @@ sub _marcxml_to_full_rows {
 		$ns->tag( $tagline->getAttribute( "tag" ) );
 		my $val = $tagline->textContent;
 		$val = NFD($val);
-		$val =~ s/(\pM+)//gso;
+		$val =~ s/\pM+//sgo;
+		$val =~ s/\pC+//sgo;
+		$val =~ s/\W+$//sgo;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -487,7 +671,9 @@ sub _marcxml_to_full_rows {
 			$ns->subfield( $data->getAttribute( "code" ) );
 			my $val = $data->textContent;
 			$val = NFD($val);
-			$val =~ s/(\pM+)//gso;
+			$val =~ s/\pM+//sgo;
+			$val =~ s/\pC+//sgo;
+			$val =~ s/\W+$//sgo;
 			$ns->value( lc($val) );
 
 			push @ns_list, $ns;
@@ -1271,9 +1457,10 @@ sub class_all_index_string_xml {
 
 		next unless $value;
 
+		$value = NFD($value);
 		$value =~ s/\pM+//sgo;
 		$value =~ s/\pC+//sgo;
-		#$value =~ s/[\x{0080}-\x{fffd}]//sgoe;
+		$value =~ s/\W+$//sgo;
 
 		$value =~ s/(\w)\./$1/sgo;
 		$value = lc($value);
@@ -1523,7 +1710,9 @@ sub _marcxml_to_full_rows {
 		$ns->tag( 'LDR' );
 		my $val = $tagline->textContent;
 		$val = NFD($val);
-		$val =~ s/(\pM+)//gso;
+		$val =~ s/\pM+//sgo;
+		$val =~ s/\pC+//sgo;
+		$val =~ s/\W+$//sgo;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -1537,7 +1726,9 @@ sub _marcxml_to_full_rows {
 		$ns->tag( $tagline->getAttribute( "tag" ) );
 		my $val = $tagline->textContent;
 		$val = NFD($val);
-		$val =~ s/(\pM+)//gso;
+		$val =~ s/\pM+//sgo;
+		$val =~ s/\pC+//sgo;
+		$val =~ s/\W+$//sgo;
 		$ns->value( $val );
 
 		push @ns_list, $ns;
@@ -1561,7 +1752,9 @@ sub _marcxml_to_full_rows {
 			$ns->subfield( $data->getAttribute( "code" ) );
 			my $val = $data->textContent;
 			$val = NFD($val);
-			$val =~ s/(\pM+)//gso;
+			$val =~ s/\pM+//sgo;
+			$val =~ s/\pC+//sgo;
+			$val =~ s/\W+$//sgo;
 			$ns->value( lc($val) );
 
 			push @ns_list, $ns;
