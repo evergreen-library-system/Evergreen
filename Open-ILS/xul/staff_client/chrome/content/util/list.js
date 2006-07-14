@@ -427,8 +427,12 @@ util.list.prototype = {
 
 	'_full_retrieve_tree' : function(params) {
 		var obj = this;
-		var nodes = obj.treechildren.childNodes;
-		for (var i = 0; i < nodes.length; i++) util.widgets.dispatch('flesh',nodes[i]);
+		if (obj.all_fleshed) {
+			obj.all_fleshed = false; obj.all_fleshed = true;
+		} else {
+			var nodes = obj.treechildren.childNodes;
+			for (var i = 0; i < nodes.length; i++) util.widgets.dispatch('flesh',nodes[i]);
+		}
 	},
 
 	'_append_to_listbox' : function (params) {
