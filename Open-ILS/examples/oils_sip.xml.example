@@ -37,19 +37,45 @@
 	<!-- needs to be one institution stanza for each institution -->
 	<!-- named in the accounts above. -->
 	<institutions>
+
+
 		<institution id="gapines" implementation="OpenILS::SIP">
-			<policy checkin="true" renewal="false" 
-				status_update="false" offline="false" timeout="600" retries="3"/>
+
+			<!-- This defines what actions we want to allow 
+				remote clients (self-check machines) to perform -->
+			<policy 
+				checkin="true" 
+				checkout="true" 
+				renewal="true" 
+				status_update="false" 
+				offline="false" 
+				timeout="600" 
+				retries="3"/>
 	
 			<!-- implementation specific config options go here -->
 			<implementation_config>
 				<bootstrap>/openils/conf/bootstrap.conf</bootstrap>
+
+				<!-- These defines what this SIP code has the ability to support -->
 				<supports>
-					<!--
-					magnetic media' => 1,
-					security inhibit' => 0,
-					offline operation' => 0
-					-->
+					<item name='magnetic media' value='true'/>
+					<item name='security inhibit' value='false'/>
+					<item name='offline operation' value='false'/>
+					<item name='patron status request' value='true'/>
+					<item name='checkout' value='true'/>
+					<item name='checkin' value='true'/>
+					<item name='block patron' value='true'/>
+					<item name='acs status' value='true'/>
+					<item name='login' value='true'/>
+					<item name='patron information' value='true'/>
+					<item name='end patron session' value='true'/>
+					<item name='fee paid' value='false'/>
+					<item name='item information' value='true'/>
+					<item name='item status update' value='false'/>
+					<item name='patron enable' value='false'/>
+					<item name='hold' value='false'/>
+					<item name='renew'  value='true'/>
+					<item name='renew all' value='false'/>
 				</supports>
 			</implementation_config>
 	
