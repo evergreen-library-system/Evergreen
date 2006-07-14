@@ -79,7 +79,8 @@ sub new {
 	$self->{id}			= $patron_id;
 	$self->{editor}	= $e;
 
-	syslog("LOG_DEBUG", "new OpenILS Patron(%s): found patron '%s'", $patron_id);
+	syslog("LOG_DEBUG", "new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
+		$patron_id, $self->{user}->barred, $self->{user}->card->active );
 
 	bless $self, $type;
 	return $self;
@@ -149,14 +150,13 @@ sub language {
 sub charge_ok {
     my $self = shift;
 	 my $u = $self->{user};
-	 return ($u->barred ne 't') and ($u->card->active ne 'f');
+	 return (($u->barred eq 'f') and ($u->card->active eq 't'));
 }
 
 # How much more detail do we need to check here?
 sub renew_ok {
     my $self = shift;
-	 my $u = $self->{user};
-	 return ($u->barred ne 'f') and ($u->card->active ne 'f');
+	 return $self->charge_ok;
 }
 
 sub recall_ok {
@@ -189,7 +189,7 @@ sub check_password {
 
 sub currency {
 	my $self = shift;
-	return 'usd';
+	return 'USD';
 }
 
 
@@ -369,9 +369,45 @@ sub unavail_holds {
 }
 
 sub block {
-    my ($self, $card_retained, $blocked_card_msg) = @_;
-	 # Mark the card as inactive, set patron alert
-    return $self;
+	my ($self, $card_retained, $blocked_card_msg) = @_;
+
+	my $u = $self->{user};
+	my $e = $self->{editor};
+
+	syslog('LOG_INFO', "Blocking user %s", $u->card->barcode );
+
+#	$self->{editor} = $e = 
+#		OpenILS::Utils::CStoreEditor->new(xact =>1) unless $e->{xact};
+
+	if(!$e->{xact}) { $e->reset; $e->{xact} = 1; }
+
+	return $self if $u->card->active eq 'f';
+
+	$u->card->active('f');
+	if( ! $e->update_actor_card($u->card) ) {
+		syslog('LOG_ERR', "Block card update failed: %s", $e->event->{textcode});
+		$e->xact_rollback;
+		return $self;
+	}
+
+	# retrieve the un-fleshed user object for update
+	$u = $e->retrieve_actor_user($u->id);
+	my $note = $u->alert_message || "";
+	$note = "CARD BLOCKED BY SELF-CHECK MACHINE\n$note"; # XXX Config option
+
+	$u->alert_message($note);
+
+	if( ! $e->update_actor_user($u) ) {
+		syslog('LOG_ERR', "Block: patron alert update failed: %s", $e->event->{textcode});
+		$e->xact_rollback;
+		return $self;
+	}
+
+	# stay in synch
+	$self->{user}->alert_message( $note );
+
+	$e->finish; # commits and resets
+	return $self;
 }
 
 # Testing purposes only

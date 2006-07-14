@@ -29,9 +29,6 @@ my %fields = (
 sub new {
 	 my $class = shift;
 
-	 use Data::Dumper;
-	 warn 'ARGS = ' .  Dumper(\@_);
-
     my $self = $class->SUPER::new(@_);
 
     my $element;
@@ -55,6 +52,8 @@ sub do_checkout {
 	my $self = shift;
 	syslog('LOG_DEBUG', "OpenILS: performing checkout...");
 
+	$self->ok(0); 
+
 	my $args = { 
 		barcode => $self->{item}->id, 
 		patron_barcode => $self->{patron}->id
@@ -65,16 +64,30 @@ sub do_checkout {
 		'open-ils.circ.checkout.permit', 
 		$self->{authtoken}, $args );
 
+	if( ref($resp) eq 'ARRAY' ) {
+		my @e;
+		push( @e, $_->{textcode} ) for @$resp;
+		syslog('LOG_INFO', "Checkout permit failed with events: @e");
+		return 0;
+	}
+
+	if( my $code = $U->event_code($resp) ) {
+		my $txt = $resp->{textcode};
+		syslog('LOG_INFO', "Checkout permit failed with event $code : $txt");
+		return 0; 
+	}
+
 	my $key;
 
-	if( ref($resp) eq 'HASH' and $key = $resp->{payload} ) {
+	if( $key = $resp->{payload} ) {
 		syslog('LOG_INFO', "OpenILS: circ permit key => $key");
 
 	} else {
-		syslog('LOG_INFO', "OpenILS: Circ permit failed :\n" . Dumper($resp) );
-		$self->ok(0);
+		syslog('LOG_WARN', "OpenILS: Circ permit failed :\n" . Dumper($resp) );
 		return 0;
 	}
+
+	# Now do the actual checkout
 
 	$args = { 
 		permit_key		=> $key, 
@@ -88,18 +101,19 @@ sub do_checkout {
 
 	# XXX Check for events
 	if( $resp ) {
-		syslog('LOG_INFO', "OpenILS: Checkout succeeded");
-		my $evt = $resp->{ilsevent};
-		my $circ = $resp->{payload}->{circ};
 
-		if(!$circ or $evt ne 0) { 
-			$self->ok(0); 
-			warn 'CHECKOUT RESPONSE: ' .  Dumper($resp) . "\n";
+		if( my $code = $U->event_code($resp) ) {
+			my $txt = $resp->{textcode};
+			syslog('LOG_INFO', "Checkout failed with event $code : $txt");
 			return 0; 
 		}
 
+		syslog('LOG_INFO', "OpenILS: Checkout succeeded");
+
+		my $circ = $resp->{payload}->{circ};
 		$self->{'due'} = $circ->due_date;
 		$self->ok(1);
+
 		return 1;
 	}
 

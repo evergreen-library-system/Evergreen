@@ -70,8 +70,11 @@ sub new {
 			]
 		);
 
-		$self->{patron} = $user->card->barcode if $user;
+		my $bc = ($user) ? $user->card->barcode : "";
+		$self->{patron} = $bc;
 		$self->{patron_object} = $user;
+
+		syslog('LOG_DEBUG', "Open circulation exists on $item_id : user = $bc");
 	}
 
 	$self->{id}			= $item_id;

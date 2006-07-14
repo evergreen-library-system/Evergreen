@@ -79,15 +79,7 @@ our $AUTOLOAD;
 sub new {
     my( $class, %args ) = @_;
 
-	use Data::Dumper;
-	warn 'ARGS = ' .  Dumper(\@_);
-
-	warn "AUTH = " . $args{authtoken} . "\n";
-
-    my $self = {
-		_permitted => \%fields,
-		%fields,
-    };
+    my $self = { _permitted => \%fields, %fields };
 
 	bless $self, $class;
 	$self->authtoken($args{authtoken});

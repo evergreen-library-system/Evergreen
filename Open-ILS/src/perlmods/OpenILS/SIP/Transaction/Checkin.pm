@@ -51,16 +51,17 @@ sub do_checkin {
 		'open-ils.circ.checkin', 
 		$self->{authtoken}, { barcode => $self->{item}->id } );
 
-
-	my $circ = $resp->{payload}->{circ};
-
-	if(!$circ) {
-		warn 'CHECKIN: ' . Dumper($resp) . "\n";
+	if( my $code = $U->event_code($resp) ) {
+		my $txt = $resp->{textcode};
+		syslog('LOG_INFO', "Checkin failed with event $code : $txt");
 		$self->ok(0);
 		return 0;
 	}
 
-	$self->{item}->{patron} = $self->editor->search_actor_card(
+	my $circ = $resp->{payload}->{circ};
+
+	$self->{item}->{patron} = 
+		$self->editor->search_actor_card(
 		{ usr => $circ->usr, active => 't' } )->[0]->barcode;
 
 	$self->ok(1);

@@ -12,27 +12,26 @@ use OpenILS::SIP::Patron;
 use OpenILS::SIP::Transaction;
 use OpenILS::SIP::Transaction::Checkout;
 use OpenILS::SIP::Transaction::Checkin;
-use OpenILS::SIP::Transaction::FeePayment;
-use OpenILS::SIP::Transaction::Hold;
+#use OpenILS::SIP::Transaction::FeePayment;
+#use OpenILS::SIP::Transaction::Hold;
 use OpenILS::SIP::Transaction::Renew;
-use OpenILS::SIP::Transaction::RenewAll;
+#use OpenILS::SIP::Transaction::RenewAll;
 
 
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 use Digest::MD5 qw(md5_hex);
 
-my $U = 'OpenILS::Application::AppUtils';
-
 # PUT ME IN THE CONFIG XXX
 my %supports = (
-		'magnetic media' => 1,
-		'security inhibit' => 0,
-		'offline operation' => 0
-		);
+	'magnetic media'		=> 1,
+	'security inhibit'	=> 0,
+	'offline operation'	=> 0
+	);
 
 
 sub new {
@@ -129,8 +128,6 @@ sub check_inst_id {
 }
 
 
-
-
 # XXX by default, these should come from the config
 sub checkout_ok {
     return 1;
@@ -201,13 +198,13 @@ sub checkout {
 
 		$xact->editor->commit;
 		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
-			"patron %s checke out %s succeeded", $patron_id, $item_id);
+			"patron %s checkout %s succeeded", $patron_id, $item_id);
 
 	} else {
 
 		$xact->editor->xact_rollback;
 		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
-			"patron %s checke out %s FAILED, rolling back xact...", $patron_id, $item_id);
+			"patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
 	}
 
 	return $xact;
@@ -249,15 +246,13 @@ sub checkin {
 
 
 
-## If the ILS caches patron information, this lets it free
-## it up
-#sub end_patron_session {
-#    my ($self, $patron_id) = @_;
-#
-#    # success?, screen_msg, print_line
-#    return (1, 'Thank you for using OpenILS!', '');
-#}
-#
+## If the ILS caches patron information, this lets it free it up
+sub end_patron_session {
+    my ($self, $patron_id) = @_;
+    return (1, 'Thank you for using OpenILS!', '');
+}
+
+
 #sub pay_fee {
 #    my ($self, $patron_id, $patron_pwd, $fee_amt, $fee_type,
 #	$pay_type, $fee_id, $trans_id, $currency) = @_;
@@ -433,73 +428,59 @@ sub checkin {
 #
 #    return $trans;
 #}
-#
-#sub renew {
-#    my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
-#	$no_block, $nb_due_date, $third_party,
-#	$item_props, $fee_ack) = @_;
-#    my ($patron, $item);
-#    my $trans;
-#
-#    $trans = new ILS::Transaction::Renew;
-#
-#    $trans->patron($patron = new ILS::Patron $patron_id);
-#    if (!$patron) {
-#	$trans->screen_msg("Invalid patron barcode.");
-#
-#	return $trans;
-#    } elsif (!$patron->renew_ok) {
-#
-#	$trans->screen_msg("Renewals not allowed.");
-#
-#	return $trans;
-#    }
-#
-#    if (defined($title_id)) {
-#	# renewing a title, rather than an item (sort of)
-#	# This is gross, but in a real ILS it would be better
-#	foreach my $i (@{$patron->{items}}) {
-#	    $item = new ILS::Item $i;
-#	    last if ($title_id eq $item->title_id);
-#	    $item = undef;
-#	}
-#    } else {
-#	foreach my $i (@{$patron->{items}}) {
-#	    if ($i == $item_id) {
-#		# We have it checked out
-#		$item = new ILS::Item $item_id;
-#		last;
-#	    }
-#	}
-#    }
-#
-#    if (!defined($item)) {
-#	# It's not checked out to $patron_id
-#	$trans->screen_msg("Item not checked out to " . $patron->name);
-#    } elsif (!$item->available($patron_id)) {
-#	 $trans->screen_msg("Item has outstanding holds");
-#    } else {
-#	$trans->item($item);
-#	$trans->renewal_ok(1);
-#
-#	$trans->desensitize(0);	# It's already checked out
-#
-#	if ($no_block eq 'Y') {
-#	    $item->{due_date} = $nb_due_date;
-#	} else {
-#	    $item->{due_date} = time + (14*24*60*60); # two weeks
-#	}
-#	if ($item_props) {
-#	    $item->{sip_item_properties} = $item_props;
-#	}
-#	$trans->ok(1);
-#	$trans->renewal_ok(1);
-#
-#	return $trans;
-#    }
-#
-#    return $trans;
-#}
+
+
+sub renew {
+	my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
+		$no_block, $nb_due_date, $third_party, $item_props, $fee_ack) = @_;
+
+	my $trans = OpenILS::SIP::Transaction::Renew->new( authtoken => $self->{authtoken} );
+	$trans->patron(OpenILS::SIP::Patron->new($patron_id));
+	$trans->item(OpenILS::SIP::Item->new($item_id));
+
+	if(!$trans->patron) {
+		$trans->screen_msg("Invalid patron barcode.");
+		$trans->ok(0);
+		return $trans;
+	}
+
+	if(!$trans->patron->renew_ok) {
+		$trans->screen_msg("Renewals not allowed.");
+		$trans->ok(0);
+		return $trans;
+	}
+
+	if(!$trans->item) {
+		if( $title_id ) {
+			$trans->screen_msg("Item Id renewal not supported.");
+		} else {
+			$trans->screen_msg("Invalid item barcode.");
+		}
+		$trans->ok(0);
+		return $trans;
+	}
+
+	if(!$trans->item->{patron} or 
+			$trans->item->{patron} ne $patron_id) {
+		$trans->screen_msg("Item not checked out to " . $trans->patron->name);
+		$trans->ok(0);
+		return $trans;
+	}
+
+	# Perform the renewal
+	$trans->do_renew();
+
+	$trans->desensitize(0);	# It's already checked out
+	$trans->item->{due_date} = $nb_due_date if $no_block eq 'Y';
+	$trans->item->{sip_item_properties} = $item_props if $item_props;
+
+	return $trans;
+}
+
+
+
+
+
 #
 #sub renew_all {
 #    my ($self, $patron_id, $patron_pwd, $fee_ack) = @_;
