@@ -21,7 +21,8 @@ util.list = function (id) {
 
 util.list.prototype = {
 
-	'row_count' : { 'total' : 0, 'fleshed' : 0, 'all_fleshed' : true },
+	'row_count' : { 'total' : 0, 'fleshed' : 0 },
+	'all_fleshed' : true,
 
 	'init' : function (params) {
 
@@ -54,6 +55,10 @@ util.list.prototype = {
 				}
 			}
 		);
+	},
+
+	'register_all_fleshed_callback' : function(f) {
+		this.on_all_fleshed = f;
 	},
 
 	'_init_tree' : function (params) {
@@ -164,7 +169,7 @@ util.list.prototype = {
 		this.error.sdump('D_LIST','Clearing list ' + this.node.getAttribute('id') + '\n');
 		this.row_count.total = 0;
 		this.row_count.fleshed = 0;
-		this.row_count.all_fleshed = true;
+		this.all_fleshed = true;
 	},
 
 	'_clear_tree' : function(params) {
@@ -203,9 +208,9 @@ util.list.prototype = {
 		}
 		this.row_count.total++;
 		if (this.row_count.fleshed == this.row_count.total) {
-			this.row_count.all_fleshed = true;
+			this.all_fleshed = true;
 		} else {
-			this.row_count.all_fleshed = false;
+			this.all_fleshed = false;
 		}
 		return rnode;
 	},
@@ -256,9 +261,9 @@ util.list.prototype = {
 							treerow.setAttribute('fleshed','true');
 							obj.row_count.fleshed++;
 							if (obj.row_count.fleshed == obj.row_count.total) {
-								obj.row_count.all_fleshed = true;
+								obj.all_fleshed = true;
 							} else {
-								obj.row_count.all_fleshed = false;
+								obj.all_fleshed = false;
 							}
 						} catch(E) {
 							alert('fixme2: ' + E);
@@ -300,9 +305,9 @@ util.list.prototype = {
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
 					if (obj.row_count.fleshed == obj.row_count.total) {
-						obj.row_count.all_fleshed = true;
+						obj.all_fleshed = true;
 					} else {
-						obj.row_count.all_fleshed = false;
+						obj.all_fleshed = false;
 					}
 				},
 				false
@@ -428,7 +433,13 @@ util.list.prototype = {
 	'_full_retrieve_tree' : function(params) {
 		var obj = this;
 		if (obj.all_fleshed) {
-			obj.all_fleshed = false; obj.all_fleshed = true;
+			setTimeout(
+				function() {
+					if (typeof obj.on_all_fleshed == 'function') {
+						obj.on_all_fleshed();
+					}
+				}, 0
+			);
 		} else {
 			var nodes = obj.treechildren.childNodes;
 			for (var i = 0; i < nodes.length; i++) util.widgets.dispatch('flesh',nodes[i]);
