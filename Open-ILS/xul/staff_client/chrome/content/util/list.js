@@ -149,6 +149,7 @@ util.list.prototype = {
 	},
 
 	'clear' : function (params) {
+		var obj = this;
 		switch (this.node.nodeName) {
 			case 'tree' : this._clear_tree(params); break;
 			case 'listbox' : this._clear_listbox(params); break;
@@ -174,6 +175,7 @@ util.list.prototype = {
 	},
 
 	'_clear_listbox' : function(params) {
+		var obj = this;
 		var items = [];
 		var nl = this.node.getElementsByTagName('listitem');
 		for (var i = 0; i < nl.length; i++) {
@@ -505,6 +507,7 @@ util.list.prototype = {
 	},
 
 	'_map_row_to_treecell' : function(params,treerow) {
+		var obj = this;
 		var s = '';
 		util.widgets.remove_children(treerow);
 		for (var i = 0; i < this.columns.length; i++) {
@@ -546,6 +549,7 @@ util.list.prototype = {
 	},
 
 	'_map_row_to_listcell' : function(params,listitem) {
+		var obj = this;
 		var s = '';
 		for (var i = 0; i < this.columns.length; i++) {
 			var value = '';
@@ -574,6 +578,7 @@ util.list.prototype = {
 	},
 
 	'retrieve_selection' : function(params) {
+		var obj = this;
 		switch(this.node.nodeName) {
 			case 'tree' : return this._retrieve_selection_from_tree(params); break;
 			default: throw('NYI: Need ._retrieve_selection_from_() for ' + this.node.nodeName); break;
@@ -581,6 +586,7 @@ util.list.prototype = {
 	},
 
 	'_retrieve_selection_from_tree' : function(params) {
+		var obj = this;
 		var list = [];
 		var start = new Object();
 		var end = new Object();
@@ -596,6 +602,7 @@ util.list.prototype = {
 	},
 
 	'dump' : function(params) {
+		var obj = this;
 		switch(this.node.nodeName) {
 			case 'tree' : return this._dump_tree(params); break;
 			default: throw('NYI: Need .dump() for ' + this.node.nodeName); break;
@@ -603,6 +610,7 @@ util.list.prototype = {
 	},
 
 	'_dump_tree' : function(params) {
+		var obj = this;
 		var dump = [];
 		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
 			var row = [];
@@ -617,6 +625,7 @@ util.list.prototype = {
 	},
 
 	'dump_with_keys' : function(params) {
+		var obj = this;
 		switch(this.node.nodeName) {
 			case 'tree' : return this._dump_tree_with_keys(params); break;
 			default: throw('NYI: Need .dump_with_keys() for ' + this.node.nodeName); break;
@@ -640,6 +649,7 @@ util.list.prototype = {
 	},
 
 	'dump_retrieve_ids' : function(params) {
+		var obj = this;
 		switch(this.node.nodeName) {
 			case 'tree' : return this._dump_retrieve_ids_tree(params); break;
 			default: throw('NYI: Need .dump_retrieve_ids() for ' + this.node.nodeName); break;
@@ -647,6 +657,7 @@ util.list.prototype = {
 	},
 
 	'_dump_retrieve_ids_tree' : function(params) {
+		var obj = this;
 		var dump = [];
 		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
 			var treeitem = this.treechildren.childNodes[i];
