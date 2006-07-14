@@ -26,42 +26,42 @@ COMMENT ON SCHEMA actor IS $$
 $$;
 
 CREATE TABLE actor.usr (
-	id			SERIAL		PRIMARY KEY,
-	card			INT		UNIQUE, -- active card
-	profile			INT		NOT NULL, -- patron profile
-	usrname			TEXT		NOT NULL UNIQUE,
+	id			SERIAL				PRIMARY KEY,
+	card			INT				UNIQUE, -- active card
+	profile			INT				NOT NULL, -- patron profile
+	usrname			TEXT				NOT NULL UNIQUE,
 	email			TEXT,
-	passwd			TEXT		NOT NULL,
-	standing		INT		NOT NULL DEFAULT 1 REFERENCES config.standing (id),
-	ident_type		INT		NOT NULL REFERENCES config.identification_type (id),
+	passwd			TEXT				NOT NULL,
+	standing		INT				NOT NULL DEFAULT 1 REFERENCES config.standing (id),
+	ident_type		INT				NOT NULL REFERENCES config.identification_type (id),
 	ident_value		TEXT,
-	ident_type2		INT		REFERENCES config.identification_type (id),
+	ident_type2		INT				REFERENCES config.identification_type (id),
 	ident_value2		TEXT,
-	net_access_level	INT		NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id),
+	net_access_level	INT				NOT NULL DEFAULT 1 REFERENCES config.net_access_level (id),
 	photo_url		TEXT,
 	prefix			TEXT,
-	first_given_name	TEXT		NOT NULL,
+	first_given_name	TEXT				NOT NULL,
 	second_given_name	TEXT,
-	family_name		TEXT		NOT NULL,
+	family_name		TEXT				NOT NULL,
 	suffix			TEXT,
 	day_phone		TEXT,
 	evening_phone		TEXT,
 	other_phone		TEXT,
 	mailing_address		INT,
 	billing_address		INT,
-	home_ou			INT		NOT NULL,
-	dob			DATE		NOT NULL,
-	active			BOOL		NOT NULL DEFAULT TRUE,
-	master_account		BOOL		NOT NULL DEFAULT FALSE,
-	super_user		BOOL		NOT NULL DEFAULT FALSE,
-	barred			BOOL		NOT NULL DEFAULT FALSE,
-	usrgroup		SERIAL		NOT NULL,
-	claims_returned_count	INT		NOT NULL DEFAULT 0,
-	credit_forward_balance	NUMERIC(6,2)	NOT NULL DEFAULT 0.00,
-	last_xact_id		TEXT		NOT NULL DEFAULT 'none',
+	home_ou			INT				NOT NULL,
+	dob			TIMESTAMP WITH TIME ZONE	NOT NULL,
+	active			BOOL				NOT NULL DEFAULT TRUE,
+	master_account		BOOL				NOT NULL DEFAULT FALSE,
+	super_user		BOOL				NOT NULL DEFAULT FALSE,
+	barred			BOOL				NOT NULL DEFAULT FALSE,
+	usrgroup		SERIAL				NOT NULL,
+	claims_returned_count	INT				NOT NULL DEFAULT 0,
+	credit_forward_balance	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
+	last_xact_id		TEXT				NOT NULL DEFAULT 'none',
 	alert_message		TEXT,
-	create_date		DATE		NOT NULL DEFAULT now()::DATE,
-	expire_date		DATE		NOT NULL DEFAULT (now() + '3 years'::INTERVAL)::DATE
+	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
+	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL)
 );
 COMMENT ON TABLE actor.usr IS $$
 /*

@@ -22,16 +22,16 @@ CREATE TABLE action.non_cataloged_circulation (
 );
 
 CREATE TABLE action.survey (
-	id		SERIAL	PRIMARY KEY,
-	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
-	start_date	DATE	NOT NULL DEFAULT NOW(),
-	end_date	DATE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
-	usr_summary	BOOL	NOT NULL DEFAULT FALSE,
-	opac		BOOL	NOT NULL DEFAULT FALSE,
-	poll		BOOL	NOT NULL DEFAULT FALSE,
-	required	BOOL	NOT NULL DEFAULT FALSE,
-	name		TEXT	NOT NULL,
-	description	TEXT	NOT NULL
+	id		SERIAL				PRIMARY KEY,
+	owner		INT				NOT NULL REFERENCES actor.org_unit (id),
+	start_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	end_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW() + '10 years'::INTERVAL,
+	usr_summary	BOOL				NOT NULL DEFAULT FALSE,
+	opac		BOOL				NOT NULL DEFAULT FALSE,
+	poll		BOOL				NOT NULL DEFAULT FALSE,
+	required	BOOL				NOT NULL DEFAULT FALSE,
+	name		TEXT				NOT NULL,
+	description	TEXT				NOT NULL
 );
 CREATE UNIQUE INDEX asv_once_per_owner_idx ON action.survey (owner,name);
 
