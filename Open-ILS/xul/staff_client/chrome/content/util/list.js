@@ -404,7 +404,7 @@ util.list.prototype = {
 							var endpos = obj.node.treeBoxObject.getLastVisibleRow();
 							if (startpos > endpos) endpos = obj.node.treeBoxObject.getPageLength();
 							//dump('startpos = ' + startpos + ' endpos = ' + endpos + '\n');
-							for (var i = startpos; i < endpos + 2; i++) {
+							for (var i = startpos; i < endpos + 4; i++) {
 								try {
 									//dump('trying index ' + i + '\n');
 									var item = obj.node.contentView.getItemAtIndex(i).firstChild;
