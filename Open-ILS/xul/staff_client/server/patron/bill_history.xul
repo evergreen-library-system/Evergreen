@@ -115,6 +115,7 @@
 			$('checked_out').value = '';
 			$('checked_in').value = '';
 			$('due').value = '';
+			$('copy_summary').hidden=true;
 
 			g.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.mbts_id ],
 				function (req) {
