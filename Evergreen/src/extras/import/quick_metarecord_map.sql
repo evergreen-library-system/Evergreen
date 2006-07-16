@@ -6,10 +6,11 @@ TRUNCATE metabib.metarecord;
 TRUNCATE metabib.metarecord_source_map;
 
 INSERT INTO metabib.metarecord (fingerprint,master_record)
-	SELECT	fingerprint,max(id)
-	  FROM	biblio.record_entry
-	  WHERE	fingerprint IS NOT NULL
-	  GROUP BY 1;
+	SELECT	fingerprint,id
+	  FROM	(SELECT	DISTINCT ON (fingerprint)
+	  		fingerprint, id, quality
+		  FROM	biblio.record_entry
+		  ORDER BY fingerprint, quality desc);
 
 INSERT INTO metabib.metarecord_source_map (metarecord,source)
 	SELECT	m.id, b.id
