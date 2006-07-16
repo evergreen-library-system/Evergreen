@@ -10,7 +10,7 @@ INSERT INTO metabib.metarecord (fingerprint,master_record)
 	  FROM	(SELECT	DISTINCT ON (fingerprint)
 	  		fingerprint, id, quality
 		  FROM	biblio.record_entry
-		  ORDER BY fingerprint, quality desc);
+		  ORDER BY fingerprint, quality desc) AS x;
 
 INSERT INTO metabib.metarecord_source_map (metarecord,source)
 	SELECT	m.id, b.id
