@@ -53,8 +53,8 @@ util.print.prototype = {
 			var w;
 			switch(content_type) {
 				case 'text/html' :
-					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') window.print(); }');
-					w = obj.win.open('data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body onload="">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
+					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { return; /* FIXME */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { /* JSAN.use("util.print"); var p = new util.print(); p.NSPrint(window,false,{}); */ alert("test"); window.print(); alert("test2"); window.close(); } catch(E) { alert(E); } },0); }');
+					w = obj.win.open('data:text/html,<html><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
 				break;
 				default:
 					w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
