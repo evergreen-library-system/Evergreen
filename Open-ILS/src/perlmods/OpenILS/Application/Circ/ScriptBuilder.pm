@@ -5,7 +5,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 use OpenSRF::Utils::Logger qw/$logger/;
-use Scalar::Util;
+use Scalar::Util qw/weaken/;
 my $U = "OpenILS::Application::AppUtils";
 use Data::Dumper;
 
