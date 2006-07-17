@@ -104,9 +104,13 @@ void osrfRouterHandleIncoming( osrfRouter* router ) {
 
 	transport_message* msg = NULL;
 
-	if( (msg = client_recv( router->connection, 0 )) ) { 
+	//if( (msg = client_recv( router->connection, 0 )) ) { 
+	while( (msg = client_recv( router->connection, 0 )) ) { 
 
 		if( msg->sender ) {
+
+			osrfLogDebug(OSRF_LOG_MARK, 
+				"osrfRouterHandleIncoming(): investigating message from %s", msg->sender);
 
 			/* if the sender is not a trusted server, drop the message */
 			int len = strlen(msg->sender) + 1;
@@ -130,9 +134,12 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 	transport_message* msg;
 	osrfLogDebug( OSRF_LOG_MARK, "osrfRouterClassHandleIncoming()");
 
-	if( (msg = client_recv( class->connection, 0 )) ) {
+	while( (msg = client_recv( class->connection, 0 )) ) {
 
 		if( msg->sender ) {
+
+			osrfLogDebug(OSRF_LOG_MARK, 
+				"osrfRouterClassHandleIncoming(): investigating message from %s", msg->sender);
 
 			/* if the client is not from a trusted domain, drop the message */
 			int len = strlen(msg->sender) + 1;
