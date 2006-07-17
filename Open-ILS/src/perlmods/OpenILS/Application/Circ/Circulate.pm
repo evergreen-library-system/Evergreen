@@ -102,7 +102,7 @@ sub create_circ_ctx {
 	OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 	my @evts = @{$ctx->{_events}} if $ctx->{_events};
 
-	#warn "SCRIPT BUILDER EVENTS: @evts\n";
+	$logger->debug("script builder events: : @evts") if @evts;
 
 	if(!$params{noncat}) {
 		if( @evts and grep { $_->{textcode} eq 'ASSET_COPY_NOT_FOUND' } @evts) {
