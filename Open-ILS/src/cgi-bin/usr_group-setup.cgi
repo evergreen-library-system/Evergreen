@@ -42,10 +42,12 @@ if (my $action = $cgi->param('action')) {
 			if (my $id = $cgi->param('permission_'.$perm->id) ) {
 				my $p = permission::grp_perm_map->search({perm=>$id,grp=>$grp->id})->next;
 				my $d = $cgi->param("depth_$id");
+				my $g = $cgi->param("grant_$id") || 'f';
 				if (!$p) {
-					$p = permission::grp_perm_map->create({perm=>$id,grp=>$grp->id,depth=>$d});
+					$p = permission::grp_perm_map->create({perm=>$id,grp=>$grp->id,depth=>$d,grantable=>$g});
 				} else {
 					$p->depth( $d );
+					$p->grantable( $g );
 				}
 				$p->update;
 			} else {
@@ -172,7 +174,7 @@ print <<HEADER;
 	document.write(tree.toString());
 	</script>
 </div>
-<div style="float:right; width:50%;">
+<div style="float:right; width:75%;">
 HEADER
 
 #-------------------------------------------------------------------------------
@@ -227,7 +229,7 @@ if (my $action = $cgi->param('action')) {
 
 			print   "<form method='POST'>".
 				"<table class='table_class'>\n".
-				"<tr class='header_class'><th>Permission</th><th>Select</th><th>At Depth</th></tr>";
+				"<tr class='header_class'><th>Permission</th><th>Select</th><th>At Depth</th><th>Grantable</th></tr>";
 
 			for my $perm ( sort {$a->code cmp $b->code} permission::perm_list->retrieve_all ) {
 				my $grp = $node;
@@ -252,6 +254,21 @@ if (my $action = $cgi->param('action')) {
 					}.">".$outype->name."</option>";
 				}
 				$out .= "</select>";
+				$out .= "</td><td><input type='checkbox' name='grant_$perm' value='t' ".
+					  do{
+					  	my $stuff = '';
+						do {
+							if ($grp) {
+								my $setting = permission::grp_perm_map->search(
+								  		{ grp  => $grp->id,
+										  perm => $perm->id }
+								)->next;
+							  	$stuff = "checked='checked' " if ($setting && $setting->grantable);
+							}
+						} while (!$stuff && $grp && ($grp = $grp->parent));
+					  	$stuff;
+					  }.">";
+
 				$grp = $node;
 				print Tr( "<td>".$perm->code."</td><td>".
 					  "<input type='checkbox' name='permission_$perm' value='$perm' ".
