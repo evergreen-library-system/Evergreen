@@ -6,6 +6,7 @@ use OpenILS::Perm;
 use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -178,31 +179,45 @@ __PACKAGE__->register_method(
 sub bucket_create {
 	my( $self, $client, $authtoken, $class, $bucket ) = @_;
 
-	my( $staff, $target, $evt ) = 
-		$apputils->checkses_requestor( 
-			$authtoken, $bucket->owner, 'CREATE_CONTAINER' );
-	return $evt if $evt;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
-	if( $staff->id eq $target->id ) {
-		$evt = $U->check_perms($target->id, $target->home_ou, 'CREATE_MY_CONTAINER');
-		return $evt if $evt;
+	if( $bucket->owner ne $e->requestor->id ) {
+		return $e->event unless
+			$e->allowed('CREATE_CONTAINER');
+
+	} else {
+		return $e->event unless
+			$e->allowed('CREATE_MY_CONTAINER');
+	}
+		
+	$bucket->clear_id;
+
+	$logger->debug("creating bucket: " . Dumper($bucket));
+
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->create_container_copy_bucket($bucket);
 	}
 
-	$logger->activity( "User " . $staff->id . 
-		" creating a new container for user " . $bucket->owner );
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->create_container_call_number_bucket($bucket);
+	}
 
-	$bucket->clear_id;
-	$logger->debug("Creating new container object: " . Dumper($bucket));
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->create_container_biblio_record_entry_bucket($bucket);
+	}
 
-	my $method = $types{$class} . ".create";
-	my $id = $apputils->simplereq( $svc, $method, $bucket );
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->create_container_user_bucket($bucket);
+	}
 
-	$logger->debug("Creatined new container with id $id");
-
-	if(!$id) { throw OpenSRF::EX 
-		("Unable to create new bucket object"); }
-
-	return $id;
+	$e->commit;
+	return $stat->id;
 }
 
 
@@ -218,24 +233,40 @@ __PACKAGE__->register_method(
 
 sub bucket_delete {
 	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
+	my( $bucket, $evt );
 
-	my( $bucket, $staff, $target, $evt );
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
-	( $bucket, $evt ) = $apputils->fetch_container($bucketid, $class);
+	( $bucket, $evt ) = $U->fetch_container_e($e, $bucketid, $class);
 	return $evt if $evt;
 
-	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
-		$authtoken, $bucket->owner, 'DELETE_CONTAINER' );
-	return $evt if $evt;
+	return $e->event unless $e->allowed('DELETE_CONTAINER');
 
-	$logger->activity( "User " . $staff->id . 
-		" deleting container $bucketid for user " . $bucket->owner );
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->delete_container_copy_bucket($bucket);
+	}
 
-	my $method = $types{$class} . ".delete";
-	my $resp = $apputils->simplereq( $svc, $method, $bucketid );
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->delete_container_call_number_bucket($bucket);
+	}
 
-	throw OpenSRF::EX ("Unable to create new bucket object") unless $resp;
-	return $resp;
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->delete_container_biblio_record_entry_bucket($bucket);
+	}
+
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->delete_container_user_bucket($bucket);
+	}
+
+	$e->commit;
+	return $stat;
+
 }
 
 
@@ -248,23 +279,47 @@ __PACKAGE__->register_method(
 
 sub item_create {
 	my( $self, $client, $authtoken, $class, $item ) = @_;
-	my( $bucket, $staff, $target, $evt);
 
-	( $bucket, $evt ) = $apputils->fetch_container($item->bucket, $class);
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
+
+	my ( $bucket, $evt ) = $apputils->fetch_container_e($e, $item->bucket, $class);
 	return $evt if $evt;
 
-	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
-		$authtoken, $bucket->owner, 'CREATE_CONTAINER_ITEM' );
-	return $evt if $evt;
+	if( $bucket->owner ne $e->requestor->id ) {
+		return $e->event unless
+			$e->allowed('CREATE_CONTAINER_ITEM');
 
-	$logger->activity( "User " . $staff->id . 
-		" creating container item for bucket " . $item->bucket . " and user " . $bucket->owner );
+	} else {
+		return $e->event unless
+			$e->allowed('CREATE_CONTAINER_ITEM'); # new perm here?
+	}
+		
+	$item->clear_id;
 
-	my $method = $types{$class} . "_item.create";
-	my $resp = $apputils->simplereq( $svc, $method, $item );
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->create_container_copy_bucket_item($item);
+	}
 
-	return $U->DB_UPDATE_FAILED($item) unless $resp;
-	return $resp;
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->create_container_call_number_bucket_item($item);
+	}
+
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->create_container_biblio_record_entry_bucket_item($item);
+	}
+
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->create_container_user_bucket_item($item);
+	}
+
+	$e->commit;
+	return $stat->id;
 }
 
 
@@ -278,28 +333,51 @@ __PACKAGE__->register_method(
 
 sub item_delete {
 	my( $self, $client, $authtoken, $class, $itemid ) = @_;
-	my( $bucket, $item, $staff, $target, $evt);
 
-	
-	( $item, $evt ) = $apputils->fetch_container_item( $itemid, $class );
-	return $evt if $evt;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
-	( $bucket, $evt ) = $apputils->fetch_container($item->bucket, $class);
-	return $evt if $evt;
-
-	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
-		$authtoken, $bucket->owner, 'DELETE_CONTAINER_ITEM' );
-	return $evt if $evt;
-
-	$logger->activity( "User " . $staff->id . 
-		" deleting continer item  $itemid for user " . $bucket->owner );
-
-	my $method = $types{$class} . "_item.delete";
-	my $resp = $apputils->simplereq( $svc, $method, $itemid );
-
-	throw OpenSRF::EX ("Unable to delete container item") unless $resp;
-	return $resp;
+	my $ret = __item_delete($e, $class, $itemid);
+	$e->commit unless $U->event_code($ret);
+	return $ret;
 }
+
+sub __item_delete {
+	my( $e, $class, $itemid ) = @_;
+	my( $bucket, $item, $evt);
+
+	( $item, $evt ) = $U->fetch_container_item_e( $e, $itemid, $class );
+	return $evt if $evt;
+
+	( $bucket, $evt ) = $U->fetch_container_e($e, $item->bucket, $class);
+	return $evt if $evt;
+
+	return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM');
+
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->delete_container_copy_bucket_item($item);
+	}
+
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->delete_container_call_number_bucket_item($item);
+	}
+
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->delete_container_biblio_record_entry_bucket_item($item);
+	}
+
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->delete_container_user_bucket_item($item);
+	}
+
+	return $stat;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> 'full_delete',
@@ -309,24 +387,61 @@ __PACKAGE__->register_method(
 
 sub full_delete {
 	my( $self, $client, $authtoken, $class, $containerId ) = @_;
-	my( $staff, $target, $container, $evt);
+	my( $container, $evt);
 
-	( $container, $evt ) = $apputils->fetch_container($containerId, $class);
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
+
+	( $container, $evt ) = $apputils->fetch_container_e($e, $containerId, $class);
 	return $evt if $evt;
 
-	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
-		$authtoken, $container->owner, 'DELETE_CONTAINER' );
-	return $evt if $evt;
+	return $e->event unless $e->allowed('DELETE_CONTAINER');
 
-	$logger->activity("User " . $staff->id . " deleting full container $containerId");
+	my $items; 
 
-	my $meth = $types{$class};
-	my $items = $apputils->simplereq( $svc, "$meth"."_item.search.atomic", { bucket => $containerId } );
+	my @s = ({bucket => $containerId}, {idlist=>1});
 
-	$self->item_delete( $client, $authtoken, $class, $_->id ) for @$items;
+	if( $class eq 'copy' ) {
+		$items = $e->search_container_copy_bucket_item(@s);
+	}
 
-	$meth = $types{$class} . ".delete";
-	return $apputils->simplereq( $svc, $meth, $containerId );
+	if( $class eq 'callnumber' ) {
+		$items = $e->search_container_call_number_bucket_item(@s);
+	}
+
+	if( $class eq 'biblio' ) {
+		$items = $e->search_container_biblio_record_entry_bucket_item(@s);
+	}
+
+	if( $class eq 'user') {
+		$items = $e->search_container_user_bucket_item(@s);
+	}
+
+	__item_delete($e, $class, $_) for @$items;
+
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->delete_container_copy_bucket_item($container);
+	}
+
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->delete_container_call_number_bucket_item($container);
+	}
+
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->delete_container_biblio_record_entry_bucket_item($container);
+	}
+
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->delete_container_user_bucket_item($container);
+	}
+
+	$e->commit;
+	return $stat;
 }
 
 __PACKAGE__->register_method(
@@ -344,19 +459,37 @@ __PACKAGE__->register_method(
 sub container_update {
 	my( $self, $conn, $authtoken, $class, $container )  = @_;
 
-	my( $staff, $target, $dbcontainer, $evt);
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
 
-	( $dbcontainer, $evt ) = $apputils->fetch_container($container->id, $class);
+	my ( $dbcontainer, $evt ) = $U->fetch_container_e($e, $container->id, $class);
 	return $evt if $evt;
 
-	( $staff, $target, $evt ) = $apputils->checkses_requestor( 
-		$authtoken, $dbcontainer->owner, 'UPDATE_CONTAINER' );
-	return $evt if $evt;
+	return $e->event unless $e->allowed('UPDATE_CONTAINER');
 
-	$logger->activity("User " . $staff->id . " updating container ". $container->id);
+	my $stat;
+	if( $class eq 'copy' ) {
+		return $e->event unless
+			$stat = $e->update_container_copy_bucket_item($container);
+	}
 
-	my $meth = $types{$class}.".update";
-	return $U->cstorereq($meth, $container);
+	if( $class eq 'callnumber' ) {
+		return $e->event unless
+			$stat = $e->update_container_call_number_bucket_item($container);
+	}
+
+	if( $class eq 'biblio' ) {
+		return $e->event unless
+			$stat = $e->update_container_biblio_record_entry_bucket_item($container);
+	}
+
+	if( $class eq 'user') {
+		return $e->event unless
+			$stat = $e->update_container_user_bucket_item($container);
+	}
+
+	$e->commit;
+	return $stat;
 }
 
 

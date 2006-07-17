@@ -591,6 +591,36 @@ sub fetch_container {
 }
 
 
+sub fetch_container_e {
+	my( $self, $editor, $id, $type ) = @_;
+
+	my( $bucket, $evt );
+	$bucket = $editor->retrieve_container_copy_bucket($id) if $type eq 'copy';
+	$bucket = $editor->retrieve_container_call_number_bucket($id) if $type eq 'callnumber';
+	$bucket = $editor->retrieve_container_biblio_record_entry_bucket($id) if $type eq 'biblio';
+	$bucket = $editor->retrieve_container_user_bucket($id) if $type eq 'user';
+
+	$evt = $editor->event unless $bucket;
+	return ($bucket, $evt);
+}
+
+sub fetch_container_item_e {
+	my( $self, $editor, $id, $type ) = @_;
+
+	my( $bucket, $evt );
+	$bucket = $editor->retrieve_container_copy_bucket_item($id) if $type eq 'copy';
+	$bucket = $editor->retrieve_container_call_number_bucket_item($id) if $type eq 'callnumber';
+	$bucket = $editor->retrieve_container_biblio_record_entry_bucket_item($id) if $type eq 'biblio';
+	$bucket = $editor->retrieve_container_user_bucket_item($id) if $type eq 'user';
+
+	$evt = $editor->event unless $bucket;
+	return ($bucket, $evt);
+}
+
+
+
+
+
 sub fetch_container_item {
 	my( $self, $id, $type ) = @_;
 	my( $bucket, $evt );
@@ -608,7 +638,6 @@ sub fetch_container_item {
 	$e = 'CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND' if $type eq 'biblio';
 	$e = 'CONTAINER_USER_BUCKET_ITEM_NOT_FOUND' if $type eq 'user';
 	$e = 'CONTAINER_COPY_BUCKET_ITEM_NOT_FOUND' if $type eq 'copy';
-
 
 	$evt = OpenILS::Event->new(
 		$e, itemid => $id, container_type => $type ) unless $bucket;

@@ -327,8 +327,11 @@ sub _prop_string {
 sub __arg_to_string {
 	my $arg = shift;
 	return "" unless defined $arg;
-	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
+	if( UNIVERSAL::isa($arg, "Fieldmapper") ) {
+		return (defined $arg->id) ? $arg->id : '<new object>';
+	}
 	return JSON->perl2JSON($arg);
+	return "";
 }
 
 
@@ -414,7 +417,7 @@ sub runmethod {
 	
 
 	if(!defined $obj) {
-		$self->log(I, "request returned no data");
+		$self->log(I, "request returned no data : $method");
 
 		if( $action eq 'retrieve' ) {
 			$self->event(_mk_not_found($type, $arg));
