@@ -168,7 +168,7 @@ sub to_fieldmapper {
 
 	if (ref($obj)) {
 		for my $field ( $fm->real_fields ) {
-			$fm->$field( $obj->$field );
+			$fm->$field( ''.$obj->$field );
 		}
 	}
 
