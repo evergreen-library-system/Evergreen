@@ -273,7 +273,7 @@ To-do list:
 				<xsl:variable name="rights" select="(atom:rights[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml'] | copyright | dc:rights)[1]" />
 				<div id="footer">
 					<xsl:if test="$rights"><p><xsl:call-template name="showtext"><xsl:with-param name="node" select="$rights" /></xsl:call-template></p></xsl:if>
-					<p><small>This XSLT is &#169; <a href="http://a9.com/">A9.com, Inc</a> with modifications for <a href="http://open-ils.org">OpenILS/Evergreen</a> &#169; <a href="http://georgialibraries.org">GPLS</a>; see <a href="http://opensearch.a9.com/docs/stylesheet.jsp">full details</a>.</small></p>
+					<p><small>This XSLT is &#169; <a href="http://a9.com/">A9.com, Inc</a> with modifications for <a href="http://open-ils.org">OpenILS/Evergreen</a> &#169; <a href="http://www.georgialibraries.org">GPLS</a>; see <a href="http://opensearch.a9.com/docs/stylesheet.jsp">full details</a>.</small></p>
 				</div>
 
 			</body>
