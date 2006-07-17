@@ -18,9 +18,7 @@ my $script_libs;	# - extra script libs
 # params within a hash are: copy, patron, 
 # requestor, request_lib, title, title_descriptor
 sub permit_copy_hold {
-
 	my $params	= shift;
-	my $k			= 'environment';
 
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build(
 		{
@@ -39,6 +37,8 @@ sub permit_copy_hold {
 
 	load_scripts($runner);
 	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
+
+	$runner->context->destroy;
 
 	# --------------------------------------------------------------
 	# Extract and uniquify the event list

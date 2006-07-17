@@ -5,6 +5,7 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 use OpenSRF::Utils::Logger qw/$logger/;
+use Scalar::Util;
 my $U = "OpenILS::Application::AppUtils";
 use Data::Dumper;
 
@@ -15,6 +16,7 @@ my %GROUP_SET;
 my $GROUP_TREE;
 my $ORG_TREE;
 my @ORG_LIST;
+
 
 
 # -----------------------------------------------------------------------
@@ -65,7 +67,9 @@ sub build_runner {
 
 	my $runner = OpenILS::Utils::ScriptRunner->new;
 
-	$runner->insert( "$evt.groupTree",	$GROUP_TREE, 1);
+	my $gt = $GROUP_TREE;
+	weaken($gt); # just to be safe
+	$runner->insert( "$evt.groupTree",	$gt, 1);
 
 
 	$runner->insert( "$evt.patron",		$ctx->{patron}, 1);
@@ -269,13 +273,16 @@ sub insert_org_methods {
 		flatten_org_tree($ORG_TREE);
 	}
 
+	my $r = $runner;
+	weaken($r);
+
 	$runner->insert(__OILS_FUNC_isOrgDescendent  => 
 		sub {
 			my( $write_key, $sname, $id ) = @_;
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
 			my $val = is_org_descendent( $parent, $child );
-			$runner->insert($write_key, $val);
+			$r->insert($write_key, $val);
 			return $val;
 		}
 	);
