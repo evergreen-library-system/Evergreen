@@ -118,6 +118,7 @@ while ( my $rec = <> ) {
 	$count++;
 }
 
+$ses[$_]->close for (@ses);
 sub postprocess {
 	my $data = shift;
 	my $f = shift;

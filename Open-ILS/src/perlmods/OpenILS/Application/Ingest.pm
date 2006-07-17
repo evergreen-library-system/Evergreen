@@ -779,6 +779,7 @@ sub biblio_fingerprint_record {
 
 	my ($fp) = $self->method_lookup('open-ils.ingest.fingerprint.xml')->run($r->marc);
 	$log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
+	$fp->{quality} = int($fp->{quality});
 	return $fp;
 }
 __PACKAGE__->register_method(  

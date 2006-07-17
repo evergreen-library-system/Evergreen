@@ -26,8 +26,8 @@ use UNIVERSAL::require;
 
 MARC::Charset->ignore_errors(1);
 
-my ($id_field, $count, $user, $password, $config, $keyfile,  @files, @trash_fields) =
-	('998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
+my ($utf8, $id_field, $count, $user, $password, $config, $keyfile,  @files, @trash_fields) =
+	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
 
 GetOptions(
 	'startid=i'	=> \$count,
@@ -49,7 +49,7 @@ my %processing_cache;
 my %source_map = (      
 	o  => 'OCLC',
 	i  => 'ISxN',    
-	l  => 'Local',
+	l  => 'LCCN',
 	s  => 'System',  
 	g  => 'Gutenberg',  
 );                              
@@ -78,23 +78,26 @@ $batch->strict_off();
 $batch->warnings_off();
 
 my $starttime = time;
-while ( my $rec = $batch->next ) {
-
+my $rec;
+while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
+	next if ($rec == -1);
 	my $id;
-	my $field = $rec->field($id_field);
 
-	if ($field) {
-		if ($field->is_control_field) {
-			$id = $field->data;
-		} else {
-			$id = $field->subfield('a');
+	if ($id_field) {
+		my $field = $rec->field($id_field);
+		if ($field) {
+			if ($field->is_control_field) {
+				$id = $field->data;
+			} else {
+				$id = $field->subfield('a');
+			}
 		}
-	} else {
-		$id = $count;
 	}
 		
-	if ($id =~ /(\d+)/o) {
+	if ($id && $id =~ /(\d+)/o) {
 		$id = $1;
+	} else {
+		$id = $count;
 	}
 
 	if ($keyfile) {
@@ -149,6 +152,11 @@ sub preprocess {
 
 	my ($id, $source, $value);
 
+        if (!$id) {
+                my $f = $rec->field($id_field);
+                $id = $f->subfield('a') if ($f);
+        }
+
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
@@ -156,8 +164,8 @@ sub preprocess {
 
 	if (!$id) {
 		my $f = $rec->field('000');
-		$id = 'g'.$f->data if ($f);
-		$source = 'g';
+		$id = $f->data if ($f);
+		$source = 'g'; # only PG seems to use this
 	}
 
         if (!$id) {
@@ -178,12 +186,6 @@ sub preprocess {
 		$source = 'l';
         }
 
-        if (!$id) {
-                my $f = $rec->field($id_field);
-                $id = $f->subfield('a') if ($f);
-		$source = 's';
-        }
-
 	if (!$id) {
 		$count++;
 		warn "\n !!! Record with no TCN : $count\n".$rec->as_formatted;
@@ -194,7 +196,7 @@ sub preprocess {
 
 	$id =~ s/\s*$//o;
 	$id =~ s/^\s*//o;
-	$id =~ s/(\S+)$/$1/o;
+	$id =~ s/^(\S+).*$/$1/o;
 
 	$id = $source.$id if ($source);
 

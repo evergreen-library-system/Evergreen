@@ -84,14 +84,22 @@ for my $h (@order) {
 
 	for my $line (@{ $lineset{$h} }) {
 		my @data;
+		my $x = 0;
 		for my $d (@$line) {
 			if (!defined($d)) {
 				$d = '\N';
 			} else {
-				$d =~ s/\t/\\t/go;
-				$d =~ s/\\/\\\\/go;
+				$d =~ s/\f/\\f/gos;
+				$d =~ s/\n/\\n/gos;
+				$d =~ s/\r/\\r/gos;
+				$d =~ s/\t/\\t/gos;
+				$d =~ s/\\/\\\\/gos;
+			}
+			if ($h eq 'bre' and $fieldcache{$h}{fields}[$x] eq 'quality') {
+				$d = int($d);
 			}
 			push @data, $d;
+			$x++;
 		}
 		$output->print( join("\t", @data)."\n" );
 	}
