@@ -191,6 +191,8 @@ sub tree_walker {
 	my $field = shift;
 	my $filter = shift;
 
+	return unless ($tree && ref($tree->$field));
+
 	my @things = $filter->($tree);
 	for my $v ( @{$tree->$field} ){
 		push @things, $filter->($v);
@@ -235,7 +237,7 @@ sub cn_browse {
 		}
 	)->gather(1);
 
-	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id});
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 
 	$logger->debug("Searching for CNs at orgs [".join(',',@ou_ids)."], based on $ou");
 
@@ -340,7 +342,7 @@ sub new_record_holdings {
 		}
 	)->gather(1);
 
-	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id});
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
 
 	$logger->debug("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
 
