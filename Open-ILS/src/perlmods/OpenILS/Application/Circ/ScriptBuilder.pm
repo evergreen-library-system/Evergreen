@@ -46,8 +46,15 @@ sub build {
 	push(@evts, $evt) if $evt;
 	$evt = fetch_user_data($editor, $args);
 	push(@evts, $evt) if $evt;
-	$logger->debug("script_builder: some events occurred: @evts") if @evts;
-	$args->{_events} = \@evts;
+
+	if(@evts) {
+		my @e;
+		push( @e, $_->{textcode} ) for @evts;
+		$logger->info("script_builder: some events occurred: @e");
+		$logger->debug("script_builder: some events occurred: " . Dumper(\@evts));
+		$args->{_events} = \@evts;
+	}
+
 	return build_runner($editor, $args);
 }
 
@@ -59,6 +66,7 @@ sub build_runner {
 	my $runner = OpenILS::Utils::ScriptRunner->new;
 
 	$runner->insert( "$evt.groupTree",	$GROUP_TREE, 1);
+
 
 	$runner->insert( "$evt.patron",		$ctx->{patron}, 1);
 	$runner->insert( "$evt.copy",			$ctx->{copy}, 1);
@@ -168,6 +176,9 @@ sub fetch_user_data {
 		$e->retrieve_actor_org_unit($patron->home_ou) ) 
 		unless ref $patron->home_ou;
 
+	$patron->home_ou->ou_type(
+		$patron->home_ou->ou_type->id) 
+		if ref $patron->home_ou->ou_type;
 
 	if(!%GROUP_SET) {
 		$GROUP_TREE = $e->search_permission_grp_tree(
