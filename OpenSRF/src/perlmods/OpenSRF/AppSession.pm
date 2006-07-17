@@ -248,6 +248,8 @@ sub create {
 				stateless		=> $stateless,
 			 } => $class;
 
+	$logger->debug( "Created new client session $app : $sess_id" );
+
 	return $_CACHE{$sess_id} = $self;
 }
 
