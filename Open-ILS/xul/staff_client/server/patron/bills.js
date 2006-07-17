@@ -168,14 +168,16 @@ patron.bills.prototype = {
 									try {
 										JSAN.use('util.window');
 										var win = new util.window();
-										obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
+										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
 										var w = win.open(
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable,modal'
+											//'chrome,resizable,modal'
+											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_history',E);	
 									}
@@ -187,14 +189,16 @@ patron.bills.prototype = {
 									try {
 										JSAN.use('util.window');
 										var win = new util.window();
-										obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
+										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
 										var w = win.open(
 											urls.XUL_PATRON_BILL_HISTORY
 												+ '?current=1&patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
-											'chrome,resizable,modal'
+											//'chrome,resizable,modal'
+											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
+										w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
 									}

@@ -211,7 +211,7 @@
 				JSAN.use('util.money');
 				JSAN.use('patron.util');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-				g.data.temp = ''; g.data.stash('temp');
+				//g.data.temp = ''; g.data.stash('temp');
 
 				g.error.sdump('D_TRACE','my_init() for bill_history.xul');
 
@@ -266,7 +266,8 @@
 				);
 				g.bill_list.clear();
 				retrieve_mbts_for_list();
-				g.data.temp = 'refresh'; g.data.stash('temp');
+				//g.data.temp = 'refresh'; g.data.stash('temp');
+				if (typeof window.refresh == 'function') window.refresh();
 			}
 		}
 
@@ -296,7 +297,7 @@
 							'footer' : g.data.print_list_templates[template].footer,
 							'type' : g.data.print_list_templates[template].type,
 							'list' : g.bill_list.dump_with_keys(),
-							'modal' : true,
+							//'modal' : true,
 						};
 						JSAN.use('util.print'); var print = new util.print();
 						print.tree_list( params );
