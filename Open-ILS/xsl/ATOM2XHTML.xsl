@@ -4,8 +4,9 @@
 !! Information About This File: http://opensearch.a9.com/docs/stylesheet.jsp
 
 Copyright (c) 2005-2006 A9.com, Inc. or its affiliates.
+Copyright (c) 2006 GPLS.
 
-Author: Michael Fagan, parts by Joel Tesler
+Author: Michael Fagan, parts by Joel Tesler; modifications by Mike Rylander / GPLS
 Changelog:
 	2005-11-28: Updated to work with OpenSearch 1.1 Draft 2 (rather than Draft 1)
 	2005-10-19: Changlog added (unknown update)
@@ -272,7 +273,7 @@ To-do list:
 				<xsl:variable name="rights" select="(atom:rights[not(@type) or @type='' or @type='text' or @type='html' or @type='xhtml'] | copyright | dc:rights)[1]" />
 				<div id="footer">
 					<xsl:if test="$rights"><p><xsl:call-template name="showtext"><xsl:with-param name="node" select="$rights" /></xsl:call-template></p></xsl:if>
-					<p><small>This XSLT is &#169; <a href="http://a9.com/">A9.com, Inc</a>; see <a href="http://opensearch.a9.com/docs/stylesheet.jsp">full details</a>.</small></p>
+					<p><small>This XSLT is &#169; <a href="http://a9.com/">A9.com, Inc</a> with modifications for <a href="http://open-ils.org">OpenILS/Evergreen</a> &#169; <a href="http://georgialibraries.org">GPLS</a>; see <a href="http://opensearch.a9.com/docs/stylesheet.jsp">full details</a>.</small></p>
 				</div>
 
 			</body>
