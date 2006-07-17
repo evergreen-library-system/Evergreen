@@ -354,6 +354,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_Z3950_IMPORT),{},{});
 				}
 			],
+			'cmd_create_marc' : [
+				['oncommand'],
+				function() {
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_MARC_NEW),{},{});
+				}
+			],
 
 			/* Admin menu */
 			'cmd_change_session' : [
