@@ -234,13 +234,24 @@ function main_init() {
 
 		/////////////////////////////////////////////////////////////////////////////
 
-		var x = document.getElementById('version_label');
 		var version = '/xul/server/'.split(/\//)[2];
 		if (version == 'server') {
 			version = 'versionless debug build';
 			document.getElementById('debug_gb').hidden = false;
 		}
-		x.setAttribute('value','Build ID: ' + version);
+		//var x = document.getElementById('version_label');
+		//x.setAttribute('value','Build ID: ' + version);
+		var x = document.getElementById('about_btn');
+		x.setAttribute('label','About this client...');
+		x.addEventListener(
+			'click',
+			function() {
+				try { 
+					G.window.open('about.html','about','chrome,resizable,width=800,height=600');
+				} catch(E) { alert(E); }
+			}, 
+			false
+		);
 
 	} catch(E) {
 		var error = "!! This software has encountered an error.  Please tell your friendly " +
