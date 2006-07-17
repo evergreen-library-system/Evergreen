@@ -1637,7 +1637,7 @@ sub hold_request_count {
 
 	my @ready;
 	for my $h (@$holds) {
-		next unless $h->capture_time;
+		next unless $h->capture_time and $h->current_copy;
 
 		my $copy = $apputils->simple_scalar_request(
 			"open-ils.cstore",
