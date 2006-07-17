@@ -293,7 +293,7 @@ cat.record_buckets.prototype = {
 								var name = prompt('What would you like to name the bucket?','','Bucket Creation');
 
 								if (name) {
-									var bucket = new ccb();
+									var bucket = new cbreb();
 									bucket.btype('staff_client');
 									bucket.owner( obj.data.list.au[0].id() );
 									bucket.name( name );
