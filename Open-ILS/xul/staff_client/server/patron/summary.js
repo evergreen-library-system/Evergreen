@@ -143,11 +143,12 @@ patron.summary.prototype = {
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 									[ ses(), obj.patron.id() ],
 									function(req) {
-										e.setAttribute('value', req.getResultObject().out	);
-										if (e2) e2.setAttribute('value', req.getResultObject().overdue	);
-										if (e3) e3.setAttribute('value', req.getResultObject().claims_returned	);
-										if (e4) e4.setAttribute('value', req.getResultObject().long_overdue	);
-										if (e5) e5.setAttribute('value', req.getResultObject().lost	);
+										var robj = req.getResultObject();
+										e.setAttribute('value', robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+										if (e2) e2.setAttribute('value', robj.overdue	);
+										if (e3) e3.setAttribute('value', robj.claims_returned	);
+										if (e4) e4.setAttribute('value', robj.long_overdue	);
+										if (e5) e5.setAttribute('value', robj.lost	);
 									}
 								);
 							};

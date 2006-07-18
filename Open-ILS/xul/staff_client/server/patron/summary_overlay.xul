@@ -80,22 +80,23 @@
 			<label id="PatronSummaryStatus_checkouts_label" class="text_left items_out label"
 				value="&staff.patron_display.checkouts.label;" />
 			<label id="patron_checkouts" class="items_out value"/>
-		</row><row>
-			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_left items_overdue label"
-				value="&staff.patron_display.checkouts_overdue.label;" />
-			<label id="patron_overdue" class="items_overdue value"/>
+		</row>
+		<row>
+			<label id="PatronSummaryStatus_checkouts_overdue_label" class="text_right items_overdue label"
+				value="&staff.patron_display.checkouts_overdue.label;" style="background: grey"/>
+			<label id="patron_overdue" class="items_overdue value" style="background: grey"/>
 		</row>
 		<row id="pdsgr5">
-			<label id="PatronSummaryStatus_long_overdue_label" value="Long Overdue:" class="text_left items_long_overdue label"/>
-			<label id="patron_long_overdue" class="items_long_overdue value"/>
+			<label id="PatronSummaryStatus_long_overdue_label" value="Long Overdue:" class="text_right items_long_overdue label" style="background: grey"/>
+			<label id="patron_long_overdue" class="items_long_overdue value" style="background: grey"/>
+		</row>
+		<row id="pdsgr7">
+			<label id="PatronSummaryStatus_claimed_returned_label" value="Claimed Returned:" class="text_right items_long_overdue label" style="background: grey"/>
+			<label id="patron_claimed_returned" class="items_claimed_returned value" style="background: grey"/>
 		</row>
 		<row id="pdsgr6">
 			<label id="PatronSummaryStatus_lost_label" value="Lost:" class="text_left items_lost label"/>
 			<label id="patron_lost" class="items_lost value"/>
-		</row>
-		<row id="pdsgr7">
-			<label id="PatronSummaryStatus_claimed_returned_label" value="Claimed Returned:" class="text_left items_long_overdue label"/>
-			<label id="patron_claimed_returned" class="items_claimed_returned value"/>
 		</row>
 	</rows>
 </grid>
