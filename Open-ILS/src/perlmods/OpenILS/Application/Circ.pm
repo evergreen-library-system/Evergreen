@@ -299,7 +299,7 @@ sub _set_circ_lost {
 	my $copy_price = $copy->price || 0;
 
 	# If the copy has a price configured, charge said price to the user
-	if($copy_price) {
+	if($copy_price and $copy_price > 0) {
 		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
 		return $evt if $evt;
 	}
