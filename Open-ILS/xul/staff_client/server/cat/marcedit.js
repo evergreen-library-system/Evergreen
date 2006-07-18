@@ -45,7 +45,7 @@ function my_init() {
 		}
 
 		xml_record = new XML( window.xulG.record.marc );
-		xml_record = xml_record..record[0];
+		if (xml_record..record[0]) xml_record = xml_record..record[0];
 
 		// Get the tooltip xml all async like
 		req =  new XMLHttpRequest();
@@ -60,7 +60,7 @@ function my_init() {
 
 		loadRecord(xml_record);
 	} catch(E) {
-		alert('FIXME, MARC Editor: ' + E);
+		alert('FIXME, MARC Editor, my_init: ' + E);
 	}
 }
 
@@ -597,17 +597,21 @@ var ff_pos = {
 };
 
 function recordType (rec) {
-	var _l = rec.leader.toString();
+	try {
+		var _l = rec.leader.toString();
 
-	var _t = _l.substr(ff_pos.Type.ldr.BKS.start, ff_pos.Type.ldr.BKS.len);
-	var _b = _l.substr(ff_pos.BLvl.ldr.BKS.start, ff_pos.BLvl.ldr.BKS.len);
+		var _t = _l.substr(ff_pos.Type.ldr.BKS.start, ff_pos.Type.ldr.BKS.len);
+		var _b = _l.substr(ff_pos.BLvl.ldr.BKS.start, ff_pos.BLvl.ldr.BKS.len);
 
-	for (var t in rec_type) {
-		if (_t.match(rec_type[t].Type) && _b.match(rec_type[t].BLvl)) {
-			document.getElementById('recordTypeLabel').value = t;
+		for (var t in rec_type) {
+			if (_t.match(rec_type[t].Type) && _b.match(rec_type[t].BLvl)) {
+				document.getElementById('recordTypeLabel').value = t;
 			_record_type = t;
-			return t;
+				return t;
+			}
 		}
+	} catch(E) {
+		alert('FIXME, MARC Editor, recordType: ' + E);
 	}
 }
 
@@ -627,76 +631,80 @@ function changeFFEditor (type) {
 }
 
 function fillFixedFields (rec) {
-	var grid = document.getElementById('leaderGrid');
+	try {
+			var grid = document.getElementById('leaderGrid');
 
-	var rtype = _record_type;
+			var rtype = _record_type;
 
-	var _l = rec.leader.toString();
-	var _6 = rec.controlfield.(@tag=='006').toString();
-	var _7 = rec.controlfield.(@tag=='007').toString();
-	var _8 = rec.controlfield.(@tag=='008').toString();
+			var _l = rec.leader.toString();
+			var _6 = rec.controlfield.(@tag=='006').toString();
+			var _7 = rec.controlfield.(@tag=='007').toString();
+			var _8 = rec.controlfield.(@tag=='008').toString();
 
-	var list = [];
-	var pre_list = grid.getElementsByTagName('label');
-	for (var i in pre_list) {
-		if ( pre_list[i].getAttribute && pre_list[i].getAttribute('set').indexOf(grid.getAttribute('type')) > -1 ) {
-			list.push( pre_list[i] );
-		}
-	}
-
-	for (var i in list) {
-		var name = list[i].getAttribute('name');
-
-		if (!ff_pos[name])
-			continue;
-
-		var value = '';
-		if ( ff_pos[name].ldr && ff_pos[name].ldr[rtype] )
-			value = _l.substr(ff_pos[name].ldr[rtype].start, ff_pos[name].ldr[rtype].len);
-
-		if ( ff_pos[name]._8 && ff_pos[name]._8[rtype] )
-			value = _8.substr(ff_pos[name]._8[rtype].start, ff_pos[name]._8[rtype].len);
-
-		if ( !value && ff_pos[name]._6 && ff_pos[name]._6[rtype] )
-			value = _6.substr(ff_pos[name]._6[rtype].start, ff_pos[name]._6[rtype].len);
-
-		if ( ff_pos[name]._7 && ff_pos[name]._7[rtype] )
-			value = _7.substr(ff_pos[name]._7[rtype].start, ff_pos[name]._7[rtype].len);
-		
-		if (!value) {
-			var d;
-			var p;
-			if (ff_pos[name].ldr && ff_pos[name].ldr[rtype]) {
-				d = ff_pos[name].ldr[rtype].def;
-				p = 'ldr';
-			}
-
-			if (ff_pos[name]._8 && ff_pos[name]._8[rtype]) {
-				d = ff_pos[name]._8[rtype].def;
-				p = '_8';
-			}
-
-			if (!value && ff_pos[name]._6 && ff_pos[name]._6[rtype]) {
-				d = ff_pos[name]._6[rtype].def;
-				p = '_6';
-			}
-
-			if (ff_pos[name]._7 && ff_pos[name]._7[rtype]) {
-				d = ff_pos[name]._7[rtype].def;
-				p = '_7';
-			}
-
-			if (!value) {
-				for (var j = 0; j < ff_pos[name][p][rtype].len; j++) {
-					value += d;
+			var list = [];
+			var pre_list = grid.getElementsByTagName('label');
+			for (var i in pre_list) {
+				if ( pre_list[i].getAttribute && pre_list[i].getAttribute('set').indexOf(grid.getAttribute('type')) > -1 ) {
+					list.push( pre_list[i] );
 				}
 			}
-		}
 
-		list[i].nextSibling.value = value;
+			for (var i in list) {
+				var name = list[i].getAttribute('name');
+
+				if (!ff_pos[name])
+					continue;
+
+				var value = '';
+				if ( ff_pos[name].ldr && ff_pos[name].ldr[rtype] )
+					value = _l.substr(ff_pos[name].ldr[rtype].start, ff_pos[name].ldr[rtype].len);
+
+				if ( ff_pos[name]._8 && ff_pos[name]._8[rtype] )
+					value = _8.substr(ff_pos[name]._8[rtype].start, ff_pos[name]._8[rtype].len);
+
+				if ( !value && ff_pos[name]._6 && ff_pos[name]._6[rtype] )
+					value = _6.substr(ff_pos[name]._6[rtype].start, ff_pos[name]._6[rtype].len);
+
+				if ( ff_pos[name]._7 && ff_pos[name]._7[rtype] )
+					value = _7.substr(ff_pos[name]._7[rtype].start, ff_pos[name]._7[rtype].len);
+				
+				if (!value) {
+					var d;
+					var p;
+					if (ff_pos[name].ldr && ff_pos[name].ldr[rtype]) {
+						d = ff_pos[name].ldr[rtype].def;
+						p = 'ldr';
+					}
+
+					if (ff_pos[name]._8 && ff_pos[name]._8[rtype]) {
+						d = ff_pos[name]._8[rtype].def;
+						p = '_8';
+					}
+
+					if (!value && ff_pos[name]._6 && ff_pos[name]._6[rtype]) {
+						d = ff_pos[name]._6[rtype].def;
+						p = '_6';
+					}
+
+					if (ff_pos[name]._7 && ff_pos[name]._7[rtype]) {
+						d = ff_pos[name]._7[rtype].def;
+						p = '_7';
+					}
+
+					if (!value) {
+						for (var j = 0; j < ff_pos[name][p][rtype].len; j++) {
+							value += d;
+						}
+					}
+				}
+
+				list[i].nextSibling.value = value;
+			}
+
+			return true;
+	} catch(E) {
+		alert('FIXME, MARC Editor, fillFixedFields: ' + E);
 	}
-
-	return true;
 }
 
 function updateFixedFields (element) {
@@ -899,22 +907,26 @@ function marcSubfield (sf) {
 }
 
 function loadRecord(rec) {
-	_record = rec;
-	var grid_rows = document.getElementById('recGrid').lastChild;
+	try {
+			_record = rec;
+			var grid_rows = document.getElementById('recGrid').lastChild;
 
-	grid_rows.appendChild( marcLeader( rec.leader ) );
+			grid_rows.appendChild( marcLeader( rec.leader ) );
 
-	for (var i in rec.controlfield) {
-		grid_rows.appendChild( marcControlfield( rec.controlfield[i] ) );
+			for (var i in rec.controlfield) {
+				grid_rows.appendChild( marcControlfield( rec.controlfield[i] ) );
+			}
+
+			for (var i in rec.datafield) {
+				grid_rows.appendChild( marcDatafield( rec.datafield[i] ) );
+			}
+
+			grid_rows.getElementsByAttribute('class','marcDatafieldRow')[0].firstChild.focus();
+			changeFFEditor(recordType(rec));
+			fillFixedFields(rec);
+	} catch(E) {
+		alert('FIXME, MARC Editor, loadRecord: ' + E);
 	}
-
-	for (var i in rec.datafield) {
-		grid_rows.appendChild( marcDatafield( rec.datafield[i] ) );
-	}
-
-	grid_rows.getElementsByAttribute('class','marcDatafieldRow')[0].firstChild.focus();
-	changeFFEditor(recordType(rec));
-	fillFixedFields(rec);
 }
 
 var context_menus = createComplexXULElement('popupset');
