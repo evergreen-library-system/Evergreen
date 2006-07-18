@@ -167,28 +167,25 @@
 							[ ses(), grocery ]
 						);
 				}
-				if (xact_id) {
+				if (typeof xact_id.ilsevent == 'undefined') {
+					JSAN.use('util.money');
 					var billing = new mb();
 						billing.isnew('1');
 						billing.note( $('bill_note').value );
 						billing.xact( xact_id );
-						billing.amount( $('bill_amount').value );
+						billing.amount( util.money.sanitize( $('bill_amount').value ) );
 						billing.billing_type( $('billing_type').value );
 					var mb_id = g.network.request(
 						api.FM_MB_CREATE.app,
 						api.FM_MB_CREATE.method,
 						[ ses(), billing ]
 					);
-					if (mb_id) {
-					} else {
-						throw('mb_id = ' + mb_id);
-					}
+					if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
 				} else {
-					throw('xact_id = ' + xact_id);
+					throw(xact_id);
 				}
 			} catch(E) {
-				g.error.sdump('D_ERROR',js2JSON(E));
-				alert(js2JSON(E));
+				g.error.standard_unexpected_error_alert('bill_wizard',E);
 			}
 		}
 
