@@ -450,7 +450,7 @@ patron.util.set_penalty_css = function(patron) {
 
 		if (expire < now) addCSSClass(document.documentElement,'PATRON_EXPIRED');
 
-		var age_parts = patron.dob().split('-');
+		var age_parts = patron.dob().substr(0,10).split('-');
 		age_parts[1] = age_parts[1] - 1;
 
 		var born = new Date();
