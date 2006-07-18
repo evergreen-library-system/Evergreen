@@ -108,7 +108,7 @@ patron.util.mb_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'voided', 'label' : 'Voided', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mb.voided() ? "Yes" : "No"'
+			'primary' : false, 'hidden' : false, 'render' : 'my.mb.voided() == "t" ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'voider', 'label' : 'Voider', 'flex' : 1,
