@@ -14,7 +14,7 @@
 var GROUP_CONFIG = {
 
 	'Patron' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
