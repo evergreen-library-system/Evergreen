@@ -11,6 +11,17 @@ use vars qw/%_paths $__json_js/;
 
 { local $/ = undef; $__json_js = <DATA>; }
 
+sub DESTROY {
+	my $self = shift;
+	$logger->info("script_runner destroying self: $self");
+}
+
+sub cleanup {
+	my $runner = shift;
+	$runner->context->destroy;
+	delete($$runner{$_}) for (keys %$runner);
+}
+
 sub new {
 	my $class = shift;
 	my %params = @_;

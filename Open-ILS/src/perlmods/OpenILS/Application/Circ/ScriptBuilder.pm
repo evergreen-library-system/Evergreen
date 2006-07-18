@@ -18,7 +18,6 @@ my $ORG_TREE;
 my @ORG_LIST;
 
 
-
 # -----------------------------------------------------------------------
 # Possible Args:
 #  copy
@@ -85,9 +84,7 @@ sub build_runner {
 
 	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}, 1) for keys %{$ctx->{_direct}};
 
-	$ctx->{runner} = $runner;
-
-	insert_org_methods( $editor, $ctx );
+	insert_org_methods( $editor, $runner );
 
 	return $runner;
 }
@@ -256,8 +253,7 @@ sub flatten_org_tree {
 
 
 sub insert_org_methods {
-	my ( $editor, $ctx ) = @_;
-	my $runner = $ctx->{runner};
+	my ( $editor, $runner ) = @_;
 
 	if(!$ORG_TREE) {
 		$ORG_TREE = $editor->search_actor_org_unit(
@@ -276,16 +272,17 @@ sub insert_org_methods {
 	my $r = $runner;
 	weaken($r);
 
-	$runner->insert(__OILS_FUNC_isOrgDescendent  => 
+	$r->insert(__OILS_FUNC_isOrgDescendent  => 
 		sub {
 			my( $write_key, $sname, $id ) = @_;
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
 			my $val = is_org_descendent( $parent, $child );
-			$r->insert($write_key, $val);
+			$r->insert($write_key, $val, 1);
 			return $val;
 		}
 	);
+
 }
 
 

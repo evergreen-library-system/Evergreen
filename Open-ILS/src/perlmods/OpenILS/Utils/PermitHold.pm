@@ -36,9 +36,10 @@ sub permit_copy_hold {
 	$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
 
 	load_scripts($runner);
-	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
+	my $result = $runner->run or 
+		throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
 
-	$runner->context->destroy;
+	$runner->cleanup;
 
 	# --------------------------------------------------------------
 	# Extract and uniquify the event list
