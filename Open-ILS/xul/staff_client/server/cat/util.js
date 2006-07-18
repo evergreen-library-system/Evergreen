@@ -58,7 +58,7 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 	JSAN.use('util.functional');
 	JSAN.use('util.window'); var win = new util.window();
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-	data.temp_copy_ids = js2JSON(
+	data.cb_temp_copy_ids = js2JSON(
 		util.functional.map_list(
 			selection_list,
 			function (o) {
@@ -70,7 +70,7 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 			}
 		)
 	);
-	data.stash('temp_copy_ids');
+	data.stash('cb_temp_copy_ids');
 	win.open( 
 		xulG.url_prefix(urls.XUL_COPY_BUCKETS_QUICK),
 		'sel_bucket_win' + win.window_name_increment(),
