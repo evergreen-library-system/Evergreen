@@ -83,26 +83,11 @@ sub build_runner {
 	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue}, 1 );
 	$runner->insert( "$evt.patronFines", $ctx->{patronFines}, 1 );
 
-	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}) for keys %{$ctx->{_direct}};
-
-	if(!$ORG_TREE) {
-		$ORG_TREE = $editor->search_actor_org_unit(
-			[
-				{"parent_ou" => undef },
-				{
-					flesh				=> 2,
-					flesh_fields	=> { aou =>  ['children'] },
-					order_by			=> { aou => 'name'}
-				}
-			]
-		)->[0];
-		flatten_org_tree($ORG_TREE);
-	}
-	#insert_org_methods( $editor, $ctx );
-
-	$runner->insert( "$evt.orgList", $ORG_TREE, 1 );
+	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}, 1) for keys %{$ctx->{_direct}};
 
 	$ctx->{runner} = $runner;
+
+	insert_org_methods( $editor, $ctx );
 
 	return $runner;
 }
