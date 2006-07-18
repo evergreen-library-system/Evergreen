@@ -131,6 +131,10 @@ sub update_patron_penalties {
 		'open-ils.storage.direct.actor.'.
 		'user_standing_penalty.search.usr.atomic', $pid )->gather(1);
 
+	my @types;
+	push( @types, $_->penalty_type ) for @$existing;
+	$logger->info("penalty: user has existing penalties [@types]");
+
 	my @deleted;
 
 	# If an existing penalty is not in the newly generated 
