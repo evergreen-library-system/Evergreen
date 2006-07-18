@@ -99,7 +99,7 @@ sub create_circ_ctx {
 	$ctx->{copy_barcode} = $ctx->{barcode};
 	$ctx->{fetch_patron_circ_info} = 1;
 
-	OpenILS::Application::Circ::ScriptBuilder->build($ctx);
+	$ctx->{runner} = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 	my @evts = @{$ctx->{_events}} if $ctx->{_events};
 
 	$logger->debug("script builder events: : @evts") if @evts;
