@@ -8,8 +8,10 @@ deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-size: large; font-family: bold; }
 
 .NO_PENALTIES .patronNameLarge { background-color: lime; }
+/*
 .ONE_PENALTY .patronNameLarge { background-color: fuchsia; }
 .MULTIPLE_PENALTIES .patronNameLarge { background-color: red; }
+*/
 
 .TEST label.bill { color: red; }
 .TEST label.bill.label { text-decoration: underline; }
