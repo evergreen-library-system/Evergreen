@@ -86,6 +86,7 @@ const api = {
 	'FM_CIRC_EDIT_DUE_DATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.due_date.update' },
 	'FM_CIT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.ident_types.retrieve' },
 	'FM_CITM_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.item_type_map.retrieve.all' },
+	'FM_CNAL_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.net_access_level.retrieve.all' },
 	'FM_CNCT_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cat_types.retrieve.all' },
 	'FM_CRAHP_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.config.rules.age_hold_protect.retrieve.all' },
 	'FM_CST_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.standings.retrieve' },

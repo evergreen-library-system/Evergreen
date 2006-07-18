@@ -45,6 +45,9 @@
 		<row id="pdsgr5">
 			<label id="patron_library" class="homelib value"/>
 		</row>
+		<row id="pdsgr5a">
+			<label id="patron_net_access" class="net_access value"/>
+		</row>
 	</rows></grid>
 	<grid id="PatronSummaryStatus_grid" flex="1"/>
 

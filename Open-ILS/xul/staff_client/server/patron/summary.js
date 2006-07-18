@@ -72,6 +72,19 @@ patron.summary.prototype = {
 							};
 						}
 					],
+					'patron_net_access' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									'Internet: ' + 
+									obj.OpenILS.data.hash.cnal[
+										obj.patron.net_access_level()
+									].name()
+								);
+							};
+						}
+					],
 					'patron_standing' : [
 						['render'],
 						function(e) {

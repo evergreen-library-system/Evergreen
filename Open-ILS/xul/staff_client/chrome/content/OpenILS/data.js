@@ -283,6 +283,27 @@ OpenILS.data.prototype = {
 		this.chain.push(
 			function() {
 				var f = gen_fm_retrieval_func(
+					'cnal',
+					[
+						api.FM_CNAL_RETRIEVE.app,
+						api.FM_CNAL_RETRIEVE.method,
+						[ obj.session.key ],
+						false
+					]
+				);
+				try {
+					f();
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
+
+		this.chain.push(
+			function() {
+				var f = gen_fm_retrieval_func(
 					'au',
 					[
 						api.FM_AU_RETRIEVE_VIA_SESSION.app,
