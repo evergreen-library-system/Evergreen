@@ -291,6 +291,7 @@ function __holdsDrawWindow() {
 	
 	}
 
+	/*
 	if(isXUL()) {
 		var dsel = $('holds_depth_selector');
 		unHideMe($('holds_depth_selector_row'));
@@ -305,6 +306,7 @@ function __holdsDrawWindow() {
 			);
 		}
 	}
+	*/
 
 	appendClear($('holds_recipient'), text(
 		holdArgs.recipient.family_name() + ', ' +  
@@ -618,8 +620,10 @@ function holdsBuildHoldFromWindow() {
 
 	//alert(fstring); return;
 
+	/*
 	if(isXUL())		
 		hold.selection_depth(getSelectorVal($('holds_depth_selector')));
+		*/
 
 	return hold;
 }

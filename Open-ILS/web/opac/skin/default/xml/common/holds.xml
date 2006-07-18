@@ -98,12 +98,14 @@
 						<input type='checkbox' id='holds_enable_email' checked='checked'/>
 					</td>
 				</tr>
+				<!--
 				<tr id='holds_depth_selector_row' class='hide_me'>
 					<td class='holds_cell'>Hold Range</td>
 					<td class='holds_cell'>
 						<select id='holds_depth_selector'></select>
 					</td>
 				</tr>
+				-->
 				<tr>
 					<td class='holds_cell'>&opac.holds.pickupLocation;</td>
 					<td class='holds_cell'>
