@@ -48,7 +48,8 @@ var groupList		= {};
 var groupIDList	= {};
 flattenGroupTree(groupTree);
 
-
+/* copy the org list into some other useful data structures */
+var orgList		= environment.orgList;
 
 
 
@@ -157,8 +158,27 @@ function getMARCItemType() {
 	return (marcXMLDoc) ? extractFixedField(marcXMLDoc, 'Type') : "";
 }
 
+function __is_org_descendant( parent, child ) {
+	while( child = grep( function(x){ x.id() == child.parent_ou() }, orgList ) ) {
+		if (child[0].id() == parent.id()) return true;
+	}
+	return false;
+}
 
 function isOrgDescendent( parentName, childId ) {
+	var parent = grep( function(x){ x.shortname() == parentName }, orgList );
+	var child = grep( function(x){ x.id() == childId }, orgList );
+
+	if (parent) parent = parent[0];
+	if (child) child = child[0];
+
+	if (!child || !parent) return false;
+	if (child.id() == parent.id()) return true;
+
+	return __is_org_descendant( parent, child );
+}
+
+function old_isOrgDescendent( parentName, childId ) {
 	var key = scratchKey();
 	__OILS_FUNC_isOrgDescendent(scratchPad(key), parentName, childId);
 	var val = getScratch(key);
