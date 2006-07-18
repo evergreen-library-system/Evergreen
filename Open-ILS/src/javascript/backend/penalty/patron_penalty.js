@@ -9,11 +9,11 @@ var config = findGroupConfig(patronProfile);
 if( config ) {
 
 	/* check the fine limit */
-	if( config.fineLimit >= 0 && patronFines >= config.fineThreshold ) 
+	if( config.fineThreshold >= 0 && patronFines >= config.fineThreshold ) 
 		result.fatalEvents.push('PATRON_EXCEEDS_FINES');
 
 	/* check the overdue limit */
-	if( config.overdueLimit >= 0 && patronOverdueCount >= config.overdueThreshold )
+	if( config.overdueThreshold >= 0 && patronOverdueCount >= config.overdueThreshold )
 		result.fatalEvents.push('PATRON_EXCEEDS_OVERDUE_COUNT');
 
 } else {
