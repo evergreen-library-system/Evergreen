@@ -791,9 +791,6 @@ function myOPACShowBookbags(force) {
 		if( isTrue(cont.pub()) ) {
 			unHideMe($n(row, 'myopac_bb_published_yes'));
 			var link = $n(row, 'myopac_bb_published_view');
-			/*
-			link.setAttribute('href', buildExtrasLink( 'bbags.xml?bb='+cont.id(), false));  
-			*/
 			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/html/'+cont.id(), false));  
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
