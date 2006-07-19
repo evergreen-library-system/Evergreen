@@ -5,11 +5,11 @@
 	<div style='width: 100%; text-align: center; padding-bottom: 5px;'>
 		<span>
 			<a href='javascript:void(0);' id='copy_info_local_link' 
-				class='rdetail_copy_nav_link hide_me classic_link'>&rdetail.copyInfo.local;</a>
+				class='rdetail_copy_nav_link hide_me classic_link'><b>&rdetail.copyInfo.local;</b></a>
 		</span>
 		<span width=''>
 			<a href='javascript:void(0);' id='copy_info_all_link' 
-				class='rdetail_copy_nav_link classic_link'>&rdetail.copyInfo.all;</a>
+				class='rdetail_copy_nav_link classic_link'><b>&rdetail.copyInfo.all;</b></a>
 		</span>
 	</div>
 
