@@ -144,7 +144,9 @@
 			<button label="Add to New Bucket" accesskey="N" oncommand="g.new_bucket()"/>
 		</hbox>
 		<hbox>
+			<!--
 			<button label="Advanced" accesskey="v" oncommand="g.advanced()"/>
+			-->
 			<button label="Cancel" accesskey="C" oncommand="window.close()"/>
 		</hbox>
 	</groupbox>
