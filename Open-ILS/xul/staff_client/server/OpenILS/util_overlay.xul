@@ -34,9 +34,10 @@
 			}
 
 			function get_bool(a) {
-				// Normal javascript interpretation except 'f' == false, per postgres
+				// Normal javascript interpretation except 'f' == false, per postgres, and 'F' == false
 				// So false includes 'f', '', 0, null, and undefined
 				if (a == 'f') return false;
+				if (a == 'F') return false;
 				if (a) return true; else return false;
 			}
 
