@@ -41,6 +41,14 @@
 				if (a) return true; else return false;
 			}
 
+			function get_db_true() {
+				return 't';
+			}
+
+			function get_db_false() {
+				return 'f';
+			}
+
 		]]>
 		</script>
 		<script>dump('finished openils_util_overlay\n');</script>
