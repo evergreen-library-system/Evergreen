@@ -318,9 +318,24 @@ patron.display.prototype = {
 							obj._checkout_spawned = true;
 						}
 
-						if (patron.alert_message()) {
-							obj.error.yns_alert('"' + patron.alert_message() + '"','Alert Message','OK',null,null,'Check here to confirm this message.');
-						}
+						obj.network.simple_request(
+							'FM_AHR_COUNT_RETRIEVE',
+							[ ses(), patron.id() ],
+							function(req) {
+								try {
+									var msg = '';
+									if (patron.alert_message()) msg += patron.alert_message() + '\n';
+									var holds = req.getResultObject();
+									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
+									if (msg) {
+										obj.error.yns_alert('"' + msg + '"','Alert Message','OK',null,null,'Check here to confirm this message.');
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Error showing patron alert and holds availability.',E);
+								}
+							}
+						);
+
 					},
 					'on_error' : function(E) {
 						try {
