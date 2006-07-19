@@ -137,6 +137,14 @@ function myOPACDrawCheckedOutSlim(r) {
 		return;
 	}
 
+	for( var i = 0; i < checked.overdue.length; i++ ) {
+		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.overdue[i]);
+		req.request.tbody = tbody;
+		req.request.od = true;
+		req.callback(myOPACDrawCheckedItem);
+		req.send();
+	}
+
 
 	for( var i = 0; i < checked.out.length; i++ ) {
 		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.out[i]);
@@ -145,13 +153,6 @@ function myOPACDrawCheckedOutSlim(r) {
 		req.send();
 	}
 
-	for( var i = 0; i < checked.overdue.length; i++ ) {
-		var req = new Request(FETCH_CIRC_BY_ID, G.user.session, checked.overdue[i]);
-		req.request.tbody = tbody;
-		req.request.od = true;
-		req.callback(myOPACDrawCheckedItem);
-		req.send();
-	}
 }
 
 function myOPACDrawCheckedItem(r) {
