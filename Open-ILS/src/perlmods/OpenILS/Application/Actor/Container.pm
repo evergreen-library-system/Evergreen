@@ -352,7 +352,9 @@ sub __item_delete {
 	( $bucket, $evt ) = $U->fetch_container_e($e, $item->bucket, $class);
 	return $evt if $evt;
 
-	return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM');
+	if( $bucket->owner ne $e->requestor->id ) {
+		return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM');
+	}
 
 	my $stat;
 	if( $class eq 'copy' ) {
@@ -395,7 +397,9 @@ sub full_delete {
 	( $container, $evt ) = $apputils->fetch_container_e($e, $containerId, $class);
 	return $evt if $evt;
 
-	return $e->event unless $e->allowed('DELETE_CONTAINER');
+	if( $container->owner ne $e->requestor->id ) {
+		return $e->event unless $e->allowed('DELETE_CONTAINER');
+	}
 
 	my $items; 
 
@@ -422,22 +426,22 @@ sub full_delete {
 	my $stat;
 	if( $class eq 'copy' ) {
 		return $e->event unless
-			$stat = $e->delete_container_copy_bucket_item($container);
+			$stat = $e->delete_container_copy_bucket($container);
 	}
 
 	if( $class eq 'callnumber' ) {
 		return $e->event unless
-			$stat = $e->delete_container_call_number_bucket_item($container);
+			$stat = $e->delete_container_call_number_bucket($container);
 	}
 
 	if( $class eq 'biblio' ) {
 		return $e->event unless
-			$stat = $e->delete_container_biblio_record_entry_bucket_item($container);
+			$stat = $e->delete_container_biblio_record_entry_bucket($container);
 	}
 
 	if( $class eq 'user') {
 		return $e->event unless
-			$stat = $e->delete_container_user_bucket_item($container);
+			$stat = $e->delete_container_user_bucket($container);
 	}
 
 	$e->commit;
@@ -470,22 +474,22 @@ sub container_update {
 	my $stat;
 	if( $class eq 'copy' ) {
 		return $e->event unless
-			$stat = $e->update_container_copy_bucket_item($container);
+			$stat = $e->update_container_copy_bucket($container);
 	}
 
 	if( $class eq 'callnumber' ) {
 		return $e->event unless
-			$stat = $e->update_container_call_number_bucket_item($container);
+			$stat = $e->update_container_call_number_bucket($container);
 	}
 
 	if( $class eq 'biblio' ) {
 		return $e->event unless
-			$stat = $e->update_container_biblio_record_entry_bucket_item($container);
+			$stat = $e->update_container_biblio_record_entry_bucket($container);
 	}
 
 	if( $class eq 'user') {
 		return $e->event unless
-			$stat = $e->update_container_user_bucket_item($container);
+			$stat = $e->update_container_user_bucket($container);
 	}
 
 	$e->commit;
