@@ -50,7 +50,12 @@ function depthSelectorChanged() {
 	if( i == _ds.options.length - 1 ) {
 		setSelector( _ds, getDepth() );
 		_opacHandleLocationTagClick();
-	} else { runEvt('common', 'depthChanged'); }
+	} else { 
+		/* this re-submits the search when they change the search range
+			disabled for testing...
+			*/
+		/*runEvt('common', 'depthChanged');*/ 
+	}
 }
 
 var chooseAnotherNode;
