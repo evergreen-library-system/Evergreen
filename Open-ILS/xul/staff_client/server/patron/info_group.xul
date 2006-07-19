@@ -79,6 +79,7 @@
 						'first_given_name' : { 'hidden' : 'false' },
 						'second_given_name' : { 'hidden' : 'false' },
 						'dob' : { 'hidden' : 'false' },
+						'master_account' : { 'hidden' : 'false' },
 					}
 				);
 				g.list.init(
