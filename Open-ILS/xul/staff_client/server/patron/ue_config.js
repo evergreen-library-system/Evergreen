@@ -459,6 +459,16 @@ function uEditDeleteAddr( tbody, row, address, detach ) {
 				}
 			)
 		);
+
+		/* XXX */
+		for( var f in dataFields ) {
+			if( dataFields[f].object == address ) {
+				dataFields[f] = null;
+			}
+		}
+
+		dataFields = compactArray(dataFields);
+
 	} else {
 
 		if( detach ) { /* remove the offending address from the list */

@@ -171,6 +171,8 @@ function uEditCreateNewAddr() {
 	addr.isnew(1);
 	addr.usr(patron.id());
 	addr.country(defaultCountry);
+	if(!patron.addresses()) 
+		patron.addresses([]);
 	if(patron.addresses().length == 0) {
 		patron.mailing_address(addr);
 		patron.billing_address(addr);
@@ -329,9 +331,8 @@ function uEditFindFieldByWId(id) {
 
 
 function uEditIterateFields(callback) {
-	for( var f in dataFields ) {
+	for( var f in dataFields ) 
 		callback(dataFields[f]);
-	}
 }
 
 
@@ -545,3 +546,11 @@ function uEditMarkCardLost() {
 }
 
 
+function compactArray(arr) {
+	var a = [];
+	for( var i = 0; arr && i < arr.length; i++ ) {
+		if( arr[i] != null )
+			a.push(arr[i]);
+	}
+	return a;
+}
