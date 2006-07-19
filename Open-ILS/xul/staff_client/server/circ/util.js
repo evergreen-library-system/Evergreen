@@ -368,23 +368,23 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'id' : 'circulate', 'label' : 'Circulate?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circulate() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.circulate() ) ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.holdable() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.holdable() ) ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'opac_visible', 'label' : 'OPAC Visible?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.opac_visible() == 1 ? "Yes" : "No"', 'persist' : 'hidden width',
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.opac_visible() ) ? "Yes" : "No"', 'persist' : 'hidden width',
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'ref', 'label' : 'Reference?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.ref() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.ref() ) ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'deposit', 'label' : 'Deposit?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.deposit() ) ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,

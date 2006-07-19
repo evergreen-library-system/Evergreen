@@ -108,7 +108,7 @@ patron.util.mb_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'voided', 'label' : 'Voided', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mb.voided() == "t" ? "Yes" : "No"'
+			'primary' : false, 'hidden' : false, 'render' : 'get_bool( my.mb.voided() ) ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'voider', 'label' : 'Voider', 'flex' : 1,
@@ -235,11 +235,11 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'active', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.active() ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.active() ) ? "Yes" : "No"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'barred', 'label' : 'Barred', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.barred() ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.barred() ) ? "Yes" : "No"'
 		},
 		{ 
 			'persist' : 'hidden width', 'id' : 'id', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
@@ -328,6 +328,10 @@ patron.util.columns = function(modify,params) {
 		{ 
 			'persist' : 'hidden width', 'id' : 'net_access_level', 'label' : 'Net Access', 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'my.au.net_access_level()'
+		},
+		{ 
+			'persist' : 'hidden width', 'id' : 'master_account', 'label' : 'Group Lead', 'flex' : 1, 
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.master_account() ) ? "Yes" : "No"'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {

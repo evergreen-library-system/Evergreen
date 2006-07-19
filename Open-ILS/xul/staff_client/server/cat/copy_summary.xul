@@ -35,19 +35,6 @@
 	<![CDATA[
 		function $(id) { return document.getElementById(id); }
 		function $w(id,text) { if ($(id)) util.widgets.set_text($(id),text); }
-		function my_bool(b) {
-			switch(b) {
-				case 't' :
-				case '1' :
-				case 1 :
-				case true:
-					return true;
-				break;
-				default:
-					return false;
-				break;
-			}
-		}
 
 		function my_init() {
 			try {
@@ -80,10 +67,10 @@
 								function (rreq) {
 									try {
 										$w('barcode',copy.barcode());	
-										$w('ref',my_bool(copy.ref()) ? 'Yes' : 'No');	
-										$w('opac_visible',my_bool(copy.opac_visible()) ? 'Yes' : 'No');	
-										$w('circulate',my_bool(copy.circulate()) ? 'Yes' : 'No');	
-										$w('holdable',my_bool(copy.holdable()) ? 'Yes' : 'No');	
+										$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
+										$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
+										$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
+										$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
 										$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
 										$w('location',copy.location().name());	
 										$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));

@@ -33,6 +33,13 @@
 				}
 			}
 
+			function get_bool(a) {
+				// Normal javascript interpretation except 'f' == false, per postgres
+				// So false includes 'f', '', 0, null, and undefined
+				if (a == 'f') return false;
+				if (a) return true; else return false;
+			}
+
 		]]>
 		</script>
 		<script>dump('finished openils_util_overlay\n');</script>

@@ -502,14 +502,14 @@ g.panes_and_field_names = {
 	[
 		"Circulate?",
 		{ 	
-			render: 'fm.circulate() == null ? "<Unset>" : ( fm.circulate() == 1 ? "Yes" : "No" )',
+			render: 'fm.circulate() == null ? "<Unset>" : ( get_bool( fm.circulate() ) ? "Yes" : "No" )',
 			input: 'c = function(v){ g.apply("circulate",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Holdable?",
 		{ 
-			render: 'fm.holdable() == null ? "<Unset>" : ( fm.holdable() == 1? "Yes" : "No" )', 
+			render: 'fm.holdable() == null ? "<Unset>" : ( get_bool( fm.holdable() ) ? "Yes" : "No" )', 
 			input: 'c = function(v){ g.apply("holdable",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
@@ -565,7 +565,7 @@ g.panes_and_field_names = {
 	[
 		"Deposit?",
 		{ 
-			render: 'fm.deposit() == null ? "<Unset>" : ( fm.deposit() == 1 ? "Yes" : "No" )',
+			render: 'fm.deposit() == null ? "<Unset>" : ( get_bool( fm.deposit() ) ? "Yes" : "No" )',
 			input: 'c = function(v){ g.apply("deposit",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
@@ -587,14 +587,14 @@ g.panes_and_field_names = {
 	[
 		"OPAC Visible?",
 		{ 
-			render: 'fm.opac_visible() == null ? "<Unset>" : ( fm.opac_visible() == 1 ? "Yes" : "No" )', 
+			render: 'fm.opac_visible() == null ? "<Unset>" : ( get_bool( fm.opac_visible() ) ? "Yes" : "No" )', 
 			input: 'c = function(v){ g.apply("opac_visible",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Reference?",
 		{ 
-			render: 'fm.ref() == null ? "<Unset>" : ( fm.ref() == 1 ? "Yes" : "No" )', 
+			render: 'fm.ref() == null ? "<Unset>" : ( get_bool( fm.ref() ) ? "Yes" : "No" )', 
 			input: 'c = function(v){ g.apply("ref",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "Yes", "1" ], [ "No", "0" ] ] ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],

@@ -105,8 +105,8 @@
 										)
 									);
 									var t = document.getElementById('caption').getAttribute('label');
-									if (meta.deleted()) { t += ' (Deleted) '; } else { 
-										if ( ! meta.active()) { t += ' (Inactive) '; }
+									if (get_bool( meta.deleted() )) { t += ' (Deleted) '; } else { 
+										if ( ! get_bool( meta.active() ) ) { t += ' (Inactive) '; }
 									}
 									document.getElementById('caption').setAttribute('label',t);
 								} catch(E) {
