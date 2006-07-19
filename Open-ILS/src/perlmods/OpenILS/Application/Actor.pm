@@ -1528,6 +1528,7 @@ sub user_transactions {
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch($title->marc());
 		my $mods = $u->finish_mods_batch();
+		$mods->doc_id($title->id) if $mods;
 
 		push @resp, {transaction => $t, circ => $circ, record => $mods };
 
