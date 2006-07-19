@@ -328,6 +328,9 @@ function uEditDefineData(patron) {
 				onpostchange : function(field, value) {
 					var type			= groupsCache[value];
 					var interval	= type.perm_interval();
+
+					/* interval_to_seconds expects 'M' for months, 'm' for minutes */
+					interval			= interval.replace(/mon/, 'Mon'); 
 					var intsecs		= parseInt(interval_to_seconds(interval));
 
 					var expdate		= new Date();
@@ -337,7 +340,7 @@ function uEditDefineData(patron) {
 
 					var year			= expdate.getYear() + 1900;
 					var month		= (expdate.getMonth() + 1) + '';
-					var day			= (expdate.getDate() + 1) + '';
+					var day			= (expdate.getDate()) + '';
 
 					if(!month.match(/\d{2}/)) month = '0' + month;
 					if(!day.match(/\d{2}/)) day = '0' + day;
