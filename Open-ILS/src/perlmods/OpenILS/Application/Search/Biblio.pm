@@ -347,6 +347,21 @@ sub the_quest_for_knowledge {
 	my $limit	= $searchhash->{limit} || 10;
 	my $end		= $offset + $limit - 1;
 
+	for( keys %{$searchhash->{searches}} ) {
+		
+	}
+
+	# do some simple sanity checking
+	if(!$searchhash->{searches} or
+		(
+			!$searchhash->{searches}->{title}	and
+			!$searchhash->{searches}->{author}	and
+			!$searchhash->{searches}->{subject}	and
+			!$searchhash->{searches}->{series}	and
+			!$searchhash->{searches}->{keyword}	) ) {
+		return { count => 0 };
+	}
+
 
 	my $maxlimit = 5000;
 	$searchhash->{offset}	= 0;
@@ -356,7 +371,10 @@ sub the_quest_for_knowledge {
 
 	my @search;
 	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
-	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
+	my $s = JSON->perl2JSON(\@search);
+	my $ckey = $pfx . md5_hex($method . $s);
+
+	$logger->info("bib search for: $s");
 
 	$searchhash->{limit} -= $offset;
 
