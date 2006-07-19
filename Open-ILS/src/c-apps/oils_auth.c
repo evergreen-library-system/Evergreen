@@ -90,22 +90,32 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 
 	if( (username = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0))) ) {
 
-		seed = va_list_to_string( "%d.%d.%s", time(NULL), getpid(), username );
-		key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+		if( strchr( username, ' ' ) ) {
 
-		md5seed = md5sum(seed);
-		osrfCachePutString( key, md5seed, 30 );
+			/* spaces are not allowed */
+			resp = jsonNewObject("x");	 /* 'x' will never be a valid seed */
+			osrfAppRespondComplete( ctx, resp );
 
-		osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
+		} else {
 
-		resp = jsonNewObject(md5seed);	
-		osrfAppRespondComplete( ctx, resp );
+			seed = va_list_to_string( "%d.%d.%s", time(NULL), getpid(), username );
+			key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
+	
+			md5seed = md5sum(seed);
+			osrfCachePutString( key, md5seed, 30 );
+	
+			osrfLogDebug( OSRF_LOG_MARK, "oilsAuthInit(): has seed %s and key %s", md5seed, key );
+	
+			resp = jsonNewObject(md5seed);	
+			osrfAppRespondComplete( ctx, resp );
+	
+			free(seed);
+			free(md5seed);
+			free(key);
+			free(username);
+		}
 
 		jsonObjectFree(resp);
-		free(seed);
-		free(md5seed);
-		free(key);
-		free(username);
 		return 0;
 	}
 
