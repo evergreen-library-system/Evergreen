@@ -87,7 +87,7 @@
 				accesskey="&staff.patron_search_form.city.accesskey;"/>
 			<textbox id="city" group="1"/>
 		</row>
-		<row id="psr10">
+		<row id="psr10" hidden="true">
 			<label id="psl10" control="state" 
 				value="&staff.patron_search_form.state.label;" 
 				accesskey="&staff.patron_search_form.state.accesskey;"/>
