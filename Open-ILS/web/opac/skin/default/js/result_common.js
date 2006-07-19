@@ -168,6 +168,8 @@ function resultLowHits() {
 	}
 
 	resultSuggestSearchClass();
+
+	if(getTerm()) resultExpandSearch(); /* advanced search */
 }
 
 var lowHitsXRefLink;
@@ -201,7 +203,7 @@ function resultZeroHits() {
 	showCanvas();
 	unHideMe($('result_low_hits'));
 	unHideMe($('result_zero_hits_msg'));
-	if(getTerm()) resultExpandSearch(); /* advanced search */
+	//if(getTerm()) resultExpandSearch(); /* advanced search */
 }
 
 function resultExpandSearch() {
