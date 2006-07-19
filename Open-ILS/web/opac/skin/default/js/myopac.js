@@ -788,7 +788,7 @@ function myOPACShowBookbags(force) {
 		myOPACFetchBBItems( cont.id(), row );
 		dlink.setAttribute('href', 'javascript:myOPACDeleteBookbag("'+cont.id()+'");');
 
-		if( cont.pub() ) {
+		if( isTrue(cont.pub()) ) {
 			unHideMe($n(row, 'myopac_bb_published_yes'));
 			var link = $n(row, 'myopac_bb_published_view');
 			/*
@@ -827,10 +827,10 @@ function myOPACMakeBBPublished(bbid, hideme) {
 
 	if(hideme) {
 		if(!confirm($('myopac_make_unpublished_confirm').innerHTML)) return;
-		bb.pub(0);
+		bb.pub('f');
 	} else {
 		if(!confirm($('myopac_make_published_confirm').innerHTML)) return;
-		bb.pub(1);
+		bb.pub('t');
 	}
 
 	var result = containerUpdate(bb);

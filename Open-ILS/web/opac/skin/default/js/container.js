@@ -36,7 +36,8 @@ function containerCreate( name, pub, callback, args ) {
 	container.btype('bookbag');
 	container.owner( G.user.id() );
 	container.name( name );
-	if(pub) container.pub(1);
+	if(pub) container.pub('t');
+	else container.pub('f');
 
 	var req = new Request( 
 		CREATE_CONTAINER, G.user.session, 'biblio', container );
