@@ -37,7 +37,7 @@ deck#patron_deck { border-left: solid thin black; }
 .TEST label.holds_ready.value { }
 
 .PATRON_AGE_LT_18 .dob { text-decoration: underline; color: purple; }
-.PATRON_AGE_LT_18 label.juvenille_indicator { display: inline; text-decoration: underline; color: purple; }
+.PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; text-decoration: underline; color: purple; }
 
 .PATRON_HAS_ALERT .patronNameLarge, 
 .PATRON_HAS_ALERT groupbox.alert { background-color: yellow; }

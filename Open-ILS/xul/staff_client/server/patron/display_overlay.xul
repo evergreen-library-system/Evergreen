@@ -18,7 +18,7 @@
 			<label class="hideme barred_indicator" value="(Barred)"/>
 			<label class="hideme expired_indicator" value="(Expired)"/>
 			<label class="hideme inactive_indicator" value="(In-Active)"/>
-			<label class="hideme juvenille_indicator" value="(Juvenille)"/>
+			<label class="hideme juvenile_indicator" value="(Juvenile)"/>
 			<label class="hideme alert_indicator" value="(Alert)"/>
 		</hbox>
 		<deck id="PatronNavBar" flex="1" class="my_overflow"/>
