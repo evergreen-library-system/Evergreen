@@ -17,6 +17,7 @@ use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use XML::LibXML;
+use XML::LibXSLT;
 
 use Encode;
 use Unicode::Normalize;
@@ -26,7 +27,84 @@ use OpenSRF::Utils::Logger qw/$logger/;
 
 
 # set the bootstrap config when this module is loaded
-my ($bootstrap, $cstore, $supercat, $actor, $parser, $search);
+my ($bootstrap, $cstore, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
+
+$browse_types{call_number}{xml} = sub {
+	my $tree = shift;
+
+	my $year = (gmtime())[5] + 1900;
+	my $content = '';
+
+	$content .= "<hold:volumes  xmlns:hold='http://open-ils.org/spec/holdings/v1'>";
+
+	for my $cn (@$tree) {
+		(my $cn_class = $cn->class_name) =~ s/::/-/gso;
+		$cn_class =~ s/Fieldmapper-//gso;
+
+		my $cn_tag = "tag:open-ils.org,$year:$cn_class/".$cn->id;
+		my $cn_lib = $cn->owning_lib->shortname;
+		my $cn_label = $cn->label;
+
+		$cn_label =~ s/\n//gos;
+		$cn_label =~ s/'/&apos;/go;
+
+		(my $ou_class = $cn->owning_lib->class_name) =~ s/::/-/gso;
+		$ou_class =~ s/Fieldmapper-//gso;
+
+		my $ou_tag = "tag:open-ils.org,$year:$ou_class/".$cn->owning_lib->id;
+		my $ou_name = $cn->owning_lib->name;
+
+		$ou_name =~ s/\n//gos;
+		$ou_name =~ s/'/&apos;/go;
+
+		(my $rec_class = $cn->record->class_name) =~ s/::/-/gso;
+		$rec_class =~ s/Fieldmapper-//gso;
+
+		my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
+
+		$content .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
+		$content .= "<act:owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
+
+		my $r_doc = $parser->parse_string($cn->record->marc);
+		$r_doc->documentElement->setAttribute( id => $rec_tag );
+		$content .= entityize($r_doc->documentElement->toString);
+
+		$content .= "</hold:volume>";
+	}
+
+	$content .= '</hold:volumes>';
+	return ("Content-type: application/xml\n\n",$content);
+};
+
+
+$browse_types{call_number}{html} = sub {
+	my $tree = shift;
+	my $p = shift;
+	my $n = shift;
+
+	if (!$cn_browse_xslt) {
+	        $cn_browse_xslt = $parser->parse_file(
+        	        OpenSRF::Utils::SettingsClient
+                	        ->new
+                        	->config_value( dirs => 'xsl' ).
+	                "/CNBrowse2HTML.xsl"
+        	);
+		$cn_browse_xslt = $xslt->parse_stylesheet( $cn_browse_xslt );
+	}
+
+	my (undef,$xml) = $browse_types{call_number}{xml}->($tree);
+
+	return (
+		"Content-type: text/html\n\n",
+		entityize(
+			$cn_browse_xslt->transform(
+				$parser->parse_string( $xml ),
+				'prev' => "'$p'",
+				'next' => "'$n'"
+			)->toString(1)
+		)
+	);
+};
 
 sub import {
 	my $self = shift;
@@ -45,6 +123,17 @@ sub child_init {
 	$actor = OpenSRF::AppSession->create('open-ils.actor');
 	$search = OpenSRF::AppSession->create('open-ils.search');
 	$parser = new XML::LibXML;
+	$xslt = new XML::LibXSLT;
+
+        $cn_browse_xslt = $parser->parse_file(
+                OpenSRF::Utils::SettingsClient
+                        ->new
+                        ->config_value( dirs => 'xsl' ).
+                "/CNBrowse2HTML.xsl"
+        );
+
+	$cn_browse_xslt = $xslt->parse_stylesheet( $cn_browse_xslt );
+
 }
 
 sub oisbn {
@@ -218,7 +307,15 @@ sub unapi {
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^metabib/o);
 		$type = 'isbn' if ($1 =~ /^isbn/o);
+		$type = 'call_number' if ($1 =~ /^call_number/o);
 		$command = 'retrieve';
+		$command = 'browse' if ($type eq 'call_number');
+	}
+
+	if ($type eq 'call_number' and $command eq 'browse') {
+		$lib = uc($lib);
+		print "Location: $root/browse/$base_format/call_number/$lib/$id\n\n";
+		return 302;
 	}
 
 	if ( !grep
@@ -1050,52 +1147,6 @@ sub entityize {
 	return $stuff;
 }
 
-my %browse_types = (
-	call_number => {
-		xml => sub {
-			my $tree = shift;
-
-			my $year = (gmtime())[5] + 1900;
-			my $content = '';
-
-			$content .= "Content-type: application/xml\n\n";
-			$content .= "<hold:volumes  xmlns:hold='http://open-ils.org/spec/holdings/v1'>";
-
-			for my $cn (@$tree) {
-				(my $cn_class = $cn->class_name) =~ s/::/-/gso;
-				$cn_class =~ s/Fieldmapper-//gso;
-
-				my $cn_tag = "tag:open-ils.org,$year:$cn_class/".$cn->id;
-				my $cn_lib = $cn->owning_lib->shortname;
-				my $cn_label = $cn->label;
-
-				(my $ou_class = $cn->owning_lib->class_name) =~ s/::/-/gso;
-				$ou_class =~ s/Fieldmapper-//gso;
-
-				my $ou_tag = "tag:open-ils.org,$year:$ou_class/".$cn->owning_lib->id;
-				my $ou_name = $cn->owning_lib->name;
-
-				(my $rec_class = $cn->record->class_name) =~ s/::/-/gso;
-				$rec_class =~ s/Fieldmapper-//gso;
-
-				my $rec_tag = "tag:open-ils.org,$year:$rec_class/".$cn->record->id.'/'.$cn->owning_lib->shortname;
-
-				$content .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'>";
-				$content .= "<act:owning_lib xmlns:act='http://open-ils.org/spec/actors/v1' id='$ou_tag' name='$ou_name'/>";
-
-				my $r_doc = $parser->parse_string($cn->record->marc);
-				$r_doc->documentElement->setAttribute( id => $rec_tag );
-				$content .= entityize($r_doc->documentElement->toString);
-
-				$content .= "</hold:volume>";
-			}
-
-			$content .= '</hold:volumes>';
-			return $content;
-		}
-	}
-			
-);
 sub string_browse {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);
@@ -1122,12 +1173,14 @@ sub string_browse {
 	my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
 	#warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
 
-
 	$site ||= $cgi->param('searchOrg');
 	$page ||= $cgi->param('startPage') || 0;
 	$page_size ||= $cgi->param('count') || 9;
 
-	$page = 0 if ($page !~ /^\d+$/);
+	$page = 0 if ($page !~ /^-?\d+$/);
+
+	my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size);
+	my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size);
 
 	unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
 		warn "something's wrong...";
@@ -1147,8 +1200,8 @@ sub string_browse {
 		$page
 	)->gather(1);
 
-	my $content = $browse_types{$axis}{$format}->($tree);
-	print $content;
+	my ($header,$content) = $browse_types{$axis}{$format}->($tree,$prev,$next);
+	print $header.$content;
 	return Apache2::Const::OK;
 }
 

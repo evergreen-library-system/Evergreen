@@ -14,6 +14,7 @@
          <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
          <link href="{$base_dir}/htmlcard.css" rel="stylesheet" type="text/css" />
       	 <xsl:apply-templates select="/marc:collection/xhtml:link"/>
+	 <title><xsl:value-of select="//marc:datafield[@tag='245']/marc:subfield[@code='a']"/></title>
        </head>
        <body>
         <xsl:apply-templates select="//marc:record"/>
@@ -26,10 +27,10 @@
      <xsl:apply-templates select="marc:datafield[@tag!='082' and @tag!='092' and @tag!='010']"/>
      <span class="bottom">
       <xsl:apply-templates select="xhtml:link[@rel='otherFormat' and contains(@href,'format=')]"/>
-      <xsl:apply-templates select="xhtml:abbr[@class='unapi-id']"/>
       <xsl:apply-templates select="marc:controlfield[@tag='001']"/>
       <xsl:apply-templates select="marc:datafield[@tag='082' or @tag='092' or @tag='010']"/>
      </span>
+     <xsl:apply-templates select="xhtml:abbr[@class='unapi-id']"/>
     </div>
     <br/>
     <xsl:apply-templates select="hold:volumes"/>
@@ -81,7 +82,15 @@
   </xsl:template>
 
   <xsl:template match="hold:volume">
-      <li> <b><xsl:value-of select="./@label"/></b>
+      <li>
+       <b>
+        <a>
+	 <xsl:attribute name="href">
+	  <xsl:value-of select="concat('/opac/extras/browse/html/call_number/',@lib,'/',@label)"/>
+	 </xsl:attribute>
+         <xsl:value-of select="./@label"/>
+	</a>
+       </b>
         <xsl:apply-templates select="hold:copies"/>
       </li>
   </xsl:template>
@@ -127,7 +136,14 @@
       
   <xsl:template match="marc:datafield">
     <xsl:if test="starts-with(@tag, '1')">
-      <p class="mainheading"><xsl:value-of select="."/></p>
+      <p class="mainheading">
+       <a>
+        <xsl:attribute name="href">
+         <xsl:value-of select="concat('/opac/extras/opensearch/1.1/-/html-full/author?searchTerms=',.)"/>
+	</xsl:attribute>
+        <xsl:value-of select="."/>
+       </a>
+      </p>
     </xsl:if>
 
     <xsl:if test="starts-with(@tag, '24') and /marc:record/marc:datafield[@tag='100']">
@@ -148,6 +164,10 @@
 
     <xsl:if test="starts-with(@tag, '5')">
       <p class="note"><xsl:value-of select="."/></p>
+    </xsl:if>
+
+    <xsl:if test="@tag='600'">
+      <span class='counter'><xsl:number count="marc:datafield[@tag='600']"/>.</span> <xsl:apply-templates select="marc:subfield"/>
     </xsl:if>
 
     <xsl:if test="@tag='650'">
@@ -197,7 +217,19 @@
   <xsl:template match="marc:subfield">
     <xsl:if test="@code!='2'">    
      <xsl:if test="@code!='a'">--</xsl:if>
-     <xsl:value-of select="."/>
+     <xsl:choose>
+      <xsl:when test="./@code!='v' and ./parent::*[starts-with(@tag,'6')]">
+       <a>
+        <xsl:attribute name="href">
+         <xsl:value-of select="concat('/opac/extras/opensearch/1.1/-/html-full/subject?searchTerms=',.)"/>
+	</xsl:attribute>
+        <xsl:value-of select="."/>
+       </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
+     </xsl:choose>
     </xsl:if>
   </xsl:template>
 
