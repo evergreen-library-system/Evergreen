@@ -2192,6 +2192,31 @@ sub delete_user_note {
 }
 
 
+__PACKAGE__->register_method (
+	method		=> 'update_user_note',
+	api_name		=> 'open-ils.actor.note.update',
+	signature	=> q/
+		@param authtoken The login session key
+		@param note The note
+	/
+);
+
+sub update_user_note {
+	my( $self, $conn, $auth, $note ) = @_;
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->event unless $e->checkauth;
+	my $patron = $e->retrieve_actor_user($note->usr)
+		or return $e->event;
+	return $e->event unless 
+		$e->allowed('UPDATE_USER', $patron->home_ou);
+	$e->update_actor_user_note($note)
+		or return $e->event;
+	$e->commit;
+	return 1;
+}
+
+
+
 
 __PACKAGE__->register_method (
 	method		=> 'create_closed_date',
