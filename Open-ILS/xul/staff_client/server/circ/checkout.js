@@ -165,8 +165,15 @@ circ.checkout.prototype = {
 						['command'],
 						function() {
 							try {
-								if (document.getElementById('checkout_auto').checked) obj.print(true);
-								obj.list.clear();
+								if (document.getElementById('checkout_auto').checked) {
+									obj.print(true,function() { 
+										obj.list.clear();
+										xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{}); 
+									});
+								} else {
+									obj.list.clear();
+									xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('cmd_checkout_done',E);
 							}
@@ -180,7 +187,7 @@ circ.checkout.prototype = {
 
 	},
 
-	'print' : function(silent) {
+	'print' : function(silent,f) {
 		var obj = this;
 		try {
 			obj.list.on_all_fleshed = function() {
@@ -198,7 +205,7 @@ circ.checkout.prototype = {
 					if (silent) params.no_prompt = true;
 					JSAN.use('util.print'); var print = new util.print();
 					print.tree_list( params );
-					setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+					setTimeout(function(){obj.list.on_all_fleshed = null;if (typeof f == 'function') f();},0);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('print',E);
 				}

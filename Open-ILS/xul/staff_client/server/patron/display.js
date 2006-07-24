@@ -32,6 +32,7 @@ patron.display.prototype = {
 				urls.XUL_CHECKOUT,
 				{},
 				{ 
+					'set_tab' : xulG.set_tab,
 					'patron_id' : obj.patron.id(),
 					'on_list_change' : function(checkout) {
 					
