@@ -572,3 +572,36 @@ function contains(arr, item) {
 function isTrue(i) {
 	return (i && !(i+'').match(/f/i) );
 }
+
+
+/* builds a JS date object with the given info.  The given data
+	has to be valid (e.g. months == 30 is not valid).  Returns NULL on 
+	invalid date 
+	Months are 1-12 (unlike the JS date object)
+	*/
+
+function buildDate( year, month, day, hours, minutes, seconds ) {
+
+	if(!year) year = 0;
+	if(!month) month = 1;
+	if(!day) day = 1;
+	if(!hours) hours = 0;
+	if(!minutes) minutes = 0;
+	if(!seconds) seconds = 0;
+
+	var d = new Date(year, month - 1, day, hours, minutes, seconds);
+
+	if( 
+		(d.getYear() + 1900) == year &&
+		d.getMonth()	== (month - 1) &&
+		d.getDate()		== parseInt(day) &&
+		d.getHours()	== parseInt(hours) &&
+		d.getMinutes() == parseInt(minutes) &&
+		d.getSeconds() == parseInt(seconds) ) {
+		return d;
+	}
+
+	return null;
+}
+
+
