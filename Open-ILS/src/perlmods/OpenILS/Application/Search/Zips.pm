@@ -63,6 +63,7 @@ sub search_zip {
 	#return $e->event unless $e->checkauth;
 	#return $e->event unless $e->allowed('VIEW_ZIP_DATA');
 	my( $self, $conn, $zip ) = @_;
+	$zip =~ s/(^\d{5}).*/$1/; # we don't care about the last 4 digits if they exist 
 	return $zips{$zip};
 }
 

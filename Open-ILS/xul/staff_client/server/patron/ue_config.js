@@ -27,6 +27,7 @@ const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 const phoneRegex	= /\d{3}-\d{3}-\d{4}/;
 const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
+const zipRegex		= /^\d{5}(-\d{4}|$)/; /* 12345 or 12345-6789 */
 
 
 function uEditUsrnameBlur(field) {
@@ -677,7 +678,7 @@ function uEditBuildAddrFields(patron, address) {
 				name	: 'ue_addr_zip',
 				type	: 'input',
 				disabled : disabled,
-				regex	: /^\d{5}$/,
+				regex	: zipRegex,
 				onblur : function(f) {
 					var v = uEditNodeVal(f);
 					var req = new Request(ZIP_SEARCH, v);
