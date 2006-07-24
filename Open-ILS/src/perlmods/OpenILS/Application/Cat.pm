@@ -78,6 +78,20 @@ sub _load_marc_template {
 	return XML::LibXML->new->parse_string($xml)->documentElement->toString;
 }
 
+my $__bib_sources;
+sub bib_source_from_name {
+	my $name = shift;
+	$logger->debug("searching for bib source: $name");
+
+	$__bib_sources = new_editor()->retrieve_all_config_bib_source()
+		unless $__bib_sources;
+
+	my ($s) = grep { lc($_->source) eq lc($name) } @$__bib_sources;
+
+	return $s->id if $s;
+	return undef;
+}
+
 
 
 __PACKAGE__->register_method(
@@ -95,7 +109,6 @@ __PACKAGE__->register_method(
 
 sub create_record_xml {
 	my( $self, $client, $login, $xml, $source ) = @_;
-	$source ||= 2;
 
 	my $override = 1 if $self->api_name =~ /override/;
 
@@ -109,7 +122,7 @@ sub create_record_xml {
 	$meth = $self->method_lookup(
 		"open-ils.cat.biblio.record.xml.import.override") if $override;
 
-	my ($s) = $meth->run($login, $xml, 2);
+	my ($s) = $meth->run($login, $xml, $source);
 	return $s;
 }
 
@@ -170,8 +183,7 @@ sub biblio_record_replace_marc  {
 		$rec->tcn_source($tsource);
 	}
 
-	# XXX Make the source the ID from config.bib_source
-	$rec->source($source) if ($source);
+	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
 	$rec->edit_date('now');
 	$rec->marc( entityize( $marcdoc->documentElement->toString ) );
@@ -228,7 +240,7 @@ sub biblio_record_xml_import {
 
 	my $record = Fieldmapper::biblio::record_entry->new;
 
-	$record->source($source) if ($source);
+	$record->source(bib_source_from_name($source)) if $source;
 	$record->tcn_source($tcn_source);
 	$record->tcn_value($tcn);
 	$record->creator($requestor->id);
