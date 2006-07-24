@@ -198,7 +198,7 @@ sub unapi {
 	
 		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))$}o) {
 			$id = $2;
-			$lib = $3;
+			$lib = uc($3);
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
 
@@ -303,7 +303,7 @@ sub unapi {
 
 	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^/]+)(?:/(.+))?}o) {
 		$id = $2;
-		$lib = $3;
+		$lib = uc($3);
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^metabib/o);
 		$type = 'isbn' if ($1 =~ /^isbn/o);
@@ -312,7 +312,7 @@ sub unapi {
 		$command = 'browse' if ($type eq 'call_number');
 	}
 
-	if (!$lib) {
+	if (!$lib || $lib eq '-') {
 	 	$lib = $actor->request(
 			'open-ils.actor.org_unit_list.search' => parent_ou => undef
 		)->gather(1)->[0]->shortname;
@@ -327,7 +327,6 @@ sub unapi {
 	my $lib_depth = (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
 
 	if ($type eq 'call_number' and $command eq 'browse') {
-		$lib = uc($lib);
 		print "Location: $root/browse/$base_format/call_number/$lib/$id\n\n";
 		return 302;
 	}
@@ -871,10 +870,10 @@ sub opensearch_feed {
 	if ($path =~ m{^/?(1\.\d{1})/(?:([^/]+)/)?([^/]+)/osd.xml}o) {
 		
 		my $version = $1;
-		my $lib = $2;
+		my $lib = uc($2);
 		my $class = $3;
 
-		if (!$lib) {
+		if (!$lib || $lib eq '-') {
 		 	$lib = $actor->request(
 				'open-ils.actor.org_unit_list.search' => parent_ou => undef
 			)->gather(1)->[0]->shortname;
@@ -1119,7 +1118,7 @@ sub create_record_feed {
 	my $records = shift;
 	my $unapi = shift;
 
-	my $lib = shift || '-';
+	my $lib = uc(shift()) || '-';
 	my $flesh = shift;
 	$flesh = 1 if (!defined($flesh));
 
