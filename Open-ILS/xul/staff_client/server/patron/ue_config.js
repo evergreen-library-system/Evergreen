@@ -1012,6 +1012,9 @@ function uEditCheckDOB(field) {
 
 	note.value(txt);
 	guardianNote = note;
+
+	unHideMe($('ue_guardian_row'));
+	$('ue_guardian_field').appendChild(text(guardianNote.value()));
 }
 
 
