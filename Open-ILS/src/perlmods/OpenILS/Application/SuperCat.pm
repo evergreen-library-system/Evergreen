@@ -686,6 +686,48 @@ Returns the Fieldmapper object representation of the requested bibliographic rec
 );
 
 
+sub retrieve_isbn_object {
+	my $self = shift;
+	my $client = shift;
+	my $isbn = shift;
+
+	return undef unless ($isbn);
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+	my $recs = $_storage->request(
+			'open-ils.cstore.direct.metabib.full_rec.search.atomic',
+			{ tag => { like => '02%'}, value => {like => "$isbn\%"}}
+	)->gather(1);
+
+	return undef unless (@$recs);
+
+	return $_storage->request(
+		'open-ils.cstore.direct.biblio.record_entry.search.atomic',
+		{ id => $recs->[0]->record }
+	)->gather(1);
+}
+__PACKAGE__->register_method(
+	method    => 'retrieve_isbn_object',
+	api_name  => 'open-ils.supercat.isbn.object.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the Fieldmapper object representation of the requested bibliographic record
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'isbn',
+				  desc => 'an ISBN',
+				  type => 'string' },
+			],
+		  'return' =>
+		  	{ desc => 'The bib record',
+			  type => 'object' }
+		}
+);
+
+
 
 sub retrieve_metarecord_mods {
 	my $self = shift;

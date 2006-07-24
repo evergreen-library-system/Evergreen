@@ -312,10 +312,45 @@ sub unapi {
 		$command = 'browse' if ($type eq 'call_number');
 	}
 
+	if (!$lib) {
+	 	$lib = $actor->request(
+			'open-ils.actor.org_unit_list.search' => parent_ou => undef
+		)->gather(1)->[0]->shortname;
+	}
+
+	my $lib_object = $actor->request(
+		'open-ils.actor.org_unit_list.search' => shortname => $lib
+	)->gather(1)->[0];
+	my $lib_id = $lib_object->id;
+
+	my $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
+	my $lib_depth = (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+
 	if ($type eq 'call_number' and $command eq 'browse') {
 		$lib = uc($lib);
 		print "Location: $root/browse/$base_format/call_number/$lib/$id\n\n";
 		return 302;
+	}
+
+	if ($type eq 'isbn') {
+		my $rec = $supercat->request('open-ils.supercat.isbn.object.retrieve',$id)->gather(1);
+		if (!@$rec) {
+			print "Content-type: text/html; charset=utf-8\n\n";
+			$apache->custom_response( 404, <<"			HTML");
+			<html>
+				<head>
+					<title>Type [$type] with id [$id] not found!</title>
+				</head>
+				<body>
+					<br/>
+					<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
+				</body>
+			</html>
+			HTML
+			return 404;
+		}
+		$id = $rec->[0]->id;
+		$type = 'record';
 	}
 
 	if ( !grep
@@ -341,9 +376,9 @@ sub unapi {
 	}
 
 	if ($format eq 'opac') {
-		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rresult.xml?m=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'metarecord');
-		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
+		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id&l=$lib_id&d=$lib_depth\n\n"
 			if ($type eq 'record');
 		return 302;
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
