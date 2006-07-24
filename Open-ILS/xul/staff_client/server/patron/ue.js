@@ -10,6 +10,7 @@ var surveyAnswersCache		= {};
 var userCache					= {};
 var groupsCache				= {};
 var netLevelsCache			= {};
+var guardianNote				= null;	
 
 
 /* fetch the necessary data to start off */
@@ -59,6 +60,7 @@ function uEditFetchNetLevels() {
 	req.send(true);
 	return req.result();
 }
+
 /* ------------------------------------------------------------------------------ */
 
 
@@ -401,6 +403,7 @@ function uEditSaveUser(cloneme) {
 	if( ! patron.ident_value2() ) patron.ident_value2(null);
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
+	req.alertEvent = false;
 	req.send(true);
 	var newuser = req.result();
 
@@ -410,6 +413,22 @@ function uEditSaveUser(cloneme) {
 		return;
 
 	} else {
+		
+		/* if it's a new user and a guardian note was created for this user,
+			create the note after we have the new user's id */
+		if( guardianNote ) {
+			guardianNote.usr( newuser.id() );
+			var req = new Request(CREATE_USER_NOTE, SESSION, guardianNote);
+			req.alertEvent = false;
+			req.send(true);
+			var resp = req.result();
+			if( checkILSEvent(resp) ) {
+				alertILSEvent(resp, 
+					"Error creating patron guardian/parent note");
+				return;
+			}
+		}
+
 		alert($('ue_success').innerHTML);
 	}
 

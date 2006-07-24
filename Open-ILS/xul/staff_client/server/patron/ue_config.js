@@ -11,10 +11,13 @@ const PATRON_SEARCH		= 'open-ils.actor:open-ils.actor.patron.search.advanced';
 const ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
 const FETCH_ADDR_MEMS	= 'open-ils.actor:open-ils.actor.address.members';
 const FETCH_GRP_MEMS		= 'open-ils.actor:open-ils.actor.usergroup.members.retrieve';
+const CREATE_USER_NOTE	= 'open-ils.actor:open-ils.actor.note.create';
 const defaultState		= 'GA';
 const defaultCountry		= 'USA';
 const defaultNetAccess	= 'None';
 const CSS_INVALID_DATA	= 'invalid_value';
+const ADULT_AGE			= 18;
+const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
 /* if they don't have these perms, they shouldn't be here */
 var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
@@ -175,6 +178,8 @@ function uEditDefineData(patron) {
 				id			: 'ue_dob',
 				regex		: dateRegex,
 				type		: 'input',
+				onpostchange	: function(field) { uEditCheckDOB(field); },
+				onblur	: function(field) { uEditCheckDOB(field); }
 			}
 		},
 		{
@@ -959,6 +964,55 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 
 
 
+
+var __lastdob;
+function uEditCheckDOB(field) {
+
+	var dob = uEditNodeVal(field);
+
+	/* don't bother if the data isn't valid */
+	if(!dob || !dob.match(field.widget.regex)) 
+		return;
+
+	if( dob == __lastdob ) return;
+
+	__lastdob = dob;
+
+	var parts = dob.split(/-/);
+	var d = new Date( parts[0], parts[1] - 1, parts[2] );
+
+	dob = buildDate( parts[0], parts[1], parts[2] );
+
+	var today = new Date();
+
+	if(!dob || dob > today) {
+		addCSSClass(field.widget.node, CSS_INVALID_DATA);
+		alertId('ue_bad_date');
+		return;
+	}
+
+	var base = new Date();
+	base.setYear( today.getYear() + 1900 - ADULT_AGE );
+
+	/* patron already exists or is at least 18 */
+	if( !patron.isnew() || dob < base ) return; 
+
+	if( guardianNote ) return;
+
+	/* create a new note to represent the patron's guardian */
+	var note = new aun();
+	note.title(GUARDIAN_NOTE);
+	note.isnew(1);
+	note.creator(USER.id());	
+	note.isnew(1);
+
+	var txt; /* get the guardian info from the staff */
+	while(!txt || txt == "") 
+		txt = prompt($('ue_juv_guardian').innerHTML);
+
+	note.value(txt);
+	guardianNote = note;
+}
 
 
 
