@@ -6,9 +6,10 @@ var myPerms = [ 'UPDATE_ORG_SETTING' ];
 
 
 var ORG_SETTINGS = {
-	'circ.lost_materials_processing_fee' : null,
-	'cat.default_item_price' : null,
-	'circ.collections_fee' : null
+	'circ.lost_materials_processing_fee'	: null,
+	'cat.default_item_price'					: null,
+	'circ.collections_fee'						: null,
+	'auth.opac_timeout'							: null,
 };
 
 function osEditorInit() {
@@ -62,7 +63,15 @@ function osBuildOrgs() {
 		setSelector( selector, gotoOrg );
 	}
 
+	for( var i in ORG_SETTINGS ) 
+		osSetCallback(i);
+
 	return gotoOrg;
+}
+
+function osSetCallback(setting) {
+	$(setting+'.apply_all').onclick = function() { osUpdate(setting, true); };
+	$(setting+'.apply').onclick = function() { osUpdate(setting, false); };
 }
 
 
@@ -97,5 +106,36 @@ function _formatMoney(m) {
 	if( m.match(/^\.\d+/) ) return '0' + m;
 	return m;
 }
+
+function osUpdate( setting, allOrgs ) {
+	var val = ORG_SETTINGS[setting].value;
+	var org = osCurrentOrg();
+
+	if(allOrgs) {
+
+	} else {
+		osUpdateOrg(setting, val, org);
+	}
+
+	osDrawRange();
+}
+
+function osUpdateOrg( setting, value, org ) {
+	var s = {};
+	s[setting] = value;
+	var req = new Request(ORG_SETTING_UPDATE, SESSION, org, s);
+	req.send(true);
+	var resp = req.result();
+
+	alert(js2JSON(resp));
+
+	if( checkILSEvent(resp) ) {
+		alertILSEvent(resp);
+		return false;
+	}
+
+	return true;
+}
+
 
 
