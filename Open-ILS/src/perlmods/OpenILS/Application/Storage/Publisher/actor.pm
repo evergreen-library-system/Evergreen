@@ -227,6 +227,7 @@ sub patron_search {
 	my $search = shift;
 	my $limit = shift || 1000;
 	my $sort = shift;
+	my $inactive = shift;
 	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
 
 	# group 0 = user
@@ -300,8 +301,22 @@ sub patron_search {
 	}
 
 	my $order_by = join ', ', map { 'users.'. $_} @$sort;
-		
-	$select = "SELECT users.id FROM $u_table AS users JOIN ($select) AS search USING (id) ORDER BY $order_by LIMIT $limit";
+
+	if ($inactive) {
+		$inactive = 'AND user.active = FALSE';
+	} else {
+		$inactive = '';
+	}
+
+	$select = <<"	SQL";
+		SELECT	users.id
+		  FROM	$u_table AS users
+			JOIN ($select) AS search
+		  USING (id)
+		  WHERE	users.deleted = FALSE $inactive
+		  ORDER BY $order_by
+		  LIMIT $limit
+	SQL
 
 	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));
 }
