@@ -1053,6 +1053,7 @@ sub choose_nearest_copy {
 				  request_lib => $hold->request_lib->to_fieldmapper,
 				}
 			)) {
+				last unless(@capturable);
 				$rand = int(rand(scalar(@capturable)));
 				next;
 			}
