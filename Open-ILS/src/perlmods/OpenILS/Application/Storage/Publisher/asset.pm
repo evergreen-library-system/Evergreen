@@ -417,7 +417,7 @@ sub copy_proximity {
 	$key = "$ol|$org";
 	$key = "$org|$ol" if ($ol->id > $org);
 
-	$_prox_cache{$key} = asset::copy->db_Main->selectcol_arrayref('SELECT actor.org_unit_proximity(?,?)',{},"$ol","$org")->[0];
+	$_prox_cache{$key} = asset::copy->db_Main->selectcol_arrayref('SELECT actor.org_unit_proximity(?,?)',{},"$ol","$org")->[0]
 		unless (exists($_prox_cache{$key}));
 
 	return $_prox_cache{$key};
