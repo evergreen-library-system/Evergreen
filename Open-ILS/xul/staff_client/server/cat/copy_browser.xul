@@ -78,6 +78,8 @@
 		<command id="cmd_edit_volumes"/>
 		<command id="cmd_delete_volumes"/>
 		<command id="cmd_mark_volume"/>
+		<command id="cmd_mark_library"/>
+		<command id="cmd_transfer_volume"/>
 		<command id="cmd_refresh_list"/>
 	</commandset>
 
@@ -90,9 +92,12 @@
 			<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 			<menuseparator/>
 			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+			<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+			<menuseparator/>
 			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
 			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
 			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+			<menuitem command="cmd_transfer_volume" label="Transfer Volume to Previously Marked Library" accesskey=""/>
 			<menuseparator/>
 			<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 		</popup>
@@ -116,9 +121,12 @@
 							<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 							<menuseparator/>
 							<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+							<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+							<menuseparator/>
 							<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
 							<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
 							<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+							<menuitem command="cmd_transfer_volume" label="Transfer Volume to Previously Marked Library" accesskey=""/>
 							<menuseparator/>
 							<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 					</menupopup>

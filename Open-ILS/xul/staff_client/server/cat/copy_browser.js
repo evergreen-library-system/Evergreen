@@ -513,6 +513,37 @@ cat.copy_browser.prototype = {
 
 							}
 						],
+						'cmd_mark_library' : [
+							['command'],
+							function() {
+								try {
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'aou';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+
+									if (list.length == 1) {
+										obj.data.marked_library = { 'lib' : list[0], 'docid' : obj.docid };
+										obj.data.stash('marked_library');
+										alert('Library + Record marked as Volume Transfer Destination');
+									} else {
+										obj.error.yns_alert('Choose just one Library to mark as Volume Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									}
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> mark library',E);
+								}
+							}
+						],
+
 						'cmd_mark_volume' : [
 							['command'],
 							function() {
@@ -546,6 +577,74 @@ cat.copy_browser.prototype = {
 						'cmd_refresh_list' : [
 							['command'],
 							function() {
+								obj.refresh_list();
+							}
+						],
+						'cmd_transfer_volume' : [
+							['command'],
+							function() {
+								try {
+									obj.data.stash_retrieve();
+									if (!obj.data.marked_library) {
+										alert('Please mark a library as the destination from within the copy browser and then try this again.');
+										return;
+									}
+									
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acn';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
+									xml += '<description>Transfer volumes ';
+
+									xml += util.functional.map_list(
+										list,
+										function (o) {
+											return obj.map_acn[ 'acn_' + o ].label();
+										}
+									).join(", ");
+
+									xml += ' to library ' + obj.data.hash.aou[ obj.data.marked_library.lib ].shortname();
+									xml += ' on the following record?</description>';
+									xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
+									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+									xml += '</vbox>';
+									obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
+									window.open(
+										urls.XUL_FANCY_PROMPT
+										+ '?xml_in_stash=temp_transfer'
+										+ '&title=' + window.escape('Volume Transfer'),
+										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
+									);
+									JSAN.use('OpenILS.data');
+									var data = new OpenILS.data(); data.init({'via':'stash'});
+									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
+
+									var robj = obj.network.simple_request('FM_ACN_TRANSFER', [ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : list } ]);
+
+									if (typeof robj.ilsevent != 'undefined') {
+										throw(robj);
+									} else {
+										alert('Volumes transferred.');
+									}
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Volumes not likely transferred.',E);
+								}
 								obj.refresh_list();
 							}
 						],
@@ -1124,17 +1223,21 @@ cat.copy_browser.prototype = {
 			obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
 			obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','true');
 			obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
+			obj.controller.view.cmd_mark_library.setAttribute('disabled','true');
 			obj.controller.view.cmd_edit_volumes.setAttribute('disabled','true');
 			obj.controller.view.cmd_delete_volumes.setAttribute('disabled','true');
 			obj.controller.view.cmd_mark_volume.setAttribute('disabled','true');
+			obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
 			if (found_aou) {
 				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
+				obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
 			}
 			if (found_acn) {
 				obj.controller.view.cmd_edit_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_delete_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_mark_volume.setAttribute('disabled','false');
 				obj.controller.view.cmd_add_items.setAttribute('disabled','false');
+				obj.controller.view.cmd_transfer_volume.setAttribute('disabled','false');
 			}
 			if (found_acp) {
 				obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
