@@ -495,7 +495,7 @@ sub generate_fines {
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
 	
-			for my $bill (1 .. $pending_fine_count) {
+			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				my ($total) = money::billable_transaction_summary->retrieve( $c->id );
 	
@@ -507,13 +507,30 @@ sub generate_fines {
 						"\tNo more fines will be generated.\n" );
 					last;
 				}
+				
+				my $billing_ts = DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill );
+
+				my $dow = $billing_ts->dow;
+				my $dow_open = "dow_${dow}_open";
+				my $dow_close = "dow_${dow}_close";
+
+				my $hoo = actor::org_unit::hours_of_operation->retrieve( $c->circ_lib );
+				next if ( $hoo->$dow_open eq '00:00:00' and $hoo->$dow_close eq '00:00:00');
+
+				my $timestamptz = $billing_ts->strftime('%FT%T%z');
+				my @cl = actor::org_unit::closed_date->search_where(
+						{ close_start	=> { '<=' => $timestamptz },
+						  close_end	=> { '>=' => $timestamptz },
+						  org_unit	=> $c->circ_lib }
+				);
+				next if (@cl);
 	
 				my $billing = money::billing->create(
 					{ xact		=> ''.$c->id,
 					  note		=> "Overdue Fine",
 					  billing_type	=> "Overdue materials",
 					  amount	=> ''.$c->recuring_fine,
-					  billing_ts	=> DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill )->strftime('%FT%T%z')
+					  billing_ts	=> $timestamptz,
 					}
 				);
 	
@@ -680,27 +697,16 @@ sub new_hold_copy_targeter {
 				die 'OK';
 			}
 
-			my $copies = [];
-			for my $c ( @$all_copies ) {
-				push @$copies, $c
-					if ( OpenILS::Utils::PermitHold::permit_copy_hold(
-						{ title => $c->call_number->record->to_fieldmapper,
-						  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
-						  patron => $hold->usr->to_fieldmapper,
-						  copy => $c->to_fieldmapper,
-						  requestor => $hold->requestor->to_fieldmapper,
-						  request_lib => $hold->request_lib->to_fieldmapper,
-						} ));
-			}
-			my $copy_count = @$copies;
-			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+			my $copy_count = @$all_copies;
 
 			# map the potentials, so that we can pick up checkins
-			$log->debug( "\tMapping ".scalar(@$copies)." potential copies for hold ".$hold->id);
-			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$copies);
+			$log->debug( "\tMapping ".scalar(@$all_copies)." potential copies for hold ".$hold->id);
+			action::hold_copy_map->create( { hold => $hold->id, target_copy => $_->id } ) for (@$all_copies);
+
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			my @good_copies;
-			for my $c (@$copies) {
+			for my $c (@$all_copies) {
 				next if ($c->id == $hold->current_copy);
 				next if (action::hold_request
 						->search_where(
@@ -710,6 +716,7 @@ sub new_hold_copy_targeter {
 						)
 				);
 				push @good_copies, $c if ($c);
+				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			}
 
 			$log->debug("\t".scalar(@good_copies)." (non-current) copies available for targeting...");
@@ -721,7 +728,7 @@ sub new_hold_copy_targeter {
 				$log->info("\tNo (non-current) copies eligible to fill the hold.");
 				if (
 				  $old_best &&
-				  grep { $old_best eq $_ } @$copies &&
+				  grep { $old_best eq $_ } @$all_copies &&
 				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef })
 				) {
 					$log->debug("\tPushing current_copy back onto the targeting list");
@@ -743,13 +750,18 @@ sub new_hold_copy_targeter {
 				} @good_copies
 			];
 
-			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
+			$all_copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
 
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			my $best = choose_nearest_copy($hold, $prox_list);
+			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
 			if (!$best) {
-				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$copies)." copies");
-				$prox_list = create_prox_list( $self, $hold->pickup_lib, $copies );
+				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
+				$prox_list = create_prox_list( $self, $hold->pickup_lib, $all_copies );
+
+				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
 				$best = choose_nearest_copy($hold, $prox_list);
 			}
 
@@ -1026,9 +1038,26 @@ sub choose_nearest_copy {
 
 	for my $p ( 0 .. int( scalar(@$prox_list) - 1) ) {
 		next unless (ref $$prox_list[$p]);
+
 		my @capturable = grep { $_->status == 0 || $_->status == 7 } @{ $$prox_list[$p] };
 		next unless (@capturable);
-		return $capturable[rand(scalar(@capturable))];
+
+		my $rand = int(rand(scalar(@capturable)));
+		while (my ($c) = splice(@capturable,$rand)) {
+			unless ( OpenILS::Utils::PermitHold::permit_copy_hold(
+				{ title => $c->call_number->record->to_fieldmapper,
+				  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
+				  patron => $hold->usr->to_fieldmapper,
+				  copy => $c->to_fieldmapper,
+				  requestor => $hold->requestor->to_fieldmapper,
+				  request_lib => $hold->request_lib->to_fieldmapper,
+				}
+			)) {
+				$rand = int(rand(scalar(@capturable)));
+				next;
+			}
+			return $c;
+		}
 	}
 }
 
