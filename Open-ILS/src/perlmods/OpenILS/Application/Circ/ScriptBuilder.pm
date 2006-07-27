@@ -70,7 +70,7 @@ sub build_runner {
 	my $runner = OpenILS::Utils::ScriptRunner->new;
 
 	my $gt = $GROUP_TREE;
-	weaken($gt); # just to be safe
+	#weaken($gt); # just to be safe
 	$runner->insert( "$evt.groupTree",	$gt, 1);
 
 
@@ -295,7 +295,8 @@ sub insert_org_methods {
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
 			my $val = is_org_descendent( $parent, $child );
-			$r->insert($write_key, $val, 1);
+			$logger->debug("script_builder: is_org_desc returned val $val, writing to $write_key");
+			$r->insert($write_key, $val, 1) if $val; # Needs testing, was dying before
 			return $val;
 		}
 	);
@@ -306,6 +307,7 @@ sub insert_org_methods {
 sub is_org_descendent {
 	my( $parent, $child ) = @_;
 	return 0 unless $parent and $child;
+	$logger->debug("script_builder: is_org_desc checking parent=".$parent->id.", child=".$child->id);
 	do {
 		return 1 if $parent->id == $child->id;
 	} while( ($child) = grep { $_->id == $child->parent_ou } @ORG_LIST );
