@@ -6,10 +6,11 @@ use Data::Dumper;
 use OpenSRF::Utils;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
-use OpenILS::Utils::Editor;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenSRF::AppSession;
 
 my $U							= "OpenILS::Application::AppUtils";
 my $holdcode				= "OpenILS::Application::Circ::Holds";
@@ -99,6 +100,7 @@ sub transit_receive {
 
 
 
+
 __PACKAGE__->register_method(
 	method	=> "copy_transit_create",
 	api_name	=> "open-ils.circ.copy_transit.create",
@@ -174,19 +176,19 @@ sub abort_transit {
 	my $barcode		= $$params{barcode};
 	my $transitid	= $$params{transitid};
 
-	my $reqr;
 	my $copy;
 	my $transit;
 	my $holdtransit;
 	my $hold;
 	my $evt;
 
-
-	($reqr, $evt) = $U->checksesperm($authtoken, 'ABORT_TRANSIT');
-	return $evt if $evt;
+	my $e = new_editor(xact => 1, authtoken => $authtoken);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('ABORT_TRANSIT');
 
 	# ---------------------------------------------------------------------
 	# Find the related copy and/or transit based on whatever data we have
+	# XXX Move to editor calls
 	if( $barcode ) {
 		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
 		return $evt if $evt;
@@ -206,49 +208,40 @@ sub abort_transit {
 	}
 
 	if(!$copy) {
-		($copy, $evt) = $U->fetch_copy($transit->tartet_copy);
+		($copy, $evt) = $U->fetch_copy($transit->target_copy);
 		return $evt if $evt;
 	}
 	# ---------------------------------------------------------------------
 
 
-	if( $transit->dest != $reqr->ws_ou 
-		and $transit->source != $reqr->ws_ou ) {
-		$evt = $U->check_perms($reqr->id, $reqr->ws_ou, 'ABORT_REMOTE_TRANIST');
-		return $evt if $evt;
+	if( $transit->dest != $e->requestor->ws_ou 
+		and $transit->source != $e->requestor->ws_ou ) {
+		return $e->event unless $e->allowed('ABORT_REMOTE_TRANIST', $e->requestor->ws_ou);
 	}
 
 	# recover the copy status
 	$copy->status( $transit->copy_status );
-	$copy->editor( $reqr->id );
+	$copy->editor( $e->requestor->id );
 	$copy->edit_date('now');
 
 	($holdtransit) = $U->fetch_hold_transit($transit->id);
 
 	# update / delete the objects
-	my $session = $U->start_db_session();
+	#my $session = $U->start_db_session();
 
 
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit) {
 		($hold, $evt) = $U->fetch_hold($holdtransit->hold);			
 		return $evt if $evt;
-		$evt = $holdcode->_reset_hold( $reqr, $hold, $session);
+		$evt = $holdcode->_reset_hold( $e->requestor, $hold );
 		return $evt if $evt;
 	}
 
-	return $U->DB_UPDATE_FAILED($transit) unless 
-		$session->request(
-			'open-ils.storage.direct.action.transit_copy.delete', 
-			$transit->id )->gather(1);
+	return $e->event unless $e->delete_action_transit_copy($transit);
+	return $e->event unless $e->update_asset_copy($copy);
 
-
-	return $U->DB_UPDATE_FAILED($copy) unless 
-		$session->request(
-			'open-ils.storage.direct.asset.copy.update', $copy )->gather(1);
-
-	$U->commit_db_session($session);
-
+	$e->commit;
 	return 1;
 }
 
@@ -266,7 +259,7 @@ __PACKAGE__->register_method(
 
 sub get_open_copy_transit {
 	my( $self, $conn, $auth, $copyid ) = @_;	
-	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth);
+	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER'); # XXX rely on editor perms
 	my $t = $e->search_action_transit_copy(
