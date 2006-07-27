@@ -162,23 +162,27 @@ sub nearest_hold {
 	my $client = shift;
 	my $pl = shift;
 	my $cp = shift;
+	my $limit = int(shift()) || 10;
 
-	my ($id) = action::hold_request->db_Main->selectrow_array(<<"	SQL", {}, $pl,$cp);
+	my ($id) = action::hold_request->db_Main->selectrow_array(<<"	SQL", {}, $cp, $pl);
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
-		  WHERE	h.pickup_lib = ?
-		  	AND hm.target_copy = ?
+		  WHERE hm.target_copy = ?
 			AND h.capture_time IS NULL
-		ORDER BY h.pickup_lib - (SELECT home_ou FROM actor.usr a WHERE a.id = h.usr), h.selection_depth DESC, h.request_time
-		LIMIT 1
+		ORDER BY
+			actor.org_unit_proximity(h.pickup_lib, ?),
+			h.selection_depth DESC,
+			h.request_time
+		LIMIT $limit
 	SQL
 	return $id;
 }
 __PACKAGE__->register_method(
-	api_name        => 'open-ils.storage.action.hold_request.nearest_hold',
-	api_level       => 1,
-	method          => 'nearest_hold',
+	api_name	=> 'open-ils.storage.action.hold_request.nearest_hold',
+	api_level	=> 1,
+	stream		=> 1,
+	method		=> 'nearest_hold',
 );
 
 sub next_resp_group_id {
@@ -1069,7 +1073,7 @@ sub create_prox_list {
 
 	my @prox_list;
 	for my $cp (@$copies) {
-		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp->id, $lib );
+		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib );
 		next unless (defined($prox));
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
 		push @{$prox_list[$prox]}, $cp;
