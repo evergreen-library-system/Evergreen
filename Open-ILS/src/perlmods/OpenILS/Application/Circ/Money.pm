@@ -260,6 +260,8 @@ sub create_grocery_bill {
 	
 	$apputils->commit_db_session($session);
 
+
+
 	return $transid;
 }
 
@@ -317,8 +319,16 @@ sub billing_items_create {
 	}
 
 	$e->create_money_billing($billing) or return $e->event;
-
 	$e->commit;
+
+	# ------------------------------------------------------------------------------
+	# Update the patron penalty info in the DB
+	# ------------------------------------------------------------------------------
+	$U->update_patron_penalties(
+		authtoken => $login,
+		patronid  => $xact->usr,
+	);
+
 	return $billing->id;
 }
 
@@ -354,7 +364,18 @@ sub void_bill {
 	my $evt = _check_open_xact($e, $bill->xact);
 	return $evt if $evt;
 
-	$e->finish;
+	$e->commit;
+
+	# ------------------------------------------------------------------------------
+	# Update the patron penalty info in the DB
+	# ------------------------------------------------------------------------------
+	my $xact = $e->retrieve_money_billable_transaction($bill->xact)
+		or return $e->event;
+	$U->update_patron_penalties(
+		authtoken => $authtoken,
+		patronid  => $xact->usr,
+	);
+
 	return 1;
 }
 
