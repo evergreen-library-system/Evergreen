@@ -14,7 +14,7 @@ my $U = "OpenILS::Application::AppUtils";
 
 # returns ( $newid, $evt ).  If $evt, then there was an error
 sub create_non_cat_circ {
-	my( $staffid, $patronid, $circ_lib, $noncat_type, $circ_time ) = @_;
+	my( $staffid, $patronid, $circ_lib, $noncat_type, $circ_time, $editor ) = @_;
 
 	my( $id, $nct, $evt );
 	$circ_time ||= 'now';
@@ -29,12 +29,18 @@ sub create_non_cat_circ {
 	$circ->item_type($noncat_type);
 	$circ->circ_time($circ_time);
 
-	$id = $U->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.action.non_cataloged_circulation.create', $circ );
-	$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
+	if( $editor ) {
+		$evt = $editor->event unless
+			$circ = $editor->create_action_non_cataloged_circulation( $circ )
 
-	$circ->id($id);
+	} else {
+		$id = $U->simplereq(
+			'open-ils.storage',
+			'open-ils.storage.direct.action.non_cataloged_circulation.create', $circ );
+		$evt = $U->DB_UPDATE_FAILED($circ) unless $id;
+		$circ->id($id);
+	}
+
 	return( $circ, $evt );
 }
 
