@@ -717,12 +717,16 @@ sub fetch_copy_location_by_name {
 sub fetch_callnumber {
 	my( $self, $id ) = @_;
 	my $evt = undef;
+
+	my $e = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id );
+	return( undef, $e ) unless $id;
+
 	$logger->debug("Fetching callnumber $id");
 
 	my $cn = $self->simplereq(
 		'open-ils.cstore',
 		'open-ils.cstore.direct.asset.call_number.retrieve', $id );
-	$evt = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id ) unless $cn;
+	$evt = $e  unless $cn;
 
 	return ( $cn, $evt );
 }
