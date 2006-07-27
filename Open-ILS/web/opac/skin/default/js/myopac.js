@@ -235,6 +235,7 @@ function myOPACRenewCirc(circid) {
 
 	var req = new Request(RENEW_CIRC, G.user.session, 
 		{ patron : G.user.id(), copyid : circ.target_copy() } );
+	req.request.alertEvent = false;
 	req.send(true);
 	var res = req.result();
 
@@ -242,8 +243,6 @@ function myOPACRenewCirc(circid) {
 		alertId('myopac_renew_fail');
 		return;
 	}
-
-	
 
 	alert($('myopac_renew_success').innerHTML);	
 	checkedDrawn = false;
