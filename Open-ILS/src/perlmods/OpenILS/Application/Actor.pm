@@ -447,8 +447,10 @@ sub _update_patron {
 		return (undef, $evt) if $evt;
 	}
 
-	$evt = _check_dup_ident($session, $patron);
-	return (undef, $evt) if $evt;
+	# We can' check for dup idents on update because some existing
+	# users may already have dup idents
+	#$evt = _check_dup_ident($session, $patron);
+	#return (undef, $evt) if $evt;
 
 
 	# update the password by itself to avoid the password protection magic
@@ -2155,7 +2157,6 @@ sub create_user_note {
 	return $evt if $evt;
 	$logger->activity("user ".$reqr->id." creating note for user ".$note->usr);
 
-	$note->pub('f') unless $note->pub;
 	$note->creator($reqr->id);
 	my $id = $U->storagereq(
 		'open-ils.storage.direct.actor.usr_note.create', $note );
