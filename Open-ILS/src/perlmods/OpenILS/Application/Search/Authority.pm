@@ -15,6 +15,20 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
 
+sub validate_authority {
+	my $self = shift;
+	my $client = shift;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	return $session->request( 'open-ils.storage.authority.validate.tag' => @_ )->gather(1);
+}
+__PACKAGE__->register_method(
+        method		=> "validate_authority",
+        api_name	=> "open-ils.search.authority.validate.tag",
+        argc		=> 4, 
+        note		=> "Validates authority data from existing controlled terms",
+);              
+
 sub search_authority {
 	my $self = shift;
 	my $client = shift;

@@ -18,6 +18,53 @@ $VERSION = 1;
 
 my $parser = XML::LibXML->new;
 
+sub validate_tag {
+	my $self = shift;
+	my $client = shift;
+	my %args = @_;
+	
+	my @tags = @{$args{tags}};
+	my @searches = @{$args{searches}};
+
+	my $search_table = authority::full_rec->table;
+
+	my @values;
+	my @selects;
+	for my $t ( @tags ) {
+		for my $search ( @searches ) {
+			my $sf = $$search{subfield};
+			my $term = NFD(lc($$search{term}));
+
+			$term =~ s/\pM+//sgo;
+			$term =~ s/\pC+//sgo;
+			$term =~ s/\W+$//o;
+
+			$tag = [$tag] if (!ref($tag));
+
+			push @values, $t, $sf, $term;
+
+			push @selects,
+				"SELECT record FROM $search_table ".
+				"WHERE tag = ? AND subfield = ? AND value = ?";
+		}
+
+		my $sql = 'SELECT COUNT(DISTINCT record) FROM (';
+		$sql .= 'SELECT record FROM (('.join(') INTERSECT (', @selects).')) AS x ';
+		$sql .= "JOIN $search_table recheck USING (record) WHERE recheck.tag = ? ";
+		$sql .= "GROUP BY 1 HAVING (COUNT(recheck.id) - ?) = 0) AS foo;";
+
+		my $count = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) )->[0];
+		return $count if ($count > 0);
+	}
+
+	return 0;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.authority.validate.tag",
+	method		=> 'validate_tag',
+	api_level	=> 1,
+);
+
 sub find_authority_marc {
 	my $self = shift;
 	my $client = shift;
