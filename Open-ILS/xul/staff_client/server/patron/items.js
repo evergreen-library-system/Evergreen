@@ -66,33 +66,29 @@ patron.items.prototype = {
 										{
 											'title' : 'Override Checkin Failure?',
 											'overridable_events' : [ 
-												1203 /* COPY_BAD_STATUS */, 
-												7010 /* COPY_ALERT_MESSAGE */, 
-												7011 /* COPY_STATUS_LOST */, 
-												7012 /* COPY_STATUS_MISSING */, 
-												7004 /* COPY_NOT_AVAILABLE */, 
-												7006 /* COPY_IS_REFERENCE */, 
+						                        1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
+						                        7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
+						                        7003 /* COPY_CIRC_NOT_ALLOWED */,
+						                        7004 /* COPY_NOT_AVAILABLE */,
+						                        7006 /* COPY_IS_REFERENCE */,
+						                        7007 /* COPY_NEEDED_FOR_HOLD */,
 												7008 /* MAX_RENEWALS_REACHED */, 
-												7010 /* COPY_ALERT_MESSAGE */,
+						                        7010 /* COPY_ALERT_MESSAGE */,
+						                        7013 /* PATRON_EXCEEDS_FINES */,
 											],
 											'text' : {
-												'1203' : function(r) {
-													return obj.OpenILS.data.hash.ccs[ r.payload.status() ].name();
-												},
 												'7010' : function(r) {
 													return r.payload;
 												},
 												'7004' : function(r) {
 													return obj.OpenILS.data.hash.ccs[ r.payload ].name();
 												},
-												'7010' : function(r) {
-													return r.payload;
-												},
 											}
 										}
 									);
-									if (typeof renew.ilsevent != 'undefined') { 
-										switch(renew.ilsevent) {
+									if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
+									for (var i = 0; i < renew.length; i++) { 
+										switch(renew[i].ilsevent) {
 											case 0 /* SUCCESS */ : break;
 											case 5000 /* PERM_FAILURE */: break;
 											case 7008 /* MAX_RENEWALS_REACHED */ : break;
