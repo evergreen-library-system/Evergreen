@@ -5,9 +5,12 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Application::Circ::Holds;
 use Scalar::Util qw/weaken/;
 my $U = "OpenILS::Application::AppUtils";
 use Data::Dumper;
+
+my $holdcode = "OpenILS::Application::Circ::Holds";
 
 my $evt = "environment";
 my @COPY_STATUSES;
@@ -76,7 +79,7 @@ sub build_runner {
 	$runner->insert( "$evt.volume",		$ctx->{volume}, 1);
 	$runner->insert( "$evt.title",		$ctx->{title}, 1);
 	$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
-	$runner->insert( "$evt.titleDescriptor", $ctx->{titleDescriptor}, 1);
+	#$runner->insert( "$evt.titleDescriptor", $ctx->{titleDescriptor}, 1);
 
 	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut}, 1 );
 	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue}, 1 );
@@ -85,6 +88,7 @@ sub build_runner {
 	$runner->insert("$evt.$_", $ctx->{_direct}->{$_}, 1) for keys %{$ctx->{_direct}};
 
 	insert_org_methods( $editor, $runner );
+	insert_copy_methods( $editor, $ctx, $runner );
 
 	return $runner;
 }
@@ -138,12 +142,13 @@ sub fetch_bib_data {
 	$ctx->{title} = $e->retrieve_biblio_record_entry(
 		$ctx->{volume}->record) or return $e->event;
 
-	if(!$ctx->{titleDescriptor}) {
-		$ctx->{titleDescriptor} = $e->search_metabib_record_descriptor( 
-			{ record => $ctx->{title}->id }) or return $e->event;
 
-		$ctx->{titleDescriptor} = $ctx->{titleDescriptor}->[0];
-	}
+#	if(!$ctx->{titleDescriptor}) {
+#		$ctx->{titleDescriptor} = $e->search_metabib_record_descriptor( 
+#			{ record => $ctx->{title}->id }) or return $e->event;
+#
+#		$ctx->{titleDescriptor} = $ctx->{titleDescriptor}->[0];
+#	}
 
 	#insert_copy_method();	
 
@@ -168,6 +173,18 @@ sub fetch_user_data {
 			$ctx->{patron} = $e->search_actor_user( 
 				{ card => $card->[0]->id }) or return $e->event;
 			$ctx->{patron} = $ctx->{patron}->[0];
+
+		} elsif( $ctx->{fetch_patron_by_circ_copy} ) {
+
+			if( my $copy = $ctx->{copy} ) {
+				my $circs = $e->search_action_circulation(
+					{ target_copy => $copy->id, stop_fines_time => undef });
+
+				if( my $circ = $circs->[0] ) {
+					$ctx->{patron} = $e->retrieve_actor_user($circ->usr)
+						or return $e->event;
+				}
+			}
 		}
 	}
 
@@ -295,20 +312,21 @@ sub is_org_descendent {
 	return 0;
 }
 
+sub insert_copy_methods {
+	my( $e, $ctx,  $runner ) = @_;
+	if( my $copy = $ctx->{copy} ) {
+		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_best_hold', sub {
+				my $key = shift;
+				$logger->debug("script_builder: searching for permitted hold for copy ".$copy->barcode);
+				my ($hold) = $holdcode->find_nearest_permitted_hold(
+					OpenSRF::AppSession->create('open-ils.storage'), $copy, $e->requestor );
+				$runner->insert( $key, $hold, 1 );
+			}
+		);
+	}
+}
 
 
-#	if( $ctx->{copy} ) {
-#		
-#		# allows a script to fetch a hold that is currently targeting the
-#		# copy in question
-#		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_hold', sub {
-#				my $key = shift;
-#				my $hold = $holdcode->fetch_related_holds($ctx->{copy}->id);
-#				$hold = undef unless $hold;
-#				$runner->insert( $key, $hold, 1 );
-#			}
-#		);
-#	}
 
 
 

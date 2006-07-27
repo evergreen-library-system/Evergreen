@@ -4,9 +4,9 @@ load_lib('circ/circ_groups.js');
 
 try {
 	if( environment.copy ) {
-		environment.copy.fetchHolds = function() {
+		environment.copy.fetchBestHold = function() {
 			var key = scratchKey();
-			environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
+			environment.copy.__OILS_FUNC_fetch_best_hold(scratchPad(key));
 			var val = getScratch(key);
 			return (val) ? val : null;
 		}
