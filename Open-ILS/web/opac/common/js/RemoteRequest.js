@@ -294,9 +294,10 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(!isXUL()) {
 		if( checkILSEvent(payload) ) {
 			this.event(payload);
-			if( this.alertEvent )
+			if( this.alertEvent ) {
 				alertILSEvent(payload);
-			return null;
+				return null;
+			}
 		} 
 	}
 
