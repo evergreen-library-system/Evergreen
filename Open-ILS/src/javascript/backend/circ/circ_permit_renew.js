@@ -2,23 +2,14 @@ function go() {
 
 /* load the lib script */
 load_lib('circ/circ_lib.js');
+log_vars('circ_permit_renew');
 
-/* collect some useful variables */
-var copy					= environment.copy;
-var patron				= environment.patron;
-var patronProfile		= patron.profile.name.toLowerCase();
-var copyStatus			= copy.status.name.toLowerCase();
-var patronItemsOut	= environment.patronItemsOut;
-var patronFines		= environment.patronFines;
-var isRenewal			= environment.isRenewal;
-
-/* XXX get me working again 
 var holds = copy.fetchHolds();
 for( var i in holds ) {
+	log_info("hold found for renewal item, checking hold->usr..");
 	var hold = holds[i];
 	if( hold && hold.usr != patron.id )
 		return result.events.push('COPY_NEEDED_FOR_HOLD');
 }
-*/
 
 } go();
