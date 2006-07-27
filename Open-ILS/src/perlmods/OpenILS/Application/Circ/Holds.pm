@@ -514,7 +514,8 @@ sub capture_copy {
 
 	$logger->debug("Capturing copy " . $copy->id);
 
-	( $hold, $evt ) = _find_local_hold_for_copy($session, $copy, $user);
+	#( $hold, $evt ) = _find_local_hold_for_copy($session, $copy, $user);
+	( $hold, $evt ) = $self->find_nearest_permitted_hold($session, $copy, $user);
 	return $evt if $evt;
 
 	warn "Found hold " . $hold->id . "\n";
@@ -579,9 +580,12 @@ sub _build_hold_transit {
 
 sub find_local_hold {
 	my( $class, $session, $copy, $user ) = @_;
-	return _find_local_hold_for_copy($session, $copy, $user);
+	#return _find_local_hold_for_copy($session, $copy, $user);
+	return $class->find_nearest_permitted_hold($session, $copy, $user);
 }
 
+
+=head deprecated
 sub _find_local_hold_for_copy {
 
 	my $session = shift;
@@ -597,19 +601,26 @@ sub _find_local_hold_for_copy {
 	if($hold) {return $hold;}
 
 	$logger->debug("searching for local hold at org " . 
-		$user->home_ou . " and copy " . $copy->id);
+		$user->ws_ou . " and copy " . $copy->id);
 
 	my $holdid = $session->request(
 		"open-ils.storage.action.hold_request.nearest_hold",
-		$user->home_ou, $copy->id )->gather(1);
+		$user->ws_ou, $copy->id )->gather(1);
 
 	return (undef, $evt) unless defined $holdid;
 
 	$logger->debug("Found hold id $holdid while ".
-		"searching nearest hold to " .$user->home_ou);
+		"searching nearest hold to " .$user->ws_ou);
 
 	return $apputils->fetch_hold($holdid);
 }
+=cut
+
+
+
+
+
+
 
 
 __PACKAGE__->register_method(
@@ -764,7 +775,7 @@ sub reset_hold {
 	my $reqr;
 	my ($hold, $evt) = $U->fetch_hold($holdid);
 	return $evt if $evt;
-	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD');
+	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD'); # XXX stronger permission
 	return $evt if $evt;
 	$evt = $self->_reset_hold($reqr, $hold);
 	return $evt if $evt;
@@ -964,6 +975,65 @@ sub _check_title_hold_is_possible {
 	}
 	return 0;
 }
+
+
+
+sub find_nearest_permitted_hold {
+
+	my $class	= shift;
+	my $session = shift;
+	my $copy		= shift;
+	my $user		= shift;
+	my $evt		= OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
+
+	# first see if this copy has already been selected to fulfill a hold
+	my $hold  = $session->request(
+		"open-ils.storage.direct.action.hold_request.search_where",
+		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
+
+	if( $hold ) {
+		$logger->info("hold found which can be fulfilled by copy ".$copy->id);
+		return $hold;
+	}
+
+	# We know this hold is permitted, so just return it
+	return $hold if $hold;
+
+	$logger->debug("searching for potential holds at org ". 
+		$user->ws_ou." and copy ".$copy->id);
+
+	my $holds = $session->request(
+		"open-ils.storage.action.hold_request.nearest_hold.atomic",
+		$user->ws_ou, $copy->id, 5 )->gather(1);
+
+	return (undef, $evt) unless @$holds;
+
+	# for each potential hold, we have to run the permit script
+	# to make sure the hold is actually permitted.
+
+	for my $holdid (@$holds) {
+		next unless $holdid;
+		$logger->info("Checking if hold $holdid is permitted for user ".$user->id);
+
+		my ($hold) = $U->fetch_hold($holdid);
+		next unless $hold;
+		my ($reqr) = $U->fetch_user($hold->requestor);
+
+		return ($hold) if OpenILS::Utils::PermitHold::permit_copy_hold(
+			{
+				patron_id			=> $hold->usr,
+				requestor			=> $reqr->id,
+				copy					=> $copy,
+				pickup_lib			=> $hold->pickup_lib,
+				request_lib			=> $hold->request_lib 
+			} 
+		);
+	}
+
+	return (undef, $evt);
+}
+
+
 
 
 
