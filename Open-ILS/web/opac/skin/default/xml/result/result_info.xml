@@ -22,7 +22,7 @@
 						style='padding-left: 40px;' >
 					<a class='search_page_nav_link' id='search_home_link' 
 						title="First results page">Start</a><a class='search_page_nav_link' 
-							id='prev_link' title='Previus page'>&lt;&lt;</a>
+							id='prev_link' title='Previous page'>&lt;&lt;</a>
 
 					<span class='search_page_nav_link' id='page_numbers'> </span>
 
