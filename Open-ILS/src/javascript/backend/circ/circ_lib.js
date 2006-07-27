@@ -1,6 +1,19 @@
 load_lib('catalog/record_type.js');
 load_lib('circ/circ_groups.js');
 
+
+try {
+	if( environment.copy ) {
+		environment.copy.fetchHolds = function() {
+			var key = scratchKey();
+			environment.copy.__OILS_FUNC_fetch_hold(scratchPad(key));
+			var val = getScratch(key);
+			return (val) ? val : null;
+		}
+	}
+} catch(e) {}
+
+
 /* ----------------------------------------------------------------------------- 
 	Collect all of the global variables
 	----------------------------------------------------------------------------- */
@@ -20,10 +33,11 @@ var volume				= environment.volume;
 var title				= environment.title;
 var recDescriptor		= environment.titleDescriptor;
 var patron				= environment.patron;
-var isRenewal			= environment.isRenewal;
 var patronItemsOut	= environment.patronItemsOut;
 var patronOverdueCount	= environment.patronOverdueCount;
 var patronFines		= environment.patronFines;
+var isRenewal			= environment.isRenewal;
+var isPrecat			= environment.isPrecat;
 
 
 
@@ -47,7 +61,6 @@ var groupTree		= environment.groupTree;
 var groupList		= {};
 var groupIDList	= {};
 flattenGroupTree(groupTree);
-
 
 
 
@@ -184,21 +197,27 @@ function log_vars( prefix ) {
 
 	if(patron) {
 		str += ' Patron=' + patron.id;
-		str += ', Patron Barcode='	+ patron.card.barcode;
 		str += ', Patron Username='+ patron.usrname;
 		str += ', Patron Profile Group='+ patronProfile;
-		str += ', Patron Library='	+ patron.home_ou.name;
 		str += ', Patron Fines='	+ patronFines;
 		str += ', Patron OverdueCount='	+ patronOverdueCount;
 		str += ', Patron Items Out=' + patronItemsOut;
+
+		try {
+			str += ', Patron Barcode='	+ patron.card.barcode;
+			str += ', Patron Library='	+ patron.home_ou.name;
+		} catch(e) {}
 	}
 
 	if(copy)	{
 		str += ', Copy=' + copy.id;
 		str += ', Copy Barcode=' + copy.barcode;
 		str += ', Copy status='	+ copyStatus;
-		str += ', Copy location=' + copy.location.name;
-		str += ', Circ Lib=' + copy.circ_lib.shortname;
+
+		try {
+			str += ', Circ Lib=' + copy.circ_lib.shortname;
+			str += ', Copy location=' + copy.location.name;
+		} catch(e) {}
 	}
 
 	if(volume)			str += ', Volume='	+ volume.id;
