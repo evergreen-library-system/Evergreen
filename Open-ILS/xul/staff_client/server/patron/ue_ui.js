@@ -175,7 +175,7 @@ function uEditInsertCat( row, cat, idx ) {
 
 	selector.onchange = function() { 
 		newval.value = getSelectorVal(selector);
-		if(newval.onchange()) newval.onchange();
+		if(newval.onchange) newval.onchange();
 	}
 
 	if( idx == 0 ) selector.id = 'ue_stat_cat_selector_1'; 
