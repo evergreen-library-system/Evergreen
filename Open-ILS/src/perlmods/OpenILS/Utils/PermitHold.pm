@@ -22,9 +22,12 @@ sub permit_copy_hold {
 
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build(
 		{
+			patron_id	=> $$params{patron_id},
 			patron		=> $$params{patron},
 			copy			=> $$params{copy},
 			requestor	=> $$params{requestor},
+			title			=> $$params{title},
+			volume		=> $$params{volume},
 			titleDescriptor	=> $$params{title_descriptor},
 			_direct	=> {
 				requestLib	=> $$params{request_lib},
@@ -45,7 +48,8 @@ sub permit_copy_hold {
 	# Extract and uniquify the event list
 	# --------------------------------------------------------------
 	my $events = $result->{events};
-	$logger->debug("circ_permit_hold for user ".$params->{patron}->id." returned events: @$events");
+	my $pid = ($params->{patron}) ? $params->{patron}->id : $params->{patron_id};
+	$logger->debug("circ_permit_hold for user $pid returned events: [@$events]");
 
 	my @allevents;
 	push( @allevents, OpenILS::Event->new($_)) for @$events;
