@@ -59,7 +59,7 @@ var GROUP_CONFIG = {
 	'Restricted' : {
 		maxItemsOut			: 2,
 		fineThreshold		: 0.01,
-		overdueThreshold	: 0,
+		overdueThreshold	: 1,
 		maxHolds				: 5
 	},
 
