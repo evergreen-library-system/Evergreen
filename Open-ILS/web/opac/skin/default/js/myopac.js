@@ -532,10 +532,24 @@ function myOPACShowCircTransaction(trans, record, circ) {
 
 	var row = myopacCircTransTemplate.cloneNode(true);
 
-	buildTitleDetailLink(record, $n(row,'myopac_circ_trans_title'));
+	if(record) {
+		buildTitleDetailLink(record, $n(row,'myopac_circ_trans_title'));
 
-	$n(row,'myopac_circ_trans_author').appendChild(text(
-		normalize(truncate(record.author(), 65))));
+		$n(row,'myopac_circ_trans_author').appendChild(text(
+			normalize(truncate(record.author(), 65))));
+
+	} else {
+
+		var req = new Request( FETCH_COPY, circ.target_copy() );
+		req.alertEvents = false;
+		req.send(true);
+		var copy = req.result();
+		if( copy ) {
+			$n(row,'myopac_circ_trans_title').appendChild(text(copy.dummy_title()));
+			$n(row,'myopac_circ_trans_author').appendChild(text(copy.dummy_author()));
+		}
+	}
+
 
 	$n(row,'myopac_circ_trans_start').
 		appendChild(text(_trimTime(trans.xact_start())));
