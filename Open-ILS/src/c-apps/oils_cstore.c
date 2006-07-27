@@ -654,6 +654,16 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
+	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
+
+        // Set the last_xact_id
+	osrfHash* last_xact_id;
+	if ((last_xact_id = oilsIDLFindPath("/%s/fields/last_xact_id", target->classname))) {
+		int index = atoi( osrfHashGet(last_xact_id, "array_position") );
+		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
+		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
+	}       
+
 	osrfLogDebug( OSRF_LOG_MARK, "There is a transaction running..." );
 
 	dbhandle = writehandle;
@@ -1570,6 +1580,16 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 	}
 
 	dbhandle = writehandle;
+
+	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
+
+        // Set the last_xact_id
+	osrfHash* last_xact_id;
+	if ((last_xact_id = oilsIDLFindPath("/%s/fields/last_xact_id", target->classname))) {
+		int index = atoi( osrfHashGet(last_xact_id, "array_position") );
+		osrfLogDebug(OSRF_LOG_MARK, "Setting last_xact_id to %s on %s at position %d", trans_id, target->classname, index);
+		jsonObjectSetIndex(target, index, jsonNewObject(trans_id));
+	}       
 
 	char* pkey = osrfHashGet(meta, "primarykey");
 	osrfHash* fields = osrfHashGet(meta, "fields");
