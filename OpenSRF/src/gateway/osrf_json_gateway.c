@@ -128,8 +128,17 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	} else {
 
-		osrfLogInfo( OSRF_LOG_MARK,  "[%s] service=%s, method=%s", 
-				r->connection->remote_ip, service, method );
+		/* ----------------------------------------------------------------- */
+		/* log all requests to the activity log */
+		growing_buffer* act = buffer_init(128);	
+		buffer_fadd(act, "[%s] %s:%s", r->connection->remote_ip, service, method );
+		char* str; int i = 0;
+		while( (str = osrfStringArrayGetString(mparams, i++)) ) 
+			buffer_fadd(act, " %s", str);
+
+		osrfLogActivity( OSRF_LOG_MARK, act->buf );
+		buffer_free(act);
+		/* ----------------------------------------------------------------- */
 
 		osrfAppSession* session = osrf_app_client_session_init(service);
 
