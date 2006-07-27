@@ -16,9 +16,11 @@ if( ! isOrgDescendent( 'STATELIB', copy.circ_lib.id ) ) {
 
 
 
-if(copyStatus != 'Available' && 
-	copyStatus != 'On holds shelf' && copyStatus != 'Reshelving' ) {
-		result.events.push('COPY_NOT_AVAILABLE');
+if( ! isTrue(isRenewal) ) {
+	if(copyStatus != 'Available' && 
+		copyStatus != 'On holds shelf' && copyStatus != 'Reshelving' ) {
+			result.events.push('COPY_NOT_AVAILABLE');
+	}
 }
 
 
