@@ -238,10 +238,12 @@ function myOPACRenewCirc(circid) {
 	req.send(true);
 	var res = req.result();
 
-	if(checkILSEvent(res)) {
-		alertILSEvent(res);
+	if(checkILSEvent(res) || checkILSEvent(res[0])) {
+		alertId('myopac_renew_fail');
 		return;
 	}
+
+	
 
 	alert($('myopac_renew_success').innerHTML);	
 	checkedDrawn = false;
