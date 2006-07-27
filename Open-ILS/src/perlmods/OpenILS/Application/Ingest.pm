@@ -288,7 +288,7 @@ sub ro_authority_ingest_single_object {
 
 	$_->record($bib->id) for (@mfr);
 
-	return { full_rec => \@mfr, field_entries => \@mXfe, fingerprint => $fp, descriptor => $rd };
+	return { full_rec => \@mfr };
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.ingest.full.authority.object.readonly",
@@ -358,7 +358,6 @@ sub ro_authority_ingest_stream_record {
 		$log->debug("Running open-ils.ingest.full.authority.record.readonly ...");
 		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.record.readonly")->run($rec);
 
-		$_->source($rec) for (@{$res->{field_entries}});
 		$_->record($rec) for (@{$res->{full_rec}});
 
 		$client->respond( $res );
@@ -417,7 +416,6 @@ sub rw_authority_ingest_stream_import {
 		$log->debug("Running open-ils.ingest.full.authority.xml.readonly ...");
 		my ($res) = $self->method_lookup("open-ils.ingest.full.authority.xml.readonly")->run($bib->marc);
 
-		$_->source($bib->id) for (@{$res->{field_entries}});
 		$_->record($bib->id) for (@{$res->{full_rec}});
 
 		$client->respond( $res );

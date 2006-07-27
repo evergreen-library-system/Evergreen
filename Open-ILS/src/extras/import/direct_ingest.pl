@@ -26,13 +26,14 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($workers, $config, $prefix) =
-	(1, '/openils/conf/bootstrap.conf', 'marc-out-');
+my ($auth, $workers, $config, $prefix) =
+	(0, 1, '/openils/conf/bootstrap.conf', 'marc-out-');
 
 GetOptions(
 	'threads=i'	=> \$workers,
 	'config=s'	=> \$config,
 	'prefix=s'	=> \$prefix,
+	'authority'	=> \$auth,
 );
 
 my @ses;
@@ -78,15 +79,18 @@ sub worker {
 
 	my $f = new FileHandle(">$fname");
 
+	my $meth = 'open-ils.ingest.full.biblio.object.readonly';
+	$meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
+
+	$meth = OpenILS::Application::Ingest->method_lookup( $meth );
+
 	while (my $rec = <$pipe>) {
 
 		my $bib = JSON->JSON2perl($rec);
 		my $data;
 
 		try {
-			($data) = OpenILS::Application::Ingest
-				->method_lookup( 'open-ils.ingest.full.biblio.object.readonly' )
-				->run( $bib );
+			($data) = $meth->run( $bib );
 		} catch Error with {
 			my $e = shift;
 			warn "Couldn't process record: $e\n >>> $rec\n";
@@ -124,17 +128,19 @@ sub postprocess {
 	my $f = shift;
 
 	my $bib = $data->{bib};
-	my $field_entries = $data->{worm_data}->{field_entries};
+	my $field_entries = $data->{worm_data}->{field_entries} unless ($auth);
 	my $full_rec = $data->{worm_data}->{full_rec};
-	my $fp = $data->{worm_data}->{fingerprint};
-	my $rd = $data->{worm_data}->{descriptor};
+	my $fp = $data->{worm_data}->{fingerprint} unless ($auth);
+	my $rd = $data->{worm_data}->{descriptor} unless ($auth);
 
-	$bib->fingerprint( $fp->{fingerprint} );
-	$bib->quality( $fp->{quality} );
+	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
+	$bib->quality( $fp->{quality} ) unless ($auth);
 
 	$f->printflush( JSON->perl2JSON($bib)."\n" );
-	$f->printflush( JSON->perl2JSON($rd)."\n" );
-	$f->printflush( JSON->perl2JSON($_)."\n" ) for (@$field_entries);
+	unless ($auth) {
+		$f->printflush( JSON->perl2JSON($rd)."\n" );
+		$f->printflush( JSON->perl2JSON($_)."\n" ) for (@$field_entries);
+	}
 	$f->printflush( JSON->perl2JSON($_)."\n" ) for (@$full_rec);
 }
 
