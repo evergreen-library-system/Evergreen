@@ -4,6 +4,8 @@ function go() {
 load_lib('circ/circ_lib.js');
 log_vars('circ_permit_hold');
 
+if( isTrue(patron.barred) ) 
+	result.events.push('PATRON_BARRED');
 
 /* projected medium */
 if( getMARCItemType() == 'g' &&

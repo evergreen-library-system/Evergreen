@@ -913,6 +913,10 @@ sub check_title_hold {
 		or return $e->event;
 	return $e->event unless $e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
 
+	return OpenILS::Event->new('PATRON_BARRED') 
+		if $patron->barred and 
+			($patron->barred =~ /t/i or $patron->barred == 1);
+
 	my $rangelib	= $params{range_lib} || $patron->home_ou;
 
 	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
