@@ -1093,6 +1093,7 @@ sub update_copy_stat_entries {
 	
 	# go through the stat cat update/create process
 	for my $entry (@$entries) { 
+		next unless $entry;
 
 		# if this link already exists in the DB, don't attempt to re-create it
 		next if( grep{$_->stat_cat_entry == $entry->id} @$maps );
