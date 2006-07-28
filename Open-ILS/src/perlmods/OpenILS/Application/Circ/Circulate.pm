@@ -476,6 +476,8 @@ sub mk_script_runner {
 sub do_permit {
 	my $self = shift;
 
+	$self->log_me("do_permit()");
+
 	unless( $self->editor->requestor->id == $self->patron->id ) {
 		return $self->bail_on_events($self->editor->event)
 			unless( $self->editor->allowed('VIEW_PERMIT_CHECKOUT') );
@@ -694,6 +696,8 @@ sub handle_claims_returned {
 # --------------------------------------------------------------------------
 sub do_checkout {
 	my $self = shift;
+
+	$self->log_me("do_checkout()");
 
 	# make sure perms are good if this isn't a renewal
 	unless( $self->is_renewal ) {
@@ -1065,6 +1069,7 @@ sub checkout_noncat {
 
 sub do_checkin {
 	my $self = shift;
+	$self->log_me("do_checkin()");
 
 	unless( $self->is_renewal ) {
 		return $self->bail_on_events($self->editor->event)
@@ -1511,12 +1516,21 @@ sub checkin_flesh_events {
 	}
 }
 
+sub log_me {
+	my( $self, $msg ) = @_;
+	my $bc = ($self->copy) ? $self->copy->barcode :
+		$self->barcode;
+	$bc ||= "";
+	my $usr = ($self->patron) ? $self->patron->id : "";
+	$logger->info("circulator: $msg requestor=".$self->editor->requestor->id.
+		", recipient=$usr, copy=$bc");
+}
+
 
 sub do_renew {
 	my $self = shift;
+	$self->log_me("do_renew()");
 	$self->is_renewal(1);
-
-	#$self->find_patron_from_copy unless $self->patron;
 
 	unless( $self->is_renewal ) {
 		return $self->bail_on_events($self->editor->events)
