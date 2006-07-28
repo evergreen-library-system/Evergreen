@@ -25,7 +25,10 @@ function _holdsHandleStaffMe() {
 function _holdsHandleStaff() {
 	var barcode = $('xul_recipient_barcode').value;
 	var user = grabUserByBarcode( G.user.session, barcode );
-	if(!user) return;
+	if(!user) {
+		alert('fixme: invalid user barcode: ['+barcode+']');
+		return
+	}
 	holdArgs.recipient = user;
 	holdsDrawEditor();
 }
