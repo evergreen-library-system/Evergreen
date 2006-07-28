@@ -88,7 +88,7 @@ sub create_hold {
 		# Now make sure the recipient is allowed to receive the specified hold
 		my $pevt;
 		my $porg		= $recipient->home_ou;
-		my $pid		= $recipient->id;
+		my $rid		= $e->requestor->id;
 		my $t			= $hold->hold_type;
 
 		# See if a duplicate hold already exists
@@ -101,13 +101,18 @@ sub create_hold {
 
 		$sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
 			
+		# XXX Put multi-hold-per-title perm here for staff
 		my $existing = $e->search_action_hold_request($sargs); 
 		my $eevt = OpenILS::Event->new('HOLD_EXISTS') if @$existing;
 
-		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'MR_HOLDS'); }
-		if( $t eq 'T' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'TITLE_HOLDS');  }
-		if( $t eq 'V' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'VOLUME_HOLDS'); }
-		if( $t eq 'C' ) { $pevt = $e->event unless $e->checkperm($pid, $porg, 'COPY_HOLDS'); }
+		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
+		if( $t eq 'T' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
+		if( $t eq 'V' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
+		if( $t eq 'C' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
+
+
+		# COPY/VOLUME holds are allowed for staff, not overridable 
+		# XXX We need overridable events for staff XXX
 
 		if( $pevt ) {
 			if( $self->api_name =~ /override/ ) {
@@ -178,7 +183,7 @@ sub __create_hold {
 		}
 
 		# is this user allowed to have holds of this type?
-		$perm = _check_holds_perm($type, $hold->usr, $recipient->home_ou);
+		$perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
 		if($perm) { 
 			#if there is a requestor, see if the requestor has override privelages
 			if($hold->requestor ne $hold->usr) {
