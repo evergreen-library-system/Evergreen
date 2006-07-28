@@ -458,6 +458,9 @@ function uEditCancel() {
 	var href = location.href;
 	href = href.replace(/\&?usr=\d+/, '');
 	href = href.replace(/\&?clone=\d+/, '');
+	var id = cgi.param('usr')
+	/* reload the current user if available */
+	if( id ) href += "?usr=" + id;
 	location.href = href;
 }
 
