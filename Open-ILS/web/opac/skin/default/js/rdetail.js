@@ -128,17 +128,15 @@ function rdetailGetPageIds() {
 }
 
 function buildunAPISpan (span, type, id) {
-        var cgi = new CGI();
-        var d = new Date();
+	var cgi = new CGI();
+	var d = new Date();
 
-        addCSSClass(span,'unapi-id');
+	addCSSClass(span,'unapi-id');
 
-        span.setAttribute(
-                'title',
-                'tag:' + cgi.server_name + ',' +
-                        d.getFullYear() +
-                        ':' + type + '/' + id
-        );
+	span.setAttribute(
+		'title', 'tag:' + cgi.server_name + ',' +
+		d.getFullYear() + ':' + type + '/' + id
+	);
 }
 
 function rdetailViewMarc(r,id) {
@@ -491,7 +489,11 @@ function _rdetailRows(node) {
 
 		var loc = findOrgUnit(getLocation());
 
-		if( !node ) {
+		if( node ) {
+			if( !orgIsMine(loc, node) ) return;
+
+		} else {
+
 			for( var i = 0; i < globalOrgTree.children().length; i++ ) {
 				var org = findOrgUnit(globalOrgTree.children()[i]);
 				if( orgIsMine(org, loc) ) {
@@ -499,12 +501,7 @@ function _rdetailRows(node) {
 					break;
 				}
 			}
-		} else {
-			// if the current node is not in our node trail 
-			var trail = orgNodeTrail(loc);
-			var intrail = grep( trail, function(i) { return (i.id() == node.id()); } );
-			if(!intrail) return;
-		}
+		} 
 	}
 
 
