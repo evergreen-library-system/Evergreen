@@ -16,8 +16,20 @@ if( isTrue(patron.barred) )
 var config = findGroupConfig(patronProfile);
 if( config ) {
 	
-	if( (config.maxItemsOut >= 0) && (patronItemsOut >= config.maxItemsOut) ) {
-		result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
+	var limit = config.maxItemsOut;
+	if( limit >= 0 ) {
+
+		/* a renewal does not add to the itemsOut, so just make
+			sure they are not already over the items out limit */
+		if( isTrue(isRenewal) ) {
+			if( patronItemsOut > limit ) {
+				result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
+			}
+		} else {
+			if( patronItemsOut >= limit ) {
+				result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
+			}
+		}
 	}
 
 } else {
