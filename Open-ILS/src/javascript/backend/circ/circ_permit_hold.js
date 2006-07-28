@@ -11,6 +11,9 @@ if( getMARCItemType() == 'g' &&
 	result.events.push('CIRC_EXCEEDS_COPY_RANGE');
 
 
+/* XXX Age-hold protection */
+
+
 
 } go();
 
