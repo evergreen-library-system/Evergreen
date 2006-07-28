@@ -475,18 +475,20 @@ patron.items.prototype = {
 				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
 			}
 			obj.checkouts = [];
+			obj.checkouts2 = [];
 			obj.checkouts = obj.checkouts.concat( robj.long_overdue );
 			obj.checkouts = obj.checkouts.concat( robj.overdue );
-			obj.checkouts = obj.checkouts.concat( robj.lost );
-			obj.checkouts = obj.checkouts.concat( robj.claims_returned );
+			obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
+			obj.checkouts2 = obj.checkouts2.concat( robj.lost );
 			obj.checkouts = obj.checkouts.concat( robj.out );
 		}
 
-		function gen_list_append(circ_id) {
+		function gen_list_append(circ_id,which_list) {
 			return function() {
 				try {
 				var checkout = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), circ_id]);
-						switch( checkout.checkin_time() ? 1 : 0 ) {
+						//switch( checkout.checkin_time() ? 1 : 0 ) {
+						switch(which_list) {
 							case 1:
 								obj.list2.append( { 'row' : { 'my' : { 'circ' : checkout, } }, } );
 							break;
@@ -505,7 +507,10 @@ patron.items.prototype = {
 		JSAN.use('util.exec'); var exec = new util.exec();
 		var rows = [];
 		for (var i in obj.checkouts) {
-			rows.push( gen_list_append(obj.checkouts[i]) );
+			rows.push( gen_list_append(obj.checkouts[i],0) );
+		}
+		for (var i in obj.checkouts2) {
+			rows.push( gen_list_append(obj.checkouts2[i],1) );
 		}
 		exec.chain( rows );
 		if (!dont_show_me_the_list_change) {
