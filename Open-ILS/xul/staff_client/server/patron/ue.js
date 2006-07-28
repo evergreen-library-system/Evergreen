@@ -460,7 +460,7 @@ function uEditCancel() {
 	href = href.replace(/\&?clone=\d+/, '');
 	var id = cgi.param('usr')
 	/* reload the current user if available */
-	if( id ) href += "?usr=" + id;
+	if( id ) href += "&usr=" + id;
 	location.href = href;
 }
 
