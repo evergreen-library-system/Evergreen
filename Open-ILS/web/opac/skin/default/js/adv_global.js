@@ -160,7 +160,10 @@ function advBuildSearchBlob() {
 				else string += " \"" + term + "\"";
 				break;
 		}
-		if(string) searches[stype].term = string;
+		if(string) {
+			string = string.replace(/'/,'');
+			searches[stype].term = string;
+		}
 	}
 
 	return searches;

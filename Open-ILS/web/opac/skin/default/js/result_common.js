@@ -43,7 +43,11 @@ function resultCollectSearchIds( type, method, handler ) {
 	if( type ) {
 		args.searches = {};
 		args.searches[getStype()] = {};
-		args.searches[getStype()].term = getTerm();
+		var term = getTerm();
+		if( term ) {
+			term = term.replace(/'/,'');
+			args.searches[getStype()].term = term;
+		}
 
 		var form = parseForm(getForm());
 		item_type = form.item_type;
