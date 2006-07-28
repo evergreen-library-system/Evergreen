@@ -1026,6 +1026,7 @@ function myOPACDrawNonCatCirc(r) {
 	var start = new Date.W3CDTF();
 	start.setW3CDTF(dtf);
 	var due = new Date(  start.getTime() + duration );
+	due = (due+'').replace(/(.*?:\d\d):.*/, '$1');
 
 	appendClear($n(row, 'circ_time'), text(due));
 }
