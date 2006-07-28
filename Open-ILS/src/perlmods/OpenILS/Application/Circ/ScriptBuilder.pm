@@ -217,6 +217,9 @@ sub fetch_user_data {
 
 	$patron->card($e->retrieve_actor_card($patron->card));
 
+	return OpenILS::Event->new('PATRON_INACTIVE_CARD')
+		unless $U->is_true($patron->card->active);
+
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
 	# this could alter the requestor object within the editor..

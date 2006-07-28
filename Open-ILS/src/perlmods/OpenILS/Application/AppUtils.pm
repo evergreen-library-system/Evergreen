@@ -1096,7 +1096,11 @@ sub walk_org_tree {
 	}
 }
 
-
+sub is_true {
+	my( $self, $item ) = @_;
+	return 1 if $item and $item !~ /^f$/i;
+	return 0;
+}
 
 
 1;
