@@ -1071,6 +1071,10 @@ sub do_checkin {
 	my $self = shift;
 	$self->log_me("do_checkin()");
 
+	return $self->bail_on_events(
+		OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
+		unless $self->copy;
+
 	unless( $self->is_renewal ) {
 		return $self->bail_on_events($self->editor->event)
 			unless $self->editor->allowed('COPY_CHECKIN');
