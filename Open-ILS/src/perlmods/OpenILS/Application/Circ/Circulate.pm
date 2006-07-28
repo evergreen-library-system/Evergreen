@@ -1074,13 +1074,27 @@ sub do_checkin {
 	$self->push_events($self->check_copy_alert());
 	$self->push_events($self->check_checkin_copy_status());
 
-	$self->circ(
-		$self->editor->search_action_circulation(
-		{ target_copy => $self->copy->id, stop_fines => undef } )->[0]);
 
-	# renewals require a circulation
-	return $self->bail_on_events($self->editor->event)
-		if( $self->is_renewal and !$self->circ );
+	# the renew code will have already found our circulation object
+	unless( $self->is_renewal and $self->circ ) {
+
+		# first lets see if we have a good old fashioned open circulation
+		my $circ = $self->editor->search_action_circulation(
+			{ target_copy => $self->copy->id, stop_fines => undef } )->[0];
+
+		if(!$circ) {
+			# if not, lets look for other circs we can check in
+			$circ = $self->editor->search_action_circulation(
+				{ 
+					target_copy => $self->copy->id, 
+					xact_finish => undef,
+					stop_fines	=> [ 'CLAIMSRETURNED', 'LOST', 'LONGOVERDUE' ]
+				} )->[0];
+		}
+
+		$self->circ($circ);
+	}
+
 
 	# if the circ is marked as 'claims returned', add the event to the list
 	$self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
@@ -1509,9 +1523,10 @@ sub do_renew {
 			unless $self->editor->allowed('RENEW_CIRC');
 	}	
 
-	# Make sure there is an open circ to renew
+	# Make sure there is an open circ to renew that is not
+	# marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
 	my $circ = $self->editor->search_action_circulation(
-			{ target_copy => $self->copy->id, stop_fines_time => undef } )->[0];
+			{ target_copy => $self->copy->id, stop_fines => undef } )->[0];
 
 	return $self->bail_on_events($self->editor->event) unless $circ;
 
@@ -1522,7 +1537,7 @@ sub do_renew {
 
 	$self->renewal_remaining( $circ->renewal_remaining - 1 );
 	$self->renewal_remaining(0) if $self->renewal_remaining < 0;
-	$self->old_circ($circ);
+	$self->circ($circ);
 
 	$self->run_renew_permit;
 
@@ -1533,10 +1548,8 @@ sub do_renew {
 	unless( $self->permit_override ) {
 		$self->do_permit();
 		return if $self->bail_out;
-		my $e = $self->events->[0];
-		if( $e and $U->event_equals($e, 'ITEM_NOT_CATALOGED') ) {
-			$self->is_precat(1);
-		}
+		$self->is_precat(1) if $self->have_event('ITEM_NOT_CATALOGED');
+		$self->remove_event('ITEM_NOT_CATALOGED');
 	}	
 
 	$self->override_events;
@@ -1544,6 +1557,22 @@ sub do_renew {
 
 	$self->events([]);
 	$self->do_checkout();
+}
+
+
+sub remove_event {
+	my( $self, $evt ) = @_;
+	$evt = (ref $evt) ? $evt->{textcode} : $evt;
+	$logger->debug("circulator: removing event from list: $evt");
+	my @events = @{$self->events};
+	$self->events( [ grep { $_->{textcode} ne $evt } @events ] );
+}
+
+
+sub have_event {
+	my( $self, $evt ) = @_;
+	$evt = (ref $evt) ? $evt->{textcode} : $evt;
+	return grep { $_->{textcode} eq $evt } @{$self->events};
 }
 
 
