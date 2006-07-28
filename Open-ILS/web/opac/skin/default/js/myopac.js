@@ -162,10 +162,8 @@ function myOPACDrawCheckedItem(r) {
 	var row = checkedRowTemplate.cloneNode(true);
 	row.id = 'myopac_checked_row_ ' + circ.id();
 
-	//if( r.od ) addCSSClass(row, 'overdue_circ');
-
 	var due = circ.due_date();
-   due = due.replace(/[0-9][0-9]:.*$/,"");
+	due = _trimTime(due);
 
 	var dlink = $n( row, "myopac_checked_due" );
 	var rlink = $n( row, "myopac_checked_renewals" );
@@ -455,7 +453,11 @@ function _finesFormatNumber(num) {
 	return num;
 }          
 
-function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
+//function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
+function _trimTime(time) { 
+	if(!time) return ""; 
+	return time.replace(/T.*/,""); 
+}
 
 function _trimSeconds(time) { if(!time) return ""; return time.replace(/:\d\d\..*$/,""); }
 
@@ -651,7 +653,7 @@ function _myOPACSummaryShowUer(r) {
 	appendClear($('myopac_summary_ident1'),text(user.ident_value()));
 	appendClear($('myopac_summary_ident2'),text(user.ident_value2()));
 	appendClear($('myopac_summary_homelib'),text(findOrgUnit(user.home_ou()).name()));
-	appendClear($('myopac_summary_create_date'),text(user.create_date()));
+	appendClear($('myopac_summary_create_date'),text(_trimTime(user.create_date())));
 
 	var tbody = $('myopac_addr_tbody');
 	var template;
