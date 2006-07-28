@@ -232,7 +232,7 @@ function _rdetailDraw(r) {
 
 function rdetailCheckDeleted(r) {
 	var br = r.getResultObject()[0];
-	if( br.deleted() == 1 ) {
+	if( isTrue(br.deleted()) ) {
 		hideMe($('rdetail_place_hold'));
 		$('rdetail_more_actions_selector').disabled = true;
 		unHideMe($('rdetail_deleted_exp'));
