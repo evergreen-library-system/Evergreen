@@ -392,6 +392,9 @@ function __holdsDrawWindow() {
 		}
 	}
 
+	if(!$('holds_phone').value) 
+		$('holds_enable_phone').checked = false;	
+
 	appendClear($('holds_physical_desc'), text(rec.physical_description()));
 
 	if(holdArgs.type == 'M') hideMe($('hold_physical_desc_row'));
@@ -631,7 +634,7 @@ function holdsBuildHoldFromWindow() {
 	return hold;
 }
 	
-function holdsPlaceHold(hold) {
+function holdsPlaceHold(hold, recurse) {
 
 	if(!hold) return;
 
@@ -645,18 +648,54 @@ function holdsPlaceHold(hold) {
 		}
 	}
 
-	var req = new Request( CREATE_HOLD, holdArgs.requestor.session, hold );
+	var method = CREATE_HOLD;
+	if(recurse) method = CREATE_HOLD_OVERRIDE;
+
+	var req = new Request( method, holdArgs.requestor.session, hold );
+	req.request.alertEvent = false;
 	req.send(true);
 	var res = req.result();
-
-	if( res == '1' ) alert($('holds_success').innerHTML);
-	else alert($('holds_failure').innerHTML);
+	holdProcessResult(hold, res, recurse);
 	
 	showCanvas();
 
 	holdArgs = null;
 	runEvt('common', 'holdUpdated');
 }
+
+function holdProcessResult( hold, res, recurse ) {
+
+	if( res == '1' ) {
+		alert($('holds_success').innerHTML);
+
+	} else {
+
+		if( recurse ) {
+			alert($('holds_failure').innerHTML);
+			return;
+		}
+
+		if( grep(res, function(e) { return (e.textcode == 'HOLD_EXISTS'); }) ) {
+
+			/* see if the requestor has the ability to create duplicate holds */
+			var preq = new Request(FETCH_HIGHEST_PERM_ORG, 
+				G.user.session, G.user.id(), ['CREATE_DUPLICATE_HOLDS']);
+			preq.send(true);
+			var org = preq.result()[0];
+
+			if( org ) {
+				if( confirm($('hold_dup_exists_override').innerHTML) ) {
+					holdsPlaceHold(hold, true);
+				}
+
+			} else {
+				alert($('hold_dup_exists').innerHTML);
+				return;
+			}
+		}
+	}
+}
+
 
 function holdsCancel(holdid, user) {
 	if(!user) user = G.user;

@@ -280,6 +280,7 @@ var FETCH_MONEY_BILLING			= 'open-ils.circ:open-ils.circ.money.billing.retrieve.
 var FETCH_CROSSREF				= "open-ils.search:open-ils.search.authority.crossref";
 var FETCH_CROSSREF_BATCH		= "open-ils.search:open-ils.search.authority.crossref.batch";
 var CREATE_HOLD					= "open-ils.circ:open-ils.circ.holds.create";
+var CREATE_HOLD_OVERRIDE		= "open-ils.circ:open-ils.circ.holds.create.override";
 var CANCEL_HOLD					= "open-ils.circ:open-ils.circ.hold.cancel";
 var UPDATE_USERNAME				= "open-ils.actor:open-ils.actor.user.username.update";
 var UPDATE_PASSWORD				= "open-ils.actor:open-ils.actor.user.password.update";
@@ -325,6 +326,7 @@ var FETCH_BRE						= 'open-ils.search:open-ils.search.biblio.record_entry.slim.r
 var CHECK_USERNAME				= 'open-ils.actor:open-ils.actor.username.exists';
 var FETCH_CIRC_BY_ID				= 'open-ils.circ:open-ils.circ.retrieve';
 var FETCH_MR_DESCRIPTORS		= 'open-ils.search:open-ils.search.metabib.record_to_descriptors';
+var FETCH_HIGHEST_PERM_ORG		= 'open-ils.actor:open-ils.actor.user.perm.highest_org.batch';
 
 /* ---------------------------------------------------------------------------- */
 

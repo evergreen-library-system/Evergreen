@@ -185,6 +185,15 @@
 		Please select a physical location where your hold can be delivered.
 	</span>
 
+	<span class='hide_me' id='hold_dup_exists'>
+		A hold already exists on the requested item
+	</span>
+
+	<span class='hide_me' id='hold_dup_exists_override'>
+		A hold already exists on the requested item.  Would you like to create the hold anyway?
+	</span>
+
+
 </div>
 
 

@@ -67,11 +67,14 @@ sub create_hold {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 
+	my $override = 1 if $self->api_name =~ /override/;
+
 	my $holds = (ref($holds[0] eq 'ARRAY')) ? $holds[0] : [@holds];
 
 	for my $hold (@$holds) {
 
 		next unless $hold;
+		my @events;
 
 		my $requestor = $e->requestor;
 		my $recipient = $requestor;
@@ -101,37 +104,36 @@ sub create_hold {
 
 		$sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
 			
-		# XXX Put multi-hold-per-title perm here for staff
 		my $existing = $e->search_action_hold_request($sargs); 
-		my $eevt = OpenILS::Event->new('HOLD_EXISTS') if @$existing;
+		push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
 		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
 		if( $t eq 'T' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
 		if( $t eq 'V' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
 		if( $t eq 'C' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
 
+		return $pevt if $pevt;
 
-		# COPY/VOLUME holds are allowed for staff, not overridable 
-		# XXX We need overridable events for staff XXX
-
-		if( $pevt ) {
-			if( $self->api_name =~ /override/ ) {
-				# The recipient is not allowed to receive the requested hold 
-				# and the requestor has elected to override - 
-				# let's see if the requestor is allowed
-				return $e->event unless $e->allowed('REQUEST_HOLDS_OVERRIDE', $porg);
+		if( @events ) {
+			if( $override ) {
+				for my $evt (@events) {
+					next unless $evt;
+					my $name = $evt->{textcode};
+					return $e->event unless $e->allowed("$name.override", $porg);
+				}
 			} else {
-				return $pevt;
+				return \@events;
 			}
 		}
 
-		if( $eevt ) {
-			if( $self->api_name =~ /override/ ) {
-				return $e->event unless $e->allowed('CREATE_DUPLICATE_HOLDS', $porg);
-			} else {
-				return $eevt;
-			}
-		}
+
+#		if( $eevt ) {
+#			if( $override ) {
+#				return $e->event unless $e->allowed('CREATE_DUPLICATE_HOLDS', $porg);
+#			} else {
+#				return $eevt;
+#			}
+#		}
 
 
 		$hold->requestor($e->requestor->id); 
@@ -139,6 +141,7 @@ sub create_hold {
 		$e->create_action_hold_request($hold) or return $e->event;
 	}
 
+	$e->commit;
 	return 1;
 }
 
