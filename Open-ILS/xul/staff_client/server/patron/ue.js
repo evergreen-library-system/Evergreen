@@ -67,7 +67,7 @@ function uEditFetchNetLevels() {
 
 /* fetches necessary and builds the UI */
 function uEditBuild() {
-	//fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
+	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	uEditBuildLibSelector();
 	patron = fetchFleshedUser(cgi.param('usr'));
@@ -94,6 +94,9 @@ function uEditBuild() {
 		unHideMe($('ue_mark_card_lost'));
 		unHideMe($('ue_reset_pw'));
 	}
+
+	if(PERMS['BAR_PATRON'] == -1) 
+		$('ue_barred').disabled = true;
 }
 
 

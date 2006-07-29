@@ -20,7 +20,14 @@ const ADULT_AGE			= 18;
 const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
 /* if they don't have these perms, they shouldn't be here */
-var myPerms = [ 'CREATE_USER', 'UPDATE_USER', 'CREATE_PATRON_STAT_CAT_ENTRY_MAP' ];
+var myPerms = [ 
+	/*
+	'CREATE_USER', 
+	'UPDATE_USER', 
+	'CREATE_PATRON_STAT_CAT_ENTRY_MAP',
+	*/
+	'BAR_PATRON',
+	];
 
 var dataFields;
 const numRegex		= /^\d+$/;
