@@ -25,6 +25,8 @@ our (@ISA, @EXPORT_OK);
 
 @EXPORT_OK = qw(invalid_patron);
 
+my $INET_PRIVS;
+
 sub new {
     my ($class, $patron_id) = @_;
     my $type = ref($class) || $class;
@@ -74,6 +76,7 @@ sub new {
 
 	syslog("LOG_DEBUG", "new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
 		$patron_id, $self->{user}->barred, $self->{user}->card->active );
+
 
 	bless $self, $type;
 	return $self;
@@ -482,5 +485,14 @@ sub invalid_patron {
 sub charge_denied {
     return "Please contact library staff";
 }
+
+sub inet_privileges {
+	my( $self ) = @_;
+	my $e = OpenILS::SIP->editor();
+	$INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
+	my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
+	return $level->name;
+}
+
 
 1;
