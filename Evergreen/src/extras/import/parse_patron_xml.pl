@@ -96,7 +96,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 			next;
 		}
 	} else {
-		$uid = $count;
+		next;
 	}
 
 	unless ($uid > 1) {

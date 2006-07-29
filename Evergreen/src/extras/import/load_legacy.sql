@@ -113,7 +113,7 @@ INSERT INTO asset.stat_cat_entry (stat_cat, owner, value)
 
 
 -- Create a temp table to speed up CN and copy inserts
-CREATE TEMP TABLE joined_legacy AS
+CREATE TABLE joined_legacy AS
 	SELECT	i.*, c.call_num
 	  FROM	legacy_item i
 		JOIN legacy_callnum c USING (cat_key,call_key);
@@ -129,7 +129,6 @@ INSERT INTO asset.call_number (creator,editor,record,label,owning_lib)
 
 
 -- Import base copy data
--- CREATE TEMP TABLE legacy_copy_list AS
 INSERT INTO asset.copy (circ_lib,creator,editor,create_date,barcode,status,location,loan_duration,fine_level,opac_visible,price,circ_modifier,call_number)
 	SELECT	DISTINCT ou.id AS circ_lib,
 		1 AS creator,
