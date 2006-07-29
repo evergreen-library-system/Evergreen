@@ -85,12 +85,13 @@ jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params ) {
 
 jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
 	if(!name) return NULL;
-	jsonObject* params = jsonParseString("[\"%s\"]", name);
-	jsonObject* r = oilsUtilsQuickReq( "open-ils.storage",
-			"open-ils.storage.direct.actor.user.search.usrname.atomic", params );
-	jsonObject* user = jsonObjectClone(jsonObjectGetIndex( r, 0 ));
-	jsonObjectFree(r);
+	jsonObject* params = jsonParseString("{\"usrname\":\"%s\"}", name);
+	jsonObject* user = oilsUtilsQuickReq( 
+		"open-ils.cstore", "open-ils.cstore.direct.actor.user.search", params );
+
 	jsonObjectFree(params);
+	long id = oilsFMGetObjectId(user);
+	osrfLogDebug(OSRF_LOG_MARK, "Fetched user %s:%ld", name, id);
 	return user;
 }
 
@@ -99,9 +100,9 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
 
-	jsonObject* params = jsonParseString("[\"%s\"]",barcode);
-	jsonObject* card = oilsUtilsStorageReq(
-			"open-ils.storage.direct.actor.card.search.barcode", params );
+	jsonObject* params = jsonParseString("{\"barcode\":\"%s\"}", barcode);
+	jsonObject* card = oilsUtilsQuickReq(
+		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 
 	if(!card) { jsonObjectFree(params); return NULL; }
 
@@ -112,8 +113,8 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 
 	jsonObjectFree(params);
 	params = jsonParseString("[%lf]", iusr);
-	jsonObject* user = oilsUtilsStorageReq(
-			"open-ils.storage.direct.actor.user.retrieve", params);
+	jsonObject* user = oilsUtilsQuickReq(
+		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
 
 	jsonObjectFree(params);
 	return user;
@@ -147,8 +148,8 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 
 	jsonObject* params = jsonParseString("[\"%s\"]", uname);
 
-	jsonObject* o = oilsUtilsQuickReq( "open-ils.auth",
-		"open-ils.auth.authenticate.init", params );
+	jsonObject* o = oilsUtilsQuickReq( 
+		"open-ils.auth", "open-ils.auth.authenticate.init", params );
 
 	char* seed = jsonObjectGetString(o);
 	char* passhash = md5sum(passwd);
