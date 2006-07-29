@@ -696,9 +696,9 @@ sub bookbag_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2/$id" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom/$id" => 'application/atom+xml');
-	$feed->link(html => $base . "/html/$id" => 'text/html');
+	$feed->link(rss => $base . "/rss2-full/$id" => 'application/rss+xml');
+	$feed->link(alternate => $base . "/atom-full/$id" => 'application/atom+xml');
+	$feed->link(html => $base . "/html-full/$id" => 'text/html');
 	$feed->link(unapi => $unapi);
 
 	$feed->link(
@@ -765,9 +765,9 @@ sub changes_feed {
 	$feed->creator($host);
 	$feed->update_ts(gmtime_ISO8601());
 
-	$feed->link(rss => $base . "/rss2/$rtype/$axis/$limit/$date" => 'application/rss+xml');
-	$feed->link(alternate => $base . "/atom/$rtype/$axis/$limit/$date" => 'application/atom+xml');
-	$feed->link(html => $base . "/html/$rtype/$axis/$limit/$date" => 'text/html');
+	$feed->link(rss => $base . "/rss2-full/$rtype/$axis/$limit/$date" => 'application/rss+xml');
+	$feed->link(alternate => $base . "/atom-full/$rtype/$axis/$limit/$date" => 'application/atom+xml');
+	$feed->link(html => $base . "/html-full/$rtype/$axis/$limit/$date" => 'text/html');
 	$feed->link(unapi => $unapi);
 
 	$feed->link(
@@ -819,9 +819,9 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <Url type="application/rss+xml"
-       template="$base/1.1/$lib/rss2/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/rss2-full/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/atom+xml"
-       template="$base/1.1/$lib/atom/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/atom-full/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods3+xml"
        template="$base/1.1/$lib/mods3/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods+xml"

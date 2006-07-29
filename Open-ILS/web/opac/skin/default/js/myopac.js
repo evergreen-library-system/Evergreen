@@ -808,12 +808,12 @@ function myOPACShowBookbags(force) {
 		if( isTrue(cont.pub()) ) {
 			unHideMe($n(row, 'myopac_bb_published_yes'));
 			var link = $n(row, 'myopac_bb_published_view');
-			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/html/'+cont.id(), false));  
+			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/html-full/'+cont.id(), false));  
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
 			link = $n(row, 'myopac_bb_published_atom');
-			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/rss2/'+cont.id(), false));  
+			link.setAttribute('href', buildExtrasLink( 'feed/bookbag/atom-full/'+cont.id(), false));  
 			link.setAttribute('target', '_blank' );
 			unHideMe(link);
 
