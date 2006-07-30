@@ -282,15 +282,17 @@ function __holdsDrawWindow() {
 	if(!holdsOrgSelectorBuilt) {
 		holdsBuildOrgSelector(null,0);
 		holdsOrgSelectorBuilt = true;
-
 		var selector = $('holds_org_selector');
+
+		/*
 		var o_loc = findOrgUnit(getOrigLocation());
 		var t = findOrgType(o_loc.ou_type());
-
 		if( t.can_have_users() ) 
 			setSelector(selector, o_loc.id());
 		else 
-			setSelector(selector, holdArgs.recipient.home_ou());
+		*/
+
+		setSelector(selector, holdArgs.recipient.home_ou());
 	
 	}
 
