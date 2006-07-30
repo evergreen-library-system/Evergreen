@@ -10,6 +10,7 @@ var ORG_SETTINGS = {
 	'cat.default_item_price'					: null,
 	'circ.collections_fee'						: null,
 	'auth.opac_timeout'							: null,
+	'auth.staff_timeout'							: null,
 };
 
 function osEditorInit() {
