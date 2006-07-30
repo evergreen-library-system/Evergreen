@@ -66,10 +66,12 @@ sub set_user_settings {
 
 	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
 
-	return $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.user_setting.batch.merge', @params );
-		
+	my $ses = $U->start_db_session();
+	my $stat = $ses->request(
+		'open-ils.storage.direct.actor.user_setting.batch.merge', @params )->gather(1);
+	$U->commit_db_session($ses);
+
+	return $stat;
 }
 
 
@@ -83,20 +85,26 @@ sub set_ou_settings {
 	
 	my( $staff, $evt ) = $apputils->checkses( $user_session );
 	return $evt if $evt;
-	$evt = $apputils->check_perms( $staff->id, $ouid, 'UPDATE_ORG_UNIT' );
+	$evt = $apputils->check_perms( $staff->id, $ouid, 'UPDATE_ORG_SETTING' );
 	return $evt if $evt;
 
+	my @params;
+	for my $set (keys %$settings) {
 
-	my @params = 
-		map { [{ org_unit => $ouid, name => $_}, {value => $$settings{$_}}] } keys %$settings;
+		my $json = JSON->perl2JSON($$settings{$set});
+		$logger->activity("updating org_unit.setting: $ouid : $set : $json");
 
-	$_->[1]->{value} = JSON->perl2JSON($_->[1]->{value}) for @params;
+		push( @params, 
+			{ org_unit => $ouid, name => $set }, 
+			{ value => $json } );
+	}
 
-	$logger->activity("Updating org unit [$ouid] settings with: " . Dumper(\@params));
+	my $ses = $U->start_db_session();
+	my $stat = $ses->request(
+		'open-ils.storage.direct.actor.org_unit_setting.merge', @params )->gather(1);
+	$U->commit_db_session($ses);
 
-	return $apputils->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.actor.org_unit_setting.merge', @params );
+	return $stat;
 }
 
 

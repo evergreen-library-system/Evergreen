@@ -112,9 +112,26 @@ function osUpdate( setting, allOrgs ) {
 	var org = osCurrentOrg();
 
 	if(allOrgs) {
+		if(!confirmId('os_confirm_all')) return;
+		var sel = $('os_orgs');
+		var stop = false;
+		iterate( sel.options, 
+			function(item) {
+				if(stop) return;
+				var o_unit = findOrgUnit(item.value);
+				var type = findOrgType(o_unit.ou_type()) ;
+				if( type.can_have_users() ) { 
+					if(!osUpdateOrg(setting, val, o_unit.id()))
+						stop = true;
+				}
+			}
+		);
+		if(!stop) alertId('os_success');
 
 	} else {
-		osUpdateOrg(setting, val, org);
+
+		if(osUpdateOrg(setting, val, org)) 
+			alertId('os_success');
 	}
 
 	osDrawRange();
@@ -124,13 +141,12 @@ function osUpdateOrg( setting, value, org ) {
 	var s = {};
 	s[setting] = value;
 	var req = new Request(ORG_SETTING_UPDATE, SESSION, org, s);
+	req.request.alertEvent = false;
 	req.send(true);
 	var resp = req.result();
 
-	alert(js2JSON(resp));
-
 	if( checkILSEvent(resp) ) {
-		alertILSEvent(resp);
+		alertILSEvent(resp, "Error updating " + findOrgUnit(org).name() );
 		return false;
 	}
 

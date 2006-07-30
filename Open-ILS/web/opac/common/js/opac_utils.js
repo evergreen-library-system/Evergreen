@@ -815,16 +815,13 @@ function checkILSEvent(obj) {
 	return null;
 }
 
-/*
-function alertILSEvent(code, msg) {
-   if(!msg) msg = "";
-	alert( msg + '\n' + $('ilsevent.' + code).innerHTML );
-}
-*/
 
 function alertILSEvent(evt, msg) {
    if(!msg) msg = "";
-	alert(evt.textcode + '\n' + evt.desc );
+	if(msg)
+		alert(msg +'\n' + evt.textcode + '\n' + evt.desc );
+	else 
+		alert(evt.textcode + '\n' + evt.desc );
 }
 
 
