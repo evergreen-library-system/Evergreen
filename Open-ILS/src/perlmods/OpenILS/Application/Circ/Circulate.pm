@@ -827,12 +827,18 @@ sub handle_checkout_holds {
       if(@myholds) {
          my $hold = $myholds[0];
 
-         $logger->debug("Related hold found in checkout: " . $hold->id );
+         $logger->debug("circulator: related hold found in checkout: " . $hold->id );
 
-         $hold->current_copy($copy->id); # just make sure it's set
          # if the hold was never officially captured, capture it.
          $hold->capture_time('now') unless $hold->capture_time;
+
+			# just make sure it's set correctly
+         $hold->current_copy($copy->id); 
+
          $hold->fulfillment_time('now');
+			$hold->fulfillment_staff($self->editor->requestor->id);
+			$hold->fulfillment_lib($self->editor->requestor->ws_ou);
+
 			return $self->bail_on_events($self->editor->event)
 				unless $self->editor->update_action_hold_request($hold);
 
@@ -843,10 +849,15 @@ sub handle_checkout_holds {
       # then we need to un-target those holds so the targeter can pick a new copy
       for(@altholds) {
 
-         $logger->info("Un-targeting hold ".$_->id.
+         $logger->info("circulator: un-targeting hold ".$_->id.
             " because copy ".$copy->id." is getting checked out");
 
+			# - make the targeter process this hold at next run
+         $_->clear_prev_check_time; 
+
+			# - clear out the targetted copy
          $_->clear_current_copy;
+
 			return $self->bail_on_event($self->editor->event)
 				unless $self->editor->update_action_hold_request($_);
       }
