@@ -11,12 +11,13 @@
 	<div style='text-align: center; font-weight: bold;' 
 		class='hide_me' id='myopac_bookbags_none'>You have not created any bookbags</div>
 
-	<div style='width: 99%; text-align: center'> 
+	<div style='width: 99%; text-align: center; margin-bottom: 10px;'> 
 		<b>My Bookbags</b>
+		<!--
 		<a class='classic_link' style='margin-left: 5px; font-size: 8pt;'
 			href='javascript:alert($("myopac_bb_what_are").innerHTML);'>(What are Bookbags?)</a>
+			-->
 	</div>
-	<br/>
 
 	<table width='100%' class='data_grid data_grid_center hide_me' id='myopac_bookbag_table'>
 		<thead>
@@ -49,9 +50,7 @@
 		</tbody>
 	</table>
 
-	<br/>
-
-	<table width='100%' class='data_grid data_grid_center'>
+	<table width='100%' class='data_grid data_grid_center' style='margin-top: 10px;'>
 		<thead>
 			<tr><td>Create a new Bookbag</td></tr>
 		</thead>
