@@ -1598,6 +1598,7 @@
 			<field name="ref" oils_obj:array_position="29" oils_persist:virtual="false" />
 			<field name="status" oils_obj:array_position="30" oils_persist:virtual="false" />
 			<field name="notes" oils_obj:array_position="31" oils_persist:virtual="true" />
+			<field name="stat_cat_entry_copy_maps" oils_obj:array_position="32" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
