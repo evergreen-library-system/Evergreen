@@ -35,7 +35,7 @@ const wordRegex	= /^\w+$/;
 const ssnRegex		= /^\d{3}-\d{2}-\d{4}$/;
 const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 const phoneRegex	= /\d{3}-\d{3}-\d{4}/;
-const nonumRegex	= /^[a-zA-Z](\D|\.)*$/; /* no numbers, no beginning whitespace */
+const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 const zipRegex		= /^\d{5}(-\d{4}|$)/; /* 12345 or 12345-6789 */
 
