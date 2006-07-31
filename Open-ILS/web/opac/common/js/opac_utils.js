@@ -593,6 +593,11 @@ function doLogin(suppressEvents) {
 
 	if( checkILSEvent(auth_result) ) {
 
+		if( auth_result.textcode == 'PATRON_INACTIVE' ) {
+			alertId('patron_inactive_alert');
+			return;
+		}
+
 		if( auth_result.textcode == 'PATRON_CARD_INACTIVE' ) {
 			alertId('patron_card_inactive_alert');
 			return;

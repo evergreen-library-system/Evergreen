@@ -329,9 +329,12 @@ static oilsEvent* oilsAuthCheckCard( osrfMethodContext* ctx, jsonObject* userObj
 
 	char* active = oilsFMGetString(card, "active");
 	if( ! oilsUtilsIsDBTrue(active) ) {
+		free(active);
 		osrfLogInfo(OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode);
 		return oilsNewEvent(OSRF_LOG_MARK, "PATRON_CARD_INACTIVE");
 	}
+
+	free(active);
 	return NULL;
 }
 
@@ -372,22 +375,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		return 0;
 	}
 
-	/* check to see if the user is allowed to login */
-	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
-		jsonObjectFree(userObj);
-		free(barcode);
-		return 0;
-	}
-
-	osrfLogDebug(OSRF_LOG_MARK, "BARCODE = %s", barcode);
-	if( barcode && (response = oilsAuthCheckCard( ctx, userObj, barcode )) ) {
-		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
-		oilsEventFree(response);
-		free(barcode);
-		return 0;
-	}
-
-	
+	/* first let's see if they have the right credentials */
 	int passOK = -1;
 	if(uname) passOK = oilsAuthVerifyPassword( ctx, userObj, uname, password );
 	else if (barcode) 
@@ -397,6 +385,35 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		free(barcode);
 		return passOK;
 	}
+
+	/* first see if their account is inactive */
+	char* active = oilsFMGetString(userObj, "active");
+	if( !oilsUtilsIsDBTrue(active) ) {
+		response = oilsNewEvent(OSRF_LOG_MARK, "PATRON_INACTIVE");
+		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
+		oilsEventFree(response);
+		free(barcode);
+		free(active);
+		return 0;
+	}
+	free(active);
+
+	/* then see if the barcode they used is active */
+	if( barcode && (response = oilsAuthCheckCard( ctx, userObj, barcode )) ) {
+		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
+		oilsEventFree(response);
+		free(barcode);
+		return 0;
+	}
+
+
+	/* check to see if the user is even allowed to login */
+	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
+		jsonObjectFree(userObj);
+		free(barcode);
+		return 0;
+	}
+	
 
 	/* if a workstation is defined, flesh the user with the workstation info */
 	if( workstation != NULL ) {

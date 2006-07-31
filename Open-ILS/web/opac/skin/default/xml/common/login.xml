@@ -104,6 +104,10 @@
 		The barcode used to login is marked as inactive.  Please contact your local library.
 	</span>
 
+	<span id='patron_inactive_alert' class='hide_me'>
+		This account has been deactivated.  Please contact your local library.
+	</span>
+
 	<span id='patron_login_failed' class='hide_me'>
 		Login failed.  The username or password provided was not valid.  
 		Make sure Caps-Lock is off and try again or contact your local library.
