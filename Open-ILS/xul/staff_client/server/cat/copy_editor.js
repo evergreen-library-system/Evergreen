@@ -342,8 +342,29 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 			copy.stat_cat_entries( temp );
 
 		} catch(E) {
-			alert(E);
+			g.error.standard_unexpected_error_alert('apply_stat_cat',E);
 		}
+	}
+}
+
+/******************************************************************************************************/
+/* This concats and uniques all the alert messages for use as the default value for a new alert message */
+
+g.populate_alert_message_input = function(tb) {
+	try {
+		var seen = {}; var s = '';
+		for (var i = 0; i < g.copies.length; i++) {
+			var msg = g.copies[i].alert_message(); 
+			if (msg) {
+				if (typeof seen[msg] == 'undefined') {
+					s += msg + '\n';
+					seen[msg] = true;
+				}
+			}
+		}
+		tb.setAttribute('value',s);
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('populate_alert_message_input',E);
 	}
 }
 
@@ -558,7 +579,7 @@ g.panes_and_field_names = {
 		"Alert Message",
 		{
 			render: 'fm.alert_message() == null ? "<Unset>" : fm.alert_message()',
-			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); g.populate_alert_message_input(x); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 
