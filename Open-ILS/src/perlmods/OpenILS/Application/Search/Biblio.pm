@@ -253,6 +253,45 @@ sub fleshed_copy_retrieve {
 	return $c;
 }
 
+__PACKAGE__->register_method(
+	method	=> "fleshed_copy_retrieve2",
+	api_name	=> "open-ils.search.asset.copy.fleshed2.retrieve",);
+
+sub fleshed_copy_retrieve2 { 
+	my( $self, $client, $id ) = @_;
+	my $e = new_editor();
+	my $copy = $e->retrieve_asset_copy(
+		[
+			$id,
+			{ 
+				flesh				=> 2,
+				flesh_fields	=> { 
+					acp => [ qw/ location status stat_cat_entry_copy_maps notes age_protect / ],
+					ascecm => [ qw/ stat_cat stat_cat_entry / ],
+				}
+			}
+		]
+	) or return $e->event;
+
+	# For backwards compatibility
+	$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
+
+	return $copy;
+
+#	return $copy unless $copy->stat_cat_entries;
+#
+#	for my $map (@{$copy->stat_cat_entries}) {
+#		$map->stat_cat(
+#			$e->retrieve_asset_stat_cat($map->stat_cat));
+#		$map->stat_cat_entry(
+#			$e->retrieve_asset_stat_cat_entry($map->stat_cat_entry));
+#	}
+#	return $copy;
+
+}
+
+
+
 
 
 __PACKAGE__->register_method(
@@ -1174,6 +1213,17 @@ sub copies_created_on {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_age_protect',
+	api_name => 'open-ils.search.copy.age_protect.retrieve.all',
+);
+
+sub fetch_age_protect {
+	return new_editor()->retrieve_all_config_rule_age_hold_protect();
+}
+
 
 
 1;
