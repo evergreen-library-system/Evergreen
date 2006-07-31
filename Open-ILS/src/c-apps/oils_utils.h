@@ -61,6 +61,8 @@ jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params )
 
 jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params );
 
+jsonObject* oilsUtilsCStoreReq( char* method, jsonObject* params );
+
 /**
  * Searches the storage server for a user with the given username 
  * Caller is responsible for freeing the returned object
@@ -90,3 +92,6 @@ jsonObject* oilsUtilsFetchWorkstation( long id );
 jsonObject* oilsUtilsFetchUserByBarcode(char* barcode);
 
 jsonObject* oilsUtilsFetchWorkstationByName( char* name );
+
+
+int oilsUtilsIsDBTrue( char* val );

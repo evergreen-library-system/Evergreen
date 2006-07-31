@@ -94,7 +94,7 @@
 		</desc>
 	</event>
 
-	<event code='1216' textcode='PATRON_INACTIVE_CARD'>
+	<event code='1216' textcode='PATRON_CARD_INACTIVE'>
 		<desc xml:lang="en-US">The patron's card is not active</desc>
 	</event>
 

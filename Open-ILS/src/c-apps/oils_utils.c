@@ -28,6 +28,12 @@ int oilsFMSetString( jsonObject* object, char* field, char* string ) {
 }
 
 
+int oilsUtilsIsDBTrue( char* val ) {
+	if( val && strcasecmp(val, "f") && strcmp(val, "0") ) return 1;
+	return 0;
+}
+
+
 long oilsFMGetObjectId( jsonObject* obj ) {
 	long id = -1;
 	if(!obj) return id;
@@ -79,6 +85,10 @@ jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params )
 
 jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params ) {
 	return oilsUtilsQuickReq( "open-ils.storage", method, params );
+}
+
+jsonObject* oilsUtilsCStoreReq( char* method, jsonObject* params ) {
+	return oilsUtilsQuickReq("open-ils.cstore", method, params);
 }
 
 

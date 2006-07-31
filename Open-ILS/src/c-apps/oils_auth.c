@@ -318,6 +318,25 @@ oilsEvent* oilsAuthVerifyWorkstation(
 
 
 
+/* see if the card used to login is marked as barred */
+static oilsEvent* oilsAuthCheckCard( osrfMethodContext* ctx, jsonObject* userObj, char* barcode) {
+	if(!(ctx && userObj && barcode)) return NULL;
+	osrfLogDebug(OSRF_LOG_MARK, "Checking to see if barcode %s is active", barcode);
+
+	jsonObject* params = jsonParseString("{\"barcode\":\"%s\"}", barcode);
+	jsonObject* card = oilsUtilsQuickReq(
+		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
+
+	char* active = oilsFMGetString(card, "active");
+	if( ! oilsUtilsIsDBTrue(active) ) {
+		osrfLogInfo(OSRF_LOG_MARK, "barcode %s is not active, returning event", barcode);
+		return oilsNewEvent(OSRF_LOG_MARK, "PATRON_CARD_INACTIVE");
+	}
+	return NULL;
+}
+
+
+
 int oilsAuthComplete( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx); 
 
@@ -356,6 +375,14 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	/* check to see if the user is allowed to login */
 	if( oilsAuthCheckLoginPerm( ctx, userObj, type ) == -1 ) {
 		jsonObjectFree(userObj);
+		free(barcode);
+		return 0;
+	}
+
+	osrfLogDebug(OSRF_LOG_MARK, "BARCODE = %s", barcode);
+	if( barcode && (response = oilsAuthCheckCard( ctx, userObj, barcode )) ) {
+		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
+		oilsEventFree(response);
 		free(barcode);
 		return 0;
 	}
