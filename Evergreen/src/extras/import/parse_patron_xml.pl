@@ -137,7 +137,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $id_val = $patron->findvalue( 'user_altid' );
 	$p->ident_value( $id_val ) if ($id_val);
 
-	$p->first_given_name( $patron->findvalue( 'firstname' ) );
+	$p->first_given_name( $patron->findvalue( 'first_name' ) );
 	$p->second_given_name( $patron->findvalue( 'middle_name' ) );
 	$p->family_name( $patron->findvalue( 'last_name' ) );
 
