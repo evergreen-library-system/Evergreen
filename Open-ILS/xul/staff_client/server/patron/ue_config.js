@@ -585,10 +585,12 @@ function uEditBuildAddrFields(patron, address) {
 	$n(row, 'ue_addr_delete').onclick = 
 		function() { uEditDeleteAddr(tbody, row, address); }
 
-	if( address.id() == patron.billing_address().id() ) 
+	if( patron.billing_address() &&
+			address.id() == patron.billing_address().id() ) 
 		$n(row, 'ue_addr_billing_yes').checked = true;
 
-	if( address.id() == patron.mailing_address().id() ) 
+	if( patron.mailing_address() &&
+			address.id() == patron.mailing_address().id() ) 
 		$n(row, 'ue_addr_mailing_yes').checked = true;
 
 	$n(row, 'ue_addr_billing_yes').setAttribute('address', address.id());

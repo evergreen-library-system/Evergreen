@@ -156,9 +156,11 @@ function uEditClone(clone) {
 
 	for( var a in cloneUser.addresses() ) {
 		var addr = cloneUser.addresses()[a];
-		if( addr.id() == cloneUser.mailing_address().id() )
+		if( cloneUser.mailing_address && 
+				addr.id() == cloneUser.mailing_address().id() )
 			patron.mailing_address(addr);
-		if( addr.id() == cloneUser.billing_address().id() )
+		if( cloneUser.billing_address() &&
+				addr.id() == cloneUser.billing_address().id() )
 			patron.billing_address(addr);
 		patron.addresses().push(addr);
 	}
@@ -227,6 +229,7 @@ function uEditActivateField(field) {
 	}
 
 	field.widget.node.disabled = field.widget.disabled;
+	if(field.object == null) return;
 	var val = field.object[field.key]();
 	if(val == null) return;
 
@@ -242,12 +245,6 @@ function uEditActivateField(field) {
 
 	if( field.widget.onload ) 
 		field.widget.onload(val);
-
-	/*
-	alert(field.key);
-	if(field.key == 'ident_value') alert(field.widget.onblur);
-	*/
-
 }
 
 
