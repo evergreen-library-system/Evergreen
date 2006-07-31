@@ -303,9 +303,9 @@ sub patron_search {
 	my $order_by = join ', ', map { 'users.'. $_} @$sort;
 
 	if ($inactive) {
-		$inactive = 'AND users.active = FALSE';
-	} else {
 		$inactive = '';
+	} else {
+		$inactive = 'AND users.active = FALSE';
 	}
 
 	$select = <<"	SQL";
