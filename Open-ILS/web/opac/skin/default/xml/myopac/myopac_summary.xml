@@ -1,6 +1,24 @@
 
 <div id='myopac_summary_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
+	<div id='myopac.notes.div' class='hide_me'>
+		<table class='data_grid' width='100%'>
+			<thead>
+				<tr>
+					<td colspan='2'><b> * Staff Notes *</b></td>
+				</tr>
+			</thead>
+			<tbody id='myopac.notes.tbody'>
+				<tr id='myopac.notes.tr'>
+					<td>
+						<b name='title'/> : <span name='value'/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+	</div>
+
 	<table width='100%' class='light_border data_grid'>
 
 		<tbody id='myopac_summary_tbody'>
@@ -134,6 +152,7 @@
 
 		</tbody>
 	</table>
+
 
 	<br/><hr/><br/>
 

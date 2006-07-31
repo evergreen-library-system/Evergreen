@@ -635,11 +635,13 @@ function myOPACShowSummary() {
 }
 
 var addrRowTemplate;
+var notesTemplate;
 function _myOPACSummaryShowUer(r) {
 
 	var user = r.getResultObject();
 	fleshedUser = user;
 	if(!user) return;
+
 
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
 	appendClear($('myopac_summary_middle'),text(user.second_given_name()));
@@ -654,6 +656,12 @@ function _myOPACSummaryShowUer(r) {
 	appendClear($('myopac_summary_ident2'),text(user.ident_value2()));
 	appendClear($('myopac_summary_homelib'),text(findOrgUnit(user.home_ou()).name()));
 	appendClear($('myopac_summary_create_date'),text(_trimTime(user.create_date())));
+
+	var req = new Request( 
+		FETCH_USER_NOTES, G.user.session, {pub:1, patronid:G.user.id()});
+	req.callback(myopacDrawNotes);
+	req.send();
+
 
 	var tbody = $('myopac_addr_tbody');
 	var template;
@@ -672,6 +680,25 @@ function _myOPACSummaryShowUer(r) {
 		tbody.appendChild(row);
 	}
 }
+
+
+function myopacDrawNotes(r) {
+	var notes = r.getResultObject();
+	var tbody = $('myopac.notes.tbody');
+	notesTemplate = tbody.removeChild($('myopac.notes.tr'));
+
+	iterate(notes, 
+		function(note) {
+			unHideMe($('myopac.notes.div'));
+			var row = notesTemplate.cloneNode(true);
+			$n(row, 'title').appendChild(text(note.title()));
+			$n(row, 'value').appendChild(text(note.value()));
+			tbody.appendChild(row);
+		}
+	);
+}
+
+
 
 function myOPACDrawAddr(row, addr) {
 

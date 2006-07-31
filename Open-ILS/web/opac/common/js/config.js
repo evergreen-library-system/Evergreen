@@ -327,6 +327,7 @@ var CHECK_USERNAME				= 'open-ils.actor:open-ils.actor.username.exists';
 var FETCH_CIRC_BY_ID				= 'open-ils.circ:open-ils.circ.retrieve';
 var FETCH_MR_DESCRIPTORS		= 'open-ils.search:open-ils.search.metabib.record_to_descriptors';
 var FETCH_HIGHEST_PERM_ORG		= 'open-ils.actor:open-ils.actor.user.perm.highest_org.batch';
+var FETCH_USER_NOTES				= 'open-ils.actor:open-ils.actor.note.retrieve.all';
 
 /* ---------------------------------------------------------------------------- */
 
