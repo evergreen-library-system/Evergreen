@@ -121,7 +121,9 @@ patron.items.prototype = {
 								return r.payload;
 							},
 							'7004' : function(r) {
-								return obj.data.hash.ccs[ r.payload ].name();
+								//return obj.data.hash.ccs[ r.payload ].name();
+								return r.payload.status().name();
+								//return r.payload.name();
 							},
 						}
 					}

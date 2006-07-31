@@ -680,7 +680,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				],
 				'text' : {
 					'1203' : function(r) {
-						return data.hash.ccs[ r.payload.status() ].name();
+						//return data.hash.ccs[ r.payload.status() ].name();
+						return r.payload.status().name();
 					},
 					'7010' : function(r) {
 						return r.payload;
@@ -699,12 +700,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
-			check.route_to = data.hash.acpl[ check.copy.location() ].name();
+			try { check.route_to = data.hash.acpl[ check.copy.location() ].name(); } catch(E) { msg += 'FIXME: ' + E + '\n'; }
 			var msg = '';
 			if (check.ilsevent == 3) msg = 'This item is already checked in.\n';
 			if (check.ilsevent == 1202 && check.copy.status() != 11) {
 				msg = 'FIXME -- ITEM_NOT_CATALOGED event but copy status is '
-					+ data.hash.ccs[ check.copy.status() ].name() + '\n';
+					+ (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() ) + '\n';
 			}
 			switch(check.copy.status()) {
 				case 0: /* AVAILABLE */
@@ -761,7 +762,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 				default:
-					msg += ('FIXME -- this case "' + data.hash.ccs[check.copy.status()].name() + '" is unhandled.\n');
+					msg += ('FIXME -- this case "' + (data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name()) + '" is unhandled.\n');
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 			}

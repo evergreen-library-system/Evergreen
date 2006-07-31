@@ -350,7 +350,10 @@ circ.checkout.prototype = {
 					],
 					'text' : {
 						'7004' : function(r) {
-							return obj.data.hash.ccs[ r.payload ].name();
+							//return obj.data.hash.ccs[ r.payload ].name();
+							return r.payload.status().name();
+							//return r.payload.name();
+							//return r.payload;
 						},
 						'7010' : function(r) {
 							return r.payload;
@@ -436,7 +439,7 @@ circ.checkout.prototype = {
 							found_handled = true;
 						break;
 						case 7004 /* COPY_NOT_AVAILABLE */ :
-							msg += test_permit[i].desc + '\n' + 'Copy status = ' + obj.data.hash.ccs[ test_permit[i].payload ].name() + '\n';
+							msg += test_permit[i].desc + '\n' + 'Copy status = ' + ( test_permit[i].payload.status().name() ) + '\n';
 							found_handled = true;
 						break;
 						case 7006 /* COPY_IS_REFERENCE */ :
