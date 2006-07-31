@@ -179,6 +179,12 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
 					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				},
+				'in_house_use' : {
+					'type' : 'items',
+					'header' : 'You marked the following in-house items used:<hr/><ol>',
+					'line_item' : '<li>Barcode: %barcode%\r\nUses: %uses%\r\n<br />%alert_message%',
+					'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
+				},
 				'holds' : {
 					'type' : 'holds',
 					'header' : 'Welcome %PATRON_FIRSTNAME%, to %LIBRARY%!<br/>\r\nYou have the following titles on hold:<hr/><ol>',
