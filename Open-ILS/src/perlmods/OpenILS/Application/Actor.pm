@@ -1763,8 +1763,21 @@ sub _checked_out {
 	}
 
 	# grab all of the lost, claims-returned, and longoverdue circs
+	#my $open = $e->search_action_circulation(
+	#	{usr => $userid, stop_fines => { '!=' => undef }, xact_finish => undef });
+
+
+	# these items have stop_fines, but no xact_finish, so money
+	# is owed on them and they have not been checked in
 	my $open = $e->search_action_circulation(
-		{usr => $userid, stop_fines => { '!=' => undef }, xact_finish => undef });
+		{
+			usr				=> $userid, 
+			stop_fines		=> { '!=' => undef }, 
+			xact_finish		=> undef,
+			checkin_time	=> undef,
+		}
+	);
+
 
 	my( @lost, @cr, @lo );
 	for my $c (@$open) {
@@ -1793,6 +1806,52 @@ sub _checked_out {
 		long_overdue		=> \@lo
 	};
 }
+
+
+
+__PACKAGE__->register_method(
+	method		=> "checked_in_with_fines",
+	api_name		=> "open-ils.actor.user.checked_in_with_fines",
+	argc			=> 2,
+	signature	=> q/@see open-ils.actor.user.checked_out/
+);
+sub checked_in_with_fines {
+	my( $self, $conn, $auth, $userid ) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+
+	if( $userid ne $e->requestor->id ) {
+		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
+	}
+
+	# money is owed on these items and they are checked in
+	my $open = $e->search_action_circulation(
+		{
+			usr				=> $userid, 
+			xact_finish		=> undef,
+			checkin_time	=> { "!=" => undef },
+		}
+	);
+
+
+	my( @lost, @cr, @lo );
+	for my $c (@$open) {
+		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
+		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
+		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
+	}
+
+	return {
+		lost		=> \@lost,
+		claims_returned	=> \@cr,
+		long_overdue		=> \@lo
+	};
+}
+
+
+
+
 
 
 
