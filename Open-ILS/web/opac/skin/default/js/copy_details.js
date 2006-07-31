@@ -164,7 +164,7 @@ function cpdDrawCopies(r) {
 	for( var i = 0; i < copies.length; i++ ) {
 		var row = copyrow.cloneNode(true);
 		var copyid = copies[i];
-		var req = new Request(FETCH_COPY, copies[i]);
+		var req = new Request(FETCH_FLESHED_COPY, copies[i]);
 		req.callback(cpdDrawCopy);
 		req.request.args = r.args;
 		req.request.row = row;
@@ -180,7 +180,7 @@ function cpdDrawCopy(r) {
 	r.args.copy = copy;
 
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
-	$n(row, 'location').appendChild(text(cpdGetLocation(copy).name()));
+	$n(row, 'location').appendChild(text(copy.location().name()));
 
 	if(isXUL()) {
 		var l = $n(row, 'copy_hold_link');
@@ -196,25 +196,27 @@ function cpdDrawCopy(r) {
 		}
 	}
 
-	for( i = 0; i < cp_statuses.length; i++ ) {
-		var c = cp_statuses[i];
-		if( c.id() == copy.status() ) {
-			$n(row, 'status').appendChild(text(c.name()));
-			break;
-		}
+	$n(row, 'status').appendChild(text(copy.status().name()));
+
+	r.args.copyrow = row;
+	cpdShowNotes(copy, r.args)
+	cpdShowStats(copy, r.args);
+
+	if(isXUL()) {
+
+		unHideMe($('age_protect_label'));
+		unHideMe($('create_date_label'));
+		unHideMe($n(row, 'age_protect_value'));
+		unHideMe($n(row, 'create_date_value'));
+
+		if( copy.age_protect() ) 
+			appendClear($n(row, 'age_protect_value'), text(copy.age_protect().name()));
+
+		var cd = copy.create_date();
+		cd = cd.replace(/T.*/, '');
+		$n(row, 'create_date_value').appendChild(text(cd));
+
 	}
-
-	var req = new Request(FETCH_COPY_NOTES, { pub : 1, itemid : copy.id() } );
-	req.request.args = r.args;
-	req.request.args.copyrow = row;
-	req.callback(cpdShowNotes);
-	req.send();
-
-	req = new Request(FETCH_COPY_STAT_CATS, { copyid : copy.id(), "public" : 1 });
-	req.request.args = r.args;
-	req.request.args.copyrow = row;
-	req.callback(cpdShowStats);
-	req.send();
 }
 
 function _cpdExtrasInit(args) {
@@ -251,62 +253,42 @@ function _cpdExtrasInit(args) {
 	return [ tbody, rowt ];
 }
 
-function cpdShowNotes(r) {
-	var notes = r.getResultObject();
+function cpdShowNotes(copy, args) {
+	var notes = copy.notes();
+	if(!notes || notes.length == 0) return;
 
-	if(notes.length > 0) {
+	var a = _cpdExtrasInit(args);
+	var tbody = a[0];
+	var rowt = a[1];
 
-		var a = _cpdExtrasInit(r.args);
-		var tbody = a[0];
-		var rowt = a[1];
-
-		for( var n in notes ) {
-			var note = notes[n];
-			var row = rowt.cloneNode(true);
-			$n(row, 'key').appendChild(text(note.title()));
-			$n(row, 'value').appendChild(text(note.value()));
-			unHideMe($n(row, 'note'));
-			unHideMe(row);
-			tbody.appendChild(row);
-		}
+	for( var n in notes ) {
+		var note = notes[n];
+		var row = rowt.cloneNode(true);
+		$n(row, 'key').appendChild(text(note.title()));
+		$n(row, 'value').appendChild(text(note.value()));
+		unHideMe($n(row, 'note'));
+		unHideMe(row);
+		tbody.appendChild(row);
 	}
 }
 
 
-function cpdShowStats(r) {
-	var entries = r.getResultObject();
-
-	if(entries.length > 0) {
+function cpdShowStats(copy, args) {
+	var entries = copy.stat_cat_entry_copy_maps();
+	if(!entries || entries.length == 0) return;
 		
-		var a = _cpdExtrasInit(r.args);
-		var tbody = a[0];
-		var rowt = a[1];
+	var a = _cpdExtrasInit(args);
+	var tbody = a[0];
+	var rowt = a[1];
 
-		for( var n in entries ) {
-			var entry = entries[n];
-			var row = rowt.cloneNode(true);
-			$n(row, 'key').appendChild(text(entry.stat_cat().name()));
-			$n(row, 'value').appendChild(text(entry.value()));
-			unHideMe($n(row, 'cat'));
-			unHideMe(row);
-			tbody.appendChild(row);
-		}
+	for( var n in entries ) {
+		var entry = entries[n];
+		var row = rowt.cloneNode(true);
+		$n(row, 'key').appendChild(text(entry.stat_cat().name()));
+		$n(row, 'value').appendChild(text(entry.stat_cat_entry().value()));
+		unHideMe($n(row, 'cat'));
+		unHideMe(row);
+		tbody.appendChild(row);
 	}
 }
-
-
-var copyLocations;
-function cpdGetLocation(copy) {
-
-	if(!copyLocations) {
-		var req = new Request(FETCH_COPY_LOCATIONS);	
-		req.send(true);
-		copyLocations = req.result();
-	}
-	return grep(copyLocations, 
-		function(l) { return l.id() == copy.location() } )[0];
-}
-
-
-
 

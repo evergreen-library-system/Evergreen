@@ -1,5 +1,6 @@
 <table class='hide_me'>
 	<script language='javascript' src='../js/copy_details.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Date.W3CDTF.js'/>
 	<style>
 		.copy_details_table {
 		}
@@ -16,9 +17,11 @@
 								<td width='33%'>Barcode</td>
 								<td>Status</td>
 								<td>Location</td>
+								<td id='age_protect_label' class='hide_me'>Age Hold Protection</td>
+								<td id='create_date_label' class='hide_me'>Create Date</td>
 							</tr>
 						</thead>
-						<tbody name='copies_tbody' class='copy_details_table'>
+						<tbody name='copies_tbody' class='copy_details_table' width='100%'>
 							<tr name='copies_row'>
 								<td>
 									<span name='barcode'> </span>
@@ -31,18 +34,21 @@
 								</td>
 								<td name='status'></td>
 								<td name='location'></td>
+								<td name='age_protect_value' class='hide_me'>- Disabled -</td>
+								<td name='create_date_value' class='hide_me'/>
 							</tr>
 							<tr name='copy_extras_row' class='hide_me'>
-								<td colspan='3'>
+								<td colspan='5'>
 									<table width='100%' class='data_grid'>
 										<tbody name='extras_tbody'>
 											<tr name='extras_row' class='hide_me'>
-												<td name='type'> 
+												<td name='type' width='20%'> 
 													<span name='note' class='hide_me'><b>Copy Note</b></span>
 													<span name='cat' class='hide_me'><b>Copy Category</b></span>
 												</td>
-												<td name='key' style='border-right: none;'> </td>
-												<td name='value' width='70%' style='border-left: none;'> </td>
+												<td>
+													<span name='key'/> : <span name='value'/>
+												</td>
 											</tr>
 										</tbody>
 									</table>
