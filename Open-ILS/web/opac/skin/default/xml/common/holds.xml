@@ -193,6 +193,12 @@
 		A hold already exists on the requested item.  Would you like to create the hold anyway?
 	</span>
 
+	<span id='hold_failed_patron_barred' class='hide_me'>
+		PATRON BARRED.  
+		Please see any notes in the notes section of your "My Account" page or contact your local library.
+	</span>
+
+
 
 </div>
 

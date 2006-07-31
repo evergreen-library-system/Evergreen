@@ -537,6 +537,7 @@ function holdsCheckPossibility(pickuplib) {
 	var type = holdArgs.type;
 	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, 
 			{ titleid : rec, patronid : G.user.id(), depth : 0, pickup_lib : pickuplib } );
+	req.request.alertEvent = false;
 	req.send(true);
 	return req.result();
 }
@@ -643,8 +644,17 @@ function holdsPlaceHold(hold, recurse) {
 	swapCanvas($('check_holds_box'));
 
 	if( holdArgs.type == 'M' || holdArgs.type == 'T' ) {
-		if( ! holdsCheckPossibility(hold.pickup_lib() ) ) {
-			alert($('hold_not_allowed').innerHTML);
+		var res = holdsCheckPossibility(hold.pickup_lib());
+		if(!res || checkILSEvent(res) ) {
+			if(!res) {
+				alert($('hold_not_allowed').innerHTML);
+			} else {
+				if( res.textcode == 'PATRON_BARRED' ) {
+					alertId('hold_failed_patron_barred');
+				} else {
+					alert($('hold_not_allowed').innerHTML);
+				}
+			}
 			swapCanvas($('holds_box'));
 			return;
 		}
