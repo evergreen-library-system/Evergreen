@@ -305,7 +305,7 @@ sub patron_search {
 	if ($inactive) {
 		$inactive = '';
 	} else {
-		$inactive = 'AND users.active = FALSE';
+		$inactive = 'AND users.active = TRUE';
 	}
 
 	$select = <<"	SQL";
