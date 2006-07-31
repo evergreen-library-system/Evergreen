@@ -184,6 +184,7 @@ patron.search_form.prototype = {
 							};
 						}
 					],
+					'inactive' : [ ['render'], function(e) { return function() {}; } ],
 				}
 			}
 		);
@@ -217,8 +218,13 @@ patron.search_form.prototype = {
 				} else {
 					query += '&';
 				}
-				query += id + '=' + window.escape(node.value);
-				dump('id = ' + id + '  value = ' + node.value + '\n');
+				if (id == 'inactive') {
+					query += id + '=' + window.escape(node.getAttribute('value'));
+					dump('id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
+				} else {
+					query += id + '=' + window.escape(node.value);
+					dump('id = ' + id + '  value = ' + node.value + '\n');
+				}
 			}
 		}
 		if (typeof obj.on_submit == 'function') {

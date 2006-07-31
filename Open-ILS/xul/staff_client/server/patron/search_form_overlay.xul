@@ -30,6 +30,13 @@
 		<column id="psc2" flex="1"/>
 	</columns>
 	<rows id="psr">
+		<row>
+			<spacer />
+			<hbox>
+				<label control="inactive" accesskey="I" value="Include inactive patrons?"/>
+				<checkbox id="inactive" value="unchecked" oncommand="if (this.getAttribute('value') == 'unchecked') this.setAttribute('value','checked'); else this.setAttribute('value','unchecked');"/>
+			</hbox>
+		</row>
 		<row id="psr1">
 			<label id="psl1" control="family_name" 
 				value="&staff.patron_search_form.family_name.label;" 

@@ -25,7 +25,7 @@ patron.search_result.prototype = {
 		JSAN.use('patron.util');
 		var columns = patron.util.columns(
 			{
-				'active' : { 'hidden' : 'false' },
+				/* 'active' : { 'hidden' : 'false' }, */
 				'barred' : { 'hidden' : 'false' },
 				'family_name' : { 'hidden' : 'false' },
 				'first_given_name' : { 'hidden' : 'false' },
@@ -101,6 +101,7 @@ patron.search_result.prototype = {
 		var obj = this;
 		var search_hash = {};
 		obj.search_term_count = 0;
+		var inactive = false;
 		for (var i in query) {
 			switch( i ) {
 				case 'phone': case 'ident': 
@@ -126,17 +127,25 @@ patron.search_result.prototype = {
 					search_hash[i].group = 0; 
 					obj.search_term_count++;
 				break;
+
+				case 'inactive':
+					if (query[i] == 'checked') inactive = true;
+				break;
 			}
 		}
 		try {
 			var results = [];
 
+			var params = [ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
+			if (inactive) {
+				params.push(1);
+				if (document.getElementById('active')) {
+					document.getElementById('active').setAttribute('hidden','false');
+					document.getElementById('active').hidden = false;
+				}
+			}
 			if (obj.search_term_count > 0) {
-				results = this.network.request(
-					api.FM_AU_IDS_RETRIEVE_VIA_HASH.app,
-					api.FM_AU_IDS_RETRIEVE_VIA_HASH.method,
-					[ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ]
-				);
+				results = this.network.simple_request( 'FM_AU_IDS_RETRIEVE_VIA_HASH', params );
 				if ( (results == null) || (typeof results.ilsevent != 'undefined') ) throw(results);
 			}
 
