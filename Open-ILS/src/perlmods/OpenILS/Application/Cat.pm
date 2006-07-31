@@ -823,14 +823,15 @@ __PACKAGE__->register_method(
 	method	=> "fleshed_copy_update",
 	api_name	=> "open-ils.cat.asset.copy.fleshed.batch.update.override",);
 
+
 sub fleshed_copy_update {
-	my( $self, $conn, $auth, $copies ) = @_;
+	my( $self, $conn, $auth, $copies, $delete_stats ) = @_;
 	return 1 unless ref $copies;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
 	my $editor = OpenILS::Utils::Editor->new(requestor => $reqr, xact => 1);
 	my $override = $self->api_name =~ /override/;
-	$evt = update_fleshed_copies( $editor, $override, undef, $copies);
+	$evt = update_fleshed_copies($editor, $override, undef, $copies, $delete_stats);
 	return $evt if $evt;
 	$editor->finish;
 	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
@@ -896,7 +897,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.cat.asset.volume.fleshed.batch.update.override",);
 
 sub fleshed_volume_update {
-	my( $self, $conn, $auth, $volumes ) = @_;
+	my( $self, $conn, $auth, $volumes, $delete_stats ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
 
@@ -940,7 +941,7 @@ sub fleshed_volume_update {
 		# now update any attached copies
 		if( @$copies and !$vol->isdeleted ) {
 			$_->call_number($vol->id) for @$copies;
-			$evt = update_fleshed_copies( $editor, $override, $vol, $copies );
+			$evt = update_fleshed_copies( $editor, $override, $vol, $copies, $delete_stats );
 			return $evt if $evt;
 		}
 	}
@@ -952,7 +953,7 @@ sub fleshed_volume_update {
 
 # this does the actual work
 sub update_fleshed_copies {
-	my( $editor, $override, $vol, $copies ) = @_;
+	my( $editor, $override, $vol, $copies, $delete_stats ) = @_;
 
 	my $evt;
 	my $fetchvol = ($vol) ? 0 : 1;
@@ -999,7 +1000,7 @@ sub update_fleshed_copies {
 		}
 
 		$copy->stat_cat_entries( $sc_entries );
-		$evt = update_copy_stat_entries($editor, $copy);
+		$evt = update_copy_stat_entries($editor, $copy, $delete_stats);
 		return $evt if $evt;
 	}
 
@@ -1067,12 +1068,20 @@ sub create_copy {
 	return undef;
 }
 
+# if 'delete_stats' is true, the copy->stat_cat_entries data is 
+# treated as the authoritative list for the copy. existing entries
+# that are not in said list will be deleted from the DB
 sub update_copy_stat_entries {
-	my( $editor, $copy ) = @_;
+	my( $editor, $copy, $delete_stats ) = @_;
 
 	my $evt;
 	my $entries = $copy->stat_cat_entries;
-	return undef unless ($entries and @$entries);
+
+	if( $delete_stats ) {
+		$entries = ($entries and @$entries) ? $entries : [];
+	} else {
+		return undef unless ($entries and @$entries);
+	}
 
 	my $maps = $editor->search_asset_stat_cat_entry_copy_map({owning_copy=>$copy->id});
 
