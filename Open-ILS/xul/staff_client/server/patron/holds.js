@@ -5,7 +5,7 @@ patron.holds = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
-	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
+	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 }
 
 patron.holds.prototype = {
@@ -113,27 +113,33 @@ patron.holds.prototype = {
 					'cmd_holds_print' : [
 						['command'],
 						function() {
-							dump(js2JSON(obj.list.dump()) + '\n');
 							try {
-								JSAN.use('patron.util');
-								var params = { 
-									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
-									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
-									'staff' : obj.OpenILS.data.list.au[0],
-									'header' : obj.OpenILS.data.print_list_templates.holds.header,
-									'line_item' : obj.OpenILS.data.print_list_templates.holds.line_item,
-									'footer' : obj.OpenILS.data.print_list_templates.holds.footer,
-									'type' : obj.OpenILS.data.print_list_templates.holds.type,
-									'list' : obj.list.dump(),
-								};
-								JSAN.use('util.print'); var print = new util.print();
-								print.tree_list( params );
+								dump(js2JSON(obj.list.dump()) + '\n');
+								function flesh_callback() {
+									try {
+										JSAN.use('patron.util');
+										var params = { 
+											'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+											'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+											'staff' : obj.data.list.au[0],
+											'header' : obj.data.print_list_templates.holds.header,
+											'line_item' : obj.data.print_list_templates.holds.line_item,
+											'footer' : obj.data.print_list_templates.holds.footer,
+											'type' : obj.data.print_list_templates.holds.type,
+											'list' : obj.list.dump(),
+										};
+										JSAN.use('util.print'); var print = new util.print();
+										print.tree_list( params );
+										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('print 2',E);
+									}
+								}
+								obj.list.on_all_fleshed = flesh_callback;
+								obj.list.full_retrieve();
 							} catch(E) {
-								this.error.sdump('D_ERROR','preview: ' + E);
-								alert('preview: ' + E);
+								obj.error.standard_unexpected_error_alert('print 1',E);
 							}
-
-
 						}
 					],
 					'cmd_show_notifications' : [
@@ -160,10 +166,10 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
-								var ws_type = obj.OpenILS.data.hash.aout[ obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ].ou_type() ];
+								var ws_type = obj.data.hash.aout[ obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].ou_type() ];
 								var list = util.functional.map_list(
 									util.functional.filter_list(	
-										obj.OpenILS.data.list.aout,
+										obj.data.list.aout,
 										function(o) {
 											if (o.depth() > ws_type.depth()) return false;
 											if (o.depth() < ws_type.depth()) return true;
@@ -179,7 +185,7 @@ patron.holds.prototype = {
 										]; 
 									}
 								);
-								ml = util.widgets.make_menulist( list, obj.OpenILS.data.list.au[0].ws_ou() );
+								ml = util.widgets.make_menulist( list, obj.data.list.au[0].ws_ou() );
 								ml.setAttribute('id','selection');
 								ml.setAttribute('name','fancy_data');
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
@@ -190,8 +196,8 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
-								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
 								window.open(
 									urls.XUL_FANCY_PROMPT
 									+ '?xml_in_stash=temp_mid'
@@ -199,15 +205,15 @@ patron.holds.prototype = {
 									+ '&title=' + window.escape('Choose a Pick Up Library'),
 									'fancy_prompt', 'chrome,resizable,modal'
 								);
-								obj.OpenILS.data.init({'via':'stash'});
-								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
-								var selection = obj.OpenILS.data.fancy_prompt_data.selection;
-								var msg = 'Are you sure you would like to change the Hold Range for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + obj.OpenILS.data.hash.aout[selection].opac_label() + '"?';
+								obj.data.init({'via':'stash'});
+								if (obj.data.fancy_prompt_data == '') { return; }
+								var selection = obj.data.fancy_prompt_data.selection;
+								var msg = 'Are you sure you would like to change the Hold Range for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + obj.data.hash.aout[selection].opac_label() + '"?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
-										hold.selection_depth( obj.OpenILS.data.hash.aout[selection].depth() ); hold.ischanged('1');
+										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -225,18 +231,18 @@ patron.holds.prototype = {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
 								var list = util.functional.map_list(
-									obj.OpenILS.data.list.aou,
+									obj.data.list.aou,
 									function(o) { 
 										var sname = o.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
 										return [
 											o.name() ? sname + ' ' + o.name() : o.shortname(),
 											o.id(),
-											( obj.OpenILS.data.hash.aout[ o.ou_type() ].can_have_users() == 0),
-											( obj.OpenILS.data.hash.aout[ o.ou_type() ].depth() * 2),
+											( obj.data.hash.aout[ o.ou_type() ].can_have_users() == 0),
+											( obj.data.hash.aout[ o.ou_type() ].depth() * 2),
 										]; 
 									}
 								);
-								ml = util.widgets.make_menulist( list, obj.OpenILS.data.list.au[0].ws_ou() );
+								ml = util.widgets.make_menulist( list, obj.data.list.au[0].ws_ou() );
 								ml.setAttribute('id','lib');
 								ml.setAttribute('name','fancy_data');
 								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
@@ -247,8 +253,8 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
-								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
 								window.open(
 									urls.XUL_FANCY_PROMPT
 									+ '?xml_in_stash=temp_mid'
@@ -256,10 +262,10 @@ patron.holds.prototype = {
 									+ '&title=' + window.escape('Choose a Pick Up Library'),
 									'fancy_prompt', 'chrome,resizable,modal'
 								);
-								obj.OpenILS.data.init({'via':'stash'});
-								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
-								var pickup_lib = obj.OpenILS.data.fancy_prompt_data.lib;
-								var msg = 'Are you sure you would like to change the Pick Up Lib for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to ' + obj.OpenILS.data.hash.aou[pickup_lib].shortname() + '?';
+								obj.data.init({'via':'stash'});
+								if (obj.data.fancy_prompt_data == '') { return; }
+								var pickup_lib = obj.data.fancy_prompt_data.lib;
+								var msg = 'Are you sure you would like to change the Pick Up Lib for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to ' + obj.data.hash.aou[pickup_lib].shortname() + '?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
@@ -287,8 +293,8 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
-								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
 								window.open(
 									urls.XUL_FANCY_PROMPT
 									+ '?xml_in_stash=temp_mid'
@@ -297,9 +303,9 @@ patron.holds.prototype = {
 									+ '&focus=phone',
 									'fancy_prompt', 'chrome,resizable,modal'
 								);
-								obj.OpenILS.data.init({'via':'stash'});
-								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
-								var phone = obj.OpenILS.data.fancy_prompt_data.phone;
+								obj.data.init({'via':'stash'});
+								if (obj.data.fancy_prompt_data == '') { return; }
+								var phone = obj.data.fancy_prompt_data.phone;
 								var msg = 'Are you sure you would like to change the Notification Phone Number for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + phone + '"?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -328,8 +334,8 @@ patron.holds.prototype = {
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.OpenILS.data.temp_mid = xml; obj.OpenILS.data.stash('temp_mid');
-								obj.OpenILS.data.temp_bot = bot_xml; obj.OpenILS.data.stash('temp_bot');
+								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
 								window.open(
 									urls.XUL_FANCY_PROMPT
 									+ '?xml_in_stash=temp_mid'
@@ -337,9 +343,9 @@ patron.holds.prototype = {
 									+ '&title=' + window.escape('Set Email Notification for Holds'),
 									'fancy_prompt', 'chrome,resizable,modal'
 								);
-								obj.OpenILS.data.init({'via':'stash'});
-								if (obj.OpenILS.data.fancy_prompt_data == '') { return; }
-								var email = obj.OpenILS.data.fancy_prompt_data.fancy_submit == 'email' ? 't' : 'f';
+								obj.data.init({'via':'stash'});
+								if (obj.data.fancy_prompt_data == '') { return; }
+								var email = obj.data.fancy_prompt_data.fancy_submit == 'email' ? 't' : 'f';
 								var msg = 'Are you sure you would like ' + ( email == 't' ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -483,7 +489,7 @@ patron.holds.prototype = {
 				} else {
 					method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				}
-				id = obj.OpenILS.data.list.au[0].ws_ou(); 
+				id = obj.data.list.au[0].ws_ou(); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
 			obj.holds = obj.network.simple_request( method, [ ses(), id ]);

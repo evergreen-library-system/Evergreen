@@ -62,24 +62,33 @@ patron.items.prototype = {
 
 	'items_print' : function(which) {
 		var obj = this;
-		dump(js2JSON( (which == 2 ? obj.list2.dump() : obj.list.dump()) ) + '\n');
 		try {
-			JSAN.use('patron.util');
-			var params = { 
-				'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
-				'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-				'staff' : obj.data.list.au[0],
-				'header' : obj.data.print_list_templates.checkout.header,
-				'line_item' : obj.data.print_list_templates.checkout.line_item,
-				'footer' : obj.data.print_list_templates.checkout.footer,
-				'type' : obj.data.print_list_templates.checkout.type,
-				'list' : which == 2 ? obj.list2.dump() : obj.list.dump(),
-			};
-			JSAN.use('util.print'); var print = new util.print();
-			print.tree_list( params );
+			var list = (which==2 ? obj.list2 : obj.list);
+			dump(js2JSON( list.dump() ) + '\n');
+			function flesh_callback() {
+				try {
+					JSAN.use('patron.util');
+					var params = { 
+						'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+						'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+						'staff' : obj.data.list.au[0],
+						'header' : obj.data.print_list_templates.checkout.header,
+						'line_item' : obj.data.print_list_templates.checkout.line_item,
+						'footer' : obj.data.print_list_templates.checkout.footer,
+						'type' : obj.data.print_list_templates.checkout.type,
+						'list' : list.dump(),
+					};
+					JSAN.use('util.print'); var print = new util.print();
+					print.tree_list( params );
+					setTimeout(function(){list.on_all_fleshed = null;},0);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('printing 2',E);
+				}
+			}
+			list.on_all_fleshed = flesh_callback;
+			list.full_retrieve();
 		} catch(E) {
-			this.error.sdump('D_ERROR','preview: ' + E);
-			alert('preview: ' + E);
+			obj.error.standard_unexpected_error_alert('printing 1',E);
 		}
 	},
 
