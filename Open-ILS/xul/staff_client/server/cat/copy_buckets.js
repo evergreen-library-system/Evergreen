@@ -407,7 +407,7 @@ cat.copy_buckets.prototype = {
 									copies[i].ischanged( 1 );
 								}
 
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies ]);
+								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies, true ]);
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(

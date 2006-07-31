@@ -113,7 +113,7 @@ cat.util.spawn_copy_editor = function(list,edit) {
 			var r = obj.network.request(
 				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-				[ ses(), copies ]
+				[ ses(), copies, true ]
 			);
 			/* FIXME -- revisit the return value here */
 		} catch(E) {

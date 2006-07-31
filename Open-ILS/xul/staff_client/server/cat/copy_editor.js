@@ -134,8 +134,8 @@ function my_init() {
 				{
 					render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
 						+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
-					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.hash.asc[' + sc.id() 
-						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ); '
+					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ) ).sort() ); '
 					//input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", null ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 					//	+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ) ); '
 						+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
@@ -317,7 +317,7 @@ g.apply = function(field,value) {
 }
 
 /******************************************************************************************************/
-/* Apply a stat cat entry to all the copies being edited */
+/* Apply a stat cat entry to all the copies being edited.  An entry_id of < 0 signifies the stat cat is being removed. */
 
 g.apply_stat_cat = function(sc_id,entry_id) {
 	g.error.sdump('D_TRACE','sc_id = ' + sc_id + '  entry_id = ' + entry_id + '\n');
@@ -333,7 +333,7 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 					return (obj.stat_cat() != sc_id);
 				}
 			);
-			temp.push( 
+			if (entry_id > -1) temp.push( 
 				util.functional.find_id_object_in_list( 
 					g.data.hash.asc[sc_id].entries(), 
 					entry_id
@@ -866,8 +866,9 @@ g.stash_and_close = function() {
 			var r = g.network.request(
 				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-				[ ses(), g.copies ]
+				[ ses(), g.copies, true ]
 			);
+			alert('pause');
 			if (typeof r.ilsevent != 'undefined') {
 				g.error.standard_unexpected_error_alert('copy update',r);
 			}

@@ -243,7 +243,7 @@ cat.copy_browser.prototype = {
 										for (var i in acn_hash) acn_list.push( acn_hash[i] );
 										var robj = obj.network.simple_request(
 											'FM_ACN_TREE_UPDATE', 
-											[ ses(), acn_list ],
+											[ ses(), acn_list, true ],
 											null,
 											{
 												'title' : 'Override Delete Failure?',
@@ -447,7 +447,7 @@ cat.copy_browser.prototype = {
 										var r = obj.network.request(
 											api.FM_ACN_TREE_UPDATE.app,
 											api.FM_ACN_TREE_UPDATE.method,
-											[ ses(), volumes ]
+											[ ses(), volumes, true ]
 										);
 										if (typeof r.ilsevent != 'undefined') throw(r);
 									} catch(E) {
@@ -488,7 +488,7 @@ cat.copy_browser.prototype = {
 										}
 										var robj = obj.network.simple_request(
 											'FM_ACN_TREE_UPDATE', 
-											[ ses(), list ],
+											[ ses(), list, true ],
 											null,
 											{
 												'title' : 'Override Delete Failure?',

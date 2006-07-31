@@ -384,7 +384,7 @@ g.stash_and_close = function() {
 			var r = g.network.request(
 				api.FM_ACN_TREE_UPDATE.app,
 				api.FM_ACN_TREE_UPDATE.method,
-				[ ses(), volumes ]
+				[ ses(), volumes, true ]
 			);
 			if (typeof r.ilsevent != 'undefined') {
 				switch(r.ilsevent) {
