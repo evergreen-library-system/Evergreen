@@ -582,9 +582,29 @@ function doLogin(suppressEvents) {
 
    var auth_request = new Request( LOGIN_COMPLETE, args );
 
+	auth_request.request.alertEvent = false;
    auth_request.send(true);
    var auth_result = auth_request.result();
-	if(!auth_result) return null;
+
+	if(!auth_result) {
+		alertId('patron_login_failed');
+		return null;
+	}
+
+	if( checkILSEvent(auth_result) ) {
+
+		if( auth_result.textcode == 'PATRON_CARD_INACTIVE' ) {
+			alertId('patron_card_inactive_alert');
+			return;
+		}
+
+		if( auth_result.textcode == 'LOGIN_FAILED' || 
+				auth_result.textcode == 'PERM_FAILURE' ) {
+			alertId('patron_login_failed');
+			return;
+		}
+	}
+
 
 	AUTHTIME = parseInt(auth_result.payload.authtime);
 	var u = grabUser(auth_result.payload.authtoken, true);
@@ -887,4 +907,5 @@ function parseForm(form) {
 }
 
 
-function isTrue(x) { return ( x && x != "0" && x != 'f' ); }
+function isTrue(x) { return ( x && x != "0" && !x.match(/^f$/i) ); }
+

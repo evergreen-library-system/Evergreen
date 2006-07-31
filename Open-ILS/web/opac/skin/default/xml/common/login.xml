@@ -100,6 +100,15 @@
 		&common.password_criteria;
 	</span>
 
+	<span id='patron_card_inactive_alert' class='hide_me'>
+		The barcode used to login is marked as inactive.  Please contact your local library.
+	</span>
+
+	<span id='patron_login_failed' class='hide_me'>
+		Login failed.  The username or password provided was not valid.  
+		Make sure Caps-Lock is off and try again or contact your local library.
+	</span>
+
 </div>
 
 
