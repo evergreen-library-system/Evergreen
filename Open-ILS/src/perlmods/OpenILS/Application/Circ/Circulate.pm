@@ -600,7 +600,7 @@ sub run_copy_permit_scripts {
 	# in as the payload for that event
 	my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
    for (@allevents) {
-      $_->{payload} = $stat if 
+      $_->{payload} = $copy if 
 			($_->{textcode} eq 'COPY_NOT_AVAILABLE');
    }
 
@@ -1123,6 +1123,7 @@ sub do_checkin {
 
 	# handle the overridable events 
 	$self->override_events unless $self->is_renewal;
+	return if $self->bail_out;
 	
 	if( $self->copy ) {
 		$self->transit(
