@@ -71,8 +71,16 @@
 		<command id="cmd_items_edit" />
 		<command id="cmd_items_mark_lost" />
 		<command id="cmd_show_catalog" />
-		<command id="cmd_show_catalog2" />
 		<command id="cmd_add_billing" />
+		
+		<command id="cmd_items_print2" />
+		<command id="cmd_items_renew2" />
+		<command id="cmd_items_claimed_returned2" />
+		<command id="cmd_items_checkin2" />
+		<command id="cmd_items_edit2" />
+		<command id="cmd_items_mark_lost2" />
+		<command id="cmd_show_catalog2" />
+		<command id="cmd_add_billing2" />
 	</commandset>
 
 	<popupset id="items_popupset"/>

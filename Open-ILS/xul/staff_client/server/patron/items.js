@@ -5,7 +5,7 @@ patron.items = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
-	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
+	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 }
 
 patron.items.prototype = {
@@ -22,306 +22,23 @@ patron.items.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
-					'cmd_broken' : [
-						['command'],
-						function() { alert('Not Yet Implemented'); }
-					],
-					'cmd_items_print' : [
-						['command'],
-						function() {
-							dump(js2JSON(obj.list.dump()) + '\n');
-							try {
-								JSAN.use('patron.util');
-								var params = { 
-									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
-									'lib' : obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ],
-									'staff' : obj.OpenILS.data.list.au[0],
-									'header' : obj.OpenILS.data.print_list_templates.checkout.header,
-									'line_item' : obj.OpenILS.data.print_list_templates.checkout.line_item,
-									'footer' : obj.OpenILS.data.print_list_templates.checkout.footer,
-									'type' : obj.OpenILS.data.print_list_templates.checkout.type,
-									'list' : obj.list.dump(),
-								};
-								JSAN.use('util.print'); var print = new util.print();
-								print.tree_list( params );
-							} catch(E) {
-								this.error.sdump('D_ERROR','preview: ' + E);
-								alert('preview: ' + E);
-							}
-
-
-						}
-					],
-					'cmd_items_renew' : [
-						['command'],
-						function() {
-							try{
-								for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									var barcode = obj.retrieve_ids[i].barcode;
-									dump('Renew barcode = ' + barcode);
-									var renew = obj.network.simple_request(
-										'CHECKOUT_RENEW', 
-										[ ses(), { barcode: barcode, patron: obj.patron_id } ],
-										null,
-										{
-											'title' : 'Override Checkin Failure?',
-											'overridable_events' : [ 
-						                        1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
-						                        7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
-						                        7003 /* COPY_CIRC_NOT_ALLOWED */,
-						                        7004 /* COPY_NOT_AVAILABLE */,
-						                        7006 /* COPY_IS_REFERENCE */,
-						                        7007 /* COPY_NEEDED_FOR_HOLD */,
-												7008 /* MAX_RENEWALS_REACHED */, 
-						                        7010 /* COPY_ALERT_MESSAGE */,
-						                        7013 /* PATRON_EXCEEDS_FINES */,
-											],
-											'text' : {
-												'7010' : function(r) {
-													return r.payload;
-												},
-												'7004' : function(r) {
-													return obj.OpenILS.data.hash.ccs[ r.payload ].name();
-												},
-											}
-										}
-									);
-									if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
-									for (var i = 0; i < renew.length; i++) { 
-										switch(renew[i].ilsevent) {
-											case 0 /* SUCCESS */ : break;
-											case 5000 /* PERM_FAILURE */: break;
-											case 7008 /* MAX_RENEWALS_REACHED */ : break;
-											default:
-												throw(renew);
-											break;
-										}
-									}
-								}
-								obj.retrieve();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
-								obj.retrieve();
-							}
-						}
-					],
-					'cmd_items_edit' : [
-						['command'],
-						function() {
-							try {
-								function check_date(value) {
-									JSAN.use('util.date');
-									try {
-										if (! util.date.check('YYYY-MM-DD',value) ) { 
-											throw('Invalid Date'); 
-										}
-										if (util.date.check_past('YYYY-MM-DD',value) ) { 
-											throw('Due date needs to be after today.'); 
-										}
-										/*
-										if ( util.date.formatted_date(new Date(),'%F') == value) { 
-											throw('Due date needs to be after today.'); 
-										}
-										*/
-										return true;
-									} catch(E) {
-										alert(E);
-										return false;
-									}
-								}
-
-								JSAN.use('util.functional');
-								var title = 'Edit Due Date' + (obj.retrieve_ids.length > 1 ? 's' : '');
-								var value = 'YYYY-MM-DD';
-								var text = 'Enter a new due date for these copies: ' + 
-									util.functional.map_list(obj.retrieve_ids,function(o){return o.barcode;}).join(', ');
-								var due_date; var invalid = true;
-								while(invalid) {
-									due_date = window.prompt(text,value,title);
-									if (due_date) {
-										invalid = ! check_date(due_date);
-									} else {
-										invalid = false;
-									}
-								}
-								if (due_date) {
-									var circs = util.functional.map_list(obj.retrieve_ids,function(o){return o.circ_id;});
-									for (var i = 0; i < circs.length; i++) {
-										var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
-										if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
-									}
-									obj.retrieve();
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
-								obj.retrieve();
-							}
-						}
-					],
-					'cmd_items_mark_lost' : [
-						['command'],
-						function() {
-							try {
-							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var barcode = obj.retrieve_ids[i].barcode;
-								dump('Mark barcode lost = ' + barcode);
-								var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
-								if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
-							}
-							obj.retrieve();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
-								obj.retrieve();
-							}
-						}
-					],
-					'cmd_items_claimed_returned' : [
-						['command'],
-						function() {
-							try {
-							function check_date(value) {
-								JSAN.use('util.date');
-								try {
-									if (! util.date.check('YYYY-MM-DD',value) ) { 
-										throw('Invalid Date'); 
-									}
-									if ( util.date.formatted_date(new Date(),'%F') == value) { 
-										return true;
-									}
-									if (! util.date.check_past('YYYY-MM-DD',value) ) { 
-										throw('Claims Returned Date cannot be in the future.'); 
-									}
-									return true;
-								} catch(E) {
-									alert(E);
-									return false;
-								}
-							}
-
-							JSAN.use('util.functional');
-							var title = 'Claimed Returned';
-							var value = 'YYYY-MM-DD';
-							var text = 'Enter a claimed returned date for these copies: ' + 
-								util.functional.map_list(obj.retrieve_ids,function(o){return o.barcode;}).join(', ');
-							var backdate; var invalid = true;
-							while(invalid) {
-								backdate = window.prompt(text,value,title);
-								if (backdate) {
-									invalid = ! check_date(backdate);
-								} else {
-									invalid = false;
-								}
-							}
-							alert('backdate = ' + backdate);
-							if (backdate) {
-								var barcodes = util.functional.map_list(obj.retrieve_ids,function(o){return o.barcode;});
-								for (var i = 0; i < barcodes.length; i++) {
-									var robj = obj.network.simple_request(
-										'MARK_ITEM_CLAIM_RETURNED', 
-										[ ses(), { barcode: barcodes[i], backdate: backdate } ]
-									);
-									if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
-								}
-								obj.retrieve();
-							}
-						} catch(E) {
-							obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
-							obj.retrieve();
-						}
-						}
-					],
-					'cmd_items_checkin' : [
-						['command'],
-						function() {
-							try {
-								JSAN.use('circ.util');
-								for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									var barcode = obj.retrieve_ids[i].barcode;
-									dump('Check in barcode = ' + barcode);
-									var robj = circ.util.checkin_via_barcode(
-										ses(), barcode
-									);
-									/* circ.util.checkin_via_barcode handles errors currently */
-								}
-								obj.retrieve();
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
-								obj.retrieve();
-							}
-						}
-					],
-					'cmd_show_catalog' : [
-						['command'],
-						function() {
-							try {
-								for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									var doc_id = obj.retrieve_ids[i].doc_id;
-									if (!doc_id) {
-										alert(obj.retrieve_ids[i].barcode + ' is not cataloged');
-										continue;
-									}
-									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
-									var content_params = { 
-										'session' : ses(),
-										'authtime' : ses('authtime'),
-										'opac_url' : opac_url,
-									};
-									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':'Retrieving title...'}, 
-										content_params
-									);
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('',E);
-							}
-						}
-					],
-					'cmd_show_catalog2' : [
-						['command'],
-						function() {
-							try {
-								for (var i = 0; i < obj.retrieve_ids2.length; i++) {
-									var doc_id = obj.retrieve_ids2[i].doc_id;
-									if (!doc_id) {
-										alert(obj.retrieve_ids2[i].barcode + ' is not cataloged');
-										continue;
-									}
-									var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
-									var content_params = { 
-										'session' : ses(),
-										'authtime' : ses('authtime'),
-										'opac_url' : opac_url,
-									};
-									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':'Retrieving title...'}, 
-										content_params
-									);
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('',E);
-							}
-						}
-					],
-					'cmd_add_billing' : [
-						['command'],
-						function() {
-							JSAN.use('util.window');
-							var win = new util.window();
-							for (var i = 0; i < obj.retrieve_ids.length; i++) {
-								var circ_id = obj.retrieve_ids[i].circ_id;
-								var w = win.open(
-									urls.XUL_PATRON_BILL_WIZARD
-										+ '?patron_id=' + window.escape(obj.patron_id)
-										+ '&xact_id=' + window.escape( circ_id ),
-									'billwizard',
-									'chrome,resizable,modal'
-								);
-							}
-							obj.retrieve();
-						}
-					],
+					'cmd_broken' : [ ['command'], function() { alert('Not Yet Implemented'); } ],
+					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
+					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
+					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],
+					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); } ],
+					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); } ],
+					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); } ],
+					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1); } ],
+					'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2); } ],
+					'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1); } ],
+					'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2); } ],
+					'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1); } ],
+					'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2); } ],
+					'cmd_show_catalog' : [ ['command'], function() { obj.show_catalog(1); } ],
+					'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
+					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1); } ],
+					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2); } ],
 				}
 			}
 		);
@@ -334,6 +51,283 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_edit.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','true');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_renew2.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_checkin2.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_edit2.setAttribute('disabled','true');
+		obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','true');
+		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','true');
+	},
+
+
+	'items_print' : function(which) {
+		var obj = this;
+		dump(js2JSON( (which == 2 ? obj.list2.dump() : obj.list.dump()) ) + '\n');
+		try {
+			JSAN.use('patron.util');
+			var params = { 
+				'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+				'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+				'staff' : obj.data.list.au[0],
+				'header' : obj.data.print_list_templates.checkout.header,
+				'line_item' : obj.data.print_list_templates.checkout.line_item,
+				'footer' : obj.data.print_list_templates.checkout.footer,
+				'type' : obj.data.print_list_templates.checkout.type,
+				'list' : which == 2 ? obj.list2.dump() : obj.list.dump(),
+			};
+			JSAN.use('util.print'); var print = new util.print();
+			print.tree_list( params );
+		} catch(E) {
+			this.error.sdump('D_ERROR','preview: ' + E);
+			alert('preview: ' + E);
+		}
+	},
+
+	'items_renew' : function(which) {
+		var obj = this;
+		try{
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			for (var i = 0; i < retrieve_ids.length; i++) {
+				var barcode = retrieve_ids[i].barcode;
+				dump('Renew barcode = ' + barcode);
+				var renew = obj.network.simple_request(
+					'CHECKOUT_RENEW', 
+					[ ses(), { barcode: barcode, patron: obj.patron_id } ],
+					null,
+					{
+						'title' : 'Override Checkin Failure?',
+						'overridable_events' : [ 
+							1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
+							7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
+							7003 /* COPY_CIRC_NOT_ALLOWED */,
+							7004 /* COPY_NOT_AVAILABLE */,
+							7006 /* COPY_IS_REFERENCE */,
+							7007 /* COPY_NEEDED_FOR_HOLD */,
+							7008 /* MAX_RENEWALS_REACHED */, 
+							7010 /* COPY_ALERT_MESSAGE */,
+							7013 /* PATRON_EXCEEDS_FINES */,
+						],
+						'text' : {
+							'7010' : function(r) {
+								return r.payload;
+							},
+							'7004' : function(r) {
+								return obj.data.hash.ccs[ r.payload ].name();
+							},
+						}
+					}
+				);
+				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
+				for (var i = 0; i < renew.length; i++) { 
+					switch(renew[i].ilsevent) {
+						case 0 /* SUCCESS */ : break;
+						case 5000 /* PERM_FAILURE */: break;
+						case 7008 /* MAX_RENEWALS_REACHED */ : break;
+						default:
+							throw(renew);
+						break;
+					}
+				}
+			}
+			obj.retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
+			obj.retrieve();
+		}
+	},
+
+	'items_edit' : function(which) {
+			var obj = this;
+			try {
+				var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+				function check_date(value) {
+					JSAN.use('util.date');
+					try {
+						if (! util.date.check('YYYY-MM-DD',value) ) { 
+							throw('Invalid Date'); 
+						}
+						if (util.date.check_past('YYYY-MM-DD',value) ) { 
+							throw('Due date needs to be after today.'); 
+						}
+						/*
+						if ( util.date.formatted_date(new Date(),'%F') == value) { 
+							throw('Due date needs to be after today.'); 
+						}
+						*/
+						return true;
+					} catch(E) {
+						alert(E);
+						return false;
+					}
+				}
+
+				JSAN.use('util.functional');
+				var title = 'Edit Due Date' + (retrieve_ids.length > 1 ? 's' : '');
+				var value = 'YYYY-MM-DD';
+				var text = 'Enter a new due date for these copies: ' + 
+					util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
+				var due_date; var invalid = true;
+				while(invalid) {
+					due_date = window.prompt(text,value,title);
+					if (due_date) {
+						invalid = ! check_date(due_date);
+					} else {
+						invalid = false;
+					}
+				}
+				if (due_date) {
+					var circs = util.functional.map_list(retrieve_ids,function(o){return o.circ_id;});
+					for (var i = 0; i < circs.length; i++) {
+						var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
+						if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+					}
+					obj.retrieve();
+				}
+			} catch(E) {
+				obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
+				obj.retrieve();
+			}
+	},
+
+	'items_mark_lost' : function(which) {
+		var obj = this;
+		try {
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			for (var i = 0; i < retrieve_ids.length; i++) {
+				var barcode = retrieve_ids[i].barcode;
+				dump('Mark barcode lost = ' + barcode);
+				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
+				if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+			}
+			obj.retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
+			obj.retrieve();
+		}
+	},
+
+	'items_claimed_returned' : function(which) {
+		var obj = this;
+		try {
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			function check_date(value) {
+				JSAN.use('util.date');
+				try {
+					if (! util.date.check('YYYY-MM-DD',value) ) { 
+						throw('Invalid Date'); 
+					}
+					if ( util.date.formatted_date(new Date(),'%F') == value) { 
+						return true;
+					}
+					if (! util.date.check_past('YYYY-MM-DD',value) ) { 
+						throw('Claims Returned Date cannot be in the future.'); 
+					}
+					return true;
+				} catch(E) {
+					alert(E);
+					return false;
+				}
+			}
+
+			JSAN.use('util.functional');
+			var title = 'Claimed Returned';
+			var value = 'YYYY-MM-DD';
+			var text = 'Enter a claimed returned date for these copies: ' + 
+				util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
+			var backdate; var invalid = true;
+			while(invalid) {
+				backdate = window.prompt(text,value,title);
+				if (backdate) {
+					invalid = ! check_date(backdate);
+				} else {
+					invalid = false;
+				}
+			}
+			alert('backdate = ' + backdate);
+			if (backdate) {
+				var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
+				for (var i = 0; i < barcodes.length; i++) {
+					var robj = obj.network.simple_request(
+						'MARK_ITEM_CLAIM_RETURNED', 
+						[ ses(), { barcode: barcodes[i], backdate: backdate } ]
+					);
+					if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+				}
+				obj.retrieve();
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
+			obj.retrieve();
+		}
+	},
+
+	'items_checkin' : function(which) {
+		var obj = this;
+		try {
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			JSAN.use('circ.util');
+			for (var i = 0; i < retrieve_ids.length; i++) {
+				var barcode = retrieve_ids[i].barcode;
+				dump('Check in barcode = ' + barcode);
+				var robj = circ.util.checkin_via_barcode(
+					ses(), barcode
+				);
+				/* circ.util.checkin_via_barcode handles errors currently */
+			}
+			obj.retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
+			obj.retrieve();
+		}
+	},
+
+	'show_catalog' : function(which) {
+		var obj = this;
+		try {
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			for (var i = 0; i < retrieve_ids.length; i++) {
+				var doc_id = retrieve_ids[i].doc_id;
+				if (!doc_id) {
+					alert(retrieve_ids[i].barcode + ' is not cataloged');
+					continue;
+				}
+				var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + doc_id;
+				var content_params = { 
+					'session' : ses(),
+					'authtime' : ses('authtime'),
+					'opac_url' : opac_url,
+				};
+				xulG.new_tab(
+					xulG.url_prefix(urls.XUL_OPAC_WRAPPER), 
+					{'tab_name':'Retrieving title...'}, 
+					content_params
+				);
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('',E);
+		}
+	},
+
+	'add_billing' : function(which) {
+		var obj = this;
+		try {
+			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			JSAN.use('util.window');
+			var win = new util.window();
+			for (var i = 0; i < retrieve_ids.length; i++) {
+				var circ_id = retrieve_ids[i].circ_id;
+				var w = win.open(
+					urls.XUL_PATRON_BILL_WIZARD
+						+ '?patron_id=' + window.escape(obj.patron_id)
+						+ '&xact_id=' + window.escape( circ_id ),
+					'billwizard',
+					'chrome,resizable,modal'
+				);
+			}
+			obj.retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('',E);
+		}
 	},
 
 	'init_lists' : function() {
@@ -537,6 +531,18 @@ patron.items.prototype = {
 	},
 
 	'on_select2' : function(list) {
+	
+		dump('patron.items.on_select2 list = ' + js2JSON(list) + '\n');
+
+		var obj = this;
+
+		obj.controller.view.cmd_items_claimed_returned2.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_renew2.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_checkin2.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_edit2.setAttribute('disabled','false');
+		obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','false');
+		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','false');
+
 		this.retrieve_ids2 = list;
 	},
 
