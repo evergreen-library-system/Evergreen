@@ -365,6 +365,13 @@ patron.items.prototype = {
 			var row = params.row;
 
 			var funcs = [];
+
+
+			funcs.push(
+				function() {
+					row.my.circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), row.my.circ_id ]);
+				}
+			);
 			
 			if (!row.my.mvr) funcs.push(
 				function() {
@@ -489,16 +496,14 @@ patron.items.prototype = {
 		function gen_list_append(circ_id,which_list) {
 			return function() {
 				try {
-				var checkout = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), circ_id]);
-						//switch( checkout.checkin_time() ? 1 : 0 ) {
-						switch(which_list) {
-							case 1:
-								obj.list2.append( { 'row' : { 'my' : { 'circ' : checkout, } }, } );
-							break;
-							default:
-								obj.list.append( { 'row' : { 'my' : { 'circ' : checkout, } }, } );
-							break;
-						}
+					switch(which_list) {
+						case 1:
+							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+						break;
+						default:
+							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+						break;
+					}
 				} catch(E) {
 					alert(E);
 				}
