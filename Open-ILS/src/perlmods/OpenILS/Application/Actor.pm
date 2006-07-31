@@ -1098,13 +1098,13 @@ __PACKAGE__->register_method(
 	method	=> "patron_adv_search",
 	api_name	=> "open-ils.actor.patron.search.advanced" );
 sub patron_adv_search {
-	my( $self, $client, $auth, $search_hash, $search_limit, $search_sort ) = @_;
+	my( $self, $client, $auth, $search_hash, $search_limit, $search_sort, $include_inactive ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
 	return $U->storagereq(
 		"open-ils.storage.actor.user.crazy_search", 
-		$search_hash, $search_limit, $search_sort);
+		$search_hash, $search_limit, $search_sort, $include_inactive);
 }
 
 
