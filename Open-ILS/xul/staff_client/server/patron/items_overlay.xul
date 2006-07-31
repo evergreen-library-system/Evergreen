@@ -49,7 +49,7 @@
 	</groupbox>
 	<splitter><grippy/></splitter>
 	<groupbox flex="1">
-		<caption label="Lost / Claimed Returned" />
+		<caption label="Lost / Claimed Returned / Long Overdue" />
 		<vbox flex="0">
 			<hbox id="items_top_ui2" />
 		</vbox>

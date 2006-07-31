@@ -478,21 +478,32 @@ patron.items.prototype = {
 		if (window.xulG && window.xulG.checkouts) {
 			obj.checkouts = window.xulG.checkouts;
 		} else {
-			var robj = obj.network.request(
-				api.FM_CIRC_RETRIEVE_VIA_USER.app,
-				api.FM_CIRC_RETRIEVE_VIA_USER.method,
+			obj.checkouts = [];
+			obj.checkouts2 = [];
+			var robj = obj.network.simple_request(
+				'FM_CIRC_RETRIEVE_VIA_USER',
 				[ ses(), obj.patron_id ]
 			);
 			if (typeof robj.ilsevent!='undefined') {
 				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
+			} else {
+				obj.checkouts = obj.checkouts.concat( robj.overdue );
+				obj.checkouts = obj.checkouts.concat( robj.out );
+				obj.checkouts2 = obj.checkouts2.concat( robj.lost );
+				obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
+				obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
 			}
-			obj.checkouts = [];
-			obj.checkouts2 = [];
-			obj.checkouts = obj.checkouts.concat( robj.long_overdue );
-			obj.checkouts = obj.checkouts.concat( robj.overdue );
-			obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
-			obj.checkouts2 = obj.checkouts2.concat( robj.lost );
-			obj.checkouts = obj.checkouts.concat( robj.out );
+			var robj = obj.network.simple_request(
+				'FM_CIRC_IN_WITH_FINES_VIA_USER',
+				[ ses(), obj.patron_id ]
+			);
+			if (typeof robj.ilsevent!='undefined') {
+				obj.error.standard_unexpected_error_alert('Error retrieving circulations.',E);
+			} else {
+				obj.checkouts2 = obj.checkouts2.concat( robj.lost );
+				obj.checkouts2 = obj.checkouts2.concat( robj.claims_returned );
+				obj.checkouts2 = obj.checkouts2.concat( robj.long_overdue );
+			}
 		}
 
 		function gen_list_append(circ_id,which_list) {
