@@ -155,7 +155,7 @@
 								
 			</tbody>
 		</table>
-		<div class='adv_quick_search_submit'>
+		<div id='adv_marc_submit' class='adv_quick_search_submit'>
 			<a style='margin-right: 4px;' class='classic_link' href='javascript:advAddMARC();'>Add Row</a>
 			<a style='margin-left: 4px;' class='classic_link' href='javascript:advMARCRun();'>Submit</a>
 		</div>

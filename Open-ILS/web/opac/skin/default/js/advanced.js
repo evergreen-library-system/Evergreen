@@ -26,7 +26,7 @@ function advAddMARC() {
 	$n(newt, 'advanced.marc.tag').value = "";
 	$n(newt, 'advanced.marc.subfield').value = "";
 	$n(newt, 'advanced.marc.value').value = "";
-	$('adv_marc_search_sidebar').insertBefore(newt, $('adv_sdbar_table').nextSibling);
+	$('adv_marc_search_sidebar').insertBefore(newt, $('adv_marc_submit'));
 }
 
 function advMARCRun() {
