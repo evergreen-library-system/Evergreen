@@ -89,6 +89,7 @@
 		<command id="copy_buckets_export" />
 		<command id="copy_buckets_transfer_to_volume" />
 		<command id="copy_buckets_batch_copy_edit" />
+		<command id="copy_buckets_batch_copy_delete" />
 	</commandset>
 
 	<box id="copy_buckets_main" />

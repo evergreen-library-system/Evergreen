@@ -358,6 +358,48 @@ cat.copy_buckets.prototype = {
 							}
 						}
 					],
+					'copy_buckets_batch_copy_delete' : [
+						['command'],
+						function() {
+							try {
+							
+								JSAN.use('util.widgets'); JSAN.use('util.functional');
+
+								var list = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o)[0]; // acp_id
+									}
+								);
+
+								var copies = util.functional.map_list(
+									list,
+									function (acp_id) {
+										return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
+									}
+								);
+
+								for (var i = 0; i < copies.length; i++) {
+									copies[i].ischanged(1);
+									copies[i].isdeleted(1);
+								}
+
+								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses, copies, true]);
+								if (typeof robj.ilsevent != 'undefined') obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+
+								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
+							} catch(E) {
+								alert( js2JSON(E) );
+							}
+						}
+					],
+
 					'copy_buckets_transfer_to_volume' : [
 						['command'],
 						function() {
