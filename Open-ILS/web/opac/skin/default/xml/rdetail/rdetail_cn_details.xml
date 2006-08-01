@@ -1,10 +1,6 @@
 <table class='hide_me'>
 	<script language='javascript' src='../js/copy_details.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Date.W3CDTF.js'/>
-	<style>
-		.copy_details_table {
-		}
-	</style>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Date.W3CDTF.js'>  </script>
 	<tbody>
 		<tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row' templateRow='1'>
 			<td colspan='10'>
@@ -17,28 +13,36 @@
 								<td width='33%'>Barcode</td>
 								<td>Status</td>
 								<td>Location</td>
-								<td id='age_protect_label' class='hide_me'>Age Hold Protection</td>
-								<td id='create_date_label' class='hide_me'>Create Date</td>
+								<td name='age_protect_label' class='hide_me'>Age Hold Protection</td>
+								<td name='create_date_label' class='hide_me'>Create Date</td>
+								<td name='holdable_label' class='hide_me'>Holdable</td>
 							</tr>
 						</thead>
 						<tbody name='copies_tbody' class='copy_details_table' width='100%'>
+
 							<tr name='copies_row'>
+
 								<td>
 									<span name='barcode'> </span>
-									<a style='padding-left: 6px; color: #804070;' 
-										class='hide_me classic_link' name='details_link'>more info...</a>
-									<a style='padding-left: 6px; color: #804070;' 
-										class='hide_me classic_link' name='less_details_link'>less info</a>
-									<a style='padding-left: 6px; color: #804070;' 
-										class='hide_me classic_link' name='copy_hold_link' href='javascript:void(0);'>place hold</a>
+									<a class='hide_me classic_link copy_more_info' name='details_link'>more info...</a>
+									<a class='hide_me classic_link copy_more_info' name='less_details_link'>less info</a>
+									<a class='hide_me classic_link copy_more_info' name='copy_hold_link' 
+										href='javascript:void(0);'>place hold</a>
 								</td>
-								<td name='status'></td>
-								<td name='location'></td>
+
+								<td name='status'> </td>
+								<td name='location'> </td>
 								<td name='age_protect_value' class='hide_me'>- Disabled -</td>
-								<td name='create_date_value' class='hide_me'/>
+								<td name='create_date_value' class='hide_me'> </td>
+
+								<td name='copy_holdable_td' class='hide_me'>
+									<span name='copy_is_holdable'> </span>
+								</td>
+
 							</tr>
+
 							<tr name='copy_extras_row' class='hide_me'>
-								<td colspan='5'>
+								<td colspan='10'>
 									<table width='100%' class='data_grid'>
 										<tbody name='extras_tbody'>
 											<tr name='extras_row' class='hide_me'>
@@ -47,13 +51,14 @@
 													<span name='cat' class='hide_me'><b>Copy Category</b></span>
 												</td>
 												<td>
-													<span name='key'/> : <span name='value'/>
+													<span name='key'> </span> : <span name='value'> </span>
 												</td>
 											</tr>
 										</tbody>
 									</table>
 								</td>
 							</tr>
+
 						</tbody>
 					</table>
 				</div>
@@ -62,6 +67,8 @@
 	</tbody>
 </table>
 
+<span class='hide_me' id='rdetail.yes'>Yes</span>
+<span class='hide_me' id='rdetail.no'>No</span>
 
 
 <div id='rdetail_print_details' class='hide_me'>
@@ -82,7 +89,7 @@
 					<tr>
 						<td colspan='3' style='background: #E0F0E0;'> </td>
 					</tr>
-					<tr name='cnrow'><td><b>Call Number</b></td><td><b colspan='2' name='cn'/></td></tr>
+					<tr name='cnrow'><td><b>Call Number</b></td><td><b colspan='2' name='cn'></b></td></tr>
 				</tbody>
 			</table>
 		</div>

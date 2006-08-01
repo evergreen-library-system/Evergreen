@@ -20,6 +20,13 @@ var i = cpdCheckExisting(contextRow);
 	goTo('#slot_'+templateRow.id);
 	*/
 
+	if(isXUL()) {
+		/* unhide before we unhide/clone the parent */
+		unHideMe($n(templateRow, 'age_protect_label'));
+		unHideMe($n(templateRow, 'create_date_label'));
+		unHideMe($n(templateRow, 'holdable_label'));
+	}
+
 	unHideMe(templateRow);
 
 	var print = $n(templateRow,'print');
@@ -161,6 +168,13 @@ function cpdDrawCopies(r) {
 	var copytbody	= $n(args.templateRow, 'copies_tbody');
 	var copyrow		= copytbody.removeChild($n(copytbody, 'copies_row'));
 
+	if(isXUL()) {
+		/* unhide before we unhide/clone the parent */
+		unHideMe($n(copyrow, 'age_protect_value'));
+		unHideMe($n(copyrow, 'create_date_value'));
+		unHideMe($n(copyrow, 'copy_holdable_td'));
+	}
+
 	for( var i = 0; i < copies.length; i++ ) {
 		var row = copyrow.cloneNode(true);
 		var copyid = copies[i];
@@ -177,12 +191,13 @@ function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
 
-	r.args.copy = copy;
-
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(copy.location().name()));
+	$n(row, 'status').appendChild(text(copy.status().name()));
 
 	if(isXUL()) {
+
+		/* show the hold link */
 		var l = $n(row, 'copy_hold_link');
 		unHideMe(l);
 		l.onclick = function() {
@@ -194,20 +209,6 @@ function cpdDrawCopy(r) {
 				}
 			);
 		}
-	}
-
-	$n(row, 'status').appendChild(text(copy.status().name()));
-
-	r.args.copyrow = row;
-	cpdShowNotes(copy, r.args)
-	cpdShowStats(copy, r.args);
-
-	if(isXUL()) {
-
-		unHideMe($('age_protect_label'));
-		unHideMe($('create_date_label'));
-		unHideMe($n(row, 'age_protect_value'));
-		unHideMe($n(row, 'create_date_value'));
 
 		if( copy.age_protect() ) 
 			appendClear($n(row, 'age_protect_value'), text(copy.age_protect().name()));
@@ -216,7 +217,24 @@ function cpdDrawCopy(r) {
 		cd = cd.replace(/T.*/, '');
 		$n(row, 'create_date_value').appendChild(text(cd));
 
+		var yes = $('rdetail.yes').innerHTML;
+		var no = $('rdetail.no').innerHTML;
+
+		if( isTrue(copy.holdable()) &&
+				isTrue(copy.location().holdable()) &&
+				isTrue(copy.status().holdable()) ) {
+			$n(row, 'copy_is_holdable').appendChild(text(yes));	
+		} else {
+			$n(row, 'copy_is_holdable').appendChild(text(no));	
+		}
+
 	}
+
+	r.args.copy = copy;
+	r.args.copyrow = row;
+	cpdShowNotes(copy, r.args)
+	cpdShowStats(copy, r.args);
+
 }
 
 function _cpdExtrasInit(args) {

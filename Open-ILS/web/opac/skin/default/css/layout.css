@@ -226,3 +226,5 @@ table { border-collapse: collapse; }
 
 /* ie does not support disabling <option> elements */
 .disabled_option { color: #808080; }
+
+.copy_more_info { padding-left: 6px; color: #804070; }
