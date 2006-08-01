@@ -162,7 +162,7 @@ util.network.prototype = {
 		}
 	},
 
-	'get_new_session' : function(name,xulG) {
+	'get_new_session' : function(name,xulG,text) {
 		var obj = this;
 		try {
 
@@ -172,8 +172,8 @@ util.network.prototype = {
 		window.open(
 			url
 			+ '?login_type=staff'
-			+ '&desc_brief=' + window.escape('Operator Change')
-			+ '&desc_full=' + window.escape('Please enter the credentials for the new login session.  Note that the previous session is still active.'),
+			+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
+			+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
 			'simple_auth' + (new Date()).toString(),
 			'chrome,resizable,modal,width=700,height=500'
 		);
@@ -201,7 +201,7 @@ util.network.prototype = {
 			var robj = req.getResultObject();
 			if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
 
-				if (obj.get_new_session(name)) {
+				if (obj.get_new_session(name,undefined,true)) {
 					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 					params[0] = data.session.key;
 					req = obj._request(app,name,params,null,o_params);
