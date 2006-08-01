@@ -239,14 +239,15 @@ circ.checkin.prototype = {
 			var checkin = circ.util.checkin_via_barcode(
 				ses(), barcode, backdate, auto_print
 			);
-			if (!checkin) return; /* circ.util.checkin handles errors and returns null currently */
+			if (!checkin) return obj.on_failure(); /* circ.util.checkin handles errors and returns null currently */
 			if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
 				|| checkin.ilsevent == -1 /* offline */
 				|| checkin.ilsevent == 1502 /* ASSET_COPY_NOT_FOUND */
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
+				|| checkin.ilsevent == 7009 /* CIRC_CLAIMS_RETURNED */ 
 				|| checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
-				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return;
+				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return obj.on_failure();
 			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
 			obj.list.append(
 				{
