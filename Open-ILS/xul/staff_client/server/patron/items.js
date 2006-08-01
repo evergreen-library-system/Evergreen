@@ -103,7 +103,7 @@ patron.items.prototype = {
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				try {
 					var barcode = retrieve_ids[i].barcode;
-					alert('Renew barcode = ' + barcode);
+					//alert('Renew barcode = ' + barcode);
 					var renew = obj.network.simple_request(
 						'CHECKOUT_RENEW', 
 						[ ses(), { barcode: barcode, patron: obj.patron_id } ],
