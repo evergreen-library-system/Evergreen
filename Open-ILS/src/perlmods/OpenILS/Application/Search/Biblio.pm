@@ -113,6 +113,7 @@ sub record_id_to_mods_slim {
 	}
 	my $mods_list = _records_to_mods( $id );
 	my $mods_obj = $mods_list->[0];
+	return OpenILS::Event->new('BIBLIO_RECORD_ENTRY_NOT_FOUND') unless $mods_obj;
 	return $mods_obj;
 }
 
