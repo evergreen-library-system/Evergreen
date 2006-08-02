@@ -10,6 +10,7 @@ CREATE TABLE permission.perm_list (
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 
+/*
 INSERT INTO permission.perm_list VALUES (-1, 'EVERYTHING', NULL);
 INSERT INTO permission.perm_list VALUES (2, 'OPAC_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (4, 'STAFF_LOGIN', NULL);
@@ -112,16 +113,19 @@ INSERT INTO permission.perm_list VALUES (103, 'CIRC_PERMIT_OVERRIDE', 'Allows a 
 INSERT INTO permission.perm_list VALUES (104, 'COPY_IS_REFERENCE.override', 'Allows a user to override the copy_is_reference event');
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 105);
+*/
 
 CREATE TABLE permission.grp_tree (
-	id		SERIAL	PRIMARY KEY,
-	name		TEXT	NOT NULL UNIQUE,
-	parent		INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT,
-	description	TEXT,
-	perm_interval	INTERVAL DEFAULT '3 years'::interval NOT NULL
+	id			SERIAL	PRIMARY KEY,
+	name			TEXT	NOT NULL UNIQUE,
+	parent			INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT,
+	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
+	description		TEXT,
+	application_perm	TEXT
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
+/*
 INSERT INTO permission.grp_tree VALUES (1, 'Users', NULL, NULL, '3 years');
 INSERT INTO permission.grp_tree VALUES (2, 'Patrons', 1, NULL, '3 years');
 INSERT INTO permission.grp_tree VALUES (3, 'Staff', 1, NULL, '3 years');
@@ -130,6 +134,7 @@ INSERT INTO permission.grp_tree VALUES (5, 'Circulators', 3, NULL, '3 years');
 INSERT INTO permission.grp_tree VALUES (10, 'Local System Administrator', 3, 'System maintenance, configuration, etc.', '3 years');
 
 SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, 11);
+*/
 
 CREATE TABLE permission.grp_perm_map (
 	id		SERIAL	PRIMARY KEY,
@@ -140,6 +145,7 @@ CREATE TABLE permission.grp_perm_map (
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
 );
 
+/*
 INSERT INTO permission.grp_perm_map VALUES (57, 2, 15, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (109, 2, 95, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (1, 1, 2, 0, false);
@@ -251,7 +257,7 @@ INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
 
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 139);
-
+*/
 
 CREATE TABLE permission.usr_perm_map (
 	id		SERIAL	PRIMARY KEY,

@@ -20,10 +20,11 @@ my $cgi = new CGI;
 #-------------------------------------------------------------------------------
 # setup part
 #-------------------------------------------------------------------------------
+my @perms = sort { $a->code cmp $b->code } permission::perm_list->retrieve_all;
 
-my %org_cols = ( qw/id GroupID name Name parent ParentGroup description Description/ );
+my %org_cols = ( qw/id GroupID name Name parent ParentGroup description Description application_perm ApplicationPermission/ );
 
-my @col_display_order = ( qw/id name parent description/ );
+my @col_display_order = ( qw/id name parent description application_perm/ );
 
 if (my $action = $cgi->param('action')) {
 	if ( $action eq 'Update' ) {
@@ -38,7 +39,7 @@ if (my $action = $cgi->param('action')) {
 	} elsif ( $action eq 'Set Permissions' ) {
 		my $grp = permission::grp_tree->retrieve($cgi->param('perms'));
 		my @ids = $cgi->param('permission');
-		for my $perm ( permission::perm_list->retrieve_all ) {
+		for my $perm ( @perms ) {
 			if (my $id = $cgi->param('permission_'.$perm->id) ) {
 				my $p = permission::grp_perm_map->search({perm=>$id,grp=>$grp->id})->next;
 				my $d = $cgi->param("depth_$id");
@@ -219,6 +220,17 @@ if (my $action = $cgi->param('action')) {
 				th($org_cols{description}),
 				td("<input type='text' name='description_$node' value=\"". $node->description() ."\">"),
 			);
+			print Tr(
+				th($org_cols{application_perm}),
+				"<td>".do {
+					my $out = '<select name="application_perm_'.$node.'"><option value="">-- Select One --</option>';
+					$out .= '<option'.do{
+							" selected='selected'" if ($_->code eq $node->application_perm);
+						}.'>'. $_->code .'</option>' for ( sort {$a->code cmp $b->code} @perms ); 
+					$out .= '</select>';
+					$out;
+				}."</td>"
+			);
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
 
@@ -231,7 +243,7 @@ if (my $action = $cgi->param('action')) {
 				"<table class='table_class'>\n".
 				"<tr class='header_class'><th>Permission</th><th>Select</th><th>At Depth</th><th>Grantable</th></tr>";
 
-			for my $perm ( sort {$a->code cmp $b->code} permission::perm_list->retrieve_all ) {
+			for my $perm ( sort {$a->code cmp $b->code} @perms ) {
 				my $grp = $node;
 				my $out = '<select name="depth_'.$perm->id.'"><option value="">-- Select One --</option>';
 				for my $outype ( actor::org_unit_type->retrieve_all ) {
