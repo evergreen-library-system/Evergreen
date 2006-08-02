@@ -55,6 +55,7 @@ CREATE TABLE actor.usr (
 	master_account		BOOL				NOT NULL DEFAULT FALSE,
 	super_user		BOOL				NOT NULL DEFAULT FALSE,
 	barred			BOOL				NOT NULL DEFAULT FALSE,
+	deleted			BOOL				NOT NULL DEFAULT FALSE,
 	usrgroup		SERIAL				NOT NULL,
 	claims_returned_count	INT				NOT NULL DEFAULT 0,
 	credit_forward_balance	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
@@ -130,6 +131,8 @@ CREATE TRIGGER actor_crypt_pw_update_trigger
 CREATE TRIGGER actor_crypt_pw_insert_trigger
 	BEFORE INSERT ON actor.usr FOR EACH ROW
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
+
+CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id;
 
 -- Just so that there is a user...
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou )

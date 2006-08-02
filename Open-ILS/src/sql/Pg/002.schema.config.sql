@@ -60,7 +60,7 @@ COMMENT ON TABLE config.bib_source IS $$
 $$;
 
 
-INSERT INTO config.bib_source (quality, source) VALUES (90, 'OcLC');
+INSERT INTO config.bib_source (quality, source) VALUES (90, 'oclc');
 INSERT INTO config.bib_source (quality, source) VALUES (10, 'System Local');
 INSERT INTO config.bib_source (quality, source, transcendant) VALUES (1, 'Project Gutenberg', TRUE);
 
@@ -153,9 +153,10 @@ INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword'
 CREATE TABLE config.non_cataloged_type (
 	id		SERIAL		PRIMARY KEY,
 	owning_lib	INT		NOT NULL, -- REFERENCES actor.org_unit (id),
-	name		TEXT		NOT NULL UNIQUE,
+	name		TEXT		NOT NULL,
 	circ_duration	INTERVAL	NOT NULL DEFAULT '14 days'::INTERVAL,
-	in_house	BOOL		NOT NULL DEFAULT FALSE
+	in_house	BOOL		NOT NULL DEFAULT FALSE,
+	CONSTRAINT noncat_once_per_lib UNIQUE (owning_lib,name)
 );
 COMMENT ON TABLE config.non_cataloged_type IS $$
 /*
@@ -410,7 +411,7 @@ INSERT INTO config.copy_status (name)			VALUES ('Missing');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('In process','t');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('In transit','t');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('Reshelving','t');
-INSERT INTO config.copy_status (name)			VALUES ('On holds shelf');
+INSERT INTO config.copy_status (name,holdable)		VALUES ('On holds shelf','t');
 INSERT INTO config.copy_status (name,holdable)		VALUES ('On order','t');
 INSERT INTO config.copy_status (name)			VALUES ('ILL');
 INSERT INTO config.copy_status (name)			VALUES ('Cataloging');
@@ -448,9 +449,9 @@ COMMENT ON TABLE config.net_access_level IS $$
  */
 $$;
 
-INSERT INTO config.net_access_level (name) VALUES ('Restricted');
-INSERT INTO config.net_access_level (name) VALUES ('Full');
-INSERT INTO config.net_access_level (name) VALUES ('None');
+INSERT INTO config.net_access_level (name) VALUES ('Filtered');
+INSERT INTO config.net_access_level (name) VALUES ('Unfiltered');
+INSERT INTO config.net_access_level (name) VALUES ('No Access');
 
 CREATE TABLE config.audience_map (
 	code		TEXT	PRIMARY KEY,
