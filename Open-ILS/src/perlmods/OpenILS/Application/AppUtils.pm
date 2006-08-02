@@ -463,6 +463,7 @@ sub fetch_record_by_copy {
 # turns a record object into an mvr (mods) object
 sub record_to_mvr {
 	my( $self, $record ) = @_;
+	return undef unless $record and $record->marc;
 	my $u = OpenILS::Utils::ModsParser->new();
 	$u->start_mods_batch( $record->marc );
 	my $mods = $u->finish_mods_batch();
