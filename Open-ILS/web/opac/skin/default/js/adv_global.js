@@ -138,10 +138,13 @@ function advBuildSearchBlob() {
 		if(!term) continue;
 
 		var string = "";
+
 		if(!searches) searches = {};
+
 		if(searches[stype]) 
 			string = searches[stype].term;
-		else searches[stype] = {};
+		else 
+			searches[stype] = { term : "" };
 
 		switch(contains) {
 			case 'contains' : 
@@ -150,8 +153,8 @@ function advBuildSearchBlob() {
 
 			case 'nocontains' : {
 				var words = term.split(" ");
-					for( var i in words ) 
-						string += " -" + words[i];
+					for( var j in words ) 
+						string += " -" + words[j];
 				}
 				break;
 
