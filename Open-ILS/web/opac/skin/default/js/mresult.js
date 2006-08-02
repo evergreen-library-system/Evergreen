@@ -28,9 +28,6 @@ function mresultDoSearch() {
 
 	if( (getSearches() || getAdvTerm()) && !getTerm() ) {
 		if(getAdvType() == ADVTYPE_MULTI ) mresultCollectAdvIds();
-		/*
-		if(getAdvType() == ADVTYPE_MARC ) mresultCollectAdvMARCIds();
-		*/
 
 	} else {
 		_mresultCollectIds(); 
@@ -39,52 +36,13 @@ function mresultDoSearch() {
 	}
 }
 
-/*
-function mresultLoadCachedSearch() {
-	if( (getOffset() > 0) && (getOffset() < mresultPreCache) ) {
-		var c = JSON2js(cookieManager.read(COOKIE_IDS));
-		if(c) { records = c[0]; ranks = c[1]; }
-	}
-}
-*/
-
-function mresultTryCachedSearch() {
-	/* XXX */
-	return false;
-
-	/*
-	mresultLoadCachedSearch();
-	if(	getOffset() != 0 && records[getOffset()] != null && 
-			records[resultFinalPageIndex()] != null) {
-		runEvt('result', 'hitCountReceived');
-		mresultCollectRecords(); 
-		return true;
-	}
-	return false;
-	*/
-}
-
 function _mresultCollectIds() { 
-	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
 	resultCollectSearchIds(true, SEARCH_MRS, mresultHandleMRIds ); 
 }
 
 function mresultCollectAdvIds() { 
-	if(getOffset() != 0 && mresultTryCachedSearch()) return; 
 	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
 }
-
-/*
-function mresultCollectAdvMARCIds() {
-	if(!mresultTryCachedSearch()) {
-		var form = (getForm() == "all") ? null : getForm();
-		var req = new Request(FETCH_ADV_MARC_MRIDS, 
-			JSON2js(getAdvTerm()), getLocation(), form );
-		req.callback(mresultHandleMRIds);
-		req.send();
-	}
-}
-*/
 
 
 function mresultHandleMRIds(r) {
@@ -112,13 +70,6 @@ function mresultSetRecords(idstruct) {
 		}
 	}
 
-	/*
-	if(getOffset() == 0) {
-		cookieManager.remove(COOKIE_IDS);
-		cookieManager.write(COOKIE_IDS, js2JSON([ records, ranks ]), '+1d' );
-	}
-	*/
-
 	TOPRANK = ranks[getOffset()];
 }
 
@@ -134,9 +85,9 @@ function mresultCollectRecords() {
 
 		req.request.userdata = i++;
 
-		/* wait at most 15 seconds for the mods rec to come back */
+		/* wait at most 10 seconds for the mods rec to come back */
 		/* this needs more testing  */
-		req.request.timeout(15); 
+		req.request.timeout(10); 
 		req.request.abortCallback(
 			function(){
 				recordsHandled++;
