@@ -42,6 +42,9 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
+						if (row.my.ahr.current_copy()) {
+							row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
+						}
 						switch(row.my.ahr.hold_type()) {
 							case 'M' :
 								row.my.mvr = obj.network.request(
@@ -50,15 +53,35 @@ patron.holds.prototype = {
 									[ row.my.ahr.target() ]
 								);
 							break;
-							default:
+							case 'T' :
 								row.my.mvr = obj.network.request(
 									api.MODS_SLIM_RECORD_RETRIEVE.app,
 									api.MODS_SLIM_RECORD_RETRIEVE.method,
 									[ row.my.ahr.target() ]
 								);
-								if (row.my.ahr.current_copy()) {
-									row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
+							break;
+							case 'V' :
+								row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ]);
+								row.my.mvr = obj.network.request(
+									api.MODS_SLIM_RECORD_RETRIEVE.app,
+									api.MODS_SLIM_RECORD_RETRIEVE.method,
+									[ row.my.acn.record() ]
+								);
+							break;
+							case 'C' :
+								if (typeof row.my.acp == 'undefined') {
+									row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ]);
 								}
+								if (typeof row.my.acp.call_number() == 'object') {
+									row.my.acn = my.acp.call_number();
+								} else {
+									row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.acp.call_number() ]);
+								}
+								row.my.mvr = obj.network.request(
+									api.MODS_SLIM_RECORD_RETRIEVE.app,
+									api.MODS_SLIM_RECORD_RETRIEVE.method,
+									[ row.my.acn.record() ]
+								);
 							break;
 						}
 					} catch(E) {
