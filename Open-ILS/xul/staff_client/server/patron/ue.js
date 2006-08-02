@@ -83,20 +83,52 @@ function uEditBuild() {
 		);
 
 	if(patron.isnew()) {
-		if(clone) 
-			uEditClone(clone);
-		else 
-			uEditCreateNewAddr();
-	}
+		if(clone) uEditClone(clone);
+		else uEditCreateNewAddr();
 
-	if(!patron.isnew()) {
+	} else {
+
 		$('ue_barcode').disabled = true;
 		unHideMe($('ue_mark_card_lost'));
 		unHideMe($('ue_reset_pw'));
+		uEditCheckEditPerm();
 	}
 
 	if(PERMS['BAR_PATRON'] == -1) 
 		$('ue_barred').disabled = true;
+}
+
+
+/* if this user does not have permission to put users into
+	the edited users group, they do not have permission to 
+	edit this user */
+function uEditCheckEditPerm() {
+
+	var perm = uEditFindGroupPerm(groupsCache[patron.profile()]);	
+	_debug("editing user with group app perm "+patron.profile()+' : '+
+		groupsCache[patron.profile()].name() +', and perm = ' + perm);
+
+	if(PERMS[perm] != -1) return;
+
+	/* we can edit our own account, but not others in our group */
+	if( patron.id() != USER.id() ){
+		_debug("we are not allowed to edit this user");
+	
+		$('ue_save').disabled = true;
+		$('ue_save_clone').disabled = true;
+	
+		uEditIterateFields(
+			function(f) {
+				if( f && f.widget && f.widget.node )
+					f.widget.node.disabled = true;
+			}	
+		);	
+
+	}
+
+	var node = $('ue_profile').parentNode;
+	node.removeChild($('ue_profile'));
+	node.appendChild(elem('span',null,groupsCache[patron.profile()].name()));
 }
 
 

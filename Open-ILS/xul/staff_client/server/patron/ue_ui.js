@@ -122,9 +122,24 @@ function uEditDrawGroups(tree, depth, selector) {
 		depth = 0;
 	}
 	groupsCache[tree.id()] = tree;
-	insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
+
+	/* if the staff does not have perms to access this group, 
+		remove it from the tree and don't add it's children */
+	var perm = uEditFindGroupPerm(tree);
+	var org = PERMS[perm];
+	if( org == -1 ) return;
+
+	var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
+
 	for( var c in tree.children() ) 
 		uEditDrawGroups( tree.children()[c], depth, selector );
+}
+
+
+function uEditFindGroupPerm(group) {
+	if( group.application_perm() ) 
+		return group.application_perm();
+	return uEditFindGroupPerm(groupsCache[group.parent()]);
 }
 
 
@@ -437,5 +452,7 @@ function uEditDrawNetLevels(netLevels) {
 		}
 	);
 }
+
+
 
 

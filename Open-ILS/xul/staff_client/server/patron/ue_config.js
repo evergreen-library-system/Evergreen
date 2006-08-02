@@ -21,12 +21,19 @@ const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
 
 /* if they don't have these perms, they shouldn't be here */
 var myPerms = [ 
-	/*
-	'CREATE_USER', 
-	'UPDATE_USER', 
-	'CREATE_PATRON_STAT_CAT_ENTRY_MAP',
-	*/
 	'BAR_PATRON',
+	'group_application.user',
+ 	'group_application.user.patron',
+ 	'group_application.user.staff',
+ 	'group_application.user.staff.circ',
+ 	'group_application.user.staff.cat',
+ 	'group_application.user.staff.admin.global_admin',
+ 	'group_application.user.staff.admin.local_admin',
+ 	'group_application.user.staff.admin.lib_manager',
+ 	'group_application.user.staff.cat.cat1',
+ 	'group_application.user.staff.supercat',
+ 	'group_application.user.sip_client',
+ 	'group_application.user.vendor'
 	];
 
 var dataFields;
@@ -340,6 +347,7 @@ function uEditDefineData(patron) {
 				regex		: numRegex,
 				onpostchange : function(field, value) {
 					var type			= groupsCache[value];
+					if(!type) return;
 					var interval	= type.perm_interval();
 
 					/* interval_to_seconds expects 'M' for months, 'm' for minutes */
