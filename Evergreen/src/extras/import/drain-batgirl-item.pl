@@ -35,5 +35,6 @@ while (my $cn = $sth->fetchrow_hashref) {
 }
 
 print "\\.\n";
+print "CREATE INDEX cat_call_idx ON legacy_item (cat_key,call_key);\n";
 
 
