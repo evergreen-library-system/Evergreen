@@ -36,8 +36,8 @@ var i = cpdCheckExisting(contextRow);
 	var mainTbody = $n(templateRow, 'copies_tbody');
 	var extrasRow = mainTbody.removeChild($n(mainTbody, 'copy_extras_row'));
 
-	var req = new Request(FETCH_VOLUME_BY_INFO, callnumber, record.doc_id(), orgid);
-	req.callback(cpdFetchCopies);
+	var req = new Request(FETCH_COPIES_FROM_VOLUME, record.doc_id(), callnumber, orgid);
+	req.callback(cpdDrawCopies);
 
 	req.request.args = { 
 		contextTbody	: contextTbody, /* tbody that holds the contextrow */
@@ -152,6 +152,7 @@ function cpdCheckExisting( contextRow ) {
 	return null;
 }
 
+/*
 function cpdFetchCopies(r) {
 	var args = r.args;
 	args.cn	= r.getResultObject();
@@ -160,6 +161,7 @@ function cpdFetchCopies(r) {
 	req.callback(cpdDrawCopies);
 	req.send();
 }
+*/
 
 function cpdDrawCopies(r) {
 

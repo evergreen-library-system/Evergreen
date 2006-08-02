@@ -551,18 +551,40 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub biblio_mrid_to_modsbatch {
-	my( $self, $client, $mrid ) = @_;
+	my( $self, $client, $mrid, $args) = @_;
 
 	warn "Grabbing mvr for $mrid\n";
 
 	my ($mr, $evt) = _grab_metarecord($mrid);
 	return $evt unless $mr;
 
-	if( my $m = $self->biblio_mrid_check_mvr($client, $mr)) {
-		return $m;
+	my $mvr = $self->biblio_mrid_check_mvr($client, $mr);
+	$mvr = $self->biblio_mrid_make_modsbatch( $client, $mr ) unless $mvr;
+
+	return $mvr unless ref($args);	
+
+	# Here we find the lead record appropriate for the given filters 
+	# and use that for the title and author of the metarecord
+	my $format	= $$args{format};
+	my $org		= $$args{org};
+	my $depth	= $$args{depth};
+
+	return $mvr unless $format or $org or $depth;
+
+	my $method = "open-ils.storage.ordered.metabib.metarecord.records";
+	$method = "$method.staff" if $self->api_name =~ /staff/o; 
+
+	my $rec = $U->storagereq($method, $format, $org, $depth, 1);
+
+	if( my $mods = $U->record_to_mvr($rec) ) {
+
+		$mvr->title($mods->title);
+		$mvr->title($mods->author);
+		$logger->debug("mods_slim updating title and ".
+			"author in mvr with ".$mods->title." : ".$mods->author);
 	}
 
-	return $self->biblio_mrid_make_modsbatch( $client, $mr ); 
+	return $mvr;
 }
 
 # converts a metarecord to an mvr
@@ -1222,6 +1244,20 @@ __PACKAGE__->register_method(
 
 sub fetch_age_protect {
 	return new_editor()->retrieve_all_config_rule_age_hold_protect();
+}
+
+
+__PACKAGE__->register_method(
+	method => 'copies_by_cn_label',
+	api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label',
+);
+
+sub copies_by_cn_label {
+	my( $self, $conn, $record, $label, $circ_lib ) = @_;
+	my $e = new_editor();
+	my $cns = $e->search_asset_call_number({record => $record, label => $label}, {idlist=>1});
+	return [] unless @$cns;
+	return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib}, {idlist=>1});
 }
 
 
