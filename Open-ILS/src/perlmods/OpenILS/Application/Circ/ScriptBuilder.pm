@@ -190,6 +190,14 @@ sub fetch_user_data {
 
 	return undef unless my $patron = $ctx->{patron};
 
+	return OpenILS::Event->new('PATRON_INACTIVE')
+		unless $U->is_true($patron->active);
+
+	$patron->card($e->retrieve_actor_card($patron->card));
+
+	return OpenILS::Event->new('PATRON_CARD_INACTIVE')
+		unless $U->is_true($patron->card->active);
+
 	$patron->home_ou( 
 		$e->retrieve_actor_org_unit($patron->home_ou) ) 
 		unless ref $patron->home_ou;
@@ -215,10 +223,6 @@ sub fetch_user_data {
 	$patron->profile( $GROUP_SET{$patron->profile} )
 		unless ref $patron->profile;
 
-	$patron->card($e->retrieve_actor_card($patron->card));
-
-	return OpenILS::Event->new('PATRON_CARD_INACTIVE')
-		unless $U->is_true($patron->card->active);
 
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
