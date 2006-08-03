@@ -473,6 +473,9 @@
 	<event code='1631' textcode='MONEY_COLLECTIONS_TRACKER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
 	</event>
+	<event code='1632' textcode='CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
 
 
 
