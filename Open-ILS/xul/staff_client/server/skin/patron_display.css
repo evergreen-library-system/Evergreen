@@ -50,7 +50,7 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_HAS_NOTES label.note_indicator { display: inline; color: olive }
 
-.PATRON_INACTIVE .patronNameLarge { background-color: #333333; }
+.PATRON_INACTIVE .patronNameLarge { background-color: #333333; color: white; }
 .PATRON_INACTIVE label.inactive_indicator { display: inline; color: gray; }
 
 .PATRON_EXPIRED .patronNameLarge { background-color: #666666; }

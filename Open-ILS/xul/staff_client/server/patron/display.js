@@ -325,11 +325,35 @@ patron.display.prototype = {
 							function(req) {
 								try {
 									var msg = '';
-									if (patron.alert_message()) msg += patron.alert_message() + '\n';
+									if (patron.alert_message()) msg += '"' + patron.alert_message() + '"\n';
+									//alert('obj.barcode = ' + obj.barcode);
+									if (obj.barcode) {
+										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
+											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
+											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
+												msg += 'Patron retrieved with an INACTIVE barcode.\n';
+											}
+										}
+									}
+									if (get_bool(patron.barred())) msg += 'Patron is BARRED.\n';
+									if (!get_bool(patron.active())) msg += 'Patron is INACTIVE.\n';
+									if (patron.expire_date()) {
+										var now = new Date();
+										now = now.getTime()/1000;
+
+										var expire_parts = patron.expire_date().split('-');
+										expire_parts[1] = expire_parts[1] - 1;
+
+										var expire = new Date();
+										expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
+										expire = expire.getTime()/1000
+
+										if (expire < now) msg += 'Patron is EXPIRED.\n';
+									}
 									var holds = req.getResultObject();
 									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
 									if (msg) {
-										obj.error.yns_alert('"' + msg + '"','Alert Message','OK',null,null,'Check here to confirm this message.');
+										obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('Error showing patron alert and holds availability.',E);
