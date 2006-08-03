@@ -126,7 +126,10 @@ circ.checkout.prototype = {
 								if (r) {
 									count = parseInt(r);
 									if (count > 0) {
-										if (count > 20) {
+										if (count > 99) {
+											obj.error.yns_alert('You tried to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '.  The maximum is 99 per action.','Non-cataloged Circulation','OK',null,null,'Check here to confirm this message.');
+											return;
+										} else if (count > 20) {
 											r = obj.error.yns_alert('Are you sure you want to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '?','Non-cataloged Circulation','Yes','No',null,'Check here to confirm this message.');
 											if (r != 0) return;
 										}
