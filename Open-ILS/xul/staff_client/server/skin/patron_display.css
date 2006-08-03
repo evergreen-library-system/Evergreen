@@ -15,43 +15,48 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_HAS_BILLS .patronNameLarge { background-color: #FF9900; }
 .PATRON_HAS_BILLS label.bill { color: #FF9900; }
-.PATRON_HAS_BILLS label.bill.label { text-decoration: underline; }
+/* .PATRON_HAS_BILLS label.bill.label { text-decoration: underline; } */
 .PATRON_HAS_BILLS label.bill.value { }
 
 .PATRON_HAS_OVERDUES .patronNameLarge { background-color: #FF9900; }
 .PATRON_HAS_OVERDUES label.items_overdue { color: #FF9900; }
-.PATRON_HAS_OVERDUES label.items_overdue.label { text-decoration: underline; }
+/* .PATRON_HAS_OVERDUES label.items_overdue.label { text-decoration: underline; } */
 .PATRON_HAS_OVERDUES label.items_overdue.value { }
 
-.PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { background-color: purple; }
+.PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { background-color: purple; color: white; }
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
-.PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; }
+/* .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.value { }
 
-.PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { background-color: purple; }
+.PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { background-color: purple; color: white; }
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue { color: purple; }
-.PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.label { text-decoration: underline; }
+/* .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.value { }
 
-.PATRON_EXCEEDS_FINES .patronNameLarge { background-color: purple; }
+.PATRON_EXCEEDS_FINES .patronNameLarge { background-color: purple; color: white; }
 .PATRON_EXCEEDS_FINES label.bill { color: purple; }
-.PATRON_EXCEEDS_FINES label.bill.label { text-decoration: underline; }
+/* .PATRON_EXCEEDS_FINES label.bill.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_FINES label.bill.value { }
 
-.PATRON_AGE_LT_18 .dob { text-decoration: underline; color: purple; }
-.PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; text-decoration: underline; color: purple; }
+.PATRON_AGE_LT_18 .dob { color: purple; }
+.PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; color: purple; }
+
+.PATRON_HAS_INVALID_DOB .dob { color: purple; }
+.PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
 
 .PATRON_HAS_ALERT .patronNameLarge, 
 .PATRON_HAS_ALERT groupbox.alert { background-color: yellow; }
-.PATRON_HAS_ALERT label.alert_indicator { display: inline; text-decoration: underline; color: olive }
+.PATRON_HAS_ALERT label.alert_indicator { display: inline; color: olive }
+
+.PATRON_HAS_NOTES label.note_indicator { display: inline; color: olive }
 
 .PATRON_INACTIVE .patronNameLarge { background-color: #333333; }
-.PATRON_INACTIVE label.inactive_indicator { display: inline; text-decoration: underline; color: gray; }
+.PATRON_INACTIVE label.inactive_indicator { display: inline; color: gray; }
 
 .PATRON_EXPIRED .patronNameLarge { background-color: #666666; }
-.PATRON_EXPIRED label.expired_indicator { display: inline; text-decoration: underline; color: fuchsia; }
+.PATRON_EXPIRED label.expired_indicator { display: inline; color: fuchsia; }
 
 .PATRON_BARRED .patronNameLarge { background-color: red; }
-.PATRON_BARRED label.barred_indicator { display: inline; text-decoration: underline; color: red; }
+.PATRON_BARRED label.barred_indicator { display: inline; color: red; }
 
 

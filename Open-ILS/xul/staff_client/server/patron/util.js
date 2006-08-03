@@ -424,6 +424,10 @@ patron.util.set_penalty_css = function(patron) {
 			var co = req.getResultObject();
 			if (co.overdue > 0 || co.long_overdue > 0) addCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
 		});
+		net.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : patron.id() } ], function(req) {
+			var notes = req.getResultObject();
+			if (notes.length > 0) addCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+		});
 
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.last_patron = patron.id(); data.stash('last_patron');
@@ -464,33 +468,36 @@ patron.util.set_penalty_css = function(patron) {
 
 		if (expire < now) addCSSClass(document.documentElement,'PATRON_EXPIRED');
 
-		var age_parts = patron.dob().substr(0,10).split('-');
-		age_parts[1] = age_parts[1] - 1;
+		if (patron.dob()) {
+			var age_parts = patron.dob().substr(0,10).split('-');
+			age_parts[1] = age_parts[1] - 1;
 
-		var born = new Date();
-		born.setFullYear(age_parts[0], age_parts[1], age_parts[2]);
-		born = born.getTime()/1000
+			var born = new Date();
+			born.setFullYear(age_parts[0], age_parts[1], age_parts[2]);
+			born = born.getTime()/1000
 
-		var patron_age = now - born;
-		var years_old = parseInt(patron_age / TIME.year);
+			var patron_age = now - born;
+			var years_old = parseInt(patron_age / TIME.year);
 
-		addCSSClass(document.documentElement,'PATRON_AGE_IS_' + years_old);
+			addCSSClass(document.documentElement,'PATRON_AGE_IS_' + years_old);
 
-		if ( years_old >= 65 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_65');
-		if ( years_old < 65 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_65');
+			if ( years_old >= 65 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_65');
+			if ( years_old < 65 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_65');
 		
-		if ( years_old >= 24 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_24');
-		if ( years_old < 24 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_24');
+			if ( years_old >= 24 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_24');
+			if ( years_old < 24 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_24');
+			
+			if ( years_old >= 21 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_21');
+			if ( years_old < 21 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_21');
 		
-		if ( years_old >= 21 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_21');
-		if ( years_old < 21 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_21');
+			if ( years_old >= 18 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_18');
+			if ( years_old < 18 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_18');
 		
-		if ( years_old >= 18 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_18');
-		if ( years_old < 18 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_18');
-		
-		if ( years_old >= 13 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_13');
-		if ( years_old < 13 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_13');
-		
+			if ( years_old >= 13 ) addCSSClass(document.documentElement,'PATRON_AGE_GE_13');
+			if ( years_old < 13 )  addCSSClass(document.documentElement,'PATRON_AGE_LT_13');
+		} else {
+			addCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+		}
 
 	} catch(E) {
 		dump('patron.util.set_penalty_css: ' + E + '\n');
