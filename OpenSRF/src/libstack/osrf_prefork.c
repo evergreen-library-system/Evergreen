@@ -120,9 +120,9 @@ void osrf_prefork_register_routers( char* appname ) {
 	osrfStringArrayFree(arr);
 }
 
-void prefork_child_init_hook(prefork_child* child) {
+int prefork_child_init_hook(prefork_child* child) {
 
-	if(!child) return;
+	if(!child) return -1;
 	osrfLogDebug( OSRF_LOG_MARK, "Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
 
@@ -133,7 +133,7 @@ void prefork_child_init_hook(prefork_child* child) {
 	if(!osrf_system_bootstrap_client_resc( NULL, NULL, resc)) {
 		osrfLogError( OSRF_LOG_MARK, "Unable to bootstrap client for osrf_prefork_run()");
 		free(resc);
-		return;
+		return -1;
 	}
 
 	free(resc);
@@ -142,9 +142,11 @@ void prefork_child_init_hook(prefork_child* child) {
 		osrfLogDebug(OSRF_LOG_MARK, "Prefork child_init succeeded\n");
 	} else {
 		osrfLogError(OSRF_LOG_MARK, "Prefork child_init failed\n");
+		return -1;
 	}
 
 	set_proc_title( "OpenSRF Drone [%s]", child->appname );
+	return 0;
 }
 
 void prefork_child_process_request(prefork_child* child, char* data) {
@@ -287,7 +289,11 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 		close( child->read_status_fd );
 
 		/* do the initing */
-		prefork_child_init_hook(child);
+		if( prefork_child_init_hook(child) == -1 ) {
+			osrfLogError(OSRF_LOG_MARK, 
+				"Forker child going away because we could not connect to OpenSRF...");
+			exit(1);
+		}
 
 		prefork_child_wait( child );
 		exit(0); /* just to be sure */
