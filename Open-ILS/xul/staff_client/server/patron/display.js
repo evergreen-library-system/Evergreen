@@ -91,6 +91,27 @@ patron.display.prototype = {
 							obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 							obj.left_deck.node.selectedIndex = 0;
 							obj.controller.view.patron_name.setAttribute('value','No Patron Selected');
+							removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
+							removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
+							removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+							removeCSSClass(document.documentElement,'NO_PENALTIES');
+							removeCSSClass(document.documentElement,'ONE_PENALTY');
+							removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
+							removeCSSClass(document.documentElement,'PATRON_HAS_ALERT');
+							removeCSSClass(document.documentElement,'PATRON_BARRED');
+							removeCSSClass(document.documentElement,'PATRON_INACTIVE');
+							removeCSSClass(document.documentElement,'PATRON_EXPIRED');
+							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_65');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_24');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_24');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_21');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_21');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_18');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_18');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_13');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_13');
 						}
 					],
 					'cmd_patron_refresh' : [
@@ -416,6 +437,8 @@ patron.display.prototype = {
 							{},
 							{
 								'on_select' : function(list) {
+									if (!list) return;
+									if (list.length < 1) return;
 									obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
 									obj.controller.view.cmd_search_form.setAttribute('disabled','false');
 									obj.retrieve_ids = list;
