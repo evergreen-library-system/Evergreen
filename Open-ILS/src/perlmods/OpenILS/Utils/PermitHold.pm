@@ -28,7 +28,7 @@ sub permit_copy_hold {
 			requestor	=> $$params{requestor},
 			title			=> $$params{title},
 			volume		=> $$params{volume},
-			titleDescriptor	=> $$params{title_descriptor},
+			flesh_age_protect => 1,
 			_direct	=> {
 				requestLib	=> $$params{request_lib},
 				pickupLib	=> $$params{pickup_lib},
