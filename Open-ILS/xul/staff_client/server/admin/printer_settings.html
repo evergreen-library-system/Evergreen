@@ -1,0 +1,12 @@
+<html><head>
+	<script type="text/javascript" src="/opac/common/js/JSON.js" />
+	<script type="text/javascript" src="/xul/server/OpenILS/global_utils.js"></script>
+	<script type="text/javascript" src="/xul/server/main/constants.js"></script>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
+	<script type="text/javascript" src="printer_settings.js"></script>
+</head><body onload="try { my_init(); } catch(E) { alert(E); }">
+	<iframe id="sample" src="printer_settings.txt"></iframe><br />
+	<button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">Set Default Printer and Print Test Page</button>
+	<button onclick="try { g.page_settings(); } catch(E) { alert(E); }">Page Settings</button><br />
+</body></html>
+

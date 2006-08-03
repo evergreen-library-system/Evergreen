@@ -271,24 +271,35 @@ util.print.prototype = {
 			this.error.sdump('D_PRINT','webBrowserPrint = ' + webBrowserPrint);
 			if (webBrowserPrint) {
 				var gPrintSettings = obj.GetPrintSettings();
+				//obj.error.standard_unexpected_error_alert('debugging printer settings #1',gPrintSettings);
+				//var s = '1: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
 				if (silent) gPrintSettings.printSilent = true;
 				else gPrintSettings.printSilent = false;
+				//alert('silent = ' + silent + ' printSilent = ' + gPrintSettings.printSilent);
 				if (params) {
+					/* They can set these now in Local Admin */
+					/*
 					gPrintSettings.marginTop = 0;
 					gPrintSettings.marginLeft = 0;
 					gPrintSettings.marginBottom = 0;
 					gPrintSettings.marginRight = 0;
+					*/
 					if (params.marginLeft) gPrintSettings.marginLeft = params.marginLeft;
 				}
+				/*
 				gPrintSettings.headerStrLeft = '';
 				gPrintSettings.headerStrCenter = '';
 				gPrintSettings.headerStrRight = '';
 				gPrintSettings.footerStrLeft = '';
 				gPrintSettings.footerStrCenter = '';
 				gPrintSettings.footerStrRight = '';
+				*/
 				//this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 				webBrowserPrint.print(gPrintSettings, null);
+				//var s = '2: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
+
+				/* This isn't working for kInitSavePageData, so we're going to save gPrintSettings ourselves from the local admin screen */
 				/*
 				if (this.gPrintSettingsAreGlobal && this.gSavePrintSettings) {
 					var PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"]
@@ -297,44 +308,50 @@ util.print.prototype = {
 					PSSVC.savePrintSettingsToPrefs( gPrintSettings, false, gPrintSettings.kInitSavePrinterName);
 				}
 				*/
+				//var s = '3: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
+				//obj.error.standard_unexpected_error_alert('debugging printer settings #3',gPrintSettings);
 				//this.error.sdump('D_PRINT','gPrintSettings 2 = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
 				//alert('Should be printing\n');
 				this.error.sdump('D_PRINT','Should be printing\n');
 			} else {
 				//alert('Should not be printing\n');
-				this.error.sdump('D_PRINT','Should not be printing\n');
+				this.error.sdump('D_ERROR','Should not be printing\n');
 			}
 		} catch (e) {
 			//alert('Probably not printing: ' + e);
 			// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 			// causing an exception to be thrown which we catch here.
-			// Unfortunately this will also consume helpful failures, so add a
-			this.error.sdump('D_PRINT','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
-			// if you need to debug
+			// Unfortunately this will also consume helpful failures
+			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
 		}
 
 	},
 
 	'GetPrintSettings' : function() {
 		try {
+			//alert('entering GetPrintSettings');
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var pref = Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefBranch);
+			//alert('pref = ' + pref);
 			if (pref) {
 				this.gPrintSettingsAreGlobal = pref.getBoolPref("print.use_global_printsettings", false);
 				this.gSavePrintSettings = pref.getBoolPref("print.save_print_settings", false);
+				//alert('gPrintSettingsAreGlobal = ' + this.gPrintSettingsAreGlobal + '  gSavePrintSettings = ' + this.gSavePrintSettings);
 			}
  
 			var printService = Components.classes["@mozilla.org/gfx/printsettings-service;1"]
 				.getService(Components.interfaces.nsIPrintSettingsService);
 			if (this.gPrintSettingsAreGlobal) {
 				this.gPrintSettings = printService.globalPrintSettings;
+				//alert('called setPrinterDefaultsForSelectedPrinter');
 				this.setPrinterDefaultsForSelectedPrinter(printService);
 			} else {
 				this.gPrintSettings = printService.newPrintSettings;
+				//alert('used printService.newPrintSettings');
 			}
 		} catch (e) {
-			this.error.sdump('D_PRINT',"GetPrintSettings() "+e+"\n");
+			this.error.sdump('D_ERROR',"GetPrintSettings() "+e+"\n");
 			//alert("GetPrintSettings() "+e+"\n");
 		}
  
@@ -346,17 +363,70 @@ util.print.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			if (this.gPrintSettings.printerName == "") {
 				this.gPrintSettings.printerName = aPrintService.defaultPrinterName;
+				//alert('used .defaultPrinterName');
 			}
+			//alert('printerName = ' + this.gPrintSettings.printerName);
 	 
 			// First get any defaults from the printer 
 			aPrintService.initPrintSettingsFromPrinter(this.gPrintSettings.printerName, this.gPrintSettings);
 	 
 			// now augment them with any values from last time
 			aPrintService.initPrintSettingsFromPrefs(this.gPrintSettings, true, this.gPrintSettings.kInitSaveAll);
+
+			// now augment from our own saved settings if they exist
+			this.load_settings();
+
 		} catch(E) {
-			this.error.sdump('D_PRINT',"setPrinterDefaultsForSelectedPrinter() "+E+"\n");
+			this.error.sdump('D_ERROR',"setPrinterDefaultsForSelectedPrinter() "+E+"\n");
 		}
-	}
+	},
+
+	'page_settings' : function() {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			this.GetPrintSettings();
+			var PO = Components.classes["@mozilla.org/gfx/printsettings-service;1"].getService(Components.interfaces.nsIPrintOptions);
+			PO.ShowPrintSetupDialog(this.gPrintSettings);
+		} catch(E) {
+			this.error.standard_unexpected_error_alert("page_settings()",E);
+		}
+	},
+
+	'load_settings' : function() {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
+			if (file._file.exists()) {
+				temp = file.get_object(); file.close();
+				for (var i in temp) {
+					this.gPrintSettings[i] = temp[i];
+				}
+			} else {
+				this.gPrintSettings.marginTop = 0;
+				this.gPrintSettings.marginLeft = 0;
+				this.gPrintSettings.marginBottom = 0;
+				this.gPrintSettings.marginRight = 0;
+				this.gPrintSettings.headerStrLeft = '';
+				this.gPrintSettings.headerStrCenter = '';
+				this.gPrintSettings.headerStrRight = '';
+				this.gPrintSettings.footerStrLeft = '';
+				this.gPrintSettings.footerStrCenter = '';
+				this.gPrintSettings.footerStrRight = '';
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert("load_settings()",E);
+		}
+	},
+
+	'save_settings' : function() {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
+			file.set_object(this.gPrintSettings); file.close();
+		} catch(E) {
+			this.error.standard_unexpected_error_alert("save_settings()",E);
+		}
+	},
 }
 
 dump('exiting util/print.js\n');
