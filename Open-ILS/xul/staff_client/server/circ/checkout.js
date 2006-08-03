@@ -171,8 +171,10 @@ circ.checkout.prototype = {
 										xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{}); 
 									});
 								} else {
-									obj.list.clear();
-									xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+									obj.print(false,function() {
+										obj.list.clear();
+										xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+									});
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('cmd_checkout_done',E);
