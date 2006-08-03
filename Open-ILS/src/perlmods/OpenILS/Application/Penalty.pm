@@ -9,6 +9,7 @@ use OpenILS::Application::Circ::ScriptBuilder;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use base 'OpenSRF::Application';
 
 my $U = "OpenILS::Application::AppUtils";
@@ -122,14 +123,13 @@ sub update_patron_penalties {
 	my $penalties = $args{penalties};
 	my $pid = $patron->id;
 
-	$logger->debug("updating penalties for patron $pid => @$penalties");
 
-	my $session   = $U->start_db_session();
+	$logger->debug("updating penalties for patron $pid => @$penalties");
+	my $editor = new_editor(xact =>1);
+
 
 	# - fetch the current penalties
-	my $existing = $session->request(
-		'open-ils.storage.direct.actor.'.
-		'user_standing_penalty.search.usr.atomic', $pid )->gather(1);
+	my $existing = $editor->search_actor_user_standing_penalty({usr=>$pid});
 
 	my @types;
 	push( @types, $_->penalty_type ) for @$existing;
@@ -145,9 +145,8 @@ sub update_patron_penalties {
 			$logger->activity("penalty: removing user penalty ".
 				$e->penalty_type . " from user $pid");
 
-			my $s = $session->request(
-				'open-ils.storage.direct.actor.user_standing_penalty.delete', $e->id )->gather(1);
-			return $U->DB_UPDATE_FAILED($e) unless defined($s);
+			$editor->delete_actor_user_standing_penalty($e)
+				or return $editor->event;
 		}
 	}
 
@@ -161,13 +160,12 @@ sub update_patron_penalties {
 			$newp->penalty_type( $p );
 			$newp->usr( $pid );
 
-			my $s = $session->request(
-				'open-ils.storage.direct.actor.user_standing_penalty.create', $newp )->gather(1);
-			return $U->DB_UPDATE_FAILED($p) unless $s;
+			$editor->create_actor_user_standing_penalty($newp)
+				or return $editor->event;
 		}
 	}
 	
-	$U->commit_db_session($session);
+	$editor->commit;
 	return undef;
 }
 
