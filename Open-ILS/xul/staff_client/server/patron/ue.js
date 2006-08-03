@@ -385,21 +385,26 @@ function uEditGetErrorStrings() {
 
 	/* munge up something for all of the required surveys 
 		(which are not registered with the fields) */
-	var rows = $('ue_survey_table').getElementsByTagName('tr');
 	if( patron.isnew() ) {
-		for( var r in rows ) {
-	
-			var row = rows[r];
-			var sel = $n(row, 'ue_survey_answer');
-			if(!sel) continue;
-			var qstn = row.getAttribute('question');
-	
-			if(qstn) {
-				qstn		= surveyQuestionsCache[qstn];
-				survey	= surveysCache[qstn.survey()];
-				var val	= getSelectorVal(sel);
-				if(!val && isTrue(survey.required()))
-					errors.push($('ue_bad_survey').innerHTML + ' : ' + qstn.question());
+		var sel = $('ue_survey_table');
+
+		if( sel ) {
+			var rows = sel.getElementsByTagName('tr');
+
+			for( var r in rows ) {
+		
+				var row = rows[r];
+				var sel = $n(row, 'ue_survey_answer');
+				if(!sel) continue;
+				var qstn = row.getAttribute('question');
+		
+				if(qstn) {
+					qstn		= surveyQuestionsCache[qstn];
+					survey	= surveysCache[qstn.survey()];
+					var val	= getSelectorVal(sel);
+					if(!val && isTrue(survey.required()))
+						errors.push($('ue_bad_survey').innerHTML + ' : ' + qstn.question());
+				}
 			}
 		}
 	}
