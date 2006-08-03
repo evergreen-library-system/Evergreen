@@ -411,7 +411,7 @@ sub copy_proximity {
 
 	$cp = asset::copy->retrieve($cp);
 
-	return unless $copy;
+	return unless $cp;
 	my $ol = $cp->circ_lib;
 
 	$key = "$ol|$org";
