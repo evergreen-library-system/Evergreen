@@ -94,7 +94,7 @@ function _holdsUpdateEditHold() {
 		$('holds_enable_phone').checked = false;
 	}
 
-	if(hold.email_notify()) {
+	if(isTrue(hold.email_notify())) {
 		$('holds_enable_email').checked = true;
 
 	} else {
