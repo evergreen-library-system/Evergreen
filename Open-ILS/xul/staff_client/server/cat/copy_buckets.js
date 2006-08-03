@@ -306,6 +306,8 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
+
+								obj.list2.select_all();
 							
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
 
@@ -363,6 +365,8 @@ cat.copy_buckets.prototype = {
 						function() {
 							try {
 							
+								obj.list2.select_all();
+
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
 
 								var list = util.functional.map_list(
@@ -404,6 +408,8 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
+								obj.list2.select_all();
+
 								// FM_ACN_RETRIEVE
 								obj.data.stash_retrieve();
 								if (!obj.data.marked_volume) {
@@ -496,6 +502,7 @@ cat.copy_buckets.prototype = {
 						['command'],
 						function() {
 							try {
+								obj.list2.select_all();
 								JSAN.use('util.functional');
 								var barcodes = util.functional.map_list(
 									obj.list2.dump_retrieve_ids(),

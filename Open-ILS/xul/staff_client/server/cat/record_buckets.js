@@ -320,6 +320,7 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() {
 							try {
+								obj.list2.select_all();
 								obj.data.stash_retrieve();
 								JSAN.use('util.functional');
 
@@ -409,6 +410,7 @@ cat.record_buckets.prototype = {
 						['command'],
 						function() {
 							try {
+								obj.list2.select_all();
 								JSAN.use('util.functional');
 								var docids = util.functional.map_list(
 									obj.list2.dump_retrieve_ids(),
