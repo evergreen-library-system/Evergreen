@@ -111,9 +111,34 @@
 		}
 
 		function build_pgt_list() {
+			var list = []; var added = {};
+
+			function walk(n) {
+				if (
+					(n.application_perm() == 'group_application.user.patron') ||
+					(n.application_perm() == null) ||
+					(n.application_perm() == '')
+				) {
+					if (typeof added[n.id()] == 'undefined') {
+						list.push(n); added[n.id()] = true;
+						var children = n.children();
+						if (children) for (var i = 0; i < children.length; i++) {
+							walk(children[i]);
+						}
+					}
+				} else if (n.parent() == null) {
+					var children = n.children();
+					if (children) for (var i = 0; i < children.length; i++) {
+						walk(children[i]);
+					}
+				}
+			}
+
+			walk(g.data.tree.pgt);
+
 			return [
 				util.functional.map_list( 
-					g.data.list.pgt,
+					list,
 					function(obj) { return [ 
 						obj.description() ? obj.name() + ' : ' + obj.description() : obj.name(), 
 						obj.id() 

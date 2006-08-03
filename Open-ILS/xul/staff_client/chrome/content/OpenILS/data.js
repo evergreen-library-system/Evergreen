@@ -390,6 +390,15 @@ OpenILS.data.prototype = {
 			}
 		);
 
+		// The previous pgt call returned a tree, not a list or hash.
+		this.chain.push(
+			function () {
+				obj.tree.pgt = obj.list.pgt;
+				obj.list.pgt = util.fm_utils.flatten_ou_branch( obj.tree.pgt );
+				obj.hash.pgt = util.functional.convert_object_list_to_hash( obj.list.pgt );
+			}
+		);
+
 		// Do this after we get the user object
 		this.chain.push(
 

@@ -106,7 +106,7 @@ const api = {
 	'FM_MOBTS_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions' },
 	'FM_MOBTS_TOTAL_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.total' },
 	'FM_MOBTS_COUNT_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.count' },
-	'FM_PGT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.retrieve' },
+	'FM_PGT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.groups.tree.retrieve' },
 	'MARC_HTML_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.html' },
 	'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_class' },
 	'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_service' },
