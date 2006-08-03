@@ -164,6 +164,7 @@ util.widgets.remove_children = function() {
 }
 
 util.widgets.disable_accesskeys_in_node_and_children = function( node ) {
+	return; /* what was I doing here? */
 	if (node.getAttribute('accesskey')) {
 		node.setAttribute('oldaccesskey', node.getAttribute('accesskey'));
 		node.setAttribute('accesskey',''); node.accessKey = '';
@@ -175,6 +176,7 @@ util.widgets.disable_accesskeys_in_node_and_children = function( node ) {
 }
 
 util.widgets.enable_accesskeys_in_node_and_children = function( node ) {
+	return; /* what was I doing here? */
 	if (node.getAttribute('oldaccesskey')) {
 		node.setAttribute('accesskey', node.getAttribute('oldaccesskey'));
 		node.accessKey = node.getAttribute('oldaccesskey'); 
