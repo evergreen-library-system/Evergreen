@@ -98,6 +98,7 @@
 
 
 <hbox id="items_bottom_ui" flex="1">
+	<button id="noncat" label="Show Non-Cataloged Circulations in List Above" command="cmd_show_noncats" accesskey="N"/>
 	<spacer flex="1"/>
 	<button id="items_print" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print" accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
 </hbox>

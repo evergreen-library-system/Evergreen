@@ -74,6 +74,8 @@
 		<command id="cmd_show_catalog" />
 		<command id="cmd_add_billing" />
 		
+		<command id="cmd_show_noncats" />
+
 		<command id="cmd_items_print2" />
 		<command id="cmd_items_renew2" />
 		<command id="cmd_items_claimed_returned2" />

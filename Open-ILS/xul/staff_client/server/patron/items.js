@@ -40,6 +40,7 @@ patron.items.prototype = {
 					'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
 					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1); } ],
 					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2); } ],
+					'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ],
 				}
 			}
 		);
@@ -60,6 +61,52 @@ patron.items.prototype = {
 		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','true');
 	},
 
+	'show_noncats' : function() {
+		var obj = this; var checkout = {};
+		try {
+			var robj = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_USER',[ ses(), obj.patron_id ]);
+			if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+			for (var ii = 0; ii < robj.length; ii++) {
+				try {
+					var nc_circ = obj.network.simple_request('FM_ANCC_RETRIEVE_VIA_ID',[ ses(), robj[ii] ]);
+					if (typeof nc_circ.ilsevent != 'undefined') throw(nc_circ);
+					var fake_circ = new aoc();
+					fake_circ.circ_lib( nc_circ.circ_lib() );
+					fake_circ.circ_staff( nc_circ.staff() );
+					fake_circ.usr( nc_circ.patron() );
+					fake_circ.circ_staff( nc_circ.staff() );
+					fake_circ.circ_lib( nc_circ.circ_lib() );
+					fake_circ.xact_start( nc_circ.circ_time() );
+					fake_circ.renewal_remaining(0);
+					fake_circ.stop_fines('Non-Cataloged');
+						
+					JSAN.use('util.date');
+					var c = nc_circ.circ_time();
+					var d = c == "now" ? new Date() : util.date.db_date2Date( c );
+					var t = obj.data.hash.cnct[ nc_circ.item_type() ];
+					var cd = t.circ_duration() || "14 days";
+					var i = util.date.interval_to_seconds( cd ) * 1000;
+					d.setTime( Date.parse(d) + i );
+					fake_circ.due_date( util.date.formatted_date(d,'%F') );
+	
+					var fake_record = new mvr();
+					fake_record.title( obj.data.hash.cnct[ nc_circ.item_type() ].name());
+	
+					var fake_copy = new acp();
+					fake_copy.barcode( '' );
+
+					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, } );
+
+				} catch(F) {
+					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii],F);
+				}
+			}
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error showing NonCat circulations',E);
+		}
+	},
 
 	'items_print' : function(which) {
 		var obj = this;
@@ -388,8 +435,12 @@ patron.items.prototype = {
 		function retrieve_row(params) {
 			var row = params.row;
 
-			var funcs = [];
+			if (!row.my.circ_id) {
+				if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+				return row;
+			}
 
+			var funcs = [];
 
 			funcs.push(
 				function() {
