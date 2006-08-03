@@ -592,7 +592,7 @@ sub biblio_record_record_metadata {
 
 	return [] unless $ids and @$ids;
 
-	my $editor = OpenILS::Utils::Editor->new(authtoken => $authtoken);
+	my $editor = new_editor(authtoken => $authtoken);
 	return $editor->event unless $editor->checkauth;
 	return $editor->event unless $editor->allowed('VIEW_USER');
 
@@ -829,7 +829,7 @@ sub fleshed_copy_update {
 	return 1 unless ref $copies;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
-	my $editor = OpenILS::Utils::Editor->new(requestor => $reqr, xact => 1);
+	my $editor = new_editor(requestor => $reqr, xact => 1);
 	my $override = $self->api_name =~ /override/;
 	$evt = update_fleshed_copies($editor, $override, undef, $copies, $delete_stats);
 	return $evt if $evt;
@@ -856,7 +856,7 @@ sub merge {
 	my( $self, $conn, $auth, $master, $records ) = @_;
 	my( $reqr, $evt ) = $U->checkses($auth);
 	return $evt if $evt;
-	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
+	my $editor = new_editor( requestor => $reqr, xact => 1 );
 	my $v = OpenILS::Application::Cat::Merge::merge_records($editor, $master, $records);
 	return $v if $v;
 	$editor->finish;
@@ -902,7 +902,7 @@ sub fleshed_volume_update {
 	return $evt if $evt;
 
 	my $override = ($self->api_name =~ /override/);
-	my $editor = OpenILS::Utils::Editor->new( requestor => $reqr, xact => 1 );
+	my $editor = new_editor( requestor => $reqr, xact => 1 );
 
 	for my $vol (@$volumes) {
 		$logger->info("vol-update: investigating volume ".$vol->id);
