@@ -137,6 +137,7 @@ function uEditDrawGroups(tree, depth, selector) {
 
 
 function uEditFindGroupPerm(group) {
+	if(!group) return null;
 	if( group.application_perm() ) 
 		return group.application_perm();
 	return uEditFindGroupPerm(groupsCache[group.parent()]);
