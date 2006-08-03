@@ -79,7 +79,6 @@ sub build_runner {
 	$runner->insert( "$evt.volume",		$ctx->{volume}, 1);
 	$runner->insert( "$evt.title",		$ctx->{title}, 1);
 	$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
-	#$runner->insert( "$evt.titleDescriptor", $ctx->{titleDescriptor}, 1);
 
 	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut}, 1 );
 	$runner->insert( "$evt.patronOverdueCount", $ctx->{patronOverdue}, 1 );
@@ -142,15 +141,9 @@ sub fetch_bib_data {
 	$ctx->{title} = $e->retrieve_biblio_record_entry(
 		$ctx->{volume}->record) or return $e->event;
 
-
-#	if(!$ctx->{titleDescriptor}) {
-#		$ctx->{titleDescriptor} = $e->search_metabib_record_descriptor( 
-#			{ record => $ctx->{title}->id }) or return $e->event;
-#
-#		$ctx->{titleDescriptor} = $ctx->{titleDescriptor}->[0];
-#	}
-
-	#insert_copy_method();	
+	$copy->age_protect(
+		$e->retrieve_config_rules_age_hold_protect($copy->age_protect))
+		if $ctx->{flesh_age_protect} and $copy->age_protect;
 
 	return undef;
 }
