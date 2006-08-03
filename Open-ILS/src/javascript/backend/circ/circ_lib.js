@@ -55,7 +55,6 @@ if( title && title.marc )
 
 
 
-
 /* copy the group tree into some other useful data structures */
 var groupTree		= environment.groupTree;
 var groupList		= {};
@@ -178,7 +177,14 @@ function isOrgDescendent( parentName, childId ) {
 	if( val == '1' ) return true;
 	return false;
 }
-	
+
+/* useful for testing */
+function die(msg) {
+	log_error("die(): "+msg);
+	log_stderr("die(): "+msg);
+	var foo = null;
+	var baz = foo.bar;
+}
 
 
 
