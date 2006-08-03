@@ -33,7 +33,7 @@ sub new {
 			{
 				flesh => 3,
 				flesh_fields => {
-					acp => [ 'circ_lib', 'call_number' ],
+					acp => [ 'circ_lib', 'call_number', 'status' ],
 					acn => [ 'owning_lib', 'record' ],
 				}
 			}
@@ -121,9 +121,29 @@ sub current_location {
 
 
 # 2 chars 0-99 
+# 01 Other
+# 02 On order
+# 03 Available
+# 04 Charged
+# 05 Charged; not to be recalled until earliest recall date
+# 06 In process
+# 07 Recalled
+# 08 Waiting on hold shelf
+# 09 Waiting to be re-shelved
+# 10 In transit between library locations
+# 11 Claimed returned
+# 12 Lost
+# 13 Missing 
 sub sip_circulation_status {
-    my $self = shift;
-	 return '01';
+	my $self = shift;
+	return '03' if $self->{copy}->status->name =~ /available/i;
+	return '04' if $self->{copy}->status->name =~ /checked out/i;
+	return '06' if $self->{copy}->status->name =~ /in process/i;
+	return '08' if $self->{copy}->status->name =~ /on holds shelf/i;
+	return '09' if $self->{copy}->status->name =~ /reshelving/i;
+	return '10' if $self->{copy}->status->name =~ /in transit/i;
+	return '12' if $self->{copy}->status->name =~ /lost/i;
+	return 01;
 }
 
 sub sip_security_marker {
@@ -142,7 +162,7 @@ sub fee {
 
 sub fee_currency {
     my $self = shift;
-    'CAD';
+    'USD';
 }
 
 sub owner {
@@ -161,8 +181,24 @@ sub hold_queue_position {
 }
 
 sub due_date {
-    my $self = shift;
-	 return 0;
+	my $self = shift;
+	my $e = OpenILS::SIP->editor();
+
+	my $circ = $e->search_action_circulation(
+		{ target_copy => $self->{copy}->id, stop_fines => undef } )->[0];
+
+	if(!$circ) {
+		# if not, lets look for other circs we can check in
+		$circ = $e->search_action_circulation(
+			{ 
+				target_copy => $self->{copy}->id, 
+				xact_finish => undef,
+				stop_fines	=> [ 'CLAIMSRETURNED', 'LOST', 'LONGOVERDUE' ]
+			} )->[0];
+	}
+
+	return $circ->due_date if $circ;
+	return 0;
 }
 
 sub recall_date {
