@@ -100,6 +100,9 @@
 	<event code='1217' textcode='PATRON_INACTIVE'>
 		<desc xml:lang="en-US">This account is marked as inactive</desc>
 	</event>
+	<event code='1218' textcode='ITEM_AGE_PROTECTED'>
+		<desc xml:lang="en-US">This item is too new to have a hold placed on it</desc>
+	</event>
 
 
 

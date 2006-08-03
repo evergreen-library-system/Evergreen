@@ -914,3 +914,14 @@ function parseForm(form) {
 
 function isTrue(x) { return ( x && x != "0" && !x.match(/^f$/i) ); }
 
+function fetchPermOrgs() {
+	var a = []; /* why does arguments come accross as an object and not an array? */
+	for( var i = 0; i < arguments.length; i++ ) 
+		a.push(arguments[i])
+
+	var preq = new Request(FETCH_HIGHEST_PERM_ORG, 
+		G.user.session, G.user.id(), a );
+	preq.send(true);
+	return preq.result();
+}
+

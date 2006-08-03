@@ -688,23 +688,17 @@ function holdProcessResult( hold, res, recurse ) {
 		}
 
 		if( grep(res, function(e) { return (e.textcode == 'HOLD_EXISTS'); }) ) {
-
-			/* see if the requestor has the ability to create duplicate holds */
-			var preq = new Request(FETCH_HIGHEST_PERM_ORG, 
-				G.user.session, G.user.id(), ['CREATE_DUPLICATE_HOLDS']);
-			preq.send(true);
-			var org = preq.result()[0];
-
-			if( org ) {
+			if( fetchPermOrgs('HOLD_EXISTS')[0] ) {
 				if( confirm($('hold_dup_exists_override').innerHTML) ) {
-					holdsPlaceHold(hold, true);
+					return holdsPlaceHold(hold, true);
 				}
 
 			} else {
-				alert($('hold_dup_exists').innerHTML);
-				return;
+				return alert($('hold_dup_exists').innerHTML);
 			}
 		}
+
+		alert($('holds_failure').innerHTML);
 	}
 }
 

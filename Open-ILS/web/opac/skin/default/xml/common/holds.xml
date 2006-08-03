@@ -164,8 +164,8 @@
 
 		<span class='hide_me' id='hold_not_allowed'>
 			No items were found that could fulfill the requested holds.  
-			It's possible that choosing a 
-			different format will result in a successful hold.
+			It's possible that choosing a different format will result in a successful hold.
+			Otherwise, please consult your local librarian.
 		</span>
 
 	</div>
@@ -197,8 +197,6 @@
 		PATRON BARRED.  
 		Please see any notes in the "Staff Notes" section of your "My Account" page or contact your local library.
 	</span>
-
-
 
 </div>
 
