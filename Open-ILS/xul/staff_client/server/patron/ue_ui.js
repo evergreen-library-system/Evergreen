@@ -254,11 +254,8 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 
 	surveyQuestionsCache[question.id()] = question;
 
-	/* XXX
-	if( survey.required() && survey.required() != 'f' ) {
+	if( patron.isnew() && isTrue(survey.required()) ) 
 		addCSSClass(selector, 'invalid_value');
-	}
-	*/
 
 	selector.onchange = function() {
 
@@ -277,14 +274,12 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 
 		var val = getSelectorVal(selector);
 
-		/* XXX
-		if( survey.required() && survey.required() != 'f' ) {
+		if( patron.isnew() && isTrue(survey.required()) ) {
 			if(val)
 				removeCSSClass(selector, 'invalid_value');
 			else 
 				addCSSClass(selector, 'invalid_value');
 		}
-		*/
 
 		if(!val) return;
 
