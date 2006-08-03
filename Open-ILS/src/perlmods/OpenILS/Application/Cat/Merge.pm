@@ -87,12 +87,8 @@ sub merge_records {
 				$vol->id." from record ".$vol->record. " to $master");
 
 			$vol->record( $master );
-			$editor->update_asset_call_number(
-				$vol, { 
-					permorg => $vol->owning_lib, 
-					checkperm => 1 
-				}
-			) or return $editor->event;
+			$editor->update_asset_call_number($vol)
+				or return $editor->event;
 		}
 	}
 
@@ -107,7 +103,7 @@ sub merge_records {
 
 		if( $rec == $master ) {
 			# make sure the master record is not deleted
-			if( $record->deleted and $record->deleted ne 'f' ) {
+			if( $U->is_true($record->deleted) ) {
 				$logger->info("merge: master record is marked as deleted...un-deleting.");
 				$record->deleted('f');
 				$record->editor($reqr->id);

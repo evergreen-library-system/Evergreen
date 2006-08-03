@@ -15,7 +15,7 @@ use XML::LibXML;
 use Unicode::Normalize;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
@@ -1024,7 +1024,7 @@ sub delete_copy {
 		if( $override ) {
 
 			# delete this volume if it's not already marked as deleted
-			if(!$vol->deleted || $vol->deleted =~ /f/io || ! $vol->isdeleted) {
+			unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
 				$vol->deleted('t');
 				$editor->update_asset_call_number($vol, {checkperm=>0})
 					or return $editor->event;
@@ -1034,7 +1034,7 @@ sub delete_copy {
 			my $rec = $editor->retrieve_biblio_record_entry($vol->record)
 				or return $editor->event;
 
-			if( !$rec->deleted ) {
+			unless( $U->is_true($rec->deleted) ) {
 				$rec->deleted('t');
 				$rec->active('f');
 				$editor->update_biblio_record_entry($rec, {checkperm=>0})
@@ -1165,6 +1165,70 @@ sub create_volume {
 	}
 
 	return undef;
+}
+
+
+__PACKAGE__->register_method (
+	method => 'batch_volume_transfer',
+	api_name => 'open-ils.cat.asset.volume.batch.transfer',
+);
+
+sub batch_volume_transfer {
+	my( $self, $conn, $auth, $args ) = @_;
+
+	my $evt;
+	my $rec		= $$args{docid};
+	my $o_lib	= $$args{lib};
+	my $vol_ids = $$args{volumes};
+
+	$logger->info("merge: transferring volumes to lib=$o_lib and record=$rec");
+
+	my $e = new_editor(authtoken => $auth, xact =>1);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VOLUME_UPDATE');
+
+	my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
+
+	my @seen;
+	for my $vol (@$vols) {
+		next unless $vol;
+		next if grep { $vol->id == $_ } @seen;
+
+		my @all = grep { $_->label eq $vol->label } @$vols;
+		push( @seen, $_->id ) for @all;
+
+		if( @all > 1 ) {
+			$logger->info("merge: found collisions in volume transfer");
+			($vol, $evt) = 
+				OpenILS::Application::Cat::Merge::merge_volumes($e, \@all, $vol);
+			return $evt if $evt;
+		} 
+		
+		$vol->owning_lib($o_lib);
+		$vol->record($rec);
+		$vol->editor($e->requestor->id);
+		$vol->edit_date('now');
+
+		$logger->info("merge: updating volume ".$vol->id);
+
+		$e->update_asset_call_number($vol) or return $e->event;
+
+		my $copies = $e->search_asset_copy({call_number=>$vol->id});
+
+		# update circ lib on the copies - make this a method flag?
+		for my $copy (@$copies) {
+			$logger->info("merge: transfer moving circ lib on copy ".$copy->id);
+			$copy->circ_lib($o_lib);
+			$copy->editor($e->requestor->id);
+			$copy->edit_date('now');
+			$e->update_asset_copy($copy) or return $e->event;
+		}
+
+	}
+
+	$logger->info("merge: transfer succeeded");
+	$e->commit;
+	return 1;
 }
 
 
