@@ -222,8 +222,9 @@ patron.search_form.prototype = {
 					query += id + '=' + window.escape(node.getAttribute('value'));
 					dump('id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
 				} else {
-					query += id + '=' + window.escape(node.value);
-					dump('id = ' + id + '  value = ' + node.value + '\n');
+					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
+					query += id + '=' + window.escape(value);
+					dump('id = ' + id + '  value = ' + value + '\n');
 				}
 			}
 		}
