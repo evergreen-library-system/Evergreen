@@ -23,7 +23,8 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
-use OpenILS::Utils::Editor q/:funcs/;
+#use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
 
 my $apputils = "OpenILS::Application::AppUtils";
@@ -64,7 +65,7 @@ __PACKAGE__->register_method(
 
 sub create_hold {
 	my( $self, $conn, $auth, @holds ) = @_;
-	my $e = new_editor(authtoken=>$auth);
+	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->event unless $e->checkauth;
 
 	my $override = 1 if $self->api_name =~ /override/;
@@ -389,28 +390,39 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub cancel_hold {
-	my($self, $client, $login_session, $holdid) = @_;
-	my $hold;	
+	my($self, $client, $auth, $holdid) = @_;
 
-	my($user, $evt) = $U->checkses($login_session);
-	return $evt if $evt;
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->event unless $e->checkauth;
 
-	( $hold, $evt ) = $U->fetch_hold($holdid);
-	return $evt if $evt;
+	my $hold = $e->retrieve_action_hold_request($holdid)
+		or return $e->event;
 
-	if($user->id ne $hold->usr) { #am I allowed to cancel this user's hold?
-		if($evt = $apputils->check_perms(
-			$user->id, $user->home_ou, 'CANCEL_HOLDS')) {
-			return $evt;
+	if( $e->requestor->id ne $hold->usr ) {
+		return $e->event unless $e->allowed('CANCEL_HOLDS');
+	}
+
+	# If the hold is captured, reset the copy status
+	if( $hold->capture_time and $hold->current_copy ) {
+
+		my $copy = $e->retrieve_asset_copy($hold->current_copy)
+			or return $e->event;
+		my $stat = $U->copy_status_from_name('on holds shelf');
+
+		if( $copy->status == $stat->id ) {
+			$logger->info("setting copy to status 'reshelving' on hold cancel");
+			$copy->status($U->copy_status_from_name('reshelving')->id);
+			$copy->editor($e->requestor->id);
+			$copy->edit_date('now');
+			$e->update_asset_copy($copy) or return $e->event;
 		}
 	}
 
-	$logger->activity( "User " . $user->id . 
-		" canceling hold $holdid for user " . $hold->usr );
+	$e->delete_action_hold_request($hold)
+		or return $e->event;
 
-	return $apputils->simplereq(
-		'open-ils.storage',
-		"open-ils.storage.direct.action.hold_request.delete", $hold );
+	$e->commit;
+	return 1;
 }
 
 
@@ -827,7 +839,7 @@ __PACKAGE__->register_method(
 
 sub fetch_open_title_holds {
 	my( $self, $conn, $auth, $id, $type, $org ) = @_;
-	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
+	my $e = new_editor( authtoken => $auth );
 	return $e->event unless $e->checkauth;
 
 	$type ||= "T";
@@ -856,7 +868,7 @@ __PACKAGE__->register_method(
 sub fetch_captured_holds {
 	my( $self, $conn, $auth, $org ) = @_;
 
-	my $e = OpenILS::Utils::Editor->new(authtoken => $auth);
+	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
 
