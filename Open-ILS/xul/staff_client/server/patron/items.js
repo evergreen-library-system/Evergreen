@@ -26,6 +26,7 @@ patron.items.prototype = {
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],
+					'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
 					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); } ],
 					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); } ],
 					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); } ],
@@ -89,6 +90,15 @@ patron.items.prototype = {
 			list.full_retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('printing 1',E);
+		}
+	},
+
+	'items_renew_all' : function() {
+		try {
+			this.list.select_all();
+			this.items_renew(1);	
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Items were not likely renewed',E);
 		}
 	},
 

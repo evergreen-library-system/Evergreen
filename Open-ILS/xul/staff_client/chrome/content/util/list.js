@@ -577,6 +577,19 @@ util.list.prototype = {
 		this.error.sdump('D_LIST',s);
 	},
 
+	'select_all' : function(params) {
+		var obj = this;
+		switch(this.node.nodeName) {
+			case 'tree' : return this._select_all_from_tree(params); break;
+			default: throw('NYI: Need ._select_all_from_() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_select_all_from_tree' : function(params) {
+		var obj = this;
+		this.node.view.selection.selectAll();
+	},
+
 	'retrieve_selection' : function(params) {
 		var obj = this;
 		switch(this.node.nodeName) {
