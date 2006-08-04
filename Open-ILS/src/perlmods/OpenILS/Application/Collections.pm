@@ -592,4 +592,67 @@ sub fetch_active {
 	return \@active;
 }
 
+
+__PACKAGE__->register_method(
+	method    => 'create_user_note',
+	api_name  => 'open-ils.collections.patron_note.create',
+	api_level => 1,
+	argc      => 4,
+	signature => { 
+		desc     => q/ Adds a note to a patron's account /,
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'user_barcode',
+				desc => q/The patron's barcode/,
+				type => q/string/,
+			},
+			{	name => 'title',
+				desc => q/The title of the note/,
+				type => q/string/,
+			},
+
+			{	name => 'note',
+				desc => q/The text of the note/,
+				type => q/string/,
+			},
+		],
+
+	  	'return' => { 
+			desc		=> q/
+				Returns '1' on success, event on error.
+				/,
+			type		=> 'object'
+		}
+	}
+);
+
+
+sub create_user_note {
+	my( $self, $conn, $auth, $user_barcode, $title, $note_txt ) = @_;
+
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('UPDATE_USER');
+
+	return $e->event unless 
+		my $card = $e->search_actor_card({barcode=>$user_barcode})->[0];
+
+	my $note = Fieldmapper::actor::usr_note->new;
+	$note->usr($card->usr);
+	$note->title($title);
+	$note->creator($e->requestor->id);
+	$note->create_date('now');
+	$note->pub('f');
+	$note->value($note_txt);
+
+	$e->create_actor_usr_note($note) or return $e->event;
+	$e->commit;
+	return 1;
+}
+
+
+
 1;
