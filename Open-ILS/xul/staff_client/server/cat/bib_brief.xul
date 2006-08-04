@@ -33,6 +33,9 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+
+		var docid;
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -43,7 +46,7 @@
 				g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
 
 				g.cgi = new CGI();
-				var docid = g.cgi.param('docid');
+				docid = g.cgi.param('docid');
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -133,6 +136,11 @@
 			}
 		}
 
+		function view_marc() {
+			JSAN.use('util.window'); var win = new util.window();
+			win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
+		}
+
 	]]>
 	</script>
 
@@ -140,8 +148,11 @@
 		<caption label="Record Summary" id="caption"/>
 			<html:table width="90%">
 				<html:tr valign="top">
-					<html:td colspan="4">
+					<html:td colspan="3">
 						<html:span style="font-weight: bold;">Title: </html:span><html:span id="title" />
+					</html:td>
+					<html:td>
+						(<html:a href="javascript:view_marc();" style="text-decoration: underline; color: blue;">View MARC</html:a>)
 					</html:td>
 				</html:tr>
 				<html:tr valign="top">

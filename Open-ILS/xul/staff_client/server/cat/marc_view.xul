@@ -52,8 +52,8 @@
 					[ docid ],
 					function(req) {
 						marc_html = req.getResultObject();
-						document.getElementById('marc_frame').setAttribute('src',
-							'data:text/html,' + marc_html);
+						if (g.cgi.param('noprint')||typeof xulG == 'undefined') marc_html = marc_html.replace(/<button.+?button>/, '');
+						document.getElementById('marc_frame').setAttribute('src', 'data:text/html,' + marc_html);
 					}
 				);
 
