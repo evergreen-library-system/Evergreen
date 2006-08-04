@@ -305,7 +305,7 @@ g.stash_and_close = function() {
 			if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
 			if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
 
-			volumes_hash[ou_id][callnumber].push( barcode );
+			if (barcode != '') volumes_hash[ou_id][callnumber].push( barcode );
 		}
 
 		var volumes = [];
