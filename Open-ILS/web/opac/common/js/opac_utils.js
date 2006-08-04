@@ -912,7 +912,7 @@ function parseForm(form) {
 }
 
 
-function isTrue(x) { return ( x && x != "0" && !x.match(/^f$/i) ); }
+function isTrue(x) { return ( x && x != "0" && !(x+'').match(/^f$/i) ); }
 
 function fetchPermOrgs() {
 	var a = []; /* why does arguments come accross as an object and not an array? */
