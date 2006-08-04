@@ -250,6 +250,10 @@ patron.bills.prototype = {
 								['render'],
 								function(e) { return function() {}; }
 							],
+							'unselected_balance' : [
+								['render'],
+								function(e) { return function() {}; }
+							],
 							'bill_total_owed' : [
 								['render'],
 								function(e) { return function() {}; }
@@ -378,6 +382,7 @@ patron.bills.prototype = {
 			var obj = this;
 			JSAN.use('util.money');
 			var selected_total = 0;
+			var unselected_total = 0;
 			//var s = '';
 
 			for (var i = 0; i < obj.current_payments.length; i++) {
@@ -387,10 +392,13 @@ patron.bills.prototype = {
 					selected_total += bo;
 					//s += ('tallying ' + i + ' : checked, bo = ' + bo + '  total = ' + selected_total + '\n');
 				} else {
+					var bo = util.money.dollars_float_to_cents_integer( bill.balance_owed );
+					unselected_total += bo;
 					//s += ('tallying ' + i + ' : not checked, total = ' + selected_total + '\n');
 				}
 			}
 			obj.controller.view.selected_balance.setAttribute('value', '$' + util.money.cents_as_dollars( selected_total ) );
+			obj.controller.view.unselected_balance.setAttribute('value', '$' + util.money.cents_as_dollars( unselected_total ) );
 			//dump(s); alert(s);
 	},
 
