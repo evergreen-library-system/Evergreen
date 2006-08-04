@@ -16,7 +16,7 @@
 		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
 		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
 		<menuitem label="Renew" command="cmd_items_renew" />
-		<menuitem label="Renew All" command="cmd_items_renew_all" hidden="true"/>
+		<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
 		<menuitem label="Check In" command="cmd_items_checkin" />
 		<menuitem label="Add Billing" command="cmd_add_billing" />
 	</popup>
@@ -71,7 +71,7 @@
 				<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
 				<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
 				<menuitem label="Renew" command="cmd_items_renew" />
-				<menuitem label="Renew All" command="cmd_items_renew_all" hidden="true"/>
+				<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
 				<menuitem label="Check In" command="cmd_items_checkin" />
 				<menuitem label="Add Billing" command="cmd_add_billing" />
 			</menupopup>

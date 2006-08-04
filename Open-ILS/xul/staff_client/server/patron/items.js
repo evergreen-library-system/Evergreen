@@ -154,10 +154,20 @@ patron.items.prototype = {
 
 	'items_renew_all' : function() {
 		try {
-			this.list.select_all();
-			this.items_renew(1);	
+			var obj = this; var list = obj.list;
+			function flesh_callback() {
+				try {
+					obj.list.select_all();
+					obj.items_renew(1);	
+					setTimeout(function(){list.on_all_fleshed = null;},0);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
+				}
+			}
+			list.on_all_fleshed = flesh_callback;
+			list.full_retrieve();
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('Items were not likely renewed',E);
+			this.error.standard_unexpected_error_alert('All items were not likely renewed',E);
 		}
 	},
 
@@ -165,6 +175,7 @@ patron.items.prototype = {
 		var obj = this;
 		try{
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
 			var msg = 'Are you sure you would like to renew item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
 			var r = obj.error.yns_alert(msg,'Renewing Items','Yes','No',null,'Check here to confirm this message');
@@ -207,7 +218,15 @@ patron.items.prototype = {
 						switch(renew[j].ilsevent) {
 							case 0 /* SUCCESS */ : break;
 							case 5000 /* PERM_FAILURE */: break;
-							case 7008 /* MAX_RENEWALS_REACHED */ : break;
+							case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
+							case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
+							case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
+							case 7004 /* COPY_NOT_AVAILABLE */ : break;
+							case 7006 /* COPY_IS_REFERENCE */ : break;
+							case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
+							case 7008 /* MAX_RENEWALS_REACHED */ : break; 
+							case 7010 /* COPY_ALERT_MESSAGE */ : break;
+							case 7013 /* PATRON_EXCEEDS_FINES */ : break;
 							default:
 								throw(renew);
 							break;
@@ -228,6 +247,7 @@ patron.items.prototype = {
 			var obj = this;
 			try {
 				var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+				if (!retrieve_ids || retrieve_ids.length == 0) return;
 				function check_date(value) {
 					JSAN.use('util.date');
 					try {
@@ -281,6 +301,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var barcode = retrieve_ids[i].barcode;
 				dump('Mark barcode lost = ' + barcode);
@@ -298,6 +319,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			function check_date(value) {
 				JSAN.use('util.date');
 				try {
@@ -353,6 +375,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
 			var msg = 'Are you sure you would like to check in item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
 			var r = obj.error.yns_alert(msg,'Check In Items','Yes','No',null,'Check here to confirm this message');
@@ -377,6 +400,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var doc_id = retrieve_ids[i].doc_id;
 				if (!doc_id) {
@@ -404,6 +428,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
+			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.window');
 			var win = new util.window();
 			for (var i = 0; i < retrieve_ids.length; i++) {
