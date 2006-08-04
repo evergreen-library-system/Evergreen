@@ -758,18 +758,6 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="ap" oils_obj:fieldmapper="actor::profile" oils_persist:tablename="actor.profile">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.profile_id_seq">
-			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
-			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
-			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
-		</fields>
-		<links>
-			<link field="users" reltype="has_many" key="profile" map="" class="au"/>
-		</links>
-	</class>
 	<class id="mfp" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -1112,6 +1100,7 @@
 			<field name="selection_ou" oils_obj:array_position="22" oils_persist:virtual="false" />
 			<field name="target" oils_obj:array_position="23" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field name="cancel_time" oils_obj:array_position="25" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>

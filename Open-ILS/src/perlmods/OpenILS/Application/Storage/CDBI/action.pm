@@ -87,7 +87,7 @@ __PACKAGE__->table('action_hold_request');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     prev_check_time expire_time requestor usr
-				     hold_type holdable_formats target
+				     hold_type holdable_formats target cancel_time
 				     phone_notify email_notify selection_depth
 				     pickup_lib current_copy request_lib
 				     fulfillment_staff fulfillment_lib selection_ou/);

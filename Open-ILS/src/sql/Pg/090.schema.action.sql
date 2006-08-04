@@ -153,6 +153,7 @@ CREATE TABLE action.hold_request (
 	return_time		TIMESTAMP WITH TIME ZONE,
 	prev_check_time		TIMESTAMP WITH TIME ZONE,
 	expire_time		TIMESTAMP WITH TIME ZONE,
+	cancel_time		TIMESTAMP WITH TIME ZONE,
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL,
 	fulfillment_staff	INT				REFERENCES actor.usr (id),
