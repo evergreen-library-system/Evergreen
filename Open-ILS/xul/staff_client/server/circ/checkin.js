@@ -142,9 +142,9 @@ circ.checkin.prototype = {
 									var flag = false;
 									var darray = ev.target.value.split('-');
 									var year = darray[0]; var month = darray[1]; var day = darray[2]; 
-									if ( (!year) || (year.length != 4) || (!parseInt(year)) ) flag = true;
-									if ( (!month) || (month.length !=2) || (!parseInt(month)) ) flag = true;
-									if ( (!day) || (day.length !=2) || (!parseInt(day)) ) flag = true;
+									if ( (!year) || (year.length != 4) || (!Number(year)) ) flag = true;
+									if ( (!month) || (month.length !=2) || (!Number(month)) ) flag = true;
+									if ( (!day) || (day.length !=2) || (!Number(day)) ) flag = true;
 									if (flag) {
 										throw('invalid date format');
 									}
