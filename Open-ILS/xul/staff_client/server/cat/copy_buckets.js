@@ -410,52 +410,34 @@ cat.copy_buckets.prototype = {
 							try {
 								obj.list2.select_all();
 
-								// FM_ACN_RETRIEVE
 								obj.data.stash_retrieve();
 								if (!obj.data.marked_volume) {
 									alert('Please mark a volume as the destination from within the copy browser and then try this again.');
 									return;
 								}
+
+								var copy_ids = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o)[0]; // acp_id
+									}
+								)
+
 								var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
-								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
-								xml += '<description>Transfer the copies in bucket "';
-								xml += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';
-								xml += 'from their original volumes to ';
-								xml += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
-								xml += '"' + volume.label() + '" on the following record?</description>';
-								xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
-								xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
-								xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + volume.record() + '"/>';
-								xml += '</vbox>';
-								obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
-								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_transfer'
-									+ '&title=' + window.escape('Copy Transfer'),
-									'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
-								);
-								JSAN.use('OpenILS.data');
-								var data = new OpenILS.data(); data.init({'via':'stash'});
-								if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
 
-								JSAN.use('util.functional');
+								var msg = 'Transfer the items in bucket "';
+								msg += obj.controller.view.bucket_menulist.getAttribute('label') + '" ';
+								msg += 'from their original volumes to ';
+								msg += obj.data.hash.aou[ volume.owning_lib() ].shortname() + "'s volume labelled ";
+								msg += '"' + volume.label() + '" on the following record?';
 
-								var copies = obj.network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [
-									util.functional.map_list(
-										obj.list2.dump_retrieve_ids(),
-										function (o) {
-											return JSON2js(o)[0]; // acp_id
-										}
-									)
-								]);
-
-								for (var i = 0; i < copies.length; i++) {
-									copies[i].call_number( obj.data.marked_volume );
-									copies[i].ischanged( 1 );
-								}
-
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies, true ]);
+								JSAN.use('cat.util'); cat.util.transfer_copies( { 
+									'copy_ids' : copy_ids, 
+									'message' : msg, 
+									'docid' : volume.record(),
+									'volume_label' : volume.label(),
+									'owning_lib' : volume.owning_lib(),
+								} );
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
@@ -465,14 +447,8 @@ cat.copy_buckets.prototype = {
 									}, 0
 								);
 								
-								if (typeof robj.ilsevent != 'undefined') {
-									throw(robj);
-								} else {
-									alert('Copies transferred.');
-								}
-
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Copies not likely transferred.',E);
+								obj.error.standard_unexpected_error_alert('Items not likely transferred.',E);
 							}
 						}
 					],

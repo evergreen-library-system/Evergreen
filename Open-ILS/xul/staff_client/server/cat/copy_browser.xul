@@ -73,6 +73,7 @@
 		<command id="cmd_add_items_to_buckets"/>
 		<command id="cmd_edit_items"/>
 		<command id="cmd_delete_items"/>
+		<command id="cmd_transfer_items"/>
 		<command id="cmd_print_spine_labels"/>
 		<command id="cmd_add_volumes"/>
 		<command id="cmd_edit_volumes"/>
@@ -89,6 +90,7 @@
 			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
 			<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 			<menuseparator/>
 			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
@@ -97,7 +99,7 @@
 			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
 			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
 			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-			<menuitem command="cmd_transfer_volume" label="Transfer Volume to Previously Marked Library" accesskey=""/>
+			<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey=""/>
 			<menuseparator/>
 			<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 		</popup>
@@ -108,7 +110,7 @@
 		<hbox>
 			<!--<button label="Clear" command="cmd_clear" accesskey="C"/>-->
 			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
-			<button label="Show Libs With Copies" command="cmd_show_libs_with_copies" accesskey="L"/>
+			<button label="Show Libs With Items" command="cmd_show_libs_with_copies" accesskey="L"/>
 			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
 			<spacer flex="1"/>
 			<menubar>
@@ -118,6 +120,7 @@
 							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
 							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+							<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
 							<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
 							<menuseparator/>
 							<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
@@ -126,7 +129,7 @@
 							<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey=""/>
 							<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
 							<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-							<menuitem command="cmd_transfer_volume" label="Transfer Volume to Previously Marked Library" accesskey=""/>
+							<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey=""/>
 							<menuseparator/>
 							<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 					</menupopup>

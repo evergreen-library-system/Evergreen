@@ -112,7 +112,7 @@ cat.copy_browser.prototype = {
 
 									if (edit==0) return; // no read-only view for this interface
 
-									var title = 'Add Copy';
+									var title = 'Add Item';
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -340,7 +340,7 @@ cat.copy_browser.prototype = {
 										return; // no read-only view for this interface
 									}
 
-									var title = 'Add Volume/Copy';
+									var title = 'Add Volume/Item';
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -565,9 +565,9 @@ cat.copy_browser.prototype = {
 									if (list.length == 1) {
 										obj.data.marked_volume = list[0];
 										obj.data.stash('marked_volume');
-										alert('Volume marked as Copy Transfer Destination');
+										alert('Volume marked as Item Transfer Destination');
 									} else {
-										obj.error.yns_alert('Choose just one Volume to mark as Copy Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+										obj.error.yns_alert('Choose just one Volume to mark as Item Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> mark volume',E);
@@ -586,7 +586,7 @@ cat.copy_browser.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_library) {
-										alert('Please mark a library as the destination from within the copy browser and then try this again.');
+										alert('Please mark a library as the destination from within holdings maintenance and then try this again.');
 										return;
 									}
 									
@@ -643,7 +643,49 @@ cat.copy_browser.prototype = {
 									}
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Volumes not likely transferred.',E);
+									obj.error.standard_unexpected_error_alert('All volumes not likely transferred.',E);
+								}
+								obj.refresh_list();
+							}
+						],
+
+						'cmd_transfer_items' : [
+							['command'],
+							function() {
+								try {
+									obj.data.stash_retrieve();
+									if (!obj.data.marked_volume) {
+										alert('Please mark a volume as the destination from within holdings maintenance and then try this again.');
+										return;
+									}
+									
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return o.split(/_/)[1];
+										}
+									);
+
+									var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+
+									JSAN.use('cat.util'); cat.util.transfer_copies( { 
+										'copy_ids' : list, 
+										'docid' : volume.record(),
+										'volume_label' : volume.label(),
+										'owning_lib' : volume.owning_lib(),
+									} );
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('All copies not likely transferred.',E);
 								}
 								obj.refresh_list();
 							}
@@ -1228,6 +1270,7 @@ cat.copy_browser.prototype = {
 			obj.controller.view.cmd_delete_volumes.setAttribute('disabled','true');
 			obj.controller.view.cmd_mark_volume.setAttribute('disabled','true');
 			obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
+			obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
 			if (found_aou) {
 				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
@@ -1244,6 +1287,7 @@ cat.copy_browser.prototype = {
 				obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
 				obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
 				obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
+				obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Copy Browser Actions',E);
