@@ -518,8 +518,9 @@ sub generate_fines {
 				my $dow_open = "dow_${dow}_open";
 				my $dow_close = "dow_${dow}_close";
 
-				my $hoo = actor::org_unit::hours_of_operation->retrieve( $c->circ_lib );
-				next if ( $hoo->$dow_open eq '00:00:00' and $hoo->$dow_close eq '00:00:00');
+				if (my $hoo = actor::org_unit::hours_of_operation->retrieve( $c->circ_lib )) {
+					next if ( $hoo->$dow_open eq '00:00:00' and $hoo->$dow_close eq '00:00:00');
+				}
 
 				my $timestamptz = $billing_ts->strftime('%FT%T%z');
 				my @cl = actor::org_unit::closed_date->search_where(
