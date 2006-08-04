@@ -263,6 +263,28 @@ sub get_open_copy_transit {
 }
 
 
+
+__PACKAGE__->register_method(
+	method => 'fetch_transit_by_copy',
+	api_name => 'open-ils.circ.fetch_transit_by_copy',
+);
+
+sub fetch_transit_by_copy {
+	my( $self, $conn, $auth, $copyid ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my $t = $e->search_action_transit_copy(
+		{
+			target_copy => $copyid,
+			dest_recv_time => undef
+		}
+	)->[0];
+	return $e->event unless $t;
+	my $ht = $e->retrieve_action_hold_transit_copy($t->id);
+	return { atc => $t, ahtc => $ht };
+}
+
+
 	
 
 
