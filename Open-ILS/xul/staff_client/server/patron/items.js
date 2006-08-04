@@ -75,8 +75,6 @@ patron.items.prototype = {
 					fake_circ.circ_lib( nc_circ.circ_lib() );
 					fake_circ.circ_staff( nc_circ.staff() );
 					fake_circ.usr( nc_circ.patron() );
-					fake_circ.circ_staff( nc_circ.staff() );
-					fake_circ.circ_lib( nc_circ.circ_lib() );
 					fake_circ.xact_start( nc_circ.circ_time() );
 					fake_circ.renewal_remaining(0);
 					fake_circ.stop_fines('Non-Cataloged');
@@ -85,6 +83,19 @@ patron.items.prototype = {
 					var c = nc_circ.circ_time();
 					var d = c == "now" ? new Date() : util.date.db_date2Date( c );
 					var t = obj.data.hash.cnct[ nc_circ.item_type() ];
+					if (!t) {
+						var robj2 = obj.network.simple_request('FM_CNCT_RETRIEVE',[ nc_circ.circ_lib() ]);
+						if (typeof robj2.ilsevent != 'undefined') throw(robj);
+						obj.data.stash_retrieve();
+						for (var j = 0; j < robj2.length; j++) {
+							if (! obj.data.hash.cnct[ robj2[j].id() ] ) {
+								obj.data.hash.cnct[ robj2[j].id() ] = robj2[j];
+								obj.data.list.cnct.push( robj2[j] );
+							}
+						}
+						obj.data.stash('hash','list');
+						t = obj.data.hash.cnct[ nc_circ.item_type() ];
+					}
 					var cd = t.circ_duration() || "14 days";
 					var i = util.date.interval_to_seconds( cd ) * 1000;
 					d.setTime( Date.parse(d) + i );
@@ -95,11 +106,12 @@ patron.items.prototype = {
 	
 					var fake_copy = new acp();
 					fake_copy.barcode( '' );
+					fake_copy.circ_lib( nc_circ.circ_lib() );
 
 					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, } );
 
 				} catch(F) {
-					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii],F);
+					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii].id(),F);
 				}
 			}
 
@@ -417,6 +429,7 @@ patron.items.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
 				'renewal_remaining' : { 'hidden' : false },
@@ -426,6 +439,7 @@ patron.items.prototype = {
 		var columns2 = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'checkin_time' : { 'hidden' : false },
 				'stop_fines' : { 'hidden' : false },

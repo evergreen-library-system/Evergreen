@@ -42,10 +42,15 @@ circ.checkout.prototype = {
 						['render'],
 						function(e) {
 							return function() {
-								JSAN.use('util.widgets'); JSAN.use('util.functional');
+								JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
 								var items = [ [ 'Barcode:' , 'barcode' ] ].concat(
 									util.functional.map_list(
-										obj.data.list.cnct,
+										util.functional.filter_list(
+											obj.data.list.cnct,
+											function(o) {
+												return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), obj.data.list.au[0].ws_ou());
+											}
+										),
 										function(o) {
 											return [ o.name(), o.id() ];
 										}
