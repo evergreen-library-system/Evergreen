@@ -16,6 +16,7 @@ use Unicode::Normalize;
 use Data::Dumper;
 use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Editor;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
@@ -160,7 +161,7 @@ __PACKAGE__->register_method(
 sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth, xact=>1);
 
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('CREATE_MARC');
@@ -174,10 +175,10 @@ sub biblio_record_replace_marc  {
 	# If we're not updating the TCN, all we care about it the marcdoc
 	my $override = $self->api_name =~ /override/;
 
+	my $storage = OpenSRF::AppSession->create('open-ils.storage');
+
 	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info(
-			OpenSRF::AppSession->create('open-ils.storage'), 
-			$newxml, $override, $recid);
+		_find_tcn_info($e->session, $newxml, $override, $recid);
 
 	return $evt if $evt;
 
