@@ -29,6 +29,7 @@ const api = {
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve' },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
 	'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all' },
+	'FM_ACPL_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve' },
 	'FM_ACPN_RETRIEVE_ALL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.retrieve.all' },
 	'FM_ACPN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.create' },
 	'FM_ACPN_DELETE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.delete' },
