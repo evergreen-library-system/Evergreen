@@ -50,6 +50,26 @@ OpenILS.data.prototype = {
 		}
 	},
 
+	'lookup' : function(key,value) {
+		try {
+			var obj = this; var found;
+			if (obj.hash[key] && obj.hash[key][value]) return obj.hash[key][value];
+			switch(key) {
+				case 'acpl': 
+					found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID',[ value ]);
+				break;
+				default: return undefined; break;
+			}
+			if (typeof found.ilsevent != 'undefined') throw(found);
+			if (!obj.hash[key]) obj.hash[key] = {};
+			obj.hash[key][value] = found; obj.list[key].push( found ); obj.stash('hash','list');
+			return found;
+		} catch(E) {
+			this.error.sdump('D_ERROR','Error in OpenILS.data.lookup('+key+','+value+'): ' + js2JSON(E) );
+			return undefined;
+		}
+	},
+
 	'_debug_stash' : function() {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
