@@ -417,6 +417,7 @@ INSERT INTO config.copy_status (name)			VALUES ('ILL');
 INSERT INTO config.copy_status (name)			VALUES ('Cataloging');
 INSERT INTO config.copy_status (name)			VALUES ('Reserves');
 INSERT INTO config.copy_status (name)			VALUES ('Discard/Weed');
+INSERT INTO config.copy_status (name)			VALUES ('Damaged');
 
 SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
 
