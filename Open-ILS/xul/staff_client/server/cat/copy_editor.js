@@ -369,6 +369,54 @@ g.populate_alert_message_input = function(tb) {
 }
 
 /******************************************************************************************************/
+/* This returns a list of acpl's appropriate for the copies being edited */
+
+g.get_acpl_list = function() {
+	try {
+
+		function get(lib_id) {
+			g.data.stash_retrieve();
+			var label = 'acpl_list_for_lib_'+lib_id;
+			if (typeof g.data[label] == 'undefined') {
+				var robj = g.network.simple_request('FM_ACPL_RETRIEVE', [ lib_id ]);
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+				var temp_list = [];
+				for (var j = 0; j < robj.length; j++) {
+					var my_acpl = robj[j];
+					if (typeof g.data.hash.acpl[ my_acpl.id() ] == 'undefined') {
+						g.data.hash.acpl[ my_acpl.id() ] = my_acpl;
+						g.data.list.acpl.push( my_acpl );
+					}
+					temp_list.push( my_acpl );
+				}
+				g.data[label] = temp_list; g.data.stash(label,'hash','list');
+			}
+			return g.data[label];
+		}
+
+		var seen = {}; seen[ g.data.list.au[0].ws_ou() ] = true;
+		var list = get( g.data.list.au[0].ws_ou() ); //g.data.list.acpl;
+		for (var i = 0; i < g.copies.length; i++) {
+			var cn_id = g.copies[i].call_number();
+			if (cn_id > 0) {
+				var my_acn = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+				var lib = my_acn.owning_lib();
+				if ( typeof seen[lib] == 'undefined' ) {
+					seen[lib] = true;
+					var r = get(my_acn.owning_lib());
+					list = list.concat( r );
+				}
+			} 
+		}
+		return list;
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('get_acpl_list',E);
+		return list;
+	}
+}
+
+
+/******************************************************************************************************/
 /* This keeps track of what fields have been edited for styling purposes */
 
 g.changed = {};
@@ -489,8 +537,8 @@ g.panes_and_field_names = {
 	[
 		"Shelving Location",
 		{ 
-			render: 'typeof fm.location() == "object" ? fm.location().name() : g.data.hash.acpl[ fm.location() ].name()', 
-			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.acpl, function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			render: 'typeof fm.location() == "object" ? fm.location().name() : g.data.lookup("acpl",fm.location()).name()', 
+			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name(), obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],

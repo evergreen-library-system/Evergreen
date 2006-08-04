@@ -350,7 +350,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) obj.data.hash.acpl[ my.acp.location() ].name(); else my.acp.location().name();', 'persist' : 'hidden width',
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) obj.data.lookup("acpl", my.acp.location() ).name(); else my.acp.location().name();', 'persist' : 'hidden width',
 		},
 		{
 			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
@@ -700,7 +700,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
-			try { check.route_to = data.hash.acpl[ check.copy.location() ].name(); } catch(E) { msg += 'FIXME: ' + E + '\n'; }
+			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'FIXME: ' + E + '\n'; }
 			var msg = '';
 			if (check.ilsevent == 3) msg = 'This item is already checked in.\n';
 			if (check.ilsevent == 1202 && check.copy.status() != 11) {
