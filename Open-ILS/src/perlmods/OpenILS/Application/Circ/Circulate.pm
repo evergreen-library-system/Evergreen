@@ -1401,7 +1401,7 @@ sub checkin_handle_circ {
 
    # backdate the circ if necessary
    if($self->backdate) {
-		$self->handle_backdate;
+		$self->checkin_handle_backdate;
 		return if $self->bail_out;
    }
 
