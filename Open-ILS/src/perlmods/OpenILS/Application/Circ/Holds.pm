@@ -511,6 +511,7 @@ sub retrieve_hold_status {
 
 
 
+=head DEPRECATED
 __PACKAGE__->register_method(
 	method	=> "capture_copy",
 	api_name	=> "open-ils.circ.hold.capture_copy.barcode",
@@ -613,16 +614,6 @@ sub _build_hold_transit {
 }
 
 
-sub find_local_hold {
-	my( $class, $session, $copy, $user ) = @_;
-	#return _find_local_hold_for_copy($session, $copy, $user);
-	return $class->find_nearest_permitted_hold($session, $copy, $user);
-}
-
-
-
-
-
 
 __PACKAGE__->register_method(
 	method	=> "create_hold_transit",
@@ -646,6 +637,18 @@ sub create_hold_transit {
 	return $ses->request(
 		"open-ils.storage.direct.action.hold_transit_copy.create", $transit )->gather(1);
 }
+
+=cut
+
+
+sub find_local_hold {
+	my( $class, $session, $copy, $user ) = @_;
+	return $class->find_nearest_permitted_hold($session, $copy, $user);
+}
+
+
+
+
 
 
 sub fetch_open_hold_by_current_copy {
@@ -1038,6 +1041,10 @@ sub find_nearest_permitted_hold {
 
 	return (undef, $evt);
 }
+
+
+#__PACKAGE__->register_method(
+#);
 
 
 
