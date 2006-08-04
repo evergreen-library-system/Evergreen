@@ -258,6 +258,8 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			document.getElementById("Create").disabled = false;
 		}
 
+		JSAN.use('util.barcode'); 
+
 		for (var i = 0; i < count; i++) {
 			var tb = document.createElement('textbox'); node.appendChild(tb);
 			tb.setAttribute('ou_id',ou_id);
@@ -267,7 +269,14 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 				tb, 
 				function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
 			);
-			tb.addEventListener('change',ready_to_create,false);
+			//tb.addEventListener('change',ready_to_create,false);
+			tb.addEventListener('change', function(ev) {
+				var barcode = ev.target.value;
+				if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
+					g.error.yns_alert( '"' + barcode + '" is an invalid barcode.','Invalid Barcode','OK',null,null,'Check here to confirm this message.');
+					setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
+				}
+			}, false);
 			tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
 		}
 	} catch(E) {

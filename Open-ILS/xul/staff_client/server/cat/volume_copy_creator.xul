@@ -39,7 +39,8 @@
 		<hbox style="border-bottom: solid black thin">
 			<hbox id="marc_cn"/>
 			<spacer flex="1" />
-			<checkbox id="print_labels" label="Print Labels" persist="checked" accesskey="P"/>
+			<checkbox id="check_barcodes" label="Check Barcodes?" persist="checked" accesskey="B"/>
+			<checkbox id="print_labels" label="Print Labels?" persist="checked" accesskey="P"/>
 			<button id="Create" accesskey="C" label="Edit then Create" disabled="true" oncommand="g.stash_and_close();"/>
 		</hbox>
 		<grid flex="1">
