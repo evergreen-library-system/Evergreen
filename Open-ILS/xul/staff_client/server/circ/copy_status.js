@@ -50,6 +50,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
+							obj.controller.view.sel_clip.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
@@ -58,6 +59,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
+							obj.controller.view.sel_clip.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -70,6 +72,10 @@ circ.copy_status.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_clip' : [
+						['command'],
+						function() { obj.list.clipboard(); }
+					],
 					'sel_checkin' : [
 						['command'],
 						function() {

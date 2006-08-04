@@ -661,6 +661,48 @@ util.list.prototype = {
 		return dump;
 	},
 
+	'dump_selected_with_keys' : function(params) {
+		var obj = this;
+		switch(this.node.nodeName) {
+			case 'tree' : return this._dump_tree_selection_with_keys(params); break;
+			default: throw('NYI: Need .dump_selection_with_keys() for ' + this.node.nodeName); break;
+		}
+
+	},
+
+	'_dump_tree_selection_with_keys' : function(params) {
+		var obj = this;
+		var dump = [];
+		var list = obj._retrieve_selection_from_tree();
+		for (var i = 0; i < list.length; i++) {
+			var row = {};
+			var treeitem = list[i];
+			var treerow = treeitem.firstChild;
+			for (var j = 0; j < treerow.childNodes.length; j++) {
+				var value = treerow.childNodes[j].getAttribute('label');
+				//FIXME
+				//if (params.skip_hidden_columns) if (obj.node.firstChild.childNodes[j].getAttribute('hidden')) continue;
+				var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
+				row[ id ] = value;
+			}
+			dump.push( row );
+		}
+		return dump;
+	},
+
+	'clipboard' : function() {
+		try {
+			var obj = this;
+			var dump = obj.dump_selected_with_keys({'skip_hidden_columns':true,'labels_instead_of_ids':true});
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+			data.list_clipboard = dump; data.stash('list_clipboard');
+			JSAN.use('util.window'); var win = new util.window();
+			win.open(urls.XUL_LIST_CLIPBOARD,'list_clipboard','chrome,resizable,modal');
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('clipboard',E);
+		}
+	},
+
 	'dump_retrieve_ids' : function(params) {
 		var obj = this;
 		switch(this.node.nodeName) {
