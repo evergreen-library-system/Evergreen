@@ -19,6 +19,7 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
+use OpenSRF::AppSession;
 
 my $apputils = "OpenILS::Application::AppUtils";
 
@@ -174,7 +175,9 @@ sub biblio_record_replace_marc  {
 	my $override = $self->api_name =~ /override/;
 
 	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info($e->session, $newxml, $override, $recid);
+		_find_tcn_info(
+			OpenSRF::AppSession->create('open-ils.storage'), 
+			$newxml, $override, $recid);
 
 	return $evt if $evt;
 
