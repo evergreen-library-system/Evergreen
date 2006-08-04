@@ -178,7 +178,6 @@ sub abort_transit {
 
 	my $copy;
 	my $transit;
-	my $holdtransit;
 	my $hold;
 	my $evt;
 
@@ -188,28 +187,27 @@ sub abort_transit {
 
 	# ---------------------------------------------------------------------
 	# Find the related copy and/or transit based on whatever data we have
-	# XXX Move to editor calls
 	if( $barcode ) {
-		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
-		return $evt if $evt;
+		$copy = $e->search_asset_copy({barcode=>$barcode})->[0];
+		return $e->event unless $copy;
 
 	} elsif( $copyid ) {
-		($copy, $evt) = $U->fetch_copy($copyid);
-		return $evt if $evt;
+		$copy = $e->retrieve_asset_copy($copyid) or return $e->event;
 	}
 
 	if( $transitid ) {
-		($transit, $evt) = $U->fetch_transit($transitid);
-		return $evt if $evt;
+		$transit = $e->retrieve_action_transit_copy($transitid)
+			or return $e->event;
 
 	} else {
-		($transit, $evt) = $U->fetch_open_transit_by_copy($copy->id);
-		return $evt if $evt;
+		$transit = $e->search_action_transit_copy(
+			{ target_copy => $copyid, dest_recv_time => undef })->[0];
+		return $e->event unless $transit;
 	}
 
 	if(!$copy) {
-		($copy, $evt) = $U->fetch_copy($transit->target_copy);
-		return $evt if $evt;
+		$copy = $e->retrieve_asset_copy($transit->target_copy)
+			or return $e->event;
 	}
 	# ---------------------------------------------------------------------
 
@@ -224,16 +222,12 @@ sub abort_transit {
 	$copy->editor( $e->requestor->id );
 	$copy->edit_date('now');
 
-	($holdtransit) = $U->fetch_hold_transit($transit->id);
-
-	# update / delete the objects
-	#my $session = $U->start_db_session();
-
+	my $holdtransit = $e->retrieve_action_hold_transit_copy($transit->id);
 
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit) {
-		($hold, $evt) = $U->fetch_hold($holdtransit->hold);			
-		return $evt if $evt;
+		$hold = $e->retrieve_action_hold_request($holdtransit->hold)
+			or return $e->event;
 		$evt = $holdcode->_reset_hold( $e->requestor, $hold );
 		return $evt if $evt;
 	}
