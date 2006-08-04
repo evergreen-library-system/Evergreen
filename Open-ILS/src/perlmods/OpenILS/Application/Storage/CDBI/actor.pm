@@ -21,6 +21,13 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
+package actor::org_unit_proximity;
+use base qw/actor/;
+__PACKAGE__->table( 'actor_org_unit_proximity' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/from_org to_org prox/ );
+
+#-------------------------------------------------------------------------------
 package actor::usr_note;
 use base qw/actor/;
 

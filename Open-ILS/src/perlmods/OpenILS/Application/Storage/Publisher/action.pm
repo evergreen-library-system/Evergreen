@@ -169,11 +169,13 @@ sub nearest_hold {
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
+		  	JOIN actor.org_unit_proximity p ON (p.from_org = h.pickup_lib)
 		  WHERE hm.target_copy = ?
+			AND p.to_org = ?
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		ORDER BY
-			actor.org_unit_proximity(h.pickup_lib, ?),
+			p.prox,
 			h.selection_depth DESC,
 			h.request_time
 		LIMIT $limit

@@ -394,6 +394,14 @@ INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (3, 3, '
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (4, 4, 'SL1', 'Example Sub-lib 1');
 INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES (6, 5, 'BM1', 'Example Bookmobile 1');
 
+CREATE TABLE actor.org_unit_proximity (
+	id		BIGSERIAL	PRIMARY KEY,
+	from_org	INT,
+	to_org		INT,
+	prox		INT
+);
+CREATE INDEX from_prox_idx ON actor.org_unit_proximity (from_org);
+
 CREATE TABLE actor.hours_of_operation (
 	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE,
 	dow_0_open	TIME	NOT NULL DEFAULT '09:00',

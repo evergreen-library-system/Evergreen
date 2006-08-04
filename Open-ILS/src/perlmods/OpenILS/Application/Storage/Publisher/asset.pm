@@ -389,7 +389,6 @@ __PACKAGE__->register_method(
 );
 
 
-my %_prox_cache;
 sub copy_proximity {
 	my $self = shift;
 	my $client = shift;
@@ -399,28 +398,12 @@ sub copy_proximity {
 
 	return unless ($cp && $org);
 
-	my $key;
-	if (ref($cp)) {
-
-		my $ol = $cp->circ_lib;
-		
-		$key = "$ol|$org";
-		$key = "$org|$ol" if ($ol->id > $org);
-		return $_prox_cache{$key} if (exists($_prox_cache{$key}));
-	}
-
-	$cp = asset::copy->retrieve($cp);
+	$cp = asset::copy->retrieve($cp) unless (ref($cp));
 
 	return unless $cp;
 	my $ol = $cp->circ_lib;
 
-	$key = "$ol|$org";
-	$key = "$org|$ol" if ($ol->id > $org);
-
-	$_prox_cache{$key} = asset::copy->db_Main->selectcol_arrayref('SELECT actor.org_unit_proximity(?,?)',{},"$ol","$org")->[0]
-		unless (exists($_prox_cache{$key}));
-
-	return $_prox_cache{$key};
+	return (actor::org_unit_proximity->search( from_org => "$ol", to_org => "$org"))[0]->prox;
 }
 __PACKAGE__->register_method(
 	method		=> 'copy_proximity',

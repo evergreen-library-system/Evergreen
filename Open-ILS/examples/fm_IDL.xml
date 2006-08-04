@@ -1029,6 +1029,21 @@
 		<links>
 		</links>
 	</class>
+	<class id="aoup" oils_obj:fieldmapper="actor::org_unit_proximity" oils_persist:tablename="actor.org_unit_proximity">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="from_org" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="to_org" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="prox" oils_obj:array_position="6" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="from_org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="to_org" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 	<class id="asv" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

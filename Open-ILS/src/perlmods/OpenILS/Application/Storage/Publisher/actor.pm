@@ -22,6 +22,37 @@ __PACKAGE__->register_method(
 	method		=> 'new_usergroup_id',
 );
 
+sub calc_proximity {
+	my $self = shift;
+	my $client = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
+	my $delete_sql = <<"	SQL";
+		DELETE FROM actor.org_unit_proximity;
+	SQL
+
+	my $insert_sql = <<"	SQL";
+		INSERT INTO actor.org_unit_proximity (from_org, to_org, prox)
+			SELECT	l.id,
+				r.id,
+				actor.org_unit_proximity(l.id,r.id)
+			  FROM	actor.org_unit l,
+				actor.org_unit r;
+	SQL
+
+	actor::org_unit_proximity->db_Main->do($delete_sql);
+	actor::org_unit_proximity->db_Main->do($insert_sql);
+
+	return 1;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.org_unit.refresh_proximity',
+	api_level	=> 1,
+	method		=> 'calc_proximity',
+);
+
+
 sub org_closed_overlap {
 	my $self = shift;
 	my $client = shift;

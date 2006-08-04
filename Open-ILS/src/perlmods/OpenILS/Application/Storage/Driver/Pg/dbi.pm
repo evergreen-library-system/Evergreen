@@ -383,6 +383,12 @@
 	actor::org_address->sequence( 'actor.org_address_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package actor::org_unit_proximity;
+	
+	actor::org_unit_proximity->table( 'actor.org_unit_proximity' );
+	actor::org_unit_proximity->sequence( 'actor.org_unit_proximity_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::org_unit_type;
 	
 	actor::org_unit_type->table( 'actor.org_unit_type' );
