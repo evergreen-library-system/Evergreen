@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/cat/record_buckets_overlay.xul"?>
 
 <window id="record_buckets_win" title="Record Buckets"
-	onload="my_init()" height="600" width="800" persist="height,width"
+	onload="my_init()" height="300" width="300" persist="height,width"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -35,18 +35,32 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+
+				/* ugly hack so we don't have to upgrade the chrome for quick buckets */
+				if (typeof xulG == 'undefined') location.href = String(location.href).replace(/record_buckets.xul/,'record_buckets_quick.xul');
+
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for record_buckets.xul');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
 				g.cgi = new CGI();
+				var record_ids = [];
+				if (g.cgi.param('record_ids')) record_ids = record_ids.concat( JSON2js( g.cgi.param('record_ids') ) );
+				if (typeof window.xuLG == 'object' && typeof window.xulG.record_ids != 'undefined')
+					record_ids = record_ids.concat( window.xulG.record_ids );
+				if (typeof g.data.rb_temp_record_ids != 'undefined' && g.data.rb_temp_record_ids != null) {
+					record_ids = record_ids.concat( JSON2js( g.data.rb_temp_record_ids ) );
+					g.data.rb_temp_record_ids = undefined; g.data.stash('rb_temp_record_ids');
+				}
+
 
 				JSAN.use('cat.record_buckets'); g.record_buckets = new cat.record_buckets();
 				g.record_buckets.init( 
 					{ 
-						'record_ids' : JSON2js( g.cgi.param('record_ids') ),
+						'record_ids' : record_ids,
 					} 
 				);
 	

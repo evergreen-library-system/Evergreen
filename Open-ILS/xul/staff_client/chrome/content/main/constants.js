@@ -208,6 +208,7 @@ const urls = {
 	'XUL_PRE_CAT' : '/xul/server/circ/pre_cat_fields.xul',
 	'XUL_PRINT_LIST_TEMPLATE_EDITOR' : '/xul/server/circ/print_list_template_editor.xul',
 	'XUL_RECORD_BUCKETS' : '/xul/server/cat/record_buckets.xul',
+	'XUL_RECORD_BUCKETS_QUICK' : '/xul/server/cat/record_buckets_quick.xul',
 	'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
 	'XUL_SPINE_LABEL' : '/xul/server/cat/spine_labels.xul',
 	'XUL_STANDALONE' : 'chrome://open_ils_staff_client/content/circ/offline.xul',
