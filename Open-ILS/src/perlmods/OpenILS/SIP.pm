@@ -105,7 +105,7 @@ sub login {
 
 	if( my $code = $U->event_code($response) ) {
 		my $txt = $response->{textcode};
-		syslog('LOG_WARN', "OpenILS: Login failed for $username.  $txt:$code");
+		syslog('LOG_WARNING', "OpenILS: Login failed for $username.  $txt:$code");
 		return undef;
 	}
 
