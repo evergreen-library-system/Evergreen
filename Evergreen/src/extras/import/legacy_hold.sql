@@ -3,9 +3,10 @@ BEGIN;
 -- These are copy level holds
 -- CREATE TABLE legacy_copy_hold_insert AS
 INSERT INTO action.hold_request
-	(target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
-	SELECT	cp.id AS target,
+	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+	SELECT	lh.hold_key AS id,
 		cp.id AS target,
+		cp.id AS current_copy,
 		'C'::TEXT AS hold_type,
 		pou.id AS pickup_lib,
 		pou.id AS selection_ou,
@@ -34,8 +35,9 @@ INSERT INTO action.hold_request
 -- And these are CN level holds
 -- CREATE TABLE legacy_cn_hold_insert AS
 INSERT INTO action.hold_request
-	(target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
-	SELECT	cp.call_number AS target,
+	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+	SELECT	lh.hold_key AS id,
+		cp.call_number AS target,
 		cp.id AS current_copy,
 		'V'::TEXT AS hold_type,
 		pou.id AS pickup_lib,
@@ -65,8 +67,9 @@ INSERT INTO action.hold_request
 -- And these are CN level holds
 -- CREATE TABLE legacy_title_hold_insert AS
 INSERT INTO action.hold_request
-	(target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
-	SELECT	lh.cat_key AS target,
+	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+	SELECT	lh.hold_key AS id,
+		lh.cat_key AS target,
 		cp.id AS current_copy,
 		'T'::TEXT AS hold_type,
 		pou.id AS pickup_lib,
@@ -93,4 +96,6 @@ INSERT INTO action.hold_request
 		JOIN actor.org_unit pou ON (pou.shortname = lh.pickup_lib)
 	  WHERE	lh.hold_level = 'T';
 
---COMMIT;
+SELECT SETVAL('action.hold_request_id_seq',(SELECT MAX(id) FROM action.hold_request),TRUE);
+
+COMMIT;
