@@ -7,6 +7,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U = "OpenILS::Application::AppUtils";
 
 
@@ -16,7 +17,7 @@ __PACKAGE__->register_method(
 	argc			=>	1,
 	signature	=> q/
 		Retrieves the ranged set of copy locations for the requested org.
-		If no org is provided, the home org of the requestor is used.
+		If no org is provided, all copy locations are returned
 		@param authtoken The login session key
 		@param orgId The org location id
 		@return An array of copy location objects
@@ -133,5 +134,20 @@ sub cl_update {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'fetch_loc',
+	api_name => 'open-ils.circ.copy_location.retrieve',
+);
 
-666;
+sub fetch_loc {
+	my( $self, $con, $id ) = @_;
+	my $e = new_editor();
+	my $cl = $e->retrieve_asset_copy_location($id)
+		or return $e->event;
+	return $cl;
+}
+
+
+
+
+23;
