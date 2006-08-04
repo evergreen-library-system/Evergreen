@@ -85,7 +85,7 @@ function rdetailSetPaging(ids) {
 }
 
 
-function _rdetailNav(id) {
+function _rdetailNav(id, offset) {
 	var args = {};
 	args[PARAM_RID] = id;
 	goTo(buildOPACLink(args));
@@ -124,8 +124,10 @@ function rdetailDraw() {
 
 function rdetailGetPageIds() {
 	attachEvt("result", "idsReceived", rdetailSetPaging );
-	rresultCollectIds();
+	resultFetchAllRecords = true;
+	rresultCollectIds(true);
 }
+
 
 function buildunAPISpan (span, type, id) {
 	var cgi = new CGI();
