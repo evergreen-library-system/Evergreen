@@ -20,7 +20,7 @@
 
 <window id="cat_copy_editor_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
-	width="800" height="500" sizemode="maximized" persist="width height"
+	width="800" height="580" persist="width height"
 	title="Copies"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

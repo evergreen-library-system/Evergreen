@@ -20,7 +20,7 @@
 
 <window id="cat_volume_copy_creator_win" 
 	onload="try { my_init(); } catch(E) { alert(E); }"
-	width="800" height="600"
+	width="800" height="580"
 	title="Volume/Copy Editor"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -34,6 +34,7 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="volume_copy_creator.js"/>
 
+	<iframe id="summary" />
 	<groupbox flex="1" style="overflow: auto">
 		<caption id="caption" label="Volume/Copy Creator"/>
 		<hbox style="border-bottom: solid black thin">

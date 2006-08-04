@@ -22,6 +22,8 @@ function my_init() {
 		/* What record am I dealing with?  Am I adding just copies or copies and volumes? */
 
 		g.doc_id = g.cgi.param('doc_id');
+		document.getElementById('summary').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + window.escape(g.doc_id));
+
 		g.copy_shortcut = g.cgi.param('copy_shortcut');
 		g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + g.cgi.param('ou_ids'));
 		if (g.copy_shortcut) g.copy_shortcut = JSON2js( g.copy_shortcut );
@@ -366,7 +368,7 @@ g.stash_and_close = function() {
 			g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
 			var w = win.open(
 				urls.XUL_COPY_EDITOR
-					+'?edit=1',
+					+'?edit=1&docid='+window.escape(g.doc_id),
 				title,
 				'chrome,modal,resizable'
 			);
