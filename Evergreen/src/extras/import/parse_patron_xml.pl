@@ -137,9 +137,19 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $id_val = $patron->findvalue( 'user_altid' );
 	$p->ident_value( $id_val ) if ($id_val);
 
-	$p->first_given_name( $patron->findvalue( 'first_name' ) );
-	$p->second_given_name( $patron->findvalue( 'middle_name' ) );
-	$p->family_name( $patron->findvalue( 'last_name' ) );
+	my ($fname,$mname,$lname) = ($patron->findvalue('first_name'),$patron->findvalue('middle_name'),$patron->findvalue('last_name'));
+
+	$fname =~ s/^\s*//o;
+	$mname =~ s/^\s*//o;
+	$lname =~ s/^\s*//o;
+
+	$fname =~ s/\s*$//o;
+	$mname =~ s/\s*$//o;
+	$lname =~ s/\s*$//o;
+
+	$p->first_given_name( $fname );
+	$p->second_given_name( $mname );
+	$p->family_name( $lname );
 
 	$p->day_phone( $patron->findvalue( 'Address/dayphone' ) );
 	$p->evening_phone( $patron->findvalue( 'Address/homephone' ) );
@@ -242,6 +252,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 			my $a = new Fieldmapper::actor::usr_note;
 
 			$a->creator(1);
+			$a->create_date('now');
 			$a->usr( $uid );
 			$a->title( "Legacy ".$note->localName );
 			$a->value( $note->textContent );

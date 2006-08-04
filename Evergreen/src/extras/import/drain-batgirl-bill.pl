@@ -33,5 +33,7 @@ while (my $cn = $sth->fetchrow_hashref) {
 }
 
 print "\\.\n";
+print "CREATE INDEX lb_bk1_idx ON legacy_bill (bill_key1);\n";
+print "CREATE INDEX lb_usr_idx ON legacy_bill (user_key);\n";
 
 
