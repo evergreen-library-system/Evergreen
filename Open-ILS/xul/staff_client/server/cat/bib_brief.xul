@@ -168,7 +168,7 @@
 				</html:tr>
 				<html:tr valign="top">
 					<html:td>
-						<html:span style="font-weight: bold;">TCN: </html:span><html:span id="tcn" />
+						<html:span style="font-weight: bold;">TCN: </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
 					</html:td>
 					<html:td>
 						<html:span style="font-weight: bold;">Created By: </html:span><html:span id="creator" />

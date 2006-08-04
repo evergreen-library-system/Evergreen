@@ -128,8 +128,8 @@
 		<row id="pdsgr0">
 			<label id="PatronSummaryContact_library_card_label" class="text_left card label"
 				value="&staff.patron_display.library_card.label;"/>
-			<!--<label id="patron_card" class="card value"/>-->
-			<textbox id="patron_card" class="plain" readonly="true" onclick="this.select()"/>
+			<label id="patron_card" class="card value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
+			<!--<textbox id="patron_card" class="plain" readonly="true" onclick="this.select()"/>-->
 		</row>
 		<row id="pdsgr1">
 			<label id="PatronSummaryContact_ident_label" class="text_left"
@@ -186,7 +186,7 @@
 		<row id="pdcgpr5">
 			<label id="PatronSummaryContact_email_label" class="text_left email label"
 				value="&staff.patron_display.email.label;" />
-			<label id="patron_email" class="email value"/>
+			<label id="patron_email" class="email value" style="text-decoration: underline; color: blue; -moz-user-focus: normal;" onclick="copy_to_clipboard(event)"/>
 		</row>
 		<row id="pdsgpr6"><label id="pdsgpr6l" value=" "/></row>
 
