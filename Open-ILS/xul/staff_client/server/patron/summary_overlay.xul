@@ -70,7 +70,7 @@
 				value="&staff.patron_display.holds_available.label;" />
 			<label id="patron_holds_available" class="holds_ready label"/>
 		</row>
-		<row id="pdsgr2">
+		<row id="pdsgr2" class="hide_patron_credit" hidden="true">
 			<label id="PatronSummaryStatus_credit_label" class="text_left credit label"
 				value="&staff.patron_display.credit.label;" />
 			<label id="patron_credit" class="credit value"/>
