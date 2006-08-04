@@ -55,6 +55,7 @@ sub ou_hold_requests {
 			JOIN $o_table ou ON (ou.id = cp.circ_lib)
 		  WHERE	ou.id = ?
 		  	AND h.capture_time IS NULL
+		  	AND h.cancel_time IS NULL
 		  ORDER BY h.request_time
 	SQL
 
@@ -170,6 +171,7 @@ sub nearest_hold {
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
 		  WHERE hm.target_copy = ?
 			AND h.capture_time IS NULL
+		  	AND h.cancel_time IS NULL
 		ORDER BY
 			actor.org_unit_proximity(h.pickup_lib, ?),
 			h.selection_depth DESC,
@@ -311,6 +313,7 @@ sub hold_pull_list {
 		  	JOIN $a_table a ON (h.current_copy = a.id)
 		  WHERE	a.circ_lib = ?
 		  	AND h.capture_time IS NULL
+		  	AND h.cancel_time IS NULL
 		  ORDER BY h.request_time ASC
 		  LIMIT $limit
 		  OFFSET $offset
@@ -583,7 +586,7 @@ sub new_hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
-			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef } ) ];
+			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef } ) ];
 		} elsif ( $check_expire ) {
 
 			my $time = time;
@@ -601,6 +604,7 @@ sub new_hold_copy_targeter {
 			$holds = [ action::hold_request->search_where(
 							{ capture_time => undef,
 							  fulfillment_time => undef,
+							  cancel_time => undef,
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
 							{ order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
@@ -608,12 +612,14 @@ sub new_hold_copy_targeter {
 							capture_time => undef,
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
+							cancel_time => undef,
 							{ order_by => 'selection_depth DESC, request_time' } );
 		} else {
 			$holds = [ action::hold_request->search(
 							capture_time => undef,
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
+							cancel_time => undef,
 							{ order_by => 'selection_depth DESC, request_time' } ) ];
 		}
 	} catch Error with {
@@ -717,6 +723,7 @@ sub new_hold_copy_targeter {
 						->search_where(
 							{ current_copy => $c->id,
 							  capture_time => undef,
+							  cancel_time => undef,
 							}
 						)
 				);
@@ -734,7 +741,7 @@ sub new_hold_copy_targeter {
 				if (
 				  $old_best &&
 				  grep { $old_best eq $_ } @$all_copies &&
-				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef })
+				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef, cancel_time => undef })
 				) {
 					$log->debug("\tPushing current_copy back onto the targeting list");
 					push @good_copies, $old_best;
