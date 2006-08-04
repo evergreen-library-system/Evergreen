@@ -895,7 +895,7 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		check.text = robj.textcode;
 		check.route_to = robj.route_to;
 		//check.text = 'Captured for Hold';
-		if (parseInt(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
+		if (Number(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();

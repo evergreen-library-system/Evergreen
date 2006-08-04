@@ -477,7 +477,7 @@ patron.util.set_penalty_css = function(patron) {
 			born = born.getTime()/1000
 
 			var patron_age = now - born;
-			var years_old = parseInt(patron_age / TIME.year);
+			var years_old = Number(patron_age / TIME.year);
 
 			addCSSClass(document.documentElement,'PATRON_AGE_IS_' + years_old);
 

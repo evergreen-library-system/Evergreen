@@ -124,7 +124,7 @@ circ.checkout.prototype = {
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								var r = window.prompt('Enter the number of ' + obj.data.hash.cnct[ params.noncat_type].name() + ' circulating:','1','Non-cataloged Items');
 								if (r) {
-									count = parseInt(r);
+									count = Number(r);
 									if (count > 0) {
 										if (count > 99) {
 											obj.error.yns_alert('You tried to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '.  The maximum is 99 per action.','Non-cataloged Circulation','OK',null,null,'Check here to confirm this message.');

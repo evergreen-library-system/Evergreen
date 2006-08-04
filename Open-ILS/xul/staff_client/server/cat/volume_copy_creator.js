@@ -122,7 +122,7 @@ g.render_volume_count_entry = function(row,ou_id) {
 	var node;
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
-		if (! isNaN( parseInt( ev.target.value) ) ) {
+		if (! isNaN( Number( ev.target.value) ) ) {
 			if (node) { row.removeChild(node); node = null; }
 			//ev.target.disabled = true;
 			node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
@@ -168,7 +168,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
 	function handle_change(tb1,tb2,hb3) {
 		if (tb1.value == '') return;
-		if (isNaN( parseInt( tb2.value ) )) return;
+		if (isNaN( Number( tb2.value ) )) return;
 
 		//if (tb1.disabled || tb2.disabled) return;
 
@@ -177,7 +177,7 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 
 		util.widgets.remove_children(hb3);
 
-		g.render_barcode_entry(hb3,tb1.value,parseInt(tb2.value),ou_id);
+		g.render_barcode_entry(hb3,tb1.value,Number(tb2.value),ou_id);
 		document.getElementById("Create").disabled = false;
 	}
 

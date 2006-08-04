@@ -61,7 +61,7 @@ circ.in_house_use.prototype = {
 						function(ev) {
 							if (ev.target.nodeName == 'textbox') {
 								try {
-									var value = parseInt(ev.target.value);
+									var value = Number(ev.target.value);
 									if (value > 0) {
 										if (value > 99) ev.target.value = 99;
 									} else {
@@ -134,7 +134,7 @@ circ.in_house_use.prototype = {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.in_house_use_barcode_entry_textbox.value;
-			var multiplier = parseInt( obj.controller.view.in_house_use_multiplier_textbox.value );
+			var multiplier = Number( obj.controller.view.in_house_use_multiplier_textbox.value );
 
 			if (barcode == '') {
 				obj.controller.view.in_house_use_barcode_entry_textbox.focus();

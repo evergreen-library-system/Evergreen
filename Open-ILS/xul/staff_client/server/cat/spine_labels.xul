@@ -79,8 +79,8 @@
 		function generate() {
 			try {
 				JSAN.use('util.widgets'); util.widgets.remove_children('panel'); var pn = $('panel'); $('preview').disabled = false;
-				var lw = parseInt($('lw').value) || 8;
-				var ll = parseInt($('ll').value) || 9;
+				var lw = Number($('lw').value) || 8;
+				var ll = Number($('ll').value) || 9;
 				for (var i in g.volumes) {
 					var hb = document.createElement('vbox'); pn.appendChild(hb); hb.setAttribute('name','template');
 					var ds = document.createElement('description'); hb.appendChild(ds);
@@ -129,15 +129,15 @@
 		function preview() {
 			try {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-					var pt = parseInt( $('pt').value ) || 10; var lm = parseInt($('lm').value); if (lm == NaN) lm = 11;
-					var lw = parseInt($('lw').value) || 8; var ll = parseInt($('ll').value) || 9; 
-					var sbl = parseInt($('sbl').value); if (sbl == NaN) sbl = 2;
+					var pt = Number( $('pt').value ) || 10; var lm = Number($('lm').value); if (lm == NaN) lm = 11;
+					var lw = Number($('lw').value) || 8; var ll = Number($('ll').value) || 9; 
+					var sbl = Number($('sbl').value); if (sbl == NaN) sbl = 2;
 					//alert('pt = ' + pt + ' lm = ' + lm + ' lw = ' + lw + ' ll = ' + ll + ' sbl = ' + sbl);
 					var html = "<html><head><link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt;
 					html += "pt}'></link><title>Spine Labels</title></head><body><pre>\n";
 					var nl = document.getElementsByAttribute('name','template');
 					for (var i = 0; i < nl.length; i++) {
-						var count = parseInt( nl[i].getElementsByAttribute('name','count')[0].value ); if (count == NaN) count = 1;
+						var count = Number( nl[i].getElementsByAttribute('name','count')[0].value ); if (count == NaN) count = 1;
 						for (var j = 0; j < count; j++) {
 							var gb = nl[i].childNodes[1];
 							var nl2 = gb.getElementsByTagName('textbox');
