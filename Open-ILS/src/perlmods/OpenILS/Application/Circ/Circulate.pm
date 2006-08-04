@@ -809,8 +809,14 @@ sub handle_checkout_holds {
 
    my $copy    = $self->copy;
    my $patron  = $self->patron;
+
 	my $holds	= $self->editor->search_action_hold_request(
-		{ current_copy =>  $copy->id , fulfillment_time => undef });
+		{ 
+			current_copy		=>  $copy->id , 
+			cancel_time			=> undef, 
+			fulfillment_time	=> undef 
+		}
+	);
 
    my @fulfilled;
 

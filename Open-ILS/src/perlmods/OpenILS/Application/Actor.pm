@@ -903,23 +903,6 @@ sub get_org_types {
 
 
 __PACKAGE__->register_method(
-	method	=> "get_user_profiles",
-	api_name	=> "open-ils.actor.user.profiles.retrieve",
-);
-
-my $user_profiles;
-sub get_user_profiles {
-	return $user_profiles if $user_profiles;
-
-	return $user_profiles = 
-		$apputils->simple_scalar_request(
-			"open-ils.cstore",
-			"open-ils.cstore.direct.actor.profile.search.atomic", { id => { "!=" => undef }});
-}
-
-
-
-__PACKAGE__->register_method(
 	method	=> "get_user_ident_types",
 	api_name	=> "open-ils.actor.user.ident_types.retrieve",
 );
@@ -1642,8 +1625,11 @@ sub hold_request_count {
 	my $holds = $apputils->simple_scalar_request(
 			"open-ils.cstore",
 			"open-ils.cstore.direct.action.hold_request.search.atomic",
-			{ usr => $userid,
-			  fulfillment_time => {"=" => undef } }
+			{ 
+				usr => $userid,
+				fulfillment_time => {"=" => undef },
+				cancel_time => undef,
+			}
 	);
 
 	my @ready;

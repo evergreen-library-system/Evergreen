@@ -100,7 +100,8 @@ sub create_hold {
 			usr			=> $recipient->id, 
 			hold_type	=> $t, 
 			fulfillment_time => undef, 
-			target		=> $hold->target
+			target		=> $hold->target,
+			cancel_time	=> undef,
 		};
 
 		$sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
@@ -326,7 +327,13 @@ sub retrieve_holds {
 	my $holds = $apputils->simplereq(
 		'open-ils.cstore',
 		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ usr =>  $user_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
+		{ 
+			usr =>  $user_id , 
+			fulfillment_time => undef,
+			cancel_time => undef,
+		}, 
+		{ order_by => { ahr => "request_time" } }
+	);
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
@@ -362,7 +369,12 @@ sub retrieve_holds_by_pickup_lib {
 	my $holds = $apputils->simplereq(
 		'open-ils.cstore',
 		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ pickup_lib =>  $ou_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
+		{ 
+			pickup_lib =>  $ou_id , 
+			fulfillment_time => undef,
+			cancel_time => undef
+		}, 
+		{ order_by => { ahr => "request_time" } });
 	
 	for my $hold ( @$holds ) {
 		$hold->transit(
@@ -402,6 +414,8 @@ sub cancel_hold {
 		return $e->event unless $e->allowed('CANCEL_HOLDS');
 	}
 
+	return 1 if $hold->cancel_time;
+
 	# If the hold is captured, reset the copy status
 	if( $hold->capture_time and $hold->current_copy ) {
 
@@ -418,7 +432,8 @@ sub cancel_hold {
 		}
 	}
 
-	$e->delete_action_hold_request($hold)
+	$hold->cancel_time('now');
+	$e->update_action_hold_request($hold)
 		or return $e->event;
 
 	$e->commit;
@@ -605,40 +620,6 @@ sub find_local_hold {
 }
 
 
-=head deprecated
-sub _find_local_hold_for_copy {
-
-	my $session = shift;
-	my $copy = shift;
-	my $user = shift;
-	my $evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
-
-	# first see if this copy has already been selected to fulfill a hold
-	my $hold  = $session->request(
-		"open-ils.storage.direct.action.hold_request.search_where",
-		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
-
-	if($hold) {return $hold;}
-
-	$logger->debug("searching for local hold at org " . 
-		$user->ws_ou . " and copy " . $copy->id);
-
-	my $holdid = $session->request(
-		"open-ils.storage.action.hold_request.nearest_hold",
-		$user->ws_ou, $copy->id )->gather(1);
-
-	return (undef, $evt) unless defined $holdid;
-
-	$logger->debug("Found hold id $holdid while ".
-		"searching nearest hold to " .$user->ws_ou);
-
-	return $apputils->fetch_hold($holdid);
-}
-=cut
-
-
-
-
 
 
 
@@ -673,7 +654,7 @@ sub fetch_open_hold_by_current_copy {
 	my $hold = $apputils->simplereq(
 		'open-ils.cstore', 
 		'open-ils.cstore.direct.action.hold_request.search.atomic',
-		{ current_copy =>  $copyid , fulfillment_time => undef });
+		{ current_copy =>  $copyid , cancel_time => undef, fulfillment_time => undef });
 	return $hold->[0] if ref($hold);
 	return undef;
 }
@@ -684,7 +665,7 @@ sub fetch_related_holds {
 	return $apputils->simplereq(
 		'open-ils.cstore', 
 		'open-ils.cstore.direct.action.hold_request.search.atomic',
-		{ current_copy =>  $copyid , fulfillment_time => undef });
+		{ current_copy =>  $copyid , cancel_time => undef, fulfillment_time => undef });
 }
 
 
@@ -710,7 +691,7 @@ sub hold_pull_list {
 
 	return $U->storagereq(
 		'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
-		$org, $limit, $offset ); # XXX change to workstation
+		$org, $limit, $offset ); 
 }
 
 __PACKAGE__->register_method (
@@ -850,7 +831,7 @@ sub fetch_open_title_holds {
 
 	# XXX make me return IDs in the future ^--
 	return $e->search_action_hold_request(
-		{ target => $id, hold_type => $type, fulfillment_time => undef });
+		{ target => $id, cancel_time => undef, hold_type => $type, fulfillment_time => undef });
 }
 
 
@@ -879,7 +860,8 @@ sub fetch_captured_holds {
 			capture_time		=> { "!=" => undef },
 			current_copy		=> { "!=" => undef },
 			fulfillment_time	=> undef,
-			pickup_lib			=> $org
+			pickup_lib			=> $org,
+			cancel_time			=> undef,
 		}
 	);
 
@@ -1013,7 +995,7 @@ sub find_nearest_permitted_hold {
 	# first see if this copy has already been selected to fulfill a hold
 	my $hold  = $session->request(
 		"open-ils.storage.direct.action.hold_request.search_where",
-		{ current_copy => $copy->id, capture_time => undef } )->gather(1);
+		{ current_copy => $copy->id, cancel_time => undef, capture_time => undef } )->gather(1);
 
 	if( $hold ) {
 		$logger->info("hold found which can be fulfilled by copy ".$copy->id);

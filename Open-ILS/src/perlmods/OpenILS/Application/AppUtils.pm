@@ -513,7 +513,8 @@ sub fetch_open_hold_by_copy {
 		{ 
 			current_copy		=> $copyid , 
 			capture_time		=> { "!=" => undef }, 
-			fulfillment_time	=> undef 
+			fulfillment_time	=> undef,
+			cancel_time			=> undef,
 		} );
 
 	$evt = OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND', copyid => $copyid) unless $hold;
