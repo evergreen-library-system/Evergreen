@@ -42,7 +42,7 @@ function my_init() {
 		} catch(E) {
 			cn_blob = [];
 		}
-		if ((!g.copy_shortcut) && (cn_blob.length > 0)) {
+		if ((!g.copy_shortcut)) {
 			var hbox = document.getElementById('marc_cn');
 			var ml = util.widgets.make_menulist(
 				util.functional.map_list(
@@ -64,6 +64,7 @@ function my_init() {
 				).reverse()
 			); hbox.appendChild(ml);
 			ml.setAttribute('editable','true');
+			ml.setAttribute('width', '200');
 			var btn = document.createElement('button');
 			btn.setAttribute('label','Apply');
 			btn.setAttribute('accesskey','A');
