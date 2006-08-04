@@ -105,8 +105,13 @@
 										)
 									);
 									var t = document.getElementById('caption').getAttribute('label');
-									if (get_bool( meta.deleted() )) { t += ' (Deleted) '; } else { 
-										if ( ! get_bool( meta.active() ) ) { t += ' (Inactive) '; }
+									if (get_bool( meta.deleted() )) { 
+										t += ' (Deleted) '; 
+										document.getElementById('caption').setAttribute('style','background: red; color: white;');
+									}
+									if ( ! get_bool( meta.active() ) ) { 
+										t += ' (Inactive) '; 
+										document.getElementById('caption').setAttribute('style','background: red; color: white;');
 									}
 									document.getElementById('caption').setAttribute('label',t);
 								} catch(E) {
