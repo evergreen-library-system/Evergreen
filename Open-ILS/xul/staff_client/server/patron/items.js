@@ -252,7 +252,7 @@ patron.items.prototype = {
 				JSAN.use('util.functional');
 				var title = 'Edit Due Date' + (retrieve_ids.length > 1 ? 's' : '');
 				var value = 'YYYY-MM-DD';
-				var text = 'Enter a new due date for these copies: ' + 
+				var text = 'Enter a new due date for these items: ' + 
 					util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
 				var due_date; var invalid = true;
 				while(invalid) {
@@ -320,7 +320,7 @@ patron.items.prototype = {
 			JSAN.use('util.functional');
 			var title = 'Claimed Returned';
 			var value = 'YYYY-MM-DD';
-			var text = 'Enter a claimed returned date for these copies: ' + 
+			var text = 'Enter a claimed returned date for these items: ' + 
 				util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ');
 			var backdate; var invalid = true;
 			while(invalid) {
