@@ -622,7 +622,7 @@ __PACKAGE__->register_method(
 
 	  	'return' => { 
 			desc		=> q/
-				Returns '1' on success, event on error.
+				Returns SUCCESS event on success, error event otherwise.
 				/,
 			type		=> 'object'
 		}
@@ -650,7 +650,7 @@ sub create_user_note {
 
 	$e->create_actor_usr_note($note) or return $e->event;
 	$e->commit;
-	return 1;
+	return OpenILS::Event->new('SUCCESS');
 }
 
 
