@@ -583,7 +583,6 @@ sub modify_from_fieldmapper {
 	actor::user->has_many( cards => 'actor::card' );
 
 	actor::org_unit->has_many( users => 'actor::user' );
-	actor::profile->has_many( users => 'actor::user' );
 
 	action::survey->has_many( questions => 'action::survey_question' );
 	action::survey->has_many( responses => 'action::survey_response' );

@@ -53,14 +53,6 @@ __PACKAGE__->columns( Primary => qw/id/);
 __PACKAGE__->columns( Essential => qw/usr name value/);
 
 #-------------------------------------------------------------------------------
-package actor::profile;
-use base qw/actor/;
-
-__PACKAGE__->table( 'actor_profile' );
-__PACKAGE__->columns( Primary => qw/id/);
-__PACKAGE__->columns( Essential => qw/name/);
-
-#-------------------------------------------------------------------------------
 package actor::org_unit_type;
 use base qw/actor/;
 
@@ -170,14 +162,6 @@ __PACKAGE__->table( 'actor_org_address' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/valid address_type org_unit street1 street2
 				      city county state country post_code/ );
-
-#-------------------------------------------------------------------------------
-package actor::profile;
-use base qw/actor/;
-
-__PACKAGE__->table( 'actor_profile' );
-__PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/name/ );
 
 #-------------------------------------------------------------------------------
 1;

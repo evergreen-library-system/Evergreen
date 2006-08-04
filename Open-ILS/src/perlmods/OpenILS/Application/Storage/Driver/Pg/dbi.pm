@@ -383,12 +383,6 @@
 	actor::org_address->sequence( 'actor.org_address_id_seq' );
 	
 	#---------------------------------------------------------------------
-	package actor::profile;
-	
-	actor::profile->table( 'actor.profile' );
-	actor::profile->sequence( 'actor.profile_id_seq' );
-	
-	#---------------------------------------------------------------------
 	package actor::org_unit_type;
 	
 	actor::org_unit_type->table( 'actor.org_unit_type' );

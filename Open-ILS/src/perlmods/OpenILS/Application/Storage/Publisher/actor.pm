@@ -557,23 +557,6 @@ __PACKAGE__->register_method(
 	method		=> 'org_unit_descendants',
 );
 
-sub profile_all {
-	my $self = shift;
-	my $client = shift;
-
-	for my $rec ( actor::profile->retrieve_all ) {
-		$client->respond( $rec->to_fieldmapper );
-	}
-
-	return undef;
-}
-__PACKAGE__->register_method(
-	method		=> 'profile_all',
-	api_name	=> 'open-ils.storage.direct.actor.profile.retrieve.all',
-	argc            => 0,
-	stream          => 1,
-);
-
 sub fleshed_actor_stat_cat {
         my $self = shift;
         my $client = shift;
