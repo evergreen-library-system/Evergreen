@@ -641,6 +641,9 @@ if( config ) {
 	result.recurringFinesLevel = config.recurringFinesLevel;
 	result.maxFine					= config.maxFine;
 
+	log_debug(config.durationRule + ' : ' + config.recurringFinesRule + ' : ' +
+		config.recurringFinesLevel + ' : ' + config.maxFine );
+
 } else {
 
 	result.durationRule			= '14_days_2_renew';

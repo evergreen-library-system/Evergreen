@@ -917,6 +917,13 @@ sub build_checkout_circ_object {
    my $dur_level  = $self->duration_level;
    my $rec_level  = $self->recurring_fines_level;
 
+	my $dname = $duration->name;
+	my $mname = $max->name;
+	my $rname = $recurring->name;
+
+	$logger->debug("circulator: building circulation with duration=$dname, ".
+		"maxfine=$mname, recurring=$rname, duration-level=$dur_level, recurring-level=$rec_level");
+
    $circ->duration( $duration->shrt ) if ($dur_level == 1);
    $circ->duration( $duration->normal ) if ($dur_level == 2);
    $circ->duration( $duration->extended ) if ($dur_level == 3);
@@ -1342,7 +1349,10 @@ sub checkin_build_hold_transit {
    $trans->dest($hold->pickup_lib);
    $trans->source_send_time("now");
    $trans->target_copy($copy->id);
-   $trans->copy_status($stat);
+
+	# when the copy gets to its destination, it will recover
+	# this status - put it onto the holds shelf
+   $trans->copy_status($U->copy_status_from_name('on holds shelf')->id);
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_hold_transit_copy($trans);
