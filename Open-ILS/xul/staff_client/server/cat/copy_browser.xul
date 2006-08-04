@@ -112,7 +112,7 @@
 			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
 			<spacer flex="1"/>
 			<menubar>
-				<menu label="Actions for Selected Rows" accesskey="S">
+				<menu label="Actions for Selected Rows" accesskey="f">
 					<menupopup>
 							<menuitem command="cmd_add_items" label="Add Items" accesskey="I"/>
 							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
