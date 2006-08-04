@@ -61,10 +61,10 @@ util.date.formatted_date = function (date,format) {
 		if (date.match(/:/) || date.match(/-/)) {
 			date = util.date.db_date2Date(date);
 		} else {
-			date = new Date( parseInt( date + '000' ) );
+			date = new Date( Number( date + '000' ) );
 		}
 	} else if (typeof(date) == 'undefined') {
-		date = new Date( parseInt( date + '000' ) );
+		date = new Date( Number( date + '000' ) );
 	}
 
 	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;

@@ -32,11 +32,11 @@ util.money.dollars_float_to_cents_integer = function( money ) {
 		}
 		var total = 0;
 		try {
-			if (parseInt(cents)) total += parseInt(cents);
+			if (Number(cents)) total += Number(cents);
 		} catch(E) {
 		}
 		try {
-			if (parseInt(dollars)) total += (parseInt(dollars) * 100);
+			if (Number(dollars)) total += (Number(dollars) * 100);
 		} catch(E) {
 		}
 		return total * negative;	

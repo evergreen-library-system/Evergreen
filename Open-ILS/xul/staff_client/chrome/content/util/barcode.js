@@ -9,7 +9,7 @@ util.barcode.EXPORT_OK	= [
 util.barcode.EXPORT_TAGS	= { ':all' : util.barcode.EXPORT_OK };
 
 util.barcode.check = function(bc) {
-	if (bc != parseInt(bc)) return false;
+	if (bc != Number(bc)) return false;
 	bc = bc.toString();
 	var last_digit = bc.substr(bc.length-1);
 	var stripped_barcode = bc.substr(0,bc.length-1);
@@ -24,14 +24,14 @@ util.barcode.checkdigit = function(bc) {
 		var product = digit * multiplier; product = product.toString();
 		var temp_sum = 0;
 		for (var j = 0; j < product.length; j++) {
-			temp_sum += parseInt( product[j] );
+			temp_sum += Number( product[j] );
 		}
-		check_sum += parseInt( temp_sum );
+		check_sum += Number( temp_sum );
 		multiplier = ( multiplier == 2 ? 1 : 2 );
 	}
 	check_sum = check_sum.toString();
 	var next_multiple_of_10 = (check_sum.match(/(\d*)\d$/)[1] * 10) + 10;
-	var check_digit = next_multiple_of_10 - parseInt(check_sum); if (check_digit == 10) check_digit = 0;
+	var check_digit = next_multiple_of_10 - Number(check_sum); if (check_digit == 10) check_digit = 0;
 	return check_digit;
 }
 
