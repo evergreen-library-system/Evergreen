@@ -54,7 +54,12 @@ static void* osrf_json_gateway_create_config( apr_pool_t* p, server_rec* s) {
 static void osrf_json_gateway_child_init(apr_pool_t *p, server_rec *s) {
 
 	char* cfg = osrf_json_gateway_config_file;
-	if( ! osrf_system_bootstrap_client( cfg, CONFIG_CONTEXT ) ) {
+	char buf[32];
+	memset(buf, 0x0, 32);
+	int t = time(NULL);
+	snprintf(buf, 32, "%d", t);
+
+	if( ! osrfSystemBootstrapClientResc( cfg, CONFIG_CONTEXT, buf ) ) {
 		ap_log_error( APLOG_MARK, APLOG_ERR, 0, s, 
 			"Unable to Bootstrap OpenSRF Client with config %s..", cfg);
 		return;
