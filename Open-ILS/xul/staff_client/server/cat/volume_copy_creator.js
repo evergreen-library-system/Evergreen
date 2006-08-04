@@ -329,7 +329,7 @@ g.stash_and_close = function() {
 				volume.copies( [] );
 				volumes.push( volume );
 
-				volume_labels[ acn_id ] = cn;
+				volume_labels[ acn_id ] = { 'label' : cn, 'owning_lib' : ou_id };
 
 				for (var i = 0; i < volumes_hash[ou_id][cn].length; i++) {
 					var copy = new acp();

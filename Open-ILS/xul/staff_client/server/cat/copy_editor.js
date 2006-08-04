@@ -425,7 +425,7 @@ g.changed = {};
 /* These need data from the middle layer to render */
 
 g.special_exception = {
-	'Call Number' : function(label,value) {
+	'Owning Lib : Call Number' : function(label,value) {
 		JSAN.use('util.widgets');
 		if (value>0) { /* an existing call number */
 			g.network.request(
@@ -435,16 +435,16 @@ g.special_exception = {
 				function(req) {
 					var cn = '??? id = ' + value;
 					try {
-						cn = req.getResultObject().label();
+						cn = req.getResultObject();
 					} catch(E) {
 						g.error.sdump('D_ERROR','callnumber retrieve: ' + E);
 					}
-					util.widgets.set_text(label,cn);
+					util.widgets.set_text(label,g.data.hash.aou[ cn.owning_lib() ].shortname() + ' : ' + cn.label());
 				}
 			);
 		} else { /* a yet to be created call number */
 			if (g.callnumbers) {
-				util.widgets.set_text(label,g.callnumbers[value]);
+				util.widgets.set_text(label,g.data.hash.aou[ g.callnumbers[value].owning_lib ].shortname() + ' : ' + g.callnumbers[value].label);
 			}
 		}
 	},
@@ -550,7 +550,7 @@ g.panes_and_field_names = {
 		} 
 	],
 	[
-		"Call Number", 	
+		"Owning Lib : Call Number", 	
 		{
 			render: 'fm.call_number();',
 		}
