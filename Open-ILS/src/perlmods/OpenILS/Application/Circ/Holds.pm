@@ -868,11 +868,11 @@ sub fetch_captured_holds {
 	);
 
 	my @res;
-	my $stat = OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	for my $h (@$holds) {
 		my $copy = $e->retrieve_asset_copy($h->current_copy)
 			or return $e->event;
-		push( @res, $h ) if $copy->status == $stat->id; # eventually, push IDs here
+		push( @res, $h ) if 
+			$copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	}
 
 	return \@res;
