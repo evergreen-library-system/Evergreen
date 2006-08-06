@@ -24,6 +24,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Editor q/:funcs/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
+use OpenSRF::Utils::SettingsClient;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -57,6 +58,18 @@ sub retrieve_circ {
 		return $e->event unless $e->allowed('VIEW_CIRCULATIONS');
 	}
 	return $circ;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_circ_mods',
+	api_name => 'open-ils.circ.circ_modifier.retrieve.all'
+);
+
+sub fetch_circ_mods {
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	return $conf->config_value(
+		'apps', 'open-ils.circ', 'app_settings', 'circ_modifiers', 'mod' );
 }
 
 
