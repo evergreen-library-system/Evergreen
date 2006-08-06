@@ -618,7 +618,8 @@ g.panes_and_field_names = {
 		"Circulation Modifier",
 		{	
 			render: 'fm.circ_modifier() == null ? "<Unset>" : fm.circ_modifier()',
-			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			/*input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',*/
+			input: 'c = function(v){ g.apply("circ_modifier",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() ); x.setAttribute("editable","true"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 ],

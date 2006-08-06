@@ -20,6 +20,7 @@ const api = {
 	'CHECKOUT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout' },
 	'CHECKOUT_PERMIT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.checkout.permit' },
 	'CHECKOUT_RENEW' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.renew' },
+	'CIRC_MODIFIER_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circ_modifier.retrieve.all' },
 	'FM_ACN_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.callnumber.retrieve' },
 	'FM_ACN_TREE_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume.fleshed.batch.update' },
 	'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy_tree.retrieve' },

@@ -310,6 +310,20 @@ OpenILS.data.prototype = {
 
 		this.chain.push(
 			function() {
+				try {
+					var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[]);
+					if (typeof robj.ilsevent != 'undefined') throw(robj);
+					obj.list.circ_modifier = robj;
+				} catch(E) {
+					var error = 'Error: ' + js2JSON(E);
+					obj.error.sdump('D_ERROR',error);
+					throw(E);
+				}
+			}
+		);
+
+		this.chain.push(
+			function() {
 				var f = gen_fm_retrieval_func(
 					'cnal',
 					[
