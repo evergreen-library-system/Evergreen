@@ -421,9 +421,8 @@ sub cancel_hold {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
 			or return $e->event;
-		my $stat = $U->copy_status_from_name('on holds shelf');
 
-		if( $copy->status == $stat->id ) {
+		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
 			$logger->info("setting copy to status 'reshelving' on hold cancel");
 			$copy->status(OILS_COPY_STATUS_RESHELVING);
 			$copy->editor($e->requestor->id);

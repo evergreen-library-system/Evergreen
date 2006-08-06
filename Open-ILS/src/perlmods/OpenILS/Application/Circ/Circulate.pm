@@ -509,7 +509,7 @@ sub do_copy_checks {
 	my $copy = $self->copy;
 	return unless $copy;
 
-	my $stat = (ref $copy->status) ? $copy->status->id : $copy->status;
+	my $stat = $U->copy_status($copy->status)->id;
 
 	# We cannot check out a copy if it is in-transit
 	if( $stat == OILS_COPY_STATUS_IN_TRANSIT ) {
@@ -594,10 +594,6 @@ sub run_copy_permit_scripts {
    my %hash = map { ($_->{ilsevent} => $_) } @allevents;
    @allevents = values %hash;
 
-
-	# If the script says the copy is not available, put the status
-	# in as the payload for that event
-	my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
    for (@allevents) {
       $_->{payload} = $copy if 
 			($_->{textcode} eq 'COPY_NOT_AVAILABLE');
@@ -1212,7 +1208,7 @@ sub do_checkin {
 	unless($self->checkin_changed) {
 
 		$self->push_events(OpenILS::Event->new('NO_CHANGE'));
-		my $stat = (ref $self->copy->status) ? $self->copy->status->id : $self->copy->status;
+		my $stat = $U->copy_status($self->copy->status)->id;
 
      	$self->hold($U->fetch_open_hold_by_copy($self->copy->id))
          if( $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF );
@@ -1232,7 +1228,7 @@ sub reshelve_copy {
    my $copy    = $self->copy;
    my $force   = $self->force;
 
-   my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
+   my $stat = $U->copy_status($copy->status)->id;
 
    if($force || (
       $stat != OILS_COPY_STATUS_ON_HOLDS_SHELF and
@@ -1270,7 +1266,7 @@ sub checkin_build_copy_transit {
    $transit->dest( (ref($copy->circ_lib)) ? $copy->circ_lib->id : $copy->circ_lib );
    $transit->target_copy($copy->id);
    $transit->source_send_time('now');
-   $transit->copy_status( (ref $copy->status) ? $copy->status->id : $copy->status );
+   $transit->copy_status( $U->copy_status($copy->status)->id );
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_transit_copy($transit);
@@ -1345,7 +1341,6 @@ sub checkin_build_hold_transit {
    my $hold = $self->hold;
    my $trans = Fieldmapper::action::hold_transit_copy->new;
 
-	my $stat = (ref $copy->status) ? $copy->status->id : $copy->status;
    $trans->hold($hold->id);
    $trans->source($self->editor->requestor->ws_ou);
    $trans->dest($hold->pickup_lib);
@@ -1511,7 +1506,7 @@ sub check_checkin_copy_status {
    my $ismissing  = 0;
    my $evt        = undef;
 
-   my $status = ref($copy->status) ? $copy->status->id : $copy->status;
+   my $status = $U->copy_status($copy->status)->id;
 
    return undef
       if(   $status == OILS_COPY_STATUS_AVAILABLE   ||
