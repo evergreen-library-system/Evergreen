@@ -47,7 +47,7 @@ INSERT INTO action.hold_request
 			ELSE 2
 		END AS selection_depth,
 		lh.hold_date AS request_time,
-		CASE	WHEN lh.available = 'Y' THEN now()
+		CASE	WHEN lh.available IN ('Y','I') THEN now()
 			ELSE NULL
 		END AS capture_time,
 		rou.id AS request_lib,
