@@ -8,15 +8,12 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Event;
 use Data::Dumper;
 use OpenILS::Utils::CStoreEditor;
-
-
-my $cache_client = "OpenSRF::Utils::Cache";
-
-my $storage_session = undef;
+use OpenILS::Const qw/:const/;
 
 # ---------------------------------------------------------------------------
 # Pile of utilty methods used accross applications.
 # ---------------------------------------------------------------------------
+my $cache_client = "OpenSRF::Utils::Cache";
 
 
 # ---------------------------------------------------------------------------
@@ -39,7 +36,6 @@ sub start_db_session {
 	$logger->debug("Setting global storage session to ".
 		"session: " . $session->session_id . " : " . $session->app );
 
-	$storage_session = $session;
 	return $session;
 }
 
@@ -91,7 +87,6 @@ sub commit_db_session {
 	$session->finish();
 	$session->disconnect();
 	$session->kill_me();
-	$storage_session = undef;
 }
 
 sub rollback_db_session {
@@ -104,7 +99,6 @@ sub rollback_db_session {
 	$session->finish();
 	$session->disconnect();
 	$session->kill_me();
-	$storage_session = undef;
 }
 
 
@@ -144,36 +138,11 @@ sub simplereq {
 	return $self->simple_scalar_request($service, $method, @params);
 }
 
-sub get_storage_session {
-
-	return undef; # XXX testing
-
-	if(	$storage_session and 
-			$storage_session->connected and
-			$storage_session->transport_connected and
-			$storage_session->app eq 'open-ils.storage' ) {
-
-		$logger->debug("get_storage_session(): returning existing session");
-		return $storage_session;
-	}
-	$logger->debug("get_storage_session(): returning undef");
-	$storage_session = undef;
-	return undef;
-}
-
 
 sub simple_scalar_request {
 	my($self, $service, $method, @params) = @_;
 
-	my $session = undef;
-
-	if( $service eq 'open-ils.storage' ) {
-		if( $session = get_storage_session() ) {
-			$logger->debug("simple request using existing storage session ".$session->session_id);
-		} else { $session = undef; }
-	}
-
-	$session = OpenSRF::AppSession->create( $service ) unless $session;
+	my $session = OpenSRF::AppSession->create( $service );
 
 	my $request = $session->request( $method, @params );
 
@@ -922,6 +891,15 @@ sub copy_status_to_name {
 		return $status->name if( $status->id == $sid );
 	}
 	return undef;
+}
+
+
+sub copy_status {
+	my( $self, $arg ) = @_;
+	return $arg if ref $arg;
+	$copy_statuses = $self->fetch_copy_statuses unless $copy_statuses;
+	my ($stat) = grep { $_->id == $arg } @$copy_statuses;
+	return $stat;
 }
 
 sub fetch_open_transit_by_copy {

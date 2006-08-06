@@ -4,7 +4,7 @@ use base 'OpenSRF::Application';
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
-#use OpenILS::Application::Circ::Circulator;
+use OpenILS::Const qw/:const/;
 
 my %scripts;
 my $script_libs;
@@ -253,9 +253,8 @@ use OpenILS::Application::Circ::Transit;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::Circ::ScriptBuilder;
+use OpenILS::Const qw/:const/;
 
-sub PRECAT_FINE_LEVEL { return 2; }
-sub PRECAT_LOAN_DURATION { return 2; }
 my $U				= "OpenILS::Application::AppUtils";
 my $holdcode	= "OpenILS::Application::Circ::Holds";
 my $transcode	= "OpenILS::Application::Circ::Transit";
@@ -451,7 +450,7 @@ sub mk_script_runner {
 		}
 	}
 
-	$self->is_precat(1) if $self->copy and $self->copy->call_number == -1;
+	$self->is_precat(1) if $self->copy and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
 
 	# Set some circ-specific flags in the script environment
 	my $evt = "environment";
@@ -513,7 +512,7 @@ sub do_copy_checks {
 	my $stat = (ref $copy->status) ? $copy->status->id : $copy->status;
 
 	# We cannot check out a copy if it is in-transit
-	if( $stat == $U->copy_status_from_name('in transit')->id ) {
+	if( $stat == OILS_COPY_STATUS_IN_TRANSIT ) {
 		return $self->bail_on_events(OpenILS::Event->new('COPY_IN_TRANSIT'));
 	}
 
@@ -663,7 +662,7 @@ sub handle_claims_returned {
 	my $CR = $self->editor->search_action_circulation(
 		{	
 			target_copy		=> $copy->id,
-			stop_fines		=> 'CLAIMSRETURNED',
+			stop_fines		=> OILS_STOP_FINES_CLAIMSRETURNED,
 			checkin_time	=> undef,
 		}
 	);
@@ -729,7 +728,7 @@ sub do_checkout {
 		$self->make_precat_copy;
 		return if $self->bail_out;
 
-	} elsif( $self->copy->call_number == -1 ) {
+	} elsif( $self->copy->call_number == OILS_PRECAT_CALL_NUMBER ) {
 		return $self->bail_on_events(OpenILS::Event->new('ITEM_NOT_CATALOGED'));
 	}
 
@@ -748,7 +747,7 @@ sub do_checkout {
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_circulation($self->circ);
 
-	$self->copy->status($U->copy_status_from_name('checked out'));
+	$self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
 	$self->update_copy;
 	return if $self->bail_out;
 
@@ -792,7 +791,7 @@ sub update_copy {
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_asset_copy($self->copy);
 
-	$copy->status($stat) if $stat;
+	$copy->status($U->copy_status($copy->status));
 	$copy->location($loc) if $loc;
 	$copy->circ_lib($circ_lib) if $circ_lib;
 }
@@ -924,13 +923,13 @@ sub build_checkout_circ_object {
 	$logger->debug("circulator: building circulation with duration=$dname, ".
 		"maxfine=$mname, recurring=$rname, duration-level=$dur_level, recurring-level=$rec_level");
 
-   $circ->duration( $duration->shrt ) if ($dur_level == 1);
-   $circ->duration( $duration->normal ) if ($dur_level == 2);
-   $circ->duration( $duration->extended ) if ($dur_level == 3);
+	$circ->duration( $duration->shrt ) if ($dur_level == OILS_CIRC_DURATION_SHORT);
+   $circ->duration( $duration->normal ) if ($dur_level == OILS_CIRC_DURATION_NORMAL);
+   $circ->duration( $duration->extended ) if ($dur_level == OILS_CIRC_DURATION_EXTENDED);
 
-   $circ->recuring_fine( $recurring->low ) if ($rec_level =~ /low/io);
-   $circ->recuring_fine( $recurring->normal ) if ($rec_level =~ /normal/io);
-   $circ->recuring_fine( $recurring->high ) if ($rec_level =~ /high/io);
+   $circ->recuring_fine( $recurring->low ) if ($rec_level eq OILS_REC_FINE_LEVEL_LOW);
+   $circ->recuring_fine( $recurring->normal ) if ($rec_level eq OILS_REC_FINE_LEVEL_NORMAL);
+   $circ->recuring_fine( $recurring->high ) if ($rec_level eq OILS_REC_FINE_LEVEL_HIGH);
 
    $circ->duration_rule( $duration->name );
    $circ->recuring_fine_rule( $recurring->name );
@@ -1040,9 +1039,9 @@ sub make_precat_copy {
    $copy->creator($self->editor->requestor->id);
    $copy->editor($self->editor->requestor->id);
    $copy->barcode($self->copy_barcode);
-   $copy->call_number(-1); #special CN for precat materials
-   $copy->loan_duration(&PRECAT_LOAN_DURATION);
-   $copy->fine_level(&PRECAT_FINE_LEVEL);
+   $copy->call_number(OILS_PRECAT_CALL_NUMBER); 
+   $copy->loan_duration(OILS_PRECAT_COPY_LOAN_DURATION);
+   $copy->fine_level(OILS_PRECAT_COPY_FINE_LEVEL);
 
    $copy->dummy_title($self->dummy_title || "");
    $copy->dummy_author($self->dummy_author || "");
@@ -1121,7 +1120,11 @@ sub do_checkin {
 				{ 
 					target_copy => $self->copy->id, 
 					xact_finish => undef,
-					stop_fines	=> [ 'CLAIMSRETURNED', 'LOST', 'LONGOVERDUE' ]
+					stop_fines	=> [ 
+						OILS_STOP_FINES_CLAIMSRETURNED, 
+						OILS_STOP_FINES_LOST, 
+						OILS_STOP_FINES_LONGOVERDUE, 
+					]
 				} )->[0];
 		}
 
@@ -1132,7 +1135,7 @@ sub do_checkin {
 	# if the circ is marked as 'claims returned', add the event to the list
 	$self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
 		if ($self->circ and $self->circ->stop_fines 
-				and $self->circ->stop_fines eq 'CLAIMSRETURNED');
+				and $self->circ->stop_fines eq OILS_STOP_FINES_CLAIMSRETURNED);
 
 	# handle the overridable events 
 	$self->override_events unless $self->is_renewal;
@@ -1212,7 +1215,7 @@ sub do_checkin {
 		my $stat = (ref $self->copy->status) ? $self->copy->status->id : $self->copy->status;
 
      	$self->hold($U->fetch_open_hold_by_copy($self->copy->id))
-         if( $stat == $U->copy_status_from_name('on holds shelf')->id );
+         if( $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF );
 		$self->bail_out(1); # no need to commit anything
 
 	} else {
@@ -1232,13 +1235,13 @@ sub reshelve_copy {
    my $stat = ref($copy->status) ? $copy->status->id : $copy->status;
 
    if($force || (
-      $stat != $U->copy_status_from_name('on holds shelf')->id and
-      $stat != $U->copy_status_from_name('available')->id and
-      $stat != $U->copy_status_from_name('cataloging')->id and
-      $stat != $U->copy_status_from_name('in transit')->id and
-      $stat != $U->copy_status_from_name('reshelving')->id) ) {
+      $stat != OILS_COPY_STATUS_ON_HOLDS_SHELF and
+      $stat != OILS_COPY_STATUS_AVAILABLE and
+      $stat != OILS_COPY_STATUS_CATALOGING and
+      $stat != OILS_COPY_STATUS_IN_TRANSIT and
+      $stat != OILS_COPY_STATUS_RESHELVING  )) {
 
-      	$copy->status( $U->copy_status_from_name('reshelving') );
+      	$copy->status( OILS_COPY_STATUS_RESHELVING );
 			$self->update_copy;
 			$self->checkin_changed(1);
 	}
@@ -1248,10 +1251,9 @@ sub reshelve_copy {
 sub checkin_handle_precat {
 	my $self 	= shift;
    my $copy    = $self->copy;
-   my $catstat = $U->copy_status_from_name('cataloging');
 
-   if( $self->is_precat and ($copy->status != $catstat->id) ) {
-      $copy->status($catstat);
+   if( $self->is_precat and ($copy->status != OILS_COPY_STATUS_CATALOGING) ) {
+      $copy->status(OILS_COPY_STATUS_CATALOGING);
 		$self->update_copy();
 		$self->checkin_changed(1);
 		$self->push_events(OpenILS::Event->new('ITEM_NOT_CATALOGED'));
@@ -1261,7 +1263,7 @@ sub checkin_handle_precat {
 
 sub checkin_build_copy_transit {
 	my $self			= shift;
-   my $copy       = $self->copy;
+	my $copy       = $self->copy;
    my $transit    = Fieldmapper::action::transit_copy->new;
 
    $transit->source($self->editor->requestor->ws_ou);
@@ -1273,7 +1275,7 @@ sub checkin_build_copy_transit {
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_transit_copy($transit);
 
-   $copy->status($U->copy_status_from_name('in transit'));
+   $copy->status(OILS_COPY_STATUS_IN_TRANSIT);
 	$self->update_copy;
 	$self->checkin_changed(1);
 }
@@ -1316,7 +1318,7 @@ sub attempt_checkin_hold_capture {
 	if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
 
 		# This hold was captured in the correct location
-   	$copy->status( $U->copy_status_from_name('on holds shelf') );
+   	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 		$self->push_events(OpenILS::Event->new('SUCCESS'));
 	
 	} else {
@@ -1324,7 +1326,7 @@ sub attempt_checkin_hold_capture {
 		# Hold needs to be picked up elsewhere.  Build a hold
 		# transit and route the item.
 		$self->checkin_build_hold_transit();
-   	$copy->status($U->copy_status_from_name('in transit') );
+   	$copy->status(OILS_COPY_STATUS_IN_TRANSIT);
 		return 1 if $self->bail_out;
 		$self->push_events(
 			OpenILS::Event->new('ROUTE_ITEM', org => $hold->pickup_lib));
@@ -1352,7 +1354,7 @@ sub checkin_build_hold_transit {
 
 	# when the copy gets to its destination, it will recover
 	# this status - put it onto the holds shelf
-   $trans->copy_status($U->copy_status_from_name('on holds shelf')->id);
+   $trans->copy_status(OILS_COPY_STATUS_IN_TRANSIT);
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_hold_transit_copy($trans);
@@ -1365,7 +1367,7 @@ sub process_received_transit {
 	my $copy = $self->copy;
    my $copyid = $self->copy->id;
 
-   my $status_name = $U->copy_status_to_name($copy->status);
+	my $status_name = $U->copy_status($copy->status)->name;
    $logger->debug("circulator: attempting transit receive on ".
 		"copy $copyid. Copy status is $status_name");
 
@@ -1422,8 +1424,8 @@ sub checkin_handle_circ {
    }
 
    if(!$circ->stop_fines) {
-      $circ->stop_fines('CHECKIN');
-      $circ->stop_fines('RENEW') if $self->is_renewal;
+      $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
+      $circ->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
       $circ->stop_fines_time('now');
    }
 
@@ -1436,7 +1438,7 @@ sub checkin_handle_circ {
    $circ->checkin_staff($self->editor->requestor->id);
    $circ->checkin_lib($self->editor->requestor->ws_ou);
 
-	$self->copy->status($U->copy_status_from_name('reshelving'));
+	$self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
 	$self->update_copy;
 
 	return $self->bail_on_events($self->editor->event)
@@ -1512,17 +1514,17 @@ sub check_checkin_copy_status {
    my $status = ref($copy->status) ? $copy->status->id : $copy->status;
 
    return undef
-      if(   $status == $U->copy_status_from_name('available')->id    ||
-            $status == $U->copy_status_from_name('checked out')->id  ||
-            $status == $U->copy_status_from_name('in process')->id   ||
-            $status == $U->copy_status_from_name('in transit')->id   ||
-            $status == $U->copy_status_from_name('reshelving')->id );
+      if(   $status == OILS_COPY_STATUS_AVAILABLE   ||
+            $status == OILS_COPY_STATUS_CHECKED_OUT ||
+            $status == OILS_COPY_STATUS_IN_PROCESS  ||
+            $status == OILS_COPY_STATUS_IN_TRANSIT  ||
+            $status == OILS_COPY_STATUS_RESHELVING );
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
-      if( $status == $U->copy_status_from_name('lost')->id );
+      if( $status == OILS_COPY_STATUS_LOST );
 
    return OpenILS::Event->new('COPY_STATUS_MISSING', payload => $copy )
-      if( $status == $U->copy_status_from_name('missing')->id );
+      if( $status == OILS_COPY_STATUS_MISSING );
 
    return OpenILS::Event->new('COPY_BAD_STATUS', payload => $copy );
 }

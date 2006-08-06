@@ -23,9 +23,9 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
-#use OpenILS::Utils::Editor q/:funcs/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
+use OpenILS::Const qw/:const/;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -425,7 +425,7 @@ sub cancel_hold {
 
 		if( $copy->status == $stat->id ) {
 			$logger->info("setting copy to status 'reshelving' on hold cancel");
-			$copy->status($U->copy_status_from_name('reshelving')->id);
+			$copy->status(OILS_COPY_STATUS_RESHELVING);
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
 			$e->update_asset_copy($copy) or return $e->event;
@@ -566,7 +566,7 @@ sub capture_copy {
 	if(!$stat) { throw OpenSRF::EX::ERROR 
 		("Error updating hold request " . $copy->id); }
 
-	$copy->status(8); #status on holds shelf
+	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF); #status on holds shelf
 
 	# if the staff member capturing this item is not at the pickup lib
 	if( $user->home_ou ne $hold->pickup_lib ) {
@@ -869,7 +869,7 @@ sub fetch_captured_holds {
 	);
 
 	my @res;
-	my $stat = $U->copy_status_from_name('on holds shelf');
+	my $stat = OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	for my $h (@$holds) {
 		my $copy = $e->retrieve_asset_copy($h->current_copy)
 			or return $e->event;

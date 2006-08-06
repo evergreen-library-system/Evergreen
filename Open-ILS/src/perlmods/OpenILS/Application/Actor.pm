@@ -22,6 +22,7 @@ use OpenSRF::Utils::Cache;
 use JSON;
 use DateTime;
 use DateTime::Format::ISO8601;
+use OpenILS::Const qw/:const/;
 
 use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
@@ -1588,14 +1589,14 @@ sub user_transaction_retrieve {
 		$u->start_mods_batch($title->marc());
 		$mods = $u->finish_mods_batch();
 	} otherwise {
-		if ($title->id == -1) {
+		if ($title->id == OILS_PRECAT_RECORD) {
 			my $copy = $apputils->simple_scalar_request(
 				"open-ils.cstore",
 				"open-ils.cstore.direct.asset.copy.retrieve",
 				$circ->target_copy );
 
 			$mods = new Fieldmapper::metabib::virtual_record;
-			$mods->doc_id(-1);
+			$mods->doc_id(OILS_PRECAT_RECORD);
 			$mods->title($copy->dummy_title);
 			$mods->author($copy->dummy_author);
 		}

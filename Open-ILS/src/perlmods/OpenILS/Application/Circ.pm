@@ -14,8 +14,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 
 use OpenILS::Application::AppUtils;
-my $apputils = "OpenILS::Application::AppUtils";
-my $U = $apputils;
+
 use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
@@ -24,6 +23,10 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Editor q/:funcs/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Const qw/:const/;
+
+my $apputils = "OpenILS::Application::AppUtils";
+my $U = $apputils;
 
 
 # ------------------------------------------------------------------------
@@ -261,10 +264,8 @@ sub _set_circ_lost {
 	$logger->activity("user ".$reqr->id." marking copy ".$copy->id.
 		" lost  for circ ".  $circ->id. " and checking for necessary charges");
 
-	my $newstat = $U->copy_status_from_name('lost');
-	if( $copy->status ne $newstat->id ) {
-
-		$copy->status($newstat->id);
+	if( $copy->status ne OILS_COPY_STATUS_LOST ) {
+		$copy->status(OILS_COPY_STATUS_LOST);
 		$U->update_copy(
 			copy		=> $copy, 
 			editor	=> $reqr->id, 
@@ -296,7 +297,7 @@ sub _set_circ_lost {
 		return $evt if $evt;
 	}
 	
-	$circ->stop_fines("LOST");		
+	$circ->stop_fines(OILS_STOP_FINES_LOST);		
 	return undef;
 }
 
