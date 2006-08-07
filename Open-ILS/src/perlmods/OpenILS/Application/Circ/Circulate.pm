@@ -880,10 +880,10 @@ sub run_checkout_scripts {
 		throw OpenSRF::EX::ERROR ("Circ Duration Script Died: $@");
 
    my $duration   = $result->{durationRule};
-   my $dur_level  = $result->{durationLevel};
+   #my $dur_level  = $result->{durationLevel};
    my $recurring  = $result->{recurringFinesRule};
    my $max_fine   = $result->{maxFine};
-   my $rec_fines_level = $result->{recurringFinesLevel};
+   #my $rec_fines_level = $result->{recurringFinesLevel};
 
    ($duration, $evt) = $U->fetch_circ_duration_by_name($duration);
 	return $self->bail_on_events($evt) if $evt;
@@ -892,8 +892,8 @@ sub run_checkout_scripts {
    ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine);
 	return $self->bail_on_events($evt) if $evt;
 
-   $self->duration_level($dur_level);
-   $self->recurring_fines_level($rec_fines_level);
+   #$self->duration_level($dur_level);
+   #$self->recurring_fines_level($rec_fines_level);
    $self->duration_rule($duration);
    $self->recurring_fines_rule($recurring);
    $self->max_fine_rule($max_fine);
@@ -909,23 +909,33 @@ sub build_checkout_circ_object {
    my $recurring  = $self->recurring_fines_rule;
    my $copy       = $self->copy;
    my $patron     = $self->patron;
-   my $dur_level  = $self->duration_level;
-   my $rec_level  = $self->recurring_fines_level;
+   #my $dur_level  = $self->duration_level;
+   #my $rec_level  = $self->recurring_fines_level;
 
 	my $dname = $duration->name;
 	my $mname = $max->name;
 	my $rname = $recurring->name;
 
-	$logger->debug("circulator: building circulation with duration=$dname, ".
-		"maxfine=$mname, recurring=$rname, duration-level=$dur_level, recurring-level=$rec_level");
+	$logger->debug("circulator: building circulation ".
+		"with duration=$dname, maxfine=$mname, recurring=$rname");
 
-	$circ->duration( $duration->shrt ) if ($dur_level == OILS_CIRC_DURATION_SHORT);
-   $circ->duration( $duration->normal ) if ($dur_level == OILS_CIRC_DURATION_NORMAL);
-   $circ->duration( $duration->extended ) if ($dur_level == OILS_CIRC_DURATION_EXTENDED);
+	#$circ->duration( $duration->shrt ) if ($dur_level == OILS_CIRC_DURATION_SHORT);
+   #$circ->duration( $duration->normal ) if ($dur_level == OILS_CIRC_DURATION_NORMAL);
+   #$circ->duration( $duration->extended ) if ($dur_level == OILS_CIRC_DURATION_EXTENDED);
 
-   $circ->recuring_fine( $recurring->low ) if ($rec_level eq OILS_REC_FINE_LEVEL_LOW);
-   $circ->recuring_fine( $recurring->normal ) if ($rec_level eq OILS_REC_FINE_LEVEL_NORMAL);
-   $circ->recuring_fine( $recurring->high ) if ($rec_level eq OILS_REC_FINE_LEVEL_HIGH);
+	$circ->duration( $duration->shrt ) 
+		if $copy->loan_duration == OILS_CIRC_DURATION_SHORT;
+   $circ->duration( $duration->normal ) 
+		if $copy->loan_duration == OILS_CIRC_DURATION_NORMAL;
+   $circ->duration( $duration->extended ) 
+		if $copy->loan_duration ==OILS_CIRC_DURATION_EXTENDED;
+
+   $circ->recuring_fine( $recurring->low ) 
+		if $copy->fine_level == OILS_REC_FINE_LEVEL_LOW;
+   $circ->recuring_fine( $recurring->normal ) 
+		if $copy->fine_level == OILS_REC_FINE_LEVEL_NORMAL;
+   $circ->recuring_fine( $recurring->high ) 
+		if $copy->fine_level == OILS_REC_FINE_LEVEL_HIGH;
 
    $circ->duration_rule( $duration->name );
    $circ->recuring_fine_rule( $recurring->name );
