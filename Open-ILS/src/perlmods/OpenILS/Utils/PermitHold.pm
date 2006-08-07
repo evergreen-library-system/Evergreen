@@ -39,6 +39,16 @@ sub permit_copy_hold {
 
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 
+	# check the various holdable flags
+	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+		unless $U->is_true($ctx->{copy}->holdable);
+
+	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+		unless $U->is_true($ctx->{copy}->location->holdable);
+
+	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+		unless $U->is_true($ctx->{copy}->status->holdable);
+
 	my $evt = check_age_protect($ctx->{patron}, $ctx->{copy});
 	push( @allevents, $evt ) if $evt;
 
