@@ -135,7 +135,7 @@ sub merge_volumes {
 	my %copies;
 	my $evt;
 
-	return ($$volumes[0]) if(scalar(@$volumes) == 1);
+	return ($$volumes[0]) if !$master and scalar(@$volumes) == 1;
 
 	$logger->debug("merge: fetching copies for volume list of size ".scalar(@$volumes));
 

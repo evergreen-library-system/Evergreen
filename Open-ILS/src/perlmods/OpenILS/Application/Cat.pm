@@ -1192,42 +1192,80 @@ sub batch_volume_transfer {
 	return $e->event unless $e->allowed('VOLUME_UPDATE');
 
 	my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
-
 	my @seen;
-	for my $vol (@$vols) {
-		next unless $vol;
-		next if grep { $vol->id == $_ } @seen;
 
+	for my $vol (@$vols) {
+
+		# if we've already looked at this volume, go to the next
+		next if !$vol or grep { $vol->id == $_ } @seen;
+
+		# grab all of the volumes in the list that have 
+		# the same label so they can be merged
 		my @all = grep { $_->label eq $vol->label } @$vols;
+
+		# take note of the fact that we've looked at this set of volumes
 		push( @seen, $_->id ) for @all;
 
-		if( @all > 1 ) {
+		# see if there is a volume at the destination lib that 
+		# already has the requested label
+		my $existing_vol = $e->search_asset_call_number(
+			{
+				label			=> $vol->label, 
+				record		=>$rec, 
+				owning_lib	=>$o_lib,
+				deleted		=> 'f'
+			}
+		)->[0];
+
+		if( $existing_vol ) {
+
+			if( grep { $_->id == $existing_vol->id } @all ) {
+				# this volume is already accounted for in our list of volumes to merge
+				$existing_vol = undef;
+
+			} else {
+				# this volume exists on the destination record/owning_lib and must
+				# be used as the destination for merging
+				$logger->debug("merge: volume already exists at destination record: ".
+					$existing_vol->id.' : '.$existing_vol->label) if $existing_vol;
+			}
+		} 
+
+		if( @all > 1 || $existing_vol ) {
 			$logger->info("merge: found collisions in volume transfer");
-			($vol, $evt) = 
-				OpenILS::Application::Cat::Merge::merge_volumes($e, \@all, $vol);
+			my @args = ($e, \@all);
+			@args = ($e, \@all, $existing_vol) if $existing_vol;
+			($vol, $evt) = OpenILS::Application::Cat::Merge::merge_volumes(@args);
 			return $evt if $evt;
 		} 
 		
-		$vol->owning_lib($o_lib);
-		$vol->record($rec);
-		$vol->editor($e->requestor->id);
-		$vol->edit_date('now');
+		if( !$existing_vol ) {
 
-		$logger->info("merge: updating volume ".$vol->id);
+			$vol->owning_lib($o_lib);
+			$vol->record($rec);
+			$vol->editor($e->requestor->id);
+			$vol->edit_date('now');
+	
+			$logger->info("merge: updating volume ".$vol->id);
+			$e->update_asset_call_number($vol) or return $e->event;
 
-		$e->update_asset_call_number($vol) or return $e->event;
+		} else {
+			$logger->info("merge: bypassing volume update because existing volume used as target");
+		}
 
-		my $copies = $e->search_asset_copy({call_number=>$vol->id});
+		# regardless of what volume was used as the destination, 
+		# update any copies that have moved over to the new lib
+		my $copies = $e->search_asset_copy({call_number=>$vol->id, deleted => 'f'});
 
 		# update circ lib on the copies - make this a method flag?
 		for my $copy (@$copies) {
+			next if $copy->circ_lib == $o_lib;
 			$logger->info("merge: transfer moving circ lib on copy ".$copy->id);
 			$copy->circ_lib($o_lib);
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
 			$e->update_asset_copy($copy) or return $e->event;
 		}
-
 	}
 
 	$logger->info("merge: transfer succeeded");
