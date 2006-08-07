@@ -309,6 +309,7 @@ sub is_org_descendent {
 	return 0 unless $parent and $child;
 	$logger->debug("script_builder: is_org_desc checking parent=".$parent->id.", child=".$child->id);
 	do {
+		return 0 unless defined $child->parent_ou;
 		return 1 if $parent->id == $child->id;
 	} while( ($child) = grep { $_->id == $child->parent_ou } @ORG_LIST );
 	return 0;
