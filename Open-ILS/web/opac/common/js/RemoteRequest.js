@@ -256,8 +256,8 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	try {
 		if( this.xmlhttp.status != 200 ) {
-			try{dump('! Returning NULL.  HTTP STATUS = ' + this.xmlhttp.status);}catch(e){}
-			return null;
+			try{dump('! NETWORK FAILURE.  HTTP STATUS = ' + this.xmlhttp.status);}catch(e){}
+			throw 'NETWORK FAILURE';
 		}
 	} catch(e) {}
 
