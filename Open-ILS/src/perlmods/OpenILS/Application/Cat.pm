@@ -1177,6 +1177,12 @@ __PACKAGE__->register_method (
 	api_name => 'open-ils.cat.asset.volume.batch.transfer',
 );
 
+__PACKAGE__->register_method (
+	method => 'batch_volume_transfer',
+	api_name => 'open-ils.cat.asset.volume.batch.transfer.override',
+);
+
+
 sub batch_volume_transfer {
 	my( $self, $conn, $auth, $args ) = @_;
 
@@ -1205,6 +1211,18 @@ sub batch_volume_transfer {
 
 		# take note of the fact that we've looked at this set of volumes
 		push( @seen, $_->id ) for @all;
+
+
+		# for each volume, see if there are any copies that have a 
+		# remote circ_lib (circ_lib != vol->owning_lib).  if so, warn them
+		unless( $self->api_name =~ /override/ ) {
+			for my $v (@all) {
+				$logger->debug("merge: searching for copies with remote circ_lib for volume ".$v->id);
+				my $copies = $e->search_asset_copy(
+					{ call_number=>$v->id, circ_lib => { '!=' => $v->owning_lib } }, {idlist=>1});
+				return OpenILS::Event->new('COPY_REMOTE_CIRC_LIB') if @$copies;
+			}
+		}
 
 		# see if there is a volume at the destination lib that 
 		# already has the requested label
