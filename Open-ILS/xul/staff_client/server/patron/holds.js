@@ -28,9 +28,9 @@ patron.holds.prototype = {
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'request_time' : { 'hidden' : false },
 				'pickup_lib_shortname' : { 'hidden' : false },
-				'hold_type' : { 'hidden' : false },
-				'current_copy' : { 'hidden' : false },
-				'capture_time' : { 'hidden' : false },
+				'hold_type' : { 'hidden' : true },
+				'current_copy' : { 'hidden' : true },
+				'capture_time' : { 'hidden' : true },
 			} 
 		);
 
@@ -42,6 +42,8 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
+						var status_robj = obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ]);
+						row.my.status = status_robj;
 						if (row.my.ahr.current_copy()) {
 							row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
 						}

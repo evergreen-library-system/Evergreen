@@ -509,12 +509,16 @@ circ.util.hold_columns = function(modify,params) {
 			'render' : 'my.ahr.request_time().toString().substr(0,10)'
 		},
 		{
+			'persist' : 'hidden width', 'id' : 'available_time', 'label' : 'Available On', 'flex' : 1,
+			'primary' : false, 'hidden' : false,  'render' : 'my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString().substr(0,10) : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "" )',
+		},
+		{
 			'persist' : 'hidden width', 'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time()'
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "???"'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.status()'
+			'primary' : false, 'hidden' : false,  'render' : 'switch(my.status) { case 1: case "1": "Waiting for copy"; break; case 2: case "2": "Waiting for capture"; break; case 3: case "3": "In-Transit"; break; case 4: case "4" : "Ready for pickup"; break; default: my.status; break;}'
 		},
 		{
 			'persist' : 'hidden width', 'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
@@ -605,6 +609,22 @@ circ.util.hold_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width', 'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_source', 'label' : 'Transit Source', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().source() ].shortname() : ""'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_source_send_time', 'label' : 'Transitted On', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().source_send_time() : ""'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_dest_lib', 'label' : 'Transit Destination', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().dest() ].shortname() : ""'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""'
 		},
 
 

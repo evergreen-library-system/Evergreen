@@ -47,6 +47,7 @@ const api = {
 	'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
 	'FM_AHR_UPDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update' },
 	'FM_AHR_RESET' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.reset' },
+	'FM_AHR_STATUS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.status.retrieve' },
 	'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
 	'FM_ANCC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cataloged_circulation.retrieve' },
 	'FM_ANCC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.open_non_cataloged_circulation.user' },
