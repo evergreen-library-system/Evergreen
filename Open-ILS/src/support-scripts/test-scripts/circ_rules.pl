@@ -28,22 +28,12 @@ my $non_cat_type				= 1;
 my $bsconfig = shift;
 my $script = shift;
 
-die "$0: <bootstrap> <script>\n" unless $script;
+die "$0: <bootstrap> <absolute_script_path>\n" unless $script;
 
 my $path;
 
 ($path, $script) = ($script =~ m#(/.*/)(.*)#);
-
 osrf_connect($bsconfig);
-
-
-#use OpenILS::Utils::ScriptRunner;
-#my $r = OpenILS::Utils::ScriptRunner->new;
-#$r->add_path($path);
-#$r->load($script) or die "Script died: $@";
-#$r->run or die "Script died: $@";
-#exit;
-
 
 my $s = time;
 my $runner = OpenILS::Application::Circ::ScriptBuilder->build(
@@ -51,6 +41,7 @@ my $runner = OpenILS::Application::Circ::ScriptBuilder->build(
 		copy_id						=> $copyid,
 		patron_id					=> $patronid,
 		fetch_patron_circ_info	=> 1,
+		flesh_age_protect			=> 1,
 		_direct						=> {
 			isNonCat		=> $is_non_cat,
 			isRenewal	=> $is_renewal,
@@ -71,9 +62,10 @@ $runner->insert(log_debug		=> sub { print "@_\n"; return 1;} );
 $runner->insert(log_internal	=> sub { print "@_\n"; return 1;} );
 
 
-$runner->add_path('/openils/var/web/opac/common/js');
+#$runner->add_path('/openils/var/web/opac/common/js');
 $runner->add_path($path);
-$runner->add_path("$path/../catalog/");
+$runner->add_path("$path/../");
+#$runner->add_path("$path/../catalog/");
 
 
 # ---------------------------------------------------------------------
