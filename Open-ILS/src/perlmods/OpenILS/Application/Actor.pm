@@ -1740,10 +1740,14 @@ sub _checked_out {
 	# split the circs up into overdue and not-overdue circs
 	my (@out,@overdue);
 	for my $c (@$circs) {
-		my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
-		my $due = $due_dt->epoch;
-		if ($due < DateTime->today->epoch) {
-			push @overdue, $c->id;
+		if( $c->due_date ) {
+			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+			my $due = $due_dt->epoch;
+			if ($due < DateTime->today->epoch) {
+				push @overdue, $c->id;
+			} else {
+				push @out, $c->id;
+			}
 		} else {
 			push @out, $c->id;
 		}
