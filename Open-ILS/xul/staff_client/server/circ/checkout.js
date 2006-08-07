@@ -552,7 +552,7 @@ circ.checkout.prototype = {
 			}
 
 		} catch(E) {
-			if (E.ilsevent && E.ilsevent == -1) {
+			if (typeof E.ilsevent != 'undefined' && E.ilsevent == -1) {
 				obj.error.standard_network_error_alert('Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
 			} else {
 				obj.error.standard_unexpected_error_alert('Check Out Failed',E);
