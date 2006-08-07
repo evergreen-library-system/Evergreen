@@ -12,14 +12,35 @@ util.network.prototype = {
 
 	'link_id' : 0,
 
+	'NETWORK_FAILURE' : null,
+
 	'simple_request' : function(id,params,f,o_params) {
 		return this.request(api[id].app,api[id].method,params,f,o_params);
+	},
+
+	'get_result' : function (req) {
+		var obj = this;
+		var result;
+		try {
+			result = req.getResultObject();	
+		} catch(E) {
+			try {
+				obj.error.sdump('D_ERROR','DEBUG: got here');
+				if (instanceOf(E, NetworkFailure)) {
+					obj.NETWORK_FAILURE = E.status();
+				} else {
+					try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
+				}
+			} catch(I) { dump(I + '\n'); }
+			result = null;
+		}
+		return result;
 	},
 
 	'request' : function (app,name,params,f,o_params) {
 		var request =  this._request(app,name,params,f,o_params);
 		if (request) {
-			return request.getResultObject();
+			return this.get_result(request);
 		} else {
 			return null;
 		}
@@ -41,7 +62,7 @@ util.network.prototype = {
 				request.setCompleteCallback(
 					function(req) {
 						try {
-							var json_string = js2JSON(req.getResultObject());
+							var json_string = js2JSON(obj.get_result(req));
 							obj.error.sdump('D_SES_RESULT','asynced result #' 
 								+ obj.link_id + '\n\n' 
 								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
@@ -54,6 +75,7 @@ util.network.prototype = {
 							}
 							req = obj.check_for_offline(app,name,params,req,o_params);
 							f(req);
+							obj.NETWORK_FAILURE = null;
 						} catch(E) {
 							try {
 								E.ilsevent = -2;
@@ -63,11 +85,19 @@ util.network.prototype = {
 						}
 					}
 				);
-				request.send(false);
+				try {
+					request.send(false);
+				} catch(E) {
+					throw(E);
+				}
 				return null;
 			} else {
-				request.send(true);
-				var result = request.getResultObject();
+				try {
+					request.send(true);
+				} catch(E) {
+					throw(E);
+				}
+				var result = obj.get_result(request);
 				var json_string = js2JSON(result);
 				this.error.sdump('D_SES_RESULT','synced result #' 
 					+ obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
@@ -79,10 +109,12 @@ util.network.prototype = {
 					request = obj.rerequest_on_override(app,name,params,request,o_params);
 				}
 				request = obj.check_for_offline(app,name,params,request,o_params);
+				obj.NETWORK_FAILURE = null;
 				return request;
 			}
 
 		} catch(E) {
+			alert(E);
 			if (instanceOf(E,perm_ex)) {
 				alert('in util.network, _request : permission exception: ' + js2JSON(E));
 			}
@@ -92,8 +124,13 @@ util.network.prototype = {
 
 	'check_for_offline' : function (app,name,params,req,o_params) {
 		var obj = this;
-		var result = req.getResultObject();
+		var result = obj.get_result(req);
 		if (result != null) return req;
+		if (obj.NETWORK_FAILURE == null) {
+			obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: ' + js2JSON(params) + '\nReturned null.  There was no NetworkFailure object thrown.');
+			obj.error.sdump('D_ALERT','method: ' + name + '\nparams: ' + js2JSON(params) + '\nReturned null.  There was no NetworkFailure object thrown.');
+			//return req;
+		}
 
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		var proceed = true;
@@ -110,7 +147,7 @@ util.network.prototype = {
 
 			} else {
 				try { obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: '+ js2JSON(params) + '\nReturned null\n'); } catch(E) { alert(E); }
-				r = obj.error.yns_alert('Network failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
+				r = obj.error.yns_alert('Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + ' status = ' + obj.NETWORK_FAILURE + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
 				if (r == 1) {
 					data.proceed_offline = true; data.stash('proceed_offline');
 					dump('Remembering proceed_offline for 200000 ms.\n');
@@ -128,7 +165,7 @@ util.network.prototype = {
 			switch(r) {
 				case 0: 
 					req = obj._request(app,name,params,null,o_params);
-					if (req.getResultObject() == null) proceed = true;
+					if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
 					return req;
 				break;
 				case 1: 
@@ -198,7 +235,7 @@ util.network.prototype = {
 	'rerequest_on_session_timeout' : function(app,name,params,req,o_params) {
 		try {
 			var obj = this;
-			var robj = req.getResultObject();
+			var robj = obj.get_result(req);
 			if (robj != null && robj.ilsevent && robj.ilsevent == 1001) {
 
 				if (obj.get_new_session(name,undefined,true)) {
@@ -216,7 +253,7 @@ util.network.prototype = {
 	'rerequest_on_perm_failure' : function(app,name,params,req,o_params) {
 		try {
 			var obj = this;
-			var robj = req.getResultObject();
+			var robj = obj.get_result(req);
 			if (robj != null && robj.ilsevent && robj.ilsevent == 5000) {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 				if (location.href.match(/^chrome/)) {
@@ -281,7 +318,7 @@ util.network.prototype = {
 				}
 			}
 
-			var result = req.getResultObject();
+			var result = obj.get_result(req);
 			if (!result) return req;
 
 			if ( (typeof result.ilsevent != 'undefined') && (o_params.overridable_events.indexOf(result.ilsevent) != -1) ) {
