@@ -11,9 +11,6 @@ log_vars('circ_duration');
 
 	----------------------------------------------------------------------------- */
 
-
-
-
 var MARC_ITEM_TYPE_MAP = {
 
 	a : { /* Language material [Books] */
@@ -35,7 +32,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	k : { /* Two-dimensional nonprojectable graphic [Card, charts, etc.] */
-		durationRule			: '14_days_2_renew',
+		durationRule			: '3_month_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
@@ -59,7 +56,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	e : { /* Cartographic material [Map] */
-		durationRule			: '3_days_1_renew',
+		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
@@ -95,7 +92,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	m : { /* Computer file */
-		durationRule			: '7_days_2_renew',
+		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	}
@@ -104,411 +101,131 @@ var MARC_ITEM_TYPE_MAP = {
 
 var CIRC_MOD_MAP = {
 
-	'Art'		: {
+	'art'		: {
 		durationRule			: '3_month_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Atlas'		: {
+	'atlas'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Audiobook' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'AV-miscellaneous nonprint' : {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller (high demand)'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller not high demand'	: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller-not holdable'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Classroom' : {
-		durationRule			: '28_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Compact Disc'				: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Computer Use' : {
-		durationRule			: '1_hour_2_renew',
-		recurringFinesRule	: '10_cent_per_day', 
-		maxFine					: 'overdue_mid'
-	},
-
-	'Deposit [monetary]'		: {
+	'audiobook' : {
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'DVD'							: {
+	'av' : {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'DVD with long loan period'	: {
+	'bestseller'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'E-Book' : {
-		durationRule			: '3_days_1_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Equipment' : { 
-		durationRule			: '3_days_1_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Equipment with long loan period' : {
-	},
-
-	'Non-PINES GA loan (NILS-Item)' : {
-		durationRule			: '28_days_0_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'ILL item' : {
-		durationRule			: '28_days_0_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'PINES ILL loan (ILS-Item)' : {
-		durationRule			: '28_days_0_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-
-	'Filmstrip'					: {
+	'bestsellernh'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Internet' : {
-	},
-
-	'Kit' : {
+	'cd'				: {
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Laserdisc'					: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Libraryuse' : {
-	},
-
-	'Magazine-Circulating'	: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-
-	'Magazine-Non Circulating' : {
-	},
-
-	'Map' : {
-		durationRule			: '3_days_1_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-
-	'Microform' : {
-	},
-
-	'Music' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'New AV material'			: {
-		durationRule			: '3_days_1_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'New Book'					: {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Outreach' : {
-		durationRule			: '2_months_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Pamphlet'					: {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Paperback' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Realia' : {
-		durationRule			: '28_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Record'						: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Reference' : {
-	},
-
-	'Reserve' : {
-	},
-
-	'Room' : {
-	},
-
-	'Roomsatell' : {
-	},
-
-	'Software' : {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Software with long loan period' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Staff' : {
-	},
-
-	'State Library book' : {
-		durationRule			: '35_days_1_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'State Library microform	' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'State Library reference' : {
-		durationRule			: '14_days_2_renew',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Talkingbook'				: { 
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Toy'							: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Video (high demand)'	: {
+	'dvd'							: {
 		durationRule			: '7_days_0_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Video (not high demand)' : {
-		durationRule			: '7_days_0_renew',
-		recurringFinesRule	: '10_cent_per_day',
+	'e-book' : {
+		durationRule			: '3_days_1_renew',
+		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Video - long loan period' : {
+	'equipment' : { 
+		durationRule			: '3_days_1_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'filmstrip'					: {
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Video public performance'		: {
+	'kit' : {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'magazine'	: {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'map' : {
+		durationRule			: '3_days_1_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'microform' : {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'music' : {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'record'						: {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'software' : {
+		durationRule			: '7_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'talking book'				: {  
+		durationRule			: 'unlimited',
+	},
+
+	'toy'							: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Video - special parameters' : {
-	}
+	'video'	: {
+		durationRule			: '7_days_0_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
 }
 
-
-
-
-/*
-var CIRC_MOD_MAP = {
-
-	'Atlas'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller (high demand)'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller not high demand'	: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller-not holdable'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Compact Disc'						: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'DVD'									: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'DVD with long loan period'	: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Filmstrip'							: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Laserdisc'							: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Magazine-Circulating'			: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'New AV material'					: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'New Book'							: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Pamphlet'							: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Record'								: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Talkingbook'						: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Toy'									: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Video (high demand)'			: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Video public performance'		: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		maxFine					: 'overdue_mid'
-
-	}
-}
-*/
 
 
 /* treat pre-cat copies like vanilla books */
@@ -521,30 +238,27 @@ if( isTrue(isPrecat) ) {
 }
 
 
-/* ----------------------------------------------------------------------------- 
+/* ----------------------------------------------------------------------------------- 
 	If a circ_modifier is defined on the copy and we have config info for the
-	provided circ_modifier, use that config.  Otherwise fall back on the MARC 
-	item type
-	----------------------------------------------------------------------------- */
+	provided circ_modifier, use that config.  Otherwise fall back on the MARC item type
+	----------------------------------------------------------------------------------- */
 var marcType	= getMARCItemType();
 var circMod		= copy.circ_modifier;
 var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
 
 
-var config = 
-	( circMod && CIRC_MOD_MAP[circMod] ) ?
-	CIRC_MOD_MAP[circMod] : 
-	MARC_ITEM_TYPE_MAP[marcType];
+var config;
 
-
-if( CIRC_MOD_MAP[circMod] ) 
+if( CIRC_MOD_MAP[circMod] ) {
+	/* if we have a config for the given circ_modifier, use it */
 	log_debug("a circ_mod config exists for the copy");
+	config = CIRC_MOD_MAP[circMod];
 
-if( MARC_ITEM_TYPE_MAP[marcType] )
-	log_debug("an item_type config exists for the copy");
+} else {
+	/* otherwise, fall back on the MARC item type */
+	config = MARC_ITEM_TYPE_MAP[marcType];
+}
 
-
-log_debug("Copy circ modifier = " + circMod + " and item type = " + marcType );
 
 
 /* ----------------------------------------------------------------------------- 
