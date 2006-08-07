@@ -162,8 +162,7 @@ function myOPACDrawCheckedItem(r) {
 	var row = checkedRowTemplate.cloneNode(true);
 	row.id = 'myopac_checked_row_ ' + circ.id();
 
-	var due = circ.due_date();
-	due = _trimTime(due);
+	var due = _trimTime(circ.due_date());
 
 	var dlink = $n( row, "myopac_checked_due" );
 	var rlink = $n( row, "myopac_checked_renewals" );
