@@ -634,7 +634,17 @@ cat.copy_browser.prototype = {
 									var data = new OpenILS.data(); data.init({'via':'stash'});
 									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
 
-									var robj = obj.network.simple_request('FM_ACN_TRANSFER', [ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : list } ]);
+									var robj = obj.network.simple_request(
+										'FM_ACN_TRANSFER', 
+										[ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : list } ],
+										null,
+										{
+											'title' : 'Override Volume Transfer Failure?',
+											'overridable_events' : [
+												1219 /* COPY_REMOTE_CIRC_LIB */,
+											],
+										}
+									);
 
 									if (typeof robj.ilsevent != 'undefined') {
 										throw(robj);
