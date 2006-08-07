@@ -33,5 +33,12 @@ CREATE TEMP VIEW legacy_closing_view AS
 INSERT INTO actor.org_unit_closed (org_unit, close_start, close_end, reason)
 	SELECT * from legacy_closing_view;
 
+INSERT INTO actor.org_unit_closed (org_unit, close_start, close_end, reason)
+	SELECT	au.id AS org_unit,
+		'2006-09-02' AS close_start,
+		'2006-09-05'::DATE - '1 second'::INTERVAL AS close_end,
+		'Evergreen Migration' AS reason
+	FROM	actor.org_unit au;
+
 SQL
 
