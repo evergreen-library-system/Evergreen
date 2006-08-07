@@ -2,6 +2,18 @@ var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "";
 var XML_HTTP_MAX_TRIES = 3;
 
+
+
+function NetworkFailure(stat) {
+	self.status = stat;
+}
+
+NetworkFailure.prototype.status = function() {
+	return self.status;
+}
+
+
+
 //var IAMXUL = false;
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
@@ -256,8 +268,9 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	try {
 		if( this.xmlhttp.status != 200 ) {
-			try{dump('! NETWORK FAILURE.  HTTP STATUS = ' + this.xmlhttp.status);}catch(e){}
-			throw 'NETWORK FAILURE';
+			try{dump('! NETWORK FAILURE.  HTTP STATUS = ' 
+				+ this.xmlhttp.status);}catch(e){}
+			throw new NetworkFailure(this.xmlhttp.status);
 		}
 	} catch(e) {}
 
