@@ -103,6 +103,13 @@
 	<event code='1218' textcode='ITEM_AGE_PROTECTED'>
 		<desc xml:lang="en-US">This item is too new to have a hold placed on it</desc>
 	</event>
+	<event code='1219' textcode='COPY_REMOTE_CIRC_LIB'>
+		<desc xml:lang="en-US">A copy with a remote circulating library (circ_lib) was encountered</desc>
+	</event>
+
+	<event code='1220' textcode='ITEM_NOT_HOLDABLE'>
+		<desc xml:lang="en-US">A copy with a remote circulating library (circ_lib) was encountered</desc>
+	</event>
 
 
 
