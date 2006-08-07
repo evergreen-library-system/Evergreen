@@ -16,6 +16,8 @@ var guardianNote				= null;
 /* fetch the necessary data to start off */
 function uEditInit() {
 
+	_debug('uEditInit(): ' + location.search);
+
 	cgi		= new CGI();
 	session	= cgi.param('ses');
 	clone		= cgi.param('clone');
