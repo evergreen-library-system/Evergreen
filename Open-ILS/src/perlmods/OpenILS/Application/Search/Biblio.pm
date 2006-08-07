@@ -25,6 +25,8 @@ use XML::LibXSLT;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 
+use OpenILS::Const qw/:const/;
+
 use OpenILS::Application::AppUtils;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -60,6 +62,7 @@ sub _records_to_mods {
 
 	while( my $resp = $request->recv ) {
 		my $content = $resp->content;
+		next if $content->id == OILS_PRECAT_RECORD;
 		my $u = OpenILS::Utils::ModsParser->new();
 		$u->start_mods_batch( $content->marc );
 		my $mods = $u->finish_mods_batch();
