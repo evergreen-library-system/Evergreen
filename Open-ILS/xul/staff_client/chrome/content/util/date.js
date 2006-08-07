@@ -65,6 +65,8 @@ util.date.formatted_date = function (date,format) {
 		}
 	} else if (typeof(date) == 'undefined') {
 		date = new Date( Number( date + '000' ) );
+	} else if (date == null) {
+		return '';
 	}
 
 	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
