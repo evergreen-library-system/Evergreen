@@ -590,14 +590,23 @@ function buildDate( year, month, day, hours, minutes, seconds ) {
 	if(!seconds) seconds = 0;
 
 	var d = new Date(year, month - 1, day, hours, minutes, seconds);
+	
+	_debug('created date with ' +
+		(d.getYear() + 1900) +'-'+
+		(d.getMonth() + 1) +'-'+
+		d.getDate()+' '+
+		d.getHours()+':'+
+		d.getMinutes()+':'+
+		d.getSeconds());
+
 
 	if( 
 		(d.getYear() + 1900) == year &&
 		d.getMonth()	== (month - 1) &&
-		d.getDate()		== parseInt(day) &&
-		d.getHours()	== parseInt(hours) &&
-		d.getMinutes() == parseInt(minutes) &&
-		d.getSeconds() == parseInt(seconds) ) {
+		d.getDate()		== new Number(day) &&
+		d.getHours()	== new Number(hours) &&
+		d.getMinutes() == new Number(minutes) &&
+		d.getSeconds() == new Number(seconds) ) {
 		return d;
 	}
 
