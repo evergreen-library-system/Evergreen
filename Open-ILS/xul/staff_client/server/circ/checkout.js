@@ -500,10 +500,10 @@ circ.checkout.prototype = {
 							var my_circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),my_copy.id(),1]);
 							if (typeof my_circ.ilsevent != 'undefined') throw(my_copy);
 							my_circ = my_circ[0];
-							var due_date = my_circ.due_date().substr(0,10);
+							var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
 							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
-							if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
-							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', today > due_date ? 'Forgiving Checkin then Checkout' : null,'Check here to confirm this message');
+							if (due_date) if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
+							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
 							JSAN.use('circ.util');
 							switch(r) {
 								case 1:
