@@ -69,6 +69,10 @@
 			}
 		}
 
+		function refresh() {
+			g.checkout.check_disable();
+		}
+
 	]]>
 	</script>
 

@@ -12,6 +12,8 @@ patron.display = function (params) {
 patron.display.prototype = {
 
 	'retrieve_ids' : [],
+	'stop_checkouts' : false,
+	'check_stop_checkouts' : function() { return this.stop_checkouts; },
 
 	'init' : function( params ) {
 
@@ -28,12 +30,13 @@ patron.display.prototype = {
 		obj.left_deck = new util.deck('patron_left_deck');
 
 		function spawn_checkout_interface() {
-			obj.right_deck.set_iframe(
+			var frame = obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT,
 				{},
 				{ 
 					'set_tab' : xulG.set_tab,
 					'patron_id' : obj.patron.id(),
+					'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
 					'on_list_change' : function(checkout) {
 					
 						/* this stops noncats from getting pushed into Items Out */
@@ -56,6 +59,8 @@ patron.display.prototype = {
 					}
 				}
 			);
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			obj.checkout_window = frame.contentWindow;
 		}
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
@@ -344,7 +349,7 @@ patron.display.prototype = {
 							[ ses(), patron.id() ],
 							function(req) {
 								try {
-									var msg = '';
+									var msg = ''; obj.stop_checkouts = false;
 									if (patron.alert_message()) msg += '"' + patron.alert_message() + '"\n';
 									//alert('obj.barcode = ' + obj.barcode);
 									if (obj.barcode) {
@@ -352,11 +357,18 @@ patron.display.prototype = {
 											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
 											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
 												msg += 'Patron retrieved with an INACTIVE barcode.\n';
+												obj.stop_checkouts = true;
 											}
 										}
 									}
-									if (get_bool(patron.barred())) msg += 'Patron is BARRED.\n';
-									if (!get_bool(patron.active())) msg += 'Patron is INACTIVE.\n';
+									if (get_bool(patron.barred())) {
+										msg += 'Patron is BARRED.\n';
+										obj.stop_checkouts = true;
+									}
+									if (!get_bool(patron.active())) {
+										msg += 'Patron is INACTIVE.\n';
+										obj.stop_checkouts = true;
+									}
 									if (patron.expire_date()) {
 										var now = new Date();
 										now = now.getTime()/1000;
@@ -368,10 +380,28 @@ patron.display.prototype = {
 										expire.setFullYear(expire_parts[0], expire_parts[1], expire_parts[2]);
 										expire = expire.getTime()/1000
 
-										if (expire < now) msg += 'Patron is EXPIRED.\n';
+										if (expire < now) {
+											msg += 'Patron is EXPIRED.\n';
+										obj.stop_checkouts = true;
+										}
 									}
 									var holds = req.getResultObject();
 									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
+									if (obj.stop_checkouts && obj.checkout_window) {
+										setTimeout( function() {
+											try {
+											if (
+												obj.checkout_window &&
+												obj.checkout_window.g &&
+												obj.checkout_window.g.checkout &&
+												typeof obj.checkout_window.g.check_disable == 'function') {
+													obj.checkout_window.g.checkout.check_disable();
+												}
+											} catch(E) {
+												alert(E);
+											}
+										}, 0);
+									}
 									if (msg) {
 										obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
 									}

@@ -195,6 +195,30 @@ circ.checkout.prototype = {
 		this.controller.render();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 
+		this.check_disable();
+
+	},
+
+	'check_disable' : function() {
+		var obj = this;
+		try {
+			if (typeof xulG.check_stop_checkouts == 'function') {
+				var disable = xulG.check_stop_checkouts();
+				if (disable) {
+					document.getElementById('checkout_submit_barcode_button').disabled = true;
+					document.getElementById('checkout_done').disabled = true;
+					obj.controller.view.checkout_menu.disabled = true;
+					obj.controller.view.checkout_barcode_entry_textbox.disabled = true;
+				} else {
+					document.getElementById('checkout_submit_barcode_button').disabled = false;
+					document.getElementById('checkout_done').disabled = false;
+					obj.controller.view.checkout_menu.disabled = false;
+					obj.controller.view.checkout_barcode_entry_textbox.disabled = false;
+				}
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error determining whether to disable checkout.',E);
+		}
 	},
 
 	'print' : function(silent,f) {
