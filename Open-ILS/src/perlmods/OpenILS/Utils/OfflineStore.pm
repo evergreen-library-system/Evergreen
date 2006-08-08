@@ -64,7 +64,7 @@ CREATE INDEX IF NOT EXISTS session_creation ON session (create_time);
 	SQL
 }
 
-__PACKAGE__->table('session');
+__PACKAGE__->table('offline.session');
 __PACKAGE__->columns( Essential => qw/key org description 
 		creator create_time in_process start_time end_time num_complete/);
 __PACKAGE__->has_many(scripts => 'OpenILS::Utils::OfflineStore::Script');
@@ -94,7 +94,7 @@ CREATE INDEX IF NOT EXISTS script_session ON script (session);
 	SQL
 }
 
-__PACKAGE__->table('script');
+__PACKAGE__->table('offline.script');
 __PACKAGE__->columns( Essential => qw/id session requestor create_time workstation logfile time_delta count/);
 __PACKAGE__->has_a(session => 'OpenILS::Utils::OfflineStore::Session');
 
