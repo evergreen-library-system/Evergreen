@@ -220,11 +220,15 @@ patron.search_form.prototype = {
 				}
 				if (id == 'inactive') {
 					query += id + '=' + window.escape(node.getAttribute('value'));
-					dump('id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
+					obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
 				} else {
 					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
-					query += id + '=' + window.escape(value);
-					dump('id = ' + id + '  value = ' + value + '\n');
+					value = value.replace(/\d/g,'');
+					value = value.replace(/[^\w\s]/g,'');
+					if (value != '') {
+						query += id + '=' + window.escape(value);
+						obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
+					}
 				}
 			}
 		}
