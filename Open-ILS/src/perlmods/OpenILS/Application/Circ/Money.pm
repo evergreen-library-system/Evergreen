@@ -371,6 +371,7 @@ sub void_bill {
 	# ------------------------------------------------------------------------------
 	my $xact = $e->retrieve_money_billable_transaction($bill->xact)
 		or return $e->event;
+
 	$U->update_patron_penalties(
 		authtoken => $authtoken,
 		patronid  => $xact->usr,
@@ -378,39 +379,6 @@ sub void_bill {
 
 	return 1;
 }
-
-# refactored below XXX
-sub ___check_open_xact {
-	my( $editor, $xactid ) = @_;
-
-	# Grab the transaction
-	my $xact = $editor->retrieve_money_billable_transaction($xactid)
-		or return $editor->event;
-
-	# if it's still open, good.
-	return undef unless $xact->xact_finish;
-
-	$logger->info("re-opening transaction ".$xact->id);
-	my $finish = $xact->xact_finish;
-
-	# clear the transaction finish time
-	$xact->clear_xact_finish;
-	$editor->update_money_billable_transaction($xact);
-
-	# grab the summary and see how much is owed on this transaction
-	my $summary = $editor->retrieve_money_open_billable_transaction_summary($xactid)
-		or return $editor->event;
-
-	if( $summary->balance_owed == 0 ) {
-		# if nothing is owed, re-close the transaction
-		$xact->xact_finish($finish);
-		$editor->update_money_billable_transaction($xact);
-	}
-
-	return undef;
-}
-
-
 
 sub _check_open_xact {
 	my( $editor, $xactid ) = @_;
@@ -423,9 +391,15 @@ sub _check_open_xact {
 	my $summary = $editor->retrieve_money_open_billable_transaction_summary($xactid)
 		or return $editor->event;
 
-	# If nothing is owed on the transaction but xact_finish has
-	# not been set, set it and update
-	if( $summary->balance_owed == 0 and ! $xact->xact_finish ) {
+	# grab the circulation if it is a circ;
+	my $circ = $editor->retrieve_action_circulation($xactid);
+
+	# If nothing is owed on the transaction but it is still open
+	# and this transaction is not an open circulation, close it
+	if( 
+		( $summary->balance_owed == 0 and ! $xact->xact_finish ) and
+		( !$circ or $circ->stop_fines )) {
+
 		$logger->info("closing transaction ".$xact->id. ' becauase balance_owed == 0');
 		$xact->xact_finish('now');
 		$editor->update_money_billable_transaction($xact)
