@@ -100,7 +100,7 @@ function my_init() {
 		/******************************************************************************************************/
 		/* Add stat cats to the panes_and_field_names.right_pane4 */
 
-		var stat_cat_seen = {};
+		g.stat_cat_seen = {};
 
 		function add_stat_cat(sc) {
 
@@ -113,9 +113,9 @@ function my_init() {
 				sc_id = sc.id();
 			}
 
-			if (typeof stat_cat_seen[sc_id] != 'undefined') { return; }
+			if (typeof g.stat_cat_seen[sc_id] != 'undefined') { return; }
 
-			stat_cat_seen[ sc_id ] = 1;
+			g.stat_cat_seen[ sc_id ] = 1;
 
 			if (typeof sc != 'object') {
 
@@ -218,7 +218,7 @@ g.apply_template = function() {
 						g.apply(template[i].field,template[i].value);
 					break;
 					case 'stat_cat' :
-						g.apply_stat_cat(template[i].field,template[i].value);
+						if (g.stat_cat_seen[ template[i].field ]) g.apply_stat_cat(template[i].field,template[i].value);
 					break;
 				}
 			}
