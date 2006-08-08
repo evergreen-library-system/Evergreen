@@ -63,13 +63,20 @@ sub retrieve_circ {
 
 __PACKAGE__->register_method(
 	method => 'fetch_circ_mods',
-	api_name => 'open-ils.circ.circ_modifier.retrieve.all'
-);
-
+	api_name => 'open-ils.circ.circ_modifier.retrieve.all');
 sub fetch_circ_mods {
 	my $conf = OpenSRF::Utils::SettingsClient->new;
 	return $conf->config_value(
 		'apps', 'open-ils.circ', 'app_settings', 'circ_modifiers', 'mod' );
+}
+
+__PACKAGE__->register_method(
+	method => 'fetch_bill_types',
+	api_name => 'open-ils.circ.billing_type.retrieve.all');
+sub fetch_bill_types {
+	my $conf = OpenSRF::Utils::SettingsClient->new;
+	return $conf->config_value(
+		'apps', 'open-ils.circ', 'app_settings', 'billing_types', 'type' );
 }
 
 
