@@ -626,8 +626,6 @@ circ.util.hold_columns = function(modify,params) {
 			'persist' : 'hidden width', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""'
 		},
-
-
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
