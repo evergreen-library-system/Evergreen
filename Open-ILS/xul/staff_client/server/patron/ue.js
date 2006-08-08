@@ -208,16 +208,23 @@ function uEditClone(clone) {
 var uEditVirtualAddrId = -1;
 function uEditCreateNewAddr() {
 	var addr = new aua();
+
 	addr.id(uEditVirtualAddrId--);
 	addr.isnew(1);
 	addr.usr(patron.id());
 	addr.country(defaultCountry);
+
 	if(!patron.addresses()) 
 		patron.addresses([]);
+
 	if(patron.addresses().length == 0) {
 		patron.mailing_address(addr);
 		patron.billing_address(addr);
 	}
+
+	addr.valid(1);
+	addr.within_city_limits(1);
+
 	uEditBuildAddrFields(patron, addr);
 	patron.addresses().push(addr);
 	uEditIterateFields(function(f) { uEditCheckValid(f); });

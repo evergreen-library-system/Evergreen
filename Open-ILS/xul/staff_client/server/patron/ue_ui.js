@@ -369,14 +369,18 @@ function uEditFleshSummaryAddr( address, patron, row ) {
 	$n(row, 'state').appendChild(text(address.state()));
 	$n(row, 'country').appendChild(text(address.country()));
 	$n(row, 'zip').appendChild(text(address.post_code()));
-	$n(row, 'valid').appendChild(text( (address.valid()) ? yes : no ));
-	$n(row, 'incorporated').appendChild(text( (address.within_city_limits()) ? yes : no ));
+	$n(row, 'valid').appendChild(text( (isTrue(address.valid())) ? yes : no ));
+	$n(row, 'incorporated').appendChild(text( (isTrue(address.within_city_limits())) ? yes : no ));
 
-	$n(row, 'mailing').appendChild(text( 
-		(patron.mailing_address() == address.id()) ? yes : no ));
+	var mid = patron.mailing_address();
+	if( typeof patron.mailing_address() == 'object' ) 
+		mid = patron.mailing_address().id();
+	$n(row, 'mailing').appendChild(text((mid == address.id()) ? yes : no ));
 
-	$n(row, 'billing').appendChild(text( 
-		(patron.billing_address() == address.id()) ? yes : no ));
+	var bid = patron.billing_address();
+	if( typeof patron.billing_address() == 'object' ) 
+		bid = patron.billing_address().id();
+	$n(row, 'billing').appendChild(text((bid == address.id()) ? yes : no ));
 }
 
 
