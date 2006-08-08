@@ -89,6 +89,12 @@ function uEditBarcodeBlur(field) {
 						field.widget.node.select();
 					}, 10 
 				);
+			} else {
+				var node = uEditFindFieldByWId("ue_username");
+				if(!node.widget.node.value) {
+					node.widget.node.value = barcode;
+					node.widget.node.onchange();
+				}
 			}
 		}
 	);
