@@ -273,8 +273,7 @@ __PACKAGE__->register_method(
 	method	=> "retrieve_holds_by_id",
 	api_name	=> "open-ils.circ.holds.retrieve_by_id",
 	notes		=> <<NOTE);
-Retrieve the hold, with hold transits attached, for the specified id
-The login session is the requestor and if the requestor is
+Retrieve the hold, with hold transits attached, for the specified id The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
@@ -290,19 +289,11 @@ sub retrieve_holds_by_id {
 	my $holds = $apputils->simplereq(
 		'open-ils.cstore',
 		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ id =>  $hold_id , fulfillment_time => undef }, { order_by => { ahr => "request_time" } });
-	
-	for my $hold ( @$holds ) {
-		$hold->transit(
-			$apputils->simplereq(
-				'open-ils.cstore',
-				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
-				{ hold => $hold->id },
-				{ order_by => { ahtc => 'id desc' }, limit => 1 }
-			)->[0]
-		);
-	}
+		{ id =>  $hold_id , fulfillment_time => undef }, 
+		{ order_by => { ahr => "request_time" } }
+	);
 
+	flesh_hold_transits($holds);
 	return $holds;
 }
 
@@ -375,18 +366,9 @@ sub retrieve_holds_by_pickup_lib {
 			cancel_time => undef
 		}, 
 		{ order_by => { ahr => "request_time" } });
-	
-	for my $hold ( @$holds ) {
-		$hold->transit(
-			$apputils->simplereq(
-				'open-ils.cstore',
-				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
-				{ hold => $hold->id },
-				{ order_by => { ahtc => 'id desc' }, limit => 1 }
-			)->[0]
-		);
-	}
 
+
+	flesh_hold_transits($holds);
 	return $holds;
 }
 
@@ -832,8 +814,32 @@ sub fetch_open_title_holds {
 #		{ target => $id, hold_type => $type, fulfillment_time => undef }, {idlist=>1});
 
 	# XXX make me return IDs in the future ^--
-	return $e->search_action_hold_request(
-		{ target => $id, cancel_time => undef, hold_type => $type, fulfillment_time => undef });
+	my $holds = $e->search_action_hold_request(
+		{ 
+			target				=> $id, 
+			cancel_time			=> undef, 
+			hold_type			=> $type, 
+			fulfillment_time	=> undef 
+		}
+	);
+
+	flesh_hold_transits($holds);
+	return $holds;
+}
+
+
+sub flesh_hold_transits {
+	my $holds = shift;
+	for my $hold ( @$holds ) {
+		$hold->transit(
+			$apputils->simplereq(
+				'open-ils.cstore',
+				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
+				{ hold => $hold->id },
+				{ order_by => { ahtc => 'id desc' }, limit => 1 }
+			)->[0]
+		);
+	}
 }
 
 
@@ -875,6 +881,7 @@ sub fetch_captured_holds {
 			$copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	}
 
+	flesh_hold_transits(\@res);
 	return \@res;
 }
 
