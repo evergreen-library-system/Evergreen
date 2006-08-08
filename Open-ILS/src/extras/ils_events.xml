@@ -111,7 +111,9 @@
 		<desc xml:lang="en-US">A copy with a remote circulating library (circ_lib) was encountered</desc>
 	</event>
 
-
+	<event code='1221' textcode='ORG_CANNOT_HAVE_VOLS'>
+		<desc xml:lang="en-US">The selected location cannot have volumes attached</desc>
+	</event>
 
 
 
