@@ -47,9 +47,11 @@
 
 <hbox id="record_buckets_bottom_ui">
 	<spacer flex="1"/>
-	<button command="cmd_sel_opac" label="Show All in Catalog" accesskey="S"/>
-	<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
-	<button id="record_buckets_done" label="Done" command="cmd_record_buckets_done" accesskey="D"/>
+	<hbox style="background: grey">
+		<vbox><spacer flex="1"/><label value="Batch:" style="font-weight: bold"/><spacer flex="1"/></vbox>
+		<button command="cmd_sel_opac" label="Show All in Catalog" accesskey="S"/>
+		<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
+	</hbox>
 </hbox>
 
 </overlay>
