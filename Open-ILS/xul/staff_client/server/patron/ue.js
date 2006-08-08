@@ -435,7 +435,10 @@ function uEditSaveUser(cloneme) {
 
 	/* null is unique in the db, but '' is not */
 	if( ! patron.ident_value() ) patron.ident_value(null);
+	if( ! patron.ident_type2() ) patron.ident_type2(null);
 	if( ! patron.ident_value2() ) patron.ident_value2(null);
+
+	if(! patron.dob() ) patron.dob(null);
 
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.alertEvent = false;
