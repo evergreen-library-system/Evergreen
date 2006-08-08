@@ -194,7 +194,7 @@ sub timed_read {
 		my ($tag) = ($buffer =~ /<([^\s\?\>]+)/o);
 		$logger->transport("Using tag: $tag  ", INTERNAL);
 
-		if ( $buffer =~ /^(.*?<\/$tag>)(.*)/s) {
+		if ( $buffer =~ /^(.*?<\/$tag>){1}(.*)/s) {
 			$buffer = $1;
 			$self->{temp_buffer} = $2;
 			$complete++;
