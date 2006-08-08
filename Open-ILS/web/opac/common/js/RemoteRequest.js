@@ -7,6 +7,9 @@ var XML_HTTP_MAX_TRIES = 3;
 /* This object is thrown when network failures occur */
 function NetworkFailure(stat) { this.status = stat; }
 NetworkFailure.prototype.status = function() { return this.status; }
+NetworkFailure.prototype.toString = function() { 
+	return "Network Failure: status = " + this.status; 
+}
 
 
 
@@ -262,13 +265,20 @@ RemoteRequest.prototype.getResultObject = function() {
 	if(this.cancelled) return null;
 	if(!this.xmlhttp) return null;
 
+	var failed = false;
+	var status = null;
+
 	try {
-		if( this.xmlhttp.status != 200 ) {
-			try{dump('! NETWORK FAILURE.  HTTP STATUS = ' 
-				+ this.xmlhttp.status);}catch(e){}
-			throw new NetworkFailure(this.xmlhttp.status);
-		}
-	} catch(e) {}
+		status = this.xmlhttp.status;
+		if( status != 200 ) failed = true;
+	} catch(e) { failed = true; }
+
+
+	if( failed ) {
+		if(!status) status = '<unknown>';
+		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status);}catch(e){}
+		throw new NetworkFailure(status);
+	}
 
 
 	this.event(null);
