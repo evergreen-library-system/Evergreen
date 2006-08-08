@@ -917,7 +917,11 @@ sub check_title_hold {
 	return $e->event unless $e->checkauth;
 	my $patron = $e->retrieve_actor_user($params{patronid})
 		or return $e->event;
-	return $e->event unless $e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
+
+	if( $e->requestor->id ne $patron->id ) {
+		return $e->event unless 
+			$e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
+	}
 
 	return OpenILS::Event->new('PATRON_BARRED') 
 		if $patron->barred and 
