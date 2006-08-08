@@ -12,6 +12,7 @@ const ZIP_SEARCH			= 'open-ils.search:open-ils.search.zip';
 const FETCH_ADDR_MEMS	= 'open-ils.actor:open-ils.actor.address.members';
 const FETCH_GRP_MEMS		= 'open-ils.actor:open-ils.actor.usergroup.members.retrieve';
 const CREATE_USER_NOTE	= 'open-ils.actor:open-ils.actor.note.create';
+const CHECK_BARCODE		= 'open-ils.actor:open-ils.actor.barcode.exists';
 const defaultState		= 'GA';
 const defaultCountry		= 'USA';
 const defaultNetAccess	= 'None';
@@ -71,6 +72,30 @@ function uEditUsrnameBlur(field) {
 }
 
 
+function uEditBarcodeBlur(field) {
+	var barcode = uEditNodeVal(field);
+	if(!barcode) return;
+	var req = new Request(CHECK_BARCODE, SESSION, barcode);
+	req.callback( 
+		function(r) {
+			var res = r.getResultObject();
+			if( res && res != patron.id() ) {
+				field.widget.onblur = null; /* prevent alert storm */
+				alertId('ue_dup_barcode');
+				field.widget.onblur = uEditBarcodeBlur;
+				setTimeout( 
+					function() {
+						field.widget.node.focus();
+						field.widget.node.select();
+					}, 10 
+				);
+			}
+		}
+	);
+	req.send();
+}
+
+
 function uEditDefineData(patron) {
 	
 	var fields = [
@@ -82,7 +107,8 @@ function uEditDefineData(patron) {
 			widget	: {
 				id		: 'ue_barcode',
 				regex	: wordRegex,
-				type	: 'input'
+				type	: 'input',
+				onblur : uEditBarcodeBlur
 			}
 		},
 		{
@@ -184,7 +210,7 @@ function uEditDefineData(patron) {
 			}
 		},
 		{
-			required : true,
+			required : false,
 			object	: patron,
 			key		: 'dob',
 			errkey	: 'ue_bad_dob',
