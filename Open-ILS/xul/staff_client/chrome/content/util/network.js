@@ -25,13 +25,14 @@ util.network.prototype = {
 			result = req.getResultObject();	
 		} catch(E) {
 			try {
-				obj.error.sdump('D_ERROR','DEBUG: got here');
 				if (instanceOf(E, NetworkFailure)) {
 					obj.NETWORK_FAILURE = E.status();
 				} else {
 					try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
 				}
-			} catch(I) { dump(I + '\n'); }
+			} catch(I) { 
+				obj.NETWORK_FAILURE = 'Unknown status';
+			}
 			result = null;
 		}
 		return result;
@@ -128,7 +129,6 @@ util.network.prototype = {
 		if (result != null) return req;
 		if (obj.NETWORK_FAILURE == null) {
 			obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: ' + js2JSON(params) + '\nReturned null.  There was no NetworkFailure object thrown.');
-			obj.error.sdump('D_ALERT','method: ' + name + '\nparams: ' + js2JSON(params) + '\nReturned null.  There was no NetworkFailure object thrown.');
 			//return req;
 		}
 
