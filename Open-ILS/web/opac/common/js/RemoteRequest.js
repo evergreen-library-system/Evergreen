@@ -5,10 +5,10 @@ var XML_HTTP_MAX_TRIES = 3;
 
 
 /* This object is thrown when network failures occur */
-function NetworkFailure(stat) { this.status = stat; }
-NetworkFailure.prototype.status = function() { return this.status; }
+function NetworkFailure(stat) { this._status = stat; }
+NetworkFailure.prototype.status = function() { return this._status; }
 NetworkFailure.prototype.toString = function() { 
-	return "Network Failure: status = " + this.status; 
+	return "Network Failure: status = " + this.status(); 
 }
 
 
