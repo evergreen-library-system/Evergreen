@@ -469,7 +469,9 @@ sub container_update {
 	my ( $dbcontainer, $evt ) = $U->fetch_container_e($e, $container->id, $class);
 	return $evt if $evt;
 
-	return $e->event unless $e->allowed('UPDATE_CONTAINER');
+	if( $e->requestor->id ne $container->owner ) {
+		return $e->event unless $e->allowed('UPDATE_CONTAINER');
+	}
 
 	my $stat;
 	if( $class eq 'copy' ) {
