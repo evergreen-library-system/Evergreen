@@ -273,7 +273,6 @@ RemoteRequest.prototype.getResultObject = function() {
 		if( status != 200 ) failed = true;
 	} catch(e) { failed = true; }
 
-
 	if( failed ) {
 		if(!status) status = '<unknown>';
 		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status);}catch(e){}
