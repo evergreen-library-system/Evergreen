@@ -135,7 +135,11 @@ sub merge_volumes {
 	my %copies;
 	my $evt;
 
-	return ($$volumes[0]) if !$master and scalar(@$volumes) == 1;
+	return ($$volumes[0]) if !$master and @$volumes == 1;
+
+	return ($$volumes[0]) if 
+		$master and @$volumes == 1 
+		and $master->id == $$volumes[0]->id;
 
 	$logger->debug("merge: fetching copies for volume list of size ".scalar(@$volumes));
 
@@ -164,6 +168,8 @@ sub merge_volumes {
 			}
 		}
 	}
+
+	$bigcn = $$volumes[0]->id unless $bigcn;
 
 	$logger->info("merge: merge using volume $bigcn as the master");
 
