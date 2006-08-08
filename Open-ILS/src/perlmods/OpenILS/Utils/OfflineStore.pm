@@ -97,6 +97,7 @@ CREATE INDEX IF NOT EXISTS script_session ON script (session);
 __PACKAGE__->table('offline.script');
 __PACKAGE__->columns( Essential => qw/id session requestor create_time workstation logfile time_delta count/);
 __PACKAGE__->has_a(session => 'OpenILS::Utils::OfflineStore::Session');
+__PACKAGE__->sequence(qw/offline.script_id_seq/);
 
 
 
