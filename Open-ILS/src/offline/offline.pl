@@ -55,7 +55,8 @@ my $evt;
 # --------------------------------------------------------------------
 sub ol_init {
 	#_ol_debug_params();
-	$DB->DBFile($config{db});
+	#$DB->DBFile($config{db});
+	$DB->DBFile($config{dsn}, $config{usr}, $config{pw});
 	OpenSRF::System->bootstrap_client(config_file => $bootstrap ); 
 	Fieldmapper->import(IDL => 
 		OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
