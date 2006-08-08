@@ -1197,6 +1197,15 @@ sub batch_volume_transfer {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VOLUME_UPDATE');
 
+	my $dorg = $e->retrieve_actor_org_unit($o_lib)
+		or return $e->event;
+
+	my $ou_type = $e->retrieve_actor_org_unit_type($dorg->ou_type)
+		or return $e->event;
+
+	return OpenILS::Event->new('ORG_CANNOT_HAVE_VOLS')
+		unless $U->is_true($ou_type->can_have_vols);
+
 	my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
 	my @seen;
 
