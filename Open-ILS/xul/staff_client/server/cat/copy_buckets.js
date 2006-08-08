@@ -393,7 +393,7 @@ cat.copy_buckets.prototype = {
 									copies[i].isdeleted(1);
 								}
 
-								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses, copies, true]);
+								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								if (typeof robj.ilsevent != 'undefined') obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
