@@ -40,6 +40,7 @@
 	<button command="copy_buckets_new_bucket" label="New Bucket"/>
 	<button command="copy_buckets_delete_bucket" label="Delete Bucket"/>
 	<spacer flex="1"/>
+	<button id="clip_button" command="sel_clip" label="Copy to Clipboard" disabled="true" />
 	<button command="copy_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
 	<button command="copy_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>

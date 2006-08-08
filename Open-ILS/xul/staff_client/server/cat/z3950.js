@@ -47,6 +47,7 @@ cat.z3950.prototype = {
 						try {
 							JSAN.use('util.functional');
 							var sel = obj.list.retrieve_selection();
+							document.getElementById('clip_button').disabled = sel.length < 1;
 							var list = util.functional.map_list(
 								sel,
 								function(o) { return o.getAttribute('retrieve_id'); }
@@ -69,6 +70,10 @@ cat.z3950.prototype = {
 			obj.controller.init(
 				{
 					control_map : {
+						'sel_clip' : [
+							['command'],
+							function() { obj.list.clipboard(); }
+						],
 						'cmd_broken' : [
 							['command'],
 							function() { alert('Not Yet Implemented'); }

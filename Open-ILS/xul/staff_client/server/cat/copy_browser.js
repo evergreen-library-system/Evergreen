@@ -31,6 +31,10 @@ cat.copy_browser.prototype = {
 			obj.controller.init(
 				{
 					control_map : {
+						'sel_clip' : [
+							['command'],
+							function() { obj.list.clipboard(); }
+						],
 						'cmd_broken' : [
 							['command'],
 							function() { alert('Not Yet Implemented'); }
@@ -1234,6 +1238,7 @@ cat.copy_browser.prototype = {
 					'on_select' : function(ev) {
 						JSAN.use('util.functional');
 						var sel = obj.list.retrieve_selection();
+						obj.controller.view.sel_clip.disabled = sel.length < 1;
 						obj.sel_list = util.functional.map_list(
 							sel,
 							function(o) { return o.getAttribute('retrieve_id'); }

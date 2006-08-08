@@ -80,6 +80,7 @@ cat.copy_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list2.retrieve_selection();
+						document.getElementById('clip_button').disabled = sel.length < 1;
 						obj.selection_list2 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
@@ -107,6 +108,10 @@ cat.copy_buckets.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_clip' : [
+						['command'],
+						function() { obj.list2.clipboard(); }
+					],
 					'copy_buckets_menulist_placeholder' : [
 						['render'],
 						function(e) {

@@ -75,6 +75,7 @@
 
 	<commandset id="cat_z3950_cmds">
 		<command id="cmd_broken" />
+		<command id="sel_clip" />
 	</commandset>
 
 	<groupbox flex="1">
@@ -155,6 +156,7 @@
 			<vbox id="result_message" />
 			<hbox>
 				<button id="page_next" label="Fetch More Results" accesskey="M" disabled="true"/>
+				<button id="clip_button" command="sel_clip" label="Copy to Clipboard" disabled="true"/>
 				<spacer flex="1"/>
 				<button id="marc_view" label="MARC View" accesskey="V" disabled="true"/>
 				<button id="marc_import_overlay" label="MARC Editor for Overlay" accesskey="O" disabled="true"/>
