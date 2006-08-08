@@ -45,6 +45,7 @@ sub new {
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l, $ff:$ll", 
 		desc			=> $descs->{$lang}->{$e},
+		servertime	=> CORE::localtime(),
 		pid			=> $$, %params };
 }
 
