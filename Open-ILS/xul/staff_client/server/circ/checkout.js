@@ -31,6 +31,10 @@ circ.checkout.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'on_select' : function() {
+					var sel = obj.list.retrieve_selection();
+					document.getElementById('clip_button').disabled = sel.length < 1;
+				}
 			}
 		);
 		
@@ -38,6 +42,10 @@ circ.checkout.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_clip' : [
+						['command'],
+						function() { obj.list.clipboard(); }
+					],
 					'checkout_menu_placeholder' : [
 						['render'],
 						function(e) {
@@ -355,6 +363,7 @@ circ.checkout.prototype = {
 				} else {
 					obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
 				}
+
 			} else {
 				throw(checkout);
 			}

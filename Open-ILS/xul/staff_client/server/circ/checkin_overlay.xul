@@ -11,6 +11,7 @@
 
 <popupset id="copy_status_popupset">
 	<popup id="copy_status_actions" position="at_pointer"> 
+		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
@@ -54,6 +55,7 @@
 	<menubar>
 	<menu label="Actions for Selected Items" accesskey="S">
 		<menupopup>
+			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />

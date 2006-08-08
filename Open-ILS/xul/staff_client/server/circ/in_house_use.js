@@ -32,6 +32,10 @@ circ.in_house_use.prototype = {
 			{
 				'columns' : columns,
 				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'on_select' : function() {
+					var sel = obj.list.retrieve_selection();
+					document.getElementById('clip_button').disabled = sel.length < 1;
+				}
 			}
 		);
 		
@@ -39,6 +43,10 @@ circ.in_house_use.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_clip' : [
+						['command'],
+						function() { obj.list.clipboard(); }
+					],
 					'in_house_use_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {

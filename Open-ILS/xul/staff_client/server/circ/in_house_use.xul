@@ -65,6 +65,7 @@
 	</script>
 
 	<commandset id="in_house_use_cmds">
+		<command id="sel_clip" />
 		<command id="cmd_in_house_use_submit_barcode" />
 		<command id="cmd_in_house_use_print" />
 		<command id="cmd_in_house_use_reprint" />
@@ -106,6 +107,7 @@
 			label="Re-Print Last List" 
 			command="cmd_in_house_use_reprint"
 			accesskey="L"/>
+		<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
 		<spacer id="pcii3s" flex="1"/>
 	</hbox>
 

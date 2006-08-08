@@ -60,6 +60,7 @@
 		label="&staff.patron_display.checkout.reprint_receipt_label;" 
 		command="cmd_checkout_reprint"
 		accesskey="&staff.patron_display.checkout.reprint_receipt_label.accesskey;"/>
+	<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkout_auto" persist="checked"
 		label="&staff.patron_display.checkout.auto_print_label;" 

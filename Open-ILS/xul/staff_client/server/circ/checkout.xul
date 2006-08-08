@@ -81,6 +81,7 @@
 		<command id="cmd_checkout_print" />
 		<command id="cmd_checkout_reprint" />
 		<command id="cmd_checkout_done" />
+		<command id="sel_clip" />
 	</commandset>
 
 	<box id="checkout_main" />
