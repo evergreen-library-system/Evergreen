@@ -57,13 +57,15 @@ function my_init() {
 				).sort(
 					function(a,b) {
 						a = a[1]; b = b[1];
-						if (a == '082' || b == '082') return -1; 
-						if (a == '092' || b == '092') return -1; 
+						if (a == '082') return -1; 
+						if (b == '082') return 1; 
+						if (a == '092')  return -1; 
+						if (b == '092')  return 1; 
 						if (a < b) return -1; 
 						if (a > b) return 1; 
 						return 0;
 					}
-				).reverse()
+				)
 			); hbox.appendChild(ml);
 			ml.setAttribute('editable','true');
 			ml.setAttribute('width', '200');
