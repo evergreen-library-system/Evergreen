@@ -4,12 +4,18 @@ use base 'Class::DBI';
 use DBI;
 use OpenSRF::Utils::Config;
 
-our $_file;
+our ($_dsn,$_u,$_p);
 sub DBFile {
 	my $class = shift;
-	my $file = shift;
-	$_file = $file if ($file);
-	return $_file;
+	my $dsn = shift;
+	my $u = shift;
+	my $p = shift;
+	if ($dsn) {
+		$_dsn = $dsn;
+		$_u = $u;
+		$_p = $p;
+	}
+	return $_dsn;
 }
 
 our $_dbh;
@@ -17,16 +23,12 @@ sub db_Main {
 	my $self = shift;
 	return $_dbh if ($_dbh);
 
-	$_dbh = DBI->connect('dbi:SQLite:dbname='.$self->DBFile,'','', 
+	$_dbh = DBI->connect($_dsn,$_u,$_p,
 		{
 			RootClass => 'DBIx::ContextualFetch' 
 		}
 	);
 
-	if( -s $self->DBFile < 1 ) { # tables have not been created
-		OpenILS::Utils::OfflineStore::Session->_create_table;
-		OpenILS::Utils::OfflineStore::Script->_create_table;
-	}
 	return $_dbh;
 }
 
