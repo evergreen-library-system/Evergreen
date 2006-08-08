@@ -199,13 +199,14 @@ sub abort_transit {
 		$transit = $e->retrieve_action_transit_copy($transitid)
 			or return $e->event;
 
-	} else {
+	} elsif( $copy ) {
+
 		$transit = $e->search_action_transit_copy(
-			{ target_copy => $copyid, dest_recv_time => undef })->[0];
+			{ target_copy => $copy->id, dest_recv_time => undef })->[0];
 		return $e->event unless $transit;
 	}
 
-	if(!$copy) {
+	if($transit and !$copy) {
 		$copy = $e->retrieve_asset_copy($transit->target_copy)
 			or return $e->event;
 	}
