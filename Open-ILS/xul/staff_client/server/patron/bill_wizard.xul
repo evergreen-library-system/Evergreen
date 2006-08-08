@@ -126,6 +126,16 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 				JSAN.use('util.money');
+				JSAN.use('util.widgets');
+				JSAN.use('util.functional');
+				var ml = util.widgets.make_menulist(
+					util.functional.map_list(
+						g.OpenILS.data.list.billing_type.sort(),
+						function(obj) { return [ obj, obj ]; }
+					)
+				);
+				ml.setAttribute('id','billing_type');
+				document.getElementById('menu_placeholder').appendChild(ml);
 
 				g.cgi = new CGI();
 
@@ -213,36 +223,7 @@
 							</menulist>
 						</row>
 						<row><label value="Billing Type"/>
-							<menulist id="billing_type">
-								<menupopup>
-									<menuitem value="Miscellaneous" label="Miscellaneous" />
-									<menuitem value="Overdue materials" label="Overdue materials" />
-									<menuitem value="Fee for placing a hold" label="Fee for placing a hold" />
-									<menuitem value="Fee for checking out a book" label="Fee for checking out a book" />
-									<menuitem value="Fee for library card" label="Fee for library card" />
-									<menuitem value="Miscellaneous charges" label="Miscellaneous charges" />
-									<menuitem value="Lost materials" label="Lost materials" />
-									<menuitem value="Damaged material" label="Damaged material" />
-									<menuitem value="Overdue Reserves charge" label="Overdue Reserves charge" />
-									<menuitem value="Recall overdue" label="Recall overdue" />
-									<menuitem value="Fee for processing lost library materials" label="Fee for processing lost library materials" />
-									<menuitem value="Fee for sending patron bills to collection agency" label="Fee for sending patron bills to collection agency" />
-									<menuitem value="Fee for interlibrary loan" label="Fee for interlibrary loan" />
-									<menuitem value="Fee for copies" label="Fee for copies" />
-									<menuitem value="Money advanced to pay for telephone use" label="Money advanced to pay for telephone use" />
-									<menuitem value="Deposit fee" label="Deposit fee" />
-									<menuitem value="Fee for disk" label="Fee for disk" />
-									<menuitem value="Fee for faxing" label="Fee for faxing" />
-									<menuitem value="Fee for laminating" label="Fee for laminating" />
-									<menuitem value="Fee for room cleaning" label="Fee for room cleaning" />
-									<menuitem value="Deposit returned; fee refund" label="Deposit returned; fee refund" />
-									<menuitem value="Sale items" label="Sale items" />
-									<menuitem value="Fee for lost card" label="Fee for lost card" />
-									<menuitem value="Long overdue items" label="Long overdue items" />
-									<menuitem value="Lost/Replacement Cassette" label="Lost/Replacement Cassette" />
-									<menuitem value="Returned Check" label="Returned Check" />
-								</menupopup>
-							</menulist>
+							<hbox id="menu_placeholder"/>
 						</row>
 						<row><label value="Amount"/><textbox id="bill_amount" /></row>
 						<row><label value="Note"/><textbox id="bill_note" multiline="true" rows="5" /></row>
