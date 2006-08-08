@@ -1212,14 +1212,24 @@ sub batch_volume_transfer {
 		# take note of the fact that we've looked at this set of volumes
 		push( @seen, $_->id ) for @all;
 
-
 		# for each volume, see if there are any copies that have a 
-		# remote circ_lib (circ_lib != vol->owning_lib).  if so, warn them
+		# remote circ_lib (circ_lib != vol->owning_lib and != $o_lib ).  
+		# if so, warn them
 		unless( $self->api_name =~ /override/ ) {
 			for my $v (@all) {
+
 				$logger->debug("merge: searching for copies with remote circ_lib for volume ".$v->id);
-				my $copies = $e->search_asset_copy(
-					{ call_number=>$v->id, circ_lib => { '!=' => $v->owning_lib } }, {idlist=>1});
+				my $args = { 
+					call_number	=> $v->id, 
+					circ_lib		=> { "!=" => $v->owning_lib },
+					deleted		=> 'f'
+				};
+
+				my $copies = $e->search_asset_copy($args, {idlist=>1});
+
+				# if the copy's circ_lib matches the destination lib,
+				# that's ok too
+				$copies = [ grep { $_->circ_lib ne $o_lib } @$copies ];
 				return OpenILS::Event->new('COPY_REMOTE_CIRC_LIB') if @$copies;
 			}
 		}
