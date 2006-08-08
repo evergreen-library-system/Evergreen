@@ -1,61 +1,67 @@
+/* XXX update me
+book
+cd
+dvd
+e-book
+equipment
+filmstrip
+kit
+magazine
+map
+microform
+music
+record
+software
+talking book
+toy
+video
+*/
+
+
 {
-	'Art'		: {
+	'art'		: {
 		durationRule			: '3_month_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		recurringFinesLevel	: 'normal',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Atlas'		: {
+	'atlas'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		recurringFinesLevel	: 'normal',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Audiobook' : {
+	'audiobook' : {
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		recurringFinesLevel	: 'normal',
 		maxFine					: 'overdue_mid'
 	},
 
-	'AV-miscellaneous nonprint' : {
+	'av' : {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		recurringFinesLevel	: 'normal',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Bestseller (high demand)'		: {
+	'bestseller'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		recurringFinesLevel	: 'normal',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Bestseller not high demand'	: {
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
-		recurringFinesLevel	: 'normal',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Bestseller-not holdable'		: {
+	'bestsellernh'		: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesLevel	: 'normal',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'Classroom' : {
-		durationRule			: '28_days_2_renew',
-		recurringFinesLevel	: 'normal',
-		recurringFinesRule	: '10_cent_per_day',
-		maxFine					: 'overdue_mid'
-	},
-
-	'Compact Disc'				: {
+	'cd'				: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		recurringFinesLevel	: 'normal',
