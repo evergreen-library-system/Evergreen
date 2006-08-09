@@ -243,7 +243,7 @@ CREATE TABLE money.bnm_payment (
 ) INHERITS (money.payment);
 
 CREATE TABLE money.forgive_payment () INHERITS (money.bnm_payment);
-CREATE INDEX money_forgive_id_idx ON money.work_payment (id);
+CREATE INDEX money_forgive_id_idx ON money.forgive_payment (id);
 CREATE INDEX money_forgive_payment_xact_idx ON money.forgive_payment (xact);
 CREATE INDEX money_forgive_payment_payment_ts_idx ON money.forgive_payment (payment_ts);
 CREATE INDEX money_forgive_payment_accepting_usr_idx ON money.forgive_payment (accepting_usr);

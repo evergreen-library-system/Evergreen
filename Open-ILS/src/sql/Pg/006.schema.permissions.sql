@@ -10,8 +10,8 @@ CREATE TABLE permission.perm_list (
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 
-/*
 INSERT INTO permission.perm_list VALUES (-1, 'EVERYTHING', NULL);
+/*
 INSERT INTO permission.perm_list VALUES (2, 'OPAC_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (4, 'STAFF_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (5, 'MR_HOLDS', NULL);
