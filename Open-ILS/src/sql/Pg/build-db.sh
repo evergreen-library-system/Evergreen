@@ -3,6 +3,7 @@
 
 echo "You may be prompted several times for your database password..."
 
+PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 001.schema.offline.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 002.schema.config.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 005.schema.actors.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 006.schema.permissions.sql
