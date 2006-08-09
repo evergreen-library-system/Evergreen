@@ -1325,11 +1325,13 @@ sub attempt_checkin_hold_capture {
 	$hold->current_copy($copy->id);
 	$hold->capture_time('now');
 
-	# prevent some DB errors
+	# prevent DB errors caused by fetching 
+	# holds from storage, and updating through cstore
 	$hold->clear_fulfillment_time;
 	$hold->clear_fulfillment_staff;
 	$hold->clear_fulfillment_lib;
 	$hold->clear_expire_time; 
+	$hold->clear_cancel_time;
 
 	$self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_hold_request($hold);
@@ -1343,6 +1345,9 @@ sub attempt_checkin_hold_capture {
 		# This hold was captured in the correct location
    	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 		$self->push_events(OpenILS::Event->new('SUCCESS'));
+		my $evt = $holdcode->hold_email_notifify(
+			$self->editor, $hold, $self->title, $self->volume, $self->copy );
+		$self->bail_on_events($evt) if $evt;
 	
 	} else {
 	
