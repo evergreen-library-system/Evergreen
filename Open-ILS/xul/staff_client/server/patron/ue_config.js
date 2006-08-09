@@ -47,6 +47,8 @@ const nonumRegex	= /^[a-zA-Z]\D*$/; /* no numbers, no beginning whitespace */
 const dateRegex	= /^\d{4}-\d{2}-\d{2}/;
 const zipRegex		= /^\d{5}(-\d{4}|$)/; /* 12345 or 12345-6789 */
 
+var barredAlerted = false;
+
 
 function uEditUsrnameBlur(field) {
 	var usrname = uEditNodeVal(field);
@@ -366,6 +368,18 @@ function uEditDefineData(patron) {
 			widget	: {
 				id			: 'ue_barred',
 				type		: 'checkbox',
+				onpostchange : function(field, val) {
+					var afield = uEditFindFieldByKey('alert_message');
+					if( val ) {
+						if( !barredAlerted ) {
+							barredAlerted = true;
+							alertId('ue_made_barred');
+						}
+						afield.required = true;	
+					} else {
+						afield.required = false;
+					}
+				}
 			}
 		},
 		{
