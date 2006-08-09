@@ -996,10 +996,7 @@ sub update_fleshed_copies {
 
 		} elsif( $copy->ischanged ) {
 
-			$logger->info("vol-update: updating copy $copyid");
-			return $editor->event unless
-				$editor->update_asset_copy(
-					$copy, {checkperm=>1, permorg=>$vol->owning_lib});
+			$evt = update_copy( $editor, $override, $vol, $copy );
 			return $evt if $evt;
 		}
 
@@ -1013,16 +1010,24 @@ sub update_fleshed_copies {
 	return undef;
 }
 
-sub delete_copy {
+
+sub update_copy {
 	my( $editor, $override, $vol, $copy ) = @_;
 
-	$logger->info("vol-update: deleting copy ".$copy->id);
-	$copy->deleted('t');
+	$logger->info("vol-update: updating copy ".$copy->id);
+	my $orig_copy = $editor->retrieve_asset_copy($copy->id);
+	my $orig_vol  = $editor->retrieve_asset_call_number($copy->call_number);
 
-	$editor->update_asset_copy(
-		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
-		or return $editor->event;
+	return $editor->event unless
+		$editor->update_asset_copy( 
+			$copy, {checkperm=>1, permorg=>$vol->owning_lib});
 
+	return remove_empty_objects($editor, $override, $orig_vol);
+}
+
+
+sub remove_empty_objects {
+	my( $editor, $override, $vol ) = @_; 
 	if( title_is_empty($editor, $vol->record) ) {
 
 		if( $override ) {
@@ -1046,12 +1051,27 @@ sub delete_copy {
 			}
 
 		} else {
-			return OpenILS::Event->new('TITLE_LAST_COPY');
+			return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record );
 		}
 	}
 
 	return undef;
 }
+
+
+sub delete_copy {
+	my( $editor, $override, $vol, $copy ) = @_;
+
+	$logger->info("vol-update: deleting copy ".$copy->id);
+	$copy->deleted('t');
+
+	$editor->update_asset_copy(
+		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
+		or return $editor->event;
+
+	return remove_empty_objects($editor, $override, $vol);
+}
+
 
 sub create_copy {
 	my( $editor, $vol, $copy ) = @_;
@@ -1191,6 +1211,8 @@ sub batch_volume_transfer {
 	my $o_lib	= $$args{lib};
 	my $vol_ids = $$args{volumes};
 
+	my $override = 1 if $self->api_name =~ /override/;
+
 	$logger->info("merge: transferring volumes to lib=$o_lib and record=$rec");
 
 	my $e = new_editor(authtoken => $auth, xact =>1);
@@ -1224,7 +1246,7 @@ sub batch_volume_transfer {
 		# for each volume, see if there are any copies that have a 
 		# remote circ_lib (circ_lib != vol->owning_lib and != $o_lib ).  
 		# if so, warn them
-		unless( $self->api_name =~ /override/ ) {
+		unless( $override ) {
 			for my $v (@all) {
 
 				$logger->debug("merge: searching for copies with remote circ_lib for volume ".$v->id);
@@ -1302,6 +1324,12 @@ sub batch_volume_transfer {
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
 			$e->update_asset_copy($copy) or return $e->event;
+		}
+
+		# Now see if any empty records need to be deleted after all of this
+		for(@all) {
+			$evt = remove_empty_objects($e, $override, $_);
+			return $evt if $evt;
 		}
 	}
 
