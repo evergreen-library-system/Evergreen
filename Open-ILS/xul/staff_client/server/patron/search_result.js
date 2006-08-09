@@ -147,10 +147,12 @@ patron.search_result.prototype = {
 			if (obj.search_term_count > 0) {
 				results = this.network.simple_request( 'FM_AU_IDS_RETRIEVE_VIA_HASH', params );
 				if ( (results == null) || (typeof results.ilsevent != 'undefined') ) throw(results);
-			}
-
-			if (results.length == 0) {
-				alert('No hits found.');
+				if (results.length == 0) {
+					alert('No patrons found matching search criteria.');
+					return;
+				}
+			} else {
+				alert('Please enter some search terms.');
 				return;
 			}
 
