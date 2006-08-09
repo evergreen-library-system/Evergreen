@@ -917,6 +917,9 @@ sub fleshed_volume_update {
 		my $copies = $vol->copies;
 		$vol->clear_copies;
 
+		$vol->editor($editor->requestor->id);
+		$vol->edit_date('now');
+
 		if( $vol->isdeleted ) {
 
 			$logger->info("vol-update: deleting volume");
@@ -1018,6 +1021,8 @@ sub update_copy {
 	my $orig_copy = $editor->retrieve_asset_copy($copy->id);
 	my $orig_vol  = $editor->retrieve_asset_call_number($copy->call_number);
 
+	$copy->editor($editor->requestor->id);
+	$copy->edit_date('now');
 	return $editor->event unless
 		$editor->update_asset_copy( 
 			$copy, {checkperm=>1, permorg=>$vol->owning_lib});
@@ -1035,6 +1040,8 @@ sub remove_empty_objects {
 			# delete this volume if it's not already marked as deleted
 			unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
 				$vol->deleted('t');
+				$vol->editor($editor->requestor->id);
+				$vol->edit_date('now');
 				$editor->update_asset_call_number($vol, {checkperm=>0})
 					or return $editor->event;
 			}
@@ -1065,6 +1072,8 @@ sub delete_copy {
 	$logger->info("vol-update: deleting copy ".$copy->id);
 	$copy->deleted('t');
 
+	$copy->editor($editor->requestor->id);
+	$copy->edit_date('now');
 	$editor->update_asset_copy(
 		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
 		or return $editor->event;
@@ -1176,6 +1185,8 @@ sub create_volume {
 
 	$vol->creator($editor->requestor->id);
 	$vol->create_date('now');
+	$vol->editor($editor->requestor->id);
+	$vol->edit_date('now');
 	$vol->clear_id;
 
 	$editor->create_asset_call_number($vol) or return $editor->event;

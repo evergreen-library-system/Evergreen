@@ -86,6 +86,8 @@ sub merge_records {
 			$logger->debug("merge: moving volume ".
 				$vol->id." from record ".$vol->record. " to $master");
 
+			$vol->editor( $editor->requestor->id );
+			$vol->edit_date('now');
 			$vol->record( $master );
 			$editor->update_asset_call_number($vol)
 				or return $editor->event;

@@ -783,6 +783,8 @@ sub update_copy {
 	$copy->status($stat->id) if $stat;
 	$copy->location($loc->id) if $loc;
 	$copy->circ_lib($circ_lib->id) if $circ_lib;
+	$copy->editor($self->editor->requestor->id);
+	$copy->edit_date('now');
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_asset_copy($self->copy);
