@@ -645,13 +645,18 @@ cat.copy_browser.prototype = {
 										{
 											'title' : 'Override Volume Transfer Failure?',
 											'overridable_events' : [
+												1208 /* TITLE_LAST_COPY */,
 												1219 /* COPY_REMOTE_CIRC_LIB */,
 											],
 										}
 									);
 
 									if (typeof robj.ilsevent != 'undefined') {
-										throw(robj);
+										if (robj.ilsevent == 1221 /* ORG_CANNOT_HAVE_VOLS */) {
+											alert('That destination cannot have volumes.');
+										} else {
+											throw(robj);
+										}
 									} else {
 										alert('Volumes transferred.');
 									}

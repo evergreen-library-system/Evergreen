@@ -47,10 +47,18 @@ cat.util.transfer_copies = function(params) {
 
 		for (var i = 0; i < copies.length; i++) {
 			copies[i].call_number( data.marked_volume );
+			copies[i].circ_lib( params.owning_lib );
 			copies[i].ischanged( 1 );
 		}
 
-		var robj = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies, true ]);
+		var robj = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies, true ], null
+			{
+				'title' : 'Override Transfer Failure?',
+				'overridable_events' : [
+					1208 /* TITLE_LAST_COPY */,
+				]
+			}
+		);
 		
 		if (typeof robj.ilsevent != 'undefined') {
 			throw(robj);
