@@ -373,7 +373,7 @@ patron.display.prototype = {
 										var now = new Date();
 										now = now.getTime()/1000;
 
-										var expire_parts = patron.expire_date().split('-');
+										var expire_parts = patron.expire_date().substr(0,10).split('-');
 										expire_parts[1] = expire_parts[1] - 1;
 
 										var expire = new Date();
