@@ -78,13 +78,13 @@ CREATE TABLE action.circulation (
 	checkin_staff		INT,					  -- actor.usr.id
 	checkin_lib		INT,					  -- actor.org_unit.id
 	renewal_remaining	INT				NOT NULL, -- derived from "circ duration" rule
-	due_date		TIMESTAMP WITH TIME ZONE	NOT NULL,
+	due_date		TIMESTAMP WITH TIME ZONE,
 	stop_fines_time		TIMESTAMP WITH TIME ZONE,
 	checkin_time		TIMESTAMP WITH TIME ZONE,
-	duration		INTERVAL			NOT NULL, -- derived from "circ duration" rule
+	duration		INTERVAL,				  -- derived from "circ duration" rule
 	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
-	recuring_fine		NUMERIC(6,2)			NOT NULL, -- derived from "circ fine" rule
-	max_fine		NUMERIC(6,2)			NOT NULL, -- derived from "max fine" rule
+	recuring_fine		NUMERIC(6,2),				  -- derived from "circ fine" rule
+	max_fine		NUMERIC(6,2),				  -- derived from "max fine" rule
 	phone_renewal		BOOL				NOT NULL DEFAULT FALSE,
 	desk_renewal		BOOL				NOT NULL DEFAULT FALSE,
 	opac_renewal		BOOL				NOT NULL DEFAULT FALSE,
