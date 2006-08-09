@@ -12,15 +12,20 @@ try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 
 function init() {
 
-
 	runEvt('common','init');
 	if( getOrigLocation() == 0 ) ORIGLOC = LOCATION;
 
 	var cgi = new CGI();
 	if( grabUser() ) {
 		if( cgi.param(PARAM_LOCATION) == null ) {
-			LOCATION = G.user.ws_ou();
-			DEPTH = findOrgDepth(G.user.ws_ou());
+			var org = G.user.prefs[PREF_DEF_LOCATION];
+			var depth = G.user.prefs[PREF_DEF_DEPTH];
+
+			if(!org) org = G.use.ws_ou();
+			if(!depth) depth = findOrgDepth(org);
+
+			LOCATION = org;
+			DEPTH = DEPTH;
 		}
 	}
 

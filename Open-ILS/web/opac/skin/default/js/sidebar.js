@@ -80,7 +80,15 @@ function loggedInOK() {
 	unHideMe(G.ui.sidebar.logged_in_as);
 	hideMe(G.ui.sidebar.loginbox);
 	runEvt( 'common', 'loggedIn');
-	runEvt( "common", "locationChanged", G.user.home_ou(), findOrgDepth(G.user.home_ou()) );
+	
+	var org = G.user.prefs[PREF_DEF_LOCATION];
+	if(!org) org = G.user.home_ou();
+
+	var depth = G.user.prefs[PREF_DEF_DEPTH];
+	if(! ( depth && depth <= findOrgDepth(org)) ) 
+		depth = findOrgDepth(org);
+
+	runEvt( "common", "locationChanged", org, depth);
 }
 
 

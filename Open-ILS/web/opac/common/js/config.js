@@ -130,6 +130,8 @@ var LOGOUT_WARNING_TIME = 30; /* "head up" for session timeout */
 var PREF_HITS_PER		= 'opac.hits_per_page';
 var PREF_DEF_FONT		= 'opac.default_font';
 var PREF_HOLD_NOTIFY = 'opac.hold_notify';
+var PREF_DEF_LOCATION = 'opac.default_search_location';
+var PREF_DEF_DEPTH	= 'opac.default_search_depth';
 
 
 /* container for global variables shared accross pages */

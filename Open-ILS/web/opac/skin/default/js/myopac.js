@@ -578,6 +578,9 @@ function myOPACSavePrefs() {
 	G.user.prefs[PREF_HITS_PER] = getSelectorVal($('prefs_hits_per'));
 	G.user.prefs[PREF_DEF_FONT] = getSelectorVal($('prefs_def_font'));
 	G.user.prefs[PREF_HOLD_NOTIFY] = getSelectorVal($('prefs_hold_notify'));
+	G.user.prefs[PREF_DEF_LOCATION] = getSelectorVal($('prefs_def_location'));
+	G.user.prefs[PREF_DEF_DEPTH] = getSelectorVal($('prefs_def_range'));
+
 	if(commitUserPrefs())
 		alert($('prefs_update_success').innerHTML);
 	else alert($('prefs_update_failure').innerHTML);
@@ -614,7 +617,43 @@ function myOPACShowPrefs() {
 	myOPACShowHitsPer();
 	myOPACShowDefFont();
 	myOPACShowHoldNotify();
+	myOPACShowDefLocation();
 	hideMe($('myopac_prefs_loading'));
+}
+
+var defSearchLocationDrawn = false;
+var defDepthIndex = 0;
+function myOPACShowDefLocation() {
+
+	var selector = $('prefs_def_location');
+	var rsel = $('prefs_def_range');
+
+	var org = G.user.prefs[PREF_DEF_LOCATION];
+	if(!org) org = G.user.home_ou();
+
+	if(!defSearchLocationDrawn) {
+		defSearchLocationDrawn = true;
+		buildOrgSel(selector, globalOrgTree, 0);
+
+		globalOrgTypes = globalOrgTypes.sort(
+			function(a, b) {
+				if( a.depth() < b.depth() ) return -1;
+				return 1;
+			}
+		);
+
+		iterate(globalOrgTypes,
+			function(t) {
+				if( t.depth() <= findOrgDepth(org) ) {
+					setSelectorVal(rsel, defDepthIndex++, t.opac_label(), t.depth());
+					if( t.depth() == findOrgDepth(org) ) 
+						setSelector(rsel, t.depth());
+				}
+			}
+		);
+	}
+
+	setSelector(selector, org);
 }
 
 function myOPACShowHitsPer() {

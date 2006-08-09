@@ -56,6 +56,24 @@
 			</tr>
 
 
+			<tr>
+				<td>Default Search Location</td>
+				<td>
+					<select id='prefs_def_location'>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Default Search Range</td>
+				<td>
+					<select id='prefs_def_range'>
+					</select>
+				</td>
+			</tr>
+
+
+
 			<!-- Save the preferences -->
 			<tr><td colspan='2'><br/></td></tr>
 
