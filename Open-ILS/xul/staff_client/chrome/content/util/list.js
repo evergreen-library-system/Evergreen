@@ -355,8 +355,8 @@ util.list.prototype = {
 	},
 
 	'detect_visible' : function() {
+		var obj = this;
 		try {
-			var obj = this;
 			//dump('detect_visible  obj.node = ' + obj.node + '\n');
 			/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
 			var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
@@ -368,7 +368,7 @@ util.list.prototype = {
 					obj.curpos = curpos; obj.maxpos = maxpos;
 				}
 			}
-		} catch(E) { alert(E); }
+		} catch(E) { obj.error.sdump('D_ERROR',E); }
 	},
 
 	'detect_visible_polling' : function() {
