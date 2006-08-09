@@ -125,15 +125,21 @@ var CIRC_MOD_MAP = {
 		maxFine					: 'overdue_mid'
 	},
 
-	'bestseller'		: {
+	'bestseller'				: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
-	'bestsellernh'		: {
+	'bestsellernh'				: {
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'book'						: {
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
@@ -227,6 +233,36 @@ var CIRC_MOD_MAP = {
 }
 
 
+/* Set up rules for legacy types */
+CIRC_MOD_MAP['DEPOSIT'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['E-AUDIO'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['EQUIP'] 		= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['FACBESTSLR'] = CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['FACNEWBK'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['MAG-CIRC'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['MAG-NOCIRC'] = CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['NEW-AV'] 		= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['NEW-BOOK'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['NEWSPAPER'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['NILS-ITEM'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['OUTREACH'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['PAMPHLET'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['PAPERBACK'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['REALIA'] 		= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['RESERVE'] 	= CIRC_MOD_MAP['book'];
+CIRC_MOD_MAP['STATE-BOOK'] = {
+	durationRule			: '35_days_1_renew',
+	recurringFinesRule	: "10_cent_per_day",
+	maxFine					: "overdue_mid"
+};
+CIRC_MOD_MAP['STATE-MFRM'] =  {
+	durationRule			: '14_days_2_renew',
+	recurringFinesRule	: "10_cent_per_day",
+	maxFine					: "overdue_mid"
+};
+
+
+
 
 /* treat pre-cat copies like vanilla books */
 if( isTrue(isPrecat) ) {
@@ -249,13 +285,18 @@ var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
 
 var config;
 
-if( CIRC_MOD_MAP[circMod] ) {
+if( circMod && CIRC_MOD_MAP[circMod.toLowerCase()] ) {
 	/* if we have a config for the given circ_modifier, use it */
-	log_debug("a circ_mod config exists for the copy");
+	log_debug("a circ_mod config exists for the copy: " + circMod);
 	config = CIRC_MOD_MAP[circMod];
 
 } else {
 	/* otherwise, fall back on the MARC item type */
+
+	if( circMod ) {
+		log_debug("no circ_mod config found for "
+			+circMod+", falling back to MARC");
+	}
 	config = MARC_ITEM_TYPE_MAP[marcType];
 }
 
