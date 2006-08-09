@@ -51,7 +51,10 @@ cat.util.transfer_copies = function(params) {
 			copies[i].ischanged( 1 );
 		}
 
-		var robj = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), copies, true ], null
+		var robj = network.simple_request(
+			'FM_ACP_FLESHED_BATCH_UPDATE', 
+			[ ses(), copies, true ], 
+			null,
 			{
 				'title' : 'Override Transfer Failure?',
 				'overridable_events' : [
