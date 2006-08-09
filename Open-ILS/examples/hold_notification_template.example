@@ -1,0 +1,29 @@
+# --------------------------------------------------------------------
+# Test comments..
+# --------------------------------------------------------------------
+
+${DATE}
+
+${LIBRARY}
+${LIBRARY_ADDRESS}
+
+
+	${PATRON_NAME}
+	${PATRON_ADDRESS}
+
+			Hold Available for Pickup
+
+The item you requested is available for pickup from the
+Library.  Contact the Circulation Desk to check out the
+item.
+
+
+	Title: ${TITLE} 
+	Author: ${AUTHOR}
+	Call Number: ${CALL_NUMBER}
+	Copy Barcode: ${COPY_BARCODE}
+	Copy Number: ${COPY_NUMBER}
+
+
+Thank you.
+
