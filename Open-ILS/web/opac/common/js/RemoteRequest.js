@@ -78,6 +78,9 @@ function RemoteRequest( service, method ) {
 	this.id			= service + method + Math.random();
 	this.cancelled = false;
 
+	this.setSecure(false);
+	if(isXUL()) this.setSecure(true);
+
 	_allrequests[this.id] = this;
 
 	var i = 2;
@@ -218,18 +221,16 @@ RemoteRequest.prototype.send = function(blocking) {
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
-	if(isXUL() && XML_HTTP_SERVER) {
-		if(this.secure || url.match(/^https:/) )
-			url =	"https://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
-		else
-			url =	"http://" + XML_HTTP_SERVER + "/" + XML_HTTP_GATEWAY;
+	if(isXUL()) {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+		if( this.secure ) url = url.replace(/http/, 'https');
+		else url = url.replace(/https/, 'http');
 	}
-
-	/* this number could be a lot higher.. */
-	var whole = url + this.param_string + 1;
 
 	var data = null;
 	if( this.type == 'GET' ) url +=  "?" + this.param_string; 
+
+	if(isXUL() && this.secure ) dump('SECURE = true\n');
 
 	try {
 
@@ -237,7 +238,7 @@ RemoteRequest.prototype.send = function(blocking) {
 		else this.xmlhttp.open(this.type, url, true);
 		
 	} catch(E) {
-		alert("Fatal error opening XMLHTTPRequest for URL:\n" + url + '\n');
+		alert("Fatal error opening XMLHTTPRequest for URL:\n" + url + '\n' + E);
 		return;
 	}
 

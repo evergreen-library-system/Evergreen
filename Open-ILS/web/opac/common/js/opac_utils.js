@@ -15,6 +15,11 @@ function Request(type) {
 	this.request = new RemoteRequest(s[0], s[1]);
 	var p = [];
 
+	if(isXUL()) {
+		if(!location.href.match(/https:\/\//))
+			this.request.setSecure(false);
+	}
+
 	for( var x = 1; x!= arguments.length; x++ ) {
 		p.push(arguments[x]);
 		this.request.addParam(arguments[x]);
