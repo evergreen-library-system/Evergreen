@@ -5,10 +5,15 @@ var XML_HTTP_MAX_TRIES = 3;
 
 
 /* This object is thrown when network failures occur */
-function NetworkFailure(stat) { this._status = stat; }
+function NetworkFailure(stat, url) { 
+	this._status = stat; 
+	this._url = url;
+}
+
 NetworkFailure.prototype.status = function() { return this._status; }
+NetworkFailure.prototype.url = function() { return this._url; }
 NetworkFailure.prototype.toString = function() { 
-	return "Network Failure: status = " + this.status(); 
+	return "Network Failure: status = " + this.status() +'\n'+this.url(); 
 }
 
 
@@ -276,7 +281,9 @@ RemoteRequest.prototype.getResultObject = function() {
 	if( failed ) {
 		if(!status) status = '<unknown>';
 		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status);}catch(e){}
-		throw new NetworkFailure(status);
+		if(isXUL()) 
+			throw new NetworkFailure(status, this.param_string);
+		else return null;
 	}
 
 
