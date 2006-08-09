@@ -417,8 +417,23 @@ sub cancel_hold {
 	$e->update_action_hold_request($hold)
 		or return $e->event;
 
+	$self->delete_hold_copy_maps($e, $hold->id);
+
 	$e->commit;
 	return 1;
+}
+
+sub delete_hold_copy_maps {
+	my $class = shift;
+	my $editor = shift;
+	my $holdid = shift;
+
+	my $maps = $editor->search_action_hold_copy_map({hold=>$holdid});
+	for(@$maps) {
+		$editor->delete_action_hold_copy_map($_) 
+			or return $editor->event;
+	}
+	return undef;
 }
 
 

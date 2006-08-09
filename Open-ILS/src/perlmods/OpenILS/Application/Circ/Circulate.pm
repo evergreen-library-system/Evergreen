@@ -845,6 +845,8 @@ sub handle_checkout_holds {
 			return $self->bail_on_events($self->editor->event)
 				unless $self->editor->update_action_hold_request($hold);
 
+			$holdcode->delete_hold_copy_maps($self->editor, $hold->id);
+
          push( @fulfilled, $hold->id );
       }
 
