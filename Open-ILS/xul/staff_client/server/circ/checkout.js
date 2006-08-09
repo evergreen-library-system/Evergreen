@@ -476,6 +476,11 @@ circ.checkout.prototype = {
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ :
 							found_handled = true;
 						break;
+						case 1217 /* PATRON_INACTIVE */ :
+							found_handled = true;
+							msg += 'This patron is inactive and may not circulate items.\n';
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+						break;
 						case 7013 /* PATRON_EXCEEDS_FINES */ :
 							found_handled = true;
 						break;
