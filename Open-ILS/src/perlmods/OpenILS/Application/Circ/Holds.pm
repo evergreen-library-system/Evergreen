@@ -25,6 +25,7 @@ use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
+use OpenSRF::Utils::SettingsClient;
 use OpenILS::Const qw/:const/;
 
 my $apputils = "OpenILS::Application::AppUtils";
@@ -1068,8 +1069,115 @@ sub find_nearest_permitted_hold {
 }
 
 
-#__PACKAGE__->register_method(
-#);
+
+# Generates a hold email notification 
+sub hold_email_notifify {
+	my( $class, $editor, $hold, $title, $volume, $copy ) = @_;
+
+	my $sclient = OpenSRF::Utils::SettingsClient->new;
+	my $template = $sclient->config_value('hold_email_template');
+	return undef unless $template;
+
+	$logger->info("hold_notify: using template $template");
+
+	my $patron = $editor->retrieve_actor_user($hold->usr)
+		or return $editor->event;
+
+	return undef unless 
+		$patron->email and $patron->email =~ /.+\@.+/; # see if it's remotely email-esque
+
+	$logger->info("hold_notify: using email ".$patron->email);
+
+	my( $str, $evt );
+
+	$str = load_template($template);
+	return undef unless $str;
+	($str, $evt) = flesh_template( $editor, $hold, $title, $volume, $copy, $patron, $str );
+	return $evt if $evt;
+	return undef unless $str;
+
+	$logger->info("hold_notify: $str");
+	return undef;
+}
+
+
+sub load_template {
+	my $template = shift;
+
+	unless( open(F, $template) ) {
+		$logger->error("Unable to open hold notification template file: $template");
+		return undef;
+	}
+
+	# load the template, strip comments
+	my @lines = <F>;
+	close(F);
+
+	my $str = '';
+	for(@lines) {
+   	chomp $_;
+   	next if $_ =~ /^\s*\#/o;
+   	$_ =~ s/\#.*//og;
+   	$str .= "$_\n";
+	}
+
+	return $str;
+}
+
+
+sub flesh_template {
+	my( $editor, $hold, $title, $volume, $copy, $patron, $str ) = @_;
+
+
+	my $p_addr;
+	unless( $p_addr = 
+			$editor->retrieve_actor_user_address($patron->billing_address)) {
+		unless( $p_addr = 
+				$editor->retrieve_actor_user_address($patron->mailing_address)) {
+			$logger->warn("No address for user ".$patron->id);
+			return undef;
+		}
+	}
+	
+	my $org = $editor->retrieve_actor_org_unit($hold->pickup_lib)
+		or return (undef, $editor->event);
+
+	my $o_name = $org->name;
+	my $o_addr = $org->holds_address;
+	my $p_name = $patron->first_given_name .' '.$patron->family_name;
+
+	my $p_addrs = $p_addr->street1."\n".$p_addr->street2."\n".
+		$p_addr->city."\n".$p_addr->state."\n".$p_addr->post_code."\n";
+
+	my @time 	= localtime();
+	my $day 		= $time[3];
+	my $month 	= $time[4] + 1;
+	my $year 	= $time[5] + 1900;
+
+	my $mods		= $U->record_to_mvr($title);
+	my $ttle		= $mods->title;
+	my $author	= $mods->author;
+	my $cn		= $volume->label;
+	my $barcode = $copy->barcode;
+	my $copy_number = $copy->copy_number;
+
+   $str =~ s/\${DATE}/$year-$month-$day/;
+   $str =~ s/\${LIBRARY}/$o_name/;
+   $str =~ s/\${LIBRARY_ADDRESS}/$o_addr/;
+   $str =~ s/\${PATRON_NAME}/$p_name/;
+   $str =~ s/\${PATRON_ADDRESS}/$p_addrs/;
+
+   $str =~ s/\${TITLE}/$ttle/;
+   $str =~ s/\${AUTHOR}/$author/;
+   $str =~ s/\${CALL_NUMBER}/$cn/;
+   $str =~ s/\${COPY_BARCODE}/$barcode/;
+   $str =~ s/\${COPY_NUMBER}/$copy_number/;
+
+	$logger->info("hold_notify: fleshed template: $str");
+
+	return $str;
+}
+
 
 
 
