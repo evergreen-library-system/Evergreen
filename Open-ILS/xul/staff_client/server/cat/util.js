@@ -23,7 +23,7 @@ cat.util.transfer_copies = function(params) {
 		if (!params.message) {
 			params.message = 'Transfer items from their original volumes to ';
 			params.message += data.hash.aou[ params.owning_lib ].shortname() + "'s volume labelled ";
-			params.message += '"' + params.volume_label + '" on the following record?';
+			params.message += '"' + params.volume_label + '" on the following record (and change their circ libs to match)?';
 		}
 
 		xml += '<description>' + params.message + '</description>';
