@@ -40,12 +40,14 @@ sub new {
 
 	my $lang = 'en-US'; # assume english for now
 
+	my $t = CORE::localtime();
+
 	return { 
 		ilsevent		=> $e, 
 		textcode		=> $event, 
 		stacktrace	=> "$f:$l, $ff:$ll", 
 		desc			=> $descs->{$lang}->{$e},
-		servertime	=> CORE::localtime(),
+		servertime	=> $t,
 		pid			=> $$, %params };
 }
 
