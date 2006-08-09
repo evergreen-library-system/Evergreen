@@ -21,7 +21,7 @@ function init() {
 			var org = G.user.prefs[PREF_DEF_LOCATION];
 			var depth = G.user.prefs[PREF_DEF_DEPTH];
 
-			if(!org) org = G.use.ws_ou();
+			if(!org) org = G.user.ws_ou();
 			if(!depth) depth = findOrgDepth(org);
 
 			LOCATION = org;
