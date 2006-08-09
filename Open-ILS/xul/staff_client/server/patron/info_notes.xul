@@ -130,7 +130,7 @@
 		function new_note() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
-				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Public?"/><checkbox id="public" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Public?"/><checkbox id="pub" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
 				window.open(
 					urls.XUL_FANCY_PROMPT
 					+ '?xml=' + window.escape(xml)
@@ -145,7 +145,7 @@
 					note.isnew(1);
 					note.title( g.data.fancy_prompt_data.title );
 					note.value( g.data.fancy_prompt_data.note );
-					note.pub( g.data.fancy_prompt_data.public ? get_db_true() : get_db_false() );
+					note.pub( g.data.fancy_prompt_data.pub ? 't' : 'f' );
 					note.usr( g.patron_id );
 					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
