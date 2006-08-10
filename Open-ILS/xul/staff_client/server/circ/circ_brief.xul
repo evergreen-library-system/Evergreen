@@ -46,44 +46,49 @@
 				g.cgi = new CGI();
 				g.circ_id = g.cgi.param('circ_id');
 
+				if (g.cgi.param('caption')) $('caption').setAttribute('label',g.cgi.param('caption'));
+				if (g.cgi.param('no_border')) $('gb').setAttribute('style','border: none');
+
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.network.request(
-					api.FM_CIRC_RETRIEVE_VIA_ID.app,
-					api.FM_CIRC_RETRIEVE_VIA_ID.method,
-					[ ses(), g.circ_id ],
-					function (req) {
-						try {
+				function circ_callback(req) {
+					try {
 						var r_circ = req.getResultObject();
 						$('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
-						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16) : '';
-						$('circ_staff').value = r_circ.circ_staff() ? r_circ.circ_staff() : '';
+						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16).replace(/T/,' ') : '';
+						$('due_date').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+						$('circ_lib').setAttribute('tooltiptext','Check Out Staff ID = ' + r_circ.circ_staff() );
 						$('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
-						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16) : '';
-						$('checkin_staff').value = r_circ.checkin_staff() ? r_circ.checkin_staff() : '';
+						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16).replace(/T/,' ') : '';
+						$('checkin_lib').setAttribute('tooltiptext','Check In Staff ID = ' + r_circ.checkin_staff() );
 						$('id').value = r_circ.id() ? r_circ.id() : '';
 						$('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
+						$('stop_fines_time').value = r_circ.stop_fines_time() ? r_circ.stop_fines_time().toString().substr(0,16).replace(/T/,' ') : '';
 						var r = '';
 						if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
 						if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
 						if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
 						$('renewal').value = r || 'No';
-						} catch(E) {
-							g.error.standard_unexpected_error_alert('Failure rendering circ.',E);
-						}
 						g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
 						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
 							var r_au = preq.getResultObject();
-							$('barcode').value = r_au.card().barcode();
-							$('patron_name').value = r_au.family_name() + ', ' + r_au.first_given_name() + ' ' + (r_au.second_given_name() ? r_au.second_given_name() : '');
+							$('patron_name').value = r_au.family_name() + ', ' + r_au.first_given_name() + ' ' + (r_au.second_given_name() ? r_au.second_given_name() + ' : ' + r_au.card().barcode() : '');
 							JSAN.use('patron.util'); patron.util.set_penalty_css(r_au);
 						});
+
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('Failure rendering circ.',E);
 					}
-				);
+				}
 
-
+				if (g.circ_id) {
+					g.network.simple_request( 'FM_CIRC_RETRIEVE_VIA_ID', [ ses(), g.circ_id ], circ_callback);
+				} else {
+					g.circ = g.data.temp_circ; g.data.temp_circ = null; g.data.stash('temp_circ');
+					circ_callback( { 'getResultObject' : function() { return g.circ; } } );
+				}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -110,11 +115,11 @@
 	]]>
 	</script>
 
-	<groupbox flex="1" style="overflow: auto;">
+	<groupbox id="gb" flex="1" style="overflow: auto;">
+		<caption id="caption"/>
 		<hbox>
-			<label id="patron_name" class="patronNameLarge"/>
-			<textbox id="barcode" class="plain" readonly="true" onclick="this.select()"/>
-			<spacer flex="1"/>
+			<label id="patron_name" class="patronNameLarge" flex="1"/>
+			<label value="Circ ID: "/><label id="id"/>
 			<button id="add_billing" disabled="true" label="Add Billing" oncommand="g.add_billing();"/>
 		</hbox>
 		<grid flex="1">
@@ -125,22 +130,21 @@
 				<column flex="1"/>
 				<column/>
 				<column flex="1"/>
+				<column/>
+				<column flex="1"/>
 			</columns>
 			<rows>
 				<row>
-					<label style="font-weight: bold" value="Circ Id"/><label id="id"/>
-					<label style="font-weight: bold" value="Renewal"/><label id="renewal"/>
-					<label style="font-weight: bold" value="Stop Fines Reason"/><label id="stop_fines"/>
+					<label style="font-weight: bold" value="Check Out Time"/><label id="xact_start"/>
+					<label style="font-weight: bold" value="Due Date"/><label id="due_date"/>
+					<label style="font-weight: bold" value="Stop Fines Time"/><label id="stop_fines_time"/>
+					<label style="font-weight: bold" value="Check In Time"/><label id="checkin_time"/>
 				</row>
 				<row>
 					<label style="font-weight: bold" value="Check Out Lib"/><label id="circ_lib"/>
-					<label style="font-weight: bold" value="Check Out Time"/><label id="xact_start"/>
-					<label style="font-weight: bold" value="Check Out Staff ID"/><label id="circ_staff"/>
-				</row>
-				<row>
+					<label style="font-weight: bold" value="Renewal"/><label id="renewal"/>
+					<label style="font-weight: bold" value="Stop Fines Reason"/><label id="stop_fines"/>
 					<label style="font-weight: bold" value="Check In Lib"/><label id="checkin_lib"/>
-					<label style="font-weight: bold" value="Check In Time"/><label id="checkin_time"/>
-					<label style="font-weight: bold" value="Check In Staff ID"/><label id="checkin_staff"/>
 				</row>
 			</rows>
 		</grid>
