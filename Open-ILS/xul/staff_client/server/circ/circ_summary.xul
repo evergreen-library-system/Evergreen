@@ -76,6 +76,7 @@
 					[ ses(), g.copy_id, g.count ]);
 				if (g.circs == null || typeof g.circs.ilsevent != 'undefined') throw(circs);
 				if (g.circs.length == 0) return;
+				g.circs = g.circs.reverse(); /* put the most recent at the top */
 				$('r_last').disabled = false; $('r_all').disabled = false;	
 
 				var gb = $('circs');
