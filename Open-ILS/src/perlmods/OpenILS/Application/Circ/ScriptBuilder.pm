@@ -235,7 +235,7 @@ sub fetch_user_data {
 
 		# Grab the fines
 		my $fxacts = $e->search_money_open_billable_transaction_summary(
-			{ usr => $patron->id, balance_owed => { ">" => 0 } });
+			{ usr => $patron->id, balance_owed => { "!=" => 0 } });
 
 		my $fines = 0;
 		$fines += $_->balance_owed for @$fxacts;
