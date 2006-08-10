@@ -80,6 +80,7 @@
 			JSAN.use('circ.util');
 			var columns = circ.util.hold_columns( 
 				{ 
+					'status' : { 'hidden' : true },
 					'request_time' : { 'hidden' : false },
 					'pickup_lib_shortname' : { 'hidden' : false },
 					'current_copy' : { 'hidden' : false },
