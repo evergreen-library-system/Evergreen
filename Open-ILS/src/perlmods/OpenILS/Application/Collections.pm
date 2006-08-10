@@ -4,9 +4,9 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::Application;
+use OpenILS::Utils::Fieldmapper;
 use base 'OpenSRF::Application';
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
-use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
 my $U = "OpenILS::Application::AppUtils";
 
@@ -205,6 +205,24 @@ __PACKAGE__->register_method(
 					for which the user is being placed in collections/,
 				type => q'string',
 			},
+			{	name => 'fee_amount',
+				desc => q/
+					The amount of money that a patron should be fined.  
+					If this field is empty, no fine is created.
+				/,
+				type => 'string',
+			},
+			{	name => 'fee_note',
+				desc => q/
+					Custom note that is added to the the billing.  
+					This field is not required.
+					Note: fee_note is not the billing_type.  Billing_type type is
+					decided by the system. (e.g. "fee for collections").  
+					fee_note is purely used for any additional needed information
+					and is only visible to staff.
+				/,
+				type => 'string',
+			},
 		],
 
 	  	'return' => { 
@@ -214,7 +232,7 @@ __PACKAGE__->register_method(
 	}
 );
 sub put_into_collections {
-	my( $self, $conn, $auth, $user_id, $location ) = @_;
+	my( $self, $conn, $auth, $user_id, $location, $fee_amount, $fee_note ) = @_;
 
 	return OpenILS::Event->new('BAD_PARAMS') 
 		unless ($auth and $user_id and $location);
@@ -222,10 +240,9 @@ sub put_into_collections {
 	my $e = new_editor(authtoken => $auth, xact =>1);
 	return $e->event unless $e->checkauth;
 
-	my $org = $e->search_actor_org_unit({shortname => $location})
-		or return $e->event; $org = $org->[0];
+	my $org = $e->search_actor_org_unit({shortname => $location});
+	return $e->event unless $org = $org->[0];
 	return $e->event unless $e->allowed('money.collections_tracker.create', $org->id);
-
 
 	my $existing = $e->search_money_collections_tracker(
 		{
@@ -238,6 +255,9 @@ sub put_into_collections {
 
 	return OpenILS::Event->new('MONEY_COLLECTIONS_TRACKER_EXISTS') if @$existing;
 
+	$logger->info("collect: user ".$e->requestor->id. 
+		" putting user $user_id into collections for $location");
+
 	my $tracker = Fieldmapper::money::collections_tracker->new;
 
 	$tracker->usr($user_id);
@@ -248,8 +268,37 @@ sub put_into_collections {
 	$e->create_money_collections_tracker($tracker) 
 		or return $e->event;
 
+	if( $fee_amount ) {
+		my $evt = add_collections_fee($e, $user_id, $org, $fee_amount, $fee_note );
+		return $evt if $evt;
+	}
+
 	$e->commit;
 	return OpenILS::Event->new('SUCCESS');
+}
+
+sub add_collections_fee {
+	my( $e, $patron_id, $org, $fee_amount, $fee_note ) = @_;
+
+	$fee_note ||= "";
+
+	$logger->info("collect: adding fee to user $patron_id : $fee_amount : $fee_note");
+
+	my $xact = Fieldmapper::money::grocery->new;
+	$xact->usr($patron_id);
+	$xact->xact_start('now');
+	$xact->billing_location($org->id);
+
+	$xact = $e->create_money_grocery($xact) or return $e->event;
+
+	my $bill = Fieldmapper::money::billing->new;
+	$bill->note($fee_note);
+	$bill->xact($xact->id);
+	$bill->billing_type('Fee for Collection'); # XXX
+	$bill->amount($fee_amount);
+
+	$e->create_money_billing($bill) or return $e->event;
+	return undef;
 }
 
 
