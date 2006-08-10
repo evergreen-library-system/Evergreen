@@ -281,6 +281,7 @@ function uEditInsertSurveyQuestion( row, survey, question ) {
 				removeCSSClass(selector, 'invalid_value');
 			else 
 				addCSSClass(selector, 'invalid_value');
+			uEditCheckErrors();
 		}
 
 		if(!val) return;

@@ -34,30 +34,35 @@ function uEditInit() {
 /* Fetch code
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIdentTypes() {
+	_debug("uEditFetchIdentTypes()\n");
 	var req = new Request(FETCH_ID_TYPES);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchStatCats() {
+	_debug("uEditFetchStatCats()\n");
 	var req = new Request(SC_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchSurveys() {
+	_debug("uEditFetchSurveys()\n");
 	var req = new Request(SV_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchGroups() {
+	_debug("uEditFetchGroups()\n");
 	var req = new Request(FETCH_GROUPS);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchNetLevels() {
+	_debug("uEditFetchNetLevels()\n");
 	var req = new Request(FETCH_NET_LEVELS, SESSION);
 	req.send(true);
 	return req.result();
