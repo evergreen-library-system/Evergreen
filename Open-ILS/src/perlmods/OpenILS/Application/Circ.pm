@@ -701,4 +701,62 @@ sub age_hold_rules {
 }
 
 
+
+
+__PACKAGE__->register_method(
+	method => 'copy_details',
+	api_name => 'open-ils.circ.copy_details.retrieve',
+	signature => q/
+	/
+);
+
+sub copy_details {
+	my( $self, $conn, $auth, $copy_id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+
+	my $copy = $e->retrieve_asset_copy($copy_id)
+		or return $e->event;
+
+	my $hold = $e->search_action_hold_request(
+		{ 
+			current_copy => $copy_id, 
+			capture_time => { "!=" => undef },
+			fulfillment_time => undef,
+		}
+	)->[0];
+
+	OpenILS::Application::Circ::Holds::flesh_hold_transits([$hold]) if $hold;
+
+	my $transit = $e->search_action_transit_copy(
+		{ target_copy => $copy_id, dest_recv_time => undef } )->[0];
+
+	my $circ = $e->search_action_circulation(
+		{ target_copy => $copy_id, stop_fines => undef })->[0];
+
+	unless( $circ ) {
+		$circ = $e->search_action_circulation(
+			{ 
+				target_copy => $copy_id, 
+				xact_finish => undef,
+				stop_fines	=> [ 
+					OILS_STOP_FINES_CLAIMSRETURNED, 
+					OILS_STOP_FINES_LOST, 
+					OILS_STOP_FINES_LONGOVERDUE, 
+				]
+			} 
+		)->[0];
+	}
+
+	return {
+		copy		=> $copy,
+		hold		=> $hold,
+		transit	=> $transit,
+		circ		=> $circ,
+	};
+}
+
+
+
+
 1;
