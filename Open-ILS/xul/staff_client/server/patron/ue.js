@@ -131,6 +131,10 @@ function uEditCheckEditPerm() {
 	var node = $('ue_profile').parentNode;
 	node.removeChild($('ue_profile'));
 	node.appendChild(elem('span',null,groupsCache[patron.profile()].name()));
+
+	var field = uEditFindFieldByKey('profile');
+	field.required = false;
+	uEditCheckErrors();
 }
 
 
@@ -329,6 +333,7 @@ function uEditOnChange(field) {
 
 function uEditCheckValid(field) {
 	var newval = uEditNodeVal(field);
+
 	if(newval) {
 
 		if(field.widget.regex) { 
