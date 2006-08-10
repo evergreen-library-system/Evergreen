@@ -100,7 +100,7 @@
 					function(n){n.setAttribute("tooltiptext","Note ID: " + g.notes[i].id() + " Creator ID: " + g.notes[i].creator());}
 				);
 				apply(node,'title',g.notes[i].title());
-				apply(node,'pub',g.notes[i].pub() ? "Public" : "Private");
+				apply(node,'pub',get_bool( g.notes[i].pub() ) ? "Public" : "Private");
 				apply(node,'value',g.notes[i].value());
 				apply(node,'id',g.notes[i].id());
 				apply(node,'creator',g.notes[i].creator());
@@ -145,7 +145,7 @@
 					note.isnew(1);
 					note.title( g.data.fancy_prompt_data.title );
 					note.value( g.data.fancy_prompt_data.note );
-					note.pub( g.data.fancy_prompt_data.pub? 't' : 'f' );
+					note.pub( get_bool( g.data.fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
 					note.owning_copy( g.copy_id );
 					var r = g.network.simple_request('FM_ACPN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
