@@ -785,10 +785,9 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				break;
 			}
 			if (msg) error.yns_alert(msg,'Alert',null,'OK',null,"Check here to confirm this message");
-		}
 
-		/* ROUTE_ITEM */
-		if (check.ilsevent == 7000) {
+		} else /* ROUTE_ITEM */ if (check.ilsevent == 7000) {
+
 			var lib = data.hash.aou[ check.org ];
 			check.route_to = lib.shortname();
 			var msg = 'This item is in transit to ' + check.route_to + '.\n';
@@ -836,10 +835,9 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 					alert('FIXME: ' + E + '\n');
 				}
 			}
-		}
 
-		/* ASSET_COPY_NOT_FOUND */
-		if (check.ilsevent == 1502) {
+		} else /* ASSET_COPY_NOT_FOUND */ if (check.ilsevent == 1502) {
+
 			check.route_to = 'CATALOGING';
 			error.yns_alert(
 				'The barcode was either mis-scanned or the item needs to be cataloged.',
@@ -849,11 +847,13 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				null,
 				"Check here to confirm this message"
 			);
-		}
 
-		/* NETWORK TIMEOUT */
-		if (check.ilsevent == -1) {
+		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert('Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
+		} else {
+
+			throw(check);
+
 		}
 
 //				case '2': case 2: /* LOST??? */
