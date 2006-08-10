@@ -115,6 +115,13 @@
 		<desc xml:lang="en-US">The selected location cannot have volumes attached</desc>
 	</event>
 
+	<event code='1222' textcode='PATRON_NO_EMAIL_ADDRESS'>
+		<desc xml:lang="en-US">The user does not have a valid email address assigned</desc>
+	</event>
+	<event code='1223' textcode='PATRON_NO_PHONE'>
+		<desc xml:lang="en-US">The user does not have a valid phone number assigned</desc>
+	</event>
+
 
 
 
