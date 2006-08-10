@@ -134,6 +134,7 @@ function uEditCheckEditPerm() {
 
 	var field = uEditFindFieldByKey('profile');
 	field.required = false;
+	removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 	uEditCheckErrors();
 }
 
