@@ -283,6 +283,7 @@ function cpdShowNotes(copy, args) {
 
 	for( var n in notes ) {
 		var note = notes[n];
+		if(!isTrue(note.pub())) continue;
 		var row = rowt.cloneNode(true);
 		$n(row, 'key').appendChild(text(note.title()));
 		$n(row, 'value').appendChild(text(note.value()));
