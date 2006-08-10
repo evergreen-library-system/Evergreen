@@ -48,6 +48,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
+							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 							obj.controller.view.sel_clip.setAttribute('disabled','true');
@@ -57,6 +58,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
+							obj.controller.view.sel_copy_details.setAttribute('disabled','false');
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 							obj.controller.view.sel_clip.setAttribute('disabled','false');
@@ -126,6 +128,15 @@ circ.copy_status.prototype = {
 						function() {
 							JSAN.use('circ.util');
 							circ.util.show_last_few_circs(obj.selection_list);
+						}
+					],
+					'sel_copy_details' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								circ.util.show_copy_details( obj.selection_list[i].copy_id );
+							}
 						}
 					],
 					'sel_bucket' : [
