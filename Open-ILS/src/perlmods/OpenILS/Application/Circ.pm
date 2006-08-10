@@ -731,22 +731,13 @@ sub copy_details {
 	my $transit = $e->search_action_transit_copy(
 		{ target_copy => $copy_id, dest_recv_time => undef } )->[0];
 
+	# find the latest circ, open or closed
 	my $circ = $e->search_action_circulation(
-		{ target_copy => $copy_id, stop_fines => undef })->[0];
-
-	unless( $circ ) {
-		$circ = $e->search_action_circulation(
-			{ 
-				target_copy => $copy_id, 
-				xact_finish => undef,
-				stop_fines	=> [ 
-					OILS_STOP_FINES_CLAIMSRETURNED, 
-					OILS_STOP_FINES_LOST, 
-					OILS_STOP_FINES_LONGOVERDUE, 
-				]
-			} 
-		)->[0];
-	}
+		[
+			{ target_copy => $copy_id },
+			{ order_by => { circ => 'xact_start desc' }, limit => 1 }
+		]
+	)->[0];
 
 	return {
 		copy		=> $copy,
