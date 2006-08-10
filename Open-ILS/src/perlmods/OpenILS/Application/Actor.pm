@@ -2383,6 +2383,18 @@ sub retrieve_net_levels {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'fetch_org_by_shortname',
+	api_name => 'open-ils.actor.org_unit.retrieve_by_shorname',
+);
+sub fetch_org_by_shortname {
+	my( $self, $conn, $sname ) = @_;
+	my $e = new_editor();
+	my $org = $e->search_actor_org_unit({ shortname => uc($sname)})->[0];
+	return $e->event unless $org;
+	return $org;
+}
+
 
 1;
 
