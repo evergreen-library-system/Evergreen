@@ -53,80 +53,86 @@
 
 				document.getElementById('caption').setAttribute('tooltiptext','Record ID = ' + docid);
 
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				data.last_record = docid; data.stash('last_record');
+				if (docid > -1) {
 
-				g.network.request(
-					api.MODS_SLIM_RECORD_RETRIEVE.app,
-					api.MODS_SLIM_RECORD_RETRIEVE.method,
-					[ docid ],
-					function (req) {
-						var mods = req.getResultObject();
-						
-						if (mods.title()) document.getElementById('title').appendChild(
-							document.createTextNode(mods.title().substr(0,50))
-						);
-						if (mods.author()) document.getElementById('author').appendChild(
-							document.createTextNode(mods.author())
-						);
-						if (mods.edition()) document.getElementById('edition').appendChild(
-							document.createTextNode(mods.edition())
-						);
-						if (mods.pubdate()) document.getElementById('pubdate').appendChild(
-							document.createTextNode(mods.pubdate())
-						);
-						if (mods.tcn()) document.getElementById('tcn').appendChild(
-							document.createTextNode(mods.tcn())
-						);
+					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+					data.last_record = docid; data.stash('last_record');
 
-						if (window.xulG && typeof window.xulG.set_tab_name == 'function') {
-							try {
-								window.xulG.set_tab_name(mods.tcn());
-							} catch(E) {
-								g.error.sdump('D_ERROR','bib_brief.xul, set_tab: ' + E);
-							}
-						}
-
-						g.network.request(
-							api.FM_BRE_RETRIEVE_VIA_ID.app,
-							api.FM_BRE_RETRIEVE_VIA_ID.method,
-							[ ses(), [ docid ] ],
-							function (req) {
+					g.network.request(
+						api.MODS_SLIM_RECORD_RETRIEVE.app,
+						api.MODS_SLIM_RECORD_RETRIEVE.method,
+						[ docid ],
+						function (req) {
+							var mods = req.getResultObject();
+							
+							if (mods.title()) document.getElementById('title').appendChild(
+								document.createTextNode(mods.title().substr(0,50))
+							);
+							if (mods.author()) document.getElementById('author').appendChild(
+								document.createTextNode(mods.author())
+							);
+							if (mods.edition()) document.getElementById('edition').appendChild(
+								document.createTextNode(mods.edition())
+							);
+							if (mods.pubdate()) document.getElementById('pubdate').appendChild(
+								document.createTextNode(mods.pubdate())
+							);
+							if (mods.tcn()) document.getElementById('tcn').appendChild(
+								document.createTextNode(mods.tcn())
+							);
+	
+							if (window.xulG && typeof window.xulG.set_tab_name == 'function') {
 								try {
-									var meta = req.getResultObject();
-									if (typeof meta.ilsevent != 'undefined') throw(meta);
-									meta = meta[0];
-									document.getElementById('creator').appendChild(
-										document.createTextNode(meta.creator().usrname())
-									);
-									document.getElementById('editor').appendChild(
-										document.createTextNode(meta.editor().usrname())
-									);
-									document.getElementById('edit_date').appendChild(
-										document.createTextNode(
-											util.date.formatted_date(meta.edit_date(),"%D")
-										)
-									);
-									var t = document.getElementById('caption').getAttribute('label');
-									if (get_bool( meta.deleted() )) { 
-										t += ' (Deleted) '; 
-										document.getElementById('caption').setAttribute('style','background: red; color: white;');
-									}
-									if ( ! get_bool( meta.active() ) ) { 
-										t += ' (Inactive) '; 
-										document.getElementById('caption').setAttribute('style','background: red; color: white;');
-									}
-									document.getElementById('caption').setAttribute('label',t);
+									window.xulG.set_tab_name(mods.tcn());
 								} catch(E) {
-									g.error.standard_unexpected_error_alert('meta retrieve',E);
+									g.error.sdump('D_ERROR','bib_brief.xul, set_tab: ' + E);
 								}
 							}
-						);
+	
+							g.network.request(
+								api.FM_BRE_RETRIEVE_VIA_ID.app,
+								api.FM_BRE_RETRIEVE_VIA_ID.method,
+								[ ses(), [ docid ] ],
+								function (req) {
+									try {
+										var meta = req.getResultObject();
+										if (typeof meta.ilsevent != 'undefined') throw(meta);
+										meta = meta[0];
+										document.getElementById('creator').appendChild(
+											document.createTextNode(meta.creator().usrname())
+										);
+										document.getElementById('editor').appendChild(
+											document.createTextNode(meta.editor().usrname())
+										);
+										document.getElementById('edit_date').appendChild(
+											document.createTextNode(
+												util.date.formatted_date(meta.edit_date(),"%D")
+											)
+										);
+										var t = document.getElementById('caption').getAttribute('label');
+										if (get_bool( meta.deleted() )) { 
+											t += ' (Deleted) '; 
+											document.getElementById('caption').setAttribute('style','background: red; color: white;');
+										}
+										if ( ! get_bool( meta.active() ) ) { 
+											t += ' (Inactive) '; 
+											document.getElementById('caption').setAttribute('style','background: red; color: white;');
+										}
+										document.getElementById('caption').setAttribute('label',t);
+									} catch(E) {
+										g.error.standard_unexpected_error_alert('meta retrieve',E);
+									}
+								}
+							);
+						}
+					);
 
-					}
-				);
-
-
+				} else {
+					var t = document.getElementById('caption').getAttribute('label');
+					t += ' (Not Cataloged) '; 
+					document.getElementById('caption').setAttribute('style','background: red; color: white;');
+					document.getElementById('caption').setAttribute('label',t);
+				}
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
