@@ -45,7 +45,7 @@ deck#patron_deck { border-left: solid thin black; }
 .PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
 
 .PATRON_HAS_ALERT .patronNameLarge, 
-.PATRON_HAS_ALERT groupbox.alert { background-color: yellow; }
+.PATRON_HAS_ALERT groupbox.alert { background-color: yellow; color: black; }
 .PATRON_HAS_ALERT label.alert_indicator { display: inline; color: olive }
 
 .PATRON_HAS_NOTES label.note_indicator { display: inline; color: olive }
