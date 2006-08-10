@@ -51,60 +51,67 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date'); JSAN.use('util.widgets');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+				var copy;
+				if (g.data.temp_copy) {
+					copy = g.data.temp_copy; g.data.temp_copy = null; g.data.stash('temp_copy');
+				}
 
-				$('caption').setAttribute('tooltiptext','Copy ID = ' + copy_id);
+				$('caption').setAttribute('tooltiptext','Copy ID = ' + (copy_id || copy.id() ) );
 
-				g.network.simple_request(
-					'FM_ACP_RETRIEVE',
-					[ copy_id ],
-					function (req) {
-						try {
-							var copy = req.getResultObject();
-							if (typeof copy.ilsevent != 'undefined') throw(copy);
-							g.network.simple_request(
-								'FM_ACN_RETRIEVE',
-								[ copy.call_number() ],
-								function (rreq) {
-									try {
-										$w('barcode',copy.barcode());	
-										$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
-										$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
-										$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
-										$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
-										$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
-										$w('location',copy.location().name());	
-										$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
-										$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
-										$w('status',copy.status().name());	
-									} catch(E) {
-										g.error.standard_unexpected_error_alert('rendering copy',E);
-									}
-									try {
-										var cn = rreq.getResultObject();
-										if (typeof cn.ilsevent != 'undefined') {
-											switch(cn.ilsevent) {
-												case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
-													$w('callnumber','Not Cataloged');	
-												break;
-												default:
-													throw(cn);
-												break;
-											}
-										} else {
-											$w('callnumber',cn.label());	
-										}
-									} catch(E) {
-										g.error.standard_unexpected_error_alert('retrieving volume',E);
-									}
+				function acp_callback(req) {
+					try {
+						var copy = req.getResultObject();
+						if (typeof copy.ilsevent != 'undefined') throw(copy);
+						g.network.simple_request(
+							'FM_ACN_RETRIEVE',
+							[ copy.call_number() ],
+							function (rreq) {
+								try {
+									$w('barcode',copy.barcode());	
+									$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
+									$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
+									$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
+									$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
+									$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
+									$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
+									$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
+									$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+									$w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );	
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('rendering copy',E);
 								}
-							);
-						} catch(E) {
-							g.error.standard_unexpected_error_alert('retrieving copy',E);
-						}
+								try {
+									var cn = rreq.getResultObject();
+									if (typeof cn.ilsevent != 'undefined') {
+										switch(cn.ilsevent) {
+											case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
+												$w('callnumber','Not Cataloged');	
+											break;
+											default:
+												throw(cn);
+											break;
+										}
+									} else {
+										$w('callnumber',cn.label());	
+									}
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('retrieving volume',E);
+								}
+							}
+						);
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('retrieving copy',E);
 					}
-				);
+				}
 
-				g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ g.copy_id ],function(req) {
+				if (copy_id) {
+					g.network.simple_request( 'FM_ACP_RETRIEVE', [ copy_id ], acp_callback);
+				} else {
+					acp_callback( { 'getResultObject' : function() { return copy; } } );
+					copy_id = copy.id();
+				}
+
+				g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ copy_id ],function(req) {
 					try {
 						var robj = req.getResultObject();
 						if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -113,8 +120,6 @@
 						g.error.standard_unexpected_error_alert('retrieving circ total',E);
 					}
 				});
-
-
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
