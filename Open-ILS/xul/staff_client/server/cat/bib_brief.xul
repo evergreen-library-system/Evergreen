@@ -138,7 +138,11 @@
 
 		function view_marc() {
 			JSAN.use('util.window'); var win = new util.window();
-			win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
+			if (docid < 0) {
+				alert('Item not cataloged.');
+			} else {
+				win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
+			}
 		}
 
 	]]>
