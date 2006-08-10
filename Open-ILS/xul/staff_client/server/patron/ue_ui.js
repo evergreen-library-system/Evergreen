@@ -177,8 +177,8 @@ function uEditInsertCat( row, cat, idx ) {
 		function( a, b ) { 
 			if( !a.value() ) return -1;
 			if( !b.value() ) return 1;
-			if( a.value().toLowerCase() > b.value().toLowerCase()) return 1;
-			if( a.value().toLowerCase() < b.value().toLowerCase()) return -1;
+			if( (a.value()+'').toLowerCase() > b.value().toLowerCase()) return 1;
+			if( (a.value()+'').toLowerCase() < b.value().toLowerCase()) return -1;
 			return 0;
 		}
 	);
