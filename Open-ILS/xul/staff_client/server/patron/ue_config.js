@@ -158,10 +158,7 @@ function uEditDefineData(patron) {
 				onpostchange : function(field, newval) {
 					var pw1f = uEditFindFieldByWId('ue_password1');
 					var pw1 = uEditNodeVal(pw1f);
-					if( pw1 == newval ) 
-						removeCSSClass(field.widget.node, CSS_INVALID_DATA);
-					else
-						addCSSClass(field.widget.node, CSS_INVALID_DATA);
+					field.widget.regex = new RegExp('^'+pw1+'$');
 				}
 			}
 		},
