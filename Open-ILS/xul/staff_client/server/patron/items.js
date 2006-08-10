@@ -23,6 +23,8 @@ patron.items.prototype = {
 			{
 				'control_map' : {
 					'cmd_broken' : [ ['command'], function() { alert('Not Yet Implemented'); } ],
+					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
+					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],
@@ -47,6 +49,8 @@ patron.items.prototype = {
 
 		obj.retrieve();
 
+		obj.controller.view.sel_clip.setAttribute('disabled','true');
+		obj.controller.view.sel_clip2.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
@@ -547,6 +551,7 @@ patron.items.prototype = {
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');
 					var sel = obj.list.retrieve_selection();
+					obj.controller.view.sel_clip.setAttribute('disabled',sel.length < 1);
 					var list = util.functional.map_list(
 						sel,
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
@@ -573,6 +578,7 @@ patron.items.prototype = {
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');
 					var sel = obj.list2.retrieve_selection();
+					obj.controller.view.sel_clip2.setAttribute('disabled',sel.length < 1);
 					var list = util.functional.map_list(
 						sel,
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }

@@ -65,6 +65,7 @@
 	</script>
 
 	<commandset id="holds_cmds">
+		<command id="sel_clip" />
 		<command id="cmd_holds_print" />
 		<command id="cmd_show_catalog" />
 		<command id="cmd_retrieve_patron" />

@@ -11,6 +11,7 @@
 
 <popupset id="items_popupset">
 	<popup id="items_actions" position="at_pointer"> 
+		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
 		<menuitem label="Edit Due Date" command="cmd_items_edit" />
 		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
@@ -21,6 +22,7 @@
 		<menuitem label="Add Billing" command="cmd_add_billing" />
 	</popup>
 	<popup id="items_actions2" position="at_pointer"> 
+		<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
 		<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
 		<menuitem label="Edit Due Date" command="cmd_items_edit2" />
 		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost2" />
@@ -66,6 +68,7 @@
 	<menubar>
 		<menu label="Actions for Selected Items" accesskey="S">
 			<menupopup>
+				<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 				<menuitem label="Show in Catalog" command="cmd_show_catalog" />
 				<menuitem label="Edit Due Date" command="cmd_items_edit" />
 				<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
@@ -84,6 +87,7 @@
 	<menubar>
 		<menu label="Actions for Selected Items" old_accesskey="S">
 			<menupopup>
+				<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
 				<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
 				<menuitem label="Edit Due Date" command="cmd_items_edit2" />
 				<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost2" />

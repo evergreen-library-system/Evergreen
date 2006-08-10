@@ -97,6 +97,7 @@ patron.holds.prototype = {
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');
 					var sel = obj.list.retrieve_selection();
+					obj.controller.view.sel_clip.setAttribute('disabled',sel.length < 1);
 					obj.retrieve_ids = util.functional.map_list(
 						sel,
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
@@ -131,6 +132,10 @@ patron.holds.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'sel_clip' : [
+						['command'],
+						function() { obj.list.clipboard(); }
+					],
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
