@@ -31,6 +31,38 @@ circ.util.abort_transits = function(selection_list) {
 	}
 }
 
+circ.util.show_copy_details = function(copy_id) {
+	var obj = {};
+	JSAN.use('util.error'); obj.error = new util.error();
+	JSAN.use('util.window'); obj.win = new util.window();
+	JSAN.use('util.network'); obj.network = new util.network();
+	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+
+	try {
+		obj.data.fancy_prompt_data = null; obj.data.stash('fancy_prompt_data');
+		var url = xulG.url_prefix( urls.XUL_COPY_DETAILS ) + '?copy_id=' + copy_id;
+		obj.win.open( url, 'show_copy_details', 'chrome,resizable,modal' );
+		obj.data.stash_retrieve();
+
+		if (! obj.data.fancy_prompt_data) return;
+		var patrons = JSON2js( obj.data.fancy_prompt_data );
+		for (var j = 0; j < patrons.length; j++) {
+			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
+				try {
+					var url = urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( patrons[j] );
+					window.xulG.new_tab( url );
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
+				}
+			}
+		}
+
+	} catch(E) {
+		obj.error.standard_unexpected_error_alert('Problem retrieving copy details.',E);
+	}
+}
+
+
 circ.util.show_last_few_circs = function(selection_list,count) {
 	var obj = {};
 	JSAN.use('util.error'); obj.error = new util.error();
@@ -495,6 +527,56 @@ circ.util.columns = function(modify,params) {
 	}
 	return c;
 }
+
+circ.util.transit_columns = function(modify,params) {
+	
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+	function getString(s) { return data.entities[s]; }
+
+	var c = [
+		{
+			'persist' : 'hidden width', 'id' : 'id', 'label' : 'Transit ID', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.atc.id()'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_source', 'label' : 'Transit Source', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'typeof my.atc.source() == "object" ? my.atc.source().shortname() : obj.data.hash.aou[ my.atc.source() ].shortname()'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_source_send_time', 'label' : 'Transitted On', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.atc.source_send_time()'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_dest_lib', 'label' : 'Transit Destination', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'typeof my.atc.dest() == "object" ? my.atc.dest().shortname() : obj.data.hash.aou[ my.atc.dest() ].shortname()'
+		},
+		{
+			'persist' : 'hidden width', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.atc.dest_recv_time()'
+		},
+	];
+	for (var i = 0; i < c.length; i++) {
+		if (modify[ c[i].id ]) {
+			for (var j in modify[ c[i].id ]) {
+				c[i][j] = modify[ c[i].id ][j];
+			}
+		}
+	}
+	if (params) {
+		if (params.just_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < params.just_these.length; i++) {
+				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
+				new_c.push( function(y){ return y; }( x ) );
+			}
+			return new_c;
+		}
+	}
+	return c;
+}
+
 
 circ.util.hold_columns = function(modify,params) {
 	
