@@ -90,12 +90,32 @@ function findCurrentPage() {
 function initParams() {
 	var cgi	= new CGI();	
 
+	/* handle the location var */
+	var org;
+	var loc = cgi.param(PARAM_LOCATION);
+	if( loc ) {
+		org = findOrgUnit(loc);
+		if(!org) org = findOrgUnitSN(loc);
+	} 
+	LOCATION	= (org) ? org.id() : null;
+
+	org = null;
+	loc = cgi.param(PARAM_ORIGLOC);
+	if( loc ) {
+		org = findOrgUnit(loc);
+		if(!org) org = findOrgUnitSN(loc);
+	}
+	ORIGLOC = (org) ? org.id() : null;
+
+
+	DEPTH = parseInt(cgi.param(PARAM_DEPTH));
+	if(isNaN(DEPTH)) DEPTH = null;
+
+
 	TERM		= cgi.param(PARAM_TERM);
 	STYPE		= cgi.param(PARAM_STYPE);
 	FORM		= cgi.param(PARAM_FORM);
-	LOCATION	= parseInt(cgi.param(PARAM_LOCATION));
-	ORIGLOC	= parseInt(cgi.param(PARAM_ORIGLOC));
-	DEPTH		= parseInt(cgi.param(PARAM_DEPTH));
+	//DEPTH		= parseInt(cgi.param(PARAM_DEPTH));
 	OFFSET	= parseInt(cgi.param(PARAM_OFFSET));
 	COUNT		= parseInt(cgi.param(PARAM_COUNT));
 	HITCOUNT	= parseInt(cgi.param(PARAM_HITCOUNT));
@@ -119,15 +139,13 @@ function initParams() {
 	RDEPTH	= cgi.param(PARAM_RDEPTH);
 
 	/* set up some sane defaults */
-	if(isNaN(LOCATION))	LOCATION	= 1;
-	if(isNaN(DEPTH))		DEPTH		= 0;
+	//if(isNaN(DEPTH))		DEPTH		= 0;
 	if(isNaN(RDEPTH))		RDEPTH	= 0;
 	if(isNaN(OFFSET))		OFFSET	= 0;
 	if(isNaN(COUNT))		COUNT		= 10;
 	if(isNaN(HITCOUNT))	HITCOUNT	= 0;
 	if(isNaN(MRID))		MRID		= 0;
 	if(isNaN(RID))			RID		= 0;
-	//if(isNaN(ORIGLOC))	ORIGLOC	= 1;
 	if(isNaN(ORIGLOC))	ORIGLOC	= 0; /* so we know it hasn't been set */
 	if(isNaN(AUTHTIME))	AUTHTIME	= 0;
 	if(ADVTERM==null)		ADVTERM	= "";
@@ -653,8 +671,8 @@ function doLogout(noredirect) {
 
 	var args = {};
 	args[PARAM_TERM] = "";
-	args[PARAM_LOCATION] = globalOrgTree.id();
-	args[PARAM_DEPTH] = findOrgDepth(globalOrgTree);
+	args[PARAM_LOCATION] = getOrigLocation();
+	args[PARAM_DEPTH] = findOrgDepth(getOrigLocation());
 	args.page = "home";
 
 	

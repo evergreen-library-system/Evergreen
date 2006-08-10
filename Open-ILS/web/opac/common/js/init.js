@@ -4,7 +4,7 @@
 window.onunload = windowUnload;
 
 attachEvt("common", "init", loadUIObjects);
-attachEvt("common", "init", initParams);
+//attachEvt("common", "init", initParams);
 attachEvt("common", "init", initCookies);
 
 attachEvt("common", "unload", _tree_killer);
@@ -12,8 +12,21 @@ try{ attachEvt("common", "unload", cleanRemoteRequests);} catch(e){}
 
 function init() {
 
+	initParams();
+
+	if( getLocation() == null && getOrigLocation() != null )
+		LOCATION = getOrigLocation();
+
+	if( getLocation() == null && getOrigLocation() == null )
+		LOCATION = globalOrgTree.id();
+
+	if( getLocation() != null && getOrigLocation() == null )
+		ORIGLOC = getLocation();
+
+	if(getDepth() == null) DEPTH = findOrgDepth(getLocation());
+
+
 	runEvt('common','init');
-	if( getOrigLocation() == 0 ) ORIGLOC = LOCATION;
 
 	var cgi = new CGI();
 	if( grabUser() ) {

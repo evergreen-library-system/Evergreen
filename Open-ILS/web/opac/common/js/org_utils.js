@@ -38,6 +38,17 @@ function findOrgUnit(org_id) {
 	return (typeof org_id == 'object') ? org_id : orgArraySearcher[org_id];
 }
 
+var orgArraySearcherSN = {};
+function findOrgUnitSN(shortname) {
+	if (typeof shortname == 'object') return shortname;
+	if( orgArraySearcherSN[shortname] ) return orgArraySearcherSN[shortname];
+	_debug("fetching org by shortname "+shortname);
+	var req = new Request(FETCH_ORG_BY_SHORTNAME, shortname);
+	req.request.alertEvent = false;
+	req.send(true);
+	return req.result();
+}
+
 
 /* builds a trail from the top of the org tree to the node provide.
 	basically fleshes out 'my orgs' 
