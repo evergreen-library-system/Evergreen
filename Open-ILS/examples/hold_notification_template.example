@@ -1,6 +1,9 @@
-# --------------------------------------------------------------------
-# Test comments..
-# --------------------------------------------------------------------
+To: ${EMAIL_RECIPIENT}
+From: ${EMAIL_SENDER}
+Reply-To: ${EMAIL_REPLY_TO}
+Subject: Hold Notification
+${EMAIL_HEADERS}
+
 
 ${DATE}
 
