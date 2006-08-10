@@ -578,8 +578,12 @@ function myOPACSavePrefs() {
 	G.user.prefs[PREF_HITS_PER] = getSelectorVal($('prefs_hits_per'));
 	G.user.prefs[PREF_DEF_FONT] = getSelectorVal($('prefs_def_font'));
 	G.user.prefs[PREF_HOLD_NOTIFY] = getSelectorVal($('prefs_hold_notify'));
-	G.user.prefs[PREF_DEF_LOCATION] = getSelectorVal($('prefs_def_location'));
 	G.user.prefs[PREF_DEF_DEPTH] = getSelectorVal($('prefs_def_range'));
+
+	if( $('myopac_pref_home_lib').checked == true )
+		G.user.prefs[PREF_DEF_LOCATION] = null;
+	else
+		G.user.prefs[PREF_DEF_LOCATION] = getSelectorVal($('prefs_def_location'));
 
 	if(commitUserPrefs())
 		alert($('prefs_update_success').innerHTML);
@@ -628,11 +632,18 @@ function myOPACShowDefLocation() {
 	var selector = $('prefs_def_location');
 	var rsel = $('prefs_def_range');
 
-	var org = G.user.prefs[PREF_DEF_LOCATION];
-	if(!org) org = G.user.home_ou();
-
 	if(!defSearchLocationDrawn) {
+
 		defSearchLocationDrawn = true;
+
+		var org = G.user.prefs[PREF_DEF_LOCATION];
+
+		if(!org) {
+			$('myopac_pref_home_lib').checked = true;
+			$('prefs_def_location').disabled = true;
+			org = G.user.home_ou();
+		}
+
 		buildOrgSel(selector, globalOrgTree, 0);
 
 		globalOrgTypes = globalOrgTypes.sort(
