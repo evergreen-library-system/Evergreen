@@ -6,6 +6,7 @@ use OpenILS::Application::Circ::Circulate;
 use OpenILS::Application::Circ::Survey;
 use OpenILS::Application::Circ::StatCat;
 use OpenILS::Application::Circ::Holds;
+use OpenILS::Application::Circ::HoldNotify;
 use OpenILS::Application::Circ::Money;
 use OpenILS::Application::Circ::NonCat;
 use OpenILS::Application::Circ::CopyLocations;
@@ -642,7 +643,7 @@ sub create_copy_note {
 
 	$note->create_date('now');
 	$note->creator($requestor->id);
-	$note->pub( ($note->pub) ? 't' : 'f' );
+	$note->pub( ($U->is_true($note->pub)) ? 1 : 0 );
 
 	my $id = $U->storagereq(
 		'open-ils.storage.direct.asset.copy_note.create', $note );
