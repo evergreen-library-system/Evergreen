@@ -114,6 +114,8 @@ function advGenericSearch() {
 		case 'cn':
 			arg.page			= CNBROWSE;
 			arg[PARAM_CN]	= term;
+			arg[PARAM_DEPTH]		= depthSelGetDepth();
+			arg[PARAM_LOCATION]	= depthSelGetNewLoc();
 			break;
 
 		case 'lccn':
