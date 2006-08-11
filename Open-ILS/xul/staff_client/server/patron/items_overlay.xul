@@ -22,6 +22,8 @@
 		<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
 		<menuitem label="Check In" command="cmd_items_checkin" />
 		<menuitem label="Add Billing" command="cmd_add_billing" />
+		<menuseparator />
+		<menuitem command="save_columns" label="Save Columns"/>
 	</popup>
 	<popup id="items_actions2" position="at_pointer"> 
 		<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
@@ -34,6 +36,8 @@
 		<menuitem label="Renew" command="cmd_items_renew2" />
 		<menuitem label="Check In" command="cmd_items_checkin2" />
 		<menuitem label="Add Billing" command="cmd_add_billing2" />
+		<menuseparator />
+		<menuitem command="save_columns2" label="Save Columns"/>
 	</popup>
 
 </popupset>
@@ -83,6 +87,8 @@
 				<menuitem label="Renew All" command="cmd_items_renew_all" hidden="false"/>
 				<menuitem label="Check In" command="cmd_items_checkin" />
 				<menuitem label="Add Billing" command="cmd_add_billing" />
+				<menuseparator />
+				<menuitem command="save_columns" label="Save Columns"/>
 			</menupopup>
 		</menu>
 	</menubar>
@@ -103,6 +109,8 @@
 				<menuitem label="Renew" command="cmd_items_renew2" />
 				<menuitem label="Check In" command="cmd_items_checkin2" />
 				<menuitem label="Add Billing" command="cmd_add_billing2" />
+				<menuseparator />
+				<menuitem command="save_columns2" label="Save Columns"/>
 			</menupopup>
 		</menu>
 	</menubar>

@@ -70,6 +70,7 @@
 		<command id="cmd_in_house_use_print" />
 		<command id="cmd_in_house_use_reprint" />
 		<command id="cmd_in_house_use_done" />
+		<command id="save_columns" />
 	</commandset>
 
 <box id="in_house_use_main" flex="1" orient="vertical" class="my_overflow">
@@ -108,6 +109,7 @@
 			command="cmd_in_house_use_reprint"
 			accesskey="L"/>
 		<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
+		<button id="save_cols_btn" command="save_columns" label="Save Columns" />
 		<spacer id="pcii3s" flex="1"/>
 	</hbox>
 

@@ -26,6 +26,8 @@
 		-->
 		<menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
 		<menuitem label="Cancel Hold" command="cmd_holds_cancel" accesskey="C"/>
+		<menuseparator />
+		<menuitem command="save_columns" label="Save Columns"/>
 	</popup>
 </popupset>
 
@@ -67,6 +69,8 @@
 				-->
 				<menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
 				<menuitem label="Cancel Hold" command="cmd_holds_cancel"  accesskey="C"/>
+				<menuseparator />
+				<menuitem command="save_columns" label="Save Columns"/>
 			</menupopup>
 		</menu>
 	</menubar>

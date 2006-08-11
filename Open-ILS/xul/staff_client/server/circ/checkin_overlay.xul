@@ -19,6 +19,8 @@
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
+		<menuseparator />
+		<menuitem command="save_columns" label="Save Columns"/>
 	</popup>
 </popupset>
 
@@ -64,6 +66,8 @@
 			<menuitem command="sel_transit_abort" label="Abort Transits" />
 			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
+			<menuseparator />
+			<menuitem command="save_columns" label="Save Columns"/>
 		</menupopup>
 	</menu>
 	</menubar>

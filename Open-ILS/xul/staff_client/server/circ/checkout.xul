@@ -82,6 +82,7 @@
 		<command id="cmd_checkout_reprint" />
 		<command id="cmd_checkout_done" />
 		<command id="sel_clip" />
+		<command id="save_columns" />
 	</commandset>
 
 	<box id="checkout_main" />

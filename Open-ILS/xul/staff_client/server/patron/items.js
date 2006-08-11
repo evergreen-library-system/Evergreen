@@ -22,6 +22,8 @@ patron.items.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
+					'save_columns2' : [ [ 'command' ], function() { obj.list2.save_columns(); } ],
 					'cmd_broken' : [ ['command'], function() { alert('Not Yet Implemented'); } ],
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],

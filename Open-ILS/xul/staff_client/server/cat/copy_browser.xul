@@ -63,6 +63,7 @@
 	</script>
 
 	<commandset id="cat_copy_browser">
+		<command id="save_columns" />
 		<command id="cmd_broken" />
 		<command id="sel_copy_details"/>
 		<command id="sel_patron"/>
@@ -108,6 +109,7 @@
 			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
 			<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
 			<menuseparator/>
+			<menuitem command="save_columns" label="Save Columns"/>
 			<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 		</popup>
 	</popupset>
@@ -142,6 +144,7 @@
 							<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
 							<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
 							<menuseparator/>
+							<menuitem command="save_columns" label="Save Columns"/>
 							<menuitem command="cmd_refresh_list" label="Refresh Listing" accesskey="R"/>
 					</menupopup>
 				</menu>
