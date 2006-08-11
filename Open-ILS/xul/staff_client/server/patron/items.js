@@ -25,21 +25,20 @@ patron.items.prototype = {
 					'cmd_broken' : [ ['command'], function() { alert('Not Yet Implemented'); } ],
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
-					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.selection_list); } ],
+					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids); } ],
 					'sel_copy_details' : [ ['command'],
 						function() {
 							JSAN.use('circ.util');
-							for (var i = 0; i < obj.selection_list.length; i++) { circ.util.show_copy_details( obj.selection_list[i].copy_id ); }
+							for (var i = 0; i < obj.retrieve_ids.length; i++) { circ.util.show_copy_details( obj.retrieve_ids[i].copy_id ); }
 						}
 					],
-					'sel_patron2' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.selection_list2); } ],
+					'sel_patron2' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids2); } ],
 					'sel_copy_details2' : [ ['command'],
 						function() {
 							JSAN.use('circ.util');
-							for (var i = 0; i < obj.selection_list2.length; i++) { circ.util.show_copy_details( obj.selection_list2[i].copy_id ); }
+							for (var i = 0; i < obj.retrieve_ids2.length; i++) { circ.util.show_copy_details( obj.retrieve_ids2[i].copy_id ); }
 						}
 					],
-
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],

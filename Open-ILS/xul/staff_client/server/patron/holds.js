@@ -148,15 +148,15 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							JSAN.use('circ.util');
-							circ.util.show_last_few_circs(obj.selection_list);
+							circ.util.show_last_few_circs(obj.retrieve_ids);
 						}
 					],
 					'sel_copy_details' : [
 						['command'],
 						function() {
 							JSAN.use('circ.util');
-							for (var i = 0; i < obj.selection_list.length; i++) {
-								if (obj.selection_list[i].copy_id) circ.util.show_copy_details( obj.selection_list[i].copy_id );
+							for (var i = 0; i < obj.retrieve_ids.length; i++) {
+								if (obj.retrieve_ids[i].copy_id) circ.util.show_copy_details( obj.retrieve_ids[i].copy_id );
 							}
 						}
 					],
@@ -550,7 +550,7 @@ patron.holds.prototype = {
 				obj.holds_map[ hold.id() ] = hold;
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON({'copy_id':hold.hold_type()=='C'?hold.target():null,'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
+						'retrieve_id' : js2JSON({'copy_id':hold.current_copy(),'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
 						'row' : {
 							'my' : {
 								'ahr' : hold,
