@@ -784,25 +784,34 @@ sub reset_hold {
 }
 
 sub _reset_hold {
-	my ($self, $reqr, $hold, $session) = @_;
+	my ($self, $reqr, $hold) = @_;
 
-	my $x;
-	if(!$session) {
-		$x = 1;
-		$session = $U->start_db_session();
+	my $e = new_editor(xact =>1, requestor => $reqr);
+
+	if( $hold->capture_time and $hold->current_copy ) {
+
+		my $copy = $e->retrieve_asset_copy($hold->current_copy)
+			or return $e->event;
+
+		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
+			$logger->info("setting copy to status 'reshelving' on hold retarget");
+			$copy->status(OILS_COPY_STATUS_RESHELVING);
+			$copy->editor($e->requestor->id);
+			$copy->edit_date('now');
+			$e->update_asset_copy($copy) or return $e->event;
+		}
 	}
 
 	$hold->clear_capture_time;
 	$hold->clear_current_copy;
 
-	return $U->DB_UPDATE_FAILED($hold) unless 
-		$session->request(
-			'open-ils.storage.direct.action.hold_request.update', $hold )->gather(1);
+	$e->update_action_hold_request($hold) or return $e->event;
 
-	$session->request(
-		'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id )->gather(1);
+	$e->commit;
 
-	$U->commit_db_session($session) unless $x;
+	$U->storagereq(
+		'open-ils.storage.action.hold_request.copy_targeter', undef, $hold->id );
+
 	return undef;
 }
 
