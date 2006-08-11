@@ -161,11 +161,10 @@ sub fetch_user_data {
 		} elsif( $ctx->{patron_barcode} ) {
 
 			my $card = $e->search_actor_card( 
-				{ barcode => $ctx->{patron_barcode} } ) or return $e->event;
+				{ barcode => $ctx->{patron_barcode} } )->[0] or return $e->event;
 
 			$ctx->{patron} = $e->search_actor_user( 
-				{ card => $card->[0]->id }) or return $e->event;
-			$ctx->{patron} = $ctx->{patron}->[0];
+				{ card => $card->id })->[0] or return $e->event;
 
 		} elsif( $ctx->{fetch_patron_by_circ_copy} ) {
 
