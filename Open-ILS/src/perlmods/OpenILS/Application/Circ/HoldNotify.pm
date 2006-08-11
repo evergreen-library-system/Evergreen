@@ -187,7 +187,6 @@ sub extract_data {
 
 	my $patron = $self->patron;
 	my $o_name = $self->pickup_lib->name;
-	my $o_addr = $self->pickup_lib->holds_address;
 	my $p_name = $patron->first_given_name .' '.$patron->family_name;
 
 	# try to find a suitable address for the patron
@@ -204,17 +203,20 @@ sub extract_data {
 
 	unless( defined $p_addrs ) {
 		$p_addrs = 
-			$p_addr->street1."\n".
-			$p_addr->street2."\n".
-			$p_addr->city."\n".
-			$p_addr->state."\n".
-			$p_addr->post_code."\n";
+			$p_addr->street1." ".
+			$p_addr->street2." ".
+			$p_addr->city." ".
+			$p_addr->state." ".
+			$p_addr->post_code;
 	}
 
-	my @time 	= localtime();
-	my $day 		= $time[3];
-	my $month 	= $time[4] + 1;
-	my $year 	= $time[5] + 1900;
+	my $l_addr = $e->retrieve_actor_org_address($self->pickup_lib->holds_address);
+	my $l_addrs = (!$l_addr) ? "" : 
+			$l_addr->street1." ".
+			$l_addr->street2." ".
+			$l_addr->city." ".
+			$l_addr->state." ".
+			$l_addr->post_code;
 
 	my $title;	
 	my $author;
@@ -233,8 +235,8 @@ sub extract_data {
 
 	return { 
 		patron_email => $self->patron->email,
-		pickup_lib_name => $o_name, 
-		pickup_lib_addr => $o_addr, 
+		pickup_lib_name => $o_name,
+		pickup_lib_addr => $l_addrs,
 		patron_name => $p_name, 
 		patron_addr => $p_addrs, 
 		title => $title, 
@@ -275,7 +277,7 @@ sub flesh_template {
 	my( $self, $str ) = @_;
 	return undef unless $str;
 
-	my @time 	= localtime();
+	my @time 	= CORE::localtime();
 	my $day 		= $time[3];
 	my $month 	= $time[4] + 1;
 	my $year 	= $time[5] + 1900;
