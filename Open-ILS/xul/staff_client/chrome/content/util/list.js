@@ -124,6 +124,8 @@ util.list.prototype = {
 		slider.addEventListener('scroll',function(){alert('slider scroll');},false);
 		*/
 		this.node.addEventListener('scroll',function(){ obj.auto_retrieve(); },false);
+
+		this.restores_columns(params);
 	},
 
 	'_init_listbox' : function (params) {
@@ -145,6 +147,87 @@ util.list.prototype = {
 					listcol.setAttribute(j,this.columns[i][j]);
 				};
 			}
+		}
+	},
+
+	'save_columns' : function (params) {
+		var obj = this;
+		switch (this.node.nodeName) {
+			case 'tree' : this._save_columns_tree(params); break;
+			default: throw('NYI: Need .save_columns() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_save_columns_tree' : function (params) {
+		var obj = this;
+		try {
+			var id = obj.node.getAttribute('id'); if (!id) {
+				alert("FIXME: The columns for this list cannot be saved because the list has no id.");
+				return;
+			}
+			var my_cols = {};
+			var nl = obj.node.getElementsByTagName('treecol');
+			for (var i = 0; i < nl.length; i++) {
+				var col = nl[i];
+				var col_id = col.getAttribute('id');
+				if (!col_id) {
+					alert('FIXME: A column in this list does not have an id and cannot be saved');
+					continue;
+				}
+				var col_hidden = col.getAttribute('hidden'); 
+				var col_width = col.getAttribute('width'); 
+				var col_ordinal = col.getAttribute('ordinal'); 
+				my_cols[ col_id ] = { 'hidden' : col_hidden, 'width' : col_width, 'ordinal' : col_ordinal };
+			}
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
+			file.set_object(my_cols);
+			file.close();
+			alert('Columns saved.');
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('_save_columns_tree',E);
+		}
+	},
+
+	'restores_columns' : function (params) {
+		var obj = this;
+		switch (this.node.nodeName) {
+			case 'tree' : this._restores_columns_tree(params); break;
+			default: throw('NYI: Need .restores_columns() for ' + this.node.nodeName); break;
+		}
+	},
+
+	'_restores_columns_tree' : function (params) {
+		var obj = this;
+		try {
+			var id = obj.node.getAttribute('id'); if (!id) {
+				alert("FIXME: The columns for this list cannot be restored because the list has no id.");
+				return;
+			}
+
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('tree_columns_for_'+window.escape(id));
+			if (file._file.exists()) {
+				var my_cols = file.get_object(); file.close();
+				var nl = obj.node.getElementsByTagName('treecol');
+				for (var i = 0; i < nl.length; i++) {
+					var col = nl[i];
+					var col_id = col.getAttribute('id');
+					if (!col_id) {
+						alert('FIXME: A column in this list does not have an id and cannot be saved');
+						continue;
+					}
+					if (typeof my_cols[col_id] != 'undefined') {
+						col.setAttribute('hidden',my_cols[col_id].hidden); 
+						col.setAttribute('width',my_cols[col_id].width); 
+						col.setAttribute('ordinal',my_cols[col_id].ordinal); 
+					} else {
+						alert('FIXME: Column ' + col_id + ' did not have a saved state.');
+					}
+				}
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('_restore_columns_tree',E);
 		}
 	},
 
