@@ -102,8 +102,10 @@ sub put_cache {
 
 	$expiretime ||= $max_persist_time;
 
-	$self->{memcache}->set( $key, $value, $expiretime ) ||
-		throw OpenSRF::EX::ERROR ("Unable to store $key => $value in memcached server" );
+	unless( $self->{memcache}->set( $key, $value, $expiretime ) ) {
+		$log->error("Unable to store $key => [".length($value)." bytes]  in memcached server" );
+		return undef;
+	}
 
 	$log->debug("Stored $key => $value in memcached server", INTERNAL);
 
