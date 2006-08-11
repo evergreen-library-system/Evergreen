@@ -114,6 +114,8 @@ perl-install:
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/openils.xml.example $(ETCDIR)
 	cp ../examples/fm_IDL.xml $(ETCDIR)
+	cp ../examples/oils_sip.xml.example $(ETCDIR)
+	cp ../examples/hold_notification_template.example $(DATADIR)
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
