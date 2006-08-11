@@ -65,6 +65,17 @@ util.list.prototype = {
 					treecol.setAttribute(j,this.columns[i][j]);
 				}
 				treecols.appendChild(treecol);
+				treecol.addEventListener(
+					'click', 
+					function(ev) {
+						var sortDir = ev.target.getAttribute('sortDir') || 'desc';
+						if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
+						//alert('sort ' + ev.target.id + ' ' + sortDir);
+						ev.target.setAttribute('sortDir',sortDir);
+						obj._sort_tree(ev.target,sortDir);
+					},
+					false
+				);
 				var splitter = document.createElement('splitter');
 				splitter.setAttribute('class','tree-splitter');
 				treecols.appendChild(splitter);
@@ -802,6 +813,51 @@ util.list.prototype = {
 			dump.push( treeitem.getAttribute('retrieve_id') );
 		}
 		return dump;
+	},
+
+	'_sort_tree' : function(col,sortDir) {
+		var obj = this;
+		try {
+			if (obj.node.getAttribute('no_sort')) {
+				return;
+			}
+			if (obj.on_all_fleshed) {
+				alert('This list is busy rendering/retrieving data.');
+				return;
+			}
+			var col_pos;
+			for (var i = 0; i < obj.columns.length; i++) { 
+				if (obj.columns[i].id == col.id) col_pos = function(a){return a;}(i); 
+			}
+			obj.on_all_fleshed =
+				function() {
+					try {
+						var rows = [];
+						var treeitems = obj.treechildren.childNodes;
+						for (var i = 0; i < treeitems.length; i++) {
+							var treeitem = treeitems[i];
+							var treerow = treeitem.firstChild;
+							var treecell = treerow.childNodes[ col_pos ];
+							//alert('treeitem = ' + treeitem.nodeName + ' treeitem.childNodes.length = ' + treeitem.childNodes.length + ' treerow = ' + treerow.nodeName + ' treerow.childNodes.length = ' + treerow.childNodes.length + ' col_pos = ' + col_pos + ' treecell = ' + treecell);
+							value = ( { 'value' : treecell ? treecell.getAttribute('label') : '', 'node' : treeitem } );
+							//alert('value = ' + value.value + ' node = ' + value.node);
+							rows.push( value );
+						}
+						rows = rows.sort( function(a,b) { a = a.value; b = b.value; if (a < b) return -1; if (a > b) return 1; return 0; } );
+						if (sortDir == 'asc') rows = rows.reverse();
+						while(obj.treechildren.lastChild) obj.treechildren.removeChild( obj.treechildren.lastChild );
+						for (var i = 0; i < rows.length; i++) {
+							obj.treechildren.appendChild( rows[i].node );
+						}
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('sorting',E); 
+					}
+					setTimeout(function(){ obj.on_all_fleshed = null; },0);
+				}
+			obj.full_retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('pre sorting', E);
+		}
 	},
 
 }
