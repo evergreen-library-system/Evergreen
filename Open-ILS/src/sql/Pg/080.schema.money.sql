@@ -187,21 +187,24 @@ CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
 		xact.usr AS usr,
 		xact.xact_start AS xact_start,
 		xact.xact_finish AS xact_finish,
-		credit.total_paid,
-		credit.last_payment_ts,
-		credit.last_payment_note,
-		credit.last_payment_type,
-		debit.total_owed,
-		debit.last_billing_ts,
-		debit.last_billing_note,
-		debit.last_billing_type,
-		COALESCE(debit.total_owed,0) - COALESCE(credit.total_paid,0) AS balance_owed,
+		SUM(credit.amount) AS total_paid,
+		MAX(credit.payment_ts) AS last_payment_ts,
+		LAST(credit.note) AS last_payment_note,
+		LAST(credit.payment_type) AS last_payment_type,
+		SUM(debit.amount) AS total_owed,
+		MAX(debit.billing_ts) AS last_billing_ts,
+		LAST(debit.note) AS last_billing_note,
+		LAST(debit.billing_type) AS last_billing_type,
+		COALESCE(SUM(debit.amount),0) - COALESCE(SUM(credit.amount),0) AS balance_owed,
 		p.relname AS xact_type
 	  FROM	money.billable_xact xact
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
-	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
-	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact)
-	  WHERE	xact.xact_finish IS NULL;
+	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
+	  	LEFT JOIN money.payment_view credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
+	  WHERE	xact.xact_finish IS NULL
+	  GROUP BY 1,2,3,4,14
+	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
+
 
 CREATE OR REPLACE VIEW money.open_usr_summary AS
 	SELECT	usr,
@@ -263,6 +266,11 @@ CREATE INDEX money_credit_payment_accepting_usr_idx ON money.credit_payment (acc
 CREATE TABLE money.bnm_desk_payment (
 	cash_drawer	INT	REFERENCES actor.workstation (id)
 ) INHERITS (money.bnm_payment);
+
+CREATE OR REPLACE VIEW money.desk_payment_view AS
+	SELECT	p.*,c.relname AS payment_type
+	  FROM	money.bnm_desk_payment p
+	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
 CREATE INDEX money_cash_id_idx ON money.cash_payment (id);
