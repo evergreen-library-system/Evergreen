@@ -74,6 +74,7 @@ circ.copy_status.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
+					'save_columns' : [ [ 'command' ], function() { obj.list.save_columns(); } ],
 					'sel_clip' : [
 						['command'],
 						function() { obj.list.clipboard(); }
