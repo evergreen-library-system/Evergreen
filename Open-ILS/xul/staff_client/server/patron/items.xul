@@ -65,6 +65,8 @@
 
 	<commandset id="items_cmds">
 		<command id="sel_clip" />
+		<command id="sel_copy_details"/>
+		<command id="sel_patron"/>
 		<command id="cmd_items_print" />
 		<command id="cmd_items_renew" />
 		<command id="cmd_items_renew_all" />
@@ -78,6 +80,8 @@
 		<command id="cmd_show_noncats" />
 
 		<command id="sel_clip2" />
+		<command id="sel_copy_details2"/>
+		<command id="sel_patron2"/>
 		<command id="cmd_items_print2" />
 		<command id="cmd_items_renew2" />
 		<command id="cmd_items_claimed_returned2" />

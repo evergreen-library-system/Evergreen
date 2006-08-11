@@ -46,9 +46,9 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_checkin.setAttribute('disabled','true');
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
-							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 							obj.controller.view.sel_clip.setAttribute('disabled','true');

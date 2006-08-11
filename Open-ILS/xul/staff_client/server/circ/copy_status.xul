@@ -87,10 +87,10 @@
 		<command id="cmd_copy_status_reprint" />
 		<command id="cmd_copy_status_done" />
 		<command id="sel_copy_details" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
 		<command id="sel_checkin" disabled="true"/>
 		<command id="sel_edit" disabled="true"/>
 		<command id="sel_opac" disabled="true"/>
-		<command id="sel_patron" disabled="true"/>
 		<command id="sel_bucket" disabled="true"/>
 		<command id="sel_spine" disabled="true"/>
 		<command id="sel_transit_abort" disabled="true"/>

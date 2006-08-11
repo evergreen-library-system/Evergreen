@@ -64,6 +64,8 @@
 
 	<commandset id="cat_copy_browser">
 		<command id="cmd_broken" />
+		<command id="sel_copy_details"/>
+		<command id="sel_patron"/>
 		<command id="sel_clip" />
 		<command id="cmd_clear" />
 		<command id="cmd_show_my_libs" />
@@ -89,8 +91,10 @@
 		<popup id="copy_browser_actions">
 			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
 							<menuseparator/>
-			<menuitem command="cmd_add_items" label="Add Items" accesskey="I"/>
-			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
+			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
+			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
@@ -121,8 +125,10 @@
 					<menupopup>
 							<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
 							<menuseparator/>
-							<menuitem command="cmd_add_items" label="Add Items" accesskey="I"/>
-							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="A"/>
+							<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+							<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+							<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
+							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
 							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 							<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>

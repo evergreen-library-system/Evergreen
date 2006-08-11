@@ -74,6 +74,7 @@ circ.util.show_last_few_circs = function(selection_list,count) {
 
 	for (var i = 0; i < selection_list.length; i++) {
 		try {
+			if (typeof selection_list[i].copy_id == 'undefined' || selection_list[i].copy_id == null) continue;
 			obj.data.fancy_prompt_data = null; obj.data.stash('fancy_prompt_data');
 			var url = xulG.url_prefix( urls.XUL_CIRC_SUMMARY ) + '?copy_id=' + selection_list[i].copy_id + '&count=' + count;
 			obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal' );

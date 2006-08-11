@@ -65,6 +65,8 @@
 	</script>
 
 	<commandset id="holds_cmds">
+		<command id="sel_copy_details" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
 		<command id="sel_clip" />
 		<command id="cmd_holds_print" />
 		<command id="cmd_show_catalog" />

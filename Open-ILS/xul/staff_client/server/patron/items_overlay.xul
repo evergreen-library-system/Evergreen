@@ -13,6 +13,8 @@
 	<popup id="items_actions" position="at_pointer"> 
 		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
+		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 		<menuitem label="Edit Due Date" command="cmd_items_edit" />
 		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost" />
 		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned" />
@@ -24,6 +26,8 @@
 	<popup id="items_actions2" position="at_pointer"> 
 		<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
 		<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
+		<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
+		<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
 		<menuitem label="Edit Due Date" command="cmd_items_edit2" />
 		<menuitem label="Mark Lost (by Patron)" command="cmd_items_mark_lost2" />
 		<menuitem label="Mark Claimed Returned" command="cmd_items_claimed_returned2" />

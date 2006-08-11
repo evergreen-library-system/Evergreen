@@ -103,6 +103,8 @@ patron.holds.prototype = {
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
 					);
 					if (obj.retrieve_ids.length > 0) {
+						obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+						obj.controller.view.sel_patron.setAttribute('disabled','false');
 						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','false');
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','false');
@@ -113,6 +115,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 					} else {
+						obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+						obj.controller.view.sel_patron.setAttribute('disabled','true');
 						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
 						obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
@@ -139,6 +143,22 @@ patron.holds.prototype = {
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }
+					],
+					'sel_patron' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							circ.util.show_last_few_circs(obj.selection_list);
+						}
+					],
+					'sel_copy_details' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								if (obj.selection_list[i].copy_id) circ.util.show_copy_details( obj.selection_list[i].copy_id );
+							}
+						}
 					],
 					'cmd_holds_print' : [
 						['command'],
@@ -530,7 +550,7 @@ patron.holds.prototype = {
 				obj.holds_map[ hold.id() ] = hold;
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON({'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
+						'retrieve_id' : js2JSON({'copy_id':hold.hold_type()=='C'?hold.target():null,'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
 						'row' : {
 							'my' : {
 								'ahr' : hold,

@@ -25,6 +25,21 @@ patron.items.prototype = {
 					'cmd_broken' : [ ['command'], function() { alert('Not Yet Implemented'); } ],
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
+					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.selection_list); } ],
+					'sel_copy_details' : [ ['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list.length; i++) { circ.util.show_copy_details( obj.selection_list[i].copy_id ); }
+						}
+					],
+					'sel_patron2' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.selection_list2); } ],
+					'sel_copy_details2' : [ ['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list2.length; i++) { circ.util.show_copy_details( obj.selection_list2[i].copy_id ); }
+						}
+					],
+
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],
@@ -51,6 +66,10 @@ patron.items.prototype = {
 
 		obj.controller.view.sel_clip.setAttribute('disabled','true');
 		obj.controller.view.sel_clip2.setAttribute('disabled','true');
+		obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+		obj.controller.view.sel_patron.setAttribute('disabled','true');
+		obj.controller.view.sel_copy_details2.setAttribute('disabled','true');
+		obj.controller.view.sel_patron2.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_renew.setAttribute('disabled','true');
 		obj.controller.view.cmd_items_checkin.setAttribute('disabled','true');
@@ -512,12 +531,12 @@ patron.items.prototype = {
 							[ row.my.circ.target_copy() ]
 						);
 
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null )}) );
+						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null )}) );
 
 					}
 				);
 			} else {
-				params.row_node.setAttribute( 'retrieve_id', js2JSON({'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null) }) );
+				params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null) }) );
 			}
 
 			funcs.push(
@@ -671,6 +690,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_edit.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
+		obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+		obj.controller.view.sel_patron.setAttribute('disabled','false');
 
 		obj.retrieve_ids = list;
 	},
@@ -687,6 +708,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_edit2.setAttribute('disabled','false');
 		obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','false');
+		obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
+		obj.controller.view.sel_patron2.setAttribute('disabled','false');
 
 		this.retrieve_ids2 = list;
 	},

@@ -13,6 +13,7 @@
 	<popup id="copy_status_actions" position="at_pointer"> 
 		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
@@ -57,6 +58,7 @@
 		<menupopup>
 			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
 			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 			<menuitem command="sel_transit_abort" label="Abort Transits" />

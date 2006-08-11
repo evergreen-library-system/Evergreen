@@ -64,6 +64,54 @@ cat.copy_browser.prototype = {
 								obj.list.clear();
 							}
 						],
+						'sel_patron' : [
+							['command'],
+							function() {
+								JSAN.use('util.functional');
+
+								var list = util.functional.filter_list(
+									obj.sel_list,
+									function (o) {
+										return o.split(/_/)[0] == 'acp';
+									}
+								);
+
+								list = util.functional.map_list(
+									list,
+									function (o) {
+										return { 'copy_id' : o.split(/_/)[1] };
+									}
+								);
+								
+								JSAN.use('circ.util');
+								circ.util.show_last_few_circs(list);
+							}
+						],
+						'sel_copy_details' : [
+							['command'],
+							function() {
+								JSAN.use('util.functional');
+
+								var list = util.functional.filter_list(
+									obj.sel_list,
+									function (o) {
+										return o.split(/_/)[0] == 'acp';
+									}
+								);
+
+								list = util.functional.map_list(
+									list,
+									function (o) {
+										return o.split(/_/)[1];
+									}
+								);
+	
+								JSAN.use('circ.util');
+								for (var i = 0; i < list.length; i++) {
+									circ.util.show_copy_details( list[i] );
+								}
+							}
+						],
 						'cmd_add_items' : [
 							['command'],
 							function() {
@@ -1291,6 +1339,8 @@ cat.copy_browser.prototype = {
 			obj.controller.view.cmd_mark_volume.setAttribute('disabled','true');
 			obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
 			obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
+			obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+			obj.controller.view.sel_patron.setAttribute('disabled','true');
 			if (found_aou) {
 				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
@@ -1308,6 +1358,8 @@ cat.copy_browser.prototype = {
 				obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
 				obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
 				obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');
+				obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+				obj.controller.view.sel_patron.setAttribute('disabled','false');
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Copy Browser Actions',E);
