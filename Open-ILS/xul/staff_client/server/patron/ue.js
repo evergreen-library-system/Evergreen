@@ -496,6 +496,8 @@ function uEditSaveUser(cloneme) {
 	}
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
+		if( patron.isnew() && cloneme ) 
+			window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id,clone:cloneme});
 		window.xulG.on_save(newuser, cloneme); 
 
 	} else {
