@@ -148,7 +148,7 @@
 			<rows>
 				<row>
 					<label style="font-weight: bold" value="Barcode:"/>
-					<label id="barcode"/>
+					<label id="barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
 					<label style="font-weight: bold" value="Location:"/>
 					<label id="location"/>
 					<label style="font-weight: bold" value="Call Number:"/>
