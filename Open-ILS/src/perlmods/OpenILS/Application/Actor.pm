@@ -2396,5 +2396,21 @@ sub fetch_org_by_shortname {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'session_home_lib',
+	api_name => 'open-ils.actor.session.home_lib',
+);
+
+sub session_home_lib {
+	my( $self, $conn, $auth ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return undef unless $e->checkauth;
+	my $org = $e->retrieve_actor_org_unit($e->requestor->home_ou);
+	return $org->shortname;
+}
+
+
+
+
 1;
 
