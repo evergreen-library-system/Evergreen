@@ -715,7 +715,23 @@ admin.offline_manage_xacts.prototype = {
 	},
 
 	'retrieve_details' : function() {
-		alert('Not Yet Implemented');
+		var obj = this;
+		JSAN.use('util.window'); var win = new util.window();
+		try {
+			for (var i = 0; i < obj.sel_errors.length; i++) {
+				var error = obj.errors[ obj.sel_errors[i] ];
+				win.open(
+					'data:text/plain,' + window.escape(
+						'Details:\n' + obj.error.pretty_print(js2JSON(error))
+					),
+					'offline_error_details',
+					'chrome,resizable,modal'
+				);
+			}
+		} catch(E) {
+			alert(E);
+		}
+
 	},
 }
 
