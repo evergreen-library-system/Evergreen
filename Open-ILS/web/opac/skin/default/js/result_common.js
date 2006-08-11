@@ -298,7 +298,7 @@ function resultSuggestSpelling(r) {
 function resultPaginate() {
 	var o = getOffset();
 
-	if( !(( (o+1) + getDisplayCount()) >= getHitCount()) ) {
+	if( !(  ((o) + getDisplayCount()) >= getHitCount()) ) {
 
 		var args = {};
 		args[PARAM_OFFSET]	= o + getDisplayCount();
