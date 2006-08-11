@@ -497,7 +497,7 @@ function uEditSaveUser(cloneme) {
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
 		_debug("xulG funcs defined...");
-		if( patron.isnew() && cloneme ) {
+		if( !patron.isnew() && cloneme ) {
 			_debug("calling spawn_editor to clone user...");
 			window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id,clone:cloneme});
 		}
