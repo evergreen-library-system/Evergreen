@@ -25,6 +25,7 @@ CREATE TABLE money.grocery ( -- Catchall table for local billing
 	billing_location	INT	NOT NULL, -- library creating transaction
 	note			TEXT
 ) INHERITS (money.billable_xact);
+ALTER TABLE money.grocery ADD PRIMARY KEY (id);
 
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -244,20 +245,24 @@ CREATE TABLE money.bnm_payment (
 	amount_collected	NUMERIC(6,2)	NOT NULL,
 	accepting_usr		INT		NOT NULL
 ) INHERITS (money.payment);
+ALTER TABLE money.bnm_payment ADD PRIMARY KEY (id);
 
 CREATE TABLE money.forgive_payment () INHERITS (money.bnm_payment);
+ALTER TABLE money.forgive_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_forgive_id_idx ON money.forgive_payment (id);
 CREATE INDEX money_forgive_payment_xact_idx ON money.forgive_payment (xact);
 CREATE INDEX money_forgive_payment_payment_ts_idx ON money.forgive_payment (payment_ts);
 CREATE INDEX money_forgive_payment_accepting_usr_idx ON money.forgive_payment (accepting_usr);
 
 CREATE TABLE money.work_payment () INHERITS (money.bnm_payment);
+ALTER TABLE money.work_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_work_id_idx ON money.work_payment (id);
 CREATE INDEX money_work_payment_xact_idx ON money.work_payment (xact);
 CREATE INDEX money_work_payment_payment_ts_idx ON money.work_payment (payment_ts);
 CREATE INDEX money_work_payment_accepting_usr_idx ON money.work_payment (accepting_usr);
 
 CREATE TABLE money.credit_payment () INHERITS (money.bnm_payment);
+ALTER TABLE money.credit_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_credit_id_idx ON money.credit_payment (id);
 CREATE INDEX money_credit_payment_xact_idx ON money.credit_payment (xact);
 CREATE INDEX money_credit_payment_payment_ts_idx ON money.credit_payment (payment_ts);
@@ -266,6 +271,7 @@ CREATE INDEX money_credit_payment_accepting_usr_idx ON money.credit_payment (acc
 CREATE TABLE money.bnm_desk_payment (
 	cash_drawer	INT	REFERENCES actor.workstation (id)
 ) INHERITS (money.bnm_payment);
+ALTER TABLE money.bnm_desk_payment ADD PRIMARY KEY (id);
 
 CREATE OR REPLACE VIEW money.desk_payment_view AS
 	SELECT	p.*,c.relname AS payment_type
@@ -273,6 +279,7 @@ CREATE OR REPLACE VIEW money.desk_payment_view AS
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
+ALTER TABLE money.cash_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_cash_id_idx ON money.cash_payment (id);
 CREATE INDEX money_cash_payment_xact_idx ON money.cash_payment (xact);
 CREATE INDEX money_cash_payment_ts_idx ON money.cash_payment (payment_ts);
@@ -282,6 +289,7 @@ CREATE INDEX money_cash_payment_cash_drawer_idx ON money.cash_payment (cash_draw
 CREATE TABLE money.check_payment (
 	check_number	TEXT	NOT NULL
 ) INHERITS (money.bnm_desk_payment);
+ALTER TABLE money.check_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_check_payment_xact_idx ON money.check_payment (xact);
 CREATE INDEX money_check_id_idx ON money.check_payment (id);
 CREATE INDEX money_check_payment_ts_idx ON money.check_payment (payment_ts);
@@ -295,6 +303,7 @@ CREATE TABLE money.credit_card_payment (
 	expire_year	INT	NOT NULL,
 	approval_code	TEXT	NOT NULL
 ) INHERITS (money.bnm_desk_payment);
+ALTER TABLE money.credit_card_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_credit_card_payment_xact_idx ON money.credit_card_payment (xact);
 CREATE INDEX money_credit_card_id_idx ON money.credit_card_payment (id);
 CREATE INDEX money_credit_card_payment_ts_idx ON money.credit_card_payment (payment_ts);

@@ -93,6 +93,7 @@ CREATE TABLE action.circulation (
 	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
 	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE'))
 ) INHERITS (money.billable_xact);
+ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 CREATE INDEX circ_outstanding_idx ON action.circulation (usr) WHERE checkin_time IS NULL;
 CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE checkin_time IS NOT NULL;
@@ -205,6 +206,7 @@ CREATE TABLE action.transit_copy (
 CREATE TABLE action.hold_transit_copy (
 	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
+ALTER TABLE action.hold_transit_copy ADD PRIMARY KEY (id);
 
 CREATE TABLE action.unfulfilled_hold_list (
 	id		BIGSERIAL			PRIMARY KEY,
