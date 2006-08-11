@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Brief Bib Display -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="circ_copy_details_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	width="800" height="600" persist="width height"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for circ_copy_details.xul');
+
+				g.cgi = new CGI();
+				g.copy_id = g.cgi.param('copy_id');
+
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.date');
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
+				// uber method
+				var robj = g.network.simple_request('FM_ACP_DETAILS', [ ses(), g.copy_id ] );
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+				if (robj.copy) g.copy = robj.copy; else throw(robj);
+				g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ;
+				if (g.hold) $('hold_caption').setAttribute('tooltiptext','Hold ID = ' + g.hold.id());
+				if (g.transit) $('transit_caption').setAttribute('tooltiptext','Transit ID = ' + g.transit.id());
+				if (g.circ) $('circ_caption').setAttribute('tooltiptext','Circ ID = ' + g.circ.id());
+
+				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
+				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
+
+				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
+				g.data.temp_copy = g.copy; g.data.stash('temp_copy'); $('mid').setAttribute('src',urls.XUL_COPY_SUMMARY);
+
+				$('r_last').disabled = true;
+				if (g.circ) {
+					$('r_last').disabled = false;
+					g.data.temp_circ = g.circ; g.data.stash('temp_circ');
+					$('circ').setAttribute('src',urls.XUL_CIRC_BRIEF + '?no_border=1');
+					if (g.circ.checkin_time()) {
+						$('circ_caption').setAttribute('label','Last Circulation');
+					} else {
+						$('circ_caption').setAttribute('label','Current Circulation');
+					}
+				} else {
+					$('circ_caption').setAttribute('label','This item has yet to circulate.');
+					$('circ').hidden = true;
+				}
+
+				if (g.transit) {
+					JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
+
+					JSAN.use('util.list'); g.list = new util.list('transit');
+					g.list.init( { 'columns' : columns, 'map_row_to_column' : circ.util.std_map_row_to_column(), });
+					g.list.append( { 'row' : { 'my' : { 'atc' : g.transit, } } });
+	
+				} else {
+					$('transit_caption').setAttribute('label','This item is not in transit.');
+					$('transit').hidden = true;
+				}
+
+
+				$('r_hold').disabled = true;
+				if (g.hold) {
+					$('r_hold').disabled = false;
+					var status_robj = g.network.simple_request('FM_AHR_STATUS',[ ses(), g.hold.id() ]);
+					JSAN.use('circ.util');
+					var columns = circ.util.hold_columns( 
+						{ 
+							'request_time' : { 'hidden' : false },
+							'pickup_lib_shortname' : { 'hidden' : false },
+							'hold_type' : { 'hidden' : true },
+							'current_copy' : { 'hidden' : true },
+							'capture_time' : { 'hidden' : true },
+							'email_notify' : { 'hidden' : false },
+							'phone_notify' : { 'hidden' : false },
+						} 
+					);
+
+					JSAN.use('util.list'); g.list = new util.list('hold');
+					g.list.init( { 'columns' : columns, 'map_row_to_column' : circ.util.std_map_row_to_column(), });
+					g.list.append( { 'row' : { 'my' : { 'ahr' : g.hold, 'acp' : g.copy, 'status' : status_robj, } } });
+	
+					JSAN.use('patron.util'); 
+					var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.hold.usr() );
+					$('patron_name').setAttribute('value', au_obj.family_name() + ', ' + au_obj.first_given_name() + ' : ' + au_obj.card().barcode() );
+
+				} else {
+					$('hold_caption').setAttribute('label','This item is not captured for a hold.');
+					$('hold').hidden = true;
+				}
+
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('Error in copy_details.xul, my_init()',E);
+			}
+		}
+
+		function retrieve_last_patron() {
+			try {
+				g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
+				g.data.stash('fancy_prompt_data');
+				window.close();
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+		function retrieve_hold_patron() {
+			try {
+				g.data.fancy_prompt_data = js2JSON( [ g.hold.usr() ] );
+				g.data.stash('fancy_prompt_data');
+				window.close();
+			} catch(E) {
+				alert(E);
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" style="overflow: auto;">
+		<iframe flex="1" id="top" style="overflow: none; min-height: 80;"/>
+		<splitter><grippy/></splitter>
+		<iframe flex="1" id="mid" style="overflow: none; min-height: 80;"/>
+		<splitter><grippy/></splitter>
+		<groupbox flex="1" id="circs" style="overflow: none; min-height: 80;">
+			<caption id="circ_caption" label="Last/Current Circulation" style="font-weight: bold"/>
+			<iframe id="circ" style="min-height: 80" flex="1"/>
+		</groupbox>
+		<splitter><grippy/></splitter>
+		<groupbox flex="1" id="transits" style="overflow: none; min-height: 80;">
+			<caption id="transit_caption" label="In Transit"/>
+			<tree id="transit" flex="1" />
+		</groupbox>
+		<splitter><grippy/></splitter>
+		<groupbox flex="1" id="holds" style="overflow: none; min-height: 80;">
+			<caption id="hold_caption" label="Captured for Hold"/>
+			<label id="patron_name" class="patronNameLarge"/>
+			<tree id="hold" flex="1" />
+			<spacer FIXME="label and tree get swapped without this"/>
+		</groupbox>
+	</vbox>
+	<hbox>
+		<button id="r_last" label="Retrieve Last Patron" accesskey="L" oncommand="retrieve_last_patron();"/>
+		<button id="r_hold" label="Retrieve Hold Patron" accesskey="H" oncommand="retrieve_hold_patron();"/>
+		<spacer flex="1"/>
+		<button id="done" label="Done" accesskey="D" oncommand="window.close();"/>
+	</hbox>
+
+</window>
+
