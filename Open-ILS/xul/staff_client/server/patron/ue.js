@@ -34,35 +34,35 @@ function uEditInit() {
 /* Fetch code
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIdentTypes() {
-	_debug("uEditFetchIdentTypes()\n");
+	_debug("uEditFetchIdentTypes()");
 	var req = new Request(FETCH_ID_TYPES);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchStatCats() {
-	_debug("uEditFetchStatCats()\n");
+	_debug("uEditFetchStatCats()");
 	var req = new Request(SC_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchSurveys() {
-	_debug("uEditFetchSurveys()\n");
+	_debug("uEditFetchSurveys()");
 	var req = new Request(SV_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchGroups() {
-	_debug("uEditFetchGroups()\n");
+	_debug("uEditFetchGroups()");
 	var req = new Request(FETCH_GROUPS);
 	req.send(true);
 	return req.result();
 }
 
 function uEditFetchNetLevels() {
-	_debug("uEditFetchNetLevels()\n");
+	_debug("uEditFetchNetLevels()");
 	var req = new Request(FETCH_NET_LEVELS, SESSION);
 	req.send(true);
 	return req.result();
@@ -497,12 +497,11 @@ function uEditSaveUser(cloneme) {
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
 		_debug("xulG funcs defined...");
-		window.xulG.on_save(newuser, cloneme); 
-
 		if( !patron.isnew() && cloneme ) {
 			_debug("calling spawn_editor to clone user...");
 			window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
 		}
+		window.xulG.on_save(newuser, cloneme); 
 
 	} else {
 
