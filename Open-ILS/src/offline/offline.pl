@@ -519,11 +519,18 @@ sub ol_process_commands {
 		my $last = ($x++ == scalar(@$commands) - 1) ? 1 : 0;
 		my $res	= { command => $d };
 
-		$res->{event} = ol_handle_checkin($d)	if $t eq 'checkin';
-		$res->{event} = ol_handle_inhouse($d)	if $t eq 'in_house_use';
-		$res->{event} = ol_handle_checkout($d) if $t eq 'checkout';
-		$res->{event} = ol_handle_renew($d)		if $t eq 'renew';
-		$res->{event} = ol_handle_register($d) if $t eq 'register';
+		try {
+			$res->{event} = ol_handle_checkin($d)	if $t eq 'checkin';
+			$res->{event} = ol_handle_inhouse($d)	if $t eq 'in_house_use';
+			$res->{event} = ol_handle_checkout($d) if $t eq 'checkout';
+			$res->{event} = ol_handle_renew($d)		if $t eq 'renew';
+			$res->{event} = ol_handle_register($d) if $t eq 'register';
+
+		} catch Error with {
+			my $e = shift;
+			$res->{event} = OpenILS::Event->new(
+				'INTERNAL_SERVER_ERROR', debug => "$e");
+		};
 
 
 		ol_append_result($res, $last);

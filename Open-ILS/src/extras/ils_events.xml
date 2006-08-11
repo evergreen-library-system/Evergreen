@@ -536,6 +536,9 @@
 	<event code='2002' textcode='DATABASE_QUERY_FAILED'>
 		<desc xml:lang="en-US">The attempt to query to the DB failed</desc>
 	</event>
+	<event code='2003' textcode='INTERNAL_SERVER_ERROR'>
+		<desc xml:lang="en-US">There was an internal server error</desc>
+	</event>
 	<event code='5000' textcode='PERM_FAILURE'>
 		<desc xml:lang="en-US">Permission Denied</desc>
 	</event>
