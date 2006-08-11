@@ -809,7 +809,7 @@ sub handle_checkout_holds {
 
 	my $holds	= $self->editor->search_action_hold_request(
 		{ 
-			current_copy		=>  $copy->id , 
+			current_copy		=> $copy->id , 
 			cancel_time			=> undef, 
 			fulfillment_time	=> undef 
 		}
@@ -862,6 +862,7 @@ sub handle_checkout_holds {
 
 			# - clear out the targetted copy
          $_->clear_current_copy;
+         $_->clear_capture_time;
 
 			return $self->bail_on_event($self->editor->event)
 				unless $self->editor->update_action_hold_request($_);
@@ -1345,9 +1346,10 @@ sub attempt_checkin_hold_capture {
 		# This hold was captured in the correct location
    	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 		$self->push_events(OpenILS::Event->new('SUCCESS'));
-		my $evt = $holdcode->hold_email_notifify(
-			$self->editor, $hold, $self->title, $self->volume, $self->copy );
-		$self->bail_on_events($evt) if $evt;
+
+#		my $evt = $holdcode->hold_email_notifify(
+#			$self->editor, $hold, $self->title, $self->volume, $self->copy );
+#		$self->bail_on_events($evt) if $evt;
 	
 	} else {
 	
