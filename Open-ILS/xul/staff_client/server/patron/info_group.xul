@@ -274,7 +274,7 @@
 			var c = window.confirm('Remove selected patrons from this group?  ' + msg);
 			if (c) {
 				for (var i = 0; i < g.sel_list.length; i++) {	
-					var robj = g.network.simple_request('FM_AU_NEW_USERGROUP', [ ses(), g.sel_list[i], 't' ]);
+					var robj = g.network.simple_request('FM_AU_NEW_USERGROUP', [ ses(), g.sel_list[i], get_db_true() ]);
 					if (typeof robj.ilsevent != 'undefined') {
 						g.error.standard_unexpected_error_alert('error removing patron (id=' + g.sel_list[i] + ') from usergroup',robj);
 					}

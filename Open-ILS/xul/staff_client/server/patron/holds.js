@@ -375,8 +375,8 @@ patron.holds.prototype = {
 								);
 								obj.data.init({'via':'stash'});
 								if (obj.data.fancy_prompt_data == '') { return; }
-								var email = obj.data.fancy_prompt_data.fancy_submit == 'email' ? 't' : 'f';
-								var msg = 'Are you sure you would like ' + ( email == 't' ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
+								var email = obj.data.fancy_prompt_data.fancy_submit == 'email' ? get_db_true() : get_db_false();
+								var msg = 'Are you sure you would like ' + ( get_bool( email ) ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {

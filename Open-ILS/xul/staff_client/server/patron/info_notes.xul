@@ -145,7 +145,7 @@
 					note.isnew(1);
 					note.title( g.data.fancy_prompt_data.title );
 					note.value( g.data.fancy_prompt_data.note );
-					note.pub( g.data.fancy_prompt_data.pub ? 't' : 'f' );
+					note.pub( get_bool( g.data.fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
 					note.usr( g.patron_id );
 					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
