@@ -496,12 +496,16 @@ function uEditSaveUser(cloneme) {
 	}
 
 	if (window.xulG && typeof window.xulG.on_save == 'function') {
-		if( patron.isnew() && cloneme ) 
+		_debug("xulG funcs defined...");
+		if( patron.isnew() && cloneme ) {
+			_debug("calling spawn_editor to clone user...");
 			window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id,clone:cloneme});
+		}
 		window.xulG.on_save(newuser, cloneme); 
 
 	} else {
 
+		_debug("xulG funcs not defined, refreshing page..");
 		var href = location.href;
 
 		href = href.replace(/\&?usr=\d+/, '');
