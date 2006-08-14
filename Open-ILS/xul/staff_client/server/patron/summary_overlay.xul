@@ -101,6 +101,10 @@
 			<label id="PatronSummaryStatus_lost_label" value="Lost:" class="text_left items_lost label"/>
 			<label id="patron_lost" class="items_lost value"/>
 		</row>
+		<row id="pdsgr6a">
+			<label id="PatronSummaryStatus_noncat_label" value="Non Cat:" class="text_left items_noncat label"/>
+			<label id="patron_noncat" class="items_noncat value"/>
+		</row>
 	</rows>
 </grid>
 
