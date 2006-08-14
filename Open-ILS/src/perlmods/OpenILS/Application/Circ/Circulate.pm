@@ -1296,6 +1296,8 @@ sub checkin_build_copy_transit {
    $transit->source_send_time('now');
    $transit->copy_status( $U->copy_status($copy->status)->id );
 
+	$logger->debug("circulator: setting copy status on transit: ".$transit->copy_status);
+
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_transit_copy($transit);
 
@@ -1371,9 +1373,12 @@ sub attempt_checkin_hold_capture {
 sub checkin_build_hold_transit {
 	my $self = shift;
 
+
    my $copy = $self->copy;
    my $hold = $self->hold;
    my $trans = Fieldmapper::action::hold_transit_copy->new;
+
+	$logger->debug("circulator: building hold transit for ".$copy->barcode);
 
    $trans->hold($hold->id);
    $trans->source($self->editor->requestor->ws_ou);
@@ -1383,7 +1388,7 @@ sub checkin_build_hold_transit {
 
 	# when the copy gets to its destination, it will recover
 	# this status - put it onto the holds shelf
-   $trans->copy_status(OILS_COPY_STATUS_IN_TRANSIT);
+   $trans->copy_status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_hold_transit_copy($trans);
