@@ -212,7 +212,7 @@ __PACKAGE__->register_method(
 sub isxn_search {
 	my $self = shift;
 	my $client = shift;
-	my $isxn = shift;
+	my $isxn = lc(shift());
 
 	my $tag = ($self->api_name =~ /isbn/o) ? '020' : '022';
 
