@@ -3,26 +3,34 @@
 <div
 	style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
 	<center id='copyright_block'>
-		<!--
-		<div 
-			style='width: 80%; background: #EFF6EF; text-align:center; border: 1px solid #808080; padding: 10px;'>
-			-->
+		<style>
+			.footer_link {
+				margin-left: 10px; 
+				margin-right: 10px;
+			}
+		</style>
+
 		<div 
 			style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
 
-				<span style='margin-left: 10px; margin-right: 10px;'>
+				<span class='footer_link'>
 					<a target='_blank' class='classic_link'
 						href='http://www.georgialibraries.org/public/findlibrary.html'>Find a Library Near Me</a>
 				</span> 
 				<span> | </span>
-				<span style='margin-left: 10px; margin-right: 10px;'>
+				<span class='footer_link'>
 					<a target='_blank' class='classic_link'
 						href='http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help'>Help</a>
 				</span>
 				<span> | </span>
-				<span style='margin-left: 10px; margin-right: 10px;'>
+				<span class='footer_link'>
 					<a target='_blank' class='classic_link'
 						href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+				</span>
+				<span> | </span>
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link'
+						href='http://www.galileo.usg.edu/'>Galileo</a>
 				</span>
 				<br/>
 				<div style='margin-top: 4px; font-size: 7pt;'>
