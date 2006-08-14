@@ -31,16 +31,16 @@ sub new {
 	my $self = {};
 
 	$config = $institution;
-	syslog("LOG_DEBUG", "new ILS '%s'", $institution->{id});
+	syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
 	$self->{institution} = $institution;
 
 	my $bsconfig = $institution->{implementation_config}->{bootstrap};
 
-	syslog('LOG_DEBUG', "loading bootstrap config: $bsconfig");
+	syslog('LOG_DEBUG', "OILS: loading bootstrap config: $bsconfig");
 	
 	local $/ = "\n";
 	OpenSRF::System->bootstrap_client(config_file => $bsconfig);
-	syslog('LOG_DEBUG', "bootstrap loaded..");
+	syslog('LOG_DEBUG', "OILS: bootstrap loaded..");
 
 	$self->{osrf_config} = OpenSRF::Utils::SettingsClient->new;
 
@@ -68,6 +68,10 @@ sub reset_editor {
 	return editor();
 }
 
+sub config {
+	return $config;
+}
+
 
 # Creates the global editor object
 sub make_editor {
@@ -75,7 +79,7 @@ sub make_editor {
 	my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
 	# gnarly cstore hack to re-gen autogen methods after IDL is loaded
 	if(!UNIVERSAL::can($e, 'search_actor_card')) {
-		syslog("LOG_WARNING", "Reloading CStoreEditor...");
+		syslog("LOG_WARNING", "OILS: Reloading CStoreEditor...");
 		delete $INC{'OpenILS/Utils/CStoreEditor.pm'};
 		require OpenILS::Utils::CStoreEditor;
 		$e = OpenILS::Utils::CStoreEditor->new(xact =>1);
@@ -87,7 +91,7 @@ sub make_editor {
 
 sub login {
 	my( $self, $username, $password ) = @_;
-	syslog('LOG_DEBUG', "OpenILS: Logging in with username $username");
+	syslog('LOG_DEBUG', "OILS: Logging in with username $username");
 
 	my $seed = $U->simplereq( 
 		'open-ils.auth',
@@ -105,12 +109,12 @@ sub login {
 
 	if( my $code = $U->event_code($response) ) {
 		my $txt = $response->{textcode};
-		syslog('LOG_WARNING', "OpenILS: Login failed for $username.  $txt:$code");
+		syslog('LOG_WARNING', "OILS: Login failed for $username.  $txt:$code");
 		return undef;
 	}
 
 	my $key = $response->{payload}->{authtoken};
-	syslog('LOG_INFO', "OpenILS: Login succeeded for $username : authkey = $key");
+	syslog('LOG_INFO', "OILS: Login succeeded for $username : authkey = $key");
 	return $self->{authtoken} = $key;
 }
 
@@ -143,7 +147,7 @@ sub check_inst_id {
 	my ($self, $id, $whence) = @_;
 	if ($id ne $self->{institution}->{id}) {
 		syslog("LOG_WARNING", 
-			"%s: received institution '%s', expected '%s'",
+			"OILS: %s: received institution '%s', expected '%s'",
 			$whence, $id, $self->{institution}->{id});
 	}
 }
@@ -183,7 +187,7 @@ sub offline_ok {
 sub checkout {
 	my ($self, $patron_id, $item_id, $sc_renew) = @_;
 	
-	syslog('LOG_DEBUG', "OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
+	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
 	
 	my $xact		= OpenILS::SIP::Transaction::Checkout->new( authtoken => $self->{authtoken} );
 	my $patron	= $self->find_patron($patron_id);
@@ -207,7 +211,7 @@ sub checkout {
 		return $xact;
 	}
 
-	syslog('LOG_DEBUG', "OpenILS::Checkout data loaded OK, checking out...");
+	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout data loaded OK, checking out...");
 	$xact->do_checkout();
 
 	if ($item->{patron} && ($item->{patron} ne $patron_id)) {
@@ -222,13 +226,13 @@ sub checkout {
 	if( $xact->ok ) {
 
 		#editor()->commit;
-		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
+		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
 			"patron %s checkout %s succeeded", $patron_id, $item_id);
 
 	} else {
 
 		#editor()->xact_rollback;
-		syslog("LOG_DEBUG", "OpenILS::Checkout: " .
+		syslog("LOG_DEBUG", "OILS: OpenILS::Checkout: " .
 			"patron %s checkout %s FAILED, rolling back xact...", $patron_id, $item_id);
 	}
 
@@ -240,7 +244,7 @@ sub checkin {
 	my ($self, $item_id, $trans_date, $return_date,
 	$current_loc, $item_props, $cancel) = @_;
 
-	syslog('LOG_DEBUG', "OpenILS::Checkin on item=$item_id");
+	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin on item=$item_id");
 	
 	my $patron;
 	my $xact		= OpenILS::SIP::Transaction::Checkin->new(authtoken => $self->{authtoken});
@@ -261,13 +265,13 @@ sub checkin {
 		$xact->patron($patron = $self->find_patron($item->{patron}));
 		delete $item->{patron};
 		delete $item->{due_date};
-		syslog('LOG_INFO', "OpenILS: Checkin succeeded");
+		syslog('LOG_INFO', "OILS: Checkin succeeded");
 		#editor()->commit;
 
 	} else {
 
 		#editor()->xact_rollback;
-		syslog('LOG_WARNING', "OpenILS: Checkin failed");
+		syslog('LOG_WARNING', "OILS: Checkin failed");
 	}
 	# END TRANSACTION
 

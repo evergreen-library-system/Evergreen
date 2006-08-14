@@ -54,12 +54,19 @@ sub do_checkin {
 
 	if( my $code = $U->event_code($resp) ) {
 		my $txt = $resp->{textcode};
-		syslog('LOG_INFO', "Checkin failed with event $code : $txt");
-		$self->ok(0);
-		return 0;
+		if( $txt ne 'ROUTE_ITEM' ) {
+			syslog('LOG_INFO', "OILS: Checkin failed with event $code : $txt");
+			$self->ok(0);
+			return 0;
+		}
 	}
 
 	my $circ = $resp->{payload}->{circ};
+
+	unless( $circ ) {
+		$self->ok(0);
+		return 0;
+	}
 
 	$self->{item}->{patron} = 
 		OpenILS::SIP->editor->search_actor_card(

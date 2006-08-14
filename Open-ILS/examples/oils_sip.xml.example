@@ -74,9 +74,15 @@
 					<item name='item status update' value='false'/>
 					<item name='patron enable' value='false'/>
 					<item name='hold' value='false'/>
-					<item name='renew'  value='true'/>
+					<item name='renew' value='true'/>
 					<item name='renew all' value='false'/>
 				</supports>
+
+				<scripts>
+					<path>/openils/var/</path>
+					<item_config>circ/circ_item_config.js</item_config>
+				<scripts>
+
 			</implementation_config>
 	
 		</institution>

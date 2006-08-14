@@ -50,7 +50,7 @@ sub new {
 # XXX Set $self->ok(0) on any errors
 sub do_checkout {
 	my $self = shift;
-	syslog('LOG_DEBUG', "OpenILS: performing checkout...");
+	syslog('LOG_DEBUG', "OILS: performing checkout...");
 
 	$self->ok(0); 
 
@@ -67,23 +67,23 @@ sub do_checkout {
 	if( ref($resp) eq 'ARRAY' ) {
 		my @e;
 		push( @e, $_->{textcode} ) for @$resp;
-		syslog('LOG_INFO', "Checkout permit failed with events: @e");
+		syslog('LOG_INFO', "OILS: Checkout permit failed with events: @e");
 		return 0;
 	}
 
 	if( my $code = $U->event_code($resp) ) {
 		my $txt = $resp->{textcode};
-		syslog('LOG_INFO', "Checkout permit failed with event $code : $txt");
+		syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
 		return 0; 
 	}
 
 	my $key;
 
 	if( $key = $resp->{payload} ) {
-		syslog('LOG_INFO', "OpenILS: circ permit key => $key");
+		syslog('LOG_INFO', "OILS: circ permit key => $key");
 
 	} else {
-		syslog('LOG_WARN', "OpenILS: Circ permit failed :\n" . Dumper($resp) );
+		syslog('LOG_WARN', "OILS: Circ permit failed :\n" . Dumper($resp) );
 		return 0;
 	}
 
@@ -104,11 +104,11 @@ sub do_checkout {
 
 		if( my $code = $U->event_code($resp) ) {
 			my $txt = $resp->{textcode};
-			syslog('LOG_INFO', "Checkout failed with event $code : $txt");
+			syslog('LOG_INFO', "OILS: Checkout failed with event $code : $txt");
 			return 0; 
 		}
 
-		syslog('LOG_INFO', "OpenILS: Checkout succeeded");
+		syslog('LOG_INFO', "OILS: Checkout succeeded");
 
 		my $circ = $resp->{payload}->{circ};
 		$self->{'due'} = $circ->due_date;

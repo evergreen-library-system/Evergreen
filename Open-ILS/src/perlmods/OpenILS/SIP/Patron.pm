@@ -17,6 +17,8 @@ use Digest::MD5 qw(md5_hex);
 use OpenILS::SIP;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
+use OpenSRF::Utils qw/:datetime/;
+use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
 our (@ISA, @EXPORT_OK);
@@ -32,7 +34,7 @@ sub new {
     my $type = ref($class) || $class;
     my $self = {};
 
-	syslog("LOG_DEBUG", "new OpenILS Patron(%s): searching...", $patron_id);
+	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): searching...", $patron_id);
 
 	my $e = OpenILS::SIP->editor();
 
@@ -66,7 +68,7 @@ sub new {
 	 }
 
 	 if(!$user) {
-		syslog("LOG_WARNING", "Unable to find patron %s", $patron_id);
+		syslog("LOG_WARNING", "OILS: Unable to find patron %s", $patron_id);
 		return undef;
 	 }
 
@@ -74,7 +76,7 @@ sub new {
 	$self->{id}			= $patron_id;
 	$self->{editor}	= $e;
 
-	syslog("LOG_DEBUG", "new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
+	syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s): found patron : barred=%s, card:active=%s", 
 		$patron_id, $self->{user}->barred, $self->{user}->card->active );
 
 
@@ -110,10 +112,12 @@ sub address {
 	my $self = shift;
 	my $u = $self->{user};
 	my $addr = $u->billing_address;
+	$addr = $u->mailing_address unless $addr;
 	my $str = __addr_string($addr);
-	my $maddr = $u->mailing_address;
-	$str .= "\n" . __addr_string($maddr) 
-		if $maddr and $maddr->id ne $addr->id;
+	syslog('LOG_DEBUG', "OILS: Patron address: $str");
+	#my $maddr = $u->mailing_address;
+	#$str .= "\n" . __addr_string($maddr) 
+		#if $maddr and $maddr->id ne $addr->id;
 	return $str;
 }
 
@@ -128,8 +132,25 @@ sub home_phone {
 }
 
 sub sip_birthdate {
-    my $self = shift;
-	return $self->{user}->dob;
+	my $self = shift;
+	my $dob	= $self->{user}->dob;
+	return "" unless $dob;
+
+	$dob = DateTime::Format::ISO8601->new->
+		parse_datetime(OpenSRF::Utils::clense_ISO8601($dob));
+	my @time = localtime($dob->epoch);
+
+	my $year = $time[5]+1900;
+	my $mon = $time[4]+1;
+	my $day = $time[3];
+
+	$mon =~ s/^(\d)$/0$1/;
+	$day =~ s/^(\d)$/0$1/;
+	$dob = "$year$mon$day";
+
+	syslog('LOG_DEBUG', "OILS: Patron DOB = $dob");
+
+	return $dob;
 }
 
 sub ptype {
@@ -306,7 +327,7 @@ sub __hold_to_title {
 
 sub __copy_to_title {
 	my( $e, $copy ) = @_;
-	syslog('LOG_DEBUG', "copy_to_title(%s)", $copy->id);
+	syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
 	return $copy->dummy_title if $copy->call_number == -1;	
 	my $vol = $e->retrieve_asset_call_number($copy->call_number);
 	return __volume_to_title($e, $vol);
@@ -315,14 +336,14 @@ sub __copy_to_title {
 
 sub __volume_to_title {
 	my( $e, $volume ) = @_;
-	syslog('LOG_DEBUG', "volume_to_title(%s)", $volume->id);
+	syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
 	return __record_to_title($e, $volume->record);
 }
 
 
 sub __record_to_title {
 	my( $e, $title_id ) = @_;
-	syslog('LOG_DEBUG', "record_to_title($title_id)");
+	syslog('LOG_DEBUG', "OILS: record_to_title($title_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
@@ -331,11 +352,11 @@ sub __record_to_title {
 
 sub __metarecord_to_title {
 	my( $e, $m_id ) = @_;
-	syslog('LOG_DEBUG', "metarecord_to_title($m_id)");
+	syslog('LOG_DEBUG', "OILS: metarecord_to_title($m_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
-	return ($mods) ? $mods->title : "";
+	return ($U->event_code($mods)) ? "<unknown>" : $mods->title;
 }
 
 
@@ -366,7 +387,7 @@ sub overdue_items {
 	my @o;
 	for my $circid (@overdues) {
 		next unless $circid;
-		syslog('LOG_DEBUG', "overdue_items() fleshing circ $circid");
+		syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circ $circid");
 		push( @o, __circ_to_title($self->{editor}, $circid) );
 	}
 	@overdues = @o;
@@ -398,7 +419,7 @@ sub charged_items {
 	my @c;
 	for my $circid (@charges) {
 		next unless $circid;
-		syslog('LOG_DEBUG', "charged_items() fleshing circ $circid");
+		syslog('LOG_DEBUG', "OILS: charged_items() fleshing circ $circid");
 		push( @c, __circ_to_title($self->{editor}, $circid) );
 	}
 	@charges = @c;
@@ -434,13 +455,13 @@ sub block {
 	my $u = $self->{user};
 	my $e = $self->{editor} = OpenILS::SIP->reset_editor();
 
-	syslog('LOG_INFO', "Blocking user %s", $u->card->barcode );
+	syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
 
 	return $self if $u->card->active eq 'f';
 
 	$u->card->active('f');
 	if( ! $e->update_actor_card($u->card) ) {
-		syslog('LOG_ERR', "Block card update failed: %s", $e->event->{textcode});
+		syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
 		$e->xact_rollback;
 		return $self;
 	}
@@ -453,7 +474,7 @@ sub block {
 	$u->alert_message($note);
 
 	if( ! $e->update_actor_user($u) ) {
-		syslog('LOG_ERR', "Block: patron alert update failed: %s", $e->event->{textcode});
+		syslog('LOG_ERR', "OILS: Block: patron alert update failed: %s", $e->event->{textcode});
 		$e->xact_rollback;
 		return $self;
 	}
@@ -491,7 +512,9 @@ sub inet_privileges {
 	my $e = OpenILS::SIP->editor();
 	$INET_PRIVS = $e->retrieve_all_config_net_access_level() unless $INET_PRIVS;
 	my ($level) = grep { $_->id eq $self->{user}->net_access_level } @$INET_PRIVS;
-	return $level->name;
+	my $name = $level->name;
+	syslog('LOG_DEBUG', "OILS: Patron inet_privs = $name");
+	return $name;
 }
 
 

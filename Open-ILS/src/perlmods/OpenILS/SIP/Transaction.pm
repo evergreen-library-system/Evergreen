@@ -37,7 +37,7 @@ sub new {
 	bless $self, $class;
 	$self->authtoken($args{authtoken});
 
-	syslog('LOG_DEBUG', "OpenILS: Created new transaction with authtoken %s", $self->authtoken);
+	syslog('LOG_DEBUG', "OILS: Created new transaction with authtoken %s", $self->authtoken);
 
 	my $e = OpenILS::SIP->editor();
 	$e->{authtoken} = $self->authtoken;

@@ -297,6 +297,11 @@ CIRC_MOD_MAP['STATE-MFRM'] =  {
 	maxFine					: "overdue_mid"
 };
 
+/* this will set defaults even if no one asked for them */
+log_debug("Calling getItemConfig() to force defaults..");
+getItemConfig();
+log_debug("getItemConfig() set magneticMedia to "+result.magneticMedia);
+
 
 function getItemConfig() {
 
@@ -325,11 +330,17 @@ function getItemConfig() {
 		config = MARC_ITEM_TYPE_MAP[marcType];
 	}
 
-	if( config ) {
-		/* go ahead and set some default result 
-			data (which may be overidden) */
-		for( var i in config ) 
-			result[i] = config[i];
+	/* if no config could be found, default to 'book' */
+	if(!config) {
+		log_warn("item_config found no circ_mod OR MARC config, defaulting to 'book'");
+		config = CIRC_MOD_MAP['book'];
+	}
+
+	/* go ahead and set some default result 
+		data (which may be overidden) */
+	for( var i in config ) {
+		log_debug("item_config setting result defaults: "+i+" = " +config[i]);
+		result[i] = config[i];
 	}
 
 	return config;
