@@ -225,7 +225,7 @@ RemoteRequest.prototype.send = function(blocking) {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 		if( XML_HTTP_SERVER ) 
 			url = 'http://'+XML_HTTP_SERVER+'/'+XML_HTTP_GATEWAY;
-		if( this.secure ) url = url.replace(/http/, 'https');
+		if( this.secure ) url = url.replace(/http:/, 'https:');
 		else url = url.replace(/https/, 'http');
 	}
 
