@@ -4,7 +4,8 @@ if (typeof cat == 'undefined') var cat = {};
 cat.util = {};
 
 cat.util.EXPORT_OK	= [ 
-	'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies',
+	'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
+	'mark_item_missing', 'mark_item_damaged',
 ];
 cat.util.EXPORT_TAGS	= { ':all' : cat.util.EXPORT_OK };
 
@@ -192,5 +193,88 @@ cat.util.spawn_copy_editor = function(list,edit) {
 		alert(E);
 	}
 }
+
+cat.util.mark_item_damaged = function(copy_ids) {
+	var error;
+	try {
+		JSAN.use('util.error'); error = new util.error();
+		JSAN.use('util.functional');
+		JSAN.use('util.network'); var network = new util.network();
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		if (typeof copies.ilsevent != 'undefined') throw(copies);
+		var magic_status = false;
+		for (var i = 0; i < copies.length; i++) {
+			var status = copies[i].status(); if (typeof status == 'object') status = status.id();
+			if (typeof my_constants.magical_statuses[ status ] != 'undefined') magic_status = true;
+		}
+		if (magic_status) {
+		
+			error.yns_alert('Action failed.  One or more of these items is in a special status (Checked Out, In Transit, etc.) and cannot be changed to the Damaged status.','Action failed.','OK',null,null,'Check here to confirm this message');
+
+		} else {
+
+			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
+
+			if (r == 0) {
+				var count = 0;
+				for (var i = 0; i < copies.length; i++) {
+					try {
+						var robj = network.simple_request('MARK_ITEM_DAMAGED',[ses(),copies[i].id()]);
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						count++;
+					} catch(E) {
+						error.standard_unexpected_error_alert('Error marking item ' + copies[i].barcode() + ' damaged.',E);
+					}
+				}
+				alert(count == 1 ? 'Item marked Damaged' : count + ' items marked Damaged.');
+			}
+		}
+
+	} catch(E) {
+		if (error) error.standard_unexpected_error_alert('cat.util.mark_item_damaged',E); else alert('FIXME: ' + E);
+	}
+}
+
+cat.util.mark_item_missing = function(copy_ids) {
+	var error;
+	try {
+		JSAN.use('util.error'); error = new util.error();
+		JSAN.use('util.functional');
+		JSAN.use('util.network'); var network = new util.network();
+		var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE', [ copy_ids ]);
+		if (typeof copies.ilsevent != 'undefined') throw(copies);
+		var magic_status = false;
+		for (var i = 0; i < copies.length; i++) {
+			var status = copies[i].status(); if (typeof status == 'object') status = status.id();
+			if (typeof my_constants.magical_statuses[ status ] != 'undefined') magic_status = true;
+		}
+		if (magic_status) {
+		
+			error.yns_alert('Action failed.  One or more of these items is in a special status (Checked Out, In Transit, etc.) and cannot be changed to the Missing status.','Action failed.','OK',null,null,'Check here to confirm this message');
+
+		} else {
+
+			var r = error.yns_alert('Change the status for these items to Missing?  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
+
+			if (r == 0) {
+				var count = 0;
+				for (var i = 0; i < copies.length; i++) {
+					try {
+						var robj = network.simple_request('MARK_ITEM_MISSING',[ses(),copies[i].id()]);
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						count++;
+					} catch(E) {
+						error.standard_unexpected_error_alert('Error marking item ' + copies[i].barcode() + ' missing.',E);
+					}
+				}
+				alert(count == 1 ? 'Item marked Missing' : count + ' items marked Missing.');
+			}
+		}
+
+	} catch(E) {
+		if (error) error.standard_unexpected_error_alert('cat.util.mark_item_missing',E); else alert('FIXME: ' + E);
+	}
+}
+
 
 dump('exiting cat/util.js\n');

@@ -128,6 +128,8 @@ const api = {
 	'FM_BLOB_RETRIEVE_VIA_Z3950_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_class' },
 	'FM_BLOB_RETRIEVE_VIA_Z3950_RAW_SEARCH' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.search_service' },
 	'RETRIEVE_Z3950_SERVICES' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.retrieve_services' },
+	'MARK_ITEM_DAMAGED' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.mark_item_damaged' },
+	'MARK_ITEM_MISSING' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.mark_item_missing' },
 	'MARK_ITEM_LOST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.set_lost' },
 	'MARK_ITEM_CLAIM_RETURNED' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.circulation.set_claims_returned' },
 	'MODS_SLIM_METARECORD_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.metarecord.mods_slim.retrieve' },

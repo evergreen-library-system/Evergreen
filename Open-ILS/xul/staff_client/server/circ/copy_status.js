@@ -48,6 +48,8 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
+							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
+							obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
@@ -59,6 +61,8 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
+							obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 							obj.controller.view.sel_clip.setAttribute('disabled','false');
@@ -138,6 +142,20 @@ circ.copy_status.prototype = {
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								circ.util.show_copy_details( obj.selection_list[i].copy_id );
 							}
+						}
+					],
+					'sel_mark_items_damaged' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_damaged( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_mark_items_missing' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_missing( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
 						}
 					],
 					'sel_bucket' : [
