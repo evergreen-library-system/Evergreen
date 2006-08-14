@@ -225,6 +225,11 @@ sub abort_transit {
 
 	my $holdtransit = $e->retrieve_action_hold_transit_copy($transit->id);
 
+	return $e->event unless $e->delete_action_transit_copy($transit);
+	return $e->event unless $e->update_asset_copy($copy);
+
+	$e->commit;
+
 	# if this is a hold transit, un-capture/un-target the hold
 	if($holdtransit) {
 		$hold = $e->retrieve_action_hold_request($holdtransit->hold)
@@ -233,10 +238,6 @@ sub abort_transit {
 		return $evt if $evt;
 	}
 
-	return $e->event unless $e->delete_action_transit_copy($transit);
-	return $e->event unless $e->update_asset_copy($copy);
-
-	$e->commit;
 	return 1;
 }
 
