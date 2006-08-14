@@ -65,6 +65,34 @@ cat.copy_browser.prototype = {
 								obj.list.clear();
 							}
 						],
+						'sel_mark_items_damaged' : [
+							['command'],
+							function() {
+								JSAN.use('cat.util'); JSAN.use('util.functional');
+
+								var list = util.functional.filter_list( obj.sel_list, function (o) { return o.split(/_/)[0] == 'acp'; });
+
+								list = util.functional.map_list( list, function (o) { return o.split(/_/)[1]; });
+
+								cat.util.mark_item_damaged( list );
+
+								obj.refresh_list();
+							}
+						],
+						'sel_mark_items_missing' : [
+							['command'],
+							function() {
+								JSAN.use('cat.util'); JSAN.use('util.functional');
+
+								var list = util.functional.filter_list( obj.sel_list, function (o) { return o.split(/_/)[0] == 'acp'; });
+
+								list = util.functional.map_list( list, function (o) { return o.split(/_/)[1]; });
+
+								cat.util.mark_item_missing( list );
+
+								obj.refresh_list();
+							}
+						],
 						'sel_patron' : [
 							['command'],
 							function() {
@@ -1342,6 +1370,8 @@ cat.copy_browser.prototype = {
 			obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
 			obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 			obj.controller.view.sel_patron.setAttribute('disabled','true');
+			obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
+			obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
 			if (found_aou) {
 				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
@@ -1354,6 +1384,8 @@ cat.copy_browser.prototype = {
 				obj.controller.view.cmd_transfer_volume.setAttribute('disabled','false');
 			}
 			if (found_acp) {
+				obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
+				obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 				obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
 				obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
 				obj.controller.view.cmd_delete_items.setAttribute('disabled','false');

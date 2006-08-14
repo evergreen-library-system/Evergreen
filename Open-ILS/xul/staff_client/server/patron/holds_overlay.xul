@@ -15,8 +15,10 @@
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" accesskey="S"/>
 		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuseparator />
 		<menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
 		<menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
+		<menuseparator />
 		<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 		<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 		<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" accesskey="E"/>
@@ -24,6 +26,9 @@
 		<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R"/>
 		<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F"/>
 		-->
+		<menuseparator />
+		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 		<menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
 		<menuitem label="Cancel Hold" command="cmd_holds_cancel" accesskey="C"/>
 		<menuseparator />
@@ -58,8 +63,10 @@
 				<menuitem label="Show in Catalog" command="cmd_show_catalog"  accesskey="S"/>
 				<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 				<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+				<menuseparator />
 				<menuitem label="Retrieve Patron" command="cmd_retrieve_patron" accesskey="P"/>
 				<menuitem label="Show Notices" command="cmd_show_notifications" accesskey="N" />
+				<menuseparator />
 				<menuitem label="Edit Pickup Library" command="cmd_holds_edit_pickup_lib" accesskey="L"/>
 				<menuitem label="Edit Phone Notification" command="cmd_holds_edit_phone_notify" accesskey="P"/>
 				<menuitem label="Toggle Email Notification" command="cmd_holds_edit_email_notify" accesskey="E" />
@@ -67,6 +74,9 @@
 				<menuitem label="Edit Hold Range" command="cmd_holds_edit_selection_depth" accesskey="R" />
 				<menuitem label="Edit Hold Focus" command="cmd_broken" accesskey="F" />
 				-->
+				<menuseparator />
+				<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+				<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 				<menuitem label="Find Another Target" command="cmd_holds_retarget" accesskey="T"/>
 				<menuitem label="Cancel Hold" command="cmd_holds_cancel"  accesskey="C"/>
 				<menuseparator />

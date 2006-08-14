@@ -73,6 +73,8 @@
 		<command id="cmd_show_all_libs" />
 		<command id="cmd_show_libs_with_copies" />
 
+		<command id="sel_mark_items_damaged" />
+		<command id="sel_mark_items_missing" />
 		<command id="cmd_add_items"/>
 		<command id="cmd_add_items_to_buckets"/>
 		<command id="cmd_edit_items"/>
@@ -95,6 +97,8 @@
 			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 			<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
+			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
@@ -130,6 +134,8 @@
 							<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 							<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 							<menuitem command="cmd_add_items_to_buckets" label="Add Items to Buckets" accesskey="B"/>
+							<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+							<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
 							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
 							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 							<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>

@@ -65,6 +65,8 @@
 	</script>
 
 	<commandset id="holds_cmds">
+		<command id="sel_mark_items_damaged" disabled="true"/>
+		<command id="sel_mark_items_missing" disabled="true"/>
 		<command id="sel_copy_details" disabled="true"/>
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_clip" />

@@ -103,6 +103,8 @@ patron.holds.prototype = {
 						function(o) { return JSON2js( o.getAttribute('retrieve_id') ); }
 					);
 					if (obj.retrieve_ids.length > 0) {
+						obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
+						obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 						obj.controller.view.sel_copy_details.setAttribute('disabled','false');
 						obj.controller.view.sel_patron.setAttribute('disabled','false');
 						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','false');
@@ -115,6 +117,8 @@ patron.holds.prototype = {
 						obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
 						obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 					} else {
+						obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
+						obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
 						obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 						obj.controller.view.sel_patron.setAttribute('disabled','true');
 						obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
@@ -150,6 +154,20 @@ patron.holds.prototype = {
 						function() {
 							JSAN.use('circ.util');
 							circ.util.show_last_few_circs(obj.retrieve_ids);
+						}
+					],
+					'sel_mark_items_damaged' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_damaged( util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_mark_items_missing' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_missing( util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
 						}
 					],
 					'sel_copy_details' : [

@@ -28,6 +28,34 @@ patron.items.prototype = {
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
 					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids); } ],
+					'sel_mark_items_damaged' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_damaged( util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_mark_items_missing' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_missing( util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_mark_items_damaged2' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_damaged( util.functional.map_list( obj.retrieve_ids2, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_mark_items_missing2' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_missing( util.functional.map_list( obj.retrieve_ids2, function(o) { return o.copy_id; } ) );
+						}
+					],
 					'sel_copy_details' : [ ['command'],
 						function() {
 							JSAN.use('circ.util');
@@ -65,6 +93,10 @@ patron.items.prototype = {
 
 		obj.retrieve();
 
+		obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
+		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
+		obj.controller.view.sel_mark_items_damaged2.setAttribute('disabled','true');
+		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','true');
 		obj.controller.view.sel_clip.setAttribute('disabled','true');
 		obj.controller.view.sel_clip2.setAttribute('disabled','true');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','true');
@@ -693,6 +725,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','false');
 		obj.controller.view.sel_patron.setAttribute('disabled','false');
+		obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
+		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 
 		obj.retrieve_ids = list;
 	},
@@ -711,6 +745,8 @@ patron.items.prototype = {
 		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
 		obj.controller.view.sel_patron2.setAttribute('disabled','false');
+		obj.controller.view.sel_mark_items_damaged2.setAttribute('disabled','false');
+		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','false');
 
 		this.retrieve_ids2 = list;
 	},
