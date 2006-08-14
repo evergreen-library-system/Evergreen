@@ -1217,6 +1217,8 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 			if (!idlClass) continue;
 			char* cname = osrfHashGet(idlClass, "classname");
 
+			if (strcmp(core_class,snode->key)) continue;
+
 			jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
 			while ( (node = jsonObjectIteratorNext( select_itr )) ) {
 				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
