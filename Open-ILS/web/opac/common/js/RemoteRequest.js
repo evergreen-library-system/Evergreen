@@ -222,11 +222,14 @@ RemoteRequest.prototype.send = function(blocking) {
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
 	if(isXUL()) {
-		netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
 		if( XML_HTTP_SERVER ) 
 			url = 'http://'+XML_HTTP_SERVER+'/'+XML_HTTP_GATEWAY;
-		if( this.secure ) url = url.replace(/http:/, 'https:');
-		else url = url.replace(/https/, 'http');
+
+		if( url.match(/^http:/) && 
+				(this.secure || location.href.match(/^https:/)) ) {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+			url = url.replace(/^http:/, 'https:');
+		}
 	}
 
 	var data = null;
