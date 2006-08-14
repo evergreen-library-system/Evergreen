@@ -70,7 +70,7 @@ function advExtractMARC(tbody) {
 	var tag = $n(tbody, 'advanced.marc.tag').value;
 	if(!tag) return null;
 
-	return { 'term' : term, 'restrict' :  [ { 'tag' : tag, 'subfield' : subfield } ] };
+	return { 'term' : term.toLowerCase(), 'restrict' :  [ { 'tag' : tag, 'subfield' : subfield } ] };
 }
 
 function advGenericSearch() {
@@ -89,14 +89,14 @@ function advGenericSearch() {
 			arg[PARAM_TERM]		= "";
 			arg[PARAM_RTYPE]		= RTYPE_ISBN;
 			arg[PARAM_OFFSET]		= 0;
-			arg[PARAM_ADVTERM]	= term
+			arg[PARAM_ADVTERM]	= term.toLowerCase();
 			break;
 		
 		case 'issn' :
 			arg.page					= RRESULT;
 			arg[PARAM_STYPE]		= "";
 			arg[PARAM_TERM]		= "";
-			arg[PARAM_ADVTERM]	= term;
+			arg[PARAM_ADVTERM]	= term.toLowerCase();
 			arg[PARAM_OFFSET]		= 0;
 			arg[PARAM_RTYPE]		= RTYPE_ISSN;
 			break;
@@ -105,7 +105,7 @@ function advGenericSearch() {
 			arg.page					= RRESULT;
 			arg[PARAM_STYPE]		= "";
 			arg[PARAM_TERM]		= "";
-			arg[PARAM_ADVTERM]	= term;
+			arg[PARAM_ADVTERM]	= term.toLowerCase();
 			arg[PARAM_OFFSET]		= 0;
 			arg[PARAM_RTYPE]		= RTYPE_TCN;
 			break;
@@ -125,7 +125,8 @@ function advGenericSearch() {
 			arg[PARAM_OFFSET] = 0;
 			arg[PARAM_DEPTH]	= depthSelGetDepth();
 			arg[PARAM_LOCATION]	= depthSelGetNewLoc();
-			arg[PARAM_SEARCHES] = js2JSON([{ 'term' : term, 'restrict' :  [ { 'tag' : '010', 'subfield' : '_' } ] }]);
+			arg[PARAM_SEARCHES] = js2JSON([{ 'term' : term.toLowerCase(), 
+					'restrict' :  [ { 'tag' : '010', 'subfield' : '_' } ] }]);
 			arg[PARAM_ADVTYPE] = ADVTYPE_MARC;
 			arg[PARAM_TERM] = "";
 			break;
