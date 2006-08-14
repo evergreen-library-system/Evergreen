@@ -224,7 +224,13 @@ patron.search_form.prototype = {
 				} else {
 					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
 					//value = value.replace(/\d/g,'');
-					value = value.replace(/[^\w\s]/g,'');
+					switch(id) {
+						case 'family_name' :
+						case 'first_given_name' :
+						case 'second_given_name' :
+							value = value.replace(/[^\w\s]/g,'');
+						break;
+					}
 					if (value != '') {
 						query += id + '=' + window.escape(value);
 						obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
