@@ -751,4 +751,40 @@ sub copy_details {
 
 
 
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_damaged',
+);
+__PACKAGE__->register_method(
+	method => 'mark_item',
+	api_name => 'open-ils.circ.mark_item_missing',
+);
+
+sub mark_item {
+	my( $self, $conn, $auth, $copy_id ) = @_;
+	my $e = new_editor(authtoken=>$auth, xact =>1);
+	return $e->event unless $e->checkauth;
+
+	my $perm = 'MARK_ITEM_MISSING';
+	my $stat = OILS_COPY_STATUS_MISSING;
+
+	if( $self->api_name =~ /damaged/ ) {
+		$perm = 'MARK_ITEM_DAMAGED';
+		$stat = OILS_COPY_STATUS_DAMAGED;
+	}
+
+	my $copy = $e->retrieve_asset_copy($copy_id)
+		or return $e->event;
+	$copy->status($stat);
+
+	$e->update_asset_copy($copy) or return $e->event;
+
+	$e->commit;
+	return 1;
+}
+
+
+
+
+
 1;
