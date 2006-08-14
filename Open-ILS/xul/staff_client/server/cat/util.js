@@ -205,7 +205,8 @@ cat.util.mark_item_damaged = function(copy_ids) {
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {
 			var status = copies[i].status(); if (typeof status == 'object') status = status.id();
-			if (typeof my_constants.magical_statuses[ status ] != 'undefined') magic_status = true;
+			if (typeof my_constants.magical_statuses[ status ] != 'undefined') 
+				if (my_constants.magical_statuses[ status ].block_mark_item_action) magic_status = true;
 		}
 		if (magic_status) {
 		
@@ -213,7 +214,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  You will also have to manually adjust any pertinent holds.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
 
 			if (r == 0) {
 				var count = 0;
@@ -246,7 +247,8 @@ cat.util.mark_item_missing = function(copy_ids) {
 		var magic_status = false;
 		for (var i = 0; i < copies.length; i++) {
 			var status = copies[i].status(); if (typeof status == 'object') status = status.id();
-			if (typeof my_constants.magical_statuses[ status ] != 'undefined') magic_status = true;
+			if (typeof my_constants.magical_statuses[ status ] != 'undefined') 
+				if (my_constants.magical_statuses[ status ].block_mark_item_action) magic_status = true;
 		}
 		if (magic_status) {
 		
@@ -254,7 +256,7 @@ cat.util.mark_item_missing = function(copy_ids) {
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Missing?  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert('Change the status for these items to Missing?  You will have to manually adjust any pertinent holds.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
 
 			if (r == 0) {
 				var count = 0;

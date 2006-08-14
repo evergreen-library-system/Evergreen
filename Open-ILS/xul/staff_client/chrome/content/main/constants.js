@@ -2,10 +2,10 @@ dump('Loading constants.js\n');
 
 const my_constants = {
 	'magical_statuses' : {
-		'1' : 't', /* | Checked out    | t */
-		'3' : 't', /* | Lost           | f */
-		'6' : 't', /* | In transit     | t */
-		'8' : 't', /* | On holds shelf | t */
+		'1' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Checked out    | t */
+		'3' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Lost           | f */
+		'6' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | In transit     | t */
+		'8' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : false }, /* | On holds shelf | t */
 	}
 }
 
