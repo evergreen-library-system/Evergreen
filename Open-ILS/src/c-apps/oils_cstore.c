@@ -1469,6 +1469,14 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 							);
 						}
 
+						if (jsonObjectGetKey(order_hash, "select")) {
+							jsonObjectSetKey(
+								jsonObjectGetIndex(fake_params, 1),
+								"select",
+								jsonObjectClone(jsonObjectGetKey(order_hash, "select"))
+							);
+						}
+
 						jsonObject* kids = doSearch(ctx, kid_idl, fake_params, err);
 
 						if(*err) {
