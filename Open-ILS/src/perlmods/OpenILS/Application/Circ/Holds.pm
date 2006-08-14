@@ -477,31 +477,24 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub retrieve_hold_status {
-	my($self, $client, $login_session, $hold_id) = @_;
+	my($self, $client, $auth, $hold_id) = @_;
 
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	my $hold = $e->retrieve_action_hold_request($hold_id)
+		or return $e->event;
+	return $e->event unless $e->allowed('VIEW_HOLD');
 
-	my( $requestor, $target, $hold, $copy, $transit, $evt );
+	return 1 unless $hold->current_copy;
+	return 2 unless $hold->capture_time;
 
-	( $hold, $evt ) = $apputils->fetch_hold($hold_id);
-	return $evt if $evt;
+	my $copy = $e->retrieve_asset_copy($hold->current_copy)
+		or return $e->event;
 
-	( $requestor, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $hold->usr, 'VIEW_HOLD' );
-	return $evt if $evt;
+	return 3 if $copy->status == OILS_COPY_STATUS_IN_TRANSIT;
+	return 4 if $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 
-	return 1 unless (defined($hold->current_copy));
-	
-	( $copy, $evt ) = $apputils->fetch_copy($hold->current_copy);
-	return $evt if $evt;
-
-	return 4 if ($hold->capture_time and $copy->circ_lib eq $hold->pickup_lib);
-
-	( $transit, $evt ) = $apputils->fetch_hold_transit_by_hold( $hold->id );
-	return 4 if(ref($transit) and defined($transit->dest_recv_time) ); 
-
-	return 3 if defined($hold->capture_time);
-
-	return 2;
+	return -1;
 }
 
 
