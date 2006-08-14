@@ -14,6 +14,9 @@ use OpenILS::SIP::Transaction;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::ScriptBuilder;
 use Data::Dumper;
+use OpenILS::Const qw/:const/;
+use OpenSRF::Utils qw/:datetime/;
+use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
 my %item_db;
@@ -111,7 +114,6 @@ sub run_attr_script {
 sub magnetic {
     my $self = shift;
 	 return 0 unless $self->run_attr_script;
-	 syslog('LOG_DEBUG', "OILS: ITEM CONFIG => ". Dumper($self->{item_config_result}));
 	 my $mag = $self->{item_config_result}->{magneticMedia};
 	 syslog('LOG_DEBUG', "OILS: magnetic = $mag");
 	 return ($mag and $mag eq 't') ? 1 : 0;
@@ -119,7 +121,10 @@ sub magnetic {
 
 sub sip_media_type {
     my $self = shift;
-	 return '001';
+	 return 0 unless $self->run_attr_script;
+	 my $media = $self->{item_config_result}->{SIPMediaType};
+	 syslog('LOG_DEBUG', "OILS: media type = $media");
+	 return ($media) ? $media : '001';
 }
 
 sub sip_item_properties {
@@ -173,13 +178,18 @@ sub current_location {
 # 13 Missing 
 sub sip_circulation_status {
 	my $self = shift;
-	return '03' if $self->{copy}->status->name =~ /available/i;
-	return '04' if $self->{copy}->status->name =~ /checked out/i;
-	return '06' if $self->{copy}->status->name =~ /in process/i;
-	return '08' if $self->{copy}->status->name =~ /on holds shelf/i;
-	return '09' if $self->{copy}->status->name =~ /reshelving/i;
-	return '10' if $self->{copy}->status->name =~ /in transit/i;
-	return '12' if $self->{copy}->status->name =~ /lost/i;
+	my $stat = $self->{copy}->status->id;
+
+	return '02' if $stat == OILS_COPY_STATUS_ON_ORDER;
+	return '03' if $stat == OILS_COPY_STATUS_AVAILABLE;
+	return '04' if $stat == OILS_COPY_STATUS_CHECKED_OUT;
+	return '06' if $stat == OILS_COPY_STATUS_IN_PROCESS;
+	return '08' if $stat == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+	return '09' if $stat == OILS_COPY_STATUS_RESHELVING;
+	return '10' if $stat == OILS_COPY_STATUS_IN_TRANSIT;
+	return '12' if $stat == OILS_COPY_STATUS_LOST;
+	return '13' if $stat == OILS_COPY_STATUS_MISSING;
+		
 	return 01;
 }
 
@@ -198,8 +208,8 @@ sub fee {
 
 
 sub fee_currency {
-    my $self = shift;
-    'USD';
+	my $self = shift;
+	return OpenILS::SIP->config()->{implementation_config}->{currency};
 }
 
 sub owner {
@@ -234,8 +244,10 @@ sub due_date {
 			} )->[0];
 	}
 
-	return $circ->due_date if $circ;
-	return 0;
+	return 0 unless $circ;
+	my $due = OpenILS::SIP->format_date($circ->due_date);
+	syslog('LOG_DEBUG', "Item due date = $due");
+	return $due;
 }
 
 sub recall_date {

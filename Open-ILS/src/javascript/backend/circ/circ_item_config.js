@@ -1,6 +1,21 @@
 load_lib('circ/circ_lib.js');
 log_debug('loading circ_item_config.js ...');
 
+
+/* SIP media types
+000 Other
+001 Book
+002 Magazine
+003 Bound journal
+004 Audio tape
+005 Video tape
+006 CD/CDROM
+007 Diskette
+008 Book with diskette
+009 Book with CD
+010 Book with audio tape
+*/
+
 /* ----------------------------------------------------------------------------- 
 	Configure the duration rules for the various item types and circ modifiers
 
@@ -12,6 +27,7 @@ log_debug('loading circ_item_config.js ...');
 var MARC_ITEM_TYPE_MAP = {
 
 	a : { /* Language material [Books] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -19,6 +35,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	t : { /* Manuscript language material [Books] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -26,6 +43,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	g : { /* Projected medium [Videos, etc.] */
+		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -33,6 +51,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	k : { /* Two-dimensional nonprojectable graphic [Card, charts, etc.] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '3_month_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -40,6 +59,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	r : { /* Three-dimensional artifact or naturally occurring object [Models, games, etc.] */ 
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -47,6 +67,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	o : { /* Kit [Mixture of item types] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -54,6 +75,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	p : { /* Mixed materials [Mixture of item types] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -61,6 +83,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	e : { /* Cartographic material [Map] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -68,6 +91,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	f : { /* Manuscript cartographic material [Map] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '3_days_1_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -75,6 +99,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	c : { /* Notated music [Printed music] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -82,6 +107,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	d : { /* Manuscript notated music [Printed music] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -89,6 +115,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	i : { /* Nonmusical sound recording [Audiobooks, sound effects, etc.] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -96,6 +123,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	j : { /* Musical sound recording [Music] */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -103,6 +131,7 @@ var MARC_ITEM_TYPE_MAP = {
 	},
 
 	m : { /* Computer file */
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -114,6 +143,7 @@ var MARC_ITEM_TYPE_MAP = {
 var CIRC_MOD_MAP = {
 
 	'art'		: {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '3_month_0_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -121,6 +151,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'atlas'		: {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -128,6 +159,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'audiobook' : {
+		SIPMediaType			: '004',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -135,6 +167,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'av' : {
+		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -142,6 +175,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'bestseller'				: {
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -149,6 +183,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'bestsellernh'				: {
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -156,6 +191,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'book'						: {
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -163,6 +199,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'cd'				: {
+		SIPMediaType			: '006',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -170,6 +207,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'dvd'							: {
+		SIPMediaType			: '006',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -177,6 +215,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'e-book' : {
+		SIPMediaType			: '001',
 		magneticMedia			: 'f',
 		durationRule			: '3_days_1_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -184,6 +223,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'equipment' : { 
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '3_days_1_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -191,6 +231,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'filmstrip'					: {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -198,6 +239,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'kit' : {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -205,6 +247,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'magazine'	: {
+		SIPMediaType			: '002',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -212,6 +255,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'map' : {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '3_days_1_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -219,6 +263,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'microform' : {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -226,6 +271,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'music' : {
+		SIPMediaType			: '004',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -233,6 +279,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'record'						: {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -240,6 +287,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'software' : {
+		SIPMediaType			: '006',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
@@ -247,11 +295,13 @@ var CIRC_MOD_MAP = {
 	},
 
 	'talking book'				: {  
+		SIPMediaType			: '006',
 		magneticMedia			: 'f',
 		durationRule			: 'unlimited',
 	},
 
 	'toy'							: {
+		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -259,6 +309,7 @@ var CIRC_MOD_MAP = {
 	},
 
 	'video'	: {
+		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
 		recurringFinesRule	: '50_cent_per_day',
@@ -285,12 +336,14 @@ CIRC_MOD_MAP['PAPERBACK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['REALIA'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['RESERVE'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['STATE-BOOK'] = {
+	SIPMediaType			: '001',
 	magneticMedia			: 'f',
 	durationRule			: '35_days_1_renew',
 	recurringFinesRule	: "10_cent_per_day",
 	maxFine					: "overdue_mid"
 };
 CIRC_MOD_MAP['STATE-MFRM'] =  {
+	SIPMediaType			: '001',
 	magneticMedia			: 'f',
 	durationRule			: '14_days_2_renew',
 	recurringFinesRule	: "10_cent_per_day",

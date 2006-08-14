@@ -18,6 +18,8 @@ use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils qw/:datetime/;
+use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
 my $editor;
@@ -85,6 +87,26 @@ sub make_editor {
 		$e = OpenILS::Utils::CStoreEditor->new(xact =>1);
 	}
 	return $e;
+}
+
+sub format_date {
+	my $class = shift;
+	my $date = shift;
+	return "" unless $date;
+
+	$date = DateTime::Format::ISO8601->new->
+		parse_datetime(OpenSRF::Utils::clense_ISO8601($date));
+	my @time = localtime($date->epoch);
+
+	my $year = $time[5]+1900;
+	my $mon = $time[4]+1;
+	my $day = $time[3];
+
+	$mon =~ s/^(\d)$/0$1/;
+	$day =~ s/^(\d)$/0$1/;
+	$date = "$year$mon$day";
+	syslog('LOG_DEBUG', "OILS: formatted date: $date");
+	return $date;
 }
 
 

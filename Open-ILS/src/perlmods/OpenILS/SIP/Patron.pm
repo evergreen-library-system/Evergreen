@@ -133,23 +133,8 @@ sub home_phone {
 
 sub sip_birthdate {
 	my $self = shift;
-	my $dob	= $self->{user}->dob;
-	return "" unless $dob;
-
-	$dob = DateTime::Format::ISO8601->new->
-		parse_datetime(OpenSRF::Utils::clense_ISO8601($dob));
-	my @time = localtime($dob->epoch);
-
-	my $year = $time[5]+1900;
-	my $mon = $time[4]+1;
-	my $day = $time[3];
-
-	$mon =~ s/^(\d)$/0$1/;
-	$day =~ s/^(\d)$/0$1/;
-	$dob = "$year$mon$day";
-
+	my $dob = OpenILS::SIP->format_date($self->{user}->dob);
 	syslog('LOG_DEBUG', "OILS: Patron DOB = $dob");
-
 	return $dob;
 }
 
@@ -327,7 +312,7 @@ sub __hold_to_title {
 
 sub __copy_to_title {
 	my( $e, $copy ) = @_;
-	syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
+	#syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
 	return $copy->dummy_title if $copy->call_number == -1;	
 	my $vol = $e->retrieve_asset_call_number($copy->call_number);
 	return __volume_to_title($e, $vol);
@@ -336,14 +321,14 @@ sub __copy_to_title {
 
 sub __volume_to_title {
 	my( $e, $volume ) = @_;
-	syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
+	#syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
 	return __record_to_title($e, $volume->record);
 }
 
 
 sub __record_to_title {
 	my( $e, $title_id ) = @_;
-	syslog('LOG_DEBUG', "OILS: record_to_title($title_id)");
+	#syslog('LOG_DEBUG', "OILS: record_to_title($title_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.record.mods_slim.retrieve', $title_id );
@@ -352,7 +337,7 @@ sub __record_to_title {
 
 sub __metarecord_to_title {
 	my( $e, $m_id ) = @_;
-	syslog('LOG_DEBUG', "OILS: metarecord_to_title($m_id)");
+	#syslog('LOG_DEBUG', "OILS: metarecord_to_title($m_id)");
 	my $mods = $U->simplereq(
 		'open-ils.search',
 		'open-ils.search.biblio.metarecord.mods_slim.retrieve', $m_id);
@@ -385,9 +370,9 @@ sub overdue_items {
 	#$overdues[$_] = __circ_to_title($self->{editor}, $overdues[$_]) for @overdues;
 
 	my @o;
+	syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
 	for my $circid (@overdues) {
 		next unless $circid;
-		syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circ $circid");
 		push( @o, __circ_to_title($self->{editor}, $circid) );
 	}
 	@overdues = @o;
@@ -417,9 +402,9 @@ sub charged_items {
 	#$charges[$_] = __circ_to_title($self->{editor}, $charges[$_]) for @charges;
 
 	my @c;
+	syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
 	for my $circid (@charges) {
 		next unless $circid;
-		syslog('LOG_DEBUG', "OILS: charged_items() fleshing circ $circid");
 		push( @c, __circ_to_title($self->{editor}, $circid) );
 	}
 	@charges = @c;

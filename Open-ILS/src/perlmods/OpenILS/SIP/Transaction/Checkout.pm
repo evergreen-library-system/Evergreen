@@ -68,12 +68,14 @@ sub do_checkout {
 		my @e;
 		push( @e, $_->{textcode} ) for @$resp;
 		syslog('LOG_INFO', "OILS: Checkout permit failed with events: @e");
+		$self->screen_msg('Patron is not allowed to check out the selected item');
 		return 0;
 	}
 
 	if( my $code = $U->event_code($resp) ) {
 		my $txt = $resp->{textcode};
 		syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
+		$self->screen_msg('Patron is not allowed to check out the selected item');
 		return 0; 
 	}
 
@@ -84,6 +86,7 @@ sub do_checkout {
 
 	} else {
 		syslog('LOG_WARN', "OILS: Circ permit failed :\n" . Dumper($resp) );
+		$self->screen_msg('Patron is not allowed to check out the selected item');
 		return 0;
 	}
 
@@ -105,13 +108,14 @@ sub do_checkout {
 		if( my $code = $U->event_code($resp) ) {
 			my $txt = $resp->{textcode};
 			syslog('LOG_INFO', "OILS: Checkout failed with event $code : $txt");
+			$self->screen_msg('Checkout failed.  Please contact a librarian');
 			return 0; 
 		}
 
 		syslog('LOG_INFO', "OILS: Checkout succeeded");
 
 		my $circ = $resp->{payload}->{circ};
-		$self->{'due'} = $circ->due_date;
+		$self->{'due'} = OpenILS::SIP->format_date($circ->due_date);
 		$self->ok(1);
 
 		return 1;
