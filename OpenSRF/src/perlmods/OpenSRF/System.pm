@@ -450,7 +450,6 @@ sub hupall {
 	_log( "HUPping brood" );
 	$SIG{CHLD} = 'IGNORE';
 	$SIG{HUP} = 'IGNORE';
-	set_config(); # reload config
 	kill( 'HUP', -$$ );
 #	$SIG{CHLD} = \&process_automation;
 	$SIG{HUP} = sub{ instance()->hupall(); };
