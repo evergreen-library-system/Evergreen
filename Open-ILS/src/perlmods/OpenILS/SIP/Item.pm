@@ -280,8 +280,14 @@ sub print_line {
 # OR
 # 2) It's checked out to the patron and there's no hold queue
 sub available {
-     my ($self, $for_patron) = @_;
-	  return 1;
+	my ($self, $for_patron) = @_;
+
+	my $stat = $self->{copy}->status->id;
+	return 1 if 
+		$stat == OILS_COPY_STATUS_AVAILABLE or
+		$stat == OILS_COPY_STATUS_RESHELVING;
+	
+	return 0;
 }
 
 

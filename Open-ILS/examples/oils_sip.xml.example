@@ -55,6 +55,7 @@
 			<!-- implementation specific config options go here -->
 			<implementation_config>
 				<bootstrap>/openils/conf/bootstrap.conf</bootstrap>
+				<currency>USD</currency>
 
 				<!-- These defines what this SIP code has the ability to support -->
 				<supports>
