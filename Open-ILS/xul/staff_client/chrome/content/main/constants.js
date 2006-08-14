@@ -1,4 +1,14 @@
 dump('Loading constants.js\n');
+
+const my_constants = {
+	'magical_statuses' : {
+		'1' : 't', /* | Checked out    | t */
+		'3' : 't', /* | Lost           | f */
+		'6' : 't', /* | In transit     | t */
+		'8' : 't', /* | On holds shelf | t */
+	}
+}
+
 const api = {
 	'AUTH_INIT' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.init' },
 	'AUTH_COMPLETE' : { 'app' : 'open-ils.auth', 'method' : 'open-ils.auth.authenticate.complete' },

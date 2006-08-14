@@ -75,7 +75,8 @@ function my_init() {
 						"Status",
 						{ 
 							render: 'typeof fm.status() == "object" ? fm.status().name() : g.data.hash.ccs[ fm.status() ].name()', 
-							input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+							input: g.safe_to_edit_copy_status() ? 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.ccs, function(obj) { return [ obj.name(), obj.id(), typeof my_constants.magical_statuses[obj.id()] != "undefined" ? true : false ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
+							//input: 'c = function(v){ g.apply("status",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list( g.data.list.ccs, function(obj) { return typeof my_constants.magical_statuses[obj.id()] == "undefined"; } ), function(obj) { return [ obj.name(), obj.id() ]; } ).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 						}
 					]
 				].concat(g.panes_and_field_names.left_pane);
@@ -345,6 +346,23 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 		} catch(E) {
 			g.error.standard_unexpected_error_alert('apply_stat_cat',E);
 		}
+	}
+}
+
+/******************************************************************************************************/
+/* This returns true if none of the copies being edited have a magical status found in my_constants.magical_statuses */
+
+g.safe_to_edit_copy_status = function() {
+	try {
+		var safe = true;
+		for (var i = 0; i < g.copies.length; i++) {
+			var status = g.copies[i].status(); if (typeof status == 'object') status = status.id();
+			if (typeof my_constants.magical_statuses[ status ] != 'undefined') safe = false;
+		}
+		return safe;
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('safe_to_edit_copy_status?',E);
+		return false;
 	}
 }
 
