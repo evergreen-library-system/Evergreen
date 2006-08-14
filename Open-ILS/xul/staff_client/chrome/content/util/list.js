@@ -832,6 +832,7 @@ util.list.prototype = {
 			obj.on_all_fleshed =
 				function() {
 					try {
+						JSAN.use('util.money');
 						var rows = [];
 						var treeitems = obj.treechildren.childNodes;
 						for (var i = 0; i < treeitems.length; i++) {
@@ -843,7 +844,23 @@ util.list.prototype = {
 							//alert('value = ' + value.value + ' node = ' + value.node);
 							rows.push( value );
 						}
-						rows = rows.sort( function(a,b) { a = a.value; b = b.value; if (a < b) return -1; if (a > b) return 1; return 0; } );
+						rows = rows.sort( function(a,b) { 
+							a = a.value; b = b.value; 
+							if (col.getAttribute('sort_type')) {
+								switch(col.getAttribute('sort_type')) {
+									case 'number' :
+										a = Number(a); b = Number(b);
+									break;
+									case 'money' :
+										a = util.money.dollars_float_to_cents_integer(a);
+										b = util.money.dollars_float_to_cents_integer(b);
+									break;
+								}
+							}
+							if (a < b) return -1; 
+							if (a > b) return 1; 
+							return 0; 
+						} );
 						if (sortDir == 'asc') rows = rows.reverse();
 						while(obj.treechildren.lastChild) obj.treechildren.removeChild( obj.treechildren.lastChild );
 						for (var i = 0; i < rows.length; i++) {

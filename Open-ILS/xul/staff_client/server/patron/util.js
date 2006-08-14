@@ -30,15 +30,18 @@ patron.util.mbts_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'balance_owed', 'label' : 'Balance Owed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.balance_owed() )'
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.balance_owed() )',
+			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_owed', 'label' : 'Total Billed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_owed() )'
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_owed() )',
+			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_paid', 'label' : 'Total Paid', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_paid() )'
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_paid() )',
+			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_note', 'label' : 'Last Billing Note', 'flex' : 2,
@@ -120,7 +123,8 @@ patron.util.mb_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mb.amount() )'
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mb.amount() )',
+			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'billing_type', 'label' : 'Type', 'flex' : 1,
@@ -174,7 +178,8 @@ patron.util.mp_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )'
+			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )',
+			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'payment_type', 'label' : 'Type', 'flex' : 1,
@@ -271,7 +276,8 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'claims_returned_count', 'label' : 'Returns Claimed', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.claims_returned_count()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.claims_returned_count()',
+			'sort_type' : 'number',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : 'Created On', 'flex' : 1, 
@@ -287,7 +293,8 @@ patron.util.columns = function(modify,params) {
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'credit_forward_balance', 'label' : 'Credit', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.credit_forward_balance()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.credit_forward_balance()',
+			'sort_type' : 'money',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'day_phone', 'label' : 'Day Phone', 'flex' : 1, 

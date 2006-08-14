@@ -134,7 +134,7 @@ circ.util.offline_checkout_columns = function(modify,params) {
 		},
 		{
 			'id' : 'noncat_count',
-			'label' : 'Count',
+			'label' : 'Count', 'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
 			'render' : 'my.noncat_count'
 		},
@@ -311,7 +311,7 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 		},
 		{
 			'id' : 'count',
-			'label' : 'Count',
+			'label' : 'Count', 'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
 			'render' : 'my.count'
 		},
@@ -378,7 +378,7 @@ circ.util.columns = function(modify,params) {
 			'render' : 'if (Number(my.acn.owning_lib())>=0) obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); else my.acn.owning_lib().shortname();', 'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1,
+			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1, 'sort_type' : 'number',
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.copy_number()', 'persist' : 'hidden width ordinal',
 		},
 		{
@@ -421,11 +421,11 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.deposit_amount()'
+			'primary' : false, 'hidden' : true, 'render' : 'util.money.sanitize(my.acp.deposit_amount())', 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.price()'
+			'primary' : false, 'hidden' : true, 'render' : 'util.money.sanitize(my.acp.price())', 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
@@ -481,7 +481,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()', 'sort_type' : 'number',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
@@ -501,7 +501,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.uses'
+			'primary' : false, 'hidden' : true, 'render' : 'my.uses', 'sort_type' : 'number',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
@@ -741,6 +741,7 @@ circ.util.std_map_row_to_column = function(error_value) {
 		JSAN.use('util.error'); obj.error = new util.error();
 		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 		JSAN.use('util.network'); obj.network = new util.network();
+		JSAN.use('util.money');
 
 		var my = row.my;
 		var value;
