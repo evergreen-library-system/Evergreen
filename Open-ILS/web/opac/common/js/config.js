@@ -29,6 +29,7 @@ var PARAM_SEARCHES	= 'ss';
 var PARAM_LANGUAGE	= 'la';
 var PARAM_TFORM		= 'tf'; /* temporary format for title result pages */
 var PARAM_RDEPTH		= 'rd';
+var PARAM_REDIR		= 're'; /* true if we have been redirected by IP (we're at a real lib) */
 
 /* URL param values (see comments above) */
 var TERM;  
