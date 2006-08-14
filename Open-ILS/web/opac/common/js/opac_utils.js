@@ -16,7 +16,7 @@ function Request(type) {
 	var p = [];
 
 	if(isXUL()) {
-		if(!location.href.match(/https:\/\//))
+		if(!location.href.match(/^https:/))
 			this.request.setSecure(false);
 	}
 
@@ -286,8 +286,6 @@ function  buildOPACLink(args, slim, ssl) {
 		var v = args[x];
 		if(x == "page" || v == null || v == undefined || v+'' == 'NaN' ) continue;
 		if(x == PARAM_OFFSET && v == 0) continue;
-		/*if(x == PARAM_LOCATION && v == 1) continue;*/
-		if(x == PARAM_DEPTH && v == 0) continue;
 		if(x == PARAM_COUNT && v == 10) continue;
 		if(x == PARAM_FORM && v == 'all' ) continue;
 		if( instanceOf(v, Array) && v.length ) {
@@ -309,7 +307,7 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
 	if(getLocation() != 1) 
 		string += _appendParam(LOCATION, PARAM_LOCATION, args, getLocation, string);
-	if(getDepth() != 0) 
+	if(getDepth() != null) 
 		string += _appendParam(DEPTH,		PARAM_DEPTH, args, getDepth, string);
 	if(getForm() && (getForm() != 'all') ) 
 		string += _appendParam(FORM,		PARAM_FORM, args, getForm, string);
