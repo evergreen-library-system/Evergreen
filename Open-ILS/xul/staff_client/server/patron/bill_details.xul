@@ -147,6 +147,7 @@
 
 		function retrieve_mb() {
 			var mb_list = g.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ] );
+			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(mb_list) ));
 
 			var mb_funcs = [];
 
@@ -166,6 +167,7 @@
 
 		function retrieve_mp() {
 			var mp_list = g.network.simple_request( 'FM_MP_RETRIEVE_VIA_MBTS_ID', [ ses(), g.mbts_id ]);
+			//g.error.sdump('D_DEBUG',g.error.pretty_print( js2JSON(mp_list) ));
 
 			var mp_funcs = [];
 

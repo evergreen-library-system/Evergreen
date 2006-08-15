@@ -194,6 +194,14 @@ patron.util.mp_columns = function(modify,params) {
 			'primary' : false, 'hidden' : false, 'render' : 'my.mp.note()'
 		},
 		{
+			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Workstation', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.cash_drawer().name()'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Staff', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'JSAN.use("patron.util"); var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); s.card().barcode() + " @ " + obj.OpenILS.data.hash.aou[ s.home_ou() ].shortname();'
+		},
+		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mp.xact()'
 		},
