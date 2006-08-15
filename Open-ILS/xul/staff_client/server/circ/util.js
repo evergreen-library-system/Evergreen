@@ -792,6 +792,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			}
 		);
 
+		error.sdump('D_DEBUG','check = ' + error.pretty_print( js2JSON( check ) ) );
+
 		check.message = check.textcode;
 
 		if (check.payload && check.payload.copy) check.copy = check.payload.copy;
@@ -935,6 +937,16 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert('Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
 		} else {
+
+			switch (check.ilsevent) {
+				case 1203 /* COPY_BAD_STATUS */ : 
+				case 7009 /* CIRC_CLAIMS_RETURNED */ :
+				case 7010 /* COPY_ALERT_MESSAGE */ : 
+				case 7011 /* COPY_STATUS_LOST */ : 
+				case 7012 /* COPY_STATUS_MISSING */ : 
+					return null; /* handled */
+				break;
+			}
 
 			throw(check);
 
