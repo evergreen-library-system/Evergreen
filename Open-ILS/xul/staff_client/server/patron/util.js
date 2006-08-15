@@ -378,7 +378,7 @@ patron.util.std_map_row_to_column = function(error_value) {
 			value = eval( col.render );
 		} catch(E) {
 			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-			if (error_value) { value = error_value; } else { value = '???' };
+			if (error_value) { value = error_value; } else { value = '   ' };
 		}
 		return value;
 	}

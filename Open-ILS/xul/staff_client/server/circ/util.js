@@ -597,7 +597,7 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "???"'
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
@@ -749,7 +749,7 @@ circ.util.std_map_row_to_column = function(error_value) {
 			value = eval( col.render );
 		} catch(E) {
 			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
-			if (error_value) value = error_value; else value = '???';
+			if (error_value) value = error_value; else value = '   ';
 		}
 		return value;
 	}
@@ -798,7 +798,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 		if (check.payload && check.payload.record) check.record = check.payload.record;
 		if (check.payload && check.payload.circ) check.circ = check.payload.circ;
 
-		if (!check.route_to) check.route_to = '???';
+		if (!check.route_to) check.route_to = '   ';
 
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
