@@ -1190,7 +1190,11 @@ sub do_checkin {
 			return $self->bail_on_events($e);	
 		}
 
-		if( $hold_transit ) {
+
+		if( $hold_transit or 
+				$U->copy_status($self->copy->status)->id 
+					== OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
+			$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
 			$self->checkin_flesh_events;
 			return;
 		} 
@@ -1421,9 +1425,7 @@ sub process_received_transit {
 	$self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_transit_copy($transit);
 
-	my $hold_transit = $self->editor->search_action_hold_transit_copy(
-		{ hold => $transit->id }
-	);
+	my $hold_transit = $self->editor->retrieve_action_hold_transit_copy($transit->id);
 
    $logger->info("Recovering original copy status in transit: ".$transit->copy_status);
    $copy->status( $transit->copy_status );
@@ -1551,6 +1553,7 @@ sub check_checkin_copy_status {
       if(   $status == OILS_COPY_STATUS_AVAILABLE   ||
             $status == OILS_COPY_STATUS_CHECKED_OUT ||
             $status == OILS_COPY_STATUS_IN_PROCESS  ||
+            $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
             $status == OILS_COPY_STATUS_IN_TRANSIT  ||
             $status == OILS_COPY_STATUS_RESHELVING );
 
