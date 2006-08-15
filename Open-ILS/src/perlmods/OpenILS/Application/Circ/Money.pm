@@ -26,7 +26,8 @@ use OpenILS::Perm;
 use Data::Dumper;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/:logger/;
-use OpenILS::Utils::Editor qw/:funcs/;
+#use OpenILS::Utils::Editor qw/:funcs/;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 __PACKAGE__->register_method(
 	method	=> "make_payments",
@@ -208,7 +209,7 @@ sub _update_patron_credit {
 
 __PACKAGE__->register_method(
 	method	=> "retrieve_payments",
-	api_name	=> "open-ils.circ.money.payment.retrieve.all",
+	api_name	=> "open-ils.circ.money.payment.retrieve.all_",
 	notes		=> "Returns a list of payments attached to a given transaction"
 	);
 	
@@ -222,9 +223,40 @@ sub retrieve_payments {
 	# XXX the logic here is wrong.. we need to check the owner of the transaction
 	# to make sure the requestor has access
 
+	# XXX grab the view, for each object in the view, grab the real object
+
 	return $apputils->simplereq(
 		'open-ils.cstore',
 		'open-ils.cstore.direct.money.payment.search.atomic', { xact => $transid } );
+}
+
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_payments2",
+	api_name	=> "open-ils.circ.money.payment.retrieve.all",
+	notes		=> "Returns a list of payments attached to a given transaction"
+	);
+	
+sub retrieve_payments2 {
+	my( $self, $client, $login, $transid ) = @_;
+
+	my $e = new_editor(authtoken=>$login);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_TRANSACTION');
+
+	my @payments;
+	my $pmnts = $e->search_money_payment({ xact => $transid });
+	for( @$pmnts ) {
+		my $type = $_->payment_type;
+		my $meth = "retrieve_money_$type";
+		my $p = $e->$meth($_->id) or return $e->event;
+		try {
+			$p->cash_drawer($e->retrieve_actor_workstation($p->cash_drawer));
+		} catch Error with {};
+		push( @payments, $p );
+	}
+
+	return \@payments;
 }
 
 
@@ -346,7 +378,8 @@ __PACKAGE__->register_method(
 sub void_bill {
 	my( $s, $c, $authtoken, $billid ) = @_;
 
-	my $e = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+	#my $e = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+	my $e = new_editor( authtoken => $authtoken );
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VOID_BILLING');
 
