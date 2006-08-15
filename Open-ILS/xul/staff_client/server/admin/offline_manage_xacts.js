@@ -256,7 +256,7 @@ admin.offline_manage_xacts.prototype = {
 				{ 
 					'id' : 'textcode', 'flex' : '1', 
 					'label' : 'Event Name', 
-					'render' : "my.event.textcode", 
+					'render' : "JSAN.use('util.functional'); typeof my.event.textcode != 'undefined' ? my.event.textcode : util.functional.map_list( my.event, function(o) { return o.textcode; }).join('/')", 
 				},
 				{
 					'id' : 'desc', 'flex' : '1', 'hidden' : 'true',
