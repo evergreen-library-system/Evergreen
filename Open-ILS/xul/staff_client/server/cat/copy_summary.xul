@@ -58,47 +58,38 @@
 
 				$('caption').setAttribute('tooltiptext','Copy ID = ' + (copy_id || copy.id() ) );
 
+				JSAN.use('circ.util');
+				var columns = circ.util.columns( 
+					{ 
+						'barcode' : { 'hidden' : false },
+						'location' : { 'hidden' : false },
+						'owning_lib' : { 'hidden' : false },
+						'circ_lib' : { 'hidden' : false },
+						'call_number' : { 'hidden' : false },
+						'status' : { 'hidden' : false },
+						'alert_message' : { 'hidden' : false },
+					} 
+				).concat(
+					{
+						'id' : 'total_circs', 'label' : 'Total Circs', 'flex' : 1,
+						'primary' : false, 'hidden' : false, 'persist' : 'hidden width ordinal',
+						'render' : 'obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count' 
+					}
+				);
+
+				JSAN.use('util.list'); g.list = new util.list('item_summary_list');
+				g.list.init(
+					{
+						'columns' : columns,
+						'map_row_to_column' : circ.util.std_map_row_to_column(),
+					}
+				);
+	
 				function acp_callback(req) {
 					try {
 						var copy = req.getResultObject();
 						if (typeof copy.ilsevent != 'undefined') throw(copy);
-						g.network.simple_request(
-							'FM_ACN_RETRIEVE',
-							[ copy.call_number() ],
-							function (rreq) {
-								try {
-									$w('barcode',copy.barcode());	
-									$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
-									$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
-									$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
-									$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
-									$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
-									$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
-									$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
-									$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
-									$w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );	
-								} catch(E) {
-									g.error.standard_unexpected_error_alert('rendering copy',E);
-								}
-								try {
-									var cn = rreq.getResultObject();
-									if (typeof cn.ilsevent != 'undefined') {
-										switch(cn.ilsevent) {
-											case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
-												$w('callnumber','Not Cataloged');	
-											break;
-											default:
-												throw(cn);
-											break;
-										}
-									} else {
-										$w('callnumber',cn.label());	
-									}
-								} catch(E) {
-									g.error.standard_unexpected_error_alert('retrieving volume',E);
-								}
-							}
-						);
+						g.list.append({'row':{'my':{'acp':copy}}});
 					} catch(E) {
 						g.error.standard_unexpected_error_alert('retrieving copy',E);
 					}
@@ -108,18 +99,7 @@
 					g.network.simple_request( 'FM_ACP_RETRIEVE', [ copy_id ], acp_callback);
 				} else {
 					acp_callback( { 'getResultObject' : function() { return copy; } } );
-					copy_id = copy.id();
 				}
-
-				g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ copy_id ],function(req) {
-					try {
-						var robj = req.getResultObject();
-						if (typeof robj.ilsevent != 'undefined') throw(robj);
-						$w('total_circs',robj.total.count);
-					} catch(E) {
-						g.error.standard_unexpected_error_alert('retrieving circ total',E);
-					}
-				});
 
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
@@ -132,52 +112,9 @@
 	]]>
 	</script>
 
-	<groupbox id="groupbox" flex="1" style="overflow: auto; min-height: 100px;">
+	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
 		<caption label="Item Summary" id="caption"/>
-		<grid>
-			<columns>
-				<column/>
-				<column/>
-				<column/>
-				<column/>
-				<column/>
-				<column/>
-				<column/>
-				<column/>
-			</columns>
-			<rows>
-				<row>
-					<label style="font-weight: bold" value="Barcode:"/>
-					<label id="barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
-					<label style="font-weight: bold" value="Location:"/>
-					<label id="location"/>
-					<label style="font-weight: bold" value="Call Number:"/>
-					<label id="callnumber"/>
-					<label style="font-weight: bold" value="Status:"/>
-					<label id="status"/>
-				</row>
-				<row>
-					<label style="font-weight: bold" value="Circulate:"/>
-					<label id="circulate"/>
-					<label style="font-weight: bold" value="Reference:"/>
-					<label id="ref"/>
-					<label style="font-weight: bold" value="Holdable:"/>
-					<label id="holdable"/>
-					<label style="font-weight: bold" value="Opac Visible:"/>
-					<label id="opac_visible"/>
-				</row>
-				<row>
-					<label style="font-weight: bold" value="Created:"/>
-					<label id="create_date"/>
-					<label style="font-weight: bold" value="Edited:"/>
-					<label id="edit_date"/>
-					<label style="font-weight: bold" value="Age Protect:"/>
-					<label id="age_protect"/>
-					<label style="font-weight: bold" value="Total Circs:"/>
-					<label id="total_circs"/>
-				</row>
-			</rows>
-		</grid>
+		<tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
 	</groupbox>
 
 </window>
