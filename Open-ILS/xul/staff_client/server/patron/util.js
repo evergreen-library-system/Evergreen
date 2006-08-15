@@ -506,6 +506,17 @@ patron.util.set_penalty_css = function(patron) {
 			addCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
 		}
 
+		if (patron.mailing_address()) {
+			if (!get_bool(patron.mailing_address().valid())) {
+				addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
+			}
+		}
+		if (patron.billing_address()) {
+			if (!get_bool(patron.billing_address().valid())) {
+				addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
+			}
+		}
+
 	} catch(E) {
 		dump('patron.util.set_penalty_css: ' + E + '\n');
 		alert('patron.util.set_penalty_css: ' + E + '\n');

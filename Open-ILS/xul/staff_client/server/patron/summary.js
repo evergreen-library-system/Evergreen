@@ -377,6 +377,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.mailing_address().street1()
 								);
+								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -387,6 +388,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.mailing_address().street2()
 								);
+								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -397,6 +399,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.mailing_address().city()
 								);
+								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -407,6 +410,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.mailing_address().state()
 								);
+								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -417,6 +421,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.mailing_address().post_code()
 								);
+								if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -427,6 +432,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.billing_address().street1()
 								);
+								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -437,6 +443,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.billing_address().street2()
 								);
+								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -447,6 +454,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.billing_address().city()
 								);
+								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -457,6 +465,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.billing_address().state()
 								);
+								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					],
@@ -467,6 +476,7 @@ patron.summary.prototype = {
 								e.setAttribute('value',
 									obj.patron.billing_address().post_code()
 								);
+								if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
 							};
 						}
 					]
