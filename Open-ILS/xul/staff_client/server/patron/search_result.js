@@ -63,6 +63,7 @@ patron.search_result.prototype = {
 						sel,
 						function(o) { return o.getAttribute('retrieve_id'); }
 					);
+					obj.controller.view.cmd_sel_clip.setAttribute('disabled', list.length < 1 );
 					if (typeof obj.on_select == 'function') {
 						obj.on_select(list);
 					}
@@ -88,6 +89,16 @@ patron.search_result.prototype = {
 						function() {
 							dump( js2JSON( obj.list.dump() ) );
 							alert( js2JSON( obj.list.dump() ) );
+						}
+					],
+					'cmd_sel_clip' : [
+						['command'],
+						function() {
+							try {
+								obj.list.clipboard();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('patron search clipboard',E);
+							}
 						}
 					],
 				}
