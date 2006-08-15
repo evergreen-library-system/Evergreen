@@ -387,9 +387,13 @@ patron.display.prototype = {
 									}
 									var holds = req.getResultObject();
 									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
+									if (msg) {
+										obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+									}
 									if (obj.stop_checkouts && obj.checkout_window) {
 										setTimeout( function() {
 											try {
+											netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 											if (
 												obj.checkout_window &&
 												obj.checkout_window.g &&
@@ -401,9 +405,6 @@ patron.display.prototype = {
 												alert(E);
 											}
 										}, 0);
-									}
-									if (msg) {
-										obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('Error showing patron alert and holds availability.',E);
