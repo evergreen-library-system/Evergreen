@@ -474,6 +474,7 @@ patron.bills.prototype = {
 							'list' : payment_blob.payments,
 							'data' : obj.previous_summary,
 						};
+						if (document.getElementById('auto_print').checked) params.no_prompt = true;
 						JSAN.use('util.print'); var print = new util.print();
 						print.tree_list( params );
 					} catch(E) {
