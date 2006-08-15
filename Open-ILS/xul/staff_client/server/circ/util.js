@@ -835,9 +835,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 						msg += '\nHold for patron ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + '\n';
 						msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 						if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
-						if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + au_obj.email() + '\n';
+						if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
 					}
 					var rv = 0;
+					JSAN.use('util.date'); 
+					msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F') + '\n';
+					msg += 'Slip Date: ' + util.date.formatted_date(new Date(),'%F') + '\n';
 					if (!auto_print) rv = error.yns_alert(
 						msg,
 						'Hold Slip',
@@ -895,15 +898,18 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			msg += '\nBarcode: ' + check.payload.copy.barcode() + '\n';
 			msg += 'Title: ' + (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() ) + '\n';
 			msg += 'Author: ' + (check.payload.record ? check.payload.record.author() :check.payload.copy.dummy_author()  ) + '\n';
+			JSAN.use('util.date');
 			if (check.payload.hold) {
 				JSAN.use('patron.util');
 				var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
 				msg += '\nHold for patron ' + au_obj.family_name() + ', ' + au_obj.first_given_name() + '\n';
 				msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 				if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
-				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + au_obj.email() + '\n';
+				if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
+				msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F');
 			}
 			var rv = 0;
+			msg += '\nSlip Date: ' + util.date.formatted_date(new Date(),'%F') + '\n';
 			if (!auto_print) rv = error.yns_alert(
 				msg,
 				'Transit Slip',
