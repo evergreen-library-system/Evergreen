@@ -66,9 +66,9 @@
 				value="&staff.patron_display.holds.label;" />
 			<label id="patron_holds" class="holds value"/>
 		</row><row>
-			<label id="PatronSummaryStatus_holds_available_label" class="text_left holds_ready label"
-				value="&staff.patron_display.holds_available.label;" />
-			<label id="patron_holds_available" class="holds_ready label"/>
+			<label id="PatronSummaryStatus_holds_available_label" class="text_right holds_ready label"
+				value="&staff.patron_display.holds_available.label;"  style="background: grey"/>
+			<label id="patron_holds_available" class="holds_ready label" style="background: grey"/>
 		</row>
 		<row id="pdsgr2" class="hide_patron_credit" hidden="true">
 			<label id="PatronSummaryStatus_credit_label" class="text_left credit label"
