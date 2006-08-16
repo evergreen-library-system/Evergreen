@@ -295,23 +295,25 @@ sub _set_circ_lost {
 
 	# if the copy has a price defined and/or a processing fee, bill the patron
 
-	my $copy_price = $copy->price || 0;
-
-	$logger->debug("lost copy has a price of $copy_price");
-
-	# If the copy has a price configured, charge said price to the user
-	if($copy_price and $copy_price > 0) {
-		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
-		return $evt if $evt;
-	}
-
 	# if the location that owns the copy has a processing fee, charge the user
 	my $owner = $U->fetch_copy_owner($copy->id);
-	$logger->info("circ fetching org settings for $owner to determine processing fee");
+	$logger->info("circ fetching org settings for $owner ".
+		"to determine processing fee and default copy price");
 
 	my $settings = $U->simplereq(
 		'open-ils.actor', 'open-ils.actor.org_unit.settings.retrieve', $owner );
 	my $fee = $settings->{'circ.lost_materials_processing_fee'} || 0;
+
+	# If the copy has a price configured, charge said price to the user
+	my $s = OILS_SETTING_DEF_ITEM_PRICE;
+	my $copy_price = $copy->price || 0;
+	$copy_price = $settings->{$s} unless $copy_price and $copy_price > 0;
+	if($copy_price and $copy_price > 0) {
+		$logger->debug("lost copy has a price of $copy_price");
+		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
+		return $evt if $evt;
+	}
+
 
 	if( $fee ) {
 		$evt = _make_bill($session, $fee, 'Lost Materials Processing Fee', $circ->id);
