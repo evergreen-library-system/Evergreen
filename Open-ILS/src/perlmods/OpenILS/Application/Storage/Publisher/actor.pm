@@ -324,12 +324,12 @@ sub patron_search {
 	my $select = '';
 	if ($usr_where) {
 		if ($addr_where) {
-			$select = "$u_select INTERSECT $a_select INTERSECT $clone_select";
+			$select = "$u_select INTERSECT $a_select UNION $clone_select";
 		} else {
 			$select = $u_select;
 		}
 	} elsif ($addr_where) {
-		$select = "$a_select INTERSECT $clone_select";
+		$select = "$a_select UNION $clone_select";
 	} else {
 		return undef;
 	}
