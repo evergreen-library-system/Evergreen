@@ -18,10 +18,14 @@
 			<label class="hideme barred_indicator" value="(Barred)"/>
 			<label class="hideme expired_indicator" value="(Expired)"/>
 			<label class="hideme inactive_indicator" value="(In-Active)"/>
+			<label class="hideme alert_indicator" value="(Alert)"/>
+			<label class="hideme max_bills_indicator" value="(Max Bills)"/>
+			<label class="hideme max_overdues_indicator" value="(Max Overdues)"/>
 			<label class="hideme juvenile_indicator" value="(Juvenile)"/>
+			<label class="hideme bills_indicator" value="(Has Bills)"/>
+			<label class="hideme overdues_indicator" value="(Has Overdues)"/>
 			<label class="hideme invalid_dob_indicator" value="(Invalid DOB)"/>
 			<label class="hideme invalid_address_indicator" value="(Invalid Address)"/>
-			<label class="hideme alert_indicator" value="(Alert)"/>
 			<label class="hideme note_indicator" value="(See Notes)"/>
 		</hbox>
 		<deck id="PatronNavBar" flex="1" class="my_overflow"/>
