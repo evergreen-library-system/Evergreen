@@ -1,4 +1,4 @@
-.fm_table { border-collapse: collapse; text-align: center; width: 100%; background: white;}
+.fm_table { border-collapse: collapse; text-align: center; width: 100%; }
 .fm_table thead tr { background: #E0F0E0; color: #000000; font-weight: bold;}
 .fm_table thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
 .fm_table tbody td { border: 1px solid #E0E0E0; padding: 2px; }
