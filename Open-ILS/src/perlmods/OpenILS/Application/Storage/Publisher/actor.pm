@@ -329,7 +329,7 @@ sub patron_search {
 			$select = $u_select;
 		}
 	} elsif ($addr_where) {
-		$select = $a_select;
+		$select = "$a_select INTERSECT $clone_select";
 	} else {
 		return undef;
 	}
