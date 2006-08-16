@@ -1,6 +1,21 @@
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistance/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1">
 
 	<!-- Virutal classes -->
+	<class id="mwps" oils_obj:fieldmapper="money::workstation_payment_summary" oils_persist:virtual="true">
+		<fields>
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="workstation" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field name="cash_payment" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field name="check_payment" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field name="credit_card_payment" oils_obj:array_position="6" oils_persist:virtual="true" />
+		</fields>
+		<links>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+		</links>
+	</class>
+
 	<class id="brn" oils_obj:fieldmapper="biblio::record_node" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
