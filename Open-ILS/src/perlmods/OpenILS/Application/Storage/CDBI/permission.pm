@@ -15,7 +15,8 @@ package permission::grp_tree;
 use base qw/permission/;
 __PACKAGE__->table('permission_grp_tree');
 __PACKAGE__->columns(Primary => qw/id/);
-__PACKAGE__->columns(Essential => qw/name parent description perm_interval application_perm/);
+__PACKAGE__->columns(Essential => qw/name parent description perm_interval
+				     application_perm usergroup/);
 #-------------------------------------------------------------------------------
 package permission::usr_grp_map;
 use base qw/permission/;
