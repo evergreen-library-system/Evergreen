@@ -317,11 +317,14 @@ sub patron_search {
 
 	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
 	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
+	my $clone_select = "SELECT cu.id as id FROM $a_table ca ".
+			   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
+			   "WHERE $addr_where";
 
 	my $select = '';
 	if ($usr_where) {
 		if ($addr_where) {
-			$select = "$u_select INTERSECT $a_select";
+			$select = "$u_select INTERSECT $a_select INTERSECT $clone_select";
 		} else {
 			$select = $u_select;
 		}
@@ -349,7 +352,7 @@ sub patron_search {
 		  LIMIT $limit
 	SQL
 
-	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));
+	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
