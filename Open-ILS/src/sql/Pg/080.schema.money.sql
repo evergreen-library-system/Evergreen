@@ -278,6 +278,11 @@ CREATE OR REPLACE VIEW money.desk_payment_view AS
 	  FROM	money.bnm_desk_payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
+CREATE OR REPLACE VIEW money.bnm_payment_view AS
+	SELECT	p.*,c.relname AS payment_type
+	  FROM	money.bnm_payment p
+	  	JOIN pg_class c ON (p.tableoid = c.oid);
+
 CREATE TABLE money.cash_payment () INHERITS (money.bnm_desk_payment);
 ALTER TABLE money.cash_payment ADD PRIMARY KEY (id);
 CREATE INDEX money_cash_id_idx ON money.cash_payment (id);

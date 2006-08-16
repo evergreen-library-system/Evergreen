@@ -113,22 +113,26 @@ sub ou_desk_payments {
 	my $startdate = shift;
 	my $enddate = shift;
 
-	my $sql = <<'	SQL';
+	return undef unless ($startdate =~ /^\d{4}-\d{2}-\d{2}$/o);
+	return undef unless ($enddate =~ /^\d{4}-\d{2}-\d{2}$/o);
+	return undef unless ($lib =~ /^\d+$/o);
+
+	my $sql = <<"	SQL";
 
 SELECT	*
-  FROM	crosstab($$
+  FROM	crosstab(\$\$
 	 SELECT	ws.id,
 		p.payment_type,
 		SUM(COALESCE(p.amount,0.0))
 	  FROM	money.desk_payment_view p
 		JOIN actor.workstation ws ON (ws.id = p.cash_drawer)
-	  WHERE	p.payment_ts >= ?
-		AND p.payment_ts < ?::TIMESTAMPTZ + INTERVAL '1 day'
+	  WHERE	p.payment_ts >= '$startdate'
+		AND p.payment_ts < '$enddate'::TIMESTAMPTZ + INTERVAL '1 day'
 		AND p.voided IS FALSE
-		AND ws.owning_lib = ?
+		AND ws.owning_lib = $lib
 	 GROUP BY 1, 2
 	 ORDER BY 1,2
-	$$) AS X(
+	\$\$) AS X(
 	  workstation int,
 	  cash_payment numeric(10,2),
 	  check_payment numeric(10,2),
@@ -136,7 +140,7 @@ SELECT	*
 
 	SQL
 
-	my $rows = money::payment->db_Main->selectall_arrayref( $sql, {}, $startdate, $enddate, $lib );
+	my $rows = money::payment->db_Main->selectall_arrayref( $sql );
 
 	for my $r (@$rows) {
 		my $x = new Fieldmapper::money::workstation_payment_summary;
@@ -153,6 +157,61 @@ SELECT	*
 __PACKAGE__->register_method(
 	method		=> 'ou_desk_payments',
 	api_name	=> 'open-ils.storage.money.org_unit.desk_payments',
+	stream		=> 1,
+	argc		=> 3,
+);
+
+sub ou_user_payments {
+	my $self = shift;
+	my $client = shift;
+	my $lib = shift;
+	my $startdate = shift;
+	my $enddate = shift;
+
+	return undef unless ($startdate =~ /^\d{4}-\d{2}-\d{2}$/o);
+	return undef unless ($enddate =~ /^\d{4}-\d{2}-\d{2}$/o);
+	return undef unless ($lib =~ /^\d+$/o);
+
+	my $sql = <<"	SQL";
+
+SELECT  *
+  FROM  crosstab(\$\$
+         SELECT au.id,
+                p.payment_type,
+                SUM(COALESCE(p.amount,0.0))
+          FROM  money.bnm_payment_view p
+                JOIN actor.usr au ON (au.id = p.accepting_usr)
+          WHERE p.payment_ts >= '$startdate'
+                AND p.payment_ts < '$enddate'::TIMESTAMPTZ + INTERVAL '1 day'
+                AND p.voided IS FALSE
+                AND au.home_ou = $lib
+         GROUP BY 1, 2
+         ORDER BY 1,2
+        \$\$) AS X(
+          usr int,
+          forgive_payment numeric(10,2),
+          work_payment numeric(10,2),
+          credit_payment numeric(10,2) );
+
+	SQL
+
+	my $rows = money::payment->db_Main->selectall_arrayref( $sql );
+
+	for my $r (@$rows) {
+		my $x = new Fieldmapper::money::user_payment_summary;
+		$x->usr( actor::user->retrieve($$r[0])->to_fieldmapper );
+		$x->forgive_payment($$r[1]);
+		$x->work_payment($$r[2]);
+		$x->credit_payment($$r[3]);
+
+		$client->respond($x);
+	}
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'ou_user_payments',
+	api_name	=> 'open-ils.storage.money.org_unit.user_payments',
 	stream		=> 1,
 	argc		=> 3,
 );
