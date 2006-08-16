@@ -119,6 +119,7 @@ CREATE TABLE permission.grp_tree (
 	id			SERIAL	PRIMARY KEY,
 	name			TEXT	NOT NULL UNIQUE,
 	parent			INT	REFERENCES permission.grp_tree (id) ON DELETE RESTRICT,
+	usergroup		BOOL	NOT NULL DEFAULT TRUE,
 	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
 	description		TEXT,
 	application_perm	TEXT
