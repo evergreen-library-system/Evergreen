@@ -130,6 +130,7 @@ function uEditDrawGroups(tree, depth, selector) {
 	if( org == -1 ) return;
 
 	var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
+	if(!isTrue(tree.usergroup())) opt.disabled = true;
 
 	for( var c in tree.children() ) 
 		uEditDrawGroups( tree.children()[c], depth, selector );
