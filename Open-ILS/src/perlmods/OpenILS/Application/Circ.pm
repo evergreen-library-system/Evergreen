@@ -497,7 +497,7 @@ sub view_circs {
 			}, 
 			{ 
 				limit => $count, 
-				order_by => { ac => "xact_start DESC" }
+				order_by => { circ => "xact_start DESC" }
 			} 
 	);
 
