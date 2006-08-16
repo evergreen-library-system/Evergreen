@@ -660,10 +660,13 @@ sub bookbag_feed {
 	}
 
 	my $url = $cgi->url(-path_info=>$add_path);
-	my $root = (split 'feed', $url)[0];
-	my $base = (split 'bookbag', $url)[0] . 'bookbag';
-	my $unapi = (split 'feed', $url)[0] . 'unapi';
+	my $root = (split 'feed', $url)[0] . '/';
+	my $base = (split 'bookbag', $url)[0] . '/bookbag';
+	my $unapi = (split 'feed', $url)[0] . '/unapi';
 
+	$root =~ s{(?<!http:)//}{/}go;
+	$base =~ s{(?<!http:)//}{/}go;
+	$unapi =~ s{(?<!http:)//}{/}go;
 
 	my $path = $cgi->path_info;
 	#warn "URL breakdown: $url -> $root -> $base -> $path -> $unapi";
