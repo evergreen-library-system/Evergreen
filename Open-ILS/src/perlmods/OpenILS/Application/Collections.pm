@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use base 'OpenSRF::Application';
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Event;
+use OpenILS::Const qw/:const/;
 my $U = "OpenILS::Application::AppUtils";
 
 
@@ -294,7 +295,7 @@ sub add_collections_fee {
 	my $bill = Fieldmapper::money::billing->new;
 	$bill->note($fee_note);
 	$bill->xact($xact->id);
-	$bill->billing_type('Fee for Collection'); # XXX
+	$bill->billing_type('SYSTEM: Long Overdue Processing Fee'); # XXX
 	$bill->amount($fee_amount);
 
 	$e->create_money_billing($bill) or return $e->event;
@@ -376,12 +377,12 @@ sub remove_from_collections {
 }
 
 
-__PACKAGE__->register_method(
-	method		=> 'transaction_details',
-	api_name		=> 'open-ils.collections.user_transaction_details.retrieve',
-	signature	=> q/
-	/
-);
+#__PACKAGE__->register_method(
+#	method		=> 'transaction_details',
+#	api_name		=> 'open-ils.collections.user_transaction_details.retrieve',
+#	signature	=> q/
+#	/
+#);
 
 
 __PACKAGE__->register_method(
@@ -482,10 +483,52 @@ sub transaction_details {
 				fetch_grocery_xacts($e, $uid, $org, $start_date, $end_date)
 		};
 
+		# for each transaction, flesh the workstatoin on any attached payment
+		# and make the payment object a real object (e.g. cash payment), 
+		# not just a generic payment object
+		for my $xact ( 
+			@{$blob->{transactions}->{circulations}}, 
+			@{$blob->{transactions}->{grocery}} ) {
+
+			my $ps;
+			if( $ps = $xact->payments and @$ps ) {
+				my @fleshed; my $evt;
+				for my $p (@$ps) {
+					($p, $evt) = flesh_payment($e,$p);
+					return $evt if $evt;
+					push(@fleshed, $p);
+				}
+				$xact->payments(\@fleshed);
+			}
+		}
+
 		push( @data, $blob );
 	}
 
 	return \@data;
+}
+
+sub flesh_payment {
+	my $e = shift;
+	my $p = shift;
+	my $type = $p->payment_type;
+	$logger->debug("collect: fleshing workstation on payment $type : ".$p->id);
+	my $meth = "retrieve_money_$type";
+	$p = $e->$meth($p->id) or return (undef, $e->event);
+	try {
+		$p->cash_drawer(
+			$e->retrieve_actor_workstation(
+				[
+					$p->cash_drawer,
+					{
+						flesh => 1,
+						flesh_fields => { aws => [ 'owning_lib' ] }
+					}
+				]
+			)
+		);
+	} catch Error with {};
+	return ($p);
 }
 
 
@@ -515,7 +558,6 @@ sub fetch_circ_xacts {
 						{
 							usr			=> $uid, 
 							circ_lib		=> $n->id,
-							xact_finish	=> undef, 
 						}, 
 						{idlist => 1}
 					)
@@ -536,7 +578,7 @@ sub fetch_circ_xacts {
 					{
 						flesh => 1,
 						flesh_fields => { 
-							circ => [ "billings", "payments", "circ_lib" ]
+							circ => [ "billings", "payments", "circ_lib", 'target_copy' ]
 						}
 					}
 				]
@@ -546,6 +588,18 @@ sub fetch_circ_xacts {
 
 	return \@data;
 }
+
+sub set_copy_price {
+	my( $e, $copy ) = @_;
+	return if $copy->price and $copy->price > 0;
+	my $vol = $e->retrieve_asset_call_number($copy->call_number);
+	my $org = ($vol and $vol->id != OILS_PRECAT_CALL_NUMBER) 
+		? $vol->owning_lib : $copy->circ_lib;
+	my $setting = $e->retrieve_actor_org_unit_setting(
+		{ org_unit => $org, name => OILS_SETTING_DEF_ITEM_PRICE } );
+	$copy->price($setting->value);
+}
+
 
 
 sub fetch_grocery_xacts {
@@ -566,7 +620,6 @@ sub fetch_grocery_xacts {
 						{
 							usr					=> $uid, 
 							billing_location	=> $n->id,
-							#xact_finish			=> undef, 
 						}, 
 						{idlist => 1}
 					)
