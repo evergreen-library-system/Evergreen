@@ -83,15 +83,16 @@ sub active_in_collections {
 			LEFT JOIN money.billing bl ON (lt.id = bl.xact)
 			LEFT JOIN money.payment pm ON (lt.id = pm.xact)
 		  WHERE	cl.location IN ((SELECT id FROM $descendants))
-		  	AND (	bl.billing_ts between ? and ?
-				OR pm.payment_ts between ? and ? )
+		  	AND (	( bl.billing_ts between ? and ?
+					OR pm.payment_ts between ? and ? )
+				OR lt.checkin_time between ? and ? )
 		  GROUP BY 1
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
 		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), uc($l), $startdate, $enddate, $startdate, $enddate );
+		$sth->execute(uc($l), uc($l), $startdate, $enddate, $startdate, $enddate, $startdate, $enddate );
 		while (my $row = $sth->fetchrow_hashref) {
 			$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
