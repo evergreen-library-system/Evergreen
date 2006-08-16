@@ -255,23 +255,24 @@ sub update_patron {
 
 
 
-__PACKAGE__->register_method(
-	method	=> "user_retrieve_fleshed_by_id",
-	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
-
-sub user_retrieve_fleshed_by_id {
-	my( $self, $client, $user_session, $user_id ) = @_;
-
-	my( $requestor, $target, $evt ) = $apputils->
-		checkses_requestor( $user_session, $user_id, 'VIEW_USER' );
-	return $evt if $evt;
-
-	return flesh_user($user_id);
-}
+#__PACKAGE__->register_method(
+#	method	=> "user_retrieve_fleshed_by_id",
+#	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
+#
+#sub user_retrieve_fleshed_by_id {
+#	my( $self, $client, $user_session, $user_id ) = @_;
+#
+#	my( $requestor, $target, $evt ) = $apputils->
+#		checkses_requestor( $user_session, $user_id, 'VIEW_USER' );
+#	return $evt if $evt;
+#
+#	return flesh_user($user_id);
+#}
 
 
 # fleshes: card, cards, address, addresses, stat_cat_entries, standing_penalties
 # XXX DEPRECATE  ME
+=head old
 sub __flesh_user {
 	my $id = shift;
 	my $session = shift;
@@ -345,32 +346,19 @@ sub __flesh_user {
 
 	return $user;
 }
+=cut
+
 
 sub flesh_user {
-	my $id 	= shift;
-	my $e 	= new_editor();
-	my $user = $e->retrieve_actor_user(
-   	[
-      	$id,
-      	{
-         	"flesh" 			=> 1,
-         	"flesh_fields" =>  {
-            	"au" => [ 
-						"cards",
-						"card",
-						"standing_penalties",
-						"addresses",
-						"billing_address",
-						"mailing_address",
-						"stat_cat_entries"
-					]
-         	}
-      	}
-   	]
-	) or return $e->event;
-
-	$user->clear_passwd();
-	return $user;
+	my $id = shift;
+	return new_flesh_user($id, [
+		"cards",
+		"card",
+		"standing_penalties",
+		"addresses",
+		"billing_address",
+		"mailing_address",
+		"stat_cat_entries" ] );
 }
 
 
@@ -2448,6 +2436,71 @@ sub trim_tree {
 
 	return $htree;
 }
+
+
+
+__PACKAGE__->register_method(
+	method	=> "user_retrieve_fleshed_by_id",
+	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
+
+sub user_retrieve_fleshed_by_id {
+	my( $self, $client, $auth, $user_id, $fields ) = @_;
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER');
+	$fields ||= [
+		"cards",
+		"card",
+		"standing_penalties",
+		"addresses",
+		"billing_address",
+		"mailing_address",
+		"stat_cat_entries" ];
+	return new_flesh_user($user_id, $fields, $e);
+}
+
+
+sub new_flesh_user {
+
+	my $id = shift;
+	my $fields = shift || [];
+	my $e	= shift || new_editor(xact=>1);
+
+	my $user = $e->retrieve_actor_user(
+   	[
+      	$id,
+      	{
+         	"flesh" 			=> 1,
+         	"flesh_fields" =>  { "au" => $fields }
+      	}
+   	]
+	) or return $e->event;
+
+
+	if( grep { $_ eq 'addresses' } @$fields ) {
+
+		$user->addresses([]) unless @{$user->addresses};
+	
+		if( ref $user->billing_address ) {
+			unless( grep { $user->billing_address->id == $_->id } @{$user->addresses} ) {
+				push( @{$user->addresses}, $user->billing_address );
+			}
+		}
+	
+		if( ref $user->mailing_address ) {
+			unless( grep { $user->mailing_address->id == $_->id } @{$user->addresses} ) {
+				push( @{$user->addresses}, $user->mailing_address );
+			}
+		}
+	}
+
+	$user->clear_passwd();
+	return $user;
+}
+
+
+
+
 
 
 1;
