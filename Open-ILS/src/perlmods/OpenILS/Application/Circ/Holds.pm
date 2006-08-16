@@ -781,6 +781,8 @@ sub _reset_hold {
 
 	my $e = new_editor(xact =>1, requestor => $reqr);
 
+	$logger->info("reseting hold ".$hold->id);
+
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
@@ -792,6 +794,10 @@ sub _reset_hold {
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
 			$e->update_asset_copy($copy) or return $e->event;
+
+		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
+			$logger->warn("reseting hold that is in transit: ".$hold->id);
+			# is this allowed?	
 		}
 	}
 
