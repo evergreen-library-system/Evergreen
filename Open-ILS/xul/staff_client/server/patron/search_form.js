@@ -228,7 +228,7 @@ patron.search_form.prototype = {
 						case 'family_name' :
 						case 'first_given_name' :
 						case 'second_given_name' :
-							value = value.replace(/[^\w\s]/g,'');
+							value = value.replace(/^\W+/g,'').replace(/\W+$/g,'');
 						break;
 					}
 					if (value != '') {
