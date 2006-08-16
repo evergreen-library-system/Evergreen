@@ -464,11 +464,6 @@ sub _update_patron {
 		$patron->clear_ident_value;
 	}
 
-	if(!$patron->ident_type2) {
-		$patron->clear_ident_type2;
-		$patron->clear_ident_value2;
-	}
-
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
 	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
