@@ -68,7 +68,11 @@ econst OILS_STOP_FINES_CLAIMSRETURNED => 'CLAIMSRETURNED';
 econst OILS_STOP_FINES_LONGOVERDUE    => 'LONGOVERDUE';
 econst OILS_UNLIMITED_CIRC_DURATION   => 'unlimited';
 
-
+# ---------------------------------------------------------------------
+# Settings
+# ---------------------------------------------------------------------
+econst OILS_SETTING_LOST_PROCESSING_FEE => 'circ.lost_materials_processing_fee';
+econst OILS_SETTING_DEF_ITEM_PRICE => 'cat.default_item_price';
 
 
 
