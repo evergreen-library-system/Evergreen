@@ -173,36 +173,36 @@ patron.util.mp_columns = function(modify,params) {
 
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : 'ID', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mp.id()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_amount', 'label' : 'Amount', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )',
 			'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'payment_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'try { alert(js2JSON(my.mp)); my.mp.payment_type(); } catch(E) { alert(E + "\n" + js2JSON(my.mp)); }'
+			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_type', 'label' : 'Type', 'flex' : 1,
+			'primary' : false, 'hidden' : false, 'render' : 'my.mp.payment_type()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'payment_ts', 'label' : 'When', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : 'When', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'util.date.formatted_date( my.mp.payment_ts(), "" )'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Note', 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : 'Note', 'flex' : 2,
 			'primary' : false, 'hidden' : false, 'render' : 'my.mp.note()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Workstation', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_ws', 'label' : 'Workstation', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'my.mp.cash_drawer().name()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Staff', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : 'Staff', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'JSAN.use("patron.util"); var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); s.card().barcode() + " @ " + obj.OpenILS.data.hash.aou[ s.home_ou() ].shortname();'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : 'Transaction ID', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.mp.xact()'
 		},
 	];
