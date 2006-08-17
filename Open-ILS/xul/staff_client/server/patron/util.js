@@ -183,7 +183,7 @@ patron.util.mp_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'payment_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'try { my.mp.payment_type(); } catch(E) { alert(E + "\n" + js2JSON(my.mp)); }'
+			'primary' : false, 'hidden' : false, 'render' : 'try { alert(js2JSON(my.mp)); my.mp.payment_type(); } catch(E) { alert(E + "\n" + js2JSON(my.mp)); }'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'payment_ts', 'label' : 'When', 'flex' : 1,
