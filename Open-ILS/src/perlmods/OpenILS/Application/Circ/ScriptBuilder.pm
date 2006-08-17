@@ -6,6 +6,8 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::Circ::Holds;
+use DateTime::Format::ISO8601;
+use OpenSRF::Utils qw/:datetime/;
 use Scalar::Util qw/weaken/;
 my $U = "OpenILS::Application::AppUtils";
 use Data::Dumper;
@@ -70,7 +72,6 @@ sub build_runner {
 	my $runner = OpenILS::Utils::ScriptRunner->new;
 
 	my $gt = $GROUP_TREE;
-	#weaken($gt); # just to be safe
 	$runner->insert( "$evt.groupTree",	$gt, 1);
 
 
@@ -189,6 +190,12 @@ sub fetch_user_data {
 
 	return OpenILS::Event->new('PATRON_CARD_INACTIVE')
 		unless $U->is_true($patron->card->active);
+
+	my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+		clense_ISO8601($patron->expire_date));
+
+	return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
+		if( CORE::time > $expire->epoch ) ;
 
 	$patron->home_ou( 
 		$e->retrieve_actor_org_unit($patron->home_ou) ) 
