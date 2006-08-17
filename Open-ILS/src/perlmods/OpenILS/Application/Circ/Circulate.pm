@@ -1130,7 +1130,6 @@ sub do_checkin {
 	$self->push_events($self->check_copy_alert());
 	$self->push_events($self->check_checkin_copy_status());
 
-
 	# the renew code will have already found our circulation object
 	unless( $self->is_renewal and $self->circ ) {
 
@@ -1264,7 +1263,6 @@ sub reshelve_copy {
 
    if($force || (
       $stat != OILS_COPY_STATUS_ON_HOLDS_SHELF and
-      $stat != OILS_COPY_STATUS_AVAILABLE and
       $stat != OILS_COPY_STATUS_CATALOGING and
       $stat != OILS_COPY_STATUS_IN_TRANSIT and
       $stat != OILS_COPY_STATUS_RESHELVING  )) {
@@ -1412,11 +1410,11 @@ sub process_received_transit {
 	my $transit = $self->transit;
 
    if( $transit->dest != $self->editor->requestor->ws_ou ) {
-      $logger->activity("Fowarding transit on copy which is destined ".
+      $logger->info("circulator: Fowarding transit on copy which is destined ".
          "for a different location. copy=$copyid,current ".
          "location=".$self->editor->requestor->ws_ou.",destination location=".$transit->dest);
 
-		$self->bail_on_events(
+		return $self->bail_on_events(
 			OpenILS::Event->new('ROUTE_ITEM', org => $transit->dest ));
    }
 
