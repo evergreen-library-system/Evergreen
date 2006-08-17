@@ -349,6 +349,7 @@
 			<field name="note" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="16" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -781,6 +782,7 @@
 			<field name="note" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="11" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -800,6 +802,7 @@
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -1301,6 +1304,7 @@
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -1506,6 +1510,7 @@
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
@@ -1591,6 +1596,7 @@
 			<field name="note" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="12" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
