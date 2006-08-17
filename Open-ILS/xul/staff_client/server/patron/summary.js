@@ -525,6 +525,8 @@ patron.summary.prototype = {
 									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
 								);
 								patron.util.set_penalty_css(obj.patron);
+								JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+								data.last_patron = patron.id(); data.stash('last_patron');
 
 							} else {
 

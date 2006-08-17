@@ -444,8 +444,10 @@ patron.util.set_penalty_css = function(patron) {
 			if (notes.length > 0) addCSSClass(document.documentElement,'PATRON_HAS_NOTES');
 		});
 
+		/*
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.last_patron = patron.id(); data.stash('last_patron');
+		*/
 
 		var penalties = patron.standing_penalties();
 		for (var i = 0; i < penalties.length; i++) {
