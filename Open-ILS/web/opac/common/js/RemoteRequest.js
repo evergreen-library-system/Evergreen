@@ -237,6 +237,8 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	if(isXUL() && this.secure ) dump('SECURE = true\n');
 
+	this.url = url;
+
 	try {
 
 		if(blocking) this.xmlhttp.open(this.type, url, false);
@@ -278,6 +280,15 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	var failed = false;
 	var status = null;
+	this.event(null);
+
+	/* DEBUG 
+	try {
+		dump(this.url + '?' + this.param_string + '\n' +
+			'Returned with \n\tstatus = ' + this.xmlhttp.status + 
+			'\n\tpayload= ' + this.xmlhttp.responseText + '\n');
+	} catch(e) {}
+	*/
 
 	try {
 		status = this.xmlhttp.status;
@@ -286,17 +297,15 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	if( failed ) {
 		if(!status) status = '<unknown>';
-		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status);}catch(e){}
+		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status+'\n');}catch(e){}
 		if(isXUL()) 
 			throw new NetworkFailure(status, this.param_string);
 		else return null;
 	}
 
-
-	this.event(null);
-
 	var text = this.xmlhttp.responseText;
-	if(text == "" || text == " " || text == null) null;
+
+	if(text == "" || text == " " || text == null) return null;
 
 	var obj = JSON2js(text);
 	if(!obj) return null;
