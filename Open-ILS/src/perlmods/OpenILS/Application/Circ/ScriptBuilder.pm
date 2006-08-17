@@ -15,8 +15,6 @@ use Data::Dumper;
 my $holdcode = "OpenILS::Application::Circ::Holds";
 
 my $evt = "environment";
-my @COPY_STATUSES;
-my @COPY_LOCATIONS;
 my %GROUP_SET;
 my $GROUP_TREE;
 my $ORG_TREE;
@@ -99,38 +97,27 @@ sub fetch_bib_data {
 
 	if(!$ctx->{copy}) {
 
+		my $flesh = { flesh => 1, flesh_fields => { acp => [ 'location', 'status', 'circ_lib' ] } };
+
 		if($ctx->{copy_id}) {
-			$ctx->{copy} = $e->retrieve_asset_copy($ctx->{copy_id})
-				or return $e->event;
+			$ctx->{copy} = $e->retrieve_asset_copy(
+				[$ctx->{copy_id}, $flesh ]) or return $e->event;
 
 		} elsif( $ctx->{copy_barcode} ) {
 
-			my $cps = $e->search_asset_copy({barcode => $ctx->{copy_barcode}});
-			return $e->event unless @$cps;
-			$ctx->{copy} = $$cps[0];
+			$ctx->{copy} = $e->search_asset_copy(
+				[{barcode => $ctx->{copy_barcode}}, $flesh ])->[0]
+				or return $e->event;
 		}
 	}
 
 	return undef unless my $copy = $ctx->{copy};
 
-	# --------------------------------------------------------------------
-	# Fetch/Cache the copy status and location objects
-	# --------------------------------------------------------------------
-	if(!@COPY_STATUSES) {
-		my $s = $e->retrieve_all_config_copy_status();
-		@COPY_STATUSES = @$s;
-		$s = $e->retrieve_all_asset_copy_location();
-		@COPY_LOCATIONS = @$s;
-	}
+	$copy->location($e->retrieve_asset_copy_location($copy->location))
+		unless( ref $copy->location );
 
-	# Flesh the status and location
-	$copy->status( 
-		grep { $_->id == $copy->status } @COPY_STATUSES ) 
-		unless ref $copy->status;
-
-	$copy->location( 
-		grep { $_->id == $copy->location } @COPY_LOCATIONS ) 
-		unless ref $copy->location;
+	$copy->status($e->retrieve_config_copy_status($copy->status))
+		unless( ref $copy->status );
 
 	$copy->circ_lib( 
 		$e->retrieve_actor_org_unit($copy->circ_lib)) 
