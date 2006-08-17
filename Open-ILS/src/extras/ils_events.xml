@@ -121,6 +121,9 @@
 	<event code='1223' textcode='PATRON_NO_PHONE'>
 		<desc xml:lang="en-US">The user does not have a valid phone number assigned</desc>
 	</event>
+	<event code='1224' textcode='PATRON_ACCOUNT_EXPIRED'>
+		<desc xml:lang="en-US">The patron's account has expired</desc>
+	</event>
 
 
 

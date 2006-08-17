@@ -39,37 +39,49 @@ sub permit_copy_hold {
 
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 
-	# check the various holdable flags
-	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
-		unless $U->is_true($ctx->{copy}->holdable);
+	if( $ctx->{_events} ) {
+		push( @allevents, $_) for @{$ctx->{_events}};
 
-	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
-		unless $U->is_true($ctx->{copy}->location->holdable);
+		# --------------------------------------------------------------
+		# If scriptbuilder returned any events, then the script context
+		# is undefined and should not be used
+		# --------------------------------------------------------------
 
-	push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
-		unless $U->is_true($ctx->{copy}->status->holdable);
+	} else {
 
-	my $evt = check_age_protect($ctx->{patron}, $ctx->{copy});
-	push( @allevents, $evt ) if $evt;
+		# check the various holdable flags
+		push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+			unless $U->is_true($ctx->{copy}->holdable);
+	
+		push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+			unless $U->is_true($ctx->{copy}->location->holdable);
+	
+		push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
+			unless $U->is_true($ctx->{copy}->status->holdable);
+	
+		my $evt = check_age_protect($ctx->{patron}, $ctx->{copy});
+		push( @allevents, $evt ) if $evt;
+	
+		$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
+	
+		load_scripts($runner);
+		my $result = $runner->run or 
+			throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
 
-	$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
+		# --------------------------------------------------------------
+		# Extract and uniquify the event list
+		# --------------------------------------------------------------
+		my $events = $result->{events};
+		my $pid = ($params->{patron}) ? $params->{patron}->id : $params->{patron_id};
+		$logger->debug("circ_permit_hold for user $pid returned events: [@$events]");
+	
+		push( @allevents, OpenILS::Event->new($_)) for @$events;
+	}
 
-	load_scripts($runner);
-	my $result = $runner->run or 
-		throw OpenSRF::EX::ERROR ("Hold Copy Permit Script Died: $@");
-
-	$runner->cleanup;
-
-	# --------------------------------------------------------------
-	# Extract and uniquify the event list
-	# --------------------------------------------------------------
-	my $events = $result->{events};
-	my $pid = ($params->{patron}) ? $params->{patron}->id : $params->{patron_id};
-	$logger->debug("circ_permit_hold for user $pid returned events: [@$events]");
-
-	push( @allevents, OpenILS::Event->new($_)) for @$events;
 	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
 	@allevents = values %hash;
+
+	$runner->cleanup;
 
 	return \@allevents if $$params{show_event_list};
 	return 1 unless @allevents;
