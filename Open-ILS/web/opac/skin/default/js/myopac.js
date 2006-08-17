@@ -734,7 +734,8 @@ function _myOPACSummaryShowUer(r) {
 function myopacDrawNotes(r) {
 	var notes = r.getResultObject();
 	var tbody = $('myopac.notes.tbody');
-	notesTemplate = tbody.removeChild($('myopac.notes.tr'));
+	if(!notesTemplate)
+		notesTemplate = tbody.removeChild($('myopac.notes.tr'));
 
 	iterate(notes, 
 		function(note) {
