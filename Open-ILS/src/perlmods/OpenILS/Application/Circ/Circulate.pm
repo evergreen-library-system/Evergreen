@@ -1619,7 +1619,7 @@ sub do_renew {
 	# -----------------------------------------------------------------
 
 	$self->renewal_remaining( $circ->renewal_remaining - 1 );
-	$self->renewal_remaining(0) if $self->renewal_remaining < 0;
+	#$self->renewal_remaining(0) if $self->renewal_remaining < 0;
 	$self->circ($circ);
 
 	$self->run_renew_permit;
