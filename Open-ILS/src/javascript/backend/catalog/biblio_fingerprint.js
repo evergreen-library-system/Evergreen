@@ -81,7 +81,7 @@ try {
 if (rtype != 'BKS') {
 	quality += marcdoc.datafield.length() / 2;
 } else {
-	quality += 20 + marcdoc.datafield.length();
+	quality += 40 + marcdoc.datafield.length();
 }
 
 var title = t;
@@ -128,7 +128,7 @@ if (marcdoc.datafield.(@tag == '039').subfield.(@code == 'b').toString().match(/
 }
 
 if (extractFixedField(marcdoc, 'Lang') == 'eng') {
-	quality *= 2;
+	quality += 100;
 	log_debug( 'got language bump for ' + extractFixedField(marcdoc, 'Lang') );
 }
 
