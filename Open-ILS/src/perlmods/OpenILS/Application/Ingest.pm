@@ -204,6 +204,8 @@ sub rw_biblio_ingest_single_object {
 			$mr->master_record($bib->id);
 		}
 
+		$mr->clear_mods;
+
 		$cstore->request( 'open-ils.cstore.direct.metabib.metarecord.update' => $mr )->gather(1);
 	}
 
