@@ -94,6 +94,9 @@ function uEditBuild() {
 
 	} else {
 
+		/* do we need to display the parent / gurdian field? */
+		uEditCheckDOB(uEditFindFieldByKey('dob'));
+
 		$('ue_barcode').disabled = true;
 		unHideMe($('ue_mark_card_lost'));
 		unHideMe($('ue_reset_pw'));

@@ -1027,8 +1027,7 @@ function uEditCheckDOB(field) {
 	__lastdob = dob;
 
 	var parts = dob.split(/-/);
-	var d = new Date( parts[0], parts[1] - 1, parts[2] );
-
+	parts[2] = parts[2].replace(/[T ].*/,'');
 	dob = buildDate( parts[0], parts[1], parts[2] );
 
 	var today = new Date();
