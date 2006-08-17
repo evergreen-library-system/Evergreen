@@ -250,6 +250,7 @@ sub retrieve_payments2 {
 		my $type = $_->payment_type;
 		my $meth = "retrieve_money_$type";
 		my $p = $e->$meth($_->id) or return $e->event;
+		$p->payment_type($type);
 		try {
 			$p->cash_drawer($e->retrieve_actor_workstation($p->cash_drawer));
 		} catch Error with {};
