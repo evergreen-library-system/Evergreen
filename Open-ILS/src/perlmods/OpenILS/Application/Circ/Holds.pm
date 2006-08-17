@@ -483,7 +483,10 @@ sub retrieve_hold_status {
 	return $e->event unless $e->checkauth;
 	my $hold = $e->retrieve_action_hold_request($hold_id)
 		or return $e->event;
-	return $e->event unless $e->allowed('VIEW_HOLD');
+
+	if( $e->requestor->id != $hold->usr ) {
+		return $e->event unless $e->allowed('VIEW_HOLD');
+	}
 
 	return 1 unless $hold->current_copy;
 	return 2 unless $hold->capture_time;

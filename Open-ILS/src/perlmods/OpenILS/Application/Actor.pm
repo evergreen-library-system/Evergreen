@@ -2442,7 +2442,9 @@ sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $auth, $user_id, $fields ) = @_;
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_USER');
+	if( $e->requestor->id != $user_id ) {
+		return $e->event unless $e->allowed('VIEW_USER');
+	}
 	$fields ||= [
 		"cards",
 		"card",
