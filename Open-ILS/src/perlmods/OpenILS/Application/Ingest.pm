@@ -227,10 +227,13 @@ sub rw_biblio_ingest_single_record {
 	my $rec = shift;
 
 	OpenILS::Application::Ingest->post_init();
-	my $r = OpenSRF::AppSession
-			->create('open-ils.cstore')
-			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
-			->gather(1);
+	my $cstore = OpenSRF::AppSession->connect( 'open-ils.cstore' );
+	$cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+
+	my $r = $cstore->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )->gather(1);
+
+	$cstore->request('open-ils.cstore.transaction.rollback')->gather(1);
+	$cstore->disconnect;
 
 	return undef unless ($r and @$r);
 
