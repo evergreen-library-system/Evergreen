@@ -75,24 +75,26 @@ sub active_in_collections {
 		SELECT	lt.usr,
 			MAX(bl.billing_ts) AS last_pertinent_billing,
 			MAX(pm.payment_ts) AS last_pertinent_payment
-		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
+		  FROM	( SELECT id,usr,billing_location AS location, 'g'::char AS x_type FROM money.grocery
 		  		UNION ALL
-			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
+			  SELECT id,usr,circ_lib AS location, 'c'::char AS x_type FROM action.circulation
+		  		UNION ALL
+			  SELECT id,usr,circ_lib AS location, 'i'::char AS x_type FROM action.circulation
+			    WHERE checkin_time between ? and ? ) AS lt
 			JOIN $descendants d ON (lt.location = d.id)
 			JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
 			LEFT JOIN money.billing bl ON (lt.id = bl.xact)
 			LEFT JOIN money.payment pm ON (lt.id = pm.xact)
-		  WHERE	cl.location IN ((SELECT id FROM $descendants))
-		  	AND (	( bl.billing_ts between ? and ?
-					OR pm.payment_ts between ? and ? )
-				OR lt.checkin_time between ? and ? )
+		  WHERE	bl.billing_ts between ? and ?
+			OR pm.payment_ts between ? and ?
+			OR lt.x_type = 'i'::char
 		  GROUP BY 1
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
 		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), uc($l), $startdate, $enddate, $startdate, $enddate, $startdate, $enddate );
+		$sth->execute( $startdate, $enddate, uc($l), $startdate, $enddate, $startdate, $enddate );
 		while (my $row = $sth->fetchrow_hashref) {
 			$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
