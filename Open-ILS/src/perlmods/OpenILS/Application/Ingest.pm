@@ -4,6 +4,7 @@ use base qw/OpenSRF::Application/;
 use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;
 
+use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:level/;
 
@@ -102,6 +103,145 @@ sub entityize {
 package OpenILS::Application::Ingest::Biblio;
 use base qw/OpenILS::Application::Ingest/;
 use Unicode::Normalize;
+
+sub rw_biblio_ingest_single_object {
+	my $self = shift;
+	my $client = shift;
+	my $bib = shift;
+
+	my ($blob) = $self->method_lookup("open-ils.ingest.full.biblio.object.readonly")->run($bib);
+	return undef unless ($blob);
+
+	$bib->fingerprint( $blob->{fingerprint}->{fingerprint} );
+	$bib->quality( $blob->{fingerprint}->{quality} );
+
+	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+
+	my $xact = $cstore->request('open-ils.cstore.transaction.begin')->gather(1);
+
+	# update full_rec stuff ...
+	my $tmp = $cstore->request(
+		'open-ils.cstore.direct.metabib.full_rec.id_list.atomic',
+		{ record => $bib->id }
+	)->gather(1);
+
+	$cstore->request( 'open-ils.cstore.direct.metabib.full_rec.delete' => $_ )->gather(1) for (@$tmp);
+	$cstore->request( 'open-ils.cstore.direct.metabib.full_rec.create' => $_ )->gather(1) for (@{ $blob->{full_rec} });
+
+	# update rec_descriptor stuff ...
+	$tmp = $cstore->request(
+		'open-ils.cstore.direct.metabib.record_descriptor.id_list.atomic',
+		{ record => $bib->id }
+	)->gather(1);
+
+	$cstore->request( 'open-ils.cstore.direct.metabib.record_descriptor.delete' => $_ )->gather(1) for (@$tmp);
+	$cstore->request( 'open-ils.cstore.direct.metabib.record_descriptor.create' => $blob->{descriptor} )->gather(1);
+
+	# deal with classed fields...
+	for my $class ( qw/title author subject keyword series/ ) {
+		$tmp = $cstore->request(
+			"open-ils.cstore.direct.metabib.${class}_field_entry.id_list.atomic",
+			{ source => $bib->id }
+		)->gather(1);
+
+		$cstore->request( "open-ils.cstore.direct.metabib.${class}_field_entry.delete" => $_ )->gather(1) for (@$tmp);
+	}
+	for my $obj ( @{ $blob->{field_entries} } ) {
+		my $class = $obj->class_name;
+		$class =~ s/^Fieldmapper:://o;
+		$class =~ s/::/./go;
+		$cstore->request( "open-ils.cstore.direct.$class.create" => $obj )->gather(1);
+	}
+
+	# update MR map ...
+
+	$tmp = $cstore->request(
+		'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic',
+		{ source => $bib->id }
+	)->gather(1);
+
+	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.delete' => $_ )->gather(1) for (@$tmp);
+
+
+	# Get the matchin MR, if any.
+	my $mr = $cstore->request(
+		'open-ils.cstore.direct.metabib.metarecord.search',
+		{ fingerprint => $bib->fingerprint }
+	)->gather(1);
+
+	if (!$mr) {
+		$mr = new Fieldmapper::metabib::metarecord;
+		$mr->fingerprint( $bib->fingerprint );
+		$mr->master_record( $bib->id );
+		$mr->id(
+			$cstore->request(
+				"open-ils.cstore.direct.metabib.metarecord.create",
+				$mr => { quiet => 'true' }
+			)->gather(1)
+		);
+	} else {
+		my $mrm = $cstore->request(
+			'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
+			{ metarecord => $mr->id }
+		)->gather(1);
+
+		my $best = $cstore->request(
+			"open-ils.cstore.direct.biblio.record_entry.search",
+			{ id => [ map { $_->source } @$mrm ] },
+			{ 'select'	=> { bre => [ qw/id quality/ ] },
+			  order_by	=> { bre => "quality desc" },
+			  limit		=> 1,
+			}
+		)->gather(1);
+
+		if ($best->quality > $bib->quality) {
+			$mr->master_record($best->id);
+		} else {
+			$mr->master_record($bib->id);
+		}
+
+		$cstore->request( 'open-ils.cstore.direct.metabib.metarecord.update' => $mr )->gather(1);
+	}
+
+	my $mrm = new Fieldmapper::metabib::metarecord_source_map;
+	$mrm->source($bib->id);
+	$mrm->metarecord($mr->id);
+
+	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.create' => $mrm )->gather(1);
+	$cstore->request( 'open-ils.cstore.direct.biblio.record_entry.update' => $bib )->gather(1);
+
+	$cstore->request( 'open-ils.cstore.transaction.commit' )->gather(1) || return undef;;
+
+	return $bib->id;
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.biblio.object",
+	method		=> "rw_biblio_ingest_single_object",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
+
+sub rw_biblio_ingest_single_record {
+	my $self = shift;
+	my $client = shift;
+	my $rec = shift;
+
+	OpenILS::Application::Ingest->post_init();
+	my $r = OpenSRF::AppSession
+			->create('open-ils.cstore')
+			->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve' => $rec )
+			->gather(1);
+
+	return undef unless ($r and @$r);
+
+	return $self->method_lookup("open-ils.ingest.full.biblio.object")->run($r);
+}
+__PACKAGE__->register_method(  
+	api_name	=> "open-ils.ingest.full.biblio.record",
+	method		=> "rw_biblio_ingest_single_record",
+	api_level	=> 1,
+	argc		=> 1,
+);                      
 
 sub ro_biblio_ingest_single_object {
 	my $self = shift;
