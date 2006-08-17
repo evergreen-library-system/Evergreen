@@ -90,22 +90,12 @@ sub handler {
 		return 1;  # error?
 	}
 
-	$log->debug( "In Application::handler()", DEBUG );
-
 	my $app = $self->application_implementation;
 
-	if( $app ) {
-		$log->debug( "Application is $app", DEBUG);
-	}
-
 	if ($session->last_message_type eq 'REQUEST') {
-		$log->debug( "We got a REQUEST: ". $app_msg->method);
 
 		my $method_name = $app_msg->method;
-		$log->debug( " * Looking up $method_name inside $app", DEBUG);
-
 		my $method_proto = $session->last_message_api_level;
-		$log->debug( " * Method API Level [$method_proto]", DEBUG);
 
 		my $coderef = $app->method_lookup( $method_name, $method_proto, 1, 1 );
 
@@ -115,8 +105,6 @@ sub handler {
 						status => "Method [$method_name] not found for $app"));
 			return 1;
 		}
-
-		$log->debug( " (we got coderef $coderef", DEBUG);
 
 		unless ($session->continue_request) {
 			$session->status(
@@ -131,7 +119,7 @@ sub handler {
 			my @args = $app_msg->params;
 			my $appreq = OpenSRF::AppRequest->new( $session );
 
-			$log->debug( "in_request = $in_request : [" . $appreq->threadTrace."]", DEBUG );
+			$log->debug( "in_request = $in_request : [" . $appreq->threadTrace."]", INTERNAL );
 			if( $in_request ) {
 				$log->debug( "Pushing onto pending requests: " . $appreq->threadTrace, DEBUG );
 				push @pending_requests, [ $appreq, \@args, $coderef ]; 
@@ -267,7 +255,7 @@ sub handler {
 									statusCode => STATUS_COMPLETE(),
 									status => 'Request Complete' ) );
 					}
-					$log->debug( "Executed: " . $appreq->threadTrace, DEBUG );
+					$log->debug( "Executed: " . $appreq->threadTrace, INTERNAL );
 				} catch Error with {
 					my $e = shift;
 					if(UNIVERSAL::isa($e,"Error")) {
@@ -515,8 +503,6 @@ sub method_lookup {
 	}
 
 	if (defined $meth) {
-		$log->debug("Looks like we found [$method]!", DEBUG);
-		$log->debug("Method object is ".Dumper($meth), INTERNAL);
 		if($no_remote and $meth->{remote}) {
 			$log->debug("OH CRAP We're not supposed to return remote methods", WARN);
 			return undef;
@@ -547,26 +533,22 @@ sub run {
 	}
 
 	if (!$self->{remote}) {
-		my $code ||= \&{$self->{package} . '::' . $self->{method}};
-		$log->debug("Created coderef [$code] for $$self{package}::$$self{method}",DEBUG);
+		my $code = \&{$self->{package} . '::' . $self->{method}};
 		my $err = undef;
 
 		try {
 			$resp = $code->($self, $req, @params);
 
 		} catch Error with {
-			my $e = shift;
-			$err = $e;
-			warn "Method 'run' catching error: $e\n";
+			$err = shift;
 
 			if( ref($self) eq 'HASH') {
-				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$e\n", ERROR);
+				$log->error("Sub $$self{package}::$$self{method} DIED!!!\n\t$err\n", ERROR);
 			}
 		};
 
 		if($err) {
 			if(UNIVERSAL::isa($err,"Error")) { 
-				warn "Throwing from method run:\n$err\n------------------\n";
 				throw $err;
 			} else {
 				die $err->stringify; 
@@ -577,9 +559,8 @@ sub run {
 		$log->debug("Coderef for [$$self{package}::$$self{method}] has been run", DEBUG);
 
 		if ( ref($req) and UNIVERSAL::isa($req, 'OpenSRF::AppSubrequest') ) {
-			$log->debug("A SubRequest object is responding", DEBUG);
 			$req->respond($resp) if (defined $resp);
-			$log->debug("... Responding with : " . join(" ",$req->responses), DEBUG);
+			$log->debug("SubRequest object is responding with : " . join(" ",$req->responses), DEBUG);
 			return $req->responses;
 		} else {
 			$log->debug("A top level Request object is responding $resp", DEBUG) if (defined $resp);

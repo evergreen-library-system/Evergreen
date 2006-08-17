@@ -88,10 +88,7 @@ sub server_build {
 
 	if ( my $thingy = $class->find($sess_id) ) {
 		$thingy->remote_id( $remote_id );
-		$logger->debug( "AppSession returning existing session $sess_id", DEBUG );
 		return $thingy;
-	} else {
-		$logger->debug( "AppSession building new server session $sess_id", DEBUG );
 	}
 
 	if( $service eq "client" ) {
@@ -459,8 +456,6 @@ sub send {
 
 	my @doc = ();
 
-	$logger->debug( "In send2", INTERNAL );
-
 	my $disconnect = 0;
 	my $connecting = 0;
 
@@ -512,7 +507,7 @@ sub send {
 
 		if($self->stateless && $self->state != CONNECTED) {
 			$self->reset;
-			$logger->debug("AppSession is stateless in send", DEBUG );
+			$logger->debug("AppSession is stateless in send", INTERNAL );
 		}
 
 		if( !$self->stateless and $self->state != CONNECTED ) {
@@ -918,7 +913,6 @@ sub failed {
 
 sub queue_wait {
 	my $self = shift;
-	OpenSRF::Utils::Logger->debug( "Calling queue_wait(@_)", INTERNAL );
 	return $self->session->queue_wait(@_)
 }
 

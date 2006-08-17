@@ -95,9 +95,6 @@ sub handler {
 
 	}
 
-	$logger->transport( 
-			"Transport building/retrieving session: $service, $remote_id, $sess_id", DEBUG );
-
 	# See if the app_session already exists.  If so, make 
 	# sure the sender hasn't changed if we're a server
 	my $app_session = OpenSRF::AppSession->find( $sess_id );
@@ -157,9 +154,6 @@ sub handler {
 	# cycle through and pass each oilsMessage contained in the message
 	# up to the message layer for processing.
 	for my $msg (@$doc) {
-
-		$logger->debug( "Transport passing up ".$msg->type." from ".
-				$app_session->remote_id . " with threadTrace [" . $msg->threadTrace."]");
 
 		next unless (	$msg && UNIVERSAL::isa($msg => 'OpenSRF::DomainObject::oilsMessage'));
 

@@ -172,9 +172,6 @@ sub handler {
 
 	$log->debug(" Received api_level => [$api_level], MType => [$mtype], ".
 			"from [".$session->remote_id."], threadTrace[".$self->threadTrace."]");
-	$log->debug("endpoint => [".$session->endpoint."]", DEBUG);
-	$log->debug("OpenSRF::AppSession->SERVER => [".$session->SERVER()."]", DEBUG);
-
 
 	my $val;
 	if ( $session->endpoint == $session->SERVER() ) {
@@ -185,7 +182,6 @@ sub handler {
 	}
 
 	if( $val ) {
-		$log->debug("Passing request up to OpenSRF::Application", DEBUG);
 		return OpenSRF::Application->handler($session, $self->payload);
 	} else {
 		$log->debug("Request was handled internally", DEBUG);
@@ -219,7 +215,6 @@ sub do_server {
 	if ($session->state == $session->CONNECTING()) {
 
 		if($mtype ne "CONNECT" and $session->stateless) {
-			$log->debug("Got message Stateless", DEBUG);
 			return 1; #pass the message up the stack
 		}
 
