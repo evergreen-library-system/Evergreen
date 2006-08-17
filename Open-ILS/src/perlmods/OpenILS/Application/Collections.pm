@@ -17,6 +17,23 @@ my $U = "OpenILS::Application::AppUtils";
 # --------------------------------------------------------------
 sub initialize { return 1; }
 
+__PACKAGE__->register_method(
+	method => 'user_from_bc',
+	api_name => 'open-ils.collections.user_id_from_barcode',
+);
+
+sub user_from_bc {
+	my( $self, $conn, $auth, $bc ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER'); 
+	my $card = $e->search_actor_card({barcode=>$bc})->[0]
+		or return $e->event;
+	my $user = $e->retrieve_actor_user($card->usr)
+		or return $e->event;
+	return $user->id;	
+}
+
 
 __PACKAGE__->register_method(
 	method    => 'users_of_interest',
