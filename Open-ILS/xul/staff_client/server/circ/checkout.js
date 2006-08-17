@@ -468,6 +468,16 @@ circ.checkout.prototype = {
 				var test_permit;
 				if (typeof permit.ilsevent != 'undefined') { test_permit = [ permit ]; } else { test_permit = permit; }
 
+				var stop_checkout = false;
+				for (var i = 0; i < test_permit.length; i++) {
+					switch(test_permit[i].ilsevent) {
+						case 1217 /* PATRON_INACTIVE */ :
+						case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
+							stop_checkout = true;
+						break;
+					}
+				}
+
 				for (var i = 0; i < test_permit.length; i++) {
 					dump('found [' + test_permit[i].ilsevent + ']\n');
 					switch(test_permit[i].ilsevent) {
@@ -479,7 +489,12 @@ circ.checkout.prototype = {
 						break;
 						case 1217 /* PATRON_INACTIVE */ :
 							found_handled = true;
-							msg += 'This patron is inactive and may not circulate items.\n';
+							msg += 'This account is inactive and may not circulate items.\n';
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+						break;
+						case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
+							found_handled = true;
+							msg += 'This account has expired  and may not circulate items.\n';
 							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
 						break;
 						case 7013 /* PATRON_EXCEEDS_FINES */ :
@@ -522,32 +537,40 @@ circ.checkout.prototype = {
 							var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
 							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
 							if (due_date) if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
-							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
-							JSAN.use('circ.util');
-							switch(r) {
-								case 1:
-									circ.util.checkin_via_barcode( ses(), params.barcode );
-									obj.checkout(params);
-								break;
-								case 2:
-									circ.util.checkin_via_barcode( ses(), params.barcode, due_date );
-									obj.checkout(params);
-								break;
+							if (! stop_checkout ) {
+								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
+								JSAN.use('circ.util');
+								switch(r) {
+									case 1:
+										circ.util.checkin_via_barcode( ses(), params.barcode );
+										obj.checkout(params);
+									break;
+									case 2:
+										circ.util.checkin_via_barcode( ses(), params.barcode, due_date );
+										obj.checkout(params);
+									break;
+								}
+							} else {
+								obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
 							}
 						break;
 						case 7014 /* COPY_IN_TRANSIT */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
-							var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Abort Transit then Checkout',null,'Check here to confirm this message');
-							switch(r) {
-								case 1:
-									var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
-									if (typeof robj.ilsevent == 'undefined') {
-										obj.checkout(params);
-									} else {
-										if (robj.ilsevent != 5000 /* PERM_FAILURE */) throw(robj);
-									}
-								break;
+							if (! stop_checkout ) {
+								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Abort Transit then Checkout',null,'Check here to confirm this message');
+								switch(r) {
+									case 1:
+										var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
+										if (typeof robj.ilsevent == 'undefined') {
+											obj.checkout(params);
+										} else {
+											if (robj.ilsevent != 5000 /* PERM_FAILURE */) throw(robj);
+										}
+									break;
+								}
+							} else {
+								obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
 							}
 						break;
 						case -1 /* NETWORK_FAILURE */ :
