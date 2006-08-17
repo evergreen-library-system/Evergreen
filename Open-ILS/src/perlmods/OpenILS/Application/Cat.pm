@@ -195,8 +195,16 @@ sub biblio_record_replace_marc  {
 	$logger->activity("user ".$e->requestor->id." replacing MARC for record $recid");
 
 	$e->update_biblio_record_entry($rec) or return $e->event;
-	$e->request('open-ils.worm.wormize.biblio', $recid) or return $e->event;
 	$e->commit;
+
+	$U->simplereq(
+		'open-ils.ingest',
+		'open-ils.ingest.full.biblio.record', $recid );
+
+	return $rec;
+
+	#$e->request('open-ils.worm.wormize.biblio', $recid) or return $e->event;
+	#$e->commit;
 
 	return $rec;
 }
@@ -265,9 +273,14 @@ sub biblio_record_xml_import {
 
 	$logger->debug("Sending record off to be wormized");
 
-	my $stat = $U->storagereq( 'open-ils.worm.wormize.biblio', $id );
-	throw OpenSRF::EX::ERROR 
-		("Unable to wormize imported record") unless $stat;
+
+	$U->simplereq(
+		'open-ils.ingest',
+		'open-ils.ingest.full.biblio.record', $id );
+
+#	my $stat = $U->storagereq( 'open-ils.worm.wormize.biblio', $id );
+#	throw OpenSRF::EX::ERROR 
+#		("Unable to wormize imported record") unless $stat;
 
 	return $record;
 }
