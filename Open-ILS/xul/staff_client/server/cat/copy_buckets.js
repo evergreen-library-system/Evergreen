@@ -464,8 +464,30 @@ cat.copy_buckets.prototype = {
 					'cmd_copy_buckets_print' : [
 						['command'],
 						function() {
-							dump( js2JSON( obj.list2.dump() ) );
-							alert( js2JSON( obj.list2.dump() ) );
+							JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+							obj.list2.on_all_fleshed = function() {
+								try {
+									dump( js2JSON( obj.list2.dump_with_keys() ) + '\n' );
+									data.stash_retrieve();
+									var lib = data.hash.aou[ data.list.au[0].ws_ou() ];
+									lib.children(null);
+									var p = { 
+										'lib' : lib,
+										'staff' : data.list.au[0],
+										'header' : data.print_list_templates.item_status.header,
+										'line_item' : data.print_list_templates.item_status.line_item,
+										'footer' : data.print_list_templates.item_status.footer,
+										'type' : data.print_list_templates.item_status.type,
+										'list' : obj.list2.dump_with_keys(),
+									};
+									JSAN.use('util.print'); var print = new util.print();
+									print.tree_list( p );
+									setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list2.full_retrieve();
 						}
 					],
 					'cmd_copy_buckets_reprint' : [

@@ -233,6 +233,7 @@ circ.checkout.prototype = {
 	'print' : function(silent,f) {
 		var obj = this;
 		try {
+			dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
 			obj.list.on_all_fleshed = function() {
 				try {
 					var params = { 
@@ -243,7 +244,7 @@ circ.checkout.prototype = {
 						'line_item' : obj.data.print_list_templates.checkout.line_item,
 						'footer' : obj.data.print_list_templates.checkout.footer,
 						'type' : obj.data.print_list_templates.checkout.type,
-						'list' : obj.list.dump(),
+						'list' : obj.list.dump_with_keys(),
 					};
 					if (silent) params.no_prompt = true;
 					JSAN.use('util.print'); var print = new util.print();

@@ -190,7 +190,7 @@ circ.copy_status.prototype = {
 								obj.list.on_all_fleshed =
 									function() {
 										try {
-											dump( js2JSON( obj.list.dump() ) + '\n' );
+											dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
 											obj.data.stash_retrieve();
 											var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 											lib.children(null);
@@ -201,7 +201,7 @@ circ.copy_status.prototype = {
 												'line_item' : obj.data.print_list_templates.item_status.line_item,
 												'footer' : obj.data.print_list_templates.item_status.footer,
 												'type' : obj.data.print_list_templates.item_status.type,
-												'list' : obj.list.dump(),
+												'list' : obj.list.dump_with_keys(),
 											};
 											JSAN.use('util.print'); var print = new util.print();
 											print.tree_list( p );

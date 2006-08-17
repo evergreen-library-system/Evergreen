@@ -180,7 +180,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var list = (which==2 ? obj.list2 : obj.list);
-			dump(js2JSON( list.dump() ) + '\n');
+			dump(js2JSON( list.dump_with_keys() ) + '\n');
 			function flesh_callback() {
 				try {
 					JSAN.use('patron.util');
@@ -192,7 +192,7 @@ patron.items.prototype = {
 						'line_item' : obj.data.print_list_templates.checkout.line_item,
 						'footer' : obj.data.print_list_templates.checkout.footer,
 						'type' : obj.data.print_list_templates.checkout.type,
-						'list' : list.dump(),
+						'list' : list.dump_with_keys(),
 					};
 					JSAN.use('util.print'); var print = new util.print();
 					print.tree_list( params );

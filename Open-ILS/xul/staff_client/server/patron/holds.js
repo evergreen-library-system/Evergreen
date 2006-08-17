@@ -183,7 +183,7 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-								dump(js2JSON(obj.list.dump()) + '\n');
+								dump(js2JSON(obj.list.dump_with_keys()) + '\n');
 								function flesh_callback() {
 									try {
 										JSAN.use('patron.util');
@@ -195,7 +195,7 @@ patron.holds.prototype = {
 											'line_item' : obj.data.print_list_templates.holds.line_item,
 											'footer' : obj.data.print_list_templates.holds.footer,
 											'type' : obj.data.print_list_templates.holds.type,
-											'list' : obj.list.dump(),
+											'list' : obj.list.dump_with_keys(),
 										};
 										JSAN.use('util.print'); var print = new util.print();
 										print.tree_list( params );

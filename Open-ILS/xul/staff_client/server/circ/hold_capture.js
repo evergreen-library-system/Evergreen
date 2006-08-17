@@ -62,7 +62,7 @@ circ.hold_capture.prototype = {
 						function() {
 							obj.list.on_all_fleshed = function() {
 								try {
-									dump( js2JSON( obj.list.dump() ) + '\n' );
+									dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
 									obj.OpenILS.data.stash_retrieve();
 									var lib = obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ];
 									lib.children(null);
@@ -73,7 +73,7 @@ circ.hold_capture.prototype = {
 										'line_item' : obj.OpenILS.data.print_list_templates.hold_capture.line_item,
 										'footer' : obj.OpenILS.data.print_list_templates.hold_capture.footer,
 										'type' : obj.OpenILS.data.print_list_templates.hold_capture.type,
-										'list' : obj.list.dump(),
+										'list' : obj.list.dump_with_keys(),
 									};
 									JSAN.use('util.print'); var print = new util.print();
 									print.tree_list( p );
