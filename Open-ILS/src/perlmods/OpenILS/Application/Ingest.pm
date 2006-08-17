@@ -185,17 +185,21 @@ sub rw_biblio_ingest_single_object {
 			{ metarecord => $mr->id }
 		)->gather(1);
 
-		my $best = $cstore->request(
-			"open-ils.cstore.direct.biblio.record_entry.search",
-			{ id => [ map { $_->source } @$mrm ] },
-			{ 'select'	=> { bre => [ qw/id quality/ ] },
-			  order_by	=> { bre => "quality desc" },
-			  limit		=> 1,
-			}
-		)->gather(1);
+		if (@$mrm) {
+			my $best = $cstore->request(
+				"open-ils.cstore.direct.biblio.record_entry.search",
+				{ id => [ map { $_->source } @$mrm ] },
+				{ 'select'	=> { bre => [ qw/id quality/ ] },
+			  	order_by	=> { bre => "quality desc" },
+			  	limit		=> 1,
+				}
+			)->gather(1);
 
-		if ($best->quality > $bib->quality) {
-			$mr->master_record($best->id);
+			if ($best->quality > $bib->quality) {
+				$mr->master_record($best->id);
+			} else {
+				$mr->master_record($bib->id);
+			}
 		} else {
 			$mr->master_record($bib->id);
 		}
