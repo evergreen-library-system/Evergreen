@@ -691,12 +691,8 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
 
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
-
 		int pos = atoi(osrfHashGet(field, "array_position"));
 		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
-
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
 
 		if (first) {
 			first = 0;
@@ -707,16 +703,10 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		buffer_add(col_buf, field_name);
 
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
-
 		if (!jsonObjectGetIndex(target, pos) || jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
-
 			buffer_add( val_buf, "DEFAULT" );
 			
 		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
-
 			if ( !strcmp(osrfHashGet(field, "datatype"), "INT8") ) {
 				buffer_fadd( val_buf, "%lld", atol(value) );
 				
@@ -727,8 +717,6 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				buffer_fadd( val_buf, "%f", atof(value) );
 			}
 		} else {
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
-
 			if ( dbi_conn_quote_string(writehandle, &value) ) {
 				buffer_fadd( val_buf, "%s", value );
 
@@ -749,8 +737,6 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 				return jsonNULL;
 			}
 		}
-
-		osrfLogDebug( OSRF_LOG_MARK, "HERE..." );
 
 		free(value);
 		
