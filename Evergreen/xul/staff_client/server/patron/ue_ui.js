@@ -116,7 +116,7 @@ function uEditBuildLibSelector( node, depth, selector ) {
 
 
 /* group tree selector */
-function uEditDrawGroups(tree, depth, selector) {
+function uEditDrawGroups(tree, depth, selector, drawme) {
 	if(!selector) {
 		selector = $('ue_profile');
 		depth = 0;
@@ -127,13 +127,15 @@ function uEditDrawGroups(tree, depth, selector) {
 		remove it from the tree and don't add it's children */
 	var perm = uEditFindGroupPerm(tree);
 	var org = PERMS[perm];
-	if( org == -1 ) return;
+	if( org == -1 ) drawme = false;
 
-	var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
-	if(!isTrue(tree.usergroup())) opt.disabled = true;
+	if( drawme ) {
+		var opt = insertSelectorVal( selector, -1, tree.name(), tree.id(), null, depth++ );	
+		if(!isTrue(tree.usergroup())) opt.disabled = true;
+	}
 
 	for( var c in tree.children() ) 
-		uEditDrawGroups( tree.children()[c], depth, selector );
+		uEditDrawGroups( tree.children()[c], depth, selector, drawme );
 }
 
 

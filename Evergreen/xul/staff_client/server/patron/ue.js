@@ -114,8 +114,10 @@ function uEditBuild() {
 function uEditCheckEditPerm() {
 
 	var perm = uEditFindGroupPerm(groupsCache[patron.profile()]);	
+	/*
 	_debug("editing user with group app perm "+patron.profile()+' : '+
 		groupsCache[patron.profile()].name() +', and perm = ' + perm);
+		*/
 
 	if(PERMS[perm] != -1) return;
 
@@ -251,7 +253,7 @@ function uEditDraw(identTypes, groups, statCats, surveys, netLevels ) {
 
 	dataFields = [];
 	uEditDrawIDTypes(identTypes);
-	uEditDrawGroups(groups);
+	uEditDrawGroups(groups, null, null, true);
 	uEditDrawStatCats(statCats);
 	uEditDrawSurveys(surveys);
 	uEditDrawNetLevels(netLevels);
