@@ -26,7 +26,7 @@ util.network.prototype = {
 		} catch(E) {
 			try {
 				if (instanceOf(E, NetworkFailure)) {
-					obj.NETWORK_FAILURE = E.status();
+					obj.NETWORK_FAILURE = E;
 				} else {
 					try { obj.NETWORK_FAILURE = js2JSON(E); } catch(F) { dump(F + '\n'); obj.NETWORK_FAILURE = E; };
 				}
@@ -127,10 +127,6 @@ util.network.prototype = {
 		var obj = this;
 		var result = obj.get_result(req);
 		if (result != null) return req;
-		if (obj.NETWORK_FAILURE == null) {
-			obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: ' + js2JSON(params) + '\nReturned null.  There was no NetworkFailure object thrown.');
-			//return req;
-		}
 
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		var proceed = true;
@@ -146,8 +142,8 @@ util.network.prototype = {
 				r = 1;
 
 			} else {
-				try { obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: '+ js2JSON(params) + '\nReturned null\n'); } catch(E) { alert(E); }
-				r = obj.error.yns_alert('Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + ' status = ' + obj.NETWORK_FAILURE + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
+				try { obj.error.sdump('D_SES_ERROR','method: ' + name + '\nparams: '+ js2JSON(params) + '\nReturned null with a NETWORK_FAILURE = ' + obj.NETWORK_FAILURE + ( typeof obj.NETWORK_FAILURE.status == 'function' ? '.status() == ' + obj.NETWORK_FAILURE.status() : '') + '\n'); } catch(E) { alert(E); }
+				r = obj.error.yns_alert('Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this message: method=' + name + ' params=' + js2JSON(params) + ' thrown = ' + obj.NETWORK_FAILURE + (obj.NETWORK_FAILURE.status == 'function' ? '.status() == ' + obj.NETWORK_FAILURE.status() : '') + '.','Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
 				if (r == 1) {
 					data.proceed_offline = true; data.stash('proceed_offline');
 					dump('Remembering proceed_offline for 200000 ms.\n');
