@@ -241,7 +241,7 @@ sub rw_biblio_ingest_single_record {
 
 	return undef unless ($r and @$r);
 
-	return $self->method_lookup("open-ils.ingest.full.biblio.object")->run($r);
+	return ($self->method_lookup("open-ils.ingest.full.biblio.object")->run($r))[0];
 }
 __PACKAGE__->register_method(  
 	api_name	=> "open-ils.ingest.full.biblio.record",
