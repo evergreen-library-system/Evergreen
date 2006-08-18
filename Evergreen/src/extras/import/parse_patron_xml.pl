@@ -154,7 +154,6 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	$p->day_phone( $patron->findvalue( 'Address/dayphone' ) );
 	$p->evening_phone( $patron->findvalue( 'Address/homephone' ) );
 	$p->other_phone( $patron->findvalue( 'Address/workphone' ) );
-	$p->email( $patron->findvalue( 'email' ) );
 
 	my $hlib = $$orgs{$patron->findvalue( 'user_library' )};
 	unless ($hlib) {
@@ -184,6 +183,10 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $mailing_addr_id = $patron->findvalue( 'user_mailingaddr' );
 
 	for my $addr ( $patron->findnodes( "Address" ) ) {
+		if (!$p->email) {
+			$p->email( $patron->findvalue( 'email' ) );
+		}
+
 		my $prefix = 'coa_';
 
 		my $line1 = $addr->findvalue( "${prefix}line1" );
@@ -235,7 +238,6 @@ for my $patron ( $doc->documentElement->childNodes ) {
 			);
 		
 			$a->valid( 'f' );
-			$a->valid( 't' ) if ($prefix eq 'std_');
 		
 			$a->within_city_limits( 'f' );
 			$a->country('USA');
