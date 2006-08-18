@@ -1091,6 +1091,15 @@ sub delete_copy {
 		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
 		or return $editor->event;
 
+	# Delete any open transits for this copy
+	my $transits = $editor->search_action_transit_copy(
+		{ target_copy=>$copy->id, dest_recv_time => undef } );
+
+	for my $t (@$transits) {
+		$editor->delete_action_transit_copy($t)
+			or return $editor->event;
+	}
+
 	return remove_empty_objects($editor, $override, $vol);
 }
 
