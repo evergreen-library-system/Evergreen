@@ -380,7 +380,7 @@ sub void_bill {
 	my( $s, $c, $authtoken, $billid ) = @_;
 
 	#my $e = OpenILS::Utils::Editor->new( authtoken => $authtoken );
-	my $e = new_editor( authtoken => $authtoken );
+	my $e = new_editor( authtoken => $authtoken, xact => 1 );
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VOID_BILLING');
 
@@ -422,7 +422,7 @@ sub _check_open_xact {
 		or return $editor->event;
 
 	# grab the summary and see how much is owed on this transaction
-	my $summary = $editor->retrieve_money_open_billable_transaction_summary($xactid)
+	my $summary = $editor->retrieve_money_billable_transaction_summary($xactid)
 		or return $editor->event;
 
 	# grab the circulation if it is a circ;
