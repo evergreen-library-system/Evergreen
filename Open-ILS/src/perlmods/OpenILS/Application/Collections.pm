@@ -123,7 +123,7 @@ sub users_of_interest {
 					select			=> {au => ["profile","id","dob", "card"]}
 				}
 			]
-		);
+		) or return $e->event;
 
 		$_->{usr} = {
 			id			=> $u->id,
