@@ -17,6 +17,6 @@ ARGS="0"
 # If today is monday, run for sat/sun/mon
 if [ "$DAY" == "1" ]; then ARGS="2 1 0"; fi;
 
-./eg_gen_overdue.pl $BSCONFIG $ARGS > "/tmp/EG_overdue.$DATE.xml"
+./eg_gen_overdue.pl $BSCONFIG $ARGS > "/openils/var/web/tmp/overdue/EG_overdue.$DATE.xml"
 
 
