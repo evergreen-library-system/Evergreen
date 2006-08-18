@@ -775,10 +775,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				'title' : 'Override Checkin Failure?',
 				'overridable_events' : [ 
 					1203 /* COPY_BAD_STATUS */, 
+					1213 /* PATRON_BARRED */,
 					7009 /* CIRC_CLAIMS_RETURNED */,
 					7010 /* COPY_ALERT_MESSAGE */, 
 					7011 /* COPY_STATUS_LOST */, 
 					7012 /* COPY_STATUS_MISSING */, 
+					7013 /* PATRON_EXCEEDS_FINES */,
 				],
 				'text' : {
 					'1203' : function(r) {
@@ -946,10 +948,12 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 			switch (check.ilsevent) {
 				case 1203 /* COPY_BAD_STATUS */ : 
+				case 1213 /* PATRON_BARRED */ :
 				case 7009 /* CIRC_CLAIMS_RETURNED */ :
 				case 7010 /* COPY_ALERT_MESSAGE */ : 
 				case 7011 /* COPY_STATUS_LOST */ : 
 				case 7012 /* COPY_STATUS_MISSING */ : 
+				case 7013 /* PATRON_EXCEEDS_FINES */ :
 					return null; /* handled */
 				break;
 			}
