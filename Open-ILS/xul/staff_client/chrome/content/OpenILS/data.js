@@ -167,7 +167,7 @@ OpenILS.data.prototype = {
 				}, 
 				'bill_payment' : {
 					'type' : 'payment',
-					'header' : 'Welcome to %LIBRARY%!<br/>A receipt of your  transaction:<hr/> <table width="100%"> <tr> <td>Original Balance:</td> <td align="right">$%original_balance%</td> </tr> <tr> <td>Payment Method:</td> <td align="right">%payment_type%</td> </tr> <tr> <td>Payment Received:</td> <td align="right">$%payment_received%</td> </tr> <tr> <td>Payment Applied:</td> <td align="right">$%payment_applied%</td> </tr> <tr> <td>Billings Voided:</td> <td align="right">$%voided_balance%</td> </tr> <tr> <td>Change Given:</td> <td align="right">$%change_given%</td> </tr> <tr> <td>New Balance:</td> <td align="right">$%new_balance%</td> </tr> </table> <p> Note: %note% </p> <p> Specific bills: <blockquote>',
+					'header' : 'Welcome to %LIBRARY%!<br/>A receipt of your  transaction:<hr/> <table width="100%"> <tr> <td>Original Balance:</td> <td align="right">$%original_balance%</td> </tr> <tr> <td>Payment Method:</td> <td align="right">%payment_type%</td> </tr> <tr> <td>Payment Received:</td> <td align="right">$%payment_received%</td> </tr> <tr> <td>Payment Applied:</td> <td align="right">$%payment_applied%</td> </tr> <tr> <td>Billings Voided:</td> <td align="right">%voided_balance%</td> </tr> <tr> <td>Change Given:</td> <td align="right">$%change_given%</td> </tr> <tr> <td>New Balance:</td> <td align="right">$%new_balance%</td> </tr> </table> <p> Note: %note% </p> <p> Specific bills: <blockquote>',
 					'line_item' : 'Bill #%bill_id%  Received: $%payment%<br />',
 					'footer' : '</blockquote> </p> <hr />%PINES_CODE% %TODAY_TRIM%<br/> <br/> ',
 				},

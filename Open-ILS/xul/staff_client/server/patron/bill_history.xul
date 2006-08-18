@@ -268,6 +268,7 @@
 				retrieve_mbts_for_list();
 				//g.data.temp = 'refresh'; g.data.stash('temp');
 				if (typeof window.refresh == 'function') window.refresh();
+				if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
 			}
 		}
 
@@ -280,6 +281,12 @@
 				'test_billdetails',
 				'modal,chrome,resizable'
 			);
+			//g.data.temp = 'refresh'; g.data.stash('temp');
+			g.data.stash_retrieve();
+			if (g.data.temp == 'refresh') {
+				if (typeof window.refresh == 'function') window.refresh();
+				if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+			}
 		}
 
 		function print_bills() {

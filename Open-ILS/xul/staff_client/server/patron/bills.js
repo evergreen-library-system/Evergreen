@@ -179,6 +179,7 @@ patron.bills.prototype = {
 											//'chrome,resizable,modal'
 											'chrome,resizable'
 										);
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
 										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 										w.refresh = function() { obj.refresh(); };
 									} catch(E) {
@@ -200,6 +201,7 @@ patron.bills.prototype = {
 											//'chrome,resizable,modal'
 											'chrome,resizable'
 										);
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
 										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
 										w.refresh = function() { obj.refresh(); };
 									} catch(E) {
