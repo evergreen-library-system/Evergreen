@@ -789,4 +789,42 @@ sub mark_item {
 
 
 
+
+# ----------------------------------------------------------------------
+__PACKAGE__->register_method(
+	method => 'magic_fetch',
+	api_name => 'open-ils.agent.fetch'
+);
+
+my @FETCH_ALLOWED = qw/ aou aout acp acn bre /;
+
+sub magic_fetch {
+	my( $self, $conn, $auth, $args ) = @_;
+	my $e = new_editor( authtoken => $auth );
+	return $e->event unless $e->checkauth;
+
+	my $hint = $$args{hint};
+	my $id	= $$args{id};
+
+	# Is the call allowed to fetch this type of object?
+	return undef unless grep { $_ eq $hint } @FETCH_ALLOWED;
+
+	# Find the class the iplements the given hint
+	my ($class) = grep { 
+		$Fieldmapper::fieldmap->{$_}{hint} eq $hint } Fieldmapper->classes;
+
+	$class =~ s/Fieldmapper:://og;
+	$class =~ s/::/_/og;
+	my $method = "retrieve_$class";
+
+	my $obj = $e->$method($id) or return $e->event;
+	return $obj;
+}
+# ----------------------------------------------------------------------
+
+
+
+
+
+
 1;
