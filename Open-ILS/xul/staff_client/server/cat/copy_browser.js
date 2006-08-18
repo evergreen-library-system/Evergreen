@@ -202,9 +202,9 @@ cat.copy_browser.prototype = {
 											+'&ou_ids=' + window.escape( js2JSON(list) )
 											+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
 										title,
-										'chrome,modal,resizable'
+										'chrome,resizable'
 									);
-									obj.refresh_list();
+									w.refresh = function() { obj.refresh_list(); }
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> add copies',E);
 								}
@@ -367,14 +367,10 @@ cat.copy_browser.prototype = {
 										}
 									);
 
+									obj.data.temp_barcodes_for_labels = util.functional.map_list( list, function(o){return o.barcode();}) ; 
+									obj.data.stash('temp_barcodes_for_labels');
 									xulG.new_tab(
-										xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
-										+ js2JSON( 
-											util.functional.map_list(
-												list,
-												function(o){return o.barcode();}
-											) 
-										),
+										xulG.url_prefix( urls.XUL_SPINE_LABEL ),
 										{ 'tab_name' : 'Spine Labels' },
 										{}
 									);
@@ -429,10 +425,10 @@ cat.copy_browser.prototype = {
 											+'?doc_id=' + window.escape(obj.docid)
 											+'&ou_ids=' + window.escape( js2JSON(list) ),
 										title,
-										'chrome,modal,resizable'
+										'chrome,resizable'
 									);
 
-									obj.refresh_list();
+									w.refresh = function() { obj.refresh_list() };
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> add volumes',E);
 								}

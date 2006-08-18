@@ -411,17 +411,21 @@ g.stash_and_close = function() {
 			} else {
 				if (copies.length > 0 && $('print_labels').checked) {
 					JSAN.use('util.functional');
+					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+					data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
+					data.stash('temp_barcodes_for_labels');
 					var w = win.open(
-						urls.XUL_SPINE_LABEL
-						+ '?barcodes=' + window.escape( js2JSON( util.functional.map_list(copies,function(o){return o.barcode();}) ) ),
+						urls.XUL_SPINE_LABEL,
 						'spine_labels',
-						'chrome,modal,resizable,width=750,height=550'
+						'chrome,resizable,width=750,height=550'
 					);
 				}
 			}
 		} catch(E) {
 			g.error.standard_unexpected_error_alert('volume tree update 2',E);
 		}
+
+		if (typeof window.refresh == 'function') window.refresh();
 
 		window.close();
 

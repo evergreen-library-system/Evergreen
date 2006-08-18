@@ -44,7 +44,16 @@
 
 				g.cgi = new CGI();
 
-				g.barcodes = JSON2js(g.cgi.param('barcodes'));
+				g.barcodes = [];
+				if (g.cgi.param('barcodes')) {
+					g.barcodes = g.barcodes.concat( JSON2js(g.cgi.param('barcodes')) );
+				}
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+				if (g.data.temp_barcodes_for_labels) {
+					g.barcodes = g.barcodes.concat( g.data.temp_barcodes_for_labels );
+					g.data.temp_barcodes_for_labels = null; g.data.stash('temp_barcodes_for_labels');
+				}
+
 				g.copies = [];
 				g.volumes = {};
 				g.volume_count = {};
@@ -134,21 +143,23 @@
 					var sbl = Number($('sbl').value); if (sbl == NaN) sbl = 2;
 					//alert('pt = ' + pt + ' lm = ' + lm + ' lw = ' + lw + ' ll = ' + ll + ' sbl = ' + sbl);
 					var html = "<html><head><link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt;
-					html += "pt}'></link><title>Spine Labels</title></head><body><pre>\n";
+					html += "pt; page-break-after: always;}'></link><title>Spine Labels</title></head><body>\n";
 					var nl = document.getElementsByAttribute('name','template');
 					for (var i = 0; i < nl.length; i++) {
 						var count = Number( nl[i].getElementsByAttribute('name','count')[0].value ); if (count == NaN) count = 1;
 						for (var j = 0; j < count; j++) {
+							html += '<pre>\n';
 							var gb = nl[i].childNodes[1];
 							var nl2 = gb.getElementsByTagName('textbox');
 							for (var k = 0; k < nl2.length; k++) {
 								for (var m = 0; m < lm; m++) html += ' ';
 								html += nl2[k].value + '\n';
 							}
-							for (var k = 0; k < sbl; k++) html += '\n';
+							//for (var k = 0; k < sbl; k++) html += '\n';
+							html += '</pre>\n';
 						}
 					}
-					html += '</pre></body></html>';
+					html += '</body></html>';
 					JSAN.use('util.window'); var win = new util.window();
 					var loc = ( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( 'data:text/html,' + window.escape(html) ) + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
 					var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
@@ -164,23 +175,23 @@
 		<hbox>
 			<grid><columns><column/><column/><column/><column/></columns><rows>
 				<row>
-					<label value="Font size (in pts):" control="pt"/><textbox id="pt" value="10"/>
+					<label value="Font size (in pts):" control="pt"/><textbox id="pt" value="10" onchange="this.setAttribute('value',this.value)" persist="value"/>
 				</row>
 				<row>
-					<label value="Left Margin (in characters):" control="lm"/><textbox id="lm" value="11"/>
+					<label value="Left Margin (in characters):" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/>
 					<label value="Include Copy Numbers?" control="cpn"/><checkbox id="cpn" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
 				</row>
 				<row>
-					<label value="Label Width (in characters):" control="lw"/><textbox id="lw" value="8"/>
+					<label value="Label Width (in characters):" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" persist="value"/>
 					<label value="Include Copy Locations?" control="cbl"/><checkbox id="cbl" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
 				</row>
 				<row>
-					<label value="Label Length (in lines):" control="ll"/><textbox id="ll" value="9"/>
+					<label value="Label Length (in lines):" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/>
 					<label value="Include Library Code?" control="lsn"/><checkbox id="lsn" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
 				</row>
-				<row>
-					<label value="Space Between Labels (in lines):" control="sbl"/><textbox id="sbl" value="2"/>
-					<description control="pb">Use form feeds instead of line feeds between labels?</description><checkbox id="pb" oncommand="alert('Not Yet Implemented');this.checked = false;"/>
+				<row hidden="true">
+					<label value="Space Between Labels (in lines):" control="sbl"/><textbox id="sbl" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/>
+					<description control="pb">Use form feeds instead of line feeds between labels?</description><checkbox id="pb" checked="true" oncommand="alert('This is always true now.');this.checked = true;"/>
 				</row>
 			</rows></grid>
 		</hbox>

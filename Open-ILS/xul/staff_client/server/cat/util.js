@@ -79,9 +79,11 @@ cat.util.spawn_spine_editor = function(selection_list) {
 	JSAN.use('util.error'); var error = new util.error();
 	try {
 		JSAN.use('util.functional');
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+		data.temp_barcodes_for_labels = util.functional.map_list( selection_list, function(o){return o.barcode;}) ; 
+		data.stash('temp_barcodes_for_labels');
 		xulG.new_tab(
-			xulG.url_prefix( urls.XUL_SPINE_LABEL ) + '?barcodes=' 
-			+ js2JSON( util.functional.map_list(selection_list,function(o){return o.barcode;}) ),
+			xulG.url_prefix( urls.XUL_SPINE_LABEL ),
 			{ 'tab_name' : 'Spine Labels' },
 			{}
 		);
@@ -141,7 +143,7 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 	win.open( 
 		xulG.url_prefix(urls.XUL_COPY_BUCKETS_QUICK),
 		'sel_bucket_win' + win.window_name_increment(),
-		'chrome,resizable,modal,center'
+		'chrome,resizable,center'
 	);
 }
 
