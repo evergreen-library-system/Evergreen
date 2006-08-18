@@ -361,6 +361,7 @@ function myOPACDrawHoldTitle(hold) {
 		var req = new Request(method, hold.target());
 		req.callback(myOPACFleshHoldTitle);
 		req.request.hold = hold;
+		req.request.alertEvent = false;
 		req.send();
 
 	} else {
@@ -383,6 +384,13 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 	var row = $("myopac_holds_row_" + hold.id());
 	var title_link = $n(row, "myopac_holds_title_link");
 	var author_link = $n(row, "myopac_holds_author_link");
+
+	if(!record || checkILSEvent(record) ) {
+		addCSSClass(row, 'invalid_hold');
+		$n(row, 'myopac_holds_edit_link').setAttribute('href', 'javascript:void(0);');
+		$n(row, 'myopac_holds_edit_link').onclick = function(){alertId('invalid_hold');};
+		return;
+	}
 
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);

@@ -198,6 +198,12 @@
 		Please see any notes in the "Staff Notes" section of your "My Account" page or contact your local library.
 	</span>
 
+	<span id='invalid_hold' class='hide_me'>
+		This hold is no longer valid.  
+		It's likely that the target for the hold was deleted from the system.
+		Please cancel this hold and place a new one.
+	</span>
+
 </div>
 
 

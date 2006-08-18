@@ -228,3 +228,6 @@ table { border-collapse: collapse; }
 .disabled_option { color: #808080; }
 
 .copy_more_info { padding-left: 6px; color: #804070; }
+
+
+.invalid_hold { background: #F0F0D0; }
