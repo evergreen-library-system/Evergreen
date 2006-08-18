@@ -33,6 +33,7 @@ circ.print_list_template_editor.prototype = {
 					'payment_type' : 'Cash',
 					'payment_received' : '10.00',
 					'payment_applied' : '7.40',
+					'voided_balance' : '0.00',
 					'change_given' : '2.60',
 					'credit_given' : '0.00',
 					'note' : "The patron's child paid this",
@@ -153,7 +154,7 @@ circ.print_list_template_editor.prototype = {
 											);
 										break;
 										case 'payment' : 
-											macros = [ '%original_balance%', '%payment_received%', '%payment_applied%', '%payment_type%', '%change_given%', '%new_balance%', '%note%', '%bill_id%', '%payment%' ];
+											macros = [ '%original_balance%', '%payment_received%', '%payment_applied%', '%payment_type%', '%voided_balance%', '%change_given%', '%new_balance%', '%note%', '%bill_id%', '%payment%' ];
 										break;
 									}
 									var macro_string = macros.join(', ');

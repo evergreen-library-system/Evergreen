@@ -9,6 +9,7 @@ patron.bills = function (params) {
 	try { 
 		obj.OpenILS = {}; JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'}); 
 		obj.data = obj.OpenILS.data;
+		obj.data.voided_billings = []; obj.data.stash('voided_billings');
 	} catch(E) { 
 		alert(E); 
 	}
@@ -52,6 +53,7 @@ patron.bills.prototype = {
 				obj.controller.view.bill_payment_amount.focus();
 				obj.distribute_payment(obj.controller.view.bill_payment_amount);
 				obj.tally_selected();
+				obj.tally_voided();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> refresh',E);	
 		}
@@ -93,6 +95,7 @@ patron.bills.prototype = {
 				obj.distribute_payment(obj.controller.view.bill_payment_amount);
 				obj.controller.view.bill_payment_amount.select();
 				obj.tally_selected();
+				obj.tally_voided();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> init',E);	
 		}
@@ -245,6 +248,10 @@ patron.bills.prototype = {
 									obj.distribute_payment(obj.controller.view.bill_payment_amount);
 									obj.tally_selected();
 								}
+							],
+							'voided_balance' : [
+								['render'],
+								function(e) { return function() {}; }
 							],
 							'selected_balance' : [
 								['render'],
@@ -404,6 +411,24 @@ patron.bills.prototype = {
 
 	/*****************************************************************************************************************************/
 
+	'tally_voided' : function() {
+
+			var obj = this;
+			JSAN.use('util.money');
+			var voided_total = 0;
+
+			obj.data.stash_retrieve();
+
+			for (var i = 0; i < obj.data.voided_billings.length; i++) {
+				var billing = obj.data.voided_billings[i];
+				var bv = util.money.dollars_float_to_cents_integer( billing.amount() );
+				voided_total += bv;
+			}
+			obj.controller.view.voided_balance.setAttribute('value', '$' + util.money.cents_as_dollars( voided_total ) );
+	},
+
+	/*****************************************************************************************************************************/
+
 	'apply_payment' : function() {
 
 		var obj = this;
@@ -457,8 +482,8 @@ patron.bills.prototype = {
 				}
 				if ( obj.pay( payment_blob ) ) {
 
+					obj.data.voided_billings = []; obj.data.stash('voided_billings');
 					obj.refresh();
-					//alert('FIXME: Receipt goes here\n' + js2JSON(payment_blob)); 
 					try {
 						obj.data.stash_retrieve();
 						var template = 'bill_payment';
@@ -491,6 +516,7 @@ patron.bills.prototype = {
 		try {
 			obj.previous_summary = {
 				original_balance : obj.controller.view.bill_total_owed.value,
+				voided_balance : obj.controller.view.voided_balance.value,
 				payment_received : obj.controller.view.bill_payment_amount.value,
 				payment_applied : obj.controller.view.bill_payment_applied.value,
 				change_given : obj.controller.view.bill_change_amount.value,
