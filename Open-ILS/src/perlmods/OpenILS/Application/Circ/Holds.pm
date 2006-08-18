@@ -89,7 +89,6 @@ sub create_hold {
 			$e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
 		}
 
-
 		# Now make sure the recipient is allowed to receive the specified hold
 		my $pevt;
 		my $porg		= $recipient->home_ou;
@@ -128,16 +127,6 @@ sub create_hold {
 				return \@events;
 			}
 		}
-
-
-#		if( $eevt ) {
-#			if( $override ) {
-#				return $e->event unless $e->allowed('CREATE_DUPLICATE_HOLDS', $porg);
-#			} else {
-#				return $eevt;
-#			}
-#		}
-
 
 		$hold->requestor($e->requestor->id); 
 		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
