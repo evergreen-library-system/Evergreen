@@ -1179,6 +1179,8 @@
 			<field name="ou_type" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="parent_ou" oils_obj:array_position="11" oils_persist:virtual="false" />
 			<field name="shortname" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="email" oils_obj:array_position="13" oils_persist:virtual="false" />
+			<field name="phone" oils_obj:array_position="14" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
