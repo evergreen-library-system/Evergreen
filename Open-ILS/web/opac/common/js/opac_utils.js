@@ -829,8 +829,10 @@ function findRecord(id,type) {
 	var meth = FETCH_RMODS
 	if(type == 'M') meth = FETCH_MRMODS;
 	var req = new Request(meth, id);
+	req.request.alertEvent = false;
 	req.send(true);
-	return req.result();
+	var res = req.result();
+	if( checkILSEvent(res) ) return null; 
 }
 
 function Timer(name, node){
