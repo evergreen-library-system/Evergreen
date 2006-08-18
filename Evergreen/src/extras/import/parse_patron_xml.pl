@@ -302,14 +302,14 @@ sub parse_date {
 			}
 		} elsif ( $1 < 99 && $2 < 99 && $3 < 99 && $1 > 0 && $2 > 0 && $3 > 0) {
 			if ($3 < 7) { # probably 2000 or greater, mm.dd.yy
-				my $y = $3 + 2000;
+				$y = $3 + 2000;
 				if ($1 > 12 && $1 < 32 && $2 < 13) { # well, actually it looks like dd.mm.yyyy
 					($m,$d) = ($2,$1);
 				} elsif ($2 > 12 && $2 < 32 && $1 < 13) {
 					($m,$d) = ($1,$2);
 				}
 			} else { # probably before 2000, mm.dd.yy
-				my $y = $3 + 1900;
+				$y = $3 + 1900;
 				if ($1 > 12 && $1 < 32 && $2 < 13) { # well, actually it looks like dd.mm.yyyy
 					($m,$d) = ($2,$1);
 				} elsif ($2 > 12 && $2 < 32 && $1 < 13) {
