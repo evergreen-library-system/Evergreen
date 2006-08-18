@@ -10,8 +10,8 @@ use OpenILS::Application::Storage::Driver::Pg;
 
 use CGI qw/:standard start_*/;
 our %config;
-#do '##CONFIG##/live-db-setup.pl';
-do '/openils/conf/live-db-setup.pl';
+do '##CONFIG##/live-db-setup.pl';
+#do '/openils/conf/live-db-setup.pl';
 
 OpenILS::Application::Storage::CDBI->connection($config{dsn},$config{usr},$config{pw});
 OpenILS::Application::Storage::CDBI->db_Main->{ AutoCommit } = 1;
@@ -23,9 +23,9 @@ my $cgi = new CGI;
 # setup part
 #-------------------------------------------------------------------------------
 
-my %org_cols = ( qw/id SysID name Name parent_ou Parent ou_type OrgUnitType shortname ShortName/ );
+my %org_cols = ( qw/id SysID name Name parent_ou Parent ou_type OrgUnitType shortname ShortName email Email phone Phone/ );
 
-my @col_display_order = ( qw/id name shortname ou_type parent_ou/ );
+my @col_display_order = ( qw/id name shortname ou_type email phone parent_ou/ );
 
 if (my $action = $cgi->param('action')) {
 	if ( $action eq 'Update' ) {
@@ -245,6 +245,15 @@ if (my $action = $cgi->param('action')) {
 						}."</select>"),
 			);
 			print Tr(
+				th($org_cols{email}),
+				td("<input type='text' name='email_$node' value=\"". $node->email() ."\">"),
+			);
+			print Tr(
+				th($org_cols{phone}),
+				td("<input type='text' name='phone_$node' value='". $node->phone() ."'>"),
+			);
+
+			print Tr(
 				th($org_cols{parent_ou}),
 				td("<select name='parent_ou_$node'>".do{
 						my $out = '<option>-- Select One --</option>';
@@ -405,6 +414,15 @@ if (my $action = $cgi->param('action')) {
 						$out;
 					}."</select>"),
 			);
+			print Tr(
+				th($org_cols{email}),
+				td("<input type='text' name='email'>"),
+			);
+			print Tr(
+				th($org_cols{phone}),
+				td("<input type='text' name='phone'>"),
+			);
+
 			print Tr( "<td colspan='2'><input type='hidden' value='$node' name='parent_ou'>",
 				  "<input type='submit' name='action' value='Add New'/></td>" );
 			print	"</table></form><hr/>";

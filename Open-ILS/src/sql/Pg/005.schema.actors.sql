@@ -373,7 +373,9 @@ CREATE TABLE actor.org_unit (
 	mailing_address	INT,
 	billing_address	INT,
 	shortname	TEXT	NOT NULL,
-	name		TEXT	NOT NULL
+	name		TEXT	NOT NULL,
+	email		TEXT,
+	phone		TEXT
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);
