@@ -1221,6 +1221,9 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 				buffer_fadd(sql_buf, " \"%s\".%s", cname, fname, cname, fname);
 			}
 		}
+
+		if (first) buffer_add(sql_buf, " *");
+
 	} else {
 		buffer_add(sql_buf, " *");
 	}
