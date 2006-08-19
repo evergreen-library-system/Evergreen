@@ -218,6 +218,8 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	if(this.cancelled) return;
 
+
+
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
@@ -249,12 +251,18 @@ RemoteRequest.prototype.send = function(blocking) {
 		return;
 	}
 
-
 	if( this.type == 'POST' ) {
 		data = this.param_string;
 		this.xmlhttp.setRequestHeader('Content-Type',
 				'application/x-www-form-urlencoded');
 	}
+
+	try {
+		var ses = cookieManager.read(COOKIE_SES);
+		if(!ses && isXUL()) ses = xulG['authtoken'];
+		if( ses ) this.xmlhttp.setRequestHeader('X-OILS-Authtoken', ses);
+	} catch(e) {}
+
 
 	try{ this.xmlhttp.send( data ); } catch(e){}
 

@@ -133,10 +133,24 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	} else {
 
+		/* This will log all heaers to the apache error log 
+		const apr_array_header_t* arr = apr_table_elts(r->headers_in);
+		const void* ptr;
+
+		while( (ptr = apr_array_pop(arr)) ) {
+			apr_table_entry_t* e = (apr_table_entry_t*) ptr;
+			fprintf(stderr, "Table entry: %s : %s\n", e->key, e->val );
+		}
+		fflush(stderr);
+		*/
+
+
 		/* ----------------------------------------------------------------- */
 		/* log all requests to the activity log */
+		const char* authtoken = apr_table_get(r->headers_in, "X-OILS-Authtoken");
+		if(!authtoken) authtoken = "";
 		growing_buffer* act = buffer_init(128);	
-		buffer_fadd(act, "[%s] %s %s", r->connection->remote_ip, service, method );
+		buffer_fadd(act, "[%s] [%s] %s %s", r->connection->remote_ip, authtoken, service, method );
 		char* str; int i = 0;
 		while( (str = osrfStringArrayGetString(mparams, i++)) ) 
 			if( i == 1 ) buffer_fadd(act, " %s", str);
