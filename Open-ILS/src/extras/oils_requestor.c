@@ -41,7 +41,7 @@ int main( int argc, char* argv[] ) {
 	}
 
 	if( ! osrf_system_bootstrap_client(config, context) ) {
-		fprintf(stderr, "Unable to connect to OpenSRF network...\n");
+		fprintf(stderr, "Unable to connect to OpenSRF network... [config:%s : context:%s]\n", config, context);
 		return 1;
 	}
 
