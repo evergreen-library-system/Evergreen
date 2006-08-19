@@ -260,7 +260,9 @@ RemoteRequest.prototype.send = function(blocking) {
 	try {
 		var ses;
 
-		if( isXUL() ) {
+		try { ses = cookieManager.read(COOKIE_SES) } catch(ee) {}
+
+		if( !ses && isXUL() ) {
 			/*
 			JSAN.use('OpenILS.data'); 
 			var data = new OpenILS.data(); 
@@ -268,9 +270,7 @@ RemoteRequest.prototype.send = function(blocking) {
 			ses = data.session.key;
 			dump('Setting authtoken header: ' + ses + ' : ' + url + '\n');
 			*/
-		} else {
-			try { ses = cookieManager.read(COOKIE_SES) } catch(ee) {}
-		}
+		} 
 
 		if( ses ) 
 			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', ses);
