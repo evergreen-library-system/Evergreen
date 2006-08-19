@@ -216,7 +216,7 @@ cat.util.mark_item_damaged = function(copy_ids) {
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  You will also have to manually adjust any pertinent holds.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert('Change the status for these items to Damaged?  You will have to manually retrieve the last circulation if you need to bill a patron.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Damaged', 'OK', 'Cancel', null, 'Check here to confirm this action');
 
 			if (r == 0) {
 				var count = 0;
@@ -258,7 +258,7 @@ cat.util.mark_item_missing = function(copy_ids) {
 
 		} else {
 
-			var r = error.yns_alert('Change the status for these items to Missing?  You will have to manually adjust any pertinent holds.  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
+			var r = error.yns_alert('Change the status for these items to Missing?  Barcodes: ' + util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", "), 'Mark Missing', 'OK', 'Cancel', null, 'Check here to confirm this action');
 
 			if (r == 0) {
 				var count = 0;
