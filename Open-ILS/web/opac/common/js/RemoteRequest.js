@@ -258,11 +258,24 @@ RemoteRequest.prototype.send = function(blocking) {
 	}
 
 	try {
-		var ses = cookieManager.read(COOKIE_SES);
-		if(!ses && isXUL()) ses = xulG['authtoken'];
-		if( ses ) this.xmlhttp.setRequestHeader('X-OILS-Authtoken', ses);
-	} catch(e) {}
+		var ses;
 
+		if( isXUL() ) {
+			/*
+			JSAN.use('OpenILS.data'); 
+			var data = new OpenILS.data(); 
+			data.init({'via':'stash'});
+			ses = data.session.key;
+			dump('Setting authtoken header: ' + ses + ' : ' + url + '\n');
+			*/
+		} else {
+			try { ses = cookieManager.read(COOKIE_SES) } catch(ee) {}
+		}
+
+		if( ses ) 
+			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', ses);
+
+	} catch(e) {}
 
 	try{ this.xmlhttp.send( data ); } catch(e){}
 
