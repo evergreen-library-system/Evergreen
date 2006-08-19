@@ -271,7 +271,7 @@ int _osrfAppRespond( osrfMethodContext* ctx, jsonObject* data, int complete ) {
 
 	if( ctx->method->options & OSRF_METHOD_ATOMIC ) {
 		osrfLogDebug( OSRF_LOG_MARK,   
-			"Adding responses to stash for atomic method %s", ctx->method );
+			"Adding responses to stash for atomic method %s", ctx->method->name );
 
 		if( ctx->responses == NULL )												
 			ctx->responses = jsonParseString("[]");							
