@@ -781,7 +781,20 @@ sub mark_item {
 
 	$e->update_asset_copy($copy) or return $e->event;
 
+
+	my $holds = $e->search_action_hold_request(
+		{ 
+			current_copy => $copy->id,
+			fulfillment_time => undef,
+			cancel_time => undef,
+		}
+	);
+
 	$e->commit;
+
+	$logger->debug("reseting holds that target the marked copy");
+	OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
+
 	return 1;
 }
 
