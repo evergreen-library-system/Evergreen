@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------
 
 
-DATE=$(date +%Y-%d-%m);
+DATE=$(date +%Y-%m-%d);
 DAY=$(date +%u);
 BSCONFIG="/openils/conf/bootstrap.conf"
 
