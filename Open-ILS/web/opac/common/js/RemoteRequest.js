@@ -258,22 +258,11 @@ RemoteRequest.prototype.send = function(blocking) {
 	}
 
 	try {
-		var ses;
-
-		try { ses = cookieManager.read(COOKIE_SES) } catch(ee) {}
-
-		if( !ses && isXUL() ) {
-			/*
-			JSAN.use('OpenILS.data'); 
-			var data = new OpenILS.data(); 
-			data.init({'via':'stash'});
-			ses = data.session.key;
-			dump('Setting authtoken header: ' + ses + ' : ' + url + '\n');
-			*/
-		} 
-
-		if( ses ) 
-			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', ses);
+		var auth;
+		try { auth = cookieManager.read(COOKIE_SES) } catch(ee) {}
+		if( !auth && isXUL() ) auth = ses();
+		if( auth ) 
+			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', auth);
 
 	} catch(e) {}
 
