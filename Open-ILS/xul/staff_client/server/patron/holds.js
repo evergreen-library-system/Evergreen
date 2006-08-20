@@ -497,13 +497,36 @@ patron.holds.prototype = {
 						function() {
 							try {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
-									var doc_id = obj.retrieve_ids[i].target;
+									var htarget = obj.retrieve_ids[i].target;
 									var htype = obj.retrieve_ids[i].type;
-									if (!doc_id) {
-										alert(obj.retrieve_ids[i].barcode + ' is not cataloged');
-										continue;
+									var opac_url;
+									switch(htype) {
+										case 'M' :
+											opac_url = xulG.url_prefix( urls.opac_rresult ) + '?m=' + htarget;
+										break;
+										case 'T' : 
+											opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + htarget;
+										break;
+										case 'V' :
+											var my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ htarget ]);
+											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
+										break;
+										case 'C' :
+											var my_acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ htarget ]);
+											var my_acn;
+											if (typeof my_acp.call_number() == 'object') {
+												my_acn = my.acp.call_number();
+											} else {
+												my_acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', 
+													[ my_acp.call_number() ]);
+											}
+											opac_url = xulG.url_prefix( urls.opac_rdetail) + '?r=' + my_acn.record();
+										break;
+										default:
+											obj.error.standard_unexpected_error_alert("I don't understand the hold type of " + htype + ", so I can't jump to the appropriate record in the catalog.", obj.retrieve_ids[i]);
+											continue;
+										break;
 									}
-									var opac_url = ( htype == 'M' ?  (xulG.url_prefix( urls.opac_rresult ) + '?m=') : (xulG.url_prefix( urls.opac_rdetail) + '?r=')  ) + doc_id;
 									var content_params = { 
 										'session' : ses(),
 										'authtime' : ses('authtime'),
