@@ -126,6 +126,7 @@ void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 
 	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG ) {
 		char buf[1536];  
+		memset(buf, 0x0, 1536);
 		/* give syslog some breathing room, and be cute about it */
 		strncat(buf, msg, 1535);
 		buf[1532] = '.';
