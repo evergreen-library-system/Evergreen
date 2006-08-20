@@ -14,8 +14,8 @@ BSCONFIG="/openils/conf/bootstrap.conf"
 source /etc/profile;
 ARGS="0"
 
-# If today is monday, run for sat/sun/mon
-if [ "$DAY" == "1" ]; then ARGS="2 1 0"; fi;
+[ $DAY == 6 -o $DAY == 7 ] && exit 0; # don't run on saturday or sunday
+if [ $DAY == 1 ]; then ARGS="2 1 0"; fi; # If today is monday, run for sat/sun/mon
 
 ./eg_gen_overdue.pl $BSCONFIG $ARGS > "/openils/var/web/tmp/overdue/EG_overdue.$DATE.xml"
 
