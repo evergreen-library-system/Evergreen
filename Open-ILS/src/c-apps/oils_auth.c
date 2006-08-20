@@ -263,7 +263,6 @@ oilsEvent* oilsAuthHandleLoginOK(
 		jsonObject* userObj, char* uname, char* type, double orgloc ) { 
 		
 	oilsEvent* response;
-	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in", uname );
 
 	double timeout;
 	char* wsorg = jsonObjectToSimpleString(oilsFMGetObject(userObj, "ws_ou"));
@@ -284,6 +283,8 @@ oilsEvent* oilsAuthHandleLoginOK(
 	char* authToken = md5sum(string); 
 	char* authKey = va_list_to_string( 
 			"%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
+
+	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in: %s", uname, authToken );
 
 	oilsFMSetString( userObj, "passwd", "" );
 	jsonObject* cacheObj = jsonParseString("{\"authtime\": %lf}", timeout);
