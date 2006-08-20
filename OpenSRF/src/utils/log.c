@@ -124,8 +124,16 @@ void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 			break;
 	}
 
-	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG )
-		syslog( fac | lvl, "[%s:%d:%s:%d] %s", l, getpid(), filename, line, msg );
+	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG ) {
+		char buf[1536];  
+		/* give syslog some breathing room, and be cute about it */
+		strncat(buf, msg, 1535);
+		buf[1532] = '.';
+		buf[1533] = '.';
+		buf[1534] = '.';
+		buf[1535] = '\0';
+		syslog( fac | lvl, "[%s:%d:%s:%d] %s", l, getpid(), filename, line, buf );
+	}
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
 		_osrfLogToFile("[%s:%d:%s:%d] %s", l, getpid(), filename, line, msg );

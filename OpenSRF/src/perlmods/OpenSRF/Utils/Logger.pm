@@ -208,7 +208,7 @@ sub _log_message {
 
 	$msg = "[$n:"."$$".":::] $msg";
 
-	$msg = substr($msg, 0, 2000); 
+	$msg = substr($msg, 0, 1536); 
 
 	if( $level == ACTIVITY() ) {
 		if( is_act_syslog() ) { syslog( $fac | $l, $msg ); } 
