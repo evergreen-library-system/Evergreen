@@ -806,11 +806,11 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
-			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'FIXME: ' + E + '\n'; }
+			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n'; }
 			var msg = '';
 			if (check.ilsevent == 3) msg = 'This item is already checked in.\n';
 			if (check.ilsevent == 1202 && check.copy.status() != 11) {
-				msg = 'FIXME -- ITEM_NOT_CATALOGED event but copy status is '
+				msg = 'Please inform your helpdesk/developers of this error:\nFIXME -- ITEM_NOT_CATALOGED event but copy status is '
 					+ (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() ) + '\n';
 			}
 			switch(check.copy.status()) {
@@ -822,13 +822,14 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 					check.route_to = 'HOLDS SHELF';
 					if (check.payload.hold) {
 						if (check.payload.hold.pickup_lib() != data.list.au[0].ws_ou()) {
-							msg += 'FIXME:  We should have received a ROUTE_ITEM\n';
+							msg += 'Please inform your helpdesk/developers of this error:\nFIXME:  We should have received a ROUTE_ITEM\n';
 						} else {
 							msg += 'This item needs to be routed to ' + check.route_to + '.\n';
 						}
 					} else { 
-						msg += 'FIXME: status of Holds Shelf, but no hold in payload';
+						msg += 'Please inform your helpdesk/developers of this error:\nFIXME: status of Holds Shelf, but no actual hold found.\n';
 					}
+					JSAN.use('util.date'); 
 					if (check.payload.hold) {
 						JSAN.use('patron.util');
 						msg += '\nBarcode: ' + check.payload.copy.barcode() + '\n';
@@ -838,10 +839,9 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 						msg += 'Barcode: ' + au_obj.card().barcode() + '\n';
 						if (check.payload.hold.phone_notify()) msg += 'Notify by phone: ' + check.payload.hold.phone_notify() + '\n';
 						if (check.payload.hold.email_notify()) msg += 'Notify by email: ' + (au_obj.email() ? au_obj.email() : '') + '\n';
+						msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F') + '\n';
 					}
 					var rv = 0;
-					JSAN.use('util.date'); 
-					msg += '\nRequest Date: ' + util.date.formatted_date(check.payload.hold.request_time(),'%F') + '\n';
 					msg += 'Slip Date: ' + util.date.formatted_date(new Date(),'%F') + '\n';
 					if (!auto_print) rv = error.yns_alert(
 						msg,
@@ -856,22 +856,22 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 							JSAN.use('util.print'); var print = new util.print();
 							print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
 						} catch(E) {
-							dump('FIXME: ' + E + '\n');
-							alert('FIXME: ' + E + '\n');
+							dump('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
+							alert('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
 						}
 					}
 					msg = '';
 				break;
 				case 6: /* IN TRANSIT */
 					check.route_to = 'TRANSIT SHELF??';
-					msg += ("FIXME -- I didn't think we could get here.\n");
+					msg += ("Please inform your helpdesk/developers of this error:\nFIXME -- I didn't think we could get here.\n");
 				break;
 				case 11: /* CATALOGING */
 					check.route_to = 'CATALOGING';
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 				default:
-					msg += ('FIXME -- this case "' + (data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name()) + '" is unhandled.\n');
+					msg += ('Please inform your helpdesk/developers of this error:\nFIXME -- this case "' + (data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name()) + '" is unhandled.\n');
 					msg += 'This item needs to be routed to ' + check.route_to + '.';
 				break;
 			}
@@ -925,8 +925,8 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 					JSAN.use('util.print'); var print = new util.print();
 					print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
 				} catch(E) {
-					dump('FIXME: ' + E + '\n');
-					alert('FIXME: ' + E + '\n');
+					dump('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
+					alert('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
 				}
 			}
 
