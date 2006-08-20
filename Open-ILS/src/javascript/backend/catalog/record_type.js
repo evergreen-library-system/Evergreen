@@ -282,10 +282,10 @@ var physical_characteristics  = {
 						f : "35 mm.",
 						g : "70mm.",
 						h : "105 mm.",
-						l : "3 x 5 in. (8 × 13 cm.)",
-						m : "4 x 6 in. (11 × 15 cm.)",
-						o : "6 × 9 in. (16 × 23 cm.)",
-						p : "3 1/4 × 7 3/8 in. (9 × 19 cm.)",
+						l : "3 x 5 in. (8 x 13 cm.)",
+						m : "4 x 6 in. (11 x 15 cm.)",
+						o : "6 x 9 in. (16 x 23 cm.)",
+						p : "3 1/4 x 7 3/8 in. (9 x 19 cm.)",
 						u : "Unknown",
 						z : "Other",
 				},
@@ -608,14 +608,14 @@ var physical_characteristics  = {
 						e : "28 mm.",
 						f : "35 mm.",
 						g : "70 mm.",
-						j : "× 2 in. (5 × 5 cm.)",
-						k : "2 1/4 × 2 1/4 in. (6 × 6 cm.)",
-						s : "4 × 5 in. (10 × 13 cm.)",
-						t : "5 × 7 in. (13 × 18 cm.)",
-						v : "8 × 10 in. (21 × 26 cm.)",
-						w : "9 × 9 in. (23 × 23 cm.)",
-						x : "10 × 10 in. (26 × 26 cm.)",
-						y : "7 × 7 in. (18 × 18 cm.)",
+						j : "2 x 2 in. (5 x 5 cm.)",
+						k : "2 1/4 x 2 1/4 in. (6 x 6 cm.)",
+						s : "4 x 5 in. (10 x 13 cm.)",
+						t : "5 x 7 in. (13 x 18 cm.)",
+						v : "8 x 10 in. (21 x 26 cm.)",
+						w : "9 x 9 in. (23 x 23 cm.)",
+						x : "10 x 10 in. (26 x 26 cm.)",
+						y : "7 x 7 in. (18 x 18 cm.)",
 						u : "Unknown",
 						z : "Other",
 				},
@@ -837,9 +837,9 @@ var physical_characteristics  = {
 						e : "12 in.",
 						f : "16 in.",
 						g : "4 3/4 in. (12 cm.)",
-						j : "3 7/8 × 2 1/2 in.",
-						o : "5 1/4 × 3 7/8 in.",
-						s : "2 3/4 × 4 in.",
+						j : "3 7/8 x 2 1/2 in.",
+						o : "5 1/4 x 3 7/8 in.",
+						s : "2 3/4 x 4 in.",
 						n : "Not applicable",
 						u : "Unknown",
 						z : "Other",
@@ -1365,6 +1365,7 @@ function videorecordingFormat (rec) {
 
 		return physical_characteristics.v.subfields.e.values[ _v_e ];
 	}
+
 	return null;
 }
 
