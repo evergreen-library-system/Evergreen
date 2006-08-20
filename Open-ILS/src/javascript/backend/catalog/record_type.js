@@ -1353,11 +1353,11 @@ function recordType (rec) {
 	}
 }
 
-function videorecordingFormat (rec) {
+function videorecordingFormatName (rec) {
 	var marcns = new Namespace("http://www.loc.gov/MARC21/slim");
 	var _7 = rec.marcns::controlfield.(@tag.match(/007/)).text().toString();
 
-	if (_7.match(/^v/) {
+	if (_7.match(/^v/)) {
 		var _v_e = _7.substr(
 			physical_characteristics.v.subfields.e.start,
 			physical_characteristics.v.subfields.e.len
