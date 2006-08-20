@@ -73,6 +73,8 @@ sub create_hold {
 
 	my $holds = (ref($holds[0] eq 'ARRAY')) ? $holds[0] : [@holds];
 
+	my @copyholds;
+
 	for my $hold (@$holds) {
 
 		next unless $hold;
@@ -109,10 +111,17 @@ sub create_hold {
 		my $existing = $e->search_action_hold_request($sargs); 
 		push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
 
-		if( $t eq 'M' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
-		if( $t eq 'T' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
-		if( $t eq 'V' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
-		if( $t eq 'C' ) { $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
+		if( $t eq OILS_HOLD_TYPE_METARECORD ) 
+			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'MR_HOLDS'); }
+
+		if( $t eq OILS_HOLD_TYPE_TITLE ) 
+			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'TITLE_HOLDS');  }
+
+		if( $t eq OILS_HOLD_TYPE_VOLUME ) 
+			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'VOLUME_HOLDS'); }
+
+		if( $t eq OILS_HOLD_TYPE_COPY ) 
+			{ $pevt = $e->event unless $e->checkperm($rid, $porg, 'COPY_HOLDS'); }
 
 		return $pevt if $pevt;
 
@@ -130,10 +139,17 @@ sub create_hold {
 
 		$hold->requestor($e->requestor->id); 
 		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
-		$e->create_action_hold_request($hold) or return $e->event;
+		$hold = $e->create_action_hold_request($hold) or return $e->event;
+		push( @copyholds, $hold ) if $hold->hold_type eq OILS_HOLD_TYPE_COPY;
 	}
 
 	$e->commit;
+
+	# Go ahead and target the copy-level holds
+	$U->storagereq(
+		'open-ils.storage.action.hold_request.copy_targeter', 
+		undef, $_->id ) for @copyholds;
+
 	return 1;
 }
 
