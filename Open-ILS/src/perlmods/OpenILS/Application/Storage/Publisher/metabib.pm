@@ -1412,10 +1412,10 @@ sub postfilter_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms,@lang,@aud,@lit_form);
-	my ($t_filter, $f_filter) = ('','');
+	my (@types,@forms,@lang,@aud,@lit_form,@vformats);
+	my ($t_filter, $f_filter, $v_filter) = ('','','');
 	my ($a_filter, $l_filter, $lf_filter) = ('','','');
-	my ($ot_filter, $of_filter) = ('','');
+	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if (my $a = $args{audience}) {
@@ -1456,6 +1456,14 @@ sub postfilter_search_multi_class_fts {
 
 		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
 		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+	if (my $v = $args{vr_format}) {
+		$v = [$v] if (!ref($v));
+		@vformats = @$v;
+
+		$v_filter = ' AND rd.vr_format IN ('.join(',',map{'?'}@vformats).')';
+		$ov_filter = ' AND ord.vr_format IN ('.join(',',map{'?'}@vformats).')';
 	}
 
 
@@ -1682,6 +1690,7 @@ sub postfilter_search_multi_class_fts {
 					AND ord.record = mrs.source
 					$ot_filter
 					$of_filter
+					$ov_filter
 					$oa_filter
 					$ol_filter
 					$olf_filter
@@ -1700,6 +1709,7 @@ sub postfilter_search_multi_class_fts {
 					AND src.transcendant IS TRUE
 					$ot_filter
 					$of_filter
+					$ov_filter
 					$oa_filter
 					$ol_filter
 					$olf_filter
@@ -1746,6 +1756,7 @@ sub postfilter_search_multi_class_fts {
 						AND src.transcendant IS TRUE
 						$ot_filter
 						$of_filter
+						$ov_filter
 						$oa_filter
 						$ol_filter
 						$olf_filter
@@ -1753,6 +1764,7 @@ sub postfilter_search_multi_class_fts {
 				)
 				$ot_filter
 				$of_filter
+				$ov_filter
 				$oa_filter
 				$ol_filter
 				$olf_filter
@@ -1767,8 +1779,8 @@ sub postfilter_search_multi_class_fts {
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
 			@bonus_values,
-			@types, @forms, @aud, @lang, @lit_form,
-			@types, @forms, @aud, @lang, @lit_form,
+			@types, @forms, @vformats, @aud, @lang, @lit_form,
+			@types, @forms, @vformats, @aud, @lang, @lit_form,
 			# ($self->api_name =~ /staff/o ? (@types, @forms, @aud, @lang, @lit_form) : () )
 	);
 	
@@ -1853,10 +1865,10 @@ sub biblio_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms,@lang,@aud,@lit_form);
-	my ($t_filter, $f_filter) = ('','');
+	my (@types,@forms,@lang,@aud,@lit_form,@vformats);
+	my ($t_filter, $f_filter, $v_filter) = ('','','');
 	my ($a_filter, $l_filter, $lf_filter) = ('','','');
-	my ($ot_filter, $of_filter) = ('','');
+	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
 
 	if (my $a = $args{audience}) {
@@ -1897,6 +1909,14 @@ sub biblio_search_multi_class_fts {
 
 		$t_filter = ' AND rd.item_type IN ('.join(',',map{'?'}@types).')';
 		$ot_filter = ' AND ord.item_type IN ('.join(',',map{'?'}@types).')';
+	}
+
+	if (my $v = $args{vr_format}) {
+		$v = [$v] if (!ref($v));
+		@vformats = @$v;
+
+		$v_filter = ' AND rd.vr_format IN ('.join(',',map{'?'}@vformats).')';
+		$ov_filter = ' AND ord.vr_format IN ('.join(',',map{'?'}@vformats).')';
 	}
 
 	# XXX legacy format and item type support
@@ -2064,6 +2084,7 @@ sub biblio_search_multi_class_fts {
 			$join_table_list
 			$t_filter
 			$f_filter
+			$v_filter
 			$a_filter
 			$l_filter
 			$lf_filter
@@ -2131,7 +2152,7 @@ sub biblio_search_multi_class_fts {
 
 	my $recs = $_cdbi->{title}->db_Main->selectall_arrayref(
 			$select, {},
-			@bonus_values, @types, @forms, @aud, @lang, @lit_form
+			@bonus_values, @types, @forms, @vformats, @aud, @lang, @lit_form
 	);
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
