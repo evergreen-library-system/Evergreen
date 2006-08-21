@@ -351,6 +351,10 @@ char* uescape( const char* string, int size, int full_escape ) {
 						OSRF_BUFFER_ADD(buf, "\\u001E");
 						break;
 
+					case 1: /* record separator */
+						OSRF_BUFFER_ADD(buf, "\\u0001");
+						break;
+
 
 					default:
 						OSRF_BUFFER_ADD_CHAR(buf, c);
