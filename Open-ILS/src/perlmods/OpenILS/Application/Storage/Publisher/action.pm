@@ -718,9 +718,20 @@ sub new_hold_copy_targeter {
 
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
+			my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+			$year += 1900;
+			$mon += 1;
+			my $today= sprintf( '%s-%0.2d-%0.2d', $year, $mon, $mday );
+
+			my @closed = actor::org_unit::closed_date->search(
+				{ close_start => { '<=', $today },
+				  close_end => { '>=', $today } }
+			);
+
 			my @good_copies;
 			for my $c (@$all_copies) {
 				next if ($c->id == $hold->current_copy);
+				next if ( grep { ''.$_->org_unit == ''.$c->circ_lib } @closed );
 				next if (action::hold_request
 						->search_where(
 							{ current_copy => $c->id,
