@@ -10,6 +10,7 @@ use OpenSRF::EX qw(:try);
 use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
+use OpenILS::Const qw/:const/;
 
 use XML::LibXML;
 use Unicode::Normalize;
@@ -773,14 +774,14 @@ sub retrieve_copies {
 
 	if( $self->api_name =~ /global/ ) {
 		warn "performing global copy_tree search for $docid\n";
-		return _build_volume_list( { record => $docid } );
+		return _build_volume_list( { record => $docid, deleted => 'f' } );
 
 	} else {
 
 		my @all_vols;
 		for my $orgid (@org_ids) {
 			my $vols = _build_volume_list( 
-					{ record => $docid, owning_lib => $orgid } );
+					{ record => $docid, owning_lib => $orgid, deleted => 'f' } );
 			warn "Volumes built for org $orgid\n";
 			push( @all_vols, @$vols );
 		}
@@ -797,36 +798,40 @@ sub _build_volume_list {
 	my $search_hash = shift;
 
 	$search_hash->{deleted} = 'f';
+	my $e = new_editor();
 
-	my	$session = OpenSRF::AppSession->create( "open-ils.cstore" );
-	
+	my $vols = $e->search_asset_call_number($search_hash);
 
-	my $request = $session->request( 
-			"open-ils.cstore.direct.asset.call_number.search.atomic", $search_hash );
-			#"open-ils.storage.direct.asset.call_number.search.atomic", $search_hash );
-
-	my $vols = $request->gather(1);
 	my @volumes;
 
 	for my $volume (@$vols) {
 
-		warn "Grabbing copies for volume: " . $volume->id . "\n";
-		my $creq = $session->request(
-			"open-ils.cstore.direct.asset.copy.search.atomic", 
+		my $copies = $e->search_asset_copy(
 			{ call_number => $volume->id , deleted => 'f' });
-			#"open-ils.storage.direct.asset.copy.search.call_number.atomic", $volume->id );
-
-		my $copies = $creq->gather(1);
 
 		$copies = [ sort { $a->barcode cmp $b->barcode } @$copies  ];
 
-		$volume->copies($copies);
+		for my $c (@$copies) {
+			if( $c->status == OILS_COPY_STATUS_CHECKED_OUT ) {
+				$c->circulations(
+					$e->search_action_circulation(
+						[
+							{ target_copy => $c->id },
+							{
+								order_by => { circ => 'xact_start desc' },
+								limit => 1
+							}
+						]
+					)
+				)
+			}
+		}
 
+		$volume->copies($copies);
 		push( @volumes, $volume );
 	}
 
-
-	$session->disconnect();
+	#$session->disconnect();
 	return \@volumes;
 
 }
