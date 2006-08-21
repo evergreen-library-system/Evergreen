@@ -25,6 +25,7 @@ var i = cpdCheckExisting(contextRow);
 		unHideMe($n(templateRow, 'age_protect_label'));
 		unHideMe($n(templateRow, 'create_date_label'));
 		unHideMe($n(templateRow, 'holdable_label'));
+		unHideMe($n(templateRow, 'due_date_label'));
 	}
 
 	unHideMe(templateRow);
@@ -175,6 +176,7 @@ function cpdDrawCopies(r) {
 		unHideMe($n(copyrow, 'age_protect_value'));
 		unHideMe($n(copyrow, 'create_date_value'));
 		unHideMe($n(copyrow, 'copy_holdable_td'));
+		unHideMe($n(copyrow, 'copy_due_date_td'));
 	}
 
 	for( var i = 0; i < copies.length; i++ ) {
@@ -198,7 +200,6 @@ function cpdDrawCopy(r) {
 	$n(row, 'status').appendChild(text(copy.status().name()));
 
 	if(isXUL()) {
-
 		/* show the hold link */
 		var l = $n(row, 'copy_hold_link');
 		unHideMe(l);
@@ -228,6 +229,14 @@ function cpdDrawCopy(r) {
 			$n(row, 'copy_is_holdable').appendChild(text(yes));	
 		} else {
 			$n(row, 'copy_is_holdable').appendChild(text(no));	
+		}
+
+		var circ;
+		if( copy.circulations() ) {
+			circ = copy.circulations()[0];
+			if( circ ) {
+				$n(row, 'copy_due_date').appendChild(text(circ.due_date().replace(/[T ].*/,'')));
+			}
 		}
 
 	}

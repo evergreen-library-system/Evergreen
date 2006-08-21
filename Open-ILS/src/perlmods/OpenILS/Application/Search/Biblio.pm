@@ -280,18 +280,21 @@ sub fleshed_copy_retrieve2 {
 	# For backwards compatibility
 	$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
 
+	if( $copy->status->id == OILS_COPY_STATUS_CHECKED_OUT ) {
+		$copy->circulations(
+			$e->search_action_circulation( 
+				[	
+					{ target_copy => $copy->id },
+					{
+						order_by => 'xact_start',
+						limit => 1
+					}
+				]
+			)
+		);
+	}
+
 	return $copy;
-
-#	return $copy unless $copy->stat_cat_entries;
-#
-#	for my $map (@{$copy->stat_cat_entries}) {
-#		$map->stat_cat(
-#			$e->retrieve_asset_stat_cat($map->stat_cat));
-#		$map->stat_cat_entry(
-#			$e->retrieve_asset_stat_cat_entry($map->stat_cat_entry));
-#	}
-#	return $copy;
-
 }
 
 

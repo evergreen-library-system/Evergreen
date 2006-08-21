@@ -16,6 +16,7 @@
 								<td name='age_protect_label' class='hide_me'>Age Hold Protection</td>
 								<td name='create_date_label' class='hide_me'>Create Date</td>
 								<td name='holdable_label' class='hide_me'>Holdable</td>
+								<td name='due_date_label' class='hide_me'>Due Date</td>
 							</tr>
 						</thead>
 						<tbody name='copies_tbody' class='copy_details_table' width='100%'>
@@ -37,6 +38,10 @@
 
 								<td name='copy_holdable_td' class='hide_me'>
 									<span name='copy_is_holdable'> </span>
+								</td>
+
+								<td name='copy_due_date_td' class='hide_me'>
+									<span name='copy_due_date'> </span>
 								</td>
 
 							</tr>
