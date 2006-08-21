@@ -96,7 +96,8 @@ CREATE TABLE metabib.rec_descriptor (
 	type_mat	TEXT,
 	cat_form	TEXT,
 	pub_status	TEXT,
-	item_lang	TEXT
+	item_lang	TEXT,
+	vr_format	TEXT
 );
 CREATE INDEX metabib_rec_descriptor_record_idx ON metabib.rec_descriptor (record);
 /* We may not need these...

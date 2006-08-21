@@ -22,3 +22,5 @@ environment.result.cat_form( extractFixedField( marcdoc, 'Desc' ) );
 environment.result.pub_status( extractFixedField( marcdoc, 'DtSt' ) );
 environment.result.item_lang( extractFixedField( marcdoc, 'Lang' ) );
 
+environment.result.vr_format( videorecordingFormatCode( marcdoc ) );
+
