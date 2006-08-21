@@ -194,13 +194,17 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* host;
 	host = getenv("HOSTNAME");
 
+	char tbuf[32];
+	memset(tbuf, 0x0, 32);
+	snprintf(tbuf, 32, "%lf", get_timestamp_millis());
+
 	if(!host) host = "";
 	if(!resource) resource = "";
 
 	int len = strlen(resource) + 256;
 	char buf[len];
 	memset(buf,0,len);
-	snprintf(buf, len - 1, "%s_%s_%d", resource, host, getpid() );
+	snprintf(buf, len - 1, "%s_%s_%s_%d", resource, host, tbuf, getpid() );
 	
 	if(client_connect( client, username, password, buf, 10, AUTH_DIGEST )) {
 		/* child nodes will leak the parents client... but we can't free
