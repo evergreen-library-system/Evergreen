@@ -257,6 +257,20 @@ sub fleshed_copy_retrieve {
 	return $c;
 }
 
+
+
+__PACKAGE__->register_method(
+	method => 'fleshed_by_barcode',
+	api_name	=> "open-ils.search.asset.copy.fleshed2.find_by_barcode",);
+sub fleshed_by_barcode {
+	my( $self, $conn, $barcode ) = @_;
+	my $e = new_editor();
+	my $copyid = $e->search_asset_copy({barcode => $barcode}, {idlist=>1})->[0]
+		or return $e->event;
+	return $self->fleshed_copy_retrieve2($conn, $copyid);
+}
+
+
 __PACKAGE__->register_method(
 	method	=> "fleshed_copy_retrieve2",
 	api_name	=> "open-ils.search.asset.copy.fleshed2.retrieve",);
