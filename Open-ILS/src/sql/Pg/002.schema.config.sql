@@ -213,11 +213,9 @@ COMMENT ON TABLE config.identification_type IS $$
 $$;
 
 
-INSERT INTO config.identification_type ( name ) VALUES ( 'Drivers Licence' );
-INSERT INTO config.identification_type ( name ) VALUES ( 'Voter Card' );
-INSERT INTO config.identification_type ( name ) VALUES ( 'Two Utility Bills' );
-INSERT INTO config.identification_type ( name ) VALUES ( 'State ID' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'Drivers License' );
 INSERT INTO config.identification_type ( name ) VALUES ( 'SSN' );
+INSERT INTO config.identification_type ( name ) VALUES ( 'Other' );
 
 CREATE TABLE config.rule_circ_duration (
 	id		SERIAL		PRIMARY KEY,
@@ -251,7 +249,16 @@ COMMENT ON TABLE config.rule_circ_duration IS $$
  */
 $$;
 
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '2wk_default', '21 days', '14 days', '7 days', 2);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '7_days_0_renew', '7 days', '7 days', '7 days', 0);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '28_days_2_renew', '28 days', '28 days', '28 days', 2);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '3_months_0_renew', '3 mons', '3 mons', '3 mons', 0);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '3_days_1_renew', '3 days', '3 days', '3 days', 1);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '2_months_2_renew', '2 mons', '2 mons', '2 mons', 2);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '35_days_1_renew', '35 days', '35 days', '35 days', 1);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '7_days_2_renew', '7 days', '7 days', '7 days', 2);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '1_hour_2_renew', '1 hour', '1 hour', '1 hour', 2);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '28_days_0_renew', '28 days', '28 days', '28 days', 0);
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '14_days_2_renew', '14 days', '14 days', '14 days', 2);
 
 
 CREATE TABLE config.rule_max_fine (
@@ -284,7 +291,12 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  */
 $$;
 
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'books', 50.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_min', 5.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_mid', 10.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_max', 100.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_min', 25.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_mid', 25.00);
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_max', 100.00);
 
 
 CREATE TABLE config.rule_recuring_fine (
@@ -322,7 +334,8 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  */
 $$;
 
-INSERT INTO config.rule_recuring_fine VALUES (1, 'books', 0.50, 0.10, 0.10, '1 day');
+INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '10_cent_per_day', 0.50, 0.10, 0.10, '1 day');
+INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '50_cent_per_day', 0.50, 0.50, 0.50, '1 day');
 
 
 CREATE TABLE config.rule_age_hold_protect (
