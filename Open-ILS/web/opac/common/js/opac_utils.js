@@ -280,6 +280,12 @@ function  buildOPACLink(args, slim, ssl) {
 		else string += config.page[findCurrentPage()];
 	}
 
+	/* this may seem unnecessary.. safety precaution for now */
+	/*
+	if( args[PARAM_DEPTH] == null )
+		args[PARAM_DEPTH] = getDepth();
+		*/
+
 	string += "?";
 
 	for( var x in args ) {
@@ -358,12 +364,11 @@ function _appendParam( fieldVar, fieldName, overrideArgs, getFunc, string ) {
 
 	var ret = "";
 
-
 	if(	fieldVar != null && 
 			(fieldVar +'' != 'NaN') && 
 			overrideArgs[fieldName] == null &&
 			getFunc() != null &&
-			getFunc() != '' ) {
+			getFunc()+'' != '' ) {
 
 		ret = "&" + fieldName + "=" + encodeURIComponent(getFunc());
 	}
