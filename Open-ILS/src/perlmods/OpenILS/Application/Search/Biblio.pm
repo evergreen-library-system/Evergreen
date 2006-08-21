@@ -286,7 +286,7 @@ sub fleshed_copy_retrieve2 {
 				[	
 					{ target_copy => $copy->id },
 					{
-						order_by => 'xact_start',
+						order_by => { circ => 'xact_start desc' },
 						limit => 1
 					}
 				]
