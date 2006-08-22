@@ -497,12 +497,11 @@ sub recent_changes {
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	return $_storage
-		->request(
-			"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
-			{ $axis => { ">" => $when }, id => { '>' => 0 } },
-			{ order_by => "$axis desc", limit => $limit } )
-		->gather(1);
+	return $_storage->request(
+		"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
+		{ $axis => { ">" => $when }, id => { '>' => 0 } },
+		{ order_by => { bre => "$axis desc" }, limit => $limit }
+	)->gather(1);
 }
 
 for my $t ( qw/biblio authority/ ) {
@@ -519,7 +518,7 @@ for my $t ( qw/biblio authority/ ) {
 		  			[
 						{ name => 'when',
 				  		  desc => "Date to start looking for ${a}ed records",
-				  		  default => 'today',
+				  		  default => '1-01-01',
 				  		  type => 'string' },
 
 						{ name => 'limit',
