@@ -550,6 +550,7 @@ sub run_patron_permit_scripts {
 
 	$penalties = $penalties->{fatal_penalties};
 
+
 	# ---------------------------------------------------------------------
 	# Now run the patron permit script 
 	# ---------------------------------------------------------------------
@@ -1324,6 +1325,7 @@ sub attempt_checkin_hold_capture {
 		return undef;
 	}
 
+
 	$logger->info("circulator: found permitted hold ".
 		$hold->id . " for copy, capturing...");
 
@@ -1619,7 +1621,6 @@ sub do_renew {
 	# -----------------------------------------------------------------
 
 	$self->renewal_remaining( $circ->renewal_remaining - 1 );
-	#$self->renewal_remaining(0) if $self->renewal_remaining < 0;
 	$self->circ($circ);
 
 	$self->run_renew_permit;
@@ -1673,6 +1674,9 @@ sub run_renew_permit {
       $self->patron->id." returned events: @$events") if @$events;
 
 	$self->push_events(OpenILS::Event->new($_)) for @$events;
+	
+	$logger->debug("circulator: re-creating script runner to be safe");
+	$self->mk_script_runner;
 }
 
 
