@@ -82,6 +82,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
 
 	//alert(js2JSON(args));
+	_debug('SEARCH: \n' + js2JSON(args) + '\n\n');
 	var req = new Request(method, args, 1);
 	req.callback(handler);
 	req.send();

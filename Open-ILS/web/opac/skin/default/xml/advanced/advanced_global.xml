@@ -23,14 +23,6 @@
 						config.ids.common.now_searching = 'now_searching_location';
 					</script>
 
-					<!--
-					<tr>
-						<td align='center' width='100%' nowrap='nowrap'>
-							<b id='now_searching_location'> </b>
-						</td>
-					</tr>
-					-->
-
 					<!--#set var="adv_global_row_id" value="adv_global_trow"-->
 					<!--#include virtual="adv_global_row.xml"-->
 
@@ -54,6 +46,20 @@
 
 
 		<td rowspan='2'>
+
+			<!--
+			<table width='100%' style='margin-bottom: 3px;'>
+				<thead>
+					<tr>
+						<td colspan='2' align='center'>
+							<span>Group Formats and Editions</span>
+							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+						</td>
+					</tr>
+				</thead>
+			</table>
+			-->
+
 			<table with='100%'>
 				<thead>
 					<tr><td colspan='2' align='center'>Search Filters</td></tr>
@@ -193,6 +199,20 @@
 	<tr style='border-top: none;'>
 		<td align='center' valign='bottom' style='border-top: none;'>
 
+			<!--
+			<table width='100%' style='padding: 1px;'>
+				<thead>
+					<tr>
+						<td colspan='2' align='center'>
+							<span>Group Formats and Editions</span>
+							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+						</td>
+					</tr>
+				</thead>
+			</table>
+			-->
+
+
 			<table style='border: none; width: 100%;'>
 				<tr>
 					<td align='center' width='100%'>
@@ -241,6 +261,12 @@
 										<!--#include virtual="../common/libselect.xml"-->
 									</td>
 
+								</tr>
+								<tr>
+									<td colspan='2' align='center'>
+										<span>Group Formats and Editions</span>
+										<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+									</td>
 								</tr>
 							</tbody>
 						</table>

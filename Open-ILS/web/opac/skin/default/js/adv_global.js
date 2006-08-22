@@ -1,7 +1,12 @@
 
 attachEvt("common", "run", advgInit);
 
+var COOKIE_NOGROUP_RECORDS = 'grpt';
+
 function advgInit() {
+
+	if( cookieManager.read(COOKIE_NOGROUP_RECORDS) )
+		$('adv_group_titles').checked = false;
 
 	$n($('adv_global_tbody'), 'term').focus();
 
@@ -111,10 +116,16 @@ function advSubmitGlobal() {
 	args[PARAM_TERM]		= "";
 
 	/* pubdate sorting causes a record (not metarecord) search */
-	if( sortby == SORT_TYPE_PUBDATE ) {
+	if( sortby == SORT_TYPE_PUBDATE || !$('adv_group_titles').checked ) {
 		args.page = RRESULT;
 		args[PARAM_RTYPE] = RTYPE_MULTI;
 	}
+
+	if($('adv_group_titles').checked ) 
+		cookieManager.write(COOKIE_NOGROUP_RECORDS,'');
+	else
+		cookieManager.write(COOKIE_NOGROUP_RECORDS,'1', '+10m');
+
 
 	goTo(buildOPACLink(args));
 }
