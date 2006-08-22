@@ -402,14 +402,15 @@ sub the_quest_for_knowledge {
 	my $ismeta = 0;
 	my @recs;
 
+	if($self->api_name =~ /metabib/) {
+		$ismeta = 1;
+		$method =~ s/biblio/metabib/o;
+	}
+
 
 	my $offset	= $searchhash->{offset} || 0;
 	my $limit	= $searchhash->{limit} || 10;
 	my $end		= $offset + $limit - 1;
-
-	for( keys %{$searchhash->{searches}} ) {
-		
-	}
 
 	# do some simple sanity checking
 	if(!$searchhash->{searches} or
@@ -438,10 +439,6 @@ sub the_quest_for_knowledge {
 
 	$searchhash->{limit} -= $offset;
 
-	if($self->api_name =~ /metabib/) {
-		$ismeta = 1;
-		$method =~ s/biblio/metabib/o;
-	}
 
 	my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
 
