@@ -70,7 +70,7 @@
 					listitem.setAttribute('id', robj.biblio[i].id());
 					$('bucket_list').appendChild(listitem);
 				}
-				$('bucket_list').selectedIndex = 0;
+				try { $('bucket_list').selectedIndex = 0; } catch(E) { }
 				$('bucket_list').focus();
 
 			} catch(E) {
@@ -106,7 +106,10 @@
 			if (b) {
 				bucket_id = b;
 			} else {
-				if ($('bucket_list').selectedItem) bucket_id = $('bucket_list').selectedItem.getAttribute('id');
+				try {
+					if ($('bucket_list').selectedItem) bucket_id = $('bucket_list').selectedItem.getAttribute('id');
+				} catch(E) {
+				}
 			}
 			if (!bucket_id) return;
 			for (var i = 0; i < g.record_ids.length; i++) {
