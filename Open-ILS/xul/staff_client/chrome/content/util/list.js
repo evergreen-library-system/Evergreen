@@ -233,7 +233,7 @@ util.list.prototype = {
 						col.setAttribute('width',my_cols[col_id].width); 
 						col.setAttribute('ordinal',my_cols[col_id].ordinal); 
 					} else {
-						alert('FIXME: Column ' + col_id + ' did not have a saved state.');
+						obj.error.sdump('D_ERROR','WARNING: Column ' + col_id + ' did not have a saved state.');
 					}
 				}
 			}

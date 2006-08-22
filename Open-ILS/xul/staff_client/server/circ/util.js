@@ -358,7 +358,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'id' : 'circ_id', 'label' : getString('staff.circ_label_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.id()', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.id() : ( my.acp.circulations() ? my.acp.circulations()[0].id() : "")', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'mvr_doc_id', 'label' : getString('staff.mvr_label_doc_id'), 'flex' : 1,
@@ -436,20 +436,29 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_modifier()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : getString('staff.circ_label_xact_start'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_start()'
+			'persist' : 'hidden width ordinal', 'id' : 'xact_start_full', 'label' : 'Checkout Timestamp', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.xact_start() : (my.acp.circulations() ? my.acp.circulations()[0].xact_start() : "")'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'checkin_time', 'label' : 'Checkin Time', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time().substr(0,16)'
+			'persist' : 'hidden width ordinal', 'id' : 'checkin_time_full', 'label' : 'Checkin Timestamp', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time()'
 		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Checkout Date', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.xact_start().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].xact_start().substr(0,10) : "")'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'checkin_time', 'label' : 'Checkin Date', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time().substr(0,10)'
+		},
+
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : 'Transaction Finished', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_finish()'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'due_date', 'label' : getString('staff.circ_label_due_date'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.due_date().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.due_date().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].due_date().substr(0,10) : "")'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2,
@@ -481,11 +490,15 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.renewal_remaining()', 'sort_type' : 'number',
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.renewal_remaining() : (my.acp.circulations() ? my.acp.circulations()[0].renewal_remaining() : "")', 'sort_type' : 'number',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.stop_fines()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.stop_fines() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines() : "")'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'stop_fines_time', 'label' : 'Fines Stopped Time', 'flex' : 0,
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.stop_fines_time() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines_time() : "")'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
@@ -587,16 +600,29 @@ circ.util.hold_columns = function(modify,params) {
 
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'request_time', 'label' : getString('staff.ahr_request_time_label'), 'flex' : 0,
+			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
 			'render' : 'my.ahr.request_time().toString().substr(0,10)'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'request_time', 'label' : 'Request Date', 'flex' : 0,
+			'primary' : false, 'hidden' : true,  
+			'render' : 'my.ahr.request_time().toString().substr(0,10)'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'available_timestamp', 'label' : 'Available On (Timestamp)', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString() : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString() : "" )',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'available_time', 'label' : 'Available On', 'flex' : 1,
 			'primary' : false, 'hidden' : false,  'render' : 'my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString().substr(0,10) : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "" )',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'capture_time', 'label' : getString('staff.ahr_capture_time_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'capture_timestamp', 'label' : 'Capture Timestamp', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString() : ""'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'capture_time', 'label' : 'Capture Date', 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""'
 		},
 		{
@@ -608,7 +634,7 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.hold_type()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib', 'label' : 'Pickup Lib (Full Name)', 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
 			'render' : 'if (Number(my.ahr.pickup_lib())>=0) obj.data.hash.aou[ my.ahr.pickup_lib() ].name(); else my.ahr.pickup_lib().name();'
 		},

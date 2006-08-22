@@ -1211,10 +1211,12 @@ cat.copy_browser.prototype = {
 						'circ_lib' : { 'hidden' : false },
 						'owning_lib' : { 'hidden' : false },
 						'call_number' : { 'hidden' : false },
+						'due_date' : { 'hidden' : false },
 						'status' : { 'hidden' : false },
 					},
 					{
 						'just_these' : [
+							'due_date',
 							'owning_lib',
 							'circ_lib',
 							'call_number',
