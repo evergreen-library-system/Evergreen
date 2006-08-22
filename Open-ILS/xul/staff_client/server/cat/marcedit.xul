@@ -68,7 +68,7 @@
 							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="MRec" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="Ctry" set="BKS SER VIS MIX MAP SCO REC COM" value="Ctry" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox class="plain" name="Ctry" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<textbox class="plain" name="Ctry" maxlength="3" size="3" oninput="updateFixedFields(this);"/>
 						</row>
 						<row>
 							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
