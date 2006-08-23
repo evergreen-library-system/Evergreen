@@ -265,7 +265,8 @@ __PACKAGE__->register_method(
 sub fleshed_by_barcode {
 	my( $self, $conn, $barcode ) = @_;
 	my $e = new_editor();
-	my $copyid = $e->search_asset_copy({barcode => $barcode}, {idlist=>1})->[0]
+	my $copyid = $e->search_asset_copy(
+		{barcode => $barcode, deleted => 'f'}, {idlist=>1})->[0]
 		or return $e->event;
 	return $self->fleshed_copy_retrieve2($conn, $copyid);
 }
