@@ -16,6 +16,7 @@ if( isTrue(isPrecat) ) {
 
 /* grab the config from the config script */
 var config = getItemConfig();
+var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
 
 
 /* ----------------------------------------------------------------------------- 
