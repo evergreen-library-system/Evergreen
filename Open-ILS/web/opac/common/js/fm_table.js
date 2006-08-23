@@ -2,6 +2,8 @@
 	Fieldmapper object table
 */
 
+var ID_GEN = 1;
+
 
 
 function drawFMObjectTable( args ) {
@@ -34,6 +36,8 @@ function FMObjectBuilder( obj, display, styleToggle ) {
 	this.thead.appendChild(this.thead_tr)
 
 	addCSSClass(this.table, 'fm_table');
+	addCSSClass(this.table, 'sortable');
+	this.table.id = 'fm_table_' + (ID_GEN++);
 }
 
 
@@ -61,16 +65,19 @@ FMObjectBuilder.prototype.build = function() {
 
 /* */
 FMObjectBuilder.prototype.setKeys = function(o) {
+	var sortme = false;
 	if( this.display[o.classname] ) 
 		this.keys = this.display[o.classname].fields;
 
 	if(!this.keys && FM_TABLE_DISPLAY[o.classname])
 		this.keys = FM_TABLE_DISPLAY[o.classname].fields;
 
-	if(!this.keys)
+	if(!this.keys) {
 		this.keys = fmclasses[o.classname];
+		sortme = true;
+	}
 
-	this.keys = this.keys.sort();
+	if(sortme) this.keys = this.keys.sort();
 }
 
 /* Inserts one row into the table to represent a single object */
@@ -176,10 +183,14 @@ FMObjectBuilder.prototype.buildSubTable = function(td, obj, key) {
 	builder.table.setAttribute('style', 'width: auto;');
 	addCSSClass(builder.table, 'fm_selected');
 
-	var style = subtd.getAttribute('style');
 	var newleft = left - (builder.table.clientWidth / 2) + (td.clientWidth / 2);
-	style = style.replace(new RegExp(left), newleft);
-	subtd.setAttribute('style', style);
+
+	if( newleft < left ) {
+		_debug("left = "+left+" : newleft = "+newleft);
+		var style = subtd.getAttribute('style');
+		style = style.replace(new RegExp(left), newleft);
+		subtd.setAttribute('style', style);
+	}
 }
 
 

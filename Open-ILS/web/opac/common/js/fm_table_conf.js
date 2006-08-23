@@ -45,5 +45,40 @@ var FM_TABLE_DISPLAY = {
 			'owning_lib',
 			'opac_visible'
 		]
+	},
+	au : {
+		name : 'usrname',
+		fields : [
+			'card',
+			'email',
+			'prefix',
+			'first_given_name',
+			'second_given_name',
+			'family_name',
+			'suffix',
+			'day_phone',
+			'home_ou',
+			'dob'
+		]
+	},
+	aws : {
+		name : 'name'
+	},
+	mwps : {
+		fields : [
+			'workstation',
+			'cash_payment',
+			'check_payment',	
+			'credit_card_payment'
+		]
+	},
+
+	mups : {
+		fields : [
+			'usr',
+			'credit_payment',
+			'forgive_payment',
+			'work_payment'
+		]
 	}
 }
