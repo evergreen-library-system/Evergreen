@@ -47,7 +47,7 @@ function osBuildOrgs() {
 
 	var selector = $('os_orgs');
 	buildOrgSel(selector, org, type.depth());
-	if(!type.can_have_users()) 
+	if(!isTrue(type.can_have_users())) 
 		selector.options[0].disabled = true;
 
 	selector.onchange = osDrawRange;
