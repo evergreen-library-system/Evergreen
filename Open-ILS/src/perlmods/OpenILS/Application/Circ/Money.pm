@@ -481,6 +481,37 @@ sub fetch_mbts {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'desk_payments',
+	api_name => 'open-ils.circ.money.org_unit.desk_payments'
+);
+
+sub desk_payments {
+	my( $self, $conn, $auth, $org, $start_date, $end_date ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_TRANSACTION', $org);
+	return $U->storagereq(
+		'open-ils.storage.money.org_unit.desk_payments.atomic',
+		$org, $start_date, $end_date );
+}
+
+
+__PACKAGE__->register_method(
+	method => 'user_payments',
+	api_name => 'open-ils.circ.money.org_unit.user_payments'
+);
+
+sub user_payments {
+	my( $self, $conn, $auth, $org, $start_date, $end_date ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_TRANSACTION', $org);
+	return $U->storagereq(
+		'open-ils.storage.money.org_unit.user_payments.atomic',
+		$org, $start_date, $end_date );
+}
+
 
 
 
