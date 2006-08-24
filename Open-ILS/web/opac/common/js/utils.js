@@ -199,6 +199,7 @@ function setSelectorRegex( sel, regex ) {
 
 function getSelectorVal( sel ) {
 	if(!sel) return null;
+	if( sel.selectedIndex < 0 ) return null;
 	var o = sel.options[sel.selectedIndex];
 	var v = o.value; 
 	if(v == null) v = o.innerHTML;
