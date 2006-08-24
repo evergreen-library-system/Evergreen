@@ -115,9 +115,6 @@ sub address {
 	$addr = $u->mailing_address unless $addr;
 	my $str = __addr_string($addr);
 	syslog('LOG_DEBUG', "OILS: Patron address: $str");
-	#my $maddr = $u->mailing_address;
-	#$str .= "\n" . __addr_string($maddr) 
-		#if $maddr and $maddr->id ne $addr->id;
 	return $str;
 }
 
@@ -168,13 +165,13 @@ sub recall_ok {
 
 sub hold_ok {
     my $self = shift;
-    return 0;
+	 return $self->charge_ok;
 }
 
 # return true if the card provided is marked as lost
 sub card_lost {
     my $self = shift;
-    return 0;
+	 return $self->{user}->card->active eq 't';
 }
 
 sub recall_overdue {
@@ -196,7 +193,14 @@ sub currency {
 
 sub fee_amount {
 	my $self = shift;
-	return 0;
+
+	my $total = 0;
+	my $e = OpenILS::SIP->editor();
+	my $xacts = $e->search_money_open_billable_transaction_summary( 
+		{ usr => $self->{user}->id, balance_owed => { '!=' => 0 } } );
+	
+	$total += $_->balance_owed for @$xacts;
+	return $total;
 }
 
 sub screen_msg {
