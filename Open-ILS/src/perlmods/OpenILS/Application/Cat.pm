@@ -1031,6 +1031,13 @@ sub update_fleshed_copies {
 	return undef;
 }
 
+sub fix_copy_price {
+	my $copy = shift;
+	my $p = $copy->price || 0;
+	$p =~ s/\$//og;
+	$copy->price($p);
+}
+
 
 sub update_copy {
 	my( $editor, $override, $vol, $copy ) = @_;
@@ -1041,6 +1048,8 @@ sub update_copy {
 
 	$copy->editor($editor->requestor->id);
 	$copy->edit_date('now');
+
+	fix_copy_price($copy);
 	return $editor->event unless
 		$editor->update_asset_copy( 
 			$copy, {checkperm=>1, permorg=>$vol->owning_lib});
@@ -1120,6 +1129,7 @@ sub create_copy {
 	$copy->clear_id;
 	$copy->creator($editor->requestor->id);
 	$copy->create_date('now');
+	fix_copy_price($copy);
 
 	$editor->create_asset_copy(
 		$copy, {checkperm=>1, permorg=>$vol->owning_lib})

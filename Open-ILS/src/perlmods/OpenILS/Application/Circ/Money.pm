@@ -79,6 +79,8 @@ sub make_payments {
 
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
+		$amount =~ s/\$//og; # just to be safe
+
 		($trans, $evt) = $apputils->fetch_open_billable_transaction($transid);
 		return $evt if $evt;
 
@@ -138,12 +140,6 @@ sub make_payments {
 			if( !$circ || $circ->stop_fines ) {
 
 				$trans->xact_finish("now");
-
-				use Data::Dumper;
-				warn Dumper($trans);
-
-				warn "calling open-ils.storage.direct.money.billable_transaction.update\n";
-
 				my $s = $session->request(
 					"open-ils.storage.direct.money.billable_transaction.update", $trans )->gather(1);
 	
@@ -293,8 +289,6 @@ sub create_grocery_bill {
 	
 	$apputils->commit_db_session($session);
 
-
-
 	return $transid;
 }
 
@@ -350,6 +344,10 @@ sub billing_items_create {
 		$e->update_money_billable_transaction($xact)
 			or return $e->event;
 	}
+
+	my $amt = $billing->amount;
+	$amt =~ s/\$//og;
+	$billing->amount($amt);
 
 	$e->create_money_billing($billing) or return $e->event;
 	$e->commit;
