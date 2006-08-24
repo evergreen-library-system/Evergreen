@@ -508,7 +508,7 @@ sub generate_fines {
 	
 				my ($total) = money::billable_transaction_summary->retrieve( $c->id );
 	
-				if ($total && $total->balance_owed > $c->max_fine) {
+				if ($total && $total->total_owed > $c->max_fine) {
 					$c->update({stop_fines => 'MAXFINES'});
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
@@ -641,7 +641,7 @@ sub new_hold_copy_targeter {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$log->info("Processing hold ".$hold->id."...\n");
 
-			action::hold_copy_map->search( { hold => $hold->id } )->delete_all;
+			action::hold_copy_map->search( hold => $hold->id )->delete_all;
 	
 			my $all_copies = [];
 
@@ -723,7 +723,7 @@ sub new_hold_copy_targeter {
 			$mon += 1;
 			my $today= sprintf( '%s-%0.2d-%0.2d', $year, $mon, $mday );
 
-			my @closed = actor::org_unit::closed_date->search(
+			my @closed = actor::org_unit::closed_date->search_where(
 				{ close_start => { '<=', $today },
 				  close_end => { '>=', $today } }
 			);
@@ -880,9 +880,10 @@ sub hold_copy_targeter {
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
 							{ order_by => 'request_time,prev_check_time' } ) ];
-			push @$holds, action::hold_request->search(
-							capture_time => undef,
-				  			prev_check_time => undef,
+			push @$holds, action::hold_request->search_where(
+							{ capture_time => undef,
+				  			  prev_check_time => undef,
+							},
 							{ order_by => 'request_time' } );
 		}
 	} catch Error with {
@@ -1044,7 +1045,7 @@ sub copy_hold_capture {
 
 	return unless ($count);
 	
-	action::hold_copy_map->search( { hold => $hold->id } )->delete_all;
+	action::hold_copy_map->search( hold => $hold->id )->delete_all;
 	
 	my @maps;
 	$self->{client}->respond( "\tMapping ".scalar(@copies)." eligable copies for hold ".$hold->id."\n");
