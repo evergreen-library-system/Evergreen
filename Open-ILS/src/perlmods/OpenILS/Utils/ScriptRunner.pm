@@ -13,11 +13,12 @@ use vars qw/%_paths $__json_js/;
 
 sub DESTROY {
 	my $self = shift;
-	$logger->info("script_runner destroying self: $self");
+	$logger->info("script_runner: destroying self: $self");
 }
 
 sub cleanup {
 	my $runner = shift;
+	$logger->info("script_runner: destroying context...");
 	$runner->context->destroy;
 	delete($$runner{$_}) for (keys %$runner);
 }
@@ -226,6 +227,9 @@ sub _find_file {
 
 sub load_lib { 
 	my( $self, $file ) = @_;
+
+	my @paths = keys %{$self->{_path}};
+	$logger->debug("script_runner: Loading lib file $file : paths=[@paths]");
 
 	push @{ $self->{libs} }, $file
 		if (! grep {$_ eq $file} @{ $self->{libs} });
