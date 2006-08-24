@@ -1,0 +1,89 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Cash Reports</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script>
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+	
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='adminlib.js'> </script>
+		<script language='javascript' src='cash_reports.js'> </script>
+
+		<script language='javascript' src='/opac/common/js/sorttable.js'> </script>
+
+		<script language='javascript' src='/opac/common/js/fm_table.js'> </script>
+		<script language='javascript' src='/opac/common/js/fm_table_conf.js'> </script>
+
+		<link rel="stylesheet" type="text/css" media="all" 
+			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
+
+
+		<link type='text/css' rel='stylesheet' href='admin.css' />
+		<link type='text/css' rel='stylesheet' href="/opac/common/css/fm_table.css"/>
+	</head>
+
+	<body onload='crInit();'>
+
+		<div class='welcome_box'>
+			<span>Welcome </span><b><span id='user'/></b>
+		</div>
+
+		<center>
+
+			<span style='padding-left: 15px;'>Start Date:</span>
+			<input type='text' id='cr_start' size='10' maxlength='10'> </input>
+			<button style='padding: 0px;' id='cr_start_trigger'>
+				<img src="/opac/common/js/jscalendar/img.gif" 
+					style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
+					title="Date selector"
+					onmouseover="this.style.background='red';" 
+					onmouseout="this.style.background=''" />
+			</button>
+
+			<span style='padding-left: 15px;'>End Date:</span>
+			<input type='text' id='cr_end' size='10' maxlength='10'> </input>
+			<button style='padding: 0px;' id='cr_end_trigger'>
+				<img src="/opac/common/js/jscalendar/img.gif" 
+					style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;" 
+					title="Date selector"
+					onmouseover="this.style.background='red';" 
+					onmouseout="this.style.background=''" />
+			</button>
+
+			<div class='pad' style='padding-left: 10px; font-size: 8pt;'>(YYYY-MM-DD)</div>
+
+			<div>View reports for :  <select id='cr_orgs' style='width:auto;'/></div>
+			<div><button onclick='crDrawRange();'>Go!</button></div>
+
+
+			<div id='cr_desk_payments_div'>
+				<h2>Desk Payments</h2>
+				<div id='cr_desk_payments'/>
+			</div>
+			
+			<br/><hr/><br/>
+
+			<div id='cr_user_payments_div'>
+				<h2>User Payments</h2>
+				<div id='cr_user_payments'/>
+			</div>
+
+		</center>
+	</body>
+</html>
+
+
