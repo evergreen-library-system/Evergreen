@@ -55,7 +55,7 @@ function crCurrentOrg() {
 
 function crBuildOrgs() {
 
-	var org = findOrgUnit(PERMS['VIEW_TRANSACTIONS']);
+	var org = findOrgUnit(PERMS['VIEW_TRANSACTION']);
 
 	if(!org) {
 		$('cr_orgs').disabled = true;
