@@ -77,6 +77,8 @@ my $batch = new MARC::Batch ( 'USMARC', @files );
 $batch->strict_off();
 $batch->warnings_off();
 
+my %seen;
+
 my $starttime = time;
 my $rec;
 while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
@@ -111,13 +113,17 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	}
 
 	$rec = preprocess($rec);
+	$rec->delete_field( $_ ) for ($rec->field($id_field));
 
 	if (!$rec) {
 		next;
 	}
 
-	my $tcn_value = $rec->subfield($id_field => 'a');
-	my $tcn_source = $rec->subfield($id_field => 'b');
+	my $tcn_value = $rec->subfield('901' => 'a');
+	my $tcn_source = $rec->subfield('901' => 'b');
+
+	next if ($seen{$tcn_value});
+	$seen{$tcn_value} = 1;
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -207,10 +213,9 @@ sub preprocess {
 	}
 
 	my $tcn = MARC::Field->new(
-		$id_field,
-		'', '',
-		'a', $id,
-		'b', do { $source_map{$source} || 'System' },
+		'901' => ('', ''),
+		a => $id,
+		b => do { $source_map{$source} || 'System' },
 	);
 
 	$rec->append_fields($tcn);

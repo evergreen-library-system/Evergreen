@@ -246,7 +246,7 @@ CREATE TABLE actor.stat_cat_entry (
 	stat_cat	INT	NOT NULL,
 	owner		INT     NOT NULL,
 	value		TEXT    NOT NULL,
-	CONSTRAINT sce_once_per_owner UNIQUE (owner,value)
+	CONSTRAINT sce_once_per_owner UNIQUE (stat_cat,owner,value)
 );
 COMMENT ON TABLE actor.stat_cat_entry IS $$
 /*

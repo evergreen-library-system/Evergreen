@@ -118,6 +118,8 @@ CREATE TABLE joined_legacy AS
 	  FROM	legacy_item i
 		JOIN legacy_callnum c USING (cat_key,call_key);
 
+CREATE INDEX lj_cat_call_idx ON joined_legacy (cat_key,call_key);
+
 -- Import the call numbers
 -- Getting the owning lib from the first available copy on the CN
 INSERT INTO asset.call_number (creator,editor,record,label,owning_lib)
@@ -129,7 +131,7 @@ INSERT INTO asset.call_number (creator,editor,record,label,owning_lib)
 
 
 -- Import base copy data
-INSERT INTO asset.copy (circ_lib,creator,editor,create_date,barcode,status,location,loan_duration,fine_level,opac_visible,price,circ_modifier,call_number)
+INSERT INTO asset.copy (circ_lib,creator,editor,create_date,barcode,status,location,loan_duration,fine_level,opac_visible,price,circ_modifier,call_number, alert_message)
 	SELECT	DISTINCT ou.id AS circ_lib,
 		1 AS creator,
 		1 AS editor,
@@ -143,7 +145,7 @@ INSERT INTO asset.copy (circ_lib,creator,editor,create_date,barcode,status,locat
 		(l.price/100::numeric)::numeric(8,2) AS price,
 		l.item_type AS circ_modifier,
 		cn.id AS call_number,
-		pc.cnt || " pieces" as alert_message
+		pc.cnt || ' pieces' as alert_message
 	  FROM	joined_legacy l
 		JOIN legacy_copy_status_map s_map
 			ON (s_map.name = l.current_location)
