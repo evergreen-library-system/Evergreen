@@ -171,7 +171,7 @@ sub hold_ok {
 # return true if the card provided is marked as lost
 sub card_lost {
     my $self = shift;
-	 return $self->{user}->card->active eq 't';
+	 return $self->{user}->card->active eq 'f';
 }
 
 sub recall_overdue {
