@@ -1,7 +1,7 @@
 var FETCH_DESK_PAYMENTS = 'open-ils.circ:open-ils.circ.money.org_unit.desk_payments';
 var FETCH_USER_PAYMENTS = 'open-ils.circ:open-ils.circ.money.org_unit.user_payments';
 
-var myPerms = [ 'VIEW_TRANSACTIONS' ];
+var myPerms = [ 'VIEW_TRANSACTION' ];
 var crBaseOrg;
 
 function crInit() {
