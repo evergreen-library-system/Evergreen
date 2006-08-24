@@ -533,6 +533,7 @@ sub flesh_payment {
 	my $meth = "retrieve_money_$type";
 	$p = $e->$meth($p->id) or return (undef, $e->event);
 	try {
+		$p->payment_type($type);
 		$p->cash_drawer(
 			$e->retrieve_actor_workstation(
 				[
