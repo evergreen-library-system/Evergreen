@@ -165,3 +165,35 @@ function sidebarTreesFree() {
 	seriesSidebarTree = null;
 }
 
+
+
+
+/* --------------------------------------------------------------------------------- */
+/* Code to support GALILEO links for PINES.  Fails gracefully
+/* --------------------------------------------------------------------------------- */
+attachEvt('common', 'init', buildEGGalLink);
+function buildEGGalLink() {
+
+	/* we're in a lib, nothing to do here */
+	if( getOrigLocation() ) return;
+	if(!$('eg_gal_link')) return;
+
+	var link = 'http://demo.galib.uga.edu/express?pinesid=';
+	if(grabUser()) {
+		$('eg_gal_link').setAttribute('href', link + G.user.session);
+		return;
+	}
+
+	$('eg_gal_link').setAttribute('href', 'javascript:void(0);');
+	$('eg_gal_link').setAttribute('target', '');
+	$('eg_gal_link').onclick = function() {
+		/* we're not logged in.  go ahead and login */
+		detachAllEvt('common','locationChanged');
+		detachAllEvt('common','loggedIn');
+		attachEvt('common','loggedIn', function() { goTo(link + G.user.session); })
+		initLogin();
+	};
+}
+/* --------------------------------------------------------------------------------- */
+
+
