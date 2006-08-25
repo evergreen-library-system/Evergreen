@@ -1036,6 +1036,10 @@ sub fix_copy_price {
 	my $p = $copy->price || 0;
 	$p =~ s/\$//og;
 	$copy->price($p);
+
+	my $d = $copy->deposit_amount || 0;
+	$d =~ s/\$//og;
+	$copy->deposit_amount($d);
 }
 
 
