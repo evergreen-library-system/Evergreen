@@ -19,7 +19,7 @@ function searchBarInit() {
 	_ts = G.ui.searchbar.type_selector;
 	_fs = G.ui.searchbar.form_selector;
 
-	G.ui.searchbar.text.focus();
+	try{G.ui.searchbar.text.focus();}catch(e){}
 	G.ui.searchbar.text.onkeydown = 
 		function(evt) {if(userPressedEnter(evt)) { searchBarSubmit(); } };
 	_ts.onkeydown = 
