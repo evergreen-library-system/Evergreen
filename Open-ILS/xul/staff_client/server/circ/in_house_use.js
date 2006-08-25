@@ -48,6 +48,50 @@ circ.in_house_use.prototype = {
 						['command'],
 						function() { obj.list.clipboard(); }
 					],
+					'in_house_use_menu_placeholder' : [
+						['render'],
+						function(e) {
+							return function() {
+								JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
+								var items = [ [ 'Barcode:' , 'barcode' ] ].concat(
+									util.functional.map_list(
+										util.functional.filter_list(
+											obj.data.list.cnct,
+											function(o) {
+												return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), obj.data.list.au[0].ws_ou());
+											}
+										),
+										function(o) {
+											return [ o.name(), o.id() ];
+										}
+									).sort()
+								);
+								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
+								util.widgets.remove_children( e );
+								var ml = util.widgets.make_menulist(
+									items
+								);
+								e.appendChild( ml );
+								ml.setAttribute('id','in_house_use_menulist');
+								ml.setAttribute('accesskey','');
+								ml.addEventListener(
+									'command',
+									function(ev) {
+										var tb = obj.controller.view.in_house_use_barcode_entry_textbox;
+										if (ev.target.value == 'barcode') {
+											tb.disabled = false;
+											tb.value = '';
+											tb.focus();
+										} else {
+											tb.disabled = true;
+											tb.value = 'Non-Cataloged';
+										}
+									}, false
+								);
+								obj.controller.view.in_house_use_menu = ml;
+							};
+						},
+					],
 					'in_house_use_barcode_entry_textbox' : [
 						['keypress'],
 						function(ev) {
@@ -142,7 +186,13 @@ circ.in_house_use.prototype = {
 	'in_house_use' : function() {
 		var obj = this;
 		try {
-			var barcode = obj.controller.view.in_house_use_barcode_entry_textbox.value;
+			var barcode;
+			if (obj.controller.view.in_house_use_menu.value == '' || obj.controller.view.in_house_use_menu.value == 'barcode') {
+				barcode = obj.controller.view.in_house_use_barcode_entry_textbox.value;
+			} else {
+				barcode = ( obj.controller.view.in_house_use_menu.value );
+				//barcode = obj.data.hash.cnct[ obj.controller.view.in_house_use_menu.value ].name()
+			}
 			var multiplier = Number( obj.controller.view.in_house_use_multiplier_textbox.value );
 
 			if (barcode == '') {
@@ -167,20 +217,30 @@ circ.in_house_use.prototype = {
 
 			JSAN.use('circ.util');
 
-			var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
-			if (copy.ilsevent) { 
-				switch(copy.ilsevent) {
-					case -1 : obj.error.standard_network_error_alert('In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface'); break;
-					case 1502: obj.error.yns_alert(copy.textcode,'In House Use Failed','Ok',null,null,'Check here to confirm this message'); break;
-					default: throw(copy);
-				}
-				return; 
-			}
+			if (obj.controller.view.in_house_use_menu.value == 'barcode') {
 
-			var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
-			var result = obj.network.simple_request('FM_AIHU_CREATE',
-				[ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
-			);
+				var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
+				if (copy.ilsevent) { 
+					switch(copy.ilsevent) {
+						case -1 : obj.error.standard_network_error_alert('In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface'); break;
+						case 1502 /* ASSET_COPY_NOT_FOUND */ : obj.error.yns_alert(copy.textcode,'In House Use Failed','Ok',null,null,'Check here to confirm this message'); break;
+						default: throw(copy);
+					}
+					return; 
+				}
+	
+				var mods = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',[ copy.id() ]);
+				var result = obj.network.simple_request('FM_AIHU_CREATE',
+					[ ses(), { 'copyid' : copy.id(), 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
+				);
+
+			} else {
+				var result = obj.network.simple_request('FM_ANCIHU_CREATE',
+					[ ses(), { 'non_cat_type' : obj.controller.view.in_house_use_menu.value, 'location' : obj.data.list.au[0].ws_ou(), 'count' : multiplier } ]
+				);
+				mods = new mvr(); mods.title( obj.data.hash.cnct[ obj.controller.view.in_house_use_menu.value ].name()); 
+				copy = new acp(); copy.barcode( '' );
+			}
 
 			obj.list.append(
 				{
@@ -194,6 +254,7 @@ circ.in_house_use.prototype = {
 				//I could override map_row_to_column here
 				}
 			);
+
 			if (typeof obj.on_in_house_use == 'function') {
 				obj.on_in_house_use(result);
 			}

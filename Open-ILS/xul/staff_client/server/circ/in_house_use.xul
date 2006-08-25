@@ -82,10 +82,7 @@
 	<hbox id="in_house_use_top_ui">
 		<label id="in_house_use_multiplier_label" value="# of uses:" control="in_house_use_multiplier_textbox" accesskey="u" hidden="false"/>
 		<textbox id="in_house_use_multiplier_textbox" value="1" hidden="false" size="2" cols="2"/>
-		<label id="in_house_use_scan_barcode_label" 
-			value="Enter Barcode:" 
-			accesskey="a"
-			control="in_house_use_barcode_entry_textbox"/>
+		<hbox id="in_house_use_menu_placeholder" flex="0"/>
 		<textbox id="in_house_use_barcode_entry_textbox"/>
 		<button id="in_house_use_submit_barcode_button" 
 			label="Submit"

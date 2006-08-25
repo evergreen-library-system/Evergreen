@@ -65,6 +65,7 @@ const api = {
 	'FM_AIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.in_house_use.create' },
 	'FM_ANCC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cataloged_circulation.retrieve' },
 	'FM_ANCC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.open_non_cataloged_circulation.user' },
+	'FM_ANCIHU_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.non_cat_in_house_use.create' },
 	'FM_AOA_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.address.retrieve' },
 	'FM_AOU_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_tree.retrieve' },
 	'FM_AOU_RETRIEVE_RELATED_VIA_SESSION' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.org_unit.full_path.retrieve' },
