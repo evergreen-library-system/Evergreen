@@ -464,7 +464,7 @@ util.list.prototype = {
 					}
 				}
 			} catch(E) {
-				obj.error.sdump('D_ERROR', 'List implementation changed? ' + E);
+				obj.error.sdump('D_XULRUNNER', 'List implementation changed? ' + E);
 			}
 		} catch(E) { obj.error.sdump('D_ERROR',E); }
 	},
