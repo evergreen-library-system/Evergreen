@@ -18,19 +18,19 @@ function mangle_005() {
 	var y = now.getUTCFullYear();
 
 	var m = now.getUTCMonth() + 1;
-	m = '0' + m if (m < 10);
+	if (m < 10) m = '0' + m;
 	
 	var d = now.getUTCDate();
-	d = '0' + d if (d < 10);
+	if (d < 10) d = '0' + d;
 	
 	var H = now.getUTCHours();
-	H = '0' + H if (H < 10);
+	if (H < 10) H = '0' + H;
 	
 	var M = now.getUTCMinutes();
-	M = '0' + M if (M < 10);
+	if (M < 10) M = '0' + M;
 	
 	var S = now.getUTCSeconds();
-	S = '0' + S if (S < 10);
+	if (S < 10) S = '0' + S;
 	
 
 	var stamp = '' + y + m + d + H + M + S + '.0';
@@ -38,8 +38,7 @@ function mangle_005() {
 	var new_005 = <controlfield tag="005" xmlns="http://www.loc.gov/MARC21/slim">{ stamp }</controlfield>;
 	
 	// first, remove the old field, if any;
-	var edit_field = xml_record.controlfield.(@tag == '005');
-	for (var i in edit_field) xml_record.removeChild(edit_field[i]);
+	for (var i in xml_record.controlfield.(@tag == '005')) delete xml_record.controlfield.(@tag == '005')[i];
 
 
 	// then, find the right position and insert it
@@ -47,12 +46,12 @@ function mangle_005() {
 	var cfields = xml_record.controfield;
 	for (var i in cfields) {
 		if (Number(cfield[i].@tag) > 5) {
-			xml_record.insertBefore( new_005, cfields[i]);
+			xml_record.insertChildBefore( cfields[i], new_005 );
 			done = 1
 			break;
 		}
 	}
-	if (!done) xml_record.insertBefore( new_005, xml_record.datafield[0] );
+	if (!done) xml_record.insertChildBefore( xml_record.datafield[0], new_005 );
 
 }
 
@@ -78,7 +77,7 @@ function my_init() {
 		// End faking part...
 
 		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
-		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString());');
+		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString()); window.xulG.record.marc = xml_record.toXMLString(); window.xulG.record.url = null; my_init()');
 
 		if (window.xulG.record.url) {
 			var req =  new XMLHttpRequest();
@@ -210,51 +209,85 @@ function createMARCTextbox (element,attrs) {
 		if (element.nodeKind() == 'attribute') element[0]=box.value;
 		else element.setChildren( box.value );
 
-		if (event.charCode == 100 && event.ctrlKey) { // ctrl+d
+		if (element.localName() != 'controlfield') {
+			if (event.charCode == 100 && event.ctrlKey) { // ctrl+d
 
-			var index_sf, target, move_data;
-			if (element.localName() == 'subfield') {
-				index_sf = element;
-				target = event.target.parentNode;
+				var index_sf, target, move_data;
+				if (element.localName() == 'subfield') {
+					index_sf = element;
+					target = event.target.parentNode;
 
-				var start = event.target.selectionStart;
-				var end = event.target.selectionEnd - event.target.selectionStart ?
-						event.target.selectionEnd :
-						event.target.value.length;
+					var start = event.target.selectionStart;
+					var end = event.target.selectionEnd - event.target.selectionStart ?
+							event.target.selectionEnd :
+							event.target.value.length;
 
-				move_data = event.target.value.substring(start,end);
-				event.target.value = event.target.value.substring(0,start) + event.target.value.substring(end);
-				event.target.setAttribute('size', event.target.value.length + 2);
+					move_data = event.target.value.substring(start,end);
+					event.target.value = event.target.value.substring(0,start) + event.target.value.substring(end);
+					event.target.setAttribute('size', event.target.value.length + 2);
+	
+					element.setChildren( event.target.value );
 
-				element.setChildren( event.target.value );
+				} else if (element.localName() == 'code') {
+					index_sf = element.parent();
+					target = event.target.parentNode;
+				} else if (element.localName() == 'tag' || element.localName() == 'ind1' || element.localName() == 'ind2') {
+					index_sf = element.parent().children()[element.parent().children().length() - 1];
+					target = event.target.parentNode.lastChild.lastChild;
+				}
 
-			} else if (element.localName() == 'code') {
-				index_sf = element.parent();
-				target = event.target.parentNode;
-			} else if (element.localName() == 'tag' || element.localName() == 'ind1' || element.localName() == 'ind2') {
-				index_sf = element.parent().children()[element.parent().children().length() - 1];
-				target = event.target.parentNode.lastChild.lastChild;
-			}
+				var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{ move_data }</subfield>;
 
-			var sf = <subfield code="" xmlns="http://www.loc.gov/MARC21/slim">{ move_data }</subfield>;
+				index_sf.parent().insertChildAfter( index_sf, sf );
 
-			index_sf.parent().insertChildAfter( index_sf, sf );
+				var new_sf = marcSubfield(sf);
 
-			var new_sf = marcSubfield(sf);
+				if (target === target.parentNode.lastChild) {
+					target.parentNode.appendChild( new_sf );
+				} else {
+					target.parentNode.insertBefore( new_sf, target.nextSibling );
+				}
 
-			if (target === target.parentNode.lastChild) {
-				target.parentNode.appendChild( new_sf );
-			} else {
-				target.parentNode.insertBefore( new_sf, target.nextSibling );
-			}
+				new_sf.firstChild.nextSibling.focus();
 
-			new_sf.firstChild.nextSibling.focus();
+				event.preventDefault();
+				return false;
 
-			event.preventDefault();
-			return false;
+			} else if (event.keyCode == 13 || event.keyCode == 77) {
+				if (event.ctrlKey) { // ctrl+enter
 
-		} else if (event.keyCode == 13 || event.keyCode == 77) {
-			if (event.ctrlKey) { // ctrl+enter
+					var index;
+					if (element.localName() == 'subfield') index = element.parent();
+					if (element.localName() == 'code') index = element.parent().parent();
+					if (element.localName() == 'tag') index = element.parent();
+					if (element.localName() == 'ind1') index = element.parent();
+					if (element.localName() == 'ind2') index = element.parent();
+
+					var df = <datafield tag="" ind1="" ind2="" xmlns="http://www.loc.gov/MARC21/slim"><subfield code="" /></datafield>;
+
+					index.parent().insertChildAfter( index, df );
+
+					var new_df = marcDatafield(df);
+
+					if (row.parentNode.lastChild === row) {
+						row.parentNode.appendChild( new_df );
+					} else {
+						row.parentNode.insertBefore( new_df, row.nextSibling );
+					}
+
+					new_df.firstChild.focus();
+
+					event.preventDefault();
+					return false;
+
+				} else if (event.shiftKey) {
+					if (row.previousSibling.className.match('marcDatafieldRow'))
+						row.previousSibling.firstChild.focus();
+				} else {
+					row.nextSibling.firstChild.focus();
+				}
+
+			} else if (event.keyCode == 46 && event.ctrlKey) { // ctrl+del
 
 				var index;
 				if (element.localName() == 'subfield') index = element.parent();
@@ -263,59 +296,6 @@ function createMARCTextbox (element,attrs) {
 				if (element.localName() == 'ind1') index = element.parent();
 				if (element.localName() == 'ind2') index = element.parent();
 
-				var df = <datafield tag="" ind1="" ind2="" xmlns="http://www.loc.gov/MARC21/slim"><subfield code="" /></datafield>;
-
-				index.parent().insertChildAfter( index, df );
-
-				var new_df = marcDatafield(df);
-
-				if (row.parentNode.lastChild === row) {
-					row.parentNode.appendChild( new_df );
-				} else {
-					row.parentNode.insertBefore( new_df, row.nextSibling );
-				}
-
-				new_df.firstChild.focus();
-
-				event.preventDefault();
-				return false;
-
-			} else if (event.shiftKey) {
-				if (row.previousSibling.className.match('marcDatafieldRow'))
-					row.previousSibling.firstChild.focus();
-			} else {
-				row.nextSibling.firstChild.focus();
-			}
-
-		} else if (event.keyCode == 46 && event.ctrlKey) { // ctrl+del
-
-			var index;
-			if (element.localName() == 'subfield') index = element.parent();
-			if (element.localName() == 'code') index = element.parent().parent();
-			if (element.localName() == 'tag') index = element.parent();
-			if (element.localName() == 'ind1') index = element.parent();
-			if (element.localName() == 'ind2') index = element.parent();
-
-			for (var i in index.parent().children()) {
-				if (index === index.parent().children()[i]) {
-					delete index.parent().children()[i];
-					break;
-				}
-			}
-
-			row.previousSibling.firstChild.focus();
-			row.parentNode.removeChild(row);
-
-			event.preventDefault();
-			return false;
-
-		} else if (event.keyCode == 46 && event.shiftKey) { // shift+del
-
-			var index;
-			if (element.localName() == 'subfield') index = element;
-			if (element.localName() == 'code') index = element.parent();
-
-			if (index) {
 				for (var i in index.parent().children()) {
 					if (index === index.parent().children()[i]) {
 						delete index.parent().children()[i];
@@ -323,19 +303,41 @@ function createMARCTextbox (element,attrs) {
 					}
 				}
 
-				if (event.target.parentNode === event.target.parentNode.parentNode.lastChild) {
-					event.target.parentNode.previousSibling.lastChild.focus();
-				} else {
-					event.target.parentNode.nextSibling.firstChild.nextSibling.focus();
-				}
-
-				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+				row.previousSibling.firstChild.focus();
+				row.parentNode.removeChild(row);
 
 				event.preventDefault();
 				return false;
+
+			} else if (event.keyCode == 46 && event.shiftKey) { // shift+del
+
+				var index;
+				if (element.localName() == 'subfield') index = element;
+				if (element.localName() == 'code') index = element.parent();
+
+				if (index) {
+					for (var i in index.parent().children()) {
+						if (index === index.parent().children()[i]) {
+							delete index.parent().children()[i];
+							break;
+						}
+					}
+
+					if (event.target.parentNode === event.target.parentNode.parentNode.lastChild) {
+						event.target.parentNode.previousSibling.lastChild.focus();
+					} else {
+						event.target.parentNode.nextSibling.firstChild.nextSibling.focus();
+					}
+
+					event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+
+					event.preventDefault();
+					return false;
+				}
 			}
+			return true;
 		}
-		return true;
+		if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 	};
 
 	box.addEventListener(
@@ -343,6 +345,7 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
+			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
 		},
 		false
@@ -353,6 +356,7 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
+			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
 		},
 		false
@@ -363,6 +367,7 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
+			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
 		},
 		true
@@ -808,28 +813,59 @@ function marcLeader (leader) {
 
 function marcControlfield (field) {
 	tagname = field.@tag.toString().substr(2);
-	var row = createRow(
-		{ class : 'marcControlfieldRow',
-		  tag : '_' + tagname },
-		createLabel(
-			{ value : field.@tag,
-			  class : 'marcTag',
-			  onmouseover : 'getTooltip(this, "tag");',
-			  tooltipid : 'tag' + field.@tag } ),
-		createLabel(
-			{ value : field.@ind1,
-			  class : 'marcInd1',
-			  onmouseover : 'getTooltip(this, "ind1");',
-			  tooltipid : 'tag' + field.@tag + 'ind1val' + field.@ind1 } ),
-		createLabel(
-			{ value : field.@ind2,
-			  class : 'marcInd2',
-			  onmouseover : 'getTooltip(this, "ind2");',
-			  tooltipid : 'tag' + field.@tag + 'ind2val' + field.@ind2 } ),
-		createLabel(
-			{ value : field.text(),
-			  class : 'marcControlfield' } )
-	);
+	var row;
+	if (tagname == '6' || tagname == '7' || tagname == '8') {
+		row = createRow(
+			{ class : 'marcControlfieldRow',
+			  tag : '_' + tagname },
+			createLabel(
+				{ value : field.@tag,
+				  class : 'marcTag',
+				  onmouseover : 'getTooltip(this, "tag");',
+				  tooltipid : 'tag' + field.@tag } ),
+			createLabel(
+				{ value : field.@ind1,
+				  class : 'marcInd1',
+				  onmouseover : 'getTooltip(this, "ind1");',
+				  tooltipid : 'tag' + field.@tag + 'ind1val' + field.@ind1 } ),
+			createLabel(
+				{ value : field.@ind2,
+				  class : 'marcInd2',
+				  onmouseover : 'getTooltip(this, "ind2");',
+				  tooltipid : 'tag' + field.@tag + 'ind2val' + field.@ind2 } ),
+			createMARCTextbox(
+				field,
+				{ value : field.text(),
+				  class : 'plain marcEditableControlfield',
+				  name : 'CONTROL' + tagname,
+				  oncontext : 'return false();',
+				  size : 50,
+				  maxlength : 50 } )
+			);
+	} else {
+		row = createRow(
+			{ class : 'marcControlfieldRow',
+			  tag : '_' + tagname },
+			createLabel(
+				{ value : field.@tag,
+				  class : 'marcTag',
+				  onmouseover : 'getTooltip(this, "tag");',
+				  tooltipid : 'tag' + field.@tag } ),
+			createLabel(
+				{ value : field.@ind1,
+				  class : 'marcInd1',
+				  onmouseover : 'getTooltip(this, "ind1");',
+				  tooltipid : 'tag' + field.@tag + 'ind1val' + field.@ind1 } ),
+			createLabel(
+				{ value : field.@ind2,
+				  class : 'marcInd2',
+				  onmouseover : 'getTooltip(this, "ind2");',
+				  tooltipid : 'tag' + field.@tag + 'ind2val' + field.@ind2 } ),
+			createLabel(
+				{ value : field.text(),
+				  class : 'marcControlfield' } )
+		);
+	}
 
 	return row;
 }

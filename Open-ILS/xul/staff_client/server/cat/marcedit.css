@@ -6,9 +6,13 @@ input:focus {
 	background-color: lightcyan;
 }
 
-.marcSubfieldDelimiter, .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag, .marcSubfield, .marcControlfield, .marcLeader {
+.marcSubfieldDelimiter, .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag, .marcEditableControlfield, .marcSubfield, .marcControlfield, .marcLeader {
 	font-family: fixed, monospace;
 	margin: 0;
+}
+
+.marcEditableControlfield {
+	text-align: left;
 }
 
 .marcSubfieldCode, .marcInd1, .marcInd2, .marcTag {
