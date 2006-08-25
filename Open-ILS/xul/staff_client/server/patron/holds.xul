@@ -52,7 +52,9 @@
 					} 
 				);
 				window.refresh = function(p) { g.holds.retrieve(p); }
-	
+
+				default_focus();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\npatron/holds.xul\n" + E + '\n';
@@ -60,6 +62,8 @@
 				alert(err_msg);
 			}
 		}
+
+		function default_focus() { try { document.getElementById('holds_print').focus(); } catch(E) { } }
 
 	]]>
 	</script>
