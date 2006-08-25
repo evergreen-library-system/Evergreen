@@ -55,7 +55,7 @@
 					<description>Repeat Steps 2 until done.</description>
 				</hbox>
 				<hbox>
-					<label value="Step 6)" style="font-weight: bold"/>
+					<label value="Step 4)" style="font-weight: bold"/>
 					<description>Finish</description>
 				</hbox>
 				<hbox>
