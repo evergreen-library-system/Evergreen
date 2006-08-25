@@ -21,6 +21,14 @@ CREATE TABLE action.non_cataloged_circulation (
 	circ_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE action.non_cat_in_house_use (
+	id		SERIAL				PRIMARY KEY,
+	item_type	BIGINT				NOT NULL REFERENCES config.non_cataloged_type(id),
+	staff		INT				NOT NULL REFERENCES actor.usr (id),
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE action.survey (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.org_unit (id),

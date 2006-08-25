@@ -225,6 +225,23 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+	<class id="ancihu" oils_obj:fieldmapper="action::non_cat_in_house_use" oils_persist:tablename="action.non_cat_in_house_use">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cat_in_house_use_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="item_type" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="use_time" oils_obj:array_position="7" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="item_type" reltype="has_a" key="id" map="" class="cnct"/>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 	<class id="atc" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

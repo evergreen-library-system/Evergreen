@@ -150,6 +150,12 @@
 	action::circulation->sequence( 'money.billable_xact_id_seq' );
 
 	#---------------------------------------------------------------------
+	package action::non_cat_in_house_use;
+	
+	action::non_cat_in_house_use->table( 'action.non_cat_in_house_use' );
+	action::non_cat_in_house_use->sequence( 'action.non_cat_in_house_use_id_seq' );
+
+	#---------------------------------------------------------------------
 	package action::in_house_use;
 	
 	action::in_house_use->table( 'action.in_house_use' );
