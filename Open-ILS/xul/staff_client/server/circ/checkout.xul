@@ -51,6 +51,8 @@
 						'patron_id' : patron_id,
 					} 
 				);
+		
+				default_focus();
 	
 			} catch(E) {
 				try {

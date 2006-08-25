@@ -203,7 +203,6 @@ circ.checkout.prototype = {
 		);
 		this.controller.render();
 		//this.controller.view.checkout_barcode_entry_textbox.focus();
-		default_focus();
 
 		this.check_disable();
 
