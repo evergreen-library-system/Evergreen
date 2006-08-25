@@ -65,7 +65,6 @@
 		function default_focus() {
 			setTimeout(
 				function() {
-					alert('HERE');
 					try {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var node = g.patron.right_deck.node.selectedPanel;
