@@ -168,5 +168,27 @@ INSERT INTO asset.copy_note (owning_copy,creator,title,value)
 	  WHERE	l.item_comment IS NOT NULL
 		AND l.item_comment <> '';
 
+-- Now do stat cats
+INSERT INTO asset.stat_cat_entry_copy_map (stat_cat, stat_cat_entry, owning_copy)
+	SELECT	sc.id,
+		sce.id,
+		cp.id
+	  FROM	joined_legacy l
+	  	JOIN asset.copy cp ON (cp.barcode = l.item_id)
+		JOIN asset.stat_cat_entry sce ON (sce.value = l.cat_1)
+		JOIN asset.stat_cat sc ON (sce.stat_cat = sc.id)
+	  WHERE	sc.name = 'Legacy CAT1';
+
+INSERT INTO asset.stat_cat_entry_copy_map (stat_cat, stat_cat_entry, owning_copy)
+	SELECT	sc.id,
+		sce.id,
+		cp.id
+	  FROM	joined_legacy l
+	  	JOIN asset.copy cp ON (cp.barcode = l.item_id)
+		JOIN asset.stat_cat_entry sce ON (sce.value = l.cat_2)
+		JOIN asset.stat_cat sc ON (sce.stat_cat = sc.id)
+	  WHERE	sc.name = 'Legacy CAT2';
+
+
 COMMIT;
 
