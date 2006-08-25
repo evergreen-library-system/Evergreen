@@ -47,6 +47,7 @@ util.deck.prototype = {
 					var cw = iframe.contentWindow; 
 					if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
 					cw.IAMXUL = true; cw.xulG = content_params;
+					setTimeout( function() { if (typeof cw.default_focus == 'function') cw.default_focus(); }, 0 );
 				} catch(E) {
 					this.error.sdump('D_ERROR','E: ' + E + '\n');
 				}
@@ -83,6 +84,7 @@ util.deck.prototype = {
 				if (typeof iframe.contentWindow.wrappedJSObject != 'undefined') cw = iframe.contentWindow.wrappedJSObject;
 				cw.IAMXUL = true; cw.xulG = content_params;
 				this.error.sdump('D_DECK', 'cw = ' + cw + ' cw.xulG = ' + js2JSON(cw.xulG) );
+				setTimeout( function() { if (typeof cw.default_focus == 'function') cw.default_focus(); }, 0 );
 			} catch(E) {
 				this.error.sdump('D_ERROR','E: ' + E + '\n');
 			}

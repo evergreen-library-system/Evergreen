@@ -62,11 +62,20 @@
 		}
 
 		function default_focus() {
-			try {
-				document.getElementById('checkout_barcode_entry_textbox').focus();
-			} catch(E) {
-				g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E));
-			}
+			setTimeout(
+				function() {
+					try {
+						var x = document.getElementById('checkout_barcode_entry_textbox');
+						if (x.disabled) {
+							document.getElementById('checkout_duedate_menu').inputField.focus();
+						} else {
+						 x.focus();
+						}
+					} catch(E) {
+						g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E));
+					}
+				}, 0
+			);
 		}
 
 		function refresh() {
