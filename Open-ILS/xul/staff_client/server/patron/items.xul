@@ -51,7 +51,9 @@
 				);
 				
 				window.refresh = function (p) { g.items.retrieve(p); }
-	
+
+				default_focus();
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" + E + '\n';
@@ -59,6 +61,8 @@
 				alert(err_msg);
 			}
 		}
+
+		function default_focus() { try { var x = document.getElementById('noncat'); x.focus(); } catch(E) { alert(E); } }
 
 	]]>
 	</script>
