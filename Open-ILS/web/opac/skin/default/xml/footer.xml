@@ -29,7 +29,7 @@
 				</span>
 				<span> | </span>
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link'
+					<a target='' class='classic_link' id='eg_gal_link'
 						href='http://www.galileo.usg.edu/'>GALILEO</a>
 				</span>
 				<br/>
