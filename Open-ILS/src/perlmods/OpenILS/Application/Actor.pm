@@ -2498,6 +2498,26 @@ sub new_flesh_user {
 
 
 
+__PACKAGE__->register_method(
+	method	=> "user_retrieve_parts",
+	api_name	=> "open-ils.actor.user.retrieve.parts",);
+
+sub user_retrieve_parts {
+	my( $self, $client, $auth, $user_id, $fields ) = @_;
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+	if( $e->requestor->id != $user_id ) {
+		return $e->event unless $e->allowed('VIEW_USER');
+	}
+	my @resp;
+	my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+	push(@resp, $user->$_()) for(@$fields);
+	return \@resp;
+}
+
+
+
+
 
 
 1;
