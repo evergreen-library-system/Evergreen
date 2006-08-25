@@ -204,7 +204,23 @@ sub fee_amount {
 }
 
 sub screen_msg {
-    my $self = shift;
+	my $self = shift;
+	my $u = $self->{user};
+	return 'barred' if $u->barred eq 't';
+
+	my $b = 'blocked';
+	return $b if $u->card->active eq 'f';
+
+	if( $u->standing_penalties ) {
+		return $b if 
+			grep { $_->penalty_type eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
+				@{$u->standing_penalties};
+
+		return $b if 
+			grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
+				@{$u->standing_penalties};
+	}
+
 	return '';
 }
 
