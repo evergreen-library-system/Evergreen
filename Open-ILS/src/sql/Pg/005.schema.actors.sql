@@ -50,7 +50,7 @@ CREATE TABLE actor.usr (
 	mailing_address		INT,
 	billing_address		INT,
 	home_ou			INT				NOT NULL,
-	dob			TIMESTAMP WITH TIME ZONE	NOT NULL,
+	dob			TIMESTAMP WITH TIME ZONE,
 	active			BOOL				NOT NULL DEFAULT TRUE,
 	master_account		BOOL				NOT NULL DEFAULT FALSE,
 	super_user		BOOL				NOT NULL DEFAULT FALSE,

@@ -628,7 +628,7 @@
 			<field name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" />
 			<field name="usrname" oils_obj:array_position="49" oils_persist:virtual="false" />
 			<field name="groups" oils_obj:array_position="50" oils_persist:virtual="true" />
-			<field name="deleted" oils_obj:array_position="51" oils_persist:virtual="true" />
+			<field name="deleted" oils_obj:array_position="51" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="net_access_level" reltype="has_a" key="id" map="" class="cnal"/>

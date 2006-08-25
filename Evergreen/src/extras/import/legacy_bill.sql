@@ -24,3 +24,5 @@ INSERT INTO money.billing (xact,billing_ts,amount,billing_type,note)
 		JOIN actor.org_unit ou ON (lb.library = ou.shortname)
 		LEFT JOIN biblio.record_entry br ON (lb.cat_key = br.id)
   	WHERE	lb.paid IS FALSE;
+
+COMMIT;

@@ -17,7 +17,7 @@ use Time::HiRes qw/time/;
 use XML::LibXML;
 
 my ($file,$config,$profileid,$identtypeid,$default_profile,$profile_map,$usermap) =
-	('return_file_0623-2.xml', '/openils/conf/bootstrap.conf', 1, 1, 1, 'profile.map');
+	('return_file_0623-2.xml', '/openils/conf/bootstrap.conf', 1, 3, 'User', 'profile.map');
 
 GetOptions(
         'usermap=s'        => \$usermap,
@@ -112,17 +112,18 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	$p->usrname( $bc );
 	$p->passwd( $patron->findvalue( 'user_pin' ) );
 
-	my $new_profile = $p_map{$old_profile};
-	unless ($new_profile) {
+	my $new_profile = $p_map{$old_profile} || $default_profile;
+
+	$p->profile( $$profiles{$new_profile} );
+	if (!$p->profile) {
 		$count++;
 		next;
 	}
 
-	$p->profile( $$profiles{$new_profile} || $default_profile );
-
 	# some defaults
 	$p->standing(1);
 	$p->active('t');
+	$p->deleted('f');
 	$p->master_account('f');
 	$p->super_user('f');
 	$p->usrgroup($uid);
@@ -182,6 +183,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my @addresses;
 	my $mailing_addr_id = $patron->findvalue( 'user_mailingaddr' );
 
+	my $all_valid = 't';
 	for my $addr ( $patron->findnodes( "Address" ) ) {
 		if (!$p->email) {
 			$p->email( $patron->findvalue( 'email' ) );
@@ -221,6 +223,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 		push @addresses, $a;
 
 		if ($prefix eq 'coa_') {
+			$all_valid = 'f';
 			$prefix = 'std_';
 
 			$line1 = $addr->findvalue( "${prefix}line1" );
@@ -246,6 +249,10 @@ for my $patron ( $doc->documentElement->childNodes ) {
 
 			push @addresses, $a;
 		}
+	}
+
+	if ($all_valid eq 'f') {
+		$_->valid('f') for (@addresses);
 	}
 
 	my @notes;

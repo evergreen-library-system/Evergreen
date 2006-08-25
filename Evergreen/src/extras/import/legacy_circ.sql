@@ -17,7 +17,7 @@ ARL	100.00
 ECGRL	100.00  
 \.
 
-CREATE TABLE legacy_type_circ_map (lib text, max_fine numeric(6,2), renewals int);
+CREATE TABLE legacy_type_circ_map (item_type text, recuring_fine numeric(6,2), renewals int);
 COPY legacy_type_circ_map (item_type, recuring_fine, renewals) FROM STDIN;
 ART	0.10	0
 ATLAS	0.50	2
