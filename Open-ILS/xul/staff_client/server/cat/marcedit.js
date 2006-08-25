@@ -13,6 +13,49 @@ var bib_data;
 
 var xml_record;
 
+function mangle_005() {
+	var now = new Date();
+	var y = now.getUTCFullYear();
+
+	var m = now.getUTCMonth() + 1;
+	m = '0' + m if (m < 10);
+	
+	var d = now.getUTCDate();
+	d = '0' + d if (d < 10);
+	
+	var H = now.getUTCHours();
+	H = '0' + H if (H < 10);
+	
+	var M = now.getUTCMinutes();
+	M = '0' + M if (M < 10);
+	
+	var S = now.getUTCSeconds();
+	S = '0' + S if (S < 10);
+	
+
+	var stamp = '' + y + m + d + H + M + S + '.0';
+
+	var new_005 = <controlfield tag="005" xmlns="http://www.loc.gov/MARC21/slim">{ stamp }</controlfield>;
+	
+	// first, remove the old field, if any;
+	var edit_field = xml_record.controlfield.(@tag == '005');
+	for (var i in edit_field) xml_record.removeChild(edit_field[i]);
+
+
+	// then, find the right position and insert it
+	var done = 0;
+	var cfields = xml_record.controfield;
+	for (var i in cfields) {
+		if (Number(cfield[i].@tag) > 5) {
+			xml_record.insertBefore( new_005, cfields[i]);
+			done = 1
+			break;
+		}
+	}
+	if (!done) xml_record.insertBefore( new_005, xml_record.datafield[0] );
+
+}
+
 function my_init() {
 	try {
 		// Fake xulG for standalone...
@@ -35,7 +78,7 @@ function my_init() {
 		// End faking part...
 
 		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
-		document.getElementById('save-button').setAttribute('oncommand', 'window.xulG.save.func(xml_record.toXMLString())');
+		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString());');
 
 		if (window.xulG.record.url) {
 			var req =  new XMLHttpRequest();
