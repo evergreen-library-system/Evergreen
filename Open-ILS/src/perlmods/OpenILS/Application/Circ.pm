@@ -22,7 +22,7 @@ use OpenILS::Event;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::Fieldmapper;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::Editor;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
@@ -415,33 +415,40 @@ __PACKAGE__->register_method(
 		in-house use objects or an event on an error
 	/);
 
-sub create_in_house_use {
+__PACKAGE__->register_method(
+	method		=> "create_in_house_use",
+	api_name		=> 'open-ils.circ.non_cat_in_house_use.create',
+);
+
+=head OLD CODE
+sub ___create_in_house_use {
 	my( $self, $client, $authtoken, $params ) = @_;
 
 	my( $staff, $evt, $copy );
 	my $org			= $params->{location};
 	my $copyid		= $params->{copyid};
 	my $count		= $params->{count} || 1;
+	my $nc_type		= $params->{non_cat_type};
 	my $use_time	= $params->{use_time} || 'now';
 
-	if(!$copyid) {
-		my $barcode = $params->{barcode};
-		($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+	my $non_cat = 1 if $self->api_name =~ /non_cat/;
+
+	unless( $non_cat ) {
+		unless( $copyid ) {
+			my $barcode = $params->{barcode};
+			($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
+			return $evt if $evt;
+			$copyid = $copy->id;
+		}
+		($copy, $evt) = $U->fetch_copy($copyid) unless $copy;
 		return $evt if $evt;
-		$copyid = $copy->id;
 	}
 
 	($staff, $evt) = $U->checkses($authtoken);
 	return $evt if $evt;
 
-	($copy, $evt) = $U->fetch_copy($copyid) unless $copy;
-	return $evt if $evt;
-
 	$evt = $U->check_perms($staff->id, $org, 'CREATE_IN_HOUSE_USE');
 	return $evt if $evt;
-
-	$logger->activity("User " . $staff->id .
-		" creating $count in-house use(s) for copy $copyid at location $org");
 
 	if( $use_time ne 'now' ) {
 		$use_time = clense_ISO8601($use_time);
@@ -450,16 +457,25 @@ sub create_in_house_use {
 
 	my @ids;
 	for(1..$count) {
-		my $ihu = Fieldmapper::action::in_house_use->new;
 
-		$ihu->item($copyid);
+		my $ihu;
+		my $method;
+
+		if($non_cat) {
+			$ihu = Fieldmapper::action::non_cat_in_house_use->new;
+			$ihu->noncat_type($nc_type);
+			$method = 'open-ils.storage.direct.action.non_cat_in_house_use.create';
+		} else {
+			$ihu = Fieldmapper::action::in_house_use->new;
+			$ihu->item($copyid);
+			$method = 'open-ils.storage.direct.action.in_house_use.create';
+		}
+
 		$ihu->staff($staff->id);
 		$ihu->org_unit($org);
 		$ihu->use_time($use_time);
 
-		my $id = $U->simplereq(
-			'open-ils.storage',
-			'open-ils.storage.direct.action.in_house_use.create', $ihu );
+		my $id = $U->simplereq('open-ils.storage', $method, $ihu );
 
 		return $U->DB_UPDATE_FAILED($ihu) unless $id;
 		push @ids, $id;
@@ -467,6 +483,73 @@ sub create_in_house_use {
 
 	return \@ids;
 }
+=cut
+
+
+
+
+sub create_in_house_use {
+	my( $self, $client, $auth, $params ) = @_;
+
+	my( $evt, $copy );
+	my $org			= $params->{location};
+	my $copyid		= $params->{copyid};
+	my $count		= $params->{count} || 1;
+	my $nc_type		= $params->{non_cat_type};
+	my $use_time	= $params->{use_time} || 'now';
+
+	my $e = new_editor(xact=>1,authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('CREATE_IN_HOUSE_USE');
+
+	my $non_cat = 1 if $self->api_name =~ /non_cat/;
+
+	unless( $non_cat ) {
+		if( $copyid ) {
+			$copy = $e->retrieve_asset_copy($copyid) or return $e->event;
+		} else {
+			$copy = $e->search_asset_copy({barcode=>$params->{barcode}})->[0]
+				or return $e->event;
+		}
+	}
+
+	if( $use_time ne 'now' ) {
+		$use_time = clense_ISO8601($use_time);
+		$logger->debug("in_house_use setting use time to $use_time");
+	}
+
+	my @ids;
+	for(1..$count) {
+
+		my $ihu;
+		my $method;
+		my $cmeth;
+
+		if($non_cat) {
+			$ihu = Fieldmapper::action::non_cat_in_house_use->new;
+			$ihu->item_type($nc_type);
+			$method = 'open-ils.storage.direct.action.non_cat_in_house_use.create';
+			$cmeth = "create_action_non_cat_in_house_use";
+
+		} else {
+			$ihu = Fieldmapper::action::in_house_use->new;
+			$ihu->item($copyid);
+			$method = 'open-ils.storage.direct.action.in_house_use.create';
+			$cmeth = "create_action_in_house_use";
+		}
+
+		$ihu->staff($e->requestor->id);
+		$ihu->org_unit($org);
+		$ihu->use_time($use_time);
+
+		$ihu = $e->$cmeth($ihu) or return $e->event;
+		push( @ids, $ihu->id );
+	}
+
+	return \@ids;
+}
+
+
 
 
 
