@@ -38,6 +38,7 @@ var patronOverdueCount	= environment.patronOverdueCount;
 var patronFines		= environment.patronFines;
 var isRenewal			= environment.isRenewal;
 var isPrecat			= environment.isPrecat;
+var currentLocation	= environment.location;
 
 
 
