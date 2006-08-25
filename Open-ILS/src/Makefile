@@ -63,6 +63,7 @@ webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
 	mkdir -p $(WEBDIR)
+	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	cp -r ../web/* $(WEBDIR)
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
@@ -70,6 +71,7 @@ webcore-install:
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
 	cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/opac/common/js/
+	cp ../xsl/*.xsl $(WEBDIR)/opac/extras/xsl/
 
 libfieldmapper:	
 	make -C apachemods libfieldmapper.so
