@@ -453,14 +453,18 @@ util.list.prototype = {
 		try {
 			//dump('detect_visible  obj.node = ' + obj.node + '\n');
 			/* FIXME - this is a hack.. if the implementation of tree changes, this could break */
-			var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
-			var curpos = scrollbar.getAttribute('curpos');
-			var maxpos = scrollbar.getAttribute('maxpos');
-			//alert('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
-			if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
-				if ( obj.auto_retrieve() > 0 ) {
-					obj.curpos = curpos; obj.maxpos = maxpos;
+			try {
+				var scrollbar = document.getAnonymousNodes( document.getAnonymousNodes(obj.node)[1] )[1];
+				var curpos = scrollbar.getAttribute('curpos');
+				var maxpos = scrollbar.getAttribute('maxpos');
+				//alert('curpos = ' + curpos + ' maxpos = ' + maxpos + ' obj.curpos = ' + obj.curpos + ' obj.maxpos = ' + obj.maxpos + '\n');
+				if ((curpos != obj.curpos) || (maxpos != obj.maxpos)) {
+					if ( obj.auto_retrieve() > 0 ) {
+						obj.curpos = curpos; obj.maxpos = maxpos;
+					}
 				}
+			} catch(E) {
+				obj.error.sdump('D_ERROR', 'List implementation changed? ' + E);
 			}
 		} catch(E) { obj.error.sdump('D_ERROR',E); }
 	},
