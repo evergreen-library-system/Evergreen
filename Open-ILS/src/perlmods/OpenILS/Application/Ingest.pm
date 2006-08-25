@@ -657,7 +657,7 @@ sub class_index_string_xml {
 			$value =~ s/\pC+//sgo;
 			$value =~ s/\W+$//sgo;
 
-			$value =~ s/(\w)\.+(\w)/$1$2/sgo;
+			$value =~ s/\b\.+\b//sgo;
 			$value = lc($value);
 
 			my $fm = $class_constructor->new;
