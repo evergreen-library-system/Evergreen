@@ -20,8 +20,10 @@ function init() {
 	if( getLocation() == null && getOrigLocation() == null )
 		LOCATION = globalOrgTree.id();
 
+	/*
 	if( getLocation() != null && getOrigLocation() == null )
 		ORIGLOC = getLocation();
+		*/
 
 	if(getDepth() == null) DEPTH = findOrgDepth(getLocation());
 
