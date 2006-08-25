@@ -221,7 +221,12 @@ sub screen_msg {
 				@{$u->standing_penalties};
 	}
 
-	return '';
+	my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+		clense_ISO8601($u->expire_date));
+
+	return $b if CORE::time > $expire->epoch;
+
+	return 'OK';
 }
 
 sub print_line {
