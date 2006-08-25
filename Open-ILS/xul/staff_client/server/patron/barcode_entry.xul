@@ -111,6 +111,7 @@
 			}
 		}
 
+		function default_focus() { try { setTimeout( function() { document.getElementById('barcode_tb').focus(); }, 0); } catch(E) {} }
 	]]>
 	</script>
 

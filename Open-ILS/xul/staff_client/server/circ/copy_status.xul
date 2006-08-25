@@ -78,6 +78,7 @@
 			}
 		}
 
+		function default_focus() { try { setTimeout( function() { document.getElementById('copy_status_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
 	]]>
 	</script>
 

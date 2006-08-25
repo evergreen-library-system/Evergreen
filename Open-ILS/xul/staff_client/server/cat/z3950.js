@@ -208,6 +208,7 @@ cat.z3950.prototype = {
 												document.getElementById('password').setAttribute('value',
 													obj.creds.services[service].password
 												);
+												try { g.service = service; } catch(E) {}
 												obj.focus(service);
 											} else {
 												document.getElementById('username').focus();

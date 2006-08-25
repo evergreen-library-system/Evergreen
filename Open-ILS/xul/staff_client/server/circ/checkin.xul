@@ -71,6 +71,7 @@
 			}
 		}
 
+		function default_focus() { try { setTimeout( function() { document.getElementById('checkin_barcode_entry_textbox').focus(); }, 0); } catch(E) {} }
 	]]>
 	</script>
 
