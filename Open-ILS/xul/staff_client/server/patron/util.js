@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css'
+	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -402,6 +402,16 @@ patron.util.retrieve_au_via_id = function(session, id, f) {
 		f
 	);
 	return patron_obj;
+}
+
+patron.util.retrieve_name_via_id = function(session, id) {
+	JSAN.use('util.network');
+	var network = new util.network();
+	var parts = network.simple_request(
+		'BLOB_AU_PARTS_RETRIEVE',
+		[ session, id, ['family_name', 'first_given_name', 'second_given_name' ] ]
+	);
+	return parts;
 }
 
 patron.util.retrieve_fleshed_au_via_id = function(session, id) {

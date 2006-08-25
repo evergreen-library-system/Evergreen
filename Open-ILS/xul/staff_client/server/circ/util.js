@@ -743,6 +743,10 @@ circ.util.hold_columns = function(modify,params) {
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""'
 		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'patron_name', 'label' : 'Patron Name', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'JSAN.use("patron.util"); var temp1 = patron.util.retrieve_name_via_id( ses(), my.ahr.usr() ); temp1[0] + ", " + temp1[1] + " " + temp1[2];',
+		}
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
