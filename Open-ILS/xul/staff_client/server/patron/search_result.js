@@ -10,6 +10,8 @@ patron.search_result = function (params) {
 
 patron.search_result.prototype = {
 
+	'result_cap' : 50,
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -171,7 +173,7 @@ patron.search_result.prototype = {
 		try {
 			var results = [];
 
-			var params = [ ses(), search_hash, 50, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
+			var params = [ ses(), search_hash, obj.result_cap + 1, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
 			if (inactive) {
 				params.push(1);
 				if (document.getElementById('active')) {
@@ -185,6 +187,10 @@ patron.search_result.prototype = {
 				if (results.length == 0) {
 					alert('No patrons found matching search criteria.');
 					return;
+				}
+				if (results.length == obj.result_cap+1) {
+					results.pop();
+					alert('Results capped at ' + obj.result_cap + ' patrons.');
 				}
 			} else {
 				alert('Please enter some search terms.');
