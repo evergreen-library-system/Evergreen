@@ -171,7 +171,7 @@ patron.search_result.prototype = {
 		try {
 			var results = [];
 
-			var params = [ ses(), search_hash, 1000, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
+			var params = [ ses(), search_hash, 50, [ 'family_name ASC', 'first_given_name ASC', 'second_given_name ASC', 'dob DESC' ] ];
 			if (inactive) {
 				params.push(1);
 				if (document.getElementById('active')) {
