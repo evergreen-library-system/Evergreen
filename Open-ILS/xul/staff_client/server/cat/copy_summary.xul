@@ -90,6 +90,43 @@
 						var copy = req.getResultObject();
 						if (typeof copy.ilsevent != 'undefined') throw(copy);
 						g.list.append({'row':{'my':{'acp':copy}}});
+						g.network.simple_request(
+							'FM_ACN_RETRIEVE',
+							[ copy.call_number() ],
+							function (rreq) {
+								try {
+									$w('barcode',copy.barcode());	
+									$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
+									$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
+									$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
+									$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
+									$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
+									$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
+									$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
+									$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+									$w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );	
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('rendering copy',E);
+								}
+								try {
+									var cn = rreq.getResultObject();
+									if (typeof cn.ilsevent != 'undefined') {
+										switch(cn.ilsevent) {
+											case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
+												$w('callnumber','Not Cataloged');	
+											break;
+											default:
+												throw(cn);
+											break;
+										}
+									} else {
+										$w('callnumber',cn.label());	
+									}
+								} catch(E) {
+									g.error.standard_unexpected_error_alert('retrieving volume',E);
+								}
+							}
+						);
 					} catch(E) {
 						g.error.standard_unexpected_error_alert('retrieving copy',E);
 					}
@@ -99,22 +136,97 @@
 					g.network.simple_request( 'FM_ACP_RETRIEVE', [ copy_id ], acp_callback);
 				} else {
 					acp_callback( { 'getResultObject' : function() { return copy; } } );
+					copy_id = copy.id();
 				}
 
+				g.network.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_COPY',[ copy_id ],function(req) {
+					try {
+						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						$w('total_circs',robj.total.count);
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('retrieving circ total',E);
+					}
+				});
+
+				toggle_deck(); toggle_deck(); /* quick hack */
+
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/copy_summary.xul\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
+				try { g.error.standard_unexpected_error_alert('copy_summary.xul',E); } catch(F) { alert(E + '\n' + F); }
 			}
 		}
 
+		function toggle_deck() {
+			try {
+				if ($('item_deck').selectedIndex == 0) {
+					$('item_deck').selectedIndex = 1; /* change to grid */
+					$('save_columns').hidden = true;
+					$('sel_clip').hidden = true;
+				} else {
+					$('item_deck').selectedIndex = 0; /* change to tree */
+					$('save_columns').hidden = false;
+					$('sel_clip').hidden = false;
+				}
+			} catch(E) {
+			}
+		}
 	]]>
 	</script>
 
 	<groupbox id="groupbox" flex="1" style="overflow: none; min-height: 80;">
 		<caption label="Item Summary" id="caption"/>
-		<tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
+		<deck id="item_deck" persist="selectedIndex">
+			<tree id="item_summary_list" enableColumnDrag="true" flex="1"/>
+			<grid>
+				<columns>
+					<column/>
+					<column/>
+					<column/>
+					<column/>
+					<column/>
+					<column/>
+					<column/>
+					<column/>
+				</columns>
+				<rows>
+					<row>
+						<label style="font-weight: bold" value="Barcode:"/>
+						<label id="barcode" style="color: blue; text-decoration: underline; -moz-user-focus: normal;" onclick="copy_to_clipboard(event);"/>
+						<label style="font-weight: bold" value="Location:"/>
+						<label id="location"/>
+						<label style="font-weight: bold" value="Call Number:"/>
+						<label id="callnumber"/>
+						<label style="font-weight: bold" value="Status:"/>
+						<label id="status"/>
+					</row>
+					<row>
+						<label style="font-weight: bold" value="Circulate:"/>
+						<label id="circulate"/>
+						<label style="font-weight: bold" value="Reference:"/>
+						<label id="ref"/>
+						<label style="font-weight: bold" value="Holdable:"/>
+						<label id="holdable"/>
+						<label style="font-weight: bold" value="Opac Visible:"/>
+						<label id="opac_visible"/>
+					</row>
+					<row>
+						<label style="font-weight: bold" value="Created:"/>
+						<label id="create_date"/>
+						<label style="font-weight: bold" value="Edited:"/>
+						<label id="edit_date"/>
+						<label style="font-weight: bold" value="Age Protect:"/>
+						<label id="age_protect"/>
+						<label style="font-weight: bold" value="Total Circs:"/>
+						<label id="total_circs"/>
+					</row>
+				</rows>
+			</grid>
+		</deck>
+		<hbox>
+			<label value="Alternate View" style="text-decoration: underline; color: blue" onclick="toggle_deck()"/>
+			<label id="save_columns" value="Save Columns" style="text-decoration: underline; color: blue" onclick="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
+			<label id="sel_clip" value="Copy to Clipboard" style="text-decoration: underline; color: blue" onclick="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
+		</hbox>
 	</groupbox>
 
 </window>
