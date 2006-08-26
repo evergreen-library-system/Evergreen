@@ -34,25 +34,33 @@ function mangle_005() {
 	
 
 	var stamp = '' + y + m + d + H + M + S + '.0';
+	createControlField('005',stamp);
 
-	var new_005 = <controlfield tag="005" xmlns="http://www.loc.gov/MARC21/slim">{ stamp }</controlfield>;
-	
+}
+
+function createControlField (tag,data) {
 	// first, remove the old field, if any;
-	for (var i in xml_record.controlfield.(@tag == '005')) delete xml_record.controlfield.(@tag == '005')[i];
+	for (var i in xml_record.controlfield.(@tag == tag)) delete xml_record.controlfield.(@tag == tag)[i];
 
+	var cf = <controlfield tag="" xmlns="http://www.loc.gov/MARC21/slim">{ data }</controlfield>;
+	cf.@tag = tag;
 
 	// then, find the right position and insert it
 	var done = 0;
-	var cfields = xml_record.controfield;
+	var cfields = xml_record.controlfield;
+	var base = Number(tag.substring(2));
 	for (var i in cfields) {
-		if (Number(cfield[i].@tag) > 5) {
-			xml_record.insertChildBefore( cfields[i], new_005 );
+		var t = Number(cfields[i].@tag.toString().substring(2));
+		if (t > base) {
+			xml_record.insertChildBefore( cfields[i], cf );
 			done = 1
 			break;
 		}
 	}
-	if (!done) xml_record.insertChildBefore( xml_record.datafield[0], new_005 );
 
+	if (!done) xml_record.insertChildBefore( xml_record.datafield[0], cf );
+
+	return cf;
 }
 
 function my_init() {
@@ -77,7 +85,7 @@ function my_init() {
 		// End faking part...
 
 		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
-		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString()); window.xulG.record.marc = xml_record.toXMLString(); window.xulG.record.url = null; my_init()');
+		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString()); loadRecord(xml_record);');
 
 		if (window.xulG.record.url) {
 			var req =  new XMLHttpRequest();
@@ -334,10 +342,18 @@ function createMARCTextbox (element,attrs) {
 					event.preventDefault();
 					return false;
 				}
+			} else if (event.keyCode == 64 && event.ctrlKey) { // ctrl + F6
+				createControlField('006','');
+				loadRecord(xml_record);
+			} else if (event.keyCode == 65 && event.ctrlKey) { // ctrl + F7
+				createControlField('007','');
+				loadRecord(xml_record);
+			} else if (event.keyCode == 66 && event.ctrlKey) { // ctrl + F8
+				createControlField('008','');
+				loadRecord(xml_record);
 			}
 			return true;
 		}
-		if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 	};
 
 	box.addEventListener(
@@ -345,7 +361,6 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
-			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
 		},
 		false
@@ -356,7 +371,6 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
-			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
 		},
 		false
@@ -367,8 +381,16 @@ function createMARCTextbox (element,attrs) {
 		function () {
 			if (element.nodeKind() == 'attribute') element[0]=box.value;
 			else element.setChildren( box.value );
-			if (element.localName() == 'controlfield') fillFixedFields(xml_record);
 			return true;
+		},
+		true
+	);
+
+	box.addEventListener(
+		'keyup', 
+		function () {
+			if (element.localName() == 'controlfield')
+				eval('fillFixedFields(xml_record);');
 		},
 		true
 	);
@@ -821,6 +843,7 @@ function marcControlfield (field) {
 			createLabel(
 				{ value : field.@tag,
 				  class : 'marcTag',
+				  context : 'tags_popup',
 				  onmouseover : 'getTooltip(this, "tag");',
 				  tooltipid : 'tag' + field.@tag } ),
 			createLabel(
@@ -990,6 +1013,8 @@ function loadRecord(rec) {
 			_record = rec;
 			var grid_rows = document.getElementById('recGrid').lastChild;
 
+			while (grid_rows.firstChild) grid_rows.removeChild(grid_rows.firstChild);
+
 			grid_rows.appendChild( marcLeader( rec.leader ) );
 
 			for (var i in rec.controlfield) {
@@ -1031,6 +1056,41 @@ tag_menu.appendChild(
 		  oncommand : 
 			'var e = document.createEvent("KeyEvents");' +
 			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,46,0);' +
+			'current_focus.inputField.dispatchEvent(e);',
+		}
+	)
+);
+
+tag_menu.appendChild( createComplexXULElement( 'separator' ) );
+
+tag_menu.appendChild(
+	createMenuitem(
+		{ label : 'Add/Replace 006',
+		  oncommand : 
+			'var e = document.createEvent("KeyEvents");' +
+			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,64,0);' +
+			'current_focus.inputField.dispatchEvent(e);',
+		 }
+	)
+);
+
+tag_menu.appendChild(
+	createMenuitem(
+		{ label : 'Add/Replace 007',
+		  oncommand : 
+			'var e = document.createEvent("KeyEvents");' +
+			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,65,0);' +
+			'current_focus.inputField.dispatchEvent(e);',
+		}
+	)
+);
+
+tag_menu.appendChild(
+	createMenuitem(
+		{ label : 'Add/Replace 008',
+		  oncommand : 
+			'var e = document.createEvent("KeyEvents");' +
+			'e.initKeyEvent("keypress",1,1,null,1,0,0,0,66,0);' +
 			'current_focus.inputField.dispatchEvent(e);',
 		}
 	)
