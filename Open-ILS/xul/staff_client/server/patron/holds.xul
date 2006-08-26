@@ -49,6 +49,7 @@
 						'patron_id' : g.cgi.param('patron_id'), 
 						'docid' : g.cgi.param('docid'),
 						'shelf' : g.cgi.param('shelf'),
+						'pull' : g.cgi.param('pull'),
 					} 
 				);
 				window.refresh = function(p) { g.holds.retrieve(p); }

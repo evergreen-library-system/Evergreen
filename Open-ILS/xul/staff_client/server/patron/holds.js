@@ -566,25 +566,29 @@ patron.holds.prototype = {
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
 		} else {
-			var method; var id;
+			var method; var param1; var param2 = undefined;
 			if (obj.patron_id) {
 				method = 'FM_AHR_RETRIEVE_VIA_AU'; 
-				id = obj.patron_id; 
+				param1 = obj.patron_id; 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
 			} else if (obj.docid) {
 				method = 'FM_AHR_RETRIEVE_VIA_BRE'; 
-				id = obj.docid; 
+				param1 = obj.docid; 
+				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+			} else if (obj.pull) {
+				method = 'FM_AHR_PULL_LIST'; 
+				param1 = 50; param2 = 0;
+			} else if (obj.shelf) {
+				method = 'FM_AHR_ONSHELF_RETRIEVE'; 
+				param1 = obj.data.list.au[0].ws_ou(); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else {
-				if (obj.shelf) {
-					method = 'FM_AHR_ONSHELF_RETRIEVE'; 
-				} else {
-					method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
-				}
-				id = obj.data.list.au[0].ws_ou(); 
+				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
+				method = 'FM_AHR_PULL_LIST'; 
+				param1 = 50; param2 = 0;
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
-			obj.holds = obj.network.simple_request( method, [ ses(), id ]);
+			obj.holds = obj.network.simple_request( method, [ ses(), param1, param2 ]);
 		}
 
 		function gen_list_append(hold) {
