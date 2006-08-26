@@ -12,14 +12,16 @@
 <popupset id="copy_status_popupset">
 	<popup id="copy_status_actions" position="at_pointer"> 
 		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuseparator/>
 		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
-		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+		<menuseparator/>
 		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 		<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
 		<menuseparator />
@@ -57,14 +59,16 @@
 	<menu label="Actions for Selected Items" accesskey="S">
 		<menupopup>
 			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuseparator />
 			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 			<menuitem command="sel_transit_abort" label="Abort Transits" />
-			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+			<menuseparator />
 			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 			<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
 			<menuseparator />
