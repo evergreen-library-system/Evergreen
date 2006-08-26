@@ -53,6 +53,8 @@
 					'doit' : g.cgi.param('doit'),
 				} );
 
+			//document.documentElement.style.setProperty('font-size-adjust','1','important');
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\n" 
