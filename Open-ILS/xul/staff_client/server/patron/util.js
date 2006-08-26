@@ -409,7 +409,7 @@ patron.util.retrieve_name_via_id = function(session, id) {
 	var network = new util.network();
 	var parts = network.simple_request(
 		'BLOB_AU_PARTS_RETRIEVE',
-		[ session, id, ['family_name', 'first_given_name', 'second_given_name' ] ]
+		[ session, id, ['family_name', 'first_given_name', 'second_given_name', 'home_ou' ] ]
 	);
 	return parts;
 }
