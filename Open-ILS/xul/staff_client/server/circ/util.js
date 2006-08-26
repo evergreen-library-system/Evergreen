@@ -469,7 +469,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.acp.edit_date().substr(0,10)'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2,
+			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2, 'sort_type' : 'title',
 			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
 		},
 		{
@@ -700,7 +700,7 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.usr()'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1, 'sort_type' : 'title',
 			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.title() : "No Title?"'
 		},
 		{

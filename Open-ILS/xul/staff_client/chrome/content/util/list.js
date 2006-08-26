@@ -843,9 +843,7 @@ util.list.prototype = {
 							var treeitem = treeitems[i];
 							var treerow = treeitem.firstChild;
 							var treecell = treerow.childNodes[ col_pos ];
-							//alert('treeitem = ' + treeitem.nodeName + ' treeitem.childNodes.length = ' + treeitem.childNodes.length + ' treerow = ' + treerow.nodeName + ' treerow.childNodes.length = ' + treerow.childNodes.length + ' col_pos = ' + col_pos + ' treecell = ' + treecell);
 							value = ( { 'value' : treecell ? treecell.getAttribute('label') : '', 'node' : treeitem } );
-							//alert('value = ' + value.value + ' node = ' + value.node);
 							rows.push( value );
 						}
 						rows = rows.sort( function(a,b) { 
@@ -858,6 +856,14 @@ util.list.prototype = {
 									case 'money' :
 										a = util.money.dollars_float_to_cents_integer(a);
 										b = util.money.dollars_float_to_cents_integer(b);
+									break;
+									case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
+										a = String( a ).toUpperCase().replace( /^(THE|A)\s+/, '' );
+										b = String( b ).toUpperCase().replace( /^(THE|A)\s+/, '' );
+									break;
+									default:
+										a = String( a ).toUpperCase();
+										b = String( a ).toUpperCase();
 									break;
 								}
 							}
