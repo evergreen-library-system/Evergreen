@@ -354,10 +354,16 @@ g.stash_and_close = function() {
 					copy.circ_lib(ou_id);
 					/* FIXME -- use constants */
 					copy.deposit(0);
+					copy.price(0);
+					copy.deposit_amount(0);
 					copy.fine_level(2);
 					copy.loan_duration(2);
 					copy.location(1);
 					copy.status(0);
+					copy.circulate(get_db_true());
+					copy.holdable(get_db_true());
+					copy.opac_visible(get_db_true());
+					copy.ref(get_db_false());
 					copies.push( copy );
 				}
 			}
