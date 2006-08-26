@@ -250,7 +250,8 @@ circ.in_house_use.prototype = {
 							'acp' : copy,
 							'uses' : result.length,
 						}
-					}
+					},
+					'to_top' : true,
 				//I could override map_row_to_column here
 				}
 			);

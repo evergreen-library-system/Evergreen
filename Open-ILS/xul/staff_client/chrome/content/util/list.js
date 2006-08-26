@@ -324,7 +324,15 @@ util.list.prototype = {
 
 		var treeitem = document.createElement('treeitem');
 		treeitem.setAttribute('retrieve_id',params.retrieve_id);
-		treechildren_node.appendChild( treeitem );
+		if (typeof params.to_top == 'undefined') {
+			treechildren_node.appendChild( treeitem );
+		} else {
+			if (treechildren_node.firstChild) {
+				treechildren_node.insertBefore( treeitem, treechildren_node.firstChild );
+			} else {
+				treechildren_node.appendChild( treeitem );
+			}
+		}
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 		treerow.setAttribute('retrieve_id',params.retrieve_id);

@@ -280,7 +280,8 @@ circ.checkin.prototype = {
 							'route_to' : checkin.route_to,
 							'message' : checkin.message,
 						}
-					}
+					},
+					'to_top' : true,
 				//I could override map_row_to_column here
 				}
 			);

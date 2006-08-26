@@ -268,7 +268,8 @@ circ.copy_status.prototype = {
 								'mvr' : my_mvr,
 								'acp' : copy,
 							}
-						}
+						},
+						'to_top' : true,
 					}
 				);
 				obj.controller.view.copy_status_barcode_entry_textbox.value = '';
