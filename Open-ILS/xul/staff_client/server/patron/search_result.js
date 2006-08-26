@@ -127,6 +127,16 @@ patron.search_result.prototype = {
 							}
 						}
 					],
+					'cmd_save_cols' : [
+						['command'],
+						function() {
+							try {
+								obj.list.save_columns();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('patron search saving columns',E);
+							}
+						}
+					],
 				}
 			}
 		);

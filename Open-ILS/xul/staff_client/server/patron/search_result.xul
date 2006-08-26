@@ -72,6 +72,7 @@
 		<command id="cmd_patron_info" />
 		<command id="cmd_search_print" />
 		<command id="cmd_sel_clip" disabled="true"/>
+		<command id="cmd_save_cols" />
 	</commandset>
 
 	<box id="patron_search_result_main" />
