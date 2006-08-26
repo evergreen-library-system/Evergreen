@@ -81,6 +81,11 @@
 						$('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
 						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+						var r = '';
+						if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
+						if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
+						if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
+						$('renewal').value = r || 'No';
 
 						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
 						$('copy_summary').hidden=false;

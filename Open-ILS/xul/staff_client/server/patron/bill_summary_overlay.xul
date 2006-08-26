@@ -44,8 +44,8 @@
 						<row>
 							<label class="header" value="Finish"/>
 							<label id="mbts_xact_finish"/>
-							<label/>
-							<label/>
+							<label class="header" value="Renewal?"/>
+							<label id="renewal"/>
 							<label class="header" id="checked_in_label" value="Checked In" hidden="true"/>
 							<label id="checked_in"/>
 						</row>
