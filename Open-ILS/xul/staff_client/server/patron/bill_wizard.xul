@@ -22,7 +22,7 @@
 
 <window id="patron_bill" title="Bill Patron Wizard"
 	orient="vertical" style="overflow: auto"
-	onload="patron_bill_init()" width="700" height="550"
+	onload="try { patron_bill_init(); font_helper(); } catch(E) { alert(E); }" width="700" height="550"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

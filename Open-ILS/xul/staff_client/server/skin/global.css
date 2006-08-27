@@ -5,6 +5,16 @@
 * { font-size-adjust: .5; }
 */
 
+.ALL_FONTS_SMALLER * { font-size-adjust: .3 !important;}
+.ALL_FONTS_LARGER * { font-size-adjust: 1.1 !important; }
+.ALL_FONTS_XX_SMALL * { font-size: xx-small !important; }
+.ALL_FONTS_X_SMALL * { font-size: x-small !important; }
+.ALL_FONTS_SMALL * { font-size: small !important; }
+.ALL_FONTS_MEDIUM * { font-size: medium !important; }
+.ALL_FONTS_LARGE * { font-size: large !important; }
+.ALL_FONTS_X_LARGE * { font-size: x-large !important; }
+.ALL_FONTS_XX_LARGE * { font-size: xx-large !important; }
+
 description { -moz-user-select: text; }
 
 *|textarea:focus { background-color: #DDFFDD; }

@@ -22,7 +22,7 @@
 <?xul-overlay href="/xul/server/patron/bill_summary_overlay.xul"?>
 
 <window id="bill_details_win" width="700" height="550"
-	onload="try{ my_init(); } catch(E) { alert(E); }"
+	onload="try{ my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

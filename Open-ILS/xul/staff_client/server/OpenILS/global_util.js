@@ -11,6 +11,24 @@
 		}
 	}
 
+	function font_helper() {
+		try {
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+			removeCSSClass(document.documentElement,'ALL_FONTS_LARGER');
+			removeCSSClass(document.documentElement,'ALL_FONTS_SMALLER');
+			removeCSSClass(document.documentElement,'ALL_FONTS_XX_SMALL');
+			removeCSSClass(document.documentElement,'ALL_FONTS_X_SMALL');
+			removeCSSClass(document.documentElement,'ALL_FONTS_SMALL');
+			removeCSSClass(document.documentElement,'ALL_FONTS_MEDIUM');
+			removeCSSClass(document.documentElement,'ALL_FONTS_LARGE');
+			removeCSSClass(document.documentElement,'ALL_FONTS_X_LARGE');
+			removeCSSClass(document.documentElement,'ALL_FONTS_XX_LARGE');
+			addCSSClass(document.documentElement,data.global_font_adjust);
+		} catch(E) {
+			alert("Error with adjusting the font size: " + E);
+		}
+	}
+
 	function get_bool(a) {
 		// Normal javascript interpretation except 'f' == false, per postgres, and 'F' == false
 		// So false includes 'f', '', 0, null, and undefined

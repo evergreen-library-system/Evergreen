@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/patron/items_overlay.xul"?>
 
 <window id="items_win" 
-	onload="my_init()"
+	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

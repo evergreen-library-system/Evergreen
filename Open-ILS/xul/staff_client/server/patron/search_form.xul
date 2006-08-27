@@ -21,7 +21,7 @@
 <?xul-overlay href="/xul/server/patron/search_form_overlay.xul"?>
 
 <window id="patron_search_form_win" 
-	onload="my_init()"
+	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

@@ -21,7 +21,7 @@
 
 <window id="patron_bill" title="CC Info"
 	orient="vertical" style="overflow: auto"
-	onload="try{info_init();}catch(E){alert(E);}"
+	onload="try{info_init(); font_helper();}catch(E){alert(E);}"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
