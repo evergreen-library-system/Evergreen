@@ -241,7 +241,20 @@ OpenILS.data.prototype = {
 		}
 		file.close();
 
-		JSAN.use('util.file');
+		JSAN.use('util.file'); var file = new util.file('global_font_adjust');
+		if (file._file.exists()) {
+			try {
+				var x = file.get_object();
+				if (x) {
+					obj.global_font_adjust = x;
+					obj.stash('global_font_adjust');
+				}
+			} catch(E) {
+				alert(E);
+			}
+		}
+		file.close();
+
 		JSAN.use('util.functional');
 		JSAN.use('util.fm_utils');
 

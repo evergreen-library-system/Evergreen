@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="font_settings_win" 
-	onload="try { my_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -48,25 +48,66 @@
 			}
 		}
 
+		function save() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				JSAN.use('util.file'); var file = new util.file('global_font_adjust');
+				file.set_object(g.data.global_font_adjust);
+				file.close();
+				alert('Global Font saved to file system.');
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
+			}
+		}
+
+		function adjust(my_class,my_msg) {
+			try {
+				g.data.global_font_adjust = my_class; g.data.stash('global_font_adjust');
+				alert(my_msg);
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('setting font in admin/font_settings.xul',E); } catch(F) { alert(E); }
+			}
+		}
+
 	]]>
 	</script>
 
 	<groupbox>
-		<caption label="Adjust Global Font Size"/>
+		<caption label="Adjust Global Font"/>
 		<hbox>
 			<vbox>
-				<button class="ALL_FONTS_LARGER" label="Larger than Default" oncommand="g.data.global_font_adjust = 'ALL_FONTS_LARGER'; g.data.stash('global_font_adjust'); alert('Global Font Adjust set to Larger than Default');"/>
-				<button class="ALL_FONTS_DEFAULT" label="Default" oncommand="g.data.global_font_adjust = 'ALL_FONTS_DEFAULT'; g.data.stash('global_font_adjust'); alert('Global Font Adjust set to Default');"/>
-				<button class="ALL_FONTS_SMALLER" label="Smaller than Default" oncommand="g.data.global_font_adjust = 'ALL_FONTS_SMALLER'; g.data.stash('global_font_adjust'); alert('Global Font Adjust set to Smaller than Default');"/>
+				<button class="ALL_FONTS_SMALLER" label="Smaller than Default" oncommand="adjust('ALL_FONTS_SMALLER','Global Font Adjust set to Smaller than Default');"/>
+				<button class="ALL_FONTS_DEFAULT" label="Default" oncommand="adjust('ALL_FONTS_DEFAULT','Global Font Adjust set to Default');"/>
+				<button class="ALL_FONTS_LARGER" label="Larger than Default" oncommand="adjust('ALL_FONTS_LARGER','Global Font Adjust set to Larger than Default');"/>
 			</vbox>
 			<vbox>
-				<button class="ALL_FONTS_XX_SMALL" label="XX-Small" oncommand="g.data.global_font_adjust = 'ALL_FONTS_XX_SMALL'; g.data.stash('global_font_adjust'); alert('Global Font set to XX-Small');"/>
-				<button class="ALL_FONTS_X_SMALL" label="X-Small" oncommand="g.data.global_font_adjust = 'ALL_FONTS_X_SMALL'; g.data.stash('global_font_adjust'); alert('Global Font set to X-Small');"/>
-				<button class="ALL_FONTS_SMALL" label="Small" oncommand="g.data.global_font_adjust = 'ALL_FONTS_SMALL'; g.data.stash('global_font_adjust'); alert('Global Font set to Small');"/>
-				<button class="ALL_FONTS_MEDIUM" label="Medium" oncommand="g.data.global_font_adjust = 'ALL_FONTS_MEDIUM'; g.data.stash('global_font_adjust'); alert('Global Font set to Medium');"/>
-				<button class="ALL_FONTS_LARGE" label="Large" oncommand="g.data.global_font_adjust = 'ALL_FONTS_LARGE'; g.data.stash('global_font_adjust'); alert('Global Font set to Large');"/>
-				<button class="ALL_FONTS_X_LARGE" label="X-Large" oncommand="g.data.global_font_adjust = 'ALL_FONTS_X_LARGE'; g.data.stash('global_font_adjust'); alert('Global Font set to X-Large');"/>
-				<button class="ALL_FONTS_XX_LARGE" label="XX-Large" oncommand="g.data.global_font_adjust = 'ALL_FONTS_XX_LARGE'; g.data.stash('global_font_adjust'); alert('Global Font set to XX-Large');"/>
+				<button class="ALL_FONTS_XX_SMALL" label="XX-Small" oncommand="adjust('ALL_FONTS_XX_SMALL','Global Font set to XX-Small');"/>
+				<button class="ALL_FONTS_X_SMALL" label="X-Small" oncommand="adjust('ALL_FONTS_X_SMALL','Global Font set to X-Small');"/>
+				<button class="ALL_FONTS_SMALL" label="Small" oncommand="adjust('ALL_FONTS_SMALL','Global Font set to Small');"/>
+				<button class="ALL_FONTS_MEDIUM" label="Medium" oncommand="adjust('ALL_FONTS_MEDIUM','Global Font set to Medium');"/>
+				<button class="ALL_FONTS_LARGE" label="Large" oncommand="adjust('ALL_FONTS_LARGE','Global Font set to Large');"/>
+				<button class="ALL_FONTS_X_LARGE" label="X-Large" oncommand="adjust('ALL_FONTS_X_LARGE','Global Font set to X-Large');"/>
+				<button class="ALL_FONTS_XX_LARGE" label="XX-Large" oncommand="adjust('ALL_FONTS_XX_LARGE','Global Font set to XX-Large');"/>
+			</vbox>
+			<vbox>
+				<button class="ALL_FONTS_5PT" label="5pt" oncommand="adjust('ALL_FONTS_5PT','Global Font set to 5pt');"/>
+				<button class="ALL_FONTS_6PT" label="6pt" oncommand="adjust('ALL_FONTS_6PT','Global Font set to 6pt');"/>
+				<button class="ALL_FONTS_7PT" label="7pt" oncommand="adjust('ALL_FONTS_7PT','Global Font set to 7pt');"/>
+				<button class="ALL_FONTS_8PT" label="8pt" oncommand="adjust('ALL_FONTS_8PT','Global Font set to 8pt');"/>
+				<button class="ALL_FONTS_9PT" label="9pt" oncommand="adjust('ALL_FONTS_9PT','Global Font set to 9pt');"/>
+				<button class="ALL_FONTS_10PT" label="10pt" oncommand="adjust('ALL_FONTS_10PT','Global Font set to 10pt');"/>
+				<button class="ALL_FONTS_11PT" label="11pt" oncommand="adjust('ALL_FONTS_11PT','Global Font set to 11pt');"/>
+				<button class="ALL_FONTS_12PT" label="12pt" oncommand="adjust('ALL_FONTS_12PT','Global Font set to 12pt');"/>
+				<button class="ALL_FONTS_13PT" label="13pt" oncommand="adjust('ALL_FONTS_13PT','Global Font set to 13pt');"/>
+				<button class="ALL_FONTS_14PT" label="14pt" oncommand="adjust('ALL_FONTS_14PT','Global Font set to 14pt');"/>
+				<button class="ALL_FONTS_15PT" label="15pt" oncommand="adjust('ALL_FONTS_15PT','Global Font set to 15pt');"/>
+				<button class="ALL_FONTS_16PT" label="16pt" oncommand="adjust('ALL_FONTS_16PT','Global Font set to 16pt');"/>
+				<button class="ALL_FONTS_17PT" label="17pt" oncommand="adjust('ALL_FONTS_17PT','Global Font set to 17pt');"/>
+				<button class="ALL_FONTS_18PT" label="18pt" oncommand="adjust('ALL_FONTS_18PT','Global Font set to 18pt');"/>
+			</vbox>
+			<vbox>
+				<button label="Restore Default" flex="1" oncommand="adjust('ALL_FONTS_DEFAULT','Global Font Adjust set to Default');"/>
+				<button label='Save to Disk' flex="1" oncommand="save();"/>
 			</vbox>
 		</hbox>
 	</groupbox>
