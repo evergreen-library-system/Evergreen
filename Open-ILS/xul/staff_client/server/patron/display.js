@@ -77,10 +77,9 @@ patron.display.prototype = {
 							if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {	
 									try {
-										var url = urls.XUL_PATRON_DISPLAY 
-											+ '?id=' + window.escape( obj.retrieve_ids[i] );
+										var url = urls.XUL_PATRON_DISPLAY; //+ '?id=' + window.escape( obj.retrieve_ids[i] );
 										window.xulG.new_tab(
-											url
+											url, {}, { 'id' : obj.retrieve_ids[i] }
 										);
 									} catch(E) {
 										alert(E);
@@ -310,12 +309,12 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
 			document.documentElement.setAttribute('class','');
-			var frame = obj.left_deck.set_iframe(
-				urls.XUL_PATRON_SUMMARY
-				+'?barcode=' + window.escape(obj.barcode) 
-				+'&id=' + window.escape(obj.id), 
+			var frame = obj.left_deck.reset_iframe(
+				urls.XUL_PATRON_SUMMARY,
 				{},
 				{
+					'barcode' : obj.barcode,
+					'id' : obj.id, 
 					'on_finished' : function(patron) {
 
 						obj.patron = patron; obj.controller.render();
@@ -477,8 +476,7 @@ patron.display.prototype = {
 									setTimeout(
 										function() {
 											var frame = obj.left_deck.set_iframe(
-												urls.XUL_PATRON_SUMMARY
-													+'?id=' + window.escape(list[0]), 
+												urls.XUL_PATRON_SUMMARY + '?id=' + window.escape(list[0]),
 													{},
 													{
 														'on_finished' : function(patron) {

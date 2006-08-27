@@ -318,8 +318,8 @@ main.menu.prototype = {
 						alert('No patron visited yet this session.');
 						return;
 					}
-					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( obj.data.last_patron ) );
-					obj.set_tab( url );
+					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY ); // + '?id=' + window.escape( obj.data.last_patron ) );
+					obj.set_tab( url, {}, { 'id' : obj.data.last_patron } );
 				}
 			],
 			

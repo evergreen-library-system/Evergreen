@@ -46,8 +46,8 @@
 
 				JSAN.use('patron.summary'); g.summary = new patron.summary();
 				g.summary.init( { 
-					'barcode' : g.cgi.param('barcode') , 
-					'id' : g.cgi.param('id') , 
+					'barcode' : g.cgi.param('barcode') || xulG.barcode, 
+					'id' : g.cgi.param('id')|| xulG.id, 
 					'show_name' : g.cgi.param('show_name'),
 				} );
 

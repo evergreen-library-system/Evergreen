@@ -47,10 +47,10 @@
 
 				JSAN.use('patron.display'); g.patron = new patron.display();
 				g.patron.init( { 
-					'barcode' : g.cgi.param('barcode') ,
-					'id' : g.cgi.param('id') ,
-					'query' : g.cgi.param('query'),
-					'doit' : g.cgi.param('doit'),
+					'barcode' : g.cgi.param('barcode') || xulG.barcode ,
+					'id' : g.cgi.param('id')  || xulG.id,
+					'query' : g.cgi.param('query') || xulG.query,
+					'doit' : g.cgi.param('doit') || xulG.doit,
 				} );
 
 			//document.documentElement.style.setProperty('font-size-adjust','1','important');

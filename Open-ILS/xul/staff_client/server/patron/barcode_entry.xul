@@ -96,14 +96,15 @@
 
 				sound.good();
 
-				var loc = urls.XUL_PATRON_DISPLAY + '?barcode=' + window.escape(barcode);
+				var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
 
-					window.xulG.set_tab( loc );
+					window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
 				} else {
 
-					location.href = loc;
+					location.href = loc + '?barcode=' + window.escape(barcode);
+;
 				}
 			} catch(E) {
 				tb.select(); tb.focus();
