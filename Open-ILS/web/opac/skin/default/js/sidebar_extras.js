@@ -77,7 +77,7 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 		var href = resultQuickLink( items[i], stype );
 		tree.addNode( stype + "_" + items[i], treeName + 'Root', item, href );
 
-		if( !IE ) resultFireXRefReq(treeName, stype, items[i]);
+//		if( !IE ) resultFireXRefReq(treeName, stype, items[i]);
 
 		var a = {};
 		a.type = stype;
@@ -87,11 +87,12 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 
 	if(found) {
 		unHideMe(wrapperNode);
-		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
+//		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
+		resultFireXRefBatch(treeName, xrefCache, stype);
 	}
 }
 
-/*
+/* XXX */
 function resultFireXRefBatch(treeName, xrefCache, stype) {
 	var query = [];
 	for( var i = 0; i != xrefCache.length; i++ ) {
@@ -106,7 +107,6 @@ function resultFireXRefBatch(treeName, xrefCache, stype) {
 	req.callback(resultRenderXRefTree);
 	req.send();
 }
-*/
 
 var xrefCacheIndex = {};
 xrefCacheIndex['subject'] = 0;
@@ -156,7 +156,7 @@ function resultQuickLink( term, type ) {
 	return buildOPACLink(args);
 }
 
-/*
+/* XXX */
 function resultRenderXRefTree(r) {
 	var tree = r._tree;
 	var res = r.getResultObject();
@@ -185,7 +185,6 @@ function resultRenderXRefTree(r) {
 		}
 	}
 }
-*/
 
 
 /* Addes the see-from/see-also entries for this subject item */
