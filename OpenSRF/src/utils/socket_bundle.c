@@ -455,16 +455,14 @@ int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
 
 		// If timeout is -1, we block indefinitely
 		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, NULL)) == -1 ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Sys Error: %s", strerror(errno));
-			osrfLogWarning( OSRF_LOG_MARK, "Call to select interrupted");
+			osrfLogWarning( OSRF_LOG_MARK, "Call to select() interrupted: Sys Error: %s", strerror(errno));
 			return -1;
 		}
 
 	} else if( timeout > 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( sock_fd + 1, &read_set, NULL, NULL, &tv)) == -1 ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Sys Error: %s", strerror(errno));
-			osrfLogWarning( OSRF_LOG_MARK,  "Call to select interrupted" );
+			osrfLogWarning( OSRF_LOG_MARK, "Call to select() interrupted: Sys Error: %s", strerror(errno));
 			return -1;
 		}
 	}
