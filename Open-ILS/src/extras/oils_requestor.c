@@ -82,7 +82,7 @@ int do_request( char* request ) {
 
 		jsonObject* params = NULL;
 		if(buffer->n_used > 0) 
-			params = jsonParseString("[%s]", buffer->buf);
+			params = jsonParseStringFmt("[%s]", buffer->buf);
 
 		osrfAppSession* session = osrf_app_client_session_init(service);
 		int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );

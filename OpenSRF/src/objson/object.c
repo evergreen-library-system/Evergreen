@@ -24,7 +24,21 @@ GNU General Public License for more details.
 
 char* __tabs(int count);
 
-jsonObject* jsonNewObject( const char* stringValue, ... ) { 
+jsonObject* jsonNewObject( const char* stringValue ) { 
+
+	jsonObject* obj	= (jsonObject*) safe_malloc(sizeof(jsonObject));
+	obj->size			= 0;
+	obj->type = JSON_NULL;
+
+	if(stringValue) {
+		obj->type = JSON_STRING;
+		obj->value.s = strdup(stringValue);
+	}
+
+	return obj;
+}
+
+jsonObject* jsonNewObjectFmt( const char* stringValue, ... ) { 
 
 	jsonObject* obj	= (jsonObject*) safe_malloc(sizeof(jsonObject));
 	obj->size			= 0;

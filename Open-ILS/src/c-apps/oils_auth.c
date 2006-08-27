@@ -287,13 +287,13 @@ oilsEvent* oilsAuthHandleLoginOK(
 	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in: %s", uname, authToken );
 
 	oilsFMSetString( userObj, "passwd", "" );
-	jsonObject* cacheObj = jsonParseString("{\"authtime\": %lf}", timeout);
+	jsonObject* cacheObj = jsonParseStringFmt("{\"authtime\": %lf}", timeout);
 	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
 
 	osrfCachePutObject( authKey, cacheObj, timeout ); 
 	jsonObjectFree(cacheObj);
 	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthComplete(): Placed user object into cache");
-	jsonObject* payload = jsonParseString(
+	jsonObject* payload = jsonParseStringFmt(
 		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
 
 	response = oilsNewEvent2( OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload );
@@ -324,7 +324,7 @@ static oilsEvent* oilsAuthCheckCard( osrfMethodContext* ctx, jsonObject* userObj
 	if(!(ctx && userObj && barcode)) return NULL;
 	osrfLogDebug(OSRF_LOG_MARK, "Checking to see if barcode %s is active", barcode);
 
-	jsonObject* params = jsonParseString("{\"barcode\":\"%s\"}", barcode);
+	jsonObject* params = jsonParseStringFmt("{\"barcode\":\"%s\"}", barcode);
 	jsonObject* card = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 

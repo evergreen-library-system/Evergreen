@@ -52,7 +52,7 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 	for( i = 0; i != size && permissions[i]; i++ ) {
 
 		char* perm = permissions[i];
-		jsonObject* params = jsonParseString("[%d, \"%s\", %d]", userid, perm, orgid);
+		jsonObject* params = jsonParseStringFmt("[%d, \"%s\", %d]", userid, perm, orgid);
 		jsonObject* o = oilsUtilsQuickReq( "open-ils.storage", 
 			"open-ils.storage.permission.user_has_perm", params );
 
@@ -95,7 +95,7 @@ jsonObject* oilsUtilsCStoreReq( char* method, jsonObject* params ) {
 
 jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
 	if(!name) return NULL;
-	jsonObject* params = jsonParseString("{\"usrname\":\"%s\"}", name);
+	jsonObject* params = jsonParseStringFmt("{\"usrname\":\"%s\"}", name);
 	jsonObject* user = oilsUtilsQuickReq( 
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.search", params );
 
@@ -110,7 +110,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
 
-	jsonObject* params = jsonParseString("{\"barcode\":\"%s\"}", barcode);
+	jsonObject* params = jsonParseStringFmt("{\"barcode\":\"%s\"}", barcode);
 	jsonObject* card = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.card.search", params );
 
@@ -122,7 +122,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 	free(usr);
 
 	jsonObjectFree(params);
-	params = jsonParseString("[%lf]", iusr);
+	params = jsonParseStringFmt("[%lf]", iusr);
 	jsonObject* user = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
 
@@ -133,7 +133,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
 	if(!setting) return NULL;
 
-	jsonObject* params = jsonParseString(
+	jsonObject* params = jsonParseStringFmt(
 			"[{ \"org_unit\": %d, \"name\":\"%s\" }]", orgid, setting );
 
 	jsonObject* set = oilsUtilsQuickReq(
@@ -156,7 +156,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 	osrfLogDebug(OSRF_LOG_MARK, "Logging in with username %s", uname );
 	char* token = NULL;
 
-	jsonObject* params = jsonParseString("[\"%s\"]", uname);
+	jsonObject* params = jsonParseStringFmt("[\"%s\"]", uname);
 
 	jsonObject* o = oilsUtilsQuickReq( 
 		"open-ils.auth", "open-ils.auth.authenticate.init", params );
@@ -172,7 +172,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 	jsonObjectFree(params);
 	free(passhash);
 
-	params = jsonParseString( "[\"%s\", \"%s\", \"%s\", \"%d\"]", uname, fullhash, type, orgId );
+	params = jsonParseStringFmt( "[\"%s\", \"%s\", \"%s\", \"%d\"]", uname, fullhash, type, orgId );
 	o = oilsUtilsQuickReq( "open-ils.auth",
 		"open-ils.auth.authenticate.complete", params );
 
@@ -191,7 +191,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 
 
 jsonObject* oilsUtilsFetchWorkstation( long id ) {
-	jsonObject* p = jsonParseString("[%ld]", id);
+	jsonObject* p = jsonParseStringFmt("[%ld]", id);
 	jsonObject* r = oilsUtilsQuickReq(
 		"open-ils.storage", 
 		"open-ils.storage.direct.actor.workstation.retrieve", p );
@@ -200,7 +200,7 @@ jsonObject* oilsUtilsFetchWorkstation( long id ) {
 }
 
 jsonObject* oilsUtilsFetchWorkstationByName( char* name ) {
-	jsonObject* p = jsonParseString("[\"%s\"]", name);
+	jsonObject* p = jsonParseStringFmt("[\"%s\"]", name);
 	jsonObject* r = oilsUtilsStorageReq(
 		"open-ils.storage.direct.actor.workstation.search.name", p );
 	jsonObjectFree(p);

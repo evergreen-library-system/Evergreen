@@ -22,10 +22,16 @@ GNU General Public License for more details.
 int current_strlen; /* XXX need to move this into the function params for thread support */
 
 
-jsonObject* jsonParseString( char* string, ... ) {
+jsonObject* jsonParseString( char* string) {
+	return json_parse_string( string );
+}
+
+jsonObject* jsonParseStringFmt( char* string, ... ) {
 	VA_LIST_TO_STRING(string);
 	return json_parse_string( VA_BUF );
 }
+
+
 
 //jsonObject* (*jsonParseString) (char* str) = &_jsonParseString;
 
@@ -40,12 +46,12 @@ jsonObject* json_parse_string(char* string) {
 
 	unsigned long index = 0;
 
-	json_eat_ws(string, &index, 1); /* remove leading whitespace */
+	json_eat_ws(string, &index, 1, current_strlen); /* remove leading whitespace */
 	if(index == current_strlen) return NULL;
 
 	jsonObject* obj = jsonNewObject(NULL);
 
-	int status = _json_parse_string(string, &index, obj);
+	int status = _json_parse_string(string, &index, obj, current_strlen);
 	if(!status) return obj;
 
 	if(status == -2) {
@@ -57,12 +63,12 @@ jsonObject* json_parse_string(char* string) {
 }
 
 
-int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
+int _json_parse_string(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 	if( !string || !index || *index >= current_strlen) return -2;
 
 	int status = 0; /* return code from parsing routines */
 	char* classname = NULL; /* object class hint */
-	json_eat_ws(string, index, 1); /* remove leading whitespace */
+	json_eat_ws(string, index, 1, current_strlen); /* remove leading whitespace */
 
 	char c = string[*index];
 
@@ -71,17 +77,17 @@ int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
 
 		while(1) {
 			(*index)++; /* move to second comment char */
-			status = json_eat_comment(string, index, &classname, 1);
+			status = json_eat_comment(string, index, &classname, 1, current_strlen);
 			if(status) return status;
 
-			json_eat_ws(string, index, 1);
+			json_eat_ws(string, index, 1, current_strlen);
 			c = string[*index];
 			if(c != '/')
 				break;
 		}
 	}
 
-	json_eat_ws(string, index, 1); /* remove leading whitespace */
+	json_eat_ws(string, index, 1, current_strlen); /* remove leading whitespace */
 
 	if(*index >= current_strlen)
 		return -2;
@@ -91,25 +97,24 @@ int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
 		/* json string */
 		case '"': 
 			(*index)++;
-			status = json_parse_json_string(string, index, obj);
-			break;
+			status = json_parse_json_string(string, index, obj, current_strlen); break;
 
 		/* json array */
 		case '[':
 			(*index)++;
-			status = json_parse_json_array(string, index, obj);			
+			status = json_parse_json_array(string, index, obj, current_strlen);			
 			break;
 
 		/* json object */
 		case '{':
 			(*index)++;
-			status = json_parse_json_object(string, index, obj);
+			status = json_parse_json_object(string, index, obj, current_strlen);
 			break;
 
 		/* NULL */
 		case 'n':
 		case 'N':
-			status = json_parse_json_null(string, index, obj);
+			status = json_parse_json_null(string, index, obj, current_strlen);
 			break;
 			
 
@@ -118,12 +123,12 @@ int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
 		case 'F':
 		case 't':
 		case 'T':
-			status = json_parse_json_bool(string, index, obj);
+			status = json_parse_json_bool(string, index, obj, current_strlen);
 			break;
 
 		default:
 			if(is_number(c) || c == '.' || c == '-') { /* are we a number? */
-				status = json_parse_json_number(string, index, obj);	
+				status = json_parse_json_number(string, index, obj, current_strlen);	
 				if(status) return status;
 				break;
 			}
@@ -135,14 +140,14 @@ int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
 
 	if(status) return status;
 
-	json_eat_ws(string, index, 1);
+	json_eat_ws(string, index, 1, current_strlen);
 
 	if( *index < current_strlen ) {
 		/* remove any trailing comments */
 		c = string[*index];
 		if( c == '/' ) { 
 			(*index)++;
-			status = json_eat_comment(string, index, NULL, 0);
+			status = json_eat_comment(string, index, NULL, 0, current_strlen);
 			if(status) return status;
 		}
 	}
@@ -156,7 +161,7 @@ int _json_parse_string(char* string, unsigned long* index, jsonObject* obj) {
 }
 
 
-int json_parse_json_null(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_null(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 
 	if(*index >= (current_strlen - 3)) {
 		return json_handle_error(string, index, 
@@ -174,7 +179,7 @@ int json_parse_json_null(char* string, unsigned long* index, jsonObject* obj) {
 }
 
 /* should be at the first character of the bool at this point */
-int json_parse_json_bool(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_bool(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 	if( ! string || ! obj || *index >= current_strlen ) return -1;
 
 	char* ret = "json_parse_json_bool(): truncated bool";
@@ -204,7 +209,7 @@ int json_parse_json_bool(char* string, unsigned long* index, jsonObject* obj) {
 
 
 /* expecting the first character of the number */
-int json_parse_json_number(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_number(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 	if( ! string || ! obj || *index >= current_strlen ) return -1;
 
 	growing_buffer* buf = buffer_init(64);
@@ -250,7 +255,7 @@ int json_parse_json_number(char* string, unsigned long* index, jsonObject* obj) 
 /* index should point to the character directly following the '['.  when done
  * index will point to the character directly following the ']' character
  */
-int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 
 	if( ! string || ! obj || ! index || *index >= current_strlen ) return -1;
 
@@ -262,7 +267,7 @@ int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
 
 	while(*index < current_strlen) {
 
-		json_eat_ws(string, index, 1);
+		json_eat_ws(string, index, 1, current_strlen);
 
 		if(string[*index] == ']') {
 			(*index)++;
@@ -271,13 +276,13 @@ int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
 		}
 
 		if(in_parse) {
-			json_eat_ws(string, index, 1);
+			json_eat_ws(string, index, 1, current_strlen);
 			if(string[*index] != ',') {
 				return json_handle_error(string, index,
 					"json_parse_json_array(): array item not followed by a ','");
 			}
 			(*index)++;
-			json_eat_ws(string, index, 1);
+			json_eat_ws(string, index, 1, current_strlen);
 		}
 
 		jsonObject* item = jsonNewObject(NULL);
@@ -289,10 +294,10 @@ int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
 				set = 1;
 			}
 		}
-		if(!set) status = _json_parse_string(string, index, item);
+		if(!set) status = _json_parse_string(string, index, item, current_strlen);
 
 		#else
-		status = _json_parse_string(string, index, item);
+		status = _json_parse_string(string, index, item, current_strlen);
 		#endif
 
 		if(status) { jsonObjectFree(item); return status; }
@@ -312,7 +317,7 @@ int json_parse_json_array(char* string, unsigned long* index, jsonObject* obj) {
 /* index should point to the character directly following the '{'.  when done
  * index will point to the character directly following the '}'
  */
-int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 	if( ! string || !obj || ! index || *index >= current_strlen ) return -1;
 
 	obj->type = JSON_HASH;
@@ -323,7 +328,7 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 
 	while(*index < current_strlen) {
 
-		json_eat_ws(string, index, 1);
+		json_eat_ws(string, index, 1, current_strlen);
 
 		if(string[*index] == '}') {
 			(*index)++;
@@ -337,12 +342,12 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 					"json_parse_json_object(): object missing ',' between elements" );
 			}
 			(*index)++;
-			json_eat_ws(string, index, 1);
+			json_eat_ws(string, index, 1, current_strlen);
 		}
 
 		/* first we grab the hash key */
 		jsonObject* key_obj = jsonNewObject(NULL);
-		status = _json_parse_string(string, index, key_obj);
+		status = _json_parse_string(string, index, key_obj, current_strlen);
 		if(status) return status;
 
 		if(key_obj->type != JSON_STRING) {
@@ -352,7 +357,7 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 
 		char* key = key_obj->value.s;
 
-		json_eat_ws(string, index, 1);
+		json_eat_ws(string, index, 1, current_strlen);
 
 		if(string[*index] != ':') {
 			return json_handle_error(string, index, 
@@ -362,7 +367,7 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 		(*index)++;
 
 		/* now grab the value object */
-		json_eat_ws(string, index, 1);
+		json_eat_ws(string, index, 1, current_strlen);
 		jsonObject* value_obj = jsonNewObject(NULL);
 
 #ifndef STRICT_JSON_READ
@@ -373,10 +378,10 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 			}
 		}
 		if(!set)
-			status = _json_parse_string(string, index, value_obj);
+			status = _json_parse_string(string, index, value_obj, current_strlen);
 
 #else
-		 status = _json_parse_string(string, index, value_obj);
+		 status = _json_parse_string(string, index, value_obj, current_strlen);
 #endif
 
 		if(status) return status;
@@ -398,7 +403,7 @@ int json_parse_json_object(char* string, unsigned long* index, jsonObject* obj) 
 
 
 /* when done, index will point to the character after the closing quote */
-int json_parse_json_string(char* string, unsigned long* index, jsonObject* obj) {
+int json_parse_json_string(char* string, unsigned long* index, jsonObject* obj, int current_strlen) {
 	if( ! string || ! index || *index >= current_strlen ) return -1;
 
 	int in_escape = 0;	
@@ -538,7 +543,7 @@ int json_parse_json_string(char* string, unsigned long* index, jsonObject* obj) 
 }
 
 
-void json_eat_ws(char* string, unsigned long* index, int eat_all) {
+void json_eat_ws(char* string, unsigned long* index, int eat_all, int current_strlen) {
 	if( ! string || ! index ) return;
 	if(*index >= current_strlen)
 		return;
@@ -558,7 +563,7 @@ void json_eat_ws(char* string, unsigned long* index, int eat_all) {
 /* index should be at the '*' character at the beginning of the comment.
  * when done, index will point to the first character after the final /
  */
-int json_eat_comment(char* string, unsigned long* index, char** buffer, int parse_class) {
+int json_eat_comment(char* string, unsigned long* index, char** buffer, int parse_class, int current_strlen) {
 	if( ! string || ! index || *index >= current_strlen ) return -1;
 	
 
@@ -633,7 +638,7 @@ int json_eat_comment(char* string, unsigned long* index, char** buffer, int pars
 				on_star = 0;
 				if(second_dash && !in_hint) {
 					(*index)++;
-					json_eat_ws(string, index, 1);
+					json_eat_ws(string, index, 1, current_strlen);
 					(*index)--; /* this will get incremented at the bottom of the loop */
 					in_hint = 1;
 					break;
@@ -648,7 +653,7 @@ int json_eat_comment(char* string, unsigned long* index, char** buffer, int pars
 				on_star = 0;
 				if(second_dash && !in_hint) {
 					(*index)++;
-					json_eat_ws(string, index, 1);
+					json_eat_ws(string, index, 1, current_strlen);
 					(*index)--; /* this will get incremented at the bottom of the loop */
 					in_hint = 1;
 					break;
@@ -716,8 +721,8 @@ int json_handle_error(char* string, unsigned long* index, char* err_msg) {
 
 	fprintf(stderr, 
 			"\nError parsing json string at charracter %c "
-			"(code %d) and index %ld\nMsg:\t%s\nNear:\t%s\n\n", 
-			string[*index], string[*index], *index, err_msg, buf );
+			"(code %d) and index %ld\nString length: %d\nMsg:\t%s\nNear:\t%s\n\nFull String:\n%s\n\n", 
+			string[*index], string[*index], *index, current_strlen, err_msg, buf, string );
 
 	return -1;
 }
