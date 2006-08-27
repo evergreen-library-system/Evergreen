@@ -16,7 +16,7 @@
 <?xul-overlay href="chrome://open_ils_staff_client/content/OpenILS/util_overlay.xul"?>
 
 <window id="util_browser_win" 
-	onload="my_init()"
+	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

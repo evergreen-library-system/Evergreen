@@ -20,7 +20,7 @@
 
 <window id="pre_cat_fields" title="Pre-Cat Fields"
 	orient="vertical" style="overflow: auto"
-	onload="try{my_init();}catch(E){alert(E);}"
+	onload="try{my_init();font_helper(); }catch(E){alert(E);}"
 	onunload="try{my_finish();}catch(E){alert(E);}"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
