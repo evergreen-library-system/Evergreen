@@ -19,6 +19,7 @@
 		$self = bless {} => $self;
 
 		$term =~ s/(\pM+)//gos;
+		$term =~ s/(\b\.\b)//gos;
 		$self->decompose($term);
 
 		my $newterm = '';
