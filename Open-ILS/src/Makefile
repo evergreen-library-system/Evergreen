@@ -70,6 +70,7 @@ webcore-install:
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/advanced.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/myopac.xml
+	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
 	cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/opac/common/js/
 	cp ../xsl/*.xsl $(WEBDIR)/opac/extras/xsl/
 
@@ -112,12 +113,14 @@ perl-install:
 	@echo "Installing Perl modules to $(PERLDIR)"
 	mkdir -p $(PERLDIR)
 	mkdir -p $(DATADIR)
+	mkdir -p $(BINDIR)
 	cp extras/ils_events.xml $(DATADIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/openils.xml.example $(ETCDIR)
 	cp ../examples/fm_IDL.xml $(ETCDIR)
 	cp ../examples/oils_sip.xml.example $(ETCDIR)
 	cp ../examples/hold_notification_template.example $(DATADIR)
+	cp ../examples/oils_ctl.sh $(BINDIR)
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
