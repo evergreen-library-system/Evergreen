@@ -249,6 +249,7 @@ patron.items.prototype = {
 							'overridable_events' : [ 
 								1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 								1213 /* PATRON_BARRED */,
+								1215 /* CIRC_EXCEEDS_COPY_RANGE */,
 								7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
 								7003 /* COPY_CIRC_NOT_ALLOWED */,
 								7004 /* COPY_NOT_AVAILABLE */,
@@ -277,6 +278,7 @@ patron.items.prototype = {
 							case 5000 /* PERM_FAILURE */: break;
 							case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
 							case 1213 /* PATRON_BARRED */ : break;
+							case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
 							case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 							case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
 							case 7004 /* COPY_NOT_AVAILABLE */ : break;
