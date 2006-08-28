@@ -260,7 +260,7 @@ double oilsAuthGetTimeout( jsonObject* userObj, char* type, double orgloc ) {
  * Event must be freed
  */
 oilsEvent* oilsAuthHandleLoginOK( 
-		jsonObject* userObj, char* uname, char* type, double orgloc ) { 
+		jsonObject* userObj, char* uname, char* type, double orgloc, char* workstation ) { 
 		
 	oilsEvent* response;
 
@@ -284,7 +284,9 @@ oilsEvent* oilsAuthHandleLoginOK(
 	char* authKey = va_list_to_string( 
 			"%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 
 
-	osrfLogActivity(OSRF_LOG_MARK,  "User %s successfully logged in: %s", uname, authToken );
+	char* ws = (workstation) ? workstation : "";
+	osrfLogActivity(OSRF_LOG_MARK,  
+		"successful login: username=%s, authtoken=%s, workstation=%s", uname, authToken, ws );
 
 	oilsFMSetString( userObj, "passwd", "" );
 	jsonObject* cacheObj = jsonParseStringFmt("{\"authtime\": %lf}", timeout);
@@ -353,6 +355,8 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	char* workstation		= jsonObjectGetString(jsonObjectGetKey(args, "workstation"));
 	char* barcode			= jsonObjectToSimpleString(jsonObjectGetKey(args, "barcode"));
 
+	char* ws = (workstation) ? workstation : "";
+
 
 	if(!type) type = OILS_AUTH_STAFF;
 
@@ -370,6 +374,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	
 	if(!userObj) { 
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
+		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s", uname, barcode, ws );
 		osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 		oilsEventFree(response);
 		free(barcode);
@@ -435,18 +440,26 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 		free(orgid);
 	}
 
+	int freeuname = 0;
+	if(!uname) {
+		uname = oilsFMGetString( userObj, "usrname" ); 
+		freeuname = 1;
+	}
+
 	if( passOK ) {
-		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc );
+		response = oilsAuthHandleLoginOK( userObj, uname, type, orgloc, workstation );
 
 	} else {
 		response = oilsNewEvent( OSRF_LOG_MARK, OILS_EVENT_AUTH_FAILED );
-		osrfLogInfo(OSRF_LOG_MARK,  "Login failed for for %s", uname );
+		osrfLogInfo(OSRF_LOG_MARK,  "failed login: username=%s, barcode=%s, workstation=%s", uname, barcode, ws );
 	}
 
 	jsonObjectFree(userObj);
 	osrfAppRespondComplete( ctx, oilsEventToJSON(response) ); 
 	oilsEventFree(response);
 	free(barcode);
+
+	if(freeuname) free(uname);
 
 	return 0;
 }
