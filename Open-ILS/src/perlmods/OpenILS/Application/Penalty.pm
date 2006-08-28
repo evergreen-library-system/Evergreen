@@ -33,12 +33,14 @@ sub initialize {
 	$path		= $conf->config_value( @pfx, 'script_path');
 	$script	= $conf->config_value( @pfx, 'patron_penalty' );
 
+	$path = (ref($path)) ? $path : [$path];
+
 	if(!($path and $script)) {
 		$logger->error("penalty:  server config missing script and/or script path");
 		return 0;
 	}
 
-	$logger->info("penalty: Loading patron penalty script $script with path $path");
+	$logger->info("penalty: Loading patron penalty script $script with paths @$path");
 }
 
 
@@ -83,7 +85,7 @@ sub patron_penalty {
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
 
 	# - Load up the script and run it
-	$runner->add_path($path);
+	$runner->add_path($_) for @$path;
 
 	$runner->load($script);
 	my $result = $runner->run or throw OpenSRF::EX::ERROR ("Patron Penalty Script Died: $@");
@@ -108,6 +110,7 @@ sub patron_penalty {
 	$logger->error("penalty: Error updating the patron ".
 		"penalties in the database: ".Dumper($evt)) if $evt;
 
+	$runner->cleanup;
 	return undef;
 }
 
