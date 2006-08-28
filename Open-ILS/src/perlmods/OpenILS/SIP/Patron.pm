@@ -209,6 +209,8 @@ sub screen_msg {
 	return 'barred' if $u->barred eq 't';
 
 	my $b = 'blocked';
+
+	return $b if $u->active eq 'f';
 	return $b if $u->card->active eq 'f';
 
 	if( $u->standing_penalties ) {
