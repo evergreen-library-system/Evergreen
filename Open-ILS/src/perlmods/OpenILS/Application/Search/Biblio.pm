@@ -313,6 +313,30 @@ sub fleshed_copy_retrieve2 {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'flesh_copy_custom',
+	api_name => 'open-ils.search.asset.copy.fleshed.custom'
+);
+
+sub flesh_copy_custom {
+	my( $self, $conn, $copyid, $fields ) = @_;
+	my $e = new_editor();
+	my $copy = $e->retrieve_asset_copy(
+		[
+			$copyid,
+			{ 
+				flesh				=> 1,
+				flesh_fields	=> { 
+					acp => $fields,
+				}
+			}
+		]
+	) or return $e->event;
+	return $copy;
+}
+
+
+
 
 
 
