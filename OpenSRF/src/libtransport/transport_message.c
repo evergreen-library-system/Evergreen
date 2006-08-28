@@ -236,7 +236,7 @@ int message_free( transport_message* msg ){
 char* message_to_xml( const transport_message* msg ) {
 
 	int			bufsize;
-	xmlChar*		xmlbuf;
+	//xmlChar*		xmlbuf;
 	char*			encoded_body;
 
 	xmlNodePtr	message_node;
@@ -266,7 +266,6 @@ char* message_to_xml( const transport_message* msg ) {
 		sprintf(code_buf, "%d", msg->error_code );
 		xmlNewProp( error_node, BAD_CAST "code", BAD_CAST code_buf  );
 	}
-	
 
 	/* set from and to */
 	xmlNewProp( message_node, BAD_CAST "to", BAD_CAST msg->recipient );
@@ -286,7 +285,6 @@ char* message_to_xml( const transport_message* msg ) {
 
 	if( thread && strlen(thread) > 0 ) {
 		thread_node = xmlNewChild(message_node, NULL, (xmlChar*) "thread", NULL );
-//		xmlNewTextChild(thread_node, NULL, NULL,  );
 		xmlNodePtr txt = xmlNewText((xmlChar*) thread);
 		xmlAddChild(thread_node, txt);
 		xmlAddChild(message_node, thread_node); 
@@ -294,7 +292,6 @@ char* message_to_xml( const transport_message* msg ) {
 
 	if( subject && strlen(subject) > 0 ) {
 		subject_node = xmlNewChild(message_node, NULL, (xmlChar*) "subject", NULL );
-		//xmlNewTextChild(subject_node, NULL, NULL, (xmlChar*) subject );
 		xmlNodePtr txt = xmlNewText((xmlChar*) subject);
 		xmlAddChild(subject_node, txt);
 		xmlAddChild( message_node, subject_node ); 
@@ -302,52 +299,16 @@ char* message_to_xml( const transport_message* msg ) {
 
 	if( body && strlen(body) > 0 ) {
 		body_node = xmlNewChild(message_node, NULL, (xmlChar*) "body", NULL);
-		//xmlNewTextChild(body_node, NULL, NULL, (xmlChar*) body );
 		xmlNodePtr txt = xmlNewText((xmlChar*) body);
 		xmlAddChild(body_node, txt);
 		xmlAddChild( message_node, body_node ); 
 	}
 
-	xmlDocDumpMemoryEnc( doc, &xmlbuf, &bufsize, "UTF-8" );
-
-	encoded_body = strdup( (char*) xmlbuf );
-
-	if( encoded_body == NULL ) {
-		osrfLogError(OSRF_LOG_MARK, "message_to_xml(): Out of Memory");
-		return NULL;
-	}
-
-	xmlFree(xmlbuf);
-	xmlFreeDoc( doc );
-	xmlCleanupParser();
-
-
-	/*** remove the XML declaration */
-	int len = strlen(encoded_body);
-	char tmp[len];
-	memset( tmp, 0, len );
-	int i;
-	int found_at = 0;
-
-	/* when we reach the first >, take everything after it */
-	for( i = 0; i!= len; i++ ) {
-		if( encoded_body[i] == 62) { /* ascii > */
-
-			/* found_at holds the starting index of the rest of the doc*/
-			found_at = i + 1; 
-			break;
-		}
-	}
-
-	if( found_at ) {
-		/* move the shortened doc into the tmp buffer */
-		strncpy( tmp, encoded_body + found_at, len - found_at );
-		/* move the tmp buffer back into the allocated space */
-		memset( encoded_body, 0, len );
-		strcpy( encoded_body, tmp );
-	}
-
-	return encoded_body;
+	xmlBufferPtr xmlbuf = xmlBufferCreate();
+	xmlNodeDump( xmlbuf, doc, xmlDocGetRootElement(doc), 0, 0);
+	char* xml = strdup((char*) (xmlBufferContent(xmlbuf)));
+	xmlBufferFree(xmlbuf);
+	return xml;
 }
 
 
