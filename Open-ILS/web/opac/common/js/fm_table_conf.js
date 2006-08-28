@@ -51,14 +51,9 @@ var FM_TABLE_DISPLAY = {
 		fields : [
 			'card',
 			'email',
-			'prefix',
 			'first_given_name',
-			'second_given_name',
 			'family_name',
-			'suffix',
-			'day_phone',
 			'home_ou',
-			'dob'
 		]
 	},
 	aws : {

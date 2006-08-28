@@ -489,9 +489,12 @@ sub desk_payments {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_TRANSACTION', $org);
-	return $U->storagereq(
+	my $data = $U->storagereq(
 		'open-ils.storage.money.org_unit.desk_payments.atomic',
 		$org, $start_date, $end_date );
+
+	$_->workstation( $_->workstation->name ) for(@$data);
+	return $data;
 }
 
 
@@ -505,9 +508,16 @@ sub user_payments {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_TRANSACTION', $org);
-	return $U->storagereq(
+	my $data = $U->storagereq(
 		'open-ils.storage.money.org_unit.user_payments.atomic',
 		$org, $start_date, $end_date );
+	for(@$data) {
+		$_->usr->card(
+			$e->retrieve_actor_card($_->usr->card)->barcode);
+		$_->usr->home_ou(
+			$e->retrieve_actor_org_unit($_->usr->home_ou)->shortname);
+	}
+	return $data;
 }
 
 
