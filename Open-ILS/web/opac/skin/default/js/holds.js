@@ -532,14 +532,16 @@ function holdsSetSelectedFormats() {
 }
 
 
-function holdsCheckPossibility(pickuplib) {
+function holdsCheckPossibility(pickuplib, hold, recurse) {
 	var rec = holdArgs.record;
 	var type = holdArgs.type;
 	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, 
 			{ titleid : rec, patronid : G.user.id(), depth : 0, pickup_lib : pickuplib } );
 	req.request.alertEvent = false;
-	req.send(true);
-	return req.result();
+	req.request._hold = hold;
+	req.request._recurse = recurse;
+	req.callback(holdHandleCreateResponse);
+	req.send();
 }
 
 
@@ -644,7 +646,9 @@ function holdsPlaceHold(hold, recurse) {
 	swapCanvas($('check_holds_box'));
 
 	if( holdArgs.type == 'M' || holdArgs.type == 'T' ) {
-		var res = holdsCheckPossibility(hold.pickup_lib());
+		var res = holdsCheckPossibility(hold.pickup_lib(), hold, recurse);
+
+		/*
 		if(!res || checkILSEvent(res) ) {
 			if(!res) {
 				alert($('hold_not_allowed').innerHTML);
@@ -658,11 +662,38 @@ function holdsPlaceHold(hold, recurse) {
 			swapCanvas($('holds_box'));
 			return;
 		}
-	}
+		*/
 
+	} else {
+		holdCreateHold(recurse, hold);
+	}
+}
+
+
+function holdHandleCreateResponse(r) {
+	var res = r.getResultObject();
+	if(!res || checkILSEvent(res) ) {
+		if(!res) {
+			alert($('hold_not_allowed').innerHTML);
+		} else {
+			if( res.textcode == 'PATRON_BARRED' ) {
+				alertId('hold_failed_patron_barred');
+			} else {
+				alert($('hold_not_allowed').innerHTML);
+			}
+		}
+		swapCanvas($('holds_box'));
+		return;
+	}
+	
+	alert(js2JSON(res));
+	holdCreateHold(r._recurse, r._hold);
+}
+
+
+function holdCreateHold( recurse, hold ) {
 	var method = CREATE_HOLD;
 	if(recurse) method = CREATE_HOLD_OVERRIDE;
-
 	var req = new Request( method, holdArgs.requestor.session, hold );
 	req.request.alertEvent = false;
 	req.send(true);
@@ -674,6 +705,7 @@ function holdsPlaceHold(hold, recurse) {
 	holdArgs = null;
 	runEvt('common', 'holdUpdated');
 }
+
 
 function holdProcessResult( hold, res, recurse ) {
 
