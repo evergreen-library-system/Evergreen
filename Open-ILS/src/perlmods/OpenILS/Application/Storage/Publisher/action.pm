@@ -439,6 +439,7 @@ sub generate_fines {
 	my $client = shift;
 	my $grace = shift;
 	my $circ = shift;
+	my $overbill = shift;
 
 	local $OpenILS::Application::Storage::WRITE = 1;
 
@@ -475,10 +476,19 @@ sub generate_fines {
 				" (user ".$c->usr.").\n".
 				"\tItem was due on or before: ".localtime($due)."\n");
 	
-			my ($fine) = money::billing->search(
-				xact => $c->id, voided => 'f',
-				{ order_by => 'billing_ts DESC', limit => '1' }
+			my @fines = money::billing->search_where(
+				{ xact => $c->id, billing_type => 'Overdue materials' },
+				{ order_by => 'billing_ts DESC'}
 			);
+
+			my $f_idx = 0;
+			my $fine = $fines[$f_idx] if (@fines);
+			if ($overbill) {
+				$fine = $fines[++$f_idx] while ($fine and $fine->voided);
+			}
+
+			my $current_fine_total = 0;
+			$current_fine_total += $_->amount for (grep { $_ and !$_->voided } @fines);
 	
 			my $last_fine;
 			if ($fine) {
@@ -506,9 +516,7 @@ sub generate_fines {
 	
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
-				my ($total) = money::billable_transaction_summary->retrieve( $c->id );
-	
-				if ($total && $total->total_owed > $c->max_fine) {
+				if ($current_fine_total > $c->max_fine) {
 					$c->update({stop_fines => 'MAXFINES'});
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
@@ -537,12 +545,14 @@ sub generate_fines {
 	
 				my $billing = money::billing->create(
 					{ xact		=> ''.$c->id,
-					  note		=> "Overdue Fine",
+					  note		=> "System Generated Overdue Fine",
 					  billing_type	=> "Overdue materials",
 					  amount	=> ''.$c->recuring_fine,
 					  billing_ts	=> $timestamptz,
 					}
 				);
+
+				$current_fine_total += $billing->amount;
 	
 				$client->respond(
 					"\t\tCreating fine of ".$billing->amount." for period starting ".
@@ -641,7 +651,9 @@ sub new_hold_copy_targeter {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$log->info("Processing hold ".$hold->id."...\n");
 
-			action::hold_copy_map->search( hold => $hold->id )->delete_all;
+			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
+			$_->delete for (@oldmaps);
+
 	
 			my $all_copies = [];
 
