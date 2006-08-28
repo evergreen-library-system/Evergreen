@@ -34,7 +34,7 @@ CREATE TABLE asset.copy (
 	holdable	BOOL				NOT NULL DEFAULT TRUE,
 	deposit_amount	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
 	price		NUMERIC(8,2)			NOT NULL DEFAULT 0.00,
-	barcode		TEXT				UNIQUE NOT NULL,
+	barcode		TEXT				NOT NULL,
 	circ_modifier	TEXT,
 	circ_as_type	TEXT,
 	dummy_title	TEXT,
@@ -43,6 +43,7 @@ CREATE TABLE asset.copy (
 	opac_visible	BOOL				NOT NULL DEFAULT TRUE,
 	deleted		BOOL				NOT NULL DEFAULT FALSE
 );
+CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);
 CREATE INDEX cp_avail_cn_idx ON asset.copy (call_number);
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
