@@ -78,7 +78,7 @@ sub build_runner {
 	$runner->insert( "$evt.volume",		$ctx->{volume}, 1);
 	$runner->insert( "$evt.title",		$ctx->{title}, 1);
 
-	if( $ctx->{requestor} ) {
+	if( ref $ctx->{requestor} ) {
 		$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
 		$runner->insert( "$evt.location",	
 			$editor->retrieve_actor_org_unit($ctx->{requestor}->ws_ou), 1);
