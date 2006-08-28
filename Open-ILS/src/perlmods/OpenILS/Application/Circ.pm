@@ -359,6 +359,7 @@ sub _set_circ_claims_returned {
 	if($backdate) {
 		OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
 			$backdate, $circ, $reqr, $session );
+		$circ->stop_fines_time(clense_ISO8601($backdate))
 	}
 
 	return undef;
