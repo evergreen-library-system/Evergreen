@@ -12,6 +12,8 @@ if( isTrue(patron.barred) )
 
 var mod = (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : "";
 
+log_info("circ-modifier = "+mod);
+
 
 if( mod == 'bestsellernh' )
 	result.events.push('ITEM_NOT_HOLDABLE');
@@ -24,6 +26,8 @@ if( ( getMARCItemType() == 'g' ||
 		mod == 'video' ) &&
 
 		!isOrgDescendent(copy.circ_lib.shortname, patron.home_ou.id) )
+
+	log_info("This patron may not place a hold on the selected item");
 
 	result.events.push('ITEM_NOT_HOLDABLE');
 
