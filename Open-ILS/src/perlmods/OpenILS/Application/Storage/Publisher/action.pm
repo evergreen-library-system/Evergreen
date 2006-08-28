@@ -250,7 +250,7 @@ sub find_local_surveys {
 		SELECT	s.*
 		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
-		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
+		  WHERE	CURRENT_TIMESTAMP BETWEEN s.start_date AND s.end_date
 	SQL
 
 	my $sth = action::survey->db_Main->prepare_cached($select);
@@ -280,7 +280,7 @@ sub find_opac_surveys {
 		SELECT	s.*
 		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
-		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
+		  WHERE	CURRENT_TIMESTAMP BETWEEN s.start_date AND s.end_date
 		  	AND s.opac IS TRUE;
 	SQL
 
@@ -355,7 +355,7 @@ sub find_optional_surveys {
 		SELECT	s.*
 		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
-		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
+		  WHERE	CURRENT_TIMESTAMP BETWEEN s.start_date AND s.end_date
 		  	AND s.required IS FALSE;
 	SQL
 
@@ -385,7 +385,7 @@ sub find_required_surveys {
 		SELECT	s.*
 		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
-		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
+		  WHERE	CURRENT_TIMESTAMP BETWEEN s.start_date AND s.end_date
 		  	AND s.required IS TRUE;
 	SQL
 
@@ -415,7 +415,7 @@ sub find_usr_summary_surveys {
 		SELECT	s.*
 		  FROM	$s_table s
 		  	JOIN actor.org_unit_full_path(?) p ON (p.id = s.owner)
-		  WHERE	CURRENT_DATE BETWEEN s.start_date AND s.end_date
+		  WHERE	CURRENT_TIMESTAMP BETWEEN s.start_date AND s.end_date
 		  	AND s.usr_summary IS TRUE;
 	SQL
 
