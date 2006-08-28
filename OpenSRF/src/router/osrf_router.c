@@ -451,6 +451,9 @@ int __osrfRouterFillFDSet( osrfRouter* router, fd_set* set ) {
 			sockid = class->ROUTER_SOCKFD;
 	
 			if( osrfUtilsCheckFileDescriptor( sockid ) ) {
+
+				osrfLogWarning(OSRF_LOG_MARK, 
+					"Removing router class '%s' because of a bad top-level file descriptor [%d]", classname, sockid);
 				osrfRouterRemoveClass( router, classname );
 	
 			} else {
