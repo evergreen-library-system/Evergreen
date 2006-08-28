@@ -1,7 +1,6 @@
 
 var FETCH_HOLD_LIST			= 'open-ils.circ:open-ils.circ.hold_pull_list.retrieve';
-var FETCH_COPY_LOCATIONS	= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
-var FETCH_COPY					= 'open-ils.search:open-ils.search.asset.copy.retrieve';
+var FETCH_COPY					= 'open-ils.search:open-ils.search.asset.copy.fleshed.custom';
 var FETCH_USER					= 'open-ils.actor:open-ils.actor.user.fleshed.retrieve';
 var FETCH_VOLUME				= 'open-ils.search:open-ils.search.callnumber.retrieve';
 
@@ -10,8 +9,6 @@ var HOLD_LIST_LIMIT	= 50;
 var numHolds			= 0;
 
 var listOffset			= 0;
-var copyLocations		= null;
-
 
 function pullListInit() {
 	fetchUser();
@@ -19,15 +16,8 @@ function pullListInit() {
 	$('pl_org').appendChild(text(findOrgUnit(USER.ws_ou()).name()));
 	setTimeout( function() { 
 		fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
-		pullListFetchCopyLocations();
 		pullListFetchHolds();
 	}, 20 );
-}
-
-function pullListFetchCopyLocations() {
-	var req = new Request(FETCH_COPY_LOCATIONS);
-	req.send(true);
-	copyLocations = req.result();
 }
 
 function pullListFetchHolds() {
@@ -71,13 +61,13 @@ function pullListDrawHold( tbody, row, hold, idx ) {
 			pullListDrawTitle( tbody, row, hold, idx, r.getResultObject() );	});
 	treq.send();
 
-	var creq = new Request( FETCH_COPY, hold.current_copy() );
+	var creq = new Request( FETCH_COPY, hold.current_copy(), ['location'] );
 	creq.callback(
 		function(r) {
 			pullListDrawCopy( tbody, row, hold, idx, r.getResultObject() ); });
 	creq.send();
 
-	var ureq = new Request( FETCH_USER, SESSION, hold.usr() );
+	var ureq = new Request( FETCH_USER, SESSION, hold.usr(), ['card'] );
 	ureq.callback(
 		function(r) {
 			pullListDrawUser( tbody, row, hold, idx, r.getResultObject() ); });
@@ -96,14 +86,9 @@ function pullListDrawTitle( tbody, row, hold, idx, record ) {
 
 
 function pullListDrawCopy( tbody, row, hold, idx, copy ) {
+
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
-	for( var l in copyLocations ) {
-		var loc = copyLocations[l];
-		if( loc.id() == copy.location() ) {
-			$n(row, 'copy_location').appendChild(text(loc.name()));
-			break;
-		}
-	}
+	$n(row, 'copy_location').appendChild(text(copy.location().name()));
 	$n(row, 'copy_number').appendChild(text(copy.copy_number()));
 
 	var vreq = new Request(FETCH_VOLUME, copy.call_number());
