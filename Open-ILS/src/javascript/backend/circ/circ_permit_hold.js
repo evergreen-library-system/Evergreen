@@ -25,11 +25,13 @@ if( ( getMARCItemType() == 'g' ||
 		mod == 'dvd' || 
 		mod == 'video' ) &&
 
-		!isOrgDescendent(copy.circ_lib.shortname, patron.home_ou.id) )
+		!isOrgDescendent(copy.circ_lib.shortname, patron.home_ou.id) ) {
 
 	log_info("This patron may not place a hold on the selected item");
 
 	result.events.push('ITEM_NOT_HOLDABLE');
+}
+
 
 } go();
 

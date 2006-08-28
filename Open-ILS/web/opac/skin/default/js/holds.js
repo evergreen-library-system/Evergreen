@@ -686,7 +686,6 @@ function holdHandleCreateResponse(r) {
 		return;
 	}
 	
-	alert(js2JSON(res));
 	holdCreateHold(r._recurse, r._hold);
 }
 
