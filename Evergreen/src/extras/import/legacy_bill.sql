@@ -17,12 +17,12 @@ INSERT INTO money.billing (xact,billing_ts,amount,billing_type,note)
 		lb.bill_date AS billing_ts,
 		(lb.balance / 100.0)::NUMERIC(6,2) AS amount,
 		lb.reason AS billing_type,
-		'TCN of Bib Record: ' || br.tcn_value AS note
+		'Item Barcode: ' || jl.item_id AS note
   	FROM	legacy_bill lb
 		JOIN money.grocery mg ON (lb.user_key = mg.usr)
 		JOIN actor.usr au ON (lb.user_key = au.id)
 		JOIN actor.org_unit ou ON (lb.library = ou.shortname)
-		LEFT JOIN biblio.record_entry br ON (lb.cat_key = br.id)
+		LEFT JOIN joined_legacy jl USING (cat_key, call_key, item_key)
   	WHERE	lb.paid IS FALSE;
 
 COMMIT;
