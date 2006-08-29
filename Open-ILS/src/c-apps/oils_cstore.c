@@ -43,10 +43,12 @@ jsonObject* oilsMakeJSONFromResult( dbi_result, osrfHash* );
 char* searchWriteSimplePredicate ( osrfHash*, const char*, const char*, const char* );
 char* searchSimplePredicate ( const char*, osrfHash*, jsonObject* );
 char* searchFunctionPredicate ( osrfHash*, jsonObjectNode* );
+char* searchFieldTransform (osrfHash*, jsonObject*);
 char* searchFieldTransformPredicate ( osrfHash*, jsonObjectNode* );
 char* searchBETWEENPredicate ( osrfHash*, jsonObject* );
 char* searchINPredicate ( osrfHash*, jsonObject* );
 char* searchPredicate ( osrfHash*, jsonObject* );
+char* buildSELECT ( jsonObject*, jsonObject*, osrfHash* );
 
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
@@ -1011,10 +1013,29 @@ char* searchFunctionPredicate (osrfHash* field, jsonObjectNode* node) {
 	return pred;
 }
 
+char* searchFieldTransform (osrfHash* field, jsonObject* node) {
+	growing_buffer* sql_buf = buffer_init(32);
+	
+	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKey( node, "transform" ) );
+
+	buffer_fadd(
+		sql_buf,
+		"%s(%s)",
+		field_transform,
+		osrfHashGet(field, "name")
+	);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+	free(field_transform);
+
+	return pred;
+}
+
 char* searchFieldTransformPredicate (osrfHash* field, jsonObjectNode* node) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
-	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKey( node->item, "transform" ) );
+	char* field_transform = searchFieldTransform( field, node->item );
 	char* value = NULL;
 
 	if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
@@ -1034,15 +1055,15 @@ char* searchFieldTransformPredicate (osrfHash* field, jsonObjectNode* node) {
 
 	buffer_fadd(
 		sql_buf,
-		"%s(%s) %s %s",
+		"%s %s %s",
 		field_transform,
-		osrfHashGet(field, "name"),
 		node->key,
 		value
 	);
 
 	char* pred = buffer_data(sql_buf);
 	buffer_free(sql_buf);
+	free(field_transform);
 
 	return pred;
 }
@@ -1174,10 +1195,7 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 
 }
 
-jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params, int* err ) {
-
-	// XXX for now...
-	dbhandle = writehandle;
+char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta ) {
 
 	osrfHash* links = osrfHashGet(meta, "links");
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -1186,9 +1204,6 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 	jsonObjectNode* node = NULL;
 	jsonObjectNode* snode = NULL;
 	jsonObject* _tmp;
-	jsonObject* obj;
-	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
-	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
 	growing_buffer* sql_buf = buffer_init(128);
 	buffer_add(sql_buf, "SELECT");
@@ -1290,6 +1305,25 @@ jsonObject* doSearch(osrfMethodContext* ctx, osrfHash* meta, jsonObject* params,
 
 	char* sql = buffer_data(sql_buf);
 	buffer_free(sql_buf);
+
+	return sql;
+}
+
+jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* params, int* err ) {
+
+	// XXX for now...
+	dbhandle = writehandle;
+
+	osrfHash* links = osrfHashGet(meta, "links");
+	osrfHash* fields = osrfHashGet(meta, "fields");
+	char* core_class = osrfHashGet(meta, "classname");
+
+	jsonObject* _tmp;
+	jsonObject* obj;
+	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
+	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
+
+	char* sql = buildSELECT( search_hash, order_hash, meta );
 	
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
