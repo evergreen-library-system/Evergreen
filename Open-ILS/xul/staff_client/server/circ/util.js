@@ -814,6 +814,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				'overridable_events' : [ 
 					1203 /* COPY_BAD_STATUS */, 
 					1213 /* PATRON_BARRED */,
+					1217 /* PATRON_INACTIVE */,
 					1224 /* PATRON_ACCOUNT_EXPIRED */,
 					7009 /* CIRC_CLAIMS_RETURNED */,
 					7010 /* COPY_ALERT_MESSAGE */, 
@@ -988,6 +989,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 			switch (check.ilsevent) {
 				case 1203 /* COPY_BAD_STATUS */ : 
 				case 1213 /* PATRON_BARRED */ :
+				case 1217 /* PATRON_INACTIVE */ :
 				case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
 				case 7009 /* CIRC_CLAIMS_RETURNED */ :
 				case 7010 /* COPY_ALERT_MESSAGE */ : 
