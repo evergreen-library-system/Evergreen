@@ -58,7 +58,7 @@ my %source_map = (
 OpenSRF::System->bootstrap_client( config_file => $config );
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-$user = OpenILS::Application::AppUtils->check_user_session( login($user,$password) )->id;
+#$user = OpenILS::Application::AppUtils->check_user_session( login($user,$password) )->id;
 
 my %keymap;
 if ($keyfile) {
@@ -76,8 +76,6 @@ select STDOUT; $| = 1;
 my $batch = new MARC::Batch ( 'USMARC', @files );
 $batch->strict_off();
 $batch->warnings_off();
-
-my %seen;
 
 my $starttime = time;
 my $rec;
@@ -121,9 +119,6 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 	my $tcn_value = $rec->subfield('901' => 'a');
 	my $tcn_source = $rec->subfield('901' => 'b');
-
-	next if ($seen{$tcn_value});
-	$seen{$tcn_value} = 1;
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
