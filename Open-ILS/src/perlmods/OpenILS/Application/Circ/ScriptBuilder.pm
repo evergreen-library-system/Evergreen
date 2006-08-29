@@ -111,7 +111,7 @@ sub fetch_bib_data {
 		} elsif( $ctx->{copy_barcode} ) {
 
 			$ctx->{copy} = $e->search_asset_copy(
-				[{barcode => $ctx->{copy_barcode}}, $flesh ])->[0]
+				[{barcode => $ctx->{copy_barcode}, deleted => 'f'}, $flesh ])->[0]
 				or return $e->event;
 		}
 	}
