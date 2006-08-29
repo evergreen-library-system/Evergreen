@@ -62,7 +62,7 @@
 			}
 		}
 
-		function default_focus() { try { var x = document.getElementById('noncat'); x.focus(); } catch(E) { alert(E); } }
+		function default_focus() { try { var x = document.getElementById('noncat'); x.focus(); } catch(E) { g.error.sdump('D_ERROR','item.xul, default_focus: ' + E); } }
 
 	]]>
 	</script>

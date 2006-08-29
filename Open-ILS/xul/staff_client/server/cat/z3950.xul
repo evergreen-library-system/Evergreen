@@ -71,7 +71,7 @@
 		}
 
 		function default_focus() {
-			setTimeout( function() { try { document.getElementById("username").focus(); g.z3950.focus(g.service); } catch(E) { alert(E); } }, 0 );
+			setTimeout( function() { try { document.getElementById("username").focus(); g.z3950.focus(g.service); } catch(E) { } }, 0 );
 		}
 
 	]]>
