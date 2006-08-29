@@ -266,27 +266,24 @@
 				);
 				g.bill_list.clear();
 				retrieve_mbts_for_list();
-				//g.data.temp = 'refresh'; g.data.stash('temp');
 				if (typeof window.refresh == 'function') window.refresh();
 				if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
 			}
 		}
 
 		function handle_details() {
-			JSAN.use('util.window'); var w = new util.window();
-			w.open(
+			JSAN.use('util.window'); var win = new util.window();
+			var w = win.open(
 				urls.XUL_PATRON_BILL_DETAILS 
 				+ '?patron_id=' + window.escape(g.patron_id)
 				+ '&mbts_id=' + window.escape( g.bill_list_selection[0] ),
 				'test_billdetails',
-				'modal,chrome,resizable'
+				'chrome,resizable'
 			);
-			//g.data.temp = 'refresh'; g.data.stash('temp');
-			g.data.stash_retrieve();
-			if (g.data.temp == 'refresh') {
+			w.xulG = { 'refresh' : function() { 
 				if (typeof window.refresh == 'function') window.refresh();
 				if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
-			}
+			} };
 		}
 
 		function print_bills() {

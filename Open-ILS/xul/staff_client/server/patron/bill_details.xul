@@ -203,7 +203,6 @@
 				JSAN.use('util.money');
 				JSAN.use('patron.util');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-				g.data.temp = ''; g.data.stash('temp');
 
 				g.error.sdump('D_TRACE','my_init() for bill_details.xul');
 
@@ -228,36 +227,37 @@
 				);
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\nbill_details.xul\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
+				try { g.error.standard_unexpected_error_alert('bill_details.xul, my_init:',E); } catch(F) { alert(E); }
 			}
 		}
 
 		function handle_void() {
-			JSAN.use('util.functional');
-			var msg = 'Are you sure you would like to void bill' + ( g.bill_list_selection.length > 1 ? 's ' : ' ') + util.functional.map_list( g.bill_list_selection, function(o) { return g.mb_list[o].id(); })  + '?';
-			var r = g.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
-			if (r == 0) {
-				g.data.stash_retrieve();
-				for (var i = 0; i < g.bill_list_selection.length; i++) {
-					var robj = g.network.simple_request('FM_MB_VOID',[ses(),g.mb_list[g.bill_list_selection[i]].id()]);
-					if (! g.data.voided_billings ) g.data.voided_billings = []; 
-					if (robj.ilsevent) {
-						switch(robj.ilsevent) {
-							case -1 : g.error.standard_network_error_alert('Void of Bill #' + g.mb_list[g.bill_list_selection[i]].id() + ' failed.'); break;
-							default: g.error.standard_unexpected_error_alert('Void of Bill #' + g.mb_list[g.bill_list_selection[i]].id() + ' failed.',robj); break;
+			try {
+				JSAN.use('util.functional');
+				var msg = 'Are you sure you would like to void bill' + ( g.bill_list_selection.length > 1 ? 's ' : ' ') + util.functional.map_list( g.bill_list_selection, function(o) { return g.mb_list[o].id(); })  + '?';
+				var r = g.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
+				if (r == 0) {
+					g.data.stash_retrieve();
+					for (var i = 0; i < g.bill_list_selection.length; i++) {
+						var robj = g.network.simple_request('FM_MB_VOID',[ses(),g.mb_list[g.bill_list_selection[i]].id()]);
+						if (! g.data.voided_billings ) g.data.voided_billings = []; 
+						if (robj.ilsevent) {
+							switch(robj.ilsevent) {
+								case -1 : g.error.standard_network_error_alert('Void of Bill #' + g.mb_list[g.bill_list_selection[i]].id() + ' failed.'); break;
+								default: g.error.standard_unexpected_error_alert('Void of Bill #' + g.mb_list[g.bill_list_selection[i]].id() + ' failed.',robj); break;
+							}
+						} else {
+							g.data.voided_billings.push( g.mb_list[g.bill_list_selection[i]] );
+							g.data.stash('voided_billings');
 						}
-					} else {
-						g.data.voided_billings.push( g.mb_list[g.bill_list_selection[i]] );
-						g.data.stash('voided_billings');
 					}
+					retrieve_mbts();
+					g.bill_list.clear();
+					retrieve_mb();
+					if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') { window.xulG.refresh(); }
 				}
-				retrieve_mbts();
-				g.bill_list.clear();
-				retrieve_mb();
-				g.data.temp = 'refresh'; g.data.stash('temp');
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('bill_details.xul, handle_void:',E); } catch(F) { alert(E); }
 			}
 		}
 

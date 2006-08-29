@@ -180,8 +180,7 @@ patron.bills.prototype = {
 											'chrome,resizable'
 										);
 										w.xulG = { 'refresh' : function() { obj.refresh(); } };
-										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
-										w.refresh = function() { obj.refresh(); };
+										//w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_history',E);	
 									}
@@ -202,8 +201,7 @@ patron.bills.prototype = {
 											'chrome,resizable'
 										);
 										w.xulG = { 'refresh' : function() { obj.refresh(); } };
-										//obj.OpenILS.data.init({'via':'stash'}); if (obj.OpenILS.data.temp == 'refresh') { obj.refresh(); }
-										w.refresh = function() { obj.refresh(); };
+										//w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
 									}
@@ -854,19 +852,15 @@ patron.bills.prototype = {
 								btn.addEventListener(
 									'command',
 									function(ev) {
-										JSAN.use('util.window'); var w = new util.window();
-										w.open(
+										JSAN.use('util.window'); var win = new util.window();
+										var w = win.open(
 											urls.XUL_PATRON_BILL_DETAILS 
 											+ '?patron_id=' + window.escape(obj.patron_id)
 											+ '&mbts_id=' + window.escape(my.mobts.id()),
 											'test' + my.mobts.id(),
-											'modal,chrome,resizable'
+											'chrome,resizable'
 										);
-										obj.OpenILS.data.init({'via':'stash'}); 
-										if (obj.OpenILS.data.temp == 'refresh') {
-											obj.refresh();
-										}
-
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
 									},
 									false
 								);
