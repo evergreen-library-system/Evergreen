@@ -509,8 +509,9 @@ sub create_in_house_use {
 		if( $copyid ) {
 			$copy = $e->retrieve_asset_copy($copyid) or return $e->event;
 		} else {
-			$copy = $e->search_asset_copy({barcode=>$params->{barcode}})->[0]
+			$copy = $e->search_asset_copy({barcode=>$params->{barcode}, deleted => 'f'})->[0]
 				or return $e->event;
+			$copyid = $copy->id;
 		}
 	}
 
