@@ -179,6 +179,12 @@ CREATE TABLE action.hold_request (
 	email_notify		BOOL				NOT NULL DEFAULT TRUE
 );
 
+CREATE INDEX hold_request_target_idx ON action.hold_request (target);
+CREATE INDEX hold_request_usr_idx ON action.hold_request (usr);
+CREATE INDEX hold_request_pickup_lib_idx ON action.hold_request (pickup_lib);
+CREATE INDEX hold_request_current_copy_idx ON action.hold_request (current_copy);
+CREATE INDEX hold_request_prev_check_time_idx ON action.hold_request (prev_check_time);
+
 
 CREATE TABLE action.hold_notification (
 	id		SERIAL				PRIMARY KEY,
