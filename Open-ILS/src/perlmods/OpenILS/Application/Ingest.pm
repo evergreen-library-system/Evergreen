@@ -156,18 +156,59 @@ sub rw_biblio_ingest_single_object {
 	# update MR map ...
 
 	$tmp = $cstore->request(
-		'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic',
+		'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
 		{ source => $bib->id }
 	)->gather(1);
 
-	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.delete' => $_ )->gather(1) for (@$tmp);
+	$cstore->request( 'open-ils.cstore.direct.metabib.metarecord_source_map.delete' => $_->id )->gather(1) for (@$tmp);
 
+	# get the old MRs
+	my $old_mrs = $cstore->request(
+		'open-ils.cstore.direct.metabib.metarecord.search.atomic' => { id => [map { $_->metarecord } @$tmp] }
+	)->gather(1) if (@$tmp);
 
-	# Get the matchin MR, if any.
-	my $mr = $cstore->request(
-		'open-ils.cstore.direct.metabib.metarecord.search',
-		{ fingerprint => $bib->fingerprint }
-	)->gather(1);
+	$old_mrs = [] if (!ref($old_mrs));
+
+	my $mr;
+	for my $m (@$old_mrs) {
+		if ($m->fingerprint eq $bib->fingerprint) {
+			$mr = $m;
+		} else {
+			my $others = $cstore->request(
+				'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic' => { metarecord => $m->metarecord }
+			)->gather(1);
+
+			if (!@$others) {
+				$cstore->request(
+					'open-ils.cstore.direct.metabib.metarecord.delete' => $m->id
+				)->gather(1);
+			}
+
+			$m->isdeleted(1);
+		}
+	}
+
+	my $holds;
+	if (!$mr) {
+		# Get the matchin MR, if any.
+		$mr = $cstore->request(
+			'open-ils.cstore.direct.metabib.metarecord.search',
+			{ fingerprint => $bib->fingerprint }
+		)->gather(1);
+
+		$holds = $cstore->request(
+			'open-ils.cstore.direct.action.hold_request.search.atomic',
+			{ hold_type => 'M', target => [ map { $_->id } grep { $_->isdeleted } @$old_mrs ] }
+		)->gather(1) if (@$old_mrs);
+
+		if ($mr) {
+			for my $h (@$holds) {
+				$h->target($mr);
+				$cstore->request( 'open-ils.cstore.direct.action.hold_request.update' => $h )->gather(1);
+				$h->ischanged(1);
+			}
+		}
+	}
 
 	if (!$mr) {
 		$mr = new Fieldmapper::metabib::metarecord;
@@ -179,6 +220,11 @@ sub rw_biblio_ingest_single_object {
 				$mr => { quiet => 'true' }
 			)->gather(1)
 		);
+
+		for my $h (grep { !$_->ischanged } @$holds) {
+			$h->target($mr);
+			$cstore->request( 'open-ils.cstore.direct.action.hold_request.update' => $h )->gather(1);
+		}
 	} else {
 		my $mrm = $cstore->request(
 			'open-ils.cstore.direct.metabib.metarecord_source_map.search.atomic',
