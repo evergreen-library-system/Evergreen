@@ -94,7 +94,7 @@ patron.util.mbts_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 patron.util.mb_columns = function(modify,params) {
@@ -161,7 +161,7 @@ patron.util.mb_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 patron.util.mp_columns = function(modify,params) {
@@ -224,7 +224,7 @@ patron.util.mp_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 patron.util.columns = function(modify,params) {
@@ -367,7 +367,7 @@ patron.util.columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 patron.util.std_map_row_to_column = function(error_value) {

@@ -175,7 +175,7 @@ circ.util.offline_checkout_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 circ.util.offline_checkin_columns = function(modify,params) {
@@ -224,7 +224,7 @@ circ.util.offline_checkin_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 circ.util.offline_renew_columns = function(modify,params) {
@@ -285,7 +285,7 @@ circ.util.offline_renew_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 circ.util.offline_inhouse_use_columns = function(modify,params) {
@@ -340,7 +340,7 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 
@@ -547,7 +547,7 @@ circ.util.columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 circ.util.transit_columns = function(modify,params) {
@@ -596,7 +596,7 @@ circ.util.transit_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 
@@ -766,7 +766,7 @@ circ.util.hold_columns = function(modify,params) {
 			return new_c;
 		}
 	}
-	return c;
+	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
 
 circ.util.std_map_row_to_column = function(error_value) {
