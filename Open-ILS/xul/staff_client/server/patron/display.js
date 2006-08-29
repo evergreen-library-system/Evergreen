@@ -387,7 +387,12 @@ patron.display.prototype = {
 									var holds = req.getResultObject();
 									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
 									if (msg) {
-										obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+										if (msg != obj.old_msg) {
+											obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+											obj.old_msg = msg;
+										} else {
+											obj.error.sdump('D_TRACE','Not re-displaying this alert message: ' + msg);
+										}
 									}
 									if (obj.stop_checkouts && obj.checkout_window) {
 										setTimeout( function() {
