@@ -308,6 +308,8 @@ char* message_to_xml( const transport_message* msg ) {
 	xmlNodeDump( xmlbuf, doc, xmlDocGetRootElement(doc), 0, 0);
 	char* xml = strdup((char*) (xmlBufferContent(xmlbuf)));
 	xmlBufferFree(xmlbuf);
+	xmlFreeDoc( doc );		 
+	xmlCleanupParser();
 	return xml;
 }
 
