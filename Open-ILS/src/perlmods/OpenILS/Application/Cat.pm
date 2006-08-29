@@ -1126,7 +1126,7 @@ sub create_copy {
 	my( $editor, $vol, $copy ) = @_;
 
 	my $existing = $editor->search_asset_copy(
-		{ barcode => $copy->barcode } );
+		{ barcode => $copy->barcode, deleted => 'f' } );
 	
 	return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
 
