@@ -519,6 +519,11 @@ circ.checkout.prototype = {
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
 						break;
+						case 7009 /* CIRC_CLAIMS_RETURNED */ :
+							msg += test_permit[i].desc + '\n';
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							found_handled = true;
+						break;
 						case 7010 /* COPY_ALERT_MESSAGE */ :
 							msg += test_permit[i].desc + '\n' + 'Alert Message = ' + test_permit[i].payload + '\n';
 							found_handled = true;
