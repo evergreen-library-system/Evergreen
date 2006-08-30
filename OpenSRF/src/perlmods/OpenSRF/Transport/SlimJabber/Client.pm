@@ -192,6 +192,7 @@ sub timed_read {
 		$self->{temp_buffer} = '';
 
 		my ($tag) = ($buffer =~ /<([^\s\?\>]+)/o);
+		$self->{last_tag} = $tag;
 		$logger->transport("Using tag: $tag  ", INTERNAL);
 
 		if ( $buffer =~ /^(.*?<\/$tag>){1}(.*)/s) {
@@ -285,7 +286,8 @@ sub timed_read {
 
 				if ($first_read) {
 					$logger->transport(" First read Buffer\n [$buffer]", INTERNAL);
-					($tag) = ($buffer =~ /<([^\s\?\>]+){1}/o);
+					($tag) = ($buffer =~ /<([^\s\?\>\/]+){1}/o);
+					$self->{last_tag} = $tag;
 					$first_read--;
 					$logger->transport("Using tag: $tag  ", INTERNAL);
 				}
@@ -561,6 +563,18 @@ sub process {
 	} elsif ( $val ) {
 		$logger->transport( 
 			"Call to Client->timed_read( $timeout ) successfully returned data", INTERNAL );
+	}
+
+	my $t = $self->{last_tag};
+	my @msgs = $val =~ /(<$t[^>]*>.*?<\/$t>)/g;
+	$val = shift(@msgs);
+
+	if (@msgs) {
+		my $tmp = $self->{temp_buffer};
+
+		$self->{temp_buffer} = '';
+		$self->{temp_buffer} .= $_ for (@msgs);
+		$self->{temp_buffer} .= $tmp;
 	}
 
 	return $val;
