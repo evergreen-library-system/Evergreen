@@ -27,6 +27,19 @@ my @goback = @ARGV;
 osrf_connect($bsconfig);
 my $e = OpenILS::Utils::CStoreEditor->new;
 
+
+# ---------------------------------------------------------------
+# Set up the email template
+my $etmpl = $ENV{EG_OVERDUE_EMAIL_TEMPLATE};
+print "Using email template: $etmpl\n";
+open(F,"$etmpl");
+my @etmpl = <F>;
+close(F);
+my $email_template = "@etmpl";
+# ---------------------------------------------------------------
+
+
+
 my @date = CORE::localtime;
 my $sec  = $date[0];
 my $min  = $date[1];
@@ -136,16 +149,30 @@ sub print_notice {
 	my $org = $circs->[0]->circ_lib;
 	my $usr = $circs->[0]->usr;
 	$logger->debug("OD_notice: printing $range user:$usr org:$org");
-	print "\t\t<notice type='overdue' count='$range'>\n";
-	print_patron_chunk($usr);
-	print_org_chunk($org);
-	print_circ_chunk($_) for @$circs;
-	print "\t\t</notice>\n";
+
+	my @patron_data = fetch_patron_data($usr);
+	my @org_data = fetch_org_data($org);
+
+	my $email;
+
+	if( $email = $patron_data[0]->email 
+		and $email =~ /.+\@.+/ 
+		and ($range eq '7day' or $range eq '14day') ) {
+
+			send_email($range, \@patron_data, \@org_data, $circs);
+
+	} else {
+
+		print "\t\t<notice type='overdue' count='$range'>\n";
+		print_patron_xml_chunk(@patron_data);
+		print_org_xml_chunk(@org_data);
+		print_circ_chunk($_) for @$circs;
+		print "\t\t</notice>\n";
+	}
 }
 
 
-
-sub print_patron_chunk {
+sub fetch_patron_data {
 	my $user_id = shift;
 
 	my $patron = $USER_CACHE{$user_id};
@@ -193,7 +220,12 @@ sub print_patron_chunk {
 	$state = entityize($state);
 	$zip	 = entityize($zip);
 
+	return ( $patron, $bc, $fn, $mn, $ln, $s1, $s2, $city, $state, $zip );
+}
+
 	
+sub print_patron_xml_chunk {
+	my( $patron, $bc, $fn, $mn, $ln, $s1, $s2, $city, $state, $zip ) = @_;
 	print <<"	XML";
 			<patron>
 				<id type="barcode">$bc</id>
@@ -202,10 +234,10 @@ sub print_patron_chunk {
 				<city_state_zip>$city, $state $zip</city_state_zip>
 			</patron>
 	XML
-
 }
 
-sub print_org_chunk {
+
+sub fetch_org_data {
 	my $org_id = shift;
 
 	my $org = $ORG_CACHE{$org_id};
@@ -228,6 +260,7 @@ sub print_org_chunk {
 	}
 
 	my $name = $org->name;
+	my $email = $org->email;
 
 	my( $phone, $s1, $s2, $city, $state, $zip );
 	my $baddr = $org->billing_address || $org->mailing_address;
@@ -246,8 +279,14 @@ sub print_org_chunk {
 	$city  = entityize($city);
 	$state = entityize($state);
 	$zip	 = entityize($zip);
+	$email = entityize($email);
+
+	return ( $org, $name, $phone, $s1, $s2, $city, $state, $zip, $email );
+}
 
 
+sub print_org_xml_chunk {
+	my( $org, $name, $phone, $s1, $s2, $city, $state, $zip, $email ) = @_;
 	print <<"	XML";
 			<library>
 				<libname>$name</libname>
@@ -258,7 +297,8 @@ sub print_org_chunk {
 	XML
 }
 
-sub print_circ_chunk {
+
+sub fetch_circ_data {
 	my $circ = shift;
 
 	my $title;
@@ -312,6 +352,13 @@ sub print_circ_chunk {
 	$cn = entityize($cn);
 	$bc = entityize($bc);
 
+	return( $title, $author, $cn, $bc, $day, $mon, $year );
+}
+
+
+sub print_circ_chunk {
+	my $circ = shift;
+	my ( $title, $author, $cn, $bc, $day, $mon, $year ) = fetch_circ_data($circ);
 	print <<"	XML";
 			<item>
 				<title>$title</title>
@@ -324,6 +371,59 @@ sub print_circ_chunk {
 }
 
 
+
+sub send_email {
+	my( $range, $patron_data, $org_data, $circs ) = @_;
+	my( $org, $org_name, $org_phone, $org_s1, $org_s2, $org_city, $org_state, $org_zip, $org_email ) = @$org_data;
+	my( $patron, $bc, $fn, $mn, $ln, $user_s1, $user_s2, $user_city, $user_state, $user_zip ) = @$patron_data;
+
+	my $pemail = $patron_data->[0]->email;
+
+	my $tmpl = $email_template;
+	my @time = localtime;
+	my $year = $time[5] + 1900;
+	my $mon  = $time[4] + 1;
+	my $day  = $time[3];
+
+	my $r = ($range eq '7day') ? 7 : 14;
+
+	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/o;
+	$tmpl =~ s/\${EMAIL_SENDER}/$org_email/o;
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
+   $tmpl =~ s/\${EMAIL_HEADERS}/\n\r\n\r/o;
+   $tmpl =~ s/\${RANGE}/$r/o;
+   $tmpl =~ s/\${DATE}/$day\/$mon\/$year/o;
+   $tmpl =~ s/\${FIRST_NAME}/$fn/o;
+   $tmpl =~ s/\${MIDDLE_NAME}/$mn/o;
+   $tmpl =~ s/\${LAST_NAME}/$ln/o;
+
+	my ($itmpl) = $tmpl =~ /\${OVERDUE_ITEMS\[(.*)\]}/ms;
+
+	my $items = '';
+	for my $circ (@$circs) {
+		my $circtmpl = $itmpl;
+		my ( $title, $author, $cn, $bc, $due_day, $due_mon, $due_year ) = fetch_circ_data($circ);
+		$circtmpl =~ s/\${TITLE}/$title/o;
+		$circtmpl =~ s/\${AUTHOR}/$author/o;
+		$circtmpl =~ s/\${CALL_NUMBER}/$cn/o;
+		$circtmpl =~ s/\${DUE_DAY}/$due_day/o;
+		$circtmpl =~ s/\${DUE_MONTH}/$due_mon/o;
+		$circtmpl =~ s/\${DUE_YEAR}/$due_year/o;
+		$circtmpl =~ s/\${ITEM_BARCODE}/$bc/o;
+		$items .= "$circtmpl\n";
+	}
+
+	$tmpl =~ s/\${OVERDUE_ITEMS\[.*\]}/$items/ms;
+
+	my $org_addr = "$org_s1 $org_s2 $org_city, $org_state $org_zip";
+	$tmpl =~ s/\${ORG_NAME}/$org_name/o;
+	$tmpl =~ s/\${ORG_ADDRESS}/$org_addr/o;
+	$tmpl =~ s/\${ORG_PHONE}/$org_phone/o;
+
+	warn "EMAIL: $tmpl\n";
+
+	$logger->info("OD_notice:   sending email to".$patron_data->[0]->email);
+}
 
 sub handle_event {
 	my $evt = shift;
