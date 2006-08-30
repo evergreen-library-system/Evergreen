@@ -575,7 +575,16 @@ circ.checkout.prototype = {
 										if (typeof robj.ilsevent == 'undefined') {
 											obj.checkout(params);
 										} else {
-											if (robj.ilsevent != 5000 /* PERM_FAILURE */) throw(robj);
+											switch(robj.ilsevent) {
+												case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
+													alert('This transit may not be aborted due to a problem status.  It needs to be returned to its circulating library.');
+												break;
+												case 5000 /* PERM_FAILURE */ :
+												break;
+												default:
+													throw(robj);
+												break;
+											}
 										}
 									break;
 								}

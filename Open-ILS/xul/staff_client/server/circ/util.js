@@ -23,7 +23,18 @@ circ.util.abort_transits = function(selection_list) {
 			for (var i = 0; i < selection_list.length; i++) {
 				var copy_id = selection_list[i].copy_id;
 				var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'copyid' : copy_id } ]);
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
+				if (typeof robj.ilsevent != 'undefined') {
+					switch(robj.ilsevent) {
+						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
+							alert('This transit for copy ' + copy_id + ' may not be aborted due to a problem status.  It needs to be returned to its circulating library.');
+						break;
+						case 5000 /* PERM_FAILURE */ :
+						break;
+						default:
+							throw(robj);
+						break;
+					}
+				}
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Transit not likely aborted.',E);
