@@ -116,7 +116,11 @@ util.widgets.make_menulist = function( items, dvalue ) {
 		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
 		menuitem.setAttribute('label',label);
 		menuitem.setAttribute('value',value);
-		menuitem.setAttribute('style','font-family: monospace; padding-left: ' + indent + 'em;');
+		if (ident) {
+			menuitem.setAttribute('style','font-family: monospace; padding-left: ' + indent + 'em;');
+		} else {
+			menuitem.setAttribute('style','font-family: monospace;');
+		}
 		if ( (disabled == true) || (disabled == "true") ) {
 			menuitem.disabled = true;
 			menuitem.setAttribute('disabled','true');
