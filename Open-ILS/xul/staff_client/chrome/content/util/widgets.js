@@ -116,7 +116,7 @@ util.widgets.make_menulist = function( items, dvalue ) {
 		var menuitem = document.createElement('menuitem'); menupopup.appendChild(menuitem);
 		menuitem.setAttribute('label',label);
 		menuitem.setAttribute('value',value);
-		if (ident) {
+		if (indent) {
 			menuitem.setAttribute('style','font-family: monospace; padding-left: ' + indent + 'em;');
 		} else {
 			menuitem.setAttribute('style','font-family: monospace;');
