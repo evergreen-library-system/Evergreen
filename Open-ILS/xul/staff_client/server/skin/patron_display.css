@@ -7,36 +7,36 @@ hbox#PatronNotNavBar { border-top: solid thin black; }
 deck#patron_deck { border-left: solid thin black; }
 .patronNameLarge { font-size: large; font-family: bold; }
 
-.NO_PENALTIES .patronNameLarge { background-color: lime; }
+.NO_PENALTIES .patronNameLarge { background-color: lime; color: black; }
 /*
 .ONE_PENALTY .patronNameLarge { background-color: fuchsia; }
-.MULTIPLE_PENALTIES .patronNameLarge { background-color: red; }
+.MULTIPLE_PENALTIES .patronNameLarge { background-color: #CC3300; }
 */
 
-.PATRON_HAS_BILLS .patronNameLarge { background-color: #FF9900; }
+.PATRON_HAS_BILLS .patronNameLarge { background-color: #FFC266; color: black; }
 .PATRON_HAS_BILLS label.bill { color: #AA4400; }
 /* .PATRON_HAS_BILLS label.bill.label { text-decoration: underline; } */
 .PATRON_HAS_BILLS label.bill.value { }
 .PATRON_HAS_BILLS label.bills_indicator { display: inline; color: #AA4400; }
 
-.PATRON_HAS_OVERDUES .patronNameLarge { background-color: #FF9900; }
+.PATRON_HAS_OVERDUES .patronNameLarge { background-color: #FFC266; color: black; }
 .PATRON_HAS_OVERDUES label.items_overdue { color: #AA4400; }
 /* .PATRON_HAS_OVERDUES label.items_overdue.label { text-decoration: underline; } */
 .PATRON_HAS_OVERDUES label.items_overdue.value { }
 .PATRON_HAS_OVERDUES label.overdues_indicator { display: inline; color: #AA4400; }
 
-.PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { background-color: purple; color: white; }
+.PATRON_EXCEEDS_CHECKOUT_COUNT .patronNameLarge { background-color: #C99DFF; color: black; }
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out { color: purple; }
 /* .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_CHECKOUT_COUNT label.items_out.value { }
 
-.PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { background-color: purple; color: white; }
+.PATRON_EXCEEDS_OVERDUE_COUNT .patronNameLarge { background-color: #C99DFF; color: black; }
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue { color: purple; }
 /* .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_OVERDUE_COUNT label.items_overdue.value { }
 .PATRON_EXCEEDS_OVERDUE_COUNT label.max_overdues_indicator { display: inline; color: purple; }
 
-.PATRON_EXCEEDS_FINES .patronNameLarge { background-color: purple; color: white; }
+.PATRON_EXCEEDS_FINES .patronNameLarge { background-color: #C99DFF; color: black; }
 .PATRON_EXCEEDS_FINES label.bill { color: purple; }
 /* .PATRON_EXCEEDS_FINES label.bill.label { text-decoration: underline; } */
 .PATRON_EXCEEDS_FINES label.bill.value { }
@@ -48,24 +48,24 @@ deck#patron_deck { border-left: solid thin black; }
 .PATRON_HAS_INVALID_DOB .dob { color: purple; }
 .PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
 
-.PATRON_HAS_INVALID_ADDRESS label.invalid_address_indicator { display: inline; color: red }
+.PATRON_HAS_INVALID_ADDRESS label.invalid_address_indicator { display: inline; color: #CC3300 }
 
 .PATRON_HAS_ALERT .patronNameLarge, 
 .PATRON_HAS_ALERT groupbox.alert { background-color: yellow; color: black; }
-.PATRON_HAS_ALERT label.alert_indicator { display: inline; color: olive }
+.PATRON_HAS_ALERT label.alert_indicator { display: inline; color: #AA4400 }
 
-.PATRON_HAS_NOTES label.note_indicator { display: inline; color: olive }
+.PATRON_HAS_NOTES label.note_indicator { display: inline; color: #AA4400 }
 
 .PATRON_INACTIVE .patronNameLarge { background-color: #333333; color: white; }
-.PATRON_INACTIVE label.inactive_indicator { display: inline; color: gray; }
+.PATRON_INACTIVE label.inactive_indicator { display: inline; color: black; }
 
 .PATRON_EXPIRED .patronNameLarge { background-color: #666666;  color: white;}
-.PATRON_EXPIRED label.expired_indicator { display: inline; color: gray; }
+.PATRON_EXPIRED label.expired_indicator { display: inline; color: black; }
 
-.PATRON_BARRED .patronNameLarge { background-color: red; color: white; }
-.PATRON_BARRED label.barred_indicator { display: inline; color: red; }
+.PATRON_BARRED .patronNameLarge { background-color: #CC3300; color: white; }
+.PATRON_BARRED label.barred_indicator { display: inline; color: #CC3300; }
 
 .PATRON_NET_ACCESS_1 .net_access { color: #AA4400; } /* Filtered */
 .PATRON_NET_ACCESS_2 .net_access { color: green; } /* Unfiltered */
-.PATRON_NET_ACCESS_3 .net_access { color: red; } /* No Access */
+.PATRON_NET_ACCESS_3 .net_access { color: #CC3300; } /* No Access */
 
