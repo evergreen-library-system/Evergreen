@@ -13,19 +13,20 @@
 		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
 		<button label="Validate" oncommand="validateAuthority(this);"/>
 		<button id="save-button"/>
-		<button label="Help" oncommand="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del');"/>
+		<button label="Help" oncommand="alert('Add Row: CTRL+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del\nCreate/Replace 006: CTRL+F6\nCreate/Replace 007: CTRL+F7'\nCreate/Replace 008: CTRL+F8\n);"/>
 	</hbox>
 </groupbox>
 
 <groupbox flex="1">
 	<caption label="MARC Record"/>
 	<vbox flex="1" style="overflow: auto;">
+		<hbox>
 		<groupbox flex="0">
 			<caption>
 				<label value="Fixed Fields -- Record type: " ondblclick="toggleFFE();"/>
 				<label id="recordTypeLabel" context="recordTypeMenu"/>
 			</caption>
-			<vbox flex="1">
+			<vbox flex="0">
 				<grid flex="0" id="leaderGrid" type="BKS" hidden="false" persist="hidden">
 					<columns>
 						<column flex="1"/>
@@ -102,8 +103,9 @@
 				</grid>
 			</vbox>
 		</groupbox>
+		</hbox>
 
-		<grid id="recGrid">
+		<grid id="recGrid" flex="1">
 			<columns>
 				<column/>
 				<column/>
