@@ -530,12 +530,13 @@ patron.bills.prototype = {
 				api.BILL_PAY.method,
 				[ ses(), payment_blob ]
 			);
-			if (robj && robj.ilsevent && robj.ilsevent == 0) {
-				return true;
-			} else if (robj == 1) {
-				return true;
-			} else {
-				throw robj;
+			if (robj == 1) { return true; } 
+			if (typeof robj.ilsevent != 'undefined') {
+				switch(robj.ilsevent) {
+					case 0 /* SUCCESS */ : return true; break;
+					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc); return false; break;
+					default: throw(robj); break;
+				}
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Bill payment likely failed',E);
