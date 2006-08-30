@@ -15,6 +15,9 @@ use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
 
+my $cache;
+
+
 sub validate_authority {
 	my $self = shift;
 	my $client = shift;
@@ -121,7 +124,8 @@ __PACKAGE__->register_method(
 );              
 
 __PACKAGE__->register_method(
-	method		=> "new_crossref_authority_batch",
+	#method		=> "new_crossref_authority_batch",
+	method		=> "crossref_authority_batch2",
 	api_name	=> "open-ils.search.authority.crossref.batch",
 	argc		=> 1, 
 	note		=> <<"	NOTE");
@@ -212,6 +216,55 @@ sub crossref_authority_batch {
 
 
 
+sub crossref_authority_batch2 {
+	my( $self, $client, $reqs ) = @_;
+
+	my $response = {};
+	my $lastr = [];
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+
+	$cache = OpenSRF::Utils::Cache->new('global') unless $cache;
+
+	for my $req (@$reqs) {
+
+		my $class = $req->[0];
+		my $term = $req->[1];
+		next unless $class and $term;
+
+		my $t = $term;
+		$t =~ s/\s//og;
+		my $cdata = $cache->get_cache("oils_authority_${class}_$t");
+
+		if( $cdata ) {
+			$logger->debug("returning authority response from cache..");
+			$response->{$class} = {} unless exists $response->{$class};
+			$response->{$class}->{$term} = $cdata;
+			next;
+		}
+
+		$logger->debug("authority data not found in cache.. fetching from storage");
+
+		warn "Sending authority request for $class : $term\n";
+		my $freq = $session->request("open-ils.storage.authority.$class.see_from.controlled.atomic",$term, 10);
+		my $areq = $session->request("open-ils.storage.authority.$class.see_also_from.controlled.atomic",$term, 10);
+		my $fr = $freq->gather(1);	
+		my $al = $areq->gather(1);
+		$response->{$class} = {} unless exists $response->{$class};
+		my $auth = _auth_flatten( $term, $fr, $al, 1 );
+
+		my $timeout = 7200; #two hours
+		$timeout = 300 if @{$auth->{from}} or @{$auth->{also}}; # 5 minutes
+		$response->{$class}->{$term} = $auth;
+		$logger->debug("adding authority lookup to cache with timeout $timeout");
+		$cache->put_cache("oils_authority_${class}_$t", $auth, $timeout);
+	}
+	return $response;
+}
+
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "authority_to_html",
 	api_name	=> "open-ils.search.authority.to_html" );
@@ -223,6 +276,7 @@ my $stylesheet;
 
 sub authority_to_html {
 	my( $self, $client, $id ) = @_;
+
 
 	if( !$stylesheet ) {
 		my $sclient = OpenSRF::Utils::SettingsClient->new();
