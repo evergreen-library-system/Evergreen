@@ -30,6 +30,7 @@ function cnBrowseGo(cn, org, depth) {
 	if(depth == null) depth = getDepth();
 
 	org = findOrgUnit(org);
+	cnOffset = 0;
 
 	do {
 		var t = findOrgType(org.ou_type());
