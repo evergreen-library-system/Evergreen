@@ -43,39 +43,47 @@
 </vbox>
 
 <hbox id="checkin_top_ui">
-	<label id="checkin_scan_barcode_label" 
-		value="&staff.circ.checkin.scan_label;" 
-		accesskey="&staff.circ.checkin.scan_label.accesskey;" 
-		control="checkin_barcode_entry_textbox"/>
-	<textbox id="checkin_barcode_entry_textbox"/>
-	<button id="checkin_submit_barcode_button" 
-		label="&staff.circ.checkin.submit_label;" 
-		command="cmd_checkin_submit_barcode"
-		oldaccesskey="&staff.circ.checkin.submit_label.accesskey;"/>
+	<vbox>
+		<hbox>
+			<label id="checkin_scan_barcode_label" 
+				value="&staff.circ.checkin.scan_label;" 
+				accesskey="&staff.circ.checkin.scan_label.accesskey;" 
+				control="checkin_barcode_entry_textbox"/>
+			<textbox id="checkin_barcode_entry_textbox"/>
+			<button id="checkin_submit_barcode_button" 
+				label="&staff.circ.checkin.submit_label;" 
+				command="cmd_checkin_submit_barcode"
+				oldaccesskey="&staff.circ.checkin.submit_label.accesskey;"/>
+		</hbox>
+		<label id="no_change_label" value="" style="color: red" hidden="true"/>
+	</vbox>
 	<spacer flex="1"/>
-	<hbox id="checkin_effective_date_hbox">
-		<label id="checkin_effective_date_label" value="Effective Date:" control="checkin_effective_date_textbox" accesskey="D"/>
-		<textbox id="checkin_effective_date_textbox"/>
-	</hbox>
-	<menubar>
-	<menu label="Actions for Selected Items" accesskey="S">
-		<menupopup>
-			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
-			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
-			<menuseparator />
-			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
-			<menuitem command="sel_transit_abort" label="Abort Transits" />
-			<menuseparator />
-			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
-			<menuseparator />
-			<menuitem command="save_columns" label="Save Columns"/>
-		</menupopup>
-	</menu>
-	</menubar>
-
+	<vbox>
+		<hbox>
+			<hbox id="checkin_effective_date_hbox">
+				<label id="checkin_effective_date_label" value="Effective Date:" control="checkin_effective_date_textbox" accesskey="D"/>
+				<textbox id="checkin_effective_date_textbox"/>
+			</hbox>
+			<menubar>
+			<menu label="Actions for Selected Items" accesskey="S">
+				<menupopup>
+					<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+					<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+					<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+					<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+					<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+					<menuseparator />
+					<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+					<menuitem command="sel_transit_abort" label="Abort Transits" />
+					<menuseparator />
+					<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
+					<menuseparator />
+					<menuitem command="save_columns" label="Save Columns"/>
+				</menupopup>
+			</menu>
+			</menubar>
+		</hbox>
+	</vbox>
 
 </hbox>
 

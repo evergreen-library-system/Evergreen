@@ -855,12 +855,23 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 		if (!check.route_to) check.route_to = '   ';
 
+		if (document.getElementById('no_change_label')) {
+			document.getElementById('no_change_label').setAttribute('value','');
+			document.getElementById('no_change_label').setAttribute('hidden','true');
+		}
+
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n'; }
 			var msg = '';
-			if (check.ilsevent == 3) msg = 'This item is already checked in.\n';
-			if (check.ilsevent == 1202 && check.copy.status() != 11) {
+			if (check.ilsevent == 3 /* NO_CHANGE */) {
+				//msg = 'This item is already checked in.\n';
+				if (document.getElementById('no_change_label')) {
+					document.getElementById('no_change_label').setAttribute('value',barcode + ' was already checked in.');
+					document.getElementById('no_change_label').setAttribute('hidden','false');
+				}
+			}
+			if (check.ilsevent == 1202 /* ITEM_NOT_CATALOGED */ && check.copy.status() != 11) {
 				msg = 'Please inform your helpdesk/developers of this error:\nFIXME -- ITEM_NOT_CATALOGED event but copy status is '
 					+ (data.hash.ccs[ check.copy.status() ] ? data.hash.ccs[ check.copy.status() ].name() : check.copy.status().name() ) + '\n';
 			}
