@@ -1298,9 +1298,9 @@ __PACKAGE__->register_method(
 sub copies_by_cn_label {
 	my( $self, $conn, $record, $label, $circ_lib ) = @_;
 	my $e = new_editor();
-	my $cns = $e->search_asset_call_number({record => $record, label => $label}, {idlist=>1});
+	my $cns = $e->search_asset_call_number({record => $record, label => $label, deleted => 'f'}, {idlist=>1});
 	return [] unless @$cns;
-	return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib}, {idlist=>1});
+	return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib, deleted => 'f'}, {idlist=>1});
 }
 
 
