@@ -73,6 +73,11 @@
 	money::billing->sequence( 'money.billing_id_seq' );
 
 	#---------------------------------------------------------------------
+	package money::desk_payment;
+	
+	money::desk_payment->table( 'money.desk_payment_view' );
+
+	#---------------------------------------------------------------------
 	package money::payment;
 	
 	money::payment->table( 'money.payment_view' );

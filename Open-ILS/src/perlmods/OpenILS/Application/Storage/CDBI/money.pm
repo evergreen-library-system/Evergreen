@@ -89,6 +89,13 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type note/);
 #-------------------------------------------------------------------------------
 
+package money::desk_payment;
+use base qw/money/;
+__PACKAGE__->table('money_desk_payment');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts voided amount_collected accepting_usr cash_drawer payment_type note/);
+#-------------------------------------------------------------------------------
+
 package money::cash_payment;
 use base qw/money/;
 __PACKAGE__->table('money_cash_payment');

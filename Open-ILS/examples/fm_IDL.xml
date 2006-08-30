@@ -1876,6 +1876,7 @@
 			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="voided" oils_obj:array_position="9" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -1885,6 +1886,30 @@
 			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
 			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="mdp" oils_obj:fieldmapper="money::desk_payment" oils_persist:tablename="money.desk_payment_view">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="accepting_usr" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="cash_drawer" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="voided" oils_obj:array_position="11" oils_persist:virtual="false" />
+		</fields>
+		<links>
+			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
+			<link field="credit_card_payment" reltype="might_have" key="id" map="" class="mccp"/>
+			<link field="check_payment" reltype="might_have" key="id" map="" class="mckp"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
 	</class>
 	<class id="cbrebi" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item">
