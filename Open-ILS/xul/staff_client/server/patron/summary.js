@@ -486,6 +486,40 @@ patron.summary.prototype = {
 
 		obj.retrieve();
 
+		try {
+			var caption = document.getElementById("PatronSummaryContact_caption");
+			var arrow = document.getAnonymousNodes(caption)[0];
+			var gb_content = document.getAnonymousNodes(caption.parentNode)[1];
+			arrow.addEventListener(
+				'click',
+				function() {
+					setTimeout(
+						function() {
+							//alert('setting shrink_state to ' + gb_content.hidden);
+							//caption.setAttribute('shrink_state',gb_content.hidden);
+							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+							JSAN.use('util.file'); var file = new util.file('patron_id_shrink');
+							file.set_object(String(gb_content.hidden)); file.close();
+						}, 0
+					);
+				}, false
+			);
+			//var shrink_state = caption.getAttribute('shrink_state');
+			var shrink_state = false;
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			JSAN.use('util.file'); var file = new util.file('patron_id_shrink');
+			if (file._file.exists()) {
+				shrink_state = file.get_object(); file.close();
+			}
+			//alert('shrink_state retrieved as ' + shrink_state);
+			if (shrink_state != 'false' && shrink_state) {
+				JSAN.use('util.widgets');
+				//alert('clicking the widget');
+				util.widgets.click( arrow );
+			}
+		} catch(E) {
+			obj.error.sdump('D_ERROR','with shrink_state in summary.js: ' + E);
+		}
 	},
 
 	'retrieve' : function() {
