@@ -566,19 +566,21 @@ sub process {
 	}
 
 	my $t = $self->{last_tag};
-	my @msgs = $val =~ /(<$t[^>]*>.*?<\/$t>)/g;
-	$val = shift(@msgs);
 
-	if (@msgs) {
-		my $tmp = $self->{temp_buffer};
-
-		$self->{temp_buffer} = '';
-		$self->{temp_buffer} .= $_ for (@msgs);
-		$self->{temp_buffer} .= $tmp;
+	if( $t and $val ) {
+		my @msgs = $val =~ /(<$t[^>]*>.*?<\/$t>)/g;
+		$val = shift(@msgs);
+	
+		if (@msgs) {
+			my $tmp = $self->{temp_buffer};
+	
+			$self->{temp_buffer} = '';
+			$self->{temp_buffer} .= $_ for (@msgs);
+			$self->{temp_buffer} .= $tmp;
+		}
 	}
 
 	return $val;
-
 }
 
 
