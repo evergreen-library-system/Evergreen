@@ -5,9 +5,42 @@ cat.util = {};
 
 cat.util.EXPORT_OK	= [ 
 	'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
-	'mark_item_missing', 'mark_item_damaged',
+	'mark_item_missing', 'mark_item_damaged', 'replace_barcode',
 ];
 cat.util.EXPORT_TAGS	= { ':all' : cat.util.EXPORT_OK };
+
+cat.util.replace_barcode = function(old_bc) {
+	try {
+		JSAN.use('util.network');
+		var network = new util.network();
+
+		if (!old_bc) old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
+		if (!old_bc) return;
+
+		var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
+		if (typeof copy.ilsevent != 'undefined') throw(copy); 
+		if (!copy) throw(copy);
+
+		// Why did I want to do this twice?  Because this copy is more fleshed?
+		copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
+		if (typeof copy.ilsevent != 'undefined') throw(copy);
+		if (!copy) throw(copy);
+
+		var new_bc = window.prompt('Enter the replacement barcode for the copy with barcode ' + old_bc + ':','','Replace Barcode');
+
+		var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
+		if (typeof test.ilsevent == 'undefined') {
+			alert('Rename aborted.  Another copy has that barcode');
+			return;
+		}
+		copy.barcode(new_bc); copy.ischanged('1');
+		var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
+		if (typeof r.ilsevent != 'undefined') { if (r.ilsevent != 0) throw(r); }
+	} catch(E) {
+		JSAN.use('util.error'); var error = new util.error();
+		error.standard_unexpected_error_alert('Rename did not likely occur.',E);
+	}
+}
 
 cat.util.transfer_copies = function(params) {
 	JSAN.use('util.error'); var error = new util.error();

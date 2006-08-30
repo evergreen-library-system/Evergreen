@@ -44,6 +44,7 @@ circ.copy_status.prototype = {
 						obj.error.sdump('D_TRACE','circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
 						if (obj.selection_list.length == 0) {
 							obj.controller.view.sel_checkin.setAttribute('disabled','true');
+							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
@@ -56,6 +57,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_clip.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
+							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
@@ -94,6 +96,24 @@ circ.copy_status.prototype = {
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
+							}
+						}
+					],
+					'cmd_replace_barcode' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('cat.util');
+								for (var i = 0; i < obj.selection_list.length; i++) {
+									try { 
+										var barcode = obj.selection_list[i].barcode;
+										cat.util.replace_barcode( barcode );
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
+									}
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Barcode replacements did not likely happen.',E);
 							}
 						}
 					],

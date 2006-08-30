@@ -20,6 +20,7 @@
 		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuseparator/>
 		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
@@ -67,6 +68,7 @@
 			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 			<menuitem command="sel_transit_abort" label="Abort Transits" />
 			<menuseparator />
 			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>

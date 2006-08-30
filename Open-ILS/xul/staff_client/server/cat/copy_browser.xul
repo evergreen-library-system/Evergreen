@@ -78,6 +78,7 @@
 		<command id="cmd_add_items"/>
 		<command id="cmd_add_items_to_buckets"/>
 		<command id="cmd_edit_items"/>
+		<command id="cmd_replace_barcode"/>
 		<command id="cmd_delete_items"/>
 		<command id="cmd_transfer_items"/>
 		<command id="cmd_print_spine_labels"/>
@@ -100,6 +101,7 @@
 			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
 			<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
+			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
 			<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>
@@ -137,6 +139,7 @@
 							<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
 							<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
 							<menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="E"/>
+							<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 							<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
 							<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
 							<menuitem command="cmd_print_spine_labels" label="Print Item Spine Labels" accesskey="P"/>

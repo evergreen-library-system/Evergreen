@@ -238,6 +238,42 @@ cat.copy_browser.prototype = {
 								}
 							}
 						],
+						'cmd_replace_barcode' : [
+							['command'],
+							function() {
+								try {
+									JSAN.use('util.functional');
+
+									var list = util.functional.filter_list(
+										obj.sel_list,
+										function (o) {
+											return o.split(/_/)[0] == 'acp';
+										}
+									);
+
+									list = util.functional.map_list(
+										list,
+										function (o) {
+											return obj.map_acp[ o ].barcode();
+										}
+									);
+
+									JSAN.use('cat.util');
+									for (var i = 0; i < list.length; i++) {
+										try {
+											cat.util.replace_barcode(list[i]);
+										} catch(E) {
+											obj.error.standard_unexpected_error_alert('Barcode ' +list[i] + ' not likely replaced.',E);
+										}
+									}
+									obj.refresh_list();
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('copy browser -> replace barcode',E);
+									obj.refresh_list();
+								}
+							}
+						],
 						'cmd_edit_items' : [
 							['command'],
 							function() {
@@ -280,6 +316,7 @@ cat.copy_browser.prototype = {
 									}
 
 									JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+									obj.refresh_list();
 
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('Copy Browser -> Edit Items',E);
@@ -1357,6 +1394,7 @@ cat.copy_browser.prototype = {
 			obj.controller.view.cmd_add_items.setAttribute('disabled','true');
 			obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','true');
 			obj.controller.view.cmd_edit_items.setAttribute('disabled','true');
+			obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
 			obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
 			obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','true');
 			obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
@@ -1386,6 +1424,7 @@ cat.copy_browser.prototype = {
 				obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
 				obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
 				obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
+				obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
 				obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
 				obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
 				obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');
