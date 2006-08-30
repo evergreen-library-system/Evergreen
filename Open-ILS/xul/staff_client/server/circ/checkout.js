@@ -577,7 +577,7 @@ circ.checkout.prototype = {
 										} else {
 											switch(robj.ilsevent) {
 												case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
-													alert('This transit may not be aborted due to a problem status.  It needs to be returned to its circulating library.');
+													alert(robj.desc);
 												break;
 												case 5000 /* PERM_FAILURE */ :
 												break;

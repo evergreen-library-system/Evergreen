@@ -26,7 +26,7 @@ circ.util.abort_transits = function(selection_list) {
 				if (typeof robj.ilsevent != 'undefined') {
 					switch(robj.ilsevent) {
 						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
-							alert('This transit for copy ' + copy_id + ' may not be aborted due to a problem status.  It needs to be returned to its circulating library.');
+							alert('Copy Id = ' + copy_id + '\n' + robj.desc);
 						break;
 						case 5000 /* PERM_FAILURE */ :
 						break;
