@@ -700,6 +700,12 @@ function _myOPACSummaryShowUer(r) {
 	if(!user) return;
 
 
+	var iv1 = user.ident_value();
+	var iv2 = user.ident_value();
+
+	if (iv1.length > 4) iv1 = iv1.replace(new RegExp(iv1.substring(0,iv1.length - 4)), '***********');
+	if (iv2.length > 4) iv2 = iv2.replace(new RegExp(iv2.substring(0,iv2.length - 4)), '***********');
+
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
 	appendClear($('myopac_summary_middle'),text(user.second_given_name()));
 	appendClear($('myopac_summary_dayphone'),text(user.day_phone()));
@@ -709,8 +715,8 @@ function _myOPACSummaryShowUer(r) {
 	appendClear($('myopac_summary_username'),text(user.usrname()));
 	appendClear($('myopac_summary_email'),text(user.email()));
 	appendClear($('myopac_summary_barcode'),text(user.card().barcode()));
-	appendClear($('myopac_summary_ident1'),text(user.ident_value()));
-	appendClear($('myopac_summary_ident2'),text(user.ident_value2()));
+	appendClear($('myopac_summary_ident1'),text(iv1));
+	appendClear($('myopac_summary_ident2'),text(iv2));
 	appendClear($('myopac_summary_homelib'),text(findOrgUnit(user.home_ou()).name()));
 	appendClear($('myopac_summary_create_date'),text(_trimTime(user.create_date())));
 
