@@ -17,9 +17,11 @@ use vars qw/$logger $apputils/;
 use Data::Dumper;
 use OpenILS::Const qw/:const/;
 use DateTime;
+use Email::Send;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use Unicode::Normalize;
+
 
 my $bsconfig = shift || die "usage: $0 <bootstrap_config>\n";
 my @goback = @ARGV;
@@ -27,6 +29,8 @@ my @goback = @ARGV;
 osrf_connect($bsconfig);
 my $e = OpenILS::Utils::CStoreEditor->new;
 
+my $smtp = $ENV{EG_OVERDUE_SMTP_HOST};
+my $mail_sender = $ENV{EG_OVERDUE_EMAIL_SENDER};
 
 # ---------------------------------------------------------------
 # Set up the email template
@@ -35,7 +39,7 @@ print "Using email template: $etmpl\n";
 open(F,"$etmpl");
 my @etmpl = <F>;
 close(F);
-my $email_template = "@etmpl";
+my $email_template = join('',@etmpl);
 # ---------------------------------------------------------------
 
 
@@ -387,15 +391,17 @@ sub send_email {
 
 	my $r = ($range eq '7day') ? 7 : 14;
 
-	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/o;
-	$tmpl =~ s/\${EMAIL_SENDER}/$org_email/o;
-	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
-   $tmpl =~ s/\${EMAIL_HEADERS}/\n\r\n\r/o;
-   $tmpl =~ s/\${RANGE}/$r/o;
-   $tmpl =~ s/\${DATE}/$day\/$mon\/$year/o;
-   $tmpl =~ s/\${FIRST_NAME}/$fn/o;
-   $tmpl =~ s/\${MIDDLE_NAME}/$mn/o;
-   $tmpl =~ s/\${LAST_NAME}/$ln/o;
+	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/;
+	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/;
+	#$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$mail_sender/;
+   $tmpl =~ s/\${EMAIL_HEADERS}//;
+
+   $tmpl =~ s/\${RANGE}/$r/;
+   $tmpl =~ s/\${DATE}/$day\/$mon\/$year/;
+   $tmpl =~ s/\${FIRST_NAME}/$fn/;
+   $tmpl =~ s/\${MIDDLE_NAME}/$mn/;
+   $tmpl =~ s/\${LAST_NAME}/$ln/;
 
 	my ($itmpl) = $tmpl =~ /\${OVERDUE_ITEMS\[(.*)\]}/ms;
 
@@ -420,7 +426,19 @@ sub send_email {
 	$tmpl =~ s/\${ORG_ADDRESS}/$org_addr/o;
 	$tmpl =~ s/\${ORG_PHONE}/$org_phone/o;
 
-	warn "EMAIL: $tmpl\n";
+	$logger->debug("OD_notice: sending email to $pemail: $tmpl");
+
+	my $sender = Email::Send->new({mailer => 'SMTP'});
+	$sender->mailer_args([Host => $smtp]);
+
+	my $stat;
+	#my $stat = $sender->send($tmpl);
+	
+	if( $stat and $stat->type eq 'success' ) {
+		$logger->info("OD_notice:   successfully sent overdue email");
+	} else {
+		$logger->warn("OD_notice:   unable to send hold overdue email: ".Dumper($stat));
+	}
 
 	$logger->info("OD_notice:   sending email to".$patron_data->[0]->email);
 }
