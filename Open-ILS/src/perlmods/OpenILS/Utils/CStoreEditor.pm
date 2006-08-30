@@ -153,6 +153,17 @@ sub xact_rollback {
 }
 
 
+
+# -----------------------------------------------------------------------------
+# Rolls back the transaction and disconnects
+# -----------------------------------------------------------------------------
+sub rollback {
+	my $self = shift;
+	$self->xact_rollback if $self->{xact};
+	$self->session->disconnect;
+}
+
+
 # -----------------------------------------------------------------------------
 # commits the db session and destroys the session
 # -----------------------------------------------------------------------------
