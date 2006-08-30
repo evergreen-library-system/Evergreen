@@ -483,6 +483,8 @@ patron.util.set_penalty_css = function(patron) {
 			addCSSClass(document.documentElement,'PATRON_INACTIVE');
 		}
 
+		try { addCSSClass(document.documentElement,'PATRON_NET_ACCESS_' + patron.net_access_level()); } catch(E) {}
+
 		var now = new Date();
 		now = now.getTime()/1000;
 
