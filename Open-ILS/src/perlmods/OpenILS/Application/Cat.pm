@@ -1173,7 +1173,9 @@ sub update_copy_stat_entries {
 			}
 		}
 	}
-	
+
+	return undef if $copy->isdeleted;
+
 	# go through the stat cat update/create process
 	for my $entry (@$entries) { 
 		next unless $entry;
@@ -1182,8 +1184,10 @@ sub update_copy_stat_entries {
 		next if( grep{$_->stat_cat_entry == $entry->id} @$maps );
 	
 		my $new_map = Fieldmapper::asset::stat_cat_entry_copy_map->new();
+
+		my $sc = ref($entry->stat_cat) ? $entry->stat_cat->id : $entry->stat_cat;
 		
-		$new_map->stat_cat( $entry->stat_cat );
+		$new_map->stat_cat( $sc );
 		$new_map->stat_cat_entry( $entry->id );
 		$new_map->owning_copy( $copy->id );
 
@@ -1200,7 +1204,6 @@ sub update_copy_stat_entries {
 sub create_volume {
 	my( $override, $editor, $vol ) = @_;
 	my $evt;
-
 
 	# first lets see if there are any collisions
 	my $vols = $editor->search_asset_call_number( { 
