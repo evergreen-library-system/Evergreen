@@ -33,7 +33,7 @@ sub new {
 
 	my $copy = $e->search_asset_copy(
 		[
-			{ barcode => $item_id },
+			{ barcode => $item_id, deleted => 'f' },
 			{
 				flesh => 3,
 				flesh_fields => {
