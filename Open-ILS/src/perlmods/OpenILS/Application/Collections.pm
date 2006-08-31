@@ -312,7 +312,7 @@ sub add_collections_fee {
 	my $bill = Fieldmapper::money::billing->new;
 	$bill->note($fee_note);
 	$bill->xact($xact->id);
-	$bill->billing_type('SYSTEM: Long Overdue Processing Fee'); # XXX
+	$bill->billing_type(OILS_BILLING_TYPE_COLLECTION_FEE);
 	$bill->amount($fee_amount);
 
 	$e->create_money_billing($bill) or return $e->event;
@@ -755,7 +755,7 @@ sub create_user_note {
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('UPDATE_USER');
+	return $e->event unless $e->allowed('UPDATE_USER'); # XXX Makre more specific perm for this
 
 	return $e->event unless 
 		my $card = $e->search_actor_card({barcode=>$user_barcode})->[0];
