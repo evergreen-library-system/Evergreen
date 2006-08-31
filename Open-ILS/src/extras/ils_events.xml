@@ -124,6 +124,16 @@
 	<event code='1224' textcode='PATRON_ACCOUNT_EXPIRED'>
 		<desc xml:lang="en-US">The patron's account has expired</desc>
 	</event>
+	<event code='1225' textcode='TRANSIT_ABORT_NOT_ALLOWED'>
+		<desc xml:lang="en-US">The transit on this item may not be aborted due to the state the item is in</desc>
+	</event>
+
+	<event code='1226' textcode='REFUND_EXCEEDS_DESK_PAYMENTS'>
+		<desc xml:lang="en-US">
+			This refund amount is not allowed because it exceeds 
+			the total amount of desk payments for this transaction.
+		</desc>
+	</event>
 
 
 
@@ -496,6 +506,9 @@
 		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
 	</event>
 	<event code='1632' textcode='CONFIG_RULES_AGE_HOLD_PROTECT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
+	</event>
+	<event code='1633' textcode='MONEY_DESK_PAYMENT_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
 	</event>
 
