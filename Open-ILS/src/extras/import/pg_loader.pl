@@ -14,12 +14,13 @@ use Time::HiRes qw/time/;
 use Getopt::Long;
 
 my @files;
-my ($config, $output, @auto, @order) =
+my ($config, $output, @auto, @order, @wipe) =
 	('/openils/conf/bootstrap.conf');
 
 GetOptions(
 	'config=s'	=> \$config,
 	'output=s'	=> \$output,
+	'wipe=s'	=> \@wipe,
 	'autoprimary=s'	=> \@auto,
 	'order=s'	=> \@order,
 );
@@ -56,6 +57,8 @@ while ( my $rec = <> ) {
 
 		$fieldcache{$hint} =
 			{ table => $class->Table,
+			  sequence => $class->Sequence,
+			  pkey => $class->Identity,
 			  fields => \@cols,
 			};
 	}
@@ -80,6 +83,7 @@ $output->print("SET CLIENT_ENCODING TO 'UNICODE';\n\n");
 
 for my $h (@order) {
 	my $fields = join(',', @{ $fieldcache{$h}{fields} });
+	$output->print( "DELETE FROM $fieldcache{$h}{table};\n" ) if (grep {$_ eq $h } @wipe);
 	$output->print( "COPY $fieldcache{$h}{table} ($fields) FROM STDIN;\n" );
 
 	for my $line (@{ $lineset{$h} }) {
@@ -105,4 +109,7 @@ for my $h (@order) {
 	}
 
 	$output->print('\.'."\n\n");
+	
+	$output->print("SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n\n")
+		if (!grep { $_ eq $h} @auto);
 }

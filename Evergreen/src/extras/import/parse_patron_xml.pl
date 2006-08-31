@@ -210,6 +210,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 		
 		$a->valid( 'f' );
 		$a->valid( 't' ) if ($prefix eq 'std_');
+		$a->valid( 'f' ) if ($prefix eq 'std_' and $a->findvalue( "${prefix}dpvscore" ) < 3);
 		
 		$a->within_city_limits( 'f' );
 		$a->country('USA');

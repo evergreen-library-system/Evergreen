@@ -9,8 +9,8 @@ ALTER TABLE actor.stat_cat ADD CONSTRAINT actor_stat_cat_owner_fkey FOREIGN KEY 
 ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_stat_cat_fkey FOREIGN KEY (stat_cat) REFERENCES actor.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.stat_cat_entry ADD CONSTRAINT actor_stat_cat_entry_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE actor.stat_cat_entry_usr_map ADD CONSTRAINT actor_sc_tu_fkey FOREIGN KEY (target_usr) REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
-
+ALTER TABLE actor.stat_cat_entry_usr_map ADD CONSTRAINT actor_sceum_tu_fkey FOREIGN KEY (target_usr) REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE actor.stat_cat_entry_usr_map ADD CONSTRAINT actor_sceum_sc_fkey FOREIGN KEY (stat_cat) REFERENCES actor.stat_cat (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_mailing_address_fkey FOREIGN KEY (mailing_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE actor.org_unit ADD CONSTRAINT actor_org_unit_billing_address_fkey FOREIGN KEY (billing_address) REFERENCES actor.org_address (id) DEFERRABLE INITIALLY DEFERRED;
@@ -67,6 +67,7 @@ ALTER TABLE asset.stat_cat_entry ADD CONSTRAINT a_sce_owner_fkey FOREIGN KEY (ow
 
 ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_oc_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_sce_fkey FOREIGN KEY (stat_cat_entry) REFERENCES asset.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_sc_fkey FOREIGN KEY (stat_cat) REFERENCES asset.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE money.billable_xact ADD CONSTRAINT money_billable_xact_usr_fkey FOREIGN KEY (usr) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 
