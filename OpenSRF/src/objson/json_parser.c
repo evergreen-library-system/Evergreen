@@ -721,7 +721,7 @@ int json_handle_error(char* string, unsigned long* index, char* err_msg) {
 
 	fprintf(stderr, 
 			"\nError parsing json string at charracter %c "
-			"(code %d) and index %ld\nString length: %d\nMsg:\t%s\nNear:\t%s\n\nFull String:\n%s\n\n", 
+			"(code %d) and index %ld\nString length: %d\nMsg:\t%s\nNear:\t%s\nFull String:\t%s\n", 
 			string[*index], string[*index], *index, current_strlen, err_msg, buf, string );
 
 	return -1;
