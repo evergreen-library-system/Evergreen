@@ -246,107 +246,24 @@ sub update_patron {
 	return $evt if $evt;
 
 	$logger->activity("user ".$user_obj->id." updating/creating  user ".$new_patron->id);
+
+	my $opatron;
+	if(!$patron->isnew) {
+		$opatron = new_editor()->retrieve_actor_user($new_patron->id);
+	}
+
 	$apputils->commit_db_session($session);
+	my $fuser =  flesh_user($new_patron->id());
 
-	#warn "Patron Update/Create complete\n";
-	return flesh_user($new_patron->id());
+	if( $opatron ) {
+		# Log the new and old patron for investigation
+		$logger->info("$user_session updating patron object. orig patron object = ".
+			JSON->perl2JSON($opatron). " |||| new patron = ".JSON->perl2JSON($fuser));
+	}
+
+
+	return $fuser;
 }
-
-
-
-
-#__PACKAGE__->register_method(
-#	method	=> "user_retrieve_fleshed_by_id",
-#	api_name	=> "open-ils.actor.user.fleshed.retrieve",);
-#
-#sub user_retrieve_fleshed_by_id {
-#	my( $self, $client, $user_session, $user_id ) = @_;
-#
-#	my( $requestor, $target, $evt ) = $apputils->
-#		checkses_requestor( $user_session, $user_id, 'VIEW_USER' );
-#	return $evt if $evt;
-#
-#	return flesh_user($user_id);
-#}
-
-
-# fleshes: card, cards, address, addresses, stat_cat_entries, standing_penalties
-# XXX DEPRECATE  ME
-=head old
-sub __flesh_user {
-	my $id = shift;
-	my $session = shift;
-
-	my $kill = 0;
-
-	if(!$session) {
-		$session = OpenSRF::AppSession->create("open-ils.storage");
-		$kill = 1;
-	}
-
-	# grab the user with the given id 
-	my $ureq = $session->request(
-			"open-ils.storage.direct.actor.user.retrieve", $id);
-	my $user = $ureq->gather(1);
-
-	if(!$user) { return undef; }
-
-	# grab the cards
-	my $cards_req = $session->request(
-			"open-ils.storage.direct.actor.card.search.usr.atomic",
-			$user->id() );
-	$user->cards( $cards_req->gather(1) );
-
-	for my $c(@{$user->cards}) {
-		if($c->id == $user->card || $c->id eq $user->card ) {
-			#warn "Setting my card to " . $c->id . "\n";
-			$user->card($c);
-		}
-	}
-
-	my $add_req = $session->request(
-			"open-ils.storage.direct.actor.user_address.search.usr.atomic",
-			$user->id() );
-	$user->addresses( $add_req->gather(1) );
-
-	if( @{$user->addresses} ) {
-		if( ! grep { $_->id eq $user->billing_address } @{$user->addresses} ) {
-			my $ba = $session->request(
-				'open-ils.storage.direct.actor.user_address.retrieve', 
-				$user->billing_address)->gather(1);
-			push( @{$user->addresses}, $ba );
-		}
-	
-		if( ! grep { $_->id eq $user->mailing_address } @{$user->addresses} ) {
-			my $ba = $session->request(
-				'open-ils.storage.direct.actor.user_address.retrieve', 
-				$user->mailing_address)->gather(1);
-			push( @{$user->addresses}, $ba );
-		}
-	}
-
-
-	for my $c(@{$user->addresses}) {
-		if($c->id eq $user->billing_address ) { $user->billing_address($c); }
-		if($c->id eq $user->mailing_address ) { $user->mailing_address($c); }
-	}
-
-	my $stat_req = $session->request(
-		"open-ils.storage.direct.actor.stat_cat_entry_user_map.search.target_usr.atomic",
-		$user->id() );
-	$user->stat_cat_entries($stat_req->gather(1));
-
-	my $standing_penalties_req = $session->request(
-		"open-ils.storage.direct.actor.user_standing_penalty.search.usr.atomic",
-		$user->id() );
-	$user->standing_penalties($standing_penalties_req->gather(1));
-
-	if($kill) { $session->disconnect(); }
-	$user->clear_passwd();
-
-	return $user;
-}
-=cut
 
 
 sub flesh_user {
@@ -371,18 +288,6 @@ sub _clone_patron {
 	my $patron = shift;
 
 	my $new_patron = $patron->clone;
-
-	# Using the Fieldmapper clone method
-	#my $new_patron = Fieldmapper::actor::user->new();
-
-	#my $fmap = $Fieldmapper::fieldmap;
-	#no strict; # shallow clone, may be useful in the fieldmapper
-	#for my $field 
-	#	(keys %{$fmap->{"Fieldmapper::actor::user"}->{'fields'}}) {
-	#		$new_patron->$field( $patron->$field() );
-	#}
-	#use strict;
-
 	# clear these
 	$new_patron->clear_billing_address();
 	$new_patron->clear_mailing_address();
@@ -416,9 +321,6 @@ sub _add_patron {
 		return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
 	}
 
-#	$evt = _check_dup_ident($session, $patron);
-#	return (undef, $evt) if $evt;
-
 	$logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
 	my $id = $session->request(
@@ -443,12 +345,6 @@ sub _update_patron {
 		$evt = $U->check_perms($user_obj->id, $patron->home_ou, 'UPDATE_USER');
 		return (undef, $evt) if $evt;
 	}
-
-	# We can' check for dup idents on update because some existing
-	# users may already have dup idents
-	#$evt = _check_dup_ident($session, $patron);
-	#return (undef, $evt) if $evt;
-
 
 	# update the password by itself to avoid the password protection magic
 	if( $patron->passwd ) {
@@ -2491,6 +2387,7 @@ sub new_flesh_user {
 		}
 	}
 
+	$e->disconnect;
 	$user->clear_passwd();
 	return $user;
 }
