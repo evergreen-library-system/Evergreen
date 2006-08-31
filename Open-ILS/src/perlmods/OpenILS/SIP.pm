@@ -32,6 +32,8 @@ sub new {
 	my $type = ref($class) || $class;
 	my $self = {};
 
+	$self->{login} = $login;
+
 	$config = $institution;
 	syslog("LOG_DEBUG", "OILS: new ILS '%s'", $institution->{id});
 	$self->{institution} = $institution;
@@ -54,6 +56,16 @@ sub new {
 		$self->login( $login->{id}, $login->{password} );
 
 	return $self;
+}
+
+sub verify_session {
+	my $self = shift;
+	my $ses = $U->simplereq( 
+		'open-ils.auth',
+		'open-ils.auth.session.retrieve',  $self->{authtoken} );
+	return 1 unless $U->event_code($ses);
+	syslog('LOG_INFO', "OILS: Logging back after session timeout as user ".$self->{login}->{id});
+	return $self->login( $self->{login}->{id}, $self->{login}->{password} );
 }
 
 sub to_bool {
@@ -208,6 +220,8 @@ sub offline_ok {
 
 sub checkout {
 	my ($self, $patron_id, $item_id, $sc_renew) = @_;
+
+	$self->verify_session;
 	
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkout attempt: patron=$patron_id, item=$item_id");
 	
@@ -265,6 +279,8 @@ sub checkout {
 sub checkin {
 	my ($self, $item_id, $trans_date, $return_date,
 	$current_loc, $item_props, $cancel) = @_;
+
+	$self->verify_session;
 
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin on item=$item_id");
 	
@@ -487,6 +503,8 @@ sub end_patron_session {
 sub renew {
 	my ($self, $patron_id, $patron_pwd, $item_id, $title_id,
 		$no_block, $nb_due_date, $third_party, $item_props, $fee_ack) = @_;
+
+	$self->verify_session;
 
 	my $trans = OpenILS::SIP::Transaction::Renew->new( authtoken => $self->{authtoken} );
 	$trans->patron($self->find_patron($patron_id));
