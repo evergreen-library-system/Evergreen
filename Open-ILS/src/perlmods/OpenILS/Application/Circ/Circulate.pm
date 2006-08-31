@@ -145,6 +145,7 @@ sub run_method {
 	# of the objects we need
 	# --------------------------------------------------------------------------
 	$circulator->is_renewal(1) if $api =~ /renew/;
+	$circulator->is_checkin(1) if $api =~ /checkin/;
 	$circulator->mk_script_runner;
 	return circ_events($circulator) if $circulator->bail_out;
 
@@ -279,6 +280,7 @@ my @AUTOLOAD_FIELDS = qw/
 	is_renewal
 	is_noncat
 	is_precat
+	is_checkin
 	noncat_type
 	editor
 	events
@@ -416,6 +418,8 @@ sub mk_script_runner {
 	my $self = shift;
 	my $args = {};
 
+	$args->{ingore_user_status} = 1 if $self->is_checkin;
+
 	my @fields = 
 		qw/copy copy_barcode copy_id patron 
 			patron_id patron_barcode volume title editor/;
@@ -522,7 +526,7 @@ sub do_copy_checks {
 	# no claims returned circ was found, check if there is any open circ
 	unless( $self->is_renewal ) {
 		my $circs = $self->editor->search_action_circulation(
-			{ target_copy => $copy->id, stop_fines_time => undef }
+			{ target_copy => $copy->id, checkin_time => undef }
 		);
 
 		return $self->bail_on_events(
@@ -1133,26 +1137,9 @@ sub do_checkin {
 
 	# the renew code will have already found our circulation object
 	unless( $self->is_renewal and $self->circ ) {
-
-		# first lets see if we have a good old fashioned open circulation
-		my $circ = $self->editor->search_action_circulation(
-			{ target_copy => $self->copy->id, stop_fines => undef } )->[0];
-
-		if(!$circ) {
-			# if not, lets look for other circs we can check in
-			$circ = $self->editor->search_action_circulation(
-				{ 
-					target_copy => $self->copy->id, 
-					xact_finish => undef,
-					stop_fines	=> [ 
-						OILS_STOP_FINES_CLAIMSRETURNED, 
-						OILS_STOP_FINES_LOST, 
-						OILS_STOP_FINES_LONGOVERDUE, 
-					]
-				} )->[0];
-		}
-
-		$self->circ($circ);
+		$self->circ(
+			$self->editor->search_action_circulation(
+			{ target_copy => $self->copy->id, checkin_time => undef })->[0]);
 	}
 
 
@@ -1257,8 +1244,8 @@ sub do_checkin {
 
 sub reshelve_copy {
    my $self    = shift;
+   my $force   = $self->force || shift;
    my $copy    = $self->copy;
-   my $force   = $self->force;
 
    my $stat = $U->copy_status($copy->status)->id;
 
@@ -1467,15 +1454,28 @@ sub checkin_handle_circ {
 
    # see if there are any fines owed on this circ.  if not, close it
 	$obt = $self->editor->retrieve_money_open_billable_transaction_summary($circ->id);
-   $circ->xact_finish('now') if( $obt->balance_owed == 0 );
+   $circ->xact_finish('now') if( $obt and $obt->balance_owed == 0 );
 
    # Set the checkin vars since we have the item
    $circ->checkin_time('now');
    $circ->checkin_staff($self->editor->requestor->id);
    $circ->checkin_lib($self->editor->requestor->ws_ou);
 
-	$self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
-	$self->update_copy;
+	my $circ_lib = (ref $self->copy->circ_lib) ?  
+		$self->copy->circ_lib->id : $self->copy->circ_lib;
+	my $stat = $U->copy_status($self->copy->status)->id;
+
+	# If the item is lost/missing and it needs to be sent home, don't 
+	# reshelve the copy, leave it lost/missing so the recipient will know
+	if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING)
+		and ($circ_lib != $self->editor->requestor->ws_ou) ) {
+		$logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
+
+	} else {
+		$self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+		$self->update_copy;
+	}
+
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_circulation($circ);
@@ -1486,7 +1486,11 @@ sub checkin_handle_backdate {
 	my $self = shift;
 
 	my $bills = $self->editor->search_money_billing(
-		{ billing_ts => { ">=" => $self->backdate }, "xact" => $self->circ->id }
+		{ 
+			billing_ts => { '>=' => $self->backdate }, 
+			xact => $self->circ->id, 
+			billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
+		}
 	);
 
 	for my $bill (@$bills) {	
@@ -1509,7 +1513,10 @@ sub _checkin_handle_backdate {
 
    my $bills = $session->request(
       "open-ils.storage.direct.money.billing.search_where.atomic",
-      billing_ts => { ">=" => $backdate }, "xact" => $circ->id )->gather(1);
+		billing_ts => { '>=' => $backdate }, 
+		xact => $circ->id,
+		billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
+	)->gather(1);
 
    if($bills) {
       for my $bill (@$bills) {
@@ -1531,7 +1538,7 @@ sub _checkin_handle_backdate {
 sub find_patron_from_copy {
 	my $self = shift;
 	my $circs = $self->editor->search_action_circulation(
-		{ target_copy => $self->copy->id, stop_fines_time => undef });
+		{ target_copy => $self->copy->id, checkin_time => undef });
 	my $circ = $circs->[0];
 	return unless $circ;
 	my $u = $self->editor->retrieve_actor_user($circ->usr)
