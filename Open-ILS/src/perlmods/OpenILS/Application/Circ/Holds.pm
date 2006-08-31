@@ -1085,4 +1085,52 @@ sub find_nearest_permitted_hold {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'all_rec_holds',
+	api_name => 'open-ils.circ.holds.retrieve_all_from_title',
+);
+
+sub all_rec_holds {
+	my( $self, $conn, $auth, $title_id, $args ) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+	$e->allowed('VIEW_HOLD') or return $e->event;
+
+	$args ||= { fulfillment_time => undef };
+	$args->{cancel_time} = undef;
+
+	my $resp = {};
+
+	$resp->{title_holds} = $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_TITLE, 
+			target => $title_id, 
+			%$args 
+		}, {idlist=>1} );
+
+	my $vols = $e->search_asset_call_number(
+		{ record => $title_id, deleted => 'f' }, {idlist=>1});
+
+	$resp->{volume_holds} = (!@$vols) ? [] : $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_VOLUME, 
+			target => $vols,
+			%$args }, 
+		{idlist=>1} );
+
+	my $copies = $e->search_asset_copy(
+		{ call_number => $vols, deleted => 'f' }, {idlist=>1});
+
+	$resp->{copy_holds} = (!@$copies) ? [] : $e->search_action_hold_request(
+		{ 
+			hold_type => OILS_HOLD_TYPE_COPY,
+			target => $copies,
+			%$args }, 
+		{idlist=>1} );
+
+	return $resp;
+}
+
+
 1;
