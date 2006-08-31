@@ -19,9 +19,12 @@
 		<br/>
 	</div>
 
-	<table width='100%' class='light_border data_grid'>
-
+	<!--
+	<table class='light_border data_grid'>
+	-->
+	<table width='70%' class='light_border myopac_summary_table'>
 		<tbody id='myopac_summary_tbody'>
+			<!--
 			<tr>
 				<td class='color_4 light_border' width='20%'>First Name</td>
 				<td class='light_border' id='myopac_summary_first'> </td>
@@ -34,6 +37,17 @@
 				<td class='color_4 light_border'>Last Name</td>
 				<td class='light_border' id='myopac_summary_last'> </td>
 			</tr>
+			-->
+
+			<tr>
+				<td width='30%' class='color_4 light_border'>Name</td>
+				<td class='light_border'>
+					<span id='myopac_summary_first'> </span> 
+					<span id='myopac_summary_middle'> </span> 
+					<span id='myopac_summary_last'> </span> 
+				</td>
+			</tr>
+
 			<tr>
 				<td class='color_4 light_border'>Day Phone</td>
 				<td class='light_border' id='myopac_summary_dayphone'> </td>
@@ -133,10 +147,12 @@
 				<td class='color_4 light_border'>Primary Identification</td>
 				<td class='light_border' id='myopac_summary_ident1'> </td>
 			</tr>
+			<!--
 			<tr>
 				<td class='color_4 light_border'>Secondary Identification</td>
 				<td class='light_border' id='myopac_summary_ident2'> </td>
 			</tr>
+			-->
 			<tr>
 				<td class='color_4 light_border'>Active Barcode</td>
 				<td class='light_border' id='myopac_summary_barcode'> </td>
