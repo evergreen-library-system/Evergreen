@@ -1148,6 +1148,8 @@ sub create_copy {
 sub update_copy_stat_entries {
 	my( $editor, $copy, $delete_stats ) = @_;
 
+	return undef if $copy->isdeleted;
+
 	my $evt;
 	my $entries = $copy->stat_cat_entries;
 
@@ -1173,8 +1175,6 @@ sub update_copy_stat_entries {
 			}
 		}
 	}
-
-	return undef if $copy->isdeleted;
 
 	# go through the stat cat update/create process
 	for my $entry (@$entries) { 
