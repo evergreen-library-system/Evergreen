@@ -172,12 +172,12 @@ sub fetch_data {
 	my $holdid	= shift;
 	my $e			= $self->editor;
 
-	$self->hold($e->retrieve_action_hold_request($holdid)) or $self->event($e->event);
-	$self->copy($e->retrieve_asset_copy($self->hold->current_copy)) or $self->event($e->event);
-	$self->volume($e->retrieve_asset_call_number($self->copy->call_number)) or $self->event($e->event);
-	$self->title($e->retrieve_biblio_record_entry($self->volume->record)) or $self->event($e->event);
-	$self->patron($e->retrieve_actor_user($self->hold->usr)) or $self->event($e->event);
-	$self->pickup_lib($e->retrieve_actor_org_unit($self->hold->pickup_lib)) or $self->event($e->event);
+	$self->hold($e->retrieve_action_hold_request($holdid)) or return $self->event($e->event);
+	$self->copy($e->retrieve_asset_copy($self->hold->current_copy)) or return $self->event($e->event);
+	$self->volume($e->retrieve_asset_call_number($self->copy->call_number)) or return $self->event($e->event);
+	$self->title($e->retrieve_biblio_record_entry($self->volume->record)) or return $self->event($e->event);
+	$self->patron($e->retrieve_actor_user($self->hold->usr)) or return $self->event($e->event);
+	$self->pickup_lib($e->retrieve_actor_org_unit($self->hold->pickup_lib)) or return $self->event($e->event);
 }
 
 
@@ -296,14 +296,14 @@ sub flesh_template {
 	my $copy_number = $$data{copy_number};
 
 	my $sender = $self->settings_client->config_value('email_notify', 'sender_address');
-	#my $reply_to	= $self->pickup_lib->
-	my $reply_to = $sender; # XXX
+	my $reply_to = $self->pickup_lib->email;
+	$reply_to ||= $sender; 
 
 
    $str =~ s/\${EMAIL_SENDER}/$sender/;
    $str =~ s/\${EMAIL_RECIPIENT}/$email/;
    $str =~ s/\${EMAIL_REPLY_TO}/$reply_to/;
-   $str =~ s/\${EMAIL_HEADERS}/\n\r\n\r/;
+   $str =~ s/\${EMAIL_HEADERS}//;
 
    $str =~ s/\${DATE}/$year-$month-$day/;
    $str =~ s/\${LIBRARY}/$o_name/;
