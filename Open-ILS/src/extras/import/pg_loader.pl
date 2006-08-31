@@ -43,7 +43,7 @@ while ( my $rec = <> ) {
 		my $e = shift;
 		warn "\n\n !!! Error : $e \n\n at or around line $count\n";
 	};
-	die unless ($row);
+	next unless ($row);
 
 	my $class = $row->class_name;
 	my $hint = $row->json_hint;

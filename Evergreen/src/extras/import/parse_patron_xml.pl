@@ -78,6 +78,7 @@ $orgs = { map { ($_->shortname => $_->id) } @$orgs };
 my $starttime = time;
 my $count = 1;
 for my $patron ( $doc->documentElement->childNodes ) {
+	next if ($patron->nodeType == 3);
 	my $p = new Fieldmapper::actor::user;
 	my $card = new Fieldmapper::actor::card;
 	my $profile_sce = new Fieldmapper::actor::stat_cat_entry_user_map;
@@ -86,13 +87,19 @@ for my $patron ( $doc->documentElement->childNodes ) {
 
 	my $bc = $patron->findvalue( 'user_id' );
 
-	next unless $bc;
+	unless (defined($bc)) {
+		my $xml = $patron->toString;
+		warn "!!! no barcode found in UMS data, user number $count, xml => $xml \n";
+		$count++;
+		next;
+	}
 
 	my $uid;
 	if (keys %u_map) {
 		$uid = $u_map{$bc};
 		unless ($uid) {
 			$count++;
+			warn "!!! no uid mapping found for barcode $bc\n";
 			next;
 		}
 	} else {
@@ -101,6 +108,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 
 	unless ($uid > 1) {
 		$count++;
+		warn "!!! user id lower than 2\n";
 		next;
 	}
 	
@@ -117,6 +125,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	$p->profile( $$profiles{$new_profile} );
 	if (!$p->profile) {
 		$count++;
+		warn "!!! no new profile found for $old_profile\n";
 		next;
 	}
 
@@ -159,6 +168,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $hlib = $$orgs{$patron->findvalue( 'user_library' )};
 	unless ($hlib) {
 		$count++;
+		warn "!!! no home library found in patron record\n";
 		next;
 	}
 	$p->home_ou( $hlib );
