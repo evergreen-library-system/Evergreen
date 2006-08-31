@@ -416,8 +416,8 @@ sub _add_patron {
 		return (undef, OpenILS::Event->new('USERNAME_EXISTS'));
 	}
 
-	$evt = _check_dup_ident($session, $patron);
-	return (undef, $evt) if $evt;
+#	$evt = _check_dup_ident($session, $patron);
+#	return (undef, $evt) if $evt;
 
 	$logger->info("Creating new user in the DB with username: ".$patron->usrname());
 
