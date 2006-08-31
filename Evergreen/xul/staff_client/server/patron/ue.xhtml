@@ -655,7 +655,13 @@
 													$('ue_claims_returned').value = 0;
 													$('ue_claims_returned').disabled = true;
 												</script>
-												<input class='pad' id='ue_claims_returned_reset' type='submit' value='Reset'/>
+												<input class='pad' id='ue_claims_returned_reset' type='submit' value='Reset' 
+													onclick="
+														if( confirmId('ue_claims_return_confirm') ) {
+															$('ue_claims_returned').value = 0;
+															$('ue_claims_returned').onchange();
+														}
+													"/>
 											</div>
 										</td>
 									</tr>
@@ -991,6 +997,11 @@
 		</span>
 		<span class='hide_me' id='ue_made_barred'>
 			Please add a note to the patron's alert message explaining why the patron is barred.
+		</span>
+		 
+		<span class='hide_me' id='ue_claims_return_confirm'>
+			This will reset the claims returned count for this user.
+			Are you sure you wish to perform this action?
 		</span>
 
 	</div>

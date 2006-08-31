@@ -428,6 +428,7 @@ function uEditDefineData(patron) {
 				id			: 'ue_claims_returned',
 				type		: 'input',
 				regex		: numRegex,
+				disabled : true
 			}
 		},
 		{
