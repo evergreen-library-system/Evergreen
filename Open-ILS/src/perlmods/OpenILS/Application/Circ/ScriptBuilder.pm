@@ -175,19 +175,21 @@ sub fetch_user_data {
 
 	return undef unless my $patron = $ctx->{patron};
 
-	return OpenILS::Event->new('PATRON_INACTIVE')
-		unless $U->is_true($patron->active);
-
-	$patron->card($e->retrieve_actor_card($patron->card));
-
-	return OpenILS::Event->new('PATRON_CARD_INACTIVE')
-		unless $U->is_true($patron->card->active);
-
-	my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-		clense_ISO8601($patron->expire_date));
-
-	return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
-		if( CORE::time > $expire->epoch ) ;
+	unless( $ctx->{ignore_user_status} ) {
+		return OpenILS::Event->new('PATRON_INACTIVE')
+			unless $U->is_true($patron->active);
+	
+		$patron->card($e->retrieve_actor_card($patron->card));
+	
+		return OpenILS::Event->new('PATRON_CARD_INACTIVE')
+			unless $U->is_true($patron->card->active);
+	
+		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+			clense_ISO8601($patron->expire_date));
+	
+		return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
+			if( CORE::time > $expire->epoch ) ;
+	}
 
 	$patron->home_ou( 
 		$e->retrieve_actor_org_unit($patron->home_ou) ) 
