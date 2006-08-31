@@ -37,6 +37,7 @@ cat.copy_buckets.prototype = {
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
+				'deleted' : { 'hidden' : false },
 			} 
 		);
 

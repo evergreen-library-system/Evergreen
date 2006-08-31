@@ -415,6 +415,10 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.circulate() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
 		},
 		{
+			'id' : 'deleted', 'label' : 'Deleted?', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.deleted() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
+		},
+		{
 			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.holdable() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
 		},
