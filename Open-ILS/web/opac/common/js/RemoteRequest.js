@@ -266,6 +266,13 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	} catch(e) {}
 
+	if(data && data.match(/param=undefined/)) {
+		/* we get a bogus param .. replace with NULL */
+		try{dump('!+! UNDEFINED PARAM IN QUERY: ' + this.service + ' : ' + this.method+'\n');}catch(r){}
+		data = data.replace(/param=undefined/g,'param=null');
+	}
+
+
 	try{ this.xmlhttp.send( data ); } catch(e){}
 
 	this.sendCount += 1;
