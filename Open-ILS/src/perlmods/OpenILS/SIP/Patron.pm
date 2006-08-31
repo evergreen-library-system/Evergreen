@@ -182,24 +182,28 @@ sub recall_overdue {
 
 sub check_password {
 	my ($self, $pwd) = @_;
+	syslog('LOG_DEBUG', 'OILS: Patron->check_password()');
 	return md5_hex($pwd) eq $self->{user}->passwd;
 }
 
 
 sub currency {
 	my $self = shift;
+	syslog('LOG_DEBUG', 'OILS: Patron->currency()');
 	return 'USD';
 }
 
 sub fee_amount {
 	my $self = shift;
+	syslog('LOG_DEBUG', 'OILS: Patron->fee_amount()');
 
 	my $total = 0;
 	my $e = OpenILS::SIP->editor();
 	my $xacts = $e->search_money_open_billable_transaction_summary( 
 		{ usr => $self->{user}->id, balance_owed => { '!=' => 0 } } );
-	
+
 	$total += $_->balance_owed for @$xacts;
+	syslog('LOG_INFO', "User ".$self->{user}->id." has a fee amount of \$$total");
 	return $total;
 }
 
@@ -270,6 +274,7 @@ sub too_many_lost {
 
 sub excessive_fines {
     my $self = shift;
+	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fines()');
 	if( $self->{user}->standing_penalties ) {
 		return grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
 			@{$self->{user}->standing_penalties};
@@ -282,6 +287,7 @@ sub excessive_fines {
 
 sub excessive_fees {
 	my $self = shift;
+	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fees()');
 	if( $self->{user}->standing_penalties ) {
 		return grep { $_->penalty_type eq 'PATRON_EXCEEDS_FINES' } 
 			@{$self->{user}->standing_penalties};
@@ -444,6 +450,7 @@ sub charged_items {
 sub fine_items {
 	my ($self, $start, $end) = @_;
 	my @fines;
+	syslog('LOG_DEBUG', 'OILS: Patron->fine_items()');
 	return (defined $start and defined $end) ? 
 		[ $fines[($start-1)..($end-1)] ] : \@fines;
 }
