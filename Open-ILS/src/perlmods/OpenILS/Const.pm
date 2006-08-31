@@ -74,10 +74,15 @@ econst OILS_UNLIMITED_CIRC_DURATION   => 'unlimited';
 econst OILS_SETTING_LOST_PROCESSING_FEE => 'circ.lost_materials_processing_fee';
 econst OILS_SETTING_DEF_ITEM_PRICE => 'cat.default_item_price';
 
+
+
 econst OILS_HOLD_TYPE_COPY        => 'C';
 econst OILS_HOLD_TYPE_VOLUME      => 'V';
 econst OILS_HOLD_TYPE_TITLE       => 'T';
 econst OILS_HOLD_TYPE_METARECORD  => 'M';
+
+
+econst OILS_BILLING_TYPE_OVERDUE_MATERIALS => 'Overdue materials';
 
 
 
