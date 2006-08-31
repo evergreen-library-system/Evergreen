@@ -26,7 +26,6 @@ use OpenILS::Perm;
 use Data::Dumper;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/:logger/;
-#use OpenILS::Utils::Editor qw/:funcs/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
 __PACKAGE__->register_method(
@@ -59,6 +58,8 @@ sub make_payments {
 	return $evt if $evt;
 	$evt = $apputils->check_perms($user->id, $user->ws_ou, 'CREATE_PAYMENT');
 	return $evt if $evt;
+
+	my $e = new_editor(); # at this point, just for convenience
 
 	$logger->info("Creating payment objects: " . Dumper($payments) );
 
@@ -95,12 +96,28 @@ sub make_payments {
 				"$credit for making a credit_payment on transaction ".$trans->id);
 		}
 
+		# A negative payment is a refund.  
+		if( $amount < 0 ) {
 
-		# A negative payment is a refund.  If the refund causes the transaction 
-		# balance to exceed 0 dollars, we are in effect loaning the patron
-		# money.  This is not allowed.
-		if( $amount < 0 and ($trans->balance_owed - $amount > 0) ) {
-			return OpenILS::Event->new('REFUND_EXCEEDS_BALANCE');
+			# If the refund causes the transaction balance to exceed 0 dollars, 
+			# we are in effect loaning the patron money.  This is not allowed.
+			if( ($trans->balance_owed - $amount) > 0 ) {
+				return OpenILS::Event->new('REFUND_EXCEEDS_BALANCE');
+			}
+
+			# Otherwise, make sure the refund does not exceed desk payments
+			# This is also not allowed
+			my $desk_total = 0;
+			my $desk_payments = $e->search_money_desk_payment(
+				{ xact => $transid, voided => 'f' });
+			#$desk_total += $_->amount_collected for @$desk_payments;
+			$desk_total += $_->amount for @$desk_payments;
+
+			if( (-$amount) > $desk_total ) {
+				return OpenILS::Event->new(
+					'REFUND_EXCEEDS_DESK_PAYMENTS', 
+					payload => { allowed_refund => $desk_total, submitted_refund => -$amount } );
+			}
 		}
 
 		my $payobj = "Fieldmapper::money::$type";
