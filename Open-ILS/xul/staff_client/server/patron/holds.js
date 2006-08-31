@@ -28,9 +28,9 @@ patron.holds.prototype = {
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'request_time' : { 'hidden' : false },
 				'pickup_lib_shortname' : { 'hidden' : false },
-				'hold_type' : { 'hidden' : true },
-				'current_copy' : { 'hidden' : true },
-				'capture_time' : { 'hidden' : true },
+				'hold_type' : { 'hidden' : false },
+				'current_copy' : { 'hidden' : false },
+				'capture_time' : { 'hidden' : false },
 			} 
 		);
 
@@ -566,44 +566,78 @@ patron.holds.prototype = {
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
 		} else {
-			var method; var param1; var param2 = undefined;
+			var method; var params = [ ses() ];
 			if (obj.patron_id) {
 				method = 'FM_AHR_RETRIEVE_VIA_AU'; 
-				param1 = obj.patron_id; 
+				params.push( obj.patron_id ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
 			} else if (obj.docid) {
-				method = 'FM_AHR_RETRIEVE_VIA_BRE'; 
-				param1 = obj.docid; 
+				method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
+				params.push( obj.docid ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else if (obj.pull) {
 				method = 'FM_AHR_PULL_LIST'; 
-				param1 = 50; param2 = 0;
+				params.push( 50 ); params.push( 0 );
 			} else if (obj.shelf) {
 				method = 'FM_AHR_ONSHELF_RETRIEVE'; 
-				param1 = obj.data.list.au[0].ws_ou(); 
+				params.push( obj.data.list.au[0].ws_ou() ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			} else {
 				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				method = 'FM_AHR_PULL_LIST'; 
-				param1 = 50; param2 = 0;
+				params.push( 50 ); params.push( 0 );
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
-			obj.holds = obj.network.simple_request( method, [ ses(), param1, param2 ]);
+			var robj = obj.network.simple_request( method, params );
+			if (typeof robj.ilsevent != 'undefined') throw(robj);
+			if (method == 'FM_AHR_RETRIEVE_ALL_VIA_BRE') {
+				obj.holds = [];
+				obj.holds = obj.holds.concat( robj.copy_holds );
+				obj.holds = obj.holds.concat( robj.volume_holds );
+				obj.holds = obj.holds.concat( robj.title_holds );
+				obj.holds = obj.holds.sort();
+			} else {
+				obj.holds = robj;
+			}
+		}
+
+		function list_append(hold) {
+			obj.holds_map[ hold.id() ] = hold;
+			obj.list.append(
+				{
+					'retrieve_id' : js2JSON({
+					'copy_id':hold.current_copy(),
+						'id':hold.id(),
+						'type':hold.hold_type(),
+						'target':hold.target(),
+						'usr':hold.usr(),
+					}),
+					'row' : {
+						'my' : {
+							'ahr' : hold,
+						}
+					}
+				}
+			);
 		}
 
 		function gen_list_append(hold) {
 			return function() {
-				obj.holds_map[ hold.id() ] = hold;
-				obj.list.append(
-					{
-						'retrieve_id' : js2JSON({'copy_id':hold.current_copy(),'id':hold.id(),'type':hold.hold_type(),'target':hold.target(),'usr':hold.usr(),}),
-						'row' : {
-							'my' : {
-								'ahr' : hold,
+				if (typeof hold == 'object') {
+					list_append(hold);
+				} else {
+					obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), hold ],
+						function(req) {
+							try {
+								var robj = req.getResultObject();
+								if (typeof robj.ilsevent != 'undefined') throw(robj);
+								list_append(robj[0]);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Error retrieving hold #' + hold, E);
 							}
 						}
-					}
-				);
+					);
+				}
 			};
 		}
 
