@@ -59,7 +59,7 @@ Enable for the windows build.  This slows linux down too much.
 	height: 26px;
 }
 
-.my_overflow { overflow: scroll; }
+.my_overflow { overflow: auto; }
 
 /*
 iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png") repeat-x bottom !important; }

@@ -9,7 +9,7 @@
 
 <commandset id="patron_summary_cmds" />
 
-<box id="patron_summary_main" flex="1" orient="vertical" style="overflow: auto">
+<box id="patron_summary_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="patron_info_sidebar" />
 </box>
 

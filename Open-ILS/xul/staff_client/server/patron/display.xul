@@ -100,7 +100,7 @@
 		<command id="cmd_search_form" />
 	</commandset>
 
-	<box id="patron_display_main" style="overflow: scroll"/>
+	<box id="patron_display_main" class="my_overflow" />
 
 </window>
 
