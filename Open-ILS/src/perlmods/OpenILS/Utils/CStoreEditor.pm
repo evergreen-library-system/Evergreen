@@ -160,7 +160,12 @@ sub xact_rollback {
 sub rollback {
 	my $self = shift;
 	$self->xact_rollback if $self->{xact};
-	$self->session->disconnect;
+	$self->disconnect;
+}
+
+sub disconnect {
+	my $self = shift;
+	$self->session->disconnect if $self->{session};
 }
 
 
@@ -180,7 +185,7 @@ sub commit {
 # -----------------------------------------------------------------------------
 sub reset {
 	my $self = shift;
-	$self->session->disconnect if $self->{session};
+	$self->disconnect;
 	$$self{$_} = undef for (keys %$self);
 }
 
