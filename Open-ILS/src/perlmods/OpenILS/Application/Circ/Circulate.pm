@@ -1340,10 +1340,8 @@ sub attempt_checkin_hold_capture {
    	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 		$self->push_events(OpenILS::Event->new('SUCCESS'));
 
-#		my $evt = $holdcode->hold_email_notifify(
-#			$self->editor, $hold, $self->title, $self->volume, $self->copy );
-#		$self->bail_on_events($evt) if $evt;
-	
+		$self->do_hold_notify($hold->id);
+
 	} else {
 	
 		# Hold needs to be picked up elsewhere.  Build a hold
@@ -1358,6 +1356,27 @@ sub attempt_checkin_hold_capture {
 	# make sure we save the copy status
 	$self->update_copy;
 	return 1;
+}
+
+sub do_hold_notify {
+	my( $self, $holdid ) = @_;
+	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
+		editor => $self->editor, hold_id => $holdid );
+
+	if(!$notifier->event) {
+
+		$logger->info("attempt at sending hold notification for hold $holdid");
+
+		# XXX uncomment me to send email notifications
+		#my $stat = $notifier->send_email_notify;
+		my $stat = 0;
+
+		$logger->info("hold notify succeeded for hold $holdid") if $stat eq '1';
+		$logger->warn(" * hold notify failed for hold $holdid") if $stat ne '1';
+
+	} else {
+		$logger->info("Not sending hold notification since the patron has no email address");
+	}
 }
 
 
@@ -1419,7 +1438,11 @@ sub process_received_transit {
 	$self->update_copy();
 	return if $self->bail_out;
 
-	my $ishold = ($hold_transit) ? 1 : 0;
+	my $ishold = 0;
+	if($hold_transit) {	
+		$self->do_hold_notify($hold_transit->hold);
+		$ishold = 1;
+	}
 
 	$self->push_events( 
 		OpenILS::Event->new(
