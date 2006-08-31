@@ -293,7 +293,7 @@ sub fleshed_copy_retrieve2 {
 	) or return $e->event;
 
 	# For backwards compatibility
-	$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
+	#$copy->stat_cat_entries($copy->stat_cat_entry_copy_maps);
 
 	if( $copy->status->id == OILS_COPY_STATUS_CHECKED_OUT ) {
 		$copy->circulations(
