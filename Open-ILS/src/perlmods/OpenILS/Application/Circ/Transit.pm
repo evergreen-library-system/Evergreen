@@ -11,6 +11,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Application::Circ::Holds;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::AppSession;
+use OpenILS::Const qw/:const/;
 
 my $U							= "OpenILS::Application::AppUtils";
 my $holdcode				= "OpenILS::Application::Circ::Holds";
@@ -188,7 +189,7 @@ sub abort_transit {
 	# ---------------------------------------------------------------------
 	# Find the related copy and/or transit based on whatever data we have
 	if( $barcode ) {
-		$copy = $e->search_asset_copy({barcode=>$barcode})->[0];
+		$copy = $e->search_asset_copy({barcode=>$barcode, deleted => 'f'})->[0];
 		return $e->event unless $copy;
 
 	} elsif( $copyid ) {
@@ -211,6 +212,12 @@ sub abort_transit {
 			or return $e->event;
 	}
 	# ---------------------------------------------------------------------
+
+	if( $transit->copy_status == OILS_COPY_STATUS_LOST or
+		$transit->copy_status == OILS_COPY_STATUS_MISSING ) {
+		$e->rollback;
+		return OpenILS::Event->new('TRANSIT_ABORT_NOT_ALLOWED');
+	}
 
 
 	if( $transit->dest != $e->requestor->ws_ou 
