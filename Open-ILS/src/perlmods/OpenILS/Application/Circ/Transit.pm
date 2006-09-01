@@ -308,18 +308,24 @@ sub transits_by_lib {
 	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # eh.. basically the same permission
 
 	my $tos = $e->search_action_transit_copy(
-		{
+		[{
 			dest => $orgid,
 			dest_recv_time => undef,
 		},
+		{
+			order_by => { atc => 'source_send_time' }
+		}]
 		{ idlist => 1 }
 	);
 
 	my $froms = $e->search_action_transit_copy(
-		{
+		[{
 			source => $orgid,
 			dest_recv_time => undef,
 		},
+		{
+			order_by => { atc => 'source_send_time' }
+		}]
 		{ idlist => 1 }
 	);
 
