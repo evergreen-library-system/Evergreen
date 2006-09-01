@@ -6,7 +6,7 @@ circ.util = {};
 circ.util.EXPORT_OK	= [ 
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns', 
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode',
-	'show_last_few_circs', 'abort_transits'
+	'show_last_few_circs', 'abort_transits', 'transit_columns'
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
