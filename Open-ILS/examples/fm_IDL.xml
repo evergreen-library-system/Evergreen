@@ -1929,7 +1929,6 @@
 			<field name="check_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
 			<field name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
 			<field name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" />
-			<field name="xact" oils_obj:array_position="16" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
