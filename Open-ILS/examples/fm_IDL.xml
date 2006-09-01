@@ -1201,7 +1201,7 @@
 			<field name="cancel_time" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field name="notify_time" oils_obj:array_position="26" oils_persist:virtual="true" />
 			<field name="notify_count" oils_obj:array_position="27" oils_persist:virtual="true" />
-			<field name="notifications" oils_obj:array_position="27" oils_persist:virtual="true" />
+			<field name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
