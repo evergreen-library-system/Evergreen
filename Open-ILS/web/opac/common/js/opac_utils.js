@@ -476,7 +476,7 @@ function grabUser(ses, force) {
 	G.user = user;
 	G.user.fleshed = false;
 	G.user.session = ses;
-	cookieManager.write(COOKIE_SES, ses, '+1d');
+	cookieManager.write(COOKIE_SES, ses, -1);
 
 
 	grabUserPrefs();
