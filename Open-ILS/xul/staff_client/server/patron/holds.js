@@ -31,6 +31,8 @@ patron.holds.prototype = {
 				'hold_type' : { 'hidden' : false },
 				'current_copy' : { 'hidden' : false },
 				'capture_time' : { 'hidden' : false },
+				'notify_time' : { 'hidden' : false },
+				'notify_count' : { 'hidden' : false },
 			} 
 		);
 
