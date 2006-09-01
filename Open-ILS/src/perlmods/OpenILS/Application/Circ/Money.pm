@@ -244,6 +244,7 @@ sub retrieve_payments {
 }
 
 
+
 __PACKAGE__->register_method(
 	method	=> "retrieve_payments2",
 	api_name	=> "open-ils.circ.money.payment.retrieve.all",
@@ -264,9 +265,8 @@ sub retrieve_payments2 {
 		my $meth = "retrieve_money_$type";
 		my $p = $e->$meth($_->id) or return $e->event;
 		$p->payment_type($type);
-		try {
-			$p->cash_drawer($e->retrieve_actor_workstation($p->cash_drawer));
-		} catch Error with {};
+		$p->cash_drawer($e->retrieve_actor_workstation($p->cash_drawer))
+			if $p->has_field('cash_drawer');
 		push( @payments, $p );
 	}
 
