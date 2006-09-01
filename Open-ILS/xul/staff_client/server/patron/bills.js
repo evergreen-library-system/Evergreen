@@ -465,7 +465,7 @@ patron.bills.prototype = {
 				if (payment_blob=='' || payment_blob.cancelled=='true') { alert('cancelled'); return; }
 				payment_blob.userid = obj.patron_id;
 				payment_blob.note = payment_blob.note || '';
-				payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
+				//payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
 				payment_blob.payment_type = obj.controller.view.payment_type.value;
 				payment_blob.payments = [];
 				payment_blob.patron_credit = obj.controller.view.bill_credit_amount.value;
