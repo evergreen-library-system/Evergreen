@@ -53,6 +53,7 @@ for my $object (keys %$map) {
 
 	print "_c[\"$short_name\"] = [";
 	for my $f (@fields) { 
+		next unless $f;
 		if( $f ne "isnew" and $f ne "ischanged" and $f ne "isdeleted" ) {
 			print "\"$f\","; 
 		}
