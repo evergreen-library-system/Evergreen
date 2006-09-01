@@ -59,9 +59,23 @@ circ.checkout.prototype = {
 											function(o) {
 												return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), obj.data.list.au[0].ws_ou());
 											}
+										).sort(
+
+											function(a,b) {
+												try { 
+													return util.fm_utils.sort_func_aou_by_depth_and_then_string(
+														[ a.owning_lib(), a.name() ],
+														[ b.owning_lib(), b.name() ]
+													);
+												} catch(E) {
+													alert('error in noncat sorting: ' + E);
+													return 0;
+												}
+											}
+
 										),
 										function(o) {
-											return [ o.name(), o.id() ];
+											return [ obj.data.hash.aou[ o.owning_lib() ].shortname() + ' : ' + o.name(), o.id() ];
 										}
 									)
 								);
