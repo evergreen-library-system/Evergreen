@@ -699,7 +699,7 @@ function _myOPACSummaryShowUer(r) {
 	fleshedUser = user;
 	if(!user) return;
 
-	var iv1 = user.ident_value();
+	var iv1 = user.ident_value()+'';
 	if (iv1.length > 4) iv1 = iv1.replace(new RegExp(iv1.substring(0,iv1.length - 4)), '***********');
 
 	appendClear($('myopac_summary_first'),text(user.first_given_name()));
