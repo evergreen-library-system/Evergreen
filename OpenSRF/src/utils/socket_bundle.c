@@ -661,8 +661,8 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	if(read_bytes == 0) {  /* socket closed by client */
 		if(mgr->on_socket_closed) {
 			mgr->on_socket_closed(mgr->blob, sock_fd);
-			return -1;
 		}
+		return -1;
 	}
 
 	return 0;

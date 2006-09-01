@@ -31,6 +31,7 @@ typedef struct message_list_struct transport_message_node;
 struct transport_client_struct {
 	transport_message_list* m_list;
 	transport_session* session;
+	int error;
 };
 typedef struct transport_client_struct transport_client;
 

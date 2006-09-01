@@ -61,6 +61,7 @@ transport_client* client_init( char* server, int port, char* unix_path, int comp
 	client->session = init_transport( server, port, unix_path, client, component );
 
 	client->session->message_callback = client_message_handler;
+	client->error = 0;
 
 	return client;
 }
@@ -87,6 +88,7 @@ int client_connected( transport_client* client ) {
 
 int client_send_message( transport_client* client, transport_message* msg ) {
 	if(client == NULL) return 0;
+	if( client->error ) return -1;
 	return session_send_msg( client->session, msg );
 }
 
@@ -115,6 +117,7 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 			int x;
 			if( (x = session_wait( client->session, -1 )) ) {
 				osrfLogWarning(OSRF_LOG_MARK, "session_wait returned failure code %d\n", x);
+				client->error = 1;
 				return NULL;
 			}
 		}
@@ -131,8 +134,11 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 		int wait_ret;
 		while( client->m_list->next == NULL && remaining >= 0 ) {
 
-			if( (wait_ret= session_wait( client->session, remaining)) ) 
+			if( (wait_ret= session_wait( client->session, remaining)) ) {
+				client->error = 1;
+				osrfLogWarning(OSRF_LOG_MARK, "session_wait returned failure code %d: setting error=1\n", wait_ret);
 				return NULL;
+			}
 
 			++counter;
 

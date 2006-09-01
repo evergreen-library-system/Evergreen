@@ -117,6 +117,7 @@ int session_wait( transport_session* session, int timeout ) {
 	int ret =  socket_wait( session->sock_mgr, timeout, session->sock_id );
 
 	if( ret ) {
+		osrfLogError(OSRF_LOG_MARK, "socket_wait returned error code %d", ret);
 		session->state_machine->connected = 0;
 	}
 	return ret;

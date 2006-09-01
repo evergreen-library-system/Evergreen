@@ -164,6 +164,16 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 		double starttime = get_timestamp_millis();
 		int req_id = osrf_app_session_make_req( session, NULL, method, api_level, mparams );
+
+
+		if( req_id == -1 ) {
+			osrfLogError(OSRF_LOG_MARK, "I am unable to communcate with opensrf..going away...");
+			/* we don't want to spawn an intense re-forking storm 
+			 * if there is no jabber server.. so give it some time before we die */
+			sleep(1); 
+			exit(1);
+		}
+
 		osrf_message* omsg = NULL;
 
 		int statuscode = 200;

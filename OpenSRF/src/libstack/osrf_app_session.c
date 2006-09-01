@@ -525,6 +525,8 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 				session->remote_service, session->session_id, t_msg->recipient, string );
 
 		retval = client_send_message( session->transport_handle, t_msg );
+
+		if( retval ) osrfLogError(OSRF_LOG_MARK, "client_send_message failed");
 	
 		free(string);
 		message_free( t_msg );
