@@ -391,9 +391,10 @@ sub send_email {
 
 	my $r = ($range eq '7day') ? 7 : 14;
 
+	$org_email ||= $mail_sender;
+
 	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/;
-	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/;
-	#$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
 	$tmpl =~ s/\${EMAIL_REPLY_TO}/$mail_sender/;
    $tmpl =~ s/\${EMAIL_HEADERS}//;
 
