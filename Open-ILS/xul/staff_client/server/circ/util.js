@@ -747,7 +747,7 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.notify_time();'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'notify_count', 'label' : '# of Notices', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'notify_count', 'label' : 'Notices', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.notify_count();'
 		},
 		{
