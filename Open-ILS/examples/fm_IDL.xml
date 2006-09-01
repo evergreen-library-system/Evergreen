@@ -1410,12 +1410,12 @@
 			<field name="name" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="opac_label" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="parent" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="org_units" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="org_units" oils_obj:array_position="11" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="aout"/>
 			<link field="children" reltype="has_many" key="parent" map="" class="aout"/>
-			<link field="org_units" reltype="has_many" key="id" map="" class="aou"/>
+			<link field="org_units" reltype="has_many" key="ou_type" map="" class="aou"/>
 		</links>
 	</class>
 	<class id="bren" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note">
