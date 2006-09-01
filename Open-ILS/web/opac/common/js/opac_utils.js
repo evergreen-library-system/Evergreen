@@ -18,6 +18,18 @@ function Request(type) {
 	if(isXUL()) {
 		if(!location.href.match(/^https:/))
 			this.request.setSecure(false);
+
+	} else {
+
+		if( G.user && G.user.session ) {
+			/* if the user is logged in, all activity resets the timeout 
+				This is not entirely accurate in the sense that not all 
+				requests will reset the server timeout - this should
+				get close enough, however.
+			*/
+			var at = getAuthtime();
+			if(at) new AuthTimer(at).run(); 
+		}
 	}
 
 	for( var x = 1; x!= arguments.length; x++ ) {
@@ -881,11 +893,13 @@ function alertILSEvent(evt, msg) {
 var __authTimer;
 function AuthTimer(time) { 
 	this.time = (time - LOGOUT_WARNING_TIME) * 1000; 
+	if(__authTimer) 
+		try {clearTimeout(__authTimer.id)} catch(e){}
 	__authTimer = this;
 }
 
 AuthTimer.prototype.run = function() {
-	setTimeout('_authTimerAlert()', this.time);
+	this.id = setTimeout('_authTimerAlert()', this.time);
 }
 
 function _authTimerAlert() {
