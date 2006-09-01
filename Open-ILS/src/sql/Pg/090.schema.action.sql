@@ -216,11 +216,20 @@ CREATE TABLE action.transit_copy (
 	copy_status		INT				NOT NULL REFERENCES config.copy_status (id),
 	persistant_transfer	BOOL				NOT NULL DEFAULT FALSE
 );
+CREATE INDEX active_transit_dest_idx ON "action".transit_copy (dest); 
+CREATE INDEX active_transit_source_idx ON "action".transit_copy (source);
+CREATE INDEX active_transit_cp_idx ON "action".transit_copy (target_copy);
+
 
 CREATE TABLE action.hold_transit_copy (
 	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
 ALTER TABLE action.hold_transit_copy ADD PRIMARY KEY (id);
+ALTER TABLE action.hold_transit_copy ADD CONSTRAINT ahtc_tc_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE CASCADE;
+CREATE INDEX active_hold_transit_dest_idx ON "action".hold_transit_copy (dest);
+CREATE INDEX active_hold_transit_source_idx ON "action".hold_transit_copy (source);
+CREATE INDEX active_hold_transit_cp_idx ON "action".hold_transit_copy (target_copy);
+
 
 CREATE TABLE action.unfulfilled_hold_list (
 	id		BIGSERIAL			PRIMARY KEY,
