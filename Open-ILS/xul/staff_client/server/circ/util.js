@@ -573,7 +573,23 @@ circ.util.transit_columns = function(modify,params) {
 
 	var c = [
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Transit ID', 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'transit_item_barcode', 'label' : 'Barcode', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.acp.barcode()'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'transit_item_title', 'label' : 'Title', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'transit_item_author', 'label' : 'Author', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'transit_item_callnumber', 'label' : 'Call Number', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  'render' : 'my.acn.label()'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'transit_id', 'label' : 'Transit ID', 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : 'my.atc.id()'
 		},
 		{
@@ -591,6 +607,10 @@ circ.util.transit_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
 			'primary' : false, 'hidden' : false, 'render' : 'my.atc.dest_recv_time()'
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'transit_target_copy', 'label' : 'Transit Copy ID', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.atc.target_copy()'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {

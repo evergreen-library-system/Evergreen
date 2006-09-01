@@ -41,7 +41,46 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for admin_transit_list.xul');
 
-				JSAN.use('circ.util'); var columns = circ.util.transit_columns({}).concat( circ.util.hold_columns({}) );
+				JSAN.use('circ.util'); 
+				var columns = circ.util.transit_columns(
+					{
+						'transit_source' : { 'hidden' : false },
+						'transit_source_send_time' : { 'hidden' : false },
+						'transit_dest_lib' : { 'hidden' : false },
+						'transit_item_barcode' : { 'hidden' : false },
+						'transit_item_title' : { 'hidden' : false },
+					},
+					{
+						'just_these' : [
+							'transit_id',
+							'transit_source',
+							'transit_source_send_time',
+							'transit_dest_lib',
+							'transit_item_barcode',
+							'transit_item_title',
+							'transit_item_author',
+							'transit_item_callnumber',
+							'transit_target_copy',
+						]
+					}
+				).concat( 
+					circ.util.hold_columns(
+						{
+							'request_time' : { 'hidden' : false },
+						},
+						{
+							'just_these' : [
+								'request_timestamp',
+								'request_time',
+								'capture_timestamp',
+								'capture_time',
+								'hold_type',
+								'expire_time',
+								'patron_name',
+							],
+						}
+					) 
+				);
 
 				JSAN.use('util.list'); 
 				g.list = new util.list('transit_from');
@@ -58,9 +97,61 @@
 									function(transit,hold) {
 										row.my.atc = transit;
 										if (hold) row.my.ahr = hold;
-										if (typeof params.on_retrieve == 'function') {
-											params.on_retrieve(row);
-										}
+
+										g.network.simple_request(
+											'FM_ACP_RETRIEVE',
+											[ row.my.atc.target_copy() ],
+											function(req) {
+												try { 
+													var r_acp = req.getResultObject();
+													if (typeof r_acp.ilsevent != 'undefined') throw(r_acp);
+													row.my.acp = r_acp;
+
+													g.network.simple_request(
+														'FM_ACN_RETRIEVE',
+														[ r_acp.call_number() ],
+														function(req2) {
+															try {
+																var r_acn = req2.getResultObject();
+																if (typeof r_acn.ilsevent != 'undefined') throw(r_acn);
+																row.my.acn = r_acn;
+
+																if (row.my.acn.record() > 0) {
+																	g.network.simple_request(
+																		'MODS_SLIM_RECORD_RETRIEVE',
+																		[ r_acn.record() ],
+																		function(req3) {
+																			try {
+																				var r_mvr = req3.getResultObject();
+																				if (typeof r_mvr.ilsevent != 'undefined') throw(r_mvr);
+																				row.my.mvr = r_mvr;
+	
+																				if (typeof params.on_retrieve == 'function') {
+																					params.on_retrieve(row);
+																				}
+																			} catch(E) {
+																				try { g.error.standard_unexpected_error_alert('retrieving mvr',E); } catch(F) { alert(E); }
+																			}
+																		}
+																	);
+																} else {
+																	if (typeof params.on_retrieve == 'function') {
+																		params.on_retrieve(row);
+																	}
+																}
+													
+															} catch(E) {
+																try { g.error.standard_unexpected_error_alert('retrieving acn',E); } catch(F) { alert(E); }
+															}
+														}
+													);
+
+
+												} catch(E) {
+													try { g.error.standard_unexpected_error_alert('retrieving acp',E); } catch(F) { alert(E); }
+												}
+											}
+										);
 									}
 								);
 							} catch(E) {
@@ -83,9 +174,60 @@
 									function(transit,hold) {
 										row.my.atc = transit;
 										if (hold) row.my.ahr = hold;
-										if (typeof params.on_retrieve == 'function') {
-											params.on_retrieve(row);
-										}
+
+										g.network.simple_request(
+											'FM_ACP_RETRIEVE',
+											[ row.my.atc.target_copy() ],
+											function(req) {
+												try { 
+													var r_acp = req.getResultObject();
+													if (typeof r_acp.ilsevent != 'undefined') throw(r_acp);
+													row.my.acp = r_acp;
+
+													g.network.simple_request(
+														'FM_ACN_RETRIEVE',
+														[ r_acp.call_number() ],
+														function(req2) {
+															try {
+																var r_acn = req2.getResultObject();
+																if (typeof r_acn.ilsevent != 'undefined') throw(r_acn);
+																row.my.acn = r_acn;
+
+																if (row.my.acn.record() > 0) {
+																	g.network.simple_request(
+																		'MODS_SLIM_RECORD_RETRIEVE',
+																		[ r_acn.record() ],
+																		function(req3) {
+																			try {
+																				var r_mvr = req3.getResultObject();
+																				if (typeof r_mvr.ilsevent != 'undefined') throw(r_mvr);
+																				row.my.mvr = r_mvr;
+	
+																				if (typeof params.on_retrieve == 'function') {
+																					params.on_retrieve(row);
+																				}
+																			} catch(E) {
+																				try { g.error.standard_unexpected_error_alert('retrieving mvr',E); } catch(F) { alert(E); }
+																			}
+																		}
+																	);
+																} else {
+																	if (typeof params.on_retrieve == 'function') {
+																		params.on_retrieve(row);
+																	}
+																}
+													
+															} catch(E) {
+																try { g.error.standard_unexpected_error_alert('retrieving acn',E); } catch(F) { alert(E); }
+															}
+														}
+													);
+
+												} catch(E) {
+													try { g.error.standard_unexpected_error_alert('retrieving acp',E); } catch(F) { alert(E); }
+												}
+											}
+										);
 									}
 								);
 							} catch(E) {
@@ -103,29 +245,29 @@
 					g.network.simple_request('FM_ATC_RETRIEVE', [ ses(), transit_id ],
 						function(req2) {
 							try {
-								var robj2 = req2.getResultObject();
-								if (typeof robj2.ilsevent != 'undefined') throw(robj2);
+								var r_atc = req2.getResultObject();
+								if (typeof r_atc.ilsevent != 'undefined') throw(r_atc);
 
-								if (instanceOf(robj2,atc)) {
-									do_this(robj2,null);
-								} else if (instanceOf(robj2,ahtc)) {
-									g.network.simple_request('FM_AHR_RETRIEVE', [ ses(), robj2.hold() ],
+								if (instanceOf(r_atc,atc)) {
+									do_this(r_atc,null);
+								} else if (instanceOf(r_atc,ahtc)) {
+									g.network.simple_request('FM_AHR_RETRIEVE', [ ses(), r_atc.hold() ],
 										function(req3) {
 											try {
-												var robj3 = req3.getResultObject();
-												if (typeof robj3.ilsevent != 'undefined') throw(robj3);
-												if (instanceOf(robj3[0],ahr)) {
-													do_this(robj2,robj3[0]);
+												var r_ahr = req3.getResultObject();
+												if (typeof r_ahr.ilsevent != 'undefined') throw(r_ahr);
+												if (instanceOf(r_ahr[0],ahr)) {
+													do_this(r_atc,r_ahr[0]);
 												} else {
-													throw(robj3);
+													throw(r_ahr);
 												}
 											} catch(E) {
-												try { g.error.standard_unexpected_error_alert('retrieving hold id = ' + robj2.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
+												try { g.error.standard_unexpected_error_alert('retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
 											}
 										}
 									);
 								} else {
-									throw(robj2);
+									throw(r_atc);
 								}
 
 							} catch(E) {
