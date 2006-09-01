@@ -1548,7 +1548,7 @@ jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 							}
 						}
 
-						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" ))) {
+						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" )) || !(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
 							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
 							jsonObjectSetIndex(
 								cur->item,
