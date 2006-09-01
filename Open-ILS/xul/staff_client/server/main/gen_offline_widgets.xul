@@ -160,13 +160,32 @@
 		}
 
 		function build_cnct_list() {
+			JSAN.use('util.fm_utils');
 			return [
-				util.functional.map_list( 
-					g.data.list.cnct,
-					function(obj) { return [ 
-						obj.name(), 
-						js2JSON( [ obj.id(), obj.circ_duration() ] )
-					]; }
+				util.functional.map_list(
+					util.functional.filter_list(
+						g.data.list.cnct,
+						function(o) {
+							return util.fm_utils.compare_aou_a_is_b_or_ancestor(o.owning_lib(), g.data.list.au[0].ws_ou());
+						}
+					).sort(
+
+						function(a,b) {
+							try { 
+								return util.fm_utils.sort_func_aou_by_depth_and_then_string(
+									[ a.owning_lib(), a.name() ],
+									[ b.owning_lib(), b.name() ]
+								);
+							} catch(E) {
+								alert('error in noncat sorting: ' + E);
+								return 0;
+							}
+						}
+
+					),
+					function(o) {
+						return [ g.data.hash.aou[ o.owning_lib() ].shortname() + ' : ' + o.name(), js2JSON( [ o.id(), o.circ_duration() ] ) ];
+					}
 				)
 			];
 		}
