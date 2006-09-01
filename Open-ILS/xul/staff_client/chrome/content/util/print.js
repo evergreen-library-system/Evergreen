@@ -146,7 +146,8 @@ util.print.prototype = {
 				);
 			break;
 			case 'payment':
-				cols = [ '%bill_id%','%payment%'];
+				//cols = [ '%bill_id%','%payment%'];
+				cols = [];
 			break;
 			case 'holds':
 				JSAN.use('circ.util');

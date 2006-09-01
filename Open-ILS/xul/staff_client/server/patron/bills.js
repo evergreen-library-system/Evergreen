@@ -17,6 +17,8 @@ patron.bills = function (params) {
 
 patron.bills.prototype = {
 
+	'bill_map' : {},
+
 	'current_payments' : [],
 
 	'SHOW_ME_THE_BILLS' : 'FM_MOBTS_HAVING_BALANCE',
@@ -83,6 +85,7 @@ patron.bills.prototype = {
 							'attributes' : { 'allowevents' : true } 
 						} 
 					);
+					obj.bill_map[ obj.bills[i].transaction.id() ] = obj.bills[i];
 					var cb = rnode.getElementsByTagName('checkbox')[0];
 					var tb = rnode.getElementsByTagName('textbox')[0];
 					var bo = obj.bills[i].transaction.balance_owed();
@@ -487,7 +490,7 @@ patron.bills.prototype = {
 					try {
 						obj.data.stash_retrieve();
 						var template = 'bill_payment';
-						JSAN.use('patron.util');
+						JSAN.use('patron.util'); JSAN.use('util.functional');
 						var params = { 
 							'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
 							'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
@@ -496,9 +499,21 @@ patron.bills.prototype = {
 							'line_item' : obj.data.print_list_templates[template].line_item,
 							'footer' : obj.data.print_list_templates[template].footer,
 							'type' : obj.data.print_list_templates[template].type,
-							'list' : payment_blob.payments,
+							'list' : util.functional.map_list(
+								payment_blob.payments,
+								function(o) {
+									return {
+										'bill_id' : o[0],
+										'payment' : o[1],
+										'last_billing_type' : obj.bill_map[ o[0] ].transaction.last_billing_type(),
+										'last_billing_note' : obj.bill_map[ o[0] ].transaction.last_billing_note(),
+										'title' : typeof obj.bill_map[ o[0] ].title != 'undefined' ? obj.bill_map[ o[0] ].title : '', 
+									};
+								}
+							),
 							'data' : obj.previous_summary,
 						};
+						obj.error.sdump('D_DEBUG',js2JSON(params));
 						if (document.getElementById('auto_print').checked) params.no_prompt = true;
 						JSAN.use('util.print'); var print = new util.print();
 						print.tree_list( params );
@@ -794,6 +809,7 @@ patron.bills.prototype = {
 												var r_mvr = rreq.getResultObject();
 												if (instanceOf(r_mvr,mvr)) {
 													xt_value.appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
+													obj.bill_map[ my.mobts.id() ].title = r_mvr.title();
 												} else {
 													obj.network.simple_request(
 														'FM_ACP_RETRIEVE',
@@ -802,6 +818,7 @@ patron.bills.prototype = {
 															var r_acp = rrreq.getResultObject();
 															if (instanceOf(r_acp,acp)) {
 																xt_value.appendChild( document.createTextNode( r_acp.dummy_title() ) );
+																obj.bill_map[ my.mobts.id() ].title = r_acp.dummy_title();
 															}
 														}
 													);
