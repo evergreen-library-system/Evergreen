@@ -3,7 +3,7 @@
 OPT_ACTION=""
 OPT_SIP_CONFIG=""
 OPT_PID_DIR=""
-SIP_DIR="/opt/SIP/SIPServer";
+SIP_DIR="/opt/SIPServer";
 
 # ---------------------------------------------------------------------------
 # Make sure we're running as the correct user
