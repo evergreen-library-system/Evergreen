@@ -294,6 +294,58 @@ sub fetch_transit_by_copy {
 }
 
 
+
+__PACKAGE__->register_method(
+	method => 'transits_by_lib',
+	api_name => 'open-ils.circ.transit.retrieve_by_lib',
+);
+
+
+sub transits_by_lib {
+	my( $self, $conn, $auth, $orgid ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # eh.. basically the same permission
+
+	my $tos = $e->search_action_transit_copy(
+		{
+			dest => $orgid,
+			dest_recv_time => undef,
+		},
+		{ idlist => 1 }
+	);
+
+	my $froms = $e->search_action_transit_copy(
+		{
+			source => $orgid,
+			dest_recv_time => undef,
+		},
+		{ idlist => 1 }
+	);
+
+	return { from => $froms, to => $tos };
+}
+
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_transit',
+	api_name => 'open-ils.circ.transit.retrieve',
+);
+sub fetch_transit {
+	my( $self, $conn, $auth, $transid ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # eh.. basically the same permission
+
+	my $ht = $e->retrieve_action_hold_transit_copy($transid);
+	return $ht if $ht;
+
+	my $t = $e->retrieve_action_transit_copy($transid)
+		or return $e->event;
+	return $t;
+}
+
 	
 
 
