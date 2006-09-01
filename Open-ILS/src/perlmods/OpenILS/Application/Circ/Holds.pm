@@ -285,18 +285,16 @@ NOTE
 
 
 sub retrieve_holds_by_id {
-	my($self, $client, $login_session, $hold_id) = @_;
+	my($self, $client, $auth, $hold_id) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+	$e->allowed('VIEW_HOLD') or return $e->event;
 
-	#FIXME
-	#my( $user, $target, $evt ) = $apputils->checkses_requestor(
-	#	$login_session, $user_id, 'VIEW_HOLD' );
-	#return $evt if $evt;
-
-	my $holds = $apputils->simplereq(
-		'open-ils.cstore',
-		"open-ils.cstore.direct.action.hold_request.search.atomic",
-		{ id =>  $hold_id , fulfillment_time => undef }, 
-		{ order_by => { ahr => "request_time" } }
+	my $holds = $e->search_action_hold_request(
+		[
+			{ id =>  $hold_id , fulfillment_time => undef }, 
+			{ order_by => { ahr => "request_time" } }
+		]
 	);
 
 	flesh_hold_transits($holds);
@@ -874,6 +872,28 @@ sub flesh_hold_transits {
 	}
 }
 
+sub flesh_hold_notices {
+	my( $holds, $e ) = @_;
+	$e ||= new_editor();
+
+	for my $hold (@$holds) {
+		my $notices = $e->search_action_hold_notification(
+			[
+				{ hold => $hold->id },
+				{ order_by => { anh => { 'notify_time desc' } } },
+			],
+			{idlist=>1}
+		);
+
+		$hold->notify_count(scalar(@$notices));
+		if( @$notices ) {
+			my $n = $e->retrieve_action_hold_notification($$notices[0])
+				or return $e->event;
+			$hold->notify_time($n->notify_time);
+		}
+	}
+}
+
 
 
 
@@ -914,6 +934,7 @@ sub fetch_captured_holds {
 	}
 
 	flesh_hold_transits(\@res);
+	flesh_hold_notices(\@res, $e);
 	return \@res;
 }
 
