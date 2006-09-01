@@ -322,7 +322,12 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	var text = this.xmlhttp.responseText;
 
-	if(text == "" || text == " " || text == null) return null;
+	if(text == "" || text == " " || text == null) {
+		try { dump('dbg: Request returned no text!\n'); } catch(E) {}
+		if(isXUL()) 
+			throw new NetworkFailure(status, this.param_string);
+		return null;
+	}
 
 	var obj = JSON2js(text);
 	if(!obj) return null;
