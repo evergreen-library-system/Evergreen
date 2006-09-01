@@ -60,5 +60,9 @@ for my $sname (keys %libs) {
 open FH, ">$ARGV[1]" or die "Can't open $ARGV[1] to write the map file! $!";
 print FH Data::Dumper->Dump([$lib_map],['lib_map']);
 
+warn Dumper( $dbh->selectall_hashref("SELECT * FROM actor.org_unit;" => 'id') );
+
+sleep 10;
+
 $dbh->commit;
 
