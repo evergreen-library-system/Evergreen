@@ -7,6 +7,9 @@
 
 			<groupbox orient="vertical" flex="1" id="summary">
 				<caption label="Summary" />
+				<hbox>
+					<label class="header1" id="billing_location"/>
+				</hbox>
 				<grid flex="1">
 					<columns>
 						<column flex="1"/>

@@ -75,6 +75,7 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 .text_justify { text-align: justify; }
 
 .header { font-weight: bold; }
+.header1 { font-weight: bold; font-size: large; }
 
 .tan { background-color: #D2B48C; }
 .sandy_brown { background-color: #F4A460; }

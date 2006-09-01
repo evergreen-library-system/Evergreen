@@ -60,8 +60,27 @@
 						$('mbts_total_owed').value = g.mbts.total_owed() ? util.money.sanitize( g.mbts.total_owed() ) : '';
 						$('mbts_total_paid').value = g.mbts.total_paid() ? util.money.sanitize( g.mbts.total_paid() ) : '';
 						$('mbts_balance_owed').value = g.mbts.balance_owed() ? util.money.sanitize( g.mbts.balance_owed() ) : '';
+
+						switch(g.mbts.xact_type()) {
+							case 'circulation' : retrieve_circ(); break;
+							case 'grocery' : retrieve_grocery(); break;
+							default: break;
+						}
+
 					} catch(E) {
 						g.error.sdump('D_ERROR',E);
+					}
+				}
+			);
+		}
+
+		function retrieve_grocery() {
+			JSAN.use('util.widgets');
+			g.network.simple_request('FM_MG_RETRIEVE', [ ses(), g.mbts_id ],
+				function (req) {
+					var r_mg = req.getResultObject();
+					if (instanceOf(r_mg,mg)) {
+						$('billing_location').value = g.data.hash.aou[ r_mg.billing_location() ].shortname() + ' : ' + g.data.hash.aou[ r_mg.billing_location() ].name();
 					}
 				}
 			);
@@ -81,6 +100,7 @@
 						$('checked_out').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,10) : '';
 						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
+						$('billing_location').value = g.data.hash.aou[ r_circ.circ_lib() ].shortname() + ' : ' + g.data.hash.aou[ r_circ.circ_lib() ].name();
 						var r = '';
 						if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
 						if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
@@ -213,7 +233,7 @@
 				retrieve_patron();
 
 				retrieve_mbts();
-				retrieve_circ();
+				//retrieve_circ();
 
 				init_lists();
 
