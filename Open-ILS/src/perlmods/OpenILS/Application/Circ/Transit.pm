@@ -314,7 +314,7 @@ sub transits_by_lib {
 		},
 		{
 			order_by => { atc => 'source_send_time' }
-		}]
+		}],
 		{ idlist => 1 }
 	);
 
@@ -325,7 +325,7 @@ sub transits_by_lib {
 		},
 		{
 			order_by => { atc => 'source_send_time' }
-		}]
+		}],
 		{ idlist => 1 }
 	);
 
