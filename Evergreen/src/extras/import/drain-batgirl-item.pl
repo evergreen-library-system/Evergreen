@@ -16,7 +16,7 @@ SQL
 
 warn "going for the data...";
 
-my $sth = $dbh->prepare('select * from ITEM');
+my $sth = $dbh->prepare("SELECT * FROM ITEM WHERE LAST_IMPORT_DATE IN ('20060901','20060902');");
 $sth->execute;
 
 warn "got it, writing file...";
