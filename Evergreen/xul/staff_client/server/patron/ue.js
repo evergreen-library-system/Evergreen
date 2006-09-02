@@ -335,7 +335,6 @@ function uEditOnChange(field) {
 	if(field.widget.onpostchange)
 		field.widget.onpostchange(field, newval);
 
-
 	uEditIterateFields(function(f) { uEditCheckValid(f); });
 	uEditCheckErrors();
 }

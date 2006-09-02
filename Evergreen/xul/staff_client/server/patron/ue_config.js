@@ -159,6 +159,11 @@ function uEditDefineData(patron) {
 					var pw1f = uEditFindFieldByWId('ue_password1');
 					var pw1 = uEditNodeVal(pw1f);
 					field.widget.regex = new RegExp('^'+pw1+'$');
+					if( pw1 ) field.required = true;
+					else {
+						if(!patron.isnew())
+							field.required = false;
+					}
 				}
 			}
 		},
