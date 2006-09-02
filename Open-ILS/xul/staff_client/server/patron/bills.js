@@ -508,6 +508,7 @@ patron.bills.prototype = {
 										'last_billing_type' : obj.bill_map[ o[0] ].transaction.last_billing_type(),
 										'last_billing_note' : obj.bill_map[ o[0] ].transaction.last_billing_note(),
 										'title' : typeof obj.bill_map[ o[0] ].title != 'undefined' ? obj.bill_map[ o[0] ].title : '', 
+										'barcode' : typeof obj.bill_map[ o[0] ].barcode != 'undefined' ? obj.bill_map[ o[0] ].barcode : '', 
 									};
 								}
 							),
@@ -810,18 +811,18 @@ patron.bills.prototype = {
 												if (instanceOf(r_mvr,mvr)) {
 													xt_value.appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
 													obj.bill_map[ my.mobts.id() ].title = r_mvr.title();
-												} else {
-													obj.network.simple_request(
-														'FM_ACP_RETRIEVE',
-														[ r_circ.target_copy() ],
-														function (rrreq) {
-															var r_acp = rrreq.getResultObject();
-															if (instanceOf(r_acp,acp)) {
-																xt_value.appendChild( document.createTextNode( r_acp.dummy_title() ) );
-																obj.bill_map[ my.mobts.id() ].title = r_acp.dummy_title();
-															}
-														}
-													);
+												}
+											}
+										);
+										obj.network.simple_request(
+											'FM_ACP_RETRIEVE',
+											[ r_circ.target_copy() ],
+											function (rrreq) {
+												var r_acp = rrreq.getResultObject();
+												if (instanceOf(r_acp,acp)) {
+													xt_value.appendChild( document.createTextNode( r_acp.dummy_title() ) );
+													if (r_acp.dummy_title()) obj.bill_map[ my.mobts.id() ].title = r_acp.dummy_title();
+													obj.bill_map[ my.mobts.id() ].barcode = r_acp.barcode();
 												}
 											}
 										);
