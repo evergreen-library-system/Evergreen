@@ -251,7 +251,11 @@ sub set_circ_lost {
 	my $session		= $U->start_db_session(); 
 
 	# grab the circulation
-	( $circ ) = $U->fetch_open_circulation( $copy->id );
+#	( $circ ) = $U->fetch_open_circulation( $copy->id );
+#	return 1 unless $circ;
+
+	$circ = new_editor()->search_action_circulation(
+		{ checkin_time => undef, target_copy => $copy->id } )->[0];
 	return 1 unless $circ;
 
 	if($islost) {
