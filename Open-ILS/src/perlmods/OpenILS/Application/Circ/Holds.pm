@@ -298,6 +298,7 @@ sub retrieve_holds_by_id {
 	);
 
 	flesh_hold_transits($holds);
+	flesh_hold_notices($holds, $e);
 	return $holds;
 }
 
