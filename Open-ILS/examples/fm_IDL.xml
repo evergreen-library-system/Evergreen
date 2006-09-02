@@ -258,7 +258,7 @@
 			<field name="source" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="source_send_time" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="target_copy" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="hold_transit_copy" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="hold_transit_copy" oils_obj:array_position="12" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="hold_transit_copy" reltype="might_have" key="id" map="" class="ahtc"/>
