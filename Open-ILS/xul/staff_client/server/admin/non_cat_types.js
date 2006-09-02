@@ -70,8 +70,10 @@ function ncDisplayTypes(r) {
 	removeChildren(tbody);
 	types = types.sort( 
 		function(a,b) {
-			if( a.name().toLowerCase() > b.name().toLowerCase() ) return 1;	
-			if( a.name().toLowerCase() < b.name().toLowerCase() ) return -1;	
+			try {
+				if( a.name()+''.toLowerCase() > b.name()+''.toLowerCase() ) return 1;	
+				if( a.name()+''.toLowerCase() < b.name()+''.toLowerCase() ) return -1;	
+			} catch(e) {}
 			return 0;
 		});
 
