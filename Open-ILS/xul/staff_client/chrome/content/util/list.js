@@ -5,6 +5,8 @@ util.list = function (id) {
 
 	this.node = document.getElementById(id);
 
+	this.row_count = { 'total' : 0, 'fleshed' : 0 };
+
 	if (!this.node) throw('Could not find element ' + id);
 	switch(this.node.nodeName) {
 		case 'listbox' : 
@@ -20,8 +22,6 @@ util.list = function (id) {
 };
 
 util.list.prototype = {
-
-	'row_count' : { 'total' : 0, 'fleshed' : 0 },
 
 	'init' : function (params) {
 
@@ -68,11 +68,22 @@ util.list.prototype = {
 				treecol.addEventListener(
 					'click', 
 					function(ev) {
-						var sortDir = ev.target.getAttribute('sortDir') || 'desc';
-						if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
-						//alert('sort ' + ev.target.id + ' ' + sortDir);
-						ev.target.setAttribute('sortDir',sortDir);
-						obj._sort_tree(ev.target,sortDir);
+						function do_it() {
+							var sortDir = ev.target.getAttribute('sortDir') || 'desc';
+							if (sortDir == 'desc') sortDir = 'asc'; else sortDir = 'desc';
+							ev.target.setAttribute('sortDir',sortDir);
+							obj._sort_tree(ev.target,sortDir);
+						}
+
+						if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
+							var r = window.confirm('WARNING: Only ' + obj.row_count.fleshed + ' out of ' + obj.row_count.total + ' rows in this list have been fully retrieved.  Sorting this list requires that all these rows be retrieved, and this may take some time and lag the staff client.  Would you like to proceed?');
+
+							if (r) {
+								setTimeout( do_it, 0 );
+							}
+						} else {
+								setTimeout( do_it, 0 );
+						}
 					},
 					false
 				);
@@ -834,15 +845,14 @@ util.list.prototype = {
 				return;
 			}
 			if (obj.on_all_fleshed) {
-				alert('This list is busy rendering/retrieving data.');
-				return;
+				var r = window.confirm('This list is busy rendering/retrieving data.  Abort current action and proceed?');
+				if (r) {} else { return; }
 			}
 			var col_pos;
 			for (var i = 0; i < obj.columns.length; i++) { 
 				if (obj.columns[i].id == col.id) col_pos = function(a){return a;}(i); 
 			}
-			obj.on_all_fleshed =
-				function() {
+			obj.on_all_fleshed = function() {
 					try {
 						JSAN.use('util.money');
 						var rows = [];
