@@ -10,6 +10,8 @@ patron.holds = function (params) {
 
 patron.holds.prototype = {
 
+	'foreign_shelf' : null,
+
 	'retrieve_ids' : [],
 
 	'holds_map' : {},
@@ -582,8 +584,9 @@ patron.holds.prototype = {
 				params.push( 50 ); params.push( 0 );
 			} else if (obj.shelf) {
 				method = 'FM_AHR_ONSHELF_RETRIEVE'; 
-				params.push( obj.data.list.au[0].ws_ou() ); 
+				params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+				obj.render_lib_menu();
 			} else {
 				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
 				method = 'FM_AHR_PULL_LIST'; 
@@ -626,14 +629,30 @@ patron.holds.prototype = {
 		function gen_list_append(hold) {
 			return function() {
 				if (typeof hold == 'object') {
-					list_append(hold);
+					if (typeof obj.controller.view.lib_menu == 'undefined') {
+						list_append(hold);
+					} else {
+						var pickup_lib = hold.pickup_lib();
+						if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
+						if (pickup_lib == obj.controller.view.lib_menu.value) {
+							list_append(hold);
+						}
+					}
 				} else {
 					obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), hold ],
 						function(req) {
 							try {
 								var robj = req.getResultObject();
 								if (typeof robj.ilsevent != 'undefined') throw(robj);
-								list_append(robj[0]);
+								if (typeof obj.controller.view.lib_menu == 'undefined') {
+									list_append(robj[0]);
+								} else {
+									var pickup_lib = robj[0].pickup_lib();
+									if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
+									if (pickup_lib == obj.controller.view.lib_menu.value) {
+										list_append(robj[0]);
+									}
+								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Error retrieving hold #' + hold, E);
 							}
@@ -656,6 +675,73 @@ patron.holds.prototype = {
 			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
 				try { window.xulG.on_list_change(obj.holds); } catch(E) { this.error.sdump('D_ERROR',E); }
 			}
+		}
+	},
+
+	'render_lib_menu' : function() {
+		try {
+			var obj = this;
+			JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
+			var x = document.getElementById('menu_placeholder');
+			if (x.firstChild) return;
+			util.widgets.remove_children( x );
+	
+			var ml = util.widgets.make_menulist( 
+				util.functional.map_list( 
+					obj.data.list.my_aou.concat(
+						util.functional.filter_list(
+							util.fm_utils.find_ou(
+								obj.data.tree.aou,
+								obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou()
+							).children(),
+							function(o) {
+								return o.id() != obj.data.list.au[0].ws_ou();
+							}
+						)
+					),
+					function(o) { return [ 
+						o.shortname(), 
+						o.id(), 
+						( ! get_bool( obj.data.hash.aout[ o.ou_type() ].can_have_users() ) ),
+						( obj.data.hash.aout[ o.ou_type() ].depth() ),
+					]; }
+				).sort(
+					function( a, b ) {
+						var A = obj.data.hash.aou[ a[1] ];
+						var B = obj.data.hash.aou[ b[1] ];
+						var X = obj.data.hash.aout[ A.ou_type() ];
+						var Y = obj.data.hash.aout[ B.ou_type() ];
+						if (X.depth() < Y.depth()) return -1;
+						if (X.depth() > Y.depth()) return 1;
+						if (A.shortname() < B.shortname()) return -1;
+						if (A.shortname() > B.shortname()) return 1;
+						return 0;
+					}
+				),
+				obj.data.list.au[0].ws_ou()
+			);
+			x.appendChild( ml );
+			ml.addEventListener(
+				'command',
+				function(ev) {
+					/*
+					obj.list.on_all_fleshed = function() {
+						obj.list.clear();
+						obj.foreign_shelf = ev.target.value;
+						obj.retrieve();
+						setTimeout( function() { obj.list.on_all_fleshed = null; }, 0);
+					};
+					obj.list.full_retrieve();
+					*/
+					obj.list.clear();
+					obj.foreign_shelf = ev.target.value;
+					obj.retrieve();
+				},
+				false
+			);
+			obj.controller.view.lib_menu = ml;
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('rendering lib menu',E);
 		}
 	},
 }

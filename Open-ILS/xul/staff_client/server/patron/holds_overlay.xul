@@ -55,6 +55,7 @@
 </vbox>
 
 <hbox id="holds_top_ui" flex="1">
+	<vbox id="menu_placeholder" />
 	<spacer flex="1"/>
 	<menubar>
 		<menu label="Actions for Selected Holds" accesskey="S">
