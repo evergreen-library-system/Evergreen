@@ -16,13 +16,15 @@ use DateTime;
 use Time::HiRes qw/time/;
 use XML::LibXML;
 
-my ($file,$config,$profileid,$identtypeid,$default_profile,$profile_map,$usermap) =
-	('return_file_0623-2.xml', '/openils/conf/bootstrap.conf', 1, 3, 'User', 'profile.map');
+my ($file,$config,$profileid,$identtypeid,$default_profile,$profile_map,$seenmap,$nosaveseen,$usermap) =
+	('return_file_0623-2.xml', '/openils/conf/bootstrap.conf', 1, 3, 'User', 'profile.map','/tmp/patron-import.seen');
 
 GetOptions(
         'usermap=s'        => \$usermap,
         'file=s'        => \$file,
         'config=s'      => \$config,
+        'seenmap=s'      => \$seenmap,
+        'no_save_seenmap'      => \$nosaveseen,
         'default_profile=i'      => \$default_profile,
         'profile_map=s'      => \$profile_map,
         'profile_statcat_id=i'      => \$profileid,
@@ -51,6 +53,17 @@ if ($profile_map) {
 		$b =~ s/^\s*(\S+)\s*$/$1/o;
 		$i =~ s/^\s*(\S+)\s*$/$1/o;
 		$p_map{$b} = $i;
+	}
+	close F;
+}
+
+my %s_map;
+if ($seenmap) {
+	open F, $seenmap;
+	while (my $line = <F>) {
+		chomp($line);
+		next if ($line eq '');
+		$s_map{$line} = 1;
 	}
 	close F;
 }
@@ -86,10 +99,17 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $old_profile = $patron->findvalue( 'user_profile' );
 
 	my $bc = $patron->findvalue( 'user_id' );
+	if (exists($s_map{$bc})) {
+		$count++;
+		warn "\n!!! already saw barcode $bc, skipping\n";
+		next;
+	} else {
+		$s_map{$bc} = 1;
+	}
 
 	unless (defined($bc)) {
 		my $xml = $patron->toString;
-		warn "!!! no barcode found in UMS data, user number $count, xml => $xml \n";
+		warn "\n!!! no barcode found in UMS data, user number $count, xml => $xml \n";
 		$count++;
 		next;
 	}
@@ -99,7 +119,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 		$uid = $u_map{$bc};
 		unless ($uid) {
 			$count++;
-			warn "!!! no uid mapping found for barcode $bc\n";
+			warn "\n!!! no uid mapping found for barcode $bc\n";
 			next;
 		}
 	} else {
@@ -108,7 +128,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 
 	unless ($uid > 1) {
 		$count++;
-		warn "!!! user id lower than 2\n";
+		warn "\n!!! user id lower than 2\n";
 		next;
 	}
 	
@@ -125,7 +145,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	$p->profile( $$profiles{$new_profile} );
 	if (!$p->profile) {
 		$count++;
-		warn "!!! no new profile found for $old_profile\n";
+		warn "\n!!! no new profile found for $old_profile\n";
 		next;
 	}
 
@@ -168,7 +188,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	my $hlib = $$orgs{$patron->findvalue( 'user_library' )};
 	unless ($hlib) {
 		$count++;
-		warn "!!! no home library found in patron record\n";
+		warn "\n!!! no home library found in patron record\n";
 		next;
 	}
 	$p->home_ou( $hlib );
@@ -220,7 +240,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 		
 		$a->valid( 'f' );
 		$a->valid( 't' ) if ($prefix eq 'std_');
-		$a->valid( 'f' ) if ($prefix eq 'std_' and $a->findvalue( "${prefix}dpvscore" ) < 3);
+		$a->valid( 'f' ) if ($prefix eq 'std_' and $addr->findvalue( "${prefix}dpvscore" ) < 3);
 		
 		$a->within_city_limits( 'f' );
 		$a->country('USA');
@@ -285,6 +305,14 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	print JSON->perl2JSON( $_ )."\n" for ($p,$card,$profile_sce,@addresses,@notes);
 
 	$count++;
+}
+
+unless ($nosaveseen) {
+	warn "writing seen_map $seenmap...\n";
+
+	open F, ">$seenmap";
+	print F "$_\n" for (keys %s_map);
+	close F;
 }
 
 print STDERR "\n";
