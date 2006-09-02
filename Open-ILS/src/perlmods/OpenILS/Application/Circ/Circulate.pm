@@ -1142,7 +1142,6 @@ sub do_checkin {
 			{ target_copy => $self->copy->id, checkin_time => undef })->[0]);
 	}
 
-
 	# if the circ is marked as 'claims returned', add the event to the list
 	$self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
 		if ($self->circ and $self->circ->stop_fines 
@@ -1582,6 +1581,7 @@ sub check_checkin_copy_status {
             $status == OILS_COPY_STATUS_IN_PROCESS  ||
             $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
             $status == OILS_COPY_STATUS_IN_TRANSIT  ||
+            $status == OILS_COPY_STATUS_CATALOGING  ||
             $status == OILS_COPY_STATUS_RESHELVING );
 
    return OpenILS::Event->new('COPY_STATUS_LOST', payload => $copy )
