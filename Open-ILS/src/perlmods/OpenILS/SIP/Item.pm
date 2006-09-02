@@ -1,9 +1,3 @@
-#
-#
-# A Class for hiding the ILS's concept of the item from the OpenSIP
-# system
-#
-
 package OpenILS::SIP::Item;
 use strict; use warnings;
 

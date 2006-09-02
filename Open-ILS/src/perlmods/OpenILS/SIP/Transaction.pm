@@ -9,6 +9,7 @@ use strict; use warnings;
 use Sys::Syslog qw(syslog);
 
 use OpenILS::SIP;
+use OpenILS::SIP::Msg qw/:const/;
 
 
 my %fields = (

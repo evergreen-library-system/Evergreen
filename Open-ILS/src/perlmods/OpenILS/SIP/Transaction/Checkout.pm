@@ -11,6 +11,7 @@ use POSIX qw(strftime);
 
 use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
+use OpenILS::SIP::Msg qw/:const/;
 use Sys::Syslog qw(syslog);
 
 use OpenILS::Application::AppUtils;
@@ -64,33 +65,38 @@ sub do_checkout {
 		'open-ils.circ.checkout.permit', 
 		$self->{authtoken}, $args );
 
-	if( ref($resp) eq 'ARRAY' ) {
-		my @e;
-		push( @e, $_->{textcode} ) for @$resp;
-		syslog('LOG_INFO', "OILS: Checkout permit failed with events: @e");
-		$self->screen_msg('Patron is not allowed to check out the selected item');
-		return 0;
-	}
-
-	if( my $code = $U->event_code($resp) ) {
-		my $txt = $resp->{textcode};
-		syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
-		$self->screen_msg('Patron is not allowed to check out the selected item');
-		return 0; 
-	}
+	$resp = [$resp] unless ref $resp eq 'ARRAY';
 
 	my $key;
 
-	if( $key = $resp->{payload} ) {
+	if( @$resp == 1 and ! $U->event_code($$resp[0]) ) {
+		$key = $$resp[0]->{payload};
 		syslog('LOG_INFO', "OILS: circ permit key => $key");
 
 	} else {
-		syslog('LOG_WARN', "OILS: Circ permit failed :\n" . Dumper($resp) );
-		$self->screen_msg('Patron is not allowed to check out the selected item');
+
+		# We got one or more non-success events
+		$self->screen_msg('');
+		for my $r (@$resp) {
+
+			if( my $code = $U->event_code($resp) ) {
+				my $txt = $resp->{textcode};
+				syslog('LOG_INFO', "OILS: Checkout permit failed with event $code : $txt");
+
+				if( $txt eq 'OPEN_CIRCULATION_EXISTS' ) {
+					$self->screen_msg(OILS_SIP_MSG_CIRC_EXISTS);
+					return 0;
+				} else {
+					$self->screen_msg(OILS_SIP_MSG_CIRC_PERMIT_FAILED);
+				}
+			}
+		}
 		return 0;
 	}
 
+	# --------------------------------------------------------------------
 	# Now do the actual checkout
+	# --------------------------------------------------------------------
 
 	$args = { 
 		permit_key		=> $key, 
