@@ -1367,10 +1367,7 @@ sub do_hold_notify {
 
 		$logger->info("attempt at sending hold notification for hold $holdid");
 
-		# XXX uncomment me to send email notifications
-		#my $stat = $notifier->send_email_notify;
-		my $stat = 0;
-
+		my $stat = $notifier->send_email_notify;
 		$logger->info("hold notify succeeded for hold $holdid") if $stat eq '1';
 		$logger->warn(" * hold notify failed for hold $holdid") if $stat ne '1';
 

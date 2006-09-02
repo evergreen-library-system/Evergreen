@@ -108,6 +108,17 @@ sub new {
 sub send_email_notify {
 	my $self = shift;
 
+	my $sc = OpenSRF::Utils::SettingsClient->new;
+	my $setting = $sc->config_value(
+		qw/ apps open-ils.circ app_settings notify_hold email / );
+
+	$logger->debug("hold_notify: email enabled setting = $setting");
+
+	if( !$setting or $setting ne 'true' ) {
+		$logger->info("hold_notify: not sending hold notify - email notifications disabled");
+		return 0;
+	}
+
 	$logger->info("hold_notify: attempting email notify on hold ".$self->hold->id);
 
 	return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS')
