@@ -119,6 +119,11 @@ sub send_email_notify {
 		return 0;
 	}
 
+	unless ($U->is_true($self->hold->email_notify)) {
+		$logger->info("not sending hold notification becaue email_notify is false");
+		return 0;
+	}
+
 	$logger->info("hold_notify: attempting email notify on hold ".$self->hold->id);
 
 	return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS')
