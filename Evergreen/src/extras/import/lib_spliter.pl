@@ -23,7 +23,7 @@ while (<STDIN>) {
 	push @{ $libs{$sys_pol}{libs} }, {name => $lib, shortname => $policy, type => 3 };
 }
 
-my $dbh = DBI->connect("dbi:Pg:host=fw4;port=5432;dbname=$ARGV[0]",'postgres');
+my $dbh = DBI->connect("dbi:Pg:host=10.1.0.13;port=5432;dbname=$ARGV[0]",'postgres');
 
 $dbh->begin_work;
 

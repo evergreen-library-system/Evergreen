@@ -26,18 +26,18 @@ HCLS-MD	Alexander Public Library / McDonough	Henry County Library
 HCLS-ST	Cochran Public Library / Stockbridge	Henry County Library
 HCLS-HA	Fortson Public Library / Hampton	Henry County Library
 HOU-PE	Perry Branch Library	Houston County Public Library
-HOU-WR	Nola Brantley Memorial Library	Houston County Public Library
+HOU-WR	Nola Brantley Memorial Library / Warner Robins	Houston County Public Library
 HOU-CV	Centerville Branch Library	Houston County Public Library
 JCL-LVILLE	Louisville Public Library	Jefferson County Library
 JCL-WRENS	McCollum Public Library	Jefferson County Library
 JCL-WADLEY	Wadley Public Library	Jefferson County Library
 JCL-BKMOBL	Bookmobile	Jefferson County Library
 KRLS-AR	Arlington Branch Library	Kinchafoonee Regional Library
-KRLS-CA	Calhoun County Public Library	Kinchafoonee Regional Library
-KRLS-CL	Clay County Public Library	Kinchafoonee Regional Library
-KRLS-RA	Randolph County Public Library	Kinchafoonee Regional Library
-KRLS-TE	Terrell County Public Library	Kinchafoonee Regional Library
-KRLS-WE	Webster County Public Library	Kinchafoonee Regional Library
+KRLS-CA	Calhoun County Library	Kinchafoonee Regional Library
+KRLS-CL	Clay County Library	Kinchafoonee Regional Library
+KRLS-RA	Randolph County Library	Kinchafoonee Regional Library
+KRLS-TE	Terrell County Library	Kinchafoonee Regional Library
+KRLS-WE	Webster County Library	Kinchafoonee Regional Library
 KRLS-KI	Kinchafoonee Regional Library System	Kinchafoonee Regional Library
 LEE-SMV	Smithville Library	Lee County Public Library
 LEE-LSB	Lee County Library	Lee County Public Library
@@ -65,7 +65,7 @@ MCCLS-HQ	Moultrie-Colquitt County Library	Moultrie-Colquitt County Library
 TRRL-SAPLO	Sapelo Branch Library	Three Rivers Regional Library
 MCCLS-DOE	Monroe Memorial Library	Moultrie-Colquitt County Library
 MCCLS-BKM	Bookmobile	Moultrie-Colquitt County Library
-MRLS-MRL	Mountain Regional Library System	Mountain Regional Library
+MRLS-MRL	Mountain Regional Library	Mountain Regional Library
 MRLS-BKMB	Bookmobile	Mountain Regional Library
 MRLS-FCPL	Fannin County Public Library	Mountain Regional Library
 MRLS-TCPL	Towns County Public Library	Mountain Regional Library
@@ -87,8 +87,8 @@ ORLS-EXT	Extension Services	Ocmulgee Regional Library
 OHOOP-VIDT	Vidalia-Toombs County Library	Ohoopee Regional Library
 OHOOP-MONT	Montgomery County Library	Ohoopee Regional Library
 OHOOP-LYON	Nelle Brown Memorial [Lyon]	Ohoopee Regional Library
-OHOOP-TATR	Tattnall County Library [Reidsville]	Ohoopee Regional Library
-OHOOP-TATG	Tattnall County Library [Glennville]	Ohoopee Regional Library
+OHOOP-TATR	Reidsville / Tattnall County Library	Ohoopee Regional Library
+OHOOP-TATG	Glennville / Tattnall County Library	Ohoopee Regional Library
 OHOOP-BKML	Bookmobile	Ohoopee Regional Library
 PPL-TPL	Thomas Public Library	Peach Public Libraries
 PPL-BPL	Byron Public Library	Peach Public Libraries
@@ -186,14 +186,14 @@ HALL-CL	Clermont Branch	Hall County Library System
 HALL-EH	East Hall and Special Needs Library	Hall County Library System
 HALL-GVL	Headquarters Branch	Hall County Library System
 HALL-MV	Murrayville Branch	Hall County Library System
-NCLS-COVTN	Newton County Library hdqtrs.	Newton County Library System
+NCLS-COVTN	Newton County Library  / Covington Branch	Newton County Library System
 OCRL-WRIGH	Johnson County Library	Oconee Regional Library
 OCRL-DUBLN	Laurens County Library	Oconee Regional Library
 OCRL-SANDR	Rosa M. Tarbutton Memorial Library	Oconee Regional Library
 OCRL-SOPER	Treutlen County Library	Oconee Regional Library
-STATELIB-L	Ga. State Lib. Collection	Office of Public Library Services
+STATELIB-L	Ga. State Library Collection	Office of Public Library Services
 PIED-TAL	Talmo Public Library	Piedmont Regional Library System
-STATELIB-B	Ga. State Lib. For the Blind	Office of Public Library Services
+STATELIB-B	Ga. GLASS	Office of Public Library Services
 OKRL-CLNCH	Clinch County Public Library	Okefenokee Regional Library System
 OKRL-BACON	Alma-Bacon County Public Library	Okefenokee Regional Library System
 ARL-PWOODS	Pinewoods North Community Learning Center	Athens Regional Library
@@ -227,7 +227,7 @@ WGRL-BO	Bowdon Public Library	West Georgia Regional Library
 WGRL-BR	Bremen Public Library	West Georgia Regional Library
 WGRL-DC	Douglas County Public Library	West Georgia Regional Library
 WGRL-FR	Heard County Public Library	West Georgia Regional Library
-WGRL-LS	Betty C. Hagler Public Library	West Georgia Regional Library
+WGRL-LS	Lithia Springs Betty C. Hagler Public Library	West Georgia Regional Library
 WGRL-MR	Maude Ragsdale Public Library	West Georgia Regional Library
 WGRL-NG	New Georgia Public Library	West Georgia Regional Library
 WGRL-PC	Paulding County Public Library	West Georgia Regional Library
@@ -250,4 +250,4 @@ ROCK-NG	Nancy Guinn Library	Conyers-Rockdale Library System
 TLLS-LS	Lake Sinclair Library	Twin Lakes Library
 WGRL-BU	Buchanan Branch Library	West Georgia Regional Library
 HALL-TEMP	Temp branch	Hall County Library System
-LEE-RED	Lee County-Redbone	Lee County Public Library
+LEE-RED	Redbone	Lee County Public Library
