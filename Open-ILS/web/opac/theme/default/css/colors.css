@@ -15,7 +15,9 @@ body a:hover	{ color: red; text-decoration: underline;}
 .searchbar_item { color: black; } 
 #login_box { border-top: 1px solid #808080; border-bottom: 1px solid #808080; }
 #next_prev_links_dead { color: #808080; text-decoration: none; }
-.nav_link_active { text-decoration: underline; }
+
+.nav_link_active {font-weight: bold;}
+
 .search_link { text-decoration: none; }
 .result_table_subtable { border-top: 1px solid #E0E0E0; }
 
