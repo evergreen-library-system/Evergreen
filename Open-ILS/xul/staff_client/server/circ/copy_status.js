@@ -20,12 +20,18 @@ circ.copy_status.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
-				'title' : { 'hidden' : false },
+				//'title' : { 'hidden' : false },
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
 				'alert_message' : { 'hidden' : false },
-			} 
+				'due_date' : { 'hidden' : false },
+			},
+			{
+				'except_these' : [
+					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish',
+				],
+			}
 		);
 
 		JSAN.use('util.list'); obj.list = new util.list('copy_status_list');

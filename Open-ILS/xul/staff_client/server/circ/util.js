@@ -183,8 +183,18 @@ circ.util.offline_checkout_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
@@ -232,8 +242,18 @@ circ.util.offline_checkin_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
@@ -293,8 +313,18 @@ circ.util.offline_renew_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
@@ -348,8 +378,18 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
@@ -456,7 +496,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'checkin_time_full', 'label' : 'Checkin Timestamp', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time()'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.checkin_time() : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time() : "")'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Checkout Date', 'flex' : 1,
@@ -464,7 +504,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'checkin_time', 'label' : 'Checkin Date', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.checkin_time().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.checkin_time().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time().substr(0,10) : "")'
 		},
 
 		{
@@ -559,7 +599,16 @@ circ.util.columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
+		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
 		}
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
@@ -628,8 +677,18 @@ circ.util.transit_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
@@ -806,8 +865,18 @@ circ.util.hold_columns = function(modify,params) {
 				var x = util.functional.find_list(c,function(d){return(d.id==params.just_these[i]);});
 				new_c.push( function(y){ return y; }( x ) );
 			}
-			return new_c;
+			c = new_c;
 		}
+		if (params.except_these) {
+			JSAN.use('util.functional');
+			var new_c = [];
+			for (var i = 0; i < c.length; i++) {
+				var x = util.functional.find_list(params.except_these,function(d){return(d==c[i].id);});
+				if (!x) new_c.push(c[i]);
+			}
+			c = new_c;
+		}
+
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
