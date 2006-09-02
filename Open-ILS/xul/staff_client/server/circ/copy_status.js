@@ -20,7 +20,7 @@ circ.copy_status.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
-				//'title' : { 'hidden' : false },
+				'title' : { 'hidden' : false },
 				'location' : { 'hidden' : false },
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
