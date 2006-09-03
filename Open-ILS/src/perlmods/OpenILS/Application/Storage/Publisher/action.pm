@@ -585,7 +585,7 @@ sub generate_fines {
 				{ xact		=> ''.$c->id,
 				  note		=> "System Generated Overdue Fine",
 				  billing_type	=> "Overdue materials",
-				  amount	=> ''.$latest_amount
+				  amount	=> ''.$latest_amount,
 				  billing_ts	=> $latest_billing_ts,
 				}
 			) if ($latest_billing_ts and $latest_amount > 0.0);
