@@ -25,6 +25,7 @@
 		<menuseparator/>
 		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 		<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+		<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
 		<menuseparator />
 		<menuitem command="save_columns" label="Save Columns"/>
 	</popup>
@@ -73,6 +74,7 @@
 			<menuseparator />
 			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 			<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+			<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
 			<menuseparator />
 			<menuitem command="save_columns" label="Save Columns"/>
 		</menupopup>

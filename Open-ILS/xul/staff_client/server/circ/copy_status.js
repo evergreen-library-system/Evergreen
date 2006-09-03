@@ -61,6 +61,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 							obj.controller.view.sel_clip.setAttribute('disabled','true');
+							obj.controller.view.sel_renew.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
 							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
@@ -74,6 +75,7 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 							obj.controller.view.sel_clip.setAttribute('disabled','false');
+							obj.controller.view.sel_renew.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -170,6 +172,22 @@ circ.copy_status.prototype = {
 							}
 						}
 					],
+					'sel_renew' : [
+						['command'],
+						function() {
+							JSAN.use('circ.util');
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								var test = obj.selection_list[i].renewable;
+								var barcode = obj.selection_list[i].barcode;
+								if (test == 't') {
+									circ.util.renew_via_barcode( barcode );
+								} else {
+									alert('Item with barcode ' + barcode + ' is not circulating.');
+								}
+							}
+						}
+					],
+
 					'sel_mark_items_damaged' : [
 						['command'],
 						function() {
@@ -288,7 +306,7 @@ circ.copy_status.prototype = {
 				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON( { 'copy_id' : copy.id(), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
+						'retrieve_id' : js2JSON( { 'renewable' : copy.circulations() ? 't' : 'f', 'copy_id' : copy.id(), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
 						'row' : {
 							'my' : {
 								'mvr' : my_mvr,

@@ -94,6 +94,7 @@
 		<command id="cmd_replace_barcode" disabled="true"/>
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_checkin" disabled="true"/>
+		<command id="sel_renew" disabled="true"/>
 		<command id="sel_edit" disabled="true"/>
 		<command id="sel_opac" disabled="true"/>
 		<command id="sel_bucket" disabled="true"/>

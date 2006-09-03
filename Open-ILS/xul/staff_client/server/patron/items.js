@@ -211,10 +211,16 @@ patron.items.prototype = {
 	'items_renew_all' : function() {
 		try {
 			var obj = this; var list = obj.list;
+			if (list.on_all_fleshed != null) {
+				var r = window.confirm('This is list is busy retrieving/rendering rows for a prior action.  Abort the prior action and proceed?');
+				if (!r) return;
+			}
+			var r = window.confirm('Renew all the items in this list?');
+			if (!r) return;
 			function flesh_callback() {
 				try {
 					obj.list.select_all();
-					obj.items_renew(1);	
+					obj.items_renew(1,true);	
 					setTimeout(function(){list.on_all_fleshed = null;},0);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
@@ -227,71 +233,24 @@ patron.items.prototype = {
 		}
 	},
 
-	'items_renew' : function(which) {
+	'items_renew' : function(which,skip_prompt) {
 		var obj = this;
 		try{
+			JSAN.use('circ.util');
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
-			var msg = 'Are you sure you would like to renew item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
-			var r = obj.error.yns_alert(msg,'Renewing Items','Yes','No',null,'Check here to confirm this message');
-			if (r != 0) { return; }
+			if (!skip_prompt) {
+				var msg = 'Are you sure you would like to renew item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
+				var r = window.confirm(msg);
+				if (!r) { return; }
+			}
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				try {
 					var barcode = retrieve_ids[i].barcode;
 					//alert('Renew barcode = ' + barcode);
-					var renew = obj.network.simple_request(
-						'CHECKOUT_RENEW', 
-						[ ses(), { barcode: barcode, patron: obj.patron_id } ],
-						null,
-						{
-							'title' : 'Override Renew Failure?',
-							'overridable_events' : [ 
-								1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
-								1213 /* PATRON_BARRED */,
-								1215 /* CIRC_EXCEEDS_COPY_RANGE */,
-								7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
-								7003 /* COPY_CIRC_NOT_ALLOWED */,
-								7004 /* COPY_NOT_AVAILABLE */,
-								7006 /* COPY_IS_REFERENCE */,
-								7007 /* COPY_NEEDED_FOR_HOLD */,
-								7008 /* MAX_RENEWALS_REACHED */, 
-								7010 /* COPY_ALERT_MESSAGE */,
-								7013 /* PATRON_EXCEEDS_FINES */,
-							],
-							'text' : {
-								'7010' : function(r) {
-									return r.payload;
-								},
-								'7004' : function(r) {
-									//return obj.data.hash.ccs[ r.payload ].name();
-									return r.payload.status().name();
-									//return r.payload.name();
-								},
-							}
-						}
-					);
-					if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
-					for (var j = 0; j < renew.length; j++) { 
-						switch(renew[j].ilsevent) {
-							case 0 /* SUCCESS */ : break;
-							case 5000 /* PERM_FAILURE */: break;
-							case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
-							case 1213 /* PATRON_BARRED */ : break;
-							case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
-							case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
-							case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
-							case 7004 /* COPY_NOT_AVAILABLE */ : break;
-							case 7006 /* COPY_IS_REFERENCE */ : break;
-							case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
-							case 7008 /* MAX_RENEWALS_REACHED */ : break; 
-							case 7010 /* COPY_ALERT_MESSAGE */ : break;
-							case 7013 /* PATRON_EXCEEDS_FINES */ : break;
-							default:
-								throw(renew);
-							break;
-						}
-					}
+					var renew = circ.util.renew_via_barcode( barcode, obj.patron_id );
+
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('Renew probably did not happen for barcode ' + barcode,E);
 				}
@@ -438,8 +397,8 @@ patron.items.prototype = {
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			JSAN.use('util.functional');
 			var msg = 'Are you sure you would like to check in item' + ( retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( retrieve_ids, function(o){return o.barcode;}).join(', ') + '?';
-			var r = obj.error.yns_alert(msg,'Check In Items','Yes','No',null,'Check here to confirm this message');
-			if (r != 0) { return; }
+			var r = window.confirm(msg);
+			if (!r) { return; }
 			JSAN.use('circ.util');
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var barcode = retrieve_ids[i].barcode;

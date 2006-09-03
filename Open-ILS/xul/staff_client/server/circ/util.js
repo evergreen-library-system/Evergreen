@@ -6,7 +6,7 @@ circ.util = {};
 circ.util.EXPORT_OK	= [ 
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns', 
 	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode',
-	'show_last_few_circs', 'abort_transits', 'transit_columns'
+	'show_last_few_circs', 'abort_transits', 'transit_columns', 'renew_via_barcode',
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
 
@@ -1192,6 +1192,84 @@ circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_
 		return null;
 	}
 }
+
+circ.util.renew_via_barcode = function ( barcode, patron_id ) {
+	try {
+		var obj = {};
+		JSAN.use('util.network'); obj.network = new util.network();
+		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.stash_retrieve();
+
+		var params = { barcode: barcode };
+		if (patron_id) params.patron = patron_id;
+
+		var renew = obj.network.simple_request(
+			'CHECKOUT_RENEW', 
+			[ ses(), params ],
+			null,
+			{
+				'title' : 'Override Renew Failure?',
+				'overridable_events' : [ 
+					1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
+					1213 /* PATRON_BARRED */,
+					1215 /* CIRC_EXCEEDS_COPY_RANGE */,
+					7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */,
+					7003 /* COPY_CIRC_NOT_ALLOWED */,
+					7004 /* COPY_NOT_AVAILABLE */,
+					7006 /* COPY_IS_REFERENCE */,
+					7007 /* COPY_NEEDED_FOR_HOLD */,
+					7008 /* MAX_RENEWALS_REACHED */, 
+					7010 /* COPY_ALERT_MESSAGE */,
+					7013 /* PATRON_EXCEEDS_FINES */,
+				],
+				'text' : {
+					'1212' : function(r) { return 'Barcode: ' + barcode; },
+					'1213' : function(r) { return 'Barcode: ' + barcode; },
+					'1215' : function(r) { return 'Barcode: ' + barcode; },
+					'7002' : function(r) { return 'Barcode: ' + barcode; },
+					'7003' : function(r) { return 'Barcode: ' + barcode; },
+					'7004' : function(r) {
+						return 'Barcode: ' + barcode + ' Status: ' + r.payload.status().name();
+					},
+					'7006' : function(r) { return 'Barcode: ' + barcode; },
+					'7007' : function(r) { return 'Barcode: ' + barcode; },
+					'7008' : function(r) { return 'Barcode: ' + barcode; },
+					'7010' : function(r) {
+						return 'Barcode: ' + barcode + ' Message: ' + r.payload;
+					},
+					'7013' : function(r) { return 'Barcode: ' + barcode; },
+				}
+			}
+		);
+		if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
+		for (var j = 0; j < renew.length; j++) { 
+			switch(renew[j].ilsevent) {
+				case 0 /* SUCCESS */ : break;
+				case 5000 /* PERM_FAILURE */: break;
+				case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
+				case 1213 /* PATRON_BARRED */ : break;
+				case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
+				case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
+				case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
+				case 7004 /* COPY_NOT_AVAILABLE */ : break;
+				case 7006 /* COPY_IS_REFERENCE */ : break;
+				case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
+				case 7008 /* MAX_RENEWALS_REACHED */ : break; 
+				case 7010 /* COPY_ALERT_MESSAGE */ : break;
+				case 7013 /* PATRON_EXCEEDS_FINES */ : break;
+				default:
+					throw(renew);
+				break;
+			}
+		}
+		return renew;
+
+	} catch(E) {
+		JSAN.use('util.error'); var error = new util.error();
+		error.standard_unexpected_error_alert('Renew Failed for ' + barcode,E);
+		return null;
+	}
+}
+
 
 
 dump('exiting circ/util.js\n');
