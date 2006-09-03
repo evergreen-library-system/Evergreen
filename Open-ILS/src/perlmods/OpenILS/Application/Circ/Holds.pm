@@ -519,6 +519,12 @@ sub retrieve_hold_status {
 		return $e->event unless $e->allowed('VIEW_HOLD');
 	}
 
+	return _hold_status($e, $hold);
+
+}
+
+sub _hold_status {
+	my($e, $hold) = @_;
 	return 1 unless $hold->current_copy;
 	return 2 unless $hold->capture_time;
 
@@ -1180,7 +1186,7 @@ sub all_rec_holds {
 	$args ||= { fulfillment_time => undef };
 	$args->{cancel_time} = undef;
 
-	my $resp = {};
+	my $resp = { volume_holds => [], copy_holds => [] };
 
 	$resp->{title_holds} = $e->search_action_hold_request(
 		{ 
@@ -1192,7 +1198,9 @@ sub all_rec_holds {
 	my $vols = $e->search_asset_call_number(
 		{ record => $title_id, deleted => 'f' }, {idlist=>1});
 
-	$resp->{volume_holds} = (!@$vols) ? [] : $e->search_action_hold_request(
+	return $resp unless @$vols;
+
+	$resp->{volume_holds} = $e->search_action_hold_request(
 		{ 
 			hold_type => OILS_HOLD_TYPE_VOLUME, 
 			target => $vols,
@@ -1202,7 +1210,9 @@ sub all_rec_holds {
 	my $copies = $e->search_asset_copy(
 		{ call_number => $vols, deleted => 'f' }, {idlist=>1});
 
-	$resp->{copy_holds} = (!@$copies) ? [] : $e->search_action_hold_request(
+	return $resp unless @$copies;
+
+	$resp->{copy_holds} = $e->search_action_hold_request(
 		{ 
 			hold_type => OILS_HOLD_TYPE_COPY,
 			target => $copies,
@@ -1211,6 +1221,70 @@ sub all_rec_holds {
 
 	return $resp;
 }
+
+
+
+__PACKAGE__->register_method(
+	method => 'uber_hold',
+	api_name => 'open-ils.circ.hold.details.retrieve'
+);
+
+sub uber_hold {
+	my($self, $client, $auth, $hold_id) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	$e->checkauth or return $e->event;
+	$e->allowed('VIEW_HOLD') or return $e->event;
+
+	my $resp = {};
+
+	my $hold = $e->retrieve_action_hold_request(
+		[
+			$hold_id,
+			{
+				flesh => 1,
+				flesh_fields => { ahr => [ 'current_copy', 'usr' ] }
+			}
+		]
+	) or return $e->event;
+
+	my $user = $hold->usr;
+	$hold->usr($user->id);
+
+	my $card = $e->retrieve_actor_card($user->card)
+		or return $e->event;
+
+	my $copy;
+	my $volume;
+	my $mvr;
+
+	if( $copy = $hold->current_copy ) {
+		$hold->current_copy($copy->id);
+		$copy = $e->retrieve_asset_copy($hold->current_copy)
+			or return $e->event;
+		$volume = $e->retrieve_asset_call_number($copy->call_number)
+			or return $e->event;
+		my $t = $e->retrieve_biblio_record_entry($volume->record)
+			or return $e->event;
+		$mvr = $U->record_to_mvr($t);
+	}
+
+
+	flesh_hold_notices([$hold], $e);
+
+	return {
+		hold		=> $hold,
+		copy		=> $copy,
+		volume	=> $volume,
+		mvr		=> $mvr,
+		status	=> _hold_status($e, $hold),
+		patron_first => $user->first_given_name,
+		patron_last  => $user->family_name,
+		patron_barcode => $card->barcode,
+	};
+
+}
+
+
 
 
 1;
