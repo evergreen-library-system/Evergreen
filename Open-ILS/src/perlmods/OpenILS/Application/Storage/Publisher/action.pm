@@ -326,7 +326,11 @@ sub hold_pull_list {
 	my $sth = action::survey->db_Main->prepare_cached($select);
 	$sth->execute($ou);
 
-	$client->respond( $id_list ? $_->id : $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
+	if ($idlist) {
+		$client->respond( $_->{id} ) for ( $sth->fetchall_hash );
+	} else {
+		$client->respond( $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
+	}
 
 	return undef;
 }
