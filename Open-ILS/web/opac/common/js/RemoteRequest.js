@@ -345,7 +345,7 @@ RemoteRequest.prototype.getResultObject = function() {
 
 		} else {
 			_debug(str);
-			alert(str);
+			throw str;
 		}
 	}
 
