@@ -450,6 +450,8 @@ sub generate_fines {
 		push @circs, overdue_circs($grace);
 	}
 
+	my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
+
 	my $penalty = OpenSRF::AppSession->create('open-ils.penalty');
 	for my $c (@circs) {
 	
@@ -539,8 +541,8 @@ sub generate_fines {
 				my $dow_open = "dow_${dow}_open";
 				my $dow_close = "dow_${dow}_close";
 
-				if (my $hoo = actor::org_unit::hours_of_operation->retrieve( $c->circ_lib )) {
-					next if ( $hoo->$dow_open eq '00:00:00' and $hoo->$dow_close eq '00:00:00');
+				if (my $h = $hoo{$c->circ_lib}) {
+					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
 				}
 
 				my $timestamptz = $billing_ts->strftime('%FT%T%z');
@@ -562,13 +564,7 @@ sub generate_fines {
 
 				$current_fine_total += $billing->amount;
 	
-				$client->respond(
-					"\t\tCreating fine of ".$billing->amount." for period starting ".
-					localtime(
-						$parser->parse_datetime(
-							clense_ISO8601( $billing->billing_ts )
-						)->epoch
-					)."\n" );
+				$client->respond( "\t\tCreating fine of ".$billing->amount." for period starting ".$billing->billing_ts."\n" );
 			}
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
