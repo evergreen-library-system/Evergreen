@@ -36,6 +36,7 @@ cat.util.replace_barcode = function(old_bc) {
 		copy.barcode(new_bc); copy.ischanged('1');
 		var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
 		if (typeof r.ilsevent != 'undefined') { if (r.ilsevent != 0) throw(r); }
+		return new_bc;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert('Rename did not likely occur.',E);
