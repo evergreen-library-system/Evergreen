@@ -454,6 +454,14 @@ sub generate_fines {
 	for my $c (@circs) {
 	
 		try {
+			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
+				$log->debug("Cleaning up after previous transaction\n");
+				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+			}
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
+			$log->info("Processing circ ".$circ->id."...\n");
+
+
 			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
 	
 			my $due = $due_dt->epoch;
@@ -563,6 +571,8 @@ sub generate_fines {
 					)."\n" );
 			}
 
+			$self->method_lookup('open-ils.storage.transaction.commit')->run;
+
 			$penalty->request(
 				'open-ils.penalty.patron_penalty.calculate',
 				{ patron	=> $c->usr->to_fieldmapper,
@@ -574,6 +584,8 @@ sub generate_fines {
 		} catch Error with {
 			my $e = shift;
 			$client->respond( "Error processing overdue circulation [".$c->id."]:\n\n$e\n" );
+			$log->error("Error processing overdue circulation [".$c->id."]:\n$e\n");
+			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 		};
 	}
 }
