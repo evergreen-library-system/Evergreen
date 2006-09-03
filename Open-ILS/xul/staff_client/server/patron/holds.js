@@ -46,101 +46,128 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
-						obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ],
-							function(status_req) {
-								var status_robj = status_req.getResultObject();
-								row.my.status = status_robj;
-								switch(row.my.ahr.hold_type()) {
-									case 'M' :
-										obj.network.request(
-											api.MODS_SLIM_METARECORD_RETRIEVE.app,
-											api.MODS_SLIM_METARECORD_RETRIEVE.method,
-											[ row.my.ahr.target() ],
-											function(mvr_req) {
-												row.my.mvr = mvr_req.getResultObject();
-												if ( row.my.ahr.current_copy() && ! row.my.acp) {
-													obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-														function(acp_req) {
-															row.my.acp = acp_req.getResultObject();
-															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-														}
-													);
-												} else {
-													if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-												}
-											}
-										);
-									break;
-									case 'T' :
-										obj.network.request(
-											api.MODS_SLIM_RECORD_RETRIEVE.app,
-											api.MODS_SLIM_RECORD_RETRIEVE.method,
-											[ row.my.ahr.target() ],
-											function(mvr_req) {
-												row.my.mvr = mvr_req.getResultObject();
-												if ( row.my.ahr.current_copy() && ! row.my.acp) {
-													obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-														function(acp_req) {
-															row.my.acp = acp_req.getResultObject();
-															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-														}
-													);
-												} else {
-													if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-												}
+						obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), row.my.hold_id ],
+							function(ahr_req) {
+								try {
+									var ahr_robj = ahr_req.getResultObject();
+									if (typeof ahr_robj.ilsevent != 'undefined') throw(ahr_robj);
+									row.my.ahr = ahr_robj[0];
+									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
+									params.row_node.setAttribute('retrieve_id', 
+										js2JSON({
+											'copy_id':row.my.ahr.current_copy(),
+											'id':row.my.ahr.id(),
+											'type':row.my.ahr.hold_type(),
+											'target':row.my.ahr.target(),
+											'usr':row.my.ahr.usr(),
+										})
+									);
 
-											}
-										);
-									break;
-									case 'V' :
-										row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ],
-											function(acn_req) {
-												row.my.acn = acn_req.getResultObject();
-												obj.network.request(
-													api.MODS_SLIM_RECORD_RETRIEVE.app,
-													api.MODS_SLIM_RECORD_RETRIEVE.method,
-													[ row.my.acn.record() ],
-													function(mvr_req) {
-														try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
-														if ( row.my.ahr.current_copy() && ! row.my.acp) {
-															obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-																function(acp_req) {
-																	row.my.acp = acp_req.getResultObject();
+									obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ],
+										function(status_req) {
+											try {
+												var status_robj = status_req.getResultObject();
+												row.my.status = status_robj;
+												switch(row.my.ahr.hold_type()) {
+													case 'M' :
+														obj.network.request(
+															api.MODS_SLIM_METARECORD_RETRIEVE.app,
+															api.MODS_SLIM_METARECORD_RETRIEVE.method,
+															[ row.my.ahr.target() ],
+															function(mvr_req) {
+																row.my.mvr = mvr_req.getResultObject();
+																if ( row.my.ahr.current_copy() && ! row.my.acp) {
+																	obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+																		function(acp_req) {
+																			row.my.acp = acp_req.getResultObject();
+																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																		}
+																	);
+																} else {
 																	if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
 																}
-															);
-														} else {
-															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-														}
-													}
-												);
-											}
-										);
-									break;
-									case 'C' :
-										obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ],
-											function(acp_req) {
-												row.my.acp = acp_req.getResultObject();
-												obj.network.simple_request( 'FM_ACN_RETRIEVE', [ typeof row.my.acp.call_number() == 'object' ? row.my.acp.call_number().id() : row.my.acp.call_number() ],
-													function(acn_req) {
-														row.my.acn = acn_req.getResultObject();
+															}
+														);
+													break;
+													case 'T' :
 														obj.network.request(
 															api.MODS_SLIM_RECORD_RETRIEVE.app,
 															api.MODS_SLIM_RECORD_RETRIEVE.method,
-															[ row.my.acn.record() ],
+															[ row.my.ahr.target() ],
 															function(mvr_req) {
-																try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
-																if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																row.my.mvr = mvr_req.getResultObject();
+																if ( row.my.ahr.current_copy() && ! row.my.acp) {
+																	obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+																		function(acp_req) {
+																			row.my.acp = acp_req.getResultObject();
+																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																		}
+																	);
+																} else {
+																	if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																}
+	
 															}
 														);
-													}
-												);
+													break;
+													case 'V' :
+														row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ],
+															function(acn_req) {
+																row.my.acn = acn_req.getResultObject();
+																obj.network.request(
+																	api.MODS_SLIM_RECORD_RETRIEVE.app,
+																	api.MODS_SLIM_RECORD_RETRIEVE.method,
+																	[ row.my.acn.record() ],
+																	function(mvr_req) {
+																		try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
+																		if ( row.my.ahr.current_copy() && ! row.my.acp) {
+																			obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+																				function(acp_req) {
+																					row.my.acp = acp_req.getResultObject();
+																					if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																				}
+																			);
+																		} else {
+																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																		}
+																	}
+																);
+															}
+														);
+													break;
+													case 'C' :
+														obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ],
+															function(acp_req) {
+																row.my.acp = acp_req.getResultObject();
+																obj.network.simple_request( 'FM_ACN_RETRIEVE', [ typeof row.my.acp.call_number() == 'object' ? row.my.acp.call_number().id() : row.my.acp.call_number() ],
+																	function(acn_req) {
+																		row.my.acn = acn_req.getResultObject();
+																		obj.network.request(
+																			api.MODS_SLIM_RECORD_RETRIEVE.app,
+																			api.MODS_SLIM_RECORD_RETRIEVE.method,
+																			[ row.my.acn.record() ],
+																			function(mvr_req) {
+																				try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
+																				if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																			}
+																		);
+																	}
+																);
+															}
+														);
+													break;
+												}
+											} catch(E) {
+												obj.error.standard_unexpected_error_alert('Error retrieving status for hold #' + row.my.hold_id, E);
 											}
-										);
-									break;
+										}
+									);
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Error retrieving hold #' + row.my.hold_id, E);
 								}
 							}
 						);
+
 					} catch(E) {
 						obj.error.sdump('D_ERROR','retrieve_row: ' + E );
 					}
@@ -619,25 +646,25 @@ patron.holds.prototype = {
 			obj.holds = window.xulG.holds;
 		} else {
 			var method; var params = [ ses() ];
-			if (obj.patron_id) {
-				method = 'FM_AHR_RETRIEVE_VIA_AU'; 
+			if (obj.patron_id) {                 /*************************************************** PATRON ******************************/
+				method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU'; 
 				params.push( obj.patron_id ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
-			} else if (obj.docid) {
+			} else if (obj.docid) {                 /*************************************************** RECORD ******************************/
 				method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
 				params.push( obj.docid ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
-			} else if (obj.pull) {
-				method = 'FM_AHR_PULL_LIST'; 
+			} else if (obj.pull) {                 /*************************************************** PULL ******************************/
+				method = 'FM_AHR_ID_LIST_PULL_LIST'; 
 				params.push( 50 ); params.push( 0 );
 			} else if (obj.shelf) {
-				method = 'FM_AHR_ONSHELF_RETRIEVE'; 
+				method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';                  /*************************************************** HOLD SHELF ******************************/
 				params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 				obj.render_lib_menu();
 			} else {
 				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
-				method = 'FM_AHR_PULL_LIST'; 
+				method = 'FM_AHR_ID_LIST_PULL_LIST';                  /*************************************************** PULL ******************************/
 				params.push( 50 ); params.push( 0 );
 				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
 			}
@@ -652,22 +679,15 @@ patron.holds.prototype = {
 			} else {
 				obj.holds = robj;
 			}
+			//alert('method = ' + method + ' params = ' + js2JSON(params));
 		}
 
-		function list_append(hold) {
-			obj.holds_map[ hold.id() ] = hold;
+		function list_append(hold_id) {
 			obj.list.append(
 				{
-					'retrieve_id' : js2JSON({
-					'copy_id':hold.current_copy(),
-						'id':hold.id(),
-						'type':hold.hold_type(),
-						'target':hold.target(),
-						'usr':hold.usr(),
-					}),
 					'row' : {
 						'my' : {
-							'ahr' : hold,
+							'hold_id' : hold_id,
 						}
 					}
 				}
@@ -676,42 +696,25 @@ patron.holds.prototype = {
 
 		function gen_list_append(hold) {
 			return function() {
-				if (typeof hold == 'object') {
-					if (typeof obj.controller.view.lib_menu == 'undefined') {
-						list_append(hold);
-					} else {
-						var pickup_lib = hold.pickup_lib();
-						if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
-						if (pickup_lib == obj.controller.view.lib_menu.value) {
-							list_append(hold);
-						}
-					}
+				if (typeof obj.controller.view.lib_menu == 'undefined') {
+					list_append(typeof hold == 'object' ? hold.id() : hold);
 				} else {
-					obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), hold ],
-						function(req) {
-							try {
-								var robj = req.getResultObject();
-								if (typeof robj.ilsevent != 'undefined') throw(robj);
-								if (typeof obj.controller.view.lib_menu == 'undefined') {
-									list_append(robj[0]);
-								} else {
-									var pickup_lib = robj[0].pickup_lib();
-									if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
-									if (pickup_lib == obj.controller.view.lib_menu.value) {
-										list_append(robj[0]);
-									}
-								}
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Error retrieving hold #' + hold, E);
-							}
-						}
-					);
+					/*
+					var pickup_lib = hold.pickup_lib();
+					if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
+					if (pickup_lib == obj.controller.view.lib_menu.value) {
+					*/
+						list_append(typeof hold == 'object' ? hold.id() : hold);
+					/*
+					}
+					*/
 				}
 			};
 		}
 
 		obj.list.clear();
 
+		//alert('obj.holds = ' + js2JSON(obj.holds));
 		JSAN.use('util.exec'); var exec = new util.exec(2);
 		var rows = [];
 		for (var i in obj.holds) {

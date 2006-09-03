@@ -312,6 +312,14 @@ user id.  The login session is the requestor and if the requestor is
 different from the user, then the requestor must have VIEW_HOLD permissions.
 NOTE
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds",
+	api_name	=> "open-ils.circ.holds.id_list.retrieve",
+	notes		=> <<NOTE);
+Retrieves all the hold ids for the specified
+user id.  The login session is the requestor and if the requestor is
+different from the user, then the requestor must have VIEW_HOLD permissions.
+NOTE
 
 sub retrieve_holds {
 	my($self, $client, $login_session, $user_id) = @_;
@@ -331,18 +339,24 @@ sub retrieve_holds {
 		{ order_by => { ahr => "request_time" } }
 	);
 	
-	for my $hold ( @$holds ) {
-		$hold->transit(
-			$apputils->simplereq(
-				'open-ils.cstore',
-				"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
-				{ hold => $hold->id },
-				{ order_by => { ahtc => 'id desc' }, limit => 1 }
-			)->[0]
-		);
+	if( ! $self->api_name =~ /id_list/ ) {
+		for my $hold ( @$holds ) {
+			$hold->transit(
+				$apputils->simplereq(
+					'open-ils.cstore',
+					"open-ils.cstore.direct.action.hold_transit_copy.search.atomic",
+					{ hold => $hold->id },
+					{ order_by => { ahtc => 'id desc' }, limit => 1 }
+				)->[0]
+			);
+		}
 	}
 
-	return $holds;
+	if( $self->api_name =~ /id_list/ ) {
+		return [ map { $_->id } @$holds ];
+	} else {
+		return $holds;
+	}
 }
 
 __PACKAGE__->register_method(
@@ -353,6 +367,13 @@ Retrieves all the holds, with hold transits attached, for the specified
 pickup_ou id. 
 NOTE
 
+__PACKAGE__->register_method(
+	method	=> "retrieve_holds_by_pickup_lib",
+	api_name	=> "open-ils.circ.holds.id_list.retrieve_by_pickup_lib",
+	notes		=> <<NOTE);
+Retrieves all the hold ids for the specified
+pickup_ou id. 
+NOTE
 
 sub retrieve_holds_by_pickup_lib {
 	my($self, $client, $login_session, $ou_id) = @_;
@@ -373,10 +394,16 @@ sub retrieve_holds_by_pickup_lib {
 		{ order_by => { ahr => "request_time" } });
 
 
-	flesh_hold_transits($holds);
-	return $holds;
-}
+	if( ! $self->api_name =~ /id_list/ ) {
+		flesh_hold_transits($holds);
+	}
 
+	if( $self->api_name =~ /id_list/ ) {
+		return [ map { $_->id } @$holds ];
+	} else {
+		return $holds;
+	}
+}
 
 __PACKAGE__->register_method(
 	method	=> "cancel_hold",
@@ -673,10 +700,20 @@ __PACKAGE__->register_method (
 	method		=> "hold_pull_list",
 	api_name		=> "open-ils.circ.hold_pull_list.retrieve",
 	signature	=> q/
+		Returns a list of holds that need to be "pulled"
+		by a given location
+	/
+);
+
+__PACKAGE__->register_method (
+	method		=> "hold_pull_list",
+	api_name		=> "open-ils.circ.hold_pull_list.id_list.retrieve",
+	signature	=> q/
 		Returns a list of hold ID's that need to be "pulled"
 		by a given location
 	/
 );
+
 
 sub hold_pull_list {
 	my( $self, $conn, $authtoken, $limit, $offset ) = @_;
@@ -689,9 +726,15 @@ sub hold_pull_list {
 	$evt = $U->check_perms($reqr->id, $org, 'VIEW_HOLD');
 	return $evt if $evt;
 
-	return $U->storagereq(
-		'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
-		$org, $limit, $offset ); 
+	if( $self->api_name =~ /id_list/ ) {
+		return $U->storagereq(
+			'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.atomic',
+			$org, $limit, $offset ); 
+	} else {
+		return $U->storagereq(
+			'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib.atomic',
+			$org, $limit, $offset ); 
+	}
 }
 
 __PACKAGE__->register_method (
@@ -902,11 +945,22 @@ __PACKAGE__->register_method(
 	method => 'fetch_captured_holds',
 	api_name	=> 'open-ils.circ.captured_holds.on_shelf.retrieve',
 	signature	=> q/
+		Returns a list of un-fulfilled holds for a given title id
+		@param authtoken The login session key
+		@param org The org id of the location in question
+	/
+);
+
+__PACKAGE__->register_method(
+	method => 'fetch_captured_holds',
+	api_name	=> 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve',
+	signature	=> q/
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param org The org id of the location in question
 	/
 );
+
 sub fetch_captured_holds {
 	my( $self, $conn, $auth, $org ) = @_;
 
@@ -934,13 +988,17 @@ sub fetch_captured_holds {
 			$copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	}
 
-	flesh_hold_transits(\@res);
-	flesh_hold_notices(\@res, $e);
-	return \@res;
+	if( ! $self->api_name =~ /id_list/ ) {
+		flesh_hold_transits(\@res);
+		flesh_hold_notices(\@res, $e);
+	}
+
+	if( $self->api_name =~ /id_list/ ) {
+		return [ map { $_->id } @res ];
+	} else {
+		return \@res;
+	}
 }
-
-
-
 
 
 __PACKAGE__->register_method(
