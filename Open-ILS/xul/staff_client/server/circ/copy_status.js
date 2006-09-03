@@ -101,6 +101,7 @@ circ.copy_status.prototype = {
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									var barcode = obj.selection_list[i].barcode;
 									var checkin = circ.util.checkin_via_barcode( ses(), barcode );
+									setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
@@ -115,7 +116,8 @@ circ.copy_status.prototype = {
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									try { 
 										var barcode = obj.selection_list[i].barcode;
-										cat.util.replace_barcode( barcode );
+										var new_bc = cat.util.replace_barcode( barcode );
+										setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(new_bc), 0);
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
 									}
@@ -130,8 +132,12 @@ circ.copy_status.prototype = {
 						function() {
 							try {
 								obj.spawn_copy_editor();
+								for (var i = 0; i < obj.selection_list.length; i++) {
+										var barcode = obj.selection_list[i].barcode;
+										setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+								}
 							} catch(E) {
-								alert(E);
+								obj.error.standard_unexpected_error_alert('with copy editor',E);
 							}
 						}
 					],
@@ -154,6 +160,10 @@ circ.copy_status.prototype = {
 						function() {
 							JSAN.use('circ.util');
 							circ.util.abort_transits(obj.selection_list);
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								var barcode = obj.selection_list[i].barcode;
+								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+							}
 						}
 					],
 					'sel_patron' : [
@@ -181,6 +191,7 @@ circ.copy_status.prototype = {
 								var barcode = obj.selection_list[i].barcode;
 								if (test == 't') {
 									circ.util.renew_via_barcode( barcode );
+									setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
 								} else {
 									alert('Item with barcode ' + barcode + ' is not circulating.');
 								}
@@ -193,6 +204,10 @@ circ.copy_status.prototype = {
 						function() {
 							JSAN.use('cat.util'); JSAN.use('util.functional');
 							cat.util.mark_item_damaged( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								var barcode = obj.selection_list[i].barcode;
+								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+							}
 						}
 					],
 					'sel_mark_items_missing' : [
@@ -200,6 +215,10 @@ circ.copy_status.prototype = {
 						function() {
 							JSAN.use('cat.util'); JSAN.use('util.functional');
 							cat.util.mark_item_missing( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								var barcode = obj.selection_list[i].barcode;
+								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+							}
 						}
 					],
 					'sel_bucket' : [
