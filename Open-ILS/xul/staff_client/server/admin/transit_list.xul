@@ -41,282 +41,10 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for admin_transit_list.xul');
 
-				JSAN.use('circ.util'); 
-				var columns = circ.util.transit_columns(
-					{
-						'transit_source' : { 'hidden' : false },
-						'transit_source_send_time' : { 'hidden' : false },
-						'transit_dest_lib' : { 'hidden' : false },
-						'transit_item_barcode' : { 'hidden' : false },
-						'transit_item_title' : { 'hidden' : false },
-					},
-					{
-						'just_these' : [
-							'transit_id',
-							'transit_source',
-							'transit_source_send_time',
-							'transit_dest_lib',
-							'transit_item_barcode',
-							'transit_item_title',
-							'transit_item_author',
-							'transit_item_callnumber',
-							'transit_target_copy',
-						]
-					}
-				).concat( 
-					circ.util.hold_columns(
-						{
-							'request_time' : { 'hidden' : false },
-						},
-						{
-							'just_these' : [
-								'request_timestamp',
-								'request_time',
-								'capture_timestamp',
-								'capture_time',
-								'hold_type',
-								'expire_time',
-								'patron_name',
-							],
-						}
-					) 
-				);
+				JSAN.use('admin.transit_list');
+				g.transit_list = new admin.transit_list();
+				g.transit_list.init();
 
-				JSAN.use('util.list'); 
-				g.list = new util.list('transit_from');
-				g.list.init( 
-					{ 
-						'columns' : columns, 
-						'map_row_to_column' : circ.util.std_map_row_to_column(), 
-						'retrieve_row' : function(params) {
-							var row = params.row;
-							try {
-								get_transit(
-									row.my.transit_id,
-									0,
-									function(transit,hold) {
-										row.my.atc = transit;
-										if (hold) row.my.ahr = hold;
-
-										g.network.simple_request(
-											'FM_ACP_RETRIEVE',
-											[ row.my.atc.target_copy() ],
-											function(req) {
-												try { 
-													var r_acp = req.getResultObject();
-													if (typeof r_acp.ilsevent != 'undefined') throw(r_acp);
-													row.my.acp = r_acp;
-
-													g.network.simple_request(
-														'FM_ACN_RETRIEVE',
-														[ r_acp.call_number() ],
-														function(req2) {
-															try {
-																var r_acn = req2.getResultObject();
-																if (typeof r_acn.ilsevent != 'undefined') throw(r_acn);
-																row.my.acn = r_acn;
-
-																if (row.my.acn.record() > 0) {
-																	g.network.simple_request(
-																		'MODS_SLIM_RECORD_RETRIEVE',
-																		[ r_acn.record() ],
-																		function(req3) {
-																			try {
-																				var r_mvr = req3.getResultObject();
-																				if (typeof r_mvr.ilsevent != 'undefined') throw(r_mvr);
-																				row.my.mvr = r_mvr;
-	
-																				if (typeof params.on_retrieve == 'function') {
-																					params.on_retrieve(row);
-																				}
-																			} catch(E) {
-																				try { g.error.standard_unexpected_error_alert('retrieving mvr',E); } catch(F) { alert(E); }
-																			}
-																		}
-																	);
-																} else {
-																	if (typeof params.on_retrieve == 'function') {
-																		params.on_retrieve(row);
-																	}
-																}
-													
-															} catch(E) {
-																try { g.error.standard_unexpected_error_alert('retrieving acn',E); } catch(F) { alert(E); }
-															}
-														}
-													);
-
-
-												} catch(E) {
-													try { g.error.standard_unexpected_error_alert('retrieving acp',E); } catch(F) { alert(E); }
-												}
-											}
-										);
-									}
-								);
-							} catch(E) {
-								try { g.error.standard_unexpected_error_alert('retrieving row',E); } catch(F) { alert(E); }
-							}
-						},
-					}
-				);
-				g.list2 = new util.list('transit_to');
-				g.list2.init( 
-					{ 
-						'columns' : columns, 
-						'map_row_to_column' : circ.util.std_map_row_to_column(), 
-						'retrieve_row' : function(params) {
-							var row = params.row;
-							try {
-								get_transit(
-									row.my.transit_id,
-									1,
-									function(transit,hold) {
-										row.my.atc = transit;
-										if (hold) row.my.ahr = hold;
-
-										g.network.simple_request(
-											'FM_ACP_RETRIEVE',
-											[ row.my.atc.target_copy() ],
-											function(req) {
-												try { 
-													var r_acp = req.getResultObject();
-													if (typeof r_acp.ilsevent != 'undefined') throw(r_acp);
-													row.my.acp = r_acp;
-
-													g.network.simple_request(
-														'FM_ACN_RETRIEVE',
-														[ r_acp.call_number() ],
-														function(req2) {
-															try {
-																var r_acn = req2.getResultObject();
-																if (typeof r_acn.ilsevent != 'undefined') throw(r_acn);
-																row.my.acn = r_acn;
-
-																if (row.my.acn.record() > 0) {
-																	g.network.simple_request(
-																		'MODS_SLIM_RECORD_RETRIEVE',
-																		[ r_acn.record() ],
-																		function(req3) {
-																			try {
-																				var r_mvr = req3.getResultObject();
-																				if (typeof r_mvr.ilsevent != 'undefined') throw(r_mvr);
-																				row.my.mvr = r_mvr;
-	
-																				if (typeof params.on_retrieve == 'function') {
-																					params.on_retrieve(row);
-																				}
-																			} catch(E) {
-																				try { g.error.standard_unexpected_error_alert('retrieving mvr',E); } catch(F) { alert(E); }
-																			}
-																		}
-																	);
-																} else {
-																	if (typeof params.on_retrieve == 'function') {
-																		params.on_retrieve(row);
-																	}
-																}
-													
-															} catch(E) {
-																try { g.error.standard_unexpected_error_alert('retrieving acn',E); } catch(F) { alert(E); }
-															}
-														}
-													);
-
-												} catch(E) {
-													try { g.error.standard_unexpected_error_alert('retrieving acp',E); } catch(F) { alert(E); }
-												}
-											}
-										);
-									}
-								);
-							} catch(E) {
-								try { g.error.standard_unexpected_error_alert('retrieving row',E); } catch(F) { alert(E); }
-							}
-						},
-					}
-				);
-
-				JSAN.use('util.network'); g.network = new util.network();
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
-
-
-				function get_transit(transit_id,which_list,do_this) {
-					g.network.simple_request('FM_ATC_RETRIEVE', [ ses(), transit_id ],
-						function(req2) {
-							try {
-								var r_atc = req2.getResultObject();
-								if (typeof r_atc.ilsevent != 'undefined') throw(r_atc);
-
-								if (instanceOf(r_atc,atc)) {
-									do_this(r_atc,null);
-								} else if (instanceOf(r_atc,ahtc)) {
-									g.network.simple_request('FM_AHR_RETRIEVE', [ ses(), r_atc.hold() ],
-										function(req3) {
-											try {
-												var r_ahr = req3.getResultObject();
-												if (typeof r_ahr.ilsevent != 'undefined') throw(r_ahr);
-												if (instanceOf(r_ahr[0],ahr)) {
-													do_this(r_atc,r_ahr[0]);
-												} else {
-													throw(r_ahr);
-												}
-											} catch(E) {
-												try { g.error.standard_unexpected_error_alert('retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
-											}
-										}
-									);
-								} else {
-									throw(r_atc);
-								}
-
-							} catch(E) {
-								try { g.error.standard_unexpected_error_alert('retrieving transit id = ' + transit_id,E); } catch(F) { alert(E); }
-							}
-						}
-					);
-				}
-
-				g.network.simple_request('FM_ATC_RETRIEVE_VIA_AOU',[ ses(), g.data.list.au[ 0 ].ws_ou() ], 
-					function(req) {
-						try {
-							var robj = req.getResultObject();
-							if (typeof robj.ilsevent != 'undefined') throw(robj);
-
-							JSAN.use('util.exec'); 
-							var exec = new util.exec(2);
-							var exec2 = new util.exec(2);
-
-							function gen_list_append(id,which_list) {
-								return function() {
-									switch(which_list) {
-										case 0: g.list.append( { 'row' : { 'my' : { 'transit_id' : id } } } ); break;
-										case 1: g.list2.append( { 'row' : { 'my' : { 'transit_id' : id } } } ); break;
-									}
-								};
-							}
-
-							var rows = []; var rows2 = [];
-
-							for (var i = 0; i < robj.from.length; i++) {
-								//get_transit(robj.from[i], 0);
-								rows.push( gen_list_append(robj.from[i],0) );
-							}
-
-							for (var i = 0; i < robj.to.length; i++) {
-								//get_transit(robj.to[i], 1);
-								rows2.push( gen_list_append(robj.to[i],1) );
-							}
-					
-							exec.chain( rows );
-							exec2.chain( rows2 );
-
-						} catch(E) {
-							try { g.error.standard_unexpected_error_alert('retrieving transits',E); } catch(F) { alert(E); }
-						}
-					}
-				);
-	
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('admin/transit_list.xul',E); } catch(F) { alert(E); }
 			}
@@ -328,14 +56,91 @@
 	<vbox flex="1" class="my_overflow">
 		<groupbox flex="1">
 			<caption label="Outgoing Transits" class="shrinkable_groupbox"/>
-			<tree id="transit_from" flex="1" enableColumnDrag="true"/>
+			<hbox>
+				<spacer flex="1"/>
+				<menubar>
+					<menu label="Actions for Selected Items" accesskey="S">
+						<menupopup>
+							<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+							<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+							<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+							<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+							<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+							<menuseparator />
+							<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+							<menuitem command="sel_transit_abort" label="Abort Transits" />
+							<menuseparator />
+							<menuitem command="save_columns" label="Save Columns"/>
+						</menupopup>
+					</menu>
+				</menubar>
+			</hbox>
+			<tree id="transit_from" flex="1" enableColumnDrag="true" context="transit_list_actions"/>
 		</groupbox>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1">
 			<caption label="Incoming Transits" class="shrinkable_groupbox"/>
-			<tree id="transit_to" flex="1" enableColumnDrag="true"/>
+			<hbox>
+				<spacer flex="1"/>
+				<menubar>
+					<menu label="Actions for Selected Items" accesskey="S">
+						<menupopup>
+							<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
+							<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
+							<menuitem command="sel_opac2" label="Show in Catalog" accesskey="S" />
+							<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
+							<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
+							<menuseparator />
+							<menuitem command="sel_edit2" label="Edit Item Attributes" accesskey="E" />
+							<menuseparator />
+							<menuitem command="save_columns2" label="Save Columns"/>
+						</menupopup>
+					</menu>
+				</menubar>
+			</hbox>
+
+			<tree id="transit_to" flex="1" enableColumnDrag="true" context="transit_list_actions2"/>
 		</groupbox>
 	</vbox>
+
+	<popupset id="transit_list_popupset">
+		<popup id="transit_list_actions" position="at_pointer"> 
+			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuseparator/>
+			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="sel_transit_abort" label="Abort Transits" />
+			<menuseparator/>
+			<menuitem command="save_columns" label="Save Columns"/>
+		</popup>
+		<popup id="transit_list_actions2" position="at_pointer"> 
+			<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
+			<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
+			<menuitem command="sel_opac2" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
+			<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
+			<menuseparator/>
+			<menuitem command="sel_edit2" label="Edit Item Attributes" accesskey="E" />
+			<menuseparator/>
+			<menuitem command="save_columns2" label="Save Columns"/>
+		</popup>
+
+	</popupset>
+
+	<commandset id="transit_list_cmds">
+		<command id="cmd_copy_status_print" /> <command id="cmd_copy_status_print2" />
+		<command id="save_columns" /> <command id="save_columns2" />
+		<command id="sel_copy_details" disabled="true"/> <command id="sel_copy_details2" disabled="true"/>
+		<command id="sel_patron" disabled="true"/> <command id="sel_patron2" disabled="true"/>
+		<command id="sel_edit" disabled="true"/> <command id="sel_edit2" disabled="true"/>
+		<command id="sel_opac" disabled="true"/> <command id="sel_opac2" disabled="true"/>
+		<command id="sel_bucket" disabled="true"/> <command id="sel_bucket2" disabled="true"/>
+		<command id="sel_transit_abort" disabled="true"/> <command id="sel_transit_abort2" disabled="true"/>
+		<command id="sel_clip" disabled="true"/> <command id="sel_clip2" disabled="true"/>
+	</commandset>
 
 </window>
 
