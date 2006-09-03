@@ -25,12 +25,13 @@ INSERT INTO action.hold_request
 		JOIN legacy_item jl
 			ON (	jl.cat_key = lh.cat_key
 				AND jl.call_key = lh.call_key
-				AND jl.item_key = lh.call_key )
+				AND jl.item_key = lh.item_key )
 		JOIN asset.copy cp ON (cp.barcode = jl.item_id)
 		JOIN actor.usr au ON (au.id = lh.user_key)
 		JOIN actor.org_unit rou ON (rou.shortname = lh.placing_lib)
 		JOIN actor.org_unit pou ON (pou.shortname = lh.pickup_lib)
-	  WHERE	lh.hold_level = 'C';
+	  WHERE	lh.hold_level = 'C'
+	  	AND lh.hold_date > '2006-01-01';
 
 -- And these are CN level holds
 -- CREATE TABLE legacy_cn_hold_insert AS
@@ -57,14 +58,15 @@ INSERT INTO action.hold_request
 		JOIN legacy_item jl
 			ON (	jl.cat_key = lh.cat_key
 				AND jl.call_key = lh.call_key
-				AND jl.item_key = lh.call_key )
+				AND jl.item_key = lh.item_key )
 		JOIN asset.copy cp ON (cp.barcode = jl.item_id)
 		JOIN actor.usr au ON (au.id = lh.user_key)
 		JOIN actor.org_unit rou ON (rou.shortname = lh.placing_lib)
 		JOIN actor.org_unit pou ON (pou.shortname = lh.pickup_lib)
-	  WHERE	lh.hold_level = 'A';
+	  WHERE	lh.hold_level = 'A'
+	  	AND lh.hold_date > '2006-01-01';
 
--- And these are CN level holds
+-- And these are Title level holds
 -- CREATE TABLE legacy_title_hold_insert AS
 INSERT INTO action.hold_request
 	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
@@ -89,12 +91,13 @@ INSERT INTO action.hold_request
 		JOIN legacy_item jl
 			ON (	jl.cat_key = lh.cat_key
 				AND jl.call_key = lh.call_key
-				AND jl.item_key = lh.call_key )
+				AND jl.item_key = lh.item_key )
 		JOIN asset.copy cp ON (cp.barcode = jl.item_id)
 		JOIN actor.usr au ON (au.id = lh.user_key)
 		JOIN actor.org_unit rou ON (rou.shortname = lh.placing_lib)
 		JOIN actor.org_unit pou ON (pou.shortname = lh.pickup_lib)
-	  WHERE	lh.hold_level = 'T';
+	  WHERE	lh.hold_level = 'T'
+	  	AND lh.hold_date > '2006-01-01';
 
 SELECT SETVAL('action.hold_request_id_seq',(SELECT MAX(id) FROM action.hold_request),TRUE);
 

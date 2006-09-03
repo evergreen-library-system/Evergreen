@@ -157,6 +157,23 @@ INSERT INTO asset.copy (circ_lib,creator,editor,create_date,barcode,status,locat
 			ON (ou.id = cn.owning_lib AND l.cat_key = cn.record AND l.call_num = cn.label)
 		LEFT JOIN legacy_piece_count pc ON (pc.barcode = l.item_id);
 
+-- Import brief copies
+INSERT INTO asset.copy (circ_lib,creator,editor,barcode,status,loan_duration,fine_level,dummy_title,dummy_author,opac_visible,circ_modifier,call_number)
+	SELECT	DISTINCT ou.id AS circ_lib,
+		1 AS creator,
+		1 AS editor,
+		b.barcode AS barcode,
+		1 AS status,
+		2 AS loan_duration,
+		2 AS fine_level,
+		b.title AS dummy_title,
+		b.author AS dummy_author,
+		FALSE as opac_visible,
+		'BOOK' AS circ_modifier,
+		-1 AS call_number
+	  FROM	legacy_pre_cat b
+	  	JOIN actor.org_unit ou ON (ou.shortname = b.lib);
+
 -- Move copy notes into the notes table ... non-public
 INSERT INTO asset.copy_note (owning_copy,creator,title,value)
 	SELECT	cp.id,
