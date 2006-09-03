@@ -96,7 +96,7 @@
 				</vbox>
 			</groupbox>
 			<groupbox flex="1">
-				<caption id="errors_caption" label="Processing Status goes here"/>
+				<caption id="errors_caption" label="The session is now processing.  Hit Refresh to check its status."/>
 			</groupbox>
 		</deck>
 		<hbox id="iframe_placeholder" hidden="false" flex="0"/>

@@ -66,3 +66,15 @@
 		}
 	}
 
+	function clear_the_cache() {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			var cacheClass 		= Components.classes["@mozilla.org/network/cache-service;1"];
+			var cacheService	= cacheClass.getService(Components.interfaces.nsICacheService);
+			cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);
+			cacheService.evictEntries(Components.interfaces.nsICache.STORE_IN_MEMORY);
+		} catch(E) {
+			alert('Problem clearing the cache: ' + E);
+		}
+	}
+

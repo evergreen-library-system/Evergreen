@@ -349,6 +349,7 @@ admin.offline_manage_xacts.prototype = {
 	'execute_ses' : function() {
 		var obj = this;
 
+		clear_the_cache();
 		obj.data.stash_retrieve();
 
 		for (var i = 0; i < obj.sel_list.length; i++) {
@@ -374,6 +375,7 @@ admin.offline_manage_xacts.prototype = {
 	'ses_errors' : function() {
 		var obj = this;
 
+		clear_the_cache();
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
@@ -491,6 +493,7 @@ admin.offline_manage_xacts.prototype = {
 	'ses_status' : function() {
 		var obj = this;
 
+		clear_the_cache();
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
@@ -516,6 +519,7 @@ admin.offline_manage_xacts.prototype = {
 		var desc = window.prompt('Please enter a description:','','Create an Offline Transaction Session');
 		if (desc=='' || desc==null) { return; }
 
+		clear_the_cache();
 		obj.data.stash_retrieve();
 
 		var url  = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI)
@@ -542,6 +546,7 @@ admin.offline_manage_xacts.prototype = {
 
 		try {
 
+			clear_the_cache();
 			obj.data.stash_retrieve();
 
 			var url = xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI) 
