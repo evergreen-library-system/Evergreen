@@ -191,21 +191,21 @@ admin.transit_list.prototype = {
 						);
 						obj.error.sdump('D_TRACE','admin.transit_list: selection list2 = ' + js2JSON(obj.selection_list2) );
 						if (obj.selection_list2.length == 0) {
-							obj.controller.view.sel_edit.setAttribute('disabled','true');
-							obj.controller.view.sel_opac.setAttribute('disabled','true');
-							obj.controller.view.sel_bucket.setAttribute('disabled','true');
-							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
-							obj.controller.view.sel_patron.setAttribute('disabled','true');
-							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
-							obj.controller.view.sel_clip.setAttribute('disabled','true');
+							obj.controller.view.sel_edit2.setAttribute('disabled','true');
+							obj.controller.view.sel_opac2.setAttribute('disabled','true');
+							obj.controller.view.sel_bucket2.setAttribute('disabled','true');
+							obj.controller.view.sel_copy_details2.setAttribute('disabled','true');
+							obj.controller.view.sel_patron2.setAttribute('disabled','true');
+							obj.controller.view.sel_transit_abort2.setAttribute('disabled','true');
+							obj.controller.view.sel_clip2.setAttribute('disabled','true');
 						} else {
-							obj.controller.view.sel_edit.setAttribute('disabled','false');
-							obj.controller.view.sel_opac.setAttribute('disabled','false');
-							obj.controller.view.sel_patron.setAttribute('disabled','false');
-							obj.controller.view.sel_bucket.setAttribute('disabled','false');
-							obj.controller.view.sel_copy_details.setAttribute('disabled','false');
-							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
-							obj.controller.view.sel_clip.setAttribute('disabled','false');
+							obj.controller.view.sel_edit2.setAttribute('disabled','false');
+							obj.controller.view.sel_opac2.setAttribute('disabled','false');
+							obj.controller.view.sel_patron2.setAttribute('disabled','false');
+							obj.controller.view.sel_bucket2.setAttribute('disabled','false');
+							obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
+							obj.controller.view.sel_transit_abort2.setAttribute('disabled','false');
+							obj.controller.view.sel_clip2.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
