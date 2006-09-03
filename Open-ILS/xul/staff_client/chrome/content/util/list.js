@@ -76,7 +76,7 @@ util.list.prototype = {
 						}
 
 						if (obj.row_count.total != obj.row_count.fleshed && (obj.row_count.total - obj.row_count.fleshed) > 50) {
-							var r = window.confirm('WARNING: Only ' + obj.row_count.fleshed + ' out of ' + obj.row_count.total + ' rows in this list have been fully retrieved.  Sorting this list requires that all these rows be retrieved, and this may take some time and lag the staff client.  Would you like to proceed?');
+							var r = window.confirm('WARNING: Only ' + obj.row_count.fleshed + ' out of ' + obj.row_count.total + ' rows in this list have been retrieved for immediate viewing.  Sorting this list requires that all these rows be retrieved, and this may take some time and lag the staff client.  Would you like to proceed?');
 
 							if (r) {
 								setTimeout( do_it, 0 );
