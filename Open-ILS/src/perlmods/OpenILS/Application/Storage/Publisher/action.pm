@@ -543,7 +543,8 @@ sub generate_fines {
 			}
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
-	
+
+			my ($latest_billing_ts, $latest_amount);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				if ($current_fine_total > $c->max_fine) {
@@ -573,19 +574,22 @@ sub generate_fines {
 				);
 				next if (@cl);
 	
-				my $billing = money::billing->create(
-					{ xact		=> ''.$c->id,
-					  note		=> "System Generated Overdue Fine",
-					  billing_type	=> "Overdue materials",
-					  amount	=> ''.$c->recuring_fine,
-					  billing_ts	=> $timestamptz,
-					}
-				);
-
-				$current_fine_total += $billing->amount;
+				$current_fine_total += $c->recuring_fine;
+				$latest_amount += $c->recuring_fine;
+				$latest_billing_ts = $timestamptz;
 	
-				$client->respond( "\t\tCreating fine of ".$billing->amount." for period starting ".$billing->billing_ts."\n" );
+				$client->respond( "\t\tAdding aggregate fine of ".$c->recuring_fine." for period starting ".$$timestamptz."\n" );
 			}
+
+			money::billing->create(
+				{ xact		=> ''.$c->id,
+				  note		=> "System Generated Overdue Fine",
+				  billing_type	=> "Overdue materials",
+				  amount	=> ''.$latest_amount
+				  billing_ts	=> $latest_billing_ts,
+				}
+			) if ($latest_billing_ts and $latest_amount > 0.0);
+
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
