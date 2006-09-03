@@ -309,6 +309,8 @@ sub hold_pull_list {
 	my $h_table = action::hold_request->table;
 	my $a_table = asset::copy->table;
 
+	my $idlist = 1 if ($self->api_name =~/id_list/o);
+
 	my $select = <<"	SQL";
 		SELECT	h.*
 		  FROM	$h_table h
@@ -324,10 +326,24 @@ sub hold_pull_list {
 	my $sth = action::survey->db_Main->prepare_cached($select);
 	$sth->execute($ou);
 
-	$client->respond( $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
+	$client->respond( $id_list ? $_->id : $_->to_fieldmapper ) for ( map { action::hold_request->construct($_) } $sth->fetchall_hash );
 
 	return undef;
 }
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib',
+	api_level       => 1,
+	stream          => 1,
+	signature	=> [
+		"Returns the hold ids for a specific library's pull list.",
+ 		[ [org_unit => "The library's org id", "number"],
+		  [limit => 'An optional page size, defaults to 10', 'number'],
+		  [offset => 'Offset for paging, defaults to 0, 0 based', 'number'],
+		],
+		['A list of holds for the stated library to pull for', 'array']
+	],
+	method          => 'hold_pull_list',
+);
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.direct.action.hold_request.pull_list.search.current_copy_circ_lib',
 	api_level       => 1,
