@@ -40,6 +40,7 @@ var myPerms = [
 var dataFields;
 const numRegex		= /^\d+$/;
 const wordRegex	= /^\w+$/;
+const unameRegex	= /^[a-zA-Z][\.\w\@-]*$/;
 const ssnRegex		= /^\d{3}-\d{2}-\d{4}$/;
 const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
 const phoneRegex	= /^\d{3}-\d{3}-\d{4}(| ex\d+)$/i;
@@ -126,7 +127,7 @@ function uEditDefineData(patron) {
 			errkey	: 'ue_bad_username',
 			widget	: {
 				id		: 'ue_username',
-				regex	: wordRegex,
+				regex	: unameRegex,
 				type	: 'input',
 				onblur : uEditUsrnameBlur
 			}
