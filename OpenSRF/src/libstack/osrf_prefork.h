@@ -14,7 +14,8 @@
 #include "osrf_settings.h"
 #include "osrfConfig.h"
 
-#define READ_BUFSIZE 4096
+//#define READ_BUFSIZE 4096
+#define READ_BUFSIZE 1024
 #define MAX_BUFSIZE 10485760 /* 10M enough? ;) */
 #define ABS_MAX_CHILDREN 256 
 

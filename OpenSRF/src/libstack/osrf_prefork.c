@@ -511,30 +511,28 @@ void prefork_child_wait( prefork_child* child ) {
 	for( i = 0; i < child->max_requests; i++ ) {
 
 		n = -1;
+		int gotdata = 0;
 		clr_fl(child->read_data_fd, O_NONBLOCK );
+
 		while( (n=read(child->read_data_fd, buf, READ_BUFSIZE-1)) > 0 ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Prefork child read %d bytes of data", n);
+			if(!gotdata)
+				set_fl(child->read_data_fd, O_NONBLOCK );
 			buffer_add( gbuf, buf );
 			memset( buf, 0, READ_BUFSIZE );
-
-			//fprintf(stderr, "Child read %d bytes\n", n);
-
-			if( n == READ_BUFSIZE ) { 
-				//fprintf(stderr, "We read READ_BUFSIZE data....\n");
-				/* XXX */
-				/* either we have exactly READ_BUFSIZE data, 
-					or there's more waiting that we need to grab*/
-				/* must set to non-block for reading more */
-			} else {
-				//fprintf(stderr, "Read Data %f\n", get_timestamp_millis() );
-				prefork_child_process_request(child, gbuf->buf);
-				buffer_reset( gbuf );
-				break;
-			}
+			gotdata = 1;
 		}
+
+		if( errno == EAGAIN ) n = 0;
 
 		if( n < 0 ) {
 			osrfLogWarning( OSRF_LOG_MARK,  "Prefork child read returned error with errno %d", errno );
 			break;
+
+		} else if( gotdata ) {
+			osrfLogDebug(OSRF_LOG_MARK, "Prefork child got a request.. processing..");
+			prefork_child_process_request(child, gbuf->buf);
+			buffer_reset( gbuf );
 		}
 
 		if( i < child->max_requests - 1 ) 
