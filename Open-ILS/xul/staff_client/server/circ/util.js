@@ -847,7 +847,7 @@ circ.util.hold_columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'patron_name', 'label' : 'Patron Name', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'JSAN.use("patron.util"); var temp1 = patron.util.retrieve_name_via_id( ses(), my.ahr.usr() ); temp1[0] + ", " + temp1[1] + " " + temp1[2];',
+			'primary' : false, 'hidden' : true, 'render' : 'my.patron_barcode + " " + my.patron_family_name + ", " + my.patron_first_given_name;',
 		}
 	];
 	for (var i = 0; i < c.length; i++) {

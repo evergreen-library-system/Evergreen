@@ -54,6 +54,7 @@ const api = {
 	'FM_AHN_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.create' },
 	'FM_AHN_RETRIEVE_VIA_AHR' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_notification.retrieve_by_hold' },
 	'FM_AHR_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve_by_id' },
+	'FM_AHR_BLOB_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.details.retrieve' },
 	'FM_AHR_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.retrieve' },
 	'FM_AHR_ID_LIST_RETRIEVE_VIA_AU' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.holds.id_list.retrieve' },
 	'FM_AHR_RETRIEVE_VIA_BRE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.open_holds.retrieve' },

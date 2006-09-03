@@ -46,6 +46,38 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
+						obj.network.simple_request('FM_AHR_BLOB_RETRIEVE', [ ses(), row.my.hold_id ],
+							function(blob_req) {
+								try {
+									var blob = blob_req.getResultObject();
+									if (typeof blob.ilsevent != 'undefined') throw(blob);
+									row.my.ahr = blob.hold;
+									row.my.status = blob.status;
+									row.my.acp = blob.copy;
+									row.my.acn = blob.volume;
+									row.my.mvr = blob.mvr;
+									row.my.patron_family_name = blob.patron_last;
+									row.my.patron_first_given_name = blob.patron_first;
+									row.my.patron_barcode = blob.patron_barcode;
+
+									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
+									params.row_node.setAttribute('retrieve_id', 
+										js2JSON({
+											'copy_id':row.my.ahr.current_copy(),
+											'id':row.my.ahr.id(),
+											'type':row.my.ahr.hold_type(),
+											'target':row.my.ahr.target(),
+											'usr':row.my.ahr.usr(),
+										})
+									);
+									if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('Error retrieving details for hold #' + row.my.hold_id, E);
+								}
+							}
+						);
+						/*
 						obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), row.my.hold_id ],
 							function(ahr_req) {
 								try {
@@ -167,7 +199,7 @@ patron.holds.prototype = {
 								}
 							}
 						);
-
+						*/
 					} catch(E) {
 						obj.error.sdump('D_ERROR','retrieve_row: ' + E );
 					}
