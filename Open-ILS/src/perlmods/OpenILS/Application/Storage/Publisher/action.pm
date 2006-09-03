@@ -459,7 +459,7 @@ sub generate_fines {
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 			}
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-			$log->info("Processing circ ".$circ->id."...\n");
+			$log->info("Processing circ ".$c->id."...\n");
 
 
 			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
