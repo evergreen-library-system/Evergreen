@@ -149,6 +149,9 @@ util.print.prototype = {
 				//cols = [ '%bill_id%','%payment%'];
 				cols = [];
 			break;
+			case 'transits':
+				cols = [];
+			break;
 			case 'holds':
 				JSAN.use('circ.util');
 				cols = util.functional.map_list(

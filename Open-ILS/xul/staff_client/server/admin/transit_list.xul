@@ -57,6 +57,7 @@
 		<groupbox flex="1">
 			<caption label="Outgoing Transits" class="shrinkable_groupbox"/>
 			<hbox>
+				<button label="Print Transits" command="cmd_print_list" />
 				<spacer flex="1"/>
 				<menubar>
 					<menu label="Actions for Selected Items" accesskey="S">
@@ -81,6 +82,7 @@
 		<groupbox flex="1">
 			<caption label="Incoming Transits" class="shrinkable_groupbox"/>
 			<hbox>
+				<button label="Print Transits" command="cmd_print_list2" />
 				<spacer flex="1"/>
 				<menubar>
 					<menu label="Actions for Selected Items" accesskey="S">
@@ -131,7 +133,7 @@
 	</popupset>
 
 	<commandset id="transit_list_cmds">
-		<command id="cmd_copy_status_print" /> <command id="cmd_copy_status_print2" />
+		<command id="cmd_print_list" /> <command id="cmd_print_list2" />
 		<command id="save_columns" /> <command id="save_columns2" />
 		<command id="sel_copy_details" disabled="true"/> <command id="sel_copy_details2" disabled="true"/>
 		<command id="sel_patron" disabled="true"/> <command id="sel_patron2" disabled="true"/>

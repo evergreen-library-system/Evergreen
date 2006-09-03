@@ -361,8 +361,8 @@ admin.transit_list.prototype = {
 					'sel_copy_details2' : [ ['command'], function() { JSAN.use('circ.util'); for (var i = 0; i < obj.selection_list2.length; i++) { circ.util.show_copy_details( obj.selection_list2[i].copy_id ); } } ],
 					'sel_bucket' : [ ['command'], function() { JSAN.use('cat.util'); cat.util.add_copies_to_bucket(obj.selection_list); } ],
 					'sel_bucket2' : [ ['command'], function() { JSAN.use('cat.util'); cat.util.add_copies_to_bucket(obj.selection_list2); } ],
-					'cmd_transit_list_print' : [ ['command'], function() { obj.print_list(0); } ],
-					'cmd_transit_list_print2' : [ ['command'], function() { obj.print_list(1); } ],
+					'cmd_print_list' : [ ['command'], function() { obj.print_list(0); } ],
+					'cmd_print_list2' : [ ['command'], function() { obj.print_list(1); } ],
 				}
 			}
 		);

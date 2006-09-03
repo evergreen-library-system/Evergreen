@@ -48,6 +48,10 @@ circ.print_list_template_editor.prototype = {
 				'bills' : [["248","Id = 3","grocery","-2.00","0.00","2.00","","Fee for copies","2006-05-27 22:56","","cash_payment","2006-06-10 17:01","2006-05-27",""],["239","Id = 3","circulation","17.00","17.00","0.00","SYSTEM GENERATED","Lost Materials Processing Fee","2006-05-27 22:07","",""," ","2006-05-26",""],["173","Id = 3","grocery","1.00","17.25","16.25","","Lost materials","2006-05-20 16:36","","cash_payment","2006-05-27 01:31","2006-05-20",""]],
 				'payment' : [ { 'bill_id' : 333, 'payment' : '2.23', 'title' : 'Harry Potter', 'last_billing_type' : 'Overdue materials', 'last_billing_note' : 'System Generated Overdue Fine', 'barcode' : 'barcode123' }, { 'bill_id' : 367, 'payment' : '5.17', 'last_billing_type' : 'Damaged material', 'last_billing_note' : 'Tracked up the carpet', 'title' : '', 'barcode' : '' } ],
 				'patrons' : [],
+				'transits' : [ 
+					{ 'transit_source' : 'ARL-ATH', 'transit_source_send_time' : '2006-05-01 12:15', 'transit_dest_lib' : 'DCPL-CEN', 'transit_item_title' : 'Scooby Doo', 'transit_item_barcode' : 'barcode123' },
+					{ 'transit_source' : 'ARL-ATH', 'transit_source_send_time' : '2006-05-02 12:19', 'transit_dest_lib' : 'DCPL-CEN', 'transit_item_title' : 'Scooby Doo', 'transit_item_barcode' : 'barcode456' }
+				],
 				'offline_checkout' : [],
 				'offline_checkin' : [],
 				'offline_renew' : [],

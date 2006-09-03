@@ -141,6 +141,12 @@ OpenILS.data.prototype = {
 					'line_item' : '<li>%title%<br/>\r\nBarcode: %barcode%\r\n',
 					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
 				}, 
+				'transit_list' : {
+					'type' : 'transits',
+					'header' : 'Transits:<hr/><ol>',
+					'line_item' : '<li>From: %transit_source% To: %transit_dest_lib%<br/>\r\nWhen: %transit_source_send_time%<br />\r\nBarcode: %transit_item_barcode% Title: %transit_item_title%<br/>\r\n',
+					'footer' : '</ol><hr />%PINES_CODE% %TODAY_TRIM%<br/>\r\n<br/>\r\n',
+				}, 
 				'items_out' : {
 					'type' : 'items',
 					'header' : 'Welcome to %LIBRARY%!<br/>\r\nYou have the following items:<hr/><ol>',
