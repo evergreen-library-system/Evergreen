@@ -75,7 +75,7 @@ admin.offline_manage_xacts.prototype = {
 				{
 					'id' : 'creator', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Created By',
-					'render' : 'my.creator',
+					'render' : 'JSAN.use("patron.util"); var staff_obj = patron.util.retrieve_name_via_id( ses(), my.creator ); staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname();',
 				},
 				{ 
 					'id' : 'count', 'flex' : '1',
@@ -203,7 +203,7 @@ admin.offline_manage_xacts.prototype = {
 				{
 					'id' : 'requestor', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Uploaded By',
-					'render' : 'my.requestor',
+					'render' : 'JSAN.use("patron.util"); var staff_obj = patron.util.retrieve_name_via_id( ses(), my.requestor ); staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname();',
 				},
 				{ 
 					'id' : 'time_delta', 'hidden' : 'true', 'flex' : '1', 
