@@ -101,7 +101,7 @@
 						return [ 
 							obj.name() ? sname + ' ' + obj.name() : obj.shortname(),
 							obj.id(), 
-							( get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_users() ) ),
+							( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_users() ) ),
 							( g.data.hash.aout[ obj.ou_type() ].depth() * 2),
 						]; 
 					}
