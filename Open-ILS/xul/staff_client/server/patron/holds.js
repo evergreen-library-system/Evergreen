@@ -46,55 +46,103 @@ patron.holds.prototype = {
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
-						var status_robj = obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ]);
-						row.my.status = status_robj;
-						if (row.my.ahr.current_copy()) {
-							row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ]);
-						}
-						switch(row.my.ahr.hold_type()) {
-							case 'M' :
-								row.my.mvr = obj.network.request(
-									api.MODS_SLIM_METARECORD_RETRIEVE.app,
-									api.MODS_SLIM_METARECORD_RETRIEVE.method,
-									[ row.my.ahr.target() ]
-								);
-							break;
-							case 'T' :
-								row.my.mvr = obj.network.request(
-									api.MODS_SLIM_RECORD_RETRIEVE.app,
-									api.MODS_SLIM_RECORD_RETRIEVE.method,
-									[ row.my.ahr.target() ]
-								);
-							break;
-							case 'V' :
-								row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ]);
-								row.my.mvr = obj.network.request(
-									api.MODS_SLIM_RECORD_RETRIEVE.app,
-									api.MODS_SLIM_RECORD_RETRIEVE.method,
-									[ row.my.acn.record() ]
-								);
-							break;
-							case 'C' :
-								if (typeof row.my.acp == 'undefined') {
-									row.my.acp = obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ]);
+						obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ],
+							function(status_req) {
+								var status_robj = status_req.getResultObject();
+								row.my.status = status_robj;
+								switch(row.my.ahr.hold_type()) {
+									case 'M' :
+										obj.network.request(
+											api.MODS_SLIM_METARECORD_RETRIEVE.app,
+											api.MODS_SLIM_METARECORD_RETRIEVE.method,
+											[ row.my.ahr.target() ],
+											function(mvr_req) {
+												row.my.mvr = mvr_req.getResultObject();
+												if ( row.my.ahr.current_copy() && ! row.my.acp) {
+													obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+														function(acp_req) {
+															row.my.acp = acp_req.getResultObject();
+															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+														}
+													);
+												} else {
+													if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+												}
+											}
+										);
+									break;
+									case 'T' :
+										obj.network.request(
+											api.MODS_SLIM_RECORD_RETRIEVE.app,
+											api.MODS_SLIM_RECORD_RETRIEVE.method,
+											[ row.my.ahr.target() ],
+											function(mvr_req) {
+												row.my.mvr = mvr_req.getResultObject();
+												if ( row.my.ahr.current_copy() && ! row.my.acp) {
+													obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+														function(acp_req) {
+															row.my.acp = acp_req.getResultObject();
+															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+														}
+													);
+												} else {
+													if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+												}
+
+											}
+										);
+									break;
+									case 'V' :
+										row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ],
+											function(acn_req) {
+												row.my.acn = acn_req.getResultObject();
+												obj.network.request(
+													api.MODS_SLIM_RECORD_RETRIEVE.app,
+													api.MODS_SLIM_RECORD_RETRIEVE.method,
+													[ row.my.acn.record() ],
+													function(mvr_req) {
+														try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
+														if ( row.my.ahr.current_copy() && ! row.my.acp) {
+															obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
+																function(acp_req) {
+																	row.my.acp = acp_req.getResultObject();
+																	if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+																}
+															);
+														} else {
+															if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+														}
+													}
+												);
+											}
+										);
+									break;
+									case 'C' :
+										obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ],
+											function(acp_req) {
+												row.my.acp = acp_req.getResultObject();
+												obj.network.simple_request( 'FM_ACN_RETRIEVE', [ typeof row.my.acp.call_number() == 'object' ? row.my.acp.call_number().id() : row.my.acp.call_number() ],
+													function(acn_req) {
+														row.my.acn = acn_req.getResultObject();
+														obj.network.request(
+															api.MODS_SLIM_RECORD_RETRIEVE.app,
+															api.MODS_SLIM_RECORD_RETRIEVE.method,
+															[ row.my.acn.record() ],
+															function(mvr_req) {
+																try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
+																if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
+															}
+														);
+													}
+												);
+											}
+										);
+									break;
 								}
-								if (typeof row.my.acp.call_number() == 'object') {
-									row.my.acn = my.acp.call_number();
-								} else {
-									row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.acp.call_number() ]);
-								}
-								row.my.mvr = obj.network.request(
-									api.MODS_SLIM_RECORD_RETRIEVE.app,
-									api.MODS_SLIM_RECORD_RETRIEVE.method,
-									[ row.my.acn.record() ]
-								);
-							break;
-						}
+							}
+						);
 					} catch(E) {
 						obj.error.sdump('D_ERROR','retrieve_row: ' + E );
-					}
-					if (typeof params.on_retrieve == 'function') {
-						params.on_retrieve(row);
 					}
 					return row;
 				},
