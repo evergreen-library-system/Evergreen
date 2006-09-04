@@ -71,21 +71,21 @@ patron.items.prototype = {
 					],
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
-					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); } ],
+					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
-					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); } ],
-					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); } ],
-					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); } ],
-					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1); } ],
-					'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2); } ],
-					'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1); } ],
-					'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2); } ],
-					'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1); } ],
-					'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2); } ],
+					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_show_catalog' : [ ['command'], function() { obj.show_catalog(1); } ],
 					'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
-					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1); } ],
-					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2); } ],
+					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ],
 				}
 			}
@@ -221,7 +221,7 @@ patron.items.prototype = {
 				try {
 					obj.list.select_all();
 					obj.items_renew(1,true);	
-					setTimeout(function(){list.on_all_fleshed = null;},0);
+					setTimeout(function(){list.on_all_fleshed = null; alert('Action complete.'); obj.retrieve(); },0);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
 				}
@@ -255,10 +255,8 @@ patron.items.prototype = {
 					obj.error.standard_unexpected_error_alert('Renew probably did not happen for barcode ' + barcode,E);
 				}
 			}
-			obj.retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Renew probably did not happen.',E);
-			obj.retrieve();
 		}
 	},
 
@@ -308,11 +306,9 @@ patron.items.prototype = {
 						var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
 						if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 					}
-					obj.retrieve();
 				}
 			} catch(E) {
 				obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
-				obj.retrieve();
 			}
 	},
 
@@ -327,10 +323,8 @@ patron.items.prototype = {
 				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
 				if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 			}
-			obj.retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
-			obj.retrieve();
 		}
 	},
 
@@ -372,7 +366,7 @@ patron.items.prototype = {
 					invalid = false;
 				}
 			}
-			alert('backdate = ' + backdate);
+			//alert('backdate = ' + backdate);
 			if (backdate) {
 				var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
 				for (var i = 0; i < barcodes.length; i++) {
@@ -382,11 +376,9 @@ patron.items.prototype = {
 					);
 					if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 				}
-				obj.retrieve();
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
-			obj.retrieve();
 		}
 	},
 
@@ -408,10 +400,8 @@ patron.items.prototype = {
 				);
 				/* circ.util.checkin_via_barcode handles errors currently */
 			}
-			obj.retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
-			obj.retrieve();
 		}
 	},
 
@@ -460,7 +450,6 @@ patron.items.prototype = {
 					'chrome,resizable,modal'
 				);
 			}
-			obj.retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('',E);
 		}
