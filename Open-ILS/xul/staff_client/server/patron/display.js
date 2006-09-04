@@ -355,17 +355,17 @@ patron.display.prototype = {
 										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
 											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
 											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
-												msg += 'Patron retrieved with an INACTIVE barcode.\n';
+												msg += 'Patron account retrieved with an INACTIVE card.\n';
 												obj.stop_checkouts = true;
 											}
 										}
 									}
 									if (get_bool(patron.barred())) {
-										msg += 'Patron is BARRED.\n';
+										msg += 'Patron account is BARRED.\n';
 										obj.stop_checkouts = true;
 									}
 									if (!get_bool(patron.active())) {
-										msg += 'Patron is INACTIVE.\n';
+										msg += 'Patron account is INACTIVE.\n';
 										obj.stop_checkouts = true;
 									}
 									if (patron.expire_date()) {
@@ -380,7 +380,7 @@ patron.display.prototype = {
 										expire = expire.getTime()/1000
 
 										if (expire < now) {
-											msg += 'Patron is EXPIRED.\n';
+											msg += 'Patron account is EXPIRED.\n';
 										obj.stop_checkouts = true;
 										}
 									}
