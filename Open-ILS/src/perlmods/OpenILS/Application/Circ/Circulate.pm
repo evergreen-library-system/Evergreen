@@ -418,7 +418,7 @@ sub mk_script_runner {
 	my $self = shift;
 	my $args = {};
 
-	$args->{ingore_user_status} = 1 if $self->is_checkin;
+	$args->{ignore_user_status} = 1 if $self->is_checkin;
 
 	my @fields = 
 		qw/copy copy_barcode copy_id patron 
