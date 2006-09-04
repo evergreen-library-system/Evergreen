@@ -39,7 +39,7 @@ function clHoldMsg() {
 function clGo() {	
 	var req = new Request(RETRIEVE_CL, USER.ws_ou());
 	req.callback(clDraw);
-	req.send();
+	setTimeout( function(){req.send()}, 500 );
 }
 
 function clBuildNew() {
@@ -68,6 +68,7 @@ function clCreateNew() {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('cl_update_success');
 	clGo();
 }
 
@@ -166,6 +167,7 @@ function clEditCommit( tbody, r, cl ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('cl_update_success');
 
 	clGo();
 }
@@ -177,7 +179,7 @@ function clDelete( cl, tbody, row ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
-
+	alertId('cl_update_success');
 	clGo();
 }
 

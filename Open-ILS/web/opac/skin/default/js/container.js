@@ -20,7 +20,7 @@ function containerFetchAll( callback, args ) {
 }
 
 function containerFlesh( id, callback, args ) {
-	var req = new Request( FLESH_CONTAINER, G.user.session, 'biblio', id );                                                                                               
+	var req = new Request( FLESH_CONTAINER, G.user.session, 'biblio', id );
 	return containerDoRequest( req, callback, args );
 }
 

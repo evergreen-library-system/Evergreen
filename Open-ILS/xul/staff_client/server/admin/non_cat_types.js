@@ -40,7 +40,7 @@ function ncBuildNew() {
 function ncFetchTypes() {
 	var req = new Request( FETCH_NON_CAT_TYPES, USER.home_ou() );	
 	req.callback(ncDisplayTypes);
-	req.send();
+	setTimeout(function(){req.send();}, 500);
 }
 
 function ncCreateNew() {
@@ -55,6 +55,7 @@ function ncCreateNew() {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('nc_update_success');
 	ncFetchTypes();
 }
 
@@ -174,6 +175,7 @@ function ncEditSubmit( type, name, interval, inhouse ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('nc_update_success');
 	ncFetchTypes();
 }
 
@@ -184,6 +186,7 @@ function ncDeleteType( tbody, row, type ) {
 		function(r) {
 			var res = r.getResultObject();
 			if(checkILSEvent(res)) alertILSEvent(res);
+			alertId('nc_update_success');
 			ncFetchTypes();
 		}
 	);

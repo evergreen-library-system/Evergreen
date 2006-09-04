@@ -136,6 +136,10 @@
 		Bookbags are...
 	</span>
 
+	<span class='hide_me' id='bb_update_success'>
+		Bookbag successfully updated
+	</span>
+
 </div>
 
 

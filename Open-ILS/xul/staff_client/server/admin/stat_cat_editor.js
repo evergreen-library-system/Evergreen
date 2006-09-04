@@ -88,6 +88,10 @@ function scFetchAll( session, type, orgid, callback, args ) {
 }
 
 function scShow(type) { 
+	setTimeout(function(){_scShow(type)}, 500);
+}
+
+function _scShow(type) { 
 
 	currentlyVisible = type;
 
@@ -172,6 +176,7 @@ function scDelete(type, id) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('sc_update_success');
 	scShow(type);
 }
 
@@ -191,6 +196,7 @@ function scCreateEntry( type, id, row ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('sc_update_success');
 	scShow(type);
 }
 
@@ -282,6 +288,7 @@ function scNew() {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('sc_update_success');
 
 	scShow(type);
 }
@@ -373,6 +380,7 @@ function scEditGo( type, cat, row, selector ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('sc_update_success');
 	scShow(type);
 
 	return true;
@@ -425,6 +433,7 @@ function scEntryDelete( cat, entry, type ) {
 	req.send(true);
 	var res = req.result();
 	if(checkILSEvent(res)) throw res;
+	alertId('sc_update_success');
 	scShow(type);
 }
 

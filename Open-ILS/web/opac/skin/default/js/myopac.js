@@ -938,7 +938,7 @@ function myOPACMakeBBPublished(bbid, hideme) {
 	var code = checkILSEvent(result);
 	if(code) { alertILSEvent(result); return; }
 
-	if(result) alert($('myopac_bb_update_success').innerHTML);
+	alert($('myopac_bb_update_success').innerHTML);
 	myOPACShowBookbags(true);
 }
 
@@ -949,6 +949,7 @@ function myOPACDeleteBookbag(id) {
 		var result = containerDelete(id);
 		var code = checkILSEvent(result);
 		if(code) { alertILSEvent(result); return; }
+		alert($('myopac_bb_update_success').innerHTML);
 		hideMe($('myopac_bookbag_items_table'));
 		hideMe($('myopac_bookbag_items_name'));
 		hideMe($('myopac_bookbag_no_items'));
@@ -1020,7 +1021,8 @@ function myOPACExpandBookbag( id, name ) {
 
 function myOPACRemoveBBItem( id, containerid, container_name ) {
 	if(!confirm($('myopac_remove_bb_item_confirm').innerHTML)) return;
-	containerRemoveItem( id );
+	var stat = containerRemoveItem( id );
+	if(stat) alert($('myopac_bb_update_success').innerHTML);
 	myOPACFetchBBItems( containerid, $('myopac_bookbag_row_' + containerid), true);
 	myOPACExpandBookbag( containerid, container_name );
 }
@@ -1044,6 +1046,7 @@ function myOPACCreateBookbag() {
 	var result = containerCreate( name, $('bb_public_yes').checked );
 	var code = checkILSEvent(result);
 	if(code) { alertILSEvent(result); return; }
+	if(result) alert($('myopac_bb_update_success').innerHTML);
 	myOPACShowBookbags(true);
 }
 
