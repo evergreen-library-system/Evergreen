@@ -518,7 +518,7 @@ sub generate_fines {
 			}
 
 			my $current_fine_total = 0;
-			$current_fine_total += $_->amount for (grep { $_ and !$_->voided } @fines);
+			$current_fine_total += int($_->amount * 100) for (grep { $_ and !$_->voided } @fines);
 	
 			my $last_fine;
 			if ($fine) {
@@ -544,10 +544,13 @@ sub generate_fines {
 	
 			$client->respond( "\t$pending_fine_count pending fine(s)\n" );
 
-			my ($latest_billing_ts, $latest_amount);
+			my $recuring_fine = int($c->recuring_fine * 100);
+			my $max_fine = int($c->max_fine * 100);
+
+			my ($latest_billing_ts, $latest_amount) = ('',0);;
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
-				if ($current_fine_total > $c->max_fine) {
+				if ($current_fine_total >= $max_fine) {
 					$c->update({stop_fines => 'MAXFINES'});
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
@@ -574,8 +577,8 @@ sub generate_fines {
 				);
 				next if (@cl);
 	
-				$current_fine_total += $c->recuring_fine;
-				$latest_amount += $c->recuring_fine;
+				$current_fine_total += $recuring_fine;
+				$latest_amount += $recuring_fine;
 				$latest_billing_ts = $timestamptz;
 	
 				$client->respond( "\t\tAdding aggregate fine of ".$c->recuring_fine." for period starting ".$$timestamptz."\n" );
@@ -585,10 +588,10 @@ sub generate_fines {
 				{ xact		=> ''.$c->id,
 				  note		=> "System Generated Overdue Fine",
 				  billing_type	=> "Overdue materials",
-				  amount	=> ''.$latest_amount,
+				  amount	=> sprintf('%0.2f', $latest_amount/100),
 				  billing_ts	=> $latest_billing_ts,
 				}
-			) if ($latest_billing_ts and $latest_amount > 0.0);
+			) if ($latest_billing_ts and $latest_amount);
 
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
