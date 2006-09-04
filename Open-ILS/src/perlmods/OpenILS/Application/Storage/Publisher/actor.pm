@@ -317,7 +317,8 @@ sub patron_search {
 
 	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
 	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
-	my $clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
+	my $clone_select = '';
+	$clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
 			   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
 			   "WHERE $addr_where) AS clone USING (id)" if ($addr_where);
 
