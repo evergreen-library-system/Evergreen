@@ -86,7 +86,7 @@ HTTP.Cookies.prototype.write = function (name, value, expires, path, domain, sec
       Now.setTime(Now.getTime() + this.date.parse(expires));
       expires = Now.toGMTString();
    }
-   if(expires) extra += "; expires=" + expires;
+   if(expires != -1 && expires) extra += "; expires=" + expires;
    if(path   ) extra += "; path="    + path;
    if(domain ) extra += "; domain="  + domain;
    if(secure ) extra += "; secure="  + secure;

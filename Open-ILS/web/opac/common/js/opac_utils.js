@@ -478,7 +478,6 @@ function grabUser(ses, force) {
 	G.user.session = ses;
 	cookieManager.write(COOKIE_SES, ses, -1);
 
-
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
 		COUNT = parseInt(G.user.prefs['opac.hits_per_page']);
