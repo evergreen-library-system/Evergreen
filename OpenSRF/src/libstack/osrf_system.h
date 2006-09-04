@@ -9,6 +9,7 @@
 #include "osrf_cache.h"
 
 
+
 /** Connects to jabber.  Returns 1 on success, 0 on failure 
 	contextnode is the location in the config file where we collect config info
 */

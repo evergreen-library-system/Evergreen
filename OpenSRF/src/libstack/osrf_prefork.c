@@ -152,6 +152,19 @@ int prefork_child_init_hook(prefork_child* child) {
 void prefork_child_process_request(prefork_child* child, char* data) {
 	if( !child ) return;
 
+	transport_client* client = osrfSystemGetTransportClient();
+
+	if(!client_connected(client)) {
+		osrfSystemIgnoreTransportClient();
+		osrfLogWarning(OSRF_LOG_MARK, "Reconnecting child to opensrf after disconnect...");
+		if(!osrf_system_bootstrap_client(NULL, NULL)) {
+			osrfLogError( OSRF_LOG_MARK, 
+				"Unable to bootstrap client in prefork_child_process_request()");
+			sleep(1);
+			exit(1);
+		}
+	}
+
 	/* construct the message from the xml */
 	transport_message* msg = new_message_from_xml( data );
 
