@@ -42,8 +42,8 @@
 			<tr>
 				<td width='30%' class='color_4 light_border'>Name</td>
 				<td class='light_border'>
-					<span id='myopac_summary_first'> </span> 
-					<span id='myopac_summary_middle'> </span> 
+					<span id='myopac_summary_first' style='padding-right: 5px;'> </span> 
+					<span id='myopac_summary_middle' style='padding-right: 5px;'> </span> 
 					<span id='myopac_summary_last'> </span> 
 				</td>
 			</tr>
