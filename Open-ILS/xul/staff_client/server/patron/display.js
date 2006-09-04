@@ -97,6 +97,9 @@ patron.display.prototype = {
 							removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 							removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
 							removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
 							removeCSSClass(document.documentElement,'NO_PENALTIES');
 							removeCSSClass(document.documentElement,'ONE_PENALTY');
 							removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
@@ -105,6 +108,7 @@ patron.display.prototype = {
 							removeCSSClass(document.documentElement,'PATRON_INACTIVE');
 							removeCSSClass(document.documentElement,'PATRON_EXPIRED');
 							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
 							removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
 							removeCSSClass(document.documentElement,'PATRON_AGE_LE_65');
 							removeCSSClass(document.documentElement,'PATRON_AGE_GE_24');
@@ -115,6 +119,9 @@ patron.display.prototype = {
 							removeCSSClass(document.documentElement,'PATRON_AGE_LE_18');
 							removeCSSClass(document.documentElement,'PATRON_AGE_GE_13');
 							removeCSSClass(document.documentElement,'PATRON_AGE_LE_13');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_1');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_2');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
 						}
 					],
 					'cmd_patron_refresh' : [
