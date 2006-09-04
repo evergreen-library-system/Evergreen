@@ -1614,6 +1614,17 @@ sub _checked_out {
 	my $circs = $e->search_action_circulation( 
 		{ usr => $userid, stop_fines => undef });
 
+	my $mcircs = $e->search_action_circulation( 
+		{ 
+			usr => $userid, 
+			checkin_time => undef, 
+			xact_finish => undef, 
+			stop_fines => OILS_STOP_FINES_MAX_FINES 
+		});
+
+	
+	push( @$circs, @$mcircs );
+
 	my $parser = DateTime::Format::ISO8601->new;
 
 	# split the circs up into overdue and not-overdue circs
