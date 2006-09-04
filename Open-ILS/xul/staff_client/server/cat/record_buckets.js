@@ -307,6 +307,8 @@ cat.record_buckets.prototype = {
 
 									if (typeof robj == 'object') throw robj;
 
+									alert('Bucket "' + name + '" created.');
+
 									obj.controller.render('record_buckets_menulist_placeholder');
 									obj.controller.view.bucket_menulist.value = robj;
 									setTimeout(
