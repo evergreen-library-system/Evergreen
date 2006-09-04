@@ -33,6 +33,11 @@ patron.search_result.prototype = {
 				'first_given_name' : { 'hidden' : 'false' },
 				'second_given_name' : { 'hidden' : 'false' },
 				'dob' : { 'hidden' : 'false' },
+			},
+			{
+				'except_these' : [
+					'barcode',
+				],
 			}
 		);
 		obj.list.init(
