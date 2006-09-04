@@ -551,7 +551,7 @@ sub generate_fines {
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				if ($current_fine_total >= $max_fine) {
-					$c->update({stop_fines => 'MAXFINES'});
+					$c->update({stop_fines => 'MAXFINES', stop_fines_time => 'now'});
 					$client->respond(
 						"\tMaximum fine level of ".$c->max_fine.
 						" reached for this circulation.\n".
