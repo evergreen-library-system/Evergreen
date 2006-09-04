@@ -65,7 +65,7 @@
 			try {
 				document.getElementById('bill_payment_amount').focus();
 			} catch(E) {
-				g.error.sdump('D_ERROR','bill default_focus: ' + js2JSON(E));
+				try { g.error.sdump('D_ERROR','bill default_focus: ' + js2JSON(E)); } catch(F) { dump(E); }
 			}
 		}
 	]]>
