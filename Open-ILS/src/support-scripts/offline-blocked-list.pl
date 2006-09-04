@@ -17,11 +17,13 @@ while (my $resp = $lost->recv ) {
 }
 $lost->finish;
 
-my $expired = $ses->request( 'open-ils.storage.actor.user.expired_barcodes' );
-while (my $resp = $expired->recv ) {
-	print $resp->content . " E\n";
+if(0) { # XXX just too many... arg
+	my $expired = $ses->request( 'open-ils.storage.actor.user.expired_barcodes' );
+	while (my $resp = $expired->recv ) {
+		print $resp->content . " E\n";
+	}
+	$expired->finish;
 }
-$expired->finish;
 
 my $barred = $ses->request( 'open-ils.storage.actor.user.barred_barcodes' );
 while (my $resp = $barred->recv ) {
