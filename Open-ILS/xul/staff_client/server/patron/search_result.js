@@ -192,6 +192,7 @@ patron.search_result.prototype = {
 				}
 			}
 			if (obj.search_term_count > 0) {
+				//alert('search params = ' + obj.error.pretty_print( js2JSON( params ) ) );
 				results = this.network.simple_request( 'FM_AU_IDS_RETRIEVE_VIA_HASH', params );
 				if ( (results == null) || (typeof results.ilsevent != 'undefined') ) throw(results);
 				if (results.length == 0) {
