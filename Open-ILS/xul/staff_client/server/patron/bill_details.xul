@@ -271,6 +271,7 @@
 							g.data.stash('voided_billings');
 						}
 					}
+					alert('Action completed.');
 					retrieve_mbts();
 					g.bill_list.clear();
 					retrieve_mb();
