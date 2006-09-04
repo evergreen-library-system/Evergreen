@@ -137,6 +137,7 @@ function flattenGroupTree(node) {
   * @param child The name of the child group
   */
 function isGroupDescendant( parent, child ) {
+	log_debug("checking descendant p="+parent + " c=" + child);
 	return __isGroupDescendant(
 		groupList[parent],
 		groupList[child]);

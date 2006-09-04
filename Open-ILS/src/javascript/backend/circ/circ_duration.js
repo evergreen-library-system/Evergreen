@@ -10,6 +10,7 @@ if( isTrue(isPrecat) ) {
 	result.durationRule			= '14_days_2_renew';
 	result.recurringFinesRule	= '10_cent_per_day';
 	result.maxFine					= 'overdue_mid';
+	checkStaff();
 	return;
 }
 
@@ -29,8 +30,6 @@ if( config ) {
 	result.durationRule			= config.durationRule;
 	result.recurringFinesRule	= config.recurringFinesRule;
 	result.maxFine					= config.maxFine;
-
-	log_debug(config.durationRule + ' : ' + config.recurringFinesRule + ' : ' + config.maxFine );
 
 } else {
 
@@ -63,6 +62,19 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 }
 
 
+checkStaff();
+
+log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + result.maxFine );
 
 } go();
+
+
+
+function checkStaff() {
+	log_debug("Checking to see if patron is staff: profile = "+patronProfile);
+	if( isGroupDescendant('Staff', patronProfile) ) {
+		result.recurringFinesRule	= "staff";
+		result.maxFine					= "staff";
+	}
+}
 
