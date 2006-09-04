@@ -745,6 +745,7 @@ function myopacDrawNotes(r) {
 	var tbody = $('myopac.notes.tbody');
 	if(!notesTemplate)
 		notesTemplate = tbody.removeChild($('myopac.notes.tr'));
+	removeChildren(tbody);
 
 	iterate(notes, 
 		function(note) {
@@ -806,6 +807,7 @@ function myOPACUpdateUsername() {
 		G.user.usrname(username);
 		hideMe($('myopac_update_username_row'));
 		userShown = false;
+		alertId('myopac_username_success');
 		myOPACShowSummary();
 		return;
 	}
@@ -826,6 +828,7 @@ function myOPACUpdateEmail() {
 		G.user.usrname(email);
 		hideMe($('myopac_update_email_row'));
 		userShown = false;
+		alertId('myopac_email_success');
 		myOPACShowSummary();
 		return;
 	}
@@ -853,8 +856,8 @@ function myOPACUpdatePassword() {
 	if(req.result()) {
 		hideMe($('myopac_update_password_row'));
 		userShown = false;
+		alertId('myopac_password_success');
 		myOPACShowSummary();
-		alert($('pw_update_successful').innerHTML);
 		return;
 	}
 
