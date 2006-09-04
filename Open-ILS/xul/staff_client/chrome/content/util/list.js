@@ -876,8 +876,8 @@ util.list.prototype = {
 										b = util.money.dollars_float_to_cents_integer(b);
 									break;
 									case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
-										a = String( a ).toUpperCase().replace( /^(THE|A)\s+/, '' );
-										b = String( b ).toUpperCase().replace( /^(THE|A)\s+/, '' );
+										a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+										b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
 									break;
 									default:
 										a = String( a ).toUpperCase();
