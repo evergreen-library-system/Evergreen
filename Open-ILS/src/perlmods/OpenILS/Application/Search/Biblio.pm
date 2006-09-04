@@ -711,7 +711,15 @@ sub biblio_mrid_make_modsbatch {
 
 	# grab all of the sub-records and shove them into the batch
 	my @ids = grep { $_ ne $masterid } @$ids;
-	my $subrecs = (@ids) ? $e->batch_retrieve_biblio_record_entry(\@ids) : [];
+	#my $subrecs = (@ids) ? $e->batch_retrieve_biblio_record_entry(\@ids) : [];
+
+	my $subrecs = [];
+	if(@$ids) {
+		for my $i (@$ids) {
+			my $r = $e->retrieve_biblio_record_entry($i);
+			push( @$subrecs, $r ) if $r;
+		}
+	}
 
 	for(@$subrecs) {
 		$logger->debug("adding record ".$_->id." to mods batch for metarecord=$mrid");
