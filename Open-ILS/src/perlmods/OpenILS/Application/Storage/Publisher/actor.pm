@@ -317,19 +317,19 @@ sub patron_search {
 
 	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
 	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
-	my $clone_select = "SELECT cu.id as id FROM $a_table ca ".
+	my $clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
 			   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
-			   "WHERE $addr_where";
+			   "WHERE $addr_where) AS clone USING (id)" if ($addr_where);
 
 	my $select = '';
 	if ($usr_where) {
 		if ($addr_where) {
-			$select = "$u_select INTERSECT $a_select UNION $clone_select";
+			$select = "$u_select INTERSECT $a_select";
 		} else {
 			$select = $u_select;
 		}
 	} elsif ($addr_where) {
-		$select = "$a_select UNION $clone_select";
+		$select = "$a_select";
 	} else {
 		return undef;
 	}
@@ -347,6 +347,7 @@ sub patron_search {
 		  FROM	$u_table AS users
 			JOIN ($select) AS search
 		  USING (id)
+		  $clone_select
 		  WHERE	users.deleted = FALSE $inactive
 		  ORDER BY $order_by
 		  LIMIT $limit
