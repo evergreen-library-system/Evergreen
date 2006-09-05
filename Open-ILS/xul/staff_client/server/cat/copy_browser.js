@@ -305,7 +305,12 @@ cat.copy_browser.prototype = {
 												util.functional.map_list(
 													list,
 													function (o) {
-														return obj.map_acn[ 'acn_' + obj.map_acp[ 'acp_' + o ].call_number() ].owning_lib();
+														var o_acp = obj.map_acp[ 'acp_' + o ].call_number();
+														if (o_acp.call_number() == -1) {
+															return o_acp.circ_lib();
+														} else {
+															return obj.map_acn[ 'acn_' + o_acp.call_number() ].owning_lib();
+														}
 													}
 												),
 												list.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]

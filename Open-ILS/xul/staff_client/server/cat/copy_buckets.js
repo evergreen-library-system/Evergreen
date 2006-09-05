@@ -344,7 +344,7 @@ cat.copy_buckets.prototype = {
 											util.functional.map_list(
 												copies,
 												function (o) {
-													return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
+													return o.call_number() == -1 ? o.circ_lib() : obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
 												}
 											),
 											copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
