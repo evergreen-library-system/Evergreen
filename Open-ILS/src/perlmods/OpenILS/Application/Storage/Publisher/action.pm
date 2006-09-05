@@ -873,6 +873,7 @@ sub new_hold_copy_targeter {
 			if ($e !~ /^OK/o) {
 				$log->error("Processing of hold failed:  $e");
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
+				throw $e if ($e =~ /IS NOT CONNECTED TO THE NETWORK/o);
 			}
 		};
 	}
