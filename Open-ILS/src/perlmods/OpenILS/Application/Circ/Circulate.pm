@@ -465,6 +465,10 @@ sub mk_script_runner {
       $self->script_runner->insert("$evt.nonCatType", $self->noncat_type);
 	}
 
+	if( $self->is_precat ) {
+		$self->script_runner->insert("environment.isPrecat", 1, 1);
+	}
+
 	$self->script_runner->add_path( $_ ) for @$script_libs;
 
 	return 1;
