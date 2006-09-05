@@ -755,6 +755,9 @@ sub new_hold_copy_targeter {
 				$log->info("\tNo copies available for targeting at all!\n");
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_COPIES' };
+
+				$hold->update( { prev_check_time => 'today' } );
+				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				die 'OK';
 			}
 
@@ -808,6 +811,7 @@ sub new_hold_copy_targeter {
 					push @good_copies, $old_best;
 				} else {
 					$log->debug("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!");
+					$hold->update( { prev_check_time => 'today' } );
 					$self->method_lookup('open-ils.storage.transaction.commit')->run;
 					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_TARGETS' };
 					die 'OK';
