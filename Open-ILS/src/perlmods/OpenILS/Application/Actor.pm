@@ -1766,6 +1766,14 @@ __PACKAGE__->register_method(
 	notes		=> <<"	NOTES");
 	Returns a list of billable transaction ids for a user that are not finished
 	NOTES
+__PACKAGE__->register_method(
+	method	=> "user_transaction_history",
+	api_name	=> "open-ils.actor.user.transactions.history.have_bill",
+	argc		=> 1,
+	notes		=> <<"	NOTES");
+	Returns a list of billable transaction ids for a user that has billings
+	NOTES
+
 
 
 =head old
@@ -1807,11 +1815,12 @@ sub user_transaction_history {
 	my @xact = (xact_type =>  $type) if(defined($type));
 	my @balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
 	my @charge  = (last_billing_ts => { "!=" => undef }) if $api =~ /have_charge/;
+	my @total_billed  = (total_billed => { "!=" => 0}) if $api =~ /have_bill/;
 	my @xact_finish  = (xact_finish => undef ) if $api =~ /still_open/;
 
 	return $e->search_money_billable_transaction_summary(
 		[
-			{ usr => $userid, @xact, @charge, @balance, @xact_finish }, 
+			{ usr => $userid, @xact, @charge, @balance, @xact_finish, @total_billed }, 
 			{ order_by => 'xact_start DESC' }
 		], {idlist => 1});
 }

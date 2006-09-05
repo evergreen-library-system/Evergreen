@@ -49,7 +49,8 @@
 		}
 
 		function retrieve_mbts_for_list() {
-			var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
+			//var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
+			var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BILL';
 			if (g.cgi.param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE';
 			g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
 			if (g.mbts_ids.ilsevent) {
