@@ -1815,7 +1815,7 @@ sub user_transaction_history {
 	my @xact = (xact_type =>  $type) if(defined($type));
 	my @balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
 	my @charge  = (last_billing_ts => { "!=" => undef }) if $api =~ /have_charge/;
-	my @total_billed  = (total_billed => { "!=" => 0}) if $api =~ /have_bill/;
+	my @total_billed  = (total_owed => { "!=" => 0}) if $api =~ /have_bill/;
 	my @xact_finish  = (xact_finish => undef ) if $api =~ /still_open/;
 
 	return $e->search_money_billable_transaction_summary(
