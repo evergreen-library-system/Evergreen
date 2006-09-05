@@ -13,7 +13,7 @@ my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/hold_targeter-LOCK";
 
 if (-e $lockfile) {
-	die "I seem to be running already at pid $pid.  If not remove $lockfile, try again\n";
+	die "I seem to be running already. If not remove $lockfile, try again\n";
 }
 
 open(F, ">$lockfile");
