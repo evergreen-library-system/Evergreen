@@ -181,7 +181,8 @@ sub fetch_user_data {
 		return OpenILS::Event->new('PATRON_INACTIVE')
 			unless $U->is_true($patron->active);
 	
-		$patron->card($e->retrieve_actor_card($patron->card));
+		$patron->card($e->retrieve_actor_card($patron->card))
+			unless ref $patron->card;
 	
 		return OpenILS::Event->new('PATRON_CARD_INACTIVE')
 			unless $U->is_true($patron->card->active);
