@@ -1268,8 +1268,8 @@ sub uber_hold {
 		$mvr = $U->record_to_mvr($t);
 	}
 
-
 	flesh_hold_notices([$hold], $e);
+	flesh_hold_transits([$hold]);
 
 	return {
 		hold		=> $hold,
