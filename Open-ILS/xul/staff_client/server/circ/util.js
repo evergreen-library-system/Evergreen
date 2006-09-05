@@ -848,7 +848,11 @@ circ.util.hold_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'patron_name', 'label' : 'Patron Name', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : 'my.patron_barcode + " " + my.patron_family_name + ", " + my.patron_first_given_name;',
-		}
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'callnumber', 'label' : 'Call Number', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'my.acn.label()',
+		},
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {

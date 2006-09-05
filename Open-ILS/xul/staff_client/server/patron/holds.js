@@ -23,6 +23,7 @@ patron.holds.prototype = {
 		obj.patron_id = params['patron_id'];
 		obj.docid = params['docid'];
 		obj.shelf = params['shelf'];
+		obj.tree_id = params['tree_id'];
 
 		JSAN.use('circ.util');
 		var columns = circ.util.hold_columns( 
@@ -38,7 +39,7 @@ patron.holds.prototype = {
 			} 
 		);
 
-		JSAN.use('util.list'); obj.list = new util.list('holds_list');
+		JSAN.use('util.list'); obj.list = new util.list( obj.tree_id || 'holds_list');
 		obj.list.init(
 			{
 				'columns' : columns,
