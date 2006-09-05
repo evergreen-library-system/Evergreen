@@ -347,7 +347,7 @@ cat.copy_buckets.prototype = {
 													return obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
 												}
 											),
-											[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+											copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
 										]
 									).length == 0 ? 1 : 0;
 								} catch(E) {

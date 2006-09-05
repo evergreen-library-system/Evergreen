@@ -308,7 +308,7 @@ cat.copy_browser.prototype = {
 														return obj.map_acn[ 'acn_' + obj.map_acp[ 'acp_' + o ].call_number() ].owning_lib();
 													}
 												),
-												[ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+												list.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
 											]
 										).length == 0 ? 1 : 0;
 									} catch(E) {
