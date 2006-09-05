@@ -13,18 +13,7 @@ my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/hold_targeter-LOCK";
 
 if (-e $lockfile) {
-	open(F,$lockfile);
-	my $pid = <F>;
-	close F;
-
-	open(F,'/bin/ps axo pid|');
-	while ( my $p = <F>) {
-		chomp($p);
-		if ($p =~ s/\s*(\d+)$/$1/o && $p == $pid) {
-			die "I seem to be running already at pid $pid.  If not, try again\n";
-		}
-	}
-	close F;
+	die "I seem to be running already at pid $pid.  If not remove $lockfile, try again\n";
 }
 
 open(F, ">$lockfile");
