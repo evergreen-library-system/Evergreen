@@ -80,8 +80,10 @@ sub build_runner {
 
 	if( ref $ctx->{requestor} ) {
 		$runner->insert( "$evt.requestor",	$ctx->{requestor}, 1);
-		$runner->insert( "$evt.location",	
-			$editor->retrieve_actor_org_unit($ctx->{requestor}->ws_ou), 1);
+		if($ctx->{requestor}->ws_ou) {
+			$runner->insert( "$evt.location",	
+				$editor->retrieve_actor_org_unit($ctx->{requestor}->ws_ou), 1);
+		}
 	}
 
 	$runner->insert( "$evt.patronItemsOut", $ctx->{patronItemsOut}, 1 );
