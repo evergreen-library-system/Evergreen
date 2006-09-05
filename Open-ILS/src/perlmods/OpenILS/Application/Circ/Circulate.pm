@@ -1325,6 +1325,7 @@ sub attempt_checkin_hold_capture {
 	$hold->clear_fulfillment_lib;
 	$hold->clear_expire_time; 
 	$hold->clear_cancel_time;
+	$hold->clear_prev_check_time unless $hold->prev_check_time;
 
 	$self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_hold_request($hold);
