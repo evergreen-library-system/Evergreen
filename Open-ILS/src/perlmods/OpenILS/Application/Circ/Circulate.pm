@@ -794,6 +794,7 @@ sub update_copy {
 	$copy->circ_lib($circ_lib->id) if $circ_lib;
 	$copy->editor($self->editor->requestor->id);
 	$copy->edit_date('now');
+	$copy->age_protect($copy->age_protect->id) if ref $copy->age_protect;
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_asset_copy($self->copy);
