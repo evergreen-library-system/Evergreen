@@ -959,6 +959,15 @@ sub fetch_billable_xact {
 	return ($xact, $evt);
 }
 
+sub fetch_billable_xact_summary {
+	my( $self, $id ) = @_;
+	my($xact, $evt);
+	$logger->debug("Fetching billable transaction summary %id");
+	$xact = $self->cstorereq(
+		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
+	$evt = OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_NOT_FOUND') unless $xact;
+	return ($xact, $evt);
+}
 
 sub fetch_fleshed_copy {
 	my( $self, $id ) = @_;

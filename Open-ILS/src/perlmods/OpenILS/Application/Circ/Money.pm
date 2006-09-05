@@ -82,7 +82,8 @@ sub make_payments {
 		my $amount = $pay->[1];
 		$amount =~ s/\$//og; # just to be safe
 
-		($trans, $evt) = $apputils->fetch_open_billable_transaction($transid);
+		#($trans, $evt) = $apputils->fetch_open_billable_transaction($transid);
+		($trans, $evt) = $apputils->fetch_billable_xact_summary($transid);
 		return $evt if $evt;
 
 		if($trans->usr != $userid) { # Do we need to restrict this in some way ??
