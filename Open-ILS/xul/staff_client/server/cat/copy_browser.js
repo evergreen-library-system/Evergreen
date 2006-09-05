@@ -305,7 +305,7 @@ cat.copy_browser.prototype = {
 												util.functional.map_list(
 													list,
 													function (o) {
-														var o_acp = obj.map_acp[ 'acp_' + o ].call_number();
+														var o_acp = obj.map_acp[ 'acp_' + o ];
 														if (o_acp.call_number() == -1) {
 															return o_acp.circ_lib();
 														} else {
