@@ -377,6 +377,10 @@ patron.util.columns = function(modify,params) {
 			'persist' : 'hidden width ordinal', 'id' : 'master_account', 'label' : 'Group Lead', 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.master_account() ) ? "Yes" : "No"'
 		},
+		{ 
+			'persist' : 'hidden width ordinal', 'id' : 'usrgroup', 'label' : 'Group ID', 'flex' : 1, 
+			'primary' : false, 'hidden' : true, 'render' : 'my.au.usrgroup()'
+		},
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
