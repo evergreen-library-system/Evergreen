@@ -1173,7 +1173,11 @@ sub do_checkin {
 		
 		if( my $e = $self->check_checkin_copy_status() ) {
 			# If the original copy status is special, alert the caller
-			return $self->bail_on_events($e);	
+			my $ev = $self->events;
+			$self->events([$e]);
+			$self->override_events;
+			return if $self->bail_out;
+			$self->events($ev);
 		}
 
 
@@ -1601,6 +1605,12 @@ sub check_checkin_copy_status {
 # --------------------------------------------------------------------------
 sub checkin_flesh_events {
 	my $self = shift;
+
+	if( grep { $_->{textcode} eq 'SUCCESS' } @{$self->events} 
+		and grep { $_->{textcode} eq 'ITEM_NOT_CATALOGED' } @{$self->events} ) {
+			$self->events([grep { $_->{textcode} eq 'ITEM_NOT_CATALOGED' } @{$self->events}]);
+	}
+
 
 	for my $evt (@{$self->events}) {
 
