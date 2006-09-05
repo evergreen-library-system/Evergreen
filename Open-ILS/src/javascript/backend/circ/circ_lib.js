@@ -240,8 +240,9 @@ function log_vars( prefix ) {
 	}
 
 	str += ' Is Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
+	str += ' Is Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
 
-	log_debug(str);
+	log_info(str);
 }
 
 
