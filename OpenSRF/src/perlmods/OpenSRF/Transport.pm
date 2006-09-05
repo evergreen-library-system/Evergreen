@@ -179,7 +179,7 @@ sub handler {
 		} else { 
 
 			if( ! $msg->handler( $app_session ) ) { return 0; } 
-			$logger->debug("Successfully handled message", DEBUG);
+			$logger->info("Successfully handled message", DEBUG);
 
 		}
 
