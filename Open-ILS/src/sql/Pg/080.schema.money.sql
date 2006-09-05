@@ -143,6 +143,7 @@ CREATE OR REPLACE VIEW money.open_transaction_payment_summary AS
 	  GROUP BY xact
 	  ORDER BY MAX(payment_ts);
 
+/* Replacing with the one below.
 CREATE OR REPLACE VIEW money.billable_xact_with_void_summary AS
 	SELECT	xact.id AS id,
 		xact.usr AS usr,
@@ -162,7 +163,31 @@ CREATE OR REPLACE VIEW money.billable_xact_with_void_summary AS
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 	  	LEFT JOIN money.transaction_billing_with_void_summary debit ON (xact.id = debit.xact)
 	  	LEFT JOIN money.transaction_payment_with_void_summary credit ON (xact.id = credit.xact);
+*/
 
+CREATE OR REPLACE VIEW money.billable_xact_with_void_summary AS
+	SELECT	xact.id AS id,
+		xact.usr AS usr,
+		xact.xact_start AS xact_start,
+		xact.xact_finish AS xact_finish,
+		SUM(credit.amount) AS total_paid,
+		MAX(credit.payment_ts) AS last_payment_ts,
+		LAST(credit.note) AS last_payment_note,
+		LAST(credit.payment_type) AS last_payment_type,
+		SUM(debit.amount) AS total_owed,
+		MAX(debit.billing_ts) AS last_billing_ts,
+		LAST(debit.note) AS last_billing_note,
+		LAST(debit.billing_type) AS last_billing_type,
+		COALESCE(SUM(debit.amount),0) - COALESCE(SUM(credit.amount),0) AS balance_owed,
+		p.relname AS xact_type
+	  FROM	money.billable_xact xact
+	  	JOIN pg_class p ON (xact.tableoid = p.oid)
+	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact)
+	  	LEFT JOIN money.payment_view credit ON (xact.id = credit.xact)
+	  GROUP BY 1,2,3,4,14
+	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
+
+/* Replacing with the version below
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	SELECT	xact.id AS id,
 		xact.usr AS usr,
@@ -182,6 +207,29 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
 	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact);
+*/
+
+CREATE OR REPLACE VIEW money.billable_xact_summary AS
+	SELECT	xact.id AS id,
+		xact.usr AS usr,
+		xact.xact_start AS xact_start,
+		xact.xact_finish AS xact_finish,
+		SUM(credit.amount) AS total_paid,
+		MAX(credit.payment_ts) AS last_payment_ts,
+		LAST(credit.note) AS last_payment_note,
+		LAST(credit.payment_type) AS last_payment_type,
+		SUM(debit.amount) AS total_owed,
+		MAX(debit.billing_ts) AS last_billing_ts,
+		LAST(debit.note) AS last_billing_note,
+		LAST(debit.billing_type) AS last_billing_type,
+		COALESCE(SUM(debit.amount),0) - COALESCE(SUM(credit.amount),0) AS balance_owed,
+		p.relname AS xact_type
+	  FROM	money.billable_xact xact
+	  	JOIN pg_class p ON (xact.tableoid = p.oid)
+	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
+	  	LEFT JOIN money.payment_view credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
+	  GROUP BY 1,2,3,4,14
+	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
 
 CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
 	SELECT	xact.id AS id,
