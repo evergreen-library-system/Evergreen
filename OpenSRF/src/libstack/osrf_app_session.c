@@ -154,7 +154,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		}
 	}
 
-	osrfLogDebug( OSRF_LOG_MARK, "Returning NULL from app_request_recv after timeout");
+	osrfLogInfo( OSRF_LOG_MARK, "Returning NULL from app_request_recv after timeout");
 	return NULL;
 }
 
