@@ -896,13 +896,18 @@ sub merge {
 sub title_is_empty {
 	my( $editor, $rid ) = @_;
 
+	return 0 if $rid == OILS_PRECAT_RECORD;
+
 	my $cnlist = $editor->search_asset_call_number(
 		{ record => $rid, deleted => 'f' }, { idlist => 1 } );
 	return 1 unless @$cnlist;
 
 	for my $cn (@$cnlist) {
 		my $copylist = $editor->search_asset_copy(
-			{ call_number => $cn, deleted => 'f' }, { idlist => 1 });
+			[
+				{ call_number => $cn, deleted => 'f' }, 
+				{ limit => 1 },
+			], { idlist => 1 });
 		return 0 if @$copylist; # false if we find any copies
 	}
 
