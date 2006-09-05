@@ -128,16 +128,21 @@ patron.summary.prototype = {
 							return function() { 
 								e.setAttribute('value','...');
 								obj.network.simple_request(
-									'FM_MOBTS_TOTAL_HAVING_BALANCE',
+									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
 									[ ses(), obj.patron.id() ],
 									function(req) {
+										var list = req.getResultObject();
+										if (typeof list.ilsevent != 'undefined') {
+											e.setAttribute('value', '??? See Bills');
+											return;
+										}
+										var sum = 0;
+										for (var i = 0; i < list.length; i++) {
+											var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),list[i]]);
+											sum += robj.balance_owed();
+										}
 										JSAN.use('util.money');
-										e.setAttribute('value',
-											'$' + 
-											util.money.sanitize( 
-												req.getResultObject() 
-											)
-										);
+										e.setAttribute('value', '$' + util.money.sanitize( sum ));
 									}
 								);
 							};
