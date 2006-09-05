@@ -68,6 +68,8 @@ osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_s
 
 	osrfLogDebug( OSRF_LOG_MARK,  "We received %d messages from %s", num_msgs, msg->sender );
 
+	double starttime = get_timestamp_millis();
+
 	int i;
 	for( i = 0; i != num_msgs; i++ ) {
 
@@ -92,6 +94,9 @@ osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_s
 
 		osrf_stack_message_handler( session, arr[i] );
 	}
+
+	double duration = get_timestamp_millis() - starttime;
+	osrfLogInfo(OSRF_LOG_MARK, "Message processing duration %lf", duration);
 
 	message_free( msg );
 	osrfLogDebug( OSRF_LOG_MARK, "after msg delete");
