@@ -549,7 +549,7 @@ sub fetch_mbts {
 	my($s, $c, $authtoken, $id) = @_;
 
         my @xacts = @{ $U->cstorereq(
-		'open-ils.cstore.direct.money.billable_transaction_summary.search.atomic',
+		'open-ils.cstore.direct.money.billable_transaction.search.atomic',
                 { id => $id },
                 { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
 	) };
