@@ -406,6 +406,7 @@ circ.checkout.prototype = {
 						7003 /* COPY_CIRC_NOT_ALLOWED */,
 						7004 /* COPY_NOT_AVAILABLE */, 
 						7006 /* COPY_IS_REFERENCE */, 
+						7007 /* COPY_NEEDED_FOR_HOLD */, 
 						7010 /* COPY_ALERT_MESSAGE */,
 						7013 /* PATRON_EXCEEDS_FINES */,
 					],
@@ -530,6 +531,10 @@ circ.checkout.prototype = {
 							found_handled = true;
 						break;
 						case 7006 /* COPY_IS_REFERENCE */ :
+							msg += test_permit[i].desc + '\n';
+							found_handled = true;
+						break;
+						case 7007 /* COPY_NEEDED_FOR_HOLD */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
 						break;
