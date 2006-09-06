@@ -1362,7 +1362,7 @@ sub user_transactions {
 
 	}
 	
-	$trans = [ grep { !$_->xact_finish } @$trans;
+	$trans = [ grep { !$_->xact_finish } @$trans ];
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
@@ -1885,7 +1885,7 @@ sub user_transaction_history {
 		@mbts = grep { int($_->balance_owed * 100) != 0 } @mbts;
 	}
 
-	if($api =~ /have_charge)/o) {
+	if($api =~ /have_charge/o) {
 		@mbts = grep { defined($_->last_billing_ts) } @mbts;
 	}
 
