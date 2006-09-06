@@ -209,10 +209,19 @@ var CIRC_MOD_MAP = {
 	'dvd'							: {
 		SIPMediaType			: '006',
 		magneticMedia			: 'f',
-		durationRule			: '7_days_0_renew',
+		durationRule			: '7_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
+
+	'dvd-long'							: {
+		SIPMediaType			: '006',
+		magneticMedia			: 'f',
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
 
 	'e-book' : {
 		SIPMediaType			: '001',
@@ -311,7 +320,15 @@ var CIRC_MOD_MAP = {
 	'video'	: {
 		SIPMediaType			: '005',
 		magneticMedia			: 'f',
-		durationRule			: '7_days_0_renew',
+		durationRule			: '7_days_2_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'video-long'	: {
+		SIPMediaType			: '005',
+		magneticMedia			: 'f',
+		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
@@ -363,12 +380,12 @@ function getItemConfig() {
 		provided circ_modifier, use that config.  Otherwise fall back on the MARC item type
 		----------------------------------------------------------------------------------- */
 	var marcType	= getMARCItemType();
-	var circMod		= copy.circ_modifier;
+	var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
 	var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
 	
 	var config;
 	
-	if( circMod && CIRC_MOD_MAP[circMod.toLowerCase()] ) {
+	if( circMod && CIRC_MOD_MAP[circMod] ) {
 		/* if we have a config for the given circ_modifier, use it */
 		log_debug("a circ_mod config exists for the copy: " + circMod);
 		config = CIRC_MOD_MAP[circMod];
