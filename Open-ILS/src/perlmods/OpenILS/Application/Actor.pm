@@ -1332,7 +1332,7 @@ sub user_transactions {
 	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
 		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
 	return $evt if $evt;
-	
+
 	my $api = $self->api_name();
 	my $trans;
 	my @xact;
@@ -1357,8 +1357,9 @@ sub user_transactions {
 	} else {
 
 		($trans) = $self
-			->method_lookup('open-ils.actor.user.transactions.history')
+			->method_lookup('open-ils.actor.user.transactions.history.still_open')
 			->run($login_session => $user_id => $type);
+		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
 
 	}
 	
