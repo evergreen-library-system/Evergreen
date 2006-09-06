@@ -20,7 +20,10 @@ if( ! isTrue(isRenewal) ) {
 	if(copyStatus != 'Available' && 
 		copyStatus != 'On holds shelf' && copyStatus != 'Reshelving' ) {
 			result.events.push('COPY_NOT_AVAILABLE');
-	}
+	} 
+
+	if( copyStatus == 'On holds shelf' )
+			result.events.push('ITEM_ON_HOLDS_SHELF');
 }
 
 

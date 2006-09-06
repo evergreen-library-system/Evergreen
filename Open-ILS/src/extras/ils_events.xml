@@ -597,12 +597,6 @@
 	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
 		<desc xml:lang="en-US"> Circulation has no more renewals remaining </desc>
 	</event>
-	<event code='7009' textcode='ROUTE_TO_COPY_LOCATION'>
-		<desc xml:lang="en-US"> 
-		A copy needs to be routed to a copy location.  The location
-		should be specified within the event with a 'location' key
-		</desc>
-	</event>
 	<event code='7009' textcode='CIRC_CLAIMS_RETURNED'>
 		<desc xml:lang="en-US"> Requested circulation is marked claims returned </desc>
 	</event>
@@ -624,6 +618,16 @@
 	<event code='7015' textcode='NEGATIVE_PATRON_BALANCE'>
 		<desc xml:lang="en-US">This requested action would result in a negative patron balance</desc>
 	</event>
+	<event code='7016' textcode='ITEM_ON_HOLDS_SHELF'>
+		<desc xml:lang="en-US">This requested item is currently on the holds shelf</desc>
+	</event>
+	<event code='7017' textcode='ROUTE_TO_COPY_LOCATION'>
+		<desc xml:lang="en-US"> 
+		A copy needs to be routed to a copy location.  The location
+		should be specified within the event with a 'location' key
+		</desc>
+	</event>
+
 
 	<!-- ================================================================ -->
 
