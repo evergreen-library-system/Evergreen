@@ -88,7 +88,9 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 	if(found) {
 		unHideMe(wrapperNode);
 //		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
-		resultFireXRefBatch(treeName, xrefCache, stype);
+
+		/* XXX */ // disabled auth lookups for now
+		//resultFireXRefBatch(treeName, xrefCache, stype);
 	}
 }
 
@@ -149,7 +151,12 @@ function resultFireXRefReq( treeName, stype, item ) {
 
 function resultQuickLink( term, type ) {
 	var args = {};
-	args.page = MRESULT;
+	if(SHOW_MR_DEFAULT) {
+		args.page = MRESULT;
+	} else {
+		args.page = RRESULT;
+		args[PARAM_RTYPE] = type;
+	}
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_TERM] = term;
 	args[PARAM_STYPE] = type;

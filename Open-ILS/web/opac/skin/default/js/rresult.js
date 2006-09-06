@@ -317,12 +317,11 @@ function rresultDoRecordMultiSearch() {
 
 function rresultFilterSearchResults(r) {
 	var result = r.getResultObject();
-
-//	_debug("SEARCH RETURNED: \n" + js2JSON(result) + '\n\n');
-
 	var ids = [];
-	for( var i = 0; i != result.ids.length; i++ ) 
-		ids.push(result.ids[i][0]);
+	if( result.count > 0 ) {
+		for( var i = 0; i != result.ids.length; i++ ) 
+			ids.push(result.ids[i][0]);
+	}
 	_rresultHandleIds( ids, result.count );
 }
 

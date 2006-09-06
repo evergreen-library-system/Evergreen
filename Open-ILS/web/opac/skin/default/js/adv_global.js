@@ -5,8 +5,9 @@ var COOKIE_NOGROUP_RECORDS = 'grpt';
 
 function advgInit() {
 
-	if( cookieManager.read(COOKIE_NOGROUP_RECORDS) )
-		$('adv_group_titles').checked = false;
+	/* XXX */
+	if( cookieManager.read(COOKIE_NOGROUP_RECORDS) || SHOW_MR_DEFAULT )
+		$('adv_group_titles').checked = true;
 
 	$n($('adv_global_tbody'), 'term').focus();
 
@@ -122,9 +123,9 @@ function advSubmitGlobal() {
 	}
 
 	if($('adv_group_titles').checked ) 
-		cookieManager.write(COOKIE_NOGROUP_RECORDS,'');
+		cookieManager.write(COOKIE_NOGROUP_RECORDS,'1',-1);
 	else
-		cookieManager.write(COOKIE_NOGROUP_RECORDS,'1', '+10m');
+		cookieManager.write(COOKIE_NOGROUP_RECORDS,'');
 
 
 	goTo(buildOPACLink(args));

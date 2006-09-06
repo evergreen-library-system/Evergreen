@@ -23,14 +23,17 @@ function initSideBar() {
 	if( page == RRESULT ) {
 		unHideMe($("sidebar_results_wrapper"));
 		unHideMe(G.ui.sidebar[MRESULT]);
-		$("sidebar_title_group_results").setAttribute("href", prevMResults());
+		if( getRtype() == RTYPE_MRID )
+			$("sidebar_title_group_results").setAttribute("href", prevMResults());
 	}
 
 	if( page == RDETAIL ) {
 		unHideMe($("sidebar_results_wrapper"));
-		$("sidebar_title_group_results").setAttribute("href", prevMResults());
+		if( getRtype() == RTYPE_MRID )
+			$("sidebar_title_group_results").setAttribute("href", prevMResults());
 		unHideMe(G.ui.sidebar[MRESULT]);
-		$("sidebar_title_results").setAttribute("href", prevRResults());
+		if(getRtype())
+			$("sidebar_title_results").setAttribute("href", prevRResults());
 		unHideMe(G.ui.sidebar[RRESULT]);
 	}
 

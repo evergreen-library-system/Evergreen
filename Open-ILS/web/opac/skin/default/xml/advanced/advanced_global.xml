@@ -265,7 +265,10 @@
 								<tr>
 									<td colspan='2' align='center'>
 										<span>Group Formats and Editions</span>
+										<!--
 										<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+										-->
+										<input id='adv_group_titles' type='checkbox'> </input>
 									</td>
 								</tr>
 							</tbody>

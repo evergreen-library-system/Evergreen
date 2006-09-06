@@ -56,10 +56,16 @@ function searchBarSubmit() {
 	text = text.replace(/'/,'');
 
 	var args = {};
-	args.page				= MRESULT;
-	//args[PARAM_OFFSET]	= 0;
-	args[PARAM_TERM]		= text;
+
+	if(SHOW_MR_DEFAULT) {
+		args.page				= MRESULT;
+	} else {
+		args.page				= RRESULT;
+		args[PARAM_RTYPE]		= _ts.options[_ts.selectedIndex].value;
+	}
+
 	args[PARAM_STYPE]		= _ts.options[_ts.selectedIndex].value;
+	args[PARAM_TERM]		= text;
 	args[PARAM_LOCATION] = depthSelGetNewLoc();
 	args[PARAM_DEPTH]		= d;
 	args[PARAM_FORM]		= _fs.options[_fs.selectedIndex].value;

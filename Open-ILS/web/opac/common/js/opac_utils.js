@@ -426,7 +426,12 @@ function buildTitleDetailLink(rec, link) {
 function buildSearchLink(type, string, linknode, trunc) {
 	if(!trunc) trunc = 65;
 	var args = {};
-	args.page = MRESULT;
+	if( SHOW_MR_DEFAULT) {
+		args.page = MRESULT;
+	} else {
+		args.page = RRESULT;
+		args[PARAM_RTYPE] = type;
+	}
 	args[PARAM_OFFSET] = 0;
 	args[PARAM_TERM] = string;
 	args[PARAM_STYPE] = type;

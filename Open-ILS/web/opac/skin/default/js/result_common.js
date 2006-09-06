@@ -70,6 +70,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	args.depth    = getDepth();
 	args.limit    = limit;
 	args.offset   = getOffset();
+	args.visiblity_limit = 3000;
 
 	if(sort) args.sort = sort;
 	if(sortdir) args.sort_dir = sortdir;
@@ -114,7 +115,20 @@ function resultSetHitInfo() {
 
 	try{searchTimer.stop()}catch(e){}
 
-	if( findCurrentPage() == MRESULT ) {
+	//if( findCurrentPage() == MRESULT ) {
+	if( findCurrentPage() == MRESULT || 
+
+		(findCurrentPage() == RRESULT &&
+			(
+				getRtype() == RTYPE_TITLE ||
+				getRtype() == RTYPE_AUTHOR ||
+				getRtype() == RTYPE_SUBJECT ||
+				getRtype() == RTYPE_SERIES ||
+				getRtype() == RTYPE_KEYWORD 
+			)
+
+		) ) {
+
 		if(getHitCount() <= lowHitCount && getTerm())
 			runEvt('result', 'lowHits');
 	}

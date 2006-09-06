@@ -1,5 +1,7 @@
 /* Export some constants  ----------------------------------------------------- */
 
+var SHOW_MR_DEFAULT = false; /* true if we show metarecords by default */
+
 /* URL param names */
 var PARAM_TERM			= "t";			/* search term */
 var PARAM_STYPE		= "tp";			/* search type */
