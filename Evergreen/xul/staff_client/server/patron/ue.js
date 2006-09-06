@@ -465,6 +465,8 @@ function uEditSaveUser(cloneme) {
 	_debug("Saving patron with card: " + js2JSON(patron.card()));
 	_debug("Saving full patron: " + js2JSON(patron));
 
+	//for( var c in patron
+
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.alertEvent = false;
 	req.send(true);
@@ -485,20 +487,19 @@ function uEditSaveUser(cloneme) {
 		else cloneme = newuser.id();
 	}
 
-	if (window.xulG && typeof window.xulG.on_save == 'function') {
-		_debug("xulG funcs defined...");
-		if( !patron.isnew() && cloneme ) {
-			_debug("calling spawn_editor to clone user...");
-			window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
-		}
-		window.xulG.on_save(newuser, cloneme); 
+	if(window.xulG &&
+			typeof window.xulG.spawn_editor == 'function' && 
+			!patron.isnew() && cloneme ) {
+
+		_debug("xulG clone spawning new interface...");
+		window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
 
 	} else {
 
 		_debug("xulG funcs not defined, refreshing page..");
 		var href = location.href;
 
-		href = href.replace(/\&?usr=\d+/, '');
+		if( cloneme ) href = href.replace(/\&?usr=\d+/, '');
 		href = href.replace(/\&?clone=\d+/, '');
 
 		if( cloneme ) href += '&clone=' + cloneme;
