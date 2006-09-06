@@ -1997,7 +1997,7 @@ sub biblio_search_multi_class_fts {
 			push @{ $bonus{'series'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
 		}
 
-		my $bonus_list = join ' * ', map { keys %$_ } (@{ $bonus{$search_class}, };
+		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
 		$bonus_list ||= '1';
 
 		push @bonus_lists, $bonus_list,;
