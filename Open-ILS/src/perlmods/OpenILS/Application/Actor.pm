@@ -1817,7 +1817,7 @@ sub user_transaction_history {
 	my @xacts = @{ $e->search_money_billable_transaction(
 		[	{ usr => $userid, @xact_finish },
 			{ flesh => 1,
-			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] }
+			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
 			  order_by => { mbt => 'xact_start DESC' },
 			}
 		]
