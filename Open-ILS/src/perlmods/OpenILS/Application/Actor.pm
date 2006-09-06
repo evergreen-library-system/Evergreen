@@ -1805,24 +1805,8 @@ sub _user_transaction_history {
 }
 =cut
 
-
-sub user_transaction_history {
-	my( $self, $conn, $auth, $userid, $type ) = @_;
-	my $e = new_editor(authtoken=>$auth);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
-
-	my $api = $self->api_name;
-	my @xact_finish  = (xact_finish => undef ) if $api =~ /still_open/;
-
-	my @xacts = @{ $e->search_money_billable_transaction(
-		[	{ usr => $userid, @xact_finish },
-			{ flesh => 1,
-			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
-			  order_by => { mbt => 'xact_start DESC' },
-			}
-		]
-	) };
+sub _make_mbts {
+	my @xacts = shift;
 
 	my @mbts;
 	for my $x (@xacts) {
@@ -1870,8 +1854,28 @@ sub user_transaction_history {
 		push @mbts, $s;
 	}
 
+	return @mbts;
+}
 
+sub user_transaction_history {
+	my( $self, $conn, $auth, $userid, $type ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 
+	my $api = $self->api_name;
+	my @xact_finish  = (xact_finish => undef ) if $api =~ /still_open/;
+
+	my @xacts = @{ $e->search_money_billable_transaction(
+		[	{ usr => $userid, @xact_finish },
+			{ flesh => 1,
+			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
+			  order_by => { mbt => 'xact_start DESC' },
+			}
+		]
+	) };
+
+	my @mbts = _make_mbts( @xacts );
 
 	if(defined($type)) {
 		@mbts = grep { $_->xact_type eq $type } @mbts;

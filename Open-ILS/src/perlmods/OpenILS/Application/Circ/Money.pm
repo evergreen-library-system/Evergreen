@@ -488,6 +488,58 @@ sub _check_open_xact {
 }
 
 
+sub _make_mbts {
+        my @xacts = shift;
+
+        my @mbts;
+        for my $x (@xacts) {
+                my $s = new Fieldmapper::money::billable_transaction_summary;
+                $s->id( $x->id );
+                $s->usr( $userid );
+                $s->xact_start( $x->xact_start );
+                $s->xact_finish( $x->xact_finish );
+
+                my $to = 0.0;
+                my $lb = undef;
+                for my $b (@{ $x->billings }) {
+                        next if ($b->voided eq 'f' or !$b->voided);
+                        $to += $b->amount;
+                        $lb ||= $b->billing_ts;
+                        if ($b->billing_ts ge $lb) {
+                                $lb = $b->billing_ts;
+                                $s->last_billing_note($b->note);
+                                $s->last_billing_ts($b->billing_ts);
+                                $s->last_billing_type($b->billing_type);
+                        }
+                }
+                $s->total_owed( $to );
+
+                my $tp = 0.0;
+                my $lp = undef;
+                for my $p (@{ $x->payments }) {
+                        next if ($p->voided eq 'f' or !$p->voided);
+                        $tp += $p->amount;
+                        $lp ||= $p->payment_ts;
+                        if ($b->payment_ts ge $lp) {
+                                $lp = $b->payment_ts;
+                                $s->last_payment_note($b->note);
+                                $s->last_payment_ts($b->payment_ts);
+                                $s->last_payment_type($b->payment_type);
+                        }
+                }
+                $s->total_paid( $tp );
+
+                $s->balance_owed( $s->total_owed - $s->total_paid );
+
+                $s->xact_type( 'grocery' ) if ($x->grocery);
+                $s->xact_type( 'circulation' ) if ($x->circulation);
+
+                push @mbts, $s;
+        }
+
+        return @mbts;
+}
+
 
 __PACKAGE__->register_method (
 	method => 'fetch_mbts',
@@ -496,8 +548,14 @@ __PACKAGE__->register_method (
 sub fetch_mbts {
 	my($s, $c, $authtoken, $id) = @_;
 
-	my $sum = $U->cstorereq(
-		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
+        my @xacts = @{ $e->search_money_billable_transaction(
+                [       { id => $id },
+                        { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
+                ]
+        ) };
+
+	my ($sum) = _make_mbts(@xacts);
+
 	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
 	my ($reqr, $evt) = $U->checkses($authtoken);
