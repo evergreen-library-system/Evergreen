@@ -36,19 +36,15 @@ patron.bills.prototype = {
 				//alert('obj.bills = ' + js2JSON(obj.bills));
 
 				for (var i = 0; i < obj.bills.length; i++) {
-					/*
 					if (instanceOf(obj.bills[i],mobts)) {
 						obj.bills[i] = { 'transaction' : obj.bills[i] }
 					} else if (instanceOf(obj.bills[i],mbts)) {
 						obj.bills[i] = { 'transaction' : obj.bills[i] }
 					} else {
-					*/
 						var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
 						//alert('refresh robj = ' + js2JSON(robj));
 						obj.bills[i] = { 'transaction' : robj }
-					/*
 					}
-					*/
 				}
 
 				if (!dont_show_me_the_money) {
@@ -643,17 +639,15 @@ patron.bills.prototype = {
 						[ ses(), obj.patron_id ]
 					);
 					for (var i = 0; i < obj.bills.length; i++) {
-						/*
 						if (instanceOf(obj.bills[i],mobts)) {
 							obj.bills[i] = { 'transaction' : obj.bills[i] }
+						} else if (instanceOf(obj.bills[i],mbts)) {
+							obj.bills[i] = { 'transaction' : obj.bills[i] }
 						} else {
-						*/
 							var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),obj.bills[i]]);
 							//alert('robj = ' + js2JSON(robj));
 							obj.bills[i] = { 'transaction' : robj }
-						/*
 						}
-						*/
 					}
 				}
 		} catch(E) {
