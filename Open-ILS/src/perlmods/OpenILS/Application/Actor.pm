@@ -1343,25 +1343,26 @@ sub user_transactions {
 
 	if($api =~ /have_charge/o) {
 
-		$trans = $apputils->simple_scalar_request( 
-			"open-ils.cstore",
-			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
-			{ usr => $user_id, total_owed => { ">" => 0 }, @xact });
+		($trans) = $self
+			->method_lookup('open-ils.actor.user.transactions.history.have_bill')
+			->run($login_session => $user_id => $type);
+		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
 
 	} elsif($api =~ /have_balance/o) {
 
-		$trans =  $apputils->simple_scalar_request( 
-			"open-ils.cstore",
-			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
-			{ usr => $user_id, balance_owed => { "<>" => 0 }, @xact });
+		($trans) = $self
+			->method_lookup('open-ils.actor.user.transactions.history.have_balance')
+			->run($login_session => $user_id => $type);
 
 	} else {
 
-		$trans =  $apputils->simple_scalar_request( 
-			"open-ils.cstore",
-			"open-ils.cstore.direct.money.open_billable_transaction_summary.search.atomic",
-			{ usr => $user_id, @xact });
+		($trans) = $self
+			->method_lookup('open-ils.actor.user.transactions.history')
+			->run($login_session => $user_id => $type);
+
 	}
+	
+	$trans = [ grep { !$_->xact_finish } @$trans;
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
@@ -1827,7 +1828,7 @@ sub user_transaction_history {
 	for my $x (@xacts) {
 		my $s = new Fieldmapper::money::billable_transaction_summary;
 		$s->id( $x->id );
-		$s->id( $userid );
+		$s->usr( $userid );
 		$s->xact_start( $x->xact_start );
 		$s->xact_finish( $x->xact_finish );
 
@@ -1877,14 +1878,14 @@ sub user_transaction_history {
 	}
 
 	if($api =~ /have_balance/o) {
-		@mbts = grep { int($_->balance_owed * 100) > 0 } @mbts;
+		@mbts = grep { int($_->balance_owed * 100) != 0 } @mbts;
 	}
 
-	if($api =~ /have_charge/o) {
+	if($api =~ /have_charge)/o) {
 		@mbts = grep { defined($_->last_billing_ts) } @mbts;
 	}
 
-	if($api =~ /total_owed/o) {
+	if($api =~ /have_bill/o) {
 		@mbts = grep { int($_->total_owed * 100) != 0 } @mbts;
 	}
 
