@@ -549,14 +549,14 @@ sub fetch_mbts {
 	my($s, $c, $authtoken, $id) = @_;
 
         my @xacts = @{ $U->cstorereq(
-		'open-ils.cstore.direct.money.billable_transaction_summary.search.atomic'
+		'open-ils.cstore.direct.money.billable_transaction_summary.search.atomic',
                 { id => $id },
                 { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
 	) };
 
 	my ($sum) = _make_mbts(@xacts);
 
-	my $sum = $U->cstorereq(
+	$sum = $U->cstorereq(
 		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
 	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
