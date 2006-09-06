@@ -1341,29 +1341,22 @@ sub user_transactions {
 
 	} else { @xact = (); }
 
+	($trans) = $self
+		->method_lookup('open-ils.actor.user.transactions.history.still_open')
+		->run($login_session => $user_id => $type);
+
 	if($api =~ /have_charge/o) {
 
-		($trans) = $self
-			->method_lookup('open-ils.actor.user.transactions.history.have_bill')
-			->run($login_session => $user_id => $type);
 		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
 
 	} elsif($api =~ /have_balance/o) {
 
-		($trans) = $self
-			->method_lookup('open-ils.actor.user.transactions.history.have_balance')
-			->run($login_session => $user_id => $type);
-
+		$trans = [ grep { int($_->balance_owed * 100) != 0 } @$trans ];
 	} else {
 
-		($trans) = $self
-			->method_lookup('open-ils.actor.user.transactions.history.still_open')
-			->run($login_session => $user_id => $type);
 		$trans = [ grep { int($_->total_owed * 100) > 0 } @$trans ];
 
 	}
-	
-	$trans = [ grep { !$_->xact_finish } @$trans ];
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
