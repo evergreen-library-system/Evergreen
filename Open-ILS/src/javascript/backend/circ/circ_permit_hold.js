@@ -6,6 +6,9 @@ log_vars('circ_permit_hold');
 if( isTrue(patron.barred) ) 
 	result.events.push('PATRON_BARRED');
 
+if( isTrue(copy.ref) ) 
+	result.events.push('ITEM_NOT_HOLDABLE');
+
 /* projected medium 
 	this needs to be expanded to check circ_modifiers as well
 */
