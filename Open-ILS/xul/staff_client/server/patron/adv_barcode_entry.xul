@@ -28,105 +28,10 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
-
-				g.cgi = new CGI();
-
-				var tb = document.getElementById('barcode_tb');
-				tb.addEventListener(
-					'keypress',
-					function(ev) {
-						if (ev.keyCode == 13 || ev.keyCode == 77) {
-							setTimeout(
-								function() {
-									spawn();
-								}, 0
-							);
-						}
-					},
-					false
-				);
-				tb.focus();
-	
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('User Permission Editor'); } catch(E) { alert(E); }
-				}
-
-			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" + E + '\n';
-				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(err_msg);
-			}
-		}
-
-		function spawn() {
-			var tb;
-			try {
-				JSAN.use('util.sound'); var sound = new util.sound();
-				tb = document.getElementById('barcode_tb');
-				var barcode = tb.value;
-
-				if (!barcode) { sound.bad(); tb.select(); tb.focus(); return; }
-
-				JSAN.use('util.network'); var net = new util.network();
-
-				var robj = net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ]);
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
-
-				if (robj == 0) {
-					sound.bad(); tb.select(); tb.focus();
-					alert('Barcode not found.');
-					return;
-				}
-
-				sound.good();
-
-				var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( 
-					urls.XUL_ADV_PATRON_EDIT
-					+ '?ses=' + window.escape( ses() )
-					+ '&adv=1'
-					+ '&barcode=' + window.escape( barcode )
-				);
-
-				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
-
-					window.xulG.set_tab( loc, {}, { 'show_print_button' : true, } );
-
-				} else {
-
-					location.href = loc;
-				}
-
-			} catch(E) {
-					tb.select(); tb.focus();
-				g.error.standard_unexpected_error_alert('adv_barcode_entry.xul',E);
-			}
-		}
-
-	]]>
-	</script>
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
-			<caption label="Retrieve User" />
-			<hbox>
-				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
-				<textbox id="barcode_tb" />
-				<button label="Submit" accesskey="S" oncommand="spawn();"/>
-			</hbox>
-			<hbox>
-				<label id="status"/>
-			</hbox>
+			<label value="This interface has been disabled."/>
 		</groupbox>
 	</vbox>
 
