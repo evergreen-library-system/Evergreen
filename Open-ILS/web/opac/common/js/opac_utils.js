@@ -854,6 +854,7 @@ function findRecord(id,type) {
 	req.send(true);
 	var res = req.result();
 	if( checkILSEvent(res) ) return null; 
+	return res;
 }
 
 function Timer(name, node){
