@@ -487,25 +487,39 @@ function uEditSaveUser(cloneme) {
 		else cloneme = newuser.id();
 	}
 
-	if(window.xulG &&
-			typeof window.xulG.spawn_editor == 'function' && 
-			!patron.isnew() && cloneme ) {
 
-		_debug("xulG clone spawning new interface...");
-		window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
+	if( cloneme ) {
+
+		if(window.xulG &&
+			typeof window.xulG.spawn_editor == 'function' && 
+
+			!patron.isnew() ) {
+				_debug("xulG clone spawning new interface...");
+				window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
+				uEditRefresh();
+
+		} else {
+
+			var href = location.href;
+			href = href.replace(/\&?usr=\d+/, '');
+			href = href.replace(/\&?clone=\d+/, '');
+			href += '&clone=' + cloneme;
+			location.href = href;
+		}
 
 	} else {
 
-		_debug("xulG funcs not defined, refreshing page..");
-		var href = location.href;
-
-		if( cloneme ) href = href.replace(/\&?usr=\d+/, '');
-		href = href.replace(/\&?clone=\d+/, '');
-
-		if( cloneme ) href += '&clone=' + cloneme;
-		location.href = href;
+		uEditRefresh();
 	}
 }
+
+
+function uEditRefresh() {
+	var href = location.href;
+	href = href.replace(/\&?clone=\d+/, '');
+	location.href = href;
+}
+
 
 function uEditCancel() {
 	var href = location.href;
