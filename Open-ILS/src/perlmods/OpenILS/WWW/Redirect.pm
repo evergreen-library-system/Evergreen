@@ -14,6 +14,7 @@ use CGI ();
 use OpenSRF::AppSession;
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 use vars '$lib_ips_hash';
 
@@ -44,13 +45,13 @@ sub handler {
 
 	my $path = $apache_obj->path_info();
 
-	warn "Client connecting from $user_ip\n";
+	$logger->debug("Apache client connecting from $user_ip");
 
 	if( my $lib_data = redirect_libs( $user_ip ) ) {
 		my $region = $lib_data->[0];
 		my $library = $lib_data->[1];
 
-		warn "Will redirect to $region / $library\n";
+		$logger->info("Apache redirecting to $region / $library");
 		my $session = OpenSRF::AppSession->create("open-ils.storage");
 		my $shortname = "$region-$library";
 
@@ -58,7 +59,7 @@ sub handler {
 			"open-ils.storage.direct.actor.org_unit.search.shortname",
 			 $shortname)->gather(1);
 
-		if($org) { $url .= "?location=" . $org->id; }
+		if($org) { $url .= "?ol=" . $org->id; }
 
 	}
 
