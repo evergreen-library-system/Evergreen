@@ -1863,8 +1863,8 @@ sub user_transaction_history {
 
 		$s->balance_owed( $s->total_owed - $s->total_paid );
 
-		$x->xact_type = 'grocery' if ($x->grocery);
-		$x->xact_type = 'circulation' if ($x->circulation);
+		$x->xact_type( 'grocery' ) if ($x->grocery);
+		$x->xact_type( 'circulation' ) if ($x->circulation);
 
 		push @mbts, $x;
 	}
