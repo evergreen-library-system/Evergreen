@@ -1842,6 +1842,7 @@ sub biblio_search_multi_class_fts {
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit} || 10;
+	my $pref_lang = $args{prefered_language} || 'eng';
 	my $visiblity_limit = $args{visiblity_limit} || 5000;
 	my $offset = $args{offset} || 0;
 
@@ -1976,6 +1977,9 @@ sub biblio_search_multi_class_fts {
 		my $rank = join('  + ', @fts_ranks);
 
 		my %bonus = ();
+		$bonus{'subject'} = [];
+		$bonus{'author'} = [];
+
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
 		$bonus{'series'} = [
@@ -1985,7 +1989,15 @@ sub biblio_search_multi_class_fts {
 
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
 
-		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
+		if ($pref_lang) {
+			push @{ $bonus{'title'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'author'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'subject'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'keyword'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+			push @{ $bonus{'series'} }, { "CASE WHEN rd.item_lang = ? THEN 10 ELSE 1 END" => $pref_lang };
+		}
+
+		my $bonus_list = join ' * ', map { keys %$_ } (@{ $bonus{$search_class}, };
 		$bonus_list ||= '1';
 
 		push @bonus_lists, $bonus_list,;
