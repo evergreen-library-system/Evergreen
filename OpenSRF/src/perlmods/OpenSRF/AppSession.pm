@@ -496,7 +496,7 @@ sub send {
 		push @doc, $msg;
 
 	
-		$logger->debug( "AppSession sending ".$msg->type." to ".$self->remote_id.
+		$logger->info( "AppSession sending ".$msg->type." to ".$self->remote_id.
 			" with threadTrace [".$msg->threadTrace."]" );
 
 	}
