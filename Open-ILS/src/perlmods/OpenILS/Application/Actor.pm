@@ -1820,7 +1820,7 @@ sub _make_mbts {
 		my $to = 0.0;
 		my $lb = undef;
 		for my $b (@{ $x->billings }) {
-			next if ($b->voided eq 'f' or !$b->voided);
+			next if ($U->is_true($b->voided));
 			$to += $b->amount;
 			$lb ||= $b->billing_ts;
 			if ($b->billing_ts ge $lb) {
@@ -1835,14 +1835,14 @@ sub _make_mbts {
 		my $tp = 0.0;
 		my $lp = undef;
 		for my $p (@{ $x->payments }) {
-			next if ($p->voided eq 'f' or !$p->voided);
+			next if ($U->is_true($p->voided));
 			$tp += $p->amount;
 			$lp ||= $p->payment_ts;
-			if ($b->payment_ts ge $lp) {
-				$lp = $b->payment_ts;
-				$s->last_payment_note($b->note);
-				$s->last_payment_ts($b->payment_ts);
-				$s->last_payment_type($b->payment_type);
+			if ($p->payment_ts ge $lp) {
+				$lp = $p->payment_ts;
+				$s->last_payment_note($p->note);
+				$s->last_payment_ts($p->payment_ts);
+				$s->last_payment_type($p->payment_type);
 			}
 		}
 		$s->total_paid( $tp );
