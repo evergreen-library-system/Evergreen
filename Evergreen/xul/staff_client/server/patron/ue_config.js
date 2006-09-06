@@ -78,6 +78,7 @@ function uEditUsrnameBlur(field) {
 function uEditBarcodeBlur(field) {
 	var barcode = uEditNodeVal(field);
 	if(!barcode) return;
+	_debug("blurring card with new value " + barcode);
 	var req = new Request(CHECK_BARCODE, SESSION, barcode);
 	req.callback( 
 		function(r) {

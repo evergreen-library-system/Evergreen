@@ -462,6 +462,9 @@ function uEditSaveUser(cloneme) {
 
 	if(! patron.dob() ) patron.dob(null);
 
+	_debug("Saving patron with card: " + js2JSON(patron.card()));
+	_debug("Saving full patron: " + js2JSON(patron));
+
 	var req = new Request(UPDATE_PATRON, SESSION, patron);
 	req.alertEvent = false;
 	req.send(true);
