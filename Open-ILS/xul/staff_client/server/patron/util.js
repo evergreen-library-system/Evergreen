@@ -485,9 +485,11 @@ patron.util.set_penalty_css = function(patron) {
 	try {
 
 		JSAN.use('util.network'); var net = new util.network();
+		/*
 		net.simple_request('FM_MOBTS_TOTAL_HAVING_BALANCE',[ ses(), patron.id() ], function(req) {
 			if (req.getResultObject() > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 		});
+		*/
 		net.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER',[ ses(), patron.id() ], function(req) {
 			var co = req.getResultObject();
 			if (co.overdue > 0 || co.long_overdue > 0) addCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
