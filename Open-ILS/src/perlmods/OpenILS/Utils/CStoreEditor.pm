@@ -380,6 +380,17 @@ sub __arg_to_string {
 sub runmethod {
 	my( $self, $action, $type, $arg, $options ) = @_;
 
+	if( $action eq 'retrieve' ) {
+		if(! defined($arg) ) {
+			$self->log(W,"$action $type called with no ID...");
+			$self->event(_mk_not_found($type, $arg));
+			return undef;
+		} elsif( ref($arg) =~ /Fieldmapper/ ) {
+			$self->log(E,"$action $type called with an object.. attempting ID retrieval..");
+			$arg = $arg->id;
+		}
+	}
+
 	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
 	my $method = "open-ils.cstore.direct.$type.$action";
 
