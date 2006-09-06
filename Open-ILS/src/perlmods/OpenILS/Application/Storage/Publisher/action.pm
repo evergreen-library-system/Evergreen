@@ -9,6 +9,13 @@ use OpenILS::Utils::PermitHold;
 use DateTime;
 use DateTime::Format::ISO8601;
 
+sub isTrue {
+	my $v = shift;
+	return 1 if ($v == 1);
+	return 1 if ($v =~ /^t/io);
+	return 1 if ($v =~ /^y/io);
+	return 0;
+}
 
 my $parser = DateTime::Format::ISO8601->new;
 my $log = 'OpenSRF::Utils::Logger';
@@ -637,6 +644,7 @@ sub new_hold_copy_targeter {
 			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef } ) ];
 		} elsif ( $check_expire ) {
 
+			# what's the retarget time threashold?
 			my $time = time;
 			$check_expire ||= '12h';
 			$check_expire = interval_to_seconds( $check_expire );
@@ -649,6 +657,7 @@ sub new_hold_copy_targeter {
 				$year, $mon, $mday, $hour, $min, $sec
 			);
 
+			# find all the holds holds needing retargeting
 			$holds = [ action::hold_request->search_where(
 							{ capture_time => undef,
 							  fulfillment_time => undef,
@@ -656,6 +665,8 @@ sub new_hold_copy_targeter {
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
 							{ order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
+
+			# find all the holds holds needing first time targeting
 			push @$holds, action::hold_request->search(
 							capture_time => undef,
 							fulfillment_time => undef,
@@ -663,6 +674,8 @@ sub new_hold_copy_targeter {
 							cancel_time => undef,
 							{ order_by => 'selection_depth DESC, request_time' } );
 		} else {
+
+			# find all the holds holds needing first time targeting ONLY
 			$holds = [ action::hold_request->search(
 							capture_time => undef,
 							fulfillment_time => undef,
@@ -675,11 +688,17 @@ sub new_hold_copy_targeter {
 		die "Could not retrieve uncaptured hold requests:\n\n$e\n";
 	};
 
+	my @closed = actor::org_unit::closed_date->search_where(
+		{ close_start => { '<=', 'today' },
+		  close_end => { '>=', 'today' } }
+	);
+
+
 	my @successes;
 
 	for my $hold (@$holds) {
 		try {
-			#action::hold_request->db_Main->begin_work;
+			#start a transaction if needed
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
@@ -687,12 +706,14 @@ sub new_hold_copy_targeter {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$log->info("Processing hold ".$hold->id."...\n");
 
+			# remove old auto-targeting maps
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 			$_->delete for (@oldmaps);
 
 	
 			my $all_copies = [];
 
+			# find filters for MR holds
 			my ($types, $formats, $lang) = split '-', $hold->holdable_formats;
 
 			# find all the potential copies
@@ -743,14 +764,16 @@ sub new_hold_copy_targeter {
 				$all_copies = [asset::copy->retrieve($hold->target)];
 			}
 
-			@$all_copies = grep {	$_->status->holdable && 
-						$_->location->holdable && 
-						$_->holdable
+			# trim unholdables
+			@$all_copies = grep {	isTrue($_->status->holdable) && 
+						isTrue($_->location->holdable) && 
+						isTrue($_->holdable)
 					} @$all_copies;
 
 			# let 'em know we're still working
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			
+			# if we have no copies ...
 			if (!ref $all_copies || !@$all_copies) {
 				$log->info("\tNo copies available for targeting at all!\n");
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
@@ -769,20 +792,15 @@ sub new_hold_copy_targeter {
 
 			$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-			my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
-			$year += 1900;
-			$mon += 1;
-			my $today= sprintf( '%s-%0.2d-%0.2d', $year, $mon, $mday );
-
-			my @closed = actor::org_unit::closed_date->search_where(
-				{ close_start => { '<=', $today },
-				  close_end => { '>=', $today } }
-			);
-
 			my @good_copies;
 			for my $c (@$all_copies) {
+				# current target
 				next if ($c->id == $hold->current_copy);
+
+				# circ lib is closed
 				next if ( grep { ''.$_->org_unit == ''.$c->circ_lib } @closed );
+
+				# target of another hold
 				next if (action::hold_request
 						->search_where(
 							{ current_copy => $c->id,
@@ -791,6 +809,8 @@ sub new_hold_copy_targeter {
 							}
 						)
 				);
+
+				# we passed all three, keep it
 				push @good_copies, $c if ($c);
 				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 			}
@@ -798,7 +818,7 @@ sub new_hold_copy_targeter {
 			$log->debug("\t".scalar(@good_copies)." (non-current) copies available for targeting...");
 
 			my $old_best = $hold->current_copy;
-			$hold->update({ current_copy => undef });
+			$hold->update({ current_copy => undef }) if ($old_best);
 	
 			if (!scalar(@good_copies)) {
 				$log->info("\tNo (non-current) copies eligible to fill the hold.");
@@ -807,9 +827,11 @@ sub new_hold_copy_targeter {
 				  grep { $old_best eq $_ } @$all_copies &&
 				  !action::hold_request->search_where({ current_copy => $old_best->id, capture_time => undef, cancel_time => undef })
 				) {
+					# the old copy is still available
 					$log->debug("\tPushing current_copy back onto the targeting list");
 					push @good_copies, $old_best;
 				} else {
+					# oops, old copy is not available
 					$log->debug("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!");
 					$hold->update( { prev_check_time => 'today' } );
 					$self->method_lookup('open-ils.storage.transaction.commit')->run;
@@ -855,13 +877,12 @@ sub new_hold_copy_targeter {
 			}
 
 			if ($best) {
-				$hold->update( { current_copy => ''.$best->id } );
+				$hold->update( { current_copy => ''.$best->id, prev_check_time => 'now' } );
 				$log->debug("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
 			} else {
+				$hold->update( { prev_check_time => 'now' } );
 				$log->info( "\tThere were no targetable copies for the hold" );
 			}
-
-			$hold->update( { prev_check_time => 'now' } );
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 			$log->info("\tProcessing of hold ".$hold->id." complete.");
