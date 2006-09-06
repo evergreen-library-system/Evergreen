@@ -5,6 +5,7 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Config;
+use Time::HiRes qw/usleep/;
 
 my $logger = "OpenSRF::Utils::Logger";
 
@@ -151,8 +152,11 @@ sub listen {
 
 			$logger->debug("Inbound listener received ".length($o)." bytes of data");
 
-			if(!$o){$logger->error(
-				"Inbound received no data from the Jabber socket in process()")}
+			if(!$o){
+				$logger->error(
+					"Inbound received no data from the Jabber socket in process()");
+				usleep(100000); # otherwise we loop and pound syslog logger with errors
+			}
 
 		} catch OpenSRF::EX::JabberDisconnected with {
 
