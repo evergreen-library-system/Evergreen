@@ -1501,13 +1501,15 @@
 			<field name="xact_start" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="grocery" oils_obj:array_position="7" oils_persist:virtual="true" />
 			<field name="circulation" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="billings" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
 			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
-			<link field="payments" reltype="has_many" key="billable_transaction" map="" class="mp"/>
-			<link field="billings" reltype="has_many" key="billable_transaction" map="" class="mb"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
 		</links>
 	</class>
 	<class id="actsce" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry">

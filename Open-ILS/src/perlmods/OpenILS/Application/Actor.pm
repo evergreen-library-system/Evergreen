@@ -1812,17 +1812,83 @@ sub user_transaction_history {
 	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 
 	my $api = $self->api_name;
-	my @xact = (xact_type =>  $type) if(defined($type));
-	my @balance = (balance_owed => { "!=" => 0}) if($api =~ /have_balance/);
-	my @charge  = (last_billing_ts => { "!=" => undef }) if $api =~ /have_charge/;
-	my @total_billed  = (total_owed => { "!=" => 0}) if $api =~ /have_bill/;
 	my @xact_finish  = (xact_finish => undef ) if $api =~ /still_open/;
 
-	return $e->search_money_billable_transaction_summary(
-		[
-			{ usr => $userid, @xact, @charge, @balance, @xact_finish, @total_billed }, 
-			{ order_by => 'xact_start DESC' }
-		], {idlist => 1});
+	my @xacts = @{ $e->search_money_billable_transaction(
+		[	{ usr => $userid, @xact_finish },
+			{ flesh => 1,
+			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] }
+			  order_by => { mbt => 'xact_start DESC' },
+			}
+		]
+	) };
+
+	my @mbts;
+	for my $x (@xacts) {
+		my $s = new Fieldmapper::money::billable_transaction_summary;
+		$s->id( $x->id );
+		$s->id( $userid );
+		$s->xact_start( $x->xact_start );
+		$s->xact_finish( $x->xact_finish );
+
+		my $to = 0.0;
+		my $lb = undef;
+		for my $b (@{ $x->billings }) {
+			next if ($b->voided eq 'f' or !$b->voided);
+			$to += $b->amount;
+			$lb ||= $b->billing_ts;
+			if ($b->billing_ts ge $lb) {
+				$lb = $b->billing_ts;
+				$s->last_billing_note($b->note);
+				$s->last_billing_ts($b->billing_ts);
+				$s->last_billing_type($b->billing_type);
+			}
+		}
+		$s->total_owed( $to );
+
+		my $tp = 0.0;
+		my $lp = undef;
+		for my $p (@{ $x->payments }) {
+			next if ($p->voided eq 'f' or !$p->voided);
+			$tp += $p->amount;
+			$lp ||= $p->payment_ts;
+			if ($b->payment_ts ge $lp) {
+				$lp = $b->payment_ts;
+				$s->last_payment_note($b->note);
+				$s->last_payment_ts($b->payment_ts);
+				$s->last_payment_type($b->payment_type);
+			}
+		}
+		$s->total_paid( $tp );
+
+		$s->balance_owed( $s->total_owed - $s->total_paid );
+
+		$x->xact_type = 'grocery' if ($x->grocery);
+		$x->xact_type = 'circulation' if ($x->circulation);
+
+		push @mbts, $x;
+	}
+
+
+
+
+	if(defined($type)) {
+		@mbts = grep { $_->xact_type eq $type } @mbts;
+	}
+
+	if($api =~ /have_balance/o) {
+		@mbts = grep { int($_->balance_owed * 100) > 0 } @mbts;
+	}
+
+	if($api =~ /have_charge/o) {
+		@mbts = grep { defined($_->last_billing_ts) } @mbts;
+	}
+
+	if($api =~ /total_owed/o) {
+		@mbts = grep { int($_->total_owed * 100) != 0 } @mbts;
+	}
+
+	return [@mbts];
 }
 
 
