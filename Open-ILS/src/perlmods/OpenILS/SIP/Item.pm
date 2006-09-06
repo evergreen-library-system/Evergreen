@@ -83,6 +83,8 @@ sub run_attr_script {
 	my $path = $config->{implementation_config}->{scripts}->{path};
 	my $item_config_script = $config->{implementation_config}->{scripts}->{item_config};
 
+	$path = ref($path) eq 'ARRAY' ? $path : [$path];
+
 	syslog('LOG_DEBUG', "OILS: Script path = $path, Item config script = $item_config_script");
 
 	my $runner = 
@@ -93,7 +95,7 @@ sub run_attr_script {
 			}
 		);
 
-	$runner->add_path($path);
+	$runner->add_path($_) for @$path;
 	$runner->load($item_config_script);
 
 	unless( $self->{item_config_result} = $runner->run ) {
