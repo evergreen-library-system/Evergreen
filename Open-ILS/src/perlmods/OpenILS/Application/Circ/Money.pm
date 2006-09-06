@@ -495,7 +495,7 @@ sub _make_mbts {
         for my $x (@xacts) {
                 my $s = new Fieldmapper::money::billable_transaction_summary;
                 $s->id( $x->id );
-                $s->usr( $userid );
+                $s->usr( $x->usr );
                 $s->xact_start( $x->xact_start );
                 $s->xact_finish( $x->xact_finish );
 
@@ -548,14 +548,16 @@ __PACKAGE__->register_method (
 sub fetch_mbts {
 	my($s, $c, $authtoken, $id) = @_;
 
-        my @xacts = @{ $e->search_money_billable_transaction(
-                [       { id => $id },
-                        { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
-                ]
-        ) };
+        my @xacts = @{ $U->cstorereq(
+		'open-ils.cstore.direct.money.billable_transaction_summary.search.atomic'
+                { id => $id },
+                { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
+	) };
 
 	my ($sum) = _make_mbts(@xacts);
 
+	my $sum = $U->cstorereq(
+		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
 	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
 	my ($reqr, $evt) = $U->checkses($authtoken);

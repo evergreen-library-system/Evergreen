@@ -1812,7 +1812,7 @@ sub _make_mbts {
 	for my $x (@xacts) {
 		my $s = new Fieldmapper::money::billable_transaction_summary;
 		$s->id( $x->id );
-		$s->usr( $userid );
+		$s->usr( $x->usr );
 		$s->xact_start( $x->xact_start );
 		$s->xact_finish( $x->xact_finish );
 
