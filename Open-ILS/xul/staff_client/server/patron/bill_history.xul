@@ -66,7 +66,27 @@
 			
 						function gen_func(r) {
 							return function() {
-								g.bill_list.append( { 'retrieve_id' : r, 'row' : {} } );
+								if (typeof r == 'object') {
+									g.bill_list.append( 
+										{ 
+											'retrieve_id' : r.id(), 
+											'row' : { 
+												'my' : { 
+													'mbts' : r 
+												} 
+											} 
+										} 
+									);
+								} else {
+									g.bill_list.append( 
+										{ 
+											'retrieve_id' : r, 
+											'row' : { 
+												'my' : {} 
+											} 
+										} 
+									);
+								}
 							}
 						}
 			
@@ -186,9 +206,11 @@
                     var id = params.retrieve_id;
 					var row = params.row;
 					if (id) {
-						var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),id]);
 						if (typeof row.my == 'undefined') row.my = {};
-						row.my.mbts = mbts_obj;
+						if ( typeof row.my.mbts == 'undefined' ) {
+							var mbts_obj = g.network.simple_request('FM_MBTS_RETRIEVE',[ses(),id]);
+							row.my.mbts = mbts_obj;
+						}
 					}
 					if (typeof params.on_retrieve == 'function') {
 						params.on_retrieve(row);
