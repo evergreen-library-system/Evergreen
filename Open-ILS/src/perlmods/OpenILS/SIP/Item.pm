@@ -97,11 +97,13 @@ sub run_attr_script {
 	$runner->load($item_config_script);
 
 	unless( $self->{item_config_result} = $runner->run ) {
+		$runner->cleanup;
 		warn "Item config script [$path : $item_config_script] failed to run: $@\n";
 		syslog('LOG_ERR', "OILS: Item config script [$path : $item_config_script] failed to run: $@");
 		return undef;
 	}
 
+	$runner->cleanup;
 	return 1;
 }
 
