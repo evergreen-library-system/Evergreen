@@ -138,7 +138,7 @@ patron.summary.prototype = {
 										}
 										var sum = 0;
 										for (var i = 0; i < list.length; i++) {
-											var robj = obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),list[i]]);
+											var robj = typeof list[i] == 'object' ? list[i] : obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),list[i]]);
 											sum += robj.balance_owed();
 										}
 										JSAN.use('util.money');
