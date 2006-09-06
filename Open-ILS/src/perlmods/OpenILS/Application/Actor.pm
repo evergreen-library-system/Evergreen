@@ -1806,7 +1806,7 @@ sub _user_transaction_history {
 =cut
 
 sub _make_mbts {
-	my @xacts = shift;
+	my @xacts = @_;
 
 	my @mbts;
 	for my $x (@xacts) {
