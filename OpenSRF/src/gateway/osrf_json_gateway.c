@@ -6,6 +6,7 @@
 #include "objson/json2xml.h"
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <unistd.h>
 
 
 #define MODULE_NAME "osrf_json_gateway_module"
@@ -88,7 +89,8 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	if( !bootstrapped || !osrf_system_get_transport_client()) {
 		ap_log_rerror( APLOG_MARK, APLOG_ERR, 0, r, "Cannot process request "
 				"because the OpenSRF JSON gateway has not been bootstrapped...");
-		return HTTP_INTERNAL_SERVER_ERROR;
+		usleep( 100000 ); /* 100 milliseconds */
+		exit(1);
 	}
 
 	osrfLogSetAppname("osrf_json_gw");
@@ -170,7 +172,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 			osrfLogError(OSRF_LOG_MARK, "I am unable to communcate with opensrf..going away...");
 			/* we don't want to spawn an intense re-forking storm 
 			 * if there is no jabber server.. so give it some time before we die */
-			sleep(1); 
+			usleep( 100000 ); /* 100 milliseconds */
 			exit(1);
 		}
 
