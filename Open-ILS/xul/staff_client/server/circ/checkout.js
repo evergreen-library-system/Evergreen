@@ -406,8 +406,8 @@ circ.checkout.prototype = {
 						7003 /* COPY_CIRC_NOT_ALLOWED */,
 						7004 /* COPY_NOT_AVAILABLE */, 
 						7006 /* COPY_IS_REFERENCE */, 
-						7007 /* COPY_NEEDED_FOR_HOLD */, 
 						7010 /* COPY_ALERT_MESSAGE */,
+						7016 /* ITEM_ON_HOLDS_SHELF */,
 						7013 /* PATRON_EXCEEDS_FINES */,
 					],
 					'text' : {
@@ -534,10 +534,6 @@ circ.checkout.prototype = {
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
 						break;
-						case 7007 /* COPY_NEEDED_FOR_HOLD */ :
-							msg += test_permit[i].desc + '\n';
-							found_handled = true;
-						break;
 						case 7009 /* CIRC_CLAIMS_RETURNED */ :
 							msg += test_permit[i].desc + '\n';
 							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
@@ -545,6 +541,10 @@ circ.checkout.prototype = {
 						break;
 						case 7010 /* COPY_ALERT_MESSAGE */ :
 							msg += test_permit[i].desc + '\n' + 'Alert Message = ' + test_permit[i].payload + '\n';
+							found_handled = true;
+						break;
+						case 7016 /* ITEM_ON_HOLDS_SHELF */ :
+							msg += test_permit[i].desc + '\n';
 							found_handled = true;
 						break;
 						case 1202 /* ITEM_NOT_CATALOGED */ :

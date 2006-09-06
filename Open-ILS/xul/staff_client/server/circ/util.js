@@ -1222,6 +1222,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 					7006 /* COPY_IS_REFERENCE */,
 					7007 /* COPY_NEEDED_FOR_HOLD */,
 					7008 /* MAX_RENEWALS_REACHED */, 
+					7009 /* CIRC_CLAIMS_RETURNED */, 
 					7010 /* COPY_ALERT_MESSAGE */,
 					7013 /* PATRON_EXCEEDS_FINES */,
 				],
@@ -1237,6 +1238,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 					'7006' : function(r) { return 'Barcode: ' + barcode; },
 					'7007' : function(r) { return 'Barcode: ' + barcode; },
 					'7008' : function(r) { return 'Barcode: ' + barcode; },
+					'7009' : function(r) { return 'Barcode: ' + barcode; },
 					'7010' : function(r) {
 						return 'Barcode: ' + barcode + ' Message: ' + r.payload;
 					},
@@ -1258,6 +1260,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 				case 7006 /* COPY_IS_REFERENCE */ : break;
 				case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
 				case 7008 /* MAX_RENEWALS_REACHED */ : break; 
+				case 7009 /* CIRC_CLAIMS_RETURNED */ : break; 
 				case 7010 /* COPY_ALERT_MESSAGE */ : break;
 				case 7013 /* PATRON_EXCEEDS_FINES */ : break;
 				default:
