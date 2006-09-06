@@ -20,10 +20,10 @@ function init() {
 	if( getLocation() == null && getOrigLocation() == null )
 		LOCATION = globalOrgTree.id();
 
-	/*
-	if( getLocation() != null && getOrigLocation() == null )
-		ORIGLOC = getLocation();
-		*/
+	/* if they click on the home page and the origlocation is set
+		take the opac back to the origlocation */
+	if( findCurrentPage() == HOME && getOrigLocation() != null )
+		LOCATION = getOrigLocation();
 
 	if(getDepth() == null) DEPTH = findOrgDepth(getLocation());
 
