@@ -555,9 +555,6 @@ sub fetch_mbts {
 	) };
 
 	my ($sum) = _make_mbts(@xacts);
-
-	$sum = $U->cstorereq(
-		'open-ils.cstore.direct.money.billable_transaction_summary.retrieve', $id );
 	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
 
 	my ($reqr, $evt) = $U->checkses($authtoken);
