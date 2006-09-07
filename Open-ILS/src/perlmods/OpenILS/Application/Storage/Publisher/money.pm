@@ -188,6 +188,7 @@ SELECT  *
                 AND p.payment_ts < '$enddate'::TIMESTAMPTZ + INTERVAL '1 day'
                 AND p.voided IS FALSE
                 AND au.home_ou = $lib
+		AND p.payment_type IN ('credit_payment','forgive_payment','work_payment')
          GROUP BY 1, 2
          ORDER BY 1,2
         \$\$) AS X(
