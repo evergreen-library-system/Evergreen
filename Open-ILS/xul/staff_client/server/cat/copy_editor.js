@@ -565,7 +565,8 @@ g.panes_and_field_names = {
 		"Circulation Library",		
 		{ 	
 			render: 'typeof fm.circ_lib() == "object" ? fm.circ_lib().shortname() : g.data.hash.aou[ fm.circ_lib() ].shortname()',
-			input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			//input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( util.functional.filter_list(g.data.list.my_aou, function(obj) { return g.data.hash.aout[ obj.ou_type() ].can_have_vols(); }), function(obj) { return [ obj.shortname(), obj.id() ]; }).sort() ); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("circ_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.aou, function(obj) { var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ obj.name() ? sname + " " + obj.name() : obj.shortname(), obj.id(), ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_vols() ) ), ( g.data.hash.aout[ obj.ou_type() ].depth() * 2), ]; }), g.data.list.au[0].ws_ou()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		} 
 	],
 	[
