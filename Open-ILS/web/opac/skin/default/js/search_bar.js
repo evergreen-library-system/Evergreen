@@ -53,7 +53,7 @@ function searchBarSubmit() {
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();
 	if(isNaN(d)) d = 0;
 
-	text = text.replace(/'/,'');
+	//text = text.replace(/'/,'');
 
 	var args = {};
 

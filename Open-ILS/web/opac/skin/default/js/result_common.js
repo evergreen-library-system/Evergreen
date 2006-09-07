@@ -45,7 +45,7 @@ function resultCollectSearchIds( type, method, handler ) {
 		args.searches[getStype()] = {};
 		var term = getTerm();
 		if( term ) {
-			term = term.replace(/'/,'');
+			term = term.replace(/'/,' ');
 			args.searches[getStype()].term = term;
 		}
 
