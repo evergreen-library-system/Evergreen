@@ -193,11 +193,16 @@ sub update_patron {
 	my $session = $apputils->start_db_session();
 	my $err = undef;
 
+
 	$logger->info("Creating new patron...") if $patron->isnew; 
 	$logger->info("Updating Patron: " . $patron->id) unless $patron->isnew;
 
 	my( $user_obj, $evt ) = $U->checkses($user_session);
 	return $evt if $evt;
+
+	$evt = check_group_perm($session, $user_obj, $patron);
+	return $evt if $evt;
+
 
 	# XXX does this user have permission to add/create users.  Granularity?
 	# $new_patron is the patron in progress.  $patron is the original patron
@@ -332,6 +337,53 @@ sub _add_patron {
 	return ( $session->request( 
 		"open-ils.storage.direct.actor.user.retrieve", $id)->gather(1), undef );
 }
+
+
+sub check_group_perm {
+	my( $session, $requestor, $patron ) = @_;
+	my $evt;
+
+	# first let's see if the requestor has 
+	# priveleges to update this user in any way
+	if( ! $patron->isnew ) {
+		my $p = $session->request(
+			'open-ils.storage.direct.actor.user.retrieve', $patron->id )->gather(1);
+		$evt = group_perm_failed($session, $requestor, $p);
+		return $evt if $evt;
+	}
+
+	# They are allowed to edit this patron.. can they put the 
+	# patron into the group requested?
+	$evt = group_perm_failed($session, $requestor, $patron);
+	return $evt if $evt;
+	return undef;
+}
+
+
+sub group_perm_failed {
+	my( $session, $requestor, $patron ) = @_;
+
+	my $perm;
+	my $grp;
+	my $grpid = $patron->profile;
+
+	do {
+
+		$logger->debug("user update looking for group perm for group $grpid");
+		$grp = $session->request(
+			'open-ils.storage.direct.permission.grp_tree.retrieve', $grpid )->gather(1);
+		return OpenILS::Event->new('PERMISSION_GRP_TREE_NOT_FOUND') unless $grp;
+
+	} while( !($perm = $grp->application_perm) and ($grpid = $grp->parent) );
+
+	$logger->info("user update checking perm $perm on user ".
+		$requestor->id." for update/create on user username=".$patron->usrname);
+
+	my $evt = $U->check_perms($requestor->id, $patron->home_ou, $perm);
+	return $evt if $evt;
+	return undef;
+}
+
 
 
 sub _update_patron {
