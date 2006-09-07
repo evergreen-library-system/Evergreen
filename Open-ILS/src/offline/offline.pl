@@ -54,12 +54,15 @@ my $evt;
 # this is moved to mod_perl
 # --------------------------------------------------------------------
 sub ol_init {
-	#_ol_debug_params();
-	#$DB->DBFile($config{db});
 	$DB->DBFile($config{dsn}, $config{usr}, $config{pw});
+	ol_connect();
+}
+
+sub ol_connect {
 	OpenSRF::System->bootstrap_client(config_file => $bootstrap ); 
 	Fieldmapper->import(IDL => 
 		OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
 }
 
 
@@ -518,20 +521,37 @@ sub ol_process_commands {
 		my $t		= $d->{type};
 		my $last = ($x++ == scalar(@$commands) - 1) ? 1 : 0;
 		my $res	= { command => $d };
+		my $err;
 
-		try {
-			$res->{event} = ol_handle_checkin($d)	if $t eq 'checkin';
-			$res->{event} = ol_handle_inhouse($d)	if $t eq 'in_house_use';
-			$res->{event} = ol_handle_checkout($d) if $t eq 'checkout';
-			$res->{event} = ol_handle_renew($d)		if $t eq 'renew';
-			$res->{event} = ol_handle_register($d) if $t eq 'register';
+		while( 1 ) {
 
-		} catch Error with {
-			my $e = shift;
-			$res->{event} = OpenILS::Event->new(
-				'INTERNAL_SERVER_ERROR', debug => "$e");
-		};
+			$err = undef;
+			$logger->debug("offline: top of execute loop : $t");
 
+			try {
+				$res->{event} = ol_handle_checkin($d)	if $t eq 'checkin';
+				$res->{event} = ol_handle_inhouse($d)	if $t eq 'in_house_use';
+				$res->{event} = ol_handle_checkout($d) if $t eq 'checkout';
+				$res->{event} = ol_handle_renew($d)		if $t eq 'renew';
+				$res->{event} = ol_handle_register($d) if $t eq 'register';
+	
+			} catch Error with { $err = shift; };
+
+			if( $err ) {
+
+				if( ref($err) eq 'OpenSRF::EX::JabberDisconnected' ) {
+					$logger->error("offline: we lost jabber .. trying to reconnect");
+					ol_connect();
+
+				} else {
+					$res->{event} = OpenILS::Event->new('INTERNAL_SERVER_ERROR', debug => "$err");
+					last;
+				}
+
+			} else { last; }
+
+			sleep(1);
+		}
 
 		ol_append_result($res, $last);
 		$session->num_complete( $session->num_complete + 1 );
@@ -558,6 +578,11 @@ sub ol_handle_inhouse {
 
 	$logger->activity("offline: in_house_use : requestor=". $requestor->id.", realtime=$realtime, ".  
 		"workstation=$ws, barcode=$barcode, count=$count, use_time=$use_time");
+
+	if( $count > 99 ) {
+		return OpenILS::Event->new(
+			'INTERNAL_SERVER_ERROR', payload => 'TOO MANY IN HOUSE USE');
+	}
 
 	my $ids = $U->simplereq(
 		'open-ils.circ', 
@@ -614,6 +639,12 @@ sub ol_circ_args_from_command {
 sub ol_handle_checkout {
 	my $command	= shift;
 	my $args = ol_circ_args_from_command($command);
+
+	if( $args->{noncat} and $args->{noncat_count} > 99 ) {
+		return OpenILS::Event->new(
+			'INTERNAL_SERVER_ERROR', payload => 'TOO MANY NON CATS');
+	}
+
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.checkout', $authtoken, $args );
 }
