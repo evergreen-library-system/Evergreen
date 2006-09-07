@@ -1516,7 +1516,7 @@ sub checkin_handle_backdate {
 
 	my $bills = $self->editor->search_money_billing(
 		{ 
-			billing_ts => { '>=' => $self->backdate }, 
+			billing_ts => { '>=' => $self->backdate . 'T23:59:59' }, 
 			xact => $self->circ->id, 
 			billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
 		}
@@ -1542,7 +1542,7 @@ sub _checkin_handle_backdate {
 
    my $bills = $session->request(
       "open-ils.storage.direct.money.billing.search_where.atomic",
-		billing_ts => { '>=' => $backdate }, 
+		billing_ts => { '>=' => $backdate . 'T23:59:59' }, 
 		xact => $circ->id,
 		billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
 	)->gather(1);

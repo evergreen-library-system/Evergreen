@@ -543,8 +543,8 @@ sub generate_fines {
 				#$last_fine += $fine_interval * $grace;
 			}
 	
-			my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ) - 1; 
-			if ($pending_fine_count < 1) {
+			my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
+			if ($pending_fine_count < 1 + $grace) {
 				$client->respond( "\tNo fines to create.  " );
 				if ($grace && $now < $due + $fine_interval * $grace) {
 					$client->respond( "Still inside grace period of: ". seconds_to_interval( $fine_interval * $grace)."\n" );
