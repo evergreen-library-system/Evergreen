@@ -126,12 +126,17 @@ sub complete_reshelving {
 	my $sql = <<"	SQL";
 		UPDATE	$cp
 		  SET	status = 0
-		  WHERE	id IN ( SELECT	cp.id
+		  WHERE	id IN
+		  	( SELECT id FROM (
+		  		SELECT	cp.id, MAX(circ.checkin_time)
 				  FROM	$cp cp
 				  	JOIN $circ circ ON (circ.target_copy = cp.id)
 				  WHERE	circ.checkin_time IS NOT NULL
-				  	AND circ.checkin_time < NOW() - CAST(? AS INTERVAL)
-					AND cp.status = 7 )
+					AND cp.status = 7
+				  GROUP BY 1
+				  	HAVING MAX(circ.checkin_time) < NOW() - CAST(? AS INTERVAL)
+			) AS foo
+		)
 	SQL
 
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
