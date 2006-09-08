@@ -1253,20 +1253,7 @@ sub uber_hold {
 	my $card = $e->retrieve_actor_card($user->card)
 		or return $e->event;
 
-	my $copy;
-	my $volume;
-	my $mvr;
-
-	if( $copy = $hold->current_copy ) {
-		$hold->current_copy($copy->id);
-		$copy = $e->retrieve_asset_copy($hold->current_copy)
-			or return $e->event;
-		$volume = $e->retrieve_asset_call_number($copy->call_number)
-			or return $e->event;
-		my $t = $e->retrieve_biblio_record_entry($volume->record)
-			or return $e->event;
-		$mvr = $U->record_to_mvr($t);
-	}
+	my( $mvr, $volume, $copy ) = find_hold_mvr($e, $hold);
 
 	flesh_hold_notices([$hold], $e);
 	flesh_hold_transits([$hold]);
@@ -1281,7 +1268,53 @@ sub uber_hold {
 		patron_last  => $user->family_name,
 		patron_barcode => $card->barcode,
 	};
+}
 
+
+
+# -----------------------------------------------------
+# Returns the MVR object that represents what the
+# hold is all about
+# -----------------------------------------------------
+sub find_hold_mvr {
+	my( $e, $hold ) = @_;
+
+	my $tid;
+	my $copy;
+	my $volume;
+
+	if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
+		my $mr = $e->retrieve_metabib_metarecord($hold->target)
+			or return $e->event;
+		$tid = $mr->master_record;
+
+	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_TITLE ) {
+		$tid = $hold->target;
+
+	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_VOLUME ) {
+		$volume = $e->retrieve_asset_call_number($hold->target)
+			or return $e->event;
+		$tid = $volume->record;
+
+	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
+		$copy = $e->retrieve_asset_copy($hold->target)
+			or return $e->event;
+		$volume = $e->retrieve_asset_call_number($copy->call_number)
+			or return $e->event;
+		$tid = $volume->record;
+	}
+
+	if(!$copy and ref $hold->current_copy ) {
+		$copy = $hold->current_copy;
+		$hold->current_copy($copy->id);
+	}
+
+	if(!$volume and $copy) {
+		$volume = $e->retrieve_asset_call_number($copy->call_number);
+	}
+
+	my $title = $e->retrieve_biblio_record_entry($tid);
+	return ( $U->record_to_mvr($title), $volume, $copy );
 }
 
 
