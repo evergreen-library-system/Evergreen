@@ -1875,7 +1875,8 @@ sub _make_mbts {
 				$s->last_billing_type($b->billing_type);
 			}
 		}
-		$s->total_owed( sprintf('%0.2f', $to / 100 );
+
+		$s->total_owed( sprintf('%0.2f', $to / 100 ) );
 
 		my $tp = 0;
 		my $lp = undef;
@@ -1890,9 +1891,9 @@ sub _make_mbts {
 				$s->last_payment_type($p->payment_type);
 			}
 		}
-		$s->total_paid( sprintf('%0.2f', $tp / 100 );
+		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
 
-		$s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100);
+		$s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100) );
 
 		$s->xact_type( 'grocery' ) if ($x->grocery);
 		$s->xact_type( 'circulation' ) if ($x->circulation);
