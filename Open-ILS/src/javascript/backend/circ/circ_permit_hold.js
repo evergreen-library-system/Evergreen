@@ -26,7 +26,7 @@ var marcItemType = getMARCItemType();
 if( ( marcItemType == 'g' || 
 		marcItemType == 'i' || 
 		marcItemType == 'j' || 
-		mod == 'softwarelong' || 
+		mod == 'softwrlong' || 
 		mod == 'music' || 
 		mod == 'audiobook' || 
 		mod == 'av' || 
