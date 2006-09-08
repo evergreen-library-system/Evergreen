@@ -72,7 +72,7 @@ log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + resu
 
 function checkStaff() {
 	log_debug("Checking to see if patron is staff: profile = "+patronProfile);
-	if( isGroupDescendant('Staff', patronProfile) ) {
+	if( isGroupDescendant('Staff', patronProfile) || isGroupDescendant('Outreach', patronProfile) ) {
 		result.recurringFinesRule	= "staff";
 		result.maxFine					= "staff";
 	}
