@@ -1549,9 +1549,13 @@ sub checkin_handle_circ {
 sub checkin_handle_backdate {
 	my $self = shift;
 
+	my $bd = $self->backdate;
+	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
+	$bd = "${bd}T23:59:59";
+
 	my $bills = $self->editor->search_money_billing(
 		{ 
-			billing_ts => { '>=' => $self->backdate . 'T23:59:59' }, 
+			billing_ts => { '>=' => $bd }, 
 			xact => $self->circ->id, 
 			billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
 		}
@@ -1575,9 +1579,14 @@ sub checkin_handle_backdate {
 sub _checkin_handle_backdate {
    my( $backdate, $circ, $requestor, $session, $closecirc ) = @_;
 
+	my $bd = $backdate;
+	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
+	$bd = "${bd}T23:59:59";
+
+
    my $bills = $session->request(
       "open-ils.storage.direct.money.billing.search_where.atomic",
-		billing_ts => { '>=' => $backdate . 'T23:59:59' }, 
+		billing_ts => { '>=' => $bd }, 
 		xact => $circ->id,
 		billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
 	)->gather(1);
