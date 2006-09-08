@@ -504,7 +504,13 @@ char* jsonObjectToJSON( const jsonObject* obj ) {
 			while( (tmp = jsonObjectIteratorNext(itr)) ) {
 
 				buffer_add(buf, "\"");
-				buffer_add(buf, tmp->key);
+
+				char* key = tmp->key;
+				int len = strlen(key);
+				char* output = uescape(key, len, 1);
+				buffer_add(buf, output);
+				free(output);
+
 				buffer_add(buf, "\":");
 				char* data =  jsonObjectToJSON(tmp->item);
 
