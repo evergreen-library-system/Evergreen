@@ -348,6 +348,15 @@ sub check_group_perm {
 	if( ! $patron->isnew ) {
 		my $p = $session->request(
 			'open-ils.storage.direct.actor.user.retrieve', $patron->id )->gather(1);
+
+		# If we are the requestor (trying to update our own account)
+		# and we are not trying to change our profile, we're good
+		if( $p->id == $requestor->id and 
+				$p->profile == $patron->profile ) {
+			return undef;
+		}
+
+
 		$evt = group_perm_failed($session, $requestor, $p);
 		return $evt if $evt;
 	}
