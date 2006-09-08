@@ -523,6 +523,8 @@ sub check_captured_holds {
    my $copy    = $self->copy;
    my $patron  = $self->patron;
 
+	return undef unless $copy;
+
 	my $s = $U->copy_status($copy->status)->id;
 	return unless $s == OILS_COPY_STATUS_ON_HOLDS_SHELF;
 	$logger->info("circulator: copy is on holds shelf, searching for the correct hold");
