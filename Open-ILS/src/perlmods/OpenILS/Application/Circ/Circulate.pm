@@ -490,6 +490,8 @@ sub do_permit {
 			unless( $self->editor->allowed('VIEW_PERMIT_CHECKOUT') );
 	}
 
+
+	$self->check_captured_holds();
 	$self->do_copy_checks();
 	return if $self->bail_out;
 	$self->run_patron_permit_scripts();
@@ -509,6 +511,38 @@ sub do_permit {
       OpenILS::Event->new(
 			'SUCCESS', 
 			payload => $self->mk_permit_key));
+}
+
+
+sub check_captured_holds {
+   my $self    = shift;
+   my $copy    = $self->copy;
+   my $patron  = $self->patron;
+
+	my $s = $U->copy_status($copy->status)->id;
+	return unless $s == OILS_COPY_STATUS_ON_HOLDS_SHELF;
+	$logger->info("circulator: copy is on holds shelf, searching for the correct hold");
+
+	# Item is on the holds shelf, make sure it's going to the right person
+	my $holds	= $self->editor->search_action_hold_request(
+		[
+			{ 
+				current_copy		=> $copy->id , 
+				capture_time		=> { '!=' => undef },
+				cancel_time			=> undef, 
+				fulfillment_time	=> undef 
+			},
+			{ limit => 1 }
+		]
+	);
+
+	if( $holds and $$holds[0] ) {
+		return undef if $$holds[0]->usr == $patron->id;
+	}
+
+	$logger->info("circulator: this copy is needed by a different patron to fulfill a hold");
+
+	$self->push_events(OpenILS::Event->new('ITEM_ON_HOLDS_SHELF'));
 }
 
 
@@ -1478,7 +1512,8 @@ sub checkin_handle_circ {
    if(!$circ->stop_fines) {
       $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
       $circ->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
-      $circ->stop_fines_time('now');
+      $circ->stop_fines_time('now') unless $self->backdate;
+      $circ->stop_fines_time($self->backdate) if $self->backdate;
    }
 
    # see if there are any fines owed on this circ.  if not, close it
