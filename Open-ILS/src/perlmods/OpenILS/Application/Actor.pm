@@ -1862,11 +1862,11 @@ sub _make_mbts {
 		$s->xact_start( $x->xact_start );
 		$s->xact_finish( $x->xact_finish );
 
-		my $to = 0.0;
+		my $to = 0;
 		my $lb = undef;
 		for my $b (@{ $x->billings }) {
 			next if ($U->is_true($b->voided));
-			$to += $b->amount;
+			$to += int($b->amount * 100);
 			$lb ||= $b->billing_ts;
 			if ($b->billing_ts ge $lb) {
 				$lb = $b->billing_ts;
@@ -1875,13 +1875,13 @@ sub _make_mbts {
 				$s->last_billing_type($b->billing_type);
 			}
 		}
-		$s->total_owed( $to );
+		$s->total_owed( sprintf('%0.2f', $to / 100 );
 
-		my $tp = 0.0;
+		my $tp = 0;
 		my $lp = undef;
 		for my $p (@{ $x->payments }) {
 			next if ($U->is_true($p->voided));
-			$tp += $p->amount;
+			$tp += int($p->amount * 100);
 			$lp ||= $p->payment_ts;
 			if ($p->payment_ts ge $lp) {
 				$lp = $p->payment_ts;
@@ -1890,9 +1890,9 @@ sub _make_mbts {
 				$s->last_payment_type($p->payment_type);
 			}
 		}
-		$s->total_paid( $tp );
+		$s->total_paid( sprintf('%0.2f', $tp / 100 );
 
-		$s->balance_owed( $s->total_owed - $s->total_paid );
+		$s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100);
 
 		$s->xact_type( 'grocery' ) if ($x->grocery);
 		$s->xact_type( 'circulation' ) if ($x->circulation);
