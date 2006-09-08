@@ -456,6 +456,10 @@ sub mk_script_runner {
 
 	$self->is_precat(1) if $self->copy and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
 
+	# We can't renew if there is no copy
+	return $self->bail_on_events(@evts) if 
+		$self->is_renewal and !$self->copy;
+
 	# Set some circ-specific flags in the script environment
 	my $evt = "environment";
 	$self->script_runner->insert("$evt.isRenewal", ($self->is_renewal) ? 1 : undef);
