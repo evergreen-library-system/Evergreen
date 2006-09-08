@@ -21,7 +21,13 @@ log_info("circ-modifier = "+mod);
 if( mod == 'bestsellernh' )
 	result.events.push('ITEM_NOT_HOLDABLE');
 
-if( ( getMARCItemType() == 'g' || 
+var marcItemType = getMARCItemType();
+
+if( ( marcItemType == 'g' || 
+		marcItemType == 'i' || 
+		marcItemType == 'j' || 
+		mod == 'softwarelong' || 
+		mod == 'music' || 
 		mod == 'audiobook' || 
 		mod == 'av' || 
 		mod == 'cd' || 
