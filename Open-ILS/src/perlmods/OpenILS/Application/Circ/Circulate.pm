@@ -38,7 +38,7 @@ sub initialize {
 	$script_libs = $lb;
 
 	$logger->debug(
-		"Loaded rules scripts for circ: " .
+		"circulator: Loaded rules scripts for circ: " .
 		"circ permit patron = $p, ".
 		"circ permit copy = $c, ".
 		"circ duration = $d, ".
@@ -179,7 +179,7 @@ sub run_method {
 		my @e = @{$circulator->events};
 		push( @ee, $_->{textcode} ) for @e;
 		$logger->info("circulator: bailing out with events: @ee");
-		$circulator->editor->xact_rollback;
+		$circulator->editor->rollback;
 
 	} else {
 		$circulator->editor->commit;
@@ -327,7 +327,7 @@ sub AUTOLOAD {
 	$name =~ s/.*://o;   
 
 	unless (grep { $_ eq $name } @AUTOLOAD_FIELDS) {
-		$logger->error("$type: invalid autoload field: $name");
+		$logger->error("circulator: $type: invalid autoload field: $name");
 		die "$type: invalid autoload field: $name\n" 
 	}
 
@@ -438,7 +438,7 @@ sub mk_script_runner {
 
 	my @evts = @{$args->{_events}} if $args->{_events};
 
-	$logger->debug("script builder returned events: : @evts") if @evts;
+	$logger->debug("circulator: script builder returned events: : @evts") if @evts;
 
 
 	if(@evts) {
@@ -1056,7 +1056,7 @@ sub apply_modified_due_date {
 
 		my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
 
-      $logger->info("circ searching for closed date overlap on lib $org".
+      $logger->info("circulator: circ searching for closed date overlap on lib $org".
 			" with an item due date of ".$circ->due_date );
 
       my $dateinfo = $U->storagereq(
@@ -1064,7 +1064,7 @@ sub apply_modified_due_date {
 			$org, $circ->due_date );
 
       if($dateinfo) {
-         $logger->info("$dateinfo : circ due data / close date overlap found : due_date=".
+         $logger->info("circulator: $dateinfo : circ due data / close date overlap found : due_date=".
             $circ->due_date." start=". $dateinfo->{start}.", end=".$dateinfo->{end});
 
             # XXX make the behavior more dynamic
@@ -1094,7 +1094,7 @@ sub make_precat_copy {
 	my $copy = $self->copy;
 
    if($copy) {
-      $logger->debug("Pre-cat copy already exists in checkout: ID=" . $copy->id);
+      $logger->debug("ciculator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
 
       $copy->editor($self->editor->requestor->id);
       $copy->edit_date('now');
@@ -1142,7 +1142,7 @@ sub checkout_noncat {
    my $count 	= $self->noncat_count || 1;
    my $cotime 	= clense_ISO8601($self->checkout_time) || "";
 
-   $logger->info("circ creating $count noncat circs with checkout time $cotime");
+   $logger->info("ciculator: circ creating $count noncat circs with checkout time $cotime");
 
    for(1..$count) {
 
@@ -1168,9 +1168,27 @@ sub do_checkin {
 	my $self = shift;
 	$self->log_me("do_checkin()");
 
+
 	return $self->bail_on_events(
 		OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
 		unless $self->copy;
+
+	# if we're on the holds shelf, do nothing
+#	if( $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
+#		$logger->info("circulator: copy is already on the holds shelf at checkin, doing nothing: ".$self->copy->barcode);
+#		$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
+#		$self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
+#		$self->checkin_flesh_events;
+#		return;
+#	}
+
+
+	if( $self->checkin_check_holds_shelf() ) {
+		$self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
+		$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
+		$self->checkin_flesh_events;
+		return;
+	}
 
 	unless( $self->is_renewal ) {
 		return $self->bail_on_events($self->editor->event)
@@ -1262,12 +1280,13 @@ sub do_checkin {
 
       } else {
 
+			my $bc = $self->copy->barcode;
+			$logger->info("circulator: copy $bc at a remote lib  - sending home");
 			$self->checkin_build_copy_transit();
 			return if $self->bail_out;
 			$self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
       }
    }
-
 
 	$self->reshelve_copy;
 	return if $self->bail_out;
@@ -1307,6 +1326,53 @@ sub reshelve_copy {
 			$self->update_copy;
 			$self->checkin_changed(1);
 	}
+}
+
+
+# Returns true if the item is at the current location
+# because it was transited there for a hold and the 
+# hold has not been fulfilled
+sub checkin_check_holds_shelf {
+	my $self = shift;
+	return 0 unless $self->copy;
+
+	return 0 unless 
+		$U->copy_status($self->copy->status)->id ==
+			OILS_COPY_STATUS_ON_HOLDS_SHELF;
+
+	# If we're on the holds shelf at our lib
+	return 1 if $self->copy->circ_lib == $self->editor->requestor->ws_ou;
+
+	# Otherwise, find the hold that put us on the holds shelf
+	my $holds = $self->editor->search_action_hold_request(
+		{ 
+			current_copy => $self->copy->id,
+			capture_time => { '!=' => undef },
+			fulfillment_time => undef,
+			cancel_time => undef,
+		}, { idlist => 1 }
+	);
+
+	return 0 unless @$holds;
+
+	$logger->info("circulator: we found a captured, un-fulfilled hold [".
+		$$holds[0]. "] for copy ".$self->copy->barcode);
+
+	# Then find the transit that got us here
+	my $transits = $self->editor->search_action_hold_transit_copy(
+		{ 
+			hold => $$holds[0], 
+			dest => $self->editor->requestor->ws_ou,
+			dest_recv_time => { '!=' => undef }
+		}, { idlist =>1 }
+	);
+
+	return 0 unless @$transits;
+
+	$logger->info("circulator: we found a hold transit [".$$transits[0]."] for ".
+		$self->copy->barcode. " which puts the copy here.. not transiting home");
+
+	return 1;
 }
 
 
@@ -1414,14 +1480,14 @@ sub do_hold_notify {
 
 	if(!$notifier->event) {
 
-		$logger->info("attempt at sending hold notification for hold $holdid");
+		$logger->info("ciculator: attempt at sending hold notification for hold $holdid");
 
 		my $stat = $notifier->send_email_notify;
-		$logger->info("hold notify succeeded for hold $holdid") if $stat eq '1';
-		$logger->warn(" * hold notify failed for hold $holdid") if $stat ne '1';
+		$logger->info("ciculator: hold notify succeeded for hold $holdid") if $stat eq '1';
+		$logger->warn("ciculator:  * hold notify failed for hold $holdid") if $stat ne '1';
 
 	} else {
-		$logger->info("Not sending hold notification since the patron has no email address");
+		$logger->info("ciculator: Not sending hold notification since the patron has no email address");
 	}
 }
 
@@ -1479,7 +1545,7 @@ sub process_received_transit {
 
 	my $hold_transit = $self->editor->retrieve_action_hold_transit_copy($transit->id);
 
-   $logger->info("Recovering original copy status in transit: ".$transit->copy_status);
+   $logger->info("ciculator: Recovering original copy status in transit: ".$transit->copy_status);
    $copy->status( $transit->copy_status );
 	$self->update_copy();
 	return if $self->bail_out;
@@ -1773,7 +1839,7 @@ sub run_renew_permit {
 		throw OpenSRF::EX::ERROR ("Circ Permit Renew Script Died: $@");
    my $events = $result->{events};
 
-   $logger->activity("circ_permit_renew for user ".
+   $logger->activity("ciculator: circ_permit_renew for user ".
       $self->patron->id." returned events: @$events") if @$events;
 
 	$self->push_events(OpenILS::Event->new($_)) for @$events;
