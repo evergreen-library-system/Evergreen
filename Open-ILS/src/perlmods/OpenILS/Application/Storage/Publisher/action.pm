@@ -592,19 +592,20 @@ sub generate_fines {
 				$current_fine_total += $recuring_fine;
 				$latest_amount += $recuring_fine;
 				$latest_billing_ts = $timestamptz;
-	
-				$client->respond( "\t\tAdding aggregate fine of ".$c->recuring_fine." for period starting ".$$timestamptz."\n" );
+
+				money::billing->create(
+					{ xact		=> ''.$c->id,
+					  note		=> "System Generated Overdue Fine",
+					  billing_type	=> "Overdue materials",
+					  amount	=> sprintf('%0.2f', $recuring_fine/100),
+					  billing_ts	=> $timestamptz,
+					}
+				);
+
 			}
 
-			money::billing->create(
-				{ xact		=> ''.$c->id,
-				  note		=> "System Generated Overdue Fine",
-				  billing_type	=> "Overdue materials",
-				  amount	=> sprintf('%0.2f', $latest_amount/100),
-				  billing_ts	=> $latest_billing_ts,
-				}
-			) if ($latest_billing_ts and $latest_amount);
-
+			$client->respond( "\t\tAdding fines totaling $latest_amount for overdue up to $latest_billing_ts\n" )
+				if ($latest_billing_ts and $latest_amount);
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
 
