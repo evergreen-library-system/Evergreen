@@ -48,7 +48,7 @@ char* searchFieldTransformPredicate ( osrfHash*, jsonObjectNode* );
 char* searchBETWEENPredicate ( osrfHash*, jsonObject* );
 char* searchINPredicate ( osrfHash*, jsonObject* );
 char* searchPredicate ( osrfHash*, jsonObject* );
-char* buildSELECT ( jsonObject*, jsonObject*, osrfHash* );
+char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
@@ -1195,7 +1195,7 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 
 }
 
-char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta ) {
+char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
 	osrfHash* links = osrfHashGet(meta, "links");
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -1252,7 +1252,24 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
 		osrfHash* field = osrfHashGet( fields, node->key );
 
-		if (!field) continue;
+		if (!field) {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: Attempt to reference non-existant column %s on table %s",
+				MODULENAME,
+				node->key,
+				osrfHashGet(meta, "tablename")
+			);
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Severe query error -- see error log for more details"
+			);
+			buffer_free(sql_buf);
+			return NULL;
+		}
 
 		if (first) {
 			first = 0;
@@ -1323,7 +1340,11 @@ jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 	jsonObject* search_hash = jsonObjectGetIndex(params, 0);
 	jsonObject* order_hash = jsonObjectGetIndex(params, 1);
 
-	char* sql = buildSELECT( search_hash, order_hash, meta );
+	char* sql = buildSELECT( search_hash, order_hash, meta, ctx );
+	if (!sql) {
+		*err = -1;
+		return NULL;
+	}
 	
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
