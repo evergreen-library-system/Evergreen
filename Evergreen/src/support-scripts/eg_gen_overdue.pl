@@ -21,6 +21,7 @@ use Email::Send;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
 use Unicode::Normalize;
+use OpenILS::Const qw/:const/;
 
 
 my $bsconfig = shift || die "usage: $0 <bootstrap_config>\n";
@@ -81,18 +82,15 @@ sub print_notices {
 		my ($start, $end) = make_date_range($day + $goback);
 		$logger->debug("OD_notice: process date range $start -> $end");
 
-		my $circs = $e->search_action_circulation(
-			[
-				{
-					stop_fines => undef,
-					due_date => { between => [ $start, $end ] }
-				},
-				{
-					order_by => { circ => 'usr, circ_lib' }
-				}
-			],
-			{ idlist => 1 }
-		);
+		my $query = [
+			{
+				checkin_time => undef,
+				due_date => { between => [ $start, $end ] },
+				stop_fines => { '!=' => OILS_STOP_FINES_LOST }
+			},
+			{ order_by => { circ => 'usr, circ_lib' } }
+		];
+		my $circs = $e->search_action_circulation($query, {idlist=>1});
 
 		process_circs( $circs, "${day}day" );
 	}
@@ -150,6 +148,11 @@ sub make_date_range {
 sub print_notice {
 	my( $range, $circs ) = @_;
 	return unless @$circs;
+
+	# The first query strips LOST materials, let's also get rid of claims-returned materials
+	$circs = [ grep { $_->stop_fines ne OILS_STOP_FINES_CLAIMSRETURNED } @$circs ];
+	return unless @$circs;
+
 	my $org = $circs->[0]->circ_lib;
 	my $usr = $circs->[0]->usr;
 	$logger->debug("OD_notice: printing $range user:$usr org:$org");
@@ -205,7 +208,7 @@ sub fetch_patron_data {
 	my $ln = $patron->family_name;
 
 	my ( $s1, $s2, $city, $state, $zip );
-	my $baddr = $patron->billing_address || $patron->mailing_address;
+	my $baddr = $patron->mailing_address || $patron->billing_address;
 	if( $baddr ) {
 		$s1		= $baddr->street1;
 		$s2		= $baddr->street2;
