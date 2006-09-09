@@ -910,7 +910,7 @@ char* searchINPredicate (osrfHash* field, jsonObject* node, const char* op) {
 
 	if (!op) {
 		buffer_add(sql_buf, "IN (");
-	} else if ((strcmp(op,"=") || strcmp(op,"in")) || !(strcasecmp(op,"not in"))) {
+	} else if (!(strcasecmp(op,"not in"))) {
 		buffer_add(sql_buf, "NOT IN (");
 	} else {
 		buffer_add(sql_buf, "IN (");
@@ -1175,7 +1175,7 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 		while ( (pred_node = jsonObjectIteratorNext( pred_itr )) ) {
 			if ( !(strcasecmp( pred_node->key,"between" )) )
 				pred = searchBETWEENPredicate( field, pred_node->item );
-			else if ( !(strcasecmp( pred_node->key,"in" )) )
+			else if ( !(strcasecmp( pred_node->key,"in" )) || !(strcasecmp( pred_node->key,"not in" )) )
 				pred = searchINPredicate( field, pred_node->item, pred_node->key );
 			else if ( pred_node->item->type == JSON_ARRAY )
 				pred = searchFunctionPredicate( field, pred_node );
