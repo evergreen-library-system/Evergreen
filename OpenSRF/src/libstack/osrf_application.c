@@ -367,6 +367,13 @@ int __osrfAppRunSystemMethod(osrfMethodContext* ctx) {
 		return osrfAppIntrospect(ctx);
 	}
 
+	if(	!strcmp(ctx->method->name, OSRF_SYSMETHOD_ECHO ) ||
+			!strcmp(ctx->method->name, OSRF_SYSMETHOD_ECHO_ATOMIC )) {
+
+		return osrfAppEcho(ctx);
+	}
+
+
 	osrfAppRequestRespondException( ctx->session, 
 			ctx->request, "System method implementation not found");
 
@@ -427,4 +434,13 @@ int osrfAppIntrospectAll( osrfMethodContext* ctx ) {
 	return -1;
 }
 
+int osrfAppEcho( osrfMethodContext* ctx ) {
+	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+	int i;
+	for( i = 0; i < ctx->params->size; i++ ) {
+		jsonObject* str = jsonObjectGetIndex(ctx->params,i);
+		osrfAppRespond(ctx, str);
+	}
+	return 1;
+}
 

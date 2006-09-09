@@ -220,6 +220,7 @@ int osrfAppRespondComplete( osrfMethodContext* context, jsonObject* data );
 
 int osrfAppIntrospect( osrfMethodContext* ctx );
 int osrfAppIntrospectAll( osrfMethodContext* ctx );
+int osrfAppEcho( osrfMethodContext* ctx );
 
 
 /**
