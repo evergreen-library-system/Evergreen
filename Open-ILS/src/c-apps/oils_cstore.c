@@ -46,7 +46,7 @@ char* searchFunctionPredicate ( osrfHash*, jsonObjectNode* );
 char* searchFieldTransform (osrfHash*, jsonObject*);
 char* searchFieldTransformPredicate ( osrfHash*, jsonObjectNode* );
 char* searchBETWEENPredicate ( osrfHash*, jsonObject* );
-char* searchINPredicate ( osrfHash*, jsonObject* );
+char* searchINPredicate ( osrfHash*, jsonObject*, const char* );
 char* searchPredicate ( osrfHash*, jsonObject* );
 char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
