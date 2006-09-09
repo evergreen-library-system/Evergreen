@@ -209,7 +209,7 @@ var CIRC_MOD_MAP = {
 	'dvd'							: {
 		SIPMediaType			: '006',
 		magneticMedia			: 'f',
-		durationRule			: '7_days_2_renew',
+		durationRule			: '7_days_0_renew',
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
