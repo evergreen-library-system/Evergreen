@@ -86,7 +86,7 @@ sub print_notices {
 			{
 				checkin_time => undef,
 				due_date => { between => [ $start, $end ] },
-				stop_fines => { '!=' => OILS_STOP_FINES_LOST }
+				stop_fines => { 'not in' => [ OILS_STOP_FINES_LOST, OILS_STOP_FINES_CLAIMSRETURNED ] }
 			},
 			{ order_by => { circ => 'usr, circ_lib' } }
 		];
@@ -148,11 +148,6 @@ sub make_date_range {
 sub print_notice {
 	my( $range, $circs ) = @_;
 	return unless @$circs;
-
-	# The first query strips LOST materials, let's also get rid of claims-returned materials
-	$circs = [ grep { $_->stop_fines ne OILS_STOP_FINES_CLAIMSRETURNED } @$circs ];
-	return unless @$circs;
-
 	my $org = $circs->[0]->circ_lib;
 	my $usr = $circs->[0]->usr;
 	$logger->debug("OD_notice: printing $range user:$usr org:$org");
@@ -233,12 +228,14 @@ sub fetch_patron_data {
 	
 sub print_patron_xml_chunk {
 	my( $patron, $bc, $fn, $mn, $ln, $s1, $s2, $city, $state, $zip ) = @_;
+	my $pid = $patron->id;
 	print <<"	XML";
 			<patron>
 				<id type="barcode">$bc</id>
 				<fullname>$fn $mn $ln</fullname>
 				<street1>$s1 $s2</street1>
 				<city_state_zip>$city, $state $zip</city_state_zip>
+				<sys_id>$pid</sys_id>
 			</patron>
 	XML
 }
@@ -366,6 +363,7 @@ sub fetch_circ_data {
 sub print_circ_chunk {
 	my $circ = shift;
 	my ( $title, $author, $cn, $bc, $day, $mon, $year ) = fetch_circ_data($circ);
+	my $cid = $circ->id;
 	print <<"	XML";
 			<item>
 				<title>$title</title>
@@ -373,6 +371,7 @@ sub print_circ_chunk {
 				<duedate>$day/$mon/$year</duedate>
 				<callno>$cn</callno>
 				<barcode>$bc</barcode>
+				<sys_id>$cid</sys_id>
 			</item>
 	XML
 }
