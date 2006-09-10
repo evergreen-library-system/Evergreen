@@ -1173,16 +1173,6 @@ sub do_checkin {
 		OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
 		unless $self->copy;
 
-	# if we're on the holds shelf, do nothing
-#	if( $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-#		$logger->info("circulator: copy is already on the holds shelf at checkin, doing nothing: ".$self->copy->barcode);
-#		$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
-#		$self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
-#		$self->checkin_flesh_events;
-#		return;
-#	}
-
-
 	if( $self->checkin_check_holds_shelf() ) {
 		$self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
 		$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
@@ -1243,11 +1233,15 @@ sub do_checkin {
 			$self->events($ev);
 		}
 
-
 		if( $hold_transit or 
 				$U->copy_status($self->copy->status)->id 
 					== OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-			$self->hold($U->fetch_open_hold_by_copy($self->copy->id));
+			$self->hold(
+				($hold_transit) ?
+					$self->editor->retrieve_action_hold_request($hold_transit->hold) :
+					$U->fetch_open_hold_by_copy($self->copy->id)
+				);
+
 			$self->checkin_flesh_events;
 			return;
 		} 
@@ -1340,39 +1334,30 @@ sub checkin_check_holds_shelf {
 		$U->copy_status($self->copy->status)->id ==
 			OILS_COPY_STATUS_ON_HOLDS_SHELF;
 
-	# If we're on the holds shelf at our lib
-	return 1 if $self->copy->circ_lib == $self->editor->requestor->ws_ou;
-
-	# Otherwise, find the hold that put us on the holds shelf
+	# find the hold that put us on the holds shelf
 	my $holds = $self->editor->search_action_hold_request(
 		{ 
 			current_copy => $self->copy->id,
 			capture_time => { '!=' => undef },
 			fulfillment_time => undef,
 			cancel_time => undef,
-		}, { idlist => 1 }
+		}
 	);
 
 	return 0 unless @$holds;
 
+	my $hold = $$holds[0];
+
 	$logger->info("circulator: we found a captured, un-fulfilled hold [".
-		$$holds[0]. "] for copy ".$self->copy->barcode);
+		$hold->id. "] for copy ".$self->copy->barcode);
 
-	# Then find the transit that got us here
-	my $transits = $self->editor->search_action_hold_transit_copy(
-		{ 
-			hold => $$holds[0], 
-			dest => $self->editor->requestor->ws_ou,
-			dest_recv_time => { '!=' => undef }
-		}, { idlist =>1 }
-	);
+	if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
+		$logger->info("circulator: hold is for here .. we're done: ".$self->copy->barcode);
+		return 1;
+	}
 
-	return 0 unless @$transits;
-
-	$logger->info("circulator: we found a hold transit [".$$transits[0]."] for ".
-		$self->copy->barcode. " which puts the copy here.. not transiting home");
-
-	return 1;
+	$logger->info("circulator: hold is not for here..");
+	return 0;
 }
 
 
