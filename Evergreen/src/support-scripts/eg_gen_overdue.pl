@@ -82,13 +82,13 @@ sub print_notices {
 	for my $day ( qw/ 7 14 30 / ) {
 		my ($start, $end) = make_date_range($day + $goback);
 
-		$logger->debug("OD_notice: process date range $start -> $end");
+		$logger->info("OD_notice: process date range $start -> $end");
 
 		my $query = [
 			{
 				checkin_time => undef,
 				due_date => { between => [ $start, $end ] },
-				stop_fines => { 'not in' => [ OILS_STOP_FINES_LOST, OILS_STOP_FINES_CLAIMSRETURNED ] }
+			#	stop_fines => { 'not in' => [ OILS_STOP_FINES_LOST, OILS_STOP_FINES_CLAIMSRETURNED ] }
 			},
 			{ order_by => { circ => 'usr, circ_lib' } }
 		];
@@ -105,12 +105,13 @@ sub process_circs {
 
 	return unless @$circs;
 
-	$logger->debug("OD_notice: processing range $range and circs @$circs");
+	$logger->info("OD_notice: processing range $range and ".scalar(@$circs)." potential circs");
 
 	my $org; 
 	my $patron;
 	my @current;
 
+	my $x = 0;
 	for my $circ (@$circs) {
 		$circ = $e->retrieve_action_circulation($circ);
 
@@ -123,8 +124,10 @@ sub process_circs {
 		}
 
 		push( @current, $circ );
+		$x++;
 	}
 
+	$logger->info("OD_notice: processed $x circs");
 	print_notice( $range, \@current );
 }
 
@@ -150,6 +153,19 @@ sub make_date_range {
 sub print_notice {
 	my( $range, $circs ) = @_;
 	return unless @$circs;
+
+	my $s1 = scalar(@$circs);
+	
+	# we don't charge for lost or claimsreturned
+	$circs = [ grep {
+		$_ ne OILS_STOP_FINES_LOST and
+		$_ ne OILS_STOP_FINES_CLAIMSRETURNED } @$circs ];
+
+	return unless @$circs;
+
+	my $s2 = $s1 - scalar(@$circs);
+	$logger->info("OD_notice: dropped $s2 lost/CR from processing...") if $s2;
+
 	my $org = $circs->[0]->circ_lib;
 	my $usr = $circs->[0]->usr;
 	$logger->debug("OD_notice: printing $range user:$usr org:$org");
