@@ -36,11 +36,12 @@ my $mail_sender = $ENV{EG_OVERDUE_EMAIL_SENDER};
 # ---------------------------------------------------------------
 # Set up the email template
 my $etmpl = $ENV{EG_OVERDUE_EMAIL_TEMPLATE};
-print "Using email template: $etmpl\n";
-open(F,"$etmpl");
-my @etmpl = <F>;
-close(F);
-my $email_template = join('',@etmpl);
+my $email_template;
+if( open(F,"$etmpl") ) {
+	my @etmpl = <F>;
+	$email_template = join('',@etmpl);
+	close(F);
+}
 # ---------------------------------------------------------------
 
 
@@ -80,6 +81,7 @@ sub print_notices {
 
 	for my $day ( qw/ 7 14 30 / ) {
 		my ($start, $end) = make_date_range($day + $goback);
+
 		$logger->debug("OD_notice: process date range $start -> $end");
 
 		my $query = [
@@ -129,14 +131,14 @@ sub process_circs {
 sub make_date_range {
 	my $daysback = shift;
 
-	my $date = DateTime->from_epoch( 
-		epoch => ( CORE::time - ($daysback * 24 * 60 * 60) ) );
+	my $epoch = CORE::time - ($daysback * 24 * 60 * 60);
+	my $date = DateTime->from_epoch( epoch => $epoch, time_zone => 'local');
 
 	$date->set_hour(0);
 	$date->set_minute(0);
 	$date->set_second(0);
 	my $start = "$date";
-
+	
 	$date->set_hour(23);
 	$date->set_minute(59);
 	$date->set_second(59);
@@ -265,8 +267,9 @@ sub fetch_org_data {
 
 	my $name = $org->name;
 	my $email = $org->email;
+	my $phone = $org->phone;
 
-	my( $phone, $s1, $s2, $city, $state, $zip );
+	my( $s1, $s2, $city, $state, $zip );
 	my $baddr = $org->billing_address || $org->mailing_address;
 	if( $baddr ) {
 		$s1		= $baddr->street1;
@@ -371,7 +374,7 @@ sub print_circ_chunk {
 				<duedate>$day/$mon/$year</duedate>
 				<callno>$cn</callno>
 				<barcode>$bc</barcode>
-				<sys_id>$cid</sys_id>
+				<circ_id>$cid</circ_id>
 			</item>
 	XML
 }
