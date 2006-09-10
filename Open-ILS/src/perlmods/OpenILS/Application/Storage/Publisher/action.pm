@@ -810,7 +810,7 @@ sub new_hold_copy_targeter {
 				next if (action::hold_request
 						->search_where(
 							{ current_copy => $c->id,
-							  capture_time => undef,
+							  fulfillment_time => undef,
 							  cancel_time => undef,
 							}
 						)
