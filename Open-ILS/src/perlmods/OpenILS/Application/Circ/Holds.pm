@@ -27,6 +27,7 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Const qw/:const/;
+use OpenILS::Application::Circ::Transit;
 
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
@@ -442,6 +443,24 @@ sub cancel_hold {
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
 			$e->update_asset_copy($copy) or return $e->event;
+
+		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
+
+			my $hid = $hold->id;
+			# We don't want the copy to remain "in transit"
+			$copy->status(OILS_COPY_STATUS_RESHELVING);
+			$logger->warn("! canceling hold [$hid] that is in transit");
+			my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id},{idlist=>1})->[0];
+
+			if( $transid ) {
+				my $trans = $e->retrieve_action_transit_copy($transid);
+				if( $trans ) {
+					$logger->info("Aborting transit [$transid] on hold [$hid] cancel...");
+					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
+					$logger->info("Transit abort completed with result $evt");
+					return $evt unless "$evt" eq 1;
+				}
+			}
 		}
 	}
 
@@ -839,6 +858,8 @@ sub _reset_hold {
 
 	$logger->info("reseting hold ".$hold->id);
 
+	my $hid = $hold->id;
+
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
@@ -852,8 +873,21 @@ sub _reset_hold {
 			$e->update_asset_copy($copy) or return $e->event;
 
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
-			$logger->warn("reseting hold that is in transit: ".$hold->id);
-			# is this allowed?	
+
+			# We don't want the copy to remain "in transit"
+			$copy->status(OILS_COPY_STATUS_RESHELVING);
+			$logger->warn("! reseting hold [$hid] that is in transit");
+			my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id},{idlist=>1})->[0];
+
+			if( $transid ) {
+				my $trans = $e->retrieve_action_transit_copy($transid);
+				if( $trans ) {
+					$logger->info("Aborting transit [$transid] on hold [$hid] reset...");
+					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
+					$logger->info("Transit abort completed with result $evt");
+					return $evt unless "$evt" eq 1;
+				}
+			}
 		}
 	}
 
@@ -861,7 +895,6 @@ sub _reset_hold {
 	$hold->clear_current_copy;
 
 	$e->update_action_hold_request($hold) or return $e->event;
-
 	$e->commit;
 
 	$U->storagereq(

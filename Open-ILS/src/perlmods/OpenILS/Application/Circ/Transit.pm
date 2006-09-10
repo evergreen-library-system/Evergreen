@@ -179,7 +179,6 @@ sub abort_transit {
 
 	my $copy;
 	my $transit;
-	my $hold;
 	my $evt;
 
 	my $e = new_editor(xact => 1, authtoken => $authtoken);
@@ -213,6 +212,18 @@ sub abort_transit {
 	}
 	# ---------------------------------------------------------------------
 
+	return __abort_transit( $e, $transit, $copy );
+}
+
+
+
+sub __abort_transit {
+
+	my( $e, $transit, $copy, $no_reset_hold ) = @_;
+
+	my $evt;
+	my $hold;
+
 	if( $transit->copy_status == OILS_COPY_STATUS_LOST or
 		$transit->copy_status == OILS_COPY_STATUS_MISSING ) {
 		$e->rollback;
@@ -238,7 +249,7 @@ sub abort_transit {
 	$e->commit;
 
 	# if this is a hold transit, un-capture/un-target the hold
-	if($holdtransit) {
+	if($holdtransit and !$no_reset_hold) {
 		$hold = $e->retrieve_action_hold_request($holdtransit->hold)
 			or return $e->event;
 		$evt = $holdcode->_reset_hold( $e->requestor, $hold );
