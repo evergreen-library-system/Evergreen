@@ -1679,28 +1679,36 @@ sub _checked_out {
 			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
 			my $due = $due_dt->epoch;
 			if ($due < DateTime->today->epoch) {
-				push @overdue, $c->id;
+				push @overdue, $c;
 			} else {
-				push @out, $c->id;
+				push @out, $c;
 			}
 		} else {
-			push @out, $c->id;
+			push @out, $c;
 		}
 	}
 
-	my( @lost, @cr, @lo );
-	for my $c (@$open) {
+	my( @open, @od, @lost, @cr, @lo );
+
+	while (my $c = shift(@out)) {
+		push( @open, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
 		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
 		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
 		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
 	}
 
+	while (my $c = shift(@overdue)) {
+		push( @od, $c->id ) if (!$c->stop_fines || $c->stop_fines eq 'MAXFINES' || $c->stop_fines eq 'RENEW');
+		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
+		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
+		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
+	}
 
 	if( $iscount ) {
 		return {
-			total		=> @$circs + @lost + @cr + @lo,
-			out		=> scalar(@out),
-			overdue	=> scalar(@overdue),
+			total		=> @open + @od + @lost + @cr + @lo,
+			out		=> scalar(@open),
+			overdue	=> scalar(@od),
 			lost		=> scalar(@lost),
 			claims_returned	=> scalar(@cr),
 			long_overdue		=> scalar(@lo)
@@ -1708,8 +1716,8 @@ sub _checked_out {
 	}
 
 	return {
-		out		=> \@out,
-		overdue	=> \@overdue,
+		out		=> \@open,
+		overdue	=> \@od,
 		lost		=> \@lost,
 		claims_returned	=> \@cr,
 		long_overdue		=> \@lo
