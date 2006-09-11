@@ -129,6 +129,14 @@ __PACKAGE__->register_method(
 	the logged in user must have RENEW_CIRC permissions.
 	NOTES
 
+__PACKAGE__->register_method(
+	method	=> "run_method",
+	api_name	=> "open-ils.circ.checkout.full");
+__PACKAGE__->register_method(
+	method	=> "run_method",
+	api_name	=> "open-ils.circ.checkout.full.override");
+
+
 
 sub run_method {
 	my( $self, $conn, $auth, $args ) = @_;
@@ -158,6 +166,14 @@ sub run_method {
 
 	if( $api =~ /checkout\.permit/ ) {
 		$circulator->do_permit();
+
+	} elsif( $api =~ /checkout.full/ ) {
+
+		$circulator->do_permit();
+		unless( $circulator->bail_out ) {
+			$circulator->events([]);
+			$circulator->do_checkout();
+		}
 
 	} elsif( $api =~ /checkout/ ) {
 		$circulator->do_checkout();
@@ -267,6 +283,7 @@ sub DESTROY { }
 # Add a pile of automagic getter/setter methods
 # --------------------------------------------------------------------------
 my @AUTOLOAD_FIELDS = qw/
+	remote_hold
 	backdate
 	copy
 	copy_id
@@ -1257,13 +1274,20 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
-	if( $self->attempt_checkin_hold_capture() ) {
+	if( !$self->remote_hold and $self->attempt_checkin_hold_capture() ) {
 		return if $self->bail_out;
 
    } else { # not needed for a hold
 
+
 		my $circ_lib = (ref $self->copy->circ_lib) ? 
 				$self->copy->circ_lib->id : $self->copy->circ_lib;
+
+		if( $self->remote_hold ) {
+			$circ_lib = $self->remote_hold->pickup_lib;
+			$logger->warn("circulator: Copy ".$self->copy->barcode.
+				" is on a remote hold's shelf, sending to $circ_lib");
+		}
 
 		$logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
 
@@ -1357,6 +1381,7 @@ sub checkin_check_holds_shelf {
 	}
 
 	$logger->info("circulator: hold is not for here..");
+	$self->remote_hold($hold);
 	return 0;
 }
 
