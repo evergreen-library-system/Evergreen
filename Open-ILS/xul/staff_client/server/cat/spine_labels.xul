@@ -96,7 +96,7 @@
 					var ds = document.createElement('description'); hb.appendChild(ds);
 					ds.appendChild( document.createTextNode( g.volumes[i].label() ) );
 					var gb = document.createElement('groupbox'); hb.appendChild(gb); 
-					var names = g.volumes[i].label().split(/\s+/).reverse();
+					var names = String(g.volumes[i].label()).split(/\s+/).reverse();
 					for (var j = 0; j < ll; j++) {
 						var hb2 = document.createElement('hbox'); gb.appendChild(hb2);
 						var tb = document.createElement('textbox'); hb2.appendChild(tb); 
