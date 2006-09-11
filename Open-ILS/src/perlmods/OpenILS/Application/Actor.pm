@@ -1919,7 +1919,7 @@ sub user_transaction_history {
 	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 
 	my $api = $self->api_name;
-	my @xact_finish  = (xact_finish => undef ) if ($api /history.still_open$/);
+	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
 
 	my @xacts = @{ $e->search_money_billable_transaction(
 		[	{ usr => $userid, @xact_finish },
