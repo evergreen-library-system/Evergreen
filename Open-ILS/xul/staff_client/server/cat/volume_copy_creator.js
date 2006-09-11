@@ -415,6 +415,7 @@ g.stash_and_close = function() {
 					default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
 				}
 			} else {
+				alert('Copies added.');
 				if (copies.length > 0 && $('print_labels').checked) {
 					JSAN.use('util.functional');
 					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();

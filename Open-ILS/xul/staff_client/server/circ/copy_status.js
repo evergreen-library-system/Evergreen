@@ -103,6 +103,7 @@ circ.copy_status.prototype = {
 									var checkin = circ.util.checkin_via_barcode( ses(), barcode );
 									setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
 								}
+								alert('Action complete.');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
 							}
@@ -164,6 +165,7 @@ circ.copy_status.prototype = {
 								var barcode = obj.selection_list[i].barcode;
 								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
 							}
+							alert('Action complete.');
 						}
 					],
 					'sel_patron' : [
@@ -196,6 +198,7 @@ circ.copy_status.prototype = {
 									alert('Item with barcode ' + barcode + ' is not circulating.');
 								}
 							}
+							alert('Action complete.');
 						}
 					],
 
