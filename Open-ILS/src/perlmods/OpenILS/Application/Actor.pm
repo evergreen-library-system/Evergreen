@@ -1675,7 +1675,6 @@ sub _checked_out {
 			usr => $userid, 
 			checkin_time => undef, 
 			xact_finish => undef, 
-			stop_fines => OILS_STOP_FINES_MAX_FINES 
 		});
 
 	
@@ -1709,7 +1708,7 @@ sub _checked_out {
 	my $open = $e->search_action_circulation(
 		{
 			usr				=> $userid, 
-			stop_fines		=> { '!=' => undef }, 
+			stop_fines		=> { in => [ qw/LOST CLAIMSRETURNED LONGOVERDUE/ ] }, 
 			xact_finish		=> undef,
 			checkin_time	=> undef,
 		}
@@ -1920,7 +1919,7 @@ sub user_transaction_history {
 	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 
 	my $api = $self->api_name;
-	my @xact_finish  = (xact_finish => undef ) if ($api !~ /history$/);
+	my @xact_finish  = (xact_finish => undef ) if ($api /history.still_open$/);
 
 	my @xacts = @{ $e->search_money_billable_transaction(
 		[	{ usr => $userid, @xact_finish },
