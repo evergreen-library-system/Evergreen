@@ -131,6 +131,7 @@ patron.summary.prototype = {
 									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
 									[ ses(), obj.patron.id() ],
 									function(req) {
+										JSAN.use('util.money');
 										var list = req.getResultObject();
 										if (typeof list.ilsevent != 'undefined') {
 											e.setAttribute('value', '??? See Bills');
@@ -139,11 +140,11 @@ patron.summary.prototype = {
 										var sum = 0;
 										for (var i = 0; i < list.length; i++) {
 											var robj = typeof list[i] == 'object' ? list[i] : obj.network.simple_request('FM_MBTS_RETRIEVE',[ses(),list[i]]);
-											sum += robj.balance_owed();
+											sum += util.money.dollars_float_to_cents_integer( robj.balance_owed() );
 										} 
 										if (sum > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 										JSAN.use('util.money');
-										e.setAttribute('value', '$' + util.money.sanitize( sum ));
+										e.setAttribute('value', '$' + util.money.sanitize( util.money.cents_as_dollars( sum ) ));
 									}
 								);
 							};
