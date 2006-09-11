@@ -23,6 +23,8 @@ use OpenSRF::Utils qw/:datetime/;
 use Unicode::Normalize;
 use OpenILS::Const qw/:const/;
 
+my $SEND_EMAILS = 1;
+
 
 my $bsconfig = shift || die "usage: $0 <bootstrap_config>\n";
 my @goback = @ARGV;
@@ -60,7 +62,7 @@ my %ORG_CACHE;
 
 print <<XML;
 <?xml version='1.0' encoding='UTF-8'?>
-<file type="notice" date="$day/$mon/$year" time="$hour:$min:$sec">
+<file type="notice" date="$mon/$day/$year" time="$hour:$min:$sec">
 	<agency name="PINES">
 XML
 
@@ -387,7 +389,7 @@ sub print_circ_chunk {
 			<item>
 				<title>$title</title>
 				<author>$author</author>
-				<duedate>$day/$mon/$year</duedate>
+				<duedate>$mon/$day/$year</duedate>
 				<callno>$cn</callno>
 				<barcode>$bc</barcode>
 				<circ_id>$cid</circ_id>
@@ -402,6 +404,8 @@ sub send_email {
 	my( $org, $org_name, $org_phone, $org_s1, $org_s2, $org_city, $org_state, $org_zip, $org_email ) = @$org_data;
 	my( $patron, $bc, $fn, $mn, $ln, $user_s1, $user_s2, $user_city, $user_state, $user_zip ) = @$patron_data;
 
+	return unless $SEND_EMAILS;
+
 	my $pemail = $patron_data->[0]->email;
 
 	my $tmpl = $email_template;
@@ -415,8 +419,8 @@ sub send_email {
 	$org_email ||= $mail_sender;
 
 	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/;
-	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/o;
-	$tmpl =~ s/\${EMAIL_REPLY_TO}/$mail_sender/;
+	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/o;
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/;
    $tmpl =~ s/\${EMAIL_HEADERS}//;
 
    $tmpl =~ s/\${RANGE}/$r/;
@@ -453,9 +457,8 @@ sub send_email {
 	my $sender = Email::Send->new({mailer => 'SMTP'});
 	$sender->mailer_args([Host => $smtp]);
 
-	my $stat;
-	#my $stat = $sender->send($tmpl);
-	
+	my $stat = $sender->send($tmpl);
+
 	if( $stat and $stat->type eq 'success' ) {
 		$logger->info("OD_notice:   successfully sent overdue email");
 	} else {

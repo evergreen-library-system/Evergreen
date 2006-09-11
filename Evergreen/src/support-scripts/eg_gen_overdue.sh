@@ -26,7 +26,8 @@ ARGS="0"
 [ $DAY == 6 -o $DAY == 7 ] && exit 0; # don't run on saturday or sunday
 if [ $DAY == 1 ]; then ARGS="2 1 0"; fi; # If today is monday, run for sat/sun/mon
 
-echo "RUNNING";
+echo "Generating overdues with config=$BSCONFIG, RECIPIENT=$RECIPIENT, SSH_CLIENT=$SSH_CLIENT..";
+
 ./eg_gen_overdue.pl $BSCONFIG $ARGS > "$ODDIR/overdue.$DATE.xml"
-scp "$ODDIR/overdue.$DATE.xml" "${SSH_CLIENT}\@${RECIPIENT}:~/"
+scp "$ODDIR/overdue.$DATE.xml" "${SSH_CLIENT}@${RECIPIENT}:~/"
 
