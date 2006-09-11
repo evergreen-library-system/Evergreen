@@ -332,6 +332,15 @@ var CIRC_MOD_MAP = {
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
+
+	'facbestslr'	: {
+		SIPMediaType			: '001',
+		magneticMedia			: 'f',
+		durationRule			: '7_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
 }
 
 
@@ -339,7 +348,6 @@ var CIRC_MOD_MAP = {
 CIRC_MOD_MAP['DEPOSIT'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['E-AUDIO'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['EQUIP'] 		= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['FACBESTSLR'] = CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['FACNEWBK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-CIRC'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-NOCIRC'] = CIRC_MOD_MAP['book'];
