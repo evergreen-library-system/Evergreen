@@ -730,7 +730,7 @@ admin.offline_manage_xacts.prototype = {
 						'Details:\n' + obj.error.pretty_print(js2JSON(error))
 					),
 					'offline_error_details',
-					'chrome,resizable,modal'
+					'height=240,width=320,scrollbars=yes,chrome,resizable,modal'
 				);
 			}
 		} catch(E) {
