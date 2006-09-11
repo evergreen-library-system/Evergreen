@@ -379,6 +379,7 @@ cat.copy_browser.prototype = {
 										if (typeof robj.ilsevent != 'undefined') {
 											if ( (robj.ilsevent != 0) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
 										}
+										alert('Action complete.');
 										obj.refresh_list();
 									}
 
@@ -569,6 +570,7 @@ cat.copy_browser.prototype = {
 											[ ses(), volumes, true ]
 										);
 										if (typeof r.ilsevent != 'undefined') throw(r);
+										alert('Volumes modified.');
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('volume update error: ',E);
 									}
@@ -623,6 +625,7 @@ cat.copy_browser.prototype = {
 											}
 											if (robj.ilsevent != 0) throw(robj);
 										}
+										alert('Volumes deleted.');
 										obj.refresh_list();
 									}
 								} catch(E) {
