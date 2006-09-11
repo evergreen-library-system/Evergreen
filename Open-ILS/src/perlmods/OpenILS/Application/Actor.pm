@@ -1668,6 +1668,59 @@ sub _checked_out {
 	my( $iscount, $e, $userid ) = @_;
 
 	my $circs = $e->search_action_circulation( 
+		{ usr => $userid, checkin_time => undef });
+
+	my $parser = DateTime::Format::ISO8601->new;
+
+	# split the circs up into overdue and not-overdue circs
+	my (@out,@overdue);
+	for my $c (@$circs) {
+		if( $c->due_date ) {
+			my $due_dt = $parser->parse_datetime( clense_ISO8601( $c->due_date ) );
+			my $due = $due_dt->epoch;
+			if ($due < DateTime->today->epoch) {
+				push @overdue, $c->id;
+			} else {
+				push @out, $c->id;
+			}
+		} else {
+			push @out, $c->id;
+		}
+	}
+
+	my( @lost, @cr, @lo );
+	for my $c (@$open) {
+		push( @lost, $c->id ) if $c->stop_fines eq 'LOST';
+		push( @cr, $c->id ) if $c->stop_fines eq 'CLAIMSRETURNED';
+		push( @lo, $c->id ) if $c->stop_fines eq 'LONGOVERDUE';
+	}
+
+
+	if( $iscount ) {
+		return {
+			total		=> @$circs + @lost + @cr + @lo,
+			out		=> scalar(@out),
+			overdue	=> scalar(@overdue),
+			lost		=> scalar(@lost),
+			claims_returned	=> scalar(@cr),
+			long_overdue		=> scalar(@lo)
+		};
+	}
+
+	return {
+		out		=> \@out,
+		overdue	=> \@overdue,
+		lost		=> \@lost,
+		claims_returned	=> \@cr,
+		long_overdue		=> \@lo
+	};
+}
+
+
+sub _checked_out_WHAT {
+	my( $iscount, $e, $userid ) = @_;
+
+	my $circs = $e->search_action_circulation( 
 		{ usr => $userid, stop_fines => undef });
 
 	my $mcircs = $e->search_action_circulation( 
