@@ -218,12 +218,15 @@ cat.util.spawn_copy_editor = function(list,edit) {
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
 				[ ses(), copies, true ]
 			);
-			/* FIXME -- revisit the return value here */
+			if (typeof r.ilsevent != 'undefined') {
+				if (r.ilsevent != 0) throw(r);
+			}
+			alert('Copies modified.');
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('copy update error',E);
 		}
 	} else {
-		//alert('not updating');
+		if (edit=='1') alert('Copies not modified.');
 	}
 	} catch(E) {
 		alert(E);
