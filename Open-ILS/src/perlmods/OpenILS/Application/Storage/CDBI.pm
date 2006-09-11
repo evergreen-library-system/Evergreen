@@ -572,8 +572,8 @@ sub modify_from_fieldmapper {
 	actor::org_unit->has_many( checkins => 'action::circulation' => 'checkin_lib' );
 
 	money::billable_transaction->has_a( usr => 'actor::user' );
-	#money::billable_transaction->might_have( circulation => 'action::circulation' );
-	#money::billable_transaction->might_have( grocery => 'money::grocery' );
+	money::billable_transaction->might_have( circulation => 'action::circulation' );
+	money::billable_transaction->might_have( grocery => 'money::grocery' );
 	actor::user->has_many( billable_transactions => 'action::circulation' => 'usr' );
 	
 	

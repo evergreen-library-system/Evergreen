@@ -4,6 +4,77 @@ use OpenSRF::Utils::Logger qw/:level/;
 
 my $log = 'OpenSRF::Utils::Logger';
 
+sub _make_mbts {
+        my @xacts = @_;
+
+        my @mbts;
+        for my $x (@xacts) {
+                my $s = new Fieldmapper::money::billable_transaction_summary;
+                $s->id( $x->id );
+                $s->usr( $x->usr );
+                $s->xact_start( $x->xact_start );
+                $s->xact_finish( $x->xact_finish );
+
+                my $to = 0;
+                my $lb = undef;
+                for my $b ($x->billings) {
+                        next if ($U->is_true($b->voided));
+                        $to += int($b->amount * 100);
+                        $lb ||= $b->billing_ts;
+                        if ($b->billing_ts ge $lb) {
+                                $lb = $b->billing_ts;
+                                $s->last_billing_note($b->note);
+                                $s->last_billing_ts($b->billing_ts);
+                                $s->last_billing_type($b->billing_type);
+                        }
+                }
+
+                $s->total_owed( sprintf('%0.2f', $to / 100 ) );
+
+                my $tp = 0;
+                my $lp = undef;
+                for my $p ($x->payments) {
+                        next if ($U->is_true($p->voided));
+                        $tp += int($p->amount * 100);
+                        $lp ||= $p->payment_ts;
+                        if ($p->payment_ts ge $lp) {
+                                $lp = $p->payment_ts;
+                                $s->last_payment_note($p->note);
+                                $s->last_payment_ts($p->payment_ts);
+                                $s->last_payment_type($p->payment_type);
+                        }
+                }
+                $s->total_paid( sprintf('%0.2f', $tp / 100 ) );
+
+                $s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100) );
+
+                $s->xact_type( 'grocery' ) if ($x->grocery);
+                $s->xact_type( 'circulation' ) if ($x->circulation);
+
+                push @mbts, $s;
+        }
+
+        return @mbts;
+}
+
+sub search_mbts {
+	my $self = shift;
+	my $client = shift;
+	my $search = shift;
+
+	my @xacts = money::billable_xact->search_where( $search );
+	$client->respond( $_ ) for (_make_mbts(@xacts));
+
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'search_mbts',
+	api_name	=> 'open-ils.storage.money.billable_transaction.summary.search',
+	stream		=> 1,
+	argc		=> 1,
+);
+
+
 sub new_collections {
 	my $self = shift;
 	my $client = shift;
