@@ -130,6 +130,7 @@ const api = {
 	'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.history.have_balance' },
 	'FM_MBTS_IDS_RETRIEVE_ALL_STILL_OPEN' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.history.still_open' },
 	'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BILL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.history.have_bill' },
+	'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.transactions.history.have_bill' },
 	'FM_MP_RETRIEVE_VIA_MBTS_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.payment.retrieve.all' },
 	'FM_MG_CREATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.create' },
 	'FM_MG_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.money.grocery.retrieve' },
