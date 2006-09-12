@@ -239,7 +239,13 @@ function findBasePath() {
 function findBaseURL(ssl) {
 	var path = findBasePath();
 	var proto = (ssl) ? "https:" : "http:";
-	return proto + "//" + location.host + path;
+
+	/* strip port numbers.  This is necessary for browsers that
+	send an explicit  <host>:80, 443 - explicit ports
+	break links that need to change ports (e.g. http -> https) */
+	var h = location.host.replace(/:.*/,''); 
+
+	return proto + "//" + h + path;
 }
 
 /*
