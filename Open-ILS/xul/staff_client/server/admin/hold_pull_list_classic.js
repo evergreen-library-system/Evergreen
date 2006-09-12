@@ -166,57 +166,61 @@ function $f(parent,name) {
 function update_ready(which_update) {
 	g[which_update] = true;
 	if (typeof g.title != 'undefined' && typeof g.patron != 'undefined' && typeof g.call_number != 'undefined') {
-		unHideMe($('pull_list_tbody')); hideMe($('inprogress'));
-		var rows = [];
-		var div = $('pull_list_tbody');
-		var div_children = div.childNodes;
-		for (var i = 0; i < div_children.length; i++) {
-			var pre = div_children[i];
-			if (pre.nodeName != 'pre') continue;
-			value = ( 
-				{ 
-					'call_number' : ts_getInnerText($f(pre,'call_number')), 
-					'title' : ts_getInnerText($f(pre,'title')),
-					'author' : ts_getInnerText($f(pre,'author')),
-					'location' : ts_getInnerText($f(pre,'copy_location')),
-					'copy_number' : ts_getInnerText($f(pre,'copy_number')),
-					'item_type' : get_unhidden_span($f(pre,'item_type')),
-					'node' : pre 
-				} 
-			);
-			rows.push( value );
-		}
-		rows = rows.sort( function(a,b) { 
-			function inner_sort(sort_type,a,b) {
-				switch(sort_type) {
-					case 'number' :
-						a = Number(a); b = Number(b);
-					break;
-					case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
-						a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-						b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
-					break;
-					default:
-						a = String( a ).toUpperCase();
-						b = String( b ).toUpperCase();
-					break;
-				}
-			
-				if (a < b) return -1; 
-				if (a > b) return 1; 
-				return 0; 
+		setTimeout( function() { update_ready_do_it(); }, 1000);
+	}
+}
+
+function update_ready_do_it() {
+	unHideMe($('pull_list_tbody')); hideMe($('inprogress'));
+	var rows = [];
+	var div = $('pull_list_tbody');
+	var div_children = div.childNodes;
+	for (var i = 0; i < div_children.length; i++) {
+		var pre = div_children[i];
+		if (pre.nodeName != 'pre') continue;
+		value = ( 
+			{ 
+				'call_number' : ts_getInnerText($f(pre,'call_number')), 
+				'title' : ts_getInnerText($f(pre,'title')),
+				'author' : ts_getInnerText($f(pre,'author')),
+				'location' : ts_getInnerText($f(pre,'copy_location')),
+				'copy_number' : ts_getInnerText($f(pre,'copy_number')),
+				'item_type' : get_unhidden_span($f(pre,'item_type')),
+				'node' : pre 
+			} 
+		);
+		rows.push( value );
+	}
+	rows = rows.sort( function(a,b) { 
+		function inner_sort(sort_type,a,b) {
+			switch(sort_type) {
+				case 'number' :
+					a = Number(a); b = Number(b);
+				break;
+				case 'title' : /* special case for "a" and "the".  doesn't use marc 245 indicator */
+					a = String( a ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+					b = String( b ).toUpperCase().replace( /^\s*(THE|A|AN)\s+/, '' );
+				break;
+				default:
+					a = String( a ).toUpperCase();
+					b = String( b ).toUpperCase();
+				break;
 			}
-			var value = inner_sort('string',a.call_number,b.call_number);
-			if (value == 0) value = inner_sort('title',a.title,b.title);
-			if (value == 0) value = inner_sort('string',a.author,b.author);
-			if (value == 0) value = inner_sort('string',a.location,b.location);
-			if (value == 0) value = inner_sort('number',a.copy_number,b.copy_number);
-			if (value == 0) value = inner_sort('string',a.item_type,b.item_type);
-			return value;
-		} );
-		while(div.lastChild) div.removeChild( div.lastChild );
-		for (var i = 0; i < rows.length; i++) {
-			div.appendChild( rows[i].node );
+				
+			if (a < b) return -1; 
+			if (a > b) return 1; 
+			return 0; 
 		}
+		var value = inner_sort('string',a.call_number,b.call_number);
+		if (value == 0) value = inner_sort('title',a.title,b.title);
+		if (value == 0) value = inner_sort('string',a.author,b.author);
+		if (value == 0) value = inner_sort('string',a.location,b.location);
+		if (value == 0) value = inner_sort('number',a.copy_number,b.copy_number);
+		if (value == 0) value = inner_sort('string',a.item_type,b.item_type);
+		return value;
+	} );
+	while(div.lastChild) div.removeChild( div.lastChild );
+	for (var i = 0; i < rows.length; i++) {
+		div.appendChild( rows[i].node );
 	}
 }
