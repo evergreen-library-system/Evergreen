@@ -75,7 +75,7 @@ void add_prefork_child( prefork_simple* forker, prefork_child* child );
 prefork_child* find_prefork_child( prefork_simple* forker, pid_t pid );
 void del_prefork_child( prefork_simple* forker, pid_t pid );
 
-void check_children( prefork_simple* forker );
+void check_children( prefork_simple* forker, int forever );
 
 void prefork_child_process_request(prefork_child*, char* data);
 int prefork_child_init_hook(prefork_child*);

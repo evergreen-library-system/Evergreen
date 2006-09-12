@@ -367,10 +367,12 @@ void prefork_run(prefork_simple* forker) {
 		if( cur_msg == NULL ) continue;
 
 		int honored = 0;	/* true if we've serviced the request */
+		int no_recheck = 0;
 
 		while( ! honored ) {
 
-			check_children( forker ); 
+			if(!no_recheck) check_children( forker, 0 ); 
+			no_recheck = 0;
 
 			osrfLogDebug( OSRF_LOG_MARK,  "Server received inbound data" );
 			int k;
@@ -430,8 +432,12 @@ void prefork_run(prefork_simple* forker) {
 			}
 
 			if( !honored ) {
-				osrfLogWarning( OSRF_LOG_MARK,  "No children available, sleeping and looping..." );
-				usleep( 50000 ); /* 50 milliseconds */
+				osrfLogWarning( OSRF_LOG_MARK,  "No children available, waiting...");
+
+				check_children( forker, 1 );  /* non-poll version */
+				/* tell the loop no to call check_children again, since we're calling it now */
+				no_recheck = 1;
+				//usleep(50000);
 			}
 
 			if( child_dead )
@@ -449,7 +455,12 @@ void prefork_run(prefork_simple* forker) {
 }
 
 
-void check_children( prefork_simple* forker ) {
+/** XXX Add a flag which tells select() to wait forever on children
+ * in the best case, this will be faster than calling usleep(x), and
+ * in the worst case it won't be slower and will do less logging...
+ */
+
+void check_children( prefork_simple* forker, int forever ) {
 
 	//check_begin:
 
@@ -459,9 +470,6 @@ void check_children( prefork_simple* forker ) {
 	int max_fd = 0;
 	int n;
 
-	struct timeval tv;
-	tv.tv_sec	= 0;
-	tv.tv_usec	= 0;
 
 	if( child_dead )
 		reap_children(forker);
@@ -479,8 +487,23 @@ void check_children( prefork_simple* forker ) {
 
 	FD_CLR(0,&read_set);/* just to be sure */
 
-	if( (select_ret=select( max_fd + 1 , &read_set, NULL, NULL, &tv)) == -1 ) {
-		osrfLogWarning( OSRF_LOG_MARK,  "Select returned error %d on check_children", errno );
+	if( forever ) {
+		osrfLogWarning(OSRF_LOG_MARK, "We have no children available - waiting for one to show up...");
+
+		if( (select_ret=select( max_fd + 1 , &read_set, NULL, NULL, NULL)) == -1 ) {
+			osrfLogWarning( OSRF_LOG_MARK,  "Select returned error %d on check_children", errno );
+		}
+		osrfLogInfo(OSRF_LOG_MARK, "select() completed after waiting on children to become available");
+
+	} else {
+
+		struct timeval tv;
+		tv.tv_sec	= 0;
+		tv.tv_usec	= 0;
+	
+		if( (select_ret=select( max_fd + 1 , &read_set, NULL, NULL, &tv)) == -1 ) {
+			osrfLogWarning( OSRF_LOG_MARK,  "Select returned error %d on check_children", errno );
+		}
 	}
 
 	if( select_ret == 0 )
