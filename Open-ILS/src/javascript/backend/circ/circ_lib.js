@@ -180,6 +180,16 @@ function isOrgDescendent( parentName, childId ) {
 	return false;
 }
 
+function hasCommonAncestor( org1, org2, depth ) {
+	var key = scratchKey();
+	__OILS_FUNC_hasCommonAncestor(scratchPad(key), org1, org2, depth);
+	var val = getScratch(key);
+	if( val == '1' ) return true;
+	return false;
+}
+
+
+
 /* useful for testing */
 function die(msg) {
 	log_error("die(): "+msg);

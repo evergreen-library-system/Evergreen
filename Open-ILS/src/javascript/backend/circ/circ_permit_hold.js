@@ -23,6 +23,8 @@ if( mod == 'bestsellernh' )
 
 var marcItemType = getMARCItemType();
 
+var isAnc;
+
 if( ( marcItemType == 'g' || 
 		marcItemType == 'i' || 
 		marcItemType == 'j' || 
@@ -32,13 +34,18 @@ if( ( marcItemType == 'g' ||
 		mod == 'av' || 
 		mod == 'cd' || 
 		mod == 'dvd' || 
-		mod == 'video' ) &&
+		mod == 'video' ) ) {
 
-		!isOrgDescendent(copy.circ_lib.shortname, patron.home_ou.id) ) {
+	isAnc = hasCommonAncestor( copy.circ_lib.id, patron.home_ou.id, 1 );
 
-	log_info("This patron may not place a hold on the selected item");
+	if( isAnc) {
+		log_info("patron and copy circ_lib share a common ancestor, hold allowed");
 
-	result.events.push('ITEM_NOT_HOLDABLE');
+	} else {
+
+		log_info("patron and copy circ_lib do NOT share a common ancestor, hold on this type of material not allowed");
+		result.events.push('ITEM_NOT_HOLDABLE');
+	}
 }
 
 

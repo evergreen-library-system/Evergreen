@@ -283,6 +283,7 @@ sub DESTROY { }
 # Add a pile of automagic getter/setter methods
 # --------------------------------------------------------------------------
 my @AUTOLOAD_FIELDS = qw/
+	penalty_request
 	remote_hold
 	backdate
 	copy
@@ -596,6 +597,29 @@ sub do_copy_checks {
 }
 
 
+sub send_penalty_request {
+	my $self = shift;
+	my $ses = OpenSRF::AppSession->create('open-ils.penalty');
+	$self->penalty_request(
+		$ses->request(	
+			'open-ils.penalty.patron_penalty.calculate', 
+			{	update => 1, 
+				authtoken => $self->editor->authtoken,
+				patron => $self->patron } ) );
+}
+
+sub gather_penalty_request {
+	my $self = shift;
+	return [] unless $self->penalty_request;
+	my $data = $self->penalty_request->recv;
+	if( ref $data ) {
+		$data = $data->content;
+		return $data->{fatal_penalties};
+	}
+	$logger->error("circulator: penalty request returned no data");
+	return [];
+}
+
 # ---------------------------------------------------------------------
 # This pushes any patron-related events into the list but does not
 # set bail_out for any events
@@ -605,16 +629,7 @@ sub run_patron_permit_scripts {
 	my $runner		= $self->script_runner;
 	my $patronid	= $self->patron->id;
 
-	# ---------------------------------------------------------------------
-	# Find all of the fatal penalties currently set on the user
-	# ---------------------------------------------------------------------
-	my $penalties = $U->update_patron_penalties( 
-		authtoken => $self->editor->authtoken,
-		patron    => $self->patron,
-	);
-
-	$penalties = $penalties->{fatal_penalties};
-
+	$self->send_penalty_request();
 
 	# ---------------------------------------------------------------------
 	# Now run the patron permit script 
@@ -625,6 +640,8 @@ sub run_patron_permit_scripts {
 
 	my $patron_events = $result->{events};
 	my @allevents; 
+
+	my $penalties = $self->gather_penalty_request();
 	push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
 
 	$logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;

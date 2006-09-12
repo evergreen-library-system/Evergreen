@@ -1092,5 +1092,22 @@ sub is_true {
 }
 
 
+sub patron_money_owed {
+	my( $self, $patronid ) = @_;
+	my $ses = OpenSRF::AppSession->create('open-ils.storage');
+	my $req = $ses->request(
+		'open-ils.storage.money.billable_transaction.summary.search',
+		{ usr => $patronid, xact_finish => undef } );
+
+	my $total = 0;
+	my $data;
+	while( $data = $req->recv ) {
+		$data = $data->content;
+		$total += $data->balance_owed;
+	}
+	return $total;
+}
+
+
 1;
 

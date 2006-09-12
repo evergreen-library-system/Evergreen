@@ -19,6 +19,7 @@ my %GROUP_SET;
 my $GROUP_TREE;
 my $ORG_TREE;
 my @ORG_LIST;
+my @OU_TYPES;
 
 
 # -----------------------------------------------------------------------
@@ -165,7 +166,7 @@ sub fetch_user_data {
 
 			if( my $copy = $ctx->{copy} ) {
 				my $circs = $e->search_action_circulation(
-					{ target_copy => $copy->id, stop_fines_time => undef });
+					{ target_copy => $copy->id, checkin_time => undef });
 
 				if( my $circ = $circs->[0] ) {
 					$ctx->{patron} = $e->retrieve_actor_user($circ->usr)
@@ -229,23 +230,24 @@ sub fetch_user_data {
 	#}
 
 	if( $ctx->{fetch_patron_circ_info} ) {
-
 		my $circ_counts = 
 			OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
 
 		$ctx->{patronOverdue} = $circ_counts->{overdue} || 0;
 		$ctx->{patronItemsOut} = $ctx->{patronOverdue} + $circ_counts->{out};
-
-		# Grab the fines
-		my $fxacts = $e->search_money_open_billable_transaction_summary(
-			{ usr => $patron->id, balance_owed => { "!=" => 0 } });
-
-		my $fines = 0;
-		$fines += $_->balance_owed for @$fxacts;
-		$ctx->{patronFines} = $fines;
-
-		$logger->debug("script_builder: patron fines determined to be $fines");
 		$logger->debug("script_builder: patron overdue count is " . $ctx->{patronOverdue});
+	}
+
+	if( $ctx->{fetch_patron_money_info} ) {
+		# Grab the fines
+#		my $fxacts = $e->search_money_billable_transaction_summary(
+#			{ usr => $patron->id, balance_owed => { "!=" => 0 }, xact_finish => undef });
+#
+#		my $fines = 0;
+#		$fines += $_->balance_owed for @$fxacts;
+#		$ctx->{patronFines} = $fines;
+		$ctx->{patronFines} = $U->patron_money_owed($patron->id);
+		$logger->debug("script_builder: patron fines determined to be ".$ctx->{patronFines});
 	}
 
 	return undef;
@@ -299,11 +301,20 @@ sub insert_org_methods {
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
 			my $val = is_org_descendent( $parent, $child );
 			$logger->debug("script_builder: is_org_desc returned val $val, writing to $write_key");
-			$r->insert($write_key, $val, 1) if $val; # Needs testing, was dying before
+			$r->insert($write_key, $val, 1) if $val;
 			return $val;
 		}
 	);
 
+	$r->insert(__OILS_FUNC_hasCommonAncestor  => 
+		sub {
+			my( $write_key, $orgid1, $orgid2, $depth ) = @_;
+			my $val = has_common_ancestor( $orgid1, $orgid2, $depth );
+			$logger->debug("script_builder: has_common_ancestor resturned $val");
+			$r->insert($write_key, $val, 1) if $val;
+			return $val;
+		}
+	);
 }
 
 
@@ -316,6 +327,40 @@ sub is_org_descendent {
 		return 1 if $parent->id == $child->id;
 	} while( ($child) = grep { $_->id == $child->parent_ou } @ORG_LIST );
 	return 0;
+}
+
+sub has_common_ancestor {
+	my( $org1, $org2, $depth ) = @_;
+	return 0 unless $org1 and $org2;
+	$logger->debug("script_builder: has_common_ancestor checking orgs $org1 : $org2");
+
+	return 1 if $org1 == $org2;
+	($org1) = grep { $_->id == $org1 } @ORG_LIST;
+	($org2) = grep { $_->id == $org2 } @ORG_LIST;
+
+	my $p1 = find_parent_at_depth($org1, $depth);
+	my $p2 = find_parent_at_depth($org2, $depth);
+
+	return 1 if $p1->id == $p2->id;
+	return 0;
+}
+
+
+sub find_parent_at_depth {
+	my $org = shift;
+	my $depth = shift;
+	fetch_ou_types();
+	do {
+		my ($t) = grep { $_->id == $org->ou_type } @OU_TYPES;
+		return $org if $t->depth == $depth;
+	} while( ($org) = grep { $_->id == $org->parent_ou } @ORG_LIST );
+	return undef;	
+}
+
+
+sub fetch_ou_types {
+	return if @OU_TYPES;
+	@OU_TYPES = @{new_editor()->retrieve_all_actor_org_unit_type()};
 }
 
 sub insert_copy_methods {

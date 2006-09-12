@@ -82,6 +82,7 @@ sub patron_penalty {
 
 	$args->{patron_id} = $args->{patronid};
 	$args->{fetch_patron_circ_info} = 1;
+	$args->{fetch_patron_money_info} = 1;
 	$args->{ignore_user_status} = 1;
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
 
