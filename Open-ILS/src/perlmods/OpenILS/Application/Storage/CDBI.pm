@@ -572,8 +572,8 @@ sub modify_from_fieldmapper {
 	actor::org_unit->has_many( checkins => 'action::circulation' => 'checkin_lib' );
 
 	money::billable_transaction->has_a( usr => 'actor::user' );
-	money::billable_transaction->might_have( circulation => 'action::circulation' );
-	money::billable_transaction->might_have( grocery => 'money::grocery' );
+	#money::billable_transaction->might_have( circulation => 'action::circulation' );
+	#money::billable_transaction->might_have( grocery => 'money::grocery' );
 	actor::user->has_many( billable_transactions => 'action::circulation' => 'usr' );
 	
 	
@@ -612,6 +612,9 @@ sub modify_from_fieldmapper {
 	metabib::metarecord->has_many( source_records => [ 'metabib::metarecord_source_map' => 'source'] );
 	biblio::record_entry->has_many( metarecords => [ 'metabib::metarecord_source_map' => 'metarecord'] );
 
+	money::billing->has_a( xact => 'money::billable_transaction' );
+	money::payment->has_a( xact => 'money::billable_transaction' );
+
 	money::billable_transaction->has_many( billings => 'money::billing' );
 	money::billable_transaction->has_many( payments => 'money::payment' );
 
@@ -634,8 +637,6 @@ sub modify_from_fieldmapper {
 	money::grocery->has_many( payments => 'money::payment' => 'xact' );
 	#money::grocery->might_have( billable_transaction => 'money::billable_transaction' );
 
-	money::billing->has_a( xact => 'money::billable_transaction' );
-	money::payment->has_a( xact => 'money::billable_transaction' );
 	#money::payment->might_have( cash_payment => 'money::cash_payment' );
 	#money::payment->might_have( check_payment => 'money::check_payment' );
 	#money::payment->might_have( credit_card_payment => 'money::credit_card_payment' );

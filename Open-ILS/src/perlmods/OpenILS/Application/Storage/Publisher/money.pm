@@ -18,7 +18,7 @@ sub _make_mbts {
                 my $to = 0;
                 my $lb = undef;
                 for my $b ($x->billings) {
-                        next if ($U->is_true($b->voided));
+                        next if ($b->voided);
                         $to += int($b->amount * 100);
                         $lb ||= $b->billing_ts;
                         if ($b->billing_ts ge $lb) {
@@ -34,7 +34,7 @@ sub _make_mbts {
                 my $tp = 0;
                 my $lp = undef;
                 for my $p ($x->payments) {
-                        next if ($U->is_true($p->voided));
+                        next if ($p->voided);
                         $tp += int($p->amount * 100);
                         $lp ||= $p->payment_ts;
                         if ($p->payment_ts ge $lp) {
@@ -48,8 +48,8 @@ sub _make_mbts {
 
                 $s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100) );
 
-                $s->xact_type( 'grocery' ) if ($x->grocery);
-                $s->xact_type( 'circulation' ) if ($x->circulation);
+                $s->xact_type( 'grocery' ) if (money::grocery->retrieve($x->id));
+                $s->xact_type( 'circulation' ) if (action::circulation->retrieve($x->id));
 
                 push @mbts, $s;
         }
@@ -62,7 +62,7 @@ sub search_mbts {
 	my $client = shift;
 	my $search = shift;
 
-	my @xacts = money::billable_xact->search_where( $search );
+	my @xacts = money::billable_transaction->search_where( $search );
 	$client->respond( $_ ) for (_make_mbts(@xacts));
 
 	return undef;
