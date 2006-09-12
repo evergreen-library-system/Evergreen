@@ -1048,7 +1048,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 			var lib = data.hash.aou[ check.org ];
 			check.route_to = lib.shortname();
-			var msg = 'This item is in transit to ' + check.route_to + '.\n';
+			var msg = 'Destination: ' + check.route_to + '.\n';
 			msg += '\n' + lib.name() + '\n';
 			try {
 				if (lib.holds_address() ) {
