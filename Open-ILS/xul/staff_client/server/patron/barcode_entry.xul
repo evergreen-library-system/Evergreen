@@ -48,7 +48,7 @@
 						if (ev.keyCode == 13 || ev.keyCode == 77) {
 							setTimeout(
 								function() {
-									spawn();
+									submit();
 								}, 0
 							);
 						}
@@ -74,28 +74,57 @@
 			}
 		}
 
-		function spawn() {
+		function submit() {
 			var tb;
 			try {
 				JSAN.use('util.sound'); var sound = new util.sound();
 				tb = document.getElementById('barcode_tb');
 				var barcode = tb.value;
 
-				if (!barcode) { sound.bad(); tb.select(); tb.focus(); return; }
+				barcode = String( barcode ).replace( /\s+/g, '' );
+
+				if (!barcode) { sound.bad(); add_msg('No barcode entered.'); tb.select(); tb.focus(); return; }
 
 				JSAN.use('util.network'); var net = new util.network();
 
-				var robj = net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ]);
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
+				tb.disabled = true;
+				document.getElementById('progress').setAttribute('hidden','false');
+				net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ],
+					function(req) {
+						document.getElementById('progress').setAttribute('hidden','true');
+						tb.disabled = false; tb.select(); tb.focus(); ;
+						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') {
+							sound.bad();
+							add_msg('Problem retrieving ' + barcode + '.  Please report this message: \n' + js2JSON(robj));
+							return;
+						} else if (robj == 0) {
+							sound.bad(); 
+							add_msg('Barcode ' + barcode + ' not found.');
+							return;
+						}
 
-				if (robj == 0) {
-					sound.bad(); tb.select(); tb.focus(); ;
-					alert('Barcode not found.');
-					return;
-				}
+						sound.good();
 
-				sound.good();
+						spawn(barcode);
+					}
+				);
+			} catch(E) {
+				tb.select(); tb.focus();
+				g.error.standard_unexpected_error_alert('barcode_entry.xul',E);
+			}
+		}
 
+		function add_msg(text) {
+			var x = document.getElementById('status');
+			var d = document.createElement('description');
+			x.appendChild(d);
+			d.appendChild( document.createTextNode( text ) );
+			d.setAttribute('style','color: red');
+		}
+
+		function spawn(barcode) {
+			try {
 				var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
@@ -107,8 +136,7 @@
 ;
 				}
 			} catch(E) {
-				tb.select(); tb.focus();
-				g.error.standard_unexpected_error_alert('barcode_entry.xul',E);
+				g.error.standard_unexpected_error_alert('spawning patron display',E);
 			}
 		}
 
@@ -122,11 +150,11 @@
 			<hbox>
 				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
-				<button label="Submit" accesskey="S" oncommand="spawn();"/>
+				<button label="Submit" accesskey="S" oncommand="submit();"/>
 			</hbox>
-			<hbox>
-				<label id="status"/>
-			</hbox>
+			<label value="Retrieving..." style="color: green" id="progress" hidden="true"/>
+			<vbox id="status">
+			</vbox>
 		</groupbox>
 	</vbox>
 
