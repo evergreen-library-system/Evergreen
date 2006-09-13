@@ -43,7 +43,7 @@ sub build {
 	my $evt;
 	my @evts;
 
-	my $editor = $$args{editor} || new_editor();
+	my $editor = $$args{editor} || new_editor(xact => 1);
 
 	$args->{_direct} = {} unless $args->{_direct};
 	
