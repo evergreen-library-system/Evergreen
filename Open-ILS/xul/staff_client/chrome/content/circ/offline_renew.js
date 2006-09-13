@@ -193,7 +193,7 @@ function append_to_list(checkout_type,count) {
 			default: alert("Please report that this happened."); break;
 		}
 	
-		g.list.append( { 'row' : { 'my' : my } } );
+		g.list.append( { 'row' : { 'my' : my }, 'to_top' : true } );
 
 		var x = $('i_barcode'); x.value = ''; x.focus();
 

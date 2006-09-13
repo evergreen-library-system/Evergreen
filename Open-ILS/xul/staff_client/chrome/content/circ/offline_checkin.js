@@ -84,7 +84,7 @@ function append_to_list() {
 		if (! i_barcode) return; 
 		my.barcode = i_barcode; 
 	
-		g.list.append( { 'row' : { 'my' : my } } );
+		g.list.append( { 'row' : { 'my' : my }, 'to_top' : true } );
 
 		var x = $('i_barcode'); x.value = ''; x.focus();
 

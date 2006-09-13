@@ -87,7 +87,7 @@ function append_to_list() {
 		if (!Number(count) || count < 1) count = 1;
 		my.count = count;
 
-		g.list.append( { 'row' : { 'my' : my } } );
+		g.list.append( { 'row' : { 'my' : my }, 'to_top' : true } );
 
 		var x = $('i_barcode'); x.value = ''; x.focus();
 
