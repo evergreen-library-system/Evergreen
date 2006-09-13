@@ -174,6 +174,14 @@ var CIRC_MOD_MAP = {
 		maxFine					: 'overdue_mid'
 	},
 
+	'new-av' : { 
+		SIPMediaType			: '005',
+		magneticMedia			: 'f',
+		durationRule			: '3_days_1_renew',
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
 	'bestseller'				: {
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
