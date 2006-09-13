@@ -2,6 +2,8 @@
 
 var SHOW_MR_DEFAULT = false; /* true if we show metarecords by default */
 
+var DO_AUTHORITY_LOOKUPS = false;
+
 /* URL param names */
 var PARAM_TERM			= "t";			/* search term */
 var PARAM_STYPE		= "tp";			/* search type */

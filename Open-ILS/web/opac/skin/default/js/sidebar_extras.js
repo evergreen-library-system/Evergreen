@@ -88,9 +88,11 @@ function resultDrawSidebarTrees( stype, treeName, items, wrapperNode, destNode )
 	if(found) {
 		unHideMe(wrapperNode);
 //		if(IE) resultFireXRefSingle(treeName, xrefCache, stype);
-
 		/* XXX */ // disabled auth lookups for now
-		//resultFireXRefBatch(treeName, xrefCache, stype);
+
+		if( DO_AUTHORITY_LOOKUPS ) {
+			resultFireXRefBatch(treeName, xrefCache, stype);
+		}
 	}
 }
 
