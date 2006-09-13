@@ -404,18 +404,10 @@ patron.display.prototype = {
 									if (obj.stop_checkouts && obj.checkout_window) {
 										setTimeout( function() {
 											try {
-											netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-											if (
-												obj.checkout_window &&
-												obj.checkout_window.g &&
-												obj.checkout_window.g.checkout &&
-												typeof obj.checkout_window.g.check_disable == 'function') {
-													obj.checkout_window.g.checkout.check_disable();
-												}
-											} catch(E) {
-												alert(E);
-											}
-										}, 0);
+												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+												obj.checkout_window.g.checkout.check_disable();
+											} catch(E) { }
+										}, 1000);
 									}
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('Error showing patron alert and holds availability.',E);
