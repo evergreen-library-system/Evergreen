@@ -204,6 +204,10 @@
 		Please cancel this hold and place a new one.
 	</span>
 
+	<span id='holds_invalid_recipient' class='hide_me'>
+		The patron barcode entered as the hold recipient is invalid. 
+	</span>
+
 </div>
 
 
