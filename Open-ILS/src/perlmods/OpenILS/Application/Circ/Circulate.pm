@@ -690,6 +690,7 @@ sub run_copy_permit_scripts {
 
 sub check_copy_alert {
 	my $self = shift;
+	return undef if $self->is_renewal;
 	return OpenILS::Event->new(
 		'COPY_ALERT_MESSAGE', payload => $self->copy->alert_message)
 		if $self->copy and $self->copy->alert_message;
