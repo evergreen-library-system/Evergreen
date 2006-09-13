@@ -184,8 +184,6 @@ sub make_payments {
 
 	$apputils->commit_db_session($session);
 
-	$client->respond_complete(1);	
-
 	# ------------------------------------------------------------------------------
 	# Update the patron penalty info in the DB
 	# ------------------------------------------------------------------------------
@@ -193,6 +191,8 @@ sub make_payments {
 		authtoken => $login,
 		patronid  => $userid,
 	);
+
+	$client->respond_complete(1);	
 
 	return undef;
 }
