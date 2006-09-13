@@ -250,8 +250,8 @@
 										<td><div class='wide left'>
 											<input type='text' id='ue_suffix'/>
 											<select id='ue_suffix_selector' style='width: 6em;'
-												onclick='$("ue_suffix").value = this.options[this.selectedIndex].value'
-												onchange='$("ue_suffix").value = this.options[this.selectedIndex].value'>
+												onclick='$("ue_suffix").value = this.options[this.selectedIndex].value;$("ue_suffix").onchange();'
+												onchange='$("ue_suffix").value = this.options[this.selectedIndex].value;$("ue_suffix").onchange();'>
 												<option value=''>- Pick -</option>
 												<option value='Jr'>Jr</option>
 												<option value='Sr'>Sr</option>
