@@ -474,7 +474,11 @@ function uEditSaveUser(cloneme) {
 
 	var evt;
 	if( (evt = checkILSEvent(newuser)) || ! newuser ) {
-		if(evt) alert(js2JSON(newuser));
+		if(evt) {
+			var j = js2JSON(newuser); 
+			alert(j);
+			_debug("USER UPDATE FAILED:\n" + j);
+		}
 		return;
 	} 
 
@@ -511,8 +515,15 @@ function uEditSaveUser(cloneme) {
 
 		uEditRefresh();
 	}
+
+	uEditRefreshXUL(newuser);
 }
 
+
+function uEditRefreshXUL(newuser) {
+	if (window.xulG && typeof window.xulG.on_save == 'function') 
+		window.xulG.on_save(newuser);
+}
 
 function uEditRefresh() {
 	var href = location.href;
