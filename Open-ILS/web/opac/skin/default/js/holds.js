@@ -25,10 +25,18 @@ function _holdsHandleStaffMe() {
 function _holdsHandleStaff() {
 	var barcode = $('xul_recipient_barcode').value;
 	var user = grabUserByBarcode( G.user.session, barcode );
-	if(!user) {
-		alert('fixme: invalid user barcode: ['+barcode+']');
+
+	var evt;
+	if(evt = checkILSEvent(user)) {
+		alertILSEvent(user);
+		return;
+	}
+
+	if(!barcode || !user) {
+		alertId('holds_invalid_recipient', barcode);
 		return
 	}
+
 	holdArgs.recipient = user;
 	holdsDrawEditor();
 }
@@ -615,7 +623,7 @@ function holdsBuildHoldFromWindow() {
 
 
 	hold.pickup_lib(org); 
-	hold.request_lib(org); 
+	//hold.request_lib(org); 
 	hold.requestor(holdArgs.requestor.id());
 	hold.usr(holdArgs.recipient.id());
 	hold.target(target);
@@ -707,7 +715,6 @@ function holdCreateHold( recurse, hold ) {
 
 
 function holdProcessResult( hold, res, recurse ) {
-
 	if( res == '1' ) {
 		alert($('holds_success').innerHTML);
 
