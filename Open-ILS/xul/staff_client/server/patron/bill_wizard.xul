@@ -191,6 +191,7 @@
 						[ ses(), billing ]
 					);
 					if (typeof mb_id.ilsevent != 'undefined') throw(mb_id);
+					alert('Billing added.');
 				} else {
 					throw(xact_id);
 				}

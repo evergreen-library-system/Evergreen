@@ -483,13 +483,39 @@ var TIME = { minute : 60, hour : 60*60, day : 60*60*24, year : 60*60*24*365 };
 
 patron.util.set_penalty_css = function(patron) {
 	try {
+							removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
+							removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
+							removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
+							removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
+							removeCSSClass(document.documentElement,'NO_PENALTIES');
+							removeCSSClass(document.documentElement,'ONE_PENALTY');
+							removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
+							removeCSSClass(document.documentElement,'PATRON_HAS_ALERT');
+							removeCSSClass(document.documentElement,'PATRON_BARRED');
+							removeCSSClass(document.documentElement,'PATRON_INACTIVE');
+							removeCSSClass(document.documentElement,'PATRON_EXPIRED');
+							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+							removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_65');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_24');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_24');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_21');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_21');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_18');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_18');
+							removeCSSClass(document.documentElement,'PATRON_AGE_GE_13');
+							removeCSSClass(document.documentElement,'PATRON_AGE_LE_13');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_1');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_2');
+							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
 
 		JSAN.use('util.network'); var net = new util.network();
-		/*
-		net.simple_request('FM_MOBTS_TOTAL_HAVING_BALANCE',[ ses(), patron.id() ], function(req) {
-			if (req.getResultObject() > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
+		net.simple_request('FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',[ ses(), patron.id() ], function(req) {
+			if (req.getResultObject().length > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 		});
-		*/
 		net.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER',[ ses(), patron.id() ], function(req) {
 			var co = req.getResultObject();
 			if (co.overdue > 0 || co.long_overdue > 0) addCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
