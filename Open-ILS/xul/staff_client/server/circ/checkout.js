@@ -15,7 +15,6 @@ circ.checkout.prototype = {
 		var obj = this;
 
 		obj.patron_id = params['patron_id'];
-		obj.patron = obj.network.simple_request('FM_AU_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
@@ -247,6 +246,7 @@ circ.checkout.prototype = {
 	'print' : function(silent,f) {
 		var obj = this;
 		try {
+			obj.patron = obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
 			dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
 			obj.list.on_all_fleshed = function() {
 				try {

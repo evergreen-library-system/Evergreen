@@ -209,7 +209,7 @@ util.print.prototype = {
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%PATRON_LASTNAME%/,params.patron.family_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
-		try{b = s; s = s.replace(/%PATRON_BARCODE%/,params.patron.card().barcode());}
+		try{b = s; s = s.replace(/%PATRON_BARCODE%/,typeof params.patron.card() == 'object' ? params.patron.card().barcode() : util.functional.find_id_object_in_list( params.patron.cards(), params.patron.card() ).barcode() ) ;}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		try{b = s; s=s.replace(/%TODAY%/g,(new Date()));}
