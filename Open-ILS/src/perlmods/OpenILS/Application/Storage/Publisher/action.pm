@@ -573,7 +573,7 @@ sub generate_fines {
 				
 				my $billing_ts = DateTime->from_epoch( epoch => $last_fine + $fine_interval * $bill );
 
-				my $dow = $billing_ts->dow;
+				my $dow = $billing_ts->day_of_week_0();
 				my $dow_open = "dow_${dow}_open";
 				my $dow_close = "dow_${dow}_close";
 
