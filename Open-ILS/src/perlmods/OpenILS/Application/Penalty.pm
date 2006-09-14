@@ -84,8 +84,9 @@ sub patron_penalty {
 	$args->{fetch_patron_circ_info} = 1;
 	$args->{fetch_patron_money_info} = 1;
 	$args->{ignore_user_status} = 1;
-	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
 
+	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
+	
 	# - Load up the script and run it
 	$runner->add_path($_) for @$path;
 
@@ -106,7 +107,9 @@ sub patron_penalty {
 
 	$evt = update_patron_penalties( 
 		patron    => $args->{patron}, 
-		penalties => $all ) if $$args{update};
+		penalties => $all,
+		editor		=> $args->{editor},
+		) if $$args{update};
 
 	# - The caller won't know it failed, so log it
 	$logger->error("penalty: Error updating the patron ".
@@ -126,11 +129,10 @@ sub update_patron_penalties {
 	my %args      = @_;
 	my $patron    = $args{patron};
 	my $penalties = $args{penalties};
+	my $editor		= $args{editor} || new_editor(xact=>1);
 	my $pid = $patron->id;
 
-
 	$logger->debug("updating penalties for patron $pid => @$penalties");
-	my $editor = new_editor(xact =>1);
 
 
 	# - fetch the current penalties
