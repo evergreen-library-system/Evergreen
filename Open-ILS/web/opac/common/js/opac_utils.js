@@ -730,7 +730,7 @@ function buildOrgSelector(node) {
 			tree.addNode(node.id(), -1, node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		else {
-			tree.addNode(node.id(), findOrgUnit(node.parent_ou()).id(), node.name(), 
+			tree.addNode(node.id(), node.parent_ou(), node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
 		}
 	}
