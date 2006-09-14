@@ -458,6 +458,7 @@ function uEditDrawNetLevels(netLevels) {
 			insertSelectorVal( sel, -1, i.name(), i.id() );
 		}
 	);
+	setSelector(sel, defaultNetLevel);
 }
 
 

@@ -16,6 +16,7 @@ const CHECK_BARCODE		= 'open-ils.actor:open-ils.actor.barcode.exists';
 const defaultState		= 'GA';
 const defaultCountry		= 'USA';
 const defaultNetAccess	= 'None';
+const defaultNetLevel   = 1;
 const CSS_INVALID_DATA	= 'invalid_value';
 const ADULT_AGE			= 18;
 //const GUARDIAN_NOTE		= 'SYSTEM: Parent/Guardian';
@@ -887,6 +888,8 @@ function uEditBuildSCMField(statcat, row) {
 					/* map does not exist in the map array but now has data */
 					if(newval) { 
 						map.isnew(1);
+						if(!patron.stat_cat_entries())
+							patron.stat_cat_entries([]);
 						patron.stat_cat_entries().push(map);
 					}
 				}
