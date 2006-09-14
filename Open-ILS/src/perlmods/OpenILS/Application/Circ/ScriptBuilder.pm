@@ -46,6 +46,7 @@ sub build {
 	my $editor = $$args{editor} || new_editor(xact => 1);
 
 	$args->{_direct} = {} unless $args->{_direct};
+	$args->{editor} = $editor;
 	
 	$evt = fetch_bib_data($editor, $args);
 	push(@evts, $evt) if $evt;
