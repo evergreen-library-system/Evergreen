@@ -42,6 +42,7 @@
 				g.error.sdump('D_TRACE','my_init() for font_settings.xul');
 
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+				document.getElementById('sound').checked = typeof g.data.no_sound == 'undefined' || g.data.no_sound == 'false' || g.data.no_sound == false ? false : true;
 
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('admin/font_settings.xul',E); } catch(F) { alert(E); }
@@ -69,8 +70,38 @@
 			}
 		}
 
+		function toggle_sound() {
+			try {
+				var bool = document.getElementById('sound').checked;
+				g.data.no_sound = bool; g.data.stash('no_sound');
+				alert('Sound is now ' + (bool ? ' disabled.' : ' enabled.') ); 
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('setting sound in admin/font_settings.xul',E); } catch(F) { alert(E); }
+			}
+		}
+
+		function save_sound() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				JSAN.use('util.file'); var file = new util.file('no_sound');
+				file.write_content( 'truncate', String( document.getElementById('sound').checked ) );
+				file.close();
+				alert('Sound preference saved to file system.');
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
+			}
+		}
+
 	]]>
 	</script>
+
+	<groupbox orient="vertical">
+		<caption label="Adjust Sound"/>
+		<hbox>
+			<checkbox id="sound" label="Disable sound?" oncommand="toggle_sound();"/>
+			<button label='Save to Disk' oncommand="save_sound();"/>
+		</hbox>
+	</groupbox>
 
 	<groupbox>
 		<caption label="Adjust Global Font"/>

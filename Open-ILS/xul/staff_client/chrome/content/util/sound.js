@@ -35,17 +35,20 @@ util.sound.prototype = {
 
 	'play_url' : function(url) {
 
+		var obj = this;
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			var obj = this;
 			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 			var url2 = obj.xp_url_init( data.server + url );
 			dump('url = ' + url2 + '\n');
-			obj.SOUND.play( url2 );
+			if (typeof data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') obj.SOUND.play( url2 );
 		} catch(E) {
-			obj.SOUND.beep();
+			try { if (data.no_sound == 'undefined' || data.no_sound == false || data.no_sound == 'false') obj.SOUND.beep(); } catch(F) { 
+				dump('beep(): ' + F + '\n');
+			}
 			dump('play_url(): ' + E + '\n');
 		}
+
 	},
 
 	'good' : function(e){

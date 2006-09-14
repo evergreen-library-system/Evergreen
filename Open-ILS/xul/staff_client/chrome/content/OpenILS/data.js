@@ -261,6 +261,20 @@ OpenILS.data.prototype = {
 		}
 		file.close();
 
+		JSAN.use('util.file'); var file = new util.file('no_sound');
+		if (file._file.exists()) {
+			try {
+				var x = file.get_content();
+				if (x) {
+					obj.no_sound = x;
+					obj.stash('no_sound');
+				}
+			} catch(E) {
+				alert(E);
+			}
+		}
+		file.close();
+
 		JSAN.use('util.functional');
 		JSAN.use('util.fm_utils');
 
