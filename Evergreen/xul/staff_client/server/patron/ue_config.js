@@ -39,7 +39,7 @@ var myPerms = [
 
 var dataFields;
 const numRegex		= /^\d+$/;
-const wordRegex	= /^\w+$/;
+const wordRegex	= /^[\w-]+$/;
 const unameRegex	= /^\w[\.\w\@-]*$/;
 const ssnRegex		= /^\d{3}-\d{2}-\d{4}$/;
 const dlRegex		= /^[a-zA-Z]{2}-\w+/; /* driver's license */
