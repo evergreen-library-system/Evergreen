@@ -32,7 +32,7 @@ sub usr_total_owed {
 					SUM(COALESCE((SELECT SUM(b.amount) FROM money.billing b WHERE b.voided IS FALSE AND b.xact = x.id),0.0)) -
 						SUM(COALESCE((SELECT SUM(p.amount) FROM money.payment p WHERE p.voided IS FALSE AND p.xact = x.id),0.0))
 			  FROM	money.billable_xact x
-			  WHERE	x.usr = ?
+			  WHERE	x.usr = ? AND x.xact_finish IS NULL
 			  GROUP BY 1
 	SQL
 
