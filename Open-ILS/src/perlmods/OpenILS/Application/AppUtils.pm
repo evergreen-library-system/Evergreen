@@ -1092,7 +1092,8 @@ sub is_true {
 }
 
 
-sub patron_money_owed {
+# This logic now lives in storage
+sub __patron_money_owed {
 	my( $self, $patronid ) = @_;
 	my $ses = OpenSRF::AppSession->create('open-ils.storage');
 	my $req = $ses->request(
@@ -1106,6 +1107,18 @@ sub patron_money_owed {
 		$total += $data->balance_owed;
 	}
 	return $total;
+}
+
+sub patron_money_owed {
+	my( $self, $userid ) = @_;
+	return $self->storagereq(
+		'open-ils.storage.actor.user.total_owed', $userid);
+}
+
+sub patron_total_items_out {
+	my( $self, $userid ) = @_;
+	return $self->storagereq(
+		'open-ils.storage.actor.user.total_out', $userid);
 }
 
 
