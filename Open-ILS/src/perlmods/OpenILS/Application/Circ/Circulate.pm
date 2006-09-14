@@ -1396,7 +1396,11 @@ sub checkin_check_holds_shelf {
 		}
 	);
 
-	return 0 unless @$holds;
+	unless(@$holds) {
+		$logger->warn("circulator: copy is on-holds-shelf, but there is no hold - reshelving");
+		$self->reshelve_copy(1);
+		return 0;
+	}
 
 	my $hold = $$holds[0];
 
