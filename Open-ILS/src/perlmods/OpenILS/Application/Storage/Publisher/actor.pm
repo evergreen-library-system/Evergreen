@@ -54,7 +54,7 @@ sub usr_breakdown_out {
 	my $out_sql = <<"	SQL";
 			SELECT	id
 			  FROM	action.circulation
-			  WHERE	usr = ? AND checkin_time IS NULL AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
+			  WHERE	usr = ? AND checkin_time IS NULL AND due_date >= 'today' AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
 	SQL
 
 	my $out = actor::user->db_Main->selectcol_arrayref($out_sql, {}, $usr);
@@ -62,7 +62,7 @@ sub usr_breakdown_out {
 	my $od_sql = <<"	SQL";
 			SELECT	id
 			  FROM	action.circulation
-			  WHERE	usr = ? AND checkin_time IS NULL AND due_date < 'today'
+			  WHERE	usr = ? AND checkin_time IS NULL AND due_date < 'today' AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
 	SQL
 
 	my $od = actor::user->db_Main->selectcol_arrayref($od_sql, {}, $usr);
