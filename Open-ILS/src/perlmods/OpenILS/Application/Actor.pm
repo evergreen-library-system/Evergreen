@@ -2280,6 +2280,7 @@ sub fetch_patron_note {
 	my $patronid = $$args{patronid};
 
 	my($reqr, $evt) = $U->checkses($authtoken);
+	return $evt if $evt;
 
 	my $patron;
 	($patron, $evt) = $U->fetch_user($patronid);
