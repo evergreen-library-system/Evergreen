@@ -97,13 +97,15 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
+								var funcs = [];
 								JSAN.use('circ.util');
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									var barcode = obj.selection_list[i].barcode;
 									var checkin = circ.util.checkin_via_barcode( ses(), barcode );
-									setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 								}
 								alert('Action complete.');
+								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
 							}
@@ -113,16 +115,19 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
+								var funcs = [];
 								JSAN.use('cat.util');
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									try { 
 										var barcode = obj.selection_list[i].barcode;
 										var new_bc = cat.util.replace_barcode( barcode );
-										setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(new_bc), 0);
+										funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(new_bc) );
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
 									}
 								}
+								alert('Action complete.');
+								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Barcode replacements did not likely happen.',E);
 							}
@@ -132,11 +137,13 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
+								var funcs = [];
 								obj.spawn_copy_editor();
 								for (var i = 0; i < obj.selection_list.length; i++) {
 										var barcode = obj.selection_list[i].barcode;
-										setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+										funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 								}
+								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('with copy editor',E);
 							}
@@ -159,13 +166,15 @@ circ.copy_status.prototype = {
 					'sel_transit_abort' : [
 						['command'],
 						function() {
+							var funcs = [];
 							JSAN.use('circ.util');
 							circ.util.abort_transits(obj.selection_list);
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 							}
 							alert('Action complete.');
+							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
 					],
 					'sel_patron' : [
@@ -187,41 +196,47 @@ circ.copy_status.prototype = {
 					'sel_renew' : [
 						['command'],
 						function() {
+							var funcs = [];
 							JSAN.use('circ.util');
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var test = obj.selection_list[i].renewable;
 								var barcode = obj.selection_list[i].barcode;
 								if (test == 't') {
 									circ.util.renew_via_barcode( barcode );
-									setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 								} else {
 									alert('Item with barcode ' + barcode + ' is not circulating.');
 								}
 							}
 							alert('Action complete.');
+							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
 					],
 
 					'sel_mark_items_damaged' : [
 						['command'],
 						function() {
+							var funcs = [];
 							JSAN.use('cat.util'); JSAN.use('util.functional');
 							cat.util.mark_item_damaged( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 							}
+							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
 					],
 					'sel_mark_items_missing' : [
 						['command'],
 						function() {
+							var funcs = [];
 							JSAN.use('cat.util'); JSAN.use('util.functional');
 							cat.util.mark_item_missing( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								setTimeout( function(a) { return function() { obj.copy_status( a ); }; }(barcode), 0);
+								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 							}
+							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
 					],
 					'sel_bucket' : [
