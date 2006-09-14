@@ -22,6 +22,51 @@ __PACKAGE__->register_method(
 	method		=> 'new_usergroup_id',
 );
 
+sub usr_total_owed {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+
+	my $sql = <<"	SQL";
+			SELECT	x.usr,
+					SUM(COALESCE((SELECT SUM(b.amount) FROM money.billing b WHERE b.voided IS FALSE AND b.xact = x.id),0.0)) -
+						SUM(COALESCE((SELECT SUM(p.amount) FROM money.payment p WHERE p.voided IS FALSE AND p.xact = x.id),0.0))
+			  FROM	money.billable_xact x
+			  WHERE	x.usr = ?
+			  GROUP BY 1
+	SQL
+
+	my (undef,$val) = actor::user->db_Main->selectrow_array($sql, {}, $usr);
+
+	return $val;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.total_owed',
+	api_level	=> 1,
+	method		=> 'usr_total_owed',
+);
+
+sub usr_total_out {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+
+	my $sql = <<"	SQL";
+			SELECT	count(*)
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL
+	SQL
+
+	my ($val) = actor::user->db_Main->selectrow_array($sql, {}, $usr);
+
+	return $val;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.total_out',
+	api_level	=> 1,
+	method		=> 'usr_total_out',
+);
+
 sub calc_proximity {
 	my $self = shift;
 	my $client = shift;
