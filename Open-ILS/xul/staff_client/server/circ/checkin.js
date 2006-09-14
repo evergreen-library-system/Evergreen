@@ -259,9 +259,41 @@ circ.checkin.prototype = {
 			var auto_print = document.getElementById('checkin_auto');
 			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
-			var checkin = circ.util.checkin_via_barcode(
-				ses(), barcode, backdate, auto_print
+			circ.util.checkin_via_barcode(
+				ses(), barcode, backdate, auto_print, {
+					'disable_textbox' : function() { 
+						obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
+						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
+					},
+					'enable_textbox' : function() { 
+						obj.controller.view.checkin_barcode_entry_textbox.disabled = false; 
+						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+					},
+					'checkin_result' : function(checkin) {
+						obj.controller.view.checkin_barcode_entry_textbox.disabled = false;
+						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+						obj.checkin2(checkin,backdate);
+					}
+				}
 			);
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Something went wrong in circ.util.checkin: ',E);
+			if (typeof obj.on_failure == 'function') {
+				obj.on_failure(E);
+			}
+			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
+				obj.error.sdump('D_CIRC','circ.util.checkin: Calling external .on_failure()\n');
+				window.xulG.on_failure(E);
+			} else {
+				obj.error.sdump('D_CIRC','circ.util.checkin: No external .on_failure()\n');
+			}
+		}
+
+	},
+
+	'checkin2' : function(checkin,backdate) {
+		var obj = this;
+		try {
 			if (!checkin) return obj.on_failure(); /* circ.util.checkin handles errors and returns null currently */
 			if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
 				|| checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
@@ -303,27 +335,32 @@ circ.checkin.prototype = {
 				obj.error.sdump('D_CIRC','circ.checkin: No external .on_checkin()\n');
 			}
 
+			return true;
+
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Something went wrong in circ.checkin.checkin: ',E);
+			obj.error.standard_unexpected_error_alert('Something went wrong in circ.util.checkin2: ',E);
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
-				obj.error.sdump('D_CIRC','circ.checkin: Calling external .on_failure()\n');
+				obj.error.sdump('D_CIRC','circ.util.checkin2: Calling external .on_failure()\n');
 				window.xulG.on_failure(E);
 			} else {
-				obj.error.sdump('D_CIRC','circ.checkin: No external .on_failure()\n');
+				obj.error.sdump('D_CIRC','circ.util.checkin2: No external .on_failure()\n');
 			}
 		}
 
 	},
 
 	'on_checkin' : function() {
+		this.controller.view.checkin_barcode_entry_textbox.disabled = false;
+		this.controller.view.checkin_barcode_entry_textbox.select();
 		this.controller.view.checkin_barcode_entry_textbox.value = '';
 		this.controller.view.checkin_barcode_entry_textbox.focus();
 	},
 
 	'on_failure' : function() {
+		this.controller.view.checkin_barcode_entry_textbox.disabled = false;
 		this.controller.view.checkin_barcode_entry_textbox.select();
 		this.controller.view.checkin_barcode_entry_textbox.focus();
 	},

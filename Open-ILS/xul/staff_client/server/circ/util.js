@@ -5,7 +5,7 @@ circ.util = {};
 
 circ.util.EXPORT_OK	= [ 
 	'offline_checkout_columns', 'offline_checkin_columns', 'offline_renew_columns', 'offline_inhouse_use_columns', 
-	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 'hold_capture_via_copy_barcode',
+	'columns', 'hold_columns', 'checkin_via_barcode', 'std_map_row_to_column', 
 	'show_last_few_circs', 'abort_transits', 'transit_columns', 'renew_via_barcode',
 ];
 circ.util.EXPORT_TAGS	= { ':all' : circ.util.EXPORT_OK };
@@ -909,22 +909,41 @@ circ.util.std_map_row_to_column = function(error_value) {
 	}
 }
 
-circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
+circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,async) {
 	try {
 		JSAN.use('util.error'); var error = new util.error();
 		JSAN.use('util.network'); var network = new util.network();
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		JSAN.use('util.date');
+
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
 		var params = { 'barcode' : barcode };
 		if (backdate) params.backdate = backdate;
 
+		if (typeof async == 'object') {
+			try { async.disable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
+		}
 		var check = network.request(
 			api.CHECKIN_VIA_BARCODE.app,
 			api.CHECKIN_VIA_BARCODE.method,
 			[ session, params ],
-			null,
+			async ? function(req) { 
+				try {
+					var check = req.getResultObject();
+					var r = circ.util.checkin_via_barcode2(session,barcode,backdate,auto_print,check); 
+					if (typeof async == 'object') {
+						try { async.checkin_result(r); } catch(E) { error.sdump('D_ERROR','async.checkin_result() = ' + E); };
+					}
+				} catch(E) {
+					JSAN.use('util.error'); var error = new util.error();
+					error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
+					if (typeof async == 'object') {
+						try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
+					}
+					return null;
+				}
+			} : null,
 			{
 				'title' : 'Override Checkin Failure?',
 				'overridable_events' : [ 
@@ -949,6 +968,27 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 				}
 			}
 		);
+		if (!async) {
+			return circ.util.checkin_via_barcode2(session,barcode,backdate,auto_print,check); 
+		}
+
+
+	} catch(E) {
+		JSAN.use('util.error'); var error = new util.error();
+		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
+		if (typeof async == 'object') {
+			try { async.enable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
+		}
+		return null;
+	}
+}
+
+circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,check) {
+	try {
+		JSAN.use('util.error'); var error = new util.error();
+		JSAN.use('util.network'); var network = new util.network();
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		JSAN.use('util.date');
 
 		error.sdump('D_DEBUG','check = ' + error.pretty_print( js2JSON( check ) ) );
 
@@ -1131,68 +1171,10 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print) {
 
 		}
 
-//				case '2': case 2: /* LOST??? */
-//					JSAN.use('patron.util');
-//					var au_obj = patron.util.retrieve_au_via_id( session, check.circ.usr() );
-//					var msg = check.text + '\r\n' + 'Barcode: ' + barcode + '  Title: ' + 
-//							check.record.title() + '  Author: ' + check.record.author() + '\r\n' +
-//							'Patron: ' + au_obj.card().barcode() + ' ' + au_obj.family_name() + ', ' +
-//							au_obj.first_given_name();
-//					var pcheck = error.yns_alert(
-//						msg,
-//						'Lost Item',
-//						'Edit Copy & Patron',
-//						"Just Continue",
-//						null,
-//						"Check here to confirm this message"
-//					); 
-//					if (pcheck == 0) {
-//						//FIXME//Re-implement
-//						/*
-//						var w = mw.spawn_main();
-//						setTimeout(
-//							function() {
-//								mw.spawn_patron_display(w.document,'new_tab','main_tabbox',{'patron':au_obj});
-//								mw.spawn_batch_copy_editor(w.document,'new_tab','main_tabbox',
-//									{'copy_ids':[ check.copy.id() ]});
-//							}, 0
-//						);
-//						*/
-//					}
-//				break;
 		return check;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert('Check In Failed (in circ.util.checkin): ',E);
-		return null;
-	}
-}
-
-circ.util.hold_capture_via_copy_barcode = function ( session, barcode, retrieve_flag ) {
-	try {
-		JSAN.use('util.network'); var network = new util.network();
-		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		var params = { barcode: barcode }
-		if (retrieve_flag) { params.flesh_record = retrieve_flag; params.flesh_copy = retrieve_flag; }
-		var robj = network.request(
-			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.app,
-			api.CAPTURE_COPY_FOR_HOLD_VIA_BARCODE.method,
-			[ session, params ]
-		);
-		var check = robj.payload;
-		if (!check) {
-			check = {};
-			check.status = robj.ilsevent;
-			check.copy = new acp(); check.copy.barcode( barcode );
-		}
-		check.text = robj.textcode;
-		check.route_to = robj.route_to;
-		//check.text = 'Captured for Hold';
-		if (Number(check.route_to)) check.route_to = data.hash.aou[ check.route_to ].shortname();
-		return check;
-	} catch(E) {
-		JSAN.use('util.error'); var error = new util.error();
-		error.standard_unexpected_error_alert('Hold Capture Failed',E);
 		return null;
 	}
 }
