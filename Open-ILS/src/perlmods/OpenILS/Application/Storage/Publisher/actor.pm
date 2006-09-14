@@ -46,6 +46,79 @@ __PACKAGE__->register_method(
 	method		=> 'usr_total_owed',
 );
 
+sub usr_breakdown_out {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+
+	my $out_sql = <<"	SQL";
+			SELECT	id
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
+	SQL
+
+	my $out = actor::user->db_Main->selectcol_arrayref($out_sql, {}, $usr);
+
+	my $od_sql = <<"	SQL";
+			SELECT	id
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL AND due_date < 'today'
+	SQL
+
+	my $od = actor::user->db_Main->selectcol_arrayref($od_sql, {}, $usr);
+
+	my $lost_sql = <<"	SQL";
+			SELECT	id
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL AND stop_fines = 'LOST'
+	SQL
+
+	my $lost = actor::user->db_Main->selectcol_arrayref($lost_sql, {}, $usr);
+
+	my $cl_sql = <<"	SQL";
+			SELECT	id
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL AND stop_fines = 'CLAIMSRETURNED'
+	SQL
+
+	my $cl = actor::user->db_Main->selectcol_arrayref($cl_sql, {}, $usr);
+
+	my $lo_sql = <<"	SQL";
+			SELECT	id
+			  FROM	action.circulation
+			  WHERE	usr = ? AND checkin_time IS NULL AND stop_fines = 'LONGOVERDUE'
+	SQL
+
+	my $lo = actor::user->db_Main->selectcol_arrayref($lo_sql, {}, $usr);
+
+	if ($self->api_name =~/count$/o) {
+		return {	total	=> scalar(@$out) + scalar(@$od) + scalar(@$lost) + scalar(@$cl) + scalar(@$lo),
+					out		=> scalar(@$out),
+					overdue	=> scalar(@$od),
+					lost	=> scalar(@$lost),
+					claims_returned	=> scalar(@$cl),
+					long_overdue		=> scalar(@$lo),
+		};
+	}
+
+	return {	out		=> $out,
+				overdue	=> $od,
+				lost	=> $lost,
+				claims_returned	=> $cl,
+				long_overdue		=> $lo,
+	};
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.checked_out',
+	api_level	=> 1,
+	method		=> 'usr_breakdown_out',
+);
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.actor.user.checked_out.count',
+	api_level	=> 1,
+	method		=> 'usr_breakdown_out',
+);
+
 sub usr_total_out {
 	my $self = shift;
 	my $client = shift;
