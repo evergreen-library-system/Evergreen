@@ -1667,6 +1667,14 @@ sub checked_out {
 sub _checked_out {
 	my( $iscount, $e, $userid ) = @_;
 
+
+	my $meth = 'open-ils.storage.actor.user.checked_out';
+	$meth = "$meth.count" if $iscount;
+	return $U->storagereq($meth, $userid);
+
+# XXX Old code - moved to storage
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 	my $circs = $e->search_action_circulation( 
 		{ usr => $userid, checkin_time => undef });
 
