@@ -347,7 +347,11 @@ sub __copy_to_title {
 	my( $e, $copy ) = @_;
 	#syslog('LOG_DEBUG', "OILS: copy_to_title(%s)", $copy->id);
 	return $copy->dummy_title if $copy->call_number == -1;	
-	my $vol = $e->retrieve_asset_call_number($copy->call_number);
+
+	my $vol = (ref $copy->call_number) ?
+		$copy->call_number :
+		$e->retrieve_asset_call_number($copy->call_number);
+
 	return __volume_to_title($e, $vol);
 }
 
