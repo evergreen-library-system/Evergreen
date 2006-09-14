@@ -436,7 +436,6 @@ sub mk_script_runner {
 	my $self = shift;
 	my $args = {};
 
-	$args->{ignore_user_status} = 1 if $self->is_checkin;
 
 	my @fields = 
 		qw/copy copy_barcode copy_id patron 
@@ -444,8 +443,10 @@ sub mk_script_runner {
 
 	# Translate our objects into the ScriptBuilder args hash
 	$$args{$_} = $self->$_() for @fields;
+
+	$args->{ignore_user_status} = 1 if $self->is_checkin;
 	$$args{fetch_patron_by_circ_copy} = 1;
-	$$args{fetch_patron_circ_info} = 1;
+	$$args{fetch_patron_circ_info} = 1 unless $self->is_checkin;
 
 	# This fetches most of the objects we need
 	$self->script_runner(
@@ -456,7 +457,7 @@ sub mk_script_runner {
 
 	my @evts = @{$args->{_events}} if $args->{_events};
 
-	$logger->debug("circulator: script builder returned events: : @evts") if @evts;
+	$logger->debug("circulator: script builder returned events: @evts") if @evts;
 
 
 	if(@evts) {
@@ -1340,6 +1341,15 @@ sub do_checkin {
 		$self->push_events(OpenILS::Event->new('SUCCESS')) 
 			unless @{$self->events};
 	}
+
+
+   # ------------------------------------------------------------------------------
+   # Update the patron penalty info in the DB
+   # ------------------------------------------------------------------------------
+   $U->update_patron_penalties(
+      authtoken => $self->editor->authtoken,
+      patron    => $self->patron,
+      background  => 1 ) if $self->is_checkin;
 
 	$self->checkin_flesh_events;
 	return;
