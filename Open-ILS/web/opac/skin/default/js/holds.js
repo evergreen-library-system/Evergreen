@@ -541,10 +541,21 @@ function holdsSetSelectedFormats() {
 
 
 function holdsCheckPossibility(pickuplib, hold, recurse) {
-	var rec = holdArgs.record;
-	var type = holdArgs.type;
-	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, 
-			{ titleid : rec, patronid : G.user.id(), depth : 0, pickup_lib : pickuplib } );
+
+	var args = { 
+		titleid : holdArgs.record,
+		volume_id : holdArgs.volume,
+		copy_id : holdArgs.copy,
+		hold_type : holdArgs.type,
+		patronid : G.user.id(), 
+		depth : 0, 
+		pickup_lib : pickuplib 
+	};
+
+	_debug("hold possible args = "+js2JSON(args));
+
+	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, args );
+
 	req.request.alertEvent = false;
 	req.request._hold = hold;
 	req.request._recurse = recurse;
@@ -636,45 +647,13 @@ function holdsBuildHoldFromWindow() {
 		hold.holdable_formats(fstring);
 		hold.target(holdArgs.metarecord);
 	}
-
-	//alert(fstring); return;
-
-	/*
-	if(isXUL())		
-		hold.selection_depth(getSelectorVal($('holds_depth_selector')));
-		*/
-
 	return hold;
 }
 	
 function holdsPlaceHold(hold, recurse) {
-
 	if(!hold) return;
-
 	swapCanvas($('check_holds_box'));
-
-	if( holdArgs.type == 'M' || holdArgs.type == 'T' ) {
-		var res = holdsCheckPossibility(hold.pickup_lib(), hold, recurse);
-
-		/*
-		if(!res || checkILSEvent(res) ) {
-			if(!res) {
-				alert($('hold_not_allowed').innerHTML);
-			} else {
-				if( res.textcode == 'PATRON_BARRED' ) {
-					alertId('hold_failed_patron_barred');
-				} else {
-					alert($('hold_not_allowed').innerHTML);
-				}
-			}
-			swapCanvas($('holds_box'));
-			return;
-		}
-		*/
-
-	} else {
-		holdCreateHold(recurse, hold);
-	}
+	holdsCheckPossibility(hold.pickup_lib(), hold, recurse);
 }
 
 

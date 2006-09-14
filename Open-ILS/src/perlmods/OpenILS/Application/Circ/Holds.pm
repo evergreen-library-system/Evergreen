@@ -1060,6 +1060,8 @@ sub check_title_hold {
 
 	my %params		= %$params;
 	my $titleid		= $params{titleid} ||"";
+	my $volid		= $params{volume_id};
+	my $copyid		= $params{copy_id};
 	my $mrid			= $params{mrid} ||"";
 	my $depth		= $params{depth} || 0;
 	my $pickup_lib	= $params{pickup_lib};
@@ -1084,18 +1086,46 @@ sub check_title_hold {
 	my $request_lib = $e->retrieve_actor_org_unit($e->requestor->ws_ou)
 		or return $e->event;
 
-	if( $hold_type eq 'T' ) {
+	$logger->info("checking hold possibility with type $hold_type");
+
+	my $copy;
+	my $volume;
+	my $title;
+
+	if( $hold_type eq OILS_HOLD_TYPE_COPY ) {
+
+		$copy = $e->retrieve_asset_copy($copyid) or return $e->event;
+		$volume = $e->retrieve_asset_call_number($copy->call_number)
+			or return $e->event;
+		$title = $e->retrieve_biblio_record_entry($volume->record)
+			or return $e->event;
+		return verify_copy_for_hold( 
+			$patron, $e->requestor, $title, $copy, $pickup_lib, $request_lib );
+
+	} elsif( $hold_type eq OILS_HOLD_TYPE_VOLUME ) {
+
+		$volume = $e->retrieve_asset_call_number($volid)
+			or return $e->event;
+		$title = $e->retrieve_biblio_record_entry($volume->record)
+			or return $e->event;
+
+		return _check_volume_hold_is_possible(
+			$volume, $title, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
+
+	} elsif( $hold_type eq OILS_HOLD_TYPE_TITLE ) {
+
 		return _check_title_hold_is_possible(
 			$titleid, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib);
-	}
 
-	if( $hold_type eq 'M' ) {
+	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
+
 		my $maps = $e->search_metabib_source_map({metarecord=>$mrid});
 		my @recs = map { $_->source } @$maps;
 		for my $rec (@recs) {
 			return 1 if (_check_title_hold_is_possible(
 				$rec, $rangelib, $depth, $request_lib, $patron, $e->requestor, $pickup_lib));
 		}
+		return 0;	
 	}
 }
 
@@ -1124,26 +1154,44 @@ sub _check_title_hold_is_possible {
 			$logger->debug("Checking callnumber ".$cn->id." for hold fulfillment possibility");
 	
 			for my $copy (@{$cn->copies}) {
-	
 				$logger->debug("Checking copy ".$copy->id." for hold fulfillment possibility");
-	
-				return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
-					{	patron				=> $patron, 
-						requestor			=> $requestor, 
-						copy					=> $copy,
-						title					=> $title, 
-						title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
-						pickup_lib			=> $pickup_lib,
-						request_lib			=> $request_lib 
-					} 
-				);
-	
+				return 1 if verify_copy_for_hold( 
+					$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
 				$logger->debug("Copy ".$copy->id." for hold fulfillment possibility failed...");
 			}
 		}
 
 		$offset += $limit;
 	}
+	return 0;
+}
+
+sub _check_volume_hold_is_possible {
+	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+	my $copies = new_editor->search_asset_copy({call_number => $vol->id});
+	$logger->info("checking possibility of volume hold for volume ".$vol->id);
+	for my $copy ( @$copies ) {
+		return 1 if verify_copy_for_hold( 
+			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+	}
+	return 0;
+}
+
+
+
+sub verify_copy_for_hold {
+	my( $patron, $requestor, $title, $copy, $pickup_lib, $request_lib ) = @_;
+	$logger->info("checking possibility of copy in hold request for copy ".$copy->id);
+	return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
+		{	patron				=> $patron, 
+			requestor			=> $requestor, 
+			copy					=> $copy,
+			title					=> $title, 
+			title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
+			pickup_lib			=> $pickup_lib,
+			request_lib			=> $request_lib 
+		} 
+	);
 	return 0;
 }
 
@@ -1205,6 +1253,10 @@ sub find_nearest_permitted_hold {
 }
 
 
+
+
+
+
 __PACKAGE__->register_method(
 	method => 'all_rec_holds',
 	api_name => 'open-ils.circ.holds.retrieve_all_from_title',
@@ -1255,6 +1307,8 @@ sub all_rec_holds {
 
 	return $resp;
 }
+
+
 
 
 
