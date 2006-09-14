@@ -27,6 +27,10 @@ cat.util.replace_barcode = function(old_bc) {
 		if (!copy) throw(copy);
 
 		var new_bc = window.prompt('Enter the replacement barcode for the copy with barcode ' + old_bc + ':','','Replace Barcode');
+		if (!new_bc) {
+			alert('Rename aborted.  Blank for barcode not allowed.');
+			return;
+		}
 
 		var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
 		if (typeof test.ilsevent == 'undefined') {
