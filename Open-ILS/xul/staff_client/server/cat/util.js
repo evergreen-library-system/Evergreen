@@ -29,13 +29,13 @@ cat.util.replace_barcode = function(old_bc) {
 		var new_bc = window.prompt('Enter the replacement barcode for the copy with barcode ' + old_bc + ':','','Replace Barcode');
 		if (!new_bc) {
 			alert('Rename aborted.  Blank for barcode not allowed.');
-			return;
+			return old_bc;
 		}
 
 		var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
 		if (typeof test.ilsevent == 'undefined') {
 			alert('Rename aborted.  Another copy has that barcode');
-			return;
+			return old_bc;
 		}
 		copy.barcode(new_bc); copy.ischanged('1');
 		var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
