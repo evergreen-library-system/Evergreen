@@ -214,6 +214,10 @@ sub isxn_search {
 	my $client = shift;
 	my $isxn = lc(shift());
 
+	$isxn =~ s/^\s*//o;
+	$isxn =~ s/\s*$//o;
+	$isxn =~ s/-//o;
+
 	my $tag = ($self->api_name =~ /isbn/o) ? '020' : '022';
 
 	my $fr_table = metabib::full_rec->table;
