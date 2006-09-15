@@ -10,7 +10,7 @@ if( isTrue(isPrecat) ) {
 	result.durationRule			= '14_days_2_renew';
 	result.recurringFinesRule	= '10_cent_per_day';
 	result.maxFine					= 'overdue_mid';
-	checkStaff();
+	checkDurationExceptions();
 	return;
 }
 
@@ -62,7 +62,7 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 }
 
 
-checkStaff();
+checkDurationExceptions();
 
 log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + result.maxFine );
 
@@ -70,11 +70,17 @@ log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + resu
 
 
 
-function checkStaff() {
-	log_debug("Checking to see if patron is staff: profile = "+patronProfile);
+function checkDurationExceptions() {
+	log_debug("Checking duration rule exceptions for profile  "+patronProfile);
+
 	if( isGroupDescendant('Staff', patronProfile) || isGroupDescendant('Outreach', patronProfile) ) {
 		result.recurringFinesRule	= "staff";
 		result.maxFine					= "staff";
+	}
+
+	if( isGroupDescendant('Outreach', patronProfile) ) {
+		log_info("Outreach user found, setting duration to 2 months");
+		result.durationRule = '2_months_2_renew';
 	}
 }
 
