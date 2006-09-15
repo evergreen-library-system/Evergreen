@@ -559,7 +559,7 @@ sub generate_fines {
 			my $recuring_fine = int($c->recuring_fine * 100);
 			my $max_fine = int($c->max_fine * 100);
 
-			my ($latest_billing_ts, $latest_amount) = ('',0);;
+			my ($latest_billing_ts, $latest_amount) = ('',0);
 			for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
 	
 				if ($current_fine_total >= $max_fine) {
@@ -579,6 +579,16 @@ sub generate_fines {
 
 				if (my $h = $hoo{$c->circ_lib}) {
 					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+				}
+
+				if ($last_fine eq $due) { # first time we've billed for this
+					$dow = $billing_ts->subtract( days => 1 )->day_of_week_0();
+					$dow_open = "dow_${dow}_open";
+					$dow_close = "dow_${dow}_close";
+
+					if (my $h = $hoo{$c->circ_lib}) { # if the day before now was a closed day, skip today (adding grace)
+						next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
+					}
 				}
 
 				my $timestamptz = $billing_ts->strftime('%FT%T%z');
