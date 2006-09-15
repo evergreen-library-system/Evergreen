@@ -218,18 +218,18 @@ sub isxn_search {
 	$isxn =~ s/\s*$//o;
 	$isxn =~ s/-//o;
 
-	my $tag = ($self->api_name =~ /isbn/o) ? '020' : '022';
+	my $tag = ($self->api_name =~ /isbn/o) ? "'020' OR tag = '024'" : "'022'";
 
 	my $fr_table = metabib::full_rec->table;
 
 	my $sql = <<"	SQL";
 		SELECT	record
 		  FROM	$fr_table
-		  WHERE	tag = ?
+		  WHERE	tag = $tag
 			AND value LIKE ?
 	SQL
 
-	my $list = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, $tag, "$isxn%");
+	my $list = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$isxn%");
 	$client->respond($_) for (@$list);
 	return undef;
 }
