@@ -735,6 +735,7 @@ sub create_copy_note {
 	$note->create_date('now');
 	$note->creator($requestor->id);
 	$note->pub( ($U->is_true($note->pub)) ? 1 : 0 );
+	$note->clear_id;
 
 	my $id = $U->storagereq(
 		'open-ils.storage.direct.asset.copy_note.create', $note );
