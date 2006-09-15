@@ -542,7 +542,33 @@ sub generate_fines {
 				# XXX There is some contention over this ... it basically makes the grace period "hard" (non-fining)
 				#$last_fine += $fine_interval * $grace;
 			}
-	
+
+			if ($last_fine == $due) { # first time we've billed for this
+				if (my $h = $hoo{$c->circ_lib}) { 
+
+					$due_dt = $due_dt->add( days => 1 );
+
+					my $dow = $due_td->day_of_week_0;
+					my $dow_open = "dow_${dow}_open";
+					my $dow_close = "dow_${dow}_close";
+
+					my $count = 0;
+					while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
+
+						$grace++;
+
+						$due_dt = $due_dt->add( days => 1 );
+						$dow = $due_td->day_of_week_0;
+						$dow_open = "dow_${dow}_open";
+						$dow_close = "dow_${dow}_close";
+
+						$count++;
+						last if ($count > 6);
+					}
+				}
+			}
+
+
 			my $pending_fine_count = int( ($now - $last_fine) / $fine_interval ); 
 			if ($pending_fine_count < 1 + $grace) {
 				$client->respond( "\tNo fines to create.  " );
@@ -579,16 +605,6 @@ sub generate_fines {
 
 				if (my $h = $hoo{$c->circ_lib}) {
 					next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
-				}
-
-				if ($last_fine eq $due) { # first time we've billed for this
-					$dow = $billing_ts->subtract( days => 1 )->day_of_week_0();
-					$dow_open = "dow_${dow}_open";
-					$dow_close = "dow_${dow}_close";
-
-					if (my $h = $hoo{$c->circ_lib}) { # if the day before now was a closed day, skip today (adding grace)
-						next if ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00');
-					}
 				}
 
 				my $timestamptz = $billing_ts->strftime('%FT%T%z');
