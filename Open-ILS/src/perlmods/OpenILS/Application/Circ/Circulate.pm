@@ -828,6 +828,9 @@ sub do_checkout {
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->create_action_circulation($self->circ);
 
+	# refresh the circ to force local time zone for now
+	$self->circ($self->editor->retrieve_action_circulation($self->circ->id));
+
 	$self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
 	$self->update_copy;
 	return if $self->bail_out;
