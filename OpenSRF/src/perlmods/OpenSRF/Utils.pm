@@ -259,14 +259,15 @@ sub interval_to_seconds {
         $interval =~ s/,/ /g;
 
         my $amount = 0;
-        while ($interval =~ /\s*\+?\s*(\d+)\s*((\w{1})\w*)\s*/g) {
-                $amount += $1 if ($3 eq 's');
-                $amount += 60 * $1 if ($3 eq 'm' || $2 =~ /^mi/io);
-                $amount += 60 * 60 * $1 if ($3 eq 'h');
-                $amount += 60 * 60 * 24 * $1 if ($3 eq 'd');
-                $amount += 60 * 60 * 24 * 7 * $1 if ($3 eq 'w');
-                $amount += ((60 * 60 * 24 * 365)/12) * $1 if ($3 eq 'M' || $2 =~ /^mo/io);
-                $amount += 60 * 60 * 24 * 365 * $1 if ($2 eq 'y');
+        while ($interval =~ /\s*\+?\s*(\d+)\s*(\w+)\s*/g) {
+		my ($count, $type) = ($1, $2);
+                $amount += $count if ($type eq 's');
+                $amount += 60 * $count if ($type =~ /^m(?!o)/oi);
+                $amount += 60 * 60 * $count if ($type =~ /^h/);
+                $amount += 60 * 60 * 24 * $count if ($type =~ /^d/oi);
+                $amount += 60 * 60 * 24 * 7 * $count if ($2 =~ /^w/oi);
+                $amount += ((60 * 60 * 24 * 365)/12) * $count if ($type =~ /^mo/io);
+                $amount += 60 * 60 * 24 * 365 * $count if ($type =~ /^y/oi);
         }
         return $amount;
 }
