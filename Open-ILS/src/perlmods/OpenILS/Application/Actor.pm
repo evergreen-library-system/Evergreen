@@ -239,8 +239,6 @@ sub update_patron {
 		return $evt if $evt;
 	}
 
-	#$session = OpenSRF::AppSession->create("open-ils.storage");  # why did i put this here?
-
 	($new_patron, $evt) = _create_stat_maps($session, $user_session, $patron, $new_patron, $user_obj);
 	return $evt if $evt;
 
