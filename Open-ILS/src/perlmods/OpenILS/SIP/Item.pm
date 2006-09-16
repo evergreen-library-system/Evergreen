@@ -230,21 +230,15 @@ sub due_date {
 	my $e = OpenILS::SIP->editor();
 
 	my $circ = $e->search_action_circulation(
-		{ target_copy => $self->{copy}->id, stop_fines => undef } )->[0];
+		{ target_copy => $self->{copy}->id, checkin_time => undef } )->[0];
 
-	if(!$circ) {
-		# if not, lets look for other circs we can check in
-		$circ = $e->search_action_circulation(
-			{ 
-				target_copy => $self->{copy}->id, 
-				xact_finish => undef,
-				stop_fines	=> [ 'CLAIMSRETURNED', 'LOST', 'LONGOVERDUE' ]
-			} )->[0];
+	if( !$circ ) {
+		syslog('LOG_INFO', "OILS: No open circ found for copy");
+		return 0;
 	}
 
-	return 0 unless $circ;
 	my $due = OpenILS::SIP->format_date($circ->due_date);
-	syslog('LOG_DEBUG', "Item due date = $due");
+	syslog('LOG_DEBUG', "OILS: Found item due date = $due");
 	return $due;
 }
 
