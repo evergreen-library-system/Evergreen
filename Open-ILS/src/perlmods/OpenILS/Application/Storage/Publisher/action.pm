@@ -548,7 +548,7 @@ sub generate_fines {
 
 					$due_dt = $due_dt->add( days => 1 );
 
-					my $dow = $due_td->day_of_week_0;
+					my $dow = $due_dt->day_of_week_0;
 					my $dow_open = "dow_${dow}_open";
 					my $dow_close = "dow_${dow}_close";
 
@@ -558,7 +558,7 @@ sub generate_fines {
 						$grace++;
 
 						$due_dt = $due_dt->add( days => 1 );
-						$dow = $due_td->day_of_week_0;
+						$dow = $due_dt->day_of_week_0;
 						$dow_open = "dow_${dow}_open";
 						$dow_close = "dow_${dow}_close";
 
