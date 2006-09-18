@@ -36,6 +36,17 @@ sub resolve_param {
 	return $val;
 }
 
+sub parse_report {
+	my $self = shift;
+	my $report = shift;
+
+	$self->set_select( $report->{select} );
+	$self->set_from( $report->{from} );
+	$self->set_where( $report->{where} );
+
+	return $self;
+}
+
 sub set_select {
 	my $self = shift;
 	my @cols = @_;
