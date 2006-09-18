@@ -225,7 +225,7 @@ sub isxn_search {
 	my $sql = <<"	SQL";
 		SELECT	record
 		  FROM	$fr_table
-		  WHERE	tag = $tag
+		  WHERE	(tag = $tag)
 			AND value LIKE ?
 	SQL
 
