@@ -617,22 +617,22 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="addresses" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="cards" oils_obj:array_position="4" oils_persist:virtual="true" />
-			<field name="checkouts" oils_obj:array_position="5" oils_persist:virtual="true" />
-			<field name="hold_requests" oils_obj:array_position="6" oils_persist:virtual="true" />
-			<field name="permissions" oils_obj:array_position="7" oils_persist:virtual="true" />
-			<field name="settings" oils_obj:array_position="8" oils_persist:virtual="true" />
-			<field name="standing_penalties" oils_obj:array_position="9" oils_persist:virtual="true" />
-			<field name="stat_cat_entries" oils_obj:array_position="10" oils_persist:virtual="true" />
-			<field name="survey_responses" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field reporter:label="All Addresses" name="addresses" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field reporter:label="All Library Cards" name="cards" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field reporter:label="All Circulations" name="checkouts" oils_obj:array_position="5" oils_persist:virtual="true" />
+			<field reporter:label="All Hold Requests" name="hold_requests" oils_obj:array_position="6" oils_persist:virtual="true" />
+			<field reporter:label="All Permissions" name="permissions" oils_obj:array_position="7" oils_persist:virtual="true" />
+			<field reporter:label="All User Settings" name="settings" oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field reporter:label="Standing Penalties" name="standing_penalties" oils_obj:array_position="9" oils_persist:virtual="true" />
+			<field reporter:label="Statistical Catagorie Entries" name="stat_cat_entries" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field reporter:label="Survey Responses" name="survey_responses" oils_obj:array_position="11" oils_persist:virtual="true" />
 			<field name="ws_ou" oils_obj:array_position="12" oils_persist:virtual="true" />
 			<field name="wsid" oils_obj:array_position="13" oils_persist:virtual="true" />
 			<field reporter:label="Active" name="active" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field reporter:label="Alert Message" name="alert_message" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field reporter:label="Barred" name="barred" oils_obj:array_position="16" oils_persist:virtual="false" />
-			<field name="billing_address" oils_obj:array_position="17" oils_persist:virtual="false" />
-			<field name="card" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field reporter:label="Physical Address" name="billing_address" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field reporter:label="Current Library Card" name="card" oils_obj:array_position="18" oils_persist:virtual="false" />
 			<field reporter:label="Claims-returned Count" name="claims_returned_count" oils_obj:array_position="19" oils_persist:virtual="false" />
 			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="20" oils_persist:virtual="false" />
 			<field reporter:label="User Credit Balance" name="credit_forward_balance" oils_obj:array_position="21" oils_persist:virtual="false" />
@@ -643,54 +643,55 @@
 			<field reporter:label="Priviledge Expiration Date" name="expire_date" oils_obj:array_position="26" oils_persist:virtual="false" />
 			<field reporter:label="Last Name" name="family_name" oils_obj:array_position="27" oils_persist:virtual="false" />
 			<field reporter:label="First Name" name="first_given_name" oils_obj:array_position="28" oils_persist:virtual="false" />
-			<field name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" />
+			<field reporter:label="Home Library" name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" />
 			<field reporter:label="User ID" name="id" oils_obj:array_position="30" oils_persist:virtual="false" />
-			<field name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" />
-			<field name="ident_type2" oils_obj:array_position="32" oils_persist:virtual="false" />
+			<field reporter:label="Primary Identifcation Type" name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" />
+			<field reporter:label="Secondary Identification Type" name="ident_type2" oils_obj:array_position="32" oils_persist:virtual="false" />
 			<field reporter:label="Primary Identification" name="ident_value" oils_obj:array_position="33" oils_persist:virtual="false" />
 			<field reporter:label="Secondary Identification" name="ident_value2" oils_obj:array_position="34" oils_persist:virtual="false" />
 			<field name="last_xact_id" oils_obj:array_position="35" oils_persist:virtual="false" />
-			<field name="mailing_address" oils_obj:array_position="36" oils_persist:virtual="false" />
+			<field reporter:label="Mailing Address" name="mailing_address" oils_obj:array_position="36" oils_persist:virtual="false" />
 			<field reporter:label="Is Group Lead Account" name="master_account" oils_obj:array_position="37" oils_persist:virtual="false" />
-			<field name="net_access_level" oils_obj:array_position="38" oils_persist:virtual="false" />
+			<field reporter:label="Internet Access Level" name="net_access_level" oils_obj:array_position="38" oils_persist:virtual="false" />
 			<field reporter:label="Other Phone" name="other_phone" oils_obj:array_position="39" oils_persist:virtual="false" />
 			<field reporter:label="Password (obfuscated)" name="passwd" oils_obj:array_position="40" oils_persist:virtual="false" />
 			<field reporter:label="Photo URL" name="photo_url" oils_obj:array_position="41" oils_persist:virtual="false" />
 			<field reporter:label="Prefix" name="prefix" oils_obj:array_position="42" oils_persist:virtual="false" />
-			<field name="profile" oils_obj:array_position="43" oils_persist:virtual="false" />
+			<field reporter:label="Main (Profile) Permission Group" name="profile" oils_obj:array_position="43" oils_persist:virtual="false" />
 			<field reporter:label="Middle Name" name="second_given_name" oils_obj:array_position="44" oils_persist:virtual="false" />
-			<field name="standing" oils_obj:array_position="45" oils_persist:virtual="false" />
+			<field reporter:label="Standing (unused)" name="standing" oils_obj:array_position="45" oils_persist:virtual="false" />
 			<field reporter:label="Suffix/Title" name="suffix" oils_obj:array_position="46" oils_persist:virtual="false" />
 			<field reporter:label="Is Super User" name="super_user" oils_obj:array_position="47" oils_persist:virtual="false" />
-			<field name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" />
+			<field reporter:label="Family Linkage or other Group" name="usrgroup" oils_obj:array_position="48" oils_persist:virtual="false" />
 			<field reporter:label="OPAC/Staff Client User Name" name="usrname" oils_obj:array_position="49" oils_persist:virtual="false" />
-			<field name="groups" oils_obj:array_position="50" oils_persist:virtual="true" />
+			<field reporter:label="Additional Permission Groups" name="groups" oils_obj:array_position="50" oils_persist:virtual="true" />
 			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="51" oils_persist:virtual="false" />
+			<field reporter:label="User Notes" name="notes" oils_obj:array_position="52" oils_persist:virtual="true" />
 		</fields>
 		<links>
-			<link reporter:label="Internet Access Level" field="net_access_level" reltype="has_a" key="id" map="" class="cnal"/>
-			<link reporter:label="Main (Profile) Permission Group" field="profile" reltype="has_a" key="id" map="" class="pgt"/>
-			<link reporter:label="Primary Identifcation Type" field="ident_type" reltype="has_a" key="id" map="" class="cit"/>
-			<link reporter:label="Physical Address" field="billing_address" reltype="has_a" key="id" map="" class="aua"/>
-			<link reporter:label="Mailing Address" field="mailing_address" reltype="has_a" key="id" map="" class="aua"/>
-			<link reporter:label="Home Library" field="home_ou" reltype="has_a" key="id" map="" class="aou"/>
-			<link reporter:label="Standing (unused)" field="standing" reltype="has_a" key="id" map="" class="cst"/>
-			<link reporter:label="Current Library Card" field="card" reltype="has_a" key="id" map="" class="ac"/>
-			<link reporter:label="Secondary Identification Type" field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
-			<link reporter:label="Statistical Catagorie Entries" field="stat_cat_entries" reltype="has_many" key="target_usr" map="" class="actscecm"/>
-			<link reporter:label="Additional Permission Groups" field="groups" reltype="has_many" key="usr" map="grp" class="pugm"/>
-			<link reporter:label="Family Linkage or other Group" field="usrgroup" reltype="has_many" key="usrgroup" map="" class="au"/>
-			<link reporter:label="All Circulations" field="checkouts" reltype="has_many" key="usr" map="" class="circ"/>
-			<link reporter:label="All Hold Requests" field="hold_requests" reltype="has_many" key="usr" map="" class="circ"/>
-			<link reporter:label="All Permissions" field="permissions" reltype="has_many" key="usr" map="perm" class="pupm"/>
-			<link reporter:label="All User Settings" field="settings" reltype="has_many" key="usr" map="" class="aus"/>
+			<link field="net_access_level" reltype="has_a" key="id" map="" class="cnal"/>
+			<link field="profile" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="ident_type" reltype="has_a" key="id" map="" class="cit"/>
+			<link field="billing_address" reltype="has_a" key="id" map="" class="aua"/>
+			<link field="mailing_address" reltype="has_a" key="id" map="" class="aua"/>
+			<link field="home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="standing" reltype="has_a" key="id" map="" class="cst"/>
+			<link field="card" reltype="has_a" key="id" map="" class="ac"/>
+			<link field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
+			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="" class="actscecm"/>
+			<link field="groups" reltype="has_many" key="usr" map="grp" class="pugm"/>
+			<link field="usrgroup" reltype="has_many" key="usrgroup" map="" class="au"/>
+			<link field="checkouts" reltype="has_many" key="usr" map="" class="circ"/>
+			<link field="hold_requests" reltype="has_many" key="usr" map="" class="circ"/>
+			<link field="permissions" reltype="has_many" key="usr" map="perm" class="pupm"/>
+			<link field="settings" reltype="has_many" key="usr" map="" class="aus"/>
 			<link reporter:label="Billable Tranastactions" field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
-			<link reporter:label="Standing Penalties" field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
-			<link reporter:label="All Addresses" field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
-			<link reporter:label="Survey Responses" field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
-			<link reporter:label="User Notes" field="notes" reltype="has_many" key="usr" map="" class="aun"/>
+			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
+			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
+			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
+			<link field="notes" reltype="has_many" key="usr" map="" class="aun"/>
 			<link reporter:label="Check-ins Performed as Staff" field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
-			<link reporter:label="All Library Cards" field="cards" reltype="has_many" key="usr" map="" class="ac"/>
+			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
 			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 		</links>
 	</class>
@@ -967,47 +968,47 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field reporter:label="Check In Library" name="checkin_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field reporter:label="Check In Staff" name="checkin_staff" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Check In Date/Time" name="checkin_time" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field reporter:label="Circulating Staff" name="circ_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field reporter:label="Desk Renewal" name="desk_renewal" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field reporter:label="Due Date/Time" name="due_date" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field reporter:label="Circulation Duration" name="duration" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field reporter:label="Circ Duration Rule" name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
 			<field reporter:label="Fine Interval" name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" />
 			<field reporter:label="Circ ID" name="id" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field reporter:label="Max Fine Amount" name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" />
-			<field name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field reporter:label="OPAC Renewal" name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" />
 			<field reporter:label="Phone Renewal" name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" />
 			<field reporter:label="Recuring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" />
-			<field name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field reporter:label="Recuring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
 			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" />
-			<field name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
-			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field reporter:label="Circulating Item" name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field reporter:label="Patron" name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field reporter:label="Check Out Date/Time" name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" />
-			<field name="billings" oils_obj:array_position="27" oils_persist:virtual="true" />
-			<field name="payments" oils_obj:array_position="28" oils_persist:virtual="true" />
+			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="27" oils_persist:virtual="true" />
+			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="28" oils_persist:virtual="true" />
 			<field name="billable_transaction" oils_obj:array_position="29" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
-			<link reporter:label="Circulating Staff" field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
-			<link reporter:label="Check In Library" field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link reporter:label="Circulating Item" field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
-			<link reporter:label="Check In Staff" field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
-			<link reporter:label="Patron" field="usr" reltype="has_a" key="id" map="" class="au"/>
-			<link reporter:label="Circulating Library" field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link reporter:label="Transaction Payments" field="payments" reltype="has_many" key="xact" map="" class="mp"/>
-			<link reporter:label="TransactionBillings" field="billings" reltype="has_many" key="xact" map="" class="mb"/>
-			<link reporter:label="Circ Duration RUle" field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
-			<link reporter:label="Max Fine Rule" field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
-			<link reporter:label="Recuring Fine Rule" field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
+			<link field="circ_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="checkin_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
+			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
+			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
 		</links>
 	</class>
 	<class id="ccnbi" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
