@@ -130,9 +130,11 @@ sub check_age_protect {
 		OpenSRF::Utils::clense_ISO8601($copy->create_date));
 	my $age = $create_date->epoch;
 
-	$logger->debug("age_protect create_date = $create_date : age=$age, start_date=$start_date");
+	$logger->info("age_protect interval=$interval, create_date=$create_date, age=$age, start_date=$start_date");
 
-	unless( $start_date < $age ) {
+	if( $start_date < $age ) { 
+		# if start date is older (less than) than the age of the item, 
+		# the item falls within the age protect range
 		$logger->info("age_protect prevents copy from having a hold placed on it: ".$copy->id);
 		return OpenILS::Event->new('ITEM_AGE_PROTECTED', copy => $copy->id );
 	}
