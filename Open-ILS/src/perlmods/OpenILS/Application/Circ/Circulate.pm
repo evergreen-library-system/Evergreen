@@ -1284,6 +1284,12 @@ sub do_checkin {
 			$self->checkin_flesh_events;
 			return;
 		} 
+
+	} elsif( $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_IN_TRANSIT ) {
+		$logger->warn("circulator: we have a copy ".$self->copy->barcode.
+			" that is in-transit, but there is no transit.. repairing");
+		$self->reshelve_copy(1);
+		return if $self->bail_out;
 	}
 
 	if( $self->is_renewal ) {
