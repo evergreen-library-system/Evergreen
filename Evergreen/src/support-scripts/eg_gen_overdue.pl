@@ -90,7 +90,6 @@ sub print_notices {
 			{
 				checkin_time => undef,
 				due_date => { between => [ $start, $end ] },
-			#	stop_fines => { 'not in' => [ OILS_STOP_FINES_LOST, OILS_STOP_FINES_CLAIMSRETURNED ] }
 			},
 			{ order_by => { circ => 'usr, circ_lib' } }
 		];
@@ -159,9 +158,14 @@ sub print_notice {
 	my $s1 = scalar(@$circs);
 	
 	# we don't charge for lost or claimsreturned
-	$circs = [ grep {
-		$_ ne OILS_STOP_FINES_LOST and
-		$_ ne OILS_STOP_FINES_CLAIMSRETURNED } @$circs ];
+	$circs = [ 
+		grep {
+			!$_->stop_fines or (
+				$_->stop_fines ne OILS_STOP_FINES_LOST and
+				$_->stop_fines ne OILS_STOP_FINES_CLAIMSRETURNED 
+			)
+		} @$circs 
+	];
 
 	return unless @$circs;
 
