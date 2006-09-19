@@ -271,9 +271,17 @@ function findTreeItemById( tree, id ) {
 matching array items otherwise */
 function grep( arr, func ) {
 	var results = [];
-	for( var i in arr ) {
-		if( func(arr[i]) ) 
-			results.push(arr[i]);
+	if(!arr) return null;
+	if( arr.constructor == Array ) {
+		for( var i = 0; i < arr.length; i++ ) {
+			if( func(arr[i]) ) 
+				results.push(arr[i]);
+		}
+	} else {
+		for( var i in arr ) {
+			if( func(arr[i]) ) 
+				results.push(arr[i]);
+		}
 	}
 	if(results.length > 0) return results;
 	return null;
