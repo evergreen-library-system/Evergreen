@@ -28,7 +28,10 @@ use OpenILS::Const qw/:const/;
 use OpenILS::Utils::Fieldmapper;
 use Email::Send;
 use Data::Dumper;
+use OpenSRF::EX qw/:try/;
 my $U = 'OpenILS::Application::AppUtils';
+
+use open ':utf8';
 
 
 __PACKAGE__->register_method(
@@ -166,9 +169,18 @@ sub send_email {
 
 	my $sender = Email::Send->new({mailer => 'SMTP'});
 	$sender->mailer_args([Host => $smtp]);
-	my $stat = $sender->send($text);
 
-	if( $stat->type eq 'success' ) {
+	my $stat;
+	my $err;
+
+	try {
+		$stat = $sender->send($text);
+	} catch Error with {
+		$err = $stat = shift;
+		$logger->error("Email notify caught error: $err");
+	};
+
+	if( !$err and $stat and $stat->type eq 'success' ) {
 		$logger->info("hold_notify: successfully sent hold notification");
 		return 1;
 	} else {
