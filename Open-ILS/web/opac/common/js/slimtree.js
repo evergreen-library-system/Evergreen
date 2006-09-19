@@ -44,12 +44,16 @@ SlimTree.prototype.addNode = function( id, pid, name, action, title ) {
 		return;
 	}
 
+	if(!action)
+		action='javascript:'+this.handle+'.toggle("'+id+'");';
+
 	var div			= elem('div',{id:id});
 	var topdiv		= elem('div',{style:'vertical-align:middle'});
 	var link			= elem('a', {id:'stlink_' + id}); 
 	var actionref	= elem('a',{href:action}, name);
 	var contdiv		= elem('div',{id:'stcont_' + id});
-	if(action) actionref.setAttribute('href',action);
+
+	actionref.setAttribute('href',action);
 	if(title) actionref.setAttribute('title',title);
 	else actionref.setAttribute('title',name);
 
