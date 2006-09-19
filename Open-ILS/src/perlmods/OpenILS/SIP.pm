@@ -74,9 +74,12 @@ sub to_bool {
 }
 
 sub editor {
-	$editor = make_editor() unless $editor;
-	return $editor;
+	return $editor 
+		if $editor and $editor->{session}
+		and $editor->session->connected;
+	return $editor = make_editor();
 }
+
 sub reset_editor {
 	$editor = undef;
 	return editor();
