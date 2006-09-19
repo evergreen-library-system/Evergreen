@@ -641,6 +641,7 @@ function uEditMarkCardLost() {
 			field.widget.node.value = "";
 			field.widget.node.onchange();
 			field.object = newcard;
+			_debug("uEditMarkCardLost(): created new card object for user");
 		}
 	}
 }
