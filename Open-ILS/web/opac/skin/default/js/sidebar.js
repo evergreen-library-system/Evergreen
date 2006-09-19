@@ -181,7 +181,8 @@ function buildEGGalLink() {
 	if( getOrigLocation() ) return;
 	if(!$('eg_gal_link')) return;
 
-	var link = 'http://demo.galib.uga.edu/express?pinesid=';
+	//var link = 'http://demo.galib.uga.edu/express?pinesid=';
+	var link = 'http://www.galileo.usg.edu/express?pinesid=';
 	if(grabUser()) {
 		$('eg_gal_link').setAttribute('href', link + G.user.session);
 		return;
