@@ -81,7 +81,7 @@ sub AUTOLOAD {
 	$name =~ s/.*://o;   
 
 	unless (grep { $_ eq $name } @AUTOLOAD_FIELDS) {
-		$logger->error("$type: invalid autoload field: $name");
+		$logger->error("hold_notify: $type: invalid autoload field: $name");
 		die "$type: invalid autoload field: $name\n" 
 	}
 
@@ -123,7 +123,7 @@ sub send_email_notify {
 	}
 
 	unless ($U->is_true($self->hold->email_notify)) {
-		$logger->info("not sending hold notification becaue email_notify is false");
+		$logger->info("hold_notify: not sending hold notification becaue email_notify is false");
 		return 0;
 	}
 
@@ -139,7 +139,7 @@ sub send_email_notify {
 	my $str = $self->flesh_template($self->load_template($template));
 
 	unless( $str ) {
-		$logger->error("No email notifiy template found - cannot notify");
+		$logger->error("hold_notify: No email notifiy template found - cannot notify");
 		return 0;
 	}
 
@@ -177,7 +177,7 @@ sub send_email {
 		$stat = $sender->send($text);
 	} catch Error with {
 		$err = $stat = shift;
-		$logger->error("Email notify caught error: $err");
+		$logger->error("hold_notify: Email notify failed with error: $err");
 	};
 
 	if( !$err and $stat and $stat->type eq 'success' ) {
@@ -224,7 +224,7 @@ sub extract_data {
 			$e->retrieve_actor_user_address($patron->billing_address)) {
 		unless( $p_addr = 
 				$e->retrieve_actor_user_address($patron->mailing_address)) {
-			$logger->warn("No address for user ".$patron->id);
+			$logger->warn("hold_notify: No address for user ".$patron->id);
 			$p_addrs = "";
 		}
 	}
@@ -282,7 +282,7 @@ sub load_template {
 	my $template = shift;
 
 	unless( open(F, $template) ) {
-		$logger->error("Unable to open hold notification template file: $template");
+		$logger->error("hold_notify: Unable to open hold notification template file: $template");
 		return undef;
 	}
 
