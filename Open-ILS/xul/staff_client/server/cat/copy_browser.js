@@ -1081,7 +1081,7 @@ cat.copy_browser.prototype = {
 		
 			var acn_tree_list;
 			if ( obj.org_ids.indexOf( org.id() ) == -1 ) {
-				if ( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) {
+				if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
 					data.row.my.volume_count = '0';
 					data.row.my.copy_count = '<0>';
 				} else {
