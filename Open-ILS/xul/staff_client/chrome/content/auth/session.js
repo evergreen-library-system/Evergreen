@@ -63,12 +63,12 @@ auth.session.prototype = {
 							this.key = robj.payload.authtoken;
 							this.authtime = robj.payload.authtime;
 						} else {
-							this.error.standard_unexpected_error_alert('auth.session.init',robj);
+							//this.error.standard_unexpected_error_alert('auth.session.init',robj);
 							throw(robj);
 						}
 					break;
 					default:
-					obj.error.standard_unexpected_error_alert('auth.session.init',robj);
+					//obj.error.standard_unexpected_error_alert('auth.session.init',robj);
 					throw(robj);
 					break;
 				}
@@ -88,7 +88,8 @@ auth.session.prototype = {
 			}
 
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error on auth.session.init()',E); 
+			alert('Login failed.  Please check your Server Hostname, Username, Password, and your CAPS LOCK key.');
+			//obj.error.standard_unexpected_error_alert('Error on auth.session.init()',E); 
 
 			if (typeof this.on_init_error == 'function') {
 				this.error.sdump('D_AUTH','auth.session.on_init_error()\n');
