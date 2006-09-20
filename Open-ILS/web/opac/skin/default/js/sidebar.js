@@ -40,6 +40,7 @@ function initSideBar() {
 		if( getRtype() == RTYPE_MRID )
 			$("sidebar_title_group_results").setAttribute("href", prevMResults());
 		else hideMe($("sidebar_title_group_results").parentNode);
+	}
 
 	unHideMe(G.ui.sidebar[page]);
 	addCSSClass(G.ui.sidebar[page], "sidebar_item_active");
