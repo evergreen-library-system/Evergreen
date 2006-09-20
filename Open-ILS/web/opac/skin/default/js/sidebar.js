@@ -25,17 +25,21 @@ function initSideBar() {
 		unHideMe(G.ui.sidebar[MRESULT]);
 		if( getRtype() == RTYPE_MRID )
 			$("sidebar_title_group_results").setAttribute("href", prevMResults());
+		else hideMe($("sidebar_title_group_results").parentNode);
 	}
 
 	if( page == RDETAIL ) {
 		unHideMe($("sidebar_results_wrapper"));
-		if( getRtype() == RTYPE_MRID )
-			$("sidebar_title_group_results").setAttribute("href", prevMResults());
+
+
 		unHideMe(G.ui.sidebar[MRESULT]);
 		if(getRtype())
 			$("sidebar_title_results").setAttribute("href", prevRResults());
 		unHideMe(G.ui.sidebar[RRESULT]);
-	}
+
+		if( getRtype() == RTYPE_MRID )
+			$("sidebar_title_group_results").setAttribute("href", prevMResults());
+		else hideMe($("sidebar_title_group_results").parentNode);
 
 	unHideMe(G.ui.sidebar[page]);
 	addCSSClass(G.ui.sidebar[page], "sidebar_item_active");
