@@ -23,13 +23,14 @@ function oilsRptMakeLabel(path) {
 
 
 /* adds an item to the display window */
-function oilsAddRptDisplayItem(val) {
-	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, val) ) 
+function oilsAddRptDisplayItem(val, name) {
+	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, val, name) ) 
 		return;
 
 	/* add the selected columns to the report output */
 	var splitp = oilsRptSplitPath(val);
-	oilsRpt.select.push( {relation:splitp[0], column:splitp[1]} );
+	name = (name) ? name : splitp[1];
+	oilsRpt.select.push( {relation:splitp[0], column:splitp[1], alias:name} );
 	oilsRptDebug();
 }
 
@@ -76,8 +77,8 @@ function oilsDelSelectedFilterItems() {
 
 
 /* adds an item to the display window */
-function oilsAddSelectorItem(sel, val) {
-	var name = oilsRptMakeLabel(val);
+function oilsAddSelectorItem(sel, val, name) {
+	name = (name) ? name : oilsRptMakeLabel(val);
 	_debug("adding selector item "+name+' = ' +val);
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
@@ -110,6 +111,12 @@ function oilsDelSelectedItems(sel) {
 	return list;
 }
 
+function oilsRptHideEditorDivs() {
+	hideMe($('oils_rpt_tform_div'));
+	hideMe($('oils_rpt_filter_div'));
+	hideMe($('oils_rpt_agg_filter_div'));
+}
+
 
 function oilsRptDrawDataWindow(path) {
 
@@ -120,9 +127,8 @@ function oilsRptDrawDataWindow(path) {
 	_debug("setting update data window for column "+col+' on class '+cls);
 
 	var div = $('oils_rpt_column_editor');
-
 	unHideMe(div);
-	/* don't let them see it until the position is fully determined */
+	/* don't let them see the floating div until the position is fully determined */
 	div.style.visibility='hidden'; 
 
 	oilsRptDrawTransformWindow(path, col, cls, field);
@@ -133,6 +139,15 @@ function oilsRptDrawDataWindow(path) {
 
 	/* focus after all the shifting to make sure the div is at least visible */
 	$('oils_rpt_tform_label_input').focus();
+
+
+	/* give the tab links behavior */
+	$('oils_rpt_tform_tab').onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_tform_div'))};
+	$('oils_rpt_filter_tab').onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_filter_div'))};
+	$('oils_rpt_agg_filter_tab').onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_agg_filter_div'))};
 }
 
 

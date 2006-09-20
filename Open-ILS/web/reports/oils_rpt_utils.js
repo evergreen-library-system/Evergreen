@@ -21,7 +21,10 @@ function oilsRptDebug() {
 	_debug(oilsRpt.toString());
 	_debug("\n-------------------------------------\n");
 	if(!oilsRptDebugEnabled) return;
-	//oilsRptDebugWindow;
+	if(!oilsRptDebugWindow)
+		oilsRptDebugWindow = window.open('','Debug','resizable,width=700,height=500,scrollbars=1'); 
+
+	oilsRptDebugWindow.document.body.innerHTML = oilsRpt.toHTMLString();
 }
 
 /* pretty print JSON */
