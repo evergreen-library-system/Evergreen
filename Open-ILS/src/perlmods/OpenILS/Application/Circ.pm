@@ -813,9 +813,10 @@ sub copy_details {
 
 	my $hold = $e->search_action_hold_request(
 		{ 
-			current_copy => $copy_id, 
-			capture_time => { "!=" => undef },
-			fulfillment_time => undef,
+			current_copy		=> $copy_id, 
+			capture_time		=> { "!=" => undef },
+			fulfillment_time	=> undef,
+			cancel_time			=> undef,
 		}
 	)->[0];
 
