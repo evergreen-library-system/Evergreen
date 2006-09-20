@@ -69,6 +69,9 @@
 					'src',
 					urls.XUL_OFFLINE_GENERATE_WIDGETS	
 				);
+
+				document.getElementById('caption').setAttribute('label','Data loaded.');
+
 				xulG.window.open(urls.XUL_MENU_FRAME
 					+ '?server='+window.escape(xulG.url),
 					'main'+xulG.window.window_name_increment(),'chrome,resizable'
@@ -81,8 +84,9 @@
 	]]>
 	</script>
 
-	<groupbox id="data_groupbox" flex="1"> 
-		<caption label="Loading data..."/> 
+	<groupbox id="data_groupbox" flex="1" class="my_overflow"> 
+		<caption id="caption" label="Loading data..."/> 
+		<description id="data_progress"/>
 		<iframe id="iframe" />
 	</groupbox>
 

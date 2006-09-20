@@ -17,6 +17,17 @@ OpenILS.data.prototype = {
 
 	'temp' : '',
 
+	'data_progress' : function(msg) {
+		try {
+			var x = document.getElementById('data_progress');
+			if (x) {
+				x.appendChild( document.createTextNode( msg ) );
+			}
+		} catch(E) {
+			this.error.sdump('D_ERROR',msg + '\n' + E);
+		}
+	},
+
 	'init' : function (params) {
 
 		try {
@@ -232,6 +243,7 @@ OpenILS.data.prototype = {
 
 		JSAN.use('util.file'); var file = new util.file('print_list_templates');
 		obj.print_list_defaults();
+		obj.data_progress('Default print templates set. ');
 		if (file._file.exists()) {
 			try {
 				var x = file.get_object();
@@ -240,6 +252,7 @@ OpenILS.data.prototype = {
 						obj.print_list_templates[i] = x[i];
 					}
 					obj.stash('print_list_templates');
+					obj.data_progress('Saved print templates retrieved from file. ');
 				}
 			} catch(E) {
 				alert(E);
@@ -254,6 +267,7 @@ OpenILS.data.prototype = {
 				if (x) {
 					obj.global_font_adjust = x;
 					obj.stash('global_font_adjust');
+					obj.data_progress('Saved font settings retrieved from file. ');
 				}
 			} catch(E) {
 				alert(E);
@@ -268,6 +282,7 @@ OpenILS.data.prototype = {
 				if (x) {
 					obj.no_sound = x;
 					obj.stash('no_sound');
+					obj.data_progress('Saved sound settings retrieved from file. ');
 				}
 			} catch(E) {
 				alert(E);
@@ -311,6 +326,7 @@ OpenILS.data.prototype = {
 					obj.list[classname] = robj;
 					obj.error.sdump_levels.D_SES_RESULT = level;
 					convert();
+					obj.data_progress('Retrieved list for ' + classname + ' objects. ');
 					// if cacheable, store an offline copy
 					/* FIXME -- we're going to revisit caching and do it differently
 					if (cacheable) {
@@ -347,6 +363,7 @@ OpenILS.data.prototype = {
 					var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[]);
 					if (typeof robj.ilsevent != 'undefined') throw(robj);
 					obj.list.circ_modifier = robj;
+					obj.data_progress('Retrieved circ modifier list. ');
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);
@@ -361,6 +378,7 @@ OpenILS.data.prototype = {
 					var robj = obj.network.simple_request('BILLING_TYPE_LIST',[]);
 					if (typeof robj.ilsevent != 'undefined') throw(robj);
 					obj.list.billing_type = robj;
+					obj.data_progress('Retrieved billing type list. ');
 				} catch(E) {
 					var error = 'Error: ' + js2JSON(E);
 					obj.error.sdump('D_ERROR',error);

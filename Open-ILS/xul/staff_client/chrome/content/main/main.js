@@ -108,7 +108,9 @@ function main_init() {
 			}
 
 			if (G.data.ws_info && G.data.ws_info[G.auth.controller.view.server_prompt.value]) {
-				var deck = document.getElementById('main_deck');
+				JSAN.use('util.widgets');
+				var deck = document.getElementById('progress_space');
+				util.widgets.remove_children( deck );
 				var iframe = document.createElement('iframe'); deck.appendChild(iframe);
 				iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
 				iframe.contentWindow.xulG = xulG;
