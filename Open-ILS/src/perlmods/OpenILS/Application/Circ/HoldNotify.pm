@@ -127,11 +127,11 @@ sub send_email_notify {
 		return 0;
 	}
 
-	$logger->info("hold_notify: attempting email notify on hold ".$self->hold->id);
-
 	return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS')
 		unless $self->patron->email and
 		$self->patron->email =~ /.+\@.+/; # see if it's remotely email-esque
+
+	$logger->info("hold_notify: attempting email notify on hold ".$self->hold->id);
 
 	my $sclient = OpenSRF::Utils::SettingsClient->new;
 	$self->settings_client($sclient);
