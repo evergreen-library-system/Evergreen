@@ -69,6 +69,8 @@ sub do_checkout {
 
 	my $key;
 
+	syslog('LOG_DEBUG', "OILS: Checkout permit returned event: " . JSON->perl2JSON($resp));
+
 	if( @$resp == 1 and ! $U->event_code($$resp[0]) ) {
 		$key = $$resp[0]->{payload};
 		syslog('LOG_INFO', "OILS: circ permit key => $key");
@@ -107,6 +109,9 @@ sub do_checkout {
 	$resp = $U->simplereq(
 		'open-ils.circ',
 		'open-ils.circ.checkout', $self->{authtoken}, $args );
+
+
+	syslog('LOG_DEBUG', "OILS: Checkout returned event: " . JSON->perl2JSON($resp));
 
 	# XXX Check for events
 	if( $resp ) {
