@@ -216,7 +216,7 @@ sub isxn_search {
 
 	$isxn =~ s/^\s*//o;
 	$isxn =~ s/\s*$//o;
-	$isxn =~ s/-//o;
+	$isxn =~ s/-//o if ($self->api_name =~ /isbn/o);
 
 	my $tag = ($self->api_name =~ /isbn/o) ? "'020' OR tag = '024'" : "'022'";
 
