@@ -122,7 +122,11 @@
 					$('patron_name').setAttribute('value', au_obj.family_name() + ', ' + au_obj.first_given_name() + ' : ' + au_obj.card().barcode() );
 
 				} else {
-					$('hold_caption').setAttribute('label','This item is not captured for a hold.');
+					if (g.copy.status() == 8 /* ON HOLDS SHELF */) {
+						$('hold_caption').setAttribute('label','This item is not captured for a hold, however its status is incorrectly set to "On Holds Shelf".  Please check this item in to correct the status.');
+					} else {
+						$('hold_caption').setAttribute('label','This item is not captured for a hold.');
+					}
 					$('hold').hidden = true;
 				}
 
