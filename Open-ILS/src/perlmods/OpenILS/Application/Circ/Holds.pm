@@ -448,8 +448,6 @@ sub cancel_hold {
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
 			my $hid = $hold->id;
-			# We don't want the copy to remain "in transit"
-			$copy->status(OILS_COPY_STATUS_RESHELVING);
 			$logger->warn("! canceling hold [$hid] that is in transit");
 			my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id},{idlist=>1})->[0];
 
@@ -462,6 +460,14 @@ sub cancel_hold {
 					return $evt unless "$evt" eq 1;
 				}
 			}
+
+			# We don't want the copy to remain "in transit" or to recover 
+			# any previous statuses
+			$logger->info("setting copy back to reshelving in hold+transit cancel");
+			$copy->status(OILS_COPY_STATUS_RESHELVING);
+			$copy->editor($e->requestor->id);
+			$copy->edit_date('now');
+			$e->update_asset_copy($copy) or return $e->event;
 		}
 	}
 
