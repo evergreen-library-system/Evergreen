@@ -705,7 +705,7 @@ function holdProcessResult( hold, res, recurse ) {
 		}
 
 		if( grep(res, function(e) { return (e.textcode == 'HOLD_EXISTS'); }) ) {
-			if( fetchPermOrgs('HOLD_EXISTS')[0] ) {
+			if( fetchPermOrgs('HOLD_EXISTS.override')[0] ) {
 				if( confirm($('hold_dup_exists_override').innerHTML) ) {
 					return holdsPlaceHold(hold, true);
 				}
