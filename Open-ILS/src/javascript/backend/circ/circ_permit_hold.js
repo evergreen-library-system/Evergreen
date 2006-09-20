@@ -37,6 +37,7 @@ if( ( marcItemType == 'g' ||
 		mod == 'av' || 
 		mod == 'cd' || 
 		mod == 'dvd' || 
+		mod == 'video-long' || 
 		mod == 'video' ) ) {
 
 	isAnc = hasCommonAncestor( copy.circ_lib.id, patron.home_ou.id, 1 );
