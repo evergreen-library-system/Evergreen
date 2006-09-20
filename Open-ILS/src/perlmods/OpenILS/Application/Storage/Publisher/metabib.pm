@@ -1139,11 +1139,17 @@ sub postfilter_search_class_fts {
 			(SUM( ( $relevance )  * ( $bonus_list ) )/COUNT(m.source))
 	RANK
 
+	my $string_default_sort = 'zzzz';
+	$string_default_sort = 'AAAA' if ($sort_dir eq 'DESC');
+
+	my $number_default_sort = '9999';
+	$number_default_sort = '0000' if ($sort_dir eq 'DESC');
+
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'$number_default_sort')::INT
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = mr.master_record
 				  	AND frp.tag = '260'
@@ -1162,7 +1168,7 @@ sub postfilter_search_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'$string_default_sort')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
@@ -1173,7 +1179,7 @@ sub postfilter_search_class_fts {
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
 			( FIRST((
-				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(fra.value),'$string_default_sort')
 				  FROM	$metabib_full_rec fra
 				  WHERE	fra.record = mr.master_record
 				  	AND fra.tag LIKE '1%'
@@ -1571,10 +1577,17 @@ sub postfilter_search_multi_class_fts {
 	my $relevance = join (' + ', @rank_list);
 	$relevance = "SUM( ($relevance) * ($bonuses) )/COUNT(DISTINCT smrs.source)";
 
+	my $string_default_sort = 'zzzz';
+	$string_default_sort = 'AAAA' if ($sort_dir eq 'DESC');
+
+	my $number_default_sort = '9999';
+	$number_default_sort = '0000' if ($sort_dir eq 'DESC');
+
+
 
 	my $secondary_sort = <<"	SORT";
 		( FIRST ((
-			SELECT	COALESCE(LTRIM(SUBSTR( sfrt.value, COALESCE(SUBSTRING(sfrt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')
+			SELECT	COALESCE(LTRIM(SUBSTR( sfrt.value, COALESCE(SUBSTRING(sfrt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'$string_default_sort')
 			  FROM	$metabib_full_rec sfrt,
 				$metabib_metarecord mr
 			  WHERE	sfrt.record = mr.master_record
@@ -1588,7 +1601,7 @@ sub postfilter_search_multi_class_fts {
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'9999')::INT
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d+'),'$number_default_sort')::INT
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = mr.master_record
 				  	AND frp.tag = '260'
@@ -1607,7 +1620,7 @@ sub postfilter_search_multi_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'$string_default_sort')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = mr.master_record
 				  	AND frt.tag = '245'
@@ -1617,7 +1630,7 @@ sub postfilter_search_multi_class_fts {
 		RANK
 		$secondary_sort = <<"		SORT";
 			( FIRST ((
-				SELECT	COALESCE(SUBSTRING(sfrp.value FROM '\\\\d+'),'9999')::INT
+				SELECT	COALESCE(SUBSTRING(sfrp.value FROM '\\\\d+'),'$number_default_sort')::INT
 				  FROM	$metabib_full_rec sfrp
 				  WHERE	sfrp.record = mr.master_record
 				  	AND sfrp.tag = '260'
@@ -1628,7 +1641,7 @@ sub postfilter_search_multi_class_fts {
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
 			( FIRST((
-				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(fra.value),'$string_default_sort')
 				  FROM	$metabib_full_rec fra
 				  WHERE	fra.record = mr.master_record
 				  	AND fra.tag LIKE '1%'
@@ -2034,12 +2047,17 @@ sub biblio_search_multi_class_fts {
 	my $relevance = join (' + ', @rank_list);
 	$relevance = "AVG( ($relevance) * ($bonuses) )";
 
+	my $string_default_sort = 'zzzz';
+	$string_default_sort = 'AAAA' if ($sort_dir eq 'DESC');
+
+	my $number_default_sort = '9999';
+	$number_default_sort = '0000' if ($sort_dir eq 'DESC');
 
 	my $rank = $relevance;
 	if (lc($sort) eq 'pubdate') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d{4}'),'9999')::INT
+				SELECT	COALESCE(SUBSTRING(frp.value FROM '\\\\d{4}'),'$number_default_sort')::INT
 				  FROM	$metabib_full_rec frp
 				  WHERE	frp.record = b.id
 				  	AND frp.tag = '260'
@@ -2058,7 +2076,7 @@ sub biblio_search_multi_class_fts {
 	} elsif (lc($sort) eq 'title') {
 		$rank = <<"		RANK";
 			( FIRST ((
-				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(SUBSTR( frt.value, COALESCE(SUBSTRING(frt.ind2 FROM '\\\\d+'),'0')::INT + 1 )),'$string_default_sort')
 				  FROM	$metabib_full_rec frt
 				  WHERE	frt.record = b.id
 				  	AND frt.tag = '245'
@@ -2069,7 +2087,7 @@ sub biblio_search_multi_class_fts {
 	} elsif (lc($sort) eq 'author') {
 		$rank = <<"		RANK";
 			( FIRST((
-				SELECT	COALESCE(LTRIM(fra.value),'zzzzzzzz')
+				SELECT	COALESCE(LTRIM(fra.value),'$string_default_sort')
 				  FROM	$metabib_full_rec fra
 				  WHERE	fra.record = b.id
 				  	AND fra.tag LIKE '1%'
