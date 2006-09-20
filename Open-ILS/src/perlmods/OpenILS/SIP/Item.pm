@@ -227,7 +227,11 @@ sub hold_queue_position {
 
 sub due_date {
 	my $self = shift;
-	my $e = OpenILS::SIP->editor();
+
+	# this should force correct circ fetching
+	require OpenILS::Utils::CStoreEditor;
+	my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
+	#my $e = OpenILS::SIP->editor();
 
 	my $circ = $e->search_action_circulation(
 		{ target_copy => $self->{copy}->id, checkin_time => undef } )->[0];
