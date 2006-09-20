@@ -83,9 +83,9 @@
 	<key id="copy-status-key" keycode="VK_F5" command="cmd_copy_status"/>
 	<key id="circ-in-house-use-key" keycode="VK_F6" command="cmd_in_house_use"/>
 	<key id="circ-hold-capture-key" keycode="VK_F2" modifiers="shift" command="cmd_circ_hold_capture"/>
-	<key id="patron-register-key" keycode="VK_F1" modifiers="shift" command="cmd_patron_registration"/>
-	<key id="retrieve_last_patron_key" keycode="VK_F8" command="cmd_patron_registration"/>
-	<key id="retrieve_last_record_key" keycode="VK_F8" modifiers="shift" command="cmd_patron_registration"/>
+	<key id="patron-register-key" keycode="VK_F1" modifiers="shift" command="cmd_patron_register"/>
+	<key id="retrieve_last_patron_key" keycode="VK_F8" command="cmd_retrieve_last_patron"/>
+	<key id="retrieve_last_record_key" keycode="VK_F8" modifiers="shift" command="cmd_retrieve_last_record"/>
 </keyset>
 
 
