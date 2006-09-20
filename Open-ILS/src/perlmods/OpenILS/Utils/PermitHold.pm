@@ -39,8 +39,18 @@ sub permit_copy_hold {
 
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($ctx);
 
-	if( $ctx->{_events} ) {
-		push( @allevents, $_) for @{$ctx->{_events}};
+	my $ets = $ctx->{_events};
+
+	# --------------------------------------------------------------
+	# Strip the expired event since holds are still allowed to be
+	# captured on expired patrons.  
+	# --------------------------------------------------------------
+	if( $ets and @$ets ) {
+		$ets = [ grep { $_->{textcode} ne 'PATRON_ACCOUNT_EXPIRED' } @$ets ];
+	} else { $ets = []; }
+
+	if( @$ets ) {
+		push( @allevents, @$ets);
 
 		# --------------------------------------------------------------
 		# If scriptbuilder returned any events, then the script context
