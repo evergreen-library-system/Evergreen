@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 package OpenILS::Application::Search::Z3950;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
@@ -229,6 +228,8 @@ sub process_results {
 
 		my $err;
 		my $mods;
+		my $marc;
+		my $marcs;
 		my $marcxml;
 
 		$logger->info("z3950: fetching record $_");
@@ -236,8 +237,9 @@ sub process_results {
 		try {
 
 			my $rec	= $results->record($_);
-			my $marc = MARC::Record->new_from_usmarc($rec->rawdata());
-			my $doc	= XML::LibXML->new->parse_string($marc->as_xml_record);
+			$marc		= MARC::Record->new_from_usmarc($rec->rawdata());
+			$marcs	= entityize($marc->as_xml_record);
+			my $doc	= XML::LibXML->new->parse_string($marcs);
 			$marcxml = entityize( $doc->documentElement->toString );
 	
 			my $u = OpenILS::Utils::ModsParser->new();
@@ -249,6 +251,10 @@ sub process_results {
 
 		push @records, { 'mvr' => $mods, 'marcxml' => $marcxml } unless $err;
 		$logger->error("z3950: bad XML : $err") if $err;
+
+		if( $err ) {
+			warn "\n\n$marcs\n\n";
+		}
 	}
 	
 	$res->{records} = \@records;
