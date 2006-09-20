@@ -1,9 +1,5 @@
 
 function oilsInitReports() {
-	oilsRpt = new oilsReport();
-	oilsRptDisplaySelector	= $('oils_rpt_display_selector');
-	oilsRptFilterSelector	= $('oils_rpt_filter_selector');
-
 	/* tell FF to capture mouse movements */
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
@@ -12,18 +8,10 @@ function oilsInitReports() {
 	fetchUser(cgi.param('ses'));
 	$('oils_rpt_user').appendChild(text(USER.usrname()));
 	oilsRptDebugEnabled = cgi.param('dbg');
-
-	oilsDrawRptTree(
-		function() { 
-			hideMe($('oils_rpt_tree_loading')); 
-			unHideMe($('oils_rpt_table')); 
-		}
-	);
-
 }
 
 function oilsCleanupReports() {
-	if(oilsRptDebugWindow) oilsRptDebugWindow.close();
+	try {oilsRptDebugWindow.close();} catch(e) {}
 }
 
 
@@ -31,10 +19,13 @@ function oilsCleanupReports() {
 	Define the report object
 	--------------------------------------------------------------------- */
 function oilsReport() {
-	this.select		= [];
-	this.from		= {};
-	this.where		= [];
-	this.params		= {};
+	this.def = {
+		select	: [],
+		from		: {},
+		where		: []
+	};
+	this.params	= {};
+	this.name	= ""
 }
 
 oilsReport.prototype.toString = function() {

@@ -29,10 +29,10 @@ function oilsParseRptTree(IDL, callback) {
 
 		var obj = { 
 			fields	: oilsRptParseFields(node),
-			table		: node.getAttribute('oils_persist:tablename'),
 			name		: node.getAttribute('id'),
-			core		: node.getAttribute('reporter:core'),
-			label		: node.getAttribute('reporter:label')
+			table		: node.getAttributeNS(oilsIDLPersistNS, 'tablename'),
+			core		: node.getAttributeNS(oilsIDLReportsNS, 'core'),
+			label		: node.getAttributeNS(oilsIDLReportsNS, 'label')
 		};
 
 		if( obj.core == 'true' ) obj.core = true;
@@ -65,7 +65,7 @@ function oilsRptParseFields( node ) {
 		var obj = {
 			field : fields[i],
 			name	: name,
-			label : field.getAttribute('reporter:label'),
+			label : field.getAttributeNS(oilsIDLReportsNS,'label'),
 			type	: 'field'
 		}
 
@@ -83,7 +83,7 @@ function oilsRptParseFields( node ) {
 			obj.key = link.getAttribute('key');
 			obj['class'] = link.getAttribute('class');
 		} else {
-			if( fields[i].getAttribute('oils_persist:virtual') == 'true' ) 
+			if( fields[i].getAttributeNS(oilsIDLPersistNS, 'virtual') == 'true' ) 
 				continue;
 		}
 

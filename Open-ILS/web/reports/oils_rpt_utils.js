@@ -1,6 +1,11 @@
 var oilsRptID = 0;
+var oilsRptID2 = 0;
 function oilsNextId() {
 	return 'oils_'+ (oilsRptID++);
+}
+
+function oilsRptNextParam() {
+	return '::PARAM'+ (oilsRptID2++);
 }
 
 function nodeText(id) {

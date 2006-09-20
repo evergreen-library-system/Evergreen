@@ -1,3 +1,18 @@
+function oilsInitReportBuilder() {
+	oilsInitReports();
+	oilsRpt = new oilsReport();
+	oilsRptDisplaySelector	= $('oils_rpt_display_selector');
+	oilsRptFilterSelector	= $('oils_rpt_filter_selector');
+	oilsDrawRptTree(
+		function() { 
+			hideMe($('oils_rpt_tree_loading')); 
+			unHideMe($('oils_rpt_table')); 
+		}
+	);
+}
+
+
+
 function oilsRptSplitPath(path) {
 	var parts = path.split(/-/);
 	var column = parts.pop();
@@ -30,7 +45,9 @@ function oilsAddRptDisplayItem(val, name) {
 	/* add the selected columns to the report output */
 	var splitp = oilsRptSplitPath(val);
 	name = (name) ? name : splitp[1];
-	oilsRpt.select.push( {relation:splitp[0], column:splitp[1], alias:name} );
+	var param = oilsRptNextParam();
+	oilsRpt.def.select.push( {relation:splitp[0], column:splitp[1], alias:param} );
+	oilsRpt.params[param] = name;
 	oilsRptDebug();
 }
 
@@ -44,18 +61,21 @@ function oilsDelSelectedDisplayItems() {
 	var list = oilsDelSelectedItems(oilsRptDisplaySelector);
 
 	/* remove the de-selected columns from the report output */
-	oilsRpt.select = grep( oilsRpt.select, 
+	oilsRpt.def.select = grep( oilsRpt.def.select, 
 		function(i) {
 			for( var j = 0; j < list.length; j++ ) {
 				var d = list[j];
 				var arr = oilsRptSplitPath(d);
-				_debug(arr);
-				if( arr[0] == i.relation && arr[1] == i.column ) return false;
+				if( arr[0] == i.relation && arr[1] == i.column ) {
+					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
+					if( param ) delete oilsRpt.params[param];
+					return false;
+				}
 			}
 			return true;
 		}
 	);
-	if(!oilsRpt.select) oilsRpt.select = [];
+	if(!oilsRpt.def.select) oilsRpt.def.select = [];
 	oilsRptDebug();
 }
 
@@ -118,6 +138,10 @@ function oilsRptHideEditorDivs() {
 }
 
 
+/**
+  This draws the 3-tabbed window containing the transform,
+  filter, and aggregate filter picker window
+  */
 function oilsRptDrawDataWindow(path) {
 
 	var parts = path.split(/-/);
@@ -140,7 +164,6 @@ function oilsRptDrawDataWindow(path) {
 	/* focus after all the shifting to make sure the div is at least visible */
 	$('oils_rpt_tform_label_input').focus();
 
-
 	/* give the tab links behavior */
 	$('oils_rpt_tform_tab').onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_tform_div'))};
@@ -151,6 +174,7 @@ function oilsRptDrawDataWindow(path) {
 }
 
 
+/* draws the transform window */
 function oilsRptDrawTransformWindow(path, col, cls, field) {
 	appendClear($('oils_rpt_tform_label'), text(oilsRptMakeLabel(path)));
 	$('oils_rpt_tform_label_input').value = oilsRptMakeLabel(path);

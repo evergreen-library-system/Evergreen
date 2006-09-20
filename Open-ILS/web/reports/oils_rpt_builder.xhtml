@@ -42,7 +42,7 @@
 
 	</head>
 
-	<body onload='oilsInitReports();' onunload='oilsCleanupReports();'>
+	<body onload='oilsInitReportBuilder();' onunload='oilsCleanupReports();'>
 
 		<div class='welcome_box'>
 			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
@@ -56,6 +56,10 @@
 			<tbody>
 				<tr>
 					<td id='oils_rpt_table_left_td' align='left'>
+						<div id='oils_rpt_name_div'>
+							<span style='padding-right: 10px;'>Report Name: </span>
+							<input size='32' onchange="oilsRpt.name=this.value"/>
+						</div>
 						<div id='oils_rpt_tree_div'>
 						</div>
 					</td>
@@ -63,12 +67,12 @@
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Display Items</div>
 							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
-							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected Values</button>
+							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected</button>
 						</div>
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Filters</div>
 							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
-							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> Remove Selected Filters</button>
+							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> Remove Selected</button>
 						</div>
 					</td>	
 				</tr>
@@ -86,7 +90,8 @@
 			</tr></tbody></table>
 
 			<div id='oils_rpt_tform_div'>
-				<b style='padding-right: 10px;' id='oils_rpt_tform_label'/>&nbsp;&nbsp;&nbsp;<input id='oils_rpt_tform_label_input'/>
+				<b style='padding-right: 15px;' id='oils_rpt_tform_label'/>
+				<input size='28' id='oils_rpt_tform_label_input'/>
 				<br/><br/>
 				<button id='oils_rpt_tform_submit'>Add Item</button>
 			</div>
