@@ -1,0 +1,101 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!ENTITY nbsp " ">
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+	<head>
+		<title>Evergreen: Reports</title>
+		<script language='javascript' src='/opac/common/js/utils.js'> </script>
+		<script language='javascript' src='/opac/common/js//config.js'> </script> 
+		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookie.js'> </script>
+		<script language='javascript' src='/opac/common/js/JSON.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmall.js'> </script>
+		<script language='javascript' src='/opac/common/js/fmgen.js'> </script>
+		<script language='javascript' src='/opac/common/js/Cookies.js'> </script>
+		<script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/OrgTree.js'> </script>
+		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
+		<script language='javascript' src='/opac/common/js/init.js'> </script>
+		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
+		<script language='javascript' src='slimtree.js'> </script>
+
+		<link rel="stylesheet" type="text/css" media="all" 
+			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/lang/calendar-en.js"></script>
+		<script type="text/javascript" src="/opac/common/js/jscalendar/calendar-setup.js"></script>
+
+		<script type="text/javascript" src="adminlib.js"></script>
+		<script type="text/javascript" src="oils_rpt_vars.js"></script>
+		<script type="text/javascript" src="oils_rpt_utils.js"></script>
+		<script type="text/javascript" src="oils_rpt_builder.js"></script>
+		<script type="text/javascript" src="oils_rpt_tree.js"></script>
+		<script type="text/javascript" src="oils_rpt.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="oils_rpt.css"> </link>
+
+	</head>
+
+	<body onload='oilsInitReports();' onunload='oilsCleanupReports();'>
+
+		<div class='welcome_box'>
+			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
+		</div>
+
+		<div id='oils_rpt_tree_loading'>
+			Loading...
+		</div>
+
+		<table class='hide_me' id='oils_rpt_table'>
+			<tbody>
+				<tr>
+					<td id='oils_rpt_table_left_td' align='left'>
+						<div id='oils_rpt_tree_div'>
+						</div>
+					</td>
+					<td id='oils_rpt_table_right_td' align='right'>
+						<div class='oils_rpt_info_div'>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Display Items</div>
+							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
+							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected Values</button>
+						</div>
+						<div class='oils_rpt_info_div'>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Filters</div>
+							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
+							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> Remove Selected Filters</button>
+						</div>
+					</td>	
+				</tr>
+			</tbody>
+		</table>
+		<span class='hide_me' id='oils_rpt_tree_label'>Report Types</span>
+
+
+		<div id='oils_rpt_column_editor' class='floaty hide_me'>
+
+			<table id='oils_rpt_editor_tab_table'><tbody><tr>
+				<td width='33%'><a id='oils_rpt_tform_tab'>Display Items and Transforms</a></td>
+				<td width='33%'><a id='oils_rpt_tform_tab'>Filters</a></td>
+				<td width='33%'><a id='oils_rpt_tform_tab'>Aggregate Filters</a></td>
+			</tr></tbody></table>
+
+			<div id='oils_rpt_tform_div'>
+				<b style='padding-right: 10px;' id='oils_rpt_tform_label'/>&nbsp;&nbsp;&nbsp;<input id='oils_rpt_tform_label_input'/>
+				<br/><br/>
+				<button id='oils_rpt_tform_submit'>Add Item</button>
+			</div>
+			<div id='oils_rpt_column_editor_close_div'>
+				<button id='oils_rpt_column_editor_close_button'>Close Window</button>
+			</div>
+		</div>
+
+	</body>
+</html>
+
+
