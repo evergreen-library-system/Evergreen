@@ -243,6 +243,11 @@ sub __abort_transit {
 
 	my $holdtransit = $e->retrieve_action_hold_transit_copy($transit->id);
 
+	if( $holdtransit ) {
+		$logger->info("setting copy to reshelving on hold transit abort");
+		$copy->status( OILS_COPY_STATUS_RESHELVING );
+	}
+
 	return $e->event unless $e->delete_action_transit_copy($transit);
 	return $e->event unless $e->update_asset_copy($copy);
 
