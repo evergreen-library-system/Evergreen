@@ -231,9 +231,6 @@ __PACKAGE__->register_method(
 sub biblio_record_xml_import {
 	my( $self, $client, $authtoken, $xml, $source) = @_;
 
-
-	# XXX Make the source the ID from config.bib_source
-
 	my $override = 1 if $self->api_name =~ /override/;
 
 	my( $tcn, $tcn_source, $marcdoc );
