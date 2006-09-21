@@ -1049,6 +1049,9 @@ sub update_copy {
 	$copy->editor($editor->requestor->id);
 	$copy->edit_date('now');
 
+	$copy->age_protect( $copy->age_protect->id )
+		if ref $copy->age_protect;
+
 	fix_copy_price($copy);
 	return $editor->event unless
 		$editor->update_asset_copy( 
