@@ -1,11 +1,46 @@
 <div id='oils_rpt_tform_timestamp_div' class='hide_me'>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_raw'/> Raw Timestamp <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_month_trunc'/> Month Trunc <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_months_ago' /> Months Ago <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_quarters_ago'/> Quarters Ago <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_age'/> Age <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_count'/> Count <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_count_distinct'/> Count Distinct <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_min'/> Min <br/>
-	<input type='radio' name='oils_rpt_tform_timestamp' id='oils_rpt_tform_timestamp_max'/> Max <br/>
+	<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_timestamp_month_trunc'/> Month Trunc <br/>
+	<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_timestamp_months_ago'/> 
+	<select id='oils_rpt_tform_timestamp_months_ago_selector'  style='padding: 0px;'
+			onchange='DOM.oils_rpt_tform_timestamp_months_ago_input.value=getSelectorVal(this);'>
+		<option value='1'>1</option>
+		<option value='2'>2</option>
+		<option value='3'>3</option>
+		<option value='4'>4</option>
+		<option value='5'>5</option>
+		<option value='6'>6</option>
+		<option value='7'>7</option>
+		<option value='8'>8</option>
+		<option value='9'>9</option>
+		<option value='10'>10</option>
+		<option value='11'>11</option>
+		<option value='12'>12</option>
+		<option value='18'>18</option>
+		<option value='24'>24</option>
+	</select>
+	<input type='text' size='3' maxlength='3' id='oils_rpt_tform_timestamp_months_ago_input' style='padding:0px'  value='1'/>
+	<span>Month(s) Ago</span> 
+	<br/>
+
+	<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_timestamp_quarters_ago'/> 
+	<select id='oils_rpt_tform_timestamp_quarters_ago_selector' style='padding:0px'  
+			onchange='DOM.oils_rpt_tform_timestamp_quarters_ago_input.value=getSelectorVal(this);'>
+		<option value='1'>1</option>
+		<option value='2'>2</option>
+		<option value='3'>3</option>
+		<option value='4'>4</option>
+		<option value='5'>5</option>
+		<option value='6'>6</option>
+		<option value='7'>7</option>
+		<option value='8'>8</option>
+		<option value='9'>9</option>
+		<option value='10'>10</option>
+		<option value='11'>11</option>
+		<option value='12'>12</option>
+	</select>
+	<input type='text' size='3' maxlength='3' id='oils_rpt_tform_timestamp_quarters_ago_input' style='padding:0px'  value='1'/>
+	<span>Quarter(s) Ago</span>
+	<br/>
+
+	<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_timestamp_age'/> Age <br/>
 </div>

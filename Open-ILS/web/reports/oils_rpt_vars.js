@@ -42,12 +42,22 @@ var oilsRptTransforms = {
 };
 
 /* for ease of use, shove everything in the 'all' slot into the other tforms */
+/*
 for( var t in oilsRptTransforms ) {
 	if( t == 'all' ) continue;
 	for( var a in oilsRptTransforms['all'] ) 
 		oilsRptTransforms[t].push( oilsRptTransforms['all'][a] );
 }
 delete oilsRptTransforms.all;
+*/
+/* --------------------------------------------------- */
+
+
+/*
+var oilsRptRegexClasses = {
+	'number' : /\d+/
+}
+*/
 
 
 

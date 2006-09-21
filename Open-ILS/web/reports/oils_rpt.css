@@ -131,7 +131,11 @@ button {
 .oils_rpt_tree_link_ref {
 	color: #A52A2A;
 	/*color: darkblue;*/
-	font-family: courier; 
+	/*font-family: courier; */
 }
 
+
+.oils_rpt_invalid_input {
+	background: red;
+}
 
