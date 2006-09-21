@@ -130,32 +130,43 @@ sub check_age_protect {
 	# age protect does not apply
 	return undef if $prox <= $copy->age_protect->prox;
 
-	# How many seconds old does the copy have to be to escape age protection
-	my $interval = OpenSRF::Utils::interval_to_seconds($copy->age_protect->age);
-	my $start_date = time - $interval;
+	my $protection_list = $U->storagereq(
+		'open-ils.storage.direct.config.rules.age_hold_protect.search_where.atomic', 
+		{ age  => { '>=' => $copy->age_protect->age  },
+		  prox => { '>=' => $copy->age_protect->prox },
+		},
+		{ order_by => 'age' }
+	);
 
 	# Now, now many seconds old is this copy
-	my $dparser = DateTime::Format::ISO8601->new;
-	my $create_date = $dparser->parse_datetime(
-		OpenSRF::Utils::clense_ISO8601($copy->create_date));
-	my $age = $create_date->epoch;
+	my $create_date = DateTime::Format::ISO8601
+		->new
+		->parse_datetime( OpenSRF::Utils::clense_ISO8601($copy->create_date) )
+		->epoch;
 
-	$logger->info("age_protect interval=$interval, create_date=$create_date, age=$age, start_date=$start_date");
+	my $age = time - $create_date;
 
-	if( $start_date < $age ) { 
-		# if start date is older (less than) than the age of the item, 
-		# the item falls within the age protect range
-		$logger->info("age_protect prevents copy from having a hold placed on it: ".$copy->id);
-		return OpenILS::Event->new('ITEM_AGE_PROTECTED', copy => $copy->id );
+	for my $protection ( @$protection_list ) {
+
+		$logger->info("analyzing age protect ".$protection->name);
+
+		# age protect does not apply if within the proximity
+		last if $prox <= $protection->prox;
+
+		# How many seconds old does the copy have to be to escape age protection
+		my $interval = OpenSRF::Utils::interval_to_seconds($protection->age);
+
+		$logger->info("age_protect interval=$interval, create_date=$create_date, age=$age");
+
+		if( $interval > $age ) { 
+			# if age of the item is less than the protection interval, 
+			# the item falls within the age protect range
+			$logger->info("age_protect prevents copy from having a hold placed on it: ".$copy->id);
+			return OpenILS::Event->new('ITEM_AGE_PROTECTED', copy => $copy->id );
+		}
 	}
-
+		
 	return undef;
 }
-
-
-
-
-
-
 
 23;
