@@ -17,6 +17,14 @@ function oilsLoadRptTree(callback) {
 	r.send(null);
 }
 
+function oilsRptFindField(node, field) {
+	return grep( node.fields, 
+		function(f) {
+			return (f.name == field);
+		}
+	)[0];
+}
+
 
 /* turns the IDL into a js object */
 function oilsParseRptTree(IDL, callback) {
@@ -66,6 +74,7 @@ function oilsRptParseFields( node ) {
 			field : fields[i],
 			name	: name,
 			label : field.getAttributeNS(oilsIDLReportsNS,'label'),
+			datatype : field.getAttributeNS(oilsIDLReportsNS,'datatype'),
 			type	: 'field'
 		}
 
@@ -79,23 +88,25 @@ function oilsRptParseFields( node ) {
 
 		if( link ) {
 			obj.type = 'link';
-			obj.reltype = link.getAttribute('reltype');
 			obj.key = link.getAttribute('key');
 			obj['class'] = link.getAttribute('class');
+			obj.reltype = link.getAttribute('reltype');
+			if( obj.reltype == 'might_have' ) continue;
 		} else {
 			if( fields[i].getAttributeNS(oilsIDLPersistNS, 'virtual') == 'true' ) 
 				continue;
 		}
 
 		obj.label = (obj.label) ? obj.label : obj.name;
+		obj.datatype = (obj.datatype) ? obj.datatype : 'string';
 		data.push(obj);
 	}
 
 	/* sort by field name */
 	data = data.sort(
 		function(a,b) {
-			if( a.name > b.name ) return 1;
-			if( a.name < b.name ) return -1;
+			if( a.label > b.label ) return 1;
+			if( a.label < b.name ) return -1;
 			return 0;
 		}
 	);
@@ -141,7 +152,8 @@ function oilsRenderSubTree( data, subTreeId, rootName, path ) {
 			action = 'javascript:oilsAddLinkTree("' +
 				dataId+'","'+field['class']+'","'+fullpath+'");';
 
-		oilsRptTree.addNode( dataId, subTreeId, field.label, action );
+		oilsRptTree.addNode( dataId, subTreeId, field.label, action, field.label,
+			(field.type == 'link') ? 'oils_rpt_tree_link_ref' : null );
 	}
 }
 

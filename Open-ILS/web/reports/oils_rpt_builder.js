@@ -1,3 +1,6 @@
+/** initializes reports, some basid display settings, 
+  * grabs and builds the IDL tree
+  */
 function oilsInitReportBuilder() {
 	oilsInitReports();
 	oilsRpt = new oilsReport();
@@ -11,14 +14,27 @@ function oilsInitReportBuilder() {
 	);
 }
 
-
-
-function oilsRptSplitPath(path) {
+/* returns just the column name */
+function oilsRptPathCol(path) {
 	var parts = path.split(/-/);
-	var column = parts.pop();
-	return [ parts.join('-'), column ];
+	return parts.pop();
 }
 
+/* returns the IDL class of the selected column */
+function oilsRptPathClass(path) {
+	var parts = path.split(/-/);
+	parts.pop();
+	return parts.pop();
+}
+
+/* returns everything prior to the column name */
+function oilsRptPathRel(path) {
+	var parts = path.split(/-/);
+	parts.pop();
+	return parts.join('-');
+}
+
+/* creates a label "path" based on the column path */
 function oilsRptMakeLabel(path) {
 	var parts = path.split(/-/);
 	var str = '';
@@ -29,7 +45,8 @@ function oilsRptMakeLabel(path) {
 		} else {
 			var column = parts[i];
 			var data = oilsIDL[parts[i-1]];
-			var f = grep(data.fields, function(j){return (j.name == column); })[0];
+			var f = grep(data.fields, 
+				function(j){return (j.name == column); })[0];
 			str += ":"+f.label;
 		}
 	}
@@ -38,18 +55,59 @@ function oilsRptMakeLabel(path) {
 
 
 /* adds an item to the display window */
-function oilsAddRptDisplayItem(val, name) {
-	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, val, name) ) 
+function oilsAddRptDisplayItem(path, name) {
+	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, path, name) ) 
 		return;
 
 	/* add the selected columns to the report output */
-	var splitp = oilsRptSplitPath(val);
-	name = (name) ? name : splitp[1];
+	name = (name) ? name : oilsRptPathCol(path);
 	var param = oilsRptNextParam();
-	oilsRpt.def.select.push( {relation:splitp[0], column:splitp[1], alias:param} );
+
+	/* add this item to the select blob */
+	oilsRpt.def.select.push( {
+		relation:oilsRptPathRel(path), 
+		column:oilsRptPathCol(path), 
+		alias:param
+	});
+
+	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
 	oilsRpt.params[param] = name;
 	oilsRptDebug();
 }
+
+/* takes a column path and builds a from-clause object for the path */
+function oilsRptBuildFromClause(path) {
+	var parts = path.split(/-/);
+	//var obj = {from : {}};
+	var obj = {};
+	var tobj = obj;
+	var newpath = "";
+	for( var i = 0; i < parts.length; i += 2 ) {
+		var cls = parts[i];
+		var col = parts[i+1];
+		var node = oilsIDL[parts[i]];
+		var field = oilsRptFindField(node, col);
+		newpath = (newpath) ? newpath + '-'+ cls : cls;
+
+		tobj.table = node.table;
+		tobj.alias = newpath;
+		_debug('field type is ' + field.type);
+		if( i == (parts.length - 2) ) break;
+
+		tobj.join = {};
+		tobj = tobj.join;
+		tobj[col] = {};
+		tobj = tobj[col];
+		if( field.type == 'link' )
+			tobj.key = field.key;
+
+		newpath = newpath + '-'+ col;
+	}
+
+	_debug("built 'from' clause: path="+path+"\n"+formatJSON(js2JSON(obj)));
+	return obj;
+}
+
 
 /* removes a specific item from the display window */
 function oilsDelDisplayItem(val) {
@@ -65,8 +123,8 @@ function oilsDelSelectedDisplayItems() {
 		function(i) {
 			for( var j = 0; j < list.length; j++ ) {
 				var d = list[j];
-				var arr = oilsRptSplitPath(d);
-				if( arr[0] == i.relation && arr[1] == i.column ) {
+				if( oilsRptPathRel(d) == i.relation 
+						&& oilsRptPathCol(d) == i.column ) {
 					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
 					if( param ) delete oilsRpt.params[param];
 					return false;
@@ -76,9 +134,17 @@ function oilsDelSelectedDisplayItems() {
 		}
 	);
 	if(!oilsRpt.def.select) oilsRpt.def.select = [];
+
+	for( var j = 0; j < list.length; j++ ) 
+		oilsRptPruneFromClause(list[j]);
+
 	oilsRptDebug();
 }
 
+/* for each item in the path list, remove the associated data
+from the "from" clause */
+function oilsRptPruneFromClause(pathlist) {
+}
 
 /* adds an item to the display window */
 function oilsAddRptFilterItem(val) {
@@ -108,6 +174,7 @@ function oilsAddSelectorItem(sel, val, name) {
 	return true;
 }
 
+
 /* removes a specific item from the display window */
 function oilsDelSelectorItem(sel, val) {
 	_debug("deleting selector item "+val);
@@ -131,6 +198,8 @@ function oilsDelSelectedItems(sel) {
 	return list;
 }
 
+
+/* hides the different field editor tabs */
 function oilsRptHideEditorDivs() {
 	hideMe($('oils_rpt_tform_div'));
 	hideMe($('oils_rpt_filter_div'));
@@ -143,10 +212,8 @@ function oilsRptHideEditorDivs() {
   filter, and aggregate filter picker window
   */
 function oilsRptDrawDataWindow(path) {
-
-	var parts = path.split(/-/);
-	var col = parts.pop();
-	var cls = parts.pop();
+	var col = oilsRptPathCol(path);
+	var cls = oilsRptPathClass(path);
 	var field = grep(oilsIDL[cls].fields, function(f){return (f.name==col);})[0];
 	_debug("setting update data window for column "+col+' on class '+cls);
 
@@ -184,6 +251,9 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 
 	$('oils_rpt_tform_label_input').focus();
 	$('oils_rpt_tform_label_input').select();
+
+	if( field.datatype == 'timestamp' )
+		unHideMe($('oils_rpt_tform_date_div'));
 }
 
 

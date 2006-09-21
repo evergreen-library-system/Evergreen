@@ -91,4 +91,21 @@ function buildFloatingDiv(div, width) {
 }
 
 
+function mergeObjects( src, obj ) {
+	for( var i in obj ) {
+		_debug("merging object element: "+i + ' : ' + src[i]);
+		if( i =='from' ) {
+			_debug('------------------------------');
+			_debug(formatJSON(js2JSON(src[i])));
+			_debug(formatJSON(js2JSON(obj[i])));
+			_debug('------------------------------');
+		}
+		if( typeof obj[i] == 'string' ) {
+			src[i] = obj[i];
+		} else {
+			if(src[i]) mergeObjects(src[i], obj[i]);
+			else src[i] = obj[i];
+		}
+	}
+}
 

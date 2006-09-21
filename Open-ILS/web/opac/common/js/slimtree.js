@@ -2,12 +2,12 @@
 var stpicopen	= '../../../../images/slimtree/folder.gif';
 var stpicclose = '../../../../images/slimtree/folderopen.gif';
 */
-var stpicopen	= '../../../../images/slimtree/folder2.gif';
-var stpicclose = '../../../../images/slimtree/folderopen2.gif';
-var stpicblank = '../../../../images/slimtree/page.gif';
-var stpicline	= '../../../../images/slimtree/line.gif';
-var stpicjoin	= '../../../../images/slimtree/join.gif';
-var stpicjoinb = '../../../../images/slimtree/joinbottom.gif';
+var stpicopen	= '../opac/images/slimtree/folder2.gif';
+var stpicclose = '../opac/images/slimtree/folderopen2.gif';
+var stpicblank = '../opac/images/slimtree/page.gif';
+var stpicline	= '../opac/images/slimtree/line.gif';
+var stpicjoin	= '../opac/images/slimtree/join.gif';
+var stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
 
 
 var stimgopen	= elem('img',{src:stpicopen,border:0});
@@ -35,7 +35,7 @@ SlimTree.prototype.addCachedChildren = function(pid) {
 	this.cache[pid] = null;
 }
 
-SlimTree.prototype.addNode = function( id, pid, name, action, title ) {
+SlimTree.prototype.addNode = function( id, pid, name, action, title, cls ) {
 
 	if( pid != -1 && !$(pid)) {
 		if(!this.cache[pid]) this.cache[pid] = new Array();
@@ -52,6 +52,8 @@ SlimTree.prototype.addNode = function( id, pid, name, action, title ) {
 	var link			= elem('a', {id:'stlink_' + id}); 
 	var actionref	= elem('a',{href:action}, name);
 	var contdiv		= elem('div',{id:'stcont_' + id});
+
+	if(cls) addCSSClass(actionref, cls);
 
 	actionref.setAttribute('href',action);
 	if(title) actionref.setAttribute('title',title);

@@ -22,7 +22,9 @@ function oilsReport() {
 	this.def = {
 		select	: [],
 		from		: {},
-		where		: []
+		where		: [],
+		having	: [],
+		order_by : []
 	};
 	this.params	= {};
 	this.name	= ""

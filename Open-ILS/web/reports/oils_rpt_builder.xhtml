@@ -40,6 +40,8 @@
 
 		<link rel="stylesheet" type="text/css" href="oils_rpt.css"> </link>
 
+		<script>function _l(l) { location.href = l + location.search; }</script>
+
 	</head>
 
 	<body onload='oilsInitReportBuilder();' onunload='oilsCleanupReports();'>
@@ -47,6 +49,11 @@
 		<div class='welcome_box'>
 			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
 		</div>
+
+		<div>
+			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt.xhtml");'>Reports Home</a>
+		</div>
+
 
 		<div id='oils_rpt_tree_loading'>
 			Loading...
@@ -92,6 +99,11 @@
 			<div id='oils_rpt_tform_div'>
 				<b style='padding-right: 15px;' id='oils_rpt_tform_label'/>
 				<input size='28' id='oils_rpt_tform_label_input'/>
+				<div class='oils_rpt_tform_window'>
+					<div style='margin-bottom: 10px;'>Select how this field should be displayed:</div>
+					<!--#include virtual="oils_rpt_tform_string.xhtml"-->
+					<!--#include virtual="oils_rpt_tform_date.xhtml"-->
+				</div>
 				<br/><br/>
 				<button id='oils_rpt_tform_submit'>Add Item</button>
 			</div>
@@ -108,6 +120,7 @@
 				<button id='oils_rpt_column_editor_close_button'>Close Window</button>
 			</div>
 		</div>
+
 
 	</body>
 </html>
