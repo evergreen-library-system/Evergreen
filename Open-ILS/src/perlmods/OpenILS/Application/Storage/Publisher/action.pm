@@ -808,7 +808,6 @@ sub new_hold_copy_targeter {
 			# if we have no copies ...
 			if (!ref $all_copies || !@$all_copies) {
 				$log->info("\tNo copies available for targeting at all!\n");
-				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_COPIES' };
 
 				$hold->update( { prev_check_time => 'today' } );
