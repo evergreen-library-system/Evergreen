@@ -693,8 +693,29 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
 
-		int pos = atoi(osrfHashGet(field, "array_position"));
-		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
+		jsonObject* field_object = jsonObjectGetIndex( target, atoi(osrfHashGet(field, "array_position")) );
+
+		char* value;
+		if (field_object && field_object->classname) {
+			value = jsonObjectToSimpleString(
+					jsonObjectGetIndex(
+						field_object,
+						atoi(
+							osrfHashGet(
+								osrfHashGet(
+									oilsIDLFindPath("/%s/fields", field_object->classname),
+									(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
+								),
+								"array_position"
+							)
+						)
+					)
+				);
+
+		} else {
+			value = jsonObjectToSimpleString( field_object );
+		}
+
 
 		if (first) {
 			first = 0;
@@ -705,7 +726,7 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 		buffer_add(col_buf, field_name);
 
-		if (!jsonObjectGetIndex(target, pos) || jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
+		if (!field_object || field_object->type == JSON_NULL) {
 			buffer_add( val_buf, "DEFAULT" );
 			
 		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
@@ -1205,7 +1226,9 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 
 char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
-	osrfHash* links = osrfHashGet(meta, "links");
+	//  XXX this will be used for joins, I think
+	//osrfHash* links = osrfHashGet(meta, "links");
+
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
 
@@ -1687,12 +1710,32 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		if(!( strcmp( field_name, pkey ) )) continue;
 		if(!( strcmp( osrfHashGet(osrfHashGet(fields,field_name), "virtual"), "true" ) )) continue;
 
-		int pos = atoi(osrfHashGet(field, "array_position"));
-		char* value = jsonObjectToSimpleString( jsonObjectGetIndex( target, pos ) );
+		jsonObject* field_object = jsonObjectGetIndex( target, atoi(osrfHashGet(field, "array_position")) );
+
+		char* value;
+		if (field_object && field_object->classname) {
+			value = jsonObjectToSimpleString(
+					jsonObjectGetIndex(
+						field_object,
+						atoi(
+							osrfHashGet(
+								osrfHashGet(
+									oilsIDLFindPath("/%s/fields", field_object->classname),
+									(char*)oilsIDLFindPath("/%s/primarykey", field_object->classname)
+								),
+								"array_position"
+							)
+						)
+					)
+				);
+
+		} else {
+			value = jsonObjectToSimpleString( field_object );
+		}
 
 		osrfLogDebug( OSRF_LOG_MARK, "Updating %s object with %s = %s", osrfHashGet(meta, "fieldmapper"), field_name, value);
 
-		if (!jsonObjectGetIndex(target, pos) || jsonObjectGetIndex(target, pos)->type == JSON_NULL) {
+		if (!field_object || field_object->type == JSON_NULL) {
 			if ( !(!( strcmp( osrfHashGet(meta, "classname"), "au" ) ) && !( strcmp( field_name, "passwd" ) )) ) { // arg at the special case!
 				if (first) first = 0;
 				else buffer_add(sql, ",");
