@@ -63,7 +63,7 @@
 							<label name="Form" set="BKS SER VIS MIX MAP SCO REC" value="Form" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Form" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="Conf" set="BKS SER" value="Conf" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox class="plain" name="Conf" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
+							<textbox class="plain" name="Conf" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="Biog" set="BKS" value="Biog" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="Biog" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="MRec" set="BKS SER VIS MIX MAP SCO REC COM" value="MRec" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
@@ -75,7 +75,7 @@
 							<label name="S/L" set="SER" value="S/L" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="S/L" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="Cont" set="BKS SER" value="Cont" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
-							<textbox class="plain" name="Cont" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
+							<textbox class="plain" name="Cont" maxlength="4" size="4" oninput="updateFixedFields(this);"/>
 							<label name="GPub" set="BKS SER VIS MAP COM" value="GPub" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
 							<textbox class="plain" name="GPub" maxlength="1" size="1" oninput="updateFixedFields(this);"/>
 							<label name="LitF" set="BKS" value="LitF" onclick="this.nextSibling.focus(); this.nextSibling.select();"/>
