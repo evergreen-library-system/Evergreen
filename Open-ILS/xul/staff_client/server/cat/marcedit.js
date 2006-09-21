@@ -586,6 +586,16 @@ var ff_pos = {
 	},
 	Conf : {
 		_8 : {
+			BKS : {start : 29, len : 1, def : '0' },
+			SER : {start : 29, len : 1, def : '0' },
+		},
+		_6 : {
+			BKS : {start : 12, len : 1, def : '0' },
+			SER : {start : 12, len : 1, def : '0' },
+		}
+	},
+	Cont : {
+		_8 : {
 			BKS : {start : 24, len : 4, def : ' ' },
 			SER : {start : 25, len : 3, def : ' ' },
 		},
