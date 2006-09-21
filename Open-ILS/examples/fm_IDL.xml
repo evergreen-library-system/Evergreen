@@ -1494,7 +1494,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mbt" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:core="true" reporter:label="">
+	<class id="mbt" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:core="true" reporter:label="Billable Transaction">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
