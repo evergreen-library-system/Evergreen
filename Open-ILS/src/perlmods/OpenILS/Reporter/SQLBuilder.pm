@@ -1,3 +1,4 @@
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder;
 
 sub new {
@@ -30,9 +31,11 @@ sub resolve_param {
 	my $val = shift;
 
 	if ($val =~ /^::(.+)$/o) {
-		return $self->get_param($1);
+		$val = $self->get_param($1);
 	}
 
+	$val =~ s/\\/\\\\/go;
+	$val =~ s/"/\\"/go;
 	return $val;
 }
 
@@ -43,6 +46,8 @@ sub parse_report {
 	$self->set_select( $report->{select} );
 	$self->set_from( $report->{from} );
 	$self->set_where( $report->{where} );
+	$self->set_having( $report->{having} );
+	$self->set_order_by( $report->{order_by} );
 
 	return $self;
 }
@@ -53,6 +58,7 @@ sub set_select {
 
 	$self->{_select} = [];
 
+	return $self unless (@cols && defined($cols[0]));
 	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
 
 	push @{ $self->{_select} }, map { OpenILS::Reporter::SQLBuilder::Column::Select->new( $_ )->set_builder( $self ) } @cols;
@@ -75,6 +81,7 @@ sub set_where {
 
 	$self->{_where} = [];
 
+	return $self unless (@cols && defined($cols[0]));
 	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
 
 	push @{ $self->{_where} }, map { OpenILS::Reporter::SQLBuilder::Column::Where->new( $_ )->set_builder( $self ) } @cols;
@@ -82,14 +89,42 @@ sub set_where {
 	return $self;
 }
 
+sub set_having {
+	my $self = shift;
+	my @cols = @_;
+
+	$self->{_having} = [];
+
+	return $self unless (@cols && defined($cols[0]));
+	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
+
+	push @{ $self->{_having} }, map { OpenILS::Reporter::SQLBuilder::Column::Having->new( $_ )->set_builder( $self ) } @cols;
+
+	return $self;
+}
+
+sub set_order_by {
+	my $self = shift;
+	my @cols = @_;
+
+	$self->{_order_by} = [];
+
+	return $self unless (@cols && defined($cols[0]));
+	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
+
+	push @{ $self->{_order_by} }, map { OpenILS::Reporter::SQLBuilder::Column::OrderBy->new( $_ )->set_builder( $self ) } @cols;
+
+	return $self;
+}
+
 sub toSQL {
 	my $self = shift;
 
-	my $sql = "SELECT\t" . join(",\n\t", map { $_->toSQL } @{ $self->{_select} }) . "\n";
+	my $sql = "SELECT\t" . join(",\n\t", map { $_->toSQL } @{ $self->{_select} }) . "\n" if (@{ $self->{_select} });
 
-	$sql .= "  FROM\t" . $self->{_from}->toSQL . "\n";
+	$sql .= "  FROM\t" . $self->{_from}->toSQL . "\n" if ($self->{_from});
 
-	$sql .= "  WHERE\t" . join("\n\tAND ", map { $_->toSQL } @{ $self->{_where} }) . "\n";
+	$sql .= "  WHERE\t" . join("\n\tAND ", map { $_->toSQL } @{ $self->{_where} }) . "\n" if (@{ $self->{_where} });
 
 	my $gcount = 1;
 	my @group_by;
@@ -99,12 +134,14 @@ sub toSQL {
 	}
 
 	$sql .= '  GROUP BY ' . join(', ', @group_by) . "\n" if (@group_by);
-	$sql .= '  ORDER BY ' . join(', ', 1 .. scalar(@{ $self->{_select} })) . "\n";
+	$sql .= "  HAVING " . join("\n\tAND ", map { $_->toSQL } @{ $self->{_having} }) . "\n" if (@{ $self->{_having} });
+	$sql .= '  ORDER BY ' . join(', ', map { $_->toSQL } @{ $self->{_order_by} }) . "\n" if (@{ $self->{_order_by} });
 
 	return $sql;
 }
 
 
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column;
 use base qw/OpenILS::Reporter::SQLBuilder/;
 
@@ -115,6 +152,21 @@ sub new {
 	my $col_data = shift;
 	$self->{_relation} = $col_data->{relation};
 	$self->{_column} = $col_data->{column};
+
+	$self->{_aggregate} = $col_data->{aggregate};
+
+	if (ref($self->{_column})) {
+		my ($trans) = keys %{ $self->{_column} };
+		my $pkg = "OpenILS::Reporter::SQLBuilder::Column::Transform::$trans";
+		if (UNIVERSAL::can($pkg => 'toSQL')) {
+			$self->{_transform} = $trans;
+		} else {
+			$self->{_transform} = 'GenericTransform';
+		}
+	} else {
+		$self->{_transform} = 'Bare';
+	}
+
 
 	return $self;
 }
@@ -133,7 +185,42 @@ sub name {
 	}
 }
 
+sub toSQL {
+	my $self = shift;
+	my $type = $self->{_transform};
+	my $toSQL = "OpenILS::Reporter::SQLBuilder::Column::Transform::${type}::toSQL";
+	return $self->$toSQL;
+}
 
+sub is_aggregate {
+	my $self = shift;
+	my $type = $self->{_transform};
+	my $is_agg = "OpenILS::Reporter::SQLBuilder::Column::Transform::${type}::is_aggregate";
+	return $self->$is_agg;
+}
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::OrderBy;
+use base qw/OpenILS::Reporter::SQLBuilder::Column/;
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new(@_);
+
+	my $col_data = shift;
+	$self->{_direction} = $col_data->{direction} || 'ascending';
+	return $self;
+}
+
+sub toSQL {
+	my $self = shift;
+	my $dir = ($self->{_direction} =~ /^d/oi) ? 'DESC' : 'ASC';
+	return $self->SUPER::toSQL .  " $dir";
+}
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Select;
 use base qw/OpenILS::Reporter::SQLBuilder::Column/;
 
@@ -143,25 +230,17 @@ sub new {
 
 	my $col_data = shift;
 	$self->{_alias} = $col_data->{alias};
-	$self->{_aggregate} = $col_data->{aggregate};
-
-	if (ref($self->{_column})) {
-		my $pkg = 'OpenILS::Reporter::SQLBuilder::Column::Select::Transform::' . (keys %{ $self->{_column} })[0];
-		if (UNIVERSAL::can($pkg => 'toSQL')) {
-			bless $self => $pkg;
-		} else {
-			bless $self => 'OpenILS::Reporter::SQLBuilder::Column::Select::GenericTransform';
-		}
-	} else {
-		bless $self => 'OpenILS::Reporter::SQLBuilder::Column::Select::Bare';
-	}
-
 	return $self;
 }
 
+sub toSQL {
+	my $self = shift;
+	return $self->SUPER::toSQL .  ' AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+}
 
-package OpenILS::Reporter::SQLBuilder::Column::Select::GenericTransform;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::GenericTransform;
 
 sub toSQL {
 	my $self = shift;
@@ -170,79 +249,180 @@ sub toSQL {
 
 	my @params;
 	@params = @{ $self->{_column}->{$func} } if (ref($self->{_column}->{$func}));
+	shift @params if (@params);
 
-	my $sql = $func . '("' . $self->{_relation} . '"."' . $self->name;
-	
-	$sql .= ',' . join(',', @params) if (@params);
-
-	$sql .= '") AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	my $sql = $func . '("' . $self->{_relation} . '"."' . $self->name . '"';
+	$sql .= ",'" . join("','", @params) . "'" if (@params);
+	$sql .= ')';
 
 	return $sql;
 }
 
 sub is_aggregate { return $self->{_aggregate} }
 
-
-package OpenILS::Reporter::SQLBuilder::Column::Select::Bare;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::Bare;
 
 sub toSQL {
 	my $self = shift;
-	return '"' . $self->{_relation} . '"."' . $self->name .
-		'" AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	return '"' . $self->{_relation} . '"."' . $self->name . '"';
+}
+
+sub is_aggregate { return 0 }
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::month_trunc;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
+		' || \'-\' || LPAD(EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '"),2,\'0\')';
 }
 
 sub is_aggregate { return 0 }
 
 
-package OpenILS::Reporter::SQLBuilder::Column::Select::Transform::count;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::quarter;
 
 sub toSQL {
 	my $self = shift;
-	return 'COUNT("' . $self->{_relation} . '"."' . $self->name .
-		'") AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")' .
+		' || \'-Q\' || EXTRACT(QUARTER FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::months_ago;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(MONTH FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::quarters_ago;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(QUARTER FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::age;
+
+sub toSQL {
+	my $self = shift;
+	return 'AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::min;
+
+sub toSQL {
+	my $self = shift;
+	return 'MIN("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 1 }
 
 
-package OpenILS::Reporter::SQLBuilder::Column::Select::Transform::count_distinct;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::max;
 
 sub toSQL {
 	my $self = shift;
-	return 'COUNT(DISTINCT "' . $self->{_relation} . '"."' . $self->name .
-		'") AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	return 'MAX("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 1 }
 
 
-package OpenILS::Reporter::SQLBuilder::Column::Select::Transform::sum;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::count;
 
 sub toSQL {
 	my $self = shift;
-	return 'SUM("' . $self->{_relation} . '"."' . $self->name .
-		'") AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	return 'COUNT("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 1 }
 
 
-package OpenILS::Reporter::SQLBuilder::Column::Select::Transform::average;
-use base qw/OpenILS::Reporter::SQLBuilder::Column::Select/;
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::count_distinct;
 
 sub toSQL {
 	my $self = shift;
-	return 'AVG("' . $self->{_relation} . '"."' . $self->name .
-		'") AS "' . $self->resolve_param( $self->{_alias} ) . '"';
+	return 'COUNT(DISTINCT "' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 1 }
 
 
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::sum;
+
+sub toSQL {
+	my $self = shift;
+	return 'SUM("' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 1 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::average;
+
+sub toSQL {
+	my $self = shift;
+	return 'AVG("' . $self->{_relation} . '"."' . $self->name .  '")';
+}
+
+sub is_aggregate { return 1 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Having;
+use base qw/OpenILS::Reporter::SQLBuilder::Column/;
+
+sub new {
+	my $class = shift;
+	my $self = $class->SUPER::new(@_);
+
+	my $col_data = shift;
+	$self->{_condition} = $col_data->{condition};
+
+	return $self;
+}
+
+sub toSQL {
+	my $self = shift;
+
+	my $sql = $self->SUPER::toSQL;
+
+	my ($op) = keys %{ $self->{_condition} };
+	my $val = $self->resolve_param( values %{ $self->{_condition} } );
+
+	$val =~ s/'/\\'/go; $val =~ s/\\/\\\\/go;
+	$sql .= " $op '$val'";
+
+	return $sql;
+}
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Where;
 use base qw/OpenILS::Reporter::SQLBuilder::Column/;
 
@@ -259,7 +439,8 @@ sub new {
 sub toSQL {
 	my $self = shift;
 
-	my $sql = '"' . $self->{_relation} . '"."' . $self->name . '"';
+	my $sql = $self->SUPER::toSQL;
+
 	my ($op) = keys %{ $self->{_condition} };
 	my $val = $self->resolve_param( values %{ $self->{_condition} } );
 
@@ -284,6 +465,7 @@ sub toSQL {
 }
 
 
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Relation;
 use base qw/OpenILS::Reporter::SQLBuilder/;
 
@@ -355,6 +537,7 @@ sub toSQL {
 	return $sql;
 }
 
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Join;
 use base qw/OpenILS::Reporter::SQLBuilder/;
 
