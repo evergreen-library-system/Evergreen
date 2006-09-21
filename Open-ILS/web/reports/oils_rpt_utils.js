@@ -93,13 +93,6 @@ function buildFloatingDiv(div, width) {
 
 function mergeObjects( src, obj ) {
 	for( var i in obj ) {
-		_debug("merging object element: "+i + ' : ' + src[i]);
-		if( i =='from' ) {
-			_debug('------------------------------');
-			_debug(formatJSON(js2JSON(src[i])));
-			_debug(formatJSON(js2JSON(obj[i])));
-			_debug('------------------------------');
-		}
 		if( typeof obj[i] == 'string' ) {
 			src[i] = obj[i];
 		} else {
@@ -107,5 +100,18 @@ function mergeObjects( src, obj ) {
 			else src[i] = obj[i];
 		}
 	}
+}
+
+
+/* scours the doc for elements with IDs.  When it finds one,
+	it grabs the dom node and sets a reference to the node at DOM[id]; */
+function oilsRptIdObjects(node) {
+	if(!node) node = document.documentElement;
+	if( node.nodeType != 1 ) return;
+	var id = node.getAttribute('id');
+	if( id ) eval("DOM."+id+"=$('"+id+"');");
+	var children = node.childNodes;
+	for( var c = 0; c < children.length; c++ ) 
+		oilsRptIdObjects(children[c]);
 }
 

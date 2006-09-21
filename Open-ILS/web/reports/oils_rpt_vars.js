@@ -1,3 +1,5 @@
+/* dom nodes with IDs are inserted into DOM as DOM[id] */
+var DOM = {};
 
 /* JS object version of the IDL */
 var oilsIDL;

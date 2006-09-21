@@ -117,24 +117,37 @@ function oilsRptParseFields( node ) {
 
 /* shoves the IDL into a UI tree */
 function oilsRenderRptTree(callback) {
+	var sel = DOM.oils_rpt_builder_type_selector;
 
-	oilsRptTree = new SlimTree( $('oils_rpt_tree_div'), 'oilsRptTree' );
-	var treeId = oilsNextId();
-	oilsRptTree.addNode( treeId, -1, nodeText('oils_rpt_tree_label'));
 	for( var i in oilsIDL ) {
 		var data = oilsIDL[i];
 		if( !data.core ) continue;
-		var subTreeId	= oilsNextId();
-		oilsRptTree.addNode( subTreeId, treeId, data.label );
-		oilsRenderSubTree( data, subTreeId, 'Display Data', '' );
+		insertSelectorVal( sel, -1, data.label, data.name );
 	}
+
+	sel.onchange = function() { 
+		if(oilsRpt.def.select.length > 0)
+			if(!confirm(DOM.oils_rpt_confirm_new_report.innerHTML)) 
+				return;
+		oilsRptRenderClassTree(getSelectorVal(sel)) 
+		oilsReportBuilderReset();
+	};
+
+	sel.onchange();
 	if( callback ) callback();
 }
 
+function oilsRptRenderClassTree(cls) {
+	var data = oilsIDL[cls];
+	removeChildren(DOM.oils_rpt_tree_div);
+	oilsRptTree = new SlimTree( DOM.oils_rpt_tree_div, 'oilsRptTree' );
+	var treeId = oilsNextId();
+	oilsRptTree.addNode( treeId, -1, data.label );
+	oilsRenderSubTree( data, treeId, '' );
+}
 
-function oilsRenderSubTree( data, subTreeId, rootName, path ) {
 
-	_debug("rendering subtree with full path "+path);
+function oilsRenderSubTree( data, subTreeId, path ) {
 
 	for( var f = 0; f < data.fields.length; f++ ) {
 
@@ -173,7 +186,7 @@ function oilsAddLinkTree( parentId, classname, fullpath ) {
 
 	oilsLinkTreeCache[parentId].push(classname);
 	var data = grep( oilsIDL, function(i) { return ( i.name == classname ); })[0];
-	var sid = oilsRenderSubTree( data, parentId, '', fullpath );
+	var sid = oilsRenderSubTree( data, parentId, fullpath );
 	oilsRptTree.open(parentId);
 }
 

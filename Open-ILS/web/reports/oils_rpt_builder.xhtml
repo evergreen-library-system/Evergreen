@@ -63,10 +63,15 @@
 			<tbody>
 				<tr>
 					<td id='oils_rpt_table_left_td' align='left'>
-						<div id='oils_rpt_name_div'>
-							<span style='padding-right: 10px;'>Report Name: </span>
-							<input size='32' onchange="oilsRpt.name=this.value"/>
-						</div>
+						<table id='oils_rpt_name_table'><tbody>
+							<tr>
+								<td width='20%'>Report Name: </td>
+								<td><input size='32' onchange="oilsRpt.name=this.value"/></td>
+							</tr><tr>
+								<td>Report Type: </td>
+								<td><select id='oils_rpt_builder_type_selector'/></td>
+							</tr>
+						</tbody></table>
 						<div id='oils_rpt_tree_div'>
 						</div>
 					</td>
@@ -121,6 +126,11 @@
 			</div>
 		</div>
 
+
+		<span class='hide_me' id='oils_rpt_confirm_new_report'>
+			This will destroy the report you are currently constructing.  
+			Are you sure you wish to do this?
+		</span>
 
 	</body>
 </html>

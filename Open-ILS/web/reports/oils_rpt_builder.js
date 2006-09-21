@@ -3,15 +3,22 @@
   */
 function oilsInitReportBuilder() {
 	oilsInitReports();
-	oilsRpt = new oilsReport();
-	oilsRptDisplaySelector	= $('oils_rpt_display_selector');
-	oilsRptFilterSelector	= $('oils_rpt_filter_selector');
+	oilsReportBuilderReset();
 	oilsDrawRptTree(
 		function() { 
-			hideMe($('oils_rpt_tree_loading')); 
-			unHideMe($('oils_rpt_table')); 
+			hideMe(DOM.oils_rpt_tree_loading); 
+			unHideMe(DOM.oils_rpt_table); 
 		}
 	);
+}
+
+function oilsReportBuilderReset() {
+	oilsRpt = new oilsReport();
+	oilsRptDisplaySelector	= DOM.oils_rpt_display_selector;
+	oilsRptFilterSelector	= DOM.oils_rpt_filter_selector;
+	removeChildren(oilsRptDisplaySelector);
+	removeChildren(oilsRptFilterSelector);
+	oilsRptDebug();
 }
 
 /* returns just the column name */
@@ -201,9 +208,9 @@ function oilsDelSelectedItems(sel) {
 
 /* hides the different field editor tabs */
 function oilsRptHideEditorDivs() {
-	hideMe($('oils_rpt_tform_div'));
-	hideMe($('oils_rpt_filter_div'));
-	hideMe($('oils_rpt_agg_filter_div'));
+	hideMe(DOM.oils_rpt_tform_div);
+	hideMe(DOM.oils_rpt_filter_div);
+	hideMe(DOM.oils_rpt_agg_filter_div);
 }
 
 
@@ -217,43 +224,47 @@ function oilsRptDrawDataWindow(path) {
 	var field = grep(oilsIDL[cls].fields, function(f){return (f.name==col);})[0];
 	_debug("setting update data window for column "+col+' on class '+cls);
 
-	var div = $('oils_rpt_column_editor');
+	var div = DOM.oils_rpt_column_editor;
+	/* set a preliminary top position so the page won't bounce around */
+	div.setAttribute('style','top:'+oilsMouseX+'px');
+
+	/* unhide the div so we can determine the dimensions */
 	unHideMe(div);
+
 	/* don't let them see the floating div until the position is fully determined */
 	div.style.visibility='hidden'; 
 
 	oilsRptDrawTransformWindow(path, col, cls, field);
 
-	$('oils_rpt_column_editor_close_button').onclick = function(){hideMe(div);};
+	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
 	buildFloatingDiv(div, 600);
+
+	/* now let them see it */
 	div.style.visibility='visible';
 
-	/* focus after all the shifting to make sure the div is at least visible */
-	$('oils_rpt_tform_label_input').focus();
-
 	/* give the tab links behavior */
-	$('oils_rpt_tform_tab').onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_tform_div'))};
-	$('oils_rpt_filter_tab').onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_filter_div'))};
-	$('oils_rpt_agg_filter_tab').onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe($('oils_rpt_agg_filter_div'))};
+	DOM.oils_rpt_tform_tab.onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_tform_div)};
+	DOM.oils_rpt_filter_tab.onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_filter_div)};
+	DOM.oils_rpt_agg_filter_tab.onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
 }
 
 
 /* draws the transform window */
 function oilsRptDrawTransformWindow(path, col, cls, field) {
-	appendClear($('oils_rpt_tform_label'), text(oilsRptMakeLabel(path)));
-	$('oils_rpt_tform_label_input').value = oilsRptMakeLabel(path);
+	appendClear(DOM.oils_rpt_tform_label, text(oilsRptMakeLabel(path)));
+	DOM.oils_rpt_tform_label_input.value = oilsRptMakeLabel(path);
 
-	$('oils_rpt_tform_submit').onclick = 
-		function(){ oilsAddRptDisplayItem(path, $('oils_rpt_tform_label_input').value) };
+	DOM.oils_rpt_tform_submit.onclick = 
+		function(){ oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value) };
 
-	$('oils_rpt_tform_label_input').focus();
-	$('oils_rpt_tform_label_input').select();
+	DOM.oils_rpt_tform_label_input.focus();
+	DOM.oils_rpt_tform_label_input.select();
 
 	if( field.datatype == 'timestamp' )
-		unHideMe($('oils_rpt_tform_date_div'));
+		unHideMe(DOM.oils_rpt_tform_date_div);
 }
 
 

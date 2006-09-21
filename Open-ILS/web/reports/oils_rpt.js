@@ -1,17 +1,20 @@
 
 function oilsInitReports() {
+	oilsRptIdObjects();
+
 	/* tell FF to capture mouse movements */
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
 
 	var cgi = new CGI();
 	fetchUser(cgi.param('ses'));
-	$('oils_rpt_user').appendChild(text(USER.usrname()));
+	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
 	oilsRptDebugEnabled = cgi.param('dbg');
 }
 
 function oilsCleanupReports() {
 	try {oilsRptDebugWindow.close();} catch(e) {}
+	DOM = null;
 }
 
 

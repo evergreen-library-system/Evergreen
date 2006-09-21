@@ -8,11 +8,14 @@ body { font-size: 9pt; font-family: Helvetica, Arial, Tahoma, sans-serif; font-s
 	font-size: 10pt;
 }
 
-#oils_rpt_name_div {
+#oils_rpt_name_table {
 	vertical-align: middle;
-	padding: 5px;
 	background: #E0F0F0; 
 	margin-bottom: 20px;
+	width: 100%;
+}
+#oils_rpt_name_table td {
+	padding: 5px;
 }
 
 #oils_rpt_table {
@@ -127,6 +130,7 @@ button {
 
 .oils_rpt_tree_link_ref {
 	color: #A52A2A;
+	/*color: darkblue;*/
 	font-family: courier; 
 }
 
