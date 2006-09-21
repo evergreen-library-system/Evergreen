@@ -13,12 +13,15 @@ function oilsInitReportBuilder() {
 }
 
 function oilsReportBuilderReset() {
+	var n = (oilsRpt) ? oilsRpt.name : "";
 	oilsRpt = new oilsReport();
+	oilsRpt.name = n;
 	oilsRptDisplaySelector	= DOM.oils_rpt_display_selector;
 	oilsRptFilterSelector	= DOM.oils_rpt_filter_selector;
 	removeChildren(oilsRptDisplaySelector);
 	removeChildren(oilsRptFilterSelector);
 	oilsRptDebug();
+	oilsRptResetParams();
 }
 
 /* returns just the column name */
@@ -62,7 +65,7 @@ function oilsRptMakeLabel(path) {
 
 
 /* adds an item to the display window */
-function oilsAddRptDisplayItem(path, name) {
+function oilsAddRptDisplayItem(path, name, tform) {
 	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, path, name) ) 
 		return;
 
@@ -71,11 +74,17 @@ function oilsAddRptDisplayItem(path, name) {
 	var param = oilsRptNextParam();
 
 	/* add this item to the select blob */
-	oilsRpt.def.select.push( {
+	var sel = {
 		relation:oilsRptPathRel(path), 
-		column:oilsRptPathCol(path), 
 		alias:param
-	});
+	};
+
+	if( tform ) {
+		sel.column = {};
+		sel.column[tform] = oilsRptPathCol(path); 
+	} else { sel.column = oilsRptPathCol(path); }
+
+	oilsRpt.def.select.push(sel);
 
 	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
 	oilsRpt.params[param] = name;
@@ -85,10 +94,10 @@ function oilsAddRptDisplayItem(path, name) {
 /* takes a column path and builds a from-clause object for the path */
 function oilsRptBuildFromClause(path) {
 	var parts = path.split(/-/);
-	//var obj = {from : {}};
 	var obj = {};
 	var tobj = obj;
 	var newpath = "";
+
 	for( var i = 0; i < parts.length; i += 2 ) {
 		var cls = parts[i];
 		var col = parts[i+1];
@@ -130,8 +139,13 @@ function oilsDelSelectedDisplayItems() {
 		function(i) {
 			for( var j = 0; j < list.length; j++ ) {
 				var d = list[j];
-				if( oilsRptPathRel(d) == i.relation 
-						&& oilsRptPathCol(d) == i.column ) {
+				var col = i.column;
+
+				/* if this columsn has a transform, it will be an object { tform => column } */
+				if( typeof col != 'string' ) 
+					for( var c in col ) col = col[c];
+
+				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
 					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
 					if( param ) delete oilsRpt.params[param];
 					return false;
@@ -140,10 +154,15 @@ function oilsDelSelectedDisplayItems() {
 			return true;
 		}
 	);
-	if(!oilsRpt.def.select) oilsRpt.def.select = [];
 
-	for( var j = 0; j < list.length; j++ ) 
-		oilsRptPruneFromClause(list[j]);
+	if(!oilsRpt.def.select) {
+		oilsRpt.def.select = [];
+		oilsReportBuilderReset();
+
+	} else {
+		for( var j = 0; j < list.length; j++ ) 
+			oilsRptPruneFromClause(list[j]);
+	}
 
 	oilsRptDebug();
 }
@@ -249,6 +268,8 @@ function oilsRptDrawDataWindow(path) {
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_filter_div)};
 	DOM.oils_rpt_agg_filter_tab.onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
+
+	DOM.oils_rpt_tform_tab.onclick();
 }
 
 
@@ -258,14 +279,38 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 	DOM.oils_rpt_tform_label_input.value = oilsRptMakeLabel(path);
 
 	DOM.oils_rpt_tform_submit.onclick = 
-		function(){ oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value) };
+		function(){ 
+			var tform = oilsRptGetTform();
+			tform = (tform == 'raw') ? null : tform;
+			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform) 
+		};
 
 	DOM.oils_rpt_tform_label_input.focus();
 	DOM.oils_rpt_tform_label_input.select();
+	oilsRptHideTformFields();
 
-	if( field.datatype == 'timestamp' )
-		unHideMe(DOM.oils_rpt_tform_date_div);
+	_debug("Transforming item with datatype "+field.datatype);
+	unHideMe($('oils_rpt_tform_'+field.datatype+'_div'));
+	unHideMe($('oils_rpt_tform_'+field.datatype+'_raw'));
+	$('oils_rpt_tform_'+field.datatype+'_raw').checked = true;
 }
 
+function oilsRptHideTformFields() {
+	for( var t in oilsRptTransforms ) {
+		hideMe($('oils_rpt_tform_'+t+'_div'));
+		for( var i in oilsRptTransforms[t] ) {
+			_debug('oils_rpt_tform_'+t+'_'+oilsRptTransforms[t][i]);
+			$('oils_rpt_tform_'+t+'_'+oilsRptTransforms[t][i]).checked = false;
+		}
+	}
+}
 
+function oilsRptGetTform() {
+	for( var t in oilsRptTransforms ) 
+		for( var i in oilsRptTransforms[t] ) 
+			if( $('oils_rpt_tform_'+t+'_'+oilsRptTransforms[t][i]).checked )
+				return oilsRptTransforms[t][i];
+	return null;
+}
 
+;

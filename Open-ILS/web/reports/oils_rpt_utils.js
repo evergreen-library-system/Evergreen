@@ -8,6 +8,10 @@ function oilsRptNextParam() {
 	return '::PARAM'+ (oilsRptID2++);
 }
 
+function oilsRptResetParams() {
+	oilsRptID2 = 0;
+}
+
 function nodeText(id) {
 	if($(id))
 		return $(id).innerHTML;
