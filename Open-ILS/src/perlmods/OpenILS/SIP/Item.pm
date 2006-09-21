@@ -236,6 +236,8 @@ sub due_date {
 	my $circ = $e->search_action_circulation(
 		{ target_copy => $self->{copy}->id, checkin_time => undef } )->[0];
 
+	$e->rollback;
+
 	if( !$circ ) {
 		syslog('LOG_INFO', "OILS: No open circ found for copy");
 		return 0;
