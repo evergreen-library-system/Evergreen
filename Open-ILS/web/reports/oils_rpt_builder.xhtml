@@ -95,16 +95,20 @@
 
 		<div id='oils_rpt_column_editor' class='floaty hide_me'>
 
-			<table id='oils_rpt_editor_tab_table'><tbody><tr>
-				<td width='33%'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items and Transforms</a></td>
-				<td width='33%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
-				<td width='33%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
-			</tr></tbody></table>
+			<table id='oils_rpt_editor_tab_table'><tbody>
+				<tr>
+					<td width='33%'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items</a></td>
+					<td width='33%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
+					<td width='33%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
+				</tr>
+			</tbody></table>
 
+			<div style='margin-bottom: 10px;'>
+				<b style='padding-right: 15px;' id='oils_rpt_editor_window_label'/>
+			</div>
 			<div id='oils_rpt_tform_div'>
-				<b style='padding-right: 15px;' id='oils_rpt_tform_label'/>
 				<input size='28' id='oils_rpt_tform_label_input'/>
-				<div class='oils_rpt_tform_window'>
+				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>Select how this field should be displayed:</div>
 					<!--#include virtual="oils_rpt_tform_table.xhtml"-->
 				</div>
@@ -113,11 +117,15 @@
 			</div>
 
 			<div id='oils_rpt_filter_div' class='hide_me'>
-				<button id='oils_rpt_filter_submit'>Add Item</button>
+				<div class='oils_rpt_field_editor_window'>
+					<div style='margin-bottom: 10px;'>Select what filter should be applied to this field:</div>
+					<!--#include virtual="oils_rpt_filter_table.xhtml"-->
+				</div>
+				<button id='oils_rpt_filter_submit'>Create Filter</button>
 			</div>
 
 			<div id='oils_rpt_agg_filter_div' class='hide_me'>
-				<button id='oils_rpt_agg_filter_submit'>Add Item</button>
+				<button id='oils_rpt_agg_filter_submit'>Create Aggregate Filter</button>
 			</div>
 
 			<div id='oils_rpt_column_editor_close_div'>

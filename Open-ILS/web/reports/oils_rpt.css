@@ -43,7 +43,7 @@ table { border-collapse: collapse; }
 }
 
 .oils_rpt_info_item {
-	width: 270px;
+	width: 290px;
 }
 
 .oils_rpt_info_title {
@@ -54,17 +54,16 @@ table { border-collapse: collapse; }
 
 .oils_rpt_info_selector {
 	border: 1px solid blue; 
-	/*background: #E0F0E0;*/
 	background: #E0F0F0; 
-	min-height: 130px;
-	max-height: 240px;
+	min-height: 150px;
+	max-height: 290px;
 	overflow: scroll;
 	font-size: 8pt;
 }
 
 .oils_rpt_info_div { 
 	text-align: center; 
-	width: 280px; 
+	width: 300px; 
 	padding-left: 10px; 
 	padding: 10px;
 	border-left: 2px solid #E0E0E0; 
@@ -123,7 +122,7 @@ button {
 	border-top: 2px solid #E0E0E0;
 }
 
-.oils_rpt_tform_window {
+.oils_rpt_field_editor_window {
 	margin: 5px;	
 	text-align: left;
 	padding: 5px;
@@ -139,7 +138,7 @@ button {
 	background: red;
 }
 
-#oils_rpt_tform_tbody td {
+.oils_rpt_editor_window_tbody td {
 	border-bottom: 1px solid #A0A0A0;
 	padding: 4px;
 }

@@ -284,6 +284,8 @@ function oilsRptDrawDataWindow(path) {
 	var cls	= oilsRptPathClass(path);
 	var field = grep(oilsIDL[cls].fields, function(f){return (f.name==col);})[0];
 
+	appendClear(DOM.oils_rpt_editor_window_label, text(oilsRptMakeLabel(path)));
+
 	_debug("setting update data window for column "+col+' on class '+cls);
 
 	var div = DOM.oils_rpt_column_editor;
@@ -318,7 +320,6 @@ function oilsRptDrawDataWindow(path) {
 
 /* draws the transform window */
 function oilsRptDrawTransformWindow(path, col, cls, field) {
-	appendClear(DOM.oils_rpt_tform_label, text(oilsRptMakeLabel(path)));
 	DOM.oils_rpt_tform_label_input.value = oilsRptMakeLabel(path);
 	var dtype = field.datatype;
 
