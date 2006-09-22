@@ -179,23 +179,6 @@ sub fetch_user_data {
 
 	return undef unless my $patron = $ctx->{patron};
 
-	unless( $ctx->{ignore_user_status} ) {
-		return OpenILS::Event->new('PATRON_INACTIVE')
-			unless $U->is_true($patron->active);
-	
-		$patron->card($e->retrieve_actor_card($patron->card))
-			unless ref $patron->card;
-	
-		return OpenILS::Event->new('PATRON_CARD_INACTIVE')
-			unless $U->is_true($patron->card->active);
-	
-		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-			clense_ISO8601($patron->expire_date));
-	
-		return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
-			if( CORE::time > $expire->epoch ) ;
-	}
-
 	$patron->home_ou( 
 		$e->retrieve_actor_org_unit($patron->home_ou) ) 
 		unless ref $patron->home_ou;
@@ -224,12 +207,6 @@ sub fetch_user_data {
 
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
-	# this could alter the requestor object within the editor..
-	#if( my $req = $ctx->{requestor} ) {
-	#	$req->home_ou( $e->retrieve_actor_org_unit($requestor->home_ou) );	
-	#	$req->ws_ou( $e->retrieve_actor_org_unit($requestor->ws_ou) );	
-	#}
-
 	if( $ctx->{fetch_patron_circ_info} ) {
 		my $circ_counts = 
 			OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
@@ -240,15 +217,25 @@ sub fetch_user_data {
 	}
 
 	if( $ctx->{fetch_patron_money_info} ) {
-		# Grab the fines
-#		my $fxacts = $e->search_money_billable_transaction_summary(
-#			{ usr => $patron->id, balance_owed => { "!=" => 0 }, xact_finish => undef });
-#
-#		my $fines = 0;
-#		$fines += $_->balance_owed for @$fxacts;
-#		$ctx->{patronFines} = $fines;
 		$ctx->{patronFines} = $U->patron_money_owed($patron->id);
 		$logger->debug("script_builder: patron fines determined to be ".$ctx->{patronFines});
+	}
+
+	unless( $ctx->{ignore_user_status} ) {
+		return OpenILS::Event->new('PATRON_INACTIVE')
+			unless $U->is_true($patron->active);
+	
+		$patron->card($e->retrieve_actor_card($patron->card))
+			unless ref $patron->card;
+	
+		return OpenILS::Event->new('PATRON_CARD_INACTIVE')
+			unless $U->is_true($patron->card->active);
+	
+		my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+			clense_ISO8601($patron->expire_date));
+	
+		return OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED')
+			if( CORE::time > $expire->epoch ) ;
 	}
 
 	return undef;
@@ -350,6 +337,7 @@ sub has_common_ancestor {
 sub find_parent_at_depth {
 	my $org = shift;
 	my $depth = shift;
+	return undef unless $org and $depth;
 	fetch_ou_types();
 	do {
 		my ($t) = grep { $_->id == $org->ou_type } @OU_TYPES;

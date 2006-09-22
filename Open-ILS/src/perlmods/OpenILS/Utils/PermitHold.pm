@@ -120,11 +120,12 @@ sub load_scripts {
 sub check_age_protect {
 	my( $patron, $copy ) = @_;
 
-	return undef unless $copy->age_protect;
+	return undef unless $copy and $copy->age_protect and $patron;
+
+	my $hou = (ref $patron->home_ou) ? $patron->home_ou->id : $patron->home_ou;
 
 	my $prox = $U->storagereq(
-		'open-ils.storage.asset.copy.proximity', 
-		$copy->id, $patron->home_ou->id );
+		'open-ils.storage.asset.copy.proximity', $copy->id, $hou );
 
 	# If this copy is within the appropriate proximity, 
 	# age protect does not apply
