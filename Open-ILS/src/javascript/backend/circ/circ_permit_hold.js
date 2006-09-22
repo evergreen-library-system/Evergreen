@@ -37,6 +37,7 @@ if( ( marcItemType == 'g' ||
 		mod == 'av' || 
 		mod == 'cd' || 
 		mod == 'dvd' || 
+		isTrue(copy.deposit) || 
 		mod == 'video-long' || 
 		mod == 'video' ) ) {
 
