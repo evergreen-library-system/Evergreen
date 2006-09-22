@@ -65,7 +65,7 @@ CREATE INDEX rpt_rpt_fldr_idx ON reporter.report (folder);
 
 CREATE TABLE reporter.schedule (
 	id		SERIAL				PRIMARY KEY,
-	report		INT				NOT NULL REFERENCES reporter.report (id) DEFERRABLE INITIALLY DEFERRED
+	report		INT				NOT NULL REFERENCES reporter.report (id) DEFERRABLE INITIALLY DEFERRED,
 	folder		INT				NOT NULL REFERENCES reporter.output_folder (id),
 	runner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	run_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
