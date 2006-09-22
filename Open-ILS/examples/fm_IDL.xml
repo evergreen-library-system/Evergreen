@@ -1504,7 +1504,7 @@
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field reporter:label="Transaction Start Date/Time" name="xact_start" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="grocery" oils_obj:array_position="7" oils_persist:virtual="true" />
-			<field oils_obj:array_position="8" oils_persist:virtual="true" />
+			<field name="circulation" oils_obj:array_position="8" oils_persist:virtual="true" />
 			<field reporter:label="Billing Line Items" name="billings" oils_obj:array_position="9" oils_persist:virtual="true" />
 			<field reporter:label="Payments" name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
 		</fields>
