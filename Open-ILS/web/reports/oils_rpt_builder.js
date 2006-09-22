@@ -4,6 +4,8 @@
 function oilsInitReportBuilder() {
 	oilsInitReports();
 	oilsReportBuilderReset();
+	DOM.oils_rpt_table.onclick = 
+		function(){hideMe(DOM.oils_rpt_column_editor)};
 	oilsDrawRptTree(
 		function() { 
 			hideMe(DOM.oils_rpt_tree_loading); 
@@ -23,6 +25,7 @@ function oilsReportBuilderReset() {
 	oilsRptDebug();
 	oilsRptResetParams();
 }
+
 
 /* returns just the column name */
 function oilsRptPathCol(path) {
@@ -53,10 +56,7 @@ function oilsRptMakeLabel(path) {
 			if( i == 0 )
 				str += oilsIDL[parts[i]].label;
 		} else {
-			var column = parts[i];
-			var data = oilsIDL[parts[i-1]];
-			var f = grep(data.fields, 
-				function(j){return (j.name == column); })[0];
+			var f = oilsRptFindField(oilsIDL[parts[i-1]], parts[i]);
 			str += ":"+f.label;
 		}
 	}
@@ -171,15 +171,47 @@ function oilsDelSelectedDisplayItems() {
 
 	} else {
 		for( var j = 0; j < list.length; j++ ) 
-			oilsRptPruneFromClause(list[j]);
+			/* if there are no items left in the "select" clause for the given 
+				relation, trim this relation from the "from" clause */
+			if(!grep(oilsRpt.def.select,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })) 
+				oilsRptPruneFromClause(oilsRptPathRel(list[j]));
 	}
 
 	oilsRptDebug();
 }
 
 /* for each item in the path list, remove the associated data
-from the "from" clause */
-function oilsRptPruneFromClause(pathlist) {
+	from the "from" clause */
+
+function oilsRptPruneFromClause(relation, node) {
+	_debug("removing relation from 'from' clause " + relation);
+	if(!node) node = oilsRpt.def.from.join;
+	for( var i in node ) {
+		if( node[i].alias == relation ) {
+			if( node[i].join ) {
+				/* if we have subtrees, don't delete our tree node */
+				return false;
+			} else {
+				delete node[i];
+				return true;
+			} 
+		} else {
+			if( node[i].join ) {
+				if( oilsRptPruneFromClause(relation, node[i].join ) ) {
+					if(oilsRptObjectKeys(node[i].join).length == 0) {
+						delete node[i].join;
+						/* if there are no items in the select clause with a relation matching
+							this nodes alias, we can safely remove this node from the tree */
+						if(!grep(oilsRpt.def.select,function(r){return (r.relation==node[i].alias)}))
+							delete node[i];
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
 }
 
 /* adds an item to the display window */
@@ -248,9 +280,10 @@ function oilsRptHideEditorDivs() {
   filter, and aggregate filter picker window
   */
 function oilsRptDrawDataWindow(path) {
-	var col = oilsRptPathCol(path);
-	var cls = oilsRptPathClass(path);
+	var col	= oilsRptPathCol(path);
+	var cls	= oilsRptPathClass(path);
 	var field = grep(oilsIDL[cls].fields, function(f){return (f.name==col);})[0];
+
 	_debug("setting update data window for column "+col+' on class '+cls);
 
 	var div = DOM.oils_rpt_column_editor;

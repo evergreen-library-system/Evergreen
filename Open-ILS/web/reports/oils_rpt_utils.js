@@ -119,3 +119,10 @@ function oilsRptIdObjects(node) {
 		oilsRptIdObjects(children[c]);
 }
 
+
+function oilsRptObjectKeys(obj) {
+	var k = [];
+	for( var i in obj ) k.push(i);
+	return k;
+}
+
