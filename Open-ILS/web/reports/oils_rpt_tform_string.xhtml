@@ -1,3 +1,14 @@
-<div id='oils_rpt_tform_string_div'>
-	<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_string_substring'/> Substring <br/>
-</div>
+<tr datatype='string'>
+	<td>
+		<input type='radio' name='oils_rpt_tform_input' id='oils_rpt_tform_string_substring'/> 
+		<span>Substring</span>
+	</td>
+	<td>
+		<span style='padding-left: 5px;'>Offset: </span>
+		<input id='oils_rpt_tform_string_substring_offset' size='3' value='1'
+			onchange='DOM.oils_rpt_tform_string_substring.checked = true;'/>
+		<span style='padding-left: 5px;'>Length: </span>
+		<input id='oils_rpt_tform_string_substring_length' size='3' value='1'
+			onchange='DOM.oils_rpt_tform_string_substring.checked = true;'/>
+	</td>
+</tr>

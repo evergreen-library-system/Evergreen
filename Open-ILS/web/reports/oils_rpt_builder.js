@@ -335,6 +335,7 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 	DOM.oils_rpt_tform_label_input.focus();
 	DOM.oils_rpt_tform_label_input.select();
 	oilsRptHideTformFields();
+	oilsRptUnHideTformFields(dtype);
 
 	_debug("Transforming item with datatype "+dtype);
 	unHideMe($('oils_rpt_tform_'+dtype+'_div'));
@@ -342,8 +343,22 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 }
 
 function oilsRptHideTformFields() {
-	for( var t in oilsRptTransforms ) 
-		hideMe($('oils_rpt_tform_'+t+'_div'));
+	var rows = DOM.oils_rpt_tform_tbody.childNodes;
+	for( var i = 0; i < rows.length; i++ )
+		if( rows[i] && rows[i].nodeType == 1 )
+			hideMe(rows[i]);
+}
+
+function oilsRptUnHideTformFields(dtype) {
+	var rows = DOM.oils_rpt_tform_tbody.childNodes;
+	for( var i = 0; i < rows.length; i++ ) {
+		var row = rows[i]
+		if( row && row.nodeType == 1 && 
+			(row.getAttribute('datatype')=='all' 
+				|| row.getAttribute('datatype') == dtype)) {
+			unHideMe(row);
+		}
+	}
 }
 
 function oilsRptGetTform(datatype) {
@@ -368,7 +383,9 @@ function getRptTformParams(type, tform) {
 		case 'string' :
 			switch(tform) {
 				case 'substring' :
-					return [];
+					return [
+						DOM.oils_rpt_tform_string_substring_offset.value, 
+						DOM.oils_rpt_tform_string_substring_length.value];
 			}
 	}
 }

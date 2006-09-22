@@ -86,8 +86,9 @@ function setMousePos(e) {
 
 function buildFloatingDiv(div, width) {
 	var left = parseInt((window.innerWidth / 2) - (width/2));
-	var top = oilsMouseY;
-	var dbot = oilsMouseY + div.clientHeight;
+	var halfh = parseInt(div.clientHeight / 2);
+	var top = oilsMouseY - halfh + 50;
+	var dbot = top + halfh;
 	if( dbot > window.innerHeight ) {
 		top = oilsMouseY - div.clientHeight - 10;
 	}

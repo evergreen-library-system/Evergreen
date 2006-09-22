@@ -1,4 +1,6 @@
 body { font-size: 9pt; font-family: Helvetica, Arial, Tahoma, sans-serif; font-size: 9pt;} 
+table { border-collapse: collapse; }
+
 .hide_me { display: none; visibility: hidden; }
 .welcome_box { position:absolute; top: 5px; right: 5px; }
 
@@ -130,8 +132,6 @@ button {
 
 .oils_rpt_tree_link_ref {
 	color: #A52A2A;
-	/*color: darkblue;*/
-	/*font-family: courier; */
 }
 
 
@@ -139,3 +139,7 @@ button {
 	background: red;
 }
 
+#oils_rpt_tform_tbody td {
+	border-bottom: 1px solid #A0A0A0;
+	padding: 4px;
+}
