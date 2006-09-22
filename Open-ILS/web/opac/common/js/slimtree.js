@@ -2,12 +2,12 @@
 var stpicopen	= '../../../../images/slimtree/folder.gif';
 var stpicclose = '../../../../images/slimtree/folderopen.gif';
 */
-var stpicopen	= '../opac/images/slimtree/folder2.gif';
-var stpicclose = '../opac/images/slimtree/folderopen2.gif';
-var stpicblank = '../opac/images/slimtree/page.gif';
-var stpicline	= '../opac/images/slimtree/line.gif';
-var stpicjoin	= '../opac/images/slimtree/join.gif';
-var stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
+var stpicopen	= '../../../../images/slimtree/folder2.gif';
+var stpicclose = '../../../../images/slimtree/folderopen2.gif';
+var stpicblank = '../../../../images/slimtree/page.gif';
+var stpicline	= '../../../../images/slimtree/line.gif';
+var stpicjoin	= '../../../../images/slimtree/join.gif';
+var stpicjoinb = '../../../../images/slimtree/joinbottom.gif';
 
 
 var stimgopen	= elem('img',{src:stpicopen,border:0});
