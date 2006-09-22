@@ -67,7 +67,7 @@
 		function generate() {
 			try {
 				var idx = 0;
-				JSAN.use('util.text');
+				JSAN.use('util.text'); JSAN.use('util.money');
 				JSAN.use('util.widgets'); util.widgets.remove_children('panel'); var pn = $('panel'); $('preview').disabled = false;
 				var lw = Number($('lw').value) || 8; /* spine label width */
 				var ll = Number($('ll').value) || 9; /* spine label length */
