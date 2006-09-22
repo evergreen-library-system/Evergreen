@@ -29,185 +29,67 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script>
-	<![CDATA[
-		function my_init() {
-			try {
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
-				JSAN.errorLevel = "die"; // none, warn, or die
-				JSAN.addRepository('/xul/server/');
-				JSAN.use('util.error'); g.error = new util.error();
-				g.error.sdump('D_TRACE','my_init() for spine_labels.xul');
+	<script type="text/javascript" src="/xul/server/cat/spine_labels.js"/>
 
-				JSAN.use('util.network'); g.network = new util.network();
+	<hbox id="spine_labels_main" flex="1">
+		<vbox>
+			<hbox>
+				<button label="Re-Generate" accesskey="G" oncommand="generate()"/>
+				<spacer />
+				<button id="preview" disabled="true" label="Preview and Print" accesskey="P" oncommand="preview()"/>
+				<spacer />
+				<button id="close" disabled="false" label="Close Window" accesskey="C" oncommand="window.close()"/>
+			</hbox>
 
-				g.cgi = new CGI();
-
-				g.barcodes = [];
-				if (g.cgi.param('barcodes')) {
-					g.barcodes = g.barcodes.concat( JSON2js(g.cgi.param('barcodes')) );
-				}
-				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
-				if (g.data.temp_barcodes_for_labels) {
-					g.barcodes = g.barcodes.concat( g.data.temp_barcodes_for_labels );
-					g.data.temp_barcodes_for_labels = null; g.data.stash('temp_barcodes_for_labels');
-				}
-
-				g.copies = [];
-				g.volumes = {};
-				g.volume_count = {};
-
-				for (var i = 0; i < g.barcodes.length; i++) {
-					var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ g.barcodes[i] ] );
-					if (typeof copy.ilsevent != 'undefined') throw(copy);
-					g.copies.push( copy );
-					if (!g.volumes[ copy.call_number() ]) {
-						var volume = g.network.simple_request( 'FM_ACN_RETRIEVE', [ copy.call_number() ] );
-						if (typeof volume.ilsevent != 'undefined') throw(volume);
-						g.volumes[ copy.call_number() ] = volume;
-						g.volume_count[ copy.call_number() ] = 1;
-					} else {
-						g.volume_count[ copy.call_number() ] += 1;
-					}
-				}
-
-				generate();
-
-			} catch(E) {
-				try {
-					g.error.standard_unexpected_error_alert('/xul/server/cat/spine_labels.xul',E);
-				} catch(F) {
-					alert('FIXME: ' + js2JSON(E));
-				}
-			}
-		}
-
-		function $(id) { return document.getElementById(id); }
-
-		function generate() {
-			try {
-				var idx = 0;
-				JSAN.use('util.widgets'); util.widgets.remove_children('panel'); var pn = $('panel'); $('preview').disabled = false;
-				var lw = Number($('lw').value) || 8;
-				var ll = Number($('ll').value) || 9;
-				for (var i in g.volumes) {
-					var hb = document.createElement('vbox'); pn.appendChild(hb); hb.setAttribute('name','template');
-					var ds = document.createElement('description'); hb.appendChild(ds);
-					ds.appendChild( document.createTextNode( g.volumes[i].label() ) );
-					var gb = document.createElement('groupbox'); hb.appendChild(gb); 
-					var names = String(g.volumes[i].label()).split(/\s+/).reverse();
-					for (var j = 0; j < ll; j++) {
-						var hb2 = document.createElement('hbox'); gb.appendChild(hb2);
-						var tb = document.createElement('textbox'); hb2.appendChild(tb); 
-						tb.setAttribute('class','plain'); tb.setAttribute('style','font-family: monospace');
-						tb.setAttribute('size',lw+1); tb.setAttribute('maxlength',lw);
-						var name = names.pop(); if (!name) continue;
-						if (name.length > lw) {
-							var sname = name.split(/\./);
-							if (sname.length > 1) {
-								for (var k = 1; k < sname.length; k++) sname[k] = '.' + sname[k];
-								names = sname.slice(1).concat( names );
-								if (sname[0].length > lw) {
-									tb.value = sname[0].substr(0,lw);
-									names = [ sname[0].substr(lw) ].concat( names );
-								} else {
-									tb.value = sname[0];
-								}
-							} else {
-								tb.value = name.substr(0,lw);
-								names = [ name.substr(lw) ].concat( names );
-							}
-						} else {
-							tb.value = name;
-						}
-					}
-					var vb = document.createElement('vbox'); hb.appendChild(vb);
-					var label = document.createElement('label'); vb.appendChild(label);
-					label.setAttribute('value','Print how many?');
-					var tb = document.createElement('textbox'); vb.appendChild(tb);
-					tb.setAttribute('value', g.volume_count[ i ]); tb.setAttribute('name','count');
-					var btn = document.createElement('button'); vb.appendChild(btn);
-					btn.setAttribute('label','Test Print');
-					btn.setAttribute('oncommand',"preview(" + idx++ + ")");
-				}
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('Generate',E);
-			}
-		}
-
-		function preview(idx) {
-			try {
-					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-					var pt = Number( $('pt').value ) || 10; var lm = Number($('lm').value); if (lm == NaN) lm = 11;
-					var lw = Number($('lw').value) || 8; var ll = Number($('ll').value) || 9; 
-					var sbl = Number($('sbl').value); if (sbl == NaN) sbl = 2;
-					//alert('pt = ' + pt + ' lm = ' + lm + ' lw = ' + lw + ' ll = ' + ll + ' sbl = ' + sbl);
-					var html = "<html><head><link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt;
-					html += "pt; page-break-after: always;}'></link><title>Spine Labels</title></head><body>\n";
-					var nl = document.getElementsByAttribute('name','template');
-					for (var i = 0; i < nl.length; i++) {
-						if (typeof idx == 'undefined' || idx == null) { } else {
-							if (idx != i) continue;
-						}
-						var count = Number( nl[i].getElementsByAttribute('name','count')[0].value ); if (count == NaN) count = 1;
-						for (var j = 0; j < count; j++) {
-							html += '<pre>\n';
-							var gb = nl[i].childNodes[1];
-							var nl2 = gb.getElementsByTagName('textbox');
-							for (var k = 0; k < nl2.length; k++) {
-								for (var m = 0; m < lm; m++) html += ' ';
-								html += nl2[k].value + '\n';
-							}
-							//for (var k = 0; k < sbl; k++) html += '\n';
-							html += '</pre>\n';
-						}
-					}
-					html += '</body></html>';
-					JSAN.use('util.window'); var win = new util.window();
-					var loc = ( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( 'data:text/html,' + window.escape(html) ) + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
-					var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
-			} catch(E) {
-				g.error.standard_unexpected_error_alert('Preview and Print',E);
-			}
-		}
-
-	]]>
-	</script>
-
-	<vbox id="spine_labels_main" flex="1">
-		<hbox>
+			<hbox><label value="Font size (in pts):" control="pt"/><textbox id="pt" value="10" onchange="this.setAttribute('value',this.value)" persist="value"/></hbox>
 			<grid><columns><column/><column/><column/><column/></columns><rows>
+				<row> <label class="header" value="Spine Label"/><spacer/> </row>
+				<row> <label value="Left Margin (in characters):" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="Label Width (in characters):" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="Label Length (in lines):" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label class="header" value="Pocket Label"/><checkbox id="pl" checked="false" persist="checked" label="Enabled"/> </row>
+				<row> <label value="Middle Margin (in characters):" control="mm"/><textbox id="mm" value="2" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="Label Width (in characters):" control="plw"/><textbox id="plw" value="28" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <label value="Label Length (in lines):" control="pll"/><textbox id="pll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
+				<row> <checkbox id="title" checked="true" persist="checked" label="Include Title (wraps on word at label width)"/><hbox><label value="On line:"/><textbox id="title_line" value="4" persist="value"/></hbox> </row>
+				<row> <checkbox id="title_r" checked="true" persist="checked" label="Include Title (segment after wrapping)"/><hbox><label value="On line:"/><textbox id="title_r_line" value="5" persist="value"/></hbox> </row>
+				<row> <spacer/><checkbox id="title_r_indent" checked="true" persist="checked" label="Indent a space?"/> </row>
+				<row> <checkbox id="author" checked="true" persist="checked" label="Include Author"/><hbox><label value="On line:"/><textbox id="author_line" value="3" persist="value"/></hbox> </row>
+				<row> <checkbox id="call_number" checked="true" persist="checked" label="Include Call Number"/><hbox><label value="On line:"/><textbox id="call_number_line" value="2" persist="value"/></hbox> </row>
 				<row>
-					<label value="Font size (in pts):" control="pt"/><textbox id="pt" value="10" onchange="this.setAttribute('value',this.value)" persist="value"/>
+					<checkbox id="owning_lib_shortname" checked="false" persist="checked" label="Include Owning Library (policy code)"/>
+					<hbox><label value="On line:"/><textbox id="owning_lib_shortname_line" value="" persist="value"/></hbox>
 				</row>
 				<row>
-					<label value="Left Margin (in characters):" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/>
-					<label value="Include Copy Numbers?" control="cpn"/><checkbox id="cpn" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
+					<checkbox id="owning_lib" checked="false" persist="checked" label="Include Owning Library"/><hbox><label value="On line:"/><textbox id="owning_lib_line" value="" persist="value"/></hbox>
 				</row>
 				<row>
-					<label value="Label Width (in characters):" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" persist="value"/>
-					<label value="Include Copy Locations?" control="cbl"/><checkbox id="cbl" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
+					<checkbox id="shelving_location" checked="false" persist="checked" label="Include Shelving Location"/><hbox><label value="On line:"/><textbox id="shelving_location_line" value="" persist="value"/></hbox>
 				</row>
 				<row>
-					<label value="Label Length (in lines):" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/>
-					<label value="Include Library Code?" control="lsn"/><checkbox id="lsn" oncommand="alert('Not Yet Implemented'); this.checked = false;"/>
+					<checkbox id="barcode" checked="true" persist="checked" label="Include Item Barcode"/><hbox><label value="On line:"/><textbox id="barcode_line" value="1" persist="value"/></hbox>
 				</row>
-				<row hidden="true">
-					<label value="Space Between Labels (in lines):" control="sbl"/><textbox id="sbl" value="0" onchange="this.setAttribute('value',this.value)" persist="value"/>
-					<description control="pb">Use form feeds instead of line feeds between labels?</description><checkbox id="pb" checked="true" oncommand="alert('This is always true now.');this.checked = true;"/>
+				<row>
+					<hbox><checkbox id="custom1" checked="false" persist="checked" label="Custom:"/><textbox id="custom1_tb" value="%price%" persist="value"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom1_line" value="" persist="value"/></hbox>
+				</row>
+				<row>
+					<hbox><checkbox id="custom2" checked="false" persist="checked" label="Custom:"/><textbox id="custom2_tb" value="%deposit_amount%" persist="value"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom2_line" value="" persist="value"/></hbox>
+				</row>
+				<row>
+					<hbox><checkbox id="custom3" checked="false" persist="checked" label="Custom:"/><textbox id="custom3_tb" value="%alert_message%" persist="value"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom3_line" value="" persist="value"/></hbox>
+				</row>
+				<row>
+					<hbox><checkbox id="custom4" checked="false" persist="checked" label="Custom:"/><textbox id="custom4_tb" value="Don't sell me on eBay" persist="value"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom4_line" value="" persist="value"/></hbox>
 				</row>
 			</rows></grid>
-		</hbox>
-		<hbox>
-			<button label="Generate" accesskey="G" oncommand="generate()"/>
-			<spacer />
-			<button id="preview" disabled="true" label="Preview and Print" accesskey="P" oncommand="preview()"/>
-			<spacer />
-			<button id="close" disabled="false" label="Close Window" accesskey="C" oncommand="window.close()"/>
-		</hbox>
-		<hbox id="panel" flex="1" style="overflow: auto"/>
-	</vbox>
+		</vbox>
+		<splitter><grippy/></splitter>
+		<vbox id="panel" flex="1" style="overflow: auto"/>
+	</hbox>
 
 </window>
 
