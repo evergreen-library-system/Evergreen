@@ -62,6 +62,11 @@
 			}
 		}
 
+		function show_macros() {
+			JSAN.use('util.functional');
+			alert( util.functional.map_list( g.cols, function(o) { return '%' + o.id + '%'; } ).join(" ") );
+		}
+
 		function $(id) { return document.getElementById(id); }
 
 		function generate() {
@@ -200,8 +205,9 @@
 			}
 		}
 
-		function expand_macros(text,copy) {
-			var my = { 'acp' : copy };
+		function expand_macros(text,copy,volume,record) {
+			var my = { 'acp' : copy, 'acn' : volume, 'mvr' : record };
+			var obj = { 'data' : g.data };
 			for (var i in g.col_map) {
 				var re = g.col_map[i].regex;
 				if (text.match(re)) {
@@ -239,13 +245,13 @@
 							var nl2 = gb.getElementsByAttribute('name','spine');
 							for (var k = 0; k < nl2.length; k++) {
 								for (var m = 0; m < lm; m++) html += ' ';
-								html += expand_macros( nl2[k].value, copy ).substr(0,lw);
+								html += expand_macros( nl2[k].value, copy, volume, volume.record() ).substr(0,lw);
 								if ($('pl').checked) {
 									var sib = nl2[k].nextSibling;
 									if (sib) {
 										for (var m = 0; m < lw - nl2[k].value.length; m++) html += ' ';
 										for (var m = 0; m < mm; m++) html += ' ';
-										html += expand_macros( sib.value, copy ).substr(0,plw);
+										html += expand_macros( sib.value, copy, volume, volume.record() ).substr(0,plw);
 									}
 								}
 								html += '\n';

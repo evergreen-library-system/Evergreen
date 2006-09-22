@@ -86,6 +86,7 @@
 					<hbox><label value="On line:"/><textbox id="custom4_line" value="" persist="value"/></hbox>
 				</row>
 			</rows></grid>
+			<button label="Available Macros" oncommand="show_macros()"/>
 		</vbox>
 		<splitter><grippy/></splitter>
 		<vbox id="panel" flex="1" style="overflow: auto"/>
