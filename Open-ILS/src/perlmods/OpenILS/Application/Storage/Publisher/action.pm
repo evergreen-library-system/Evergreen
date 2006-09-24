@@ -537,25 +537,26 @@ sub generate_fines {
 				$client->respond( "Last billing time: ".$fine->billing_ts." (clensed fromat: ".clense_ISO8601( $fine->billing_ts ).")");
 				$last_fine = $parser->parse_datetime( clense_ISO8601( $fine->billing_ts ) )->epoch;
 			} else {
+				$log->info( "Potential first billing for circ ".$c->id );
 				$last_fine = $due;
 
-				# XXX There is some contention over this ... it basically makes the grace period "hard" (non-fining)
-				#$last_fine += $fine_interval * $grace;
-			}
-
-			if ($last_fine == $due) { # first time we've billed for this
 				if (my $h = $hoo{$c->circ_lib}) { 
 
+					$log->info( "Circ lib has an hours-of-operation entry" );
+					# find the day after the due date...
 					$due_dt = $due_dt->add( days => 1 );
 
+					# get the day of the week for that day...
 					my $dow = $due_dt->day_of_week_0;
 					my $dow_open = "dow_${dow}_open";
 					my $dow_close = "dow_${dow}_close";
 
 					my $count = 0;
 					while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
+						# if the circ lib is closed, add a day to the grace period...
 
 						$grace++;
+						$log->info( "Grace period for circ ".$c->id." extended to $grace intervals" );
 
 						$due_dt = $due_dt->add( days => 1 );
 						$dow = $due_dt->day_of_week_0;
@@ -563,6 +564,8 @@ sub generate_fines {
 						$dow_close = "dow_${dow}_close";
 
 						$count++;
+
+						# and check for up to a week
 						last if ($count > 6);
 					}
 				}
@@ -574,6 +577,7 @@ sub generate_fines {
 				$client->respond( "\tNo fines to create.  " );
 				if ($grace && $now < $due + $fine_interval * $grace) {
 					$client->respond( "Still inside grace period of: ". seconds_to_interval( $fine_interval * $grace)."\n" );
+					$log->info( "Circ ".$c->id." is still inside grace period of: $grace [". seconds_to_interval( $fine_interval * $grace).']' );
 				} else {
 					$client->respond( "Last fine generated for: ".localtime($last_fine)."\n" );
 				}
