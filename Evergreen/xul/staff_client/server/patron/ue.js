@@ -627,6 +627,16 @@ function uEditMarkCardLost() {
 			card.ischanged(1);
 			card.active(0);
 
+			if( !card.barcode() ) {
+				/* a card exists in the array with no barcode */
+				ueRemoveCard(card.id());
+
+			} else if( card.isnew() && card.active() == 0 ) {
+				/* a new card was created, then never used, removing.. */
+				_debug("removing new inactive card "+card.barcode());
+				ueRemoveCard(card.id());
+			}
+
 			/* create a new card for the patron */
 			var newcard = new ac();
 			newcard.id(uEditCardVirtId--);
@@ -645,6 +655,17 @@ function uEditMarkCardLost() {
 		}
 	}
 }
+
+
+function ueRemoveCard(id) {
+	_debug("removing card from cards() array: " + id);
+	var cds = grep( patron.cards(), function(c){return (c.id() != id)});
+	if(!cds) cds = [];
+	for( var j = 0; j < cds.length; j++ )
+		_debug("patron card array now has :  "+cds[j].id());
+	patron.cards(cds);
+}
+
 
 
 function compactArray(arr) {
