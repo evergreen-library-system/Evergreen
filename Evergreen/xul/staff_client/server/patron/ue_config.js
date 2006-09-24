@@ -398,6 +398,8 @@ function uEditDefineData(patron) {
 					exptime			+= intsecs * 1000;
 					expdate.setTime(exptime);
 
+					_debug("profile change (interval= '"+interval+"', seconds="+intsecs+")\n\tgenerated a date of " + expdate);
+
 					var year			= expdate.getYear() + 1900;
 					var month		= (expdate.getMonth() + 1) + '';
 					var day			= (expdate.getDate()) + '';
@@ -405,8 +407,11 @@ function uEditDefineData(patron) {
 					if(!month.match(/\d{2}/)) month = '0' + month;
 					if(!day.match(/\d{2}/)) day = '0' + day;
 
+
 					var node = $('ue_expire');
 					node.value = year+'-'+month+'-'+day;
+
+					_debug("profile change formatted date to "+ node.value);
 				}
 			}
 		},
