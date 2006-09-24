@@ -132,11 +132,19 @@ sub fetch_bib_data {
 		$e->retrieve_actor_org_unit($copy->circ_lib)) 
 		unless ref $copy->circ_lib;
 
-	$ctx->{volume} = $e->retrieve_asset_call_number(
-		$ctx->{copy}->call_number) or return $e->event;
+	if( ref $copy->call_number ) {
+		$ctx->{volume} = $copy->call_number;
+	} else {
+		$ctx->{volume} = $e->retrieve_asset_call_number(
+			$copy->call_number) or return $e->event;
+	}
 
-	$ctx->{title} = $e->retrieve_biblio_record_entry(
-		$ctx->{volume}->record) or return $e->event;
+	if( ref $ctx->{volume}->record ) {
+		$ctx->{title} = $ctx->{volume}->record;
+	} else {
+		$ctx->{title} = $e->retrieve_biblio_record_entry(
+			$ctx->{volume}->record) or return $e->event;
+	}
 
 	$copy->age_protect(
 		$e->retrieve_config_rules_age_hold_protect($copy->age_protect))
