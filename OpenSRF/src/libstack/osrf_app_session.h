@@ -22,7 +22,7 @@ enum OSRF_SESSION_STATE { OSRF_SESSION_CONNECTING, OSRF_SESSION_CONNECTED, OSRF_
 enum OSRF_SESSION_TYPE { OSRF_SESSION_SERVER, OSRF_SESSION_CLIENT };
 
 /* entry point for data into the stack.  gets set in osrf_stack.c */
-int (*osrf_stack_entry_point) (transport_client* client, int timeout );
+int (*osrf_stack_entry_point) (transport_client* client, int timeout, int* recvd );
 
 struct osrf_app_request_struct {
 	/** Our controlling session */
@@ -159,7 +159,7 @@ int osrf_app_session_disconnect( osrf_app_session* );
   * payload and message type.  This method will return after
   * any data has arrived.
   */
-int osrf_app_session_queue_wait( osrf_app_session*, int timeout );
+int osrf_app_session_queue_wait( osrf_app_session*, int timeout, int* recvd );
 
 /** Disconnects (if client), frees any attached app_reuqests, removes the session from the 
   * global session cache and frees the session.  Needless to say, only call this when the

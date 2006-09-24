@@ -36,19 +36,7 @@ void osrfAppSessionCleanup() {
 void _osrf_app_request_free( void * req ){
 	if( req == NULL ) return;
 	osrfAppRequest* r = (osrfAppRequest*) req;
-
 	if( r->payload ) osrf_message_free( r->payload );
-
-	/*
-	osrf_message* cur_msg = req->result;
-	while( cur_msg != NULL ) {
-		osrf_message* next_msg = cur_msg->next;
-		osrf_message_free( cur_msg );
-		cur_msg = next_msg;
-	}
-	osrf_message_free( req->payload );
-	*/
-
 	free( r );
 }
 
@@ -68,11 +56,6 @@ void _osrf_app_request_push_queue( osrf_app_request* req, osrf_message* result )
 			ptr2 = ptr2->next;
 		}
 		ptr->next = result;
-
-		/*
-		result->next = req->result;
-		req->result = result;
-		*/
 	}
 }
 
@@ -118,7 +101,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		/* tell the session to wait for stuff */
 		osrfLogDebug( OSRF_LOG_MARK,  "In app_request receive with remaining time [%d]", (int) remaining );
 
-		osrf_app_session_queue_wait( req->session, 0 );
+		osrf_app_session_queue_wait( req->session, 0, NULL );
 
 		if( req->result != NULL ) { /* if we received anything */
 			/* pop off the first message in the list */
@@ -132,7 +115,7 @@ osrf_message* _osrf_app_request_recv( osrf_app_request* req, int timeout ) {
 		if( req->complete )
 			return NULL;
 
-		osrf_app_session_queue_wait( req->session, (int) remaining );
+		osrf_app_session_queue_wait( req->session, (int) remaining, NULL );
 
 		if( req->result != NULL ) { /* if we received anything */
 			/* pop off the first message in the list */
@@ -253,7 +236,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 osrf_app_session* osrf_app_server_session_init( 
 		char* session_id, char* our_app, char* remote_id ) {
 
-	osrfLogInfo( OSRF_LOG_MARK, "Initing server session with session id %s, service %s,"
+	osrfLogDebug( OSRF_LOG_MARK, "Initing server session with session id %s, service %s,"
 			" and remote_id %s", session_id, our_app, remote_id );
 
 	osrf_app_session* session = osrf_app_session_find_session( session_id );
@@ -435,7 +418,7 @@ int osrf_app_session_connect(osrf_app_session* session){
 	time_t remaining = (time_t) timeout;
 
 	while( session->state != OSRF_SESSION_CONNECTED && remaining >= 0 ) {
-		osrf_app_session_queue_wait( session, remaining );
+		osrf_app_session_queue_wait( session, remaining, NULL );
 		remaining -= (int) (time(NULL) - start);
 	}
 
@@ -487,12 +470,11 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 	if( !(session && msgs && size > 0) ) return 0;
 	int retval = 0;
 
-
 	osrfMessage* msg = msgs[0];
 
 	if(msg) {
 
-		osrf_app_session_queue_wait( session, 0 );
+		osrf_app_session_queue_wait( session, 0, NULL );
 
 		if(session->state != OSRF_SESSION_CONNECTED)  {
 
@@ -520,20 +502,21 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 
 		transport_message* t_msg = message_init( 
 				string, "", session->session_id, session->remote_id, NULL );
-	
-		osrfLogDebug(OSRF_LOG_MARK, "Session [%s] [%s]  sending to %s \nData: %s", 
-				session->remote_service, session->session_id, t_msg->recipient, string );
 
 		retval = client_send_message( session->transport_handle, t_msg );
 
 		if( retval ) osrfLogError(OSRF_LOG_MARK, "client_send_message failed");
-	
+
+		osrfLogInfo(OSRF_LOG_MARK, "[%s] sent %d bytes of data to %s",
+			session->remote_service, strlen(string), t_msg->recipient );
+
+		osrfLogDebug(OSRF_LOG_MARK, "Sent: %s", string );
+
 		free(string);
 		message_free( t_msg );
 	}
 
 	return retval; 
-
 }
 
 
@@ -553,11 +536,11 @@ int _osrf_app_session_send( osrf_app_session* session, osrf_message* msg ){
   * payload and message type.  This method will return after
   * any data has arrived.
   */
-int osrf_app_session_queue_wait( osrf_app_session* session, int timeout ){
+int osrf_app_session_queue_wait( osrf_app_session* session, int timeout, int* recvd ){
 	if(session == NULL) return 0;
 	int ret_val = 0;
 	osrfLogDebug(OSRF_LOG_MARK,  "AppSession in queue_wait with timeout %d", timeout );
-	ret_val = osrf_stack_entry_point(session->transport_handle, timeout);
+	ret_val = osrf_stack_entry_point(session->transport_handle, timeout, recvd);
 	return ret_val;
 }
 
@@ -604,6 +587,7 @@ int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data 
 
 	osrf_message* msg = osrf_message_init( RESULT, requestId, 1 );
 	char* json = jsonObjectToJSON( data );
+
 	osrf_message_set_result_content( msg, json );
 	_osrf_app_session_send( ses, msg ); 
 
@@ -640,8 +624,6 @@ int osrfAppRequestRespondComplete(
 	}
 
 	osrf_message_free( status );
-
-	/* join and free */
 
 	return 0;
 }

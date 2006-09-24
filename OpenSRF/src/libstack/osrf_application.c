@@ -210,9 +210,6 @@ int osrfAppRunMethod( char* appName, char* methodName,
 	/* this is the method we're gonna run */
 	int (*meth) (osrfMethodContext*);	
 
-	osrfLogInfo( OSRF_LOG_MARK, "Running method [%s] for app [%s] with request id %d and "
-			"thread trace %s", methodName, appName, reqId, ses->session_id );
-
 	if( !(app = _osrfAppFindApplication(appName)) )
 		return osrfAppRequestRespondException( ses, 
 				reqId, "Application not found: %s", appName );
@@ -317,7 +314,6 @@ int __osrfAppPostProcess( osrfMethodContext* ctx, int retcode ) {
 	}
 
 	return 0;
-
 }
 
 int osrfAppRequestRespondException( osrfAppSession* ses, int request, char* msg, ... ) {

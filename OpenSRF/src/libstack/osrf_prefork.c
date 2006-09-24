@@ -179,6 +179,7 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 	osrfLogDebug( OSRF_LOG_MARK, "Entering keepalive loop for session %s", session->session_id );
 	int keepalive = child->keepalive;
 	int retval;
+	int recvd;
 	time_t start;
 	time_t end;
 
@@ -187,8 +188,10 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 		osrfLogDebug(OSRF_LOG_MARK, 
 				"osrf_prefork calling queue_wait [%d] in keepalive loop", keepalive);
 		start		= time(NULL);
-		retval	= osrf_app_session_queue_wait(session, keepalive);
+		retval	= osrf_app_session_queue_wait(session, keepalive, &recvd);
 		end		= time(NULL);
+
+		osrfLogDebug(OSRF_LOG_MARK, "Data received == %d", recvd);
 
 		if(retval) {
 			osrfLogError(OSRF_LOG_MARK, "queue-wait returned non-success %d", retval);
@@ -198,11 +201,9 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 		/* see if the client disconnected from us */
 		if(session->state != OSRF_SESSION_CONNECTED) break;
 
-		/* see if the used up the timeout */
-		if( (end - start) >= keepalive ) {
-
-			osrfLogDebug(OSRF_LOG_MARK, "Keepalive timed out, exiting connected session");
-
+		/* if no data was reveived within the timeout interval */
+		if( !recvd && (end - start) >= keepalive ) {
+			osrfLogInfo(OSRF_LOG_MARK, "No data was reveived in %d seconds, exiting stateful session", keepalive);
 			osrfAppSessionStatus( 
 					session, 
 					OSRF_STATUS_TIMEOUT, 

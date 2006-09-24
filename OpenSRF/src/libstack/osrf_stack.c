@@ -5,13 +5,15 @@ osrf_message* _do_client( osrf_app_session*, osrf_message* );
 osrf_message* _do_server( osrf_app_session*, osrf_message* );
 
 /* tell osrf_app_session where the stack entry is */
-int (*osrf_stack_entry_point) (transport_client*, int)  = &osrf_stack_process;
+int (*osrf_stack_entry_point) (transport_client*, int, int*)  = &osrf_stack_process;
 
-int osrf_stack_process( transport_client* client, int timeout ) {
+int osrf_stack_process( transport_client* client, int timeout, int* msg_received ) {
 	if( !client ) return -1;
 	transport_message* msg = NULL;
+	if(msg_received) *msg_received = 0;
 
 	while( (msg = client_recv( client, timeout )) ) {
+		if(msg_received) *msg_received = 1;
 		osrfLogDebug( OSRF_LOG_MARK,  "Received message from transport code from %s", msg->sender );
 		osrf_stack_transport_handler( msg, NULL );
 		timeout = 0;
@@ -162,8 +164,6 @@ osrf_message* _do_client( osrf_app_session* session, osrf_message* msg ) {
 			case OSRF_STATUS_EXPFAILED: 
 				osrf_app_session_reset_remote( session );
 				session->state = OSRF_SESSION_DISCONNECTED;
-				/* set the session to 'stateful' then resend */
-			//	osrf_app_session_request_resend( session, msg->thread_trace );
 				return NULL;
 
 			case OSRF_STATUS_TIMEOUT:
@@ -238,9 +238,7 @@ osrf_message* _do_server( osrf_app_session* session, osrf_message* msg ) {
 
 
 
-
 int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg ) {
-
 	if(session == NULL || msg == NULL) return 0;
 
 	if(msg->m_type == RESULT && session->type == OSRF_SESSION_CLIENT) {
@@ -255,10 +253,9 @@ int osrf_stack_application_handler( osrf_app_session* session, osrf_message* msg
 	jsonObject* params = msg->_params;
 
 	osrfAppRunMethod( app, method,  session, msg->thread_trace, params );
-
 	osrfMessageFree(msg);
 		
 	return 1;
-
 }
+
 
