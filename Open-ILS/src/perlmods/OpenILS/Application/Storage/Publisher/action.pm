@@ -540,33 +540,36 @@ sub generate_fines {
 				$log->info( "Potential first billing for circ ".$c->id );
 				$last_fine = $due;
 
-				if (my $h = $hoo{$c->circ_lib}) { 
+				if (0) {
+					if (my $h = $hoo{$c->circ_lib}) { 
 
-					$log->info( "Circ lib has an hours-of-operation entry" );
-					# find the day after the due date...
-					$due_dt = $due_dt->add( days => 1 );
-
-					# get the day of the week for that day...
-					my $dow = $due_dt->day_of_week_0;
-					my $dow_open = "dow_${dow}_open";
-					my $dow_close = "dow_${dow}_close";
-
-					my $count = 0;
-					while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
-						# if the circ lib is closed, add a day to the grace period...
-
-						$grace++;
-						$log->info( "Grace period for circ ".$c->id." extended to $grace intervals" );
-
+						$log->info( "Circ lib has an hours-of-operation entry" );
+						# find the day after the due date...
 						$due_dt = $due_dt->add( days => 1 );
-						$dow = $due_dt->day_of_week_0;
-						$dow_open = "dow_${dow}_open";
-						$dow_close = "dow_${dow}_close";
 
-						$count++;
+						# get the day of the week for that day...
+						my $dow = $due_dt->day_of_week_0;
+						my $dow_open = "dow_${dow}_open";
+						my $dow_close = "dow_${dow}_close";
 
-						# and check for up to a week
-						last if ($count > 6);
+						my $count = 0;
+						while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
+							# if the circ lib is closed, add a day to the grace period...
+
+							$grace++;
+							$log->info( "Grace period for circ ".$c->id." extended to $grace intervals" );
+							$log->info( "Day of week $dow open $dow_open, close $dow_close" );
+
+							$due_dt = $due_dt->add( days => 1 );
+							$dow = $due_dt->day_of_week_0;
+							$dow_open = "dow_${dow}_open";
+							$dow_close = "dow_${dow}_close";
+
+							$count++;
+
+							# and check for up to a week
+							last if ($count > 6);
+						}
 					}
 				}
 			}
