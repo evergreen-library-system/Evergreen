@@ -2,7 +2,7 @@ LDLIBS += -lobjson -lopensrf -lfieldmapper
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
-all:	oils_auth.so oils_cstore.so oils_dataloader
+all:	oils_auth.so oils_cstore.so oils_rstore.so oils_dataloader
 #all:	oils_auth.so
 
 oils_event.o:	oils_event.c oils_event.h
@@ -20,6 +20,14 @@ oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
 		$(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
+
+oils_rstore.o:	oils_cstore.c oils_utils.h
+	$(CC) $(CFLAGS) -I$(TMPDIR) -I$(TMPDIR)/opensrf/ -DRSTORE -c -o $@ oils_cstore.c 
+
+oils_rstore.so:	oils_rstore.o liboils_utils.so liboils_idl.so
+	@echo $@
+	$(CC) -shared -W1 -L/usr/local/lib/dbd \
+		$(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils -ldbi -ldbdpgsql oils_rstore.o -o $(TMPDIR)/$@
 
 oils_fetch.so:	oils_fetch.o liboils_utils.so
 	@echo $@

@@ -13,7 +13,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef MODULENAME
+#ifdef RSTORE
+#  define MODULENAME "open-ils.reporter-store"
+#else
 #  define MODULENAME "open-ils.cstore"
 #endif
 
