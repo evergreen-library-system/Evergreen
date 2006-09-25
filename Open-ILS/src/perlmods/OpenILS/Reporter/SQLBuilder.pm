@@ -285,6 +285,28 @@ sub is_aggregate { return 0 }
 
 
 #-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::day_name;
+
+sub toSQL {
+	my $self = shift;
+	return 'TO_CHAR("' . $self->{_relation} . '"."' . $self->name . '", \'Day\')';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::month_name;
+
+sub toSQL {
+	my $self = shift;
+	return 'TO_CHAR("' . $self->{_relation} . '"."' . $self->name . '", \'Month\')';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::doy;
 
 sub toSQL {
