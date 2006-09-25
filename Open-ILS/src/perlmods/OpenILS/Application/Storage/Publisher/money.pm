@@ -20,7 +20,7 @@ sub _make_mbts {
                 for my $b ($x->billings) {
                         next if ($b->voided);
 			#$log->debug( "billing is ".$b->amount, DEBUG );
-                        $to += int($b->amount * 100);
+                        $to += ($b->amount * 100);
                         $lb ||= $b->billing_ts;
                         if ($b->billing_ts ge $lb) {
                                 $lb = $b->billing_ts;
@@ -30,14 +30,14 @@ sub _make_mbts {
                         }
                 }
 
-                $s->total_owed( sprintf('%0.2f', int($to) / 100 ) );
+                $s->total_owed( sprintf('%0.2f', ($to) / 100 ) );
 
                 my $tp = 0;
                 my $lp = undef;
                 for my $p ($x->payments) {
 			#$log->debug( "payment is ".$p->amount." voided = ".$p->voided, DEBUG );
                         next if ($p->voided eq 't');
-                        $tp += int($p->amount * 100);
+                        $tp += ($p->amount * 100);
                         $lp ||= $p->payment_ts;
                         if ($p->payment_ts ge $lp) {
                                 $lp = $p->payment_ts;
@@ -46,9 +46,9 @@ sub _make_mbts {
                                 $s->last_payment_type($p->payment_type);
                         }
                 }
-                $s->total_paid( sprintf('%0.2f', int($tp) / 100 ) );
+                $s->total_paid( sprintf('%0.2f', ($tp) / 100 ) );
 
-                $s->balance_owed( sprintf('%0.2f', int(int($to) - int($tp)) / 100) );
+                $s->balance_owed( sprintf('%0.2f', (($to) - ($tp)) / 100) );
 		#$log->debug( "balance of ".$x->id." == ".$s->balance_owed, DEBUG );
 
                 $s->xact_type( 'grocery' ) if (money::grocery->retrieve($x->id));

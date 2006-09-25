@@ -503,7 +503,7 @@ sub _make_mbts {
                 my $lb = undef;
                 for my $b (@{ $x->billings }) {
 			next if ($U->is_true($b->voided));
-                        $to += int($b->amount * 100);
+                        $to += ($b->amount * 100);
                         $lb ||= $b->billing_ts;
                         if ($b->billing_ts ge $lb) {
                                 $lb = $b->billing_ts;
@@ -518,7 +518,7 @@ sub _make_mbts {
                 my $lp = undef;
                 for my $p (@{ $x->payments }) {
 			next if ($U->is_true($p->voided));
-                        $tp += int($p->amount * 100);
+                        $tp += ($p->amount * 100);
                         $lp ||= $p->payment_ts;
                         if ($p->payment_ts ge $lp) {
                                 $lp = $p->payment_ts;
@@ -529,7 +529,7 @@ sub _make_mbts {
                 }
 		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
 
-		$s->balance_owed( sprintf('%0.2f', int($to - $tp) / 100) );
+		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
 
                 $s->xact_type( 'grocery' ) if ($x->grocery);
                 $s->xact_type( 'circulation' ) if ($x->circulation);
