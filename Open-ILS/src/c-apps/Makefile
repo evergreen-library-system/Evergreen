@@ -63,6 +63,7 @@ install:
 	cp $(TMPDIR)/oils_auth.so $(LIBDIR)/
 	#cp $(TMPDIR)/oils_fetch.so $(LIBDIR)/
 	cp $(TMPDIR)/oils_cstore.so $(LIBDIR)/
+	cp $(TMPDIR)/oils_rstore.so $(LIBDIR)/
 	cp $(TMPDIR)/liboils_utils.so $(LIBDIR)/
 	cp $(TMPDIR)/liboils_idl.so $(LIBDIR)/
 	cp $(TMPDIR)/oils_dataloader $(BINDIR)/
