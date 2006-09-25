@@ -51,39 +51,39 @@
 				<row> <label value="Middle Margin (in characters):" control="mm"/><textbox id="mm" value="2" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
 				<row> <label value="Label Width (in characters):" control="plw"/><textbox id="plw" value="28" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
 				<row> <label value="Label Length (in lines):" control="pll"/><textbox id="pll" value="9" onchange="this.setAttribute('value',this.value)" persist="value"/> </row>
-				<row> <checkbox id="title" checked="true" persist="checked" label="Include Title (wraps on word at label width)"/><hbox><label value="On line:"/><textbox id="title_line" value="4" persist="value"/></hbox> </row>
-				<row> <checkbox id="title_r" checked="true" persist="checked" label="Include Title (segment after wrapping)"/><hbox><label value="On line:"/><textbox id="title_r_line" value="5" persist="value"/></hbox> </row>
+				<row> <checkbox id="title" checked="true" persist="checked" label="Include Title (wraps on word at label width)"/><hbox><label value="On line:"/><textbox id="title_line" value="4" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox> </row>
+				<row> <checkbox id="title_r" checked="true" persist="checked" label="Include Title (segment after wrapping)"/><hbox><label value="On line:"/><textbox id="title_r_line" value="5" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox> </row>
 				<row> <spacer/><checkbox id="title_r_indent" checked="true" persist="checked" label="Indent a space?"/> </row>
-				<row> <checkbox id="author" checked="true" persist="checked" label="Include Author"/><hbox><label value="On line:"/><textbox id="author_line" value="3" persist="value"/></hbox> </row>
-				<row> <checkbox id="call_number" checked="true" persist="checked" label="Include Call Number"/><hbox><label value="On line:"/><textbox id="call_number_line" value="2" persist="value"/></hbox> </row>
+				<row> <checkbox id="author" checked="true" persist="checked" label="Include Author"/><hbox><label value="On line:"/><textbox id="author_line" value="3" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox> </row>
+				<row> <checkbox id="call_number" checked="true" persist="checked" label="Include Call Number"/><hbox><label value="On line:"/><textbox id="call_number_line" value="2" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox> </row>
 				<row>
 					<checkbox id="owning_lib_shortname" checked="false" persist="checked" label="Include Owning Library (policy code)"/>
-					<hbox><label value="On line:"/><textbox id="owning_lib_shortname_line" value="" persist="value"/></hbox>
+					<hbox><label value="On line:"/><textbox id="owning_lib_shortname_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<checkbox id="owning_lib" checked="false" persist="checked" label="Include Owning Library"/><hbox><label value="On line:"/><textbox id="owning_lib_line" value="" persist="value"/></hbox>
+					<checkbox id="owning_lib" checked="false" persist="checked" label="Include Owning Library"/><hbox><label value="On line:"/><textbox id="owning_lib_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<checkbox id="shelving_location" checked="false" persist="checked" label="Include Shelving Location"/><hbox><label value="On line:"/><textbox id="shelving_location_line" value="" persist="value"/></hbox>
+					<checkbox id="shelving_location" checked="false" persist="checked" label="Include Shelving Location"/><hbox><label value="On line:"/><textbox id="shelving_location_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<checkbox id="barcode" checked="true" persist="checked" label="Include Item Barcode"/><hbox><label value="On line:"/><textbox id="barcode_line" value="1" persist="value"/></hbox>
+					<checkbox id="barcode" checked="true" persist="checked" label="Include Item Barcode"/><hbox><label value="On line:"/><textbox id="barcode_line" value="1" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<hbox><checkbox id="custom1" checked="false" persist="checked" label="Custom:"/><textbox id="custom1_tb" value="%price%" persist="value"/></hbox>
-					<hbox><label value="On line:"/><textbox id="custom1_line" value="" persist="value"/></hbox>
+					<hbox><checkbox id="custom1" checked="false" persist="checked" label="Custom:"/><textbox id="custom1_tb" value="%price%" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom1_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<hbox><checkbox id="custom2" checked="false" persist="checked" label="Custom:"/><textbox id="custom2_tb" value="%deposit_amount%" persist="value"/></hbox>
-					<hbox><label value="On line:"/><textbox id="custom2_line" value="" persist="value"/></hbox>
+					<hbox><checkbox id="custom2" checked="false" persist="checked" label="Custom:"/><textbox id="custom2_tb" value="%deposit_amount%" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom2_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<hbox><checkbox id="custom3" checked="false" persist="checked" label="Custom:"/><textbox id="custom3_tb" value="%alert_message%" persist="value"/></hbox>
-					<hbox><label value="On line:"/><textbox id="custom3_line" value="" persist="value"/></hbox>
+					<hbox><checkbox id="custom3" checked="false" persist="checked" label="Custom:"/><textbox id="custom3_tb" value="%alert_message%" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom3_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 				<row>
-					<hbox><checkbox id="custom4" checked="false" persist="checked" label="Custom:"/><textbox id="custom4_tb" value="Don't sell me on eBay" persist="value"/></hbox>
-					<hbox><label value="On line:"/><textbox id="custom4_line" value="" persist="value"/></hbox>
+					<hbox><checkbox id="custom4" checked="false" persist="checked" label="Custom:"/><textbox id="custom4_tb" value="Don't sell me on eBay" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
+					<hbox><label value="On line:"/><textbox id="custom4_line" value="" persist="value" onchange="this.setAttribute('value',this.value)"/></hbox>
 				</row>
 			</rows></grid>
 			<button label="Available Macros" oncommand="show_macros()"/>
