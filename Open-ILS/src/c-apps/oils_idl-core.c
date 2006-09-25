@@ -67,6 +67,25 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 				);
 			}
 
+			osrfStringArray* controller = osrfNewStringArray(0);
+			string_tmp = NULL;
+			if( (string_tmp = (char*)xmlGetProp(kid, "controller") )) {
+				char* controller_list = strdup( string_tmp );
+				osrfLogInfo(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
+
+				if (strlen( controller_list ) > 0) {
+					char* st_tmp;
+					char* _controller_class = strtok_r(controller_list, " ", &st_tmp);
+					osrfStringArrayAdd(controller, strdup(_controller_class));
+
+					while ((_controller_class = strtok_r(NULL, " ", &st_tmp))) {
+						osrfStringArrayAdd(controller, strdup(_controller_class));
+					}
+				}
+			}
+			osrfHashSet( usrData, controller, "controller");
+
+
 			osrfHash* _tmp;
 			osrfHash* links = osrfNewHash();
 			osrfHash* fields = osrfNewHash();

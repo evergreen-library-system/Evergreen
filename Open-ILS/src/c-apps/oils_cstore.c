@@ -13,8 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define OILS_AUTH_CACHE_PRFX "oils_cstore_"
-#define MODULENAME "open-ils.cstore"
+#ifndef MODULENAME
+#  define MODULENAME "open-ils.cstore"
+#endif
+
 #define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistance/v1"
 #define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
 #define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
@@ -63,21 +65,12 @@ jsonObject* jsonNULL = NULL; //
 osrfHash* idl;
 
 int osrfAppInitialize() {
-
-	// first we register all the transaction and savepoint methods
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.begin", "beginTransaction", "", 0, 0 );
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.commit", "commitTransaction", "", 0, 0 );
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.transaction.rollback", "rollbackTransaction", "", 0, 0 );
-
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.set", "setSavepoint", "", 1, 0 );
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.release", "releaseSavepoint", "", 1, 0 );
-	osrfAppRegisterMethod( MODULENAME, "open-ils.cstore.savepoint.rollback", "rollbackSavepoint", "", 1, 0 );
-
+	growing_buffer* method_name;
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-	char * idl_filename = osrf_settings_host_value("/apps/%s/app_settings/IDL", MODULENAME);
+	char* idl_filename = osrf_settings_host_value("/apps/%s/app_settings/IDL", MODULENAME);
 	osrfLogInfo(OSRF_LOG_MARK, "Found file:");
 	osrfLogInfo(OSRF_LOG_MARK, idl_filename);
 
@@ -87,6 +80,32 @@ int osrfAppInitialize() {
 		osrfLogError(OSRF_LOG_MARK, "Problem loading the IDL.  Seacrest out!");
 		exit(1);
 	}
+
+	// first we register all the transaction and savepoint methods
+	method_name =  buffer_init(64);
+	buffer_fadd(method_name, "%s.transaction.begin", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "beginTransaction", "", 0, 0 );
+
+	buffer_reset(method_name)
+	buffer_fadd(method_name, "%s.transaction.commit", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "commitTransaction", "", 0, 0 );
+
+	buffer_reset(method_name)
+	buffer_fadd(method_name, "%s.transaction.rollback", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "rollbackTransaction", "", 0, 0 );
+
+
+	buffer_reset(method_name)
+	buffer_fadd(method_name, "%s.savepoint.set", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "setSavepoint", "", 1, 0 );
+
+	buffer_reset(method_name)
+	buffer_fadd(method_name, "%s.savepoint.release", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "releaseSavepoint", "", 1, 0 );
+
+	buffer_reset(method_name)
+	buffer_fadd(method_name, "%s.savepoint.rollback", MODULENAME);
+	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "rollbackSavepoint", "", 1, 0 );
 
 	osrfStringArray* global_methods = osrfNewStringArray(6);
 
@@ -107,6 +126,11 @@ int osrfAppInitialize() {
 		osrfLogInfo(OSRF_LOG_MARK, "Generating class methods for %s", classname);
 		
 		osrfHash* idlClass = osrfHashGet(idl, classname);
+
+		if (!osrfStringArrayContains( osrfHashGet(idlClass, "controller"), MODULENAME )) {
+			osrfLogInfo(OSRF_LOG_MARK, "%s is not listed as a controller for %s, moving on", MODULENAME, classname);
+			continue;
+		}
 
 		char* virt = osrfHashGet(idlClass, "virtual");
 		if (virt && !strcmp( virt, "true")) {
