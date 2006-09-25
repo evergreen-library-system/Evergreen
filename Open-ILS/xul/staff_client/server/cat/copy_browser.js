@@ -1391,10 +1391,15 @@ cat.copy_browser.prototype = {
 		var obj = this;
 		try {
 			var found_aou = false; var found_acn = false; var found_acp = false;
+			var found_aou_with_can_have_vols = false;
 			for (var i = 0; i < obj.sel_list.length; i++) {
 				var type = obj.sel_list[i].split(/_/)[0];
 				switch(type) {
-					case 'aou' : found_aou = true; break;
+					case 'aou' : 
+						found_aou = true; 
+						var org = obj.data.hash.aou[ obj.sel_list[i].split(/_/)[1] ];
+						if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) found_aou_with_can_have_vols = true;
+					break;
 					case 'acn' : found_acn = true; break;
 					case 'acp' : found_acp = true; break;
 				}
@@ -1416,7 +1421,7 @@ cat.copy_browser.prototype = {
 			obj.controller.view.sel_patron.setAttribute('disabled','true');
 			obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
 			obj.controller.view.sel_mark_items_missing.setAttribute('disabled','true');
-			if (found_aou) {
+			if (found_aou && found_aou_with_can_have_vols) {
 				obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
 				obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
 			}

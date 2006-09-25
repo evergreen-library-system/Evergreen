@@ -96,9 +96,12 @@ function my_init() {
 		var node_id = 0;
 		for (var i = 0; i < ou_ids.length; i++) {
 			try {
-				var row = document.createElement('row'); rows.appendChild(row); row.setAttribute('ou_id',ou_ids[i]);
-				g.render_library_label(row,ou_ids[i]);
-				g.render_volume_count_entry(row,ou_ids[i]);
+				var org = g.data.hash.aou[ ou_ids[i] ];
+				if ( get_bool( g.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
+					var row = document.createElement('row'); rows.appendChild(row); row.setAttribute('ou_id',ou_ids[i]);
+					g.render_library_label(row,ou_ids[i]);
+					g.render_volume_count_entry(row,ou_ids[i]);
+				}
 			} catch(E) {
 				g.error.sdump('D_ERROR',E);
 			}
