@@ -270,6 +270,51 @@ sub toSQL {
 
 sub is_aggregate { return 0 }
 
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::doy;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(DOY FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::dom;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(DAY FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::dow;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(DOW FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::year_trunc;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(YEAR FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
 #-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::month_trunc;
 
