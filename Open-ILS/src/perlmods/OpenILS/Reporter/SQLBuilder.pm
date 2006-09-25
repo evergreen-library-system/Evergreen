@@ -296,6 +296,39 @@ sub is_aggregate { return 0 }
 
 
 #-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::woy;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(WEEK FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::moy;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(MONTH FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::qoy;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(QUARTER FROM "' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::dom;
 
 sub toSQL {
