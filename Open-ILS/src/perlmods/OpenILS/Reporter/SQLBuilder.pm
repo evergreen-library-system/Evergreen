@@ -270,6 +270,19 @@ sub toSQL {
 
 sub is_aggregate { return 0 }
 
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::substring;
+
+sub toSQL {
+	my $self = shift;
+	my ($params) = values %{ $self->{_column} };
+	my $start = $$params[1];
+	my $len = $$params[2];
+	return 'SUBSTRING("' . $self->{_relation} . '"."' . $self->name . "\",$start,$len)";
+}
+
+sub is_aggregate { return 0 }
+
 
 #-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::doy;
