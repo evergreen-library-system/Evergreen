@@ -308,7 +308,7 @@ sub _checkperm {
 		return undef if $self->perm_checked($perm, $org);
 		return $self->event unless $self->allowed($perm, $org);
 	} else {
-		$self->log(E, "no perm provided for $ptype.$action");
+		$self->log(I, "no perm provided for $ptype.$action");
 	}
 	return undef;
 }
