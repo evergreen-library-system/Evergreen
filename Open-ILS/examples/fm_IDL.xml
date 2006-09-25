@@ -1,7 +1,7 @@
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistance/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1">
 
 	<!-- Virutal classes -->
-	<class id="mups" oils_obj:fieldmapper="money::user_payment_summary" oils_persist:virtual="true">
+	<class id="mups" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_payment_summary" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -16,7 +16,7 @@
 		</links>
 	</class>
 
-	<class id="mwps" oils_obj:fieldmapper="money::workstation_payment_summary" oils_persist:virtual="true">
+	<class id="mwps" controller="open-ils.cstore" oils_obj:fieldmapper="money::workstation_payment_summary" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -31,7 +31,7 @@
 		</links>
 	</class>
 
-	<class id="brn" oils_obj:fieldmapper="biblio::record_node" oils_persist:virtual="true">
+	<class id="brn" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_node" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -48,7 +48,7 @@
 		</fields>
 	</class>
 
-	<class id="mvr" oils_obj:fieldmapper="metabib::virtual_record" oils_persist:virtual="true">
+	<class id="mvr" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::virtual_record" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -75,7 +75,7 @@
 		</fields>
 	</class>
 
-	<class id="ex" oils_obj:fieldmapper="ex" oils_persist:virtual="true">
+	<class id="ex" controller="open-ils.cstore" oils_obj:fieldmapper="ex" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -85,7 +85,7 @@
 		</fields>
 	</class>
 
-	<class id="perm_ex" oils_obj:fieldmapper="perm_ex" oils_persist:virtual="true">
+	<class id="perm_ex" controller="open-ils.cstore" oils_obj:fieldmapper="perm_ex" oils_persist:virtual="true">
 		<fields>
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -98,7 +98,7 @@
 
 
 	<!-- Actually in the DB -->
-	<class id="aws" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
+	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -112,7 +112,7 @@
 		</links>
 	</class>
 
-	<class id="cit" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
+	<class id="cit" controller="open-ils.cstore" oils_obj:fieldmapper="config::identification_type" oils_persist:tablename="config.identification_type" reporter:label="Identification Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.identification_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -122,7 +122,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="asvq" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question" reporter:label="User Survey Question">
+	<class id="asvq" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_question" oils_persist:tablename="action.survey_question" reporter:label="User Survey Question">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_question_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -139,7 +139,7 @@
 			<link field="answers" reltype="has_many" key="question" map="" class="asva"/>
 		</links>
 	</class>
-	<class id="mbts" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_summary">
+	<class id="mbts" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction_summary" oils_persist:tablename="money.billable_xact_summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -163,7 +163,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aun" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note">
+	<class id="aun" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -181,7 +181,7 @@
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aus" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting">
+	<class id="aus" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -195,7 +195,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="mafe" oils_obj:fieldmapper="metabib::author_field_entry" oils_persist:tablename="metabib.author_field_entry">
+	<class id="mafe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::author_field_entry" oils_persist:tablename="metabib.author_field_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.author_field_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -210,7 +210,7 @@
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="aihu" oils_obj:fieldmapper="action::in_house_use" oils_persist:tablename="action.in_house_use">
+	<class id="aihu" controller="open-ils.cstore" oils_obj:fieldmapper="action::in_house_use" oils_persist:tablename="action.in_house_use">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.in_house_use_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -227,7 +227,7 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="ancihu" oils_obj:fieldmapper="action::non_cat_in_house_use" oils_persist:tablename="action.non_cat_in_house_use">
+	<class id="ancihu" controller="open-ils.cstore" oils_obj:fieldmapper="action::non_cat_in_house_use" oils_persist:tablename="action.non_cat_in_house_use">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cat_in_house_use_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -244,7 +244,7 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="atc" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy">
+	<class id="atc" controller="open-ils.cstore" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -268,7 +268,7 @@
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 	</class>
-	<class id="asvr" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response">
+	<class id="asvr" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_response_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -289,7 +289,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="ccbi" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item">
+	<class id="ccbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -303,7 +303,7 @@
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccb"/>
 		</links>
 	</class>
-	<class id="are" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry">
+	<class id="are" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -329,7 +329,7 @@
 			<link field="fixed_fields" reltype="might_have" key="record" map="" class="ard"/>
 		</links>
 	</class>
-	<class id="ard" oils_obj:fieldmapper="authority::record_descriptor" oils_persist:tablename="authority.rec_descriptor">
+	<class id="ard" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_descriptor" oils_persist:tablename="authority.rec_descriptor">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.rec_descriptor_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -343,7 +343,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 	</class>
-	<class id="clm" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Laguage Map">
+	<class id="clm" controller="open-ils.cstore" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Laguage Map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -353,7 +353,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mccp" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment">
+	<class id="mccp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_card_payment" oils_persist:tablename="money.credit_card_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -380,7 +380,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="cmf" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
+	<class id="cmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -394,7 +394,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="cam" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map" reporter:label="Audience Map">
+	<class id="cam" controller="open-ils.cstore" oils_obj:fieldmapper="config::audience_map" oils_persist:tablename="config.audience_map" reporter:label="Audience Map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -405,7 +405,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="cifm" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map" reporter:label="Item Form Map">
+	<class id="cifm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_form_map" oils_persist:tablename="config.item_form_map" reporter:label="Item Form Map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -415,7 +415,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="acn" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number">
+	<class id="acn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -440,7 +440,7 @@
 			<link field="copies" reltype="has_many" key="call_number" map="" class="acp"/>
 		</links>
 	</class>
-	<class id="cst" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing">
+	<class id="cst" controller="open-ils.cstore" oils_obj:fieldmapper="config::standing" oils_persist:tablename="config.standing">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.standing_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -450,7 +450,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mous" oils_obj:fieldmapper="money::open_user_summary" oils_persist:tablename="money.open_usr_summary">
+	<class id="mous" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_user_summary" oils_persist:tablename="money.open_usr_summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -462,7 +462,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mct" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker">
+	<class id="mct" controller="open-ils.cstore" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.collections_tracker_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -479,7 +479,7 @@
 			<link field="location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="bre" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry">
+	<class id="bre" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_entry" oils_persist:tablename="biblio.record_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -526,7 +526,7 @@
 			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
 		</links>
 	</class>
-	<class id="aouhoo" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
+	<class id="aouhoo" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::hours_of_operation" oils_persist:tablename="actor.hours_of_operation">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -552,7 +552,7 @@
 			<link field="org_unit" reltype="might_have" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="aoucd" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
+	<class id="aoucd" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_closed_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -567,7 +567,7 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="crcd" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
+	<class id="crcd" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::circ_duration" oils_persist:tablename="config.rule_circ_duration">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_circ_duration_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -582,7 +582,7 @@
 		<links>
 		</links>
 	</class>
-	<class id="mobts" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary">
+	<class id="mobts" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -612,7 +612,7 @@
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
 		</links>
 	</class>
-	<class id="au" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
+	<class id="au" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user" oils_persist:tablename="actor.usr" reporter:core="true" reporter:label="ILS User">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -695,7 +695,7 @@
 			<link reporter:label="Circulations Performed as Staff" field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
 		</links>
 	</class>
-	<class id="aous" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:tablename="actor.org_unit_setting">
+	<class id="aous" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_setting" oils_persist:tablename="actor.org_unit_setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_setting_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -709,7 +709,7 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="acpn" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note">
+	<class id="acpn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -727,7 +727,7 @@
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="mfr" oils_obj:fieldmapper="metabib::full_rec" oils_persist:tablename="metabib.full_rec">
+	<class id="mfr" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::full_rec" oils_persist:tablename="metabib.full_rec">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.full_rec_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -744,7 +744,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
-	<class id="mmr" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord">
+	<class id="mmr" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -760,7 +760,7 @@
 			<link field="source_records" reltype="has_many" key="metarecord" map="source" class="mmrsm"/>
 		</links>
 	</class>
-	<class id="cnal" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level">
+	<class id="cnal" controller="open-ils.cstore" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -770,7 +770,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="ppl" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
+	<class id="ppl" controller="open-ils.cstore" oils_obj:fieldmapper="permission::perm_list" oils_persist:tablename="permission.perm_list">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.perm_list_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -781,7 +781,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mmrsm" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map">
+	<class id="mmrsm" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_source_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -795,7 +795,7 @@
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
 		</links>
 	</class>
-	<class id="mkfe" oils_obj:fieldmapper="metabib::keyword_field_entry" oils_persist:tablename="metabib.keyword_field_entry">
+	<class id="mkfe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::keyword_field_entry" oils_persist:tablename="metabib.keyword_field_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.keyword_field_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -810,7 +810,7 @@
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="mcp" oils_obj:fieldmapper="money::cash_payment" oils_persist:tablename="money.cash_payment">
+	<class id="mcp" controller="open-ils.cstore" oils_obj:fieldmapper="money::cash_payment" oils_persist:tablename="money.cash_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -832,7 +832,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="mfp" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment">
+	<class id="mfp" controller="open-ils.cstore" oils_obj:fieldmapper="money::forgive_payment" oils_persist:tablename="money.forgive_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -853,7 +853,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="mrd" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor">
+	<class id="mrd" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.rec_descriptor_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -883,7 +883,7 @@
 			<link field="lit_form" reltype="has_a" key="code" map="" class="clfm"/>
 		</links>
 	</class>
-	<class id="ccs" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
+	<class id="ccs" controller="open-ils.cstore" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -894,7 +894,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="ausp" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
+	<class id="ausp" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_standing_penalty" oils_persist:tablename="actor.usr_standing_penalty">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_standing_penalty_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -907,7 +907,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aua" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address">
+	<class id="aua" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_address" oils_persist:tablename="actor.usr_address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_address_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -929,7 +929,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="acnn" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
+	<class id="acnn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number_note" oils_persist:tablename="asset.call_number_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -946,7 +946,7 @@
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 		</links>
 	</class>
-	<class id="arn" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
+	<class id="arn" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_note" oils_persist:tablename="authority.record_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -963,7 +963,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 	</class>
-	<class id="circ" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation" reporter:core="true" reporter:label="Circulation">
+	<class id="circ" controller="open-ils.cstore" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation" reporter:core="true" reporter:label="Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1011,7 +1011,7 @@
 			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
 		</links>
 	</class>
-	<class id="ccnbi" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
+	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_item_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1025,7 +1025,7 @@
 			<link field="bucket" reltype="has_a" key="id" map="" class="ccnb"/>
 		</links>
 	</class>
-	<class id="cbreb" oils_obj:fieldmapper="container::biblio_record_entry_bucket" oils_persist:tablename="container.biblio_record_entry_bucket">
+	<class id="cbreb" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket" oils_persist:tablename="container.biblio_record_entry_bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1042,7 +1042,7 @@
 			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
 		</links>
 	</class>
-	<class id="ahcm" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map">
+	<class id="ahcm" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_copy_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1056,7 +1056,7 @@
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 	</class>
-	<class id="ahn" oils_obj:fieldmapper="action::hold_notification" oils_persist:tablename="action.hold_notification">
+	<class id="ahn" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_notification" oils_persist:tablename="action.hold_notification">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_notification_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1073,7 +1073,7 @@
 			<link field="notify_staff" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="acpl" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location">
+	<class id="acpl" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy_location" oils_persist:tablename="asset.copy_location" reporter:label="Copy/Shelving Location">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1089,7 +1089,7 @@
 		<links>
 		</links>
 	</class>
-	<class id="ascecm" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map">
+	<class id="ascecm" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1105,7 +1105,7 @@
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="asc"/>
 		</links>
 	</class>
-	<class id="citm" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map">
+	<class id="citm" controller="open-ils.cstore" oils_obj:fieldmapper="config::item_type_map" oils_persist:tablename="config.item_type_map" reporter:label="Item Type Map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1115,7 +1115,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="aoup" oils_obj:fieldmapper="actor::org_unit_proximity" oils_persist:tablename="actor.org_unit_proximity">
+	<class id="aoup" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_proximity" oils_persist:tablename="actor.org_unit_proximity">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1130,7 +1130,7 @@
 			<link field="to_org" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="asv" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey">
+	<class id="asv" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey" oils_persist:tablename="action.survey">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1154,7 +1154,7 @@
 			<link field="questions" reltype="has_many" key="survey" map="" class="asvq"/>
 		</links>
 	</class>
-	<class id="aoa" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
+	<class id="aoa" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_address_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1175,7 +1175,7 @@
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="ahr" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request">
+	<class id="ahr" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_request" oils_persist:tablename="action.hold_request">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1221,7 +1221,7 @@
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 		</links>
 	</class>
-	<class id="aou" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit">
+	<class id="aou" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1256,7 +1256,7 @@
 			<link field="workstations" reltype="has_many" key="owning_lib" map="" class="aws"/>
 		</links>
 	</class>
-	<class id="ccnb" oils_obj:fieldmapper="container::call_number_bucket" oils_persist:tablename="container.call_number_bucket">
+	<class id="ccnb" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket" oils_persist:tablename="container.call_number_bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.call_number_bucket_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1273,7 +1273,7 @@
 			<link field="items" reltype="has_many" key="bucket" map="" class="ccnbi"/>
 		</links>
 	</class>
-	<class id="asc" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat">
+	<class id="asc" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1289,7 +1289,7 @@
 			<link field="entries" reltype="has_many" key="stat_cat" map="" class="asce"/>
 		</links>
 	</class>
-	<class id="ac" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card">
+	<class id="ac" controller="open-ils.cstore" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.card_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1303,7 +1303,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="actsc" oils_obj:fieldmapper="actor::stat_cat" oils_persist:tablename="actor.stat_cat">
+	<class id="actsc" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat" oils_persist:tablename="actor.stat_cat">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1319,7 +1319,7 @@
 			<link field="entries" reltype="has_many" key="stat_cat" map="" class="actsce"/>
 		</links>
 	</class>
-	<class id="msefe" oils_obj:fieldmapper="metabib::series_field_entry" oils_persist:tablename="metabib.series_field_entry">
+	<class id="msefe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::series_field_entry" oils_persist:tablename="metabib.series_field_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.series_field_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1334,7 +1334,7 @@
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="cub" oils_obj:fieldmapper="container::user_bucket" oils_persist:tablename="container.user_bucket">
+	<class id="cub" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket" oils_persist:tablename="container.user_bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1351,7 +1351,7 @@
 			<link field="items" reltype="has_many" key="bucket" map="" class="cubi"/>
 		</links>
 	</class>
-	<class id="mcrp" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment">
+	<class id="mcrp" controller="open-ils.cstore" oils_obj:fieldmapper="money::credit_payment" oils_persist:tablename="money.credit_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1372,7 +1372,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="afr" oils_obj:fieldmapper="authority::full_rec" oils_persist:tablename="authority.full_rec">
+	<class id="afr" controller="open-ils.cstore" oils_obj:fieldmapper="authority::full_rec" oils_persist:tablename="authority.full_rec">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.full_rec_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1389,7 +1389,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 	</class>
-	<class id="cnct" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type">
+	<class id="cnct" controller="open-ils.cstore" oils_obj:fieldmapper="config::non_cataloged_type" oils_persist:tablename="config.non_cataloged_type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.non_cataloged_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1404,7 +1404,7 @@
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="aout" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type">
+	<class id="aout" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_type_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1425,7 +1425,7 @@
 			<link field="org_units" reltype="has_many" key="ou_type" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="bren" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note">
+	<class id="bren" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_note_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1445,7 +1445,7 @@
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
-	<class id="mucs" oils_obj:fieldmapper="money::user_circulation_summary" oils_persist:tablename="money.usr_circulation_summary">
+	<class id="mucs" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_circulation_summary" oils_persist:tablename="money.usr_circulation_summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1459,7 +1459,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="mg" oils_obj:fieldmapper="money::grocery" oils_persist:tablename="money.grocery">
+	<class id="mg" controller="open-ils.cstore" oils_obj:fieldmapper="money::grocery" oils_persist:tablename="money.grocery">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1482,7 +1482,7 @@
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="cbs" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
+	<class id="cbs" controller="open-ils.cstore" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.bib_source_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1494,7 +1494,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mbt" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:core="true" reporter:label="Billable Transaction">
+	<class id="mbt" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:core="true" reporter:label="Billable Transaction">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1516,7 +1516,7 @@
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
 		</links>
 	</class>
-	<class id="actsce" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry">
+	<class id="actsce" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1531,7 +1531,7 @@
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="cubi" oils_obj:fieldmapper="container::user_bucket_item" oils_persist:tablename="container.user_bucket_item">
+	<class id="cubi" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_item" oils_persist:tablename="container.user_bucket_item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_item_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1545,7 +1545,7 @@
 			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
 		</links>
 	</class>
-	<class id="mus" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary">
+	<class id="mus" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_summary" oils_persist:tablename="money.usr_summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1559,7 +1559,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="clfm" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map">
+	<class id="clfm" controller="open-ils.cstore" oils_obj:fieldmapper="config::lit_form_map" oils_persist:tablename="config.lit_form_map">
 		<fields oils_persist:primary="code" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1570,7 +1570,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mwp" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment">
+	<class id="mwp" controller="open-ils.cstore" oils_obj:fieldmapper="money::work_payment" oils_persist:tablename="money.work_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1591,7 +1591,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="aoc" oils_obj:fieldmapper="action::open_circulation" oils_persist:tablename="action.open_circulation">
+	<class id="aoc" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circulation" oils_persist:tablename="action.open_circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1629,7 +1629,7 @@
 			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
 		</links>
 	</class>
-	<class id="msfe" oils_obj:fieldmapper="metabib::subject_field_entry" oils_persist:tablename="metabib.subject_field_entry">
+	<class id="msfe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::subject_field_entry" oils_persist:tablename="metabib.subject_field_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.subject_field_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1644,7 +1644,7 @@
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="crrf" oils_obj:fieldmapper="config::rules::recuring_fine" oils_persist:tablename="config.rule_recuring_fine">
+	<class id="crrf" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::recuring_fine" oils_persist:tablename="config.rule_recuring_fine">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_recuring_fine_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1658,7 +1658,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mckp" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment">
+	<class id="mckp" controller="open-ils.cstore" oils_obj:fieldmapper="money::check_payment" oils_persist:tablename="money.check_payment">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1682,7 +1682,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="acp" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:label="Item">
+	<class id="acp" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1734,7 +1734,7 @@
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 		</links>
 	</class>
-	<class id="crahp" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
+	<class id="crahp" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1746,7 +1746,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="crmf" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
+	<class id="crmf" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::max_fine" oils_persist:tablename="config.rule_max_fine" reporter:label="Max Fine Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_max_fine_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1757,7 +1757,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="pgt" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
+	<class id="pgt" controller="open-ils.cstore" oils_obj:fieldmapper="permission::grp_tree" oils_persist:tablename="permission.grp_tree" reporter:label="Permission Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1776,7 +1776,7 @@
 			<link field="children" reltype="has_many" key="parent" map="" class="pgt"/>
 		</links>
 	</class>
-	<class id="asva" oils_obj:fieldmapper="action::survey_answer" oils_persist:tablename="action.survey_answer" reporter:label="Survey Answer">
+	<class id="asva" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_answer" oils_persist:tablename="action.survey_answer" reporter:label="Survey Answer">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_answer_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1791,7 +1791,7 @@
 			<link field="responses" reltype="has_many" key="answer" map="" class="asvr"/>
 		</links>
 	</class>
-	<class id="ancc" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
+	<class id="ancc" controller="open-ils.cstore" oils_obj:fieldmapper="action::non_cataloged_circulation" oils_persist:tablename="action.non_cataloged_circulation" reporter:core="true" reporter:label="Non-cataloged Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.non_cataloged_circulation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1810,7 +1810,7 @@
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="moucs" oils_obj:fieldmapper="money::open_user_circulation_summary" oils_persist:tablename="money.open_usr_circulation_summary">
+	<class id="moucs" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_user_circulation_summary" oils_persist:tablename="money.open_usr_circulation_summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1824,7 +1824,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aufh" oils_obj:fieldmapper="action::unfulfilled_hold_list" oils_persist:tablename="action.unfulfilled_hold_list" reporter:label="Unfulfilled Hold Targets">
+	<class id="aufh" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_list" oils_persist:tablename="action.unfulfilled_hold_list" reporter:label="Unfulfilled Hold Targets">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.unfulfilled_hold_list_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1841,7 +1841,7 @@
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="mtfe" oils_obj:fieldmapper="metabib::title_field_entry" oils_persist:tablename="metabib.title_field_entry">
+	<class id="mtfe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::title_field_entry" oils_persist:tablename="metabib.title_field_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.title_field_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1856,7 +1856,7 @@
 			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
 		</links>
 	</class>
-	<class id="actscecm" oils_obj:fieldmapper="actor::stat_cat_entry_user_map" oils_persist:tablename="actor.stat_cat_entry_usr_map"  reporter:label="User Statistical Category Entry">
+	<class id="actscecm" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry_user_map" oils_persist:tablename="actor.stat_cat_entry_usr_map"  reporter:label="User Statistical Category Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_usr_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1871,7 +1871,7 @@
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
 		</links>
 	</class>
-	<class id="pgpm" oils_obj:fieldmapper="permission::grp_perm_map" oils_persist:tablename="permission.grp_perm_map">
+	<class id="pgpm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::grp_perm_map" oils_persist:tablename="permission.grp_perm_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_perm_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1887,7 +1887,7 @@
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
-	<class id="ccb" oils_obj:fieldmapper="container::copy_bucket" oils_persist:tablename="container.copy_bucket">
+	<class id="ccb" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket" oils_persist:tablename="container.copy_bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1904,7 +1904,7 @@
 			<link field="items" reltype="has_many" key="bucket" map="" class="ccbi"/>
 		</links>
 	</class>
-	<class id="pupm" oils_obj:fieldmapper="permission::usr_perm_map" oils_persist:tablename="permission.usr_perm_map">
+	<class id="pupm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_perm_map" oils_persist:tablename="permission.usr_perm_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_perm_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1920,7 +1920,7 @@
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
-	<class id="mp" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view">
+	<class id="mp" controller="open-ils.cstore" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1949,7 +1949,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="mdp" oils_obj:fieldmapper="money::desk_payment" oils_persist:tablename="money.desk_payment_view">
+	<class id="mdp" controller="open-ils.cstore" oils_obj:fieldmapper="money::desk_payment" oils_persist:tablename="money.desk_payment_view">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1976,7 +1976,7 @@
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
 	</class>
-	<class id="cbrebi" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item">
+	<class id="cbrebi" controller="open-ils.cstore" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1990,7 +1990,7 @@
 			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
 		</links>
 	</class>
-	<class id="asce" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry">
+	<class id="asce" controller="open-ils.cstore" oils_obj:fieldmapper="asset::stat_cat_entry" oils_persist:tablename="asset.stat_cat_entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2005,7 +2005,7 @@
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="ahtc" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy">
+	<class id="ahtc" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2030,7 +2030,7 @@
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 		</links>
 	</class>
-	<class id="mb" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing">
+	<class id="mb" controller="open-ils.cstore" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2050,7 +2050,7 @@
 			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="pugm" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map">
+	<class id="pugm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_grp_map_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2064,7 +2064,7 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="rof" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder">
+	<class id="rof" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::output_folder" oils_persist:tablename="reporter.output_folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.output_folder_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2085,7 +2085,7 @@
 			<link field="share_with" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="rtf" oils_obj:fieldmapper="reporter::template_folder" oils_persist:tablename="reporter.template_folder">
+	<class id="rtf" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::template_folder" oils_persist:tablename="reporter.template_folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.template_folder_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2106,7 +2106,7 @@
 			<link field="share_with" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="rrf" oils_obj:fieldmapper="reporter::report_folder" oils_persist:tablename="reporter.report_folder">
+	<class id="rrf" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::report_folder" oils_persist:tablename="reporter.report_folder">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.report_folder_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2127,7 +2127,7 @@
 			<link field="share_with" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="rt" oils_obj:fieldmapper="reporter::template" oils_persist:tablename="reporter.template">
+	<class id="rt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::template" oils_persist:tablename="reporter.template">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.template_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2144,7 +2144,7 @@
 			<link field="folder" reltype="has_a" key="id" map="" class="rtf"/>
 		</links>
 	</class>
-	<class id="rr" oils_obj:fieldmapper="reporter::report" oils_persist:tablename="reporter.report">
+	<class id="rr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::report" oils_persist:tablename="reporter.report">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.report_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2164,7 +2164,7 @@
 			<link field="folder" reltype="has_many" key="parent" map="" class="rrf"/>
 		</links>
 	</class>
-	<class id="rs" oils_obj:fieldmapper="reporter::schedule" oils_persist:tablename="reporter.schedule">
+	<class id="rs" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::schedule" oils_persist:tablename="reporter.schedule">
 		<fields oils_persist:primary="id" oils_persist:sequence="reporter.schedule_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />

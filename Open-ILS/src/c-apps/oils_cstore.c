@@ -86,24 +86,24 @@ int osrfAppInitialize() {
 	buffer_fadd(method_name, "%s.transaction.begin", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "beginTransaction", "", 0, 0 );
 
-	buffer_reset(method_name)
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.transaction.commit", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "commitTransaction", "", 0, 0 );
 
-	buffer_reset(method_name)
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.transaction.rollback", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "rollbackTransaction", "", 0, 0 );
 
 
-	buffer_reset(method_name)
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.savepoint.set", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "setSavepoint", "", 1, 0 );
 
-	buffer_reset(method_name)
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.savepoint.release", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "releaseSavepoint", "", 1, 0 );
 
-	buffer_reset(method_name)
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.savepoint.rollback", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "rollbackSavepoint", "", 1, 0 );
 
@@ -138,8 +138,6 @@ int osrfAppInitialize() {
 			continue;
 		}
 
-		osrfLogDebug(OSRF_LOG_MARK, "HERE");
-		
 		int i = 0; 
 		char* method_type;
 		char* st_tmp;
