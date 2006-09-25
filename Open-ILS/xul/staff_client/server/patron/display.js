@@ -205,6 +205,7 @@ patron.display.prototype = {
 									'passthru_content_params' : {
 										'on_save' : function(p) {
 											try {
+												if (obj.barcode) obj.barcode = p.card().barcode();
 												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 												obj.summary_window.g.summary.retrieve();
 											} catch(E) {
