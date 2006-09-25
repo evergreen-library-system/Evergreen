@@ -250,9 +250,9 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
-									obj.patron.ident_value()
-								);
+								var val = obj.patron.ident_value();
+								val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
+								e.setAttribute('value', val);
 							};
 						}
 					],
@@ -275,9 +275,9 @@ patron.summary.prototype = {
 						['render'],
 						function(e) {
 							return function() { 
-								e.setAttribute('value',
-									obj.patron.ident_value2()
-								);
+								var val = obj.patron.ident_value2();
+								val = val.replace(/.+(\d\d\d\d)$/,'xxxx$1');
+								e.setAttribute('value', val);
 							};
 						}
 					],
