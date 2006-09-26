@@ -1,0 +1,54 @@
+<!-- Generic selecto for transforms -->
+<table id='<!--#echo var="OILS_RPT_TFORM_TABLE_ID"-->'> 
+	<tbody>
+		<tr>
+			<td>
+				<select name='selector' style='width: 14em;'>
+				
+					<!-- generic transforms -->
+					<option value='Bare' selected='selected'>Raw Data</option>
+					<option value='count' aggregate='1'>Count</option>
+					<option value='count distinct' aggregate='1'>Count Distinct</option>
+					<option value='min' aggregate='1'>Min</option>
+					<option value='max' aggregate='1'>Max</option>
+					
+					<!-- string transforms -->
+					<option value='substring' datatype='string' widget='string_substring_widget' >Substring</option>
+					<option value='lower' datatype='string'>Lower case</option>
+					<option value='upper' datatype='string'>Upper Case</option>
+					
+					<!-- timestamp transforms -->
+					<option value='dow' datatype='timestamp'>Day of Week</option>
+					<option value='dom' datatype='timestamp'>Day of Month</option>
+					<option value='doy' datatype='timestamp'>Day of Year</option>
+					<option value='woy' datatype='timestamp'>Week of Year</option>
+					<option value='moy' datatype='timestamp'>Month of Year</option>
+					<option value='qoy' datatype='timestamp'>Quarter of Year</option>
+					<option value='date' datatype='timestamp'>Date</option>
+					<option value='month_trunc' datatype='timestamp'>Year + Month</option>
+					<option value='year_trunc' datatype='timestamp'>Year</option>
+					<option value='day_name' datatype='timestamp'>Day Name</option>
+					<option value='month_name' datatype='timestamp'>Month Name</option>
+					
+					<!-- numeric transforms -->
+					<option value='round' datatype='numeric' >Round</option>
+					<option value='int' datatype='numeric' >Drop trailing decimals</option>
+				</select>
+			</td>
+
+			<td name='widget_td'>
+
+				<div widget='1' name='string_substring_widget'>
+					<span style='padding-left: 5px;'>Offset: </span>
+					<input name='string_substring_offset' size='3' value='1'/>
+					<span style='padding-left: 5px;'>Length: </span>
+					<input name='string_substring_length' size='3' value='1'/>
+				</div>
+
+			</td>
+
+		</tr>
+	</tbody>
+</table>
+
+

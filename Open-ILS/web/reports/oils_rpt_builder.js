@@ -6,6 +6,7 @@ function oilsInitReportBuilder() {
 	oilsReportBuilderReset();
 	DOM.oils_rpt_table.onclick = 
 		function(){hideMe(DOM.oils_rpt_column_editor)};
+	//oilsRptBuildCalendars();
 	oilsDrawRptTree(
 		function() { 
 			hideMe(DOM.oils_rpt_tree_loading); 
@@ -25,6 +26,26 @@ function oilsReportBuilderReset() {
 	oilsRptDebug();
 	oilsRptResetParams();
 }
+
+/*
+function oilsRptBuildCalendars() {
+	Calendar.setup({
+		inputField  : "oils_rpt_filter_tform_timestamp_input", // id of the input field
+		ifFormat    : "%Y-%m-%d", // format of the input field
+		button      : "oils_rpt_filter_tform_timestamp_cal",  // trigger for the calendar (button ID)
+		align       : "Tl", // alignment (defaults to "Bl")
+		singleClick : true
+	});
+	Calendar.setup({
+		inputField  : "oils_rpt_filter_tform_timestamp_input_2", // id of the input field
+		ifFormat    : "%Y-%m-%d", // format of the input field
+		button      : "oils_rpt_filter_tform_timestamp_cal2",  // trigger for the calendar (button ID)
+		align       : "Tl", // alignment (defaults to "Bl")
+		singleClick : true
+	});
+}
+*/
+
 
 
 /* returns just the column name */
@@ -282,9 +303,10 @@ function oilsRptHideEditorDivs() {
 function oilsRptDrawDataWindow(path) {
 	var col	= oilsRptPathCol(path);
 	var cls	= oilsRptPathClass(path);
-	var field = grep(oilsIDL[cls].fields, function(f){return (f.name==col);})[0];
+	var field = oilsRptFindField(oilsIDL[cls], col);
 
 	appendClear(DOM.oils_rpt_editor_window_label, text(oilsRptMakeLabel(path)));
+	appendClear(DOM.oils_rpt_editor_window_datatype, text(field.datatype));
 
 	_debug("setting update data window for column "+col+' on class '+cls);
 
@@ -299,13 +321,24 @@ function oilsRptDrawDataWindow(path) {
 	div.style.visibility='hidden'; 
 
 	oilsRptDrawTransformWindow(path, col, cls, field);
+	oilsRptDrawFilterWindow(path, col, cls, field);
 
-	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
+	//oilsRptSetFilters(field.datatype);
+
+	//oilsRptDoFilterWidgets();
+
+	//DOM.oils_rpt_filter_tform_selector.onchange = oilsRptDoFilterWidgets;
+
 	buildFloatingDiv(div, 600);
 
 	/* now let them see it */
 	div.style.visibility='visible';
 
+	oilsRptSetDataWindowActions(div);
+}
+
+
+function oilsRptSetDataWindowActions(div) {
 	/* give the tab links behavior */
 	DOM.oils_rpt_tform_tab.onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_tform_div)};
@@ -315,6 +348,14 @@ function oilsRptDrawDataWindow(path) {
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
 
 	DOM.oils_rpt_tform_tab.onclick();
+	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
+}
+
+
+function oilsRptDrawFilterWindow(path, col, cls, field) {
+	oilsRptCurrentFilterTform = new oilsRptTFormManager(DOM.oils_rpt_filter_tform_table);
+	oilsRptCurrentFilterTform.build(field.datatype, false, true);
+	oilsRptCurrentFilterOpManager = new oilsRptOpManager(DOM.oils_rpt_filter_op_table);
 }
 
 
@@ -325,24 +366,39 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 
 	DOM.oils_rpt_tform_submit.onclick = 
 		function(){ 
+			/*
 			var tform = oilsRptGetTform(dtype);
 			_debug('found tform: ' + js2JSON(tform));
 			var params = getRptTformParams(dtype, tform);
 			_debug('found tform params: ' + js2JSON(params));
 			tform = (tform == 'raw') ? null : tform;
-			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform, params ) 
+			*/
+
+			var tform = oilsRptCurrentTform.getCurrentTForm();
+			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform.value, tform.params ) 
 		};
+
 
 	DOM.oils_rpt_tform_label_input.focus();
 	DOM.oils_rpt_tform_label_input.select();
+
+	oilsRptCurrentTform = new oilsRptTFormManager(DOM.oils_rpt_tform_table);
+	oilsRptCurrentTform.build(dtype, true, true);
+
+	/*
 	oilsRptHideTformFields();
 	oilsRptUnHideTformFields(dtype);
+	*/
 
-	_debug("Transforming item with datatype "+dtype);
+	_debug("Building transiform window for datatype "+dtype);
+
+	/*
 	unHideMe($('oils_rpt_tform_'+dtype+'_div'));
 	$('oils_rpt_tform_all_raw').checked = true;
+	*/
 }
 
+/*
 function oilsRptHideTformFields() {
 	var rows = DOM.oils_rpt_tform_tbody.childNodes;
 	for( var i = 0; i < rows.length; i++ )
@@ -362,6 +418,7 @@ function oilsRptUnHideTformFields(dtype) {
 	}
 }
 
+
 function oilsRptGetTform(datatype) {
 	for( var i in oilsRptTransforms[datatype] ) 
 		if( $('oils_rpt_tform_'+datatype+'_'+oilsRptTransforms[datatype][i]).checked )
@@ -371,16 +428,12 @@ function oilsRptGetTform(datatype) {
 			return oilsRptTransforms.all[i];
 	return null;
 }
+*/
 
+
+/*
 function getRptTformParams(type, tform) {
 	switch(type) {
-		case 'timestamp':
-			switch(tform) {
-				case 'months_ago':
-					return [DOM.oils_rpt_tform_timestamp_months_ago_input.value];
-				case 'quarters_ago':
-					return [DOM.oils_rpt_tform_timestamp_quarters_ago_input.value];
-			}
 		case 'string' :
 			switch(tform) {
 				case 'substring' :
@@ -390,5 +443,205 @@ function getRptTformParams(type, tform) {
 			}
 	}
 }
+*/
+
+
+/* given a transform selector, this displays the appropriate 
+	transforms for the given datatype.
+	if aggregate is true, is displays the aggregate transforms */
+/*
+function oilsRptSetTransforms(sel, dtype, show_agg, show_noagg) {
+	for( var i = 0; i < sel.options.length; i++ ) {
+		var opt = sel.options[i];
+		var t = opt.getAttribute('datatype');
+		if( t && t != dtype ){
+			hideMe(opt);
+		} else {
+			var ag = opt.getAttribute('aggregate');
+			if( ag && show_agg )
+				unHideMe(opt);
+			else if( ag && ! show_agg )
+				hideMe(opt)
+			else if( !ag && show_noagg )
+				unHideMe(opt);
+			else
+				hideMe(opt);
+		}
+	}
+}
+*/
+
+
+/* displays the correct filter-transforms for the given datatype */
+/*
+function oilsRptSetFilters(dtype) {
+
+	DOM.oils_rpt_filter_submit.onclick = function() {
+		var data = oilsRptDoFilterWidgets();
+		alert(js2JSON(data));
+	}
+
+	var sel = DOM.oils_rpt_filter_tform_selector;
+	for( var i = 0; i < sel.options.length; i++ ) {
+		var opt = sel.options[i];
+		_debug(opt.getAttribute('op'));
+		var t = opt.getAttribute('datatype');
+		if( t && t != dtype ) hideMe(opt);
+		else unHideMe(opt);
+	}
+}
+*/
+
+/* hides all of the filter widgets */
+function oilsRptHideFilterWidgets(node) {
+	if(!node)
+		node = DOM.oils_rpt_filter_tform_widget_td;
+	if( node.nodeType != 1 ) return;
+	if( node.getAttribute('widget') ) {
+		hideMe(node);
+	} else {
+		var cs = node.childNodes;
+		for( var i = 0; cs && i < cs.length; i++ )
+			oilsRptHideFilterWidgets(cs[i]);
+	}
+}
+
+/* what does this need to do? */
+function oilsRptSetFilterOpActions() {
+}
+
+
+
+/* hides/unhides the appropriate widgets and returns the parameter
+	array appropriate for the selected widget */
+function oilsRptDoFilterWidgets() {
+	filter = getSelectorVal(DOM.oils_rpt_filter_tform_selector);
+	oilsRptHideFilterWidgets();
+	var op = null;
+	var tform = null;
+	var params = null;
+
+	switch(filter) {
+		
+		/* generic transforms */
+		case 'equals':
+			if(!op) op = 'equals';
+		case 'like':
+			if(!op) op = 'like';
+		case 'ilike':
+			if(!op) op = 'ilike';
+		case 'gt':
+			if(!op) op = '>';
+		case 'gte':
+			if(!op) op = '>=';
+		case 'lt':
+			if(!op) op = '<';
+		case 'lte':
+			if(!op) op = '<=';
+		case 'in':
+			if(!op) op = 'in';
+		case 'not_in':
+			if(!op) op = 'not in';
+		case 'between':
+			if(!op) op = 'between';
+		case 'not_between':
+			if(!op) op = 'not between';
+			unHideMe(DOM.oils_rpt_filter_tform_input);	
+			params = [DOM.oils_rpt_filter_tform_input.value];
+			break;
+
+		/* timestamp transforms */
+		case 'date_between':
+			if(!op) op = 'between';
+		case 'date_not_between':
+			if(!op) op = 'not between';
+			tform = 'date';
+			var d = new Date();
+			unHideMe(DOM.oils_rpt_filter_tform_date_1);
+			unHideMe(DOM.oils_rpt_filter_tform_date_2);
+			unHideMe(DOM.oils_rpt_filter_tform_date_hint);
+			DOM.oils_rpt_filter_tform_date_1.value = mkYearMonDay();
+			DOM.oils_rpt_filter_tform_date_2.value = mkYearMonDay();
+			params = [
+				DOM.oils_rpt_filter_tform_date_1.value,
+				DOM.oils_rpt_filter_tform_date_2.value
+			];
+			break;
+
+		case 'dow_between':
+			op = 'between';
+			if(!tform) tform = 'dow';
+		case 'dow_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'dow';
+			break;
+
+		case 'dom_between':
+			op = 'between';
+			if(!tform) tform = 'dom';
+		case 'dom_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'dom';
+			break;
+
+		case 'month_between':
+			op = 'between';
+			if(!tform) tform = 'moy';
+		case 'month_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'moy';
+			break;
+
+		case 'quarter_between':
+			op = 'between';
+			if(!tform) tform = 'qoy';
+		case 'quarter_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'qoy';
+			break;
+
+		case 'year_between':
+			if(!op) op = 'between';
+			if(!tform) tform = 'year_trunc';
+		case 'year_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'year_trunc';
+			break;
+
+		case 'age_between':
+			if(!op) op = 'between';
+			if(!tform) tform = 'age';
+		case 'age_not_between':
+			if(!op) op = 'not between';
+			if(!tform) tform = 'age';
+			break;
+
+		/* string transforms */
+		case 'substring':
+			if(!tform) tform = 'substring';
+			break;
+
+		case 'lower':
+			if(!op) op = '';
+			if(!tform) tform = 'dow';
+
+		case 'upper':
+			if(!op) op = '';
+			if(!tform) tform = 'dow';
+
+		/* numeric transforms */
+		case 'round':
+			if(!op) op = '';
+			if(!tform) tform = 'dow';
+
+		case 'int':
+			if(!op) op = '';
+			if(!tform) tform = 'dow';
+	}
+
+	return { op : op, params : params, tform : tform };
+}
+
+
 
 

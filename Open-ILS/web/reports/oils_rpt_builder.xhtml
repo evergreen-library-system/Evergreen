@@ -23,7 +23,16 @@
 		<script language='javascript' src='/opac/common/js/org_utils.js'> </script>
 		<script language='javascript' src='/opac/common/js/init.js'> </script>
 		<script language='javascript' src='/opac/common/js/RemoteRequest.js'> </script>
-		<script language='javascript' src='slimtree.js'> </script>
+		<script language='javascript' src='/opac/common/js/slimtree.js'> </script>
+		<script>
+			stpicopen  = '../opac/images/slimtree/folder2.gif';
+			stpicclose = '../opac/images/slimtree/folderopen2.gif';
+			stpicblank = '../opac/images/slimtree/page.gif';
+			stpicline  = '../opac/images/slimtree/line.gif';
+			stpicjoin  = '../opac/images/slimtree/join.gif';
+			stpicjoinb = '../opac/images/slimtree/joinbottom.gif';
+		</script>
+
 
 		<link rel="stylesheet" type="text/css" media="all" 
 			href="/opac/common/js/jscalendar/calendar-brown.css" title="win2k-cold-1" />
@@ -34,8 +43,9 @@
 		<script type="text/javascript" src="adminlib.js"></script>
 		<script type="text/javascript" src="oils_rpt_vars.js"></script>
 		<script type="text/javascript" src="oils_rpt_utils.js"></script>
-		<script type="text/javascript" src="oils_rpt_builder.js"></script>
 		<script type="text/javascript" src="oils_rpt_tree.js"></script>
+		<script type="text/javascript" src="oils_rpt_builder.js"></script>
+		<script type="text/javascript" src="oils_rpt_builder_widgets.js"></script>
 		<script type="text/javascript" src="oils_rpt.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="oils_rpt.css"> </link>
@@ -53,7 +63,6 @@
 		<div>
 			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt.xhtml");'>Reports Home</a>
 		</div>
-
 
 		<div id='oils_rpt_tree_loading'>
 			Loading...
@@ -104,13 +113,15 @@
 			</tbody></table>
 
 			<div style='margin-bottom: 10px;'>
-				<b style='padding-right: 15px;' id='oils_rpt_editor_window_label'/>
+				<b style='padding-right: 8px;' id='oils_rpt_editor_window_label'/>
+				(<span id='oils_rpt_editor_window_datatype'/>)
 			</div>
 			<div id='oils_rpt_tform_div'>
 				<input size='28' id='oils_rpt_tform_label_input'/>
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>Select how this field should be displayed:</div>
-					<!--#include virtual="oils_rpt_tform_table.xhtml"-->
+					<!--#set var="OILS_RPT_TFORM_TABLE_ID" value="oils_rpt_tform_table"-->
+					<!--#include virtual="oils_rpt_tforms.xhtml"-->
 				</div>
 				<br/><br/>
 				<button id='oils_rpt_tform_submit'>Add Item</button>
@@ -119,7 +130,15 @@
 			<div id='oils_rpt_filter_div' class='hide_me'>
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>Select what filter should be applied to this field:</div>
-					<!--#include virtual="oils_rpt_filter_table.xhtml"-->
+					<div>
+						<!--#set var="OILS_RPT_TFORM_TABLE_ID" value="oils_rpt_filter_tform_table"-->
+						<!--#include virtual="oils_rpt_tforms.xhtml"-->
+					</div>
+					<div>
+						<!--#set var="OILS_RPT_OP_TABLE_ID" value="oils_rpt_filter_op_table"-->
+						<!--#include virtual="oils_rpt_ops.xhtml"-->
+					</div>
+
 				</div>
 				<button id='oils_rpt_filter_submit'>Create Filter</button>
 			</div>

@@ -93,7 +93,7 @@ button {
 .floaty {
 	position: absolute;	
 	text-align: center;
-	z-index: 10;
+	z-index: 1;
 	background: #E0F0F0; 
 	border: 3px groove #0033EE;
 	padding: 10px;
@@ -141,4 +141,10 @@ button {
 .oils_rpt_editor_window_tbody td {
 	border-bottom: 1px solid #A0A0A0;
 	padding: 4px;
+}
+
+.oils_rpt_cal_image {
+	cursor: pointer; 
+	border: 1px solid red; 
+	padding: 0px; margin: -3px;
 }
