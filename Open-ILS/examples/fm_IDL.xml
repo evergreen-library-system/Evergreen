@@ -2136,8 +2136,9 @@
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="date" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="data" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="folder" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="description" oils_obj:array_position="9" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
