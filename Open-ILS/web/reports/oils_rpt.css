@@ -148,3 +148,7 @@ button {
 	border: 1px solid red; 
 	padding: 0px; margin: -3px;
 }
+
+#oils_rpt_main_table {
+	margin-top: 15px;
+}

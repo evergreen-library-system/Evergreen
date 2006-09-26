@@ -12,6 +12,12 @@ function oilsInitReports() {
 	oilsRptDebugEnabled = cgi.param('dbg');
 }
 
+function oilsRtpInitFolders() {
+	oilsRptCurrentFolderManager = 
+		new oilsRptFolderManager(DOM.oils_rpt_folder_tree_div);
+	oilsRptCurrentFolderManager.draw(SESSION);
+}
+
 function oilsCleanupReports() {
 	try {oilsRptDebugWindow.close();} catch(e) {}
 	DOM = null;

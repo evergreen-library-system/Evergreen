@@ -10,6 +10,9 @@ var oilsRpt;
 /* UI tree  */
 var oilsRptTree;
 
+/* UI tree of report folders */
+var oilsRptFolderTree;
+
 /* URL to retrieve the IDL from */
 var OILS_IDL_URL = "/reports/fm_IDL.xml";
 
@@ -33,34 +36,6 @@ var oilsPageYMid;
 var oilsIDLReportsNS = 'http://open-ils.org/spec/opensrf/IDL/reporter/v1';
 var oilsIDLPersistNS = 'http://open-ils.org/spec/opensrf/IDL/persistance/v1';
 
-/* transforms for the different data types */
-/*
-var oilsRptTransforms = {
-	'string'		: [ 'substring' ],
-	'numeric'	: [ 'sum', 'average' ],
-	'timestamp' : [ 'month_trunc', 'months_ago', 'quarters_ago', 'age' ],
-	'all'			: [ 'raw', 'count', 'count_distinct', 'min', 'max' ]
-};
-*/
-
-/* for ease of use, shove everything in the 'all' slot into the other tforms */
-/*
-for( var t in oilsRptTransforms ) {
-	if( t == 'all' ) continue;
-	for( var a in oilsRptTransforms['all'] ) 
-		oilsRptTransforms[t].push( oilsRptTransforms['all'][a] );
-}
-delete oilsRptTransforms.all;
-*/
-/* --------------------------------------------------- */
-
-
-/*
-var oilsRptRegexClasses = {
-	'number' : /\d+/
-}
-*/
-
 /* the current transform manager for the builder transform window */
 var oilsRptCurrentTform;
 
@@ -69,3 +44,8 @@ var oilsRptCurrentFilterTform;
 
 /* the current operation manager for the filter window */
 var oilsRptCurrentFilterOpManager;
+
+var OILS_RPT_FETCH_FOLDERS = 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
+var OILS_RPT_FETCH_FOLDER_DATA = 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';
+
+var oilsRptCurrentFolderManager;
