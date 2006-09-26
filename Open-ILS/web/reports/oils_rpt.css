@@ -149,6 +149,16 @@ button {
 	padding: 0px; margin: -3px;
 }
 
-#oils_rpt_main_table {
+#oils_rpt_folder_table {
 	margin-top: 15px;
+	width: 100%;
 }
+
+#oils_rpt_folder_table_left_td {
+	width: 25%;
+}
+
+#oils_rpt_folder_table_right_td {
+	border-left: 2px solid #E0E0E0; 
+}
+

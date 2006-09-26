@@ -1,3 +1,5 @@
+var oilsRptFolderNodeCache = {};
+
 function oilsRptFolderManager(node) {
 	this.node = node;
 	this.folderTree = {};
@@ -60,16 +62,20 @@ oilsRptFolderManager.prototype.makeTree = function(type, folders, node, parentId
 	} else {
 		_debug("making subtree with folder "+node.folder.name());
 
+		var c = oilsRptFolderNodeCache;
+		if(!c[type]) c[type] = {};
+		c[type][node.folder.id()] = node;
+
 		id = oilsNextId();
-		oilsRptFolderTree.addNode(id, parentId, node.folder.name());
+
+		var action = 'javascript:oilsRptDrawFolderWindow("'+
+			type+'","'+node.folder.id()+'");oilsRptFolderTree.toggle("'+id+'");';
+
+		oilsRptFolderTree.addNode(id, parentId, node.folder.name(), action);
 		node.treeId = id;
 		node.children = [];
 		childNodes = grep(folders, 
 			function(i){return (i.parent() == node.folder.id())});
-
-		var req = new Request(OILS_RPT_FETCH_FOLDER_DATA,SESSION,type,node.folder.id());
-		req.callback
-
 	} 
 
 	if(!childNodes) return;
@@ -77,7 +83,10 @@ oilsRptFolderManager.prototype.makeTree = function(type, folders, node, parentId
 		this.makeTree( type, folders, { folder : childNodes[i] }, id );
 }
 
-//oilsRptFolderManager.prototype.make
+oilsRptFolderManager.prototype.findNode = function(type, id) {
+	return oilsRptFolderNodeCache[type][id];
+}
+
 
 
 
