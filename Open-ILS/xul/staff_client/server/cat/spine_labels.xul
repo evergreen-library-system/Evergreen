@@ -31,7 +31,8 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script type="text/javascript" src="/xul/server/cat/spine_labels.js"/>
 
-	<hbox id="spine_labels_main" flex="1">
+	<vbox id="spine_labels_main" flex="1" class="my_overflow">
+		<hbox flex="1" class="my_overflow">
 		<vbox>
 			<hbox>
 				<button label="Re-Generate" accesskey="G" oncommand="generate()"/>
@@ -89,8 +90,9 @@
 			<button label="Available Macros" oncommand="show_macros()"/>
 		</vbox>
 		<splitter><grippy/></splitter>
-		<vbox id="panel" flex="1" style="overflow: auto"/>
-	</hbox>
+		<vbox id="panel" flex="1" class="my_overflow"/>
+		</hbox>
+	</vbox>
 
 </window>
 
