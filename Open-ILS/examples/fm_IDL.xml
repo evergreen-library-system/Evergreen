@@ -2158,6 +2158,8 @@
 			<field name="folder" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="recur" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="recurance" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field name="name" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="description" oils_obj:array_position="12" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
