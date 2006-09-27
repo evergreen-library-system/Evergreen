@@ -34,7 +34,6 @@
 			}
 
 			table {		border-collapse: collapse;
-					border: solid black 1px;
 					margin-bottom: 10px;
 					margin-top: 10px;
 			}
@@ -46,6 +45,8 @@
 					text-align: center;
 					border-top: solid black 1px;
 			}
+
+			td.odd {	background-color: lightcyan; }
 
 			td.label {	text-align: right;
 					padding-right: 10px;
@@ -65,170 +66,21 @@
 
 		<table width="100%">
 			<tr>
-				<th colspan="2">User Identifcation</th>
-			</tr>
-			<tr class='advanced hideme'>
-				<td class="label">System ID:</td>
-				<td class="value"><input type="text" name="user.id" id="user.id" disabled="true"/></td>
-			</tr>
-			<tr>
-				<td class="label">Creation Date:</td>
-				<td class="value"><input type="text" name="user.create_date" id="user.create_date" disabled="true"/></td>
-			</tr>
-			<tr>
 				<td class="label">User Name:</td>
 				<td class="value"><input disabled="true" type="text" name="user.usrname" id="user.usrname"/></td>
-			</tr>
-			<tr>
-				<td class="label">Current Barcode:</td>
-				<td class="value"><input type="text" name="user.card.barcode" id="user.card.barcode" disabled="true"/>
-						  <button class="hideme stay_hidden" name="replace_card">Replace Card</button>
-				</td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Password:</td>
-				<td class="value"><input type="password" name="user.passwd" id="user.passwd"/></td>
-			</tr>
-
-			<tr>
-				<td class="label">Honorific:</td>
-				<td class="value"><input disabled="true" type="text" name="user.prefix" id="user.prefix"/></td>
+				<td class="label">Barcode:</td>
+				<td class="value"><input type="text" name="user.card.barcode" id="user.card.barcode" disabled="true"/></td>
 			</tr>
 			<tr>
 				<td class="label">First Name:</td>
 				<td class="value"><input disabled="true" type="text" name="user.first_given_name" id="user.first_given_name"/></td>
-			</tr>
-			<tr>
 				<td class="label">Middle Name:</td>
 				<td class="value"><input disabled="true" type="text" name="user.second_given_name" id="user.second_given_name"/></td>
-			</tr>
-			<tr>
 				<td class="label">Last Name:</td>
 				<td class="value"><input disabled="true" type="text" name="user.family_name" id="user.family_name"/></td>
 			</tr>
-			<tr>
-				<td class="label">Title:</td>
-				<td class="value"><input disabled="true" type="text" name="user.suffix" id="user.suffix"/></td>
-			</tr>
-
-			<tr>
-				<td class="label">Date of Birth:</td>
-				<td class="value"><input disabled="true" type="text" name="user.dob" id="user.dob"/></td>
-			</tr>
-
-			<tr class='stay_hidden'>
-				<td class="label">Primary Identification Type:</td>
-				<td class="value"><select name="user.ident_type" id="user.ident_type"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Primary Identification:</td>
-				<td class="value"><input type="text" name="user.ident_value" id="user.ident_value"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Alternate Identification Type:</td>
-				<td class="value"><select name="user.ident_type2" id="user.ident_type2"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Alternate Identification:</td>
-				<td class="value"><input type="text" name="user.ident_value2" id="user.ident_value2"/></td>
-			</tr>
-
-
-
-			<tr class='stay_hidden'>
-				<th colspan="2">Contact Information</th>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Email Address:</td>
-				<td class="value"><input type="text" name="user.email" id="user.email"/></td>
-			</tr>
-
-			<tr class='stay_hidden'>
-				<td class="label">Daytime Phone:</td>
-				<td class="value"><input type="text" name="user.day_phone" id="user.day_phone"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Evening Phone:</td>
-				<td class="value"><input type="text" name="user.evening_phone" id="user.evening_phone"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Other/Cell Phone:</td>
-				<td class="value"><input type="text" name="user.other_phone" id="user.other_phone"/></td>
-			</tr>
-
-			<tr class='stay_hidden'>
-				<td class="label">Home Library:</td>
-				<td class="value"><select name="user.home_ou" id="user.home_ou"/></td>
-			</tr>
-
-			<tr class='stay_hidden'>
-				<th class="label" colspan="2">Addresses</th>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="value" colspan="2">
-					<div>
-						<button onclick="new_addr(); return false;">New Address</button>
-					</div>
-					<div name="addresses" id="addresses"/>
-				</td>
-			</tr>
-
-
-
-
-
-			<tr>
-				<th colspan="2">User Settings</th>
-			</tr>
-			<tr>
-				<td class="label">Profile Group:</td>
-				<td class="value"><select name="user.profile" id="user.profile"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Expire Date:</td>
-				<td class="value"><input type="text" name="user.expire_date" id="user.expire_date"/></td>
-			</tr>
 			<tr class='advanced hideme'>
-				<td class="label">Active:</td>
-				<td class="value"><input type="checkbox" name="user.active" id="user.active" value="t"/></td>
-			</tr>
-			<tr class='advanced hideme'>
-				<td class="label">Set as Superuser:</td>
-				<td class="value"><input type="checkbox" name="user.super_user" id="user.super_user" value="t"/></td>
-			</tr>
-			<tr class='advanced hideme'>
-				<td class="label">Barred:</td>
-				<td class="value"><input type="checkbox" name="user.barred" id="user.barred" value="t"/></td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Set as Family or Group Lead Account:</td>
-				<td class="value"><input type="checkbox" name="user.master_account" id="user.master_account" value="t"/></td>
-			</tr>
-			<tr class='advanced hideme stay_hidden'>
-				<td class="label">"Claims returned" count:</td>
-				<td class="value">
-					<input type="text" name="user.claims_returned_count" id="user.claims_returned_count" value="0" disabled="true"/>
-					<button onclick="reset_crc(); return false;">Reset</button>
-				</td>
-			</tr>
-			<tr class='stay_hidden'>
-				<td class="label">Alert Message:</td>
-				<td class="value">
-					<textarea name="user.alert_message" id="user.alert_message" defaultvalue=''> </textarea>
-					<button onclick="clear_alert_message(); return false;">Reset</button>
-				</td>
-			</tr>
-
-
-			<tr class='advanced hideme'>
-				<th colspan="2">User Permissions</th>
-			</tr>
-			<tr class='advanced hideme'>
-				<td class="label">Permission Groups:</td>
-				<td class="value"><select multiple="muliple" name="permgroups" id="permgroups"/></td>
-			</tr>
-			<tr class='advanced hideme'>
-				<td class="value" colspan="2">
+				<td class="value" colspan="6">
 					<table width="100%">
 						<thead>
 							<tr>
@@ -243,91 +95,15 @@
 				</td>
 			</tr>
 
-
-			<tr class='stay_hidden'>
-				<th colspan="2">Local Statistical Catagories</th>
-			</tr>
-			<tbody id="statcats" name="statcats" class='stay_hidden'/>
-
-
-			<tr class='stay_hidden'>
-				<th colspan="2">Required Surveys</th>
-			</tr>
-			<tr class='stay_hidden'>
-				<td colspan="2" class='value'>
-					<div name="surveys" id="surveys" style="width: 100%"/>
-				</td>
-			</tr>
-
-
 		</table>
 
 		<button onclick="save_user(); return false;">Save</button>
 		</form>
 
 
-		<div class='hideme' id="addr-tmpl">
-			<table>
-				<tr>
-					<td class="label" colspan="1">Address Label</td>
-					<td colspan="1"><input type="text" size="7" name="adr.address_type"/></td>
-					<td class="label" colspan="1">Mailing Address</td>
-					<td colspan="1"><input type="radio" name="is_mailing"/></td>
-					<td class="label" colspan="1">Physical Address</td>
-					<td colspan="1"><input type="radio" name="is_billing"/></td>
-					<td class="label" colspan="1">Valid</td>
-					<td colspan="1"><input type="checkbox" name="adr.valid" value='t'/></td>
-				</tr>
-				<tr>
-					<td class="label" colspan="1">Street 1</td>
-					<td colspan="7"><input type="text" size="50" name="adr.street1"/></td>
-				</tr>
-				<tr>
-					<td class="label" colspan="1">Street 2</td>
-					<td colspan="7"><input type="text" size="50" name="adr.street2"/></td>
-				</tr>
-				<tr>
-					<td class="label">City</td>
-					<td><input type="text" size="15" name="adr.city"/></td>
-					<td class="label">State</td>
-					<td><input type="text" size="4" name="adr.state"/></td>
-					<td class="label">ZIP</td>
-					<td colspan='3'><input type="text" size="10" name="adr.post_code"/></td>
-				</tr>
-				<tr>
-					<td colspan="1" class="label">County</td>
-					<td colspan="2"><input type="text" size="20" name="adr.county"/></td>
-					<td colspan="1" class="label">Country</td>
-					<td colspan="4"><input type="text" size="20" name="adr.country"/></td>
-				</tr>
-				<tr>
-					<td colspan="8"><button name="remove">Remove this address</button></td>
-				</tr>
-			</table>
-		</div>
-
-		<div class='hideme' id="statcat-tmpl">
-			<tr name='scrow'>
-				<td class="label" name='sclabel' valign='top'>
-					<span name="sc.name"/>
-				</td>
-				<td class="value">
-					<input type="text" name="sce.value" onchange="set_sc_value(this);"/>
-					<div class='hideme'>
-						<select
-							onchange="
-								var x = findNodeByName(this.parentNode.parentNode,'sce.value');
-								x.value = this.options[this.selectedIndex].value;
-								set_sc_value(x);"
-							name="sce_select"/>
-					</div>
-				</td>
-			</tr>
-		</div>
-
 		<div class='hideme' id="permission-tmpl">
 			<tr name='prow'>
-				<td class="label" name='plabel'>
+				<td class="value" name='plabel'>
 					<span name="p.code"/>
 				</td>
 				<td class="value" name='papply'>
@@ -341,59 +117,6 @@
 				</td>
 			</tr>
 		</div>
-
-                <div class='hideme' id='survey-tmpl'><div>
-
-                        <table name="editor" width="95%">
-                                <tr>
-                                        <td colspan="2" style="text-align: center; font-weight: bold;"><span name="sur.name"/></td>
-                                </tr>
-                                <tr>
-                                        <td colspan="2" style="text-align: center"><span name="sur.description"/></td>
-                                </tr>
-				<!--
-                                <tr>
-                                        <th class="label">Survey Start Date:</th>
-                                        <td class="value"><span name="sur.start_date"/></td>
-                                </tr>
-                                <tr>
-                                        <th class="label">Survey End Date:</th>
-                                        <td class="value"><span name="sur.end_date"/></td>
-                                </tr>
-				-->
-                                <tr>
-                                        <td class="label">Answer Date:</td>
-                                        <td class="value"><input type="text" name="effective_date"/></td>
-                                </tr>
-                                <tr>
-                                        <td class="label">Questions</td>
-                                        <td class="value" name="questions"/>
-                                </tr>
-				<!--
-                                <tr>
-                                        <th colspan="2" class="label">
-                                                <button name="save_response">Submit</button>
-                                        </th>
-                                </tr>
-				-->
-                        </table>
-                        <div class='hideme' name="question-tmpl">
-                                <table width="100%">
-                                        <tr>
-                                                <td class="value">
-                                                        <span name="q.question"/>
-                                                </td>
-                                        </tr>
-                                        <tr>
-                                                <td class="label">
-                                                        <select onchange="update_response(this);" name="answers-sel" class='hideme'/>
-                                                        <div name="answers-rad" class='hideme'><input onclick="update_response_rad(this);" type="radio"/></div>
-                                                </td>
-                                        </tr>
-                                </table>
-                        </div>
-                </div></div>
-
 
 	</body>
 </html>

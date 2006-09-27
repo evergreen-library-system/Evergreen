@@ -729,6 +729,54 @@ sub _create_perm_maps {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "set_user_perms",
+	api_name	=> "open-ils.actor.user.permissions.update",
+);
+
+sub set_user_perms {
+	my $self = shift;
+	my $client = shift;
+	my $ses = shift;
+	my $maps = shift;
+
+	my $session = $apputils->start_db_session();
+
+	my( $user_obj, $evt ) = $U->checkses($ses);
+	return $evt if $evt;
+
+	my $perms = $session->request('open-ils.storage.permission.user_perms.atomic', $user_obj->id)->gather(1);
+
+	my $all = undef;
+	$all = 1 if ($user_obj->super_user());
+    $all = 1 unless ($U->check_perms($user_obj->id, $user_obj->home_ou, 'EVERYTHING'));
+
+	for my $map (@$maps) {
+
+		my $method = "open-ils.storage.direct.permission.usr_perm_map.update";
+		if ($map->isdeleted()) {
+			$method = "open-ils.storage.direct.permission.usr_perm_map.delete";
+		} elsif ($map->isnew()) {
+			$method = "open-ils.storage.direct.permission.usr_perm_map.create";
+			$map->clear_id;
+		}
+
+		next unless ($all || (grep { $_->perm eq $map->perm and $_->grantable == 1 and $_->depth >= $map->depth } @$perms));
+
+		#warn( "Updating permissions with method $method and session $ses and map $map" );
+		$logger->info( "Updating permissions with method $method and map $map" );
+
+		my $stat = $session->request($method, $map)->gather(1);
+		$logger->warn( "update failed: ".$U->DB_UPDATE_FAILED($map) ) unless defined($stat);
+
+	}
+
+	$apputils->commit_db_session($session);
+
+	return scalar(@$maps);
+}
+
+
 sub _create_standing_penalties {
 
 	my($session, $user_session, $patron, $new_patron) = @_;
