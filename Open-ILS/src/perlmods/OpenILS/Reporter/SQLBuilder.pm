@@ -156,7 +156,7 @@ sub new {
 	$self->{_aggregate} = $col_data->{aggregate};
 
 	if (ref($self->{_column})) {
-		my ($trans) = keys %{ $self->{_column} };
+		my $trans = $self->{_column}->{transform} || 'Bare';
 		my $pkg = "OpenILS::Reporter::SQLBuilder::Column::Transform::$trans";
 		if (UNIVERSAL::can($pkg => 'toSQL')) {
 			$self->{_transform} = $trans;
@@ -174,14 +174,9 @@ sub new {
 sub name {
 	my $self = shift;
 	if (ref($self->{_column})) {
-		my ($k) = keys %{$self->{_column}};
-		if (ref($self->{_column}->{$k})) {
-		 	return $self->resolve_param( $self->{_column}->{$k}->[0] );
-		} else {
-			return $self->resolve_param( $self->{_column}->{$k} );
-		}
+		 return $self->{_column}->{colname};
 	} else {
-		return $self->resolve_param( $self->{_column} );
+		return $self->{_column};
 	}
 }
 
@@ -248,8 +243,7 @@ sub toSQL {
 	my ($func) = keys %{ $self->{_column} };
 
 	my @params;
-	@params = @{ $self->{_column}->{$func} } if (ref($self->{_column}->{$func}));
-	shift @params if (@params);
+	@params = @{ $self->resolve_param( $self->{_column}->{params} ) } if ($self->{_column}->{params});
 
 	my $sql = $func . '("' . $self->{_relation} . '"."' . $self->name . '"';
 	$sql .= ",'" . join("','", @params) . "'" if (@params);
@@ -275,9 +269,9 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::substring;
 
 sub toSQL {
 	my $self = shift;
-	my ($params) = values %{ $self->{_column} };
-	my $start = $$params[1];
-	my $len = $$params[2];
+	my $params = $self->resolve_param( $self->{_column}->{params} );
+	my $start = $$params[0];
+	my $len = $$params[1];
 	return 'SUBSTRING("' . $self->{_relation} . '"."' . $self->name . "\",$start,$len)";
 }
 
