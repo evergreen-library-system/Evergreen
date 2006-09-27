@@ -79,6 +79,7 @@ sub create_template {
 	return $tmpl;
 }
 
+
 __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.report.create',
 	method => 'create_report');
@@ -93,5 +94,34 @@ sub create_report {
 	$e->commit;
 	return $tmpl;
 }
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.template.retrieve',
+	method => 'retrieve_template');
+sub retrieve_template {
+	my( $self, $conn, $auth, $id ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('RUN_REPORTS');
+	my $t = $e->retrieve_reporter_template($id) 
+		or return $e->event;
+	return $t;
+}
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.report.retrieve',
+	method => 'retrieve_report');
+sub retrieve_report {
+	my( $self, $conn, $auth, $id ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('RUN_REPORTS');
+	my $r = $e->retrieve_reporter_report($id) 
+		or return $e->event;
+	return $r;
+}
+
 
 1;
