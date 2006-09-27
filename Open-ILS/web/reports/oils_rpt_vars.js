@@ -47,5 +47,8 @@ var oilsRptCurrentFilterOpManager;
 
 var OILS_RPT_FETCH_FOLDERS = 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
 var OILS_RPT_FETCH_FOLDER_DATA = 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';
+var OILS_RPT_FETCH_TEMPLATE = 'open-ils.reporter:open-ils.reporter.template.retrieve';
 
 var oilsRptCurrentFolderManager;
+
+//var oilsRptFolderWindowCache = {};

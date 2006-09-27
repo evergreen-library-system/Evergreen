@@ -30,8 +30,21 @@
 						<div id='oils_rpt_folder_tree_div'>
 						</div>
 					</td>
-					<td id='oils_rpt_folder_table_right_td'>
-						<div id='oils_rpt_folder_window_div'>
+					<td id='oils_rpt_folder_table_right_td' class='hide_me'>
+						<div class='oils_rpt_folder_window'>
+
+							<table class='oils_rpt_tab_table'><tbody>
+								<tr>
+									<td width='33%'><a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>Manage Folder Contents</a></td>
+									<td width='33%'><a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Edit This Folder</a></td>
+									<td width='33%'><a id='oils_rpt_child_folders_tab' href='javascript:void(0);'>Add New Folders</a></td>
+								</tr>
+							</tbody></table>
+
+							<div>
+								<!--#include virtual="oils_rpt_template_folder_window.xhtml"-->
+								<!--#include virtual="oils_rpt_report_folder_window.xhtml"-->
+							</div>
 						</div>
 					</td>
 				</tr>

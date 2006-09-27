@@ -1,12 +1,49 @@
 var oilsRptID = 0;
 var oilsRptID2 = 0;
+var oilsRptID3 = 0;
 function oilsNextId() {
 	return 'oils_'+ (oilsRptID++);
+}
+
+function oilsNextNumericId() {
+	return oilsRptID3++;
 }
 
 function oilsRptNextParam() {
 	return '::PARAM'+ (oilsRptID2++);
 }
+
+
+function oilsRptCacheObject(obj) {
+	var id = oilsNextId();
+	oilsRptObjectCache[id] = obj;
+	return id;
+}
+
+function oilsRptFindObject(id) {
+	return oilsRptObjectCache[id];
+}
+
+
+/* -------------------------------------------- */
+function oilsRptObject() {}
+oilsRptObject.prototype.init = function() {
+	oilsRptObject.cache(this);
+}
+oilsRptObject.objectCache = {};
+oilsRptObject.find = function(id) {
+	return oilsRptObject.objectCache[id];
+}
+oilsRptObject.cache = function(obj) {
+	obj.id = oilsNextNumericId();
+	oilsRptObject.objectCache[obj.id] = obj;
+	return obj.id;
+}
+/* -------------------------------------------- */
+
+
+
+
 
 function oilsRptResetParams() {
 	oilsRptID2 = 0;

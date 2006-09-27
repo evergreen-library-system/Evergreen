@@ -1,8 +1,13 @@
 var oilsRptFolderNodeCache = {};
 
+oilsRptFolderManager.prototype = new oilsRptObject();
+oilsRptFolderManager.prototype.constructor = oilsRptFolderManager;
+oilsRptFolderManager.baseClass = oilsRptObject.prototype.constructor;
+
 function oilsRptFolderManager(node) {
 	this.node = node;
 	this.folderTree = {};
+	this.init();
 }
 
 oilsRptFolderManager.prototype.draw = function(auth) {
@@ -68,8 +73,10 @@ oilsRptFolderManager.prototype.makeTree = function(type, folders, node, parentId
 
 		id = oilsNextId();
 
-		var action = 'javascript:oilsRptDrawFolderWindow("'+
-			type+'","'+node.folder.id()+'");oilsRptFolderTree.toggle("'+id+'");';
+		node.folderWindow = oilsRptBuildFolderWindow(type, node.folder.id());
+
+		var action = 'javascript:oilsRptObject.find('+node.folderWindow.id+').draw();'+
+			'oilsRptFolderTree.toggle("'+id+'");';
 
 		oilsRptFolderTree.addNode(id, parentId, node.folder.name(), action);
 		node.treeId = id;
@@ -86,6 +93,7 @@ oilsRptFolderManager.prototype.makeTree = function(type, folders, node, parentId
 oilsRptFolderManager.prototype.findNode = function(type, id) {
 	return oilsRptFolderNodeCache[type][id];
 }
+
 
 
 

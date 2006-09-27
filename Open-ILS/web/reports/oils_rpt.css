@@ -29,6 +29,10 @@ table { border-collapse: collapse; }
 	padding: 5px;
 }
 
+#oils_rpt_table tr {
+	-moz-border-radius: 5px 5px 5px 5px;	
+}
+
 #oils_rpt_table td {
 	vertical-align: top;
 	padding: 3px;
@@ -100,20 +104,22 @@ button {
 }
 
 
-#oils_rpt_editor_tab_table {
+.oils_rpt_tab_table {
 	width: 100%;
 	background: #F0F0F0;
 	margin: 4px;
 	margin-bottom: 10px;
 	border: 1px solid #808080;
 	border-collapse: collapse;
+	text-align: center;
 }
 
-#oils_rpt_editor_tab_table td {
+.oils_rpt_tab_table td {
 	border-left: 1px solid #808080;
 	border-right: 1px solid #808080;
 	padding: 2px;
 }
+
 
 
 #oils_rpt_column_editor_close_div {
@@ -155,10 +161,28 @@ button {
 }
 
 #oils_rpt_folder_table_left_td {
-	width: 25%;
+	vertical-align: top;
 }
 
 #oils_rpt_folder_table_right_td {
 	border-left: 2px solid #E0E0E0; 
+	text-align: center;
+	vertical-align: top;
+	padding: 10px;
+	width: 75%;
 }
 
+.oils_rpt_folder_window {
+	border: 1px solid blue; 
+	background: #E0F0F0; 
+	text-align: left;
+}
+
+.oils_rpt_folder_window td {
+	padding: 5px;
+}
+
+
+oils_rpt_folder_window_div {
+	width: 100%;
+}
