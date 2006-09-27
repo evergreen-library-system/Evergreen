@@ -68,7 +68,7 @@ my $report = {
 			direction => 'descending',
 		},
 		{	relation=> 'circ-checkin_lib-aou',
-			column	=> 'shortname',
+			column	=> { colname => 'shortname', transform => 'substring', params => [ 1, 4 ] },
 		},
 		{	relation=> 'circ',
 			column	=> { transform => month_trunc => colname => 'checkin_time' },
