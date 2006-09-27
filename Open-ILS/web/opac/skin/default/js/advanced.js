@@ -11,8 +11,11 @@ function advInit() {
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
 
 	unHideMe($('adv_quick_search_sidebar'));
+
+	/*
 	if(isXUL()) 
-		setSelector($('adv_quick_type'), 'tcn');
+		setSelector($('adv_quick_type'), 'tcn'); */
+
 	setEnterFunc($('adv_quick_text'), advGenericSearch);
 
 	unHideMe($('adv_marc_search_sidebar'));
