@@ -870,6 +870,8 @@ cat.copy_browser.prototype = {
 					'command',
 					function(ev) {
 						//obj.show_my_libs(ev.target.value);
+						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+						util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 						obj.refresh_list();
 					},
 					false
@@ -878,7 +880,31 @@ cat.copy_browser.prototype = {
 				throw('Missing library list.\n');
 			}
 
-			obj.show_my_libs( list_data[1] );
+			JSAN.use('util.widgets'); 
+		
+			file = new util.file('copy_browser_prefs');
+			util.widgets.load_attributes(file);
+			ml.value = ml.getAttribute('value');
+
+			document.getElementById('show_acns').addEventListener(
+				'command',
+				function(ev) {
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+				},
+				false
+			);
+
+			document.getElementById('show_acps').addEventListener(
+				'command',
+				function(ev) {
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+				},
+				false
+			);
+
+			obj.show_my_libs( ml.value );
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
@@ -1224,6 +1250,13 @@ cat.copy_browser.prototype = {
 				node.setAttribute('container','true');
 			}
 
+			if (document.getElementById('show_acns').checked) {
+				if ( obj.data.hash.aout[ org.ou_type() ].depth() != 0 ) {
+					node.setAttribute('open','true');
+					setTimeout( function() { obj.on_select_org( org.id() ); }, 0 );
+				}
+			}
+
 		} catch(E) {
 			dump(E+'\n');
 			alert(E);
@@ -1267,6 +1300,10 @@ cat.copy_browser.prototype = {
 			if (acn_tree.copies()) {
 				obj.map_acp[ 'acn_' + acn_tree.id() ] = acn_tree;
 				node.setAttribute('container','true');
+			}
+			if (document.getElementById('show_acps').checked) {
+				node.setAttribute('open','true');
+				setTimeout( function() { obj.on_select_acn( acn_tree.id() ); }, 0 );
 			}
 
 		} catch(E) {

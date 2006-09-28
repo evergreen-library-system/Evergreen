@@ -165,6 +165,10 @@
 				</menu>
 			</menubar>
 		</hbox>
+			<hbox>
+				<checkbox id="show_acns" label="Show Volumes" />
+				<checkbox id="show_acps" label="Show Items" />
+			</hbox>
 		<tree id="copy_tree" flex="1" enableColumnDrag="true" context="copy_browser_actions"/>
 	</groupbox>
 
