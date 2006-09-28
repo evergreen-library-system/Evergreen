@@ -103,7 +103,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Workstation ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field reporter:label="Workstation ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field reporter:label="Workstation Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
@@ -117,7 +117,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Identification ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Identification ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Identification Name" name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -129,7 +129,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Answers" name="answers" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field reporter:label="Responses" name="responses" oils_obj:array_position="4" oils_persist:virtual="true" />
-			<field reporter:label="Question ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Question ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Question" name="question" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field reporter:label="Survey" name="survey" oils_obj:array_position="7" oils_persist:virtual="false" />
 		</fields>
@@ -170,7 +170,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="pub" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="title" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -186,7 +186,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -201,7 +201,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
@@ -215,7 +215,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="item" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -232,7 +232,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="item_type" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="org_unit" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="staff" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -276,9 +276,9 @@
 			<field name="answer" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field name="answer_date" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="effective_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="question" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="response_group_id" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="response_group_id" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="survey" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="10" oils_persist:virtual="false" />
 		</fields>
@@ -295,7 +295,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -316,7 +316,7 @@
 			<field name="deleted" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="editor" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="last_xact_id" oils_obj:array_position="12" oils_persist:virtual="false" />
 			<field name="marc" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="source" oils_obj:array_position="14" oils_persist:virtual="false" />
@@ -359,15 +359,15 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="approval_code" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="cash_drawer" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="cc_number" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="cc_type" oils_obj:array_position="9" oils_persist:virtual="false" />
-			<field name="expire_month" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="expire_year" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="expire_month" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="expire_year" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="15" oils_persist:virtual="false" />
@@ -377,6 +377,7 @@
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
@@ -386,10 +387,10 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field_class" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="weight" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="weight" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="format" oils_obj:array_position="8" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -426,7 +427,7 @@
 			<field name="deleted" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="edit_date" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="editor" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="label" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" />
 			<field name="record" oils_obj:array_position="12" oils_persist:virtual="false" />
@@ -445,7 +446,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="value" oils_obj:array_position="4" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -455,9 +456,9 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -469,7 +470,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="collector" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field name="enter_time" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="location" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="7" oils_persist:virtual="false" />
 		</fields>
@@ -493,10 +494,10 @@
 			<field name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="editor" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="fingerprint" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="last_xact_id" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="marc" oils_obj:array_position="14" oils_persist:virtual="false" />
-			<field name="quality" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="quality" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="16" oils_persist:virtual="false" />
 			<field name="tcn_source" oils_obj:array_position="17" oils_persist:virtual="false" />
 			<field name="tcn_value" oils_obj:array_position="18" oils_persist:virtual="false" />
@@ -545,7 +546,7 @@
 			<field name="dow_5_open" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field name="dow_6_close" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field name="dow_6_open" oils_obj:array_position="16" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="org_unit" oils_obj:array_position="18" oils_persist:virtual="true" />
 		</fields>
 		<links>
@@ -557,9 +558,9 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="close_end" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="close_start" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="close_end" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="close_start" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="org_unit" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="reason" oils_obj:array_position="7" oils_persist:virtual="false" />
 		</fields>
@@ -573,8 +574,8 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="extended" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="max_renewals" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="max_renewals" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="shrt" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -588,7 +589,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="last_billing_note" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="last_billing_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="last_billing_type" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -633,9 +634,9 @@
 			<field reporter:label="Barred" name="barred" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Physical Address" name="billing_address" oils_obj:array_position="17" oils_persist:virtual="false" />
 			<field reporter:label="Current Library Card" name="card" oils_obj:array_position="18" oils_persist:virtual="false" />
-			<field reporter:label="Claims-returned Count" name="claims_returned_count" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field reporter:label="Claims-returned Count" name="claims_returned_count" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label="User Credit Balance" name="credit_forward_balance" oils_obj:array_position="21" oils_persist:virtual="false" />
+			<field reporter:label="User Credit Balance" name="credit_forward_balance" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Daytime Phone" name="day_phone" oils_obj:array_position="22" oils_persist:virtual="false" />
 			<field reporter:label="Date of Birth" name="dob" oils_obj:array_position="23" oils_persist:virtual="false" />
 			<field reporter:label="Email Address" name="email" oils_obj:array_position="24" oils_persist:virtual="false" />
@@ -644,7 +645,7 @@
 			<field reporter:label="Last Name" name="family_name" oils_obj:array_position="27" oils_persist:virtual="false" />
 			<field reporter:label="First Name" name="first_given_name" oils_obj:array_position="28" oils_persist:virtual="false" />
 			<field reporter:label="Home Library" name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" />
-			<field reporter:label="User ID" name="id" oils_obj:array_position="30" oils_persist:virtual="false" />
+			<field reporter:label="User ID" name="id" oils_obj:array_position="30" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Primary Identifcation Type" name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" />
 			<field reporter:label="Secondary Identification Type" name="ident_type2" oils_obj:array_position="32" oils_persist:virtual="false" />
 			<field reporter:label="Primary Identification" name="ident_value" oils_obj:array_position="33" oils_persist:virtual="false" />
@@ -716,7 +717,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owning_copy" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="pub" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="title" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -732,7 +733,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -750,7 +751,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="fingerprint" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="master_record" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="mods" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="source_records" oils_obj:array_position="7" oils_persist:virtual="true" />
@@ -765,7 +766,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name"/>
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field name="name" oils_obj:array_position="4" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -777,7 +778,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="code" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="code"/>
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="code" reporter:datatype="int"/>
 		</fields>
 		<links/>
 	</class>
@@ -786,7 +787,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="metarecord" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
@@ -801,7 +802,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
@@ -816,10 +817,10 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="cash_drawer" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -829,6 +830,7 @@
 		<links>
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
@@ -838,9 +840,9 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
@@ -864,7 +866,7 @@
 			<field name="char_encoding" oils_obj:array_position="6" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="control_type" oils_obj:array_position="7" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="enc_level" oils_obj:array_position="8" oils_persist:virtual="false" oils_persist:primitive="string" />
-			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="item_form" oils_obj:array_position="10" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="item_lang" oils_obj:array_position="11" oils_persist:virtual="false" oils_persist:primitive="string" />
 			<field name="item_type" oils_obj:array_position="12" oils_persist:virtual="false" oils_persist:primitive="string" />
@@ -889,7 +891,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="holdable" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name"/>
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -899,7 +901,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="penalty_type" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
@@ -916,7 +918,7 @@
 			<field name="city" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="country" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="county" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="post_code" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="state" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="street1" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -937,7 +939,7 @@
 			<field name="call_number" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field name="create_date" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="creator" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="pub" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="title" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
@@ -955,7 +957,7 @@
 			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="edit_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="editor" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="record" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="9" oils_persist:virtual="false" />
 		</fields>
@@ -978,14 +980,14 @@
 			<field reporter:label="Circulation Duration" name="duration" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field reporter:label="Circ Duration Rule" name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
 			<field reporter:label="Fine Interval" name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" />
-			<field reporter:label="Circ ID" name="id" oils_obj:array_position="13" oils_persist:virtual="false" />
-			<field reporter:label="Max Fine Amount" name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field reporter:label="Circ ID" name="id" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Max Fine Amount" name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field reporter:label="OPAC Renewal" name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Phone Renewal" name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Recuring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field reporter:label="Recuring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Recuring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
-			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Circulating Item" name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
@@ -1017,7 +1019,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="target_call_number" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1032,7 +1034,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -1048,7 +1050,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="hold" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="target_copy" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1062,7 +1064,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="hold" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="method" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="note" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="notify_staff" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1080,7 +1082,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Can Circulate?" name="circulate" oils_obj:array_position="3" oils_persist:virtual="false"  reporter:datatype="bool"/>
 			<field reporter:label="Is Holdable?" name="holdable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Location ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Location ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Name" name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field reporter:label="Is OPAC Visible?" name="opac_visible" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Owing Org Unit" name="owning_lib" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -1094,7 +1096,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owning_copy" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="stat_cat_entry" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -1120,10 +1122,10 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="from_org" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="to_org" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="prox" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="prox" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="from_org" reltype="has_a" key="id" map="" class="aou"/>
@@ -1139,7 +1141,7 @@
 			<field name="responses" oils_obj:array_position="4" oils_persist:virtual="true" />
 			<field name="description" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="end_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field name="name" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="opac" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="owner" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -1163,7 +1165,7 @@
 			<field name="city" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="country" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="county" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="org_unit" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field name="post_code" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="state" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -1191,7 +1193,7 @@
 			<field name="fulfillment_time" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="hold_type" oils_obj:array_position="12" oils_persist:virtual="false" />
 			<field name="holdable_formats" oils_obj:array_position="13" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="phone_notify" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field name="pickup_lib" oils_obj:array_position="16" oils_persist:virtual="false" />
 			<field name="prev_check_time" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="timestamp"/>
@@ -1204,7 +1206,7 @@
 			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
 			<field name="cancel_time" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="notify_time" oils_obj:array_position="26" oils_persist:virtual="true" reporter:datatype="timestamp"/>
-			<field name="notify_count" oils_obj:array_position="27" oils_persist:virtual="true" />
+			<field name="notify_count" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="int" />
 			<field name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" />
 		</fields>
 		<links>
@@ -1229,7 +1231,7 @@
 			<field reporter:label="Subordinate OUs" name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field reporter:label="Billing Address" name="billing_address" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Holds Recieving Address" name="holds_address" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field reporter:label="OU ID" name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:selector="shortname"/>
+			<field reporter:label="OU ID" name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:selector="shortname" reporter:datatype="int"/>
 			<field reporter:label="ILL Recieving Address" name="ill_address" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field reporter:label="Mailling Address" name="mailing_address" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field reporter:label="Name" name="name" oils_obj:array_position="9" oils_persist:virtual="false" />
@@ -1263,7 +1265,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -1279,7 +1281,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="entries" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="opac_visible" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1296,7 +1298,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="active" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="barcode" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1309,7 +1311,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="entries" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="opac_visible" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1325,7 +1327,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
@@ -1341,7 +1343,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -1357,9 +1359,9 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
@@ -1377,7 +1379,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="ind1" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="ind2" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="record" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -1395,7 +1397,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="circ_duration" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name"/>
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field name="in_house" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="owning_lib" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1412,8 +1414,8 @@
 			<field reporter:label="Subordinate Types" name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field reporter:label="Can Have Users?" name="can_have_users" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Can Have Volumes?" name="can_have_vols" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Type Depth" name="depth" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field reporter:label="Type ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Type Depth" name="depth" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Type ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Type Name" name="name" oils_obj:array_position="8" oils_persist:virtual="false" />
 			<field reporter:label="OPAC Label" name="opac_label" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field reporter:label="Parent Type" name="parent" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -1434,7 +1436,7 @@
 			<field name="creator" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="edit_date" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="editor" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="record" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -1450,9 +1452,9 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1465,7 +1467,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="billing_location" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="xact_finish" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp" />
@@ -1487,8 +1489,8 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="source"/>
-			<field name="quality" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="source" reporter:datatype="int"/>
+			<field name="quality" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="transcendant" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
@@ -1499,7 +1501,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Transaction ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field reporter:label="Transaction ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="User" name="usr" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field reporter:label="Transaction Start Date/Time" name="xact_start" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -1521,7 +1523,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -1537,7 +1539,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="target_user" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1550,9 +1552,9 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1576,9 +1578,9 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="9" oils_persist:virtual="false" />
@@ -1606,14 +1608,14 @@
 			<field name="duration" oils_obj:array_position="10" oils_persist:virtual="false" />
 			<field name="duration_rule" oils_obj:array_position="11" oils_persist:virtual="false" />
 			<field name="fine_interval" oils_obj:array_position="12" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="13" oils_persist:virtual="false" />
-			<field name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="max_fine" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
-			<field name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" />
+			<field name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="target_copy" oils_obj:array_position="23" oils_persist:virtual="false" />
@@ -1635,7 +1637,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
@@ -1649,11 +1651,11 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="high" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name"/>
-			<field name="low" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="high" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
+			<field name="low" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="normal" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="recurance_interval" oils_obj:array_position="8" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -1664,11 +1666,11 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="accepting_usr" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="amount_collected" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="cash_drawer" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="check_number" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field name="check_number" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
+			<field name="id" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="xact" oils_obj:array_position="11" oils_persist:virtual="false" />
@@ -1701,7 +1703,7 @@
 			<field reporter:label="Creating User" name="creator" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Is Deposit Required" name="deposit" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Deposit Amount" name="deposit_amount" oils_obj:array_position="17" oils_persist:virtual="false" />
+			<field reporter:label="Deposit Amount" name="deposit_amount" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Precat Dummy Author" name="dummy_author" oils_obj:array_position="18" oils_persist:virtual="false" />
 			<field reporter:label="Precat Dummy Title" name="dummy_title" oils_obj:array_position="19" oils_persist:virtual="false" />
 			<field reporter:label="Last Edit Date/Time" name="edit_date" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="timestamp"/>
@@ -1712,7 +1714,7 @@
 			<field reporter:label="Loan Duration" name="loan_duration" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="26" oils_persist:virtual="false" />
 			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="27" oils_persist:virtual="false" />
-			<field reporter:label="Price" name="price" oils_obj:array_position="28" oils_persist:virtual="false" />
+			<field reporter:label="Price" name="price" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Is Reference" name="ref" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Copy Status" name="status" oils_obj:array_position="30" oils_persist:virtual="false" />
 			<field reporter:label="Copy Notes" name="notes" oils_obj:array_position="31" oils_persist:virtual="true" />
@@ -1740,9 +1742,9 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Item Age" name="age" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field reporter:label="Rule ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Rule ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Rule Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field reporter:label="Allowed Proximity" name="prox" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field reporter:label="Allowed Proximity" name="prox" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links/>
 	</class>
@@ -1751,8 +1753,8 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Max Fine Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field reporter:label="Rule ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Max Fine Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Rule ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Rule Name" name="name" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links/>
@@ -1764,7 +1766,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Child Groups" name="children" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field reporter:label="Group ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="name"/>
+			<field reporter:label="Group ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:selector="name" reporter:datatype="int"/>
 			<field reporter:label="Group Name" name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field reporter:label="Parent Group" name="parent" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field reporter:label="User Expiration Interval" name="perm_interval" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -1783,7 +1785,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Responses using this Answer" name="responses" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field reporter:label="Answer Text" name="answer" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field reporter:label="Answer ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Answer ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Question" name="question" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1798,7 +1800,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Circulating Library" name="circ_lib" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field reporter:label="Circulation Date/Time" name="circ_time" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label="Non-cat Circulation ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Non-cat Circulation ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Non-cat Item Type" name="item_type" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field reporter:label="Patron" name="patron" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field reporter:label="Circulating Staff" name="staff" oils_obj:array_position="8" oils_persist:virtual="false" />
@@ -1815,9 +1817,9 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="balance_owed" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_owed" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="total_paid" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="usr" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1833,7 +1835,7 @@
 			<field reporter:label="Non-fulfilling Copy" name="current_copy" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Retargeting Date/Time" name="fail_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold" name="hold" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field reporter:label="Record ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Record ID" name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
@@ -1847,7 +1849,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="field" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="source" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
 		</fields>
@@ -1861,7 +1863,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field reporter:label="Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Statistical Category" name="stat_cat" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field reporter:label="Entry Text" name="stat_cat_entry" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field reporter:label="User" name="target_usr" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -1876,10 +1878,10 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="depth" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="depth" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="grantable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="grp" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="perm" oils_obj:array_position="7" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1894,7 +1896,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="items" oils_obj:array_position="3" oils_persist:virtual="true" />
 			<field name="btype" oils_obj:array_position="4" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="pub" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -1911,7 +1913,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="depth" oils_obj:array_position="3" oils_persist:virtual="false" />
 			<field name="grantable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="perm" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="usr" oils_obj:array_position="7" oils_persist:virtual="false" />
 		</fields>
@@ -1925,8 +1927,8 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1954,8 +1956,8 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
@@ -1982,7 +1984,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="bucket" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="target_biblio_record_entry" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -1995,7 +1997,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="stat_cat" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="value" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2014,7 +2016,7 @@
 			<field name="dest" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="dest_recv_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="hold" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="persistant_transfer" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="prev_hop" oils_obj:array_position="9" oils_persist:virtual="false" />
 			<field name="source" oils_obj:array_position="10" oils_persist:virtual="false" />
@@ -2035,10 +2037,10 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
 			<field name="billing_ts" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="billing_type" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="note" oils_obj:array_position="7" oils_persist:virtual="false" />
 			<field name="void_time" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="voided" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -2056,7 +2058,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="grp" oils_obj:array_position="3" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="usr" oils_obj:array_position="5" oils_persist:virtual="false" />
 		</fields>
 		<links>
@@ -2069,7 +2071,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="parent" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2090,7 +2092,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="parent" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2111,7 +2113,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="parent" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="owner" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2132,7 +2134,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="name" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2150,7 +2152,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="template" oils_obj:array_position="6" oils_persist:virtual="false" />
@@ -2172,7 +2174,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" />
+			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="runner" oils_obj:array_position="4" oils_persist:virtual="false" />
 			<field name="start_time" oils_obj:array_position="5" oils_persist:virtual="false" />
 			<field name="complete_time" oils_obj:array_position="6" oils_persist:virtual="false" />
