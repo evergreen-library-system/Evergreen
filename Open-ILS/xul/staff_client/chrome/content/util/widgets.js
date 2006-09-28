@@ -25,6 +25,8 @@ util.widgets.EXPORT_OK	= [
 	'dispatch',
 	'stop_event',
 	'set_text',
+	'save_attributes',
+	'load_attributes',
 ];
 util.widgets.EXPORT_TAGS	= { ':all' : util.widgets.EXPORT_OK };
 
@@ -45,15 +47,19 @@ util.widgets.apply = function(e,attr,attr_value,f) {
 }
 
 util.widgets.save_xml = function (filename,node) {
-	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	try { 
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-	JSAN.use('util.file'); var file = new util.file(filename);
+		JSAN.use('util.file'); var file = new util.file(filename);
 
-	node = util.widgets.get(node);
-	var xml = util.widgets.serialize_node(node);
+		node = util.widgets.get(node);
+		var xml = util.widgets.serialize_node(node);
 
-	file.write_content('truncate',xml);
-	file.close();
+		file.write_content('truncate',xml);
+		file.close();
+	} catch(E) {
+		alert('Error in util.widgets.save_xml: ' + E);
+	}
 }
 
 util.widgets.serialize_node = function(node) {
@@ -308,6 +314,41 @@ util.widgets.set_text = function(n,t) {
 		default:
 			alert("FIXME: util.widgets.set_text doesn't know how to handle " + n.nodeName);
 		break;
+	}
+}
+
+util.widgets.save_attributes = function (file,ids_attrs) {
+	try {
+		var blob = {};
+		for (var element_id in ids_attrs) {
+			var attribute_list = ids_attrs[ element_id ];
+			if (! blob[ element_id ] ) blob[ element_id ] =  {};
+			for (var j = 0; j < attribute_list.length; j++) {
+				blob[ element_id ][ attribute_list[j] ] = document.getElementById( element_id ).getAttribute( attribute_list[j] );
+			}
+		}
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		//FIXME - WHY DOES THIS NOT WORK?// JSAN.use('util.file'); var file = new util.file(filename);
+		file.set_object(blob); file.close();
+	} catch(E) {
+		alert('Error saving preferences: ' + E);
+	}
+}
+
+util.widgets.load_attributes = function (file) {		
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		//FIXME - WHY DOES THIS NOT WORK?// JSAN.use('util.file'); var file = new util.file(filename);
+		if (file._file.exists()) {
+			var blob = file.get_object(); file.close();
+			for (var element_id in blob) {
+				for (var attribute in blob[ element_id ]) {
+					document.getElementById( element_id ).setAttribute(attribute, blob[ element_id ][ attribute ]);
+				}
+			}
+		}
+	} catch(E) {
+		alert('Error loading preferences: ' + E);
 	}
 }
 
