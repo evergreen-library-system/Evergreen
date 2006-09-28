@@ -24,6 +24,43 @@ oilsRptWidget.prototype.draw = function() {
 	appendClear(this.node, this.dest);
 }
 
+/* ----------------------------------------------------------- */
+
+oilsRptSetSubClass('oilsRptMultiInputWidget', 'oilsRptWidget');
+function oilsRptMultiInputWidget(args) {
+	this.init(args);
+}
+
+oilsRptMultiInputWidget.prototype.init = function(args) {
+	if(!args) return;
+	this.super.init(args);
+	this.count = (args.count) ? args.count : 2;
+	this.dest = [];
+	for( var i = 0; i < this.count; i++ )
+		this.dest.push(elem('input',{type:'text'}));
+}
+
+oilsRptMultiInputWidget.prototype.getValue = function() {
+	var vals = [];
+	for( var i = 0; i < this.dest.length; i++ )
+		vals.push(this.dest.value);
+	return vals;
+}
+
+oilsRptMultiInputWidget.prototype.draw = function() {
+	removeChildren(this.node);
+	for( var i = 0; i < this.dest.length; i++ ) {
+		this.node.appendChild(this.label[i]);
+		this.node.appendChild(this.dest[i]);
+	}
+}
+
+oilsRptMultiInputWidget.prototype.setLabels = function(labels) {
+	this.labels = labels;	
+}
+
+
+
 
 /* ----------------------------------------------------------- */
 

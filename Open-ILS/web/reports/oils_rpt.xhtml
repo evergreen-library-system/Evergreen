@@ -27,29 +27,60 @@
 			<tbody>
 				<tr>
 					<td id='oils_rpt_folder_table_left_td'>
-						<div id='oils_rpt_folder_tree_div'>
+						<div class='oils_rpt_folder_tree_div'>
+							<div><b>My Folders</b></div>
+							<div id='oils_rpt_template_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_report_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_output_folder_tree' class='oils_rpt_folder_tree'/>
+						</div>
+						<div class='oils_rpt_folder_tree_div'>
+							<div><b>Shared Folders</b></div>
+							<div id='oils_rpt_template_shared_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_report_shared_folder_tree' class='oils_rpt_folder_tree'/>
+							<div id='oils_rpt_output_shared_folder_tree' class='oils_rpt_folder_tree'/>
 						</div>
 					</td>
+					<td/>
 					<td id='oils_rpt_folder_table_right_td' class='hide_me'>
 						<div class='oils_rpt_folder_window'>
 
 							<table class='oils_rpt_tab_table'><tbody>
 								<tr>
-									<td width='33%'><a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>Manage Folder Contents</a></td>
-									<td width='33%'><a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Edit This Folder</a></td>
-									<td width='33%'><a id='oils_rpt_child_folders_tab' href='javascript:void(0);'>Add New Folders</a></td>
+									<td width='33%'>
+										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>Manage Folder Contents</a></td>
+									<td width='33%'>
+										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Edit This Folder</a></td>
+									<td width='33%'>
+									<a id='oils_rpt_child_folders_tab' href='javascript:void(0);'>Add New Folders</a></td>
 								</tr>
 							</tbody></table>
 
+							<table id='oils_rpt_folder_details_table'>
+								<tbody>
+									<tr>
+										<td>
+											<span><b id='oils_rpt_folder_name_label'/>: created by </span><b id='oils_rpt_folder_creator_label'/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
 							<div>
-								<!--#include virtual="oils_rpt_template_folder_window.xhtml"-->
-								<!--#include virtual="oils_rpt_report_folder_window.xhtml"-->
+
+								<!--#include virtual="oils_rpt_folder_window.xhtml"-->
+
+								<!--
+								<|||#include virtual="oils_rpt_template_folder_window.xhtml"||>
+								<|||#include virtual="oils_rpt_report_folder_window.xhtml"||>
+								-->
 							</div>
 						</div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<!--#include virtual="oils_rpt_param_editor.xhtml"-->
 
 	</body>
 </html>

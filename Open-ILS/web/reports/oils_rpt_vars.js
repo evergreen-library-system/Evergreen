@@ -10,8 +10,13 @@ var oilsRpt;
 /* UI tree  */
 var oilsRptTree;
 
-/* UI tree of report folders */
-var oilsRptFolderTree;
+var oilsRptTemplateFolderTree;
+var oilsRptReportFolderTree;
+var oilsRptOutputFolderTree;
+var oilsRptSharedTemplateFolderTree;
+var oilsRptSharedReportFolderTree;
+var oilsRptSharedOutputFolderTree;
+
 
 /* URL to retrieve the IDL from */
 var OILS_IDL_URL = "/reports/fm_IDL.xml";
@@ -52,3 +57,5 @@ var OILS_RPT_FETCH_TEMPLATE = 'open-ils.reporter:open-ils.reporter.template.retr
 var oilsRptCurrentFolderManager;
 
 //var oilsRptFolderWindowCache = {};
+
+var oilsRptObjectCache = {};

@@ -13,22 +13,24 @@ function drawFMObjectTable( args ) {
 
 	if( typeof destination == 'string' ) 
 		destination = $(destination);
-	var builder = new FMObjectBuilder(obj, args.display);
+	var builder = new FMObjectBuilder(obj, args);
 	destination.appendChild(builder.build());
 	return builder;
 }
 
 
 /* Constructor for the builder object */
-function FMObjectBuilder( obj, display, styleToggle ) {
+function FMObjectBuilder( obj, args ) {
 	this.obj		= obj;
 	this.table	= elem('table');
 	this.thead	= elem('thead');
 	this.tbody	= elem('tbody');
 	this.thead_tr = elem('tr');
 	this.subtables = [];
-	this.display = display;
-	this.styleToggle = styleToggle;
+	this.display = args.display;
+	this.selectCol = args.selectCol;
+	this.selectColName = args.selectColName;
+	this.rows = [];
 	if(!this.display) this.display = {};
 
 	this.table.appendChild(this.thead);
@@ -41,6 +43,16 @@ function FMObjectBuilder( obj, display, styleToggle ) {
 }
 
 
+FMObjectBuilder.prototype.getSelected = function() {
+	var objs = [];
+	for( var i = 0; i < this.rows.length; i++ ) {
+		var r = $(this.rows[i]);
+		if( $n(r,'selected').checked )
+			objs.push(this.obj[i]);
+	}
+	return objs;
+}
+
 /* Builds the table */
 FMObjectBuilder.prototype.build = function() {
 	var o = this.obj;
@@ -52,6 +64,8 @@ FMObjectBuilder.prototype.build = function() {
 	if( o ) {
 
 		this.setKeys(o);
+		if( this.selectCol )
+			this.thead_tr.appendChild(elem('td',null,this.selectColName));
 		for( var i = 0; i < this.keys.length; i++ ) 
 			this.thead_tr.appendChild(elem('td',null,this.keys[i]));
 	
@@ -83,6 +97,15 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 /* Inserts one row into the table to represent a single object */
 FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 	var row = elem('tr');
+	row.id = 'fm_table_' + (ID_GEN++);
+	this.rows.push(row.id);
+
+	if(this.selectCol) {
+		var td = elem('td');
+		td.appendChild(elem('input',{type:'checkbox',name:'selected'}));
+		row.appendChild(td);
+	}
+
 	for( var i = 0; i < this.keys.length; i++ ) {
 		var td = elem('td');	
 		var data = obj[this.keys[i]]();
@@ -161,7 +184,7 @@ FMObjectBuilder.prototype.hideSubTables = function() {
 
 FMObjectBuilder.prototype.buildSubTable = function(td, obj, key) {
 
-	var left = td.offsetLeft;
+	var left = parseInt(td.offsetLeft);
 	var div	= elem('div');
 	var row	= elem('tr');
 	var subtd= elem('td');
@@ -177,8 +200,10 @@ FMObjectBuilder.prototype.buildSubTable = function(td, obj, key) {
 
 	addCSSClass(td, 'fm_selected');
 	subtd.setAttribute('colspan',this.keys.length);
+	if(this.selectCol)
+		subtd.setAttribute('colspan',this.keys.length + 1);
 
-	subtd.setAttribute('style', 'width: 100%; padding-left:'+left+';');
+	subtd.setAttribute('style', 'width: 100%; padding-left:'+left+'px;');
 	var builder = drawFMObjectTable({dest:div, obj:obj, display:this.display});
 	builder.table.setAttribute('style', 'width: auto;');
 	addCSSClass(builder.table, 'fm_selected');
@@ -186,7 +211,8 @@ FMObjectBuilder.prototype.buildSubTable = function(td, obj, key) {
 	var newleft = left - (builder.table.clientWidth / 2) + (td.clientWidth / 2);
 
 	if( newleft < left ) {
-		_debug("left = "+left+" : newleft = "+newleft);
+		if( newleft < 0 ) newleft = 0;
+		newleft = parseInt(newleft);
 		var style = subtd.getAttribute('style');
 		style = style.replace(new RegExp(left), newleft);
 		subtd.setAttribute('style', style);

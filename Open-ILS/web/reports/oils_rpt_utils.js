@@ -24,6 +24,18 @@ function oilsRptFindObject(id) {
 	return oilsRptObjectCache[id];
 }
 
+function oilsRptCacheObject(type, obj, id) {
+	if( !oilsRptObjectCache[type] )
+		oilsRptObjectCache[type] = {};
+	oilsRptObjectCache[type][id] = obj;
+}
+
+function oilsRptGetCache(type, id) {
+	if( !oilsRptObjectCache[type] )
+		return null;
+	return oilsRptObjectCache[type][i];
+}
+
 
 /* -------------------------------------------- */
 function oilsRptObject() {}

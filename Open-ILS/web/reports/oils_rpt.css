@@ -162,6 +162,7 @@ button {
 
 #oils_rpt_folder_table_left_td {
 	vertical-align: top;
+	width: 25%;
 }
 
 #oils_rpt_folder_table_right_td {
@@ -169,7 +170,6 @@ button {
 	text-align: center;
 	vertical-align: top;
 	padding: 10px;
-	width: 75%;
 }
 
 .oils_rpt_folder_window {
@@ -183,7 +183,7 @@ button {
 }
 
 
-oils_rpt_folder_window_div {
+#oils_rpt_folder_window_contents_div {
 	width: 100%;
 }
 
@@ -194,4 +194,56 @@ oils_rpt_folder_window_div {
 .oils_rpt_param_table td {
 	border: 1px solid #808080;
 	padding: 5px;
+}
+
+#oils_rpt_folder_details_table {
+	width: 100%;
+	margin-bottom: 10px;
+}
+#oils_rpt_folder_details_table tr {
+	border: 1px solid #808080;
+}
+
+#oils_rpt_folder_details_table td {
+	text-align: center;
+	padding: 5px;
+}
+
+#oils_rpt_template_folder_go_row {
+	border-bottom: 1px solid #808080;
+	margin-bottom: 10px;
+}
+
+#oils_rpt_param_editor_table {
+	width: 100%;
+	border: 1px solid #808080;
+}
+
+#oils_rpt_param_editor_table thead td {
+	font-weight: bold;
+}
+
+.oils_rpt_folder_tree {
+	margin: 5px;
+}
+
+.oils_rpt_folder_tree_div {
+	border: 1px solid #808080;
+	margin: 10px;
+}
+
+.oils_rpt_folder_contents {
+	min-width:  200px;
+}
+
+.oils_rpt_folder_window_contents_row {
+	border-bottom: 1px solid #808080;
+	margin: 10px;
+}
+
+#oils_rpt_folder_window_contents_table {
+	width: 100%;
+}
+#oils_rpt_folder_window_contents_table td {
+	text-align: center;
 }

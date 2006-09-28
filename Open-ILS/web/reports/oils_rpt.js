@@ -5,6 +5,8 @@ function oilsInitReports() {
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
 
+	DEBUG = 1;
+
 	var cgi = new CGI();
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
@@ -49,6 +51,7 @@ function oilsReport(templateObj, reportObj) {
 
 	if( reportObj ) 
 		this.params = JSON2js(reportObj.data());
+	if(!this.params) this.params = {};
 }
 
 oilsReport.prototype.toString = function() {
@@ -60,8 +63,7 @@ oilsReport.prototype.toHTMLString = function() {
 }
 
 oilsReport.prototype.gatherParams = function() {
-	if(oilsRptObjectKeys(this.params).length == 0) return;
-
+	//if(oilsRptObjectKeys(this.params).length == 0) return;
 	_debug("we have params: " + js2JSON(this.params));
 
 	var params	= [];
@@ -80,6 +82,8 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 		var key; 
 		var op;
 
+		/* add select transform support */
+
 		if( typeof node == 'string' ) {
 			key = node.match(/::.*/);
 		} else {
@@ -97,7 +101,8 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 			value		: this.params[key],
 			column	: obj.column,
 			type		: type, 
-			relation : obj.relation
+			relation : obj.relation,
+			field		: field
 		});
 	}
 }
