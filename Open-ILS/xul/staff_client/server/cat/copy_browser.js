@@ -852,6 +852,20 @@ cat.copy_browser.prototype = {
 				for (var i = 0; i < obj.org_ids.length; i++) {
 					ml.getElementsByAttribute('value',obj.org_ids[i])[0].setAttribute('class','has_copies');
 				}
+				ml.firstChild.addEventListener(
+					'popupshown',
+					function(ev) {
+						document.getElementById('legend').setAttribute('hidden','false');
+					},
+					false
+				);
+				ml.firstChild.addEventListener(
+					'popuphidden',
+					function(ev) {
+						document.getElementById('legend').setAttribute('hidden','true');
+					},
+					false
+				);
 				ml.addEventListener(
 					'command',
 					function(ev) {

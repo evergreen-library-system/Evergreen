@@ -123,6 +123,7 @@
 
 	<groupbox flex="1">
 		<caption label="Holdings Maintenance"/>
+		<hbox><label id="legend" style="font-size: large" class="has_copies" value="Green in the list below means the library has volumes for this record." hidden="true"/></hbox>
 		<hbox>
 			<hbox id="x_lib_menu"/>
 			<button label="Refresh" command="cmd_refresh_list" />
