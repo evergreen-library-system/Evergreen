@@ -918,6 +918,11 @@ cat.copy_browser.prototype = {
 
 			JSAN.use('util.exec'); var exec = new util.exec();
 			var funcs = [];
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('lib_menu').setAttribute('disabled','true'); 
+			} );
+
 			for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
 				funcs.push(
 					function(o) {
@@ -927,6 +932,11 @@ cat.copy_browser.prototype = {
 					}( obj.data.tree.aou.children()[i] )
 				);
 			}
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('lib_menu').setAttribute('disabled','false'); 
+			} );
+
 			exec.chain( funcs );
 		} catch(E) {
 			alert(E);
@@ -950,6 +960,11 @@ cat.copy_browser.prototype = {
 				}
 			);
 			var funcs = [];
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('lib_menu').setAttribute('disabled','true'); 
+			} );
+
 			for (var i = 0; i < orgs.length; i++) {
 				funcs.push(
 					function(o) {
@@ -959,6 +974,11 @@ cat.copy_browser.prototype = {
 					}( orgs[i] )
 				);
 			}
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('lib_menu').setAttribute('disabled','false'); 
+			} );
+
 			exec.chain( funcs );
 		} catch(E) {
 			alert(E);
@@ -1046,6 +1066,10 @@ cat.copy_browser.prototype = {
 		try {
 			var acn_tree = obj.map_acp[ 'acn_' + acn_id ];
 			var funcs = [];
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('lib_menu').setAttribute('disabled','true'); 
+			} );
 			if (acn_tree.copies()) {
 				for (var i = 0; i < acn_tree.copies().length; i++) {
 					funcs.push(
@@ -1057,6 +1081,10 @@ cat.copy_browser.prototype = {
 					)
 				}
 			}
+			funcs.push( function() { 
+				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('lib_menu').setAttribute('disabled','false'); 
+			} );
 			JSAN.use('util.exec'); var exec = new util.exec();
 			exec.chain( funcs );
 		} catch(E) {
@@ -1067,7 +1095,13 @@ cat.copy_browser.prototype = {
 	'on_select_org' : function(org_id,twisty) {
 		var obj = this;
 		var org = obj.data.hash.aou[ org_id ];
+		if (obj.data.hash.aout[ org.ou_type() ].depth() == 0) return; 
+		/* otherwise, we'd show every system in the consortia */
 		var funcs = [];
+		funcs.push( function() { 
+			document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+			document.getElementById('lib_menu').setAttribute('disabled','true'); 
+		} );
 		if (org.children()) {
 			for (var i = 0; i < org.children().length; i++) {
 				funcs.push(
@@ -1090,6 +1124,10 @@ cat.copy_browser.prototype = {
 				);
 			}
 		}
+		funcs.push( function() { 
+			document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+			document.getElementById('lib_menu').setAttribute('disabled','false'); 
+		} );
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
 	},
