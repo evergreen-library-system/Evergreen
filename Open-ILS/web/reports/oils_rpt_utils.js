@@ -42,6 +42,25 @@ oilsRptObject.cache = function(obj) {
 /* -------------------------------------------- */
 
 
+/* returns just the column name */
+function oilsRptPathCol(path) {
+	var parts = path.split(/-/);
+	return parts.pop();
+}
+
+/* returns the IDL class of the selected column */
+function oilsRptPathClass(path) {
+	var parts = path.split(/-/);
+	parts.pop();
+	return parts.pop();
+}
+
+/* returns everything prior to the column name */
+function oilsRptPathRel(path) {
+	var parts = path.split(/-/);
+	parts.pop();
+	return parts.join('-');
+}
 
 
 
@@ -162,5 +181,15 @@ function oilsRptObjectKeys(obj) {
 	var k = [];
 	for( var i in obj ) k.push(i);
 	return k;
+}
+
+
+/* makes cls a subclass of parent */
+function oilsRptSetSubClass(cls, parent) {
+	var str = cls+'.prototype = new '+parent+'();\n';
+	str += cls+'.prototype.constructor = '+cls+';\n';
+	str += cls+'.baseClass = '+parent+'.prototype.constructor;\n';
+	str += cls+'.prototype.super = '+parent+'.prototype;\n';
+	eval(str);
 }
 

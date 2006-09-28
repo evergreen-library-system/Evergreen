@@ -4,6 +4,9 @@
 			<tr>
 				<td>Select a report:</td>
 				<td><select id='oils_rpt_report_selector'/></td>
+				<td>
+					<span>Report Description: </span><span id='oils_rpt_report_description'/>
+				</td>
 			</tr>
 			<tr>
 				<td>Select an action:</td>
@@ -20,7 +23,40 @@
 					</div>
 				</td>
 			</tr>
+			<tr>
+				<td colspan='2' align='center'>
+					<button id='oils_rpt_report_folder_window_go'>Go!</button>
+				</td>
+			</tr>
 		</tbody>
 	</table>
+
+	<table id='oils_rpt_report_folder_window_display_params_table' class='hide_me oils_rpt_param_table'>
+
+		<thead>
+			<tr><td colspan='3' align='center'>Display Transforms</td></tr>
+			<tr><td>Column</td><td>Transform</td><td>Parameters</td></tr>
+		</thead>
+
+		<tbody name='tbody'>
+			<tr name='tr'>
+				<td name='column'/>
+				<td name='transform'/>
+				<td>
+					<input name='param' type='text' class='hide_me'/>
+
+					<!-- pull in from an external file? -->
+					<div widget='1' name='string_substring_widget' class='hide_me'>
+						<span style='padding-left: 5px;'>Offset: </span>
+						<input name='string_substring_offset' size='3' value='1'/>
+						<span style='padding-left: 5px;'>Length: </span>
+					<input name='string_substring_length' size='3' value='1'/>
+					</div>
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 </div>
 

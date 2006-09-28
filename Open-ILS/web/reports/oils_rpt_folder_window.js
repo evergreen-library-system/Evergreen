@@ -20,7 +20,7 @@ function oilsRptFetchTemplate(id) {
 		return oilsRptTemplateCache[id];
 	var r = new Request(OILS_RPT_FETCH_TEMPLATE, SESSION, id);
 	r.send(true);
-	return r.result();
+	return oilsRptTemplateCache[id] = r.result();
 }
 
 
@@ -34,7 +34,6 @@ oilsRptFolderWindow.prototype.init2 = function(node, type) {
 	this.folderNode = node;
 	this.type = type;
 	this.init();
-	_debug('id = ' + this.id);
 }
 
 oilsRptFolderWindow.prototype.openWindow = function(node) {
@@ -44,7 +43,7 @@ oilsRptFolderWindow.prototype.openWindow = function(node) {
 	unHideMe(node);
 }
 
-oilsRptFolderWindow.prototype.fetchFolderData = function(type, selector, cache) {
+oilsRptFolderWindow.prototype.fetchFolderData = function(type, selector, cache, callback) {
 	removeChildren(selector);
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
 		SESSION, type, this.folderNode.folder.id());
@@ -60,6 +59,7 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(type, selector, cache) 
 				insertSelectorVal(selector, -1, name, ts[i].id());
 				cache[ts[i].id()] = ts[i];
 			}
+			if(callback) callback();
 		}
 	);
 	req.send();
@@ -99,7 +99,79 @@ function oilsRptReportFolderWindow(node) { this.init2(node, 'report'); }
 
 oilsRptReportFolderWindow.prototype.draw = function() {
 	this.openWindow(DOM.oils_rpt_report_folder_window_contents_div);
-	this.fetchFolderData('report', DOM.oils_rpt_report_selector, oilsRptReportCache);
+	var obj = this;
+	this.fetchFolderData('report', 
+		DOM.oils_rpt_report_selector, oilsRptReportCache, 
+			function() {
+				appendClear(DOM.oils_rpt_report_description, 
+					text(obj.getSelectedReport().description()));
+			}
+	);
+
+	DOM.oils_rpt_report_folder_window_go.onclick = function() {
+		var rpt = obj.getSelectedReport();
+		var tmpl = oilsRptFetchTemplate(rpt.template());
+		obj.oilsReport = new oilsReport( tmpl, rpt );
+		var params = obj.oilsReport.gatherParams();
+		obj.drawParamEditor(params);
+	};
+}
+
+oilsRptReportFolderWindow.prototype.drawParamEditor = function(params) {
+	_debug('drawing params: \n' + formatJSON(js2JSON(params)));
+	this.drawSelectParamEditor(grep(params,
+		function(p) { return (p.type == 'select')}));
+	this.drawWhereParamEditor(grep(params,
+		function(p) { return (p.type == 'where')}));
+	this.drawHavingParamEditor(grep(params,
+		function(p) { return (p.type == 'having')}));
+}
+
+
+var oilsRptReportFolderSelectParamRow;
+oilsRptReportFolderWindow.prototype.drawSelectParamEditor = function(params) {
+	if(params.length == 0) return;
+	unHideMe(DOM.oils_rpt_report_folder_window_display_params_table);
+
+	var tbody = $n(DOM.oils_rpt_report_folder_window_display_params_table,'tbody');
+	if(!oilsRptReportFolderSelectParamRow)
+		oilsRptReportFolderSelectParamRow = tbody.removeChild($n(tbody,'tr'));
+
+	for( var p = 0; p < params.length; p++ ) {
+
+		var row = oilsRptReportFolderSelectParamRow.cloneNode(true);
+		var par = params[p];
+		$n(row, 'column').appendChild(text(par.column.colname));
+		$n(row, 'transform').appendChild(text(par.column.transform));
+
+		if( typeof par.value == 'string' ) {
+			unHideMe($n(row, 'param'));
+			$n(row, 'param').value = par.value;
+		} else {
+			switch(par.transform) {
+				case 'substring':
+					unHideMe($n(row,'string_substring_widget'));
+					break;
+			}
+		}
+		tbody.appendChild(row);
+	}
+}
+
+oilsRptReportFolderWindow.prototype.drawWhereParamEditor = function(params) {
+}
+
+oilsRptReportFolderWindow.prototype.drawHavingParamEditor = function(params) {
+}
+
+
+
+oilsRptReportFolderWindow.prototype.getSelectedReport = function() {
+	return oilsRptReportCache[getSelectorVal(DOM.oils_rpt_report_selector)];
+}
+
+oilsRptReportFolderWindow.prototype.getSelectedAction = function() {
+	return getSelectorVal(DOM.oils_rpt_report_selector, force);
 }
 
 

@@ -27,6 +27,7 @@ function oilsReportBuilderReset() {
 	oilsRptResetParams();
 }
 
+
 /*
 function oilsRptBuildCalendars() {
 	Calendar.setup({
@@ -46,27 +47,6 @@ function oilsRptBuildCalendars() {
 }
 */
 
-
-
-/* returns just the column name */
-function oilsRptPathCol(path) {
-	var parts = path.split(/-/);
-	return parts.pop();
-}
-
-/* returns the IDL class of the selected column */
-function oilsRptPathClass(path) {
-	var parts = path.split(/-/);
-	parts.pop();
-	return parts.pop();
-}
-
-/* returns everything prior to the column name */
-function oilsRptPathRel(path) {
-	var parts = path.split(/-/);
-	parts.pop();
-	return parts.join('-');
-}
 
 /* creates a label "path" based on the column path */
 function oilsRptMakeLabel(path) {

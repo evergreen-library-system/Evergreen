@@ -186,3 +186,12 @@ button {
 oils_rpt_folder_window_div {
 	width: 100%;
 }
+
+.oils_rpt_param_table thead td {
+	font-weight: bold;
+}
+
+.oils_rpt_param_table td {
+	border: 1px solid #808080;
+	padding: 5px;
+}
