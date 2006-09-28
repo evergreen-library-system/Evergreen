@@ -9,16 +9,24 @@ var stpicline	= '../../../../images/slimtree/line.gif';
 var stpicjoin	= '../../../../images/slimtree/join.gif';
 var stpicjoinb = '../../../../images/slimtree/joinbottom.gif';
 
-
-var stimgopen	= elem('img',{src:stpicopen,border:0});
-var stimgclose	= elem('img',{src:stpicclose,border:0});
-var stimgblank	= elem('img',{src:stpicblank,border:0});
-var stimgline	= elem('img',{src:stpicline,border:0});
-var stimgjoin	= elem('img',{src:stpicjoin,border:0, style:'display:inline;'});
+var stimgopen;
+var stimgclose;
+var stimgblank;
+var stimgline;
+var stimgjoin;
 
 function _apc(root,node) { root.appendChild(node); }
 
 function SlimTree(context, handle, rootimg) { 
+	
+	if(!stimgopen) {
+		stimgopen	= elem('img',{src:stpicopen,border:0});
+		stimgclose	= elem('img',{src:stpicclose,border:0});
+		stimgblank	= elem('img',{src:stpicblank,border:0});
+		stimgline	= elem('img',{src:stpicline,border:0});
+		stimgjoin	= elem('img',{src:stpicjoin,border:0, style:'display:inline;'});
+	}
+
 	this.context	= context; 
 	this.handle		= handle;
 	this.cache		= new Object();
