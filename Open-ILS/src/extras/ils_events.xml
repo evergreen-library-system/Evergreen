@@ -511,6 +511,22 @@
 	<event code='1633' textcode='MONEY_DESK_PAYMENT_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_collections_tracker was not found</desc>
 	</event>
+	<event code='1634' textcode='REPORTER_TEMPLATE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_template was not found</desc>
+	</event>
+	<event code='1635' textcode='REPORTER_REPORT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_report was not found</desc>
+	</event>
+	<event code='1636' textcode='REPORTER_OUTPUT_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_output_folder was not found</desc>
+	</event>
+	<event code='1637' textcode='REPORTER_REPORT_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_report_folder was not found</desc>
+	</event>
+	<event code='1638' textcode='REPORTER_TEMPLATE_FOLDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_template_folder was not found</desc>
+	</event>
+
 
 
 

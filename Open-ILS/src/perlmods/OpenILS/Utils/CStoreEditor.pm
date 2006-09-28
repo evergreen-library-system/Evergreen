@@ -18,10 +18,16 @@ my %PERMS;
 use vars qw(@EXPORT_OK %EXPORT_TAGS);
 use Exporter;
 use base qw/Exporter/;
-push @EXPORT_OK, 'new_editor';
-%EXPORT_TAGS = ( funcs => [ qw/ new_editor / ] );
+push @EXPORT_OK, ( 'new_editor', 'new_rstore_editor' );
+%EXPORT_TAGS = ( funcs => [ qw/ new_editor new_rstore_editor / ] );
 
 sub new_editor { return OpenILS::Utils::CStoreEditor->new(@_); }
+
+sub new_rstore_editor { 
+	my $e = OpenILS::Utils::CStoreEditor->new(@_); 
+	$e->app('open-ils.reporter-store');
+	return $e;
+}
 
 
 # -----------------------------------------------------------------------------
@@ -47,6 +53,15 @@ sub new {
 	$self->{checked_perms} = {};
 	return $self;
 }
+
+
+sub app {
+	my( $self, $app ) = @_;
+	$self->{app} = $app if $app;
+	$self->{app} = 'open-ils.cstore' unless $self->{app};
+	return $self->{app};
+}
+
 
 # -----------------------------------------------------------------------------
 # Log the editor metadata along with the log string
@@ -84,6 +99,17 @@ sub event {
 }
 
 # -----------------------------------------------------------------------------
+# Destroys the transaction and disconnects where necessary,
+# then returns the last event that occurred
+# -----------------------------------------------------------------------------
+sub die_event {
+	my $self = shift;
+	$self->rollback;
+	return $self->event;
+}
+
+
+# -----------------------------------------------------------------------------
 # Clears the last caught event
 # -----------------------------------------------------------------------------
 sub clear_event {
@@ -106,7 +132,7 @@ sub session {
 	$self->{session} = $session if $session;
 
 	if(!$self->{session}) {
-		$self->{session} = OpenSRF::AppSession->create('open-ils.cstore');
+		$self->{session} = OpenSRF::AppSession->create($self->app);
 
 		if( ! $self->{session} ) {
 			my $str = "Error creating cstore session with OpenSRF::AppSession->create()!";
@@ -127,7 +153,7 @@ sub session {
 sub xact_start {
 	my $self = shift;
 	$self->log(D, "starting new db session");
-	my $stat = $self->request('open-ils.cstore.transaction.begin');
+	my $stat = $self->request($self->app . '.transaction.begin');
 	$self->log(E, "error starting database transaction") unless $stat;
 	return $stat;
 }
@@ -138,7 +164,7 @@ sub xact_start {
 sub xact_commit {
 	my $self = shift;
 	$self->log(D, "comitting db session");
-	my $stat = $self->request('open-ils.cstore.transaction.commit');
+	my $stat = $self->request($self->app.'.transaction.commit');
 	$self->log(E, "error comitting database transaction") unless $stat;
 	return $stat;
 }
@@ -149,7 +175,7 @@ sub xact_commit {
 sub xact_rollback {
 	my $self = shift;
 	$self->log(I, "rolling back db session");
-	return $self->request("open-ils.cstore.transaction.rollback");
+	return $self->request($self->app.".transaction.rollback");
 }
 
 
@@ -392,7 +418,7 @@ sub runmethod {
 	}
 
 	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
-	my $method = "open-ils.cstore.direct.$type.$action";
+	my $method = $self->app.".direct.$type.$action";
 
 	if( $action eq 'search' ) {
 		$method = "$method.atomic";
