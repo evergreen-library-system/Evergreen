@@ -199,8 +199,9 @@ function setSelectorRegex( sel, regex ) {
 
 function getSelectorVal( sel ) {
 	if(!sel) return null;
-	if( sel.selectedIndex < 0 ) return null;
-	var o = sel.options[sel.selectedIndex];
+	var idx = sel.selectedIndex;
+	if( idx < 0 ) return null;
+	var o = sel.options[idx];
 	var v = o.value; 
 	if(v == null) v = o.innerHTML;
 	return v;
@@ -494,7 +495,7 @@ function setEnterFunc(node, func) {
 }
 
 function iterate( arr, callback ) {
-	for( var i = 0; i < arr.length; i++ ) 
+	for( var i = 0; arr && i < arr.length; i++ ) 
 		callback(arr[i]);
 }
 
@@ -622,4 +623,13 @@ function buildDate( year, month, day, hours, minutes, seconds ) {
 	return null;
 }
 
+function mkYearMonDay(date) {
+	if(!date) date = new Date();
+	var y = date.getYear() + 1900;
+	var m = (date.getMonth() + 1)+'';
+	var d = date.getDate()+'';
+	if(m.length == 1) m = '0'+m;
+	if(d.length == 1) d = '0'+d;
+	return y+'-'+m+'-'+d;
+}
 
