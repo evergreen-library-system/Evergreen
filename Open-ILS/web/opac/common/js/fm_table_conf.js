@@ -1,5 +1,5 @@
 var FM_TABLE_DISPLAY = {
-	acp : {
+	'acp' : {
 		name : 'barcode',	
 		fields : [
 			'barcode',
@@ -15,7 +15,7 @@ var FM_TABLE_DISPLAY = {
 			'stat_cat_entry_copy_maps',
 			'status' ],
 		},
-	acpn : {
+	'acpn' : {
 		name : 'title',
 		fields : [
 			'pub',
@@ -23,7 +23,7 @@ var FM_TABLE_DISPLAY = {
 			'value'
 		]
 	},
-	asc : {
+	'asc' : {
 		name : 'name',
 		fields : [
 			'owner',
@@ -31,13 +31,13 @@ var FM_TABLE_DISPLAY = {
 			'name'
 		]
 	},
-	ascecm : {
+	'ascecm' : {
 		fields : [ 'stat_cat', 'stat_cat_entry' ]
 	},
-	ccs : {
+	'ccs' : {
 		name : 'name'
 	},
-	acpl : {
+	'acpl' : {
 		name : 'name',
 		fields : [
 			'circulate',
@@ -46,7 +46,7 @@ var FM_TABLE_DISPLAY = {
 			'opac_visible'
 		]
 	},
-	au : {
+	'au' : {
 		name : 'usrname',
 		fields : [
 			'card',
@@ -56,10 +56,10 @@ var FM_TABLE_DISPLAY = {
 			'home_ou',
 		]
 	},
-	aws : {
+	'aws' : {
 		name : 'name'
 	},
-	mwps : {
+	'mwps' : {
 		fields : [
 			'workstation',
 			'cash_payment',
@@ -68,12 +68,32 @@ var FM_TABLE_DISPLAY = {
 		]
 	},
 
-	mups : {
+	'mups' : {
 		fields : [
 			'usr',
 			'credit_payment',
 			'forgive_payment',
 			'work_payment'
+		]
+	},
+	'rr' : {
+		name : 'name',
+		fields : [
+			'name',
+			'owner',
+			'create_time',
+			'recur',
+			'recurance',
+			'description'
+		]
+	},
+	'rt' : {
+		name : 'name',
+		fields : [
+			'name',
+			'owner',
+			'create_time',
+			'description'
 		]
 	}
 }
