@@ -43,8 +43,16 @@ sub retrieve_visible_folders {
 	my $meth = "search_reporter_${type}_folder";
 	my $fs = $e->$meth( { owner => $e->requestor->id } );
 
-	# XXX fetch folders visible to me
+	my @orgs;
+	my $oid = $e->requestor->ws_ou; 
+	while( my ($o) = $U->fetch_org_unit($oid) ) {
+		last unless $o;
+		push( @orgs, $o->id );
+		$oid = $o->parent_ou;
+	}
 
+	my $fs2 = $e->$meth({shared => 't', share_with => \@orgs});
+	push( @$fs, @$fs2);
 	return $fs;
 }
 
