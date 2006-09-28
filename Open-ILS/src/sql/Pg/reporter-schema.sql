@@ -54,6 +54,8 @@ CREATE TABLE reporter.report (
 	id		SERIAL				PRIMARY KEY,
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	name		TEXT				NOT NULL DEFAULT '',
+	description	TEXT				NOT NULL DEFAULT '',
 	template	INT				NOT NULL REFERENCES reporter.template (id) DEFERRABLE INITIALLY DEFERRED,
 	data		TEXT				NOT NULL,
 	folder		INT				NOT NULL REFERENCES reporter.report_folder (id),

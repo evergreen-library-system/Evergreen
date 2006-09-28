@@ -11,7 +11,7 @@ my $report = {
 			alias	=> '::PARAM4',
 		},
 		{	relation=> 'circ-checkin_lib-aou',
-			column	=> { colname => 'shortname', transform => 'substring', params => [ 1, 4 ] },
+			column	=> { colname => 'shortname', transform => 'Bare'},
 			alias	=> 'Library Short Name',
 		},
 		{	relation=> 'circ-circ_staff-au-card-ac',
@@ -59,7 +59,7 @@ my $report = {
 	having => [
 		{	relation	=> 'circ',
 			column		=> { transform => count => colname => 'id' },
-			condition	=> { '>' => '::PARAM5' },
+			condition	=> { 'between' => '::PARAM5' },
 		},
 	],
 	order_by => [
@@ -68,7 +68,7 @@ my $report = {
 			direction => 'descending',
 		},
 		{	relation=> 'circ-checkin_lib-aou',
-			column	=> { colname => 'shortname', transform => 'substring', params => [ 1, 4 ] },
+			column	=> { colname => 'shortname', transform => 'Bare' },
 		},
 		{	relation=> 'circ',
 			column	=> { transform => month_trunc => colname => 'checkin_time' },
@@ -78,21 +78,22 @@ my $report = {
 			column	=> 'barcode',
 		},
 	],
-
 };
 
 my $params = {
 	PARAM1 => [ 18, 19, 20, 21, 22, 23 ],
-	PARAM2 => ['2006-07','2006-08','2006-09'],
+	#PARAM2 => ['2006-07','2006-08','2006-09'],
+	PARAM2 => [{transform => 'relative_month', params => [-2]},{transform => 'relative_month', params => [-3]}],
 	PARAM3 => 'Circ Count',
 	PARAM4 => 'Checkin Date',
-	PARAM5 => 100,
+	PARAM5 => [{ transform => 'Bare', params => [10] },{ transform => 'Bare', params => [100] }],
+	PARAM6 => [ 1, 4 ],
 };
 
 my $r = OpenILS::Reporter::SQLBuilder->new;
 
 $r->register_params( $params );
-$r->parse_report( $report );
+my $rs = $r->parse_report( $report );
 
-print $r->toSQL;
+print $rs->toSQL;
 
