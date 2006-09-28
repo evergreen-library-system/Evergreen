@@ -65,6 +65,10 @@ sub import {
 				{ virtual => ($idl->{$c}{fields}{field}{$f}{'oils_persist:virtual'} eq 'true') ? 1 : 0,
 				  position => $idl->{$c}{fields}{field}{$f}{'oils_obj:array_position'},
 				};
+
+			if ($idl->{$c}{fields}{field}{$f}{'reporter:selector'}) {
+				$$fieldmap{$n}{selector} = $idl->{$c}{fields}{field}{$f}{'reporter:selector'};
+			}
 		}
 	}
 
@@ -153,19 +157,24 @@ sub AUTOLOAD {
 	return $obj->$field($value);
 }
 
+sub Selector {
+	my $self = shift;
+	return $$fieldmap{$self->class_name}{selector};
+}
+
 sub Identity {
-	my $class_name = shift;
-	return $$fieldmap{$class_name}{identity};
+	my $self = shift;
+	return $$fieldmap{$self->class_name}{identity};
 }
 
 sub Sequence {
-	my $class_name = shift;
-	return $$fieldmap{$class_name}{sequence};
+	my $self = shift;
+	return $$fieldmap{$self->class_name}{sequence};
 }
 
 sub Table {
-	my $class_name = shift;
-	return $$fieldmap{$class_name}{table};
+	my $self = shift;
+	return $$fieldmap{$self->class_name}{table};
 }
 
 sub class_name {
