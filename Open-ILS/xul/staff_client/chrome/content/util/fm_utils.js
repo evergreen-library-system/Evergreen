@@ -3,7 +3,7 @@ dump('entering util/fm_utils.js\n');
 if (typeof util == 'undefined') var util = {};
 util.fm_utils = {};
 
-util.fm_utils.EXPORT_OK	= [ 'flatten_ou_branch', 'find_ou', 'compare_aou_a_is_b_or_ancestor', 'sort_func_aou_by_depth_and_then_string' ];
+util.fm_utils.EXPORT_OK	= [ 'flatten_ou_branch', 'find_ou', 'compare_aou_a_is_b_or_ancestor', 'sort_func_aou_by_depth_and_then_string', 'find_common_aou_ancestor', 'find_common_aou_ancestors' ];
 util.fm_utils.EXPORT_TAGS	= { ':all' : util.fm_utils.EXPORT_OK };
 
 util.fm_utils.flatten_ou_branch = function(branch) {
@@ -65,3 +65,83 @@ util.fm_utils.sort_func_aou_by_depth_and_then_string = function(a,b) {
 		return 0;
 	}
 }
+
+util.fm_utils.find_common_aou_ancestor = function(orgs) {
+	try {
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+		var candidates = {};
+		for (var i = 0; i < orgs.length; i++) {
+
+			var node = orgs[i]; 
+
+			while (node) {
+
+				if (typeof node != 'object') node = data.hash.aou[ node ];
+				if (!node) continue;
+
+				if ( candidates[node.id()] ) {
+
+					candidates[node.id()]++;
+					
+				} else {
+
+					candidates[node.id()] = 1;
+				}
+
+				if (candidates[node.id()] == orgs.length) return node;
+
+				node = node.parent_ou();
+			}
+
+		}
+
+		return null;
+
+	} catch(E) {
+		alert('error in util.fm_utils.find_common_aou_ancestor: ' + E);
+		return null;
+	}
+}
+
+util.fm_utils.find_common_aou_ancestors = function(orgs) {
+	try {
+		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+		var candidates = {}; var winners = [];
+		for (var i = 0; i < orgs.length; i++) {
+
+			var node = orgs[i]; 
+
+			while (node) {
+
+				if (typeof node != 'object') node = data.hash.aou[ node ];
+				if (!node) continue;
+
+				if ( candidates[node.id()] ) {
+
+					candidates[node.id()]++;
+					
+				} else {
+
+					candidates[node.id()] = 1;
+				}
+
+				node = node.parent_ou();
+			}
+
+		}
+
+		for (var i in candidates) {
+
+			if (candidates[i] == orgs.length) winners.push( i );
+		}
+
+		return winners;
+
+	} catch(E) {
+		alert('error in util.fm_utils.find_common_aou_ancestors: ' + E);
+		return [];
+	}
+}
+

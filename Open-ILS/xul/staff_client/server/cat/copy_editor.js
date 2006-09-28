@@ -393,7 +393,9 @@ g.populate_alert_message_input = function(tb) {
 g.get_acpl_list = function() {
 	try {
 
-		function get(lib_id) {
+		JSAN.use('util.functional');
+
+		function get(lib_id,only_these) {
 			g.data.stash_retrieve();
 			var label = 'acpl_list_for_lib_'+lib_id;
 			if (typeof g.data[label] == 'undefined') {
@@ -406,28 +408,37 @@ g.get_acpl_list = function() {
 						g.data.hash.acpl[ my_acpl.id() ] = my_acpl;
 						g.data.list.acpl.push( my_acpl );
 					}
-					temp_list.push( my_acpl );
+					if (only_these.indexOf( String( my_acpl.owning_lib() ) ) != -1) {
+						temp_list.push( my_acpl );
+					}
 				}
 				g.data[label] = temp_list; g.data.stash(label,'hash','list');
 			}
 			return g.data[label];
 		}
 
-		var seen = {}; seen[ g.data.list.au[0].ws_ou() ] = true;
-		var list = get( g.data.list.au[0].ws_ou() ); //g.data.list.acpl;
+		var libs = []; var map_acn = {};
 		for (var i = 0; i < g.copies.length; i++) {
 			var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
-				var my_acn = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
-				var lib = my_acn.owning_lib();
-				if ( typeof seen[lib] == 'undefined' ) {
-					seen[lib] = true;
-					var r = get(my_acn.owning_lib());
-					list = list.concat( r );
+				if (! map_acn[ cn_id ]) {
+					map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+					libs.push( map_acn[ cn_id ].owning_lib() );
 				}
-			} 
+			}
 		}
-		return list;
+		JSAN.use('util.fm_utils');
+		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
+		if (typeof ancestor == 'object') ancestor = ancestor.id();
+
+		var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
+
+		if (ancestor) {
+			return get(ancestor, ancestors);
+		} else {
+			return [];
+		}
+
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('get_acpl_list',E);
 		return list;
