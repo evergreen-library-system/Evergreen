@@ -705,6 +705,7 @@ sub fetch_callnumber {
 my %ORG_CACHE; # - these rarely change, so cache them..
 sub fetch_org_unit {
 	my( $self, $id ) = @_;
+	return undef unless $id;
 	return $id if( ref($id) eq 'Fieldmapper::actor::org_unit' );
 	return $ORG_CACHE{$id} if $ORG_CACHE{$id};
 	$logger->debug("Fetching org unit $id");

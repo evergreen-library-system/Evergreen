@@ -40,8 +40,12 @@ sub retrieve_visible_folders {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
 
+	my $class = 'rrf';
+	$class = 'rtf' if $type eq 'template';
+	my $flesh = {flesh => 1,flesh_fields => { $class => ['owner', 'share_with']}};
+
 	my $meth = "search_reporter_${type}_folder";
-	my $fs = $e->$meth( { owner => $e->requestor->id } );
+	my $fs = $e->$meth( [{ owner => $e->requestor->id }, $flesh] );
 
 	my @orgs;
 	my $oid = $e->requestor->ws_ou; 
@@ -51,7 +55,7 @@ sub retrieve_visible_folders {
 		$oid = $o->parent_ou;
 	}
 
-	my $fs2 = $e->$meth({shared => 't', share_with => \@orgs});
+	my $fs2 = $e->$meth([{shared => 't', share_with => \@orgs}, $flesh]);
 	push( @$fs, @$fs2);
 	return $fs;
 }
@@ -69,7 +73,10 @@ sub retrieve_folder_data {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
 	my $meth = "search_reporter_${type}";
-	return $e->$meth( { folder => $folderid } );
+	my $class = 'rr';
+	$class = 'rt' if $type eq 'template';
+	my $flesh = {flesh => 1,flesh_fields => { $class => ['owner']}};
+	return $e->$meth([{ folder => $folderid }, $flesh]); 
 }
 
 
