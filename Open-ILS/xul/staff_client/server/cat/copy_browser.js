@@ -836,25 +836,59 @@ cat.copy_browser.prototype = {
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
 
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-			obj.show_libs( org );
+			//obj.show_libs( org );
 
-			obj.show_my_libs();
+			//obj.show_my_libs();
+
+			JSAN.use('util.file'); JSAN.use('util.widgets');
+
+			var file; var list_data; var ml; 
+
+			file = new util.file('offline_ou_list'); 
+			if (file._file.exists()) {
+				list_data = file.get_object(); file.close();
+				ml = util.widgets.make_menulist( list_data[0], list_data[1] );
+				ml.setAttribute('id','lib_menu'); document.getElementById('x_lib_menu').appendChild(ml);
+				for (var i = 0; i < obj.org_ids.length; i++) {
+					ml.getElementsByAttribute('value',obj.org_ids[i])[0].setAttribute('class','has_copies');
+				}
+				ml.addEventListener(
+					'command',
+					function(ev) {
+						//obj.show_my_libs(ev.target.value);
+						obj.refresh_list();
+					},
+					false
+				);
+			} else {
+				throw('Missing library list.\n');
+			}
+
+			obj.show_my_libs( list_data[1] );
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
 		}
 	},
 
-	'show_my_libs' : function() {
+	'show_my_libs' : function(org) {
 		var obj = this;
 		try {
-			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+			if (!org) {
+				org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
+			} else {
+				if (typeof org != 'object') org = obj.data.hash.aou[ org ];
+			}
 			obj.show_libs( org, true );
 		
 			var p_org = obj.data.hash.aou[ org.parent_ou() ];
 			if (p_org) {
 				JSAN.use('util.exec'); var exec = new util.exec();
 				var funcs = [];
+				funcs.push( function() { 
+					document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+					document.getElementById('lib_menu').setAttribute('disabled','true'); 
+				} );
 				for (var i = 0; i < p_org.children().length; i++) {
 					funcs.push(
 						function(o) {
@@ -864,6 +898,10 @@ cat.copy_browser.prototype = {
 						}( p_org.children()[i] )
 					);
 				}
+				funcs.push( function() { 
+					document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+					document.getElementById('lib_menu').setAttribute('disabled','false'); 
+				} );
 				exec.chain( funcs );
 			}
 		} catch(E) {
@@ -1457,9 +1495,11 @@ cat.copy_browser.prototype = {
 			obj.map_acn = {};
 			obj.map_acp = {};
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			/*
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			obj.show_libs( org );
-			obj.show_my_libs();
+			*/
+			obj.show_my_libs( document.getElementById('lib_menu').value );
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Problem refreshing the volume/copy tree.',E);
 		}

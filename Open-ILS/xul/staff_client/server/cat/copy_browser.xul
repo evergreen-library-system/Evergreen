@@ -7,6 +7,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -123,10 +124,14 @@
 	<groupbox flex="1">
 		<caption label="Holdings Maintenance"/>
 		<hbox>
-			<!--<button label="Clear" command="cmd_clear" accesskey="C"/>-->
+			<hbox id="x_lib_menu"/>
+			<button label="Refresh" command="cmd_refresh_list" />
+			<!-- <button label="Clear" command="cmd_clear" accesskey="C"/> -->
 			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
+			<!--
 			<button label="Show Libs With Items" command="cmd_show_libs_with_copies" accesskey="L"/>
 			<button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
+			-->
 			<spacer flex="1"/>
 			<menubar>
 				<menu label="Actions for Selected Rows" accesskey="f">
