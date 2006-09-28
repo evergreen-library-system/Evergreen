@@ -58,7 +58,10 @@ sub parse_report {
 		->set_from( $report->{from} )
 		->set_where( $report->{where} )
 		->set_having( $report->{having} )
-		->set_order_by( $report->{order_by} );
+		->set_order_by( $report->{order_by} )
+		->set_pivot_data( $report->{pivot_data} )
+		->set_pivot_label( $report->{pivot_label} )
+		->set_pivot_default( $report->{pivot_default} );
 
 	return $rs;
 }
@@ -73,6 +76,42 @@ sub is_subquery {
 	my $flag = shift;
 	$self->{_is_subquery} = $flag if (defined $flag);
 	return $self->{_is_subquery};
+}
+
+sub pivot_data {
+	my $self = shift;
+	return $self->{_pivot_data};
+}
+
+sub pivot_label {
+	my $self = shift;
+	return $self->{_pivot_label};
+}
+
+sub pivot_default {
+	my $self = shift;
+	return $self->{_pivot_label};
+}
+
+sub set_pivot_default {
+	my $self = shift;
+	my $p = shift;
+	$self->{_pivot_default} = $p if (defined $p);
+	return $self;
+}
+
+sub set_pivot_data {
+	my $self = shift;
+	my $p = shift;
+	$self->{_pivot_data} = $p if (defined $p);
+	return $self;
+}
+
+sub set_pivot_label {
+	my $self = shift;
+	my $p = shift;
+	$self->{_pivot_label} = $p if (defined $p);
+	return $self;
 }
 
 sub set_subquery_alias {
@@ -147,6 +186,29 @@ sub set_order_by {
 	return $self;
 }
 
+sub column_label_list {
+	my $self = shift;
+
+	my @labels;
+	push @labels, $self->resolve_param( $_->{_alias} ) for ( @{ $self->{_select} } );
+	return @labels;
+}
+
+sub group_by_list {
+	my $self = shift;
+	my $base = shift;
+	$base = 1 unless (defined $base);
+
+	my $gcount = $base;
+	my @group_by;
+	for my $c ( @{ $self->{_select} } ) {
+		push @group_by, $gcount if (!$c->is_aggregate);
+		$gcount++;
+	}
+
+	return @group_by;
+}
+
 sub toSQL {
 	my $self = shift;
 
@@ -162,12 +224,7 @@ sub toSQL {
 	$sql .= "  FROM\t" . $self->{_from}->toSQL . "\n" if ($self->{_from});
 	$sql .= "  WHERE\t" . join("\n\tAND ", map { $_->toSQL } @{ $self->{_where} }) . "\n" if (@{ $self->{_where} });
 
-	my $gcount = 1;
-	my @group_by;
-	for my $c ( @{ $self->{_select} } ) {
-		push @group_by, $gcount if (!$c->is_aggregate);
-		$gcount++;
-	}
+	my @group_by = $self->group_by_list;
 
 	$sql .= '  GROUP BY ' . join(', ', @group_by) . "\n" if (@group_by);
 	$sql .= "  HAVING " . join("\n\tAND ", map { $_->toSQL } @{ $self->{_having} }) . "\n" if (@{ $self->{_having} });

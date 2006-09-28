@@ -95,5 +95,6 @@ my $r = OpenILS::Reporter::SQLBuilder->new;
 $r->register_params( $params );
 my $rs = $r->parse_report( $report );
 
+print "Column Labels: " . join(', ', $rs->column_label_list) . "\n";
 print $rs->toSQL;
 

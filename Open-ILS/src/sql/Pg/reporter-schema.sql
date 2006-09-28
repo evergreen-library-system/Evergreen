@@ -77,6 +77,9 @@ CREATE TABLE reporter.schedule (
 	excel_format	BOOL				NOT NULL DEFAULT TRUE,
 	html_format	BOOL				NOT NULL DEFAULT TRUE,
 	csv_format	BOOL				NOT NULL DEFAULT TRUE,
+	chart_pie	BOOL				NOT NULL DEFAULT FALSE,
+	chart_bar	BOOL				NOT NULL DEFAULT FALSE,
+	chart_line	BOOL				NOT NULL DEFAULT FALSE,
 	error_code	INT,
 	error_text	TEXT
 );

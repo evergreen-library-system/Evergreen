@@ -2183,10 +2183,13 @@
 			<field name="excel_format" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="csv_format" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field name="html_format" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="error_code" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field name="error_code" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field name="error_text" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="report" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field name="folder" oils_obj:array_position="15" oils_persist:virtual="false" />
+			<field name="chart_pie" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field name="chart_bar" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field name="chart_line" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="runner" reltype="has_a" key="id" map="" class="au"/>
