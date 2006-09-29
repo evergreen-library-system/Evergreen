@@ -62,6 +62,14 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 }
 
 
+/* and so does OCRL */
+
+if( isOrgDescendent('OCRL', copy.circ_lib.id) && copy.circ_modifier == 'VIDEO') {
+	result.durationRule		= '7_days_0_renew';
+	result.recurringFinesRule	= '10_cent_per_day';
+}
+
+
 checkDurationExceptions();
 
 log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + result.maxFine );
