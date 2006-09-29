@@ -247,3 +247,7 @@ button {
 #oils_rpt_folder_window_contents_table td {
 	text-align: center;
 }
+
+#oils_rpt_editor_div {
+	width: 100%;
+}

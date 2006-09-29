@@ -32,8 +32,8 @@ oilsRptFolderWindow.prototype.init2 = function(node, type) {
 oilsRptFolderWindow.prototype.draw = function() {
 
 	hideMe(DOM.oils_rpt_template_folder_new_report);
-	hideMe(DOM.oils_rpt_param_editor_div);
 	unHideMe(DOM.oils_rpt_folder_table_right_td);
+	hideMe(DOM.oils_rpt_folder_table_alt_td);
 	this.drawFolderDetails();
 
 	var obj = this;
@@ -53,6 +53,17 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 oilsRptFolderWindow.prototype.doFolderAction = function() {
 	var objs = this.fmTable.getSelected();
+	if( objs.length == 0 ) 
+		return alert('Please select an item from the list');
+	var action = getSelectorVal(DOM.oils_rpt_folder_contents_action_selector);
+
+	switch(action) {
+		case 'create_report' :
+			hideMe(DOM.oils_rpt_folder_table_right_td);
+			unHideMe(DOM.oils_rpt_folder_table_alt_td);
+			new oilsRptReportEditor(new oilsReport(objs[0]));
+			break;
+	}
 }
 
 

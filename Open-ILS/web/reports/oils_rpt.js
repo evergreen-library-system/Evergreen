@@ -67,7 +67,6 @@ oilsReport.prototype.gatherParams = function() {
 	_debug("we have params: " + js2JSON(this.params));
 
 	var params	= [];
-	this._gatherParams(params, this.def.select, 'select', 'alias');
 	this._gatherParams(params, this.def.where, 'where', 'condition');
 	this._gatherParams(params, this.def.having, 'having', 'condition');
 	return params;

@@ -21,22 +21,54 @@ function oilsRptFolderManager() {
 }
 
 oilsRptFolderManager.prototype.draw = function(auth) {
-	oilsRptTemplateFolderTree = new SlimTree(DOM.oils_rpt_template_folder_tree, 'oilsRptTemplateFolderTree');
+
+	oilsRptTemplateFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_template_folder_tree, 
+			'oilsRptTemplateFolderTree');
+			//'images/template-page.gif');
+
 	oilsRptTemplateFolderTree.addNode(this.tId, -1, 'Templates')
 
-	oilsRptReportFolderTree = new SlimTree(DOM.oils_rpt_report_folder_tree, 'oilsRptReportFolderTree');
+	oilsRptReportFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_report_folder_tree, 
+			'oilsRptReportFolderTree');
+			//'images/report-page.gif');
+
 	oilsRptReportFolderTree.addNode(this.rId, -1, 'Reports')
 
-	oilsRptOutputFolderTree = new SlimTree(DOM.oils_rpt_output_folder_tree, 'oilsRptOutputFolderTree');
+
+	oilsRptOutputFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_output_folder_tree, 
+			'oilsRptOutputFolderTree');
+			//'images/output-page.gif');
+
 	oilsRptOutputFolderTree.addNode(this.oId, -1, 'Output')
 
-	oilsRptSharedTemplateFolderTree = new SlimTree(DOM.oils_rpt_template_shared_folder_tree, 'oilsRptSharedTemplateFolderTree');
+	oilsRptSharedTemplateFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_template_shared_folder_tree, 
+			'oilsRptSharedTemplateFolderTree');
+			//'images/template-page.gif');
+
 	oilsRptSharedTemplateFolderTree.addNode(this.stId, -1, 'Templates')
 
-	oilsRptSharedReportFolderTree = new SlimTree(DOM.oils_rpt_report_shared_folder_tree, 'oilsRptSharedReportFolderTree');
+	oilsRptSharedReportFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_report_shared_folder_tree, 
+			'oilsRptSharedReportFolderTree');
+			//'images/report-page.gif');
+
 	oilsRptSharedReportFolderTree.addNode(this.srId, -1, 'Reports')
 
-	oilsRptSharedOutputFolderTree = new SlimTree(DOM.oils_rpt_output_shared_folder_tree, 'oilsRptSharedOutputFolderTree');
+	oilsRptSharedOutputFolderTree = 
+		new SlimTree(
+			DOM.oils_rpt_output_shared_folder_tree, 
+			'oilsRptSharedOutputFolderTree');
+			//'images/output-page.gif');
+
 	oilsRptSharedOutputFolderTree.addNode(this.soId, -1, 'Output')
 
 	this.fetchFolders(auth);
@@ -88,7 +120,6 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 	for( var i = 0; i < folders.length; i++ ) {
 
 		var folder = folders[i];
-		_debug(js2JSON(folder));
 		var mine = (folder.owner().id() == USER.id());
 		var pid;
 		var treename;
@@ -128,6 +159,10 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 				}
 		}
 
+		if( folder.parent() ) 
+			pid = this.findNode(type, folder.parent()).treeId;
+
+
 		if(!mine) {
 			if(!this.orgTrail[type][folder.share_with().id()]) {
 				tree.addNode(id, pid, folder.share_with().shortname());
@@ -141,9 +176,6 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 			}
 		}
 
-		if( folder.parent() ) 
-			pid = this.findNode(type, folder.parent()).treeId;
-
 		var action = 'javascript:oilsRptObject.find('+
 			node.folderWindow.id+').draw();'+treename+'.toggle("'+id+'");';
 		_debug('adding node '+folder.name()+' pid = '+pid);
@@ -153,49 +185,7 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 }
 
 
-/*
-oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
-	this.folderTree[type] = { children : [] };
-	this.makeTree(type, folders, this.folderTree[type], -1 );
-}
-oilsRptFolderManager.prototype.makeTree = function(type, folders, node, parentId, tree) {
-	if(!node) return;
-	var id = parentId;
-	var childNodes;
-
-	if( ! node.folder ) {
-		childNodes = grep(folders, function(f){return (!f.parent())});
-
-	} else {
-		_debug("making subtree with folder "+node.folder.name());
-
-		var c = oilsRptFolderNodeCache;
-		if(!c[type]) c[type] = {};
-		c[type][node.folder.id()] = node;
-
-		id = oilsNextId();
-
-		node.folderWindow = oilsRptBuildFolderWindow(type, node.folder.id());
-
-		var action = 'javascript:oilsRptObject.find('+node.folderWindow.id+').draw();'+
-			'oilsRptFolderTree.toggle("'+id+'");';
-
-		oilsRptFolderTree.addNode(id, parentId, node.folder.name(), action);
-		node.treeId = id;
-		node.children = [];
-		childNodes = grep(folders, 
-			function(i){return (i.parent() == node.folder.id())});
-	} 
-
-	if(!childNodes) return;
-	for( var i = 0; i < childNodes.length; i++ ) 
-		this.makeTree( type, folders, { folder : childNodes[i] }, id );
-}
-*/
-
-
 oilsRptFolderManager.prototype.findNode = function(type, id) {
-		_debug('finding : type = ' + type + ' : ' + id);
 	return oilsRptFolderNodeCache[type][id];
 }
 
