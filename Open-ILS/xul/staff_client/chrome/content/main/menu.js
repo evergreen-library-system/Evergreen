@@ -637,6 +637,8 @@ main.menu.prototype = {
 	'close_tab' : function () {
 		var idx = this.controller.view.tabs.selectedIndex;
 		var tab = this.controller.view.tabs.childNodes[idx];
+		var panel = this.controller.view.panels.childNodes[ idx ];
+		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 		tab.setAttribute('label','Tab ' + (idx+1));
 		if (idx == 0) {
 			try {
