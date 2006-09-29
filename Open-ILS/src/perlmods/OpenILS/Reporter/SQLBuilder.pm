@@ -35,12 +35,15 @@ sub resolve_param {
 	my $self = shift;
 	my $val = shift;
 
-	if ($val =~ /^::(.+)$/o) {
+	if (defined($val) && $val =~ /^::(.+)$/o) {
 		$val = $self->get_param($1);
 	}
 
-	$val =~ s/\\/\\\\/go if (!ref($val));
-	$val =~ s/"/\\"/go if (!ref($val));
+	if (defined($val) && !ref($val)) {
+		$val =~ s/\\/\\\\/go;
+		$val =~ s/"/\\"/go;
+	}
+
 	return $val;
 }
 
@@ -257,10 +260,13 @@ sub new {
 		} else {
 			$self->{_transform} = 'GenericTransform';
 		}
-	} else {
+	} elsif( defined($col_data) ) {
 		$self->{_transform} = 'Bare';
 		$self->{params} = $col_data;
+	} else {
+		$self->{_transform} = 'NULL';
 	}
+
 
 
 	return $self;
@@ -272,6 +278,14 @@ sub toSQL {
 	return $self->{_sql} if ($self->{_sql});
 	my $toSQL = "OpenILS::Reporter::SQLBuilder::Input::Transform::${type}::toSQL";
 	return $self->{_sql} = $self->$toSQL;
+}
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Input::Transform::NULL;
+
+sub toSQL {
+	return "NULL";
 }
 
 
@@ -378,8 +392,10 @@ sub new {
 		} else {
 			$self->{_transform} = 'GenericTransform';
 		}
-	} else {
+	} elsif( defined($self->{_column}) ) {
 		$self->{_transform} = 'Bare';
+	} else {
+		$self->{_transform} = 'NULL';
 	}
 
 

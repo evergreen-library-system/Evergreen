@@ -22,6 +22,10 @@ my $report = {
 			column	=> { transform => count => colname => 'id' },
 			alias	=> '::PARAM3',
 		},
+		{	relation=> 'circ-id-mb',
+			column	=> { transform => sum => colname => 'amount' },
+			alias	=> 'total bills',
+		},
 	],
 	from => {
 		table	=> 'action.circulation',
@@ -44,6 +48,11 @@ my $report = {
 				alias	=> 'circ-checkin_lib-aou',
 				key	=> 'id',
 			},
+			'id-billings' => {
+				table	=> 'money.billing',
+				alias	=> 'circ-id-mb',
+				key	=> 'xact',
+			},
 		},
 	},
 	where => [
@@ -54,6 +63,10 @@ my $report = {
 		{	relation	=> 'circ',
 			column		=> { transform => month_trunc => colname => 'checkin_time' },
 			condition	=> { 'in' => '::PARAM2' },
+		},
+		{	relation	=> 'circ-id-mb',
+			column		=> 'voided',
+			condition	=> { '=' => '::PARAM7' },
 		},
 	],
 	having => [
@@ -88,6 +101,7 @@ my $params = {
 	PARAM4 => 'Checkin Date',
 	PARAM5 => [{ transform => 'Bare', params => [10] },{ transform => 'Bare', params => [100] }],
 	PARAM6 => [ 1, 4 ],
+	PARAM7 => 'f',
 };
 
 my $r = OpenILS::Reporter::SQLBuilder->new;
