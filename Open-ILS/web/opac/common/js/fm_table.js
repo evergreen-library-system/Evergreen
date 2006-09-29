@@ -109,11 +109,24 @@ FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 	for( var i = 0; i < this.keys.length; i++ ) {
 		var td = elem('td');	
 		var data = obj[this.keys[i]]();
+		data = this.munge(data);
 		this.fleshData(td, data, this.keys[i]);
 		row.appendChild(td);
 	}
 	this.tbody.appendChild(row);
 }
+
+FMObjectBuilder.prototype.munge = function(data) {
+	if(!data) return;
+	if(typeof data == 'string') {
+		if( data.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/) ) {
+			data = data.replace(/T/,' ');
+			data = data.replace(/:\d{2}-.*/,'');
+		}
+	}
+	return data;
+}
+
 
 FMObjectBuilder.prototype.dataName = function(data) {
 	var name;
