@@ -122,6 +122,7 @@ function oilsRptBuildFromClause(path) {
 			contains relevant info, plus a list of "fields",
 			or column objects */
 		var node = oilsIDL[cls];
+		var pkey = oilsRptFindField(node.pkey);
 
 		/* a "field" is a parsed version of a column from the IDL,
 			contains datatype, column name, etc. */
@@ -138,14 +139,19 @@ function oilsRptBuildFromClause(path) {
 		if( i == (parts.length - 2) ) break;
 
 		/* we still have columns left in the path, keep adding join's */
+		var path_col = col;
+		if(field.reltype != 'has_a')
+			col = pkey.name + '-' + col;
+
 		tobj.join = {};
 		tobj = tobj.join;
+
 		tobj[col] = {};
 		tobj = tobj[col];
 		if( field.type == 'link' )
 			tobj.key = field.key;
 
-		newpath = newpath + '-'+ col;
+		newpath = newpath + '-'+ path_col;
 	}
 
 	_debug("built 'from' clause: path="+path+"\n"+formatJSON(js2JSON(obj)));

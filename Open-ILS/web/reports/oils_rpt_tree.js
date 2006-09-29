@@ -34,13 +34,15 @@ function oilsParseRptTree(IDL, callback) {
 	for( var i = 0; i < classes.length; i++ ) {
 		var node = classes[i];
 		var id = node.getAttribute('id');
+		var fields = node.getElementsByTagName('fields')[0];
 
 		var obj = { 
 			fields	: oilsRptParseFields(node),
 			name		: node.getAttribute('id'),
 			table		: node.getAttributeNS(oilsIDLPersistNS, 'tablename'),
 			core		: node.getAttributeNS(oilsIDLReportsNS, 'core'),
-			label		: node.getAttributeNS(oilsIDLReportsNS, 'label')
+			label		: node.getAttributeNS(oilsIDLReportsNS, 'label'),
+			pkey		: fields.getAttributeNS(oilsIDLPersistNS, 'primary')
 		};
 
 		if( obj.core == 'true' ) obj.core = true;
@@ -91,7 +93,6 @@ function oilsRptParseFields( node ) {
 			obj.key = link.getAttribute('key');
 			obj['class'] = link.getAttribute('class');
 			obj.reltype = link.getAttribute('reltype');
-			if( obj.reltype == 'might_have' ) continue;
 		} else {
 			if( fields[i].getAttributeNS(oilsIDLPersistNS, 'virtual') == 'true' ) 
 				continue;
