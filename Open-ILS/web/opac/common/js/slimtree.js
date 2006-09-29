@@ -55,15 +55,22 @@ SlimTree.prototype.addNode = function( id, pid, name, action, title, cls ) {
 	if(!action)
 		action='javascript:'+this.handle+'.toggle("'+id+'");';
 
+	var actionref;
+	if( typeof action == 'string' )
+		actionref = elem('a',{href:action}, name);
+	else {
+		actionref = elem('a',{href:'javascript:void(0);'}, name);
+		actionref.onclick = action;
+	}
+
 	var div			= elem('div',{id:id});
 	var topdiv		= elem('div',{style:'vertical-align:middle'});
 	var link			= elem('a', {id:'stlink_' + id}); 
-	var actionref	= elem('a',{href:action}, name);
 	var contdiv		= elem('div',{id:'stcont_' + id});
 
 	if(cls) addCSSClass(actionref, cls);
 
-	actionref.setAttribute('href',action);
+	//actionref.setAttribute('href',action);
 	if(title) actionref.setAttribute('title',title);
 	else actionref.setAttribute('title',name);
 
@@ -126,6 +133,7 @@ SlimTree.prototype.toggle = function(id) {
 SlimTree.prototype.open = function(id) {
 	if($(id).getAttribute('ostate') == '2') return;
 	var link = $('stlink_' + id);
+	if(!link) return;
 	if(id != this.rootid || !this.rootimg) {
 		removeChildren(link);
 		_apc(link,stimgclose.cloneNode(true));
@@ -137,6 +145,7 @@ SlimTree.prototype.open = function(id) {
 
 SlimTree.prototype.close = function(id) {
 	var link = $('stlink_' + id);
+	if(!link) return;
 	if(id != this.rootid || !this.rootimg) {
 		removeChildren(link);
 		_apc(link,stimgopen.cloneNode(true));
