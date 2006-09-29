@@ -174,6 +174,40 @@ oilsRptRemoteWidget.prototype.setFetch = function(func) {
 }
 
 
+/* --------------------------------------------------------------------- */
+
+/* standalone org widget */
+function oilsRptMyOrgsWidget(node, orgid) {
+	this.node = node;
+	this.orgid = orgid;
+}
+
+oilsRptMyOrgsWidget.prototype.draw = function() {
+	var req = new Request(OILS_RPT_FETCH_ORG_FULL_PATH, this.orgid);
+	var obj = this;
+	req.callback(
+		function(r) { obj.drawWidget(r.getResultObject()); }
+	);
+	req.send();
+}
+
+oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
+	var sel = this.node;
+	_debug('here');
+	for( var i = 0; i < orglist.length; i++ ) {
+		var org = orglist[i];
+		_debug('here + ' + org.shortname());
+		var opt = insertSelectorVal( this.node, -1, 
+			org.name(), org.id(), null, findOrgDepth(org) );
+		if( org.id() == this.orgid )
+			opt.selected = true;
+	}
+}
+
+oilsRptMyOrgsWidget.prototype.getValue = function() {
+	return getSelectorVal(this.node);
+}
+
 
 
 

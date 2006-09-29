@@ -5,6 +5,9 @@ table { border-collapse: collapse; }
 .welcome_box { position:absolute; top: 5px; right: 5px; }
 
 
+/* override some slimtree settings */
+.fm_table thead tr { background: #F0F0F0; }
+
 .oils_rpt_main_link {
 	padding: 5px;
 	font-size: 10pt;
@@ -174,7 +177,7 @@ button {
 
 .oils_rpt_folder_window {
 	border: 1px solid blue; 
-	background: #E0F0F0; 
+	background: #E6F0F0; 
 	text-align: left;
 }
 
@@ -185,6 +188,7 @@ button {
 
 #oils_rpt_folder_window_contents_div {
 	width: 100%;
+	margin-top: 15px;
 }
 
 .oils_rpt_param_table thead td {
@@ -216,6 +220,9 @@ button {
 
 #oils_rpt_param_editor_table {
 	width: 100%;
+}
+
+#oils_rpt_param_editor_table td {
 	border: 1px solid #808080;
 }
 
@@ -251,3 +258,16 @@ button {
 #oils_rpt_editor_div {
 	width: 100%;
 }
+
+
+
+.oils_rpt_table_row_borders { width: 100%; }
+.oils_rpt_table_row_borders tr { border: 1px solid #808080; }
+.oils_rpt_table_row_borders td { padding: 5px; }
+
+.oils_rpt_generic_table { width: 100%; }
+.oils_rpt_generic_table td { border: 1px solid #808080; padding: 5px; }
+
+
+
+

@@ -14,6 +14,7 @@ function oilsRptNextParam() {
 }
 
 
+/*
 function oilsRptCacheObject(obj) {
 	var id = oilsNextId();
 	oilsRptObjectCache[id] = obj;
@@ -23,6 +24,7 @@ function oilsRptCacheObject(obj) {
 function oilsRptFindObject(id) {
 	return oilsRptObjectCache[id];
 }
+*/
 
 function oilsRptCacheObject(type, obj, id) {
 	if( !oilsRptObjectCache[type] )
@@ -73,6 +75,23 @@ function oilsRptPathRel(path) {
 	parts.pop();
 	return parts.join('-');
 }
+
+/* creates a label "path" based on the column path */
+function oilsRptMakeLabel(path) {
+	var parts = path.split(/-/);
+	var str = '';
+	for( var i = 0; i < parts.length; i++ ) {
+		if(i%2 == 0) {
+			if( i == 0 )
+				str += oilsIDL[parts[i]].label;
+		} else {
+			var f = oilsRptFindField(oilsIDL[parts[i-1]], parts[i]);
+			str += ":"+f.label;
+		}
+	}
+	return str;
+}
+
 
 
 
@@ -204,4 +223,45 @@ function oilsRptSetSubClass(cls, parent) {
 	str += cls+'.prototype.super = '+parent+'.prototype;\n';
 	eval(str);
 }
+
+
+function oilsRptUpdateFolder(folder, type, callback) {
+
+	_debug("updating folder " + folder.id() + ' : ' + folder.name());
+
+	var req = new Request(OILS_RPT_UPDATE_FOLDER, SESSION, type, folder);
+	if( callback ) {
+		req.callback( 
+			function(r) {
+				if( r.getResultObject() == 1 )
+					callback(true);
+				else callback(false);
+			}
+		);
+		req.send();
+	} else {
+		req.send(true);
+		return req.result();
+	}
+}
+
+function oilsRptCreateFolder(folder, type, callback) {
+	_debug("creating folder "+ folder.name());
+	var req = new Request(OILS_RPT_CREATE_FOLDER, SESSION, type, folder);
+	if( callback ) {
+		req.callback( 
+			function(r) {
+				if( r.getResultObject() > 0 )
+					callback(true);
+				else callback(false);
+			}
+		);
+		req.send();
+	} else {
+		req.send(true);
+		return req.result();
+	}
+}
+
+function oilsRptAlertSuccess() { alertId('oils_rpt_generic_success'); }
 

@@ -22,8 +22,11 @@
 			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt_builder.xhtml");'>Build a New Report</a>
 		</div>
 
+		<div id='oils_rpt_tree_loading'>
+			Loading...
+		</div>
 
-		<table id='oils_rpt_folder_table'>
+		<table id='oils_rpt_folder_table' class='hide_me'>
 			<tbody>
 				<tr>
 					<td id='oils_rpt_folder_table_left_td'>
@@ -44,14 +47,12 @@
 					<td id='oils_rpt_folder_table_right_td' class='hide_me'>
 						<div class='oils_rpt_folder_window'>
 
-							<table class='oils_rpt_tab_table'><tbody>
+							<table class='oils_rpt_tab_table' id='oils_rpt_folder_manager_tab_table'><tbody>
 								<tr>
-									<td width='33%'>
+									<td width='50%'>
 										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>Manage Folder Contents</a></td>
-									<td width='33%'>
-										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Edit This Folder</a></td>
-									<td width='33%'>
-									<a id='oils_rpt_child_folders_tab' href='javascript:void(0);'>Add New Folders</a></td>
+									<td width='50%'>
+										<a id='oils_rpt_folder_window_edit_tab' href='javascript:void(0);'>Manage Folder</a></td>
 								</tr>
 							</tbody></table>
 
@@ -59,7 +60,8 @@
 								<tbody>
 									<tr>
 										<td>
-											<span><b id='oils_rpt_folder_name_label'/>: created by </span><b id='oils_rpt_folder_creator_label'/>
+											<span><b id='oils_rpt_folder_name_label'/>: 
+											created by </span> <b id='oils_rpt_folder_creator_label'/>
 										</td>
 									</tr>
 								</tbody>
@@ -67,6 +69,9 @@
 
 							<div>
 								<!--#include virtual="oils_rpt_folder_window.xhtml"-->
+							</div>
+							<div>
+								<!--#include virtual="oils_rpt_folder_manager.xhtml"-->
 							</div>
 						</div>
 					</td>
@@ -80,7 +85,10 @@
 				</tr>
 			</tbody>
 		</table>
-
+		
+		<span class='hide_me' id='oils_rpt_generic_success'>
+			Action Succeeded
+		</span>
 
 	</body>
 </html>

@@ -1,0 +1,55 @@
+<div id='oils_rpt_folder_manager_div' class='hide_me' style='margin-top: 10px; text-align: center;'>
+	<select id='oils_rpt_folder_manager_actions'>
+		<option value='change_name'>Change folder name</option>
+		<option value='create_sub_folder'>Create a new sub-folder</option>
+		<option id='oils_rpt_folder_manager_share_opt' value='share'>Share this folder</option>
+		<option id='oils_rpt_folder_manager_unshare_opt' value='unshare'>Hide (un-share) this folder</option>
+	</select>
+	<input id='oils_rpt_folder_manager_actions_submit' type='submit' value='Go'/>
+
+	<div id='oils_rpt_folder_manager_action_div' style='margin: 15px;'>
+
+		<div id='oils_rpt_folder_manager_change_name_div'>
+			Enter new name: 
+			<input id='oils_rpt_folder_manager_name_input' type='text'/>
+			<input type='submit' value='Submit' id='oils_rpt_folder_manager_change_name_submit'/>
+		</div>
+
+		<div id='oils_rpt_folder_manager_create_sub'>
+			<table class='oils_rpt_generic_table'>
+				<tbody>
+					<tr>
+						<td>Folder Name:</td>
+						<td><input id='oils_rpt_folder_manager_sub_name' type='text'/></td>
+					</tr>
+					<tr>
+						<td>Share this folder:</td>
+						<td>
+							<select id='oils_rpt_folder_manager_sub_shared'>
+								<option value='no'>Do not share</option>
+								<option value='yes'>Share</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Share with:</td>
+						<td><select id='oils_rpt_folder_manager_sub_lib_picker'/></td>
+					</tr>
+					<tr><td colspan='2' align='center'>
+						<input type='submit' value='Create Sub Folder' 
+							id='oils_rpt_folder_manager_sub_lib_create'/>
+					</td></tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<span class='hide_me' id='oils_rpt_folder_manager_change_name_confirm'>
+		Are you sure you wish to change this folder's name?
+	</span>
+	<span class='hide_me' id='oils_rpt_folder_manager_new_confirm'>
+		Are you sure you wish to create new subfolder
+	</span>
+
+</div>

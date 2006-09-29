@@ -48,23 +48,6 @@ function oilsRptBuildCalendars() {
 */
 
 
-/* creates a label "path" based on the column path */
-function oilsRptMakeLabel(path) {
-	var parts = path.split(/-/);
-	var str = '';
-	for( var i = 0; i < parts.length; i++ ) {
-		if(i%2 == 0) {
-			if( i == 0 )
-				str += oilsIDL[parts[i]].label;
-		} else {
-			var f = oilsRptFindField(oilsIDL[parts[i-1]], parts[i]);
-			str += ":"+f.label;
-		}
-	}
-	return str;
-}
-
-
 /* adds an item to the display window */
 function oilsAddRptDisplayItem(path, name, tform, params) {
 	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, path, name) ) 

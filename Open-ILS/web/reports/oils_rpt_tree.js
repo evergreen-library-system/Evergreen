@@ -2,7 +2,7 @@ var oilsIDLCache = {};
 
 /* fetchs and draws the report tree */
 function oilsDrawRptTree(callback) {
-	oilsLoadRptTree(callback);
+	oilsLoadRptTree(function(){oilsRenderRptTree(callback)});
 }
 
 /* fetches the IDL XML */
@@ -52,7 +52,8 @@ function oilsParseRptTree(IDL, callback) {
 		oilsIDL[id] = obj;
 	}
 
-	oilsRenderRptTree(callback);
+	if( callback ) callback();
+	//oilsRenderRptTree(callback);
 }
 
 /* parses the links and fields portion of the IDL */

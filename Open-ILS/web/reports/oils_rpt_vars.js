@@ -53,6 +53,9 @@ var oilsRptCurrentFilterOpManager;
 var OILS_RPT_FETCH_FOLDERS = 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
 var OILS_RPT_FETCH_FOLDER_DATA = 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';
 var OILS_RPT_FETCH_TEMPLATE = 'open-ils.reporter:open-ils.reporter.template.retrieve';
+var OILS_RPT_UPDATE_FOLDER = 'open-ils.reporter:open-ils.reporter.folder.update';
+var OILS_RPT_CREATE_FOLDER = 'open-ils.reporter:open-ils.reporter.folder.create';
+var OILS_RPT_FETCH_ORG_FULL_PATH = 'open-ils.reporter:open-ils.reporter.org_unit.full_path';
 
 var oilsRptCurrentFolderManager;
 
