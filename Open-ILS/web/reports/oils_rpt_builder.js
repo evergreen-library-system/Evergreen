@@ -55,28 +55,19 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 
 	/* add the selected columns to the report output */
 	name = (name) ? name : oilsRptPathCol(path);
-	var param = oilsRptNextParam();
+	if( !tform ) tform = 'Bare';
 
 	/* add this item to the select blob */
 	var sel = {
-		relation:oilsRptPathRel(path), 
-		alias:param
+		relation: oilsRptPathRel(path), 
+		alias:    name,
+		column:   { transform: tform, colname: oilsRptPathCol(path) }
 	};
 
-	if( tform ) {
-		sel.column = {};
-		if( params ) {
-			params.unshift(oilsRptPathCol(path));
-			sel.column[tform] = params;
-		} else {
-			sel.column[tform] = oilsRptPathCol(path); 
-		}
-	} else { sel.column = oilsRptPathCol(path); }
-
+	if( params ) sel.column.params = params;
 	oilsRpt.def.select.push(sel);
 
 	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
-	oilsRpt.params[param] = name;
 	oilsRptDebug();
 }
 
@@ -105,7 +96,7 @@ function oilsRptBuildFromClause(path) {
 			contains relevant info, plus a list of "fields",
 			or column objects */
 		var node = oilsIDL[cls];
-		var pkey = oilsRptFindField(node.pkey);
+		var pkey = oilsRptFindField(node, node.pkey);
 
 		/* a "field" is a parsed version of a column from the IDL,
 			contains datatype, column name, etc. */
