@@ -84,6 +84,7 @@ function removeChildren(dom) {
 }
 
 function appendClear(node, child) {
+	if(typeof child =='string') child = text(child);
 	removeChildren(node);
 	node.appendChild(child);
 }
