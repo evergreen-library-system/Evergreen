@@ -21,7 +21,7 @@ oilsRptParamEditor.prototype.draw = function() {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		$n(row, 'object').appendChild(text(oilsRptMakeLabel(par.relation)));
-		$n(row, 'column').appendChild(par.column.colname);
+		$n(row, 'column').appendChild(text(par.column.colname));
 		$n(row, 'transform').appendChild(text(par.column.transform));
 		$n(row, 'action').appendChild(text(par.op));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));

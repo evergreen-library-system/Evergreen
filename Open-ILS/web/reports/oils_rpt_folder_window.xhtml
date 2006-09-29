@@ -5,10 +5,12 @@
 				<td> 
 					<span>
 						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
-							<option type='template' value='create_report'>Create a new report from template</option>
-							<option type='template' value='clone_template'>Clone template</option>
+							<option type='template' value='create_report'>Create a new report from selected template</option>
+							<option type='template' value='clone_template'>Clone selected template</option>
+							<option type='template' value='delete_template'>Delete selected template(s)</option>
 							<option type='report' value='change_params'>Clone report</option>
 							<option type='report' value='schedule_report'>Schedule report</option>
+							<option type='report' value='delete_report'>Delete selected report(s)</option>
 						</select>
 					</span>
 					<input type='submit' value='Submit' id='oils_rpt_folder_content_action_go'/>
@@ -24,5 +26,18 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<span class='hide_me' id='oils_rpt_folder_contents_confirm_report_delete'>
+		Are you sure you wish to delete the selected report(s)?
+	</span>
+
+	<span class='hide_me' id='oils_rpt_folder_contents_confirm_template_delete'>
+		Are you sure you wish to delete the selected template(s)?
+	</span>
+
+	<span class='hide_me' id='oils_rpt_folder_contents_template_no_delete'>
+		The selected template could not be deleted because there are reports
+		that depend on it.
+	</span>
 </div>
 

@@ -52,14 +52,19 @@ var oilsRptCurrentFilterTform;
 /* the current operation manager for the filter window */
 var oilsRptCurrentFilterOpManager;
 
-var OILS_RPT_FETCH_FOLDERS = 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
-var OILS_RPT_FETCH_FOLDER_DATA = 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';
-var OILS_RPT_FETCH_TEMPLATE = 'open-ils.reporter:open-ils.reporter.template.retrieve';
-var OILS_RPT_UPDATE_FOLDER = 'open-ils.reporter:open-ils.reporter.folder.update';
-var OILS_RPT_DELETE_FOLDER = 'open-ils.reporter:open-ils.reporter.folder.delete';
-var OILS_RPT_CREATE_FOLDER = 'open-ils.reporter:open-ils.reporter.folder.create';
+var OILS_RPT_FETCH_FOLDERS			= 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
+var OILS_RPT_FETCH_FOLDER_DATA	= 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';
+var OILS_RPT_FETCH_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.retrieve';
+var OILS_RPT_UPDATE_FOLDER			= 'open-ils.reporter:open-ils.reporter.folder.update';
+var OILS_RPT_DELETE_FOLDER			= 'open-ils.reporter:open-ils.reporter.folder.delete';
+var OILS_RPT_CREATE_FOLDER			= 'open-ils.reporter:open-ils.reporter.folder.create';
 var OILS_RPT_FETCH_ORG_FULL_PATH = 'open-ils.reporter:open-ils.reporter.org_unit.full_path';
-var OILS_RPT_FETCH_ORG_TREE = 'open-ils.actor:open-ils.actor.org_tree.retrieve';
+var OILS_RPT_FETCH_ORG_TREE		= 'open-ils.actor:open-ils.actor.org_tree.retrieve';
+var OILS_RPT_DELETE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.delete';
+var OILS_RPT_DELETE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.delete';
+var OILS_RPT_TEMPLATE_HAS_RPTS	= 'open-ils.reporter:open-ils.reporter.template_has_reports';
+var OILS_RPT_CREATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.create';
+var OILS_RPT_CREATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.create';
 
 var oilsRptCurrentFolderManager;
 

@@ -118,8 +118,58 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
 			new oilsRptReportEditor(new oilsReport(objs[0]), this);
 			break;
+		case 'delete_report' :
+			for(var r = 0; r < objs.length; r++) 
+				this.deleteReport(objs[r]);
+			break;
+		case 'delete_template' :
+			for(var r = 0; r < objs.length; r++) 
+				this.deleteTemplate(objs[r]);
+			break;
+
 	}
 }
+
+
+oilsRptFolderWindow.prototype.deleteReport = function(report) {
+	if(!confirmId('oils_rpt_folder_contents_confirm_report_delete')) return;
+	var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
+	req.callback(
+		function(r) {
+			var res = r.getResultObject();
+			if( res == 1 ) {
+				oilsRptAlertSuccess();
+				oilsRptCurrentFolderManager.draw();
+			}
+		}
+	);
+	req.send();
+}
+
+oilsRptFolderWindow.prototype.deleteTemplate = function(tmpl) {
+	var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
+	req0.callback(
+		function(r0) {
+			var resp = r0.getResultObject();
+			if( resp != '0' )
+				return alertId('oils_rpt_folder_contents_template_no_delete');
+			if(!confirmId('oils_rpt_folder_contents_confirm_template_delete')) return;
+			var req = new Request(OILS_RPT_DELETE_TEMPLATE, SESSION, tmpl.id());
+			req.callback(
+				function(r) {
+					var res = r.getResultObject();
+					if( res == 1 ) {
+						oilsRptAlertSuccess();
+						oilsRptCurrentFolderManager.draw();
+					}
+				}
+			);
+			req.send();
+		}
+	);
+	req0.send();
+}
+
 
 
 oilsRptFolderWindow.prototype.drawFolderDetails = function() {
