@@ -879,7 +879,7 @@ sub build {
 	$self = $self->SUPER::new if (!ref($self));
 
 	$self->{_left_rel} = shift;
-	$self->{_left_col} = shift;
+	($self->{_left_col}) = split(/-/,shift());
 
 	$self->{_right_rel} = shift;
 	$self->{_right_col} = shift;
