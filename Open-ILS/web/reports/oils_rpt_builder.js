@@ -99,23 +99,45 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 
 /* takes a column path and builds a from-clause object for the path */
 function oilsRptBuildFromClause(path) {
+
+	/* the path is the full path (relation) from the source 
+		object to the column in question (e.g. au-home_ou-aou-name)*/
 	var parts = path.split(/-/);
-	var obj = {};
-	var tobj = obj;
+
+	/* the final from clause */
+	var obj = {}; 
+
+	/* reference to the current position in the from clause */
+	var tobj = obj; 
+
 	var newpath = "";
 
+	/* walk the path, fleshing the from clause as we go */
 	for( var i = 0; i < parts.length; i += 2 ) {
-		var cls = parts[i];
-		var col = parts[i+1];
-		var node = oilsIDL[parts[i]];
+
+		var cls = parts[i]; /* class name (id) */
+		var col = parts[i+1]; /* column name */
+
+		/* a "node" is a class description from the IDL, it 
+			contains relevant info, plus a list of "fields",
+			or column objects */
+		var node = oilsIDL[cls];
+
+		/* a "field" is a parsed version of a column from the IDL,
+			contains datatype, column name, etc. */
 		var field = oilsRptFindField(node, col);
+
+		/* re-construct the path as we go so 
+			we know what all we've seen thus far */
 		newpath = (newpath) ? newpath + '-'+ cls : cls;
 
+		/* extract relevant info */
 		tobj.table = node.table;
 		tobj.alias = newpath;
 		_debug('field type is ' + field.type);
 		if( i == (parts.length - 2) ) break;
 
+		/* we still have columns left in the path, keep adding join's */
 		tobj.join = {};
 		tobj = tobj.join;
 		tobj[col] = {};
