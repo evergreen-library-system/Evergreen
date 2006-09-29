@@ -5,21 +5,24 @@ function oilsInitReports() {
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
 
-
 	var cgi = new CGI();
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
 	oilsRptDebugEnabled = cgi.param('dbg');
 	if(oilsRptDebugEnabled) DEBUG = 1;
 
-	DEBUG = 1;
+	oilsRptCurrentOrg = USER.ws_ou();
 
-	oilsLoadRptTree(
+	oilsRptFetchOrgTree(
 		function() {
-			hideMe(DOM.oils_rpt_tree_loading); 
-			unHideMe(DOM.oils_rpt_folder_table);
+			oilsLoadRptTree(
+				function() {
+					hideMe(DOM.oils_rpt_tree_loading); 
+					unHideMe(DOM.oils_rpt_folder_table);
+				}
+			)
 		}
-	)
+	);
 }
 
 function oilsRtpInitFolders() {

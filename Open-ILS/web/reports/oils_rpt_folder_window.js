@@ -14,16 +14,12 @@ function oilsRptFetchTemplate(id) {
 /* generic folder window class */
 oilsRptSetSubClass('oilsRptFolderWindow', 'oilsRptObject');
 function oilsRptFolderWindow(type, folderId) { 
+	this.init();
+	_debug("initted folderwindow with id "+this.id);
 	var node = oilsRptCurrentFolderManager.findNode(type, folderId);
-	this.init2(node, type);
 	this.selector = DOM.oils_rpt_folder_contents_selector;
-}
-
-
-oilsRptFolderWindow.prototype.init2 = function(node, type) {
 	this.folderNode = node;
 	this.type = type;
-	this.init();
 }
 
 
@@ -96,6 +92,8 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 					DOM.oils_rpt_folder_manager_sub_lib_picker, USER.ws_ou());
 				obj.myOrgSelector.draw();
 				break;
+			case 'delete':
+				obj.doFolderDelete();
 		}
 	}
 
@@ -137,6 +135,7 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
 		SESSION, this.type, this.folderNode.folder.id());
 	var obj = this;
+	removeChildren(obj.selector);
 	req.callback(
 		function(r) {
 			obj.fmTable = drawFMObjectTable( 
@@ -171,7 +170,10 @@ oilsRptFolderWindow.prototype.setFolderEditActions = function() {
 			if(confirmId('oils_rpt_folder_manager_change_name_confirm')) {
 				oilsRptUpdateFolder(folder, obj.type,
 					function(success) {
-						if(success) oilsRptAlertSuccess();
+						if(success) {
+							oilsRptAlertSuccess();
+							oilsRptCurrentFolderManager.draw();
+						}
 					}
 				);
 			}
@@ -198,14 +200,57 @@ oilsRptFolderWindow.prototype.setFolderEditActions = function() {
 		if(confirm(DOM.oils_rpt_folder_manager_new_confirm.innerHTML + ' "'+folder.name()+'"')) {
 			oilsRptCreateFolder(folder, obj.type,
 				function(success) {
-					if(success) oilsRptAlertSuccess();
+					if(success) {
+						oilsRptAlertSuccess();
+						oilsRptCurrentFolderManager.draw();
+					}
 				}
 			);
 		}
 	}
-
 }
 
 
+oilsRptFolderWindow.prototype.doFolderDelete = function() {
+	
+	var cache = oilsRptFolderNodeCache[this.type];
+	/* let's see if this folder has any children */
+	for( var c in cache ) 
+		if( cache[c].folder.parent() == this.folderNode.folder.id() )
+			return alertId('oils_rpt_folder_cannot_delete');
+
+	/* lets see if the folder has contents */
+	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
+		SESSION, this.type, this.folderNode.folder.id());
+	var obj = this;
+	req.send();
+
+	req.callback( 
+		function(r) {
+
+			var contents = r.getResultObject();
+			if( contents.length > 0 ) 
+				return alertId('oils_rpt_folder_cannot_delete');
+
+			if( confirmId('oils_rpt_folder_manager_delete_confirm') ) {
+				var req2 = new Request(OILS_RPT_DELETE_FOLDER, 
+					SESSION, obj.type, obj.folderNode.folder.id());
+	
+				req2.callback( 
+					function(r2) {
+						var res = r2.getResultObject();
+						if( res == 1 ) {
+							oilsRptAlertSuccess();
+							oilsRptCurrentFolderManager.draw();
+						}
+						else alert('error: '+js2JSON(res));
+					}
+				);
+
+				req2.send();
+			}
+		}
+	);
+}
 
 

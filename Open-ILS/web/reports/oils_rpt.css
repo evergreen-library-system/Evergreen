@@ -68,6 +68,16 @@ table { border-collapse: collapse; }
 	font-size: 8pt;
 }
 
+.oils_rpt_small_info_selector {
+	border: 1px solid blue; 
+	background: #E0F0F0; 
+	height: 80px;
+	overflow: scroll;
+	font-size: 8pt;
+	width: 12em;
+}
+
+
 .oils_rpt_info_div { 
 	text-align: center; 
 	width: 300px; 

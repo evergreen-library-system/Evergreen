@@ -5,9 +5,13 @@ oilsRptFolderNodeCache.output  = {};
 
 oilsRptSetSubClass('oilsRptFolderManager','oilsRptObject');
 
-function oilsRptFolderManager() {
+function oilsRptFolderManager() { this.init(); }
+
+oilsRptFolderManager.prototype.draw = function(auth) {
+
+	if(!auth) auth = SESSION;
+
 	this.folderTree = {};
-	this.super.init();
 	this.tId = oilsNextId();
 	this.rId = oilsNextId();
 	this.oId = oilsNextId();
@@ -19,9 +23,13 @@ function oilsRptFolderManager() {
 	this.ownerFolders.template = {};
 	this.ownerFolders.report = {};
 	this.ownerFolders.output = {};
-}
 
-oilsRptFolderManager.prototype.draw = function(auth) {
+	removeChildren(DOM.oils_rpt_template_folder_tree); 
+	removeChildren(DOM.oils_rpt_report_folder_tree); 
+	removeChildren(DOM.oils_rpt_output_folder_tree); 
+	removeChildren(DOM.oils_rpt_template_shared_folder_tree); 
+	removeChildren(DOM.oils_rpt_report_shared_folder_tree); 
+	removeChildren(DOM.oils_rpt_output_shared_folder_tree); 
 
 	oilsRptTemplateFolderTree = 
 		new SlimTree(
@@ -115,7 +123,8 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		var node = { folder : folder, treeId : id };
 		oilsRptFolderNodeCache[type][folder.id()] = node;
 		node.folderWindow = new oilsRptFolderWindow(type, folder.id())
-		_debug("creating folder node for "+folder.name()+" : id = "+folder.id()+' treeId = '+id);
+		_debug("creating folder node for "+folder.name()+" : id = "+
+			folder.id()+' treeId = '+id + ' window id = ' + node.folderWindow.id);
 	}
 
 
@@ -161,10 +170,10 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 				}
 		}
 
-		id = this.findNode(type, folder.id()).treeId;
+		node = this.findNode(type, folder.id());
+		id = node.treeId;
 		if( folder.parent() ) 
 			pid = this.findNode(type, folder.parent()).treeId;
-
 
 		/*
 		if(!mine) {
@@ -200,10 +209,9 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 				fname = folder.name() + ' ('+folder.share_with().shortname()+')';
 		}
 
-		var action = 'javascript:oilsRptObject.find('+
-			node.folderWindow.id+').draw();'+treename+'.toggle("'+id+'");';
-
-		_debug('adding node '+fname+' id = ' + id + ' pid = '+pid + ' parent = ' + folder.parent() );
+		var action = 'javascript:oilsRptObject.find('+node.folderWindow.id+').draw();';
+		_debug('adding node '+fname+' id = ' + id + ' pid = '
+			+pid + ' parent = ' + folder.parent() + ' folder-window = ' + node.folderWindow.id );
 
 		tree.addNode(id, pid, fname, action);
 		tree.close(pid);
@@ -253,7 +261,7 @@ function oilsRptBuildFolder(type, node, treeVar, rootName, action) {
 function __setFolderCB(tree, id, action, node) {
 	var act;
 	if( action ) 
-		act = function() { tree.toggle(id);	action( node ); };
+		act = function() { action( node ); };
 	return act;
 }
 

@@ -1,6 +1,6 @@
 oilsRptSetSubClass('oilsRptReportEditor', 'oilsRptObject');
 var oilsRptReportEditorFolderTree;
-function oilsRptReportEditor(rptObject) {
+function oilsRptReportEditor(rptObject, folderWindow) {
 	var tmpl = rptObject.templateObject;
 	var rpt = rptObject.reportObject;
 	this.folderWindow = folderWindow;
@@ -23,7 +23,9 @@ function oilsRptReportEditor(rptObject) {
 		DOM.oils_rpt_report_editor_dest_folder,
 		'oilsRptReportEditorFolderTree',
 		'Report Folders',
-		function(node) { obj.selectedFolder = node; });
+		function(node) { 
+			appendClear(DOM.oils_rpt_report_editor_selected_folder, node.folder.name());
+			obj.selectedFolder = node; });
 }
 
 

@@ -3,13 +3,13 @@ oilsRptWidget.OILS_RPT_TRANSFORM_WIDGET = 0;
 oilsRptWidget.OILS_RPT_OPERATION_WIDGET = 1;
 
 function oilsRptWidget(args) {
-	this.init(args);
+	this.initWidget(args);
 	this.dest = elem('input',{type:'text'});
 }
 
-oilsRptWidget.prototype.init = function(args) {
+oilsRptWidget.prototype.initWidget = function(args) {
 	if(!args) return;
-	this.super.init();
+	this.init();
 	this.node	= args.node;
 	this.type	= args.type;
 	this.action = args.action;
@@ -28,12 +28,12 @@ oilsRptWidget.prototype.draw = function() {
 
 oilsRptSetSubClass('oilsRptMultiInputWidget', 'oilsRptWidget');
 function oilsRptMultiInputWidget(args) {
-	this.init(args);
+	this.initInputWidget(args);
 }
 
-oilsRptMultiInputWidget.prototype.init = function(args) {
+oilsRptMultiInputWidget.prototype.initInputWidget = function(args) {
 	if(!args) return;
-	this.super.init(args);
+	this.initWidget(args);
 	this.count = (args.count) ? args.count : 2;
 	this.dest = [];
 	for( var i = 0; i < this.count; i++ )
@@ -66,16 +66,21 @@ oilsRptMultiInputWidget.prototype.setLabels = function(labels) {
 
 oilsRptSetSubClass('oilsRptMultiWidget', 'oilsRptWidget');
 function oilsRptMultiWidget(args) {
-	this.init(args);
+	this.initMultiWidget(args);
 }
 
-oilsRptMultiWidget.prototype.init = function(args) {
+oilsRptMultiWidget.prototype.initMultiWidget = function(args) {
 	if(!args) return;
-	this.super.init(args);
+	this.initWidget(args);
 	this.dest = elem('select',
-		{multiple:'multiple','class':'oils_rpt_info_selector'});
-	this.addButton = elem('button',null, 'Add');
-	this.addButton = this.getSourceCollector();
+		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+
+	var obj = this;
+
+	this.addButton = elem('input',{type:'submit',value:"Add"})
+	this.addButton.onclick = this.getSourceCollector();
+	this.delButton = elem('input',{type:'submit',value:"Del"})
+	this.delButton.onclick = function(){obj.removeSelected()};
 }
 
 oilsRptMultiWidget.prototype.getValue = function() {
@@ -86,13 +91,15 @@ oilsRptMultiWidget.prototype.getValue = function() {
 }
 
 oilsRptMultiWidget.prototype.removeSelected = function() {
-	oilsDeleteSelectedItems(this.dest);
+	oilsDelSelectedItems(this.dest);
 }
 
 oilsRptMultiWidget.prototype.addItem = function(name, val) {
-	for( var i = 0; i < this.dest.options.length; i++ )
+	for( var i = 0; i < this.dest.options.length; i++ ) {
 		if( this.dest.options[i].value == val ) 
 			return;
+	}
+
 	insertSelectorVal(this.dest, -1, name, val);
 }
 
@@ -100,9 +107,13 @@ oilsRptMultiWidget.prototype.setSource = function(src) {
 	this.source = src;
 }
 
-oilsRptMultiWidget.prototype.draw = function() {
+oilsRptMultiWidget.prototype.drawMultiWidget = function() {
 	appendClear(this.node, this.source);
-	appendClear(this.node, this.dest);
+	this.node.appendChild(elem('br'))
+	this.node.appendChild(this.addButton);
+	this.node.appendChild(this.delButton);
+	this.node.appendChild(elem('br'))
+	this.node.appendChild(this.dest);
 }
 
 
@@ -110,19 +121,21 @@ oilsRptMultiWidget.prototype.draw = function() {
 
 oilsRptSetSubClass('oilsRptInputMultiWidget', 'oilsRptMultiWidget');
 function oilsRptInputMultiWidget(args) {
-	this.init(args);
+	this.initInputMultiWidget(args);
 }
-oilsRptInputMultiWidget.prototype.init = function(args) {
+oilsRptInputMultiWidget.prototype.initInputMultiWidget = function(args) {
 	if(!args) return;
-	this.super.init(args);
+	this.initMultiWidget(args);
 	this.setSource(elem('input',{type:'text'}));
 }
 
+/*
 oilsRptInputMultiWidget.prototype.addItem = function(name, val) {
-	this.super.addItem(name, val);
+	//this.addItem(name, val);
 	this.source.value = "";
 	this.source.focus();
 }
+*/
 
 oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 	var obj = this;
@@ -135,20 +148,23 @@ oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 
 oilsRptSetSubClass('oilsRptSelectorMultiWidget', 'oilsRptMultiWidget');
 function oilsRptSelectorMultiWidget(args) {
-	this.init(args);
+	this.initSelectorMultiWidget(args);
 }
-oilsRptSelectorMultiWidget.prototype.init = function(args) {
+oilsRptSelectorMultiWidget.prototype.initSelectorMultiWidget = function(args) {
 	if(!args) return;
-	this.super.init(args);
+	this.initMultiWidget(args);
 	this.setSource(
-		elem('select',{multiple:multiple, 'class':'oils_rpt_info_selector'}));
+		elem('select',{multiple:'multiple', 'class':'oils_rpt_small_info_selector'}));
 }
 
 oilsRptSelectorMultiWidget.prototype.getSourceCollector = function() {
 	var obj = this;
 	return function() {
-		for( var i = 0; i < obj.source.options.length; i++ )
-			obj.addItem(obj.source.options.name, obj.source.options.value);
+		for( var i = 0; i < obj.source.options.length; i++ ) {
+			if( obj.source.options[i].selected )
+				obj.addItem(obj.source.options[i].innerHTML, 
+					obj.source.options[i].value);
+		}
 	}
 }
 
@@ -156,17 +172,17 @@ oilsRptSelectorMultiWidget.prototype.getSourceCollector = function() {
 
 oilsRptSetSubClass('oilsRptRemoteWidget', 'oilsRptSelectorMultiWidget');
 function oilsRptRemoteWidget(args) {
-	this.init(args);
+	this.initRemoteWidget(args);
 }
-oilsRptRemoteWidget.prototype.init = function(args) {
+oilsRptRemoteWidget.prototype.initRemoteWidget = function(args) {
 	if(!args) return;
-	this.super.init(args);
+	this.initSelectorMultiWidget(args);
 	this.selector = args.selector;
 }
 
 oilsRptRemoteWidget.prototype.draw = function() {
 	this.fetch();
-	this.super.draw();
+	//this.draw();
 }
 
 oilsRptRemoteWidget.prototype.setFetch = function(func) {
@@ -193,10 +209,8 @@ oilsRptMyOrgsWidget.prototype.draw = function() {
 
 oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
 	var sel = this.node;
-	_debug('here');
 	for( var i = 0; i < orglist.length; i++ ) {
 		var org = orglist[i];
-		_debug('here + ' + org.shortname());
 		var opt = insertSelectorVal( this.node, -1, 
 			org.name(), org.id(), null, findOrgDepth(org) );
 		if( org.id() == this.orgid )
@@ -208,6 +222,41 @@ oilsRptMyOrgsWidget.prototype.getValue = function() {
 	return getSelectorVal(this.node);
 }
 
+/* --------------------------------------------------------------------- */
+
+oilsRptSetSubClass('oilsRptOrgMultiSelect','oilsRptSelectorMultiWidget');
+function oilsRptOrgMultiSelect(args) {
+	this.initSelectorMultiWidget(args);
+}
+
+oilsRptOrgMultiSelect.prototype.draw = function(org) {
+	if(!org) org = globalOrgTree;
+	var opt = insertSelectorVal( this.source, -1, 
+		org.shortname(), org.id(), null, findOrgDepth(org) );
+	if( org.id() == oilsRptCurrentOrg )
+		opt.selected = true;
+	if( org.children() ) {
+		for( var c = 0; c < org.children().length; c++ )
+			this.draw(org.children()[c]);
+	}
+	this.drawMultiWidget();
+}
+
+/*
+oilsRptOrgMultiSelectWidget.prototype.getSourceCollector = function() {
+	var obj = this;
+	return function() {
+		for( var i = 0; i < obj.source.options.length; i++ )
+			obj.addItem(obj.source.options.name, obj.source.options.value);
+	}
+}
+*/
+
+/*
+oilsRptOrgMultiSelect.prototype.getValue = function() {
+	return getSelectedList(this.select);
+}
+*/
 
 
 

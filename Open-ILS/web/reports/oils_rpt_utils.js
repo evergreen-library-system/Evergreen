@@ -13,6 +13,17 @@ function oilsRptNextParam() {
 	return '::PARAM'+ (oilsRptID2++);
 }
 
+function oilsRptFetchOrgTree(callback) {
+	var req = new Request(OILS_RPT_FETCH_ORG_TREE);
+	req.callback(
+		function(r) {
+			globalOrgTree = r.getResultObject();
+			if( callback ) callback();
+		}
+	);
+	req.send();
+}
+
 
 /*
 function oilsRptCacheObject(obj) {
@@ -41,8 +52,9 @@ function oilsRptGetCache(type, id) {
 
 /* -------------------------------------------- */
 function oilsRptObject() {}
-oilsRptObject.prototype.init = function() {
-	oilsRptObject.cache(this);
+oilsRptObject.prototype.init = function(obj) {
+	if(!obj) obj = this;
+	oilsRptObject.cache(obj);
 }
 oilsRptObject.objectCache = {};
 oilsRptObject.find = function(id) {
