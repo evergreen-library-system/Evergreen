@@ -17,16 +17,20 @@
 		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 		<menuseparator/>
-		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
-		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
+		<menuseparator/>
+		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+		<menuseparator/>
+		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
+		<menuseparator/>
 		<menuitem command="sel_transit_abort" label="Abort Transits" />
 		<menuseparator/>
-		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 		<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+		<menuseparator/>
 		<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
 		<menuseparator />
+		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
+		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 		<menuitem command="save_columns" label="Save Columns"/>
 	</popup>
 </popupset>
@@ -73,16 +77,20 @@
 			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
 			<menuseparator />
-			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
 			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
-			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
+			<menuseparator />
+			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+			<menuseparator />
+			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
+			<menuseparator />
 			<menuitem command="sel_transit_abort" label="Abort Transits" />
 			<menuseparator />
-			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
 			<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+			<menuseparator />
 			<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
 			<menuseparator />
+			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
+			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
 			<menuitem command="save_columns" label="Save Columns"/>
 		</menupopup>
 	</menu>
