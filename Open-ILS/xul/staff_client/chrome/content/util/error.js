@@ -300,8 +300,59 @@ util.error.prototype = {
 		}
 	},
 
-
 	'yns_alert' : function (s,title,b1,b2,b3,c) {
+
+		/* The original purpose of yns_alert was to prevent errors from being scanned through accidentally with a barcode scanner.  
+		However, this can be done in a less annoying manner by rolling our own dialog and not having any of the options in focus */
+
+		/*
+			s 	= Message to display
+			title 	= Text in Title Bar
+			b1	= Text for button 1
+			b2	= Text for button 2
+			b3	= Text for button 3
+			c	= Text for confirmation checkbox.  null for no confirm
+		*/
+
+		dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
+
+		this.sound.bad();
+
+
+		//FIXME - need to escape these values before embedding them into xml.. but window.escape was weird..
+
+		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
+			'<groupbox style="overflow: auto"><caption label="' + (title) + '"/><description>' + (s)
+			+ '</description></groupbox><groupbox><caption label="Options"/><hbox>';
+		var b1_key = b1 ? b1[0] : '';
+		var b2_key = b2 ? b2[0] : '';
+		var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
+		if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>'
+		if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
+		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
+		xml += '</hbox></groupbox></vbox>';
+		window.open(
+			urls.XUL_FANCY_PROMPT
+			+ '?xml=' + window.escape(xml)
+			+ '&title=' + window.escape(title),
+			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		);
+		JSAN.use('OpenILS.data');
+		var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (data.fancy_prompt_data != '') {
+			switch(data.fancy_prompt_data.fancy_submit) {
+				case 'b1' : return 0; break;
+				case 'b2' : return 1; break;
+				case 'b3' : return 2; break;
+			}
+		} else {
+			return this.yns_alert(s,title,b1,b2,b3,c);
+		}
+	},
+
+
+	'yns_alert_original' : function (s,title,b1,b2,b3,c) {
 
 		/*
 			s 	= Message to display
