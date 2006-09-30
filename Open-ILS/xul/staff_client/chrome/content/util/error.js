@@ -322,8 +322,8 @@ util.error.prototype = {
 
 		//FIXME - need to escape these values before embedding them into xml.. but window.escape was weird..
 
-		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
-			'<groupbox style="overflow: auto"><caption label="' + (title) + '"/><description>' + (s)
+		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">' + 
+			'<groupbox flex="1" style="overflow: auto"><caption label="' + (title) + '"/><description>' + (s)
 			+ '</description></groupbox><groupbox><caption label="Options"/><hbox>';
 		var b1_key = b1 ? b1[0] : '';
 		var b2_key = b2 ? b2[0] : '';
