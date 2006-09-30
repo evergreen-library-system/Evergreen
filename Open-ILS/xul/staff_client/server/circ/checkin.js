@@ -307,6 +307,10 @@ circ.checkin.prototype = {
 				|| checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return obj.on_failure();
 			var retrieve_id = js2JSON( { 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
 			if (checkin.circ && checkin.circ.checkin_time() == 'now') checkin.circ.checkin_time(backdate);
+			if (document.getElementById('trim_list')) {
+				var x = document.getElementById('trim_list');
+				if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
+			}
 			obj.list.append(
 				{
 					'retrieve_id' : retrieve_id,

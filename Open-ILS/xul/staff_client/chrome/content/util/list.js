@@ -437,6 +437,19 @@ util.list.prototype = {
 		}
 		this.error.sdump('D_LIST',s);
 
+			try {
+
+				if (obj.trim_list && obj.row_count.total >= obj.trim_list) {
+					// Remove oldest row
+					if (typeof params.to_top == 'undefined') {
+						treechildren_node.removeChild( treechildren_node.firstChild );
+					} else {
+						treechildren_node.removeChild( treechildren_node.lastChild );
+					}
+				}
+			} catch(E) {
+			}
+
 		setTimeout( function() { obj.auto_retrieve(); }, 0 );
 
 		return treeitem;

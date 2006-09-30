@@ -86,11 +86,12 @@
 </hbox>
 
 <hbox id="copy_status_bottom_ui">
-	<spacer flex="1"/>
 	<button id="copy_status_print" 
 		label="Print"
 		command="cmd_copy_status_print"
 		accesskey="P"/>
+	<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
+	<spacer flex="1"/>
 </hbox>
 
 </overlay>

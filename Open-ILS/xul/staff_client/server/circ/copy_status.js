@@ -341,6 +341,10 @@ circ.copy_status.prototype = {
 				}
 			} else {
 				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
+				if (document.getElementById('trim_list')) {
+					var x = document.getElementById('trim_list');
+					if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
+				}
 				obj.list.append(
 					{
 						'retrieve_id' : js2JSON( { 'renewable' : copy.circulations() ? 't' : 'f', 'copy_id' : copy.id(), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),

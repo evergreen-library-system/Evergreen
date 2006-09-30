@@ -256,6 +256,10 @@ circ.in_house_use.prototype = {
 				copy = new acp(); copy.barcode( '' );
 			}
 
+			if (document.getElementById('trim_list')) {
+				var x = document.getElementById('trim_list');
+				if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
+			}
 			obj.list.append(
 				{
 					'row' : {
