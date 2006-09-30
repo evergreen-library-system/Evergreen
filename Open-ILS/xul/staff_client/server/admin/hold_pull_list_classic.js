@@ -12,6 +12,12 @@ var numHolds			= 0;
 var listOffset			= 0;
 
 function pullListInit() {
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+	JSAN.errorLevel = "die"; // none, warn, or die
+	JSAN.addRepository('/xul/server/');
+	JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+
 	fetchUser();
 	$('pl_user').appendChild(text(USER.usrname()));
 	$('pl_org').appendChild(text(findOrgUnit(USER.ws_ou()).name()));
@@ -92,6 +98,12 @@ function pullListDrawCopy( tbody, row, hold, idx, copy ) {
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'copy_location').appendChild(text(copy.location().name()));
 	$n(row, 'copy_number').appendChild(text(copy.copy_number()));
+	try {
+		if (copy.age_protect()) {
+			$n(row, 'age_protect').appendChild(text( (copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() )) ));	
+			unHideMe($n(row, 'age_protect_span'));
+		}
+	} catch(E) { alert(E); }
 
 	var vreq = new Request(FETCH_VOLUME, copy.call_number());
 	vreq.callback(
