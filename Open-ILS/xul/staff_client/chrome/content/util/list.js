@@ -919,6 +919,11 @@ util.list.prototype = {
 										b = String( b ).toUpperCase();
 									break;
 								}
+							} else {
+								if (typeof a == 'string' || typeof b == 'string') {
+									a = String( a ).toUpperCase();
+									b = String( b ).toUpperCase();
+								}
 							}
 							if (a < b) return -1; 
 							if (a > b) return 1; 
