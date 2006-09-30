@@ -435,18 +435,17 @@ patron.display.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			obj.summary_window = frame.contentWindow;
 		} else {
+			obj.render_search_form(params);
+		}
+	},
+
+	'render_search_form' : function(params) {
+		var obj = this;
 			if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 				try { window.xulG.set_tab_name('Patron Search'); } catch(E) { alert(E); }
 			}
 
 			obj.controller.view.PatronNavBar.selectedIndex = 0;
-			JSAN.use('util.widgets'); 
-			util.widgets.enable_accesskeys_in_node_and_children(
-				obj.controller.view.PatronNavBar.firstChild
-			);
-			util.widgets.disable_accesskeys_in_node_and_children(
-				obj.controller.view.PatronNavBar.lastChild
-			);
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 
@@ -464,6 +463,7 @@ patron.display.prototype = {
 				loc,
 				{},
 				{
+					'clear_left_deck' : function() { setTimeout( function() { obj.left_deck.clear_all_except(loc); obj.render_search_form(params); }, 0); },
 					'on_submit' : function(query) {
 						obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 						var list_frame = obj.right_deck.reset_iframe(
@@ -509,7 +509,6 @@ patron.display.prototype = {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			obj.search_window = form_frame.contentWindow;
 			obj._checkout_spawned = true;
-		}
 	},
 
 	'_checkout_spawned' : false,

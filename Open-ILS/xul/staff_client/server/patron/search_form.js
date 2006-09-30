@@ -33,7 +33,10 @@ patron.search_form.prototype = {
 					],
 					'cmd_patron_search_clear' : [
 						['command'],
-						function() { obj.controller.render(); }
+						function() { 
+							obj.controller.render(); 
+							window.xulG.clear_left_deck();
+						}
 					],
 					'family_name' : [
 						['render'],
@@ -207,6 +210,7 @@ patron.search_form.prototype = {
 	},
 
 	'submit' : function() {
+		window.xulG.clear_left_deck();
 		var obj = this;
 		var query = '';
 		for (var i = 0; i < obj.controller.render_list.length; i++) {

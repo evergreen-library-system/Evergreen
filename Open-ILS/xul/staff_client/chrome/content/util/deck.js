@@ -23,6 +23,18 @@ util.deck = function (id) {
 
 util.deck.prototype = {
 
+	'clear' : function() {
+		while (this.node.lastChild) this.node.removeChild( this.node.lastChild );
+	},
+
+	'clear_all_except' : function(url) {
+		var keep_me = this.find_index(url); var remove_me = [];
+		for (var i = 0; i < this.node.childNodes.length; i++) {
+			if (i != keep_me) remove_me.push( this.node.childNodes[i] );
+		}
+		for (var i = 0; i < remove_me.length; i++) this.node.removeChild( remove_me[i] );
+	},
+
 	'find_index' : function (url) {
 		var idx = -1;
 		var nodes = this.node.childNodes;
