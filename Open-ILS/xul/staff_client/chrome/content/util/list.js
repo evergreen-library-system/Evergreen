@@ -916,7 +916,7 @@ util.list.prototype = {
 									break;
 									default:
 										a = String( a ).toUpperCase();
-										b = String( a ).toUpperCase();
+										b = String( b ).toUpperCase();
 									break;
 								}
 							}
