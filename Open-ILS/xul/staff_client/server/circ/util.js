@@ -1075,7 +1075,16 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 				break;
 				case 11: /* CATALOGING */
 					check.route_to = 'CATALOGING';
-					msg += 'This item needs to be routed to ' + check.route_to + '.';
+					if (document.getElementById('do_not_alert_on_precat')) {
+						var x = document.getElementById('do_not_alert_on_precat');
+						if (! x.checked) msg += 'This item needs to be routed to ' + check.route_to + '.';
+					} else {
+						msg += 'This item needs to be routed to ' + check.route_to + '.';
+					}
+					if (document.getElementById('no_change_label')) {
+						document.getElementById('no_change_label').setAttribute('value',barcode + ' needs to be cataloged.');
+						document.getElementById('no_change_label').setAttribute('hidden','false');
+					}
 				break;
 				default:
 					msg += ('Please inform your helpdesk/developers of this error:\nFIXME -- this case "' + (data.hash.ccs[check.copy.status()] ? data.hash.ccs[check.copy.status()].name() : check.copy.status().name()) + '" is unhandled.\n');
