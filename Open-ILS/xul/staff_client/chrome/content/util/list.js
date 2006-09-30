@@ -30,6 +30,7 @@ util.list.prototype = {
 		JSAN.use('util.widgets');
 
 		if (typeof params.map_row_to_column == 'function') obj.map_row_to_column = params.map_row_to_column;
+		if (typeof params.map_row_to_columns == 'function') obj.map_row_to_columns = params.map_row_to_columns;
 		if (typeof params.retrieve_row == 'function') obj.retrieve_row = params.retrieve_row;
 
 		obj.prebuilt = false;
@@ -640,40 +641,61 @@ util.list.prototype = {
 		var obj = this;
 		var s = '';
 		util.widgets.remove_children(treerow);
-		for (var i = 0; i < this.columns.length; i++) {
-			var treecell = document.createElement('treecell');
-			var label = '';
-			if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
-				treecell.setAttribute('label',label);
-				treerow.appendChild( treecell );
-				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
-				continue;
-			}
-			if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
-				treecell.setAttribute('label',label);
-				treerow.appendChild( treecell );
-				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
-				continue;
-			}
-			if (typeof params.map_row_to_column == 'function')  {
 
-				label = params.map_row_to_column(params.row,this.columns[i]);
+		if (typeof params.map_row_to_column == 'function' || typeof this.map_row_to_column == 'function') {
 
-			} else {
-
-				if (typeof this.map_row_to_column == 'function') {
-
-					label = this.map_row_to_column(params.row,this.columns[i]);
-
-				} else {
-
-					throw('No map_row_to_column function');
-
+			for (var i = 0; i < this.columns.length; i++) {
+				var treecell = document.createElement('treecell');
+				var label = '';
+				if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
+					treecell.setAttribute('label',label);
+					treerow.appendChild( treecell );
+					s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+					continue;
 				}
+				if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
+					treecell.setAttribute('label',label);
+					treerow.appendChild( treecell );
+					s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+					continue;
+				}
+	
+				if (typeof params.map_row_to_column == 'function')  {
+	
+					label = params.map_row_to_column(params.row,this.columns[i]);
+	
+				} else if (typeof this.map_row_to_column == 'function') {
+	
+					label = this.map_row_to_column(params.row,this.columns[i]);
+	
+				}
+				treecell.setAttribute('label',label);
+				treerow.appendChild( treecell );
+				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
 			}
-			treecell.setAttribute('label',label);
-			treerow.appendChild( treecell );
-			s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+		} else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
+
+			var labels = [];
+
+			if (typeof params.map_row_to_columns == 'function') {
+
+				labels = params.map_row_to_columns(params.row,this.columns);
+
+			} else if (typeof this.map_row_to_columns == 'function') {
+
+				labels = this.map_row_to_columns(params.row,this.columns);
+
+			}
+			for (var i = 0; i < labels.length; i++) {
+				var treecell = document.createElement('treecell');
+				treecell.setAttribute('label',labels[i]);
+				treerow.appendChild( treecell );
+				s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
+			}
+
+		} else {
+
+			throw('No row to column mapping function.');
 		}
 		this.error.sdump('D_LIST',s);
 	},

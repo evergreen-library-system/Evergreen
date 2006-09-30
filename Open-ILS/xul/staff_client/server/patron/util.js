@@ -4,7 +4,8 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id'
+	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'std_map_row_to_columns',
+	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 
@@ -265,121 +266,121 @@ patron.util.columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : 'Barcode', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.card().barcode()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.card().barcode(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'usrname', 'label' : 'Login Name', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.usrname()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.usrname(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.pgt[ my.au.profile() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.pgt[ my.au.profile() ].name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.active() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.active() ) ? "Yes" : "No"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'barred', 'label' : 'Barred', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.barred() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.barred() ) ? "Yes" : "No"; v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.id()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.id(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : getString('staff.au_label_prefix'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.prefix()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.prefix(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : getString('staff.au_label_family_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.family_name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.family_name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : getString('staff.au_label_first_given_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.first_given_name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.first_given_name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : getString('staff.au_label_second_given_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.second_given_name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.second_given_name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : getString('staff.au_label_suffix'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.suffix()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.suffix(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.alert_message()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.alert_message(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'claims_returned_count', 'label' : 'Returns Claimed', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.claims_returned_count()',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.claims_returned_count(); v;',
 			'sort_type' : 'number',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : 'Created On', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.create_date()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.create_date(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : 'Expires On', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.expire_date().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.expire_date().substr(0,10); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : 'Home Lib', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.aou[ my.au.home_ou() ].shortname()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.aou[ my.au.home_ou() ].shortname(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'credit_forward_balance', 'label' : 'Credit', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.credit_forward_balance()',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.credit_forward_balance(); v;',
 			'sort_type' : 'money',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'day_phone', 'label' : 'Day Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.day_phone()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.day_phone(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'evening_phone', 'label' : 'Evening Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.evening_phone()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.evening_phone(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'other_phone', 'label' : 'Other Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.other_phone()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.other_phone(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'email', 'label' : 'Email', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.email()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.email(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : 'Birth Date', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.dob().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.dob().substr(0,10); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : 'Ident Type', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.cit[ my.au.ident_type() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.cit[ my.au.ident_type() ].name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_value', 'label' : 'Ident Value', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.ident_value()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.ident_value(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_type2', 'label' : 'Ident Type 2', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'obj.OpenILS.data.hash.cit[ my.au.ident_type2() ].name()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.cit[ my.au.ident_type2() ].name(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_value2', 'label' : 'Ident Value 2', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.ident_value2()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.ident_value2(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'net_access_level', 'label' : 'Net Access', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.net_access_level()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.net_access_level(); v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'master_account', 'label' : 'Group Lead', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.au.master_account() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.master_account() ) ? "Yes" : "No"; v;'
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'usrgroup', 'label' : 'Group ID', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'my.au.usrgroup()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.usrgroup(); v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -432,6 +433,32 @@ patron.util.std_map_row_to_column = function(error_value) {
 			if (error_value) { value = error_value; } else { value = '   ' };
 		}
 		return value;
+	}
+}
+
+patron.util.std_map_row_to_columns = function(error_value) {
+	return function(row,cols) {
+		// row contains { 'my' : { 'au' : {} } }
+		// cols contains all of the objects listed above in columns
+		
+		var obj = {}; obj.OpenILS = {}; 
+		JSAN.use('util.error'); obj.error = new util.error();
+		JSAN.use('OpenILS.data'); obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
+		JSAN.use('util.date'); JSAN.use('util.money');
+
+		var my = row.my;
+		var values = [];
+		var cmd = '';
+		try { 
+			for (var i = 0; i < cols.length; i++) {
+				cmd += cols[i].render + '; values['+i+'] = v; ';
+			}
+			eval( cmd );
+		} catch(E) {
+			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
+			if (error_value) { value = error_value; } else { value = '   ' };
+		}
+		return values;
 	}
 }
 

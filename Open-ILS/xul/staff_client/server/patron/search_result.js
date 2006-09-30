@@ -43,7 +43,7 @@ patron.search_result.prototype = {
 		obj.list.init(
 			{
 				'columns' : columns,
-				'map_row_to_column' : patron.util.std_map_row_to_column(),
+				'map_row_to_columns' : patron.util.std_map_row_to_columns(),
 				'retrieve_row' : function(params) {
 					var id = params.retrieve_id;
 					var au_obj = patron.util.retrieve_au_via_id( ses(), id,
