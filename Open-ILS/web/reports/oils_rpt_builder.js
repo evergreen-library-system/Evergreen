@@ -21,8 +21,10 @@ function oilsReportBuilderReset() {
 	oilsRpt.name = n;
 	oilsRptDisplaySelector	= DOM.oils_rpt_display_selector;
 	oilsRptFilterSelector	= DOM.oils_rpt_filter_selector;
+	oilsRptAggFilterSelector= DOM.oils_rpt_agg_filter_selector;
 	removeChildren(oilsRptDisplaySelector);
 	removeChildren(oilsRptFilterSelector);
+	removeChildren(oilsRptAggFilterSelector);
 	oilsRptDebug();
 	oilsRptResetParams();
 }
@@ -174,11 +176,15 @@ function oilsDelSelectedDisplayItems() {
 
 	} else {
 		for( var j = 0; j < list.length; j++ ) 
-			/* if there are no items left in the "select" clause for the given 
-				relation, trim this relation from the "from" clause */
-			if(!grep(oilsRpt.def.select,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })) 
-				oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+			/* if there are no items left in the "select", "where", or "having" clauses 
+				for the given relation, trim this relation from the "from" clause */
+			if(	!grep(oilsRpt.def.select,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.where,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.having,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
 	}
 
 	oilsRptDebug();
@@ -229,7 +235,112 @@ function oilsDelFilterItem(val) {
 
 /* removes selected items from the display window */
 function oilsDelSelectedFilterItems() {
-	oilsDelSelectedItems(oilsRptFilterSelector);
+	var list = oilsDelSelectedItems(oilsRptFilterSelector);
+
+	/* remove the de-selected columns from the report output */
+	oilsRpt.def.where = grep( oilsRpt.def.where, 
+		function(i) {
+			for( var j = 0; j < list.length; j++ ) {
+				var d = list[j];
+				var col = i.column;
+
+				/* if this columsn has a transform, 
+					it will be an object { tform => column } */
+				if( typeof col != 'string' ) 
+					for( var c in col ) col = col[c];
+
+				/* if this transform requires params, the column 
+					will be the first item in the param set array */
+				if( typeof col != 'string' ) col = col[0];
+
+				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
+					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
+					if( param ) delete oilsRpt.params[param];
+					return false;
+				}
+			}
+			return true;
+		}
+	);
+
+	if(!oilsRpt.def.where) {
+		oilsRpt.def.where = [];
+		oilsReportBuilderReset();
+
+	} else {
+		for( var j = 0; j < list.length; j++ ) 
+			/* if there are no items left in the "select", "where", or "having" clauses 
+				for the given relation, trim this relation from the "from" clause */
+			if(	!grep(oilsRpt.def.select,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.where,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.having,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+	}
+
+	oilsRptDebug();
+}
+
+/* adds an item to the display window */
+function oilsAddRptAggFilterItem(val) {
+	oilsAddSelectorItem(oilsRptAggFilterSelector, val);
+}
+
+/* removes a specific item from the display window */
+function oilsDelAggFilterItem(val) {
+	oilsDelSelectorItem(oilsRptAggFilterSelector, val);
+}
+
+/* removes selected items from the display window */
+function oilsDelSelectedAggFilterItems() {
+	var list = oilsDelSelectedItems(oilsRptAggFilterSelector);
+
+	/* remove the de-selected columns from the report output */
+	oilsRpt.def.having = grep( oilsRpt.def.having, 
+		function(i) {
+			for( var j = 0; j < list.length; j++ ) {
+				var d = list[j];
+				var col = i.column;
+
+				/* if this columsn has a transform, 
+					it will be an object { tform => column } */
+				if( typeof col != 'string' ) 
+					for( var c in col ) col = col[c];
+
+				/* if this transform requires params, the column 
+					will be the first item in the param set array */
+				if( typeof col != 'string' ) col = col[0];
+
+				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
+					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
+					if( param ) delete oilsRpt.params[param];
+					return false;
+				}
+			}
+			return true;
+		}
+	);
+
+	if(!oilsRpt.def.having) {
+		oilsRpt.def.having = [];
+		oilsReportBuilderReset();
+
+	} else {
+		for( var j = 0; j < list.length; j++ ) 
+			/* if there are no items left in the "select", "where", or "having" clauses 
+				for the given relation, trim this relation from the "from" clause */
+			if(	!grep(oilsRpt.def.select,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.where,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+				&& !grep(oilsRpt.def.having,
+					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
+			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+	}
+
+	oilsRptDebug();
 }
 
 

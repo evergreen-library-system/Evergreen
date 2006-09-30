@@ -29,6 +29,10 @@ var oilsRptDisplaySelector;
 
 var oilsRptFilterSelector;
 
+var oilsRptAggFilterSelector;
+
+var oilsRptOrderBySelector;
+
 /* display the currently building report object in an external window */
 var oilsRptDebugWindow;
 
@@ -48,9 +52,11 @@ var oilsRptCurrentTform;
 
 /* the current transform manager for the builder filter window */
 var oilsRptCurrentFilterTform;
+var oilsRptCurrentAggFilterTform;
 
 /* the current operation manager for the filter window */
 var oilsRptCurrentFilterOpManager;
+var oilsRptCurrentAggFilterOpManager;
 
 var OILS_RPT_FETCH_FOLDERS			= 'open-ils.reporter:open-ils.reporter.folder.visible.retrieve';
 var OILS_RPT_FETCH_FOLDER_DATA	= 'open-ils.reporter:open-ils.reporter.folder_data.retrieve';

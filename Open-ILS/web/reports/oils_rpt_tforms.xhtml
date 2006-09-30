@@ -7,17 +7,23 @@
 				
 					<!-- generic transforms -->
 					<option value='Bare' selected='selected'>Raw Data</option>
-					<option value='count' aggregate='1'>Count</option>
-					<option value='count distinct' aggregate='1'>Count Distinct</option>
-					<option value='min' aggregate='1'>Min</option>
-					<option value='max' aggregate='1'>Max</option>
+					<option value='first'>First Value</option>
+					<option value='last'>Last Value</option>
 					
 					<!-- string transforms -->
+					<option value='count' datatype='string' aggregate='1'>Count</option>
+					<option value='count_distinct' datatype='string' aggregate='1'>Count Distinct</option>
+					<option value='min' datatype='string' aggregate='1'>Min</option>
+					<option value='max' datatype='string' aggregate='1'>Max</option>
 					<option value='substring' datatype='string' widget='string_substring_widget' >Substring</option>
 					<option value='lower' datatype='string'>Lower case</option>
 					<option value='upper' datatype='string'>Upper Case</option>
 					
 					<!-- timestamp transforms -->
+					<option value='count' datatype='timestamp' aggregate='1'>Count</option>
+					<option value='count_distinct' datatype='timestamp' aggregate='1'>Count Distinct</option>
+					<option value='min' datatype='timestamp' aggregate='1'>Min</option>
+					<option value='max' datatype='timestamp' aggregate='1'>Max</option>
 					<option value='dow' datatype='timestamp'>Day of Week</option>
 					<option value='dom' datatype='timestamp'>Day of Month</option>
 					<option value='doy' datatype='timestamp'>Day of Year</option>
@@ -30,9 +36,23 @@
 					<option value='day_name' datatype='timestamp'>Day Name</option>
 					<option value='month_name' datatype='timestamp'>Month Name</option>
 					
-					<!-- numeric transforms -->
-					<option value='round' datatype='numeric' >Round</option>
-					<option value='int' datatype='numeric' >Drop trailing decimals</option>
+					<!-- int transforms -->
+					<option value='count' datatype='int' aggregate='1'>Count</option>
+					<option value='count_distinct' datatype='int' aggregate='1'>Count</option>
+					<option value='min' datatype='int' aggregate='1'>Min</option>
+					<option value='max' datatype='int' aggregate='1'>Max</option>
+					<option value='sum' datatype='int' aggregate='1'>Sum</option>
+					<option value='average' datatype='int' aggregate='1'>Average</option>
+
+					<!-- float transforms -->
+					<option value='count' datatype='float' aggregate='1'>Count</option>
+					<option value='count_distinct' datatype='float' aggregate='1'>Count</option>
+					<option value='min' datatype='float' aggregate='1'>Min</option>
+					<option value='max' datatype='float' aggregate='1'>Max</option>
+					<option value='sum' datatype='float' aggregate='1'>Sum</option>
+					<option value='average' datatype='int' aggregate='1'>Average</option>
+					<option value='round' datatype='float' >Round</option>
+					<option value='int' datatype='float' >Drop trailing decimals</option>
 				</select>
 			</td>
 
