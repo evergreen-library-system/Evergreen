@@ -97,19 +97,9 @@
 		label="&staff.checkin.print_receipt_label;" 
 		command="cmd_checkin_print"
 		accesskey="&staff.checkin.print_receipt_label.accesskey;"/>
-	<button id="checkin_reprint" 
-		label="&staff.checkin.reprint_receipt_label;" 
-		command="cmd_checkin_reprint"
-		accesskey="&staff.checkin.reprint_receipt_label.accesskey;"/>
 	<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkin_auto" label="Auto-Print for Hold/Transit Slips" accesskey="P" persist="checked"/> 
-<!--
-	<button id="checkin_done" 
-		label="&staff.checkin.done_label;" 
-		command="cmd_checkin_done"
-		accesskey="&staff.checkin.done_label.accesskey;"/>
--->
 </hbox>
 
 </overlay>

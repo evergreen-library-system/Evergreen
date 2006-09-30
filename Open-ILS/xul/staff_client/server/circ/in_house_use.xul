@@ -103,10 +103,6 @@
 			label="Print List" 
 			command="cmd_in_house_use_print"
 			accesskey=""/>
-		<button id="in_house_use_reprint" 
-			label="Re-Print Last List" 
-			command="cmd_in_house_use_reprint"
-			accesskey="L"/>
 		<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
 		<spacer id="pcii3s" flex="1"/>
 		<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
