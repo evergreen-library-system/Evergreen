@@ -1224,7 +1224,6 @@ cat.copy_browser.prototype = {
 			if (parent_org) {
 				data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
 			}
-
 			var node = obj.list.append(data);
 			if (params) {
 				for (var i in params) {
@@ -1364,17 +1363,17 @@ cat.copy_browser.prototype = {
 				{
 					'id' : 'tree_location', 'label' : 'Location/Barcode', 'flex' : 1,
 					'primary' : true, 'hidden' : false, 
-					'render' : 'my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"'
+					'render' : 'v = my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; v;'
 				},
 				{
 					'id' : 'volume_count', 'label' : 'Volumes', 'flex' : 0,
 					'primary' : false, 'hidden' : false, 
-					'render' : 'my.volume_count'
+					'render' : 'v = my.volume_count; v;'
 				},
 				{
 					'id' : 'copy_count', 'label' : 'Copies', 'flex' : 0,
 					'primary' : false, 'hidden' : false, 
-					'render' : 'my.copy_count'
+					'render' : 'v = my.copy_count; v;'
 				},
 			].concat(
 				circ.util.columns( 

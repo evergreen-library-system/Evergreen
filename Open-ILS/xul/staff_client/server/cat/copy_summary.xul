@@ -73,7 +73,7 @@
 					{
 						'id' : 'total_circs', 'label' : 'Total Circs', 'flex' : 1,
 						'primary' : false, 'hidden' : false, 'persist' : 'hidden width ordinal',
-						'render' : 'obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count' 
+						'render' : 'v = obj.network.simple_request("FM_CIRC_COUNT_RETRIEVE_VIA_COPY",[ my.acp.id() ]).total.count; v;' 
 					}
 				);
 
