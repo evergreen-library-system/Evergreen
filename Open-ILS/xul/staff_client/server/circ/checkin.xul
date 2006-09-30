@@ -93,6 +93,7 @@
 		<command id="sel_bucket" disabled="true"/>
 		<command id="sel_spine" disabled="true"/>
 		<command id="sel_transit_abort" disabled="true"/>
+		<command id="sel_mark_items_damaged" disabled="true"/>
 
 	</commandset>
 

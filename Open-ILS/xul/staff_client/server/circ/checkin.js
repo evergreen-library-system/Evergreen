@@ -58,6 +58,7 @@ circ.checkin.prototype = {
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 							obj.controller.view.sel_clip.setAttribute('disabled','true');
+							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
@@ -67,6 +68,7 @@ circ.checkin.prototype = {
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 							obj.controller.view.sel_clip.setAttribute('disabled','false');
+							obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -132,7 +134,14 @@ circ.checkin.prototype = {
 							}
 						}
 					],
-
+					'sel_mark_items_damaged' : [
+						['command'],
+						function() {
+							var funcs = [];
+							JSAN.use('cat.util'); JSAN.use('util.functional');
+							cat.util.mark_item_damaged( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
+						}
+					],
 					'sel_bucket' : [
 						['command'],
 						function() {
