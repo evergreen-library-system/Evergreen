@@ -1005,6 +1005,17 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 			document.getElementById('no_change_label').setAttribute('hidden','true');
 		}
 
+		if (check.circ) {
+			network.simple_request('FM_MBTS_RETRIEVE',[ses(),check.circ.id()], function(req) {
+				JSAN.use('util.money');
+				var bill = req.getResultObject();
+				if (Number(bill.balance_owed()) == 0) return;
+				var m = document.getElementById('no_change_label').getAttribute('value');
+				document.getElementById('no_change_label').setAttribute('value', m + 'Transaction for ' + barcode + ' billable $' + util.money.sanitize(bill.balance_owed()) + '  ');
+				document.getElementById('no_change_label').setAttribute('hidden','false');
+			});
+		}
+
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n'; }
@@ -1012,7 +1023,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 			if (check.ilsevent == 3 /* NO_CHANGE */) {
 				//msg = 'This item is already checked in.\n';
 				if (document.getElementById('no_change_label')) {
-					document.getElementById('no_change_label').setAttribute('value',barcode + ' was already checked in.');
+					var m = document.getElementById('no_change_label').getAttribute('value');
+					document.getElementById('no_change_label').setAttribute('value',m + barcode + ' was already checked in.  ');
 					document.getElementById('no_change_label').setAttribute('hidden','false');
 				}
 			}
@@ -1068,6 +1080,11 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 						}
 					}
 					msg = '';
+					if (document.getElementById('no_change_label')) {
+						var m = document.getElementById('no_change_label').getAttribute('value');
+						document.getElementById('no_change_label').setAttribute('value',m + barcode + ' has been captured for a hold.  ');
+						document.getElementById('no_change_label').setAttribute('hidden','false');
+					}
 				break;
 				case 6: /* IN TRANSIT */
 					check.route_to = 'TRANSIT SHELF??';
@@ -1082,7 +1099,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 						msg += 'This item needs to be routed to ' + check.route_to + '.';
 					}
 					if (document.getElementById('no_change_label')) {
-						document.getElementById('no_change_label').setAttribute('value',barcode + ' needs to be cataloged.');
+						var m = document.getElementById('no_change_label').getAttribute('value');
+						document.getElementById('no_change_label').setAttribute('value',m + barcode + ' needs to be cataloged.  ');
 						document.getElementById('no_change_label').setAttribute('hidden','false');
 					}
 				break;
@@ -1145,6 +1163,11 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 					alert('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
 				}
 			}
+			if (document.getElementById('no_change_label')) {
+				var m = document.getElementById('no_change_label').getAttribute('value');
+				document.getElementById('no_change_label').setAttribute('value',m + barcode + ' is in transit.  ');
+				document.getElementById('no_change_label').setAttribute('hidden','false');
+			}
 
 		} else /* ASSET_COPY_NOT_FOUND */ if (check.ilsevent == 1502) {
 
@@ -1157,6 +1180,11 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 				null,
 				"Check here to confirm this message"
 			);
+			if (document.getElementById('no_change_label')) {
+				var m = document.getElementById('no_change_label').getAttribute('value');
+				document.getElementById('no_change_label').setAttribute('value',m + barcode + ' is mis-scanned or not cataloged.  ');
+				document.getElementById('no_change_label').setAttribute('hidden','false');
+			}
 
 		} else /* NETWORK TIMEOUT */ if (check.ilsevent == -1) {
 			error.standard_network_error_alert('Check In Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
