@@ -669,7 +669,7 @@ util.list.prototype = {
 					label = this.map_row_to_column(params.row,this.columns[i]);
 	
 				}
-				treecell.setAttribute('label',label);
+				treecell.setAttribute('label',label ? label : '');
 				treerow.appendChild( treecell );
 				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
 			}
@@ -688,7 +688,7 @@ util.list.prototype = {
 			}
 			for (var i = 0; i < labels.length; i++) {
 				var treecell = document.createElement('treecell');
-				treecell.setAttribute('label',labels[i]);
+				treecell.setAttribute('label',labels[i] ? labels[i] : '');
 				treerow.appendChild( treecell );
 				s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
 			}
