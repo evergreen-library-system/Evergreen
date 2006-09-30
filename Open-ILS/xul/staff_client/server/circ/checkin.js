@@ -179,8 +179,10 @@ circ.checkin.prototype = {
 									if (x) {
 										if ( ev.target.value == util.date.formatted_date(new Date(),'%F') ) {
 											x.setAttribute('style','background-color: green');
+											document.getElementById('background-text').setAttribute('value','Check In / Process Item');
 										} else {
 											x.setAttribute('style','background-color: red');
+											document.getElementById('background-text').setAttribute('value','Backdated ' + ev.target.value + ' Check In');
 										}
 									}
 
