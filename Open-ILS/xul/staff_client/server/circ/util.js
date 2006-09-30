@@ -846,8 +846,16 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""; v;'
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'patron_name', 'label' : 'Patron Name', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.patron_barcode ? my.patron_barcode + " " + my.patron_family_name + ", " + my.patron_first_given_name : ""; v;',
+			'persist' : 'hidden width ordinal', 'id' : 'patron_barcode', 'label' : 'Patron Barcode', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.patron_barcode ? my.patron_barcode : ""; v;',
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'patron_family_name', 'label' : 'Patron Last Name', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.patron_family_name ? my.patron_family_name : ""; v;',
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'patron_first_given_name', 'label' : 'Patron First Name', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.patron_first_given_name ? my.patron_first_given_name : ""; v;',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'callnumber', 'label' : 'Call Number', 'flex' : 1,
