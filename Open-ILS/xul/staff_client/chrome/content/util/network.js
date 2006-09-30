@@ -4,6 +4,7 @@ if (typeof util == 'undefined') util = {};
 util.network = function () {
 
 	JSAN.use('util.error'); this.error = new util.error();
+	JSAN.use('util.sound'); this.sound = new util.sound();
 
 	return this;
 };
@@ -295,6 +296,7 @@ util.network.prototype = {
 			function override(r) {
 				try {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+					obj.sound.bad();
 					var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">' + 
 						'<groupbox><caption label="Exceptions"/>' + 
 						'<grid><columns><column/><column/></columns><rows>';
