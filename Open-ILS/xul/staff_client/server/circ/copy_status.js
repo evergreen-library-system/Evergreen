@@ -318,7 +318,9 @@ circ.copy_status.prototype = {
 	'copy_status' : function(barcode) {
 		var obj = this;
 		try {
+			try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
 			if (!barcode) barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
+			if (!barcode) return;
 			JSAN.use('circ.util');
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
 			if (copy == null) {
@@ -331,6 +333,7 @@ circ.copy_status.prototype = {
 						obj.controller.view.copy_status_barcode_entry_textbox.focus();
 					break;
 					case 1502 /* ASSET_COPY_NOT_FOUND */ :
+						try { document.getElementById('last_scanned').setAttribute('value',barcode + ' was either mis-scanned or is not cataloged.'); } catch(E) {}
 						obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
 						obj.controller.view.copy_status_barcode_entry_textbox.select();
 						obj.controller.view.copy_status_barcode_entry_textbox.focus();
@@ -340,6 +343,19 @@ circ.copy_status.prototype = {
 					break;
 				}
 			} else {
+				obj.network.simple_request('FM_ACP_DETAILS', [ ses(), copy.id() ], function(req) {
+					try {
+						var details = req.getResultObject();
+						var msg = copy.barcode() + ' -- ';
+						if (copy.call_number() == -1) msg += 'Item is a Pre-Cat.  ';
+						if (details.hold) msg += 'Item is captured for a Hold.  ';
+						if (details.transit) msg += 'Item is in Transit.  ';
+						if (details.circ && ! details.circ.checkin_time()) msg += 'Item is circulating.  ';
+						try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
+					} catch(E) {
+						alert(E);
+					}
+				} );
 				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
 				if (document.getElementById('trim_list')) {
 					var x = document.getElementById('trim_list');

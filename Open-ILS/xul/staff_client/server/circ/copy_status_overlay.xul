@@ -41,6 +41,11 @@
 		<label value="Item Status" style="font-size: x-large; font-weight: bold;"/>
 		<spacer flex="1"/>
 	</hbox>
+	<hbox id="last_scanned_hbox" style="background-color: yellow">
+		<spacer flex="1"/>
+		<label id="last_scanned" style="font-weight: bold;"/>
+		<spacer flex="1"/>
+	</hbox>
 	<groupbox id="cmgb1" flex="2">
 		<caption label="Scan Item" />
 		<hbox id="copy_status_top_ui" />
