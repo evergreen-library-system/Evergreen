@@ -117,55 +117,55 @@ circ.util.offline_checkout_columns = function(modify,params) {
 			'id' : 'timestamp', 
 			'label' : 'Timestamp', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.timestamp' 
+			'render' : 'v = my.timestamp; v;' 
 		},
 		{ 
 			'id' : 'checkout_time', 
 			'label' : 'Check Out Time', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.checkout_time' 
+			'render' : 'v = my.checkout_time; v;' 
 		},
 		{ 
 			'id' : 'type', 
 			'label' : 'Transaction Type', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.type' 
+			'render' : 'v = my.type; v;' 
 		},
 		{
 			'id' : 'noncat',
 			'label' : 'Non-Cataloged?',
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.noncat'
+			'render' : 'v = my.noncat; v;'
 		},
 		{
 			'id' : 'noncat_type',
 			'label' : 'Non-Cat Type ID',
 			'flex' : 1, 'primary' : false, 'hidden' : true,
-			'render' : 'my.noncat_type'
+			'render' : 'v = my.noncat_type; v;'
 		},
 		{
 			'id' : 'noncat_count',
 			'label' : 'Count', 'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
-			'render' : 'my.noncat_count'
+			'render' : 'v = my.noncat_count; v;'
 		},
 		{ 
 			'id' : 'patron_barcode', 
 			'label' : 'Patron Barcode', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.patron_barcode' 
+			'render' : 'v = my.patron_barcode; v;' 
 		},
 		{ 
 			'id' : 'barcode', 
 			'label' : 'Item Barcode', 
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
-			'render' : 'my.barcode' 
+			'render' : 'v = my.barcode; v;' 
 		},
 		{ 
 			'id' : 'due_date', 
 			'label' : 'Due Date', 
 			'flex' : 1, 'primary' : false, 'hidden' : false, 
-			'render' : 'my.due_date' 
+			'render' : 'v = my.due_date; v;' 
 		},
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
@@ -206,25 +206,25 @@ circ.util.offline_checkin_columns = function(modify,params) {
 			'id' : 'timestamp', 
 			'label' : 'Timestamp', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.timestamp' 
+			'render' : 'v = my.timestamp; v;' 
 		},
 		{ 
 			'id' : 'backdate', 
 			'label' : 'Back Date', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.backdate' 
+			'render' : 'v = my.backdate; v;' 
 		},
 		{ 
 			'id' : 'type', 
 			'label' : 'Transaction Type', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.type' 
+			'render' : 'v = my.type; v;' 
 		},
 		{ 
 			'id' : 'barcode', 
 			'label' : 'Item Barcode', 
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
-			'render' : 'my.barcode' 
+			'render' : 'v = my.barcode; v;' 
 		},
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
@@ -265,37 +265,37 @@ circ.util.offline_renew_columns = function(modify,params) {
 			'id' : 'timestamp', 
 			'label' : 'Timestamp', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.timestamp' 
+			'render' : 'v = my.timestamp; v;' 
 		},
 		{ 
 			'id' : 'checkout_time', 
 			'label' : 'Check Out Time', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.checkout_time' 
+			'render' : 'v = my.checkout_time; v;' 
 		},
 		{ 
 			'id' : 'type', 
 			'label' : 'Transaction Type', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.type' 
+			'render' : 'v = my.type; v;' 
 		},
 		{ 
 			'id' : 'patron_barcode', 
 			'label' : 'Patron Barcode', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.patron_barcode' 
+			'render' : 'v = my.patron_barcode; v;' 
 		},
 		{ 
 			'id' : 'barcode', 
 			'label' : 'Item Barcode', 
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
-			'render' : 'my.barcode' 
+			'render' : 'v = my.barcode; v;' 
 		},
 		{ 
 			'id' : 'due_date', 
 			'label' : 'Due Date', 
 			'flex' : 1, 'primary' : false, 'hidden' : false, 
-			'render' : 'my.due_date' 
+			'render' : 'v = my.due_date; v;' 
 		},
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
@@ -336,31 +336,31 @@ circ.util.offline_inhouse_use_columns = function(modify,params) {
 			'id' : 'timestamp', 
 			'label' : 'Timestamp', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.timestamp' 
+			'render' : 'v = my.timestamp; v;' 
 		},
 		{ 
 			'id' : 'use_time', 
 			'label' : 'Use Time', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.use_time' 
+			'render' : 'v = my.use_time; v;' 
 		},
 		{ 
 			'id' : 'type', 
 			'label' : 'Transaction Type', 
 			'flex' : 1, 'primary' : false, 'hidden' : true, 
-			'render' : 'my.type' 
+			'render' : 'v = my.type; v;' 
 		},
 		{
 			'id' : 'count',
 			'label' : 'Count', 'sort_type' : 'number',
 			'flex' : 1, 'primary' : false, 'hidden' : false,
-			'render' : 'my.count'
+			'render' : 'v = my.count; v;'
 		},
 		{ 
 			'id' : 'barcode', 
 			'label' : 'Item Barcode', 
 			'flex' : 2, 'primary' : true, 'hidden' : false, 
-			'render' : 'my.barcode' 
+			'render' : 'v = my.barcode; v;' 
 		},
 	];
 	if (modify) for (var i = 0; i < c.length; i++) {
@@ -405,183 +405,183 @@ circ.util.columns = function(modify,params) {
 	var c = [
 		{
 			'id' : 'acp_id', 'label' : getString('staff.acp_label_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.id()', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.id(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'circ_id', 'label' : getString('staff.circ_label_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.id() : ( my.acp.circulations() ? my.acp.circulations()[0].id() : "")', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.id() : ( my.acp.circulations() ? my.acp.circulations()[0].id() : ""); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'mvr_doc_id', 'label' : getString('staff.mvr_label_doc_id'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.doc_id()', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.doc_id(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'barcode', 'label' : getString('staff.acp_label_barcode'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.barcode()', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.barcode(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : ' if (my.acp && my.acp.call_number() == -1) { "Not Cataloged"; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { "Not Cataloged"; } else { my.acn = x; x.label(); } } else { my.acn.label(); } } ' , 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : ' if (my.acp && my.acp.call_number() == -1) { v = "Not Cataloged"; v; } else { if (!my.acn) { var x = obj.network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { v = "Not Cataloged"; v; } else { my.acn = x; v = x.label(); v; } } else { v = my.acn.label(); v; } } ' , 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'owning_lib', 'label' : 'Owning Lib', 'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : 'if (Number(my.acn.owning_lib())>=0) obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); else my.acn.owning_lib().shortname();', 'persist' : 'hidden width ordinal',
+			'render' : 'if (Number(my.acn.owning_lib())>=0) { v = obj.data.hash.aou[ my.acn.owning_lib() ].shortname(); v; } else { v = my.acn.owning_lib().shortname(); v; }', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1, 'sort_type' : 'number',
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.copy_number()', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.copy_number(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) obj.data.lookup("acpl", my.acp.location() ).name(); else my.acp.location().name();', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.location())>=0) v = obj.data.lookup("acpl", my.acp.location() ).name(); else v = my.acp.location().name(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 
-			'render' : 'switch(my.acp.loan_duration()){ case 1: "Short"; break; case 2: "Normal"; break; case 3: "Long"; break; }', 'persist' : 'hidden width ordinal',
+			'render' : 'switch(my.acp.loan_duration()){ case 1: v = "Short"; break; case 2: v = "Normal"; break; case 3: v = "Long"; break; }; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'circ_lib', 'label' : getString('staff.acp_label_circ_lib'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.circ_lib())>=0) obj.data.hash.aou[ my.acp.circ_lib() ].shortname(); else my.acp.circ_lib().shortname();', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.circ_lib())>=0) v = obj.data.hash.aou[ my.acp.circ_lib() ].shortname(); else v = my.acp.circ_lib().shortname(); v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'fine_level', 'label' : getString('staff.acp_label_fine_level'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,
-			'render' : 'switch(my.acp.fine_level()){ case 1: "Low"; break; case 2: "Normal"; break; case 3: "High"; break; }', 'persist' : 'hidden width ordinal',
+			'render' : 'switch(my.acp.fine_level()){ case 1: v = "Low"; break; case 2: v = "Normal"; break; case 3: v = "High"; break; }; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'circulate', 'label' : 'Circulate?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.circulate() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.circulate() ) ? "Yes" : "No"; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'deleted', 'label' : 'Deleted?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.deleted() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.deleted() ) ? "Yes" : "No"; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'holdable', 'label' : 'Holdable?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.holdable() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.holdable() ) ? "Yes" : "No"; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'id' : 'opac_visible', 'label' : 'OPAC Visible?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.opac_visible() ) ? "Yes" : "No"', 'persist' : 'hidden width ordinal',
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.opac_visible() ) ? "Yes" : "No"; v;', 'persist' : 'hidden width ordinal',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'ref', 'label' : 'Reference?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.ref() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.ref() ) ? "Yes" : "No"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'deposit', 'label' : 'Deposit?', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'get_bool( my.acp.deposit() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.acp.deposit() ) ? "Yes" : "No"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'util.money.sanitize(my.acp.deposit_amount())', 'sort_type' : 'money',
+			'primary' : false, 'hidden' : true, 'render' : 'v = util.money.sanitize(my.acp.deposit_amount()); v;', 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'util.money.sanitize(my.acp.price())', 'sort_type' : 'money',
+			'primary' : false, 'hidden' : true, 'render' : 'v = util.money.sanitize(my.acp.price()); v;', 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_as_type()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.circ_as_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'circ_modifier', 'label' : getString('staff.acp_label_circ_modifier'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.circ_modifier()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.circ_modifier(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start_full', 'label' : 'Checkout Timestamp', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.xact_start() : (my.acp.circulations() ? my.acp.circulations()[0].xact_start() : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.xact_start() : (my.acp.circulations() ? my.acp.circulations()[0].xact_start() : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'checkin_time_full', 'label' : 'Checkin Timestamp', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.checkin_time() : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time() : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.checkin_time() : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time() : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Checkout Date', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.xact_start().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].xact_start().substr(0,10) : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.xact_start().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].xact_start().substr(0,10) : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'checkin_time', 'label' : 'Checkin Date', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.checkin_time().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time().substr(0,10) : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.checkin_time().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].checkin_time().substr(0,10) : ""); v;'
 		},
 
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : 'Transaction Finished', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ.xact_finish()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ.xact_finish(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'due_date', 'label' : getString('staff.circ_label_due_date'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.due_date().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].due_date().substr(0,10) : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.due_date().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].due_date().substr(0,10) : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : 'Date Created', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.create_date().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.create_date().substr(0,10); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'edit_date', 'label' : 'Date Last Edited', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.edit_date().substr(0,10)'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.edit_date().substr(0,10); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2, 'sort_type' : 'title',
-			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
+			'primary' : false, 'hidden' : true, 'render' : 'try { v = my.mvr.title(); v; } catch(E) { v = my.acp.dummy_title(); v; }'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
+			'primary' : false, 'hidden' : true, 'render' : 'try { v = my.mvr.author(); v; } catch(E) { v = my.acp.dummy_author(); v; }'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.edition(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.isbn(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.pubdate(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.publisher(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.tcn(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.renewal_remaining() : (my.acp.circulations() ? my.acp.circulations()[0].renewal_remaining() : "")', 'sort_type' : 'number',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.renewal_remaining() : (my.acp.circulations() ? my.acp.circulations()[0].renewal_remaining() : ""); v;', 'sort_type' : 'number',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'stop_fines', 'label' : 'Fines Stopped', 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.stop_fines() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines() : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.stop_fines() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines() : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'stop_fines_time', 'label' : 'Fines Stopped Time', 'flex' : 0,
-			'primary' : false, 'hidden' : true, 'render' : 'my.circ ? my.circ.stop_fines_time() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines_time() : "")'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.circ ? my.circ.stop_fines_time() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines_time() : ""); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.status())>=0) obj.data.hash.ccs[ my.acp.status() ].name(); else my.acp.status().name();'
+			'primary' : false, 'hidden' : true, 'render' : 'if (Number(my.acp.status())>=0) v = obj.data.hash.ccs[ my.acp.status() ].name(); else v = my.acp.status().name(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'route_to', 'label' : 'Route To', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.route_to.toString()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.route_to.toString(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'message', 'label' : 'Message', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.message.toString()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.message.toString(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'uses', 'label' : '# of Uses', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.uses', 'sort_type' : 'number',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.uses; v;', 'sort_type' : 'number',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acp.alert_message()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acp.alert_message(); v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -623,43 +623,43 @@ circ.util.transit_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_item_barcode', 'label' : 'Barcode', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.acp.barcode()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.acp.barcode(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_item_title', 'label' : 'Title', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'try { my.mvr.title(); } catch(E) { my.acp.dummy_title(); }'
+			'primary' : false, 'hidden' : true,  'render' : 'try { v = my.mvr.title(); v; } catch(E) { v = my.acp.dummy_title(); v; }'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_item_author', 'label' : 'Author', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'try { my.mvr.author(); } catch(E) { my.acp.dummy_author(); }'
+			'primary' : false, 'hidden' : true,  'render' : 'try { v = my.mvr.author(); v; } catch(E) { v = my.acp.dummy_author(); v; }'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_item_callnumber', 'label' : 'Call Number', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.acn.label()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.acn.label(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_id', 'label' : 'Transit ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.atc.id()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.atc.id(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_source', 'label' : 'Transit Source', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'typeof my.atc.source() == "object" ? my.atc.source().shortname() : obj.data.hash.aou[ my.atc.source() ].shortname()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = typeof my.atc.source() == "object" ? my.atc.source().shortname() : obj.data.hash.aou[ my.atc.source() ].shortname(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_source_send_time', 'label' : 'Transitted On', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.atc.source_send_time()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.atc.source_send_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_lib', 'label' : 'Transit Destination', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'typeof my.atc.dest() == "object" ? my.atc.dest().shortname() : obj.data.hash.aou[ my.atc.dest() ].shortname()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = typeof my.atc.dest() == "object" ? my.atc.dest().shortname() : obj.data.hash.aou[ my.atc.dest() ].shortname(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.atc.dest_recv_time()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.atc.dest_recv_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_target_copy', 'label' : 'Transit Copy ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.atc.target_copy()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.atc.target_copy(); v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -704,154 +704,154 @@ circ.util.hold_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'my.ahr.request_time().toString().substr(0,10)'
+			'render' : 'v = my.ahr.request_time().toString().substr(0,10); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_time', 'label' : 'Request Date', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'my.ahr.request_time().toString().substr(0,10)'
+			'render' : 'v = my.ahr.request_time().toString().substr(0,10); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'available_timestamp', 'label' : 'Available On (Timestamp)', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString() : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString() : "" )',
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString() : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString() : "" ); v;',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'available_time', 'label' : 'Available On', 'flex' : 1,
-			'primary' : false, 'hidden' : false,  'render' : 'my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString().substr(0,10) : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "" )',
+			'primary' : false, 'hidden' : false,  'render' : 'v = my.ahr.transit() ? ( my.ahr.transit().dest_recv_time() ? my.ahr.transit().dest_recv_time().toString().substr(0,10) : "") : ( my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : "" ); v;',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'capture_timestamp', 'label' : 'Capture Timestamp', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString() : ""'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.capture_time() ? my.ahr.capture_time().toString() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'capture_time', 'label' : 'Capture Date', 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : false,  'render' : 'switch(my.status) { case 1: case "1": "Waiting for copy"; break; case 2: case "2": "Waiting for capture"; break; case 3: case "3": "In-Transit"; break; case 4: case "4" : "Ready for pickup"; break; default: my.status; break;}'
+			'primary' : false, 'hidden' : false,  'render' : 'switch(my.status) { case 1: case "1": v = "Waiting for copy"; break; case 2: case "2": v = "Waiting for capture"; break; case 3: case "3": v = "In-Transit"; break; case 4: case "4" : v = "Ready for pickup"; break; default: v = my.status; break;}; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.hold_type()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.hold_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib', 'label' : 'Pickup Lib (Full Name)', 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'if (Number(my.ahr.pickup_lib())>=0) obj.data.hash.aou[ my.ahr.pickup_lib() ].name(); else my.ahr.pickup_lib().name();'
+			'render' : 'if (Number(my.ahr.pickup_lib())>=0) v = obj.data.hash.aou[ my.ahr.pickup_lib() ].name(); else v = my.ahr.pickup_lib().name(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : 'if (Number(my.ahr.pickup_lib())>=0) obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname(); else my.ahr.pickup_lib().shortname();'
+			'render' : 'if (Number(my.ahr.pickup_lib())>=0) v = obj.data.hash.aou[ my.ahr.pickup_lib() ].shortname(); else v = my.ahr.pickup_lib().shortname(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.acp ? my.acp.barcode() : "No Copy"'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.acp ? my.acp.barcode() : "No Copy"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.email_notify() == 1 ? "Yes" : "No"'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.email_notify() == 1 ? "Yes" : "No"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.expire_time()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.expire_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.fulfillment_time()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.fulfillment_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.holdable_formats()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.holdable_formats(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : getString('staff.ahr_id_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.id()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.id(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'phone_notify', 'label' : getString('staff.ahr_phone_notify_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.phone_notify()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.phone_notify(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'prev_check_time', 'label' : getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.prev_check_time()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.prev_check_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'requestor', 'label' : getString('staff.ahr_requestor_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.requestor()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.requestor(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'selection_depth', 'label' : getString('staff.ahr_selection_depth_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.selection_depth()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.selection_depth(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'target', 'label' : getString('staff.ahr_target_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.target()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.target(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : getString('staff.ahr_usr_label'), 'flex' : 1,
-			'primary' : false, 'hidden' : true,  'render' : 'my.ahr.usr()'
+			'primary' : false, 'hidden' : true,  'render' : 'v = my.ahr.usr(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1, 'sort_type' : 'title',
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.title() : "No Title?"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr ? my.mvr.title() : "No Title?"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr ? my.mvr.author() : "No Author?"'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr ? my.mvr.author() : "No Author?"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'edition', 'label' : 'Edition', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.edition();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.edition(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'isbn', 'label' : 'ISBN', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.isbn();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.isbn(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'pubdate', 'label' : 'PubDate', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.pubdate();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.pubdate(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'publisher', 'label' : 'Publisher', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.publisher();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.publisher(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'tcn', 'label' : 'TCN', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mvr.tcn();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mvr.tcn(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'notify_time', 'label' : 'Last Notify Time', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.notify_time();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.notify_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'notify_count', 'label' : 'Notices', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.notify_count();'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.notify_count(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_source', 'label' : 'Transit Source', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().source() ].shortname() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().source() ].shortname() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_source_send_time', 'label' : 'Transitted On', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().source_send_time() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.transit() ?  my.ahr.transit().source_send_time() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_lib', 'label' : 'Transit Destination', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().dest() ].shortname() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.transit() ?  obj.data.hash.aou[ my.ahr.transit().dest() ].shortname() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'transit_dest_recv_time', 'label' : 'Transit Completed On', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.ahr.transit() ?  my.ahr.transit().dest_recv_time() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'patron_name', 'label' : 'Patron Name', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.patron_barcode ? my.patron_barcode + " " + my.patron_family_name + ", " + my.patron_first_given_name : ""',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.patron_barcode ? my.patron_barcode + " " + my.patron_family_name + ", " + my.patron_first_given_name : ""; v;',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'callnumber', 'label' : 'Call Number', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.acn.label()',
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.acn.label(); v;',
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -906,6 +906,33 @@ circ.util.std_map_row_to_column = function(error_value) {
 			if (error_value) value = error_value; else value = '   ';
 		}
 		return value;
+	}
+}
+
+circ.util.std_map_row_to_columns = function(error_value) {
+	return function(row,cols) {
+		// row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
+		// cols contains all of the objects listed above in columns
+		
+		var obj = {}; 
+		JSAN.use('util.error'); obj.error = new util.error();
+		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+		JSAN.use('util.network'); obj.network = new util.network();
+		JSAN.use('util.money');
+
+		var my = row.my;
+		var values = [];
+		var cmd = '';
+		try { 
+			for (var i = 0; i < cols.length; i++) {
+				cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }';
+			}
+			eval( cmd );
+		} catch(E) {
+			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
+			if (error_value) { value = error_value; } else { value = '   ' };
+		}
+		return values;
 	}
 }
 

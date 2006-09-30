@@ -47,7 +47,7 @@ cat.copy_buckets.prototype = {
 		obj.list1.init(
 			{
 				'columns' : columns,
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');
@@ -76,7 +76,7 @@ cat.copy_buckets.prototype = {
 		obj.list2.init(
 			{
 				'columns' : columns,
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'on_select' : function(ev) {
 					try {
 						JSAN.use('util.functional');

@@ -19,62 +19,62 @@ patron.util.mbts_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.id()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.id(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : 'User', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.usr() ? "Id = " + my.mbts.usr() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.usr() ? "Id = " + my.mbts.usr() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_type()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'balance_owed', 'label' : 'Balance Owed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.balance_owed() )',
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.balance_owed() ); v;',
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_owed', 'label' : 'Total Billed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_owed() )',
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.total_owed() ); v;',
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_paid', 'label' : 'Total Paid', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mbts.total_paid() )',
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.total_paid() ); v;',
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_note', 'label' : 'Last Billing Note', 'flex' : 2,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_billing_note()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_billing_note(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_type', 'label' : 'Last Billing Type', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_billing_type()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_billing_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : 'Last Billed', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'util.date.formatted_date( my.mbts.last_billing_ts(), "" )'
+			'primary' : false, 'hidden' : true, 'render' : 'v = util.date.formatted_date( my.mbts.last_billing_ts(), "" ); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : 'Last Payment Note', 'flex' : 2,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_payment_note()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_payment_note(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_type', 'label' : 'Last Payment Type', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mbts.last_payment_type()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_payment_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : 'Last Payment', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'util.date.formatted_date( my.mbts.last_payment_ts(), "" )'
+			'primary' : false, 'hidden' : true, 'render' : 'v = util.date.formatted_date( my.mbts.last_payment_ts(), "" ); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Created', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : 'Closed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""; v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -117,40 +117,40 @@ patron.util.mb_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mb.id()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.id(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'voided', 'label' : 'Voided', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'get_bool( my.mb.voided() ) ? "Yes" : "No"'
+			'primary' : false, 'hidden' : false, 'render' : 'v = get_bool( my.mb.voided() ) ? "Yes" : "No"; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'voider', 'label' : 'Voider', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mb.voider() ? "Id = " + my.mb.voider() : ""'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.voider() ? "Id = " + my.mb.voider() : ""; v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : 'Void Time', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mb.void_time()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.void_time(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mb.amount() )',
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mb.amount() ); v;',
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'billing_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mb.billing_type()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mb.billing_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : 'When', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.date.formatted_date( my.mb.billing_ts(), "" )'
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.date.formatted_date( my.mb.billing_ts(), "" ); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Note', 'flex' : 2,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mb.note()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mb.note(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mb.xact()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.xact(); v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -194,36 +194,36 @@ patron.util.mp_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : 'ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mp.id()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mp.id(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.money.sanitize( my.mp.amount() )',
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mp.amount() ); v;',
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mp.payment_type()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.payment_type(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : 'When', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'util.date.formatted_date( my.mp.payment_ts(), "" )'
+			'primary' : false, 'hidden' : false, 'render' : 'v = util.date.formatted_date( my.mp.payment_ts(), "" ); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : 'Note', 'flex' : 2,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mp.note()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.note(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_ws', 'label' : 'Workstation', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'my.mp.cash_drawer().name()'
+			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.cash_drawer().name(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : 'Staff', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'JSAN.use("patron.util"); var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); s.card().barcode() + " @ " + obj.OpenILS.data.hash.aou[ s.home_ou() ].shortname();'
+			'primary' : false, 'hidden' : false, 'render' : 'JSAN.use("patron.util"); var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); v = s.card().barcode() + " @ " + obj.OpenILS.data.hash.aou[ s.home_ou() ].shortname(); v;'
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : 'Transaction ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'my.mp.xact()'
+			'primary' : false, 'hidden' : true, 'render' : 'v = my.mp.xact(); v;'
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -451,7 +451,7 @@ patron.util.std_map_row_to_columns = function(error_value) {
 		var cmd = '';
 		try { 
 			for (var i = 0; i < cols.length; i++) {
-				cmd += cols[i].render + '; values['+i+'] = v; ';
+				cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }';
 			}
 			eval( cmd );
 		} catch(E) {

@@ -550,7 +550,7 @@ patron.items.prototype = {
 		obj.list.init(
 			{
 				'columns' : columns,
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');
@@ -577,7 +577,7 @@ patron.items.prototype = {
 		obj.list2.init(
 			{
 				'columns' : columns2,
-				'map_row_to_column' : circ.util.std_map_row_to_column(),
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
 					JSAN.use('util.functional');

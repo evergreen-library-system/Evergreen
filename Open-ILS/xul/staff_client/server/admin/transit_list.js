@@ -121,7 +121,7 @@ admin.transit_list.prototype = {
 		obj.list.init( 
 			{ 
 				'columns' : columns, 
-				'map_row_to_column' : circ.util.std_map_row_to_column(), 
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(), 
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {
@@ -169,7 +169,7 @@ admin.transit_list.prototype = {
 		obj.list2.init( 
 			{ 
 				'columns' : columns, 
-				'map_row_to_column' : circ.util.std_map_row_to_column(), 
+				'map_row_to_columns' : circ.util.std_map_row_to_columns(), 
 				'retrieve_row' : function(params) {
 					var row = params.row;
 					try {

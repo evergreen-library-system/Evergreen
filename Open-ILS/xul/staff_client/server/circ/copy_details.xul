@@ -87,7 +87,7 @@
 					JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
 
 					JSAN.use('util.list'); g.list = new util.list('transit');
-					g.list.init( { 'columns' : columns, 'map_row_to_column' : circ.util.std_map_row_to_column(), });
+					g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
 					g.list.append( { 'row' : { 'my' : { 'atc' : g.transit, } } });
 	
 				} else {
@@ -114,7 +114,7 @@
 					);
 
 					JSAN.use('util.list'); g.list = new util.list('hold');
-					g.list.init( { 'columns' : columns, 'map_row_to_column' : circ.util.std_map_row_to_column(), });
+					g.list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
 					g.list.append( { 'row' : { 'my' : { 'ahr' : g.hold, 'acp' : g.copy, 'status' : status_robj, } } });
 	
 					JSAN.use('patron.util'); 
