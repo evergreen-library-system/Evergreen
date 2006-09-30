@@ -30,6 +30,7 @@ patron.display.prototype = {
 		obj.left_deck = new util.deck('patron_left_deck');
 
 		function spawn_checkout_interface() {
+			obj.reset_nav_styling('cmd_patron_checkout');
 			var frame = obj.right_deck.set_iframe(
 				urls.XUL_CHECKOUT,
 				{},
@@ -137,6 +138,7 @@ patron.display.prototype = {
 					'cmd_patron_items' : [
 						['command'],
 						function(ev) {
+							obj.reset_nav_styling('cmd_patron_items');
 							var frame = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_ITEMS
 								+ '?patron_id=' + window.escape( obj.patron.id() ),
@@ -160,6 +162,7 @@ patron.display.prototype = {
 					'cmd_patron_edit' : [
 						['command'],
 						function(ev) {
+								obj.reset_nav_styling('cmd_patron_edit');
 
 								function spawn_search(s) {
 									obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
@@ -224,6 +227,7 @@ patron.display.prototype = {
 					'cmd_patron_info' : [
 						['command'],
 						function(ev) {
+							obj.reset_nav_styling('cmd_patron_info');
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_INFO + '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
@@ -237,6 +241,7 @@ patron.display.prototype = {
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
+							obj.reset_nav_styling('cmd_patron_holds');
 							obj.right_deck.set_iframe(
 								urls.XUL_PATRON_HOLDS	
 								+ '?patron_id=' + window.escape( obj.patron.id() ),
@@ -256,6 +261,7 @@ patron.display.prototype = {
 					'cmd_patron_bills' : [
 						['command'],
 						function(ev) {
+							obj.reset_nav_styling('cmd_patron_bills');
 							var f = obj.right_deck.set_iframe(
 								urls.XUL_PATRON_BILLS
 								+ '?patron_id=' + window.escape( obj.patron.id() ),
@@ -437,6 +443,16 @@ patron.display.prototype = {
 		} else {
 			obj.render_search_form(params);
 		}
+	},
+
+	'reset_nav_styling' : function(btn) {
+		this.controller.view.cmd_patron_checkout.setAttribute('style','');
+		this.controller.view.cmd_patron_items.setAttribute('style','');
+		this.controller.view.cmd_patron_edit.setAttribute('style','');
+		this.controller.view.cmd_patron_info.setAttribute('style','');
+		this.controller.view.cmd_patron_holds.setAttribute('style','');
+		this.controller.view.cmd_patron_bills.setAttribute('style','');
+		this.controller.view[ btn ].setAttribute('style','background: blue; color: white;');
 	},
 
 	'render_search_form' : function(params) {
