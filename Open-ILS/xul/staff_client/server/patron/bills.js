@@ -816,6 +816,12 @@ patron.bills.prototype = {
 											xt_finish.setAttribute('value','Due: ' + r_circ.due_date().toString().substr(0,10) );
 										}
 										*/
+										if (! r_circ.checkin_time()) {
+											xt_value.setAttribute('style','background: red; color: white');
+											if (document.getElementById('circulating_hint')) {
+												document.getElementById('circulating_hint').hidden = false;
+											}
+										}
 										obj.network.simple_request(
 											'MODS_SLIM_RECORD_RETRIEVE_VIA_COPY',
 											[ r_circ.target_copy() ],

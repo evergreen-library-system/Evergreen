@@ -15,6 +15,8 @@
 		<label style="font-weight: bold;" value="Selected Balance:"/><label id="selected_balance"/>
 		<label style="font-weight: bold;" value="Un-Selected:"/><label id="unselected_balance"/>
 		<label style="font-weight: bold;" value="Voided:"/><label id="voided_balance"/>
+		<spacer flex="1"/>
+		<label id="circulating_hint" hidden="true" style="background: red; color: white" value="Red Items are still Checked Out"/>
 	</hbox>
 	<listbox id="bill_list" flex="1"/>
 	<hbox>
