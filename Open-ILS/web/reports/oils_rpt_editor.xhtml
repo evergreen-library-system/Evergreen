@@ -42,7 +42,96 @@
 			<tr><td colspan='2'><hr/></td></tr>
 			<tr>
 				<td colspan='2'>
-					Add scheduling interface ...
+					<table width="100%">
+						<tbody>
+							<tr>
+								<th>Run on:</th>
+								<td><input name="sched_start_date" type="text" size="10"/> .... put a calendar here?</td>
+							</tr>
+							<tr>
+								<th>At time:</th>
+								<td>
+									<select name="sched_start_hour">
+										<option value="00:00">Midnight</option>
+										<option value="01:00">1 AM</option>
+										<option value="02:00">2 AM</option>
+										<option value="03:00">3 AM</option>
+										<option value="04:00">4 AM</option>
+										<option value="05:00">5 AM</option>
+										<option value="06:00">6 AM</option>
+										<option value="07:00">7 AM</option>
+										<option value="09:00">8 AM</option>
+										<option value="09:00">9 AM</option>
+										<option value="10:00">10 AM</option>
+										<option value="11:00">11 AM</option>
+										<option value="12:00">Noon</option>
+										<option value="13:00">1 PM</option>
+										<option value="14:00">2 PM</option>
+										<option value="15:00">3 PM</option>
+										<option value="16:00">4 PM</option>
+										<option value="17:00">5 PM</option>
+										<option value="18:00">6 PM</option>
+										<option value="19:00">7 PM</option>
+										<option value="20:00">8 PM</option>
+										<option value="21:00">9 PM</option>
+										<option value="22:00">10 PM</option>
+										<option value="23:00">11 PM</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>Email completion notification to:</th>
+								<td><input name="sched_email" type="text" size="25"/></td>
+							</tr>
+							<tr>
+								<th>Recuring Report</th>
+								<td><input type="checkbox" name="sched_recur" value="t"/></td>
+							</tr>
+							<tr>
+								<th>Recurance Interval</th>
+								<td>
+									<select name="sched_recur_count">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+										<option>13</option>
+										<option>14</option>
+										<option>15</option>
+										<option>16</option>
+										<option>17</option>
+										<option>18</option>
+										<option>19</option>
+										<option>20</option>
+										<option>21</option>
+										<option>22</option>
+										<option>23</option>
+										<option>24</option>
+									</select>
+								</td>
+
+							</tr>
+							<tr>
+								<th>Recurance Interval</th>
+								<td>
+									<select name="sched_recur_interval_type">
+										<option value="hours">Hour(s)</option>
+										<option value="days">Day(s)</option>
+										<option value="weeks">Week(s)</option>
+										<option value="months">Month(s)</option>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</td>
 			</tr>
 			<tr>
