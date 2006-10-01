@@ -50,7 +50,7 @@ table { border-collapse: collapse; }
 }
 
 .oils_rpt_info_item {
-	width: 290px;
+	width: 310px;
 }
 
 .oils_rpt_info_title {
@@ -80,7 +80,7 @@ table { border-collapse: collapse; }
 
 .oils_rpt_info_div { 
 	text-align: center; 
-	width: 300px; 
+	width: 320px; 
 	padding-left: 10px; 
 	padding: 10px;
 	border-left: 2px solid #E0E0E0; 

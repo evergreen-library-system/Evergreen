@@ -193,10 +193,26 @@ function oilsRptPruneFromClause(relation, node) {
 	return false;
 }
 
+function oilsRptFilterName(path, tform, filter) {
+}
+
 /* adds an item to the display window */
 function oilsAddRptFilterItem(path, tform, filter) {
 	_debug("Adding filter item for "+path+" tform="+tform+" filter="+filter);
-	if( ! oilsAddSelectorItem(oilsRptFilterSelector, path) )
+
+	var name = oilsRptMakeLabel(path);
+	if(tform) name += ' ('+tform+')';
+	name += ' "' + filter + '"';
+
+	var epath = path + ':'+filter+':';
+	if(tform) epath += tform;
+
+	/*
+	if( ! oilsAddSelectorItem(oilsRptFilterSelector, path, name) )
+		return;
+		*/
+
+	if( ! oilsAddSelectorItem(oilsRptFilterSelector, epath, name) )
 		return;
 
 	var where = {
@@ -205,6 +221,10 @@ function oilsAddRptFilterItem(path, tform, filter) {
 		condition : {}
 	};
 	where.condition[filter] = oilsRptNextParam();
+
+	switch(tform) {
+		case 'substring' : where.column.params = oilsRptNextParam();
+	}
 
 	oilsRpt.def.where.push(where);
 	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
@@ -218,7 +238,25 @@ function oilsAddRptFilterItem(path, tform, filter) {
 
 /* removes selected items from the display window */
 function oilsDelSelectedFilterItems() {
+
+	/* the values in this list are formed:  <path>:<operation>:<tform (optional)> */
 	var list = oilsDelSelectedItems(oilsRptFilterSelector);
+
+	var flist = [];
+
+	for( var i = 0; i < list.length; i++ ) {
+		var item = list[i];
+		flist.push( {
+			path:		item.replace(/:.*/,''),
+			filter:	item.replace(/.*:(.*):.*/,'$1'),
+			tform:	item.replace(/.*?:.*?:(.*)/,'$1')
+		});
+	}
+
+
+	/* XXX refactor the below to take operation and transform into account
+		since the same path can be used multiple times as long as a different
+		filter and/or transform is used */
 
 	/* remove the de-selected columns from the report output */
 	oilsRpt.def.where = grep( oilsRpt.def.where, 
@@ -420,9 +458,30 @@ function oilsRptSetDataWindowActions(div) {
 
 
 function oilsRptDrawFilterWindow(path, col, cls, field) {
+
+	var fsel = $n(DOM.oils_rpt_filter_op_table,'selector');
+	for( var i = 0; i < fsel.options.length; i++ ){
+		var opt = fsel.options[i];
+		var dt = opt.getAttribute('datatype');
+		_debug(dt);
+
+		/* add a special case for boolean objects, since the only 
+			operation that makes sense is "="  */
+		if( field.datatype == 'bool' ) {
+			hideMe(opt);
+			if( opt.getAttribute('value') == '=' )
+				unHideMe(opt);
+
+		} else {
+			if( dt && dt != field.datatype )
+				hideMe(opt);
+			else unHideMe(opt);
+		}
+	}
+
+
 	DOM.oils_rpt_filter_submit.onclick = function() {
 		var tsel = $n(DOM.oils_rpt_filter_tform_table,'selector');
-		var fsel = $n(DOM.oils_rpt_filter_op_table,'selector');
 		var tform = getSelectorVal(tsel);
 		var filter = getSelectorVal(fsel);
 		oilsAddRptFilterItem(path, tform, filter);
