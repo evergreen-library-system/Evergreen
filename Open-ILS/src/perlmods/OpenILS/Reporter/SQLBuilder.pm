@@ -60,6 +60,10 @@ sub parse_report {
 
 	my $rs = OpenILS::Reporter::SQLBuilder::ResultSet->new;
 
+	if (!$report->{order_by} || @{$report->{order_by}} == 0) {
+		$report->{order_by} = $report->{select};
+	}
+
 	$rs->is_subquery( 1 ) if ( $report->{alias} );
 
 	$rs	->set_builder( $self )
@@ -826,6 +830,18 @@ sub toSQL {
 		$sql .= " BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
 	} elsif (lc($op) eq 'not between') {
 		$sql .= " NOT BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
+	} elsif (lc($op) eq 'like') {
+		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val =~ s/^'(.*)'$/$1/o;
+		$val =~ s/%/\\\\%/o;
+		$val =~ s/_/\\\\_/o;
+		$sql .= " LIKE '\%$val\%'";
+	} elsif (lc($op) eq 'ilike') {
+		$val = $$val[0] if (ref($val) eq 'ARRAY');
+		$val =~ s/^'(.*)'$/$1/o;
+		$val =~ s/%/\\\\%/o;
+		$val =~ s/_/\\\\_/o;
+		$sql .= " ILIKE '\%$val\%'";
 	} else {
 		$val = $$val[0] if (ref($val) eq 'ARRAY');
 		$sql .= " $op " . $val->toSQL;
