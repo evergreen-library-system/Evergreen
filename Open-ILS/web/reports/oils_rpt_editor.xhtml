@@ -24,7 +24,7 @@
 			</tr>
 			<tr><td colspan='2'><hr/></td></tr>
 			<tr>
-				<td>Choose a report folder as the destination: </td>
+				<td>Choose a folder to store this report definition: </td>
 				<td>
 					<div style='margin-bottom: 7px;'>
 						<span>Selected Folder: </span>
@@ -78,8 +78,18 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Email completion notification to:</th>
+								<th>Send completion notification to this Email address:</th>
 								<td><input name="sched_email" type="text" size="25"/></td>
+							</tr>
+							<tr>
+								<td>Choose a folder to store this report's output: </td>
+								<td>
+									<div style='margin-bottom: 7px;'>
+										<span>Selected Folder: </span>
+										<b id='oils_rpt_output_selected_folder'/>
+									</div>
+									<span id='oils_rpt_output_dest_folder'/>
+								</td>
 							</tr>
 							<tr>
 								<th>Recuring Report</th>
