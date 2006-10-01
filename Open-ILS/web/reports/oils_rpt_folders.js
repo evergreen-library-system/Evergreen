@@ -195,8 +195,10 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		var node = { folder : folder, treeId : id };
 		oilsRptFolderNodeCache[type][folder.id()] = node;
 		node.folderWindow = new oilsRptFolderWindow(type, folder.id())
+		/*
 		_debug("creating folder node for "+folder.name()+" : id = "+
 			folder.id()+' treeId = '+id + ' window id = ' + node.folderWindow.id);
+			*/
 	}
 
 
@@ -282,8 +284,10 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		}
 
 		var action = 'javascript:oilsRptObject.find('+node.folderWindow.id+').draw();';
+		/*
 		_debug('adding node '+fname+' id = ' + id + ' pid = '
 			+pid + ' parent = ' + folder.parent() + ' folder-window = ' + node.folderWindow.id );
+			*/
 
 		tree.addNode(id, pid, fname, action);
 		tree.close(pid);

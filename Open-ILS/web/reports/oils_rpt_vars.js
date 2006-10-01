@@ -71,6 +71,9 @@ var OILS_RPT_DELETE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.delet
 var OILS_RPT_TEMPLATE_HAS_RPTS	= 'open-ils.reporter:open-ils.reporter.template_has_reports';
 var OILS_RPT_CREATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.create';
 var OILS_RPT_CREATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.create';
+var OILS_RPT_CREATE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.create';
+var OILS_RPT_UPDATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.update';
+var OILS_RPT_UPDATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.update';
 
 var oilsRptCurrentFolderManager;
 

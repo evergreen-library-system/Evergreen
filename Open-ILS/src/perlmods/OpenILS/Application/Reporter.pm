@@ -44,6 +44,7 @@ sub retrieve_visible_folders {
 
 	my $class = 'rrf';
 	$class = 'rtf' if $type eq 'template';
+	$class = 'rof' if $type eq 'output';
 	my $flesh = {flesh => 1,flesh_fields => { $class => ['owner', 'share_with']}};
 
 	my $meth = "search_reporter_${type}_folder";
@@ -108,17 +109,34 @@ __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.report.create',
 	method => 'create_report');
 sub create_report {
-	my( $self, $conn, $auth, $report ) = @_;
+	my( $self, $conn, $auth, $report, $schedule ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
 	$report->owner($e->requestor->id);
-	my $tmpl = $e->create_reporter_report($report)
+	my $rpt = $e->create_reporter_report($report)
 		or return $e->die_event;
+	$schedule->report($rpt->id);
+	$schedule->runner($e->requestor->id);
+	$e->create_reporter_schedule($schedule) or return $e->die_event;
 	$e->commit;
-	return $tmpl;
+	return $rpt;
 }
 
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.scheduleer.schedule.create',
+	method => 'create_schedule');
+sub create_schedule {
+	my( $self, $conn, $auth, $schedule ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	my $sched = $e->create_reporter_schedule($schedule)
+		or return $e->die_event;
+	$e->commit;
+	return $sched;
+}
 
 __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.template.retrieve',
@@ -160,6 +178,27 @@ sub update_template {
 		or return $e->die_event;
 	return 0 if $t->owner ne $e->requestor->id;
 	$e->update_reporter_template($tmpl)
+		or return $e->die_event;
+	$e->commit;
+	return 1;
+}
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.report.update',
+	method => 'update_report');
+sub update_report {
+	my( $self, $conn, $auth, $report ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	my $r = $e->retrieve_reporter_report($report->id)
+		or return $e->die_event;
+	if( $r->owner ne $e->requestor->id ) {
+		$e->rollback;
+		return 0;
+	}
+	$e->update_reporter_report($report)
 		or return $e->die_event;
 	$e->commit;
 	return 1;

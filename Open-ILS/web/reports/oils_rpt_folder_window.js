@@ -15,7 +15,6 @@ function oilsRptFetchTemplate(id) {
 oilsRptSetSubClass('oilsRptFolderWindow', 'oilsRptObject');
 function oilsRptFolderWindow(type, folderId) { 
 	this.init();
-	_debug("initted folderwindow with id "+this.id);
 	var node = oilsRptCurrentFolderManager.findNode(type, folderId);
 	this.selector = DOM.oils_rpt_folder_contents_selector;
 	this.folderNode = node;
@@ -24,6 +23,13 @@ function oilsRptFolderWindow(type, folderId) {
 
 
 oilsRptFolderWindow.prototype.draw = function() {
+
+	_debug(this.folderNode.folder.owner().id() + ' : ' + USER.id());
+
+	if( this.folderNode.folder.owner().id() != USER.id() ) 
+		hideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
+	else unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
+
 	unHideMe(DOM.oils_rpt_folder_window_contents_div);
 	hideMe(DOM.oils_rpt_folder_manager_div);
 	hideMe(DOM.oils_rpt_top_folder);
@@ -259,8 +265,6 @@ oilsRptFolderWindow.prototype.setFolderEditActions = function() {
 		folder.shared( (shared == 'yes') ? 't' : 'f');
 		if( folder.shared() == 't' )
 			folder.share_with( obj.myOrgSelector.getValue() );
-
-		_debug("Creating new folder: " + js2JSON(folder));
 
 		if(confirm(DOM.oils_rpt_folder_manager_new_confirm.innerHTML + ' "'+folder.name()+'"')) {
 			oilsRptCreateFolder(folder, obj.type,

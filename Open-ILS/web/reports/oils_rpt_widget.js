@@ -26,6 +26,7 @@ oilsRptWidget.prototype.draw = function() {
 
 /* ----------------------------------------------------------- */
 
+/* multiple input boxes */
 oilsRptSetSubClass('oilsRptMultiInputWidget', 'oilsRptWidget');
 function oilsRptMultiInputWidget(args) {
 	this.initInputWidget(args);
@@ -99,7 +100,6 @@ oilsRptMultiWidget.prototype.addItem = function(name, val) {
 		if( this.dest.options[i].value == val ) 
 			return;
 	}
-
 	insertSelectorVal(this.dest, -1, name, val);
 }
 
@@ -129,13 +129,9 @@ oilsRptInputMultiWidget.prototype.initInputMultiWidget = function(args) {
 	this.setSource(elem('input',{type:'text'}));
 }
 
-/*
-oilsRptInputMultiWidget.prototype.addItem = function(name, val) {
-	//this.addItem(name, val);
-	this.source.value = "";
-	this.source.focus();
+oilsRptInputMultiWidget.prototype.draw = function() {
+	this.drawMultiWidget();
 }
-*/
 
 oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 	var obj = this;
@@ -143,6 +139,7 @@ oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 		obj.addItem(obj.source.value, obj.source.value);
 	}
 }
+
 
 /* ----------------------------------------------------------- */
 
@@ -242,21 +239,7 @@ oilsRptOrgMultiSelect.prototype.draw = function(org) {
 	this.drawMultiWidget();
 }
 
-/*
-oilsRptOrgMultiSelectWidget.prototype.getSourceCollector = function() {
-	var obj = this;
-	return function() {
-		for( var i = 0; i < obj.source.options.length; i++ )
-			obj.addItem(obj.source.options.name, obj.source.options.value);
-	}
-}
-*/
 
-/*
-oilsRptOrgMultiSelect.prototype.getValue = function() {
-	return getSelectedList(this.select);
-}
-*/
 
 
 

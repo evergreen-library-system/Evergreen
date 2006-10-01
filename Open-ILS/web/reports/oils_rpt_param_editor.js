@@ -5,6 +5,17 @@ function oilsRptParamEditor(report, tbody) {
 }
 
 
+oilsRptParamEditor.prototype.recur = function() {
+	var cb = $n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur');
+	return (cb.checked) ? 't' : 'f';
+}
+
+oilsRptParamEditor.prototype.recurInterval = function() {
+	var count = getSelectorVal($n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur_count'));
+	var intvl = getSelectorVal($n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur_interval_type'));
+	return count+''+intvl;
+}
+
 oilsRptParamEditor.prototype.draw = function() {
 	var params = this.report.gatherParams();
 	this.params = params;
@@ -37,13 +48,12 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	switch(param.op) {
 		case 'in':
 		case 'not in':
-
 			/* we have to special case org selection for now, 
 				until we have generic object fetch support */
 			if( cls == 'aou' ) {
 				return new oilsRptOrgMultiSelect({node:node});
 			} else {
-				return new oilsRptOrgMultiSelect({node:node});
+				return new oilsRptInputMultiWidget({node:node});
 			}
 
 		default:

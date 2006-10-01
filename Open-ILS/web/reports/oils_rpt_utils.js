@@ -239,7 +239,7 @@ function oilsRptSetSubClass(cls, parent) {
 
 function oilsRptUpdateFolder(folder, type, callback) {
 
-	_debug("updating folder " + folder.id() + ' : ' + folder.name());
+	_debug("updating folder " + js2JSON(folder));
 
 	var req = new Request(OILS_RPT_UPDATE_FOLDER, SESSION, type, folder);
 	if( callback ) {
@@ -258,7 +258,7 @@ function oilsRptUpdateFolder(folder, type, callback) {
 }
 
 function oilsRptCreateFolder(folder, type, callback) {
-	_debug("creating folder "+ folder.name());
+	_debug("creating folder "+ js2JSON(folder));
 	var req = new Request(OILS_RPT_CREATE_FOLDER, SESSION, type, folder);
 	if( callback ) {
 		req.callback( 
