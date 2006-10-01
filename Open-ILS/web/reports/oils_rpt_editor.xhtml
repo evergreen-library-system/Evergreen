@@ -42,15 +42,13 @@
 			<tr><td colspan='2'><hr/></td></tr>
 			<tr>
 				<td colspan='2'>
-					<table width="100%">
+					<table>
 						<tbody>
 							<tr>
 								<th>Run on:</th>
-								<td><input name="sched_start_date" type="text" size="10"/> .... put a calendar here?</td>
-							</tr>
-							<tr>
-								<th>At time:</th>
 								<td>
+									<input name="sched_start_date" type="text" size="10"/>
+										at
 									<select name="sched_start_hour">
 										<option value="00:00">Midnight</option>
 										<option value="01:00">1 AM</option>
@@ -116,12 +114,6 @@
 										<option>23</option>
 										<option>24</option>
 									</select>
-								</td>
-
-							</tr>
-							<tr>
-								<th>Recurance Interval</th>
-								<td>
 									<select name="sched_recur_interval_type">
 										<option value="hours">Hour(s)</option>
 										<option value="days">Day(s)</option>
