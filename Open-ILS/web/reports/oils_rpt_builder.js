@@ -202,36 +202,24 @@ function oilsRptPruneFromClause(relation, node) {
 		// first, descend into the tree, and prune leaves first
 		if( node[i].join ) {
 			oilsRptPruneFromClause(relation, node[i].join); 
-			if(node[i].join && oilsRptObjectKeys(node[i].join).length == 0)
-				delete node[i].join;
-
-			/* if there are no items in the select, where or having clauses with a relation
-				matching this nodes alias, we can safely remove this node from the tree */
-			if( node[i].alias == relation ) {
-				if(	!grep(oilsRpt.def.select,
-						function(i){ return (i.relation == node[i].alias)})
-					&& !grep(oilsRpt.def.where,
-						function(i){ return (i.relation == node[i].alias)})
-					&& !grep(oilsRpt.def.having,
-						function(i){ return (i.relation == node[i].alias)})
-				) {
-					delete node[i];
-					return true;
-				}
-			}
-		}
-
-		// now, if we're at the leaf to remove, remove it
-		if( node[i].alias == relation ) {
-			if( node[i].join ) {
-				/* if we have subtrees, don't delete our tree node */
-				return false;
-			} else {
-				delete node[i];
-				return true;
-			} 
+			if(oilsRptObjectKeys(node[i].join).length == 0) delete node[i].join;
 		}
 	}
+
+	// if we're at an unused empty leaf, remove it
+	if(  !node[i].join ) {
+		if(	!grep(oilsRpt.def.select,
+				function(i){ return (i.relation == node[i].alias)})
+			&& !grep(oilsRpt.def.where,
+				function(i){ return (i.relation == node[i].alias)})
+			&& !grep(oilsRpt.def.having,
+				function(i){ return (i.relation == node[i].alias)})
+		) {
+			delete node[i];
+			return true;
+		}
+	}
+
 	return false;
 }
 
