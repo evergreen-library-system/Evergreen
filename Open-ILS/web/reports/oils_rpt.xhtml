@@ -18,9 +18,11 @@
 			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
 		</div>
 
+		<!--
 		<div>
 			<a class='oils_rpt_main_link' href='javascript:_l("oils_rpt_builder.xhtml");'>Build a New Report Template</a>
 		</div>
+		-->
 
 		<div id='oils_rpt_tree_loading'>
 			Loading...
@@ -80,7 +82,38 @@
 						<div class='oils_rpt_folder_window'>
 							<!--#include virtual="oils_rpt_editor.xhtml"-->
 						</div>
+
+						<div id='oils_rpt_top_folder' class='hide_me oils_rpt_folder_window'>
+							<div>
+								<span><b>Create a new sub-folder</b>.  Folder type: </span> <b id='oils_rpt_top_folder_type'/>
+							</div>
+							<table class='oils_rpt_generic_table'>
+								<tbody>
+									<tr>
+										<td>Folder Name:</td>
+										<td><input id='oils_rpt_top_folder_name' type='text'/></td>
+									</tr>
+									<tr>
+										<td>Share this folder:</td>
+										<td>
+											<select id='oils_rpt_top_folder_shared'>
+												<option value='f'>Do not share</option>
+												<option value='t'>Share</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>Share with:</td>
+										<td><select id='oils_rpt_top_folder_lib_picker'/></td>
+									</tr>
+									<tr><td colspan='2' align='center'>
+										<input type='submit' value='Create Sub Folder' id='oils_rpt_top_folder_create'/>
+									</td></tr>
+								</tbody>
+							</table>
+						</div>
 					</td>
+
 
 				</tr>
 			</tbody>
@@ -89,6 +122,9 @@
 		<span class='hide_me' id='oils_rpt_generic_success'>
 			Action Succeeded
 		</span>
+
+
+
 
 	</body>
 </html>

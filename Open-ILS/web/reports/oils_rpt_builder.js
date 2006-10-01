@@ -14,7 +14,6 @@ function oilsInitReportBuilder() {
 	);
 
 	DOM.oils_rpt_builder_save_template.onclick = oilsReportBuilderSave;
-	oilsRpt.folder = new CGI().param('folder');
 }
 
 function oilsReportBuilderReset() {
@@ -32,16 +31,19 @@ function oilsReportBuilderReset() {
 }
 
 function oilsReportBuilderSave() {
-	if(!confirm('Name : '+oilsRpt.name + '\nDescription: ' 
-			+ oilsRpt.description+'\nSave Template?'))
-		return;
 
 	var tmpl = new rt();
-	tmpl.name( oilsRpt.name );
-	tmpl.description( oilsRpt.desc );
-	tmpl.ower(USER.id());
-	tmpl.folder(oilsRpt.folder);
+	tmpl.name(DOM.oils_rpt_builder_new_name.value);
+	tmpl.description(DOM.oils_rpt_builder_new_desc.value);
+	tmpl.owner(USER.id());
+	tmpl.folder(new CGI().param('folder'));
 	tmpl.data(js2JSON(oilsRpt.def));
+
+	_debug('folder = ' + tmpl.folder());
+
+	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
+		return;
+
 
 	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);
 	req.callback(

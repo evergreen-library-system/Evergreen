@@ -26,6 +26,7 @@ function oilsRptFolderWindow(type, folderId) {
 oilsRptFolderWindow.prototype.draw = function() {
 	unHideMe(DOM.oils_rpt_folder_window_contents_div);
 	hideMe(DOM.oils_rpt_folder_manager_div);
+	hideMe(DOM.oils_rpt_top_folder);
 
 	DOM.oils_rpt_folder_window_manage_tab.onclick = function() {
 		unHideMe(DOM.oils_rpt_folder_window_contents_div);
@@ -62,6 +63,18 @@ oilsRptFolderWindow.prototype.draw = function() {
 }
 
 oilsRptFolderWindow.prototype.drawEditActions = function() {
+
+	DOM.oils_rpt_folder_window_contents_new_template.onclick = function() {
+		var s = location.search+'';
+		s = s.replace(/\&folder=\d+/,'');
+		goTo( 'oils_rpt_builder.xhtml'+s+'&folder='+obj.folderNode.folder.id());
+	}
+
+	if( this.type == 'template' )
+		unHideMe(DOM.oils_rpt_folder_window_contents_new_template)
+	else
+		hideMe(DOM.oils_rpt_folder_window_contents_new_template)
+
 	if( this.folderNode.folder.owner().id() != USER.id() )
 		hideMe(DOM.oils_rpt_folder_manager_tab_table);
 	else
@@ -95,9 +108,6 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 			case 'delete':
 				obj.doFolderDelete();
 				break;
-			case 'create_template':
-				goTo( 'oils_rpt_builder.xhtml'+location.search+'&folder='+obj.folderNode.folder.id());
-				break;
 		}
 	}
 
@@ -120,6 +130,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 		case 'create_report' :
 			hideMe(DOM.oils_rpt_folder_table_right_td);
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
+			unHideMe(DOM.oils_rpt_editor_div);
 			new oilsRptReportEditor(new oilsReport(objs[0]), this);
 			break;
 		case 'delete_report' :
