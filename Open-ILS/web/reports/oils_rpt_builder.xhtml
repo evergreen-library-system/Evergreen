@@ -33,10 +33,13 @@
 					<td id='oils_rpt_table_left_td' align='left'>
 						<table id='oils_rpt_name_table'><tbody>
 							<tr>
-								<td width='20%'>Report Name: </td>
+								<td width='20%'>Template Name: </td>
 								<td><input size='32' onchange="oilsRpt.name=this.value"/></td>
 							</tr><tr>
-								<td>Report Type: </td>
+								<td>Template Description: </td>
+								<td><textarea cols='50' rows='2' id='oils_rpt_builder_desc_text'/></td>
+							</tr><tr>
+								<td>Template Type: </td>
 								<td><select id='oils_rpt_builder_type_selector'/></td>
 							</tr>
 						</tbody></table>
@@ -45,12 +48,12 @@
 					</td>
 					<td id='oils_rpt_table_right_td' align='right'>
 						<div class='oils_rpt_info_div'>
-							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Display Items</div>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Display Items</div>
 							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
 							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected</button>
 						</div>
 						<div class='oils_rpt_info_div'>
-							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Filters</div>
+							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Filters</div>
 							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
 							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> Remove Selected</button>
 						</div>
@@ -63,7 +66,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<span class='hide_me' id='oils_rpt_tree_label'>Report Types</span>
+		<span class='hide_me' id='oils_rpt_tree_label'>Template Types</span>
 
 
 		<div id='oils_rpt_column_editor' class='floaty hide_me'>
@@ -95,12 +98,20 @@
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>Select what filter should be applied to this field:</div>
 					<div>
-						<!--#set var="OILS_RPT_TFORM_TABLE_ID" value="oils_rpt_filter_tform_table"-->
-						<!--#include virtual="oils_rpt_tforms.xhtml"-->
-					</div>
-					<div>
-						<!--#set var="OILS_RPT_OP_TABLE_ID" value="oils_rpt_filter_op_table"-->
-						<!--#include virtual="oils_rpt_ops.xhtml"-->
+						<table><tbody><tr>
+							<td>Choose a Transform: </td>
+							<td>
+								<!--#set var="OILS_RPT_TFORM_TABLE_ID" value="oils_rpt_filter_tform_table"-->
+								<!--#include virtual="oils_rpt_tforms.xhtml"-->
+							</td>
+						</tr>
+						<tr>	
+							<td>Choose a Filter: </td>
+							<td>
+								<!--#set var="OILS_RPT_OP_TABLE_ID" value="oils_rpt_filter_op_table"-->
+								<!--#include virtual="oils_rpt_ops.xhtml"-->
+							</td>
+						</tr></tbody></table>
 					</div>
 
 				</div>

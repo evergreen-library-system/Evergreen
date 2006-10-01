@@ -269,6 +269,9 @@ button {
 	width: 100%;
 }
 
+#oils_rpt_name_table tr { border: 1px solid #808080; }
+#oils_rpt_name_table td { padding: 5px; }
+
 
 
 .oils_rpt_table_row_borders { width: 100%; }

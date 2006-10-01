@@ -6,7 +6,6 @@ function oilsInitReportBuilder() {
 	oilsReportBuilderReset();
 	DOM.oils_rpt_table.onclick = 
 		function(){hideMe(DOM.oils_rpt_column_editor)};
-	//oilsRptBuildCalendars();
 	oilsDrawRptTree(
 		function() { 
 			hideMe(DOM.oils_rpt_tree_loading); 
@@ -28,26 +27,6 @@ function oilsReportBuilderReset() {
 	oilsRptDebug();
 	oilsRptResetParams();
 }
-
-
-/*
-function oilsRptBuildCalendars() {
-	Calendar.setup({
-		inputField  : "oils_rpt_filter_tform_timestamp_input", // id of the input field
-		ifFormat    : "%Y-%m-%d", // format of the input field
-		button      : "oils_rpt_filter_tform_timestamp_cal",  // trigger for the calendar (button ID)
-		align       : "Tl", // alignment (defaults to "Bl")
-		singleClick : true
-	});
-	Calendar.setup({
-		inputField  : "oils_rpt_filter_tform_timestamp_input_2", // id of the input field
-		ifFormat    : "%Y-%m-%d", // format of the input field
-		button      : "oils_rpt_filter_tform_timestamp_cal2",  // trigger for the calendar (button ID)
-		align       : "Tl", // alignment (defaults to "Bl")
-		singleClick : true
-	});
-}
-*/
 
 
 /* adds an item to the display window */
@@ -151,18 +130,9 @@ function oilsDelSelectedDisplayItems() {
 				var d = list[j];
 				var col = i.column;
 
-				/* if this columsn has a transform, 
-					it will be an object { tform => column } */
-				if( typeof col != 'string' ) 
-					for( var c in col ) col = col[c];
-
-				/* if this transform requires params, the column 
-					will be the first item in the param set array */
-				if( typeof col != 'string' ) col = col[0];
-
-				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
-					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
-					if( param ) delete oilsRpt.params[param];
+				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col.colname ) {
+					//var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
+					//	if( param ) delete oilsRpt.params[param];
 					return false;
 				}
 			}
@@ -172,7 +142,7 @@ function oilsDelSelectedDisplayItems() {
 
 	if(!oilsRpt.def.select) {
 		oilsRpt.def.select = [];
-		oilsReportBuilderReset();
+		//oilsReportBuilderReset();
 
 	} else {
 		for( var j = 0; j < list.length; j++ ) 
@@ -224,14 +194,27 @@ function oilsRptPruneFromClause(relation, node) {
 }
 
 /* adds an item to the display window */
-function oilsAddRptFilterItem(val) {
-	oilsAddSelectorItem(oilsRptFilterSelector, val);
+function oilsAddRptFilterItem(path, tform, filter) {
+	_debug("Adding filter item for "+path+" tform="+tform+" filter="+filter);
+	if( ! oilsAddSelectorItem(oilsRptFilterSelector, path) )
+		return;
+
+	var where = {
+		relation: oilsRptPathRel(path), 
+		column:   { transform: tform, colname: oilsRptPathCol(path) },
+		condition : {}
+	};
+	where.condition[filter] = oilsRptNextParam();
+
+	oilsRpt.def.where.push(where);
+	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
+	oilsRptDebug();
 }
 
 /* removes a specific item from the display window */
-function oilsDelFilterItem(val) {
-	oilsDelSelectorItem(oilsRptFilterSelector, val);
-}
+//function oilsDelFilterItem(path) {
+	//oilsDelSelectorItem(oilsRptFilterSelector, path);
+//}
 
 /* removes selected items from the display window */
 function oilsDelSelectedFilterItems() {
@@ -244,16 +227,7 @@ function oilsDelSelectedFilterItems() {
 				var d = list[j];
 				var col = i.column;
 
-				/* if this columsn has a transform, 
-					it will be an object { tform => column } */
-				if( typeof col != 'string' ) 
-					for( var c in col ) col = col[c];
-
-				/* if this transform requires params, the column 
-					will be the first item in the param set array */
-				if( typeof col != 'string' ) col = col[0];
-
-				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
+				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col.colname ) {
 					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
 					if( param ) delete oilsRpt.params[param];
 					return false;
@@ -265,7 +239,7 @@ function oilsDelSelectedFilterItems() {
 
 	if(!oilsRpt.def.where) {
 		oilsRpt.def.where = [];
-		oilsReportBuilderReset();
+		//oilsReportBuilderReset();
 
 	} else {
 		for( var j = 0; j < list.length; j++ ) 
@@ -446,9 +420,39 @@ function oilsRptSetDataWindowActions(div) {
 
 
 function oilsRptDrawFilterWindow(path, col, cls, field) {
+	DOM.oils_rpt_filter_submit.onclick = function() {
+		var tsel = $n(DOM.oils_rpt_filter_tform_table,'selector');
+		var fsel = $n(DOM.oils_rpt_filter_op_table,'selector');
+		var tform = getSelectorVal(tsel);
+		var filter = getSelectorVal(fsel);
+		oilsAddRptFilterItem(path, tform, filter);
+	}
+	oilsRptShowFilters($n(DOM.oils_rpt_filter_tform_table,'selector'), field.datatype, false, true);
+		
+	/*
 	oilsRptCurrentFilterTform = new oilsRptTFormManager(DOM.oils_rpt_filter_tform_table);
 	oilsRptCurrentFilterTform.build(field.datatype, false, true);
 	oilsRptCurrentFilterOpManager = new oilsRptOpManager(DOM.oils_rpt_filter_op_table);
+	*/
+}
+
+function oilsRptShowFilters( selector, dtype, show_agg, show_noagg ) {
+	for( var i = 0; i < selector.options.length; i++ ) {
+		var opt = selector.options[i];
+		var t = opt.getAttribute('datatype');
+		if( t && t != dtype ){
+			hideMe(opt);
+		} else {
+			var ag = opt.getAttribute('aggregate');
+			if( ag && show_agg )
+				unHideMe(opt);
+			else if( ag && ! show_agg )
+				hideMe(opt)
+			else if( !ag && show_noagg )
+				unHideMe(opt);
+			else hideMe(opt);
+		}
+	}
 }
 
 
@@ -459,31 +463,30 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 
 	DOM.oils_rpt_tform_submit.onclick = 
 		function(){ 
-			/*
-			var tform = oilsRptGetTform(dtype);
-			_debug('found tform: ' + js2JSON(tform));
-			var params = getRptTformParams(dtype, tform);
-			_debug('found tform params: ' + js2JSON(params));
-			tform = (tform == 'raw') ? null : tform;
-			*/
-
-			var tform = oilsRptCurrentTform.getCurrentTForm();
-			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform.value, tform.params ) 
+			var sel = $n(DOM.oils_rpt_tform_table,'selector');
+			var tform = getSelectorVal(sel);
+			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform ) 
 		};
 
 
 	DOM.oils_rpt_tform_label_input.focus();
 	DOM.oils_rpt_tform_label_input.select();
 
+	/*
 	oilsRptCurrentTform = new oilsRptTFormManager(DOM.oils_rpt_tform_table);
 	oilsRptCurrentTform.build(dtype, true, true);
+	*/
+
+	_debug($n(DOM.oils_rpt_tform_table,'selector'));
+
+	oilsRptShowFilters($n(DOM.oils_rpt_tform_table,'selector'), dtype, true, true);
 
 	/*
 	oilsRptHideTformFields();
 	oilsRptUnHideTformFields(dtype);
 	*/
 
-	_debug("Building transiform window for datatype "+dtype);
+	_debug("Building transform window for datatype "+dtype);
 
 	/*
 	unHideMe($('oils_rpt_tform_'+dtype+'_div'));

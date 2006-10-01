@@ -10,7 +10,7 @@ function oilsNextNumericId() {
 }
 
 function oilsRptNextParam() {
-	return '::PARAM'+ (oilsRptID2++);
+	return '::P'+ (oilsRptID2++);
 }
 
 function oilsRptFetchOrgTree(callback) {

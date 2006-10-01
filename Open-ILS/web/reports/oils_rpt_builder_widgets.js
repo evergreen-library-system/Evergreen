@@ -8,16 +8,17 @@ oilsRptBuilderWidget.prototype.init = function(node) {
 	_debug(this.node.id);
 
 	this.selector = $n(this.node, 'selector');
-	this.widgetNode = $n(this.node, 'widget_td');
+//	this.widgetNode = $n(this.node, 'widget_td');
 	var obj = this;
 	this.selector.onchange = function() { 
 		obj.showWidgets(
 			obj.selector.options[obj.selector.selectedIndex]);
 	}
-	this.hideWidgets();
+	//this.hideWidgets();
 }
 
 
+/*
 oilsRptBuilderWidget.prototype.hideWidgets = function(node) {
 	if(!node) node = this.widgetNode;
 	if( node.nodeType != 1 ) return;
@@ -37,6 +38,7 @@ oilsRptBuilderWidget.prototype.showWidgets = function(opt) {
 	var widget = opt.getAttribute('widget');
 	if( widget ) unHideMe($n(this.node, widget));
 }
+*/
 
 oilsRptBuilderWidget.prototype.getCurrentOpt = function() {
 	return this.selector.options[this.selector.selectedIndex];
@@ -78,11 +80,12 @@ oilsRptTFormManager.prototype.getCurrentTForm = function() {
 		datatype  : opt.getAttribute('datatype'),
 		aggregate : opt.getAttribute('aggregate'),
 	};
-	data.params = this.getWidgetParams(data);
+	//data.params = this.getWidgetParams(data);
 	return data;
 }
 
 
+/*
 oilsRptTFormManager.prototype.getWidgetParams = function(obj) {
 	switch(obj.datatype) {
 		case 'string' :
@@ -96,6 +99,7 @@ oilsRptTFormManager.prototype.getWidgetParams = function(obj) {
 	}
 	return null;
 }
+*/
 
 
 
@@ -106,4 +110,5 @@ oilsRptOpManager.prototype = new oilsRptBuilderWidget();
 oilsRptOpManager.prototype.constructor = oilsRptOpManager;
 oilsRptOpManager.baseClass = oilsRptBuilderWidget.prototype.constructor;
 function oilsRptOpManager(node) { this.init(node); }
+
 
