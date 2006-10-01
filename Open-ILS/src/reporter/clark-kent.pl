@@ -14,7 +14,7 @@ use Text::CSV_XS;
 use Spreadsheet::WriteExcel::Big;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
-use OpenSRF::Utils::Logger qw/:level/;
+#use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
@@ -41,10 +41,6 @@ if (-e $lockfile) {
 	die "I seem to be running already. If not remove $lockfile, try again\n";
 }
 
-open(F, ">$lockfile");
-print F $$;
-close F;
-
 OpenSRF::System->bootstrap_client( config_file => $config );
 
 # XXX Get this stuff from the settings server
@@ -62,7 +58,13 @@ my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';p
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
-daemonize("Clark Kent, waiting for trouble") if ($daemon);
+if ($daemon) {
+	open(F, ">$lockfile");
+	print F $$;
+	close F;
+	daemonize("Clark Kent, waiting for trouble");
+}
+
 
 DAEMON:
 
@@ -119,6 +121,7 @@ while (my $r = $sth->fetchrow_hashref) {
 	$b->register_params( JSON->JSON2perl( $r->{report}->{data} ) );
 
 	$r->{resultset} = $b->parse_report( JSON->JSON2perl( $r->{report}->{template}->{data} ) );
+	$r->{resultset}->relative_time($r->{run_time});
 	push @reports, $r;
 }
 
@@ -139,7 +142,7 @@ for my $r ( @reports ) {
 	try {
 		$dbh->do(<<'		SQL',{}, $r->{id});
 			UPDATE	reporter.schedule
-			  SET	start_time = 'now',
+			  SET	start_time = now()
 			  WHERE	id = ?;
 		SQL
 
@@ -174,26 +177,36 @@ for my $r ( @reports ) {
 	
 		my $output_dir = "$output_base/$s2/$s3/$output";
 
-		if ( $r->{csv_format} eq 't') {
+		if ( $r->{csv_format} ) {
 			build_csv("$output_dir/report-data.csv", $r);
 		}
 
-		if ( $r->{excel_format} eq 't') {
+		if ( $r->{excel_format} ) {
 			build_excel("$output_dir/report-data.xls", $r);
 		}
 
-		if ( $r->{html_format} eq 't') {
+		if ( $r->{html_format} ) {
 			mkdir("$output_dir/html");
 			build_html("$output_dir/report-data.html", $r);
 		}
 
-
 		$dbh->begin_work;
 
-		if ($r->{report}->{recur} eq 't') {
+		if ($r->{report}->{recur} ) {
 			my $sql = <<'			SQL';
-				INSERT INTO reporter.schedule ( report, folder, runner, run_time, email, csv_format, excel_format, html_format)
-					VALUES ( ?, ?, ?, NOW() + ?, ?, ?, ?, ? );
+				INSERT INTO reporter.schedule (
+						report,
+						folder,
+						runner,
+						run_time,
+						email,
+						csv_format,
+						excel_format,
+						html_format,
+						chart_pie,
+						chart_bar,
+						chart_line )
+					VALUES ( ?, ?, ?, ?::TIMESTAMPTZ + ?, ?, ?, ?, ?, ?, ?, ? );
 			SQL
 
 			$dbh->do(
@@ -202,17 +215,21 @@ for my $r ( @reports ) {
 				$r->{report}->{id},
 				$r->{folder},
 				$r->{runner},
+				$r->{run_time},
 				$r->{report}->{recurance},
 				$r->{email},
 				$r->{csv_format},
 				$r->{excel_format},
-				$r->{html_format}
+				$r->{html_format},
+				$r->{chart_pie},
+				$r->{chart_bar},
+				$r->{chart_line},
 			);
 		}
 
 		$dbh->do(<<'		SQL',{}, $r->{id});
 			UPDATE	reporter.schedule
-			  SET	complete_time = 'now'
+			  SET	complete_time = now()
 			  WHERE	id = ?;
 		SQL
 
@@ -225,8 +242,8 @@ for my $r ( @reports ) {
 		$dbh->do(<<'		SQL',{}, $e, $r->{id});
 			UPDATE	reporter.schedule
 			  SET	error_text = ?,
-			  	complete_time = 'now',
-				error_code = 1,
+			  	complete_time = now(),
+				error_code = 1
 			  WHERE	id = ?;
 		SQL
 	};
@@ -297,13 +314,22 @@ sub build_html {
 		</style>
 	</head>
 	<body>
+		<center>
 		<h2><u>$$r{report}{name}</u></h2>
 		$$r{report}{description}<br/><br/><br/>
 	HEADER
 
 	
 	# add a link to the raw output html
-	print $index "<a href='report-data.html.raw.html'>Tabular Output</a><br/><br/><br/><br/>";
+	print $index "<a href='report-data.html.raw.html'>Tabular Output</a>";
+
+	# add a link to the CSV output
+	print $index " -- <a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
+
+	# add a link to the CSV output
+	print $index " -- <a href='report-data.xls'>Excel Output</a>" if ($r->{excel_format});
+
+	print $index "<br/><br/><br/><br/></center>";
 
 	# create the raw output html file
 	print $raw "<html><head><title>$$r{report}{name}</title>";
@@ -329,7 +355,7 @@ sub build_html {
 	$raw->close;
 
 	# Time for a pie chart
-	if ($r->{chart_pie} eq 't') {
+	if ($r->{chart_pie}) {
 		my $pics = draw_pie($r, $file);
 		for my $pic (@$pics) {
 			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
@@ -338,7 +364,7 @@ sub build_html {
 
 	print $index '<br/><br/><br/><br/>';
 	# Time for a bar chart
-	if ($r->{chart_bar} eq 't') {
+	if ($r->{chart_bar}) {
 		my $pics = draw_bars($r, $file);
 		for my $pic (@$pics) {
 			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
@@ -347,7 +373,7 @@ sub build_html {
 
 	print $index '<br/><br/><br/><br/>';
 	# Time for a bar chart
-	if ($r->{chart_line} eq 't') {
+	if ($r->{chart_line}) {
 		my $pics = draw_lines($r, $file);
 		for my $pic (@$pics) {
 			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";

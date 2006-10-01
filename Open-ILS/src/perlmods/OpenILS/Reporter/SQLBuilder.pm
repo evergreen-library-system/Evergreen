@@ -31,6 +31,13 @@ sub builder {
 	return $self->{_builder};
 }
 
+sub relative_time {
+	my $self = shift;
+	my $t = shift;
+	$self->builder->{_relative_time} = $t if (defined $t);
+	return $self->builder->{_relative_time};
+}
+
 sub resolve_param {
 	my $self = shift;
 	my $val = shift;
@@ -311,13 +318,18 @@ package OpenILS::Reporter::SQLBuilder::Input::Transform::relative_year;
 sub toSQL {
 	my $self = shift;
 
+	my $rtime = $self->relative_time || 'now';
+
+	$rtime =~ s/\\/\\\\/go;
+	$rtime =~ s/'/\\'/go;
+
 	my $val = $self->{params};
 	$val = $$val[0] if (ref($val));
 
 	$val =~ s/\\/\\\\/go;
 	$val =~ s/'/\\'/go;
 
-	return "EXTRACT(YEAR FROM NOW() + '$val years')";
+	return "EXTRACT(YEAR FROM '$rtime'::TIMESTAMPTZ + '$val years')";
 }
 
 
@@ -327,14 +339,19 @@ package OpenILS::Reporter::SQLBuilder::Input::Transform::relative_month;
 sub toSQL {
 	my $self = shift;
 
+	my $rtime = $self->relative_time || 'now';
+
+	$rtime =~ s/\\/\\\\/go;
+	$rtime =~ s/'/\\'/go;
+
 	my $val = $self->{params};
 	$val = $$val[0] if (ref($val));
 
 	$val =~ s/\\/\\\\/go;
 	$val =~ s/'/\\'/go;
 
-	return "EXTRACT(YEAR FROM NOW() + '$val months')" .
-		" || '-' || LPAD(EXTRACT(MONTH FROM NOW() + '$val months'),2,'0')";
+	return "EXTRACT(YEAR FROM '$rtime'::TIMESTAMPTZ + '$val months')" .
+		" || '-' || LPAD(EXTRACT(MONTH FROM '$rtime'::TIMESTAMPTZ + '$val months'),2,'0')";
 }
 
 
@@ -344,13 +361,18 @@ package OpenILS::Reporter::SQLBuilder::Input::Transform::relative_date;
 sub toSQL {
 	my $self = shift;
 
+	my $rtime = $self->relative_time || 'now';
+
+	$rtime =~ s/\\/\\\\/go;
+	$rtime =~ s/'/\\'/go;
+
 	my $val = $self->{params};
 	$val = $$val[0] if (ref($val));
 
 	$val =~ s/\\/\\\\/go;
 	$val =~ s/'/\\'/go;
 
-	return "DATE(NOW() + '$val days')";
+	return "DATE('$rtime'::TIMESTAMPTZ + '$val days')";
 }
 
 
@@ -360,13 +382,18 @@ package OpenILS::Reporter::SQLBuilder::Input::Transform::relative_week;
 sub toSQL {
 	my $self = shift;
 
+	my $rtime = $self->relative_time || 'now';
+
+	$rtime =~ s/\\/\\\\/go;
+	$rtime =~ s/'/\\'/go;
+
 	my $val = $self->{params};
 	$val = $$val[0] if (ref($val));
 
 	$val =~ s/\\/\\\\/go;
 	$val =~ s/'/\\'/go;
 
-	return "EXTRACT(WEEK FROM NOW() + '$val weeks')";
+	return "EXTRACT(WEEK FROM '$rtime'::TIMESTAMPTZ + '$val weeks')";
 }
 
 
