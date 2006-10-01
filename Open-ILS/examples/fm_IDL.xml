@@ -2227,7 +2227,7 @@
 			<field reporter:label="Publication Year (normalized)" name="pubdate" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="int"/>
 			<field reporter:label="Series Title (normalized)" name="series_title" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field reporter:label="Series Statement (normalized)" name="series_statement" oils_obj:array_position="15" oils_persist:virtual="false" />
-			<field reporter:label="Summary" name="summary (normalized)" oils_obj:array_position="16" oils_persist:virtual="false" />
+			<field reporter:label="Summary (normalized)" name="summary" oils_obj:array_position="16" oils_persist:virtual="false" />
 			<field reporter:label="ISBN" name="isbn" oils_obj:array_position="17" oils_persist:virtual="false" />
 			<field reporter:label="ISSN" name="issn" oils_obj:array_position="18" oils_persist:virtual="false" />
 			<field reporter:label="Topic Subjects (normalized)" name="topic_subject" oils_obj:array_position="19" oils_persist:virtual="false" />
