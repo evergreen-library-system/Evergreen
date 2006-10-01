@@ -94,6 +94,10 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 				break;
 			case 'delete':
 				obj.doFolderDelete();
+				break;
+			case 'create_template':
+				goTo( 'oils_rpt_builder.xhtml'+location.search+'&folder='+obj.folderNode.folder.id());
+				break;
 		}
 	}
 

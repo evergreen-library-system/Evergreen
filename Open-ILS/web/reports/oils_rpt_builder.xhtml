@@ -31,18 +31,23 @@
 			<tbody>
 				<tr>
 					<td id='oils_rpt_table_left_td' align='left'>
+
 						<table id='oils_rpt_name_table'><tbody>
 							<tr>
 								<td width='20%'>Template Name: </td>
 								<td><input size='32' onchange="oilsRpt.name=this.value"/></td>
 							</tr><tr>
 								<td>Template Description: </td>
-								<td><textarea cols='50' rows='2' id='oils_rpt_builder_desc_text'/></td>
+								<td><textarea cols='50' rows='2' id='oils_rpt_builder_desc_text' onchange='oilsRpt.desc = this.value;'/></td>
 							</tr><tr>
 								<td>Template Type: </td>
 								<td><select id='oils_rpt_builder_type_selector'/></td>
+							</tr><tr>
+								<td>Save this Template: </td>
+								<td><input type='submit' value='Save Template' id='oils_rpt_builder_save_template'/></td>
 							</tr>
 						</tbody></table>
+
 						<div id='oils_rpt_tree_div'>
 						</div>
 					</td>

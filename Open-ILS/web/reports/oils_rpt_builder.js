@@ -12,6 +12,9 @@ function oilsInitReportBuilder() {
 			unHideMe(DOM.oils_rpt_table); 
 		}
 	);
+
+	DOM.oils_rpt_builder_save_template.onclick = oilsReportBuilderSave;
+	oilsRpt.folder = new CGI().param('folder');
 }
 
 function oilsReportBuilderReset() {
@@ -27,6 +30,33 @@ function oilsReportBuilderReset() {
 	oilsRptDebug();
 	oilsRptResetParams();
 }
+
+function oilsReportBuilderSave() {
+	if(!confirm('Name : '+oilsRpt.name + '\nDescription: ' 
+			+ oilsRpt.description+'\nSave Template?'))
+		return;
+
+	var tmpl = new rt();
+	tmpl.name( oilsRpt.name );
+	tmpl.description( oilsRpt.desc );
+	tmpl.ower(USER.id());
+	tmpl.folder(oilsRpt.folder);
+	tmpl.data(js2JSON(oilsRpt.def));
+
+	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);
+	req.callback(
+		function(r) {
+			var res = r.getResultObject();
+			if( res != 0 ) {
+				oilsRptAlertSuccess();
+				_l('oils_rpt.xhtml');
+			}
+		}
+	);
+	
+	req.send();
+}
+
 
 
 /* adds an item to the display window */
@@ -160,6 +190,7 @@ function oilsDelSelectedDisplayItems() {
 	oilsRptDebug();
 }
 
+
 /* for each item in the path list, remove the associated data
 	from the "from" clause */
 
@@ -167,6 +198,7 @@ function oilsRptPruneFromClause(relation, node) {
 	_debug("removing relation from 'from' clause " + relation);
 	if(!node) node = oilsRpt.def.from.join;
 	for( var i in node ) {
+		_debug("looking at node "+node[i].alias);
 		if( node[i].alias == relation ) {
 			if( node[i].join ) {
 				/* if we have subtrees, don't delete our tree node */
@@ -193,24 +225,24 @@ function oilsRptPruneFromClause(relation, node) {
 	return false;
 }
 
-function oilsRptFilterName(path, tform, filter) {
+function oilsRptMkFilterTags(path, tform, filter) {
+	var name = oilsRptMakeLabel(path);
+	if(tform) name += ' ('+tform+')';
+	name += ' "' + filter + '"';
+	var epath = path + ':'+filter+':';
+	if(tform) epath += tform;
+
+	return [ name, epath ];
 }
+
 
 /* adds an item to the display window */
 function oilsAddRptFilterItem(path, tform, filter) {
 	_debug("Adding filter item for "+path+" tform="+tform+" filter="+filter);
 
-	var name = oilsRptMakeLabel(path);
-	if(tform) name += ' ('+tform+')';
-	name += ' "' + filter + '"';
-
-	var epath = path + ':'+filter+':';
-	if(tform) epath += tform;
-
-	/*
-	if( ! oilsAddSelectorItem(oilsRptFilterSelector, path, name) )
-		return;
-		*/
+	var name = oilsRptMkFilterTags(path, tform, filter);
+	var epath = name[1];
+	name = name[0];
 
 	if( ! oilsAddSelectorItem(oilsRptFilterSelector, epath, name) )
 		return;
@@ -239,7 +271,7 @@ function oilsAddRptFilterItem(path, tform, filter) {
 /* removes selected items from the display window */
 function oilsDelSelectedFilterItems() {
 
-	/* the values in this list are formed:  <path>:<operation>:<tform (optional)> */
+	/* the values in this list are formed:  <path>:<operation>:<transform> */
 	var list = oilsDelSelectedItems(oilsRptFilterSelector);
 
 	var flist = [];
@@ -248,7 +280,7 @@ function oilsDelSelectedFilterItems() {
 		var item = list[i];
 		flist.push( {
 			path:		item.replace(/:.*/,''),
-			filter:	item.replace(/.*:(.*):.*/,'$1'),
+			operation:	item.replace(/.*:(.*):.*/,'$1'),
 			tform:	item.replace(/.*?:.*?:(.*)/,'$1')
 		});
 	}
@@ -261,35 +293,54 @@ function oilsDelSelectedFilterItems() {
 	/* remove the de-selected columns from the report output */
 	oilsRpt.def.where = grep( oilsRpt.def.where, 
 		function(i) {
-			for( var j = 0; j < list.length; j++ ) {
-				var d = list[j];
+			for( var j = 0; j < flist.length; j++ ) {
+				var fil = flist[j];
 				var col = i.column;
+				var frel = oilsRptPathRel(fil.path);
+				var fcol = oilsRptPathCol(fil.path);
 
-				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col.colname ) {
-					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
-					if( param ) delete oilsRpt.params[param];
-					return false;
+				var op = oilsRptObjectKeys(i.condition)[0];
+
+				if(	frel == i.relation && 
+						fcol == col.colname && 
+						fil.operation == op &&
+						fil.tform == col.transform ) {
+						/* we have found a where clause with the same 
+							relation, column,  operation and transform */
+						
+						/* we aren't setting params on template build.. */
+						//var param = (i.column.params) ? i.columns.params.match(/::P\d*/) : null;
+						//if( param ) delete oilsRpt.params[param];
+						//param = (i.condition[op]) ? i.condition[op].match(/::P\d*/) : null;
+						//if( param ) delete oilsRpt.params[param];
+
+						return false;
 				}
 			}
 			return true;
 		}
 	);
 
-	if(!oilsRpt.def.where) {
+	if(!oilsRpt.def.where) 
 		oilsRpt.def.where = [];
-		//oilsReportBuilderReset();
 
-	} else {
-		for( var j = 0; j < list.length; j++ ) 
-			/* if there are no items left in the "select", "where", or "having" clauses 
-				for the given relation, trim this relation from the "from" clause */
-			if(	!grep(oilsRpt.def.select,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.where,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.having,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+
+	for( var j = 0; j < flist.length; j++ ) {
+		var path = flist[j].path;
+		var rel = oilsRptPathRel(path);
+		/* if there are no items left in the "select", "where", or "having" clauses 
+			for the given relation, trim this relation from the "from" clause */
+
+		var func = function(i){ return (i.relation == rel); };
+
+		if(	!grep(oilsRpt.def.select, func) &&
+				!grep(oilsRpt.def.where, func) &&
+				!grep(oilsRpt.def.having, func) ) {
+
+			_debug("pruning item with path "+ path + ' and relation '+ rel);
+
+			oilsRptPruneFromClause(oilsRptPathRel(path)); 
+		}
 	}
 
 	oilsRptDebug();
@@ -326,7 +377,7 @@ function oilsDelSelectedAggFilterItems() {
 				if( typeof col != 'string' ) col = col[0];
 
 				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
-					var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
+					var param = (i.alias) ? i.alias.match(/::P\d*/) : null;
 					if( param ) delete oilsRpt.params[param];
 					return false;
 				}
