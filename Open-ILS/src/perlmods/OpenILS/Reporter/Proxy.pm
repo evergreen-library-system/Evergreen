@@ -33,6 +33,13 @@ sub handler {
 	my $auth_ses = $cgi->cookie('ses');
 	my $ws_ou = $cgi->cookie('ws_ou') || 1;
 
+	# push everyone to the secure site
+	if ($url =~ /^http:/o) {
+		$url =~ s/^http:/https:/o;
+		print "Location: $url\n\n";
+		return Apache2::Const::OK;
+	}
+
 	if (!$auth_ses) {
 		my $u = $cgi->param('user');
 		my $p = $cgi->param('passwd');
@@ -40,37 +47,37 @@ sub handler {
 		my $url = $cgi->url;
 
 		if (!$u) {
-			if ($url =~ /^http:/o) {
-				$url =~ s/^http:/https:/o;
-				print "Location: $url\n\n";
-				return Apache2::Const::OK;
-			}
 
 			print $cgi->header(-type=>'text/html', -expires=>'-1d');
 			print <<"			HTML";
+
 <html>
 	<head>
 		<title>Report Output Login</title>
 	</head>
 	<body>
+		<br/><br/><br/>
+		<center>
 		<form method='POST'>
-			<table style='border-collapse: collapse;'>
+			<table style='border-collapse: collapse; border: 1px solid black;'>
 				<tr>
 					<th colspan='2' align='center'><u>Please log in to view reports</u></th>
 				</tr>
 				<tr>
-					<th>Username or barcode:</th>
+					<th align="right">Username or barcode:</th>
 					<td><input type="text" name="user"/></td>
 				</tr>
 				<tr>
-					<th>Password:</th>
+					<th align="right">Password:</th>
 					<td><input type="password" name="passwd"/></td>
 				</tr>
 			</table>
 			<input type="submit" value="Log in"/>
 		</form>
+		</center>
 	</body>
 </html>
+
 			HTML
 			return Apache2::Const::OK;
 		}
