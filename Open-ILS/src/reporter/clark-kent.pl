@@ -28,10 +28,11 @@ use Tie::IxHash;
 use open ':utf8';
 
 
-my ($count, $config, $lockfile, $daemon) = (1, '/openils/conf/bootstrap.conf', '/tmp/reporter-LOCK');
+my ($count, $config, $sleep_interval, $lockfile, $daemon) = (1, '/openils/conf/bootstrap.conf', 10, '/tmp/reporter-LOCK');
 
 GetOptions(
 	"daemon"	=> \$daemon,
+	"sleep"		=> \$sleep_interval,
 	"concurrency=i"	=> \$count,
 	"boostrap=s"	=> \$config,
 	"lockfile=s"	=> \$lockfile,
@@ -84,7 +85,7 @@ if ($count <= $running) {
 		$dbh->disconnect;
 		sleep 1;
 		POSIX::waitpid( -1, POSIX::WNOHANG );
-		sleep 60;
+		sleep $sleep_interval;
 		goto DAEMON;
 	}
 	print "Already running maximum ($running) concurrent reports\n";
@@ -256,7 +257,7 @@ for my $r ( @reports ) {
 if ($daemon) {
 	sleep 1;
 	POSIX::waitpid( -1, POSIX::WNOHANG );
-	sleep 60;
+	sleep $sleep_interval;
 	goto DAEMON;
 }
 
