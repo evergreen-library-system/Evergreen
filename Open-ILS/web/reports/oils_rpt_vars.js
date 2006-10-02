@@ -12,12 +12,16 @@ var oilsRptTree;
 
 var oilsRptCurrentOrg;
 
+var oilsRptCookie;
+
 var oilsRptTemplateFolderTree;
 var oilsRptReportFolderTree;
 var oilsRptOutputFolderTree;
 var oilsRptSharedTemplateFolderTree;
 var oilsRptSharedReportFolderTree;
 var oilsRptSharedOutputFolderTree;
+
+var oilsRptOutputLimit = 10;
 
 
 /* URL to retrieve the IDL from */

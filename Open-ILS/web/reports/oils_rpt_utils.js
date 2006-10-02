@@ -46,7 +46,7 @@ function oilsRptCacheObject(type, obj, id) {
 function oilsRptGetCache(type, id) {
 	if( !oilsRptObjectCache[type] )
 		return null;
-	return oilsRptObjectCache[type][i];
+	return oilsRptObjectCache[type][id];
 }
 
 
@@ -275,10 +275,54 @@ function oilsRptCreateFolder(folder, type, callback) {
 	}
 }
 
+/*
 function oilsRptFetchReport(id, callback) {
 	var req = new Request(OILS_RPT_FETCH_REPORT, SESSION, id);
 	req.callback(function(r){ callback(r.getResultObject());});
 	req.send();
+}
+*/
+
+function oilsRptFetchReport(id, callback) {
+	var r = oilsRptGetCache('rr', id);
+	if(r) return callback(r);
+	var req = new Request(OILS_RPT_FETCH_REPORT, SESSION, id);
+	req.callback( 
+		function(res) { 
+			var rpt = res.getResultObject();
+			oilsRptCacheObject('rr', rpt, id);
+			callback(rpt);
+		}
+	);
+	req.send();
+}
+
+function oilsRptFetchUser(id, callback) {
+	var r = oilsRptGetCache('au', id);
+	if(r) return callback(r);
+	var req = new Request(FETCH_FLESHED_USER, SESSION, id, []);
+	req.callback( 
+		function(res) { 
+			var user = res.getResultObject();
+			oilsRptCacheObject('au', user, id);
+			callback(user);
+		}
+	);
+	req.send();
+}
+
+function oilsRptFetchTemplate(id, callback) {
+	var t = oilsRptGetCache('rt', id);
+	if(t) return callback(t);
+	var r = new Request(OILS_RPT_FETCH_TEMPLATE, SESSION, id);
+	r.callback( 
+		function(res) { 
+			var tmpl = res.getResultObject();
+		oilsRptCacheObject('rt', tmpl, id);
+			callback(tmpl);
+		}
+	);
+	r.send();
 }
 
 
@@ -288,3 +332,5 @@ function oilsRptAlertSuccess() { alertId('oils_rpt_generic_success'); }
 function oilsRptBuildOutputLink(tid, rid, sid) {
 	return OILS_IDL_OUTPUT_URL + tid+'/'+rid+'/'+sid+'/'+ OILS_IDL_OUTPUT_FILE;
 }
+
+

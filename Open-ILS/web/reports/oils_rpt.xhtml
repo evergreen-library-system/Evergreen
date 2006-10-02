@@ -13,9 +13,13 @@
 		<!--#include virtual="oils_rpt_common.xhtml"-->
 	</head>
 
-	<body onload='oilsInitReports();oilsRtpInitFolders();' onunload='oilsCleanupReports();'>
+	<body onload='if(oilsInitReports())oilsRtpInitFolders();' onunload='oilsCleanupReports();'>
 		<div class='welcome_box'>
 			<span>You are logged in as </span><b><span id='oils_rpt_user'/></b>
+		</div>
+
+		<div id='oils_rpt_permission_denied' class='hide_me'>
+			You do not have sufficient permissions to run reports
 		</div>
 
 		<!--

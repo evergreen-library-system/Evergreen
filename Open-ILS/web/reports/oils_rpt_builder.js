@@ -2,7 +2,7 @@
   * grabs and builds the IDL tree
   */
 function oilsInitReportBuilder() {
-	oilsInitReports();
+	if(!oilsInitReports()) return false;
 	oilsReportBuilderReset();
 	DOM.oils_rpt_table.onclick = 
 		function(){hideMe(DOM.oils_rpt_column_editor)};

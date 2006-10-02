@@ -88,8 +88,20 @@ oilsRptReportEditor.prototype.save = function() {
 	schedule.folder(this.selectedOutputFolder.folder.id());
 	schedule.email(DOM.oils_rpt_param_editor_sched_email.value);
 	schedule.run_time(time);
+	schedule.runner(USER.id());
+
+	schedule.excel_format((DOM.oils_rpt_format_excel.checked) ? 't' : 'f');
+	schedule.html_format((DOM.oils_rpt_format_html.checked) ? 't' : 'f');
+	schedule.csv_format((DOM.oils_rpt_format_csv.checked) ? 't' : 'f');
+	schedule.chart_pie((DOM.oils_rpt_format_chart_pie.checked) ? 't' : 'f');
+	schedule.chart_bar((DOM.oils_rpt_format_chart_bar.checked) ? 't' : 'f');
+	schedule.chart_line((DOM.oils_rpt_format_chart_line.checked) ? 't' : 'f');
+
+	debugFMObject(schedule);
 
 	_debug("Built schedule:\n"+js2JSON(schedule));
+
+	return; /* XXX */
 
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
 	req.callback(

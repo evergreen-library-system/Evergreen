@@ -1,14 +1,5 @@
 
-function oilsRptFetchTemplate(id) {
-	var t = oilsRptGetCache('rt', id);
-	if(!t) {
-		var r = new Request(OILS_RPT_FETCH_TEMPLATE, SESSION, id);
-		r.send(true);
-		t = r.result();
-		oilsRptCacheObject('rt', t, id);
-	}
-	return t;
-}
+
 
 
 /* generic folder window class */
@@ -25,6 +16,13 @@ function oilsRptFolderWindow(type, folderId) {
 oilsRptFolderWindow.prototype.draw = function() {
 
 	_debug(this.folderNode.folder.owner().id() + ' : ' + USER.id());
+
+	var obj = this;
+	setSelector(DOM.oils_rpt_output_limit_selector, oilsRptOutputLimit);
+	DOM.oils_rpt_output_limit_redraw.onclick = function() {
+		oilsRptOutputLimit = getSelectorVal(DOM.oils_rpt_output_limit_selector);
+		obj.draw();
+	}
 
 	if( this.folderNode.folder.owner().id() == USER.id() && this.type == 'template') 
 		unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
@@ -50,7 +48,6 @@ oilsRptFolderWindow.prototype.draw = function() {
 	hideMe(DOM.oils_rpt_folder_table_alt_td);
 	this.drawFolderDetails();
 
-	var obj = this;
 	DOM.oils_rpt_folder_content_action_go.onclick = 
 		function() {obj.doFolderAction()}
 
@@ -68,6 +65,12 @@ oilsRptFolderWindow.prototype.draw = function() {
 		else hideMe(opt);
 	}
 	sel.options[0].selected = true;
+
+	/*
+	hideMe(DOM.oils_rpt_output_limit_selector.parentNode);
+	if( this.type == 'output' )
+		unHideMe(DOM.oils_rpt_output_limit_selector.parentNode);
+		*/
 
 	this.drawEditActions();
 }
@@ -218,31 +221,71 @@ oilsRptFolderWindow.prototype.drawFolderDetails = function() {
 oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 	removeChildren(this.selector);
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
-		SESSION, this.type, this.folderNode.folder.id());
+		SESSION, this.type, this.folderNode.folder.id(), oilsRptOutputLimit);
 
-	if(this.type == 'output') 
-		req = new Request(OILS_RPT_FETCH_OUTPUT, SESSION, this.folderNode.folder.id());
-
+	if(this.type == 'output') {
+		req = new Request(OILS_RPT_FETCH_OUTPUT, 
+			SESSION, this.folderNode.folder.id(), oilsRptOutputLimit);
+	}
 
 	var obj = this;
 	removeChildren(obj.selector);
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			obj.fmTable = drawFMObjectTable( 
-				{ 
-					dest : obj.selector, 
-					obj : res,
-					selectCol : true,
-					selectColName : 'Select',
-					selectAllName : 'All',
-					selectNoneName : 'None'
-				}
-			);
-			if(callback) callback();
+			if( obj.type == 'output' ) {
+				obj.fleshSchedules(res, 0);
+			} else {
+				obj.fmTable = drawFMObjectTable( 
+					{ 
+						dest : obj.selector, 
+						obj : res,
+						selectCol : true,
+						selectColName : 'Select',
+						selectAllName : 'All',
+						selectNoneName : 'None'
+					}
+				);
+			}
 		}
 	);
 	req.send();
+}
+
+
+oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx) {
+	if( idx >= list.length ) {
+		this.fmTable = drawFMObjectTable( 
+			{ 
+				dest : this.selector, 
+				obj : list,
+				selectCol : true,
+				selectColName : 'Select',
+				selectAllName : 'All',
+				selectNoneName : 'None'
+			}
+		);
+		return;
+	}
+
+	var sched = list[idx];
+	var obj = this;
+	oilsRptFetchUser(sched.runner(),
+		function(user) {
+			sched.runner(user);
+			oilsRptFetchReport(sched.report(),
+				function(report) {
+					sched.report(report);
+					oilsRptFetchTemplate(report.template(),
+						function(template) {
+							report.template(template);
+							obj.fleshSchedules(list, ++idx);
+						}
+					);
+				}
+			);
+		}
+	);
 }
 
 

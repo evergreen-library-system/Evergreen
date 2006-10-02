@@ -5,15 +5,21 @@ function oilsInitReports() {
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
 
-	//DEBUG = 1;
-
 	var cgi = new CGI();
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
-	oilsRptDebugEnabled = cgi.param('dbg');
-	if(oilsRptDebugEnabled) DEBUG = 1;
 
+	fetchHighestPermOrgs(SESSION, USER.id(), ['RUN_REPORTS']);
+	if( PERMS['RUN_REPORTS'] == -1 ) {
+		unHideMe(DOM.oils_rpt_permission_denied);
+		hideMe(DOM.oils_rpt_tree_loading);
+		return false;
+	}
+
+	oilsRptCookie = new HTTP.Cookies();
 	oilsRptCurrentOrg = USER.ws_ou();
+	cookieManager.write(COOKIE_SES, SESSION, -1, '/');
+	cookieManager.write('ws_ou', USER.ws_ou(), -1, '/');
 
 	oilsRptFetchOrgTree(
 		function() {
@@ -25,6 +31,7 @@ function oilsInitReports() {
 			)
 		}
 	);
+	return true;
 }
 
 function oilsRtpInitFolders() {
