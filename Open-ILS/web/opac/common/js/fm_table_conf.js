@@ -80,35 +80,35 @@ var FM_TABLE_DISPLAY = {
 		name : 'name',
 		fields : [
 			'name',
+			'description'
 			'template',
-			'owner',
 			'create_time',
 			'recur',
 			'recurance',
-			'description'
+			'owner',
 		]
 	},
 	'rt' : {
 		name : 'name',
 		fields : [
 			'name',
-			'owner',
-			'create_time',
 			'description'
+			'create_time',
+			'owner',
 		]
 	},
 	'rs' : {
 		fields : [
-			'complete_time',
-			'csv_format',
-			'email',
-			'error_text',
-			'excel_format',
-			'folder',
-			'html_format',
 			'report',
 			'run_time',
+			'complete_time',
 			'runner'
+			'email',
+			'folder',
+			'error_text',
+			'excel_format',
+			'html_format',
+			'csv_format',
 		]
 	}
 }
