@@ -1103,7 +1103,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 						"Print",
 						"Don't Print",
 						null,
-						"Check here to confirm this message"
+						"Check here to confirm this message",
+						'/xul/server/skin/media/images/turtle.gif'
 					);
 					if (rv == 0) {
 						try {
@@ -1187,7 +1188,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 				"Print",
 				"Don't Print",
 				null,
-				"Check here to confirm this message"
+				"Check here to confirm this message",
+				'/xul/server/skin/media/images/turtle.gif'
 			);
 			if (rv == 0) {
 				try {
