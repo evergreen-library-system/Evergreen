@@ -43,7 +43,7 @@ function oilsReportBuilderSave() {
 		return;
 
 	debugFMObject(tmpl);
-	return; /* XXX */
+	//return; /* XXX */
 
 
 	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);
@@ -73,7 +73,9 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 
 	/* add this item to the select blob */
 	var sel = {
-		relation: oilsRptPathRel(path), 
+		relation: hex_md5(oilsRptPathRel(path)), 
+		_relation: oilsRptPathRel(path), 
+		path : path,
 		alias:    name,
 		column:   { transform: tform, colname: oilsRptPathCol(path) }
 	};
@@ -122,7 +124,9 @@ function oilsRptBuildFromClause(path) {
 
 		/* extract relevant info */
 		tobj.table = node.table;
-		tobj.alias = newpath;
+		tobj.path = newpath;
+		tobj.alias = hex_md5(newpath);
+
 		_debug('field type is ' + field.type);
 		if( i == (parts.length - 2) ) break;
 
@@ -156,16 +160,19 @@ function oilsDelDisplayItem(val) {
 function oilsDelSelectedDisplayItems() {
 	var list = oilsDelSelectedItems(oilsRptDisplaySelector);
 
+	_debug('deleting list: ' + list);
+
 	/* remove the de-selected columns from the report output */
 	oilsRpt.def.select = grep( oilsRpt.def.select, 
 		function(i) {
 			for( var j = 0; j < list.length; j++ ) {
-				var d = list[j];
+				var d = list[j]; /* path */
 				var col = i.column;
 
-				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col.colname ) {
-					//var param = (i.alias) ? i.alias.match(/::PARAM\d*/) : null;
-					//	if( param ) delete oilsRpt.params[param];
+				_debug('in delete, looking at list = '+d+' : col = ' + 
+					col.colname + ' : relation = ' + i.relation + ' : encoded = ' + hex_md5(oilsRptPathRel(d)) );
+
+				if( hex_md5(oilsRptPathRel(d)) == i.relation && oilsRptPathCol(d) == col.colname ) {
 					return false;
 				}
 			}
@@ -173,21 +180,22 @@ function oilsDelSelectedDisplayItems() {
 		}
 	);
 
-	if(!oilsRpt.def.select) {
-		oilsRpt.def.select = [];
-		//oilsReportBuilderReset();
+	if(!oilsRpt.def.select) oilsRpt.def.select = [];
 
-	} else {
-		for( var j = 0; j < list.length; j++ ) 
-			/* if there are no items left in the "select", "where", or "having" clauses 
-				for the given relation, trim this relation from the "from" clause */
-			if(	!grep(oilsRpt.def.select,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.where,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.having,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+	for( var j = 0; j < list.length; j++ ) {
+		/* if there are no items left in the "select", "where", or "having" clauses 
+			for the given relation, trim this relation from the "from" clause */
+		debug('seeing if we can prune from clause with relation = ' + hex_md5(oilsRptPathRel(list[j])));
+		if(	!grep(oilsRpt.def.select,
+				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
+			&& !grep(oilsRpt.def.where,
+				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
+			&& !grep(oilsRpt.def.having,
+				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
+		) {
+			_debug('pruning from clause');
+			oilsRptPruneFromClause(oilsRptPathRel(list[j]));
+		}
 	}
 
 	oilsRptDebug();
@@ -200,8 +208,9 @@ function oilsDelSelectedDisplayItems() {
 function oilsRptPruneFromClause(relation, node) {
 	_debug("removing relation from 'from' clause " + relation);
 	if(!node) node = oilsRpt.def.from.join;
+
 	for( var i in node ) {
-		_debug("looking at node "+node[i].alias);
+		_debug("looking at node "+node[i].path);
 		// first, descend into the tree, and prune leaves first
 		if( node[i].join ) {
 			oilsRptPruneFromClause(relation, node[i].join); 
@@ -209,14 +218,20 @@ function oilsRptPruneFromClause(relation, node) {
 		}
 	}
 
+	_debug(js2JSON(node));
+
 	// if we're at an unused empty leaf, remove it
-	if(  !node[i].join ) {
+	if(  !node.join ) {
+
+		var key = oilsRptObjectKeys(node)[0];
+		_debug("pruning from clause with "+node[key].alias);
+
 		if(	!grep(oilsRpt.def.select,
-				function(i){ return (i.relation == node[i].alias)})
+				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
 			&& !grep(oilsRpt.def.where,
-				function(i){ return (i.relation == node[i].alias)})
+				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
 			&& !grep(oilsRpt.def.having,
-				function(i){ return (i.relation == node[i].alias)})
+				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
 		) {
 			delete node[i];
 			return true;
@@ -249,7 +264,9 @@ function oilsAddRptFilterItem(path, tform, filter) {
 		return;
 
 	var where = {
-		relation: oilsRptPathRel(path), 
+		relation: hex_md5(oilsRptPathRel(path)), 
+		_relation: oilsRptPathRel(path), 
+		path : path,
 		column:   { transform: tform, colname: oilsRptPathCol(path) },
 		condition : {}
 	};

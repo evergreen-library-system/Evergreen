@@ -31,7 +31,7 @@ oilsRptParamEditor.prototype.draw = function() {
 	for( var p = 0; p < params.length; p++ ) {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
-		$n(row, 'object').appendChild(text(oilsRptMakeLabel(par.relation)));
+		$n(row, 'object').appendChild(text(oilsRptMakeLabel(oilsRptPathRel(par.path))));
 		$n(row, 'column').appendChild(text(par.column.colname));
 		$n(row, 'transform').appendChild(text(par.column.transform));
 		$n(row, 'action').appendChild(text(par.op));
@@ -43,7 +43,10 @@ oilsRptParamEditor.prototype.draw = function() {
 
 
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {
-	var cls = param.relation.split(/-/).pop();
+	//var cls = param.relation.split(/-/).pop();
+	var path = param.path.split(/-/);
+	path.pop();
+	var cls = path.pop();
 	_debug("building widget with param class:" + cls + ' col: '+param.column.colname + ' op: '+ param.op);
 	switch(param.op) {
 		case 'in':

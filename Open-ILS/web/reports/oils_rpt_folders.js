@@ -139,19 +139,17 @@ oilsRptFolderManager.prototype.createTopFolder = function(type, orgsel) {
 	if( folder.shared() == 't' )
 		folder.share_with( orgsel.getValue() );
 
-	if(confirm(DOM.oils_rpt_folder_manager_new_confirm.innerHTML + ' "'+folder.name()+'"')) {
-		oilsRptCreateFolder(folder, type,
-			function(success) {
-				if(success) {
-					oilsRptAlertSuccess();
-					oilsRptCurrentFolderManager.draw();
-					hideMe(DOM.oils_rpt_top_folder);
-					hideMe(DOM.oils_rpt_folder_table_alt_td);
-					unHideMe(DOM.oils_rpt_editor_div);
-				}
+	oilsRptCreateFolder(folder, type,
+		function(success) {
+			if(success) {
+				oilsRptAlertSuccess();
+				oilsRptCurrentFolderManager.draw();
+				hideMe(DOM.oils_rpt_top_folder);
+				hideMe(DOM.oils_rpt_folder_table_alt_td);
+				unHideMe(DOM.oils_rpt_editor_div);
 			}
-		);
-	}
+		}
+	);
 }
 
 

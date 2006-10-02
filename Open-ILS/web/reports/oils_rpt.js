@@ -122,6 +122,7 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 			op			: op,
 			value		: this.params[key],
 			column	: obj.column,
+			path		: obj.path,
 			type		: type, 
 			relation : obj.relation,
 			field		: field
