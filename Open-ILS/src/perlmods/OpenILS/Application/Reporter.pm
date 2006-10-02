@@ -77,15 +77,52 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_folder_data {
-	my( $self, $conn, $auth, $type, $folderid ) = @_;
+	my( $self, $conn, $auth, $type, $folderid, $limit ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
 	my $meth = "search_reporter_${type}";
 	my $class = 'rr';
 	$class = 'rt' if $type eq 'template';
-	my $flesh = {flesh => 1,flesh_fields => { $class => ['owner']}};
+	my $flesh = {
+		flesh => 1,
+		flesh_fields => { $class => ['owner']}, 
+		order_by => { $class => 'create_time DESC'} 
+	};
+	$flesh->{limit} = $limit if $limit;
 	return $e->$meth([{ folder => $folderid }, $flesh]); 
+}
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.schedule.retrieve_by_folder',
+	method => 'retrieve_schedules');
+sub retrieve_schedules {
+	my( $self, $conn, $auth, $folderId, $limit ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('RUN_REPORTS');
+
+	my $search = { folder => $folderId };
+	my $query = [
+		{ folder => $folderId },
+		{ order_by => { rs => 'run_time DESC' } }
+	];
+
+	$query->[1]->{limit} = $limit if $limit;
+	return $e->search_reporter_schedule($query);
+}
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.schedule.retrieve',
+	method => 'retrieve_schedules');
+sub retrieve_schedule {
+	my( $self, $conn, $auth, $sched_id ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	return $e->event unless $e->allowed('RUN_REPORTS');
+	my $s = $e->retrieve_reporter_schedule($sched_id)
+		or return $e->event;
+	return $s;
 }
 
 
