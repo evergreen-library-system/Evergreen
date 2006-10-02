@@ -637,18 +637,16 @@ function mkYearMonDay(date) {
 
 function debugFMObject(obj) {
 	if(typeof obj != 'object' ) return;
-	var keys = fmclasses[obj.classname];
-	keys.sort();
 	_debug("---------------------");
+	var keys = fmclasses[obj.classname];
+	if(!keys) { _debug(js2JSON(obj)); return; }
+
+	keys.sort();
 	for( var i = 0; i < keys.length; i++ ) {
 		var val = obj[keys[i]]();
 		if( typeof val == 'object' ) {
-			if( val._isfieldmapper) {
-				_debug(keys[i]+' :=\n');
-				_debugFMObject(val);
-			} else {
-				_debug(keys[i]+' = ' +js2JSON(val));
-			}
+			_debug(keys[i]+' :=\n');
+			_debugFMObject(val);
 		} else {
 			_debug(keys[i]+' = ' +val);
 		}
