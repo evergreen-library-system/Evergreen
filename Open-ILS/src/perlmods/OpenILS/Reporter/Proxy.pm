@@ -32,6 +32,63 @@ sub handler {
 	my $auth_ses = $cgi->cookie('ses');
 	my $ws_ou = $cgi->cookie('ws_ou') || 1;
 
+	if (!$auth_ses) {
+		my $u = $cgi->param('user');
+		my $p = $cgi->param('passwd');
+
+		my $url = $cgi->url;
+
+		if (!$u) {
+			if ($url =~ /^http:/o) {
+				$url =~ s/^http:/https:/o;
+				print "Location: $url\n\n";
+				return 200;
+			}
+
+			print <<"			HTML";
+Content-type: text/html
+
+<html>
+	<head>
+		<title>Report Output Login</title>
+	</head>
+	<body>
+		<form method='POST'>
+			<table>
+				<tr>
+					<th colspan='2' align='center'>Please log in to view reports</th>
+				</tr>
+				<tr>
+					<th>Username or barcode:</th>
+					<td><input type="text" name="user"/></td>
+				</tr>
+				<tr>
+					<th>Password:</th>
+					<td><input type="password" name="passwd"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="Log in"/>
+		</form>
+	</body>
+</html>
+			HTML
+			return 200;
+		}
+
+		$auth_ses = oils_login($u, $p);
+		if ($auth_ses) {
+			print $cgi->redirect(
+				-uri=>$url,
+				-cookie=>$cgi->cookie(
+					-name=>'ses',
+					-value=>$auth_ses,
+					-path=>'/',-expires=>'+1h'
+				)
+			);
+			return 302;
+		}
+	}
+
 	my $user = verify_login($auth_ses);
 	return Apache2::Const::NOT_FOUND unless ($user);
 
@@ -65,6 +122,33 @@ sub verify_login {
 
 	return $user if ref($user);
 	return undef;
+}
+
+sub oils_login {
+        my( $username, $password, $type ) = @_;
+
+        $type |= "staff";
+	my $nametype = 'username';
+	$nametype = 'barcode' if ($username =~ /^\d+$/o);
+
+        my $seed = OpenSRF::AppSession
+		->create("open-ils.auth")
+		->request( 'open-ils.auth.authenticate.init', $username )
+		->gather(1);
+
+        return undef unless $seed;
+
+        my $response = OpenSRF::AppSession
+		->create("open-ils.auth")
+		->request( 'open-ils.auth.authenticate.complete',
+			{ $nametype => $username,
+			  password => md5_hex($seed . md5_hex($password)),
+			  type => $type })
+		->gather(1);
+
+        return undef unless $response;
+
+        return = $response->{payload}->{authtoken};
 }
 
 
