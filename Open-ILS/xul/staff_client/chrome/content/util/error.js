@@ -280,17 +280,18 @@ util.error.prototype = {
 			}
 		}
 		if (!msg) msg = '';
-		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + (E.desc ? E.desc + '\n' : '') : '') + ( typeof E.status != 'undefined' ? 'Status: ' + E.status + '\n': '' );
+		var alert_msg = 'FIXME:  If you encounter this alert, please inform your IT/ILS helpdesk staff or your friendly Evergreen developers.\n\n' + (new Date()) + '\n\n' + msg + '\n\n' + (typeof E.ilsevent != 'undefined' ? E.textcode + '\n' + (E.desc ? E.desc + '\n' : '') : '') + ( typeof E.status != 'undefined' ? 'Status: ' + E.status + '\n': '' );
 		obj.sdump('D_ERROR',msg + ' : ' + js2JSON(E));
 		var r = obj.yns_alert(
 			alert_msg,	
 			'Unhandled Error',
-			'Ok', 'Debug', 'Report to Helpdesk', 'Check here to confirm this message'
+			'Ok', 'Debug Output to send to Helpdesk', null, 'Check here to confirm this message',
+			'/xul/server/skin/media/images/skull.png'
 		);
 		if (r == 1) {
 			JSAN.use('util.window'); var win = new util.window();
 			win.open(
-				'data:text/plain,' + window.escape( msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
+				'data:text/plain,' + window.escape( 'Please open a helpdesk ticket and include the following text: \n\n' + (new Date()) + '\n\n' + msg + '\n\n' + obj.pretty_print(js2JSON(E)) ),
 				'error_alert',
 				'chrome,resizable,width=700,height=500'
 			);
@@ -300,7 +301,7 @@ util.error.prototype = {
 		}
 	},
 
-	'yns_alert' : function (s,title,b1,b2,b3,c) {
+	'yns_alert' : function (s,title,b1,b2,b3,c,image) {
 
 		/* The original purpose of yns_alert was to prevent errors from being scanned through accidentally with a barcode scanner.  
 		However, this can be done in a less annoying manner by rolling our own dialog and not having any of the options in focus */
@@ -323,8 +324,11 @@ util.error.prototype = {
 		//FIXME - need to escape these values before embedding them into xml.. but window.escape was weird..
 
 		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
-			+ '<groupbox flex="1" style="overflow: auto"><caption label="' + (title) + '"/><html:pre>' + (s)
-			+ '</html:pre></groupbox><groupbox><caption label="Options"/><hbox>';
+			+ '<groupbox flex="1" style="overflow: auto; border: solid thin red;"><caption label="' + (title) + '"/>';
+
+		if (image) xml += '<hbox><image src="' + image + '"/><spacer flex="1"/></hbox>';
+		xml += '<description style="font-size: large">' + (s)
+			+ '</description></groupbox><groupbox><caption label="Options"/><hbox>';
 		var b1_key = b1 ? b1[0] : '';
 		var b2_key = b2 ? b2[0] : '';
 		var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
@@ -347,7 +351,7 @@ util.error.prototype = {
 				case 'b3' : return 2; break;
 			}
 		} else {
-			return this.yns_alert(s,title,b1,b2,b3,c);
+			return this.yns_alert(s,title,b1,b2,b3,c,image);
 		}
 	},
 
