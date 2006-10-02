@@ -416,21 +416,21 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="acn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number">
+	<class id="acn" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="copies" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="create_date" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="creator" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="deleted" oils_obj:array_position="6" oils_persist:virtual="false" />
-			<field name="edit_date" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="editor" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int" />
-			<field name="label" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" />
-			<field name="record" oils_obj:array_position="12" oils_persist:virtual="false" />
+			<field reporter:label="Copies" name="copies" oils_obj:array_position="3" oils_persist:virtual="true" />
+			<field reporter:label="Create Date/Time" name="create_date" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Creating User" name="creator" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Last Edit Date/Time" name="edit_date" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Editing User" name="editor" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field reporter:label="Call Number/Volume ID" name="id" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Call Number Label" name="label" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false" />
+			<field reporter:label="Bib Record" name="record" oils_obj:array_position="12" oils_persist:virtual="false" />
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -1498,7 +1498,7 @@
 		</fields>
 		<links/>
 	</class>
-	<class id="mbt" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:core="true" reporter:label="Billable Transaction">
+	<class id="mbt" controller="open-ils.cstore" oils_obj:fieldmapper="money::billable_transaction" oils_persist:tablename="money.billable_xact" reporter:label="Billable Transaction">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -1686,7 +1686,7 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="acp" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:label="Item">
+	<class id="acp" controller="open-ils.cstore" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
