@@ -33,6 +33,8 @@ sub handler {
 	my $auth_ses = $cgi->cookie('ses');
 	my $ws_ou = $cgi->cookie('ws_ou') || 1;
 
+	my $url = $cgi->url;
+
 	# push everyone to the secure site
 	if ($url =~ /^http:/o) {
 		$url =~ s/^http:/https:/o;
@@ -43,8 +45,6 @@ sub handler {
 	if (!$auth_ses) {
 		my $u = $cgi->param('user');
 		my $p = $cgi->param('passwd');
-
-		my $url = $cgi->url;
 
 		if (!$u) {
 
