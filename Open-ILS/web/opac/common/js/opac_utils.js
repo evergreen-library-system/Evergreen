@@ -978,3 +978,24 @@ function fetchPermOrgs() {
 	return preq.result();
 }
 
+
+function print_tabs(t) {
+	var r = '';
+	for (var j = 0; j < t; j++ ) { r = r + "  "; }
+	return r;
+}
+function formatJSON(s) {
+	var r = ''; var t = 0;
+	for (var i in s) {
+		if (s[i] == '{' || s[i] == '[' ) {
+			r = r + s[i] + "\n" + print_tabs(++t);
+		} else if (s[i] == '}' || s[i] == ']') {
+			t--; r = r + "\n" + print_tabs(t) + s[i];
+		} else if (s[i] == ',') {
+			r = r + s[i] + "\n" + print_tabs(t);
+		} else {
+			r = r + s[i];
+		}
+	}
+	return r;
+}
