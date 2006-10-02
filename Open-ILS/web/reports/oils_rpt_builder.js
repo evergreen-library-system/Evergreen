@@ -39,10 +39,11 @@ function oilsReportBuilderSave() {
 	tmpl.folder(new CGI().param('folder'));
 	tmpl.data(js2JSON(oilsRpt.def));
 
-	_debug('folder = ' + tmpl.folder());
-
 	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
 		return;
+
+	debugFMObject(tmpl);
+	return; /* XXX */
 
 
 	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);

@@ -117,11 +117,13 @@ function nodeText(id) {
 	return "";
 }
 
+/*
 function print_tabs(t) {
 	var r = '';
 	for (var j = 0; j < t; j++ ) { r = r + "  "; }
 	return r;
 }
+*/
 
 
 function oilsRptDebug() {
@@ -135,7 +137,10 @@ function oilsRptDebug() {
 	oilsRptDebugWindow.document.body.innerHTML = oilsRpt.toHTMLString();
 }
 
+
+
 /* pretty print JSON */
+/*
 function formatJSON(s) {
 	var r = ''; var t = 0;
 	for (var i in s) {
@@ -151,6 +156,7 @@ function formatJSON(s) {
 	}
 	return r;
 }
+*/
 
 
 function print_tabs_html(t) {

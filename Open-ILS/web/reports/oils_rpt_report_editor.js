@@ -51,6 +51,9 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 oilsRptReportEditor.prototype.save = function() {
 	var report = new rr();
 
+	if(!this.selectedFolder) 
+		return alert('Please provide a report folder');
+
 	report.owner( USER.id() );
 	report.template( this.template.id() );
 	report.folder( this.selectedFolder.folder.id() );
@@ -58,6 +61,7 @@ oilsRptReportEditor.prototype.save = function() {
 	report.description( DOM.oils_rpt_report_editor_desc.value );
 	report.recur(this.paramEditor.recur());
 	report.recurance(this.paramEditor.recurInterval());
+
 
 	/* collect the param data */
 	var data = {};
@@ -92,6 +96,9 @@ oilsRptReportEditor.prototype.save = function() {
 		_debug("built run_time "+time);
 	}
 
+	if(!this.selectedOutputFolder) 
+		return alert('Please provide an output folder');
+
 	var schedule = new rs();
 	schedule.folder(this.selectedOutputFolder.folder.id());
 	schedule.email(DOM.oils_rpt_param_editor_sched_email.value);
@@ -104,6 +111,7 @@ oilsRptReportEditor.prototype.save = function() {
 	schedule.chart_pie((DOM.oils_rpt_format_chart_pie.checked) ? 't' : 'f');
 	schedule.chart_bar((DOM.oils_rpt_format_chart_bar.checked) ? 't' : 'f');
 	schedule.chart_line((DOM.oils_rpt_format_chart_line.checked) ? 't' : 'f');
+
 
 	debugFMObject(report);
 	debugFMObject(schedule);

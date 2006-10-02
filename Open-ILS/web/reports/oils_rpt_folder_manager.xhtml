@@ -47,13 +47,26 @@
 			</table>
 		</div>
 
+		<div id='oils_rpt_folder_manager_share_div'>
+			<table class='oils_rpt_generic_table'>
+				<tbody>
+					<tr>
+						<td>Share with:</td>
+						<td><select id='oils_rpt_folder_manager_share_lib_picker'/></td>
+					</tr>
+					<tr><td colspan='2' align='center'>
+						<input type='submit' value='Share this folder' 
+							id='oils_rpt_folder_manager_share_submit'/>
+					</td></tr>
+				</tbody>
+			</table>
+		</div>
+
+
 	</div>
 
 	<span class='hide_me' id='oils_rpt_folder_manager_change_name_confirm'>
 		Are you sure you wish to change this folder's name?
-	</span>
-	<span class='hide_me' id='oils_rpt_folder_manager_new_confirm'>
-		Are you sure you wish to create new subfolder
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_manager_delete_confirm'>
@@ -63,6 +76,17 @@
 	<span class='hide_me' id='oils_rpt_folder_cannot_delete'>
 		This folder may not be deleted because it is not empty.
 	</span>
+
+	<span class='hide_me' id='oils_rpt_folder_already_shared'>
+		This folder is already shared
+	</span>
+	<span class='hide_me' id='oils_rpt_folder_already_unshared'>
+		This folder is not shared
+	</span>
+	<span class='hide_me' id='oils_rpt_folder_unshare_confirm'>
+		Are you sure you wish to hide this folder?
+	</span>
+
 
 </div>
 

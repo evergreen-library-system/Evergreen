@@ -117,15 +117,65 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 			case 'delete':
 				obj.doFolderDelete();
 				break;
+			case 'share':
+				obj.shareFolder();
+				break;
+			case 'unshare':
+				obj.unShareFolder();
+				break;
 		}
 	}
 
 }
 
 
+oilsRptFolderWindow.prototype.shareFolder = function() {
+	var folder = this.folderNode.folder;
+	if(isTrue(folder.shared()))
+		return alertId('oils_rpt_folder_already_shared');
+	unHideMe(DOM.oils_rpt_folder_manager_share_div);
+
+	var orgsel = new oilsRptMyOrgsWidget(
+		DOM.oils_rpt_folder_manager_share_lib_picker, USER.ws_ou());
+	orgsel.draw();
+
+	var type = this.type;
+	DOM.oils_rpt_folder_manager_share_submit.onclick = function() {
+		folder.shared('t');
+		folder.share_with(orgsel.getValue());
+		oilsRptUpdateFolder( folder, type, 
+			function(success) {
+				if(success) {
+					oilsRptAlertSuccess();
+					oilsRptCurrentFolderManager.draw();
+				}
+			}
+		);
+	}
+}
+
+oilsRptFolderWindow.prototype.unShareFolder = function() {
+	var folder = this.folderNode.folder;
+	if(!isTrue(folder.shared()))
+		return alertId('oils_rpt_folder_already_unshared');
+	if(!confirmId('oils_rpt_folder_unshare_confirm')) return;
+	folder.shared('f');
+	var type = this.type;
+	oilsRptUpdateFolder( folder, type, 
+		function(success) {
+			if(success) {
+				oilsRptAlertSuccess();
+				oilsRptCurrentFolderManager.draw();
+			}
+		}
+	);
+}
+
+
 oilsRptFolderWindow.prototype.hideFolderActions = function() {
 	hideMe(DOM.oils_rpt_folder_manager_change_name_div);
 	hideMe(DOM.oils_rpt_folder_manager_create_sub);
+	hideMe(DOM.oils_rpt_folder_manager_share_div);
 }
 
 
@@ -346,16 +396,14 @@ oilsRptFolderWindow.prototype.setFolderEditActions = function() {
 		if( folder.shared() == 't' )
 			folder.share_with( obj.myOrgSelector.getValue() );
 
-		if(confirm(DOM.oils_rpt_folder_manager_new_confirm.innerHTML + ' "'+folder.name()+'"')) {
-			oilsRptCreateFolder(folder, obj.type,
-				function(success) {
-					if(success) {
-						oilsRptAlertSuccess();
-						oilsRptCurrentFolderManager.draw();
-					}
+		oilsRptCreateFolder(folder, obj.type,
+			function(success) {
+				if(success) {
+					oilsRptAlertSuccess();
+					oilsRptCurrentFolderManager.draw();
 				}
-			);
-		}
+			}
+		);
 	}
 }
 
@@ -370,7 +418,13 @@ oilsRptFolderWindow.prototype.doFolderDelete = function() {
 
 	/* lets see if the folder has contents */
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
-		SESSION, this.type, this.folderNode.folder.id());
+		SESSION, this.type, this.folderNode.folder.id(), 1);
+
+	if(this.type == 'output') {
+		req = new Request(OILS_RPT_FETCH_OUTPUT, 
+			SESSION, this.folderNode.folder.id(), 1);
+	}
+
 	var obj = this;
 	req.send();
 
