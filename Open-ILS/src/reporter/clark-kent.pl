@@ -24,6 +24,7 @@ use GD::Graph::pie;
 use GD::Graph::bars3d;
 use GD::Graph::lines3d;
 use Tie::IxHash;
+use Email::Send;
 
 use open ':utf8';
 
@@ -53,7 +54,14 @@ my $db_name = $sc->config_value( reporter => setup => database => 'name' );
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
 my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
 
+my $email_server = $sc->config_value( email_notify => 'smtp_server' );
+my $email_sender = $sc->config_value( email_notify => 'sender_address' );
+my $success_template = $sc->config_value( reporter => setup => files => 'success_template' );
+my $fail_template = $sc->config_value( reporter => setup => files => 'fail_template' );
+
 my $output_base = $sc->config_value( reporter => setup => files => 'output_base' );
+
+my $base_uri = $sc->config_value( reporter => setup => 'base_uri' );
 
 my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
 
@@ -186,10 +194,7 @@ for my $r ( @reports ) {
 			build_excel("$output_dir/report-data.xls", $r);
 		}
 
-		if ( $r->{html_format} ) {
-			mkdir("$output_dir/html");
-			build_html("$output_dir/report-data.html", $r);
-		}
+		build_html("$output_dir/report-data.html", $r);
 
 		$dbh->begin_work;
 
@@ -236,9 +241,20 @@ for my $r ( @reports ) {
 
 		$dbh->commit;
 
+		my $new_r = $dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
+			SELECT * FROM reporter.schedule WHERE id = ?;
+		SQL
+
+		$r->{start_time} = $new_r->{start_time};
+		$r->{complete_time} = $new_r->{complete_time};
+
+		if ($r->{email}) {
+			send_success($r);
+		}
 
 	} otherwise {
 		my $e = shift;
+		$r->{error_text} = ''.$e;
 		$dbh->rollback;
 		$dbh->do(<<'		SQL',{}, $e, $r->{id});
 			UPDATE	reporter.schedule
@@ -247,6 +263,18 @@ for my $r ( @reports ) {
 				error_code = 1
 			  WHERE	id = ?;
 		SQL
+
+		my $new_r = $dbh->selectrow_hashref(<<"		SQL", {}, $r->{id});
+			SELECT * FROM reporter.schedule WHERE id = ?;
+		SQL
+
+		$r->{error_text} = $new_r->{error_text};
+		$r->{complete_time} = $new_r->{complete_time};
+
+		if ($r->{email}) {
+			send_fail($r);
+		}
+
 	};
 
 	$dbh->disconnect;
@@ -262,6 +290,51 @@ if ($daemon) {
 }
 
 #-------------------------------------------------------------------
+
+sub send_success {
+	my $r = shift;
+	open F, $success_template;
+	my $tmpl = join('',<F>);
+	close F;
+
+	my $url = $base_uri . '/' .
+		$r->{report}->{template}->{id} . '/' .
+		$r->{report}->{id} . '/' .
+		$r->{id} . '/report-data.html';
+
+	$tmpl =~ s/{TO}/$r->{email}/smog;
+	$tmpl =~ s/{FROM}/$email_sender/smog;
+	$tmpl =~ s/{REPLY_TO}/$email_sender/smog;
+	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{template}->{name} -- $r->{report}->{name}/smog;
+	$tmpl =~ s/{RUN_TIME}/$r->{run_time}/smog;
+	$tmpl =~ s/{COMPLETE_TIME}/$r->{complete_time}/smog;
+	$tmpl =~ s/{OUTPUT_URL}/$url/smog;
+
+	my $sender = Email::Send->new({mailer => 'SMTP'});
+	$sender->mailer_args([Host => $email_server]);
+	$sender->send($tmpl);
+}
+
+sub send_fail {
+	my $r = shift;
+	open F, $success_template;
+	my $tmpl = join('',<F>);
+	close F;
+
+	my $sql = $r->{resultset}->toSQL;
+
+	$tmpl =~ s/{TO}/$r->{email}/smog;
+	$tmpl =~ s/{FROM}/$email_sender/smog;
+	$tmpl =~ s/{REPLY_TO}/$email_sender/smog;
+	$tmpl =~ s/{REPORT_NAME}/$r->{report}->{template}->{name} -- $r->{report}->{name}/smog;
+	$tmpl =~ s/{RUN_TIME}/$r->{run_time}/smog;
+	$tmpl =~ s/{ERROR_TEXT}/$r->{error_text}/smog;
+	$tmpl =~ s/{SQL}/$sql/smog;
+
+	my $sender = Email::Send->new({mailer => 'SMTP'});
+	$sender->mailer_args([Host => $email_server]);
+	$sender->send($tmpl);
+}
 
 sub build_csv {
 	my $file = shift;
@@ -300,7 +373,6 @@ sub build_html {
 	my $r = shift;
 
 	my $index = new FileHandle (">$file");
-	my $raw = new FileHandle (">$file.raw.html");
 	
 	# index header
 	print $index <<"	HEADER";
@@ -320,40 +392,45 @@ sub build_html {
 		$$r{report}{description}<br/><br/><br/>
 	HEADER
 
-	
+	my @links;
+
 	# add a link to the raw output html
-	print $index "<a href='report-data.html.raw.html'>Tabular Output</a>";
+	push @links, "<a href='report-data.html.raw.html'>Tabular Output</a>" if ($r->{html_format});
 
 	# add a link to the CSV output
-	print $index " -- <a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
+	push @links, "<a href='report-data.xls'>Excel Output</a>" if ($r->{excel_format});
 
 	# add a link to the CSV output
-	print $index " -- <a href='report-data.xls'>Excel Output</a>" if ($r->{excel_format});
+	push @links, "<a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
 
+	print $index join(' -- ', @links);
 	print $index "<br/><br/><br/><br/></center>";
 
-	# create the raw output html file
-	print $raw "<html><head><title>$$r{report}{name}</title>";
+	if ($r->{html_format}) {
+		# create the raw output html file
+		my $raw = new FileHandle (">$file.raw.html");
+		print $raw "<html><head><title>$$r{report}{name}</title>";
 
-	print $raw <<'	CSS';
-		<style>
-			table { border-collapse: collapse; }
-			th { background-color: lightgray; }
-			td,th { border: solid black 1px; }
-			* { font-family: sans-serif; font-size: 10px; }
-		</style>
-	CSS
+		print $raw <<'		CSS';
+			<style>
+				table { border-collapse: collapse; }
+				th { background-color: lightgray; }
+				td,th { border: solid black 1px; }
+				* { font-family: sans-serif; font-size: 10px; }
+			</style>
+		CSS
 
-	print $raw "</head><body><table>";
+		print $raw "</head><body><table>";
 
-	{	no warnings;
-		print $raw "<tr><th>".join('</th><th>',@{$r->{column_labels}}).'</th></tr>';
-		print $raw "<tr><td>".join('</td><td>',@$_                   ).'</td></tr>' for (@{$r->{data}});
-	}
+		{	no warnings;
+			print $raw "<tr><th>".join('</th><th>',@{$r->{column_labels}}).'</th></tr>';
+			print $raw "<tr><td>".join('</td><td>',@$_                   ).'</td></tr>' for (@{$r->{data}});
+		}
 
-	print $raw '</table></body></html>';
+		print $raw '</table></body></html>';
 	
-	$raw->close;
+		$raw->close;
+	}
 
 	# Time for a pie chart
 	if ($r->{chart_pie}) {

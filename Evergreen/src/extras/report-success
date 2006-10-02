@@ -1,0 +1,16 @@
+To: {TO}
+From: {FROM}
+Reply-To: {REPLY_TO}
+Subject: Report {REPORT_NAME} complete
+
+Your report, {REPORT_NAME}, schedued to run at {RUN_TIME} completed
+at {COMPLETE_TIME} and is available for viewing a the following URL:
+
+{OUTPUT_URL}
+
+If you have any general questions, please contact the PINES staff.
+
+Thanks,
+
+Clark Kent, your friendly neighorhood reporter.
+
