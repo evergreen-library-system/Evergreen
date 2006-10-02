@@ -640,7 +640,7 @@
 			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="User Credit Balance" name="credit_forward_balance" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Daytime Phone" name="day_phone" oils_obj:array_position="22" oils_persist:virtual="false" />
-			<field reporter:label="Date of Birth" name="dob" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field reporter:label="Date of Birth" name="dob"  reporter:datatype="timestamp" oils_obj:array_position="23" oils_persist:virtual="false" />
 			<field reporter:label="Email Address" name="email" oils_obj:array_position="24" oils_persist:virtual="false" />
 			<field reporter:label="Evening Phone" name="evening_phone" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field reporter:label="Priviledge Expiration Date" name="expire_date" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp"/>
