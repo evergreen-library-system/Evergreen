@@ -109,7 +109,7 @@ Content-type: text/html
 # returns the user object if the session is valid, 0 otherwise
 sub verify_login {
 	my $auth_token = shift;
-	return 0 unless $auth_token;
+	return undef unless $auth_token;
 
 	my $user = OpenSRF::AppSession
 		->create("open-ils.auth")
