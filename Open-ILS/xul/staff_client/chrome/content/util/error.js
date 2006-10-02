@@ -322,9 +322,9 @@ util.error.prototype = {
 
 		//FIXME - need to escape these values before embedding them into xml.. but window.escape was weird..
 
-		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">' + 
-			'<groupbox flex="1" style="overflow: auto"><caption label="' + (title) + '"/><description>' + (s)
-			+ '</description></groupbox><groupbox><caption label="Options"/><hbox>';
+		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
+			+ '<groupbox flex="1" style="overflow: auto"><caption label="' + (title) + '"/><html:pre>' + (s)
+			+ '</html:pre></groupbox><groupbox><caption label="Options"/><hbox>';
 		var b1_key = b1 ? b1[0] : '';
 		var b2_key = b2 ? b2[0] : '';
 		var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
