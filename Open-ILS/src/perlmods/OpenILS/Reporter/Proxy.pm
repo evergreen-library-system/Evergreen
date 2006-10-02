@@ -3,7 +3,7 @@ use strict; use warnings;
 
 use Apache2 ();
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK BAD_REQUEST NOT_FOUNE DECLINED :log);
+use Apache2::Const -compile => qw(OK NOT_FOUND DECLINED :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use CGI;
 use Data::Dumper;
@@ -30,16 +30,17 @@ sub handler {
 	my $apache = shift;
 	my $cgi = new CGI;
 	my $auth_ses = $cgi->cookie('ses');
+	my $ws_ou = $cgi->cookie('ws_ou') || 1;
 
-	my $user = verify_user($auth_ses);
-	return Apache2::Const::BAD_REQUEST unless ($user);
+	my $user = verify_login($auth_ses);
+	return Apache2::Const::NOT_FOUND unless ($user);
 
 	my $failures = OpenSRF::AppSession
 		->create('open-ils.actor')
-		->request('open-ils.actor.user.perm.check', $token, $user->id, 1, ['RUN_REPORTS'])
+		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, ['RUN_REPORTS'])
 		->gather(1);
 
-	return Apache2::Const::BAD_REQUEST if (@$failures > 0);
+	return Apache2::Const::NOT_FOUND if (@$failures > 0);
 
 	# they're good, let 'em through
 	return Apache2::Const::DECLINED if (-e $apache->filename);
@@ -53,7 +54,7 @@ sub verify_login {
 	my $auth_token = shift;
 	return 0 unless $auth_token;
 
-	my $session = OpenSRF::AppSession
+	my $user = OpenSRF::AppSession
 		->create("open-ils.auth")
 		->request( "open-ils.auth.session.retrieve", $auth_token )
 		->gather(1);
