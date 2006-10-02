@@ -636,21 +636,26 @@ function mkYearMonDay(date) {
 
 
 function debugFMObject(obj) {
-	if(typeof obj != 'object' ) return;
+	if(typeof obj != 'object' ) return obj;
 	_debug("---------------------");
 	var keys = fmclasses[obj.classname];
-	if(!keys) { _debug(js2JSON(obj)); return; }
+	if(!keys) { _debug(formatJSON(js2JSON(obj))); return; }
 
 	keys.sort();
 	for( var i = 0; i < keys.length; i++ ) {
+		var key = keys[i];
+		while( key.length < 20 ) key += ' ';
 		var val = obj[keys[i]]();
 		if( typeof val == 'object' ) {
-			_debug(keys[i]+' :=\n');
+			_debug(key+' :=\n');
 			_debugFMObject(val);
 		} else {
-			_debug(keys[i]+' = ' +val);
+			_debug(key+' = ' +val);
 		}
 
 	}
 	_debug("---------------------");
 }
+
+
+
