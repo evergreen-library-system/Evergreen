@@ -1306,7 +1306,7 @@ sub batch_volume_transfer {
 				$logger->debug("merge: searching for copies with remote circ_lib for volume ".$v->id);
 				my $args = { 
 					call_number	=> $v->id, 
-					circ_lib		=> { "!=" => $v->owning_lib },
+					circ_lib		=> { "not in" => [ $o_lib, $v->owning_lib ] },
 					deleted		=> 'f'
 				};
 
@@ -1314,7 +1314,6 @@ sub batch_volume_transfer {
 
 				# if the copy's circ_lib matches the destination lib,
 				# that's ok too
-				$copies = [ grep { $_->circ_lib ne $o_lib } @$copies ];
 				return OpenILS::Event->new('COPY_REMOTE_CIRC_LIB') if @$copies;
 			}
 		}
