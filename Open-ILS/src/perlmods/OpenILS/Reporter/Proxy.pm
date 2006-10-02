@@ -3,7 +3,7 @@ use strict; use warnings;
 
 use Apache2 ();
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK NOT_FOUND DECLINED :log);
+use Apache2::Const -compile => qw(REDIRECT FORBIDDEN OK NOT_FOUND DECLINED :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use CGI;
 use Data::Dumper;
@@ -43,21 +43,20 @@ sub handler {
 			if ($url =~ /^http:/o) {
 				$url =~ s/^http:/https:/o;
 				print "Location: $url\n\n";
-				return 200;
+				return Apache2::Const::OK;
 			}
 
+			print $cgi->header(-type=>'text/html', -expires=>'-1d');
 			print <<"			HTML";
-Content-type: text/html
-
 <html>
 	<head>
 		<title>Report Output Login</title>
 	</head>
 	<body>
 		<form method='POST'>
-			<table>
+			<table style='border-collapse: collapse;'>
 				<tr>
-					<th colspan='2' align='center'>Please log in to view reports</th>
+					<th colspan='2' align='center'><u>Please log in to view reports</u></th>
 				</tr>
 				<tr>
 					<th>Username or barcode:</th>
@@ -73,7 +72,7 @@ Content-type: text/html
 	</body>
 </html>
 			HTML
-			return 200;
+			return Apache2::Const::OK;
 		}
 
 		$auth_ses = oils_login($u, $p);
@@ -86,19 +85,19 @@ Content-type: text/html
 					-path=>'/',-expires=>'+1h'
 				)
 			);
-			return 302;
+			return Apache2::Const::REDIRECT;
 		}
 	}
 
 	my $user = verify_login($auth_ses);
-	return Apache2::Const::NOT_FOUND unless ($user);
+	return Apache2::Const::FORBIDDEN unless ($user);
 
 	my $failures = OpenSRF::AppSession
 		->create('open-ils.actor')
 		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, ['RUN_REPORTS'])
 		->gather(1);
 
-	return Apache2::Const::NOT_FOUND if (@$failures > 0);
+	return Apache2::Const::FORBIDDEN if (@$failures > 0);
 
 	# they're good, let 'em through
 	return Apache2::Const::DECLINED if (-e $apache->filename);
