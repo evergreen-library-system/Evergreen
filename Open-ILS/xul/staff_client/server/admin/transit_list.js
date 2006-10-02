@@ -110,7 +110,9 @@ admin.transit_list.prototype = {
 						'capture_time',
 						'hold_type',
 						'expire_time',
-						'patron_name',
+						'patron_first_given_name',
+						'patron_family_name',
+						'patron_barcode',
 					],
 				}
 			) 
