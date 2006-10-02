@@ -314,7 +314,7 @@ RemoteRequest.prototype.getResultObject = function() {
 
 	if( failed ) {
 		if(!status) status = '<unknown>';
-		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status+'\n');}catch(e){}
+		try{dump('! NETWORK FAILURE.  HTTP STATUS = ' +status+'\n'+this.param_string+'\n');}catch(e){}
 		if(isXUL()) 
 			throw new NetworkFailure(status, this.param_string);
 		else return null;
