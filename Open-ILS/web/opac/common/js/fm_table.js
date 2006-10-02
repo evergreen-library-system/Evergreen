@@ -110,11 +110,16 @@ FMObjectBuilder.prototype.selectNone = function() {
 /* */
 FMObjectBuilder.prototype.setKeys = function(o) {
 	var sortme = false;
-	if( this.display[o.classname] ) 
+	if( this.display[o.classname] ) {
 		this.keys = this.display[o.classname].fields;
+		this.bold = this.display[o.classname].bold;
+	}
 
 	if(!this.keys && FM_TABLE_DISPLAY[o.classname])
 		this.keys = FM_TABLE_DISPLAY[o.classname].fields;
+
+	if(!this.bold && FM_TABLE_DISPLAY[o.classname])
+		this.bold = FM_TABLE_DISPLAY[o.classname].bold;
 
 	if(!this.keys) {
 		this.keys = fmclasses[o.classname];
@@ -206,7 +211,12 @@ FMObjectBuilder.prototype.fleshData = function(td, data, key) {
 		}
 
 	} else {
-		td.appendChild(text( data ));
+		if( this.bold && grep(this.bold,function(i){return (i==key)}) ) {
+			var span = elem('span',{'class':'fm_table_bold'}, data);
+			td.appendChild(span);
+		} else {
+			td.appendChild(text( data ));
+		}
 	}
 }
 

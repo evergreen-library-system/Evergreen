@@ -109,6 +109,9 @@ var FM_TABLE_DISPLAY = {
 			'excel_format',
 			'html_format',
 			'csv_format',
+		],
+		bold : [
+			'error_text',
 		]
 	}
 }
