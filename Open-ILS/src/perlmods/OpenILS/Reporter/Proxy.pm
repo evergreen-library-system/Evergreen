@@ -7,6 +7,7 @@ use Apache2::Const -compile => qw(OK NOT_FOUND DECLINED :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use CGI;
 use Data::Dumper;
+use Digest::MD5 qw/md5_hex/;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::System;
