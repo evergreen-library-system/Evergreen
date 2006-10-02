@@ -148,7 +148,7 @@ sub oils_login {
 
         return undef unless $response;
 
-        return = $response->{payload}->{authtoken};
+        return $response->{payload}->{authtoken};
 }
 
 
