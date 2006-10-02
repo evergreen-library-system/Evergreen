@@ -505,7 +505,7 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::GenericTransform;
 sub toSQL {
 	my $self = shift;
 	my $name = $self->name;
-	my ($func) = keys %{ $self->{_column} };
+	my $func = $self->{_column}->{transform};
 
 	my @params;
 	@params = @{ $self->resolve_param( $self->{_column}->{params} ) } if ($self->{_column}->{params});
@@ -528,6 +528,34 @@ sub toSQL {
 }
 
 sub is_aggregate { return 0 }
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::upper;
+
+sub toSQL {
+	my $self = shift;
+	my $params = $self->resolve_param( $self->{_column}->{params} );
+	my $start = $$params[0];
+	my $len = $$params[1];
+	return 'UPPER("' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::lower;
+
+sub toSQL {
+	my $self = shift;
+	my $params = $self->resolve_param( $self->{_column}->{params} );
+	my $start = $$params[0];
+	my $len = $$params[1];
+	return 'LOWER("' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
 
 #-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::substring;
