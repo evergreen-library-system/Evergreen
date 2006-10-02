@@ -71,6 +71,8 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 	name = (name) ? name : oilsRptPathCol(path);
 	if( !tform ) tform = 'Bare';
 
+	var aggregate = oilsRptGetIsAgg(tform);
+
 	/* add this item to the select blob */
 	var sel = {
 		relation: hex_md5(oilsRptPathRel(path)), 
@@ -81,10 +83,36 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 	};
 
 	if( params ) sel.column.params = params;
-	oilsRpt.def.select.push(sel);
+
+	if(!oilsRptGetIsAgg(tform)) {
+		var select = [];
+		var added = false;
+		for( var i = 0; i < oilsRpt.def.select.length; i++ ) {
+			var item = oilsRpt.def.select[i];
+			if( !added && oilsRptGetIsAgg( item.column.transform ) ) {
+				select.push(sel);
+				added = true;
+			}
+			select.push(item);
+		}
+		if(!added) select.push(sel);
+		oilsRpt.def.select = select;
+	} else {
+		oilsRpt.def.select.push(sel);
+	}
+
 
 	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
 	oilsRptDebug();
+}
+
+function oilsRptGetIsAgg(tform) {
+	var sel = $n(DOM.oils_rpt_tform_table,'selector');
+	for( var i = 0; i < sel.options.length; i++ ) {
+		var opt = sel.options[i];
+		if( opt.getAttribute('value') == tform )
+			return opt.getAttribute('aggregate');
+	}
 }
 
 /* takes a column path and builds a from-clause object for the path */

@@ -245,6 +245,7 @@ button {
 .oils_rpt_folder_tree_div {
 	border: 1px solid #808080;
 	margin: 10px;
+	min-width: 170px;
 }
 
 .oils_rpt_folder_contents {
