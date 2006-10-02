@@ -80,7 +80,7 @@ var FM_TABLE_DISPLAY = {
 		name : 'name',
 		fields : [
 			'name',
-			'description'
+			'description',
 			'template',
 			'create_time',
 			'recur',
@@ -92,7 +92,7 @@ var FM_TABLE_DISPLAY = {
 		name : 'name',
 		fields : [
 			'name',
-			'description'
+			'description',
 			'create_time',
 			'owner',
 		]
@@ -102,7 +102,7 @@ var FM_TABLE_DISPLAY = {
 			'report',
 			'run_time',
 			'complete_time',
-			'runner'
+			'runner',
 			'email',
 			'folder',
 			'error_text',
