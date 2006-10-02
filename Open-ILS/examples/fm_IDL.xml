@@ -1711,11 +1711,11 @@
 			<field reporter:label="Last Edit Date/Time" name="edit_date" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Last Editing User" name="editor" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field reporter:label="Fine Level" name="fine_level" oils_obj:array_position="22" oils_persist:virtual="false" />
-			<field reporter:label="Is Holdable" name="holdable" oils_obj:array_position="23" oils_persist:virtual="false" />
-			<field reporter:label="Copy ID" name="id" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Is Holdable" name="holdable" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="bool" />
+			<field reporter:label="Copy ID" name="id" oils_obj:array_position="24" oils_persist:virtual="false"/>
 			<field reporter:label="Loan Duration" name="loan_duration" oils_obj:array_position="25" oils_persist:virtual="false" />
 			<field reporter:label="Shelving Location" name="location" oils_obj:array_position="26" oils_persist:virtual="false" />
-			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="27" oils_persist:virtual="false" />
+			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="bool" />
 			<field reporter:label="Price" name="price" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Is Reference" name="ref" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Copy Status" name="status" oils_obj:array_position="30" oils_persist:virtual="false" />
