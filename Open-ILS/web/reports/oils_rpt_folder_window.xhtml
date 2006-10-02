@@ -1,6 +1,6 @@
 <div id='oils_rpt_folder_window_contents_div'>
 	<div style='width:100%;text-align: center; margin: 10px;'>
-		<a id='oils_rpt_folder_window_contents_new_template' href='javascript:void(0);'><b>Create a new Template</b></a>
+		<a id='oils_rpt_folder_window_contents_new_template' href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
 	</div>
 	<table id='oils_rpt_folder_window_contents_table'>
 		<tbody>
@@ -14,6 +14,8 @@
 							<option type='report' value='change_params'>Clone report</option>
 							<option type='report' value='schedule_report'>Schedule report</option>
 							<option type='report' value='delete_report'>Delete selected report(s)</option>
+							<option type='output' value='show_output'>View report output</option>
+							<option type='output' value='delete_output'>Delete selected output(s)</option>
 						</select>
 					</span>
 					<input type='submit' value='Submit' id='oils_rpt_folder_content_action_go'/>
@@ -42,5 +44,6 @@
 		The selected template could not be deleted because there are reports
 		that depend on it.
 	</span>
+
 </div>
 

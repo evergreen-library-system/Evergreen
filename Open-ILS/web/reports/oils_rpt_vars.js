@@ -23,6 +23,9 @@ var oilsRptSharedOutputFolderTree;
 /* URL to retrieve the IDL from */
 var OILS_IDL_URL = "/reports/fm_IDL.xml";
 
+var OILS_IDL_OUTPUT_URL = '/reporter/'
+var OILS_IDL_OUTPUT_FILE = 'report-data.html';
+
 /* multi-select which shows the user 
 	what data they want to see in the report */
 var oilsRptDisplaySelector;
@@ -74,6 +77,9 @@ var OILS_RPT_CREATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.cr
 var OILS_RPT_CREATE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.create';
 var OILS_RPT_UPDATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.update';
 var OILS_RPT_UPDATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.update';
+var OILS_RPT_FETCH_OUTPUT			= 'open-ils.reporter:open-ils.reporter.schedule.retrieve_by_folder';
+var OILS_RPT_FETCH_REPORT			= 'open-ils.reporter:open-ils.reporter.report.retrieve';
+var OILS_RPT_FETCH_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.retrieve';
 
 var oilsRptCurrentFolderManager;
 

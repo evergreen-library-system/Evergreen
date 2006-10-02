@@ -275,5 +275,16 @@ function oilsRptCreateFolder(folder, type, callback) {
 	}
 }
 
+function oilsRptFetchReport(id, callback) {
+	var req = new Request(OILS_RPT_FETCH_REPORT, SESSION, id);
+	req.callback(function(r){ callback(r.getResultObject());});
+	req.send();
+}
+
+
 function oilsRptAlertSuccess() { alertId('oils_rpt_generic_success'); }
 
+
+function oilsRptBuildOutputLink(tid, rid, sid) {
+	return OILS_IDL_OUTPUT_URL + tid+'/'+rid+'/'+sid+'/'+ OILS_IDL_OUTPUT_FILE;
+}

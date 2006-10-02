@@ -26,9 +26,9 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 	_debug(this.folderNode.folder.owner().id() + ' : ' + USER.id());
 
-	if( this.folderNode.folder.owner().id() != USER.id() ) 
-		hideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
-	else unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
+	if( this.folderNode.folder.owner().id() == USER.id() && this.type == 'template') 
+		unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
+	else hideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
 
 	unHideMe(DOM.oils_rpt_folder_window_contents_div);
 	hideMe(DOM.oils_rpt_folder_manager_div);
@@ -57,15 +57,19 @@ oilsRptFolderWindow.prototype.draw = function() {
 	this.fetchFolderData();
 
 	var sel = DOM.oils_rpt_folder_contents_action_selector;
+	var x = true;
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
-		if( opt.getAttribute('type') == this.type )
+		if( opt.getAttribute('type') == this.type ) {
+			if(x) opt.selected = true;
+			x = false;
 			unHideMe(opt);
+		}
 		else hideMe(opt);
 	}
+	sel.options[0].selected = true;
 
 	this.drawEditActions();
-
 }
 
 oilsRptFolderWindow.prototype.drawEditActions = function() {
@@ -76,10 +80,6 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 		goTo( 'oils_rpt_builder.xhtml'+s+'&folder='+obj.folderNode.folder.id());
 	}
 
-	if( this.type == 'template' )
-		unHideMe(DOM.oils_rpt_folder_window_contents_new_template)
-	else
-		hideMe(DOM.oils_rpt_folder_window_contents_new_template)
 
 	if( this.folderNode.folder.owner().id() != USER.id() )
 		hideMe(DOM.oils_rpt_folder_manager_tab_table);
@@ -147,8 +147,22 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			for(var r = 0; r < objs.length; r++) 
 				this.deleteTemplate(objs[r]);
 			break;
+		case 'show_output':
+			this.showOutput(objs[0]);
+			break;
 
 	}
+}
+
+
+
+oilsRptFolderWindow.prototype.showOutput = function(sched) {
+	oilsRptFetchReport(sched.report(), 
+		function(r) {
+			var url = oilsRptBuildOutputLink(r.template(), r.id(), sched.id());
+			goTo(url);
+		}
+	);
 }
 
 
@@ -205,19 +219,26 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 	removeChildren(this.selector);
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
 		SESSION, this.type, this.folderNode.folder.id());
+
+	if(this.type == 'output') 
+		req = new Request(OILS_RPT_FETCH_OUTPUT, SESSION, this.folderNode.folder.id());
+
+
 	var obj = this;
 	removeChildren(obj.selector);
 	req.callback(
 		function(r) {
+			var res = r.getResultObject();
 			obj.fmTable = drawFMObjectTable( 
 				{ 
 					dest : obj.selector, 
-					obj : r.getResultObject(),
+					obj : res,
 					selectCol : true,
-					selectColName : 'Select Row'	
+					selectColName : 'Select',
+					selectAllName : 'All',
+					selectNoneName : 'None'
 				}
 			);
-			//sortables_init();
 			if(callback) callback();
 		}
 	);
