@@ -314,6 +314,24 @@ sub delete_report {
 
 
 __PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.schedule.delete',
+	method => 'delete_schedule');
+sub delete_schedule {
+	my( $self, $conn, $auth, $scheduleId ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+
+	my $t = $e->retrieve_reporter_schedule($scheduleId)
+		or return $e->die_event;
+	return 0 if $t->runner ne $e->requestor->id;
+	$e->delete_reporter_schedule($t) or return $e->die_event;
+	$e->commit;
+	return 1;
+}
+
+
+__PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.template_has_reports',
 	method => 'has_reports');
 sub has_reports {
