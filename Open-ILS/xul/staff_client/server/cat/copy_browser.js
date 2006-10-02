@@ -834,6 +834,7 @@ cat.copy_browser.prototype = {
 			obj.list_init(params);
 
 			obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID',[ obj.docid ]);
+			if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
 
 			var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
 			//obj.show_libs( org );
@@ -907,7 +908,7 @@ cat.copy_browser.prototype = {
 			obj.show_my_libs( ml.value );
 
 		} catch(E) {
-			this.error.sdump('D_ERROR','cat.copy_browser.init: ' + E + '\n');
+			this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
 		}
 	},
 
