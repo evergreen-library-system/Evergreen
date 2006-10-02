@@ -135,6 +135,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 		return alert('Please select an item from the list');
 	var action = getSelectorVal(DOM.oils_rpt_folder_contents_action_selector);
 
+	var obj = this;
 	switch(action) {
 		case 'create_report' :
 			hideMe(DOM.oils_rpt_folder_table_right_td);
@@ -153,11 +154,26 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 		case 'show_output':
 			this.showOutput(objs[0]);
 			break;
+		case 'delete_output':
+			this.deleteOutputs(objs,0, 
+				function(){
+					oilsRptAlertSuccess();
+					obj.draw();
+				}
+			);
+			break;
 
 	}
 }
 
 
+oilsRptFolderWindow.prototype.deleteOutputs = function(list, idx, callback) {
+	if( idx >= list.length ) return callback();
+	var req = new Request(OILS_RPT_DELETE_SCHEDULE,SESSION,list[idx].id());
+	var obj = this;
+	req.callback(function(){obj.deleteOutputs(list, ++idx, callback);});
+	req.send();
+}
 
 oilsRptFolderWindow.prototype.showOutput = function(sched) {
 	oilsRptFetchReport(sched.report(), 

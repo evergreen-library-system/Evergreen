@@ -74,15 +74,23 @@ oilsRptReportEditor.prototype.save = function() {
 	_debug("Built report:\n"+js2JSON(report));
 
 
-	var dt = DOM.oils_rpt_param_editor_sched_start_date.value;
-	if(!dt || !dt.match(/^\d{4}-\d{2}-\d{2}$/) ) {
-		/* for now.. make this better in the future */
-		alert('invalid start date -  YYYY-MM-DD');
-		return;
+	var time;
+	if( DOM.oils_rpt_report_editor_run_now.checked ) {
+		DOM.oils_rpt_report_editor_run_now.checked = false;
+		time = 'now';
+
+	} else {
+
+		var dt = DOM.oils_rpt_param_editor_sched_start_date.value;
+		if(!dt || !dt.match(/^\d{4}-\d{2}-\d{2}$/) ) {
+			/* for now.. make this better in the future */
+			alert('invalid start date -  YYYY-MM-DD');
+			return;
+		}
+		var hour = getSelectorVal(DOM.oils_rpt_param_editor_sched_start_hour);
+		time = dt +'T'+hour+':00';
+		_debug("built run_time "+time);
 	}
-	var hour = getSelectorVal(DOM.oils_rpt_param_editor_sched_start_hour);
-	var time = dt +'T'+hour+':00';
-	_debug("built run_time "+time);
 
 	var schedule = new rs();
 	schedule.folder(this.selectedOutputFolder.folder.id());
@@ -97,11 +105,8 @@ oilsRptReportEditor.prototype.save = function() {
 	schedule.chart_bar((DOM.oils_rpt_format_chart_bar.checked) ? 't' : 'f');
 	schedule.chart_line((DOM.oils_rpt_format_chart_line.checked) ? 't' : 'f');
 
+	debugFMObject(report);
 	debugFMObject(schedule);
-
-	_debug("Built schedule:\n"+js2JSON(schedule));
-
-	return; /* XXX */
 
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
 	req.callback(
