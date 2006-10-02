@@ -14,6 +14,7 @@ function drawFMObjectTable( args ) {
 	if( typeof destination == 'string' ) 
 		destination = $(destination);
 	var builder = new FMObjectBuilder(obj, args);
+
 	destination.appendChild(builder.build());
 	return builder;
 }
@@ -30,6 +31,8 @@ function FMObjectBuilder( obj, args ) {
 	this.display = args.display;
 	this.selectCol = args.selectCol;
 	this.selectColName = args.selectColName;
+	this.selectAllName = args.selectAllName;
+	this.selectNoneName = args.selectNoneName;
 	this.rows = [];
 	if(!this.display) this.display = {};
 
@@ -64,8 +67,20 @@ FMObjectBuilder.prototype.build = function() {
 	if( o ) {
 
 		this.setKeys(o);
-		if( this.selectCol )
-			this.thead_tr.appendChild(elem('td',null,this.selectColName));
+		if( this.selectCol ) {
+			var obj = this;
+			var td = elem('td',null,this.selectColName);
+
+			var all = elem('a',{href:'javascript:void(0);','class':'fm_select_link' }, this.selectAllName);
+			var none = elem('a',{href:'javascript:void(0);', 'class':'fm_select_link'}, this.selectNoneName);
+
+			all.onclick = function(){obj.selectAll()};
+			none.onclick = function(){obj.selectNone()};
+
+			td.appendChild(all);
+			td.appendChild(none);
+			this.thead_tr.appendChild(td);
+		}
 		for( var i = 0; i < this.keys.length; i++ ) 
 			this.thead_tr.appendChild(elem('td',null,this.keys[i]));
 	
@@ -74,6 +89,21 @@ FMObjectBuilder.prototype.build = function() {
 	}
 
 	return this.table;
+}
+
+
+FMObjectBuilder.prototype.selectAll = function() {
+	for( var i = 0; i < this.rows.length; i++ ) {
+		var r = $(this.rows[i]);
+		$n(r,'selected').checked = true;
+	}
+}
+
+FMObjectBuilder.prototype.selectNone = function() {
+	for( var i = 0; i < this.rows.length; i++ ) {
+		var r = $(this.rows[i]);
+		$n(r,'selected').checked = false;
+	}
 }
 
 
