@@ -526,6 +526,9 @@
 	<event code='1638' textcode='REPORTER_TEMPLATE_FOLDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested reporter_template_folder was not found</desc>
 	</event>
+	<event code='1639' textcode='REPORTER_SCHEDULE_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested reporter_schedule was not found</desc>
+	</event>
 
 
 
