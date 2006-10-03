@@ -321,7 +321,7 @@ function oilsRptBuildFolder(type, node, treeVar, rootName, action, shared) {
 		var pid = this.treeId;
 		var f = cache[c].folder;
 
-		if( !shared && f.owner() != USER.id() ) continue;
+		if( !shared && (f.owner().id() != USER.id()) ) continue;
 
 		if(f.parent()) {
 			/* find the parent's tree id so we can latch on to it */
