@@ -203,7 +203,7 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 
 		/* if no data was reveived within the timeout interval */
 		if( !recvd && (end - start) >= keepalive ) {
-			osrfLogInfo(OSRF_LOG_MARK, "No data was reveived in %d seconds, exiting stateful session", keepalive);
+			osrfLogInfo(OSRF_LOG_MARK, "No request was reveived in %d seconds, exiting stateful session", keepalive);
 			osrfAppSessionStatus( 
 					session, 
 					OSRF_STATUS_TIMEOUT, 
