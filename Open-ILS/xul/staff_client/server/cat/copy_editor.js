@@ -441,7 +441,7 @@ g.get_acpl_list = function() {
 
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('get_acpl_list',E);
-		return list;
+		return [];
 	}
 }
 
