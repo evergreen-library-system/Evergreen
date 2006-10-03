@@ -38,20 +38,21 @@ oilsRptMultiInputWidget.prototype.initInputWidget = function(args) {
 	this.count = (args.count) ? args.count : 2;
 	this.dest = [];
 	for( var i = 0; i < this.count; i++ )
-		this.dest.push(elem('input',{type:'text'}));
+		this.dest.push(elem('input',{type:'text',size:10}));
 }
 
 oilsRptMultiInputWidget.prototype.getValue = function() {
 	var vals = [];
 	for( var i = 0; i < this.dest.length; i++ )
-		vals.push(this.dest.value);
+		vals.push(this.dest[i].value);
 	return vals;
 }
 
 oilsRptMultiInputWidget.prototype.draw = function() {
 	removeChildren(this.node);
 	for( var i = 0; i < this.dest.length; i++ ) {
-		this.node.appendChild(this.label[i]);
+		if( this.label )
+			this.node.appendChild(this.label[i]);
 		this.node.appendChild(this.dest[i]);
 	}
 }

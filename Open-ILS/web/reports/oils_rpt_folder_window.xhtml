@@ -21,30 +21,28 @@
 					<input type='submit' value='Submit' id='oils_rpt_folder_content_action_go'/>
 				</td>
 			</tr>
-			<tr class='oils_rpt_folder_window_contents_row'>
-				<td width='100%' align='center'>
-					<table width='100%'><tbody>
-						<tr>
-							<td align='center'>
-								<h4>Folder Contents</h4>
-								<span style='padding-left: 10px;'>
-									Limit output to 
-									<select id='oils_rpt_output_limit_selector'>
-										<option value='5'>5</option>
-										<option value='10'>10</option>
-										<option value='25'>25</option>
-										<option value='50'>50</option>
-										<option value=''>All</option>
-									</select>
-									rows.
-									<input type='submit' value='Re-Draw' id='oils_rpt_output_limit_redraw'/>
-								</span>
-							</td>
-						</tr>
-						<tr><td><div id='oils_rpt_folder_contents_selector'/></td></tr>
-					</tbody></table>
+
+			<tr>
+				<td style='text-align:left;'>
+					<div>
+						Limit output to 
+						<select id='oils_rpt_output_limit_selector'>
+							<option value='5'>5</option>
+							<option value='10'>10</option>
+							<option value='25'>25</option>
+							<option value='50'>50</option>
+							<option value=''>All</option>
+						</select>
+					</div>
 				</td>
 			</tr>
+
+			<tr class='oils_rpt_folder_window_contents_row'>
+				<td width='100%'>
+					<div id='oils_rpt_folder_contents_selector'/>
+				</td>
+			</tr>
+
 		</tbody>
 	</table>
 

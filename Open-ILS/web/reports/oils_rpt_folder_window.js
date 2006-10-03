@@ -19,10 +19,12 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 	var obj = this;
 	setSelector(DOM.oils_rpt_output_limit_selector, oilsRptOutputLimit);
-	DOM.oils_rpt_output_limit_redraw.onclick = function() {
+
+	DOM.oils_rpt_output_limit_selector.onchange = function() {
 		oilsRptOutputLimit = getSelectorVal(DOM.oils_rpt_output_limit_selector);
 		obj.draw();
 	}
+
 
 	if( this.folderNode.folder.owner().id() == USER.id() && this.type == 'template') 
 		unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);

@@ -58,6 +58,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			} else {
 				return new oilsRptInputMultiWidget({node:node});
 			}
+		case 'between':
+			return new oilsRptMultiInputWidget({node:node});
 
 		default:
 			return new oilsRptWidget({node:node});

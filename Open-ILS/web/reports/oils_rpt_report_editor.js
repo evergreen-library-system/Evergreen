@@ -108,13 +108,15 @@ oilsRptReportEditor.prototype.save = function() {
 	schedule.excel_format((DOM.oils_rpt_format_excel.checked) ? 't' : 'f');
 	schedule.html_format((DOM.oils_rpt_format_html.checked) ? 't' : 'f');
 	schedule.csv_format((DOM.oils_rpt_format_csv.checked) ? 't' : 'f');
-	schedule.chart_pie((DOM.oils_rpt_format_chart_pie.checked) ? 't' : 'f');
+	//schedule.chart_pie((DOM.oils_rpt_format_chart_pie.checked) ? 't' : 'f');
 	schedule.chart_bar((DOM.oils_rpt_format_chart_bar.checked) ? 't' : 'f');
 	schedule.chart_line((DOM.oils_rpt_format_chart_line.checked) ? 't' : 'f');
 
 
 	debugFMObject(report);
 	debugFMObject(schedule);
+
+	//return;
 
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
 	req.callback(
