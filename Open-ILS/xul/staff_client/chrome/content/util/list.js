@@ -688,7 +688,7 @@ util.list.prototype = {
 			}
 			for (var i = 0; i < labels.length; i++) {
 				var treecell = document.createElement('treecell');
-				treecell.setAttribute('label',labels[i] ? labels[i] : '');
+				treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
 				treerow.appendChild( treecell );
 				s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
 			}
