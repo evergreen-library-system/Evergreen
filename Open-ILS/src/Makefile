@@ -73,7 +73,7 @@ webcore-install:
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
 	cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/opac/common/js/
 	cp ../xsl/*.xsl $(WEBDIR)/opac/extras/xsl/
-	ln -sr $(ETCDIR)/fm_IDL.xml $(WEBDIR)/reports/
+	ln -sf $(ETCDIR)/fm_IDL.xml $(WEBDIR)/reports/
 	cp ../xul/staff_client/server/admin/adminlib.js $(WEBDIR)/reports/
 	
 
