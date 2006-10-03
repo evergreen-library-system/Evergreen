@@ -429,7 +429,7 @@ g.get_acpl_list = function() {
 		}
 		JSAN.use('util.fm_utils');
 		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
-		if (typeof ancestor == 'object') ancestor = ancestor.id();
+		if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
 
 		var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
 
