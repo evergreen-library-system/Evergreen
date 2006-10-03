@@ -65,7 +65,7 @@ cat.util.transfer_copies = function(params) {
 			params.message += '"' + params.volume_label + '" on the following record (and change their circ libs to match)?';
 		}
 
-		xml += '<description>' + params.message + '</description>';
+		xml += '<description>' + params.message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</description>';
 		xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
 		xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 		xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + params.docid + '"/>';

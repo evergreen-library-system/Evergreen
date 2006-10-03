@@ -301,10 +301,14 @@ util.network.prototype = {
 						'<groupbox><caption label="Exceptions"/>' + 
 						'<grid><columns><column/><column/></columns><rows>';
 					for (var i = 0; i < r.length; i++) {
+						var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+						var t2 = String(r[i].textcode).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+						var t3 = String((o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+						var t4 = String(r[i].desc).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						xml += '<row>' + 
-							'<description style="color: red" tooltiptext="' + r[i].ilsevent + '">' + r[i].textcode + '</description>' + 
-							'<description>' + (o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '') + '</description>' + 
-							'</row><row>' + '<description>' + r[i].desc + '</description>' + '</row>';
+							'<description style="color: red" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
+							'<description>' + t3 + '</description>' + 
+							'</row><row>' + '<description>' + t4 + '</description>' + '</row>';
 					}
 					xml += '</rows></grid></groupbox><groupbox><caption label="Override"/><hbox>' + 
 						'<description>Force this action?</description>' + 

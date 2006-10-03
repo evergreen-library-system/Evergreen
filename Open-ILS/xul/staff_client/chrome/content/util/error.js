@@ -321,7 +321,8 @@ util.error.prototype = {
 		this.sound.bad();
 
 
-		//FIXME - need to escape these values before embedding them into xml.. but window.escape was weird..
+		//FIMXE - is that good enough of an escape job?
+		s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
 			+ '<groupbox flex="1" style="overflow: auto; border: solid thin red;"><caption label="' + (title) + '"/>';
