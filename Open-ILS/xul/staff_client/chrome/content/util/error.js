@@ -351,7 +351,8 @@ util.error.prototype = {
 				case 'b3' : return 2; break;
 			}
 		} else {
-			return this.yns_alert(s,title,b1,b2,b3,c,image);
+			//return this.yns_alert(s,title,b1,b2,b3,c,image);
+			return null;
 		}
 	},
 
