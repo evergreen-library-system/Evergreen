@@ -306,7 +306,7 @@ oilsRptFolderManager.prototype.findNode = function(type, id) {
 	if defined, "action" must be a function pointer that takes the
 	folder node as the param */
 var __someid;
-function oilsRptBuildFolder(type, node, treeVar, rootName, action) {
+function oilsRptBuildFolder(type, node, treeVar, rootName, action, shared) {
 	removeChildren(node);
 	var tree = new SlimTree(node, treeVar);
 	this.treeId = oilsNextId();
@@ -320,6 +320,8 @@ function oilsRptBuildFolder(type, node, treeVar, rootName, action) {
 		var tid = cache[c].treeId + __someid;
 		var pid = this.treeId;
 		var f = cache[c].folder;
+
+		if( !shared && f.owner() != USER.id() ) continue;
 
 		if(f.parent()) {
 			/* find the parent's tree id so we can latch on to it */
