@@ -45,10 +45,14 @@ oilsRptParamEditor.prototype.draw = function() {
 
 /* display the time-relative options if necessary */
 oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
+
 	var field = oilsRptFindField(
 		oilsIDL[oilsRptPathClass(par.path)], oilsRptPathCol(par.path));
+
 	_debug('checking rel widget for datatype '+field.datatype);
-	if( field.datatype != 'timestamp' ) return;
+
+	if(field.datatype != 'timestamp') return;
+	if(par.op != '=') return;
 
 	var dom = $n(row,'reldate_div');
 	unHideMe(dom);
@@ -78,7 +82,6 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 
 	}
 
-
 	switch(param.op) {
 		case 'in':
 		case 'not in':
@@ -94,7 +97,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		default:
 			switch(dtype) {
 				case 'timestamp':
-					return new oilsRptRelDatePicker({node:node});
+					return new oilsRptWidget({node:node});
 				default:
 					return new oilsRptWidget({node:node});
 			}

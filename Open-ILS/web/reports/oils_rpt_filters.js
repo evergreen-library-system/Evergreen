@@ -71,10 +71,9 @@ function oilsRptFilterPicker(args) {
 oilsRptFilterPicker.prototype.addOpt = function(key) {
 	var filter = OILS_RPT_FILTERS[key];
 	var label = filter.label;
-	if( filter.labels && filter.labels[this.dtype] ) 
-		label = filter.labels[this.dtype];
-	var obj = this;
 	insertSelectorVal( this.selector, -1, label, key);
+	if( filter.labels && filter.labels[this.dtype] ) 
+		insertSelectorVal( this.selector, -1, filter.labels[this.dtype], key);
 }
 
 oilsRptFilterPicker.prototype.getSelected = function() {

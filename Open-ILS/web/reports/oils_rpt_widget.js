@@ -269,3 +269,60 @@ oilsRptRelDatePicker.prototype.getValue = function() {
 
 
 
+
+
+
+
+
+
+
+/* --------------------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
+
+function oilsRptAtomicWidget(args) {
+	this.node = args.node;
+	this.source = args.source;
+	this.dest = elem('input',{type:'text',size:12});
+}
+oilsRptAtomicWidget.prototype.draw = function() {
+	if( this.source )
+		appendClear(this.node, this.source);
+	appendClear(this.node, this.dest);
+}
+oilsRptAtomicWidget.prototype.getValue = function() {
+	return this.dest.value;
+}
+/* --------------------------------------------------------------------- */
+function oilsRptListWidget(args) {
+	this.node = args.node;
+	this.source = args.source;
+	this.dest = elem('select',
+		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+}
+oilsRptListWidget.prototype.draw = function() {
+	appendClear(this.source);
+	appendClear(this.dest);
+}
+oilsRptListWidget.prototype.getValue = function() {
+	return getSelectedList(this.dest);
+}
+/* --------------------------------------------------------------------- */
+function oilsRptBetweenWidget(args) {
+	this.node = args.node;
+	this.startSource = args.startSource;
+	this.endSource = args.endSource;
+	this.dest = elem('select',
+		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+}
+oilsRptBetweenWidget.prototype.draw = function() {
+	appendClear(this.startSource);
+	appendClear(this.endSource);
+	appendClear(this.dest);
+}
+oilsRptBetweenWidget.prototype.getValue = function() {
+	return getSelectedList(this.dest);
+}
+
+
+
+

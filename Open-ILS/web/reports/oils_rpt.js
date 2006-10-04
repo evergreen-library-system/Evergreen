@@ -5,6 +5,8 @@ function oilsInitReports() {
 	document.captureEvents(Event.MOUSEMOVE);
 	document.onmousemove = setMousePos;
 
+	DEBUGSLIM = true;
+
 	var cgi = new CGI();
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));

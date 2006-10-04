@@ -1,5 +1,6 @@
 oilsRptSetSubClass('oilsRptReportEditor', 'oilsRptObject');
 var oilsRptReportEditorFolderTree;
+
 function oilsRptReportEditor(rptObject, folderWindow) {
 	var tmpl = rptObject.templateObject;
 	var rpt = rptObject.reportObject;
@@ -121,12 +122,14 @@ oilsRptReportEditor.prototype.save = function() {
 
 	//return;
 
+	var obj = this;
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
 			oilsRptAlertSuccess();
 			oilsRptCurrentFolderManager.draw();
+			obj.folderWindow.draw();
 		}
 	);
 	req.send();

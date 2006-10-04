@@ -123,6 +123,25 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Age'
 	},
 
+	relative_year : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Relative year'
+	},
+
+	relative_month : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Relative month'
+	},
+
+	relative_week : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Relative week'
+	},
+
+	relative_date : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Relative date'
+	},
 
 	/* int  / float transforms ----------------------------------- */
 	sum : {
