@@ -36,7 +36,7 @@ var oilsRptDisplaySelector;
 
 var oilsRptFilterSelector;
 
-var oilsRptAggFilterSelector;
+var oilsRptHavingSelector;
 
 var oilsRptOrderBySelector;
 

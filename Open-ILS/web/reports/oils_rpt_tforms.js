@@ -1,9 +1,3 @@
-/*
-var OILS_RPT_DTYPE_STRING = 'string';
-var OILS_RPT_DTYPE_NUMERIC = 'numeric';
-var OILS_RPT_DTYPE_FLOAT = 'float';
-var OILS_RPT_DTYPE_TIMESTAMP = 'timestamp';
-*/
 
 var OILS_RPT_TRANSFORMS = {
 	Bare : {
@@ -207,7 +201,7 @@ oilsRptTformPicker.prototype.addOpt = function(key) {
 		this.selector, -1, tform.label, key,
 		function() {
 			obj.setSelected(getSelectorVal(obj.selector));
-			_debug("setting selected to " + obj.getSelected());
+			_debug("setting selected tform to " + obj.getSelected());
 		}
 	);
 }

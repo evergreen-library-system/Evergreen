@@ -111,8 +111,7 @@
 						<tr>	
 							<td>Choose a Filter: </td>
 							<td>
-								<!--#set var="OILS_RPT_OP_TABLE_ID" value="oils_rpt_filter_op_table"-->
-								<!--#include virtual="oils_rpt_ops.xhtml"-->
+								<div id='oils_rpt_filter_op_table'/>
 							</td>
 						</tr></tbody></table>
 					</div>
@@ -122,8 +121,28 @@
 			</div>
 
 			<div id='oils_rpt_agg_filter_div' class='hide_me'>
+				<div class='oils_rpt_field_editor_window'>
+					<div style='margin-bottom: 10px;'>
+						Select what aggregate filter should be applied to this field:
+					</div>
+					<div>
+						<table><tbody><tr>
+							<td>Choose a Transform: </td>
+							<td>
+								<div id='oils_rpt_agg_filter_tform_table'/>
+							</td>
+						</tr>
+						<tr>	
+							<td>Choose a Filter: </td>
+							<td>
+								<div id='oils_rpt_agg_filter_op_table'/>
+							</td>
+						</tr></tbody></table>
+					</div>
+				</div>
 				<button id='oils_rpt_agg_filter_submit'>Create Aggregate Filter</button>
 			</div>
+
 
 			<div id='oils_rpt_column_editor_close_div'>
 				<button id='oils_rpt_column_editor_close_button'>Close Window</button>
