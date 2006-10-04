@@ -211,9 +211,10 @@ function oilsDelSelectedDisplayItems() {
 
 	if(!oilsRpt.def.select) oilsRpt.def.select = [];
 
+	oilsRptPruneFromList(list);
+
+	/*
 	for( var j = 0; j < list.length; j++ ) {
-		/* if there are no items left in the "select", "where", or "having" clauses 
-			for the given relation, trim this relation from the "from" clause */
 		debug('seeing if we can prune from clause with relation = ' + hex_md5(oilsRptPathRel(list[j])));
 		if(	!grep(oilsRpt.def.select,
 				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
@@ -226,8 +227,30 @@ function oilsDelSelectedDisplayItems() {
 			oilsRptPruneFromClause(oilsRptPathRel(list[j]));
 		}
 	}
+	*/
 
 	oilsRptDebug();
+}
+
+function oilsRptPruneFromList(pathlist) {
+
+	for( var j = 0; j < pathlist.length; j++ ) {
+		/* if there are no items left in the "select", "where", or "having" clauses 
+			for the given relation, trim this relation from the "from" clause */
+		var path = pathlist[j];
+		var encrel = hex_md5(oilsRptPathRel(path));
+
+		debug('seeing if we can prune from clause with relation = ' + encrel +' : path = ' + path);
+
+		var func = function(i){ return (i.relation == hex_md5(oilsRptPathRel(path))); };
+
+		if(	!grep(oilsRpt.def.select, func) && 
+				!grep(oilsRpt.def.where, func) && 
+				!grep(oilsRpt.def.having, func) ) {
+
+			oilsRptPruneFromClause(oilsRptPathRel(pathlist[j]));
+		}
+	}
 }
 
 
@@ -235,33 +258,33 @@ function oilsDelSelectedDisplayItems() {
 	from the "from" clause */
 
 function oilsRptPruneFromClause(relation, node) {
-	_debug("removing relation from 'from' clause " + relation);
+	_debug("removing relation from 'from' clause: " + relation);
 	if(!node) node = oilsRpt.def.from.join;
+	if(!node) return false;
 
 	for( var i in node ) {
-		_debug("looking at node "+node[i].path);
+		_debug("from prune looking at node "+node[i].path);
 		// first, descend into the tree, and prune leaves first
 		if( node[i].join ) {
 			oilsRptPruneFromClause(relation, node[i].join); 
-			if(oilsRptObjectKeys(node[i].join).length == 0) delete node[i].join;
+			if(oilsRptObjectKeys(node[i].join).length == 0) 
+				delete node[i].join;
 		}
 	}
 
-	_debug(js2JSON(node));
-
-	// if we're at an unused empty leaf, remove it
-	if(  !node.join ) {
+	if(!node.join) {
 
 		var key = oilsRptObjectKeys(node)[0];
-		_debug("pruning from clause with "+node[key].alias);
+		var from_alias = node[key].alias;
+		var func = function(n){ return (n.relation == from_alias)};
 
-		if(	!grep(oilsRpt.def.select,
-				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
-			&& !grep(oilsRpt.def.where,
-				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
-			&& !grep(oilsRpt.def.having,
-				function(n){ _debug(n.relation); return (n.relation == node[key].alias)})
-		) {
+		_debug("pruning from clause with alias "+ from_alias);
+
+		if(	!grep(oilsRpt.def.select, func) &&
+				!grep(oilsRpt.def.where, func) &&
+				!grep(oilsRpt.def.having, func) ) {
+
+			// if we're at an unused empty leaf, remove it
 			delete node[i];
 			return true;
 		}
@@ -342,116 +365,109 @@ function oilsAddRptHavingItem(path, tform, filter) {
 
 
 
-/* removes selected items from the display window */
 function oilsDelSelectedFilterItems() {
+	_oilsDelSelectedFilterItems('where');
+}
+function oilsDelSelectedAggFilterItems() {
+	_oilsDelSelectedFilterItems('having');
+}
+
+function _oilsDelSelectedFilterItems(type) {
 
 	/* the values in this list are formed:  <path>:<operation>:<transform> */
 	var list = oilsDelSelectedItems(oilsRptFilterSelector);
 
-	var flist = [];
-
 	for( var i = 0; i < list.length; i++ ) {
-		var item = list[i];
-		flist.push( {
-			path:		item.replace(/:.*/,''),
-			operation:	item.replace(/.*:(.*):.*/,'$1'),
-			tform:	item.replace(/.*?:.*?:(.*)/,'$1')
-		});
-	}
-
-
-	/* XXX refactor the below to take operation and transform into account
-		since the same path can be used multiple times as long as a different
-		filter and/or transform is used */
-
-	/* remove the de-selected columns from the report output */
-	oilsRpt.def.where = grep( oilsRpt.def.where, 
-		function(i) {
-			for( var j = 0; j < flist.length; j++ ) {
-				var fil = flist[j];
-				var col = i.column;
-				var frel = oilsRptPathRel(fil.path);
-				var fcol = oilsRptPathCol(fil.path);
-
-				var op = oilsRptObjectKeys(i.condition)[0];
-
-				if(	frel == i.relation && 
-						fcol == col.colname && 
-						fil.operation == op &&
-						fil.tform == col.transform ) {
-						/* we have found a where clause with the same 
-							relation, column,  operation and transform */
-						
-						/* we aren't setting params on template build.. */
-						//var param = (i.column.params) ? i.columns.params.match(/::P\d*/) : null;
-						//if( param ) delete oilsRpt.params[param];
-						//param = (i.condition[op]) ? i.condition[op].match(/::P\d*/) : null;
-						//if( param ) delete oilsRpt.params[param];
-
-						return false;
-				}
+		var enc_path = list[i];
+		var data = oilsRptParseFilterEncPath(enc_path);
+		oilsRpt.def[type] = grep( 
+			oilsRpt.def[type],
+			function(f) { 
+				return oilsRptFilterDataMatches( 
+					f, data.path, data.operation, data.tform );
 			}
-			return true;
-		}
-	);
-
-	if(!oilsRpt.def.where) 
-		oilsRpt.def.where = [];
-
-
-	for( var j = 0; j < flist.length; j++ ) {
-		var path = flist[j].path;
-		var rel = oilsRptPathRel(path);
-		/* if there are no items left in the "select", "where", or "having" clauses 
-			for the given relation, trim this relation from the "from" clause */
-
-		var func = function(i){ return (i.relation == rel); };
-
-		if(	!grep(oilsRpt.def.select, func) &&
-				!grep(oilsRpt.def.where, func) &&
-				!grep(oilsRpt.def.having, func) ) {
-
-			_debug("pruning item with path "+ path + ' and relation '+ rel);
-
-			oilsRptPruneFromClause(oilsRptPathRel(path)); 
-		}
+		);
 	}
 
+	if(!oilsRpt.def[type]) oilsRpt.def[type] = [];
+	oilsRptPruneFromList(list);
 	oilsRptDebug();
 }
 
+function oilsRptParseFilterEncPath(item) {
+	return {
+		path:		item.replace(/:.*/,''),
+		operation:	item.replace(/.*:(.*):.*/,'$1'),
+		tform:	item.replace(/.*?:.*?:(.*)/,'$1')
+	};
+}
+
+
+function oilsRptFilterDataMatches(filter, path, operation, tform) {
+	var rel = hex_md5(oilsRptPathRel(path));
+	var col = oilsRptPathCol(path);
+
+	if(	col == filter.column.colname &&
+			rel == filter.relation &&	
+			tform == filter.column.transform &&
+			operation == oilsRptObjectKeys(filter)[0] ) return true;
+
+	return false;
+}
+
+/*
+function oilsRptFilterGrep(flist, filter) {
+
+	for( var j = 0; j < flist.length; j++ ) {
+
+		var fil	= flist[j];
+		var col	= filter.column;
+		var frel = hex_md5(oilsRptPathRel(fil.path));
+		var fcol = oilsRptPathCol(fil.path);
+
+		var op = oilsRptObjectKeys(filter.condition)[0];
+
+		if(	frel == filter.relation && 
+				fcol == col.colname && 
+				fil.operation == op &&
+				fil.tform == col.transform ) {
+				return false;
+		}
+	}
+	return true;
+}
+*/
+
 /* adds an item to the display window */
 function oilsAddRptAggFilterItem(val) {
-	oilsAddSelectorItem(oilsRptAggFilterSelector, val);
+	oilsAddSelectorItem(oilsRptHavingFilterSelector, val);
 }
 
 /* removes a specific item from the display window */
 function oilsDelAggFilterItem(val) {
-	oilsDelSelectorItem(oilsRptAggFilterSelector, val);
+	oilsDelSelectorItem(oilsRptHavingFilterSelector, val);
 }
 
-/* removes selected items from the display window */
-function oilsDelSelectedAggFilterItems() {
-	var list = oilsDelSelectedItems(oilsRptAggFilterSelector);
 
-	/* remove the de-selected columns from the report output */
+
+/*
+function ___oilsDelSelectedAggFilterItems() {
+	var list = oilsDelSelectedItems(oilsRptHavingFilterSelector);
 	oilsRpt.def.having = grep( oilsRpt.def.having, 
 		function(i) {
 			for( var j = 0; j < list.length; j++ ) {
 				var d = list[j];
 				var col = i.column;
 
-				/* if this columsn has a transform, 
-					it will be an object { tform => column } */
 				if( typeof col != 'string' ) 
 					for( var c in col ) col = col[c];
 
-				/* if this transform requires params, the column 
-					will be the first item in the param set array */
 				if( typeof col != 'string' ) col = col[0];
 
 				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
-					var param = (i.alias) ? i.alias.match(/::P\d*/) : null;
+				*/
+				//	var param = (i.alias) ? i.alias.match(/::P\d*/) : null;
+					/*
 					if( param ) delete oilsRpt.params[param];
 					return false;
 				}
@@ -460,31 +476,16 @@ function oilsDelSelectedAggFilterItems() {
 		}
 	);
 
-	if(!oilsRpt.def.having) {
-		oilsRpt.def.having = [];
-		oilsReportBuilderReset();
-
-	} else {
-		for( var j = 0; j < list.length; j++ ) 
-			/* if there are no items left in the "select", "where", or "having" clauses 
-				for the given relation, trim this relation from the "from" clause */
-			if(	!grep(oilsRpt.def.select,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.where,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-				&& !grep(oilsRpt.def.having,
-					function(i){ return (i.relation == oilsRptPathRel(list[j])); })
-			) oilsRptPruneFromClause(oilsRptPathRel(list[j]));
-	}
-
+	if(!oilsRpt.def.having) oilsRpt.def.having = [];
+	oilsRptPruneFromList(list);
 	oilsRptDebug();
 }
+*/
 
 
 /* adds an item to the display window */
 function oilsAddSelectorItem(sel, val, name) {
 	name = (name) ? name : oilsRptMakeLabel(val);
-	_debug("adding selector item "+name+' = ' +val);
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
 		if( opt.value == val ) return false;
@@ -496,7 +497,6 @@ function oilsAddSelectorItem(sel, val, name) {
 
 /* removes a specific item from the display window */
 function oilsDelSelectorItem(sel, val) {
-	_debug("deleting selector item "+val);
 	var opts = sel.options;
 	for( var i = 0; i < opts.length; i++ ) {
 		var opt = opts[i];
@@ -554,17 +554,10 @@ function oilsRptDrawDataWindow(path) {
 	oilsRptDrawFilterWindow(path, col, cls, field);
 	oilsRptDrawHavingWindow(path, col, cls, field);
 
-	//oilsRptSetFilters(field.datatype);
-
-	//oilsRptDoFilterWidgets();
-
-	//DOM.oils_rpt_filter_tform_selector.onchange = oilsRptDoFilterWidgets;
-
 	buildFloatingDiv(div, 600);
 
 	/* now let them see it */
 	div.style.visibility='visible';
-
 	oilsRptSetDataWindowActions(div);
 }
 

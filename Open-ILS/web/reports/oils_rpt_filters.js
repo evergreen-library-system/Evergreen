@@ -74,23 +74,11 @@ oilsRptFilterPicker.prototype.addOpt = function(key) {
 	if( filter.labels && filter.labels[this.dtype] ) 
 		label = filter.labels[this.dtype];
 	var obj = this;
-	insertSelectorVal(	
-		this.selector, -1, label, key,
-		function() {
-			obj.setSelected(getSelectorVal(obj.selector));
-			_debug("setting selected filter to " + obj.getSelected());
-		}
-	);
+	insertSelectorVal( this.selector, -1, label, key);
 }
-
-
-oilsRptFilterPicker.prototype.setSelected = function(key) {
-	this.selected = key;
-}
-
 
 oilsRptFilterPicker.prototype.getSelected = function() {
-	return this.selected;
+	return getSelectorVal(this.selector);
 }
 
 

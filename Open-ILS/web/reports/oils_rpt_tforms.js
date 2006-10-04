@@ -194,23 +194,13 @@ function oilsRptTformPicker(args) {
 }
 
 oilsRptTformPicker.prototype.addOpt = function(key) {
-	_debug("drawing tform opt with key " + key);
 	var tform = OILS_RPT_TRANSFORMS[key];		
 	var obj = this;
-	insertSelectorVal(	
-		this.selector, -1, tform.label, key,
-		function() {
-			obj.setSelected(getSelectorVal(obj.selector));
-			_debug("setting selected tform to " + obj.getSelected());
-		}
-	);
+	insertSelectorVal(this.selector, -1, tform.label, key);
 }
 
-oilsRptTformPicker.prototype.setSelected = function(key) {
-	this.selected = key;
-}
 oilsRptTformPicker.prototype.getSelected = function(key) {
-	return this.selected;
+	return getSelectorVal(this.selector);
 }
 
 

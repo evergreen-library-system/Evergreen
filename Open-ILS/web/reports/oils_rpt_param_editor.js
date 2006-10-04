@@ -68,7 +68,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	var cls = path.pop();
 
 	var field = oilsRptFindField(
-		oilsIDL[oilsRptPathClass(par.path)], oilsRptPathCol(par.path));
+		oilsIDL[oilsRptPathClass(param.path)], oilsRptPathCol(param.path));
 	var dtype = field.datatype;
 	var transform = param.column.transform;
 
