@@ -14,6 +14,8 @@ CREATE TABLE reporter.template_folder (
 	share_with	INT				REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX rpt_tmpl_fldr_owner_idx ON reporter.template_folder (owner);
+CREATE UNIQUE INDEX rpt_template_folder_once_parent_idx ON reporter.template_folder (name,parent);
+CREATE UNIQUE INDEX rpt_template_folder_once_idx ON reporter.output_folder (name,owner) WHERE parent IS NULL;
 
 CREATE TABLE reporter.report_folder (
 	id		SERIAL				PRIMARY KEY,
@@ -25,6 +27,8 @@ CREATE TABLE reporter.report_folder (
 	share_with	INT				REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX rpt_rpt_fldr_owner_idx ON reporter.report_folder (owner);
+CREATE UNIQUE INDEX rpt_report_folder_once_parent_idx ON reporter.report_folder (name,parent);
+CREATE UNIQUE INDEX rpt_report_folder_once_idx ON reporter.report_folder (name,owner) WHERE parent IS NULL;
 
 CREATE TABLE reporter.output_folder (
 	id		SERIAL				PRIMARY KEY,
@@ -36,6 +40,8 @@ CREATE TABLE reporter.output_folder (
 	share_with	INT				REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
 );
 CREATE INDEX rpt_output_fldr_owner_idx ON reporter.output_folder (owner);
+CREATE UNIQUE INDEX rpt_output_folder_once_parent_idx ON reporter.output_folder (name,parent);
+CREATE UNIQUE INDEX rpt_output_folder_once_idx ON reporter.output_folder (name,owner) WHERE parent IS NULL;
 
 
 CREATE TABLE reporter.template (
@@ -49,6 +55,7 @@ CREATE TABLE reporter.template (
 );
 CREATE INDEX rpt_tmpl_owner_idx ON reporter.template (owner);
 CREATE INDEX rpt_tmpl_fldr_idx ON reporter.template (folder);
+CREATE UNIQUE INDEX rtp_template_folder_once_idx ON reporter.template (name,folder);
 
 CREATE TABLE reporter.report (
 	id		SERIAL				PRIMARY KEY,
@@ -64,6 +71,7 @@ CREATE TABLE reporter.report (
 );
 CREATE INDEX rpt_rpt_owner_idx ON reporter.report (owner);
 CREATE INDEX rpt_rpt_fldr_idx ON reporter.report (folder);
+CREATE UNIQUE INDEX rtp_report_folder_once_idx ON reporter.report (name,folder);
 
 CREATE TABLE reporter.schedule (
 	id		SERIAL				PRIMARY KEY,
