@@ -78,9 +78,10 @@
 
 			<table id='oils_rpt_editor_tab_table' class='oils_rpt_tab_table'><tbody>
 				<tr>
-					<td width='33%'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items</a></td>
-					<td width='33%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
-					<td width='33%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
+					<td width='25%'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items</a></td>
+					<td width='25%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
+					<td width='25%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
+					<td width='25%'><a id='oils_rpt_order_by_tab' href='javascript:void(0);'>Column Sorting</a></td>
 				</tr>
 			</tbody></table>
 
@@ -142,6 +143,38 @@
 				</div>
 				<button id='oils_rpt_agg_filter_submit'>Create Aggregate Filter</button>
 			</div>
+
+
+
+			<div id='oils_rpt_order_by_div' class='hide_me'>
+				<div class='oils_rpt_field_editor_window'>
+					<div style='margin-bottom: 10px;'>
+						Select how the columns should be sorted
+					</div>
+					<div>
+						<table><tbody>
+							<!--
+							<tr>
+							<td>Choose a column: </td>
+							<td>
+								<select id='oils_rpt_order_by_selector'/>
+							</td>
+						</tr>
+						-->
+						<tr>	
+							<td>Choose the direction the sorting should occur: </td>
+							<td>
+								<select id='oils_rpt_order_by_dir'>
+									<option selected='selected'>Ascending</option>
+									<option value='descending'>Descending</option>
+								</select>
+							</td>
+						</tr></tbody></table>
+					</div>
+				</div>
+				<button id='oils_rpt_order_by_submit'>Add Sort</button>
+			</div>
+
 
 
 			<div id='oils_rpt_column_editor_close_div'>

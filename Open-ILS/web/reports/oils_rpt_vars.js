@@ -38,7 +38,7 @@ var oilsRptFilterSelector;
 
 var oilsRptHavingSelector;
 
-var oilsRptOrderBySelector;
+//var oilsRptOrderBySelector;
 
 /* display the currently building report object in an external window */
 var oilsRptDebugWindow;
@@ -77,6 +77,7 @@ var OILS_RPT_DELETE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.de
 var OILS_RPT_DELETE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.delete';
 var OILS_RPT_DELETE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.delete';
 var OILS_RPT_TEMPLATE_HAS_RPTS	= 'open-ils.reporter:open-ils.reporter.template_has_reports';
+var OILS_RPT_REPORT_HAS_OUTS		= 'open-ils.reporter:open-ils.reporter.report_has_output';
 var OILS_RPT_CREATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.create';
 var OILS_RPT_CREATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.create';
 var OILS_RPT_CREATE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.create';

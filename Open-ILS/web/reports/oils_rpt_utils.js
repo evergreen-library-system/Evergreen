@@ -333,6 +333,7 @@ function oilsRptFetchTemplate(id, callback) {
 
 
 function oilsRptAlertSuccess() { alertId('oils_rpt_generic_success'); }
+function oilsRptAlertFailure() { alertId('oils_rpt_generic_failure'); }
 
 
 function oilsRptBuildOutputLink(tid, rid, sid) {

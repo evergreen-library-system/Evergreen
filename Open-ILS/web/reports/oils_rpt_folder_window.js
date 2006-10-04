@@ -15,7 +15,7 @@ function oilsRptFolderWindow(type, folderId) {
 
 oilsRptFolderWindow.prototype.draw = function() {
 
-	_debug(this.folderNode.folder.owner().id() + ' : ' + USER.id());
+	_debug('drawing folder window for ' + this.folderNode.folder.name() );
 
 	var obj = this;
 	setSelector(DOM.oils_rpt_output_limit_selector, oilsRptOutputLimit);
@@ -188,6 +188,13 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 	var action = getSelectorVal(DOM.oils_rpt_folder_contents_action_selector);
 
 	var obj = this;
+	var successCallback = function(errid) {
+		if(errid) alertId(errid)
+		else oilsRptAlertSuccess();
+		obj.draw();
+	};
+
+	var obj = this;
 	switch(action) {
 		case 'create_report' :
 			hideMe(DOM.oils_rpt_folder_table_right_td);
@@ -196,39 +203,43 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			new oilsRptReportEditor(new oilsReport(objs[0]), this);
 			break;
 		case 'delete_report' :
-			for(var r = 0; r < objs.length; r++) 
-				this.deleteReport(objs[r]);
+			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+			this.deleteReports(objs, 0, successCallback);
 			break;
+
 		case 'delete_template' :
-			for(var r = 0; r < objs.length; r++) 
-				this.deleteTemplate(objs[r]);
+			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+			this.deleteTemplates(objs, 0, successCallback);
 			break;
+
 		case 'show_output':
 			this.showOutput(objs[0]);
 			break;
+
 		case 'delete_output':
-			for( var i = 0; i < objs.length; i++ ) {
-				if( objs[i].runner().id()  != USER.id() )
-					return alertId('oils_rpt_folder_contents_no_delete');
-			}
-			this.deleteOutputs(objs,0, 
-				function(){
-					oilsRptAlertSuccess();
-					obj.draw();
-				}
-			);
+			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+			this.deleteOutputs(objs,0, successCallback);
 			break;
 
 	}
 }
 
 
-oilsRptFolderWindow.prototype.deleteOutputs = function(list, idx, callback) {
-	if( idx >= list.length ) return callback();
-	var req = new Request(OILS_RPT_DELETE_SCHEDULE,SESSION,list[idx].id());
-	var obj = this;
-	req.callback(function(){obj.deleteOutputs(list, ++idx, callback);});
-	req.send();
+oilsRptFolderWindow.prototype.deleteOutputs = function(list, idx, callback, errid) {
+	if( idx >= list.length ) return callback(errid);
+	var output = list[idx];
+
+	if( list.runner().id()  != USER.id() ) {
+		this.deleteOutputs(list, ++idx, 
+			callback, 'oils_rpt_folder_contents_no_delete');
+
+	} else {
+		_debug('deleting output ' + output.id());
+		var req = new Request(OILS_RPT_DELETE_SCHEDULE,SESSION,output.id());
+		var obj = this;
+		req.callback(function(){obj.deleteOutputs(list, ++idx, callback, errid);});
+		req.send();
+	}
 }
 
 oilsRptFolderWindow.prototype.showOutput = function(sched) {
@@ -241,47 +252,75 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 }
 
 
-oilsRptFolderWindow.prototype.deleteReport = function(report) {
-	if( report.owner().id() != USER.id() )
-		return alertId('oils_rpt_folder_contents_no_delete');
-	if(!confirmId('oils_rpt_folder_contents_confirm_report_delete')) return;
-	var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
-	req.callback(
-		function(r) {
-			var res = r.getResultObject();
-			if( res == 1 ) {
-				oilsRptAlertSuccess();
-				oilsRptCurrentFolderManager.draw();
+oilsRptFolderWindow.prototype.deleteReports = function(list, idx, callback, errid) {
+	if( idx >= list.length ) return callback(errid);
+	var report = list[idx];
+
+	if( report.owner().id() != USER.id() ) {
+		this.deleteReports(list, ++idx, 
+			callback, 'oils_rpt_folder_contents_no_delete');
+
+	} else {
+
+		var obj = this;
+		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
+		req0.callback(
+			function(r0) {
+				var r0es = r0.getResultObject();
+				if( r0es != '0' ) {
+					obj.deleteReports(list, ++idx, 
+						callback, 'oils_rpt_folder_contents_report_no_delete');
+				} else {
+					_debug('deleting report ' + report.id());
+					var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
+					req.callback(function(r) { 
+						var res = r.getResultObject();
+						if( res != 1 ) return oilsRptAlertFailure();
+						obj.deleteReports(list, ++idx, callback, errid)
+					});
+					req.send();
+				}
 			}
-		}
-	);
-	req.send();
+		);
+
+		req0.send();
+	}
 }
 
-oilsRptFolderWindow.prototype.deleteTemplate = function(tmpl) {
-	if( tmpl.owner().id() != USER.id() )
-		return alertId('oils_rpt_folder_contents_no_delete');
-	var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
-	req0.callback(
-		function(r0) {
-			var resp = r0.getResultObject();
-			if( resp != '0' )
-				return alertId('oils_rpt_folder_contents_template_no_delete');
-			if(!confirmId('oils_rpt_folder_contents_confirm_template_delete')) return;
-			var req = new Request(OILS_RPT_DELETE_TEMPLATE, SESSION, tmpl.id());
-			req.callback(
-				function(r) {
-					var res = r.getResultObject();
-					if( res == 1 ) {
-						oilsRptAlertSuccess();
-						oilsRptCurrentFolderManager.draw();
-					}
+oilsRptFolderWindow.prototype.deleteTemplates = function(list, idx, callback, errid) {
+	if( idx >= list.length ) return callback(errid);
+	var tmpl = list[idx];
+
+	var obj = this;
+	if( tmpl.owner().id() != USER.id() ) {
+		this.deleteTemplates(list, ++idx, 
+			callback, 'oils_rpt_folder_contents_no_delete');
+
+	} else {
+
+		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
+		req0.callback(
+			function(r0) {
+				var resp = r0.getResultObject();
+
+				if( resp != '0' ) {
+					obj.deleteTemplates(list, ++idx, 
+						callback, 'oils_rpt_folder_contents_template_no_delete');
+
+				} else {
+					_debug('deleting template ' + tmpl.id());
+					var req = new Request(OILS_RPT_DELETE_TEMPLATE, SESSION, tmpl.id());
+					req.callback(function(r) {
+						var res = r.getResultObject();
+						if( res != 1 ) return oilsRptAlertFailure();
+						obj.deleteTemplates(list, ++idx, callback, errid)
+					});
+					req.send();
 				}
-			);
-			req.send();
-		}
-	);
-	req0.send();
+			}
+		);
+		req0.send();
+	}
 }
 
 

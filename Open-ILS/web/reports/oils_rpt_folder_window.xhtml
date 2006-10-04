@@ -1,11 +1,15 @@
 <div id='oils_rpt_folder_window_contents_div'>
-	<div style='width:100%;text-align: center; margin: 10px;'>
+
+
+	<!--
+	<div style='width:100%;text-align: right; margin: 10px; vertical-align: top'>
 		<a id='oils_rpt_folder_window_contents_new_template' href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
 	</div>
+	-->
 	<table id='oils_rpt_folder_window_contents_table'>
 		<tbody>
 			<tr>
-				<td> 
+				<td colspan='2'> 
 					<span>
 						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
 							<option type='template' value='create_report'>Create a new report from selected template</option>
@@ -35,10 +39,14 @@
 						</select>
 					</div>
 				</td>
+				<td style='text-align:right;'>
+					<a id='oils_rpt_folder_window_contents_new_template' 
+						href='javascript:void(0);'><b>Create a new Template for this folder</b></a>
+				</td>
 			</tr>
 
 			<tr class='oils_rpt_folder_window_contents_row'>
-				<td width='100%'>
+				<td colspan='2'>
 					<div id='oils_rpt_folder_contents_selector'/>
 				</td>
 			</tr>
@@ -46,18 +54,20 @@
 		</tbody>
 	</table>
 
-	<span class='hide_me' id='oils_rpt_folder_contents_confirm_report_delete'>
-		Are you sure you wish to delete the selected report(s)?
-	</span>
-
-	<span class='hide_me' id='oils_rpt_folder_contents_confirm_template_delete'>
-		Are you sure you wish to delete the selected template(s)?
+	<span class='hide_me' id='oils_rpt_folder_contents_confirm_delete'>
+		Are you sure you wish to delete the selected item(s)?
 	</span>
 
 	<span class='hide_me' id='oils_rpt_folder_contents_template_no_delete'>
-		The selected template could not be deleted because there are reports
-		that depend on it.
+		One or more of the selected templates could not be deleted because 
+		there are reports that depend on them.
 	</span>
+
+	<span class='hide_me' id='oils_rpt_folder_contents_report_no_delete'>
+		One or more of The selected reports could not be deleted because 
+		there are outputs that depend on them.
+	</span>
+
 
 	<span class='hide_me' id='oils_rpt_folder_contents_no_delete'>
 		You may not delete another user's items

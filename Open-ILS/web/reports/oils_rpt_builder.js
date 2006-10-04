@@ -22,10 +22,11 @@ function oilsReportBuilderReset() {
 	oilsRpt.name = n;
 	oilsRptDisplaySelector	= DOM.oils_rpt_display_selector;
 	oilsRptFilterSelector	= DOM.oils_rpt_filter_selector;
-	oilsRptHavingSelector= DOM.oils_rpt_agg_filter_selector;
+	oilsRptHavingSelector	= DOM.oils_rpt_agg_filter_selector;
 	removeChildren(oilsRptDisplaySelector);
 	removeChildren(oilsRptFilterSelector);
 	removeChildren(oilsRptHavingSelector);
+	//removeChildren(oilsRptOrderBySelector);
 	oilsRptResetParams();
 }
 
@@ -523,6 +524,7 @@ function oilsRptHideEditorDivs() {
 	hideMe(DOM.oils_rpt_tform_div);
 	hideMe(DOM.oils_rpt_filter_div);
 	hideMe(DOM.oils_rpt_agg_filter_div);
+	hideMe(DOM.oils_rpt_order_by_div);
 }
 
 
@@ -553,6 +555,7 @@ function oilsRptDrawDataWindow(path) {
 	oilsRptDrawTransformWindow(path, col, cls, field);
 	oilsRptDrawFilterWindow(path, col, cls, field);
 	oilsRptDrawHavingWindow(path, col, cls, field);
+	oilsRptDrawOrderByWindow(path, col, cls, field);
 
 	buildFloatingDiv(div, 600);
 
@@ -570,6 +573,8 @@ function oilsRptSetDataWindowActions(div) {
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_filter_div)};
 	DOM.oils_rpt_agg_filter_tab.onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
+	DOM.oils_rpt_order_by_tab.onclick = 
+		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_order_by_div)};
 
 	DOM.oils_rpt_tform_tab.onclick();
 	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
@@ -637,9 +642,20 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 				DOM.oils_rpt_tform_label_input.value, tformPicker.getSelected() );
 		};
 
-
 	DOM.oils_rpt_tform_label_input.focus();
 	DOM.oils_rpt_tform_label_input.select();
 
 	_debug("Building transform window for datatype "+dtype);
 }
+
+
+function oilsRptDrawOrderByWindow(path, col, cls, field) {
+	var sel = DOM.oils_rpt_order_by_selector;
+	removeChildren(sel);
+	DOM.oils_rpt_order_by_submit.onclick = function() {
+		alert('make me work');
+	}
+}
+
+
+
