@@ -928,6 +928,7 @@ cat.copy_browser.prototype = {
 				var funcs = [];
 				funcs.push( function() { 
 					document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+					document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 					document.getElementById('lib_menu').setAttribute('disabled','true'); 
 				} );
 				for (var i = 0; i < p_org.children().length; i++) {
@@ -941,6 +942,7 @@ cat.copy_browser.prototype = {
 				}
 				funcs.push( function() { 
 					document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+					document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 					document.getElementById('lib_menu').setAttribute('disabled','false'); 
 				} );
 				exec.chain( funcs );
@@ -961,6 +963,7 @@ cat.copy_browser.prototype = {
 			var funcs = [];
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 
@@ -975,6 +978,7 @@ cat.copy_browser.prototype = {
 			}
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
 
@@ -1003,6 +1007,7 @@ cat.copy_browser.prototype = {
 			var funcs = [];
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 
@@ -1017,6 +1022,7 @@ cat.copy_browser.prototype = {
 			}
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
 
@@ -1109,6 +1115,7 @@ cat.copy_browser.prototype = {
 			var funcs = [];
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 				document.getElementById('lib_menu').setAttribute('disabled','true'); 
 			} );
 			if (acn_tree.copies()) {
@@ -1124,6 +1131,7 @@ cat.copy_browser.prototype = {
 			}
 			funcs.push( function() { 
 				document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+				document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 				document.getElementById('lib_menu').setAttribute('disabled','false'); 
 			} );
 			JSAN.use('util.exec'); var exec = new util.exec();
@@ -1141,6 +1149,7 @@ cat.copy_browser.prototype = {
 		var funcs = [];
 		funcs.push( function() { 
 			document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+			document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
 			document.getElementById('lib_menu').setAttribute('disabled','true'); 
 		} );
 		if (org.children()) {
@@ -1167,6 +1176,7 @@ cat.copy_browser.prototype = {
 		}
 		funcs.push( function() { 
 			document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+			document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
 			document.getElementById('lib_menu').setAttribute('disabled','false'); 
 		} );
 		JSAN.use('util.exec'); var exec = new util.exec();
