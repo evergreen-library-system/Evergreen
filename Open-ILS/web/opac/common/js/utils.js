@@ -289,6 +289,19 @@ function grep( arr, func ) {
 	return null;
 }
 
+function ogrep( obj, func ) {
+	var results = {};
+	var found = false;
+	for( var i in obj ) {
+		if( func(obj[i]) ) {
+			results[i] = obj[i];
+			found = true;
+		}
+	}
+	if(found) return results;
+	return null;
+}
+
 function doSelectorActions(sel) {
 	if(IE && sel) { 
 		sel.onchange = function() {
@@ -644,7 +657,7 @@ function debugFMObject(obj) {
 	keys.sort();
 	for( var i = 0; i < keys.length; i++ ) {
 		var key = keys[i];
-		while( key.length < 20 ) key += ' ';
+		while( key.length < 12 ) key += ' ';
 		var val = obj[keys[i]]();
 		if( typeof val == 'object' ) {
 			_debug(key+' :=\n');
