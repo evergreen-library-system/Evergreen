@@ -13,30 +13,30 @@
 				<th>Recurance Interval</th>
 				<td>
 					<select name="oils_rpt_recur_count">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
-						<option>15</option>
-						<option>16</option>
-						<option>17</option>
-						<option>18</option>
-						<option>19</option>
-						<option>20</option>
-						<option>21</option>
-						<option>22</option>
-						<option>23</option>
-						<option>24</option>
+						<option value='1'>1</option>
+						<option value='2'>2</option>
+						<option value='3'>3</option>
+						<option value='4'>4</option>
+						<option value='5'>5</option>
+						<option value='6'>6</option>
+						<option value='7'>7</option>
+						<option value='8'>8</option>
+						<option value='9'>9</option>
+						<option value='10'>10</option>
+						<option value='11'>11</option>
+						<option value='12'>12</option>
+						<option value='13'>13</option>
+						<option value='14'>14</option>
+						<option value='15'>15</option>
+						<option value='16'>16</option>
+						<option value='17'>17</option>
+						<option value='18'>18</option>
+						<option value='19'>19</option>
+						<option value='20'>20</option>
+						<option value='21'>21</option>
+						<option value='22'>22</option>
+						<option value='23'>23</option>
+						<option value='24'>24</option>
 					</select>
 					<select name="oils_rpt_recur_interval_type">
 						<!--
@@ -67,10 +67,61 @@
 				<td name='column'/>
 				<td name='transform'/>
 				<td name='action'/>
-				<td name='widget'/>
+				<td>
+					<div name='widget'/>
+					<div name='reldate_div'  style='margin-top: 5px;' class='hide_me'>
+						<div><b> - OR - </b></div>
+						<input type='checkbox' name='choose_rel'/> Use a relative date instead.
+						<div name='reldate'/>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<div class='hide_me' id='oils_rpt_relative_date_picker'>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<select name="count">
+							<option value='1'>1</option>
+							<option value='2'>2</option>
+							<option value='3'>3</option>
+							<option value='4'>4</option>
+							<option value='5'>5</option>
+							<option value='6'>6</option>
+							<option value='7'>7</option>
+							<option value='8'>8</option>
+							<option value='9'>9</option>
+							<option value='10'>10</option>
+							<option value='11'>11</option>
+							<option value='12'>12</option>
+							<option value='13'>13</option>
+							<option value='14'>14</option>
+							<option value='15'>15</option>
+							<option value='16'>16</option>
+							<option value='17'>17</option>
+							<option value='18'>18</option>
+							<option value='19'>19</option>
+							<option value='20'>20</option>
+							<option value='21'>21</option>
+							<option value='22'>22</option>
+							<option value='23'>23</option>
+							<option value='24'>24</option>
+						</select>
+						<select name="type">
+							<option value="days">Day(s)</option>
+							<option value="weeks">Week(s)</option>
+							<option value="months">Month(s)</option>
+						</select>
+						<span> ago</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 </div>
 
 

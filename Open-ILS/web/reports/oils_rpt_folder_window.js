@@ -208,7 +208,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			break;
 		case 'delete_output':
 			for( var i = 0; i < objs.length; i++ ) {
-				if( objs[i].runner()  != USER.id() )
+				if( objs[i].runner().id()  != USER.id() )
 					return alertId('oils_rpt_folder_contents_no_delete');
 			}
 			this.deleteOutputs(objs,0, 
@@ -242,7 +242,7 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 
 
 oilsRptFolderWindow.prototype.deleteReport = function(report) {
-	if( report.owner() != USER.id() )
+	if( report.owner().id() != USER.id() )
 		return alertId('oils_rpt_folder_contents_no_delete');
 	if(!confirmId('oils_rpt_folder_contents_confirm_report_delete')) return;
 	var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
@@ -259,7 +259,7 @@ oilsRptFolderWindow.prototype.deleteReport = function(report) {
 }
 
 oilsRptFolderWindow.prototype.deleteTemplate = function(tmpl) {
-	if( tmpl.owner() != USER.id() )
+	if( tmpl.owner().id() != USER.id() )
 		return alertId('oils_rpt_folder_contents_no_delete');
 	var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
 	req0.callback(

@@ -37,22 +37,52 @@ oilsRptParamEditor.prototype.draw = function() {
 		$n(row, 'action').appendChild(text(par.op));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
+		this.buildRelWidget(par, row);
 		this.tbody.appendChild(row);
 	}
 }
 
 
+/* display the time-relative options if necessary */
+oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
+	var field = oilsRptFindField(
+		oilsIDL[oilsRptPathClass(par.path)], oilsRptPathCol(par.path));
+	_debug('checking rel widget for datatype '+field.datatype);
+	if( field.datatype != 'timestamp' ) return;
+
+	var dom = $n(row,'reldate_div');
+	unHideMe(dom);
+	par.relWidget = new oilsRptRelDatePicker({node:$n(dom,'reldate'),relative:true});
+	par.relWidget.draw();
+	var cb = $n(row,'choose_rel');
+	cb.onclick = function() {
+		par.relWidgetChecked = false;
+		if( cb.checked ) par.relWidgetChecked = true;
+	}
+}
+
+
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {
-	//var cls = param.relation.split(/-/).pop();
 	var path = param.path.split(/-/);
 	path.pop();
 	var cls = path.pop();
+
+	var field = oilsRptFindField(
+		oilsIDL[oilsRptPathClass(par.path)], oilsRptPathCol(par.path));
+	var dtype = field.datatype;
+	var transform = param.column.transform;
+
 	_debug("building widget with param class:" + cls + ' col: '+param.column.colname + ' op: '+ param.op);
+
+	switch(transform) {
+
+	}
+
+
 	switch(param.op) {
 		case 'in':
 		case 'not in':
-			/* we have to special case org selection for now, 
-				until we have generic object fetch support */
+			/* special case the org tree selector  */
 			if( cls == 'aou' ) {
 				return new oilsRptOrgMultiSelect({node:node});
 			} else {
@@ -62,7 +92,12 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			return new oilsRptMultiInputWidget({node:node});
 
 		default:
-			return new oilsRptWidget({node:node});
+			switch(dtype) {
+				case 'timestamp':
+					return new oilsRptRelDatePicker({node:node});
+				default:
+					return new oilsRptWidget({node:node});
+			}
 	}
 }
 

@@ -17,7 +17,7 @@ oilsRptWidget.prototype.initWidget = function(args) {
 }
 
 oilsRptWidget.prototype.getValue = function() {
-	return this.dest.value;
+	return this.dest.value ;
 }
 
 oilsRptWidget.prototype.draw = function() {
@@ -26,7 +26,7 @@ oilsRptWidget.prototype.draw = function() {
 
 /* ----------------------------------------------------------- */
 
-/* multiple input boxes */
+/* multiple input boxes, no separate source, optional box labels */
 oilsRptSetSubClass('oilsRptMultiInputWidget', 'oilsRptWidget');
 function oilsRptMultiInputWidget(args) {
 	this.initInputWidget(args);
@@ -66,6 +66,8 @@ oilsRptMultiInputWidget.prototype.setLabels = function(labels) {
 
 /* ----------------------------------------------------------- */
 
+/* abstract class, multi-select output (dest), 
+	add and delete buttons, you provide intput */
 oilsRptSetSubClass('oilsRptMultiWidget', 'oilsRptWidget');
 function oilsRptMultiWidget(args) {
 	this.initMultiWidget(args);
@@ -120,6 +122,7 @@ oilsRptMultiWidget.prototype.drawMultiWidget = function() {
 
 /* ----------------------------------------------------------- */
 
+/* single text box as source, multiwidget output (select) as dest */
 oilsRptSetSubClass('oilsRptInputMultiWidget', 'oilsRptMultiWidget');
 function oilsRptInputMultiWidget(args) {
 	this.initInputMultiWidget(args);
@@ -144,6 +147,7 @@ oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 
 /* ----------------------------------------------------------- */
 
+/* multi-select source */
 oilsRptSetSubClass('oilsRptSelectorMultiWidget', 'oilsRptMultiWidget');
 function oilsRptSelectorMultiWidget(args) {
 	this.initSelectorMultiWidget(args);
@@ -168,6 +172,7 @@ oilsRptSelectorMultiWidget.prototype.getSourceCollector = function() {
 
 /* ----------------------------------------------------------- */
 
+/* in process */
 oilsRptSetSubClass('oilsRptRemoteWidget', 'oilsRptSelectorMultiWidget');
 function oilsRptRemoteWidget(args) {
 	this.initRemoteWidget(args);
@@ -190,7 +195,7 @@ oilsRptRemoteWidget.prototype.setFetch = function(func) {
 
 /* --------------------------------------------------------------------- */
 
-/* standalone org widget */
+/* custom my-orgs picker */
 function oilsRptMyOrgsWidget(node, orgid) {
 	this.node = node;
 	this.orgid = orgid;
@@ -222,11 +227,11 @@ oilsRptMyOrgsWidget.prototype.getValue = function() {
 
 /* --------------------------------------------------------------------- */
 
+/* custom all-orgs picker */
 oilsRptSetSubClass('oilsRptOrgMultiSelect','oilsRptSelectorMultiWidget');
 function oilsRptOrgMultiSelect(args) {
 	this.initSelectorMultiWidget(args);
 }
-
 oilsRptOrgMultiSelect.prototype.draw = function(org) {
 	if(!org) org = globalOrgTree;
 	var opt = insertSelectorVal( this.source, -1, 
@@ -241,6 +246,26 @@ oilsRptOrgMultiSelect.prototype.draw = function(org) {
 }
 
 
+/* --------------------------------------------------------------------- */
+function oilsRptRelDatePicker(args) {
+	this.node = args.node;
+	this.relative = args.relative;
+	this.div = DOM.oils_rpt_relative_date_picker.cloneNode(true);
+}
+
+oilsRptRelDatePicker.prototype.draw = function() {
+	this.node.appendChild(this.div);
+	unHideMe(this.div);
+}
+
+oilsRptRelDatePicker.prototype.getValue = function() {
+	var str = 
+		getSelectorVal($n(this.div, 'count')) + 
+		getSelectorVal($n(this.div,'type'));
+	if( this.relative ) str = '-'+str;
+	return str;
+}
+/* --------------------------------------------------------------------- */
 
 
 

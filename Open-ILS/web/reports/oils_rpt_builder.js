@@ -107,6 +107,9 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 }
 
 function oilsRptGetIsAgg(tform) {
+	return OILS_RPT_TRANSFORMS[tform].aggregate;
+	
+	/* DEPRECATED */
 	var sel = $n(DOM.oils_rpt_tform_table,'selector');
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
@@ -298,7 +301,9 @@ function oilsAddRptFilterItem(path, tform, filter) {
 		column:   { transform: tform, colname: oilsRptPathCol(path) },
 		condition : {}
 	};
-	where.condition[filter] = oilsRptNextParam();
+	if( filter == 'is' || filter == 'is not' )
+		where.condition[filter] = null;
+	else where.condition[filter] = oilsRptNextParam();
 
 	switch(tform) {
 		case 'substring' : where.column.params = oilsRptNextParam();
@@ -576,7 +581,20 @@ function oilsRptDrawFilterWindow(path, col, cls, field) {
 		}
 	}
 
+	var tformPicker = new oilsRptTformPicker( {	
+			node : DOM.oils_rpt_filter_tform_table,
+			datatype : field.datatype,
+			non_aggregate : true
+		}
+	);
 
+	DOM.oils_rpt_filter_submit.onclick = function() {
+		oilsAddRptFilterItem(
+			path, tformPicker.getSelected(), getSelectorVal(fsel));
+	}
+
+
+	/*
 	DOM.oils_rpt_filter_submit.onclick = function() {
 		var tsel = $n(DOM.oils_rpt_filter_tform_table,'selector');
 		var tform = getSelectorVal(tsel);
@@ -584,6 +602,7 @@ function oilsRptDrawFilterWindow(path, col, cls, field) {
 		oilsAddRptFilterItem(path, tform, filter);
 	}
 	oilsRptShowFilters($n(DOM.oils_rpt_filter_tform_table,'selector'), field.datatype, false, true);
+	*/
 		
 	/*
 	oilsRptCurrentFilterTform = new oilsRptTFormManager(DOM.oils_rpt_filter_tform_table);
@@ -617,11 +636,18 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 	DOM.oils_rpt_tform_label_input.value = oilsRptMakeLabel(path);
 	var dtype = field.datatype;
 
+	var tformPicker = new oilsRptTformPicker( {	
+			node : DOM.oils_rpt_tform_table,
+			datatype : field.datatype,
+			non_aggregate : true,
+			aggregate : true
+		}
+	);
+
 	DOM.oils_rpt_tform_submit.onclick = 
 		function(){ 
-			var sel = $n(DOM.oils_rpt_tform_table,'selector');
-			var tform = getSelectorVal(sel);
-			oilsAddRptDisplayItem(path, DOM.oils_rpt_tform_label_input.value, tform ) 
+			oilsAddRptDisplayItem(path, 
+				DOM.oils_rpt_tform_label_input.value, tformPicker.getSelected() );
 		};
 
 
@@ -633,9 +659,11 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 	oilsRptCurrentTform.build(dtype, true, true);
 	*/
 
+	/*
 	_debug($n(DOM.oils_rpt_tform_table,'selector'));
 
 	oilsRptShowFilters($n(DOM.oils_rpt_tform_table,'selector'), dtype, true, true);
+	*/
 
 	/*
 	oilsRptHideTformFields();
@@ -745,6 +773,7 @@ function oilsRptSetFilters(dtype) {
 */
 
 /* hides all of the filter widgets */
+/*
 function oilsRptHideFilterWidgets(node) {
 	if(!node)
 		node = DOM.oils_rpt_filter_tform_widget_td;
@@ -757,15 +786,12 @@ function oilsRptHideFilterWidgets(node) {
 			oilsRptHideFilterWidgets(cs[i]);
 	}
 }
-
-/* what does this need to do? */
-function oilsRptSetFilterOpActions() {
-}
-
+*/
 
 
 /* hides/unhides the appropriate widgets and returns the parameter
 	array appropriate for the selected widget */
+/*
 function oilsRptDoFilterWidgets() {
 	filter = getSelectorVal(DOM.oils_rpt_filter_tform_selector);
 	oilsRptHideFilterWidgets();
@@ -775,7 +801,6 @@ function oilsRptDoFilterWidgets() {
 
 	switch(filter) {
 		
-		/* generic transforms */
 		case 'equals':
 			if(!op) op = 'equals';
 		case 'like':
@@ -802,7 +827,6 @@ function oilsRptDoFilterWidgets() {
 			params = [DOM.oils_rpt_filter_tform_input.value];
 			break;
 
-		/* timestamp transforms */
 		case 'date_between':
 			if(!op) op = 'between';
 		case 'date_not_between':
@@ -868,7 +892,6 @@ function oilsRptDoFilterWidgets() {
 			if(!tform) tform = 'age';
 			break;
 
-		/* string transforms */
 		case 'substring':
 			if(!tform) tform = 'substring';
 			break;
@@ -881,7 +904,6 @@ function oilsRptDoFilterWidgets() {
 			if(!op) op = '';
 			if(!tform) tform = 'dow';
 
-		/* numeric transforms */
 		case 'round':
 			if(!op) op = '';
 			if(!tform) tform = 'dow';
@@ -893,6 +915,7 @@ function oilsRptDoFilterWidgets() {
 
 	return { op : op, params : params, tform : tform };
 }
+ */
 
 
 

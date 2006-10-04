@@ -91,3 +91,8 @@ var oilsRptCurrentFolderManager;
 //var oilsRptFolderWindowCache = {};
 
 var oilsRptObjectCache = {};
+
+var OILS_RPT_DTYPE_STRING = 'string';
+var OILS_RPT_DTYPE_INT = 'int';
+var OILS_RPT_DTYPE_FLOAT = 'float';
+var OILS_RPT_DTYPE_TIMESTAMP = 'timestamp';
