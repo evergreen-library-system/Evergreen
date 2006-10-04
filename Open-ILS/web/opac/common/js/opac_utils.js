@@ -8,6 +8,7 @@ var cookieManager = new HTTP.Cookies();
 
 var __ilsEvent; /* the last event the occurred */
 
+var DEBUGSLIM;
 function Request(type) {
 
 	var s = type.split(":");
@@ -44,6 +45,9 @@ function Request(type) {
 			str += js2JSON(p[i]);
 		}
 		_debug('request ' + s[0] + ' ' + s[1] + ' ' + str );
+
+	} else if( DEBUGSLIM ) {
+		_debug('request ' + s[1]);
 	}
 }
 
