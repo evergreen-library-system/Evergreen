@@ -313,7 +313,7 @@ sub metarecord_copy_count {
 			       		JOIN $cl_table cl ON (cp.location = cl.id)
 					JOIN $descendants a ON (cp.circ_lib = a.id)
 				  WHERE r.metarecord = ?
-				  	AND cp.status = 0
+				  	AND cp.status IN (0,7)
 				  	AND cn.deleted IS FALSE
 				  	AND cp.deleted IS FALSE
 					$copies_visible

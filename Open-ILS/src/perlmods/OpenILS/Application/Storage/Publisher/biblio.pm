@@ -56,7 +56,7 @@ sub record_copy_count {
 					$visible
 				  	AND cn.deleted IS FALSE
 					AND cp.deleted IS FALSE
-				  	AND cp.status = 0)
+				  	AND cp.status IN (0,7))
 			) AS available,
 			sum(
 				(SELECT count(cp.id)
@@ -325,7 +325,7 @@ sub global_record_copy_count {
 					JOIN $cs_table cs ON (cs.id = cp.status)
 					JOIN $cl_table cl ON (cl.id = cp.location)
 				  WHERE	cn.record = ?
-				  	AND cp.status = 0
+				  	AND cp.status IN (0,7)
 				  	$copies_visible
 				  GROUP BY 1
                         			UNION
