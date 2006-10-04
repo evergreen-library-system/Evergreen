@@ -357,6 +357,63 @@ util.error.prototype = {
 		}
 	},
 
+	'yns_alert_formatted' : function (s,title,b1,b2,b3,c,image) {
+
+		/* The original purpose of yns_alert was to prevent errors from being scanned through accidentally with a barcode scanner.  
+		However, this can be done in a less annoying manner by rolling our own dialog and not having any of the options in focus */
+
+		/*
+			s 	= Message to display
+			title 	= Text in Title Bar
+			b1	= Text for button 1
+			b2	= Text for button 2
+			b3	= Text for button 3
+			c	= Text for confirmation checkbox.  null for no confirm
+		*/
+
+		dump('yns_alert:\n\ts = ' + s + '\n\ttitle = ' + title + '\n\tb1 = ' + b1 + '\n\tb2 = ' + b2 + '\n\tb3 = ' + b3 + '\n\tc = ' + c + '\n');
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
+
+		this.sound.bad();
+
+
+		//FIMXE - is that good enough of an escape job?
+		s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+		var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml" flex="1">' 
+			+ '<groupbox flex="1" style="overflow: auto; border: solid thin red;"><caption label="' + (title) + '"/>';
+
+		if (image) xml += '<hbox><image src="' + image + '"/><spacer flex="1"/></hbox>';
+		xml += '<description style="font-size: large"><html:pre style="font-size: large">' + (s)
+			+ '</html:pre></description></groupbox><groupbox><caption label="Options"/><hbox>';
+		var b1_key = b1 ? b1[0] : '';
+		var b2_key = b2 ? b2[0] : '';
+		var b3_key = b3 ? b3[0] : ''; /* FIXME - need to check for collisions */
+		if (b1) xml += '<button id="b1" accesskey="' + b1_key + '" label="' + (b1) + '" name="fancy_submit" value="b1"/>'
+		if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
+		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
+		xml += '</hbox></groupbox></vbox>';
+		window.open(
+			urls.XUL_FANCY_PROMPT
+			+ '?xml=' + window.escape(xml)
+			+ '&title=' + window.escape(title),
+			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		);
+		JSAN.use('OpenILS.data');
+		var data = new OpenILS.data(); data.init({'via':'stash'});
+		if (data.fancy_prompt_data != '') {
+			switch(data.fancy_prompt_data.fancy_submit) {
+				case 'b1' : return 0; break;
+				case 'b2' : return 1; break;
+				case 'b3' : return 2; break;
+			}
+		} else {
+			//return this.yns_alert(s,title,b1,b2,b3,c,image);
+			return null;
+		}
+	},
+
+
 
 	'yns_alert_original' : function (s,title,b1,b2,b3,c) {
 

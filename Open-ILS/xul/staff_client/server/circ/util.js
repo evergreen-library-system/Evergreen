@@ -1097,8 +1097,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 					}
 					var rv = 0;
 					msg += 'Slip Date: ' + util.date.formatted_date(new Date(),'%F') + '\n';
-					if (!auto_print) rv = error.yns_alert(
-						'<html:pre style="font-size: large">' + msg + '</html:pre>',
+					if (!auto_print) rv = error.yns_alert_formatted(
+						msg,
 						'Hold Slip',
 						"Print",
 						"Don't Print",
@@ -1182,8 +1182,8 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 			}
 			var rv = 0;
 			msg += '\nSlip Date: ' + util.date.formatted_date(new Date(),'%F') + '\n';
-			if (!auto_print) rv = error.yns_alert(
-				'<html:pre style="font-size: large">' + msg + '</html:pre>',
+			if (!auto_print) rv = error.yns_alert_formatted(
+				msg,
 				'Transit Slip',
 				"Print",
 				"Don't Print",
