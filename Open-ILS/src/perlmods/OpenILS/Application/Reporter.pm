@@ -344,6 +344,20 @@ sub has_reports {
 	return 0;
 }
 
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.report_has_output',
+	method => 'has_output');
+sub has_output {
+	my( $self, $conn, $auth, $reportId ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	my $outs = $e->search_reporter_schedule({report=>$reportId},{idlist=>1});
+	return 1 if @$outs;
+	return 0;
+}
+
+
 
 __PACKAGE__->register_method(
 	method => 'org_full_path',
