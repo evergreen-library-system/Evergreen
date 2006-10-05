@@ -31,6 +31,7 @@ oilsRptParamEditor.prototype.draw = function() {
 	for( var p = 0; p < params.length; p++ ) {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
+		this.tbody.appendChild(row);
 		$n(row, 'object').appendChild(text(oilsRptMakeLabel(oilsRptPathRel(par.path))));
 		$n(row, 'column').appendChild(text(par.column.colname));
 		$n(row, 'transform').appendChild(text(par.column.transform));
@@ -38,7 +39,6 @@ oilsRptParamEditor.prototype.draw = function() {
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
 		//this.buildRelWidget(par, row);
-		this.tbody.appendChild(row);
 	}
 }
 
@@ -80,14 +80,38 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 
 	_debug("building widget with param class:" + cls + ' col: '+param.column.colname + ' op: '+ param.op);
 
-	switch(transform) {
+	/* get the atomic widget from the datatype */
+	var atomicWidget = oilsRptTextWidget;
+	var widgetArgs	= {node:node};
+	widgetArgs.calFormat = OILS_RPT_TRANSFORMS[transform].cal_format;
+	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
 
+	switch(transform) {
+		case 'month_trunc':
+		case 'year_trunc':
+		case 'date':
+			atomicWidget = oilsRptCalWidget;
+			break;
 	}
 
 	switch(param.op) {
 		case 'in':
 		case 'not in':
-			/* special case the org tree selector  */
+			widgetArgs.inputWidget = atomicWidget;
+			return new oilsRptSetWidget(widgetArgs);
+		case 'between':
+		case 'not between':
+			widgetArgs.startWidget = atomicWidget;
+			widgetArgs.endWidget = atomicWidget;
+			return new oilsRptBetweenWidget(widgetArgs);
+		default:
+			return new oilsRptAtomicWidget(widgetArgs);
+	}
+
+	/*
+	switch(param.op) {
+		case 'in':
+		case 'not in':
 			if( cls == 'aou' ) {
 				return new oilsRptOrgMultiSelect({node:node});
 			} else {
@@ -104,6 +128,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 					return new oilsRptWidget({node:node});
 			}
 	}
+	*/
 }
 
 //oilsRptParamEditor.prototype.get = function(param, node) {

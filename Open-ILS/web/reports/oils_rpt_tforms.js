@@ -90,7 +90,8 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Date',
 		regex : /^\d{4}-\d{2}-\d{2}$/,
 		hint  : 'YYYY-MM-DD',
-		cal_format : '%Y-%m-%d'
+		cal_format : '%Y-%m-%d',
+		input_size : 10
 	},
 
 	month_trunc : {
@@ -98,7 +99,8 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Year + Month',
 		regex : /^\d{4}-\d{2}$/,
 		hint  : 'YYYY-MM',
-		cal_format : '%Y-%m'
+		cal_format : '%Y-%m',
+		input_size : 7
 	},
 
 	year_trunc : {
@@ -106,7 +108,8 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Year',
 		regex : /^\d{4}$/,
 		hint  : 'YYYY',
-		cal_format : '%Y'
+		cal_format : '%Y',
+		input_size : 4
 	},
 
 	day_name : {

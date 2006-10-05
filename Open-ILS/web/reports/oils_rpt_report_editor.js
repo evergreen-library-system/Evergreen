@@ -122,7 +122,7 @@ oilsRptReportEditor.prototype.save = function() {
 	debugFMObject(report);
 	debugFMObject(schedule);
 
-	//return;
+	return;
 
 	var obj = this;
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );

@@ -274,53 +274,152 @@ oilsRptRelDatePicker.prototype.getValue = function() {
 
 
 
-
-
 /* --------------------------------------------------------------------- */
 /* --------------------------------------------------------------------- */
 
-function oilsRptAtomicWidget(args) {
+
+
+
+/* --------------------------------------------------------------------- 
+	Represents a set of value, an inputWidget collects data and a 
+	multi-select displays the data and allows the user to remove items
+	--------------------------------------------------------------------- */
+function oilsRptSetWidget(args) {
 	this.node = args.node;
-	this.source = args.source;
-	this.dest = elem('input',{type:'text',size:12});
-}
-oilsRptAtomicWidget.prototype.draw = function() {
-	if( this.source )
-		appendClear(this.node, this.source);
-	appendClear(this.node, this.dest);
-}
-oilsRptAtomicWidget.prototype.getValue = function() {
-	return this.dest.value;
-}
-/* --------------------------------------------------------------------- */
-function oilsRptListWidget(args) {
-	this.node = args.node;
-	this.source = args.source;
+	this.inputWidget = new args.inputWidget(args);
 	this.dest = elem('select',
 		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
 }
-oilsRptListWidget.prototype.draw = function() {
-	appendClear(this.source);
-	appendClear(this.dest);
+
+oilsRptSetWidget.prototype.draw = function() {
+
+	this.addButton = elem('input',{type:'submit',value:"Add"})
+	this.delButton = elem('input',{type:'submit',value:"Del"})
+
+	var obj = this;
+	this.addButton.onclick = function() {
+		obj.addDisplayItems(obj.inputWidget.getDisplayValue());
+	}
+
+	this.delButton.onclick = function(){obj.removeSelected()};
+
+	removeChildren(this.node);
+	this.inputWidget.draw();
+	this.node.appendChild(elem('br'))
+	this.node.appendChild(this.addButton);
+	this.node.appendChild(this.delButton);
+	this.node.appendChild(elem('br'))
+	this.node.appendChild(this.dest);
 }
-oilsRptListWidget.prototype.getValue = function() {
-	return getSelectedList(this.dest);
+
+oilsRptSetWidget.prototype.addDisplayItems = function(list) {
+	if( list.constructor != Array ) list = [list];
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+
+		/* no dupes */
+		var exists = false;
+		iterate(this.dest.options, 
+			function(o){if(o.getAttribute('value') == item.value) {exists = true; return;}});
+		if(exists) continue;
+
+		_debug('Inserting SetWidget values ' + js2JSON(item));
+		insertSelectorVal(this.dest, -1, item.label, item.value);
+	}
 }
-/* --------------------------------------------------------------------- */
+
+oilsRptSetWidget.prototype.removeSelected = function() {
+	oilsDelSelectedItems(this.dest);
+}
+
+oilsRptSetWidget.prototype.getValue = function() {
+	return getSelectedSet(this.dest);
+}
+
+
+/* --------------------------------------------------------------------- 
+	represents a widget that has start and end values.  start and end
+	are gather from start/end widgets
+	--------------------------------------------------------------------- */
 function oilsRptBetweenWidget(args) {
 	this.node = args.node;
-	this.startSource = args.startSource;
-	this.endSource = args.endSource;
-	this.dest = elem('select',
-		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+	this.startWidget = new args.startWidget(args);
+	this.endWidget = new args.endWidget(args);
 }
 oilsRptBetweenWidget.prototype.draw = function() {
-	appendClear(this.startSource);
-	appendClear(this.endSource);
-	appendClear(this.dest);
+	removeChildren(this.node);
+	this.startWidget.draw();
+	this.endWidget.draw();
 }
 oilsRptBetweenWidget.prototype.getValue = function() {
-	return getSelectedList(this.dest);
+	return [
+		this.startWidget.getValue(),
+		this.endWidget.getValue()
+	];
+}
+
+
+/* --------------------------------------------------------------------- 
+	the most basic text input widget
+	--------------------------------------------------------------------- */
+function oilsRptTextWidget(args) {
+	this.node = args.node;
+	this.dest = elem('input',{type:'text',size:12});
+}
+oilsRptTextWidget.prototype.draw = function() {
+	this.node.appendChild(this.dest);
+}
+
+/* returns the "real" value for the widget */
+oilsRptTextWidget.prototype.getValue = function() {
+	return this.dest.value;
+}
+
+/* returns the label and "real" value for the widget */
+oilsRptTextWidget.prototype.getDisplayValue = function() {
+	return { label : this.getValue(), value : this.getValue() };
+}
+
+
+/* --------------------------------------------------------------------- */
+
+function oilsRptCalWidget(args) {
+	this.node = args.node;
+	this.calFormat = args.calFormat;
+	this.input = elem('input',{type:'text',size:12});
+
+	if( args.inputSize ) {
+		this.input.setAttribute('size',args.inputSize);
+		this.input.setAttribute('maxlength',args.inputSize);
+	}
+}
+
+oilsRptCalWidget.prototype.draw = function() {
+	this.button = DOM.generic_calendar_button.cloneNode(true);
+	this.button.id = oilsNextId();
+	this.input.id = oilsNextId();
+
+	this.node.appendChild(this.button);
+	this.node.appendChild(this.input);
+	unHideMe(this.button);
+
+	_debug('making calendar widget with format ' + this.calFormat);
+
+	Calendar.setup({
+		inputField	: this.input.id,
+		ifFormat		: this.calFormat,
+		button		: this.button.id,
+		align			: "Tl",	
+		singleClick	: true
+	});
+}
+
+oilsRptCalWidget.prototype.getValue = function() {
+	return this.input.value;
+}
+
+oilsRptCalWidget.prototype.getDisplayValue = function() {
+	return { label : this.getValue(), value : this.getValue() };
 }
 
 
