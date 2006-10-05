@@ -37,13 +37,14 @@ oilsRptParamEditor.prototype.draw = function() {
 		$n(row, 'action').appendChild(text(par.op));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
-		this.buildRelWidget(par, row);
+		//this.buildRelWidget(par, row);
 		this.tbody.appendChild(row);
 	}
 }
 
 
 /* display the time-relative options if necessary */
+/*
 oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
 
 	var field = oilsRptFindField(
@@ -64,6 +65,7 @@ oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
 		if( cb.checked ) par.relWidgetChecked = true;
 	}
 }
+*/
 
 
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {

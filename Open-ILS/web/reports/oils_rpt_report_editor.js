@@ -69,10 +69,12 @@ oilsRptReportEditor.prototype.save = function() {
 	for( var p in this.paramEditor.params ) {
 		var par = this.paramEditor.params[p];
 		_debug("adding report param "+par.key+" to report data");
+		/*
 		if( par.relWidgetChecked )
 			data[par.key] = par.relWidget.getValue();
 		else
-			data[par.key] = par.widget.getValue();
+		*/
+		data[par.key] = par.widget.getValue();
 	}
 
 	data = js2JSON(data);

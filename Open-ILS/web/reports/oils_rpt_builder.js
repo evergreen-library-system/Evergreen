@@ -573,8 +573,13 @@ function oilsRptSetDataWindowActions(div) {
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_filter_div)};
 	DOM.oils_rpt_agg_filter_tab.onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
+
 	DOM.oils_rpt_order_by_tab.onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_order_by_div)};
+		function(){
+			oilsRptHideEditorDivs();
+			oilsRptDrawOrderByWindow();
+			unHideMe(DOM.oils_rpt_order_by_div);
+			};
 
 	DOM.oils_rpt_tform_tab.onclick();
 	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
@@ -649,12 +654,46 @@ function oilsRptDrawTransformWindow(path, col, cls, field) {
 }
 
 
-function oilsRptDrawOrderByWindow(path, col, cls, field) {
+//function oilsRptDrawOrderByWindow(path, col, cls, field) {
+function oilsRptDrawOrderByWindow() {
 	var sel = DOM.oils_rpt_order_by_selector;
 	removeChildren(sel);
 	DOM.oils_rpt_order_by_submit.onclick = function() {
-		alert('make me work');
+		oilsRptAddOrderBy(getSelectorVal(sel));
 	}
+
+	var cols = oilsRpt.def.select;
+	for( var i = 0; i < cols.length; i++ ) {
+		var obj = cols[i];
+		insertSelectorVal(sel, -1, obj.alias, obj.path);
+	}
+}
+
+function oilsRptAddOrderBy(path) {
+	var rel = hex_md5(oilsRptPathRel(path));
+	var order_by = oilsRpt.def.order_by;
+
+	/* if this item is already in the order by remove it and overwrite it */
+	order_by = grep(oilsRpt.def.order_by, 
+		function(i) {return (i.path != path)});
+	
+	if(!order_by) order_by = [];
+
+	/* find the column definition in the select blob */
+	var obj = grep(oilsRpt.def.select,
+		function(i) {return (i.path == path)});
+	
+	if(!obj) return;
+	obj = obj[0];
+	
+	order_by.push({ 
+		relation : obj.relation, 
+		column : obj.column,
+		direction : getSelectorVal(DOM.oils_rpt_order_by_dir)
+	});
+
+	oilsRpt.def.order_by = order_by;
+	oilsRptDebug();
 }
 
 
