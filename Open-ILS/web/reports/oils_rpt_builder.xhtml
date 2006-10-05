@@ -56,6 +56,8 @@
 							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Display Items</div>
 							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
 							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> Remove Selected</button>
+							<button onclick='oilsMoveUpDisplayItems();'>Move &uarr;</button>
+							<button onclick='oilsMoveDownDisplayItems();'>Move &darr;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>Template Filters</div>
@@ -81,7 +83,9 @@
 					<td width='25%'><a id='oils_rpt_tform_tab' href='javascript:void(0);'>Display Items</a></td>
 					<td width='25%'><a id='oils_rpt_filter_tab' href='javascript:void(0);'>Filters</a></td>
 					<td width='25%'><a id='oils_rpt_agg_filter_tab' href='javascript:void(0);'>Aggregate Filters</a></td>
+					<!--
 					<td width='25%'><a id='oils_rpt_order_by_tab' href='javascript:void(0);'>Column Sorting</a></td>
+					-->
 				</tr>
 			</tbody></table>
 

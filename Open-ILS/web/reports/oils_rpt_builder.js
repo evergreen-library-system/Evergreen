@@ -179,11 +179,59 @@ function oilsRptBuildFromClause(path) {
 	return obj;
 }
 
+function oilsMoveUpDisplayItems() {
+	var sel = oilsRptDisplaySelector;
+	var idx = sel.selectedIndex;
+	if( idx == 0 ) return;
+	var opt = sel.options[idx];
+	sel.options[idx] = null;
+	idx--;
+	var val = opt.getAttribute('value');
+	insertSelectorVal(sel, idx, opt.innerHTML, val);
+	sel.options[idx].selected = true;
+
+	var arr = oilsRpt.def.select;
+	for( var i = 0; i < arr.length; i++ ) {
+		if( arr[i].path == val ) {
+			var other = arr[i-1];
+			arr[i-1] = arr[i];
+			arr[i] = other;
+			break;
+		}
+	}
+	oilsRptDebug();
+}
+
+function oilsMoveDownDisplayItems() {
+	var sel = oilsRptDisplaySelector;
+	var idx = sel.selectedIndex;
+	if( idx == sel.options.length - 1 ) return;
+	var opt = sel.options[idx];
+	sel.options[idx] = null;
+	idx++;
+	var val = opt.getAttribute('value');
+	insertSelectorVal(sel, idx, opt.innerHTML, val);
+	sel.options[idx].selected = true;
+
+	var arr = oilsRpt.def.select;
+	for( var i = 0; i < arr.length; i++ ) {
+		if( arr[i].path == val ) {
+			var other = arr[i+1];
+			arr[i+1] = arr[i];
+			arr[i] = other;
+			break;
+		}
+	}
+	oilsRptDebug();
+}
+
 
 /* removes a specific item from the display window */
+/*
 function oilsDelDisplayItem(val) {
 	oilsDelSelectorItem(oilsRptDisplaySelector, val);
 }
+*/
 
 /* removes selected items from the display window */
 function oilsDelSelectedDisplayItems() {
@@ -573,12 +621,14 @@ function oilsRptSetDataWindowActions(div) {
 	DOM.oils_rpt_agg_filter_tab.onclick = 
 		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
 
+	/*
 	DOM.oils_rpt_order_by_tab.onclick = 
 		function(){
 			oilsRptHideEditorDivs();
 			oilsRptDrawOrderByWindow();
 			unHideMe(DOM.oils_rpt_order_by_div);
 			};
+			*/
 
 	DOM.oils_rpt_tform_tab.onclick();
 	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};

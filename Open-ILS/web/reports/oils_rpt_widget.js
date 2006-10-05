@@ -602,6 +602,10 @@ oilsRptTruncPicker.prototype.getDisplayValue = function() {
 }
 
 
+/* --------------------------------------------------------------------- 
+	Atomic remote object picker
+	--------------------------------------------------------------------- */
+
 
 
 
