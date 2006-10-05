@@ -208,6 +208,7 @@ oilsRptOrgMultiSelect.prototype.draw = function(org) {
 
 
 /* --------------------------------------------------------------------- */
+/*
 function oilsRptRelDatePicker(args) {
 	this.node = args.node;
 	this.relative = args.relative;
@@ -226,6 +227,7 @@ oilsRptRelDatePicker.prototype.getValue = function() {
 	if( this.relative ) str = '-'+str;
 	return str;
 }
+*/
 /* --------------------------------------------------------------------- */
 
 
@@ -285,7 +287,7 @@ oilsRptSetWidget.prototype.addDisplayItems = function(list) {
 		if(exists) continue;
 
 		_debug('Inserting SetWidget values ' + js2JSON(item));
-		insertSelectorVal(this.dest, -1, item.label, item.value);
+		insertSelectorVal(this.dest, -1, item.label, this.objToStr(item.value));
 	}
 }
 
@@ -295,8 +297,23 @@ oilsRptSetWidget.prototype.removeSelected = function() {
 
 oilsRptSetWidget.prototype.getValue = function() {
 	var vals = [];
-	iterate(this.dest, function(i){vals.push(i.getAttribute('value'))});
+	var obj = this;
+	iterate(this.dest, function(i){vals.push(obj.strToObj(i.getAttribute('value')))});
 	return vals;
+}
+
+oilsRptSetWidget.prototype.objToStr = function(obj) {
+	if( typeof obj == 'string' ) return obj;
+	return ':'+obj.transform+':'+obj.params[0];
+}
+
+oilsRptSetWidget.prototype.strToObj = function(str) {
+	if( str.match(/^:.*/) ) {
+		var tform = str.replace(/^:(.*):.*/,'$1');
+		var param = str.replace(/^:.*:(.*)/,'$1');
+		return { transform : tform, params : [param] };
+	}
+	return str;
 }
 
 
@@ -311,9 +328,11 @@ function oilsRptBetweenWidget(args) {
 }
 oilsRptBetweenWidget.prototype.draw = function() {
 	removeChildren(this.node);
-	this.node.appendChild(text('Between '));
 	this.startWidget.draw();
-	this.node.appendChild(text(' and '));
+	this.node.appendChild(elem('hr'));
+	this.node.appendChild(elem('div',
+		{style:'text-align:center;width:100%;font-weight:bold'},' - And - '));
+	this.node.appendChild(elem('hr'));
 	this.endWidget.draw();
 }
 oilsRptBetweenWidget.prototype.getValue = function() {
@@ -488,30 +507,102 @@ function oilsRptNumberWidget(args) {
 	this.node = args.node;
 	this.size = args.size || 24;
 	this.start = args.start;
+	/*
 	var len = new String(this.size).length;
 	_debug('length = ' + len);
 	this.input = elem('input',{type:'text',size: len});
+	*/
 	this.selector = elem('select');
 }
 oilsRptNumberWidget.prototype.draw = function() {
 	for( var i = this.start; i < (this.size + this.start); i++ )
 		insertSelectorVal(this.selector, -1, i, i);
 	this.node.appendChild(this.selector);
-	this.node.appendChild(this.input);
+	//this.node.appendChild(this.input);
 	var obj = this;
+	/*
 	this.selector.onchange = function() {
 		obj.input.value = getSelectorVal(obj.selector);
 	}
 	this.input.value = getSelectorVal(this.selector);
+	*/
 }
 
 oilsRptNumberWidget.prototype.getValue = function() {
-	return this.input.value;
+	//return this.input.value;
+	return getSelectorVal(this.selector);
 }
 
 oilsRptNumberWidget.prototype.getDisplayValue = function() {
 	return { label : this.getValue(), value : this.getValue() };
 }
+
+
+/* --------------------------------------------------------------------- 
+	Relative dates widget
+	--------------------------------------------------------------------- */
+function oilsRptTruncPicker(args) {
+	this.node = args.node;
+	this.type = args.type;
+	this.realSpan = elem('span');
+	this.relSpan = elem('span');
+	hideMe(this.relSpan);
+	args.node = this.realSpan;
+	this.calWidget = new oilsRptCalWidget(args);
+	args.node = this.node;
+
+	this.selector = elem('select');
+	insertSelectorVal(this.selector,-1,'Real Date',1);
+	insertSelectorVal(this.selector,-1,'Relative Date',2);
+
+	this.numberPicker = 
+		new oilsRptNumberWidget({node:this.relSpan,size:24,start:1});
+
+	this.label = 'Day(s)';
+	if(this.type == 'month') this.label = 'Month(s)';
+	if(this.type == 'quarter') this.label = 'Quarter(s)';
+	if(this.type == 'year') this.label = 'Year(s)';
+}
+
+oilsRptTruncPicker.prototype.draw = function() {
+	this.node.appendChild(this.selector);
+	this.node.appendChild(this.realSpan);
+	this.node.appendChild(this.relSpan);
+	this.calWidget.draw();
+	this.numberPicker.draw();
+	this.relSpan.appendChild(text(this.label+' ago'));
+
+	var obj = this;
+	this.selector.onchange = function() {
+		if( getSelectorVal(obj.selector) == 1 ) {
+			unHideMe(obj.realSpan);
+			hideMe(obj.relSpan);
+		} else {
+			unHideMe(obj.relSpan);
+			hideMe(obj.realSpan);
+		}
+	}
+}
+
+oilsRptTruncPicker.prototype.getValue = function() {
+	if( getSelectorVal(this.selector) == 2) {
+		var val = this.numberPicker.getValue();
+		var tform = 'relative_' + this.type;
+		return { transform : tform, params : ['-'+val] };
+	}
+	return this.calWidget.getValue();
+}
+
+oilsRptTruncPicker.prototype.getDisplayValue = function() {
+	if( getSelectorVal(this.selector) == 2) {
+		var num = this.numberPicker.getValue();
+		return { label : num +' '+this.label+' ago', value : this.getValue() };
+	}
+	return this.calWidget.getDisplayValue();
+}
+
+
+
 
 
 /* --------------------------------------------------------------------- 

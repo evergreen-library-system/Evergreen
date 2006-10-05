@@ -32,10 +32,9 @@ oilsRptParamEditor.prototype.draw = function() {
 		var par = params[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		this.tbody.appendChild(row);
-		$n(row, 'object').appendChild(text(oilsRptMakeLabel(oilsRptPathRel(par.path))));
-		$n(row, 'column').appendChild(text(par.column.colname));
-		$n(row, 'transform').appendChild(text(par.column.transform));
-		$n(row, 'action').appendChild(text(par.op));
+		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path)));
+		$n(row, 'transform').appendChild(text(OILS_RPT_TRANSFORMS[par.column.transform].label));
+		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
 		//this.buildRelWidget(par, row);
@@ -84,8 +83,17 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 
 	switch(transform) {
 		case 'hour_trunc':
+			widgetArgs.type = 'hour';
+			atomicWidget = oilsRptTruncPicker;
+			break;
 		case 'month_trunc':
+			widgetArgs.type = 'month';
+			atomicWidget = oilsRptTruncPicker;
+			break;
 		case 'year_trunc':
+			widgetArgs.type = 'year';
+			atomicWidget = oilsRptTruncPicker;
+			break;
 		case 'date':
 			atomicWidget = oilsRptCalWidget;
 			break;
@@ -114,7 +122,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			break;
 		case 'dow':
 			widgetArgs.size = 7;
-			widgetArgs.start = 1;
+			widgetArgs.start = 0;
 			atomicWidget = oilsRptNumberWidget
 			break;
 		case 'dom':
@@ -166,7 +174,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			widgetArgs.endWidget = atomicWidget;
 			return new oilsRptBetweenWidget(widgetArgs);
 		default:
-			return new oilsRptAtomicWidget(widgetArgs);
+			return new atomicWidget(widgetArgs);
 	}
 
 	/*

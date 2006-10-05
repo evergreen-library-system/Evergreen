@@ -122,16 +122,18 @@ oilsRptReportEditor.prototype.save = function() {
 	debugFMObject(report);
 	debugFMObject(schedule);
 
-	return;
+	//return;
 
 	var obj = this;
 	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			oilsRptAlertSuccess();
-			oilsRptCurrentFolderManager.draw();
-			obj.folderWindow.draw();
+			if( res && res != '0' ) {
+				oilsRptAlertSuccess();
+				oilsRptCurrentFolderManager.draw();
+				obj.folderWindow.draw();
+			}
 		}
 	);
 	req.send();

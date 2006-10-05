@@ -45,7 +45,6 @@ function oilsReportBuilderSave() {
 	debugFMObject(tmpl);
 	//return; /* XXX */
 
-
 	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);
 	req.callback(
 		function(r) {
@@ -53,7 +52,7 @@ function oilsReportBuilderSave() {
 			if( res && res != '0' ) {
 				oilsRptAlertSuccess();
 				_l('oils_rpt.xhtml');
-			}
+			} 
 		}
 	);
 	
