@@ -69,14 +69,10 @@ oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
 
 
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {
-	var path = param.path.split(/-/);
-	path.pop();
-	var cls = path.pop();
-
-	var field = oilsRptFindField(
-		oilsIDL[oilsRptPathClass(param.path)], oilsRptPathCol(param.path));
-	var dtype = field.datatype;
 	var transform = param.column.transform;
+	var cls = oilsRptPathClass(param.path);
+	var field = oilsRptFindField(oilsIDL[cls], oilsRptPathCol(param.path));
+	var dtype = field.datatype;
 
 	_debug("building widget with param class:" + cls + ' col: '+param.column.colname + ' op: '+ param.op);
 
@@ -87,10 +83,75 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
 
 	switch(transform) {
+		case 'hour_trunc':
 		case 'month_trunc':
 		case 'year_trunc':
 		case 'date':
 			atomicWidget = oilsRptCalWidget;
+			break;
+		case 'age':
+			atomicWidget = oilsRptAgeWidget;
+			break;
+		case 'days_ago':	
+			widgetArgs.size = 7;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'months_ago':	
+			widgetArgs.size = 12;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'quarters_ago':	
+			widgetArgs.size = 4;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'years_ago':	
+			widgetArgs.size = 20;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'dow':
+			widgetArgs.size = 7;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'dom':
+			widgetArgs.size = 31;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'doy':
+			widgetArgs.size = 365;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'woy':
+			widgetArgs.size = 52;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'moy':
+			widgetArgs.size = 12;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'qoy':
+			widgetArgs.size = 4;
+			widgetArgs.start = 1;
+			atomicWidget = oilsRptNumberWidget
+			break;
+		case 'hod':
+			widgetArgs.size = 24;
+			widgetArgs.start = 0;
+			atomicWidget = oilsRptNumberWidget
+			break;
+	}
+
+	switch(cls) {
+		case 'aou':
+			atomicWidget = oilsRptOrgSelector;
 			break;
 	}
 

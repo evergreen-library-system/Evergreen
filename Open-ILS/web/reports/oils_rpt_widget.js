@@ -1,3 +1,4 @@
+/*
 oilsRptSetSubClass('oilsRptWidget', 'oilsRptObject');
 oilsRptWidget.OILS_RPT_TRANSFORM_WIDGET = 0;
 oilsRptWidget.OILS_RPT_OPERATION_WIDGET = 1;
@@ -24,9 +25,6 @@ oilsRptWidget.prototype.draw = function() {
 	appendClear(this.node, this.dest);
 }
 
-/* ----------------------------------------------------------- */
-
-/* multiple input boxes, no separate source, optional box labels */
 oilsRptSetSubClass('oilsRptMultiInputWidget', 'oilsRptWidget');
 function oilsRptMultiInputWidget(args) {
 	this.initInputWidget(args);
@@ -64,10 +62,6 @@ oilsRptMultiInputWidget.prototype.setLabels = function(labels) {
 
 
 
-/* ----------------------------------------------------------- */
-
-/* abstract class, multi-select output (dest), 
-	add and delete buttons, you provide intput */
 oilsRptSetSubClass('oilsRptMultiWidget', 'oilsRptWidget');
 function oilsRptMultiWidget(args) {
 	this.initMultiWidget(args);
@@ -119,10 +113,6 @@ oilsRptMultiWidget.prototype.drawMultiWidget = function() {
 	this.node.appendChild(this.dest);
 }
 
-
-/* ----------------------------------------------------------- */
-
-/* single text box as source, multiwidget output (select) as dest */
 oilsRptSetSubClass('oilsRptInputMultiWidget', 'oilsRptMultiWidget');
 function oilsRptInputMultiWidget(args) {
 	this.initInputMultiWidget(args);
@@ -145,9 +135,7 @@ oilsRptInputMultiWidget.prototype.getSourceCollector = function() {
 }
 
 
-/* ----------------------------------------------------------- */
 
-/* multi-select source */
 oilsRptSetSubClass('oilsRptSelectorMultiWidget', 'oilsRptMultiWidget');
 function oilsRptSelectorMultiWidget(args) {
 	this.initSelectorMultiWidget(args);
@@ -169,10 +157,11 @@ oilsRptSelectorMultiWidget.prototype.getSourceCollector = function() {
 		}
 	}
 }
+*/
 
 /* ----------------------------------------------------------- */
 
-/* in process */
+/*
 oilsRptSetSubClass('oilsRptRemoteWidget', 'oilsRptSelectorMultiWidget');
 function oilsRptRemoteWidget(args) {
 	this.initRemoteWidget(args);
@@ -191,43 +180,13 @@ oilsRptRemoteWidget.prototype.draw = function() {
 oilsRptRemoteWidget.prototype.setFetch = function(func) {
 	this.fetch = func;
 }
+*/
+
+
 
 
 /* --------------------------------------------------------------------- */
-
-/* custom my-orgs picker */
-function oilsRptMyOrgsWidget(node, orgid) {
-	this.node = node;
-	this.orgid = orgid;
-}
-
-oilsRptMyOrgsWidget.prototype.draw = function() {
-	var req = new Request(OILS_RPT_FETCH_ORG_FULL_PATH, this.orgid);
-	var obj = this;
-	req.callback(
-		function(r) { obj.drawWidget(r.getResultObject()); }
-	);
-	req.send();
-}
-
-oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
-	var sel = this.node;
-	for( var i = 0; i < orglist.length; i++ ) {
-		var org = orglist[i];
-		var opt = insertSelectorVal( this.node, -1, 
-			org.name(), org.id(), null, findOrgDepth(org) );
-		if( org.id() == this.orgid )
-			opt.selected = true;
-	}
-}
-
-oilsRptMyOrgsWidget.prototype.getValue = function() {
-	return getSelectorVal(this.node);
-}
-
-/* --------------------------------------------------------------------- */
-
-/* custom all-orgs picker */
+/*
 oilsRptSetSubClass('oilsRptOrgMultiSelect','oilsRptSelectorMultiWidget');
 function oilsRptOrgMultiSelect(args) {
 	this.initSelectorMultiWidget(args);
@@ -244,6 +203,8 @@ oilsRptOrgMultiSelect.prototype.draw = function(org) {
 	}
 	this.drawMultiWidget();
 }
+*/
+
 
 
 /* --------------------------------------------------------------------- */
@@ -333,7 +294,9 @@ oilsRptSetWidget.prototype.removeSelected = function() {
 }
 
 oilsRptSetWidget.prototype.getValue = function() {
-	return getSelectedSet(this.dest);
+	var vals = [];
+	iterate(this.dest, function(i){vals.push(i.getAttribute('value'))});
+	return vals;
 }
 
 
@@ -348,7 +311,9 @@ function oilsRptBetweenWidget(args) {
 }
 oilsRptBetweenWidget.prototype.draw = function() {
 	removeChildren(this.node);
+	this.node.appendChild(text('Between '));
 	this.startWidget.draw();
+	this.node.appendChild(text(' and '));
 	this.endWidget.draw();
 }
 oilsRptBetweenWidget.prototype.getValue = function() {
@@ -359,8 +324,15 @@ oilsRptBetweenWidget.prototype.getValue = function() {
 }
 
 
+
+
 /* --------------------------------------------------------------------- 
-	the most basic text input widget
+	ATOMIC WIDGETS
+	--------------------------------------------------------------------- */
+
+
+/* --------------------------------------------------------------------- 
+	Atomic text input widget
 	--------------------------------------------------------------------- */
 function oilsRptTextWidget(args) {
 	this.node = args.node;
@@ -381,8 +353,10 @@ oilsRptTextWidget.prototype.getDisplayValue = function() {
 }
 
 
-/* --------------------------------------------------------------------- */
 
+/* --------------------------------------------------------------------- 
+	Atomic calendar widget
+	--------------------------------------------------------------------- */
 function oilsRptCalWidget(args) {
 	this.node = args.node;
 	this.calFormat = args.calFormat;
@@ -423,5 +397,157 @@ oilsRptCalWidget.prototype.getDisplayValue = function() {
 }
 
 
+/* --------------------------------------------------------------------- 
+	Atomic org widget
+	--------------------------------------------------------------------- */
+function oilsRptOrgSelector(args) {
+	this.node = args.node;
+	this.selector = elem('select',
+		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+}
+
+oilsRptOrgSelector.prototype.draw = function(org) {
+	if(!org) org = globalOrgTree;
+	var opt = insertSelectorVal( this.selector, -1, 
+		org.shortname(), org.id(), null, findOrgDepth(org) );
+	if( org.id() == oilsRptCurrentOrg )
+		opt.selected = true;
+	if( org.children() ) {
+		for( var c = 0; c < org.children().length; c++ )
+			this.draw(org.children()[c]);
+	}
+	this.node.appendChild(this.selector);
+}
+
+oilsRptOrgSelector.prototype.getValue = function() {
+	var vals = [];
+	iterate(this.selector,
+		function(o){
+			if( o.selected )
+				vals.push(o.getAttribute('value'))
+		}
+	);
+	return vals;
+}
+
+oilsRptOrgSelector.prototype.getDisplayValue = function() {
+	var vals = [];
+	iterate(this.selector,
+		function(o){
+			if( o.selected )
+				vals.push({ label : o.innerHTML, value : o.getAttribute('value')});
+		}
+	);
+	return vals;
+}
+
+
+/* --------------------------------------------------------------------- 
+	Atomic age widget
+	--------------------------------------------------------------------- */
+function oilsRptAgeWidget(args) {
+	this.node = args.node;
+	this.count = elem('select');
+	this.type = elem('select');
+}
+
+oilsRptAgeWidget.prototype.draw = function() {
+	for( var i = 1; i < 25; i++ )
+		insertSelectorVal(this.count, -1, i, i);
+	insertSelectorVal(this.type, -1, 'Day(s)', 'days');
+	insertSelectorVal(this.type, -1, 'Month(s)', 'months');
+	insertSelectorVal(this.type, -1, 'Year(s)', 'years');
+	this.node.appendChild(this.count);
+	this.node.appendChild(this.type);
+}
+
+oilsRptAgeWidget.prototype.getValue = function() {
+	var count = getSelectorVal(this.count);
+	var type = getSelectorVal(this.type);
+	return count+''+type;
+}
+
+oilsRptAgeWidget.prototype.getDisplayValue = function() {
+	var val = { value : this.getValue() };
+	var label = getSelectorVal(this.count) + ' ';
+	for( var i = 0; i < this.type.options.length; i++ ) {
+		var opt = this.type.options[i];
+		if( opt.selected )
+			label += opt.innerHTML;
+	}
+	val.label = label;
+	return val;
+}
+
+
+
+/* --------------------------------------------------------------------- 
+	Atomic number picker
+	--------------------------------------------------------------------- */
+function oilsRptNumberWidget(args) {
+	this.node = args.node;
+	this.size = args.size || 24;
+	this.start = args.start;
+	var len = new String(this.size).length;
+	_debug('length = ' + len);
+	this.input = elem('input',{type:'text',size: len});
+	this.selector = elem('select');
+}
+oilsRptNumberWidget.prototype.draw = function() {
+	for( var i = this.start; i < (this.size + this.start); i++ )
+		insertSelectorVal(this.selector, -1, i, i);
+	this.node.appendChild(this.selector);
+	this.node.appendChild(this.input);
+	var obj = this;
+	this.selector.onchange = function() {
+		obj.input.value = getSelectorVal(obj.selector);
+	}
+	this.input.value = getSelectorVal(this.selector);
+}
+
+oilsRptNumberWidget.prototype.getValue = function() {
+	return this.input.value;
+}
+
+oilsRptNumberWidget.prototype.getDisplayValue = function() {
+	return { label : this.getValue(), value : this.getValue() };
+}
+
+
+/* --------------------------------------------------------------------- 
+	CUSTOM WIDGETS
+	--------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------- 
+	custom my-orgs picker 
+	--------------------------------------------------------------------- */
+function oilsRptMyOrgsWidget(node, orgid) {
+	this.node = node;
+	this.orgid = orgid;
+}
+
+oilsRptMyOrgsWidget.prototype.draw = function() {
+	var req = new Request(OILS_RPT_FETCH_ORG_FULL_PATH, this.orgid);
+	var obj = this;
+	req.callback(
+		function(r) { obj.drawWidget(r.getResultObject()); }
+	);
+	req.send();
+}
+
+oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
+	var sel = this.node;
+	for( var i = 0; i < orglist.length; i++ ) {
+		var org = orglist[i];
+		var opt = insertSelectorVal( this.node, -1, 
+			org.name(), org.id(), null, findOrgDepth(org) );
+		if( org.id() == this.orgid )
+			opt.selected = true;
+	}
+}
+
+oilsRptMyOrgsWidget.prototype.getValue = function() {
+	return getSelectorVal(this.node);
+}
 
 

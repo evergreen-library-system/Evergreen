@@ -76,13 +76,19 @@ var OILS_RPT_TRANSFORMS = {
 	moy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Month of Year',
-		regex : /^[0-9]{1,2}$/
+		regex : /^\d{1,2}$/
 	},
 
 	qoy : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Quarter of Year',
 		regex : /^[1234]$/
+	}, 
+
+	hod : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Hour of day',
+		regex : /^\d{1,2}$/
 	}, 
 
 	date : {
@@ -112,6 +118,15 @@ var OILS_RPT_TRANSFORMS = {
 		input_size : 4
 	},
 
+	hour_trunc : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Hour',
+		regex : /^\d{2}$/,
+		hint  : 'HH',
+		cal_format : '%H',
+		input_size : 2
+	},
+
 	day_name : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Day Name'
@@ -126,6 +141,7 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Age'
 	},
 
+	/*
 	relative_year : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Relative year'
@@ -145,6 +161,33 @@ var OILS_RPT_TRANSFORMS = {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Relative date'
 	},
+	*/
+
+	/* exists?
+	days_ago : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Days ago'
+	}
+	*/
+
+	months_ago : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Months ago'
+	},
+
+	quarters_ago : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Quarters ago'
+	},
+
+
+	/* exists?
+	years_ago : {
+		datatype : OILS_RPT_DTYPE_TIMESTAMP,
+		label : 'Years ago'
+	},
+	*/
+
 
 	/* int  / float transforms ----------------------------------- */
 	sum : {

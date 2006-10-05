@@ -50,7 +50,7 @@ function oilsReportBuilderSave() {
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			if( res != 0 ) {
+			if( res && res != '0' ) {
 				oilsRptAlertSuccess();
 				_l('oils_rpt.xhtml');
 			}
