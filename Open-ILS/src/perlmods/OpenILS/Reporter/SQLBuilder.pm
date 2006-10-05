@@ -317,6 +317,24 @@ sub toSQL {
 
 
 #-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Input::Transform::age;
+
+sub toSQL {
+	my $self = shift;
+
+	my $val = $self->{params};
+	$val = $$val[0] if (ref($val));
+
+	$val =~ s/\\/\\\\/go;
+	$val =~ s/'/\\'/go;
+
+	return "AGE(NOW(),'" . $val . "'::TIMESTAMPTZ)";
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Input::Transform::relative_year;
 
 sub toSQL {
@@ -683,6 +701,28 @@ sub is_aggregate { return 0 }
 
 
 #-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::date_trunc;
+
+sub toSQL {
+	my $self = shift;
+	return 'DATE("' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::hour_trunc;
+
+sub toSQL {
+	my $self = shift;
+	return 'DATE_TRUNC("' . $self->{_relation} . '"."' . $self->name . '")';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Column::Transform::quarter;
 
 sub toSQL {
@@ -700,6 +740,17 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::months_ago;
 sub toSQL {
 	my $self = shift;
 	return 'EXTRACT(MONTH FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
+}
+
+sub is_aggregate { return 0 }
+
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Column::Transform::hod;
+
+sub toSQL {
+	my $self = shift;
+	return 'EXTRACT(HOUR FROM "' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 0 }
