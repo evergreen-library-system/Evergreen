@@ -317,7 +317,7 @@ sub send_success {
 
 sub send_fail {
 	my $r = shift;
-	open F, $success_template;
+	open F, $fail_template;
 	my $tmpl = join('',<F>);
 	close F;
 
