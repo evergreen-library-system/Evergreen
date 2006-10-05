@@ -320,8 +320,8 @@ var CIRC_MOD_MAP = {
 	'toy'							: {
 		SIPMediaType			: '000',
 		magneticMedia			: 'f',
-		durationRule			: '7_days_2_renew',
-		recurringFinesRule	: '50_cent_per_day',
+		durationRule			: '14_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
