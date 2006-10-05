@@ -427,6 +427,11 @@ g.get_acpl_list = function() {
 				}
 			}
 		}
+		if (g.callnumbers) {
+			for (var i in g.callnumbers) {
+				if ( ( libs.indexOf( g.callnumbers[i].owning_lib ) > -1 ) || ( libs.indexOf( String( g.callnumbers[i].owning_lib ) ) > -1 ) ) { /* already in list */ } else { libs.push( g.callnumbers[i].owning_lib ); }
+			}
+		}
 		JSAN.use('util.fm_utils');
 		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
 		if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
