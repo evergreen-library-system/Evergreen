@@ -22,10 +22,6 @@ my $report = {
 			column	=> { transform => count => colname => 'id' },
 			alias	=> '::PARAM3',
 		},
-		{	relation=> 'circ-id-mb',
-			column	=> { transform => sum => colname => 'amount' },
-			alias	=> 'total bills',
-		},
 	],
 	from => {
 		table	=> 'action.circulation',
@@ -91,6 +87,9 @@ my $report = {
 			column	=> 'barcode',
 		},
 	],
+	pivot_default => 0,
+	pivot_data => 4,
+	pivot_label => 2,
 };
 
 my $params = {
@@ -108,6 +107,7 @@ my $r = OpenILS::Reporter::SQLBuilder->new;
 
 $r->register_params( $params );
 my $rs = $r->parse_report( $report );
+$rs->relative_time('2006-10-01T00:00:00-4');
 
 print "Column Labels: " . join(', ', $rs->column_label_list) . "\n";
 print $rs->toSQL;

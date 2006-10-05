@@ -882,11 +882,12 @@ sub new {
 
 sub _flesh_conditions {
 	my $cond = shift;
+	my $builder = shift;
 	$cond = [$cond] unless (ref($cond) eq 'ARRAY');
 
 	my @out;
 	for my $c (@$cond) {
-		push @out, OpenILS::Reporter::SQLBuilder::Input->new( $c );
+		push @out, OpenILS::Reporter::SQLBuilder::Input->new( $c )->set_builder( $builder );
 	}
 
 	return \@out;
@@ -899,7 +900,7 @@ sub toSQL {
 	my $sql = $self->SUPER::toSQL;
 
 	my ($op) = keys %{ $self->{_condition} };
-	my $val = _flesh_conditions( $self->resolve_param( $self->{_condition}->{$op} ) );
+	my $val = _flesh_conditions( $self->resolve_param( $self->{_condition}->{$op} ), $self->builder );
 
 	if (lc($op) eq 'in') {
 		$sql .= " IN (". join(",", map { $_->toSQL } @$val).")";

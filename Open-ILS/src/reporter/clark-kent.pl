@@ -577,7 +577,7 @@ sub draw_bars {
 	my $max_y = 0;
 	for my $vcol (@values) {
 		next unless (defined $vcol);
-
+		$pic_data[$set] ||= [];
 
 		my $pos = 0;
 		for my $row (@$data) {
@@ -598,11 +598,11 @@ sub draw_bars {
 	my @no_use;
 	my $set_index = 0;
 	for my $dataset (@pic_data) {
-		splice(@$dataset,$_,1) for (sort { $b <=> $a } @trim_cols);
+		splice(@$dataset,$_,1) for (reverse sort @trim_cols);
 
 		if (grep { $_ } @$dataset) {
 			push @new_data, $dataset;
-			push @use_me, $set_index;
+			push @use_me, $set_index if ($set_index > 0);
 		} else {
 			push @no_use, $set_index;
 		}
@@ -613,7 +613,7 @@ sub draw_bars {
 	return [] unless ($new_data[0] && @{$new_data[0]});
 
 	for my $col (@use_me) {
-		push @leg, $r->{column_labels}->[$col + @groups - 1] if (map { 1 } grep { $col == $_ } @values);
+		push @leg, $r->{column_labels}->[$values[$col - 1]];
 	}
 
 	my $w = 100 + 10 * scalar(@{$new_data[0]});
@@ -688,6 +688,7 @@ sub draw_lines {
 	my $max_y = 0;
 	for my $vcol (@values) {
 		next unless (defined $vcol);
+		$pic_data[$set] ||= [];
 
 
 		for my $row (@$data) {
@@ -708,7 +709,7 @@ sub draw_lines {
 
 		if (grep { $_ } @$dataset) {
 			push @new_data, $dataset;
-			push @use_me, $set_index;
+			push @use_me, $set_index if ($set_index > 0);
 		} else {
 			push @no_use, $set_index;
 		}
@@ -717,7 +718,7 @@ sub draw_lines {
 	}
 
 	for my $col (@use_me) {
-		push @leg, $r->{column_labels}->[$col + @groups - 1] if (map { 1 } grep { $col == $_ } @values);
+		push @leg, $r->{column_labels}->[$values[$col - 1]];
 	}
 
 	my $w = 100 + 10 * scalar(@{$new_data[0]});
