@@ -309,9 +309,10 @@ sub _set_circ_lost {
 	my $fee = $settings->{'circ.lost_materials_processing_fee'} || 0;
 
 	# If the copy has a price configured, charge said price to the user
+	# otherwise use the default price
 	my $s = OILS_SETTING_DEF_ITEM_PRICE;
-	my $copy_price = $copy->price || 0;
-	$copy_price = $settings->{$s} unless $copy_price and $copy_price > 0;
+	my $copy_price = $copy->price;
+	$copy_price = $settings->{$s} unless defined $copy_price;
 	if($copy_price and $copy_price > 0) {
 		$logger->debug("lost copy has a price of $copy_price");
 		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
