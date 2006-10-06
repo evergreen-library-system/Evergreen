@@ -229,7 +229,7 @@ oilsRptFolderWindow.prototype.deleteOutputs = function(list, idx, callback, erri
 	if( idx >= list.length ) return callback(errid);
 	var output = list[idx];
 
-	if( list.runner().id()  != USER.id() ) {
+	if( output.runner().id()  != USER.id() ) {
 		this.deleteOutputs(list, ++idx, 
 			callback, 'oils_rpt_folder_contents_no_delete');
 
