@@ -799,7 +799,7 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
 
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearchdescription/1.0/">
-  <Url>$base/1.0/$lib/-/$class/?searchTerms={searchTerms}&startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
+  <Url>$base/1.0/$lib/-/$class/?searchTerms={searchTerms}&amp;startPage={startPage}&amp;startIndex={startIndex}&amp;count={count}</Url>
   <Format>http://a9.com/-/spec/opensearchrss/1.0/</Format>
   <ShortName>$lib</ShortName>
   <LongName>Search $lib</LongName>
@@ -822,15 +822,15 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
   <Description>Search the $lib OPAC by $class.</Description>
   <Tags>$lib book library</Tags>
   <Url type="application/rss+xml"
-       template="$base/1.1/$lib/rss2-full/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/rss2-full/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/atom+xml"
-       template="$base/1.1/$lib/atom-full/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/atom-full/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods3+xml"
-       template="$base/1.1/$lib/mods3/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/mods3/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-mods+xml"
-       template="$base/1.1/$lib/mods/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/mods/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-marcxml+xml"
-       template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+       template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
