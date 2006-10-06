@@ -685,6 +685,16 @@
 		<desc xml:lang="en-US"> No org id was provided </desc>
 	</event>
 
+	<event code='9000' textcode='REPORT_TEMPLATE_EXISTS'>
+		<desc xml:lang="en-US"> A report template with the given name and folder already exists</desc>
+	</event>
+
+	<event code='9001' textcode='REPORT_REPORT_EXISTS'>
+		<desc xml:lang="en-US"> A report with the given name and folder already exists</desc>
+	</event>
+
+
+
 	<!-- ================================================================ -->
 
 </ils_events>

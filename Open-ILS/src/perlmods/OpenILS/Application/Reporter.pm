@@ -135,6 +135,11 @@ sub create_template {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
 	$template->owner($e->requestor->id);
+
+	my $existing = $e->search_reporter_template( {owner=>$template->owner, 
+			folder=>$template->folder, name=>$template->name},{idlist=>1});
+	return OpenILS::Event->new('REPORT_TEMPLATE_EXISTS') if @$existing;
+
 	my $tmpl = $e->create_reporter_template($template)
 		or return $e->die_event;
 	$e->commit;
@@ -151,6 +156,11 @@ sub create_report {
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('RUN_REPORTS');
 	$report->owner($e->requestor->id);
+
+	my $existing = $e->search_reporter_report( {owner=>$report->owner, 
+			folder=>$report->folder, name=>$report->name},{idlist=>1});
+	return OpenILS::Event->new('REPORT_REPORT_EXISTS') if @$existing;
+
 	my $rpt = $e->create_reporter_report($report)
 		or return $e->die_event;
 	$schedule->report($rpt->id);
