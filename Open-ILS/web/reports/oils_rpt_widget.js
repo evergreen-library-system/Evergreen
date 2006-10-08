@@ -616,9 +616,16 @@ oilsRptTruncPicker.prototype.getDisplayValue = function() {
 /* --------------------------------------------------------------------- 
 	custom my-orgs picker 
 	--------------------------------------------------------------------- */
-function oilsRptMyOrgsWidget(node, orgid) {
+function oilsRptMyOrgsWidget(node, orgid, maxorg) {
+	_debug('fetching my orgs with max org of ' + maxorg);
 	this.node = node;
 	this.orgid = orgid;
+	this.maxorg = maxorg || 1;
+	this.active = true;
+	if( maxorg < 1 ) {
+		this.node.disabled = true;
+		this.active = false;
+	}
 }
 
 oilsRptMyOrgsWidget.prototype.draw = function() {
@@ -632,12 +639,18 @@ oilsRptMyOrgsWidget.prototype.draw = function() {
 
 oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
 	var sel = this.node;
+	var started = false;
 	for( var i = 0; i < orglist.length; i++ ) {
 		var org = orglist[i];
 		var opt = insertSelectorVal( this.node, -1, 
 			org.name(), org.id(), null, findOrgDepth(org) );
 		if( org.id() == this.orgid )
 			opt.selected = true;
+		if(!started) {
+			if( org.id() == this.maxorg ) 
+				started = true;
+			else opt.disabled = true;
+		}
 	}
 }
 

@@ -1,3 +1,5 @@
+var perms = [ 'RUN_REPORTS', 'SHARE_REPORT_FOLDER' ];
+
 function oilsInitReports() {
 	oilsRptIdObjects();
 
@@ -11,12 +13,13 @@ function oilsInitReports() {
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
 
-	fetchHighestPermOrgs(SESSION, USER.id(), ['RUN_REPORTS']);
-	if( PERMS['RUN_REPORTS'] == -1 ) {
+	fetchHighestPermOrgs(SESSION, USER.id(), perms);
+	if( PERMS.RUN_REPORTS == -1 ) {
 		unHideMe(DOM.oils_rpt_permission_denied);
 		hideMe(DOM.oils_rpt_tree_loading);
 		return false;
 	}
+
 
 	oilsRptCookie = new HTTP.Cookies();
 	oilsRptCurrentOrg = USER.ws_ou();

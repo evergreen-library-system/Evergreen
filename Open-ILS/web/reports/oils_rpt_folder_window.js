@@ -75,6 +75,11 @@ oilsRptFolderWindow.prototype.draw = function() {
 		*/
 
 	this.drawEditActions();
+
+
+	var porg = PERMS.SHARE_REPORT_FOLDER;
+	if( porg < 1 ) 
+		DOM.oils_rpt_folder_manager_share_opt.disabled = true;
 }
 
 oilsRptFolderWindow.prototype.drawEditActions = function() {
@@ -111,9 +116,13 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 				unHideMe(DOM.oils_rpt_folder_manager_change_name_div);
 				break;
 			case 'create_sub_folder':
+				var porg = PERMS.SHARE_REPORT_FOLDER;
+				if( porg < 1 ) 
+					DOM.oils_rpt_folder_manager_sub_shared.disabled = true;
+				removeChildren(DOM.oils_rpt_folder_manager_sub_lib_picker);
 				unHideMe(DOM.oils_rpt_folder_manager_create_sub);
 				obj.myOrgSelector = new oilsRptMyOrgsWidget(
-					DOM.oils_rpt_folder_manager_sub_lib_picker, USER.ws_ou());
+					DOM.oils_rpt_folder_manager_sub_lib_picker, USER.ws_ou(), porg)
 				obj.myOrgSelector.draw();
 				break;
 			case 'delete':
@@ -137,8 +146,10 @@ oilsRptFolderWindow.prototype.shareFolder = function() {
 		return alertId('oils_rpt_folder_already_shared');
 	unHideMe(DOM.oils_rpt_folder_manager_share_div);
 
+
 	var orgsel = new oilsRptMyOrgsWidget(
-		DOM.oils_rpt_folder_manager_share_lib_picker, USER.ws_ou());
+		DOM.oils_rpt_folder_manager_share_lib_picker, 
+		USER.ws_ou(), PERMS.SHARE_REPORT_FOLDER);
 	orgsel.draw();
 
 	var type = this.type;

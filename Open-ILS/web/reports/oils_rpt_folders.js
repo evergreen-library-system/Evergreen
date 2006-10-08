@@ -31,9 +31,13 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 	removeChildren(DOM.oils_rpt_report_shared_folder_tree); 
 	removeChildren(DOM.oils_rpt_output_shared_folder_tree); 
 
+	var porg = PERMS.SHARE_REPORT_FOLDER;
+	if( porg < 1 ) 
+		DOM.oils_rpt_top_folder_shared.disabled = true;
+
 	var obj = this;
 	var orgsel = new oilsRptMyOrgsWidget(
-		DOM.oils_rpt_top_folder_lib_picker, USER.ws_ou());
+		DOM.oils_rpt_top_folder_lib_picker, USER.ws_ou(), porg)
 	orgsel.draw();
 
 	oilsRptTemplateFolderTree = 

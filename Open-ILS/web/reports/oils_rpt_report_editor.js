@@ -16,7 +16,8 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	appendClear(DOM.oils_rpt_report_editor_cols,' | ');
 	iterate(rptObject.def.select, 
 		function(i) {
-			DOM.oils_rpt_report_editor_cols.appendChild(text(i.alias +' | '));
+			if(i)
+				DOM.oils_rpt_report_editor_cols.appendChild(text(i.alias +' | '));
 		}
 	);
 
@@ -77,12 +78,10 @@ oilsRptReportEditor.prototype.save = function() {
 	for( var p in this.paramEditor.params ) {
 		var par = this.paramEditor.params[p];
 		_debug("adding report param "+par.key+" to report data");
-		/*
-		if( par.relWidgetChecked )
-			data[par.key] = par.relWidget.getValue();
-		else
-		*/
-		data[par.key] = par.widget.getValue();
+		var val = par.widget.getValue();
+		if(!val || val.length == 0 )
+			return alertId('oils_rpt_empty_param');
+		data[par.key] = val;
 	}
 
 	data = js2JSON(data);
