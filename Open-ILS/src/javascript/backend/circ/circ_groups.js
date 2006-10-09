@@ -28,21 +28,21 @@ var GROUP_CONFIG = {
 	},
 
 	'Friend'	: {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
 	},
 
 	'NonResident' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
 	},
 
 	'OutOfState' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
@@ -71,21 +71,21 @@ var GROUP_CONFIG = {
 	},
 
 	'TempRes6' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
 	},
 
 	'tempRes12' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: -1
 	},
 
 	'Trustee' : {
-		maxItemsOut			: 10,
+		maxItemsOut			: 50,
 		fineThreshold		: 10,
 		overdueThreshold	: 10,
 		maxHolds				: 10

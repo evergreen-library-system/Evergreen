@@ -18,17 +18,11 @@ if( config ) {
 	
 	var limit = config.maxItemsOut;
 	if( limit >= 0 ) {
-
-		/* a renewal does not add to the itemsOut, so just make
-			sure they are not already over the items out limit */
-		if( isTrue(isRenewal) ) {
-			if( patronItemsOut > limit ) {
+		/* Patrons are allowed to renew regardless 
+			of how many items they have checked out */
+		_debug('patron items out = ' + patronItemsOut +' limit = ' + limit);
+		if( !isTrue(isRenewal) && patronItemsOut >= limit ) {
 				result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
-			}
-		} else {
-			if( patronItemsOut >= limit ) {
-				result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
-			}
 		}
 	}
 

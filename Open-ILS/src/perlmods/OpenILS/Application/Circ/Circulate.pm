@@ -643,7 +643,17 @@ sub run_patron_permit_scripts {
 	my @allevents; 
 
 	my $penalties = $self->gather_penalty_request();
-	push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
+
+	for my $p (@$penalties, @$patron_events) {
+
+		# this is policy directly in the code, not a good idea in general, but
+		# the penalty server doesn't know anything about renewals, so we
+		# have to strip the event out here
+		next if $self->is_renewal and $p eq 'PATRON_EXCEEDS_OVERDUE_COUNT';
+
+
+		push( @allevents, OpenILS::Event->new($p))
+	}
 
 	$logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
 
