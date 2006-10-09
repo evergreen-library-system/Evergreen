@@ -176,6 +176,13 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			break;
 	}
 
+	switch(dtype) {
+		case 'bool':
+			atomicWidget = oilsRptBoolWidget;
+			break;
+	}
+
+
 	switch(param.op) {
 		case 'in':
 		case 'not in':

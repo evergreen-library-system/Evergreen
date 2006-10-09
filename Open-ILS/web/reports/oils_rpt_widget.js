@@ -374,6 +374,36 @@ oilsRptTextWidget.prototype.getDisplayValue = function() {
 
 
 /* --------------------------------------------------------------------- 
+	Atomic bool input widget
+	--------------------------------------------------------------------- */
+function oilsRptBoolWidget(args) {
+	this.node = args.node;
+	this.selector = elem('select');
+	insertSelectorVal(this.selector, -1,'True','t');
+	insertSelectorVal(this.selector, -1,'False','f');
+}
+
+oilsRptBoolWidget.prototype.draw = function() {
+	this.node.appendChild(this.selector);
+}
+
+/* returns the "real" value for the widget */
+oilsRptBoolWidget.prototype.getValue = function() {
+	return getSelectorVal(this.selector);
+}
+
+/* returns the label and "real" value for the widget */
+oilsRptBoolWidget.prototype.getDisplayValue = function() {
+	var val = getSelectorVal(this.selector);
+	var label = 'True';
+	if (val == 'f') labal = 'False';
+	return { label : label, value : val };
+}
+
+
+
+
+/* --------------------------------------------------------------------- 
 	Atomic calendar widget
 	--------------------------------------------------------------------- */
 function oilsRptCalWidget(args) {
@@ -505,7 +535,7 @@ oilsRptAgeWidget.prototype.getDisplayValue = function() {
 	--------------------------------------------------------------------- */
 function oilsRptNumberWidget(args) {
 	this.node = args.node;
-	this.size = args.size || 24;
+	this.size = args.size || 32;
 	this.start = args.start;
 	/*
 	var len = new String(this.size).length;
