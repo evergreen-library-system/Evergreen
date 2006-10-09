@@ -65,6 +65,20 @@
   </xsl:template>
 
   <xsl:template match="marc:record">
+   <img>
+    <xsl:attribute name="src">
+      <xsl:variable name="isbnraw"><xsl:value-of select="marc:datafield[@tag='020']/marc:subfield[@code='a']"/></xsl:variable>
+      <xsl:choose>
+        <xsl:when test="substring-before($isbnraw,' ')">
+          <xsl:variable name="isbntrimmed"><xsl:value-of select="substring-before($isbnraw,' ')"/></xsl:variable>
+          <xsl:value-of select="concat('/opac/extras/jacket/small/',$isbntrimmed)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('/opac/extras/jacket/small/',$isbnraw)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:attribute>
+   </img>
    <a>
     <xsl:attribute name="href">
      <xsl:value-of select="concat('/opac/extras/unapi?format=htmlholdings-full;id=',@id)"/>
@@ -73,6 +87,21 @@
    </a>
    <xsl:text> By </xsl:text>
    <xsl:value-of select="marc:datafield[@tag='100']/marc:subfield[@code='a']"/>
+   <xsl:text> / Published </xsl:text>
+   <xsl:value-of select="marc:datafield[@tag='260']/marc:subfield[@code='c']|marc:datafield[@tag='261']/marc:subfield[@code='d']|marc:datafield[@tag='262']/marc:subfield[@code='d']"/>
+   <span>
+     <xsl:attribute name="style">
+      <xsl:text>font-size:smaller;</xsl:text>
+     </xsl:attribute>
+     <xsl:text> (</xsl:text>
+     <a>
+      <xsl:attribute name="href">
+       <xsl:value-of select="concat('/opac/extras/unapi?format=opac;id=',@id)"/>
+      </xsl:attribute>
+      <xsl:text>Dynamic Details</xsl:text>
+     </a>
+     <xsl:text>)</xsl:text>
+   </span>
   </xsl:template>
 
 </xsl:stylesheet>
