@@ -174,37 +174,60 @@ oilsRptFolderManager.prototype.fetchFolders = function(auth) {
 
 
 oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
+
 	var tree;
-
-	folders = folders.sort(
-		function(a,b) {
-			var asw = a.share_with();
-			var bsw = b.share_with();
-			if( asw ) asw = findOrgDepth(findOrgUnit(asw.id()));
-			else asw = -1;
-			if( bsw ) bsw = findOrgDepth(findOrgUnit(bsw.id()));
-			else bsw = -1;
-			if( asw < bsw ) return 1;
-			if( asw > bsw ) return -1;
-			return 0;
-		}
-	);
-
+	var owners = {};
 
 	for( var i = 0; i < folders.length; i++ ) {
+
 		var folder = folders[i];
 		var id = oilsNextId();
 		var node = { folder : folder, treeId : id };
+
 		oilsRptFolderNodeCache[type][folder.id()] = node;
 		node.folderWindow = new oilsRptFolderWindow(type, folder.id())
+
 		/*
 		_debug("creating folder node for "+folder.name()+" : id = "+
 			folder.id()+' treeId = '+id + ' window id = ' + node.folderWindow.id);
 			*/
+
+		/* shared folders get a folder for the usrname of the 
+			owner as the parent node for the folders in the tree */
+		if(!folder.parent() && folder.owner().id() != USER.id()) {
+			if(owners[folder.owner().id()]) {
+				node.ownerNode = owners[folder.owner().id()];
+				continue;
+			}
+
+			_debug("building usrname node "+type+" -> " +folder.owner().usrname());
+
+			var id = oilsNextId();
+			var pid = this.stId;
+			var tree = oilsRptSharedTemplateFolderTree;
+			var treename = 'oilsRptSharedTemplateFolderTree';
+
+			if(type=='report') {
+				tree = oilsRptSharedReportFolderTree;
+				treename = 'oilsRptSharedReportFolderTree';
+				pid = this.srId;
+			}
+
+			if(type=='output') {
+				tree = oilsRptSharedOutputFolderTree;
+				treename = 'oilsRptSharedOutputFolderTree';
+				pid = this.soId;
+			}
+
+			tree.addNode(id, pid, folder.owner().usrname());
+			tree.close(pid);
+			owners[folder.owner().id()] = id;
+			node.ownerNode = id;
+		}
 	}
 
-
 	for( var i = 0; i < folders.length; i++ ) {
+
 
 		var folder = folders[i];
 		var mine = (folder.owner().id() == USER.id());
@@ -251,41 +274,19 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		if( folder.parent() ) 
 			pid = this.findNode(type, folder.parent()).treeId;
 
-		/*
-		if(!mine) {
-			if(!this.orgTrail[type][folder.share_with().id()]) {
-				tree.addNode(id, pid, folder.share_with().shortname());
-				tree.close(pid);
-				pid = id;
-				id = oilsNextId();
-				this.orgTrail[type][folder.share_with().id()] = pid;
-			} else {
-				pid = this.orgTrail[type][folder.share_with().id()];
-				id = oilsNextId();
-			}
-		}
-		*/
-
 		var fname = folder.name();
 
 		if(!mine) {
 			fname = folder.name() + ' ('+folder.share_with().shortname()+')';
-			if(!this.ownerFolders[type][folder.owner().id()]) {
-				tree.addNode(id, pid, folder.owner().usrname());
-				tree.close(pid);
-				pid = id;
-				id = oilsNextId();
-				this.ownerFolders[type][folder.owner().id()] = pid;
-			} else {
-				pid = this.ownerFolders[type][folder.owner().id()];
-				id = oilsNextId();
-			}
+			if( node.ownerNode ) pid = node.ownerNode;
+
 		} else {
 			if(isTrue(folder.shared()))
 				fname = folder.name() + ' ('+folder.share_with().shortname()+')';
 		}
 
 		var action = 'javascript:oilsRptObject.find('+node.folderWindow.id+').draw();';
+
 		/*
 		_debug('adding node '+fname+' id = ' + id + ' pid = '
 			+pid + ' parent = ' + folder.parent() + ' folder-window = ' + node.folderWindow.id );
