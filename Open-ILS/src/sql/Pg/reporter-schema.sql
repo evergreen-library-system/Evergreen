@@ -15,7 +15,7 @@ CREATE TABLE reporter.template_folder (
 );
 CREATE INDEX rpt_tmpl_fldr_owner_idx ON reporter.template_folder (owner);
 CREATE UNIQUE INDEX rpt_template_folder_once_parent_idx ON reporter.template_folder (name,parent);
-CREATE UNIQUE INDEX rpt_template_folder_once_idx ON reporter.output_folder (name,owner) WHERE parent IS NULL;
+CREATE UNIQUE INDEX rpt_template_folder_once_idx ON reporter.template_folder (name,owner) WHERE parent IS NULL;
 
 CREATE TABLE reporter.report_folder (
 	id		SERIAL				PRIMARY KEY,
