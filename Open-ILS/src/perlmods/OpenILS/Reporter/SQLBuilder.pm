@@ -912,7 +912,6 @@ sub toSQL {
 	my $sql;
 
 	my $rel = $self->find_relation($self->{_relation});
-	warn $self->builder;
 	if ($rel && $rel->is_join && $rel->join_type ne 'inner') {
 		$sql = "($sql IS NULL OR ";
 	}
