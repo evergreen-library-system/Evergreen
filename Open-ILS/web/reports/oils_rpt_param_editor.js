@@ -82,6 +82,10 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
 
 	switch(transform) {
+		case 'date':
+			widgetArgs.type = 'date';
+			atomicWidget = oilsRptTruncPicker;
+			break;
 		case 'hour_trunc':
 			widgetArgs.type = 'hour';
 			atomicWidget = oilsRptTruncPicker;
@@ -155,6 +159,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			widgetArgs.start = 0;
 			atomicWidget = oilsRptNumberWidget
 			break;
+
+
 	}
 
 	if( field.selector ) {

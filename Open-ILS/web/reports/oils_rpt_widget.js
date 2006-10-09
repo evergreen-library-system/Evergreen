@@ -562,6 +562,7 @@ function oilsRptTruncPicker(args) {
 	if(this.type == 'month') this.label = 'Month(s)';
 	if(this.type == 'quarter') this.label = 'Quarter(s)';
 	if(this.type == 'year') this.label = 'Year(s)';
+	if(this.type == 'date') this.label = 'Day(s)';
 }
 
 oilsRptTruncPicker.prototype.draw = function() {
