@@ -275,6 +275,9 @@ util.error.prototype = {
 			if (E.ilsevent == 0 /* SUCCESS */ ) {
 				msg = "The action involved likely succeeded, however, this part of the software needs to be updated to better understand success messages from the server, so please let us know about it.";
 			}
+			if (E.ilsevent == -1 /* Network/Server Problem */ ) {
+				return obj.standard_network_error_alert(msg);
+			}
 			if (E.ilsevent == 5000 /* PERM_FAILURE */ ) {
 				msg = "The action involved likely failed due to insufficient permissions.  However, this part of the software needs to be updated to better understand permission messages from the server, so please let us know about it.";
 			}
