@@ -32,11 +32,14 @@ sub new {
 
 	my( $m, $f, $l ) = caller(0);
 	my( $mm, $ff, $ll ) = caller(1);
+	my( $mmm, $fff, $lll ) = caller(1);
 
 	$f  ||= "";
 	$l  ||= "";
 	$ff ||= "";
 	$ll ||= "";
+	$fff ||= "";
+	$lll ||= "";
 
 	my $lang = 'en-US'; # assume english for now
 
@@ -45,7 +48,7 @@ sub new {
 	return { 
 		ilsevent		=> $e, 
 		textcode		=> $event, 
-		stacktrace	=> "$f:$l, $ff:$ll", 
+		stacktrace	=> "$f:$l $ff:$ll $fff:$lll", 
 		desc			=> $descs->{$lang}->{$e},
 		servertime	=> $t,
 		pid			=> $$, %params };
