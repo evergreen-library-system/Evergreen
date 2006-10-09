@@ -26,6 +26,12 @@ sub set_builder {
 	return $self;
 }
 
+sub find_relation {
+	my $self = shift;
+	my $rel = shift;
+	return $self->builder->{_rels}->{$rel};
+}
+
 sub builder {
 	my $self = shift;
 	return $self->{_builder};
@@ -94,37 +100,37 @@ sub is_subquery {
 
 sub pivot_data {
 	my $self = shift;
-	return $self->{_pivot_data};
+	return $self->builder->{_pivot_data};
 }
 
 sub pivot_label {
 	my $self = shift;
-	return $self->{_pivot_label};
+	return $self->builder->{_pivot_label};
 }
 
 sub pivot_default {
 	my $self = shift;
-	return $self->{_pivot_label};
+	return $self->builder->{_pivot_default};
 }
 
 sub set_pivot_default {
 	my $self = shift;
 	my $p = shift;
-	$self->{_pivot_default} = $p if (defined $p);
+	$self->builder->{_pivot_default} = $p if (defined $p);
 	return $self;
 }
 
 sub set_pivot_data {
 	my $self = shift;
 	my $p = shift;
-	$self->{_pivot_data} = $p if (defined $p);
+	$self->builder->{_pivot_data} = $p if (defined $p);
 	return $self;
 }
 
 sub set_pivot_label {
 	my $self = shift;
 	my $p = shift;
-	$self->{_pivot_label} = $p if (defined $p);
+	$self->builder->{_pivot_label} = $p if (defined $p);
 	return $self;
 }
 
@@ -153,7 +159,7 @@ sub set_from {
 	my $self = shift;
 	my $f = shift;
 
-	$self->{_from} = OpenILS::Reporter::SQLBuilder::Relation->parse( $f );
+	$self->{_from} = OpenILS::Reporter::SQLBuilder::Relation->parse( $f, $self );
 
 	return $self;
 }
@@ -213,9 +219,14 @@ sub group_by_list {
 	my $base = shift;
 	$base = 1 unless (defined $base);
 
+	my $seen_label = 0;
 	my $gcount = $base;
 	my @group_by;
 	for my $c ( @{ $self->{_select} } ) {
+		if ($base == 0 && !$seen_label  && defined($self->pivot_label) && $gcount == $self->pivot_label - 1) {
+			$seen_label++;
+			next;
+		}
 		push @group_by, $gcount if (!$c->is_aggregate);
 		$gcount++;
 	}
@@ -897,7 +908,16 @@ sub toSQL {
 	my $self = shift;
 
 	return $self->{_sql} if ($self->{_sql});
-	my $sql = $self->SUPER::toSQL;
+
+	my $sql;
+
+	my $rel = $self->find_relation($self->{_relation});
+	warn $self->builder;
+	if ($rel && $rel->is_join && $rel->join_type ne 'inner') {
+		$sql = "($sql IS NULL OR ";
+	}
+
+	$sql .= $self->SUPER::toSQL;
 
 	my ($op) = keys %{ $self->{_condition} };
 	my $val = _flesh_conditions( $self->resolve_param( $self->{_condition}->{$op} ), $self->builder );
@@ -927,6 +947,10 @@ sub toSQL {
 		$sql .= " $op " . $val->toSQL;
 	}
 
+	if ($rel && $rel->is_join && $rel->join_type ne 'inner') {
+		$sql .= ")";
+	}
+
 	return $self->{_sql} = $sql;
 }
 
@@ -944,15 +968,19 @@ sub parse {
 	$self = $self->SUPER::new if (!ref($self));
 
 	my $rel_data = shift;
+	my $b = shift;
+	$self->set_builder($b);
 
 	$self->{_table} = $rel_data->{table};
 	$self->{_alias} = $rel_data->{alias} || $self->name;
 	$self->{_join} = [];
 	$self->{_columns} = [];
 
+	$self->builder->{_rels}{$self->{_alias}} = $self;
+
 	if ($rel_data->{join}) {
 		$self->add_join(
-			$_ => OpenILS::Reporter::SQLBuilder::Relation->parse( $rel_data->{join}->{$_} ) => $rel_data->{join}->{$_}->{key}
+			$_ => OpenILS::Reporter::SQLBuilder::Relation->parse( $rel_data->{join}->{$_}, $b ) => $rel_data->{join}->{$_}->{key} => $rel_data->{join}->{$_}->{type}
 		) for ( keys %{ $rel_data->{join} } );
 	}
 
@@ -977,11 +1005,12 @@ sub add_join {
 	my $col = shift;
 	my $frel = shift;
 	my $fkey = shift;
+	my $type = lc(shift()) || 'inner';
 
-	if (ref($col) eq 'OpenILS::Reporter::SQLBuilder::Join') {
+	if (UNIVERSAL::isa($col,'OpenILS::Reporter::SQLBuilder::Join')) {
 		push @{ $self->{_join} }, $col;
 	} else {
-		push @{ $self->{_join} }, OpenILS::Reporter::SQLBuilder::Join->build( $self => $col, $frel => $fkey );
+		push @{ $self->{_join} }, OpenILS::Reporter::SQLBuilder::Join->build( $self => $col, $frel => $fkey, $type );
 	}
 
 	return $self;
@@ -992,6 +1021,13 @@ sub is_join {
 	my $j = shift;
 	$self->{_is_join} = $j if ($j);
 	return $self->{_is_join};
+}
+
+sub join_type {
+	my $self = shift;
+	my $j = shift;
+	$self->{_join_type} = $j if ($j);
+	return $self->{_join_type};
 }
 
 sub toSQL {
@@ -1014,8 +1050,8 @@ package OpenILS::Reporter::SQLBuilder::Join;
 use base qw/OpenILS::Reporter::SQLBuilder/;
 
 sub build {
-	my $self = shift;
-	$self = $self->SUPER::new if (!ref($self));
+	my $class = shift;
+	my $self = $class->SUPER::new if (!ref($class));
 
 	$self->{_left_rel} = shift;
 	($self->{_left_col}) = split(/-/,shift());
@@ -1023,20 +1059,84 @@ sub build {
 	$self->{_right_rel} = shift;
 	$self->{_right_col} = shift;
 
+	$self->{_join_type} = shift;
+
 	$self->{_right_rel}->is_join(1);
+	$self->{_right_rel}->join_type($self->{_join_type});
+
+	bless $self => "OpenILS::Reporter::SQLBuilder::Join::$self->{_join_type}";
 
 	return $self;
 }
 
 sub toSQL {
 	my $self = shift;
-	return $self->{_sql} if ($self->{_sql});
 
-	my $sql = "\n\tJOIN " . $self->{_right_rel}->toSQL .
+	my $sql = "JOIN " . $self->{_right_rel}->toSQL .
 		' ON ("' . $self->{_left_rel}->{_alias} . '"."' . $self->{_left_col} .
 		'" = "' . $self->{_right_rel}->{_alias} . '"."' . $self->{_right_col} . '")';
 
 	$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
+
+	return $sql;
+}
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Join::left;
+use base qw/OpenILS::Reporter::SQLBuilder::Join/;
+
+sub toSQL {
+	my $self = shift;
+	#return $self->{_sql} if ($self->{_sql});
+
+	my $sql = "\n\tLEFT OUTER ". $self->SUPER::toSQL;
+
+	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
+
+	return $self->{_sql} = $sql;
+}
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Join::right;
+use base qw/OpenILS::Reporter::SQLBuilder::Join/;
+
+sub toSQL {
+	my $self = shift;
+	#return $self->{_sql} if ($self->{_sql});
+
+	my $sql = "\n\tRIGHT OUTER ". $self->SUPER::toSQL;
+
+	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
+
+	return $self->{_sql} = $sql;
+}
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Join::inner;
+use base qw/OpenILS::Reporter::SQLBuilder::Join/;
+
+sub toSQL {
+	my $self = shift;
+	#return $self->{_sql} if ($self->{_sql});
+
+	my $sql = "\n\tINNER ". $self->SUPER::toSQL;
+
+	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
+
+	return $self->{_sql} = $sql;
+}
+
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Join::cross;
+use base qw/OpenILS::Reporter::SQLBuilder::Join/;
+
+sub toSQL {
+	my $self = shift;
+	#return $self->{_sql} if ($self->{_sql});
+
+	my $sql = "\n\tFULL OUTER ". $self->SUPER::toSQL;
+
+	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
 
 	return $self->{_sql} = $sql;
 }

@@ -18,8 +18,8 @@ my $report = {
 			column	=> 'barcode',
 			alias	=> 'User Barcode',
 		},
-		{	relation=> 'circ',
-			column	=> { transform => count => colname => 'id' },
+		{	relation=> 'circ-id-mb',
+			column	=> { transform => sum => colname => 'amount' },
 			alias	=> '::PARAM3',
 		},
 	],
@@ -30,11 +30,13 @@ my $report = {
 			checkin_staff => {
 				table	=> 'actor.usr',
 				alias	=> 'circ-circ_staff-au',
+				type	=> 'inner',
 				key	=> 'id',
 				join	=> {
 					card => {
 						table	=> 'actor.card',
 						alias	=> 'circ-circ_staff-au-card-ac',
+						type	=> 'inner',
 						key	=> 'id',
 					},
 				},
@@ -42,11 +44,13 @@ my $report = {
 			checkin_lib => {
 				table	=> 'actor.org_unit',
 				alias	=> 'circ-checkin_lib-aou',
+				type	=> 'inner',
 				key	=> 'id',
 			},
 			'id-billings' => {
 				table	=> 'money.billing',
 				alias	=> 'circ-id-mb',
+				type	=> 'left',
 				key	=> 'xact',
 			},
 		},
@@ -65,17 +69,8 @@ my $report = {
 			condition	=> { '=' => '::PARAM7' },
 		},
 	],
-	having => [
-		{	relation	=> 'circ',
-			column		=> { transform => count => colname => 'id' },
-			condition	=> { 'between' => '::PARAM5' },
-		},
-	],
+	having => [],
 	order_by => [
-		{	relation=> 'circ',
-			column	=> { transform => count => colname => 'id' },
-			direction => 'descending',
-		},
 		{	relation=> 'circ-checkin_lib-aou',
 			column	=> { colname => 'shortname', transform => 'Bare' },
 		},
@@ -96,7 +91,7 @@ my $params = {
 	PARAM1 => [ 18, 19, 20, 21, 22, 23 ],
 	#PARAM2 => ['2006-07','2006-08','2006-09'],
 	PARAM2 => [{transform => 'relative_month', params => [-2]},{transform => 'relative_month', params => [-3]}],
-	PARAM3 => 'Circ Count',
+	PARAM3 => 'Billed Amount',
 	PARAM4 => 'Checkin Date',
 	PARAM5 => [{ transform => 'Bare', params => [10] },{ transform => 'Bare', params => [100] }],
 	PARAM6 => [ 1, 4 ],
@@ -111,4 +106,9 @@ $rs->relative_time('2006-10-01T00:00:00-4');
 
 print "Column Labels: " . join(', ', $rs->column_label_list) . "\n";
 print $rs->toSQL;
+
+print "\n\n";
+
+print "SQL group by list: ".join(',',$rs->group_by_list)."\n";
+print "Perl group by list: ".join(',',$rs->group_by_list(0))."\n";
 

@@ -173,6 +173,9 @@ for my $r ( @reports ) {
 
 			$r->{column_labels} = $newdata->{columns};
 			$r->{data} = $newdata->{data};
+			$r->{group_by_list} = $newdata->{group_by_list};
+		} else {
+			$r->{group_by_list} = [$r->{resultset}->group_by_list(0)];
 		}
 
 		my $s2 = $r->{report}->{template}->{id};
@@ -470,7 +473,7 @@ sub draw_pie {
 
 	my $data = $r->{data};
 
-	my @groups = $r->{resultset}->group_by_list(0);
+	my @groups = @{ $r->{group_by_list} };
 	
 	my @values = (0 .. (scalar(@{$r->{column_labels}}) - 1));
 	delete @values[@groups];
@@ -556,7 +559,7 @@ sub draw_bars {
 
 	#my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
 
-	my @groups = $r->{resultset}->group_by_list(0);
+	my @groups = @{ $r->{group_by_list} };
 
 	
 	my @values = (0 .. (scalar(@{$r->{column_labels}}) - 1));
@@ -670,7 +673,7 @@ sub draw_lines {
 
 	#my $logo = $doc->findvalue('/reporter/setup/files/chart_logo');
 
-	my @groups = $r->{resultset}->group_by_list(0);
+	my @groups = @{ $r->{group_by_list} };
 	
 	my @values = (0 .. (scalar(@{$r->{column_labels}}) - 1));
 	splice(@values,$_,1) for (reverse @groups);
@@ -784,6 +787,8 @@ sub pivot_data {
 	my @keep_cols = (0 .. @$cols - 1);
 	splice(@keep_cols, $_ - 1, 1) for (reverse sort ($pivot_label, $pivot_data));
 
+	my @gb = ( 0 .. @keep_cols - 1);
+
 	#first, find the unique list of pivot values
 	my %tmp;
 	for my $row (@$data) {
@@ -822,7 +827,7 @@ sub pivot_data {
 
 	push @keep_labels, @new_cols;
 
-	return { columns => \@keep_labels, data => [ values %new_data ] };
+	return { columns => \@keep_labels, data => [ values %new_data ], group_by_list => \@gb };
 }
 
 

@@ -132,6 +132,17 @@ SELECT	r.id,
   WHERE	r.deleted IS FALSE
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
+CREATE OR REPLACE VIEW reporter.demographic AS
+SELECT	u.id,
+	u.dob,
+	CASE
+		WHEN u.dob IS NULL
+			THEN 'Adult'
+		WHEN AGE(u.dob) > '18 years'::INTERVAL
+			THEN 'Adult'
+		ELSE 'Juvenile'
+	END AS general_division
+  FROM	actor.usr u;
 
 COMMIT;
 
