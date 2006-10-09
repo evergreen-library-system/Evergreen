@@ -107,6 +107,8 @@ sub make_editor {
 sub format_date {
 	my $class = shift;
 	my $date = shift;
+	my $type = shift || 'dob';
+
 	return "" unless $date;
 
 	$date = DateTime::Format::ISO8601->new->
@@ -120,7 +122,10 @@ sub format_date {
 	$mon =~ s/^(\d)$/0$1/;
 	$day =~ s/^(\d)$/0$1/;
 	$date = "$year$mon$day";
-	syslog('LOG_DEBUG', "OILS: formatted date: $date");
+
+	$date = $year.'-'.$mon.'-'.$day .' 0:00:00' if $type eq 'due';
+
+	syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
 	return $date;
 }
 

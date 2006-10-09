@@ -126,7 +126,7 @@ sub do_checkout {
 		syslog('LOG_INFO', "OILS: Checkout succeeded");
 
 		my $circ = $resp->{payload}->{circ};
-		$self->{'due'} = OpenILS::SIP->format_date($circ->due_date);
+		$self->{'due'} = OpenILS::SIP->format_date($circ->due_date, 'due');
 		$self->ok(1);
 
 		return 1;

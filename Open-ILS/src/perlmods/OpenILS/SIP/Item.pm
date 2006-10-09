@@ -243,7 +243,7 @@ sub due_date {
 		return 0;
 	}
 
-	my $due = OpenILS::SIP->format_date($circ->due_date);
+	my $due = OpenILS::SIP->format_date($circ->due_date, 'due');
 	syslog('LOG_DEBUG', "OILS: Found item due date = $due");
 	return $due;
 }
