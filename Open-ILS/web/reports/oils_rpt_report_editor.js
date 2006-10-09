@@ -66,6 +66,9 @@ oilsRptReportEditor.prototype.save = function() {
 	if(!this.selectedFolder) 
 		return alert('Please provide a report folder');
 
+	if(!DOM.oils_rpt_report_editor_name.value)
+		return alert('Please enter a report name');
+
 	report.owner( USER.id() );
 	report.template( this.template.id() );
 	report.folder( this.selectedFolder.folder.id() );
