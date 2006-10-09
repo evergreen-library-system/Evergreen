@@ -11,6 +11,7 @@ var oilsRpt;
 var oilsRptTree;
 
 var oilsRptCurrentOrg;
+var oilsRptMyOrgs;
 
 var oilsRptCookie;
 

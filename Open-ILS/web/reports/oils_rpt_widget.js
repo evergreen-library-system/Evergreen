@@ -616,7 +616,24 @@ function oilsRptRemoteWidget(args) {
 }
 
 oilsRptRemoteWidget.prototype.draw = function() {
-	var req = new Request(OILS_RPT_MAGIC_FETCH, SESSION, {hint:this.class}); 
+	var orgcol;
+	iterate(oilsIDL[this.class].fields,
+		function(i) {
+			if(i.type == 'link' && i.class == 'aou') 
+				orgcol = i.name;
+		}
+	);
+
+	if(orgcol) _debug("found org column for remote widget: " + orgcol);
+
+	var orgs = [];
+	iterate(oilsRptMyOrgs,function(i){orgs.push(i.id());});
+	var req = new Request(OILS_RPT_MAGIC_FETCH, SESSION, {
+		hint:this.class,
+		org_column : orgcol,
+		org : orgs
+	}); 
+
 	var obj = this;
 	this.node.appendChild(this.source);
 	req.callback(function(r){obj.render(r.getResultObject())});
@@ -624,7 +641,6 @@ oilsRptRemoteWidget.prototype.draw = function() {
 }
 
 oilsRptRemoteWidget.prototype.render = function(objs) {
-	_debug("rendering objects " + formatJSON(js2JSON(objs)));
 	for( var i = 0; i < objs.length; i++ ) {
 		var obj = objs[i];
 		var label = obj[this.field.selector]();
@@ -679,17 +695,22 @@ function oilsRptMyOrgsWidget(node, orgid, maxorg) {
 }
 
 oilsRptMyOrgsWidget.prototype.draw = function() {
-	var req = new Request(OILS_RPT_FETCH_ORG_FULL_PATH, this.orgid);
-	var obj = this;
-	req.callback(
-		function(r) { obj.drawWidget(r.getResultObject()); }
-	);
-	req.send();
+	if(!oilsRptMyOrgs) {
+		var req = new Request(OILS_RPT_FETCH_ORG_FULL_PATH, this.orgid);
+		var obj = this;
+		req.callback(
+			function(r) { obj.drawWidget(r.getResultObject()); }
+		);
+		req.send();
+	} else {
+		this.drawWidget(oilsRptMyOrgs);
+	}
 }
 
 oilsRptMyOrgsWidget.prototype.drawWidget = function(orglist) {
 	var sel = this.node;
 	var started = false;
+	oilsRptMyOrgs = orglist;
 	for( var i = 0; i < orglist.length; i++ ) {
 		var org = orglist[i];
 		var opt = insertSelectorVal( this.node, -1, 

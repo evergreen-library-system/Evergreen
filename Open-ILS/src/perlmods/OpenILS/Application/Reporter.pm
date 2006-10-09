@@ -396,6 +396,8 @@ sub magic_fetch_all {
 	return $e->event unless $e->allowed('RUN_REPORTS');
 
 	my $hint = $$args{hint};
+	my $org_col = $$args{org_column};
+	my $orgs = $$args{org};
 
 	# Find the class the iplements the given hint
 	my ($class) = grep { 
@@ -405,11 +407,20 @@ sub magic_fetch_all {
 
 	$class =~ s/Fieldmapper:://og;
 	$class =~ s/::/_/og;
-	my $method = "retrieve_all_$class";
+	
+	my $method;
+	my $margs;
+
+	if( $org_col ) {
+		$method = "search_$class";
+		$margs = { $org_col => $orgs };
+	} else {
+		$method = "retrieve_all_$class";
+	}
 
 	$logger->info("reporter.magic_fetch => $method");
 
-	return $e->$method();
+	return $e->$method($margs);
 }
 
 
