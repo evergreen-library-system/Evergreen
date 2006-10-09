@@ -105,7 +105,11 @@ sub retrieve_schedules {
 	my $search = { folder => $folderId };
 	my $query = [
 		{ folder => $folderId },
-		{ order_by => { rs => 'run_time DESC' } }
+		{ 
+			order_by => { rs => 'run_time DESC' } ,
+			flesh => 1,
+			flesh_fields => { rs => ['report'] }
+		}
 	];
 
 	$query->[1]->{limit} = $limit if $limit;

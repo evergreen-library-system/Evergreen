@@ -399,15 +399,10 @@ oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx) {
 	oilsRptFetchUser(sched.runner(),
 		function(user) {
 			sched.runner(user);
-			oilsRptFetchReport(sched.report(),
-				function(report) {
-					sched.report(report);
-					oilsRptFetchTemplate(report.template(),
-						function(template) {
-							report.template(template);
-							obj.fleshSchedules(list, ++idx);
-						}
-					);
+			oilsRptFetchTemplate(sched.report().template(),
+				function(template) {
+					sched.report().template(template);
+					obj.fleshSchedules(list, ++idx);
 				}
 			);
 		}
