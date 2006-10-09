@@ -203,7 +203,13 @@ sub run_method {
 
 	$circulator->script_runner->cleanup;
 	
-	return circ_events($circulator);
+	$conn->respond_complete(circ_events($circulator));
+
+	unless($circulator->bail_out) {
+		$logger->info("circulator: running delayed hold notify process");
+		$circulator->do_hold_notify($circulator->notify_hold)
+			if $circulator->notify_hold;
+	}
 }
 
 sub circ_events {
@@ -283,6 +289,7 @@ sub DESTROY { }
 # Add a pile of automagic getter/setter methods
 # --------------------------------------------------------------------------
 my @AUTOLOAD_FIELDS = qw/
+	notify_hold
 	penalty_request
 	remote_hold
 	backdate
@@ -1516,7 +1523,8 @@ sub attempt_checkin_hold_capture {
    	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
 		$self->push_events(OpenILS::Event->new('SUCCESS'));
 
-		$self->do_hold_notify($hold->id);
+		#$self->do_hold_notify($hold->id);
+		$self->notify_hold($hold->id);
 
 	} else {
 	
@@ -1536,6 +1544,7 @@ sub attempt_checkin_hold_capture {
 
 sub do_hold_notify {
 	my( $self, $holdid ) = @_;
+
 	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
 		editor => $self->editor, hold_id => $holdid );
 
@@ -1544,18 +1553,24 @@ sub do_hold_notify {
 		$logger->info("ciculator: attempt at sending hold notification for hold $holdid");
 
 		my $stat = $notifier->send_email_notify;
-		$logger->info("ciculator: hold notify succeeded for hold $holdid") if $stat eq '1';
-		$logger->warn("ciculator:  * hold notify failed for hold $holdid") if $stat ne '1';
+		if( $stat == '1' ) {
+			$logger->info("ciculator: hold notify succeeded for hold $holdid");
+			$self->editor->commit;
+			return;
+		} 
+
+		$logger->warn("ciculator:  * hold notify failed for hold $holdid");
 
 	} else {
 		$logger->info("ciculator: Not sending hold notification since the patron has no email address");
 	}
+
+	$self->editor->rollback;
 }
 
 
 sub checkin_build_hold_transit {
 	my $self = shift;
-
 
    my $copy = $self->copy;
    my $hold = $self->hold;
@@ -1613,7 +1628,8 @@ sub process_received_transit {
 
 	my $ishold = 0;
 	if($hold_transit) {	
-		$self->do_hold_notify($hold_transit->hold);
+		#$self->do_hold_notify($hold_transit->hold);
+		$self->notify_hold($hold_transit->hold);
 		$ishold = 1;
 	}
 
