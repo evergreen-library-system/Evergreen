@@ -151,11 +151,11 @@ util.network.prototype = {
 				try { network_failure_string = String( obj.NETWORK_FAILURE ); } catch(E) { network_failure_string = E; }
 				try { network_failure_status_string = typeof obj.NETWORK_FAILURE == 'object' && typeof obj.NETWORK_FAILURE != 'null' && typeof obj.NETWORK_FAILURE.status == 'function' ? obj.NETWORK_FAILURE.status() : ''; } catch(E) { network_failure_status_string = ''; obj.error.sdump('D_ERROR', 'setting network_failure_status_string: ' + E); }
 				
-				try { msg = 'Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Proceed Offline in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this information:\nmethod=' + name + '\nparams=' + js2JSON(params) + '\nTHROWN:\n' + network_failure_string + '\nSTATUS:\n' + network_failure_status_string; } catch(E) { msg = E; }
+				try { msg = 'Network/server failure.  Please check your Internet connection to ' + data.server_unadorned + ' and choose Retry Network.  If you need to enter Offline Mode, choose Ignore Errors in this and subsequent dialogs.  If you believe this error is due to a bug in Evergreen and not network problems, please contact your helpdesk or friendly Evergreen admins, and give them this information:\nmethod=' + name + '\nparams=' + js2JSON(params) + '\nTHROWN:\n' + network_failure_string + '\nSTATUS:\n' + network_failure_status_string; } catch(E) { msg = E; }
 
 				try { obj.error.sdump('D_SES_ERROR',msg); } catch(E) { alert(E); }
 
-				r = obj.error.yns_alert(msg,'Network Failure','Retry Network','Proceed Offline',null,'Check here to confirm this message');
+				r = obj.error.yns_alert(msg,'Network Failure','Retry Network','Ignore Errors',null,'Check here to confirm this message');
 				if (r == 1) {
 					data.proceed_offline = true; data.stash('proceed_offline');
 					dump('Remembering proceed_offline for 200000 ms.\n');
@@ -168,7 +168,7 @@ util.network.prototype = {
 				}
 			}
 
-			dump( r == 0 ? 'Retry Network\n' : 'Proceed Offline\n' );
+			dump( r == 0 ? 'Retry Network\n' : 'Ignore Errors\n' );
 
 			switch(r) {
 				case 0: 
