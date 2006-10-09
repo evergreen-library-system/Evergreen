@@ -129,6 +129,10 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 	if(sortme) this.keys = this.keys.sort();
 }
 
+FMObjectBuilder.prototype.add = function(obj) {
+	this.buildObjectRow(obj);
+}
+
 /* Inserts one row into the table to represent a single object */
 FMObjectBuilder.prototype.buildObjectRow = function(obj) {
 	var row = elem('tr');

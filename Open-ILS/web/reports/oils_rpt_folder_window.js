@@ -379,29 +379,35 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 }
 
 
-oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx) {
-	if( idx >= list.length ) {
-		this.fmTable = drawFMObjectTable( 
-			{ 
-				dest : this.selector, 
-				obj : list,
-				selectCol : true,
-				selectColName : 'Select',
-				selectAllName : 'All',
-				selectNoneName : 'None'
-			}
-		);
-		return;
-	}
+oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, table) {
+
+	if( idx >= list.length ) return;
 
 	var sched = list[idx];
 	var obj = this;
+
 	oilsRptFetchUser(sched.runner(),
+
 		function(user) {
 			sched.runner(user);
 			oilsRptFetchTemplate(sched.report().template(),
+
 				function(template) {
 					sched.report().template(template);
+					if( idx == 0 ) {
+						obj.fmTable = drawFMObjectTable( 
+							{ 
+								dest : obj.selector, 
+								obj : [sched],
+								selectCol : true,
+								selectColName : 'Select',
+								selectAllName : 'All',
+								selectNoneName : 'None'
+							}
+						);
+					} else {
+						obj.fmTable.add(sched);
+					}
 					obj.fleshSchedules(list, ++idx);
 				}
 			);
