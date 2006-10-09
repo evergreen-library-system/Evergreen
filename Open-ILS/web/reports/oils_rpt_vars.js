@@ -86,6 +86,7 @@ var OILS_RPT_UPDATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.up
 var OILS_RPT_FETCH_OUTPUT			= 'open-ils.reporter:open-ils.reporter.schedule.retrieve_by_folder';
 var OILS_RPT_FETCH_REPORT			= 'open-ils.reporter:open-ils.reporter.report.retrieve';
 var OILS_RPT_FETCH_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.retrieve';
+var OILS_RPT_MAGIC_FETCH			= 'open-ils.reporter:open-ils.reporter.magic_fetch';
 
 var oilsRptCurrentFolderManager;
 

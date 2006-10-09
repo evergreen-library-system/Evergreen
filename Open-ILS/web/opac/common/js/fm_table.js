@@ -129,7 +129,9 @@ FMObjectBuilder.prototype.setKeys = function(o) {
 	if(sortme) this.keys = this.keys.sort();
 }
 
+/* use this method to insert object rows after the table has been rendered */
 FMObjectBuilder.prototype.add = function(obj) {
+	this.obj.push(obj);
 	this.buildObjectRow(obj);
 }
 

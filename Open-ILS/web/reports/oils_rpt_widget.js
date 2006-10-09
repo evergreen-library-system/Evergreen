@@ -606,6 +606,56 @@ oilsRptTruncPicker.prototype.getDisplayValue = function() {
 	Atomic remote object picker
 	--------------------------------------------------------------------- */
 
+function oilsRptRemoteWidget(args) {
+	this.node	= args.node;
+	this.class	= args.class;
+	this.field	= args.field;
+	this.column = args.column;
+	this.source = elem('select',
+		{multiple:'multiple','class':'oils_rpt_small_info_selector'});
+}
+
+oilsRptRemoteWidget.prototype.draw = function() {
+	var req = new Request(OILS_RPT_MAGIC_FETCH, SESSION, {hint:this.class}); 
+	var obj = this;
+	this.node.appendChild(this.source);
+	req.callback(function(r){obj.render(r.getResultObject())});
+	req.send();
+}
+
+oilsRptRemoteWidget.prototype.render = function(objs) {
+	_debug("rendering objects " + formatJSON(js2JSON(objs)));
+	for( var i = 0; i < objs.length; i++ ) {
+		var obj = objs[i];
+		var label = obj[this.field.selector]();
+		var value = obj[this.column]();
+		_debug("inserted remote object "+label + ' : ' + value);
+		insertSelectorVal(this.source, -1, label, value);
+	}
+}
+
+oilsRptRemoteWidget.prototype.getDisplayValue = function() {
+	var vals = [];
+	iterate(this.source,
+		function(o){
+			if( o.selected )
+				vals.push({ label : o.innerHTML, value : o.getAttribute('value')});
+		}
+	);
+	return vals;
+}
+
+oilsRptRemoteWidget.prototype.getValue = function() {
+	var vals = [];
+	iterate(this.source,
+		function(o){
+			if( o.selected )
+				vals.push(o.getAttribute('value'))
+		}
+	);
+	return vals;
+}
+
 
 
 

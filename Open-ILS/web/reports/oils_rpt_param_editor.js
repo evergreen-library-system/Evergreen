@@ -157,6 +157,13 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			break;
 	}
 
+	if( field.selector ) {
+		atomicWidget = oilsRptRemoteWidget;
+		widgetArgs.class = cls;
+		widgetArgs.field = field;
+		widgetArgs.column = param.column.colname;
+	}
+
 	switch(cls) {
 		case 'aou':
 			atomicWidget = oilsRptOrgSelector;

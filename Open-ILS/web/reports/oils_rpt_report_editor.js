@@ -55,6 +55,8 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 	DOM.oils_rpt_report_editor_save.onclick = function(){obj.save();}
 	DOM.oils_rpt_param_editor_sched_email.value = USER.email();
 	DOM.oils_rpt_param_editor_sched_start_date.value = mkYearMonDay();
+
+	_debug("fleshing template:\n" + tmpl.name() + '\n' + formatJSON(tmpl.data()));
 }
 
 

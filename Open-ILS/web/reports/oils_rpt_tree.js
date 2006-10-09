@@ -78,6 +78,7 @@ function oilsRptParseFields( node ) {
 			name	: name,
 			label : field.getAttributeNS(oilsIDLReportsNS,'label'),
 			datatype : field.getAttributeNS(oilsIDLReportsNS,'datatype'),
+			selector : field.getAttributeNS(oilsIDLReportsNS,'selector'),
 			type	: 'field'
 		}
 
