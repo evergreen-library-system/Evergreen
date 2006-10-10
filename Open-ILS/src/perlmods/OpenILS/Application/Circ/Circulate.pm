@@ -341,6 +341,7 @@ my @AUTOLOAD_FIELDS = qw/
 	force
 	old_circ
 	permit_override
+	pending_checkouts
 /;
 
 
@@ -455,6 +456,11 @@ sub mk_script_runner {
 	$$args{fetch_patron_by_circ_copy} = 1;
 	$$args{fetch_patron_circ_info} = 1 unless $self->is_checkin;
 
+	if( my $pco = $self->pending_checkouts ) {
+		$logger->info("circulator: we were given a pending checkouts number of $pco");
+		$$args{patronItemsOut} = $pco;
+	}
+
 	# This fetches most of the objects we need
 	$self->script_runner(
 		OpenILS::Application::Circ::ScriptBuilder->build($args));
@@ -519,7 +525,6 @@ sub do_permit {
 		return $self->bail_on_events($self->editor->event)
 			unless( $self->editor->allowed('VIEW_PERMIT_CHECKOUT') );
 	}
-
 
 	$self->check_captured_holds();
 	$self->do_copy_checks();
@@ -855,14 +860,17 @@ sub do_checkout {
 	$self->handle_checkout_holds();
 	return if $self->bail_out;
 
+
    # ------------------------------------------------------------------------------
    # Update the patron penalty info in the DB
    # ------------------------------------------------------------------------------
-   $U->update_patron_penalties(
-      authtoken => $self->editor->authtoken,
-      patron    => $self->patron,
-      background  => 1,
-   );
+	if( $self->permit_override ) {
+		$U->update_patron_penalties(
+			authtoken => $self->editor->authtoken,
+			patron    => $self->patron,
+			background  => 1,
+		);
+	}
 
 	my $record = $U->record_to_mvr($self->title) unless $self->is_precat;
 	$self->push_events(

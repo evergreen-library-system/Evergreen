@@ -220,7 +220,11 @@ sub fetch_user_data {
 			OpenILS::Application::Actor::_checked_out(1, $e, $patron->id);
 
 		$ctx->{patronOverdue} = $circ_counts->{overdue} || 0;
-		$ctx->{patronItemsOut} = $ctx->{patronOverdue} + $circ_counts->{out};
+		my $out = $ctx->{patronOverdue} + $circ_counts->{out};
+
+		$ctx->{patronItemsOut} = $out 
+			unless( $ctx->{patronItemsOut} and $ctx->{patronItemsOut} > $out );
+
 		$logger->debug("script_builder: patron overdue count is " . $ctx->{patronOverdue});
 	}
 
