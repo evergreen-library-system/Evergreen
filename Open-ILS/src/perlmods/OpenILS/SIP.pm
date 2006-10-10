@@ -123,8 +123,8 @@ sub format_date {
 	$day =~ s/^(\d)$/0$1/;
 	$date = "$year$mon$day";
 
-	#$date = $year.'-'.$mon.'-'.$day .' 0:00:00' if $type eq 'due';
-	$date = $year.'-'.$mon.'-'.$day if $type eq 'due';
+	$date = $year.'-'.$mon.'-'.$day .' 0:00:00' if $type eq 'due';
+	#$date = $year.'-'.$mon.'-'.$day if $type eq 'due';
 
 	syslog('LOG_DEBUG', "OILS: formatted date [type=$type]: $date");
 	return $date;
