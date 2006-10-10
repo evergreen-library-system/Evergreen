@@ -160,7 +160,7 @@ sub do_renew {
 		CIRC(), 'open-ils.circ.renew', $authtoken, $args );
 	my $e = time() - $t;
 	oils_event_die($resp);
-	printl("Renewal succeeded\nTime: $t");
+	printl("Renewal succeeded\nTime: $e");
 }
 
 sub do_checkin {
@@ -172,7 +172,7 @@ sub do_checkin {
 	my $e = time() - $t;
 	oils_event_die($resp);
 	debug($resp) if(ref($resp) eq 'ARRAY');
-	printl("Checkin succeeded\nTime: $t");
+	printl("Checkin succeeded\nTime: $e");
 
 }
 
