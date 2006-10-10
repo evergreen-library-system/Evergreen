@@ -712,6 +712,8 @@ sub has_notes {
 	return scalar @$n;
 }
 
+
+
 __PACKAGE__->register_method(
 	method		=> 'create_copy_note',
 	api_name		=> 'open-ils.circ.copy_note.create',
@@ -726,27 +728,30 @@ sub create_copy_note {
 	my( $self, $connection, $authtoken, $note ) = @_;
 	my( $cnowner, $requestor, $evt );
 
-	($cnowner, $evt) = $U->fetch_copy_owner($note->owning_copy);
-	return $evt if $evt;
-	($requestor, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$evt = $U->check_perms($requestor->id, $cnowner, 'CREATE_COPY_NOTE');
-	return $evt if $evt;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
+	my $copy = $e->retrieve_asset_copy(
+		[
+			$note->owning_copy,
+			{	flesh => 1,
+				flesh_fields => { 'acp' => ['call_number'] }
+			}
+		]
+	);
+
+	return $e->event unless 
+		$e->allowed('CREATE_COPY_NOTE', $copy->call_number->owning_lib);
 
 	$note->create_date('now');
-	$note->creator($requestor->id);
-	$note->pub( ($U->is_true($note->pub)) ? 1 : 0 );
+	$note->creator($e->requestor->id);
+	$note->pub( ($U->is_true($note->pub)) ? 't' : 'f' );
 	$note->clear_id;
 
-	my $id = $U->storagereq(
-		'open-ils.storage.direct.asset.copy_note.create', $note );
-	return $U->DB_UPDATE_FAILED($note) unless $id;
-
-	$logger->activity("User ".$requestor->id." created a new copy ".
-		"note [$id] for copy ".$note->owning_copy." with text ".$note->value);
-
-	return $id;
+	$e->create_asset_copy_note($note) or return $e->event;
+	$e->commit;
+	return $note->id;
 }
+
 
 __PACKAGE__->register_method(
 	method		=> 'delete_copy_note',
