@@ -11,6 +11,14 @@ use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 my %PERMS;
 
+#my %PERMS = (
+#	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
+#	'asset.copy'				=> { update => 'UPDATE_COPY'},
+#	'asset.call_number'		=> { update => 'UPDATE_VOLUME'},
+#	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
+#);
+
+
 
 # -----------------------------------------------------------------------------
 # Export some useful functions
@@ -238,7 +246,13 @@ sub request {
 	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
 	$self->log(I, "request $method : $argstr");
-	
+
+	if( $self->{xact} and 
+			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
+		$logger->error("CStoreEditor lost it's connection!!");
+		#throw OpenSRF::EX::ERROR ("CStoreEditor lost it's connection - cannot continue");
+	}
+
 	try {
 		$val = $self->session->request($method, @params)->gather(1);
 
