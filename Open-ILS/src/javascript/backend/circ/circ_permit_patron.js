@@ -20,7 +20,7 @@ if( config ) {
 	if( limit >= 0 ) {
 		/* Patrons are allowed to renew regardless 
 			of how many items they have checked out */
-		_debug('patron items out = ' + patronItemsOut +' limit = ' + limit);
+		log_info('patron items out = ' + patronItemsOut +' limit = ' + limit);
 		if( !isTrue(isRenewal) && patronItemsOut >= limit ) {
 				result.events.push('PATRON_EXCEEDS_CHECKOUT_COUNT');
 		}
