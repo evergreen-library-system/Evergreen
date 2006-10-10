@@ -1148,6 +1148,7 @@ sub update_copy_stat_entries {
 	my( $editor, $copy, $delete_stats ) = @_;
 
 	return undef if $copy->isdeleted;
+	return undef unless $copy->ischanged or $copy->isnew;
 
 	my $evt;
 	my $entries = $copy->stat_cat_entries;
