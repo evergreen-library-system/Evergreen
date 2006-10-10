@@ -726,7 +726,6 @@ __PACKAGE__->register_method(
 
 sub create_copy_note {
 	my( $self, $connection, $authtoken, $note ) = @_;
-	my( $cnowner, $requestor, $evt );
 
 	my $e = new_editor(xact=>1, authtoken=>$authtoken);
 	return $e->event unless $e->checkauth;
@@ -762,29 +761,29 @@ __PACKAGE__->register_method(
 		@param noteid The id of the note to delete
 		@return 1 on success - Event otherwise.
 		/);
-
 sub delete_copy_note {
 	my( $self, $conn, $authtoken, $noteid ) = @_;
-	my( $requestor, $note, $owner, $evt );
 
-	($requestor, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->die_event unless $e->checkauth;
 
-	($note, $evt) = $U->fetch_copy_note($noteid);
-	return $evt if $evt;
+	my $note = $e->retrieve_asset_copy_note([
+		$noteid,
+		{ flesh => 2,
+			flesh_fields => {
+				'acpn' => [ 'owning_copy' ],
+				'acp' => [ 'call_number' ],
+			}
+		}
+	]) or return $e->die_event;
 
-	if( $note->creator ne $requestor->id ) {
-		($owner, $evt) = $U->fetch_copy_onwer($note->owning_copy);
-		return $evt if $evt;
-		$evt = $U->check_perms($requestor->id, $owner, 'DELETE_COPY_NOTE');
-		return $evt if $evt;
+	if( $note->creator ne $e->requestor->id ) {
+		return $e->die_event unless 
+			$e->allowed('DELETE_COPY_NOTE', $note->copy->call_number->owning_lib);
 	}
 
-	my $stat = $U->storagereq(
-		'open-ils.storage.direct.asset.copy_note.delete', $noteid );
-	return $U->DB_UPDATE_FAILED($noteid) unless $stat;
-
-	$logger->activity("User ".$requestor->id." deleted copy note $noteid");
+	$e->delete_asset_copy_note($note) or return $e->die_event;
+	$e->commit;
 	return 1;
 }
 
