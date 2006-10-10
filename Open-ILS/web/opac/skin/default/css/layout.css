@@ -43,9 +43,16 @@ table { border-collapse: collapse; }
 
 .light_border { border: 1px solid #E0E0E0; }
 
+
+/*
 #main_table { border-collapse: collapse; width: 100%; height: 100%; }
 #main_left_cell { height: 100%; width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
 #main_right_cell { height: 100%; width: 80%; vertical-align: top; margin: 0px; padding:0px;}
+*/
+
+#main_table { border-collapse: collapse; width: 100%;  }
+#main_left_cell { width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
+#main_right_cell { width: 80%; vertical-align: top; margin: 0px; padding:0px;}
 
 
 .canvas { min-height: 300px; }
