@@ -253,10 +253,11 @@ sub timed_read {
 				$self->{temp_buffer} = '';
 				#####
 
-				my $ff =  fcntl($fh, F_GETFL, 0);
-				if ($ff == ($ff | O_NONBLOCK) and $timeout > 0 ) {
+				# This code is no longer in use
+				#my $ff =  fcntl($fh, F_GETFL, 0);
+				#if ($ff == ($ff | O_NONBLOCK) and $timeout > 0 ) {
 					#throw OpenSRF::EX::ERROR ("File flags are set to NONBLOCK but timeout is $timeout", ERROR );
-				}
+				#}
 
 				my $t_buf = "";
 				my $read_size = 1024; my $f = 0;
