@@ -641,7 +641,7 @@ sub run_patron_permit_scripts {
 	my $runner		= $self->script_runner;
 	my $patronid	= $self->patron->id;
 
-	$self->send_penalty_request();
+	$self->send_penalty_request() unless $self->is_renewal;
 
 	# ---------------------------------------------------------------------
 	# Now run the patron permit script 
@@ -653,18 +653,15 @@ sub run_patron_permit_scripts {
 	my $patron_events = $result->{events};
 	my @allevents; 
 
-	my $penalties = $self->gather_penalty_request();
 
-	for my $p (@$penalties, @$patron_events) {
+	# ---------------------------------------------------------------------
+	# this is policy directly in the code, not a good idea in general, but
+	# the penalty server doesn't know anything about renewals, so we
+	# have to strip the event out here
+	my $penalties = ($self->is_renewal) ? [] : $self->gather_penalty_request();
+	# ---------------------------------------------------------------------
 
-		# this is policy directly in the code, not a good idea in general, but
-		# the penalty server doesn't know anything about renewals, so we
-		# have to strip the event out here
-		next if $self->is_renewal and $p eq 'PATRON_EXCEEDS_OVERDUE_COUNT';
-
-
-		push( @allevents, OpenILS::Event->new($p))
-	}
+	push( @allevents, OpenILS::Event->new($_)) for (@$penalties, @$patron_events);
 
 	$logger->info("circulator: permit_patron script returned events: @allevents") if @allevents;
 
@@ -859,11 +856,12 @@ sub do_checkout {
 	$self->handle_checkout_holds();
 	return if $self->bail_out;
 
-
    # ------------------------------------------------------------------------------
-   # Update the patron penalty info in the DB
+   # Update the patron penalty info in the DB.  Run it for permit-overrides or
+	# renewals since both of those cases do not require the penalty server to
+	# run during the permit phase of the checkout
    # ------------------------------------------------------------------------------
-	if( $self->permit_override ) {
+	if( $self->permit_override or $self->is_renewal ) {
 		$U->update_patron_penalties(
 			authtoken => $self->editor->authtoken,
 			patron    => $self->patron,
