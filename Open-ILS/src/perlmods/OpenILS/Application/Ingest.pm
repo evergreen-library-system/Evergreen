@@ -175,7 +175,7 @@ sub rw_biblio_ingest_single_object {
 			$mr = $m;
 		} else {
 			my $others = $cstore->request(
-				'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic' => { metarecord => $m->metarecord }
+				'open-ils.cstore.direct.metabib.metarecord_source_map.id_list.atomic' => { metarecord => $m->id }
 			)->gather(1);
 
 			if (!@$others) {
