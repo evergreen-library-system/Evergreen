@@ -932,6 +932,56 @@ sub magic_fetch {
 # ----------------------------------------------------------------------
 
 
+__PACKAGE__->register_method(
+	method	=> "fleshed_circ_retrieve",
+	api_name	=> "open-ils.circ.fleshed.retrieve",);
+
+sub fleshed_circ_retrieve {
+	my( $self, $client, $id ) = @_;
+	my $e = new_editor();
+	my $circ = $e->retrieve_action_circulation(
+		[
+			$id,
+			{ 
+				flesh				=> 4,
+				flesh_fields	=> { 
+					circ => [ qw/ target_copy / ],
+					acp => [ qw/ location status stat_cat_entry_copy_maps notes age_protect call_number / ],
+					ascecm => [ qw/ stat_cat stat_cat_entry / ],
+					acn => [ qw/ record / ],
+				}
+			}
+		]
+	) or return $e->event;
+	
+	my $copy = $circ->target_copy;
+	my $vol = $copy->call_number;
+	my $rec = $circ->target_copy->call_number->record;
+
+	$vol->record($rec->id);
+	$copy->call_number($vol->id);
+	$circ->target_copy($copy->id);
+
+	my $mvr;
+
+	if( $rec->id == OILS_PRECAT_RECORD ) {
+		$rec = undef;
+		$vol = undef;
+	} else { 
+		$mvr = $U->record_to_mvr($rec);
+		# trim the buly marc data
+		$rec->marc('');
+	}
+	
+
+	return {
+		circ => $circ,
+		copy => $copy,
+		volume => $vol,
+		record => $rec,
+		mvr => $mvr,
+	};
+}
 
 
 
