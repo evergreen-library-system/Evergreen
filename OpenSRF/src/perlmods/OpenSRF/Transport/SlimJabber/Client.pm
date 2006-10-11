@@ -269,7 +269,10 @@ sub timed_read {
 					}
 
 					# XXX Change me to debug/internal at some point, this is for testing...
+					# XXX Found a race condition where reading >= $read_size bytes of data
+					# will fail if the log line below is removed.
 					$logger->info("timed_read() read $n bytes of data");
+
 
 					$buffer .= $t_buf;
 					if( $n < $read_size ) {
