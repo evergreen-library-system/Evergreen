@@ -42,13 +42,13 @@ __PACKAGE__->register_method(
 
 sub send_email_notify_pub {
 	my( $self, $conn, $auth, $hold_id ) = @_;
-	my $e = new_editor(authtoken => $auth, xact =>1);
+	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('CREATE_HOLD_NOTIFICATION');
 	my $notifier = __PACKAGE__->new(editor=> $e, hold_id => $hold_id);
 	return $notifier->event if $notifier->event;
 	my $stat = $notifier->send_email_notify;
-	$e->commit if $stat == '1';
+#	$e->commit if $stat == '1';
 	return $stat;
 }
 
@@ -102,7 +102,9 @@ sub new {
 	my( $class, %args ) = @_;
 	$class = ref($class) || $class;
 	my $self = bless( {}, $class );
-	$self->editor( ($args{editor}) ? $args{editor} : new_editor());
+	$self->editor($args{editor});
+	$logger->debug("circulator: creating new hold-notifier with requestor ".
+		$self->editor->requestor->id);
 	$self->fetch_data($args{hold_id});
 	return $self;
 }
@@ -143,18 +145,24 @@ sub send_email_notify {
 		return 0;
 	}
 
-	$logger->info("hold_notify: fleshed template: $str");
+	return 0 unless $self->send_email($str);
 
-	$self->send_email($str);
+	# ------------------------------------------------------------------
+	# If the hold email takes too long to send, the existing editor 
+	# transaction may have timed out.  Create a one-off editor to write 
+	# the notification to the DB.
+	# ------------------------------------------------------------------
+	my $we = new_editor(xact=>1, requestor=>$self->editor->requestor);
 
 	my $notify = Fieldmapper::action::hold_notification->new;
 	$notify->hold($self->hold->id);
-	$notify->notify_staff($self->editor->requestor->id);
+	$notify->notify_staff($we->requestor->id);
 	$notify->notify_time('now');
 	$notify->method('email');
 	
-	$self->editor->create_action_hold_notification($notify)
-		or return $self->editor->event;
+	$we->create_action_hold_notification($notify)
+		or return $we->die_event;
+	$we->commit;
 
 	return 1;
 }
@@ -199,6 +207,8 @@ sub fetch_data {
 	my $self		= shift;
 	my $holdid	= shift;
 	my $e			= $self->editor;
+
+	$logger->debug("circulator: fetching hold notify data");
 
 	$self->hold($e->retrieve_action_hold_request($holdid)) or return $self->event($e->event);
 	$self->copy($e->retrieve_asset_copy($self->hold->current_copy)) or return $self->event($e->event);

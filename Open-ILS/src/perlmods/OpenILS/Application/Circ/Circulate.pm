@@ -206,7 +206,6 @@ sub run_method {
 	$conn->respond_complete(circ_events($circulator));
 
 	unless($circulator->bail_out) {
-		$logger->info("circulator: running delayed hold notify process");
 		$circulator->do_hold_notify($circulator->notify_hold)
 			if $circulator->notify_hold;
 	}
@@ -1553,8 +1552,12 @@ sub attempt_checkin_hold_capture {
 sub do_hold_notify {
 	my( $self, $holdid ) = @_;
 
+	$logger->info("circulator: running delayed hold notify process");
+
 	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
-		editor => $self->editor, hold_id => $holdid );
+		hold_id => $holdid, editor => new_editor(requestor=>$self->editor->requestor));
+
+	$logger->debug("circulator: built hold notifier");
 
 	if(!$notifier->event) {
 
@@ -1563,7 +1566,6 @@ sub do_hold_notify {
 		my $stat = $notifier->send_email_notify;
 		if( $stat == '1' ) {
 			$logger->info("ciculator: hold notify succeeded for hold $holdid");
-			$self->editor->commit;
 			return;
 		} 
 
@@ -1572,8 +1574,6 @@ sub do_hold_notify {
 	} else {
 		$logger->info("ciculator: Not sending hold notification since the patron has no email address");
 	}
-
-	$self->editor->rollback;
 }
 
 
