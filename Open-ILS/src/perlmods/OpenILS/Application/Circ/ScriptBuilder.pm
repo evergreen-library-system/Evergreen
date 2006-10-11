@@ -300,7 +300,7 @@ sub insert_org_methods {
 			my ($parent)	= grep { $_->shortname eq $sname } @ORG_LIST;
 			my ($child)		= grep { $_->id == $id } @ORG_LIST;
 			my $val = is_org_descendent( $parent, $child );
-			$logger->debug("script_builder: is_org_desc returned val $val, writing to $write_key");
+			$logger->debug("script_builder: is_org_desc $sname:$id returned val $val, writing to $write_key");
 			$r->insert($write_key, $val, 1) if $val;
 			return $val;
 		}
