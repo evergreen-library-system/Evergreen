@@ -106,6 +106,7 @@ const api = {
 	'FM_BRE_ID_SEARCH_VIA_TCN' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.tcn' },
 	'FM_BRN_FROM_MARCXML' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.z3950.marcxml_to_brn' },
 	'FM_CCS_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.config.copy_status.retrieve.all' },
+	'FM_CIRC_DETAILS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.fleshed.retrieve' },
 	'FM_CIRC_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.retrieve' },
 	/*'FM_CIRC_RETRIEVE_VIA_USER' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.actor.user.checked_out.slim' },*/
 	'FM_CIRC_IN_WITH_FINES_VIA_USER' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.checked_in_with_fines' },

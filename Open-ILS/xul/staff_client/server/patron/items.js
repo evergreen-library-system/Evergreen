@@ -487,63 +487,29 @@ patron.items.prototype = {
 				return row;
 			}
 
-			var funcs = [];
-
-			funcs.push(
-				function() {
-					row.my.circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_ID',[ ses(), row.my.circ_id ]);
-				}
-			);
-			
-			if (!row.my.mvr) funcs.push(
-				function() {
-
-					row.my.mvr = obj.network.request(
-						api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.app,
-						api.MODS_SLIM_RECORD_RETRIEVE_VIA_COPY.method,
-						[ row.my.circ.target_copy() ]
-					);
-
-				}
-			);
-			if (!row.my.acp) {
-				funcs.push(	
-					function() {
-
-						row.my.acp = obj.network.request(
-							api.FM_ACP_RETRIEVE.app,
-							api.FM_ACP_RETRIEVE.method,
-							[ row.my.circ.target_copy() ]
-						);
-
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null )}) );
-
+			obj.network.simple_request(
+				'FM_CIRC_DETAILS',
+				[ row.my.circ_id ],
+				function(req) {
+					try { 
+						var robj = req.getResultObject();
+						row.my.circ = robj.circ;
+						row.my.acp = robj.copy;
+						row.my.mvr = robj.mvr;
+						row.my.acn = robj.volume;
+						
+						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+	
+						if (typeof params.on_retrieve == 'function') {
+							params.on_retrieve(row);
+						}
+					} catch(E) {
+						obj.error.standard_unexpected_error_alert('circ details',E);
 					}
-				);
-			} else {
-				params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( typeof row.my.mvr.ilsevent == 'undefined' ? row.my.mvr.doc_id() : null) }) );
-			}
-
-			funcs.push(
-				function() {
-
-					if (typeof params.on_retrieve == 'function') {
-						params.on_retrieve(row);
-					}
-
 				}
 			);
-
-			JSAN.use('util.exec'); var exec = new util.exec();
-			exec.on_error = function(E) {
-				//var err = 'items chain: ' + js2JSON(E);
-				//obj.error.sdump('D_ERROR',err);
-				return true; /* keep going */
-			}
-			exec.chain( funcs );
 
 			return row;
-
 		}
 
 		JSAN.use('util.list'); obj.list = new util.list('items_list');
