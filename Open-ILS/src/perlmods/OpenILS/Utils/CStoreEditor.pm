@@ -10,6 +10,7 @@ use JSON;
 use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 my %PERMS;
+my $cache;
 
 #my %PERMS = (
 #	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
@@ -88,12 +89,23 @@ sub log {
 # -----------------------------------------------------------------------------
 # Verifies the auth token and fetches the requestor object
 # -----------------------------------------------------------------------------
+#sub checkauth {
+#	my $self = shift;
+#	$self->log(D, "checking auth token ".$self->authtoken);
+#	my ($reqr, $evt) = $U->checkses($self->authtoken);
+#	$self->event($evt) if $evt;
+#	return $self->{requestor} = $reqr;
+#}
+
+
 sub checkauth {
 	my $self = shift;
-	$self->log(D, "checking auth token ".$self->authtoken);
-	my ($reqr, $evt) = $U->checkses($self->authtoken);
-	$self->event($evt) if $evt;
-	return $self->{requestor} = $reqr;
+	$cache = OpenSRF::Utils::Cache->new('global') unless $cache;
+	$self->log(D, "checking cached auth token ".$self->authtoken);
+	my $user = $cache->get_cache("oils_auth_".$self->authtoken);
+	return $self->{requestor} = $user->{userobj} if $user;
+	$self->event(OpenILS::Event->new('NO_SESSION'));
+	return undef;
 }
 
 
