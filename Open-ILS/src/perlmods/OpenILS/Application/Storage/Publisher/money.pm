@@ -77,6 +77,35 @@ __PACKAGE__->register_method(
 	argc		=> 1,
 );
 
+sub search_ous {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+
+	my @xacts = $self->method_lookup( 'open-ils.storage.money.billable_transaction.summary.search' )->run( { usr => $usr } );
+
+	my ($total,$owed,$paid) = (0.0,0.0,0.0);
+	for my $x (@xacts) {
+		$total += $x->total_owed;
+		$owed += $x->balance_owed;
+		$paid += $x->total_paid;
+	}
+
+	my $ous = Fieldmapper::money::open_user_summary->new;
+	$ous->usr( $usr );
+	$ous->total_paid( sprintf('%0.2f', $paid) );
+	$ous->total_owed( sprintf('%0.2f', $total) );
+	$ous->balance_owed( sprintf('%0.2f', $owed) );
+
+	return $ous;
+}
+__PACKAGE__->register_method(
+	method		=> 'search_ous',
+	api_name	=> 'open-ils.storage.money.open_user_summary.search',
+	stream		=> 1,
+	argc		=> 1,
+);
+
 
 sub new_collections {
 	my $self = shift;
