@@ -102,7 +102,6 @@ sub search_ous {
 __PACKAGE__->register_method(
 	method		=> 'search_ous',
 	api_name	=> 'open-ils.storage.money.open_user_summary.search',
-	stream		=> 1,
 	argc		=> 1,
 );
 
