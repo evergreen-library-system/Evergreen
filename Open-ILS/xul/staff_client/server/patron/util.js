@@ -4,7 +4,7 @@ if (typeof patron == 'undefined') var patron = {};
 patron.util = {};
 
 patron.util.EXPORT_OK	= [ 
-	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', 'std_map_row_to_column', 'std_map_row_to_columns',
+	'columns', 'mbts_columns', 'mb_columns', 'mp_columns', /*'std_map_row_to_column',*/ 'std_map_row_to_columns',
 	'retrieve_au_via_id', 'retrieve_fleshed_au_via_id', 'retrieve_fleshed_au_via_barcode', 'set_penalty_css', 'retrieve_name_via_id'
 ];
 patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
@@ -12,6 +12,7 @@ patron.util.EXPORT_TAGS	= { ':all' : patron.util.EXPORT_OK };
 patron.util.mbts_columns = function(modify,params) {
 
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+	JSAN.use('util.money'); JSAN.use('util.date');
 
 	function getString(s) { return data.entities[s]; }
 
@@ -19,62 +20,62 @@ patron.util.mbts_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.id(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.id(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : 'User', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.usr() ? "Id = " + my.mbts.usr() : ""; v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.usr() ? "Id = " + my.mbts.usr() : ""; },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_type(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_type(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'balance_owed', 'label' : 'Balance Owed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.balance_owed() ); v;',
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.balance_owed() ); },
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_owed', 'label' : 'Total Billed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.total_owed() ); v;',
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.total_owed() ); },
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'total_paid', 'label' : 'Total Paid', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mbts.total_paid() ); v;',
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mbts.total_paid() ); },
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_note', 'label' : 'Last Billing Note', 'flex' : 2,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_billing_note(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_billing_note(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_type', 'label' : 'Last Billing Type', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_billing_type(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_billing_type(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_billing_ts', 'label' : 'Last Billed', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = util.date.formatted_date( my.mbts.last_billing_ts(), "" ); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_billing_ts(), "" ); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_note', 'label' : 'Last Payment Note', 'flex' : 2,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_payment_note(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_payment_note(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_type', 'label' : 'Last Payment Type', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mbts.last_payment_type(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mbts.last_payment_type(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'last_payment_ts', 'label' : 'Last Payment', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = util.date.formatted_date( my.mbts.last_payment_ts(), "" ); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_payment_ts(), "" ); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : 'Created', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""; v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_start() ? my.mbts.xact_start().toString().substr(0,10) : ""; },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : 'Closed', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""; v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mbts.xact_finish() ? my.mbts.xact_finish().toString().substr(0,10) : ""; },
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -110,6 +111,7 @@ patron.util.mbts_columns = function(modify,params) {
 patron.util.mb_columns = function(modify,params) {
 
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+	JSAN.use('util.money'); JSAN.use('util.date');
 
 	function getString(s) { return data.entities[s]; }
 
@@ -117,40 +119,40 @@ patron.util.mb_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.id(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.id(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'voided', 'label' : 'Voided', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = get_bool( my.mb.voided() ) ? "Yes" : "No"; v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return get_bool( my.mb.voided() ) ? "Yes" : "No"; },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'voider', 'label' : 'Voider', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.voider() ? "Id = " + my.mb.voider() : ""; v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.voider() ? "Id = " + my.mb.voider() : ""; },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'void_time', 'label' : 'Void Time', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.void_time(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.void_time(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mb.amount() ); v;',
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mb.amount() ); },
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'billing_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mb.billing_type(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mb.billing_type(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'billing_ts', 'label' : 'When', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.date.formatted_date( my.mb.billing_ts(), "" ); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.date.formatted_date( my.mb.billing_ts(), "" ); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'note', 'label' : 'Note', 'flex' : 2,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mb.note(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mb.note(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact', 'label' : 'Transaction ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mb.xact(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mb.xact(); },
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -187,6 +189,7 @@ patron.util.mb_columns = function(modify,params) {
 patron.util.mp_columns = function(modify,params) {
 
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+	JSAN.use('util.money'); JSAN.use('util.date'); JSAN.use('patron.util');
 
 	function getString(s) { return data.entities[s]; }
 
@@ -194,36 +197,36 @@ patron.util.mp_columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : 'ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mp.id(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mp.id(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_amount', 'label' : 'Amount', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.money.sanitize( my.mp.amount() ); v;',
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.money.sanitize( my.mp.amount() ); },
 			'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_type', 'label' : 'Type', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.payment_type(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.payment_type(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_payment_ts', 'label' : 'When', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = util.date.formatted_date( my.mp.payment_ts(), "" ); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return util.date.formatted_date( my.mp.payment_ts(), "" ); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_note', 'label' : 'Note', 'flex' : 2,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.note(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.note(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_ws', 'label' : 'Workstation', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'v = my.mp.cash_drawer().name(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { return my.mp.cash_drawer().name(); }, 
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : 'Staff', 'flex' : 1,
-			'primary' : false, 'hidden' : false, 'render' : 'JSAN.use("patron.util"); var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); v = s.card().barcode() + " @ " + obj.OpenILS.data.hash.aou[ s.home_ou() ].shortname(); v;'
+			'primary' : false, 'hidden' : false, 'render' : function(my) { var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); return s.card().barcode() + " @ " + data.hash.aou[ s.home_ou() ].shortname(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : 'Transaction ID', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.mp.xact(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mp.xact(); },
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -266,121 +269,121 @@ patron.util.columns = function(modify,params) {
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : 'Barcode', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.card().barcode(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.card().barcode(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'usrname', 'label' : 'Login Name', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.usrname(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { my.au.usrname(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'profile', 'label' : 'Group', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.pgt[ my.au.profile() ].name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.pgt[ my.au.profile() ].name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.active() ) ? "Yes" : "No"; v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.active() ) ? "Yes" : "No"; },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'barred', 'label' : 'Barred', 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.barred() ) ? "Yes" : "No"; v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.barred() ) ? "Yes" : "No"; },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.id(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.id(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : getString('staff.au_label_prefix'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.prefix(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.prefix(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : getString('staff.au_label_family_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.family_name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.family_name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : getString('staff.au_label_first_given_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.first_given_name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.first_given_name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : getString('staff.au_label_second_given_name'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.second_given_name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.second_given_name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : getString('staff.au_label_suffix'), 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.suffix(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.suffix(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.alert_message(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.alert_message(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'claims_returned_count', 'label' : 'Returns Claimed', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.claims_returned_count(); v;',
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.claims_returned_count(); },
 			'sort_type' : 'number',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : 'Created On', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.create_date(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.create_date(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'expire_date', 'label' : 'Expires On', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.expire_date().substr(0,10); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.expire_date().substr(0,10); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'home_ou', 'label' : 'Home Lib', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.aou[ my.au.home_ou() ].shortname(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.aou[ my.au.home_ou() ].shortname(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'credit_forward_balance', 'label' : 'Credit', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.credit_forward_balance(); v;',
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.credit_forward_balance(); },
 			'sort_type' : 'money',
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'day_phone', 'label' : 'Day Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.day_phone(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.day_phone(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'evening_phone', 'label' : 'Evening Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.evening_phone(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.evening_phone(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'other_phone', 'label' : 'Other Phone', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.other_phone(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.other_phone(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'email', 'label' : 'Email', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.email(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.email(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'dob', 'label' : 'Birth Date', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.dob().substr(0,10); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.dob().substr(0,10); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_type', 'label' : 'Ident Type', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.cit[ my.au.ident_type() ].name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.cit[ my.au.ident_type() ].name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_value', 'label' : 'Ident Value', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.ident_value(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.ident_value(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_type2', 'label' : 'Ident Type 2', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = obj.OpenILS.data.hash.cit[ my.au.ident_type2() ].name(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.cit[ my.au.ident_type2() ].name(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'ident_value2', 'label' : 'Ident Value 2', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.ident_value2(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.ident_value2(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'net_access_level', 'label' : 'Net Access', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.net_access_level(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.net_access_level(); },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'master_account', 'label' : 'Group Lead', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = get_bool( my.au.master_account() ) ? "Yes" : "No"; v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.master_account() ) ? "Yes" : "No"; },
 		},
 		{ 
 			'persist' : 'hidden width ordinal', 'id' : 'usrgroup', 'label' : 'Group ID', 'flex' : 1, 
-			'primary' : false, 'hidden' : true, 'render' : 'v = my.au.usrgroup(); v;'
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.usrgroup(); },
 		},
 	];
 	for (var i = 0; i < c.length; i++) {
@@ -413,7 +416,7 @@ patron.util.columns = function(modify,params) {
 	}
 	return c.sort( function(a,b) { if (a.label < b.label) return -1; if (a.label > b.label) return 1; return 0; } );
 }
-
+/*
 patron.util.std_map_row_to_column = function(error_value) {
 	return function(row,col) {
 		// row contains { 'my' : { 'au' : {} } }
@@ -435,7 +438,7 @@ patron.util.std_map_row_to_column = function(error_value) {
 		return value;
 	}
 }
-
+*/
 patron.util.std_map_row_to_columns = function(error_value) {
 	return function(row,cols) {
 		// row contains { 'my' : { 'au' : {} } }
@@ -451,9 +454,13 @@ patron.util.std_map_row_to_columns = function(error_value) {
 		var cmd = '';
 		try { 
 			for (var i = 0; i < cols.length; i++) {
-				cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }';
+				switch (typeof cols[i].render) {
+					case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; dump(E+'\n'); } break;
+					case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
+					default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
+				}
 			}
-			eval( cmd );
+			if (cmd) eval( cmd );
 		} catch(E) {
 			obj.error.sdump('D_WARN','map_row_to_column: ' + E);
 			if (error_value) { value = error_value; } else { value = '   ' };

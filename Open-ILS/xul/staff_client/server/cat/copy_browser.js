@@ -1374,17 +1374,17 @@ cat.copy_browser.prototype = {
 				{
 					'id' : 'tree_location', 'label' : 'Location/Barcode', 'flex' : 1,
 					'primary' : true, 'hidden' : false, 
-					'render' : 'v = my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; v;'
+					'render' : function(my) { return my.acp ? my.acp.barcode() : my.acn ? my.acn.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; },
 				},
 				{
 					'id' : 'volume_count', 'label' : 'Volumes', 'flex' : 0,
 					'primary' : false, 'hidden' : false, 
-					'render' : 'v = my.volume_count; v;'
+					'render' : function(my) { return my.volume_count; },
 				},
 				{
 					'id' : 'copy_count', 'label' : 'Copies', 'flex' : 0,
 					'primary' : false, 'hidden' : false, 
-					'render' : 'v = my.copy_count; v;'
+					'render' : function(my) { return my.copy_count; },
 				},
 			].concat(
 				circ.util.columns( 

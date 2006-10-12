@@ -53,68 +53,62 @@ admin.offline_manage_xacts.prototype = {
 	'$' : function(id) { return document.getElementById(id); },
 
 	'init_list' : function() {
-		var obj = this; JSAN.use('util.list'); 
+		var obj = this; JSAN.use('util.list'); JSAN.use('util.date'); JSAN.use('patron.util');
 		obj.list = new util.list('session_tree');
 		obj.list.init( {
 			'columns' : [
 				{
 					'id' : 'org', 'hidden' : 'true', 'flex' : '1',
 					'label' : 'Organization',
-					'render' : 'v = data.hash.aou[ my.org ].shortname(); v;',
+					'render' : function(my) { return obj.data.hash.aou[ my.org ].shortname(); },
 				},
 				{ 
 					'id' : 'description', 'flex' : '2',
 					'label' : 'Description', 
-					'render' : "v = my.description; v;", 
+					'render' : function(my) { return my.description; },
 				},
 				{
 					'id' : 'create_time', 'flex' : '1',
 					'label' : 'Date Created',
-					'render' : 'if (my.create_time) { var x = new Date(); x.setTime(my.create_time+"000"); v = util.date.formatted_date(x,"%F %H:%M"); } else { v = ""; }; v;',
+					'render' : function(my) { if (my.create_time) { var x = new Date(); x.setTime(my.create_time+"000"); return util.date.formatted_date(x,"%F %H:%M"); } else { return ""; }; },
 				},
 				{
 					'id' : 'creator', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Created By',
-					'render' : 'JSAN.use("patron.util"); var staff_obj = patron.util.retrieve_name_via_id( ses(), my.creator ); v = staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname(); v;',
+					'render' : function(my) { var staff_obj = patron.util.retrieve_name_via_id( ses(), my.creator ); return staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname(); },
 				},
 				{ 
 					'id' : 'count', 'flex' : '1',
 					'label' : 'Upload Count', 
-					'render' : "v = my.scripts.length; v;", 
+					'render' : function(my) { return my.scripts.length; },
 				},
 				{ 
 					'id' : 'num_complete', 'flex' : '1', 
 					'label' : 'Transactions Processed', 
-					'render' : "v = my.num_complete; v;", 
+					'render' : function(my) { return my.num_complete; },
 				},
 				{ 
 					'id' : 'in_process', 'flex' : '1',
 					'label' : 'Processing?', 
-					'render' : "if (my.end_time) { v = 'Completed' } else { v = my.in_process == 0 ? 'No' : 'Yes'}; v;", 
+					'render' : function(my) { if (my.end_time) { return 'Completed' } else { return get_bool(my.in_process) ? 'Yes' : 'No'}; },
 				},
 				{
 					'id' : 'start_time', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Date Started',
-					'render' : 'if (my.start_time) {var x = new Date(); x.setTime(my.start_time+"000"); v = util.date.formatted_date(x,"%F %H:%M");} else { v = ""; }; v;',
+					'render' : function(my) { if (my.start_time) {var x = new Date(); x.setTime(my.start_time+"000"); return util.date.formatted_date(x,"%F %H:%M");} else { return ""; }; },
 				},
 				{
 					'id' : 'end_time', 'flex' : '1',
 					'label' : 'Date Completed',
-					'render' : 'if (my.end_time) {var x = new Date(); x.setTime(my.end_time+"000"); v = util.date.formatted_date(x,"%F %H:%M");} else { v = ""; }; v;',
+					'render' : function(my) { if (my.end_time) {var x = new Date(); x.setTime(my.end_time+"000"); return util.date.formatted_date(x,"%F %H:%M");} else { return ""; }; },
 				},
 				{ 
 					'id' : 'key', 'hidden' : 'true', 'flex' : '1', 
 					'label' : 'Session', 
-					'render' : "v = my.key; v;", 
+					'render' : function(my) { return my.key; },
 				},
 			],
-			'map_row_to_column' : function(row,col) {
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				var my = row; var value;
-				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
-				return value;
-			},
+			'map_row_to_columns' : patron.util.std_map_row_to_columns(),
 			'on_select' : function(ev) {
 				try {
 					$('deck').selectedIndex = 0;
@@ -191,126 +185,114 @@ admin.offline_manage_xacts.prototype = {
 	},
 
 	'init_script_list' : function() {
-		var obj = this; JSAN.use('util.list'); 
+		var obj = this; JSAN.use('util.list'); JSAN.use('util.date'); JSAN.use('patron.util');
 		obj.script_list = new util.list('script_tree');
 		obj.script_list.init( {
 			'columns' : [
 				{
 					'id' : 'create_time', 'flex' : '1',
 					'label' : 'Date Uploaded',
-					'render' : 'if (my.create_time) { var x = new Date(); x.setTime(my.create_time+"000"); v = util.date.formatted_date(x,"%F %H:%M"); } else { v = ""; }; v;',
+					'render' : function(my) { if (my.create_time) { var x = new Date(); x.setTime(my.create_time+"000"); return util.date.formatted_date(x,"%F %H:%M"); } else { return ""; }; },
 				},
 				{
 					'id' : 'requestor', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Uploaded By',
-					'render' : 'JSAN.use("patron.util"); var staff_obj = patron.util.retrieve_name_via_id( ses(), my.requestor ); v = staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname(); v;',
+					'render' : function(my) { var staff_obj = patron.util.retrieve_name_via_id( ses(), my.requestor ); return staff_obj[0] + " @ " + obj.data.hash.aou[ staff_obj[3] ].shortname(); },
 				},
 				{ 
 					'id' : 'time_delta', 'hidden' : 'true', 'flex' : '1', 
 					'label' : 'Server/Local Time Delta', 
-					'render' : "v = my.time_delta; v;", 
+					'render' : function(my) { return my.time_delta; },
 				},
 				{ 
 					'id' : 'workstation', 'flex' : '1', 
 					'label' : 'Workstation', 
-					'render' : "v = my.workstation; v;", 
+					'render' : function(my) { return my.workstation; },
 				},
 			],
-			'map_row_to_column' : function(row,col) {
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				var my = row; var value;
-				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
-				return value;
-			},
+			'map_row_to_columns' : patron.util.std_map_row_to_columns(),
 		} );
 
 
 	},
 
 	'init_error_list' : function() {
-		var obj = this; JSAN.use('util.list'); 
+		var obj = this; JSAN.use('util.list');  JSAN.use('util.date'); JSAN.use('patron.util'); JSAN.use('util.functional');
 		obj.error_list = new util.list('error_tree');
 		obj.error_list.init( {
 			'columns' : [
 				{
 					'id' : 'workstation', 'flex' : '1',
 					'label' : 'Workstation',
-					'render' : 'v = my.command._workstation ? my.command._workstation : my.command._worksation; v;',
+					'render' : function(my) { return my.command._workstation ? my.command._workstation : my.command._worksation; },
 				},
 				{
 					'id' : 'timestamp', 'flex' : '1',
 					'label' : 'Timestamp',
-					'render' : 'if (my.command.timestamp) { var x = new Date(); x.setTime(my.command.timestamp+"000"); v = util.date.formatted_date(x,"%F %H:%M"); } else { v = my.command._realtime; }; v;',
+					'render' : function(my) { if (my.command.timestamp) { var x = new Date(); x.setTime(my.command.timestamp+"000"); return util.date.formatted_date(x,"%F %H:%M"); } else { return my.command._realtime; }; },
 				},
 				{
 					'id' : 'type', 'flex' : '1',
 					'label' : 'Type',
-					'render' : 'v = my.command.type; v;',
+					'render' : function(my) { return my.command.type; },
 				},
 				{ 
 					'id' : 'ilsevent', 'hidden' : 'true', 'flex' : '1', 
 					'label' : 'Event Code', 
-					'render' : "v = my.event.ilsevent; v;", 
+					'render' : function(my) { return my.event.ilsevent; },
 				},
 				{ 
 					'id' : 'textcode', 'flex' : '1', 
 					'label' : 'Event Name', 
-					'render' : "JSAN.use('util.functional'); v = typeof my.event.textcode != 'undefined' ? my.event.textcode : util.functional.map_list( my.event, function(o) { return o.textcode; }).join('/'); v;", 
+					'render' : function(my) { return typeof my.event.textcode != 'undefined' ? my.event.textcode : util.functional.map_list( my.event, function(o) { return o.textcode; }).join('/'); },
 				},
 				{
 					'id' : 'desc', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Event Description',
-					'render' : "v = my.event.desc; v;",
+					'render' : function(my) { return my.event.desc; },
 				},
 				{
 					'id' : 'i_barcode', 'flex' : '1',
 					'label' : 'Item Barcode',
-					'render' : 'v = my.command.barcode ? my.command.barcode : ""; v;',
+					'render' : function(my) { return my.command.barcode ? my.command.barcode : ""; },
 				},
 				{
 					'id' : 'p_barcode', 'flex' : '1',
 					'label' : 'Patron Barcode',
-					'render' : 'if (my.command.patron_barcode) { v = my.command.patron_barcode; } else { if (my.command.user.card.barcode) { v = my.command.user.card.barcode; } else { v = ""; } }; v;',
+					'render' : function(my) { if (my.command.patron_barcode) { return my.command.patron_barcode; } else { if (my.command.user.card.barcode) { return my.command.user.card.barcode; } else { return ""; } }; },
 				},
 				{
 					'id' : 'duedate', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Due Date',
-					'render' : 'v = my.command.due_date || ""; v;',
+					'render' : function(my) { return my.command.due_date || ""; },
 				},
 				{
 					'id' : 'backdate', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Check In Backdate',
-					'render' : 'v = my.command.backdate || ""; v;',
+					'render' : function(my) { return my.command.backdate || ""; },
 				},
 				{
 					'id' : 'count', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'In House Use Count',
-					'render' : 'v = my.command.count || ""; v;',
+					'render' : function(my) { return my.command.count || ""; },
 				},
 				{
 					'id' : 'noncat', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Non-Cataloged?',
-					'render' : 'v = my.command.noncat == 1 ? "Yes" : "No"; v;',
+					'render' : function(my) { return get_bool(my.command.noncat) ? "Yes" : "No"; },
 				},
 				{
 					'id' : 'noncat_type', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Non-Cataloged Type',
-					'render' : 'v = data.hash.cnct[ my.command.noncat_type ] ? data.hash.cnct[ my.command.noncat_type ].name() : ""; v;',
+					'render' : function(my) { return data.hash.cnct[ my.command.noncat_type ] ? obj.data.hash.cnct[ my.command.noncat_type ].name() : ""; },
 				},
 				{
 					'id' : 'noncat_count', 'flex' : '1', 'hidden' : 'true',
 					'label' : 'Non-Cataloged Count',
-					'render' : 'v = my.command.noncat_count || ""; v;',
+					'render' : function(my) { return my.command.noncat_count || ""; },
 				},
 			],
-			'map_row_to_column' : function(row,col) {
-				JSAN.use('util.date');
-				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-				var my = row; var value;
-				try { value = eval( col.render ); } catch(E) { obj.error.sdump('D_ERROR',E); value = '???'; }
-				return value;
-			},
+			'map_row_to_columns' : patron.util.std_map_row_to_columns(),
 			'on_select' : function(ev) {
 				try {
 					var sel = obj.error_list.retrieve_selection();
@@ -591,7 +573,7 @@ admin.offline_manage_xacts.prototype = {
 						obj.list.append( { 'retrieve_id' : idx, 'row' : row } );
 						if (idx == old_idx) obj.list.node.view.selection.select(idx);
 					};
-				}(i,obj.seslist[i]) 
+				}(i,{ 'my' : obj.seslist[i] }) 
 			);
 		}
 
@@ -625,7 +607,7 @@ admin.offline_manage_xacts.prototype = {
 					return function(){
 						obj.script_list.append( { 'row' : row } );
 					};
-				}(scripts[i]) 
+				}({ 'my' : scripts[i] }) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
@@ -654,7 +636,7 @@ admin.offline_manage_xacts.prototype = {
 					return function(){
 						obj.error_list.append( { 'retrieve_id' : idx, 'row' : row } );
 					};
-				}(i,obj.errors[i]) 
+				}(i,{ 'my' : obj.errors[i] }) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
