@@ -85,6 +85,7 @@ sub patron_penalty {
 	$args->{fetch_patron_money_info} = 1;
 	$args->{ignore_user_status} = 1;
 
+	$args->{editor} = undef; # just to be safe
 	my $runner = OpenILS::Application::Circ::ScriptBuilder->build($args);
 	
 	# - Load up the script and run it
@@ -107,9 +108,7 @@ sub patron_penalty {
 
 	$evt = update_patron_penalties( 
 		patron    => $args->{patron}, 
-		penalties => $all,
-		editor		=> $args->{editor},
-		) if $$args{update};
+		penalties => $all) if $$args{update};
 
 	# - The caller won't know it failed, so log it
 	$logger->error("penalty: Error updating the patron ".
@@ -126,14 +125,13 @@ sub patron_penalty {
 # --------------------------------------------------------------
 sub update_patron_penalties {
 
-	my %args      = @_;
-	my $patron    = $args{patron};
-	my $penalties = $args{penalties};
-	my $editor		= $args{editor} || new_editor(xact=>1);
-	my $pid = $patron->id;
+	my %args			= @_;
+	my $patron		= $args{patron};
+	my $penalties	= $args{penalties};
+	my $editor		= new_editor(xact=>1);
+	my $pid			= $patron->id;
 
 	$logger->debug("updating penalties for patron $pid => @$penalties");
-
 
 	# - fetch the current penalties
 	my $existing = $editor->search_actor_user_standing_penalty({usr=>$pid});
@@ -153,7 +151,7 @@ sub update_patron_penalties {
 				$e->penalty_type . " from user $pid");
 
 			$editor->delete_actor_user_standing_penalty($e)
-				or return $editor->event;
+				or return $editor->die_event;
 		}
 	}
 
@@ -168,7 +166,7 @@ sub update_patron_penalties {
 			$newp->usr( $pid );
 
 			$editor->create_actor_user_standing_penalty($newp)
-				or return $editor->event;
+				or return $editor->die_event;
 		}
 	}
 	
