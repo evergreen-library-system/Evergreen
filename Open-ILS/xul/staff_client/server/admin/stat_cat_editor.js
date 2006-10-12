@@ -189,7 +189,7 @@ function scCreateEntry( type, id, row ) {
 
 	entry.isnew(1);
 	entry.stat_cat(id);
-	entry.owner(user.home_ou());
+	entry.owner(getSelectorVal($n(row, 'sc_new_entry_lib')));
 	entry.value(value);
 
 	var req = new Request( SC_ENTRY_CREATE.replace(/TYPE/, type), session, entry );
