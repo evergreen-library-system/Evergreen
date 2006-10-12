@@ -1308,20 +1308,20 @@ __PACKAGE__->register_method(
 	NOTES
 
 sub user_fines_summary {
-	my( $self, $client, $login_session, $user_id ) = @_;
+	my( $self, $client, $auth, $user_id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my $user = $e->retrieve_actor_user($user_id)
+		or return $e->event;
 
-	my $user_obj = $apputils->check_user_session($login_session); 
-	if($user_obj->id ne $user_id) {
-		if($apputils->check_user_perms($user_obj->id, $user_obj->home_ou, "VIEW_USER_FINES_SUMMARY")) {
-			return OpenILS::Perm->new("VIEW_USER_FINES_SUMMARY"); 
-		}
+	if( $user_id ne $e->requestor->id ) {
+		return $e->event unless 
+			$e->allowed('VIEW_USER_FINES_SUMMARY', $user->home_ou);
 	}
-
+	
 	return $apputils->simple_scalar_request( 
-		"open-ils.cstore",
-		"open-ils.cstore.direct.money.open_user_summary.search",
-		{ usr => $user_id } );
-
+		'open-ils.storage',
+		'open-ils.storage.money.open_user_summary.search', $user_id );
 }
 
 
@@ -2360,16 +2360,19 @@ __PACKAGE__->register_method (
 );
 sub create_user_note {
 	my( $self, $conn, $authtoken, $note ) = @_;
-	my( $reqr, $patron, $evt ) = 
-		$U->checkses_requestor($authtoken, $note->usr, 'UPDATE_USER');
-	return $evt if $evt;
-	$logger->activity("user ".$reqr->id." creating note for user ".$note->usr);
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->die_event unless $e->checkauth;
 
-	$note->creator($reqr->id);
-	my $id = $U->storagereq(
-		'open-ils.storage.direct.actor.usr_note.create', $note );
-	return $U->DB_UPDATE_FAILED($note) unless $id;
-	return $id;
+	my $user = $e->retrieve_actor_user($note->usr)
+		or return $e->die_event;
+
+	return $e->die_event unless 
+		$e->allowed('UPDATE_USER',$user->home_ou);
+
+	$note->creator($e->requestor->id);
+	$e->create_actor_usr_note($note) or return $e->die_event;
+	$e->commit;
+	return $note->id;
 }
 
 
@@ -2385,19 +2388,18 @@ __PACKAGE__->register_method (
 sub delete_user_note {
 	my( $self, $conn, $authtoken, $noteid ) = @_;
 
-	my $note = $U->cstorereq(
-		'open-ils.cstore.direct.actor.usr_note.retrieve', $noteid);
-	return OpenILS::Event->new('ACTOR_USER_NOTE_NOT_FOUND') unless $note;
-
-	my( $reqr, $patron, $evt ) = 
-		$U->checkses_requestor($authtoken, $note->usr, 'UPDATE_USER');
-	return $evt if $evt;
-	$logger->activity("user ".$reqr->id." deleting note [$noteid] for user ".$note->usr);
-
-	my $stat = $U->storagereq(
-		'open-ils.storage.direct.actor.usr_note.delete', $noteid );
-	return $U->DB_UPDATE_FAILED($note) unless defined $stat;
-	return $stat;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->die_event unless $e->checkauth;
+	my $note = $e->retrieve_actor_usr_note($noteid)
+		or return $e->die_event;
+	my $user = $e->retrieve_actor_user($note->usr)
+		or return $e->die_event;
+	return $e->die_event unless 
+		$e->allowed('UPDATE_USER', $user->home_ou);
+	
+	$e->delete_actor_usr_note($note) or return $e->die_event;
+	$e->commit;
+	return 1;
 }
 
 
@@ -2600,6 +2602,21 @@ sub trim_tree {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "update_penalties",
+	api_name	=> "open-ils.actor.user.penalties.update");
+sub update_penalties {
+	my( $self, $conn, $auth, $userid ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	$U->update_patron_penalties( 
+		authtoken => $auth,
+		patronid  => $userid,
+	);
+	return 1;
+}
+
+
 
 __PACKAGE__->register_method(
 	method	=> "user_retrieve_fleshed_by_id",
@@ -2609,9 +2626,11 @@ sub user_retrieve_fleshed_by_id {
 	my( $self, $client, $auth, $user_id, $fields ) = @_;
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
+
 	if( $e->requestor->id != $user_id ) {
 		return $e->event unless $e->allowed('VIEW_USER');
 	}
+
 	$fields ||= [
 		"cards",
 		"card",
@@ -2658,7 +2677,7 @@ sub new_flesh_user {
 		}
 	}
 
-	$e->disconnect;
+	$e->rollback;
 	$user->clear_passwd();
 	return $user;
 }
