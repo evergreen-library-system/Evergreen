@@ -358,7 +358,7 @@ sub create_stat_entry {
 	my $status = $req->gather(1);
 	$apputils->commit_db_session($session);
 
-	warn "stat cat entry with id " . $status . " updated with status $status\n";
+	$logger->info("created stat cat entry $status");
 	return $status;
 }
 
