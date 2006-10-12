@@ -969,10 +969,8 @@ sub fleshed_circ_retrieve {
 		$vol = undef;
 	} else { 
 		$mvr = $U->record_to_mvr($rec);
-		# trim the buly marc data
-		$rec->marc('');
+		$rec->marc(''); # drop the bulky marc data
 	}
-	
 
 	return {
 		circ => $circ,
