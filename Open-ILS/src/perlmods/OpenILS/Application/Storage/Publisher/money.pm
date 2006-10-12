@@ -82,7 +82,7 @@ sub search_ous {
 	my $client = shift;
 	my $usr = shift;
 
-	my @xacts = $self->method_lookup( 'open-ils.storage.money.billable_transaction.summary.search' )->run( { usr => $usr } );
+	my @xacts = $self->method_lookup( 'open-ils.storage.money.billable_transaction.summary.search' )->run( { usr => $usr, xact_finish => undef } );
 
 	my ($total,$owed,$paid) = (0.0,0.0,0.0);
 	for my $x (@xacts) {
