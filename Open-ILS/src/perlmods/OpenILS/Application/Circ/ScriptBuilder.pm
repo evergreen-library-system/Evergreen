@@ -43,10 +43,16 @@ sub build {
 	my $evt;
 	my @evts;
 
-	my $editor = $$args{editor} || new_editor(xact => 1);
+	my $rollback;
+	my $editor = $$args{editor};
+
+	unless($editor) {
+		$editor = new_editor(xact => 1);
+		$rollback = 1;
+	}
 
 	$args->{_direct} = {} unless $args->{_direct};
-	$args->{editor} = $editor;
+	#$args->{editor} = $editor;
 	
 	$evt = fetch_bib_data($editor, $args);
 	push(@evts, $evt) if $evt;
@@ -61,7 +67,9 @@ sub build {
 		$args->{_events} = \@evts;
 	}
 
-	return build_runner($editor, $args);
+	my $r = build_runner($editor, $args);
+	$editor->rollback if $rollback;
+	return $r;
 }
 
 
@@ -104,51 +112,41 @@ sub fetch_bib_data {
 	my $e = shift;
 	my $ctx = shift;
 
-	if(!$ctx->{copy}) {
+	my $flesh = { 
+		flesh => 2, 
+		flesh_fields => { 
+			acp => [ 'location', 'status', 'circ_lib', 'age_protect', 'call_number' ],
+			acn => [ 'record' ]
+		} 
+	};
 
-		my $flesh = { flesh => 1, flesh_fields => { acp => [ 'location', 'status', 'circ_lib' ] } };
-
-		if($ctx->{copy_id}) {
-			$ctx->{copy} = $e->retrieve_asset_copy(
-				[$ctx->{copy_id}, $flesh ]) or return $e->event;
-
-		} elsif( $ctx->{copy_barcode} ) {
-
-			$ctx->{copy} = $e->search_asset_copy(
-				[{barcode => $ctx->{copy_barcode}, deleted => 'f'}, $flesh ])->[0]
-				or return $e->event;
-		}
+	if( $ctx->{copy} ) {
+		$ctx->{copy_id} = $ctx->{copy}->id 
+			unless $ctx->{copy_id} or $ctx->{copy_barcode};
 	}
 
-	return undef unless my $copy = $ctx->{copy};
+	my $copy;
 
-	$copy->location($e->retrieve_asset_copy_location($copy->location))
-		unless( ref $copy->location );
+	if($ctx->{copy_id}) {
+		$copy = $e->retrieve_asset_copy(
+			[$ctx->{copy_id}, $flesh ]) or return $e->event;
 
-	$copy->status($e->retrieve_config_copy_status($copy->status))
-		unless( ref $copy->status );
+	} elsif( $ctx->{copy_barcode} ) {
 
-	$copy->circ_lib( 
-		$e->retrieve_actor_org_unit($copy->circ_lib)) 
-		unless ref $copy->circ_lib;
-
-	if( ref $copy->call_number ) {
-		$ctx->{volume} = $copy->call_number;
-	} else {
-		$ctx->{volume} = $e->retrieve_asset_call_number(
-			$copy->call_number) or return $e->event;
+		$copy = $e->search_asset_copy(
+			[{barcode => $ctx->{copy_barcode}, deleted => 'f'}, $flesh ])->[0]
+			or return $e->event;
 	}
 
-	if( ref $ctx->{volume}->record ) {
-		$ctx->{title} = $ctx->{volume}->record;
-	} else {
-		$ctx->{title} = $e->retrieve_biblio_record_entry(
-			$ctx->{volume}->record) or return $e->event;
-	}
+	return undef unless $copy;
 
-	$copy->age_protect(
-		$e->retrieve_config_rules_age_hold_protect($copy->age_protect))
-		if $ctx->{flesh_age_protect} and $copy->age_protect;
+	my $vol = $copy->call_number;
+	my $rec = $vol->record;
+	$ctx->{copy} = $copy;
+	$ctx->{volume} = $vol;
+	$copy->call_number($vol->id);
+	$ctx->{title} = $rec;
+	$vol->record($rec->id);
 
 	return undef;
 }
@@ -157,61 +155,49 @@ sub fetch_bib_data {
 
 sub fetch_user_data {
 	my( $e, $ctx ) = @_;
+
+	my $flesh = {
+		flesh => 2,
+		flesh_fields => {
+			au => [ qw/ profile home_ou card / ],
+			aou => [ 'ou_type' ],
+		}
+	};
+
+	if( $ctx->{patron} ) {
+		$ctx->{patron_id} = $ctx->{patron}->id unless $ctx->{patron_id};
+	}
+
+	my $patron;
 	
-	if(!$ctx->{patron}) {
+	if( $ctx->{patron_id} ) {
+		$patron = $e->retrieve_actor_user([$ctx->{patron_id}, $flesh]);
 
-		if( $ctx->{patron_id} ) {
-			$ctx->{patron} = $e->retrieve_actor_user($ctx->{patron_id});
+	} elsif( $ctx->{patron_barcode} ) {
 
-		} elsif( $ctx->{patron_barcode} ) {
+		my $card = $e->search_actor_card( 
+			{ barcode => $ctx->{patron_barcode} } )->[0] or return $e->event;
 
-			my $card = $e->search_actor_card( 
-				{ barcode => $ctx->{patron_barcode} } )->[0] or return $e->event;
+		$patron = $e->search_actor_user( 
+			[{ card => $card->id }, $flesh ]
+			)->[0] or return $e->event;
 
-			$ctx->{patron} = $e->search_actor_user( 
-				{ card => $card->id })->[0] or return $e->event;
+	} elsif( $ctx->{fetch_patron_by_circ_copy} ) {
 
-		} elsif( $ctx->{fetch_patron_by_circ_copy} ) {
+		if( my $copy = $ctx->{copy} ) {
+			my $circs = $e->search_action_circulation(
+				{ target_copy => $copy->id, checkin_time => undef });
 
-			if( my $copy = $ctx->{copy} ) {
-				my $circs = $e->search_action_circulation(
-					{ target_copy => $copy->id, checkin_time => undef });
-
-				if( my $circ = $circs->[0] ) {
-					$ctx->{patron} = $e->retrieve_actor_user($circ->usr)
-						or return $e->event;
-				}
+			if( my $circ = $circs->[0] ) {
+				$patron = $e->retrieve_actor_user([$circ->usr, $flesh])
+					or return $e->event;
 			}
 		}
 	}
 
-	return undef unless my $patron = $ctx->{patron};
+	return undef unless $ctx->{patron} = $patron;
 
-	$patron->home_ou( 
-		$e->retrieve_actor_org_unit($patron->home_ou) ) 
-		unless ref $patron->home_ou;
-
-	$patron->home_ou->ou_type(
-		$patron->home_ou->ou_type->id) 
-		if ref $patron->home_ou->ou_type;
-
-	if(!%GROUP_SET) {
-		$GROUP_TREE = $e->search_permission_grp_tree(
-			[
-				{ parent => undef }, 
-				{ 
-					flesh => 100,
-					flesh_fields => { pgt => ['children'] }
-				} 
-			]
-		)->[0];
-
-		flatten_groups($GROUP_TREE);
-	}
-
-	$patron->profile( $GROUP_SET{$patron->profile} )
-		unless ref $patron->profile;
-
+	flatten_groups($e);
 
 	$ctx->{requestor} = $ctx->{requestor} || $e->requestor;
 
@@ -237,9 +223,6 @@ sub fetch_user_data {
 		return OpenILS::Event->new('PATRON_INACTIVE')
 			unless $U->is_true($patron->active);
 	
-		$patron->card($e->retrieve_actor_card($patron->card))
-			unless ref $patron->card;
-	
 		return OpenILS::Event->new('PATRON_CARD_INACTIVE')
 			unless $U->is_true($patron->card->active);
 	
@@ -255,11 +238,26 @@ sub fetch_user_data {
 
 
 sub flatten_groups {
+	my $e = shift;
 	my $tree = shift;
+
+	if(!%GROUP_SET) {
+		$GROUP_TREE = $e->search_permission_grp_tree(
+			[
+				{ parent => undef }, 
+				{ 
+				flesh => 100,
+					flesh_fields => { pgt => ['children'] }
+				} 
+			]
+		)->[0];
+		$tree = $GROUP_TREE;
+	}
+
 	return undef unless $tree;
 	$GROUP_SET{$tree->id} = $tree;
 	if( $tree->children ) {
-		flatten_groups($_) for @{$tree->children};
+		flatten_groups($e, $_) for @{$tree->children};
 	}
 }
 
@@ -366,12 +364,13 @@ sub fetch_ou_types {
 
 sub insert_copy_methods {
 	my( $e, $ctx,  $runner ) = @_;
+	my $reqr = $ctx->{requestor} || $e->requestor;
 	if( my $copy = $ctx->{copy} ) {
 		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_best_hold', sub {
 				my $key = shift;
 				$logger->debug("script_builder: searching for permitted hold for copy ".$copy->barcode);
 				my ($hold) = $holdcode->find_nearest_permitted_hold(
-					OpenSRF::AppSession->create('open-ils.storage'), $copy, $e->requestor );
+					OpenSRF::AppSession->create('open-ils.storage'), $copy, $reqr );
 				$runner->insert( $key, $hold, 1 );
 			}
 		);
