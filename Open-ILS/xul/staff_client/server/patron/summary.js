@@ -128,6 +128,16 @@ patron.summary.prototype = {
 							return function() { 
 								e.setAttribute('value','...');
 								obj.network.simple_request(
+									'FM_MOUS_RETRIEVE',
+									[ ses(), obj.patron.id() ],
+									function(req) {
+										JSAN.use('util.money');
+										var robj = req.getResultObject();
+										e.setAttribute('value', '$' + util.money.sanitize( robj.balance_owed() ));
+									}
+								);
+								/*
+								obj.network.simple_request(
 									'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',
 									[ ses(), obj.patron.id() ],
 									function(req) {
@@ -147,6 +157,7 @@ patron.summary.prototype = {
 										e.setAttribute('value', '$' + util.money.sanitize( util.money.cents_as_dollars( sum ) ));
 									}
 								);
+								*/
 							};
 						}
 					],

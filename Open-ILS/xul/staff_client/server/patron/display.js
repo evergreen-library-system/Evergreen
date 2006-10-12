@@ -39,6 +39,12 @@ patron.display.prototype = {
 					'patron_id' : obj.patron.id(),
 					'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
 					'on_list_change' : function(checkout) {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						var x = obj.summary_window.g.summary.controller.view.patron_checkouts;
+						var n = Number(x.getAttribute('value'));
+						x.setAttribute('value',n+1);
+					},
+					'on_list_change_old' : function(checkout) {
 					
 						/* this stops noncats from getting pushed into Items Out */
 						if (!checkout.circ.id()) return; 

@@ -547,8 +547,8 @@ patron.util.set_penalty_css = function(patron) {
 							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
 
 		JSAN.use('util.network'); var net = new util.network();
-		net.simple_request('FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE',[ ses(), patron.id() ], function(req) {
-			if (req.getResultObject().length > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
+		net.simple_request('FM_MOUS_RETRIEVE',[ ses(), patron.id() ], function(req) {
+			if (req.getResultObject().balance_owed() > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 		});
 		net.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER',[ ses(), patron.id() ], function(req) {
 			var co = req.getResultObject();
