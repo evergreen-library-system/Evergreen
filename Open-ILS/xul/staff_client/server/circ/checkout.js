@@ -219,6 +219,12 @@ circ.checkout.prototype = {
 
 		this.check_disable();
 
+		var robj = obj.network.simple_request(
+			'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
+			[ ses(), obj.patron_id ]
+		);
+		obj.items_out_count = (robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+
 	},
 
 	'check_disable' : function() {
@@ -293,6 +299,122 @@ circ.checkout.prototype = {
 		}
 	},
 
+	'_checkout' : function(params) {
+		var obj = this;
+		try {
+			/**********************************************************************************************************************/
+			/* This does the actual checkout/renewal */
+		
+			var x = document.createElement('label');
+			x.setAttribute('style','color: green');
+			x.setAttribute('value',(params.barcode ? params.barcode : 'non-cat' ) + ' checkout pending...');
+			document.getElementById('msg_area').appendChild(x);
+
+			obj.network.request(
+				api.CHECKOUT.app,
+				api.CHECKOUT.method,
+				[ ses(), params, obj.items_out_count ],
+				function(req) {
+					obj._checkout_callback(req,x);
+				}
+			);
+			
+			if (typeof params.noncat == 'undefined') obj.items_out_count++;
+
+		} catch(E) {
+			x.setAttribute('style','color: red');
+			x.setAttribute('value',params.barcode + ' failed.');
+			if (typeof params.noncat == 'undefined') obj.items_out_count--;
+			obj.error.standard_unexpected_error_alert('Check Out Failed #2',E);
+		}
+	},
+
+	'_checkout_callback' : function(req,x) {
+		var obj = this;
+		try {
+			var checkout = req.getResultObject();
+			if (checkout.ilsevent == 0) {
+
+			if (!checkout.payload) checkout.payload = {};
+
+			if (!checkout.payload.circ) {
+				checkout.payload.circ = new aoc();
+				/*********************************************************************************************/
+				/* Non Cat */
+				if (checkout.payload.noncat_circ) {
+					checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
+					checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
+					checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
+			
+					JSAN.use('util.date');
+					var c = checkout.payload.noncat_circ.circ_time();
+					var d = c == "now" ? new Date() : util.date.db_date2Date( c );
+					var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
+					var cd = t.circ_duration() || "14 days";
+					var i = util.date.interval_to_seconds( cd ) * 1000;
+					d.setTime( Date.parse(d) + i );
+					checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
+
+				}
+			}
+
+			if (!checkout.payload.record) {
+				checkout.payload.record = new mvr();
+				/*********************************************************************************************/
+				/* Non Cat */
+				if (checkout.payload.noncat_circ) {
+					checkout.payload.record.title(
+						obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ].name()
+					);
+				}
+			}
+
+			if (!checkout.payload.copy) {
+				checkout.payload.copy = new acp();
+				checkout.payload.copy.barcode( '' );
+			}
+
+			/*********************************************************************************************/
+			/* Override mvr title/author with dummy title/author for Pre cat */
+			if (checkout.payload.copy.dummy_title())  checkout.payload.record.title( checkout.payload.copy.dummy_title() );
+			if (checkout.payload.copy.dummy_author())  checkout.payload.record.author( checkout.payload.copy.dummy_author() );
+
+			obj.list.append(
+				{
+					'row' : {
+						'my' : {
+						'circ' : checkout.payload.circ,
+						'mvr' : checkout.payload.record,
+						'acp' : checkout.payload.copy
+						}
+					}
+				//I could override map_row_to_column here
+				}
+			);
+			document.getElementById('msg_area').removeChild(x);
+			/*
+			if (typeof obj.on_checkout == 'function') {
+				obj.on_checkout(checkout.payload);
+			}
+			*/
+			if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
+				window.xulG.on_list_change(checkout.payload);
+			} else {
+				obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
+			}
+
+			} else {
+				throw(checkout);
+			}
+
+		} catch(E) {
+			x.setAttribute('style','color: red');
+			x.setAttribute('value',params.barcode + ' failed.');
+			if (typeof params.noncat == 'undefined') obj.items_out_count--;
+			obj.error.standard_unexpected_error_alert('Check Out Failed #3',E);
+		}
+	},
+
 	'checkout' : function(params) {
 		var obj = this;
 
@@ -301,89 +423,10 @@ circ.checkout.prototype = {
 			params.due_date = obj.controller.view.checkout_duedate_menu.value;
 		}
 
+		if (typeof obj.on_checkout == 'function') { obj.on_checkout(params); }
+
 		if (! (params.barcode||params.noncat)) return;
 
-		/**********************************************************************************************************************/
-		/* This does the actual checkout/renewal, but is called after a permit test further below */
-		function check_out(params) {
-
-			var checkout = obj.network.request(
-				api.CHECKOUT.app,
-				api.CHECKOUT.method,
-				[ ses(), params ]
-			);
-
-			if (checkout.ilsevent == 0) {
-
-				if (!checkout.payload) checkout.payload = {};
-
-				if (!checkout.payload.circ) {
-					checkout.payload.circ = new aoc();
-					/*********************************************************************************************/
-					/* Non Cat */
-					if (checkout.payload.noncat_circ) {
-						checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
-						checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
-						checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
-						
-						JSAN.use('util.date');
-						var c = checkout.payload.noncat_circ.circ_time();
-						var d = c == "now" ? new Date() : util.date.db_date2Date( c );
-						var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
-						var cd = t.circ_duration() || "14 days";
-						var i = util.date.interval_to_seconds( cd ) * 1000;
-						d.setTime( Date.parse(d) + i );
-						checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
-
-					}
-				}
-
-				if (!checkout.payload.record) {
-					checkout.payload.record = new mvr();
-					/*********************************************************************************************/
-					/* Non Cat */
-					if (checkout.payload.noncat_circ) {
-						checkout.payload.record.title(
-							obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ].name()
-						);
-					}
-				}
-
-				if (!checkout.payload.copy) {
-					checkout.payload.copy = new acp();
-					checkout.payload.copy.barcode( '' );
-				}
-
-				/*********************************************************************************************/
-				/* Override mvr title/author with dummy title/author for Pre cat */
-				if (checkout.payload.copy.dummy_title())  checkout.payload.record.title( checkout.payload.copy.dummy_title() );
-				if (checkout.payload.copy.dummy_author())  checkout.payload.record.author( checkout.payload.copy.dummy_author() );
-
-				obj.list.append(
-					{
-						'row' : {
-							'my' : {
-							'circ' : checkout.payload.circ,
-							'mvr' : checkout.payload.record,
-							'acp' : checkout.payload.copy
-							}
-						}
-					//I could override map_row_to_column here
-					}
-				);
-				if (typeof obj.on_checkout == 'function') {
-					obj.on_checkout(checkout.payload);
-				}
-				if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
-					window.xulG.on_list_change(checkout.payload);
-				} else {
-					obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
-				}
-
-			} else {
-				throw(checkout);
-			}
-		}
 
 		/**********************************************************************************************************************/
 		/* Permissibility test before checkout */
@@ -394,7 +437,7 @@ circ.checkout.prototype = {
 			var permit = obj.network.request(
 				api.CHECKOUT_PERMIT.app,
 				api.CHECKOUT_PERMIT.method,
-				[ ses(), params ],
+				[ ses(), params, obj.items_out_count ],
 				null,
 				{
 					'title' : 'Override Checkout Failure?',
@@ -449,7 +492,7 @@ circ.checkout.prototype = {
 
 				JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 				params.permit_key = permit.payload;
-				check_out( params );
+				obj._checkout( params ); 
 
 			/**********************************************************************************************************************/
 			/* Item not cataloged or barcode mis-scan.  Prompt for pre-cat option */
@@ -479,7 +522,7 @@ circ.checkout.prototype = {
 						params.dummy_author = obj.data.dummy_author;
 						params.precat = 1;
 
-						if (params.dummy_title != '') { check_out( params ); } else { throw('Checkout cancelled'); }
+						if (params.dummy_title != '') { obj._checkout( params ); } else { throw('Checkout cancelled'); }
 					} 
 				};
 
