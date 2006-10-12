@@ -134,6 +134,10 @@ patron.display.prototype = {
 					'cmd_patron_refresh' : [
 						['command'],
 						function(ev) {
+							obj.network.simple_request(
+								'RECALCULATE_STANDING_PENALTIES',
+								[ ses(), obj.patron.id() ]
+							);
 							obj.refresh_all();
 						}
 					],
