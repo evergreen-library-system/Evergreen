@@ -485,7 +485,8 @@ sub mk_script_runner {
 		}
 	}
 
-	$self->is_precat(1) if $self->copy and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
+	$self->is_precat(1) if $self->copy 
+		and $self->copy->call_number == OILS_PRECAT_CALL_NUMBER;
 
 	# We can't renew if there is no copy
 	return $self->bail_on_events(@evts) if 
@@ -625,6 +626,7 @@ sub gather_penalty_request {
 	return [] unless $self->penalty_request;
 	my $data = $self->penalty_request->recv;
 	if( ref $data ) {
+		throw $data if UNIVERSAL::isa($data,'Error');
 		$data = $data->content;
 		return $data->{fatal_penalties};
 	}
