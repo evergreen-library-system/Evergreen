@@ -91,8 +91,6 @@ sub permit_copy_hold {
 	my %hash = map { ($_->{ilsevent} => $_) } @allevents;
 	@allevents = values %hash;
 
-	$ctx->{editor}->rollback if $ctx->{editor};
-
 	$runner->cleanup;
 
 	return \@allevents if $$params{show_event_list};
