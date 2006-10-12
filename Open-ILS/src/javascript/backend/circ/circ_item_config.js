@@ -422,6 +422,8 @@ function getItemConfig() {
 		config = CIRC_MOD_MAP['book'];
 	}
 
+	config.maxFine = setMaxFineByCircLocation();
+
 	/* go ahead and set some default result 
 		data (which may be overidden) */
 	for( var i in config ) {
@@ -430,6 +432,41 @@ function getItemConfig() {
 	}
 
 	return config;
+}
+
+
+function setMaxFineByCircLocation() {
+	var max_libs = [ 'ARL', 'DTRL', 'SJRLS' ];
+	var mid_libs = [ 'CHRL', 'ECGR', 'FRRLS', 'HCLS', 'OCRL', 'OHOOP', 'OKRL', 'PMRLS', 'PPL', 'STRL' ];
+
+	var cl = (volume && volume.id != -1) ? volume.owning_lib : currentLocation.id;
+	var max_fine = null;
+
+	for( var i = 0; i < max_libs.length; i++ ) {
+		var org = max_libs[i];
+		if( isOrgDescendent(org, cl) ) {
+			log_debug("found max-fine ancestor org "+org);
+			max_fine = 'overdue_max';
+			break;
+		}
+	}
+
+	if(!max_fine) {
+		for( var i = 0; i < mid_libs.length; i++ ) {
+			var org = mid_libs[i];
+			if( isOrgDescendent(org, cl) ) {
+				log_debug("found mid-fine ancestor org "+org);
+				max_fine = 'overdue_mid';
+				break;
+			}
+		}
+	}
+
+	if(!max_fine) max_fine = 'overdue_min';
+
+	log_info("setMaxFineByCircLocation() set max_fine to "+ max_fine);
+
+	return max_fine;
 }
 
 
