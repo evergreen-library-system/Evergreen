@@ -108,7 +108,7 @@ function advGenericSearch() {
 			arg.page					= RRESULT;
 			arg[PARAM_STYPE]		= "";
 			arg[PARAM_TERM]		= "";
-			arg[PARAM_ADVTERM]	= term.toLowerCase();
+			arg[PARAM_ADVTERM]	= term;
 			arg[PARAM_OFFSET]		= 0;
 			arg[PARAM_RTYPE]		= RTYPE_TCN;
 			break;
