@@ -845,8 +845,12 @@ sub fleshed_copy_update {
 	my $editor = new_editor(requestor => $reqr, xact => 1);
 	my $override = $self->api_name =~ /override/;
 	$evt = update_fleshed_copies($editor, $override, undef, $copies, $delete_stats);
-	return $evt if $evt;
-	$editor->finish;
+	if( $evt ) { 
+		$logger->info("fleshed copy update failed with event: ".JSON->perl2JSON($evt));
+		$editor->rollback; 
+		return $evt; 
+	}
+	$editor->commit;
 	$logger->info("fleshed copy update successfully updated ".scalar(@$copies)." copies");
 	return 1;
 }
@@ -993,6 +997,9 @@ sub update_fleshed_copies {
 			return $editor->event unless $vol;
 		}
 
+		return $editor->event unless 
+			$editor->allowed('UPDATE_COPY', $vol->owning_lib);
+
 		$copy->editor($editor->requestor->id);
 		$copy->edit_date('now');
 
@@ -1053,10 +1060,8 @@ sub update_copy {
 		if ref $copy->age_protect;
 
 	fix_copy_price($copy);
-	return $editor->event unless
-		$editor->update_asset_copy( 
-			$copy, {checkperm=>1, permorg=>$vol->owning_lib});
 
+	return $editor->event unless $editor->update_asset_copy($copy);
 	return remove_empty_objects($editor, $override, $orig_vol);
 }
 
@@ -1065,15 +1070,16 @@ sub remove_empty_objects {
 	my( $editor, $override, $vol ) = @_; 
 	if( title_is_empty($editor, $vol->record) ) {
 
-		if( $override ) {
+		# disable the TITLE_LAST_COPY event for now
+		# if( $override ) {
+		if( 1 ) {
 
 			# delete this volume if it's not already marked as deleted
 			unless( $U->is_true($vol->deleted) || $vol->isdeleted ) {
 				$vol->deleted('t');
 				$vol->editor($editor->requestor->id);
 				$vol->edit_date('now');
-				$editor->update_asset_call_number($vol, {checkperm=>0})
-					or return $editor->event;
+				$editor->update_asset_call_number($vol) or return $editor->event;
 			}
 
 			# then delete the record this volume points to
@@ -1083,8 +1089,7 @@ sub remove_empty_objects {
 			unless( $U->is_true($rec->deleted) ) {
 				$rec->deleted('t');
 				$rec->active('f');
-				$editor->update_biblio_record_entry($rec, {checkperm=>0})
-					or return $editor->event;
+				$editor->update_biblio_record_entry($rec) or return $editor->event;
 			}
 
 		} else {
@@ -1104,9 +1109,7 @@ sub delete_copy {
 
 	$copy->editor($editor->requestor->id);
 	$copy->edit_date('now');
-	$editor->update_asset_copy(
-		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
-		or return $editor->event;
+	$editor->update_asset_copy($copy) or return $editor->event;
 
 	# Delete any open transits for this copy
 	my $transits = $editor->search_action_transit_copy(
@@ -1134,10 +1137,7 @@ sub create_copy {
 	$copy->create_date('now');
 	fix_copy_price($copy);
 
-	$editor->create_asset_copy(
-		$copy, {checkperm=>1, permorg=>$vol->owning_lib})
-		or return $editor->event;
-
+	$editor->create_asset_copy($copy) or return $editor->event;
 	return undef;
 }
 
@@ -1272,7 +1272,7 @@ sub batch_volume_transfer {
 
 	my $e = new_editor(authtoken => $auth, xact =>1);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VOLUME_UPDATE');
+	return $e->event unless $e->allowed('VOLUME_UPDATE', $o_lib);
 
 	my $dorg = $e->retrieve_actor_org_unit($o_lib)
 		or return $e->event;

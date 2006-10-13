@@ -45,7 +45,7 @@ sub merge_records {
 	my @recs = keys %r;
 
 	my $reqr = $editor->requestor;
-	$logger->activity("merge: user ".$reqr->id." merging bib records: @recs");
+	$logger->activity("merge: user ".$reqr->id." merging bib records: @recs with master = $master");
 
 	# -----------------------------------------------------------
 	# collect all of the volumes, merge any with duplicate 
@@ -53,7 +53,7 @@ sub merge_records {
 	# -----------------------------------------------------------
 	my @volumes;
 	for (@recs) {
-		my $vs = $editor->search_asset_call_number({record => $_});
+		my $vs = $editor->search_asset_call_number({record => $_, deleted=>'f'});
 		push( @volumes, @$vs );
 	}
 
@@ -61,22 +61,46 @@ sub merge_records {
 
 	my @trimmed;
 	# de-duplicate any volumes with the same label and owning_lib
+
+	my %seen_vols;
+
 	for my $v (@volumes) {
 		my $l = $v->label;
 		my $o = $v->owning_lib;
-		my @dups = rgrep( 
-			sub { $_->label eq $l and $_->owning_lib == $o }, \@volumes );
+
+		if($seen_vols{$v->id}) {
+			$logger->debug("merge: skipping ".$v->id." since it's already been merged");
+			next;
+		}
+
+		$seen_vols{$v->id} = 1;
+
+		$logger->debug("merge: [".$v->id."] looking for dupes with label $l and owning_lib $o");
+
+		my @dups;
+		for my $vv (@volumes) {
+			if( $vv->label eq $v->label and $vv->owning_lib == $v->owning_lib ) {
+				$logger->debug("merge: pushing dupe volume ".$vv->id) if @dups;
+				push( @dups, $vv );
+				$seen_vols{$vv->id} = 1;
+			} 
+		}
 
 		if( @dups == 1 ) {
+			$logger->debug("merge: pushing unique volume into trimmed volume set: ".$v->id);
 			push( @trimmed, @dups );
 
 		} else {
 			my($vol, $e) = merge_volumes($editor, \@dups);
 			return $e if $e;
+			$logger->debug("merge: pushing vol-merged volume into trimmed volume set: ".$vol->id);
 			push(@trimmed, $vol);
 		}
 	}
 
+	my $s = 'merge: trimmed volume set contains the following vols: ';
+	$s .= 'id = '.$_->id .' : record = '.$_->record.' | ' for @trimmed;
+	$logger->debug($s);
 
 	# make all the volumes point to the master record
 	my $stat;
@@ -183,8 +207,7 @@ sub merge_volumes {
 			$copy->call_number($bigcn);
 			$copy->editor($editor->requestor->id);
 			$copy->edit_date('now');
-			$editor->update_asset_copy($copy, {checkperm=>1})
-				or return (undef, $editor->event);
+			$editor->update_asset_copy($copy) or return (undef, $editor->event);
 		}
 	}
 
@@ -194,8 +217,8 @@ sub merge_volumes {
 		$_->deleted('t');
 		$_->editor($editor->requestor->id);
 		$_->edit_date('now');
-		$editor->update_asset_call_number($_,{checkperm=>1}) 
-			or return (undef, $editor->event);
+		return (undef,$editor->event) unless $editor->allowed('VOLUME_UPDATE', $_->owning_lib);
+		$editor->update_asset_call_number($_) or return (undef, $editor->event);
 	}
 
 	my ($mvol) = grep { $_->id == $bigcn } @$volumes;
