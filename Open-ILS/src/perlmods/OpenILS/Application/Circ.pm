@@ -779,7 +779,7 @@ sub delete_copy_note {
 
 	if( $note->creator ne $e->requestor->id ) {
 		return $e->die_event unless 
-			$e->allowed('DELETE_COPY_NOTE', $note->copy->call_number->owning_lib);
+			$e->allowed('DELETE_COPY_NOTE', $note->owning_copy->call_number->owning_lib);
 	}
 
 	$e->delete_asset_copy_note($note) or return $e->die_event;
