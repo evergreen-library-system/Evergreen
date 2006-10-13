@@ -554,8 +554,11 @@ sub _hold_status {
 	return 1 unless $hold->current_copy;
 	return 2 unless $hold->capture_time;
 
-	my $copy = $e->retrieve_asset_copy($hold->current_copy)
-		or return $e->event;
+	my $copy = $hold->current_copy;
+	unless( ref $copy ) {
+		$copy = $e->retrieve_asset_copy($hold->current_copy)
+			or return $e->event;
+	}
 
 	return 3 if $copy->status == OILS_COPY_STATUS_IN_TRANSIT;
 	return 4 if $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF;
