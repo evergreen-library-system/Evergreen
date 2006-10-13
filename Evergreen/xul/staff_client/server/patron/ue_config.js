@@ -412,6 +412,7 @@ function uEditDefineData(patron) {
 					node.value = year+'-'+month+'-'+day;
 
 					_debug("profile change formatted date to "+ node.value);
+					node.onchange();
 				}
 			}
 		},

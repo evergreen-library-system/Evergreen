@@ -335,6 +335,8 @@ function uEditOnChange(field) {
 	if(field.widget.onpostchange)
 		field.widget.onpostchange(field, newval);
 
+	//_debug(field.key+' = '+newval);
+
 	uEditIterateFields(function(f) { uEditCheckValid(f); });
 	uEditCheckErrors();
 }
