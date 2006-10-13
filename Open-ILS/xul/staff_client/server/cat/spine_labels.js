@@ -212,7 +212,7 @@
 				var re = g.col_map[i].regex;
 				if (text.match(re)) {
 					try {
-						text = text.replace(re, eval( g.col_map[i].render ));
+						text = text.replace(re, (typeof g.col_map[i].render == 'function' ? g.col_map[i].render(my) : eval( g.col_map[i].render ) ) );
 					} catch(E) {
 						g.error.sdump('D_ERROR','spine_labels.js, expand_macros() = ' + E);
 					}
