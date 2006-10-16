@@ -1319,9 +1319,12 @@ sub user_fines_summary {
 			$e->allowed('VIEW_USER_FINES_SUMMARY', $user->home_ou);
 	}
 	
-	return $apputils->simple_scalar_request( 
-		'open-ils.storage',
-		'open-ils.storage.money.open_user_summary.search', $user_id );
+	# run this inside a transaction to prevent replication delay errors
+	my $ses = $U->start_db_session();
+	my $s = $ses->request(
+		'open-ils.storage.money.open_user_summary.search', $user_id )->gather(1);
+	$U->rollback_db_session($ses);
+	return $s;
 }
 
 
@@ -2029,9 +2032,11 @@ sub _make_mbts {
 
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
-	my $e = new_editor(authtoken=>$auth);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS');
+
+	# run inside of a transaction to prevent replication delays
+	my $e = new_editor(xact=>1, authtoken=>$auth);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('VIEW_USER_TRANSACTIONS');
 
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
@@ -2044,6 +2049,8 @@ sub user_transaction_history {
 			}
 		]
 	) };
+
+	$e->rollback;
 
 	my @mbts = _make_mbts( @xacts );
 
