@@ -356,19 +356,56 @@ sub _set_circ_claims_returned {
 	return $evt if $evt;
 	$circ->stop_fines("CLAIMSRETURNED");
 
-	$logger->activity("user ".$reqr->id.
-		" marking circ".  $circ->id. " as claims returned");
+	$logger->info("user ".$reqr->id.
+		" marking circ".  $circ->id. " as claims returned with backdate $backdate");
 
 	# allow the caller to backdate the circulation and void any fines
 	# that occurred after the backdate
 	if($backdate) {
-		OpenILS::Application::Circ::Circulate::_checkin_handle_backdate(
-			$backdate, $circ, $reqr, $session );
+		my $s = cr_handle_backdate($backdate, $circ, $reqr, $session );
+		$logger->debug("backdate method returned $s");
 		$circ->stop_fines_time(clense_ISO8601($backdate))
 	}
 
 	return undef;
 }
+
+sub cr_handle_backdate {
+   my( $backdate, $circ, $requestor, $session, $closecirc ) = @_;
+
+	my $bd = $backdate;
+	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
+	$bd = "${bd}T23:59:59";
+
+   my $bills = $session->request(
+      "open-ils.storage.direct.money.billing.search_where.atomic",
+		billing_ts => { '>=' => $bd }, 
+		xact => $circ->id,
+		billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
+	)->gather(1);
+
+	$logger->debug("backdate found ".scalar(@$bills)." bills to void");
+
+   if($bills) {
+      for my $bill (@$bills) {
+			unless( $U->is_true($bill->voided) ) {
+				$logger->info("voiding bill ".$bill->id);
+				$bill->voided('t');
+				$bill->void_time('now');
+				$bill->voider($requestor->id);
+				my $n = $bill->note || "";
+				$bill->note($n . "\nSystem: VOIDED FOR BACKDATE");
+				my $s = $session->request(
+					"open-ils.storage.direct.money.billing.update", $bill)->gather(1);
+				return $U->DB_UPDATE_FAILED($bill) unless $s;
+			}
+		}
+   }
+
+	return 100;
+}
+
+
 
 
 
