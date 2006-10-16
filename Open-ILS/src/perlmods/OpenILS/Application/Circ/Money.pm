@@ -82,9 +82,10 @@ sub make_payments {
 		my $amount = $pay->[1];
 		$amount =~ s/\$//og; # just to be safe
 
-		#($trans, $evt) = $apputils->fetch_open_billable_transaction($transid);
-		($trans, $evt) = $apputils->fetch_billable_xact_summary($transid);
-		return $evt if $evt;
+		$trans = $self->fetch_mbts($client, $login, $transid);
+		return $trans if $U->event_code($trans);
+
+		$logger->info("payment method retrieved transaction [$transid] with balance_owed = " . $trans->balance_owed);
 
 		if($trans->usr != $userid) { # Do we need to restrict this in some way ??
 			$logger->info( " * User $userid is making a payment for " . 
