@@ -228,6 +228,7 @@ util.network.prototype = {
 			data.session.key = data.temporary_session.key; 
 			data.session.authtime = data.temporary_session.authtime; 
 			data.stash('session');
+			if (! data.list.au ) data.list.au = [];
 			data.list.au[0] = JSON2js(data.temporary_session.usr);
 			data.stash('list');
 			obj.reset_titlebars(data);
