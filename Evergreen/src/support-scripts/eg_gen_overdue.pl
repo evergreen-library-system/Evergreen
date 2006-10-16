@@ -428,7 +428,7 @@ sub send_email {
    $tmpl =~ s/\${EMAIL_HEADERS}//;
 
    $tmpl =~ s/\${RANGE}/$r/;
-   $tmpl =~ s/\${DATE}/$day\/$mon\/$year/;
+   $tmpl =~ s/\${DATE}/$mon\/$day\/$year/;
    $tmpl =~ s/\${FIRST_NAME}/$fn/;
    $tmpl =~ s/\${MIDDLE_NAME}/$mn/;
    $tmpl =~ s/\${LAST_NAME}/$ln/;
