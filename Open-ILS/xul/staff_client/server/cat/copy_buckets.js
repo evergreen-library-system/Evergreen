@@ -7,6 +7,7 @@ cat.copy_buckets = function (params) {
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+	this.first_pause = true;
 }
 
 cat.copy_buckets.prototype = {
@@ -15,6 +16,11 @@ cat.copy_buckets.prototype = {
 	'bucket_id_name_map' : {},
 
 	'render_pending_copies' : function() {
+		if (this.first_pause) {
+			this.first_pause = false;
+		} else {
+			alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+		}
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.copy_ids.length; i++) {
@@ -253,6 +259,7 @@ cat.copy_buckets.prototype = {
 									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
 								}
                                                         }
+							alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -272,6 +279,7 @@ cat.copy_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
+								alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Bucket deletion likely failed.',E);

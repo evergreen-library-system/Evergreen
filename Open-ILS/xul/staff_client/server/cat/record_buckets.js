@@ -7,6 +7,7 @@ cat.record_buckets = function (params) {
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+	this.first_pause = true;
 }
 
 cat.record_buckets.prototype = {
@@ -15,6 +16,11 @@ cat.record_buckets.prototype = {
 	'bucket_id_name_map' : {},
 
 	'render_pending_records' : function() {
+		if (this.first_pause) {
+			this.first_pause = false;
+		} else {
+			alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+		}
 		var obj = this;
 		obj.list1.clear();
 		for (var i = 0; i < obj.record_ids.length; i++) {
@@ -259,6 +265,7 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
+							alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -278,6 +285,7 @@ cat.record_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
+								alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
 								obj.controller.render('record_buckets_menulist_placeholder');
 								setTimeout(
 									function() {
