@@ -101,7 +101,7 @@ circ.copy_status.prototype = {
 								JSAN.use('circ.util');
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									var barcode = obj.selection_list[i].barcode;
-									var checkin = circ.util.checkin_via_barcode( ses(), barcode );
+									var checkin = circ.util.checkin_via_barcode( ses(), { 'barcode' : barcode } );
 									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 								}
 								alert('Action complete.');

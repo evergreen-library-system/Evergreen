@@ -271,7 +271,7 @@ circ.checkin.prototype = {
 			if (auto_print) auto_print = auto_print.checked;
 			JSAN.use('circ.util');
 			circ.util.checkin_via_barcode(
-				ses(), barcode, backdate, auto_print, {
+				ses(), { 'barcode' : barcode }, backdate, auto_print, {
 					'disable_textbox' : function() { 
 						obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
 						obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 

@@ -964,7 +964,7 @@ circ.util.std_map_row_to_columns = function(error_value) {
 	}
 }
 
-circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,async) {
+circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,async) {
 	try {
 		JSAN.use('util.error'); var error = new util.error();
 		JSAN.use('util.network'); var network = new util.network();
@@ -973,7 +973,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,asy
 
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
-		var params = { 'barcode' : barcode };
+		//var params = { 'barcode' : barcode };
 		if (backdate) params.backdate = backdate;
 
 		if (typeof async == 'object') {
@@ -986,7 +986,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,asy
 			async ? function(req) { 
 				try {
 					var check = req.getResultObject();
-					var r = circ.util.checkin_via_barcode2(session,barcode,backdate,auto_print,check); 
+					var r = circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check); 
 					if (typeof async == 'object') {
 						try { async.checkin_result(r); } catch(E) { error.sdump('D_ERROR','async.checkin_result() = ' + E); };
 					}
@@ -1024,7 +1024,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,asy
 			}
 		);
 		if (!async) {
-			return circ.util.checkin_via_barcode2(session,barcode,backdate,auto_print,check); 
+			return circ.util.checkin_via_barcode2(session,params,backdate,auto_print,check); 
 		}
 
 
@@ -1038,7 +1038,7 @@ circ.util.checkin_via_barcode = function(session,barcode,backdate,auto_print,asy
 	}
 }
 
-circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,check) {
+circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,check) {
 	try {
 		JSAN.use('util.error'); var error = new util.error();
 		JSAN.use('util.network'); var network = new util.network();
@@ -1065,9 +1065,11 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 				JSAN.use('util.money');
 				var bill = req.getResultObject();
 				if (Number(bill.balance_owed()) == 0) return;
-				var m = document.getElementById('no_change_label').getAttribute('value');
-				document.getElementById('no_change_label').setAttribute('value', m + 'Transaction for ' + barcode + ' billable $' + util.money.sanitize(bill.balance_owed()) + '  ');
-				document.getElementById('no_change_label').setAttribute('hidden','false');
+				if (document.getElementById('no_change_label')) {
+					var m = document.getElementById('no_change_label').getAttribute('value');
+					document.getElementById('no_change_label').setAttribute('value', m + 'Transaction for ' + params.barcode + ' billable $' + util.money.sanitize(bill.balance_owed()) + '  ');
+					document.getElementById('no_change_label').setAttribute('hidden','false');
+				}
 			});
 		}
 
@@ -1079,7 +1081,7 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 				//msg = 'This item is already checked in.\n';
 				if (document.getElementById('no_change_label')) {
 					var m = document.getElementById('no_change_label').getAttribute('value');
-					document.getElementById('no_change_label').setAttribute('value',m + barcode + ' was already checked in.  ');
+					document.getElementById('no_change_label').setAttribute('value',m + params.barcode + ' was already checked in.  ');
 					document.getElementById('no_change_label').setAttribute('hidden','false');
 				}
 			}
@@ -1138,7 +1140,7 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 					msg = '';
 					if (document.getElementById('no_change_label')) {
 						var m = document.getElementById('no_change_label').getAttribute('value');
-						document.getElementById('no_change_label').setAttribute('value',m + barcode + ' has been captured for a hold.  ');
+						document.getElementById('no_change_label').setAttribute('value',m + params.barcode + ' has been captured for a hold.  ');
 						document.getElementById('no_change_label').setAttribute('hidden','false');
 					}
 				break;
@@ -1156,7 +1158,7 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 					}
 					if (document.getElementById('no_change_label')) {
 						var m = document.getElementById('no_change_label').getAttribute('value');
-						document.getElementById('no_change_label').setAttribute('value',m + barcode + ' needs to be cataloged.  ');
+						document.getElementById('no_change_label').setAttribute('value',m + params.barcode + ' needs to be cataloged.  ');
 						document.getElementById('no_change_label').setAttribute('hidden','false');
 					}
 				break;
@@ -1222,7 +1224,7 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 			}
 			if (document.getElementById('no_change_label')) {
 				var m = document.getElementById('no_change_label').getAttribute('value');
-				document.getElementById('no_change_label').setAttribute('value',m + barcode + ' is in transit.  ');
+				document.getElementById('no_change_label').setAttribute('value',m + params.barcode + ' is in transit.  ');
 				document.getElementById('no_change_label').setAttribute('hidden','false');
 			}
 
@@ -1239,7 +1241,7 @@ circ.util.checkin_via_barcode2 = function(session,barcode,backdate,auto_print,ch
 			);
 			if (document.getElementById('no_change_label')) {
 				var m = document.getElementById('no_change_label').getAttribute('value');
-				document.getElementById('no_change_label').setAttribute('value',m + barcode + ' is mis-scanned or not cataloged.  ');
+				document.getElementById('no_change_label').setAttribute('value',m + params.barcode + ' is mis-scanned or not cataloged.  ');
 				document.getElementById('no_change_label').setAttribute('hidden','false');
 			}
 

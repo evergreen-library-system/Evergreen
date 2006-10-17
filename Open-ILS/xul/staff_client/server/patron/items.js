@@ -393,10 +393,10 @@ patron.items.prototype = {
 			if (!r) { return; }
 			JSAN.use('circ.util');
 			for (var i = 0; i < retrieve_ids.length; i++) {
-				var barcode = retrieve_ids[i].barcode;
-				dump('Check in barcode = ' + barcode);
+				var copy_id = retrieve_ids[i].copy_id;
+				dump('Check in copy_id = ' + copy_id + ' barcode = ' + retrieve_ids[i].barcode + '\n');
 				var robj = circ.util.checkin_via_barcode(
-					ses(), barcode
+					ses(), { 'copy_id' : copy_id }
 				);
 				/* circ.util.checkin_via_barcode handles errors currently */
 			}

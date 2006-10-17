@@ -615,11 +615,11 @@ circ.checkout.prototype = {
 								JSAN.use('circ.util');
 								switch(r) {
 									case 1:
-										circ.util.checkin_via_barcode( ses(), params.barcode );
+										circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode } );
 										obj.checkout(params);
 									break;
 									case 2:
-										circ.util.checkin_via_barcode( ses(), params.barcode, due_date );
+										circ.util.checkin_via_barcode( ses(), { 'barcode' : params.barcode }, due_date );
 										obj.checkout(params);
 									break;
 								}
