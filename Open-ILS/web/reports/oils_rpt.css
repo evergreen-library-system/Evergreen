@@ -97,12 +97,17 @@ button {
 	font-size:84%;
 	font-weight:bold;
 	background-color:#fed;
-	border:1px solid;
+	border:2px solid;
 	border-top-color:#696;
 	border-left-color:#696;
 	border-right-color:#363;
 	border-bottom-color:#363;
 	margin: 4px;
+	border-style: outset;
+}
+
+button:active {
+	border-style: inset;
 }
 
 .floaty {
