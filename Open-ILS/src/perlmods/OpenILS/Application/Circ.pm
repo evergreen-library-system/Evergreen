@@ -590,6 +590,7 @@ sub create_in_house_use {
 		push( @ids, $ihu->id );
 	}
 
+	$e->commit;
 	return \@ids;
 }
 
