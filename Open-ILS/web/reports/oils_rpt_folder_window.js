@@ -60,22 +60,15 @@ oilsRptFolderWindow.prototype.draw = function() {
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
 		if( opt.getAttribute('type') == this.type ) {
-			if(x) opt.selected = true;
-			x = false;
+			if(x && !opt.disabled) {
+				opt.selected = true;
+				x = false;
+			}
 			unHideMe(opt);
-		}
-		else hideMe(opt);
+		} else hideMe(opt);
 	}
-	sel.options[0].selected = true;
-
-	/*
-	hideMe(DOM.oils_rpt_output_limit_selector.parentNode);
-	if( this.type == 'output' )
-		unHideMe(DOM.oils_rpt_output_limit_selector.parentNode);
-		*/
 
 	this.drawEditActions();
-
 
 	var porg = PERMS.SHARE_REPORT_FOLDER;
 	if( porg < 1 ) 
