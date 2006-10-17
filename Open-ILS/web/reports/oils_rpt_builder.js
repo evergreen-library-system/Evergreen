@@ -538,7 +538,8 @@ function oilsAddSelectorItem(sel, val, name) {
 		var opt = sel.options[i];
 		if( opt.value == val ) return false;
 	}
-	insertSelectorVal( sel, -1, name, val );
+	var opt = insertSelectorVal( sel, -1, name, val );
+	opt.setAttribute('title', name);
 	return true;
 }
 
