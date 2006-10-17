@@ -81,7 +81,10 @@ log_debug(result.durationRule + ' : ' + result.recurringFinesRule + ' : ' + resu
 function checkDurationExceptions() {
 	log_debug("Checking duration rule exceptions for profile  "+patronProfile);
 
-	if( isGroupDescendant('Staff', patronProfile) || isGroupDescendant('Outreach', patronProfile) ) {
+	if(	isGroupDescendant('Staff', patronProfile) || 
+			isGroupDescendant('Trustee', patronProfile) ||
+			isGroupDescendant('Outreach', patronProfile) ) {
+
 		result.recurringFinesRule	= "staff";
 		result.maxFine					= "staff";
 	}
@@ -91,4 +94,5 @@ function checkDurationExceptions() {
 		result.durationRule = '2_months_2_renew';
 	}
 }
+
 
