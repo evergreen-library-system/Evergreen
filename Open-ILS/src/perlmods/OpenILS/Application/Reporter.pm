@@ -402,7 +402,7 @@ sub magic_fetch_all {
 	if ($orgs && !$$args{no_fetch}) {
 		($orgs) = $self
 				->method_lookup( 'open-ils.reporter.org_unit.full_path' )
-				->run( $orgs );
+				->run( @$orgs );
 		$orgs = [ map {$_->id} @$orgs ];
 	}
 
