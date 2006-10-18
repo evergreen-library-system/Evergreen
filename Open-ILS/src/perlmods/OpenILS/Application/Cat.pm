@@ -998,7 +998,7 @@ sub update_fleshed_copies {
 		}
 
 		return $editor->event unless 
-			$editor->allowed('UPDATE_COPY', $vol->id == -1 ? $copy->circ_lib : $vol->owning_lib);
+			$editor->allowed('UPDATE_COPY', $vol->id == -1 ? $copy->circ_lib->id : $vol->owning_lib);
 
 		$copy->editor($editor->requestor->id);
 		$copy->edit_date('now');
