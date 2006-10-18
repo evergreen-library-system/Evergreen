@@ -398,6 +398,13 @@ sub magic_fetch_all {
 	my $hint = $$args{hint};
 	my $org_col = $$args{org_column};
 	my $orgs = $$args{org};
+	
+	if ($orgs && !$$args{no_fetch}) {
+		($orgs) = $self
+				->method_lookup( 'open-ils.reporter.org_unit.full_path' )
+				->run( $orgs );
+		$orgs = [ map {$_->id} @$orgs ];
+	}
 
 	# Find the class the iplements the given hint
 	my ($class) = grep { 
