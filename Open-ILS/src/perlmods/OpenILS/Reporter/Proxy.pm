@@ -101,7 +101,7 @@ sub handler {
 
 	my $failures = OpenSRF::AppSession
 		->create('open-ils.actor')
-		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, ['RUN_REPORTS'])
+		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, ['VIEW_REPORT_OUTPUT'])
 		->gather(1);
 
 	return Apache2::Const::FORBIDDEN if (@$failures > 0);
