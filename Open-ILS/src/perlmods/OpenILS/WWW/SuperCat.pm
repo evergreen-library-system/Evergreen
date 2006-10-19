@@ -915,6 +915,18 @@ sub opensearch_feed {
 	$type ||= $cgi->param('responseType') || '-';
 	$org ||= $cgi->param('searchOrg') || '-';
 
+	my $kwt = $cgi->param('kw');
+	my $tit = $cgi->param('ti');
+	my $aut = $cgi->param('au');
+	my $sut = $cgi->param('su');
+	my $set = $cgi->param('se');
+
+	$terms .= " keyword: $kwt" if ($kwt);
+	$terms .= " title: $tit" if ($tit);
+	$terms .= " author: $aut" if ($aut);
+	$terms .= " subject: $sut" if ($sut);
+	$terms .= " series: $set" if ($set);
+
 	if ($version eq '1.0') {
 		$type = 'rss2';
 	} elsif ($type eq '-') {
