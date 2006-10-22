@@ -89,15 +89,16 @@ sub log {
 # -----------------------------------------------------------------------------
 # Verifies the auth token and fetches the requestor object
 # -----------------------------------------------------------------------------
-#sub checkauth {
-#	my $self = shift;
-#	$self->log(D, "checking auth token ".$self->authtoken);
-#	my ($reqr, $evt) = $U->checkses($self->authtoken);
-#	$self->event($evt) if $evt;
-#	return $self->{requestor} = $reqr;
-#}
+sub checkauth {
+	my $self = shift;
+	$self->log(D, "checking auth token ".$self->authtoken);
+	my ($reqr, $evt) = $U->checkses($self->authtoken);
+	$self->event($evt) if $evt;
+	return $self->{requestor} = $reqr;
+}
 
 
+=head test
 sub checkauth {
 	my $self = shift;
 	$cache = OpenSRF::Utils::Cache->new('global') unless $cache;
@@ -107,6 +108,7 @@ sub checkauth {
 	$self->event(OpenILS::Event->new('NO_SESSION'));
 	return undef;
 }
+=cut
 
 
 # -----------------------------------------------------------------------------
