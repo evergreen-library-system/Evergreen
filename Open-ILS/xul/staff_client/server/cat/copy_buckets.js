@@ -124,7 +124,7 @@ cat.copy_buckets.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional');
-								var items = [ ['Choose a bucket...',''] ].concat(
+								var items = [ ['Choose a bucket...',''], ['Retrieve shared bucket...',-1] ].concat(
 									util.functional.map_list(
 										obj.network.simple_request(
 											'BUCKET_RETRIEVE_VIA_USER',
@@ -136,7 +136,7 @@ cat.copy_buckets.prototype = {
 										}
 									)
 								);
-								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
+								obj.error.sdump('D_TRACE','items = ' + js2JSON(items));
 								util.widgets.remove_children( e );
 								var ml = util.widgets.make_menulist(
 									items
@@ -147,11 +147,39 @@ cat.copy_buckets.prototype = {
 
 								function change_bucket(ev) {
 									var bucket_id = ev.target.value;
+									if (bucket_id < 0 ) {
+										bucket_id = window.prompt('Enter bucket number:');
+										ev.target.value = bucket_id;
+										ev.target.setAttribute('value',bucket_id);
+									}
 									if (!bucket_id) return;
 									var bucket = obj.network.simple_request(
 										'BUCKET_FLESH',
 										[ ses(), 'copy', bucket_id ]
 									);
+									if (typeof bucket.ilsevent != 'undefined') {
+										if (bucket.ilsevent == 1506 /* CONTAINER_NOT_FOUND */) {
+											alert('Could not find a bucket with ID = ' + bucket_id);
+										} else {
+											obj.error.standard_unexpected_error_alert('Error retrieving bucket.  Did you use a valid bucket id?',bucket);
+										}
+										return;
+									}
+									try {
+										var x = document.getElementById('info_box');
+										x.setAttribute('hidden','false');
+										x = document.getElementById('bucket_number');
+										x.setAttribute('value',bucket.id());
+										x = document.getElementById('bucket_name');
+										x.setAttribute('value',bucket.name());
+										x = document.getElementById('bucket_owner');
+										var s = bucket.owner(); JSAN.use('patron.util');
+										if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); 
+										x.setAttribute('value',s.card().barcode() + " @ " + obj.data.hash.aou[ s.home_ou() ].shortname());
+
+									} catch(E) {
+										alert(E);
+									}
 									var items = bucket.items() || [];
 									obj.list2.clear();
 									for (var i = 0; i < items.length; i++) {
@@ -169,6 +197,9 @@ cat.copy_buckets.prototype = {
 								}, false);
 								obj.controller.view.bucket_menulist = ml;
 								JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+								document.getElementById('refresh').addEventListener( 'command', function() {
+									JSAN.use('util.widgets'); util.widgets.dispatch('change_bucket',ml);
+								}, false);
 							};
 						},
 					],
