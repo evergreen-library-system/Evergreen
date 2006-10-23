@@ -989,8 +989,8 @@
 			<field reporter:label="Max Fine Rule" name="max_fine_rule" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field reporter:label="OPAC Renewal" name="opac_renewal" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Phone Renewal" name="phone_renewal" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label="Recuring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
-			<field reporter:label="Recuring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
+			<field reporter:label="Recurring Fine Amount" name="recuring_fine" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Recurring Fine Rule" name="recuring_fine_rule" oils_obj:array_position="19" oils_persist:virtual="false" />
 			<field reporter:label="Remaining Renewals" name="renewal_remaining" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="int" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="timestamp"/>
