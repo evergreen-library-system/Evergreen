@@ -298,6 +298,27 @@ circ.copy_status.prototype = {
 							}
 						}
 					],
+					'cmd_copy_status_export' : [
+						['command'],
+						function() {
+							try {
+								obj.list.on_all_fleshed =
+									function() {
+										try {
+											dump( obj.list.dump_csv() + '\n' );
+											copy_to_clipboard(obj.list.dump_csv());
+											setTimeout(function(){ obj.list.on_all_fleshed = null; },0);
+										} catch(E) {
+											obj.error.standard_unexpected_error_alert('export',E); 
+										}
+									}
+								obj.list.full_retrieve();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('export',E); 
+							}
+						}
+					],
+
 					'cmd_copy_status_reprint' : [
 						['command'],
 						function() {

@@ -242,6 +242,22 @@ circ.checkin.prototype = {
 							obj.list.full_retrieve();
 						}
 					],
+					'cmd_checkin_export' : [
+						['command'],
+						function() {
+							obj.list.on_all_fleshed = function() {
+								try {
+									dump(obj.list.dump_csv() + '\n');
+									copy_to_clipboard(obj.list.dump_csv());
+									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list.full_retrieve();
+						}
+					],
+
 					'cmd_checkin_reprint' : [
 						['command'],
 						function() {

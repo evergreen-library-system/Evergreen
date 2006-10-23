@@ -125,11 +125,19 @@
 	<button id="noncat" label="Show Non-Cataloged Circulations in List Above" command="cmd_show_noncats" accesskey="N"/>
 	<spacer flex="1"/>
 	<button id="items_print" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print" accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
+	<button id="items_export" 
+		label="Export"
+		command="cmd_items_export"
+		accesskey=""/>
 </hbox>
 
 <hbox id="items_bottom_ui2" flex="1">
 	<spacer flex="1"/>
 	<button id="items_print2" label="&staff.patron_display.items.print_receipt_label;" command="cmd_items_print2" old_accesskey="&staff.patron_display.items.print_receipt_label.accesskey;" />
+	<button id="items_export2" 
+		label="Export"
+		command="cmd_items_export2"
+		accesskey=""/>
 </hbox>
 
 </overlay>

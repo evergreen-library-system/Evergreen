@@ -75,6 +75,21 @@ cat.z3950.prototype = {
 							['command'],
 							function() { obj.list.clipboard(); }
 						],
+						'cmd_export' : [
+							['command'],
+							function() {
+								obj.list.on_all_fleshed = function() {
+									try {
+										dump(obj.list.dump_csv() + '\n');
+										copy_to_clipboard(obj.list.dump_csv());
+										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+									} catch(E) {
+										alert(E); 
+									}
+								}
+								obj.list.full_retrieve();
+							}
+						],
 						'cmd_broken' : [
 							['command'],
 							function() { alert('Not Yet Implemented'); }

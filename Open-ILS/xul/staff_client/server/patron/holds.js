@@ -323,6 +323,27 @@ patron.holds.prototype = {
 							}
 						}
 					],
+					'cmd_holds_export' : [
+						['command'],
+						function() {
+							try {
+								function flesh_callback() {
+									try {
+										dump(obj.list.dump_csv() + '\n');
+										copy_to_clipboard(obj.list.dump_csv());
+										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('export 2',E);
+									}
+								}
+								obj.list.on_all_fleshed = flesh_callback;
+								obj.list.full_retrieve();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('export 1',E);
+							}
+						}
+					],
+
 					'cmd_show_notifications' : [
 						['command'],
 						function() {

@@ -69,6 +69,7 @@
 		<command id="sel_clip" />
 		<command id="cmd_in_house_use_submit_barcode" />
 		<command id="cmd_in_house_use_print" />
+		<command id="cmd_in_house_use_export" />
 		<command id="cmd_in_house_use_reprint" />
 		<command id="cmd_in_house_use_done" />
 		<command id="save_columns" />
@@ -102,6 +103,10 @@
 		<button id="in_house_use_print" 
 			label="Print List" 
 			command="cmd_in_house_use_print"
+			accesskey=""/>
+		<button id="in_house_use_export" 
+			label="Export"
+			command="cmd_in_house_use_export"
 			accesskey=""/>
 		<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
 		<spacer id="pcii3s" flex="1"/>

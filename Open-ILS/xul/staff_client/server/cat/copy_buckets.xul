@@ -79,6 +79,7 @@
 		<command id="sel_clip" />
 		<command id="cmd_copy_buckets_submit_barcode" />
 		<command id="cmd_copy_buckets_print" />
+		<command id="cmd_copy_buckets_export" />
 		<command id="cmd_copy_buckets_reprint" />
 		<command id="cmd_copy_buckets_done" />
 		<command id="cmd_export_to_copy_status" />

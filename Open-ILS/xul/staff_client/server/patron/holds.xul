@@ -76,6 +76,7 @@
 		<command id="sel_patron" disabled="true"/>
 		<command id="sel_clip" />
 		<command id="cmd_holds_print" />
+		<command id="cmd_holds_export" />
 		<command id="cmd_show_catalog" />
 		<command id="cmd_retrieve_patron" />
 		<command id="cmd_show_notifications" />

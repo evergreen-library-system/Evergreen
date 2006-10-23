@@ -81,6 +81,7 @@
 	<commandset id="checkin_cmds">
 		<command id="cmd_checkin_submit_barcode" />
 		<command id="cmd_checkin_print" />
+		<command id="cmd_checkin_export" />
 		<command id="cmd_checkin_reprint" />
 		<command id="cmd_checkin_done" />
 		<command id="save_columns" />

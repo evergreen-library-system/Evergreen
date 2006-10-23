@@ -56,6 +56,10 @@
 </hbox>
 
 <hbox id="record_buckets_bottom_ui">
+	<button id="record_buckets_export" 
+		label="Export"
+		command="cmd_record_buckets_export"
+		accesskey=""/>
 	<spacer flex="1"/>
 	<hbox style="background: grey">
 		<vbox><spacer flex="1"/><label value="Batch:" style="font-weight: bold"/><spacer flex="1"/></vbox>

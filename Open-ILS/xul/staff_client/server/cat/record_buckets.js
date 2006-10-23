@@ -361,6 +361,23 @@ cat.record_buckets.prototype = {
 							}
 						}
 					],
+					
+					'cmd_record_buckets_export' : [
+						['command'],
+						function() {
+							obj.list2.on_all_fleshed = function() {
+								try {
+									dump(obj.list2.dump_csv() + '\n');
+									copy_to_clipboard(obj.list2.dump_csv());
+									setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list2.full_retrieve();
+						}
+					],
+
 					'cmd_merge_records' : [
 						['command'],
 						function() {

@@ -185,6 +185,18 @@ circ.checkout.prototype = {
 
 						}
 					],
+					'cmd_checkout_export' : [
+						['command'],
+						function() {
+							try {
+								obj.export_list();
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('cmd_checkout_export',E); 
+							}
+						}
+					],
+
+
 					'cmd_checkout_reprint' : [
 						['command'],
 						function() {
@@ -278,6 +290,24 @@ circ.checkout.prototype = {
 			obj.list.full_retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('print',E);
+		}
+	},
+	
+	'export_list' : function(silent,f) {
+		var obj = this;
+		try {
+			obj.list.on_all_fleshed = function() {
+				try {
+					dump( obj.list.dump_csv() + '\n' );
+					copy_to_clipboard(obj.list.dump_csv());
+					setTimeout(function(){obj.list.on_all_fleshed = null;if (typeof f == 'function') f();},0);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('print',E);
+				}
+			}
+			obj.list.full_retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('export',E);
 		}
 	},
 

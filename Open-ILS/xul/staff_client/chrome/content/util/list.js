@@ -813,6 +813,44 @@ util.list.prototype = {
 		return dump;
 	},
 
+	'dump_csv' : function(params) {
+		var obj = this;
+		switch(this.node.nodeName) {
+			case 'tree' : return this._dump_tree_csv(params); break;
+			default: throw('NYI: Need .dump_csv() for ' + this.node.nodeName); break;
+		}
+
+	},
+
+	'_dump_tree_csv' : function(params) {
+		var obj = this;
+		var dump = '';
+		for (var j = 0; j < obj.columns.length; j++) {
+			if (obj.columns[j].hidden) {
+				/* skip */
+			} else {
+				if (dump) dump += ',';
+				dump += '"' + obj.columns[j].label.replace(/"/g, '""') + '"';
+			}
+		}
+		dump += '\r\n';
+		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
+			var row = '';
+			var treeitem = this.treechildren.childNodes[i];
+			var treerow = treeitem.firstChild;
+			for (var j = 0; j < treerow.childNodes.length; j++) {
+				if (obj.columns[j].hidden) {
+					/* skip */
+				} else {
+					if (row) row += ',';
+					row += '"' + treerow.childNodes[j].getAttribute('label').replace(/"/g, '""') + '"';
+				}
+			}
+			dump +=  row + '\r\n';
+		}
+		return dump;
+	},
+
 	'dump_selected_with_keys' : function(params) {
 		var obj = this;
 		switch(this.node.nodeName) {

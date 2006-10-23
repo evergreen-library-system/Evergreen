@@ -57,10 +57,10 @@
 		label="&staff.patron_display.checkout.print_receipt_label;" 
 		command="cmd_checkout_print"
 		accesskey="&staff.patron_display.checkout.print_receipt_label.accesskey;"/>
-	<button id="checkout_reprint" 
-		label="&staff.patron_display.checkout.reprint_receipt_label;" 
-		command="cmd_checkout_reprint"
-		accesskey="&staff.patron_display.checkout.reprint_receipt_label.accesskey;"/>
+	<button id="checkout_export" 
+		label="Export"
+		command="cmd_checkout_export"
+		accesskey=""/>
 	<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
 	<button id="save_col_btn" command="save_columns" label="Save Columns" />
 	<spacer id="pcii3s" flex="1"/>

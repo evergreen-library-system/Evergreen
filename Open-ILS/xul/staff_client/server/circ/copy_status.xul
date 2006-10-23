@@ -85,6 +85,7 @@
 	<commandset id="copy_status_cmds">
 		<command id="cmd_copy_status_submit_barcode" />
 		<command id="cmd_copy_status_print" />
+		<command id="cmd_copy_status_export" />
 		<command id="cmd_copy_status_reprint" />
 		<command id="cmd_copy_status_done" />
 		<command id="save_columns" />

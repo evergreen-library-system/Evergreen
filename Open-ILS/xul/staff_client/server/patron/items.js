@@ -71,6 +71,8 @@ patron.items.prototype = {
 					],
 					'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
+					'cmd_items_export' : [ ['command'], function() { obj.items_export(1); } ],
+					'cmd_items_export2' : [ ['command'], function() { obj.items_export(2); } ],
 					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
 					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); alert('Action complete.'); obj.retrieve(); } ],
@@ -205,6 +207,26 @@ patron.items.prototype = {
 			list.full_retrieve();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('printing 1',E);
+		}
+	},
+
+	'items_export' : function(which) {
+		var obj = this;
+		try {
+			var list = (which==2 ? obj.list2 : obj.list);
+			function flesh_callback() {
+				try {
+					dump( list.dump_csv() + '\n');
+					copy_to_clipboard(list.dump_csv());
+					setTimeout(function(){list.on_all_fleshed = null;},0);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('export 2',E);
+				}
+			}
+			list.on_all_fleshed = flesh_callback;
+			list.full_retrieve();
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('export 1',E);
 		}
 	},
 
