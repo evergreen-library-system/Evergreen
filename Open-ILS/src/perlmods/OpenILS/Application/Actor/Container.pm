@@ -84,7 +84,8 @@ sub bucket_flesh {
 	my $meth = $types{$class};
 
 	my $bkt = $apputils->simplereq( $svc, "$meth.retrieve", $bucket );
-	if(!$bkt) {return undef};
+	#if(!$bkt) {return undef};
+	return OpenILS::Event->new('CONTAINER_NOT_FOUND', payload=>$bucket) unless $bkt;
 
 	if(!$bkt->pub) {
 		my( $user, $e ) = $apputils->checkrequestor( $staff, $bkt->owner, 'VIEW_CONTAINER' );
