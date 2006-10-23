@@ -74,7 +74,7 @@ sub create_hold {
 
 	my $holds = (ref($holds[0] eq 'ARRAY')) ? $holds[0] : [@holds];
 
-	my @copyholds;
+#	my @copyholds;
 
 	for my $hold (@$holds) {
 
@@ -142,17 +142,19 @@ sub create_hold {
 		$hold->request_lib($e->requestor->ws_ou);
 		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
 		$hold = $e->create_action_hold_request($hold) or return $e->event;
-		push( @copyholds, $hold ) if $hold->hold_type eq OILS_HOLD_TYPE_COPY;
+#		push( @copyholds, $hold ) if $hold->hold_type eq OILS_HOLD_TYPE_COPY;
 	}
 
 	$e->commit;
 
+	$conn->respond_complete(1);
+
 	# Go ahead and target the copy-level holds
 	$U->storagereq(
 		'open-ils.storage.action.hold_request.copy_targeter', 
-		undef, $_->id ) for @copyholds;
+		undef, $_->id ) for @holds;
 
-	return 1;
+	return undef;
 }
 
 sub __create_hold {
