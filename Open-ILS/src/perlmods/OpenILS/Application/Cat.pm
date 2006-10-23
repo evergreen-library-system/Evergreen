@@ -976,6 +976,17 @@ sub fleshed_volume_update {
 }
 
 
+sub copy_perm_org {
+	my( $vol, $copy ) = @_;
+	my $org = $vol->owning_lib;
+	if( $vol->id == OILS_PRECAT_CALL_NUMBER ) {
+		$org = ref($copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
+	}
+	$logger->debug("using copy perm org $org");
+	return $org;
+}
+
+
 # this does the actual work
 sub update_fleshed_copies {
 	my( $editor, $override, $vol, $copies, $delete_stats ) = @_;
@@ -998,7 +1009,7 @@ sub update_fleshed_copies {
 		}
 
 		return $editor->event unless 
-			$editor->allowed('UPDATE_COPY', $vol->id == -1 ? $copy->circ_lib->id : $vol->owning_lib);
+			$editor->allowed('UPDATE_COPY', copy_perm_org($vol, $copy));
 
 		$copy->editor($editor->requestor->id);
 		$copy->edit_date('now');
