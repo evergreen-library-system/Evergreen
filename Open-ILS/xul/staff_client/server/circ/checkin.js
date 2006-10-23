@@ -5,6 +5,7 @@ circ.checkin = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
+	JSAN.use('util.barcode');
 	JSAN.use('util.date');
 	this.OpenILS = {}; JSAN.use('OpenILS.data'); this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
 	this.data = this.OpenILS.data;
@@ -261,11 +262,36 @@ circ.checkin.prototype = {
 
 	},
 
+	'test_barcode' : function(bc) {
+		var obj = this;
+		var good = util.barcode.check(bc);
+		if (good) {
+			return true;
+		} else {
+			if ( 1 == obj.error.yns_alert(
+						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
+						'Bad Barcode',
+						'Cancel',
+						'Accept Barcode',
+						null,
+						'Check here to confirm this action',
+						'/xul/server/skin/media/images/bad_barcode.png'
+			) ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	},
+
 	'checkin' : function() {
 		var obj = this;
 		try {
 			var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
 			if (!barcode) return;
+			if (barcode) {
+				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
+			}
 			var backdate = obj.controller.view.checkin_effective_date_textbox.value;
 			var auto_print = document.getElementById('checkin_auto');
 			if (auto_print) auto_print = auto_print.checked;

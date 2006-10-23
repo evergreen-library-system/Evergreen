@@ -6,6 +6,7 @@ circ.checkout = function (params) {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+	JSAN.use('util.barcode');
 }
 
 circ.checkout.prototype = {
@@ -415,6 +416,28 @@ circ.checkout.prototype = {
 		}
 	},
 
+	'test_barcode' : function(bc) {
+		var obj = this;
+		var good = util.barcode.check(bc);
+		if (good) {
+			return true;
+		} else {
+			if ( 1 == obj.error.yns_alert(
+						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
+						'Bad Barcode',
+						'Cancel',
+						'Accept Barcode',
+						null,
+						'Check here to confirm this action',
+						'/xul/server/skin/media/images/bad_barcode.png'
+			) ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	},
+
 	'checkout' : function(params) {
 		var obj = this;
 
@@ -426,6 +449,10 @@ circ.checkout.prototype = {
 		if (typeof obj.on_checkout == 'function') { obj.on_checkout(params); }
 
 		if (! (params.barcode||params.noncat)) return;
+
+		if (params.barcode) {
+			if ( obj.test_barcode(params.barcode) ) { /* good */ } else { /* bad */ return; }
+		}
 
 
 		/**********************************************************************************************************************/

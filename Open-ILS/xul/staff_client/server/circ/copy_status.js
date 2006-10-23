@@ -5,6 +5,7 @@ circ.copy_status = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
+	JSAN.use('util.barcode');
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 }
@@ -315,12 +316,37 @@ circ.copy_status.prototype = {
 
 	},
 
+	'test_barcode' : function(bc) {
+		var obj = this;
+		var good = util.barcode.check(bc);
+		if (good) {
+			return true;
+		} else {
+			if ( 1 == obj.error.yns_alert(
+						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
+						'Bad Barcode',
+						'Cancel',
+						'Accept Barcode',
+						null,
+						'Check here to confirm this action',
+						'/xul/server/skin/media/images/bad_barcode.png'
+			) ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	},
+
 	'copy_status' : function(barcode) {
 		var obj = this;
 		try {
 			try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
 			if (!barcode) barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
 			if (!barcode) return;
+			if (barcode) {
+				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
+			}
 			JSAN.use('circ.util');
 			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
 			if (copy == null) {
