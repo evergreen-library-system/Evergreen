@@ -489,89 +489,26 @@ sub _check_open_xact {
 }
 
 
-sub _make_mbts {
-        my @xacts = @_;
-
-        my @mbts;
-        for my $x (@xacts) {
-                my $s = new Fieldmapper::money::billable_transaction_summary;
-                $s->id( $x->id );
-                $s->usr( $x->usr );
-                $s->xact_start( $x->xact_start );
-                $s->xact_finish( $x->xact_finish );
-
-                my $to = 0;
-                my $lb = undef;
-                for my $b (@{ $x->billings }) {
-			next if ($U->is_true($b->voided));
-                        $to += ($b->amount * 100);
-                        $lb ||= $b->billing_ts;
-                        if ($b->billing_ts ge $lb) {
-                                $lb = $b->billing_ts;
-                                $s->last_billing_note($b->note);
-                                $s->last_billing_ts($b->billing_ts);
-                                $s->last_billing_type($b->billing_type);
-                        }
-                }
-		$s->total_owed( sprintf('%0.2f', $to / 100 ) );
-
-                my $tp = 0;
-                my $lp = undef;
-                for my $p (@{ $x->payments }) {
-			next if ($U->is_true($p->voided));
-                        $tp += ($p->amount * 100);
-                        $lp ||= $p->payment_ts;
-                        if ($p->payment_ts ge $lp) {
-                                $lp = $p->payment_ts;
-                                $s->last_payment_note($p->note);
-                                $s->last_payment_ts($p->payment_ts);
-                                $s->last_payment_type($p->payment_type);
-                        }
-                }
-		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
-
-		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
-
-                $s->xact_type( 'grocery' ) if ($x->grocery);
-                $s->xact_type( 'circulation' ) if ($x->circulation);
-
-                push @mbts, $s;
-        }
-
-        return @mbts;
-}
-
 
 __PACKAGE__->register_method (
 	method => 'fetch_mbts',
 	api_name => 'open-ils.circ.money.billable_xact_summary.retrieve'
 );
 sub fetch_mbts {
-	my($s, $c, $authtoken, $id) = @_;
+	my( $self, $conn, $auth, $id) = @_;
 
-	$id = $id->id if (ref($id));
+	my $e = new_editor(xact => 1, authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	my ($mbts) = $U->fetch_mbts($id, $e);
 
-        my @xacts = @{ $U->cstorereq(
-		'open-ils.cstore.direct.money.billable_transaction.search.atomic',
-                { id => $id },
-                { flesh => 1, flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] } }
-	) };
+	my $user = $e->retrieve_actor_user($mbts->usr)
+		or return $e->die_event;
 
-	my ($sum) = _make_mbts(@xacts);
-	return OpenILS::Event->new('MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND', id => $id) unless $sum;
-
-	my ($reqr, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
-
-	my $usr;
-	($usr, $evt) = $U->fetch_user($sum->usr);
-	return $evt if $evt;
-
-	$evt = $U->check_perms($reqr->id, $usr->home_ou, 'VIEW_TRANSACTION');
-	return $evt if $evt;
-
-	return $sum;
+	return $e->die_event unless $e->allowed('VIEW_TRANSACTION', $user->home_ou);
+	$e->rollback;
+	return $mbts
 }
+
 
 
 __PACKAGE__->register_method(

@@ -1977,6 +1977,7 @@ sub _user_transaction_history {
 }
 =cut
 
+=head SEE APPUTILS.PM
 sub _make_mbts {
 	my @xacts = @_;
 
@@ -2029,6 +2030,7 @@ sub _make_mbts {
 
 	return @mbts;
 }
+=cut
 
 sub user_transaction_history {
 	my( $self, $conn, $auth, $userid, $type ) = @_;
@@ -2052,7 +2054,8 @@ sub user_transaction_history {
 
 	$e->rollback;
 
-	my @mbts = _make_mbts( @xacts );
+	#my @mbts = _make_mbts( @xacts );
+	my @mbts = $U->make_mbts( @xacts );
 
 	if(defined($type)) {
 		@mbts = grep { $_->xact_type eq $type } @mbts;
