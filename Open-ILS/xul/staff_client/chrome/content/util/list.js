@@ -59,6 +59,7 @@ util.list.prototype = {
 		} else {
 			var treecols = document.createElement('treecols');
 			this.node.appendChild(treecols);
+			this.treecols = treecols;
 
 			for (var i = 0; i < this.columns.length; i++) {
 				var treecol = document.createElement('treecol');
@@ -826,7 +827,7 @@ util.list.prototype = {
 		var obj = this;
 		var dump = '';
 		for (var j = 0; j < obj.columns.length; j++) {
-			if (obj.columns[j].hidden) {
+			if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
 				/* skip */
 			} else {
 				if (dump) dump += ',';
@@ -839,7 +840,7 @@ util.list.prototype = {
 			var treeitem = this.treechildren.childNodes[i];
 			var treerow = treeitem.firstChild;
 			for (var j = 0; j < treerow.childNodes.length; j++) {
-				if (obj.columns[j].hidden) {
+				if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') {
 					/* skip */
 				} else {
 					if (row) row += ',';
@@ -870,8 +871,7 @@ util.list.prototype = {
 			var treerow = treeitem.firstChild;
 			for (var j = 0; j < treerow.childNodes.length; j++) {
 				var value = treerow.childNodes[j].getAttribute('label');
-				//FIXME
-				//if (params.skip_hidden_columns) if (obj.node.firstChild.childNodes[j].getAttribute('hidden')) continue;
+				if (params.skip_hidden_columns) if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') continue;
 				var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
 				row[ id ] = value;
 			}
