@@ -264,7 +264,7 @@ sub request {
 	if( $self->{xact} and 
 			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
 		$logger->error("CStoreEditor lost it's connection!!");
-		#throw OpenSRF::EX::ERROR ("CStoreEditor lost it's connection - cannot continue");
+		#throw OpenSRF::EX::ERROR ("CStoreEditor lost it's connection - transaction cannot continue");
 	}
 
 	try {
