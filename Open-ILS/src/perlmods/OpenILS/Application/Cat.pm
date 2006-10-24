@@ -958,8 +958,7 @@ sub fleshed_volume_update {
 
 		} elsif( $vol->ischanged ) {
 			$logger->info("vol-update: update volume");
-			return $editor->event unless
-				$editor->update_asset_call_number($vol);
+			$evt = update_volume($vol, $editor);
 			return $evt if $evt;
 		}
 
@@ -974,6 +973,28 @@ sub fleshed_volume_update {
 	$editor->finish;
 	return scalar(@$volumes);
 }
+
+
+sub update_volume {
+	my $vol = shift;
+	my $editor = shift;
+
+	my $vols = $editor->search_asset_call_number( { 
+			owning_lib	=> $vol->owning_lib,
+			record		=> $vol->record,
+			label			=> $vol->label,
+			deleted		=> 'f'
+		}
+	);
+
+	# There exists a different volume in the DB with the same properties
+	return OpenILS::Event->new('VOLUME_LABEL_EXISTS', payload => $vol->id)
+		if grep { $_->id ne $vol->id } @$vols;
+
+	return $editor->event unless $editor->update_asset_call_number($vol);
+	return undef;
+}
+
 
 
 sub copy_perm_org {
