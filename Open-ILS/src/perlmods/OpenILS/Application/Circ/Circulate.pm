@@ -1351,8 +1351,8 @@ sub do_checkin {
       } else {
 
 			my $bc = $self->copy->barcode;
-			$logger->info("circulator: copy $bc at a remote lib  - sending home");
-			$self->checkin_build_copy_transit();
+			$logger->info("circulator: copy $bc at the wrong location, sending to $circ_lib");
+			$self->checkin_build_copy_transit($circ_lib);
 			return if $self->bail_out;
 			$self->push_events(OpenILS::Event->new('ROUTE_ITEM', org => $circ_lib));
       }
@@ -1466,11 +1466,15 @@ sub checkin_handle_precat {
 
 sub checkin_build_copy_transit {
 	my $self			= shift;
+	my $dest			= shift;
 	my $copy       = $self->copy;
    my $transit    = Fieldmapper::action::transit_copy->new;
 
+	#$dest	||= (ref($copy->circ_lib)) ? $copy->circ_lib->id : $copy->circ_lib;
+	$logger->info("circulator: transiting copy to $dest");
+
    $transit->source($self->editor->requestor->ws_ou);
-   $transit->dest( (ref($copy->circ_lib)) ? $copy->circ_lib->id : $copy->circ_lib );
+   $transit->dest($dest);
    $transit->target_copy($copy->id);
    $transit->source_send_time('now');
    $transit->copy_status( $U->copy_status($copy->status)->id );
