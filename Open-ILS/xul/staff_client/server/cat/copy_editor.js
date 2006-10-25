@@ -664,7 +664,7 @@ g.panes_and_field_names = {
 		"Alert Message",
 		{
 			render: 'fm.alert_message() == null ? "<Unset>" : fm.alert_message()',
-			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); g.populate_alert_message_input(x); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("alert_message",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("multiline",true); g.populate_alert_message_input(x); x.addEventListener("apply",function(f){ return function(ev) { f( String(ev.target.value).replace(/^\s+$/,'') ); } }(c), false);',
 		}
 	],
 
