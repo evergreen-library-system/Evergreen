@@ -637,7 +637,10 @@ function uEditBuildAddrFields(patron, address) {
 	uEditCheckSharedAddr(patron, address, tbody, row);
 
 	$n(row, 'ue_addr_delete').onclick = 
-		function() { uEditDeleteAddr(tbody, row, address); }
+		function() { 
+			uEditDeleteAddr(tbody, row, address); 
+			uEditCheckErrors();
+		};
 
 	if( patron.billing_address() &&
 			address.id() == patron.billing_address().id() ) 

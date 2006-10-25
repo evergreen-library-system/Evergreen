@@ -366,6 +366,7 @@ function uEditCheckValid(field) {
 			removeCSSClass(field.widget.node, CSS_INVALID_DATA);
 		}
 	}
+
 }
 
 /* find a field object by object key */
@@ -400,9 +401,11 @@ function uEditGetErrorStrings() {
 	uEditIterateFields(
 		function(field) { 
 			if(field.errkey) {
-				if( field.widget.node.className.indexOf(CSS_INVALID_DATA) != -1) {
-					var str = $(field.errkey).innerHTML;
-					if(str) errors.push(str);
+				if( !field.object.isdeleted() ) {
+					if( field.widget.node.className.indexOf(CSS_INVALID_DATA) != -1) {
+						var str = $(field.errkey).innerHTML;
+						if(str) errors.push(str);
+					}
 				}
 			}
 		}
