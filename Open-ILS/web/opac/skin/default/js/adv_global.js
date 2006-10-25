@@ -176,7 +176,8 @@ function advBuildSearchBlob() {
 				break;
 		}
 		if(string) {
-			string = string.replace(/'/,' ');
+			string = string.replace(/'/g,' ');
+			string = string.replace(/\\/g,' ');
 			searches[stype].term = string;
 		}
 	}
