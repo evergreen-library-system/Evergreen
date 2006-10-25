@@ -145,14 +145,14 @@ function initLogin() {
 	G.ui.login.password.onkeydown = 
 		function(evt) {if(userPressedEnter(evt)) loginDance();};
 
-	if(loginBoxVisible) {
-		showCanvas();
-	} else {
+//	if(loginBoxVisible) {
+//		showCanvas();
+//	} else {
 		swapCanvas(G.ui.login.box);
 		try{G.ui.login.username.focus();}catch(e){}
-	}
+//	}
 
-	loginBoxVisible = !loginBoxVisible;
+//	loginBoxVisible = !loginBoxVisible;
 	G.ui.login.cancel.onclick = showCanvas;
 	if(findCurrentPage() == MYOPAC) 
 		G.ui.login.cancel.onclick = goHome;

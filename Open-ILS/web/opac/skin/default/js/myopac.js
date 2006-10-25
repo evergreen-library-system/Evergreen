@@ -1,7 +1,6 @@
 
 attachEvt("common", "run", myOPACInit );
-attachEvt("common", "loggedIn", myOPACInit );
-
+//attachEvt("common", "loggedIn", myOPACInit );
 attachEvt('common','locationUpdated', myopacReload );
 
 var fleshedUser = null;
@@ -22,16 +21,18 @@ function myOPACInit() {
 }
 
 function myopacReload() {
-	swapCanvas($('myopac_reloading'));
+	//swapCanvas($('myopac_reloading'));
 	var a = {};
 	a[PARAM_LOCATION] = getNewSearchLocation();
 	a[PARAM_DEPTH] = getNewSearchDepth();
+	hideMe($('canvas_main'));
 	goTo(buildOPACLink(a, true));
 }
 
 
 function myOPACChangePage( page ) {
-	
+	showCanvas();
+
 	var s = $("myopac_summary_td");
 	var c = $("myopac_checked_td");
 	var f = $("myopac_fines_td");

@@ -1,4 +1,4 @@
-<div id='canvas_main'>
+<div id='canvas_main' class='hide_me'>
 
 	<script language='javascript' src='../js/myopac.js'> </script>
 	<script> config.ids.altcanvas.myopac_reload = 'myopac_reloading'; </script>
