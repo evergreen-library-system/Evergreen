@@ -547,7 +547,8 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		volume_id : holdArgs.volume,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,
-		patronid : G.user.id(), 
+		//patronid : G.user.id(), 
+		patronid : holdArgs.recipient.id(),
 		depth : 0, 
 		pickup_lib : pickuplib 
 	};

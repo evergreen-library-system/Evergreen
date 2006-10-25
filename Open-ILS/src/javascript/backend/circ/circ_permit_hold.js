@@ -47,9 +47,16 @@ if( ( marcItemType == 'g' ||
 		log_info("patron and copy circ_lib share a common ancestor, hold allowed");
 
 	} else {
+		log_info("patron and copy circ_lib do NOT share a common ancestor");
 
-		log_info("patron and copy circ_lib do NOT share a common ancestor, hold on this type of material not allowed");
-		result.events.push('ITEM_NOT_HOLDABLE');
+		if( hasCommonAncestor( copy.circ_lib.id, holdRequestLib.id, 1) ) {
+			log_info("request_lib and copy circ_lib DO share a common ancestor");
+
+		} else {
+
+			log_info("request_lib and copy circ_lib also do NOT share a common ancestor, hold on this type of material not allowed");
+			result.events.push('ITEM_NOT_HOLDABLE');
+		}
 	}
 }
 

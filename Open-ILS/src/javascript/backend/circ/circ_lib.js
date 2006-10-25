@@ -39,6 +39,7 @@ var patronFines		= environment.patronFines;
 var isRenewal			= environment.isRenewal;
 var isPrecat			= environment.isPrecat;
 var currentLocation	= environment.location;
+var holdRequestLib	= environment.requestLib;
 
 
 
@@ -251,6 +252,7 @@ function log_vars( prefix ) {
 
 	str += ' Is Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
 	str += ' Is Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
+	str += (holdRequestLib) ? ' Hold request lib is ' + holdRequestLib.shortname : '';
 
 	log_info(str);
 }
