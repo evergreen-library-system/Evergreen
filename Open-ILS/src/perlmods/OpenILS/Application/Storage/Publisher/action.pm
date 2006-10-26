@@ -737,6 +737,10 @@ sub new_hold_copy_targeter {
 
 	for my $hold (@$holds) {
 		try {
+			#first, re-fetch the hold, to make sure it's not captured already
+			$hold = action::hold_request->retrieve( $hold->id );
+			die "OK\n" if ($hold->capture_time);
+
 			#start a transaction if needed
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
@@ -783,7 +787,7 @@ sub new_hold_copy_targeter {
 
 				unless ($rtree) {
 					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_RECORD' };
-					die 'OK';
+					die "OK\n";
 				}
 
 				for my $cn ( @{ $rtree->call_numbers } ) {
@@ -819,7 +823,7 @@ sub new_hold_copy_targeter {
 
 				$hold->update( { prev_check_time => 'today' } );
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
-				die 'OK';
+				die "OK\n";
 			}
 
 			my $copy_count = @$all_copies;
@@ -874,7 +878,7 @@ sub new_hold_copy_targeter {
 					$hold->update( { prev_check_time => 'today' } );
 					$self->method_lookup('open-ils.storage.transaction.commit')->run;
 					push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_TARGETS' };
-					die 'OK';
+					die "OK\n";
 				}
 			}
 
