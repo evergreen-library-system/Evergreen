@@ -190,35 +190,36 @@ sub org_closed_overlap {
 		  ORDER BY close_start ASC, close_end DESC
 	SQL
 
+	$date = clense_ISO8601($date);
+
 	my $sth = actor::org_unit::closed_date->db_Main->prepare( $sql );
 	$sth->execute($date, $ou);
-
-	$date = clense_ISO8601($date);
 	
 	my ($begin, $end);
 	while (my $closure = $sth->fetchrow_hashref) {
-		$begin ||= $closure->{close_start};
-		$end = $closure->{close_end};
-
-		my $before = $_dt_parser->parse_datetime( clense_ISO8601($begin) );
-		$before->subtract( seconds => 1 );
-		my $after = $_dt_parser->parse_datetime( clense_ISO8601($end) );
-		$after->add( seconds => 1 );
+		$begin ||= clense_ISO8601($closure->{close_start});
+		$end = clense_ISO8601($closure->{close_end});
 
 		if ( $direction <= 0 ) {
+			$before = $_dt_parser->parse_datetime( $begin );
+			$before->subtract( minutes => 1 );
+
 			while ( my $_b = org_closed_overlap($self, $client, $ou, $before->iso8601, -1, 1 ) ) {
 				$before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
 			}
+			$begin = clense_ISO8601($before->iso8601);
 		}
 
 		if ( $direction >= 0 ) {
+			$after = $_dt_parser->parse_datetime( $end );
+			$after->add( minutes => 1 );
+
 			while ( my $_a = org_closed_overlap($self, $client, $ou, $after->iso8601, 1, 1 ) ) {
 				$after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
 			}
+			$end = clense_ISO8601($after->iso8601);
 		}
 
-		$begin = clense_ISO8601($before->iso8601);
-		$end = clense_ISO8601($after->iso8601);
 	}
 
 	$begin ||= $date;

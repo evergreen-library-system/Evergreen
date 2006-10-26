@@ -2,8 +2,7 @@ BEGIN;
 
 -- These are copy level holds
 -- CREATE TABLE legacy_copy_hold_insert AS
-INSERT INTO action.hold_request
-	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+create table copy_hold_fix as 
 	SELECT	lh.hold_key AS id,
 		cp.id AS target,
 		cp.id AS current_copy,
@@ -15,7 +14,7 @@ INSERT INTO action.hold_request
 			ELSE 2
 		END AS selection_depth,
 		lh.hold_date AS request_time,
-		CASE	WHEN lh.available IN ('Y','I') THEN now()
+		CASE	WHEN lh.available IN ('Y','I') THEN '2006-09-01'::timestamptz
 			ELSE NULL
 		END AS capture_time,
 		rou.id AS request_lib,
@@ -33,10 +32,10 @@ INSERT INTO action.hold_request
 	  WHERE	lh.hold_level = 'C'
 	  	AND lh.hold_date > '2006-01-01';
 
+
 -- And these are CN level holds
 -- CREATE TABLE legacy_cn_hold_insert AS
-INSERT INTO action.hold_request
-	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+create table cn_hold_fix as
 	SELECT	lh.hold_key AS id,
 		cp.call_number AS target,
 		cp.id AS current_copy,
@@ -48,7 +47,7 @@ INSERT INTO action.hold_request
 			ELSE 2
 		END AS selection_depth,
 		lh.hold_date AS request_time,
-		CASE	WHEN lh.available IN ('Y','I') THEN now()
+		CASE	WHEN lh.available IN ('Y','I') THEN '2006-09-01'::timestamptz
 			ELSE NULL
 		END AS capture_time,
 		rou.id AS request_lib,
@@ -68,8 +67,7 @@ INSERT INTO action.hold_request
 
 -- And these are Title level holds
 -- CREATE TABLE legacy_title_hold_insert AS
-INSERT INTO action.hold_request
-	(id, target, current_copy, hold_type, pickup_lib, selection_ou, selection_depth, request_time, capture_time, request_lib, requestor, usr) 
+create table title_hold_fix as
 	SELECT	lh.hold_key AS id,
 		lh.cat_key AS target,
 		cp.id AS current_copy,
@@ -81,7 +79,7 @@ INSERT INTO action.hold_request
 			ELSE 2
 		END AS selection_depth,
 		lh.hold_date AS request_time,
-		CASE	WHEN lh.available IN ('Y','I') THEN now()
+		CASE	WHEN lh.available IN ('Y','I') THEN '2006-09-01'::timestamptz
 			ELSE NULL
 		END AS capture_time,
 		rou.id AS request_lib,
