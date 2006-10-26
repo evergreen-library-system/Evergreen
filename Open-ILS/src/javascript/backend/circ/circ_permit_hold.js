@@ -20,14 +20,25 @@ var mod = (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : "";
 
 log_info("circ-modifier = "+mod);
 
-
 if( mod == 'bestsellernh' )
 	result.events.push('ITEM_NOT_HOLDABLE');
 
 var marcItemType = getMARCItemType();
 
-var isAnc;
 
+/* some STATELIB items can have holds placed on them from anywhere */
+if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
+	if(	mod == 'dvd-long'		|| 
+			mod == 'video-long'	|| 
+			mod == 'audiobook'	|| 
+			mod == 'microform' ) {
+		log_info("STATELIB 'AV' item is holdable");
+		return;
+	}
+}
+
+
+var isAnc;
 if( ( marcItemType == 'g' || 
 		marcItemType == 'i' || 
 		marcItemType == 'j' || 

@@ -45,20 +45,9 @@ if( config ) {
 	----------------------------------------------------------------------------- */
 
 /* statelib has some special circ rules */
-
 if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
-
-	result.durationRule			= '35_days_1_renew';
-	result.recurringFinesRule	= "10_cent_per_day";
-	result.maxFine					= "overdue_mid";
-
-	/* reference, microfiche, microfilm */
-	if(	isTrue(copy.ref)	|| 
-			itemForm == 'a'	|| 
-			itemForm == 'b' ) {
-
-		result.durationRule		= '14_days_2_renew';
-	}	
+	if(isTrue(copy.ref))
+		result.durationRule	= '14_days_2_renew';
 }
 
 

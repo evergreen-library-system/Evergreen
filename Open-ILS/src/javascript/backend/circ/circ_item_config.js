@@ -383,6 +383,9 @@ CIRC_MOD_MAP['STATE-MFRM'] =  {
 	maxFine					: "overdue_mid"
 };
 
+
+
+
 /* this will set defaults even if no one asked for them */
 log_debug("Calling getItemConfig() to force defaults..");
 getItemConfig();
