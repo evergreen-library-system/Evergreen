@@ -1122,7 +1122,11 @@ sub apply_modified_due_date {
       # if the due_date lands on a day when the location is closed
       return unless $copy and $circ->due_date;
 
-		my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
+		#my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
+
+		# due-date overlap should be determined by the location the item
+		# is checked out from, not the owning or circ lib of the item
+		my $org = $self->editor->requestor->ws_ou;
 
       $logger->info("circulator: circ searching for closed date overlap on lib $org".
 			" with an item due date of ".$circ->due_date );
