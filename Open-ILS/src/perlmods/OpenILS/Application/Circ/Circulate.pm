@@ -192,9 +192,12 @@ sub run_method {
 		# make sure no success event accidentally slip in
 		$circulator->events(
 			[ grep { $_->{textcode} ne 'SUCCESS' } @{$circulator->events} ]);
+
+		# Log the events
 		my @e = @{$circulator->events};
 		push( @ee, $_->{textcode} ) for @e;
 		$logger->info("circulator: bailing out with events: @ee");
+
 		$circulator->editor->rollback;
 
 	} else {
@@ -214,6 +217,8 @@ sub run_method {
 sub circ_events {
 	my $circ = shift;
 	my @e = @{$circ->events};
+	# if we have multiple events, SUCCESS should not be one of them;
+	@e = grep { $_->{textcode} ne 'SUCCESS' } @e if @e > 1;
 	return (@e == 1) ? $e[0] : \@e;
 }
 
