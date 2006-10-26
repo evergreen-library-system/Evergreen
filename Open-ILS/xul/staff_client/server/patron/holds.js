@@ -61,10 +61,21 @@ patron.holds.prototype = {
 									row.my.patron_first_given_name = blob.patron_first;
 									row.my.patron_barcode = blob.patron_barcode;
 
+									var copy_id = row.my.ahr.current_copy();
+									if (typeof copy_id == 'object') {
+										if (copy_id == null) {
+											if (typeof row.my.acp == 'object' && row.my.acp != null) copy_id = row.my.acp.id();
+										} else {
+											copy_id = copy_id.id();
+										}
+									} else {
+										copy_id = row.my.acp.id();
+									}
+
 									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
 									params.row_node.setAttribute('retrieve_id', 
 										js2JSON({
-											'copy_id':row.my.ahr.current_copy(),
+											'copy_id':copy_id,
 											'id':row.my.ahr.id(),
 											'type':row.my.ahr.hold_type(),
 											'target':row.my.ahr.target(),

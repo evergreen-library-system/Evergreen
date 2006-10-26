@@ -519,8 +519,19 @@ patron.items.prototype = {
 						row.my.acp = robj.copy;
 						row.my.mvr = robj.mvr;
 						row.my.acn = robj.volume;
+
+						var copy_id = row.my.circ.target_copy();
+						if (typeof copy_id == 'object') {
+							if (copy_id != null) {
+								copy_id = copy_id.id();
+							} else {
+								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+							}
+						} else {
+								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+						}
 						
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.circ.target_copy(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
 	
 						if (typeof params.on_retrieve == 'function') {
 							params.on_retrieve(row);

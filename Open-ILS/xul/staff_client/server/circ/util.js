@@ -49,6 +49,8 @@ circ.util.show_copy_details = function(copy_id) {
 	JSAN.use('util.network'); obj.network = new util.network();
 	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
+	if (typeof copy_id == 'object' && copy_id != null) copy_id = copy_id.id();
+
 	try {
 		obj.data.fancy_prompt_data = null; obj.data.stash('fancy_prompt_data');
 		var url = xulG.url_prefix( urls.XUL_COPY_DETAILS ) + '?copy_id=' + copy_id;
