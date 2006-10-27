@@ -21,7 +21,6 @@ function ncBuildNew() {
 
 	var name = $('nc_new_name');
 	name.focus();
-	setEnterFunc(name, ncCreateNew );
 
 	var org = findOrgUnit(PERMS['CREATE_NON_CAT_TYPE']);
 	var mydepth = findOrgDepth(org);
