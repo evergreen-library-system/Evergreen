@@ -1249,13 +1249,15 @@ sub find_nearest_permitted_hold {
 		next unless $hold;
 		my ($reqr) = $U->fetch_user($hold->requestor);
 
+		my ($rlib) = $U->fetch_org_unit($hold->request_lib);
+
 		return ($hold) if OpenILS::Utils::PermitHold::permit_copy_hold(
 			{
 				patron_id			=> $hold->usr,
 				requestor			=> $reqr->id,
 				copy					=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
-				request_lib			=> $hold->request_lib 
+				request_lib			=> $rlib,
 			} 
 		);
 	}
