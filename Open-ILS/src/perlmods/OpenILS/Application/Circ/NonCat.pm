@@ -66,9 +66,9 @@ sub __create_noncat_type {
 	# grab all of "my" non-cat types and see if one with 
 	# the requested name already exists
 	my $types = $self->retrieve_noncat_types_all($client, $orgId);
-	if(ref($types)) {
-		for(@$types) {
-			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS') if $_->name eq $name;
+	for(@$types) {
+		if( $_->name eq $name ) {
+			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS', payload => $name);
 		}
 	}
 
@@ -101,9 +101,10 @@ sub create_noncat_type {
 	# grab all of "my" non-cat types and see if one with 
 	# the requested name already exists
 	my $types = $self->retrieve_noncat_types_all($client, $orgId);
-	if(ref($types)) {
-		for(@$types) {
-			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS') if $_->name eq $name;
+	for(@$types) {
+		if( $_->name eq $name ) {
+			$e->rollback;
+			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS', payload => $name);
 		}
 	}
 
@@ -223,16 +224,19 @@ __PACKAGE__->register_method(
 );
 sub delete_noncat {
 	my( $self, $conn, $auth, $typeid ) = @_;
-	my $e = OpenILS::Utils::Editor->new( authtoken => $auth );
-	return $e->event unless $e->checkauth;
+	my $e = new_editor(xact=>1, authtoken => $auth);
+	return $e->die_event unless $e->checkauth;
 
 	my $nc = $e->retrieve_config_non_cataloged_type($typeid)
-		or return $e->event;
+		or return $e->die_event;
 
 	$e->allowed('DELETE_NON_CAT_TYPE', $nc->owning_lib) # XXX rely on editor perm
-		or return $e->event;
+		or return $e->die_event;
 
-	$e->delete_config_non_cataloged_type($nc) or return $e->event;
+	#	XXX Add checks to see if this type is in use by a transaction
+
+	$e->delete_config_non_cataloged_type($nc) or return $e->die_event;
+	$e->commit;
 	return 1;
 }
 
