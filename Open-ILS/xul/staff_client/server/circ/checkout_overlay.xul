@@ -63,6 +63,7 @@
 		accesskey=""/>
 	<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
 	<button id="save_col_btn" command="save_columns" label="Save Columns" />
+	<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkout_auto" persist="checked"
 		label="&staff.patron_display.checkout.auto_print_label;" 

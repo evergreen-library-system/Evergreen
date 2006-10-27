@@ -280,6 +280,8 @@ circ.checkin.prototype = {
 
 	'test_barcode' : function(bc) {
 		var obj = this;
+		var x = document.getElementById('strict_barcode');
+		if (x && x.checked != true) return true;
 		var good = util.barcode.check(bc);
 		if (good) {
 			return true;

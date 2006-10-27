@@ -340,6 +340,8 @@ circ.copy_status.prototype = {
 	'test_barcode' : function(bc) {
 		var obj = this;
 		var good = util.barcode.check(bc);
+		var x = document.getElementById('strict_barcode');
+		if (x && x.checked != true) return true;
 		if (good) {
 			return true;
 		} else {

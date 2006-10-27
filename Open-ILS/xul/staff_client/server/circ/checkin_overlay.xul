@@ -106,6 +106,7 @@
 		command="cmd_checkin_export"
 		accesskey=""/>
 	<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
+	<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
 	<checkbox id="do_not_alert_on_precat" label="Don't Alert on Pre-Cat" persist="checked"/> 
 	<spacer id="pcii3s" flex="1"/>
 	<checkbox id="checkin_auto" label="Auto-Print for Hold/Transit Slips" accesskey="P" persist="checked"/> 

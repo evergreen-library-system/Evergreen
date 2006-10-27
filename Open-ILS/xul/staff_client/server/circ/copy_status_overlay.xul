@@ -108,6 +108,7 @@
 		command="cmd_copy_status_export"
 		accesskey=""/>
 	<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
+	<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
 	<spacer flex="1"/>
 </hbox>
 

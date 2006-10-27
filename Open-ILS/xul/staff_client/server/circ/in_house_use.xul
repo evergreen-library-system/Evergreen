@@ -109,6 +109,7 @@
 			command="cmd_in_house_use_export"
 			accesskey=""/>
 		<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked"/> 
+		<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
 		<spacer id="pcii3s" flex="1"/>
 		<button id="clip_button" disabled="true" command="sel_clip" label="Copy to Clipboard" />
 		<button id="save_cols_btn" command="save_columns" label="Save Columns" />
