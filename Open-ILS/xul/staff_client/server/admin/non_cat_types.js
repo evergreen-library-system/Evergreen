@@ -51,9 +51,16 @@ function ncCreateNew() {
 	var inh = $('nc_new_inhouse').checked ? 1 : null;
 
 	var req = new Request(CREATE_NON_CAT_TYPE, SESSION, name, org, time + ' ' + type, inh );
+	req.request.alertEvent = false;
 	req.send(true);
 	var res = req.result();
-	if(checkILSEvent(res)) throw res;
+
+	if(checkILSEvent(res)) {
+		if( res.textcode == 'NON_CAT_TYPE_EXISTS' )
+			return alertId('nc_type_exists');
+		alert(js2JSON(res));
+	}
+
 	alertId('nc_update_success');
 	ncFetchTypes();
 }
