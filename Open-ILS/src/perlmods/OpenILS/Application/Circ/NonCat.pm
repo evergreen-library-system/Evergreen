@@ -7,6 +7,7 @@ use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::Editor;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 $Data::Dumper::Indent = 0;
 
 my $U = "OpenILS::Application::AppUtils";
@@ -57,7 +58,7 @@ __PACKAGE__->register_method(
 		event on failure
 	/);
 
-sub create_noncat_type {
+sub __create_noncat_type {
 	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
 	my( $staff, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -89,6 +90,36 @@ sub create_noncat_type {
 	return $type;
 }
 
+
+sub create_noncat_type {
+	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
+
+	my $e = new_editor(authtoken=>$authtoken, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('CREATE_NON_CAT_TYPE', $orgId);
+
+	# grab all of "my" non-cat types and see if one with 
+	# the requested name already exists
+	my $types = $self->retrieve_noncat_types_all($client, $orgId);
+	if(ref($types)) {
+		for(@$types) {
+			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS') if $_->name eq $name;
+		}
+	}
+
+	my $type = Fieldmapper::config::non_cataloged_type->new;
+	$type->name($name);
+	$type->owning_lib($orgId);
+	$type->circ_duration($interval);
+	$type->in_house( ($inhouse) ? 't' : 'f' );
+
+	$e->create_config_non_cataloged_type($type) or return $e->die_event;
+	$e->commit;
+	return $type;
+}
+
+
+
 __PACKAGE__->register_method(
 	method	=> "update_noncat_type",
 	api_name	=> "open-ils.circ.non_cat_type.update",
@@ -102,21 +133,20 @@ __PACKAGE__->register_method(
 
 sub update_noncat_type {
 	my( $self, $client, $authtoken, $type ) = @_;
-	my( $staff, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
+	my $e = new_editor(xact=>1, authtoken=>$authtoken);
+	return $e->die_event unless $e->checkauth;
 
-	my $otype;
-	($otype, $evt) = $U->fetch_non_cat_type($type->id);
-	return $evt if $evt;
+	my $otype = $e->retrieve_config_non_cataloged_type($type->id) 
+		or return $e->die_event;
+
+	return $e->die_event unless 
+		$e->allowed('UPDATE_NON_CAT_TYPE', $otype->owning_lib);
 
 	$type->owning_lib($otype->owning_lib); # do not allow them to "move" the object
 
-	$evt = $U->check_perms( $staff->id, $type->owning_lib, 'UPDATE_NON_CAT_TYPE' );
-	return $evt if $evt;
-
-	return $U->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.config.non_cataloged_type.update', $type );
+	$e->update_config_non_cataloged_type($type) or return $e->die_event;
+	$e->commit;
+	return 1;
 }
 
 __PACKAGE__->register_method(
