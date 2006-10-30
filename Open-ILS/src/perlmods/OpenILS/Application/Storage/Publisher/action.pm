@@ -135,12 +135,19 @@ sub complete_reshelving {
 					AND cp.status = 7
 				  GROUP BY 1
 				  	HAVING MAX(circ.checkin_time) < NOW() - CAST(? AS INTERVAL)
-			) AS foo
-		)
+			  ) AS foo
+			)
+			OR id IN
+			( SELECT	cp.id
+			    FROM	$cp cp 
+					LEFT JOIN $circ circ ON (circ.target_copy = cp.id AND circ.id IS NULL)
+			    WHERE	cp.status = 7
+			    		AND cp.create_date > NOW() - CAST(? AS INTERVAL)
+			)
 	SQL
 
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
-	$sth->execute($window);
+	$sth->execute($window, $window);
 
 	return $sth->rows;
 
