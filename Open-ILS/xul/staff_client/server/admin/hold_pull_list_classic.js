@@ -54,6 +54,8 @@ function pullListDrawHolds(r) {
 function pullListDrawHold( tbody, row, hold, idx ) {
 
 	$n(row, 'date').appendChild(text(hold.request_time().replace(/\ .*/, "")));
+	var pl = typeof hold.pickup_lib() == 'object' ? hold.pickup_lib().shortname() : g.data.hash.aou[ hold.pickup_lib() ].shortname();
+	$n(row, 'pickup').appendChild(text(pl));
 
 	switch( hold.hold_type() ) {
 		case 'C' : unHideMe($n(row, 'copy_hold')); break;
