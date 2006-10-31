@@ -97,7 +97,7 @@ __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.schedule.retrieve_by_folder',
 	method => 'retrieve_schedules');
 sub retrieve_schedules {
-	my( $self, $conn, $auth, $folderId, $limit ) = @_;
+	my( $self, $conn, $auth, $folderId, $limit, $complete ) = @_;
 	my $e = new_rstore_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('RUN_REPORTS');
@@ -113,6 +113,9 @@ sub retrieve_schedules {
 	];
 
 	$query->[1]->{limit} = $limit if $limit;
+	$query->[0]->{complete_time} = undef unless $complete;
+	$query->[0]->{complete_time} = { '!=' => undef } if $complete;
+
 	return $e->search_reporter_schedule($query);
 }
 
@@ -250,6 +253,29 @@ sub update_report {
 		return 0;
 	}
 	$e->update_reporter_report($report)
+		or return $e->die_event;
+	$e->commit;
+	return 1;
+}
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.schedule.update',
+	method => 'update_schedule');
+sub update_schedule {
+	my( $self, $conn, $auth, $schedule ) = @_;
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+	my $s = $e->retrieve_reporter_schedule($schedule->id)
+		or return $e->die_event;
+	my $r = $e->retrieve_reporter_report($s->report)
+		or return $e->die_event;
+	if( $r->owner ne $e->requestor->id ) {
+		$e->rollback;
+		return 0;
+	}
+	$e->update_reporter_schedule($schedule)
 		or return $e->die_event;
 	$e->commit;
 	return 1;
