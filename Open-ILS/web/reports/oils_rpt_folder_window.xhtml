@@ -13,20 +13,24 @@
 					<span>
 						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
 							<option type='template' value='create_report'>Create a new report from selected template</option>
-							<option type='template' value='clone_template' disabled='disabled'>Clone selected template</option>
+							<option type='template' value='clone_template'>Clone selected template</option>
 							<option type='template' value='delete_template'>Delete selected template(s)</option>
 							<option type='report' value='change_params' disabled='disabled'>Clone report</option>
 							<option type='report' value='schedule_report' disabled='disabled'>Schedule report</option>
 							<option type='report' value='delete_report'>Delete selected report(s)</option>
 							<option type='output' value='show_output'>View report output</option>
 							<option type='output' value='delete_output'>Delete selected output(s)</option>
+
+							<option type='template' value='move_template'>Move the selected template(s) to a different folder</option>
+							<option type='report' value='move_report'>Move the select report(s) to a different folder</option>
+							<option type='output' value='move_output'>Move the selected output(s) to a different folder</option>
 						</select>
 					</span>
 					<input type='submit' value='Submit' id='oils_rpt_folder_content_action_go'/>
 				</td>
 			</tr>
 
-			<tr>
+			<tr id='oils_rpt_content_count_row'>
 				<td style='text-align:left;'>
 					<div>
 						Limit output to 
@@ -37,6 +41,7 @@
 							<option value='50'>50</option>
 							<option value=''>All</option>
 						</select>
+						<span><b id='oils_rpt_pending_output' class='hide_me'>Pending Items</b></span>
 					</div>
 				</td>
 				<td style='text-align:right;'>
@@ -45,14 +50,54 @@
 				</td>
 			</tr>
 
-			<tr class='oils_rpt_folder_window_contents_row'>
+			<tr class='oils_rpt_folder_window_contents_row' id='oils_rpt_content_row'>
 				<td colspan='2'>
 					<div id='oils_rpt_folder_contents_selector'/>
 				</td>
 			</tr>
 
+			<tr class='hide_me' id='oils_rpt_content_row_empty'>
+				<td style='text-align:left;'><b>No items to display</b></td>
+			</tr>
+
+
+			<!-- =================================================================== -->
+			<!--  Second set of folder data for schedule objects that have completed-->
+			<!-- =================================================================== -->
+			<tr id='oils_rpt_content_count_row_2' class='hide_me'>
+				<td style='text-align:left;padding-top: 20px;'>
+					<div>
+						Limit output to 
+						<select id='oils_rpt_output_limit_selector_2'>
+							<option value='5'>5</option>
+							<option value='10'>10</option>
+							<option value='25'>25</option>
+							<option value='50'>50</option>
+							<option value=''>All</option>
+						</select>
+						<span><b>Completed Items</b></span>
+					</div>
+				</td>
+			</tr>
+
+			<tr class='oils_rpt_folder_window_contents_row hide_me' id='oils_rpt_content_row_2'>
+				<td colspan='2'>
+					<div id='oils_rpt_folder_contents_selector_2'/>
+				</td>
+			</tr>
+			<!-- =================================================================== -->
+
 		</tbody>
 	</table>
+
+	<div id='oils_rpt_move_folder_div' class='hide_me' style='width:100%; padding: 5px; margin-left: 10px;'>
+		<div>Selected Folder: <b id='oils_rpt_move_folder_selected'/></div>
+		<hr/>
+		<div id='oils_rpt_move_folder_picker'/>
+		<hr/>
+		<input type='submit' value='Select Folder' id='oils_rpt_change_folder_submit'/>
+		<input type='submit' value='Cancel' id='oils_rpt_change_folder_cancel'/>
+	</div>
 
 	<span class='hide_me' id='oils_rpt_folder_contents_confirm_delete'>
 		Are you sure you wish to delete the selected item(s)?
@@ -72,6 +117,11 @@
 	<span class='hide_me' id='oils_rpt_folder_contents_no_delete'>
 		You may not delete another user's items
 	</span>
+
+	<span class='hide_me' id='oils_rpt_change_folder_not_allowed'>
+		You may not move another user's items
+	</span>
+
 
 </div>
 

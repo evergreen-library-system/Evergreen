@@ -10,10 +10,58 @@ function oilsInitReportBuilder() {
 		function() { 
 			hideMe(DOM.oils_rpt_tree_loading); 
 			unHideMe(DOM.oils_rpt_table); 
+			oilsRptBuilderDrawClone(new CGI().param('ct'));
 		}
 	);
 
 	DOM.oils_rpt_builder_save_template.onclick = oilsReportBuilderSave;
+}
+
+function oilsRptBuilderDrawClone(templateId) {
+	if(!templateId) return;
+	unHideMe(DOM.oils_rpt_builder_cloning);
+
+	oilsRptFetchTemplate(templateId,
+		function(template) { oilsRptBuilderDrawClone2(template);}
+	);
+}
+
+
+function oilsRptBuilderDrawClone2(template) {
+	//oilsRpt.
+	appendClear( DOM.oils_rpt_build_cloning_name, template.name() );
+	DOM.oils_rpt_builder_new_name.value = template.name();
+	DOM.oils_rpt_builder_new_desc.value = template.description();
+
+	_debug(formatJSON(template.data()));
+
+	/* manually shove data into the display selectors */
+	var def = JSON2js(template.data());
+
+	var table = def.from.table;
+	var node;
+	for( var i in oilsIDL ) {
+		node = oilsIDL[i];
+		if( node.table == table ) {
+			setSelector(DOM.oils_rpt_builder_type_selector, node.name);
+			DOM.oils_rpt_builder_type_selector.onchange();
+			break;
+		}
+	}
+
+	iterate(def.select,
+		function(item) {
+			oilsAddRptDisplayItem(item.path, item.alias, item.column.transform)});
+
+	iterate(def.where,
+		function(item) {
+			oilsAddRptFilterItem(item.path, item.column.transform, oilsRptObjectKeys(item.condition)[0])});
+
+	iterate(def.having,
+		function(item) {
+			oilsAddRptHavingItem(item.path, item.column.transform, oilsRptObjectKeys(item.condition)[0])});
+
+	oilsRpt.setTemplate(template);
 }
 
 function oilsReportBuilderReset() {
@@ -46,13 +94,18 @@ function oilsReportBuilderSave() {
 	//return; /* XXX */
 
 	var req = new Request(OILS_RPT_CREATE_TEMPLATE, SESSION, tmpl);
+	req.request.alertEvent = false;
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			if( res && res != '0' ) {
-				oilsRptAlertSuccess();
-				_l('oils_rpt.xhtml');
-			} 
+			if(checkILSEvent(res)) {
+				alertILSEvent(res);
+			} else {
+				if( res && res != '0' ) {
+					oilsRptAlertSuccess();
+					_l('oils_rpt.xhtml');
+				} 
+			}
 		}
 	);
 	
@@ -573,6 +626,10 @@ function oilsRptHideEditorDivs() {
 	hideMe(DOM.oils_rpt_filter_div);
 	hideMe(DOM.oils_rpt_agg_filter_div);
 	hideMe(DOM.oils_rpt_order_by_div);
+
+	removeCSSClass(DOM.oils_rpt_tform_tab.parentNode, 'oils_rpt_tab_picker_selected');
+	removeCSSClass(DOM.oils_rpt_filter_tab.parentNode, 'oils_rpt_tab_picker_selected');
+	removeCSSClass(DOM.oils_rpt_agg_filter_tab.parentNode, 'oils_rpt_tab_picker_selected');
 }
 
 
@@ -592,7 +649,10 @@ function oilsRptDrawDataWindow(path) {
 
 	var div = DOM.oils_rpt_column_editor;
 	/* set a preliminary top position so the page won't bounce around */
-	div.setAttribute('style','top:'+oilsMouseX+'px');
+
+
+	/* XXX */
+	//div.setAttribute('style','top:'+oilsMouseX+'px');
 
 	/* unhide the div so we can determine the dimensions */
 	unHideMe(div);
@@ -605,7 +665,10 @@ function oilsRptDrawDataWindow(path) {
 	oilsRptDrawHavingWindow(path, col, cls, field);
 	oilsRptDrawOrderByWindow(path, col, cls, field);
 
-	buildFloatingDiv(div, 600);
+	//buildFloatingDiv(div, 600);
+
+	//window.scrollTo(0,0);
+	window.scrollTo(0, 60);
 
 	/* now let them see it */
 	div.style.visibility='visible';
@@ -615,12 +678,27 @@ function oilsRptDrawDataWindow(path) {
 
 function oilsRptSetDataWindowActions(div) {
 	/* give the tab links behavior */
+
+
 	DOM.oils_rpt_tform_tab.onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_tform_div)};
+		function(){
+			oilsRptHideEditorDivs();
+			unHideMe(DOM.oils_rpt_tform_div)
+			addCSSClass(DOM.oils_rpt_tform_tab.parentNode, 'oils_rpt_tab_picker_selected');
+		};
+
 	DOM.oils_rpt_filter_tab.onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_filter_div)};
+		function(){
+			oilsRptHideEditorDivs();
+			unHideMe(DOM.oils_rpt_filter_div)
+			addCSSClass(DOM.oils_rpt_filter_tab.parentNode, 'oils_rpt_tab_picker_selected');
+		};
 	DOM.oils_rpt_agg_filter_tab.onclick = 
-		function(){oilsRptHideEditorDivs();unHideMe(DOM.oils_rpt_agg_filter_div)};
+		function(){
+			oilsRptHideEditorDivs();
+			unHideMe(DOM.oils_rpt_agg_filter_div)
+			addCSSClass(DOM.oils_rpt_agg_filter_tab.parentNode, 'oils_rpt_tab_picker_selected');
+		};
 
 	/*
 	DOM.oils_rpt_order_by_tab.onclick = 

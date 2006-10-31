@@ -1,32 +1,44 @@
 <div id='oils_rpt_editor_div'>
-	<table width='100%'>
+	<table width='100%' id='oils_rpt_editor_table'>
 		<tbody>
 			<tr>
-				<td>Template Name:</td>
-				<td><b id='oils_rpt_report_editor_template_name'/></td>
+				<th>Template Name:</th>
+				<td><span id='oils_rpt_report_editor_template_name'/></td>
 			</tr>
 			<tr>
-				<td>Template Creator:</td>
-				<td><b id='oils_rpt_report_editor_template_creator'/></td>
+				<th>Template Creator:</th>
+				<td><span id='oils_rpt_report_editor_template_creator'/></td>
 			</tr>
 			<tr>
-				<td>Template Description:</td>
-				<td><b id='oils_rpt_report_editor_template_description'/></td>
+				<th>Template Description:</th>
+				<td><span id='oils_rpt_report_editor_template_description'/></td>
 			</tr>
 
 			<tr>
-				<td>Report Name:</td>
-				<td><input type='text' id='oils_rpt_report_editor_name'/></td>
+				<th>Report Name:</th>
+				<script>
+					var oils_rpt_report_editor_name_func = function(obj) {
+						if(obj.value) removeCSSClass(obj, OILS_RPT_INVALID_DATA);
+						else addCSSClass(obj, OILS_RPT_INVALID_DATA);
+					}
+				</script>
+				<td>
+					<input type='text' id='oils_rpt_report_editor_name' class='oils_rpt_invalid_input'
+						onkeyup='oils_rpt_report_editor_name_func(this);' 
+						onchange='oils_rpt_report_editor_name_func(this);'/>
+				</td>
 			</tr>
 			<tr>
-				<td>Report Description:</td>
+				<th>Report Description:</th>
 				<td><textarea cols='45' rows='2' id='oils_rpt_report_editor_desc'/></td>
 			</tr>
 			<tr>
-				<td>Report Columns:</td>
+				<th>Report Columns:</th>
 				<td><b id='oils_rpt_report_editor_cols'/></td>
 			</tr>
+			<!--
 			<tr><td colspan='2'><hr/></td></tr>
+			-->
 			<tr>
 				<th>Choose a folder to store this report definition: </th>
 				<td>
@@ -37,18 +49,25 @@
 					<span id='oils_rpt_report_editor_dest_folder'/>
 				</td>
 			</tr>
+			<!--
 			<tr><td colspan='2'><hr/></td></tr>
+			-->
 			<tr>
-				<td colspan='2'>
+				<td colspan='2' style='padding: 10px;'>
 					<!--#include virtual="oils_rpt_param_editor.xhtml"-->
 				</td>
 			</tr>
+			<!--
 			<tr><td colspan='2'><hr/></td></tr>
+			-->
+			<!--
 			<tr>
 				<th colspan='2'>Output Options</th>
 			</tr>
+			-->
 			<tr>
 				<td colspan='2'>
+					<div><b>Output Options</b></div>
 					<ul>
 						<li><input type="checkbox" id="oils_rpt_format_excel" value="t" checked="checked"/><span>Excel Output</span></li>
 						<li><input type="checkbox" id="oils_rpt_format_csv" value="t"/><span>CSV Output</span></li>
@@ -66,66 +85,122 @@
 
 				</td>
 			</tr>
+			<!--
 			<tr><td colspan='2'><hr/></td></tr>
+			-->
 			<tr>
-				<td colspan='2'>
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<span>Run ASAP </span>
-										<input type='checkbox' id='oils_rpt_report_editor_run_now'/>
-									<span> or at :</span>
-								</th>
-								<td>
-									<input id="oils_rpt_param_editor_sched_start_date" type="text" size="10"/>
-										at
-									<select id='oils_rpt_param_editor_sched_start_hour'>
-										<option value="00:00">Midnight</option>
-										<option value="01:00">1 AM</option>
-										<option value="02:00">2 AM</option>
-										<option value="03:00">3 AM</option>
-										<option value="04:00">4 AM</option>
-										<option value="05:00">5 AM</option>
-										<option value="06:00">6 AM</option>
-										<option value="07:00">7 AM</option>
-										<option value="09:00">8 AM</option>
-										<option value="09:00">9 AM</option>
-										<option value="10:00">10 AM</option>
-										<option value="11:00">11 AM</option>
-										<option value="12:00">Noon</option>
-										<option value="13:00">1 PM</option>
-										<option value="14:00">2 PM</option>
-										<option value="15:00">3 PM</option>
-										<option value="16:00">4 PM</option>
-										<option value="17:00">5 PM</option>
-										<option value="18:00">6 PM</option>
-										<option value="19:00">7 PM</option>
-										<option value="20:00">8 PM</option>
-										<option value="21:00">9 PM</option>
-										<option value="22:00">10 PM</option>
-										<option value="23:00">11 PM</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>Send completion notification to this Email address:</th>
-								<td><input id="oils_rpt_param_editor_sched_email" type="text" size="25"/></td>
-							</tr>
-							<tr>
-								<th>Choose a folder to store this report's output: </th>
-								<td>
-									<div style='margin-bottom: 7px;'>
-										<span>Selected Folder: </span>
-										<b id='oils_rpt_output_selected_folder'/>
-									</div>
-									<span id='oils_rpt_output_dest_folder'/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<th>Recurring Report: </th>
+				<td>
+					<input type="checkbox" id="oils_rpt_recur" value="t"
+						onclick='
+							if(this.checked) {
+								DOM.oils_rpt_recur_count.disabled = false;
+								DOM.oils_rpt_recur_interval_type.disabled = false;
+							} else {
+								DOM.oils_rpt_recur_count.disabled = true;
+								DOM.oils_rpt_recur_interval_type.disabled = true;
+							}
+					'/>
 				</td>
 			</tr>
+			<tr>
+				<th>Recurrence Interval: </th>
+				<td>
+					<select id="oils_rpt_recur_count" disabled='disabled'>
+						<option value='1'>1</option>
+						<option value='2'>2</option>
+						<option value='3'>3</option>
+						<option value='4'>4</option>
+						<option value='5'>5</option>
+						<option value='6'>6</option>
+						<option value='7'>7</option>
+						<option value='8'>8</option>
+						<option value='9'>9</option>
+						<option value='10'>10</option>
+						<option value='11'>11</option>
+						<option value='12'>12</option>
+						<option value='13'>13</option>
+						<option value='14'>14</option>
+						<option value='15'>15</option>
+						<option value='16'>16</option>
+						<option value='17'>17</option>
+						<option value='18'>18</option>
+						<option value='19'>19</option>
+						<option value='20'>20</option>
+						<option value='21'>21</option>
+						<option value='22'>22</option>
+						<option value='23'>23</option>
+						<option value='24'>24</option>
+					</select>
+					<select id="oils_rpt_recur_interval_type" disabled='disabled'>
+						<option value="days">Day(s)</option>
+						<option value="weeks">Week(s)</option>
+						<option value="months">Month(s)</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span>Run ASAP </span>
+						<input type='checkbox' id='oils_rpt_report_editor_run_now'
+							onclick='
+								if(this.checked) {
+									DOM.oils_rpt_param_editor_sched_start_date.disabled = true;
+									DOM.oils_rpt_param_editor_sched_start_hour.disabled = true;
+								} else {
+									DOM.oils_rpt_param_editor_sched_start_date.disabled = false;
+									DOM.oils_rpt_param_editor_sched_start_hour.disabled = false;
+								}
+							'
+						/>
+					<span> or at: </span>
+				</th>
+				<td>
+					<input id="oils_rpt_param_editor_sched_start_date" type="text" size="10"/>
+						at
+					<select id='oils_rpt_param_editor_sched_start_hour'>
+						<option value="00:00">Midnight</option>
+						<option value="01:00">1 AM</option>
+						<option value="02:00">2 AM</option>
+						<option value="03:00">3 AM</option>
+						<option value="04:00">4 AM</option>
+						<option value="05:00">5 AM</option>
+						<option value="06:00">6 AM</option>
+						<option value="07:00">7 AM</option>
+						<option value="09:00">8 AM</option>
+						<option value="09:00">9 AM</option>
+						<option value="10:00">10 AM</option>
+						<option value="11:00">11 AM</option>
+						<option value="12:00">Noon</option>
+						<option value="13:00">1 PM</option>
+						<option value="14:00">2 PM</option>
+						<option value="15:00">3 PM</option>
+						<option value="16:00">4 PM</option>
+						<option value="17:00">5 PM</option>
+						<option value="18:00">6 PM</option>
+						<option value="19:00">7 PM</option>
+						<option value="20:00">8 PM</option>
+						<option value="21:00">9 PM</option>
+						<option value="22:00">10 PM</option>
+						<option value="23:00">11 PM</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Send completion notification to this Email address: </th>
+				<td><input id="oils_rpt_param_editor_sched_email" type="text" size="25"/></td>
+			</tr>
+			<tr>
+				<th>Choose a folder to store this report's output: </th>
+				<td>
+					<div style='margin-bottom: 7px;'>
+						<span>Selected Folder: </span>
+						<b id='oils_rpt_output_selected_folder'/>
+					</div>
+					<span id='oils_rpt_output_dest_folder'/>
+				</td>
+			</tr>
+
 			<tr>
 				<td colspan='2'>
 					<input id='oils_rpt_report_editor_save' type='submit' value='Save Report'/>

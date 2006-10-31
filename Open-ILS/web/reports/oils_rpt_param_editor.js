@@ -6,13 +6,18 @@ function oilsRptParamEditor(report, tbody) {
 
 
 oilsRptParamEditor.prototype.recur = function() {
-	var cb = $n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur');
+	//var cb = $n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur');
+	var cb = DOM.oils_rpt_recur;
 	return (cb.checked) ? 't' : 'f';
 }
 
 oilsRptParamEditor.prototype.recurInterval = function() {
+	/*
 	var count = getSelectorVal($n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur_count'));
 	var intvl = getSelectorVal($n(DOM.oils_rpt_recur_editor_table,'oils_rpt_recur_interval_type'));
+	*/
+	var count = getSelectorVal(DOM.oils_rpt_recur_count);
+	var intvl = getSelectorVal(DOM.oils_rpt_recur_interval_type);
 	return count+''+intvl;
 }
 
@@ -37,35 +42,8 @@ oilsRptParamEditor.prototype.draw = function() {
 		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
-		//this.buildRelWidget(par, row);
 	}
 }
-
-
-/* display the time-relative options if necessary */
-/*
-oilsRptParamEditor.prototype.buildRelWidget = function(par, row) {
-
-	var field = oilsRptFindField(
-		oilsIDL[oilsRptPathClass(par.path)], oilsRptPathCol(par.path));
-
-	_debug('checking rel widget for datatype '+field.datatype);
-
-	if(field.datatype != 'timestamp') return;
-	if(par.op != '=') return;
-
-	var dom = $n(row,'reldate_div');
-	unHideMe(dom);
-	par.relWidget = new oilsRptRelDatePicker({node:$n(dom,'reldate'),relative:true});
-	par.relWidget.draw();
-	var cb = $n(row,'choose_rel');
-	cb.onclick = function() {
-		par.relWidgetChecked = false;
-		if( cb.checked ) par.relWidgetChecked = true;
-	}
-}
-*/
-
 
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	var transform = param.column.transform;
@@ -80,6 +58,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	var widgetArgs	= {node:node};
 	widgetArgs.calFormat = OILS_RPT_TRANSFORMS[transform].cal_format;
 	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
+	widgetArgs.regex = OILS_RPT_TRANSFORMS[transform].regex;
 
 	switch(transform) {
 		case 'date':
@@ -196,31 +175,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		default:
 			return new atomicWidget(widgetArgs);
 	}
-
-	/*
-	switch(param.op) {
-		case 'in':
-		case 'not in':
-			if( cls == 'aou' ) {
-				return new oilsRptOrgMultiSelect({node:node});
-			} else {
-				return new oilsRptInputMultiWidget({node:node});
-			}
-		case 'between':
-			return new oilsRptMultiInputWidget({node:node});
-
-		default:
-			switch(dtype) {
-				case 'timestamp':
-					return new oilsRptWidget({node:node});
-				default:
-					return new oilsRptWidget({node:node});
-			}
-	}
-	*/
 }
 
-//oilsRptParamEditor.prototype.get = function(param, node) {
 
 
 

@@ -84,8 +84,18 @@ oilsRptReportEditor.prototype.save = function() {
 		var par = this.paramEditor.params[p];
 		_debug("adding report param "+par.key+" to report data");
 		var val = par.widget.getValue();
+
 		if(!val || val.length == 0 )
 			return alertId('oils_rpt_empty_param');
+
+		if( typeof val == 'object') {
+			for( var i = i; i < val.length; i++ ) {
+				_debug("looking at widget value" + val[i]);
+				if( val[i] == '' || val[i] == null ) 
+					return alertId('oils_rpt_empty_param');
+			}
+		}
+
 		data[par.key] = val;
 	}
 
@@ -141,10 +151,14 @@ oilsRptReportEditor.prototype.save = function() {
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			if( res && res != '0' ) {
-				oilsRptAlertSuccess();
-				oilsRptCurrentFolderManager.draw();
-				obj.folderWindow.draw();
+			if(checkILSEvent(res)) {
+				alertILSEvent(res);
+			} else {
+				if( res && res != '0' ) {
+					oilsRptAlertSuccess();
+					oilsRptCurrentFolderManager.draw();
+					obj.folderWindow.draw();
+				}
 			}
 		}
 	);

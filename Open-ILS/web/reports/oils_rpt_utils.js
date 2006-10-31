@@ -127,14 +127,17 @@ function print_tabs(t) {
 
 
 function oilsRptDebug() {
+	if(!oilsRptDebugEnabled) return;
+
 	_debug("\n-------------------------------------\n");
 	_debug(oilsRpt.toString());
 	_debug("\n-------------------------------------\n");
-	if(!oilsRptDebugEnabled) return;
+
+	/*
 	if(!oilsRptDebugWindow)
 		oilsRptDebugWindow = window.open('','Debug','resizable,width=700,height=500,scrollbars=1'); 
-
 	oilsRptDebugWindow.document.body.innerHTML = oilsRpt.toHTMLString();
+	*/
 }
 
 
@@ -198,6 +201,8 @@ function buildFloatingDiv(div, width) {
 		top = oilsMouseY - div.clientHeight - 10;
 	}
 	div.setAttribute('style', 'left:'+left+'px; top:'+top+'px; width:'+width+'px');
+	//div.setAttribute('style', 'top:'+top+'px;');
+	//alert(DOM.oils_rpt_filter_selector.style.top);
 }
 
 
@@ -279,6 +284,31 @@ function oilsRptCreateFolder(folder, type, callback) {
 		req.send(true);
 		return req.result();
 	}
+}
+
+function oilsRptUpdateTemplate(template, callback) {
+	oilsRptDoGenericUpdate(OILS_RPT_UPDATE_TEMPLATE, template, callback);
+}
+
+function oilsRptUpdateReport(report, callback) {
+	oilsRptDoGenericUpdate(OILS_RPT_UPDATE_REPORT, report, callback);
+}
+
+function oilsRptUpdateSchedule(schedule, callback) {
+	oilsRptDoGenericUpdate(OILS_RPT_UPDATE_SCHEDULE, schedule, callback);
+}
+
+function oilsRptDoGenericUpdate( method, arg, callback ) {
+	_debug("generic update running: "+method);
+	var req = new Request(method, SESSION, arg);
+	req.callback(
+		function(r) {
+			if( r.getResultObject() > 0 )
+				callback(true);
+			else callback(false);
+		}
+	);
+	req.send();
 }
 
 /*

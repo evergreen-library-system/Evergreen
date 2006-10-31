@@ -114,11 +114,20 @@ button:active {
 	position: absolute;	
 	text-align: center;
 	z-index: 1;
-	background: #E0F0F0; 
+	/*background: #E0F0F0; */
+	background: #FFCC7F;   /* see FF9900 as the primary color in the color picker for complimentaries */
 	border: 3px groove #0033EE;
 	padding: 10px;
+
+	/* testing static location */
+	width: 600px;
+	top: 60px;
+	left: 20px;
 }
 
+.oils_rpt_tab_picker_selected {
+	background: #96A1C6;
+}
 
 .oils_rpt_tab_table {
 	width: 100%;
@@ -128,6 +137,7 @@ button:active {
 	border: 1px solid #808080;
 	border-collapse: collapse;
 	text-align: center;
+	font-weight: bold;
 }
 
 .oils_rpt_tab_table td {
@@ -237,10 +247,12 @@ button:active {
 
 #oils_rpt_param_editor_table td {
 	border: 1px solid #808080;
+	padding: 2px;
 }
 
 #oils_rpt_param_editor_table thead td {
 	font-weight: bold;
+	text-align: center;
 }
 
 .oils_rpt_folder_tree {
@@ -285,6 +297,19 @@ button:active {
 .oils_rpt_generic_table { width: 100%; }
 .oils_rpt_generic_table td { border: 1px solid #808080; padding: 5px; }
 
+#oils_rpt_content_count_row_2 {
+	border-top: 2px solid #808080;
+	border-bottom: 1px solid #808080;
+	padding-top: 10px;
+	margin-top: 10px;
+}
 
 
+#oils_rpt_editor_table tr {
+	border-bottom: 1px solid #D0D0D0;
+}
+
+#oils_rpt_editor_table tr td {
+	border-left: 1px solid #808080;
+}
 

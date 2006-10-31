@@ -19,14 +19,21 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 	var obj = this;
 	setSelector(DOM.oils_rpt_output_limit_selector, oilsRptOutputLimit);
+	setSelector(DOM.oils_rpt_output_limit_selector_2, oilsRptOutputLimit2);
 
 	DOM.oils_rpt_output_limit_selector.onchange = function() {
 		oilsRptOutputLimit = getSelectorVal(DOM.oils_rpt_output_limit_selector);
 		obj.draw();
 	}
 
+	DOM.oils_rpt_output_limit_selector_2.onchange = function() {
+		oilsRptOutputLimit2 = getSelectorVal(DOM.oils_rpt_output_limit_selector_2);
+		obj.draw();
+	}
 
-	if( this.folderNode.folder.owner().id() == USER.id() && this.type == 'template') 
+	var mine = ( this.folderNode.folder.owner().id() == USER.id() );
+
+	if( mine  && this.type == 'template') 
 		unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
 	else hideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
 
@@ -59,6 +66,12 @@ oilsRptFolderWindow.prototype.draw = function() {
 	var x = true;
 	for( var i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
+
+		if( !mine && opt.getAttribute('value').match(/move/) ) {
+			hideMe(opt);
+			continue;
+		}
+
 		if( opt.getAttribute('type') == this.type ) {
 			if(x && !opt.disabled) {
 				opt.selected = true;
@@ -79,7 +92,8 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 
 	DOM.oils_rpt_folder_window_contents_new_template.onclick = function() {
 		var s = location.search+'';
-		s = s.replace(/\&folder=\d+/,'');
+		s = s.replace(/\&folder=\d+/g,'');
+		s = s.replace(/\&ct=\d+/g,'');
 		goTo( 'oils_rpt_builder.xhtml'+s+'&folder='+obj.folderNode.folder.id());
 	}
 
@@ -186,7 +200,11 @@ oilsRptFolderWindow.prototype.hideFolderActions = function() {
 
 
 oilsRptFolderWindow.prototype.doFolderAction = function() {
-	var objs = this.fmTable.getSelected();
+	var objs = (this.fmTable) ? this.fmTable.getSelected() : [];
+
+	if( this.type == 'output' && this.fmTable2 ) 
+		objs = objs.concat( this.fmTable2.getSelected() );
+
 	if( objs.length == 0 ) 
 		return alert('Please select an item from the list');
 	var action = getSelectorVal(DOM.oils_rpt_folder_contents_action_selector);
@@ -225,6 +243,93 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			this.deleteOutputs(objs,0, successCallback);
 			break;
 
+		case 'move_template':
+			this.changeBatchFolder(objs, 'template', successCallback);
+			break;
+
+		case 'move_report':
+			this.changeBatchFolder(objs, 'report', successCallback);
+			break;
+
+		case 'move_output':
+			this.changeBatchFolder(objs, 'output', successCallback);
+			break;
+
+		case 'clone_template':
+			this.cloneTemplate(objs[0]);
+	}
+}
+
+oilsRptFolderWindow.prototype.changeBatchFolder = function(objs, type, callback) {
+	hideMe(DOM.oils_rpt_folder_window_contents_table);
+	unHideMe(DOM.oils_rpt_move_folder_div)
+	var obj = this;
+	this.drawFolderOptions(type,	
+		function(folderid) {
+			obj.changeFolderList(objs, type, folderid, 0, callback);
+			hideMe(DOM.oils_rpt_move_folder_div)
+			unHideMe(DOM.oils_rpt_folder_window_contents_table);
+		}
+	);
+}
+
+oilsRptFolderWindow.prototype.cloneTemplate = function(template) {
+	hideMe(DOM.oils_rpt_folder_window_contents_table);
+	unHideMe(DOM.oils_rpt_move_folder_div)
+	var obj = this;
+	this.drawFolderOptions('template',
+		function(folderid) {
+			var s = location.search+'';
+			s = s.replace(/\&folder=\d+/g,'');
+			s = s.replace(/\&ct=\d+/g,'');
+			goTo('oils_rpt_builder.xhtml'+s+'&folder='+folderid+'&ct='+template.id());
+		}
+	);
+}
+
+
+oilsRptFolderWindow.prototype.changeFolderList = function(list, type, folderid, idx, callback, errid) {
+	if( idx >= list.length ) return callback(errid);
+	var item = list[idx];
+	var obj	= this;
+	var rcback = function(){obj.changeFolderList(list,type,folderid,++idx,callback,errid)};
+
+	item.folder(folderid);
+
+	switch(type) {
+		case 'template':
+			oilsRptUpdateTemplate(item,rcback);
+			break;
+		case 'report':
+			oilsRptUpdateReport(item,rcback);
+			break;
+		case 'output':
+			oilsRptUpdateSchedule(item,rcback);
+			break;
+	}
+}
+
+oilsRptFolderWindow.prototype.drawFolderOptions = function(type, callback) {
+	//var oilsRptChangeFolderTree;
+	var selectedFolder;
+	oilsRptBuildFolder(
+		type,
+		DOM.oils_rpt_move_folder_picker,
+		'tree9807897',
+		'Change Folders',
+		function(node) { 
+			appendClear(DOM.oils_rpt_move_folder_selected, node.folder.name());
+			selectedFolder = node.folder.id();
+		} 
+	);
+
+	DOM.oils_rpt_change_folder_submit.onclick = function() {
+		if(selectedFolder) callback(selectedFolder);
+	}
+
+	DOM.oils_rpt_change_folder_cancel.onclick = function() {
+		hideMe(DOM.oils_rpt_move_folder_div)
+		unHideMe(DOM.oils_rpt_folder_window_contents_table);
 	}
 }
 
@@ -247,10 +352,16 @@ oilsRptFolderWindow.prototype.deleteOutputs = function(list, idx, callback, erri
 }
 
 oilsRptFolderWindow.prototype.showOutput = function(sched) {
-	oilsRptFetchReport(sched.report(), 
+	oilsRptFetchReport(sched.report().id(), 
 		function(r) {
 			var url = oilsRptBuildOutputLink(r.template(), r.id(), sched.id());
-			goTo(url);
+			_debug("launching report output view at URL: " + url);
+			if(isXUL()) 
+				xulG.new_tab(url,{"tab_name":"Report Output: " + r.name()},{})
+			else {
+				//goTo(url);
+				var win = window.open(url,r.name(), 'resizable,width=800,height=600,scrollbars=1'); 
+			}
 		}
 	);
 }
@@ -338,13 +449,21 @@ oilsRptFolderWindow.prototype.drawFolderDetails = function() {
 
 
 oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
+
+	hideMe(DOM.oils_rpt_content_count_row_2);
+	hideMe(DOM.oils_rpt_content_row_2);
+
 	removeChildren(this.selector);
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
 		SESSION, this.type, this.folderNode.folder.id(), oilsRptOutputLimit);
 
+	hideMe(DOM.oils_rpt_pending_output);
+
 	if(this.type == 'output') {
+		unHideMe(DOM.oils_rpt_pending_output);
+		/* first fetch the non-complete schedules */
 		req = new Request(OILS_RPT_FETCH_OUTPUT, 
-			SESSION, this.folderNode.folder.id(), oilsRptOutputLimit);
+			SESSION, this.folderNode.folder.id(), oilsRptOutputLimit, 0);
 	}
 
 	var obj = this;
@@ -352,9 +471,22 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 	req.callback(
 		function(r) {
 			var res = r.getResultObject();
-			if( obj.type == 'output' ) {
-				obj.fleshSchedules(res, 0);
+
+			if( res.length == 0 ) {
+				hideMe(DOM.oils_rpt_content_count_row);
+				hideMe(DOM.oils_rpt_content_row);
+				unHideMe(DOM.oils_rpt_content_row_empty);
 			} else {
+				unHideMe(DOM.oils_rpt_content_count_row);
+				unHideMe(DOM.oils_rpt_content_row);
+				hideMe(DOM.oils_rpt_content_row_empty);
+			}
+
+			if( obj.type == 'output' ) {
+				obj.fleshSchedules(res, 0, obj.selector);
+			} else {
+
+
 				obj.fmTable = drawFMObjectTable( 
 					{ 
 						dest : obj.selector, 
@@ -369,10 +501,41 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 		}
 	);
 	req.send();
+
+	if( this.type != 'output' ) return;
+
+	/*
+	unHideMe(DOM.oils_rpt_content_count_row_2);
+	unHideMe(DOM.oils_rpt_content_row_2);
+	*/
+
+	/* now fetch the completed schedules */
+	req = new Request(OILS_RPT_FETCH_OUTPUT, 
+		SESSION, this.folderNode.folder.id(), oilsRptOutputLimit2, 1);
+
+	_debug("TRYING: fleshing finished scheds with div: " + DOM.oils_rpt_folder_contents_selector_2);
+	removeChildren(DOM.oils_rpt_folder_contents_selector_2);
+	req.callback(
+		function(r) {
+			var res = r.getResultObject();
+
+			if( res.length == 0 ) {
+				hideMe(DOM.oils_rpt_content_count_row_2);
+				hideMe(DOM.oils_rpt_content_row_2);
+			} else {
+				unHideMe(DOM.oils_rpt_content_count_row_2);
+				unHideMe(DOM.oils_rpt_content_row_2);
+			}
+
+			_debug("fleshing finished scheds with div: " + DOM.oils_rpt_folder_contents_selector_2);
+			obj.fleshSchedules(res, 0, DOM.oils_rpt_folder_contents_selector_2, true);
+		}
+	);
+	req.send();
 }
 
 
-oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, table) {
+oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, selector, isSecond) {
 
 	if( idx >= list.length ) return;
 
@@ -388,9 +551,10 @@ oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, table) {
 				function(template) {
 					sched.report().template(template);
 					if( idx == 0 ) {
-						obj.fmTable = drawFMObjectTable( 
+						_debug("drawing schedule with output: "+selector);
+						var t = drawFMObjectTable( 
 							{ 
-								dest : obj.selector, 
+								dest : selector, 
 								obj : [sched],
 								selectCol : true,
 								selectColName : 'Select',
@@ -398,10 +562,17 @@ oilsRptFolderWindow.prototype.fleshSchedules = function(list, idx, table) {
 								selectNoneName : 'None'
 							}
 						);
+
+						if( isSecond ) obj.fmTable2 = t;
+						else obj.fmTable = t;
+
 					} else {
-						obj.fmTable.add(sched);
+						//obj.fmTable.add(sched);
+						if( isSecond ) obj.fmTable2.add(sched);
+						else obj.fmTable.add(sched);
 					}
-					obj.fleshSchedules(list, ++idx);
+
+					obj.fleshSchedules(list, ++idx, selector, isSecond);
 				}
 			);
 		}

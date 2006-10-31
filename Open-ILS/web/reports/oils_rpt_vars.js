@@ -23,7 +23,9 @@ var oilsRptSharedReportFolderTree;
 var oilsRptSharedOutputFolderTree;
 
 var oilsRptOutputLimit = 10;
+var oilsRptOutputLimit2 = 10;
 
+var OILS_RPT_INVALID_DATA = 'oils_rpt_invalid_input';
 
 /* URL to retrieve the IDL from */
 var OILS_IDL_URL = "/reports/fm_IDL.xml";
@@ -84,6 +86,7 @@ var OILS_RPT_CREATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.cr
 var OILS_RPT_CREATE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.create';
 var OILS_RPT_UPDATE_REPORT			= 'open-ils.reporter:open-ils.reporter.report.update';
 var OILS_RPT_UPDATE_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.update';
+var OILS_RPT_UPDATE_SCHEDULE		= 'open-ils.reporter:open-ils.reporter.schedule.update';
 var OILS_RPT_FETCH_OUTPUT			= 'open-ils.reporter:open-ils.reporter.schedule.retrieve_by_folder';
 var OILS_RPT_FETCH_REPORT			= 'open-ils.reporter:open-ils.reporter.report.retrieve';
 var OILS_RPT_FETCH_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.retrieve';

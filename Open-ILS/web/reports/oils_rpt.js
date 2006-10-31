@@ -69,17 +69,20 @@ function oilsReport(templateObj, reportObj) {
 
 	this.params	= {};
 	this.name	= "";
-	this.templateObject = templateObj;
 	this.reportObject = reportObj;
 
-	if( templateObj ) {
-		this.def = JSON2js(templateObj.data());
-		this.name = templateObj.name();
-	}
+	if(templateObj) this.setTemplate(templateObj);
 
 	if( reportObj ) 
 		this.params = JSON2js(reportObj.data());
 	if(!this.params) this.params = {};
+}
+
+
+oilsReport.prototype.setTemplate = function(template) {
+	this.def		= JSON2js(template.data());
+	this.name	= template.name();
+	this.templateObject = template;
 }
 
 oilsReport.prototype.toString = function() {
