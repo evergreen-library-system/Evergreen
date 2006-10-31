@@ -50,7 +50,7 @@ FMObjectBuilder.prototype.getSelected = function() {
 	var objs = [];
 	for( var i = 0; i < this.rows.length; i++ ) {
 		var r = $(this.rows[i]);
-		if( $n(r,'selected').checked )
+		if( $n(r,'selected') && $n(r,'selected').checked )
 			objs.push(this.obj[i]);
 	}
 	return objs;
