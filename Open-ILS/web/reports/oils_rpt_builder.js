@@ -349,6 +349,8 @@ function oilsRptPruneFromList(pathlist) {
 				!grep(oilsRpt.def.where, func) && 
 				!grep(oilsRpt.def.having, func) ) {
 
+			debug('looks like we can prune ' + path);
+
 			oilsRptPruneFromClause(oilsRptPathRel(pathlist[j]));
 		}
 	}
@@ -359,35 +361,46 @@ function oilsRptPruneFromList(pathlist) {
 	from the "from" clause */
 
 function oilsRptPruneFromClause(relation, node) {
-	_debug("removing relation from 'from' clause: " + relation);
+
+	var keys = oilsRptObjectKeys(node);
+	_debug("trying to remove relation: " + relation+'\n\tthis object has keys: '+keys);
+
 	if(!node) node = oilsRpt.def.from.join;
 	if(!node) return false;
 
 	for( var i in node ) {
-		_debug("from prune looking at node "+node[i].path);
-		// first, descend into the tree, and prune leaves first
-		if( node[i].join ) {
-			oilsRptPruneFromClause(relation, node[i].join); 
-			if(oilsRptObjectKeys(node[i].join).length == 0) 
-				delete node[i].join;
+		var child_node = node[i];
+		_debug("\tanalyzing child node: "+child_node.path);
+
+		// first, descend into the tree, and prune leaves 
+		if( child_node.join ) {
+
+			oilsRptPruneFromClause(relation, child_node.join); 
+			var join_keys = oilsRptObjectKeys(child_node.join);
+			_debug("\tchild has a sub-join for items : ["+ join_keys+"]");
+
+			if(join_keys.length == 0) {
+				_debug("\tdeleting join for object "+i);
+				delete child_node.join;
+			}
 		}
-	}
 
-	if(!node.join) {
+		if( !child_node.join ) {
 
-		var key = oilsRptObjectKeys(node)[0];
-		var from_alias = node[key].alias;
-		var func = function(n){ return (n.relation == from_alias)};
+			_debug("\tchild node has no sub-join, seeing if we should delete it");
 
-		_debug("pruning from clause with alias "+ from_alias);
-
-		if(	!grep(oilsRpt.def.select, func) &&
-				!grep(oilsRpt.def.where, func) &&
-				!grep(oilsRpt.def.having, func) ) {
-
-			// if we're at an unused empty leaf, remove it
-			delete node[i];
-			return true;
+			var from_alias = child_node.alias;
+			var func = function(n){ return (n.relation == from_alias)};
+	
+			if(	!grep(oilsRpt.def.select, func) &&
+					!grep(oilsRpt.def.where, func) &&
+					!grep(oilsRpt.def.having, func) ) {
+	
+				/* we are not used by any other clauses */
+				_debug("\tdeleting node with relation: "+ from_alias);
+				delete node[i];
+				return true;
+			}
 		}
 	}
 

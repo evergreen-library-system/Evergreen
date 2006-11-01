@@ -33,7 +33,10 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 	var mine = ( this.folderNode.folder.owner().id() == USER.id() );
 
-	if( mine  && this.type == 'template') 
+	_debug('drawing folder window with type '+this.type);
+	if(mine) _debug('folder is mine...');
+
+	if( mine && this.type == 'template') 
 		unHideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
 	else hideMe(DOM.oils_rpt_folder_window_contents_new_template.parentNode);
 
@@ -473,7 +476,7 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 			var res = r.getResultObject();
 
 			if( res.length == 0 ) {
-				hideMe(DOM.oils_rpt_content_count_row);
+				//hideMe(DOM.oils_rpt_content_count_row); /* this also hides the new-template link.. fix me */
 				hideMe(DOM.oils_rpt_content_row);
 				unHideMe(DOM.oils_rpt_content_row_empty);
 			} else {

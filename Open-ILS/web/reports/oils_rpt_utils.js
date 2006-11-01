@@ -117,14 +117,6 @@ function nodeText(id) {
 	return "";
 }
 
-/*
-function print_tabs(t) {
-	var r = '';
-	for (var j = 0; j < t; j++ ) { r = r + "  "; }
-	return r;
-}
-*/
-
 
 function oilsRptDebug() {
 	if(!oilsRptDebugEnabled) return;
@@ -139,27 +131,6 @@ function oilsRptDebug() {
 	oilsRptDebugWindow.document.body.innerHTML = oilsRpt.toHTMLString();
 	*/
 }
-
-
-
-/* pretty print JSON */
-/*
-function formatJSON(s) {
-	var r = ''; var t = 0;
-	for (var i in s) {
-		if (s[i] == '{' || s[i] == '[' ) {
-			r = r + s[i] + "\n" + print_tabs(++t);
-		} else if (s[i] == '}' || s[i] == ']') {
-			t--; r = r + "\n" + print_tabs(t) + s[i];
-		} else if (s[i] == ',') {
-			r = r + s[i] + "\n" + print_tabs(t);
-		} else {
-			r = r + s[i];
-		}
-	}
-	return r;
-}
-*/
 
 
 function print_tabs_html(t) {
@@ -310,14 +281,6 @@ function oilsRptDoGenericUpdate( method, arg, callback ) {
 	);
 	req.send();
 }
-
-/*
-function oilsRptFetchReport(id, callback) {
-	var req = new Request(OILS_RPT_FETCH_REPORT, SESSION, id);
-	req.callback(function(r){ callback(r.getResultObject());});
-	req.send();
-}
-*/
 
 function oilsRptFetchReport(id, callback) {
 	var r = oilsRptGetCache('rr', id);
