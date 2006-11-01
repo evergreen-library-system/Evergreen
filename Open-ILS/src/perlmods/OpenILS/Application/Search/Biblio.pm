@@ -1303,12 +1303,31 @@ __PACKAGE__->register_method(
 	api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label',
 );
 
+__PACKAGE__->register_method(
+	method => 'copies_by_cn_label',
+	api_name => 'open-ils.search.asset.copy.retrieve_by_cn_label.staff',
+);
+
 sub copies_by_cn_label {
 	my( $self, $conn, $record, $label, $circ_lib ) = @_;
 	my $e = new_editor();
 	my $cns = $e->search_asset_call_number({record => $record, label => $label, deleted => 'f'}, {idlist=>1});
 	return [] unless @$cns;
-	return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib, deleted => 'f'}, {idlist=>1});
+
+	# show all non-deleted copies in the staff client ...
+	if ($self->api_name =~ /staff$/o) {
+		return $e->search_asset_copy({call_number => $cns, circ_lib => $circ_lib, deleted => 'f'}, {idlist=>1});
+	}
+
+	# ... otherwise, grab the copies ...
+	my $copies = $e->search_asset_copy(
+		[ {call_number => $cns, circ_lib => $circ_lib, deleted => 'f', opac_visible => 't'},
+		  {flesh => 1, flesh_fields => { acp => [ qw/location status/] } }
+		]
+	);
+
+	# ... and test for location and status visibility
+	return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->holdable)) ? ($_->id) : () } @$copies ];
 }
 
 
