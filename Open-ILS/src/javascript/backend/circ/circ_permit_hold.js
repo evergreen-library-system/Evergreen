@@ -33,6 +33,7 @@ if( ( marcItemType == 'g' ||
 		mod == 'audiobook' || 
 		mod == 'av' || 
 		mod == 'cd' || 
+		mod == 'kit' || 
 		mod == 'dvd' || 
 		isTrue(copy.deposit) || 
 		mod == 'video-long' || 
