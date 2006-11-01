@@ -145,7 +145,7 @@ var CIRC_MOD_MAP = {
 	'art'		: {
 		SIPMediaType			: '000',
 		magneticMedia			: 'f',
-		durationRule			: '3_month_0_renew',
+		durationRule			: '3_month_0_renew', /* make me 1 renewal when possible */
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
@@ -230,7 +230,6 @@ var CIRC_MOD_MAP = {
 		maxFine					: 'overdue_mid'
 	},
 
-
 	'e-book' : {
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
@@ -240,6 +239,14 @@ var CIRC_MOD_MAP = {
 	},
 
 	'equipment' : { 
+		SIPMediaType			: '000',
+		magneticMedia			: 'f',
+		durationRule			: '3_days_1_renew', /* make me 1 day, 0 renewal when possible */
+		recurringFinesRule	: '50_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'equip-long' : { 
 		SIPMediaType			: '000',
 		magneticMedia			: 'f',
 		durationRule			: '3_days_1_renew',
@@ -307,6 +314,14 @@ var CIRC_MOD_MAP = {
 		SIPMediaType			: '006',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_2_renew',
+		recurringFinesRule	: '10_cent_per_day',
+		maxFine					: 'overdue_mid'
+	},
+
+	'softwrlong' : {
+		SIPMediaType			: '006',
+		magneticMedia			: 'f',
+		durationRule			: '14_days_2_renew',
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},

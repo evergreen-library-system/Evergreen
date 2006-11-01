@@ -44,6 +44,8 @@ if( config ) {
 	Add custom rules here.  
 	----------------------------------------------------------------------------- */
 
+var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
+
 /* statelib has some special circ rules */
 if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 	if(isTrue(copy.ref))
@@ -51,12 +53,9 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 }
 
 
-/* and so does OCRL */
-
-if( isOrgDescendent('OCRL', copy.circ_lib.id) && copy.circ_modifier == 'VIDEO') {
-	result.durationRule		= '7_days_0_renew';
+/* Newton county gives their DVD's for $.10 a day */
+if( isOrgDescendent('NCLS', copy.circ_lib.id) && circMod == 'dvd' ) 
 	result.recurringFinesRule	= '10_cent_per_day';
-}
 
 
 checkDurationExceptions();
