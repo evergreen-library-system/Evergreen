@@ -117,7 +117,7 @@
 								var r_mvr = rreq.getResultObject();
 								if (instanceOf(r_mvr,mvr)) {
 									util.widgets.remove_children('title');
-									$('title').appendChild( document.createTextNode( r_mvr.title().substr(0,50) ) );
+									$('title').appendChild( document.createTextNode( String(r_mvr.title()).substr(0,50) ) );
 								} else {
 									g.network.simple_request(
 										'FM_ACP_RETRIEVE',

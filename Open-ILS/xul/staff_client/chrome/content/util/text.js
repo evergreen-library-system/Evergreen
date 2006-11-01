@@ -10,17 +10,18 @@ util.text.EXPORT_TAGS	= { ':all' : util.text.EXPORT_OK };
 
 util.text.wrap_on_space = function( text, length ) {
 	try {
-		if (text.length <= length) return [ text, '' ];
 
-		var truncated_text = text.substr(0,length);
+		if (String(text).length <= length) return [ text, '' ];
+
+		var truncated_text = String(text).substr(0,length);
 
 		var pivot_pos = truncated_text.lastIndexOf(' ');
 
-		return [ text.substr(0,pivot_pos).replace(/\s*$/,''), text.substr(pivot_pos+1) ];
+		return [ text.substr(0,pivot_pos).replace(/\s*$/,''), String(text).substr(pivot_pos+1) ];
 
 	} catch(E) {
 		alert('FIXME: util.text.wrap_on_space( "' + text + '", ' + length + ")");
-		return [ text.substr(0,length), text.substr(length) ];
+		return [ String(text).substr(0,length), String(text).substr(length) ];
 	}
 }
 
