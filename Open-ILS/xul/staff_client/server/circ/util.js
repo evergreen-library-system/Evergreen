@@ -1133,7 +1133,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 					if (rv == 0) {
 						try {
 							JSAN.use('util.print'); var print = new util.print();
-							print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
+							msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
+							print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
 						} catch(E) {
 							dump('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
 							alert('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
@@ -1218,7 +1219,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			if (rv == 0) {
 				try {
 					JSAN.use('util.print'); var print = new util.print();
-					print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
+					//print.simple( msg, { 'no_prompt' : true, 'content_type' : 'text/plain' } );
+					msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
+					print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
 				} catch(E) {
 					dump('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');
 					alert('Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n');

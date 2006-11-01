@@ -37,4 +37,14 @@ g.printer_settings = function() {
 	g.print.save_settings();
 }
 
+g.set_print_strategy = function(which) {
+	netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+	JSAN.use('util.file'); var file = new util.file('print_strategy');
+	file.write_content( 'truncate', String( which ) );
+	file.close();
+	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+	data.print_strategy = which; data.stash('print_strategy');
+	alert('Print strategy (' + which + ') saved to file system.');
+}
+
 g.save_settings = function() { g.print.save_settings(); }
