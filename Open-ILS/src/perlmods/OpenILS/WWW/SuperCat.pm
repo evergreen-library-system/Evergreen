@@ -907,13 +907,20 @@ sub opensearch_feed {
 	my ($version,$org,$type,$class,$terms,$sort,$sortdir,$lang);
 	(undef,$version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = split '/', $path;
 
-	$lang ||= $cgi->param('searchLang');
-	$sort ||= $cgi->param('searchSort');
-	$sortdir ||= $cgi->param('searchSortDir');
-	$terms ||= $cgi->param('searchTerms');
-	$class ||= $cgi->param('searchClass') || '-';
-	$type ||= $cgi->param('responseType') || '-';
-	$org ||= $cgi->param('searchOrg') || '-';
+	$lang = $cgi->param('searchLang') if $cgi->param('searchLang');
+	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
+	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
+	$terms .= " " . $cgi->param('searchTerms') if $cgi->param('searchTerms');
+
+	$class = $cgi->param('searchClass') if $cgi->param('searchClass');
+	$class ||= '-';
+
+	$type = $cgi->param('responseType') if $cgi->param('responseType');
+	$type ||= '-';
+
+	$org = $cgi->param('searchOrg') if $cgi->param('searchOrg');
+	$org ||= '-';
+
 
 	my $kwt = $cgi->param('kw');
 	my $tit = $cgi->param('ti');
@@ -994,7 +1001,7 @@ sub opensearch_feed {
 		)->gather(1);
 	}
 
-	$cache_key .= $org.$sort.$sortdir.$lang;
+	{ no warnings; $cache_key .= $org.$sort.$sortdir.$lang; }
 
 	my $rs_name = $cgi->cookie('os_session');
 	my $cached_res = OpenSRF::Utils::Cache->new->get_cache( "os_session:$rs_name" ) if ($rs_name);

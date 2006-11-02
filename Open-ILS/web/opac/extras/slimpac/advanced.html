@@ -1,0 +1,185 @@
+<html>
+	<head>
+		<title>Advanced Search</title>
+		<style>
+			.maintable {
+				border-collapse: collapse;
+				border: 3px solid #A7EA9D;
+				-moz-border-radius: 6px;
+				padding: 6px;
+				margin-top: 65px;'
+			}
+			
+			.greenrow {
+				border: 1px solid #D0D0D0;
+				background: #A7EA9D;
+			}
+
+			.bluerow {
+				border: 1px solid #D0D0D0;
+				background: #E0F6E0;
+			}
+
+			.rowpad {
+				height: 20px;
+			}
+
+			.footer_link {
+				margin-left: 10px; 
+				margin-right: 10px;
+			}
+
+			.indent0 {
+				padding-left: 0px; 
+			}
+
+			.indent1 {
+				padding-left: 10px; 
+			}
+
+			.indent2 {
+				padding-left: 20px; 
+			}
+
+			th {
+				text-align: right;
+				padding-right: 5px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<center>
+
+		<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
+
+		<table class="maintable">
+			<tbody>
+				<tr><td colspan="2" align="center"><b>Advanced Search</b></td></tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="bluerow">
+					<th>Now Searching:</th>
+					<td>
+						<select name="searchOrg">
+							<!--#include file="lib_list.inc" -->
+						</select>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="greenrow">
+					<th> Keywords: </th><td><input type="text" name="kw" size="40"/></td>
+				</tr>
+				<tr class="greenrow">
+					<th> Title: </th><td><input type="text" name="ti" size="40"/></td>
+				</tr>
+				<tr class="greenrow">
+					<th> Author: </th><td><input type="text" name="au" size="40"/></td>
+				</tr>
+				<tr class="greenrow">
+					<th> Subject: </th><td><input type="text" name="su" size="40"/></td>
+				</tr>
+				<tr class="greenrow">
+					<th> Series: </th><td><input type="text" name="se" size="40"/></td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="bluerow">
+					<th>Item Language</th>
+					<td>
+						<select name="searchLang">
+							<option value="">-- All --</option>
+							<option value="eng">English</option>
+							<option value="spa">Spanish</option>
+							<option value="fre">French</option>
+							<option value="ger">German</option>
+							<option value="ita">Italian</option>
+							<option value="chi">Chinese</option>
+							<option value="jpn">Japanese</option>
+							<option value="kor">Korean</option>
+							<option value="dut">Dutch</option>
+							<option value="gre">Greek, Modern (1453- )</option>
+							<option value="lat">Latin</option>
+							<option value="vie">Vietnamese</option>
+							<option value="rus">Russian</option>
+							<option value="nor">Norwegian</option>
+							<option value="wel">Welsh</option>
+							<option value="pau">Palauan</option>
+							<option value="swe">Swedish</option>
+							<option value="nav">Navajo</option>
+							<option value="und">Undetermined</option>
+						</select>
+					</td>
+				</tr>
+				<tr class="bluerow">
+					<th>Sort by:</th>
+					<td>
+						<select name="searchSort">
+							<option value="">Relevance</option>
+							<option value="title">Title</option>
+							<option value="author">Author</option>
+							<option value="pubdate">Publication Date</option>
+							<option value="create_date">Record Creation Date</option>
+							<option value="edit_date">Record Edit Date</option>
+						</select>
+					</td>
+				</tr>
+				<!--
+				<tr class="bluerow">
+					<th/>
+					<td>
+						<select name="searchSortDir">
+							<option value="asc">Ascending / A-Z / First-Last</option>
+							<option value="desc">Descending / Z-A / Last-First</option>
+						</select>
+					</td>
+				</tr>
+				-->
+				<tr class="rowpad"><td align="center" colspan="2"><input type="submit" value="Go!"/></td></tr>
+			</tbody>
+		</table>
+
+		</form>
+
+		<div style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
+			<center>
+			<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
+
+				<span class='footer_link'>
+					<a class='classic_link' href='start.html'>Home</a>
+				</span> 
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/lib/directories/pineslibdir.html'>Find a Library Near Me</a>
+				</span> 
+
+				<span> | </span>
+				
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help'>Help</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='' class='classic_link' id='eg_gal_link' href='http://www.galileo.usg.edu/'>GALILEO</a>
+				</span>
+				<br/>
+				<div style='margin-top: 4px; font-size: 7pt;'>
+					<span>Copyright &#169; 2006 Georgia Public Library Service</span>
+				</div>
+			</div>
+			</center>
+		</div>
+
+		</center>
+
+	</body>
+</html>
+

@@ -64,6 +64,7 @@ webcore-install:
 	echo "Copying web into $(WEBDIR)"
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
+	mkdir -p $(WEBDIR)/opac/extras/slimpac/
 	cp -r ../web/* $(WEBDIR)
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
@@ -73,6 +74,7 @@ webcore-install:
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/cnbrowse.xml
 	cp ../xul/staff_client/chrome//content//util/date.js $(WEBDIR)/opac/common/js/
 	cp ../xsl/*.xsl $(WEBDIR)/opac/extras/xsl/
+	cp ../slimpac/*.html $(WEBDIR)/opac/extras/slimpac/
 	ln -sf $(ETCDIR)/fm_IDL.xml $(WEBDIR)/reports/
 	cp ../xul/staff_client/server/admin/adminlib.js $(WEBDIR)/reports/
 	
@@ -97,6 +99,7 @@ autojs-install:
 	@echo $@
 	cp extras/fieldmapper.pl $(BINDIR)
 	cp extras/org_tree_js.pl $(BINDIR)
+	cp extras/org_tree_html_options.pl $(BINDIR)
 	cp extras/autogen.sh $(BINDIR)
 	cp support-scripts/offline-blocked-list.pl $(BINDIR) # this should probably be somewhere else
 # -----------------------------------------------------------------------------------

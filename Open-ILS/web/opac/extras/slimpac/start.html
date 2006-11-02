@@ -1,0 +1,139 @@
+<html>
+	<head>
+		<title>Simple Search</title>
+		<style>
+			.maintable {
+				border-collapse: collapse;
+				border: 3px solid #A7EA9D;
+				-moz-border-radius: 6px;
+				padding: 6px;
+				margin-top: 65px;'
+			}
+			
+			.greenrow {
+				border: 1px solid #D0D0D0;
+				background: #A7EA9D;
+			}
+
+			.bluerow {
+				border: 1px solid #D0D0D0;
+				background: #E0F6E0;
+			}
+
+			.rowpad {
+				height: 20px;
+			}
+
+			.footer_link {
+				margin-left: 10px; 
+				margin-right: 10px;
+			}
+
+			.indent0 {
+				padding-left: 0px; 
+			}
+
+			.indent1 {
+				padding-left: 10px; 
+			}
+
+			.indent2 {
+				padding-left: 20px; 
+			}
+
+		</style>
+	</head>
+	<body>
+		<center>
+
+		<form method="GET" action="/opac/extras/opensearch/1.1/-/html-full">
+
+		<table class="maintable">
+			<tbody>
+				<tr>
+					<td>
+						<div style='width: 100%; text-align: center'>
+							<img src='/opac/images/main_logo.jpg'/>
+						</div>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="bluerow">
+					<td>
+						<div style='width: 100%; text-align: center'>
+							<span>Now Searching: </span>
+							<select name="searchOrg">
+								<!--#include file="lib_list.inc" -->
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+				<tr class="greenrow">
+					<td>
+						<div style='width: 100%; text-align: center'>
+
+							<input type="text" name="searchTerms" size="40"/>
+
+							<select name="searchClass">
+								<option value="keyword">Keyword</option>
+								<option value="title">Title</option>
+								<option value="author">Author</option>
+								<option value="subject">Subject</option>
+								<option value="series">Series</option>
+							</select>
+
+							<input type="submit" value="Go!"/>
+						</div>
+					</td>
+				</tr>
+				<tr class="rowpad"><td></td></tr>
+			</tbody>
+		</table>
+
+		</form>
+
+		<div style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
+			<center>
+			<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
+
+				<span class='footer_link'>
+					<a class='classic_link' href='advanced.html'>Advanced Search</a>
+				</span> 
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/lib/directories/pineslibdir.html'>Find a Library Near Me</a>
+				</span> 
+
+				<span> | </span>
+				
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help'>Help</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+				</span>
+
+				<span> | </span>
+
+				<span class='footer_link'>
+					<a target='' class='classic_link' id='eg_gal_link' href='http://www.galileo.usg.edu/'>GALILEO</a>
+				</span>
+				<br/>
+				<div style='margin-top: 4px; font-size: 7pt;'>
+					<span>Copyright &#169; 2006 Georgia Public Library Service</span>
+				</div>
+			</div>
+			</center>
+		</div>
+
+		</center>
+
+	</body>
+</html>
+

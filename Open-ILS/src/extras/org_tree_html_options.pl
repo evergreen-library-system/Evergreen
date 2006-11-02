@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+# turns the orgTree and orgTypes into js files
+
+use OpenSRF::AppSession;
+use OpenSRF::System;
+use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::SettingsClient;
+
+die "usage: perl org_tree_js.pl <bootstrap_config> <output_file>" unless $ARGV[1];
+OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
+
+open FILE, ">$ARGV[1]";
+
+Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
+my $ses = OpenSRF::AppSession->create("open-ils.storage");
+my $tree = $ses->request("open-ils.actor.org_tree.retrieve")->gather(1);
+
+print_option($tree);
+
+$ses->disconnect();
+close FILE;
+
+
+
+sub print_option {
+	my $node = shift;
+	my $depth = $node->ou_type - 1;
+	my $sname = $node->shortname;
+	my $name = $node->name;
+	my $kids = $node->children;
+	print FILE "<option class='indent$depth' value='$sname'>$name</option>\n";
+	print_option($_) for (@$kids);
+}
+
