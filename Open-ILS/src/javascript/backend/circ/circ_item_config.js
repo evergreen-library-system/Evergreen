@@ -145,7 +145,7 @@ var CIRC_MOD_MAP = {
 	'art'		: {
 		SIPMediaType			: '000',
 		magneticMedia			: 'f',
-		durationRule			: '3_month_0_renew', /* make me 1 renewal when possible */
+		durationRule			: '3_month_1_renew', 
 		recurringFinesRule	: '10_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
@@ -241,7 +241,7 @@ var CIRC_MOD_MAP = {
 	'equipment' : { 
 		SIPMediaType			: '000',
 		magneticMedia			: 'f',
-		durationRule			: '3_days_1_renew', /* make me 1 day, 0 renewal when possible */
+		durationRule			: '1_day_0_renew', /* make me 1 day, 0 renewal when possible */
 		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
