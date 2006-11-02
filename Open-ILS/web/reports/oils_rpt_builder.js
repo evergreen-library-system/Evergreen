@@ -28,7 +28,6 @@ function oilsRptBuilderDrawClone(templateId) {
 
 
 function oilsRptBuilderDrawClone2(template) {
-	//oilsRpt.
 	appendClear( DOM.oils_rpt_build_cloning_name, template.name() );
 	DOM.oils_rpt_builder_new_name.value = template.name();
 	DOM.oils_rpt_builder_new_desc.value = template.description();
@@ -62,6 +61,7 @@ function oilsRptBuilderDrawClone2(template) {
 			oilsAddRptHavingItem(item.path, item.column.transform, oilsRptObjectKeys(item.condition)[0])});
 
 	oilsRpt.setTemplate(template);
+	oilsRpt.templateObject = null; /* simplify debugging */
 }
 
 function oilsReportBuilderReset() {
@@ -129,44 +129,57 @@ function oilsAddRptDisplayItem(path, name, tform, params) {
 	var sel = {
 		relation: hex_md5(oilsRptPathRel(path)), 
 		path : path,
-		alias:    name,
-		column:   { transform: tform, colname: oilsRptPathCol(path) }
+		alias: name,
+		column: { transform: tform, colname: oilsRptPathCol(path) }
 	};
 
 	if( params ) sel.column.params = params;
+	oilsRptAddSelectList(sel, tform);
+	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
+	oilsRptDebug();
+}
 
+function oilsRptAddSelectList(obj, tform) {
 	if(!oilsRptGetIsAgg(tform)) {
 		var select = [];
 		var added = false;
 		for( var i = 0; i < oilsRpt.def.select.length; i++ ) {
 			var item = oilsRpt.def.select[i];
+
+			/* shove the item in question in front of the first agg tform */
 			if( !added && oilsRptGetIsAgg( item.column.transform ) ) {
-				select.push(sel);
+				select.push(obj);
 				added = true;
 			}
 			select.push(item);
 		}
-		if(!added) select.push(sel);
+
+		/* if there is no existing agg tfrom to 
+			insert in front of, add me on the end */
+		if(!added) select.push(obj);
+
 		oilsRpt.def.select = select;
+
+		if( added ) {
+			/* re-draw the select display to get the order correct */
+			var sel = oilsRptDisplaySelector;
+			while( sel.options.length > 0 ) sel.options[0] = null;
+			iterate(oilsRpt.def.select,
+				function(item) {
+					_debug('re-inserting display item ' + item.path);
+					oilsAddSelectorItem(oilsRptDisplaySelector, item.path, item.alias) });
+		}
+
 	} else {
-		oilsRpt.def.select.push(sel);
+		/* shove agg transforms onto the end */
+		oilsRpt.def.select.push(obj);
 	}
-
-
-	mergeObjects( oilsRpt.def.from, oilsRptBuildFromClause(path));
-	oilsRptDebug();
 }
+
+
 
 function oilsRptGetIsAgg(tform) {
 	return OILS_RPT_TRANSFORMS[tform].aggregate;
-	
-	/* DEPRECATED */
-	var sel = $n(DOM.oils_rpt_tform_table,'selector');
-	for( var i = 0; i < sel.options.length; i++ ) {
-		var opt = sel.options[i];
-		if( opt.getAttribute('value') == tform )
-			return opt.getAttribute('aggregate');
-	}
 }
 
 /* takes a column path and builds a from-clause object for the path */
@@ -314,25 +327,7 @@ function oilsDelSelectedDisplayItems() {
 	);
 
 	if(!oilsRpt.def.select) oilsRpt.def.select = [];
-
 	oilsRptPruneFromList(list);
-
-	/*
-	for( var j = 0; j < list.length; j++ ) {
-		debug('seeing if we can prune from clause with relation = ' + hex_md5(oilsRptPathRel(list[j])));
-		if(	!grep(oilsRpt.def.select,
-				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
-			&& !grep(oilsRpt.def.where,
-				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
-			&& !grep(oilsRpt.def.having,
-				function(i){ return (i.relation == hex_md5(oilsRptPathRel(list[j]))); })
-		) {
-			_debug('pruning from clause');
-			oilsRptPruneFromClause(oilsRptPathRel(list[j]));
-		}
-	}
-	*/
-
 	oilsRptDebug();
 }
 
@@ -679,7 +674,7 @@ function oilsRptDrawDataWindow(path) {
 	oilsRptDrawTransformWindow(path, col, cls, field);
 	oilsRptDrawFilterWindow(path, col, cls, field);
 	oilsRptDrawHavingWindow(path, col, cls, field);
-	oilsRptDrawOrderByWindow(path, col, cls, field);
+	//oilsRptDrawOrderByWindow(path, col, cls, field);
 
 	//buildFloatingDiv(div, 600);
 
