@@ -745,15 +745,17 @@ cat.copy_browser.prototype = {
 									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
 									xml += '</vbox>';
-									obj.data.temp_transfer = xml; obj.data.stash('temp_transfer');
+									JSAN.use('OpenILS.data');
+									var data = new OpenILS.data(); data.init({'via':'stash'});
+									data.temp_transfer = xml; data.stash('temp_transfer');
 									window.open(
 										urls.XUL_FANCY_PROMPT
 										+ '?xml_in_stash=temp_transfer'
 										+ '&title=' + window.escape('Volume Transfer'),
 										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
 									);
-									JSAN.use('OpenILS.data');
-									var data = new OpenILS.data(); data.init({'via':'stash'});
+									data.init({'via':'stash'});
+
 									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
 
 									var robj = obj.network.simple_request(
