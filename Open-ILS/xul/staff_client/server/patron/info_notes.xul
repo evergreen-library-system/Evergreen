@@ -160,9 +160,11 @@
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Patron Visible?"/><checkbox id="pub" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				g.data.init({'via':'stash'});
+				g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
 				window.open(
 					urls.XUL_FANCY_PROMPT
-					+ '?xml=' + window.escape(xml)
+					+ '?xml_in_stash=temp_note_xml'
 					+ '&focus=' + window.escape('title')
 					+ '&title=' + window.escape('Add Note'),
 					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'

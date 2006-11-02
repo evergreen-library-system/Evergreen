@@ -184,9 +184,11 @@
 				xml += '<row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
 				xml += '<row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/>';
 				xml += '<button label="Add Notification Record" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
+				g.data.init({'via':'stash'});
+				g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
 				window.open(
 					urls.XUL_FANCY_PROMPT
-					+ '?xml=' + window.escape(xml)
+					+ '?xml_in_stash=temp_notification_xml'
 					+ '&focus=' + window.escape('method')
 					+ '&title=' + window.escape('Add Notification Record'),
 					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
