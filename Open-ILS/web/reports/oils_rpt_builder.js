@@ -222,8 +222,11 @@ function oilsRptBuildFromClause(path) {
 
 		tobj[col] = {};
 		tobj = tobj[col];
-		if( field.type == 'link' )
+		if( field.type == 'link' ) {
 			tobj.key = field.key;
+			if( field.reltype == 'has_many' || field.reltype == 'might_have' )
+				tobj.type = 'left';
+		}
 
 		newpath = newpath + '-'+ path_col;
 	}
