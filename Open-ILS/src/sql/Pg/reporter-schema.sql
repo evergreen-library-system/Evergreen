@@ -166,5 +166,13 @@ SELECT	u.id,
 	END AS general_division
   FROM	actor.usr u;
 
+CREATE OR REPLACE VIEW reporter.circ_type AS
+SELECT	id,
+	CASE WHEN opac_renewal OR phone_renewal OR desk_renewal
+		THEN 'RENEWAL'
+		ELSE 'CHECKOUT'
+	END AS "type"
+  FROM	action.circulation;
+
 COMMIT;
 
