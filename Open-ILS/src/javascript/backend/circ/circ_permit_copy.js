@@ -24,14 +24,6 @@ if( ! isTrue(isRenewal) ) {
 }
 
 
-/* this should happen very rarely .. 
-	but it should at least require an override */
-
-
-if( getMARCItemType() == 'g' && copy.circ_lib.id != currentLocation.id )
-	result.events.push('CIRC_EXCEEDS_COPY_RANGE');
-
-
 	
 } go();
 
