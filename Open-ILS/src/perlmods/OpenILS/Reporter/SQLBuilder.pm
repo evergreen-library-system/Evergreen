@@ -26,12 +26,6 @@ sub set_builder {
 	return $self;
 }
 
-sub find_relation {
-	my $self = shift;
-	my $rel = shift;
-	return $self->builder->{_rels}->{$rel};
-}
-
 sub builder {
 	my $self = shift;
 	return $self->{_builder};
@@ -173,7 +167,7 @@ sub set_where {
 	return $self unless (@cols && defined($cols[0]));
 	@cols = @{ $cols[0] } if (@cols == 1 && ref($cols[0]) eq 'ARRAY');
 
-	push @{ $self->{_where} }, map { OpenILS::Reporter::SQLBuilder::Column::Where->new( $_ )->set_builder( $self->builder ) } @cols;
+	push @{ $self->{_where} }, map { OpenILS::Reporter::SQLBuilder::Column::Where->new( $_, $self->{_from}->builder->{_rels} )->set_builder( $self->builder ) } @cols;
 
 	return $self;
 }
@@ -444,6 +438,8 @@ sub new {
 
 	$self->{_aggregate} = $col_data->{aggregate};
 
+	$self->{_rels} = shift;
+
 	if (ref($self->{_column})) {
 		my $trans = $self->{_column}->{transform} || 'Bare';
 		my $pkg = "OpenILS::Reporter::SQLBuilder::Column::Transform::$trans";
@@ -460,6 +456,11 @@ sub new {
 
 
 	return $self;
+}
+
+sub find_relation {
+	my $self = shift;
+	return $self->{_rels}->{$self->{_relation}};
 }
 
 sub name {
@@ -911,9 +912,9 @@ sub toSQL {
 
 	my $sql;
 
-	my $rel = $self->find_relation($self->{_relation});
-	if ($rel && $rel->is_join && $rel->join_type ne 'inner') {
-		$sql = "($sql IS NULL OR ";
+	my $rel = $self->find_relation();
+	if ($rel && $rel->is_nullable) {
+		$sql = "(". $self->SUPER::toSQL ." IS NULL OR ";
 	}
 
 	$sql .= $self->SUPER::toSQL;
@@ -946,7 +947,7 @@ sub toSQL {
 		$sql .= " $op " . $val->toSQL;
 	}
 
-	if ($rel && $rel->is_join && $rel->join_type ne 'inner') {
+	if ($rel && $rel->is_nullable) {
 		$sql .= ")";
 	}
 
@@ -1015,6 +1016,11 @@ sub add_join {
 	return $self;
 }
 
+sub is_nullable {
+	my $self = shift;
+	return $self->{_nullable};
+}
+
 sub is_join {
 	my $self = shift;
 	my $j = shift;
@@ -1060,6 +1066,8 @@ sub build {
 
 	$self->{_join_type} = shift;
 
+	$self->{_right_rel}->set_builder($self->{_left_rel}->builder);
+
 	$self->{_right_rel}->is_join(1);
 	$self->{_right_rel}->join_type($self->{_join_type});
 
@@ -1070,12 +1078,13 @@ sub build {
 
 sub toSQL {
 	my $self = shift;
+	my $dir = shift;
 
 	my $sql = "JOIN " . $self->{_right_rel}->toSQL .
 		' ON ("' . $self->{_left_rel}->{_alias} . '"."' . $self->{_left_col} .
 		'" = "' . $self->{_right_rel}->{_alias} . '"."' . $self->{_right_col} . '")';
 
-	$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
+	$sql .= $_->toSQL($dir) for (@{ $self->{_right_rel}->{_join} });
 
 	return $sql;
 }
@@ -1086,9 +1095,16 @@ use base qw/OpenILS::Reporter::SQLBuilder::Join/;
 
 sub toSQL {
 	my $self = shift;
+	my $dir = shift;
 	#return $self->{_sql} if ($self->{_sql});
 
-	my $sql = "\n\tLEFT OUTER ". $self->SUPER::toSQL;
+	my $_nullable_rel = $dir && $dir eq 'r' ? '_left_rel' : '_right_rel';
+	$self->{_right_rel}->{_nullable} = 'l';
+	$self->{$_nullable_rel}->{_nullable} = $dir;
+
+	my $j = $dir && $dir eq 'r' ? 'FULL OUTER' : 'LEFT OUTER';
+
+	my $sql = "\n\t$j ". $self->SUPER::toSQL('l');
 
 	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
 
@@ -1101,9 +1117,16 @@ use base qw/OpenILS::Reporter::SQLBuilder::Join/;
 
 sub toSQL {
 	my $self = shift;
+	my $dir = shift;
 	#return $self->{_sql} if ($self->{_sql});
 
-	my $sql = "\n\tRIGHT OUTER ". $self->SUPER::toSQL;
+	my $_nullable_rel = $dir && $dir eq 'l' ? '_right_rel' : '_left_rel';
+	$self->{_left_rel}->{_nullable} = 'r';
+	$self->{$_nullable_rel}->{_nullable} = $dir;
+
+	my $j = $dir && $dir eq 'l' ? 'FULL OUTER' : 'RIGHT OUTER';
+
+	my $sql = "\n\t$j ". $self->SUPER::toSQL('r');
 
 	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
 
@@ -1116,9 +1139,15 @@ use base qw/OpenILS::Reporter::SQLBuilder::Join/;
 
 sub toSQL {
 	my $self = shift;
+	my $dir = shift;
 	#return $self->{_sql} if ($self->{_sql});
 
-	my $sql = "\n\tINNER ". $self->SUPER::toSQL;
+	my $_nullable_rel = $dir && $dir eq 'l' ? '_right_rel' : '_left_rel';
+	$self->{$_nullable_rel}->{_nullable} = $dir;
+
+	my $j = $dir ? ( $dir eq 'l' ? 'LEFT OUTER' : ( $dir eq 'r' ? 'RIGHT OUTER' : 'FULL OUTER' ) ) : 'INNER';
+
+	my $sql = "\n\t$j ". $self->SUPER::toSQL;
 
 	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
 
@@ -1133,7 +1162,10 @@ sub toSQL {
 	my $self = shift;
 	#return $self->{_sql} if ($self->{_sql});
 
-	my $sql = "\n\tFULL OUTER ". $self->SUPER::toSQL;
+	$self->{_right_rel}->{_nullable} = 'f';
+	$self->{_left_rel}->{_nullable} = 'f';
+
+	my $sql = "\n\tFULL OUTER ". $self->SUPER::toSQL('f');
 
 	#$sql .= $_->toSQL for (@{ $self->{_right_rel}->{_join} });
 
