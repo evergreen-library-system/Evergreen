@@ -1627,8 +1627,9 @@ sub process_received_transit {
 	my $transit = $self->transit;
 
    if( $transit->dest != $self->editor->requestor->ws_ou ) {
+		my $tid = $transit->id;	
       $logger->info("circulator: Fowarding transit on copy which is destined ".
-         "for a different location. copy=$copyid,current ".
+         "for a different location. transit=$tid, copy=$copyid,current ".
          "location=".$self->editor->requestor->ws_ou.",destination location=".$transit->dest);
 
 		return $self->bail_on_events(
