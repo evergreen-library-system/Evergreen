@@ -127,6 +127,8 @@ function uEditCheckEditPerm() {
 	
 		$('ue_save').disabled = true;
 		$('ue_save_clone').disabled = true;
+		$('ue_mark_card_lost').disabled = true;
+		$('ue_reset_pw').disabled = true;
 	
 		uEditIterateFields(
 			function(f) {
