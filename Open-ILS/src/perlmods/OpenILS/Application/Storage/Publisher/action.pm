@@ -142,7 +142,7 @@ sub complete_reshelving {
 			    FROM	$cp cp 
 					LEFT JOIN $circ circ ON (circ.target_copy = cp.id AND circ.id IS NULL)
 			    WHERE	cp.status = 7
-			    		AND cp.create_date > NOW() - CAST(? AS INTERVAL)
+			    		AND cp.create_date < NOW() - CAST(? AS INTERVAL)
 			)
 	SQL
 
@@ -746,7 +746,7 @@ sub new_hold_copy_targeter {
 		try {
 			#first, re-fetch the hold, to make sure it's not captured already
 			$hold = action::hold_request->retrieve( $hold->id );
-			die "OK\n" if ($hold->capture_time);
+			die "OK\n" if (!$hold or $hold->capture_time);
 
 			#start a transaction if needed
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
