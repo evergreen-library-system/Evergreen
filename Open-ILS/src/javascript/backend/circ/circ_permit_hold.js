@@ -35,6 +35,13 @@ if( ( marcItemType == 'g' ||
 		mod == 'cd' || 
 		mod == 'kit' || 
 		mod == 'dvd' || 
+		mod == 'deposit' || 
+		mod == 'atlas' || 
+		mod == 'magazine' || 
+		mod == 'equipment' || 
+		mod == 'equip-long' || 
+		mod == 'microform' || 
+		mod == 'record' || 
 		isTrue(copy.deposit) || 
 		mod == 'video-long' || 
 		mod == 'video' ) ) {
