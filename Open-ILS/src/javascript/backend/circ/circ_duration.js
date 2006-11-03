@@ -58,6 +58,9 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 
 else if( isOrgDescendent('LEE', copy.circ_lib.id) && circMod == 'video' ) 
 	result.recurringFinesRule	= '50_cent_per_day';
+
+else if( isOrgDescendent('ECGR', copy.circ_lib.id) && circMod == 'video' ) 
+	result.recurringFinesRule	= '50_cent_per_day';
 	
 
 
