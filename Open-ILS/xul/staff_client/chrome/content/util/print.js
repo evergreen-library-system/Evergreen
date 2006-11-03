@@ -53,22 +53,22 @@ util.print.prototype = {
 			var w;
 			switch(content_type) {
 				case 'text/html' :
-					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { return go_print(); /* FIXME - mozilla bug#301560 - xpcom kills it too */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { window.print(); window.close(); } catch(E) { alert(E); } },0); }');
+					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { alert("Please inform the developers that the go_print bug occurred.  After this alert, we will try to print again."); window.print(); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { window.print(); window.close(); } catch(E) { alert(E); } },0); }');
 					w = obj.win.open('data:text/html,<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
 					w.minimize();
 					w.go_print = function() { 
 
-						setTimeout(
-							function() {
+						//setTimeout(
+						//	function() {
 								try {
 									obj.NSPrint(w, silent, params);
 								} catch(E) {
-									obj.error.sdump('D_ERROR','util.print.simple: ' + E);
+									obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
 									w.print();
 								}
 								w.minimize(); w.close();
-							}, 0
-						);
+						//	}, 0
+						//);
 
 					}
 				break;
@@ -80,7 +80,7 @@ util.print.prototype = {
 							try {
 								obj.NSPrint(w, silent, params);
 							} catch(E) {
-								obj.error.sdump('D_ERROR','util.print.simple: ' + E);
+								obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
 								w.print();
 							}
 							w.minimize(); w.close();
@@ -100,9 +100,10 @@ util.print.prototype = {
 		} catch(E) {
 			dump(E+'\n');
 		}
-		var cols;
+		var cols = [];
 		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
 		// we could do a dump_with_keys instead
+		/*
 		switch(params.type) {
 			case 'offline_checkout' :
 				JSAN.use('circ.util');
@@ -186,6 +187,7 @@ util.print.prototype = {
 				);
 			break;
 		}
+		*/
 
 		var s = this.template_sub( params.header, cols, params );
 		for (var i = 0; i < params.list.length; i++) {
@@ -251,6 +253,7 @@ util.print.prototype = {
 		try {
 			if (typeof params.row != 'undefined') {
 				if (params.row.length >= 0) {
+					alert('debug pause');
 					for (var i = 0; i < cols.length; i++) {
 						var re = new RegExp(cols[i],"g");
 						try{b = s; s=s.replace(re, params.row[i]);}

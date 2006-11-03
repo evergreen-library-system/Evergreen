@@ -282,7 +282,18 @@ circ.checkout.prototype = {
 					if (silent) params.no_prompt = true;
 					JSAN.use('util.print'); var print = new util.print();
 					print.tree_list( params );
-					setTimeout(function(){obj.list.on_all_fleshed = null;if (typeof f == 'function') f();},0);
+					setTimeout(
+						function(){
+							obj.list.on_all_fleshed = null;
+							if (typeof f == 'function') { 
+								setTimeout( 
+									function() {
+										f();
+									}, 1000
+								)
+							} }
+						, 1000
+					);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('print',E);
 				}
