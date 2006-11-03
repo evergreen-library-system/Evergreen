@@ -2038,7 +2038,11 @@ sub user_transaction_history {
 	# run inside of a transaction to prevent replication delays
 	my $e = new_editor(xact=>1, authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('VIEW_USER_TRANSACTIONS');
+
+	if( $e->requestor->id ne $userid ) {
+		return $e->die_event 
+			unless $e->allowed('VIEW_USER_TRANSACTIONS');
+	}
 
 	my $api = $self->api_name;
 	my @xact_finish  = (xact_finish => undef ) if ($api =~ /history.still_open$/);
