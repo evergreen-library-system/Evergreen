@@ -315,14 +315,16 @@ util.network.prototype = {
 						'<description>Force this action?</description>' + 
 						'<button accesskey="N" label="No" name="fancy_cancel"/>' + 
 						'<button id="override" accesskey="Y" label="Yes" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
+					JSAN.use('OpenILS.data');
+					var data = new OpenILS.data(); data.init({'via':'stash'});
+					data.temp_override_xml = xml; data.stash('temp_override_xml');
 					window.open(
 						urls.XUL_FANCY_PROMPT
-						+ '?xml=' + window.escape(xml)
+						+ '?xml_in_stash=temp_override_xml'
 						+ '&title=' + window.escape(o_params.title),
 						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 					);
-					JSAN.use('OpenILS.data');
-					var data = new OpenILS.data(); data.init({'via':'stash'});
+					data.init({'via':'stash'});
 					if (data.fancy_prompt_data != '') {
 						req = obj._request(app,name + '.override',params);
 					}

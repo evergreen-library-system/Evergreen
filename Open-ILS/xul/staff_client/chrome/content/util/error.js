@@ -340,14 +340,16 @@ util.error.prototype = {
 		if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
 		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
 		xml += '</hbox></groupbox></vbox>';
+		JSAN.use('OpenILS.data');
+		var data = new OpenILS.data(); data.init({'via':'stash'});
+		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		window.open(
 			urls.XUL_FANCY_PROMPT
-			+ '?xml=' + window.escape(xml)
+			+ '?xml_in_stash=temp_yns_xml'
 			+ '&title=' + window.escape(title),
 			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
-		JSAN.use('OpenILS.data');
-		var data = new OpenILS.data(); data.init({'via':'stash'});
+		data.init({'via':'stash'});
 		if (data.fancy_prompt_data != '') {
 			switch(data.fancy_prompt_data.fancy_submit) {
 				case 'b1' : return 0; break;
@@ -396,14 +398,16 @@ util.error.prototype = {
 		if (b2) xml += '<button id="b2" accesskey="' + b2_key + '" label="' + (b2) + '" name="fancy_submit" value="b2"/>'
 		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
 		xml += '</hbox></groupbox></vbox>';
+		JSAN.use('OpenILS.data');
+		var data = new OpenILS.data(); data.init({'via':'stash'});
+		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		window.open(
 			urls.XUL_FANCY_PROMPT
-			+ '?xml=' + window.escape(xml)
+			+ '?xml_in_stash=temp_yns_xml'
 			+ '&title=' + window.escape(title),
 			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
-		JSAN.use('OpenILS.data');
-		var data = new OpenILS.data(); data.init({'via':'stash'});
+		data.init({'via':'stash'});
 		if (data.fancy_prompt_data != '') {
 			switch(data.fancy_prompt_data.fancy_submit) {
 				case 'b1' : return 0; break;
