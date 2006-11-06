@@ -102,9 +102,21 @@
 		<command id="sel_spine" disabled="true"/>
 		<command id="sel_transit_abort" disabled="true"/>
 		<command id="sel_clip" disabled="true"/>
+		
+		<command id="cmd_add_items" disabled="true"/>
+		<command id="cmd_delete_items" disabled="true"/>
+		<command id="cmd_transfer_items" disabled="true"/>
+		<command id="cmd_add_volumes" disabled="true"/>
+		<command id="cmd_edit_volumes" disabled="true"/>
+		<command id="cmd_delete_volumes" disabled="true"/>
+		<command id="cmd_mark_volume" disabled="true"/>
+		<command id="cmd_mark_library" disabled="true"/>
+		<command id="cmd_transfer_volume" disabled="true"/>
+
 	</commandset>
 
 	<popupset id="copy_status_popupset"/>
+	<popupset id="copy_cat_status_popupset"/>
 
 	<box id="copy_status_main" />
 

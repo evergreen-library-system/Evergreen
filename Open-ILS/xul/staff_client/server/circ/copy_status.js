@@ -63,6 +63,15 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','true');
 							obj.controller.view.sel_clip.setAttribute('disabled','true');
 							obj.controller.view.sel_renew.setAttribute('disabled','true');
+							obj.controller.view.cmd_add_items.setAttribute('disabled','true');
+							obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
+							obj.controller.view.cmd_transfer_items.setAttribute('disabled','true');
+							obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
+							obj.controller.view.cmd_edit_volumes.setAttribute('disabled','true');
+							obj.controller.view.cmd_delete_volumes.setAttribute('disabled','true');
+							obj.controller.view.cmd_mark_volume.setAttribute('disabled','true');
+							obj.controller.view.cmd_mark_library.setAttribute('disabled','true');
+							obj.controller.view.cmd_transfer_volume.setAttribute('disabled','true');
 						} else {
 							obj.controller.view.sel_checkin.setAttribute('disabled','false');
 							obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
@@ -77,6 +86,15 @@ circ.copy_status.prototype = {
 							obj.controller.view.sel_transit_abort.setAttribute('disabled','false');
 							obj.controller.view.sel_clip.setAttribute('disabled','false');
 							obj.controller.view.sel_renew.setAttribute('disabled','false');
+							obj.controller.view.cmd_add_items.setAttribute('disabled','false');
+							obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
+							obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');
+							obj.controller.view.cmd_add_volumes.setAttribute('disabled','false');
+							obj.controller.view.cmd_edit_volumes.setAttribute('disabled','false');
+							obj.controller.view.cmd_delete_volumes.setAttribute('disabled','false');
+							obj.controller.view.cmd_mark_volume.setAttribute('disabled','false');
+							obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
+							obj.controller.view.cmd_transfer_volume.setAttribute('disabled','false');
 						}
 					} catch(E) {
 						alert('FIXME: ' + E);
@@ -318,16 +336,486 @@ circ.copy_status.prototype = {
 							}
 						}
 					],
-
-					'cmd_copy_status_reprint' : [
+					'cmd_add_items' : [
 						['command'],
 						function() {
+							try {
+
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+								if (list.length == 0) return;
+
+								var copy_shortcut = {}; var map_acn = {};
+
+								for (var i = 0; i < list.length; i++) {
+									var volume_id = list[i];
+									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (! map_acn[volume_id]) {
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+									}
+									var record_id = map_acn[ volume_id ].record();
+									var ou_id = map_acn[ volume_id ].owning_lib();
+									var label = map_acn[ volume_id ].label();
+									if (!copy_shortcut[record_id]) copy_shortcut[record_id] = {};
+									if (!copy_shortcut[record_id][ou_id]) copy_shortcut[record_id][ou_id] = {};
+									copy_shortcut[record_id][ou_id][ label ] = volume_id;
+
+								}
+
+								for (var r in copy_shortcut) {
+
+									/* quick fix */  /* what was this fixing? */
+									list = []; for (var i in copy_shortcut[r]) { list.push( i ); }
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												list,
+												[ 'CREATE_COPY' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
+									}
+	
+									if (edit==0) return; // no read-only view for this interface
+	
+									var title = 'Add Item for record #' + r;
+	
+									JSAN.use('util.window'); var win = new util.window();
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(r)
+											+'&ou_ids=' + window.escape( js2JSON(list) )
+											+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut[r]) ),
+										title,
+										'chrome,resizable'
+									);
+								}
+
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> add copies',E);
+							}
+						}
+
+					],
+					'cmd_delete_items' : [
+						['command'],
+						function() {
+							try {
+
+                                JSAN.use('util.functional');
+
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } );
+
+                                var copies = util.functional.map_list(
+                                    list,
+                                    function (acp_id) {
+                                        return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
+                                    }
+                                );
+
+                                for (var i = 0; i < copies.length; i++) {
+                                    copies[i].ischanged(1);
+                                    copies[i].isdeleted(1);
+                                }
+
+								if (! window.confirm('Are you sure sure you want to delete these items? ' + util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")) ) return;
+
+                                var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
+                                if (typeof robj.ilsevent != 'undefined') obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj); else { alert('Items Deleted'); }
+
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> delete items',E);
+							}
 						}
 					],
-					'cmd_copy_status_done' : [
+					'cmd_transfer_items' : [
 						['command'],
 						function() {
+								try {
+									obj.data.stash_retrieve();
+									if (!obj.data.marked_volume) {
+										alert('Please mark a volume as the destination from within holdings maintenance and then try this again.');
+										return;
+									}
+									
+									JSAN.use('util.functional');
+
+									var list = util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } );
+
+									var volume = obj.network.simple_request('FM_ACN_RETRIEVE',[ obj.data.marked_volume ]);
+
+									JSAN.use('cat.util'); cat.util.transfer_copies( { 
+										'copy_ids' : list, 
+										'docid' : volume.record(),
+										'volume_label' : volume.label(),
+										'owning_lib' : volume.owning_lib(),
+									} );
+
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert('All copies not likely transferred.',E);
+								}
+							}
+
+					],
+					'cmd_add_volumes' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+								if (list.length == 0) return;
+
+								var aou_hash = {}; var map_acn = {};
+
+								for (var i = 0; i < list.length; i++) {
+									var volume_id = list[i];
+									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (! map_acn[volume_id]) {
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+									}
+									var record_id = map_acn[ volume_id ].record();
+									var ou_id = map_acn[ volume_id ].owning_lib();
+									var label = map_acn[ volume_id ].label();
+									if (!aou_hash[record_id]) aou_hash[record_id] = {};
+									aou_hash[record_id][ou_id] = 1;
+
+								}
+
+								for (var r in aou_hash) {
+
+									list = []; for (var org in aou_hash[r]) list.push(org);
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												list,
+												[ 'CREATE_VOLUME', 'CREATE_COPY' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
+									}
+
+									if (edit==0) {
+										alert("You don't have permission to add volumes to that library.");
+										return; // no read-only view for this interface
+									}
+
+									var title = 'Add Volume/Item for Record # ' + r;
+
+									JSAN.use('util.window'); var win = new util.window();
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(r)
+											+'&ou_ids=' + window.escape( js2JSON(list) ),
+										title,
+										'chrome,resizable'
+									);
+
+								}
+
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> add volumes',E);
+							}
 						}
+
+					],
+					'cmd_edit_volumes' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+								if (list.length == 0) return;
+
+								var volume_hash = {}; var map_acn = {};
+
+								for (var i = 0; i < list.length; i++) {
+									var volume_id = list[i];
+									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (! map_acn[volume_id]) {
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										map_acn[ volume_id ].copies( [] );
+									}
+									var record_id = map_acn[ volume_id ].record();
+									if (!volume_hash[record_id]) volume_hash[record_id] = {};
+									volume_hash[record_id][volume_id] = 1;
+								}
+
+								for (var rec in volume_hash) {
+
+									list = []; for (var v in volume_hash[rec]) list.push( map_acn[v] );
+
+									var edit = 0;
+									try {
+										edit = obj.network.request(
+											api.PERM_MULTI_ORG_CHECK.app,
+											api.PERM_MULTI_ORG_CHECK.method,
+											[ 
+												ses(), 
+												obj.data.list.au[0].id(), 
+												util.functional.map_list(
+													list,
+													function (o) {
+														return o.owning_lib();
+													}
+												),
+												[ 'UPDATE_VOLUME' ]
+											]
+										).length == 0 ? 1 : 0;
+									} catch(E) {
+										obj.error.sdump('D_ERROR','batch permission check: ' + E);
+									}
+
+									if (edit==0) {
+										alert("You don't have permission to edit this volume.");
+										return; // no read-only view for this interface
+									}
+
+									var title = (list.length == 1 ? 'Volume' : 'Volumes') + ' for record # ' + rec;
+
+									JSAN.use('util.window'); var win = new util.window();
+									obj.data.volumes_temp = js2JSON( list );
+									obj.data.stash('volumes_temp');
+									var w = win.open(
+										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
+										title,
+										'chrome,modal,resizable'
+									);
+
+									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+									obj.data.stash_retrieve();
+									var volumes = JSON2js( obj.data.volumes_temp );
+									obj.error.sdump('D_CAT','in browse, obj.data.temp =\n' + obj.data.temp);
+									if (volumes=='') return;
+								
+									volumes = util.functional.filter_list(
+										volumes,
+										function (o) {
+											return o.ischanged() == '1';
+										}
+									);
+
+									volumes = util.functional.map_list(
+										volumes,
+										function (o) {
+											o.record( rec ); // staff client 2 did not do this.  Does it matter?
+											return o;
+										}
+									);
+
+									if (volumes.length == 0) return;
+
+									try {
+										var r = obj.network.request(
+											api.FM_ACN_TREE_UPDATE.app,
+											api.FM_ACN_TREE_UPDATE.method,
+											[ ses(), volumes, false ]
+										);
+										if (typeof r.ilsevent != 'undefined') throw(r);
+										alert('Volumes modified.');
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('volume update error: ',E);
+									}
+
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Copy Status -> Volume Edit',E);
+							}
+						}
+
+					],
+					'cmd_delete_volumes' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+								if (list.length == 0) return;
+
+								var map_acn = {};
+
+								for (var i = 0; i < list.length; i++) {
+									var volume_id = list[i];
+									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (! map_acn[volume_id]) {
+										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+									}
+								}
+
+								list = []; for (var v in map_acn) list.push( map_acn[v] );
+
+								var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' volumes' : 'this one volume') + '?', 'Delete Volumes?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+
+								if (r == 0) {
+									for (var i = 0; i < list.length; i++) {
+										list[i].isdeleted('1');
+									}
+									var robj = obj.network.simple_request(
+										'FM_ACN_TREE_UPDATE', 
+										[ ses(), list, true ],
+										null,
+										{
+											'title' : 'Override Delete Failure?',
+											'overridable_events' : [
+											]
+										}
+									);
+									if (robj == null) throw(robj);
+									if (typeof robj.ilsevent != 'undefined') {
+										if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
+											alert('You must delete all the copies on the volume before you may delete the volume itself.');
+											return;
+										}
+										if (robj.ilsevent != 0) throw(robj);
+									}
+									alert('Volumes deleted.');
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> delete volumes',E);
+							}
+
+						}
+
+					],
+					'cmd_mark_volume' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+
+								if (list.length == 1) {
+									obj.data.marked_volume = list[0];
+									obj.data.stash('marked_volume');
+									alert('Volume marked as Item Transfer Destination');
+								} else {
+									obj.error.yns_alert('Choose just one Volume to mark as Item Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> mark volume',E);
+							}
+						}
+					],
+					'cmd_mark_library' : [
+						['command'],
+						function() {
+							try {
+								JSAN.use('util.functional');
+								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+
+								if (list.length == 1) {
+									var v = obj.network.simple_request('FM_ACN_RETRIEVE',[list[0]]);
+									var owning_lib = v.owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
+
+									obj.data.marked_library = { 'lib' : owning_lib, 'docid' : v.record() };
+									obj.data.stash('marked_library');
+									alert('Library + Record marked as Volume Transfer Destination');
+								} else {
+									obj.error.yns_alert('Choose just one Library to mark as Volume Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+								}
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('copy status -> mark library',E);
+							}
+						}
+					],
+					'cmd_transfer_volume' : [
+						['command'],
+						function() {
+							try {
+									obj.data.stash_retrieve();
+									if (!obj.data.marked_library) {
+										alert('Please mark a library as the destination from within holdings maintenance and then try this again.');
+										return;
+									}
+									
+									JSAN.use('util.functional');
+
+									var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
+									if (list.length == 0) return;
+
+									var map_acn = {};
+
+									for (var i = 0; i < list.length; i++) {
+										var volume_id = list[i];
+										if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+										if (! map_acn[volume_id]) {
+											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
+										}
+									}
+
+									list = []; for (v in map_acn) list.push(map_acn[v]);
+
+									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
+									xml += '<description>Transfer volumes ';
+
+									xml += util.functional.map_list(
+										list,
+										function (o) {
+											return o.label();
+										}
+									).join(", ");
+
+									xml += ' to library ' + obj.data.hash.aou[ obj.data.marked_library.lib ].shortname();
+									xml += ' on the following record?</description>';
+									xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
+									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
+									xml += '</vbox>';
+									JSAN.use('OpenILS.data');
+									var data = new OpenILS.data(); data.init({'via':'stash'});
+									data.temp_transfer = xml; data.stash('temp_transfer');
+									window.open(
+										urls.XUL_FANCY_PROMPT
+										+ '?xml_in_stash=temp_transfer'
+										+ '&title=' + window.escape('Volume Transfer'),
+										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
+									);
+								
+									data.init({'via':'stash'});
+									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
+
+									var robj = obj.network.simple_request(
+										'FM_ACN_TRANSFER', 
+										[ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : util.functional.map_list( list, function(o) { return o.id(); }) } ],
+										null,
+										{
+											'title' : 'Override Volume Transfer Failure?',
+											'overridable_events' : [
+												1208 /* TITLE_LAST_COPY */,
+												1219 /* COPY_REMOTE_CIRC_LIB */,
+											],
+										}
+									);
+
+									if (typeof robj.ilsevent != 'undefined') {
+										if (robj.ilsevent == 1221 /* ORG_CANNOT_HAVE_VOLS */) {
+											alert('That destination cannot have volumes.');
+										} else {
+											throw(robj);
+										}
+									} else {
+										alert('Volumes transferred.');
+									}
+
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('All volumes not likely transferred.',E);
+							}
+						}
+
 					],
 				}
 			}
@@ -412,7 +900,7 @@ circ.copy_status.prototype = {
 				}
 				obj.list.append(
 					{
-						'retrieve_id' : js2JSON( { 'renewable' : copy.circulations() ? 't' : 'f', 'copy_id' : copy.id(), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
+						'retrieve_id' : js2JSON( { 'renewable' : copy.circulations() ? 't' : 'f', 'copy_id' : copy.id(), 'acn_id' : (typeof copy.call_number() == 'object' ? copy.call_number().id() : copy.call_number()), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
 						'row' : {
 							'my' : {
 								'mvr' : my_mvr,

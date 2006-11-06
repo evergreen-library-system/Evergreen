@@ -35,6 +35,38 @@
 	</popup>
 </popupset>
 
+<popupset id="copy_cat_status_popupset">
+	<popup id="copy_cat_status_actions" position="at_pointer"> 
+		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
+		<menuitem command="sel_bucket" label="Add Items to Buckets" accesskey="B"/>
+		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuseparator/>
+		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E"/>
+		<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+		<menuseparator/>
+		<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+		<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+		<menuseparator/>
+		<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
+		<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
+		<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+		<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+		<menuseparator/>
+		<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+		<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+		<menuseparator/>
+		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+		<menuseparator/>
+		<menuitem command="sel_spine" label="Print Item Spine Labels" accesskey="P"/>
+		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
+		<menuitem command="save_columns" label="Save Columns"/>
+	</popup>
+</popupset>
+
+
 <box id="copy_status_main" flex="1" orient="vertical" class="my_overflow">
 	<vbox id="cmvb1" flex="1"/>
 </box>
@@ -69,6 +101,36 @@
 		command="cmd_copy_status_submit_barcode"/>
 	<spacer flex="1"/>
 	<menubar>
+	<menu label="Actions for Catalogers" accesskey="f">
+		<menupopup>
+			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
+			<menuitem command="sel_bucket" label="Add Items to Buckets" accesskey="B"/>
+			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuseparator/>
+			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E"/>
+			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+			<menuseparator/>
+			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
+			<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+			<menuseparator/>
+			<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
+			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
+			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
+			<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+			<menuseparator/>
+			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
+			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+			<menuseparator/>
+			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+			<menuseparator/>
+			<menuitem command="sel_spine" label="Print Item Spine Labels" accesskey="P"/>
+			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
+			<menuitem command="save_columns" label="Save Columns"/>
+		</menupopup>
+	</menu>
 	<menu label="Actions for Selected Items" accesskey="S">
 		<menupopup>
 			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
