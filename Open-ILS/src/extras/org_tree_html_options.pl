@@ -29,7 +29,7 @@ sub print_option {
 	my $sname = $node->shortname;
 	my $name = $node->name;
 	my $kids = $node->children;
-	print FILE "<option class='indent$depth' value='$sname'>$name</option>\n";
+	print FILE "<option value='$sname'><pre>" . '&nbsp;&nbsp;&nbsp;'x$depth . "</pre>$name</option>\n";
 	print_option($_) for (@$kids);
 }
 
