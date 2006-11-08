@@ -85,7 +85,8 @@ sub make_payments {
 		$trans = $self->fetch_mbts($client, $login, $transid);
 		return $trans if $U->event_code($trans);
 
-		$logger->info("payment method retrieved transaction [$transid] with balance_owed = " . $trans->balance_owed);
+		$logger->info("payment: processing transaction [$transid] with balance_owed = ". 
+			$trans->balance_owed. ",  payment amount = $amount, and payment type = $type");
 
 		if($trans->usr != $userid) { # Do we need to restrict this in some way ??
 			$logger->info( " * User $userid is making a payment for " . 
@@ -100,6 +101,8 @@ sub make_payments {
 
 		# A negative payment is a refund.  
 		if( $amount < 0 ) {
+			
+			$logger->info("payment: received a negative payment (refund) of $amount");
 
 			# If the refund causes the transaction balance to exceed 0 dollars, 
 			# we are in effect loaning the patron money.  This is not allowed.
@@ -112,7 +115,6 @@ sub make_payments {
 			my $desk_total = 0;
 			my $desk_payments = $e->search_money_desk_payment(
 				{ xact => $transid, voided => 'f' });
-			#$desk_total += $_->amount_collected for @$desk_payments;
 			$desk_total += $_->amount for @$desk_payments;
 
 			if( (-$amount) > $desk_total ) {
@@ -144,11 +146,12 @@ sub make_payments {
 
 			# Any overpay on this transaction goes directly into patron credit 
 			$cred = -$cred;
-			$credit += $cred;
-			$logger->activity("user ".$user->id." applying credit ".
-				"of $cred on transaction ".$trans->id. " because of overpayment");
 
-			$logger->debug("Transactin " . $trans->id . ' is complete');
+			$logger->info("payment: amount ($amount) exceeds transaction balance of ".
+				$trans->balance_owed.".  Applying patron credit of $cred");
+
+			$credit += $cred;
+
 			$trans = $session->request(
 				"open-ils.storage.direct.money.billable_transaction.retrieve", $transid )->gather(1);
 
@@ -166,9 +169,6 @@ sub make_payments {
 					("Error updating billable_xact in circ.money.payment"); }
 			}
 		}
-
-
-		$logger->debug("Creating new $payobj for \$$amount\n");
 
 		my $s = $session->request(
 			"open-ils.storage.direct.money.$type.create", $payobj )->gather(1);
