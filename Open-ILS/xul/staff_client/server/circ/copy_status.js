@@ -428,7 +428,29 @@ circ.copy_status.prototype = {
 								if (! window.confirm('Are you sure sure you want to delete these items? ' + util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")) ) return;
 
                                 var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
-                                if (typeof robj.ilsevent != 'undefined') obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj); else { alert('Items Deleted'); }
+								var robj = obj.network.simple_request(
+									'FM_ACP_FLESHED_BATCH_UPDATE', 
+									[ ses(), copies, true ], 
+									null,
+									{
+										'title' : 'Override Delete Failure?',
+										'overridable_events' : [
+											1208 /* TITLE_LAST_COPY */,
+											1227 /* COPY_DELETE_WARNING */,
+										]
+									}
+								);
+	
+                                if (typeof robj.ilsevent != 'undefined') {
+									switch(robj.ilsevent) {
+										case 1208 /* TITLE_LAST_COPY */:
+										case 1227 /* COPY_DELETE_WARNING */:
+										break;
+										default:
+											obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+										break;
+									}
+								} else { alert('Items Deleted'); }
 
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> delete items',E);
@@ -441,7 +463,7 @@ circ.copy_status.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_volume) {
-										alert('Please mark a volume as the destination from within holdings maintenance and then try this again.');
+										alert('Please mark a volume as the destination and then try this again.');
 										return;
 									}
 									

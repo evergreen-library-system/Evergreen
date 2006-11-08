@@ -98,6 +98,7 @@ cat.util.transfer_copies = function(params) {
 				'title' : 'Override Transfer Failure?',
 				'overridable_events' : [
 					1208 /* TITLE_LAST_COPY */,
+					1227 /* COPY_DELETE_WARNING */,
 				]
 			}
 		);

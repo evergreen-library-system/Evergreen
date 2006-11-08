@@ -371,13 +371,14 @@ cat.copy_browser.prototype = {
 											{
 												'title' : 'Override Delete Failure?',
 												'overridable_events' : [
-													1208 /* TITLE_LAST_COPY */
+													1208 /* TITLE_LAST_COPY */,
+													1227 /* COPY_DELETE_WARNING */,
 												]
 											}
 										);
 										if (robj == null) throw(robj);
 										if (typeof robj.ilsevent != 'undefined') {
-											if ( (robj.ilsevent != 0) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
+											if ( (robj.ilsevent != 0) && (robj.ilsevent != 1227 /* COPY_DELETE_WARNING */) && (robj.ilsevent != 1208 /* TITLE_LAST_COPY */) ) throw(robj);
 										}
 										alert('Action complete.');
 										obj.refresh_list();
