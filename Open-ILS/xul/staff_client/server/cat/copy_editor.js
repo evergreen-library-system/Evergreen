@@ -221,6 +221,9 @@ g.apply_template = function() {
 					case 'stat_cat' :
 						if (g.stat_cat_seen[ template[i].field ]) g.apply_stat_cat(template[i].field,template[i].value);
 					break;
+					case 'owning_lib' :
+						g.apply_owning_lib(template[i].value);
+					break;
 				}
 			}
 			g.summarize( g.copies );
@@ -348,6 +351,41 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 		}
 	}
 }
+
+/******************************************************************************************************/
+/* Apply an "owning lib" to all the copies being edited.  That is, change and auto-vivicating volumes */
+
+g.apply_owning_lib = function(ou_id) {
+	g.error.sdump('D_TRACE','ou_id = ' + ou_id + '\n');
+	var map_acn = {};
+	for (var i = 0; i < g.copies.length; i++) {
+		var copy = g.copies[i];
+		try {
+			if (!map_acn[copy.call_number()]) {
+				var volume = g.network.simple_request('FM_ACN_RETRIEVE',[ copy.call_number() ]);
+				if (typeof volume.ilsevent != 'undefined') {
+					g.error.standard_unexpected_error_alert('Error retrieving Volume information for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",volume);
+					continue;
+				}
+				map_acn[copy.call_number()] = volume;
+			}
+			var old_volume = map_acn[copy.call_number()];
+			var acn_id = g.network.simple_request(
+				'FM_ACN_FIND_OR_CREATE',
+				[ses(),old_volume.label(),old_volume.record(),ou_id]
+			);
+			if (typeof acn_id.ilsevent != 'undefined') {
+				g.error.standard_unexpected_error_alert('Error changing owning lib for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",acn_id);
+				continue;
+			}
+			copy.call_number(acn_id);
+			copy.ischanged('1');
+		} catch(E) {
+			g.error.standard_unexpected_error_alert('apply_stat_cat',E);
+		}
+	}
+}
+
 
 /******************************************************************************************************/
 /* This returns true if none of the copies being edited have a magical status found in my_constants.magical_statuses */
@@ -589,6 +627,7 @@ g.panes_and_field_names = {
 		"Owning Lib : Call Number", 	
 		{
 			render: 'fm.call_number();',
+			input: 'c = function(v){ g.apply_owning_lib(v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.aou, function(obj) { var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ obj.name() ? sname + " " + obj.name() : obj.shortname(), obj.id(), ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_vols() ) ), ( g.data.hash.aout[ obj.ou_type() ].depth() * 2), ]; }), g.data.list.au[0].ws_ou()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
@@ -884,7 +923,7 @@ g.render_input = function(node,blob) {
 				function post_c(v) {
 					try {
 						/* FIXME - kludgy */
-						var t = input_cmd.match('apply_stat_cat') ? 'stat_cat' : 'attribute';
+						var t = input_cmd.match('apply_stat_cat') ? 'stat_cat' : ( input_cmd.match('apply_owning_lib') ? 'owning_lib' : 'attribute' );
 						var f;
 						switch(t) {
 							case 'attribute' :
@@ -892,6 +931,9 @@ g.render_input = function(node,blob) {
 							break;
 							case 'stat_cat' :
 								f = input_cmd.match(/apply_stat_cat\((.+?),/)[1];
+							break;
+							case 'owning_lib' :
+								f = null;
 							break;
 						}
 						g.changed[ hbox.id ] = { 'type' : t, 'field' : f, 'value' : v };
