@@ -266,7 +266,7 @@ To-do list:
 						</p>
 					</xsl:when>
 					<xsl:when test="(opensearch:startIndex&gt;1 or opensearchOld&gt;1) and not($totalresults=0)"><xsl:value-of select="$t-nomoreresults" /></xsl:when>
-					<xsl:otherwise><!-- <p><xsl:value-of select="$t-noresults" /></p> --></xsl:otherwise>
+					<xsl:otherwise><p><xsl:value-of select="$t-noresults" /></p></xsl:otherwise>
 				</xsl:choose>
 
 				<!-- display the copyright -->
@@ -415,6 +415,7 @@ To-do list:
 							<xsl:value-of select="@href" />
 						</xsl:attribute>
 					</xsl:for-each>
+					<!--
 					<xsl:choose>
 						<xsl:when test="string-length(substring-after($url, 'http://'))&gt;100">
 							<xsl:value-of select="concat(substring(substring-after($url, 'http://'),1,100),'&#8230;')" />
@@ -423,6 +424,8 @@ To-do list:
 							<xsl:value-of select="substring-after($url, 'http://')" />
 						</xsl:otherwise>
 					</xsl:choose>
+					-->
+					<xsl:text>unAPI</xsl:text>
 				</abbr>
 			</dd>
 		</xsl:if>

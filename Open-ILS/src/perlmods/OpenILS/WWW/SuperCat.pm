@@ -904,7 +904,7 @@ sub opensearch_feed {
 		$offset -= 1;
 	}
 
-	my ($version,$org,$type,$class,$terms,$sort,$sortdir,$lang);
+	my ($version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = ('','','','','','','','');
 	(undef,$version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = split '/', $path;
 
 	$lang = $cgi->param('searchLang') if $cgi->param('searchLang');
@@ -944,6 +944,7 @@ sub opensearch_feed {
 	$terms = decode_utf8($terms);
 	$terms =~ s/\+/ /go;
 	$terms =~ s/'//go;
+	$terms =~ s/^\s+//go;
 	my $term_copy = $terms;
 
 	my $complex_terms = 0;
@@ -1074,43 +1075,43 @@ sub opensearch_feed {
 
 	$feed->link(
 		next =>
-		$base . "/$version/$org/$type/$class?searchTerms=$terms&startIndex=" . int($offset + $limit + 1) . "&count=" . $limit =>
+		$base . "/$version/$org/$type/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang&startIndex=" . int($offset + $limit + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset + $limit < $recs->{count});
 
 	$feed->link(
 		previous =>
-		$base . "/$version/$org/$type/$class?searchTerms=$terms&startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
+		$base . "/$version/$org/$type/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang&startIndex=" . int(($offset - $limit) + 1) . "&count=" . $limit =>
 		'application/opensearch+xml'
 	) if ($offset);
 
 	$feed->link(
 		self =>
-		$base .  "/$version/$org/$type/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/$type/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/opensearch+xml'
 	);
 
 	$feed->link(
 		rss =>
-		$base .  "/$version/$org/rss2-full/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/rss2-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/rss+xml'
 	);
 
 	$feed->link(
 		alternate =>
-		$base .  "/$version/$org/atom-full/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/atom-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'application/atom+xml'
 	);
 
 	$feed->link(
 		'html' =>
-		$base .  "/$version/$org/html/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/html/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'text/html'
 	);
 
 	$feed->link(
 		'html-full' =>
-		$base .  "/$version/$org/html-full/$class?searchTerms=$terms" =>
+		$base .  "/$version/$org/html-full/$class?searchTerms=$terms&searchSort=$sort&searchSortDir=$sortdir&searchLang=$lang" =>
 		'text/html'
 	);
 

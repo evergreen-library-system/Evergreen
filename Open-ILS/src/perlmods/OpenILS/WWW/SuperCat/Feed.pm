@@ -65,6 +65,27 @@ sub class {
 	return $self->{class};
 }
 
+sub Sort {
+	my $self = shift;
+	my $search = shift;
+	$self->{sort} = $search if ($search);
+	return $self->{sort};
+}
+
+sub SortDir {
+	my $self = shift;
+	my $search = shift;
+	$self->{sort_dir} = $search if ($search);
+	return $self->{sort_dir};
+}
+
+sub lang {
+	my $self = shift;
+	my $search = shift;
+	$self->{lang} = $search if ($search);
+	return $self->{lang};
+}
+
 sub lib {
 	my $self = shift;
 	my $lib = shift;
@@ -592,6 +613,9 @@ sub toString {
 	my $base = $self->base || '';
 	my $root = $self->root || '';
 	my $search = $self->search || '';
+	my $sort = $self->Sort || '';
+	my $sort_dir = $self->SortDir || '';
+	my $lang = $self->lang || '';
 	my $lib = $self->lib || '-';
 
 	$self->composeDoc;
@@ -612,6 +636,9 @@ sub toString {
 		base_dir => "'$root'",
 		lib => "'$lib'",
 		searchTerms => "'$search'",
+		searchSort => "'$sort'",
+		searchSortDir => "'$sort_dir'",
+		searchLang => "'$lang'",
 	);
 
 	return $new_doc->toString(1); 
