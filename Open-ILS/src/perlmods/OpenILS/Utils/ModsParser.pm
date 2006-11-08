@@ -178,7 +178,7 @@ sub modsdoc_to_values {
 					$data->{$class}->{$type} = shift @$arr;
 
 					my $t = lc($data->{$class}->{$type});
-					if($t and $t =~ /^the|an?/o ) {
+					if($t and $t =~ /^l[eoa]s|l[ae]|el|the|un[ae]?|an?\s?$/o ) {
 						my $val = shift @$arr || "";
 						$data->{$class}->{$type} .= " $val" if $data->{$class}->{$type};
 						$data->{$class}->{$type} = " $val" unless $data->{$class}->{$type};
