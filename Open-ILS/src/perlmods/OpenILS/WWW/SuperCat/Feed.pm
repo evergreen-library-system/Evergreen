@@ -166,6 +166,8 @@ sub add_holdings {
 	my $self = shift;
 	my $holdings_xml = shift;
 
+	return $self unless ($holdings_xml);
+
 	$parser = new XML::LibXML if (!$parser);
 	my $new_doc = $parser->parse_string($holdings_xml);
 
