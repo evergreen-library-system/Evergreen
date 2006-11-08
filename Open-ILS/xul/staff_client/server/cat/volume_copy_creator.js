@@ -331,20 +331,16 @@ g.stash_and_close = function() {
 
 		for (var ou_id in volumes_hash) {
 			for (var cn in volumes_hash[ou_id]) {
-				var volume = new acn();
-				var acn_id;
-				if (!g.copy_shortcut) {
-					acn_id = g.new_node_id--;
-					volume.isnew('1');
-				} else {
-					acn_id = g.copy_shortcut[ou_id][cn];
+
+				var acn_id = g.network.simple_request(
+					'FM_ACN_FIND_OR_CREATE',
+					[ ses(), cn, g.doc_id, ou_id ]
+				);
+
+				if (typeof acn_id.ilsevent != 'undefined') {
+					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',anc_id);
+					continue;
 				}
-				volume.id( acn_id );
-				volume.record(g.doc_id);
-				volume.label(cn);
-				volume.owning_lib(ou_id);
-				volume.copies( [] );
-				volumes.push( volume );
 
 				volume_labels[ acn_id ] = { 'label' : cn, 'owning_lib' : ou_id };
 
@@ -379,7 +375,7 @@ g.stash_and_close = function() {
 			g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
 			var w = win.open(
 				urls.XUL_COPY_EDITOR
-					+'?edit=1&docid='+window.escape(g.doc_id),
+					+'?edit=1&handle_update=1&docid='+window.escape(g.doc_id),
 				title,
 				'chrome,modal,resizable'
 			);
@@ -392,50 +388,28 @@ g.stash_and_close = function() {
 			if (!copies) {
 				alert('Items were not created.');
 				return;
-			}
-		}
-
-		for (var i = 0; i < copies.length; i++) {
-			var copy = copies[i];
-			var volume = util.functional.find_id_object_in_list( volumes, copy.call_number() );
-			var temp = volume.copies();
-			temp.push( copy );
-			volume.copies( temp );
-		}
-
-		try {
-			var r = g.network.request(
-				api.FM_ACN_TREE_UPDATE.app,
-				api.FM_ACN_TREE_UPDATE.method,
-				[ ses(), volumes, true ]
-			);
-			if (typeof r.ilsevent != 'undefined') {
-				switch(r.ilsevent) {
-					case 1706 /* ITEM_BARCODE_EXISTS */ :
-						alert('Some of these barcodes are or have been in use.  Please change them.');
-						return;
-					break;
-					default: g.error.standard_unexpected_error_alert('volume tree update',r); break;
-				}
 			} else {
-				alert('Copies added.');
-				if (copies.length > 0 && $('print_labels').checked) {
-					JSAN.use('util.functional');
-					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-					data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
-					data.stash('temp_barcodes_for_labels');
-					var w = win.open(
-						urls.XUL_SPINE_LABEL,
-						'spine_labels',
-						'chrome,resizable,width=750,height=550'
-					);
+				try {
+					//case 1706 /* ITEM_BARCODE_EXISTS */ :
+					if (copies.length > 0 && $('print_labels').checked) {
+						JSAN.use('util.functional');
+						JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+						data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
+						data.stash('temp_barcodes_for_labels');
+						var w = win.open(
+							urls.XUL_SPINE_LABEL,
+							'spine_labels',
+							'chrome,resizable,width=750,height=550'
+						);
+					}
+				} catch(E) {
+					g.error.standard_unexpected_error_alert('volume tree update 2',E);
 				}
-			}
-		} catch(E) {
-			g.error.standard_unexpected_error_alert('volume tree update 2',E);
-		}
 
-		if (typeof window.refresh == 'function') window.refresh();
+				if (typeof window.refresh == 'function') window.refresh();
+
+			}
+		}
 
 		window.close();
 

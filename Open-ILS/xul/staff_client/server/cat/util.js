@@ -188,53 +188,37 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 
 cat.util.spawn_copy_editor = function(list,edit) {
 	try {
-	var obj = {};
-	JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
-	JSAN.use('util.network'); obj.network = new util.network();
-	JSAN.use('util.error'); obj.error = new util.error();
-
-	var title = list.length == 1 ? '' : 'Batch '; 
-	title += edit == 1 ? 'Edit' : 'View';
-	title += ' Copy Attributes';
-
-	JSAN.use('util.window'); var win = new util.window();
-	obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
-	obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
-	obj.data.temp_copy_ids = js2JSON(list);
-	obj.data.stash('temp_copy_ids');
-	var w = win.open(
-		window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
-			+'?edit='+edit,
-		title,
-		'chrome,modal,resizable'
-	);
-	/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-	obj.data.stash_retrieve();
-	if (!obj.data.temp_copies) return;
-	var copies = JSON2js( obj.data.temp_copies );
-	obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
-	obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
-	obj.data.temp_copy_ids = undefined; obj.data.stash('temp_copy_ids');
-	obj.error.sdump('D_CAT','in cat/copy_status, copy editor, copies =\n<<' + copies + '>>');
-	if (edit=='1' && copies!='' && typeof copies != 'undefined') {
-		try {
-			var r = obj.network.request(
-				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
-				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-				[ ses(), copies, true ]
-			);
-			if (typeof r.ilsevent != 'undefined') {
-				if (r.ilsevent != 0) throw(r);
-			}
-			alert('Copies modified.');
-		} catch(E) {
-			obj.error.standard_unexpected_error_alert('copy update error',E);
-		}
-	} else {
-		if (edit=='1') alert('Copies not modified.');
-	}
+		var obj = {};
+		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+		JSAN.use('util.network'); obj.network = new util.network();
+		JSAN.use('util.error'); obj.error = new util.error();
+	
+		if (list.length == 0) return;
+	
+		var title = list.length == 1 ? '' : 'Batch '; 
+		title += edit == 1 ? 'Edit' : 'View';
+		title += ' Copy Attributes';
+	
+		JSAN.use('util.window'); var win = new util.window();
+		obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+		obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
+		obj.data.temp_copy_ids = js2JSON(list);
+		obj.data.stash('temp_copy_ids');
+		var w = win.open(
+			window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
+				+'?handle_update=1&edit='+edit,
+			title,
+			'chrome,modal,resizable'
+		);
+		/* FIXME -- need to unique the temp space, and not rely on modalness of window */
+		obj.data.stash_retrieve();
+		if (!obj.data.temp_copies) alert('Copies not modified.');
+		obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+		obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
+		obj.data.temp_copy_ids = undefined; obj.data.stash('temp_copy_ids');
 	} catch(E) {
-		alert(E);
+		JSAN.use('util.error'); var error = new util.error();
+		error.standard_unexpected_error_alert('error in cat.util.spawn_copy_editor',E);
 	}
 }
 

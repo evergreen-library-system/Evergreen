@@ -37,6 +37,7 @@ const api = {
 	'FM_ACN_TREE_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume.fleshed.batch.update' },
 	'FM_ACN_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy_tree.retrieve' },
 	'FM_ACN_TRANSFER' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.volume.batch.transfer' },
+	'FM_ACN_FIND_OR_CREATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.call_number.find_or_create' },
 	'FM_ACP_DETAILS' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_details.retrieve' },
 	//'FM_ACP_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.retrieve' },
 	'FM_ACP_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed2.retrieve' },

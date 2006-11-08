@@ -953,9 +953,10 @@ g.stash_and_close = function() {
 				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
 				[ ses(), g.copies, true ]
 			);
-			alert('pause');
 			if (typeof r.ilsevent != 'undefined') {
 				g.error.standard_unexpected_error_alert('copy update',r);
+			} else {
+				alert('Items added/modified.');
 			}
 			/* FIXME -- revisit the return value here */
 		} catch(E) {
