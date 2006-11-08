@@ -1016,7 +1016,7 @@
 			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
-			<link field="circ_type" reltype="has_a" key="id" map="" class="rcirct"/>
+			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
 		</links>
 	</class>
 	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
