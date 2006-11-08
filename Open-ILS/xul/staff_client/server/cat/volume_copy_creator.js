@@ -372,7 +372,8 @@ g.stash_and_close = function() {
 		if (copies.length > 0) {
 			g.data.temp_copies = js2JSON(copies); g.data.stash('temp_copies');
 			g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
-			g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
+			//g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
+			g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
 			var w = win.open(
 				urls.XUL_COPY_EDITOR
 					+'?edit=1&handle_update=1&docid='+window.escape(g.doc_id),
