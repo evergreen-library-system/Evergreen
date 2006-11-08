@@ -1180,8 +1180,13 @@ sub create_record_feed {
 		my $node = $feed->add_item($xml);
 		next unless $node;
 
+		$xml = '';
 		if ($lib && $type eq 'marcxml' &&  $flesh) {
-			$xml = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib )->gather(1);
+			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib );
+			while ( !$r->complete ) {
+				$xml .= join('', map {$_->content} $r->recv);
+			}
+			$xml .= join('', map {$_->content} $r->recv);
 			$node->add_holdings($xml);
 		}
 

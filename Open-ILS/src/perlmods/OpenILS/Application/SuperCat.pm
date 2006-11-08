@@ -350,7 +350,7 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	my $xml = "<hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'>";
+	$client->respond("<hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'>");
 
 	for my $cn (@{$tree->call_numbers}) {
 
@@ -358,6 +358,7 @@ sub new_record_holdings {
 		for my $c (@{$cn->copies}) {
 			next unless grep {$c->circ_lib->id == $_} @ou_ids;
 			$found = 1;
+			last;
 		}
 		next unless $found;
 
@@ -369,7 +370,7 @@ sub new_record_holdings {
 
 		my $cn_label = $cn->label;
 
-		$xml .= "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><hold:copies>";
+		my $xml = "<hold:volume id='$cn_tag' lib='$cn_lib' label='$cn_label'><hold:copies>";
 		
 		for my $cp (@{$cn->copies}) {
 
@@ -379,25 +380,22 @@ sub new_record_holdings {
 			$cp_class =~ s/Fieldmapper-//gso;
 			my $cp_tag = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d:$cp_class/".$cp->id, $month, $day);
 
-			my $cp_stat = $cp->status->name;
-
-			my $cp_loc = $cp->location->name;
-
-			my $cp_lib = $cp->circ_lib->shortname;
-
-			my $cp_bc = $cp->barcode;
+			my $cp_stat = escape($cp->status->name);
+			my $cp_loc = escape($cp->location->name);
+			my $cp_lib = escape($cp->circ_lib->shortname);
+			my $cp_bc = escape($cp->barcode);
 
 			$xml .= "<hold:copy id='$cp_tag' barcode='$cp_bc'><hold:status>$cp_stat</hold:status>".
-				"<hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:notes>";
+				"<hold:location>$cp_loc</hold:location><hold:circlib>$cp_lib</hold:circlib><hold:copy_notes>";
 
-			#if ($cp->notes) {
-			#	for my $note ( @{$cp->notes} ) {
-			#		next unless ( $sce->stat_cat->pub eq 't' );
-			#		$xml .= sprintf('<hold:note date="%s" title="%s">%s</hold:note>',$note->create_date, escape($note->title), escape($note->value));
-			#	}
-			#}
+			if ($cp->notes) {
+				for my $note ( @{$cp->notes} ) {
+					next unless ( $note->pub eq 't' );
+					$xml .= sprintf('<hold:copy_note date="%s" title="%s">%s</hold:copy_note>',$note->create_date, escape($note->title), escape($note->value));
+				}
+			}
 
-			$xml .= "</hold:notes><hold:statcats>";
+			$xml .= "</hold:copy_notes><hold:statcats>";
 
 			if ($cp->stat_cat_entries) {
 				for my $sce ( @{$cp->stat_cat_entries} ) {
@@ -410,17 +408,18 @@ sub new_record_holdings {
 		}
 		
 		$xml .= "</hold:copies></hold:volume>";
+
+		$client->respond($xml)
 	}
 
-	$xml .= "</hold:volumes>";
-
-	return $xml;
+	return "</hold:volumes>";
 }
 __PACKAGE__->register_method(
 	method    => 'new_record_holdings',
 	api_name  => 'open-ils.supercat.record.holdings_xml.retrieve',
 	api_level => 1,
 	argc      => 1,
+	stream    => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
 Returns the XML representation of the requested bibliographic record's holdings
@@ -432,7 +431,7 @@ Returns the XML representation of the requested bibliographic record's holdings
 				  type => 'number' },
 			],
 		  'return' =>
-		  	{ desc => 'The bib record holdings hierarchy in XML',
+		  	{ desc => 'Stream of bib record holdings hierarchy in XML',
 			  type => 'string' }
 		}
 );
