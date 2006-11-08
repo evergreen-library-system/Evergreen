@@ -136,6 +136,10 @@
 	</event>
 
 
+	<event code='1227' textcode='COPY_DELETE_WARNING'>
+		<desc xml:lang="en-US">The copy in question is not in an ideal status for deleting</desc>
+	</event>
+
 
 
 
