@@ -16,6 +16,7 @@ require '../../../Open-ILS/src/support-scripts/oils_header.pl';
 use vars qw/$logger $apputils/;
 use Data::Dumper;
 use OpenILS::Const qw/:const/;
+use OpenILS::Application::AppUtils;
 use DateTime;
 use Email::Send;
 use DateTime::Format::ISO8601;
@@ -23,8 +24,9 @@ use OpenSRF::Utils qw/:datetime/;
 use Unicode::Normalize;
 use OpenILS::Const qw/:const/;
 
-my $SEND_EMAILS = 1;
+my $U = 'OpenILS::Application::AppUtils';
 
+my $SEND_EMAILS = 1;
 
 my $bsconfig = shift || die "usage: $0 <bootstrap_config>\n";
 my @goback = @ARGV;
@@ -189,11 +191,18 @@ sub print_notice {
 
 	} else {
 
-		print "\t\t<notice type='overdue' count='$range'>\n";
-		print_patron_xml_chunk(@patron_data);
-		print_org_xml_chunk(@org_data);
-		print_circ_chunk($_) for @$circs;
-		print "\t\t</notice>\n";
+		if( $patron_data[9] ) {
+
+			print "\t\t<notice type='overdue' count='$range'>\n";
+			print_patron_xml_chunk(@patron_data);
+			print_org_xml_chunk(@org_data);
+			print_circ_chunk($_) for @$circs;
+			print "\t\t</notice>\n";
+
+		} else {
+			# There is no zip, therefore no address.
+			$logger->warn("OD_notice: unable to send mail notification for $usr due to lack of valid address");
+		}
 	}
 }
 
@@ -227,7 +236,13 @@ sub fetch_patron_data {
 	my $ln = $patron->family_name;
 
 	my ( $s1, $s2, $city, $state, $zip );
-	my $baddr = $patron->mailing_address || $patron->billing_address;
+
+	my $baddr = $patron->mailing_address;
+	unless( $baddr and $U->is_true($baddr->valid) ) {
+		$baddr = $patron->billing_address;
+		$baddr = undef unless( $baddr and $U->is_true($baddr->valid) );
+	}
+
 	if( $baddr ) {
 		$s1		= $baddr->street1;
 		$s2		= $baddr->street2;
