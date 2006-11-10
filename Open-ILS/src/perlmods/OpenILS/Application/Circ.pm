@@ -838,13 +838,19 @@ sub age_hold_rules {
 
 
 
+__PACKAGE__->register_method(
+	method => 'copy_details_barcode',
+	api_name => 'open-ils.circ.copy_details.retrieve.barcode');
+sub copy_details_barcode {
+	my( $self, $conn, $auth, $barcode ) = @_;
+	return $self->copy_details( $conn, $auth, 
+		new_editor()->search_asset_copy({barcode=>$barcode,deleted=>'f'},{idlist=>1})->[0]);
+}
+
 
 __PACKAGE__->register_method(
 	method => 'copy_details',
-	api_name => 'open-ils.circ.copy_details.retrieve',
-	signature => q/
-	/
-);
+	api_name => 'open-ils.circ.copy_details.retrieve');
 
 sub copy_details {
 	my( $self, $conn, $auth, $copy_id ) = @_;
