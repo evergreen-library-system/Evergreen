@@ -1154,7 +1154,7 @@ sub create_due_date {
       gmtime(OpenSRF::Utils->interval_to_seconds($duration) + int(time()));
    $year += 1900; $mon += 1;
    my $due_date = sprintf(
-      '%s-%0.2d-%0.2dT%s:%0.2d:%0.2d-00',
+      '%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
       $year, $mon, $mday, $hour, $min, $sec);
    return $due_date;
 }
