@@ -851,8 +851,33 @@ sub copy_details {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 
-	my $copy = $e->retrieve_asset_copy($copy_id)
-		or return $e->event;
+	my $flesh = { flesh => 1 };
+
+	my $copy = $e->retrieve_asset_copy(
+		[
+			$copy_id,
+			{
+				flesh => 2,
+				flesh_fields => {
+					acp => ['call_number'],
+					acn => ['record']
+				}
+			}
+		]) or return $e->event;
+
+
+	# De-flesh the copy for backwards compatibility
+	my $mvr;
+	my $vol = $copy->call_number;
+	if( ref $vol ) {
+		$copy->call_number($vol->id);
+		my $record = $vol->record;
+		if( ref $record ) {
+			$vol->record($record->id);
+			$mvr = $U->record_to_mvr($record);
+		}
+	}
+
 
 	my $hold = $e->search_action_hold_request(
 		{ 
@@ -876,11 +901,14 @@ sub copy_details {
 		]
 	)->[0];
 
+
 	return {
 		copy		=> $copy,
 		hold		=> $hold,
 		transit	=> $transit,
 		circ		=> $circ,
+		volume	=> $vol,
+		mvr		=> $mvr,
 	};
 }
 
@@ -912,6 +940,8 @@ sub mark_item {
 	my $copy = $e->retrieve_asset_copy($copy_id)
 		or return $e->event;
 	$copy->status($stat);
+	$copy->edit_date('now');
+	$copy->editor($e->requestor->id);
 
 	$e->update_asset_copy($copy) or return $e->event;
 
