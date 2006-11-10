@@ -972,7 +972,7 @@ sub parse {
 	$self->set_builder($b);
 
 	$self->{_table} = $rel_data->{table};
-	$self->{_alias} = $rel_data->{alias} || $self->name;
+	$self->{_alias} = $rel_data->{alias} || $self->{_table};
 	$self->{_join} = [];
 	$self->{_columns} = [];
 
