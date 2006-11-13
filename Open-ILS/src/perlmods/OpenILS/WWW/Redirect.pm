@@ -51,7 +51,7 @@ sub handler {
 		my $region = $lib_data->[0];
 		my $library = $lib_data->[1];
 
-		$logger->info("Apache redirecting to $region / $library");
+		$logger->info("Apache redirecting $user_ip to $region / $library");
 		my $session = OpenSRF::AppSession->create("open-ils.storage");
 		my $shortname = "$region-$library";
 
