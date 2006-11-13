@@ -1,0 +1,34 @@
+1. Set up the database params in settings.py
+2. Comment out the following item in the INSTALLED_APPS variable in settings.py (around line 80):  'ils_admin.setup',
+	* If this is not commented out, Django will attempt to create tables for the ILS models, which
+	could cause the creation of duplicate tables with slightly different names/layouts *
+3. Run "python manage.py syncdb".  This will install the necessary Django tables in the database
+4. Uncomment the line commented out in #2.
+
+	To test the base Django app installation, you can run "python manage.py shell" to access the models directly.
+	Also, see http://www.djangoproject.com/documentation/tutorial1/
+
+5. Add an Apache config similar to the one below (requires mod_python):
+
+<Location /ils_setup/>
+	# Protect this sensitive sight
+	Order deny,allow
+	Deny from all
+	Allow from 10.0.0.0/8
+	SetHandler mod_python
+
+	# set up the python/django handlers
+	PythonHandler django.core.handlers.modpython
+	SetEnv DJANGO_SETTINGS_MODULE ils_admin.settings
+	PythonPath "['/openils/var/admin/', '/usr/lib/python2.4/site-packages/'] +sys.path"
+
+	# set up some good development settings
+	PythonAutoReload On 
+	PythonDebug On
+</Location>
+
+6. Start apache
+
+
+
+
