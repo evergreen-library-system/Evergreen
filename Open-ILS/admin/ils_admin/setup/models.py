@@ -2,11 +2,13 @@ from django.db import models
 
 # Create your models here.
 
+INTERVAL_HELP_TEXT = 'examples: "1 hour", "14 days", "3 months", "DD:HH:MM:SS.ms"'
+
 class GrpTree(models.Model):
 	name = models.CharField(maxlength=100)
 	parent_id = models.ForeignKey('self', null=True, related_name='children', db_column='parent')
 	description = models.CharField(blank=True, maxlength=200)
-	perm_interval = models.CharField(blank=True, maxlength=100)
+	perm_interval = models.CharField(blank=True, maxlength=100, help_text=INTERVAL_HELP_TEXT)
 	application_perm = models.CharField(blank=True, maxlength=100)
 	usergroup = models.BooleanField()
 	class Admin:
@@ -102,7 +104,6 @@ class OrgUnit(models.Model):
 	billing_address_id = models.ForeignKey(OrgAddress, db_column='billing_address', null=True, blank=True)
 	class Admin:
 		search_fields = ['name', 'shortname']
-		#list_filter = ['parent_ou_id']
 		list_display = ('shortname', 'name')
 	class Meta:
 		db_table = 'org_unit'
@@ -112,5 +113,73 @@ class OrgUnit(models.Model):
 		return self.shortname
 
 
+class RuleCircDuration(models.Model):
+	name = models.CharField(maxlength=200)
+	extended = models.CharField(maxlength=200, help_text=INTERVAL_HELP_TEXT);
+	normal = models.CharField(maxlength=200, help_text=INTERVAL_HELP_TEXT);
+	shrt = models.CharField(maxlength=200, help_text=INTERVAL_HELP_TEXT);
+	max_renewals = models.IntegerField()
+	class Admin:
+		search_fields = ['name']
+		list_display = ('name','extended','normal','shrt','max_renewals')
+	class Meta:
+		db_table = 'rule_circ_duration'
+		ordering = ['name']
+		verbose_name = 'Circ Duration Rule'
+	def __str__(self):
+		return self.name
 
+
+class RuleMaxFine(models.Model):
+	name = models.CharField(maxlength=200)
+	amount = models.FloatField(max_digits=6, decimal_places=2)
+	class Admin:
+		search_fields = ['name']
+		list_display = ('name','amount')
+	class Meta:
+		db_table = 'rule_max_fine'
+		ordering = ['name']
+		verbose_name = 'Circ Max Fine Rule'
+	def __str__(self):
+		return self.name
+
+class RuleRecurringFine(models.Model):
+	name = models.CharField(maxlength=200)
+	high = models.FloatField(max_digits=6, decimal_places=2)
+	normal = models.FloatField(max_digits=6, decimal_places=2)
+	low = models.FloatField(max_digits=6, decimal_places=2)
+	class Admin:
+		search_fields = ['name']
+		list_display = ('name','high', 'normal', 'low')
+	class Meta:
+		db_table = 'rule_recuring_fine'
+		ordering = ['name']
+		verbose_name = 'Circ Recurring Fine Rule'
+	def __str__(self):
+		return self.name
+
+class IdentificationType(models.Model):
+	name = models.CharField(maxlength=200)
+	class Admin:
+		search_fields = ['name']
+	class Meta:
+		db_table = 'identification_type'
+		ordering = ['name']
+		verbose_name = 'Identification Type'
+	def __str__(self):
+		return self.name
+
+
+class RuleAgeHoldProtect(models.Model):
+	name = models.CharField(maxlength=200)
+	age = models.CharField(blank=True, maxlength=100, help_text=INTERVAL_HELP_TEXT)
+	prox = models.IntegerField()
+	class Admin:
+		search_fields = ['name']
+	class Meta:
+		db_table = 'rule_age_hold_protect'
+		ordering = ['name']
+		verbose_name = 'Hold Age Protection Rule'
+	def __str__(self):
+		return self.name
 
