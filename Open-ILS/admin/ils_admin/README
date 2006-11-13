@@ -27,7 +27,11 @@
 	PythonDebug On
 </Location>
 
-6. Start apache
+6. Add a symlink to "media" in your document root (e.g /openils/var/web) to the admin media dir:
+e.g. /usr/lib/python2.4/site-packages/django/contrib/admin/media/
+This can also be accomplished with an Alias directive in Apache config
+
+7. Start apache
 
 
 
