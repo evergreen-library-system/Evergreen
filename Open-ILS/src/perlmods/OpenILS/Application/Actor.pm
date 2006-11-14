@@ -1053,9 +1053,10 @@ __PACKAGE__->register_method(
 );
 
 sub get_my_org_path {
-	my( $self, $client, $user_session, $org_id ) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-	if(!defined($org_id)) { $org_id = $user_obj->home_ou; }
+	my( $self, $client, $auth, $org_id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	$org_id = $e->requestor->ws_ou unless defined $org_id;
 
 	return $apputils->simple_scalar_request(
 		"open-ils.storage",
