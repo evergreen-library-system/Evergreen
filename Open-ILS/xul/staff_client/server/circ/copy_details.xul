@@ -57,13 +57,13 @@
 				var robj = g.network.simple_request('FM_ACP_DETAILS', [ ses(), g.copy_id ] );
 				if (typeof robj.ilsevent != 'undefined') throw(robj);
 				if (robj.copy) g.copy = robj.copy; else throw(robj);
-				g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ;
+				g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ; g.callnumber = robj.volume;
 				if (g.hold) $('hold_caption').setAttribute('tooltiptext','Hold ID = ' + g.hold.id());
 				if (g.transit) $('transit_caption').setAttribute('tooltiptext','Transit ID = ' + g.transit.id());
 				if (g.circ) $('circ_caption').setAttribute('tooltiptext','Circ ID = ' + g.circ.id());
 
-				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
-				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
+				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
+				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
 				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
 				g.data.temp_copy = g.copy; g.data.stash('temp_copy'); $('item_summary').setAttribute('src',urls.XUL_COPY_SUMMARY);

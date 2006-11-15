@@ -881,60 +881,72 @@ circ.copy_status.prototype = {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
 			JSAN.use('circ.util');
-			var copy = obj.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE', [ barcode ]);
-			if (copy == null) {
-				throw('Something weird happened.  null result');
-			} else if (copy.ilsevent) {
-				switch(copy.ilsevent) {
-					case -1: 
-						obj.error.standard_network_error_alert(); 
-						obj.controller.view.copy_status_barcode_entry_textbox.select();
-						obj.controller.view.copy_status_barcode_entry_textbox.focus();
-					break;
-					case 1502 /* ASSET_COPY_NOT_FOUND */ :
-						try { document.getElementById('last_scanned').setAttribute('value',barcode + ' was either mis-scanned or is not cataloged.'); } catch(E) {}
-						obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
-						obj.controller.view.copy_status_barcode_entry_textbox.select();
-						obj.controller.view.copy_status_barcode_entry_textbox.focus();
-					break;
-					default: 
-						throw(copy); 
-					break;
-				}
-			} else {
-				obj.network.simple_request('FM_ACP_DETAILS', [ ses(), copy.id() ], function(req) {
-					try {
-						var details = req.getResultObject();
-						var msg = copy.barcode() + ' -- ';
-						if (copy.call_number() == -1) msg += 'Item is a Pre-Cat.  ';
-						if (details.hold) msg += 'Item is captured for a Hold.  ';
-						if (details.transit) msg += 'Item is in Transit.  ';
-						if (details.circ && ! details.circ.checkin_time()) msg += 'Item is circulating.  ';
-						try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
-					} catch(E) {
-						alert(E);
+			obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ], function(req) {
+				try {
+					var details = req.getResultObject();
+					if (details == null) {
+						throw('Something weird happened.  null result');
+					} else if (details.ilsevent) {
+						switch(details.ilsevent) {
+							case -1: 
+								obj.error.standard_network_error_alert(); 
+								obj.controller.view.copy_status_barcode_entry_textbox.select();
+								obj.controller.view.copy_status_barcode_entry_textbox.focus();
+								return;
+							break;
+							case 1502 /* ASSET_COPY_NOT_FOUND */ :
+								try { document.getElementById('last_scanned').setAttribute('value',barcode + ' was either mis-scanned or is not cataloged.'); } catch(E) {}
+								obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
+								obj.controller.view.copy_status_barcode_entry_textbox.select();
+								obj.controller.view.copy_status_barcode_entry_textbox.focus();
+								return;
+							break;
+							default: 
+								throw(details); 
+							break;
+						}
 					}
-				} );
-				var my_mvr = obj.network.simple_request('MODS_SLIM_RECORD_RETRIEVE_VIA_COPY', [ copy.id() ]);
-				if (document.getElementById('trim_list')) {
-					var x = document.getElementById('trim_list');
-					if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
-				}
-				obj.list.append(
-					{
-						'retrieve_id' : js2JSON( { 'renewable' : copy.circulations() ? 't' : 'f', 'copy_id' : copy.id(), 'acn_id' : (typeof copy.call_number() == 'object' ? copy.call_number().id() : copy.call_number()), 'barcode' : barcode, 'doc_id' : (typeof my_mvr.ilsevent == 'undefined' ? my_mvr.doc_id() : null ) } ),
-						'row' : {
-							'my' : {
-								'mvr' : my_mvr,
-								'acp' : copy,
-							}
-						},
-						'to_top' : true,
+					var msg = details.copy.barcode() + ' -- ';
+					if (details.copy.call_number() == -1) msg += 'Item is a Pre-Cat.  ';
+					if (details.hold) msg += 'Item is captured for a Hold.  ';
+					if (details.transit) msg += 'Item is in Transit.  ';
+					if (details.circ && ! details.circ.checkin_time()) msg += 'Item is circulating.  ';
+					try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
+					if (document.getElementById('trim_list')) {
+						var x = document.getElementById('trim_list');
+						if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
 					}
-				);
-				obj.controller.view.copy_status_barcode_entry_textbox.value = '';
-				obj.controller.view.copy_status_barcode_entry_textbox.focus();
-			}
+					obj.list.append(
+						{
+							'retrieve_id' : js2JSON( 
+								{ 
+									'renewable' : details.circ ? 't' : 'f', 
+									'copy_id' : details.copy.id(), 
+									'acn_id' : details.volume ? details.volume.id() : -1, 
+									'barcode' : barcode, 
+									'doc_id' : details.mvr ? details.mvr.doc_id() : null  
+								} 
+							),
+							'row' : {
+								'my' : {
+									'mvr' : details.mvr,
+									'acp' : details.copy,
+									'acn' : details.volume,
+									'atc' : details.transit,
+									'circ' : details.circ,
+									'ahr' : details.hold,
+								}
+							},
+							'to_top' : true,
+						}
+					);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('',E);
+				}
+			} );
+			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
+			obj.controller.view.copy_status_barcode_entry_textbox.focus();
+			
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('',E);
 			obj.controller.view.copy_status_barcode_entry_textbox.select();

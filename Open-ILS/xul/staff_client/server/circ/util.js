@@ -428,7 +428,7 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { if (my.acp && my.acp.call_number() == -1) { return "Not Cataloged"; } else { if (!my.acn) { var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { return "Not Cataloged"; } else { my.acn = x; return x.label(); } } else { return my.acn.label(); } } },
+			'primary' : false, 'hidden' : true, 'render' : function(my) { if (my.acp && my.acp.call_number() == -1) { return "Not Cataloged"; } else { if (!my.acn) { /* var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { return "Not Cataloged"; } else { my.acn = x; return x.label(); } */ return '?'; } else { return my.acn.label(); } } },
 			'persist' : 'hidden width ordinal',
 		},
 		{
