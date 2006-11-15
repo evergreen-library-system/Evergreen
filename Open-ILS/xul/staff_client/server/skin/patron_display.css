@@ -69,3 +69,7 @@ deck#patron_deck { border-left: solid thin black; }
 .PATRON_NET_ACCESS_2 .net_access { color: green; } /* Unfiltered */
 .PATRON_NET_ACCESS_3 .net_access { color: #CC3300; } /* No Access */
 
+.bad_barcode { color: red; }
+.line_item { font-family: monospace; }
+.checking_barcode { color: orange; text-decoration: blink; }
+
