@@ -101,100 +101,16 @@ util.print.prototype = {
 			dump(E+'\n');
 		}
 		var cols = [];
-		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
-		// we could do a dump_with_keys instead
-		/*
-		switch(params.type) {
-			case 'offline_checkout' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_checkout_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
 
-			break;
-			case 'offline_checkin' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_checkin_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-
-			break;
-			case 'offline_renew' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_renew_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'offline_inhouse_use' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_inhouse_use_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'items':
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'bills':
-				JSAN.use('patron.util');
-				cols = util.functional.map_list(
-					patron.util.mbts_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'payment':
-				//cols = [ '%bill_id%','%payment%'];
-				cols = [];
-			break;
-			case 'transits':
-				cols = [];
-			break;
-			case 'holds':
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.hold_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'patrons':
-				JSAN.use('patron.util');
-				cols = util.functional.map_list(
-					patron.util.columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
+		var s = '';
+		if (params.header) s += this.template_sub( params.header, cols, params );
+		if (params.list) {
+			for (var i = 0; i < params.list.length; i++) {
+				params.row = params.list[i];
+				s += this.template_sub( params.line_item, cols, params );
+			}
 		}
-		*/
-
-		var s = this.template_sub( params.header, cols, params );
-		for (var i = 0; i < params.list.length; i++) {
-			params.row = params.list[i];
-			s += this.template_sub( params.line_item, cols, params );
-		}
-		s += this.template_sub( params.footer, cols, params );
+		if (params.footer) s += this.template_sub( params.footer, cols, params );
 
 		if (params.sample_frame) {
 			var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
@@ -221,6 +137,8 @@ util.print.prototype = {
 		try{b = s; s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%STAFF_PROFILE%/,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
@@ -253,7 +171,7 @@ util.print.prototype = {
 		try {
 			if (typeof params.row != 'undefined') {
 				if (params.row.length >= 0) {
-					alert('debug pause');
+					alert('debug - please tell the developers that deprecated template code tried to execute');
 					for (var i = 0; i < cols.length; i++) {
 						var re = new RegExp(cols[i],"g");
 						try{b = s; s=s.replace(re, params.row[i]);}
@@ -288,9 +206,9 @@ util.print.prototype = {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-			if (obj.data.print_strategy) {
+			if (params.print_strategy || obj.data.print_strategy) {
 
-				switch(obj.data.print_strategy) {
+				switch(params.print_strategy || obj.data.print_strategy) {
 					case 'dos.print':
 						obj._NSPrint_dos_print(w,silent,params);
 					break;	
@@ -348,7 +266,7 @@ util.print.prototype = {
 
 		} catch (e) {
 			//alert('Probably not printing: ' + e);
-			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+			this.error.sdump('D_ERROR','_NSPrint_dos_print PRINT EXCEPTION: ' + js2JSON(e) + '\n');
 		}
 	},
 
@@ -377,7 +295,7 @@ util.print.prototype = {
 			// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 			// causing an exception to be thrown which we catch here.
 			// Unfortunately this will also consume helpful failures
-			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+			this.error.sdump('D_ERROR','_NSPrint_webBrowserPrint PRINT EXCEPTION: ' + js2JSON(e) + '\n');
 		}
 	},
 
