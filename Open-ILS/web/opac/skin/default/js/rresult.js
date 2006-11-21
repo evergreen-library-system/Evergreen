@@ -229,6 +229,8 @@ var rresultTries = 0;
 function rresultHandleRIds(r) {
 	var res = r.getResultObject();
 
+	if(!res) res = {count:0,ids:[]};
+
 	if( res.count == 0 && rresultTries == 0 && ! r.noretry) {
 
 		rresultTries++;
