@@ -255,17 +255,17 @@ char* uescape( const char* string, int size, int full_escape ) {
 
 	growing_buffer* buf = buffer_init(size + 64);
 	int idx = 0;
-	long unsigned int c = 0;
+	int c = 0;
 
 	while (string[idx]) {
 
 		c ^= c;
 
-		if (!(string[idx] < 0x80)) { // not ASCII
-			if (string[idx]>= 0xc0 && string[idx] <= 0xfd) { // starts a UTF8 string
+		if (!((unsigned char)string[idx] < 0x80)) { // not ASCII
+			if ((unsigned char)string[idx] >= 0xc0 && (unsigned char)string[idx] <= 0xfd) { // starts a UTF8 string
 				do {
-					c = (c << 6) | (string[idx] & 0x3f); // add this byte worth
-				} while ((string[idx + 1] >= 0x80 && string[idx + 1] <= 0xbf) && idx++); // and continue if there's more
+					c = (c << 6) | ((unsigned char)string[idx] & 0x3f); // add this byte worth
+				} while (((unsigned char)string[idx + 1] >= 0x80 && (unsigned char)string[idx + 1] <= 0xbf) && idx++); // and continue if there's more
 				buffer_fadd(buf, "\\u%0.4x", c);
 			} else return NULL;
 		} else {
