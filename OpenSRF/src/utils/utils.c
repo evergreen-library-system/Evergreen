@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #include "utils.h"
 #include <errno.h>
 
-
 inline void* safe_malloc( int size ) {
 	void* ptr = (void*) malloc( size );
 	if( ptr == NULL ) {
@@ -259,53 +258,16 @@ char* uescape( const char* string, int size, int full_escape ) {
 	long unsigned int c = 0;
 
 	while (string[idx]) {
-	
+
 		c ^= c;
-		
-		if ((string[idx] & 0xF0) == 0xF0) {
-			c = string[idx]<<18;
 
-			if( size - idx < 4 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<12;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<6;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFF000000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
-
-		} else if ((string[idx] & 0xE0) == 0xE0) {
-			c = string[idx]<<12;
-			if( size - idx < 3 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<6;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFFF80000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
-
-		} else if ((string[idx] & 0xC0) == 0xC0) {
-			// Two byte char
-			c = string[idx]<<6;
-			if( size - idx < 2 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFFFFF000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
-
+		if (!OSRF_UTF8_IS_ASCII(string[idx])) {
+			if (OSRF_UTF8_IS_START) {
+				do {
+					OSRF_UTF8_ACCUMULATE(c, string[idx]);
+				} while (OSRF_UTF8_IS_CONTINUATION(string[idx++]));
+				buffer_fadd(buf, "\\u%0.4x", c);
+			} else return NULL;
 		} else {
 			c = string[idx];
 
