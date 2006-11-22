@@ -261,11 +261,11 @@ char* uescape( const char* string, int size, int full_escape ) {
 
 		c ^= c;
 
-		if (!OSRF_UTF8_IS_ASCII(string[idx])) {
-			if (OSRF_UTF8_IS_START) {
+		if (!OSRF_UTF8_IS_ASCII((char)string[idx])) {
+			if (OSRF_UTF8_IS_START((char)string[idx])) {
 				do {
-					OSRF_UTF8_ACCUMULATE(c, string[idx]);
-				} while (OSRF_UTF8_IS_CONTINUATION(string[idx++]));
+					c = OSRF_UTF8_ACCUMULATE(c, string[idx]);
+				} while (OSRF_UTF8_IS_CONTINUATION(string[idx + 1] && idx++));
 				buffer_fadd(buf, "\\u%0.4x", c);
 			} else return NULL;
 		} else {

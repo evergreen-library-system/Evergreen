@@ -31,14 +31,14 @@ GNU General Public License for more details.
 
 #include "md5.h"
 
-#define OSRF_UTF8_IS_ASCII(_c) 		((_c) <  0x80)
-#define OSRF_UTF8_IS_START(_c)		((_c) >= 0xc0 && ((_c) <= 0xfd))
-#define OSRF_UTF8_IS_CONTINUATION(_c)		((_c) >= 0x80 && ((_c) <= 0xbf))
-#define OSRF_UTF8_IS_CONTINUED(_c) 		((_c) &  0x80)
+#define OSRF_UTF8_IS_ASCII(_c) 		(((char)_c) <  0x80)
+#define OSRF_UTF8_IS_START(_c)		(((char)_c) >= 0xc0 && (((char)_c) <= 0xfd))
+#define OSRF_UTF8_IS_CONTINUATION(_c)		(((char)_c) >= 0x80 && (((char)_c) <= 0xbf))
+#define OSRF_UTF8_IS_CONTINUED(_c) 		(((char)_c) &  0x80)
 
 #define OSRF_UTF8_CONTINUATION_MASK		(0x3f)
 #define OSRF_UTF8_ACCUMULATION_SHIFT		6
-#define OSRF_UTF8_ACCUMULATE(_o, _n)	(((_o) << OSRF_UTF8_ACCUMULATION_SHIFT) | ((_n) & OSRF_UTF8_CONTINUATION_MASK))
+#define OSRF_UTF8_ACCUMULATE(_o, _n)	(((_o) << OSRF_UTF8_ACCUMULATION_SHIFT) | (((char)_n) & OSRF_UTF8_CONTINUATION_MASK))
 
 #define OSRF_MALLOC(ptr, size) \
 	ptr = (void*) malloc( size ); \
