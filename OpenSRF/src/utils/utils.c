@@ -254,20 +254,45 @@ int buffer_add_char(growing_buffer* gb, char c) {
 char* uescape( const char* string, int size, int full_escape ) {
 
 	growing_buffer* buf = buffer_init(size + 64);
+	int clen = 1;
 	int idx = 0;
-	int c = 0;
+	unsigned long int c = 0x0;
 
 	while (string[idx]) {
 
-		c ^= c;
+		c = 0x0;
 
-		if (!((unsigned char)string[idx] < 0x80)) { // not ASCII
-			if ((unsigned char)string[idx] >= 0xc0 && (unsigned char)string[idx] <= 0xfd) { // starts a UTF8 string
-				do {
-					c = (c << 6) | ((unsigned char)string[idx] & 0x3f); // add this byte worth
-				} while (((unsigned char)string[idx + 1] >= 0x80 && (unsigned char)string[idx + 1] <= 0xbf) && idx++); // and continue if there's more
-				buffer_fadd(buf, "\\u%0.4x", c);
-			} else return NULL;
+		if ((unsigned char)string[idx] >= 0x80) { // not ASCII
+
+			if ((unsigned char)string[idx] >= 0xC0 && (unsigned char)string[idx] <= 0xF4) { // starts a UTF8 string
+
+				clen = 1;
+				if (((unsigned char)string[idx] & 0xF0) == 0xF0) {
+					clen = 4;
+					c = (unsigned char)string[idx] ^ 0xF0;
+
+				} else if (((unsigned char)string[idx] & 0xE0) == 0xE0) {
+					clen = 3;
+					c = (unsigned char)string[idx] ^ 0xE0;
+
+				} else if (((unsigned char)string[idx] & 0xC0) == 0xC0) {
+					clen = 2;
+					c = (unsigned char)string[idx] ^ 0xC0;
+				}
+
+				for (;clen;--clen) {
+
+					idx++; // look at the next byte
+					c = (c << 6) | ((unsigned char)string[idx] & 0x3F); // add this byte worth
+
+				}
+
+				buffer_fadd(buf, "\\u%04x", c);
+
+			} else {
+				return NULL;
+			}
+
 		} else {
 			c = string[idx];
 
