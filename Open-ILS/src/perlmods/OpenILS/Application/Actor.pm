@@ -1053,9 +1053,10 @@ __PACKAGE__->register_method(
 );
 
 sub get_my_org_path {
-	my( $self, $client, $user_session, $org_id ) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-	if(!defined($org_id)) { $org_id = $user_obj->home_ou; }
+	my( $self, $client, $auth, $org_id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	$org_id = $e->requestor->ws_ou unless defined $org_id;
 
 	return $apputils->simple_scalar_request(
 		"open-ils.storage",
@@ -1532,6 +1533,8 @@ __PACKAGE__->register_method(
 	NOTES
 sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
+
+	# XXX I think I'm deprecated... make sure
 
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.cstore",
