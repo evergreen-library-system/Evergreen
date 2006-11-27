@@ -76,11 +76,15 @@ sub make_payments {
 	my $approval_code = $payments->{approval_code} || 'n/a';
 	my $check_number	= $payments->{check_number} || 'n/a';
 
+	my $total_paid = 0;
+
 	for my $pay (@{$payments->{payments}}) {
 
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
 		$amount =~ s/\$//og; # just to be safe
+
+		$total_paid += $amount;
 
 		$trans = $self->fetch_mbts($client, $login, $transid);
 		return $trans if $U->event_code($trans);
@@ -177,8 +181,11 @@ sub make_payments {
 	}
 
 
-	$logger->activity("user ".$user->id." applying total ".
+	my $uid = $user->id;
+	$logger->info("user $uid applying total ".
 		"credit of $credit to user $userid") if $credit != 0;
+
+	$logger->info("user $uid applying total payment of $total_paid to user $userid");
 
 	$evt = _update_patron_credit( $session, $userid, $credit );
 	return $evt if $evt;
