@@ -456,8 +456,7 @@ sub _check_open_xact {
 		or return $editor->event;
 
 	# grab the summary and see how much is owed on this transaction
-	my $summary = $editor->retrieve_money_billable_transaction_summary($xactid)
-		or return $editor->event;
+	my ($summary) = $U->fetch_mbts($xactid, $editor);
 
 	# grab the circulation if it is a circ;
 	my $circ = $editor->retrieve_action_circulation($xactid);
