@@ -89,8 +89,8 @@ function my_init() {
 			'mangle_005(); ' + 
 			'var xml_string = xml_record.toXMLString(); ' +
 			'xml_string = xml_string.replace( ' +
-			'	/([\\\\u0080-\\\\ufffe])/g, ' +
-			'	function (r,s) { return s.charCodeAt(0).toString(16) } ' +
+			'	/([\\u0080-\\ufffe])/g, ' +
+			'	function (r,s) { return "&#x" + s.charCodeAt(0).toString(16) + ";" } ' +
 			'); ' +
 			'window.xulG.save.func( xml_record ); ' +
 			'loadRecord(xml_record);'
