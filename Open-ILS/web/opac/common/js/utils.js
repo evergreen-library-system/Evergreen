@@ -359,6 +359,7 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 /* split on spaces.  capitalize the first /\w/ character in
    each substring */
 function normalize(val) {
+	return val; /* disable me for now */
 
    if(!val) return ""; 
 
