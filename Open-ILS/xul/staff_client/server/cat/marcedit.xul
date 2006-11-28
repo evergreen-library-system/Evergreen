@@ -4,6 +4,7 @@
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="my_init()">
 
+<script src="/xul/server/util/sprintf.js" type="application/x-javascript; e4x=1"/>
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/CGI.js" type="application/x-javascript; e4x=1"/>
 

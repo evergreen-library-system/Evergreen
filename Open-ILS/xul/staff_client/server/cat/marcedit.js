@@ -85,7 +85,16 @@ function my_init() {
 		// End faking part...
 
 		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
-		document.getElementById('save-button').setAttribute('oncommand', 'mangle_005(); window.xulG.save.func(xml_record.toXMLString()); loadRecord(xml_record);');
+		document.getElementById('save-button').setAttribute('oncommand',
+			'mangle_005(); ' + 
+			'var xml_string = xml_record.toXMLString(); ' +
+			'xml_string = xml_string.replace( ' +
+			'	/([\\\\u0080-\\\\ufffe])/g, ' +
+			'	function (r,s) { return "&#x%04x;".sprintf(s) } ' +
+			'); ' +
+			'window.xulG.save.func( xml_record ); ' +
+			'loadRecord(xml_record);'
+		);
 
 		if (window.xulG.record.url) {
 			var req =  new XMLHttpRequest();
