@@ -90,7 +90,7 @@ function my_init() {
 			'var xml_string = xml_record.toXMLString(); ' +
 			'xml_string = xml_string.replace( ' +
 			'	/([\\\\u0080-\\\\ufffe])/g, ' +
-			'	function (r,s) { return "&#x%04x;".sprintf(s) } ' +
+			'	function (r,s) { return s.charCodeAt(0).toString(16) } ' +
 			'); ' +
 			'window.xulG.save.func( xml_record ); ' +
 			'loadRecord(xml_record);'
