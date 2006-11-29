@@ -63,6 +63,13 @@ function createControlField (tag,data) {
 	return cf;
 }
 
+function xml_escape_unicode ( str ) {
+	return str.replace(
+		/([\u0080-\ufffe])/g,
+		function (r,s) { return "&#x" + s.charCodeAt(0).toString(16) + ";"; }
+	);
+}
+
 function my_init() {
 	try {
 		// Fake xulG for standalone...
@@ -87,12 +94,8 @@ function my_init() {
 		document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
 		document.getElementById('save-button').setAttribute('oncommand',
 			'mangle_005(); ' + 
-			'var xml_string = xml_record.toXMLString(); ' +
-			'xml_string = xml_string.replace( ' +
-			'	/([\\u0080-\\ufffe])/g, ' +
-			'	function (r,s) { return "&#x" + s.charCodeAt(0).toString(16) + ";" } ' +
-			'); ' +
-			'window.xulG.save.func( xml_record ); ' +
+			'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
+			'window.xulG.save.func( xml_string ); ' +
 			'loadRecord(xml_record);'
 		);
 
