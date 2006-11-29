@@ -15,7 +15,7 @@ TITLE                 AUTHOR                CALL NUMBER
 
 ${OVERDUE_ITEMS[
 ${TITLE} : ${AUTHOR}		${CALL_NUMBER}
-Due: ${DUE_DAY}/${DUE_MONTH}/${DUE_YEAR}		ID: ${ITEM_BARCODE}
+Due: ${DUE_MONTH}/${DUE_DAY}/${DUE_YEAR}		ID: ${ITEM_BARCODE}
 ]}
 
 
