@@ -1694,7 +1694,8 @@ sub checkin_handle_circ {
 	$logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
 
    # Set the checkin vars since we have the item
-   $circ->checkin_time('now');
+	$circ->checkin_time( ($self->backdate) ? $self->backdate : 'now' );
+
    $circ->checkin_staff($self->editor->requestor->id);
    $circ->checkin_lib($self->editor->requestor->ws_ou);
 
@@ -1723,8 +1724,13 @@ sub checkin_handle_backdate {
 	my $self = shift;
 
 	my $bd = $self->backdate;
+
+	# ------------------------------------------------------------------
+	# clean up the backdate for date comparison
+	# we want any bills created on or after the backdate
+	# ------------------------------------------------------------------
 	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-	$bd = "${bd}T23:59:59";
+	#$bd = "${bd}T23:59:59";
 
 	my $bills = $self->editor->search_money_billing(
 		{ 
