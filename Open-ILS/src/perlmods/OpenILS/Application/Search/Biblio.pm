@@ -1019,9 +1019,13 @@ sub marc_search {
 	my $recs = search_cache($ckey, $offset, $limit);
 
 	if(!$recs) {
-		$recs = $U->storagereq($method, %$args);
-		put_cache($ckey, scalar(@$recs), $recs);
-		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+		$recs = $U->storagereq($method, %$args) || [];
+		if( $recs ) {
+			put_cache($ckey, scalar(@$recs), $recs);
+			$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+		} else {
+			$recs = [];
+		}
 	}
 
 	my $count = 0;

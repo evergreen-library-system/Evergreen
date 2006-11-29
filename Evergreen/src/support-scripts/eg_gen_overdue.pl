@@ -181,6 +181,8 @@ sub print_notice {
 	my @patron_data = fetch_patron_data($usr);
 	my @org_data = fetch_org_data($org);
 
+	return unless (@patron_data and @org_data);
+
 	my $email;
 
 	if( $email = $patron_data[0]->email 
@@ -491,6 +493,7 @@ sub handle_event {
 	my $evt = shift;
 	warn "OD_notice: ".Dumper($evt) . "\n";
 	$logger->error("OD_notice: ".Dumper($evt));
+	return undef;
 }
 
 

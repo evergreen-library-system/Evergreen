@@ -540,7 +540,11 @@ sub runmethod {
 		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
 
-	$arg->id($obj->id) if $action eq 'create'; # grabs the id on create
+	if( $action eq 'create' ) {
+		$self->log(I, "created a new $type object with ID " . $obj->id);
+		$arg->id($obj->id);
+	}
+
 	$self->data($obj); # cache the data for convenience
 
 	return ($obj) ? $obj : 1;

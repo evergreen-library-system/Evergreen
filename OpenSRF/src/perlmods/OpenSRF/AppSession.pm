@@ -528,13 +528,13 @@ sub send {
 		}
 
 	} 
-	$logger->debug( "AppSession sending doc: " . JSON->perl2JSON(\@doc), INTERNAL );
-
+	my $json = JSON->perl2JSON(\@doc);
+	$logger->internal("AppSession sending doc: $json");
 
 	$self->{peer_handle}->send( 
 					to     => $self->remote_id,
 				   thread => $self->session_id,
-				   body   => JSON->perl2JSON(\@doc) );
+				   body   => $json );
 
 	if( $disconnect) {
 		$self->state( DISCONNECTED );

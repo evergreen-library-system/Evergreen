@@ -599,7 +599,8 @@ function _rdetailBuildInfoRows(r) {
 			}
 		}
 
-		if(isLocal) unHideMe(rowNode);
+		//if(isLocal) unHideMe(rowNode);
+		unHideMe(rowNode);
 
 		rdetailSetPath( thisOrg, isLocal );
 		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg );
