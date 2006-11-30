@@ -338,7 +338,7 @@ g.stash_and_close = function() {
 				);
 
 				if (typeof acn_id.ilsevent != 'undefined') {
-					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',anc_id);
+					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',acn_id);
 					continue;
 				}
 
