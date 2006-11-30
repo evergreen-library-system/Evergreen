@@ -490,8 +490,8 @@ int json_parse_json_string(char* string, unsigned long* index, jsonObject* obj, 
 					/* ----------------------------------------------------------------------- */
 					/* The following chunk was borrowed with permission from 
 						json-c http://oss.metaparadigm.com/json-c/ */
-					unsigned char utf_out[3];
-					memset(utf_out,0,3);
+					unsigned char utf_out[4];
+					memset(utf_out,0,4);
 
 					#define hexdigit(x) ( ((x) <= '9') ? (x) - '0' : ((x) & 7) + 9)
 
