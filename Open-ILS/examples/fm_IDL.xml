@@ -1002,6 +1002,8 @@
 			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="28" oils_persist:virtual="true" />
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="29" oils_persist:virtual="true" />
 			<field reporter:label="Circulation Type" name="circ_type" oils_obj:array_position="30" oils_persist:virtual="true" />
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="31" oils_persist:virtual="true" />
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="32" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -1017,6 +1019,8 @@
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recuring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
 			<link field="circ_type" reltype="might_have" key="id" map="" class="rcirct"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 		</links>
 	</class>
 	<class id="ccnbi" controller="open-ils.cstore" oils_obj:fieldmapper="container::call_number_bucket_item" oils_persist:tablename="container.call_number_bucket_item">
@@ -1483,6 +1487,8 @@
 			<field name="billings" oils_obj:array_position="9" oils_persist:virtual="true" />
 			<field name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
 			<field name="billable_transaction" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="31" oils_persist:virtual="true" />
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="32" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -1490,6 +1496,8 @@
 			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
 			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 		</links>
 	</class>
 	<class id="cbs" controller="open-ils.cstore" oils_obj:fieldmapper="config::bib_source" oils_persist:tablename="config.bib_source">
@@ -1516,7 +1524,9 @@
 			<field name="grocery" oils_obj:array_position="7" oils_persist:virtual="true" />
 			<field name="circulation" oils_obj:array_position="8" oils_persist:virtual="true" />
 			<field reporter:label="Billing Line Items" name="billings" oils_obj:array_position="9" oils_persist:virtual="true" />
-			<field reporter:label="Payments" name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field reporter:label="Payment Line Items" name="payments" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="31" oils_persist:virtual="true" />
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="32" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="grocery" reltype="might_have" key="id" map="" class="mg"/>
@@ -1524,6 +1534,8 @@
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
 			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="billing_total" reltype="might_have" key="xact" map="" class="rxbt"/>
+			<link field="payment_total" reltype="might_have" key="xact" map="" class="rxpt"/>
 		</links>
 	</class>
 	<class id="actsce" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry" reporter:label="User Stat Cat Entry">
@@ -2310,6 +2322,34 @@
 		<links>
 			<link field="id" reltype="might_have" key="id" map="" class="ahr"/>
 			<link field="bib_record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+	</class>
+	<class id="rxbt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_billing_totals" oils_persist:tablename="reporter.xact_billing_totals">
+		<fields oils_persist:primary="xact">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Transaction ID" name="xact" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Unvoided Billing Amount" name="unvoided" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Voided Billing Amount" name="voided" oils_obj:array_position="5" oils_persist:virtual="false"/>
+			<field reporter:label="Total Billing Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="might_have" key="id" map="" class="mb"/>
+		</links>
+	</class>
+	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals">
+		<fields oils_persist:primary="xact">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Transaction ID" name="xact" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Unvoided Paid Amount" name="unvoided" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Voided (Returned) Paid Amount" name="voided" oils_obj:array_position="5" oils_persist:virtual="false"/>
+			<field reporter:label="Total Paid Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="might_have" key="id" map="" class="mp"/>
 		</links>
 	</class>
 </IDL>
