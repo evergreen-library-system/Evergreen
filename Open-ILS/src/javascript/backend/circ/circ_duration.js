@@ -52,9 +52,10 @@ if( isOrgDescendent('STATELIB', copy.circ_lib.id) ) {
 	if(isTrue(copy.ref))
 		result.durationRule	= '14_days_2_renew';
 
-} else if( isOrgDescendent('NCLS', copy.circ_lib.id) && circMod == 'dvd' ) 
+} else if( isOrgDescendent('NCLS', copy.circ_lib.id) && ( circMod == 'dvd' || circMod == 'video' ) ) 
 	result.recurringFinesRule	= '10_cent_per_day';
 
+/*
 else if( isOrgDescendent('LEE', copy.circ_lib.id) && circMod == 'video' ) 
 	result.recurringFinesRule	= '50_cent_per_day';
 
@@ -66,6 +67,7 @@ else if( isOrgDescendent('OHOOP', copy.circ_lib.id) && circMod == 'video' )
 
 else if( isOrgDescendent('ARL', copy.circ_lib.id) && circMod == 'video' )
 	result.recurringFinesRule	= '50_cent_per_day';
+	*/
 	
 
 
