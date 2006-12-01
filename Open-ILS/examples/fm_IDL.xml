@@ -2335,7 +2335,7 @@
 			<field reporter:label="Total Billing Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
 		</fields>
 		<links>
-			<link field="xact" reltype="might_have" key="id" map="" class="mb"/>
+			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
 		</links>
 	</class>
 	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals">
@@ -2349,7 +2349,7 @@
 			<field reporter:label="Total Paid Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
 		</fields>
 		<links>
-			<link field="xact" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
 		</links>
 	</class>
 </IDL>
