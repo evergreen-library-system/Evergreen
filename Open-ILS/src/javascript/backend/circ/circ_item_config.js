@@ -344,7 +344,7 @@ var CIRC_MOD_MAP = {
 		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
-		recurringFinesRule	: '10_cent_per_day',
+		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
@@ -370,18 +370,14 @@ var CIRC_MOD_MAP = {
 /* Set up rules for legacy types */
 CIRC_MOD_MAP['DEPOSIT'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['E-AUDIO'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['EQUIP'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['FACNEWBK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-CIRC'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-NOCIRC'] = CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['NEW-AV'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['NEW-BOOK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['NEWSPAPER'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['NILS-ITEM'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['OUTREACH'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['PAMPHLET'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['PAPERBACK'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['REALIA'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['RESERVE'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['STATE-BOOK'] = {
 	SIPMediaType			: '001',
