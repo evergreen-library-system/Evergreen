@@ -1189,7 +1189,7 @@
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="status" oils_obj:array_position="3" oils_persist:virtual="true" />
-			<field name="transit" oils_obj:array_position="4" oils_persist:virtual="true" />
+			<field reporter:label="Transit" name="transit" oils_obj:array_position="4" oils_persist:virtual="true" />
 			<field reporter:label="Capture Date/Time" name="capture_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Currently Targeted Copy" name="current_copy" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field reporter:label="Notify by Email?" name="email_notify" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
@@ -1203,17 +1203,18 @@
 			<field reporter:label="Notifications Phone Number" name="phone_notify" oils_obj:array_position="15" oils_persist:virtual="false" />
 			<field reporter:label="Pickup Library" name="pickup_lib" oils_obj:array_position="16" oils_persist:virtual="false" />
 			<field reporter:label="Last Targeting Date/Time" name="prev_check_time" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="request_lib" oils_obj:array_position="18" oils_persist:virtual="false" />
+			<field reporter:label="Requesting Library" name="request_lib" oils_obj:array_position="18" oils_persist:virtual="false" />
 			<field reporter:label="Request Date/Time" name="request_time" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Requesting User" name="requestor" oils_obj:array_position="20" oils_persist:virtual="false" />
 			<field reporter:label="Item Selection Depth" name="selection_depth" oils_obj:array_position="21" oils_persist:virtual="false" />
 			<field reporter:label="Selection Locus" name="selection_ou" oils_obj:array_position="22" oils_persist:virtual="false" />
-			<field name="target" oils_obj:array_position="23" oils_persist:virtual="false" />
-			<field name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
+			<field reporter:label="Target Object ID" name="target" oils_obj:array_position="23" oils_persist:virtual="false" />
+			<field reporter:label="Hold User" name="usr" oils_obj:array_position="24" oils_persist:virtual="false" />
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="notify_time" oils_obj:array_position="26" oils_persist:virtual="true" reporter:datatype="timestamp"/>
 			<field name="notify_count" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="int" />
-			<field name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" />
+			<field reporter:label="Notifications" name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" />
+			<field reporter:label="Bib Record Link" name="bib_rec" oils_obj:array_position="29" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -1222,11 +1223,12 @@
 			<link field="selection_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="requestor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="current_copy" reltype="has_a" key="id" map="" class="acp"/>
-			<link reporter:label="Hold User" field="usr" reltype="has_a" key="id" map="" class="au"/>
-			<link reporter:label="Requesting Library" field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link reporter:label="Transit" field="transit" reltype="might_have" key="hold" map="" class="ahtc"/>
-			<link reporter:label="Notifications" field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
-			<link reporter:label="Eligible Copies" field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="transit" reltype="might_have" key="hold" map="" class="ahtc"/>
+			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
+			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
+			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 		</links>
 	</class>
 	<class id="aou" controller="open-ils.cstore" oils_obj:fieldmapper="actor::org_unit" oils_persist:tablename="actor.org_unit" reporter:label="Organizational Unit">
@@ -2293,6 +2295,21 @@
 		</fields>
 		<links>
 			<link field="id" reltype="might_have" key="id" map="" class="circ"/>
+		</links>
+	</class>
+	<class id="rhrr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record">
+		<fields oils_persist:primary="id">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Hold ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Hold Target" name="target" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Hold Request Type" name="hold_type" oils_obj:array_position="5" oils_persist:virtual="false"/>
+			<field reporter:label="Target Bib Record" name="bib_record" oils_obj:array_position="6" oils_persist:virtual="false"/>
+		</fields>
+		<links>
+			<link field="id" reltype="might_have" key="id" map="" class="ahr"/>
+			<link field="bib_record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
 </IDL>
