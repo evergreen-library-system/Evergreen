@@ -190,7 +190,7 @@ SELECT	id,
 	END AS bib_record
   FROM	action.hold_request ahr;
 
-CREATE OR REPLACE VIEW reporter.xact_billed_totals AS
+CREATE OR REPLACE VIEW reporter.xact_billing_totals AS
 SELECT	b.xact,
 	SUM( CASE WHEN b.voided THEN 0 ELSE amount END ) as unvoided,
 	SUM( CASE WHEN b.voided THEN amount ELSE 0 END ) as voided,
