@@ -1942,24 +1942,24 @@
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
-	<class id="mp" controller="open-ils.cstore" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view">
+	<class id="mp" controller="open-ils.cstore" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:core="true" reporter:label="Payments: All">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
-			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="voided" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="cash_payment" oils_obj:array_position="10" oils_persist:virtual="true" />
-			<field name="credit_card_payment" oils_obj:array_position="11" oils_persist:virtual="true" />
-			<field name="credit_payment" oils_obj:array_position="12" oils_persist:virtual="true" />
-			<field name="check_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
-			<field name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
-			<field name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Payment ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Payment Date/Time" name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Type" name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Billable Transaction" name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field reporter:label="Voided?" name="voided" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Cash Payment Detail" name="cash_payment" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field reporter:label="Credit Card Payment Detail" name="credit_card_payment" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_obj:array_position="12" oils_persist:virtual="true" />
+			<field reporter:label="Check Payment Detail" name="check_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
+			<field reporter:label="Work Payment Detail" name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
+			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -1971,23 +1971,73 @@
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
-	<class id="mdp" controller="open-ils.cstore" oils_obj:fieldmapper="money::desk_payment" oils_persist:tablename="money.desk_payment_view">
+	<class id="mbp" controller="open-ils.cstore" oils_obj:fieldmapper="money::bnm_payment" oils_persist:tablename="money.bnm_payment_view" reporter:core="true" reporter:label="Payments: Brick-and-mortar">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
-			<field name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
-			<field name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
-			<field name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
-			<field name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="accepting_usr" oils_obj:array_position="9" oils_persist:virtual="false" />
-			<field name="cash_drawer" oils_obj:array_position="10" oils_persist:virtual="false" />
-			<field name="voided" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field name="cash_payment" oils_obj:array_position="12" oils_persist:virtual="true" />
-			<field name="credit_card_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
-			<field name="check_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Payment ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Payment Date/Time" name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Type" name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Billable Transaction" name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field reporter:label="Voided?" name="voided" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Cash Payment Detail" name="cash_payment" oils_obj:array_position="10" oils_persist:virtual="true" />
+			<field reporter:label="Credit Card Payment Detail" name="credit_card_payment" oils_obj:array_position="11" oils_persist:virtual="true" />
+			<field reporter:label="Credit Payment Detail" name="credit_payment" oils_obj:array_position="12" oils_persist:virtual="true" />
+			<field reporter:label="Check Payment Detail" name="check_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
+			<field reporter:label="Work Payment Detail" name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
+			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" />
+		</fields>
+		<links>
+			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
+			<link field="credit_card_payment" reltype="might_have" key="id" map="" class="mccp"/>
+			<link field="credit_payment" reltype="might_have" key="id" map="" class="mcrp"/>
+			<link field="check_payment" reltype="might_have" key="id" map="" class="mckp"/>
+			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
+			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="mndp" controller="open-ils.reporter" oils_obj:fieldmapper="money::non_drawer_payment" oils_persist:tablename="money.non_drawer_payment_view" reporter:core="true" reporter:label="Payments: Non-drawer Staff">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Payment ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Payment Date/Time" name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Type" name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Billable Transaction" name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field reporter:label="Voided?" name="voided" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Work Payment Detail" name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
+			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" />
+		</fields>
+		<links>
+			<link field="work_payment" reltype="might_have" key="id" map="" class="mwp"/>
+			<link field="forgive_payment" reltype="might_have" key="id" map="" class="mfp"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+	<class id="mdp" controller="open-ils.cstore" oils_obj:fieldmapper="money::desk_payment" oils_persist:tablename="money.desk_payment_view" reporter:core="true" reporter:label="Payments: Desk">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Payment ID" name="id" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="5" oils_persist:virtual="false" />
+			<field reporter:label="Payment Date/Time" name="payment_ts" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Type" name="payment_type" oils_obj:array_position="7" oils_persist:virtual="false" />
+			<field reporter:label="Billable Transaction" name="xact" oils_obj:array_position="8" oils_persist:virtual="false" />
+			<field reporter:label="Accepting User" name="accepting_usr" oils_obj:array_position="9" oils_persist:virtual="false" />
+			<field reporter:label="Cash Drawer" name="cash_drawer" oils_obj:array_position="10" oils_persist:virtual="false" />
+			<field reporter:label="Voided?" name="voided" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Cash Payment" name="cash_payment" oils_obj:array_position="12" oils_persist:virtual="true" />
+			<field reporter:label="Credit Card Payment" name="credit_card_payment" oils_obj:array_position="13" oils_persist:virtual="true" />
+			<field reporter:label="Check Payment" name="check_payment" oils_obj:array_position="14" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>

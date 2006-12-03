@@ -57,6 +57,12 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
+CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
+	SELECT	p.*, c.relname AS payment_type
+	  FROM	money.bnm_payment p         
+			JOIN pg_class c ON p.tableoid = c.oid
+	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
+
 CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,
 		billing_type AS last_billing_type,
