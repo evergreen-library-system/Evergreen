@@ -247,6 +247,12 @@ oilsRptOrgSelector.prototype.draw = function(org) {
 		org.shortname(), org.id(), null, findOrgDepth(org) );
 	if( org.id() == oilsRptCurrentOrg )
 		opt.selected = true;
+	
+	/* sometimes we need these choices 
+	if( !isTrue(findOrgType(org.ou_type()).can_have_vols()) )
+		opt.disabled = true;
+		*/
+
 	if( org.children() ) {
 		for( var c = 0; c < org.children().length; c++ )
 			this.draw(org.children()[c]);
@@ -364,7 +370,7 @@ function oilsRptTruncPicker(args) {
 	insertSelectorVal(this.selector,-1,'Relative Date',2);
 
 	this.numberPicker = 
-		new oilsRptNumberWidget({node:this.relSpan,size:24,start:1});
+		new oilsRptNumberWidget({node:this.relSpan,size:90,start:1});
 
 	this.label = 'Day(s)';
 	if(this.type == 'month') this.label = 'Month(s)';
