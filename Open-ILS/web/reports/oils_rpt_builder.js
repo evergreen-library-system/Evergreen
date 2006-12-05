@@ -489,13 +489,24 @@ function _oilsDelSelectedFilterItems(type) {
 	/* the values in this list are formed:  <path>:<operation>:<transform> */
 	var list = oilsDelSelectedItems(oilsRptFilterSelector);
 
+	_debug("deleting filter items " + list);
+
 	for( var i = 0; i < list.length; i++ ) {
 		var enc_path = list[i];
 		var data = oilsRptParseFilterEncPath(enc_path);
+
+		_debug("trimming filter items with enc_path = " + enc_path);
+		_debug(data.path);
+		_debug(data.operation);
+		_debug(data.tform);
+		_debug(data.tform);
+		_debug(type);
+		_debug('---------------------');
+
 		oilsRpt.def[type] = grep( 
 			oilsRpt.def[type],
 			function(f) { 
-				return oilsRptFilterDataMatches( 
+				return ! oilsRptFilterDataMatches( 
 					f, data.path, data.operation, data.tform );
 			}
 		);
@@ -519,10 +530,17 @@ function oilsRptFilterDataMatches(filter, path, operation, tform) {
 	var rel = hex_md5(oilsRptPathRel(path));
 	var col = oilsRptPathCol(path);
 
+	/*
+	_debug("oilsRptFilterDataMatches(): " + col + " : " + rel + " : " + tform + " : " + operation);
+	_debug("oilsRptFilterDataMatches(): " + filter.column.colname + " : " + filter.relation + " : " + 
+		filter.column.transform + " : " + oilsRptObjectKeys(filter.condition)[0]);
+	_debug("------------------");
+	*/
+
 	if(	col == filter.column.colname &&
 			rel == filter.relation &&	
 			tform == filter.column.transform &&
-			operation == oilsRptObjectKeys(filter)[0] ) return true;
+			operation == oilsRptObjectKeys(filter.condition)[0] ) return true;
 
 	return false;
 }
