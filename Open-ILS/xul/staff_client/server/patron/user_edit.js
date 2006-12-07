@@ -197,7 +197,7 @@ function display_perm (root,perm_def,staff_perms, r) {
 
 
 	var dis = false;
-	if (up.id() < 0 || !sp || !sp.grantable()) dis = true; 
+	if ((up && up.id() < 0) || !sp || !sp.grantable()) dis = true; 
 	if (all) dis = false; 
 
 	var label_cell = findNodeByName(prow,'plabel');
