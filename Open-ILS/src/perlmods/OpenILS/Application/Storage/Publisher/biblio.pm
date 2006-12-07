@@ -142,11 +142,13 @@ sub record_ranged_tree {
 	my $offset_count = 0;
 	my $limit_count = 0;
 	for my $cn ( $r->call_numbers  ) {
+		next if ($cn->deleted);
 		my $call_number = $cn->to_fieldmapper;
 		$call_number->copies([]);
 
 
 		for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
+			next if ($cp->deleted);
 			if ($offset > 0 && $offset_count < $offset) {
 				$offset_count++;
 				next;
