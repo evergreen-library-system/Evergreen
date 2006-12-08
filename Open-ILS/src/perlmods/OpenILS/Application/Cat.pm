@@ -56,21 +56,40 @@ __PACKAGE__->register_method(
 
 sub retrieve_marc_template {
 	my( $self, $client, $type ) = @_;
-
 	return $marctemplates{$type} if defined($marctemplates{$type});
 	$marctemplates{$type} = _load_marc_template($type);
 	return $marctemplates{$type};
 }
 
+__PACKAGE__->register_method(
+	method => 'fetch_marc_template_types',
+	api_name => 'open-ils.cat.marc_template.types.retrieve'
+);
+
+my $marc_template_files;
+
+sub fetch_marc_template_types {
+	my( $self, $conn ) = @_;
+	__load_marc_templates();
+	return [ keys %$marc_template_files ];
+}
+
+sub __load_marc_templates {
+	return if $marc_template_files;
+	if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
+
+	$marc_template_files = $conf->config_value(					
+		"apps", "open-ils.cat","app_settings", "marctemplates" );
+
+	$logger->info("Loaded marc templates: " . Dumper($marc_template_files));
+}
+
 sub _load_marc_template {
 	my $type = shift;
 
-	if(!$conf) { $conf = OpenSRF::Utils::SettingsClient->new; }
+	__load_marc_templates();
 
-	my $template = $conf->config_value(					
-		"apps", "open-ils.cat","app_settings", "marctemplates", $type );
-	warn "Opening template file $template\n";
-
+	my $template = $$marc_template_files{$type};
 	open( F, $template ) or 
 		throw OpenSRF::EX::ERROR ("Unable to open MARC template file: $template : $@");
 
@@ -161,6 +180,8 @@ __PACKAGE__->register_method(
 
 sub biblio_record_replace_marc  {
 	my( $self, $conn, $auth, $recid, $newxml, $source ) = @_;
+
+	warn "Updating MARC with xml\n$newxml\n";
 
 	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth, xact=>1);
 
