@@ -185,7 +185,7 @@
 							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
 							</select>
 							<select multiple='true' size='3' id='adv_global_audience_basic'>
-								<option value='e'>Adult</option>
+								<option value='e '>Adult</option>
 								<option value='abcdj'>Juvenile</option>
 								<option value='fg '>General</option>
 							</select>
