@@ -766,6 +766,7 @@ sub cn_ranged_tree {
 
 	$cn = asset::call_number->retrieve( $cn );
 	return undef unless ($cn);
+	return undef if ($cn->deleted);
 
 	my $call_number = $cn->to_fieldmapper;
 	$call_number->copies([]);
@@ -774,6 +775,7 @@ sub cn_ranged_tree {
 	$call_number->record->fixed_fields( $cn->record->record_descriptor->next->to_fieldmapper );
 
 	for my $cp ( $cn->copies(circ_lib => $ou_list) ) {
+		next if ($cp->deleted);
 		my $copy = $cp->to_fieldmapper;
 		$copy->status( $cp->status->to_fieldmapper );
 		$copy->location( $cp->status->to_fieldmapper );

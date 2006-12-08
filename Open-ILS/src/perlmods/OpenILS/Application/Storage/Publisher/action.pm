@@ -817,7 +817,8 @@ sub new_hold_copy_targeter {
 			# trim unholdables
 			@$all_copies = grep {	isTrue($_->status->holdable) && 
 						isTrue($_->location->holdable) && 
-						isTrue($_->holdable)
+						isTrue($_->holdable) &&
+						!isTrue($_->deleted)
 					} @$all_copies;
 
 			# let 'em know we're still working
