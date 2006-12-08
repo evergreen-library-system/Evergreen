@@ -232,7 +232,7 @@ function myOPACRenewCirc(circid) {
 	if(!confirm($('myopac_renew_confirm').innerHTML)) return;
 
 	var req = new Request(RENEW_CIRC, G.user.session, 
-		{ patron : G.user.id(), copyid : circ.target_copy() } );
+		{ patron : G.user.id(), copyid : circ.target_copy(), opac_renewal : 1 } );
 	req.request.alertEvent = false;
 	req.send(true);
 	var res = req.result();
