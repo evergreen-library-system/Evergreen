@@ -346,6 +346,7 @@ my @AUTOLOAD_FIELDS = qw/
 	old_circ
 	permit_override
 	pending_checkouts
+	cancelled_hold_transit
 /;
 
 
@@ -1308,17 +1309,30 @@ sub do_checkin {
 		if( $hold_transit or 
 				$U->copy_status($self->copy->status)->id 
 					== OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-			$self->hold(
-				($hold_transit) ?
-					$self->editor->retrieve_action_hold_request($hold_transit->hold) :
-					$U->fetch_open_hold_by_copy($self->copy->id)
-				);
 
-			$self->checkin_flesh_events;
-			return;
+			my $hold = ($hold_transit) ?
+					$self->editor->retrieve_action_hold_request($hold_transit->hold) :
+					$U->fetch_open_hold_by_copy($self->copy->id);
+
+			$self->hold($hold);
+
+			if( $hold and $hold->cancel_time ) { # this transited hold was cancelled mid-transit
+
+				$logger->info("circulator: we received a transit on a cancelled hold " . $hold->id);
+				$self->reshelve_copy(1);
+				$self->cancelled_hold_transit(1);
+				return if $self->bail_out;
+
+			} else {
+
+				# hold transited to correct location
+				$self->checkin_flesh_events;
+				return;
+			}
 		} 
 
 	} elsif( $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_IN_TRANSIT ) {
+
 		$logger->warn("circulator: we have a copy ".$self->copy->barcode.
 			" that is in-transit, but there is no transit.. repairing");
 		$self->reshelve_copy(1);
@@ -1339,7 +1353,6 @@ sub do_checkin {
 		return if $self->bail_out;
 
    } else { # not needed for a hold
-
 
 		my $circ_lib = (ref $self->copy->circ_lib) ? 
 				$self->copy->circ_lib->id : $self->copy->circ_lib;
@@ -1380,6 +1393,7 @@ sub do_checkin {
 		$self->bail_out(1); # no need to commit anything
 
 	} else {
+
 		$self->push_events(OpenILS::Event->new('SUCCESS')) 
 			unless @{$self->events};
 	}
@@ -1862,8 +1876,12 @@ sub checkin_flesh_events {
 		$payload->{record}   = $U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
 		$payload->{circ}     = $self->circ;
 		$payload->{transit}  = $self->transit;
-		$payload->{hold}     = $self->hold;
-		
+		$payload->{cancelled_hold_transit} = 1 if $self->cancelled_hold_transit;
+
+		# $self->hold may or may not have been replaced with a 
+		# valid hold after processing a cancelled hold
+		$payload->{hold} = $self->hold unless (not $self->hold or $self->hold->cancel_time);
+
 		$evt->{payload} = $payload;
 	}
 }

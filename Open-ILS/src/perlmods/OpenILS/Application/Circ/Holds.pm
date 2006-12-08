@@ -455,21 +455,14 @@ sub cancel_hold {
 
 			if( $transid ) {
 				my $trans = $e->retrieve_action_transit_copy($transid);
+				# Leave the transit alive, but  set the copy status to 
+				# reshelving so it will be properly reshelved when it gets back home
 				if( $trans ) {
-					$logger->info("Aborting transit [$transid] on hold [$hid] cancel...");
-					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
-					$logger->info("Transit abort completed with result $evt");
-					return $evt unless "$evt" eq 1;
+					$trans->copy_status( OILS_COPY_STATUS_RESHELVING );
+					$e->update_action_transit_copy($trans) or return $e->die_event;
 				}
+				
 			}
-
-			# We don't want the copy to remain "in transit" or to recover 
-			# any previous statuses
-			$logger->info("setting copy back to reshelving in hold+transit cancel");
-			$copy->status(OILS_COPY_STATUS_RESHELVING);
-			$copy->editor($e->requestor->id);
-			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
 		}
 	}
 
