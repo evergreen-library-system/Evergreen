@@ -257,6 +257,7 @@ sub translate_legacy_args {
 		$$args{is_precat} = $$args{precat};
 		delete $$args{precat};
 	}
+
 }
 
 
@@ -347,6 +348,9 @@ my @AUTOLOAD_FIELDS = qw/
 	permit_override
 	pending_checkouts
 	cancelled_hold_transit
+	opac_renewal
+	phone_renewal
+	desk_renewal
 /;
 
 
@@ -395,6 +399,10 @@ sub new {
 
 	$self->circ_lib(
 		($self->circ_lib) ? $self->circ_lib : $self->editor->requestor->ws_ou);
+
+	# if this is a renewal, default to desk_renewal
+	$self->desk_renewal(1) unless 
+		$self->opac_renewal or $self->phone_renewal;
 
 	return $self;
 }
@@ -1087,10 +1095,13 @@ sub build_checkout_circ_object {
    $circ->circ_lib( $self->circ_lib );
 
    if( $self->is_renewal ) {
-      $circ->opac_renewal(1);
+      $circ->opac_renewal('t') if $self->opac_renewal;
+      $circ->phone_renewal('t') if $self->phone_renewal;
+      $circ->desk_renewal('t') if $self->desk_renewal;
       $circ->renewal_remaining($self->renewal_remaining);
       $circ->circ_staff($self->editor->requestor->id);
    }
+
 
    # if the user provided an overiding checkout time,
    # (e.g. the checkout really happened several hours ago), then
@@ -1727,7 +1738,6 @@ sub checkin_handle_circ {
 		$self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
 		$self->update_copy;
 	}
-
 
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_circulation($circ);
