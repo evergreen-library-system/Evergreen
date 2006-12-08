@@ -1075,10 +1075,15 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			});
 		}
 
+		var msg = '';
+
+		if (check.payload && check.payload.cancelled_hold_transit) {
+			msg += 'Original hold for transit cancelled.\n\n';
+		}
+
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n'; }
-			var msg = '';
 			if (check.ilsevent == 3 /* NO_CHANGE */) {
 				//msg = 'This item is already checked in.\n';
 				if (document.getElementById('no_change_label')) {
@@ -1176,7 +1181,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
 			var lib = data.hash.aou[ check.org ];
 			check.route_to = lib.shortname();
-			var msg = 'Destination: ' + check.route_to + '.\n';
+			msg += 'Destination: ' + check.route_to + '.\n';
 			msg += '\n' + lib.name() + '\n';
 			try {
 				if (lib.holds_address() ) {
