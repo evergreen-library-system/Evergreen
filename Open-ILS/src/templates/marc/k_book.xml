@@ -35,11 +35,4 @@
   <datafield tag="650" ind1=" " ind2="0">
     <subfield code="a">Subject Added Entry.Topical term or geographic name as entry element</subfield>
   </datafield>
-  <datafield tag="999" ind1=" " ind2=" ">
-    <subfield code="a">Library Policy name, e.g. HALL</subfield>
-  </datafield>
-  <datafield tag="994" ind1=" " ind2=" ">
-    <subfield code="a">C0</subfield>
-    <subfield code="b">P@N</subfield>
-  </datafield>
 </record>
