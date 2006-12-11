@@ -32,32 +32,117 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+
+		function $(id) { return document.getElementById(id); }
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for example_template.xul');
 
-				g.cgi = new CGI();
-				var session = g.cgi.param('session');
-
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Template'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name('MARC Template'); } catch(E) { alert(E); }
 				}
 
+				JSAN.use('util.network'); g.network = new util.network();
+				JSAN.use('util.widgets');
+				JSAN.use('util.functional');
+
+				var templates = g.network.simple_request('MARC_XML_TEMPLATE_LIST',[]);
+				if (typeof templates.ilsevent != 'undefined') throw(templates);
+				var ml = util.widgets.make_menulist(
+					util.functional.map_list(
+						templates,
+						function(el) {
+							return [ el /* The menu entry label */, el /* The menu entry value */ ];
+						}
+					)
+				);
+				$('menu_placeholder').appendChild(ml);
+
+				$('load').addEventListener(
+					'command',
+					function(ev) {
+
+						var template_name;
+						try {
+
+							template_name = $('menu_placeholder').firstChild.value;
+							var marc = g.network.simple_request(
+								'MARC_XML_TEMPLATE_RETRIEVE',
+								[ template_name ]
+							);
+							if (typeof marc.ilsevent != 'undefined') throw(marc);
+	
+							var url = urls.XUL_MARC_EDIT;
+							var params = {
+								'record' : { 'marc' : marc },
+								'save' : {
+									'label' : 'Create Record',
+									'func' : function(new_marcxml) {
+										try {
+											var robj = g.network.simple_request(
+												'MARC_XML_RECORD_IMPORT',
+												[ ses(), new_marcxml, 'System Local', 1 ]
+											);
+											if (typeof robj.ilsevent != 'undefined') throw(robj);
+											alert('Record created.');
+
+											/* Replace tab with OPAC-view of record */
+
+											var opac_url = xulG.url_prefix( urls.opac_rdetail ) + '?r=' + robj.id();
+											var content_params = {
+												'session' : ses(),
+												'authtime' : ses('authtime'),
+												'opac_url' : opac_url,
+											};
+											xulG.set_tab(
+												xulG.url_prefix(urls.XUL_OPAC_WRAPPER),
+												{'tab_name':'Retrieving title...'},
+												content_params
+											);
+
+										} catch(E) {
+											g.error.standard_unexpected_error_alert(
+												'Error creating MARC record.', E
+											);
+										}
+									}
+								}
+							};
+							$('marc_editor').setAttribute('src',url);
+							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+							$('marc_editor').contentWindow.xulG = params;
+
+						} catch(E) {
+							g.error.standard_unexpected_error_alert(
+								'Error loading MARC template: ' + template_name,
+								E
+							);
+						}
+
+					},
+					false
+				);
+
 			} catch(E) {
-				g.error.standard_unexpect_error_alert('cat/marc_new.xul',E);
+				g.error.standard_unexpected_error_alert('cat/marc_new.xul',E);
 			}
 		}
 
 	]]>
 	</script>
 
-	<vbox>
-		
+	<vbox flex="1">
+		<hbox id="actions">
+			<hbox id="menu_placeholder" />
+			<button id="load" label="Load" accesskey="L"/>
+		</hbox>
+		<iframe id="marc_editor" flex="1"/>
 	</vbox>
 
 </window>
