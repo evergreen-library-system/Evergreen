@@ -218,8 +218,6 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	if(this.cancelled) return;
 
-
-
 	/* determine the xmlhttp server dynamically */
 	var url = location.protocol + "//" + location.host + "/" + XML_HTTP_GATEWAY;
 
@@ -236,8 +234,6 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	var data = null;
 	if( this.type == 'GET' ) url +=  "?" + this.param_string; 
-
-	if(isXUL() && this.secure ) dump('SECURE = true\n');
 
 	this.url = url;
 
@@ -260,7 +256,7 @@ RemoteRequest.prototype.send = function(blocking) {
 	try {
 		var auth;
 		try { auth = cookieManager.read(COOKIE_SES) } catch(ee) {}
-		if( !auth && isXUL() ) auth = ses();
+		if( isXUL() ) auth = fetchXULStash().session.key;
 		if( auth ) 
 			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', auth);
 
@@ -299,7 +295,7 @@ RemoteRequest.prototype.getResultObject = function() {
 	var status = null;
 	this.event(null);
 
-	/* DEBUG 
+	/*
 	try {
 		dump(this.url + '?' + this.param_string + '\n' +
 			'Returned with \n\tstatus = ' + this.xmlhttp.status + 
@@ -321,6 +317,8 @@ RemoteRequest.prototype.getResultObject = function() {
 	}
 
 	var text = this.xmlhttp.responseText;
+
+	//try{if(getDebug()) _debug('response: ' + text + '\n')}catch(e){}
 
 	if(text == "" || text == " " || text == null) {
 		try { dump('dbg: Request returned no text!\n'); } catch(E) {}
@@ -371,4 +369,20 @@ RemoteRequest.prototype.addParam = function(param) {
 	var string = encodeURIComponent(js2JSON(param));
 	this.param_string += "&param=" + string;
 }
+
+function fetchXULStash() {
+	if( isXUL() ) {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			var __OILS = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+			var data_cache = new __OILS( );
+			return data_cache.wrappedJSObject.OpenILS.prototype.data;
+	
+		} catch(E) {
+			_debug('Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );
+		}
+	}
+	return {};
+}
+
 
