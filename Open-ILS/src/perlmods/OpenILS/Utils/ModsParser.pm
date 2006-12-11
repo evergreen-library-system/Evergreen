@@ -58,6 +58,8 @@ my $xpathset = {
 				"[../mods:role/mods:text[text()='creator']][1]",
 		other => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']",
+		any => 
+			"//mods:mods/mods:name/*[local-name()='namePart'][1]",
 	},
 
 	subject => {
@@ -255,7 +257,8 @@ sub mods_values_to_mods_slim {
 		($author = $tmp->{personal}) ||
 		($author = $tmp->{other}) ||
 		($author = $tmp->{corporate}) ||
-		($author = $tmp->{conference}); 
+		($author = $tmp->{conference}) ||
+		($author = $tmp->{any}); 
 	}
 
 	$tmp = $modsperl->{subject};
