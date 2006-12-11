@@ -301,6 +301,10 @@ sub entityize {
 	}
 	
 	$stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+
+	# strip some other unfriendly chars that may leak in
+   $stuff =~ s/([\x{0000}-\x{0008}])//sgoe; 
+
 	return $stuff;
 }
 
