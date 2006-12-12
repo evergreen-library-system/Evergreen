@@ -118,6 +118,9 @@
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 							$('marc_editor').contentWindow.xulG = params;
 
+							/* hide template widgets */
+							$('actions').hidden = true;
+
 						} catch(E) {
 							g.error.standard_unexpected_error_alert(
 								'Error loading MARC template: ' + template_name,
