@@ -98,6 +98,9 @@
 										var meta = req.getResultObject();
 										if (typeof meta.ilsevent != 'undefined') throw(meta);
 										meta = meta[0];
+										document.getElementById('tcn_source').appendChild(
+											document.createTextNode(meta.tcn_source())
+										);
 										document.getElementById('creator').appendChild(
 											document.createTextNode(meta.creator().usrname())
 										);
@@ -178,7 +181,7 @@
 				</html:tr>
 				<html:tr valign="top">
 					<html:td>
-						<html:span style="font-weight: bold;">TCN: </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
+						<html:span style="font-weight: bold;">TCN: (</html:span><html:span id="tcn_source"/><html:span style="font-weight: bold;">) </html:span><html:span id="tcn" style="text-decoration: underline; color: blue;" onclick="copy_to_clipboard(event)"/>
 					</html:td>
 					<html:td>
 						<html:span style="font-weight: bold;">Created By: </html:span><html:span id="creator" />
