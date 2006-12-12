@@ -107,6 +107,8 @@ function my_init() {
 			}
 		}
 
+		g.load_prefs();
+
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 			"system administrator or software developer the following:\ncat/volume_copy_creator.xul\n" +E+ '\n';
@@ -416,6 +418,53 @@ g.stash_and_close = function() {
 
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('volume tree update 3',E);
+	}
+}
+
+g.load_prefs = function() {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
+		if (file._file.exists()) {
+			var prefs = file.get_object(); file.close();
+			if (prefs.check_barcodes) {
+				if ( prefs.check_barcodes == 'false' ) {
+					$('check_barcodes').checked = false;
+				} else {
+					$('check_barcodes').checked = prefs.check_barcodes;
+				}
+			} else {
+				$('check_barcodes').checked = false;
+			}
+			if (prefs.print_labels) {
+				if ( prefs.print_labels == 'false' ) {
+					$('print_labels').checked = false;
+				} else {
+					$('print_labels').checked = prefs.print_labels;
+				}
+			} else {
+				$('print_labels').checked = false;
+			}
+
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error retrieving stored preferences',E);
+	}
+}
+
+g.save_prefs = function () {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
+		file.set_object(
+			{
+				'check_barcodes' : $('check_barcodes').checked,
+				'print_labels' : $('print_labels').checked,
+			}
+		);
+		file.close();
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error storing preferences',E);
 	}
 }
 
