@@ -562,12 +562,10 @@ sub _hold_status {
 }
 
 
-
-
-sub find_local_hold {
-	my( $class, $session, $copy, $user ) = @_;
-	return $class->find_nearest_permitted_hold($session, $copy, $user);
-}
+#sub find_local_hold {
+#	my( $class, $session, $copy, $user ) = @_;
+#	return $class->find_nearest_permitted_hold($session, $copy, $user);
+#}
 
 
 sub fetch_open_hold_by_current_copy {
@@ -1069,58 +1067,103 @@ sub verify_copy_for_hold {
 sub find_nearest_permitted_hold {
 
 	my $class	= shift;
-	my $session = shift;
-	my $copy		= shift;
-	my $user		= shift;
+	my $editor	= shift; # CStoreEditor object
+	my $copy		= shift; # copy to target
+	my $user		= shift; # hold recipient
+	my $check_only = shift; # do no updates, just see if the copy could fulfill a hold
 	my $evt		= OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
 
-	# first see if this copy has already been selected to fulfill a hold
-	my $hold  = $session->request(
-		"open-ils.storage.direct.action.hold_request.search_where",
-		{ current_copy => $copy->id, cancel_time => undef, capture_time => undef } )->gather(1);
+	my $bc = $copy->barcode;
 
-	if( $hold ) {
-		$logger->info("hold found which can be fulfilled by copy ".$copy->id);
-		return $hold;
+	# find any existing holds that already target this copy
+	my $old_holds = $editor->search_action_hold_request(
+		{	current_copy => $copy->id, 
+			cancel_time => undef, 
+			capture_time => undef 
+		} 
+	);
+
+	$logger->info("circulator: searching for best hold at org ".$user->ws_ou." and copy $bc");
+
+	# search for what should be the best holds for this copy to fulfill
+	my $best_holds = $U->storagereq(
+		"open-ils.storage.action.hold_request.nearest_hold.atomic",
+		$user->ws_ou, $copy->id, 10 );
+
+	unless(@$best_holds) {
+
+		if( my $hold = $$old_holds[0] ) {
+			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
+			return ($hold);
+		}
+
+		$logger->info("circulator: no suitable holds found for copy $bc");
+		return (undef, $evt);
 	}
 
-	# We know this hold is permitted, so just return it
-	return $hold if $hold;
 
-	$logger->debug("searching for potential holds at org ". 
-		$user->ws_ou." and copy ".$copy->id);
-
-	my $holds = $session->request(
-		"open-ils.storage.action.hold_request.nearest_hold.atomic",
-		$user->ws_ou, $copy->id, 5 )->gather(1);
-
-	return (undef, $evt) unless @$holds;
+	my $best_hold;
 
 	# for each potential hold, we have to run the permit script
 	# to make sure the hold is actually permitted.
-
-	for my $holdid (@$holds) {
+	for my $holdid (@$best_holds) {
 		next unless $holdid;
-		$logger->info("Checking if hold $holdid is permitted for user ".$user->id);
+		$logger->info("circulator: checking if hold $holdid is permitted for copy $bc");
 
-		my ($hold) = $U->fetch_hold($holdid);
-		next unless $hold;
-		my ($reqr) = $U->fetch_user($hold->requestor);
+		my $hold = $editor->retrieve_action_hold_request($holdid) or next;
+		my $reqr = $editor->retrieve_actor_user($hold->requestor) or next;
+		my $rlib = $editor->retrieve_actor_org_unit($hold->request_lib) or next;
 
-		my ($rlib) = $U->fetch_org_unit($hold->request_lib);
-
-		return ($hold) if OpenILS::Utils::PermitHold::permit_copy_hold(
-			{
-				patron_id			=> $hold->usr,
+		# see if this hold is permitted
+		my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
+			{	patron_id			=> $hold->usr,
 				requestor			=> $reqr->id,
 				copy					=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
 				request_lib			=> $rlib,
 			} 
 		);
+
+		if( $permitted ) {
+			$best_hold = $hold;
+			last;
+		}
 	}
 
-	return (undef, $evt);
+
+	unless( $best_hold ) { # no "good" permitted holds were found
+		if( my $hold = $$old_holds[0] ) { # can we return a pre-targeted hold?
+			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
+			return ($hold);
+		}
+
+		# we got nuthin
+		$logger->info("circulator: no suitable holds found for copy $bc");
+		return (undef, $evt);
+	}
+
+	$logger->info("circulator: best hold ".$best_hold->id." found for copy $bc");
+
+	# indicate a permitted hold was found
+	return $best_hold if $check_only;
+
+	# we've found a permitted hold.  we need to "grab" the copy 
+	# to prevent re-targeted holds (next part) from re-grabbing the copy
+	$best_hold->current_copy($copy->id);
+	$editor->update_action_hold_request($best_hold) 
+		or return (undef, $editor->event);
+
+
+	# re-target any other holds that already target this copy
+	for my $old_hold (@$old_holds) {
+		next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
+		$logger->info("circulator: re-targeting hold ".$old_hold->id.
+			" after a better hold [".$best_hold->id."] was found");
+		$U->storagereq( 
+			'open-ils.storage.action.hold_request.copy_targeter', undef, $old_hold->id );
+	}
+
+	return ($best_hold);
 }
 
 
