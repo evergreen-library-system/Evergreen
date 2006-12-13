@@ -10,7 +10,7 @@
   <datafield tag="028" ind1="" ind2="">
     <subfield code="a"></subfield>
   </datafield>
-  <datafield tag="082" ind1="" ind2="">
+  <datafield tag="082" ind1="0" ind2="4">
     <subfield code="a"></subfield>
   </datafield>
   <datafield tag="092" ind1="" ind2="">
