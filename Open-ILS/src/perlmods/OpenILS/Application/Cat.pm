@@ -105,13 +105,23 @@ sub bib_source_from_name {
 	my $name = shift;
 	$logger->debug("searching for bib source: $name");
 
-	$__bib_sources = new_editor()->retrieve_all_config_bib_source()
-		unless $__bib_sources;
+	fetch_bib_sources();
 
 	my ($s) = grep { lc($_->source) eq lc($name) } @$__bib_sources;
 
 	return $s->id if $s;
 	return undef;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'fetch_bib_sources',
+	api_name => 'open-ils.cat.bib_sources.retrieve.all');
+
+sub fetch_bib_sources {
+	$__bib_sources = new_editor()->retrieve_all_config_bib_source()
+		unless $__bib_sources;
+	return $__bib_sources;
 }
 
 
@@ -250,7 +260,7 @@ __PACKAGE__->register_method(
 
 
 sub biblio_record_xml_import {
-	my( $self, $client, $authtoken, $xml, $source) = @_;
+	my( $self, $client, $authtoken, $xml, $source, $auto_tcn) = @_;
 
 	my $override = 1 if $self->api_name =~ /override/;
 
@@ -260,8 +270,13 @@ sub biblio_record_xml_import {
 
 	my $session = $apputils->start_db_session();
 
-	( $tcn, $tcn_source, $marcdoc, $evt ) = _find_tcn_info($session, $xml, $override);
-	return $evt if $evt;
+	if( $auto_tcn ) {
+		# auto_tcn forces a blank TCN value so the DB will have to generate one for us
+		$marcdoc = __make_marc_doc($xml);
+	} else {
+		( $tcn, $tcn_source, $marcdoc, $evt ) = _find_tcn_info($session, $xml, $override);
+		return $evt if $evt;
+	}
 
 	$logger->activity("user ".$requestor->id.
 		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
@@ -298,6 +313,14 @@ sub biblio_record_xml_import {
 	return undef;
 }
 
+sub __make_marc_doc {
+	my $xml = shift;
+	my $marcxml = XML::LibXML->new->parse_string( $xml );
+	$marcxml->documentElement->setNamespace( 
+		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+	return $marcxml;
+}
+
 
 sub _find_tcn_info { 
 	my $session		= shift;
@@ -306,9 +329,10 @@ sub _find_tcn_info {
 	my $existing_rec	= shift || 0;
 
 	# parse the XML
-	my $marcxml = XML::LibXML->new->parse_string( $xml );
-	$marcxml->documentElement->setNamespace( 
-		"http://www.loc.gov/MARC21/slim", "marc", 1 );
+	my $marcxml = __make_marc_doc($xml);
+#	my $marcxml = XML::LibXML->new->parse_string( $xml );
+#	$marcxml->documentElement->setNamespace( 
+#		"http://www.loc.gov/MARC21/slim", "marc", 1 );
 
 	my $xpath = '//marc:controlfield[@tag="001"]';
 	my $tcn = $marcxml->documentElement->findvalue($xpath);
