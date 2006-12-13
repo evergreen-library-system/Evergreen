@@ -1529,9 +1529,8 @@ sub attempt_checkin_hold_capture {
 	my $copy = $self->copy;
 
 	# See if this copy can fulfill any holds
-	my ($hold) = $holdcode->find_nearest_permitted_hold(
-		OpenSRF::AppSession->create('open-ils.storage'), 
-		$copy, $self->editor->requestor );
+	my ($hold) = $holdcode->find_nearest_permitted_hold( 
+		$self->editor, $copy, $self->editor->requestor );
 
 	if(!$hold) {
 		$logger->debug("circulator: no potential permitted".

@@ -369,8 +369,7 @@ sub insert_copy_methods {
 		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_best_hold', sub {
 				my $key = shift;
 				$logger->debug("script_builder: searching for permitted hold for copy ".$copy->barcode);
-				my ($hold) = $holdcode->find_nearest_permitted_hold(
-					OpenSRF::AppSession->create('open-ils.storage'), $copy, $reqr );
+				my ($hold) = $holdcode->find_nearest_permitted_hold( $e, $copy, $reqr, 1 );
 				$runner->insert( $key, $hold, 1 );
 			}
 		);
