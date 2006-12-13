@@ -56,7 +56,7 @@
 				if (typeof templates.ilsevent != 'undefined') throw(templates);
 				var ml = util.widgets.make_menulist(
 					util.functional.map_list(
-						templates,
+						templates.sort(),
 						function(el) {
 							return [ el /* The menu entry label */, el /* The menu entry value */ ];
 						}
@@ -120,6 +120,8 @@
 
 							/* hide template widgets */
 							$('actions').hidden = true;
+
+							window.xulG.set_tab_name(template_name);
 
 						} catch(E) {
 							g.error.standard_unexpected_error_alert(
