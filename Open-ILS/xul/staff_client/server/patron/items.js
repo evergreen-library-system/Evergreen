@@ -28,6 +28,20 @@ patron.items.prototype = {
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
 					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids); } ],
+					'sel_bucket' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_bucket2' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(util.functional.map_list( obj.retrieve_ids2, function(o) { return o.copy_id; } ) );
+						}
+					],
 					'sel_mark_items_damaged' : [
 						['command'],
 						function() {
@@ -101,6 +115,8 @@ patron.items.prototype = {
 		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','true');
 		obj.controller.view.sel_clip.setAttribute('disabled','true');
 		obj.controller.view.sel_clip2.setAttribute('disabled','true');
+		obj.controller.view.sel_bucket.setAttribute('disabled','true');
+		obj.controller.view.sel_bucket2.setAttribute('disabled','true');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 		obj.controller.view.sel_patron.setAttribute('disabled','true');
 		obj.controller.view.sel_copy_details2.setAttribute('disabled','true');
@@ -675,6 +691,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+		obj.controller.view.sel_bucket.setAttribute('disabled','false');
 		obj.controller.view.sel_patron.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
@@ -695,6 +712,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
+		obj.controller.view.sel_bucket2.setAttribute('disabled','false');
 		obj.controller.view.sel_patron2.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_damaged2.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','false');

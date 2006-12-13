@@ -12,6 +12,7 @@
 <popupset id="items_popupset">
 	<popup id="items_actions" position="at_pointer"> 
 		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 		<menuitem label="Show in Catalog" command="cmd_show_catalog" />
 		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
@@ -28,6 +29,7 @@
 	</popup>
 	<popup id="items_actions2" position="at_pointer"> 
 		<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
+		<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
 		<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
 		<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
@@ -79,6 +81,7 @@
 		<menu label="Actions for Selected Items" accesskey="S">
 			<menupopup>
 				<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+				<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
 				<menuitem label="Show in Catalog" command="cmd_show_catalog" />
 				<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 				<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
@@ -103,6 +106,7 @@
 		<menu label="Actions for Selected Items" old_accesskey="S">
 			<menupopup>
 				<menuitem command="sel_clip2" label="Copy to Clipboard" accesskey="C" />
+				<menuitem command="sel_bucket2" label="Add to Item Bucket" accesskey="A"/>
 				<menuitem label="Show in Catalog" command="cmd_show_catalog2" />
 				<menuitem command="sel_copy_details2" label="Show Item Details" accesskey="I" />
 				<menuitem command="sel_patron2" label="Show Last Few Circulations" accesskey="L"/>
