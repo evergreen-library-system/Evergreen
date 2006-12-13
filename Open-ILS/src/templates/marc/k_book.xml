@@ -1,38 +1,39 @@
 <record xmlns="http://www.loc.gov/MARC21/slim">
-  <leader>00620cam a2200205Ia 4500</leader>
-  <controlfield tag="008">060202s2006    xxua          000 1 eng d</controlfield>
-  <datafield tag="010" ind1=" " ind2=" ">
-    <subfield code="a">LCCN number</subfield>
-  </datafield>
-  <datafield tag="020" ind1=" " ind2=" ">
-    <subfield code="a">ISBN number</subfield>
-  </datafield>
-  <datafield tag="100" ind1="1" ind2=" ">
-    <subfield code="a">Main Entry.Personal Name</subfield>
-  </datafield>
-  <datafield tag="245" ind1="1" ind2="0">
-    <subfield code="a">Title Statement</subfield>
-    <subfield code="b">Remainder of title</subfield>
-    <subfield code="c">Statement of responsibility, etc.</subfield>
-  </datafield>
-  <datafield tag="260" ind1=" " ind2=" ">
-    <subfield code="a">Place of publication, distribution, etc.</subfield>
-    <subfield code="b">Name of publisher, distributor, etc.</subfield>
-    <subfield code="c">Date of publication, distribution, etc.</subfield>
-  </datafield>
-  <datafield tag="300" ind1=" " ind2=" ">
-    <subfield code="a">Physical Description; extent</subfield>
-    <subfield code="b">Other physical details</subfield>
-    <subfield code="c">Dimensions</subfield>
-  </datafield>
-  <datafield tag="500" ind1=" " ind2=" ">
-    <subfield code="a">General Note</subfield>
-  </datafield>
-  <datafield tag="650" ind1=" " ind2="0">
-    <subfield code="a">Subject Added Entry.Topical term or geographic name as entry element</subfield>
-    <subfield code="v">Form subdivision</subfield>
-  </datafield>
-  <datafield tag="650" ind1=" " ind2="0">
-    <subfield code="a">Subject Added Entry.Topical term or geographic name as entry element</subfield>
-  </datafield>
+	<leader>00620cam a2200205Ia 4500</leader>
+	<datafield tag="010" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
+	<datafield tag="020" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
+	<datafield tag="092" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
+	<datafield tag="100" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
+	<datafield tag="245" ind1="" ind2="">
+		<subfield code="a"></subfield>
+		<subfield code="b"></subfield>
+		<subfield code="c"></subfield>
+	</datafield>
+	<datafield tag="260" ind1="" ind2="">
+		<subfield code="a"></subfield>
+		<subfield code="b"></subfield>
+		<subfield code="c"></subfield></datafield>
+	<datafield tag="300" ind1="" ind2="">
+		<subfield code="a"></subfield>
+		<subfield code="b"></subfield>
+		<subfield code="c"></subfield>
+	</datafield>
+	<datafield tag="500" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
+	<datafield tag="650" ind1="" ind2="">
+		<subfield code="a"></subfield>
+		<subfield code="v"></subfield>
+	</datafield>
+	<datafield tag="650" ind1="" ind2="">
+		<subfield code="a"></subfield>
+	</datafield>
 </record>
