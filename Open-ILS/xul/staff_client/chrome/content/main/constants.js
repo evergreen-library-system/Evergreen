@@ -163,6 +163,8 @@ const api = {
 	'MARC_XML_RECORD_IMPORT' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.import' },
 	'MARC_XML_RECORD_REPLACE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.marc.replace' },
 	'MARC_XML_RECORD_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.record.xml.update' },
+	'MARC_XML_TEMPLATE_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.marc_template.retrieve' },
+	'MARC_XML_TEMPLATE_LIST' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.marc_template.types.retrieve' },
 	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
 	'PATRON_BARCODE_EXISTS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists' },
 	'RECALCULATE_STANDING_PENALTIES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalties.update' },
