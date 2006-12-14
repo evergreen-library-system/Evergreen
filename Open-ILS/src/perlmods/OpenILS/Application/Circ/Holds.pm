@@ -1084,7 +1084,7 @@ sub find_nearest_permitted_hold {
 	);
 
 	# hold->type "R" means we need this copy
-	for my $h (@$old_holds) { return ($h) if $h->type eq 'R'; }
+	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
 
 	$logger->info("circulator: searching for best hold at org ".$user->ws_ou." and copy $bc");
 
