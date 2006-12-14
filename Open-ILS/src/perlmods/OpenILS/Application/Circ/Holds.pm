@@ -831,7 +831,7 @@ sub flesh_hold_notices {
 		my $notices = $e->search_action_hold_notification(
 			[
 				{ hold => $hold->id },
-				{ order_by => { anh => { 'notify_time desc' } } },
+				{ order_by => { anh => 'notify_time desc' } },
 			],
 			{idlist=>1}
 		);
@@ -944,9 +944,7 @@ sub check_title_hold {
 			$e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
 	}
 
-	return OpenILS::Event->new('PATRON_BARRED') 
-		if $patron->barred and 
-			($patron->barred =~ /t/i or $patron->barred == 1);
+	return OpenILS::Event->new('PATRON_BARRED') if $U->is_true($patron->barred);
 
 	my $rangelib	= $params{range_lib} || $patron->home_ou;
 
