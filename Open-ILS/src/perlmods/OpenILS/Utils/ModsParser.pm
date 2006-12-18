@@ -49,13 +49,28 @@ my $xpathset = {
 	author => {
 		corporate => 
 			"//mods:mods/mods:name[\@type='corporate']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		personal => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		conference => 
 			"//mods:mods/mods:name[\@type='conference']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		other => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']",
 		any => 
@@ -65,7 +80,12 @@ my $xpathset = {
 	subject => {
 
 		topic => 
-			"//mods:mods/mods:subject/*[local-name()='geographic' or local-name()='name' or local-name()='temporal' or local-name()='topic']/parent::mods:subject",
+			"//mods:mods/mods:subject/*[".
+			"   local-name()='geographic'".
+			"   or local-name()='name'".
+			"   or local-name()='temporal'".
+			"   or local-name()='topic'".
+			"]/parent::mods:subject",
 
 #		geographic => 
 #			"//mods:mods/*[local-name()='subject']/*[local-name()='geographic']",
@@ -255,9 +275,9 @@ sub mods_values_to_mods_slim {
 	if(!$tmp) { $author = ""; }
 	else {
 		($author = $tmp->{personal}) ||
-		($author = $tmp->{other}) ||
 		($author = $tmp->{corporate}) ||
 		($author = $tmp->{conference}) ||
+		($author = $tmp->{other}) ||
 		($author = $tmp->{any}); 
 	}
 
