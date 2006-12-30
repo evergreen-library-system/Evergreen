@@ -784,7 +784,10 @@ sub new_hold_copy_targeter {
 
 					for my $cn ( @{ $rtree->call_numbers } ) {
 						push @$all_copies,
-							asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+							asset::copy->search_where(
+								{ id => [map {$_->id} @{ $cn->copies }],
+								  deleted => 'f' }
+							);
 					}
 				}
 			} elsif ($hold->hold_type eq 'T') {
@@ -799,7 +802,10 @@ sub new_hold_copy_targeter {
 
 				for my $cn ( @{ $rtree->call_numbers } ) {
 					push @$all_copies,
-						asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+						asset::copy->search_where(
+							{ id => [map {$_->id} @{ $cn->copies }],
+							  deleted => 'f' }
+						);
 				}
 			} elsif ($hold->hold_type eq 'V') {
 				my ($vtree) = $self
@@ -807,10 +813,12 @@ sub new_hold_copy_targeter {
 					->run( $hold->target, $hold->selection_ou, $hold->selection_depth );
 
 				push @$all_copies,
-					asset::copy->search( id => [map {$_->id} @{ $vtree->copies }] );
+					asset::copy->search_where(
+						{ id => [map {$_->id} @{ $vtree->copies }],
+						  deleted => 'f' }
+					);
 					
-			} elsif  ($hold->hold_type eq 'C') {
-
+			} elsif  ($hold->hold_type eq 'C' || $hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
 				$all_copies = [asset::copy->retrieve($hold->target)];
 			}
 
@@ -845,10 +853,10 @@ sub new_hold_copy_targeter {
 			my @good_copies;
 			for my $c (@$all_copies) {
 				# current target
-				next if ($c->id == $hold->current_copy);
+				next if ($c->id eq $hold->current_copy);
 
 				# circ lib is closed
-				next if ( grep { ''.$_->org_unit == ''.$c->circ_lib } @closed );
+				next if ( grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed );
 
 				# target of another hold
 				next if (action::hold_request
