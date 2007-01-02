@@ -670,7 +670,8 @@ __PACKAGE__->register_method (
 		@return ID of the new object on success, Event on error
 		/
 );
-sub create_hold_notify {
+=head old
+sub __create_hold_notify {
 	my( $self, $conn, $authtoken, $notification ) = @_;
 	my( $requestor, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -691,6 +692,26 @@ sub create_hold_notify {
 	return $U->DB_UPDATE_FAILED($notification) unless $id;
 	$logger->info("User ".$requestor->id." successfully created new hold notification $id");
 	return $id;
+}
+=cut
+
+sub create_hold_notify {
+   my( $self, $conn, $auth, $note ) = @_;
+   my $e = new_editor(authtoken=>$auth, xact=>1);
+   return $e->die_event unless $e->checkauth;
+
+   my $hold = $e->retrieve_action_hold_request($note->hold)
+      or return $e->die_event;
+   my $patron = $e->retrieve_actor_user($hold->usr) 
+      or return $e->die_event;
+
+   return $e->die_event unless 
+      $e->allowed('CREATE_HOLD_NOTIFICATION', $patron->home_ou);
+
+	$note->notify_staff($e->requestor->id);
+   $e->create_action_hold_notification($note) or return $e->die_event;
+   $e->commit;
+   return $note->id;
 }
 
 
