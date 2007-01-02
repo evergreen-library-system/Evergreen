@@ -347,17 +347,9 @@ char* uescape( const char* string, int size, int full_escape ) {
 						OSRF_BUFFER_ADD_CHAR(buf, '\\');
 						break;
 
-					case 30: /* record separator */
-						OSRF_BUFFER_ADD(buf, "\\u001E");
-						break;
-
-					case 1: /* record separator */
-						OSRF_BUFFER_ADD(buf, "\\u0001");
-						break;
-
-
-					default:
-						OSRF_BUFFER_ADD_CHAR(buf, c);
+               default:
+                  if( c < 32 ) buffer_fadd(buf, "\\u%0.4x", c);
+                  else OSRF_BUFFER_ADD_CHAR(buf, c);
 				}
 
 			} else {
