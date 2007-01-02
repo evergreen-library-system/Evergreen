@@ -410,23 +410,24 @@ function getItemConfig() {
 		provided circ_modifier, use that config.  Otherwise fall back on the MARC item type
 		----------------------------------------------------------------------------------- */
 	var marcType	= getMARCItemType();
-	var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
 	var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
+	//var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
+	var circMod		= copy.circ_modifier;
 	
-	var config;
-	
-	if( circMod && CIRC_MOD_MAP[circMod] ) {
-		/* if we have a config for the given circ_modifier, use it */
-		log_debug("a circ_mod config exists for the copy: " + circMod);
-		config = CIRC_MOD_MAP[circMod];
-	
-	} else {
+	var config = null;
+
+   if( circMod ) {
+      config = CIRC_MOD_MAP[circMod];
+      if(!config) 
+         config = CIRC_MOD_MAP[circMod.toLowerCase()]
+      if(config)
+		   log_info("a circ_mod config exists for the copy with mod: " + circMod);
+   }
+
+   if(!config) {
 		/* otherwise, fall back on the MARC item type */
-	
-		if( circMod ) {
-			log_debug("no circ_mod config found for "
-				+circMod+", falling back to MARC");
-		}
+		if( circMod ) 
+			log_info("no circ_mod config found for " +circMod+", falling back to MARC");
 		config = MARC_ITEM_TYPE_MAP[marcType];
 	}
 
