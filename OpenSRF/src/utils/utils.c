@@ -335,8 +335,8 @@ char* uescape( const char* string, int size, int full_escape ) {
 						break;
 
 					default:
-                  if( c < 32 ) buffer_fadd(buf, "\\u%0.4x", c);
-                  else OSRF_BUFFER_ADD_CHAR(buf, c);
+						if( c < 32 ) buffer_fadd(buf, "\\u%04x", c);
+						else OSRF_BUFFER_ADD_CHAR(buf, c);
 				}
 
 			} else {
