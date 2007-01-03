@@ -1321,9 +1321,12 @@ sub do_checkin {
 				$U->copy_status($self->copy->status)->id 
 					== OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
 
-			my $hold = ($hold_transit) ?
-					$self->editor->retrieve_action_hold_request($hold_transit->hold) :
-					$U->fetch_open_hold_by_copy($self->copy->id);
+         my $hold;
+         if( $hold_transit ) {
+            $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
+         } else {
+				($hold) = $U->fetch_open_hold_by_copy($self->copy->id);
+         }
 
 			$self->hold($hold);
 
@@ -1667,7 +1670,7 @@ sub process_received_transit {
 
 	my $hold_transit = $self->editor->retrieve_action_hold_transit_copy($transit->id);
 
-   $logger->info("ciculator: Recovering original copy status in transit: ".$transit->copy_status);
+   $logger->info("circulator: Recovering original copy status in transit: ".$transit->copy_status);
    $copy->status( $transit->copy_status );
 	$self->update_copy();
 	return if $self->bail_out;
