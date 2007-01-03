@@ -196,6 +196,7 @@ sub xact_commit {
 # -----------------------------------------------------------------------------
 sub xact_rollback {
 	my $self = shift;
+   return unless $self->{session};
 	$self->log(I, "rolling back db session");
 	return $self->request($self->app.".transaction.rollback");
 }
