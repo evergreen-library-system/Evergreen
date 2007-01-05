@@ -52,7 +52,11 @@ function save_user () {
 
 	try {
 
+		var save_perms = [];
 		for (var i in user_perms) {
+			// Group based perm? skip it.
+			if (user_perms[i].id() < 0) continue;
+
 			if (user_perms[i].depth() == null) {
 				var p;
 				for (var j in perm_list) {
@@ -63,9 +67,11 @@ function save_user () {
 				}
 				throw "Depth is required on the " + p.code() + " permission.";
 			}
+
+			save_perms.push( user_perms[i] );
 		}
 
-		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, user_perms );
+		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, save_perms );
 		req.send(true);
 		var ok = req.getResultObject();
 
