@@ -567,6 +567,15 @@ function alertId(id) {
 	if(node) alert(node.innerHTML);
 }
 
+function alertIdText(id, text) {
+	var node = $(id);
+   if(!node) return;
+   if(text)
+      alert(text + '\n\n' + node.innerHTML);
+   else 
+	   alert(node.innerHTML);
+}
+
 function confirmId(id) {
 	var node = $(id);
 	if(node) return confirm(node.innerHTML);
