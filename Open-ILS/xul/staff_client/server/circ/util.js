@@ -28,6 +28,9 @@ circ.util.abort_transits = function(selection_list) {
 						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
 							alert('Copy Id = ' + copy_id + '\n' + robj.desc);
 						break;
+						case 1504 /* ACTION_TRANSIT_COPY_NOT_FOUND */ :
+							alert('This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?');
+						break;
 						case 5000 /* PERM_FAILURE */ :
 						break;
 						default:
