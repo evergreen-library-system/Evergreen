@@ -1,7 +1,7 @@
 
 var rec_type = {
         BKS : { Type : /[at]{1}/,	BLvl : /[acdm]{1}/ },
-	SER : { Type : /[a]{1}/,	BLvl : /[bs]{1}/ },
+	SER : { Type : /[a]{1}/,	BLvl : /[bsi]{1}/ },
 	VIS : { Type : /[gkro]{1}/,	BLvl : /[abcdms]{1}/ },
 	MIX : { Type : /[p]{1}/,	BLvl : /[cd]{1}/ },
 	MAP : { Type : /[ef]{1}/,	BLvl : /[abcdms]{1}/ },
