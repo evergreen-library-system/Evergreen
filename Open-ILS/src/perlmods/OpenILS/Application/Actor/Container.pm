@@ -232,6 +232,8 @@ __PACKAGE__->register_method(
 		Returns the new bucket object
 	NOTES
 
+# XXX pretty sure no one actually uses this method, 
+# (see open-ils.actor.container.full_delete) -- should probably deprecate it
 sub bucket_delete {
 	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
 	my( $bucket, $evt );
@@ -354,7 +356,9 @@ sub __item_delete {
 	return $evt if $evt;
 
 	if( $bucket->owner ne $e->requestor->id ) {
-		return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM');
+      my $owner = $e->retrieve_actor_user($bucket->owner)
+         or return $e->die_event;
+		return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM', $owner->home_ou);
 	}
 
 	my $stat;
@@ -399,7 +403,9 @@ sub full_delete {
 	return $evt if $evt;
 
 	if( $container->owner ne $e->requestor->id ) {
-		return $e->event unless $e->allowed('DELETE_CONTAINER');
+      my $owner = $e->retrieve_actor_user($container->owner)
+         or return $e->die_event;
+		return $e->event unless $e->allowed('DELETE_CONTAINER', $owner->home_ou);
 	}
 
 	my $items; 
