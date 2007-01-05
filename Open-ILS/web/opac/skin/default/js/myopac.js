@@ -118,6 +118,15 @@ var checkedRowTemplate;
 var circsCache = new Array();
 var checkedDrawn = false;
 
+function moClearCheckedTable() {
+	var tbody			= $("myopac_checked_tbody");
+	var loading			= $("myopac_checked_loading");
+	var none				= $("myopac_checked_none");
+	clearNodes( tbody, [ loading, none ] );
+}
+
+var __can_renew_one = false;
+
 function myOPACDrawCheckedOutSlim(r) {
 
 	var checked			= r.getResultObject();
@@ -125,12 +134,14 @@ function myOPACDrawCheckedOutSlim(r) {
 	var loading			= $("myopac_checked_loading");
 	var none				= $("myopac_checked_none");
 
+   __can_renew_one = false;
+
 	if(checkedDrawn) return;
 	checkedDrawn = true;
 	if(!checkedRowTemplate) 
 		checkedRowTemplate = tbody.removeChild($("myopac_checked_row"));
 
-	clearNodes( tbody, [ loading, none ] );
+   moClearCheckedTable();
 
 	hideMe(loading); /* remove all children and start over */
 	if(!(checked && (checked.out || checked.overdue))) {
@@ -154,7 +165,17 @@ function myOPACDrawCheckedOutSlim(r) {
 		req.send();
 	}
 
+   appendClear($('mo_items_out_count'), 
+      text(new String( parseInt(checked.overdue.length) + parseInt(checked.out.length) )) );
+
+   if( checked.overdue.length > 0 ) {
+      addCSSClass($('mo_items_overdue_count'), 'overdue');
+      appendClear($('mo_items_overdue_count'),
+         text(new String( parseInt(checked.overdue.length) )) );
+   }
+
 }
+
 
 function myOPACDrawCheckedItem(r) {
 
@@ -162,23 +183,37 @@ function myOPACDrawCheckedItem(r) {
 	var tbody = r.tbody;
 	var row = checkedRowTemplate.cloneNode(true);
 	row.id = 'myopac_checked_row_ ' + circ.id();
+   row.setAttribute('circid', circ.id());
 
 	var due = _trimTime(circ.due_date());
 
 	var dlink = $n( row, "myopac_checked_due" );
 	var rlink = $n( row, "myopac_checked_renewals" );
-	var rnlink = $n( row, "myopac_checked_renew_link" );
+	//var rnlink = $n( row, "myopac_checked_renew_link" );
 
-	if( r.od ) due = elem('b', {style:'color:red;font-size:110%'},due);
-	else due = text(due);
+	//if( r.od ) due = elem('b', {style:'color:red;font-size:110%'},due);
+	if( r.od ) {
+      due = elem('b', null, due);
+      addCSSClass(due, 'overdue');
+   } else {
+      due = text(due);
+   }
 
 	dlink.appendChild(due);
 	rlink.appendChild(text(circ.renewal_remaining()));
 	unHideMe(row);
-	rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
+	//rnlink.setAttribute('href', 'javascript:myOPACRenewCirc("'+circ.id()+'");');
 	circsCache.push(circ);
 
-	if( circ.renewal_remaining() < 1 ) hideMe(rnlink);
+	if( circ.renewal_remaining() < 1 ) {
+      $n(row, 'selectme').disabled = true;
+      if(!__can_renew_one)
+         $('mo_renew_button').disabled = true;
+   } else {
+      __can_renew_one = true;
+      $('mo_renew_button').disabled = false;
+      $n(row, 'selectme').disabled = false;
+   }
 
 	tbody.appendChild(row);
 
@@ -189,6 +224,8 @@ function myOPACDrawCheckedItem(r) {
 	req.callback(myOPACDrawCheckedTitle);
 	req.send();
 }
+
+var __circ_titles = {};
 
 function myOPACDrawCheckedTitle(r) {
 	var record = r.getResultObject();
@@ -207,6 +244,7 @@ function myOPACDrawCheckedTitle(r) {
 	var alink = $n( row, "myopac_checked_author_link" );
 	buildTitleDetailLink(record, tlink);
 	buildSearchLink(STYPE_AUTHOR, record.author(), alink);
+   __circ_titles[circid] = record.title();
 }
 
 function myOPACDrawNonCatalogedItem(r) {
@@ -219,9 +257,11 @@ function myOPACDrawNonCatalogedItem(r) {
 
 	tlink.parentNode.appendChild(text(copy.dummy_title()));
 	alink.parentNode.appendChild(text(copy.dummy_author()));
+   __circ_titles[circid] = copy.dummy_title();
 }
 
 
+/*
 function myOPACRenewCirc(circid) {
 
 	var circ;
@@ -246,6 +286,7 @@ function myOPACRenewCirc(circid) {
 	checkedDrawn = false;
 	myOPACShowChecked();
 }
+*/
 
 
 
@@ -1124,6 +1165,114 @@ function myOPACDrawNonCatCirc(r) {
 	appendClear($n(row, 'circ_time'), text(due));
 }
 
+
+
+
+function myopacSelectAllChecked() {
+   __myopacSelectChecked(true);
+}
+
+function myopacSelectNoneChecked() {
+   __myopacSelectChecked(false);
+}
+
+function __myopacSelectChecked(value) {
+   var rows = myopacGetCheckedOutRows();
+   for( var i = 0; i < rows.length; i++ ) {
+      var row = rows[i];
+      var box = $n(row, 'selectme');
+      if( box && ! box.disabled )
+      box.checked = value;
+   }
+}
+
+function myopacGetCheckedOutRows() {
+   var rows = [];
+   var tbody = $('myopac_checked_tbody');
+   var children = tbody.childNodes;
+   for( var i = 0; i < children.length; i++ ) {
+      var child = children[i];
+      if( child.nodeName.match(/^tr$/i) ) 
+         if( $n(child, 'selectme') ) 
+            rows.push(child);
+   }
+   return rows;
+}
+
+var __renew_circs = [];
+
+/* true if 1 renewal succeeded */
+var __a_renew_success = false;
+
+/* renews all selected circulations */
+function myOPACRenewSelected() {
+   var rows = myopacGetCheckedOutRows();
+	if(!confirm($('myopac_renew_confirm').innerHTML)) return;
+   __a_renew_success = false;
+
+   for( var i = 0; i < rows.length; i++ ) {
+
+      var row = rows[i];
+      if( ! $n(row, 'selectme').checked ) continue;
+      var circ_id = row.getAttribute('circid');
+
+	   var circ;
+	   for( var j = 0; j != circsCache.length; j++ ) 
+		   if(circsCache[j].id() == circ_id)
+			   circ = circsCache[j];
+
+      moRenewCirc( circ.target_copy(), G.user.id(), circ );
+   }
+}
+
+
+/* renews a single circulation */
+function moRenewCirc(copy_id, user_id, circ) {
+
+   unHideMe($('my_renewing'));
+   moClearCheckedTable();
+
+   _debug('renewing circ ' + circ.id() + ' with copy ' + copy_id);
+   var req = new Request(RENEW_CIRC, G.user.session, 
+      {  patron : user_id, 
+         copyid : copy_id, opac_renewal : 1 
+      } 
+   );
+
+   __renew_circs.push(circ.id());
+   req.request.alertEvent = false;
+   req.callback(myHandleRenewResponse);
+   req.request.circ = circ;
+   req.send();
+}
+
+
+
+/* handles the circ renew results */
+function myHandleRenewResponse(r) {
+   var res = r.getResultObject();
+   var circ = r.circ;
+
+   /* remove this circ from the list of circs to renew */
+   __renew_circs = grep(__renew_circs, function(i) { return (i != circ.id()); });
+
+   _debug("handling renew result for " + circ.id());
+
+   if(checkILSEvent(res) || checkILSEvent(res[0])) 
+      alertIdText('myopac_renew_fail', __circ_titles[circ.id()]);
+   else __a_renew_success = true;
+
+   if(__renew_circs) return; /* more to come */
+
+   __renew_circs = [];
+
+	if( __a_renew_success )
+      alert($('myopac_renew_success').innerHTML);	
+
+   hideMe($('my_renewing'));
+   checkedDrawn = false;
+	myOPACShowChecked();
+}
 
 
 
