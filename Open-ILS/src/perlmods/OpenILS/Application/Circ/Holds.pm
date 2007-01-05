@@ -441,11 +441,12 @@ sub cancel_hold {
 			or return $e->event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-			$logger->info("setting copy to status 'reshelving' on hold cancel");
-			$copy->status(OILS_COPY_STATUS_RESHELVING);
-			$copy->editor($e->requestor->id);
-			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
+         $logger->info("canceling hold $holdid whose item is on the holds shelf");
+#			$logger->info("setting copy to status 'reshelving' on hold cancel");
+#			$copy->status(OILS_COPY_STATUS_RESHELVING);
+#			$copy->editor($e->requestor->id);
+#			$copy->edit_date('now');
+#			$e->update_asset_copy($copy) or return $e->event;
 
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
@@ -461,7 +462,6 @@ sub cancel_hold {
 					$trans->copy_status( OILS_COPY_STATUS_RESHELVING );
 					$e->update_action_transit_copy($trans) or return $e->die_event;
 				}
-				
 			}
 		}
 	}
