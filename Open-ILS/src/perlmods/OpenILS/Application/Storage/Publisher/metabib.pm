@@ -223,7 +223,7 @@ sub isxn_search {
 	my $fr_table = metabib::full_rec->table;
 
 	my $sql = <<"	SQL";
-		SELECT	record
+		SELECT	DISTINCT record
 		  FROM	$fr_table
 		  WHERE	(tag = $tag)
 			AND value LIKE ?
