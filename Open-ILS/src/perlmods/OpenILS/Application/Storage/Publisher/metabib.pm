@@ -1536,6 +1536,7 @@ sub postfilter_search_multi_class_fts {
 
 		my %bonus = ();
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value LIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
+		$bonus{'author'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $first_word } ];
 
 		$bonus{'series'} = [
 			{ "CASE WHEN $search_class.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
@@ -1995,7 +1996,7 @@ sub biblio_search_multi_class_fts {
 
 		my %bonus = ();
 		$bonus{'subject'} = [];
-		$bonus{'author'} = [];
+		$bonus{'author'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word } ];
 
 		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
