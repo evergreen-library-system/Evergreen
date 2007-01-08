@@ -104,6 +104,7 @@ sub build_runner {
 
 	insert_org_methods( $editor, $runner );
 	insert_copy_methods( $editor, $ctx, $runner );
+   insert_user_funcs( $editor, $ctx, $runner );
 
 	return $runner;
 }
@@ -369,13 +370,27 @@ sub insert_copy_methods {
 		$runner->insert_method( 'environment.copy', '__OILS_FUNC_fetch_best_hold', sub {
 				my $key = shift;
 				$logger->debug("script_builder: searching for permitted hold for copy ".$copy->barcode);
-				my ($hold) = $holdcode->find_nearest_permitted_hold( $e, $copy, $reqr, 1 );
+				my ($hold) = $holdcode->find_nearest_permitted_hold( $e, $copy, $reqr, 1 );  # do we need a new editor here since the xact may be dead??
 				$runner->insert( $key, $hold, 1 );
 			}
 		);
 	}
 }
 
+sub insert_user_funcs {
+   my( $e, $ctx, $runner ) = @_;
+
+   # tells how many holds a user has
+	$runner->insert(__OILS_FUNC_userHoldCount  => 
+		sub {
+			my( $write_key, $userid ) = @_;
+         my $val = $holdcode->__user_hold_count(new_editor(), $userid);
+         $logger->info("script_runner: user hold count is $val");
+			$runner->insert($write_key, $val, 1) if $val;
+			return $val;
+		}
+	);
+}
 
 
 
