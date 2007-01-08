@@ -76,7 +76,10 @@
 	</script>
 
 	<commandset id="copy_buckets_cmds">
-		<command id="sel_clip" />
+		<command id="sel_clip1" />
+		<command id="save_columns1" />
+		<command id="sel_clip2" />
+		<command id="save_columns2" />
 		<command id="cmd_copy_buckets_submit_barcode" />
 		<command id="cmd_copy_buckets_print" />
 		<command id="cmd_copy_buckets_export" />
