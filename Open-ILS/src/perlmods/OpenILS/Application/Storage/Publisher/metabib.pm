@@ -218,18 +218,21 @@ sub isxn_search {
 	$isxn =~ s/\s*$//o;
 	$isxn =~ s/-//o if ($self->api_name =~ /isbn/o);
 
-	my $tag = ($self->api_name =~ /isbn/o) ? "'020' OR tag = '024'" : "'022'";
+	my $tag = ($self->api_name =~ /isbn/o) ? "'020' OR f.tag = '024'" : "'022'";
 
 	my $fr_table = metabib::full_rec->table;
+	my $bib_table = biblio::record_entry->table;
 
 	my $sql = <<"	SQL";
-		SELECT	DISTINCT record
-		  FROM	$fr_table
-		  WHERE	(tag = $tag)
-			AND value LIKE ?
+		SELECT	DISTINCT f.record
+		  FROM	$fr_table f
+			JOIN $bib_table b ON (b.id = f.record)
+		  WHERE	(f.tag = $tag)
+			AND f.value LIKE ?
+			AND b.deleted IS FALSE
 	SQL
 
-	my $list = metabib::metarecord_source_map->db_Main->selectcol_arrayref($sql, {}, "$isxn%");
+	my $list = metabib::full_rec->db_Main->selectcol_arrayref($sql, {}, "$isxn%");
 	$client->respond($_) for (@$list);
 	return undef;
 }
