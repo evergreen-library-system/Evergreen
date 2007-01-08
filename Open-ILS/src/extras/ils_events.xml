@@ -564,6 +564,9 @@
 	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
 		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
 	</event>
+	<event code='1709' textcode='MAX_HOLDS'>
+		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
