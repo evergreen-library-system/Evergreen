@@ -363,6 +363,35 @@ sub retrieve_holds {
 	}
 }
 
+
+__PACKAGE__->register_method(
+   method => 'user_hold_count',
+   api_name => 'open-ils.circ.hold.user.count');
+
+sub user_hold_count {
+   my( $self, $conn, $auth, $userid ) = @_;
+   my $e = new_editor(authtoken=>$auth);
+   return $e->event unless $e->checkauth;
+   my $patron = $e->retrieve_actor_user($userid)
+      or return $e->event;
+   return $e->event unless $e->allowed('VIEW_HOLD', $patron->home_ou);
+   return $self->__user_hold_count($e, $userid);
+}
+
+sub __user_hold_count {
+   my( $self, $e, $userid ) = @_;
+   my $holds = $e->search_action_hold_request(
+      {  usr =>  $userid , 
+         fulfillment_time => undef,
+         cancel_time => undef,
+      }, 
+      {idlist => 1}
+   );
+
+   return scalar(@$holds);
+}
+
+
 __PACKAGE__->register_method(
 	method	=> "retrieve_holds_by_pickup_lib",
 	api_name	=> "open-ils.circ.holds.retrieve_by_pickup_lib",

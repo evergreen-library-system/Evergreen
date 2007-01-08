@@ -181,6 +181,13 @@ function isOrgDescendent( parentName, childId ) {
 	return false;
 }
 
+/* returns the number of unfulfilled holds open on this user */
+function userHoldCount(userid) {
+   var key = scratchKey();
+   __OILS_FUNC_userHoldCount(scratchPad(key), userid);
+   return getScratch(key);
+}
+
 function hasCommonAncestor( org1, org2, depth ) {
 	var key = scratchKey();
 	__OILS_FUNC_hasCommonAncestor(scratchPad(key), org1, org2, depth);
