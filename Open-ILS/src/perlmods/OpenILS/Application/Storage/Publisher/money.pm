@@ -244,7 +244,7 @@ SELECT  usr,
 		my ($org) = actor::org_unit->search( shortname => uc($l) );
 		next unless $org;
 
-		my $o_list = actor::org_unit->db_Main->selectcol_arrayref->( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
 		next unless (@$o_list);
 
 		my $o_txt = join ',' => @$o_list;
@@ -257,7 +257,7 @@ SELECT  usr,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
-			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate
 		);
 
 		while (my $row = $sth->fetchrow_hashref) {
