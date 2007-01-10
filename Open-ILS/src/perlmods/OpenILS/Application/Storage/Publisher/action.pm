@@ -687,7 +687,9 @@ sub new_hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef } ) ];
+			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 		} elsif ( $check_expire ) {
 
 			# what's the retarget time threashold?
