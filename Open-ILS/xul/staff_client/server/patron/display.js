@@ -373,7 +373,7 @@ patron.display.prototype = {
 							function(req) {
 								try {
 									var msg = ''; obj.stop_checkouts = false;
-									if (patron.alert_message()) msg += '"' + patron.alert_message() + '"\n';
+									if (patron.alert_message()) msg += 'Alert message: "' + patron.alert_message() + '"\n';
 									//alert('obj.barcode = ' + obj.barcode);
 									if (obj.barcode) {
 										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
@@ -412,7 +412,10 @@ patron.display.prototype = {
 									if (holds.ready && holds.ready > 0) msg += 'Holds available: ' + holds.ready;
 									if (msg) {
 										if (msg != obj.old_msg) {
-											obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+											//obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
+											document.documentElement.firstChild.focus();
+											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>Alert</h1><blockquote><pre>' + msg + '\r\n\r\nPress a navigation button above (e.g. Check Out) to clear this alert.</pre></blockquote>');
+											obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
 											obj.old_msg = msg;
 										} else {
 											obj.error.sdump('D_TRACE','Not re-displaying this alert message: ' + msg);
