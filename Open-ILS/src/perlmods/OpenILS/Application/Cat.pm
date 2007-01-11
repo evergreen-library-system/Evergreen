@@ -195,11 +195,11 @@ sub biblio_record_replace_marc  {
 
 	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth, xact=>1);
 
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('CREATE_MARC');
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('CREATE_MARC');
 
 	my $rec = $e->retrieve_biblio_record_entry($recid)
-		or return $e->event;
+		or return $e->die_event;
 
 	my $fixtcn = 1 if $self->api_name =~ /replace/o;
 
@@ -207,7 +207,11 @@ sub biblio_record_replace_marc  {
 	# If we're not updating the TCN, all we care about it the marcdoc
 	my $override = $self->api_name =~ /override/;
 
+
 	my $storage = OpenSRF::AppSession->create('open-ils.storage');
+
+   # XXX should .update even bother with the tcn_info if it's not going to replace it?
+   # there is the potential for returning a TCN_EXISTS event, even though no replacement happens
 
 	my( $tcn, $tsource, $marcdoc, $evt) = 
 		_find_tcn_info($e->session, $newxml, $override, $recid);
@@ -278,7 +282,7 @@ sub biblio_record_xml_import {
 		return $evt if $evt;
 	}
 
-	$logger->activity("user ".$requestor->id.
+	$logger->info("user ".$requestor->id.
 		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
 
 	my $record = Fieldmapper::biblio::record_entry->new;
@@ -349,7 +353,9 @@ sub _find_tcn_info {
 		# if we're overriding, try to find a different TCN to use
 		if( $override ) {
 
-			$logger->activity("tcn value $tcn already exists, attempting to override");
+         # XXX Create ALLOW_ALT_TCN permission check support 
+
+			$logger->info("tcn value $tcn already exists, attempting to override");
 
 			if(!$tcn) {
 				return ( 
@@ -492,145 +498,6 @@ sub _tcn_exists {
 	$logger->debug("_tcn_exists is false for tcn : $tcn ($source)");
 	return 0;
 }
-
-
-
-
-# XXX deprecated. Remove me.
-
-=head deprecated
-
-__PACKAGE__->register_method(
-	method	=> "biblio_record_tree_retrieve",
-	api_name	=> "open-ils.cat.biblio.record.tree.retrieve",
-);
-
-sub biblio_record_tree_retrieve {
-
-	my( $self, $client, $recordid ) = @_;
-
-	my $name = "open-ils.storage.direct.biblio.record_entry.retrieve";
-	my $session = OpenSRF::AppSession->create( "open-ils.storage" );
-	my $request = $session->request( $name, $recordid );
-	my $marcxml = $request->gather(1);
-
-	if(!$marcxml) {
-		throw OpenSRF::EX::ERROR 
-			("No record in database with id $recordid");
-	}
-
-	$session->disconnect();
-	$session->kill_me();
-
-	warn "turning into nodeset\n";
-	my $nodes = OpenILS::Utils::FlatXML->new()->xml_to_nodeset( $marcxml->marc ); 
-	warn "turning nodeset into tree\n";
-	my $tree = $utils->nodeset2tree( $nodes->nodeset );
-
-	$tree->owner_doc( $marcxml->id() );
-
-	warn "returning tree\n";
-
-	return $tree;
-}
-=cut
-
-
-=head deprecate 
-__PACKAGE__->register_method(
-	method	=> "biblio_record_xml_update",
-	api_name	=> "open-ils.cat.biblio.record.xml.update",
-	argc		=> 3, #(session_id, biblio_tree ) 
-	notes		=> <<'	NOTES');
-	Updates the XML of a biblio record entry
-	@param authtoken The session token for the staff updating the record
-	@param docID The record entry ID to update
-	@param xml The new MARCXML record
-	NOTES
-
-sub biblio_record_xml_update {
-
-	my( $self, $client, $user_session,  $id, $xml ) = @_;
-
-	my $user_obj = $apputils->check_user_session($user_session); 
-
-	if($apputils->check_user_perms(
-			$user_obj->id, $user_obj->home_ou, "UPDATE_MARC")) {
-		return OpenILS::Perm->new("UPDATE_MARC"); 
-	}
-
-	$logger->activity("user ".$user_obj->id." updating biblio record $id");
-
-
-	my $session = OpenILS::Application::AppUtils->start_db_session();
-
-	warn "Retrieving biblio record from storage for update\n";
-
-	my $req1 = $session->request(
-			"open-ils.storage.direct.biblio.record_entry.batch.retrieve", $id );
-	my $biblio = $req1->gather(1);
-
-	warn "retrieved doc $id\n";
-
-	my $doc = XML::LibXML->new->parse_string($xml);
-	throw OpenSRF::EX::ERROR ("Invalid XML in record update: $xml") unless $doc;
-
-	$biblio->marc( entityize( $doc->documentElement->toString ) );
-	$biblio->editor( $user_obj->id );
-	$biblio->edit_date( 'now' );
-
-	warn "Sending updated doc $id to db with xml ".$biblio->marc. "\n";
-
-	my $req = $session->request( 
-		"open-ils.storage.direct.biblio.record_entry.update", $biblio );
-
-	$req->wait_complete;
-	my $status = $req->recv();
-	if( !$status || $status->isa("Error") || ! $status->content) {
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-		if($status->isa("Error")) { throw $status ($status); }
-		throw OpenSRF::EX::ERROR ("Error updating biblio record");
-	}
-	$req->finish();
-
-	# Send the doc to the wormer for wormizing
-	warn "Starting worm session\n";
-
-	my $success = 0;
-	my $wresp;
-
-	my $wreq = $session->request( "open-ils.worm.wormize.biblio", $id );
-
-	my $w = 0;
-	try {
-		$w = $wreq->gather(1);
-
-	} catch Error with {
-		my $e = shift;
-		warn "wormizing failed, rolling back\n";
-		OpenILS::Application::AppUtils->rollback_db_session($session);
-
-		if($e) { throw $e ($e); }
-		throw OpenSRF::EX::ERROR ("Wormizing Failed for $id" );
-	};
-
-	warn "Committing db session...\n";
-	OpenILS::Application::AppUtils->commit_db_session( $session );
-
-#	$client->respond_complete($tree);
-
-	warn "Done wormizing\n";
-
-	#use Data::Dumper;
-	#warn "Returning tree:\n";
-	#warn Dumper $tree;
-
-	return $biblio;
-
-}
-
-=cut
-
 
 
 __PACKAGE__->register_method(
@@ -1166,15 +1033,8 @@ sub remove_empty_objects {
 				$editor->update_asset_call_number($vol) or return $editor->event;
 			}
 
-			# then delete the record this volume points to
-			my $rec = $editor->retrieve_biblio_record_entry($vol->record)
-				or return $editor->event;
-
-			unless( $U->is_true($rec->deleted) ) {
-				$rec->deleted('t');
-				$rec->active('f');
-				$editor->update_biblio_record_entry($rec) or return $editor->event;
-			}
+         my $evt = delete_rec($editor, $vol->record);
+         return $evt if $evt;
 
 		} else {
 			return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record );
@@ -1182,6 +1042,24 @@ sub remove_empty_objects {
 	}
 
 	return undef;
+}
+
+# marks a record as deleted
+sub delete_rec {
+   my( $editor, $rec_id ) = @_;
+
+   my $rec = $editor->retrieve_biblio_record_entry($rec_id)
+      or return $editor->event;
+
+   return undef if $U->is_true($rec->deleted);
+   
+   $rec->deleted('t');
+   $rec->active('f');
+   $rec->editor( $editor->requestor->id );
+   $rec->edit_date('now');
+   $editor->update_biblio_record_entry($rec) or return $editor->event;
+
+   return undef;
 }
 
 
@@ -1385,6 +1263,8 @@ sub batch_volume_transfer {
 	my $vols = $e->batch_retrieve_asset_call_number($vol_ids);
 	my @seen;
 
+   my @rec_ids;
+
 	for my $vol (@$vols) {
 
 		# if we've already looked at this volume, go to the next
@@ -1396,6 +1276,7 @@ sub batch_volume_transfer {
 
 		# take note of the fact that we've looked at this set of volumes
 		push( @seen, $_->id ) for @all;
+      push( @rec_ids, $_->record ) for @all;
 
 		# for each volume, see if there are any copies that have a 
 		# remote circ_lib (circ_lib != vol->owning_lib and != $o_lib ).  
@@ -1480,10 +1361,16 @@ sub batch_volume_transfer {
 		}
 
 		# Now see if any empty records need to be deleted after all of this
-		for(@all) {
-			$evt = remove_empty_objects($e, $override, $_);
+
+      for(@rec_ids) {
+         $logger->debug("merge: seeing if we should delete record $_...");
+         $evt = delete_rec($e, $_) if title_is_empty($e, $_);
 			return $evt if $evt;
-		}
+      }
+
+		#for(@all) {
+		#	$evt = remove_empty_objects($e, $override, $_);
+		#}
 	}
 
 	$logger->info("merge: transfer succeeded");
