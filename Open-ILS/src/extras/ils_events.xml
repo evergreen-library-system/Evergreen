@@ -140,6 +140,13 @@
 		<desc xml:lang="en-US">The copy in question is not in an ideal status for deleting</desc>
 	</event>
 
+	<event code='1228' textcode='BIB_RECORD_DELETED'>
+		<desc xml:lang="en-US">The requested bib record is marked as deleted</desc>
+	</event>
+	<event code='1229' textcode='VOLUME_DELETED'>
+		<desc xml:lang="en-US">The requested volume is marked as deleted</desc>
+	</event>
+
 
 
 
