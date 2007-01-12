@@ -26,6 +26,8 @@ CREATE TABLE money.grocery ( -- Catchall table for local billing
 	note			TEXT
 ) INHERITS (money.billable_xact);
 ALTER TABLE money.grocery ADD PRIMARY KEY (id);
+CREATE INDEX circ_open_date_idx ON "money".grocery (xact_start) WHERE xact_finish IS NULL;
+CREATE INDEX m_g_usr_idx ON "money".grocery (usr);
 
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
