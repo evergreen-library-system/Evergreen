@@ -2,12 +2,12 @@
 var rec_type = {
         BKS : { Type : /[at]{1}/,	BLvl : /[acdm]{1}/ },
 	SER : { Type : /[a]{1}/,	BLvl : /[bsi]{1}/ },
-	VIS : { Type : /[gkro]{1}/,	BLvl : /[abcdms]{1}/ },
-	MIX : { Type : /[p]{1}/,	BLvl : /[cd]{1}/ },
-	MAP : { Type : /[ef]{1}/,	BLvl : /[abcdms]{1}/ },
-	SCO : { Type : /[cd]{1}/,	BLvl : /[abcdms]{1}/ },
-	REC : { Type : /[ij]{1}/,	BLvl : /[abcdms]{1}/ },
-	COM : { Type : /[m]{1}/,	BLvl : /[abcdms]{1}/ }
+	VIS : { Type : /[gkro]{1}/,	BLvl : /[abcdmsi]{1}/ },
+	MIX : { Type : /[p]{1}/,	BLvl : /[cdi]{1}/ },
+	MAP : { Type : /[ef]{1}/,	BLvl : /[abcdmsi]{1}/ },
+	SCO : { Type : /[cd]{1}/,	BLvl : /[abcdmsi]{1}/ },
+	REC : { Type : /[ij]{1}/,	BLvl : /[abcdmsi]{1}/ },
+	COM : { Type : /[m]{1}/,	BLvl : /[abcdmsi]{1}/ }
 };
 
 var ff_pos = {
