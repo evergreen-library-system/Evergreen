@@ -120,32 +120,64 @@ sub new_collections {
 	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
-		SELECT	lt.usr,
-			MAX(bl.billing_ts) AS last_pertinent_billing,
-			SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0) AS threshold_amount
-		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
-		  		UNION ALL
-			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
-			JOIN $descendants d ON (lt.location = d.id)
-			JOIN money.billing bl ON (lt.id = bl.xact AND bl.voided IS FALSE)
-		  WHERE	AGE(bl.billing_ts) > ?
-		  GROUP BY lt.usr
-		  HAVING  SUM(
-		  		(SELECT	COUNT(*)
-				  FROM	money.collections_tracker
-				  WHERE	usr = lt.usr
-				  	AND location in (
-				  		(SELECT	id
-						  FROM	$descendants )
-					)
-				) ) = 0
-		  	AND (SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0)) > ? 
+
+select
+        usr,
+        MAX(last_billing) as last_pertinent_billing,
+        SUM(total_billing) - SUM(COALESCE(p.amount,0)) as threshold_amount
+  from  (select
+                x.id,
+                x.usr,
+                MAX(b.billing_ts) as last_billing,
+                SUM(b.amount) AS total_billing
+          from  action.circulation x
+                left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and c.id is null
+                and x.circ_lib in (XX)
+                and b.billing_ts < current_timestamp - ? * '1 day'::interval
+                and not b.voided
+          group by 1,2
+
+                  union all
+
+         select
+                x.id,
+                x.usr,
+                MAX(b.billing_ts) as last_billing,
+                SUM(b.amount) AS total_billing
+          from  money.grocery x
+                left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and c.id is null
+                and x.billing_location in (XX)
+                and b.billing_ts < current_timestamp - ? * '1 day'::interval
+                and not b.voided
+          group by 1,2
+        ) full_list
+        left join money.payment p on (full_list.id = p.xact)
+  group by 1
+  having SUM(total_billing) - SUM(COALESCE(p.amount,0)) > ?
+;
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
-		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), $age, uc($l), $amount );
+		my ($org) = actor::org_unit->search( shortname => uc($l) );
+		next unless $org;
+
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		next unless (@$o_list);
+
+		my $o_txt = join ',' => @$o_list;
+
+		(my $real_sql = $SQL) =~ s/XX/$o_txt/gsm;
+
+		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
+		$sth->execute( $org->id, $age, $org->id, $age, $amount );
+
 		while (my $row = $sth->fetchrow_hashref) {
 			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
@@ -244,7 +276,7 @@ SELECT  usr,
 		my ($org) = actor::org_unit->search( shortname => uc($l) );
 		next unless $org;
 
-		my $o_list = actor::org_unit->db_Main->selectcol_arrayref->( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
 		next unless (@$o_list);
 
 		my $o_txt = join ',' => @$o_list;
@@ -257,7 +289,7 @@ SELECT  usr,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
-			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate
 		);
 
 		while (my $row = $sth->fetchrow_hashref) {
