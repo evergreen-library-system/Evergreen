@@ -193,7 +193,8 @@ sub biblio_record_replace_marc  {
 
 	warn "Updating MARC with xml\n$newxml\n";
 
-	my $e = OpenILS::Utils::Editor->new(authtoken=>$auth, xact=>1);
+	#my $e = OpenILS::Utils::Editor->new(authtoken=>$auth, xact=>1);
+	my $e = new_editor(authtoken=>$auth, xact=>1);
 
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_MARC');
@@ -214,7 +215,7 @@ sub biblio_record_replace_marc  {
    # there is the potential for returning a TCN_EXISTS event, even though no replacement happens
 
 	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info($e->session, $newxml, $override, $recid);
+		_find_tcn_info($storage, $newxml, $override, $recid);
 
 	return $evt if $evt;
 
@@ -1104,6 +1105,12 @@ sub create_copy {
 	
 	return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
 
+   # see if the volume this copy references is marked as deleted
+   my $evol = $editor->retrieve_asset_call_number($copy->call_number)
+      or return $editor->event;
+   return OpenILS::Event->new('VOLUME_DELETED', vol => $evol->id) 
+      if $U->is_true($evol->deleted);
+
 	my $evt;
 	my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
 	return $evt if ( $evt = org_cannot_have_vols($editor, $org) );
@@ -1183,6 +1190,12 @@ sub create_volume {
 
 	return $evt if ( $evt = org_cannot_have_vols($editor, $vol->owning_lib) );
 
+   # see if the record this volume references is marked as deleted
+   my $rec = $editor->retrieve_biblio_record_entry($vol->record)
+      or return $editor->event;
+   return OpenILS::Event->new('BIB_RECORD_DELETED', rec => $rec->id) 
+      if $U->is_true($rec->deleted);
+
 	# first lets see if there are any collisions
 	my $vols = $editor->search_asset_call_number( { 
 			owning_lib	=> $vol->owning_lib,
@@ -1194,6 +1207,7 @@ sub create_volume {
 
 	my $label = undef;
 	if(@$vols) {
+      # we've found an exising volume
 		if($override) { 
 			$label = $vol->label;
 		} else {
@@ -1202,8 +1216,9 @@ sub create_volume {
 		}
 	}
 
-	# create a temp label so we can create the volume, then de-dup it
-	$vol->label( '__SYSTEM_TMP_'.time) if $label;
+	# create a temp label so we can create the new volume, 
+   # then de-dup it with the existing volume
+	$vol->label( "__SYSTEM_TMP_$$".time) if $label;
 
 	$vol->creator($editor->requestor->id);
 	$vol->create_date('now');
@@ -1427,12 +1442,16 @@ sub find_or_create_volume {
 	$vol->owning_lib($org_id);
 	$vol->label($label);
 	$vol->record($record_id);
-	$vol->creator($e->requestor->id);
-	$vol->create_date('now');
-	$vol->editor($e->requestor->id);
-	$vol->edit_date('now');
 
-	$e->create_asset_call_number($vol) or return $e->die_event;
+	#$vol->creator($e->requestor->id);
+	#$vol->create_date('now');
+	#$vol->editor($e->requestor->id);
+	#$vol->edit_date('now');
+	#$e->create_asset_call_number($vol) or return $e->die_event;
+
+   my $evt = create_volume( 0, $e, $vol );
+   return $evt if $evt;
+
 	$e->commit;
 	return $vol->id;
 }
