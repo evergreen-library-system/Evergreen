@@ -2242,6 +2242,62 @@ __PACKAGE__->register_method(
 	cachable	=> 1,
 );
 
+sub xref_count {
+	my $self = shift;
+	my $client = shift;
+	my $args = shift;
+	my $term = $$args{term};
+	my $limit = $$args{max} || 1;
+	my $min = $$args{min} || 1;
+	my @classes = @{$$args{class}};
+
+	if (!@classes) {
+		@classes = ( qw/ title author subject series keyword / );
+	}
+
+	my %matches;
+	my $bre_table = biblio::record_entry->table;
+	my $cn_table = asset::call_number->table;
+	my $cp_table = asset::copy->table;
+
+	for my $search_class ( @classes ) {
+
+		my $class = $_cdbi->{$search_class};
+		my $search_table = $class->table;
+
+		my ($index_col) = $class->columns('FTS');
+		$index_col ||= 'value';
+
+		
+		my $where = OpenILS::Application::Storage::FTS
+			->compile($term, $search_class.'.value', "$search_class.$index_col")
+			->sql_where_clause;
+
+		my $SQL = <<"		SQL";
+			SELECT	COUNT(DISTINCT X.source)
+			  FROM	(SELECT	$search_class.source
+				  FROM	$search_table $search_class
+					JOIN $bre_table b ON (b.id = $search_class.source)
+				  WHERE	$where
+				  	AND NOT b.deleted
+					AND b.active
+				  LIMIT $limit) X
+			  HAVING COUNT(DISTINCT X.source) >= $min;
+		SQL
+
+		my $res = $class->db_Main->selectrow_arrayref( $SQL );
+		$matches{$search_class} = $res ? $res->[0] : 0;
+	}
+
+	return \%matches;
+}
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.search.xref",
+	method		=> 'xref_count',
+	api_level	=> 1,
+);
+
+
 
 1;
 
