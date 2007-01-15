@@ -2246,10 +2246,13 @@ sub xref_count {
 	my $self = shift;
 	my $client = shift;
 	my $args = shift;
+
 	my $term = $$args{term};
 	my $limit = $$args{max} || 1;
 	my $min = $$args{min} || 1;
 	my @classes = @{$$args{class}};
+
+	$limit = $min if ($min > $limit);
 
 	if (!@classes) {
 		@classes = ( qw/ title author subject series keyword / );
