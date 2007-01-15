@@ -1248,20 +1248,165 @@ char* searchPredicate ( osrfHash* field, jsonObject* node ) {
 
 }
 
-char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
-	//  XXX this will be used for joins, I think
-	//osrfHash* links = osrfHashGet(meta, "links");
+/*
+
+join_filter : {
+	acn : {
+		field : record,
+		fkey : id
+		type : left
+		filter : { ... },
+		join_filter : {
+			acp : {
+				field : call_number,
+				fkey : id,
+				filter : { ... },
+			},
+		},
+	},
+	mrd : {
+		field : record,
+		type : inner
+		fkey : id,
+		filter : { ... },
+	}
+}
+
+*/
+
+char* searchJOIN ( osrfHash* leftmeta, jsonObject* join_hash ) {
+
+	char* leftclass = osrfHashGet(leftmeta, "classname");
+
+	growing_buffer* join_buf = buffer_init(128);
+
+	jsonObjectIterator* search_itr = jsonNewObjectIterator( join_hash );
+	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
+		osrfHash* idlClass = osrfHashGet( idl, snode->key );
+		osrfHash* fields = osrfHashGet(idlClass, "fields");
+
+		char* class = osrfHashGet(idlClass, "classname");
+		char* table = osrfHashGet(idlClass, "tablename")
+
+		char* type = jsonObjectGetKey( snode->value, "type" );
+		char* fkey = jsonObjectGetKey( snode->value, "fkey" );
+		char* field = jsonObjectGetKey( snode->value, "field" );
+
+		jsonObject* filter = jsonObjectGetKey( snode->value, "filter" );
+		jsonObject* join_filter = jsonObjectGetKey( snode->value, "join_filter" );
+
+		if (type) {
+			if ( !strcasecmp(type,"left") ) {
+				buffer_add(join_buf, " LEFT JOIN");
+			} else if ( !strcasecmp(type,"else") ) {
+				buffer_add(join_buf, " LEFT JOIN");
+			} else {
+				buffer_add(join_buf, " INNER JOIN");
+			}
+		} else {
+			buffer_add(join_buf, " INNER JOIN");
+		}
+
+		buffer_fadd(join_buf, " \"%s\" AS %s ON ( \"%s\".%s = \"%s\".%s");
+
+		if (join_filter) {
+			char* jpred = searchWHERE( join_filter, idlClass, 0 );
+			buffer_fadd( join_buf, "AND %s", jpred );
+			free(subpred);
+		}
+
+		buffer_add(join_buf, " ) ");
+		
+	}
+
+	char* join = buffer_data(join_buf);
+	buffer_free(join_buf);
+
+	return join;
+}
+
+/*
+
+{ -or|-and : { field : { op : value }, ... }, ... }
+
+*/
+char* searchWHERE ( jsonObject* search_hash, osrfHash* fields, int opjoin_type ) {
+
+	growing_buffer* sql_buf = buffer_init(128);
+
+	char opjoin[6] = " AND \0";
+	if (opjoin_type == 1) " OR  \0";
+
+	first = 1;
+	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
+	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
+
+		if ( !strcasecmp("-or",node->key) ) {
+			char* subpred = searchWHERE( node->value, fields, 1);
+			buffer_fadd(sql_buf, "( %s )", subpred);
+			free(subpred);
+		} else if ( !strcasecmp("-and",node->key) ) {
+			char* subpred = searchWHERE( node->value, fields, 0);
+			buffer_fadd(sql_buf, "( %s )", subpred);
+			free(subpred);
+		} else {
+
+			osrfHash* field = osrfHashGet( fields, node->key );
+
+			if (!field) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: Attempt to reference non-existant column %s on table %s",
+					MODULENAME,
+					node->key,
+					osrfHashGet(meta, "tablename")
+				);
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Severe query error -- see error log for more details"
+				);
+				buffer_free(sql_buf);
+				return NULL;
+			}
+
+			if (first) {
+				first = 0;
+			} else {
+				buffer_add(sql_buf, opjoin);
+			}
+
+			char* subpred = searchPredicate( field, node->item);
+			buffer_fadd( sql_buf, "%s", subpred );
+			free(subpred);
+		}
+	}
+
+	jsonObjectIteratorFree(search_itr);
+
+	char* pred = buffer_data(sql_buf);
+	buffer_free(sql_buf);
+
+	return pred;
+}
+
+char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
+	char* pkey = osrfHashGet(meta, "primarykey");
+	jsonObject* join_hash = jsonObjectGetKey( order_hash, "join" );
 
 	jsonObjectNode* node = NULL;
 	jsonObjectNode* snode = NULL;
 	jsonObject* _tmp;
 
 	growing_buffer* sql_buf = buffer_init(128);
-	buffer_add(sql_buf, "SELECT");
+
+	buffer_fadd(sql_buf, "SELECT DISTINCT ON (\"%s\".%s) ", core_class, pkey);
 
 	int first = 1;
 	if ( (_tmp = jsonObjectGetKey( order_hash, "select" )) ) {
@@ -1288,7 +1433,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 					buffer_add(sql_buf, ",");
 				}
 
-				buffer_fadd(sql_buf, " \"%s\".%s", cname, fname, cname, fname);
+				buffer_fadd(sql_buf, " \"%s\".%s", cname, fname);
 			}
 		}
 
@@ -1298,46 +1443,19 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 		buffer_add(sql_buf, " *");
 	}
 
-	buffer_fadd(sql_buf, " FROM %s AS \"%s\" WHERE ", osrfHashGet(meta, "tablename"), core_class );
+	buffer_fadd(sql_buf, " FROM %s AS \"%s\"", osrfHashGet(meta, "tablename"), core_class );
 
-
-	char* pred;
-	first = 1;
-	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
-	while ( (node = jsonObjectIteratorNext( search_itr )) ) {
-		osrfHash* field = osrfHashGet( fields, node->key );
-
-		if (!field) {
-			osrfLogError(
-				OSRF_LOG_MARK,
-				"%s: Attempt to reference non-existant column %s on table %s",
-				MODULENAME,
-				node->key,
-				osrfHashGet(meta, "tablename")
-			);
-			osrfAppSessionStatus(
-				ctx->session,
-				OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException",
-				ctx->request,
-				"Severe query error -- see error log for more details"
-			);
-			buffer_free(sql_buf);
-			return NULL;
-		}
-
-		if (first) {
-			first = 0;
-		} else {
-			buffer_add(sql_buf, " AND ");
-		}
-
-		pred = searchPredicate( field, node->item);
-		buffer_fadd( sql_buf, "%s", pred );
-		free(pred);
+	if ( join_hash ) {
+		char* join_clause = searchJOIN( meta, join_hash );
+		buffer_add(sql_buf, " %s", join_clause);
+		free(join_clause);
 	}
 
-	jsonObjectIteratorFree(search_itr);
+	buffer_fadd(sql_buf, " WHERE ", osrfHashGet(meta, "tablename"), core_class );
+
+	char* pred = searchWHERE( search_hash, fields, 0 );
+	buffer_add(sql_buf, pred);
+	free(pred);
 
 	if (order_hash) {
 		char* string;
