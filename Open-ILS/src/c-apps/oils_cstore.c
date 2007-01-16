@@ -1264,6 +1264,7 @@ join_filter : {
 		field : record,
 		fkey : id
 		type : left
+		filter_op : or
 		filter : { ... },
 		join_filter : {
 			acp : {
@@ -1298,6 +1299,7 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		char* table = osrfHashGet(idlClass, "tablename");
 
 		char* type = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "type" ) );
+		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "filter_op" ) );
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "fkey" ) );
 		char* field = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "field" ) );
 
@@ -1321,8 +1323,18 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
 
 		if (filter) {
+			if (filter_op) {
+				if (!strcasecmp("or",filter_op)) {
+					buffer_add( join_buf, " OR " );
+				} else {
+					buffer_add( join_buf, " AND " );
+				}
+			} else {
+				buffer_add( join_buf, " AND " );
+			}
+
 			char* jpred = searchWHERE( filter, idlClass, 0 );
-			buffer_fadd( join_buf, " AND %s", jpred );
+			buffer_fadd( join_buf, " %s", jpred );
 			free(jpred);
 		}
 
@@ -1406,54 +1418,72 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 
 char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
+	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
-	char* pkey = osrfHashGet(meta, "primarykey");
+
 	jsonObject* join_hash = jsonObjectGetKey( order_hash, "join_filter" );
 
 	jsonObjectNode* node = NULL;
 	jsonObjectNode* snode = NULL;
-	jsonObject* _tmp;
+	jsonObject* _tmp = NULL;
+	jsonObject* selhash = NULL;
+	jsonObject* defaultselhash = NULL;
 
 	growing_buffer* sql_buf = buffer_init(128);
+	growing_buffer* select_buf = buffer_init(128);
 
-	buffer_fadd(sql_buf, "SELECT DISTINCT ON (\"%s\".%s)", core_class, pkey);
+	if ( !(selhash = jsonObjectGetKey( order_hash, "select" )) ) {
+		defaultselhash = jsonParseString( "{}" );
+		selhash = defaultselhash;
+	}
+	
+	if ( !jsonObjectGetKey(selhash,core_class) ) {
+		jsonObjectSetKey( selhash, core_class, jsonParseString( "[]" ) );
+		jsonObject* flist = jsonObjectGetKey( selhash, core_class );
+		
+		int i = 0;
+		char* field;
 
-	int first = 1;
-	if ( (_tmp = jsonObjectGetKey( order_hash, "select" )) ) {
-
-		jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
-		while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
-
-			osrfHash* idlClass = osrfHashGet( idl, snode->key );
-			if (!idlClass) continue;
-			char* cname = osrfHashGet(idlClass, "classname");
-
-			if (strcmp(core_class,snode->key)) continue;
-
-			jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
-			while ( (node = jsonObjectIteratorNext( select_itr )) ) {
-				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
-				char* fname = osrfHashGet(field, "name");
-
-				if (!field) continue;
-
-				if (first) {
-					first = 0;
-				} else {
-					buffer_add(sql_buf, ",");
-				}
-
-				buffer_fadd(sql_buf, " \"%s\".%s", cname, fname);
-			}
+		osrfStringArray* keys = osrfHashKeys( fields );
+		while ( (field = osrfStringArrayGetString(keys, i++)) ) {
+			if ( strcasecmp( "true", osrfHashGet( osrfHashGet( fields, field ), "virtual" ) ) )
+				jsonObjectPush( flist, jsonNewObject( field ) );
 		}
-
-		if (first) buffer_add(sql_buf, " *");
-
-	} else {
-		buffer_add(sql_buf, " *");
+		osrfStringArrayFree(keys);
 	}
 
-	buffer_fadd(sql_buf, " FROM %s AS \"%s\"", osrfHashGet(meta, "tablename"), core_class );
+	int first = 1;
+	jsonObjectIterator* class_itr = jsonNewObjectIterator( selhash );
+	while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
+
+		osrfHash* idlClass = osrfHashGet( idl, snode->key );
+		if (!idlClass) continue;
+		char* cname = osrfHashGet(idlClass, "classname");
+
+		//if (strcmp(core_class,snode->key)) continue;
+
+		jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
+		while ( (node = jsonObjectIteratorNext( select_itr )) ) {
+			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
+			char* fname = osrfHashGet(field, "name");
+
+			if (!field) continue;
+
+			if (first) {
+				first = 0;
+			} else {
+				buffer_add(select_buf, ",");
+			}
+
+			buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
+		}
+	}
+
+	char* col_list = buffer_data(select_buf);
+	buffer_free(select_buf);
+	if (defaultselhash) jsonObjectFree(defaultselhash);
+
+	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, osrfHashGet(meta, "tablename"), core_class );
 
 	if ( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, meta );
@@ -1461,7 +1491,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 		free(join_clause);
 	}
 
-	buffer_fadd(sql_buf, " WHERE ", osrfHashGet(meta, "tablename"), core_class );
+	buffer_add(sql_buf, " WHERE ");
 
 	char* pred = searchWHERE( search_hash, meta, 0 );
 	if (!pred) {
@@ -1481,14 +1511,18 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	if (order_hash) {
 		char* string;
-		if ( (_tmp = jsonObjectGetKey( jsonObjectGetKey( order_hash, "order_by" ), core_class ) ) ){
-			string = jsonObjectToSimpleString(_tmp);
-			buffer_fadd(
-				sql_buf,
-				" ORDER BY %s",
-				string
-			);
-			free(string);
+		if ( (_tmp = jsonObjectGetKey( order_hash, "order_by" )) ){
+			jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
+			while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
+				string = jsonObjectToSimpleString(snode->item);
+				buffer_fadd(
+					sql_buf,
+					" ORDER BY \"%s\".%s",
+					snode->key,
+					string
+				);
+				free(string);
+			}
 		}
 
 		if ( (_tmp = jsonObjectGetKey( order_hash, "limit" )) ){
@@ -1529,6 +1563,7 @@ jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 	osrfHash* links = osrfHashGet(meta, "links");
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
+	char* pkey = osrfHashGet(meta, "primarykey");
 
 	jsonObject* _tmp;
 	jsonObject* obj;
@@ -1544,6 +1579,7 @@ jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
+	osrfHash* dedup = osrfNewHash();
 	jsonObject* res_list = jsonParseString("[]");
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
@@ -1553,7 +1589,14 @@ jsonObject* doSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonObject* param
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
 			do {
 				obj = oilsMakeJSONFromResult( result, meta );
-				jsonObjectPush(res_list, obj);
+				int pkey_pos = atoi( osrfHashGet( osrfHashGet( fields, pkey ), "array_position" ) );
+				char* pkey_val = jsonObjectToSimpleString( jsonObjectGetIndex( obj, pkey_pos ) );
+				if ( osrfHashGet( dedup, pkey_val ) ) {
+					jsonObjectFree(obj);
+				} else {
+					osrfHashSet( dedup, pkey_val, pkey_val );
+					jsonObjectPush(res_list, obj);
+				}
 			} while (dbi_result_next_row(result));
 		} else {
 			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
