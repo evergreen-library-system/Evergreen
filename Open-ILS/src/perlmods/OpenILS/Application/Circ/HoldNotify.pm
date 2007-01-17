@@ -337,6 +337,14 @@ sub flesh_template {
 	my $reply_to = $self->pickup_lib->email;
 	$reply_to ||= $sender; 
 
+   # if they have an org setting for bounced emails, use that as the sender address
+   if( my $set = $self->editor->search_actor_org_unit_setting(
+         {  name => OILS_SETTING_ORG_BOUNCED_EMAIL, 
+            org_unit => $self->pickup_lib->id } )->[0] ) {
+
+      my $bemail = JSON->JSON2perl($set->value);
+      $sender = $bemail if $bemail;
+   }
 
    $str =~ s/\${EMAIL_SENDER}/$sender/;
    $str =~ s/\${EMAIL_RECIPIENT}/$email/;
