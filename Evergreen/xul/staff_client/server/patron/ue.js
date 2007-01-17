@@ -12,7 +12,6 @@ var groupsCache				= {};
 var netLevelsCache			= {};
 //var guardianNote				= null;	
 
-
 /* fetch the necessary data to start off */
 function uEditInit() {
 
@@ -28,6 +27,26 @@ function uEditInit() {
 
 	setTimeout( function() { 
 		uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
+
+   /*
+   window.onunload = function() { 
+      if( ! confirm($('ue_unsaved_changes').innerHTML) ) 
+         location.href = location.href;
+   }
+   */
+
+
+}
+
+function uEditSetUnload() {
+   window.onbeforeunload = function(evt) { 
+      //evt.returnValue = ('ue_unsaved_changes').innerHTML; 
+      return $('ue_unsaved_changes').innerHTML; 
+   };
+}
+
+function uEditClearUnload() {
+   window.onbeforeunload = null;
 }
 
 /* ------------------------------------------------------------------------------ */
@@ -341,6 +360,8 @@ function uEditOnChange(field) {
 
 	uEditIterateFields(function(f) { uEditCheckValid(f); });
 	uEditCheckErrors();
+
+   uEditSetUnload();
 }
 
 
@@ -478,6 +499,8 @@ function uEditSaveUser(cloneme) {
 	req.alertEvent = false;
 	req.send(true);
 	var newuser = req.result();
+
+   uEditClearUnload();
 
 	var evt;
 	if( (evt = checkILSEvent(newuser)) || ! newuser ) {
