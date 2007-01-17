@@ -59,14 +59,24 @@ oilsRptSetWidget.prototype.getValue = function() {
 
 oilsRptSetWidget.prototype.objToStr = function(obj) {
 	if( typeof obj == 'string' ) return obj;
-	return ':'+obj.transform+':'+obj.params[0];
+	//return ':'+obj.transform+':'+obj.params[0];
+	var str = ':'+obj.transform;
+	for( var i = 0; i < obj.params.length; i++ ) 
+		str += ':' + obj.params[i];
+	_debug("objToStr(): built string " + str);
+	return str;
+
 }
 
 oilsRptSetWidget.prototype.strToObj = function(str) {
 	if( str.match(/^:.*/) ) {
-		var tform = str.replace(/^:(.*):.*/,'$1');
-		var param = str.replace(/^:.*:(.*)/,'$1');
-		return { transform : tform, params : [param] };
+		var parts = str.split(/:/);
+		_debug("strToObj(): " + str + ' : ' + parts);
+		parts.shift();
+		var tform = parts.shift();
+		//var tform = str.replace(/^:(.*):.*/,'$1');
+		//var param = str.replace(/^:.*:(.*)/,'$1');
+		return { transform : tform, params : parts };
 	}
 	return str;
 }
@@ -324,6 +334,42 @@ oilsRptAgeWidget.prototype.getDisplayValue = function() {
 	return val;
 }
 
+
+
+/* --------------------------------------------------------------------- 
+	Atomic substring picker
+	--------------------------------------------------------------------- */
+function oilsRptSubstrWidget(args) {
+	this.node = args.node
+	this.data = elem('input',{type:'text',size:12})
+	this.offset = elem('input',{type:'text',size:5})
+	this.length = elem('input',{type:'text',size:5})
+}
+
+oilsRptSubstrWidget.prototype.draw = function() {
+	this.node.appendChild(text('string: '))
+	this.node.appendChild(this.data);
+	this.node.appendChild(elem('br'));
+	this.node.appendChild(text('offset: '))
+	this.node.appendChild(this.offset);
+	this.node.appendChild(elem('br'));
+	this.node.appendChild(text('length: '))
+	this.node.appendChild(this.length);
+}
+
+oilsRptSubstrWidget.prototype.getValue = function() {
+	return {
+		transform : 'substring',
+		params : [ this.data.value, this.offset.value, this.length.value ]
+	};
+}
+
+oilsRptSubstrWidget.prototype.getDisplayValue = function() {
+	return {
+		label : this.data.value + ' : ' + this.offset.value + ' : ' + this.length.value,
+		value : this.getValue()
+	};
+}
 
 
 /* --------------------------------------------------------------------- 
