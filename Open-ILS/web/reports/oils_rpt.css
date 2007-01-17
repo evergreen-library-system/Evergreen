@@ -64,15 +64,15 @@ table { border-collapse: collapse; }
 	background: #E0F0F0; 
 	min-height: 150px;
 	max-height: 290px;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .oils_rpt_small_info_selector {
 	border: 1px solid blue; 
 	background: #E0F0F0; 
 	height: 80px;
-	overflow: scroll;
 	width: 12em;
+	overflow: auto;
 }
 
 
@@ -108,6 +108,12 @@ button {
 
 button:active {
 	border-style: inset;
+}
+
+button:disabled {
+	color: #000;
+	background-color: #EEE;
+	border: 2px solid #888;
 }
 
 .floaty {
