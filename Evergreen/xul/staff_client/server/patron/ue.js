@@ -27,18 +27,10 @@ function uEditInit() {
 
 	setTimeout( function() { 
 		uEditBuild(); uEditShowPage('uedit_userid'); }, 20 );
-
-   /*
-   window.onunload = function() { 
-      if( ! confirm($('ue_unsaved_changes').innerHTML) ) 
-         location.href = location.href;
-   }
-   */
-
-
 }
 
 function uEditSetUnload() {
+   _debug('setting window unload event');
    window.onbeforeunload = function(evt) { 
       //evt.returnValue = ('ue_unsaved_changes').innerHTML; 
       return $('ue_unsaved_changes').innerHTML; 
@@ -46,6 +38,7 @@ function uEditSetUnload() {
 }
 
 function uEditClearUnload() {
+   _debug('clearing window unload event');
    window.onbeforeunload = null;
 }
 
