@@ -1067,6 +1067,9 @@ sub delete_rec {
 sub delete_copy {
 	my( $editor, $override, $vol, $copy ) = @_;
 
+   return $editor->event unless 
+      $editor->allowed('DELETE_COPY',copy_perm_org($vol, $copy));
+
 	my $stat = $U->copy_status($copy->status)->id;
 
 	unless($override) {
