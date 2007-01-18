@@ -40,6 +40,21 @@ function oilsRptBuilderDrawClone2(template) {
 	/* manually shove data into the display selectors */
 	var def = JSON2js(template.data());
 
+   /* --------------------------------------------------------------- */
+   /* hack to determine the higest existing param in the template */
+   matches = template.data().match(/::P\d/g);
+   var max = 0;
+   for( var i = 0; i < matches.length; i++ ) {
+      var num = parseInt(matches[i].replace(/::P(\d)/,'$1')); 
+      if( num > max ) max = num;
+   }
+   oilsRptID2 = max + 1;
+   _debug("set next avail param to " + oilsRptID2);
+   //_debug('PARAM = ' + oilsRptNextParam());
+   //var x = null;
+   //x.blah();
+   /* --------------------------------------------------------------- */
+
 	var table = def.from.table;
 	var node;
 	for( var i in oilsIDL ) {
@@ -63,7 +78,7 @@ function oilsRptBuilderDrawClone2(template) {
 		function(item) {
 			oilsAddRptHavingItem(item.path, item.column.transform, oilsRptObjectKeys(item.condition)[0])});
 
-	oilsRpt.setTemplate(template);
+	//oilsRpt.setTemplate(template); /* commented out with clone fix, *shouldn't* break anything */
 	oilsRpt.templateObject = null; /* simplify debugging */
 }
 
@@ -78,7 +93,7 @@ function oilsReportBuilderReset() {
 	removeChildren(oilsRptFilterSelector);
 	removeChildren(oilsRptHavingSelector);
 	//removeChildren(oilsRptOrderBySelector);
-	oilsRptResetParams();
+	//oilsRptResetParams();
 }
 
 function oilsReportBuilderSave() {
@@ -216,6 +231,8 @@ function oilsRptBuildFromClause(path) {
 
 	var newpath = "";
 
+   var last_is_left = false; /* true if our parent join is a 'left' join */
+
 	/* walk the path, fleshing the from clause as we go */
 	for( var i = 0; i < parts.length; i += 2 ) {
 
@@ -256,8 +273,12 @@ function oilsRptBuildFromClause(path) {
 		tobj = tobj[col];
 		if( field.type == 'link' ) {
 			tobj.key = field.key;
-			if( field.reltype == 'has_many' || field.reltype == 'might_have' )
+			if( field.reltype == 'has_many' || field.reltype == 'might_have' || last_is_left ) {
 				tobj.type = 'left';
+            last_is_left = true;
+         } else {
+            last_is_left = false;
+         }
 		}
 
 		newpath = newpath + '-'+ path_col;
@@ -493,6 +514,10 @@ function oilsAddRptFilterItem(path, tform, filter) {
 		column:   { transform: tform, colname: oilsRptPathCol(path) },
 		condition : {}
 	};
+
+   //_debug('NEXT PARAM = ' + oilsRptID2);
+   //_debug('NEXT PARAM = ' + oilsRptNextParam());
+
 	if( filter == 'is' || filter == 'is not' )
 		where.condition[filter] = null;
 	else where.condition[filter] = oilsRptNextParam();
