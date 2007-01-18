@@ -3,7 +3,7 @@
 #	provided to any method is not at least as large as the 'argc' setting for the method
 
 CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -DOSRF_STRICT_PARAMS -rdynamic -fno-strict-aliasing
-LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache -LJudy
+LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache 
 
 TARGETS = osrf_message.o \
 			 osrf_app_session.o \
@@ -18,8 +18,6 @@ TARGETS = osrf_message.o \
 			 osrf_list.o \
 			 osrf_hash.o \
 			 xml_utils.o 
-			 #osrf_big_hash.o \
-			 osrf_big_list.o \
 
 HEADERS = osrf_message.h \
 			 osrf_app_session.h \
@@ -34,8 +32,6 @@ HEADERS = osrf_message.h \
 			 osrf_list.h \
 			 osrf_hash.h \
 			 xml_utils.h
-			 #osrf_big_hash.h \
-			 osrf_big_list.h \
 
 all: xml_utils.o $(TARGETS) copy 
 
