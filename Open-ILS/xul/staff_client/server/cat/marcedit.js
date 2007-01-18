@@ -285,14 +285,22 @@ function createMARCTextbox (element,attrs) {
 
 					var df = <datafield tag="" ind1="" ind2="" xmlns="http://www.loc.gov/MARC21/slim"><subfield code="" /></datafield>;
 
-					index.parent().insertChildAfter( index, df );
+					if (event.shiftKey) { // ctrl+shift+enter
+						index.parent().insertChildBefore( index, df );
+					} else {
+						index.parent().insertChildAfter( index, df );
+					}
 
 					var new_df = marcDatafield(df);
 
 					if (row.parentNode.lastChild === row) {
 						row.parentNode.appendChild( new_df );
 					} else {
-						row.parentNode.insertBefore( new_df, row.nextSibling );
+						if (event.shiftKey) { // ctrl+shift+enter
+							row.parentNode.insertBefore( new_df, row );
+						} else {
+							row.parentNode.insertBefore( new_df, row.nextSibling );
+						}
 					}
 
 					new_df.firstChild.focus();
