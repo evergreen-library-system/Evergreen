@@ -228,19 +228,25 @@
 							<tbody>
 								<tr>
 
+                           <script>
+                              function __setsortsel() {
+                                 var sel = $('adv_global_sort_by')
+										   if(sel.selectedIndex == 0) {
+											   $("adv_global_sort_dir").disabled = true;
+											   $("adv_global_sort_dir").selectedIndex = 0;
+										   } else $("adv_global_sort_dir").disabled = false;
+                              }
+                           </script>
+
 									<td align=''>
-										<select id='adv_global_sort_by' 
-											onchange='
-											if(this.selectedIndex == 0) {
-												$("adv_global_sort_dir").disabled = true;
-												$("adv_global_sort_dir").selectedIndex = 0;
-											} else $("adv_global_sort_dir").disabled = false;'>
+										<select id='adv_global_sort_by' onchange='__setsortsel();'>
 											<option value='rel'>Relevance</option>
 											<option value='title'>Title</option>
 											<option value='author'>Author</option>
 											<option value='pubdate'>Publication Date</option>
 										</select>
 									</td>
+
 
 									<td align='center' width='100%' nowrap='nowrap'>
 										<b id='now_searching_location'> </b>
@@ -256,6 +262,9 @@
 											<option value='desc'>Descending / Z to A</option>
 										</select>
 									</td>
+
+                           <!-- force the enable/disable sort dir code to run -->
+                           <script>__setsortsel();</script>
 
 									<td align='center'>
 										<!--#include virtual="../common/libselect.xml"-->
