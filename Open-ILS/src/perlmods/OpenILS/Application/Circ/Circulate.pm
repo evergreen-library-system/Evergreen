@@ -1594,8 +1594,11 @@ sub do_hold_notify {
 
 	$logger->info("circulator: running delayed hold notify process");
 
+#	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
+#		hold_id => $holdid, editor => new_editor(requestor=>$self->editor->requestor));
+
 	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
-		hold_id => $holdid, editor => new_editor(requestor=>$self->editor->requestor));
+		hold_id => $holdid, requestor => $self->editor->requestor);
 
 	$logger->debug("circulator: built hold notifier");
 

@@ -45,7 +45,7 @@ sub send_email_notify_pub {
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('CREATE_HOLD_NOTIFICATION');
-	my $notifier = __PACKAGE__->new(editor=> $e, hold_id => $hold_id);
+	my $notifier = __PACKAGE__->new(requestor => $e->requestor, hold_id => $hold_id);
 	return $notifier->event if $notifier->event;
 	my $stat = $notifier->send_email_notify;
 #	$e->commit if $stat == '1';
@@ -102,13 +102,12 @@ sub new {
 	my( $class, %args ) = @_;
 	$class = ref($class) || $class;
 	my $self = bless( {}, $class );
-	$self->editor($args{editor});
+	$self->editor( new_editor( xact => 1, requestor => $args{requestor} ));
 	$logger->debug("circulator: creating new hold-notifier with requestor ".
 		$self->editor->requestor->id);
 	$self->fetch_data($args{hold_id});
 	return $self;
 }
-
 
 sub send_email_notify {
 	my $self = shift;
@@ -120,18 +119,21 @@ sub send_email_notify {
 	$logger->debug("hold_notify: email enabled setting = $setting");
 
 	if( !$setting or $setting ne 'true' ) {
+      $self->editor->rollback;
 		$logger->info("hold_notify: not sending hold notify - email notifications disabled");
 		return 0;
 	}
 
 	unless ($U->is_true($self->hold->email_notify)) {
+      $self->editor->rollback;
 		$logger->info("hold_notify: not sending hold notification becaue email_notify is false");
 		return 0;
 	}
 
-	return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS')
-		unless $self->patron->email and
-		$self->patron->email =~ /.+\@.+/; # see if it's remotely email-esque
+	unless( $self->patron->email and $self->patron->email =~ /.+\@.+/ ) { # see if it's remotely email-esque
+      $self->editor->rollback;
+	   return OpenILS::Event->new('PATRON_NO_EMAIL_ADDRESS');
+   }
 
 	$logger->info("hold_notify: attempting email notify on hold ".$self->hold->id);
 
@@ -141,9 +143,13 @@ sub send_email_notify {
 	my $str = $self->flesh_template($self->load_template($template));
 
 	unless( $str ) {
+      $self->editor->rollback;
 		$logger->error("hold_notify: No email notifiy template found - cannot notify");
 		return 0;
 	}
+
+   my $reqr = $self->editor->requestor;
+   $self->editor->rollback; # we're done with this transaction
 
 	return 0 unless $self->send_email($str);
 
@@ -152,7 +158,7 @@ sub send_email_notify {
 	# transaction may have timed out.  Create a one-off editor to write 
 	# the notification to the DB.
 	# ------------------------------------------------------------------
-	my $we = new_editor(xact=>1, requestor=>$self->editor->requestor);
+	my $we = new_editor(xact=>1, requestor=>$reqr);
 
 	my $notify = Fieldmapper::action::hold_notification->new;
 	$notify->hold($self->hold->id);
@@ -169,6 +175,8 @@ sub send_email_notify {
 
 sub send_email {
 	my( $self, $text ) = @_;
+
+   # !!! $self->editor xact has been rolled back before we get here
 
 	my $smtp = $self->settings_client->config_value('email_notify', 'smtp_server');
 
