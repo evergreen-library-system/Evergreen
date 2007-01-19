@@ -728,7 +728,7 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::hour_trunc;
 
 sub toSQL {
 	my $self = shift;
-	return 'DATE_TRUNC("' . $self->{_relation} . '"."' . $self->name . '")';
+	return 'EXTRAC(HOUR FROM "' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 0 }
