@@ -209,12 +209,14 @@ sub xact_rollback {
 sub rollback {
 	my $self = shift;
 	$self->xact_rollback if $self->{xact};
+   delete $self->{xact};
 	$self->disconnect;
 }
 
 sub disconnect {
 	my $self = shift;
 	$self->session->disconnect if $self->{session};
+   delete $self->{session};
 }
 
 
@@ -269,7 +271,20 @@ sub request {
 	}
 
 	try {
-		$val = $self->session->request($method, @params)->gather(1);
+
+      my $req = $self->session->request($method, @params);
+
+      if( $self->substream ) {
+         $self->log(D,"running in substream mode");
+         $val = [];
+         while( my $resp = $req->recv ) {
+            push(@$val, $resp->content) if $resp->content;
+         }
+      } else {
+         $val = $req->gather(1);
+      }
+
+		#$val = $self->session->request($method, @params)->gather(1);
 
 	} catch Error with {
 		$err = shift;
@@ -278,6 +293,12 @@ sub request {
 
 	throw $err if $err;
 	return $val;
+}
+
+sub substream {
+   my( $self, $bool ) = @_;
+   $self->{substream} = $bool if defined $bool;
+   return $self->{substream};
 }
 
 
@@ -435,6 +456,8 @@ sub __arg_to_string {
 sub runmethod {
 	my( $self, $action, $type, $arg, $options ) = @_;
 
+   $options ||= {};
+
 	if( $action eq 'retrieve' ) {
 		if(! defined($arg) ) {
 			$self->log(W,"$action $type called with no ID...");
@@ -469,6 +492,8 @@ sub runmethod {
 	}
 
 	$method =~ s/search/id_list/o if $options->{idlist};
+
+   $method =~ s/\.atomic$//o if $self->substream($$options{substream});
 
 	# remove any stale events
 	$self->clear_event;
