@@ -26,13 +26,11 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($auth, $workers, $config, $prefix) =
-	(0, 1, '/openils/conf/bootstrap.conf', 'marc-out-');
+my ($auth, $config) =
+	(0, '/openils/conf/bootstrap.conf');
 
 GetOptions(
-	'threads=i'	=> \$workers,
 	'config=s'	=> \$config,
-	'prefix=s'	=> \$prefix,
 	'authority'	=> \$auth,
 );
 
@@ -44,76 +42,34 @@ select NEWERR; $| = 1;
 select STDERR; $| = 1;
 select STDOUT; $| = 1;
 
-for (1 .. $workers) {
-	my ($r,$w);
-	pipe($r,$w);
-	if (fork) {
-		push @ses, $w;
-	} else {
-		$0 = "Local Ingest Worker $_";
-		if ($workers == 1) {
-			worker($r, -1);
-		} else {
-			worker($r, $_);
-		}
-		exit;
-	}
-}
-$0 = "Local Ingest Master";
+OpenSRF::System->bootstrap_client( config_file => $config );
+Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-sub worker {
-	my $pipe = shift;
-	my $file = shift;
+OpenILS::Application::Ingest->use;
 
-	OpenSRF::System->bootstrap_client( config_file => $config );
-	Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+my $meth = 'open-ils.ingest.full.biblio.object.readonly';
+$meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
 
-	sleep 1;
-
-	OpenILS::Application::Ingest->use;
-
-	my $fname = "${prefix}$file";
-	if ($file == -1) {
-		$fname = '&STDOUT';
-	}
-
-	my $f = new FileHandle(">$fname");
-
-	my $meth = 'open-ils.ingest.full.biblio.object.readonly';
-	$meth = 'open-ils.ingest.full.authority.object.readonly' if ($auth);
-
-	$meth = OpenILS::Application::Ingest->method_lookup( $meth );
-
-	while (my $rec = <$pipe>) {
-
-		my $bib = JSON->JSON2perl($rec);
-		my $data;
-
-		try {
-			($data) = $meth->run( $bib );
-		} catch Error with {
-			my $e = shift;
-			warn "Couldn't process record: $e\n >>> $rec\n";
-		};
-
-		next unless $data;
-
-		postprocess(
-			{ bib		=> $bib,
-		  	worm_data	=> $data,
-			},
-			$f
-		);
-	}
-}
+$meth = OpenILS::Application::Ingest->method_lookup( $meth );
 
 my $count = 0;
 my $starttime = time;
-while ( my $rec = <> ) {
+while (my $rec = <>) {
 	next unless ($rec);
-	my $session_index = $count % $workers;
 
-	$ses[$session_index]->printflush( $rec );
+	my $bib = JSON->JSON2perl($rec);
+	my $data;
+
+	try {
+		($data) = $meth->run( $bib );
+	} catch Error with {
+		my $e = shift;
+		warn "Couldn't process record: $e\n >>> $rec\n";
+	};
+
+	next unless $data;
+
+	postprocess( { bib => $bib, worm_data => $data } );
 
 	if (!($count % 20)) {
 		print NEWERR "\r$count\t". $count / (time - $starttime);
@@ -122,25 +78,25 @@ while ( my $rec = <> ) {
 	$count++;
 }
 
-$ses[$_]->close for (@ses);
 sub postprocess {
 	my $data = shift;
-	my $f = shift;
 
 	my $bib = $data->{bib};
-	my $field_entries = $data->{worm_data}->{field_entries} unless ($auth);
 	my $full_rec = $data->{worm_data}->{full_rec};
+
+	my $field_entries = $data->{worm_data}->{field_entries} unless ($auth);
 	my $fp = $data->{worm_data}->{fingerprint} unless ($auth);
 	my $rd = $data->{worm_data}->{descriptor} unless ($auth);
 
 	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
 	$bib->quality( $fp->{quality} ) unless ($auth);
 
-	$f->printflush( JSON->perl2JSON($bib)."\n" );
+	print( JSON->perl2JSON($bib)."\n" );
 	unless ($auth) {
-		$f->printflush( JSON->perl2JSON($rd)."\n" );
-		$f->printflush( JSON->perl2JSON($_)."\n" ) for (@$field_entries);
+		print( JSON->perl2JSON($rd)."\n" );
+		print( JSON->perl2JSON($_)."\n" ) for (@$field_entries);
 	}
-	$f->printflush( JSON->perl2JSON($_)."\n" ) for (@$full_rec);
+
+	print( JSON->perl2JSON($_)."\n" ) for (@$full_rec);
 }
 
