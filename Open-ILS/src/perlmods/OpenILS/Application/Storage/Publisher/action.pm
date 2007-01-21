@@ -746,10 +746,6 @@ sub new_hold_copy_targeter {
 
 	for my $hold (@$holds) {
 		try {
-			#first, re-fetch the hold, to make sure it's not captured already
-			$hold = action::hold_request->retrieve( $hold->id );
-			die "OK\n" if (!$hold or $hold->capture_time);
-
 			#start a transaction if needed
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
@@ -757,6 +753,10 @@ sub new_hold_copy_targeter {
 			}
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$log->info("Processing hold ".$hold->id."...\n");
+
+			#first, re-fetch the hold, to make sure it's not captured already
+			$hold = action::hold_request->retrieve( $hold->id );
+			die "OK\n" if (!$hold or $hold->capture_time);
 
 			# remove old auto-targeting maps
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
