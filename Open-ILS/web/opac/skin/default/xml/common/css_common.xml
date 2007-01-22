@@ -15,5 +15,5 @@
 <link rel='search' 
 	 type="application/opensearchdescription+xml"
     title="Evergreen"
-    href="/opac/extras/opensearch/1.1/-/osd.xml"> </link>
+    href="http://<!--#echo var='SERVER_NAME'-->/opac/extras/opensearch/1.1/-/osd.xml"> </link>
 
