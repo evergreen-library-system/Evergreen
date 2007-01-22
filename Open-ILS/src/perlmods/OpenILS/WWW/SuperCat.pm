@@ -986,6 +986,8 @@ sub opensearch_feed {
 		}
 	}
 
+	$lang = 'eng' if ($lang eq 'en-US');
+
 	if ($term_copy) {
 		no warnings;
 		$class = 'keyword' if ($class eq '-');
