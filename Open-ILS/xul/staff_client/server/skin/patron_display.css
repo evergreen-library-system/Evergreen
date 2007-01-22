@@ -61,6 +61,7 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_EXPIRED .patronNameLarge { background-color: #666666;  color: white;}
 .PATRON_EXPIRED label.expired_indicator { display: inline; color: black; }
+.PATRON_EXPIRED label.expire_date { background-color: #666666; color: white }
 
 .PATRON_BARRED .patronNameLarge { background-color: #CC3300; color: white; }
 .PATRON_BARRED label.barred_indicator { display: inline; color: #CC3300; }
