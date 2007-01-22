@@ -426,8 +426,10 @@ sub finish_mods_batch {
 	my $record = init_virtual_record();
 
 	# turn the hash into a fieldmapper object
-	(my $title = $perl->{title}) =~ s/\[.*?\]//og;
-	(my $author = $perl->{author}) =~ s/\(.*?\)//og;
+	#(my $title = $perl->{title}) =~ s/\[.*?\]//og;
+	#(my $author = $perl->{author}) =~ s/\(.*?\)//og;
+	my $title = $perl->{title};
+	my $author = $perl->{author};
 
 	my @series;
 	for my $s (@{$perl->{series}}) {
