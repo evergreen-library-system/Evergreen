@@ -1046,7 +1046,7 @@ sub check_title_hold {
 
 
 
-sub _check_title_hold_is_possible {
+sub ___check_title_hold_is_possible {
 	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
 
 	my $limit	= 10;
@@ -1080,6 +1080,126 @@ sub _check_title_hold_is_possible {
 	}
 	return 0;
 }
+
+my %prox_cache;
+
+sub _check_title_hold_is_possible {
+	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+   
+   my $e = new_editor();
+
+   # this monster will grab all "holdable" copies for the given record
+   my $copies = $e->search_asset_copy(
+      [
+         { deleted => 'f', circulate => 't', holdable => 't' },
+         {  #flesh => 1,
+            #flesh_fields => {
+            #   acp => ['circ_lib']
+            #},
+            join_filter => {
+               acpl  => {
+                  field => 'id',
+                  fkey => 'location',
+                  filter => { holdable => 't' }
+               },
+               ccs => {
+                  field => 'id',
+                  fkey => 'status',
+                  filter => { holdable => 't' }
+               },
+               acn => {
+                  field => 'id',
+                  fkey => 'call_number',
+                  join_filter => {
+                     bre => {
+                        field => 'id',
+                        fkey => 'record',
+                        filter => { id => $titleid }
+                     }
+                  }
+               }
+            }
+         }
+      ],
+   );
+
+   $logger->info("title possible found ".scalar(@$copies)." potential copies");
+   return 0 unless @$copies;
+
+   # -----------------------------------------------------------------------
+   # sort the copies into buckets based on their circ_lib proximity to 
+   # the patron's home_ou.  
+   # -----------------------------------------------------------------------
+
+   my $home_org = $patron->home_ou;
+   my $req_org = $request_lib->id;
+
+   my $home_prox = 
+      ($prox_cache{$home_org}) ? 
+         $prox_cache{$home_org} :
+         $prox_cache{$home_org} = $e->search_actor_org_unit_proximity({from_org => $home_org});
+
+   my %buckets;
+   my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+   push( @{$buckets{ $hash{$_->circ_lib} } }, $_ ) for @$copies;
+
+   my @keys = sort { $a <=> $b } keys %buckets;
+
+
+   if( $home_org ne $req_org ) {
+      # -----------------------------------------------------------------------
+      # shove the copies close to the request_lib into the primary buckets 
+      # directly before the farthest away copies.  That way, they are not 
+      # given priority, but they are checked before the farthest copies.
+      # -----------------------------------------------------------------------
+      my $req_prox = 
+         ($prox_cache{$req_org}) ? 
+            $prox_cache{$req_org} :
+            $prox_cache{$req_org} = $e->search_actor_org_unit_proximity({from_org => $req_org});
+
+      my %buckets2;
+      my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+      push( @{$buckets2{ $hash2{$_->circ_lib} } }, $_ ) for @$copies;
+
+      my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+      my $new_key = $highest_key - 0.5; # right before the farthest prox
+      my @keys2 = sort { $a <=> $b } keys %buckets2;
+      for my $key (@keys2) {
+         last if $key >= $highest_key;
+         push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+      }
+   }
+
+   @keys = sort { $a <=> $b } keys %buckets;
+
+   my $title;
+   my @seen;
+   for my $key (@keys) {
+      my @cps = @{$buckets{$key}};
+
+      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
+
+      for my $copy (@cps) {
+
+         next if grep { $_ eq $copy->id } @seen;
+         push(@seen, $copy->id); # there could be dupes given the merged buckets
+         $logger->debug("looking at bucket_key=$key, copy ".$copy->id." : circ_lib = " . $copy->circ_lib);
+
+         unless($title) { # grab the title if we don't already have it
+            my $vol = $e->retrieve_asset_call_number(
+               [ $copy->call_number, { flesh => 1, flesh_fields => { acn => ['record'] } } ] );
+            $title = $vol->record;
+         }
+   
+         return 1 if verify_copy_for_hold( 
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+   
+      }
+   }
+
+   return 0;
+}
+
 
 sub _check_volume_hold_is_possible {
 	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
