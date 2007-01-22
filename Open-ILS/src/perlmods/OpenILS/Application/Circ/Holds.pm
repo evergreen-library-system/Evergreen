@@ -1173,7 +1173,7 @@ sub _check_title_hold_is_possible {
    @keys = sort { $a <=> $b } keys %buckets;
 
    my $title;
-   my @seen;
+   my %seen;
    for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
@@ -1181,8 +1181,8 @@ sub _check_title_hold_is_possible {
 
       for my $copy (@cps) {
 
-         next if grep { $_ eq $copy->id } @seen;
-         push(@seen, $copy->id); # there could be dupes given the merged buckets
+         next if $seen{$copy->id};
+         $seen{$copy->id} = 1; # there could be dupes given the merged buckets
          $logger->debug("looking at bucket_key=$key, copy ".$copy->id." : circ_lib = " . $copy->circ_lib);
 
          unless($title) { # grab the title if we don't already have it
