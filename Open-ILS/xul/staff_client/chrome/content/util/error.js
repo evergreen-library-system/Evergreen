@@ -306,6 +306,10 @@ util.error.prototype = {
 
 	'yns_alert' : function (s,title,b1,b2,b3,c,image) {
 
+		try {
+
+			if (location.href.match(/^chrome/)) return this.yns_alert_original(s,title,b1,b2,b3,c);
+
 		/* The original purpose of yns_alert was to prevent errors from being scanned through accidentally with a barcode scanner.  
 		However, this can be done in a less annoying manner by rolling our own dialog and not having any of the options in focus */
 
@@ -343,11 +347,9 @@ util.error.prototype = {
 		JSAN.use('OpenILS.data');
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
+		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
 		window.open(
-			urls.XUL_FANCY_PROMPT
-			+ '?xml_in_stash=temp_yns_xml'
-			+ '&title=' + window.escape(title),
-			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
 		data.init({'via':'stash'});
 		if (data.fancy_prompt_data != '') {
@@ -360,9 +362,19 @@ util.error.prototype = {
 			//return this.yns_alert(s,title,b1,b2,b3,c,image);
 			return null;
 		}
+
+		} catch(E) {
+
+			alert('yns_alert failed: ' + E + '\ns = ' + s + '\ntitle = ' + title + '\nb1 = ' + b1 + '\nb2 = ' + b2 + '\nb3 = ' + b3 + '\nc = ' + c + '\nimage = ' + image + '\n');
+
+		}
 	},
 
 	'yns_alert_formatted' : function (s,title,b1,b2,b3,c,image) {
+
+		try {
+
+			if (location.href.match(/^chrome/)) return this.yns_alert_original(s,title,b1,b2,b3,c);
 
 		/* The original purpose of yns_alert was to prevent errors from being scanned through accidentally with a barcode scanner.  
 		However, this can be done in a less annoying manner by rolling our own dialog and not having any of the options in focus */
@@ -401,11 +413,9 @@ util.error.prototype = {
 		JSAN.use('OpenILS.data');
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
+		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
 		window.open(
-			urls.XUL_FANCY_PROMPT
-			+ '?xml_in_stash=temp_yns_xml'
-			+ '&title=' + window.escape(title),
-			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
 		data.init({'via':'stash'});
 		if (data.fancy_prompt_data != '') {
@@ -418,9 +428,14 @@ util.error.prototype = {
 			//return this.yns_alert(s,title,b1,b2,b3,c,image);
 			return null;
 		}
+
+		} catch(E) {
+
+			alert('yns_alert_formatted failed: ' + E + '\ns = ' + s + '\ntitle = ' + title + '\nb1 = ' + b1 + '\nb2 = ' + b2 + '\nb3 = ' + b3 + '\nc = ' + c + '\nimage = ' + image + '\n');
+
+		}
+
 	},
-
-
 
 	'yns_alert_original' : function (s,title,b1,b2,b3,c) {
 
