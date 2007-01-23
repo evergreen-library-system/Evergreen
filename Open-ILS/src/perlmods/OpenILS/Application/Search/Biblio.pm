@@ -175,13 +175,14 @@ __PACKAGE__->register_method(
 
 sub biblio_search_tcn {
 
-	my( $self, $client, $tcn ) = @_;
+	my( $self, $client, $tcn, $include_deleted ) = @_;
 
 	$tcn =~ s/.*?(\w+)\s*$/$1/o;
 
 	my $e = new_editor();
-	my $recs = $e->search_biblio_record_entry(
-		{deleted => 'f', tcn_value => $tcn}, {idlist =>1});
+   my $search = {tcn_value => $tcn};
+   $search->{deleted} = 'f' unless $include_deleted;
+	my $recs = $e->search_biblio_record_entry( $search, {idlist =>1} );
 	
 	return { count => scalar(@$recs), ids => $recs };
 }
