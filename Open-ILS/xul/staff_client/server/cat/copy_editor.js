@@ -184,6 +184,26 @@ function my_init() {
 }
 
 /******************************************************************************************************/
+/* File picker for template export/import */
+
+function pick_file(mode) {
+	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+	fp.init( 
+		window, 
+		mode == 'open' ? "Import Templates File" : "Save Templates File As", 
+		mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
+	);
+	fp.appendFilters( nsIFilePicker.filterAll );
+	if ( fp.show( ) == nsIFilePicker.returnOK && fp.file ) {
+		return fp.file;
+	} else {
+		return null;
+	}
+}
+
+/******************************************************************************************************/
 /* Retrieve Templates */
 
 g.retrieve_templates = function() {
@@ -294,6 +314,110 @@ g.delete_template = function() {
 		g.error.standard_unexpected_error_alert('Error deleting template',E);
 	}
 }
+
+/******************************************************************************************************/
+/* Export Templates */
+
+g.export_templates = function() {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		JSAN.use('util.file');
+		var f = pick_file('save');
+		if (f) {
+			if (f.exists()) {
+				var r = G.error.yns_alert(
+					'Would you like to overwrite the existing file ' + f.leafName + '?',
+					'Templates Export Warning',
+					'Yes',
+					'No',
+					null,
+					'Check here to confirm this message'
+				);
+				if (r != 0) { file.close(); alert('Not overwriting file.'); return; }
+			}
+			var e_file = new util.file(''); e_file._file = f;
+			e_file.write_content( 'truncate', js2JSON( g.templates ) );
+			e_file.close();
+			alert('Templates exported as file ' + f.leafName);
+		} else {
+			alert('File not chosen for export.');
+		}
+
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error exporting templates',E);
+	}
+}
+
+/******************************************************************************************************/
+/* Import Templates */
+
+g.import_templates = function() {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		JSAN.use('util.file');
+		var f = pick_file('open');
+		if (f && f.exists()) {
+			var i_file = new util.file(''); i_file._file = f;
+			var temp = JSON2js( i_file.get_content() );
+			i_file.close();
+			for (var i in temp) {
+
+				if (g.templates[i]) {
+
+					var r = g.error.yns_alert(
+						'Replace the existing template with the imported template?\n' + g.error.pretty_print( js2JSON( temp[i] ) ),
+						'Template ' + i + ' already exists.','Yes','No',null,'Click here'
+					);
+
+					if (r == 0 /* Yes */) g.templates[i] = temp[i];
+
+				} else {
+
+					g.templates[i] = temp[i];
+
+				}
+
+			}
+
+			var r = g.error.yns_alert(
+				'Save all of these imported templates permanently to this account?',
+				'Final Warning', 'Yes', 'No', null, 'Click here'
+			);
+
+			if (r == 0 /* Yes */) {
+				var robj = g.network.simple_request(
+					'FM_AUS_UPDATE',[ses(),g.data.list.au[0].id(), { 'staff_client.copy_editor.templates' : g.templates }]
+				);
+				if (typeof robj.ilsevent != 'undefined') {
+					throw(robj);
+				} else {
+					alert('All templates saved.');
+					setTimeout(
+						function() {
+							try {
+								g.retrieve_templates();
+							} catch(E) {
+								g.error.standard_unexpected_error_alert('Error saving templates',E);
+							}
+						},0
+					);
+				}
+			} else {
+				util.widgets.remove_children('template_placeholder');
+				var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
+				g.template_menu = util.widgets.make_menulist( list );
+				$('template_placeholder').appendChild(g.template_menu);
+				alert("Note: These imported templates will get saved along with any new template you try to create, but if that doesn't happen, then these templates will dissappear with the next invocation of the item attribute editor.");
+			}
+
+		} else {
+			alert('File not chosen for import.');
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error exporting templates',E);
+	}
+}
+
 
 /******************************************************************************************************/
 /* Restore backup copies */

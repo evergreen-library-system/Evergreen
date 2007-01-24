@@ -45,6 +45,8 @@
 				<hbox id="template_placeholder"/>
 				<button id="apply_template" label="Apply" accesskey="y" oncommand="g.apply_template()"/>
 				<button id="delete_template" label="Delete" oncommand="g.delete_template()"/>
+				<button id="import_templates" label="Import" oncommand="g.import_templates()"/>
+				<button id="export_templates" label="Export" oncommand="g.export_templates()"/>
 				<button id="save_template" label="Save" oncommand="g.save_template()"/>
 			</hbox>
 			<spacer flex="1"/>
