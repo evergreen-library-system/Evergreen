@@ -315,7 +315,28 @@ admin.offline_manage_xacts.prototype = {
 			}
 		} );
 
-
+		var export_button = document.getElementById('export_btn');
+		if (export_button) export_button.addEventListener(
+			'command',
+			function(ev) {
+				try {
+					obj.error_list.on_all_fleshed =
+						function() {
+							try {
+								dump( obj.error_list.dump_csv() + '\n' );
+								copy_to_clipboard(obj.error_list.dump_csv());
+								setTimeout(function(){ obj.error_list.on_all_fleshed = null; },0);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('export',E); 
+							}
+						}
+					obj.error_list.full_retrieve();
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('export',E); 
+				}
+			},
+			false
+		);
 	},
 
 	'check_perm' : function(perms) {
