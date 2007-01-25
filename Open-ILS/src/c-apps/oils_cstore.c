@@ -1078,8 +1078,8 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 	buffer_fadd(
 		sql_buf,
 		"%s(\"%s\".%s)",
-		class,
 		field_transform,
+		class,
 		osrfHashGet(field, "name")
 	);
 
