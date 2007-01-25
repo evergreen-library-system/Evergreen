@@ -111,4 +111,16 @@ sub set_router_class {
 	}
 }
 
+sub set_osrf_xid {
+   my( $self, $xid ) = @_;
+   $self->{msg_node}->setAttribute( osrf_xid => $xid );
+}
+
+
+sub get_osrf_xid {
+   my $self = shift;
+   $self->{msg_node}->getAttribute('osrf_xid');
+}
+
+
 1;

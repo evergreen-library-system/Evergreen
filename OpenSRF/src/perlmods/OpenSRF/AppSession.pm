@@ -409,6 +409,9 @@ sub request {
 	my $meth = shift;
 	return unless $self;
 
+   # tell the logger to create a new xid - the logger will decide if it's really necessary
+   $logger->mk_osrf_xid;
+
 	my $method;
 	if (!ref $meth) {
 		$method = new OpenSRF::DomainObject::oilsMethod ( method => $meth );

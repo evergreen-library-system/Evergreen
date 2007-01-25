@@ -169,6 +169,11 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	char* domain = strdup(osrfStringArrayGetString( arr, 0 )); /* just the first for now */
 	osrfStringArrayFree(arr);
 
+   /* if we're a source-client, tell the logger */
+   char* isclient = osrfConfigGetValue(NULL, "/client");
+   if( isclient && !strcasecmp(isclient,"true") )
+      osrfLogSetIsClient(1);
+   free(isclient);
 
 	int llevel = 0;
 	int iport = 0;
