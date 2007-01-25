@@ -1425,6 +1425,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	jsonObjectNode* node = NULL;
 	jsonObjectNode* snode = NULL;
+	jsonObjectNode* onode = NULL;
 	jsonObject* _tmp = NULL;
 	jsonObject* selhash = NULL;
 	jsonObject* defaultselhash = NULL;
@@ -1481,7 +1482,6 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
-	if (defaultselhash) jsonObjectFree(defaultselhash);
 
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, osrfHashGet(meta, "tablename"), core_class );
 
@@ -1510,19 +1510,82 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	}
 
 	if (order_hash) {
-		char* string;
+		char* string = NULL;
 		if ( (_tmp = jsonObjectGetKey( order_hash, "order_by" )) ){
+
+			growing_buffer* order_buf = buffer_init(128);
+
+			first = 1;
 			jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
 			while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
-				string = jsonObjectToSimpleString(snode->item);
+
+				if (!jsonObjectGetKey(selhash,snode->key))
+					continue;
+
+				if ( snode->item->type == JSON_ARRAY ) {
+
+					jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
+					while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
+
+						if ( onode->item->type == JSON_HASH ) {
+							string = searchFieldTransformPredicate(
+								snode->key,
+								oilsIDLFindPath(
+									"/%s/fields/%s",
+									snode->key,
+									jsonObjectToSimpleString(
+										jsonObjectGetKey(
+											snode->item,
+											"transform"
+										)
+									)
+								),
+								snode
+							);
+						} else {
+							string = jsonObjectToSimpleString(snode->item);
+						}
+
+						if (first) {
+							first = 0;
+						} else {
+							buffer_add(order_buf, ",");
+						}
+
+						buffer_add(order_buf, string);
+						free(string);
+
+						if ( (_tmp = jsonObjectGetKey( snode->item, "direction" )) ) {
+							string = jsonObjectToSimpleString(_tmp);
+							if (!strcasecmp(string,"desc")) {
+								buffer_add(order_buf, " DESC");
+							}
+							free(string);
+						}
+
+					}
+
+				} else {
+					string = jsonObjectToSimpleString(snode->item);
+					buffer_add(order_buf, string);
+					free(string);
+					break;
+				}
+
+			}
+
+			string = buffer_data(order_buf);
+			buffer_free(order_buf);
+
+			if (strlen(string)) {
 				buffer_fadd(
 					sql_buf,
-					" ORDER BY \"%s\".%s",
-					snode->key,
+					" ORDER BY %s",
 					string
 				);
-				free(string);
 			}
+
+			free(string);
 		}
 
 		if ( (_tmp = jsonObjectGetKey( order_hash, "limit" )) ){
@@ -1551,6 +1614,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	char* sql = buffer_data(sql_buf);
 	buffer_free(sql_buf);
+	if (defaultselhash) jsonObjectFree(defaultselhash);
 
 	return sql;
 }
