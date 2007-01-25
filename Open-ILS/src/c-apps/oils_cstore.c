@@ -1083,8 +1083,6 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 		osrfHashGet(field, "name")
 	);
 
-
-
 	char* pred = buffer_data(sql_buf);
 	buffer_free(sql_buf);
 	free(field_transform);
@@ -1522,45 +1520,63 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 				if (!jsonObjectGetKey(selhash,snode->key))
 					continue;
 
-				if ( snode->item->type == JSON_ARRAY ) {
+				if ( snode->item->type == JSON_HASH ) {
 
 					jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 					while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
+						if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
+							continue;
+
+						char* direction = NULL;
 						if ( onode->item->type == JSON_HASH ) {
-							string = searchFieldTransformPredicate(
-								snode->key,
-								oilsIDLFindPath(
-									"/%s/fields/%s",
+							if ( jsonObjectGetKey( onode->item, "transform" ) ) {
+								string = searchFieldTransform(
 									snode->key,
-									jsonObjectToSimpleString(
-										jsonObjectGetKey(
-											snode->item,
-											"transform"
-										)
-									)
-								),
-								snode
-							);
+									oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ),
+									onode->item
+								);
+							} else {
+								growing_buffer* field_buf = buffer_init(16);
+								buffer_fadd(field_buf, "\"%s\".%s", snode->key, onode->key);
+								string = buffer_data(field_buf);
+								buffer_free(field_buf);
+							}
+
+							if ( (_tmp = jsonObjectGetKey( onode->item, "direction" )) ) {
+								direction = jsonObjectToSimpleString(_tmp);
+								if (!strncasecmp(direction, "d", 1)) {
+									free(direction);
+									direction = " DESC";
+								} else {
+									free(direction);
+									direction = " ASC";
+								}
+							}
+
 						} else {
-							string = jsonObjectToSimpleString(snode->item);
+							string = strdup(onode->key);
+							direction = jsonObjectToSimpleString(onode->item);
+							if (!strncasecmp(direction, "d", 1)) {
+								free(direction);
+								direction = " DESC";
+							} else {
+								free(direction);
+								direction = " ASC";
+							}
 						}
 
 						if (first) {
 							first = 0;
 						} else {
-							buffer_add(order_buf, ",");
+							buffer_add(order_buf, ", ");
 						}
 
 						buffer_add(order_buf, string);
 						free(string);
 
-						if ( (_tmp = jsonObjectGetKey( snode->item, "direction" )) ) {
-							string = jsonObjectToSimpleString(_tmp);
-							if (!strcasecmp(string,"desc")) {
-								buffer_add(order_buf, " DESC");
-							}
-							free(string);
+						if (direction) {
+							buffer_add(order_buf, direction);
 						}
 
 					}
