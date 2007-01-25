@@ -87,6 +87,7 @@
 				</description>
 				<vbox flex="1">
 					<hbox>
+						<button id='export_btn' label="Export List" />
 						<spacer flex="1"/>
 						<button id='retrieve_item' label="Retrieve Item" disabled="true"/>
 						<button id='retrieve_patron' label="Retrieve Patron" disabled="true"/>
