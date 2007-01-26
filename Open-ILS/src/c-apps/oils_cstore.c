@@ -25,6 +25,7 @@
 
 int osrfAppChildInit();
 int osrfAppInitialize();
+void osrfAppChildExit();
 
 int verifyObjectClass ( osrfMethodContext*, jsonObject* );
 
@@ -67,6 +68,24 @@ jsonObject* jsonNULL = NULL; //
 
 /* parse and store the IDL here */
 osrfHash* idl;
+
+/* called when this process is about to exit */
+void osrfAppChildExit() {
+	osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
+
+	if (writehandle) {
+		dbi_conn_query(writehandle, "ROLLBACK;");
+		dbi_conn_close(writehandle);
+		writehandle = NULL;
+	}
+
+	if (dbhandle)
+		dbi_conn_close(dbhandle);
+
+	// XXX add cleanup of readHandles whenever that gets used
+
+	return;
+}
 
 int osrfAppInitialize() {
 	growing_buffer* method_name;
