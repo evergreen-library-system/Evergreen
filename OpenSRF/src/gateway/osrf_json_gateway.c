@@ -114,6 +114,15 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	a_l			= apacheGetFirstParamValue( params, "api_level" ); 
 	mparams		= apacheGetParamValues( params, "param" ); /* free me */
 
+   /* set the user defined timeout value */
+   int timeout = 60;
+   char* tout = apacheGetFirstParamValue( params, "timeout" ); /* request timeout in seconds */
+   if( tout ) {
+      timeout = atoi(tout);
+      osrfLogDebug(OSRF_LOG_MARK, "Client supplied timeout of %d", timeout);
+   }
+
+
 	if (a_l)
 		api_level = atoi(a_l);
 
@@ -198,7 +207,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		char* statustext	= NULL;
 		char* output		= NULL;
 
-		while((omsg = osrfAppSessionRequestRecv( session, req_id, 60 ))) {
+		while((omsg = osrfAppSessionRequestRecv( session, req_id, timeout ))) {
 	
 			statuscode = omsg->status_code;
 			jsonObject* res;	
