@@ -493,7 +493,7 @@ sub runmethod {
 
 	$method =~ s/search/id_list/o if $options->{idlist};
 
-   $method =~ s/\.atomic$//o if $self->substream($$options{substream});
+   $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
 
 	# remove any stale events
 	$self->clear_event;
