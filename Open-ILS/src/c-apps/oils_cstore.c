@@ -1307,9 +1307,8 @@ join : {
 
 char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 
-	char* leftclass = osrfHashGet(leftmeta, "classname");
-
 	growing_buffer* join_buf = buffer_init(128);
+	char* leftclass = osrfHashGet(leftmeta, "classname");
 
 	jsonObjectNode* snode = NULL;
 	jsonObjectIterator* search_itr = jsonNewObjectIterator( join_hash );
@@ -1326,6 +1325,85 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 
 		jsonObject* filter = jsonObjectGetKey( snode->item, "filter" );
 		jsonObject* join_filter = jsonObjectGetKey( snode->item, "join" );
+
+		if (field && !fkey) {
+			fkey = (char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
+			if (!fkey) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: JOIN failed.  No link defined from %s.%s to %s",
+					MODULENAME,
+					class,
+					field,
+					leftclass
+				);
+				buffer_free(join_buf);
+				return NULL;
+			}
+			fkey = strdup( fkey );
+
+		} else if (!field && fkey) {
+			field = (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey );
+			if (!field) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: JOIN failed.  No link defined from %s.%s to %s",
+					MODULENAME,
+					leftclass,
+					fkey,
+					class
+				);
+				buffer_free(join_buf);
+				return NULL;
+			}
+			field = strdup( field );
+
+		} else if (!field && !fkey) {
+			osrfHash* _links = oilsIDLFindPath("/%s/links", leftclass);
+
+			int i = 0;
+			osrfStringArray* keys = osrfHashKeys( _links );
+			while ( (fkey = osrfStringArrayGetString(keys, i++)) ) {
+				fkey = strdup(osrfStringArrayGetString(keys, i++));
+				if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", leftclass, fkey), class) ) {
+					field = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", leftclass, fkey) );
+					break;
+				} else {
+					free(fkey);
+				}
+			}
+			osrfStringArrayFree(keys);
+
+			if (!field && !fkey) {
+				_links = oilsIDLFindPath("/%s/links", class);
+
+				i = 0;
+				keys = osrfHashKeys( _links );
+				while ( (field = osrfStringArrayGetString(keys, i++)) ) {
+					field = strdup(osrfStringArrayGetString(keys, i++));
+					if ( !strcmp( (char*)oilsIDLFindPath("/%s/links/%s/class", class, field), class) ) {
+						fkey = strdup( (char*)oilsIDLFindPath("/%s/links/%s/key", class, field) );
+						break;
+					} else {
+						free(field);
+					}
+				}
+				osrfStringArrayFree(keys);
+			}
+
+			if (!field && !fkey) {
+				osrfLogError(
+					OSRF_LOG_MARK,
+					"%s: JOIN failed.  No link defined between %s and %s",
+					MODULENAME,
+					leftclass,
+					class
+				);
+				buffer_free(join_buf);
+				return NULL;
+			}
+
+		}
 
 		if (type) {
 			if ( !strcasecmp(type,"left") ) {
@@ -1367,11 +1445,14 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 			free(jpred);
 		}
 
+		free(type);
+		free(filter_op);
+		free(fkey);
+		free(field);
 	}
 
 	char* join_string = buffer_data(join_buf);
 	buffer_free(join_buf);
-
 	return join_string;
 }
 
