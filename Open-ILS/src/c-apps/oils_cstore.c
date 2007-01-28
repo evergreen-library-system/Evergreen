@@ -1280,14 +1280,14 @@ char* searchPredicate ( const char* class, osrfHash* field, jsonObject* node ) {
 
 /*
 
-join_filter : {
+join : {
 	acn : {
 		field : record,
 		fkey : id
 		type : left
 		filter_op : or
 		filter : { ... },
-		join_filter : {
+		join : {
 			acp : {
 				field : call_number,
 				fkey : id,
@@ -1325,7 +1325,7 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		char* field = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "field" ) );
 
 		jsonObject* filter = jsonObjectGetKey( snode->item, "filter" );
-		jsonObject* join_filter = jsonObjectGetKey( snode->item, "join_filter" );
+		jsonObject* join_filter = jsonObjectGetKey( snode->item, "join" );
 
 		if (type) {
 			if ( !strcasecmp(type,"left") ) {
@@ -1369,10 +1369,10 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 
 	}
 
-	char* join = buffer_data(join_buf);
+	char* join_string = buffer_data(join_buf);
 	buffer_free(join_buf);
 
-	return join;
+	return join_string;
 }
 
 /*
@@ -1489,11 +1489,17 @@ char* SELECT (
 	// get the core class -- the only key of the top level FROM clause, or a string
 	if (join_hash->type == JSON_HASH) {
 		jsonObjectIterator* tmp_itr = jsonNewObjectIterator( join_hash );
-		core_class = strdup( jsonObjectIteratorNext( tmp_itr )->key );
+		snode = jsonObjectIteratorNext( tmp_itr );
+		
+		core_class = strdup( snode->key );
+		join_hash = snode->item;
+
 		jsonObjectIteratorFree( tmp_itr );
+		snode = NULL;
 
 	} else if (join_hash->type == JSON_STRING) {
 		core_class = jsonObjectToSimpleString( join_hash );
+		join_hash = NULL;
 	}
 
 	// punt if we don't know about the core class
@@ -1716,12 +1722,43 @@ char* SELECT (
 
 			}
 
+		} else if ( snode->item->type == JSON_ARRAY ) {
+
+			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
+			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
+
+				char* _f = jsonObjectToSimpleString( onode->item );
+
+				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, _f))
+					continue;
+
+				if (first) {
+					first = 0;
+				} else {
+					buffer_add(order_buf, ", ");
+				}
+
+				buffer_add(order_buf, _f);
+				free(_f);
+
+			}
+
 		// IT'S THE OOOOOOOOOOOLD STYLE!
 		} else {
-			string = jsonObjectToSimpleString(snode->item);
-			buffer_add(order_buf, string);
-			free(string);
-			break;
+			osrfLogError(OSRF_LOG_MARK, "%s: Possible SQL injection attempt; direct order by is not allowed", MODULENAME);
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Severe query error -- see error log for more details"
+			);
+
+			free(core_class);
+			buffer_free(order_buf);
+			buffer_free(sql_buf);
+			if (defaultselhash) jsonObjectFree(defaultselhash);
+			return NULL;
 		}
 
 	}
@@ -1768,7 +1805,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
 
-	jsonObject* join_hash = jsonObjectGetKey( order_hash, "join_filter" );
+	jsonObject* join_hash = jsonObjectGetKey( order_hash, "join" );
 
 	jsonObjectNode* node = NULL;
 	jsonObjectNode* snode = NULL;
