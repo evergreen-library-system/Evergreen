@@ -348,6 +348,7 @@ util.error.prototype = {
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+		if (xulG && xulG.url_prefix) url = xulG.url_prefix( url );
 		window.open(
 			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
@@ -365,7 +366,9 @@ util.error.prototype = {
 
 		} catch(E) {
 
-			alert('yns_alert failed: ' + E + '\ns = ' + s + '\ntitle = ' + title + '\nb1 = ' + b1 + '\nb2 = ' + b2 + '\nb3 = ' + b3 + '\nc = ' + c + '\nimage = ' + image + '\n');
+			dump('yns_alert failed: ' + E + '\ns = ' + s + '\ntitle = ' + title + '\nb1 = ' + b1 + '\nb2 = ' + b2 + '\nb3 = ' + b3 + '\nc = ' + c + '\nimage = ' + image + '\n');
+
+			this.yns_alert_original(s + '\n\nAlso, yns_alert failed: ' + E,title,b1,b2,b3,c);
 
 		}
 	},
@@ -414,6 +417,7 @@ util.error.prototype = {
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+		if (xulG && xulG.url_prefix) url = xulG.url_prefix( url );
 		window.open(
 			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
