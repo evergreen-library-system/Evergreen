@@ -277,6 +277,7 @@ patron.display.prototype = {
 								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
+									'url_prefix' : xulG.url_prefix,
 									'on_money_change' : function(b) {
 										//alert('test');
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
