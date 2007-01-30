@@ -1088,15 +1088,11 @@ sub _check_title_hold_is_possible {
    
    my $e = new_editor();
 
-   # this monster will grab all "holdable" copies for the given record
+=head old
    my $copies = $e->search_asset_copy(
       [
          { deleted => 'f', circulate => 't', holdable => 't' },
-         {  #flesh => 1,
-            #flesh_fields => {
-            #   acp => ['circ_lib']
-            #},
-            join_filter => {
+         {  'join' => {
                acpl  => {
                   field => 'id',
                   fkey => 'location',
@@ -1110,7 +1106,7 @@ sub _check_title_hold_is_possible {
                acn => {
                   field => 'id',
                   fkey => 'call_number',
-                  join_filter => {
+                  'join' => {
                      bre => {
                         field => 'id',
                         fkey => 'record',
@@ -1122,7 +1118,36 @@ sub _check_title_hold_is_possible {
          }
       ],
    );
+=cut
 
+    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
+    my $copies = $e->json_query(
+        { 
+            select => { acp => ['id', 'circ_lib'] },
+            from => {
+                acp => {
+                    acn => {
+                        field => 'id',
+                        fkey => 'call_number',
+                        'join' => {
+                            bre => {
+                                field => 'id',
+                                filter => { id => $titleid },
+                                fkey => 'record'
+                            }
+                        }
+                    },
+                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    ccs => { field => 'id', filter => { holdable => 't'}, fkey => 'status' }
+                }
+            }, 
+            where => {
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't' }
+            }
+        }
+    );
+
+   return $e->event unless defined $copies;
    $logger->info("title possible found ".scalar(@$copies)." potential copies");
    return 0 unless @$copies;
 
@@ -1141,7 +1166,7 @@ sub _check_title_hold_is_possible {
 
    my %buckets;
    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
-   push( @{$buckets{ $hash{$_->circ_lib} } }, $_ ) for @$copies;
+   push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
 
    my @keys = sort { $a <=> $b } keys %buckets;
 
@@ -1159,7 +1184,7 @@ sub _check_title_hold_is_possible {
 
       my %buckets2;
       my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
-      push( @{$buckets2{ $hash2{$_->circ_lib} } }, $_ ) for @$copies;
+      push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
 
       my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
       my $new_key = $highest_key - 0.5; # right before the farthest prox
@@ -1179,11 +1204,12 @@ sub _check_title_hold_is_possible {
 
       $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
 
-      for my $copy (@cps) {
+      for my $copyid (@cps) {
 
-         next if $seen{$copy->id};
-         $seen{$copy->id} = 1; # there could be dupes given the merged buckets
-         $logger->debug("looking at bucket_key=$key, copy ".$copy->id." : circ_lib = " . $copy->circ_lib);
+         next if $seen{$copyid};
+         $seen{$copyid} = 1; # there could be dupes given the merged buckets
+         my $copy = $e->retrieve_asset_copy($copyid) or return $e->event;
+         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
 
          unless($title) { # grab the title if we don't already have it
             my $vol = $e->retrieve_asset_call_number(
