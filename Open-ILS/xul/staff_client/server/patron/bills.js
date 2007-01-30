@@ -557,7 +557,7 @@ patron.bills.prototype = {
 			if (typeof robj.ilsevent != 'undefined') {
 				switch(robj.ilsevent) {
 					case 0 /* SUCCESS */ : return true; break;
-					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc); return false; break;
+					case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert(robj.desc + '\n\nAnother way to "zero" this transaction is to use Add Billing and add a misc bill to counter the negative balance.'); return false; break;
 					default: throw(robj); break;
 				}
 			}
