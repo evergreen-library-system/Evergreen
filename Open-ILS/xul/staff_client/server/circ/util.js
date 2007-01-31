@@ -725,7 +725,7 @@ circ.util.hold_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : function(my) { return my.ahr.request_time().toString().substr(0,10); },
+			'render' : function(my) { return my.ahr.request_time().toString(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_time', 'label' : 'Request Date', 'flex' : 0,
