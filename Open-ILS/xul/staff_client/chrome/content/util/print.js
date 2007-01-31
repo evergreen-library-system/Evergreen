@@ -205,7 +205,10 @@ util.print.prototype = {
 		if (!w) w = window;
 		var obj = this;
 		try {
+			if (!params) params = {};
+
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			obj.data.init({'via':'stash'});
 
 			if (params.print_strategy || obj.data.print_strategy) {
 
@@ -231,7 +234,7 @@ util.print.prototype = {
 			}
 
 		} catch (e) {
-			//alert('Probably not printing: ' + e);
+			alert('Probably not printing: ' + e);
 			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
 		}
 
@@ -240,6 +243,7 @@ util.print.prototype = {
 	'_NSPrint_dos_print' : function(w,silent,params) {
 		var obj = this;
 		try {
+
 			/* This is a kludge/workaround.  webBrowserPrint doesn't always work.  So we're going to let
 				the html window handle our receipt template rendering, and then force a selection of all
 				the text nodes and dump that to a file, for printing through a dos utility */
@@ -393,9 +397,12 @@ util.print.prototype = {
 
 	'save_settings' : function() {
 		try {
+			var obj = this;
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var file = new util.file('gPrintSettings');
-			file.set_object(this.gPrintSettings); file.close();
+			if (typeof obj.gPrintSettings == 'undefined') obj.GetPrintSettings();
+			if (obj.gPrintSettings) file.set_object(obj.gPrintSettings); 
+			file.close();
 		} catch(E) {
 			this.error.standard_unexpected_error_alert("save_settings()",E);
 		}
