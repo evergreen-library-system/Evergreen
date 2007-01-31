@@ -9,6 +9,7 @@ util.print = function () {
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init( { 'via':'stash' } );
 	JSAN.use('util.window'); this.win = new util.window();
 	JSAN.use('util.functional');
+	JSAN.use('util.file');
 
 	return this;
 };
@@ -247,7 +248,7 @@ util.print.prototype = {
 			w.getSelection().selectAllChildren(w.document.firstChild);
 			var text = w.getSelection().toString();
 
-			JSAN.use('util.file'); var file = new util.file('receipt.txt');
+			var file = new util.file('receipt.txt');
 			file.write_content('truncate',text); file.close();
 			
 			file = new util.file('receipt.bat');
@@ -367,7 +368,7 @@ util.print.prototype = {
 	'load_settings' : function() {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
+			var file = new util.file('gPrintSettings');
 			if (file._file.exists()) {
 				temp = file.get_object(); file.close();
 				for (var i in temp) {
@@ -393,7 +394,7 @@ util.print.prototype = {
 	'save_settings' : function() {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
+			var file = new util.file('gPrintSettings');
 			file.set_object(this.gPrintSettings); file.close();
 		} catch(E) {
 			this.error.standard_unexpected_error_alert("save_settings()",E);
