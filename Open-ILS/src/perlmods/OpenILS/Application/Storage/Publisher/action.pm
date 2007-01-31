@@ -938,6 +938,18 @@ sub new_hold_copy_targeter {
 			if ($best) {
 				$hold->update( { current_copy => ''.$best->id, prev_check_time => 'now' } );
 				$log->debug("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
+			} elsif (
+				$old_best &&
+				action::hold_request
+					->search_where(
+						{ current_copy => $old_best->id,
+						  fulfillment_time => undef,
+						  cancel_time => undef,
+						}       
+					)
+			) {     
+				$hold->update( { prev_check_time => 'now', current_copy => ''.$old_best->id } );
+				$log->debug( "\tRetargeting the previously targeted copy [".$old_best->id."]" );
 			} else {
 				$hold->update( { prev_check_time => 'now' } );
 				$log->info( "\tThere were no targetable copies for the hold" );
@@ -1203,7 +1215,7 @@ sub choose_nearest_copy {
 
 		my $rand = int(rand(scalar(@capturable)));
 		while (my ($c) = splice(@capturable,$rand)) {
-			unless ( OpenILS::Utils::PermitHold::permit_copy_hold(
+			return $c if ( OpenILS::Utils::PermitHold::permit_copy_hold(
 				{ title => $c->call_number->record->to_fieldmapper,
 				  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
 				  patron => $hold->usr->to_fieldmapper,
@@ -1211,12 +1223,10 @@ sub choose_nearest_copy {
 				  requestor => $hold->requestor->to_fieldmapper,
 				  request_lib => $hold->request_lib->to_fieldmapper,
 				}
-			)) {
-				last unless(@capturable);
-				$rand = int(rand(scalar(@capturable)));
-				next;
-			}
-			return $c;
+			));
+
+			last unless(@capturable);
+			$rand = int(rand(scalar(@capturable)));
 		}
 	}
 }
