@@ -987,20 +987,21 @@ patron.bills.prototype = {
 			var msg = 'Are you sure you would like to void $' + sum + ' worth of line-item billings?';
 			var r = obj.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
 			if (r == 0) {
-				obj.data.stash_retrieve();
-				for (var i = 0; i < mb_list.length; i++) {
-					var robj = obj.network.simple_request('FM_MB_VOID',[ses(),mb_list[i].id()]);
-					if (! obj.data.voided_billings ) obj.data.voided_billings = []; 
-					if (robj.ilsevent) {
-						switch(robj.ilsevent) {
-							case -1 : obj.error.standard_network_error_alert('Void of Bill #' + mb_list[i].id() + ' ($' + util.money.sanitize(mb_list[i].amount()) + ') failed.'); break;
-							default: obj.error.standard_unexpected_error_alert('Void of Bill #' + mb_list[i].id() + '($' + util.money.sanitize(mb_list[i].amount()) + ') failed.',robj); break;
-						}
-					} else {
-						obj.data.voided_billings.push( mb_list[i] );
-						obj.data.stash('voided_billings');
+				var robj = obj.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
+				if (robj.ilsevent) {
+					switch(robj.ilsevent) {
+						default: 
+							obj.error.standard_unexpected_error_alert('Error voiding bills.',robj); 
+							obj.refresh(); return; 
+						break;
 					}
 				}
+
+				obj.data.stash_retrieve(); if (! obj.data.voided_billings ) obj.data.voided_billings = []; 
+				for (var i = 0; i < mb_list.length; i++) {
+						obj.data.voided_billings.push( mb_list[i] );
+				}
+				obj.data.stash('voided_billings');
 				alert('Billings voided.');
 				obj.refresh();
 			}
