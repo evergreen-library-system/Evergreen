@@ -938,6 +938,18 @@ patron.bills.prototype = {
 					);
 				}
 
+				var btn4 = document.createElement('button');
+				btn_box.appendChild( btn4 );
+				btn4.setAttribute( 'label', 'Void All Billings' );
+				btn4.setAttribute( 'mobts_id', my.mobts.id() );
+				btn4.addEventListener(
+					'command',
+					function(ev) {
+						obj.void_all_billings( my.mobts.id() );
+					},
+					false
+				);
+
 				return vbox;
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('bills -> info_box',E);	
@@ -954,6 +966,48 @@ patron.bills.prototype = {
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('bills -> payment_box',E);	
 		}
+	},
+
+	'void_all_billings' : function(mobts_id) {
+		try {
+			var obj = this;
+			JSAN.use('util.functional');
+			
+			var mb_list = obj.network.simple_request( 'FM_MB_RETRIEVE_VIA_MBTS_ID', [ ses(), mobts_id ] );
+			if (typeof mb_list.ilsevent != 'undefined') throw(mb_list);
+
+			mb_list = util.functional.filter_list( mb_list, function(o) { return ! get_bool( o.voided() ) });
+
+			if (mb_list.length == 0) { alert('All billings already voided on this bill.'); return; }
+
+			var sum = 0;
+			for (var i = 0; i < mb_list.length; i++) sum += util.money.dollars_float_to_cents_integer( mb_list[i].amount() );
+			sum = util.money.cents_as_dollars( sum );
+
+			var msg = 'Are you sure you would like to void $' + sum + ' worth of line-item billings?';
+			var r = obj.error.yns_alert(msg,'Voiding Bills','Yes','No',null,'Check here to confirm this message');
+			if (r == 0) {
+				obj.data.stash_retrieve();
+				for (var i = 0; i < mb_list.length; i++) {
+					var robj = obj.network.simple_request('FM_MB_VOID',[ses(),mb_list[i].id()]);
+					if (! obj.data.voided_billings ) obj.data.voided_billings = []; 
+					if (robj.ilsevent) {
+						switch(robj.ilsevent) {
+							case -1 : obj.error.standard_network_error_alert('Void of Bill #' + mb_list[i].id() + ' ($' + util.money.sanitize(mb_list[i].amount()) + ') failed.'); break;
+							default: obj.error.standard_unexpected_error_alert('Void of Bill #' + mb_list[i].id() + '($' + util.money.sanitize(mb_list[i].amount()) + ') failed.',robj); break;
+						}
+					} else {
+						obj.data.voided_billings.push( mb_list[i] );
+						obj.data.stash('voided_billings');
+					}
+				}
+				alert('Billings voided.');
+				obj.refresh();
+			}
+		} catch(E) {
+			try { obj.error.standard_unexpected_error_alert('bills.js, void_all_billings():',E); } catch(F) { alert(E); }
+		}
+
 	},
 	
 	'gen_map_row_to_column' : function() {
