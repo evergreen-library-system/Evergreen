@@ -191,7 +191,7 @@ sub do_search {
 		'Z3950_BAD_QUERY', payload => $query, debug => "$err") if $err;
 
 	return OpenILS::Event->new('Z3950_SEARCH_FAILED', 
-		debug => $connection->errcode.":".$connection->errmsg) unless $results;
+		debug => $connection->errcode." => ".$connection->errmsg." : query = $query") unless $results;
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
@@ -277,10 +277,18 @@ sub compile_query {
 	my $str = "";
 	$str .= "\@$seperator " for (1..$count-1);
 	
+    # -------------------------------------------------------------------
+    # "code" is the bib-1 "use attribute", "format" is the bib-1 
+    # "structure attribute"
+    # -------------------------------------------------------------------
 	for( keys %$hash ) {
-		$str .= '@attr ' .
-			$services{$service}->{attrs}->{$_}->{format} . '=' .
-			$services{$service}->{attrs}->{$_}->{code} . " \"" . $$hash{$_} . "\" ";		
+#		$str .= '@attr ' .
+#			$services{$service}->{attrs}->{$_}->{format} . '=' .
+#			$services{$service}->{attrs}->{$_}->{code} . " \"" . $$hash{$_} . "\" ";		
+        $str .= 
+            '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
+            ' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add teh structure attribute
+            " \"" . $$hash{$_} . "\" "; # add the search term
 	}
 	return $str;
 }
