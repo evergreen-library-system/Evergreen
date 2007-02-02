@@ -11,9 +11,9 @@
 	<caption label="Options"/>
 	<hbox flex="1">
 		<checkbox persist="checked" accesskey='s' label="Stack subfields" onclick="stackSubfields(this);" checked="false" id="stackSubfields"/>
-		<button label="Validate" oncommand="validateAuthority(this);"/>
-		<button id="save-button"/>
-		<button label="Help" oncommand="alert('Add Row: CTRL+Enter\nInsert Row: CTRL+Shift+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del\nCreate/Replace 006: CTRL+F6\nCreate/Replace 007: CTRL+F7\nCreate/Replace 008: CTRL+F8\n');"/>
+		<button label="Validate"  accesskey="V" oncommand="validateAuthority(this);"/>
+		<button id="save-button" accesskey="d"/>
+		<button label="Help" accesskey="H" oncommand="alert('Add Row: CTRL+Enter\nInsert Row: CTRL+Shift+Enter\nAdd Subfield: CTRL+D\nRemove Row: CTRL+Del\nRemove Subfield: SHIFT+Del\nCreate/Replace 006: CTRL+F6\nCreate/Replace 007: CTRL+F7\nCreate/Replace 008: CTRL+F8\n');"/>
 	</hbox>
 </groupbox>
 
