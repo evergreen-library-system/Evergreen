@@ -357,6 +357,31 @@ sub biblio_barcode_to_title {
 	return { count => 0 };
 }
 
+__PACKAGE__->register_method(
+    method => 'title_id_by_item_barcode',
+    api_name => 'open-ils.search.bib_id.by_barcode'
+);
+
+sub title_id_by_item_barcode {
+    my( $self, $conn, $barcode ) = @_;
+    my $e = new_editor();
+    my $copies = $e->search_asset_copy(
+        [
+            { deleted => 'f', barcode => $barcode },
+            {
+                flesh => 2,
+                flesh_fields => {
+                    acp => [ 'call_number' ],
+                    acn => [ 'record' ]
+                }
+            }
+        ]
+    );
+
+    return $e->event unless @$copies;
+    return $$copies[0]->call_number->record->id;
+}
+
 
 __PACKAGE__->register_method(
 	method	=> "biblio_copy_to_mods",
