@@ -191,13 +191,13 @@ sub org_closed_overlap {
 	SQL
 
 	$date = clense_ISO8601($date);
+	my ($begin, $end) = ($date,$date);
 
 	my $sth = actor::org_unit::closed_date->db_Main->prepare( $sql );
 	$sth->execute($date, $ou);
 	
-	my ($begin, $end);
 	while (my $closure = $sth->fetchrow_hashref) {
-		$begin ||= clense_ISO8601($closure->{close_start});
+		$begin = clense_ISO8601($closure->{close_start});
 		$end = clense_ISO8601($closure->{close_end});
 
 		if ( $direction <= 0 ) {
@@ -222,8 +222,8 @@ sub org_closed_overlap {
 
 	}
 
-	$begin ||= $date;
-	$end ||= $date;
+	#$begin ||= $date;
+	#$end ||= $date;
 
 
 	if ( !$no_hoo ) {
