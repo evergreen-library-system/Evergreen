@@ -114,6 +114,7 @@
 							<option value='cn'>Call Number</option>
 							<option value='lccn'>LCCN</option>
 							<option value='tcn'>TCN</option>
+                            <option value='barcode'>Item Barcode</option>
 						</select>
 					</td><td>
 						<input type='text' id='adv_quick_text' size='16'> </input>
@@ -121,6 +122,7 @@
 				</tr></tbody></table>
 			</div>
 
+            <span class='hide_me' id='myopac.copy.not.found'>No copy with the requested barcode was found</span>
 			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
 				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>Submit</a>
 			</div>
