@@ -1274,9 +1274,13 @@ sub do_checkin {
 
 	# the renew code will have already found our circulation object
 	unless( $self->is_renewal and $self->circ ) {
-		$self->circ(
-			$self->editor->search_action_circulation(
-			{ target_copy => $self->copy->id, checkin_time => undef })->[0]);
+        my $circs = $self->editor->search_action_circulation(
+			{ target_copy => $self->copy->id, checkin_time => undef });
+		$self->circ($$circs[0]);
+
+        # for now, just warn if there are multiple open circs on a copy
+        $logger->warn("circulator: we have ".scalar(@$circs).
+            " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
 	}
 
 	# if the circ is marked as 'claims returned', add the event to the list
