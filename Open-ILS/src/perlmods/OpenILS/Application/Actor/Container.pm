@@ -194,31 +194,37 @@ sub bucket_create {
 		
 	$bucket->clear_id;
 
-	$logger->debug("creating bucket: " . Dumper($bucket));
+    my $evt = OpenILS::Event->new('CONTAINER_EXISTS', 
+        payload => [$class, $bucket->owner, $bucket->btype, $bucket->name]);
+    my $search = {name => $bucket->name, owner => $bucket->owner, btype => $bucket->btype};
 
-	my $stat;
+	my $obj;
 	if( $class eq 'copy' ) {
+        return $evt if $e->search_container_copy_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_copy_bucket($bucket);
+			$obj = $e->create_container_copy_bucket($bucket);
 	}
 
 	if( $class eq 'callnumber' ) {
+        return $evt if $e->search_container_call_number_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_call_number_bucket($bucket);
+			$obj = $e->create_container_call_number_bucket($bucket);
 	}
 
 	if( $class eq 'biblio' ) {
+        return $evt if $e->search_container_biblio_record_entry_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_biblio_record_entry_bucket($bucket);
+			$obj = $e->create_container_biblio_record_entry_bucket($bucket);
 	}
 
 	if( $class eq 'user') {
+        return $evt if $e->search_container_user_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_user_bucket($bucket);
+			$obj = $e->create_container_user_bucket($bucket);
 	}
 
 	$e->commit;
-	return $stat->id;
+	return $obj->id;
 }
 
 
