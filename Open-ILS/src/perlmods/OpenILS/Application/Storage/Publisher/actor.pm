@@ -191,13 +191,13 @@ sub org_closed_overlap {
 	SQL
 
 	$date = clense_ISO8601($date);
+	my ($begin, $end) = ($date,$date);
 
 	my $sth = actor::org_unit::closed_date->db_Main->prepare( $sql );
 	$sth->execute($date, $ou);
 	
-	my ($begin, $end);
 	while (my $closure = $sth->fetchrow_hashref) {
-		$begin ||= clense_ISO8601($closure->{close_start});
+		$begin = clense_ISO8601($closure->{close_start});
 		$end = clense_ISO8601($closure->{close_end});
 
 		if ( $direction <= 0 ) {
@@ -221,10 +221,6 @@ sub org_closed_overlap {
 		}
 
 	}
-
-	$begin ||= $date;
-	$end ||= $date;
-
 
 	if ( !$no_hoo ) {
 		if ( my $hoo = actor::org_unit::hours_of_operation->retrieve($ou) ) {
@@ -496,7 +492,8 @@ sub patron_search {
 		return undef;
 	}
 
-	my $order_by = join ', ', map { 'users.'. $_} @$sort;
+	my $order_by = join ', ', map { 'users.'. $_ } @$sort;
+	my $distinct_list = join ', ', map { 'users.'. (split / /, $_)[0] } @$sort;
 
 	if ($inactive) {
 		$inactive = '';
@@ -505,7 +502,7 @@ sub patron_search {
 	}
 
 	$select = <<"	SQL";
-		SELECT	users.id
+		SELECT	DISTINCT $distinct_list, users.id
 		  FROM	$u_table AS users
 			JOIN ($select) AS search
 		  USING (id)
@@ -515,7 +512,7 @@ sub patron_search {
 		  LIMIT $limit
 	SQL
 
-	return actor::user->db_Main->selectcol_arrayref($select, {}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv,@addrv));
+	return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort) + 1]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
