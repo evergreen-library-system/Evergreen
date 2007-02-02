@@ -574,6 +574,9 @@
 	<event code='1709' textcode='MAX_HOLDS'>
 		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
 	</event>
+	<event code='1710' textcode='CONTAINER_EXISTS'>
+		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
+	</event>
 
 
 	<event code='2000' textcode='BAD_PARAMS'>
