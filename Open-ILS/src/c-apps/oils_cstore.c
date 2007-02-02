@@ -2154,10 +2154,11 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 				osrfAppRespond( ctx, oilsMakeJSONFromResult( result ) );
 			} while (dbi_result_next_row(result));
 
-			osrfAppRespondComplete( ctx, NULL );
 		} else {
 			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
 		}
+
+		osrfAppRespondComplete( ctx, NULL );
 
 		/* clean up the query */
 		dbi_result_free(result); 
@@ -2172,9 +2173,6 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			ctx->request,
 			"Severe query error -- see error log for more details"
 		);
-		free(sql);
-		return err;
-
 	}
 
 	free(sql);
