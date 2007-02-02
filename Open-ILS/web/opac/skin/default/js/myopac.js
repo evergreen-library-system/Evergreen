@@ -505,10 +505,17 @@ function _finesFormatNumber(num) {
 //function _trimTime(time) { if(!time) return ""; return time.replace(/\ .*/,""); }
 function _trimTime(time) { 
 	if(!time) return ""; 
-	return time.replace(/T.*/,""); 
+    var d = Date.parseIso8601(time);
+    if(!d) return ""; /* date parse failed */
+    return d.iso8601Format('YMD');
 }
 
-function _trimSeconds(time) { if(!time) return ""; return time.replace(/:\d\d\..*$/,""); }
+function _trimSeconds(time) { 
+    if(!time) return ""; 
+    var d = Date.parseIso8601(time);
+    if(!d) return ""; /* date parse failed */
+    return d.iso8601Format('YMDHM',null,true,true);
+}
 
 function myOPACShowTransactions(r) {
 
@@ -740,6 +747,12 @@ function _myOPACSummaryShowUer(r) {
 	var user = r.getResultObject();
 	fleshedUser = user;
 	if(!user) return;
+
+    var expireDate = Date.parseIso8601(user.expire_date());
+    if( expireDate < new Date() ) {
+        appendClear($('myopac.expired.date'), expireDate.iso8601Format('YMD'));
+        unHideMe($('myopac.expired.alert'));
+    }
 
 	var iv1 = user.ident_value()+'';
 	if (iv1.length > 4) iv1 = iv1.replace(new RegExp(iv1.substring(0,iv1.length - 4)), '***********');
@@ -1151,18 +1164,9 @@ function myOPACDrawNonCatCirc(r) {
 	duration = parseInt(duration + '000');
 
 	var dtf = circ.circ_time();
-
-	/*Date.W3CDTF is not happy with the milliseonds, nor is it
-	happy without minute component of the timezone */
-	dtf = dtf.replace(/\.\d+/,'');
-	dtf += ":00"; 
-
-	var start = new Date.W3CDTF();
-	start.setW3CDTF(dtf);
+    var start = Date.parseIso8601(circ.circ_time());
 	var due = new Date(  start.getTime() + duration );
-	due = (due+'').replace(/(.*?:\d\d):.*/, '$1');
-
-	appendClear($n(row, 'circ_time'), text(due));
+	appendClear($n(row, 'circ_time'), text(due.iso8601Format('YMDHM', null, true, true)));
 }
 
 

@@ -145,8 +145,6 @@ function rdetailViewMarc(r,id) {
 	hideMe($('rdetail_extras_loading'));
 	$('rdetail_view_marc_box').innerHTML = r.getResultObject();
 
-	var d = new Date();
-
 	var div = elem('div', { "class" : 'hide_me' });
 	var span = div.appendChild( elem('abbr') );
 
