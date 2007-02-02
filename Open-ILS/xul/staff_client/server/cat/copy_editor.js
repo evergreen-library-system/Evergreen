@@ -965,7 +965,7 @@ g.render = function() {
 				groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
 				if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class','copy_editor_field_changed');
 				caption = document.createElement('caption'); groupbox.appendChild(caption);
-				caption.setAttribute('label',fn); 
+				caption.setAttribute('label',fn); caption.setAttribute('id','caption_'+fn);
 				vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
 				grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
 				grid.setAttribute('flex','1');
@@ -1066,6 +1066,7 @@ g.render_input = function(node,blob) {
 							function() {
 								g.summarize( g.copies );
 								g.render();
+								document.getElementById(caption.id).focus();
 							}, 0
 						);
 					} catch(E) {
@@ -1085,7 +1086,7 @@ g.render_input = function(node,blob) {
 					apply.addEventListener('command',function() { c(x.value); },false);
 					var cancel = document.createElement('button');
 					cancel.setAttribute('label','Cancel');
-					cancel.addEventListener('command',function() { setTimeout( function() { g.summarize( g.copies ); g.render(); }, 0); }, false);
+					cancel.addEventListener('command',function() { setTimeout( function() { g.summarize( g.copies ); g.render(); document.getElementById(caption.id).focus(); }, 0); }, false);
 					hbox2.appendChild(cancel);
 					setTimeout( function() { x.focus(); }, 0 );
 				}
