@@ -1219,6 +1219,7 @@
 			<field name="notify_count" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="int" />
 			<field reporter:label="Notifications" name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" />
 			<field reporter:label="Bib Record Link" name="bib_rec" oils_obj:array_position="29" oils_persist:virtual="true"/>
+			<field reporter:label="Eligible Copies" name="eligible_copies" oils_obj:array_position="30" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
