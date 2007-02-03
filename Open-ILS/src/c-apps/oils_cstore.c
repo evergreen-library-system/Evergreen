@@ -1307,6 +1307,13 @@ join : {
 
 char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 
+	if (join_hash->type == JSON_STRING) {
+		char* __tmp = jsonObjectToSimpleString( join_hash );
+		join_hash = jsonParseString("{}");
+		jsonObjectSetKey(join_hash, __tmp, NULL);
+		free(__tmp);
+	}
+
 	growing_buffer* join_buf = buffer_init(128);
 	char* leftclass = osrfHashGet(leftmeta, "classname");
 
@@ -1542,6 +1549,8 @@ char* SELECT (
 	jsonObjectNode* selfield = NULL;
 	jsonObjectNode* snode = NULL;
 	jsonObjectNode* onode = NULL;
+	jsonObject* found = NULL;
+
 	char* string = NULL;
 	int first = 1;
 
@@ -1631,7 +1640,14 @@ char* SELECT (
 		if (strcmp(core_class,cname)) {
 			if (!join_hash) continue;
 
-			jsonObject* found =  jsonObjectFindPath(join_hash, "//%s", cname);
+			if (join_hash->type == JSON_STRING) {
+				string = jsonObjectToSimpleString(join_hash);
+				found = strcmp(string,cname) ? NULL : jsonParseString("{\"1\":\"1\"}");
+				free(string);
+			} else {
+				found = jsonObjectFindPath(join_hash, "//%s", cname);
+			}
+
 			if (!found->size) {
 				jsonObjectFree(found);
 				continue;
