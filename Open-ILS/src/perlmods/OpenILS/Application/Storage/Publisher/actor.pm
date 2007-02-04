@@ -266,7 +266,7 @@ sub org_closed_overlap {
 				$after = $_dt_parser->parse_datetime( $end );
 				$after->add( minutes => 1 );
 
-				while ( my $_a = org_closed_overlap($self, $client, $ou, $after->iso8601, 1, 1 ) ) {
+				while ( my $_a = org_closed_overlap($self, $client, $ou, $after->iso8601, 1 ) ) {
 					$after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
 				}
 				$end = clense_ISO8601($after->iso8601);
