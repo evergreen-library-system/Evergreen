@@ -711,7 +711,7 @@ sub new_hold_copy_targeter {
 							  cancel_time => undef,
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
-							{ order_by => 'selection_depth DESC, request_time,prev_check_time' } ) ];
+							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time,prev_check_time' } ) ];
 
 			# find all the holds holds needing first time targeting
 			push @$holds, action::hold_request->search(
@@ -719,7 +719,7 @@ sub new_hold_copy_targeter {
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
 							cancel_time => undef,
-							{ order_by => 'selection_depth DESC, request_time' } );
+							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } );
 		} else {
 
 			# find all the holds holds needing first time targeting ONLY
@@ -728,7 +728,7 @@ sub new_hold_copy_targeter {
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
 							cancel_time => undef,
-							{ order_by => 'selection_depth DESC, request_time' } ) ];
+							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } ) ];
 		}
 	} catch Error with {
 		my $e = shift;
@@ -736,8 +736,8 @@ sub new_hold_copy_targeter {
 	};
 
 	my @closed = actor::org_unit::closed_date->search_where(
-		{ close_start => { '<=', 'today' },
-		  close_end => { '>=', 'today' } }
+		{ close_start => { '<=', 'now' },
+		  close_end => { '>=', 'now' } }
 	);
 
 
