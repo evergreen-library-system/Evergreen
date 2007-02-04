@@ -188,15 +188,15 @@ sub org_closed_overlap {
 		  WHERE	? between close_start and close_end
 			AND org_unit = ?
 		  ORDER BY close_start ASC, close_end DESC
+		  LIMIT 1
 	SQL
 
 	$date = clense_ISO8601($date);
 	my ($begin, $end) = ($date,$date);
 
-	my $sth = actor::org_unit::closed_date->db_Main->prepare( $sql );
-	$sth->execute($date, $ou);
-	
-	while (my $closure = $sth->fetchrow_hashref) {
+	my $hoo = actor::org_unit::hours_of_operation->retrieve($ou);
+
+	if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $date, $ou )) {
 		$begin = clense_ISO8601($closure->{close_start});
 		$end = clense_ISO8601($closure->{close_end});
 
@@ -219,15 +219,10 @@ sub org_closed_overlap {
 			}
 			$end = clense_ISO8601($after->iso8601);
 		}
-
 	}
 
-	#$begin ||= $date;
-	#$end ||= $date;
-
-
 	if ( !$no_hoo ) {
-		if ( my $hoo = actor::org_unit::hours_of_operation->retrieve($ou) ) {
+		if ( $hoo ) {
 
 			my $begin_dow = $_dt_parser->parse_datetime( $begin )->day_of_week_0;
 			my $begin_open_meth = "dow_".$begin_dow."_open";
@@ -242,6 +237,14 @@ sub org_closed_overlap {
 				last if ($count > 6);
 				$begin_open_meth = "dow_".$begin_dow."_open";
 				$begin_close_meth = "dow_".$begin_dow."_close";
+			}
+
+			if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $begin, $ou )) {
+				$before = $_dt_parser->parse_datetime( $begin );
+				$before->subtract( minutes => 1 );
+				while ( my $_b = org_closed_overlap($self, $client, $ou, $before->iso8601, -1 ) ) {
+					$before = $_dt_parser->parse_datetime( clense_ISO8601($_b->{start}) );
+				}
 			}
 	
 			my $end_dow = $_dt_parser->parse_datetime( $end )->day_of_week_0;
@@ -258,6 +261,17 @@ sub org_closed_overlap {
 				$end_open_meth = "dow_".$end_dow."_open";
 				$end_close_meth = "dow_".$end_dow."_close";
 			}
+
+			if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $end, $ou )) {
+				$after = $_dt_parser->parse_datetime( $end );
+				$after->add( minutes => 1 );
+
+				while ( my $_a = org_closed_overlap($self, $client, $ou, $after->iso8601, 1, 1 ) ) {
+					$after = $_dt_parser->parse_datetime( clense_ISO8601($_a->{end}) );
+				}
+				$end = clense_ISO8601($after->iso8601);
+			}
+
 		}
 	}
 
