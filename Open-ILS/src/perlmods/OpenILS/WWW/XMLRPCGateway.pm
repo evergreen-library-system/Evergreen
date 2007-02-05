@@ -80,10 +80,22 @@ sub handler {
 
 
 sub run_request {
-	my( $service, $method, @args ) = @_;
-	my $ses = OpenSRF::AppSession->create( $service );
-	my $data = $ses->request($method, @args)->gather(1);
-	return wrap_perl($data);
+    my( $service, $method, @args ) = @_;
+    my $ses = OpenSRF::AppSession->create( $service );
+    #my $data = $ses->request($method, @args)->gather(1);
+
+    my $data = [];
+    my $req = $ses->request($method, @args);
+    while( my $resp = $req->recv( timeout => 300 ) ) {
+        if( $req->failed ) {
+            push( @$data, $req->failed );
+            last;
+        }
+        push( @$data, $resp->content );
+    }
+
+    return [] if scalar(@$data) == 0;
+    return wrap_perl($data);
 }
 
 # These should probably be moved out to a library somewhere
