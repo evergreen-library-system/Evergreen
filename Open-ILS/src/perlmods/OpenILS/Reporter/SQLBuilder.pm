@@ -296,6 +296,23 @@ sub toSQL {
 	return $self->{_sql} = $self->$toSQL;
 }
 
+#-------------------------------------------------------------------------------------------------
+package OpenILS::Reporter::SQLBuilder::Input::Transform::GenericTransform;
+
+sub toSQL {
+	my $self = shift;
+	my $func = $self->{transform};
+
+	my @params;
+	@params = @{ $self->{params} } if ($self->{params});
+
+	my $sql = $func . '(\'';
+	$sql .= join("','", @params) if (@params);
+	$sql .= '\')';
+
+	return $sql;
+}
+
 
 #-------------------------------------------------------------------------------------------------
 package OpenILS::Reporter::SQLBuilder::Input::Transform::NULL;
