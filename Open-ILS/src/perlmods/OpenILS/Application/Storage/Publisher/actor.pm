@@ -510,7 +510,7 @@ sub patron_search {
 		return undef;
 	}
 
-	my $order_by = join ', ', map { 'users.'. $_ } @$sort;
+	my $order_by = join ', ', map { 'LOWER(users.'. $_ . ')' } @$sort;
 	my $distinct_list = join ', ', map { 'users.'. (split / /, $_)[0] } @$sort;
 
 	if ($inactive) {
