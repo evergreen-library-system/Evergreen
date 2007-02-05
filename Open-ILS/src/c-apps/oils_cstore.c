@@ -23,6 +23,8 @@
 #define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
 #define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
 
+#define SELECT_DISTINCT	1
+
 int osrfAppChildInit();
 int osrfAppInitialize();
 void osrfAppChildExit();
@@ -60,7 +62,7 @@ char* searchJOIN ( jsonObject*, osrfHash* );
 char* searchWHERE ( jsonObject*, osrfHash*, int );
 char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 
-char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject* );
+char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
 
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
@@ -1535,10 +1537,10 @@ char* SELECT (
 		/* SELECT   */ jsonObject* selhash,
 		/* FROM     */ jsonObject* join_hash,
 		/* WHERE    */ jsonObject* search_hash,
-		/* GROUP BY */ jsonObject* order_hash,
-		/* ORDER BY */ jsonObject* group_hash,
+		/* ORDER BY */ jsonObject* order_hash,
 		/* LIMIT    */ jsonObject* limit,
-		/* OFFSET   */ jsonObject* offset
+		/* OFFSET   */ jsonObject* offset,
+		/* flags    */ int flags
 ) {
 	// in case we don't get a select list
 	jsonObject* defaultselhash = NULL;
@@ -1553,6 +1555,8 @@ char* SELECT (
 
 	char* string = NULL;
 	int first = 1;
+	int gfirst = 1;
+	//int hfirst = 1;
 
 	// return variable for the SQL
 	char* sql = NULL;
@@ -1571,6 +1575,8 @@ char* SELECT (
 	// temp buffer for the SELECT list
 	growing_buffer* select_buf = buffer_init(128);
 	growing_buffer* order_buf = buffer_init(128);
+	growing_buffer* group_buf = buffer_init(128);
+	growing_buffer* having_buf = buffer_init(128);
 
 	// punt if there's no core class
 	if (!join_hash || ( join_hash->type == JSON_HASH && !join_hash->size ))
@@ -1627,7 +1633,10 @@ char* SELECT (
 	}
 
 	// Now we build the acutal select list
+	int sel_pos = 1;
+	jsonObject* is_agg = jsonObjectFindPath(selhash, "//aggregate");
 	first = 1;
+	gfirst = 1;
 	jsonObjectIterator* selclass_itr = jsonNewObjectIterator( selhash );
 	while ( (selclass = jsonObjectIteratorNext( selclass_itr )) ) {
 
@@ -1660,13 +1669,19 @@ char* SELECT (
 		jsonObjectIterator* select_itr = jsonNewObjectIterator( selclass->item );
 		while ( (selfield = jsonObjectIteratorNext( select_itr )) ) {
 
+			char* __column = NULL;
+			char* __alias = NULL;
+
 			// ... if it's a sstring, just toss it on the pile
 			if (selfield->item->type == JSON_STRING) {
 
 				// again, just to be safe
-				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(selfield->item) );
+				char* _requested_col = jsonObjectToSimpleString(selfield->item);
+				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _requested_col );
+				free(_requested_col);
+
 				if (!field) continue;
-				char* fname = osrfHashGet(field, "name");
+				__column = strdup(osrfHashGet(field, "name"));
 
 				if (first) {
 					first = 0;
@@ -1674,13 +1689,12 @@ char* SELECT (
 					buffer_add(select_buf, ",");
 				}
 
-				buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
+				buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
 
 			// ... but it could be an object, in which case we check for a Field Transform
 			} else {
 
-				char* __column = jsonObjectToSimpleString( jsonObjectGetKey( selfield->item, "column" ) );
-				char* __alias = NULL;
+				__column = jsonObjectToSimpleString( jsonObjectGetKey( selfield->item, "column" ) );
 
 				// again, just to be safe
 				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), __column );
@@ -1706,13 +1720,41 @@ char* SELECT (
 				} else {
 					buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
 				}
-
-				free(__column);
-				free(__alias);
 			}
-		}
 
+			if (is_agg->size || (flags & SELECT_DISTINCT)) {
+
+				if (!jsonBoolIsTrue( jsonObjectGetKey( selfield->item, "aggregate" ) )) {
+					if (gfirst) {
+						gfirst = 0;
+					} else {
+						buffer_add(group_buf, ",");
+					}
+
+					buffer_fadd(group_buf, " %d", sel_pos);
+				/*
+				} else if (is_agg = jsonObjectGetKey( selfield->item, "having" )) {
+					if (gfirst) {
+						gfirst = 0;
+					} else {
+						buffer_add(group_buf, ",");
+					}
+
+					__column = searchFieldTransform(cname, field, selfield->item);
+					buffer_fadd(group_buf, " %s", __column);
+					__column = searchFieldTransform(cname, field, selfield->item);
+				*/
+				}
+			}
+
+			if (__column) free(__column);
+			if (__alias) free(__alias);
+
+			sel_pos++;
+		}
 	}
+
+	if (is_agg) jsonObjectFree(is_agg);
 
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
@@ -1859,6 +1901,32 @@ char* SELECT (
 		}
 
 	}
+
+	string = buffer_data(group_buf);
+	buffer_free(group_buf);
+
+	if (strlen(string)) {
+		buffer_fadd(
+			sql_buf,
+			" GROUP BY %s",
+			string
+		);
+	}
+
+	free(string);
+
+	string = buffer_data(having_buf);
+	buffer_free(having_buf);
+
+	if (strlen(string)) {
+		buffer_fadd(
+			sql_buf,
+			" HAVING %s",
+			string
+		);
+	}
+
+	free(string);
 
 	string = buffer_data(order_buf);
 	buffer_free(order_buf);
@@ -2145,10 +2213,10 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			jsonObjectGetKey( hash, "select" ),
 			jsonObjectGetKey( hash, "from" ),
 			jsonObjectGetKey( hash, "where" ),
-			jsonObjectGetKey( hash, "group_by" ),
 			jsonObjectGetKey( hash, "order_by" ),
 			jsonObjectGetKey( hash, "limit" ),
-			jsonObjectGetKey( hash, "offset" )
+			jsonObjectGetKey( hash, "offset" ),
+			jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )) ? SELECT_DISTINCT : 0
 	);
 
 	if (!sql) {
