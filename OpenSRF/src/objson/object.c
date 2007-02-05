@@ -805,3 +805,8 @@ char* jsonObjectToSimpleString( const jsonObject* o ) {
 }
 
 
+int jsonBoolIsTrue( const jsonObject* o ) {
+    return (o && o->type == JSON_BOOL && o->value.b);
+}
+
+
