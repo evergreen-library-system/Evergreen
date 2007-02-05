@@ -1088,38 +1088,6 @@ sub _check_title_hold_is_possible {
    
    my $e = new_editor();
 
-=head old
-   my $copies = $e->search_asset_copy(
-      [
-         { deleted => 'f', circulate => 't', holdable => 't' },
-         {  'join' => {
-               acpl  => {
-                  field => 'id',
-                  fkey => 'location',
-                  filter => { holdable => 't' }
-               },
-               ccs => {
-                  field => 'id',
-                  fkey => 'status',
-                  filter => { holdable => 't' }
-               },
-               acn => {
-                  field => 'id',
-                  fkey => 'call_number',
-                  'join' => {
-                     bre => {
-                        field => 'id',
-                        fkey => 'record',
-                        filter => { id => $titleid }
-                     }
-                  }
-               }
-            }
-         }
-      ],
-   );
-=cut
-
     # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
     my $copies = $e->json_query(
         { 
