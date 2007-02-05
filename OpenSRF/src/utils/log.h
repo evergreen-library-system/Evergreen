@@ -59,6 +59,12 @@ void osrfLogActivity( const char* file, int line, const char* msg, ... );
 
 void osrfLogCleanup();
 
+void osrfLogClearXid();
+void osrfLogSetXid(char* xid);
+void osrfLogMkXid();
+void osrfLogSetIsClient(int is);
+char* osrfLogGetXid();
+
 /* sets the activity flag */
 void osrfLogSetActivityEnabled( int enabled );
 
