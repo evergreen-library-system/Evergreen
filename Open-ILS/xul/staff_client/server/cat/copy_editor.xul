@@ -45,6 +45,8 @@
 				<hbox id="template_placeholder"/>
 				<button id="apply_template" label="Apply" accesskey="y" oncommand="g.apply_template()"/>
 				<button id="delete_template" label="Delete" oncommand="g.delete_template()"/>
+				<button id="import_templates" label="Import" oncommand="g.import_templates()"/>
+				<button id="export_templates" label="Export" oncommand="g.export_templates()"/>
 				<button id="save_template" label="Save" oncommand="g.save_template()"/>
 			</hbox>
 			<spacer flex="1"/>
@@ -58,22 +60,22 @@
 			</vbox>
 			<splitter><grippy /></splitter>
 			<vbox flex="1">
-				<label value="Location" style="font-weight: bold; font-size: large"/>
+				<button style="font-weight: bold; font-size: normal" label="Location" accesskey="1" oncommand="document.getElementById('right_pane').firstChild.firstChild.focus();"/>
 				<vbox id="right_pane" flex="1"/>
 			</vbox>
 			<splitter><grippy /></splitter>
 			<vbox flex="1">
-				<label value="Circulation" style="font-weight: bold; font-size: large"/>
+				<button style="font-weight: bold; font-size: normal" label="Circulation" accesskey="2" oncommand="document.getElementById('right_pane2').firstChild.firstChild.focus();"/>
 				<vbox id="right_pane2" flex="1"/>
 			</vbox>
 			<splitter><grippy /></splitter>
 			<vbox flex="1">
-				<label value="Miscellaneous" style="font-weight: bold; font-size: large"/>
+				<button style="font-weight: bold; font-size: normal" label="Miscellaneous" accesskey="3" oncommand="document.getElementById('right_pane3').firstChild.firstChild.focus();"/>
 				<vbox id="right_pane3" flex="1"/>
 			</vbox>
 			<splitter><grippy /></splitter>
 			<vbox flex="1">
-				<label value="Statistics" style="font-weight: bold; font-size: large"/>
+				<button style="font-weight: bold; font-size: normal" label="Statistics" accesskey="4" oncommand="document.getElementById('right_pane4').firstChild.firstChild.focus();"/>
 				<vbox id="right_pane4" flex="1"/>
 			</vbox>
 		</hbox>
