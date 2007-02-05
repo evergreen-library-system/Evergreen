@@ -117,7 +117,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
-	my( $self, $client, $user_session, $uid ) = @_;
+	my( $self, $client, $user_session, $uid, $setting ) = @_;
 	
 	my( $staff, $user, $evt ) = 
 		$apputils->checkses_requestor( $user_session, $uid, 'VIEW_USER' );
@@ -128,7 +128,10 @@ sub user_settings {
 		'open-ils.cstore',
 		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
 
-	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+	my $settings =  { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+
+   return $$settings{$setting} if $setting;
+   return $settings;
 }
 
 
@@ -1534,6 +1537,8 @@ __PACKAGE__->register_method(
 sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
 
+	# XXX I think I'm deprecated... make sure
+
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.cstore",
 		"open-ils.cstore.direct.money.billable_transaction_summary.retrieve",
@@ -2054,7 +2059,8 @@ sub user_transaction_history {
 			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
 			  order_by => { mbt => 'xact_start DESC' },
 			}
-		]
+		],
+      {substream => 1}
 	) };
 
 	$e->rollback;
