@@ -1513,7 +1513,19 @@ sub postfilter_search_multi_class_fts {
 	my @bonus_values;
 	my $prev_search_class;
 	my $curr_search_class;
-	for my $search_class (sort keys %{$args{searches}}) {
+	my $search_class;
+	my $search_field;
+	my $metabib_field;
+	for my $search_group (sort keys %{$args{searches}}) {
+		($search_class,$search_field) = split /\|/, $search_group;
+
+		if ($search_field) {
+			unless ( ($metabib_field) = config::metabib_field->search( field_class => $search_class, name => $search_field ) ) {
+				$log->debug("Requested class [$search_class] or field [$search_field] does not exist!", WARN);
+				next;
+			}
+		}
+
 		$prev_search_class = $curr_search_class if ($curr_search_class);
 
 		$curr_search_class = $search_class;
@@ -1560,6 +1572,11 @@ sub postfilter_search_multi_class_fts {
 		$search_table_list .= "$search_table $search_class, ";
 		push @rank_list,$rank;
 		$fts_list .= " AND $fts_where AND m.source = $search_class.source";
+
+		if ($metabib_field) {
+			$join_table_list .= " $curr_search_class.field = " . $metabib_field->id;
+			$metabib_field = undef;
+		}
 
 		if ($prev_search_class) {
 			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
@@ -1973,7 +1990,19 @@ sub biblio_search_multi_class_fts {
 	my @bonus_values;
 	my $prev_search_class;
 	my $curr_search_class;
-	for my $search_class (sort keys %{$args{searches}}) {
+	my $search_class;
+	my $search_field;
+	my $metabib_field;
+	for my $search_group (sort keys %{$args{searches}}) {
+		($search_class,$search_field) = split /\|/, $search_group;
+
+		if ($search_field) {
+			unless ( ($metabib_field) = config::metabib_field->search( field_class => $search_class, name => $search_field ) ) {
+				$log->debug("Requested class [$search_class] or field [$search_field] does not exist!", WARN);
+				next;
+			}
+		}
+
 		$prev_search_class = $curr_search_class if ($curr_search_class);
 
 		$curr_search_class = $search_class;
@@ -2029,6 +2058,11 @@ sub biblio_search_multi_class_fts {
 		$search_table_list .= "$search_table $search_class, ";
 		push @rank_list,$rank;
 		$fts_list .= " AND $fts_where AND b.id = $search_class.source";
+
+		if ($metabib_field) {
+			$join_table_list .= " $curr_search_class.field = " . $metabib_field->id;
+			$metabib_field = undef;
+		}
 
 		if ($prev_search_class) {
 			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
