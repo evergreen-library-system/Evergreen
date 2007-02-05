@@ -9,6 +9,7 @@ util.print = function () {
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init( { 'via':'stash' } );
 	JSAN.use('util.window'); this.win = new util.window();
 	JSAN.use('util.functional');
+	JSAN.use('util.file');
 
 	return this;
 };
@@ -53,27 +54,42 @@ util.print.prototype = {
 			var w;
 			switch(content_type) {
 				case 'text/html' :
-					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { return; /* FIXME - mozilla bug#301560 - xpcom kills it too */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { window.print(); window.close(); } catch(E) { alert(E); } },0); }');
-					w = obj.win.open('data:text/html,<html><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
+					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { alert("Please inform the developers that the go_print bug occurred.  After this alert, we will try to print again."); window.print(); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { window.print(); window.close(); } catch(E) { alert(E); } },0); }');
+					w = obj.win.open('data:text/html,<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
+					w.minimize();
+					w.go_print = function() { 
+
+						//setTimeout(
+						//	function() {
+								try {
+									obj.NSPrint(w, silent, params);
+								} catch(E) {
+									obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
+									w.print();
+								}
+								w.minimize(); w.close();
+						//	}, 0
+						//);
+
+					}
 				break;
 				default:
 					w = obj.win.open('data:' + content_type + ',' + window.escape(msg),'receipt_temp','chrome,resizable');
+					w.minimize();
+					setTimeout(
+						function() {
+							try {
+								obj.NSPrint(w, silent, params);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
+								w.print();
+							}
+							w.minimize(); w.close();
+						}, 1000
+					);
 				break;
 			}
 
-			w.minimize();
-
-			setTimeout(
-				function() {
-					try {
-						obj.NSPrint(w, silent, params);
-					} catch(E) {
-						obj.error.sdump('D_ERROR','util.print.simple: ' + E);
-						w.print();
-					}
-					w.minimize(); w.close();
-				}, 0
-			);
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('util.print.simple',E);
 		}
@@ -85,103 +101,21 @@ util.print.prototype = {
 		} catch(E) {
 			dump(E+'\n');
 		}
-		var cols;
-		// FIXME -- This could be done better.. instead of finding the columns and handling a tree dump,
-		// we could do a dump_with_keys instead
-		switch(params.type) {
-			case 'offline_checkout' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_checkout_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
+		var cols = [];
 
-			break;
-			case 'offline_checkin' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_checkin_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-
-			break;
-			case 'offline_renew' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_renew_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'offline_inhouse_use' :
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.offline_inhouse_use_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'items':
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'bills':
-				JSAN.use('patron.util');
-				cols = util.functional.map_list(
-					patron.util.mbts_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'payment':
-				//cols = [ '%bill_id%','%payment%'];
-				cols = [];
-			break;
-			case 'transits':
-				cols = [];
-			break;
-			case 'holds':
-				JSAN.use('circ.util');
-				cols = util.functional.map_list(
-					circ.util.hold_columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
-			case 'patrons':
-				JSAN.use('patron.util');
-				cols = util.functional.map_list(
-					patron.util.columns( {} ),
-					function(o) {
-						return '%' + o.id + '%';
-					}
-				);
-			break;
+		var s = '';
+		if (params.header) s += this.template_sub( params.header, cols, params );
+		if (params.list) {
+			for (var i = 0; i < params.list.length; i++) {
+				params.row = params.list[i];
+				s += this.template_sub( params.line_item, cols, params );
+			}
 		}
-
-		var s = this.template_sub( params.header, cols, params );
-		for (var i = 0; i < params.list.length; i++) {
-			params.row = params.list[i];
-			s += this.template_sub( params.line_item, cols, params );
-		}
-		s += this.template_sub( params.footer, cols, params );
+		if (params.footer) s += this.template_sub( params.footer, cols, params );
 
 		if (params.sample_frame) {
 			var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '};');
-			params.sample_frame.setAttribute('src','data:text/html,<html><head><script src="' + window.escape(jsrc) + '"></script></head><body>' + window.escape(s) + '</body></html>');
+			params.sample_frame.setAttribute('src','data:text/html,<html id="top"><head><script src="' + window.escape(jsrc) + '"></script></head><body>' + window.escape(s) + '</body></html>');
 		} else {
 			this.simple(s,params);
 		}
@@ -204,6 +138,8 @@ util.print.prototype = {
 		try{b = s; s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%STAFF_BARCODE%/,params.staff.barcode); }
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%STAFF_PROFILE%/,obj.data.hash.pgt[ params.staff.profile() ].name() ); }
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%PATRON_FIRSTNAME%/,params.patron.first_given_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
@@ -236,6 +172,7 @@ util.print.prototype = {
 		try {
 			if (typeof params.row != 'undefined') {
 				if (params.row.length >= 0) {
+					alert('debug - please tell the developers that deprecated template code tried to execute');
 					for (var i = 0; i < cols.length; i++) {
 						var re = new RegExp(cols[i],"g");
 						try{b = s; s=s.replace(re, params.row[i]);}
@@ -268,6 +205,79 @@ util.print.prototype = {
 		if (!w) w = window;
 		var obj = this;
 		try {
+			if (!params) params = {};
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			obj.data.init({'via':'stash'});
+
+			if (params.print_strategy || obj.data.print_strategy) {
+
+				switch(params.print_strategy || obj.data.print_strategy) {
+					case 'dos.print':
+						obj._NSPrint_dos_print(w,silent,params);
+					break;	
+					case 'window.print':
+						w.print();
+					break;	
+					case 'webBrowserPrint':
+						obj._NSPrint_webBrowserPrint(w,silent,params);
+					break;	
+					default:
+						//w.print();
+						obj._NSPrint_webBrowserPrint(w,silent,params);
+					break;	
+				}
+
+			} else {
+				//w.print();
+				obj._NSPrint_webBrowserPrint(w,silent,params);
+			}
+
+		} catch (e) {
+			alert('Probably not printing: ' + e);
+			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+		}
+
+	},
+
+	'_NSPrint_dos_print' : function(w,silent,params) {
+		var obj = this;
+		try {
+
+			/* This is a kludge/workaround.  webBrowserPrint doesn't always work.  So we're going to let
+				the html window handle our receipt template rendering, and then force a selection of all
+				the text nodes and dump that to a file, for printing through a dos utility */
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			w.getSelection().selectAllChildren(w.document.firstChild);
+			var text = w.getSelection().toString();
+
+			var file = new util.file('receipt.txt');
+			file.write_content('truncate',text); file.close();
+			
+			file = new util.file('receipt.bat');
+			if (! file._file.exists()) { 
+				file.write_content('truncate','copy chrome\\open_ils_staff_client\\content\\conf\\receipt.txt lpt1 /b\n');
+				file.close();
+				file = new util.file('receipt.bat');
+			}
+
+			var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+			process.init(file._file);
+
+			var args = [];
+
+			process.run(true, args, args.length);
+
+		} catch (e) {
+			//alert('Probably not printing: ' + e);
+			this.error.sdump('D_ERROR','_NSPrint_dos_print PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+		}
+	},
+
+	'_NSPrint_webBrowserPrint' : function(w,silent,params) {
+		var obj = this;
+		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var webBrowserPrint = w
 				.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -275,50 +285,14 @@ util.print.prototype = {
 			this.error.sdump('D_PRINT','webBrowserPrint = ' + webBrowserPrint);
 			if (webBrowserPrint) {
 				var gPrintSettings = obj.GetPrintSettings();
-				//obj.error.standard_unexpected_error_alert('debugging printer settings #1',gPrintSettings);
-				//var s = '1: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
 				if (silent) gPrintSettings.printSilent = true;
 				else gPrintSettings.printSilent = false;
-				//alert('silent = ' + silent + ' printSilent = ' + gPrintSettings.printSilent);
 				if (params) {
-					/* They can set these now in Local Admin */
-					/*
-					gPrintSettings.marginTop = 0;
-					gPrintSettings.marginLeft = 0;
-					gPrintSettings.marginBottom = 0;
-					gPrintSettings.marginRight = 0;
-					*/
 					if (params.marginLeft) gPrintSettings.marginLeft = params.marginLeft;
 				}
-				/*
-				gPrintSettings.headerStrLeft = '';
-				gPrintSettings.headerStrCenter = '';
-				gPrintSettings.headerStrRight = '';
-				gPrintSettings.footerStrLeft = '';
-				gPrintSettings.footerStrCenter = '';
-				gPrintSettings.footerStrRight = '';
-				*/
-				//this.error.sdump('D_PRINT','gPrintSettings = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
-				//alert('gPrintSettings = ' + js2JSON(gPrintSettings));
 				webBrowserPrint.print(gPrintSettings, null);
-				//var s = '2: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
-
-				/* This isn't working for kInitSavePageData, so we're going to save gPrintSettings ourselves from the local admin screen */
-				/*
-				if (this.gPrintSettingsAreGlobal && this.gSavePrintSettings) {
-					var PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"]
-						.getService(Components.interfaces.nsIPrintSettingsService);
-					PSSVC.savePrintSettingsToPrefs( gPrintSettings, true, gPrintSettings.kInitSaveAll);
-					PSSVC.savePrintSettingsToPrefs( gPrintSettings, false, gPrintSettings.kInitSavePrinterName);
-				}
-				*/
-				//var s = '3: '; for (var i in gPrintSettings) if (i.match(/^paper/)) s += i + ': ' + gPrintSettings[i] + '\n'; alert(s);
-				//obj.error.standard_unexpected_error_alert('debugging printer settings #3',gPrintSettings);
-				//this.error.sdump('D_PRINT','gPrintSettings 2 = ' + obj.error.pretty_print(js2JSON(gPrintSettings)));
-				//alert('Should be printing\n');
 				this.error.sdump('D_PRINT','Should be printing\n');
 			} else {
-				//alert('Should not be printing\n');
 				this.error.sdump('D_ERROR','Should not be printing\n');
 			}
 		} catch (e) {
@@ -326,9 +300,8 @@ util.print.prototype = {
 			// Pressing cancel is expressed as an NS_ERROR_ABORT return value,
 			// causing an exception to be thrown which we catch here.
 			// Unfortunately this will also consume helpful failures
-			this.error.sdump('D_ERROR','PRINT EXCEPTION: ' + js2JSON(e) + '\n');
+			this.error.sdump('D_ERROR','_NSPrint_webBrowserPrint PRINT EXCEPTION: ' + js2JSON(e) + '\n');
 		}
-
 	},
 
 	'GetPrintSettings' : function() {
@@ -399,7 +372,7 @@ util.print.prototype = {
 	'load_settings' : function() {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
+			var file = new util.file('gPrintSettings');
 			if (file._file.exists()) {
 				temp = file.get_object(); file.close();
 				for (var i in temp) {
@@ -424,9 +397,12 @@ util.print.prototype = {
 
 	'save_settings' : function() {
 		try {
+			var obj = this;
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			JSAN.use('util.file'); var file = new util.file('gPrintSettings');
-			file.set_object(this.gPrintSettings); file.close();
+			var file = new util.file('gPrintSettings');
+			if (typeof obj.gPrintSettings == 'undefined') obj.GetPrintSettings();
+			if (obj.gPrintSettings) file.set_object(obj.gPrintSettings); 
+			file.close();
 		} catch(E) {
 			this.error.standard_unexpected_error_alert("save_settings()",E);
 		}
