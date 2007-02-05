@@ -511,7 +511,7 @@ sub patron_search {
 	}
 
 	my $order_by = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ') ' . (split / /,$_)[1] } @$sort;
-	my $distinct_list = join ', ', map { 'users.'. (split / /, $_)[0] } @$sort;
+	my $distinct_by = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ')' } @$sort;
 
 	if ($inactive) {
 		$inactive = '';
