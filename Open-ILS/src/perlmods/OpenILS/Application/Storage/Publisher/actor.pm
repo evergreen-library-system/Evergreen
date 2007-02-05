@@ -434,7 +434,9 @@ sub patron_search {
 	my $limit = shift || 1000;
 	my $sort = shift;
 	my $inactive = shift;
+
 	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
+	push @$sort,'id';
 
 	# group 0 = user
 	# group 1 = address
@@ -520,7 +522,7 @@ sub patron_search {
 	}
 
 	$select = <<"	SQL";
-		SELECT	DISTINCT $distinct_list, users.id
+		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users
 			JOIN ($select) AS search
 		  USING (id)
