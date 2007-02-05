@@ -40,6 +40,7 @@ __PACKAGE__->register_method(
 	api_name  => 'open-ils.collections.users_of_interest.retrieve',
 	api_level => 1,
 	argc      => 4,
+    stream    => 1,
 	signature => { 
 		desc     => q/
 			Returns an array of user information objects that the system 
@@ -92,16 +93,8 @@ __PACKAGE__->register_method(
 );
 
 
-__PACKAGE__->register_method(
-	method    => 'users_of_interest',
-	api_name  => 'open-ils.collections.users_of_interest.retrieve.atomic',
-   stream    => 1,
-);
-
 sub users_of_interest {
 	my( $self, $conn, $auth, $age, $fine_level, $location ) = @_;
-
-   my $atomic = $self->api_name =~ /atomic/;
 
 	return OpenILS::Event->new('BAD_PARAMS') 
 		unless ($auth and $age and $fine_level and $location);
