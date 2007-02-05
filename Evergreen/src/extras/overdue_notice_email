@@ -1,6 +1,7 @@
 To: ${EMAIL_RECIPIENT}
 From: ${EMAIL_SENDER}
 Reply-To: ${EMAIL_REPLY_TO}
+Errors-To: ${EMAIL_ERRORS_TO}
 Subject: Overdue Materials Notification
 ${EMAIL_HEADERS}
 
