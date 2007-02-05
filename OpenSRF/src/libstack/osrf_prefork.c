@@ -126,6 +126,13 @@ int prefork_child_init_hook(prefork_child* child) {
 	osrfLogDebug( OSRF_LOG_MARK, "Child init hook for child %d", child->pid);
 	char* resc = va_list_to_string("%s_drone",child->appname);
 
+   /* if we're a source-client, tell the logger now that we're a new process*/
+   char* isclient = osrfConfigGetValue(NULL, "/client");
+   if( isclient && !strcasecmp(isclient,"true") )
+      osrfLogSetIsClient(1);
+   free(isclient);
+
+
 	/* we want to remove traces of our parents socket connection 
 	 * so we can have our own */
 	osrfSystemIgnoreTransportClient();
@@ -161,7 +168,7 @@ void prefork_child_process_request(prefork_child* child, char* data) {
 			osrfLogError( OSRF_LOG_MARK, 
 				"Unable to bootstrap client in prefork_child_process_request()");
 			sleep(1);
-			exit(1);
+         osrf_prefork_child_exit(child);
 		}
 	}
 
@@ -306,15 +313,19 @@ prefork_child*  launch_child( prefork_simple* forker ) {
 		if( prefork_child_init_hook(child) == -1 ) {
 			osrfLogError(OSRF_LOG_MARK, 
 				"Forker child going away because we could not connect to OpenSRF...");
-			exit(1);
+         osrf_prefork_child_exit(child);
 		}
 
 		prefork_child_wait( child );
-		exit(0); /* just to be sure */
+      osrf_prefork_child_exit(child); /* just to be sure */
 	 }
 	return NULL;
 }
 
+void osrf_prefork_child_exit(prefork_child* child) {
+   osrfAppRunExitCode();
+   exit(0);
+}
 
 void prefork_launch_children( prefork_simple* forker ) {
 	if(!forker) return;
@@ -562,6 +573,11 @@ void prefork_child_wait( prefork_child* child ) {
 
 		if( errno == EAGAIN ) n = 0;
 
+      if( errno == EPIPE ) {
+         osrfLogWarning(OSRF_LOG_MARK, "C child attempted read on broken pipe, exiting...");
+         break;
+      }
+
 		if( n < 0 ) {
 			osrfLogWarning( OSRF_LOG_MARK,  "Prefork child read returned error with errno %d", errno );
 			break;
@@ -581,7 +597,7 @@ void prefork_child_wait( prefork_child* child ) {
 	osrfLogDebug( OSRF_LOG_MARK, "Child with max-requests=%d, num-served=%d exiting...[%d]", 
 			child->max_requests, i, getpid() );
 
-	exit(0);
+   osrf_prefork_child_exit(child); /* just to be sure */
 }
 
 

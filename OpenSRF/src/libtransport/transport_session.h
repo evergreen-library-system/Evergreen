@@ -158,6 +158,7 @@ struct transport_session_struct {
 	growing_buffer* router_from_buffer;
 	growing_buffer* router_class_buffer;
 	growing_buffer* router_command_buffer;
+	growing_buffer* osrf_xid_buffer;
 	int router_broadcast;
 
 	/* this can be anything.  It will show up in the 
