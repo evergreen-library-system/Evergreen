@@ -237,6 +237,8 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	this.url = url;
 
+   //if( isXUL() ) dump('request URL = ' + url + '?' + this.param_string + '\n');
+
 	try {
 
 		if(blocking) this.xmlhttp.open(this.type, url, false);
