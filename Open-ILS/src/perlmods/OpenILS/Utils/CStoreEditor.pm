@@ -473,13 +473,13 @@ sub runmethod {
 	my $method = $self->app.".direct.$type.$action";
 
 	if( $action eq 'search' ) {
-		$method = "$method.atomic";
+		$method .= '.atomic';
 
 	} elsif( $action eq 'batch_retrieve' ) {
 		$action = 'search';
 		@arg = ( { id => $arg } );
 		$method =~ s/batch_retrieve/search/o;
-		$method = "$method.atomic";
+		$method .= '.atomic';
 
 	} elsif( $action eq 'retrieve_all' ) {
 		$action = 'search';
@@ -488,12 +488,12 @@ sub runmethod {
 		$tt =~ s/\./::/og;
 		my $fmobj = "Fieldmapper::$tt";
 		@arg = ( { $fmobj->Identity => { '!=' => undef } } );
-		$method = "$method.atomic";
+		$method .= '.atomic';
 	}
 
 	$method =~ s/search/id_list/o if $options->{idlist};
 
-   $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
+    $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
 
 	# remove any stale events
 	$self->clear_event;
@@ -561,7 +561,7 @@ sub runmethod {
 		return undef;
 	}
 
-	if( $action eq 'search' or $action eq 'batch_retrieve' or $action eq 'retrieve_all') {
+	if( $action eq 'search' ) {
 		$self->log(I, "$type.$action : returned ".scalar(@$obj). " result(s)");
 		$self->event(_mk_not_found($type, $arg)) unless @$obj;
 	}
@@ -638,6 +638,31 @@ for my $object (keys %$map) {
 	my $retrieveallf = 
 		"sub $retrieveall {return shift()->runmethod('retrieve_all', '$type', \@_);}";
 	eval $retrieveallf;
+}
+
+sub json_query {
+    my( $self, $arg, $options ) = @_;
+    $options ||= {};
+	my @arg = ( ref($arg) eq 'ARRAY' ) ? @$arg : ($arg);
+    my $method = $self->app.'.json_query.atomic';
+    $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
+	$self->clear_event;
+    my $obj;
+    my $err;
+    
+    try {
+        $obj = $self->request($method, @arg);
+    } catch Error with { $err = shift; };
+
+    if( $err ) {
+        $self->event(
+            OpenILS::Event->new( 'DATABASE_QUERY_FAILED',
+            payload => $arg, debug => "$err" ));
+        return undef;
+    }
+
+    $self->log(I, "json_query : returned ".scalar(@$obj). " result(s)");
+    return $obj;
 }
 
 
