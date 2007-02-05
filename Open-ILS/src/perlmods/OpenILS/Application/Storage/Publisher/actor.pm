@@ -434,7 +434,9 @@ sub patron_search {
 	my $limit = shift || 1000;
 	my $sort = shift;
 	my $inactive = shift;
+
 	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
+	push @$sort,'id';
 
 	# group 0 = user
 	# group 1 = address
@@ -511,7 +513,7 @@ sub patron_search {
 	}
 
 	my $order_by = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ') ' . (split / /,$_)[1] } @$sort;
-	my $distinct_list = join ', ', map { 'users.'. (split / /, $_)[0] } @$sort;
+	my $distinct_list = join ', ', map { 'LOWER(users.'. (split / /,$_)[0] . ')' } @$sort;
 
 	if ($inactive) {
 		$inactive = '';
@@ -520,7 +522,7 @@ sub patron_search {
 	}
 
 	$select = <<"	SQL";
-		SELECT	DISTINCT $distinct_list, users.id
+		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users
 			JOIN ($select) AS search
 		  USING (id)
@@ -530,7 +532,7 @@ sub patron_search {
 		  LIMIT $limit
 	SQL
 
-	return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort) + 1]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv,@addrv));
+	return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv,@addrv));
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.actor.user.crazy_search',
