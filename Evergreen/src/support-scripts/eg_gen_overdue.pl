@@ -305,8 +305,9 @@ sub fetch_org_data {
 	}
 
 	my $name = $org->name;
-	my $email = $org->email;
 	my $phone = $org->phone;
+	my $email = $org->email;
+
 
 	my( $s1, $s2, $city, $state, $zip );
 	my $baddr = $org->billing_address || $org->mailing_address;
@@ -437,12 +438,23 @@ sub send_email {
 
 	my $r = ($range eq '7day') ? 7 : 14;
 
-	$org_email ||= $mail_sender;
+	# - default to the global sender for the errors-to header
+	my $errors_to = $mail_sender;
+
+	# if they have an org setting for errors-to, use that as the errors-to address
+	if( my $set = $e->search_actor_org_unit_setting( 
+			{ name => 'org.bounced_emails', org_unit => $org->id } )->[0] ) {
+
+		my $bemail = JSON->JSON2perl($set->value);
+		$errors_to = $bemail if $bemail;
+	}
+
 
 	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/;
-	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/o;
-	$tmpl =~ s/\${EMAIL_REPLY_TO}/$org_email/;
-   $tmpl =~ s/\${EMAIL_HEADERS}//;
+	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/o; 
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$mail_sender/;
+	$tmpl =~ s/\${EMAIL_ERRORS_TO}/$errors_to/;
+   $tmpl =~ s/\${EMAIL_HEADERS}//; # - we have no additional headers to add
 
    $tmpl =~ s/\${RANGE}/$r/;
    $tmpl =~ s/\${DATE}/$mon\/$day\/$year/;
