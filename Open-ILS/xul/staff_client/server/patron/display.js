@@ -248,6 +248,12 @@ patron.display.prototype = {
 							);
 						}
 					],
+					'cmd_patron_exit' : [
+						['command'],
+						function(ev) {
+							xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+						}
+					],
 					'cmd_patron_holds' : [
 						['command'],
 						function(ev) {
