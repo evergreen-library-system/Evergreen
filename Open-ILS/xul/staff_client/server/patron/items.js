@@ -182,7 +182,7 @@ patron.items.prototype = {
 					fake_copy.barcode( '' );
 					fake_copy.circ_lib( nc_circ.circ_lib() );
 
-					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, } );
+					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, 'to_bottom' : true } );
 
 				} catch(F) {
 					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii].id(),F);
@@ -648,10 +648,10 @@ patron.items.prototype = {
 				try {
 					switch(which_list) {
 						case 1:
-							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true } );
 						break;
 						default:
-							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, 'to_bottom' : true } );
 						break;
 					}
 				} catch(E) {
