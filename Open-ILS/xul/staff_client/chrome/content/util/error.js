@@ -348,7 +348,7 @@ util.error.prototype = {
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
-		if (xulG && xulG.url_prefix) url = xulG.url_prefix( url );
+		if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
 		window.open(
 			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
@@ -417,7 +417,7 @@ util.error.prototype = {
 		var data = new OpenILS.data(); data.init({'via':'stash'});
 		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
 		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
-		if (xulG && xulG.url_prefix) url = xulG.url_prefix( url );
+		if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
 		window.open(
 			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 		);
