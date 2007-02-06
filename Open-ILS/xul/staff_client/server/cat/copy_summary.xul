@@ -233,9 +233,10 @@
 			</grid>
 		</deck>
 		<hbox>
-			<label value="Alternate View" style="text-decoration: underline; color: blue" onclick="toggle_deck()"/>
-			<label id="save_columns" value="Save Columns" style="text-decoration: underline; color: blue" onclick="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
-			<label id="sel_clip" value="Copy to Clipboard" style="text-decoration: underline; color: blue" onclick="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
+			<button label="Alternate View" oncommand="toggle_deck()"/>
+			<button id="save_columns" label="Save Columns" oncommand="try { g.list.save_columns(); } catch(E) { alert(E); }"/>
+			<button id="sel_clip" label="Copy to Clipboard" oncommand="try { g.list.node.view.selection.selectAll(); g.list.clipboard(); } catch(E) { alert(E); }"/>
+			<button id="print_export" label="Print Export" oncommand="try { g.list.on_all_fleshed = function() { JSAN.use('util.print'); var p = new util.print(); p.simple( g.list.dump_csv(), { 'content_type' : 'text/plain' } ); setTimeout( function() { g.list.on_all_fleshed = null; }, 0); }; g.list.full_retrieve(); } catch(E) { alert(E); }"/>
 		</hbox>
 	</groupbox>
 
