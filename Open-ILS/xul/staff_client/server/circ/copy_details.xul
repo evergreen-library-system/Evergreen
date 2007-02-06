@@ -66,7 +66,9 @@
 				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
 				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
-				g.data.temp_copy = g.copy; g.data.stash('temp_copy'); $('item_summary').setAttribute('src',urls.XUL_COPY_SUMMARY);
+				g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
+				g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
+				$('item_summary').setAttribute('src',urls.XUL_COPY_SUMMARY);
 
 				$('r_last').disabled = true;
 				if (g.circ) {
