@@ -1288,7 +1288,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 	}
 }
 
-circ.util.renew_via_barcode = function ( barcode, patron_id ) {
+circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 	try {
 		var obj = {};
 		JSAN.use('util.network'); obj.network = new util.network();
@@ -1297,10 +1297,44 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 		var params = { barcode: barcode };
 		if (patron_id) params.patron = patron_id;
 
+		function renew_callback(req) {
+			try {
+				var renew = req.getResultObject();
+				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
+				for (var j = 0; j < renew.length; j++) { 
+					switch(renew[j].ilsevent) {
+						case 0 /* SUCCESS */ : break;
+						case 5000 /* PERM_FAILURE */: break;
+						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
+						case 1213 /* PATRON_BARRED */ : break;
+						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
+						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
+						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
+						case 7004 /* COPY_NOT_AVAILABLE */ : break;
+						case 7006 /* COPY_IS_REFERENCE */ : break;
+						case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
+						case 7008 /* MAX_RENEWALS_REACHED */ : break; 
+						case 7009 /* CIRC_CLAIMS_RETURNED */ : break; 
+						case 7010 /* COPY_ALERT_MESSAGE */ : break;
+						case 7013 /* PATRON_EXCEEDS_FINES */ : break;
+						default:
+							throw(renew);
+						break;
+					}
+				}
+				if (typeof async == 'function') async(renew);
+				return renew;
+			} catch(E) {
+				JSAN.use('util.error'); var error = new util.error();
+				error.standard_unexpected_error_alert('Renew Failed for ' + barcode,E);
+				return null;
+			}
+		}
+
 		var renew = obj.network.simple_request(
 			'CHECKOUT_RENEW', 
 			[ ses(), params ],
-			null,
+			async ? renew_callback : null,
 			{
 				'title' : 'Override Renew Failure?',
 				'overridable_events' : [ 
@@ -1337,29 +1371,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 				}
 			}
 		);
-		if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
-		for (var j = 0; j < renew.length; j++) { 
-			switch(renew[j].ilsevent) {
-				case 0 /* SUCCESS */ : break;
-				case 5000 /* PERM_FAILURE */: break;
-				case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
-				case 1213 /* PATRON_BARRED */ : break;
-				case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
-				case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
-				case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
-				case 7004 /* COPY_NOT_AVAILABLE */ : break;
-				case 7006 /* COPY_IS_REFERENCE */ : break;
-				case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
-				case 7008 /* MAX_RENEWALS_REACHED */ : break; 
-				case 7009 /* CIRC_CLAIMS_RETURNED */ : break; 
-				case 7010 /* COPY_ALERT_MESSAGE */ : break;
-				case 7013 /* PATRON_EXCEEDS_FINES */ : break;
-				default:
-					throw(renew);
-				break;
-			}
-		}
-		return renew;
+		if (! async ) return renew_callback( { 'getResultObject' : function() { return renew; } } );
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
