@@ -55,6 +55,10 @@
 				if (g.data.temp_copy) {
 					copy = g.data.temp_copy; g.data.temp_copy = null; g.data.stash('temp_copy');
 				}
+				var callnumber;
+				if (g.data.temp_callnumber) {
+					callnumber = g.data.temp_callnumber; g.data.temp_callnumber = null; g.data.stash('temp_callnumber');
+				}
 
 				$('caption').setAttribute('tooltiptext','Copy ID = ' + (copy_id || copy.id() ) );
 
@@ -89,44 +93,50 @@
 					try {
 						var copy = req.getResultObject();
 						if (typeof copy.ilsevent != 'undefined') throw(copy);
-						g.list.append({'row':{'my':{'acp':copy}}});
-						g.network.simple_request(
-							'FM_ACN_RETRIEVE',
-							[ copy.call_number() ],
-							function (rreq) {
-								try {
-									$w('barcode',copy.barcode());	
-									$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
-									$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
-									$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
-									$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
-									$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
-									$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
-									$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
-									$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
-									$w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );	
-								} catch(E) {
-									g.error.standard_unexpected_error_alert('rendering copy',E);
-								}
-								try {
-									var cn = rreq.getResultObject();
-									if (typeof cn.ilsevent != 'undefined') {
-										switch(cn.ilsevent) {
-											case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
-												$w('callnumber','Not Cataloged');	
-											break;
-											default:
-												throw(cn);
-											break;
-										}
-									} else {
-										$w('callnumber',cn.label());	
-									}
-								} catch(E) {
-									g.error.standard_unexpected_error_alert('retrieving volume',E);
-								}
+
+						function acn_callback(rreq) {
+							try {
+								$w('barcode',copy.barcode());	
+								$w('ref',get_bool(copy.ref()) ? 'Yes' : 'No');	
+								$w('opac_visible',get_bool(copy.opac_visible()) ? 'Yes' : 'No');	
+								$w('circulate',get_bool(copy.circulate()) ? 'Yes' : 'No');	
+								$w('holdable',get_bool(copy.holdable()) ? 'Yes' : 'No');	
+								$w('age_protect',copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() ) );	
+								$w('location',typeof copy.location() == 'object' ? copy.location().name() : g.data.lookup('acpl',copy.location()).name() );	
+								$w('create_date',util.date.formatted_date(copy.create_date(),'%F'));
+								$w('edit_date',util.date.formatted_date(copy.edit_date(),'%F'));
+								$w('status',typeof copy.status() == 'object' ? copy.status().name() : g.data.hash.ccs[ copy.status() ].name() );	
+							} catch(E) {
+								g.error.standard_unexpected_error_alert('rendering copy',E);
 							}
-						);
+							try {
+								var cn = rreq.getResultObject();
+								if (typeof cn.ilsevent != 'undefined') {
+									switch(cn.ilsevent) {
+										case 1508 /* ASSET_CALL_NUMBER_NOT_FOUND */ :
+											$w('callnumber','Not Cataloged');	
+										break;
+										default:
+											throw(cn);
+										break;
+									}
+								} else {
+									$w('callnumber',cn.label());	
+								}
+								g.list.append({'row':{'my':{'acp':copy,'acn':cn}}});
+							} catch(E) {
+								g.error.standard_unexpected_error_alert('retrieving volume',E);
+							}
+						}
+
+						if (callnumber) {
+							acn_callback( { 'getResultObject' : function() { return callnumber; } } );
+						} else {
+							g.network.simple_request(
+								'FM_ACN_RETRIEVE',
+								[ copy.call_number() ], acn_callback
+							);
+						}
 					} catch(E) {
 						g.error.standard_unexpected_error_alert('retrieving copy',E);
 					}
