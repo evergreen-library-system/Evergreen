@@ -1,5 +1,18 @@
 <body onload='init(); getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));'>
-	<table width='100%' style='border-collapse: collapse;'>
+
+	<noscript>
+		<style type="text/css">#toptable { display: none; }</style>
+		<p style="font-size: 1.3em; padding: 3em; text-align: center;">
+			JavaScript must be enabled in order for you to use the regular Evergreen Catalog.
+			However, it seems JavaScript is either disabled or not supported by your browser.
+			To use the regular Evergreen Catalog, enable JavaScript by changing your browser options, then
+			<a style="color: blue; text-decoration: underline;" href="/">try again</a>.
+			<br/><br/>Alternatively, you can use the basic HTML-only catalog
+			<a style="color: blue; text-decoration: underline;" href="/opac/extras/slimpac/start.html">here</a>.
+		</p>
+	</noscript>
+
+	<table id='#toptable' width='100%' style='border-collapse: collapse;'>
 		<tbody>
 			<tr>
 				<td width='10%'> </td>
@@ -14,6 +27,7 @@
 		</tbody>
 	</table>
 	<script language='javascript'>isFrontPage = true;</script>
+	<script language="javascript">document.getElementById('toptable').style.display = 'table';</script>
 	<center>
 		<!--#include virtual='../footer.xml'-->
 	</center>
