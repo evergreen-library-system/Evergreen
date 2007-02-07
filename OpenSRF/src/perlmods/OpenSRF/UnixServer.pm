@@ -222,10 +222,6 @@ sub configure_hook {
 	return OpenSRF::Application->application_implementation;
 }
 
-sub child_finish_hook {
-	my $self = shift;
-}
-
 sub child_init_hook { 
 
 	$0 =~ s/master/drone/g;
