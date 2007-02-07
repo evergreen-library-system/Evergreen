@@ -133,6 +133,9 @@ g.render_volume_count_entry = function(row,ou_id) {
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
 		if (! isNaN( Number( ev.target.value) ) ) {
+			if ( Number( ev.target.value ) > 100 ) {
+				if (!window.confirm('Are you sure you would like to create ' + ev.target.value + ' volumes?')) return;
+			}
 			if (node) { row.removeChild(node); node = null; }
 			//ev.target.disabled = true;
 			node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
@@ -175,10 +178,15 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 	x.setAttribute('value','Call Numbers'); x.setAttribute('style','font-weight: bold');
 	x = document.createElement('label'); r.appendChild(x);
 	x.setAttribute('value','# of Copies'); x.setAttribute('style','font-weight: bold');
+	x.setAttribute('size','3'); x.setAttribute('cols','3');
+
 
 	function handle_change(tb1,tb2,hb3) {
 		if (tb1.value == '') return;
 		if (isNaN( Number( tb2.value ) )) return;
+		if ( Number( tb2.value ) > 100 ) {
+			if (!window.confirm('Are you sure you would like to create ' + tb2.value + ' copies?')) return;
+		}
 
 		//if (tb1.disabled || tb2.disabled) return;
 
