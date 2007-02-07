@@ -86,7 +86,7 @@ sub run_request {
 
     my $data = [];
     my $req = $ses->request($method, @args);
-    while( my $resp = $req->recv( timeout => 300 ) ) {
+    while( my $resp = $req->recv( timeout => 600 ) ) {
         if( $req->failed ) {
             push( @$data, $req->failed );
             last;
@@ -95,6 +95,8 @@ sub run_request {
     }
 
     return [] if scalar(@$data) == 0;
+    return wrap_perl($$data[0]) 
+        if scalar(@$data) == 1 and $method !~ /.atomic$/og;
     return wrap_perl($data);
 }
 
