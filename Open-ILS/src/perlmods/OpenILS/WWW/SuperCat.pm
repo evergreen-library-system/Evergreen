@@ -968,7 +968,6 @@ sub opensearch_feed {
 	my $cache_key = '';
 	my $searches = {};
 	while ($term_copy =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang):[^:]+)$//so) {
-		warn $1;
 		my ($c,$t) = split ':' => $1;
 		if ($c eq 'site') {
 			$org = $t;
