@@ -332,14 +332,34 @@ sub _set_circ_lost {
 sub _make_bill {
 	my( $session, $amount, $type, $xactid ) = @_;
 
-	$logger->activity("The system is charging $amount ".
+	$logger->info("The system is charging $amount ".
 		" [$type] for lost materials on circulation $xactid");
 
-	my $bill = Fieldmapper::money::billing->new;
+   # -----------------------------------------------------------------
+   # make sure the transaction is not closed
+   my $e = new_editor(xact=>1);
+   my $xact = $e->retrieve_money_billable_transaction($xactid)
+      or return $e->die_event;
 
+   if( $xact->xact_finish ) {
+      my ($mbts) = $U->fetch_mbts($xactid, $e);
+      if( ($mbts->balance_owed + $amount) != 0 ) {
+         $logger->info("re-opening xact $xactid");
+         $xact->clear_xact_finish;
+         $e->update_money_billable_transaction($xact)
+            or return $e->die_event;
+         $e->commit;
+      } 
+   }
+
+   $e->rollback; # has no effect if it's already been comitted
+   # -----------------------------------------------------------------
+
+
+	my $bill = Fieldmapper::money::billing->new;
 	$bill->xact($xactid);
 	$bill->amount($amount);
-	$bill->billing_type($type); # - XXX these strings should be configurable some day
+	$bill->billing_type($type); 
 	$bill->note('SYSTEM GENERATED');
 
 	my $id = $session->request(

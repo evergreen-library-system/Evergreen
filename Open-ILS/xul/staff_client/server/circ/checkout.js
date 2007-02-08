@@ -429,7 +429,8 @@ circ.checkout.prototype = {
 						'mvr' : checkout.payload.record,
 						'acp' : checkout.payload.copy
 						}
-					}
+					},
+					'to_top' : true,
 				//I could override map_row_to_column here
 				}
 			);

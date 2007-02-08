@@ -154,9 +154,15 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		growing_buffer* act = buffer_init(128);	
 		buffer_fadd(act, "[%s] [%s] %s %s", r->connection->remote_ip, authtoken, service, method );
 		char* str; int i = 0;
-		while( (str = osrfStringArrayGetString(mparams, i++)) ) 
-			if( i == 1 ) buffer_fadd(act, " %s", str);
-			else buffer_fadd(act, ", %s", str);
+		while( (str = osrfStringArrayGetString(mparams, i++)) ) {
+			if( i == 1 ) {
+            OSRF_BUFFER_ADD(act, " ");
+				OSRF_BUFFER_ADD(act, str);
+			} else {
+				OSRF_BUFFER_ADD(act, ", ");
+				OSRF_BUFFER_ADD(act, str);
+			}
+		}
 
 		osrfLogActivity( OSRF_LOG_MARK, act->buf );
 		buffer_free(act);

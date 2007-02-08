@@ -26,6 +26,8 @@ CREATE TABLE money.grocery ( -- Catchall table for local billing
 	note			TEXT
 ) INHERITS (money.billable_xact);
 ALTER TABLE money.grocery ADD PRIMARY KEY (id);
+CREATE INDEX circ_open_date_idx ON "money".grocery (xact_start) WHERE xact_finish IS NULL;
+CREATE INDEX m_g_usr_idx ON "money".grocery (usr);
 
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -56,6 +58,12 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	SELECT	p.*,c.relname AS payment_type
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
+
+CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
+	SELECT	p.*, c.relname AS payment_type
+	  FROM	money.bnm_payment p         
+			JOIN pg_class c ON p.tableoid = c.oid
+	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
 
 CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,

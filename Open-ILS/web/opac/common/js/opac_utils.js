@@ -449,6 +449,11 @@ function buildSearchLink(type, string, linknode, trunc) {
 	linknode.setAttribute("href", buildOPACLink(args));
 }
 
+function setSessionCookie(ses) {
+	cookieManager.write(COOKIE_SES, ses, -1);
+}
+
+
 
 /* ----------------------------------------------------------------------- */
 /* user session handling */
@@ -459,7 +464,11 @@ function buildSearchLink(type, string, linknode, trunc) {
 	if ses != G.user.session, we also force a grab */
 function grabUser(ses, force) {
 
-	if(!ses && isXUL()) ses = xulG['authtoken'];
+	if(!ses && isXUL()) {
+		stash = fetchXULStash();
+		ses = stash.session.key
+		_debug("stash auth token = " + ses);
+	}
 
 	if(!ses) {
 		ses = cookieManager.read(COOKIE_SES);
@@ -491,7 +500,7 @@ function grabUser(ses, force) {
 	G.user = user;
 	G.user.fleshed = false;
 	G.user.session = ses;
-	cookieManager.write(COOKIE_SES, ses, -1);
+	setSessionCookie(ses);
 
 	grabUserPrefs();
 	if(G.user.prefs['opac.hits_per_page'])
@@ -541,7 +550,7 @@ function grabFleshedUser() {
 	G.user.session = ses;
 	G.user.fleshed = true;
 
-	cookieManager.write(COOKIE_SES, ses, '+1y'); /*  update the cookie */
+	setSessionCookie(ses);
 	return G.user;
 }
 

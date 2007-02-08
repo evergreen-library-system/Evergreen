@@ -31,6 +31,8 @@
 </vbox>
 
 <hbox id="pending_buckets_bottom_ui">
+	<button id="save_button1" command="save_columns1" label="Save Columns" />
+	<button id="clip_button1" command="sel_clip1" label="Copy to Clipboard" disabled="true" />
 	<spacer flex="1"/>
 	<button label="Add All" command="copy_buckets_add" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
 	<button label="Add Selected" command="copy_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
@@ -42,7 +44,8 @@
 	<button command="copy_buckets_delete_bucket" label="Delete Bucket"/>
 	<button id="refresh" label="Refresh"/>
 	<spacer flex="1"/>
-	<button id="clip_button" command="sel_clip" label="Copy to Clipboard" disabled="true" />
+	<button id="save_button2" command="save_columns2" label="Save Columns" />
+	<button id="clip_button2" command="sel_clip2" label="Copy to Clipboard" disabled="true" />
 	<button command="copy_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
 	<button command="copy_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
