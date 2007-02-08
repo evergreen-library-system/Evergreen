@@ -114,6 +114,15 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	a_l			= apacheGetFirstParamValue( params, "api_level" ); 
 	mparams		= apacheGetParamValues( params, "param" ); /* free me */
 
+   /* set the user defined timeout value */
+   int timeout = 60;
+   char* tout = apacheGetFirstParamValue( params, "timeout" ); /* request timeout in seconds */
+   if( tout ) {
+      timeout = atoi(tout);
+      osrfLogDebug(OSRF_LOG_MARK, "Client supplied timeout of %d", timeout);
+   }
+
+
 	if (a_l)
 		api_level = atoi(a_l);
 
@@ -146,6 +155,20 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		fflush(stderr);
 		*/
 
+		osrfAppSession* session = osrf_app_client_session_init(service);
+
+		double starttime = get_timestamp_millis();
+		int req_id = osrf_app_session_make_req( session, NULL, method, api_level, mparams );
+
+
+		if( req_id == -1 ) {
+			osrfLogError(OSRF_LOG_MARK, "I am unable to communcate with opensrf..going away...");
+			/* we don't want to spawn an intense re-forking storm 
+			 * if there is no jabber server.. so give it some time before we die */
+			usleep( 100000 ); /* 100 milliseconds */
+			exit(1);
+		}
+
 
 		/* ----------------------------------------------------------------- */
 		/* log all requests to the activity log */
@@ -168,19 +191,6 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		buffer_free(act);
 		/* ----------------------------------------------------------------- */
 
-		osrfAppSession* session = osrf_app_client_session_init(service);
-
-		double starttime = get_timestamp_millis();
-		int req_id = osrf_app_session_make_req( session, NULL, method, api_level, mparams );
-
-
-		if( req_id == -1 ) {
-			osrfLogError(OSRF_LOG_MARK, "I am unable to communcate with opensrf..going away...");
-			/* we don't want to spawn an intense re-forking storm 
-			 * if there is no jabber server.. so give it some time before we die */
-			usleep( 100000 ); /* 100 milliseconds */
-			exit(1);
-		}
 
 		osrf_message* omsg = NULL;
 
@@ -197,7 +207,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		char* statustext	= NULL;
 		char* output		= NULL;
 
-		while((omsg = osrfAppSessionRequestRecv( session, req_id, 60 ))) {
+		while((omsg = osrfAppSessionRequestRecv( session, req_id, timeout ))) {
 	
 			statuscode = omsg->status_code;
 			jsonObject* res;	
@@ -289,6 +299,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	string_array_destroy(mparams);
 
 	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
+   osrfLogClearXid();
 
 	return ret;
 }
