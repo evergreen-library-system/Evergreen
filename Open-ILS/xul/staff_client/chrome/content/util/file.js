@@ -30,16 +30,16 @@ util.file.prototype = {
 			if (!fname) throw('Must specify a filename.');
 
 			switch(path) {
-				case 'profile' :
-					this._file = this.dirService.get( "UChrom",  Components.interfaces.nsIFile );
-					//this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
-				break;
 				case 'chrome' : 
-				default:
 					this._file = this.dirService.get( "AChrom",  Components.interfaces.nsIFile );
 					this._file.append(myPackageDir); 
 					this._file.append("content"); 
 					this._file.append("conf"); 
+				break;
+				default:
+				case 'profile' :
+					this._file = this.dirService.get( "UChrm",  Components.interfaces.nsIFile );
+					//this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
 				break;
 			}
 			this._file.append(fname);
