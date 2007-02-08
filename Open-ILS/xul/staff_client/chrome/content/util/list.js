@@ -337,7 +337,8 @@ util.list.prototype = {
 
 		var treeitem = document.createElement('treeitem');
 		treeitem.setAttribute('retrieve_id',params.retrieve_id);
-		if (typeof params.to_bottom != 'undefined') {
+		//if (typeof params.to_bottom != 'undefined') {
+		if (typeof params.to_top == 'undefined') {
 			treechildren_node.appendChild( treeitem );
 		} else {
 			if (treechildren_node.firstChild) {
@@ -443,7 +444,8 @@ util.list.prototype = {
 
 				if (obj.trim_list && obj.row_count.total >= obj.trim_list) {
 					// Remove oldest row
-					if (typeof params.to_bottom != 'undefined') {
+					//if (typeof params.to_bottom != 'undefined') {
+					if (typeof params.to_top == 'undefined') {
 						treechildren_node.removeChild( treechildren_node.firstChild );
 					} else {
 						treechildren_node.removeChild( treechildren_node.lastChild );
