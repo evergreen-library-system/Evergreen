@@ -465,12 +465,7 @@ sub the_quest_for_knowledge {
 
 	# do some simple sanity checking
 	if(!$searchhash->{searches} or
-		(
-			!$searchhash->{searches}->{title}	and
-			!$searchhash->{searches}->{author}	and
-			!$searchhash->{searches}->{subject}	and
-			!$searchhash->{searches}->{series}	and
-			!$searchhash->{searches}->{keyword}	) ) {
+		( !grep { /^(?:title|author|subject|series|keyword)/ } keys %{$searchhash->{searches}} ) ) {
 		return { count => 0 };
 	}
 

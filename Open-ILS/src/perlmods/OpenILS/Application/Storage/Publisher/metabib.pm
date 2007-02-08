@@ -1511,24 +1511,26 @@ sub postfilter_search_multi_class_fts {
 
 	my @bonus_lists;
 	my @bonus_values;
-	my $prev_search_class;
-	my $curr_search_class;
+	my $prev_search_group;
+	my $curr_search_group;
 	my $search_class;
 	my $search_field;
 	my $metabib_field;
 	for my $search_group (sort keys %{$args{searches}}) {
+		(my $search_group_name = $search_group) =~ s/\|/_/gso;
 		($search_class,$search_field) = split /\|/, $search_group;
+		$log->debug("Searching class [$search_class] and field [$search_field]",DEBUG);
 
 		if ($search_field) {
-			unless ( ($metabib_field) = config::metabib_field->search( field_class => $search_class, name => $search_field ) ) {
-				$log->debug("Requested class [$search_class] or field [$search_field] does not exist!", WARN);
-				next;
+			unless ( $metabib_field = config::metabib_field->search( field_class => $search_class, name => $search_field )->next ) {
+				$log->warn("Requested class [$search_class] or field [$search_field] does not exist!");
+				return undef;
 			}
 		}
 
-		$prev_search_class = $curr_search_class if ($curr_search_class);
+		$prev_search_group = $curr_search_group if ($curr_search_group);
 
-		$curr_search_class = $search_class;
+		$curr_search_group = $search_group_name;
 
 		my $class = $_cdbi->{$search_class};
 		my $search_table = $class->table;
@@ -1537,7 +1539,7 @@ sub postfilter_search_multi_class_fts {
 		$index_col ||= 'value';
 
 		
-		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_class}{term}, $search_class.'.value', "$search_class.$index_col");
+		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
 
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
@@ -1546,16 +1548,16 @@ sub postfilter_search_multi_class_fts {
 		my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
 		my $first_word = lc(($fts->words)[0]).'%';
 
-		$_.=" * (SELECT weight FROM $field_table WHERE $search_class.field = id)" for (@fts_ranks);
+		$_.=" * (SELECT weight FROM $field_table WHERE $search_group_name.field = id)" for (@fts_ranks);
 		my $rank = join(' + ', @fts_ranks);
 
 		my %bonus = ();
-		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value LIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
-		$bonus{'author'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $first_word } ];
+		$bonus{'keyword'} = [ { "CASE WHEN $search_group_name.value LIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
+		$bonus{'author'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 10 ELSE 1 END" => $first_word } ];
 
 		$bonus{'series'} = [
-			{ "CASE WHEN $search_class.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-			{ "CASE WHEN $search_class.value ~ ? THEN 20 ELSE 1 END" => $REstring },
+			{ "CASE WHEN $search_group_name.value LIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+			{ "CASE WHEN $search_group_name.value ~ ? THEN 20 ELSE 1 END" => $REstring },
 		];
 
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
@@ -1569,17 +1571,17 @@ sub postfilter_search_multi_class_fts {
 
 		#---------------------
 
-		$search_table_list .= "$search_table $search_class, ";
+		$search_table_list .= "$search_table $search_group_name, ";
 		push @rank_list,$rank;
-		$fts_list .= " AND $fts_where AND m.source = $search_class.source";
+		$fts_list .= " AND $fts_where AND m.source = $search_group_name.source";
 
 		if ($metabib_field) {
-			$join_table_list .= " $curr_search_class.field = " . $metabib_field->id;
+			$join_table_list .= " AND $search_group_name.field = " . $metabib_field->id;
 			$metabib_field = undef;
 		}
 
-		if ($prev_search_class) {
-			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
+		if ($prev_search_group) {
+			$join_table_list .= " AND $prev_search_group.source = $curr_search_group.source";
 		}
 	}
 
@@ -1988,24 +1990,26 @@ sub biblio_search_multi_class_fts {
 
 	my @bonus_lists;
 	my @bonus_values;
-	my $prev_search_class;
-	my $curr_search_class;
+	my $prev_search_group;
+	my $curr_search_group;
 	my $search_class;
 	my $search_field;
 	my $metabib_field;
 	for my $search_group (sort keys %{$args{searches}}) {
+		(my $search_group_name = $search_group) =~ s/\|/_/gso;
 		($search_class,$search_field) = split /\|/, $search_group;
+		$log->debug("Searching class [$search_class] and field [$search_field]",DEBUG);
 
 		if ($search_field) {
-			unless ( ($metabib_field) = config::metabib_field->search( field_class => $search_class, name => $search_field ) ) {
-				$log->debug("Requested class [$search_class] or field [$search_field] does not exist!", WARN);
-				next;
+			unless ( $metabib_field = config::metabib_field->search( field_class => $search_class, name => $search_field )->next ) {
+				$log->warn("Requested class [$search_class] or field [$search_field] does not exist!");
+				return undef;
 			}
 		}
 
-		$prev_search_class = $curr_search_class if ($curr_search_class);
+		$prev_search_group = $curr_search_group if ($curr_search_group);
 
-		$curr_search_class = $search_class;
+		$curr_search_group = $search_group_name;
 
 		my $class = $_cdbi->{$search_class};
 		my $search_table = $class->table;
@@ -2014,7 +2018,7 @@ sub biblio_search_multi_class_fts {
 		$index_col ||= 'value';
 
 		
-		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_class}{term}, $search_class.'.value', "$search_class.$index_col");
+		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
 
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
@@ -2023,18 +2027,18 @@ sub biblio_search_multi_class_fts {
 		my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
 		my $first_word = lc(($fts->words)[0]).'%';
 
-		$_.=" * (SELECT weight FROM $field_table WHERE $search_class.field = id)" for (@fts_ranks);
+		$_.=" * (SELECT weight FROM $field_table WHERE $search_group_name.field = id)" for (@fts_ranks);
 		my $rank = join('  + ', @fts_ranks);
 
 		my %bonus = ();
 		$bonus{'subject'} = [];
-		$bonus{'author'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word } ];
+		$bonus{'author'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word } ];
 
-		$bonus{'keyword'} = [ { "CASE WHEN $search_class.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
+		$bonus{'keyword'} = [ { "CASE WHEN $search_group_name.value ILIKE ? THEN 10 ELSE 1 END" => $SQLstring } ];
 
 		$bonus{'series'} = [
-			{ "CASE WHEN $search_class.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
-			{ "CASE WHEN $search_class.value ~ ? THEN 20 ELSE 1 END" => $REstring },
+			{ "CASE WHEN $search_group_name.value ILIKE ? THEN 1.5 ELSE 1 END" => $first_word },
+			{ "CASE WHEN $search_group_name.value ~ ? THEN 20 ELSE 1 END" => $REstring },
 		];
 
 		$bonus{'title'} = [ @{ $bonus{'series'} }, @{ $bonus{'keyword'} } ];
@@ -2050,22 +2054,22 @@ sub biblio_search_multi_class_fts {
 		my $bonus_list = join ' * ', map { keys %$_ } @{ $bonus{$search_class} };
 		$bonus_list ||= '1';
 
-		push @bonus_lists, $bonus_list,;
+		push @bonus_lists, $bonus_list;
 		push @bonus_values, map { values %$_ } @{ $bonus{$search_class} };
 
 		#---------------------
 
-		$search_table_list .= "$search_table $search_class, ";
+		$search_table_list .= "$search_table $search_group_name, ";
 		push @rank_list,$rank;
-		$fts_list .= " AND $fts_where AND b.id = $search_class.source";
+		$fts_list .= " AND $fts_where AND b.id = $search_group_name.source";
 
 		if ($metabib_field) {
-			$join_table_list .= " $curr_search_class.field = " . $metabib_field->id;
+			$fts_list .= " AND $curr_search_group.field = " . $metabib_field->id;
 			$metabib_field = undef;
 		}
 
-		if ($prev_search_class) {
-			$join_table_list .= " AND $prev_search_class.source = $curr_search_class.source";
+		if ($prev_search_group) {
+			$join_table_list .= " AND $prev_search_group.source = $curr_search_group.source";
 		}
 	}
 
