@@ -47,6 +47,19 @@ sub child_init {
 	$_xslt = new XML::LibXSLT;
 	
 	# parse the MODS xslt ...
+	my $mods32_xslt = $_parser->parse_file(
+		OpenSRF::Utils::SettingsClient
+			->new
+			->config_value( dirs => 'xsl' ).
+		"/MARC21slim2MODS32.xsl"
+	);
+	# and stash a transformer
+	$record_xslt{mods32}{xslt} = $_xslt->parse_stylesheet( $mods32_xslt );
+	$record_xslt{mods32}{namespace_uri} = 'http://www.loc.gov/mods/v3';
+	$record_xslt{mods32}{docs} = 'http://www.loc.gov/mods/';
+	$record_xslt{mods32}{schema_location} = 'http://www.loc.gov/standards/mods/v3/mods-3-2.xsd';
+
+	# parse the MODS xslt ...
 	my $mods3_xslt = $_parser->parse_file(
 		OpenSRF::Utils::SettingsClient
 			->new
