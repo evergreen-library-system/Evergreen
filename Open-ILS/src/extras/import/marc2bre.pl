@@ -16,35 +16,47 @@ use Digest::MD5 qw/md5_hex/;
 use JSON;
 use Data::Dumper;
 use Unicode::Normalize;
+use Encode;
 
+use bytes;
+
+use FileHandle;
 use Time::HiRes qw/time/;
 use Getopt::Long;
 use MARC::Batch;
 use MARC::File::XML;
-use MARC::Charset;
+use MARC::Charset qw/utf8_to_marc8/;;
 use UNIVERSAL::require;
 
 MARC::Charset->ignore_errors(1);
 
-my ($utf8, $id_field, $count, $user, $password, $config, $keyfile,  @files, @trash_fields) =
-	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
+my ($id_field, $recid, $user, $config, $keyfile, $dontuse_file, $enc, @files, @trash_fields) =
+	('', 1, 1, '/openils/conf/bootstrap.conf');
 
 GetOptions(
-	'startid=i'	=> \$count,
+	'startid=i'	=> \$recid,
 	'idfield=s'	=> \$id_field,
 	'user=s'	=> \$user,
-	'password=s'	=> \$password,
+	'encoding=s'	=> \$enc,
 	'keyfile=s'	=> \$keyfile,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
 	'trash=s'	=> \@trash_fields,
+	'dontuse=s'	=> \$dontuse_file
 );
+
+if ($enc) {
+	MARC::Charset->ignore_errors(1);
+	MARC::Charset->assume_encoding($enc);
+}
 
 @files = @ARGV if (!@files);
 
 my @ses;
 my @req;
 my %processing_cache;
+
+my $startid = $recid;
 
 my %source_map = (      
 	o  => 'OCLC',
@@ -58,8 +70,6 @@ my %source_map = (
 OpenSRF::System->bootstrap_client( config_file => $config );
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-#$user = OpenILS::Application::AppUtils->check_user_session( login($user,$password) )->id;
-
 my %keymap;
 if ($keyfile) {
 	open F, $keyfile or die "Couldn't open key file $keyfile";
@@ -68,6 +78,19 @@ if ($keyfile) {
 			$keymap{$1} = $2;
 		}
 	}
+	close(F);
+}
+
+my %dontuse_id;
+if ($dontuse_file) {
+	open F, $dontuse_file or die "Couldn't open used-id file $dontuse_file";
+	while (<F>) {
+		chomp;
+		s/^\s*//;
+		s/\s*$//;
+		$dontuse_id{$_} = 1;
+	}
+	close(F);
 }
 
 select STDERR; $| = 1;
@@ -77,11 +100,19 @@ my $batch = new MARC::Batch ( 'USMARC', @files );
 $batch->strict_off();
 $batch->warnings_off();
 
+my %used_ids;
 my $starttime = time;
 my $rec;
+my $count = 0;
 while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	next if ($rec == -1);
 	my $id;
+
+	$recid++;
+	while ($used_ids{$recid}) {
+		$recid++;
+	}
+	$used_ids{$recid} = 1;
 
 	if ($id_field) {
 		my $field = $rec->field($id_field);
@@ -91,13 +122,13 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 			} else {
 				$id = $field->subfield('a');
 			}
+
+			$id =~ s/\D+//gso;
 		}
 	}
-		
-	if ($id && $id =~ /(\d+)/o) {
-		$id = $1;
-	} else {
-		$id = $count;
+
+	if (!$id) {
+		$id = $recid;
 	}
 
 	if ($keyfile) {
@@ -117,8 +148,8 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 		next;
 	}
 
-	my $tcn_value = $rec->subfield('901' => 'a');
-	my $tcn_source = $rec->subfield('901' => 'b');
+	my $tcn_value = $rec->subfield('901' => 'a') || "SYS$id";
+	my $tcn_source = $rec->subfield('901' => 'b') || 'System';
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
 	$xml =~ s/^<\?xml.+\?\s*>//go;
@@ -140,10 +171,11 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$bib->last_xact_id('IMPORT-'.$starttime);
 
 	print JSON->perl2JSON($bib)."\n";
+	$dontuse_id{$tcn_value} = 1;
 
 	$count++;
 
-	if (!($count % 20)) {
+	if (!($count % 50)) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 }
@@ -151,60 +183,66 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 sub preprocess {
 	my $rec = shift;
 
-	my ($id, $source, $value);
-
-        if (!$id) {
-                my $f = $rec->field($id_field);
-                $id = $f->subfield('a') if ($f);
-        }
+	my ($id, $source, $value) = ('','','');
 
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
 	}
 
-	if (!$id) {
+	if (!$id || $dontuse_id{$source.$id}) {
 		my $f = $rec->field('000');
 		$id = $f->data if ($f);
-		$source = 'g'; # only PG seems to use this
+		$source = 'g' if ($f); # only PG seems to use this
 	}
 
-        if (!$id) {
+        if (!$id || $dontuse_id{$source.$id}) {
                 my $f = $rec->field('020');
                 $id = $f->subfield('a') if ($f);
-		$source = 'i';
+		$source = 'i' if ($f);
         }
 
-        if (!$id) {
+        if (!$id || $dontuse_id{$source.$id}) {
                 my $f = $rec->field('022');
                 $id = $f->subfield('a') if ($f);
-		$source = 'i';
+		$source = 'i' if ($f);
         }
 
-        if (!$id) {
+        if (!$id || $dontuse_id{$source.$id}) {
                 my $f = $rec->field('010');
                 $id = $f->subfield('a') if ($f);
-		$source = 'l';
+		$source = 'l' if ($f);
         }
 
-	if (!$id) {
-		$count++;
-		warn "\n !!! Record with no TCN : $count\n".$rec->as_formatted;
-		return undef;
-	}
+#        if (!$id) {
+#                my $f = $rec->field($id_field);
+#                $id = $f->subfield('a') if ($f);
+#        }
 
 	$rec->delete_field($_) for ($rec->field($id_field, @trash_fields));
 
-	$id =~ s/\s*$//o;
-	$id =~ s/^\s*//o;
-	$id =~ s/^(\S+).*$/$1/o;
+	if ($id) {
+		$id =~ s/\s*$//o;
+		$id =~ s/^\s*//o;
+		$id =~ s/^(\S+).*$/$1/o;
 
-	$id = $source.$id if ($source);
+		$id = $source.$id if ($source);
 
-	($source, $value) = $id =~ /^(.)(.+)$/o;
-	if ($id =~ /^o(\d+)$/o) {
-		$id = "ocm$1";
-		$source = 'o';
+		($source, $value) = $id =~ /^(.)(.+)$/o;
+		if ($id =~ /^o(\d+)$/o) {
+			$id = "ocm$1";
+			$source = 'o';
+		}
+	}
+
+	if ($id && $dontuse_id{$id}) {
+		warn "\n!!! ID $id is already in use\n";
+		$id = '';
+	}
+
+	if (!$id) {
+		$source = 's';
+		$id = 's'.$recid;
 	}
 
 	my $tcn = MARC::Field->new(
@@ -217,36 +255,6 @@ sub preprocess {
 
 	return $rec;
 }
-
-sub login {        
-	my( $username, $password, $type ) = @_;
-
-	$type |= "staff"; 
-
-	my $seed = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.init',
-		$username
-	);
-
-	die("No auth seed. Couldn't talk to the auth server") unless $seed;
-
-	my $response = OpenILS::Application::AppUtils->simplereq(
-		'open-ils.auth',
-		'open-ils.auth.authenticate.complete',
-                {       username => $username,
-                        password => md5_hex($seed . md5_hex($password)),
-                        type => $type });
-
-        die("No auth response returned on login.") unless $response;
-
-        my $authtime = $response->{payload}->{authtime};
-        my $authtoken = $response->{payload}->{authtoken};
-
-	die("Login failed for user $username!") unless $authtoken;
-
-        return $authtoken;
-}       
 
 sub entityize {
         my $stuff = shift;
