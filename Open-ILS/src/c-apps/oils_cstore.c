@@ -1100,17 +1100,15 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKey( node, "transform" ) );
 
-	buffer_fadd(
-		sql_buf,
-		"%s(\"%s\".%s)",
-		field_transform,
-		class,
-		osrfHashGet(field, "name")
-	);
+	if (field_transform)
+		buffer_fadd( sql_buf, "%s(\"%s\".%s)", field_transform, class, osrfHashGet(field, "name"));
+	else
+		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
 
 	char* pred = buffer_data(sql_buf);
 	buffer_free(sql_buf);
-	free(field_transform);
+
+	if (field_transform) free(field_transform);
 
 	return pred;
 }
@@ -1121,8 +1119,12 @@ char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObj
 	char* field_transform = searchFieldTransform( class, field, node->item );
 	char* value = NULL;
 
-	if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
+	if (!jsonObjectGetKey( node->item, "value" )) {
+		value = searchWHERE( node->item, osrfHashGet( oilsIDL(), class ), 0 );
+	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
 		value = searchValueTransform(jsonObjectGetKey( node->item, "value" ));
+	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_HASH) {
+		value = searchWHERE( jsonObjectGetKey( node->item, "value" ), osrfHashGet( oilsIDL(), class ), 0 );
 	} else if (jsonObjectGetKey( node->item, "value" )->type != JSON_NULL) {
 		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			value = jsonNumberToDBString( field, jsonObjectGetKey( node->item, "value" ) );
@@ -1488,9 +1490,15 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 		}
 
 		if ( !strncmp("+",node->key,1) ) {
-			char* subpred = searchWHERE( node->item, osrfHashGet( oilsIDL(), node->key + 1 ), 0);
-			buffer_fadd(sql_buf, "( %s )", subpred);
-			free(subpred);
+			if ( node->item->type == JSON_STRING ) {
+				char* subpred = jsonObjectToSimpleString( node->item );
+				buffer_fadd(sql_buf, " \"%s\".%s ", node->key + 1, subpred);
+				free(subpred);
+			} else {
+				char* subpred = searchWHERE( node->item, osrfHashGet( oilsIDL(), node->key + 1 ), 0);
+				buffer_fadd(sql_buf, "( %s )", subpred);
+				free(subpred);
+			}
 		} else if ( !strcasecmp("-or",node->key) ) {
 			char* subpred = searchWHERE( node->item, meta, 1);
 			buffer_fadd(sql_buf, "( %s )", subpred);
