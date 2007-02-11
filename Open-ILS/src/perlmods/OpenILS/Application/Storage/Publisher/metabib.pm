@@ -2233,17 +2233,18 @@ sub biblio_search_multi_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-	my $max = 0;
-	$max = 1 if (!@$recs);
-	for (@$recs) {
-		$max = $$_[1] if ($$_[1] > $max);
-	}
+#	my $max = 0;
+#	$max = 1 if (!@$recs);
+#	for (@$recs) {
+#		$max = $$_[1] if ($$_[1] > $max);
+#	}
 
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		next unless ($$rec[0]);
 		my ($mrid,$rank) = @$rec;
-		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $count] );
+#		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $count] );
+		$client->respond( [$mrid, sprintf('%0.3f',$rank), $count] );
 	}
 	return undef;
 }
