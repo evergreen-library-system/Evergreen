@@ -2698,6 +2698,11 @@ sub new_flesh_user {
 		}
 	}
 
+	$user->card( (grep { $U->is_true($_->active) } @{$user->cards})[0] )
+		if grep { /card$/ } @$fields and 
+			grep { /cards/ } @$fields and 
+			not $U->is_true($user->card->active);
+
 	$e->rollback;
 	$user->clear_passwd();
 	return $user;
