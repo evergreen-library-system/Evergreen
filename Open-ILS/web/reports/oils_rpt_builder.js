@@ -582,7 +582,11 @@ function oilsDelSelectedAggFilterItems() {
 function _oilsDelSelectedFilterItems(type) {
 
 	/* the values in this list are formed:  <path>:<operation>:<transform> */
-	var list = oilsDelSelectedItems(oilsRptFilterSelector);
+	var list;
+    if( type == 'where' )
+	    list = oilsDelSelectedItems(oilsRptFilterSelector);
+    else if( type == 'having' )
+	    list = oilsDelSelectedItems(oilsRptHavingSelector);
 
 	_debug("deleting filter items " + list);
 
