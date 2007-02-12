@@ -863,8 +863,10 @@ __PACKAGE__->register_method(
 	api_name => 'open-ils.circ.copy_details.retrieve.barcode');
 sub copy_details_barcode {
 	my( $self, $conn, $auth, $barcode ) = @_;
-	return $self->copy_details( $conn, $auth, 
-		new_editor()->search_asset_copy({barcode=>$barcode,deleted=>'f'},{idlist=>1})->[0]);
+    my $e = new_editor();
+    my $cid = $e->search_asset_copy({barcode=>$barcode, deleted=>'f'}, {idlist=>1})->[0];
+    return $e->event unless $cid;
+	return $self->copy_details( $conn, $auth, $cid );
 }
 
 
