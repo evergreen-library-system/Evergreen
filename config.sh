@@ -24,6 +24,7 @@
 
 CONFIG_FILE="install.conf";
 DEFAULT_CONFIG_FILE="install.conf.default";
+USE_DEFAULT="$1";
 
 function buildConfig {
 
@@ -34,6 +35,12 @@ function buildConfig {
 			source "$DEFAULT_CONFIG_FILE";
 		fi;
 	fi;
+
+    if [ -n "$USE_DEFAULT" ]; then
+        prompt "Default config requested, not prompting for values...\n";
+        writeConfig;
+        return 0;
+    fi;
 
 
 	echo "";
@@ -109,7 +116,7 @@ function buildConfig {
 	writeConfig;
 }
 
-function prompt { echo ""; echo -n "$*"; }
+function prompt { echo ""; echo -en "$*"; }
 
 function writeConfig {
 
