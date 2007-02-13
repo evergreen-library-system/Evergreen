@@ -175,13 +175,14 @@ __PACKAGE__->register_method(
 
 sub biblio_search_tcn {
 
-	my( $self, $client, $tcn ) = @_;
+	my( $self, $client, $tcn, $include_deleted ) = @_;
 
 	$tcn =~ s/.*?(\w+)\s*$/$1/o;
 
 	my $e = new_editor();
-	my $recs = $e->search_biblio_record_entry(
-		{deleted => 'f', tcn_value => $tcn}, {idlist =>1});
+   my $search = {tcn_value => $tcn};
+   $search->{deleted} = 'f' unless $include_deleted;
+	my $recs = $e->search_biblio_record_entry( $search, {idlist =>1} );
 	
 	return { count => scalar(@$recs), ids => $recs };
 }
@@ -354,6 +355,31 @@ sub biblio_barcode_to_title {
 
 	return { ids => [ $title->id ], count => 1 } if $title;
 	return { count => 0 };
+}
+
+__PACKAGE__->register_method(
+    method => 'title_id_by_item_barcode',
+    api_name => 'open-ils.search.bib_id.by_barcode'
+);
+
+sub title_id_by_item_barcode {
+    my( $self, $conn, $barcode ) = @_;
+    my $e = new_editor();
+    my $copies = $e->search_asset_copy(
+        [
+            { deleted => 'f', barcode => $barcode },
+            {
+                flesh => 2,
+                flesh_fields => {
+                    acp => [ 'call_number' ],
+                    acn => [ 'record' ]
+                }
+            }
+        ]
+    );
+
+    return $e->event unless @$copies;
+    return $$copies[0]->call_number->record->id;
 }
 
 
@@ -1019,9 +1045,13 @@ sub marc_search {
 	my $recs = search_cache($ckey, $offset, $limit);
 
 	if(!$recs) {
-		$recs = $U->storagereq($method, %$args);
-		put_cache($ckey, scalar(@$recs), $recs);
-		$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+		$recs = $U->storagereq($method, %$args) || [];
+		if( $recs ) {
+			put_cache($ckey, scalar(@$recs), $recs);
+			$recs = [ @$recs[$offset..($offset + ($limit - 1))] ];
+		} else {
+			$recs = [];
+		}
 	}
 
 	my $count = 0;

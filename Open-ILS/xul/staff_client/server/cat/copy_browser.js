@@ -1207,6 +1207,7 @@ cat.copy_browser.prototype = {
 				},
 				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'aou_' + org.id(),
+				'to_bottom' : true,
 			};
 		
 			var acn_tree_list;
@@ -1302,6 +1303,7 @@ cat.copy_browser.prototype = {
 				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'acn_' + acn_tree.id(),
 				'node' : parent_node,
+				'to_bottom' : true,
 			};
 			var node = obj.list.append(data);
 			obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
@@ -1351,6 +1353,7 @@ cat.copy_browser.prototype = {
 				},
 				'retrieve_id' : 'acp_' + acp_item.id(),
 				'node' : parent_node,
+				'to_bottom' : true,
 			};
 			var node = obj.list.append(data);
 			obj.map_tree[ 'acp_' + acp_item.id() ] =  node;

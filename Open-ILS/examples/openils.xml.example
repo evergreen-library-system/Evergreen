@@ -28,6 +28,47 @@ For non-core config info, see the inline documentation within this file
 		<!-- script for exception strings -->
 		<ils_events>/openils/var/data/ils_events.xml</ils_events>
 
+
+      <!-- Points to the IDL, which defines the ILS objects -->
+		<IDL>/openils/conf/fm_IDL.xml</IDL>
+
+
+      <!-- defines the settings for the hold notification emails -->
+      <email_notify>
+         <template>/openils/var/data/hold_notification_template.example</template>
+         <smtp_server>my.smtp.server</smtp_server>
+         <sender_address>evergreen@mydomain</sender_address>
+      </email_notify>
+
+
+      <!-- defines which services are published via the xml-rpc gateway 
+         !!! do NOT publish sentitive interfaces (e.g. storage)
+         Only interfaces that require authentication/authorization should be published !!!
+      -->
+		<xml-rpc>
+			<allowed_services>
+				<service>opensrf.math</service>
+				<service>opensrf.dbmath</service>
+				<service>open-ils.cat</service>
+				<service>open-ils.search</service>
+				<service>open-ils.circ</service>
+				<service>open-ils.actor</service>
+				<service>open-ils.auth</service>
+				<service>open-ils.collections</service>
+			</allowed_services>
+		</xml-rpc>
+
+
+      <!-- defines the settings for communicating with an added content vendor -->
+		<added_content>
+			<module>OpenILS::WWW::AddedContent::MyVendor</module> <!-- perl handler -->
+			<userid>testuser</userid> <!-- vendor login -->
+			<base_url>http://myvenddor.com</base_url> <!-- vendor url -->
+
+         <!-- add more options as necessary to accomodate the handler module... -->
+		</added_content>
+
+
       <z3950>
 			<default>oclc</default>
          <services>
@@ -188,25 +229,11 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 
 				<app_settings>
-					<memcache>127.0.0.1:10101</memcache>
 					<max_cache_time>3600</max_cache_time>
 					<marc_html_xsl>oilsMARC21slim2HTML.xsl</marc_html_xsl>
-					<added_content>
-						<!-- 
-							Example added content handler.  If this is not defined, the default
-							content handler is used, which returns empty sets for all methods	
-						-->
-						<!--
-						<implementation>Evergreen::Application::Search::AddedContent::ContentCafe</implementation>
-						<host>MY_CONTENT_HOST</host>
-						<username>MY_CONTENT_USERNAME</username>
-						<password>MY_CONTENT_PASSWORD</password>
-						-->
-					</added_content>
 					<zips_file>/openils/var/data/zips.txt</zips_file>
 					<spelling_dictionary>/openils/var/data/oils_authority.dict</spelling_dictionary>
 					<cache_timeout>600</cache_timeout>
-
 				</app_settings>
 
 			</open-ils.search>
@@ -319,7 +346,8 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 				<app_settings>
 					<patron_penalty>patron_penalty.js</patron_penalty>
-					<script_path>/openils/var/penalty/</script_path>
+               <script_path>/openils/var</script_path>
+               <script_path>/openils/var/catalog</script_path>
 				</app_settings>
 			</open-ils.penalty>
 
@@ -343,29 +371,113 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 
 				<app_settings>
-					<rules>
-						<permission>permit_circ.rules</permission>
-						<duration>calculate_duration.rules</duration>
-						<recurring_fines>calculate_recurring_fines.rules</recurring_fines>
-						<max_fines>calculate_max_fines.rules</max_fines>
-						<permit_hold>permit_hold.rules</permit_hold>
-						<permit_renew>permit_renew.rules</permit_renew>
-					</rules>
 
-					<script_path>/openils/var/circ/</script_path>
+					<notify_hold> <!-- set to "true" to generate hold notification emails -->
+						<email>false</email>
+					</notify_hold>
+
+               <!-- script script paths and files -->
+					<script_path>/openils/var</script_path>
+					<script_path>/openils/var/catalog</script_path>
                <scripts>
-                  <circ_permit_patron>circ_permit_patron.js</circ_permit_patron>
-                  <circ_permit_copy>circ_permit_copy.js</circ_permit_copy>
-                  <circ_duration>circ_duration.js</circ_duration>
-                  <circ_recurring_fines>circ_recurring_fines.js</circ_recurring_fines>
-                  <circ_max_fines>circ_max_fines.js</circ_max_fines>
-                  <circ_permit_renew>circ_permit_renew.js</circ_permit_renew>
-                  <circ_permit_hold>circ_permit_hold.js</circ_permit_hold>
-               </scripts>        
+                  <circ_permit_patron>circ/circ_permit_patron.js</circ_permit_patron>
+                  <circ_permit_copy>circ/circ_permit_copy.js</circ_permit_copy>
+                  <circ_duration>circ/circ_duration.js</circ_duration>
+                  <circ_recurring_fines>circ/circ_recurring_fines.js</circ_recurring_fines>
+                  <circ_max_fines>circ/circ_max_fines.js</circ_max_fines>
+                  <circ_permit_renew>circ/circ_permit_renew.js</circ_permit_renew>
+                  <circ_permit_hold>circ/circ_permit_hold.js</circ_permit_hold>
+               </scripts>               
+
+               <!-- list of copy circulation modifiers -->
+					<circ_modifiers>
+						<mod>art</mod>
+						<mod>atlas</mod>
+						<mod>audiobook</mod>
+						<mod>av</mod>
+						<mod>bestseller</mod>
+						<mod>bestsellernh</mod>
+						<mod>book</mod>
+						<mod>cd</mod>
+						<mod>dvd</mod>
+						<mod>e-book</mod>
+						<mod>equipment</mod>
+						<mod>filmstrip</mod>
+						<mod>kit</mod>
+						<mod>magazine</mod>
+						<mod>map</mod>
+						<mod>microform</mod>
+						<mod>music</mod>
+						<mod>record</mod>
+						<mod>software</mod>
+						<mod>talking book</mod>
+						<mod>toy</mod>
+						<mod>video</mod>
+					</circ_modifiers>
+
+              <billing_types>
+                  <type>Miscellaneous</type>
+                  <type>Overdue materials</type>
+                  <type>Fee for placing a hold</type>
+                  <type>Fee for checking out a book</type>
+                  <type>Fee for library card</type>
+                  <type>Miscellaneous charges</type>
+                  <type>Lost materials</type>
+                  <type>Damaged material</type>
+                  <type>Overdue Reserves charge</type>
+                  <type>Recall overdue</type>
+                  <type>Fee for processing lost library materials</type>
+                  <type>Fee for sending patron bills to collection agency</type>
+                  <type>Fee for interlibrary loan</type>
+                  <type>Fee for copies</type>
+                  <type>Money advanced to pay for telephone use</type>
+                  <type>Deposit fee</type>
+                  <type>Fee for disk</type>
+                  <type>Fee for faxing</type>
+                  <type>Fee for laminating</type>
+                  <type>Fee for room cleaning</type>
+                  <type>Deposit returned; fee refund</type>
+                  <type>Sale items</type>
+                  <type>Fee for lost card</type>
+                  <type>Long overdue items</type>
+                  <type>Lost/Replacement Cassette</type>
+                  <type>Returned Check</type>
+               </billing_types>
+
 
 				</app_settings>
 
 			</open-ils.circ>
+
+
+         <open-ils.ingest>
+            <keepalive>3</keepalive>
+            <stateless>1</stateless>
+
+            <implementation>OpenILS::Application::Ingest</implementation>
+            <language>perl</language>
+            <max_requests>1000000</max_requests>
+
+            <app_settings>
+               <script_path>/openils/var/catalog/</script_path>
+               <script_path>/openils/var/web/opac/common/js/</script_path>
+               <scripts>
+                  <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
+                  <biblio_descriptor>biblio_descriptor.js</biblio_descriptor>
+               </scripts>
+            </app_settings>
+            <unix_config>
+               <max_requests>1000000</max_requests>
+               <unix_log>open-ils.ingest-unix.log</unix_log>
+               <unix_sock>open-ils.ingest-unix.sock</unix_sock>
+               <unix_pid>open-ils.ingest-unix.pid</unix_pid>
+               <min_children>5</min_children>
+               <max_children>100</max_children>
+               <min_spare_children>2</min_spare_children>
+               <max_spare_children>5</max_spare_children>
+            </unix_config>
+         </open-ils.ingest>
+
 
 			<!-- Database storage server -->
 			<open-ils.storage>
@@ -386,6 +498,10 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 					
 				<app_settings>
+					<script_path>/openils/var/catalog/</script_path>
+					<scripts>
+						<biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>
+					</scripts>
 					<databases>
 						<driver>Pg</driver>
 						<database>
@@ -401,6 +517,76 @@ For non-core config info, see the inline documentation within this file
 				</app_settings>
 
 			</open-ils.storage>
+
+
+			<open-ils.cstore>
+				<keepalive>6</keepalive>
+				<stateless>1</stateless>
+				<language>C</language>
+				<implementation>oils_cstore.so</implementation>
+				<max_requests>95</max_requests>
+
+				<unix_config>
+					<unix_log>cstore.log</unix_log>
+					<unix_sock>cstore.sock</unix_sock>
+					<unix_pid>cstore.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<min_children>2</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>20</max_spare_children>
+				</unix_config>
+				
+				<app_settings>
+					<IDL>/openils/conf/fm_IDL.xml</IDL>
+					<driver>pgsql</driver>
+					<database>
+						<type>master</type>
+						<weight>2</weight>
+						<user>USER</user>
+						<host>HOST</host>
+						<port>PORT</port>
+						<pw>PASSWORD</pw>
+						<db>DATABASE_NAME</db>
+						<client_encoding>UTF-8</client_encoding>
+					</database>
+				</app_settings>
+			</open-ils.cstore>
+
+			<open-ils.reporter-store>
+				<keepalive>5</keepalive>
+				<stateless>1</stateless>
+				<language>C</language>
+				<implementation>oils_rstore.so</implementation>
+				<max_requests>95</max_requests>
+
+				<unix_config>
+					<unix_log>rstore.log</unix_log>
+					<unix_sock>rstore.sock</unix_sock>
+					<unix_pid>rstore.pid</unix_pid>
+					<max_requests>1000</max_requests>
+					<min_children>2</min_children>
+					<max_children>15</max_children>
+					<min_spare_children>2</min_spare_children>
+					<max_spare_children>20</max_spare_children>
+				</unix_config>
+				
+				<app_settings>
+					<IDL>/openils/conf/fm_IDL.xml</IDL>
+					<driver>pgsql</driver>
+					<database>
+						<type>master</type>
+						<weight>2</weight>
+						<user>USER</user>
+						<host>HOST</host>
+						<port>PORT</port>
+						<pw>PASSWORD</pw>
+						<db>DATABASE_NAME</db>
+						<client_encoding>UTF-8</client_encoding>
+					</database>
+				</app_settings>
+			</open-ils.reporter-store>
+
 
 			<opensrf.settings>
 				<keepalive>1</keepalive>
@@ -420,6 +606,44 @@ For non-core config info, see the inline documentation within this file
 				</unix_config>
 			</opensrf.settings>
 
+
+         <open-ils.collections>
+            <keepalive>3</keepalive>
+            <stateless>1</stateless>
+            <language>perl</language>
+            <implementation>OpenILS::Application::Collections</implementation>
+            <max_requests>17</max_requests>
+            <unix_config>
+               <unix_sock>opensrf.collections_unix.sock</unix_sock>
+               <unix_pid>opoensrf.collections_unix.pid</unix_pid>
+               <max_requests>1000</max_requests>
+               <unix_log>opensrf.collections_unix.log</unix_log>
+               <min_children>5</min_children>
+               <max_children>15</max_children>
+               <min_spare_children>3</min_spare_children>
+               <max_spare_children>5</max_spare_children>
+            </unix_config>
+         </open-ils.collections>
+
+
+         <open-ils.reporter>
+            <keepalive>3</keepalive>
+            <stateless>1</stateless>
+            <language>perl</language>
+            <implementation>OpenILS::Application::Reporter</implementation>
+            <max_requests>17</max_requests>
+            <unix_config>
+               <unix_sock>open-ils.reporter_unix.sock</unix_sock>
+               <unix_pid>open-ils.reporter_unix.pid</unix_pid>
+               <max_requests>1000</max_requests>
+               <unix_log>open-ils.reporter_unix.log</unix_log>
+               <min_children>5</min_children>
+               <max_children>15</max_children>
+               <min_spare_children>3</min_spare_children>
+               <max_spare_children>5</max_spare_children>
+            </unix_config>
+         </open-ils.reporter>
+
 		</apps>
 
 	</default>
@@ -431,19 +655,25 @@ For non-core config info, see the inline documentation within this file
 		<myhost.mydomain.com> <!-- must match 'hostname -f' -->
 			<activeapps>
 
-				<!-- opensrf builtin apps -->
+            <!-- opensrf core apps -->
 				<appname>opensrf.math</appname> 
 				<appname>opensrf.dbmath</appname> 
 				<appname>opensrf.settings</appname> 
 
-				<!-- openils apps -->
+            <!-- ILS-specific opensrf apps -->
 				<appname>open-ils.cat</appname> 
+				<appname>open-ils.supercat</appname> 
 				<appname>open-ils.search</appname> 
 				<appname>open-ils.circ</appname> 
-				<appname>open-ils.penalty</appname> 
 				<appname>open-ils.actor</appname> 
 				<appname>open-ils.auth</appname> 
 				<appname>open-ils.storage</appname>  
+				<appname>open-ils.penalty</appname>  
+				<appname>open-ils.collections</appname>  
+				<appname>open-ils.cstore</appname>  
+				<appname>open-ils.ingest</appname>  
+				<appname>open-ils.reporter-store</appname>  
+				<appname>open-ils.reporter</appname>  
 
 			</activeapps>
 		</myhost.mydomain.com> 

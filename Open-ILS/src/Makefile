@@ -62,6 +62,8 @@ server-xul:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
+	mkdir -p $(ADMINDIR)
+	cp -r ../admin/* $(ADMINDIR)
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	mkdir -p $(WEBDIR)/opac/extras/slimpac/

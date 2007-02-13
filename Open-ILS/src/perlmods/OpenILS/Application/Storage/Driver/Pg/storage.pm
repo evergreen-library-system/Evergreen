@@ -2,11 +2,14 @@
 {
 	package OpenILS::Application::Storage;
 	use OpenSRF::Utils::Logger;
+
 	our $NOPRIMARY = 0;
 	my $log = 'OpenSRF::Utils::Logger';
-
 	my $pg = 'OpenILS::Application::Storage::Driver::Pg';
 
+	sub child_exit {
+		$_->disconnect for $pg->db_Handles;
+	}
 
 	sub current_xact {
 		my $self = shift;

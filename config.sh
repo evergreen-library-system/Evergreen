@@ -24,6 +24,7 @@
 
 CONFIG_FILE="install.conf";
 DEFAULT_CONFIG_FILE="install.conf.default";
+USE_DEFAULT="$1";
 
 function buildConfig {
 
@@ -34,6 +35,12 @@ function buildConfig {
 			source "$DEFAULT_CONFIG_FILE";
 		fi;
 	fi;
+
+    if [ -n "$USE_DEFAULT" ]; then
+        prompt "Default config requested, not prompting for values...\n";
+        writeConfig;
+        return 0;
+    fi;
 
 
 	echo "";
@@ -59,6 +66,7 @@ function buildConfig {
 	XSLDIR="$PREFIX/var/xsl";
 	REPORTERDIR="$PREFIX/var/reporter";
 	TMP="$(pwd)/.tmp";
+	ADMINDIR="$PREFIX/var/admin";
 
 	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
 	read X; if [ ! -z "$X" ]; then NEW_OPAC_URL="$X"; fi;
@@ -108,7 +116,7 @@ function buildConfig {
 	writeConfig;
 }
 
-function prompt { echo ""; echo -n "$*"; }
+function prompt { echo ""; echo -en "$*"; }
 
 function writeConfig {
 
@@ -166,6 +174,7 @@ function writeConfig {
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
 	_write "REPORTERDIR=\"$REPORTERDIR\"";
+	_write "ADMINDIR=\"$ADMINDIR\"";
 
 
 	# Now we'll write out the DB bootstrapping config

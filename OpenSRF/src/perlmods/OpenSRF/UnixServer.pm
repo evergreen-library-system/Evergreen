@@ -2,7 +2,7 @@ package OpenSRF::UnixServer;
 use strict; use warnings;
 use base qw/OpenSRF/;
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils::Logger qw(:level);
+use OpenSRF::Utils::Logger qw(:level $logger);
 use OpenSRF::Transport::PeerHandle;
 use OpenSRF::Application;
 use OpenSRF::AppSession;
@@ -18,11 +18,7 @@ use Carp;
 use IO::Socket::INET;
 use IO::Socket::UNIX;
 
-# XXX Need to add actual logging statements in the code
-my $logger = "OpenSRF::Utils::Logger";
-
 sub DESTROY { confess "Dying $$"; }
-
 
 =head1 What am I
 
@@ -226,10 +222,6 @@ sub configure_hook {
 	return OpenSRF::Application->application_implementation;
 }
 
-sub child_finish_hook {
-	my $self = shift;
-}
-
 sub child_init_hook { 
 
 	$0 =~ s/master/drone/g;
@@ -258,6 +250,13 @@ sub child_init_hook {
 
 	return OpenSRF::Transport::PeerHandle->retrieve;
 }
+
+sub child_finish_hook {
+    $logger->debug("attempting to call child exit handler...");
+	OpenSRF::Application->application_implementation->child_exit
+		if (OpenSRF::Application->application_implementation->can('child_exit'));
+}
+
 
 1;
 

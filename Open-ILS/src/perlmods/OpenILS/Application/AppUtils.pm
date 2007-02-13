@@ -437,6 +437,7 @@ sub record_to_mvr {
 	$u->start_mods_batch( $record->marc );
 	my $mods = $u->finish_mods_batch();
 	$mods->doc_id($record->id);
+   $mods->tcn($record->tcn_value);
 	return $mods;
 }
 
