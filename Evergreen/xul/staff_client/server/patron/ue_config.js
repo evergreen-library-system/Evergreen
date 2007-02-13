@@ -1009,6 +1009,7 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 						function() { window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id}) };
 				
 					if( userCache[id] ) {
+                        var usr = userCache[id];
 						nnode.appendChild(text(
 							usr.first_given_name() + ' ' +  usr.family_name()));
 				
