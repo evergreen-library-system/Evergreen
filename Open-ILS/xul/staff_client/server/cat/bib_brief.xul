@@ -101,12 +101,30 @@
 										document.getElementById('tcn_source').appendChild(
 											document.createTextNode(meta.tcn_source())
 										);
+										g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),meta.creator().id()],
+											function(rreq) {
+												var creator_au = rreq.getResultObject();
+												document.getElementById('creator_bc').appendChild(
+													document.createTextNode(creator_au.card().barcode())
+												);
+											}
+										);
+										g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),meta.editor().id()],
+											function(rreq) {
+												var editor_au = rreq.getResultObject();
+												document.getElementById('editor_bc').appendChild(
+													document.createTextNode(editor_au.card().barcode())
+												);
+											}
+										);
 										document.getElementById('creator').appendChild(
-											document.createTextNode(meta.creator().usrname())
+											document.createTextNode('('+data.hash.aou[meta.creator().home_ou()].shortname()+') ')
 										);
+										document.getElementById('creator_bc').setAttribute('au_id',meta.creator().id());
 										document.getElementById('editor').appendChild(
-											document.createTextNode(meta.editor().usrname())
+											document.createTextNode('('+data.hash.aou[meta.editor().home_ou()].shortname()+') ')
 										);
+										document.getElementById('editor_bc').setAttribute('au_id',meta.editor().id());
 										document.getElementById('edit_date').appendChild(
 											document.createTextNode(
 												util.date.formatted_date(meta.edit_date(),"%D")
@@ -154,6 +172,20 @@
 			}
 		}
 
+		function spawn_patron(span) {
+            try {
+                var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
+
+                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+                    window.xulG.set_tab( loc, {}, { 'id' : span.getAttribute('au_id') } );
+                } else {
+					copy_to_clipboard( span.textContent );
+				}
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('spawning patron display',E);
+            }
+		}
+
 	]]>
 	</script>
 
@@ -185,9 +217,11 @@
 					</html:td>
 					<html:td>
 						<html:span style="font-weight: bold;">Created By: </html:span><html:span id="creator" />
+						<html:span id="creator_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
 					</html:td>
 					<html:td>
 						<html:span style="font-weight: bold;">Last Edited By: </html:span><html:span id="editor" />
+						<html:span id="editor_bc" style="text-decoration: underline; color: blue;" onclick="try{spawn_patron(this);}catch(E){alert(E);}"/>
 					</html:td>
 					<html:td>
 						<html:span style="font-weight: bold;">Last Edited On: </html:span><html:span id="edit_date" />
