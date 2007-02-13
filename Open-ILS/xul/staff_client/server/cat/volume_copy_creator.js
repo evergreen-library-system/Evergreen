@@ -289,7 +289,8 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			);
 			//tb.addEventListener('change',ready_to_create,false);
 			tb.addEventListener('change', function(ev) {
-				var barcode = ev.target.value;
+				var barcode = String( ev.target.value ).replace(/\s/g,'');
+				if (barcode != ev.target.value) ev.target.value = barcode;
 				if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
 					g.error.yns_alert( '"' + barcode + '" is an invalid barcode.','Invalid Barcode','OK',null,null,'Check here to confirm this message.');
 					setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
