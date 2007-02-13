@@ -31,15 +31,18 @@ function uEditInit() {
 
 function uEditSetUnload() {
    _debug('setting window unload event');
+   /*
    window.onbeforeunload = function(evt) { 
-      //evt.returnValue = ('ue_unsaved_changes').innerHTML; 
       return $('ue_unsaved_changes').innerHTML; 
    };
+   */
 }
 
 function uEditClearUnload() {
    _debug('clearing window unload event');
+   /*
    window.onbeforeunload = null;
+   */
 }
 
 /* ------------------------------------------------------------------------------ */
@@ -202,19 +205,27 @@ function uEditClone(clone) {
 	var cloneUser = fetchFleshedUser(clone);
 	patron.usrgroup(cloneUser.usrgroup());
 
-	if( cloneUser.day_phone() )
+	if( cloneUser.day_phone() ) {
 		$('ue_day_phone').value = cloneUser.day_phone();
-	if( cloneUser.evening_phone() )
+	    $('ue_day_phone').onchange();
+    }
+
+	if( cloneUser.evening_phone() ) {
 		$('ue_night_phone').value = cloneUser.evening_phone();
-	if( cloneUser.other_phone() )
+		$('ue_night_phone').onchange();
+    }
+
+	if( cloneUser.other_phone() ) {
 		$('ue_other_phone').value = cloneUser.other_phone();
+		$('ue_other_phone').onchange();
+    }
+
 	setSelector($('ue_org_selector'), cloneUser.home_ou());
-
-
 	setSelector($('ue_profile'), cloneUser.profile());
 
 	/* force the expire date to be set */
 	$('ue_profile').onchange();
+	$('ue_org_selector').onchange();
 
 	for( var a in cloneUser.addresses() ) {
 		var addr = cloneUser.addresses()[a];
