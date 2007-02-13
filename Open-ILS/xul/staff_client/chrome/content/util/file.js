@@ -29,9 +29,13 @@ util.file.prototype = {
 			if (!fname) { fname = this.name; } else { this.name = fname; }
 			if (!fname) throw('Must specify a filename.');
 
-			/* FIXME - need to make a build directive for this */
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+			var pref = Components.classes["@mozilla.org/preferences-service;1"]
+				.getService(Components.interfaces.nsIPrefBranch);
+			if (!path && pref.getBoolPref("open-ils.write_in_user_chrome_directory")) path = 'uchrome';
+
 			switch(path) {
-				case 'profile' :
+				case 'uchrome' :
 					this._file = this.dirService.get( "UChrm",  Components.interfaces.nsIFile );
 					//this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
 				break;
