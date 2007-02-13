@@ -181,6 +181,13 @@ function isOrgDescendent( parentName, childId ) {
 	return false;
 }
 
+/* returns the number of unfulfilled holds open on this user */
+function userHoldCount(userid) {
+   var key = scratchKey();
+   __OILS_FUNC_userHoldCount(scratchPad(key), userid);
+   return getScratch(key);
+}
+
 function hasCommonAncestor( org1, org2, depth ) {
 	var key = scratchKey();
 	__OILS_FUNC_hasCommonAncestor(scratchPad(key), org1, org2, depth);
@@ -216,26 +223,27 @@ function log_vars( prefix ) {
 
 	if(patron) {
 		str += ' Patron=' + patron.id;
-		str += ', Patron Username='+ patron.usrname;
-		str += ', Patron Profile Group='+ patronProfile;
-		str += ', Patron Fines='	+ patronFines;
-		str += ', Patron OverdueCount='	+ patronOverdueCount;
-		str += ', Patron Items Out=' + patronItemsOut;
+		str += ', Patron_Username='+ patron.usrname;
+		str += ', Patron_Profile Group='+ patronProfile;
+		str += ', Patron_Fines='	+ patronFines;
+		str += ', Patron_OverdueCount='	+ patronOverdueCount;
+		str += ', Patron_Items Out=' + patronItemsOut;
 
 		try {
-			str += ', Patron Barcode='	+ patron.card.barcode;
-			str += ', Patron Library='	+ patron.home_ou.name;
+			str += ', Patron_Barcode='	+ patron.card.barcode;
+			str += ', Patron_Library='	+ patron.home_ou.name;
 		} catch(e) {}
 	}
 
 	if(copy)	{
 		str += ', Copy=' + copy.id;
-		str += ', Copy Barcode=' + copy.barcode;
-		str += ', Copy status='	+ copyStatus;
+		str += ', Copy_Barcode=' + copy.barcode;
+		str += ', Copy_status='	+ copyStatus;
+      str += (copy.circ_modifier) ? ', Circ_Mod=' + copy.circ_modifier : '';
 
 		try {
-			str += ', Circ Lib=' + copy.circ_lib.shortname;
-			str += ', Copy location=' + copy.location.name;
+			str += ', Circ_Lib=' + copy.circ_lib.shortname;
+			str += ', Copy_location=' + copy.location.name;
 		} catch(e) {}
 	}
 
@@ -243,16 +251,16 @@ function log_vars( prefix ) {
 	if(title)			str += ', Record='	+ title.id;
 
 	if(recDescriptor)	{
-		str += ', Record Descriptor=' + recDescriptor.id;
-		str += ', Item Type='			+ recDescriptor.item_type;
-		str += ', Item Form='			+ recDescriptor.item_form;
-		str += ', Item Lang='			+ recDescriptor.item_lang;
-		str += ', Item Audience='		+ recDescriptor.audience;
+		str += ', Record_Descriptor=' + recDescriptor.id;
+		str += ', Item_Type='			+ recDescriptor.item_type;
+		str += ', Item_Form='			+ recDescriptor.item_form;
+		str += ', Item_Lang='			+ recDescriptor.item_lang;
+		str += ', Item_Audience='		+ recDescriptor.audience;
 	}
 
-	str += ' Is Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
-	str += ' Is Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
-	str += (holdRequestLib) ? ' Hold request lib is ' + holdRequestLib.shortname : '';
+	str += ', Is_Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
+	str += ', Is_Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
+	str += (holdRequestLib) ? ', Hold_request_lib=' + holdRequestLib.shortname : '';
 
 	log_info(str);
 }

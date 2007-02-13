@@ -28,6 +28,20 @@ patron.items.prototype = {
 					'sel_clip' : [ ['command'], function() { obj.list.clipboard(); } ],
 					'sel_clip2' : [ ['command'], function() { obj.list2.clipboard(); } ],
 					'sel_patron' : [ ['command'], function() { JSAN.use('circ.util'); circ.util.show_last_few_circs(obj.retrieve_ids); } ],
+					'sel_bucket' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(util.functional.map_list( obj.retrieve_ids, function(o) { return o.copy_id; } ) );
+						}
+					],
+					'sel_bucket2' : [
+						['command'],
+						function() {
+							JSAN.use('cat.util');
+							cat.util.add_copies_to_bucket(util.functional.map_list( obj.retrieve_ids2, function(o) { return o.copy_id; } ) );
+						}
+					],
 					'sel_mark_items_damaged' : [
 						['command'],
 						function() {
@@ -73,9 +87,9 @@ patron.items.prototype = {
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(1); } ],
 					'cmd_items_export2' : [ ['command'], function() { obj.items_export(2); } ],
-					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); /*alert('Action complete.'); obj.retrieve();*/ } ],
 					'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
-					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); /*alert('Action complete.'); obj.retrieve();*/ } ],
 					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); alert('Action complete.'); obj.retrieve(); } ],
 					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1); alert('Action complete.'); obj.retrieve(); } ],
@@ -101,6 +115,8 @@ patron.items.prototype = {
 		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','true');
 		obj.controller.view.sel_clip.setAttribute('disabled','true');
 		obj.controller.view.sel_clip2.setAttribute('disabled','true');
+		obj.controller.view.sel_bucket.setAttribute('disabled','true');
+		obj.controller.view.sel_bucket2.setAttribute('disabled','true');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 		obj.controller.view.sel_patron.setAttribute('disabled','true');
 		obj.controller.view.sel_copy_details2.setAttribute('disabled','true');
@@ -166,7 +182,7 @@ patron.items.prototype = {
 					fake_copy.barcode( '' );
 					fake_copy.circ_lib( nc_circ.circ_lib() );
 
-					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, } );
+					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, 'to_bottom' : true } );
 
 				} catch(F) {
 					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii].id(),F);
@@ -243,7 +259,7 @@ patron.items.prototype = {
 				try {
 					obj.list.select_all();
 					obj.items_renew(1,true);	
-					setTimeout(function(){list.on_all_fleshed = null; alert('Action complete.'); obj.retrieve(); },0);
+					setTimeout(function(){list.on_all_fleshed = null; /*alert('Action complete.'); obj.retrieve();*/ },0);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
 				}
@@ -267,11 +283,37 @@ patron.items.prototype = {
 				var r = window.confirm(msg);
 				if (!r) { return; }
 			}
+
+			var count = 0;
+
+			function gen_renew(bc) {
+				var x = document.getElementById('renew_msgs');
+				if (x) {
+					var l = document.createElement('label');
+					l.setAttribute('value','Renewing ' + bc);
+					x.appendChild(l);
+				}
+				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
+					function(r) {
+						if ( instanceOf( r[0], 'circ' ) || (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
+							l.setAttribute('value', bc + ' renewed.');
+						} else {
+							l.setAttribute('value', bc + ' not renewed.  ' + r[0].desc);
+						}
+						count--;
+						if (count == 0) {
+							if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
+							JSAN.use('util.widgets'); util.widgets.remove_children(x);
+						}
+					} 
+				);
+			}
+
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				try {
+					count++;
 					var barcode = retrieve_ids[i].barcode;
-					//alert('Renew barcode = ' + barcode);
-					var renew = circ.util.renew_via_barcode( barcode, obj.patron_id );
+					gen_renew(barcode);
 
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('Renew probably did not happen for barcode ' + barcode,E);
@@ -632,10 +674,10 @@ patron.items.prototype = {
 				try {
 					switch(which_list) {
 						case 1:
-							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true } );
 						break;
 						default:
-							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, } );
+							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, 'to_bottom' : true } );
 						break;
 					}
 				} catch(E) {
@@ -675,6 +717,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_mark_lost.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details.setAttribute('disabled','false');
+		obj.controller.view.sel_bucket.setAttribute('disabled','false');
 		obj.controller.view.sel_patron.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
@@ -695,6 +738,7 @@ patron.items.prototype = {
 		obj.controller.view.cmd_items_mark_lost2.setAttribute('disabled','false');
 		obj.controller.view.cmd_show_catalog2.setAttribute('disabled','false');
 		obj.controller.view.sel_copy_details2.setAttribute('disabled','false');
+		obj.controller.view.sel_bucket2.setAttribute('disabled','false');
 		obj.controller.view.sel_patron2.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_damaged2.setAttribute('disabled','false');
 		obj.controller.view.sel_mark_items_missing2.setAttribute('disabled','false');

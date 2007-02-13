@@ -139,6 +139,10 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			atomicWidget = oilsRptNumberWidget
 			break;
 
+		case 'substring':
+			atomicWidget = oilsRptSubstrWidget
+			break;
+
 
 	}
 

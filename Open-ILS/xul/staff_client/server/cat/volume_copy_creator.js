@@ -107,6 +107,8 @@ function my_init() {
 			}
 		}
 
+		g.load_prefs();
+
 	} catch(E) {
 		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 			"system administrator or software developer the following:\ncat/volume_copy_creator.xul\n" +E+ '\n';
@@ -131,6 +133,9 @@ g.render_volume_count_entry = function(row,ou_id) {
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
 		if (! isNaN( Number( ev.target.value) ) ) {
+			if ( Number( ev.target.value ) > 100 ) {
+				if (!window.confirm('Are you sure you would like to create ' + ev.target.value + ' volumes?')) return;
+			}
 			if (node) { row.removeChild(node); node = null; }
 			//ev.target.disabled = true;
 			node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
@@ -173,10 +178,15 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 	x.setAttribute('value','Call Numbers'); x.setAttribute('style','font-weight: bold');
 	x = document.createElement('label'); r.appendChild(x);
 	x.setAttribute('value','# of Copies'); x.setAttribute('style','font-weight: bold');
+	x.setAttribute('size','3'); x.setAttribute('cols','3');
+
 
 	function handle_change(tb1,tb2,hb3) {
 		if (tb1.value == '') return;
 		if (isNaN( Number( tb2.value ) )) return;
+		if ( Number( tb2.value ) > 100 ) {
+			if (!window.confirm('Are you sure you would like to create ' + tb2.value + ' copies?')) return;
+		}
 
 		//if (tb1.disabled || tb2.disabled) return;
 
@@ -279,7 +289,8 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 			);
 			//tb.addEventListener('change',ready_to_create,false);
 			tb.addEventListener('change', function(ev) {
-				var barcode = ev.target.value;
+				var barcode = String( ev.target.value ).replace(/\s/g,'');
+				if (barcode != ev.target.value) ev.target.value = barcode;
 				if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
 					g.error.yns_alert( '"' + barcode + '" is an invalid barcode.','Invalid Barcode','OK',null,null,'Check here to confirm this message.');
 					setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
@@ -338,7 +349,7 @@ g.stash_and_close = function() {
 				);
 
 				if (typeof acn_id.ilsevent != 'undefined') {
-					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',anc_id);
+					g.error.standard_unexpected_error_alert('Problem finding or creating ' + cn + '.  We will skip item creation for this volume.',acn_id);
 					continue;
 				}
 
@@ -416,6 +427,53 @@ g.stash_and_close = function() {
 
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('volume tree update 3',E);
+	}
+}
+
+g.load_prefs = function() {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
+		if (file._file.exists()) {
+			var prefs = file.get_object(); file.close();
+			if (prefs.check_barcodes) {
+				if ( prefs.check_barcodes == 'false' ) {
+					$('check_barcodes').checked = false;
+				} else {
+					$('check_barcodes').checked = prefs.check_barcodes;
+				}
+			} else {
+				$('check_barcodes').checked = false;
+			}
+			if (prefs.print_labels) {
+				if ( prefs.print_labels == 'false' ) {
+					$('print_labels').checked = false;
+				} else {
+					$('print_labels').checked = prefs.print_labels;
+				}
+			} else {
+				$('print_labels').checked = false;
+			}
+
+		}
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error retrieving stored preferences',E);
+	}
+}
+
+g.save_prefs = function () {
+	try {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		JSAN.use('util.file'); var file = new util.file('volume_copy_creator.prefs');
+		file.set_object(
+			{
+				'check_barcodes' : $('check_barcodes').checked,
+				'print_labels' : $('print_labels').checked,
+			}
+		);
+		file.close();
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error storing preferences',E);
 	}
 }
 

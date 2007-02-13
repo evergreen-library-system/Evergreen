@@ -10,6 +10,7 @@ use Data::Dumper;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
 use Carp;
+use JSON;
 #use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
 
 sub DESTROY{};
@@ -164,9 +165,7 @@ sub handler {
 				}
 
 				my $start = time();
-				warn "About to run...\n";
 				$resp = $coderef->run( $appreq, @args); 
-				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
 
 				$log->debug( "Method duration for [$method_name]:  ". $time );

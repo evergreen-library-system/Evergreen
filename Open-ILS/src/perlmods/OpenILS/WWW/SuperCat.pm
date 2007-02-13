@@ -1,7 +1,6 @@
 package OpenILS::WWW::SuperCat;
 use strict; use warnings;
 
-use Apache2 ();
 use Apache2::Log;
 use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
 use APR::Const    -compile => qw(:error SUCCESS);
@@ -831,6 +830,8 @@ Content-type: application/opensearchdescription+xml; charset=utf-8
        template="$base/1.1/$lib/mods/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <Url type="application/x-marcxml+xml"
        template="$base/1.1/$lib/marcxml/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
+  <Url type="text/html"
+       template="$base/1.1/$lib/html-full/$class/?searchTerms={searchTerms}&amp;startPage={startPage?}&amp;startIndex={startIndex?}&amp;count={count?}&amp;searchLang={language?}"/>
   <LongName>Search $lib</LongName>
   <Query role="example" searchTerms="harry+potter" />
   <Developer>Mike Rylander for GPLS/PINES</Developer>
@@ -983,6 +984,8 @@ sub opensearch_feed {
 			$complex_terms = 1;
 		}
 	}
+
+	$lang = 'eng' if ($lang eq 'en-US');
 
 	if ($term_copy) {
 		no warnings;

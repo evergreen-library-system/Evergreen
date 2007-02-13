@@ -645,6 +645,11 @@ sub ol_handle_checkout {
 			'INTERNAL_SERVER_ERROR', payload => 'TOO MANY NON CATS');
 	}
 
+    if( $args->{barcode} ) {
+        my( $c, $e ) = $U->fetch_copy_by_barcode($args->{barcode});
+        return $e if $e;
+    }
+
 	return $U->simplereq(
 		'open-ils.circ', 'open-ils.circ.checkout', $authtoken, $args );
 }

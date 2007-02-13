@@ -51,8 +51,18 @@
 							</tr>
 						</tbody></table>
 
+
 						<div id='oils_rpt_tree_div'>
 						</div>
+
+						<br/>
+						<div>
+							<b>**</b>
+							<span style='padding-left: 6px;'>
+								Indicates that when filtering on the item, a list of named choices will be generated.
+							</span>
+						</div>
+
 					</td>
 					<td id='oils_rpt_table_right_td' align='right'>
 						<div class='oils_rpt_info_div'>
@@ -71,6 +81,9 @@
 							<div class='oils_rpt_info_item oils_rpt_info_title'>Report Aggregate Filters</div>
 							<select id='oils_rpt_agg_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
 							<button onclick='oilsDelSelectedAggFilterItems();'><u>X</u> Remove Selected</button>
+						</div>
+						<div class='oils_rpt_info_div'>
+							<span style='color:red;font-weight:bold;'>Hint: </span> Double-click on an item to see the item details.
 						</div>
 					</td>	
 				</tr>
@@ -97,7 +110,7 @@
 				(<span id='oils_rpt_editor_window_datatype'/>)
 			</div>
 			<div id='oils_rpt_tform_div'>
-				<input size='28' id='oils_rpt_tform_label_input'/>
+				<input size='42' id='oils_rpt_tform_label_input'/>
 				<div class='oils_rpt_field_editor_window'>
 					<div style='margin-bottom: 10px;'>Select how this field should be displayed:</div>
 					<div id='oils_rpt_tform_table'/>

@@ -105,6 +105,8 @@ ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 CREATE INDEX circ_outstanding_idx ON action.circulation (usr) WHERE checkin_time IS NULL;
 CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE checkin_time IS NOT NULL;
+CREATE INDEX circ_circ_lib_idx ON "action".circulation (circ_lib);
+CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_finish IS NULL;
 
 
 CREATE OR REPLACE VIEW action.open_circulation AS

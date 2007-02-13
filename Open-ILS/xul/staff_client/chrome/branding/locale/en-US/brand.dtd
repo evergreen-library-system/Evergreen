@@ -1,0 +1,6 @@
+<!ENTITY  brandShortName        "Evergreen">
+<!ENTITY  brandFullName         "Evergreen">            
+<!ENTITY  vendorShortName       "open-ils.org">
+
+<!-- LOCALIZATION NOTE (releaseBaseURL): The about: page appends __MOZ_APP_VERSION__.html, e.g. 2.0.html -->
+<!ENTITY  releaseBaseURL        "http://open-ils.org/cvs/">

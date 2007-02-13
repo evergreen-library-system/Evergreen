@@ -495,6 +495,21 @@ cat.z3950.prototype = {
 										var title = 'Import Collision';
 										var btn1 = 'Overlay';
 										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
+										if (btn2) {
+											JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+											var robj = obj.network.simple_request(
+												'PERM_CHECK',[
+													ses(),
+													data.list.au[0].id(),
+													data.list.au[0].ws_ou(),
+													[ 'ALLOW_ALT_TCN' ]
+												]
+											);
+											if (typeof robj.ilsevent != 'undefined') {
+												obj.error.standard_unexpected_error_alert('check permission',E);
+											}
+											if (robj.length != 0) btn2 = null;
+										}
 										var btn3 = 'Cancel Import';
 										var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,'Check here to confirm this action');
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');

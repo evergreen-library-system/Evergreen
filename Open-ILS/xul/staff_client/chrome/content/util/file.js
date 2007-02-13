@@ -31,7 +31,7 @@ util.file.prototype = {
 
 			switch(path) {
 				case 'profile' :
-					this._file = this.dirService.get( "UChrom",  Components.interfaces.nsIFile );
+					this._file = this.dirService.get( "UChrm",  Components.interfaces.nsIFile );
 					//this._file = this.dirService.get( "ProfD",  Components.interfaces.nsIFile );
 				break;
 				case 'chrome' : 
