@@ -761,7 +761,6 @@ sub new_hold_copy_targeter {
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 			$_->delete for (@oldmaps);
 
-	
 			my $all_copies = [];
 
 			# find filters for MR holds
@@ -838,7 +837,7 @@ sub new_hold_copy_targeter {
 				$log->info("\tNo copies available for targeting at all!\n");
 				push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_COPIES' };
 
-				$hold->update( { prev_check_time => 'today' } );
+				$hold->update( { prev_check_time => 'today', current_copy => undef } );
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				die "OK\n";
 			}
