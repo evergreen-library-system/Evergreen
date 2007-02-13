@@ -54,23 +54,17 @@ util.print.prototype = {
 			var w;
 			switch(content_type) {
 				case 'text/html' :
-					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { alert("Please inform the developers that the go_print bug occurred.  After this alert, we will try to print again."); window.print(); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ if (' + (typeof params.modal != 'undefined' ? 'true' : 'false') + ') setTimeout(function(){ try { window.print(); window.close(); } catch(E) { alert(E); } },0); }');
+					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { setTimeout( function() { if (typeof go_print == "function") { alert("Please tell the developers that the 2-second go_print workaround executed, and let them know whether this job printed successfully.  Thanks!"); go_print(); } else { alert("Please tell the developers that the 2-second go_print workaround did not work.  We will try to print one more time; there have been reports of wasted receipt paper at this point.  Please check the settings in the print dialog and/or prepare to power off your printer.  Thanks!"); window.print(); } }, 2000 ); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ }');
 					w = obj.win.open('data:text/html,<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
 					w.minimize();
 					w.go_print = function() { 
-
-						//setTimeout(
-						//	function() {
-								try {
-									obj.NSPrint(w, silent, params);
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
-									w.print();
-								}
-								w.minimize(); w.close();
-						//	}, 0
-						//);
-
+						try {
+							obj.NSPrint(w, silent, params);
+						} catch(E) {
+							obj.error.standard_unexpected_error_alert("Print Error in util.print.simple.  After this dialog we'll try a second print attempt. content_type = " + content_type,E);
+							w.print();
+						}
+						w.minimize(); w.close();
 					}
 				break;
 				default:
