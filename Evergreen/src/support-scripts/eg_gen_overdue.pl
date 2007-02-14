@@ -451,8 +451,8 @@ sub send_email {
 
 
 	$tmpl =~ s/\${EMAIL_RECIPIENT}/$pemail/;
-	$tmpl =~ s/\${EMAIL_SENDER}/$mail_sender/o; 
-	$tmpl =~ s/\${EMAIL_REPLY_TO}/$mail_sender/;
+	$tmpl =~ s/\${EMAIL_SENDER}/$errors_to/o; 
+	$tmpl =~ s/\${EMAIL_REPLY_TO}/$errors_to/;
 	$tmpl =~ s/\${EMAIL_ERRORS_TO}/$errors_to/;
    $tmpl =~ s/\${EMAIL_HEADERS}//; # - we have no additional headers to add
 
