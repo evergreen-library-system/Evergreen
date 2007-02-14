@@ -184,7 +184,7 @@ sub nearest_hold {
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
 
-	my ($id) = action::hold_request->db_Main->selectrow_array(<<"	SQL", {}, $cp, $pl);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $pl);
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
@@ -199,7 +199,9 @@ sub nearest_hold {
 			h.request_time
 		LIMIT $limit
 	SQL
-	return $id;
+	
+	$client->respond( $_ ) for ( @$ids );
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.action.hold_request.nearest_hold',
