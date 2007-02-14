@@ -43,6 +43,7 @@ if( ( marcItemType == 'g' ||
 		mod == 'music' || 
 		mod == 'audiobook' || 
 		mod == 'av' || 
+		mod == 'new-av' || 
 		mod == 'cd' || 
 		mod == 'kit' || 
 		mod == 'dvd' || 
