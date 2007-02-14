@@ -29,10 +29,15 @@ util.file.prototype = {
 			if (!fname) { fname = this.name; } else { this.name = fname; }
 			if (!fname) throw('Must specify a filename.');
 
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
-			var pref = Components.classes["@mozilla.org/preferences-service;1"]
-				.getService(Components.interfaces.nsIPrefBranch);
-			if (!path && pref.getBoolPref("open-ils.write_in_user_chrome_directory")) path = 'uchrome';
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
+				var pref = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefBranch);
+				if (!path && pref.getBoolPref("open-ils.write_in_user_chrome_directory")) path = 'uchrome';
+			} catch(E) {
+				// getBoolPref throws an exception if "open-ils.write_in_user_chrome_directory" is not defined at all
+				// in defaults/preferences/prefs.js
+			}
 
 			switch(path) {
 				case 'uchrome' :
@@ -55,7 +60,7 @@ util.file.prototype = {
 			return this._file;
 
 		} catch(E) {
-			this.error.sdump('D_ERROR',this._file.path + '\nutil.file.get(): ' + E);
+			this.error.standard_unexpected_error_alert('error in util.file.get('+fname+','+path+')',E);
 			throw(E);
 		}
 	},
