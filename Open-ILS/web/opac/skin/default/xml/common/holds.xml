@@ -165,7 +165,8 @@
 		<span class='hide_me' id='hold_not_allowed'>
 			No items were found that could fulfill the requested holds.  
 			It's possible that choosing a different format will result in a successful hold.
-			Otherwise, please consult your local librarian.
+         It is also possible that you have exceeded the number of allowable holds.
+			For further information, please consult your local librarian.
 		</span>
 
 	</div>

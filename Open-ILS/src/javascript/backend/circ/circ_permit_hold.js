@@ -3,6 +3,17 @@ function go() {
 load_lib('circ/circ_lib.js');
 log_vars('circ_permit_hold');
 
+
+
+/* non-staff members are allowed 50 open holds at most */
+if( ! isGroupDescendant('Staff', patronProfile) ) {
+   var count = userHoldCount(patron.id);
+   log_info("patron has " + count + " open holds");
+   if( count >= 50 ) 
+      result.events.push('MAX_HOLDS');
+}
+
+
 if( isTrue(patron.barred) ) 
 	result.events.push('PATRON_BARRED');
 
@@ -32,6 +43,7 @@ if( ( marcItemType == 'g' ||
 		mod == 'music' || 
 		mod == 'audiobook' || 
 		mod == 'av' || 
+		mod == 'new-av' || 
 		mod == 'cd' || 
 		mod == 'kit' || 
 		mod == 'dvd' || 

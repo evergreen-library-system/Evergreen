@@ -43,6 +43,8 @@ table { border-collapse: collapse; }
 
 .light_border { border: 1px solid #E0E0E0; }
 
+/*.overdue { color: red; font-size: 110%; background: #F0F0E0; }*/
+.overdue { color: red; font-weight: bold;}
 
 /*
 #main_table { border-collapse: collapse; width: 100%; height: 100%; }

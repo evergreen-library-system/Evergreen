@@ -40,6 +40,7 @@ __PACKAGE__->register_method(
 	api_name  => 'open-ils.collections.users_of_interest.retrieve',
 	api_level => 1,
 	argc      => 4,
+    stream    => 1,
 	signature => { 
 		desc     => q/
 			Returns an array of user information objects that the system 
@@ -107,34 +108,44 @@ sub users_of_interest {
 	# they need global perms to view users so no org is provided
 	return $e->event unless $e->allowed('VIEW_USER'); 
 
-	my $data = $U->storagereq(
-		'open-ils.storage.money.collections.users_of_interest.atomic', 
-		$age, $fine_level, $location);
+   my $data = [];
 
-	return [] unless $data and @$data;
+   my $ses = OpenSRF::AppSession->create('open-ils.storage');
+   my $req = $ses->request(
+      'open-ils.storage.money.collections.users_of_interest', 
+      $age, $fine_level, $location);
 
-	for (@$data) {
-		my $u = $e->retrieve_actor_user(
-			[
-				$_->{usr},
-				{
-					flesh				=> 1,
-					flesh_fields	=> {au => ["groups","profile", "card"]},
-					select			=> {au => ["profile","id","dob", "card"]}
-				}
-			]
-		) or return $e->event;
+   # let the client know we're still here
+   $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-		$_->{usr} = {
-			id			=> $u->id,
-			dob		=> $u->dob,
-			profile	=> $u->profile->name,
-			barcode	=> $u->card->barcode,
-			groups	=> [ map { $_->name } @{$u->groups} ],
-		};
-	}
+   while( my $resp = $req->recv(timeout => 600) ) {
+      return $req->failed if $req->failed;
+      my $hash = $resp->content;
+      next unless $hash;
 
-	return $data;
+      my $u = $e->retrieve_actor_user(
+         [
+	         $hash->{usr},
+	         {
+		         flesh				=> 1,
+		         flesh_fields	=> {au => ["groups","profile", "card"]},
+		         #select			=> {au => ["profile","id","dob", "card"]}
+	         }
+         ]
+      ) or return $e->event;
+
+      $hash->{usr} = {
+         id			=> $u->id,
+         dob		=> $u->dob,
+         profile	=> $u->profile->name,
+         barcode	=> $u->card->barcode,
+         groups	=> [ map { $_->name } @{$u->groups} ],
+      };
+      
+      $conn->respond($hash);
+   }
+
+   return undef;
 }
 
 

@@ -107,7 +107,6 @@
 
 				/* button bar */
 				var hb = document.createElement('hbox'); np.appendChild(hb);
-					var spacer = document.createElement('spacer'); hb.appendChild(spacer); spacer.flex = 1;
 					var btn1 = document.createElement('button'); hb.appendChild(btn1);
 						btn1.setAttribute('label','Delete This Note');
 						btn1.setAttribute('image',"/xul/server/skin/media/images/up_arrow.gif");

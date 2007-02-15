@@ -257,6 +257,7 @@ sub translate_legacy_args {
 		$$args{is_precat} = $$args{precat};
 		delete $$args{precat};
 	}
+
 }
 
 
@@ -346,6 +347,10 @@ my @AUTOLOAD_FIELDS = qw/
 	old_circ
 	permit_override
 	pending_checkouts
+	cancelled_hold_transit
+	opac_renewal
+	phone_renewal
+	desk_renewal
 /;
 
 
@@ -394,6 +399,10 @@ sub new {
 
 	$self->circ_lib(
 		($self->circ_lib) ? $self->circ_lib : $self->editor->requestor->ws_ou);
+
+	# if this is a renewal, default to desk_renewal
+	$self->desk_renewal(1) unless 
+		$self->opac_renewal or $self->phone_renewal;
 
 	return $self;
 }
@@ -1086,10 +1095,13 @@ sub build_checkout_circ_object {
    $circ->circ_lib( $self->circ_lib );
 
    if( $self->is_renewal ) {
-      $circ->opac_renewal(1);
+      $circ->opac_renewal('t') if $self->opac_renewal;
+      $circ->phone_renewal('t') if $self->phone_renewal;
+      $circ->desk_renewal('t') if $self->desk_renewal;
       $circ->renewal_remaining($self->renewal_remaining);
       $circ->circ_staff($self->editor->requestor->id);
    }
+
 
    # if the user provided an overiding checkout time,
    # (e.g. the checkout really happened several hours ago), then
@@ -1262,9 +1274,13 @@ sub do_checkin {
 
 	# the renew code will have already found our circulation object
 	unless( $self->is_renewal and $self->circ ) {
-		$self->circ(
-			$self->editor->search_action_circulation(
-			{ target_copy => $self->copy->id, checkin_time => undef })->[0]);
+        my $circs = $self->editor->search_action_circulation(
+			{ target_copy => $self->copy->id, checkin_time => undef });
+		$self->circ($$circs[0]);
+
+        # for now, just warn if there are multiple open circs on a copy
+        $logger->warn("circulator: we have ".scalar(@$circs).
+            " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
 	}
 
 	# if the circ is marked as 'claims returned', add the event to the list
@@ -1308,17 +1324,33 @@ sub do_checkin {
 		if( $hold_transit or 
 				$U->copy_status($self->copy->status)->id 
 					== OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-			$self->hold(
-				($hold_transit) ?
-					$self->editor->retrieve_action_hold_request($hold_transit->hold) :
-					$U->fetch_open_hold_by_copy($self->copy->id)
-				);
 
-			$self->checkin_flesh_events;
-			return;
+         my $hold;
+         if( $hold_transit ) {
+            $hold = $self->editor->retrieve_action_hold_request($hold_transit->hold);
+         } else {
+				($hold) = $U->fetch_open_hold_by_copy($self->copy->id);
+         }
+
+			$self->hold($hold);
+
+			if( $hold and $hold->cancel_time ) { # this transited hold was cancelled mid-transit
+
+				$logger->info("circulator: we received a transit on a cancelled hold " . $hold->id);
+				$self->reshelve_copy(1);
+				$self->cancelled_hold_transit(1);
+				return if $self->bail_out;
+
+			} else {
+
+				# hold transited to correct location
+				$self->checkin_flesh_events;
+				return;
+			}
 		} 
 
 	} elsif( $U->copy_status($self->copy->status)->id == OILS_COPY_STATUS_IN_TRANSIT ) {
+
 		$logger->warn("circulator: we have a copy ".$self->copy->barcode.
 			" that is in-transit, but there is no transit.. repairing");
 		$self->reshelve_copy(1);
@@ -1339,7 +1371,6 @@ sub do_checkin {
 		return if $self->bail_out;
 
    } else { # not needed for a hold
-
 
 		my $circ_lib = (ref $self->copy->circ_lib) ? 
 				$self->copy->circ_lib->id : $self->copy->circ_lib;
@@ -1380,6 +1411,7 @@ sub do_checkin {
 		$self->bail_out(1); # no need to commit anything
 
 	} else {
+
 		$self->push_events(OpenILS::Event->new('SUCCESS')) 
 			unless @{$self->events};
 	}
@@ -1504,9 +1536,8 @@ sub attempt_checkin_hold_capture {
 	my $copy = $self->copy;
 
 	# See if this copy can fulfill any holds
-	my ($hold) = $holdcode->find_nearest_permitted_hold(
-		OpenSRF::AppSession->create('open-ils.storage'), 
-		$copy, $self->editor->requestor );
+	my ($hold) = $holdcode->find_nearest_permitted_hold( 
+		$self->editor, $copy, $self->editor->requestor );
 
 	if(!$hold) {
 		$logger->debug("circulator: no potential permitted".
@@ -1567,8 +1598,11 @@ sub do_hold_notify {
 
 	$logger->info("circulator: running delayed hold notify process");
 
+#	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
+#		hold_id => $holdid, editor => new_editor(requestor=>$self->editor->requestor));
+
 	my $notifier = OpenILS::Application::Circ::HoldNotify->new(
-		hold_id => $holdid, editor => new_editor(requestor=>$self->editor->requestor));
+		hold_id => $holdid, requestor => $self->editor->requestor);
 
 	$logger->debug("circulator: built hold notifier");
 
@@ -1643,7 +1677,7 @@ sub process_received_transit {
 
 	my $hold_transit = $self->editor->retrieve_action_hold_transit_copy($transit->id);
 
-   $logger->info("ciculator: Recovering original copy status in transit: ".$transit->copy_status);
+   $logger->info("circulator: Recovering original copy status in transit: ".$transit->copy_status);
    $copy->status( $transit->copy_status );
 	$self->update_copy();
 	return if $self->bail_out;
@@ -1694,7 +1728,8 @@ sub checkin_handle_circ {
 	$logger->debug("circulator: ".$obt->balance_owed." is owed on this circulation");
 
    # Set the checkin vars since we have the item
-   $circ->checkin_time('now');
+	$circ->checkin_time( ($self->backdate) ? $self->backdate : 'now' );
+
    $circ->checkin_staff($self->editor->requestor->id);
    $circ->checkin_lib($self->editor->requestor->ws_ou);
 
@@ -1713,7 +1748,6 @@ sub checkin_handle_circ {
 		$self->update_copy;
 	}
 
-
 	return $self->bail_on_events($self->editor->event)
 		unless $self->editor->update_action_circulation($circ);
 }
@@ -1723,8 +1757,13 @@ sub checkin_handle_backdate {
 	my $self = shift;
 
 	my $bd = $self->backdate;
+
+	# ------------------------------------------------------------------
+	# clean up the backdate for date comparison
+	# we want any bills created on or after the backdate
+	# ------------------------------------------------------------------
 	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-	$bd = "${bd}T23:59:59";
+	#$bd = "${bd}T23:59:59";
 
 	my $bills = $self->editor->search_money_billing(
 		{ 
@@ -1856,8 +1895,12 @@ sub checkin_flesh_events {
 		$payload->{record}   = $U->record_to_mvr($self->title) if($self->title and !$self->is_precat);
 		$payload->{circ}     = $self->circ;
 		$payload->{transit}  = $self->transit;
-		$payload->{hold}     = $self->hold;
-		
+		$payload->{cancelled_hold_transit} = 1 if $self->cancelled_hold_transit;
+
+		# $self->hold may or may not have been replaced with a 
+		# valid hold after processing a cancelled hold
+		$payload->{hold} = $self->hold unless (not $self->hold or $self->hold->cancel_time);
+
 		$evt->{payload} = $payload;
 	}
 }
