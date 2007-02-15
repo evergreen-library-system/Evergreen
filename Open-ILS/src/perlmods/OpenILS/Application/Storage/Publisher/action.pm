@@ -790,7 +790,7 @@ sub new_hold_copy_targeter {
 							asset::copy->search_where(
 								{ id => [map {$_->id} @{ $cn->copies }],
 								  deleted => 'f' }
-							) if ($cn && $cn->copies);
+							) if ($cn && @{ $cn->copies });
 					}
 				}
 			} elsif ($hold->hold_type eq 'T') {
@@ -808,7 +808,7 @@ sub new_hold_copy_targeter {
 						asset::copy->search_where(
 							{ id => [map {$_->id} @{ $cn->copies }],
 							  deleted => 'f' }
-						) if ($cn && $cn->copies);
+						) if ($cn && @{ $cn->copies });
 				}
 			} elsif ($hold->hold_type eq 'V') {
 				my ($vtree) = $self
@@ -819,10 +819,11 @@ sub new_hold_copy_targeter {
 					asset::copy->search_where(
 						{ id => [map {$_->id} @{ $vtree->copies }],
 						  deleted => 'f' }
-					) if ($vtree && $vtree->copies);
+					) if ($vtree && @{ $vtree->copies });
 					
 			} elsif  ($hold->hold_type eq 'C' || $hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
-				$all_copies = [asset::copy->retrieve($hold->target)];
+				my $_cp = asset::copy->retrieve($hold->target);
+				push @$all_copies, $_cp if $_cp;
 			}
 
 			# trim unholdables
