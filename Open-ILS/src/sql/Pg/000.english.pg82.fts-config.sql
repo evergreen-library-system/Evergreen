@@ -1,6 +1,13 @@
 
 BEGIN;
 
+CREATE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
+BEGIN
+	NEW.index_vector = to_tsvector(TG_ARGV[0], NEW.value);
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
 INSERT INTO pg_ts_cfg VALUES ('title', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('author', 'default','C');
 INSERT INTO pg_ts_cfg VALUES ('subject', 'default','C');
