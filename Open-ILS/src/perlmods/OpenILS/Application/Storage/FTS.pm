@@ -10,6 +10,7 @@ sub compile {
 	$log->debug("You must override me somewhere, or I will make searching really slow!!!!",ERROR);;
 
 	my $self = shift;
+	my $class = shift;
 	my $term = shift;
 
 	$self = ref($self) || $self;
@@ -39,7 +40,7 @@ sub decompose {
 	$term =~ s/(^|\s+)-(\w+)/$1!$2/go;
 	$term =~ s/\b(\+)(\w+)/$2/go;
 	$term =~ s/^\s*\b(.+)\b\s*$/$1/o;
-	$term =~ s/^(?:an?|the)\b(.*)/$1/o;
+	#$term =~ s/^(?:an?|the)\b(.*)/$1/o;
 
 	$log->debug("Stripped search term string is [$term]",DEBUG);
 

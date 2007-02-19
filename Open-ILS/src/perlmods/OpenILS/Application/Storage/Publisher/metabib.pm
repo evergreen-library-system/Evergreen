@@ -413,7 +413,7 @@ sub biblio_multi_search_full_rec {
 		$index_col ||= 'value';
 		my $search_table = metabib::full_rec->table;
 
-		my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
+		my $fts = OpenILS::Application::Storage::FTS->compile('default' => $term, 'value',"$index_col");
 
 		my $fts_where = $fts->sql_where_clause();
 		my @fts_ranks = $fts->fts_rank;
@@ -667,7 +667,7 @@ sub search_full_rec {
 	$index_col ||= 'value';
 	my $search_table = metabib::full_rec->table;
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
+	my $fts = OpenILS::Application::Storage::FTS->compile('default' => $term, 'value',"$index_col");
 
 	my $fts_where = $fts->sql_where_clause();
 	my @fts_ranks = $fts->fts_rank;
@@ -763,7 +763,8 @@ sub search_class_fts {
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
+	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).search_fts.*/$1/o;
+	my $fts = OpenILS::Application::Storage::FTS->compile($search_class => $term, 'f.value', "f.$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
 	my @fts_ranks = $fts->fts_rank;
@@ -940,7 +941,7 @@ sub search_class_fts_count {
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'value',"$index_col");
+	my $fts = OpenILS::Application::Storage::FTS->compile($search_class => $term, 'value',"$index_col");
 
 	my $fts_where = $fts->sql_where_clause;
 
@@ -1114,7 +1115,9 @@ sub postfilter_search_class_fts {
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
+	(my $search_class = $self->api_name) =~ s/.*metabib.(\w+).post_filter.*/$1/o;
+
+	my $fts = OpenILS::Application::Storage::FTS->compile($search_class => $term, 'f.value', "f.$index_col");
 
 	my $SQLstring = join('%',map { lc($_) } $fts->words);
 	my $REstring = '^' . join('\s+',map { lc($_) } $fts->words) . '\W*$';
@@ -1539,7 +1542,7 @@ sub postfilter_search_multi_class_fts {
 		$index_col ||= 'value';
 
 		
-		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
+		my $fts = OpenILS::Application::Storage::FTS->compile($search_class => $args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
 
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
@@ -2018,7 +2021,7 @@ sub biblio_search_multi_class_fts {
 		$index_col ||= 'value';
 
 		
-		my $fts = OpenILS::Application::Storage::FTS->compile($args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
+		my $fts = OpenILS::Application::Storage::FTS->compile($search_class => $args{searches}{$search_group}{term}, $search_group_name.'.value', "$search_group_name.$index_col");
 
 		my $fts_where = $fts->sql_where_clause;
 		my @fts_ranks = $fts->fts_rank;
@@ -2312,7 +2315,7 @@ sub xref_count {
 
 		
 		my $where = OpenILS::Application::Storage::FTS
-			->compile($term, $search_class.'.value', "$search_class.$index_col")
+			->compile($search_class => $term, $search_class.'.value', "$search_class.$index_col")
 			->sql_where_clause;
 
 		my $SQL = <<"		SQL";

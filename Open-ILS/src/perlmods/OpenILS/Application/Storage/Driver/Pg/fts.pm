@@ -8,15 +8,18 @@
 
 	sub compile {
 		my $self = shift;
+		my $class = shift;
 		my $term = NFD(shift());
 
 		$log->debug("Raw term: $term",DEBUG);
+		$log->debug("Search class: $class",DEBUG);
 
 		$term =~ s/\&//go;
 		$term =~ s/\|//go;
 
 		$self = ref($self) || $self;
 		$self = bless {} => $self;
+		$self->{class} = $class;
 
 		$term =~ s/(\pM+)//gos;
 		$term =~ s/(\b\.\b)//gos;
@@ -34,7 +37,7 @@
 		$newterm = OpenILS::Application::Storage::Driver::Pg->quote($newterm);
 		$log->debug("Quoted term is [$newterm]", DEBUG);
 
-		$self->{fts_query} = ["to_tsquery('default',$newterm)"];
+		$self->{fts_query} = ["to_tsquery('$$self{class}',$newterm)"];
 		$self->{fts_query_nots} = [];
 		$self->{fts_op} = '@@';
 		$self->{text_col} = shift;
