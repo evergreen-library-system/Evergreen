@@ -1,7 +1,7 @@
 
 BEGIN;
 
-CREATE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
 BEGIN
 	NEW.index_vector = to_tsvector(TG_ARGV[0], NEW.value);
 	RETURN NEW;
