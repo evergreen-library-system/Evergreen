@@ -104,7 +104,7 @@ sub find_authority_marc {
 	my ($index_col) = authority::full_rec->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'f.value', "f.$index_col");
+	my $fts = OpenILS::Application::Storage::FTS->compile(default => $term, 'f.value', "f.$index_col");
 
 	$term =~ s/\W+$//gso;
 	$term =~ s/'/''/gso;
@@ -159,7 +159,7 @@ sub _empty_check {
 	my ($index_col) = $class->columns('FTS');
 	$index_col ||= 'value';
 
-	my $fts = OpenILS::Application::Storage::FTS->compile($term, 'm.value', "m.$index_col");
+	my $fts = OpenILS::Application::Storage::FTS->compile(default => $term, 'm.value', "m.$index_col");
 	my $fts_where = $fts->sql_where_clause;
 
 	my $sql = <<"	SQL";
