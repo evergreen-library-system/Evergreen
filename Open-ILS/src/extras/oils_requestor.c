@@ -5,7 +5,6 @@
 #include "opensrf/utils.h"
 #include "opensrf/osrf_system.h"
 #include "opensrf/osrf_app_session.h"
-#include "openils/fieldmapper_lookup.h"
 #include "openils/oils_event.h"
 #include "openils/oils_utils.h"
 
@@ -22,9 +21,10 @@ int main( int argc, char* argv[] ) {
 	char* password		= NULL;
 	char* config		= NULL;
 	char* context		= NULL;
+	char* idl_filename	= NULL;
 	char* request;
 
-	while( (c = getopt( argc, argv, "f:u:p:s:c:" )) != -1 ) {
+	while( (c = getopt( argc, argv, "f:u:p:s:c:i:" )) != -1 ) {
 		switch(c) {
 			case '?': return -1;
 			case 'f': config		= strdup(optarg);
@@ -32,7 +32,18 @@ int main( int argc, char* argv[] ) {
 			case 'u': username	= strdup(optarg);
 			case 'p': password	= strdup(optarg);
 			case 's': script		= strdup(optarg);
+			case 'i': idl_filename		= strdup(optarg);
 		}
+	}
+
+	if (!idl_filename) {
+		fprintf(stderr, "IDL file not provided. Exiting...\n");
+		return -1;
+	}
+
+	if (!oilsInitIDL( idl_filename )) {
+		fprintf(stderr, "IDL file could not be loaded. Exiting...\n");
+		return -1;
 	}
 
 	if(!(config && context)) {
@@ -56,6 +67,7 @@ int main( int argc, char* argv[] ) {
 		if(do_request(request)) break;
 
 	free(authtoken);
+	free(idl_filename);
 	return 1;
 }
 
