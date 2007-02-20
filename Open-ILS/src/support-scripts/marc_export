@@ -74,10 +74,23 @@ while ( my $i = <> ) {
 
 	next unless $bib;
 
-	if ($format eq 'XML') {
-		print $bib->marc . "\n";
-	} else {
-		print MARC::Record->new_from_xml( $bib->marc, $encoding, $format )->as_usmarc;
+	my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
+	$r->delete_field( $_ ) for ($r->field(901));
+
+	$r->append_fields(
+		MARC::Field->new(
+			901, '', '', 
+			a => $bib->tcn_value,
+			b => $bib->tcn_source
+		)
+	);
+
+	if (uc($format) eq 'XML') {
+		print $r->as_xml_record;
+	} elsif (uc($format) eq 'UNIMARC') {
+		print $r->as_unimarc
+	} elsif (uc($format) eq 'USMARC') {
+		print $r->as_usmarc
 	}
 }
 
