@@ -1,9 +1,22 @@
 #include "objson/object.h"
 #include "opensrf/log.h"
-#include "openils/fieldmapper_lookup.h"
+
+// XXX replacing this with liboils_idl implementation
+// #include "openils/fieldmapper_lookup.h"
+
+#include "openils/idl_fieldmapper.h"
+
 #include "oils_event.h"
 #include "oils_constants.h"
 #include "opensrf/osrf_app_session.h"
+#include "opensrf/osrf_settings.h"
+
+/**
+  An entirely untested IDL initializer. Returns NULL on failure
+  or a pointer to the IDL data structure on success.
+  @param idl_filename The file to load the IDL from.
+ */
+osrfHash* oilsInitIDL(char* idl_filename);
 
 /**
   Returns the string value for field 'field' in the given object.

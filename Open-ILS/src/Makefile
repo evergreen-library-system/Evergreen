@@ -85,12 +85,12 @@ libfieldmapper:
 libfieldmapper-install:	
 	make -C apachemods libfieldmapper-install
 
-c_apps:	libfieldmapper
+c_apps:
 	@echo $@
 	make -C c-apps
 	make -C extras oils_requestor
 
-c_apps-install:	libfieldmapper-install
+c_apps-install:
 	@echo $@
 	make -C c-apps install
 	make -C extras oils_requestor-install

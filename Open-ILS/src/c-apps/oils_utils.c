@@ -1,4 +1,21 @@
 #include "oils_utils.h"
+#include "oils_idl.h"
+
+// XXX this is entirely untested!!!
+osrfHash* oilsInitIDL(char* idl_filename) {
+
+	if (!idl_filename) {
+		osrfLogError(OSRF_LOG_MARK, "At least give me a file to try!");
+		return NULL;
+	}
+
+	if (!oilsIDLInit( idl_filename )) {
+		osrfLogError(OSRF_LOG_MARK, "Problem loading IDL file [%s]!", idl_filename);
+		return NULL;
+	}
+
+	return oilsIDL();
+}
 
 char* oilsFMGetString( jsonObject* object, char* field ) {
 	return jsonObjectToSimpleString(oilsFMGetObject( object, field ));

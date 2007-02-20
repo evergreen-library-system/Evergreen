@@ -2,6 +2,9 @@
 #include "opensrf/utils.h"
 #include "opensrf/osrf_hash.h"
 
+#ifndef OILS_IDL_API
+#define OILS_IDL_API
+
 osrfHash* oilsIDLInit( char* );
 osrfHash* oilsIDL();
 osrfHash* oilsIDLFindPath( char*, ... );
@@ -41,3 +44,8 @@ osrfHash* oilsIDLFindPath( char*, ... );
 
 */
 
+int oilsIDL_classIsFieldmapper(char*);
+char * oilsIDL_pton(char *, int);
+int oilsIDL_ntop(char *, char *);
+
+#endif

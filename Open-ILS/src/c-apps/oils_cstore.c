@@ -3,9 +3,6 @@
 #include "opensrf/utils.h"
 #include "objson/object.h"
 #include "opensrf/log.h"
-#include "oils_utils.h"
-#include "oils_constants.h"
-#include "oils_event.h"
 #include "oils_idl.h"
 #include <dbi/dbi.h>
 
@@ -18,10 +15,6 @@
 #else
 #  define MODULENAME "open-ils.cstore"
 #endif
-
-#define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistance/v1"
-#define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
-#define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
 
 #define SELECT_DISTINCT	1
 
@@ -96,7 +89,7 @@ int osrfAppInitialize() {
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-	char* idl_filename = osrf_settings_host_value("/apps/%s/app_settings/IDL", MODULENAME);
+	char* idl_filename = osrf_settings_host_value("/IDL", MODULENAME);
 	osrfLogInfo(OSRF_LOG_MARK, "Found file:");
 	osrfLogInfo(OSRF_LOG_MARK, idl_filename);
 

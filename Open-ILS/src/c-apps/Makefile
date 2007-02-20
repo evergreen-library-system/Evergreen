@@ -1,12 +1,12 @@
-LDLIBS += -lobjson -lopensrf -lfieldmapper 
+LDLIBS += -lobjson -lopensrf #-lfieldmapper 
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
-all:	oils_auth.so oils_cstore.so oils_rstore.so oils_dataloader
+all:	liboils_idl.so oils_auth.so oils_cstore.so oils_rstore.so oils_dataloader
 #all:	oils_auth.so
 
 oils_event.o:	oils_event.c oils_event.h
-oils_utils.o:	oils_utils.c oils_utils.h
+oils_utils.o:	oils_utils.c oils_utils.h idl_fieldmapper.h
 oils_auth.o:	oils_auth.c
 oils_fetch.o:	oils_fetch.c oils_utils.h 
 oils_cstore.o:	oils_cstore.c oils_utils.h
@@ -19,7 +19,7 @@ oils_dataloader:	oils_dataloader.o
 oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
 
 oils_rstore.o:	oils_cstore.c oils_utils.h
 	$(CC) $(CFLAGS) -I$(TMPDIR) -I$(TMPDIR)/opensrf/ -DRSTORE -c -o $@ oils_cstore.c 
@@ -27,7 +27,7 @@ oils_rstore.o:	oils_cstore.c oils_utils.h
 oils_rstore.so:	oils_rstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils -ldbi -ldbdpgsql oils_rstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_rstore.o -o $(TMPDIR)/$@
 
 oils_fetch.so:	oils_fetch.o liboils_utils.so
 	@echo $@
@@ -42,10 +42,11 @@ liboils_idl.so:	oils_idl-core.o
 	cp $@ $(TMPDIR)/
 	mkdir -p $(TMPDIR)/openils/
 	cp oils_idl.h $(TMPDIR)/openils/
+	cp idl_fieldmapper.h $(TMPDIR)/openils/
 
 oils_auth.so:	oils_auth.o liboils_utils.so
 	@echo $@
-	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_utils oils_auth.o -o $(TMPDIR)/$@
+	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_utils -loils_idl oils_auth.o -o $(TMPDIR)/$@
 
 liboils_utils.so:	oils_utils.o oils_event.o oils_constants.h
 	@echo $@
@@ -55,8 +56,6 @@ liboils_utils.so:	oils_utils.o oils_event.o oils_constants.h
 	cp oils_event.h $(TMPDIR)/openils/
 	cp oils_utils.h $(TMPDIR)/openils/
 	cp oils_constants.h $(TMPDIR)/openils/
-
-
 
 install:
 	@echo $@;
@@ -72,6 +71,7 @@ install:
 	cp oils_idl.h $(INCDIR)
 	cp oils_event.h $(INCDIR)
 	cp oils_constants.h $(INCDIR)
+	cp idl_fieldmapper.h $(INCDIR)
 
 clean:
 	@echo $@;

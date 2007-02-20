@@ -289,3 +289,41 @@ osrfHash* oilsIDLFindPath( char* path, ... ) {
 	return obj;
 }
 
+int oilsIDL_classIsFieldmapper ( char* classname ) {
+	if (!classname) return 0;
+	if(oilsIDLFindPath( "/%s", classname )) return 1;
+	return 0;
+}
+
+int oilsIDL_ntop (char* classname, char* fieldname) {
+	osrfHash* _pos = NULL;
+
+	if (!oilsIDL_classIsFieldmapper(classname)) return -1;
+	_pos = oilsIDLFindPath( "/%s/fields/%s", classname, fieldname );
+	if (_pos) return atoi( osrfHashGet(_pos, "array_position") );
+	return -1;
+}
+
+char * oilsIDL_pton (char* classname, int pos) {
+	char* ret = NULL;
+	osrfHash* f = NULL;
+	osrfHash* fields = NULL;
+	osrfHashIterator* itr = NULL;
+
+	if (!oilsIDL_classIsFieldmapper(classname)) return NULL;
+
+	fields = oilsIDLFindPath( "/%s/fields", classname );
+	itr = osrfNewHashIterator( fields );
+
+	while ( (f = osrfHashIteratorNext( itr )) ) {
+		if ( atoi(osrfHashGet(f, "array_position")) == pos ) {
+			ret = strdup(itr->current);
+			break;
+		}
+	}
+
+	osrfHashIteratorFree( itr );
+
+	return ret;
+}
+
