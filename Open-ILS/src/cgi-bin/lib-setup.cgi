@@ -23,9 +23,9 @@ my $cgi = new CGI;
 # setup part
 #-------------------------------------------------------------------------------
 
-my %org_cols = ( qw/id SysID name Name parent_ou Parent ou_type OrgUnitType shortname ShortName email Email phone Phone/ );
+my %org_cols = ( qw/id SysID name Name parent_ou Parent ou_type OrgUnitType shortname ShortName email Email phone Phone opac_visible OPACVisible/ );
 
-my @col_display_order = ( qw/id name shortname ou_type email phone parent_ou/ );
+my @col_display_order = ( qw/id name shortname ou_type email phone opac_visible parent_ou/ );
 
 if (my $action = $cgi->param('action')) {
 	if ( $action eq 'Update' ) {
@@ -248,9 +248,24 @@ if (my $action = $cgi->param('action')) {
 				th($org_cols{email}),
 				td("<input type='text' name='email_$node' value=\"". $node->email() ."\">"),
 			);
+
 			print Tr(
 				th($org_cols{phone}),
 				td("<input type='text' name='phone_$node' value='". $node->phone() ."'>"),
+			);
+
+			print Tr(
+				th($org_cols{opac_visible}),
+				td("<select name='opac_visible_$node'>".
+					do {
+						my $out = "<option value='t' ";
+						$out .= ($node->opac_visible =~ /^[y1t]+/) ?  "selected='yes'" : "";
+						$out .= ">True</option><option value='f' ";
+						$out .= ($node->opac_visible =~ /^[n0f]+/) ?  "selected='yes'" : "";
+						$out .= ">False</option>";
+						$out;
+					}."</select>"
+				),
 			);
 
 			print Tr(

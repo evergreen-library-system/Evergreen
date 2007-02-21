@@ -154,6 +154,7 @@ class OrgUnit(models.Model):
    name = models.CharField(maxlength=200)
    email = models.EmailField(null=True, blank=True)
    phone = models.CharField(maxlength=200, null=True, blank=True)
+   opac_visible = models.BooleanField(blank=True)
    ill_address_id = models.ForeignKey(OrgAddress, db_column='ill_address', null=True, blank=True)
    holds_address_id = models.ForeignKey(OrgAddress, db_column='holds_address', null=True, blank=True)
    mailing_address_id = models.ForeignKey(OrgAddress, db_column='mailing_address', null=True, blank=True)
