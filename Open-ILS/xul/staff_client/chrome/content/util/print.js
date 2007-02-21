@@ -68,7 +68,7 @@ util.print.prototype = {
 						} else {
 							w = msg;
 						}
-						if (! params.no_form_feed) { w = w + '\r\n\f'; }
+						if (! params.no_form_feed) { w = w + '\r\n\r\n\r\n\r\n\r\n\r\n\f'; }
 						obj.NSPrint(w, silent, params);
 						return;
 					break;
