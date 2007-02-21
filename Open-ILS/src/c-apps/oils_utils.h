@@ -12,11 +12,12 @@
 #include "opensrf/osrf_settings.h"
 
 /**
-  An entirely untested IDL initializer. Returns NULL on failure
+  Loads the IDL. Returns NULL on failure
   or a pointer to the IDL data structure on success.
-  @param idl_filename The file to load the IDL from.
+  @param idl_filename If not provided, we'll fetch the 
+  filename from the settings server
  */
-osrfHash* oilsInitIDL(char* idl_filename);
+osrfHash* oilsInitIDL( char* idl_filename );
 
 /**
   Returns the string value for field 'field' in the given object.

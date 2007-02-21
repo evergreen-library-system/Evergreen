@@ -27,9 +27,8 @@ int osrfAppInitialize() {
 
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing Auth Server...");
 
-	char* idl_filename = osrf_settings_host_value("/IDL");
-	if (!oilsInitIDL( idl_filename )) exit(1);
-	free(idl_filename);
+    /* load and parse the IDL */
+	if (!oilsInitIDL(NULL)) return 1; /* return non-zero to indicate error */
 
 	osrfAppRegisterMethod( 
 		MODULENAME, 

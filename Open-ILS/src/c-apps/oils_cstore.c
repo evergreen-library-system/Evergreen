@@ -89,14 +89,7 @@ int osrfAppInitialize() {
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-	char* idl_filename = osrf_settings_host_value("/IDL", MODULENAME);
-	osrfLogInfo(OSRF_LOG_MARK, "Found file:");
-	osrfLogInfo(OSRF_LOG_MARK, idl_filename);
-
-	if (!oilsIDLInit( idl_filename )) {
-		osrfLogError(OSRF_LOG_MARK, "Problem loading the IDL.  Seacrest out!");
-		exit(1);
-	}
+	if (!oilsInitIDL(NULL)) return 1; /* return non-zero to indicate error */
 
 	// Generic search thingy
 	method_name =  buffer_init(64);

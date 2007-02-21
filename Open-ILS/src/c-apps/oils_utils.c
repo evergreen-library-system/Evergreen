@@ -1,19 +1,27 @@
 #include "oils_utils.h"
 #include "oils_idl.h"
 
-// XXX this is entirely untested!!!
 osrfHash* oilsInitIDL(char* idl_filename) {
 
+    int freeme = 0;
+    if(!idl_filename) {
+	    idl_filename = osrf_settings_host_value("/IDL");
+        freeme = 1;
+    }
+
 	if (!idl_filename) {
-		osrfLogError(OSRF_LOG_MARK, "At least give me a file to try!");
+		osrfLogError(OSRF_LOG_MARK, "No settings config for '/IDL'");
 		return NULL;
 	}
+
+    osrfLogInfo(OSRF_LOG_MARK, "Parsing IDL %s", idl_filename);
 
 	if (!oilsIDLInit( idl_filename )) {
 		osrfLogError(OSRF_LOG_MARK, "Problem loading IDL file [%s]!", idl_filename);
 		return NULL;
 	}
 
+    if(freeme) free(idl_filename);
 	return oilsIDL();
 }
 

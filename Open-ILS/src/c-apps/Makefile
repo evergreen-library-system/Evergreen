@@ -19,7 +19,7 @@ oils_dataloader:	oils_dataloader.o
 oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
 
 oils_rstore.o:	oils_cstore.c oils_utils.h
 	$(CC) $(CFLAGS) -I$(TMPDIR) -I$(TMPDIR)/opensrf/ -DRSTORE -c -o $@ oils_cstore.c 
