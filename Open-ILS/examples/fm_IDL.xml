@@ -1253,6 +1253,7 @@
 			<field reporter:label="Short (Policy) Name" name="shortname" oils_obj:array_position="12" oils_persist:virtual="false" />
 			<field reporter:label="EMail Address" name="email" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field reporter:label="Phone Number" name="phone" oils_obj:array_position="14" oils_persist:virtual="false" />
+			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>

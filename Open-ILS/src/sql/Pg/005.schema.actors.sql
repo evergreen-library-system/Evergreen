@@ -375,7 +375,8 @@ CREATE TABLE actor.org_unit (
 	shortname	TEXT	NOT NULL,
 	name		TEXT	NOT NULL,
 	email		TEXT,
-	phone		TEXT
+	phone		TEXT,
+	opac_visible	BOOL	NOT NULL DEFAULT TRUE
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);
