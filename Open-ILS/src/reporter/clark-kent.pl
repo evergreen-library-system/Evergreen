@@ -71,7 +71,7 @@ if ($daemon) {
 	open(F, ">$lockfile");
 	print F $$;
 	close F;
-	daemonize("Clark Kent, waiting for trouble");
+	daemonize("clark_master");
 }
 
 
