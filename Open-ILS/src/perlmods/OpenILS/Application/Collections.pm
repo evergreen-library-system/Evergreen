@@ -111,6 +111,8 @@ sub users_of_interest {
    my $data = [];
 
    my $ses = OpenSRF::AppSession->create('open-ils.storage');
+
+   my $start = time;
    my $req = $ses->request(
       'open-ils.storage.money.collections.users_of_interest', 
       $age, $fine_level, $location);
@@ -118,34 +120,41 @@ sub users_of_interest {
    # let the client know we're still here
    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
+   my $total;
    while( my $resp = $req->recv(timeout => 600) ) {
-      return $req->failed if $req->failed;
-      my $hash = $resp->content;
-      next unless $hash;
+        return $req->failed if $req->failed;
+        my $hash = $resp->content;
+        next unless $hash;
 
-      my $u = $e->retrieve_actor_user(
-         [
-	         $hash->{usr},
-	         {
-		         flesh				=> 1,
-		         flesh_fields	=> {au => ["groups","profile", "card"]},
-		         #select			=> {au => ["profile","id","dob", "card"]}
-	         }
-         ]
-      ) or return $e->event;
+        unless($total) {
+            $total = time - $start;
+            $logger->info("collections: users_of_interest ".
+            "($age, $fine_level, $location) took $total seconds");
+        }
 
-      $hash->{usr} = {
-         id			=> $u->id,
-         dob		=> $u->dob,
-         profile	=> $u->profile->name,
-         barcode	=> $u->card->barcode,
-         groups	=> [ map { $_->name } @{$u->groups} ],
-      };
+        my $u = $e->retrieve_actor_user(
+            [
+	            $hash->{usr},
+	            {
+		            flesh				=> 1,
+		            flesh_fields	=> {au => ["groups","profile", "card"]},
+		            #select			=> {au => ["profile","id","dob", "card"]}
+	            }
+            ]
+        ) or return $e->event;
+
+        $hash->{usr} = {
+            id			=> $u->id,
+            dob		=> $u->dob,
+            profile	=> $u->profile->name,
+            barcode	=> $u->card->barcode,
+            groups	=> [ map { $_->name } @{$u->groups} ],
+        };
       
-      $conn->respond($hash);
-   }
+        $conn->respond($hash);
+    }
 
-   return undef;
+    return undef;
 }
 
 
@@ -154,6 +163,7 @@ __PACKAGE__->register_method(
 	api_name  => 'open-ils.collections.users_with_activity.retrieve',
 	api_level => 1,
 	argc      => 4,
+    stream    => 1,
 	signature => { 
 		desc     => q/
 			Returns an array of users that are already in collections 
@@ -200,11 +210,31 @@ sub users_with_activity {
 
 	my $org = $e->search_actor_org_unit({shortname => $location})
 		or return $e->event; $org = $org->[0];
-	return $e->event unless $e->allowed('VIEW_USER', $org->id);
+    return $e->event unless $e->allowed('VIEW_USER', $org->id);
 
-	return $U->storagereq(
+    my $ses = OpenSRF::AppSession->create('open-ils.storage');
+
+    my $start = time;
+    my $req = $ses->request(
 		'open-ils.storage.money.collections.users_with_activity.atomic', 
 		$start_date, $end_date, $location);
+
+    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+    my $total;
+    while( my $resp = $req->recv(timeout => 600) ) {
+
+        unless($total) {
+            $total = time - $start;
+            $logger->info("collections: users_with_activity search ".
+                "($start_date, $end_date, $location) took $total seconds");
+        }
+
+        return $req->failed if $req->failed;
+        $conn->respond($resp->content);
+   }
+
+    return undef;
 }
 
 
