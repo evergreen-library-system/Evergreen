@@ -4,6 +4,7 @@
 #include "objson/object.h"
 #include "opensrf/log.h"
 #include "oils_idl.h"
+#include "oils_utils.h"
 #include <dbi/dbi.h>
 
 #include <time.h>
