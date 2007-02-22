@@ -59,12 +59,6 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  FROM	money.payment p
 	  	JOIN pg_class c ON (p.tableoid = c.oid);
 
-CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
-	SELECT	p.*, c.relname AS payment_type
-	  FROM	money.bnm_payment p         
-			JOIN pg_class c ON p.tableoid = c.oid
-	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
-
 CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,
 		billing_type AS last_billing_type,
@@ -370,6 +364,12 @@ CREATE INDEX money_credit_card_id_idx ON money.credit_card_payment (id);
 CREATE INDEX money_credit_card_payment_ts_idx ON money.credit_card_payment (payment_ts);
 CREATE INDEX money_credit_card_payment_accepting_usr_idx ON money.credit_card_payment (accepting_usr);
 CREATE INDEX money_credit_card_payment_cash_drawer_idx ON money.credit_card_payment (cash_drawer);
+
+CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
+	SELECT	p.*, c.relname AS payment_type
+	  FROM	money.bnm_payment p         
+			JOIN pg_class c ON p.tableoid = c.oid
+	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
 
 CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 	SELECT	ou.id AS org_unit,
