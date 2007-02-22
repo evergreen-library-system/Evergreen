@@ -40,7 +40,7 @@ Example opensrf config file for OpenILS
                 <base_uri>https://localhost/reporter/</base_uri>
                 <database>
                     <driver>Pg</driver>
-                    <host>127.0.0.1</host>
+                    <host>localhost</host>
                     <port>5432</port>
                     <name>evergreen</name>
                     <user>postgres</user>
@@ -133,7 +133,7 @@ Example opensrf config file for OpenILS
             <!-- memcache servers -->
             <global>
                 <servers>
-                    <server>127.0.0.1:11211</server>
+                    <server>localhost:11211</server>
                 </servers>
                 <max_cache_time>86400</max_cache_time>
             </global>
@@ -489,7 +489,7 @@ Example opensrf config file for OpenILS
                             <type>master</type>
                             <weight>2</weight>
                             <user>postgres</user>
-                            <host>127.0.0.1</host>
+                            <host>localhost</host>
                             <port>5432</port>
                             <pw>postgres</pw>
                             <db>evergreen</db>
@@ -523,10 +523,10 @@ Example opensrf config file for OpenILS
                         <type>master</type>
                         <weight>2</weight>
                         <user>postgres</user>
-                        <host>127.0.0.1</host>
+                        <host>localhost</host>
                         <port>5432</port>
                         <pw>postgres</pw>
-                        <db>sparkle</db>
+                        <db>evergreen</db>
                         <client_encoding>UTF-8</client_encoding>
                     </database>
                 </app_settings>
@@ -612,7 +612,7 @@ Example opensrf config file for OpenILS
                     <type>master</type>
                     <weight>2</weight>
                     <user>postgres</user>
-                    <host>127.0.0.1</host>
+                    <host>localhost</host>
                     <port>5432</port>
                     <pw>postgres</pw>
                     <db>evergreen</db>
