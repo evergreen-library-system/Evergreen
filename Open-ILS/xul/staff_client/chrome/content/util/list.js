@@ -347,6 +347,9 @@ util.list.prototype = {
 				treechildren_node.appendChild( treeitem );
 			}
 		}
+		if (typeof params.no_auto_select == 'undefined') {
+			try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ERROR','tree auto select: ' + E + '\n'); }
+		}
 		var treerow = document.createElement('treerow');
 		treeitem.appendChild( treerow );
 		treerow.setAttribute('retrieve_id',params.retrieve_id);
