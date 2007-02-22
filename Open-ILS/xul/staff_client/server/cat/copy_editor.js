@@ -414,7 +414,7 @@ g.import_templates = function() {
 			alert('File not chosen for import.');
 		}
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('Error exporting templates',E);
+		g.error.standard_unexpected_error_alert('Error importing templates',E);
 	}
 }
 
