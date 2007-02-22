@@ -125,6 +125,7 @@ util.print.prototype = {
 		if (params.list) {
 			for (var i = 0; i < params.list.length; i++) {
 				params.row = params.list[i];
+				params.row_idx = i;
 				s += this.template_sub( params.line_item, cols, params );
 			}
 		}
@@ -142,6 +143,9 @@ util.print.prototype = {
 		if (!msg) { dump('template sub called with empty string\n'); return; }
 		JSAN.use('util.date');
 		var s = msg; var b;
+
+		try{b = s; s = s.replace(/%LINE_NO%/,Number(params.row_idx)+1);}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 
 		try{b = s; s = s.replace(/%patron_barcode%/,params.patron_barcode);}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
