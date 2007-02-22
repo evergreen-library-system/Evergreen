@@ -42,14 +42,3 @@ port					= 5222
 
 # --------------------------------------
 
-# log file names
-[logs]
-debug					= debug.log
-error					= error.log
-transport			= transport.log
-message				= message.log
-method				= method.log
-trace					= trace.log
-opac					= opac.log
-
-
