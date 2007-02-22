@@ -68,15 +68,6 @@ function buildConfig {
 	TMP="$(pwd)/.tmp";
 	ADMINDIR="$PREFIX/var/admin";
 
-	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
-	read X; if [ ! -z "$X" ]; then NEW_OPAC_URL="$X"; fi;
-
-	prompt "Package Name for Staff Client [$NEW_XUL_PACKAGE_NAME] "
-	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_NAME="$X"; fi;
-
-	prompt "Package Label for Staff Client [$NEW_XUL_PACKAGE_LABEL] "
-	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_LABEL="$X"; fi;
-
 	prompt "Apache2 apxs binary [$APXS2] "
 	read X; if [ ! -z "$X" ]; then APXS2="$X"; fi;
 
@@ -146,10 +137,6 @@ function writeConfig {
 	_write "CATALOGSCRIPTDIR=\"$CATALOGSCRIPTDIR\"";
 	_write "PENALTYRULESDIR=\"$PENALTYRULESDIR\"";
 	_write "XSLDIR=\"$XSLDIR\"";
-
-	_write "NEW_OPAC_URL=\"$NEW_OPAC_URL\"";
-	_write "NEW_XUL_PACKAGE_NAME=\"$NEW_XUL_PACKAGE_NAME\"";
-	_write "NEW_XUL_PACKAGE_LABEL=\"$NEW_XUL_PACKAGE_LABEL\"";
 
 	# print out the targets
 	STR="TARGETS=(";
