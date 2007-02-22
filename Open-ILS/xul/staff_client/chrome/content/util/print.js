@@ -52,6 +52,29 @@ util.print.prototype = {
 			}
 
 			var w;
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			obj.data.init({'via':'stash'});
+
+			if (params.print_strategy || obj.data.print_strategy) {
+
+				switch(params.print_strategy || obj.data.print_strategy) {
+					case 'dos.print':
+						/* FIXME - this it a kludge.. we're going to sidestep window-based html rendering for printing */
+						/* I'm using regexps to mangle the html receipt templates; it'd be nice to use xsl but the */
+						/* templates aren't guaranteed to be valid xml */
+						if (content_type=='text/html') {
+							w = msg.replace(/<br.*?>/gi,'\r\n').replace(/<table.*?>/gi,'\r\n').replace(/<tr.*?>/gi,'\r\n').replace(/<hr.*?>/gi,'\r\n').replace(/<p.*?>/gi,'\r\n').replace(/<block.*?>/gi,'\r\n').replace(/<li.*?>/gi,'\r\n * ').replace(/<.+?>/gi,'');
+						} else {
+							w = msg;
+						}
+						if (! params.no_form_feed) { w = w + '\r\n\r\n\r\n\r\n\r\n\r\n\f'; }
+						obj.NSPrint(w, silent, params);
+						return;
+					break;
+				}
+			}
+
 			switch(content_type) {
 				case 'text/html' :
 					var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { setTimeout( function() { if (typeof go_print == "function") { alert("Please tell the developers that the 2-second go_print workaround executed, and let them know whether this job printed successfully.  Thanks!"); go_print(); } else { alert("Please tell the developers that the 2-second go_print workaround did not work.  We will try to print one more time; there have been reports of wasted receipt paper at this point.  Please check the settings in the print dialog and/or prepare to power off your printer.  Thanks!"); window.print(); } }, 2000 ); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ }');
@@ -238,13 +261,19 @@ util.print.prototype = {
 		var obj = this;
 		try {
 
-			/* This is a kludge/workaround.  webBrowserPrint doesn't always work.  So we're going to let
+			/* OLD way: This is a kludge/workaround.  webBrowserPrint doesn't always work.  So we're going to let
 				the html window handle our receipt template rendering, and then force a selection of all
 				the text nodes and dump that to a file, for printing through a dos utility */
 
+			/*
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			w.getSelection().selectAllChildren(w.document.firstChild);
 			var text = w.getSelection().toString();
+			*/
+
+			/* NEW way: we just pass in the text */
+
+			var text = w;
 
 			var file = new util.file('receipt.txt');
 			file.write_content('truncate',text); file.close();
