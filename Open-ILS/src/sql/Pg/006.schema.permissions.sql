@@ -11,20 +11,22 @@ CREATE TABLE permission.perm_list (
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 
 INSERT INTO permission.perm_list VALUES (-1, 'EVERYTHING', NULL);
-INSERT INTO permission.perm_list VALUES (138, 'MAX_RENEWALS_REACHED.override', 'Allows a user to renew an item past the maximun renewal count');
-INSERT INTO permission.perm_list VALUES (-1, 'EVERYTHING', NULL);
 INSERT INTO permission.perm_list VALUES (2, 'OPAC_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (4, 'STAFF_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (5, 'MR_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (6, 'TITLE_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (7, 'VOLUME_HOLDS', NULL);
+INSERT INTO permission.perm_list VALUES (8, 'COPY_HOLDS', 'User is allowed to place a hold on a specific copy');
 INSERT INTO permission.perm_list VALUES (9, 'REQUEST_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (10, 'REQUEST_HOLDS_OVERRIDE', NULL);
+INSERT INTO permission.perm_list VALUES (11, 'VIEW_HOLD', 'Allows a user to view another user''s holds');
 INSERT INTO permission.perm_list VALUES (13, 'DELETE_HOLDS', NULL);
+INSERT INTO permission.perm_list VALUES (14, 'UPDATE_HOLD', 'Allows a user to update another user''s hold');
 INSERT INTO permission.perm_list VALUES (15, 'RENEW_CIRC', NULL);
 INSERT INTO permission.perm_list VALUES (16, 'VIEW_USER_FINES_SUMMARY', NULL);
 INSERT INTO permission.perm_list VALUES (17, 'VIEW_USER_TRANSACTIONS', NULL);
 INSERT INTO permission.perm_list VALUES (18, 'UPDATE_MARC', NULL);
+INSERT INTO permission.perm_list VALUES (19, 'CREATE_MARC', 'User is allowed to create new MARC records');
 INSERT INTO permission.perm_list VALUES (20, 'IMPORT_MARC', NULL);
 INSERT INTO permission.perm_list VALUES (21, 'CREATE_VOLUME', NULL);
 INSERT INTO permission.perm_list VALUES (22, 'UPDATE_VOLUME', NULL);
@@ -48,13 +50,9 @@ INSERT INTO permission.perm_list VALUES (41, 'CREATE_TRANSACTION', 'User may cre
 INSERT INTO permission.perm_list VALUES (43, 'CREATE_BILL', 'Allows a user to create a new bill on a transaction');
 INSERT INTO permission.perm_list VALUES (44, 'VIEW_CONTAINER', 'Allows a user to view another user''s containers (buckets)');
 INSERT INTO permission.perm_list VALUES (45, 'CREATE_CONTAINER', 'Allows a user to create a new container for another user');
-INSERT INTO permission.perm_list VALUES (8, 'COPY_HOLDS', 'User is allowed to place a hold on a specific copy');
 INSERT INTO permission.perm_list VALUES (24, 'CREATE_COPY', 'User is allowed to create a new copy object');
-INSERT INTO permission.perm_list VALUES (150, 'COPY_CIRC_NOT_ALLOWED.override', 'Allows a user to checkout an item that is marked as non-circ');
 INSERT INTO permission.perm_list VALUES (47, 'UPDATE_ORG_UNIT', 'Allows a user to change org unit settings');
 INSERT INTO permission.perm_list VALUES (48, 'VIEW_CIRCULATIONS', 'Allows a user to see what another use has checked out');
-INSERT INTO permission.perm_list VALUES (14, 'UPDATE_HOLD', 'Allows a user to update another user''s hold');
-INSERT INTO permission.perm_list VALUES (11, 'VIEW_HOLD', 'Allows a user to view another user''s holds');
 INSERT INTO permission.perm_list VALUES (42, 'VIEW_TRANSACTION', 'User may view another user''s transactions');
 INSERT INTO permission.perm_list VALUES (49, 'DELETE_CONTAINER', 'Allows a user to delete another user container');
 INSERT INTO permission.perm_list VALUES (50, 'CREATE_CONTAINER_ITEM', 'Create a container item for another user');
@@ -145,19 +143,20 @@ INSERT INTO permission.perm_list VALUES (134, 'group_application.user.staff.supe
 INSERT INTO permission.perm_list VALUES (135, 'group_application.user.sip_client', 'Allows a user to add/remove users to/from the "SIP-Client" group');
 INSERT INTO permission.perm_list VALUES (136, 'group_application.user.vendor', 'Allows a user to add/remove users to/from the "Vendor" group');
 INSERT INTO permission.perm_list VALUES (137, 'ITEM_AGE_PROTECTED.override', 'Allows a user to place a hold on an age-protected item');
-INSERT INTO permission.perm_list VALUES (151, 'DELETE_CONTAINER_ITEM', 'Allows a user to delete an item out of another user''s container');
+INSERT INTO permission.perm_list VALUES (138, 'MAX_RENEWALS_REACHED.override', 'Allows a user to renew an item past the maximun renewal count');
 INSERT INTO permission.perm_list VALUES (139, 'PATRON_EXCEEDS_CHECKOUT_COUNT.override', 'Allow staff to override checkout count failure');
 INSERT INTO permission.perm_list VALUES (140, 'PATRON_EXCEEDS_OVERDUE_COUNT.override', 'Allow staff to override overdue count failure');
 INSERT INTO permission.perm_list VALUES (141, 'PATRON_EXCEEDS_FINES.override', 'Allow staff to override fine amount checkout failure');
 INSERT INTO permission.perm_list VALUES (142, 'CIRC_EXCEEDS_COPY_RANGE.override', '');
 INSERT INTO permission.perm_list VALUES (143, 'ITEM_ON_HOLDS_SHELF.override', '');
 INSERT INTO permission.perm_list VALUES (144, 'COPY_NOT_AVAILABLE.override', 'Allow staff to force checkout of Missing/Lost type items');
-INSERT INTO permission.perm_list VALUES (19, 'CREATE_MARC', 'User is allowed to create new MARC records');
 INSERT INTO permission.perm_list VALUES (145, 'VOLUME_UPDATE', '');
 INSERT INTO permission.perm_list VALUES (146, 'HOLD_EXISTS.override', 'allows users to place multiple holds on a single title');
 INSERT INTO permission.perm_list VALUES (147, 'RUN_REPORTS', 'Allows a users to run reports');
 INSERT INTO permission.perm_list VALUES (148, 'SHARE_REPORT_FOLDER', 'Allows a user to share report his own folders');
 INSERT INTO permission.perm_list VALUES (149, 'VIEW_REPORT_OUTPUT', 'Allow user to view report output');
+INSERT INTO permission.perm_list VALUES (150, 'COPY_CIRC_NOT_ALLOWED.override', 'Allows a user to checkout an item that is marked as non-circ');
+INSERT INTO permission.perm_list VALUES (151, 'DELETE_CONTAINER_ITEM', 'Allows a user to delete an item out of another user''s container');
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 151, TRUE);
 
