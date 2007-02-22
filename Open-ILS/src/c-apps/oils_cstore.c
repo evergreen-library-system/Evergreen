@@ -4,7 +4,6 @@
 #include "objson/object.h"
 #include "opensrf/log.h"
 #include "oils_idl.h"
-#include "oils_utils.h"
 #include <dbi/dbi.h>
 
 #include <time.h>
@@ -90,7 +89,7 @@ int osrfAppInitialize() {
 	osrfLogInfo(OSRF_LOG_MARK, "Initializing the CStore Server...");
 	osrfLogInfo(OSRF_LOG_MARK, "Finding XML file...");
 
-	if (!oilsInitIDL(NULL)) return 1; /* return non-zero to indicate error */
+	if (!oilsIDLInit( osrf_settings_host_value("/IDL") )) return 1; /* return non-zero to indicate error */
 
 	// Generic search thingy
 	method_name =  buffer_init(64);
@@ -98,7 +97,7 @@ int osrfAppInitialize() {
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "doJSONSearch", "", 1, OSRF_METHOD_STREAMING );
 
 	// first we register all the transaction and savepoint methods
-	method_name =  buffer_init(64);
+	buffer_reset(method_name);
 	buffer_fadd(method_name, "%s.transaction.begin", MODULENAME);
 	osrfAppRegisterMethod( MODULENAME, buffer_data(method_name), "beginTransaction", "", 0, 0 );
 
