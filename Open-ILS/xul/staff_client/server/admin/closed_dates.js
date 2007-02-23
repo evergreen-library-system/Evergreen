@@ -127,9 +127,11 @@ function cdInitCals() {
 
 }
 
-function cdDrawRange( start, end ) {
+function cdDrawRange( start, end, alertSuccess ) {
 	start = (start) ? start : new Date().getYear() + 1900 + '-01-01';
 	end = (end) ? end : '3001-01-01';
+
+    if(alertSuccess) alertId('cd_update_success');
 
 	selectedStart = start;
 	selectedEnd = end;
@@ -263,7 +265,7 @@ function cdDelete(row, date) {
 		function(r) {
 			var res = r.getResultObject();
 			if( checkILSEvent(res) ) alertILSEvent(res);
-			cdDrawRange(selectedStart, selectedEnd);
+			cdDrawRange(selectedStart, selectedEnd, true);
 		}
 	)
 	req.send();
@@ -408,7 +410,7 @@ function cdCreateOne( org, start, end, note, refresh ) {
 		function(r) {
 			var res = r.getResultObject();
 			if( checkILSEvent(res) ) alertILSEvent(res);
-			if(refresh) cdDrawRange(selectedStart, selectedEnd);
+			if(refresh) cdDrawRange(selectedStart, selectedEnd, true);
 		}
 	);
 	req.send();
