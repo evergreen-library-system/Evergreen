@@ -259,9 +259,9 @@ if (my $action = $cgi->param('action')) {
 				td("<select name='opac_visible_$node'>".
 					do {
 						my $out = "<option value='t' ";
-						$out .= ($node->opac_visible =~ /^[y1t]+/) ?  "selected='yes'" : "";
+						$out .= ($node->opac_visible =~ /^[y1t]+/i) ?  "selected='yes'" : "";
 						$out .= ">True</option><option value='f' ";
-						$out .= ($node->opac_visible =~ /^[n0f]+/) ?  "selected='yes'" : "";
+						$out .= ($node->opac_visible =~ /^[n0f]+/i) ?  "selected='yes'" : "";
 						$out .= ">False</option>";
 						$out;
 					}."</select>"
