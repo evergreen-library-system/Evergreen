@@ -14,7 +14,6 @@ PG_SCHEMAS = "actor, permission, public, config"
 def setSearchPath():
    from django.db import connection
    cursor = connection.cursor()
-   print "SET search_path TO %s" % PG_SCHEMAS
    cursor.execute("SET search_path TO %s" % PG_SCHEMAS)
 dispatcher.connect(setSearchPath, signal=signals.class_prepared)
 dispatcher.connect(setSearchPath, signal=signals.pre_init)
@@ -86,6 +85,7 @@ class GrpPermMap(models.Model):
 
 
 """ There's no way to do user-based mangling given the size of the data without custom handling.
+      When you try to create a new permission map, it tries to load all users into a dropdown selector :(
 
 class User(models.Model):
    card_id = models.ForeignKey('Card', db_column='card')
@@ -240,4 +240,28 @@ class RuleAgeHoldProtect(models.Model):
       verbose_name = 'Hold Age Protection Rule'
    def __str__(self):
       return self.name
+
+class MetabibField(models.Model):
+    field_class_choices = (
+        ('title', 'Title'),
+        ('author', 'Author'),
+        ('subject', 'Subject'),
+        ('series', 'Series'),
+        ('keyword', 'Keyword'),
+    )
+    field_class = models.CharField(maxlength=200, choices=field_class_choices, null=False, blank=False)
+    name = models.CharField(maxlength=200, null=False, blank=False)
+    xpath = models.TextField(null=False, blank=False)
+    weight = models.IntegerField(null=False, blank=False)
+    format = models.CharField(maxlength=200, null=False, blank=False)
+    class Admin:
+        search_fields = ['name', 'format', 'field_class']
+        list_display = ('field_class', 'name', 'format')
+    class Meta:
+        db_table = 'metabib_field'
+        ordering = ['field_class', 'name']
+        verbose_name = 'Metabib Field'
+    def __str__(self):
+        return self.name
+
 
