@@ -255,7 +255,7 @@ if (my $action = $cgi->param('action')) {
 			);
 
 			print Tr(
-				th($org_cols{opac_visible}),
+				th($org_cols{opac_visible} .'<span style="color:red">*</span>'),
 				td("<select name='opac_visible_$node'>".
 					do {
 						my $out = "<option value='t' ";
@@ -283,7 +283,8 @@ if (my $action = $cgi->param('action')) {
 			);
 
 			print Tr( "<td colspan='2'><input type='submit' name='action' value='Update'/></td>" );
-			print	"</table></form>";
+			print	"</table><span style='color:red;'>*</span>".
+				"You must hide every OU you want hidden, not just an anscestor!</form>";
 
 			#-------------------------------------------------------------------------
 			# Hours of operation form
