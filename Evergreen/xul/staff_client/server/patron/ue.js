@@ -50,6 +50,9 @@ function uEditClearUnload() {
 /* ------------------------------------------------------------------------------ */
 function uEditFetchIdentTypes() {
 	_debug("uEditFetchIdentTypes()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.cit != 'undefined') return s.list.cit;
 	var req = new Request(FETCH_ID_TYPES);
 	req.send(true);
 	return req.result();
@@ -57,6 +60,9 @@ function uEditFetchIdentTypes() {
 
 function uEditFetchStatCats() {
 	_debug("uEditFetchStatCats()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.my_actsc != 'undefined') return s.list.my_actsc;
 	var req = new Request(SC_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
@@ -64,6 +70,9 @@ function uEditFetchStatCats() {
 
 function uEditFetchSurveys() {
 	_debug("uEditFetchSurveys()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.asv != 'undefined') return s.list.asv;
 	var req = new Request(SV_FETCH_ALL, SESSION);
 	req.send(true);
 	return req.result();
@@ -71,6 +80,9 @@ function uEditFetchSurveys() {
 
 function uEditFetchGroups() {
 	_debug("uEditFetchGroups()");
+	var s = fetchXULStash(); 
+	if (typeof s.tree != 'undefined') 
+		if (typeof s.tree.pgt != 'undefined') return s.tree.pgt;
 	var req = new Request(FETCH_GROUPS);
 	req.send(true);
 	return req.result();
@@ -78,6 +90,9 @@ function uEditFetchGroups() {
 
 function uEditFetchNetLevels() {
 	_debug("uEditFetchNetLevels()");
+	var s = fetchXULStash(); 
+	if (typeof s.list != 'undefined') 
+		if (typeof s.list.cnal != 'undefined') return s.list.cnal;
 	var req = new Request(FETCH_NET_LEVELS, SESSION);
 	req.send(true);
 	return req.result();
