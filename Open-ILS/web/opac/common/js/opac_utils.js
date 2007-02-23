@@ -739,6 +739,7 @@ function buildOrgSelector(node) {
 	for( var i in orgArraySearcher ) { 
 		var node = orgArraySearcher[i];
 		if( node == null ) continue;
+        if(!isXUL() && !isTrue(node.opac_visible())) continue; 
 		if(node.parent_ou() == null)
 			tree.addNode(node.id(), -1, node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
@@ -764,7 +765,6 @@ function setFontSize(size) {
 	scaleFonts(size);
 	cookieManager.write(COOKIE_FONT, size, '+1y');
 }
-
 
 var resourceFormats = [
    "text",

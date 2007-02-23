@@ -504,8 +504,11 @@ function _rdetailRows(node) {
 		} 
 	}
 
+    /* don't show hidden orgs */
 
 	if(node) {
+
+        if(!isXUL() && !isTrue(node.opac_visible())) return;
 
 		var row = copyRow.cloneNode(true);
 		row.id = "cp_info_" + node.id();
