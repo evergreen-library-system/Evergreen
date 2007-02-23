@@ -33,14 +33,14 @@ my ($count, $config, $sleep_interval, $lockfile, $daemon) = (1, '/openils/conf/b
 
 GetOptions(
 	"daemon"	=> \$daemon,
-	"sleep"		=> \$sleep_interval,
+	"sleep=i"	=> \$sleep_interval,
 	"concurrency=i"	=> \$count,
 	"boostrap=s"	=> \$config,
 	"lockfile=s"	=> \$lockfile,
 );
 
 if (-e $lockfile) {
-	die "I seem to be running already. If not remove $lockfile, try again\n";
+	die "I seem to be running already. If not, remove $lockfile and try again\n";
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
@@ -53,6 +53,8 @@ my $db_port = $sc->config_value( reporter => setup => database => 'port' );
 my $db_name = $sc->config_value( reporter => setup => database => 'name' );
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
 my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
+
+die "I don't seem to be configured" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
 
 my $email_server = $sc->config_value( email_notify => 'smtp_server' );
 my $email_sender = $sc->config_value( email_notify => 'sender_address' );
