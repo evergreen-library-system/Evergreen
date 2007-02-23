@@ -5,6 +5,9 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// This one is specific for Open-ILS
+pref("open-ils.write_in_user_chrome_directory", true);
+
 // This one just makes things speedier.  We use a lot of XMLHttpRequest
 pref("network.http.max-persistent-connections-per-server",8);
 
