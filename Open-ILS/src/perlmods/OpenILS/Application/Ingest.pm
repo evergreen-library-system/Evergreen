@@ -69,7 +69,11 @@ sub post_init {
 
 		my $req = OpenSRF::AppSession
 				->create('open-ils.cstore')
-				->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { id => { '!=' => undef } } )
+				
+				# XXX testing new metabib field use for faceting
+				#->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { id => { '!=' => undef } } )
+				->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { search => 't' } )
+
 				->gather(1);
 
 		if (ref $req and @$req) {
