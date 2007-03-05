@@ -80,6 +80,9 @@
 		<command id="save_columns1" />
 		<command id="sel_clip2" />
 		<command id="save_columns2" />
+		<command id="cmd_print_export1" />
+		<command id="cmd_export1" />
+		<command id="cmd_print_export2" />
 		<command id="cmd_copy_buckets_submit_barcode" />
 		<command id="cmd_copy_buckets_print" />
 		<command id="cmd_copy_buckets_export" />
