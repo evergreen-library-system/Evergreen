@@ -27,7 +27,7 @@
 		</tbody>
 	</table>
 	<script language='javascript'>isFrontPage = true;</script>
-	<script language="javascript">document.getElementById('toptable').style.display = 'table';</script>
+	<script language="javascript">try { document.getElementById('toptable').style.display = 'table'; } catch(e) {}</script>
 	<center>
 		<!--#include virtual='../footer.xml'-->
 	</center>
