@@ -1,8 +1,12 @@
 package OpenSRF::Application::Settings;
 use OpenSRF::Application;
 use OpenSRF::Utils::SettingsParser;
+use OpenSRF::Utils::Logger qw/$logger/;
 use base 'OpenSRF::Application';
 
+sub child_exit {
+    $logger->debug("settings server child exiting...$$");
+}
 
 
 __PACKAGE__->register_method( method => 'get_host_config', api_name => 'opensrf.settings.host_config.get' );

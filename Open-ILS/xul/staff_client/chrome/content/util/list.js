@@ -337,13 +337,19 @@ util.list.prototype = {
 
 		var treeitem = document.createElement('treeitem');
 		treeitem.setAttribute('retrieve_id',params.retrieve_id);
-		if (typeof params.to_top == 'undefined') {
+		if (typeof params.to_bottom != 'undefined') {
 			treechildren_node.appendChild( treeitem );
+			if (typeof params.no_auto_select == 'undefined') {
+				try { obj.node.view.selection.select(Number(obj.node.view.rowCount)-1); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+			}
 		} else {
 			if (treechildren_node.firstChild) {
 				treechildren_node.insertBefore( treeitem, treechildren_node.firstChild );
 			} else {
 				treechildren_node.appendChild( treeitem );
+			}
+			if (typeof params.no_auto_select == 'undefined') {
+				try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
 			}
 		}
 		var treerow = document.createElement('treerow');
@@ -443,6 +449,7 @@ util.list.prototype = {
 
 				if (obj.trim_list && obj.row_count.total >= obj.trim_list) {
 					// Remove oldest row
+					//if (typeof params.to_bottom != 'undefined') {
 					if (typeof params.to_top == 'undefined') {
 						treechildren_node.removeChild( treechildren_node.firstChild );
 					} else {

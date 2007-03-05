@@ -315,6 +315,53 @@ admin.offline_manage_xacts.prototype = {
 			}
 		} );
 
+		var export_button = document.getElementById('export_btn');
+		if (export_button) export_button.addEventListener(
+			'command',
+			function(ev) {
+				try {
+					obj.error_list.on_all_fleshed =
+						function() {
+							try {
+								dump( obj.error_list.dump_csv() + '\n' );
+								copy_to_clipboard(obj.error_list.dump_csv());
+								setTimeout(function(){ obj.error_list.on_all_fleshed = null; },0);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('export',E); 
+							}
+						}
+					obj.error_list.full_retrieve();
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('export',E); 
+				}
+			},
+			false
+		);
+		
+		var print_export_button = document.getElementById('print_export_btn');
+		if (print_export_button) print_export_button.addEventListener(
+			'command',
+			function(ev) {
+				try {
+					obj.error_list.on_all_fleshed =
+						function() {
+							try {
+								dump( obj.error_list.dump_csv() + '\n' );
+								//copy_to_clipboard(obj.error_list.dump_csv());
+								JSAN.use('util.print'); var p = new util.print();
+								p.simple( obj.error_list.dump_csv(), { 'content_type' : 'text/plain' } );
+								setTimeout(function(){ obj.error_list.on_all_fleshed = null; },0);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('export',E); 
+							}
+						}
+					obj.error_list.full_retrieve();
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('print export',E); 
+				}
+			},
+			false
+		);
 
 	},
 

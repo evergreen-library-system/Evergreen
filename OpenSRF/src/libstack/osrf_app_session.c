@@ -32,6 +32,8 @@ void osrfAppSessionCleanup() {
 	osrfHashFree(osrfAppSessionCache);	
 }
 
+
+
 /** Frees memory used by an app_request object */
 void _osrf_app_request_free( void * req ){
 	if( req == NULL ) return;
@@ -308,6 +310,8 @@ int osrf_app_session_make_req(
 		char* method_name, int protocol, string_array* param_strings ) {
 	if(session == NULL) return -1;
 
+   osrfLogMkXid();
+
 	osrf_message* req_msg = osrf_message_init( REQUEST, ++(session->thread_trace), protocol );
 	osrf_message_set_method(req_msg, method_name);
 	if(params) {
@@ -502,6 +506,7 @@ int osrfAppSessionSendBatch( osrfAppSession* session, osrf_message* msgs[], int 
 
 		transport_message* t_msg = message_init( 
 				string, "", session->session_id, session->remote_id, NULL );
+      message_set_osrf_xid( t_msg, osrfLogGetXid() );
 
 		retval = client_send_message( session->transport_handle, t_msg );
 

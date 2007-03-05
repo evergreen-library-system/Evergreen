@@ -292,6 +292,20 @@ patron.summary.prototype = {
 							};
 						}
 					],
+					'patron_date_of_exp' : [
+						['render'],
+						function(e) {
+							return function() { 
+								e.setAttribute('value',
+									'Expires on ' + (
+										obj.patron.expire_date() ?
+										obj.patron.expire_date().substr(0,10) :
+										'<Unset>'
+									)
+								);
+							};
+						}
+					],
 					'patron_date_of_birth' : [
 						['render'],
 						function(e) {

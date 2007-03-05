@@ -113,6 +113,10 @@ function advGenericSearch() {
 			arg[PARAM_RTYPE]		= RTYPE_TCN;
 			break;
 
+        case 'barcode':
+            advFindBarcode(term);
+            break;
+
 
 		case 'cn':
 			arg.page			= CNBROWSE;
@@ -140,5 +144,27 @@ function advGenericSearch() {
 
 	if(arg.page) goTo(buildOPACLink(arg));
 }
+
+
+function advFindBarcode(barcode) {
+    var req = new Request(FETCH_BIB_ID_BY_BARCODE, barcode);
+    req.callback(advDrawBarcode);
+    req.request.alertEvent = false;
+    req.send();
+}
+
+function advDrawBarcode(r) {
+    titleid = r.getResultObject();
+    if(checkILSEvent(titleid)) {
+        alertId('myopac.copy.not.found');
+        return;
+    }
+    if(!titleid) return;
+    var args = {};
+    args.page = RDETAIL;
+    args[PARAM_RID] = titleid;
+    location.href = buildOPACLink(args);
+}
+
 
 

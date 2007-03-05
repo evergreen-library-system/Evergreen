@@ -27,6 +27,7 @@ cat.util.replace_barcode = function(old_bc) {
 		if (!copy) throw(copy);
 
 		var new_bc = window.prompt('Enter the replacement barcode for the copy with barcode ' + old_bc + ':','','Replace Barcode');
+		new_bc = String( new_bc ).replace(/\s/g,'');
 		if (!new_bc) {
 			alert('Rename aborted.  Blank for barcode not allowed.');
 			return old_bc;

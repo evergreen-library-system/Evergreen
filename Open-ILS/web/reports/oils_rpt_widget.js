@@ -59,14 +59,24 @@ oilsRptSetWidget.prototype.getValue = function() {
 
 oilsRptSetWidget.prototype.objToStr = function(obj) {
 	if( typeof obj == 'string' ) return obj;
-	return ':'+obj.transform+':'+obj.params[0];
+	//return ':'+obj.transform+':'+obj.params[0];
+	var str = ':'+obj.transform;
+	for( var i = 0; i < obj.params.length; i++ ) 
+		str += ':' + obj.params[i];
+	_debug("objToStr(): built string " + str);
+	return str;
+
 }
 
 oilsRptSetWidget.prototype.strToObj = function(str) {
 	if( str.match(/^:.*/) ) {
-		var tform = str.replace(/^:(.*):.*/,'$1');
-		var param = str.replace(/^:.*:(.*)/,'$1');
-		return { transform : tform, params : [param] };
+		var parts = str.split(/:/);
+		_debug("strToObj(): " + str + ' : ' + parts);
+		parts.shift();
+		var tform = parts.shift();
+		//var tform = str.replace(/^:(.*):.*/,'$1');
+		//var param = str.replace(/^:.*:(.*)/,'$1');
+		return { transform : tform, params : parts };
 	}
 	return str;
 }
@@ -247,6 +257,12 @@ oilsRptOrgSelector.prototype.draw = function(org) {
 		org.shortname(), org.id(), null, findOrgDepth(org) );
 	if( org.id() == oilsRptCurrentOrg )
 		opt.selected = true;
+	
+	/* sometimes we need these choices 
+	if( !isTrue(findOrgType(org.ou_type()).can_have_vols()) )
+		opt.disabled = true;
+		*/
+
 	if( org.children() ) {
 		for( var c = 0; c < org.children().length; c++ )
 			this.draw(org.children()[c]);
@@ -321,6 +337,42 @@ oilsRptAgeWidget.prototype.getDisplayValue = function() {
 
 
 /* --------------------------------------------------------------------- 
+	Atomic substring picker
+	--------------------------------------------------------------------- */
+function oilsRptSubstrWidget(args) {
+	this.node = args.node
+	this.data = elem('input',{type:'text',size:12})
+	this.offset = elem('input',{type:'text',size:5})
+	this.length = elem('input',{type:'text',size:5})
+}
+
+oilsRptSubstrWidget.prototype.draw = function() {
+	this.node.appendChild(text('string: '))
+	this.node.appendChild(this.data);
+	this.node.appendChild(elem('br'));
+	this.node.appendChild(text('offset: '))
+	this.node.appendChild(this.offset);
+	this.node.appendChild(elem('br'));
+	this.node.appendChild(text('length: '))
+	this.node.appendChild(this.length);
+}
+
+oilsRptSubstrWidget.prototype.getValue = function() {
+	return {
+		transform : 'substring',
+		params : [ this.data.value, this.offset.value, this.length.value ]
+	};
+}
+
+oilsRptSubstrWidget.prototype.getDisplayValue = function() {
+	return {
+		label : this.data.value + ' : ' + this.offset.value + ' : ' + this.length.value,
+		value : this.getValue()
+	};
+}
+
+
+/* --------------------------------------------------------------------- 
 	Atomic number picker
 	--------------------------------------------------------------------- */
 function oilsRptNumberWidget(args) {
@@ -364,7 +416,7 @@ function oilsRptTruncPicker(args) {
 	insertSelectorVal(this.selector,-1,'Relative Date',2);
 
 	this.numberPicker = 
-		new oilsRptNumberWidget({node:this.relSpan,size:24,start:1});
+		new oilsRptNumberWidget({node:this.relSpan,size:90,start:1});
 
 	this.label = 'Day(s)';
 	if(this.type == 'month') this.label = 'Month(s)';

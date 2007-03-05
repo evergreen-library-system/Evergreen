@@ -93,4 +93,4 @@ int prefork_child_free( prefork_child* );
 
 void osrf_prefork_register_routers( char* appname );
 
-
+void osrf_prefork_child_exit( prefork_child* );

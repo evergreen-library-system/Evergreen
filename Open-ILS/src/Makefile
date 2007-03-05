@@ -1,7 +1,7 @@
 
 export TMPDIR			= $(TMP)/opensrf
-export LDFLAGS			= -L $(TMPDIR) -L .
-export CFLAGS			= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
+export LDFLAGS			+= -L $(TMPDIR) -L .
+export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
 								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(TMPDIR)
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
@@ -62,6 +62,8 @@ server-xul:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
+	mkdir -p $(ADMINDIR)
+	cp -r ../admin/* $(ADMINDIR)
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	mkdir -p $(WEBDIR)/opac/extras/slimpac/
@@ -134,12 +136,12 @@ perl-install:
 
 reporter-install:
 	@echo $@
-	@echo "Installing Reporter templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
-	cp reporter/report_base.example.xml $(ETCDIR)/reporter.example.xml
-	cp reporter/tables.example.xml $(ETCDIR)
-	cp reporter/widgets.example.xml $(ETCDIR)
-	mkdir -p $(REPORTERDIR)
-	cp -r reporter/templates/* $(REPORTERDIR)
+#	@echo "Installing Reporter templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
+#	cp reporter/report_base.example.xml $(ETCDIR)/reporter.example.xml
+#	cp reporter/tables.example.xml $(ETCDIR)
+#	cp reporter/widgets.example.xml $(ETCDIR)
+#	mkdir -p $(REPORTERDIR)
+#	cp -r reporter/templates/* $(REPORTERDIR)
 
 # -----------------------------------------------------------------------------------
 offline-install:
