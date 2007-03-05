@@ -1214,6 +1214,8 @@ function myOPACRenewSelected() {
 	if(!confirm($('myopac_renew_confirm').innerHTML)) return;
    __a_renew_success = false;
 
+   var renewThese = [];
+
    for( var i = 0; i < rows.length; i++ ) {
 
       var row = rows[i];
@@ -1225,8 +1227,13 @@ function myOPACRenewSelected() {
 		   if(circsCache[j].id() == circ_id)
 			   circ = circsCache[j];
 
-      moRenewCirc( circ.target_copy(), G.user.id(), circ );
+      renewThese.push(circ);
    }
+
+    for( var i = 0; i < renewThese.length; i++ ) {
+        var circ = renewThese[i];
+        moRenewCirc( circ.target_copy(), G.user.id(), circ );
+    }
 }
 
 
