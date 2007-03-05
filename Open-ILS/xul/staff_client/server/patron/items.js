@@ -526,6 +526,7 @@ patron.items.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'checkout_lib' : { 'hidden' : false },
 				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
@@ -536,6 +537,7 @@ patron.items.prototype = {
 		var columns2 = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'checkout_lib' : { 'hidden' : false },
 				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'checkin_time' : { 'hidden' : false },
@@ -557,6 +559,8 @@ patron.items.prototype = {
 				function(req) {
 					try { 
 						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						if (typeof robj.ilsevent == 'null') throw('null result');
 						row.my.circ = robj.circ;
 						row.my.acp = robj.copy;
 						row.my.mvr = robj.mvr;
@@ -579,7 +583,7 @@ patron.items.prototype = {
 							params.on_retrieve(row);
 						}
 					} catch(E) {
-						obj.error.standard_unexpected_error_alert('circ details',E);
+						obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 					}
 				}
 			);
