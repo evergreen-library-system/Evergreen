@@ -74,6 +74,8 @@
 		label="&staff.patron_navbar.edit;" accesskey="&staff.patron_navbar.edit.accesskey;"/>
 	<button id="PatronNavBar_info" command="cmd_patron_info" class="nav"
 		label="&staff.patron_navbar.info;" accesskey="&staff.patron_navbar.info.accesskey;"/>
+	<button id="PatronNavBar_exit" command="cmd_patron_exit" class="nav"
+		label="Exit" accesskey="x"/>
 </hbox>
 
 <hbox id="PatronNavBar0">

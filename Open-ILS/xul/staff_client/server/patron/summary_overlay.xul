@@ -48,6 +48,9 @@
 		<row id="pdsgr5a">
 			<label id="patron_net_access" class="net_access value"/>
 		</row>
+		<row id="pdsgr5aa">
+			<label id="patron_date_of_exp" class="expire_date value"/>
+		</row>
 	</rows></grid>
 	<grid id="PatronSummaryStatus_grid" flex="1"/>
 

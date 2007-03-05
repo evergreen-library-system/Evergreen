@@ -33,7 +33,7 @@ g.page_settings = function() {
 g.printer_settings = function() {
 	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 	var w = document.getElementById('sample').contentWindow;
-	g.print.NSPrint(w ? w : window);
+	g.print.NSPrint(w ? w : window, false, {});
 	g.print.save_settings();
 }
 

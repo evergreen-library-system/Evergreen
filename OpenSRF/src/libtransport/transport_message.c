@@ -54,6 +54,12 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 	xmlChar* router_to	= xmlGetProp( root, BAD_CAST "router_to" );
 	xmlChar* router_class= xmlGetProp( root, BAD_CAST "router_class" );
 	xmlChar* broadcast	= xmlGetProp( root, BAD_CAST "broadcast" );
+   xmlChar* osrf_xid    = xmlGetProp( root, BAD_CAST "osrf_xid" );
+
+   if( osrf_xid ) {
+      message_set_osrf_xid( new_msg, (char*) osrf_xid);
+      xmlFree(osrf_xid);
+   }
 
 	if( router_from ) {
 		new_msg->sender		= strdup((char*)router_from);
@@ -122,50 +128,19 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 	if( new_msg->body == NULL )
 		new_msg->body = strdup("");
 
-	int			bufsize;
-	xmlChar*		xmlbuf;
-	char*			encoded_body;
+	new_msg->msg_xml = xmlDocToString(msg_doc, 0);
+   xmlFreeDoc(msg_doc);
+   xmlCleanupParser();
 
-	xmlDocDumpFormatMemory( msg_doc, &xmlbuf, &bufsize, 0 );
-	encoded_body = strdup( (char*) xmlbuf );
-
-	if( encoded_body == NULL ) 
-		osrfLogError(OSRF_LOG_MARK, "message_to_xml(): Out of Memory");
-
-	xmlFree(xmlbuf);
-	xmlFreeDoc(msg_doc);
-	xmlCleanupParser();
-
-	/*** remove the XML declaration */
-	int len = strlen(encoded_body);
-	char tmp[len];
-	memset( tmp, 0, len );
-	int i;
-	int found_at = 0;
-
-	/* when we reach the first >, take everything after it */
-	for( i = 0; i!= len; i++ ) {
-		if( encoded_body[i] == 62) { /* ascii > */
-
-			/* found_at holds the starting index of the rest of the doc*/
-			found_at = i + 1; 
-			break;
-		}
-	}
-
-	if( found_at ) {
-		/* move the shortened doc into the tmp buffer */
-		strncpy( tmp, encoded_body + found_at, len - found_at );
-		/* move the tmp buffer back into the allocated space */
-		memset( encoded_body, 0, len );
-		strcpy( encoded_body, tmp );
-	}
-
-	new_msg->msg_xml = encoded_body;
 	return new_msg;
-
 }
 
+void message_set_osrf_xid( transport_message* msg, char* osrf_xid ) {
+   if(!msg) return;
+   if( osrf_xid )
+      msg->osrf_xid = strdup(osrf_xid);
+   else msg->osrf_xid = strdup("");
+}
 
 void message_set_router_info( transport_message* msg, char* router_from,
 		char* router_to, char* router_class, char* router_command, int broadcast_enabled ) {
@@ -224,6 +199,7 @@ int message_free( transport_message* msg ){
 	free(msg->router_to);
 	free(msg->router_class);
 	free(msg->router_command);
+   free(msg->osrf_xid);
 	if( msg->error_type != NULL ) free(msg->error_type);
 	if( msg->msg_xml != NULL ) free(msg->msg_xml);
 	free(msg);
@@ -274,6 +250,7 @@ char* message_to_xml( const transport_message* msg ) {
 	xmlNewProp( message_node, BAD_CAST "router_to", BAD_CAST msg->router_to );
 	xmlNewProp( message_node, BAD_CAST "router_class", BAD_CAST msg->router_class );
 	xmlNewProp( message_node, BAD_CAST "router_command", BAD_CAST msg->router_command );
+	xmlNewProp( message_node, BAD_CAST "osrf_xid", BAD_CAST msg->osrf_xid );
 
 	if( msg->broadcast )
 		xmlNewProp( message_node, BAD_CAST "broadcast", BAD_CAST "1" );

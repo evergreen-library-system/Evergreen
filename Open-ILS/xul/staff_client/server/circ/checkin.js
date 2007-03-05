@@ -54,6 +54,7 @@ circ.checkin.prototype = {
 							obj.controller.view.sel_edit.setAttribute('disabled','true');
 							obj.controller.view.sel_opac.setAttribute('disabled','true');
 							obj.controller.view.sel_patron.setAttribute('disabled','true');
+							obj.controller.view.sel_last_patron.setAttribute('disabled','true');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','true');
 							obj.controller.view.sel_bucket.setAttribute('disabled','true');
 							obj.controller.view.sel_spine.setAttribute('disabled','true');
@@ -64,6 +65,7 @@ circ.checkin.prototype = {
 							obj.controller.view.sel_edit.setAttribute('disabled','false');
 							obj.controller.view.sel_opac.setAttribute('disabled','false');
 							obj.controller.view.sel_patron.setAttribute('disabled','false');
+							obj.controller.view.sel_last_patron.setAttribute('disabled','false');
 							obj.controller.view.sel_copy_details.setAttribute('disabled','false');
 							obj.controller.view.sel_bucket.setAttribute('disabled','false');
 							obj.controller.view.sel_spine.setAttribute('disabled','false');
@@ -124,6 +126,23 @@ circ.checkin.prototype = {
 						function() {
 							JSAN.use('circ.util');
 							circ.util.show_last_few_circs(obj.selection_list);
+						}
+					],
+					'sel_last_patron' : [
+						['command'],
+						function() {
+							var patrons = {};
+							for (var i = 0; i < obj.selection_list.length; i++) {
+								var circs = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),obj.selection_list[i].copy_id,1]);
+								if (circs.length > 0) {
+									patrons[circs[0].usr()] = 1;
+								} else {
+									alert('Item ' + obj.selection_list[i].barcode + ' has never circulated');
+								}
+							}
+							for (var i in patrons) {
+								xulG.new_tab(urls.XUL_PATRON_DISPLAY,{},{'id' : i});
+							}
 						}
 					],
 					'sel_copy_details' : [
@@ -381,6 +400,7 @@ circ.checkin.prototype = {
 				//I could override map_row_to_column here
 				}
 			);
+			obj.list.node.view.selection.select(0);
 
 			JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 

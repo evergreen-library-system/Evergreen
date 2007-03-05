@@ -311,7 +311,7 @@ To-do list:
 					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat('/opac/extras/jacket/small/','---')"/>
+					<xsl:text>/opac/extras/jacket/small/</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>		

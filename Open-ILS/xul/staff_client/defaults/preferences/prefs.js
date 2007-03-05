@@ -5,6 +5,9 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// This one is specific for Open-ILS
+pref("open-ils.write_in_user_chrome_directory", true);
+
 // This one just makes things speedier.  We use a lot of XMLHttpRequest
 pref("network.http.max-persistent-connections-per-server",8);
 
@@ -33,4 +36,16 @@ pref("javascript.options.showInConsole",true);
 pref("nglayout.debug.disable_xul_cache",true);
 pref("nglayout.debug.disable_xul_fastload",true);
 pref("browser.xul.error_pages.enabled",true);
+
+pref("browser.download.useDownloadDir", true);
+pref("browser.download.folderList", 0);
+pref("browser.download.manager.showAlertOnComplete", true);
+pref("browser.download.manager.showAlertInterval", 2000);
+pref("browser.download.manager.retention", 2);
+pref("browser.download.manager.showWhenStarting", true);
+pref("browser.download.manager.useWindow", true);
+pref("browser.download.manager.closeWhenDone", false);
+pref("browser.download.manager.openDelay", 0);
+pref("browser.download.manager.focusWhenStarting", false);
+pref("browser.download.manager.flashCount", 2); 
 

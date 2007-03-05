@@ -114,6 +114,15 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	a_l			= apacheGetFirstParamValue( params, "api_level" ); 
 	mparams		= apacheGetParamValues( params, "param" ); /* free me */
 
+   /* set the user defined timeout value */
+   int timeout = 60;
+   char* tout = apacheGetFirstParamValue( params, "timeout" ); /* request timeout in seconds */
+   if( tout ) {
+      timeout = atoi(tout);
+      osrfLogDebug(OSRF_LOG_MARK, "Client supplied timeout of %d", timeout);
+   }
+
+
 	if (a_l)
 		api_level = atoi(a_l);
 
@@ -146,22 +155,6 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		fflush(stderr);
 		*/
 
-
-		/* ----------------------------------------------------------------- */
-		/* log all requests to the activity log */
-		const char* authtoken = apr_table_get(r->headers_in, "X-OILS-Authtoken");
-		if(!authtoken) authtoken = "";
-		growing_buffer* act = buffer_init(128);	
-		buffer_fadd(act, "[%s] [%s] %s %s", r->connection->remote_ip, authtoken, service, method );
-		char* str; int i = 0;
-		while( (str = osrfStringArrayGetString(mparams, i++)) ) 
-			if( i == 1 ) buffer_fadd(act, " %s", str);
-			else buffer_fadd(act, ", %s", str);
-
-		osrfLogActivity( OSRF_LOG_MARK, act->buf );
-		buffer_free(act);
-		/* ----------------------------------------------------------------- */
-
 		osrfAppSession* session = osrf_app_client_session_init(service);
 
 		double starttime = get_timestamp_millis();
@@ -175,6 +168,29 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 			usleep( 100000 ); /* 100 milliseconds */
 			exit(1);
 		}
+
+
+		/* ----------------------------------------------------------------- */
+		/* log all requests to the activity log */
+		const char* authtoken = apr_table_get(r->headers_in, "X-OILS-Authtoken");
+		if(!authtoken) authtoken = "";
+		growing_buffer* act = buffer_init(128);	
+		buffer_fadd(act, "[%s] [%s] %s %s", r->connection->remote_ip, authtoken, service, method );
+		char* str; int i = 0;
+		while( (str = osrfStringArrayGetString(mparams, i++)) ) {
+			if( i == 1 ) {
+            OSRF_BUFFER_ADD(act, " ");
+				OSRF_BUFFER_ADD(act, str);
+			} else {
+				OSRF_BUFFER_ADD(act, ", ");
+				OSRF_BUFFER_ADD(act, str);
+			}
+		}
+
+		osrfLogActivity( OSRF_LOG_MARK, act->buf );
+		buffer_free(act);
+		/* ----------------------------------------------------------------- */
+
 
 		osrf_message* omsg = NULL;
 
@@ -191,7 +207,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		char* statustext	= NULL;
 		char* output		= NULL;
 
-		while((omsg = osrfAppSessionRequestRecv( session, req_id, 60 ))) {
+		while((omsg = osrfAppSessionRequestRecv( session, req_id, timeout ))) {
 	
 			statuscode = omsg->status_code;
 			jsonObject* res;	
@@ -283,6 +299,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 	string_array_destroy(mparams);
 
 	osrfLogDebug(OSRF_LOG_MARK, "Gateway served %d requests", ++numserved);
+   osrfLogClearXid();
 
 	return ret;
 }

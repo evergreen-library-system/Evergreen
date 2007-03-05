@@ -152,8 +152,10 @@ function scInsertCat( tbody, cat, type ) {
 
 	cat.entries().sort(  /* sort the entries by value */
 		function( a, b ) { 
-			if( a.value().toLowerCase() > b.value().toLowerCase()) return 1;
-			if( a.value().toLowerCase() < b.value().toLowerCase()) return -1;
+         a = new String(a.value()).toLowerCase();
+         b = new String(b.value()).toLowerCase();
+			if( a > b ) return 1;
+			if( a < b ) return -1;
 			return 0;
 		}
 	);

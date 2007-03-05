@@ -338,6 +338,7 @@ var FETCH_MR_DESCRIPTORS		= 'open-ils.search:open-ils.search.metabib.record_to_d
 var FETCH_HIGHEST_PERM_ORG		= 'open-ils.actor:open-ils.actor.user.perm.highest_org.batch';
 var FETCH_USER_NOTES				= 'open-ils.actor:open-ils.actor.note.retrieve.all';
 var FETCH_ORG_BY_SHORTNAME		= 'open-ils.actor:open-ils.actor.org_unit.retrieve_by_shorname';
+var FETCH_BIB_ID_BY_BARCODE = 'open-ils.search:open-ils.search.bib_id.by_barcode';
 
 /* ---------------------------------------------------------------------------- */
 

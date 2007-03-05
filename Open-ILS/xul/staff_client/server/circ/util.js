@@ -28,6 +28,9 @@ circ.util.abort_transits = function(selection_list) {
 						case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
 							alert('Copy Id = ' + copy_id + '\n' + robj.desc);
 						break;
+						case 1504 /* ACTION_TRANSIT_COPY_NOT_FOUND */ :
+							alert('This item was no longer in transit at the time of the abort.  Perhaps this happened from a stale display?');
+						break;
 						case 5000 /* PERM_FAILURE */ :
 						break;
 						default:
@@ -509,6 +512,10 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.circ_modifier(); },
 		},
 		{
+			'persist' : 'hidden width ordinal', 'id' : 'checkout_lib', 'label' : 'Checkout Lib', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? data.hash.aou[ my.circ.circ_lib() ].shortname() : ( my.acp.circulations() ? data.hash.aou[ my.acp.circulations()[0].circ_lib() ].shortname() : ""); },
+		},
+		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start_full', 'label' : 'Checkout Timestamp', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.xact_start() : (my.acp.circulations() ? my.acp.circulations()[0].xact_start() : ""); },
 		},
@@ -722,7 +729,7 @@ circ.util.hold_columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
-			'render' : function(my) { return my.ahr.request_time().toString().substr(0,10); },
+			'render' : function(my) { return my.ahr.request_time().toString(); },
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_time', 'label' : 'Request Date', 'flex' : 0,
@@ -1075,10 +1082,15 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			});
 		}
 
+		var msg = '';
+
+		if (check.payload && check.payload.cancelled_hold_transit) {
+			msg += 'Original hold for transit cancelled.\n\n';
+		}
+
 		/* SUCCESS  /  NO_CHANGE  /  ITEM_NOT_CATALOGED */
 		if (check.ilsevent == 0 || check.ilsevent == 3 || check.ilsevent == 1202) {
 			try { check.route_to = data.lookup('acpl', check.copy.location() ).name(); } catch(E) { msg += 'Please inform your helpdesk/developers of this error:\nFIXME: ' + E + '\n'; }
-			var msg = '';
 			if (check.ilsevent == 3 /* NO_CHANGE */) {
 				//msg = 'This item is already checked in.\n';
 				if (document.getElementById('no_change_label')) {
@@ -1176,7 +1188,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
 			var lib = data.hash.aou[ check.org ];
 			check.route_to = lib.shortname();
-			var msg = 'Destination: ' + check.route_to + '.\n';
+			msg += 'Destination: ' + check.route_to + '.\n';
 			msg += '\n' + lib.name() + '\n';
 			try {
 				if (lib.holds_address() ) {
@@ -1280,7 +1292,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 	}
 }
 
-circ.util.renew_via_barcode = function ( barcode, patron_id ) {
+circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 	try {
 		var obj = {};
 		JSAN.use('util.network'); obj.network = new util.network();
@@ -1289,10 +1301,45 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 		var params = { barcode: barcode };
 		if (patron_id) params.patron = patron_id;
 
+		function renew_callback(req) {
+			try {
+				var renew = req.getResultObject();
+				if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
+				for (var j = 0; j < renew.length; j++) { 
+					switch(renew[j].ilsevent) {
+						case 0 /* SUCCESS */ : break;
+						case 5000 /* PERM_FAILURE */: break;
+						case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
+						case 1213 /* PATRON_BARRED */ : break;
+						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
+						case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;
+						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
+						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
+						case 7004 /* COPY_NOT_AVAILABLE */ : break;
+						case 7006 /* COPY_IS_REFERENCE */ : break;
+						case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
+						case 7008 /* MAX_RENEWALS_REACHED */ : break; 
+						case 7009 /* CIRC_CLAIMS_RETURNED */ : break; 
+						case 7010 /* COPY_ALERT_MESSAGE */ : break;
+						case 7013 /* PATRON_EXCEEDS_FINES */ : break;
+						default:
+							throw(renew);
+						break;
+					}
+				}
+				if (typeof async == 'function') async(renew);
+				return renew;
+			} catch(E) {
+				JSAN.use('util.error'); var error = new util.error();
+				error.standard_unexpected_error_alert('Renew Failed for ' + barcode,E);
+				return null;
+			}
+		}
+
 		var renew = obj.network.simple_request(
 			'CHECKOUT_RENEW', 
 			[ ses(), params ],
-			null,
+			async ? renew_callback : null,
 			{
 				'title' : 'Override Renew Failure?',
 				'overridable_events' : [ 
@@ -1329,29 +1376,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id ) {
 				}
 			}
 		);
-		if (typeof renew.ilsevent != 'undefined') renew = [ renew ];
-		for (var j = 0; j < renew.length; j++) { 
-			switch(renew[j].ilsevent) {
-				case 0 /* SUCCESS */ : break;
-				case 5000 /* PERM_FAILURE */: break;
-				case 1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */ : break;
-				case 1213 /* PATRON_BARRED */ : break;
-				case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
-				case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
-				case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
-				case 7004 /* COPY_NOT_AVAILABLE */ : break;
-				case 7006 /* COPY_IS_REFERENCE */ : break;
-				case 7007 /* COPY_NEEDED_FOR_HOLD */ : break;
-				case 7008 /* MAX_RENEWALS_REACHED */ : break; 
-				case 7009 /* CIRC_CLAIMS_RETURNED */ : break; 
-				case 7010 /* COPY_ALERT_MESSAGE */ : break;
-				case 7013 /* PATRON_EXCEEDS_FINES */ : break;
-				default:
-					throw(renew);
-				break;
-			}
-		}
-		return renew;
+		if (! async ) return renew_callback( { 'getResultObject' : function() { return renew; } } );
 
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();

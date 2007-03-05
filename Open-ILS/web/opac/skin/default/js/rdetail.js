@@ -145,8 +145,6 @@ function rdetailViewMarc(r,id) {
 	hideMe($('rdetail_extras_loading'));
 	$('rdetail_view_marc_box').innerHTML = r.getResultObject();
 
-	var d = new Date();
-
 	var div = elem('div', { "class" : 'hide_me' });
 	var span = div.appendChild( elem('abbr') );
 
@@ -506,8 +504,11 @@ function _rdetailRows(node) {
 		} 
 	}
 
+    /* don't show hidden orgs */
 
 	if(node) {
+
+        if(!isXUL() && !isTrue(node.opac_visible())) return;
 
 		var row = copyRow.cloneNode(true);
 		row.id = "cp_info_" + node.id();
@@ -599,7 +600,8 @@ function _rdetailBuildInfoRows(r) {
 			}
 		}
 
-		if(isLocal) unHideMe(rowNode);
+		//if(isLocal) unHideMe(rowNode);
+		unHideMe(rowNode);
 
 		rdetailSetPath( thisOrg, isLocal );
 		rdetailBuildBrowseInfo( rowNode, arr[1], isLocal, thisOrg );
