@@ -557,6 +557,8 @@ patron.items.prototype = {
 				function(req) {
 					try { 
 						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') throw(robj);
+						if (typeof robj.ilsevent == 'null') throw('null result');
 						row.my.circ = robj.circ;
 						row.my.acp = robj.copy;
 						row.my.mvr = robj.mvr;
@@ -579,7 +581,7 @@ patron.items.prototype = {
 							params.on_retrieve(row);
 						}
 					} catch(E) {
-						obj.error.standard_unexpected_error_alert('circ details',E);
+						obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 					}
 				}
 			);
