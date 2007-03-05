@@ -1,8 +1,9 @@
 #!/bin/sh
-# args: {db-host} {db-port} {db-name} {db-user} {db-password}
+# args: {db-host} {db-port} {db-name} {db-user} {db-password} {db-version}
 
 echo "You may be prompted several times for your database password..."
 
+PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 000.english.pg$6.fts-config.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 001.schema.offline.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 002.schema.config.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 005.schema.actors.sql

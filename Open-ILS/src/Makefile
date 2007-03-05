@@ -173,7 +173,7 @@ storage-bootstrap:
 	@echo "Type control-c to avoid destroying all of the data.  Type enter to continue..."
 	@echo ""
 	@read X;
-	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBPORT) $(DBNAME) $(DBUSER) $(DBPW)
+	./extras/import/build-oils-db.sh $(DBDRVR) $(DBHOST) $(DBPORT) $(DBNAME) $(DBUSER) $(DBPW) $(DBVER)
 
 # -----------------------------------------------------------------------------------
 

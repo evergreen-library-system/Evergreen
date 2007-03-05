@@ -115,5 +115,6 @@ DBHOST="127.0.0.1";
 DBPORT="5432";
 DBNAME="demo-dev";
 DBUSER="postgres";
+DBVER="82";
 DBPW="";
 

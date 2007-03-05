@@ -83,22 +83,27 @@ function buildConfig {
 	prompt "Build targets [${TARGETS[@]:0}] "
 	read X; if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
 
-	prompt "Bootstrapping Database Driver [$DBDRVR] "
+	prompt "Database Driver [$DBDRVR] "
 	read X; if [ ! -z "$X" ]; then DBDRVR="$X"; fi;
 
-	prompt "Bootstrapping Database Host [$DBHOST] "
+	if [ "$DBDRVR" == "Pg" ]; then
+		prompt "Bootstrapping Database Version (80 for 8.0.x, 81 for 8.1.x, 82 for 8.2.x) [$DBHOST] "
+		read X; if [ ! -z "$X" ]; then DBVER="$X"; fi;
+	fi;
+
+	prompt "Database Host [$DBHOST] "
 	read X; if [ ! -z "$X" ]; then DBHOST="$X"; fi;
 
-	prompt "Bootstrapping Database Port [$DBPORT] "
+	prompt "Database Port [$DBPORT] "
 	read X; if [ ! -z "$X" ]; then DBPORT="$X"; fi;
 
-	prompt "Bootstrapping Database Name [$DBNAME] "
+	prompt "Database Name [$DBNAME] "
 	read X; if [ ! -z "$X" ]; then DBNAME="$X"; fi;
 
-	prompt "Bootstrapping Database User [$DBUSER] "
+	prompt "Database User [$DBUSER] "
 	read X; if [ ! -z "$X" ]; then DBUSER="$X"; fi;
 
-	prompt "Bootstrapping Database Password [$DBPW] "
+	prompt "Database Password [$DBPW] "
 	read X; if [ ! -z "$X" ]; then DBPW="$X"; fi;
 
 	prompt "Reporter Template Directory [$REPORTERDIR] "
@@ -160,6 +165,7 @@ function writeConfig {
 	_write "DBNAME=\"$DBNAME\"";
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
+	_write "DBVER=\"$DBVER\"";
 	_write "REPORTERDIR=\"$REPORTERDIR\"";
 	_write "ADMINDIR=\"$ADMINDIR\"";
 
