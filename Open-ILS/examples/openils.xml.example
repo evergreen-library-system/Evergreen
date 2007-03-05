@@ -47,7 +47,7 @@ Example opensrf config file for OpenILS
                     <password>postgres</password>
                 </database>
                 <files>
-                    <!-- successfull report outputs go here -->
+                    <!-- successful report outputs go here -->
                     <output_base>/openils/var/reporter/output</output_base>
                     <success_template>/openils/var/data/report-success</success_template>
                     <fail_template>/openils/var/data/report-fail</fail_template>

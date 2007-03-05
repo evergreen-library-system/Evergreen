@@ -15,7 +15,6 @@
 # --------------------------------------------------------------------
 
 
-
 # --------------------------------------------------------------------
 # Build targets.  Options include:
 # 
@@ -33,7 +32,7 @@
 # openils_db			- installs the database schemas 
 # openils_reporter		- installs the base of OpenILS Reporter
 #
-# evergreen_cor		- builds core Evergreen components (does not build evergreen_xul_client!)
+# evergreen_core		- builds core Evergreen components (does not build evergreen_xul_client!)
 # evergreen_xul_client   - client XUL application
 #
 # When running the server components of OpenSRF/OpenILS, the simplest
@@ -48,7 +47,7 @@ TARGETS=("opensrf_all" "openils_core" "openils_web" "evergreen_core");
 
 # --------------------------------------------------------------------
 # Global install prefix.  Binaries will be installed into PREFIX/bin,
-# libraries will be installed into PERFIX/lib, etc.  The user 
+# libraries will be installed into PREFIX/lib, etc.  The user 
 # running 'install.sh install' must have write permissions to PREFIX
 # --------------------------------------------------------------------
 PREFIX="/openils/";
@@ -113,8 +112,8 @@ EVERGREENDIR="Evergreen/";
 DBDRVR="Pg";
 DBHOST="127.0.0.1";
 DBPORT="5432";
-DBNAME="demo-dev";
+DBNAME="evergreen";
 DBUSER="postgres";
 DBVER="82";
-DBPW="";
+DBPW="postgres";
 

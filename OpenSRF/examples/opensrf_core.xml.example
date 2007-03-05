@@ -62,7 +62,7 @@
 	<!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
 	<gateway>
 
-        <!-- we consider ourselves to the the "originating" client for requests,
+        <!-- we consider ourselves to be the "originating" client for requests,
             which means we define the log XID string for log traces -->
         <client>true</client>
 
