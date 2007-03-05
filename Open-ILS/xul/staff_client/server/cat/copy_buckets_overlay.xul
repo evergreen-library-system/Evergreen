@@ -33,6 +33,8 @@
 <hbox id="pending_buckets_bottom_ui">
 	<button id="save_button1" command="save_columns1" label="Save Columns" />
 	<button id="clip_button1" command="sel_clip1" label="Copy to Clipboard" disabled="true" />
+	<button id="cmd_print_export_btn1" command="cmd_print_export1" label="Print Export" />
+	<button id="cmd_export_btn1" command="cmd_export1" label="Export" />
 	<spacer flex="1"/>
 	<button label="Add All" command="copy_buckets_add" accesskey="A" image="/xul/server/skin/media/images/down_arrow.gif"/>
 	<button label="Add Selected" command="copy_buckets_sel_add" accesskey="" image="/xul/server/skin/media/images/down_arrow.gif"/>
@@ -60,6 +62,7 @@
 
 <hbox id="copy_buckets_bottom_ui">
 	<button id="copy_buckets_print" label="Print" command="cmd_copy_buckets_print" accesskey="P"/>
+	<button id="cmd_print_export_btn2" command="cmd_print_export2" label="Print Export" />
 	<button id="copy_buckets_export" 
 		label="Export"
 		command="cmd_copy_buckets_export"

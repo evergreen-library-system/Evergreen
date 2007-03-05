@@ -391,6 +391,69 @@ cat.record_buckets.prototype = {
 						}
 					],
 
+					'cmd_export1' : [
+						['command'],
+						function() {
+							obj.list1.on_all_fleshed = function() {
+								try {
+									dump(obj.list1.dump_csv() + '\n');
+									copy_to_clipboard(obj.list1.dump_csv());
+									setTimeout(function(){obj.list1.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list1.full_retrieve();
+						}
+					],
+
+                    'cmd_print_export1' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list1.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            dump( obj.list1.dump_csv() + '\n' );
+                                            //copy_to_clipboard(obj.list.dump_csv());
+                                            JSAN.use('util.print'); var print = new util.print();
+                                            print.simple(obj.list1.dump_csv(),{'content_type':'text/plain'});
+                                            setTimeout(function(){ obj.list1.on_all_fleshed = null; },0);
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('print export',E);
+                                        }
+                                    }
+                                obj.list1.full_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('print export',E);
+                            }
+                        }
+                    ],
+
+
+                    'cmd_print_export2' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list2.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            dump( obj.list2.dump_csv() + '\n' );
+                                            //copy_to_clipboard(obj.list.dump_csv());
+                                            JSAN.use('util.print'); var print = new util.print();
+                                            print.simple(obj.list2.dump_csv(),{'content_type':'text/plain'});
+                                            setTimeout(function(){ obj.list2.on_all_fleshed = null; },0);
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('print export',E);
+                                        }
+                                    }
+                                obj.list2.full_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('print export',E);
+                            }
+                        }
+                    ],
+
 					'cmd_merge_records' : [
 						['command'],
 						function() {
