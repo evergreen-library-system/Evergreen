@@ -402,6 +402,9 @@ function __holdsDrawWindow() {
 		}
 	}
 
+    if(!G.user.email())
+		$('holds_enable_email').checked = false;	
+
 	if(!$('holds_phone').value) 
 		$('holds_enable_phone').checked = false;	
 
