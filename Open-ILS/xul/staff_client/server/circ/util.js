@@ -512,6 +512,10 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.circ_modifier(); },
 		},
 		{
+			'persist' : 'hidden width ordinal', 'id' : 'checkout_lib', 'label' : 'Checkout Lib', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? data.hash.aou[ my.circ.circ_lib() ].shortname() : ( my.acp.circulations() ? data.hash.aou[ my.acp.circulations()[0].circ_lib() ].shortname() : ""); },
+		},
+		{
 			'persist' : 'hidden width ordinal', 'id' : 'xact_start_full', 'label' : 'Checkout Timestamp', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.xact_start() : (my.acp.circulations() ? my.acp.circulations()[0].xact_start() : ""); },
 		},

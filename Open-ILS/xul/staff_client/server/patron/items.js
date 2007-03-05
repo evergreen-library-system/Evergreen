@@ -526,6 +526,7 @@ patron.items.prototype = {
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'checkout_lib' : { 'hidden' : false },
 				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'due_date' : { 'hidden' : false },
@@ -536,6 +537,7 @@ patron.items.prototype = {
 		var columns2 = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
+				'checkout_lib' : { 'hidden' : false },
 				'circ_lib' : { 'hidden' : false },
 				'title' : { 'hidden' : false, 'flex' : '3' },
 				'checkin_time' : { 'hidden' : false },
