@@ -114,8 +114,8 @@ CREATE TABLE config.metabib_field (
 	xpath		TEXT	NOT NULL,
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL DEFAULT 'mods',
-	search		BOOL	NOT NULL DEFAULT TRUE,
-	facet		BOOL	NOT NULL DEFAULT FALSE
+	search_field	BOOL	NOT NULL DEFAULT TRUE,
+	facet_field	BOOL	NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.metabib_field IS $$
 /*

@@ -392,8 +392,8 @@
 			<field name="xpath" oils_obj:array_position="6" oils_persist:virtual="false" />
 			<field name="weight" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="int" />
 			<field name="format" oils_obj:array_position="8" oils_persist:virtual="false" />
-			<field name="search" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool" />
-			<field name="facet" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="bool" />
+			<field name="search_field" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="bool" />
+			<field name="facet_field" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="bool" />
 		</fields>
 		<links/>
 	</class>

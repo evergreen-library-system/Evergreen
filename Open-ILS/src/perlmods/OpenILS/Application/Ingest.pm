@@ -72,7 +72,7 @@ sub post_init {
 				
 				# XXX testing new metabib field use for faceting
 				#->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { id => { '!=' => undef } } )
-				->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { search => 't' } )
+				->request( 'open-ils.cstore.direct.config.metabib_field.search.atomic', { search_field => 't' } )
 
 				->gather(1);
 
