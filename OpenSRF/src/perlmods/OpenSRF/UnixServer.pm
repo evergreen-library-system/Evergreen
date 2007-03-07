@@ -68,7 +68,6 @@ sub process_request {
 	my $data; my $d;
 	while( $d = <STDIN> ) { $data .= $d; }
 
-	
 	my $orig = $0;
 	$0 = "$0*";
 
@@ -162,37 +161,40 @@ sub serve {
 
 	$0 = "OpenSRF master [$app]";
 
-	system("rm -f /tmp/opensrf_unix_$app*");
-
 	my $client = OpenSRF::Utils::SettingsClient->new();
-	$logger->transport("Max Req: " . $client->config_value("apps", $app, "unix_config", "max_requests" ), INFO );
+    my @base = ('apps', $app, 'unix_config' );
 
-	my $min_servers = $client->config_value("apps", $app, "unix_config", "min_children" );
-	my $max_servers = $client->config_value("apps", $app, "unix_config", "max_children" );
-	my $min_spare 	 =	$client->config_value("apps", $app, "unix_config", "min_spare_children" );
-	my $max_spare	 = $client->config_value("apps", $app, "unix_config", "max_spare_children" );
-	my $max_requests = $client->config_value("apps", $app, "unix_config", "max_requests" );
-	my $log_file = join("/", $client->config_value("dirs", "log"),
-				$client->config_value("apps", $app, "unix_config", "unix_log" ));
-	my $port = 	join("/", $client->config_value("dirs", "sock"),
-				$client->config_value("apps", $app, "unix_config", "unix_sock" ));
-	my $pid_file =	join("/", $client->config_value("dirs", "pid"),
-				$client->config_value("apps", $app, "unix_config", "unix_pid" ));
+	my $min_servers = $client->config_value(@base, 'min_children');
+	my $max_servers = $client->config_value(@base, "max_children" );
+	my $min_spare =	$client->config_value(@base, "min_spare_children" );
+	my $max_spare = $client->config_value(@base, "max_spare_children" );
+	my $max_requests = $client->config_value(@base, "max_requests" );
+    # fwiw, these file paths are (obviously) not portable
+	my $log_file = join("/", $client->config_value("dirs", "log"), $client->config_value(@base, "unix_log" ));
+	my $port = join("/", $client->config_value("dirs", "sock"), $client->config_value(@base, "unix_sock" ));
+	my $pid_file = join("/", $client->config_value("dirs", "pid"), $client->config_value(@base, "unix_pid" ));
 
-	my $file = "/tmp/" . "opensrf_unix_$app"."_" . time . rand( $$ ) . "_$$";
-	my $file_string = "min_servers $min_servers\nmax_servers $max_servers\n" .
-		"min_spare_servers $min_spare\nmax_spare_servers $max_spare\n" .
-		"max_requests $max_requests\nlog_file $log_file\nproto unix\n" . 
-		"port $port\npid_file $pid_file\nlog_level 3\n";
+    $min_spare ||= $min_servers;
+    $max_spare ||= $max_servers;
+    $max_requests ||= 1000;
 
-	open F, "> $file" or die "Can't open $file : $!";
-	print F $file_string;
-	close F;
+    $logger->info("UnixServer: min=$min_servers, max=$max_servers, min_spare=$min_spare ".
+        "max_spare=$max_spare, max_req=$max_requests, log_file=$log_file, port=$port, pid_file=$pid_file");
 
-	$self->run( 'conf_file' => $file );
-	unlink($file);
+    $self->run(
+        min_servers => $min_servers,
+        max_servers => $max_servers,
+        min_spare_servers => $min_spare,
+        max_spare_servers => $max_spare,
+        max_requests => $max_requests,
+        log_file => $log_file,
+        port => $port,
+        proto => 'unix',
+        pid_file => $pid_file,
+    );
 
 }
+
 
 sub configure_hook {
 	my $self = shift;
