@@ -524,9 +524,8 @@ sub patron_search {
 	$select = <<"	SQL";
 		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users
-			JOIN ($select) AS search
-		  USING (id)
-		  $clone_select
+			JOIN ($select) AS search USING (id)
+			$clone_select
 		  WHERE	users.deleted = FALSE $inactive
 		  ORDER BY $order_by
 		  LIMIT $limit

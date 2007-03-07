@@ -110,7 +110,7 @@ INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'm
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
 	field_class	TEXT	NOT NULL CHECK (lower(field_class) IN ('title','author','subject','keyword','series')),
-	name		TEXT	NOT NULL UNIQUE,
+	name		TEXT	NOT NULL,
 	xpath		TEXT	NOT NULL,
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL DEFAULT 'mods',
@@ -142,6 +142,8 @@ COMMENT ON TABLE config.metabib_field IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
 
 
 INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'series', 'seriestitle', $$//mods:mods/mods:relatedItem[@type="series"]/mods:titleInfo$$ );
