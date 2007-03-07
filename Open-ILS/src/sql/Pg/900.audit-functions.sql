@@ -4,10 +4,16 @@ BEGIN;
 
 CREATE SCHEMA auditor;
 
+
 CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
 	EXECUTE $$
+			CREATE SEQUENCE auditior.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
+	$$;
+
+	EXECUTE $$
 			CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
+				audit_id	BIGINT				PRIMARY KEY,
 				audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
 				audit_action	TEXT				NOT NULL,
 				LIKE $$ || sch || $$.$$ || tbl || $$
@@ -19,7 +25,10 @@ BEGIN
 			RETURNS TRIGGER AS $func$
 			BEGIN
 				INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history
-					SELECT now(), SUBSTR(TG_OP,1,1), OLD.*;
+					SELECT	nextval('auditior.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
+						now(),
+						SUBSTR(TG_OP,1,1),
+						OLD.*;
 				RETURN NULL;
 			END;
 			$func$ LANGUAGE 'plpgsql';
@@ -33,7 +42,7 @@ BEGIN
 
 	EXECUTE $$
 			CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
-				SELECT	now() as audit_time, 'C' as audit_action, *
+				SELECT	now() as audit_time, '-' as audit_action, *
 				  FROM	$$ || sch || $$.$$ || tbl || $$
 				  	UNION ALL
 				SELECT	*
@@ -42,13 +51,6 @@ BEGIN
 	RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
-
-SELECT auditor.create_auditor ( 'actor', 'usr' );
-SELECT auditor.create_auditor ( 'actor', 'usr_address' );
-SELECT auditor.create_auditor ( 'actor', 'org_unit' );
-SELECT auditor.create_auditor ( 'biblio', 'record_entry' );
-SELECT auditor.create_auditor ( 'asset', 'call_number' );
-SELECT auditor.create_auditor ( 'asset', 'copy' );
 
 COMMIT;
 
