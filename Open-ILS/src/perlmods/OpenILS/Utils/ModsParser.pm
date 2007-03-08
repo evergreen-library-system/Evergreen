@@ -213,6 +213,7 @@ sub modsdoc_to_values {
 				} else {
 					$data->{$class}->{$type} = $arr;
 				}
+				$data->{$class}->{$type} =~ s/\s+/ /go;
 			}
 		}
 	}
