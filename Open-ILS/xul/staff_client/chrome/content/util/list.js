@@ -340,7 +340,14 @@ util.list.prototype = {
 		if (typeof params.to_bottom != 'undefined') {
 			treechildren_node.appendChild( treeitem );
 			if (typeof params.no_auto_select == 'undefined') {
-				try { obj.node.view.selection.select(Number(obj.node.view.rowCount)-1); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+				if (!obj.auto_select_pending) {
+					obj.auto_select_pending = true;
+					setTimeout(function() {
+						try { obj.node.view.selection.select(Number(obj.node.view.rowCount)-1); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						obj.auto_select_pending = false;
+					}, 1000);
+				}
 			}
 		} else {
 			if (treechildren_node.firstChild) {
@@ -349,7 +356,14 @@ util.list.prototype = {
 				treechildren_node.appendChild( treeitem );
 			}
 			if (typeof params.no_auto_select == 'undefined') {
-				try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+				if (!obj.auto_select_pending) {
+					obj.auto_select_pending = true;
+					setTimeout(function() {
+						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						obj.auto_select_pending = false;
+					}, 1000);
+				}
 			}
 		}
 		var treerow = document.createElement('treerow');
