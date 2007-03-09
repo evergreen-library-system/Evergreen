@@ -206,10 +206,10 @@ patron.items.prototype = {
 						'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
 						'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
 						'staff' : obj.data.list.au[0],
-						'header' : obj.data.print_list_templates.checkout.header,
-						'line_item' : obj.data.print_list_templates.checkout.line_item,
-						'footer' : obj.data.print_list_templates.checkout.footer,
-						'type' : obj.data.print_list_templates.checkout.type,
+						'header' : obj.data.print_list_templates.items_out.header,
+						'line_item' : obj.data.print_list_templates.items_out.line_item,
+						'footer' : obj.data.print_list_templates.items_out.footer,
+						'type' : obj.data.print_list_templates.items_out.type,
 						'list' : list.dump_with_keys(),
 					};
 					JSAN.use('util.print'); var print = new util.print();
