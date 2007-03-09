@@ -25,7 +25,7 @@ sub record_copy_count {
 	my $descendants = "actor.org_unit_descendants(u.id)";
 	my $ancestors = "actor.org_unit_ancestors(?)";
 
-	my $visible = 'AND st.holdable = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
+	my $visible = 'AND a.opac_visible = TRUE AND st.holdable = TRUE AND loc.opac_visible = TRUE AND cp.opac_visible = TRUE';
 	if ($self->api_name =~ /staff/o) {
 		$visible = ''
 	}
