@@ -1,5 +1,3 @@
-DROP SCHEMA auditor CASCADE;
-
 BEGIN;
 
 SELECT auditor.create_auditor ( 'actor', 'usr' );

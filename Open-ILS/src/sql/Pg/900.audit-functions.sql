@@ -8,7 +8,7 @@ CREATE SCHEMA auditor;
 CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
 	EXECUTE $$
-			CREATE SEQUENCE auditior.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
+			CREATE SEQUENCE auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
 	$$;
 
 	EXECUTE $$
@@ -25,7 +25,7 @@ BEGIN
 			RETURNS TRIGGER AS $func$
 			BEGIN
 				INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history
-					SELECT	nextval('auditior.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
+					SELECT	nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
 						now(),
 						SUBSTR(TG_OP,1,1),
 						OLD.*;
@@ -42,7 +42,7 @@ BEGIN
 
 	EXECUTE $$
 			CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
-				SELECT	now() as audit_time, '-' as audit_action, *
+				SELECT	-1, now() as audit_time, '-' as audit_action, *
 				  FROM	$$ || sch || $$.$$ || tbl || $$
 				  	UNION ALL
 				SELECT	*
