@@ -50,7 +50,17 @@ if (my $action = $cgi->param('action')) {
 			$hoo->update;
 		}
 	} elsif ( $action eq 'Add New' ) {
-		actor::org_unit->create( { map { defined($cgi->param($_)) ? ($_ => $cgi->param($_)) : () } keys %org_cols } );
+		actor::org_unit->create(
+			{ map {
+				defined($cgi->param($_)) ? 
+					( $_ eq 'shortname' ?
+						($_ => uc($cgi->param($_))) :
+						($_ => $cgi->param($_)) 
+					) :
+				()
+			  } keys %org_cols
+			}
+		);
 	} elsif ( $action eq 'Save Address' ) {
 		my $org = actor::org_unit->retrieve($cgi->param('id'));
 
