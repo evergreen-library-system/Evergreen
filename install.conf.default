@@ -42,7 +42,7 @@
 # If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-TARGETS=("opensrf_all" "openils_core" "openils_web" "evergreen_core" "openils_db");
+TARGETS=("opensrf_all" "openils_core" "openils_web" "openils_db");
 
 
 # --------------------------------------------------------------------

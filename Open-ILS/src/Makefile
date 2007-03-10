@@ -127,6 +127,7 @@ perl-install:
 	cp ../examples/oils_sip.xml.example $(ETCDIR)
 	cp ../examples/hold_notification_template.example $(DATADIR)
 	cp ../examples/oils_ctl.sh $(BINDIR)
+	cp ../examples/lib_ips.txt.example $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
