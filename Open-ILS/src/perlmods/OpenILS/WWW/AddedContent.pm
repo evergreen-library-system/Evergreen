@@ -30,13 +30,19 @@ sub import {
 }
 
 
+my $net_timeout;
 sub child_init {
 
 	OpenSRF::System->bootstrap_client( config_file => $bs_config );
 
 	my $sclient = OpenSRF::Utils::SettingsClient->new();
 	my $ac_data = $sclient->config_value("added_content");
+
+    return unless $ac_data;
+
 	my $ac_handler = $ac_data->{module};
+    $net_timeout = $ac_data->{timeout} || 3;
+    
 	return unless $ac_handler;
 
 	$logger->debug("Attempting to load Added Content handler: $ac_handler");
@@ -78,6 +84,21 @@ sub handler {
 	return Apache2::Const::NOT_FOUND if $err or !$success;
 	return Apache2::Const::OK;
 }
+
+
+
+# generic GET call
+sub get_url {
+	my( $self, $url ) = @_;
+	$logger->info("added content getting [timeout=$net_timeout] URL = $url");
+	my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+	my $res = $agent->get($url);
+	die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
+	return $res->content;
+}
+
+
+
 
 
 
