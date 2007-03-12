@@ -436,6 +436,9 @@ g.apply = function(field,value) {
 	g.error.sdump('D_TRACE','applying field = <' + field + '>  value = <' + value + '>\n');
 	if (value == '<HACK:KLUDGE:NULL>') value = null;
 	if (field == 'alert_message') { value = value.replace(/^\W+$/g,''); }
+	if (field == 'price' || field == 'deposit_amount') {
+		if (value == '') { value = null; } else { JSAN.use('util.money'); value = util.money.sanitize( value ); }
+	}
 	for (var i = 0; i < g.copies.length; i++) {
 		var copy = g.copies[i];
 		try {
@@ -842,14 +845,14 @@ g.panes_and_field_names = {
 	[
 		"Deposit Amount",
 		{ 
-			render: 'util.money.sanitize( fm.deposit_amount() );',
+			render: 'if (fm.deposit_amount() == null) { "<Unset>"; } else { util.money.sanitize( fm.deposit_amount() ); }',
 			input: 'c = function(v){ g.apply("deposit_amount",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
 	[
 		"Price",
 		{ 
-			render: 'util.money.sanitize( fm.price() );', 
+			render: 'if (fm.price() == null) { "<Unset>"; } else { util.money.sanitize( fm.price() ); }', 
 			input: 'c = function(v){ g.apply("price",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 		}
 	],
