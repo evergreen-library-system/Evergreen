@@ -40,6 +40,7 @@ var isRenewal			= environment.isRenewal;
 var isPrecat			= environment.isPrecat;
 var currentLocation	= environment.location;
 var holdRequestLib	= environment.requestLib;
+var holdPickupLib       = environment.pickupLib; /* hold pickup lib */
 
 
 
@@ -224,10 +225,10 @@ function log_vars( prefix ) {
 	if(patron) {
 		str += ' Patron=' + patron.id;
 		str += ', Patron_Username='+ patron.usrname;
-		str += ', Patron_Profile Group='+ patronProfile;
+		str += ', Patron_Profile_Group='+ patronProfile;
 		str += ', Patron_Fines='	+ patronFines;
 		str += ', Patron_OverdueCount='	+ patronOverdueCount;
-		str += ', Patron_Items Out=' + patronItemsOut;
+		str += ', Patron_Items_Out=' + patronItemsOut;
 
 		try {
 			str += ', Patron_Barcode='	+ patron.card.barcode;
@@ -247,8 +248,12 @@ function log_vars( prefix ) {
 		} catch(e) {}
 	}
 
-	if(volume)			str += ', Volume='	+ volume.id;
-	if(title)			str += ', Record='	+ title.id;
+	if(volume) {
+        str += ', Item_Owning_lib=' + volume.owning_lib;
+        str += ', Volume='	+ volume.id;
+    }
+
+	if(title) str += ', Record='	+ title.id;
 
 	if(recDescriptor)	{
 		str += ', Record_Descriptor=' + recDescriptor.id;
@@ -261,6 +266,7 @@ function log_vars( prefix ) {
 	str += ', Is_Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
 	str += ', Is_Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
 	str += (holdRequestLib) ? ', Hold_request_lib=' + holdRequestLib.shortname : '';
+    str += (holdPickupLib) ? ', Hold_Pickup_Lib=' + holdPickupLib : '';
 
 	log_info(str);
 }
