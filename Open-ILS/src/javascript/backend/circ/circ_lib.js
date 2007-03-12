@@ -40,6 +40,7 @@ var isRenewal			= environment.isRenewal;
 var isPrecat			= environment.isPrecat;
 var currentLocation	= environment.location;
 var holdRequestLib	= environment.requestLib;
+var holdPickupLib       = environment.pickupLib; /* hold pickup lib */
 
 
 
@@ -163,7 +164,6 @@ function __isGroupDescendant( parent, child ) {
 
 
 function getMARCItemType() {
-
 	if(	copy &&
 			copy.circ_as_type &&
 			copy.circ_as_type != 'undef' )
@@ -208,15 +208,6 @@ function die(msg) {
 
 
 
-/*
-- at some point we should add a library of objects that map 
-codes to names (item_form, item_type, etc.)
-load_lib('item_form_map.js');
-var form_name = item_form_map[env.record_descriptor.item_form];
-*/
-
-
-
 /* logs a load of info */
 function log_vars( prefix ) {
 	var str = prefix + ' : ';
@@ -224,10 +215,10 @@ function log_vars( prefix ) {
 	if(patron) {
 		str += ' Patron=' + patron.id;
 		str += ', Patron_Username='+ patron.usrname;
-		str += ', Patron_Profile Group='+ patronProfile;
+		str += ', Patron_Profile_Group='+ patronProfile;
 		str += ', Patron_Fines='	+ patronFines;
 		str += ', Patron_OverdueCount='	+ patronOverdueCount;
-		str += ', Patron_Items Out=' + patronItemsOut;
+		str += ', Patron_Items_Out=' + patronItemsOut;
 
 		try {
 			str += ', Patron_Barcode='	+ patron.card.barcode;
@@ -247,8 +238,12 @@ function log_vars( prefix ) {
 		} catch(e) {}
 	}
 
-	if(volume)			str += ', Volume='	+ volume.id;
-	if(title)			str += ', Record='	+ title.id;
+	if(volume) {
+        str += ', Item_Owning_lib=' + volume.owning_lib;
+        str += ', Volume='	+ volume.id;
+    }
+
+	if(title) str += ', Record='	+ title.id;
 
 	if(recDescriptor)	{
 		str += ', Record_Descriptor=' + recDescriptor.id;
@@ -261,8 +256,40 @@ function log_vars( prefix ) {
 	str += ', Is_Renewal: '	+ ( (isTrue(isRenewal)) ? "yes" : "no" );
 	str += ', Is_Precat: '	+ ( (isTrue(isPrecat)) ? "yes" : "no" );
 	str += (holdRequestLib) ? ', Hold_request_lib=' + holdRequestLib.shortname : '';
+    str += (holdPickupLib) ? ', Hold_Pickup_Lib=' + holdPickupLib : '';
 
 	log_info(str);
+}
+
+
+
+/**
+  * Returns config information for the requested group.  If 
+  * no config info exists for the requested group, then this
+  * function searches up the tree to find the config info 
+  * for the nearest ancestor
+  * @param The name of the group who's config info to return
+  */
+function findGroupConfig(name) {
+	if(!name) return null;
+	var node = groupList[name];
+	do {
+		if( GROUP_CONFIG[node.name] ) {
+			debugGroupConfig(name, node.name, GROUP_CONFIG[node.name]);
+			return GROUP_CONFIG[node.name];
+		}
+	} while( (node = groupIDList[node.parent]) );
+	return null;
+}
+
+
+/** prints out the settings for the given group config **/
+function debugGroupConfig(name, foundName, config) {
+	if(!config) return;
+	var str = "findGroupConfig('"+name+"'): returning config info for '"+ foundName +"': ";
+	for( var i in config ) 
+		str += i + '=' + config[i] + '  ';
+	log_debug(str);
 }
 
 

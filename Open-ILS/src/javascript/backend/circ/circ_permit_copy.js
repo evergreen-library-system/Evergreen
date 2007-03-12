@@ -9,13 +9,6 @@ if( ! isTrue(copy.circulate) )
 	result.events.push('COPY_CIRC_NOT_ALLOWED');
 
 
-if( ! isOrgDescendent( 'STATELIB', copy.circ_lib.id ) ) {
-	if( isTrue(copy.ref) ) 
-		result.events.push('COPY_IS_REFERENCE');
-}
-
-
-
 if( ! isTrue(isRenewal) ) {
 	if(copyStatus != 'Available' && 
 		copyStatus != 'On holds shelf' && copyStatus != 'Reshelving' ) {
