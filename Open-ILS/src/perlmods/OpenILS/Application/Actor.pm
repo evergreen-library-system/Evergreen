@@ -152,6 +152,43 @@ sub ou_settings {
 	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
 
+
+
+__PACKAGE__->register_method(
+    api_name => 'open-ils.actor.ou_setting.ancestor_default',
+    method => 'ou_ancestor_setting',
+);
+
+# ------------------------------------------------------------------
+# Attempts to find the org setting value for a given org.  if not 
+# found at the requested org, searches up the org tree until it 
+# finds a parent that has the requested setting.
+# when found, returns { org => $id, value => $value }
+# otherwise, returns NULL
+# ------------------------------------------------------------------
+sub ou_ancestor_setting {
+    my( $self, $client, $orgid, $name ) = @_;
+    my $e = new_editor();
+
+    do {
+        my $setting = $e->search_actor_org_unit_setting({org_unit=>$orgid, name=>$name})->[0];
+
+        if( $setting ) {
+            $logger->info("found org_setting $name at org $orgid : " . $setting->value);
+            return { org => $orgid, value => JSON->JSON2perl($setting->value) };
+        }
+
+        my $org = $e->retrieve_actor_org_unit($orgid) or return $e->event;
+        $orgid = $org->parent_ou or return undef;
+
+    } while(1);
+
+    return undef;
+}
+
+
+
+
 __PACKAGE__->register_method (
 	method		=> "ou_setting_delete",
 	api_name		=> 'open-ils.actor.org_setting.delete',
