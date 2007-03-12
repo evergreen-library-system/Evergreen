@@ -122,6 +122,7 @@ Example opensrf config file for OpenILS
             <module>OpenILS::WWW::AddedContent::Syndetic</module>
             <userid>MY_USER_ID</userid>
             <base_url>http://syndetics.com/index.aspx</base_url>
+            <timeout>2</timeout>
         </added_content>
 
 
