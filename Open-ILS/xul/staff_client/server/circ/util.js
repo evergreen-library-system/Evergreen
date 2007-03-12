@@ -497,11 +497,11 @@ circ.util.columns = function(modify,params) {
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.money.sanitize(my.acp.deposit_amount()); }, 'sort_type' : 'money',
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.price() == null ? "<Unset>" : util.money.sanitize(my.acp.deposit_amount()); }, 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
-			'primary' : false, 'hidden' : true, 'render' : function(my) { return util.money.sanitize(my.acp.price()); }, 'sort_type' : 'money',
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.price() == null ? "<Unset>" : util.money.sanitize(my.acp.price()); }, 'sort_type' : 'money',
 		},
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
