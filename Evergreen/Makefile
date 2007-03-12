@@ -34,7 +34,7 @@ perl-install:
 circ-install:
 	@echo $@
 	mkdir -p $(CIRCRULESDIR)
-	cp circ_rules/*.rules $(CIRCRULESDIR)/
+	cp src/javascript/backend/circ/*.js $(CIRCRULESDIR)
 
 iplist-install:
 	@echo $@
