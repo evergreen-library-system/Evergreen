@@ -6,11 +6,17 @@ use OpenSRF::System;
 use JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Cache;
 
 die "usage: perl org_tree_js.pl <bootstrap_config>" unless $ARGV[0];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
+warn "removing OrgTree from the cache...\n";
+my $cache = OpenSRF::Utils::Cache->new;
+$cache->delete_cache('orgtree');
+
 
 my $ses = OpenSRF::AppSession->create("open-ils.storage");
 my $tree = $ses->request("open-ils.storage.direct.actor.org_unit.retrieve.all.atomic")->gather(1);
