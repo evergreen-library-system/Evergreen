@@ -9,8 +9,7 @@ NEW_XUL_PACKAGE_LABEL=OpenILS
 # A kludge until we move the generic parts of the staff client to Open-ILS
 
 all:	xul 
-
-install: 	circ-install iplist-install perl-install
+install:	circ-install iplist-install perl-install web-install
 
 xul:
 	@echo $@
@@ -40,6 +39,10 @@ iplist-install:
 	@echo $@
 	mkdir -p $(ETCDIR)
 	cp conf/lib_ips.txt $(ETCDIR)
+
+web-install:
+	@echo $@
+	cp web/opac/images/* $(WEBDIR)/opac/images/
 
 clean:
 	if [ -d local_staff_client ]; then make -C local_staff_client clean; fi;
