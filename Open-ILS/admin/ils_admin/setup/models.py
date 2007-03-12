@@ -64,7 +64,7 @@ class OrgUnitSetting(models.Model):
         list_filter = ['name', 'org_unit_id']
     class Meta:
         db_table = 'org_unit_setting'
-        ordering = ['name']
+        ordering = ['org_unit_id', 'name']
         verbose_name = 'Library Setting'
     def __str__(self):
         return "%s:%s=%s" % (self.org_unit_id.shortname, self.name, self.value)
