@@ -627,7 +627,7 @@ sub retrieve_record_transform {
 	(my $transform = $self->api_name) =~ s/^.+record\.([^\.]+)\.retrieve$/$1/o;
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
-	$_storage->connect;
+	#$_storage->connect;
 
 	my $record = $_storage->request(
 		'open-ils.cstore.direct.biblio.record_entry.retrieve',
