@@ -1430,11 +1430,15 @@ sub postfilter_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms,@lang,@aud,@lit_form,@vformats);
+	my ($avail_filter,@types,@forms,@lang,@aud,@lit_form,@vformats) = ('');
 	my ($t_filter, $f_filter, $v_filter) = ('','','');
 	my ($a_filter, $l_filter, $lf_filter) = ('','','');
 	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
+
+	if ($args{available}) {
+		$avail_filter = ' AND cp.status IN (0,7)';
+	}
 
 	if (my $a = $args{audience}) {
 		$a = [$a] if (!ref($a));
@@ -1740,6 +1744,7 @@ sub postfilter_search_multi_class_fts {
 					$oa_filter
 					$ol_filter
 					$olf_filter
+					$avail_filter
 				  LIMIT 1
 			  	)
 				OR EXISTS (
@@ -1774,6 +1779,7 @@ sub postfilter_search_multi_class_fts {
 			  	AND (	EXISTS (
 					  	SELECT	1
 						  FROM	$asset_call_number_table cn,
+							$asset_copy_table cp,
 							$descendants d,
 							$br_table br
 						  WHERE	br.id = omrs.source
@@ -1781,6 +1787,8 @@ sub postfilter_search_multi_class_fts {
 							AND cn.owning_lib = d.id
 							AND br.deleted IS FALSE
 							AND cn.deleted IS FALSE
+							AND cp.call_number = cn.id
+							$avail_filter
 						  LIMIT 1
 					)
 					OR NOT EXISTS (
@@ -1912,11 +1920,15 @@ sub biblio_search_multi_class_fts {
 	$limit_clause = "LIMIT $outer_limit";
 	$offset_clause = "OFFSET $offset" if (defined $offset and int($offset) > 0);
 
-	my (@types,@forms,@lang,@aud,@lit_form,@vformats);
+	my ($avail_filter,@types,@forms,@lang,@aud,@lit_form,@vformats) = ('');
 	my ($t_filter, $f_filter, $v_filter) = ('','','');
 	my ($a_filter, $l_filter, $lf_filter) = ('','','');
 	my ($ot_filter, $of_filter, $ov_filter) = ('','','');
 	my ($oa_filter, $ol_filter, $olf_filter) = ('','','');
+
+	if ($args{available}) {
+		$avail_filter = ' AND cp.status IN (0,7)';
+	}
 
 	if (my $a = $args{audience}) {
 		$a = [$a] if (!ref($a));
@@ -2199,6 +2211,7 @@ sub biblio_search_multi_class_fts {
 					AND d.opac_visible IS TRUE
 					AND cp.deleted IS FALSE
 					AND cn.deleted IS FALSE
+					$avail_filter
 				  LIMIT 1
 			  	)
 				OR src.transcendant IS TRUE
@@ -2213,10 +2226,13 @@ sub biblio_search_multi_class_fts {
 			  WHERE	EXISTS (
 			  	SELECT	1
 				  FROM	$asset_call_number_table cn,
+					$asset_copy_table cp,
 					$descendants d
 				  WHERE	cn.record = s.id
 					AND cn.owning_lib = d.id
+					AND cp.call_number = cn.id
 					AND cn.deleted IS FALSE
+					$avail_filter
 				  LIMIT 1
 				)
 				OR NOT EXISTS (
