@@ -3,7 +3,7 @@
 
 	<script language='javascript' src='../js/holds.js'> </script>
 
-	<table class='light_border data_grid data_grid_center'>
+	<table width='100%' class='light_border data_grid data_grid_center'>
 
 		<thead class='color_3'>
 			<tr>
