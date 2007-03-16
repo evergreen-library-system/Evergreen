@@ -103,6 +103,18 @@ circ.print_list_template_editor.prototype = {
 								obj.save_template( obj.controller.view.template_name_menu.value );
 							}
 						],
+						'export' : [
+							['command'],
+							function() {
+								obj.export_templates();
+							}
+						],
+						'import' : [
+							['command'],
+							function() {
+								obj.import_templates();
+							}
+						],
 						'default' : [
 							['command'],
 							function() {
@@ -278,6 +290,90 @@ circ.print_list_template_editor.prototype = {
 		JSAN.use('util.file'); var file = new util.file('print_list_templates');
 		file.set_object(obj.data.print_list_templates); file.close();
 		alert('Template Saved\n' + js2JSON(obj.data.print_list_templates[name]));
+	},
+
+	'export_templates' : function() {
+		try {
+			var obj = this;
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			JSAN.use('util.file');
+			var f = obj.pick_file('save');
+			if (f) {
+				if (f.exists()) {
+					var r = obj.error.yns_alert(
+						'Would you like to overwrite the existing file ' + f.leafName + '?',
+						'Templates Export Warning',
+						'Yes',
+						'No',
+						null,
+						'Check here to confirm this message'
+					);
+					if (r != 0) { file.close(); alert('Not overwriting file.'); return; }
+				}
+				var e_file = new util.file(''); e_file._file = f;
+				e_file.write_content( 'truncate', js2JSON( obj.data.print_list_templates ) );
+				e_file.close();
+				alert('Templates exported as file ' + f.leafName);
+			} else {
+				alert('File not chosen for export.');
+			}
+
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Error exporting templates',E);
+		}
+	},
+
+	'import_templates' : function() {
+		try {
+			var obj = this;
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			JSAN.use('util.file');
+			var f = obj.pick_file('open');
+			if (f && f.exists()) {
+				var i_file = new util.file(''); i_file._file = f;
+				var temp = JSON2js( i_file.get_content() );
+				i_file.close();
+				var s = '';
+				function set_t(k,v) {
+					obj.data.print_list_templates[k] = v;
+					if (s) s+= ', '; s += k;
+				}
+				for (var i in temp) { set_t(i,temp[i]); }
+				obj.data.stash('print_list_templates');
+				alert('Imported these templates: ' + s);
+				if (xulG) { 
+					xulG.set_tab(xulG.url_prefix(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR), {}, {});
+				} else {
+					alert('Please reload this interface.');
+				}
+	
+			} else {
+				alert('File not chosen for import.');
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Error importing templates',E);
+		}
+	},
+
+	'pick_file' : function(mode) {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			var nsIFilePicker = Components.interfaces.nsIFilePicker;
+			var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+			fp.init( 
+				window, 
+				mode == 'open' ? "Import Templates File" : "Save Templates File As", 
+				mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
+			);
+			fp.appendFilters( nsIFilePicker.filterAll );
+			if ( fp.show( ) == nsIFilePicker.returnOK && fp.file ) {
+				return fp.file;
+			} else {
+				return null;
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('error picking file',E);
+		}
 	},
 
 }

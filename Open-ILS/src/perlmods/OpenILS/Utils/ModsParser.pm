@@ -49,21 +49,43 @@ my $xpathset = {
 	author => {
 		corporate => 
 			"//mods:mods/mods:name[\@type='corporate']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		personal => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		conference => 
 			"//mods:mods/mods:name[\@type='conference']/*[local-name()='namePart']".
-				"[../mods:role/mods:text[text()='creator']][1]",
+				"[../mods:role/mods:text[text()='creator']".
+				" or ../mods:role/mods:roleTerm[".
+				"        \@type='text'".
+				"        and \@authority='marcrelator'".
+				"        and text()='creator']".
+				"][1]",
 		other => 
 			"//mods:mods/mods:name[\@type='personal']/*[local-name()='namePart']",
+		any => 
+			"//mods:mods/mods:name/*[local-name()='namePart'][1]",
 	},
 
 	subject => {
 
 		topic => 
-			"//mods:mods/mods:subject/*[local-name()='geographic' or local-name()='name' or local-name()='temporal' or local-name()='topic']/parent::mods:subject",
+			"//mods:mods/mods:subject/*[".
+			"   local-name()='geographic'".
+			"   or local-name()='name'".
+			"   or local-name()='temporal'".
+			"   or local-name()='topic'".
+			"]/parent::mods:subject",
 
 #		geographic => 
 #			"//mods:mods/*[local-name()='subject']/*[local-name()='geographic']",
@@ -191,6 +213,7 @@ sub modsdoc_to_values {
 				} else {
 					$data->{$class}->{$type} = $arr;
 				}
+				$data->{$class}->{$type} =~ s/\s+/ /go;
 			}
 		}
 	}
@@ -253,9 +276,10 @@ sub mods_values_to_mods_slim {
 	if(!$tmp) { $author = ""; }
 	else {
 		($author = $tmp->{personal}) ||
-		($author = $tmp->{other}) ||
 		($author = $tmp->{corporate}) ||
-		($author = $tmp->{conference}); 
+		($author = $tmp->{conference}) ||
+		($author = $tmp->{other}) ||
+		($author = $tmp->{any}); 
 	}
 
 	$tmp = $modsperl->{subject};
@@ -403,8 +427,10 @@ sub finish_mods_batch {
 	my $record = init_virtual_record();
 
 	# turn the hash into a fieldmapper object
-	(my $title = $perl->{title}) =~ s/\[.*?\]//og;
-	(my $author = $perl->{author}) =~ s/\(.*?\)//og;
+	#(my $title = $perl->{title}) =~ s/\[.*?\]//og;
+	#(my $author = $perl->{author}) =~ s/\(.*?\)//og;
+	my $title = $perl->{title};
+	my $author = $perl->{author};
 
 	my @series;
 	for my $s (@{$perl->{series}}) {

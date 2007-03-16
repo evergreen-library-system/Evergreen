@@ -53,6 +53,8 @@ sub DEBUG		{ return 4;	}
 sub INTERNAL	{ return 5;	}
 sub ALL			{ return 100; }
 
+my $isclient;  # true if we control the osrf_xid
+
 # load up our config options
 sub set_config {
 
@@ -97,7 +99,7 @@ sub set_config {
 
 	} else { $actfile = "$logdir/$actfile"; }
 
-	#warn "Level: $loglevel, Fac: $facility, Act: $actfac\n";
+	$isclient = (OpenSRF::Utils::Config->current->bootstrap->client =~ /^true$/iog) ?  1 : 0;
 }
 
 sub _fac_to_const {
@@ -186,7 +188,26 @@ sub transport {
 }
 
 
+# ----------------------------------------------------------------------
+# creates a new xid if necessary
+# ----------------------------------------------------------------------
+my $osrf_xid = '';
+my $osrf_xid_inc = 0;
+sub mk_osrf_xid {
+   return unless $isclient;
+   $osrf_xid_inc++;
+   return $osrf_xid = "$^T${$}$osrf_xid_inc";
+}
 
+sub set_osrf_xid { 
+   return if $isclient; # if we're a client, we control our xid
+   $osrf_xid = $_[1]; 
+}
+
+sub get_osrf_xid { return $osrf_xid; }
+# ----------------------------------------------------------------------
+
+   
 sub _log_message {
 	my( $msg, $level ) = @_;
 	return if $level > $loglevel;
@@ -201,12 +222,13 @@ sub _log_message {
 	elsif ($level == INTERNAL())	{$l = LOG_DEBUG; $n = "INTL"; }
 	elsif ($level == ACTIVITY())	{$l = LOG_INFO; $n = "ACT"; $fac = $actfac; }
 
-	#my( $pack, $file, $line_no ) = @caller;
+	my( undef, $file, $line_no ) = caller(1);
+   $file =~ s#/.*/##og;
 
 	# help syslog with the formatting
 	$msg =~ s/\%/\%\%/gso if( is_act_syslog() or is_syslog() );
 
-	$msg = "[$n:"."$$".":::] $msg";
+	$msg = "[$n:"."$$".":$file:$line_no:$osrf_xid] $msg";
 
 	$msg = substr($msg, 0, 1536); 
 

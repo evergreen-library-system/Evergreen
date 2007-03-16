@@ -290,6 +290,21 @@ OpenILS.data.prototype = {
 		}
 		file.close();
 
+		JSAN.use('util.file'); var file = new util.file('print_strategy');
+		if (file._file.exists()) {
+			try {
+				var x = file.get_content();
+				if (x) {
+					obj.print_strategy = x;
+					obj.stash('print_strategy');
+					obj.data_progress('Print strategy retrieved from file. ');
+				}
+			} catch(E) {
+				alert(E);
+			}
+		}
+		file.close();
+
 		JSAN.use('util.functional');
 		JSAN.use('util.fm_utils');
 

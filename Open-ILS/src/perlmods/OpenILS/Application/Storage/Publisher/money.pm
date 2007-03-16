@@ -120,32 +120,64 @@ sub new_collections {
 	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
-		SELECT	lt.usr,
-			MAX(bl.billing_ts) AS last_pertinent_billing,
-			SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0) AS threshold_amount
-		  FROM	( SELECT id,usr,billing_location AS location FROM money.grocery
-		  		UNION ALL
-			  SELECT id,usr,circ_lib AS location FROM action.circulation ) AS lt
-			JOIN $descendants d ON (lt.location = d.id)
-			JOIN money.billing bl ON (lt.id = bl.xact AND bl.voided IS FALSE)
-		  WHERE	AGE(bl.billing_ts) > ?
-		  GROUP BY lt.usr
-		  HAVING  SUM(
-		  		(SELECT	COUNT(*)
-				  FROM	money.collections_tracker
-				  WHERE	usr = lt.usr
-				  	AND location in (
-				  		(SELECT	id
-						  FROM	$descendants )
-					)
-				) ) = 0
-		  	AND (SUM(bl.amount) - COALESCE(SUM((SELECT SUM(amount) FROM money.payment WHERE xact = lt.id)),0)) > ? 
+
+select
+        usr,
+        MAX(last_billing) as last_pertinent_billing,
+        SUM(total_billing) - SUM(COALESCE(p.amount,0)) as threshold_amount
+  from  (select
+                x.id,
+                x.usr,
+                MAX(b.billing_ts) as last_billing,
+                SUM(b.amount) AS total_billing
+          from  action.circulation x
+                left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and c.id is null
+                and x.circ_lib in (XX)
+                and b.billing_ts < current_timestamp - ? * '1 day'::interval
+                and not b.voided
+          group by 1,2
+
+                  union all
+
+         select
+                x.id,
+                x.usr,
+                MAX(b.billing_ts) as last_billing,
+                SUM(b.amount) AS total_billing
+          from  money.grocery x
+                left join money.collections_tracker c ON (c.usr = x.usr AND c.location = ?)
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and c.id is null
+                and x.billing_location in (XX)
+                and b.billing_ts < current_timestamp - ? * '1 day'::interval
+                and not b.voided
+          group by 1,2
+        ) full_list
+        left join money.payment p on (full_list.id = p.xact)
+  group by 1
+  having SUM(total_billing) - SUM(COALESCE(p.amount,0)) > ?
+;
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
-		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute(uc($l), $age, uc($l), $amount );
+		my ($org) = actor::org_unit->search( shortname => uc($l) );
+		next unless $org;
+
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		next unless (@$o_list);
+
+		my $o_txt = join ',' => @$o_list;
+
+		(my $real_sql = $SQL) =~ s/XX/$o_txt/gsm;
+
+		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
+		$sth->execute( $org->id, $age, $org->id, $age, $amount );
+
 		while (my $row = $sth->fetchrow_hashref) {
 			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );
@@ -171,32 +203,95 @@ sub active_in_collections {
 	my $mb = money::billing->table;
 	my $circ = action::circulation->table;
 	my $mg = money::grocery->table;
-	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
 
 	my $SQL = <<"	SQL";
-		SELECT	lt.usr,
-			MAX(bl.billing_ts) AS last_pertinent_billing,
-			MAX(pm.payment_ts) AS last_pertinent_payment
-		  FROM	( SELECT id,usr,billing_location AS location, 'g'::char AS x_type FROM money.grocery
-		  		UNION ALL
-			  SELECT id,usr,circ_lib AS location, 'c'::char AS x_type FROM action.circulation
-		  		UNION ALL
-			  SELECT id,usr,circ_lib AS location, 'i'::char AS x_type FROM action.circulation
-			    WHERE checkin_time between ? and ? ) AS lt
-			JOIN $descendants d ON (lt.location = d.id)
-			JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
-			LEFT JOIN money.billing bl ON (lt.id = bl.xact)
-			LEFT JOIN money.payment pm ON (lt.id = pm.xact)
-		  WHERE	bl.billing_ts between ? and ?
-			OR pm.payment_ts between ? and ?
-			OR lt.x_type = 'i'::char
-		  GROUP BY 1
+SELECT  usr,
+        MAX(last_pertinent_billing) AS last_pertinent_billing,
+        MAX(last_pertinent_payment) AS last_pertinent_payment
+  FROM  (
+                SELECT  lt.usr,
+                        MAX(bl.billing_ts) AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  money.grocery lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.billing_location IN (XX)
+                        AND bl.billing_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        MAX(pm.payment_ts) AS last_pertinent_payment
+                  FROM  money.grocery lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.payment pm ON (lt.id = pm.xact)
+                  WHERE cl.location = ?
+                        AND lt.billing_location IN (XX)
+                        AND pm.payment_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  action.circulation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                  WHERE cl.location = ?
+                        AND lt.circ_lib IN (XX)
+                        AND lt.checkin_time BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        MAX(pm.payment_ts) AS last_pertinent_payment
+                  FROM  action.circulation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.payment pm ON (lt.id = pm.xact)
+                  WHERE cl.location = ?
+                        AND lt.circ_lib IN (XX)
+                        AND pm.payment_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        MAX(bl.billing_ts) AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  action.circulation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.circ_lib IN (XX)
+                        AND bl.billing_ts BETWEEN ? AND ?
+                  GROUP BY 1
+        ) foo
+  GROUP BY 1
+;
 	SQL
 
 	my @l_ids;
 	for my $l (@loc) {
-		my $sth = money::collections_tracker->db_Main->prepare($SQL);
-		$sth->execute( $startdate, $enddate, uc($l), $startdate, $enddate, $startdate, $enddate );
+		my ($org) = actor::org_unit->search( shortname => uc($l) );
+		next unless $org;
+
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		next unless (@$o_list);
+
+		my $o_txt = join ',' => @$o_list;
+
+		(my $real_sql = $SQL) =~ s/XX/$o_txt/gsm;
+
+		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
+		$sth->execute(
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate
+		);
+
 		while (my $row = $sth->fetchrow_hashref) {
 			$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
 			$client->respond( $row );

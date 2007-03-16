@@ -1,6 +1,9 @@
 /** initializes reports, some basid display settings, 
   * grabs and builds the IDL tree
   */
+
+var __dblclicks = {}; /* retain a cache of the selector value doubleclick event handlers */
+
 function oilsInitReportBuilder() {
 	if(!oilsInitReports()) return false;
 	oilsReportBuilderReset();
@@ -37,6 +40,21 @@ function oilsRptBuilderDrawClone2(template) {
 	/* manually shove data into the display selectors */
 	var def = JSON2js(template.data());
 
+   /* --------------------------------------------------------------- */
+   /* hack to determine the higest existing param in the template */
+   matches = template.data().match(/::P\d/g);
+   var max = 0;
+   for( var i = 0; i < matches.length; i++ ) {
+      var num = parseInt(matches[i].replace(/::P(\d)/,'$1')); 
+      if( num > max ) max = num;
+   }
+   oilsRptID2 = max + 1;
+   _debug("set next avail param to " + oilsRptID2);
+   //_debug('PARAM = ' + oilsRptNextParam());
+   //var x = null;
+   //x.blah();
+   /* --------------------------------------------------------------- */
+
 	var table = def.from.table;
 	var node;
 	for( var i in oilsIDL ) {
@@ -60,7 +78,7 @@ function oilsRptBuilderDrawClone2(template) {
 		function(item) {
 			oilsAddRptHavingItem(item.path, item.column.transform, oilsRptObjectKeys(item.condition)[0])});
 
-	oilsRpt.setTemplate(template);
+	//oilsRpt.setTemplate(template); /* commented out with clone fix, *shouldn't* break anything */
 	oilsRpt.templateObject = null; /* simplify debugging */
 }
 
@@ -75,7 +93,7 @@ function oilsReportBuilderReset() {
 	removeChildren(oilsRptFilterSelector);
 	removeChildren(oilsRptHavingSelector);
 	//removeChildren(oilsRptOrderBySelector);
-	oilsRptResetParams();
+	//oilsRptResetParams();
 }
 
 function oilsReportBuilderSave() {
@@ -116,8 +134,16 @@ function oilsReportBuilderSave() {
 
 /* adds an item to the display window */
 function oilsAddRptDisplayItem(path, name, tform, params) {
-	if( ! oilsAddSelectorItem(oilsRptDisplaySelector, path, name) ) 
+
+	if( ! oilsAddSelectorItem( 
+		{  selector : oilsRptDisplaySelector, 
+			val : path, 
+			label : name, 
+			path : path, 
+			type : 'display',
+			transform : tform }) ) {
 		return;
+	}
 
 	/* add the selected columns to the report output */
 	name = (name) ? name : oilsRptPathCol(path);
@@ -167,7 +193,15 @@ function oilsRptAddSelectList(obj, tform) {
 			iterate(oilsRpt.def.select,
 				function(item) {
 					_debug('re-inserting display item ' + item.path);
-					oilsAddSelectorItem(oilsRptDisplaySelector, item.path, item.alias) });
+					oilsAddSelectorItem(
+						{  selector: oilsRptDisplaySelector, 
+							val:item.path, 
+							label:item.alias, 
+							path:item.path,
+							transform : item.column.transform,
+							type : 'display'
+						}
+					) });
 		}
 
 	} else {
@@ -196,6 +230,8 @@ function oilsRptBuildFromClause(path) {
 	var tobj = obj; 
 
 	var newpath = "";
+
+   var last_is_left = false; /* true if our parent join is a 'left' join */
 
 	/* walk the path, fleshing the from clause as we go */
 	for( var i = 0; i < parts.length; i += 2 ) {
@@ -237,8 +273,12 @@ function oilsRptBuildFromClause(path) {
 		tobj = tobj[col];
 		if( field.type == 'link' ) {
 			tobj.key = field.key;
-			if( field.reltype == 'has_many' || field.reltype == 'might_have' )
+			if( field.reltype == 'has_many' || field.reltype == 'might_have' || last_is_left ) {
 				tobj.type = 'left';
+            last_is_left = true;
+         } else {
+            last_is_left = false;
+         }
 		}
 
 		newpath = newpath + '-'+ path_col;
@@ -255,8 +295,23 @@ function oilsMoveUpDisplayItems() {
 	var opt = sel.options[idx];
 	sel.options[idx] = null;
 	idx--;
+
 	var val = opt.getAttribute('value');
-	insertSelectorVal(sel, idx, opt.innerHTML, val);
+   var label = opt.getAttribute('label');
+   var path = opt.getAttribute('path');
+   var evt_id = opt.getAttribute('listener');
+
+	opt = insertSelectorVal(sel, idx, label, val);
+
+	opt.setAttribute('path', path);
+	opt.setAttribute('title', label);
+   opt.setAttribute('label', label);
+   opt.setAttribute('value', val);
+   opt.setAttribute('listener', evt_id);
+
+   /* re-attach the double-click event */
+	opt.addEventListener('dblclick', __dblclicks[evt_id], true );
+
 	sel.options[idx].selected = true;
 
 	var arr = oilsRpt.def.select;
@@ -278,8 +333,27 @@ function oilsMoveDownDisplayItems() {
 	var opt = sel.options[idx];
 	sel.options[idx] = null;
 	idx++;
+
+	//var val = opt.getAttribute('value');
+	//insertSelectorVal(sel, idx, opt.innerHTML, val);
+	//insertSelectorVal(sel, idx, opt.getAttribute('label'), val);
+
 	var val = opt.getAttribute('value');
-	insertSelectorVal(sel, idx, opt.innerHTML, val);
+   var label = opt.getAttribute('label');
+   var path = opt.getAttribute('path');
+   var evt_id = opt.getAttribute('listener');
+
+	opt = insertSelectorVal(sel, idx, label, val);
+
+   opt.setAttribute('value', val);
+	opt.setAttribute('path', path);
+	opt.setAttribute('title', label);
+   opt.setAttribute('label', label);
+   opt.setAttribute('listener', evt_id);
+
+   /* re-attach the double-click event */
+	opt.addEventListener('dblclick', __dblclicks[evt_id], true );
+
 	sel.options[idx].selected = true;
 
 	var arr = oilsRpt.def.select;
@@ -423,7 +497,15 @@ function oilsAddRptFilterItem(path, tform, filter) {
 	var epath = name[1];
 	name = name[0];
 
-	if( ! oilsAddSelectorItem(oilsRptFilterSelector, epath, name) )
+	if( ! oilsAddSelectorItem(
+		{  selector : oilsRptFilterSelector, 
+			val : epath, 
+			label : name, 
+			path : path,
+			transform : tform,
+			operation : filter,
+			type : 'filter'
+		}) )
 		return;
 
 	var where = {
@@ -432,6 +514,10 @@ function oilsAddRptFilterItem(path, tform, filter) {
 		column:   { transform: tform, colname: oilsRptPathCol(path) },
 		condition : {}
 	};
+
+   //_debug('NEXT PARAM = ' + oilsRptID2);
+   //_debug('NEXT PARAM = ' + oilsRptNextParam());
+
 	if( filter == 'is' || filter == 'is not' )
 		where.condition[filter] = null;
 	else where.condition[filter] = oilsRptNextParam();
@@ -453,7 +539,16 @@ function oilsAddRptHavingItem(path, tform, filter) {
 	var epath = name[1];
 	name = name[0];
 
-	if( ! oilsAddSelectorItem(oilsRptHavingSelector, epath, name) )
+	if( ! oilsAddSelectorItem(
+		{  selector: oilsRptHavingSelector, 
+			val:epath, 
+			label:name, 
+			path:path,
+			transform : tform,
+			operation : filter,
+			type : 'agg_filter' /* XXX */
+		}) )
+
 		return;
 
 	var having = {
@@ -487,15 +582,30 @@ function oilsDelSelectedAggFilterItems() {
 function _oilsDelSelectedFilterItems(type) {
 
 	/* the values in this list are formed:  <path>:<operation>:<transform> */
-	var list = oilsDelSelectedItems(oilsRptFilterSelector);
+	var list;
+    if( type == 'where' )
+	    list = oilsDelSelectedItems(oilsRptFilterSelector);
+    else if( type == 'having' )
+	    list = oilsDelSelectedItems(oilsRptHavingSelector);
+
+	_debug("deleting filter items " + list);
 
 	for( var i = 0; i < list.length; i++ ) {
 		var enc_path = list[i];
 		var data = oilsRptParseFilterEncPath(enc_path);
+
+		_debug("trimming filter items with enc_path = " + enc_path);
+		_debug(data.path);
+		_debug(data.operation);
+		_debug(data.tform);
+		_debug(data.tform);
+		_debug(type);
+		_debug('---------------------');
+
 		oilsRpt.def[type] = grep( 
 			oilsRpt.def[type],
 			function(f) { 
-				return oilsRptFilterDataMatches( 
+				return ! oilsRptFilterDataMatches( 
 					f, data.path, data.operation, data.tform );
 			}
 		);
@@ -522,88 +632,58 @@ function oilsRptFilterDataMatches(filter, path, operation, tform) {
 	if(	col == filter.column.colname &&
 			rel == filter.relation &&	
 			tform == filter.column.transform &&
-			operation == oilsRptObjectKeys(filter)[0] ) return true;
+			operation == oilsRptObjectKeys(filter.condition)[0] ) return true;
 
 	return false;
 }
 
+/* adds an item to the display window */
 /*
-function oilsRptFilterGrep(flist, filter) {
-
-	for( var j = 0; j < flist.length; j++ ) {
-
-		var fil	= flist[j];
-		var col	= filter.column;
-		var frel = hex_md5(oilsRptPathRel(fil.path));
-		var fcol = oilsRptPathCol(fil.path);
-
-		var op = oilsRptObjectKeys(filter.condition)[0];
-
-		if(	frel == filter.relation && 
-				fcol == col.colname && 
-				fil.operation == op &&
-				fil.tform == col.transform ) {
-				return false;
-		}
-	}
-	return true;
+function oilsAddRptAggFilterItem(val) {
+	oilsAddSelectorItem({selector:oilsRptHavingFilterSelector, val:val, label:val, path:val});
 }
 */
 
-/* adds an item to the display window */
-function oilsAddRptAggFilterItem(val) {
-	oilsAddSelectorItem(oilsRptHavingFilterSelector, val);
-}
-
 /* removes a specific item from the display window */
+/*
 function oilsDelAggFilterItem(val) {
 	oilsDelSelectorItem(oilsRptHavingFilterSelector, val);
 }
-
-
-
-/*
-function ___oilsDelSelectedAggFilterItems() {
-	var list = oilsDelSelectedItems(oilsRptHavingFilterSelector);
-	oilsRpt.def.having = grep( oilsRpt.def.having, 
-		function(i) {
-			for( var j = 0; j < list.length; j++ ) {
-				var d = list[j];
-				var col = i.column;
-
-				if( typeof col != 'string' ) 
-					for( var c in col ) col = col[c];
-
-				if( typeof col != 'string' ) col = col[0];
-
-				if( oilsRptPathRel(d) == i.relation && oilsRptPathCol(d) == col ) {
-				*/
-				//	var param = (i.alias) ? i.alias.match(/::P\d*/) : null;
-					/*
-					if( param ) delete oilsRpt.params[param];
-					return false;
-				}
-			}
-			return true;
-		}
-	);
-
-	if(!oilsRpt.def.having) oilsRpt.def.having = [];
-	oilsRptPruneFromList(list);
-	oilsRptDebug();
-}
 */
 
 
 /* adds an item to the display window */
-function oilsAddSelectorItem(sel, val, name) {
-	name = (name) ? name : oilsRptMakeLabel(val);
-	for( var i = 0; i < sel.options.length; i++ ) {
+//function oilsAddSelectorItem(sel, val, name, path) {
+function oilsAddSelectorItem(args) {
+
+	var sel = args.selector;
+	var label = args.label;
+	var path = args.path;
+	var val = args.val;
+
+	label = (label) ? label : oilsRptMakeLabel(val);
+
+	var i;
+	for( i = 0; i < sel.options.length; i++ ) {
 		var opt = sel.options[i];
 		if( opt.value == val ) return false;
 	}
-	var opt = insertSelectorVal( sel, -1, name, val );
-	opt.setAttribute('title', name);
+
+	var opt = insertSelectorVal( sel, -1, label, val );
+	opt.setAttribute('title', label);
+	opt.setAttribute('path', path);
+   opt.setAttribute('label', label);
+
+   var evt_id = oilsNextNumericId();
+   opt.setAttribute('listener', evt_id);
+
+	args.index = i;
+	delete args.selector;
+   var listener = function(){ oilsRptDrawDataWindow(path, args);};
+	opt.addEventListener('dblclick', listener, true );
+   __dblclicks[evt_id] = listener;
+		//function(){ oilsRptDrawDataWindow(path, args);} , true);
+
 	return true;
 }
 
@@ -648,7 +728,13 @@ function oilsRptHideEditorDivs() {
   This draws the 3-tabbed window containing the transform,
   filter, and aggregate filter picker window
   */
-function oilsRptDrawDataWindow(path) {
+function oilsRptDrawDataWindow(path, args) {
+
+	args = (args) ? args : {};
+
+	for( var x in args ) 
+		_debug("oilsRptDrawDataWindow(): args -> " + x + " = " + args[x]);
+
 	var col	= oilsRptPathCol(path);
 	var cls	= oilsRptPathClass(path);
 	var field = oilsRptFindField(oilsIDL[cls], col);
@@ -671,9 +757,9 @@ function oilsRptDrawDataWindow(path) {
 	/* don't let them see the floating div until the position is fully determined */
 	div.style.visibility='hidden'; 
 
-	oilsRptDrawTransformWindow(path, col, cls, field);
-	oilsRptDrawFilterWindow(path, col, cls, field);
-	oilsRptDrawHavingWindow(path, col, cls, field);
+	oilsRptDrawTransformWindow(path, col, cls, field, args);
+	oilsRptDrawFilterWindow(path, col, cls, field, args);
+	oilsRptDrawHavingWindow(path, col, cls, field, args);
 	//oilsRptDrawOrderByWindow(path, col, cls, field);
 
 	//buildFloatingDiv(div, 600);
@@ -683,13 +769,13 @@ function oilsRptDrawDataWindow(path) {
 
 	/* now let them see it */
 	div.style.visibility='visible';
-	oilsRptSetDataWindowActions(div);
+	//args.type = (args.type) ? args.type : 'display';
+	oilsRptSetDataWindowActions(div, args);
 }
 
 
-function oilsRptSetDataWindowActions(div) {
+function oilsRptSetDataWindowActions(div, args) {
 	/* give the tab links behavior */
-
 
 	DOM.oils_rpt_tform_tab.onclick = 
 		function(){
@@ -704,6 +790,7 @@ function oilsRptSetDataWindowActions(div) {
 			unHideMe(DOM.oils_rpt_filter_div)
 			addCSSClass(DOM.oils_rpt_filter_tab.parentNode, 'oils_rpt_tab_picker_selected');
 		};
+
 	DOM.oils_rpt_agg_filter_tab.onclick = 
 		function(){
 			oilsRptHideEditorDivs();
@@ -720,23 +807,46 @@ function oilsRptSetDataWindowActions(div) {
 			};
 			*/
 
-	DOM.oils_rpt_tform_tab.onclick();
+	DOM.oils_rpt_tform_submit.disabled = false;
+	DOM.oils_rpt_filter_submit.disabled = false;
+	DOM.oils_rpt_agg_filter_submit.disabled = false;
+
+	if( !args.type ) {
+		DOM.oils_rpt_tform_tab.onclick();
+	} else {
+		/* disable editing on existing items for now */
+		if( args.type == 'display' ) {
+			DOM.oils_rpt_tform_tab.onclick();
+			DOM.oils_rpt_tform_submit.disabled = true;
+		}
+		if( args.type == 'filter' ) {
+			DOM.oils_rpt_filter_tab.onclick();
+			DOM.oils_rpt_filter_submit.disabled = true;
+		}
+		if( args.type == 'agg_filter' ) {
+			DOM.oils_rpt_agg_filter_tab.onclick();
+			DOM.oils_rpt_agg_filter_submit.disabled = true;
+		}
+	}
+
 	DOM.oils_rpt_column_editor_close_button.onclick = function(){hideMe(div);};
 }
 
 
-function oilsRptDrawFilterWindow(path, col, cls, field) {
+function oilsRptDrawFilterWindow(path, col, cls, field, args) {
 
 	var tformPicker = new oilsRptTformPicker( {	
 			node : DOM.oils_rpt_filter_tform_table,
 			datatype : field.datatype,
-			non_aggregate : true
+			non_aggregate : true,
+			select : args.transform
 		}
 	);
 
 	var filterPicker = new oilsRptFilterPicker({
 			node : DOM.oils_rpt_filter_op_table,
-			datatype : field.datatype
+			datatype : field.datatype,
+			select : args.operation
 		}
 	);
 
@@ -747,17 +857,19 @@ function oilsRptDrawFilterWindow(path, col, cls, field) {
 }
 
 
-function oilsRptDrawHavingWindow(path, col, cls, field) {
+function oilsRptDrawHavingWindow(path, col, cls, field, args) {
 	var tformPicker = new oilsRptTformPicker( {	
 			node : DOM.oils_rpt_agg_filter_tform_table,
 			datatype : field.datatype,
-			aggregate : true
+			aggregate : true,
+			select : args.transform
 		}
 	);
 
 	var filterPicker = new oilsRptFilterPicker({
 			node : DOM.oils_rpt_agg_filter_op_table,
-			datatype : field.datatype
+			datatype : field.datatype,
+			select : args.operation
 		}
 	);
 
@@ -768,15 +880,20 @@ function oilsRptDrawHavingWindow(path, col, cls, field) {
 }
 
 /* draws the transform window */
-function oilsRptDrawTransformWindow(path, col, cls, field) {
-	DOM.oils_rpt_tform_label_input.value = oilsRptMakeLabel(path);
+function oilsRptDrawTransformWindow(path, col, cls, field, args) {
+	args = (args) ? args : {};
+
+	DOM.oils_rpt_tform_label_input.value = 
+		(args.label) ? args.label : oilsRptMakeLabel(path);
+
 	var dtype = field.datatype;
 
 	var tformPicker = new oilsRptTformPicker( {	
 			node : DOM.oils_rpt_tform_table,
 			datatype : field.datatype,
 			non_aggregate : true,
-			aggregate : true
+			aggregate : true,
+			select : args.transform
 		}
 	);
 
