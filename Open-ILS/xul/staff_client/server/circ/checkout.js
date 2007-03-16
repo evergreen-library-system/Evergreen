@@ -603,6 +603,7 @@ circ.checkout.prototype = {
 				var stop_checkout = false;
 				for (var i = 0; i < test_permit.length; i++) {
 					switch(test_permit[i].ilsevent) {
+						case 1216 /* PATRON_CARD_INACTIVE */ :
 						case 1217 /* PATRON_INACTIVE */ :
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
 							stop_checkout = true;
@@ -621,6 +622,11 @@ circ.checkout.prototype = {
 						break;
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ :
 							found_handled = true;
+						break;
+						case 1216 /* PATRON_CARD_INACTIVE */ :
+							found_handled = true;
+							msg += 'The card used to retrieve this account is inactive and may not be used to circulate items.\n';
+							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
 						break;
 						case 1217 /* PATRON_INACTIVE */ :
 							found_handled = true;
