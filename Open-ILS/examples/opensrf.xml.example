@@ -627,7 +627,12 @@ Example opensrf config file for OpenILS
     </default>
 
     <hosts>
-        <localhost> <!-- must match "hostname -f" of the hosting machine -->
+
+        <localhost> 
+            <!-- ^-=- must match the fully qualified domain name of the host 
+               on Linux, this is usually the output of "hostname -f"
+            -->
+
             <activeapps>
                 <!-- services hosted on this machine -->
                 <appname>opensrf.settings</appname> 
