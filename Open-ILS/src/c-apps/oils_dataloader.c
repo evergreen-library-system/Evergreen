@@ -12,9 +12,15 @@
 #define CSTORE "open-ils.cstore"
 #define APPNAME "oils_dataloader"
 
+#define ESUCCESS 0
+#define ECOMMITERROR -1
+#define ECOMMANDERROR -2
+#define EROLLBACKERROR -3
+
 int sendCommand ( char* );
 int startTransaction ( );
-int endTransaction ( );
+int commitTransaction ( );
+int rollbackTransaction ( );
 
 
 osrfHash* mnames = NULL;
@@ -97,9 +103,9 @@ int main (int argc, char **argv) {
 
 	growing_buffer* json = buffer_init(128);
 	char* json_string;
-	char c;
+	int c;
 	int counter = 0;
-	while ((c = (char)getchar())) {
+	while ((c = getchar())) {
 		switch(c) {
 			case '\n':
 			case EOF:
@@ -114,6 +120,15 @@ int main (int argc, char **argv) {
 						method,
 						json_string
 					);
+
+					if (!rollbackTransaction()) {
+						osrfAppSessionFree(session);
+						osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to complete a transaction");
+						return EROLLBACKERROR;
+					}
+
+					osrfAppSessionFree(session);
+					return ECOMMANDERROR;
 				}
 
 				counter++;
@@ -129,19 +144,40 @@ int main (int argc, char **argv) {
 	}
 
 	// clean up, commit, go away
-	if (!endTransaction()) {
+	if (!commitTransaction()) {
 		osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to complete a transaction");
+		osrfAppSessionFree(session);
+		return ECOMMITERROR;
 	}
 
 	osrfAppSessionFree(session);
+	free(method);
 
-	return 0;
+	return ESUCCESS;
 }
 
-int endTransaction () {
+int commitTransaction () {
 	int ret = 1;
 	jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.commit", 1, NULL );
+	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
+	if ( (data = jsonObjectClone(osrfMessageGetResult(res))) ) {
+		if(!(trans_id = jsonObjectGetString(data))) {
+			ret = 0;
+		}
+		jsonObjectFree(data);
+	} else {
+		ret = 0;
+	}
+	osrfMessageFree(res);
+
+	return ret;
+}
+
+int rollbackTransaction () {
+	int ret = 1;
+	jsonObject* data;
+	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.rollback", 1, NULL );
 	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
 	if ( (data = jsonObjectClone(osrfMessageGetResult(res))) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
