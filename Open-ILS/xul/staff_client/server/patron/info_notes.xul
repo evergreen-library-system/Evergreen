@@ -136,7 +136,13 @@
 									JSAN.use('util.print'); var p = new util.print();
 									p.simple(
 										'<hr/>'
-										+ '<p>Pertaining to ' + patron_obj.family_name() + ', ' + patron_obj.first_given_name() + ' ' + patron_obj.second_given_name() + ' : ' 
+										+ '<p>Pertaining to ' + 
+											( patron_obj.prefix() ? patron_obj.prefix() + ' ' : '') + 
+											patron_obj.family_name() + ', ' + 
+											patron_obj.first_given_name() + ' ' +
+											( patron_obj.second_given_name() ? patron_obj.second_given_name() + ' ' : '' ) +
+											( patron_obj.suffix() ? patron_obj.suffix() : '')
+											+ ' : ' 
 										+ patron_obj.card().barcode() + '</p>'
 										+ '<p><b>"' 
 										+ g.notes[id].title() + '"</b> created on ' + g.notes[id].create_date().toString().substr(0,10) 
