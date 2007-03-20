@@ -218,7 +218,7 @@ patron.search_result.prototype = {
 
 				function gen_func(r) {
 					return function() {
-						obj.list.append( { 'retrieve_id' : r, 'row' : {}, 'to_bottom' : true } );
+						obj.list.append( { 'retrieve_id' : r, 'row' : {}, 'to_bottom' : true, 'no_auto_select' : true } );
 					}
 				}
 
