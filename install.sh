@@ -68,8 +68,6 @@ function mkInstallDirs {
 	 if installing; then
 	 	if [ ! $(grep "^opensrf:" /etc/group) ]; then groupadd opensrf; fi
 	 	if [ ! $(grep "^opensrf:" /etc/passwd) ]; then useradd -g opensrf opensrf; fi
-	 	# add opensrf to the opensrf group
-	 	gpasswd -a opensrf opensrf
 	fi;
 
 }
