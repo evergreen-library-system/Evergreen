@@ -6,6 +6,7 @@ use vars qw/@ISA $AUTOLOAD $VERSION/;
 push @ISA, qw/OpenSRF::Utils/;
 
 use OpenSRF::Utils (':common');
+use Net::Domain qw/hostfqdn/;
 
 $VERSION = do { my @r=(q$Revision$=~/\d+/g); sprintf "%d."."%02d"x$#r,@r };
 
@@ -325,7 +326,7 @@ sub FILE {
 
 sub load_env {
 	my $self = shift;
-	my $host = `hostname -f`  || `uname -n`;
+	my $host = hostfqdn();
 	chomp $host;
 	$$self{env} = $self->section_pkg->new;
 	$$self{env}{hostname} = $host;
