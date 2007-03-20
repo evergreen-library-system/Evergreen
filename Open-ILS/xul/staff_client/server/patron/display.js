@@ -301,8 +301,11 @@ patron.display.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value',
-									obj.patron.family_name() + ', ' + obj.patron.first_given_name() + ' ' +
-									( obj.patron.second_given_name() ? obj.patron.second_given_name() : '' )
+									( obj.patron.prefix() ? obj.patron.prefix() + ' ' : '') + 
+									obj.patron.family_name() + ', ' + 
+									obj.patron.first_given_name() + ' ' +
+									( obj.patron.second_given_name() ? obj.patron.second_given_name() + ' ' : '' ) +
+									( obj.patron.suffix() ? obj.patron.suffix() : '')
 								);
 								JSAN.use('patron.util'); patron.util.set_penalty_css(obj.patron);
 							};
