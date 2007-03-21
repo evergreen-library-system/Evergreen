@@ -7,6 +7,7 @@
 
 int osrfAppInitialize();
 int osrfAppChildInit();
+void osrfAppChildExit();
 int osrfMathRun( osrfMethodContext* );
 
 
@@ -41,9 +42,16 @@ int osrfAppInitialize() {
 	return 0;
 }
 
+/* called when this process is just coming into existence */
 int osrfAppChildInit() {
 	return 0;
 }
+
+/* called when this process is about to exit */
+void osrfAppChildExit() {
+   osrfLogDebug(OSRF_LOG_MARK, "Child is exiting...");
+}
+
 
 int osrfMathRun( osrfMethodContext* ctx ) {
 

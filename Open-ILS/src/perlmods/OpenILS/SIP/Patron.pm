@@ -197,13 +197,13 @@ sub fee_amount {
 	my $self = shift;
 	syslog('LOG_DEBUG', 'OILS: Patron->fee_amount()');
 
-	my $total = 0;
-	my $e = OpenILS::SIP->editor();
-	my $xacts = $e->search_money_open_billable_transaction_summary( 
-		{ usr => $self->{user}->id, balance_owed => { '!=' => 0 } } );
+	my $ses = $U->start_db_session();
+	my $summary = $ses->request(
+		'open-ils.storage.money.open_user_summary.search', $self->{user}->id )->gather(1);
+	$U->rollback_db_session($ses);
 
-	$total += $_->balance_owed for @$xacts;
-	syslog('LOG_INFO', "User ".$self->{user}->id." has a fee amount of \$$total");
+	my $total = $summary->balance_owed;
+	syslog('LOG_INFO', "User ".$self->{id} .':'.$self->{user}->id." has a fee amount of \$$total");
 	return $total;
 }
 

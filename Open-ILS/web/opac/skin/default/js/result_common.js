@@ -10,7 +10,8 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.hitCountReceived.push(resultSetHitInfo);
 	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
-	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, resultDrawAuthors, resultDrawSeries);
+	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
+      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))});
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
 	attachEvt( "common", "locationUpdated", resultSBSubmit );
@@ -151,6 +152,9 @@ function resultSetHitInfo() {
 	G.ui.result.current_page.appendChild(text(cpage));
 	G.ui.result.num_pages.appendChild(text(pages + ")")); /* the ) is dumb */
 
+	$('current_page2').appendChild(text(cpage));
+	$('num_pages2').appendChild(text(pages + ")")); /* the ) is dumb */
+
 	/* set the offsets */
 	var offsetEnd = getDisplayCount() + getOffset();  
 	if( getDisplayCount() > (getHitCount() - getOffset()))  
@@ -159,8 +163,14 @@ function resultSetHitInfo() {
 	G.ui.result.offset_end.appendChild(text(offsetEnd));
 	G.ui.result.offset_start.appendChild(text(getOffset() + 1));
 
+	$('offset_end2').appendChild(text(offsetEnd));
+	$('offset_start2').appendChild(text(getOffset() + 1));
+
 	G.ui.result.result_count.appendChild(text(getHitCount()));
 	unHideMe(G.ui.result.info);
+
+	$('result_count2').appendChild(text(getHitCount()));
+	unHideMe($('result_info_div2'));
 }
 
 function resultLowHits() {
@@ -326,6 +336,9 @@ function resultPaginate() {
 		G.ui.result.next_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.next_link, config.css.result.nav_active);
 
+		$('next_link2').setAttribute("href", buildOPACLink(args)); 
+		addCSSClass($('next_link2'), config.css.result.nav_active);
+
 		args[PARAM_OFFSET] = getHitCount() - (getHitCount() % getDisplayCount());
 
 		/* when hit count is divisible by display count, we have to adjust */
@@ -334,6 +347,9 @@ function resultPaginate() {
 
 		G.ui.result.end_link.setAttribute("href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.end_link, config.css.result.nav_active);
+
+		$('end_link2').setAttribute("href", buildOPACLink(args)); 
+		addCSSClass($('end_link2'), config.css.result.nav_active);
 	}
 
 	if( o > 0 ) {
@@ -347,13 +363,21 @@ function resultPaginate() {
 		G.ui.result.prev_link.setAttribute( "href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.prev_link, config.css.result.nav_active);
 
+		$('prev_link2').setAttribute( "href", buildOPACLink(args)); 
+		addCSSClass($('prev_link2'), config.css.result.nav_active);
+
 		args[PARAM_OFFSET] = 0;
 		G.ui.result.home_link.setAttribute( "href", buildOPACLink(args)); 
 		addCSSClass(G.ui.result.home_link, config.css.result.nav_active);
+
+		$('search_home_link2').setAttribute( "href", buildOPACLink(args)); 
+		addCSSClass($('search_home_link2'), config.css.result.nav_active);
 	}
 
-	if(getDisplayCount() < getHitCount())
+	if(getDisplayCount() < getHitCount()) {
 		unHideMe($('start_end_links_span'));
+		unHideMe($('start_end_links_span2'));
+   }
 
 	showCanvas();
 	try{searchTimer.stop()}catch(e){}

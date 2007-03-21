@@ -135,37 +135,48 @@ main.menu.prototype = {
 				function() {
 					var tcn = prompt('What is the TCN or accession ID for the record?','','TCN Lookup');
 
+					function spawn_tcn(r) {
+						for (var i = 0; i < r.count; i++) {
+							var id = r.ids[i];
+							var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
+							obj.data.stash_retrieve();
+							var content_params = { 
+								'session' : ses(), 
+								'authtime' : ses('authtime'),
+								'opac_url' : opac_url,
+							};
+							if (i == 0) {
+								obj.set_tab(
+									obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
+									{'tab_name':tcn}, 
+									content_params
+								);
+							} else {
+								obj.new_tab(
+									obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
+									{'tab_name':tcn}, 
+									content_params
+								);
+							}
+						}
+					}
+
 					if (tcn) {
 						JSAN.use('util.network');
 						var network = new util.network();
 						var robj = network.simple_request('FM_BRE_ID_SEARCH_VIA_TCN',[tcn]);
 						if (robj.count != robj.ids.length) throw('FIXME -- FM_BRE_ID_SEARCH_VIA_TCN = ' + js2JSON(robj));
 						if (robj.count == 0) {
-							alert('TCN not found');
-						} else {
-							for (var i = 0; i < robj.count; i++) {
-								var id = robj.ids[i];
-								var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + id;
-								obj.data.stash_retrieve();
-								var content_params = { 
-									'session' : ses(), 
-									'authtime' : ses('authtime'),
-									'opac_url' : opac_url,
-								};
-								if (i == 0) {
-									obj.set_tab(
-										obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':tcn}, 
-										content_params
-									);
-								} else {
-									obj.new_tab(
-										obj.url_prefix(urls.XUL_OPAC_WRAPPER), 
-										{'tab_name':tcn}, 
-										content_params
-									);
+							var robj2 = network.simple_request('FM_BRE_ID_SEARCH_VIA_TCN',[tcn,1]);
+							if (robj2.count == 0) {
+								alert('"' + tcn + '" not found');
+							} else {
+								if ( window.confirm('"' + tcn + '" is deleted.  Show deleted record anyway?') ) {
+									spawn_tcn(robj2);
 								}
 							}
+						} else {
+							spawn_tcn(robj);
 						}
 					}
 				}

@@ -13,12 +13,12 @@
 				list of router domains we should register with. 
 				We must at least have our default jabber domain in here
 			-->
-         <router>127.0.0.1</router>
+         <router>localhost</router>
       </routers>
 
       <domains>
 			<!-- Our jabber domain, currenlty only one domain is supported -->
-         <domain>127.0.0.1</domain>
+         <domain>localhost</domain>
       </domains>
 
       <username>client</username>
@@ -46,7 +46,7 @@
 
 	<!-- Update this if you use ChopChop -->
 	<chopchop> <!-- Our jabber server -->
-		<domain>127.0.0.1</domain>
+		<domain>localhost</domain>
 		<port>5222</port>
 
 		<!-- used when multiple servers need to communicate -->
@@ -62,12 +62,16 @@
 	<!-- The section between <gateway>...</gateway> is a standard OpenSRF C stack config file -->
 	<gateway>
 
+        <!-- we consider ourselves to the the "originating" client for requests,
+            which means we define the log XID string for log traces -->
+        <client>true</client>
+
 		<!--  the routers's name on the network -->
 		<router_name>router</router_name>
 
 		<!-- jabber domains to connect to (domain1, domain2, ...) -->
 		<domains>
-			<domain>127.0.0.1</domain>
+			<domain>localhost</domain>
 		</domains>
 
 		<!-- These are the services that the gateway will serve. 
@@ -97,7 +101,7 @@
 	<rest_gateway>
 		<router_name>router</router_name>
 		<domains>
-			<domain>127.0.0.1</domain>
+			<domain>localhost</domain>
 		</domains>
 		<username>mylogin</username>
 		<passwd>mypassword</passwd>
@@ -116,14 +120,14 @@
 	
 		<trusted_domains>
 			<!-- Trusted servers are allowed to register apps with the router -->
-			<server>127.0.0.1</server>
+			<server>localhost</server>
 			<!-- Trusted clients are allowed to send packets through the router -->
-			<client>127.0.0.1</client>
+			<client>localhost</client>
 		</trusted_domains>
 	
 		<transport>
 			<!-- jabber server are we connecting to -->
-			<server>127.0.0.1</server>
+			<server>localhost</server>
 			<port>5222</port>
 
 			<!-- do not change this -->

@@ -13,6 +13,8 @@ function oilsInitReports() {
 	fetchUser(cgi.param('ses'));
 	DOM.oils_rpt_user.appendChild(text(USER.usrname()));
 
+	if( cgi.param('dbg') ) oilsRptDebugEnabled = true;
+
 	fetchHighestPermOrgs(SESSION, USER.id(), perms);
 	if( PERMS.RUN_REPORTS == -1 ) {
 		unHideMe(DOM.oils_rpt_permission_denied);
