@@ -160,29 +160,22 @@ Example opensrf config file for OpenILS
                 <max_requests>93</max_requests>
 
                 <unix_config>
-
-                    <!-- Note that not all implementations use all settings -->
-
-                    <!-- unix sock file -->
-                    <unix_sock>open-ils.auth_unix.sock</unix_sock>
-
-                    <!-- PID files -->
-                    <unix_pid>open-ils.auth_unix.pid</unix_pid>
-
                     <!-- maximum number of top level requests coming to 
-                    this child before the child is recycled -->
+                        this child before the child is recycled -->
                     <max_requests>1000</max_requests>
-
-                    <!-- Perl net::server log -->
-                    <unix_log>open-ils.auth_unix.log</unix_log>
                     <!-- min children to fork -->
                     <min_children>1</min_children>
                     <!-- max possible children to fork -->
                     <max_children>15</max_children>
+
+                    <!-- C forking implementation does not support 
+                        min/max idle children, but may in the future -->
+
                     <!-- min idle children -->
                     <min_spare_children>1</min_spare_children>
                     <!-- max idle children -->
                     <max_spare_children>5</max_spare_children>
+
                 </unix_config>
 
                 <app_settings>
@@ -205,10 +198,13 @@ Example opensrf config file for OpenILS
                 <implementation>OpenILS::Application::Search</implementation>
                 <max_requests>93</max_requests>
                 <unix_config>
+
+                    <!-- the following 3 settings are currently used by Perl services only -->
                     <unix_sock>open-ils.search_unix.sock</unix_sock>
                     <unix_pid>open-ils.search_unix.pid</unix_pid>
-                    <max_requests>1000</max_requests>
                     <unix_log>open-ils.search_unix.log</unix_log>
+
+                    <max_requests>1000</max_requests>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -508,9 +504,6 @@ Example opensrf config file for OpenILS
                 <implementation>oils_cstore.so</implementation>
                 <max_requests>95</max_requests>
                 <unix_config>
-                    <unix_log>cstore.log</unix_log>
-                    <unix_sock>cstore.sock</unix_sock>
-                    <unix_pid>cstore.pid</unix_pid>
                     <max_requests>400</max_requests>
                     <min_children>1</min_children>
                     <max_children>15</max_children>
@@ -597,9 +590,6 @@ Example opensrf config file for OpenILS
                 <implementation>oils_rstore.so</implementation>
                 <max_requests>95</max_requests>
                 <unix_config>
-                    <unix_log>rstore.log</unix_log>
-                    <unix_sock>rstore.sock</unix_sock>
-                    <unix_pid>rstore.pid</unix_pid>
                     <max_requests>400</max_requests>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
