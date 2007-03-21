@@ -19,7 +19,7 @@ cat.copy_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+			alert("Action completed.");
 		}
 		var obj = this;
 		obj.list1.clear();
@@ -303,7 +303,7 @@ cat.copy_buckets.prototype = {
 									obj.error.standard_unexpected_error_alert('Deletion likely failed.',E);
 								}
                                                         }
-							alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+							alert("Action completed.");
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -323,7 +323,7 @@ cat.copy_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'copy',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+								alert("Action completed.");
 								obj.controller.render('copy_buckets_menulist_placeholder');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Bucket deletion likely failed.',E);

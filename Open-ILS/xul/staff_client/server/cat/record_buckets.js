@@ -19,7 +19,7 @@ cat.record_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+			alert("Action completed.");
 		}
 		var obj = this;
 		obj.list1.clear();
@@ -308,7 +308,7 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+							alert("Action completed.");
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -328,7 +328,7 @@ cat.record_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+								alert("Action completed.");
 								obj.controller.render('record_buckets_menulist_placeholder');
 								setTimeout(
 									function() {
