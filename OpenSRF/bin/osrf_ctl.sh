@@ -134,7 +134,7 @@ function stop_perl {
 }
 
 function start_c {
-    host=$(perl -MNet::Domain=hostfqdn -e 'print hostfqdn()')
+	host=$(perl -MNet::Domain=hostfqdn -e 'print hostfqdn()')
 	do_action "start" $PID_OSRF_C "OpenSRF C (host=$host)";
 	opensrf-c $host $OPT_C_CONFIG opensrf;
 	pid=$(ps ax | grep "OpenSRF System-C" | grep -v grep | awk '{print $1}')
