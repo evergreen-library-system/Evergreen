@@ -178,8 +178,12 @@
 
 	<hosts>
 
-		<!-- Host specific settings. the name of the node (server)  must match the output of 'hostname -f' -->
 		<myhost.mydomain.org>
+			<!-- ^-=-
+				must match the fully qualified domain name of the host 
+				on Linux, this is usually the output of "hostname -f"
+			-->
+
 
 			<!-- List all of the apps this server will be running -->
 			<activeapps>
