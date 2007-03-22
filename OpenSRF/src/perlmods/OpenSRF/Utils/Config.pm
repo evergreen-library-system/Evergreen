@@ -89,6 +89,7 @@ push @ISA, qw/OpenSRF::Utils/;
 use FileHandle;
 use OpenSRF::Utils (':common');  
 use OpenSRF::Utils::Logger;
+use Net::Domain qw/hostfqdn/;
 
 #use overload '""' => \&OpenSRF::Utils::Config::dump_ini;
 
