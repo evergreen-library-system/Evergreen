@@ -98,18 +98,6 @@
 
 	</gateway>
 
-	<rest_gateway>
-		<router_name>router</router_name>
-		<domains>
-			<domain>localhost</domain>
-		</domains>
-		<username>mylogin</username>
-		<passwd>mypassword</passwd>
-		<port>5222</port>
-		<unixpath>/openils/var/sock/jserver.sock</unixpath>
-		<logfile>/openils/var/log/gateway.log</logfile>
-		<loglevel>3</loglevel>
-	</rest_gateway>
 
 	<!-- ======================================================================================== -->
 
@@ -130,7 +118,8 @@
 			<server>localhost</server>
 			<port>5222</port>
 
-			<!-- do not change this -->
+			<!-- if this is changed, all "router_name" settings 
+                will need to be updated to match this setting -->
 			<username>router</username>
 
 			<password>mypassword</password>
