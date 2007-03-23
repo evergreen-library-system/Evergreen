@@ -24,16 +24,16 @@ use FileHandle;
 use Time::HiRes qw/time/;
 use Getopt::Long;
 use MARC::Batch;
-use MARC::File::XML;
-use MARC::Charset qw/utf8_to_marc8/;;
-use UNIVERSAL::require;
+use MARC::File::XML ( BinaryEncoding => 'utf-8' );
+use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $keyfile, $dontuse_file, $enc, @files, @trash_fields) =
-	('', 1, 1, '/openils/conf/bootstrap.conf');
+my ($id_field, $recid, $user, $config, $marctype, $keyfile, $dontuse_file, $enc, @files, @trash_fields) =
+	('', 1, 1, '/openils/conf/bootstrap.conf', 'USMARC');
 
 GetOptions(
+	'marctype=i'	=> \$marctype,
 	'startid=i'	=> \$recid,
 	'idfield=s'	=> \$id_field,
 	'user=s'	=> \$user,
@@ -96,7 +96,7 @@ if ($dontuse_file) {
 select STDERR; $| = 1;
 select STDOUT; $| = 1;
 
-my $batch = new MARC::Batch ( 'USMARC', @files );
+my $batch = new MARC::Batch ( $marctype, @files );
 $batch->strict_off();
 $batch->warnings_off();
 

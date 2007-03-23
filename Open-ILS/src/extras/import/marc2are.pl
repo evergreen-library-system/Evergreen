@@ -20,18 +20,18 @@ use Unicode::Normalize;
 use Time::HiRes qw/time/;
 use Getopt::Long;
 use MARC::Batch;
-use MARC::File::XML;
+use MARC::File::XML ( BinaryEncoding => 'utf-8' );
 use MARC::Charset;
-use UNIVERSAL::require;
 
 MARC::Charset->ignore_errors(1);
 
-my ($utf8, $id_field, $count, $user, $password, $config, $keyfile,  @files, @trash_fields) =
-	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
+my ($utf8, $id_field, $count, $user, $password, $config, $marctype, $keyfile,  @files, @trash_fields) =
+	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf', 'USMARC');
 
 GetOptions(
 	'startid=i'	=> \$count,
 	'user=s'	=> \$user,
+	'marctype=s'	=> \$marctype,
 	'password=s'	=> \$password,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
@@ -51,7 +51,7 @@ $user = OpenILS::Application::AppUtils->check_user_session( login($user,$passwor
 select STDERR; $| = 1;
 select STDOUT; $| = 1;
 
-my $batch = new MARC::Batch ( 'USMARC', @files );
+my $batch = new MARC::Batch ( $marctype, @files );
 $batch->strict_off();
 $batch->warnings_off();
 
