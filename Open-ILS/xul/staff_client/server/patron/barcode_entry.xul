@@ -7,7 +7,6 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -29,7 +28,121 @@
         <scripts id="openils_util_scripts"/>
 
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
-	<script type="text/javascript" src="barcode_entry.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
+
+				g.cgi = new CGI();
+
+				var tb = document.getElementById('barcode_tb');
+				tb.addEventListener(
+					'keypress',
+					function(ev) {
+						if (ev.keyCode == 13 || ev.keyCode == 77) {
+							setTimeout(
+								function() {
+									submit();
+								}, 0
+							);
+						}
+					},
+					false
+				);
+				tb.focus();
+	
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+					try { window.xulG.set_tab_name('Check Out'); } catch(E) { alert(E); }
+				}
+
+				if (g.cgi.param('error')) { 
+					var error = g.cgi.param('error');
+					alert(error);
+				}
+
+			} catch(E) {
+				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
+					"system administrator or software developer the following:\n" + E + '\n';
+				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+				alert(err_msg);
+			}
+		}
+
+		function submit() {
+			var tb;
+			try {
+				JSAN.use('util.sound'); var sound = new util.sound();
+				tb = document.getElementById('barcode_tb');
+				var barcode = tb.value;
+
+				barcode = String( barcode ).replace( /\s+/g, '' );
+
+				if (!barcode) { sound.bad(); add_msg('No barcode entered.'); tb.select(); tb.focus(); return; }
+
+				JSAN.use('util.network'); var net = new util.network();
+
+				tb.disabled = true;
+				document.getElementById('progress').setAttribute('hidden','false');
+				net.simple_request('PATRON_BARCODE_EXISTS',[ ses(), barcode ],
+					function(req) {
+						document.getElementById('progress').setAttribute('hidden','true');
+						tb.disabled = false; tb.select(); tb.focus(); ;
+						var robj = req.getResultObject();
+						if (typeof robj.ilsevent != 'undefined') {
+							sound.bad();
+							add_msg('Problem retrieving ' + barcode + '.  Please report this message: \n' + js2JSON(robj));
+							return;
+						} else if (robj == 0) {
+							sound.bad(); 
+							add_msg('Barcode ' + barcode + ' not found.');
+							return;
+						}
+
+						sound.good();
+
+						spawn(barcode);
+					}
+				);
+			} catch(E) {
+				tb.select(); tb.focus();
+				g.error.standard_unexpected_error_alert('barcode_entry.xul',E);
+			}
+		}
+
+		function add_msg(text) {
+			var x = document.getElementById('status');
+			var d = document.createElement('description');
+			x.appendChild(d);
+			d.appendChild( document.createTextNode( text ) );
+			d.setAttribute('style','color: red');
+		}
+
+		function spawn(barcode) {
+			try {
+				var loc = urls.XUL_PATRON_DISPLAY; // + '?barcode=' + window.escape(barcode);
+
+				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab == 'function') {
+
+					window.xulG.set_tab( loc, {}, { 'barcode' : barcode } );
+				} else {
+
+					location.href = loc + '?barcode=' + window.escape(barcode);
+;
+				}
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('spawning patron display',E);
+			}
+		}
+
+		function default_focus() { try { setTimeout( function() { document.getElementById('barcode_tb').focus(); }, 0); } catch(E) {} }
+	]]>
+	</script>
 
 	<vbox flex="1" class="my_overflow">
 		<groupbox orient="vertical" flex="1">
@@ -37,71 +150,11 @@
 			<hbox>
 				<label value="Barcode:" accesskey="B" control="barcode_tb"/>
 				<textbox id="barcode_tb" />
-				<button id="submit_cb" label="Submit" accesskey="t" oncommand="submit();"/>
-				<checkbox id="quick_checkout" persist="checked" label="Quick Checkout" oncommand="$('checkout_top_ui').hidden = ! this.checked; $('barcode_tb').focus();"/>
+				<button label="Submit" accesskey="S" oncommand="submit();"/>
 			</hbox>
 			<label value="Retrieving..." style="color: green" id="progress" hidden="true"/>
 			<vbox id="status">
 			</vbox>
-			<label class="patronNameLarge" id="patron_name"/>
-			<hbox>
-				<label class="hideme barred_indicator" value="(Barred)"/>
-				<label class="hideme expired_indicator" value="(Expired)"/>
-				<label class="hideme inactive_indicator" value="(In-Active)"/>
-				<label class="hideme juvenile_indicator" value="(Juvenile)"/>
-				<label class="hideme alert_indicator" value="(Alert)"/>
-				<label class="hideme note_indicator" value="(See Notes)"/>
-				<label class="hideme max_bills_indicator" value="(Max Bills)"/>
-				<label class="hideme max_overdues_indicator" value="(Max Overdues)"/>
-				<label class="hideme bills_indicator" value="(Has Bills)"/>
-				<label class="hideme overdues_indicator" value="(Has Overdues)"/>
-				<label class="hideme invalid_dob_indicator" value="(Invalid DOB)"/>
-				<label class="hideme invalid_address_indicator" value="(Invalid Address)"/>
-			</hbox>
-			<groupbox orient="vertical" id="checkout_top_ui" flex="1" disabled="true">
-				<caption label="Check Out Items"/>
-				<vbox flex="1" style="overflow: scroll">
-					<grid flex="1">
-						<columns>
-							<column/>
-							<column/>
-							<column/>
-						</columns>
-						<rows id="rows">
-							<row>
-								<label value="Barcode" style="font-weight: bold;"/>
-								<label value="Due Date" style="font-weight: bold;"/>
-								<label value="Title/Non-Cat Type" style="font-weight: bold;"/>
-							</row>
-							<row id="checkout_controls">
-								<textbox id="checkout_barcode_entry_textbox"/>						
-								<menulist id="checkout_duedate_menu" editable="true" onchange="test_date(this);">
-									<menupopup>
-										<menuitem label="Normal" selected="true"/>
-										<menuitem label="Today + 3 days" />
-										<menuitem label="Today + 7 days" />
-										<menuitem label="Today + 14 days" />
-										<menuitem label="Today + 30 days" />
-									</menupopup>
-								</menulist>
-								<hbox>
-									<hbox id="checkout_menu_placeholder" flex="0"/>
-									<button label="Submit" accesskey="S" id="checkout_submit" oncommand="submit_item();"/>
-								</hbox>
-							</row>
-							<row id="spacer">
-								<label value=" " class="line_item" />
-							</row>
-						</rows>
-					</grid>
-				</vbox>
-				<hbox>
-					<button id="done" label="Done" accesskey="D" oncommand="done();"/>
-					<button id="retrieve_patron" label="Retrieve Patron" accesskey="R" oncommand="retrieve_patron();"/>
-					<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked"/> 
-					<checkbox id="enable_print" label="Enable LPT1 Printing" checked="true" persist="checked"/> 
-				</hbox>
-			</groupbox>
 		</groupbox>
 	</vbox>
 
