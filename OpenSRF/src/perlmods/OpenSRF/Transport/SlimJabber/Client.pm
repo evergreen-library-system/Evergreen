@@ -178,6 +178,7 @@ sub set_block {
 
 sub timed_read {
 	my ($self, $timeout) = @_;
+    $timeout = defined($timeout) ? int($timeout) : undef;
 
 	$logger->transport( "Temp Buffer Contained: \n". $self->{temp_buffer}, INTERNAL) if $self->{temp_buffer};
 	if( $self->can( "app" ) ) {
@@ -549,7 +550,8 @@ sub process {
 	my( $self, $timeout ) = @_;
 
 	$timeout ||= 0;
-	undef $timeout if ( $timeout == -1 );
+    $timeout = int($timeout);
+	undef $timeout if ( $timeout < 0 );
 
 	unless( $self->{_socket}->connected ) {
 		OpenSRF::EX::JabberDisconnected->throw( 
