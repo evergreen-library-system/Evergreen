@@ -1,0 +1,54 @@
+<record>
+  <leader>01149cjm a2200265Ka 4500</leader>
+  <controlfield tag="008">070101s                            eng d</controlfield>
+  <datafield tag="010" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="024" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="028" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="082" ind1="0" ind2="4">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="092" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="100" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="d"></subfield>
+  </datafield>
+  <datafield tag="245" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="h"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="260" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="300" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="511" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="518" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="500" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="505" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="650" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+</record>

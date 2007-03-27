@@ -359,6 +359,7 @@ function setSelectorVal( selector, index, name, value, action, indent ) {
 /* split on spaces.  capitalize the first /\w/ character in
    each substring */
 function normalize(val) {
+	return val; /* disable me for now */
 
    if(!val) return ""; 
 
@@ -564,6 +565,15 @@ function openWindow( data ) {
 function alertId(id) {
 	var node = $(id);
 	if(node) alert(node.innerHTML);
+}
+
+function alertIdText(id, text) {
+	var node = $(id);
+   if(!node) return;
+   if(text)
+      alert(text + '\n\n' + node.innerHTML);
+   else 
+	   alert(node.innerHTML);
 }
 
 function confirmId(id) {

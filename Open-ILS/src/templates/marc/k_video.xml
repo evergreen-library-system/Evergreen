@@ -1,0 +1,44 @@
+<record>
+  <leader>01490cgm a2200229Ka 4500</leader>
+  <controlfield tag="008">070101s                            eng d</controlfield>
+  <datafield tag="020" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="028" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+  </datafield>
+  <datafield tag="082" ind1="0" ind2="4">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="092" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="245" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="h"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="250" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="260" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="300" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="538" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="511" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="508" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+</record>

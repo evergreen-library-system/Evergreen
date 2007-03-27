@@ -70,7 +70,7 @@ function advSelToStringList(sel) {
 	for( var i = 0; i < list.length; i++ ) {
 		var str = list[i];
 		for( var j = 0; j < str.length; j++ ) {
-			if(str.charAt(j) == ' ') continue;
+			//if(str.charAt(j) == ' ') continue;
 			vals.push(str.charAt(j));
 		}
 	}

@@ -360,7 +360,9 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 			var url = oilsRptBuildOutputLink(r.template(), r.id(), sched.id());
 			_debug("launching report output view at URL: " + url);
 			if(isXUL()) 
-				xulG.new_tab(url,{"tab_name":"Report Output: " + r.name()},{})
+				xulG.new_tab('/xul/server/util/rbrowser.xul?url=' + url,  /* this comes from urls.XUL_REMOTE_BROWSER */
+					{tab_name:'Report Output: ' + r.name(), browser:true},
+					{no_xulG:false, show_nav_buttons:true, show_print_button:true});
 			else {
 				//goTo(url);
 				var win = window.open(url,r.name(), 'resizable,width=800,height=600,scrollbars=1'); 

@@ -22,6 +22,9 @@ verbose:	oldconfig
 config:	
 	@./config.sh
 
+default_config:	
+	@./config.sh default
+
 oldconfig:	install.conf
 
 install.conf:	

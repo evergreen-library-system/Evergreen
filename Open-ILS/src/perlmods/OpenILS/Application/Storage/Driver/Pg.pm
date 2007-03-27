@@ -29,6 +29,11 @@
 	my $master_db;
 	my @slave_dbs;
 	my $_db_params;
+
+	sub db_Handles {
+		return ($master_db, @slave_dbs);
+	}
+
 	sub child_init {
 		my $self = shift;
 		$_db_params = shift;

@@ -8,6 +8,8 @@ item_form and language are optional - if language exist and no
 item_form is specified, use item_type(s)--language
 */
 
+var noEmailMessage;
+
 function holdsHandleStaff() {
 	swapCanvas($('xulholds_box'));
 	$('xul_recipient_barcode').focus();
@@ -51,6 +53,9 @@ function _holdsHandleStaff() {
 function holdsDrawEditor(args) {
 
 	holdArgs = (args) ? args : holdArgs;
+
+    if(!noEmailMessage)
+        noEmailMessage = $('holds_email').removeChild($('holds.no_email'));
 
 	if(isXUL() && holdArgs.recipient == null 
 			&& holdArgs.editHold == null) {
@@ -402,6 +407,15 @@ function __holdsDrawWindow() {
 		}
 	}
 
+    if(!G.user.email()) {
+		$('holds_enable_email').checked = false;	
+		$('holds_enable_email').disabled = true;
+        var n = noEmailMessage.cloneNode(true);
+	    appendClear( $('holds_email'), n);
+        unHideMe(n);
+        $('holds.no_email.my_account').setAttribute('href', buildOPACLink({page:MYOPAC},null,true));
+    }
+
 	if(!$('holds_phone').value) 
 		$('holds_enable_phone').checked = false;	
 
@@ -552,15 +566,22 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		pickup_lib : pickuplib 
 	};
 
-	_debug("hold possible args = "+js2JSON(args));
+	if(recurse) {
+		/* if we're calling create again (recursing), 
+			we know that the hold possibility check already succeeded */
+		holdHandleCreateResponse({_recurse:true, _hold:hold}, true );
 
-	var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, args );
-
-	req.request.alertEvent = false;
-	req.request._hold = hold;
-	req.request._recurse = recurse;
-	req.callback(holdHandleCreateResponse);
-	req.send();
+	} else {
+		_debug("hold possible args = "+js2JSON(args));
+	
+		var req = new Request(CHECK_HOLD_POSSIBLE, G.user.session, args );
+	
+		req.request.alertEvent = false;
+		req.request._hold = hold;
+		req.request._recurse = recurse;
+		req.callback(holdHandleCreateResponse);
+		req.send();
+	}
 }
 
 
@@ -657,22 +678,25 @@ function holdsPlaceHold(hold, recurse) {
 }
 
 
-function holdHandleCreateResponse(r) {
-	var res = r.getResultObject();
-	if(!res || checkILSEvent(res) ) {
-		if(!res) {
-			alert($('hold_not_allowed').innerHTML);
-		} else {
-			if( res.textcode == 'PATRON_BARRED' ) {
-				alertId('hold_failed_patron_barred');
-			} else {
+function holdHandleCreateResponse(r, recurse) {
+
+	if(!recurse) {
+		var res = r.getResultObject();
+		if(!res || checkILSEvent(res) ) {
+			if(!res) {
 				alert($('hold_not_allowed').innerHTML);
+			} else {
+				if( res.textcode == 'PATRON_BARRED' ) {
+					alertId('hold_failed_patron_barred');
+			} else {
+					alert($('hold_not_allowed').innerHTML);
+				}
 			}
+			swapCanvas($('holds_box'));
+			return;
 		}
-		swapCanvas($('holds_box'));
-		return;
-	}
-	
+	}	
+
 	holdCreateHold(r._recurse, r._hold);
 }
 
@@ -688,14 +712,15 @@ function holdCreateHold( recurse, hold ) {
 	
 	showCanvas();
 
-	holdArgs = null;
 	runEvt('common', 'holdUpdated');
 }
 
 
 function holdProcessResult( hold, res, recurse ) {
+
 	if( res == '1' ) {
 		alert($('holds_success').innerHTML);
+		holdArgs = null;
 
 	} else {
 

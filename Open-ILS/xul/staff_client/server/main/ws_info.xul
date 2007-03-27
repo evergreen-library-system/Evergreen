@@ -53,6 +53,7 @@
 			JSAN.use('util.network'); g.network = new util.network();
 			JSAN.use('util.widgets');
 			JSAN.use('util.functional');
+			JSAN.use('util.fm_utils');
 
 			g.aout_list = g.network.simple_request(
 				'FM_AOUT_RETRIEVE',
@@ -68,9 +69,30 @@
 				[ xulG.auth.session.key ]
 			);
 
-			g.my_libs_hash = {};
+			g.my_libs_shortname_hash = {};
+			g.my_libs_ou_hash = {};
 			for (var i = 0; i < g.my_libs.length; i++) {
-				g.my_libs_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
+				g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
+				g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
+			}
+			for (var i = 0; i < g.my_libs.length; i++) {
+				var p = g.my_libs[i].parent_ou();
+				if (!p) {
+					g.my_libs_tree = function(o){return o;}(g.my_libs_ou_hash[g.my_libs[i].id()]);
+				} else {
+					p = g.my_libs_ou_hash[ p ];
+					var c = p.children();
+					if (!c) c = [];
+					c.push( function(o){return o;}(g.my_libs[i]) );
+					c = c.sort(
+						function( a, b ) {
+							if (a.shortname() < b.shortname()) return -1;
+							if (a.shortname() > b.shortname()) return 1;
+							return 0;
+						}
+					);
+					p.children( c );
+				}
 			}
 
 			g.my_lib = g.network.simple_request(
@@ -91,19 +113,13 @@
 
 			g.ml = util.widgets.make_menulist( 
 				util.functional.map_list( 
-					g.my_libs,
+					util.fm_utils.flatten_ou_branch( g.my_libs_tree ),
 					function(obj) { return [ 
 						obj.shortname(), 
 						obj.id(), 
-						( g.aout_hash[ obj.ou_type() ].can_have_users() == 0),
+						( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
 						( g.aout_hash[ obj.ou_type() ].depth() ),
 					]; }
-				).sort(
-					function( a, b ) {
-						if (a[0] < b[0]) return -1;
-						if (a[0] > b[0]) return 1;
-						return 0;
-					}
 				),
 				g.my_lib
 			);
@@ -115,7 +131,7 @@
 			try {
 				var robj = g.network.simple_request(
 					'AUTH_WORKSTATION',
-					[ xulG.auth.session.key, g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ],
+					[ xulG.auth.session.key, g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, g.ml.value ],
 					null,
 					{
 						'title' : 'Override Registration Failure?',
@@ -134,9 +150,9 @@
 				} else {
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead");
 					g.data.ws_info[ xulG.auth.controller.view.server_prompt.value ] = { 
-						'name' : g.my_libs_hash[ g.ml.value ] + '-' + g.tb.value, 
+						'name' : g.my_libs_shortname_hash[ g.ml.value ] + '-' + g.tb.value, 
 						'owning_lib' : g.ml.value,
-						'lib_shortname' : g.my_libs_hash[ g.ml.value ],
+						'lib_shortname' : g.my_libs_shortname_hash[ g.ml.value ],
 					};
 					xulG.file.get('ws_info');
 					xulG.file.set_object(g.data.ws_info);
@@ -159,8 +175,8 @@
 			<label value="Name" control="wsname"/>
 			<textbox id="wsname" />
 		</hbox>
-		<hbox id="placeholder"/>
 		<hbox>
+			<hbox id="placeholder"/>
 			<button label="Register" accesskey="R" oncommand="register();"/>
 		</hbox>
 	</vbox>

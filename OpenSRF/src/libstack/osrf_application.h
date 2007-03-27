@@ -79,6 +79,7 @@
 struct _osrfApplicationStruct {
 	void* handle;									/* the lib handle */
 	osrfHash* methods;
+   void (*onExit) (void);
 };
 typedef struct _osrfApplicationStruct osrfApplication;
 
@@ -226,5 +227,7 @@ int osrfAppEcho( osrfMethodContext* ctx );
 /**
  * Tells the backend process to run its child init function */
 int osrfAppRunChildInit(char* appname);
+void osrfAppSetOnExit(osrfApplication* app, char* appName);
+void osrfAppRunExitCode();
 
 

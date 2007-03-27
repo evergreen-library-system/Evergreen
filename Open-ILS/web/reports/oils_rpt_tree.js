@@ -168,7 +168,12 @@ function oilsRenderSubTree( data, subTreeId, path ) {
 			action = 'javascript:oilsAddLinkTree("' +
 				dataId+'","'+field['class']+'","'+fullpath+'");';
 
-		oilsRptTree.addNode( dataId, subTreeId, field.label, action, field.label,
+		label = field.label;
+
+		/* indicate that this will build a friendly list at report time */
+		if( field.selector ) label += ' **'; 
+
+		oilsRptTree.addNode( dataId, subTreeId, label, action, field.label,
 			(field.type == 'link') ? 'oils_rpt_tree_link_ref' : null );
 	}
 }

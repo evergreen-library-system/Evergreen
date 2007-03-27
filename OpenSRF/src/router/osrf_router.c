@@ -136,6 +136,8 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 
 	while( (msg = client_recv( class->connection, 0 )) ) {
 
+      osrfLogSetXid(msg->osrf_xid);
+
 		if( msg->sender ) {
 
 			osrfLogDebug(OSRF_LOG_MARK, 
@@ -166,6 +168,7 @@ int osrfRouterClassHandleIncoming( osrfRouter* router, char* classname, osrfRout
 			}
 		}
 
+      osrfLogClearXid();
 		message_free( msg );
 	}
 
@@ -270,6 +273,7 @@ transport_message* osrfRouterClassHandleBounce(
 			transport_message* error = message_init( 
 				node->lastMessage->body, node->lastMessage->subject, 
 				node->lastMessage->thread, node->lastMessage->router_from, node->lastMessage->recipient );
+         message_set_osrf_xid(error, node->lastMessage->osrf_xid);
 			set_msg_error( error, "cancel", 501 );
 	
 			/* send the error message back to the original sender */
@@ -287,6 +291,7 @@ transport_message* osrfRouterClassHandleBounce(
 				lastSent = message_init( node->lastMessage->body,
 					node->lastMessage->subject, node->lastMessage->thread, "", node->lastMessage->router_from );
 				message_set_router_info( lastSent, node->lastMessage->router_from, NULL, NULL, NULL, 0 );
+            message_set_osrf_xid( lastSent, node->lastMessage->osrf_xid );
 			}
 		} else {
 
@@ -324,6 +329,7 @@ int osrfRouterClassHandleMessage(
 		transport_message* new_msg= message_init(	msg->body, 
 				msg->subject, msg->thread, node->remoteId, msg->sender );
 		message_set_router_info( new_msg, msg->sender, NULL, NULL, NULL, 0 );
+      message_set_osrf_xid( new_msg, msg->osrf_xid );
 
 		osrfLogInfo( OSRF_LOG_MARK,  "Routing message:\nfrom: [%s]\nto: [%s]", 
 				new_msg->router_from, new_msg->recipient );
@@ -389,6 +395,9 @@ void osrfRouterClassFree( char* classname, void* c ) {
 
 	while( (node = osrfHashIteratorNext(rclass->itr)) ) 
 		osrfRouterClassRemoveNode( rclass->router, classname, node->remoteId );
+
+   osrfHashIteratorFree(rclass->itr);
+   osrfHashFree(rclass->nodes);
 
 	free(rclass);
 }

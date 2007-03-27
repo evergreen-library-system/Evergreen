@@ -19,7 +19,7 @@ cat.record_buckets.prototype = {
 		if (this.first_pause) {
 			this.first_pause = false;
 		} else {
-			alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+			alert("Action completed.");
 		}
 		var obj = this;
 		obj.list1.clear();
@@ -59,6 +59,7 @@ cat.record_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list1.retrieve_selection();
+						document.getElementById('clip_button1').disabled = sel.length < 1;
 						obj.selection_list1 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
@@ -88,7 +89,7 @@ cat.record_buckets.prototype = {
 					try {
 						JSAN.use('util.functional');
 						var sel = obj.list2.retrieve_selection();
-						document.getElementById('clip_button').disabled = sel.length < 1;
+						document.getElementById('clip_button2').disabled = sel.length < 1;
 						obj.selection_list2 = util.functional.map_list(
 							sel,
 							function(o) { return JSON2js(o.getAttribute('retrieve_id')); }
@@ -116,9 +117,21 @@ cat.record_buckets.prototype = {
 		obj.controller.init(
 			{
 				'control_map' : {
-					'sel_clip' : [
+					'save_columns2' : [
+						['command'],
+						function() { obj.list2.save_columns(); }
+					],
+					'save_columns1' : [
+						['command'],
+						function() { obj.list1.save_columns(); }
+					],
+					'sel_clip2' : [
 						['command'],
 						function() { obj.list2.clipboard(); }
+					],
+					'sel_clip1' : [
+						['command'],
+						function() { obj.list1.clipboard(); }
 					],
 					'record_buckets_menulist_placeholder' : [
 						['render'],
@@ -295,7 +308,7 @@ cat.record_buckets.prototype = {
 									alert(js2JSON(E));
 								}
                                                         }
-							alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+							alert("Action completed.");
 							setTimeout(
 								function() {
 									JSAN.use('util.widgets'); 
@@ -315,7 +328,7 @@ cat.record_buckets.prototype = {
 								obj.list2.clear();
 								var robj = obj.network.simple_request('BUCKET_DELETE',[ses(),'biblio',bucket]);
 								if (typeof robj == 'object') throw robj;
-								alert("Pausing for replicated databases... press Enter or Spacebar when ready.");
+								alert("Action completed.");
 								obj.controller.render('record_buckets_menulist_placeholder');
 								setTimeout(
 									function() {
@@ -377,6 +390,69 @@ cat.record_buckets.prototype = {
 							obj.list2.full_retrieve();
 						}
 					],
+
+					'cmd_export1' : [
+						['command'],
+						function() {
+							obj.list1.on_all_fleshed = function() {
+								try {
+									dump(obj.list1.dump_csv() + '\n');
+									copy_to_clipboard(obj.list1.dump_csv());
+									setTimeout(function(){obj.list1.on_all_fleshed = null;},0);
+								} catch(E) {
+									alert(E); 
+								}
+							}
+							obj.list1.full_retrieve();
+						}
+					],
+
+                    'cmd_print_export1' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list1.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            dump( obj.list1.dump_csv() + '\n' );
+                                            //copy_to_clipboard(obj.list.dump_csv());
+                                            JSAN.use('util.print'); var print = new util.print();
+                                            print.simple(obj.list1.dump_csv(),{'content_type':'text/plain'});
+                                            setTimeout(function(){ obj.list1.on_all_fleshed = null; },0);
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('print export',E);
+                                        }
+                                    }
+                                obj.list1.full_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('print export',E);
+                            }
+                        }
+                    ],
+
+
+                    'cmd_print_export2' : [
+                        ['command'],
+                        function() {
+                            try {
+                                obj.list2.on_all_fleshed =
+                                    function() {
+                                        try {
+                                            dump( obj.list2.dump_csv() + '\n' );
+                                            //copy_to_clipboard(obj.list.dump_csv());
+                                            JSAN.use('util.print'); var print = new util.print();
+                                            print.simple(obj.list2.dump_csv(),{'content_type':'text/plain'});
+                                            setTimeout(function(){ obj.list2.on_all_fleshed = null; },0);
+                                        } catch(E) {
+                                            obj.error.standard_unexpected_error_alert('print export',E);
+                                        }
+                                    }
+                                obj.list2.full_retrieve();
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('print export',E);
+                            }
+                        }
+                    ],
 
 					'cmd_merge_records' : [
 						['command'],

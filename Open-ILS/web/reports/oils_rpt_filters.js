@@ -63,15 +63,16 @@ function oilsRptFilterPicker(args) {
 	this.dtype = args.datatype;
 	this.selector = elem('select');
 	for( var key in OILS_RPT_FILTERS ) 
-		this.addOpt(key);
+		this.addOpt(key, key == args.select );
 	appendClear(this.node, this.selector);
 }
 
 
-oilsRptFilterPicker.prototype.addOpt = function(key) {
+oilsRptFilterPicker.prototype.addOpt = function(key, select) {
 	var filter = OILS_RPT_FILTERS[key];
 	var label = filter.label;
-	insertSelectorVal( this.selector, -1, label, key);
+	var opt = insertSelectorVal( this.selector, -1, label, key);
+	if( select ) opt.selected = true;
 	if( filter.labels && filter.labels[this.dtype] ) 
 		insertSelectorVal( this.selector, -1, filter.labels[this.dtype], key);
 }

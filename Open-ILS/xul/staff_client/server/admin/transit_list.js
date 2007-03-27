@@ -37,8 +37,8 @@ admin.transit_list.prototype = {
 						function gen_list_append(id,which_list) {
 							return function() {
 								switch(which_list) {
-									case 0: obj.list.append( { 'row' : { 'my' : { 'transit_id' : id } } } ); break;
-									case 1: obj.list2.append( { 'row' : { 'my' : { 'transit_id' : id } } } ); break;
+									case 0: obj.list.append( { 'row' : { 'my' : { 'transit_id' : id } }, 'no_auto_select' : true } ); break;
+									case 1: obj.list2.append( { 'row' : { 'my' : { 'transit_id' : id } }, 'no_auto_select' : true } ); break;
 								}
 							};
 						}
