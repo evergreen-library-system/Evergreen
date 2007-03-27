@@ -874,7 +874,7 @@ cat.copy_browser.prototype = {
 					'command',
 					function(ev) {
 						//obj.show_my_libs(ev.target.value);
-						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 						util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 						obj.refresh_list();
 					},
@@ -886,14 +886,18 @@ cat.copy_browser.prototype = {
 
 			JSAN.use('util.widgets'); 
 		
-			file = new util.file('copy_browser_prefs');
+			file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 			util.widgets.load_attributes(file);
 			ml.value = ml.getAttribute('value');
+			if (! ml.value) {
+				ml.value = org.id();
+				ml.setAttribute('value',ml.value);
+			}
 
 			document.getElementById('show_acns').addEventListener(
 				'command',
 				function(ev) {
-					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 				},
 				false
@@ -902,7 +906,7 @@ cat.copy_browser.prototype = {
 			document.getElementById('show_acps').addEventListener(
 				'command',
 				function(ev) {
-					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 				},
 				false
