@@ -367,16 +367,22 @@ admin.offline_manage_xacts.prototype = {
 
 	'check_perm' : function(perms) {
 		var obj = this;
-		var robj = obj.network.simple_request('PERM_CHECK',[ses(),obj.data.list.au[0].id(),obj.data.list.au[0].ws_ou(),perms]);
-		if (typeof robj.ilsevent != 'undefined') {
-			obj.error.standard_unexpected_error_alert('check permission',E);
-			return false;
+		try {
+			var robj = obj.network.simple_request('PERM_CHECK',[ses(),obj.data.list.au[0].id(),obj.data.list.au[0].ws_ou(),perms]);
+			if (typeof robj.ilsevent != 'undefined') {
+				obj.error.standard_unexpected_error_alert('check permission',E);
+				return false;
+			}
+			return robj.length == 0 ? true : false;
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error checking permissions',E);
 		}
-		return robj.length == 0 ? true : false;
 	},
 
 	'execute_ses' : function() {
 		var obj = this;
+
+		try {
 
 		clear_the_cache();
 		obj.data.stash_retrieve();
@@ -393,16 +399,23 @@ admin.offline_manage_xacts.prototype = {
 			x.send(null);
 
 			dump(url + ' = ' + x.responseText + '\n' );
+			if (!x.responseText) throw('Bad response from CGI component');
 			var robj = JSON2js(x.responseText);
 
 			if (robj.ilsevent != 0) { alert('Execute error: ' + x.responseText); }
 
 			obj.retrieve_seslist(); obj.render_seslist();
 		}
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error executing session',E);
+		}
 	},
 
 	'ses_errors' : function() {
 		var obj = this;
+
+		try {
 
 		clear_the_cache();
 		obj.data.stash_retrieve();
@@ -418,15 +431,23 @@ admin.offline_manage_xacts.prototype = {
 		x.send(null);
 
 		dump(url + ' = ' + x.responseText + '\n' );
+		if (!x.responseText) throw('Bad response from CGI component');
 		var robj = JSON2js(x.responseText);
 
 		return { 'errors' : robj, 'description' : obj.seslist[ obj.sel_list[0] ].description };
+
+		} catch(E) {
+			throw('Error retrieving session errors: ' + E);
+		}
 
 	},
 
 	'rename_file' : function() {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
+
+		try {
+
 		JSAN.use('util.file'); 
 		var pending = new util.file('pending_xacts');
 		if ( !pending._file.exists() ) { throw("Can't rename a non-existent file"); }
@@ -439,29 +460,50 @@ admin.offline_manage_xacts.prototype = {
 			if (count++>100) throw("Taking too long to find a unique filename.");
 		}
 		pending._file.moveTo(null,obj.transition_filename);
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error renaming xact file',E);
+		}
 	},
 
 	'revert_file' : function() {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
+
+		try {
+
 		JSAN.use('util.file');
 		var pending = new util.file('pending_xacts');
 		if (pending._file.exists()) { obj.error.yns_alert('Something bad happened.  New offline transactions were accumulated during our attempted upload.  Tell your system admin that the file involved is ' + obj.transition_filename,'Scary Error','Ok',null,null,'Check here to confirm this message'); return; }
 		var file = new util.file(obj.transition_filename);
 		file._file.moveTo(null,'pending_xacts');
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error reverting xact file',E);
+		}
 	},
 
 	'archive_file' : function() {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
+
+		try {
+
 		JSAN.use('util.file');
 		var file = new util.file(obj.transition_filename);
-		if (file._file.exists()) file._file.moveTo(null,obj.transition_filename + '.complete')
+		if (file._file.exists()) file._file.moveTo(null,obj.transition_filename + '.complete');
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error archiving xact file',E);
+		}
 	},
 
 	'upload' : function() {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		var obj = this;
+
+		try {
+
 		if (obj.sel_list.length == 0) { alert('Please select a session to upload to.'); return; }
 		if (obj.sel_list.length > 1) { alert('Please select a single session to upload to.'); return; }
 
@@ -517,10 +559,16 @@ admin.offline_manage_xacts.prototype = {
 			}
 		};
 		x.contentWindow.xulG = newG;
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error uploading xacts',E);
+		}
 	},
 
 	'ses_status' : function() {
 		var obj = this;
+
+		try {
 
 		clear_the_cache();
 		obj.data.stash_retrieve();
@@ -536,14 +584,24 @@ admin.offline_manage_xacts.prototype = {
 		x.send(null);
 
 		dump(url + ' = ' + x.responseText + '\n' );
+		if (!x.responseText) throw('Bad response from CGI component');
 		var robj = JSON2js(x.responseText);
 
 		return robj;
+
+		} catch(E) {
+
+			obj.error.standard_unexpected_error_alert('Error retrieving session status',E);
+			return { 'ilsevent' : -2 };	
+
+		}
 	},
 
 	'create_ses' : function() {
 
 		var obj = this;
+
+		try {
 
 		var desc = window.prompt('Please enter a description:','','Create an Offline Transaction Session');
 		if (desc=='' || desc==null) { return; }
@@ -561,12 +619,18 @@ admin.offline_manage_xacts.prototype = {
 		x.send(null);
 
 		dump(url + ' = ' + x.responseText + '\n' );
+		if (!x.responseText) throw('Bad response from CGI component');
 		var robj = JSON2js(x.responseText);
 		if (robj.ilsevent == 0) {
 			obj.retrieve_seslist(); obj.render_seslist();
 		} else {
 			alert('Error: ' + x.responseText);
 		}
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error creating session',E);
+		}
+
 	},
 
 	'retrieve_seslist' : function() {
@@ -587,10 +651,14 @@ admin.offline_manage_xacts.prototype = {
 			x.open("GET",url,false);
 			x.send(null);
 
-			dump(url + ' = ' + x.responseText + '\n' );
+			dump(url + ' = ' + typeof(x.responseText) + '\n' );
+
+			if (!x.responseText) throw('Bad response from CGI component');
 
 			var robj = JSON2js( x.responseText );
 			if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+			if (!robj) throw(robj);
 
 			obj.seslist = robj.sort(
 				function(a,b) {
@@ -607,6 +675,8 @@ admin.offline_manage_xacts.prototype = {
 
 		var obj = this;
 
+		try {
+
 		var old_idx = obj.list.node.currentIndex;
 		if (old_idx < 0) old_idx = 0;
 
@@ -617,7 +687,7 @@ admin.offline_manage_xacts.prototype = {
 			funcs.push( 
 				function(idx,row){ 
 					return function(){
-						obj.list.append( { 'retrieve_id' : idx, 'row' : row } );
+						obj.list.append( { 'retrieve_id' : idx, 'row' : row, 'no_auto_select' : true } );
 						if (idx == old_idx) obj.list.node.view.selection.select(idx);
 					};
 				}(i,{ 'my' : obj.seslist[i] }) 
@@ -630,15 +700,20 @@ admin.offline_manage_xacts.prototype = {
 		document.getElementById('execute').disabled = true;
 		document.getElementById('upload').disabled = true;
 
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error rendering session list',E);
+		}
 	},
 
 	'render_scriptlist' : function() {
 
 		dump('render_scriptlist\n');
 
-		document.getElementById('deck').selectedIndex = 1;
-
 		var obj = this;
+
+		try { 
+
+		document.getElementById('deck').selectedIndex = 1;
 
 		obj.script_list.clear();
 
@@ -652,22 +727,28 @@ admin.offline_manage_xacts.prototype = {
 			funcs.push( 
 				function(row){ 
 					return function(){
-						obj.script_list.append( { 'row' : row } );
+						obj.script_list.append( { 'row' : row, 'no_auto_select' : true  } );
 					};
 				}({ 'my' : scripts[i] }) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error rendering script list',E);
+		}
 	},
 	
 	'render_errorlist' : function() {
 
 		dump('render_errorlist\n');
 
-		document.getElementById('deck').selectedIndex = 2;
-
 		var obj = this;
+
+		try {
+
+		document.getElementById('deck').selectedIndex = 2;
 
 		obj.error_list.clear();
 
@@ -681,13 +762,17 @@ admin.offline_manage_xacts.prototype = {
 			funcs.push( 
 				function(idx,row){ 
 					return function(){
-						obj.error_list.append( { 'retrieve_id' : idx, 'row' : row } );
+						obj.error_list.append( { 'retrieve_id' : idx, 'row' : row, 'no_auto_select' : true  } );
 					};
 				}(i,{ 'my' : obj.errors[i] }) 
 			);
 		}
 		JSAN.use('util.exec'); var exec = new util.exec();
 		exec.chain( funcs );
+
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error rendering error list',E);
+		}
 	},
 
 	'render_status' : function() {
