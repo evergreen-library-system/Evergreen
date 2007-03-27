@@ -178,6 +178,7 @@ sub set_block {
 
 sub timed_read {
 	my ($self, $timeout) = @_;
+    $timeout = defined($timeout) ? int($timeout) : undef;
 
 	$logger->transport( "Temp Buffer Contained: \n". $self->{temp_buffer}, INTERNAL) if $self->{temp_buffer};
 	if( $self->can( "app" ) ) {
@@ -413,7 +414,7 @@ sub send {
 	$msg->setBody( $body );
 	$msg->set_router_command( $router_command );
 	$msg->set_router_class( $router_class );
-
+   $msg->set_osrf_xid($logger->get_osrf_xid);
 
 	$logger->transport( 
 			"JabberClient Sending message to $to with thread $thread and body: \n$body", INTERNAL );
@@ -549,7 +550,8 @@ sub process {
 	my( $self, $timeout ) = @_;
 
 	$timeout ||= 0;
-	undef $timeout if ( $timeout == -1 );
+    $timeout = int($timeout);
+	undef $timeout if ( $timeout < 0 );
 
 	unless( $self->{_socket}->connected ) {
 		OpenSRF::EX::JabberDisconnected->throw( 

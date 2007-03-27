@@ -133,8 +133,8 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id;
 
 -- Just so that there is a user...
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou )
-	VALUES ( 1, 1,'admin', 'open-ils', 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
+INSERT INTO actor.usr ( profile, card, usrname, passwd,     first_given_name, family_name,      dob,          master_account, super_user, ident_type, ident_value,      home_ou )
+               VALUES ( 1,       1,    'admin', 'open-ils', 'Administrator',  'System Account', '1979-01-22', TRUE,           TRUE,       1,          'identification', 1 );
 
 CREATE TABLE actor.usr_note (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -375,7 +375,8 @@ CREATE TABLE actor.org_unit (
 	shortname	TEXT	NOT NULL,
 	name		TEXT	NOT NULL,
 	email		TEXT,
-	phone		TEXT
+	phone		TEXT,
+	opac_visible	BOOL	NOT NULL DEFAULT TRUE
 );
 CREATE INDEX actor_org_unit_parent_ou_idx ON actor.org_unit (parent_ou);
 CREATE INDEX actor_org_unit_ou_type_idx ON actor.org_unit (ou_type);

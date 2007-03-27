@@ -5,6 +5,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils::SettingsParser;
 use JSON;
 use OpenSRF::EX qw/:try/;
+use OpenILS::WWW::AddedContent;
 
 
 
@@ -223,12 +224,9 @@ sub fetch_content {
 	my( $self, $page, $key ) = @_;
 	my $uname = $self->userid;
 	my $url = $self->base_url . "?isbn=$key/$page&client=$uname&type=rw12";
-	$logger->info("added content URL = $url");
-	my $agent = LWP::UserAgent->new;
-	my $res = $agent->get($url);
-	die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
-	return $res->content;
+    return OpenILS::WWW::AddedContent->get_url($url);
 }
+
 
 
 1;
