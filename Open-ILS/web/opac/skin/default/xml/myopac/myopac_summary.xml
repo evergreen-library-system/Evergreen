@@ -1,6 +1,20 @@
 
 <div id='myopac_summary_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
+
+    <div id='myopac.expired.alert' class='hide_me' style='margin-bottom: 20px;'>
+		<table class='data_grid' width='100%'>
+            <tbody>
+                <tr>
+                    <td width='100%' style='color:red;'>
+                        Your account expired on <span id='myopac.expired.date'/>!  
+                        Please see a librarian to renew your account.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 	<div id='myopac.notes.div' class='hide_me'>
 		<table class='data_grid' width='100%'>
 			<thead>
@@ -19,26 +33,8 @@
 		<br/>
 	</div>
 
-	<!--
-	<table class='light_border data_grid'>
-	-->
 	<table width='70%' class='light_border myopac_summary_table'>
 		<tbody id='myopac_summary_tbody'>
-			<!--
-			<tr>
-				<td class='color_4 light_border' width='20%'>First Name</td>
-				<td class='light_border' id='myopac_summary_first'> </td>
-			</tr>
-			<tr>
-				<td class='color_4 light_border'>Middle Name</td>
-				<td class='light_border' id='myopac_summary_middle'> </td>
-			</tr>
-			<tr>
-				<td class='color_4 light_border'>Last Name</td>
-				<td class='light_border' id='myopac_summary_last'> </td>
-			</tr>
-			-->
-
 			<tr>
 				<td width='30%' class='color_4 light_border'>Name</td>
 				<td class='light_border'>

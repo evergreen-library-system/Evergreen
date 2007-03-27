@@ -184,7 +184,7 @@ sub nearest_hold {
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
 
-	my ($id) = action::hold_request->db_Main->selectrow_array(<<"	SQL", {}, $cp, $pl);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $pl);
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
@@ -199,7 +199,9 @@ sub nearest_hold {
 			h.request_time
 		LIMIT $limit
 	SQL
-	return $id;
+	
+	$client->respond( $_ ) for ( @$ids );
+	return undef;
 }
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.action.hold_request.nearest_hold',
@@ -687,6 +689,7 @@ sub new_hold_copy_targeter {
 
 	try {
 		if ($one_hold) {
+			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$holds = [ action::hold_request->search_where( { id => $one_hold, fulfillment_time => undef, cancel_time => undef } ) ];
 		} elsif ( $check_expire ) {
 
@@ -735,8 +738,8 @@ sub new_hold_copy_targeter {
 	};
 
 	my @closed = actor::org_unit::closed_date->search_where(
-		{ close_start => { '<=', 'today' },
-		  close_end => { '>=', 'today' } }
+		{ close_start => { '<=', 'now' },
+		  close_end => { '>=', 'now' } }
 	);
 
 
@@ -744,10 +747,6 @@ sub new_hold_copy_targeter {
 
 	for my $hold (@$holds) {
 		try {
-			#first, re-fetch the hold, to make sure it's not captured already
-			$hold = action::hold_request->retrieve( $hold->id );
-			die "OK\n" if (!$hold or $hold->capture_time);
-
 			#start a transaction if needed
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
 				$log->debug("Cleaning up after previous transaction\n");
@@ -756,11 +755,14 @@ sub new_hold_copy_targeter {
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
 			$log->info("Processing hold ".$hold->id."...\n");
 
+			#first, re-fetch the hold, to make sure it's not captured already
+			$hold = action::hold_request->retrieve( $hold->id );
+			die "OK\n" if (!$hold or $hold->capture_time);
+
 			# remove old auto-targeting maps
 			my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
 			$_->delete for (@oldmaps);
 
-	
 			my $all_copies = [];
 
 			# find filters for MR holds
@@ -784,7 +786,10 @@ sub new_hold_copy_targeter {
 
 					for my $cn ( @{ $rtree->call_numbers } ) {
 						push @$all_copies,
-							asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+							asset::copy->search_where(
+								{ id => [map {$_->id} @{ $cn->copies }],
+								  deleted => 'f' }
+							) if ($cn && @{ $cn->copies });
 					}
 				}
 			} elsif ($hold->hold_type eq 'T') {
@@ -799,7 +804,10 @@ sub new_hold_copy_targeter {
 
 				for my $cn ( @{ $rtree->call_numbers } ) {
 					push @$all_copies,
-						asset::copy->search( id => [map {$_->id} @{ $cn->copies }] );
+						asset::copy->search_where(
+							{ id => [map {$_->id} @{ $cn->copies }],
+							  deleted => 'f' }
+						) if ($cn && @{ $cn->copies });
 				}
 			} elsif ($hold->hold_type eq 'V') {
 				my ($vtree) = $self
@@ -807,17 +815,21 @@ sub new_hold_copy_targeter {
 					->run( $hold->target, $hold->selection_ou, $hold->selection_depth );
 
 				push @$all_copies,
-					asset::copy->search( id => [map {$_->id} @{ $vtree->copies }] );
+					asset::copy->search_where(
+						{ id => [map {$_->id} @{ $vtree->copies }],
+						  deleted => 'f' }
+					) if ($vtree && @{ $vtree->copies });
 					
-			} elsif  ($hold->hold_type eq 'C') {
-
-				$all_copies = [asset::copy->retrieve($hold->target)];
+			} elsif  ($hold->hold_type eq 'C' || $hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
+				my $_cp = asset::copy->retrieve($hold->target);
+				push @$all_copies, $_cp if $_cp;
 			}
 
 			# trim unholdables
 			@$all_copies = grep {	isTrue($_->status->holdable) && 
 						isTrue($_->location->holdable) && 
-						isTrue($_->holdable)
+						isTrue($_->holdable) &&
+						!isTrue($_->deleted)
 					} @$all_copies;
 
 			# let 'em know we're still working
@@ -828,7 +840,7 @@ sub new_hold_copy_targeter {
 				$log->info("\tNo copies available for targeting at all!\n");
 				push @successes, { hold => $hold->id, eligible_copies => 0, error => 'NO_COPIES' };
 
-				$hold->update( { prev_check_time => 'today' } );
+				$hold->update( { prev_check_time => 'today', current_copy => undef } );
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				die "OK\n";
 			}
@@ -844,10 +856,10 @@ sub new_hold_copy_targeter {
 			my @good_copies;
 			for my $c (@$all_copies) {
 				# current target
-				next if ($c->id == $hold->current_copy);
+				next if ($c->id eq $hold->current_copy);
 
 				# circ lib is closed
-				next if ( grep { ''.$_->org_unit == ''.$c->circ_lib } @closed );
+				next if ( grep { ''.$_->org_unit eq ''.$c->circ_lib } @closed );
 
 				# target of another hold
 				next if (action::hold_request
@@ -928,6 +940,18 @@ sub new_hold_copy_targeter {
 			if ($best) {
 				$hold->update( { current_copy => ''.$best->id, prev_check_time => 'now' } );
 				$log->debug("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
+			} elsif (
+				$old_best &&
+				action::hold_request
+					->search_where(
+						{ current_copy => $old_best->id,
+						  fulfillment_time => undef,
+						  cancel_time => undef,
+						}       
+					)
+			) {     
+				$hold->update( { prev_check_time => 'now', current_copy => ''.$old_best->id } );
+				$log->debug( "\tRetargeting the previously targeted copy [".$old_best->id."]" );
 			} else {
 				$hold->update( { prev_check_time => 'now' } );
 				$log->info( "\tThere were no targetable copies for the hold" );
@@ -1193,7 +1217,7 @@ sub choose_nearest_copy {
 
 		my $rand = int(rand(scalar(@capturable)));
 		while (my ($c) = splice(@capturable,$rand)) {
-			unless ( OpenILS::Utils::PermitHold::permit_copy_hold(
+			return $c if ( OpenILS::Utils::PermitHold::permit_copy_hold(
 				{ title => $c->call_number->record->to_fieldmapper,
 				  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
 				  patron => $hold->usr->to_fieldmapper,
@@ -1201,12 +1225,10 @@ sub choose_nearest_copy {
 				  requestor => $hold->requestor->to_fieldmapper,
 				  request_lib => $hold->request_lib->to_fieldmapper,
 				}
-			)) {
-				last unless(@capturable);
-				$rand = int(rand(scalar(@capturable)));
-				next;
-			}
-			return $c;
+			));
+
+			last unless(@capturable);
+			$rand = int(rand(scalar(@capturable)));
 		}
 	}
 }

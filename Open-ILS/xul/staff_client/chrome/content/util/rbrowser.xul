@@ -31,6 +31,7 @@
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -50,7 +51,9 @@
 				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
 
-				JSAN.use('util.browser'); g.browser = new util.browser();
+				if (!g.browser) {
+					JSAN.use('util.browser'); g.browser = new util.browser();
+				}
 
 				var push_xulG = true;
 				if (g.cgi.param('no_xulG') || (typeof xulG == 'object' ? xulG.no_xulG : false)) push_xulG = false;
@@ -111,7 +114,10 @@
 			<button id="back" label="Go Back" command="cmd_back" accesskey="b" disabled="true" hidden="true"/>
 			<button id="forward" label="Go Forward" command="cmd_forward" accesskey="d" disabled="true" hidden="true"/>
 			<spacer flex="1"/>
-			<button id="browser_print" label="Print Page" command="cmd_print" hidden="true"/>
+			<button id="browser_print" label="Print Page" oldcommand="cmd_print" hidden="true"
+				oncommand="netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect'); if (g.browser.alt_print) { JSAN.use('util.print'); var p = new util.print(); p.NSPrint(g.browser.get_content(),false,{}); } else { g.browser.get_content().print(); }"
+			/>
+
 		</hbox>
 		<browser id="browser_browser" flex="1" type="content"/>
 	</vbox>
