@@ -154,6 +154,8 @@ util.print.prototype = {
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%PINES_CODE%/,params.lib.shortname());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
+		try{b = s; s = s.replace(/%SHORTNAME%/,params.lib.shortname());}
+			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%STAFF_FIRSTNAME%/,params.staff.first_given_name());}
 			catch(E){s = b; this.error.sdump('D_WARN','string = <' + s + '> error = ' + js2JSON(E)+'\n');}
 		try{b = s; s = s.replace(/%STAFF_LASTNAME%/,params.staff.family_name());}
