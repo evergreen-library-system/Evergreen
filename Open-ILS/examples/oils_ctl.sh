@@ -89,7 +89,7 @@ function start_sip {
 	do_action "start" $PID_SIP "OILS SIP Server";
 	DIR=$(pwd);
 	cd $SIP_DIR;
-	nohup perl SIPServer.pm "$OPT_SIP_CONFIG" &
+    perl SIPServer.pm "$OPT_SIP_CONFIG" > /dev/null 2>&1 &
 	pid=$!;
 	cd $DIR;
 	ps ax | grep "$pid";
