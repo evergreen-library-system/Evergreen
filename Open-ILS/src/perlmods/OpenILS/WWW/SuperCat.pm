@@ -909,6 +909,8 @@ sub opensearch_feed {
 	(undef,$version,$org,$type,$class,$terms,$sort,$sortdir,$lang) = split '/', $path;
 
 	$lang = $cgi->param('searchLang') if $cgi->param('searchLang');
+	$lang = '' if ($lang eq '*');
+
 	$sort = $cgi->param('searchSort') if $cgi->param('searchSort');
 	$sortdir = $cgi->param('searchSortDir') if $cgi->param('searchSortDir');
 	$terms .= " " . $cgi->param('searchTerms') if $cgi->param('searchTerms');
