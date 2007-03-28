@@ -4,7 +4,7 @@ if (typeof util == 'undefined') var util = {};
 util.text = {};
 
 util.text.EXPORT_OK	= [ 
-	'wrap_on_space', 'html_escape',
+	'wrap_on_space', 'preserve_string_in_html',
 ];
 util.text.EXPORT_TAGS	= { ':all' : util.text.EXPORT_OK };
 
@@ -25,11 +25,13 @@ util.text.wrap_on_space = function( text, length ) {
 	}
 }
 
-util.text.html_escape = function( text ) {
-	text = text.replace(/&/,'&amp;');
-	text = text.replace(/ /,'&nbsp;');
-	text = text.replace(/</,'&lt;');
-	text = text.replace(/>/,'&gt;');
+util.text.preserve_string_in_html = function( text ) {
+	text = text.replace(/&/g,'&amp;');
+	text = text.replace(/"/g,'&quot;');
+	text = text.replace(/'/g,'&#39;');
+	text = text.replace(/ /g,'&nbsp;');
+	text = text.replace(/</g,'&lt;');
+	text = text.replace(/>/g,'&gt;');
 	return text;
 }
 
