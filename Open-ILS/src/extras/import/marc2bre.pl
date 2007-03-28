@@ -33,7 +33,7 @@ my ($id_field, $recid, $user, $config, $marctype, $keyfile, $dontuse_file, $enc,
 	('', 1, 1, '/openils/conf/bootstrap.conf', 'USMARC');
 
 GetOptions(
-	'marctype=i'	=> \$marctype,
+	'marctype=s'	=> \$marctype,
 	'startid=i'	=> \$recid,
 	'idfield=s'	=> \$id_field,
 	'user=s'	=> \$user,
