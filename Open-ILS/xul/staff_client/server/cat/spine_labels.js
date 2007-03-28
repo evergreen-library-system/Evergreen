@@ -245,13 +245,13 @@
 							var nl2 = gb.getElementsByAttribute('name','spine');
 							for (var k = 0; k < nl2.length; k++) {
 								for (var m = 0; m < lm; m++) html += ' ';
-								html += util.text.html_escape(expand_macros( nl2[k].value, copy, volume, volume.record() ).substr(0,lw));
+								html += util.text.preserve_string_in_html(expand_macros( nl2[k].value, copy, volume, volume.record() ).substr(0,lw));
 								if ($('pl').checked) {
 									var sib = nl2[k].nextSibling;
 									if (sib) {
 										for (var m = 0; m < lw - nl2[k].value.length; m++) html += ' ';
 										for (var m = 0; m < mm; m++) html += ' ';
-										html += util.text.html_escape(expand_macros( sib.value, copy, volume, volume.record() ).substr(0,plw));
+										html += util.text.preserve_string_in_html(expand_macros( sib.value, copy, volume, volume.record() ).substr(0,plw));
 									}
 								}
 								html += '\n';
