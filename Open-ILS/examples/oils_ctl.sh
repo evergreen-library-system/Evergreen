@@ -92,7 +92,6 @@ function start_sip {
     perl SIPServer.pm "$OPT_SIP_CONFIG" > /dev/null 2>&1 &
 	pid=$!;
 	cd $DIR;
-	ps ax | grep "$pid";
 	echo $pid > $PID_SIP;
 	return 0;
 }
