@@ -2,21 +2,12 @@ from django.db import models
 from django.db.models import signals
 from django.dispatch import dispatcher
 
-# Create your models here.
-
+# ?i18n?
 INTERVAL_HELP_TEXT = 'examples: "1 hour", "14 days", "3 months", "DD:HH:MM:SS.ms"'
-PG_SCHEMAS = "actor, permission, public, config"
 
 
-# ---------------------------------------------------------------------
-# Here we run some SQL to manually set the postgres schema search-paths
-# ---------------------------------------------------------------------
-def setSearchPath():
-    from django.db import connection
-    cursor = connection.cursor()
-    cursor.execute("SET search_path TO %s" % PG_SCHEMAS)
-dispatcher.connect(setSearchPath, signal=signals.class_prepared)
-dispatcher.connect(setSearchPath, signal=signals.pre_init)
+#PG_SCHEMAS = "actor, permission, public, config"
+
 
 
 class GrpTree(models.Model):
@@ -284,4 +275,24 @@ class MetabibField(models.Model):
     def __str__(self):
         return self.name
 
+
+# register the alternate DB
+"""
+settings.OTHER_DATABASES['main_db']['MODELS'] = [
+    'GrpTree',
+    'OrgUnitType',
+    'OrgUnitSetting',
+    'PermList',
+    'GrpPermMap',
+    'User',
+    'UsrPermMap',
+    'Card',
+    'OrgAddress',
+    'OrgUnit',
+    'RuleCircDuration',
+    'RuleMaxFine',
+    'RuleRecurringFine',
+    'IdentificationType',
+    'RuleAgeHoldProtect' ]
+"""
 

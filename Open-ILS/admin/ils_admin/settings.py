@@ -9,13 +9,30 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'postgresql'           # 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = ''             # Or path to database file if using sqlite3.
-DATABASE_SCHEMAS = 'public, permission, actor'          # Only used with postgresq to support multiple schemas
+DATABASE_ENGINE = 'sqlite3'           # 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
+DATABASE_NAME = '/openils/var/data/django.db'             # Or path to database file if using sqlite3.
+DATABASE_SCHEMAS = ''
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+
+"""
+2007-03-28: the "django" user in the primary ILS database needs to have
+the following schemas set in the default search path: actor, permission, public, config
+"""
+
+OTHER_DATABASES = { 
+    'ils_data': { 
+        'DATABASE_ENGINE' : 'postgresql',
+        'DATABASE_NAME' : 'evergreen',
+        'DATABASE_HOST' : '127.0.0.1',
+        'DATABASE_PORT' : '5432',
+        'DATABASE_USER' : 'django',
+        'DATABASE_PASSWORD' : '',
+        'MODELS': ['ils_data']
+    },
+}
 
 # Local time zone for this installation. All choices can be found here:
 # http://www.postgresql.org/docs/current/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE
@@ -76,7 +93,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-	 'django.contrib.admin',
-	 'ils_admin.setup',
+    'django.contrib.admin',
+    'ils_admin.setup',
+    'ils_admin.setup.ils_data', # load the ILS models
 )
 
