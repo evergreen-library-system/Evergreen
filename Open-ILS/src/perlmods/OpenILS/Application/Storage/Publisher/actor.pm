@@ -78,7 +78,7 @@ sub usr_breakdown_out {
 	my $cl_sql = <<"	SQL";
 			SELECT	id
 			  FROM	action.circulation
-			  WHERE	usr = ? AND checkin_time IS NULL AND xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED'
+			  WHERE	usr = ? AND checkin_time IS NULL AND stop_fines = 'CLAIMSRETURNED'
 	SQL
 
 	my $cl = actor::user->db_Main->selectcol_arrayref($cl_sql, {}, $usr);
