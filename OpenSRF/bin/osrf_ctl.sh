@@ -35,6 +35,9 @@ function usage {
 	echo -e "\tstart_all"
 	echo -e "\trestart_all"
 	echo "";
+    echo "Example:";
+    echo "  $0 -p bootstrap.conf -c opensrf_core.xml -a restart_all";
+    echo "";
 	exit;
 }
 
