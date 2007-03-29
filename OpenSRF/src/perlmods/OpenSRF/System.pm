@@ -206,14 +206,12 @@ sub bootstrap {
 	# --- Boot the Unix servers
 	$self->launch_unix($apps);
 
-
-	_sleep();
 	sleep 2;
 
 	# --- Boot the listeners
 	$self->launch_listener($apps);
 
-	_sleep();
+    sleep 1;
 
 	_log( " * System is ready..." );
 
@@ -400,27 +398,6 @@ sub launch_listener {
 	}
 }
 
-# ----------------------------------------------
-
-=head comment
-sub launch_shell {
-
-	my $self = shift;
-
-	my $pid = OpenSRF::Utils::safe_fork();
-
-	if( $pid ) { $self->pid_hash( $pid , _shell() ); }
-	else {
-		$0 = "System Shell";
-		for( my $x = 0; $x != 10; $x++ ) {
-			eval _shell();
-			if( ! $@ ) { last; }
-		}
-		exit;
-	}
-}
-=cut
-
 
 # ----------------------------------------------
 
@@ -467,9 +444,6 @@ sub _log {
 
 # ----------------------------------------------
 
-sub _sleep {
-	select( undef, undef, undef, 0.3 );
-}
 
 1;
 
