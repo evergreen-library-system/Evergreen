@@ -138,7 +138,8 @@
 						'my' : {
 							'ahr' : g.ahr,
 						}
-					}
+					},
+					'no_auto_select' : true,
 				}
 			);
 		}
