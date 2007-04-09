@@ -524,7 +524,13 @@ function uEditSaveUser(cloneme) {
 	var evt;
 	if( (evt = checkILSEvent(newuser)) || ! newuser ) {
 		if(evt) {
-			var j = js2JSON(newuser); 
+            evt = newuser;
+            if( evt.textcode == 'XACT_COLLISION' ) {
+                if( confirmId('ue_xact_collision') )
+                    location.href = location.href;
+                return;
+            }
+            var j = js2JSON(evt);
 			alert(j);
 			_debug("USER UPDATE FAILED:\n" + j);
 		}

@@ -168,22 +168,7 @@ __PACKAGE__->register_method(
 # ------------------------------------------------------------------
 sub ou_ancestor_setting {
     my( $self, $client, $orgid, $name ) = @_;
-    my $e = new_editor();
-
-    do {
-        my $setting = $e->search_actor_org_unit_setting({org_unit=>$orgid, name=>$name})->[0];
-
-        if( $setting ) {
-            $logger->info("found org_setting $name at org $orgid : " . $setting->value);
-            return { org => $orgid, value => JSON->JSON2perl($setting->value) };
-        }
-
-        my $org = $e->retrieve_actor_org_unit($orgid) or return $e->event;
-        $orgid = $org->parent_ou or return undef;
-
-    } while(1);
-
-    return undef;
+    return $U->ou_ancestor_setting($orgid, $name);
 }
 
 
@@ -244,7 +229,6 @@ sub update_patron {
 	return $evt if $evt;
 
 
-	# XXX does this user have permission to add/create users.  Granularity?
 	# $new_patron is the patron in progress.  $patron is the original patron
 	# passed in with the method.  new_patron will change as the components
 	# of patron are added/updated.
@@ -459,12 +443,29 @@ sub _update_patron {
 		$patron->clear_ident_value;
 	}
 
+    $evt = verify_last_xact($session, $patron);
+    return (undef, $evt) if $evt;
+
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
 	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
 
 	return ($patron);
 }
+
+sub verify_last_xact {
+    my( $session, $patron ) = @_;
+    return undef unless $patron->id and $patron->id > 0;
+    my $p = $session->request(
+        'open-ils.storage.direct.actor.user.retrieve', $patron->id)->gather(1);
+    my $xact = $p->last_xact_id;
+    return undef unless $xact;
+    $logger->info("user xact = $xact, saving with xact " . $patron->last_xact_id);
+    return OpenILS::Event->new('XACT_COLLISION')
+        if $xact != $patron->last_xact_id;
+    return undef;
+}
+
 
 sub _check_dup_ident {
 	my( $session, $patron ) = @_;
