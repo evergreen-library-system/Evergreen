@@ -133,10 +133,10 @@ sub make_payments {
 
 		$payobj->amount($amount);
 		$payobj->amount_collected($amount);
-		$payobj->accepting_usr($user->id);
 		$payobj->xact($transid);
 		$payobj->note($note);
 
+		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($user->id); }
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
 		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
 		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
