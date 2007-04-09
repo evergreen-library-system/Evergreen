@@ -214,215 +214,233 @@ sub title_from_transaction {
 }
 
 
+
 __PACKAGE__->register_method(
-	method	=> "set_circ_lost",
+	method	=> "new_set_circ_lost",
 	api_name	=> "open-ils.circ.circulation.set_lost",
-	NOTES		=> <<"	NOTES");
-	Params are login, barcode
-	login must have SET_CIRC_LOST perms
-	Sets a circulation to lost
-	NOTES
-
-__PACKAGE__->register_method(
-	method	=> "set_circ_lost",
-	api_name	=> "open-ils.circ.circulation.set_claims_returned",
-	NOTES		=> <<"	NOTES");
-	Params are login, barcode
-	login must have SET_CIRC_MISSING perms
-	Sets a circulation to lost
-	NOTES
-
-sub set_circ_lost {
-	my( $self, $client, $login, $args ) = @_;
-	my( $user, $circ, $copy, $evt );
-
-	my $barcode		= $$args{barcode};
-	my $backdate	= $$args{backdate};
-
-	( $user, $evt ) = $U->checkses($login);
-	return $evt if $evt;
-
-	# Grab the related copy
-	($copy, $evt) = $U->fetch_copy_by_barcode($barcode);
-	return $evt if $evt;
-
-	my $isclaims	= $self->api_name =~ /claims_returned/;
-	my $islost		= $self->api_name =~ /lost/;
-	my $session		= $U->start_db_session(); 
-
-	# grab the circulation
-#	( $circ ) = $U->fetch_open_circulation( $copy->id );
-#	return 1 unless $circ;
-
-	$circ = new_editor()->search_action_circulation(
-		{ checkin_time => undef, target_copy => $copy->id } )->[0];
-	return 1 unless $circ;
-
-	if($islost) {
-		$evt  = _set_circ_lost($copy, $circ, $user, $session) if $islost;
-		return $evt if $evt;
-	}
-
-	if($isclaims) {
-		$evt = _set_circ_claims_returned(
-			$user, $circ, $session, $backdate );
-		return $evt if $evt;
-
-	}
-
-	$circ->stop_fines_time('now') unless $circ->stop_fines_time;
-	my $s = $session->request(
-		"open-ils.storage.direct.action.circulation.update", $circ )->gather(1);
-
-	return $U->DB_UPDATE_FAILED($circ) unless defined($s);
-	$U->commit_db_session($session);
-
-	return 1;
-}
-
-sub _set_circ_lost {
-	my( $copy, $circ, $reqr, $session ) = @_;
-
-	my $evt = $U->check_perms($reqr->id, $circ->circ_lib, 'SET_CIRC_LOST');
-	return $evt if $evt;
-
-	$logger->activity("user ".$reqr->id." marking copy ".$copy->id.
-		" lost  for circ ".  $circ->id. " and checking for necessary charges");
-
-	if( $copy->status ne OILS_COPY_STATUS_LOST ) {
-		$copy->status(OILS_COPY_STATUS_LOST);
-		$U->update_copy(
-			copy		=> $copy, 
-			editor	=> $reqr->id, 
-			session	=> $session);
-	}
-
-	# if the copy has a price defined and/or a processing fee, bill the patron
-
-	# if the location that owns the copy has a processing fee, charge the user
-	my $owner = $U->fetch_copy_owner($copy->id);
-	$logger->info("circ fetching org settings for $owner ".
-		"to determine processing fee and default copy price");
-
-	my $settings = $U->simplereq(
-		'open-ils.actor', 'open-ils.actor.org_unit.settings.retrieve', $owner );
-	my $fee = $settings->{'circ.lost_materials_processing_fee'} || 0;
-
-	# If the copy has a price configured, charge said price to the user
-	# otherwise use the default price
-	my $s = OILS_SETTING_DEF_ITEM_PRICE;
-	my $copy_price = $copy->price;
-	$copy_price = $settings->{$s} unless defined $copy_price;
-	if($copy_price and $copy_price > 0) {
-		$logger->debug("lost copy has a price of $copy_price");
-		$evt = _make_bill($session, $copy_price, 'Lost Materials', $circ->id);
-		return $evt if $evt;
-	}
+	signature	=> q/
+        Sets the copy and related open circulation to lost
+		@param auth
+		@param args : barcode
+	/
+);
 
 
-	if( $fee ) {
-		$evt = _make_bill($session, $fee, 'Lost Materials Processing Fee', $circ->id);
-		return $evt if $evt;
-	}
-	
-	$circ->stop_fines(OILS_STOP_FINES_LOST);		
-	return undef;
-}
+# ---------------------------------------------------------------------
+# Sets a circulation to lost.  updates copy status to lost
+# applies copy and/or prcoessing fees depending on org settings
+# ---------------------------------------------------------------------
+sub new_set_circ_lost {
+    my( $self, $conn, $auth, $args ) = @_;
 
-sub _make_bill {
-	my( $session, $amount, $type, $xactid ) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
 
-	$logger->info("The system is charging $amount ".
-		" [$type] for lost materials on circulation $xactid");
+    my $barcode = $$args{barcode};
+    $logger->info("marking item lost $barcode");
 
-   # -----------------------------------------------------------------
-   # make sure the transaction is not closed
-   my $e = new_editor(xact=>1);
-   my $xact = $e->retrieve_money_billable_transaction($xactid)
-      or return $e->die_event;
-
-   if( $xact->xact_finish ) {
-      my ($mbts) = $U->fetch_mbts($xactid, $e);
-      if( ($mbts->balance_owed + $amount) != 0 ) {
-         $logger->info("re-opening xact $xactid");
-         $xact->clear_xact_finish;
-         $e->update_money_billable_transaction($xact)
+    # ---------------------------------------------------------------------
+    # gather the pieces
+    my $copy = $e->search_asset_copy([
+        {barcode=>$barcode, deleted=>'f'},
+        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])->[0] 
             or return $e->die_event;
-         $e->commit;
-      } 
-   }
 
-   $e->rollback; # has no effect if it's already been comitted
-   # -----------------------------------------------------------------
+    my $owning_lib = 
+        ($copy->call_number == OILS_PRECAT_CALL_NUMBER) ? 
+            $copy->circ_lib : $copy->call_number->owning_lib;
+
+    my $circ = $e->search_action_circulation(
+        {checkin_time => undef, target_copy => $copy->id} )->[0]
+            or return $e->die_event;
+
+    $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
+
+    # ---------------------------------------------------------------------
+    # fetch the related org settings
+    my $default_price = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_DEF_ITEM_PRICE, $e) || 0;
+    my $proc_fee = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_LOST_PROCESSING_FEE, $e) || 0;
+    my $charge_on_0 = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e) || 0;
+    my $void_overdue = $U->ou_ancestor_setting_value(
+        $owning_lib, OILS_SETTING_VOID_OVERDUE_ON_LOST, $e) || 0;
+
+    $logger->info("org settings: default price = $default_price, ".
+        "processing fee = $proc_fee, charge on 0 = $charge_on_0, void overdues = $void_overdue");
+
+    # ---------------------------------------------------------------------
+    # move the copy into LOST status
+	unless( $copy->status == OILS_COPY_STATUS_LOST ) {
+		$copy->status(OILS_COPY_STATUS_LOST);
+        $copy->editor($e->requestor->id);
+        $copy->edit_date('now');
+        $e->update_asset_copy($copy) or return $e->die_event;
+	}
+
+    # ---------------------------------------------------------------------
+    # determine the appropriate item price to charge and create the billing
+    my $price = $copy->price;
+    $price = $default_price unless defined $price;
+    $price = 0 if $price < 0;
+    $price = $default_price if $price == 0 and $charge_on_0;
+
+    if( $price > 0 ) {
+        my $evt = create_bill($e, $price, 'Lost Materials', $circ->id);
+        return $evt if $evt;
+    }
+
+    # ---------------------------------------------------------------------
+    # if there is a processing fee, charge that too
+    if( $proc_fee > 0 ) {
+        my $evt = create_bill($e, $proc_fee, 'Lost Materials Processing Fee', $circ->id);
+        return $evt if $evt;
+    }
+
+    # ---------------------------------------------------------------------
+    # mark the circ as lost and stop the fines
+    $circ->stop_fines(OILS_STOP_FINES_LOST);
+    $circ->stop_fines_time('now') unless $circ->stop_fines_time;
+    $e->update_action_circulation($circ) or return $e->die_event;
+
+    # ---------------------------------------------------------------------
+    # void all overdue fines on this circ if configured
+    if( $void_overdue ) {
+        my $evt = void_overdues($e, $circ);
+        return $evt if $evt;
+    }
+
+    $e->commit;
+    return 1;
+}
 
 
+sub create_bill {
+	my( $e, $amount, $type, $xactid ) = @_;
+
+	$logger->info("The system is charging $amount [$type] on xact $xactid");
+
+    # -----------------------------------------------------------------
+    # make sure the transaction is not closed
+    my $xact = $e->retrieve_money_billable_transaction($xactid)
+        or return $e->die_event;
+
+    if( $xact->xact_finish ) {
+        my ($mbts) = $U->fetch_mbts($xactid, $e);
+        if( ($mbts->balance_owed + $amount) != 0 ) {
+            $logger->info("* re-opening xact $xactid");
+            $xact->clear_xact_finish;
+            $e->update_money_billable_transaction($xact)
+                or return $e->die_event;
+        } 
+    }
+
+    # -----------------------------------------------------------------
+    # now create the billing
 	my $bill = Fieldmapper::money::billing->new;
 	$bill->xact($xactid);
 	$bill->amount($amount);
 	$bill->billing_type($type); 
 	$bill->note('SYSTEM GENERATED');
-
-	my $id = $session->request(
-		'open-ils.storage.direct.money.billing.create', $bill )->gather(1);
-
-	return $U->DB_UPDATE_FAILED($bill) unless defined $id;
-	return undef;
-}
-
-sub _set_circ_claims_returned {
-	my( $reqr, $circ, $session, $backdate ) = @_;
-
-	my $evt = $U->check_perms($reqr->id, $circ->circ_lib, 'SET_CIRC_CLAIMS_RETURNED');
-	return $evt if $evt;
-	$circ->stop_fines("CLAIMSRETURNED");
-
-	$logger->info("user ".$reqr->id.
-		" marking circ".  $circ->id. " as claims returned with backdate $backdate");
-
-	# allow the caller to backdate the circulation and void any fines
-	# that occurred after the backdate
-	if($backdate) {
-		my $s = cr_handle_backdate($backdate, $circ, $reqr, $session );
-		$logger->debug("backdate method returned $s");
-		$circ->stop_fines_time(clense_ISO8601($backdate))
-	}
+    $e->create_money_billing($bill) or return $e->die_event;
 
 	return undef;
 }
 
-sub cr_handle_backdate {
-   my( $backdate, $circ, $requestor, $session, $closecirc ) = @_;
 
-	my $bd = $backdate;
-	$bd =~ s/^(\d{4}-\d{2}-\d{2}).*/$1/og;
-	$bd = "${bd}T23:59:59";
 
-   my $bills = $session->request(
-      "open-ils.storage.direct.money.billing.search_where.atomic",
-		billing_ts => { '>=' => $bd }, 
-		xact => $circ->id,
-		billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS
-	)->gather(1);
+# -----------------------------------------------------------------
+# Voids overdue fines on the given circ.  if a backdate is 
+# provided, then we only void back to the backdate
+# -----------------------------------------------------------------
+sub void_overdues {
+    my( $e, $circ, $backdate ) = @_;
 
-	$logger->debug("backdate found ".scalar(@$bills)." bills to void");
+    my $bill_search = { 
+        xact => $circ->id, 
+        billing_type => OILS_BILLING_TYPE_OVERDUE_MATERIALS 
+    };
 
-   if($bills) {
-      for my $bill (@$bills) {
-			unless( $U->is_true($bill->voided) ) {
-				$logger->info("voiding bill ".$bill->id);
-				$bill->voided('t');
-				$bill->void_time('now');
-				$bill->voider($requestor->id);
-				my $n = $bill->note || "";
-				$bill->note($n . "\nSystem: VOIDED FOR BACKDATE");
-				my $s = $session->request(
-					"open-ils.storage.direct.money.billing.update", $bill)->gather(1);
-				return $U->DB_UPDATE_FAILED($bill) unless $s;
-			}
-		}
-   }
+    if( $backdate ) {
+        # ------------------------------------------------------------------
+        # Fines for overdue materials are assessed up to, but not including,
+        # one fine interval after the fines are applicable.  Here, we add
+        # one fine interval to the backdate to ensure that we are not 
+        # voiding fines that were applicable before the backdate.
+        # ------------------------------------------------------------------
+        my $interval = OpenSRF::Utils->interval_to_seconds($circ->fine_interval);
+        my $date = DateTime::Format::ISO8601->parse_datetime($backdate);
+        $backdate = $U->epoch2ISO8601($date->epoch + $interval);
+        $logger->info("applying backdate $backdate in overdue voiding");
+        $$bill_search{billing_ts} = {'>=' => $backdate};
+    }
 
-	return 100;
+    my $bills = $e->search_money_billing($bill_search);
+    
+    for my $bill (@$bills) {
+        next if $U->is_true($bill->voided);
+        $logger->info("voiding overdue bill ".$bill->id);
+        $bill->voided('t');
+        $bill->void_time('now');
+        $bill->voider($e->requestor->id);
+        my $n = $bill->note || "";
+        $bill->note("$n\nSystem: VOIDED FOR BACKDATE");
+        $e->update_money_billing($bill) or return $e->die_event;
+    }
+
+	return undef;
+}
+
+
+
+
+__PACKAGE__->register_method(
+	method	=> "set_circ_claims_returned",
+	api_name	=> "open-ils.circ.circulation.set_claims_returned",
+	signature	=> q/
+        Sets the circ for the given item as claims returned
+        If a backdate is provided, overdue fines will be voided
+        back to the backdate
+		@param auth
+		@param args : barcode, backdate
+	/
+);
+
+sub set_circ_claims_returned {
+    my( $self, $conn, $auth, $args ) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $barcode = $$args{barcode};
+    my $backdate = $$args{backdate};
+
+    $logger->info("marking circ for item $barcode as claims returned");
+
+    my $copy = $e->search_asset_copy({barcode=>$barcode, deleted=>'f'})->[0] 
+        or return $e->die_event;
+
+    my $circ = $e->search_action_circulation(
+        {checkin_time => undef, target_copy => $copy->id})->[0]
+            or return $e->die_event;
+
+    $e->allowed('SET_CIRC_CLAIMS_RETURNED', $circ->circ_lib) 
+        or return $e->die_event;
+
+    $circ->stop_fines(OILS_STOP_FINES_CLAIMSRETURNED);
+	$circ->stop_fines_time('now') unless $circ->stop_fines_time;
+    $e->update_action_circulation($circ) or return $e->die_event;
+
+    if( $backdate ) {
+        # make it look like the circ stopped at the cliams returned time
+        $circ->stop_fines_time(clense_ISO8601($backdate));
+        my $evt = void_overdues($e, $circ, $backdate);
+        return $evt if $evt;
+    }
+
+    $e->commit;
+    return 1;
 }
 
 
