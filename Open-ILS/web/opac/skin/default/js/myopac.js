@@ -1206,15 +1206,13 @@ function myopacGetCheckedOutRows() {
 var __renew_circs = [];
 
 /* true if 1 renewal succeeded */
-var __a_renew_success = false;
+var __success_count = 0;
 
 /* renews all selected circulations */
 function myOPACRenewSelected() {
    var rows = myopacGetCheckedOutRows();
 	if(!confirm($('myopac_renew_confirm').innerHTML)) return;
-   __a_renew_success = false;
-
-   var renewThese = [];
+   __success_count = 0;
 
    for( var i = 0; i < rows.length; i++ ) {
 
@@ -1227,11 +1225,16 @@ function myOPACRenewSelected() {
 		   if(circsCache[j].id() == circ_id)
 			   circ = circsCache[j];
 
-      renewThese.push(circ);
+      __renew_circs.push(circ);
    }
 
-    for( var i = 0; i < renewThese.length; i++ ) {
-        var circ = renewThese[i];
+    if( __renew_circs.length == 0 ) return;
+
+    unHideMe($('my_renewing'));
+    moClearCheckedTable();
+
+    for( var i = 0; i < __renew_circs.length; i++ ) {
+        var circ = __renew_circs[i];
         moRenewCirc( circ.target_copy(), G.user.id(), circ );
     }
 }
@@ -1240,17 +1243,14 @@ function myOPACRenewSelected() {
 /* renews a single circulation */
 function moRenewCirc(copy_id, user_id, circ) {
 
-   unHideMe($('my_renewing'));
-   moClearCheckedTable();
-
    _debug('renewing circ ' + circ.id() + ' with copy ' + copy_id);
    var req = new Request(RENEW_CIRC, G.user.session, 
       {  patron : user_id, 
-         copyid : copy_id, opac_renewal : 1 
+         copyid : copy_id, 
+         opac_renewal : 1 
       } 
    );
 
-   __renew_circs.push(circ.id());
    req.request.alertEvent = false;
    req.callback(myHandleRenewResponse);
    req.request.circ = circ;
@@ -1265,24 +1265,24 @@ function myHandleRenewResponse(r) {
    var circ = r.circ;
 
    /* remove this circ from the list of circs to renew */
-   __renew_circs = grep(__renew_circs, function(i) { return (i != circ.id()); });
+   __renew_circs = grep(__renew_circs, function(i) { return (i.id() != circ.id()); });
 
    _debug("handling renew result for " + circ.id());
 
    if(checkILSEvent(res) || checkILSEvent(res[0])) 
       alertIdText('myopac_renew_fail', __circ_titles[circ.id()]);
-   else __a_renew_success = true;
+   else __success_count++;
 
    if(__renew_circs) return; /* more to come */
 
    __renew_circs = [];
 
-	if( __a_renew_success )
-      alert($('myopac_renew_success').innerHTML);	
+	if( __success_count > 0 )
+      alertIdText('myopac_renew_success', __success_count);
 
    hideMe($('my_renewing'));
    checkedDrawn = false;
-	myOPACShowChecked();
+    myOPACShowChecked();
 }
 
 
