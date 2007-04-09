@@ -426,20 +426,33 @@ void prefork_run(prefork_simple* forker) {
 			/* if none available, add a new child if we can */
 			if( ! honored ) {
 				osrfLogDebug( OSRF_LOG_MARK, "Not enough children, attempting to add...");
+
 				if( forker->current_num_children < forker->max_children ) {
 					osrfLogDebug( OSRF_LOG_MARK,  "Launching new child with current_num = %d",
 							forker->current_num_children );
 
 					prefork_child* new_child = launch_child( forker );
-					message_prepare_xml( cur_msg );
-					char* data = cur_msg->msg_xml;
-					if( ! data || strlen(data) < 1 ) break;
-					new_child->available = 0;
-					osrfLogDebug( OSRF_LOG_MARK,  "Writing to new child fd %d : pid %d", 
-							new_child->write_data_fd, new_child->pid );
-					write( new_child->write_data_fd, data, strlen(data) + 1 );
-					forker->first_child = new_child->next;
-					honored = 1;
+                    if( new_child ) {
+
+					    message_prepare_xml( cur_msg );
+					    char* data = cur_msg->msg_xml;
+
+                        if( data ) {
+                            int len = strlen(data);
+
+                            if( len > 0 ) {
+					            new_child->available = 0;
+					            osrfLogDebug( OSRF_LOG_MARK,  "Writing to new child fd %d : pid %d", 
+							        new_child->write_data_fd, new_child->pid );
+        
+					            if( write( new_child->write_data_fd, data, len + 1 ) >= 0 ) {
+					                forker->first_child = new_child->next;
+					                honored = 1;
+                                }
+                            }
+                        }
+                    }
+
 				}
 			}
 
@@ -449,7 +462,6 @@ void prefork_run(prefork_simple* forker) {
 				check_children( forker, 1 );  /* non-poll version */
 				/* tell the loop no to call check_children again, since we're calling it now */
 				no_recheck = 1;
-				//usleep(50000);
 			}
 
 			if( child_dead )
