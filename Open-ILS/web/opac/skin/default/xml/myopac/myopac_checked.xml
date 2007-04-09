@@ -94,7 +94,7 @@
 		</table>
 	</div>
 
-	<div id='myopac_renew_success' class='hide_me'>Item(s) successfully renewed</div>
+	<div id='myopac_renew_success' class='hide_me'>item(s) successfully renewed</div>
 
 	<span class='hide_me' id='myopac_renew_confirm'>Are you sure you wish to renew the selected item(s)?</span>
 
