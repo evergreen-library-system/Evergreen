@@ -146,6 +146,10 @@
 	<event code='1229' textcode='VOLUME_DELETED'>
 		<desc xml:lang="en-US">The requested volume is marked as deleted</desc>
 	</event>
+	<event code='1230' textcode='XACT_COLLISION'>
+		<desc xml:lang="en-US">The saved item has been edited by another user</desc>
+	</event>
+
 
 
 
