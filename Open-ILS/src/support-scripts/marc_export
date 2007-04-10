@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use bytes;
 
 use OpenSRF::System;
 use OpenSRF::EX qw/:try/;
@@ -15,12 +16,16 @@ use UNIVERSAL::require;
 
 use Getopt::Long;
 
+
 my @formats = qw/USMARC UNIMARC XML/;
 
-my ($config,$format,$encoding,$help) = ('/openils/conf/bootstrap.conf','USMARC','MARC8');
+my ($config,$format,$encoding,$location,$dollarsign,$help,$holdings) = ('/openils/conf/bootstrap.conf','USMARC','MARC8','','$');
 
 GetOptions(
         'help'      => \$help,
+        'items'      => \$holdings,
+        'location=s'      => \$location,
+        'money=s'      => \$dollarsign,
         'config=s'      => \$config,
         'format=s'      => \$format,
         'encoding=s'      => \$encoding,
@@ -33,6 +38,9 @@ Usage: $0 [options]
  --config or -c		Configuration file [/openils/conf/bootstrap.conf]
  --format or -f		Output format (USMARC, UNIMARC, XML) [USMARC]
  --encoding or -e	Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --items or -i		Include items (holdings) in the output
+ --location or -l	MARC Location Code for holdings from
+ 			http://www.loc.gov/marc/organizations/orgshome.html
 
 Example:
 
@@ -62,12 +70,24 @@ if ($format ne 'XML') {
 OpenSRF::System->bootstrap_client( config_file => $config );
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-my $ses = OpenSRF::AppSession->connect('open-ils.cstore');
+my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
 print <<HEADER if ($format eq 'XML');
 <?xml version="1.0" encoding="$encoding"?>
 <collection xmlns='http://www.loc.gov/MARC21/slim'>
 HEADER
+
+my %orgs;
+if ($holdings) {
+	my $o = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search.atomic', { id => { '!=' => undef } } )->gather(1);
+	%orgs = map { ( $_->id => $_ ) } @$o;
+}
+
+my %shelves;
+if ($holdings) {
+	my $s = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search.atomic', { id => { '!=' => undef } } )->gather(1);
+	%shelves = map { ( $_->id => $_ ) } @$s;
+}
 
 while ( my $i = <> ) {
 	my $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i )->gather(1);
@@ -85,6 +105,46 @@ while ( my $i = <> ) {
 		)
 	);
 
+	if ($holdings) {
+		my $cn_list = $ses->request(
+			'open-ils.cstore.direct.asset.call_number.search.atomic',
+			{ record => $i, deleted => 'f' }
+		)->gather(1);
+
+
+		my $cp_list = $ses->request(
+			'open-ils.cstore.direct.asset.copy.search.atomic',
+			{ call_number => [ map { $_->id } @$cn_list ], deleted => 'f' }
+		)->gather(1);
+
+		my %cn_map;
+		push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+
+		for my $cn ( @$cn_list ) {
+			my $cn_map_list = $cn_map{$cn->id};
+			for my $cp ( @$cn_map_list ) {
+				$r->append_fields(
+					MARC::Field->new(
+						852, '4', '', 
+						a => $location,
+						b => $orgs{$cn->owning_lib}->shortname,
+						b => $orgs{$cp->circ_lib}->shortname,
+						c => $shelves{$cp->location}->name,
+						j => $cn->label,
+						($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+						p => $cp->barcode,
+						($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+						($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+						($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+						($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+						($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+						($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+					)
+				);
+			}
+		}
+	}
+
 	if (uc($format) eq 'XML') {
 		print $r->as_xml_record;
 	} elsif (uc($format) eq 'UNIMARC') {
@@ -95,6 +155,4 @@ while ( my $i = <> ) {
 }
 
 print "</collection>\n" if ($format eq 'XML');
-
-$ses->disconnect;
 
