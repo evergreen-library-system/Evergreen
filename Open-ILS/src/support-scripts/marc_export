@@ -19,7 +19,7 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$help,$holdings) = ('/openils/conf/bootstrap.conf','USMARC','MARC8','','$');
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/bootstrap.conf','USMARC','MARC8','','$');
 
 GetOptions(
         'help'      => \$help,
@@ -28,6 +28,7 @@ GetOptions(
         'money=s'      => \$dollarsign,
         'config=s'      => \$config,
         'format=s'      => \$format,
+        'xml-idl=s'      => \$idl,
         'encoding=s'      => \$encoding,
 );
 
@@ -39,6 +40,7 @@ Usage: $0 [options]
  --format or -f		Output format (USMARC, UNIMARC, XML) [USMARC]
  --encoding or -e	Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
  --items or -i		Include items (holdings) in the output
+ --xml-idl or -x	Location of the IDL XML
  --location or -l	MARC Location Code for holdings from
  			http://www.loc.gov/marc/organizations/orgshome.html
 
@@ -68,7 +70,10 @@ if ($format ne 'XML') {
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
-Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+my $sc = OpenSRF::Utils::SettingsClient->new;
+$idl ||= $sc->config_value("IDL");
+
+Fieldmapper->import(IDL => $idl);
 
 my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
