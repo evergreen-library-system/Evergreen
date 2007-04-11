@@ -443,8 +443,8 @@ sub _update_patron {
 		$patron->clear_ident_value;
 	}
 
-    $evt = verify_last_xact($session, $patron);
-    return (undef, $evt) if $evt;
+    #$evt = verify_last_xact($session, $patron);
+    #return (undef, $evt) if $evt;
 
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
