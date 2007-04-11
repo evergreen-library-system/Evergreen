@@ -4,6 +4,10 @@ if (typeof circ == 'undefined') circ = {};
 circ.checkin = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
+
+	var js = JSAN._loadJSFromUrl( urls.isodate_lib );
+	try { eval( js ); } catch(E) { this.error.standard_unexpected_error_alert('Problem loading ISO8601 date extension',E); }
+
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('util.barcode');
 	JSAN.use('util.date');

@@ -178,6 +178,7 @@ const urls = {
 	'opac_rresult' : '/opac/en-US/skin/default/xml/rresult.xml',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'fieldmapper' : '/opac/common/js/fmall.js',
+	'isodate_lib' : '/opac/common/js/DP_DateExtensions.js',
 	'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
 
 	'AUDIO_GOOD_SOUND' : '/xul/server/skin/media/audio/bonus.wav',

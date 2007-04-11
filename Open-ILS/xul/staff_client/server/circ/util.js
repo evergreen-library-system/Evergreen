@@ -983,7 +983,7 @@ circ.util.checkin_via_barcode = function(session,params,backdate,auto_print,asyn
 		if (backdate && (backdate == util.date.formatted_date(new Date(),'%Y-%m-%d')) ) backdate = null;
 
 		//var params = { 'barcode' : barcode };
-		if (backdate) params.backdate = backdate;
+		if (backdate) params.backdate = util.date.formatted_date(backdate + ' 00:00:00','%{iso8601}');
 
 		if (typeof async == 'object') {
 			try { async.disable_textbox(); } catch(E) { error.sdump('D_ERROR','async.disable_textbox() = ' + E); };
