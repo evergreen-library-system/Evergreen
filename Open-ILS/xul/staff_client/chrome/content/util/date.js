@@ -80,6 +80,9 @@ util.date.formatted_date = function (date,format) {
 
 	var s = format;
 	if (s == '') { s = '%F %H:%M'; }
+	if (typeof date.iso8601Format == 'function') {
+		s = s.replace( /%\{iso8601\}/g, date.iso8601Format("YMDHMS") );
+	}
 	s = s.replace( /%m/g, mm );
 	s = s.replace( /%d/g, dd );
 	s = s.replace( /%Y/g, yyyy );
