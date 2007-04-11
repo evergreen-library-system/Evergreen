@@ -116,7 +116,7 @@ class OrgUnitType(models.Model):
     can_have_users = models.BooleanField()
     class Meta:
         db_table = 'org_unit_type'
-        verbose_name = _('Library Type')
+        verbose_name = _('Organizational Unit Type')
     class Admin:
         list_display = ('name', 'depth')
         list_filter = ['parent_id']
@@ -135,7 +135,7 @@ class OrgUnitSetting(models.Model):
     class Meta:
         db_table = 'org_unit_setting'
         ordering = ['org_unit_id', 'name']
-        verbose_name = _('Library Setting')
+        verbose_name = _('Organizational Unit Setting')
     def __str__(self):
         return "%s:%s=%s" % (self.org_unit_id.shortname, self.name, self.value)
 
@@ -158,7 +158,7 @@ class OrgAddress(models.Model):
     class Meta:
         ordering = ['city']
         db_table = 'org_address'
-        verbose_name = _('Library Address')
+        verbose_name = _('Organizational Unit Address')
     def __str__(self):
         return self.street1+' '+self.city+', '+self.state+' '+self.post_code
 
@@ -184,7 +184,7 @@ class OrgUnit(models.Model):
     class Meta:
         db_table = 'org_unit'
         ordering = ['shortname']
-        verbose_name = _('Library')
+        verbose_name = _('Organizational Unit')
     def __str__(self):
         return self.shortname
 
@@ -278,7 +278,7 @@ class MetabibField(models.Model):
     name = models.CharField(maxlength=CHAR_MAXLEN, null=False, blank=False)
     xpath = models.TextField(null=False, blank=False)
     weight = models.IntegerField(null=False, blank=False)
-    format = models.CharField(maxlength=CHAR_MAXLEN, null=False, blank=False)
+    format = models.ForeignKey('XmlTransform')
     class Admin:
         search_fields = ['name', 'format', 'field_class']
         list_display = ('field_class', 'name', 'format')
@@ -300,6 +300,7 @@ class CopyStatus(models.Model):
         db_table = 'copy_status'
         ordering = ['name']
         verbose_name= _('Copy Status')
+        verbose_name_plural= _('Copy Statuses')
     def __str__(self):
         return self.name
 
@@ -353,7 +354,7 @@ class ItemTypeMap(models.Model):
         search_fields = ['code', 'value']
         list_display = ('code', 'value')
     class Meta:
-        db_table = 'item_form_map'
+        db_table = 'item_type_map'
         ordering = ['code']
         verbose_name = _('Item Type Map')
     def __str__(self):
