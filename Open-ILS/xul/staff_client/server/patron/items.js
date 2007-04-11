@@ -182,7 +182,7 @@ patron.items.prototype = {
 					fake_copy.barcode( '' );
 					fake_copy.circ_lib( nc_circ.circ_lib() );
 
-					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, 'to_bottom' : true } );
+					obj.list.append( { 'row' : { 'my' : { 'circ' : fake_circ, 'mvr' : fake_record, 'acp' : fake_copy } }, 'to_bottom' : true, 'no_auto_select' : true } );
 
 				} catch(F) {
 					obj.error.standard_unexpected_error_alert('Error showing NonCat #' + robj[ii].id(),F);
