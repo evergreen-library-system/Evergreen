@@ -75,6 +75,8 @@ econst OILS_UNLIMITED_CIRC_DURATION   => 'unlimited';
 econst OILS_SETTING_LOST_PROCESSING_FEE => 'circ.lost_materials_processing_fee';
 econst OILS_SETTING_DEF_ITEM_PRICE => 'cat.default_item_price';
 econst OILS_SETTING_ORG_BOUNCED_EMAIL => 'org.bounced_emails';
+econst OILS_SETTING_CHARGE_LOST_ON_ZERO => 'circ.charge_lost_on_zero';
+econst OILS_SETTING_VOID_OVERDUE_ON_LOST => 'circ.void_overdue_on_lost';
 
 
 
