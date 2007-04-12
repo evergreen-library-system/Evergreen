@@ -208,6 +208,14 @@ sub ou_setting_delete {
 
 
 
+
+
+
+
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "update_patron",
 	api_name	=> "open-ils.actor.patron.update",);
@@ -856,12 +864,7 @@ __PACKAGE__->register_method(
 
 sub search_username {
 	my($self, $client, $username) = @_;
-	my $users = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.cstore", 
-			"open-ils.cstore.direct.actor.user.search.atomic",
-			{ usrname => $username }
-	);
-	return $users;
+    return new_editor()->search_actor_user({usrname=>$username});
 }
 
 
@@ -1121,6 +1124,7 @@ sub patron_adv_search {
 
 
 
+=head old
 sub _verify_password {
 	my($user_session, $password) = @_;
 	my $user_obj = $apputils->check_user_session($user_session); 
@@ -1156,7 +1160,12 @@ sub update_password {
 
 	my $evt;
 
+	my $session = $apputils->start_db_session();
 	my $user_obj = $apputils->check_user_session($user_session); 
+
+    #fetch the in-database version so we get the latest xact_id
+    $user_obj = $session->request(
+        'open-ils.storage.direct.actor.user.retrieve', $user_obj->id)->gather(1);
 
 	if($self->api_name =~ /password/o) {
 
@@ -1180,7 +1189,6 @@ sub update_password {
 		$user_obj->email($new_value);
 	}
 
-	my $session = $apputils->start_db_session();
 
 	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj, 1);
 	return $evt if $evt;
@@ -1190,6 +1198,60 @@ sub update_password {
 	if($user_obj) { return 1; }
 	return undef;
 }
+=cut
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.password.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.username.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.email.update");
+
+sub update_passwd {
+    my( $self, $conn, $auth, $new_val, $orig_pw ) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $db_user = $e->retrieve_actor_user($e->requestor->id)
+        or return $e->die_event;
+    my $api = $self->api_name;
+
+    if( $api =~ /password/o ) {
+
+        # make sure the original password matches the in-database password
+        return OpenILS::Event->new('INCORRECT_PASSWORD')
+            if md5_hex($orig_pw) ne $db_user->passwd;
+        $db_user->passwd($new_val);
+
+    } else {
+
+        # if we don't clear the password, the user will be updated with
+        # a hashed version of the hashed version of their password
+        $db_user->clear_passwd;
+
+        if( $api =~ /username/o ) {
+
+            # make sure no one else has this username
+            my $exist = $e->search_actor_user({usrname=>$new_val},{idlist=>1}); 
+			return OpenILS::Event->new('USERNAME_EXISTS') if @$exist;
+            $db_user->usrname($new_val);
+
+        } elsif( $api =~ /email/o ) {
+            $db_user->email($new_val);
+        }
+    }
+
+    $e->update_actor_user($db_user) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+
 
 
 __PACKAGE__->register_method(
@@ -2810,6 +2872,9 @@ sub user_retrieve_parts {
 	push(@resp, $user->$_()) for(@$fields);
 	return \@resp;
 }
+
+
+
 
 
 
