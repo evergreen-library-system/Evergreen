@@ -343,9 +343,12 @@ util.list.prototype = {
 				if (!obj.auto_select_pending) {
 					obj.auto_select_pending = true;
 					setTimeout(function() {
-						try { obj.node.view.selection.select(Number(obj.node.view.rowCount)-1); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+						dump('auto-selecting\n');
+						var idx = Number(obj.node.view.rowCount)-1;
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
 						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -362,6 +365,7 @@ util.list.prototype = {
 						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
 						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(0).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -403,6 +407,13 @@ util.list.prototype = {
 							p.row = params.row;
 							obj._map_row_to_treecell(p,treerow);
 							inc_fleshed();
+							var idx = obj.node.contentView.getIndexOfItem( params.row_node );
+							dump('idx = ' + idx + '\n');
+							// if current row is selected, send another select event to re-sync data that the client code fetches on selects
+							if ( obj.node.view.selection.isSelected( idx ) ) {
+								dump('dispatching select event for on_retrieve for idx = ' + idx + '\n');
+								util.widgets.dispatch('select',params.row_node);
+							}
 						} catch(E) {
 							alert('fixme2: ' + E);
 						}
@@ -633,6 +644,7 @@ util.list.prototype = {
 						params.row = row;
 						obj._map_row_to_listcell(params,listitem);
 						obj.node.appendChild( listitem );
+						util.widgets.dispatch('select',params.row_node);
 					}
 
 					if (typeof params.retrieve_row == 'function') {
