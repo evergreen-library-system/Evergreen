@@ -476,7 +476,6 @@ Example opensrf config file for OpenILS
                     <unix_log>storage_unix.log</unix_log>
                     <unix_sock>storage_unix.sock</unix_sock>
                     <unix_pid>storage_unix.pid</unix_pid>
-                    <max_requests>400</max_requests>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
