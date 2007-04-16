@@ -495,6 +495,7 @@ patron.bills.prototype = {
 					obj.data.voided_billings = []; obj.data.stash('voided_billings');
 					obj.refresh();
 					try {
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						obj.data.stash_retrieve();
 						var template = 'bill_payment';
 						JSAN.use('patron.util'); JSAN.use('util.functional');
