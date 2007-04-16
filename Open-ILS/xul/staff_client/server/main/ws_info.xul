@@ -30,11 +30,17 @@
 
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="/xul/server/main/lang.js"/>
+	<script type="text/javascript" src="/opac/common/js/OrgTree.js"/>
+	<script type="text/javascript" src="/opac/common/js/org_utils.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 
 		function wsinfo_init() {
+
+			document.getElementById('register_btn').disabled = true;
+			document.getElementById('wsname').disabled = true;
+			document.getElementById('wsname').value = 'Please Wait';
 
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
@@ -55,6 +61,10 @@
 			JSAN.use('util.functional');
 			JSAN.use('util.fm_utils');
 
+			g.user = g.network.simple_request( 'FM_AU_RETRIEVE_VIA_SESSION', [ xulG.auth.session.key ] );
+
+			g.my_lib = g.user.home_ou();
+
 			g.aout_list = g.network.simple_request(
 				'FM_AOUT_RETRIEVE',
 				[ ]
@@ -64,10 +74,25 @@
 				g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
 			}
 
-			g.my_libs = g.network.simple_request(
-				'FM_AOU_RETRIEVE_RELATED_VIA_SESSION',
-				[ xulG.auth.session.key ]
+			//g.my_libs = g.network.simple_request(
+			//	'FM_AOU_RETRIEVE_RELATED_VIA_SESSION',
+			//	[ xulG.auth.session.key ]
+			//);
+
+			var highest_org_id = g.network.simple_request(
+				'PERM_RETRIEVE_HIGHEST_ORG',
+				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
 			);
+			var perm_depth = findOrgDepth( highest_org_id );
+
+			g.my_libs_tree = g.network.simple_request(
+				'FM_AOU_DESCENDANTS_RETRIEVE',
+				[ g.user.home_ou(), perm_depth ]
+			);
+			if (!instanceOf(g.my_libs_tree,aou)) { /* FIXME - workaround for weird descendants call result */
+				g.my_libs_tree = g.my_libs_tree[0];
+			}
+			g.my_libs = util.fm_utils.flatten_ou_branch( g.my_libs_tree );
 
 			g.my_libs_shortname_hash = {};
 			g.my_libs_ou_hash = {};
@@ -75,6 +100,7 @@
 				g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
 				g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
 			}
+			/*
 			for (var i = 0; i < g.my_libs.length; i++) {
 				var p = g.my_libs[i].parent_ou();
 				if (!p) {
@@ -94,15 +120,15 @@
 					p.children( c );
 				}
 			}
-
-			g.my_lib = g.network.simple_request(
-				'FM_AU_RETRIEVE_VIA_SESSION',
-				[ xulG.auth.session.key ]
-			).home_ou();
+			*/
 
 			g.tb = document.getElementById('wsname');
 
 			render_menulist();
+
+			document.getElementById('register_btn').disabled = false;
+			document.getElementById('wsname').disabled = false;
+			document.getElementById('wsname').value = '';
 
 			document.getElementById('wsname').focus();
 		}
@@ -177,7 +203,7 @@
 		</hbox>
 		<hbox>
 			<hbox id="placeholder"/>
-			<button label="Register" accesskey="R" oncommand="register();"/>
+			<button id="register_btn" label="Register" accesskey="R" oncommand="register();"/>
 		</hbox>
 	</vbox>
 </window>
