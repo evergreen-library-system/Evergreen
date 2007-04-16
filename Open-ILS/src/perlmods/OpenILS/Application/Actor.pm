@@ -1019,8 +1019,8 @@ sub build_org_tree {
 
 	my( $self, $orglist) = @_;
 
-	return $orglist unless ( 
-			ref($orglist) and @$orglist > 1 );
+	return $orglist unless ref $orglist;
+    return $$orglist[0] if @$orglist == 1;
 
 	my @list = sort { 
 		$a->ou_type <=> $b->ou_type ||
