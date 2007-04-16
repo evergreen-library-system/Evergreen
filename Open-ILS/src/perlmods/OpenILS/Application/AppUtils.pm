@@ -246,8 +246,8 @@ sub build_org_tree {
 
 	my( $self, $orglist, $add_types ) = @_;
 
-	return $orglist unless ( 
-			ref($orglist) and @$orglist > 1 );
+	return $orglist unless ref $orglist; 
+    return $$orglist[0] if @$orglist == 1;
 
 	my @list = sort { 
 		$a->ou_type <=> $b->ou_type ||
@@ -270,7 +270,6 @@ sub build_org_tree {
 	}
 
 	return $list[0];
-
 }
 
 sub fetch_closed_date {
