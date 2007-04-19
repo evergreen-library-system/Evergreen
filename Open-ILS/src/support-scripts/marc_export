@@ -70,8 +70,10 @@ if ($format ne 'XML') {
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
-my $sc = OpenSRF::Utils::SettingsClient->new;
-$idl ||= $sc->config_value("IDL");
+
+if (!$idl) {
+	$idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+}
 
 Fieldmapper->import(IDL => $idl);
 
@@ -83,79 +85,89 @@ print <<HEADER if ($format eq 'XML');
 HEADER
 
 my %orgs;
+my %shelves;
 if ($holdings) {
 	my $o = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search.atomic', { id => { '!=' => undef } } )->gather(1);
 	%orgs = map { ( $_->id => $_ ) } @$o;
-}
 
-my %shelves;
-if ($holdings) {
 	my $s = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search.atomic', { id => { '!=' => undef } } )->gather(1);
 	%shelves = map { ( $_->id => $_ ) } @$s;
 }
 
+my $start = time;
+my $count = 1;
 while ( my $i = <> ) {
 	my $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i )->gather(1);
 
 	next unless $bib;
 
-	my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-	$r->delete_field( $_ ) for ($r->field(901));
+	try {
+		my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
+		$r->delete_field( $_ ) for ($r->field(901));
 
-	$r->append_fields(
-		MARC::Field->new(
-			901, '', '', 
-			a => $bib->tcn_value,
-			b => $bib->tcn_source
-		)
-	);
+		$r->append_fields(
+			MARC::Field->new(
+				901, '', '', 
+				a => $bib->tcn_value,
+				b => $bib->tcn_source
+			)
+		);
 
-	if ($holdings) {
-		my $cn_list = $ses->request(
-			'open-ils.cstore.direct.asset.call_number.search.atomic',
-			{ record => $i, deleted => 'f' }
-		)->gather(1);
+		if ($holdings) {
+			my $cn_list = $ses->request(
+				'open-ils.cstore.direct.asset.call_number.search.atomic',
+				{ record => $i, deleted => 'f' }
+			)->gather(1);
 
 
-		my $cp_list = $ses->request(
-			'open-ils.cstore.direct.asset.copy.search.atomic',
-			{ call_number => [ map { $_->id } @$cn_list ], deleted => 'f' }
-		)->gather(1);
+			my $cp_list = $ses->request(
+				'open-ils.cstore.direct.asset.copy.search.atomic',
+				{ call_number => [ map { $_->id } @$cn_list ], deleted => 'f' }
+			)->gather(1);
 
-		my %cn_map;
-		push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+			my %cn_map;
+			push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
 
-		for my $cn ( @$cn_list ) {
-			my $cn_map_list = $cn_map{$cn->id};
-			for my $cp ( @$cn_map_list ) {
-				$r->append_fields(
-					MARC::Field->new(
-						852, '4', '', 
-						a => $location,
-						b => $orgs{$cn->owning_lib}->shortname,
-						b => $orgs{$cp->circ_lib}->shortname,
-						c => $shelves{$cp->location}->name,
-						j => $cn->label,
-						($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-						p => $cp->barcode,
-						($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-						($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-						($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-						($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-						($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-						($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-					)
-				);
+			for my $cn ( @$cn_list ) {
+				my $cn_map_list = $cn_map{$cn->id};
+				for my $cp ( @$cn_map_list ) {
+					$r->append_fields(
+						MARC::Field->new(
+							852, '4', '', 
+							a => $location,
+							b => $orgs{$cn->owning_lib}->shortname,
+							b => $orgs{$cp->circ_lib}->shortname,
+							c => $shelves{$cp->location}->name,
+							j => $cn->label,
+							($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+							p => $cp->barcode,
+							($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+							($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+							($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+							($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+							($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+							($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+						)
+					);
+				}
 			}
 		}
-	}
 
-	if (uc($format) eq 'XML') {
-		print $r->as_xml_record;
-	} elsif (uc($format) eq 'UNIMARC') {
-		print $r->as_unimarc
-	} elsif (uc($format) eq 'USMARC') {
-		print $r->as_usmarc
+		if (uc($format) eq 'XML') {
+			print $r->as_xml_record;
+		} elsif (uc($format) eq 'UNIMARC') {
+			print $r->as_unimarc
+		} elsif (uc($format) eq 'USMARC') {
+			print $r->as_usmarc
+		}
+	} catch {
+		my $e = shift;
+		warn "\n$e\n";
+	};
+
+	if (! ($count % 50 )) {
+		my $speed = sprintf( '%0.4f', $count / time - $start );
+		print STDERR "\r $speed / second       \r";
 	}
 }
 
