@@ -14,10 +14,11 @@ use MARC::Record;
 use MARC::File::XML;
 use UNIVERSAL::require;
 
+use Time::HiRes qw/time/;
 use Getopt::Long;
 
 
-my @formats = qw/USMARC UNIMARC XML/;
+my @formats = qw/USMARC UNIMARC XML BRE/;
 
 my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/bootstrap.conf','USMARC','MARC8','','$');
 
@@ -58,7 +59,7 @@ $encoding = uc($encoding);
 binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
 binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
-if (!grep { $format eq $_ } @formats) {
+if (!grep { uc($format) eq $_ } @formats) {
 	die	"Please select a supported format.  ".
 		"Right now that means one of [".
 		join('|',@formats). "]\n";
@@ -86,22 +87,59 @@ HEADER
 
 my %orgs;
 my %shelves;
-if ($holdings) {
-	my $o = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search.atomic', { id => { '!=' => undef } } )->gather(1);
-	%orgs = map { ( $_->id => $_ ) } @$o;
 
-	my $s = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search.atomic', { id => { '!=' => undef } } )->gather(1);
-	%shelves = map { ( $_->id => $_ ) } @$s;
+my $flesh = {};
+if ($holdings) {
+	my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
+
+    while (my $o = $r->recv) {
+        die $r->failed->stringify if ($r->failed);
+        $o = $o->content;
+        last unless ($o);
+	    $orgs{$o->id} = $o;
+    }
+    $r->finish;
+
+	$r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
+
+    while (my $s = $r->recv) {
+        die $r->failed->stringify if ($r->failed);
+        $s = $s->content;
+        last unless ($s);
+	    $shelves{$s->id} = $s;
+    }
+    $r->finish;
+
+    $flesh = { flesh => 1, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 }
 
 my $start = time;
-my $count = 1;
+my $last_time = time;
+my %count = ();
+my $speed = 0;
 while ( my $i = <> ) {
-	my $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i )->gather(1);
+    my $bib;
+    try {
+        local $SIG{ALRM} = sub { die "TIMEOUT\n" };
+        alarm(1);
+	    $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
+        alarm(0);
+    } otherwise {
+        warn "\n!!!!!! Timed out trying to read record $i\n";
+    };
+    alarm(0);
 
+    $count{bib}++;
 	next unless $bib;
 
+    if (uc($format) eq 'BRE') {
+        print JSON->perl2JSON($bib);
+	    stats();
+        next;
+    }
+
 	try {
+
 		my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
 		$r->delete_field( $_ ) for ($r->field(901));
 
@@ -113,45 +151,48 @@ while ( my $i = <> ) {
 			)
 		);
 
-		if ($holdings) {
-			my $cn_list = $ses->request(
-				'open-ils.cstore.direct.asset.call_number.search.atomic',
-				{ record => $i, deleted => 'f' }
-			)->gather(1);
 
+        my $cn_list = $bib->call_numbers;
+        if ($cn_list && @$cn_list) {
 
-			my $cp_list = $ses->request(
-				'open-ils.cstore.direct.asset.copy.search.atomic',
-				{ call_number => [ map { $_->id } @$cn_list ], deleted => 'f' }
-			)->gather(1);
+	        $count{cn} += @$cn_list;
+		
+            my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
+            if ($cp_list && @$cp_list) {
 
-			my %cn_map;
-			push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+	            my %cn_map;
+	            push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+		                        
+	            for my $cn ( @$cn_list ) {
+	                my $cn_map_list = $cn_map{$cn->id};
+	
+	                for my $cp ( @$cn_map_list ) {
+	                    $count{cp}++;
+		                        
+						$r->append_fields(
+							MARC::Field->new(
+								852, '4', '', 
+								a => $location,
+								b => $orgs{$cn->owning_lib}->shortname,
+								b => $orgs{$cp->circ_lib}->shortname,
+								c => $shelves{$cp->location}->name,
+								j => $cn->label,
+								($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+								p => $cp->barcode,
+								($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+								($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+								($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+								($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+								($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+								($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+							)
+						);
 
-			for my $cn ( @$cn_list ) {
-				my $cn_map_list = $cn_map{$cn->id};
-				for my $cp ( @$cn_map_list ) {
-					$r->append_fields(
-						MARC::Field->new(
-							852, '4', '', 
-							a => $location,
-							b => $orgs{$cn->owning_lib}->shortname,
-							b => $orgs{$cp->circ_lib}->shortname,
-							c => $shelves{$cp->location}->name,
-							j => $cn->label,
-							($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-							p => $cp->barcode,
-							($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-							($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-							($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-							($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-							($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-							($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-						)
-					);
+                        stats() if (! ($count{cp} % 100 ));
+					}
 				}
 			}
-		}
+        }
 
 		if (uc($format) eq 'XML') {
 			print $r->as_xml_record;
@@ -160,16 +201,48 @@ while ( my $i = <> ) {
 		} elsif (uc($format) eq 'USMARC') {
 			print $r->as_usmarc
 		}
-	} catch {
+
+        $count{did}++;
+
+	} otherwise {
 		my $e = shift;
 		warn "\n$e\n";
 	};
 
-	if (! ($count % 50 )) {
-		my $speed = sprintf( '%0.4f', $count / time - $start );
-		print STDERR "\r $speed / second       \r";
-	}
+	stats() if (! ($count{bib} % 50 ));
 }
 
 print "</collection>\n" if ($format eq 'XML');
+
+$speed = $count{did} / (time - $start);
+my $time = time - $start;
+print STDERR <<DONE;
+
+Exports Attempted : $count{bib}
+Exports Completed : $count{did}
+Overall Speed     : $speed
+Total Time Elapsed: $time seconds
+
+DONE
+
+
+sub stats {
+    try {
+    	$speed = $count{did} / (time - $start);
+
+    	my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
+	    my $cn_speed = $count{cn} / (time - $start);
+    	my $cp_speed = $count{cp} / (time - $start);
+
+	    printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
+                "($count{cn} CNs @ \%0.4f/s :: $count{cp} CPs @ \%0.4f/s)\r",
+                $speed,
+                $speed_now,
+                $cn_speed,
+                $cp_speed;
+    } otherwise {};
+   	$count{did_last} = $count{did};
+   	$count{time_last} = time;
+}
+
 
