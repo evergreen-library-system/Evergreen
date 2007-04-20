@@ -90,6 +90,8 @@ my %shelves;
 
 my $flesh = {};
 if ($holdings) {
+
+	print STDERR "Retrieving Org Units ... ";
 	my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
     while (my $o = $r->recv) {
@@ -99,7 +101,9 @@ if ($holdings) {
 	    $orgs{$o->id} = $o;
     }
     $r->finish;
+	print STDERR "OK\n";
 
+	print STDERR "Retrieving Shelving locations ... ";
 	$r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
 
     while (my $s = $r->recv) {
@@ -109,8 +113,9 @@ if ($holdings) {
 	    $shelves{$s->id} = $s;
     }
     $r->finish;
+	print STDERR "OK\n";
 
-    $flesh = { flesh => 1, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
+    $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 }
 
 my $start = time;
