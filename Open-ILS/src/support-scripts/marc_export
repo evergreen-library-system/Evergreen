@@ -152,7 +152,8 @@ while ( my $i = <> ) {
 			MARC::Field->new(
 				901, '', '', 
 				a => $bib->tcn_value,
-				b => $bib->tcn_source
+				b => $bib->tcn_source,
+				c => $bib->id
 			)
 		);
 
@@ -233,6 +234,8 @@ DONE
 
 sub stats {
     try {
+	no warnings;
+
     	$speed = $count{did} / (time - $start);
 
     	my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
