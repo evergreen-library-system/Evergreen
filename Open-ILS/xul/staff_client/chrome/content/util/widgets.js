@@ -305,6 +305,7 @@ util.widgets.set_text = function(n,t) {
 			n.setAttribute('value',t); 
 		break;
 		case 'description' : 
+		case 'H1': case 'H2': case 'H3': case 'H4': case 'SPAN': case 'P': case 'BLOCKQUOTE':
 			util.widgets.remove_children(n); 
 			n.appendChild( document.createTextNode(t) );
 		break;
