@@ -54,6 +54,40 @@ __PACKAGE__->register_method(
 	argc		=> 3,
 );
 
+sub usr_has_home_perm {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+	my $perm = shift;
+	my $target = shift;
+
+	return permission::usr_grp_map->db_Main->selectrow_arrayref(<<"	SQL",{}, "$usr", "$perm", "$target")->[0];
+		SELECT permission.usr_has_home_perm(?,?,?)
+	SQL
+}
+__PACKAGE__->register_method(
+	method		=> 'usr_has_home_perm',
+	api_name	=> 'open-ils.storage.permission.user_has_home_perm',
+	argc		=> 3,
+);
+
+sub usr_has_work_perm {
+	my $self = shift;
+	my $client = shift;
+	my $usr = shift;
+	my $perm = shift;
+	my $target = shift;
+
+	return permission::usr_grp_map->db_Main->selectrow_arrayref(<<"	SQL",{}, "$usr", "$perm", "$target")->[0];
+		SELECT permission.usr_has_work_perm(?,?,?)
+	SQL
+}
+__PACKAGE__->register_method(
+	method		=> 'usr_has_work_perm',
+	api_name	=> 'open-ils.storage.permission.user_has_work_perm',
+	argc		=> 3,
+);
+
 sub usr_perms {
 	my $self = shift;
 	my $client = shift;
