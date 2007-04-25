@@ -229,57 +229,6 @@ sub bucket_create {
 
 
 __PACKAGE__->register_method(
-	method	=> "bucket_delete",
-	api_name	=> "open-ils.actor.container.delete",
-	notes		=> <<"	NOTES");
-		Deletes a bucket object.  If requestor is different from
-		bucketOwner, requestor needs DELETE_CONTAINER permissions
-		PARAMS(authtoken, class, bucketId);
-		Returns the new bucket object
-	NOTES
-
-# XXX pretty sure no one actually uses this method, 
-# (see open-ils.actor.container.full_delete) -- should probably deprecate it
-sub bucket_delete {
-	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
-	my( $bucket, $evt );
-
-	my $e = new_editor(xact=>1, authtoken=>$authtoken);
-	return $e->event unless $e->checkauth;
-
-	( $bucket, $evt ) = $U->fetch_container_e($e, $bucketid, $class);
-	return $evt if $evt;
-
-	return $e->event unless $e->allowed('DELETE_CONTAINER');
-
-	my $stat;
-	if( $class eq 'copy' ) {
-		return $e->event unless
-			$stat = $e->delete_container_copy_bucket($bucket);
-	}
-
-	if( $class eq 'callnumber' ) {
-		return $e->event unless
-			$stat = $e->delete_container_call_number_bucket($bucket);
-	}
-
-	if( $class eq 'biblio' ) {
-		return $e->event unless
-			$stat = $e->delete_container_biblio_record_entry_bucket($bucket);
-	}
-
-	if( $class eq 'user') {
-		return $e->event unless
-			$stat = $e->delete_container_user_bucket($bucket);
-	}
-
-	$e->commit;
-	return $stat;
-
-}
-
-
-__PACKAGE__->register_method(
 	method	=> "item_create",
 	api_name	=> "open-ils.actor.container.item.create",
 	notes		=> <<"	NOTES");
