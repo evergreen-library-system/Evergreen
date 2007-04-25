@@ -770,7 +770,7 @@ var resourceFormats = [
    "text",
    "moving image",
    "sound recording", "software, multimedia",
-   "still images",
+   "still image",
    "cartographic",
    "mixed material",
    "notated music",
@@ -791,7 +791,7 @@ function modsFormatToMARC(format) {
          return "j";
       case "software, multimedia":
          return "m";
-      case "still images":
+      case "still image":
          return "k";
       case "cartographic":
          return "ef";
@@ -820,7 +820,7 @@ function MARCFormatToMods(format) {
       case "m":
          return "software, multimedia";
       case "k":
-         return "still images";
+         return "still image";
       case "e":
       case "f":
          return "cartographic";
