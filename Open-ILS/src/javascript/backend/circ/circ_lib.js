@@ -41,6 +41,7 @@ var isPrecat			= environment.isPrecat;
 var currentLocation	= environment.location;
 var holdRequestLib	= environment.requestLib;
 var holdPickupLib       = environment.pickupLib; /* hold pickup lib */
+var requestor = environment.requestor || patron;
 
 
 
@@ -145,6 +146,12 @@ function isGroupDescendant( parent, child ) {
 		groupList[child]);
 }
 
+function isGroupDescendantId( parentName, childId ) {
+	log_debug("checking descendant ID p="+parentName + " c=" + childId);
+	return __isGroupDescendant(
+		groupList[parentName],
+		groupIDList[childId]);
+}
 
 
 /**
@@ -225,6 +232,9 @@ function log_vars( prefix ) {
 			str += ', Patron_Library='	+ patron.home_ou.name;
 		} catch(e) {}
 	}
+
+    if(requestor.id != patron.id) 
+        str+= ' Requestor='+requestor.usrname;
 
 	if(copy)	{
 		str += ', Copy=' + copy.id;

@@ -26,8 +26,8 @@ var MARC_ITEM_TYPE_MAP = {
 	a : { /* Language material [Books] */
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
-		durationRule			: 'default'
-		recurringFinesRule	    : 'default'
+		durationRule			: 'default',
+		recurringFinesRule	    : 'default',
 		maxFine					: 'default'
 	},
     /* add more MARC item type configs as needed... */
@@ -41,8 +41,8 @@ var CIRC_MOD_MAP = {
 	'bestseller'				: {
 		SIPMediaType			: '001',
 		magneticMedia			: 'f',
-		durationRule			: 'default'
-		recurringFinesRule	    : 'default'
+		durationRule			: 'default',
+		recurringFinesRule	    : 'default',
 		maxFine					: 'default'
 	},
 }

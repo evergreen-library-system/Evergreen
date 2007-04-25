@@ -28,7 +28,7 @@ if( config ) {
 	log_debug("circ_duration found a config for the copy");
 	result.durationRule			= config.durationRule;
 	result.recurringFinesRule	= config.recurringFinesRule;
-	result.maxFine					= config.maxFine;
+	result.maxFine			    = config.maxFine;
 
 } else {
 
