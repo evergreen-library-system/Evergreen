@@ -143,7 +143,9 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 			atomicWidget = oilsRptSubstrWidget
 			break;
 
-
+        case "org_unit":
+            atomicWidget = oilsRptOrgSelector;
+            break;
 	}
 
 	if( field.selector ) {
