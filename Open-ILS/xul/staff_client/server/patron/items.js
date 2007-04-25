@@ -395,10 +395,10 @@ patron.items.prototype = {
 	'items_claimed_returned' : function(which) {
 		var obj = this;
 		try {
+			JSAN.use('util.date');
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
 			function check_date(value) {
-				JSAN.use('util.date');
 				try {
 					if (! util.date.check('YYYY-MM-DD',value) ) { 
 						throw('Invalid Date'); 
@@ -432,6 +432,7 @@ patron.items.prototype = {
 			}
 			//alert('backdate = ' + backdate);
 			if (backdate) {
+				backdate = util.date.formatted_date(backdate + ' 00:00:00','%{iso8601}');
 				var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
 				for (var i = 0; i < barcodes.length; i++) {
 					var robj = obj.network.simple_request(
