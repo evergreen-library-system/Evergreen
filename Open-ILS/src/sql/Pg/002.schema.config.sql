@@ -272,6 +272,8 @@ INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '1_hour_2_renew', '1 hour
 INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '28_days_0_renew', '28 days', '28 days', '28 days', 0);
 INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '14_days_2_renew', '14 days', '14 days', '14 days', 2);
 
+INSERT INTO config.rule_circ_duration VALUES (DEFAULT, 'default', '21 days', '14 days', '7 days', 2);
+
 
 CREATE TABLE config.rule_max_fine (
 	id	SERIAL		PRIMARY KEY,
@@ -302,6 +304,8 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'default', 5.00);
 
 INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_min', 5.00);
 INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_mid', 10.00);
@@ -346,6 +350,7 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  */
 $$;
 
+INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, 'default', 0.50, 0.10, 0.05, '1 day');
 INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '10_cent_per_day', 0.50, 0.10, 0.10, '1 day');
 INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '50_cent_per_day', 0.50, 0.50, 0.50, '1 day');
 
