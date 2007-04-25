@@ -80,6 +80,12 @@ util.date.formatted_date = function (date,format) {
 
 	var s = format;
 	if (s == '') { s = '%F %H:%M'; }
+	if (typeof date.iso8601Format != 'function') {
+		
+		var js = JSAN._loadJSFromUrl( urls.isodate_lib );
+		try { eval( js ); } catch(E) { alert('Problem loading ISO8601 date extension:' + E); }
+
+	}
 	if (typeof date.iso8601Format == 'function') {
 		s = s.replace( /%\{iso8601\}/g, date.iso8601Format("YMDHMS") );
 	}
