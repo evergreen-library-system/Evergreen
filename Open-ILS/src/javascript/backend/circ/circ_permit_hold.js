@@ -5,7 +5,6 @@ log_vars('circ_permit_hold');
 
 
 /* is a staff member placing this hold? */
-//var isStaffHold = isGroupDescendant('Staff', patronProfile);
 var isStaffHold = isGroupDescendantId('Staff', requestor.profile);
 
 
