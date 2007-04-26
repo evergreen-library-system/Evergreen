@@ -221,6 +221,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 
 	var obj = this;
 	switch(action) {
+
 		case 'create_report' :
 			hideMe(DOM.oils_rpt_folder_table_right_td);
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
@@ -228,12 +229,12 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			new oilsRptReportEditor(new oilsReport(objs[0]), this);
 			break;
 		case 'delete_report' :
-			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+			if(!confirmId('oils_rpt_verify_report_delete')) return;
 			this.deleteReports(objs, 0, successCallback);
 			break;
 
 		case 'delete_template' :
-			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+            if(!confirmId('oils_rpt_verify_template_delete')) return;
 			this.deleteTemplates(objs, 0, successCallback);
 			break;
 
@@ -417,6 +418,7 @@ oilsRptFolderWindow.prototype.deleteTemplates = function(list, idx, callback, er
 			callback, 'oils_rpt_folder_contents_no_delete');
 
 	} else {
+
 
 //		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
 //		req0.callback(
