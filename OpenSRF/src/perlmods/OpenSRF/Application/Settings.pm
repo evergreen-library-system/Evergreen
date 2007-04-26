@@ -16,6 +16,13 @@ sub get_host_config {
 	return $parser->get_server_config($host);
 }
 
+__PACKAGE__->register_method( method => 'get_default_config', api_name => 'opensrf.settings.default_config.get' );
+sub get_default_config {
+	my( $self, $client ) = @_;
+	my $parser = OpenSRF::Utils::SettingsParser->new();
+	return $parser->get_default_config();
+}
+
 
 
 

@@ -85,8 +85,20 @@ sub grab_host_config {
 
 	} catch OpenSRF::EX with {
 
+		if( ! ($session->connect()) ) {die "Settings Connect timed out\n";}
+		$req = $session->request( "opensrf.settings.default_config.get" );
+		$resp = $req->recv( timeout => 10 );
+
+	} catch Error with {
+
 		my $e = shift;
 		warn "Connection to Settings Failed  $e : $@ ***\n";
+		die $e;
+
+	} otherwise {
+
+		my $e = shift;
+		warn "Settings Retrieval Failed  $e : $@ ***\n";
 		die $e;
 	};
 

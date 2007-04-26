@@ -133,6 +133,12 @@ sub get_server_config {
 	return $self->_get( $xpath );
 }
 
+sub get_default_config {
+	my( $self, $server ) = @_;
+	my $xpath = "/opensrf/default";
+	return $self->_get( $xpath );
+}
+
 sub get_bootstrap_config {
 	my( $self ) = @_;
 	my $xpath = "/opensrf/bootstrap";
