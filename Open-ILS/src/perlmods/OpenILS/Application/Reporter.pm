@@ -154,6 +154,9 @@ sub create_template {
 }
 
 
+
+	
+
 __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.report.create',
 	method => 'create_report');
@@ -334,6 +337,146 @@ sub delete_template {
 	$e->commit;
 	return 1;
 }
+
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.template.delete.cascade',
+	method => 'cascade_delete_template');
+
+#__PACKAGE__->register_method(
+#	api_name => 'open-ils.reporter.template.delete.cascade.force',
+#	method => 'cascade_delete_template');
+
+sub cascade_delete_template {
+	my( $self, $conn, $auth, $templateId ) = @_;
+
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+
+    my $ret = cascade_delete_template_impl(
+        $e, $e->requestor->id, $templateId, ($self->api_name =~ /force/o) );
+    return $ret if ref $ret; # some fatal event occurred
+
+    $e->rollback if $ret == 0;
+    $e->commit if $ret > 0;
+    return $ret;
+}
+
+
+__PACKAGE__->register_method(
+	api_name => 'open-ils.reporter.report.delete.cascade',
+	method => 'cascade_delete_report');
+
+#__PACKAGE__->register_method(
+#	api_name => 'open-ils.reporter.report.delete.cascade.force',
+#	method => 'cascade_delete_report');
+
+sub cascade_delete_report {
+	my( $self, $conn, $auth, $reportId ) = @_;
+
+	my $e = new_rstore_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('RUN_REPORTS');
+
+    my $ret = cascade_delete_report_impl($e, $e->requestor->id, $reportId);
+    return $ret if ref $ret; # some fatal event occurred
+
+    $e->rollback if $ret == 0;
+    $e->commit if $ret > 0;
+    return $ret;
+}
+
+
+# performs a cascading template delete
+# returns 2 if all data was deleted
+# returns 1 if some data was deleted
+# returns 0 if no data was deleted
+# returns event on error
+sub cascade_delete_template_impl {
+    my( $e, $owner, $templateId ) = @_;
+
+    # fetch the template to delete
+    my $template = $e->search_reporter_template(
+        {id=>$templateId, owner=>$owner})->[0] or return 0;
+
+    # fetch he attached report IDs for this  owner
+    my $reports = $e->search_reporter_report(
+        {template=>$templateId, owner=>$owner},{idlist=>1});
+
+    # delete the attached reports
+    my $all_rpts_deleted = 1;
+    for my $r (@$reports) {
+        my $evt = cascade_delete_report_impl($e, $owner, $r);
+        return $evt if ref $evt;
+        $all_rpts_deleted = 0 unless $evt == 2;
+    }
+
+    # fetch all reports attached to this template that
+    # do not belong to $owner.  If there are any, we can't 
+    # delete the template
+    my $alt_reports = $e->search_reporter_report(
+        {template=>$templateId, owner=>{"!=" => $owner}},{idlist=>1});
+
+    # all_rpts_deleted will be false if a report has an 
+    # attached scheduled owned by a different user
+    return 1 if @$alt_reports or not $all_rpts_deleted;
+
+    $e->delete_reporter_template($template) 
+        or return $e->die_event;
+    return 2;
+}
+
+# performs a cascading report delete
+# returns 2 if all data was deleted
+# returns 1 if some data was deleted
+# returns 0 if no data was deleted
+# returns event on error
+sub cascade_delete_report_impl {
+    my( $e, $owner, $reportId ) = @_;
+
+    # fetch the report to delete
+    my $report = $e->search_reporter_report(
+        {id=>$reportId, owner=>$owner})->[0] or return 0;
+
+    # fetch the attached schedule IDs for this owner
+    my $scheds = $e->search_reporter_schedule(
+        {report=>$reportId, runner=>$owner},{idlist=>1});
+
+    # delete the attached schedules
+    for my $sched (@$scheds) {
+        my $evt = delete_schedule_impl($e, $sched);
+        return $evt if $evt;
+    }
+
+    # fetch all schedules attached to this report that
+    # do not belong to $owner.  If there are any, we can't 
+    # delete the report
+    my $alt_scheds = $e->search_reporter_schedule(
+        {report=>$reportId, runner=>{"!=" => $owner}},{idlist=>1});
+
+    return 1 if @$alt_scheds;
+
+    $e->delete_reporter_report($report) 
+        or return $e->die_event;
+
+    return 2;
+}
+
+
+# deletes the requested schedule
+# returns undef on success, event on error
+sub delete_schedule_impl {
+    my( $e, $schedId ) = @_;
+    my $s = $e->retrieve_reporter_schedule($schedId)
+        or return $e->die_event;
+    $e->delete_reporter_schedule($s) or return $e->die_event;
+    return undef;
+}
+
+
+
 
 __PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.report.delete',

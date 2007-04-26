@@ -382,26 +382,26 @@ oilsRptFolderWindow.prototype.deleteReports = function(list, idx, callback, erri
 
 	} else {
 
-		var obj = this;
-		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
-		req0.callback(
-			function(r0) {
-				var r0es = r0.getResultObject();
-				if( r0es != '0' ) {
-					obj.deleteReports(list, ++idx, 
-						callback, 'oils_rpt_folder_contents_report_no_delete');
-				} else {
+//		var obj = this;
+//		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
+//		req0.callback(
+//			function(r0) {
+//				var r0es = r0.getResultObject();
+//				if( r0es != '0' ) {
+//					obj.deleteReports(list, ++idx, 
+//						callback, 'oils_rpt_folder_contents_report_no_delete');
+//				} else {
 					_debug('deleting report ' + report.id());
 					var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
 					req.callback(function(r) { 
 						var res = r.getResultObject();
-						if( res != 1 ) return oilsRptAlertFailure();
+						if( res == 0 ) return oilsRptAlertFailure();
 						obj.deleteReports(list, ++idx, callback, errid)
 					});
 					req.send();
-				}
-			}
-		);
+//				}
+//			}
+//		);
 
 		req0.send();
 	}
@@ -418,28 +418,28 @@ oilsRptFolderWindow.prototype.deleteTemplates = function(list, idx, callback, er
 
 	} else {
 
-		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
-		req0.callback(
-			function(r0) {
-				var resp = r0.getResultObject();
-
-				if( resp != '0' ) {
-					obj.deleteTemplates(list, ++idx, 
-						callback, 'oils_rpt_folder_contents_template_no_delete');
-
-				} else {
+//		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
+//		req0.callback(
+//			function(r0) {
+//				var resp = r0.getResultObject();
+//
+//				if( resp != '0' ) {
+//					obj.deleteTemplates(list, ++idx, 
+//						callback, 'oils_rpt_folder_contents_template_no_delete');
+//
+//				} else {
 					_debug('deleting template ' + tmpl.id());
 					var req = new Request(OILS_RPT_DELETE_TEMPLATE, SESSION, tmpl.id());
 					req.callback(function(r) {
 						var res = r.getResultObject();
-						if( res != 1 ) return oilsRptAlertFailure();
+						if( res == 0 ) return oilsRptAlertFailure();
 						obj.deleteTemplates(list, ++idx, callback, errid)
 					});
 					req.send();
-				}
-			}
-		);
-		req0.send();
+//				}
+//			}
+//		);
+//		req0.send();
 	}
 }
 
