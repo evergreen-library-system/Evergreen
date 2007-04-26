@@ -376,13 +376,13 @@ oilsRptFolderWindow.prototype.deleteReports = function(list, idx, callback, erri
 	if( idx >= list.length ) return callback(errid);
 	var report = list[idx];
 
+	var obj = this;
 	if( report.owner().id() != USER.id() ) {
 		this.deleteReports(list, ++idx, 
 			callback, 'oils_rpt_folder_contents_no_delete');
 
 	} else {
 
-//		var obj = this;
 //		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
 //		req0.callback(
 //			function(r0) {
@@ -402,8 +402,8 @@ oilsRptFolderWindow.prototype.deleteReports = function(list, idx, callback, erri
 //				}
 //			}
 //		);
-
-		req0.send();
+//
+//		req0.send();
 	}
 }
 
