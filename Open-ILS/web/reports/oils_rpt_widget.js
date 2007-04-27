@@ -401,6 +401,19 @@ oilsRptNumberWidget.prototype.getDisplayValue = function() {
 /* --------------------------------------------------------------------- 
 	Relative dates widget
 	--------------------------------------------------------------------- */
+
+function oilsRptNullWidget(args) {
+    this.node = args.node;
+    this.type = args.type;
+}
+oilsRptNullWidget.prototype.draw = function() {}
+oilsRptNullWidget.prototype.getValue = function() {
+    return null;
+}
+
+/* --------------------------------------------------------------------- 
+	Relative dates widget
+	--------------------------------------------------------------------- */
 function oilsRptTruncPicker(args) {
 	this.node = args.node;
 	this.type = args.type;
