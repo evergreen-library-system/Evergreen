@@ -142,4 +142,43 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 
 
 
+oilsReport.prototype.gatherTemplateParams = function() {
+    var arr = this.__gatherTemplateParams(this.def.where, 'where');
+    arr.concat(this.__gatherTemplateParams(this.def.having, 'having'));
+    _debug("template params: " + js2JSON(arr));
+    return arr;
+}
+
+oilsReport.prototype.__gatherTemplateParams = function(arr, type) {
+
+    if(!arr) return [];
+    var params = [];
+
+	for( var i = 0; i < arr.length; i++ ) {
+
+		var obj = arr[i];
+		var node = obj.condition;
+	    var op = oilsRptObjectKeys(node)[0];
+		var key = node[op];
+
+        /** if this is a dynamic param, skip it */
+        if( key && key.match(/::.*/) ) continue;
+
+		_debug("template params: op = " + op + ", value = " + js2JSON(key));
+
+		params.push( { 
+			key		: key, /* key == value, since this is not a dynamic param */
+			op		: op,
+            value   : key,
+			column	: obj.column,
+			path	: obj.path,
+			type	: type, 
+			relation : obj.relation,
+			field	: field
+		});
+	}
+
+    return params;
+}
+
 

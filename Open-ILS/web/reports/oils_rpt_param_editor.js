@@ -43,6 +43,21 @@ oilsRptParamEditor.prototype.draw = function() {
 		par.widget = this.buildWidget(par, $n(row, 'widget'));
 		par.widget.draw();
 	}
+
+    /** draw the pre-defined template params so the user will know
+        what params are already set */
+    var tparams = this.report.gatherTemplateParams();
+
+	for( var p = 0; p < params.length; p++ ) {
+		var par = tparams[p];
+		var row = oilsRptParamEditor.row.cloneNode(true);
+		this.tbody.appendChild(row);
+		$n(row, 'column').appendChild(text(oilsRptMakeLabel(par.path)));
+		$n(row, 'transform').appendChild(text(OILS_RPT_TRANSFORMS[par.column.transform].label));
+		$n(row, 'action').appendChild(text(OILS_RPT_FILTERS[par.op].label));
+		par.widget = this.buildWidget(par, $n(row, 'widget'));
+		par.widget.draw();
+	}
 }
 
 oilsRptParamEditor.prototype.buildWidget = function(param, node) {
@@ -173,6 +188,9 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		case 'not in':
 			widgetArgs.inputWidget = atomicWidget;
 			return new oilsRptSetWidget(widgetArgs);
+        case 'is':
+        case 'is not':
+            return new oilsRptNullWidget(widgetArgs);
 		case 'between':
 		case 'not between':
 			widgetArgs.startWidget = atomicWidget;
