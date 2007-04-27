@@ -48,7 +48,7 @@ oilsRptParamEditor.prototype.draw = function() {
         what params are already set */
     var tparams = this.report.gatherTemplateParams();
 
-	for( var p = 0; p < params.length; p++ ) {
+	for( var p = 0; p < tparams.length; p++ ) {
 		var par = tparams[p];
 		var row = oilsRptParamEditor.row.cloneNode(true);
 		this.tbody.appendChild(row);
