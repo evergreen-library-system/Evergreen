@@ -1,7 +1,5 @@
 /*
 Copyright (C) 2005  Georgia Public Library Service 
-Bill Erickson <highfalutin@gmail.com>
-Mike Rylander <mrylander@gmail.com>
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -290,6 +288,7 @@ char* uescape( const char* string, int size, int full_escape ) {
 				buffer_fadd(buf, "\\u%04x", c);
 
 			} else {
+				buffer_free(buf);
 				return NULL;
 			}
 
@@ -370,13 +369,14 @@ int daemonize() {
 	}
 }
 
+
+/* Return 1 if the string represents an integer,  */
+/* as recognized by strtol(); Otherwise return 0. */
+
 int stringisnum(char* s) {
-	char* w = (char*) malloc(strlen(s) * sizeof(char*));
-	bzero(w, strlen(s));
+	char* w;
 	strtol(s, &w, 10);
-	if(strlen(w) > 0)  
-		return 0;
-	return 1;
+	return *w ? 0 : 1;
 }
 	
 
