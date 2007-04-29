@@ -12,6 +12,14 @@ char* osrf_settings_host_value(char* format, ...) {
 
 jsonObject* osrf_settings_host_value_object(char* format, ...) {
 	VA_LIST_TO_STRING(format);
+
+	if( ! config ) {
+		const char * msg = "config pointer is NULL";
+		fprintf( stderr, "osrf_settings_host_value_object: %s\n", msg );
+		osrfLogError( OSRF_LOG_MARK, msg );
+		exit( 99 );
+	}
+
 	return jsonObjectFindPath(config->config, VA_BUF);
 }
 
