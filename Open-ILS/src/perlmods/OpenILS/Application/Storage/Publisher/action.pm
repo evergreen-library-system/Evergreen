@@ -1225,6 +1225,7 @@ sub choose_nearest_copy {
 				  copy => $c->to_fieldmapper,
 				  requestor => $hold->requestor->to_fieldmapper,
 				  request_lib => $hold->request_lib->to_fieldmapper,
+				   pickup_lib => $hold->pickup_lib->id,
 				}
 			));
 
