@@ -18,8 +18,6 @@ use Data::Dumper;
 use Unicode::Normalize;
 use Encode;
 
-use bytes;
-
 use FileHandle;
 use Time::HiRes qw/time/;
 use Getopt::Long;
@@ -27,9 +25,9 @@ use MARC::Batch;
 use MARC::File::XML ( BinaryEncoding => 'utf-8' );
 use MARC::Charset;
 
-MARC::Charset->ignore_errors(1);
+#MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $marctype, $keyfile, $dontuse_file, $enc, @files, @trash_fields) =
+my ($id_field, $recid, $user, $config, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields) =
 	('', 1, 1, '/openils/conf/bootstrap.conf', 'USMARC');
 
 GetOptions(
@@ -38,6 +36,7 @@ GetOptions(
 	'idfield=s'	=> \$id_field,
 	'user=s'	=> \$user,
 	'encoding=s'	=> \$enc,
+	'hard_encoding'	=> \$force_enc,
 	'keyfile=s'	=> \$keyfile,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
@@ -48,6 +47,12 @@ GetOptions(
 if ($enc) {
 	MARC::Charset->ignore_errors(1);
 	MARC::Charset->assume_encoding($enc);
+}
+
+if (uc($marctype) eq 'XML') {
+	'open'->use(':utf8');
+} else {
+	bytes->use();
 }
 
 @files = @ARGV if (!@files);
@@ -141,8 +146,10 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 		}
 	}
 
-	$rec = preprocess($rec);
+	my $tcn;
+	($rec, $tcn) = preprocess($rec);
 	$rec->delete_field( $_ ) for ($rec->field($id_field));
+	$rec->append_fields( $tcn );
 
 	if (!$rec) {
 		next;
@@ -251,9 +258,7 @@ sub preprocess {
 		b => do { $source_map{$source} || 'System' },
 	);
 
-	$rec->append_fields($tcn);
-
-	return $rec;
+	return ($rec,$tcn);
 }
 
 sub entityize {
