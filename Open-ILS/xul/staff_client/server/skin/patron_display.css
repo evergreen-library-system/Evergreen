@@ -61,6 +61,7 @@ deck#patron_deck { border-left: solid thin black; }
 
 .PATRON_EXPIRED .patronNameLarge { background-color: #666666;  color: white;}
 .PATRON_EXPIRED label.expired_indicator { display: inline; color: black; }
+.PATRON_EXPIRED label.expire_date { background-color: #666666; color: white }
 
 .PATRON_BARRED .patronNameLarge { background-color: #CC3300; color: white; }
 .PATRON_BARRED label.barred_indicator { display: inline; color: #CC3300; }
@@ -68,4 +69,8 @@ deck#patron_deck { border-left: solid thin black; }
 .PATRON_NET_ACCESS_1 .net_access { color: #AA4400; } /* Filtered */
 .PATRON_NET_ACCESS_2 .net_access { color: green; } /* Unfiltered */
 .PATRON_NET_ACCESS_3 .net_access { color: #CC3300; } /* No Access */
+
+.bad_barcode { color: red; }
+.line_item { font-family: monospace; }
+.checking_barcode { color: orange; text-decoration: blink; }
 

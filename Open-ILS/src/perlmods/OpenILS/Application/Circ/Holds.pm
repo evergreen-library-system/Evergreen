@@ -363,6 +363,35 @@ sub retrieve_holds {
 	}
 }
 
+
+__PACKAGE__->register_method(
+   method => 'user_hold_count',
+   api_name => 'open-ils.circ.hold.user.count');
+
+sub user_hold_count {
+   my( $self, $conn, $auth, $userid ) = @_;
+   my $e = new_editor(authtoken=>$auth);
+   return $e->event unless $e->checkauth;
+   my $patron = $e->retrieve_actor_user($userid)
+      or return $e->event;
+   return $e->event unless $e->allowed('VIEW_HOLD', $patron->home_ou);
+   return $self->__user_hold_count($e, $userid);
+}
+
+sub __user_hold_count {
+   my( $self, $e, $userid ) = @_;
+   my $holds = $e->search_action_hold_request(
+      {  usr =>  $userid , 
+         fulfillment_time => undef,
+         cancel_time => undef,
+      }, 
+      {idlist => 1}
+   );
+
+   return scalar(@$holds);
+}
+
+
 __PACKAGE__->register_method(
 	method	=> "retrieve_holds_by_pickup_lib",
 	api_name	=> "open-ils.circ.holds.retrieve_by_pickup_lib",
@@ -441,11 +470,12 @@ sub cancel_hold {
 			or return $e->event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-			$logger->info("setting copy to status 'reshelving' on hold cancel");
-			$copy->status(OILS_COPY_STATUS_RESHELVING);
-			$copy->editor($e->requestor->id);
-			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
+         $logger->info("canceling hold $holdid whose item is on the holds shelf");
+#			$logger->info("setting copy to status 'reshelving' on hold cancel");
+#			$copy->status(OILS_COPY_STATUS_RESHELVING);
+#			$copy->editor($e->requestor->id);
+#			$copy->edit_date('now');
+#			$e->update_asset_copy($copy) or return $e->event;
 
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
@@ -455,21 +485,13 @@ sub cancel_hold {
 
 			if( $transid ) {
 				my $trans = $e->retrieve_action_transit_copy($transid);
+				# Leave the transit alive, but  set the copy status to 
+				# reshelving so it will be properly reshelved when it gets back home
 				if( $trans ) {
-					$logger->info("Aborting transit [$transid] on hold [$hid] cancel...");
-					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
-					$logger->info("Transit abort completed with result $evt");
-					return $evt unless "$evt" eq 1;
+					$trans->copy_status( OILS_COPY_STATUS_RESHELVING );
+					$e->update_action_transit_copy($trans) or return $e->die_event;
 				}
 			}
-
-			# We don't want the copy to remain "in transit" or to recover 
-			# any previous statuses
-			$logger->info("setting copy back to reshelving in hold+transit cancel");
-			$copy->status(OILS_COPY_STATUS_RESHELVING);
-			$copy->editor($e->requestor->id);
-			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
 		}
 	}
 
@@ -569,147 +591,10 @@ sub _hold_status {
 }
 
 
-
-
-
-=head DEPRECATED
-__PACKAGE__->register_method(
-	method	=> "capture_copy",
-	api_name	=> "open-ils.circ.hold.capture_copy.barcode",
-	notes		=> <<"	NOTE");
-	Captures a copy to fulfil a hold
-	Params is login session and copy barcode
-	Optional param is 'flesh'.  If set, we also return the
-	relevant copy and title
-	login mus have COPY_CHECKIN permissions (since this is essentially
-	copy checkin)
-	NOTE
-
-# XXX deprecate me XXX
-
-sub capture_copy {
-	my( $self, $client, $login_session, $params ) = @_;
-	my %params = %$params;
-	my $barcode = $params{barcode};
-
-
-	my( $user, $target, $copy, $hold, $evt );
-
-	( $user, $evt ) = $apputils->checkses($login_session);
-	return $evt if $evt;
-
-	# am I allowed to checkin a copy?
-	$evt = $apputils->check_perms($user->id, $user->home_ou, "COPY_CHECKIN");
-	return $evt if $evt;
-
-	$logger->info("Capturing copy with barcode $barcode");
-
-	my $session = $apputils->start_db_session();
-
-	($copy, $evt) = $apputils->fetch_copy_by_barcode($barcode);
-	return $evt if $evt;
-
-	$logger->debug("Capturing copy " . $copy->id);
-
-	#( $hold, $evt ) = _find_local_hold_for_copy($session, $copy, $user);
-	( $hold, $evt ) = $self->find_nearest_permitted_hold($session, $copy, $user);
-	return $evt if $evt;
-
-	warn "Found hold " . $hold->id . "\n";
-	$logger->info("We found a hold " .$hold->id. "for capturing copy with barcode $barcode");
-
-	$hold->current_copy($copy->id);
-	$hold->capture_time("now"); 
-
-	#update the hold
-	my $stat = $session->request(
-			"open-ils.storage.direct.action.hold_request.update", $hold)->gather(1);
-	if(!$stat) { throw OpenSRF::EX::ERROR 
-		("Error updating hold request " . $copy->id); }
-
-	$copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF); #status on holds shelf
-
-	# if the staff member capturing this item is not at the pickup lib
-	if( $user->home_ou ne $hold->pickup_lib ) {
-		$self->_build_hold_transit( $login_session, $session, $hold, $user, $copy );
-	}
-
-	$copy->editor($user->id);
-	$copy->edit_date("now");
-	$stat = $session->request(
-		"open-ils.storage.direct.asset.copy.update", $copy )->gather(1);
-	if(!$stat) { throw OpenSRF::EX ("Error updating copy " . $copy->id); }
-
-	my $payload = { hold => $hold };
-	$payload->{copy} = $copy if $params{flesh_copy};
-
-	if($params{flesh_record}) {
-		my $record;
-		($record, $evt) = $apputils->fetch_record_by_copy( $copy->id );
-		return $evt if $evt;
-		$record = $apputils->record_to_mvr($record);
-		$payload->{record} = $record;
-	}
-
-	$apputils->commit_db_session($session);
-
-	return OpenILS::Event->new('ROUTE_ITEM', 
-		route_to => $hold->pickup_lib, payload => $payload );
-}
-
-sub _build_hold_transit {
-	my( $self, $login_session, $session, $hold, $user, $copy ) = @_;
-	my $trans = Fieldmapper::action::hold_transit_copy->new;
-
-	$trans->hold($hold->id);
-	$trans->source($user->home_ou);
-	$trans->dest($hold->pickup_lib);
-	$trans->source_send_time("now");
-	$trans->target_copy($copy->id);
-	$trans->copy_status($copy->status);
-
-	my $meth = $self->method_lookup("open-ils.circ.hold_transit.create");
-	my ($stat) = $meth->run( $login_session, $trans, $session );
-	if(!$stat) { throw OpenSRF::EX ("Error creating new hold transit"); }
-	else { $copy->status(6); } #status in transit 
-}
-
-
-
-__PACKAGE__->register_method(
-	method	=> "create_hold_transit",
-	api_name	=> "open-ils.circ.hold_transit.create",
-	notes		=> <<"	NOTE");
-	Creates a new transit object
-	NOTE
-
-sub create_hold_transit {
-	my( $self, $client, $login_session, $transit, $session ) = @_;
-
-	my( $user, $evt ) = $apputils->checkses($login_session);
-	return $evt if $evt;
-	$evt = $apputils->check_perms($user->id, $user->home_ou, "CREATE_TRANSIT");
-	return $evt if $evt;
-
-	my $ses;
-	if($session) { $ses = $session; } 
-	else { $ses = OpenSRF::AppSession->create("open-ils.storage"); }
-
-	return $ses->request(
-		"open-ils.storage.direct.action.hold_transit_copy.create", $transit )->gather(1);
-}
-
-=cut
-
-
-sub find_local_hold {
-	my( $class, $session, $copy, $user ) = @_;
-	return $class->find_nearest_permitted_hold($session, $copy, $user);
-}
-
-
-
-
+#sub find_local_hold {
+#	my( $class, $session, $copy, $user ) = @_;
+#	return $class->find_nearest_permitted_hold($session, $copy, $user);
+#}
 
 
 sub fetch_open_hold_by_current_copy {
@@ -814,7 +699,8 @@ __PACKAGE__->register_method (
 		@return ID of the new object on success, Event on error
 		/
 );
-sub create_hold_notify {
+=head old
+sub __create_hold_notify {
 	my( $self, $conn, $authtoken, $notification ) = @_;
 	my( $requestor, $evt ) = $U->checkses($authtoken);
 	return $evt if $evt;
@@ -835,6 +721,26 @@ sub create_hold_notify {
 	return $U->DB_UPDATE_FAILED($notification) unless $id;
 	$logger->info("User ".$requestor->id." successfully created new hold notification $id");
 	return $id;
+}
+=cut
+
+sub create_hold_notify {
+   my( $self, $conn, $auth, $note ) = @_;
+   my $e = new_editor(authtoken=>$auth, xact=>1);
+   return $e->die_event unless $e->checkauth;
+
+   my $hold = $e->retrieve_action_hold_request($note->hold)
+      or return $e->die_event;
+   my $patron = $e->retrieve_actor_user($hold->usr) 
+      or return $e->die_event;
+
+   return $e->die_event unless 
+      $e->allowed('CREATE_HOLD_NOTIFICATION', $patron->home_ou);
+
+	$note->notify_staff($e->requestor->id);
+   $e->create_action_hold_notification($note) or return $e->die_event;
+   $e->commit;
+   return $note->id;
 }
 
 
@@ -975,7 +881,7 @@ sub flesh_hold_notices {
 		my $notices = $e->search_action_hold_notification(
 			[
 				{ hold => $hold->id },
-				{ order_by => { anh => { 'notify_time desc' } } },
+				{ order_by => { anh => 'notify_time desc' } },
 			],
 			{idlist=>1}
 		);
@@ -1088,9 +994,7 @@ sub check_title_hold {
 			$e->allowed('VIEW_HOLD_PERMIT', $patron->home_ou);
 	}
 
-	return OpenILS::Event->new('PATRON_BARRED') 
-		if $patron->barred and 
-			($patron->barred =~ /t/i or $patron->barred == 1);
+	return OpenILS::Event->new('PATRON_BARRED') if $U->is_true($patron->barred);
 
 	my $rangelib	= $params{range_lib} || $patron->home_ou;
 
@@ -1142,7 +1046,7 @@ sub check_title_hold {
 
 
 
-sub _check_title_hold_is_possible {
+sub ___check_title_hold_is_possible {
 	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
 
 	my $limit	= 10;
@@ -1176,6 +1080,120 @@ sub _check_title_hold_is_possible {
 	}
 	return 0;
 }
+
+my %prox_cache;
+
+sub _check_title_hold_is_possible {
+	my( $titleid, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
+   
+   my $e = new_editor();
+
+    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
+    my $copies = $e->json_query(
+        { 
+            select => { acp => ['id', 'circ_lib'] },
+            from => {
+                acp => {
+                    acn => {
+                        field => 'id',
+                        fkey => 'call_number',
+                        'join' => {
+                            bre => {
+                                field => 'id',
+                                filter => { id => $titleid },
+                                fkey => 'record'
+                            }
+                        }
+                    },
+                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    ccs => { field => 'id', filter => { holdable => 't'}, fkey => 'status' }
+                }
+            }, 
+            where => {
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't' }
+            }
+        }
+    );
+
+   return $e->event unless defined $copies;
+   $logger->info("title possible found ".scalar(@$copies)." potential copies");
+   return 0 unless @$copies;
+
+   # -----------------------------------------------------------------------
+   # sort the copies into buckets based on their circ_lib proximity to 
+   # the patron's home_ou.  
+   # -----------------------------------------------------------------------
+
+   my $home_org = $patron->home_ou;
+   my $req_org = $request_lib->id;
+
+   my $home_prox = 
+      ($prox_cache{$home_org}) ? 
+         $prox_cache{$home_org} :
+         $prox_cache{$home_org} = $e->search_actor_org_unit_proximity({from_org => $home_org});
+
+   my %buckets;
+   my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+   push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+   my @keys = sort { $a <=> $b } keys %buckets;
+
+
+   if( $home_org ne $req_org ) {
+      # -----------------------------------------------------------------------
+      # shove the copies close to the request_lib into the primary buckets 
+      # directly before the farthest away copies.  That way, they are not 
+      # given priority, but they are checked before the farthest copies.
+      # -----------------------------------------------------------------------
+      my $req_prox = 
+         ($prox_cache{$req_org}) ? 
+            $prox_cache{$req_org} :
+            $prox_cache{$req_org} = $e->search_actor_org_unit_proximity({from_org => $req_org});
+
+      my %buckets2;
+      my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+      push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+      my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+      my $new_key = $highest_key - 0.5; # right before the farthest prox
+      my @keys2 = sort { $a <=> $b } keys %buckets2;
+      for my $key (@keys2) {
+         last if $key >= $highest_key;
+         push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+      }
+   }
+
+   @keys = sort { $a <=> $b } keys %buckets;
+
+   my $title;
+   my %seen;
+   for my $key (@keys) {
+      my @cps = @{$buckets{$key}};
+
+      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
+
+      for my $copyid (@cps) {
+
+         next if $seen{$copyid};
+         $seen{$copyid} = 1; # there could be dupes given the merged buckets
+         my $copy = $e->retrieve_asset_copy($copyid) or return $e->event;
+         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
+
+         unless($title) { # grab the title if we don't already have it
+            my $vol = $e->retrieve_asset_call_number(
+               [ $copy->call_number, { flesh => 1, flesh_fields => { acn => ['record'] } } ] );
+            $title = $vol->record;
+         }
+   
+         return 1 if verify_copy_for_hold( 
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+   
+      }
+   }
+
+   return 0;
+}
+
 
 sub _check_volume_hold_is_possible {
 	my( $vol, $title, $rangelib, $depth, $request_lib, $patron, $requestor, $pickup_lib ) = @_;
@@ -1211,58 +1229,106 @@ sub verify_copy_for_hold {
 sub find_nearest_permitted_hold {
 
 	my $class	= shift;
-	my $session = shift;
-	my $copy		= shift;
-	my $user		= shift;
+	my $editor	= shift; # CStoreEditor object
+	my $copy		= shift; # copy to target
+	my $user		= shift; # hold recipient
+	my $check_only = shift; # do no updates, just see if the copy could fulfill a hold
 	my $evt		= OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
 
-	# first see if this copy has already been selected to fulfill a hold
-	my $hold  = $session->request(
-		"open-ils.storage.direct.action.hold_request.search_where",
-		{ current_copy => $copy->id, cancel_time => undef, capture_time => undef } )->gather(1);
+	my $bc = $copy->barcode;
 
-	if( $hold ) {
-		$logger->info("hold found which can be fulfilled by copy ".$copy->id);
-		return $hold;
+	# find any existing holds that already target this copy
+	my $old_holds = $editor->search_action_hold_request(
+		{	current_copy => $copy->id, 
+			cancel_time => undef, 
+			capture_time => undef 
+		} 
+	);
+
+	# hold->type "R" means we need this copy
+	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
+
+	$logger->info("circulator: searching for best hold at org ".$user->ws_ou." and copy $bc");
+
+	# search for what should be the best holds for this copy to fulfill
+	my $best_holds = $U->storagereq(
+		"open-ils.storage.action.hold_request.nearest_hold.atomic",
+		$user->ws_ou, $copy->id, 10 );
+
+	unless(@$best_holds) {
+
+		if( my $hold = $$old_holds[0] ) {
+			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
+			return ($hold);
+		}
+
+		$logger->info("circulator: no suitable holds found for copy $bc");
+		return (undef, $evt);
 	}
 
-	# We know this hold is permitted, so just return it
-	return $hold if $hold;
 
-	$logger->debug("searching for potential holds at org ". 
-		$user->ws_ou." and copy ".$copy->id);
-
-	my $holds = $session->request(
-		"open-ils.storage.action.hold_request.nearest_hold.atomic",
-		$user->ws_ou, $copy->id, 5 )->gather(1);
-
-	return (undef, $evt) unless @$holds;
+	my $best_hold;
 
 	# for each potential hold, we have to run the permit script
 	# to make sure the hold is actually permitted.
-
-	for my $holdid (@$holds) {
+	for my $holdid (@$best_holds) {
 		next unless $holdid;
-		$logger->info("Checking if hold $holdid is permitted for user ".$user->id);
+		$logger->info("circulator: checking if hold $holdid is permitted for copy $bc");
 
-		my ($hold) = $U->fetch_hold($holdid);
-		next unless $hold;
-		my ($reqr) = $U->fetch_user($hold->requestor);
+		my $hold = $editor->retrieve_action_hold_request($holdid) or next;
+		my $reqr = $editor->retrieve_actor_user($hold->requestor) or next;
+		my $rlib = $editor->retrieve_actor_org_unit($hold->request_lib) or next;
 
-		my ($rlib) = $U->fetch_org_unit($hold->request_lib);
-
-		return ($hold) if OpenILS::Utils::PermitHold::permit_copy_hold(
-			{
-				patron_id			=> $hold->usr,
+		# see if this hold is permitted
+		my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
+			{	patron_id			=> $hold->usr,
 				requestor			=> $reqr->id,
 				copy					=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
 				request_lib			=> $rlib,
 			} 
 		);
+
+		if( $permitted ) {
+			$best_hold = $hold;
+			last;
+		}
 	}
 
-	return (undef, $evt);
+
+	unless( $best_hold ) { # no "good" permitted holds were found
+		if( my $hold = $$old_holds[0] ) { # can we return a pre-targeted hold?
+			$logger->info("circulator: using existing pre-targeted hold ".$hold->id." in hold search");
+			return ($hold);
+		}
+
+		# we got nuthin
+		$logger->info("circulator: no suitable holds found for copy $bc");
+		return (undef, $evt);
+	}
+
+	$logger->info("circulator: best hold ".$best_hold->id." found for copy $bc");
+
+	# indicate a permitted hold was found
+	return $best_hold if $check_only;
+
+	# we've found a permitted hold.  we need to "grab" the copy 
+	# to prevent re-targeted holds (next part) from re-grabbing the copy
+	$best_hold->current_copy($copy->id);
+	$editor->update_action_hold_request($best_hold) 
+		or return (undef, $editor->event);
+
+
+	# re-target any other holds that already target this copy
+	for my $old_hold (@$old_holds) {
+		next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
+		$logger->info("circulator: re-targeting hold ".$old_hold->id.
+			" after a better hold [".$best_hold->id."] was found");
+		$U->storagereq( 
+			'open-ils.storage.action.hold_request.copy_targeter', undef, $old_hold->id );
+	}
+
+	return ($best_hold);
 }
 
 

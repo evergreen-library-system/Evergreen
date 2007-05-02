@@ -5,11 +5,12 @@ use base qw/OpenSRF/;
 use OpenSRF::AppSession;
 use OpenSRF::DomainObject::oilsMethod;
 use OpenSRF::DomainObject::oilsResponse qw/:status/;
-use OpenSRF::Utils::Logger qw/:level/;
+use OpenSRF::Utils::Logger qw/:level $logger/;
 use Data::Dumper;
 use Time::HiRes qw/time/;
 use OpenSRF::EX qw/:try/;
 use Carp;
+use JSON;
 #use OpenSRF::UnixServer;  # to get the server class from UnixServer::App
 
 sub DESTROY{};
@@ -94,8 +95,10 @@ sub handler {
 
 	if ($session->last_message_type eq 'REQUEST') {
 
+        my @p = $app_msg->params;
 		my $method_name = $app_msg->method;
 		my $method_proto = $session->last_message_api_level;
+        $logger->info("CALL: $method_name [".join(', ',@p)."]");
 
 		my $coderef = $app->method_lookup( $method_name, $method_proto, 1, 1 );
 
@@ -164,9 +167,7 @@ sub handler {
 				}
 
 				my $start = time();
-				warn "About to run...\n";
 				$resp = $coderef->run( $appreq, @args); 
-				warn "Done running...\n";
 				my $time = sprintf '%.3f', time() - $start;
 
 				$log->debug( "Method duration for [$method_name]:  ". $time );

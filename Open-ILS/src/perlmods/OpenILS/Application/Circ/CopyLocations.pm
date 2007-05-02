@@ -48,24 +48,26 @@ __PACKAGE__->register_method(
 		@return The if of the new location object on success, event on error
 	/);
 
+
 sub cl_create {
-	my( $self, $client, $authtoken, $copyLoc ) = @_;
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$evt = $U->check_perms($requestor->id, 
-		$copyLoc->owning_lib, 'CREATE_COPY_LOCATION');
-	return $evt if $evt;
+    my( $self, $conn, $auth, $location ) = @_;
 
-	my $cl;
-	($cl, $evt) = $U->fetch_copy_location_by_name($copyLoc->name, $copyLoc->owning_lib);
-	return OpenILS::Event->new('COPY_LOCATION_EXISTS') if $cl;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless 
+        $e->allowed('CREATE_COPY_LOCATION', $location->owning_lib);
 
-	my $id = $U->storagereq(
-		'open-ils.storage.direct.asset.copy_location.create', $copyLoc );
+    # make sure there is no copy_location with the same name in the same place
+    my $existing = $e->search_asset_copy_location(
+        {owning_lib => $location->owning_lib, name => $location->name}, {idlist=>1});
+    return OpenILS::Event->new('COPY_LOCATION_EXISTS') if @$existing;
 
-	return $U->DB_UPDATE_FAILED($copyLoc) unless $id;
-	return $id;
+    $e->create_asset_copy_location($location) or return $e->die_event;
+    $e->commit;
+    return $location->id;
 }
+
+
 
 __PACKAGE__->register_method (
 	api_name		=> 'open-ils.circ.copy_location.delete',
@@ -79,25 +81,23 @@ __PACKAGE__->register_method (
 		@return 1 on success, event on error
 	/);
 
+
 sub cl_delete {
-	my( $self, $client, $authtoken, $id ) = @_;
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
+    my( $self, $conn, $auth, $id ) = @_;
 
-	my $cl;
-	($cl, $evt) = $U->fetch_copy_location($id);
-	return $evt if $evt;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
 
-	$evt = $U->check_perms($requestor->id, 
-		$cl->owning_lib, 'DELETE_COPY_LOCATION');
-	return $evt if $evt;
+    my $cloc = $e->retrieve_asset_copy_location($id) 
+        or return $e->die_event;
+    return $e->die_event unless 
+        $e->allowed('DELETE_COPY_LOCATION', $cloc->owning_lib);
 
-	my $resp = $U->storagereq(
-		'open-ils.storage.direct.asset.copy_location.delete', $id );
-	
-	return $U->DB_UPDATE_FAILED unless $resp;
-	return 1;
+    $e->delete_asset_copy_location($cloc) or return $e->die_event;
+    $e->commit;
+    return 1;
 }
+
 
 __PACKAGE__->register_method (
 	api_name		=> 'open-ils.circ.copy_location.update',
@@ -111,27 +111,30 @@ __PACKAGE__->register_method (
 		@return 1 on success, event on error
 	/);
 
+
 sub cl_update {
-	my( $self, $client, $authtoken, $copyLoc ) = @_;
+    my( $self, $conn, $auth, $location ) = @_;
 
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
 
-	my $cl; 
-	($cl, $evt) = $U->fetch_copy_location($copyLoc->id);
-	return $evt if $evt;
+    # check permissions against the original copy location
+    my $orig_loc = $e->retrieve_asset_copy_location($location->id)
+        or return $e->die_event;
 
-	$evt = $U->check_perms($requestor->id, 
-		$cl->owning_lib, 'UPDATE_COPY_LOCATION');
-	return $evt if $evt;
+    return $e->die_event unless 
+        $e->allowed('UPDATE_COPY_LOCATION', $orig_loc->owning_lib);
 
-	$copyLoc->owning_lib($cl->owning_lib); #disallow changing of the lib
+    # disallow hijacking of the location
+    $location->owning_lib($orig_loc->owning_lib);  
 
-	my $resp = $U->storagereq(
-		'open-ils.storage.direct.asset.copy_location.update', $copyLoc );
-	
-	return 1; # if there was no exception thrown, then the update was a success
+    $e->update_asset_copy_location($location)
+        or return $e->die_event;
+
+    $e->commit;
+    return 1;
 }
+
 
 
 __PACKAGE__->register_method(

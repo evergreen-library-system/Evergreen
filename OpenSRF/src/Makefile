@@ -31,15 +31,13 @@ OPENSRF_TARGETS = 	libtransport/transport_session.o \
 			libstack/xml_utils.o \
 			libstack/osrf_transgroup.o \
 			libstack/osrf_list.o \
-			libstack/osrf_big_list.o \
 			libstack/osrf_hash.o \
-			libstack/osrf_big_hash.o \
 			utils/socket_bundle.o \
 			utils/string_array.o \
 			utils/utils.o \
 			utils/log.o \
 			utils/md5.o \
-			utils/sha.o \
+			utils/sha.o 
 
 OPENSRF_HEADERS = 	libtransport/transport_session.h \
 			libtransport/transport_client.h \
@@ -56,16 +54,13 @@ OPENSRF_HEADERS = 	libtransport/transport_session.h \
 			libstack/xml_utils.h \
 			libstack/osrf_transgroup.h \
 			libstack/osrf_list.h \
-			libstack/osrf_big_list.h \
 			libstack/osrf_hash.h \
-			libstack/osrf_big_hash.h \
 			utils/socket_bundle.h \
 			utils/string_array.h \
 			utils/utils.h \
 			utils/log.h \
 			utils/md5.h \
-			utils/sha.h \
-
+			utils/sha.h 
 
 all: 	prep \
 	libopensrf.so \
@@ -95,7 +90,7 @@ libopensrf.so:	objson/libobjson.so
 	@echo stack
 	make -C libstack
 	@echo $@
-	$(CC) -shared -W1 $(LDFLAGS) -lJudy -lxml2 -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
+	$(CC) -shared -W1 $(LDFLAGS) -lxml2 -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
 	@echo apps
 	make -C  c-apps
 
@@ -118,7 +113,7 @@ objson/libobjson.so:	prep
 libstack/opensrf.o:	libstack/opensrf.c libopensrf.so
 libstack/opensrf:	libstack/opensrf.o
 	@echo $@
-	$(CC) $(CFLAGS) $(LDFLAGS) -lJudy -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
 	
 
 router: libopensrf.so

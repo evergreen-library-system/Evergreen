@@ -34,10 +34,12 @@ var OILS_RPT_TRANSFORMS = {
 
 	/* string transforms ------------------------- */
 
+   /* XXX not supported yet
 	substring : {
 		datatype : OILS_RPT_DTYPE_STRING,
 		label : 'Substring'
 	},
+   */
 
 	lower : {
 		datatype : OILS_RPT_DTYPE_STRING,
@@ -141,35 +143,6 @@ var OILS_RPT_TRANSFORMS = {
 		label : 'Age'
 	},
 
-	/*
-	relative_year : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Relative year'
-	},
-
-	relative_month : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Relative month'
-	},
-
-	relative_week : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Relative week'
-	},
-
-	relative_date : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Relative date'
-	},
-	*/
-
-	/* exists?
-	days_ago : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Days ago'
-	}
-	*/
-
 	months_ago : {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Months ago'
@@ -179,15 +152,6 @@ var OILS_RPT_TRANSFORMS = {
 		datatype : OILS_RPT_DTYPE_TIMESTAMP,
 		label : 'Quarters ago'
 	},
-
-
-	/* exists?
-	years_ago : {
-		datatype : OILS_RPT_DTYPE_TIMESTAMP,
-		label : 'Years ago'
-	},
-	*/
-
 
 	/* int  / float transforms ----------------------------------- */
 	sum : {
@@ -254,14 +218,15 @@ function oilsRptTformPicker(args) {
 	this.selector = elem('select');
 	this.tforms = oilsRptGetTforms(args);
 	for( var i = 0; i < this.tforms.length; i++ ) 
-		this.addOpt(this.tforms[i]);
+		this.addOpt(this.tforms[i], this.tforms[i] == args.select );
 	appendClear(this.node, this.selector);
 }
 
-oilsRptTformPicker.prototype.addOpt = function(key) {
+oilsRptTformPicker.prototype.addOpt = function(key, select) {
 	var tform = OILS_RPT_TRANSFORMS[key];		
 	var obj = this;
-	insertSelectorVal(this.selector, -1, tform.label, key);
+	var opt = insertSelectorVal(this.selector, -1, tform.label, key);
+	if( select ) opt.selected = true;
 }
 
 oilsRptTformPicker.prototype.getSelected = function(key) {

@@ -67,7 +67,7 @@
 
 		function retrieve_surveys() {
 			try {
-				var surveys = g.data.list.asv;
+				var surveys = g.data.list.my_asv;
 				g.survey_responses = {};
 				for (var i = 0; i < surveys.length; i++) {
 					var responses = g.network.simple_request(

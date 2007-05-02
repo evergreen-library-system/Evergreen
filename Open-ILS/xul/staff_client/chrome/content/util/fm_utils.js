@@ -9,7 +9,7 @@ util.fm_utils.EXPORT_TAGS	= { ':all' : util.fm_utils.EXPORT_OK };
 util.fm_utils.flatten_ou_branch = function(branch) {
 	var my_array = new Array();
 	my_array.push( branch );
-	for (var i in branch.children() ) {
+	if (typeof branch.children == 'function') for (var i in branch.children() ) {
 		var child = branch.children()[i];
 		if (child != null) {
 			var temp_array = util.fm_utils.flatten_ou_branch(child);

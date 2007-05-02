@@ -117,7 +117,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
-	my( $self, $client, $user_session, $uid ) = @_;
+	my( $self, $client, $user_session, $uid, $setting ) = @_;
 	
 	my( $staff, $user, $evt ) = 
 		$apputils->checkses_requestor( $user_session, $uid, 'VIEW_USER' );
@@ -128,7 +128,10 @@ sub user_settings {
 		'open-ils.cstore',
 		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
 
-	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+	my $settings =  { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+
+   return $$settings{$setting} if $setting;
+   return $settings;
 }
 
 
@@ -148,6 +151,28 @@ sub ou_settings {
 
 	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
 }
+
+
+
+__PACKAGE__->register_method(
+    api_name => 'open-ils.actor.ou_setting.ancestor_default',
+    method => 'ou_ancestor_setting',
+);
+
+# ------------------------------------------------------------------
+# Attempts to find the org setting value for a given org.  if not 
+# found at the requested org, searches up the org tree until it 
+# finds a parent that has the requested setting.
+# when found, returns { org => $id, value => $value }
+# otherwise, returns NULL
+# ------------------------------------------------------------------
+sub ou_ancestor_setting {
+    my( $self, $client, $orgid, $name ) = @_;
+    return $U->ou_ancestor_setting($orgid, $name);
+}
+
+
+
 
 __PACKAGE__->register_method (
 	method		=> "ou_setting_delete",
@@ -183,6 +208,14 @@ sub ou_setting_delete {
 
 
 
+
+
+
+
+
+
+
+
 __PACKAGE__->register_method(
 	method	=> "update_patron",
 	api_name	=> "open-ils.actor.patron.update",);
@@ -204,7 +237,6 @@ sub update_patron {
 	return $evt if $evt;
 
 
-	# XXX does this user have permission to add/create users.  Granularity?
 	# $new_patron is the patron in progress.  $patron is the original patron
 	# passed in with the method.  new_patron will change as the components
 	# of patron are added/updated.
@@ -419,12 +451,29 @@ sub _update_patron {
 		$patron->clear_ident_value;
 	}
 
+    $evt = verify_last_xact($session, $patron);
+    return (undef, $evt) if $evt;
+
 	my $stat = $session->request(
 		"open-ils.storage.direct.actor.user.update",$patron )->gather(1);
 	return (undef, $U->DB_UPDATE_FAILED($patron)) unless defined($stat);
 
 	return ($patron);
 }
+
+sub verify_last_xact {
+    my( $session, $patron ) = @_;
+    return undef unless $patron->id and $patron->id > 0;
+    my $p = $session->request(
+        'open-ils.storage.direct.actor.user.retrieve', $patron->id)->gather(1);
+    my $xact = $p->last_xact_id;
+    return undef unless $xact;
+    $logger->info("user xact = $xact, saving with xact " . $patron->last_xact_id);
+    return OpenILS::Event->new('XACT_COLLISION')
+        if $xact != $patron->last_xact_id;
+    return undef;
+}
+
 
 sub _check_dup_ident {
 	my( $session, $patron ) = @_;
@@ -815,12 +864,7 @@ __PACKAGE__->register_method(
 
 sub search_username {
 	my($self, $client, $username) = @_;
-	my $users = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.cstore", 
-			"open-ils.cstore.direct.actor.user.search.atomic",
-			{ usrname => $username }
-	);
-	return $users;
+    return new_editor()->search_actor_user({usrname=>$username});
 }
 
 
@@ -975,8 +1019,8 @@ sub build_org_tree {
 
 	my( $self, $orglist) = @_;
 
-	return $orglist unless ( 
-			ref($orglist) and @$orglist > 1 );
+	return $orglist unless ref $orglist;
+    return $$orglist[0] if @$orglist == 1;
 
 	my @list = sort { 
 		$a->ou_type <=> $b->ou_type ||
@@ -1053,9 +1097,10 @@ __PACKAGE__->register_method(
 );
 
 sub get_my_org_path {
-	my( $self, $client, $user_session, $org_id ) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-	if(!defined($org_id)) { $org_id = $user_obj->home_ou; }
+	my( $self, $client, $auth, $org_id ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+	$org_id = $e->requestor->ws_ou unless defined $org_id;
 
 	return $apputils->simple_scalar_request(
 		"open-ils.storage",
@@ -1079,6 +1124,7 @@ sub patron_adv_search {
 
 
 
+=head old
 sub _verify_password {
 	my($user_session, $password) = @_;
 	my $user_obj = $apputils->check_user_session($user_session); 
@@ -1114,7 +1160,12 @@ sub update_password {
 
 	my $evt;
 
+	my $session = $apputils->start_db_session();
 	my $user_obj = $apputils->check_user_session($user_session); 
+
+    #fetch the in-database version so we get the latest xact_id
+    $user_obj = $session->request(
+        'open-ils.storage.direct.actor.user.retrieve', $user_obj->id)->gather(1);
 
 	if($self->api_name =~ /password/o) {
 
@@ -1138,7 +1189,6 @@ sub update_password {
 		$user_obj->email($new_value);
 	}
 
-	my $session = $apputils->start_db_session();
 
 	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj, 1);
 	return $evt if $evt;
@@ -1148,6 +1198,60 @@ sub update_password {
 	if($user_obj) { return 1; }
 	return undef;
 }
+=cut
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.password.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.username.update");
+
+__PACKAGE__->register_method(
+	method	=> "update_passwd",
+	api_name	=> "open-ils.actor.user.email.update");
+
+sub update_passwd {
+    my( $self, $conn, $auth, $new_val, $orig_pw ) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $db_user = $e->retrieve_actor_user($e->requestor->id)
+        or return $e->die_event;
+    my $api = $self->api_name;
+
+    if( $api =~ /password/o ) {
+
+        # make sure the original password matches the in-database password
+        return OpenILS::Event->new('INCORRECT_PASSWORD')
+            if md5_hex($orig_pw) ne $db_user->passwd;
+        $db_user->passwd($new_val);
+
+    } else {
+
+        # if we don't clear the password, the user will be updated with
+        # a hashed version of the hashed version of their password
+        $db_user->clear_passwd;
+
+        if( $api =~ /username/o ) {
+
+            # make sure no one else has this username
+            my $exist = $e->search_actor_user({usrname=>$new_val},{idlist=>1}); 
+			return OpenILS::Event->new('USERNAME_EXISTS') if @$exist;
+            $db_user->usrname($new_val);
+
+        } elsif( $api =~ /email/o ) {
+            $db_user->email($new_val);
+        }
+    }
+
+    $e->update_actor_user($db_user) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+
 
 
 __PACKAGE__->register_method(
@@ -1532,6 +1636,8 @@ __PACKAGE__->register_method(
 	NOTES
 sub user_transaction_retrieve {
 	my( $self, $client, $login_session, $bill_id ) = @_;
+
+	# XXX I think I'm deprecated... make sure
 
 	my $trans = $apputils->simple_scalar_request( 
 		"open-ils.cstore",
@@ -2053,7 +2159,8 @@ sub user_transaction_history {
 			  flesh_fields => { mbt => [ qw/billings payments grocery circulation/ ] },
 			  order_by => { mbt => 'xact_start DESC' },
 			}
-		]
+		],
+      {substream => 1}
 	) };
 
 	$e->rollback;
@@ -2575,6 +2682,56 @@ sub session_home_lib {
 	return $org->shortname;
 }
 
+__PACKAGE__->register_method(
+	method => 'session_safe_token',
+	api_name => 'open-ils.actor.session.safe_token',
+	signature => q/
+		Returns a hashed session ID that is safe for export to the world.
+		This safe token will expire after 1 hour of non-use.
+		@param auth Active authentication token
+	/
+);
+
+sub session_safe_token {
+	my( $self, $conn, $auth ) = @_;
+	my $e = new_editor(authtoken=>$auth);
+	return undef unless $e->checkauth;
+
+	my $safe_token = md5_hex($auth);
+
+	$cache ||= OpenSRF::Utils::Cache->new("global", 0);
+
+	# Add more like the following if needed...
+	$cache->put_cache(
+		"safe-token-home_lib-shortname-$safe_token",
+		$e->retrieve_actor_org_unit(
+			$e->requestor->home_ou
+		)->shortname,
+		60 * 60
+	);
+
+	return $safe_token;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'safe_token_home_lib',
+	api_name => 'open-ils.actor.safe_token.home_lib.shortname',
+	signature => q/
+		Returns the home library shortname from the session
+		asscociated with a safe token from generated by
+		open-ils.actor.session.safe_token.
+		@param safe_token Active safe token
+	/
+);
+
+sub safe_token_home_lib {
+	my( $self, $conn, $safe_token ) = @_;
+
+	$cache ||= OpenSRF::Utils::Cache->new("global", 0);
+	return $cache->get_cache( 'safe-token-home_lib-shortname-'. $safe_token );
+}
+
 
 
 __PACKAGE__->register_method(
@@ -2715,6 +2872,9 @@ sub user_retrieve_parts {
 	push(@resp, $user->$_()) for(@$fields);
 	return \@resp;
 }
+
+
+
 
 
 

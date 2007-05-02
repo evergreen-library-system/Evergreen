@@ -116,7 +116,7 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 		//	if( ! session_wait( client->session, -1 ) ) {
 			int x;
 			if( (x = session_wait( client->session, -1 )) ) {
-				osrfLogWarning(OSRF_LOG_MARK, "session_wait returned failure code %d\n", x);
+				osrfLogDebug(OSRF_LOG_MARK, "session_wait returned failure code %d\n", x);
 				client->error = 1;
 				return NULL;
 			}
@@ -136,7 +136,7 @@ transport_message* client_recv( transport_client* client, int timeout ) {
 
 			if( (wait_ret= session_wait( client->session, remaining)) ) {
 				client->error = 1;
-				osrfLogWarning(OSRF_LOG_MARK, "session_wait returned failure code %d: setting error=1\n", wait_ret);
+				osrfLogDebug(OSRF_LOG_MARK, "session_wait returned failure code %d: setting error=1\n", wait_ret);
 				return NULL;
 			}
 

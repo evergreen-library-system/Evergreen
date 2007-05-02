@@ -194,80 +194,37 @@ sub bucket_create {
 		
 	$bucket->clear_id;
 
-	$logger->debug("creating bucket: " . Dumper($bucket));
+    my $evt = OpenILS::Event->new('CONTAINER_EXISTS', 
+        payload => [$class, $bucket->owner, $bucket->btype, $bucket->name]);
+    my $search = {name => $bucket->name, owner => $bucket->owner, btype => $bucket->btype};
 
-	my $stat;
+	my $obj;
 	if( $class eq 'copy' ) {
+        return $evt if $e->search_container_copy_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_copy_bucket($bucket);
+			$obj = $e->create_container_copy_bucket($bucket);
 	}
 
 	if( $class eq 'callnumber' ) {
+        return $evt if $e->search_container_call_number_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_call_number_bucket($bucket);
+			$obj = $e->create_container_call_number_bucket($bucket);
 	}
 
 	if( $class eq 'biblio' ) {
+        return $evt if $e->search_container_biblio_record_entry_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_biblio_record_entry_bucket($bucket);
+			$obj = $e->create_container_biblio_record_entry_bucket($bucket);
 	}
 
 	if( $class eq 'user') {
+        return $evt if $e->search_container_user_bucket($search)->[0];
 		return $e->event unless
-			$stat = $e->create_container_user_bucket($bucket);
+			$obj = $e->create_container_user_bucket($bucket);
 	}
 
 	$e->commit;
-	return $stat->id;
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "bucket_delete",
-	api_name	=> "open-ils.actor.container.delete",
-	notes		=> <<"	NOTES");
-		Deletes a bucket object.  If requestor is different from
-		bucketOwner, requestor needs DELETE_CONTAINER permissions
-		PARAMS(authtoken, class, bucketId);
-		Returns the new bucket object
-	NOTES
-
-sub bucket_delete {
-	my( $self, $client, $authtoken, $class, $bucketid ) = @_;
-	my( $bucket, $evt );
-
-	my $e = new_editor(xact=>1, authtoken=>$authtoken);
-	return $e->event unless $e->checkauth;
-
-	( $bucket, $evt ) = $U->fetch_container_e($e, $bucketid, $class);
-	return $evt if $evt;
-
-	return $e->event unless $e->allowed('DELETE_CONTAINER');
-
-	my $stat;
-	if( $class eq 'copy' ) {
-		return $e->event unless
-			$stat = $e->delete_container_copy_bucket($bucket);
-	}
-
-	if( $class eq 'callnumber' ) {
-		return $e->event unless
-			$stat = $e->delete_container_call_number_bucket($bucket);
-	}
-
-	if( $class eq 'biblio' ) {
-		return $e->event unless
-			$stat = $e->delete_container_biblio_record_entry_bucket($bucket);
-	}
-
-	if( $class eq 'user') {
-		return $e->event unless
-			$stat = $e->delete_container_user_bucket($bucket);
-	}
-
-	$e->commit;
-	return $stat;
-
+	return $obj->id;
 }
 
 
@@ -354,7 +311,9 @@ sub __item_delete {
 	return $evt if $evt;
 
 	if( $bucket->owner ne $e->requestor->id ) {
-		return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM');
+      my $owner = $e->retrieve_actor_user($bucket->owner)
+         or return $e->die_event;
+		return $e->event unless $e->allowed('DELETE_CONTAINER_ITEM', $owner->home_ou);
 	}
 
 	my $stat;
@@ -399,7 +358,9 @@ sub full_delete {
 	return $evt if $evt;
 
 	if( $container->owner ne $e->requestor->id ) {
-		return $e->event unless $e->allowed('DELETE_CONTAINER');
+      my $owner = $e->retrieve_actor_user($container->owner)
+         or return $e->die_event;
+		return $e->event unless $e->allowed('DELETE_CONTAINER', $owner->home_ou);
 	}
 
 	my $items; 

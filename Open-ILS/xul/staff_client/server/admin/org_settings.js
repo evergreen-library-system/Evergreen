@@ -8,9 +8,9 @@ var myPerms = [ 'UPDATE_ORG_SETTING' ];
 var ORG_SETTINGS = {
 	'circ.lost_materials_processing_fee'	: null,
 	'cat.default_item_price'					: null,
-//	'circ.collections_fee'						: null,
 	'auth.opac_timeout'							: null,
 	'auth.staff_timeout'							: null,
+   'org.bounced_emails'                   : null,
 };
 
 function osEditorInit() {

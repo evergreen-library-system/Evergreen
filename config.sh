@@ -24,6 +24,7 @@
 
 CONFIG_FILE="install.conf";
 DEFAULT_CONFIG_FILE="install.conf.default";
+USE_DEFAULT="$1";
 
 function buildConfig {
 
@@ -34,6 +35,12 @@ function buildConfig {
 			source "$DEFAULT_CONFIG_FILE";
 		fi;
 	fi;
+
+    if [ -n "$USE_DEFAULT" ]; then
+        prompt "Default config requested, not prompting for values...\n";
+        writeConfig;
+        return 0;
+    fi;
 
 
 	echo "";
@@ -59,15 +66,7 @@ function buildConfig {
 	XSLDIR="$PREFIX/var/xsl";
 	REPORTERDIR="$PREFIX/var/reporter";
 	TMP="$(pwd)/.tmp";
-
-	prompt "Web domain for OPAC in Staff Client [$NEW_OPAC_URL] "
-	read X; if [ ! -z "$X" ]; then NEW_OPAC_URL="$X"; fi;
-
-	prompt "Package Name for Staff Client [$NEW_XUL_PACKAGE_NAME] "
-	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_NAME="$X"; fi;
-
-	prompt "Package Label for Staff Client [$NEW_XUL_PACKAGE_LABEL] "
-	read X; if [ ! -z "$X" ]; then NEW_XUL_PACKAGE_LABEL="$X"; fi;
+	ADMINDIR="$PREFIX/var/admin";
 
 	prompt "Apache2 apxs binary [$APXS2] "
 	read X; if [ ! -z "$X" ]; then APXS2="$X"; fi;
@@ -108,7 +107,7 @@ function buildConfig {
 	writeConfig;
 }
 
-function prompt { echo ""; echo -n "$*"; }
+function prompt { echo ""; echo -en "$*"; }
 
 function writeConfig {
 
@@ -139,10 +138,6 @@ function writeConfig {
 	_write "PENALTYRULESDIR=\"$PENALTYRULESDIR\"";
 	_write "XSLDIR=\"$XSLDIR\"";
 
-	_write "NEW_OPAC_URL=\"$NEW_OPAC_URL\"";
-	_write "NEW_XUL_PACKAGE_NAME=\"$NEW_XUL_PACKAGE_NAME\"";
-	_write "NEW_XUL_PACKAGE_LABEL=\"$NEW_XUL_PACKAGE_LABEL\"";
-
 	# print out the targets
 	STR="TARGETS=(";
 	for target in ${TARGETS[@]:0}; do
@@ -166,6 +161,7 @@ function writeConfig {
 	_write "DBUSER=\"$DBUSER\"";
 	_write "DBPW=\"$DBPW\"";
 	_write "REPORTERDIR=\"$REPORTERDIR\"";
+	_write "ADMINDIR=\"$ADMINDIR\"";
 
 
 	# Now we'll write out the DB bootstrapping config

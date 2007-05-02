@@ -127,9 +127,11 @@ function cdInitCals() {
 
 }
 
-function cdDrawRange( start, end ) {
+function cdDrawRange( start, end, alertSuccess ) {
 	start = (start) ? start : new Date().getYear() + 1900 + '-01-01';
 	end = (end) ? end : '3001-01-01';
+
+    if(alertSuccess) alertId('cd_update_success');
 
 	selectedStart = start;
 	selectedEnd = end;
@@ -263,7 +265,7 @@ function cdDelete(row, date) {
 		function(r) {
 			var res = r.getResultObject();
 			if( checkILSEvent(res) ) alertILSEvent(res);
-			cdDrawRange(selectedStart, selectedEnd);
+			cdDrawRange(selectedStart, selectedEnd, true);
 		}
 	)
 	req.send();
@@ -286,21 +288,26 @@ function cdDateStrToDate( str ) {
 	var data = str.split(/ /);
 
 	var year = data[0];
-	var time	= data[1];
+	var time = data[1];
 
 	if(!cdVerifyDate(year)) return alertId('cd_invalid_date');
 	if(!cdVerifyTime(time)) return alertId('cd_invalid_time');
 
 	var yeardata = year.split(/-/);
 	var timedata = time.split(/:/);
+    
+    /*  seed the date with day = 1, which is a valid day for any month.  
+        this prevents automatic date correction by the date code for days that 
+        fall outside of the current or target month */
+    date.setDate(1);
 
-	date.setFullYear(yeardata[0]);
-	date.setMonth(yeardata[1] - 1);
-	date.setDate(yeardata[2]);
+	date.setFullYear(new Number(yeardata[0]));
+	date.setMonth(new Number(yeardata[1]) - 1);
+    date.setDate(new Number(yeardata[2]));
 
-	date.setHours(timedata[0]);
-	date.setMinutes(timedata[1]);
-	date.setSeconds(timedata[2]);
+	date.setHours(new Number(timedata[0]));
+	date.setMinutes(new Number(timedata[1]));
+	date.setSeconds(new Number(timedata[2]));
 
 	return date;
 }
@@ -313,6 +320,7 @@ function cdNew() {
 	if( ! $('cd_edit_allday_row').className.match(/hide_me/) ) {
 
 		var date = $('cd_edit_allday_start_date').value;
+
 		start = cdDateStrToDate(date + ' 00:00:00');
 		end = cdDateStrToDate(date + ' 23:59:59');
 
@@ -402,7 +410,7 @@ function cdCreateOne( org, start, end, note, refresh ) {
 		function(r) {
 			var res = r.getResultObject();
 			if( checkILSEvent(res) ) alertILSEvent(res);
-			if(refresh) cdDrawRange(selectedStart, selectedEnd);
+			if(refresh) cdDrawRange(selectedStart, selectedEnd, true);
 		}
 	);
 	req.send();

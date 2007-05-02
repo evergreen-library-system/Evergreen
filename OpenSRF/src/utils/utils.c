@@ -1,7 +1,5 @@
 /*
 Copyright (C) 2005  Georgia Public Library Service 
-Bill Erickson <highfalutin@gmail.com>
-Mike Rylander <mrylander@gmail.com>
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,7 +14,6 @@ GNU General Public License for more details.
 
 #include "utils.h"
 #include <errno.h>
-
 
 inline void* safe_malloc( int size ) {
 	void* ptr = (void*) malloc( size );
@@ -255,56 +252,45 @@ int buffer_add_char(growing_buffer* gb, char c) {
 char* uescape( const char* string, int size, int full_escape ) {
 
 	growing_buffer* buf = buffer_init(size + 64);
+	int clen = 0;
 	int idx = 0;
-	long unsigned int c = 0;
+	unsigned long int c = 0x0;
 
 	while (string[idx]) {
-	
-		c ^= c;
-		
-		if ((string[idx] & 0xF0) == 0xF0) {
-			c = string[idx]<<18;
 
-			if( size - idx < 4 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<12;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<6;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFF000000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
+		c = 0x0;
 
-		} else if ((string[idx] & 0xE0) == 0xE0) {
-			c = string[idx]<<12;
-			if( size - idx < 3 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F)<<6;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFFF80000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
+		if ((unsigned char)string[idx] >= 0x80) { // not ASCII
 
-		} else if ((string[idx] & 0xC0) == 0xC0) {
-			// Two byte char
-			c = string[idx]<<6;
-			if( size - idx < 2 ) return NULL;
-			
-			idx++;
-			c |= (string[idx] & 0x3F);
-			
-			c ^= 0xFFFFF000;
-			
-			buffer_fadd(buf, "\\u%0.4x", c);
+			if ((unsigned char)string[idx] >= 0xC0 && (unsigned char)string[idx] <= 0xF4) { // starts a UTF8 string
+
+				clen = 1;
+				if (((unsigned char)string[idx] & 0xF0) == 0xF0) {
+					clen = 3;
+					c = (unsigned char)string[idx] ^ 0xF0;
+
+				} else if (((unsigned char)string[idx] & 0xE0) == 0xE0) {
+					clen = 2;
+					c = (unsigned char)string[idx] ^ 0xE0;
+
+				} else if (((unsigned char)string[idx] & 0xC0) == 0xC0) {
+					clen = 1;
+					c = (unsigned char)string[idx] ^ 0xC0;
+				}
+
+				for (;clen;clen--) {
+
+					idx++; // look at the next byte
+					c = (c << 6) | ((unsigned char)string[idx] & 0x3F); // add this byte worth
+
+				}
+
+				buffer_fadd(buf, "\\u%04x", c);
+
+			} else {
+				buffer_free(buf);
+				return NULL;
+			}
 
 		} else {
 			c = string[idx];
@@ -347,17 +333,9 @@ char* uescape( const char* string, int size, int full_escape ) {
 						OSRF_BUFFER_ADD_CHAR(buf, '\\');
 						break;
 
-					case 30: /* record separator */
-						OSRF_BUFFER_ADD(buf, "\\u001E");
-						break;
-
-					case 1: /* record separator */
-						OSRF_BUFFER_ADD(buf, "\\u0001");
-						break;
-
-
 					default:
-						OSRF_BUFFER_ADD_CHAR(buf, c);
+						if( c < 32 ) buffer_fadd(buf, "\\u%04x", c);
+						else OSRF_BUFFER_ADD_CHAR(buf, c);
 				}
 
 			} else {
@@ -391,13 +369,14 @@ int daemonize() {
 	}
 }
 
+
+/* Return 1 if the string represents an integer,  */
+/* as recognized by strtol(); Otherwise return 0. */
+
 int stringisnum(char* s) {
-	char* w = (char*) malloc(strlen(s) * sizeof(char*));
-	bzero(w, strlen(s));
+	char* w;
 	strtol(s, &w, 10);
-	if(strlen(w) > 0)  
-		return 0;
-	return 1;
+	return *w ? 0 : 1;
 }
 	
 

@@ -98,7 +98,7 @@ function oilsRptMakeLabel(path) {
 				str += oilsIDL[parts[i]].label;
 		} else {
 			var f = oilsRptFindField(oilsIDL[parts[i-1]], parts[i]);
-			str += ":"+f.label;
+			str += " -> "+f.label;
 		}
 	}
 	return str;

@@ -89,7 +89,9 @@ function do_action {
 
 		pid=$(cat $pidfile);
 		echo "Stopping $item : $pid";
-		kill -s INT $pid;
+		kill -s INT $pid 2> /dev/null;
+        sleep 1;
+		kill -9 $pid 2> /dev/null;
 		rm -f $pidfile;
 
 	fi;

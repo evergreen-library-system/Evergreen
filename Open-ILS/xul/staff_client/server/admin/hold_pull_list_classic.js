@@ -102,7 +102,7 @@ function pullListDrawCopy( tbody, row, hold, idx, copy ) {
 	$n(row, 'copy_number').appendChild(text(copy.copy_number()));
 	try {
 		if (copy.age_protect()) {
-			$n(row, 'age_protect').appendChild(text( (copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() )) ));	
+			$n(row, 'age_protect').appendChild(text( (copy.age_protect() == null ? '<Unset>' : ( typeof copy.age_protect() == 'object' ? copy.age_protect().name() : g.data.hash.crahp[ copy.age_protect() ].name() )) + ' (' + copy.create_date().substr(0,10) + ')' ));	
 			unHideMe($n(row, 'age_protect_span'));
 		}
 	} catch(E) { alert(E); }
