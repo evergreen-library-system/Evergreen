@@ -52,7 +52,11 @@ function save_user () {
 
 	try {
 
+		var save_perms = [];
 		for (var i in user_perms) {
+			// Group based perm? skip it.
+			if (user_perms[i].id() < 0) continue;
+
 			if (user_perms[i].depth() == null) {
 				var p;
 				for (var j in perm_list) {
@@ -63,9 +67,11 @@ function save_user () {
 				}
 				throw "Depth is required on the " + p.code() + " permission.";
 			}
+
+			save_perms.push( user_perms[i] );
 		}
 
-		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, user_perms );
+		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, save_perms );
 		req.send(true);
 		var ok = req.getResultObject();
 
@@ -149,11 +155,7 @@ function init_editor (u) {
 	if (user.id() > 0) {
 		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id, user.id() );
 		req.send(true);
-		var up = req.getResultObject();
-		for (var i in up) {
-			if (up[i].id() > 0)
-				user_perms.push(up[i]);
-		}
+		user_perms = req.getResultObject();
 
 		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.retrieve' );
 		req.send(true);
@@ -195,13 +197,13 @@ function display_perm (root,perm_def,staff_perms, r) {
 	}
 
 	for (var i in user_perms) {
-		if (perm_def.id() == user_perms[i].perm() && user_perms[i].id() > 0)
+		if (perm_def.id() == user_perms[i].perm())
 			up = user_perms[i];
 	}
 
 
 	var dis = false;
-	if (!sp || !sp.grantable()) dis = true; 
+	if ((up && up.id() < 0) || !sp || !sp.grantable()) dis = true; 
 	if (all) dis = false; 
 
 	var label_cell = findNodeByName(prow,'plabel');

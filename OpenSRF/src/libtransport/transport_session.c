@@ -30,6 +30,7 @@ transport_session* init_transport(  char* server,
 	/* for OpenSRF extensions */
 	session->router_to_buffer		= buffer_init( JABBER_JID_BUFSIZE );
 	session->router_from_buffer	= buffer_init( JABBER_JID_BUFSIZE );
+	session->osrf_xid_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 	session->router_class_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 	session->router_command_buffer	= buffer_init( JABBER_JID_BUFSIZE );
 
@@ -97,6 +98,7 @@ int session_free( transport_session* session ) {
 	buffer_free(session->message_error_type);
 	buffer_free(session->router_to_buffer);
 	buffer_free(session->router_from_buffer);
+	buffer_free(session->osrf_xid_buffer);
 	buffer_free(session->router_class_buffer);
 	buffer_free(session->router_command_buffer);
 	buffer_free(session->session_id);
@@ -331,6 +333,7 @@ void startElementHandler(
 		buffer_add( ses->from_buffer, get_xml_attr( atts, "from" ) );
 		buffer_add( ses->recipient_buffer, get_xml_attr( atts, "to" ) );
 		buffer_add( ses->router_from_buffer, get_xml_attr( atts, "router_from" ) );
+		buffer_add( ses->osrf_xid_buffer, get_xml_attr( atts, "osrf_xid" ) );
 		buffer_add( ses->router_to_buffer, get_xml_attr( atts, "router_to" ) );
 		buffer_add( ses->router_class_buffer, get_xml_attr( atts, "router_class" ) );
 		buffer_add( ses->router_command_buffer, get_xml_attr( atts, "router_command" ) );
@@ -467,6 +470,8 @@ void endElementHandler( void *session, const xmlChar *name) {
 				ses->router_command_buffer->buf,
 				ses->router_broadcast );
 
+         message_set_osrf_xid( msg, ses->osrf_xid_buffer->buf );
+
 			if( ses->message_error_type->n_used > 0 ) {
 				set_msg_error( msg, ses->message_error_type->buf, ses->message_error_code );
 			}
@@ -539,6 +544,7 @@ int reset_session_buffers( transport_session* ses ) {
 	buffer_reset( ses->from_buffer );
 	buffer_reset( ses->recipient_buffer );
 	buffer_reset( ses->router_from_buffer );
+	buffer_reset( ses->osrf_xid_buffer );
 	buffer_reset( ses->router_to_buffer );
 	buffer_reset( ses->router_class_buffer );
 	buffer_reset( ses->router_command_buffer );

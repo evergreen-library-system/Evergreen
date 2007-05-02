@@ -38,6 +38,8 @@ osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_s
 
 	if(!msg) return NULL;
 
+   osrfLogSetXid(msg->osrf_xid);
+
 	osrfLogDebug( OSRF_LOG_MARK,  "Transport handler received new message \nfrom %s "
 			"to %s with body \n\n%s\n", msg->sender, msg->recipient, msg->body );
 

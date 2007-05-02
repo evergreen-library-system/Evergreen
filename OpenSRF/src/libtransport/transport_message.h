@@ -7,6 +7,7 @@
 #include <libxml/xmlmemory.h>
 
 #include "opensrf/utils.h"
+#include "opensrf/xml_utils.h"
 #include "opensrf/log.h"
 
 #ifndef TRANSPORT_MESSAGE_H
@@ -27,6 +28,7 @@ struct transport_message_struct {
 	char* router_to;
 	char* router_class;
 	char* router_command;
+   char* osrf_xid;
 	int is_error;
 	char* error_type;
 	int error_code;
@@ -48,6 +50,8 @@ transport_message* new_message_from_xml( const char* msg_xml );
 
 void message_set_router_info( transport_message* msg, char* router_from,
 		char* router_to, char* router_class, char* router_command, int broadcast_enabled );
+
+void message_set_osrf_xid( transport_message* msg, char* osrf_xid );
 
 // ---------------------------------------------------------------------------------
 // Formats the Jabber message as XML for encoding. 

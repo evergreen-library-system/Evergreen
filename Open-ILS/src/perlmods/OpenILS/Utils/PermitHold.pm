@@ -69,8 +69,21 @@ sub permit_copy_hold {
 		push( @allevents, OpenILS::Event->new('ITEM_NOT_HOLDABLE') )
 			unless $U->is_true($ctx->{copy}->status->holdable);
 	
-		my $evt = check_age_protect($ctx->{patron}, $ctx->{copy});
-		push( @allevents, $evt ) if $evt;
+      my $evt;
+
+      # grab the data safely
+      my $rlib = ref($$params{request_lib}) ? $$params{request_lib}->id : $$params{request_lib};
+      my $olib = ref($ctx->{volume}) ? $ctx->{volume}->owning_lib : -1;
+      my $rid  = ref($ctx->{requestor}) ? $ctx->{requestor}->id : -2;
+		my $pid  = ($params->{patron}) ? $params->{patron}->id : $params->{patron_id};
+
+      if( ($rid ne $pid) and ($olib eq $rlib) ) {
+         $logger->info("Item owning lib $olib is the same as the request lib.  No age_protection will be checked");
+      } else {
+         $logger->info("item owning lib = $olib, request lib = $rlib, requestor=$rid, patron=$pid. checking age_protection");
+		   $evt = check_age_protect($ctx->{patron}, $ctx->{copy});
+		   push( @allevents, $evt ) if $evt;
+      }
 	
 		$logger->debug("Running permit_copy_hold on copy " . $$params{copy}->id);
 	
@@ -82,7 +95,6 @@ sub permit_copy_hold {
 		# Extract and uniquify the event list
 		# --------------------------------------------------------------
 		my $events = $result->{events};
-		my $pid = ($params->{patron}) ? $params->{patron}->id : $params->{patron_id};
 		$logger->debug("circ_permit_hold for user $pid returned events: [@$events]");
 	
 		push( @allevents, OpenILS::Event->new($_)) for @$events;
