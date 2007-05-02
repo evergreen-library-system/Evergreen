@@ -48,7 +48,7 @@
 	<spacer flex="1"/>
 	<button id="save_button2" command="save_columns2" label="Save Columns" />
 	<button id="clip_button2" command="sel_clip2" label="Copy to Clipboard" disabled="true" />
-	<button command="copy_buckets_delete_item" label="Delete Selected" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
+	<button command="copy_buckets_delete_item" label="Remove Selected From Bucket" disabled="true" image="/xul/server/skin/media/images/icon_delete.gif"/>
 	<button command="copy_buckets_export" label="Add Selected" disabled="true" image="/xul/server/skin/media/images/up_arrow.gif"/>
 </hbox>
 
@@ -73,7 +73,7 @@
 		<button label="Show Status" command="cmd_export_to_copy_status"/>
 		<button command="copy_buckets_transfer_to_volume" label="Transfer to Specific Volume"/>
 		<button command="copy_buckets_batch_copy_edit" label="Edit Item Attributes" image="/xul/server/skin/media/images/grinder.gif"/>
-		<button command="copy_buckets_batch_copy_delete" label="Delete" />
+		<button command="copy_buckets_batch_copy_delete" label="Delete All from Catalog" />
 	</hbox>
 </hbox>
 
