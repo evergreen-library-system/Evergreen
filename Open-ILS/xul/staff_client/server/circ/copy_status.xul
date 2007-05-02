@@ -53,17 +53,26 @@
 					try { window.xulG.set_tab_name('Item Status'); } catch(E) { alert(E); }
 				}
 
+				g.barcodes = [];
 				if (g.cgi.param('barcodes')) {
-					var barcodes = JSON2js(g.cgi.param('barcodes'));
+					g.barcodes = g.barcodes.concat( JSON2js(g.cgi.param('barcodes')) );
+				}
+				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
+				if (g.data.temp_barcodes_for_copy_status) {
+					g.barcodes = g.barcodes.concat( g.data.temp_barcodes_for_copy_status );
+					g.data.temp_barcodes_for_copy_status = null; g.data.stash('temp_barcodes_for_copy_status');
+				}
+
+				if (g.barcodes.length > 0) {
 					JSAN.use('util.exec'); var exec = new util.exec();
 					var funcs = [];
-					for (var i = 0; i < barcodes.length; i++) {
+					for (var i = 0; i < g.barcodes.length; i++) {
 						funcs.push(
 							function(b){
 								return function() {
 									g.copy_status.copy_status(b);
 								}
-							}(barcodes[i])
+							}(g.barcodes[i])
 						);
 					}
 					exec.chain( funcs );

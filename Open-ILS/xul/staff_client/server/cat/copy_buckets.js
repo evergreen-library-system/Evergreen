@@ -644,7 +644,10 @@ cat.copy_buckets.prototype = {
 									obj.list2.dump_retrieve_ids(),
 									function(o) { return JSON2js(o)[1]; }
 								);
-								var url = urls.XUL_COPY_STATUS + '?barcodes=' + window.escape( js2JSON(barcodes) );
+								var url = urls.XUL_COPY_STATUS; // + '?barcodes=' + window.escape( js2JSON(barcodes) );
+								JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+								data.temp_barcodes_for_copy_status = barcodes;
+								data.stash('temp_barcodes_for_copy_status');
 								xulG.new_tab( url, {}, {});
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
