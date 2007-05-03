@@ -1214,8 +1214,8 @@ sub verify_copy_for_hold {
 	return 1 if OpenILS::Utils::PermitHold::permit_copy_hold(
 		{	patron				=> $patron, 
 			requestor			=> $requestor, 
-			copy					=> $copy,
-			title					=> $title, 
+			copy				=> $copy,
+			title				=> $title, 
 			title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
 			pickup_lib			=> $pickup_lib,
 			request_lib			=> $request_lib 
@@ -1282,8 +1282,8 @@ sub find_nearest_permitted_hold {
 		# see if this hold is permitted
 		my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
 			{	patron_id			=> $hold->usr,
-				requestor			=> $reqr->id,
-				copy					=> $copy,
+				requestor			=> $reqr,
+				copy				=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
 				request_lib			=> $rlib,
 			} 
