@@ -188,21 +188,28 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	session->transport_handle = osrf_system_get_transport_client();
 	if( session->transport_handle == NULL ) {
 		osrfLogWarning( OSRF_LOG_MARK, "No transport client for service 'client'");
+		free( session );
 		return NULL;
 	}
 
 	char target_buf[512];
-	memset(target_buf,0,512);
+	target_buf[ 0 ] = '\0';
 
 	osrfStringArray* arr = osrfNewStringArray(8);
 	osrfConfigGetValueList(NULL, arr, "/domains/domain");
 	char* domain = osrfStringArrayGetString(arr, 0);
 	char* router_name = osrfConfigGetValue(NULL, "/router_name");
 	
-	sprintf( target_buf, "%s@%s/%s",  router_name, domain, remote_service );
+	int len = snprintf( target_buf, 512, "%s@%s/%s",  router_name, domain, remote_service );
 	osrfStringArrayFree(arr);
 	//free(domain);
 	free(router_name);
+
+	if( len >= sizeof( target_buf ) ) {
+		osrfLogWarning( OSRF_LOG_MARK, "Buffer overflow for remote_id");
+		free( session );
+		return NULL;
+	}
 
 	session->request_queue = osrfNewList();
 	session->request_queue->freeItem = &_osrf_app_request_free;
