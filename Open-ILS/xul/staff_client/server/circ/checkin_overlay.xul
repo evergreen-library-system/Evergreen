@@ -16,6 +16,7 @@
 		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_last_patron" label="Retrieve Last Patron who circulated item" accesskey="R"/>
 		<menuseparator/>
 		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 		<menuseparator />
@@ -79,6 +80,7 @@
 					<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
 					<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
 					<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+					<menuitem command="sel_last_patron" label="Retrieve Last Patron who circulated item" accesskey="R"/>
 					<menuseparator />
 					<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
 					<menuseparator />

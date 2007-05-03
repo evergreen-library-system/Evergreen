@@ -43,7 +43,7 @@
 # If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-TARGETS=("opensrf_all" "openils_all" "evergreen_core");
+TARGETS=("opensrf_all" "openils_core" "openils_web" "evergreen_core");
 
 
 # --------------------------------------------------------------------
@@ -75,7 +75,7 @@ TMP="/tmp/ilstmp/";
 # to the published API.
 # --------------------------------------------------------------------
 
-APXS2="/opt/bin/apxs"; 
+APXS2="/usr/bin/apxs2";
 
 
 # --------------------------------------------------------------------
@@ -83,8 +83,8 @@ APXS2="/opt/bin/apxs";
 # be set when building the mod_ils_gateway C plugin for allowing web 
 # access to the published API.
 # --------------------------------------------------------------------
-APACHE2_HEADERS="/opt/include/";
-APR_HEADERS="/opt/include/";
+APACHE2_HEADERS="/usr/include/apache2";
+APR_HEADERS="/usr/include/apr-1.0/";
 
 
 # --------------------------------------------------------------------

@@ -246,8 +246,8 @@ sub build_org_tree {
 
 	my( $self, $orglist, $add_types ) = @_;
 
-	return $orglist unless ( 
-			ref($orglist) and @$orglist > 1 );
+	return $orglist unless ref $orglist; 
+    return $$orglist[0] if @$orglist == 1;
 
 	my @list = sort { 
 		$a->ou_type <=> $b->ou_type ||
@@ -270,7 +270,6 @@ sub build_org_tree {
 	}
 
 	return $list[0];
-
 }
 
 sub fetch_closed_date {
@@ -437,6 +436,7 @@ sub record_to_mvr {
 	$u->start_mods_batch( $record->marc );
 	my $mods = $u->finish_mods_batch();
 	$mods->doc_id($record->id);
+   $mods->tcn($record->tcn_value);
 	return $mods;
 }
 
@@ -1131,7 +1131,7 @@ sub patron_total_items_out {
 sub fetch_mbts {
 	my $self = shift;
 	my $id	= shift;
-	my $editor = shift || new_editor();
+	my $editor = shift || OpenILS::Utils::CStoreEditor->new;
 
 	$id = $id->id if (ref($id));
 
@@ -1198,8 +1198,8 @@ sub make_mbts {
 
 		$s->total_paid( sprintf('%0.2f', $tp / 100 ) );
 		$s->balance_owed( sprintf('%0.2f', ($to - $tp) / 100) );
-		$s->xact_type( 'grocery' ) if ($x->grocery);
-		$s->xact_type( 'circulation' ) if ($x->circulation);
+		$s->xact_type('grocery') if ($x->grocery);
+		$s->xact_type('circulation') if ($x->circulation);
 
 		$logger->debug("Created mbts with balance_owed = ". $s->balance_owed);
 		
@@ -1210,9 +1210,42 @@ sub make_mbts {
 }
 		
 		
+sub ou_ancestor_setting_value {
+    my $obj = ou_ancestor_setting(@_);
+    return ($obj) ? $obj->{value} : undef;
+}
+
+sub ou_ancestor_setting {
+    my( $self, $orgid, $name, $e ) = @_;
+    $e = $e || OpenILS::Utils::CStoreEditor->new;
+
+    do {
+        my $setting = $e->search_actor_org_unit_setting({org_unit=>$orgid, name=>$name})->[0];
+
+        if( $setting ) {
+            $logger->info("found org_setting $name at org $orgid : " . $setting->value);
+            return { org => $orgid, value => JSON->JSON2perl($setting->value) };
+        }
+
+        my $org = $e->retrieve_actor_org_unit($orgid) or return $e->event;
+        $orgid = $org->parent_ou or return undef;
+
+    } while(1);
+
+    return undef;
+}	
 		
-		
-		
+
+# returns the ISO8601 string representation of the requested epoch in GMT
+sub epoch2ISO8601 {
+    my( $self, $epoch ) = @_;
+    my ($sec,$min,$hour,$mday,$mon,$year) = gmtime($epoch);
+    $year += 1900; $mon += 1;
+    my $date = sprintf(
+        '%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
+        $year, $mon, $mday, $hour, $min, $sec);
+    return $date;
+}
 			
 	
 1;

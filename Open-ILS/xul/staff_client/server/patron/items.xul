@@ -69,6 +69,7 @@
 
 	<commandset id="items_cmds">
 		<command id="save_columns" />
+		<command id="sel_bucket" disabled="true"/>
 		<command id="sel_clip" />
 		<command id="sel_copy_details"/>
 		<command id="sel_patron"/>
@@ -88,6 +89,7 @@
 		<command id="cmd_show_noncats" />
 
 		<command id="save_columns2" />
+		<command id="sel_bucket2" disabled="true"/>
 		<command id="sel_clip2" />
 		<command id="sel_copy_details2"/>
 		<command id="sel_patron2"/>

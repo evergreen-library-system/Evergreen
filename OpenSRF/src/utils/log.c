@@ -7,6 +7,12 @@ char* __osrfLogFile				= NULL;
 char* __osrfLogAppname			= NULL;
 int __osrfLogLevel				= OSRF_LOG_INFO;
 int __osrfLogActivityEnabled	= 1;
+int __osrfLogIsClient         = 0;
+
+
+int __osrfLogXidInc              = 0; /* increments with each new xid for uniqueness */
+char* __osrfLogXid            = NULL; /* current xid */
+char* __osrfLogXidPfx         = NULL; /* xid prefix string */
 
 
 void osrfLogCleanup() {
@@ -21,6 +27,42 @@ void osrfLogInit( int type, const char* appname, int maxlevel ) {
 	osrfLogSetLevel(maxlevel);
 	if( type == OSRF_LOG_TYPE_SYSLOG ) 
 		openlog(__osrfLogAppname, 0, __osrfLogFacility );
+}
+
+static void __osrfLogSetXid(char* xid) {
+   if(xid) {
+      if(__osrfLogXid) free(__osrfLogXid);
+      __osrfLogXid = strdup(xid);
+   }
+}
+
+void osrfLogClearXid() { __osrfLogSetXid(""); }
+void osrfLogSetXid(char* xid) {
+   if(!__osrfLogIsClient) __osrfLogSetXid(xid);
+}
+
+void osrfLogMkXid() {
+   if(__osrfLogIsClient) {
+      char buf[32];
+      memset(buf, 0x0, 32);
+      snprintf(buf, 32, "%s%d", __osrfLogXidPfx, __osrfLogXidInc);
+      __osrfLogSetXid(buf);
+      __osrfLogXidInc++;
+   }
+}
+
+char* osrfLogGetXid() {
+   return __osrfLogXid;
+}
+
+void osrfLogSetIsClient(int is) {
+   __osrfLogIsClient = is;
+   if(!is) return;
+   /* go ahead and create the xid prefix so it will be consistent later */
+   static char buff[32];
+   memset(buff, 0x0, 32);
+   snprintf(buff, 32, "%d%d", (int)time(NULL), getpid());
+   __osrfLogXidPfx = buff;
 }
 
 void osrfLogSetType( int logtype ) { 
@@ -124,6 +166,8 @@ void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 			break;
 	}
 
+   char* xid = (__osrfLogXid) ? __osrfLogXid : "";
+
 	if(__osrfLogType == OSRF_LOG_TYPE_SYSLOG ) {
 		char buf[1536];  
 		memset(buf, 0x0, 1536);
@@ -133,11 +177,11 @@ void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 		buf[1533] = '.';
 		buf[1534] = '.';
 		buf[1535] = '\0';
-		syslog( fac | lvl, "[%s:%d:%s:%d] %s", l, getpid(), filename, line, buf );
+		syslog( fac | lvl, "[%s:%d:%s:%d:%s] %s", l, getpid(), filename, line, xid, buf );
 	}
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
-		_osrfLogToFile("[%s:%d:%s:%d] %s", l, getpid(), filename, line, msg );
+		_osrfLogToFile("[%s:%d:%s:%d:%s] %s", l, getpid(), filename, line, xid, msg );
 
 }
 

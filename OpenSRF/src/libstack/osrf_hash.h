@@ -6,7 +6,9 @@
 #include "osrf_list.h"
 
 /* 0x100 is a good size for small hashes */
-#define OSRF_HASH_LIST_SIZE 0x100  /* size of the main hash list */
+//#define OSRF_HASH_LIST_SIZE 0x100  /* size of the main hash list */
+#define OSRF_HASH_LIST_SIZE 0x10  /* size of the main hash list */
+
 
 /* used internally */
 #define OSRF_HASH_NODE_FREE(h, n) \

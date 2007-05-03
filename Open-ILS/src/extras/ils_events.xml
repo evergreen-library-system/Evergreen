@@ -140,6 +140,17 @@
 		<desc xml:lang="en-US">The copy in question is not in an ideal status for deleting</desc>
 	</event>
 
+	<event code='1228' textcode='BIB_RECORD_DELETED'>
+		<desc xml:lang="en-US">The requested bib record is marked as deleted</desc>
+	</event>
+	<event code='1229' textcode='VOLUME_DELETED'>
+		<desc xml:lang="en-US">The requested volume is marked as deleted</desc>
+	</event>
+	<event code='1230' textcode='XACT_COLLISION'>
+		<desc xml:lang="en-US">The saved item has been edited by another user</desc>
+	</event>
+
+
 
 
 
@@ -563,6 +574,12 @@
 	</event>
 	<event code='1708' textcode='MONEY_COLLECTIONS_TRACKER_EXISTS'>
 		<desc xml:lang="en-US">A duplicate money.collections_tracker object already exists in the database</desc>
+	</event>
+	<event code='1709' textcode='MAX_HOLDS'>
+		<desc xml:lang="en-US">User has reached the maximum number of holds</desc>
+	</event>
+	<event code='1710' textcode='CONTAINER_EXISTS'>
+		<desc xml:lang="en-US">User has already created a bucket with the requested name</desc>
 	</event>
 
 
