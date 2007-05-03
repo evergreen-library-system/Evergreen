@@ -319,24 +319,18 @@ sub ou_desk_payments {
 
 	my $sql = <<"	SQL";
 
-SELECT	*
-  FROM	crosstab(\$\$
-	 SELECT	ws.id,
-		p.payment_type,
-		SUM(COALESCE(p.amount,0.0))
+	SELECT	ws.id as workstation,
+		SUM( CASE WHEN p.payment_type = 'cash_payment' THEN p.amount ELSE 0.0 END ) as cash_payment,
+		SUM( CASE WHEN p.payment_type = 'check_payment' THEN p.amount ELSE 0.0 END ) as check_payment,
+		SUM( CASE WHEN p.payment_type = 'credit_card_payment' THEN p.amount ELSE 0.0 END ) as credit_card_payment
 	  FROM	money.desk_payment_view p
 		JOIN actor.workstation ws ON (ws.id = p.cash_drawer)
 	  WHERE	p.payment_ts >= '$startdate'
 		AND p.payment_ts < '$enddate'::TIMESTAMPTZ + INTERVAL '1 day'
 		AND p.voided IS FALSE
 		AND ws.owning_lib = $lib
-	 GROUP BY 1, 2
-	 ORDER BY 1,2
-	\$\$) AS X(
-	  workstation int,
-	  cash_payment numeric(10,2),
-	  check_payment numeric(10,2),
-	  credit_card_payment numeric(10,2) );
+	 GROUP BY 1
+	 ORDER BY 1;
 
 	SQL
 
@@ -374,11 +368,10 @@ sub ou_user_payments {
 
 	my $sql = <<"	SQL";
 
-SELECT  *
-  FROM  crosstab(\$\$
-         SELECT au.id,
-                p.payment_type,
-                SUM(COALESCE(p.amount,0.0))
+       	SELECT	au.id as usr,
+		SUM( CASE WHEN p.payment_type = 'forgive_payment' THEN p.amount ELSE 0.0 END ) as forgive_payment,
+		SUM( CASE WHEN p.payment_type = 'work_payment' THEN p.amount ELSE 0.0 END ) as work_payment,
+		SUM( CASE WHEN p.payment_type = 'credit_payment' THEN p.amount ELSE 0.0 END ) as credit_payment
           FROM  money.bnm_payment_view p
                 JOIN actor.usr au ON (au.id = p.accepting_usr)
           WHERE p.payment_ts >= '$startdate'
@@ -386,13 +379,8 @@ SELECT  *
                 AND p.voided IS FALSE
                 AND au.home_ou = $lib
 		AND p.payment_type IN ('credit_payment','forgive_payment','work_payment')
-         GROUP BY 1, 2
-         ORDER BY 1,2
-        \$\$) AS X(
-          usr int,
-          forgive_payment numeric(10,2),
-          work_payment numeric(10,2),
-          credit_payment numeric(10,2) );
+         GROUP BY 1
+         ORDER BY 1;
 
 	SQL
 
