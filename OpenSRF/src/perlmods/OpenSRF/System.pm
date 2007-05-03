@@ -201,7 +201,7 @@ sub bootstrap {
 
 	push @OpenSRF::UnixServer::ISA, $server_type;
 
-	_log( " * System boostrap" );
+	_log( " * System bootstrap" );
 	
 	# --- Boot the Unix servers
 	$self->launch_unix($apps);

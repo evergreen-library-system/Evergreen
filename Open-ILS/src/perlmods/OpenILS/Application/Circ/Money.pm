@@ -76,11 +76,15 @@ sub make_payments {
 	my $approval_code = $payments->{approval_code} || 'n/a';
 	my $check_number	= $payments->{check_number} || 'n/a';
 
+	my $total_paid = 0;
+
 	for my $pay (@{$payments->{payments}}) {
 
 		my $transid = $pay->[0];
 		my $amount = $pay->[1];
 		$amount =~ s/\$//og; # just to be safe
+
+		$total_paid += $amount;
 
 		$trans = $self->fetch_mbts($client, $login, $transid);
 		return $trans if $U->event_code($trans);
@@ -129,10 +133,10 @@ sub make_payments {
 
 		$payobj->amount($amount);
 		$payobj->amount_collected($amount);
-		$payobj->accepting_usr($user->id);
 		$payobj->xact($transid);
 		$payobj->note($note);
 
+		if ($payobj->has_field('accepting_usr')) { $payobj->accepting_usr($user->id); }
 		if ($payobj->has_field('cash_drawer')) { $payobj->cash_drawer($drawer); }
 		if ($payobj->has_field('cc_type')) { $payobj->cc_type($cc_type); }
 		if ($payobj->has_field('cc_number')) { $payobj->cc_number($cc_number); }
@@ -177,8 +181,11 @@ sub make_payments {
 	}
 
 
-	$logger->activity("user ".$user->id." applying total ".
+	my $uid = $user->id;
+	$logger->info("user $uid applying total ".
 		"credit of $credit to user $userid") if $credit != 0;
+
+	$logger->info("user $uid applying total payment of $total_paid to user $userid");
 
 	$evt = _update_patron_credit( $session, $userid, $credit );
 	return $evt if $evt;
@@ -410,54 +417,54 @@ __PACKAGE__->register_method(
 	/
 );
 
-sub void_bill {
-	my( $s, $c, $authtoken, $billid ) = @_;
 
-	#my $e = OpenILS::Utils::Editor->new( authtoken => $authtoken );
+sub void_bill {
+	my( $s, $c, $authtoken, @billids ) = @_;
+
 	my $e = new_editor( authtoken => $authtoken, xact => 1 );
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VOID_BILLING');
 
-	my $bill = $e->retrieve_money_billing($billid)
-		or return $e->event;
+    my %users;
+    for my $billid (@billids) {
 
-	return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill) 
-		if $bill->voided and $bill->voided =~ /t/io;
+	    my $bill = $e->retrieve_money_billing($billid)
+		    or return $e->event;
 
-	$bill->voided('t');
-	$bill->voider($e->requestor->id);
-	$bill->void_time('now');
+        my $xact = $e->retrieve_money_billable_transaction($bill->xact)
+            or return $e->event;
 
-	$e->update_money_billing($bill) or return $e->event;
-	my $evt = _check_open_xact($e, $bill->xact);
-	return $evt if $evt;
+        $users{$xact->usr} = 1;
+    
+	    return OpenILS::Event->new('BILL_ALREADY_VOIDED', payload => $bill) 
+		    if $bill->voided and $bill->voided =~ /t/io;
+    
+	    $bill->voided('t');
+	    $bill->voider($e->requestor->id);
+	    $bill->void_time('now');
+    
+	    $e->update_money_billing($bill) or return $e->event;
+	    my $evt = _check_open_xact($e, $bill->xact, $xact);
+	    return $evt if $evt;
+    }
 
 	$e->commit;
-
-	# ------------------------------------------------------------------------------
-	# Update the patron penalty info in the DB
-	# ------------------------------------------------------------------------------
-	my $xact = $e->retrieve_money_billable_transaction($bill->xact)
-		or return $e->event;
-
-	$U->update_patron_penalties(
-		authtoken => $authtoken,
-		patronid  => $xact->usr,
-	);
-
+    # update the penalties for each affected user
+	$U->update_patron_penalties( authtoken => $authtoken, patronid  => $_ ) for keys %users;
 	return 1;
 }
 
+
 sub _check_open_xact {
-	my( $editor, $xactid ) = @_;
+	my( $editor, $xactid, $xact ) = @_;
 
 	# Grab the transaction
-	my $xact = $editor->retrieve_money_billable_transaction($xactid)
-		or return $editor->event;
+	$xact ||= $editor->retrieve_money_billable_transaction($xactid);
+    return $editor->event unless $xact;
+    $xactid ||= $xact->id;
 
 	# grab the summary and see how much is owed on this transaction
-	my $summary = $editor->retrieve_money_billable_transaction_summary($xactid)
-		or return $editor->event;
+	my ($summary) = $U->fetch_mbts($xactid, $editor);
 
 	# grab the circulation if it is a circ;
 	my $circ = $editor->retrieve_action_circulation($xactid);

@@ -760,18 +760,12 @@ function uEditBuildAddrFields(patron, address) {
 							var state = $n(f.widget.base, 'ue_addr_state');
 							var county = $n(f.widget.base, 'ue_addr_county');
 							var city = $n(f.widget.base, 'ue_addr_city');
-							if(!state.value) {
-								state.value = info.state;
-								state.onchange();
-							}
-							if(!county.value) {
-								county.value = info.county;
-								county.onchange();
-							}
-							if(!city.value) {
-								city.value = info.city;
-								city.onchange();
-							}
+							state.value = info.state;
+							state.onchange();
+							county.value = info.county;
+							county.onchange();
+							city.value = info.city;
+							city.onchange();
 						}
 					);
 					req.send();
@@ -1009,6 +1003,7 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 						function() { window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id}) };
 				
 					if( userCache[id] ) {
+                        var usr = userCache[id];
 						nnode.appendChild(text(
 							usr.first_given_name() + ' ' +  usr.family_name()));
 				

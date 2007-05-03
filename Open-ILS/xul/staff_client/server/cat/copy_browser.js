@@ -874,7 +874,7 @@ cat.copy_browser.prototype = {
 					'command',
 					function(ev) {
 						//obj.show_my_libs(ev.target.value);
-						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 						util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 						obj.refresh_list();
 					},
@@ -886,14 +886,18 @@ cat.copy_browser.prototype = {
 
 			JSAN.use('util.widgets'); 
 		
-			file = new util.file('copy_browser_prefs');
+			file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 			util.widgets.load_attributes(file);
 			ml.value = ml.getAttribute('value');
+			if (! ml.value) {
+				ml.value = org.id();
+				ml.setAttribute('value',ml.value);
+			}
 
 			document.getElementById('show_acns').addEventListener(
 				'command',
 				function(ev) {
-					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 				},
 				false
@@ -902,7 +906,7 @@ cat.copy_browser.prototype = {
 			document.getElementById('show_acps').addEventListener(
 				'command',
 				function(ev) {
-					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs');
+					JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 					util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 				},
 				false
@@ -1207,6 +1211,8 @@ cat.copy_browser.prototype = {
 				},
 				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'aou_' + org.id(),
+				'to_bottom' : true,
+				'no_auto_select' : true,
 			};
 		
 			var acn_tree_list;
@@ -1302,6 +1308,8 @@ cat.copy_browser.prototype = {
 				'skip_all_columns_except' : [0,1,2],
 				'retrieve_id' : 'acn_' + acn_tree.id(),
 				'node' : parent_node,
+				'to_bottom' : true,
+				'no_auto_select' : true,
 			};
 			var node = obj.list.append(data);
 			obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
@@ -1351,6 +1359,8 @@ cat.copy_browser.prototype = {
 				},
 				'retrieve_id' : 'acp_' + acp_item.id(),
 				'node' : parent_node,
+				'to_bottom' : true,
+				'no_auto_select' : true,
 			};
 			var node = obj.list.append(data);
 			obj.map_tree[ 'acp_' + acp_item.id() ] =  node;
@@ -1429,6 +1439,7 @@ cat.copy_browser.prototype = {
 			JSAN.use('util.list'); obj.list = new util.list('copy_tree');
 			obj.list.init(
 				{
+					'no_auto_select' : true,
 					'columns' : columns,
 					'map_row_to_columns' : circ.util.std_map_row_to_columns(' '),
 					'retrieve_row' : function(params) {

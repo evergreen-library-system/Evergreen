@@ -23,8 +23,8 @@ my $pile = "var _l = [";
 
 my @array;
 for my $o (@$tree) {
-	my ($i,$t,$p,$n) = ($o->id,$o->ou_type,$o->parent_ou,$o->name);
-	push @array, "[$i,$t,$p,\"$n\"]";
+	my ($i,$t,$p,$n,$v) = ($o->id,$o->ou_type,$o->parent_ou,$o->name,$o->opac_visible);
+	push @array, "[$i,$t,$p,\"$n\",\"$v\"]";
 }
 $pile .= join ',', @array;
 $pile .= <<JS;

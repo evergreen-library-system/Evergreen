@@ -254,6 +254,8 @@ jsonObject* jsonObjectClone( const jsonObject* o );
 	*/
 char* jsonObjectToSimpleString( const jsonObject* o );
 
+int jsonBoolIsTrue( const jsonObject* o );
+
 
 /* ------------------------------------------------------------------------ */
 /* XPATH */

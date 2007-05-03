@@ -16,7 +16,8 @@ util.network.prototype = {
 	'NETWORK_FAILURE' : null,
 
 	'simple_request' : function(id,params,f,o_params) {
-		return this.request(api[id].app,api[id].method,params,f,o_params);
+		var secure = true; if (typeof api[id].secure != 'undefined') secure = api[id].secure;
+		return this.request(api[id].app,api[id].method,params,f,o_params,secure);
 	},
 
 	'get_result' : function (req) {
@@ -39,8 +40,8 @@ util.network.prototype = {
 		return result;
 	},
 
-	'request' : function (app,name,params,f,o_params) {
-		var request =  this._request(app,name,params,f,o_params);
+	'request' : function (app,name,params,f,o_params,secure) {
+		var request =  this._request(app,name,params,f,o_params,secure);
 		if (request) {
 			return this.get_result(request);
 		} else {
@@ -48,14 +49,19 @@ util.network.prototype = {
 		}
 	},
 
-	'_request' : function (app,name,params,f,o_params) {
+	'_request' : function (app,name,params,f,o_params,secure) {
 		var obj = this;
 		try {
 			var sparams = js2JSON(params);
 			obj.error.sdump('D_SES','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
-				'\no_params = ' + o_params + 
+				'\no_params = ' + o_params + '\nsecure = ' + secure +
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
 			var request = new RemoteRequest( app, name );
+			if (secure) {
+				request.setSecure(true);
+			} else {
+				request.setSecure(false);
+			}
 			for(var index in params) {
 				request.addParam(params[index]);
 			}
@@ -70,12 +76,12 @@ util.network.prototype = {
 								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
 								+ '\n\nOriginal Request:\n\n' 
 								+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params);
-							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params);
+							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params,secure);
+							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params,secure);
 							if (o_params) {
-								req = obj.rerequest_on_override(app,name,params,req,o_params);
+								req = obj.rerequest_on_override(app,name,params,req,o_params,secure);
 							}
-							req = obj.check_for_offline(app,name,params,req,o_params);
+							req = obj.check_for_offline(app,name,params,req,o_params,secure);
 							f(req);
 							obj.NETWORK_FAILURE = null;
 						} catch(E) {
@@ -105,12 +111,12 @@ util.network.prototype = {
 					+ obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
 					+ '\n\nOriginal Request:\n\n' 
 					+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params);
-				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params);
+				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params,secure);
+				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params,secure);
 				if (o_params) {
-					request = obj.rerequest_on_override(app,name,params,request,o_params);
+					request = obj.rerequest_on_override(app,name,params,request,o_params,secure);
 				}
-				request = obj.check_for_offline(app,name,params,request,o_params);
+				request = obj.check_for_offline(app,name,params,request,o_params,secure);
 				obj.NETWORK_FAILURE = null;
 				return request;
 			}
@@ -124,7 +130,7 @@ util.network.prototype = {
 		}
 	},
 
-	'check_for_offline' : function (app,name,params,req,o_params) {
+	'check_for_offline' : function (app,name,params,req,o_params,secure) {
 		var obj = this;
 		var result = obj.get_result(req);
 		if (result != null) return req;
@@ -172,7 +178,7 @@ util.network.prototype = {
 
 			switch(r) {
 				case 0: 
-					req = obj._request(app,name,params,null,o_params);
+					req = obj._request(app,name,params,null,o_params,secure);
 					if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
 					return req;
 				break;
@@ -241,7 +247,7 @@ util.network.prototype = {
 		}
 	},
 
-	'rerequest_on_session_timeout' : function(app,name,params,req,o_params) {
+	'rerequest_on_session_timeout' : function(app,name,params,req,o_params,secure) {
 		try {
 			var obj = this;
 			var robj = obj.get_result(req);
@@ -250,7 +256,7 @@ util.network.prototype = {
 				if (obj.get_new_session(name,undefined,true)) {
 					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 					params[0] = data.session.key;
-					req = obj._request(app,name,params,null,o_params);
+					req = obj._request(app,name,params,null,o_params,secure);
 				}
 			}
 		} catch(E) {
@@ -259,7 +265,7 @@ util.network.prototype = {
 		return req;
 	},
 	
-	'rerequest_on_perm_failure' : function(app,name,params,req,o_params) {
+	'rerequest_on_perm_failure' : function(app,name,params,req,o_params,secure) {
 		try {
 			var obj = this;
 			var robj = obj.get_result(req);
@@ -280,7 +286,7 @@ util.network.prototype = {
 					var data = new OpenILS.data(); data.init({'via':'stash'});
 					if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
 						params[0] = data.temporary_session.key;
-						req = obj._request(app,name,params,null,o_params);
+						req = obj._request(app,name,params,null,o_params,secure);
 					}
 				}
 			}
@@ -290,7 +296,7 @@ util.network.prototype = {
 		return req;
 	},
 
-	'rerequest_on_override' : function (app,name,params,req,o_params) {
+	'rerequest_on_override' : function (app,name,params,req,o_params,secure) {
 		var obj = this;
 		try {
 			if (!o_params.text) o_params.text = {};

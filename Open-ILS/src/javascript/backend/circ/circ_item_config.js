@@ -344,7 +344,7 @@ var CIRC_MOD_MAP = {
 		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
-		recurringFinesRule	: '10_cent_per_day',
+		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
@@ -370,18 +370,14 @@ var CIRC_MOD_MAP = {
 /* Set up rules for legacy types */
 CIRC_MOD_MAP['DEPOSIT'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['E-AUDIO'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['EQUIP'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['FACNEWBK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-CIRC'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['MAG-NOCIRC'] = CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['NEW-AV'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['NEW-BOOK'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['NEWSPAPER'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['NILS-ITEM'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['OUTREACH'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['PAMPHLET'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['PAPERBACK'] 	= CIRC_MOD_MAP['book'];
-CIRC_MOD_MAP['REALIA'] 		= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['RESERVE'] 	= CIRC_MOD_MAP['book'];
 CIRC_MOD_MAP['STATE-BOOK'] = {
 	SIPMediaType			: '001',
@@ -414,23 +410,24 @@ function getItemConfig() {
 		provided circ_modifier, use that config.  Otherwise fall back on the MARC item type
 		----------------------------------------------------------------------------------- */
 	var marcType	= getMARCItemType();
-	var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
 	var itemForm	= (marcXMLDoc) ? extractFixedField(marcXMLDoc,'Form') : "";
+	//var circMod		= (copy.circ_modifier) ? copy.circ_modifier.toLowerCase() : '';
+	var circMod		= copy.circ_modifier;
 	
-	var config;
-	
-	if( circMod && CIRC_MOD_MAP[circMod] ) {
-		/* if we have a config for the given circ_modifier, use it */
-		log_debug("a circ_mod config exists for the copy: " + circMod);
-		config = CIRC_MOD_MAP[circMod];
-	
-	} else {
+	var config = null;
+
+   if( circMod ) {
+      config = CIRC_MOD_MAP[circMod];
+      if(!config) 
+         config = CIRC_MOD_MAP[circMod.toLowerCase()]
+      if(config)
+		   log_info("a circ_mod config exists for the copy with mod: " + circMod);
+   }
+
+   if(!config) {
 		/* otherwise, fall back on the MARC item type */
-	
-		if( circMod ) {
-			log_debug("no circ_mod config found for "
-				+circMod+", falling back to MARC");
-		}
+		if( circMod ) 
+			log_info("no circ_mod config found for " +circMod+", falling back to MARC");
 		config = MARC_ITEM_TYPE_MAP[marcType];
 	}
 

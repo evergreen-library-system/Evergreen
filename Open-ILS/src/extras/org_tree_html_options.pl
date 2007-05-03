@@ -6,7 +6,7 @@ use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 
-die "usage: perl org_tree_js.pl <bootstrap_config> <output_file>" unless $ARGV[1];
+die "usage: perl org_tree_html_options.pl <bootstrap_config> <output_file>" unless $ARGV[1];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
 
 open FILE, ">$ARGV[1]";
@@ -25,6 +25,7 @@ close FILE;
 
 sub print_option {
 	my $node = shift;
+	return unless ($node->opac_visible =~ /^[y1t]+/i);
 	my $depth = $node->ou_type - 1;
 	my $sname = $node->shortname;
 	my $name = $node->name;

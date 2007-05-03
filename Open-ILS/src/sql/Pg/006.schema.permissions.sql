@@ -11,19 +11,22 @@ CREATE TABLE permission.perm_list (
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
 
 INSERT INTO permission.perm_list VALUES (-1, 'EVERYTHING', NULL);
-/*
 INSERT INTO permission.perm_list VALUES (2, 'OPAC_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (4, 'STAFF_LOGIN', NULL);
 INSERT INTO permission.perm_list VALUES (5, 'MR_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (6, 'TITLE_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (7, 'VOLUME_HOLDS', NULL);
+INSERT INTO permission.perm_list VALUES (8, 'COPY_HOLDS', 'User is allowed to place a hold on a specific copy');
 INSERT INTO permission.perm_list VALUES (9, 'REQUEST_HOLDS', NULL);
 INSERT INTO permission.perm_list VALUES (10, 'REQUEST_HOLDS_OVERRIDE', NULL);
+INSERT INTO permission.perm_list VALUES (11, 'VIEW_HOLD', 'Allows a user to view another user''s holds');
 INSERT INTO permission.perm_list VALUES (13, 'DELETE_HOLDS', NULL);
+INSERT INTO permission.perm_list VALUES (14, 'UPDATE_HOLD', 'Allows a user to update another user''s hold');
 INSERT INTO permission.perm_list VALUES (15, 'RENEW_CIRC', NULL);
 INSERT INTO permission.perm_list VALUES (16, 'VIEW_USER_FINES_SUMMARY', NULL);
 INSERT INTO permission.perm_list VALUES (17, 'VIEW_USER_TRANSACTIONS', NULL);
 INSERT INTO permission.perm_list VALUES (18, 'UPDATE_MARC', NULL);
+INSERT INTO permission.perm_list VALUES (19, 'CREATE_MARC', 'User is allowed to create new MARC records');
 INSERT INTO permission.perm_list VALUES (20, 'IMPORT_MARC', NULL);
 INSERT INTO permission.perm_list VALUES (21, 'CREATE_VOLUME', NULL);
 INSERT INTO permission.perm_list VALUES (22, 'UPDATE_VOLUME', NULL);
@@ -47,13 +50,9 @@ INSERT INTO permission.perm_list VALUES (41, 'CREATE_TRANSACTION', 'User may cre
 INSERT INTO permission.perm_list VALUES (43, 'CREATE_BILL', 'Allows a user to create a new bill on a transaction');
 INSERT INTO permission.perm_list VALUES (44, 'VIEW_CONTAINER', 'Allows a user to view another user''s containers (buckets)');
 INSERT INTO permission.perm_list VALUES (45, 'CREATE_CONTAINER', 'Allows a user to create a new container for another user');
-INSERT INTO permission.perm_list VALUES (8, 'COPY_HOLDS', 'User is allowed to place a hold on a specific copy');
 INSERT INTO permission.perm_list VALUES (24, 'CREATE_COPY', 'User is allowed to create a new copy object');
-INSERT INTO permission.perm_list VALUES (19, 'CREATE_ORIGINAL_MARC', 'User is allowed to create new MARC records');
 INSERT INTO permission.perm_list VALUES (47, 'UPDATE_ORG_UNIT', 'Allows a user to change org unit settings');
 INSERT INTO permission.perm_list VALUES (48, 'VIEW_CIRCULATIONS', 'Allows a user to see what another use has checked out');
-INSERT INTO permission.perm_list VALUES (14, 'UPDATE_HOLD', 'Allows a user to update another user''s hold');
-INSERT INTO permission.perm_list VALUES (11, 'VIEW_HOLD', 'Allows a user to view another user''s holds');
 INSERT INTO permission.perm_list VALUES (42, 'VIEW_TRANSACTION', 'User may view another user''s transactions');
 INSERT INTO permission.perm_list VALUES (49, 'DELETE_CONTAINER', 'Allows a user to delete another user container');
 INSERT INTO permission.perm_list VALUES (50, 'CREATE_CONTAINER_ITEM', 'Create a container item for another user');
@@ -111,9 +110,55 @@ INSERT INTO permission.perm_list VALUES (101, 'OFFLINE_EXECUTE', 'Allows a user 
 INSERT INTO permission.perm_list VALUES (102, 'CIRC_OVERRIDE_DUE_DATE', 'Allows a user to change set the due date on an item to any date');
 INSERT INTO permission.perm_list VALUES (103, 'CIRC_PERMIT_OVERRIDE', 'Allows a user to bypass the circ permit call for checkout');
 INSERT INTO permission.perm_list VALUES (104, 'COPY_IS_REFERENCE.override', 'Allows a user to override the copy_is_reference event');
+INSERT INTO permission.perm_list VALUES (105, 'VOID_BILLING', 'Allows a user to void a bill');
+INSERT INTO permission.perm_list VALUES (106, 'CIRC_CLAIMS_RETURNED.override', 'Allows a person to check in/out an item that is claims returned');
+INSERT INTO permission.perm_list VALUES (107, 'COPY_BAD_STATUS.override', 'Allows a user to check out an item in a non-circulatable status');
+INSERT INTO permission.perm_list VALUES (108, 'COPY_ALERT_MESSAGE.override', 'Allows a user to check in/out an item that has an alert message');
+INSERT INTO permission.perm_list VALUES (109, 'COPY_STATUS_LOST.override', 'Allows a user to remove the lost status from a copy');
+INSERT INTO permission.perm_list VALUES (110, 'COPY_STATUS_MISSING.override', 'Allows a user to change the missing status on a copy');
+INSERT INTO permission.perm_list VALUES (111, 'ABORT_TRANSIT', 'Allows a user to abort a copy transit if the user is at the transit destination or source');
+INSERT INTO permission.perm_list VALUES (112, 'ABORT_REMOTE_TRANIST', 'Allows a user to abort a copy transit if the user is not at the transit source or dest');
+INSERT INTO permission.perm_list VALUES (113, 'VIEW_ZIP_DATA', 'Allowsa user to query the zip code data method');
+INSERT INTO permission.perm_list VALUES (114, 'CANCEL_HOLDS', '');
+INSERT INTO permission.perm_list VALUES (115, 'CREATE_DUPLICATE_HOLDS', 'Allows a user to create duplicate holds (e.g. two holds on the same title)');
+INSERT INTO permission.perm_list VALUES (117, 'actor.org_unit.closed_date.update', 'Allows a user to update a closed date interval for a given location');
+INSERT INTO permission.perm_list VALUES (116, 'actor.org_unit.closed_date.delete', 'Allows a user to remove a closed date interval for a given location');
+INSERT INTO permission.perm_list VALUES (118, 'actor.org_unit.closed_date.create', 'Allows a user to create a new closed date for a location');
+INSERT INTO permission.perm_list VALUES (119, 'DELETE_NON_CAT_TYPE', 'Allows a user to delete a non cataloged type');
+INSERT INTO permission.perm_list VALUES (120, 'money.collections_tracker.create', 'Allows a user to put someone into collections');
+INSERT INTO permission.perm_list VALUES (121, 'money.collections_tracker.delete', 'Allows a user to remove someone from collections');
+INSERT INTO permission.perm_list VALUES (122, 'BAR_PATRON', 'Allows a user to bar a patron');
+INSERT INTO permission.perm_list VALUES (123, 'UNBAR_PATRON', 'Allows a user to un-bar a patron');
+INSERT INTO permission.perm_list VALUES (124, 'DELETE_WORKSTATION', 'Allows a user to remove an existing workstation so a new one can replace it');
+INSERT INTO permission.perm_list VALUES (125, 'group_application.user', 'Allows a user to add/remove users to/from the "User" group');
+INSERT INTO permission.perm_list VALUES (126, 'group_application.user.patron', 'Allows a user to add/remove users to/from the "Patron" group');
+INSERT INTO permission.perm_list VALUES (127, 'group_application.user.staff', 'Allows a user to add/remove users to/from the "Staff" group');
+INSERT INTO permission.perm_list VALUES (128, 'group_application.user.staff.circ', 'Allows a user to add/remove users to/from the "Circulator" group');
+INSERT INTO permission.perm_list VALUES (129, 'group_application.user.staff.cat', 'Allows a user to add/remove users to/from the "Cataloger" group');
+INSERT INTO permission.perm_list VALUES (130, 'group_application.user.staff.admin.global_admin', 'Allows a user to add/remove users to/from the "GlobalAdmin" group');
+INSERT INTO permission.perm_list VALUES (131, 'group_application.user.staff.admin.local_admin', 'Allows a user to add/remove users to/from the "LocalAdmin" group');
+INSERT INTO permission.perm_list VALUES (132, 'group_application.user.staff.admin.lib_manager', 'Allows a user to add/remove users to/from the "LibraryManager" group');
+INSERT INTO permission.perm_list VALUES (133, 'group_application.user.staff.cat.cat1', 'Allows a user to add/remove users to/from the "Cat1" group');
+INSERT INTO permission.perm_list VALUES (134, 'group_application.user.staff.supercat', 'Allows a user to add/remove users to/from the "Supercat" group');
+INSERT INTO permission.perm_list VALUES (135, 'group_application.user.sip_client', 'Allows a user to add/remove users to/from the "SIP-Client" group');
+INSERT INTO permission.perm_list VALUES (136, 'group_application.user.vendor', 'Allows a user to add/remove users to/from the "Vendor" group');
+INSERT INTO permission.perm_list VALUES (137, 'ITEM_AGE_PROTECTED.override', 'Allows a user to place a hold on an age-protected item');
+INSERT INTO permission.perm_list VALUES (138, 'MAX_RENEWALS_REACHED.override', 'Allows a user to renew an item past the maximun renewal count');
+INSERT INTO permission.perm_list VALUES (139, 'PATRON_EXCEEDS_CHECKOUT_COUNT.override', 'Allow staff to override checkout count failure');
+INSERT INTO permission.perm_list VALUES (140, 'PATRON_EXCEEDS_OVERDUE_COUNT.override', 'Allow staff to override overdue count failure');
+INSERT INTO permission.perm_list VALUES (141, 'PATRON_EXCEEDS_FINES.override', 'Allow staff to override fine amount checkout failure');
+INSERT INTO permission.perm_list VALUES (142, 'CIRC_EXCEEDS_COPY_RANGE.override', '');
+INSERT INTO permission.perm_list VALUES (143, 'ITEM_ON_HOLDS_SHELF.override', '');
+INSERT INTO permission.perm_list VALUES (144, 'COPY_NOT_AVAILABLE.override', 'Allow staff to force checkout of Missing/Lost type items');
+INSERT INTO permission.perm_list VALUES (145, 'VOLUME_UPDATE', '');
+INSERT INTO permission.perm_list VALUES (146, 'HOLD_EXISTS.override', 'allows users to place multiple holds on a single title');
+INSERT INTO permission.perm_list VALUES (147, 'RUN_REPORTS', 'Allows a users to run reports');
+INSERT INTO permission.perm_list VALUES (148, 'SHARE_REPORT_FOLDER', 'Allows a user to share report his own folders');
+INSERT INTO permission.perm_list VALUES (149, 'VIEW_REPORT_OUTPUT', 'Allow user to view report output');
+INSERT INTO permission.perm_list VALUES (150, 'COPY_CIRC_NOT_ALLOWED.override', 'Allows a user to checkout an item that is marked as non-circ');
+INSERT INTO permission.perm_list VALUES (151, 'DELETE_CONTAINER_ITEM', 'Allows a user to delete an item out of another user''s container');
 
-SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 105);
-*/
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 151, TRUE);
 
 CREATE TABLE permission.grp_tree (
 	id			SERIAL	PRIMARY KEY,
@@ -126,16 +171,20 @@ CREATE TABLE permission.grp_tree (
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 
-/*
-INSERT INTO permission.grp_tree VALUES (1, 'Users', NULL, NULL, '3 years');
-INSERT INTO permission.grp_tree VALUES (2, 'Patrons', 1, NULL, '3 years');
-INSERT INTO permission.grp_tree VALUES (3, 'Staff', 1, NULL, '3 years');
-INSERT INTO permission.grp_tree VALUES (4, 'Catalogers', 3, NULL, '3 years');
-INSERT INTO permission.grp_tree VALUES (5, 'Circulators', 3, NULL, '3 years');
-INSERT INTO permission.grp_tree VALUES (10, 'Local System Administrator', 3, 'System maintenance, configuration, etc.', '3 years');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (1, 'Users', NULL, NULL, '3 years', FALSE, 'group_application.user');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (2, 'Patrons', 1, NULL, '3 years', TRUE, 'group_application.user.patron');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (3, 'Staff', 1, NULL, '3 years', FALSE, 'group_application.user.staff');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (4, 'Catalogers', 3, NULL, '3 years', TRUE, 'group_application.user.staff.cat');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (5, 'Circulators', 3, NULL, '3 years', TRUE, 'group_application.user.staff.circ');
+INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm)
+	VALUES (10, 'Local System Administrator', 3, 'System maintenance, configuration, etc.', '3 years', TRUE, 'group_application.user.staff.admin.local_admin');
 
 SELECT SETVAL('permission.grp_tree_id_seq'::TEXT, 11);
-*/
 
 CREATE TABLE permission.grp_perm_map (
 	id		SERIAL	PRIMARY KEY,
@@ -146,7 +195,7 @@ CREATE TABLE permission.grp_perm_map (
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
 );
 
-/*
+-- XXX Incomplete base permission setup.  A patch would be appreciated.
 INSERT INTO permission.grp_perm_map VALUES (57, 2, 15, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (109, 2, 95, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (1, 1, 2, 0, false);
@@ -258,7 +307,6 @@ INSERT INTO permission.grp_perm_map VALUES (133, 5, 102, 0, false);
 INSERT INTO permission.grp_perm_map VALUES (138, 5, 104, 1, false);
 
 SELECT SETVAL('permission.grp_perm_map_id_seq'::TEXT, 139);
-*/
 
 CREATE TABLE permission.usr_perm_map (
 	id		SERIAL	PRIMARY KEY,

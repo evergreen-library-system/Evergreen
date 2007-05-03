@@ -184,22 +184,22 @@ int json_parse_json_bool(char* string, unsigned long* index, jsonObject* obj, in
 
 	char* ret = "json_parse_json_bool(): truncated bool";
 
-	if( *index >= (current_strlen - 5))
-		return json_handle_error(string, index, ret);
-	
-	if(!strncasecmp( string + (*index), "false", 5)) {
-		(*index) += 5;
-		obj->value.b = 0;
-		obj->type = JSON_BOOL;
-		return 0;
-	}
-
-	if( *index >= (current_strlen - 4))
+	if( *index > (current_strlen - 4))
 		return json_handle_error(string, index, ret);
 
 	if(!strncasecmp( string + (*index), "true", 4)) {
 		(*index) += 4;
 		obj->value.b = 1;
+		obj->type = JSON_BOOL;
+		return 0;
+	}
+
+	if( *index > (current_strlen - 5))
+		return json_handle_error(string, index, ret);
+	
+	if(!strncasecmp( string + (*index), "false", 5)) {
+		(*index) += 5;
+		obj->value.b = 0;
 		obj->type = JSON_BOOL;
 		return 0;
 	}
@@ -490,8 +490,8 @@ int json_parse_json_string(char* string, unsigned long* index, jsonObject* obj, 
 					/* ----------------------------------------------------------------------- */
 					/* The following chunk was borrowed with permission from 
 						json-c http://oss.metaparadigm.com/json-c/ */
-					unsigned char utf_out[3];
-					memset(utf_out,0,3);
+					unsigned char utf_out[4];
+					memset(utf_out,0,4);
 
 					#define hexdigit(x) ( ((x) <= '9') ? (x) - '0' : ((x) & 7) + 9)
 

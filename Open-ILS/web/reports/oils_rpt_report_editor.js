@@ -30,6 +30,9 @@ function oilsRptReportEditor(rptObject, folderWindow) {
 		rptObject, DOM.oils_rpt_param_editor_tbody);
 	this.paramEditor.draw();
 
+	removeChildren(DOM.oils_rpt_report_editor_selected_folder);
+	removeChildren(DOM.oils_rpt_output_selected_folder);
+
 	var obj = this;
 	oilsRptBuildFolder(
 		'report',

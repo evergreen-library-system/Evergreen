@@ -221,6 +221,7 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 
 	var obj = this;
 	switch(action) {
+
 		case 'create_report' :
 			hideMe(DOM.oils_rpt_folder_table_right_td);
 			unHideMe(DOM.oils_rpt_folder_table_alt_td);
@@ -228,12 +229,12 @@ oilsRptFolderWindow.prototype.doFolderAction = function() {
 			new oilsRptReportEditor(new oilsReport(objs[0]), this);
 			break;
 		case 'delete_report' :
-			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+			if(!confirmId('oils_rpt_verify_report_delete')) return;
 			this.deleteReports(objs, 0, successCallback);
 			break;
 
 		case 'delete_template' :
-			if(!confirmId('oils_rpt_folder_contents_confirm_delete')) return;
+            if(!confirmId('oils_rpt_verify_template_delete')) return;
 			this.deleteTemplates(objs, 0, successCallback);
 			break;
 
@@ -360,7 +361,9 @@ oilsRptFolderWindow.prototype.showOutput = function(sched) {
 			var url = oilsRptBuildOutputLink(r.template(), r.id(), sched.id());
 			_debug("launching report output view at URL: " + url);
 			if(isXUL()) 
-				xulG.new_tab(url,{"tab_name":"Report Output: " + r.name()},{})
+				xulG.new_tab('/xul/server/util/rbrowser.xul?url=' + url,  /* this comes from urls.XUL_REMOTE_BROWSER */
+					{tab_name:'Report Output: ' + r.name(), browser:true},
+					{no_xulG:false, show_nav_buttons:true, show_print_button:true});
 			else {
 				//goTo(url);
 				var win = window.open(url,r.name(), 'resizable,width=800,height=600,scrollbars=1'); 
@@ -374,34 +377,34 @@ oilsRptFolderWindow.prototype.deleteReports = function(list, idx, callback, erri
 	if( idx >= list.length ) return callback(errid);
 	var report = list[idx];
 
+	var obj = this;
 	if( report.owner().id() != USER.id() ) {
 		this.deleteReports(list, ++idx, 
 			callback, 'oils_rpt_folder_contents_no_delete');
 
 	} else {
 
-		var obj = this;
-		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
-		req0.callback(
-			function(r0) {
-				var r0es = r0.getResultObject();
-				if( r0es != '0' ) {
-					obj.deleteReports(list, ++idx, 
-						callback, 'oils_rpt_folder_contents_report_no_delete');
-				} else {
+//		var req0 = new Request(OILS_RPT_REPORT_HAS_OUTS, SESSION, report.id());
+//		req0.callback(
+//			function(r0) {
+//				var r0es = r0.getResultObject();
+//				if( r0es != '0' ) {
+//					obj.deleteReports(list, ++idx, 
+//						callback, 'oils_rpt_folder_contents_report_no_delete');
+//				} else {
 					_debug('deleting report ' + report.id());
 					var req = new Request(OILS_RPT_DELETE_REPORT, SESSION, report.id());
 					req.callback(function(r) { 
 						var res = r.getResultObject();
-						if( res != 1 ) return oilsRptAlertFailure();
+						if( res == 0 ) return oilsRptAlertFailure();
 						obj.deleteReports(list, ++idx, callback, errid)
 					});
 					req.send();
-				}
-			}
-		);
-
-		req0.send();
+//				}
+//			}
+//		);
+//
+//		req0.send();
 	}
 }
 
@@ -416,28 +419,29 @@ oilsRptFolderWindow.prototype.deleteTemplates = function(list, idx, callback, er
 
 	} else {
 
-		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
-		req0.callback(
-			function(r0) {
-				var resp = r0.getResultObject();
 
-				if( resp != '0' ) {
-					obj.deleteTemplates(list, ++idx, 
-						callback, 'oils_rpt_folder_contents_template_no_delete');
-
-				} else {
+//		var req0 = new Request(	OILS_RPT_TEMPLATE_HAS_RPTS, SESSION, tmpl.id() );
+//		req0.callback(
+//			function(r0) {
+//				var resp = r0.getResultObject();
+//
+//				if( resp != '0' ) {
+//					obj.deleteTemplates(list, ++idx, 
+//						callback, 'oils_rpt_folder_contents_template_no_delete');
+//
+//				} else {
 					_debug('deleting template ' + tmpl.id());
 					var req = new Request(OILS_RPT_DELETE_TEMPLATE, SESSION, tmpl.id());
 					req.callback(function(r) {
 						var res = r.getResultObject();
-						if( res != 1 ) return oilsRptAlertFailure();
+						if( res == 0 ) return oilsRptAlertFailure();
 						obj.deleteTemplates(list, ++idx, callback, errid)
 					});
 					req.send();
-				}
-			}
-		);
-		req0.send();
+//				}
+//			}
+//		);
+//		req0.send();
 	}
 }
 

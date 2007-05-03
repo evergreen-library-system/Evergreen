@@ -89,6 +89,7 @@ sub handler {
 	my $body	= $helper->get_body();
 	my $type	= $helper->get_msg_type();
 
+   $logger->set_osrf_xid($helper->get_osrf_xid);
 
 	if (defined($type) and $type eq 'error') {
 		throw OpenSRF::EX::Session ("$remote_id IS NOT CONNECTED TO THE NETWORK!!!");
