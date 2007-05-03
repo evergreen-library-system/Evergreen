@@ -502,7 +502,7 @@ oilsEvent*  _oilsAuthResetTimeout( char* authToken ) {
 	jsonObject* cacheObj = osrfCacheGetObject( key ); 
 
 	if(!cacheObj) {
-		osrfLogError(OSRF_LOG_MARK, "No user in the cache exists with key %s", key);
+		osrfLogInfo(OSRF_LOG_MARK, "No user in the cache exists with key %s", key);
 		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 
 	} else {
