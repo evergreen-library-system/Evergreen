@@ -58,7 +58,7 @@
 				try {
 					g.error.standard_unexpected_error_alert('circ/checkout.xul',E);
 				} catch(F) {
-					alert('FIXME: circ/checkout.xul -> ' + E);
+					dump('FIXME: circ/checkout.xul -> ' + E + ' -> ' + F + '\n');
 				}
 			}
 		}
@@ -66,13 +66,14 @@
 		function default_focus() {
 			try {
 				var x = document.getElementById('checkout_barcode_entry_textbox');
+				if (!x) return;
 				if (x.disabled) {
 					document.getElementById('checkout_duedate_menu').inputField.focus();
 				} else {
 				 x.focus();
 				}
 			} catch(E) {
-				g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E));
+				try { g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E)); } catch(F) { dump('FIXME: circ/checkout.xul default_focus() -> ' + E + ' -> ' + F) }
 			}
 		}
 
