@@ -232,7 +232,7 @@ circ.checkout.prototype = {
 
 		this.check_disable();
 
-		var robj = obj.network.simple_request(
+		var robj = obj.network.cached_request(
 			'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 			[ ses(), obj.patron_id ]
 		);
