@@ -220,7 +220,8 @@ patron.display.prototype = {
 											try {
 												if (obj.barcode) obj.barcode = p.card().barcode();
 												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-												obj.summary_window.g.summary.retrieve();
+												//obj.summary_window.g.summary.retrieve();
+												obj.refresh_all();
 											} catch(E) {
 												alert(E);
 											}
@@ -575,6 +576,7 @@ patron.display.prototype = {
 	
 	'refresh_all' : function() {
 		var obj = this;
+		obj.OpenILS.data.cached_request = {}; obj.OpenILS.data.stash('cached_request');
 		obj.controller.view.patron_name.setAttribute(
 			'value','Retrieving...'
 		);
