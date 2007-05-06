@@ -51,6 +51,8 @@
 				g.cgi = new CGI();
 				g.patron_id = g.cgi.param('patron_id');
 
+				g.new_note = false;
+
 				refresh();
 
 			} catch(E) {
@@ -66,7 +68,12 @@
 		}
 
 		function retrieve_notes() {
-			g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
+			if (g.new_note) {
+				g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
+				g.new_note = false;
+			} else {
+				g.notes = g.network.cached_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
+			}
 		}
 
 		function apply(node,field,value) {
@@ -117,7 +124,7 @@
 								var r = g.error.yns_alert('Delete the note titled "' + g.notes[id].title() + '" created on ' + g.notes[id].create_date().toString().substr(0,10) + '?','Delete Note','Yes','No',null,'Check here to confirm this action'); 
 								if (r == 0) {
 									g.network.simple_request('FM_AUN_DELETE',[ses(),g.notes[id].id()]);
-									setTimeout(function(){ alert('Note deleted.'); refresh();},0);
+									setTimeout(function(){ g.new_note = true; alert('Note deleted.'); refresh();},0);
 								}
 							} }(i),
 							false
@@ -185,7 +192,7 @@
 					note.usr( g.patron_id );
 					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
-					setTimeout(function(){ alert('Note added.'); refresh();},0);
+					setTimeout(function(){ g.new_note = true; alert('Note added.'); refresh();},0);
 				}
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('The note was not likely created.',E);
