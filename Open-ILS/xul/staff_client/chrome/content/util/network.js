@@ -15,9 +15,16 @@ util.network.prototype = {
 
 	'NETWORK_FAILURE' : null,
 
-	'simple_request' : function(id,params,f,o_params) {
-		var secure = true; if (typeof api[id].secure != 'undefined') secure = api[id].secure;
-		return this.request(api[id].app,api[id].method,params,f,o_params,secure);
+	'simple_request' : function(method_id,params,f,override_params) {
+		if (typeof api[method_id] == 'undefined') throw( 'Method not found for ' + method_id );
+		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
+		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
+	},
+
+	'cached_request' : function(method_id,params,f,override_params) {
+		if (typeof api[method_id] == 'undefined') throw( 'Method not found for ' + method_id );
+		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
+		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'want_cached' : true, 'method_id' : method_id });
 	},
 
 	'get_result' : function (req) {
@@ -40,24 +47,93 @@ util.network.prototype = {
 		return result;
 	},
 
-	'request' : function (app,name,params,f,o_params,secure) {
-		var request =  this._request(app,name,params,f,o_params,secure);
+	'is_cacheable' : function(method_id) {
+		return (api[method_id].cacheable);
+	},
+
+	'request' : function (app,name,params,f,override_params,_params) {
+
+		var obj = this;
+
+		try { 
+
+		if (_params && _params.want_cached) if ( this.is_cacheable(_params.method_id) ) {
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+			var key = (app + '+' + name + '+' + js2JSON(params)).replace(/\./g,'_');
+			var x = data.cached_request[key];
+			if (x) {
+				obj.error.sdump('D_CACHE','Cached request found for key = \n' + key + '\n' + js2JSON(x) + '\n');		
+				switch(x.status) {
+					case 'pending' :
+						if (f) { // Setup a self-destroying observer on the pending request to handle this request
+							obj.error.sdump('D_CACHE','Cached request pending, adding watch to handle current asynchronous request. key = \n' + key + '\n');
+							var id = data.observers.add('cached_request.'+key+'.status',function(p,o,n) {
+									obj.error.sdump('D_OBSERVERS','Entering watch function for key = \n' + key + '\np = ' + p + '\no = ' + js2JSON(o) + '\nn = ' + js2JSON(n) + '\nx = ' + js2JSON(x) + '\n');
+									if (n == 'complete') {
+										obj.error.sdump('D_CACHE','Cached request completed for key = \n' + key + '\nNow calling a previous async request watching this one.\n');
+										f( { 'getResultObject' : function() { return JSON2js( js2JSON( x.request ) ); } } );
+										setTimeout( function() { try { data.observers.remove(id); } catch(E) { alert(E); } }, 0 );
+									}
+									return n;
+								}
+							);
+							return null;
+						} else {
+							obj.error.sdump('D_CACHE','Pending request and synchronous request collision with key = \n' + key + '\nFalling through...\n');
+						}
+					break;
+					case 'complete' :
+						if ( Number( new Date() ) < x.expire_time ) {
+							if (f) {
+								obj.error.sdump('D_CACHE','Cached request found completed, handling asynchronous request now. key = \n' + key + '\n');
+								f( { 'getResultObject' : function() { return JSON2js( js2JSON( x.request ) ); } } );
+								return null;
+							} else {
+								obj.error.sdump('D_CACHE','Cached request found completed, key = \n' + key + '\nreturning value =\n' + x.request + '\n');
+								return JSON2js( js2JSON( x.request ) ); // FIXME -- cloning the object is a workaround, otherwise instanceOf somehow silently fails
+							}
+						} else {
+							obj.error.sdump('D_CACHE','Cached request found completed, however, it has expired. key = \n' + key + '\nFalling through...\n');
+						}
+					break;
+				}
+			} else {
+				obj.error.sdump('D_CACHE','Cached request not found for key = \n' + key + '\n');		
+			}
+		}
+
+		var request =  this._request(app,name,params,f,override_params,_params);
 		if (request) {
 			return this.get_result(request);
 		} else {
 			return null;
 		}
+
+		} catch(E) {
+			alert(E); 
+		}
 	},
 
-	'_request' : function (app,name,params,f,o_params,secure) {
+	'_request' : function (app,name,params,f,override_params,_params) {
 		var obj = this;
 		try {
 			var sparams = js2JSON(params);
 			obj.error.sdump('D_SES','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
-				'\no_params = ' + o_params + '\nsecure = ' + secure +
+				'\noverride_params = ' + override_params + '\n_params = ' + _params +
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
+
+			var key; var x; var data;
+			if (_params && obj.is_cacheable(_params.method_id)) {
+				JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.init({'via':'stash'});
+				key = (app + '+' + name + '+' + js2JSON(params)).replace(/\./g,'_');
+				data.cached_request[key] = { 'test' : 'test', 'status' : 'pending', 'status_time' : Number(new Date()) }; 
+				data.stash('cached_request');
+				x = data.cached_request[key];
+				obj.error.sdump('D_CACHE','Current request is cacheable, setting pending status for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
+			}
+
 			var request = new RemoteRequest( app, name );
-			if (secure) {
+			if (_params && _params.secure) {
 				request.setSecure(true);
 			} else {
 				request.setSecure(false);
@@ -76,12 +152,18 @@ util.network.prototype = {
 								+ (json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string) 
 								+ '\n\nOriginal Request:\n\n' 
 								+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-							req = obj.rerequest_on_session_timeout(app,name,params,req,o_params,secure);
-							req = obj.rerequest_on_perm_failure(app,name,params,req,o_params,secure);
-							if (o_params) {
-								req = obj.rerequest_on_override(app,name,params,req,o_params,secure);
+							req = obj.rerequest_on_session_timeout(app,name,params,req,override_params,_params);
+							req = obj.rerequest_on_perm_failure(app,name,params,req,override_params,_params);
+							if (override_params) {
+								req = obj.rerequest_on_override(app,name,params,req,override_params,_params);
 							}
-							req = obj.check_for_offline(app,name,params,req,o_params,secure);
+							req = obj.check_for_offline(app,name,params,req,override_params,_params);
+							if (_params && obj.is_cacheable(_params.method_id)) {
+								x.request = obj.get_result(req);
+								x.status = 'complete'; x.status_time = Number(new Date()); x.expire_time = Number(x.status_time) + api[_params.method_id].ttl;
+								data.stash('cached_request');
+								obj.error.sdump('D_CACHE','Previously pending cached request is now complete for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
+							}
 							f(req);
 							obj.NETWORK_FAILURE = null;
 						} catch(E) {
@@ -111,13 +193,19 @@ util.network.prototype = {
 					+ obj.link_id + '\n\n' + ( json_string.length > 80 ? obj.error.pretty_print(json_string) : json_string ) 
 					+ '\n\nOriginal Request:\n\n' 
 					+ 'request '+app+' '+name+' '+ sparams.slice(1,sparams.length-1));
-				request = obj.rerequest_on_session_timeout(app,name,params,request,o_params,secure);
-				request = obj.rerequest_on_perm_failure(app,name,params,request,o_params,secure);
-				if (o_params) {
-					request = obj.rerequest_on_override(app,name,params,request,o_params,secure);
+				request = obj.rerequest_on_session_timeout(app,name,params,request,override_params,_params);
+				request = obj.rerequest_on_perm_failure(app,name,params,request,override_params,_params);
+				if (override_params) {
+					request = obj.rerequest_on_override(app,name,params,request,override_params,_params);
 				}
-				request = obj.check_for_offline(app,name,params,request,o_params,secure);
+				request = obj.check_for_offline(app,name,params,request,override_params,_params);
 				obj.NETWORK_FAILURE = null;
+				if (_params && obj.is_cacheable(_params.method_id)) {
+					x.request = result;
+					x.status = 'complete'; x.status_time = Number(new Date()); x.expire_time = Number(x.status_time) + api[_params.method_id].ttl;
+					data.stash('cached_request');
+					obj.error.sdump('D_CACHE','Previously pending cached request is now complete for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
+				}
 				return request;
 			}
 
@@ -130,7 +218,7 @@ util.network.prototype = {
 		}
 	},
 
-	'check_for_offline' : function (app,name,params,req,o_params,secure) {
+	'check_for_offline' : function (app,name,params,req,override_params,_params) {
 		var obj = this;
 		var result = obj.get_result(req);
 		if (result != null) return req;
@@ -178,7 +266,7 @@ util.network.prototype = {
 
 			switch(r) {
 				case 0: 
-					req = obj._request(app,name,params,null,o_params,secure);
+					req = obj._request(app,name,params,null,override_params,_params);
 					if (obj.get_result(req)) proceed = true; /* daily WTF, why am I even doing this? :) */
 					return req;
 				break;
@@ -247,7 +335,7 @@ util.network.prototype = {
 		}
 	},
 
-	'rerequest_on_session_timeout' : function(app,name,params,req,o_params,secure) {
+	'rerequest_on_session_timeout' : function(app,name,params,req,override_params,_params) {
 		try {
 			var obj = this;
 			var robj = obj.get_result(req);
@@ -256,7 +344,7 @@ util.network.prototype = {
 				if (obj.get_new_session(name,undefined,true)) {
 					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 					params[0] = data.session.key;
-					req = obj._request(app,name,params,null,o_params,secure);
+					req = obj._request(app,name,params,null,override_params,_params);
 				}
 			}
 		} catch(E) {
@@ -265,7 +353,7 @@ util.network.prototype = {
 		return req;
 	},
 	
-	'rerequest_on_perm_failure' : function(app,name,params,req,o_params,secure) {
+	'rerequest_on_perm_failure' : function(app,name,params,req,override_params,_params) {
 		try {
 			var obj = this;
 			var robj = obj.get_result(req);
@@ -286,7 +374,7 @@ util.network.prototype = {
 					var data = new OpenILS.data(); data.init({'via':'stash'});
 					if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
 						params[0] = data.temporary_session.key;
-						req = obj._request(app,name,params,null,o_params,secure);
+						req = obj._request(app,name,params,null,override_params,_params);
 					}
 				}
 			}
@@ -296,10 +384,10 @@ util.network.prototype = {
 		return req;
 	},
 
-	'rerequest_on_override' : function (app,name,params,req,o_params,secure) {
+	'rerequest_on_override' : function (app,name,params,req,override_params,_params) {
 		var obj = this;
 		try {
-			if (!o_params.text) o_params.text = {};
+			if (!override_params.text) override_params.text = {};
 			function override(r) {
 				try {
 					netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
@@ -310,7 +398,7 @@ util.network.prototype = {
 					for (var i = 0; i < r.length; i++) {
 						var t1 = String(r[i].ilsevent).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						var t2 = String(r[i].textcode).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-						var t3 = String((o_params.text[r[i].ilsevent] ? o_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+						var t3 = String((override_params.text[r[i].ilsevent] ? override_params.text[r[i].ilsevent](r[i]) : '')).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						var t4 = String(r[i].desc).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 						xml += '<row>' + 
 							'<description style="color: red" tooltiptext="' + t1 + '">' + t2 + '</description>' + 
@@ -327,7 +415,7 @@ util.network.prototype = {
 					window.open(
 						urls.XUL_FANCY_PROMPT
 						+ '?xml_in_stash=temp_override_xml'
-						+ '&title=' + window.escape(o_params.title),
+						+ '&title=' + window.escape(override_params.title),
 						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
 					);
 					data.init({'via':'stash'});
@@ -343,12 +431,12 @@ util.network.prototype = {
 			var result = obj.get_result(req);
 			if (!result) return req;
 
-			if ( (typeof result.ilsevent != 'undefined') && (o_params.overridable_events.indexOf(result.ilsevent) != -1) ) {
+			if ( (typeof result.ilsevent != 'undefined') && (override_params.overridable_events.indexOf(result.ilsevent) != -1) ) {
 				req = override([result]);
 			} else {
 				var found_good = false; var found_bad = false;
 				for (var i = 0; i < result.length; i++) {
-					if ( (result[i].ilsevent != 'undefined') && (o_params.overridable_events.indexOf(result[i].ilsevent) != -1) ) {
+					if ( (result[i].ilsevent != 'undefined') && (override_params.overridable_events.indexOf(result[i].ilsevent) != -1) ) {
 						found_good = true;
 					} else {
 						found_bad = true;
