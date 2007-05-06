@@ -62,7 +62,24 @@
 			g.data.stash('session');
 			g.data.on_complete = function () {
 
-				g.data.stash('list','hash','tree','temp');
+				g.data.stash('list','hash','tree','temp','cached_request');
+
+				setInterval(
+					function() {
+						try {
+							var remove_me = [];
+							var n = Number( new Date() );
+							for (var i in g.data.cached_request) {
+								if (g.data.cached_request[i].expire_time < n && g.data.cached_request[i].status != 'pending') remove_me.push(i);
+							}
+							dump('trimming ' + remove_me.length + ' requests from cache\n');
+							for (var i in remove_me) delete g.data.cached_request[i];
+						} catch(E) {
+							alert(E);
+						}
+					}, 180000
+				);
+
 				g.data._debug_stash();
 
 				document.getElementById('iframe').setAttribute(
@@ -80,6 +97,9 @@
 			}
 
 			g.data.init();
+	
+			g.data.init_observer_functions();
+
 		}
 	]]>
 	</script>
