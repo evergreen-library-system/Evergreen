@@ -9,6 +9,7 @@ item_form is specified, use item_type(s)--language
 */
 
 var noEmailMessage;
+var noEmailMessageXUL;
 
 function holdsHandleStaff() {
 	swapCanvas($('xulholds_box'));
@@ -56,6 +57,9 @@ function holdsDrawEditor(args) {
 
     if(!noEmailMessage)
         noEmailMessage = $('holds_email').removeChild($('holds.no_email'));
+
+    if(!noEmailMessageXUL)
+        noEmailMessageXUL = $('holds_email').removeChild($('holds.no_email.xul'));
 
 	if(isXUL() && holdArgs.recipient == null 
 			&& holdArgs.editHold == null) {
@@ -407,13 +411,20 @@ function __holdsDrawWindow() {
 		}
 	}
 
-    if(!G.user.email()) {
+    //if(!G.user.email()) {
+    if(!holdArgs.recipient.email()) {
 		$('holds_enable_email').checked = false;	
 		$('holds_enable_email').disabled = true;
-        var n = noEmailMessage.cloneNode(true);
-	    appendClear( $('holds_email'), n);
-        unHideMe(n);
-        $('holds.no_email.my_account').setAttribute('href', buildOPACLink({page:MYOPAC},null,true));
+        var message;
+        if(isXUL()) {
+            message = noEmailMessageXUL.cloneNode(true);
+	        appendClear($('holds_email'), message);
+        } else {
+            message = noEmailMessage.cloneNode(true);
+	        appendClear($('holds_email'), message);
+            $('holds.no_email.my_account').setAttribute('href', buildOPACLink({page:MYOPAC},null,true));
+        }
+        unHideMe(message);
     }
 
 	if(!$('holds_phone').value) 
