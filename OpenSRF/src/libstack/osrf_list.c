@@ -54,14 +54,13 @@ void* osrfListSet( osrfList* list, void* item, unsigned int position ) {
 
 	void* olditem = osrfListRemove( list, position );
 	list->arrlist[position] = item;
-	//if( list->size == 0 || list->size <= position )
 	if( list->size <= position ) list->size = position + 1;
 	return olditem;
 }
 
 
-void* osrfListGetIndex( osrfList* list, unsigned int position ) {
-	if(!list || position >= list->size) return NULL;
+void* osrfListGetIndex( const osrfList* list, unsigned int position ) {
+	if(!list || position >= list->size || position < 0) return NULL;
 	return list->arrlist[position];
 }
 
@@ -80,8 +79,8 @@ void osrfListFree( osrfList* list ) {
 	free(list);
 }
 
-void* osrfListRemove( osrfList* list, int position ) {
-	if(!list || position >= list->size) return NULL;
+void* osrfListRemove( osrfList* list, unsigned int position ) {
+	if(!list || position >= list->size || position < 0) return NULL;
 
 	void* olditem = list->arrlist[position];
 	list->arrlist[position] = NULL;
@@ -95,7 +94,7 @@ void* osrfListRemove( osrfList* list, int position ) {
 }
 
 
-int osrfListFind( osrfList* list, void* addr ) {
+int osrfListFind( const osrfList* list, void* addr ) {
 	if(!(list && addr)) return -1;
 	int index;
 	for( index = 0; index < list->size; index++ ) {
@@ -106,7 +105,7 @@ int osrfListFind( osrfList* list, void* addr ) {
 }
 
 
-unsigned int osrfListGetCount( osrfList* list ) {
+unsigned int osrfListGetCount( const osrfList* list ) {
 	if(!list) return -1;
 	return list->size;
 }
@@ -118,9 +117,8 @@ void* osrfListPop( osrfList* list ) {
 }
 
 
-osrfListIterator* osrfNewListIterator( osrfList* list ) {
+osrfListIterator* osrfNewListIterator( const osrfList* list ) {
 	if(!list) return NULL;
-	//osrfListIterator* itr = safe_malloc(sizeof(osrfListIterator));
 	osrfListIterator* itr;
 	OSRF_MALLOC(itr, sizeof(osrfListIterator));
 	itr->list = list;

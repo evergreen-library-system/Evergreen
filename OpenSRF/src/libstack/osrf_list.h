@@ -26,7 +26,7 @@ typedef struct __osrfListStruct osrfList;
 
 
 struct __osrfListIteratorStruct {
-	osrfList* list;
+	const osrfList* list;
 	unsigned int current;
 };
 typedef struct __osrfListIteratorStruct osrfListIterator;
@@ -37,7 +37,7 @@ osrfList* osrfNewListSize( unsigned int size );
 /**
   Creates a new list iterator with the given list
   */
-osrfListIterator* osrfNewListIterator( osrfList* list );
+osrfListIterator* osrfNewListIterator( const osrfList* list );
 
 /**
   Returns the next non-NULL item in the list, return NULL when
@@ -99,7 +99,7 @@ void* osrfListSet( osrfList* list, void* item, unsigned int position );
   @param list The list
   @param postiont the position
   */
-void* osrfListGetIndex( osrfList* list, unsigned int  position );
+void* osrfListGetIndex( const osrfList* list, unsigned int  position );
 
 /**
   Frees the list and all list items (if the list has a "freeItem" function defined )
@@ -114,7 +114,7 @@ void osrfListFree( osrfList* list );
   @return A pointer to the item removed if "freeItem" is not defined
   for this list, returns NULL if it is.
   */
-void* osrfListRemove( osrfList* list, int position );
+void* osrfListRemove( osrfList* list, unsigned int position );
 
 /**
   Finds the list item whose void* is the same as the one passed in
@@ -122,7 +122,7 @@ void* osrfListRemove( osrfList* list, int position );
   @param addr The pointer connected to the list item we're to find
   @return the index of the item, or -1 if the item was not found
   */
-int osrfListFind( osrfList* list, void* addr );
+int osrfListFind( const osrfList* list, void* addr );
 
 
 void __osrfListSetSize( osrfList* list );
@@ -131,7 +131,7 @@ void __osrfListSetSize( osrfList* list );
 /**
   @return The number of non-null items in the list
   */
-unsigned int osrfListGetCount( osrfList* list );
+unsigned int osrfListGetCount( const osrfList* list );
 
 /**
  * May be used as a default memory freeing call
