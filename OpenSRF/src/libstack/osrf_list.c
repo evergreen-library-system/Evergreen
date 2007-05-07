@@ -11,6 +11,7 @@ osrfList* osrfNewList() {
 osrfList* osrfNewListSize( unsigned int size ) {
 	osrfList* list;
 	OSRF_MALLOC(list, sizeof(osrfList));
+    if( size <= 0 ) size = 16;
 	list->arrsize	= size;
 	OSRF_MALLOC( list->arrlist, list->arrsize * sizeof(void*) );
 	return list;
