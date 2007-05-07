@@ -5,8 +5,13 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
+<!-- Load these just to cache them -->
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/circ.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/patron_summary.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/simple_auth.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -29,9 +34,8 @@
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="/xul/server/main/lang.js"/>
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
@@ -50,22 +54,115 @@
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 
+
+			function data_progress(msg) {
+				try {
+					var x = document.getElementById('data_progress');
+					if (x) {
+						x.appendChild( document.createTextNode( msg + ' ') );
+					}
+				} catch(E) {
+					dump(msg + '\n' + E);
+				}
+			}
+
+
 			// load these just so they'll get cached
-			JSAN.use('util.barcode'); JSAN.use('util.controller'); JSAN.use('util.deck'); JSAN.use('util.exec');
-			JSAN.use('util.fm_utils'); JSAN.use('util.list'); JSAN.use('util.network'); JSAN.use('util.sound');
-			JSAN.use('util.widgets'); JSAN.use('util.browser'); JSAN.use('util.error'); JSAN.use('util.file');
-			JSAN.use('util.functional'); JSAN.use('util.money'); JSAN.use('util.print'); JSAN.use('util.text');
-			JSAN.use('util.window');
+			JSAN.use('util.exec'); data_progress('util.exec');
+			JSAN.use('util.barcode'); data_progress('util.barcode');  
+			JSAN.use('util.controller'); data_progress('util.controller');  
+			JSAN.use('util.deck'); data_progress('util.deck');  
+			JSAN.use('util.fm_utils'); data_progress('util.fm_utils');  
+			JSAN.use('util.list'); data_progress('util.list');  
+			JSAN.use('util.network'); data_progress('util.network'); 
+			JSAN.use('util.sound'); data_progress('util.sound'); 
+			JSAN.use('util.widgets'); data_progress('util.widgets');  
+			JSAN.use('util.browser'); data_progress('util.browser');  
+			JSAN.use('util.error'); data_progress('util.error');  
+			JSAN.use('util.file'); data_progress('util.file'); 
+			JSAN.use('util.functional'); data_progress('util.functional');  
+			JSAN.use('util.money'); data_progress('util.money');  
+			JSAN.use('util.print'); data_progress('util.print');  
+			JSAN.use('util.text'); data_progress('util.text'); 
+			JSAN.use('util.window'); data_progress('util.window'); 
 
-			JSAN.use('patron.bills'); JSAN.use('patron.display'); JSAN.use('patron.holds'); JSAN.use('patron.items');
-			JSAN.use('patron.search_form'); JSAN.use('patron.search_result'); JSAN.use('patron.summary');
-			JSAN.use('patron.util');
+			JSAN.use('patron.bills'); data_progress('patron.bills');  
+			JSAN.use('patron.display'); data_progress('patron.display');  
+			JSAN.use('patron.holds'); data_progress('patron.holds');  
+			JSAN.use('patron.items'); data_progress('patron.items'); 
+			JSAN.use('patron.search_form'); data_progress('patron.search_form');  
+			JSAN.use('patron.search_result'); data_progress('patron.search_result');  
+			JSAN.use('patron.summary'); data_progress('patron.summary'); 
+			JSAN.use('patron.util'); data_progress('patron.util'); 
 
-			JSAN.use('circ.checkin'); JSAN.use('circ.checkout'); JSAN.use('circ.copy_status'); JSAN.use('circ.hold_capture');
-			JSAN.use('circ.in_house_use'); JSAN.use('circ.print_list_template_editor'); JSAN.use('circ.util');
+			JSAN.use('circ.checkin'); data_progress('circ.checkin');  
+			JSAN.use('circ.checkout'); data_progress('circ.checkout');  
+			JSAN.use('circ.copy_status'); data_progress('circ.copy_status'); 
+			JSAN.use('circ.hold_capture'); data_progress('circ.hold_capture'); 
+			JSAN.use('circ.in_house_use'); data_progress('circ.in_house_use');  
+			JSAN.use('circ.util'); data_progress('circ.util'); 
 
-			JSAN.use('cat.copy_browser'); JSAN.use('cat.copy_buckets'); JSAN.use('cat.record_buckets');
-			JSAN.use('cat.util'); JSAN.use('cat.z3950');
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/checkout_overlay.xul',true);
+				x.send(null);
+				data_progress('checkout_overlay.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/checkout.xul',true);
+				x.send(null);
+				data_progress('checkout.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/patron/barcode_entry.xul',true);
+				x.send(null);
+				data_progress('barcode_entry.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/util/fancy_prompt.xul',true);
+				x.send(null);
+				data_progress('fancy_prompt.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/checkin_overlay.xul',true);
+				x.send(null);
+				data_progress('checkin_overlay.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/checkin.xul',true);
+				x.send(null);
+				data_progress('checkin.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/circ_brief.xul',true);
+				x.send(null);
+				data_progress('circ_brief.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/circ_summary.xul',true);
+				x.send(null);
+				data_progress('circ_summary.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/copy_status.xul',true);
+				x.send(null);
+				data_progress('copy_status.xul');
+			}
+			{
+				var x = new XMLHttpRequest();
+				x.open("GET",'/xul/server/circ/copy_status_overlay.xul',true);
+				x.send(null);
+				data_progress('copy_status_overlay.xul');
+			}
+
 
 			// ----
 
