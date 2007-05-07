@@ -50,6 +50,25 @@
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 
+			// load these just so they'll get cached
+			JSAN.use('util.barcode'); JSAN.use('util.controller'); JSAN.use('util.deck'); JSAN.use('util.exec');
+			JSAN.use('util.fm_utils'); JSAN.use('util.list'); JSAN.use('util.network'); JSAN.use('util.sound');
+			JSAN.use('util.widgets'); JSAN.use('util.browser'); JSAN.use('util.error'); JSAN.use('util.file');
+			JSAN.use('util.functional'); JSAN.use('util.money'); JSAN.use('util.print'); JSAN.use('util.text');
+			JSAN.use('util.window');
+
+			JSAN.use('patron.bills'); JSAN.use('patron.display'); JSAN.use('patron.holds'); JSAN.use('patron.items');
+			JSAN.use('patron.search_form'); JSAN.use('patron.search_result'); JSAN.use('patron.summary');
+			JSAN.use('patron.util');
+
+			JSAN.use('circ.checkin'); JSAN.use('circ.checkout'); JSAN.use('circ.copy_status'); JSAN.use('circ.hold_capture');
+			JSAN.use('circ.in_house_use'); JSAN.use('circ.print_list_template_editor'); JSAN.use('circ.util');
+
+			JSAN.use('cat.copy_browser'); JSAN.use('cat.copy_buckets'); JSAN.use('cat.record_buckets');
+			JSAN.use('cat.util'); JSAN.use('cat.z3950');
+
+			// ----
+
 			JSAN.use('OpenILS.data');
 			g.data = new OpenILS.data()
 			g.data.on_error = xulG.auth.logoff;
