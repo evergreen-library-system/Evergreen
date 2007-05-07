@@ -46,7 +46,7 @@ var MARC_ITEM_TYPE_MAP = {
 		SIPMediaType			: '005',
 		magneticMedia			: 'f',
 		durationRule			: '7_days_0_renew',
-		recurringFinesRule	: '10_cent_per_day',
+		recurringFinesRule	: '50_cent_per_day',
 		maxFine					: 'overdue_mid'
 	},
 
