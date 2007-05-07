@@ -92,8 +92,13 @@
 					<td class='holds_cell'>&opac.holds.concactEmail;:</td>
 					<td class='holds_cell' id='holds_email'> 
                         <span class='hide_me' id='holds.no_email'>
-                            (See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> for setting your email address)
+                            (See <a class='classic_link' 
+                                id='holds.no_email.my_account'>My Account</a> for setting your email address)
                         </span>
+                        <span class='hide_me' id='holds.no_email.xul'>
+                            (Patron has no configured email address)
+                        </span>
+
                     </td>
 				</tr>
 				<tr>
