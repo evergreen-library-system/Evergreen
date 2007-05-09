@@ -78,7 +78,9 @@ SELECT	cl.shortname AS circ_lib,
 	paddr.city AS patron_city,
 	paddr.post_code AS patron_zip,
 	sc1.stat_cat_entry AS stat_cat_1,
-	sc2.stat_cat_entry AS stat_cat_2
+	sc2.stat_cat_entry AS stat_cat_2,
+	sce1.value AS stat_cat_1_value,
+	sce2.value AS stat_cat_2_value
   FROM	action.circulation circ
 	JOIN reporter.circ_type circ_type ON (circ.id = circ_type.id)
 	JOIN asset.copy cp ON (cp.id = circ.target_copy)
@@ -97,7 +99,9 @@ SELECT	cl.shortname AS circ_lib,
 	LEFT JOIN config.item_form_map ifm ON (rd.item_form = ifm.code)
 	LEFT JOIN config.item_type_map itm ON (rd.item_type = itm.code)
 	LEFT JOIN asset.stat_cat_entry_copy_map sc1 ON (sc1.owning_copy = cp.id AND sc1.stat_cat = 1)
-	LEFT JOIN asset.stat_cat_entry_copy_map sc2 ON (sc2.owning_copy = cp.id AND sc2.stat_cat = 2);
+	LEFT JOIN asset.stat_cat_entry sce1 ON (sce1.id = sc1.stat_cat_entry)
+	LEFT JOIN asset.stat_cat_entry_copy_map sc2 ON (sc2.owning_copy = cp.id AND sc2.stat_cat = 2)
+	LEFT JOIN asset.stat_cat_entry sce2 ON (sce2.id = sc2.stat_cat_entry);
 
 CREATE OR REPLACE VIEW reporter.legacy_cat1 AS
 SELECT	id,
