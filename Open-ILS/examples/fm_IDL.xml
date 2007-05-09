@@ -2406,6 +2406,24 @@
 			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
 		</links>
 	</class>
+	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals">
+		<fields oils_persist:primary="xact">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Transaction ID" name="xact" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Unvoided Paid Amount" name="unvoided" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Voided (Returned) Paid Amount" name="voided" oils_obj:array_position="5" oils_persist:virtual="false"/>
+			<field reporter:label="Total Paid Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
+		</links>
+	</class>
+
+	<!-- ********************************************************************************************************************* -->
+	<!-- What follows is a set of example extentions that are useful for PINES.  Comment out or remove if you don't want them. -->
+	<!-- ********************************************************************************************************************* -->
 	<class id="rccc" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_circ" oils_persist:tablename="reporter.classic_current_circ" reporter:label="Classic Circulation View">
 		<fields oils_persist:primary="id">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -2435,8 +2453,8 @@
 			<field reporter:label="Patron County" name="patron_county" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Patron City" name="patron_city" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Patron ZIP Code" name="patron_zip" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Legacy CAT1 Value" name="stat_cat_1" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Legacy CAT2 Value" name="stat_cat_2" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Legacy CAT1 Value" name="stat_cat_1" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="int"/>
+			<field reporter:label="Legacy CAT2 Value" name="stat_cat_2" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="circ"/>
@@ -2445,20 +2463,38 @@
 			<link field="circ_lib_id" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="patron_home_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="stat_cat_1" reltype="might_have" key="id" map="" class="rsce1"/>
+			<link field="stat_cat_2" reltype="might_have" key="id" map="" class="rsce2"/>
 		</links>
 	</class>
-	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals">
-		<fields oils_persist:primary="xact">
+
+	<class id="rsce1" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::legacy_cat1" oils_persist:tablename="reporter.legacy_cat1" reporter:label="CAT1 Entry">
+		<fields oils_persist:primary="id">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Transaction ID" name="xact" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Unvoided Paid Amount" name="unvoided" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label="Voided (Returned) Paid Amount" name="voided" oils_obj:array_position="5" oils_persist:virtual="false"/>
-			<field reporter:label="Total Paid Amount" name="total" oils_obj:array_position="6" oils_persist:virtual="false"/>
+			<field reporter:label="Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="id" />
+			<field reporter:label="Entry Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field reporter:label="Entry Value" name="value" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="xact" reltype="might_have" key="id" map="" class="mbt"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+
+	<class id="rsce2" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::legacy_cat2" oils_persist:tablename="reporter.legacy_cat2" reporter:label="CAT2 Entry">
+		<fields oils_persist:primary="id">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Entry ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="id" />
+			<field reporter:label="Entry Owner" name="owner" oils_obj:array_position="4" oils_persist:virtual="false" />
+			<field reporter:label="Entry Value" name="value" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+	<!-- ********************************************************************************************************************* -->
+
 </IDL>
