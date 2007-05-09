@@ -2424,7 +2424,7 @@
 	<!-- ********************************************************************************************************************* -->
 	<!-- What follows is a set of example extentions that are useful for PINES.  Comment out or remove if you don't want them. -->
 	<!-- ********************************************************************************************************************* -->
-	<class id="rccc" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_circ" oils_persist:tablename="reporter.classic_current_circ" reporter:label="Classic Circulation View">
+	<class id="rccc" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_circ" oils_persist:tablename="reporter.classic_current_circ" reporter:core="true" reporter:label="Classic Circulation View">
 		<fields oils_persist:primary="id">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
