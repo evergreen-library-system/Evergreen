@@ -2472,7 +2472,7 @@
 		</links>
 	</class>
 
-	<class id="rsce1" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::legacy_cat1" oils_persist:tablename="reporter.legacy_cat1" reporter:label="CAT1 Entry">
+	<class id="rsce1" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::legacy_cat1" oils_persist:tablename="reporter.legacy_cat1" reporter:label="CAT1 Entry">
 		<fields oils_persist:primary="id">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
@@ -2486,7 +2486,7 @@
 		</links>
 	</class>
 
-	<class id="rsce2" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::legacy_cat2" oils_persist:tablename="reporter.legacy_cat2" reporter:label="CAT2 Entry">
+	<class id="rsce2" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::legacy_cat2" oils_persist:tablename="reporter.legacy_cat2" reporter:label="CAT2 Entry">
 		<fields oils_persist:primary="id">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
