@@ -20,6 +20,58 @@ SELECT	cl.shortname AS circ_lib,
 	cn.id AS call_number,
 	cn.label AS call_number_label,
 	call_number_dewey(cn.label) AS dewey,
+	CASE
+		WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+			THEN
+				btrim(
+					to_char(
+						10 * floor((call_number_dewey(cn.label)::float) / 10), '000'
+					)
+				)
+		ELSE NULL
+	END AS dewey_block_tens,
+	CASE
+		WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+			THEN
+				btrim(
+					to_char(
+						100 * floor((call_number_dewey(cn.label)::float) / 100), '000'
+					)
+				)
+		ELSE NULL
+	END AS dewey_block_hundreds,
+	CASE
+		WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+			THEN
+				btrim(
+					to_char(
+						10 * floor((call_number_dewey(cn.label)::float) / 10), '000'
+					)
+				)
+				|| '-' ||
+				btrim(
+					to_char(
+						10 * floor((call_number_dewey(cn.label)::float) / 10) + 9, '000'
+					)
+				)
+		ELSE NULL
+	END AS dewey_range_tens,
+	CASE
+		WHEN call_number_dewey(cn.label) ~  E'^[0-9.]+$'
+			THEN
+				btrim(
+					to_char(
+						100 * floor((call_number_dewey(cn.label)::float) / 100), '000'
+					)
+				)
+				|| '-' ||
+				btrim(
+					to_char(
+						100 * floor((call_number_dewey(cn.label)::float) / 100) + 99, '000'
+					)
+				)
+		ELSE NULL
+	END AS dewey_range_hundreds,
 	hl.id AS patron_home_lib,
 	hl.shortname AS patron_home_lib_shortname,
 	paddr.county AS patron_county,
