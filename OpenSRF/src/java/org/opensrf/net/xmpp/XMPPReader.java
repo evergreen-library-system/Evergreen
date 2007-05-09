@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * Slim XMPP Stream reader.  This reader only understands enough XMPP
- * to handle logins and recv messages.
+ * to handle logins and recv messages.  It's implemented as a StAX parser.
  * @author Bill Erickson, Georgia Public Library Systems
  */
 public class XMPPReader implements Runnable {
@@ -68,7 +68,7 @@ public class XMPPReader implements Runnable {
      * @param inStream the inbound XML stream
      */
     public XMPPReader(InputStream inStream) {
-        msgQueue = new ConcurrentLinkedQueue();
+        msgQueue = new ConcurrentLinkedQueue<XMPPMessage>();
         this.inStream = inStream;
         resetBuffers();
         xmlState = XMLState.IN_NOTHING;
@@ -144,7 +144,8 @@ public class XMPPReader implements Runnable {
     }
 
 
-    /** Thread kickoff point */
+
+    /** Kickoff the thread */
     public void run() {
         read();
     }
@@ -157,9 +158,10 @@ public class XMPPReader implements Runnable {
     public void read() {
 
         try {
+
             XMLInputFactory factory = XMLInputFactory.newInstance();
 
-            /** disable as many features as possible to speed up the parsing */
+            /** disable as many unused features as possible to speed up the parsing */
             factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.FALSE);
             factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
             factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.FALSE);
@@ -227,19 +229,9 @@ public class XMPPReader implements Runnable {
 
         String name = reader.getName().toString();
 
-        if("stream:stream".equals(name)) {
-            setXMPPStreamState(XMPPStreamState.CONNECT_RECV);
-            return;
-        }
-
-        if("iq".equals(name)) {
-            if("result".equals(reader.getAttributeValue(null, "type")))
-                setXMPPStreamState(XMPPStreamState.CONNECTED);
-            return;
-        }
-
         if("message".equals(name)) {
             xmlState = XMLState.IN_BODY;
+
             /** add a special case for the opensrf "router_from" attribute */
             String rf = reader.getAttributeValue(null, "router_from");
             if( rf != null )
@@ -250,8 +242,24 @@ public class XMPPReader implements Runnable {
             return;
         }
 
+        if("body".equals(name)) {
+            xmlState = XMLState.IN_BODY;
+            return;
+        }
+
         if("thread".equals(name)) {
             xmlState = XMLState.IN_THREAD;
+            return;
+        }
+
+        if("stream:stream".equals(name)) {
+            setXMPPStreamState(XMPPStreamState.CONNECT_RECV);
+            return;
+        }
+
+        if("iq".equals(name)) {
+            if("result".equals(reader.getAttributeValue(null, "type")))
+                setXMPPStreamState(XMPPStreamState.CONNECTED);
             return;
         }
 

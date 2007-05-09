@@ -6,6 +6,10 @@ import org.opensrf.net.xmpp.XMPPSession;
 
 public class TestXMPP {
 
+    /**
+     * Connects to the jabber server and waits for inbound messages.
+     * If a recipient is provided, a small message is sent to the recipient.
+     */
     public static void main(String args[]) throws Exception {
 
         String host;
@@ -23,7 +27,7 @@ public class TestXMPP {
             resource = args[4];
 
         } catch(ArrayIndexOutOfBoundsException e) {
-            System.err.println("usage: org.opensrf.test.TestXMPP <host> <port> <username> <password> <resource>");
+            System.err.println("usage: org.opensrf.test.TestXMPP <host> <port> <username> <password> <resource> [<recipient>]");
             return;
         }
 
@@ -33,7 +37,9 @@ public class TestXMPP {
         XMPPMessage msg;
 
         if( args.length == 6 ) {
+
             /** they specified a recipient */
+
             recipient = args[5];
             msg = new XMPPMessage();
             msg.setTo(recipient);
@@ -45,7 +51,7 @@ public class TestXMPP {
 
         while(true) {
             System.out.println("waiting for message...");
-            msg = session.recv(-1);
+            msg = session.recv(-1); /* wait forever for a message to arrive */
             System.out.println("got message: " + msg.toXML());
         }
     }
