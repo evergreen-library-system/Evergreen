@@ -91,10 +91,10 @@ GNU General Public License for more details.
 	char* LONGSTR = __b;
 
 #define DOUBLE_TO_STRING(l) \
-	unsigned int __len = snprintf(NULL, 0, "%lf", l) + 2; \
+	unsigned int __len = snprintf(NULL, 0, "%f", l) + 2; \
 	char __b[__len]; \
 	bzero(__b, __len); \
-	snprintf(__b, __len - 1, "%lf", l); \
+	snprintf(__b, __len - 1, "%f", l); \
 	char* DOUBLESTR = __b;
 
 #define LONG_DOUBLE_TO_STRING(l) \

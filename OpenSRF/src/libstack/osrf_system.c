@@ -201,7 +201,7 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 
 	char tbuf[32];
 	memset(tbuf, 0x0, 32);
-	snprintf(tbuf, 32, "%lf", get_timestamp_millis());
+	snprintf(tbuf, 32, "%f", get_timestamp_millis());
 
 	if(!host) host = "";
 	if(!resource) resource = "";

@@ -166,9 +166,9 @@ void _rest_xml_output(growing_buffer* buf, object* obj, char * fm_class, int fm_
 
 	} else if(obj->is_double) {
 		if (notag)
-			buffer_fadd(buf,"%lf",tag,obj->double_value,tag);
+			buffer_fadd(buf,"%f",tag,obj->double_value,tag);
 		else
-			buffer_fadd(buf,"<%s>%lf</%s>",tag,obj->double_value,tag);
+			buffer_fadd(buf,"<%s>%f</%s>",tag,obj->double_value,tag);
 
 
 	} else if (obj->is_array) {

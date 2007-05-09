@@ -147,7 +147,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 	free(usr);
 
 	jsonObjectFree(params);
-	params = jsonParseStringFmt("[%lf]", iusr);
+	params = jsonParseStringFmt("[%f]", iusr);
 	jsonObject* user = oilsUtilsQuickReq(
 		"open-ils.cstore", "open-ils.cstore.direct.actor.user.retrieve", params);
 

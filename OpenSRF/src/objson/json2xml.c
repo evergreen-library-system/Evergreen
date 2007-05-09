@@ -70,12 +70,12 @@ int _recurse_jsonObjectToXML(jsonObject* obj, growing_buffer* res_xml) {
 			if (x == (int)x)
 				buffer_fadd(res_xml,"<number class_hint=\"%s\">%d</number>", hint, (int)x);
 			else
-				buffer_fadd(res_xml,"<number class_hint=\"%s\">%lf</number>", hint, x);
+				buffer_fadd(res_xml,"<number class_hint=\"%s\">%f</number>", hint, x);
 		} else {
 			if (x == (int)x)
 				buffer_fadd(res_xml,"<number>%d</number>", (int)x);
 			else
-				buffer_fadd(res_xml,"<number>%lf</number>", x);
+				buffer_fadd(res_xml,"<number>%f</number>", x);
 		}
 
 	} else if (obj->type == JSON_ARRAY) {

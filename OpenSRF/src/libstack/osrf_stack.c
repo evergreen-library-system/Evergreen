@@ -100,7 +100,7 @@ osrfAppSession* osrf_stack_transport_handler( transport_message* msg, char* my_s
 	}
 
 	double duration = get_timestamp_millis() - starttime;
-	osrfLogInfo(OSRF_LOG_MARK, "Message processing duration %lf", duration);
+	osrfLogInfo(OSRF_LOG_MARK, "Message processing duration %f", duration);
 
 	message_free( msg );
 	osrfLogDebug( OSRF_LOG_MARK, "after msg delete");

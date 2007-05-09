@@ -54,7 +54,7 @@ int main() {
 	/* number, double, and 'null' parsing... */
 	printf("------------------------------------------------------------------\n");
 	o = jsonParseString("1");
-	printf("\nParsed number: %lf\n", jsonObjectGetNumber(o));
+	printf("\nParsed number: %f\n", jsonObjectGetNumber(o));
 	jsonObjectFree(o);
 
 

@@ -279,7 +279,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 				"Auth session trying org from param [%d] for auth timeout", orgloc );
 		timeout = oilsAuthGetTimeout( userObj, type, orgloc );
 	}
-	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %lf", uname, timeout );
+	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %f", uname, timeout );
 
 	char* string = va_list_to_string( 
 			"%d.%d.%s", getpid(), time(NULL), uname ); 
@@ -292,14 +292,14 @@ oilsEvent* oilsAuthHandleLoginOK(
 		"successful login: username=%s, authtoken=%s, workstation=%s", uname, authToken, ws );
 
 	oilsFMSetString( userObj, "passwd", "" );
-	jsonObject* cacheObj = jsonParseStringFmt("{\"authtime\": %lf}", timeout);
+	jsonObject* cacheObj = jsonParseStringFmt("{\"authtime\": %f}", timeout);
 	jsonObjectSetKey( cacheObj, "userobj", jsonObjectClone(userObj));
 
 	osrfCachePutObject( authKey, cacheObj, timeout ); 
 	jsonObjectFree(cacheObj);
 	osrfLogInternal(OSRF_LOG_MARK, "oilsAuthComplete(): Placed user object into cache");
 	jsonObject* payload = jsonParseStringFmt(
-		"{ \"authtoken\": \"%s\", \"authtime\": %lf }", authToken, timeout );
+		"{ \"authtoken\": \"%s\", \"authtime\": %f }", authToken, timeout );
 
 	response = oilsNewEvent2( OSRF_LOG_MARK, OILS_EVENT_SUCCESS, payload );
 	free(string); free(authToken); free(authKey);

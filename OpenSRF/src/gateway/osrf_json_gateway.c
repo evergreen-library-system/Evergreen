@@ -238,7 +238,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		}
 
 		double duration = get_timestamp_millis() - starttime;
-		osrfLogDebug(OSRF_LOG_MARK, "gateway request took %lf seconds", duration);
+		osrfLogDebug(OSRF_LOG_MARK, "gateway request took %f seconds", duration);
 
 
 		if (isXML)

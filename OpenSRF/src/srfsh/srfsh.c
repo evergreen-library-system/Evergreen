@@ -308,7 +308,7 @@ int handle_login( char* words[]) {
 		}
 		else login_session = NULL;
 
-		printf("Login Session: %s.  Session timeout: %lf\n", login_session, authtime );
+		printf("Login Session: %s.  Session timeout: %f\n", login_session, authtime );
 		
 		return 1;
 

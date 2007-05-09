@@ -639,7 +639,7 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 	memset(buf, 0, RBUFSIZE);
 	set_fl(sock_fd, O_NONBLOCK);
 
-	osrfLogInternal( OSRF_LOG_MARK, "%d : Received data at %lf\n", getpid(), get_timestamp_millis());
+	osrfLogInternal( OSRF_LOG_MARK, "%d : Received data at %f\n", getpid(), get_timestamp_millis());
 
 	while( (read_bytes = recv(sock_fd, buf, RBUFSIZE-1, 0) ) > 0 ) {
 		osrfLogInternal( OSRF_LOG_MARK, "Socket %d Read %d bytes and data: %s", sock_fd, read_bytes, buf);
