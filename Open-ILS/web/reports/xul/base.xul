@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="reporter.css" type="text/css"?>
+<?xml-stylesheet href="calendar/calendar-brown.css" type="text/css" ?>
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadIDL()">
+
+<script src="jsan/JSAN.js" type="application/x-javascript; e4x=1"/>
+<script>JSAN.use('DOM.Utils')</script>
+
+<script src="/opac/common/js/JSON.js" type="application/x-javascript; e4x=1"/>
+<script src="/opac/common/js/md5.js" type="application/x-javascript; e4x=1"/>
+<script src="utilities.js" type="application/x-javascript; e4x=1"/>
+<script src="xulbuilder.js" type="application/x-javascript; e4x=1"/>
+<script src="source-setup.js" type="application/x-javascript; e4x=1"/>
+<script src="source-browse.js" type="application/x-javascript; e4x=1"/>
+<script src="template-config.js" type="application/x-javascript; e4x=1"/>
+<script src="transforms.js" type="application/x-javascript; e4x=1"/>
+<script src="operators.js" type="application/x-javascript; e4x=1"/>
+
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/calendar.js"/>
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/lang/calendar-en.js"/>
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/calendar-setup.js"/>
+
+<groupbox flex="1">
+	<caption label="Database Source Browser"/>
+	<hbox flex="1">
+		<hbox flex="1">
+			<vbox flex="1">
+				<menulist label="Sources" popup="source-menu"/>
+				<tree
+					id="idl-browse-tree"
+					flex="2"
+					onclick="sourceTreeHandler(event)"
+					ondblclick="sourceTreeHandlerDblClick(event)"
+				>
+					<treecols>
+						<treecol primary="true" label="Source Name" flex="1"/>
+					</treecols>
+					<treechildren id="sources-treetop" alternatingbackground="true" />
+				</tree>
+			</vbox>
+		</hbox>
+
+		<splitter id="rtp-browse-splitter" collapse="before" persist="state hidden"><grippy/></splitter>
+
+		<hbox flex="2">
+			<vbox flex="1">
+				<hbox>
+					<label control="path-label" value="Source Specifier:"/>
+					<textbox id="path-label" flex="1"/>
+				</hbox>
+				<hbox flex="1">
+					<hbox flex="3">
+						<vbox flex="1">
+							<tree
+								id="class-view"
+								flex="3"
+								onclick="detailTreeHandler()"
+								ondblclick="addReportAtoms()"
+								enableColumnDrag="true"
+							>
+								<treecols>
+									<treecol label="Field Name" flex="1"/>
+									<treecol label="Data Type" flex="0"/>
+								</treecols>
+								<treechildren id="class-treetop" alternatingbackground="true" />
+							</tree>
+						</vbox>
+					</hbox>
+
+					<splitter><grippy/></splitter>
+
+					<hbox flex="2">
+						<vbox flex="1">
+							<tree
+								id="trans-view"
+								flex="1"
+								seltype="single"
+								onclick="transformSelectHandler()"
+								ondblclick="addReportAtoms()"
+								enableColumnDrag="true"
+							>
+								<treecols>
+									<treecol label="Field Transform" flex="1"/>
+									<treecol label="Params" flex="0" hidden="true"/>
+									<treecol label="Applicable Datatypes" flex="1" hidden="true"/>
+									<treecol label="Output Type" flex="1" />
+								</treecols>
+								<treechildren id="trans-treetop" alternatingbackground="true" />
+							</tree>
+						</vbox>
+					</hbox>
+				</hbox>
+				<hbox>
+					<spacer flex="1"/>
+					<button label="Add Selected Fields" id="source-add" oncommand="addReportAtoms()"/>
+				</hbox>
+			</vbox>
+		</hbox>
+	</hbox>
+</groupbox>
+
+<splitter style="margin:3px" id="rtp-browse-build-splitter" collapse="before" persist="state hidden"><grippy/></splitter>
+
+
+<groupbox flex="1" orient="horizontal">
+	<caption label="Template Configuration"/>
+
+	<hbox flex="1">
+		<vbox flex="1">
+			<hbox>
+			<vbox>
+				<label control="template-name" value="Name:" style="height:2em"/>
+				<label control="template-description" value="Description:"/>
+			</vbox>
+			<vbox flex="1">
+				<textbox id="template-name" flex="1"/>
+				<textbox id="template-description" multiline="true" flex="1" style="max-height:3em"/>
+			</vbox>
+			<vbox pack="end">
+				<button onclick="save_template();" label="Save"/>
+			</vbox>
+			</hbox>
+
+			<hbox flex="1">
+				<tabbox flex="2" id="used-source-fields-tabbox">
+					<tabs>
+						<tab
+							id="dis_tab"
+							label="Displayed Fields"
+							onclick="transformSelectHandler(true);"
+						/>
+						<tab
+							id="filter_tab"
+							label="Base Filters"
+							onclick="transformSelectHandler(true);"
+						/>
+						<tab
+							id="aggfilter_tab"
+							label="Aggregate Filters"
+							disabled="true"
+							onclick="transformSelectHandler(true);"
+						/>
+						<!--
+						<tab
+							id="order_tab"
+							label="Field Order"
+							onclick="transformSelectHandler(true);"
+						/>
+						-->
+					</tabs>
+
+					<tabpanels flex="1">
+						<tabpanel id="dis_tabpanel" orient="vertical">
+							<vbox flex="1">
+								<hbox flex="1">
+									<tree
+										id="dis-col-view"
+										flex="1"
+										seltype="single"
+										ondblclick="alterColumnLabel()"
+										onselect="populateTransformContext()"
+										enableColumnDrag="true"
+									>
+										<treecols>
+											<treecol label="Display Name" flex="3"/>
+											<treecol label="Field Name" hidden="true" flex="1"/>
+											<treecol label="Data Type" flex="1"/>
+											<treecol label="Field Transform" flex="1"/>
+											<treecol label="Field Transform Type" hidden="true" flex="1"/>
+										</treecols>
+										<treechildren id="dis-col-treetop" alternatingbackground="true" />
+									</tree>
+								</hbox>
+								<hbox pack="center">
+									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
+									<button type="menu" label="Change Transform">
+										<menupopup id='dis_tab_trans_menu'/>
+									</button>
+									<spacer flex="1"/>
+									<button label="Move Up" oncommand="changeDisplayOrder('u')"/>
+									<button label="Move Down" oncommand="changeDisplayOrder('d')"/>
+									<spacer flex="1"/>
+									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+
+						<tabpanel id="filter_tabpanel" orient="vertical">
+							<vbox flex="1">
+								<hbox flex="1">
+									<tree
+										id="filter-col-view"
+										flex="1"
+										seltype="single"
+										onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
+										enableColumnDrag="true"
+									>
+										<treecols>
+											<treecol label="Filter Field" flex="2"/>
+											<treecol label="Field Name" hidden="true" flex="1"/>
+											<treecol label="Data Type" hidden="true" flex="1"/>
+											<treecol label="Field Transform" flex="1"/>
+											<treecol label="Field Transform Type" hidden="true" flex="1"/>
+											<treecol label="Operator" flex="1"/>
+											<treecol label="Value" flex="1"/>
+										</treecols>
+										<treechildren id="filter-col-treetop" alternatingbackground="true" />
+									</tree>
+								</hbox>
+								<hbox pack="center">
+									<button type="menu" label="Change Transform">
+										<menupopup id='filter_tab_trans_menu'/>
+									</button>
+									<button type="menu" label="Change Operator">
+										<menupopup id='filter_tab_op_menu'/>
+									</button>
+									<button label="Change value" command="filter_tab_value_action"/>
+									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
+									<spacer flex="1"/>
+									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+
+						<tabpanel id="aggfilter_tabpanel" orient="vertical">
+							<vbox flex="1">
+								<hbox flex="1">
+									<tree
+										id="aggfilter-col-view"
+										flex="1"
+										seltype="single"
+										onselect="populateTransformContext();populateOperatorContext();changeTemplateFilterValue();"
+										enableColumnDrag="true"
+									>
+										<treecols>
+											<treecol label="Filter Field" flex="2"/>
+											<treecol label="Field Name" hidden="true" flex="1"/>
+											<treecol label="Data Type" hidden="true" flex="1"/>
+											<treecol label="Field Transform" flex="1"/>
+											<treecol label="Field Transform Type" hidden="true" flex="1"/>
+											<treecol label="Operator" flex="1"/>
+											<treecol label="Value" flex="1"/>
+										</treecols>
+										<treechildren id="aggfilter-col-treetop" alternatingbackground="true" />
+									</tree>
+								</hbox>
+								<hbox pack="center">
+									<button type="menu" label="Change Transform">
+										<menupopup id='aggfilter_tab_trans_menu'/>
+									</button>
+									<button type="menu" label="Change Operator">
+										<menupopup id='aggfilter_tab_op_menu'/>
+									</button>
+									<button label="Change value" command="aggfilter_tab_value_action"/>
+									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
+									<spacer flex="1"/>
+									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+								</hbox>
+							</vbox>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</hbox>
+		</vbox>
+	</hbox>
+
+	<splitter id="rtp-build-splitter" collapse="after" persist="state hidden"><grippy/></splitter>
+
+	<hbox flex="3">
+		<tree
+			id="used-sources"
+			flex="1"
+			onclick="renderSources(true)"
+			ondblclick="changeTemplateFilterValue()"
+			enableColumnDrag="true"
+		>
+			<treecols>
+				<treecol label="Source Specifier" flex="2"/>
+				<treecol label="Table Name" flex="1" hidden="true"/>
+				<treecol label="SQL Alias" flex="1" hidden="true"/>
+				<treecol label="Relationship" flex="1" hidden="true"/>
+			</treecols>
+			<treechildren id="used-sources-treetop" alternatingbackground="true" />
+		</tree>
+	</hbox>
+
+</groupbox>
+
+<commandset>
+	<command id='filter_tab_value_action'/>
+	<command id='aggfilter_tab_value_action'/>
+</commandset>
+
+<popupset>
+	<popup id="source-menu" position="after_start"/>
+	<popup
+		id="calendar-widget"
+		position="before_start"
+	/>
+</popupset>
+
+</window>
+
