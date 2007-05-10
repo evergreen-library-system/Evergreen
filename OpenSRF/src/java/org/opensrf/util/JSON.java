@@ -8,7 +8,10 @@ import java.util.*;
  */
 public class JSON {
 
+    /** Special OpenSRF serializable object netClass key */
     public static final String JSON_CLASS_KEY = "__c";
+
+    /** Special OpenSRF serializable object payload key */
     public static final String JSON_PAYLOAD_KEY = "__p";
 
 
@@ -52,6 +55,12 @@ public class JSON {
         /** JSON array */
         if(obj instanceof Iterable) {
             encodeJSONArray((Iterable) obj, sb);
+            return;
+        }
+
+        /** OpenSRF serializable objects */
+        if(obj instanceof OSRFSerializable) {
+            encodeOSRFSerializable((OSRFSerializable) obj, sb);
             return;
         }
 
@@ -110,6 +119,36 @@ public class JSON {
         if(key != null) 
             sb.deleteCharAt(sb.length()-1); 
         sb.append("}");
+    }
+
+
+    /**
+     * Encodes a network-serializable OpenSRF object
+     */
+    private static void encodeOSRFSerializable(OSRFSerializable obj, StringBuffer sb) {
+
+        OSRFRegistry reg = obj.getRegistry();
+        String[] fields = reg.getFields();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(JSON_CLASS_KEY, reg.getNetClass());
+
+        if( reg.getWireProtocol() == OSRFRegistry.WireProtocol.ARRAY ) {
+
+            List<Object> list = new ArrayList<Object>(fields.length);
+            for(String s : fields)
+                list.add(obj.get(s));
+            map.put(JSON_PAYLOAD_KEY, list);
+
+        } else {
+            //map.put(JSON_PAYLOAD_KEY, new HashMap<String, Object>(obj));
+            Map<String, Object> subMap = new HashMap<String, Object>();
+            for(String s : fields)
+                map.put(s, obj.get(s));
+                
+        }
+
+        /** now serialize the encoded object */
+        toJSON(map, sb);
     }
 }
 

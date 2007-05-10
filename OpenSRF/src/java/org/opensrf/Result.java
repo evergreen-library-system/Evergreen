@@ -1,4 +1,5 @@
 package org.opensrf;
+import org.opensrf.util.*;
 
 
 /**
@@ -12,6 +13,15 @@ public class Result {
     private String status;
     /** Status code number */
     private int statusCode;
+
+
+    /** Register this object */
+    private static OSRFRegistry registry = 
+        OSRFRegistry.registerObject(
+            "osrfResult", 
+            OSRFRegistry.WireProtocol.HASH, 
+            new String[] {"status", "statusCode", "content"});
+
 
     public Result(String status, int statusCode, Object content) {
         this.status = status;
@@ -66,5 +76,23 @@ public class Result {
     public void setContent(Object content) {
         this.content = content;
     }
+
+    /**
+     * Implements the generic get() API required by OSRFSerializable
+     */
+    public Object get(String field) {
+        if("status".equals(field))
+            return getStatus();
+        if("statusCode".equals(field))
+            return getStatusCode();
+        if("content".equals(field))
+            return getContent();
+        return null;
+    }
+
+    public OSRFRegistry getRegistry() {
+        return registry;
+    }
+
 }
 
