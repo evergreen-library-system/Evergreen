@@ -3,26 +3,29 @@ package org.opensrf.util;
 import java.io.*;
 import java.util.*;
 
+
 /**
- * JSON utilities.
+ * JSONWriter
  */
-public class JSON {
+public class JSONWriter {
 
-    /** Special OpenSRF serializable object netClass key */
-    public static final String JSON_CLASS_KEY = "__c";
+    /** The object to serialize to JSON */
+    private Object obj;
 
-    /** Special OpenSRF serializable object payload key */
-    public static final String JSON_PAYLOAD_KEY = "__p";
+    public JSONWriter(Object obj) {
+        this.obj = obj;
+    }
 
 
     /**
-     * @see toJSON(Object, StringBuffer)
+     * @see write(Object, StringBuffer)
      */
-    public static String toJSON(Object obj) {
+    public String write() {
         StringBuffer sb = new StringBuffer();
-        toJSON(obj, sb);
+        write(sb);
         return sb.toString();
     }
+
 
 
     /**
@@ -30,7 +33,11 @@ public class JSON {
      * Maps (HashMaps, etc.) are encoded as JSON objects.  
      * Iterable's (Lists, etc.) are encoded as JSON arrays
      */
-    public static void toJSON(Object obj, StringBuffer sb) {
+    public void write(StringBuffer sb) {
+        write(obj, sb);
+    }
+
+    public void write(Object obj, StringBuffer sb) {
 
         /** JSON null */
         if(obj == null) {
@@ -81,14 +88,14 @@ public class JSON {
     /**
      * Encodes a List as a JSON array
      */
-    private static void encodeJSONArray(Iterable iterable, StringBuffer sb) {
+    private void encodeJSONArray(Iterable iterable, StringBuffer sb) {
         Iterator itr = iterable.iterator();
         sb.append("[");
         boolean some = false;
 
         while(itr.hasNext()) {
             some = true;
-            toJSON(itr.next(), sb);
+            write(itr.next(), sb);
             sb.append(',');
         }
 
@@ -100,18 +107,18 @@ public class JSON {
 
 
     /**
-     * Encodes a Map to a JSON object
+     * Encodes a Map as a JSON object
      */
-    private static void encodeJSONObject(Map map, StringBuffer sb) {
+    private void encodeJSONObject(Map map, StringBuffer sb) {
         Iterator itr = map.keySet().iterator();
         sb.append("{");
         Object key = null;
 
         while(itr.hasNext()) {
             key = itr.next();
-            toJSON(key, sb);
+            write(key, sb);
             sb.append(':');
-            toJSON(map.get(key), sb);
+            write(map.get(key), sb);
             sb.append(',');
         }
 
@@ -125,30 +132,31 @@ public class JSON {
     /**
      * Encodes a network-serializable OpenSRF object
      */
-    private static void encodeOSRFSerializable(OSRFSerializable obj, StringBuffer sb) {
+    private void encodeOSRFSerializable(OSRFSerializable obj, StringBuffer sb) {
 
         OSRFRegistry reg = obj.getRegistry();
         String[] fields = reg.getFields();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put(JSON_CLASS_KEY, reg.getNetClass());
+        map.put(JSONReader.JSON_CLASS_KEY, reg.getNetClass());
 
         if( reg.getWireProtocol() == OSRFRegistry.WireProtocol.ARRAY ) {
 
             List<Object> list = new ArrayList<Object>(fields.length);
             for(String s : fields)
                 list.add(obj.get(s));
-            map.put(JSON_PAYLOAD_KEY, list);
+            map.put(JSONReader.JSON_PAYLOAD_KEY, list);
 
         } else {
-            //map.put(JSON_PAYLOAD_KEY, new HashMap<String, Object>(obj));
+
             Map<String, Object> subMap = new HashMap<String, Object>();
             for(String s : fields)
-                map.put(s, obj.get(s));
+                subMap.put(s, obj.get(s));
+            map.put(JSONReader.JSON_PAYLOAD_KEY, subMap);
                 
         }
 
         /** now serialize the encoded object */
-        toJSON(map, sb);
+        write(map, sb);
     }
 }
 

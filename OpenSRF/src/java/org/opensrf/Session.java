@@ -1,6 +1,8 @@
 package org.opensrf;
-import org.opensrf.util.JSON;
+import org.opensrf.util.JSONWriter;
 import org.opensrf.net.xmpp.*;
+import java.util.Map;
+import java.util.HashMap;
 
 public abstract class Session {
 
@@ -10,6 +12,10 @@ public abstract class Session {
         CONNECTING,
         CONNECTED
     };
+
+    /** local cache of existing sessions */
+    private static Map<String, Session> 
+        sessionCache = new HashMap<String, Session>();
 
     /** the current connection state */
     private ConnectState connectState;
@@ -37,14 +43,44 @@ public abstract class Session {
         XMPPMessage xmsg = new XMPPMessage();
         xmsg.setTo(remoteNode);
         xmsg.setThread(thread);
-        xmsg.setBody(JSON.toJSON(omsg));
+        xmsg.setBody(new JSONWriter(omsg).write());
         XMPPSession ses = XMPPSession.getGlobalSession();
 
         try {
             XMPPSession.getGlobalSession().send(xmsg);
         } catch(XMPPException e) {
-            /* XXX log */
+            /* XXX log.. what else? */
             connectState = ConnectState.DISCONNECTED;
         }
+    }
+
+    /**
+     * Waits for a message to arrive over the network and passes
+     * all received messages to the stack for processing
+     * @param millis The number of milliseconds to wait for a message to arrive
+     */
+    public static void waitForMessage(long millis) {
+        try {
+            Stack.processXMPPMessage(
+                XMPPSession.getGlobalSession().recv(millis));
+        } catch(XMPPException e) {
+            /* XXX log.. what else? */
+        }
+    }
+
+    /**
+     * Removes this session from the session cache.
+     */
+    public void cleanup() {
+        sessionCache.remove(thread);
+    }
+
+    /**
+     * Searches for the cached session with the given thread.
+     * @param thread The session thread.
+     * @return The found session or null.
+     */
+    public static Session findCachedSession(String thread) {
+        return sessionCache.get(thread);
     }
 }

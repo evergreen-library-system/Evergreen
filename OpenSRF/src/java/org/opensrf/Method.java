@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import org.opensrf.util.*;
 
 
-public class Method implements OSRFSerializable {
+public class Method extends OSRFObject {
 
     private String name;
     private List<Object> params;
 
-    /** Register this object */
     private static OSRFRegistry registry = 
         OSRFRegistry.registerObject(
             "osrfMethod", 
             OSRFRegistry.WireProtocol.HASH, 
             new String[] {"method", "params"});
-
 
     public Method(String name) {
         this.name = name;

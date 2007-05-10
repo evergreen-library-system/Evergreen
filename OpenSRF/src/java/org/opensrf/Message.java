@@ -35,6 +35,11 @@ public class Message implements OSRFSerializable {
         setId(id);
         setType(type);
     }
+    public Message(int id, Type type, Object payload) {
+        this(id, type);
+        setPayload(payload);
+    }
+
 
     public int getId() {
         return id;

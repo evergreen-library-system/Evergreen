@@ -161,7 +161,7 @@ public class XMPPSession {
      * If timeout is 0, this method will not block at all, but will return a 
      * message if there is already a message available.
      */
-    public XMPPMessage recv(int timeout) throws XMPPException {
+    public XMPPMessage recv(long timeout) throws XMPPException {
 
         XMPPMessage msg;
 

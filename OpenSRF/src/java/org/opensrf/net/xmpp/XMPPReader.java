@@ -130,7 +130,7 @@ public class XMPPReader implements Runnable {
      * timeout is negative, waits potentially forever.
      * @return The number of milliseconds in wait
      */
-    public synchronized long waitCoreEvent(int timeout) {
+    public synchronized long waitCoreEvent(long timeout) {
 
         if(msgQueue.peek() != null || timeout == 0) return 0;
 

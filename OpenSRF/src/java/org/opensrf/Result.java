@@ -5,7 +5,7 @@ import org.opensrf.util.*;
 /**
  * Models a single result from a method request.
  */
-public class Result {
+public class Result implements OSRFSerializable {
 
     /** Method result content */
     private Object content;

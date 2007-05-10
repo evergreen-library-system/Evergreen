@@ -1,5 +1,6 @@
 package org.opensrf.util;
 
+import java.util.Map;
 import java.util.HashMap;
 
 
@@ -14,6 +15,14 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
 
     public OSRFObject() {
     }
+
+
+    /*
+    public OSRFObject(String netClass, Map map) {
+        super(map);
+        registry = OSRFRegistry.getRegistry(netClass);
+    }
+    */
 
     /**
      * Creates a new object with the provided registry
@@ -31,12 +40,8 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
         return registry;
     }
 
-
     /**
-     * Gets the object at the given fields.  We override this here
-     * as part of the contract with OSRFSerializable
-     * @param field the field name to get.
-     * @return The object contained at the given field.
+     * Implement get() to fulfill our contract with OSRFSerializable
      */
     public Object get(String field) {
         return super.get(field);

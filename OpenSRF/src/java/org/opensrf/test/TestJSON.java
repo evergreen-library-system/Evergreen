@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TestJSON {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
         
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("key1", "value1");
@@ -22,7 +22,7 @@ public class TestJSON {
         list.add(null);
         map.put("key6", list);
 
-        System.out.println(JSON.toJSON(map) + "\n");
+        System.out.println(new JSONWriter(map).write() + "\n");
 
         String[] fields = {"isnew", "name", "shortname", "ill_address"};
         OSRFRegistry.registerObject("aou", OSRFRegistry.WireProtocol.ARRAY, fields);
@@ -34,7 +34,7 @@ public class TestJSON {
 
         map.put("key7", obj);
         list.add(obj);
-        System.out.println(JSON.toJSON(map) + "\n");
+        System.out.println(new JSONWriter(map).write() + "\n");
 
 
         Message m = new Message(1, Message.Type.REQUEST);
@@ -42,6 +42,10 @@ public class TestJSON {
         method.addParam("app07.dev.gapines.org");
         m.setPayload(method);
 
-        System.out.println(JSON.toJSON(m) + "\n");
+        String s = new JSONWriter(m).write();
+        System.out.println(s + "\n");
+
+        Object o = new JSONReader(s).read();
+        System.out.println("Read+Wrote: " + new JSONWriter(o).write());
     }
 }
