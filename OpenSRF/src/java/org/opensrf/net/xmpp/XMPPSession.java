@@ -37,6 +37,9 @@ public class XMPPSession {
     /** Raw socket output stream */
     OutputStream outStream;
 
+    /** The process-wide session.  All communication occurs
+     * accross this single connection */
+    private static XMPPSession globalSession;
 
 
     /**
@@ -49,12 +52,21 @@ public class XMPPSession {
         this.port = port;
     }
 
+    public static XMPPSession getGlobalSession() {
+        return globalSession;
+    }
+
+    public static void setGlobalSession(XMPPSession ses) {
+        globalSession = ses;
+    }
+
 
     /** true if this session is connected to the server */
     public boolean connected() {
         return (
             reader != null && 
-            reader.getXMPPStreamState() == XMPPReader.XMPPStreamState.CONNECTED);
+            reader.getXMPPStreamState() == 
+                XMPPReader.XMPPStreamState.CONNECTED);
     }
 
 
@@ -123,7 +135,7 @@ public class XMPPSession {
      * Sends an XMPPMessage.
      * @param msg The message to send.
      */
-    public void send(XMPPMessage msg) throws XMPPException {
+    public synchronized void send(XMPPMessage msg) throws XMPPException {
         checkConnected();
         try {
             outStream.write(msg.toXML().getBytes()); 

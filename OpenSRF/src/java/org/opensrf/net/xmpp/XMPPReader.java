@@ -217,7 +217,10 @@ public class XMPPReader implements Runnable {
             }
 
         } catch(javax.xml.stream.XMLStreamException se) {
-            /* XXX log an error, set a state, and notify */
+            /* XXX log an error */
+            xmlState = XMLState.IN_NOTHING;
+            streamState = XMPPStreamState.DISCONNECTED;
+            notifyCoreEvent();
         }
     }
 
