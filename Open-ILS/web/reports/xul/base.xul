@@ -5,12 +5,9 @@
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadIDL()">
 
-<script src="jsan/JSAN.js" type="application/x-javascript; e4x=1"/>
-<script>JSAN.use('DOM.Utils')</script>
-
+<script src="utilities.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/JSON.js" type="application/x-javascript; e4x=1"/>
 <script src="/opac/common/js/md5.js" type="application/x-javascript; e4x=1"/>
-<script src="utilities.js" type="application/x-javascript; e4x=1"/>
 <script src="xulbuilder.js" type="application/x-javascript; e4x=1"/>
 <script src="source-setup.js" type="application/x-javascript; e4x=1"/>
 <script src="source-browse.js" type="application/x-javascript; e4x=1"/>
