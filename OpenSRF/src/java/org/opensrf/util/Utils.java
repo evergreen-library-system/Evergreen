@@ -80,6 +80,26 @@ public class Utils {
             }
         }
     }
+
+
+    /** 
+     * Descends into the map along the given XPATH-style path 
+     * and returns the object found there.
+     * @param path The XPATH-style path to search.  Path 
+     * components are separated by '/' characters.  
+     * Example:  /opensrf/loglevel
+     * @return The found object. 
+     */
+
+    public static Object findPath(Map map, String path) {
+        String keys[] = path.split("/", -1);
+        int i = 0;
+        if(path.charAt(0) == '/') i++;
+        for(; i < keys.length - 1; i++ ) 
+            map = (Map) map.get(keys[i]);
+
+        return map.get(keys[i]);
+    }
 }
 
 

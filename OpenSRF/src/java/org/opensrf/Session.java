@@ -28,7 +28,7 @@ public abstract class Session {
      * In other words, each session has a unique thread, and all messages 
      * in that session will carry this thread around as an indicator.
      */
-    private String thread;
+    protected String thread;
 
     public Session() {
         connectState = ConnectState.DISCONNECTED;
@@ -82,5 +82,16 @@ public abstract class Session {
      */
     public static Session findCachedSession(String thread) {
         return sessionCache.get(thread);
+    }
+
+    protected void cacheSession() {
+        sessionCache.put(thread, this);
+    }
+
+    public void setRemoteNode(String nodeName) {
+        remoteNode = nodeName;
+    }
+    public String getRemoteNode() {
+        return remoteNode;
     }
 }
