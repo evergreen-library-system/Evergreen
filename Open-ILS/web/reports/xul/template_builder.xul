@@ -5,9 +5,22 @@
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xhtml="http://www.w3.org/1999/xhtml" onload="loadIDL()">
 
+<script src='/opac/common/js/utils.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/config.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/CGI.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/JSON.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/fmall.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/fmgen.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/Cookies.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/opac_utils.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/OrgTree.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/org_utils.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/RemoteRequest.js' type="application/x-javascript; e4x=1"/>
+<script src='/opac/common/js/md5.js' type="application/x-javascript; e4x=1"/>
+
+<script src="../adminlib.js" type="application/x-javascript; e4x=1"/>
+
 <script src="utilities.js" type="application/x-javascript; e4x=1"/>
-<script src="/opac/common/js/JSON.js" type="application/x-javascript; e4x=1"/>
-<script src="/opac/common/js/md5.js" type="application/x-javascript; e4x=1"/>
 <script src="xulbuilder.js" type="application/x-javascript; e4x=1"/>
 <script src="source-setup.js" type="application/x-javascript; e4x=1"/>
 <script src="source-browse.js" type="application/x-javascript; e4x=1"/>
