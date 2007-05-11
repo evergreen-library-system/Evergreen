@@ -50,7 +50,6 @@ public class Config {
 
     /**
      * Returns the configuration value found at the requested path.
-     * @see org.opensrf.util.Utils.findPath for path description.
      * @param path The search path
      * @return The config value, or null if no value exists at the given path.  
      * @throws ConfigException thrown if nothing is found at the path
@@ -79,7 +78,6 @@ public class Config {
 
     /**
      * Returns the configuration object found at the requested path.
-     * @see org.opensrf.util.Utils.findPath for path description.
      * @param path The search path
      * @return The config value
      * @throws ConfigException thrown if nothing is found at the path

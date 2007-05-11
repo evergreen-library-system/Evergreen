@@ -21,7 +21,7 @@ public class JSONWriter {
 
 
     /**
-     * @see write(Object, StringBuffer)
+     * Encodes a java object to JSON.
      */
     public String write() {
         StringBuffer sb = new StringBuffer();

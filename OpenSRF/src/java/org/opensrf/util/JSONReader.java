@@ -23,7 +23,7 @@ public class JSONReader {
     private String json;
 
     /**
-     * @param The JSON to parse
+     * @param json The JSON to parse
      */
     public JSONReader(String json) {
         this.json = json;
@@ -31,7 +31,6 @@ public class JSONReader {
 
     /**
      * Parses JSON and creates an object.
-     * @param json The JSON string to parse
      * @return The resulting object which may be a List, 
      * Map, Number, String, Boolean, or null
      */

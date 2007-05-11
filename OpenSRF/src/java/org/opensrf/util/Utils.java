@@ -26,7 +26,7 @@ public class Utils {
 
 
     /**
-     * @see escape(String, StringBuffer)
+     * Escapes a string.
      */
     public static String escape(String string) {
         StringBuffer sb = new StringBuffer();

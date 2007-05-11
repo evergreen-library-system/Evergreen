@@ -153,7 +153,6 @@ public class XMPPReader implements Runnable {
 
     /**
      * Parses XML data from the provided XMPP stream.
-     * @param inStream The stream to parse.
      */
     public void read() {
 
