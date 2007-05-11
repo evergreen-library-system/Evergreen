@@ -37,7 +37,7 @@ public class TestJSON {
         System.out.println(new JSONWriter(map).write() + "\n");
 
 
-        Message m = new Message(1, Message.Type.REQUEST);
+        Message m = new Message(1, Message.REQUEST);
         Method method = new Method("opensrf.settings.host_config.get");
         method.addParam("app07.dev.gapines.org");
         m.setPayload(method);

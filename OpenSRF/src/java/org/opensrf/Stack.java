@@ -10,6 +10,8 @@ public class Stack {
 
     public static void processXMPPMessage(XMPPMessage msg) {
 
+        if(msg == null) return;
+
         Session ses = Session.findCachedSession(msg.getThread());
 
         if(ses == null) {
@@ -24,6 +26,7 @@ public class Stack {
             msgList = new JSONReader(msg.getBody()).readArray();
         } catch(JSONException e) {
             /** XXX LOG error */
+            e.printStackTrace();
             return;
         }
 
@@ -33,13 +36,18 @@ public class Stack {
         long start = new Date().getTime();
 
         while(itr.hasNext()) {
+
             /** Construct a Message object from the generic OSRFObject returned from parsing */
             obj = (OSRFObject) itr.next();
-            processOSRFMessage(ses, 
+
+            processOSRFMessage(
+                ses, 
                 new Message(
-                    ((Integer) obj.get("threadTrace")).intValue(),
-                    (Message.Type) obj.get("type"),
-                    obj.get("payload")));
+                    obj.getInt("threadTrace"),
+                    obj.getString("type"),
+                    obj.get("payload")
+                )
+            );
         }
 
         /** LOG the duration */
@@ -47,14 +55,18 @@ public class Stack {
 
     public static void processOSRFMessage(Session ses, Message msg) {
         if( ses instanceof ClientSession ) 
-            processServerResponse((ClientSession) ses, msg);
+            processResponse((ClientSession) ses, msg);
         else
-            processClientRequest((ServerSession) ses, msg);
+            processRequest((ServerSession) ses, msg);
     }
 
-    public static void processServerResponse(ClientSession session, Message msg) {
+    public static void processResponse(ClientSession session, Message msg) {
+        if(msg.RESULT.equals(msg.getType())) {
+            session.pushResponse(msg);
+            return;
+        }
     }
 
-    public static void processClientRequest(ServerSession session, Message msg) {
+    public static void processRequest(ServerSession session, Message msg) {
     }
 }

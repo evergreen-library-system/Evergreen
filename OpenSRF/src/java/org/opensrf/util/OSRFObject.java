@@ -46,4 +46,12 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
     public Object get(String field) {
         return super.get(field);
     }
+
+    public String getString(String field) {
+        return (String) get(field);
+    }
+
+    public int getInt(String field) {
+        return ((Integer) get(field)).intValue();
+    }
 }

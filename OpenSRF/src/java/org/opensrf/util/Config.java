@@ -56,6 +56,10 @@ public class Config {
         }
     }
 
+    public static int getInt(String path) throws ConfigException {
+        return Integer.parseInt(getString(path));
+    }
+
     /**
      * Returns the configuration object found at the requested path.
      * @see org.opensrf.util.Utils.findPath for path description.

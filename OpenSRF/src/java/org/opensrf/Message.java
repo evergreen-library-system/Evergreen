@@ -4,19 +4,16 @@ import org.opensrf.util.*;
 
 public class Message implements OSRFSerializable {
 
-    /** Message types */
-    public enum Type {
-        REQUEST,
-        STATUS,
-        RESULT,
-        CONNECT,
-        DISCONNECT,
-    };
+    public static final String REQUEST = "REQUEST";
+    public static final String STATUS = "STATUS";
+    public static final String RESULT = "RESULT";
+    public static final String CONNECT = "CONNECT";
+    public static final String DISCONNECT = "DISCONNECT";
 
     /** Message ID.  This number is used to relate requests to responses */
     private int id;
-    /** Type of message. */
-    private Type type;
+    /** String of message. */
+    private String type;
     /** message payload */
     private Object payload;
 
@@ -31,11 +28,11 @@ public class Message implements OSRFSerializable {
      * @param id This message's ID
      * @param type The type of message
      */
-    public Message(int id, Type type) {
+    public Message(int id, String type) {
         setId(id);
-        setType(type);
+        setString(type);
     }
-    public Message(int id, Type type, Object payload) {
+    public Message(int id, String type, Object payload) {
         this(id, type);
         setPayload(payload);
     }
@@ -44,7 +41,7 @@ public class Message implements OSRFSerializable {
     public int getId() {
         return id;
     }   
-    public Type getType() {
+    public String getType() {
         return type;
     }
     public Object getPayload() {
@@ -53,7 +50,7 @@ public class Message implements OSRFSerializable {
     public void setId(int id) {
         this.id = id;
     }
-    public void setType(Type type) {
+    public void setString(String type) {
         this.type = type;
     }
     public void setPayload(Object p) {

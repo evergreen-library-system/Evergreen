@@ -138,7 +138,8 @@ public class XMPPSession {
     public synchronized void send(XMPPMessage msg) throws XMPPException {
         checkConnected();
         try {
-            outStream.write(msg.toXML().getBytes()); 
+            String xml = msg.toXML();
+            outStream.write(xml.getBytes()); 
         } catch (Exception e) {
             throw new XMPPException(e.toString());
         }
