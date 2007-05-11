@@ -35,7 +35,7 @@ function sortLabels (a,b) {
 
 function loadIDL() {
         var req = new XMLHttpRequest();
-        req.open('GET', 'fm_IDL.xml', true);
+        req.open('GET', '../fm_IDL.xml', true);
         req.onreadystatechange = function() {
                 if( req.readyState == 4 ) {
                         oilsIDL = req.responseXML;
