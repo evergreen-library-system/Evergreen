@@ -1,5 +1,5 @@
-
-
+var OILS_TEMPLATE_INTERFACE = 'xul/template_builder.xul';
+//var OILS_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
 
 
 /* generic folder window class */
@@ -97,7 +97,7 @@ oilsRptFolderWindow.prototype.drawEditActions = function() {
 		var s = location.search+'';
 		s = s.replace(/\&folder=\d+/g,'');
 		s = s.replace(/\&ct=\d+/g,'');
-		goTo( 'oils_rpt_builder.xhtml'+s+'&folder='+obj.folderNode.folder.id());
+		goTo( OILS_TEMPLATE_INTERFACE+s+'&folder='+obj.folderNode.folder.id());
 	}
 
 
