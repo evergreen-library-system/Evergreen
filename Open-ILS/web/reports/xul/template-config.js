@@ -770,7 +770,7 @@ function save_template () {
 	tmpl.folder(cgi.param('folder'));
 	tmpl.data(js2JSON(template));
 
-	prompt( 'template', js2JSON( tmpl ) );
+	// prompt( 'template', js2JSON( tmpl ) );
 
 	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
 		return;
