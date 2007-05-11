@@ -157,10 +157,6 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		case 'substring':
 			atomicWidget = oilsRptSubstrWidget
 			break;
-
-        case "org_unit":
-            atomicWidget = oilsRptOrgSelector;
-            break;
 	}
 
 	if( field.selector ) {
@@ -180,6 +176,10 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		case 'bool':
 			atomicWidget = oilsRptBoolWidget;
 			break;
+
+        case "org_unit":
+            atomicWidget = oilsRptOrgSelector;
+            break;
 	}
 
 
