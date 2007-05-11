@@ -12,14 +12,21 @@ function removeReportAtom (args) {
 	var tree = tabpanel.getElementsByTagName('tree')[0];
 	var fields = getSelectedItems(tree);
 
+
 	for (var i in fields) {
 		var field = fields[i];
 		var colname = field.firstChild.firstChild.nextSibling.getAttribute('label');
-
 		var relation_alias = field.getAttribute('relation');
 
-
 		delete rpt_rel_cache[relation_alias].fields[tabname][colname];
+		if (tabname == 'dis_tab') {
+			var _o_tmp = [];
+			for each (var _o_col in rpt_rel_cache.order_by) {
+				if (_o_col.relation == relation_alias && _o_col.field == colname) continue;
+				_o_tmp.push( _o_col );
+			}
+			rpt_rel_cache.order_by = _o_tmp
+		}
 
 		with (rpt_rel_cache[relation_alias].fields) {
 			if ( getKeys(dis_tab).length == 0 && getKeys(filter_tab).length == 0 && getKeys(aggfilter_tab).length == 0 )
