@@ -12,6 +12,7 @@ public class Stack {
 
         if(msg == null) return;
 
+        /** fetch this session from the cache */
         Session ses = Session.findCachedSession(msg.getThread());
 
         if(ses == null) {
@@ -35,9 +36,10 @@ public class Stack {
         OSRFObject obj = null;
         long start = new Date().getTime();
 
+        /** cycle through the messages and push them up the stack */
         while(itr.hasNext()) {
 
-            /** Construct a Message object from the generic OSRFObject returned from parsing */
+            /** Construct a Message object from the parsed generic OSRFObject */
             obj = (OSRFObject) itr.next();
 
             processOSRFMessage(
@@ -53,20 +55,26 @@ public class Stack {
         /** LOG the duration */
     }
 
-    public static void processOSRFMessage(Session ses, Message msg) {
+    private static void processOSRFMessage(Session ses, Message msg) {
         if( ses instanceof ClientSession ) 
             processResponse((ClientSession) ses, msg);
         else
             processRequest((ServerSession) ses, msg);
     }
 
-    public static void processResponse(ClientSession session, Message msg) {
+    /** 
+     * Process a server response
+     */
+    private static void processResponse(ClientSession session, Message msg) {
         if(msg.RESULT.equals(msg.getType())) {
             session.pushResponse(msg);
             return;
         }
     }
 
-    public static void processRequest(ServerSession session, Message msg) {
+    /**
+     * Process a client request
+     */
+    private static void processRequest(ServerSession session, Message msg) {
     }
 }

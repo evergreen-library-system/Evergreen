@@ -21,7 +21,7 @@ public abstract class Session {
     /** the current connection state */
     private ConnectState connectState;
 
-    /** The (jabber) address of the remote party we are communicating with */
+    /** The address of the remote party we are communicating with */
     private String remoteNode;
 
     /** 
@@ -85,13 +85,23 @@ public abstract class Session {
         return sessionCache.get(thread);
     }
 
+    /**
+     * Puts this session into session cache.
+     */
     protected void cacheSession() {
         sessionCache.put(thread, this);
     }
 
+    /**
+     * Sets the remote address
+     * @param nodeName The name of the remote node.
+     */
     public void setRemoteNode(String nodeName) {
         remoteNode = nodeName;
     }
+    /**
+     * @return The remote node
+     */
     public String getRemoteNode() {
         return remoteNode;
     }

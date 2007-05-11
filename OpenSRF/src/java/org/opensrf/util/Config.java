@@ -16,8 +16,16 @@ public class Config {
     private static Config config;
     /** The object form of the parsed config */
     private Map configObject;
+    /** 
+     * The log parsing context.  This is used as a prefix to the
+     * config item search path.  This allows config XML chunks to 
+     * be inserted into arbitrary XML files.
+     */
     private String context;
 
+    /**
+     * @param context The config context
+     */
     public Config(String context) {
         this.context = context;
     }
@@ -56,8 +64,17 @@ public class Config {
         }
     }
 
+    /**
+     * Gets the int value at the given path
+     * @param path The search path
+     */
     public static int getInt(String path) throws ConfigException {
-        return Integer.parseInt(getString(path));
+        try {
+            return Integer.parseInt(getString(path));
+        } catch(Exception e) {
+            throw new
+                ConfigException("No config int found at " + path);
+        }
     }
 
     /**
@@ -79,6 +96,11 @@ public class Config {
         }
     }
 
+    /**
+     * Returns the first item in the list found at the given path.  If
+     * no list is found, ConfigException is thrown.
+     * @param path The search path
+     */
     public static Object getFirst(String path) throws ConfigException {
         Object obj = get(path); 
         if(obj instanceof List) 

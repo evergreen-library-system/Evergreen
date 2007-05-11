@@ -2,20 +2,6 @@ package org.opensrf.net.xmpp;
 
 import java.io.*;
 
-
-/*
- * uncomment to use the DOM serialization code...
- 
-import org.w3c.dom.*;
-import org.apache.xerces.dom.DocumentImpl;
-import org.apache.xerces.dom.DOMImplementationImpl;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.Serializer;
-import org.apache.xml.serialize.SerializerFactory;
-import org.apache.xml.serialize.XMLSerializer;
-*/
-
-
 /**
  * Models a single XMPP message.
  */
@@ -110,50 +96,6 @@ public class XMPPMessage {
             }
         }
     }
-
-
-
-    /**
-     * This is a DOM implementataion of message serialization. 
-     * I'm inclined to think the stringbuffer version is faster, but 
-     * I have no proof.
-     */
-    /*
-    public String __toXML() {
-
-        Document doc = new DocumentImpl();
-        Element message = doc.createElement("message");
-        Element body = doc.createElement("body");
-        Element thread = doc.createElement("thread");
-
-        doc.appendChild(message);
-        message.setAttribute("to", getTo());
-        message.setAttribute("from", getFrom());
-        message.appendChild(body);
-        message.appendChild(thread);
-
-        body.appendChild(doc.createTextNode(getBody()));
-        thread.appendChild(doc.createTextNode(getThread()));
-
-        XMLSerializer serializer = new XMLSerializer();
-        StringWriter strWriter = new StringWriter();
-        OutputFormat outFormat = new OutputFormat();
-
-        outFormat.setEncoding("UTF-8");
-        outFormat.setVersion("1.0");
-        outFormat.setIndenting(false);
-        outFormat.setOmitXMLDeclaration(true);
-
-        serializer.setOutputCharStream(strWriter);
-        serializer.setOutputFormat(outFormat);
-
-        try {
-            serializer.serialize(doc);
-        } catch(IOException ioe) {
-        }
-        return strWriter.toString();
-    }
-    */
 }
 
 

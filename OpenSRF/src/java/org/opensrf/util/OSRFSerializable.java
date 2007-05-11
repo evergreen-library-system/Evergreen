@@ -10,6 +10,9 @@ public interface OSRFSerializable {
      */
     public abstract OSRFRegistry getRegistry();
 
+    /**
+     * Returns the object found at the given field
+     */
     public abstract Object get(String field);
 }
 

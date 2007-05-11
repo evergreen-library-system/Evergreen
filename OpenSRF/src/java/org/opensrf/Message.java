@@ -4,6 +4,7 @@ import org.opensrf.util.*;
 
 public class Message implements OSRFSerializable {
 
+    /** Message types */
     public static final String REQUEST = "REQUEST";
     public static final String STATUS = "STATUS";
     public static final String RESULT = "RESULT";
@@ -12,12 +13,12 @@ public class Message implements OSRFSerializable {
 
     /** Message ID.  This number is used to relate requests to responses */
     private int id;
-    /** String of message. */
+    /** type of message. */
     private String type;
     /** message payload */
     private Object payload;
 
-    /** Go ahead and register the Message object */
+    /** Create a registry for the osrfMessage object */
     private static OSRFRegistry registry = 
         OSRFRegistry.registerObject(
             "osrfMessage", 
@@ -32,6 +33,12 @@ public class Message implements OSRFSerializable {
         setId(id);
         setString(type);
     }
+
+    /**
+     * @param id This message's ID
+     * @param type The type of message
+     * @param payload The message payload
+     */
     public Message(int id, String type, Object payload) {
         this(id, type);
         setPayload(payload);
@@ -70,6 +77,9 @@ public class Message implements OSRFSerializable {
         return null;
     }
 
+    /**
+     * @return The osrfMessage registry.
+     */
     public OSRFRegistry getRegistry() {
         return registry;
     }

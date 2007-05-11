@@ -19,8 +19,12 @@ public class JSONReader {
     /** Special OpenSRF serializable object payload key */
     public static final String JSON_PAYLOAD_KEY = "__p";
 
+    /** The JSON string to parser */
     private String json;
 
+    /**
+     * @param The JSON to parse
+     */
     public JSONReader(String json) {
         this.json = json;
     }
@@ -40,6 +44,10 @@ public class JSONReader {
         }
     }
 
+    /**
+     * Assumes that a JSON array will be read.  Returns
+     * the resulting array as a list.
+     */
     public List<?> readArray() throws JSONException {
         Object o = read();
         try {
@@ -49,6 +57,10 @@ public class JSONReader {
         }
     }
 
+    /**
+     * Assumes that a JSON object will be read.  Returns 
+     * the resulting object as a map.
+     */
     public Map<?,?> readObject() throws JSONException {
         Object o = read();
         try {
@@ -59,6 +71,9 @@ public class JSONReader {
     }
 
 
+    /**
+     * Recurse through the object and turn items into maps, lists, etc.
+     */
     private Object readSubObject(Object obj) throws JSONException {
 
         if( obj == null || 

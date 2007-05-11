@@ -52,10 +52,16 @@ public class XMPPSession {
         this.port = port;
     }
 
+    /**
+     * Returns the global, process-wide session
+     */
     public static XMPPSession getGlobalSession() {
         return globalSession;
     }
 
+    /**
+     * Sets the global, process-wide section
+     */
     public static void setGlobalSession(XMPPSession ses) {
         globalSession = ses;
     }

@@ -16,14 +16,6 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
     public OSRFObject() {
     }
 
-
-    /*
-    public OSRFObject(String netClass, Map map) {
-        super(map);
-        registry = OSRFRegistry.getRegistry(netClass);
-    }
-    */
-
     /**
      * Creates a new object with the provided registry
      */
@@ -31,7 +23,6 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
         this();
         registry = reg;
     }
-
 
     /**
      * @return This object's registry
@@ -47,11 +38,16 @@ public class OSRFObject extends HashMap<String, Object> implements OSRFSerializa
         return super.get(field);
     }
 
+    /** Returns the string value found at the given field */
     public String getString(String field) {
         return (String) get(field);
     }
 
+    /** Returns the int value found at the given field */
     public int getInt(String field) {
+        Object o = get(field);
+        if(o instanceof String)
+            return Integer.parseInt((String) o);
         return ((Integer) get(field)).intValue();
     }
 }

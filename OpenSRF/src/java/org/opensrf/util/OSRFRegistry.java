@@ -79,16 +79,24 @@ public class OSRFRegistry {
         return -1;
     }
 
+    /** Returns the wire protocol of this object */
     public WireProtocol getWireProtocol() {
         return this.wireProtocol;
     }
 
+    /** Returns the netClass ("hint") of this object */
     public String getNetClass() {
         return this.netClass;
     }
 
     /**
-     * Creates a new registry object */
+     * Creates a new registry object.
+     * @param netClass The network class/hint
+     * @param wireProtocol The wire protocol
+     * @param fields The array of field names.  For array-based objects,
+     * the fields array must be sorted in accordance with the sorting
+     * of the objects in the array.
+     */ 
     public OSRFRegistry(String netClass, WireProtocol wireProtocol, String fields[]) {
         this.netClass = netClass;
         this.wireProtocol = wireProtocol;

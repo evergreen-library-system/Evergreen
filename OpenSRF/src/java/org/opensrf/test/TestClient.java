@@ -4,6 +4,7 @@ import org.opensrf.util.*;
 import org.opensrf.net.xmpp.*;
 import java.io.PrintStream;
 import java.util.Map;
+import java.util.Date;
 
 
 public class TestClient {

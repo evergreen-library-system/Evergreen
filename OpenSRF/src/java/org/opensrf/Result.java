@@ -23,6 +23,11 @@ public class Result implements OSRFSerializable {
             new String[] {"status", "statusCode", "content"});
 
 
+    /**
+     * @param status The status message for this result
+     * @param statusCode The status code
+     * @param content The content of the result
+     */
     public Result(String status, int statusCode, Object content) {
         this.status = status;
         this.statusCode = statusCode;
@@ -90,6 +95,9 @@ public class Result implements OSRFSerializable {
         return null;
     }
 
+    /**
+     * @return The osrfMethod registry.
+     */
     public OSRFRegistry getRegistry() {
         return registry;
     }

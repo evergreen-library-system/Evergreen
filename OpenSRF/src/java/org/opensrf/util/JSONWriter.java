@@ -12,6 +12,9 @@ public class JSONWriter {
     /** The object to serialize to JSON */
     private Object obj;
 
+    /**
+     * @param obj The object to encode
+     */
     public JSONWriter(Object obj) {
         this.obj = obj;
     }
@@ -37,6 +40,9 @@ public class JSONWriter {
         write(obj, sb);
     }
 
+    /**
+     * Encodes the object as JSON into the provided buffer
+     */
     public void write(Object obj, StringBuffer sb) {
 
         /** JSON null */
@@ -141,6 +147,7 @@ public class JSONWriter {
 
         if( reg.getWireProtocol() == OSRFRegistry.WireProtocol.ARRAY ) {
 
+            /** encode arrays as lists */
             List<Object> list = new ArrayList<Object>(fields.length);
             for(String s : fields)
                 list.add(obj.get(s));
@@ -148,6 +155,7 @@ public class JSONWriter {
 
         } else {
 
+            /** encode hashes as maps */
             Map<String, Object> subMap = new HashMap<String, Object>();
             for(String s : fields)
                 subMap.put(s, obj.get(s));
