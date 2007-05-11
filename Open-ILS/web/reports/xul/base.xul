@@ -15,9 +15,9 @@
 <script src="transforms.js" type="application/x-javascript; e4x=1"/>
 <script src="operators.js" type="application/x-javascript; e4x=1"/>
 
-<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/calendar.js"/>
-<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/lang/calendar-en.js"/>
-<script type="application/x-javascript; e4x=1" src="/opac/common/js/calendar/calendar-setup.js"/>
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar.js"/>
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/lang/calendar-en.js"/>
+<script type="application/x-javascript; e4x=1" src="/opac/common/js/jscalendar/calendar-setup.js"/>
 
 <groupbox flex="1">
 	<caption label="Database Source Browser"/>
