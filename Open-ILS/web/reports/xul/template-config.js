@@ -231,7 +231,7 @@ function alterColumnTransform (trans) {
 	}
 
 	renderSources(true);
-	return true;
+	return false;
 }
 
 function changeOperator (args) {
