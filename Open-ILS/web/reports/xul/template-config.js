@@ -578,7 +578,7 @@ function populateTransformContext () {
 				  alias : t.label,
 				  label : t.label,
 				  params : t.params,
-				  oncommand : "alterColumnTransform('"+t.name+"')",
+				  command : function () { return alterColumnTransform(t.name) }
 				}
 			)
 		);
