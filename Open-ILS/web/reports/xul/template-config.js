@@ -514,7 +514,7 @@ function populateOperatorContext () {
 					menu.appendChild(
 						createMenuItem(
 							{ label : o.labels[key],
-							  command : function () { return changeOperator({op:i,label:o.labels[key]}) },
+							  oncommand : "changeOperator({op:i,label:o.labels[key]}) },
 							}
 						)
 					);
@@ -873,6 +873,8 @@ function fleshFromPath ( template, rel ) {
 function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	if (!rel.fields[tab_name] || !rel.fields[tab_name][field]) return;
+
+	prompt('eh',js2JSON(rel));
 
 	var tab = rel.fields[tab_name];
 
