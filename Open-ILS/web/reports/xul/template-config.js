@@ -318,7 +318,6 @@ function changeTemplateFilterValue () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var item_pos = tree.view.selection.currentIndex;
 	var items = getSelectedItems(tree);
 
 	var targetCmd = $( tabname + '_value_action' );
@@ -515,7 +514,7 @@ function populateOperatorContext () {
 					menu.appendChild(
 						createMenuItem(
 							{ label : o.labels[key],
-							  oncommand : "changeOperator({op:'"+i+"',label:'"+o.labels[key]+"'})",
+							  command : function () { return changeOperator({op:i,label:o.labels[key]}) },
 							}
 						)
 					);
@@ -537,16 +536,18 @@ function populateTransformContext () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var item_pos = tree.view.selection.currentIndex;
-	var item = getSelectedItems(tree)[0];
+	var items = getSelectedItems(tree);
 
 	var transforms = {};
-	var dtype = item.getAttribute('datatype');
-	var item_transforms = getTransforms({ datatype : dtype });
+	for (var i in items) {
+		var item = items[i];
+		var dtype = item.getAttribute('datatype');
+		var item_transforms = getTransforms({ datatype : dtype });
 
-	for (var j in item_transforms) {
-		transforms[item_transforms[j]] = OILS_RPT_TRANSFORMS[item_transforms[j]];
-		transforms[item_transforms[j]].name = item_transforms[j];
+		for (var j in item_transforms) {
+			transforms[item_transforms[j]] = OILS_RPT_TRANSFORMS[item_transforms[j]];
+			transforms[item_transforms[j]].name = item_transforms[j];
+		}
 	}
 
 	var transformList = [];
