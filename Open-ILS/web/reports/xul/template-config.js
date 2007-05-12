@@ -10,7 +10,6 @@ function removeReportAtom (args) {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var item_pos = tree.view.selection.currentIndex;
 	var fields = getSelectedItems(tree);
 
 
@@ -36,7 +35,6 @@ function removeReportAtom (args) {
 	}
 
 	renderSources();
-	tree.view.selection.select( item_pos );
 }
 
 function addReportAtoms () {
@@ -229,7 +227,6 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
-	return true;
 }
 
 function changeOperator (args) {
@@ -257,7 +254,6 @@ function changeOperator (args) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
-	return true;
 }
 
 function removeTemplateFilterValue () {
@@ -273,13 +269,17 @@ function removeTemplateFilterValue () {
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
 	var item_pos = tree.view.selection.currentIndex;
-	var item = getSelectedItems(tree)[0];
-	var relation_alias = item.getAttribute('relation');
+	var items = getSelectedItems(tree);
 
-	var field = item.firstChild.firstChild;
-	var colname = field.nextSibling.getAttribute('label');
+	for (var i in items) {
+		var item = items[i];
+		var relation_alias = item.getAttribute('relation');
 
-	rpt_rel_cache[relation_alias].fields[tabname][colname].op_value = {};
+		var field = item.firstChild.firstChild;
+		var colname = field.nextSibling.getAttribute('label');
+
+		rpt_rel_cache[relation_alias].fields[tabname][colname].op_value = {};
+	}
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
@@ -307,8 +307,7 @@ function changeTemplateFilterValue () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var item_pos = tree.view.selection.currentIndex;
-	var item = getSelectedItems(tree)[0];
+	var items = getSelectedItems(tree);
 
 	var targetCmd = $( tabname + '_value_action' );
 
@@ -317,144 +316,149 @@ function changeTemplateFilterValue () {
 	targetCmd.oncommand = null;
 	targetCmd.removeEventListener( 'command', __handler_cache, true );
 
-	var relation_alias = item.getAttribute('relation');
+	for (var i in items) {
+		var item = items[i];
+		var relation_alias = item.getAttribute('relation');
 
-	var field = item.firstChild.firstChild;
-	var colname = field.nextSibling.getAttribute('label');
+		var field = item.firstChild.firstChild;
+		var colname = field.nextSibling.getAttribute('label');
 
-	var obj = rpt_rel_cache[relation_alias].fields[tabname][colname]
-	var operation = OILS_RPT_FILTERS[obj.op];
+		var obj = rpt_rel_cache[relation_alias].fields[tabname][colname]
+		var operation = OILS_RPT_FILTERS[obj.op];
 
-	switch (obj.datatype) {
-		case 'timestamp':
-			var cal_popup = $('calendar-widget');
+		switch (obj.datatype) {
+			case 'timestamp':
+				var cal_popup = $('calendar-widget');
 
-			while (cal_popup.firstChild) cal_popup.removeChild(cal_popup.lastChild);
-			var calendar = new Calendar(
-				0,
-				obj.op_value.object,
-				function (cal,date) { timestampSetDate(obj,cal,date) },
-				function (cal) { cal_popup.hidePopup(); cal.destroy(); }
-			);
+				while (cal_popup.firstChild) cal_popup.removeChild(cal_popup.lastChild);
+				var calendar = new Calendar(
+					0,
+					obj.op_value.object,
+					function (cal,date) { timestampSetDate(obj,cal,date) },
+					function (cal) { cal_popup.hidePopup(); cal.destroy(); }
+				);
 
-			var format = OILS_RPT_TRANSFORMS[obj.transform].cal_format || '%Y-%m-%d';
+				var format = OILS_RPT_TRANSFORMS[obj.transform].cal_format || '%Y-%m-%d';
 
-			calendar.setDateFormat(format);
-			calendar.create(cal_popup);
+				calendar.setDateFormat(format);
+				calendar.create(cal_popup);
 
-			targetCmd.menu = 'calendar-widget';
+				targetCmd.menu = 'calendar-widget';
 
-			break;
+				break;
 
-		case 'bool':
+			case 'bool':
 
-			function __bool_value_event_handler () {
-				var state, answer;
+				function __bool_value_event_handler () {
+					var state, answer;
 
-				try {
-					// get a reference to the prompt service component.
-					var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-					                    .getService(Components.interfaces.nsIPromptService);
+					try {
+						// get a reference to the prompt service component.
+						var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+						                    .getService(Components.interfaces.nsIPromptService);
 
-					// set the buttons that will appear on the dialog. It should be
-					// a set of constants multiplied by button position constants. In this case,
-					// three buttons appear, Save, Cancel and a custom button.
-					var flags=promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
-						promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1 +
-					        promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_2;
+						// set the buttons that will appear on the dialog. It should be
+						// a set of constants multiplied by button position constants. In this case,
+						// three buttons appear, Save, Cancel and a custom button.
+						var flags=promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0 +
+							promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_1 +
+						        promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_2;
 
-					// display the dialog box. The flags set above are passed
-					// as the fourth argument. The next three arguments are custom labels used for
-					// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
-					// particular button. The last two arguments are for an optional check box.
-					answer = promptService.select(
-						window,
-						"Boolean Value",
-						"Select the value, or cancel:",
-						2, ["True", "False"], state
-					);
-				} catch (e) {
-					answer = true;
-					state = confirm("Click OK for TRUE and Cancel for FALSE.");
-					state ? state = 0 : state = 1;
-				}
-
-				if (answer) {
-					if (state) {
-						obj.op_value.value = 'f';
-						obj.op_value.label = 'False';
-					} else {
-						obj.op_value.value = 't';
-						obj.op_value.label = 'True';
-					}
-				}
-
-				targetCmd.removeEventListener( 'command', __bool_value_event_handler, true );
-				renderSources(true);
-				tree.view.selection.select( item_pos );
-			}
-
-			__handler_cache = __bool_value_event_handler;
-			targetCmd.addEventListener( 'command', __bool_value_event_handler, true );
-
-			break;
-
-		default:
-
-
-			var promptstring = "Field does not match one of list (comma separated):";
-
-			switch (obj.op) {
-				case 'not between':
-					promptstring = "Field value is not between (comma separated):";
-					break;
-
-				case 'between':
-					promptstring = "Field value is between (comma separated):";
-					break;
-
-				case 'not in':
-					promptstring = "Field does not match one of list (comma separated):";
-					break;
-
-				case 'in':
-					promptstring = "Field matches one of list (comma separated):";
-					break;
-
-				default:
-					promptstring = "Value " + obj.op_label + ":";
-					break;
-			}
-
-			function __default_value_event_handler () {
-				var _v;
-				if (_v  = prompt( promptstring, obj.op_value.value || '' )) {
-					switch (obj.op) {
-						case 'between':
-						case 'not between':
-						case 'not in':
-						case 'in':
-							obj.op_value.value = _v.split(/\s*,\s*/);
-							break;
-
-						default:
-							obj.op_value.value = _v;
-							break;
+						// display the dialog box. The flags set above are passed
+						// as the fourth argument. The next three arguments are custom labels used for
+						// the buttons, which are used if BUTTON_TITLE_IS_STRING is assigned to a
+						// particular button. The last two arguments are for an optional check box.
+						answer = promptService.select(
+							window,
+							"Boolean Value",
+							"Select the value, or cancel:",
+							2, ["True", "False"], state
+						);
+					} catch (e) {
+						answer = true;
+						state = confirm("Click OK for TRUE and Cancel for FALSE.");
+						state ? state = 0 : state = 1;
 					}
 
-					obj.op_value.label = '"' + obj.op_value.value + '"';
+					if (answer) {
+						if (state) {
+							obj.op_value.value = 'f';
+							obj.op_value.label = 'False';
+						} else {
+							obj.op_value.value = 't';
+							obj.op_value.label = 'True';
+						}
+					}
+
+					targetCmd.removeEventListener( 'command', __bool_value_event_handler, true );
+					renderSources(true);
+					tree.view.selection.select( item_pos );
 				}
 
-				targetCmd.removeEventListener( 'command', __default_value_event_handler, true );
-				renderSources(true);
-				tree.view.selection.select( item_pos );
-			}
+				__handler_cache = __bool_value_event_handler;
+				targetCmd.addEventListener( 'command', __bool_value_event_handler, true );
 
-			__handler_cache = __default_value_event_handler;
-			targetCmd.addEventListener( 'command', __default_value_event_handler, true );
+				break;
 
-			break;
+			default:
+
+
+				var promptstring = "Field does not match one of list (comma separated):";
+
+				switch (obj.op) {
+					case 'not between':
+						promptstring = "Field value is not between (comma separated):";
+						break;
+
+					case 'between':
+						promptstring = "Field value is between (comma separated):";
+						break;
+
+					case 'not in':
+						promptstring = "Field does not match one of list (comma separated):";
+						break;
+
+					case 'in':
+						promptstring = "Field matches one of list (comma separated):";
+						break;
+
+					default:
+						promptstring = "Value " + obj.op_label + ":";
+						break;
+				}
+
+				function __default_value_event_handler () {
+					var _v;
+					if (_v  = prompt( promptstring, obj.op_value.value || '' )) {
+						switch (obj.op) {
+							case 'between':
+							case 'not between':
+							case 'not in':
+							case 'in':
+								obj.op_value.value = _v.split(/\s*,\s*/);
+								break;
+
+							default:
+								obj.op_value.value = _v;
+								break;
+						}
+
+						obj.op_value.label = '"' + obj.op_value.value + '"';
+					}
+
+					targetCmd.removeEventListener( 'command', __default_value_event_handler, true );
+					renderSources(true);
+					tree.view.selection.select( item_pos );
+				}
+
+				__handler_cache = __default_value_event_handler;
+				targetCmd.addEventListener( 'command', __default_value_event_handler, true );
+
+				break;
+		}
 	}
+
+	//renderSources(true);
 }
 
 function populateOperatorContext () {

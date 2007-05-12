@@ -185,8 +185,7 @@
 								</hbox>
 								<hbox pack="center">
 									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
-									<button type="menu" label="Change Transform">
-										<menupopup id='dis_tab_trans_menu'/>
+									<button popup="dis_tab_trans_menu" label="Change Transform">
 									</button>
 									<spacer flex="1"/>
 									<button label="Move Up" oncommand="changeDisplayOrder('u')"/>
@@ -309,6 +308,7 @@
 		id="calendar-widget"
 		position="before_start"
 	/>
+	<popup id='dis_tab_trans_menu'/>
 </popupset>
 
 </window>
