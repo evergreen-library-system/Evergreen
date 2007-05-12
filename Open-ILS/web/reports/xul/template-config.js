@@ -502,7 +502,7 @@ function populateOperatorContext () {
 		menu.appendChild(
 			createMenuItem(
 				{ label : o.label,
-				  oncommand : "changeOperator({op:'"+i+"',label:'"+o.label+"'})",
+				  command : function () { return changeOperator({op:i,label:o.label}) },
 				}
 			)
 		);
@@ -514,7 +514,7 @@ function populateOperatorContext () {
 					menu.appendChild(
 						createMenuItem(
 							{ label : o.labels[key],
-							  oncommand : "changeOperator({op:i,label:o.labels[key]}) },
+							  command : function () { return changeOperator({op:i,label:o.labels[key]}); },
 							}
 						)
 					);
