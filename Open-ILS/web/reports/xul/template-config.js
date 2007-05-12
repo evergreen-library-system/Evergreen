@@ -234,6 +234,7 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	item.focus();
 	return true;
 }
 
@@ -318,6 +319,7 @@ function changeTemplateFilterValue () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
+	var item_pos = tree.view.selection.currentIndex;
 	var items = getSelectedItems(tree);
 
 	var targetCmd = $( tabname + '_value_action' );
@@ -486,13 +488,10 @@ function populateOperatorContext () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var items = getSelectedItems(tree);
+	var item = getSelectedItems(tree)[0];
 
 	var dtypes = [];
-	for (var i in items) {
-		var item = items[i];
-		dtypes.push( item.getAttribute('datatype') );
-	}
+	dtypes.push( item.getAttribute('datatype') );
 
 	var menu = $(tabname + '_op_menu');
 	while (menu.firstChild) menu.removeChild(menu.lastChild);
@@ -536,18 +535,16 @@ function populateTransformContext () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var items = getSelectedItems(tree);
+	var item_pos = tree.view.selection.currentIndex;
+	var item = getSelectedItems(tree)[0];
 
 	var transforms = {};
-	for (var i in items) {
-		var item = items[i];
-		var dtype = item.getAttribute('datatype');
-		var item_transforms = getTransforms({ datatype : dtype });
+	var dtype = item.getAttribute('datatype');
+	var item_transforms = getTransforms({ datatype : dtype });
 
-		for (var j in item_transforms) {
-			transforms[item_transforms[j]] = OILS_RPT_TRANSFORMS[item_transforms[j]];
-			transforms[item_transforms[j]].name = item_transforms[j];
-		}
+	for (var j in item_transforms) {
+		transforms[item_transforms[j]] = OILS_RPT_TRANSFORMS[item_transforms[j]];
+		transforms[item_transforms[j]].name = item_transforms[j];
 	}
 
 	var transformList = [];
