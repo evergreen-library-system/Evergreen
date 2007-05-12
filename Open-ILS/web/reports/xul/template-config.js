@@ -35,6 +35,8 @@ function removeReportAtom (args) {
 	}
 
 	renderSources();
+
+	return true;
 }
 
 function addReportAtoms () {
@@ -125,6 +127,8 @@ function addReportAtoms () {
 	}
 
 	renderSources();
+
+	return true;
 }
 
 function changeDisplayOrder (dir) {
@@ -166,6 +170,7 @@ function changeDisplayOrder (dir) {
 	}
 
 	tree.view.selection.select( item_pos );
+	return true;
 }
 
 function alterColumnLabel () {
@@ -197,6 +202,8 @@ function alterColumnLabel () {
 		renderSources(true);
 		tree.view.selection.select( item_pos );
 	}
+
+	return true;
 }
 
 function alterColumnTransform (trans) {
@@ -227,6 +234,7 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	return true;
 }
 
 function changeOperator (args) {
@@ -254,6 +262,7 @@ function changeOperator (args) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	return true;
 }
 
 function removeTemplateFilterValue () {
@@ -283,6 +292,7 @@ function removeTemplateFilterValue () {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	return true;
 }
 
 function timestampSetDate (obj, cal, date) {
@@ -291,6 +301,7 @@ function timestampSetDate (obj, cal, date) {
 	obj.op_value.label = '"' + date + '"';
 
 	renderSources(true);
+	return true;
 }
 
 var __handler_cache;
@@ -334,8 +345,8 @@ function changeTemplateFilterValue () {
 				var calendar = new Calendar(
 					0,
 					obj.op_value.object,
-					function (cal,date) { timestampSetDate(obj,cal,date) },
-					function (cal) { cal_popup.hidePopup(); cal.destroy(); }
+					function (cal,date) { return timestampSetDate(obj,cal,date) },
+					function (cal) { cal_popup.hidePopup(); cal.destroy(); return true; }
 				);
 
 				var format = OILS_RPT_TRANSFORMS[obj.transform].cal_format || '%Y-%m-%d';
@@ -393,6 +404,7 @@ function changeTemplateFilterValue () {
 					targetCmd.removeEventListener( 'command', __bool_value_event_handler, true );
 					renderSources(true);
 					tree.view.selection.select( item_pos );
+					return true;
 				}
 
 				__handler_cache = __bool_value_event_handler;
@@ -449,6 +461,7 @@ function changeTemplateFilterValue () {
 					targetCmd.removeEventListener( 'command', __default_value_event_handler, true );
 					renderSources(true);
 					tree.view.selection.select( item_pos );
+					return true;
 				}
 
 				__handler_cache = __default_value_event_handler;
@@ -458,7 +471,7 @@ function changeTemplateFilterValue () {
 		}
 	}
 
-	//renderSources(true);
+	return true;
 }
 
 function populateOperatorContext () {
