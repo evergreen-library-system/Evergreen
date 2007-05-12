@@ -185,7 +185,7 @@
 								</hbox>
 								<hbox pack="center">
 									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
-									<menulist label="Change Transform" id='dis_tab_trans_menu'/>
+									<menulist label="Change Transform" popup='dis_tab_trans_menu'/>
 									<spacer flex="1"/>
 									<button label="Move Up" oncommand="changeDisplayOrder('u')"/>
 									<button label="Move Down" oncommand="changeDisplayOrder('d')"/>
@@ -218,12 +218,8 @@
 									</tree>
 								</hbox>
 								<hbox pack="center">
-									<button type="menu" label="Change Transform">
-										<menupopup id='filter_tab_trans_menu'/>
-									</button>
-									<button type="menu" label="Change Operator">
-										<menupopup id='filter_tab_op_menu'/>
-									</button>
+									<menulist label="Change Transform" popup='filter_tab_trans_menu'/>
+									<menulist label="Change Operator" popup='filter_tab_op_menu'/>
 									<button label="Change value" command="filter_tab_value_action"/>
 									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
@@ -255,12 +251,8 @@
 									</tree>
 								</hbox>
 								<hbox pack="center">
-									<button type="menu" label="Change Transform">
-										<menupopup id='aggfilter_tab_trans_menu'/>
-									</button>
-									<button type="menu" label="Change Operator">
-										<menupopup id='aggfilter_tab_op_menu'/>
-									</button>
+									<menulist label="Change Transform" popup='aggfilter_tab_trans_menu'/>
+									<menulist label="Change Operator" popup='aggfilter_tab_op_menu'/>
 									<button label="Change value" command="aggfilter_tab_value_action"/>
 									<button label="Remove value" oncommand="removeTemplateFilterValue()"/>
 									<spacer flex="1"/>
@@ -303,6 +295,11 @@
 
 <popupset>
 	<popup id="source-menu" position="after_start"/>
+	<popup id="dis_tab_trans_menu" position="before_start"/>
+	<popup id="filter_tab_op_menu" position="before_start"/>
+	<popup id="filter_tab_trans_menu" position="before_start"/>
+	<popup id="aggfilter_tab_op_menu" position="before_start"/>
+	<popup id="aggfilter_tab_trans_menu" position="before_start"/>
 	<popup
 		id="calendar-widget"
 		position="before_start"
