@@ -779,7 +779,7 @@ function save_template () {
 	tmpl.folder(cgi.param('folder'));
 	tmpl.data(js2JSON(template));
 
-	// prompt( 'template', js2JSON( tmpl ) );
+	prompt( 'template', js2JSON( template ) );
 
 	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
 		return;
@@ -878,7 +878,7 @@ function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	var tab = rel.fields[tab_name];
 
-	var field_path = rel.path + '-' + field;
+	var field_path = rel.path + '-' + rel.idlclass + '-' + field;
 	field_path = field_path.replace(/\./g, '-');
 
 	var element = {
