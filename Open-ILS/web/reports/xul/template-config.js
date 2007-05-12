@@ -201,6 +201,8 @@ function alterColumnLabel () {
 		rpt_rel_cache[relation_alias].fields[tabname][colname].alias = new_label;
 		renderSources(true);
 		tree.view.selection.select( item_pos );
+		tree.focus();
+		tree.click();
 	}
 
 	return true;
@@ -234,6 +236,8 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	tree.focus();
+	tree.click();
 	return true;
 }
 
@@ -262,6 +266,8 @@ function changeOperator (args) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
+	tree.focus();
+	tree.click();
 	return true;
 }
 
