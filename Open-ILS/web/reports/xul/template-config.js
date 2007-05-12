@@ -234,7 +234,6 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
-	$('template-name').focus();
 	return true;
 }
 
@@ -263,7 +262,6 @@ function changeOperator (args) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
-	$('template-name').focus();
 	return true;
 }
 
