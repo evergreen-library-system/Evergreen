@@ -234,7 +234,6 @@ function alterColumnTransform (trans) {
 
 	renderSources(true);
 	tree.view.selection.select( item_pos );
-	item.focus();
 	return true;
 }
 
