@@ -776,7 +776,7 @@ function save_template () {
 	for each (var order in rpt_rel_cache.order_by)
 		fleshTemplateField( template, rpt_rel_cache[order.relation], 'dis_tab', order.field );
 
-	prompt( 'template', js2JSON( template ) );
+	//prompt( 'template', js2JSON( template ) );
 
 	// and the saving throw ...
 	var cgi = new CGI();
@@ -882,8 +882,6 @@ function fleshFromPath ( template, rel ) {
 function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	if (!rel.fields[tab_name] || !rel.fields[tab_name][field]) return;
-
-	prompt('eh',js2JSON(rel));
 
 	var tab = rel.fields[tab_name];
 
