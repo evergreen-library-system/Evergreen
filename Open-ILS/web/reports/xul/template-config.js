@@ -214,21 +214,16 @@ function alterColumnTransform (trans) {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var items = getSelectedItems(tree);
+	var item =  getSelectedItems(tree)[0];
+	var relation_alias = item.getAttribute('relation');
 
-	for (var i in items) {
-		var item = items[i];
-		var relation_alias = item.getAttribute('relation');
+	var field = item.firstChild.firstChild;
+	var colname = field.nextSibling.getAttribute('label');
 
-		var field = item.firstChild.firstChild;
-		var colname = field.nextSibling.getAttribute('label');
-
-		rpt_rel_cache[relation_alias].fields[tabname][colname].transform = trans;
-		rpt_rel_cache[relation_alias].fields[tabname][colname].aggregate = transform.aggregate;
-		rpt_rel_cache[relation_alias].fields[tabname][colname].params = transform.params;
-		rpt_rel_cache[relation_alias].fields[tabname][colname].transform_label = transform.label;
-
-	}
+	rpt_rel_cache[relation_alias].fields[tabname][colname].transform = trans;
+	rpt_rel_cache[relation_alias].fields[tabname][colname].aggregate = transform.aggregate;
+	rpt_rel_cache[relation_alias].fields[tabname][colname].params = transform.params;
+	rpt_rel_cache[relation_alias].fields[tabname][colname].transform_label = transform.label;
 
 	renderSources(true);
 	return false;
