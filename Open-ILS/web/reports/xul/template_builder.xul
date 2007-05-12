@@ -185,7 +185,7 @@
 								</hbox>
 								<hbox pack="center">
 									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
-									<button type="menu-button" label="Change Transform">
+									<button type="menu" label="Change Transform">
 										<menupopup id='dis_tab_trans_menu'/>
 									</button>
 									<spacer flex="1"/>
