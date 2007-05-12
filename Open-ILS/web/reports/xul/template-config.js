@@ -502,7 +502,7 @@ function populateOperatorContext () {
 		menu.appendChild(
 			createMenuItem(
 				{ label : o.label,
-				  command : function () { return changeOperator({op:i,label:o.label}) },
+				  oncommand : "changeOperator({op:'"+i+"',label:'"+o.label+"'})"
 				}
 			)
 		);
@@ -514,7 +514,7 @@ function populateOperatorContext () {
 					menu.appendChild(
 						createMenuItem(
 							{ label : o.labels[key],
-							  command : function () { return changeOperator({op:i,label:o.labels[key]}); },
+							  oncommand : "changeOperator({op:'"+i+"',label:'"+o.labels[key]+"'});"
 							}
 						)
 					);
@@ -578,7 +578,7 @@ function populateTransformContext () {
 				  alias : t.label,
 				  label : t.label,
 				  params : t.params,
-				  command : function () { return alterColumnTransform(t.name) }
+				  oncommand : "alterColumnTransform('"+t.name+"')"
 				}
 			)
 		);
