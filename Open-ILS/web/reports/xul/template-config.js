@@ -766,6 +766,7 @@ function save_template () {
 	for each (var order in rpt_rel_cache.order_by)
 		fleshTemplateField( template, rpt_rel_cache[order.relation], 'dis_tab', order.field );
 
+	prompt( 'template', js2JSON( template ) );
 
 	// and the saving throw ...
 	var cgi = new CGI();
@@ -778,8 +779,6 @@ function save_template () {
 	tmpl.owner(USER.id());
 	tmpl.folder(cgi.param('folder'));
 	tmpl.data(js2JSON(template));
-
-	prompt( 'template', js2JSON( template ) );
 
 	if(!confirm('Name : '+tmpl.name() + '\nDescription: ' + tmpl.description()+'\nSave Template?'))
 		return;
