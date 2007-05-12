@@ -238,6 +238,8 @@ function alterColumnTransform (trans) {
 	tree.view.selection.select( item_pos );
 	tree.focus();
 	tree.click();
+
+	$(tabname + '_trans_menu').hidePopup();
 	return true;
 }
 
@@ -268,6 +270,8 @@ function changeOperator (args) {
 	tree.view.selection.select( item_pos );
 	tree.focus();
 	tree.click();
+
+	$(tabname + '_op_menu').hidePopup();
 	return true;
 }
 
