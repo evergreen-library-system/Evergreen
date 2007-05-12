@@ -877,8 +877,13 @@ function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	var tab = rel.fields[tab_name];
 
-	var field_path = rel.path + '-' + rel.idlclass + '-' + field;
-	field_path = field_path.replace(/\./g, '-');
+	var table_path = rel.path.split( /\./ );
+	if (table_path.length > 1 || rel.path.indexOf('-') > -1)
+		table_path.push( rel.idlclass );
+
+	table_path.push( field );
+
+	var field_path = table_path.join('-');
 
 	var element = {
 		alias : tab[field].alias,
