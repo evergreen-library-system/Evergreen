@@ -487,10 +487,13 @@ function populateOperatorContext () {
 
 	var tabpanel = $( tabname + 'panel' );
 	var tree = tabpanel.getElementsByTagName('tree')[0];
-	var item = getSelectedItems(tree)[0];
+	var items = getSelectedItems(tree);
 
 	var dtypes = [];
-	dtypes.push( item.getAttribute('datatype') );
+	for (var i in items) {
+		var item = items[i];
+		dtypes.push( item.getAttribute('datatype') );
+	}
 
 	var menu = $(tabname + '_op_menu');
 	while (menu.firstChild) menu.removeChild(menu.lastChild);
