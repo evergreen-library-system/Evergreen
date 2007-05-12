@@ -2465,7 +2465,7 @@
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="circ"/>
 			<link field="copy_id" reltype="has_a" key="id" map="" class="acp"/>
-			<link field="patron_id" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="patron_id" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib_id" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="patron_home_lib" reltype="has_a" key="id" map="" class="aou"/>
