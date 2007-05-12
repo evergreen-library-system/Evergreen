@@ -185,14 +185,14 @@
 								</hbox>
 								<hbox pack="center">
 									<button label="Alter Display Header" oncommand="alterColumnLabel()"/>
-									<button type="menu" label="Change Transform">
+									<button type="menu-button" label="Change Transform">
 										<menupopup id='dis_tab_trans_menu'/>
 									</button>
 									<spacer flex="1"/>
 									<button label="Move Up" oncommand="changeDisplayOrder('u')"/>
 									<button label="Move Down" oncommand="changeDisplayOrder('d')"/>
 									<spacer flex="1"/>
-									<button label="Remove Selected Fields" oncommand="removeReportAtom()"/>
+									<button label="Remove Selected Field" oncommand="removeReportAtom()"/>
 								</hbox>
 							</vbox>
 						</tabpanel>
