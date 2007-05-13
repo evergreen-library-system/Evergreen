@@ -16,6 +16,7 @@ function $ () {
 	return elements;
 }
 
+function _l(l) { location.href = l + location.search; }
 
 function map (func, list) {
         var ret = [];
