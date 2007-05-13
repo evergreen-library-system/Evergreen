@@ -45,11 +45,12 @@ function loadTemplate(id) {
 			var tmpl = res.getResultObject();
 			var template = JSON2js( tmpl.data() );
 
-			$('template-name').value = tmpl.name + ' (clone)';
-			$('template-description').value = tmpl.description;
+			resetUI( template.core_class );
+
+			$('template-name').value = tmpl.name() + ' (clone)';
+			$('template-description').value = tmpl.description();
 
 			rpt_rel_cache = template.rel_cache;
-			resetUI( template.core_class );
 			renderSources();
 		}
 	);
