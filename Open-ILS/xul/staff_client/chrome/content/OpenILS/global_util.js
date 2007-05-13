@@ -29,6 +29,16 @@
 		}
 	}
 
+	function get_contentWindow(frame) {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		if (frame && frame.contentWindow) {
+			if (typeof frame.contentWindow.wrappedJSObject != 'undefined') return frame.contentWindow.wrappedJSObject;
+			return frame.contentWindow;
+		} else {
+			return null;
+		}
+	}
+
 	function update_modal_xulG(v) {
 		try {
 			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});

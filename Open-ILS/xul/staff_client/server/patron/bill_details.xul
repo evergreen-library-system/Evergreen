@@ -116,7 +116,7 @@
 
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
-						$('copy_summary').contentWindow.xulG = { 'copy_id' : r_circ.target_copy() };
+						get_contentWindow($('copy_summary')).xulG = { 'copy_id' : r_circ.target_copy() };
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(

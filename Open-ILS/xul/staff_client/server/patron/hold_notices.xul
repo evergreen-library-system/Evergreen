@@ -58,7 +58,7 @@
 				a_list_of_one();
 
 				document.getElementById('bib_brief').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.ahr.target());
-				document.getElementById('bib_brief').contentWindow.xulG = { 'docid' : g.ahr.target() };
+				get_contentWindow(document.getElementById('bib_brief')).xulG = { 'docid' : g.ahr.target() };
 
 				refresh();
 
