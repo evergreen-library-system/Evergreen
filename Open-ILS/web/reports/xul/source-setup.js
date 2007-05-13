@@ -68,13 +68,14 @@ function loadIDL() {
 			populateSourcesMenu(
 				filterByAttributeNS( oilsIDL.getElementsByTagName('class'), rptNS, 'core', 'true' )
 			);
+
+			var cgi = new CGI();
+			var template_id = cgi.param('ct');
+			if (template_id) loadTemplate(template_id);
                 }
         }
 	req.send(null);
 
-	var cgi = new CGI();
-	var template_id = cgi.param('ct');
-	if (template_id) loadTemplate(template_id);
 }
 
 function getIDLClass (id) { return filterByAttribute( oilsIDL.getElementsByTagName('class'), 'id', id )[0] }
