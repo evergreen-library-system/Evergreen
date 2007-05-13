@@ -33,6 +33,31 @@ function sortLabels (a,b) {
 	return aname < bname ? -1 : 1;
 }
 
+
+function loadTemplate(id) {
+	var cgi = new CGI();
+	var session = cgi.param('ses');
+
+	var r = new Request('open-ils.reporter:open-ils.reporter.template.retrieve', session, id);
+
+	r.callback(
+		function(res) {
+			var tmpl = res.getResultObject();
+			var template = JSON2js( tmpl.data() );
+
+			$('template-name').value = tmpl.name + ' (clone)';
+			$('template-description').value = tmpl.description;
+
+			rpt_rel_cache = template.rel_cache;
+			resetUI( template.core_class );
+			renderSources();
+		}
+	);
+
+	r.send();
+}
+
+
 function loadIDL() {
         var req = new XMLHttpRequest();
         req.open('GET', '../fm_IDL.xml', true);
@@ -45,6 +70,10 @@ function loadIDL() {
                 }
         }
 	req.send(null);
+
+	var cgi = new CGI();
+	var template_id = cgi.param('ct');
+	if (template_id) loadTemplate(template_id);
 }
 
 function getIDLClass (id) { return filterByAttribute( oilsIDL.getElementsByTagName('class'), 'id', id )[0] }

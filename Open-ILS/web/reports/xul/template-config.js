@@ -747,7 +747,7 @@ function save_template () {
 	param_count = 0;
 
 	var template = {
-		version    : 1,
+		version    : 2,
 		core_class : $('sources-treetop').getElementsByTagName('treeitem')[0].getAttribute('idlclass'),
 		select     : [],
 		from       : {},
@@ -775,6 +775,8 @@ function save_template () {
 	// and now for select (based on order_by)
 	for each (var order in rpt_rel_cache.order_by)
 		fleshTemplateField( template, rpt_rel_cache[order.relation], 'dis_tab', order.field );
+
+	template.rel_cache = rpt_rel_cache;
 
 	//prompt( 'template', js2JSON( template ) );
 
