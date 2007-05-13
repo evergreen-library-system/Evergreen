@@ -101,7 +101,7 @@ const api = {
 	'FM_AU_FLESHED_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.fleshed.retrieve', 'cacheable' : true, 'ttl' : 60000 },
 	'FM_AU_NEW_USERGROUP' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.usergroup.new' },
 	'FM_AU_UPDATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.update' },
-	'FM_AUN_RETRIEVE_ALL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all', 'cacheable' : true, 'ttl' : 60000 },
+	'FM_AUN_RETRIEVE_ALL' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.retrieve.all', 'cacheable' : false, 'ttl' : 60000 },
 	'FM_AUN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.create' },
 	'FM_AUN_DELETE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.note.delete' },
 	'FM_AUS_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.patron.settings.retrieve' },
