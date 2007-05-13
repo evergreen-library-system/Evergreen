@@ -11,15 +11,13 @@ function my_init() {
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
-		g.error.sdump('D_TRACE','my_init() for offline_checkout.html');
+		g.error.sdump('D_TRACE','my_init() for upload_xacts.html');
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 			try { window.xulG.set_tab_name('Upload Offline Transactions'); } catch(E) { alert(E); }
 		}
 
-		g.cgi = new CGI();
-
-		JSAN.use('util.file'); g.file = new util.file( g.cgi.param('filename') );
+		JSAN.use('util.file'); g.file = new util.file( xul_param('filename') );
 
 		if (g.file._file.exists()) {
 			$('submit').disabled = false;
@@ -29,10 +27,10 @@ function my_init() {
 			return;
 		}
 
-		$( 'ws' ).setAttribute('value', g.cgi.param('ws'));
-		$( 'ses' ).setAttribute('value', g.cgi.param('ses'));
-		$( 'seskey' ).setAttribute('value', g.cgi.param('seskey'));
-		$( 'delta' ).setAttribute('value', g.cgi.param('delta'));
+		$( 'ws' ).setAttribute('value', xul_param('ws'));
+		$( 'ses' ).setAttribute('value', xul_param('ses'));
+		$( 'seskey' ).setAttribute('value', xul_param('seskey'));
+		$( 'delta' ).setAttribute('value', xul_param('delta'));
 
 		$( 'form' ).setAttribute('action', xulG.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS_CGI));
 

@@ -261,20 +261,28 @@
 					}
 					html += '</body></html>';
 					JSAN.use('util.window'); var win = new util.window();
-					var loc = ( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
+					var loc = ( urls.XUL_REMOTE_BROWSER );
+					//+ '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
 					var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
-					w.xulG = { 'on_url_load' : function(b) { 
-						try { 
-							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-							if (typeof w.xulG.written == 'undefined') {
-								w.xulG.written = true;
-								w.g.browser.get_content().document.write(html);
-								w.g.browser.get_content().document.close();
+					w.xulG = { 
+						'url' : 'about:blank',
+						'show_print_button' : 1,
+						'alternate_print' : 1,
+						'no_xulG' : 1,
+						'title' : 'Spine Labels',
+						'on_url_load' : function(b) { 
+							try { 
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+								if (typeof w.xulG.written == 'undefined') {
+									w.xulG.written = true;
+									w.g.browser.get_content().document.write(html);
+									w.g.browser.get_content().document.close();
+								}
+							} catch(E) {
+								alert(E);
 							}
-						} catch(E) {
-							alert(E);
-						}
-					} };
+						},
+					};
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('Preview and Print',E);
 			}

@@ -16,24 +16,17 @@ function my_init() {
 
 		JSAN.use('util.network'); g.network = new util.network();
 
-		g.cgi = new CGI();
-
 		/***********************************************************************************************************/
 		/* What record am I dealing with?  Am I adding just copies or copies and volumes? */
 
-		g.doc_id = g.cgi.param('doc_id');
-		document.getElementById('summary').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + window.escape(g.doc_id));
+		g.doc_id = xul_param('doc_id');
+		document.getElementById('summary').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + window.escape(g.doc_id));
+		document.getElementById('summary').contentWindow.xulG = { 'docid' : g.doc_id };
 
-		g.copy_shortcut = g.cgi.param('copy_shortcut');
-		g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + g.cgi.param('ou_ids'));
-		if (g.copy_shortcut) g.copy_shortcut = JSON2js( g.copy_shortcut );
+		g.copy_shortcut = xul_param('copy_shortcut',{'JSON2js_if_cgi':true});
+		g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
 
-		var ou_ids = [];
-		if (g.cgi.param('ou_ids')) 
-			ou_ids = JSON2js( g.cgi.param('ou_ids') );
-		if (!ou_ids) ou_ids = [];
-		if (window.xulG && window.xulG.ou_ids) 
-			ou_ids = ou_ids.concat( window.xulG.ou_ids );
+		var ou_ids = xul_param('ou_ids',{'JSON2js_if_cgi' : true, 'concat' : true});;
 
 		/***********************************************************************************************************/
 		/* For the call number drop down */
@@ -381,22 +374,24 @@ g.stash_and_close = function() {
 
 		JSAN.use('util.window'); var win = new util.window();
 		if (copies.length > 0) {
-			g.data.temp_copies = js2JSON(copies); g.data.stash('temp_copies');
-			g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
-			//g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
-			g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
-			var w = win.open(
-				urls.XUL_COPY_EDITOR
-					+'?edit=1&handle_update=1&docid='+window.escape(g.doc_id),
+			//g.data.temp_copies = js2JSON(copies); g.data.stash('temp_copies');
+			//g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
+			////g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
+			//g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
+			var my_xulG = win.open(
+				urls.XUL_COPY_EDITOR,
+					//+'?edit=1&handle_update=1&docid='+window.escape(g.doc_id),
 				title,
-				'chrome,modal,resizable'
+				'chrome,modal,resizable',
+				{ 'edit' : 1, 'handle_update' : 1, 'docid' : g.doc_id, 'copies' : copies }
 			);
 			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-			g.data.stash_retrieve();
-			copies = JSON2js( g.data.temp_copies );
-			g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
-			g.data.temp_copies = undefined; g.data.stash('temp_copies');
-			g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
+			//g.data.stash_retrieve();
+			//copies = JSON2js( g.data.temp_copies );
+			copies = my_xulG.copies;
+			//g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
+			//g.data.temp_copies = undefined; g.data.stash('temp_copies');
+			//g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
 			if (!copies) {
 				alert('Items were not created.');
 				return;

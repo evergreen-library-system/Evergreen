@@ -45,8 +45,17 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
 
-				g.cgi = new CGI();
-				docid = g.cgi.param('docid');
+				JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+
+				docid = xul_param('docid');
+
+				var key = location.pathname + location.search + location.hash;
+				if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
+					var xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
+					if (typeof xulG == 'object') {
+						docid = xulG.docid;
+					}
+				}
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -55,7 +64,6 @@
 
 				if (docid > -1) {
 
-					JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 					data.last_record = docid; data.stash('last_record');
 
 					g.network.request(
@@ -164,11 +172,17 @@
 		}
 
 		function view_marc() {
-			JSAN.use('util.window'); var win = new util.window();
-			if (docid < 0) {
-				alert('Item not cataloged.');
-			} else {
-				win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
+			try {
+				JSAN.use('util.window'); var win = new util.window();
+				if (docid < 0) {
+					alert('Item not cataloged.');
+				} else {
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					//win.open( urls.XUL_MARC_VIEW + '?noprint=1&docid=' + docid, 'marc_view', 'chrome,resizable,modal,width=400,height=400');
+					win.open( urls.XUL_MARC_VIEW, 'marc_view', 'chrome,resizable,modal,width=400,height=400',{'noprint':1,'docid':docid});
+				}
+			} catch(E) {
+                g.error.standard_unexpected_error_alert('spawning marc display',E);
 			}
 		}
 

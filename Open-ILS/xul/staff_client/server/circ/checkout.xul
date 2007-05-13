@@ -41,9 +41,7 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for checkout.xul');
 
-				g.cgi = new CGI();
-
-				var patron_id = g.cgi.param('patron_id') || xulG.patron_id;
+				var patron_id = xul_param('patron_id');
 
 				JSAN.use('circ.checkout'); g.checkout = new circ.checkout();
 				g.checkout.init( 

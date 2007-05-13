@@ -65,6 +65,7 @@ util.network.prototype = {
 				obj.error.sdump('D_CACHE','Cached request found for key = \n' + key + '\n' + js2JSON(x) + '\n');		
 				switch(x.status) {
 					case 'pending' :
+						if ( Number(new Date()) - Number(x.status_time) > 60000 ) break; // if pending request is taking too long
 						if (f) { // Setup a self-destroying observer on the pending request to handle this request
 							obj.error.sdump('D_CACHE','Cached request pending, adding watch to handle current asynchronous request. key = \n' + key + '\n');
 							var id = data.observers.add('cached_request.'+key+'.status',function(p,o,n) {
@@ -308,26 +309,34 @@ util.network.prototype = {
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 		var url = urls.XUL_AUTH_SIMPLE;
 		if (typeof xulG != 'undefined' && typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
-		window.open(
-			url
-			+ '?login_type=staff'
-			+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
-			+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
-			'simple_auth' + (new Date()).toString(),
-			'chrome,resizable,modal,width=700,height=500'
+		JSAN.use('util.window'); var win = new util.window();
+		var my_xulG = win.open(
+			url,
+			//+ '?login_type=staff'
+			//+ '&desc_brief=' + window.escape( text ? 'Session Expired' : 'Operator Change' )
+			//+ '&desc_full=' + window.escape( text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.'),
+			//'simple_auth' + (new Date()).toString(),
+			'Authorize',
+			'chrome,resizable,modal,width=700,height=500',
+			{
+				'login_type' : 'staff',
+				'desc_brief' : text ? 'Session Expired' : 'Operator Change',
+				'desc_full' : text ? 'Please enter the credentials for a new login session.' : 'Please enter the credentials for the new login session.  Note that the previous session is still active.',
+				//'simple_auth' : (new Date()).toString(),
+			}
 		);
 		JSAN.use('OpenILS.data');
 		var data = new OpenILS.data(); data.init({'via':'stash'});
-		if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
-			data.session.key = data.temporary_session.key; 
-			data.session.authtime = data.temporary_session.authtime; 
+		if (typeof my_xulG.temporary_session != 'undefined' && my_xulG.temporary_session != '') {
+			data.session.key = my_xulG.temporary_session.key; 
+			data.session.authtime = my_xulG.temporary_session.authtime; 
 			data.stash('session');
 			if (! data.list.au ) data.list.au = [];
-			data.list.au[0] = JSON2js(data.temporary_session.usr);
+			data.list.au[0] = JSON2js( my_xulG.temporary_session.usr );
 			data.stash('list');
 			obj.reset_titlebars(data);
 			return true;
-		}
+		} else { alert('here2'); }
 		return false;
 
 		} catch(E) {
@@ -362,18 +371,26 @@ util.network.prototype = {
 				if (location.href.match(/^chrome/)) {
 					//alert('Permission denied.');
 				} else {
-					window.open(
-						urls.XUL_AUTH_SIMPLE
-						+ '?login_type=temp'
-						+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
-						+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
-						'simple_auth' + (new Date()).toString(),
-						'chrome,resizable,modal,width=700,height=500'
+					JSAN.use('util.window'); var win = new util.window();
+					var my_xulG = win.open(
+						urls.XUL_AUTH_SIMPLE,
+						//+ '?login_type=temp'
+						//+ '&desc_brief=' + window.escape('Permission Denied: ' + robj.ilsperm)
+						//+ '&desc_full=' + window.escape('Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, inform your friendly Evergreen developers of the above permission and this debug information: ' + name),
+						//'simple_auth' + (new Date()).toString(),
+						'Authorize',
+						'chrome,resizable,modal,width=700,height=500',
+						{
+							'login_type' : 'temp',
+							'desc_brief' : 'Permission Denied: ' + robj.ilsperm,
+							'desc_full' : 'Another staff member with the above permission may authorize this specific action.  Please notify your library administrator if you need this permission.  If you feel you have received this exception in error, please inform your friendly Evergreen developers or helpdesk staff of the above permission and this debug information: ' + name,
+							//'simple_auth' : (new Date()).toString(),
+						}
 					);
 					JSAN.use('OpenILS.data');
-					var data = new OpenILS.data(); data.init({'via':'stash'});
-					if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
-						params[0] = data.temporary_session.key;
+					//var data = new OpenILS.data(); data.init({'via':'stash'});
+					if (typeof my_xulG.temporary_session != 'undefined' && my_xulG.temporary_session != '') {
+						params[0] = my_xulG.temporary_session.key;
 						req = obj._request(app,name,params,null,override_params,_params);
 					}
 				}
@@ -409,17 +426,18 @@ util.network.prototype = {
 						'<description>Force this action?</description>' + 
 						'<button accesskey="N" label="No" name="fancy_cancel"/>' + 
 						'<button id="override" accesskey="Y" label="Yes" name="fancy_submit" value="override"/></hbox></groupbox></vbox>';
-					JSAN.use('OpenILS.data');
-					var data = new OpenILS.data(); data.init({'via':'stash'});
-					data.temp_override_xml = xml; data.stash('temp_override_xml');
-					window.open(
-						urls.XUL_FANCY_PROMPT
-						+ '?xml_in_stash=temp_override_xml'
-						+ '&title=' + window.escape(override_params.title),
-						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+					//JSAN.use('OpenILS.data');
+					//var data = new OpenILS.data(); data.init({'via':'stash'});
+					//data.temp_override_xml = xml; data.stash('temp_override_xml');
+					JSAN.use('util.window'); var win = new util.window();
+					var fancy_prompt_data = win.open(
+						urls.XUL_FANCY_PROMPT,
+						//+ '?xml_in_stash=temp_override_xml'
+						//+ '&title=' + window.escape(override_params.title),
+						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+						{ 'xml' : xml, 'title' : override_params.title }
 					);
-					data.init({'via':'stash'});
-					if (data.fancy_prompt_data != '') {
+					if (fancy_prompt_data.fancy_status == 'complete') {
 						req = obj._request(app,name + '.override',params);
 					}
 					return req;

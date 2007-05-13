@@ -503,16 +503,16 @@ patron.items.prototype = {
 		try {
 			var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
 			if (!retrieve_ids || retrieve_ids.length == 0) return;
-			JSAN.use('util.window');
-			var win = new util.window();
+			JSAN.use('util.window'); var win = new util.window();
 			for (var i = 0; i < retrieve_ids.length; i++) {
 				var circ_id = retrieve_ids[i].circ_id;
-				var w = win.open(
-					urls.XUL_PATRON_BILL_WIZARD
-						+ '?patron_id=' + window.escape(obj.patron_id)
-						+ '&xact_id=' + window.escape( circ_id ),
+				var my_xulG = win.open(
+					urls.XUL_PATRON_BILL_WIZARD,
+						//+ '?patron_id=' + window.escape(obj.patron_id)
+						//+ '&xact_id=' + window.escape( circ_id ),
 					'billwizard',
-					'chrome,resizable,modal'
+					'chrome,resizable,modal',
+					{ 'patron_id' : obj.patron_id, 'xact_id' : circ_id }
 				);
 			}
 		} catch(E) {

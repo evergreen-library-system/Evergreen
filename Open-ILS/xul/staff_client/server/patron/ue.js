@@ -19,8 +19,12 @@ function uEditInit() {
 	_debug('uEditInit(): ' + location.search);
 
 	cgi		= new CGI();
-	session	= cgi.param('ses');
-	clone		= cgi.param('clone');
+	session	= cgi.param('ses'); 
+	if (xulG) if (xulG.ses) session = xulG.ses;
+	if (xulG) if (xulG.params) if (xulG.params.ses) session = xulG.params.ses;
+	clone		= cgi.param('clone'); 
+	if (xulG) if (xulG.clone) clone = xulG.clone;
+	if (xulG) if (xulG.params) if (xulG.params.clone) clone = xulG.params.clone;
 	if(!session) throw "User session is not defined";
 
 	fetchUser(session);
@@ -77,7 +81,10 @@ function uEditBuild() {
 	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	uEditBuildLibSelector();
-	patron = fetchFleshedUser(cgi.param('usr'));
+	var usr = cgi.param('usr'); 
+	if (xulG) if (xulG.usr) usr = xulG.usr;
+	if (xulG) if (xulG.params) if (xulG.params.usr) usr = xulG.params.usr;
+	patron = fetchFleshedUser(usr);
 	if(!patron) patron = uEditNewPatron(); 
 
 
@@ -499,7 +506,10 @@ function uEditSaveUser(cloneme) {
 		_debug("xulG funcs defined...");
 		if( !patron.isnew() && cloneme ) {
 			_debug("calling spawn_editor to clone user...");
-			window.xulG.spawn_editor({ses:cgi.param('ses'),clone:cloneme});
+			var ses = cgi.param('ses'); 
+			if (xulG.ses) ses = xulG.ses;
+			if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
+			window.xulG.spawn_editor({ses:ses,clone:cloneme});
 		}
 		window.xulG.on_save(newuser, cloneme); 
 
@@ -520,7 +530,9 @@ function uEditCancel() {
 	var href = location.href;
 	href = href.replace(/\&?usr=\d+/, '');
 	href = href.replace(/\&?clone=\d+/, '');
-	var id = cgi.param('usr')
+	var id = cgi.param('usr'); 
+	if (xulG) if (xulG.usr) id = xulG.usr;
+	if (xulG) if (xulG.params) if (xulG.params.usr) id = xulG.params.usr;
 	/* reload the current user if available */
 	if( id ) href += "&usr=" + id;
 	location.href = href;

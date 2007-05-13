@@ -48,8 +48,7 @@
 
 				g.error.sdump('D_TRACE','my_init() for hold_notices.xul');
 
-				g.cgi = new CGI();
-				g.ahr_id = g.cgi.param('ahr_id');
+				g.ahr_id = xul_param('ahr_id');
 				g.ahr = g.network.simple_request('FM_AHR_RETRIEVE',[ ses(), g.ahr_id ]);
 				if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
 				g.ahr = g.ahr[0];
@@ -58,7 +57,8 @@
 
 				a_list_of_one();
 
-				document.getElementById('bib_brief').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.ahr.target());
+				document.getElementById('bib_brief').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.ahr.target());
+				document.getElementById('bib_brief').contentWindow.xulG = { 'docid' : g.ahr.target() };
 
 				refresh();
 
@@ -192,22 +192,23 @@
 				xml += '<row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row>';
 				xml += '<row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/>';
 				xml += '<button label="Add Notification Record" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
-				g.data.init({'via':'stash'});
-				g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
-				window.open(
-					urls.XUL_FANCY_PROMPT
-					+ '?xml_in_stash=temp_notification_xml'
-					+ '&focus=' + window.escape('method')
-					+ '&title=' + window.escape('Add Notification Record'),
-					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+				//g.data.init({'via':'stash'});
+				//g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
+				JSAN.use('util.window'); var win = new util.window();
+				var fancy_prompt_data = window.open(
+					urls.XUL_FANCY_PROMPT,
+					//+ '?xml_in_stash=temp_notification_xml'
+					//+ '&focus=' + window.escape('method')
+					//+ '&title=' + window.escape('Add Notification Record'),
+					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+					{ 'xml' : xml, 'focus' : 'method', 'title' : 'Add Notification Record' }
 				);
-				g.data.init({'via':'stash'});
-				if (g.data.fancy_prompt_data != '') {
+				if (fancy_prompt_data.fancy_status == 'complete') {
 					var notification = new ahn();
 					notification.isnew(1);
 					notification.hold(g.ahr_id);
-					notification.method( g.data.fancy_prompt_data.method );
-					notification.note( g.data.fancy_prompt_data.note );
+					notification.method( fancy_prompt_data.method );
+					notification.note( fancy_prompt_data.note );
 					var r = g.network.simple_request('FM_AHN_CREATE',[ ses(), notification ]); if (typeof r.ilsevent != 'undefined') throw(r);
 					setTimeout(function(){refresh();},0);
 				}

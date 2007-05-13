@@ -41,8 +41,6 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for hold_capture.xul');
 
-				g.cgi = new CGI();
-
 				JSAN.use('circ.hold_capture'); g.hold_capture = new circ.hold_capture();
 				g.hold_capture.init( 
 					{ 

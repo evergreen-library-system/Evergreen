@@ -560,7 +560,7 @@ cat.z3950.prototype = {
 	},
 
 	'confirm_overlay' : function(record_ids) {
-		var obj = this; JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+		var obj = this; // JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 		var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
 		top_xml += '<description>Overlay this record?</description>';
@@ -578,17 +578,19 @@ cat.z3950.prototype = {
 			xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
 		}
 		xml += '</tr></table></form>';
-		data.temp_merge_top = top_xml; data.stash('temp_merge_top');
-		data.temp_merge_mid = xml; data.stash('temp_merge_mid');
-		window.open(
-			urls.XUL_FANCY_PROMPT
-			+ '?xml_in_stash=temp_merge_mid'
-			+ '&top_xml_in_stash=temp_merge_top'
-			+ '&title=' + window.escape('Record Overlay'),
-			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		// data.temp_merge_top = top_xml; data.stash('temp_merge_top');
+		// data.temp_merge_mid = xml; data.stash('temp_merge_mid');
+		JSAN.use('util.window'); var win = new util.window();
+		var fancy_prompt_data = win.open(
+			urls.XUL_FANCY_PROMPT,
+			// + '?xml_in_stash=temp_merge_mid'
+			// + '&top_xml_in_stash=temp_merge_top'
+			// + '&title=' + window.escape('Record Overlay'),
+			'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+			{ 'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Overlay' }
 		);
-		data.stash_retrieve();
-		if (data.fancy_prompt_data == '') { alert('Overlay Aborted'); return false; }
+		//data.stash_retrieve();
+		if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Overlay Aborted'); return false; }
 		return true;
 	},
 

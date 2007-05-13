@@ -42,18 +42,14 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for patron_summary.xul');
 
-				g.cgi = new CGI();
-
-				var patron_id = g.cgi.param('id'); 
-				if (typeof window.xulG == 'object' && typeof window.xulG.id != 'undefined') patron_id = window.xulG.id;
-				var patron_bc = g.cgi.param('barcode'); 
-				if (typeof window.xulG == 'object' && typeof window.xulG.barcode != 'undefined') patron_bc = window.xulG.barcode;
+				var patron_id = xul_param('id'); 
+				var patron_bc = xul_param('barcode'); 
 
 				JSAN.use('patron.summary'); g.summary = new patron.summary();
 				g.summary.init( { 
 					'barcode' : patron_bc,
 					'id' : patron_id,
-					'show_name' : g.cgi.param('show_name'),
+					'show_name' : xul_param('show_name'),
 				} );
 
 				window.refresh = function () { g.summary.retrieve(); }

@@ -46,16 +46,15 @@
 
 				$('server').value = g.data.server_unadorned;
 
-				g.cgi = new CGI();
-				addCSSClass(document.documentElement,g.cgi.param('login_type'))
+				addCSSClass(document.documentElement,xul_param('login_type',{'modal_xulG':true}))
 
-				if (g.cgi.param('desc_brief')) {
+				if (xul_param('desc_brief',{'modal_xulG':true})) {
 					$('desc').hidden = false;
-					$('desc_brief').appendChild( document.createTextNode( g.cgi.param('desc_brief') ) );
+					$('desc_brief').appendChild( document.createTextNode( xul_param('desc_brief',{'modal_xulG':true}) ) );
 				}
-				if (g.cgi.param('desc_full')) {
+				if (xul_param('desc_full',{'modal_xulG':true})) {
 					$('desc').hidden = false;
-					$('desc_full').appendChild( document.createTextNode( g.cgi.param('desc_full') ) );
+					$('desc_full').appendChild( document.createTextNode( xul_param('desc_full',{'modal_xulG':true}) ) );
 				}
 
 				$('username').focus();
@@ -91,14 +90,26 @@
 						'password_prompt' : $('password'),
 						'server_prompt' : $('server'),
 					},
-					g.cgi.param('login_type') || 'temp'
+					xul_param('login_type',{'modal_xulG':true}) || 'temp'
 				);
 				g.session.on_init = function() { 
-					JSAN.use('util.network'); var n = new util.network();
-					var staff = n.simple_request('FM_AU_RETRIEVE_VIA_SESSION',[ g.session.key ]);
-					g.data.temporary_session = { 'key' : g.session.key, 'authtime' : g.session.authtime, 'usr' : js2JSON(staff) };
-					g.data.stash('temporary_session');
-					window.close();
+					try {
+						JSAN.use('util.network'); var n = new util.network();
+						var staff = n.simple_request('FM_AU_RETRIEVE_VIA_SESSION',[ g.session.key ]);
+						g.data.temporary_session = {  // old way because of local chrome still out there
+							'key' : g.session.key, 
+							'authtime' : g.session.authtime, 
+							'usr' : js2JSON(staff)
+						}
+						g.data.stash('temporary_session');
+						var my_xulG = { // new way, to minimize the use of global spaces
+							'temporary_session' : g.data.temporary_session
+						};
+						update_modal_xulG(my_xulG);
+						window.close();
+					} catch(E) {
+						g.error.standard_unexpected_error_alert('simple_auth.session.on_init',E);
+					}
 				}
 				g.session.on_init_error = function() { 
 					$('password').value = '';

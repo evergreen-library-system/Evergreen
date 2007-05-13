@@ -999,8 +999,11 @@ function uEditCheckSharedAddr(patron, address, tbody, row) {
 			
 				} else {
 			
+					var ses = cgi.param('ses'); 
+					if (xulG) if (xulG.ses) ses = xulG.ses;
+					if (xulG) if (xulG.params) if (xulG.params.ses) ses = xulG.params.ses;
 					link.onclick = 
-						function() { window.xulG.spawn_editor({ses:cgi.param('ses'),usr:id}) };
+						function() { window.xulG.spawn_editor({ses:ses,usr:id}) };
 				
 					if( userCache[id] ) {
                         var usr = userCache[id];

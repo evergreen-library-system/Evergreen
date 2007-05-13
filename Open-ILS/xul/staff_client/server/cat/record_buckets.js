@@ -356,7 +356,14 @@ cat.record_buckets.prototype = {
 
 									var robj = obj.network.simple_request('BUCKET_CREATE',[ses(),'biblio',bucket]);
 
-									if (typeof robj == 'object') throw robj;
+									if (typeof robj == 'object') {
+										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
+											alert('You already have a bucket with that name.');
+											return;
+										}
+										throw robj;
+									}
+
 
 									alert('Bucket "' + name + '" created.');
 
@@ -493,14 +500,17 @@ cat.record_buckets.prototype = {
 									xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
 								}
 								xml += '</tr></table></form>';
-								obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
-								obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
+								//obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
+								//obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
 								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_merge_mid'
-									+ '&top_xml_in_stash=temp_merge_top'
-									+ '&title=' + window.escape('Record Merging'),
-									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_merge_mid'
+									//+ '&top_xml_in_stash=temp_merge_top'
+									//+ '&title=' + window.escape('Record Merging'),
+									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+									{
+										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Merging'
+									}
 								);
 								obj.data.stash_retrieve();
 								if (obj.data.fancy_prompt_data == '') { alert('Merge Aborted'); return; }

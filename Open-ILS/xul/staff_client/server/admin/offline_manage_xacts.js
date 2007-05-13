@@ -522,6 +522,7 @@ admin.offline_manage_xacts.prototype = {
 		x.setAttribute(
 			'src',
 			window.xulG.url_prefix( urls.XUL_REMOTE_BROWSER )
+			/*
 			+ '?url=' + window.escape(
 				urls.XUL_OFFLINE_UPLOAD_XACTS
 				+ '?ses=' + window.escape(ses())
@@ -530,10 +531,17 @@ admin.offline_manage_xacts.prototype = {
 				+ '&delta=' + window.escape('0')
 				+ '&filename=' + window.escape( obj.transition_filename )
 			)
+			*/
 		);
 		var newG = { 
+			'url' : urls.XUL_OFFLINE_UPLOAD_XACTS,
 			'url_prefix' : window.xulG.url_prefix, 
 			'passthru_content_params' : {
+				'ses' : ses(),
+				'seskey' : seskey,
+				'ws' : obj.data.ws_name,
+				'delta' : 0,
+				'filename' : obj.transition_filename,
 				'url_prefix' : window.xulG.url_prefix,
 				'handle_event' : function(robj){
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -687,8 +695,8 @@ admin.offline_manage_xacts.prototype = {
 			funcs.push( 
 				function(idx,row){ 
 					return function(){
-						obj.list.append( { 'retrieve_id' : idx, 'row' : row, 'no_auto_select' : true } );
-						if (idx == old_idx) obj.list.node.view.selection.select(idx);
+						obj.list.append( { 'retrieve_id' : idx, 'row' : row, 'no_auto_select' : true, 'to_bottom' : true } );
+						//if (idx == old_idx) obj.list.node.view.selection.select(idx);
 					};
 				}(i,{ 'my' : obj.seslist[i] }) 
 			);
@@ -795,10 +803,10 @@ admin.offline_manage_xacts.prototype = {
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 				try {
-					var url = urls.XUL_COPY_STATUS
-						+ '?barcodes=' + window.escape( js2JSON(barcodes) );
+					var url = urls.XUL_COPY_STATUS;
+						//+ '?barcodes=' + window.escape( js2JSON(barcodes) );
 					window.xulG.new_tab(
-						url
+						url, {}, { 'barcodes' : barcodes }
 					);
 				} catch(E) {
 					alert(E);
@@ -811,22 +819,27 @@ admin.offline_manage_xacts.prototype = {
 
 	'retrieve_patron' : function() {
 		var obj = this;
+		var patrons = {};
 		try {
 			for (var i = 0; i < obj.sel_errors.length; i++) {
 				var error = obj.errors[ obj.sel_errors[i] ];
 				if ( ! error.command.patron_barcode ) continue; 
 				if ( [ '', ' ', '???' ].indexOf( error.command.patron_barcode ) != -1 ) continue;
+				patrons[ error.command.patron_barcode ] = true;
+			}
+			for (var barcode in patrons) {
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					try {
-						var url = urls.XUL_PATRON_DISPLAY
-							+ '?barcode=' + window.escape( error.command.patron_barcode );
+						var url = urls.XUL_PATRON_DISPLAY;
+							//+ '?barcode=' + window.escape( error.command.patron_barcode );
 						window.xulG.new_tab(
-							url
+							url, {}, { 'barcode' : barcode }
 						);
 					} catch(E) {
 						alert(E);
 					}
 				}
+
 			}
 		} catch(E) {
 			alert(E);
@@ -844,7 +857,7 @@ admin.offline_manage_xacts.prototype = {
 						'Details:\n' + obj.error.pretty_print(js2JSON(error))
 					),
 					'offline_error_details',
-					'height=240,width=320,scrollbars=yes,chrome,resizable,modal'
+					'height=780,width=580,scrollbars=yes,chrome,resizable,modal'
 				);
 			}
 		} catch(E) {

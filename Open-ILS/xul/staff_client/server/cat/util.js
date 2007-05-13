@@ -71,15 +71,16 @@ cat.util.transfer_copies = function(params) {
 		xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 		xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + params.docid + '"/>';
 		xml += '</vbox>';
-		data.temp_transfer = xml; data.stash('temp_transfer');
-		window.open(
-			urls.XUL_FANCY_PROMPT
-			+ '?xml_in_stash=temp_transfer'
-			+ '&title=' + window.escape('Item Transfer'),
-			'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
+		//data.temp_transfer = xml; data.stash('temp_transfer');
+		JSAN.use('util.window'); var win = new util.window();
+		var fancy_prompt_data = win.open(
+			urls.XUL_FANCY_PROMPT,
+			//+ '?xml_in_stash=temp_transfer'
+			//+ '&title=' + window.escape('Item Transfer'),
+			'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
+			{ 'xml' : xml, 'title' : 'Item Transfer' }
 		);
-		data.stash_retrieve();
-		if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
+		if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
 
 		JSAN.use('util.functional');
 
@@ -190,7 +191,6 @@ cat.util.add_copies_to_bucket = function(selection_list) {
 cat.util.spawn_copy_editor = function(list,edit) {
 	try {
 		var obj = {};
-		JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 		JSAN.use('util.network'); obj.network = new util.network();
 		JSAN.use('util.error'); obj.error = new util.error();
 	
@@ -201,22 +201,26 @@ cat.util.spawn_copy_editor = function(list,edit) {
 		title += ' Copy Attributes';
 	
 		JSAN.use('util.window'); var win = new util.window();
-		obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
-		obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
-		obj.data.temp_copy_ids = js2JSON(list);
-		obj.data.stash('temp_copy_ids');
-		var w = win.open(
-			window.xulG.url_prefix(urls.XUL_COPY_EDITOR)
-				+'?handle_update=1&edit='+edit,
+		//JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+		//obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
+		//obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
+		//obj.data.temp_copy_ids = js2JSON(list); obj.data.stash('temp_copy_ids');
+		var my_xulG = win.open(
+			//window.xulG.url_prefix(urls.XUL_COPY_EDITOR),
+			(urls.XUL_COPY_EDITOR),
+			//	+'?handle_update=1&edit='+edit,
 			title,
-			'chrome,modal,resizable'
+			'chrome,modal,resizable',
+			{
+				'handle_update' : 1,
+				'edit' : edit,
+				'copy_ids' : js2JSON(list),
+			}
 		);
-		/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-		obj.data.stash_retrieve();
-		if (!obj.data.temp_copies) alert('Copies not modified.');
-		obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
-		obj.data.temp_callnumbers = undefined; obj.data.stash('temp_callnumbers');
-		obj.data.temp_copy_ids = undefined; obj.data.stash('temp_copy_ids');
+		//obj.data.stash_retrieve();
+		if (!my_xulG.copies) alert('Copies not modified.');
+		//if (!obj.data.temp_copies) alert('Copies not modified.');
+		//obj.data.temp_copies = undefined; obj.data.stash('temp_copies');
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert('error in cat.util.spawn_copy_editor',E);

@@ -41,15 +41,13 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for holds.xul');
 
-				g.cgi = new CGI();
-
 				JSAN.use('patron.holds'); g.holds = new patron.holds();
 				g.holds.init( 
 					{ 
-						'patron_id' : g.cgi.param('patron_id'), 
-						'docid' : g.cgi.param('docid'),
-						'shelf' : g.cgi.param('shelf'),
-						'pull' : g.cgi.param('pull'),
+						'patron_id' : xul_param('patron_id'), 
+						'docid' : xul_param('docid'),
+						'shelf' : xul_param('shelf'),
+						'pull' : xul_param('pull'),
 					} 
 				);
 				window.refresh = function(p) { g.holds.retrieve(p); }

@@ -71,13 +71,40 @@ util.window.prototype = {
 		return w;
 	},
 
-	'open' : function(url,title,features) {
+	'open' : function(url,title,features,my_xulG) {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		var key;
 		if (!title) title = 'anon' + this.window_name_increment();
 		if (!features) features = 'chrome';
-		this.error.sdump('D_WIN',
-			'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
+		this.error.sdump('D_WIN', 'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
+		var data;
+		if (features.match(/modal/) && my_xulG) {
+			JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.init({'via':'stash'});
+			if (typeof data.modal_xulG_stack == 'undefined') data.modal_xulG_stack = {}; 
+			/* FIXME - not a perfect key.. could imagine two top-level windows both opening modal windows */
+			key = url; 
+			if (typeof xulG == 'object') if (typeof xulG.url_prefix == 'function') {
+				key = key.replace( xulG.url_prefix('/'), '/' );	
+			}
+			if (typeof data.modal_xulG_stack[key] == 'undefined') data.modal_xulG_stack[key] = [];
+			data.modal_xulG_stack[key].push( my_xulG );
+			data.stash('modal_xulG_stack');
+			this.error.sdump('D_WIN','modal key = ' + key);
+		}
 		var w = this.SafeWindowOpen(url,title,features);
+		if (features.match(/modal/) && my_xulG) { 
+			var x = data.modal_xulG_stack[key].pop();
+			data.stash('modal_xulG_stack');
+			return x;
+		} else {
+			if (my_xulG) {
+				if (w.contentWindow) {
+					w.contentWindow.xulG = my_xulG;
+				} else {
+					w.xulG = my_xulG;
+				}
+			}
+		}
 		/*
 		setTimeout( 
 			function() { 

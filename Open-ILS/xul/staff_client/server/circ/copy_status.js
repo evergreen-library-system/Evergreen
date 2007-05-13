@@ -8,6 +8,7 @@ circ.copy_status = function (params) {
 	JSAN.use('util.barcode');
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+	JSAN.use('util.sound'); this.sound = new util.sound();
 }
 
 circ.copy_status.prototype = {
@@ -412,12 +413,13 @@ circ.copy_status.prototype = {
 	
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
-										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
-											+'?doc_id=' + window.escape(r)
-											+'&ou_ids=' + window.escape( js2JSON(list) )
-											+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut[r]) ),
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+											//+'?doc_id=' + window.escape(r)
+											//+'&ou_ids=' + window.escape( js2JSON(list) )
+											//+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut[r]) ),
 										title,
-										'chrome,resizable'
+										'chrome,resizable',
+										{ 'doc_id' : r, 'ou_ids' : list, 'copy_shortcut' : copy_shortcut[r] }
 									);
 								}
 
@@ -562,11 +564,12 @@ circ.copy_status.prototype = {
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
-										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
-											+'?doc_id=' + window.escape(r)
-											+'&ou_ids=' + window.escape( js2JSON(list) ),
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+											//+'?doc_id=' + window.escape(r)
+											//+'&ou_ids=' + window.escape( js2JSON(list) ),
 										title,
-										'chrome,resizable'
+										'chrome,resizable',
+										{ 'doc_id' : r, 'ou_ids' : list }
 									);
 
 								}
@@ -632,19 +635,20 @@ circ.copy_status.prototype = {
 									var title = (list.length == 1 ? 'Volume' : 'Volumes') + ' for record # ' + rec;
 
 									JSAN.use('util.window'); var win = new util.window();
-									obj.data.volumes_temp = js2JSON( list );
-									obj.data.stash('volumes_temp');
-									var w = win.open(
+									//obj.data.volumes_temp = js2JSON( list );
+									//obj.data.stash('volumes_temp');
+									var my_xulG = win.open(
 										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
 										title,
-										'chrome,modal,resizable'
+										'chrome,modal,resizable',
+										{ 'volumes' : list }
 									);
 
 									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-									obj.data.stash_retrieve();
-									var volumes = JSON2js( obj.data.volumes_temp );
-									obj.error.sdump('D_CAT','in browse, obj.data.temp =\n' + obj.data.temp);
-									if (volumes=='') return;
+									//obj.data.stash_retrieve();
+									//var volumes = JSON2js( obj.data.volumes_temp );
+									var volumes = my_xulG.volumes;
+									if (!volumes) return;
 								
 									volumes = util.functional.filter_list(
 										volumes,
@@ -821,17 +825,18 @@ circ.copy_status.prototype = {
 									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
 									xml += '</vbox>';
 									JSAN.use('OpenILS.data');
-									var data = new OpenILS.data(); data.init({'via':'stash'});
-									data.temp_transfer = xml; data.stash('temp_transfer');
-									window.open(
-										urls.XUL_FANCY_PROMPT
-										+ '?xml_in_stash=temp_transfer'
-										+ '&title=' + window.escape('Volume Transfer'),
-										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
+									//var data = new OpenILS.data(); data.init({'via':'stash'});
+									//data.temp_transfer = xml; data.stash('temp_transfer');
+									JSAN.use('util.window'); var win = new util.window();
+									var fancy_prompt_data = win.open(
+										urls.XUL_FANCY_PROMPT,
+										//+ '?xml_in_stash=temp_transfer'
+										//+ '&title=' + window.escape('Volume Transfer'),
+										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
+										{ 'xml' : xml, 'title' : 'Volume Transfer' }
 									);
 								
-									data.init({'via':'stash'});
-									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
+									if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
 
 									var robj = obj.network.simple_request(
 										'FM_ACN_TRANSFER', 
@@ -904,7 +909,7 @@ circ.copy_status.prototype = {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
 			JSAN.use('circ.util');
-			obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ], function(req) {
+			function handle_req(req) {
 				try {
 					var details = req.getResultObject();
 					if (details == null) {
@@ -966,7 +971,9 @@ circ.copy_status.prototype = {
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('',E);
 				}
-			} );
+			}
+			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ]);
+			handle_req({'getResultObject':function(){return result;}}); // used to be async
 			obj.controller.view.copy_status_barcode_entry_textbox.value = '';
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 			

@@ -48,8 +48,7 @@
 
 				g.error.sdump('D_TRACE','my_init() for patron_info.xul');
 
-				g.cgi = new CGI();
-				g.patron_id = g.cgi.param('patron_id');
+				g.patron_id = xul_param('patron_id');
 
 				g.new_note = false;
 
@@ -172,23 +171,24 @@
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite");
 				var xml = '<groupbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1"><caption label="New Note"/><grid flex="1"><columns><column/><column flex="1"/></columns><rows><row><label value="Patron Visible?"/><checkbox id="pub" name="fancy_data"/></row><row><label value="Title"/><textbox id="title" name="fancy_data"/></row><row><label value="Note"/><textbox multiline="true" id="note" name="fancy_data"/></row><row><spacer/><hbox><button label="Cancel" name="fancy_cancel" accesskey="C"/><button label="Add Note" accesskey="A" name="fancy_submit"/></hbox></row></rows></grid></groupbox>';
-				g.data.init({'via':'stash'});
-				g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
-				window.open(
-					urls.XUL_FANCY_PROMPT
-					+ '?xml_in_stash=temp_note_xml'
-					+ '&focus=' + window.escape('title')
-					+ '&title=' + window.escape('Add Note'),
-					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+				//g.data.init({'via':'stash'});
+				//g.data.temp_note_xml = xml; g.data.stash('temp_note_xml');
+				JSAN.use('util.window'); var win = new util.window();
+				var fancy_prompt_data = win.open(
+					urls.XUL_FANCY_PROMPT,
+					//+ '?xml_in_stash=temp_note_xml'
+					//+ '&focus=' + window.escape('title')
+					//+ '&title=' + window.escape('Add Note'),
+					'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+					{ 'xml' : xml, 'focus' : 'title', 'title' : 'Add Note' }
 				);
-				g.data.init({'via':'stash'});
-				if (g.data.fancy_prompt_data != '') {
+				if (fancy_prompt_data.fancy_status == 'complete') {
 					//alert(js2JSON(g.data.fancy_prompt_data));
 					var note = new aun();
 					note.isnew(1);
-					note.title( g.data.fancy_prompt_data.title );
-					note.value( g.data.fancy_prompt_data.note );
-					note.pub( get_bool( g.data.fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
+					note.title( fancy_prompt_data.title );
+					note.value( fancy_prompt_data.note );
+					note.pub( get_bool( fancy_prompt_data.pub ) ? get_db_true() : get_db_false() );
 					note.usr( g.patron_id );
 					var r = g.network.simple_request('FM_AUN_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);

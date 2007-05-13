@@ -5,6 +5,8 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- PRESENTATION -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/auth.css" type="text/css"?>
 <!-- Load these just to cache them -->
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
@@ -12,6 +14,7 @@
 <?xml-stylesheet href="/xul/server/skin/patron_display.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/patron_summary.css" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/simple_auth.css" type="text/css"?>
+
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -34,8 +37,9 @@
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="/xul/server/main/lang.js"/>
-	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
 		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
@@ -54,9 +58,17 @@
 			JSAN.errorLevel = "die"; // none, warn, or die
 			JSAN.addRepository('/xul/server/');
 
-
-			function data_progress(msg) {
+			function cache_me(msg,how) {
 				try {
+					switch(how) {
+						case 'jsan' : JSAN.use(msg); break;
+						case 'http' :
+							var x = new XMLHttpRequest();
+							x.open("GET",msg,true);
+							x.send(null);
+						break;
+					}
+					dump(msg + '\n');
 					var x = document.getElementById('data_progress');
 					if (x) {
 						x.appendChild( document.createTextNode( msg + ' ') );
@@ -66,103 +78,103 @@
 				}
 			}
 
-
 			// load these just so they'll get cached
-			JSAN.use('util.exec'); data_progress('util.exec');
-			JSAN.use('util.barcode'); data_progress('util.barcode');  
-			JSAN.use('util.controller'); data_progress('util.controller');  
-			JSAN.use('util.deck'); data_progress('util.deck');  
-			JSAN.use('util.fm_utils'); data_progress('util.fm_utils');  
-			JSAN.use('util.list'); data_progress('util.list');  
-			JSAN.use('util.network'); data_progress('util.network'); 
-			JSAN.use('util.sound'); data_progress('util.sound'); 
-			JSAN.use('util.widgets'); data_progress('util.widgets');  
-			JSAN.use('util.browser'); data_progress('util.browser');  
-			JSAN.use('util.error'); data_progress('util.error');  
-			JSAN.use('util.file'); data_progress('util.file'); 
-			JSAN.use('util.functional'); data_progress('util.functional');  
-			JSAN.use('util.money'); data_progress('util.money');  
-			JSAN.use('util.print'); data_progress('util.print');  
-			JSAN.use('util.text'); data_progress('util.text'); 
-			JSAN.use('util.window'); data_progress('util.window'); 
+			cache_me('/xul/server//util/exec.js','http');
+			cache_me('/xul/server//util/barcode.js','http');  
+			cache_me('/xul/server//util/controller.js','http');  
+			cache_me('/xul/server//util/deck.js','http');  
+			cache_me('/xul/server//util/fm_utils.js','http');  
+			cache_me('/xul/server//util/list.js','http');  
+			cache_me('/xul/server//util/network.js','http'); 
+			cache_me('/xul/server//util/sound.js','http'); 
+			cache_me('/xul/server//util/widgets.js','http');  
+			cache_me('/xul/server//util/browser.js','http');  
+			cache_me('/xul/server//util/error.js','http');  
+			cache_me('/xul/server//util/file.js','http'); 
+			cache_me('/xul/server//util/functional.js','http');  
+			cache_me('/xul/server//util/money.js','http');  
+			cache_me('/xul/server//util/print.js','http');  
+			cache_me('/xul/server//util/text.js','http'); 
+			cache_me('/xul/server//util/window.js','http'); 
 
-			JSAN.use('patron.bills'); data_progress('patron.bills');  
-			JSAN.use('patron.display'); data_progress('patron.display');  
-			JSAN.use('patron.holds'); data_progress('patron.holds');  
-			JSAN.use('patron.items'); data_progress('patron.items'); 
-			JSAN.use('patron.search_form'); data_progress('patron.search_form');  
-			JSAN.use('patron.search_result'); data_progress('patron.search_result');  
-			JSAN.use('patron.summary'); data_progress('patron.summary'); 
-			JSAN.use('patron.util'); data_progress('patron.util'); 
+			cache_me('/xul/server/util/fancy_prompt.xul','http');
+			cache_me('/xul/server/util/browser.xul','http');
+			cache_me('/xul/server/util/rbrowser.xul','http');
 
-			JSAN.use('circ.checkin'); data_progress('circ.checkin');  
-			JSAN.use('circ.checkout'); data_progress('circ.checkout');  
-			JSAN.use('circ.copy_status'); data_progress('circ.copy_status'); 
-			JSAN.use('circ.hold_capture'); data_progress('circ.hold_capture'); 
-			JSAN.use('circ.in_house_use'); data_progress('circ.in_house_use');  
-			JSAN.use('circ.util'); data_progress('circ.util'); 
+			cache_me('/xul/server//patron/display.js','http');  
+			cache_me('/xul/server//patron/bills.js','http');  
+			cache_me('/xul/server//patron/holds.js','http');  
+			cache_me('/xul/server//patron/items.js','http'); 
+			cache_me('/xul/server//patron/search_form.js','http');  
+			cache_me('/xul/server//patron/search_result.js','http');  
+			cache_me('/xul/server//patron/summary.js','http'); 
+			cache_me('/xul/server//patron/util.js','http'); 
 
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/checkout_overlay.xul',true);
-				x.send(null);
-				data_progress('checkout_overlay.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/checkout.xul',true);
-				x.send(null);
-				data_progress('checkout.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/patron/barcode_entry.xul',true);
-				x.send(null);
-				data_progress('barcode_entry.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/util/fancy_prompt.xul',true);
-				x.send(null);
-				data_progress('fancy_prompt.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/checkin_overlay.xul',true);
-				x.send(null);
-				data_progress('checkin_overlay.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/checkin.xul',true);
-				x.send(null);
-				data_progress('checkin.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/circ_brief.xul',true);
-				x.send(null);
-				data_progress('circ_brief.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/circ_summary.xul',true);
-				x.send(null);
-				data_progress('circ_summary.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/copy_status.xul',true);
-				x.send(null);
-				data_progress('copy_status.xul');
-			}
-			{
-				var x = new XMLHttpRequest();
-				x.open("GET",'/xul/server/circ/copy_status_overlay.xul',true);
-				x.send(null);
-				data_progress('copy_status_overlay.xul');
-			}
+			cache_me('/xul/server/patron/display.xul','http');  
+			cache_me('/xul/server/patron/display_overlay.xul','http');  
+			cache_me('/xul/server/patron/bills.xul','http');  
+			cache_me('/xul/server/patron/bills_overlay.xul','http');  
+			cache_me('/xul/server/patron/holds.xul','http');  
+			cache_me('/xul/server/patron/holds_overlay.xul','http');  
+			cache_me('/xul/server/patron/items.xul','http'); 
+			cache_me('/xul/server/patron/items_overlay.xul','http'); 
+			cache_me('/xul/server/patron/search_form.xul','http');  
+			cache_me('/xul/server/patron/search_form_overlay.xul','http');  
+			cache_me('/xul/server/patron/search_result.xul','http');  
+			cache_me('/xul/server/patron/search_result_overlay.xul','http');  
+			cache_me('/xul/server/patron/summary.xul','http'); 
+			cache_me('/xul/server/patron/summary_overlay.xul','http'); 
+			cache_me('/xul/server/patron/barcode_entry.xul','http');
 
+			cache_me('/xul/server/patron/ue.xhtml','http');
+			cache_me('/xul/server/admin/adminlib.js','http');
+			cache_me('/xul/server/admin/admin.css','http');
+			cache_me('/xul/server/patron/ue_config.js','http');
+			cache_me('/xul/server/patron/ue_ui.js','http');
+			cache_me('/xul/server/patron/ue.js','http');
+			cache_me('/opac/common/js//config.js','http');
+			cache_me('/opac/common/js/Cookie.js','http');
+			cache_me('/opac/common/js/Cookies.js','http');
+			cache_me('/opac/common/js/opac_utils.js','http');
+			cache_me('/opac/common/js/init.js','http');
+			cache_me('/opac/common/js/jscalendar/calendar-brown.css','http');
+			cache_me('/opac/common/js/jscalendar/calendar.js','http');
+			cache_me('/opac/common/js/jscalendar/lang/calendar-en.js','http');
+			cache_me('/opac/common/js/jscalendar/calendar-setup.js','http');
+			cache_me('/opac/common/js/jscalendar/img.gif','http');
+
+			cache_me('/xul/server/skin/media/images/stop_sign.png','http');
+			cache_me('/xul/server/skin/media/images/bad_barcode.png','http');
+			cache_me('/xul/server/skin/media/images/grinder.gif','http');     
+			cache_me('/xul/server/skin/media/images/patron_left_arrow.png','http');
+			cache_me('/xul/server/skin/media/images/skull.png','http');
+			cache_me('/xul/server/skin/media/images/tools.png','http');
+			cache_me('/xul/server/skin/media/images/up_arrow.gif','http');
+			cache_me('/xul/server/skin/media/images/book_question.png','http');
+			cache_me('/xul/server/skin/media/images/down_arrow.gif','http');
+			cache_me('/xul/server/skin/media/images/icon_delete.gif','http');
+			cache_me('/xul/server/skin/media/images/patron_right_arrow.png','http');
+			cache_me('/xul/server/skin/media/images/turtle.gif','http');
+			cache_me('/xul/server/skin/media/audio/bonus.wav','http');
+			cache_me('/xul/server/skin/media/audio/question.wav','http');
+			cache_me('/xul/server/skin/media/audio/redalert.wav','http');
+			cache_me('/xul/server/skin/media/audio/toggled.wav','http');
+
+			cache_me('/xul/server//circ/checkin.js','http');  
+			cache_me('/xul/server//circ/checkout.js','http');  
+			cache_me('/xul/server//circ/copy_status.js','http'); 
+			cache_me('/xul/server//circ/hold_capture.js','http'); 
+			cache_me('/xul/server//circ/in_house_use.js','http');  
+			cache_me('/xul/server//circ/util.js','http'); 
+
+			cache_me('/xul/server/circ/checkout_overlay.xul','http');
+			cache_me('/xul/server/circ/checkout.xul','http');
+			cache_me('/xul/server/circ/checkin_overlay.xul','http');
+			cache_me('/xul/server/circ/checkin.xul','http');
+			cache_me('/xul/server/circ/circ_brief.xul','http');
+			cache_me('/xul/server/circ/circ_summary.xul','http');
+			cache_me('/xul/server/circ/copy_status.xul','http');
+			cache_me('/xul/server/circ/copy_status_overlay.xul','http');
 
 			// ----
 

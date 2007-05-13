@@ -1,5 +1,7 @@
 var g = {};
 
+var xulG = {};
+
 function my_init() {
 	try {
 		/******************************************************************************************************/
@@ -16,23 +18,17 @@ function my_init() {
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 		JSAN.use('util.network'); g.network = new util.network();
 
-		g.cgi = new CGI();
-
-		g.docid = g.cgi.param('docid');
-		g.handle_update = g.cgi.param('handle_update');
+		g.docid = xul_param('docid',{'modal_xulG':true});
+		g.handle_update = xul_param('handle_update',{'modal_xulG':true});
 
 		/******************************************************************************************************/
 		/* Get the copy ids from various sources and flesh them */
 
-		var copy_ids = [];
-		if (g.cgi.param('copy_ids')) copy_ids = JSON2js( g.cgi.param('copy_ids') );
-		if (window.xulG && window.xulG.copy_ids) copy_ids = copy_ids.concat( window.xulG.copy_ids );
-		if (typeof g.data.temp_copy_ids != 'undefined' && g.data.temp_copy_ids != null) copy_ids = copy_ids.concat( JSON2js( g.data.temp_copy_ids ) );
+		var copy_ids = xul_param('copy_ids',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xulG':true,'JSON2js_if_xpcom':true,'stash_name':'temp_copy_ids','clear_xpcom':true,'modal_xulG':true});
 		if (!copy_ids) copy_ids = [];
 
-		if (copy_ids.length > 0) g.copies = g.network.request(
-			api.FM_ACP_FLESHED_BATCH_RETRIEVE.app,
-			api.FM_ACP_FLESHED_BATCH_RETRIEVE.method,
+		if (copy_ids.length > 0) g.copies = g.network.simple_request(
+			'FM_ACP_FLESHED_BATCH_RETRIEVE',
 			[ copy_ids ]
 		);
 
@@ -40,22 +36,18 @@ function my_init() {
 		/* And other fleshed copies if any */
 
 		if (!g.copies) g.copies = [];
-		if (window.xulG && window.xulG.copies) g.copies = g.copies.concat( window.xulG.copies );
-		if (g.cgi.param('copies')) g.copies = g.copies.concat( JSON2js( g.cgi.param('copies') ) );
-		if (g.data.temp_copies != 'undefined' && g.data.temp_copies) g.copies = g.copies.concat( JSON2js( g.data.temp_copies ) );
-		g.data.temp_copies = null; g.data.stash('temp_copies');
+		var c = xul_param('copies',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_copies','clear_xpcom':true,'modal_xulG':true})
+		if (c) g.copies = g.copies.concat(c);
 
 		/******************************************************************************************************/
 		/* We try to retrieve callnumbers for existing copies, but for new copies, we rely on this */
 
-		if (window.xulG && window.xulG.callnumbers) g.callnumbers = window.xulG.callnumbers;
-		if (g.cgi.param('callnumbers')) g.callnumbers =  JSON2js( g.cgi.param('callnumbers') );
-		if (g.data.temp_callnumbers != 'undefined') g.callnumbers = JSON2js( g.data.temp_callnumbers );
+		g.callnumbers = xul_param('callnumbers',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_callnumbers','clear_xpcom':true,'modal_xulG':true});
 
 		/******************************************************************************************************/
 		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
 
-		if (g.cgi.param('edit') == '1') { 
+		if (xul_param('edit',{'modal_xulG':true}) == '1') { 
 			g.edit = true;
 			document.getElementById('caption').setAttribute('label','Copy Editor'); 
 			document.getElementById('save').setAttribute('hidden','false'); 
@@ -1117,27 +1109,32 @@ g.render_input = function(node,blob) {
 /* store the copies in the global xpcom stash */
 
 g.stash_and_close = function() {
-	if (g.handle_update) {
-		try {
-			var r = g.network.request(
-				api.FM_ACP_FLESHED_BATCH_UPDATE.app,
-				api.FM_ACP_FLESHED_BATCH_UPDATE.method,
-				[ ses(), g.copies, true ]
-			);
-			if (typeof r.ilsevent != 'undefined') {
-				g.error.standard_unexpected_error_alert('copy update',r);
-			} else {
-				alert('Items added/modified.');
+	try {
+		if (g.handle_update) {
+			try {
+				var r = g.network.request(
+					api.FM_ACP_FLESHED_BATCH_UPDATE.app,
+					api.FM_ACP_FLESHED_BATCH_UPDATE.method,
+					[ ses(), g.copies, true ]
+				);
+				if (typeof r.ilsevent != 'undefined') {
+					g.error.standard_unexpected_error_alert('copy update',r);
+				} else {
+					alert('Items added/modified.');
+				}
+				/* FIXME -- revisit the return value here */
+			} catch(E) {
+				alert('copy update error: ' + js2JSON(E));
 			}
-			/* FIXME -- revisit the return value here */
-		} catch(E) {
-			alert('copy update error: ' + js2JSON(E));
 		}
+		//g.data.temp_copies = js2JSON( g.copies );
+		//g.data.stash('temp_copies');
+		xulG.copies = g.copies;
+		update_modal_xulG(xulG);
+		window.close();
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('stash and close',E);
 	}
-	g.data.temp_copies = js2JSON( g.copies );
-	g.data.stash('temp_copies');
-	g.error.sdump('D_CAT','in modal window, g.data.temp_copies = \n' + g.data.temp_copies + '\n');
-	window.close();
 }
 
 /******************************************************************************************************/
@@ -1145,6 +1142,11 @@ g.stash_and_close = function() {
 
 g.copy_notes = function() {
 	JSAN.use('util.window'); var win = new util.window();
-	win.open(urls.XUL_COPY_NOTES + '?copy_id=' + window.escape(g.copies[0].id()),'Copy Notes','chrome,resizable,modal');
+	win.open(
+		urls.XUL_COPY_NOTES, 
+		//+ '?copy_id=' + window.escape(g.copies[0].id()),
+		'Copy Notes','chrome,resizable,modal',
+		{ 'copy_id' : g.copies[0].id() }
+	);
 }
 

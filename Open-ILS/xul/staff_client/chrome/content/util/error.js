@@ -106,7 +106,7 @@ util.error.prototype = {
 		'D_SPAWN' : false, 
 		'D_STRING' : false,
 		'D_UTIL' : false, 
-		'D_WIN' : false, 
+		'D_WIN' : { 'dump' : true }, 
 		'D_WIDGETS' : false
 	},
 
@@ -347,16 +347,16 @@ util.error.prototype = {
 		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
 		xml += '</hbox></groupbox></vbox>';
 		JSAN.use('OpenILS.data');
-		var data = new OpenILS.data(); data.init({'via':'stash'});
-		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
-		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+		//var data = new OpenILS.data(); data.init({'via':'stash'});
+		//data.temp_yns_xml = xml; data.stash('temp_yns_xml');
+		var url = urls.XUL_FANCY_PROMPT; // + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
 		if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
-		window.open(
-			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		JSAN.use('util.window'); var win = new util.window();
+		var fancy_prompt_data = win.open(
+			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title }
 		);
-		data.init({'via':'stash'});
-		if (data.fancy_prompt_data != '') {
-			switch(data.fancy_prompt_data.fancy_submit) {
+		if (fancy_prompt_data.fancy_status == 'complete') {
+			switch(fancy_prompt_data.fancy_submit) {
 				case 'b1' : return 0; break;
 				case 'b2' : return 1; break;
 				case 'b3' : return 2; break;
@@ -416,16 +416,16 @@ util.error.prototype = {
 		if (b3) xml += '<button id="b3" accesskey="' + b3_key + '" label="' + (b3) + '" name="fancy_submit" value="b3"/>'
 		xml += '</hbox></groupbox></vbox>';
 		JSAN.use('OpenILS.data');
-		var data = new OpenILS.data(); data.init({'via':'stash'});
-		data.temp_yns_xml = xml; data.stash('temp_yns_xml');
-		var url = urls.XUL_FANCY_PROMPT + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
+		//var data = new OpenILS.data(); data.init({'via':'stash'});
+		//data.temp_yns_xml = xml; data.stash('temp_yns_xml');
+		var url = urls.XUL_FANCY_PROMPT; // + '?xml_in_stash=temp_yns_xml' + '&title=' + window.escape(title);
 		if (typeof xulG != 'undefined') if (typeof xulG.url_prefix == 'function') url = xulG.url_prefix( url );
-		window.open(
-			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+		JSAN.use('util.window'); var win = new util.window();
+		var fancy_prompt_data = win.open(
+			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title }
 		);
-		data.init({'via':'stash'});
-		if (data.fancy_prompt_data != '') {
-			switch(data.fancy_prompt_data.fancy_submit) {
+		if (fancy_prompt_data == 'complete') {
+			switch(fancy_prompt_data.fancy_submit) {
 				case 'b1' : return 0; break;
 				case 'b2' : return 1; break;
 				case 'b3' : return 2; break;
