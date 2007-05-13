@@ -42,11 +42,9 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat_copy_browser.xul');
 
-				g.cgi = new CGI();
-
 				JSAN.use('cat.copy_browser'); g.copy_browser = new cat.copy_browser();
 
-				g.copy_browser.init( { 'docid' : g.cgi.param('docid') } );
+				g.copy_browser.init( { 'docid' : xul_param('docid') } );
 
 				//if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 				//	try { window.xulG.set_tab_name('Holdings Maintenance'); } catch(E) { alert(E); }

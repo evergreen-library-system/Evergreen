@@ -48,8 +48,7 @@
 
 				g.error.sdump('D_TRACE','my_init() for patron_info_group.xul');
 
-				g.cgi = new CGI();
-				g.patron_id = g.cgi.param('patron_id');
+				g.patron_id = xul_param('patron_id');
 
 				tree_init();
 
@@ -202,16 +201,19 @@
 			if (! g.sel_list ) return;
 			try {
 				for (var i = 0; i < g.sel_list.length; i++) {	
-					var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) 
-						+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
-						+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
+					var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); 
+						//+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
+						//+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
 					xulG.new_tab(
 						loc, 
 						{}, 
 						{ 
+							'url' : urls.XUL_PATRON_EDIT, // + '?ses=' + window.escape(ses()) + '&clone=' + g.sel_list[i],
 							'show_print_button' : true , 
 							'tab_name' : 'Register Patron Clone for Group' ,
 							'passthru_content_params' : {
+								'ses' : ses(,
+								'clone' : g.sel_list[i],
 								'spawn_search' : spawn_search,
 								'spawn_editor' : spawn_editor,
 								'on_save' : function() { refresh(); },
@@ -230,25 +232,25 @@
 
 		function spawn_editor(p) {
 			var url = urls.XUL_PATRON_EDIT;
-			var param_count = 0;
+			var passthru = {
+				'spawn_search' : spawn_search,
+				'spawn_editor' : spawn_editor,
+				'on_save' : function() { refresh(); },
+				'url_prefix' : xulG.url_prefix,
+				'new_tab' : xulG.new_tab,
+			};
 			for (var i in p) {
-				if (param_count++ == 0) url += '?'; else url += '&';
-				url += i + '=' + window.escape(p[i]);
+				passthru[i] = p[i];
 			}
-			var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( url );
+			var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); // + '?url=' + window.escape( url );
 			xulG.new_tab(
 				loc, 
 				{}, 
 				{ 
+					'url' : url,
 					'show_print_button' : true , 
 					'tab_name' : 'Editing Related Patron' ,
-					'passthru_content_params' : {
-						'spawn_search' : spawn_search,
-						'spawn_editor' : spawn_editor,
-						'on_save' : function() { refresh(); },
-						'url_prefix' : xulG.url_prefix,
-						'new_tab' : xulG.new_tab,
-					},
+					'passthru_content_params' : passthru,
 					'url_prefix' : xulG.url_prefix,
 					'new_tab' : xulG.new_tab,
 				}
@@ -260,8 +262,8 @@
 			try {
 				g.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
 				var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
-					loc += '?doit=1&query=' + window.escape(js2JSON(s));
-				xulG.new_tab( loc, {}, {} );
+					//loc += '?doit=1&query=' + window.escape(js2JSON(s));
+				xulG.new_tab( loc, {}, {'doit':1,'query':s} );
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('spawn search',E);
 			}
@@ -346,19 +348,20 @@
 					var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
 					bot_xml += '</hbox></vbox>';
 		
-					g.data.temp_top = top_xml; g.data.stash('temp_top');
-					g.data.temp_mid = xml; g.data.stash('temp_mid');
-					g.data.temp_bot = bot_xml; g.data.stash('temp_bot');
-					window.open(
-						urls.XUL_FANCY_PROMPT
-						+ '?xml_in_stash=temp_mid'
-						+ '&top_xml_in_stash=temp_top'
-						+ '&bottom_xml_in_stash=temp_bot'
-						+ '&title=' + window.escape('Move Patron into a Usergroup'),
-						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500'
+					//g.data.temp_top = top_xml; g.data.stash('temp_top');
+					//g.data.temp_mid = xml; g.data.stash('temp_mid');
+					//g.data.temp_bot = bot_xml; g.data.stash('temp_bot');
+					JSAN.use('util.window'); var win = new util.window();
+					var fancy_prompt_data = win.open(
+						urls.XUL_FANCY_PROMPT,
+						//+ '?xml_in_stash=temp_mid'
+						//+ '&top_xml_in_stash=temp_top'
+						//+ '&bottom_xml_in_stash=temp_bot'
+						//+ '&title=' + window.escape('Move Patron into a Usergroup'),
+						'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+						{ 'xml' : xml, 'top_xml' : top_xml, 'bottom_xml' : bot_xml, 'title' : 'Move Patron into a Usergroup' }
 					);
-					g.data.init({'via':'stash'});
-					if (g.data.fancy_prompt_data == '') { continue; }
+					if (fancy_prompt_data.fancy_status == 'incomplete') { continue; }
 					else {
 						var patron_c;
 						switch(direction) {

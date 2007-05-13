@@ -40,8 +40,6 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for in_house_use.xul');
 
-				g.cgi = new CGI();
-
 				JSAN.use('circ.in_house_use'); g.in_house_use = new circ.in_house_use();
 				g.in_house_use.init( 
 					{ 

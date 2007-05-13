@@ -472,9 +472,8 @@ patron.util.std_map_row_to_columns = function(error_value) {
 patron.util.retrieve_au_via_id = function(session, id, f) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var patron_obj = network.request(
-		api.FM_AU_RETRIEVE_VIA_ID.app,
-		api.FM_AU_RETRIEVE_VIA_ID.method,
+	var patron_obj = network.cached_request(
+		'FM_AU_RETRIEVE_VIA_ID',
 		[ session, id ],
 		f
 	);
@@ -484,7 +483,7 @@ patron.util.retrieve_au_via_id = function(session, id, f) {
 patron.util.retrieve_name_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var parts = network.simple_request(
+	var parts = network.cached_request(
 		'BLOB_AU_PARTS_RETRIEVE',
 		[ session, id, ['family_name', 'first_given_name', 'second_given_name', 'home_ou' ] ]
 	);
@@ -494,7 +493,7 @@ patron.util.retrieve_name_via_id = function(session, id) {
 patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var patron_obj = network.simple_request(
+	var patron_obj = network.cached_request(
 		'FM_AU_FLESHED_RETRIEVE_VIA_ID',
 		[ session, id ]
 	);
@@ -505,7 +504,7 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id) {
 patron.util.retrieve_fleshed_au_via_barcode = function(session, id) {
 	JSAN.use('util.network');
 	var network = new util.network();
-	var patron_obj = network.simple_request(
+	var patron_obj = network.cached_request(
 		'FM_AU_RETRIEVE_VIA_BARCODE',
 		[ session, id ]
 	);
@@ -547,14 +546,18 @@ patron.util.set_penalty_css = function(patron) {
 							removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
 
 		JSAN.use('util.network'); var net = new util.network();
-		net.simple_request('FM_MOUS_RETRIEVE',[ ses(), patron.id() ], function(req) {
+		net.cached_request('FM_MOUS_RETRIEVE',[ ses(), patron.id() ], function(req) {
 			if (req.getResultObject().balance_owed() > 0) addCSSClass(document.documentElement,'PATRON_HAS_BILLS');
 		});
-		net.simple_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER',[ ses(), patron.id() ], function(req) {
-			var co = req.getResultObject();
-			if (co.overdue > 0 || co.long_overdue > 0) addCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
+		net.cached_request('FM_CIRC_COUNT_RETRIEVE_VIA_USER',[ ses(), patron.id() ], function(req) {
+			try {
+				var co = req.getResultObject();
+				if (co.overdue > 0 || co.long_overdue > 0) addCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
+			} catch(E) {
+				alert(E);
+			}
 		});
-		net.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : patron.id() } ], function(req) {
+		net.cached_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : patron.id() } ], function(req) {
 			var notes = req.getResultObject();
 			if (notes.length > 0) addCSSClass(document.documentElement,'PATRON_HAS_NOTES');
 		});

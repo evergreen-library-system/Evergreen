@@ -45,20 +45,13 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for cat_copy_summary.xul');
 
-				g.cgi = new CGI();
-				var copy_id = g.cgi.param('copy_id');
+				var copy_id = xul_param('copy_id');
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date'); JSAN.use('util.widgets');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.stash_retrieve();
-				var copy;
-				if (g.data.temp_copy) {
-					copy = g.data.temp_copy; g.data.temp_copy = null; g.data.stash('temp_copy');
-				}
-				var callnumber;
-				if (g.data.temp_callnumber) {
-					callnumber = g.data.temp_callnumber; g.data.temp_callnumber = null; g.data.stash('temp_callnumber');
-				}
+				var copy = xul_param('copy',{'stash_name':'temp_copy','clear_xpcom':true});
+				var callnumber = xul_param('callnumber',{'stash_name':'temp_callnumber','clear_xpcom':true});
 
 				$('caption').setAttribute('tooltiptext','Copy ID = ' + (copy_id || copy.id() ) );
 

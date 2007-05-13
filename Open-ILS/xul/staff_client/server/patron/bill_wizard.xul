@@ -102,7 +102,7 @@
 		}
 
 		function retrieve_patron() {
-			g.patron_id = g.cgi.param('patron_id');
+			g.patron_id = xul_param('patron_id',{'modal_xulG':true});
 
 			if (g.patron_id) {
 				JSAN.use('patron.util'); 
@@ -144,16 +144,14 @@
 				ml.setAttribute('id','billing_type');
 				document.getElementById('menu_placeholder').appendChild(ml);
 
-				g.cgi = new CGI();
-
 				retrieve_patron();
 
 				$('billing_location').setAttribute('value', g.OpenILS.data.hash.aou[ g.OpenILS.data.list.au[0].ws_ou() ].name() );
 
 				$('bill_amount').focus();
 
-				if (g.cgi.param('xact_id')) { 
-					g.mbts_id = g.cgi.param('xact_id');
+				if (xul_param('xact_id',{'modal_xulG':true})) { 
+					g.mbts_id = xul_param('xact_id',{'modal_xulG':true});
 					$('summary').hidden = false; 
 					retrieve_mbts();
 					retrieve_circ();
@@ -171,7 +169,7 @@
 
 		function patron_bill_finish() {
 			try {
-				var xact_id = g.cgi.param('xact_id');
+				var xact_id = xul_param('xact_id',{'modal_xulG':true});
 				if (!xact_id) {
 						var grocery = new mg();
 							grocery.isnew('1');

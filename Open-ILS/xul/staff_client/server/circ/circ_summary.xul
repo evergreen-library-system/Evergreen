@@ -37,6 +37,8 @@
 	<![CDATA[
 		function $(id) { return document.getElementById(id); }
 
+		var xulG = {};
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -46,9 +48,8 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
-				g.cgi = new CGI();
-				g.copy_id = g.cgi.param('copy_id');
-				g.count = g.cgi.param('count');
+				g.copy_id = xul_param('copy_id',{'modal_xulG':true});
+				g.count = xul_param('count',{'modal_xulG':true});
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -59,8 +60,10 @@
 				g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
 				if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
-				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
-				$('mid').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + g.copy.id());
+				$('top').setAttribute('src',urls.XUL_BIB_BRIEF);// + '?docid=' + g.callnumber.record());
+				$('top').contentWindow.xulG = { 'docid' : g.callnumber.record() };
+				$('mid').setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + g.copy.id());
+				$('mid').contentWindow.xulG = { 'copy_id' : g.copy.id() };
 
 				show_circs();
 
@@ -85,7 +88,8 @@
 					iframe.setAttribute('style','overflow: none; min-height: 100px;');
 					iframe.setAttribute('flex','1');
 					gb.appendChild(iframe);
-					iframe.setAttribute('src', urls.XUL_CIRC_BRIEF + '?circ_id=' + g.circs[j].id() );
+					iframe.setAttribute('src', urls.XUL_CIRC_BRIEF); // + '?circ_id=' + g.circs[j].id() );
+					iframe.contentWindow.xulG = { 'circ_id' : g.circs[j].id() };
 				}
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('error showing circs',E);
@@ -93,22 +97,34 @@
 		}
 
 		function retrieve_last() {
-			g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
-			g.data.stash('fancy_prompt_data');
-			window.close();
+			try {
+				//g.data.fancy_prompt_data = js2JSON( [ g.circs[0].usr() ] );
+				//g.data.stash('fancy_prompt_data');
+				xulG.retrieve_these_patrons = [ g.circs[0].usr() ];
+				update_modal_xulG(xulG);
+				window.close();
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('retrieve_last',E);
+			}
 		}
 
 		function retrieve_all() {
-			var patrons = []; var p_hash = {};
-			for (var i = 0; i < g.circs.length; i++) {
-				var usr = g.circs[i].usr();
-				if (typeof p_hash[usr] != 'undefined') { continue; }
-				p_hash[usr] = true;
-				patrons.push( function(a){return a;}(usr) );
+			try {
+				var patrons = []; var p_hash = {};
+				for (var i = 0; i < g.circs.length; i++) {
+					var usr = g.circs[i].usr();
+					if (typeof p_hash[usr] != 'undefined') { continue; }
+					p_hash[usr] = true;
+					patrons.push( function(a){return a;}(usr) );
+				}
+				//g.data.fancy_prompt_data = js2JSON(patrons);
+				//g.data.stash('fancy_prompt_data');
+				xulG.retrieve_these_patrons = patrons;
+				update_modal_xulG(xulG);
+				window.close();
+			} catch(E) {
+				g.error.standard_unexpected_error_alert('retrieve_all',E);
 			}
-			g.data.fancy_prompt_data = js2JSON(patrons);
-			g.data.stash('fancy_prompt_data');
-			window.close();
 		}
 
 	]]>

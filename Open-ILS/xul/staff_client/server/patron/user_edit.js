@@ -110,13 +110,22 @@ function init_editor (u) {
 	var x = document.getElementById('editor').elements;
 	
 	cgi = new CGI();
-	if (cgi.param('adv')) adv_mode = true;
+	if (cgi.param('adv')) adv_mode = true; 
+	if (xulG) if (xulG.adv) adv_mode = true;
+	if (xulG) if (xulG.params) if (xulG.params.adv) adv_mode = true;
 	apply_adv_mode(document.getElementById('editor'));
 
-	ses_id = cgi.param('ses');
+	ses_id = cgi.param('ses'); 
+	if (xulG) if (xulG.ses) ses_id = xulG.ses;
+	if (xulG) if (xulG.params) if (xulG.params.ses) ses_id = xulG.params.ses;
 
-	var usr_id = cgi.param('usr');
-	var usr_barcode = cgi.param('barcode');
+	var usr_id = cgi.param('usr'); 
+	if (xulG) if (xulG.usr_id) usr_id = xulG.usr_id;
+	if (xulG) if (xulG.params) if (xulG.params.usr_id) usr_id = xulG.params.usr_id;
+
+	var usr_barcode = cgi.param('barcode'); 
+	if (xulG) if (xulG.usr_barcode) usr_ibarcode = xulG.usr_barcode;
+	if (xulG) if (xulG.params) if (xulG.params.usr_barcode) usr_ibarcode = xulG.params.usr_barcode;
 
 	try {
 		var req;

@@ -46,16 +46,15 @@
 				g.error.sdump('D_TRACE','my_init() for record_buckets.xul');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.cgi = new CGI();
-				var record_ids = [];
-				if (g.cgi.param('record_ids')) record_ids = record_ids.concat( JSON2js( g.cgi.param('record_ids') ) );
-				if (typeof window.xuLG == 'object' && typeof window.xulG.record_ids != 'undefined')
-					record_ids = record_ids.concat( window.xulG.record_ids );
-				if (typeof g.data.rb_temp_record_ids != 'undefined' && g.data.rb_temp_record_ids != null) {
-					record_ids = record_ids.concat( JSON2js( g.data.rb_temp_record_ids ) );
-					g.data.rb_temp_record_ids = undefined; g.data.stash('rb_temp_record_ids');
-				}
-
+				var record_ids = xul_param(
+					'record_ids',{
+						'concat' : true,
+						'JSON2js_if_cgi' : true,
+						'JSON2js_if_xpcom' : true,
+						'stash_name':'rb_temp_record_ids',
+						'clear_xpcom' : true,
+					}
+				);
 
 				JSAN.use('cat.record_buckets'); g.record_buckets = new cat.record_buckets();
 				g.record_buckets.init( 

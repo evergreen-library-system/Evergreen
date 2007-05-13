@@ -344,7 +344,13 @@ cat.copy_buckets.prototype = {
 
 									var robj = obj.network.simple_request('BUCKET_CREATE',[ses(),'copy',bucket]);
 
-									if (typeof robj == 'object') throw robj;
+									if (typeof robj == 'object') {
+										if (robj.ilsevent == 1710 /* CONTAINER_EXISTS */) {
+											alert('You already have a bucket with that name.');
+											return;
+										}
+										throw robj;
+									}
 
 									alert('Bucket "' + name + '" created.');
 
@@ -645,10 +651,10 @@ cat.copy_buckets.prototype = {
 									function(o) { return JSON2js(o)[1]; }
 								);
 								var url = urls.XUL_COPY_STATUS; // + '?barcodes=' + window.escape( js2JSON(barcodes) );
-								JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-								data.temp_barcodes_for_copy_status = barcodes;
-								data.stash('temp_barcodes_for_copy_status');
-								xulG.new_tab( url, {}, {});
+								//JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+								//data.temp_barcodes_for_copy_status = barcodes;
+								//data.stash('temp_barcodes_for_copy_status');
+								xulG.new_tab( url, {}, { 'barcodes' : barcodes });
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Copy Status from Copy Buckets',E);
 							}

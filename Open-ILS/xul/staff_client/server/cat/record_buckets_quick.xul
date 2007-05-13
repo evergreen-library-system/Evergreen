@@ -45,15 +45,15 @@
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.cgi = new CGI();
-				g.record_ids = [];
-				if (g.cgi.param('record_ids')) g.record_ids = g.record_ids.concat( JSON2js( g.cgi.param('record_ids') ) );
-				if (typeof window.xuLG == 'object' && typeof window.xulG.record_ids != 'undefined')
-					g.record_ids = g.record_ids.concat( window.xulG.record_ids );
-				if (typeof g.data.rb_temp_record_ids != 'undefined' && g.data.rb_temp_record_ids != null) {
-					g.record_ids = g.record_ids.concat( JSON2js( g.data.rb_temp_record_ids ) );
-					g.data.rb_temp_record_ids = undefined; g.data.stash('rb_temp_record_ids');
-				}
+				g.record_ids = xul_param(
+					'record_ids',{
+						'concat' : true,
+						'JSON2js_if_cgi' : true,
+						'JSON2js_if_xpcom' : true,
+						'stash_name':'rb_temp_record_ids',
+						'clear_xpcom' : true,
+					}
+				);
 
 				$('desc').appendChild( document.createTextNode( 
 					(g.record_ids.length == 1 ?

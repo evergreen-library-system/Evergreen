@@ -41,14 +41,8 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for util_browser.xul');
 
-				g.cgi = new CGI();
-				var name = g.cgi.param('tab_name') || g.cgi.param('name') || null;
-				if (!name) {
-					if (typeof window.xulG == 'object') {
-						name = window.xulG.name || window.xulG.tab_name || null;
-					}
-				}
-				var url; try { url = g.cgi.param('url') || xulG.url } catch(E) { dump(E + '\n'); };
+				var name = xul_param('tab_name') || xul_param('name') || null;
+				var url; try { url = xul_param('url'); } catch(E) { dump(E + '\n'); };
 				if (!url) url = urls.browser;
 
 				if (!g.browser) {
@@ -56,10 +50,10 @@
 				}
 
 				var push_xulG = true;
-				if (g.cgi.param('no_xulG') || (typeof xulG == 'object' ? xulG.no_xulG : false)) push_xulG = false;
+				if (xul_param('no_xulG')) push_xulG = false;
 
 				var alt_print = false;
-				if (g.cgi.param('alternate_print') || (typeof xulG == 'object' ? xulG.alternate_print : false)) alt_print = true;
+				if (xul_param('alternate_print')) alt_print = true;
 
 				var p = { 
 					'url' : url,
@@ -78,17 +72,17 @@
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
 					if (name) try { window.xulG.set_tab_name(name); } catch(E) { alert(E); }
 				}
-				if (g.cgi.param('show_nav_buttons')||(typeof window.xulG == 'object' && window.xulG.show_nav_buttons)) {
+				if (xul_param('show_nav_buttons')) {
 					document.getElementById('back').hidden = false;
 					document.getElementById('forward').hidden = false;
 				}
-				if (g.cgi.param('show_print_button')||(typeof window.xulG == 'object' && window.xulG.show_print_button)) {
+				if (xul_param('show_print_button')) {
 					document.getElementById('browser_print').hidden = false;
 				}
 
-				if (g.cgi.param('title')) {
-					try { document.title = g.cgi.param('title'); } catch(E) {}
-					try { window.title = g.cgi.param('title'); } catch(E) {}
+				if (xul_param('title')) {
+					try { document.title = xul_param('title'); } catch(E) {}
+					try { window.title = xul_param('title'); } catch(E) {}
 				}
 
 			} catch(E) {

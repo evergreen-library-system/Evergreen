@@ -37,7 +37,7 @@
 		function $(id) { return document.getElementById(id); }
 
 		function retrieve_patron() {
-			g.patron_id = g.cgi.param('patron_id');
+			g.patron_id = xul_param('patron_id');
 
 			if (g.patron_id) {
 				JSAN.use('patron.util'); 
@@ -58,7 +58,7 @@
 		function retrieve_mbts_for_list() {
 			//var method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_CHARGE';
 			var method = 'FM_MBTS_IDS_RETRIEVE_FOR_HISTORY';
-			if (g.cgi.param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE';
+			if (xul_param('current')) method = 'FM_MBTS_IDS_RETRIEVE_ALL_HAVING_BALANCE';
 			g.mbts_ids = g.network.simple_request(method,[ses(),g.patron_id]);
 			if (g.mbts_ids.ilsevent) {
 				switch(g.mbts_ids.ilsevent) {
@@ -158,7 +158,9 @@
 						$('checked_in').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,10) : '';
 						$('due').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
 
-						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
+						$('copy_summary').contentWindow.xulG = { 'copy_id' : r_circ.target_copy() };
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(
@@ -245,8 +247,6 @@
 
 				g.error.sdump('D_TRACE','my_init() for bill_history.xul');
 
-				g.cgi = new CGI();
-
 				retrieve_patron();
 
 				init_lists();
@@ -265,7 +265,7 @@
 					false
 				);
 
-				if (g.cgi.param('current')) {
+				if (xul_param('current')) {
 					$('caption').setAttribute('label','Current Bills');
 					document.title = 'Current Bills';
 				} else {
@@ -288,11 +288,12 @@
 				JSAN.use('util.window');
 				var win = new util.window();
 				var w = win.open(
-					urls.XUL_PATRON_BILL_WIZARD
-						+ '?patron_id=' + window.escape(g.patron_id)
-						+ '&xact_id=' + window.escape( g.bill_list_selection[0] ),
+					urls.XUL_PATRON_BILL_WIZARD,
+						//+ '?patron_id=' + window.escape(g.patron_id)
+						//+ '&xact_id=' + window.escape( g.bill_list_selection[0] ),
 					'billwizard',
-					'chrome,resizable,modal'
+					'chrome,resizable,modal',
+					{ 'patron_id' : g.patron_id, 'xact_id' : g.bill_list_selection[0] }
 				);
 				g.bill_list.clear();
 				retrieve_mbts_for_list();
@@ -303,24 +304,28 @@
 
 		function handle_details() {
 			JSAN.use('util.window'); var win = new util.window();
-			var w = win.open(
-				urls.XUL_PATRON_BILL_DETAILS 
-				+ '?patron_id=' + window.escape(g.patron_id)
-				+ '&mbts_id=' + window.escape( g.bill_list_selection[0] ),
+			var my_xulG = win.open(
+				urls.XUL_PATRON_BILL_DETAILS,
+				//+ '?patron_id=' + window.escape(g.patron_id)
+				//+ '&mbts_id=' + window.escape( g.bill_list_selection[0] ),
 				'test_billdetails',
-				'chrome,resizable'
+				'chrome,resizable',
+				{
+					'patron_id' : g.patron_id,
+					'mbts_id' : g.bill_list_selection[0],
+					'refresh' : function() { 
+						if (typeof window.refresh == 'function') window.refresh();
+						if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
+					}, 
+				}
 			);
-			w.xulG = { 'refresh' : function() { 
-				if (typeof window.refresh == 'function') window.refresh();
-				if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
-			} };
 		}
 
 		function print_bills() {
 			try {
 				g.bill_list.on_all_fleshed = function() {
 					try {
-						var template = 'bills_historical'; if (g.cgi.param('current')) template = 'bills_current';
+						var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
 						JSAN.use('patron.util');
 						var params = { 
 							'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 

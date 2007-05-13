@@ -41,12 +41,10 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				try { g.error.sdump('D_TRACE','my_init() for items.xul'); } catch(E) { dump(E); }
 
-				g.cgi = new CGI();
-
 				JSAN.use('patron.items'); g.items = new patron.items();
 				g.items.init( 
 					{ 
-						'patron_id' : g.cgi.param('patron_id'), 
+						'patron_id' : xul_param('patron_id'), 
 					} 
 				);
 				

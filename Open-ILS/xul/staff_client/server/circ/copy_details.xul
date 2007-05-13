@@ -37,6 +37,8 @@
 	<![CDATA[
 		function $(id) { return document.getElementById(id); }
 
+		var xulG = {};
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -46,8 +48,7 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for circ_copy_details.xul');
 
-				g.cgi = new CGI();
-				g.copy_id = g.cgi.param('copy_id');
+				g.copy_id = xul_param('copy_id',{'modal_xulG':true});
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -65,16 +66,19 @@
 				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
 				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
 
-				$('top').setAttribute('src',urls.XUL_BIB_BRIEF + '?docid=' + g.callnumber.record());
-				g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
-				g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
+				$('top').setAttribute('src',urls.XUL_BIB_BRIEF); // + '?docid=' + g.callnumber.record());
+				$('top').contentWindow.xulG = { 'docid' : g.callnumber.record() };
+				//g.data.temp_copy = g.copy; g.data.stash('temp_copy'); 
+				//g.data.temp_callnumber = g.callnumber; g.data.stash('temp_callnumber'); 
 				$('item_summary').setAttribute('src',urls.XUL_COPY_SUMMARY);
+				$('item_summary').contentWindow.xulG = { 'copy' : g.copy, 'callnumber' : g.callnumber };
 
 				$('r_last').disabled = true;
 				if (g.circ) {
 					$('r_last').disabled = false;
 					g.data.temp_circ = g.circ; g.data.stash('temp_circ');
-					$('circ').setAttribute('src',urls.XUL_CIRC_BRIEF + '?no_border=1');
+					$('circ').setAttribute('src',urls.XUL_CIRC_BRIEF); // + '?no_border=1');
+					$('circ').contentWindow.xulG = { 'no_border' : 1 };
 					if (g.circ.checkin_time()) {
 						$('circ_caption').setAttribute('label','Last Circulation');
 					} else {
@@ -139,8 +143,10 @@
 
 		function retrieve_last_patron() {
 			try {
-				g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
-				g.data.stash('fancy_prompt_data');
+				//g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
+				//g.data.stash('fancy_prompt_data');
+				xulG.retrieve_these_patrons = [ g.circ.user() ];
+				update_modal_xulG(xulG);
 				window.close();
 			} catch(E) {
 				alert(E);
@@ -149,8 +155,10 @@
 
 		function retrieve_hold_patron() {
 			try {
-				g.data.fancy_prompt_data = js2JSON( [ g.hold.usr() ] );
-				g.data.stash('fancy_prompt_data');
+				//g.data.fancy_prompt_data = js2JSON( [ g.hold.usr() ] );
+				//g.data.stash('fancy_prompt_data');
+				xulG.retrieve_these_patrons = [ g.hold.user() ];
+				update_modal_xulG(xulG);
 				window.close();
 			} catch(E) {
 				alert(E);

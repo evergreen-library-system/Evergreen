@@ -363,10 +363,10 @@ patron.holds.prototype = {
 								for (var i = 0; i < obj.retrieve_ids.length; i++) {
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 									win.open(
-										xulG.url_prefix(urls.XUL_HOLD_NOTICES) 
-										+ '?ahr_id=' + obj.retrieve_ids[i].id,
+										xulG.url_prefix(urls.XUL_HOLD_NOTICES), // + '?ahr_id=' + obj.retrieve_ids[i].id,
 										'hold_notices_' + obj.retrieve_ids[i].id,
-										'chrome,resizable'
+										'chrome,resizable',
+										{ 'ahr_id' : obj.retrieve_ids[i].id }
 									);
 								}
 							} catch(E) {
@@ -409,18 +409,19 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_mid'
-									+ '&bottom_xml_in_stash=temp_bot'
-									+ '&title=' + window.escape('Choose a Pick Up Library'),
-									'fancy_prompt', 'chrome,resizable,modal'
+								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_mid'
+									//+ '&bottom_xml_in_stash=temp_bot'
+									//+ '&title=' + window.escape('Choose a Pick Up Library'),
+									'fancy_prompt', 'chrome,resizable,modal',
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Pick Up Library' }
 								);
-								obj.data.init({'via':'stash'});
-								if (obj.data.fancy_prompt_data == '') { return; }
-								var selection = obj.data.fancy_prompt_data.selection;
+								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+								var selection = fancy_prompt_data.selection;
 								var msg = 'Are you sure you would like to change the Hold Range for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + obj.data.hash.aout[selection].opac_label() + '"?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -466,18 +467,19 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_mid'
-									+ '&bottom_xml_in_stash=temp_bot'
-									+ '&title=' + window.escape('Choose a Pick Up Library'),
-									'fancy_prompt', 'chrome,resizable,modal'
+								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_mid'
+									//+ '&bottom_xml_in_stash=temp_bot'
+									//+ '&title=' + window.escape('Choose a Pick Up Library'),
+									'fancy_prompt', 'chrome,resizable,modal',
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Pick Up Library' }
 								);
-								obj.data.init({'via':'stash'});
-								if (obj.data.fancy_prompt_data == '') { return; }
-								var pickup_lib = obj.data.fancy_prompt_data.lib;
+								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+								var pickup_lib = fancy_prompt_data.lib;
 								var msg = 'Are you sure you would like to change the Pick Up Lib for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to ' + obj.data.hash.aou[pickup_lib].shortname() + '?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -506,19 +508,20 @@ patron.holds.prototype = {
 								bot_xml += '<spacer flex="1"/><button label="Done" accesskey="D" name="fancy_submit"/>';
 								bot_xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_mid'
-									+ '&bottom_xml_in_stash=temp_bot'
-									+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
-									+ '&focus=phone',
-									'fancy_prompt', 'chrome,resizable,modal'
+								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_mid'
+									//+ '&bottom_xml_in_stash=temp_bot'
+									//+ '&title=' + window.escape('Choose a Hold Notification Phone Number')
+									//+ '&focus=phone',
+									'fancy_prompt', 'chrome,resizable,modal',
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Choose a Hold Notification Phone Number', 'focus' : 'phone' }
 								);
-								obj.data.init({'via':'stash'});
-								if (obj.data.fancy_prompt_data == '') { return; }
-								var phone = obj.data.fancy_prompt_data.phone;
+								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+								var phone = fancy_prompt_data.phone;
 								var msg = 'Are you sure you would like to change the Notification Phone Number for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + ' to "' + phone + '"?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -547,18 +550,19 @@ patron.holds.prototype = {
 								var bot_xml = '<hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
 								bot_xml += '<spacer flex="1"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								obj.data.temp_mid = xml; obj.data.stash('temp_mid');
-								obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
-								window.open(
-									urls.XUL_FANCY_PROMPT
-									+ '?xml_in_stash=temp_mid'
-									+ '&bottom_xml_in_stash=temp_bot'
-									+ '&title=' + window.escape('Set Email Notification for Holds'),
-									'fancy_prompt', 'chrome,resizable,modal'
+								//obj.data.temp_mid = xml; obj.data.stash('temp_mid');
+								//obj.data.temp_bot = bot_xml; obj.data.stash('temp_bot');
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_mid'
+									//+ '&bottom_xml_in_stash=temp_bot'
+									//+ '&title=' + window.escape('Set Email Notification for Holds'),
+									'fancy_prompt', 'chrome,resizable,modal',
+									{ 'xml' : xml, 'bottom_xml' : bot_xml, 'title' : 'Set Email Notification for Holds' }
 								);
-								obj.data.init({'via':'stash'});
-								if (obj.data.fancy_prompt_data == '') { return; }
-								var email = obj.data.fancy_prompt_data.fancy_submit == 'email' ? get_db_true() : get_db_false();
+								if (fancy_prompt_data.fancy_status == 'incomplete') { return; }
+								var email = fancy_prompt_data.fancy_submit == 'email' ? get_db_true() : get_db_false();
 								var msg = 'Are you sure you would like ' + ( get_bool( email ) ? 'enable' : 'disable' ) + ' email notification for hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
 								var r = obj.error.yns_alert(msg,'Modifying Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
@@ -626,9 +630,9 @@ patron.holds.prototype = {
 									var patron_id = obj.retrieve_ids[i].usr;
 									if (seen[patron_id]) continue; seen[patron_id] = true;
 									xulG.new_tab(
-										xulG.url_prefix(urls.XUL_PATRON_DISPLAY) + '?id=' + patron_id, 
+										xulG.url_prefix(urls.XUL_PATRON_DISPLAY), // + '?id=' + patron_id, 
 										{}, 
-										{}
+										{ 'id' : patron_id }
 									);
 								}
 							} catch(E) {

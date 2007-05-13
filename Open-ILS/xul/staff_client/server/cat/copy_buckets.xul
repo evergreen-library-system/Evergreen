@@ -42,15 +42,15 @@
 				g.error.sdump('D_TRACE','my_init() for copy_buckets.xul');
 				JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
-				g.cgi = new CGI();
-				var copy_ids = [];
-				if (g.cgi.param('copy_ids')) copy_ids = copy_ids.concat( JSON2js( g.cgi.param('copy_ids') ) );
-				if (typeof window.xuLG == 'object' && typeof window.xulG.copy_ids != 'undefined')
-					copy_ids = copy_ids.concat( window.xulG.copy_ids );
-				if (typeof g.data.cb_temp_copy_ids != 'undefined' && g.data.cb_temp_copy_ids != null) {
-					copy_ids = copy_ids.concat( JSON2js( g.data.cb_temp_copy_ids ) );
-					g.data.cb_temp_copy_ids = undefined; g.data.stash('cb_temp_copy_ids');
-				}
+				var copy_ids = xul_param(
+					'copy_ids',{
+						'concat' : true,
+						'JSON2js_if_cgi' : true,
+						'JSON2js_if_xpcom' : true,
+						'stash_name':'cb_temp_copy_ids',
+						'clear_xpcom' : true,
+					}
+				);
 
 				JSAN.use('cat.copy_buckets'); g.copy_buckets = new cat.copy_buckets();
 				g.copy_buckets.init( 

@@ -43,11 +43,10 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for circ_circ_brief.xul');
 
-				g.cgi = new CGI();
-				g.circ_id = g.cgi.param('circ_id');
+				g.circ_id = xul_param('circ_id');
 
-				if (g.cgi.param('caption')) $('caption').setAttribute('label',g.cgi.param('caption'));
-				if (g.cgi.param('no_border')) $('gb').setAttribute('style','border: none');
+				var caption = xul_param('caption'); if (caption) $('caption').setAttribute('label',caption);
+				if (xul_param('no_border')) $('gb').setAttribute('style','border: none');
 
 				JSAN.use('util.network'); g.network = new util.network();
 				JSAN.use('util.date');
@@ -105,11 +104,12 @@
 			JSAN.use('util.window');
 			var win = new util.window();
 			var w = win.open(
-				urls.XUL_PATRON_BILL_WIZARD
-					+ '?patron_id=' + window.escape(g.patron_id)
-					+ '&xact_id=' + window.escape( g.circ_id ),
+				urls.XUL_PATRON_BILL_WIZARD,
+					//+ '?patron_id=' + window.escape(g.patron_id)
+					//+ '&xact_id=' + window.escape( g.circ_id ),
 				'billwizard',
-				'chrome,resizable,modal'
+				'chrome,resizable,modal',
+				{ 'patron_id' : g.patron_id, 'xact_id' : g.circ_id }
 			);
 		}
 
