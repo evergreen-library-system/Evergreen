@@ -1,5 +1,5 @@
 var OILS_TEMPLATE_INTERFACE = 'xul/template_builder.xul';
-var OILS_CLONE_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
+var OILS_LEGACY_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
 
 
 /* generic folder window class */
@@ -286,7 +286,13 @@ oilsRptFolderWindow.prototype.cloneTemplate = function(template) {
 			var s = location.search+'';
 			s = s.replace(/\&folder=\d+/g,'');
 			s = s.replace(/\&ct=\d+/g,'');
-			goTo(OILS_CLONE_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+            version = JSON2js(template.data()).version;
+            if(version && version >= 2) {
+                _debug('entering new template building interface with template version ' + version);
+			    goTo(OILS_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+            } else {
+			    goTo(OILS_LEGACY_TEMPLATE_INTERFACE+s+'&folder='+folderid+'&ct='+template.id());
+            }
 		}
 	);
 }
