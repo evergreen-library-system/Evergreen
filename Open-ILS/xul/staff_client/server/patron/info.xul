@@ -54,19 +54,23 @@
 
 				try{
 					$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES); 
-					$('notes_frame').contentWindow.xulG = { 'patron_id' : g.patron_id };
+					get_contentWindow($('notes_frame')).xulG = 
+						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
 					$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS);
-					$('stat_cats_frame').contentWindow.xulG = { 'patron_id' : g.patron_id };
+					get_contentWindow($('stat_cats_frame')).xulG = 
+						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
 					$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS);
-					$('surveys_frame').contentWindow.xulG = { 'patron_id' : g.patron_id };
+					get_contentWindow($('surveys_frame')).xulG = 
+						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 				try{
 					$('group_frame').setAttribute('src',urls.XUL_PATRON_INFO_GROUP);
-					$('group_frame').contentWindow.xulG = { 'patron_id' : g.patron_id };
+					get_contentWindow($('group_frame')).xulG = 
+						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
 				}catch(E){alert(E);}
 
 			} catch(E) {
@@ -80,17 +84,10 @@
 		function refresh() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				if ($('notes_frame').contentWindow && typeof $('notes_frame').contentWindow.refresh == 'function') {
-					$('notes_frame').contentWindow.refresh();
-				}
-				if ($('stat_cats_frame').contentWindow && typeof $('stat_cats_frame').contentWindow.refresh == 'function') {
-					$('stat_cats_frame').contentWindow.refresh();
-				}
-				if ($('surveys_frame').contentWindow && typeof $('surveys_frame').contentWindow.refresh == 'function') {
-					$('surveys_frame').contentWindow.refresh();
-				}
-				if ($('group_frame').contentWindow && typeof $('group_frame').contentWindow.refresh == 'function') {
-					$('group_frame').contentWindow.refresh();
+				for (var i in [ 'notes_frame', 'stat_cats_frame', 'surveys_frame', 'group_frame' ]) {
+					if (get_contentWindow($(i)) && typeof get_contentWindow($(i)).refresh == 'function') {
+						get_contentWindow($(i)).refresh();
+					}
 				}
 			} catch(E) {
 				alert(E);

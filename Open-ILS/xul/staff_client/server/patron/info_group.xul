@@ -182,10 +182,15 @@
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					for (var i = 0; i < g.sel_list.length; i++) {	
 						try {
-							var url = urls.XUL_PATRON_DISPLAY 
-								+ '?id=' + window.escape( g.sel_list[i] );
+							var url = urls.XUL_PATRON_DISPLAY// + '?id=' + window.escape( g.sel_list[i] );
 							window.xulG.new_tab(
-								url, { 'tab_name' : 'Retrieving Patron..' }, {}
+								url, 
+								{ 'tab_name' : 'Retrieving Patron..' }, 
+								{ 
+									'id' : g.sel_list[i],
+									'url_prefix' : xulG.url_prefix,
+									'new_tab' : xulG.new_tab,
+								}
 							);
 						} catch(E) {
 							g.error.standard_unexpected_error_alert('Failed to retrieve patron.',E);
@@ -204,7 +209,7 @@
 					var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); 
 						//+ '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' 
 						//+ window.escape( ses() ) + '&clone=' + g.sel_list[i] );
-					xulG.new_tab(
+					if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
 						loc, 
 						{}, 
 						{ 
@@ -212,7 +217,7 @@
 							'show_print_button' : true , 
 							'tab_name' : 'Register Patron Clone for Group' ,
 							'passthru_content_params' : {
-								'ses' : ses(,
+								'ses' : ses(),
 								'clone' : g.sel_list[i],
 								'spawn_search' : spawn_search,
 								'spawn_editor' : spawn_editor,
@@ -243,7 +248,7 @@
 				passthru[i] = p[i];
 			}
 			var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); // + '?url=' + window.escape( url );
-			xulG.new_tab(
+			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') xulG.new_tab(
 				loc, 
 				{}, 
 				{ 
@@ -263,7 +268,8 @@
 				g.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
 				var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
 					//loc += '?doit=1&query=' + window.escape(js2JSON(s));
-				xulG.new_tab( loc, {}, {'doit':1,'query':s} );
+				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') 
+					xulG.new_tab( loc, {}, {'doit':1,'query':s} );
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('spawn search',E);
 			}

@@ -566,7 +566,7 @@ admin.offline_manage_xacts.prototype = {
 				} 
 			}
 		};
-		x.contentWindow.xulG = newG;
+		get_contentWindow(x).xulG = newG;
 
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Error uploading xacts',E);

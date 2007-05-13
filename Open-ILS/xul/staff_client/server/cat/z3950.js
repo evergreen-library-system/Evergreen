@@ -122,7 +122,7 @@ cat.z3950.prototype = {
 										n.setAttribute('toggle','1');
 										n.setAttribute('label','Results View');
 										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-										var f = document.getElementById('marc_frame').contentWindow;
+										var f = get_contentWindow(document.getElementById('marc_frame'));
 										f.xulG = { 'marcxml' : obj.results.records[ n.getAttribute('retrieve_id') ].marcxml };
 										f.my_init();
 										f.document.body.firstChild.focus();

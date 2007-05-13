@@ -98,8 +98,8 @@ util.window.prototype = {
 			return x;
 		} else {
 			if (my_xulG) {
-				if (w.contentWindow) {
-					w.contentWindow.xulG = my_xulG;
+				if (get_contentWindow(w)) {
+					get_contentWindow(w).xulG = my_xulG;
 				} else {
 					w.xulG = my_xulG;
 				}

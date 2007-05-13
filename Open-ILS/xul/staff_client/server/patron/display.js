@@ -67,7 +67,7 @@ patron.display.prototype = {
 				}
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.checkout_window = frame.contentWindow;
+			obj.checkout_window = get_contentWindow(frame);
 		}
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
@@ -167,7 +167,7 @@ patron.display.prototype = {
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							obj.items_window = frame.contentWindow;
+							obj.items_window = get_contentWindow(frame);
 						}
 					],
 					'cmd_patron_edit' : [
@@ -307,7 +307,7 @@ patron.display.prototype = {
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							obj.bill_window = f.contentWindow;
+							obj.bill_window = get_contentWindow(f);
 						}
 					],
 					'patron_name' : [
@@ -476,7 +476,7 @@ patron.display.prototype = {
 				}
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.summary_window = frame.contentWindow;
+			obj.summary_window = get_contentWindow(frame);
 		} else {
 			obj.render_search_form(params);
 		}
@@ -536,7 +536,7 @@ patron.display.prototype = {
 										netscape.security.PrivilegeManager.enablePrivilege(
 											"UniversalXPConnect"
 										);
-										obj.summary_window = frame.contentWindow;
+										obj.summary_window = get_contentWindow(frame);
 										obj.patron = obj.summary_window.g.summary.patron;
 										obj.controller.render('patron_name');
 									}, 0
@@ -545,7 +545,7 @@ patron.display.prototype = {
 						}
 					);
 					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-					obj.search_result = list_frame.contentWindow;
+					obj.search_result = get_contentWindow(list_frame);
 				}
 			};
 
@@ -560,7 +560,7 @@ patron.display.prototype = {
 				my_xulG
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.search_window = form_frame.contentWindow;
+			obj.search_window = get_contentWindow(form_frame);
 			obj._checkout_spawned = true;
 	},
 
@@ -572,7 +572,7 @@ patron.display.prototype = {
 		for (var i = 0; i < obj.right_deck.node.childNodes.length; i++) {
 			try {
 				var f = obj.right_deck.node.childNodes[i];
-				var w = f.contentWindow;
+				var w = get_contentWindow(f);
 				if (url) {
 					if (w.location.href == url) w.refresh(true);
 				} else {
