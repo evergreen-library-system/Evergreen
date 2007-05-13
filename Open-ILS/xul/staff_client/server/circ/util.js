@@ -55,18 +55,16 @@ circ.util.show_copy_details = function(copy_id) {
 	if (typeof copy_id == 'object' && copy_id != null) copy_id = copy_id.id();
 
 	try {
-		obj.data.fancy_prompt_data = null; obj.data.stash('fancy_prompt_data');
-		var url = xulG.url_prefix( urls.XUL_COPY_DETAILS ) + '?copy_id=' + copy_id;
-		obj.win.open( url, 'show_copy_details', 'chrome,resizable,modal' );
-		obj.data.stash_retrieve();
+		var url = xulG.url_prefix( urls.XUL_COPY_DETAILS ); // + '?copy_id=' + copy_id;
+		var my_xulG = obj.win.open( url, 'show_copy_details', 'chrome,resizable,modal', { 'copy_id' : copy_id } );
 
-		if (! obj.data.fancy_prompt_data) return;
-		var patrons = JSON2js( obj.data.fancy_prompt_data );
+		if (typeof my_xulG.retrieve_these_patrons == 'undefined') return;
+		var patrons = my_xulG.retrieve_these_patrons;
 		for (var j = 0; j < patrons.length; j++) {
 			if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 				try {
-					var url = urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( patrons[j] );
-					window.xulG.new_tab( url );
+					var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
+					window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
 				}
@@ -91,18 +89,16 @@ circ.util.show_last_few_circs = function(selection_list,count) {
 	for (var i = 0; i < selection_list.length; i++) {
 		try {
 			if (typeof selection_list[i].copy_id == 'undefined' || selection_list[i].copy_id == null) continue;
-			obj.data.fancy_prompt_data = null; obj.data.stash('fancy_prompt_data');
-			var url = xulG.url_prefix( urls.XUL_CIRC_SUMMARY ) + '?copy_id=' + selection_list[i].copy_id + '&count=' + count;
-			obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal' );
-			obj.data.stash_retrieve();
+			var url = xulG.url_prefix( urls.XUL_CIRC_SUMMARY ); // + '?copy_id=' + selection_list[i].copy_id + '&count=' + count;
+			var my_xulG = obj.win.open( url, 'show_last_few_circs', 'chrome,resizable,modal', { 'copy_id' : selection_list[i].copy_id, 'count' : count } );
 
-			if (! obj.data.fancy_prompt_data) continue;
-			var patrons = JSON2js( obj.data.fancy_prompt_data );
+			if (typeof my_xulG.retrieve_these_patrons == 'undefined') continue;
+			var patrons = my_xulG.retrieve_these_patrons;
 			for (var j = 0; j < patrons.length; j++) {
 				if (typeof window.xulG == 'object' && typeof window.xulG.new_tab == 'function') {
 					try {
-						var url = urls.XUL_PATRON_DISPLAY + '?id=' + window.escape( patrons[j] );
-						window.xulG.new_tab( url );
+						var url = urls.XUL_PATRON_DISPLAY; // + '?id=' + window.escape( patrons[j] );
+						window.xulG.new_tab( url, {}, { 'id' : patrons[j] } );
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert('Problem retrieving patron.',E);
 					}
@@ -726,6 +722,17 @@ circ.util.hold_columns = function(modify,params) {
 	function getString(s) { return data.entities[s]; }
 
 	var c = [
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'request_lib', 'label' : 'Request Lib (Full Name)', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  
+			'render' : function(my) { if (Number(my.ahr.request_lib())>=0) return data.hash.aou[ my.ahr.request_lib() ].name(); else return my.ahr.request_lib().name(); },
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'request_lib_shortname', 'label' : 'Request Lib', 'flex' : 0,
+			'primary' : false, 'hidden' : true,  
+			'render' : function(my) { if (Number(my.ahr.request_lib())>=0) return data.hash.aou[ my.ahr.request_lib() ].shortname(); else return my.ahr.request_lib().shortname(); },
+		},
+
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
