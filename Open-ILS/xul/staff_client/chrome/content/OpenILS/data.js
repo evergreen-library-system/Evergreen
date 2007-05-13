@@ -14,6 +14,7 @@ OpenILS.data.prototype = {
 	'list' : {},
 	'hash' : {},
 	'tree' : {},
+	'cached_request' : {},
 
 	'temp' : '',
 
@@ -43,6 +44,98 @@ OpenILS.data.prototype = {
 		}
 
 
+	},
+
+	// This should be invoked only once per application, in a persistant window
+	'init_observer_functions' : function() {
+		try {
+			var obj = this;				// OpenILS.data
+			obj.observers = {};			//
+			obj.observers.id = 1;		// Unique id for each observer function added
+			obj.observers.id2path = {}; // Lookup for full_path via observer id
+			obj.observers.cache = {};	// Observer funcs go in here
+
+			// For a given path, this executes all the registered observer funcs
+			obj.observers.dispatch = function(full_path, old_value, new_value) {
+				obj.error.sdump('D_OBSERVERS', 'entering observers.dispatch\nfull_path = ' + full_path + '\nold_value = ' + js2JSON(old_value) + '\nnew_value = ' + js2JSON(new_value) + '\n');
+				try {
+					var path = full_path.split(/\./).pop();
+					for (var i in obj.observers.cache[full_path]) {
+						try {
+							var o = obj.observers.cache[full_path][i];
+							if (typeof o.func == 'function') o.func(path, old_value, new_value);
+						} catch(E) {
+							obj.error.sdump('D_ERROR','Error in OpenILS.data.observers.dispatch(): ' + js2JSON(E) );
+						}
+					}
+				} catch(E) {
+					obj.error.sdump('D_ERROR','Error in OpenILS.data.observers.dispatch(): ' + js2JSON(E) );
+				}
+			}
+
+			// This registers an observer function for a given path
+			obj.observers.add = function(full_path, func) {
+				try {
+					obj.error.sdump('D_OBSERVERS', 'entering observers.add\nfull_path = ' + full_path + '\nfunc = ' + func + '\n');
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					const OpenILS=new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+					var data_cache=new OpenILS( );
+					var stash = data_cache.wrappedJSObject.OpenILS.prototype.data;
+
+					var id = obj.observers.id++;
+					if (typeof obj.observers.cache[ full_path ] == 'undefined') obj.observers.cache[ full_path ] = {};
+					obj.observers.cache[ full_path ][ id ] = { 'func' : func, 'time_added' : new Date() };
+					obj.observers.id2path[ id ] = [ full_path ];
+
+					var path_list = full_path.split(/\./);
+					var observed_prop = path_list.pop();
+
+					// Convert soft path to object reference.  Error if any but the last node is undefined
+					for (var i in path_list) stash = stash[ path_list[i] ];
+					stash.watch(
+						observed_prop,
+						function(p,old_value,new_value) {
+							obj.observers.dispatch(full_path,old_value,new_value);
+							return new_value;
+						}
+					);
+
+					return id;
+				} catch(E) {
+					obj.error.sdump('D_ERROR','Error in OpenILS.data.observers.add(): ' + js2JSON(E) );
+				}
+			}
+
+			// This unregisters an observer function for a given observer id
+			obj.observers.remove = function(id) {
+				try {
+					obj.error.sdump('D_OBSERVERS', 'entering observers.remove\nid = ' + id + '\n');
+					var path = obj.observers.id2path[ id ];
+					delete obj.observers.cache[ path ][ id ];
+					delete obj.observers.id2path[ id ];
+				} catch(E) {
+					obj.error.sdump('D_ERROR','Error in OpenILS.data.observers.remove(): ' + js2JSON(E) );
+				}
+			}
+
+			// This purges observer functions for a given path
+			obj.observers.purge = function(full_path) {
+				obj.error.sdump('D_OBSERVERS', 'entering observers.purge\nfull_path = ' + full_path + '\n');
+				try {
+					var remove_these = [];
+					for (var id in obj.observers.cache[ full_path ]) remove_these.push( id );
+					for (var id in remove_these) delete obj.observers.id2path[ id ];
+					delete obj.observers.cache[ full_path ];
+				} catch(E) {
+					obj.error.sdump('D_ERROR','Error in OpenILS.data.observers.purge(): ' + js2JSON(E) );
+				}
+			}
+
+			obj.stash('observers'); // make this accessible globally
+
+		} catch(E) {
+			this.error.sdump('D_ERROR','Error in OpenILS.data.init_observer_functions(): ' + js2JSON(E) );
+		}
 	},
 
 	'stash' : function () {
