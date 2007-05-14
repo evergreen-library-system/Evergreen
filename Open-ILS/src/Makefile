@@ -61,8 +61,6 @@ server-xul:
 webcore-install:
 	@echo $@
 	echo "Copying web into $(WEBDIR)"
-	mkdir -p $(ADMINDIR)
-	cp -r ../admin/* $(ADMINDIR)
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	cp -r ../web/* $(WEBDIR)
@@ -76,7 +74,6 @@ webcore-install:
 	cp ../xsl/*.xsl $(WEBDIR)/opac/extras/xsl/
 	ln -sf $(ETCDIR)/fm_IDL.xml $(WEBDIR)/reports/
 	cp ../xul/staff_client/server/admin/adminlib.js $(WEBDIR)/reports/
-	mkdir -p $(WEBDIR)/opac/extras/slimpac/
 	
 
 libfieldmapper:	
@@ -135,12 +132,6 @@ perl-install:
 
 reporter-install:
 	@echo $@
-#	@echo "Installing Reporter templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
-#	cp reporter/report_base.example.xml $(ETCDIR)/reporter.example.xml
-#	cp reporter/tables.example.xml $(ETCDIR)
-#	cp reporter/widgets.example.xml $(ETCDIR)
-#	mkdir -p $(REPORTERDIR)
-#	cp -r reporter/templates/* $(REPORTERDIR)
 
 # -----------------------------------------------------------------------------------
 offline-install:
@@ -188,8 +179,8 @@ xsl-install:
 	@echo "Installing XSL files to $(XSLDIR)"
 	mkdir -p $(XSLDIR)
 	cp ../xsl/*.xsl $(XSLDIR)
-#	mkdir -p $(WEBDIR)/xsl/
-#	cp ../xsl/*.xsl $(WEBDIR)/xsl/
+	mkdir -p $(WEBDIR)/xsl/
+	cp ../xsl/*.xsl $(WEBDIR)/xsl/
 
 clean:
 	@echo $@

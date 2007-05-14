@@ -50,6 +50,13 @@ osrfConfig* osrfConfigInit(char* configFile, char* configContext) {
 	}
 
 	cfg->config = xmlDocToJSON(doc);
+
+	/*
+	char* j = jsonObjectToJSON(cfg->config);
+	fprintf(stderr, "JSON:\n%s\n", j);
+	free(j);
+	*/
+
 	xmlFreeDoc(doc);
 
 	if(!cfg->config) {

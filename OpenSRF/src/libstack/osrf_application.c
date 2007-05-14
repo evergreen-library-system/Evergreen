@@ -1,10 +1,6 @@
 #include "osrf_application.h"
-#include "objson/object.h"
-
-//osrfApplication* __osrfAppList = NULL; 
 
 osrfHash* __osrfAppHash = NULL;
-
 
 int osrfAppRegisterApplication( char* appName, char* soFile ) {
 	if(!appName || ! soFile) return -1;

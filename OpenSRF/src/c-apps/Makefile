@@ -1,4 +1,4 @@
-LDLIBS += -lobjson -lopensrf
+LDLIBS +=  -lopensrf
 CFLAGS += -DOSRF_LOG_PARAMS
 
 all:	osrf_math.so osrf_dbmath.so osrf_version.so

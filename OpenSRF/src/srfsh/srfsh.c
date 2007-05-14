@@ -514,7 +514,7 @@ int send_request( char* server,
 	jsonObject* params = NULL;
 	if( !relay ) {
 		if( buffer != NULL && buffer->n_used > 0 ) 
-			params = json_parse_string(buffer->buf);
+			params = jsonParseString(buffer->buf);
 	} else {
 		if(!last_result || ! last_result->_result_content) { 
 			printf("We're not going to call 'relay' with no result params\n");
@@ -802,7 +802,7 @@ int do_math( int count, int style ) {
 	osrf_app_session* session = osrf_app_client_session_init(  "opensrf.math" );
 	osrf_app_session_connect(session);
 
-	jsonObject* params = json_parse_string("[]");
+	jsonObject* params = jsonParseString("[]");
 	jsonObjectPush(params,jsonNewObject("1"));
 	jsonObjectPush(params,jsonNewObject("2"));
 

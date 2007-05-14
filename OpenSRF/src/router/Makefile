@@ -1,6 +1,6 @@
 #MALLOC_CHECK_=1 # XXX debug only
 
-LDLIBS	+= -lxml2 -lopensrf -lobjson
+LDLIBS	+= -lxml2 -lopensrf 
 CFLAGS	+= -D_ROUTER
 
 all: opensrf_router 

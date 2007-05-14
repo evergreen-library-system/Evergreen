@@ -1,4 +1,4 @@
-LDLIBS	+= -lopensrf -lobjson -lxml2
+LDLIBS	+= -lopensrf -lxml2
 CFLAGS	+= -D_GNU_SOURCE
 
 all: chopchop

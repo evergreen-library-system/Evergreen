@@ -27,9 +27,11 @@ GNU General Public License for more details.
 #include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <sys/timeb.h>
-
 #include "md5.h"
+
+
+//#define MKCHAR(__c) (char*) __c
+
 
 #define OSRF_MALLOC(ptr, size) \
 	ptr = (void*) malloc( size ); \

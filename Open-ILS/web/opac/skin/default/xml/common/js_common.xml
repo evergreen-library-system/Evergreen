@@ -1,7 +1,5 @@
 <div>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
-
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js'> </script>
 	<!--
@@ -12,7 +10,7 @@
 
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js'> </script>
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_wrapper.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js'> </script>

@@ -2,8 +2,8 @@
 # OSRF_STRICT_PARAMS instructs the app handler to return an error if the number of method arguments
 #	provided to any method is not at least as large as the 'argc' setting for the method
 
-CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -DOSRF_STRICT_PARAMS -rdynamic -fno-strict-aliasing
-LDLIBS	+= -lxml2 -lobjson -ldl -lmemcache 
+CFLAGS	+=  -DASSUME_STATELESS  -DOSRF_LOG_PARAMS -DOSRF_STRICT_PARAMS -rdynamic -fno-strict-aliasing -I.
+LDLIBS	+= -lxml2  -ldl -lmemcache
 
 TARGETS = osrf_message.o \
 			 osrf_app_session.o \
@@ -17,7 +17,13 @@ TARGETS = osrf_message.o \
 			 osrf_transgroup.o \
 			 osrf_list.o \
 			 osrf_hash.o \
-			 xml_utils.o 
+			 xml_utils.o \
+			 osrf_hash.o \
+			 osrf_json_object.o \
+			 osrf_json_parser.o \
+			 osrf_json_tools.o \
+			 legacy_json.o \
+			 xml_utils.o
 
 HEADERS = osrf_message.h \
 			 osrf_app_session.h \
@@ -31,6 +37,7 @@ HEADERS = osrf_message.h \
 			 osrf_transgroup.h \
 			 osrf_list.h \
 			 osrf_hash.h \
+			 osrf_json.h \
 			 xml_utils.h
 
 all: xml_utils.o $(TARGETS) copy 
@@ -53,10 +60,11 @@ osrfConfig.o:	osrfConfig.c osrfConfig.h xml_utils.o
 osrf_application.o: osrf_application.c osrf_application.h
 osrf_cache.o:	osrf_cache.c osrf_cache.h
 osrf_list.o:	osrf_list.c osrf_list.h
-#osrf_big_list.o:	osrf_big_list.c osrf_big_list.h
 osrf_hash.o:	osrf_hash.c osrf_hash.h
-#osrf_big_hash.o:	osrf_big_hash.c osrf_big_hash.h
-
+osrf_json_object.o:	osrf_json_object.c osrf_json.h osrf_json_utils.h
+osrf_json_parser.o:	osrf_json_parser.c osrf_json.h osrf_json_utils.h
+osrf_json_tools.o:	osrf_json_tools.c osrf_json.h osrf_json_utils.h
+legacy_json.o:	legacy_json.c osrf_json.h osrf_json_utils.h
 
 clean:
 	/bin/rm -f *.o libopensrf_stack.so xml_utils.h xml_utils.c opensrf

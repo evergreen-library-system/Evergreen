@@ -1,6 +1,6 @@
 #CFLAGS	+= -DASSUME_STATELESS -DOSRF_GATEWAY_NASTY_DEBUG
 CFLAGS	+= -DASSUME_STATELESS 
-LDLIBS	+= -lobjson -lopensrf
+LDLIBS	+=  -lopensrf 
 
 all: osrf_json_gateway.so copy
 

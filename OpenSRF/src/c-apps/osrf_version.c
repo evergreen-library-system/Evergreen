@@ -1,6 +1,6 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
-#include "objson/object.h"
+#include "opensrf/osrf_json.h"
 #include "opensrf/utils.h"
 #include "opensrf/log.h"
 

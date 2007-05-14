@@ -36,6 +36,9 @@ build:	oldconfig
 install:
 	@./install.sh install
 
+verbose_install:
+	@./install.sh install verbose
+
 clean:
 	@./install.sh clean
 	

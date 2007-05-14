@@ -1,8 +1,7 @@
 #include "opensrf/string_array.h"
 #include "opensrf/utils.h"
 #include "opensrf/log.h"
-#include "objson/object.h"
-#include "objson/json_parser.h"
+#include "osrf_json.h"
 
 
 /* libxml stuff for the config reader */

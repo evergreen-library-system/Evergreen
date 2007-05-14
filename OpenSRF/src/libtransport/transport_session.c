@@ -322,13 +322,14 @@ void grab_incoming(void* blob, socket_manager* mgr, int sockid, char* data, int 
 
 
 void startElementHandler(
-	void *session, const xmlChar *name, const xmlChar **atts) {
+	void *session, const xmlChar *ename, const xmlChar **atts) {
 
 	transport_session* ses = (transport_session*) session;
 	if( ! ses ) { return; }
 
-	
-	if( strcmp( name, "message" ) == 0 ) {
+   char* name = (char*) ename;
+
+	if( strcmp(  name, "message" ) == 0 ) {
 		ses->state_machine->in_message = 1;
 		buffer_add( ses->from_buffer, get_xml_attr( atts, "from" ) );
 		buffer_add( ses->recipient_buffer, get_xml_attr( atts, "to" ) );
@@ -429,7 +430,7 @@ char* get_xml_attr( const xmlChar** atts, char* attr_name ) {
 	int i;
 	if (atts != NULL) {
 		for(i = 0;(atts[i] != NULL);i++) {
-			if( strcmp( atts[i++], attr_name ) == 0 ) {
+			if( strcmp( (char*)atts[i++], attr_name ) == 0 ) {
 				if( atts[i] != NULL ) {
 					return (char*) atts[i];
 				}
@@ -443,10 +444,11 @@ char* get_xml_attr( const xmlChar** atts, char* attr_name ) {
 // ------------------------------------------------------------------
 // See which tags are ending
 // ------------------------------------------------------------------
-void endElementHandler( void *session, const xmlChar *name) {
+void endElementHandler( void *session, const xmlChar *ename) {
 	transport_session* ses = (transport_session*) session;
 	if( ! ses ) { return; }
 
+   char* name = (char*) ename;
 	if( strcmp( name, "message" ) == 0 ) {
 
 

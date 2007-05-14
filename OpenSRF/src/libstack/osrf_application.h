@@ -2,7 +2,7 @@
 #include <dlfcn.h>
 #include "opensrf/utils.h"
 #include "opensrf/log.h"
-#include "objson/object.h"
+#include "osrf_json.h"
 #include "osrf_app_session.h"
 #include "osrf_hash.h"
 

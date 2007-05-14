@@ -95,7 +95,7 @@ transport_message* new_message_from_xml( const char* msg_xml ) {
 		xmlFree(router_class);
 	}
 	if(broadcast) {
-		if(strcmp(broadcast,"0") )
+		if(strcmp( (char*)broadcast,"0") )
 			new_msg->broadcast	= 1;
 		xmlFree(broadcast);
 	}
@@ -211,9 +211,9 @@ int message_free( transport_message* msg ){
 // ---------------------------------------------------------------------------------
 char* message_to_xml( const transport_message* msg ) {
 
-	int			bufsize;
+	//int			bufsize;
 	//xmlChar*		xmlbuf;
-	char*			encoded_body;
+	//char*			encoded_body;
 
 	xmlNodePtr	message_node;
 	xmlNodePtr	body_node;

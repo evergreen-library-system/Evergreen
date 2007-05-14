@@ -42,7 +42,7 @@ iplist-install:
 
 web-install:
 	@echo $@
-	cp web/opac/images/* $(WEBDIR)/opac/images/
+	cp web/opac/images/* $(WEBDIR)/opac/images/ 
 
 clean:
 	if [ -d local_staff_client ]; then make -C local_staff_client clean; fi;

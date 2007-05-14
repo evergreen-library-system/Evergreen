@@ -22,7 +22,7 @@ from osrf.log import *
 import os, time
 import logging
 
-# - log jabber activity (for future reference)
+# - if you need raw jabber logs
 #logger=logging.getLogger()
 #logger.addHandler(logging.StreamHandler())
 #logger.addHandler(logging.FileHandler('j.log'))

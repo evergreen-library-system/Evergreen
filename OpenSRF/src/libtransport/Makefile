@@ -1,6 +1,7 @@
 
 TARGETS	= transport_message.o transport_session.o transport_client.o 
 HEADERS	= transport_message.h transport_session.h transport_client.h 
+CFLAGS += -I ../libstack -I ../utils
 
 TARGET = libopensrf_transport.so
 

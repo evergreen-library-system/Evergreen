@@ -119,8 +119,10 @@ char* osrfMessageSerializeBatch( osrfMessage* msgs [], int count ) {
 	while( ((msg = msgs[i]) && (i++ < count)) ) 
 		jsonObjectPush(wrapper, osrfMessageToJSON( msg ));
 
+	//jsonObject* enc = jsonObjectEncodeClass(wrapper);
 	j = jsonObjectToJSON(wrapper);
 	jsonObjectFree(wrapper);
+	//jsonObjectFree(enc);
 
 	return j;	
 }
@@ -133,12 +135,14 @@ char* osrf_message_serialize(osrf_message* msg) {
 
 	jsonObject* json = osrfMessageToJSON( msg );
 
-	if(json) {
-		jsonObject* wrapper = jsonNewObject(NULL);
-		jsonObjectPush(wrapper, json);
-		j = jsonObjectToJSON(wrapper);
-		jsonObjectFree(wrapper);
-	}
+	if(!json) return NULL;
+
+	jsonObject* wrapper = jsonNewObject(NULL);
+	jsonObjectPush(wrapper, json);
+	//jsonObject* enc = jsonObjectEncodeClass(wrapper);
+	j = jsonObjectToJSON(wrapper);
+	jsonObjectFree(wrapper);
+	//jsonObjectFree(enc);
 
 	return j;
 }
@@ -211,7 +215,11 @@ int osrf_message_deserialize(char* string, osrf_message* msgs[], int count) {
 	if(!string || !msgs || count <= 0) return 0;
 	int numparsed = 0;
 
+	/** XXX **/
 	jsonObject* json = jsonParseString(string);
+	//jsonObject* json2 = jsonObjectDecodeClass(json);
+	//jsonObjectFree(json);
+	//json = json2;
 
 	if(!json) {
 		osrfLogWarning( OSRF_LOG_MARK, 

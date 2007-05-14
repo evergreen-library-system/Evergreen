@@ -27,6 +27,16 @@ def replace(str, pattern, replace):
    return re.compile(pattern).sub(replace, str)
 
 
+def oilsIsEvent(evt):
+   try:
+      if evt['ilsevent']: return True
+   except: return False
+
+def oilsEventCode(evt):
+   if oilsIsEvent(evt):
+      return evt['ilsevent']
+   return -1
+
 
       
 

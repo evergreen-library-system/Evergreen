@@ -2,8 +2,8 @@
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_system.h"
 #include "opensrf/osrfConfig.h"
-#include "objson/object.h"
-#include "objson/json2xml.h"
+#include "opensrf/osrf_json.h"
+#include "../libstack/legacy_json.h"
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
@@ -11,15 +11,22 @@
 
 #define MODULE_NAME "osrf_json_gateway_module"
 #define GATEWAY_CONFIG "OSRFGatewayConfig"
+#define JSON_PROTOCOL "OSRFGatewayJSONProtocol"
 #define CONFIG_CONTEXT "gateway"
 
 #define GATEWAY_DEFAULT_CONFIG "/openils/conf/opensrf_core.xml"
+#define GATEWAY_DEFAULT_PROTOCOL "wrapper"  // other option is "classy"
 
 
 /* our config structure */
 typedef struct { 
 	char* configfile;  /* our bootstrap config file */
 } osrf_json_gateway_config;
+
+
+typedef struct { 
+	char* JSONProtocol;
+} osrf_json_gateway_dir_config;
 
 module AP_MODULE_DECLARE_DATA osrf_json_gateway_module;
 
@@ -36,10 +43,18 @@ static const char* osrf_json_gateway_set_config(cmd_parms *parms, void *config, 
 	return NULL;
 }
 
+static const char* osrf_json_gateway_set_json_proto(cmd_parms *parms, void *config, const char *arg) {
+	osrf_json_gateway_dir_config* cfg = (osrf_json_gateway_dir_config*) config;
+	cfg->JSONProtocol = (char*) arg;
+	return NULL;
+}
+
 /* tell apache about our commands */
 static const command_rec osrf_json_gateway_cmds[] = {
 	AP_INIT_TAKE1( GATEWAY_CONFIG, osrf_json_gateway_set_config, 
 			NULL, RSRC_CONF, "osrf json gateway config file"),
+	AP_INIT_TAKE1( JSON_PROTOCOL, osrf_json_gateway_set_json_proto,
+			NULL, ACCESS_CONF, "osrf json gateway config file"),
 	{NULL}
 };
 
@@ -48,6 +63,13 @@ static void* osrf_json_gateway_create_config( apr_pool_t* p, server_rec* s) {
 	osrf_json_gateway_config* cfg = (osrf_json_gateway_config*) 
 			apr_palloc(p, sizeof(osrf_json_gateway_config));
 	cfg->configfile = GATEWAY_DEFAULT_CONFIG;
+	return (void*) cfg;
+}
+
+static void* osrf_json_gateway_create_dir_config( apr_pool_t* p, char* dir) {
+	osrf_json_gateway_dir_config* cfg = (osrf_json_gateway_dir_config*) 
+			apr_palloc(p, sizeof(osrf_json_gateway_dir_config));
+	cfg->JSONProtocol = GATEWAY_DEFAULT_PROTOCOL;
 	return (void*) cfg;
 }
 
@@ -82,6 +104,25 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 
 	/* make sure we're needed first thing*/
 	if (strcmp(r->handler, MODULE_NAME )) return DECLINED;
+
+    /* XXX */
+	osrf_json_gateway_dir_config* dir_conf =  
+		ap_get_module_config(r->per_dir_config, &osrf_json_gateway_module);
+
+	ap_log_rerror( APLOG_MARK, APLOG_INFO, 0, r, "JSON protocol = %s", dir_conf->JSONProtocol);
+
+	/* provide 2 different JSON parsers and serializers to support legacy JSON */
+	jsonObject* (*parseJSONFunc) (char*) = legacy_jsonParseString;
+	char* (*jsonToStringFunc) (const jsonObject*) = legacy_jsonObjectToJSON;
+
+	if(dir_conf->JSONProtocol && !strcmp(dir_conf->JSONProtocol,"wrapper") ) {
+		/* if protocol is wrapper, use the new wrapper JSON code */
+		ap_log_rerror( APLOG_MARK, APLOG_INFO, 0, r, "Using wrapper JSON");
+		parseJSONFunc = jsonParseString;
+		jsonToStringFunc = jsonObjectToJSON;
+	}
+    /* XXX */
+
 
 	osrfLogDebug(OSRF_LOG_MARK, "osrf gateway: entered request handler");
 
@@ -179,7 +220,7 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 		char* str; int i = 0;
 		while( (str = osrfStringArrayGetString(mparams, i++)) ) {
 			if( i == 1 ) {
-            OSRF_BUFFER_ADD(act, " ");
+                OSRF_BUFFER_ADD(act, " ");
 				OSRF_BUFFER_ADD(act, str);
 			} else {
 				OSRF_BUFFER_ADD(act, ", ");
@@ -217,7 +258,8 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 				if (isXML) {
 					output = jsonObjectToXML( res );
 				} else {
-					output = jsonObjectToJSON( res );
+					//output = jsonObjectToJSON( res );
+                    output = jsonToStringFunc( res );
 					if( morethan1 ) ap_rputs(",", r); /* comma between JSON array items */
 				}
 				ap_rputs(output, r);
@@ -263,7 +305,8 @@ static int osrf_json_gateway_method_handler (request_rec *r) {
 				bzero(bb, l);
 				snprintf(bb, l,  "%s : %s", statusname, statustext);
 				jsonObject* tmp = jsonNewObject(bb);
-				char* j = jsonObjectToJSON(tmp);
+				//char* j = jsonObjectToJSON(tmp);
+                char* j = jsonToStringFunc(tmp);
 				snprintf( buf, l, ",\"debug\": %s", j);
 				free(j);
 				jsonObjectFree(tmp);
@@ -314,7 +357,8 @@ static void osrf_json_gateway_register_hooks (apr_pool_t *p) {
 
 module AP_MODULE_DECLARE_DATA osrf_json_gateway_module = {
 	STANDARD20_MODULE_STUFF,
-	NULL,
+	osrf_json_gateway_create_dir_config,
+	/*NULL,*/
 	NULL,
 	osrf_json_gateway_create_config,
 	NULL,

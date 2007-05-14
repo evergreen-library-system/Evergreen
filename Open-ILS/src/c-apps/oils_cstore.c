@@ -1,7 +1,7 @@
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
 #include "opensrf/utils.h"
-#include "objson/object.h"
+#include "opensrf/osrf_json.h"
 #include "opensrf/log.h"
 #include "oils_idl.h"
 #include <dbi/dbi.h>
@@ -45,9 +45,9 @@ jsonObject* oilsMakeJSONFromResult( dbi_result );
 
 char* searchWriteSimplePredicate ( const char*, osrfHash*, const char*, const char*, const char* );
 char* searchSimplePredicate ( const char*, const char*, osrfHash*, jsonObject* );
-char* searchFunctionPredicate ( const char*, osrfHash*, jsonObjectNode* );
+char* searchFunctionPredicate ( const char*, osrfHash*, char* key, jsonObject* obj );
 char* searchFieldTransform (const char*, osrfHash*, jsonObject*);
-char* searchFieldTransformPredicate ( const char*, osrfHash*, jsonObjectNode* );
+char* searchFieldTransformPredicate ( const char*, osrfHash*, char* key, jsonObject* obj );
 char* searchBETWEENPredicate ( const char*, osrfHash*, jsonObject* );
 char* searchINPredicate ( const char*, osrfHash*, jsonObject*, const char* );
 char* searchPredicate ( const char*, osrfHash*, jsonObject* );
@@ -575,10 +575,10 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		obj = doFieldmapperSearch(ctx, class_obj, ctx->params, &err);
 		if(err) return err;
 
-		jsonObjectNode* cur;
+		jsonObject* cur;
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
-			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
+			osrfAppRespond( ctx, jsonObjectClone(cur) );
 		}
 		jsonObjectIteratorFree(itr);
 		osrfAppRespondComplete( ctx, NULL );
@@ -605,14 +605,14 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
 		if(err) return err;
 
-		jsonObjectNode* cur;
+		jsonObject* cur;
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
 			osrfAppRespond(
 				ctx,
 				jsonObjectClone(
 					jsonObjectGetIndex(
-						cur->item,
+						cur,
 						atoi(
 							osrfHashGet(
 								osrfHashGet(
@@ -1060,17 +1060,17 @@ char* searchValueTransform( jsonObject* array ) {
 	return pred;
 }
 
-char* searchFunctionPredicate (const char* class, osrfHash* field, jsonObjectNode* node) {
+char* searchFunctionPredicate (const char* class, osrfHash* field, char* key, jsonObject* obj) {
 	growing_buffer* sql_buf = buffer_init(32);
 
-	char* val = searchValueTransform(node->item);
+	char* val = searchValueTransform(obj);
 	
 	buffer_fadd(
 		sql_buf,
 		"\"%s\".%s %s %s",
 		class,
 		osrfHashGet(field, "name"),
-		node->key,
+		key,
 		val
 	);
 
@@ -1099,23 +1099,23 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 	return pred;
 }
 
-char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObjectNode* node) {
+char* searchFieldTransformPredicate (const char* class, osrfHash* field, char* key, jsonObject* obj) {
 	growing_buffer* sql_buf = buffer_init(32);
 	
-	char* field_transform = searchFieldTransform( class, field, node->item );
+	char* field_transform = searchFieldTransform( class, field, obj );
 	char* value = NULL;
 
-	if (!jsonObjectGetKey( node->item, "value" )) {
-		value = searchWHERE( node->item, osrfHashGet( oilsIDL(), class ), 0 );
-	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
-		value = searchValueTransform(jsonObjectGetKey( node->item, "value" ));
-	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_HASH) {
-		value = searchWHERE( jsonObjectGetKey( node->item, "value" ), osrfHashGet( oilsIDL(), class ), 0 );
-	} else if (jsonObjectGetKey( node->item, "value" )->type != JSON_NULL) {
+	if (!jsonObjectGetKey( obj, "value" )) {
+		value = searchWHERE( obj, osrfHashGet( oilsIDL(), class ), 0 );
+	} else if (jsonObjectGetKey( obj, "value" )->type == JSON_ARRAY) {
+		value = searchValueTransform(jsonObjectGetKey( obj, "value" ));
+	} else if (jsonObjectGetKey( obj, "value" )->type == JSON_HASH) {
+		value = searchWHERE( jsonObjectGetKey( obj, "value" ), osrfHashGet( oilsIDL(), class ), 0 );
+	} else if (jsonObjectGetKey( obj, "value" )->type != JSON_NULL) {
 		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
-			value = jsonNumberToDBString( field, jsonObjectGetKey( node->item, "value" ) );
+			value = jsonNumberToDBString( field, jsonObjectGetKey( obj, "value" ) );
 		} else {
-			value = jsonObjectToSimpleString(jsonObjectGetKey( node->item, "value" ));
+			value = jsonObjectToSimpleString(jsonObjectGetKey( obj, "value" ));
 			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, value);
 				free(value);
@@ -1128,7 +1128,7 @@ char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObj
 		sql_buf,
 		"%s %s %s",
 		field_transform,
-		node->key,
+		key,
 		value
 	);
 
@@ -1233,19 +1233,19 @@ char* searchPredicate ( const char* class, osrfHash* field, jsonObject* node ) {
 	if (node->type == JSON_ARRAY) { // equality IN search
 		pred = searchINPredicate( class, field, node, NULL );
 	} else if (node->type == JSON_HASH) { // non-equality search
-		jsonObjectNode* pred_node;
+		jsonObject* pred_obj;
 		jsonObjectIterator* pred_itr = jsonNewObjectIterator( node );
-		while ( (pred_node = jsonObjectIteratorNext( pred_itr )) ) {
-			if ( !(strcasecmp( pred_node->key,"between" )) )
-				pred = searchBETWEENPredicate( class, field, pred_node->item );
-			else if ( !(strcasecmp( pred_node->key,"in" )) || !(strcasecmp( pred_node->key,"not in" )) )
-				pred = searchINPredicate( class, field, pred_node->item, pred_node->key );
-			else if ( pred_node->item->type == JSON_ARRAY )
-				pred = searchFunctionPredicate( class, field, pred_node );
-			else if ( pred_node->item->type == JSON_HASH )
-				pred = searchFieldTransformPredicate( class, field, pred_node );
+		while ( (pred_obj = jsonObjectIteratorNext( pred_itr )) ) {
+			if ( !(strcasecmp( pred_itr->key,"between" )) )
+				pred = searchBETWEENPredicate( class, field, pred_obj );
+			else if ( !(strcasecmp( pred_itr->key,"in" )) || !(strcasecmp( pred_itr->key,"not in" )) )
+				pred = searchINPredicate( class, field, pred_obj, pred_itr->key );
+			else if ( pred_obj->type == JSON_ARRAY )
+				pred = searchFunctionPredicate( class, field, pred_itr->key, pred_obj);
+			else if ( pred_obj->type == JSON_HASH )
+				pred = searchFieldTransformPredicate( class, field, pred_itr->key, pred_obj);
 			else 
-				pred = searchSimplePredicate( pred_node->key, class, field, pred_node->item );
+				pred = searchSimplePredicate( pred_itr->key, class, field, pred_obj );
 
 			break;
 		}
@@ -1307,21 +1307,21 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 	growing_buffer* join_buf = buffer_init(128);
 	char* leftclass = osrfHashGet(leftmeta, "classname");
 
-	jsonObjectNode* snode = NULL;
+	jsonObject* sobj = NULL;
 	jsonObjectIterator* search_itr = jsonNewObjectIterator( join_hash );
-	while ( (snode = jsonObjectIteratorNext( search_itr )) ) {
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), snode->key );
+	while ( (sobj= jsonObjectIteratorNext( search_itr )) ) {
+		osrfHash* idlClass = osrfHashGet( oilsIDL(), search_itr->key );
 
 		char* class = osrfHashGet(idlClass, "classname");
 		char* table = osrfHashGet(idlClass, "tablename");
 
-		char* type = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "type" ) );
-		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "filter_op" ) );
-		char* fkey = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "fkey" ) );
-		char* field = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "field" ) );
+		char* type = jsonObjectToSimpleString( jsonObjectGetKey( sobj, "type" ) );
+		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKey( sobj, "filter_op" ) );
+		char* fkey = jsonObjectToSimpleString( jsonObjectGetKey( sobj, "fkey" ) );
+		char* field = jsonObjectToSimpleString( jsonObjectGetKey( sobj, "field" ) );
 
-		jsonObject* filter = jsonObjectGetKey( snode->item, "filter" );
-		jsonObject* join_filter = jsonObjectGetKey( snode->item, "join" );
+		jsonObject* filter = jsonObjectGetKey( sobj, "filter" );
+		jsonObject* join_filter = jsonObjectGetKey( sobj, "join" );
 
 		if (field && !fkey) {
 			fkey = (char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
@@ -1462,7 +1462,7 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 
 	growing_buffer* sql_buf = buffer_init(128);
 
-	jsonObjectNode* node = NULL;
+	jsonObject* node = NULL;
 
 	int first = 1;
 	jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
@@ -1475,43 +1475,43 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 			else buffer_add(sql_buf, " AND ");
 		}
 
-		if ( !strncmp("+",node->key,1) ) {
-			if ( node->item->type == JSON_STRING ) {
-				char* subpred = jsonObjectToSimpleString( node->item );
-				buffer_fadd(sql_buf, " \"%s\".%s ", node->key + 1, subpred);
+		if ( !strncmp("+",search_itr->key,1) ) {
+			if ( node->type == JSON_STRING ) {
+				char* subpred = jsonObjectToSimpleString( node );
+				buffer_fadd(sql_buf, " \"%s\".%s ", search_itr->key + 1, subpred);
 				free(subpred);
 			} else {
-				char* subpred = searchWHERE( node->item, osrfHashGet( oilsIDL(), node->key + 1 ), 0);
+				char* subpred = searchWHERE( node, osrfHashGet( oilsIDL(), search_itr->key + 1 ), 0);
 				buffer_fadd(sql_buf, "( %s )", subpred);
 				free(subpred);
 			}
-		} else if ( !strcasecmp("-or",node->key) ) {
-			char* subpred = searchWHERE( node->item, meta, 1);
+		} else if ( !strcasecmp("-or",search_itr->key) ) {
+			char* subpred = searchWHERE( node, meta, 1);
 			buffer_fadd(sql_buf, "( %s )", subpred);
 			free(subpred);
-		} else if ( !strcasecmp("-and",node->key) ) {
-			char* subpred = searchWHERE( node->item, meta, 0);
+		} else if ( !strcasecmp("-and",search_itr->key) ) {
+			char* subpred = searchWHERE( node, meta, 0);
 			buffer_fadd(sql_buf, "( %s )", subpred);
 			free(subpred);
 		} else {
 
 			char* class = osrfHashGet(meta, "classname");
 			osrfHash* fields = osrfHashGet(meta, "fields");
-			osrfHash* field = osrfHashGet( fields, node->key );
+			osrfHash* field = osrfHashGet( fields, search_itr->key );
 
 			if (!field) {
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: Attempt to reference non-existant column %s on table %s",
 					MODULENAME,
-					node->key,
+					search_itr->key,
 					osrfHashGet(meta, "tablename")
 				);
 				buffer_free(sql_buf);
 				return NULL;
 			}
 
-			char* subpred = searchPredicate( class, field, node->item );
+			char* subpred = searchPredicate( class, field, node );
 			buffer_add( sql_buf, subpred );
 			free(subpred);
 		}
@@ -1540,11 +1540,11 @@ char* SELECT (
 	jsonObject* defaultselhash = NULL;
 
 	// general tmp objects
-	jsonObject* __tmp = NULL;
-	jsonObjectNode* selclass = NULL;
-	jsonObjectNode* selfield = NULL;
-	jsonObjectNode* snode = NULL;
-	jsonObjectNode* onode = NULL;
+	jsonObject* __tmp = NULL; 
+    jsonObject* selclass = NULL; 
+    jsonObject* selfield = NULL; 
+    jsonObject* snode = NULL;
+	jsonObject* onode = NULL;
 	jsonObject* found = NULL;
 
 	char* string = NULL;
@@ -1581,8 +1581,8 @@ char* SELECT (
 		jsonObjectIterator* tmp_itr = jsonNewObjectIterator( join_hash );
 		snode = jsonObjectIteratorNext( tmp_itr );
 		
-		core_class = strdup( snode->key );
-		join_hash = snode->item;
+		core_class = strdup( tmp_itr->key );
+		join_hash = snode;
 
 		jsonObjectIteratorFree( tmp_itr );
 		snode = NULL;
@@ -1635,7 +1635,7 @@ char* SELECT (
 	while ( (selclass = jsonObjectIteratorNext( selclass_itr )) ) {
 
 		// round trip through the idl, just to be safe
-		idlClass = osrfHashGet( oilsIDL(), selclass->key );
+		idlClass = osrfHashGet( oilsIDL(), selclass_itr->key );
 		if (!idlClass) continue;
 		char* cname = osrfHashGet(idlClass, "classname");
 
@@ -1660,17 +1660,17 @@ char* SELECT (
 		}
 
 		// stitch together the column list ...
-		jsonObjectIterator* select_itr = jsonNewObjectIterator( selclass->item );
+		jsonObjectIterator* select_itr = jsonNewObjectIterator( selclass );
 		while ( (selfield = jsonObjectIteratorNext( select_itr )) ) {
 
 			char* __column = NULL;
 			char* __alias = NULL;
 
 			// ... if it's a sstring, just toss it on the pile
-			if (selfield->item->type == JSON_STRING) {
+			if (selfield->type == JSON_STRING) {
 
 				// again, just to be safe
-				char* _requested_col = jsonObjectToSimpleString(selfield->item);
+				char* _requested_col = jsonObjectToSimpleString(selfield);
 				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), _requested_col );
 				free(_requested_col);
 
@@ -1688,7 +1688,7 @@ char* SELECT (
 			// ... but it could be an object, in which case we check for a Field Transform
 			} else {
 
-				__column = jsonObjectToSimpleString( jsonObjectGetKey( selfield->item, "column" ) );
+				__column = jsonObjectToSimpleString( jsonObjectGetKey( selfield, "column" ) );
 
 				// again, just to be safe
 				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), __column );
@@ -1701,15 +1701,15 @@ char* SELECT (
 					buffer_add(select_buf, ",");
 				}
 
-				if ((__tmp = jsonObjectGetKey( selfield->item, "alias" ))) {
+				if ((__tmp = jsonObjectGetKey( selfield, "alias" ))) {
 					__alias = jsonObjectToSimpleString( __tmp );
 				} else {
 					__alias = strdup(__column);
 				}
 
-				if (jsonObjectGetKey( selfield->item, "transform" )) {
+				if (jsonObjectGetKey( selfield, "transform" )) {
 					free(__column);
-					__column = searchFieldTransform(cname, field, selfield->item);
+					__column = searchFieldTransform(cname, field, selfield);
 					buffer_fadd(select_buf, " %s AS \"%s\"", __column, __alias);
 				} else {
 					buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
@@ -1718,7 +1718,7 @@ char* SELECT (
 
 			if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
-				if (!jsonBoolIsTrue( jsonObjectGetKey( selfield->item, "aggregate" ) )) {
+				if (!jsonBoolIsTrue( jsonObjectGetKey( selfield, "aggregate" ) )) {
 					if (gfirst) {
 						gfirst = 0;
 					} else {
@@ -1727,16 +1727,16 @@ char* SELECT (
 
 					buffer_fadd(group_buf, " %d", sel_pos);
 				/*
-				} else if (is_agg = jsonObjectGetKey( selfield->item, "having" )) {
+				} else if (is_agg = jsonObjectGetKey( selfield, "having" )) {
 					if (gfirst) {
 						gfirst = 0;
 					} else {
 						buffer_add(group_buf, ",");
 					}
 
-					__column = searchFieldTransform(cname, field, selfield->item);
+					__column = searchFieldTransform(cname, field, selfield);
 					buffer_fadd(group_buf, " %s", __column);
-					__column = searchFieldTransform(cname, field, selfield->item);
+					__column = searchFieldTransform(cname, field, selfield);
 				*/
 				}
 			}
@@ -1791,33 +1791,33 @@ char* SELECT (
 	jsonObjectIterator* class_itr = jsonNewObjectIterator( order_hash );
 	while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
 
-		if (!jsonObjectGetKey(selhash,snode->key))
+		if (!jsonObjectGetKey(selhash,class_itr->key))
 			continue;
 
-		if ( snode->item->type == JSON_HASH ) {
+		if ( snode->type == JSON_HASH ) {
 
-			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
+			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
-				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
+				if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
 					continue;
 
 				char* direction = NULL;
-				if ( onode->item->type == JSON_HASH ) {
-					if ( jsonObjectGetKey( onode->item, "transform" ) ) {
+				if ( onode->type == JSON_HASH ) {
+					if ( jsonObjectGetKey( onode, "transform" ) ) {
 						string = searchFieldTransform(
-							snode->key,
-							oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ),
-							onode->item
+							class_itr->key,
+							oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
+							onode
 						);
 					} else {
 						growing_buffer* field_buf = buffer_init(16);
-						buffer_fadd(field_buf, "\"%s\".%s", snode->key, onode->key);
+						buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
 						string = buffer_data(field_buf);
 						buffer_free(field_buf);
 					}
 
-					if ( (__tmp = jsonObjectGetKey( onode->item, "direction" )) ) {
+					if ( (__tmp = jsonObjectGetKey( onode, "direction" )) ) {
 						direction = jsonObjectToSimpleString(__tmp);
 						if (!strncasecmp(direction, "d", 1)) {
 							free(direction);
@@ -1829,8 +1829,8 @@ char* SELECT (
 					}
 
 				} else {
-					string = strdup(onode->key);
-					direction = jsonObjectToSimpleString(onode->item);
+					string = strdup(order_itr->key);
+					direction = jsonObjectToSimpleString(onode);
 					if (!strncasecmp(direction, "d", 1)) {
 						free(direction);
 						direction = " DESC";
@@ -1855,14 +1855,14 @@ char* SELECT (
 
 			}
 
-		} else if ( snode->item->type == JSON_ARRAY ) {
+		} else if ( snode->type == JSON_ARRAY ) {
 
-			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
+			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
-				char* _f = jsonObjectToSimpleString( onode->item );
+				char* _f = jsonObjectToSimpleString( onode );
 
-				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, _f))
+				if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, _f))
 					continue;
 
 				if (first) {
@@ -1966,9 +1966,9 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	jsonObject* join_hash = jsonObjectGetKey( order_hash, "join" );
 
-	jsonObjectNode* node = NULL;
-	jsonObjectNode* snode = NULL;
-	jsonObjectNode* onode = NULL;
+	jsonObject* node = NULL;
+	jsonObject* snode = NULL;
+	jsonObject* onode = NULL;
 	jsonObject* _tmp = NULL;
 	jsonObject* selhash = NULL;
 	jsonObject* defaultselhash = NULL;
@@ -2000,14 +2000,14 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	jsonObjectIterator* class_itr = jsonNewObjectIterator( selhash );
 	while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
 
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), snode->key );
+		osrfHash* idlClass = osrfHashGet( oilsIDL(), class_itr->key );
 		if (!idlClass) continue;
 		char* cname = osrfHashGet(idlClass, "classname");
 
-		if (strcmp(core_class,snode->key)) {
+		if (strcmp(core_class,class_itr->key)) {
 			if (!join_hash) continue;
 
-			jsonObject* found =  jsonObjectFindPath(join_hash, "//%s", snode->key);
+			jsonObject* found =  jsonObjectFindPath(join_hash, "//%s", class_itr->key);
 			if (!found->size) {
 				jsonObjectFree(found);
 				continue;
@@ -2016,9 +2016,9 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 			jsonObjectFree(found);
 		}
 
-		jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
+		jsonObjectIterator* select_itr = jsonNewObjectIterator( snode );
 		while ( (node = jsonObjectIteratorNext( select_itr )) ) {
-			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
+			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node) );
 			char* fname = osrfHashGet(field, "name");
 
 			if (!field) continue;
@@ -2072,33 +2072,33 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 			jsonObjectIterator* class_itr = jsonNewObjectIterator( _tmp );
 			while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
 
-				if (!jsonObjectGetKey(selhash,snode->key))
+				if (!jsonObjectGetKey(selhash,class_itr->key))
 					continue;
 
-				if ( snode->item->type == JSON_HASH ) {
+				if ( snode->type == JSON_HASH ) {
 
-					jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
+					jsonObjectIterator* order_itr = jsonNewObjectIterator( snode );
 					while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
-						if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
+						if (!oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ))
 							continue;
 
 						char* direction = NULL;
-						if ( onode->item->type == JSON_HASH ) {
-							if ( jsonObjectGetKey( onode->item, "transform" ) ) {
+						if ( onode->type == JSON_HASH ) {
+							if ( jsonObjectGetKey( onode, "transform" ) ) {
 								string = searchFieldTransform(
-									snode->key,
-									oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ),
-									onode->item
+									class_itr->key,
+									oilsIDLFindPath( "/%s/fields/%s", class_itr->key, order_itr->key ),
+									onode
 								);
 							} else {
 								growing_buffer* field_buf = buffer_init(16);
-								buffer_fadd(field_buf, "\"%s\".%s", snode->key, onode->key);
+								buffer_fadd(field_buf, "\"%s\".%s", class_itr->key, order_itr->key);
 								string = buffer_data(field_buf);
 								buffer_free(field_buf);
 							}
 
-							if ( (_tmp = jsonObjectGetKey( onode->item, "direction" )) ) {
+							if ( (_tmp = jsonObjectGetKey( onode, "direction" )) ) {
 								direction = jsonObjectToSimpleString(_tmp);
 								if (!strncasecmp(direction, "d", 1)) {
 									free(direction);
@@ -2110,8 +2110,8 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 							}
 
 						} else {
-							string = strdup(onode->key);
-							direction = jsonObjectToSimpleString(onode->item);
+							string = strdup(order_itr->key);
+							direction = jsonObjectToSimpleString(onode);
 							if (!strncasecmp(direction, "d", 1)) {
 								free(direction);
 								direction = " DESC";
@@ -2137,7 +2137,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 					}
 
 				} else {
-					string = jsonObjectToSimpleString(snode->item);
+					string = jsonObjectToSimpleString(snode);
 					buffer_add(order_buf, string);
 					free(string);
 					break;
@@ -2346,16 +2346,16 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 					}
 
 					if (!link_fields) {
-						jsonObjectNode* _f;
+						jsonObject* _f;
 						link_fields = osrfNewStringArray(1);
 						jsonObjectIterator* _i = jsonNewObjectIterator( flesh_fields );
 						while ((_f = jsonObjectIteratorNext( _i ))) {
-							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
+							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f ) );
 						}
 					}
 				}
 
-				jsonObjectNode* cur;
+				jsonObject* cur;
 				jsonObjectIterator* itr = jsonNewObjectIterator( res_list );
 				while ((cur = jsonObjectIteratorNext( itr ))) {
 
@@ -2419,7 +2419,7 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 						char* search_key =
 						jsonObjectToSimpleString(
 							jsonObjectGetIndex(
-								cur->item,
+								cur,
 								atoi( osrfHashGet(value_field, "array_position") )
 							)
 						);
@@ -2480,14 +2480,14 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 							X = kids;
 							kids = jsonParseString("[]");
 
-							jsonObjectNode* _k_node;
+							jsonObject* _k_node;
 							jsonObjectIterator* _k = jsonNewObjectIterator( X );
 							while ((_k_node = jsonObjectIteratorNext( _k ))) {
 								jsonObjectPush(
 									kids,
 									jsonObjectClone(
 										jsonObjectGetIndex(
-											_k_node->item,
+											_k_node,
 											(unsigned long)atoi(
 												osrfHashGet(
 													osrfHashGet(
@@ -2512,7 +2512,7 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_a" )) || !(strcmp( osrfHashGet(kid_link, "reltype"), "might_have" ))) {
 							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
 							jsonObjectSetIndex(
-								cur->item,
+								cur,
 								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
 								jsonObjectClone( jsonObjectGetIndex(kids, 0) )
 							);
@@ -2521,7 +2521,7 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 						if (!(strcmp( osrfHashGet(kid_link, "reltype"), "has_many" ))) { // has_many
 							osrfLogDebug(OSRF_LOG_MARK, "Storing fleshed objects in %s", osrfHashGet(kid_link, "field"));
 							jsonObjectSetIndex(
-								cur->item,
+								cur,
 								(unsigned long)atoi( osrfHashGet( field, "array_position" ) ),
 								jsonObjectClone( kids )
 							);
@@ -2536,7 +2536,7 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 						jsonObjectFree( fake_params );
 
 						osrfLogDebug(OSRF_LOG_MARK, "Fleshing of %s complete", osrfHashGet(kid_link, "field"));
-						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur->item));
+						osrfLogDebug(OSRF_LOG_MARK, "%s", jsonObjectToJSON(cur));
 
 					}
 				}
@@ -2871,7 +2871,7 @@ jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* meta) {
 					jsonObjectSetIndex(
 						object,
 						fmIndex,
-						jsonNewObject( dbi_result_get_string(result, columnName) )
+						jsonNewObject( (char*) dbi_result_get_string(result, columnName) )
 					);
 
 					break;
@@ -2952,7 +2952,7 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 					break;
 
 				case DBI_TYPE_STRING :
-					jsonObjectSetKey( object, columnName, jsonNewObject(dbi_result_get_string(result, columnName)) );
+					jsonObjectSetKey( object, columnName, jsonNewObject( (char*)dbi_result_get_string(result, columnName)) );
 					break;
 
 				case DBI_TYPE_DATETIME :

@@ -91,7 +91,7 @@ char* xmlSaxAttr( const xmlChar** atts, char* name ) {
 	if( atts && name ) {
 		int i;
 		for(i = 0; (atts[i] != NULL); i++) {
-			if(!strcmp(atts[i], name)) {
+			if(!strcmp( (char*)atts[i], name)) {
 				if(atts[++i]) return (char*) atts[i];
 			}
 		}

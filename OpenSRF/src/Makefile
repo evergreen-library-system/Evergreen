@@ -32,6 +32,10 @@ OPENSRF_TARGETS = 	libtransport/transport_session.o \
 			libstack/osrf_transgroup.o \
 			libstack/osrf_list.o \
 			libstack/osrf_hash.o \
+			libstack/osrf_json_parser.o \
+			libstack/osrf_json_object.o \
+			libstack/osrf_json_tools.o \
+			libstack/legacy_json.o \
 			utils/socket_bundle.o \
 			utils/string_array.o \
 			utils/utils.o \
@@ -55,6 +59,7 @@ OPENSRF_HEADERS = 	libtransport/transport_session.h \
 			libstack/osrf_transgroup.h \
 			libstack/osrf_list.h \
 			libstack/osrf_hash.h \
+			libstack/osrf_json.h \
 			utils/socket_bundle.h \
 			utils/string_array.h \
 			utils/utils.h \
@@ -67,22 +72,19 @@ all: 	prep \
 	libstack/opensrf \
 	router \
 	srfsh \
-	jserver \
 	gateway
 
-install: 	install-prep \
+install:	install-prep \
 		opensrf-install \
 		gateway-install	\
 		router-install \
 		srfsh-install \
-		jserver-install \
-		perl-install \
-		objson-install
+		perl-install 
 
 prep:
 	mkdir -p $(TMPDIR)
 
-libopensrf.so:	objson/libobjson.so
+libopensrf.so:
 	@echo utils
 	make -C utils
 	@echo transport
@@ -90,30 +92,19 @@ libopensrf.so:	objson/libobjson.so
 	@echo stack
 	make -C libstack
 	@echo $@
-	$(CC) -shared -W1 $(LDFLAGS) -lxml2 -lmemcache -lobjson $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
+	$(CC) -shared -W1 $(LDFLAGS) -lxml2 -lmemcache $(OPENSRF_TARGETS) -o $(TMPDIR)/$(LIBOPENSRF)
 	@echo apps
 	make -C  c-apps
 
 
-opensrf-install:	objson-install
-	@echo $@
-	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
-	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
-	cp libstack/opensrf $(BINDIR)/opensrf-c
-	make -C c-apps install
-
-
-objson/libobjson.so:	prep
-	@echo $@
-	make -C objson
-
+#
 # --------------------------------------------------------------------------------
 # BINARIES
 # --------------------------------------------------------------------------------
 libstack/opensrf.o:	libstack/opensrf.c libopensrf.so
 libstack/opensrf:	libstack/opensrf.o
 	@echo $@
-	$(CC) $(CFLAGS) $(LDFLAGS) -lxml2 -lopensrf -lobjson libstack/opensrf.o -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -lxml2 -lopensrf libstack/opensrf.o -o $@
 	
 
 router: libopensrf.so
@@ -146,13 +137,16 @@ install-prep:
 	mkdir -p $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
 
-objson-install:	install-prep 
-	@echo $@
-	make -C objson install
-
 libopensrf-install:	install-prep
 	@echo $@
 	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)
+
+opensrf-install:
+	@echo $@
+	cp $(TMPDIR)/$(LIBOPENSRF) $(LIBDIR)/$(LIBOPENSRF)
+	cp $(OPENSRF_HEADERS) $(INCLUDEDIR)/opensrf/
+	cp libstack/opensrf $(BINDIR)/opensrf-c
+	make -C c-apps install
 
 gateway-install:	install-prep opensrf-install	
 	@echo $@
@@ -191,7 +185,6 @@ clean:
 	make -C gateway clean
 	make -C jserver clean
 	make -C utils clean
-	make -C objson clean
 	make -C srfsh clean
 	make -C c-apps clean
 	echo "Removing directory [$(TMPDIR)]"

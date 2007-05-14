@@ -17,13 +17,14 @@ from osrf.log import *
 from osrf.json import *
 from oils.utils.utils import replace
 from oils.utils.idl import oilsGetIDLParser
-from osrf.ses import osrfClientSession
+from osrf.ses import osrfClientSession, osrfAtomicRequest
 from oils.const import *
 import re
 
 ACTIONS = ['create', 'retrieve', 'update', 'delete', 'search']
 
 class CSEditor(object):
+
    def __init__(self, **args):
 
       self.app = args.get('app', OILS_APP_CSTORE)
@@ -31,12 +32,27 @@ class CSEditor(object):
       self.requestor = args.get('requestor')
       self.connect = args.get('connect')
       self.xact = args.get('xact')
+      self.substream = False;
       self.__session = None
 
+   # -------------------------------------------------------------------------
+   # rolls back the existing transaction and returns the last event
+   # -------------------------------------------------------------------------
    def die_event(self):
-      pass
+      self.rollback()
+      return self.event
+
+   # -------------------------------------------------------------------------
+   # Verifies the session is valid sets the 'requestor' to the user retrieved
+   # by the session lookup
+   # -------------------------------------------------------------------------
    def checkauth(self):
-      pass
+      usr = osrfAtomicRequest( OILS_APP_AUTH, 'open-ils.auth.session.retrieve', self.authtoken ) 
+      if oilsIsEvent(usr):
+         self.event = usr
+         return False
+      self.requestor = usr
+      return True
 
 
    # -------------------------------------------------------------------------
@@ -59,7 +75,7 @@ class CSEditor(object):
    
 
    # -------------------------------------------------------------------------
-   # Logs string with some meta info
+   # Logs the given string with some meta info
    # -------------------------------------------------------------------------
    def log(self, func, string):
       s = "editor[";
@@ -104,25 +120,49 @@ class CSEditor(object):
    # -------------------------------------------------------------------------
    def request(self, method, params=[]):
 
-      # XXX improve param logging here
-
-      self.log(osrfLogInfo, "request %s %s" % (method, str(params)))
-
       if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
          self.log(osrfLogErr, "csedit lost it's connection!")
 
-      val = None
+      self.log(osrfLogInfo, "request %s %s" % (method, self.__args_to_str(params)))
 
+      val = None
       try:
-         req = self.session().request2(method, params)
-         resp = req.recv()
-         val = resp.content()
+         req =  self.session().request2(method, params)
+
+         # -------------------------------------------------------------------------
+         # substream requests gather the requests as they come in
+         # -------------------------------------------------------------------------
+         if self.substream:
+            val = []
+            while True:
+               resp = req.recv()
+               if not resp: 
+                  break
+               val.append(resp.content())
+         else:
+            val = req.recv().content()
 
       except Exception, e:
          self.log(osrfLogErr, "request error: %s" % str(e))
          raise e
 
       return val
+
+
+   # -------------------------------------------------------------------------
+   # turns an array of parms into a readable argument string for logging
+   # -------------------------------------------------------------------------
+   def __args_to_str(self, arg):
+      s = ''
+      for i in range(len(arg)):
+         obj = arg[i]
+         if i > 0: s += ', '
+         if isinstance(obj, osrfNetworkObject):
+            if obj.id() != None:
+               s += str(obj.id())
+            else: s += '<new object: %s>' % obj.__class__.__name__
+         else: s += osrfObjectToJSON(obj)
+      return s
 
 
    # -------------------------------------------------------------------------
@@ -135,14 +175,28 @@ class CSEditor(object):
 
    def runMethod(self, action, type, arg, options={}):
 
+      # make sure we're in a transaction if performing any writes
+      if action in ['create', 'update', 'delete'] and not self.xact:
+         raise oilsCSEditException('attempt to update DB outside of a transaction') 
+
+      # clear the previous event
+      self.event = None
+
+      # construct the method name
       method = "%s.direct.%s.%s" % (self.app, type, action)
 
+      # do we only want a list of IDs?
       if options.get('idlist'):
          method = replace(method, 'search', 'id_list')
          del options['idlist']
-
+      
+      # are we streaming or atomic?
       if action == 'search':
-         method = replace(method, '$', '.atomic')
+         if options.get('substream'):
+            self.substream = True
+            del options['substream']
+         else:
+            method = replace(method, '$', '.atomic')
 
       params = [arg];
       if len(options.keys()):

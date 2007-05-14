@@ -2,16 +2,13 @@
 #define _OSRF_APP_SESSION
 
 #include "opensrf/transport_client.h"
-#include "objson/object.h"
+#include "osrf_json.h"
 #include "osrf_message.h"
 #include "osrf_system.h"
 #include "opensrf/string_array.h"
 #include "osrfConfig.h"
 #include "osrf_hash.h"
 #include "osrf_list.h"
-
-#include "objson/object.h"
-#include "objson/json_parser.h"
 
 
 

@@ -1,6 +1,8 @@
-var XML_HTTP_GATEWAY = "gateway";
+//var XML_HTTP_GATEWAY = "gateway2";
+var XML_HTTP_GATEWAY;
 var XML_HTTP_SERVER = "";
 var XML_HTTP_MAX_TRIES = 3;
+
 
 
 
@@ -20,6 +22,11 @@ NetworkFailure.prototype.toString = function() {
 
 //var IAMXUL = false;
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
+
+
+if(isXUL())
+    XML_HTTP_GATEWAY = "gateway";
+else XML_HTTP_GATEWAY = "gateway2";
 
 /* some communication exceptions */
 function EX(message) { this.init(message); }

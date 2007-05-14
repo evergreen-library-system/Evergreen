@@ -1,4 +1,4 @@
-LDLIBS += -lobjson -lopensrf #-lfieldmapper 
+LDLIBS += -lopensrf 
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so

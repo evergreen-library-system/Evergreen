@@ -1,6 +1,6 @@
 # if EXEC_DEFAULT is defined, then srfsh will send all unknown commands to the shell for execution
 
-LDLIBS	+= -lobjson -lreadline -lxml2 -lopensrf -lncurses 
+LDLIBS	+=  -lreadline -lxml2 -lopensrf -lncurses 
 LDFLAGS	+= -DEXEC_DEFAULT
 
 all: srfsh

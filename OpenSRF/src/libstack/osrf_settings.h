@@ -10,8 +10,7 @@
 
 #include "opensrf/log.h"
 #include "opensrf/utils.h"
-#include "objson/object.h"
-#include "objson/json_parser.h"
+#include "osrf_json.h"
 #include "osrf_app_session.h"
 
 

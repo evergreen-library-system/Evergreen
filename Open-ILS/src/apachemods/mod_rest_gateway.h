@@ -11,8 +11,7 @@
 #include "opensrf/osrf_app_session.h"
 #include "string_array.h"
 #include "md5.h"
-#include "objson/object.h"
-#include "objson/json_parser.h"
+#include "opensrf/osrf_json.h"
 
 #include "json_xml.h"
 #define GATEWAY_CONFIG "ILSRestGatewayConfig"
