@@ -1,7 +1,8 @@
 #ifndef _XML_UTILS_H
 #define _XML_UTILS_H
 
-#include "objson/object.h"
+//#include "opensrf/osrf_json.h"
+#include "osrf_json.h"
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
