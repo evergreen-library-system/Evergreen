@@ -214,6 +214,7 @@ sub modsdoc_to_values {
 					$data->{$class}->{$type} = $arr;
 				}
 			}
+			$data->{$class}->{$type} =~ s/\s+/ /go;
 		}
 	}
 
