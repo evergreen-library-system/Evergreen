@@ -53,7 +53,8 @@ function fetchHighestPermOrgs( session, userId, perms ) {
 	req.send(true);
 	var orgs = req.getResultObject();
 	for( var i = 0; i != orgs.length; i++ ) 
-		PERMS[ perms[i] ] = ( orgs[i] != null ) ? orgs[i] : -1 ;
+		PERMS[perms[i]] = orgs[i];
+		//PERMS[ perms[i] ] = ( orgs[i] != null ) ? orgs[i] : -1 ;
 	return orgs;
 }
 
