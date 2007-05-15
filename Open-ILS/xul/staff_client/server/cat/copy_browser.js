@@ -197,15 +197,14 @@ cat.copy_browser.prototype = {
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
-										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-											//+'?doc_id=' + window.escape(obj.docid)
-											//+'&ou_ids=' + window.escape( js2JSON(list) )
-											//+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(obj.docid)
+											+'&ou_ids=' + window.escape( js2JSON(list) )
+											+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
 										title,
 										'chrome,resizable'
 									);
 									w.refresh = function() { obj.refresh_list(); }
-									w.xulG = { 'doc_id':obj.docid, 'ou_ids' : list, 'copy_shortcut' : copy_shortcut };
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> add copies',E);
 								}
@@ -466,15 +465,14 @@ cat.copy_browser.prototype = {
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
-										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-											//+'?doc_id=' + window.escape(obj.docid)
-											//+'&ou_ids=' + window.escape( js2JSON(list) ),
+										window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR)
+											+'?doc_id=' + window.escape(obj.docid)
+											+'&ou_ids=' + window.escape( js2JSON(list) ),
 										title,
 										'chrome,resizable'
 									);
 
 									w.refresh = function() { obj.refresh_list() };
-									w.xulG = { 'doc_id' : obj.docid, 'ou_ids' : list };
 								} catch(E) {
 									obj.error.standard_unexpected_error_alert('copy browser -> add volumes',E);
 								}
@@ -535,19 +533,19 @@ cat.copy_browser.prototype = {
 									var title = list.length == 1 ? 'Volume' : 'Volumes';
 
 									JSAN.use('util.window'); var win = new util.window();
-									//obj.data.volumes_temp = js2JSON( list );
-									//obj.data.stash('volumes_temp');
-									var my_xulG = win.open(
+									obj.data.volumes_temp = js2JSON( list );
+									obj.data.stash('volumes_temp');
+									var w = win.open(
 										window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
 										title,
-										'chrome,modal,resizable',
-										{ 'volumes' : list }
+										'chrome,modal,resizable'
 									);
 
 									/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-									//obj.data.stash_retrieve();
-									var volumes = my_xulG.volumes;
-									if (!volumes) return;
+									obj.data.stash_retrieve();
+									var volumes = JSON2js( obj.data.volumes_temp );
+									obj.error.sdump('D_CAT','in browse, obj.data.temp =\n' + obj.data.temp);
+									if (volumes=='') return;
 								
 									volumes = util.functional.filter_list(
 										volumes,
@@ -750,17 +748,16 @@ cat.copy_browser.prototype = {
 									xml += '</vbox>';
 									JSAN.use('OpenILS.data');
 									var data = new OpenILS.data(); data.init({'via':'stash'});
-									//data.temp_transfer = xml; data.stash('temp_transfer');
-									JSAN.use('util.window'); var win = new util.window();
-									var fancy_prompt_data = win.open(
-										urls.XUL_FANCY_PROMPT,
-										//+ '?xml_in_stash=temp_transfer'
-										//+ '&title=' + window.escape('Volume Transfer'),
-										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
-										{ 'xml' : xml, 'title' : 'Volume Transfer' }
+									data.temp_transfer = xml; data.stash('temp_transfer');
+									window.open(
+										urls.XUL_FANCY_PROMPT
+										+ '?xml_in_stash=temp_transfer'
+										+ '&title=' + window.escape('Volume Transfer'),
+										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300'
 									);
+									data.init({'via':'stash'});
 
-									if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
+									if (data.fancy_prompt_data == '') { alert('Transfer Aborted'); return; }
 
 									var robj = obj.network.simple_request(
 										'FM_ACN_TRANSFER', 

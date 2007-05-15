@@ -37,7 +37,7 @@
 		function $(id) { return document.getElementById(id); }
 
 		function retrieve_patron() {
-			g.patron_id = xul_param('patron_id');
+			g.patron_id = g.cgi.param('patron_id');
 
 			if (g.patron_id) {
 				JSAN.use('patron.util'); 
@@ -114,9 +114,7 @@
 						if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
 						$('renewal').value = r || 'No';
 
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY); // + '?copy_id=' + r_circ.target_copy());
-						get_contentWindow($('copy_summary')).xulG = { 'copy_id' : r_circ.target_copy() };
+						$('copy_summary').setAttribute('src',urls.XUL_COPY_SUMMARY + '?copy_id=' + r_circ.target_copy());
 						$('copy_summary').hidden=false;
 
 						g.network.simple_request(
@@ -235,7 +233,9 @@
 
 				g.error.sdump('D_TRACE','my_init() for bill_details.xul');
 
-				g.mbts_id = xul_param('mbts_id');
+				g.cgi = new CGI();
+
+				g.mbts_id = g.cgi.param('mbts_id');
 
 				retrieve_patron();
 

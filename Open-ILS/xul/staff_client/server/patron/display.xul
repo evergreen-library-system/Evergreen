@@ -43,12 +43,14 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for patron_display.xul');
 
+				g.cgi = new CGI();
+
 				JSAN.use('patron.display'); g.patron = new patron.display();
 				g.patron.init( { 
-					'barcode' : xul_param('barcode'),
-					'id' : xul_param('id'),
-					'query' : xul_param('query'),
-					'doit' : xul_param('doit'),
+					'barcode' : g.cgi.param('barcode') || xulG.barcode ,
+					'id' : g.cgi.param('id')  || xulG.id,
+					'query' : g.cgi.param('query') || xulG.query,
+					'doit' : g.cgi.param('doit') || xulG.doit,
 				} );
 
 			//document.documentElement.style.setProperty('font-size-adjust','1','important');
@@ -68,12 +70,12 @@
 					try {
 						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 						var node = g.patron.right_deck.node.selectedPanel;
-						if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
-							get_contentWindow(node).default_focus();
+						if (node && node.contentWindow && typeof node.contentWindow.default_focus == 'function') {
+							node.contentWindow.default_focus();
 						} else {
 							var node = g.patron.left_deck.node.selectedPanel;
-							if (node && get_contentWindow(node) && typeof get_contentWindow(node).default_focus == 'function') {
-								get_contentWindow(node).default_focus();
+							if (node && node.contentWindow && typeof node.contentWindow.default_focus == 'function') {
+								node.contentWindow.default_focus();
 							}
 						}
 					} catch(E) {

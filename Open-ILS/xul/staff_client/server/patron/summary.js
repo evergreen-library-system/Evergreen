@@ -127,7 +127,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value','...');
-								obj.network.cached_request(
+								obj.network.simple_request(
 									'FM_MOUS_RETRIEVE',
 									[ ses(), obj.patron.id() ],
 									function(req) {
@@ -171,20 +171,16 @@ patron.summary.prototype = {
 								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) e4.setAttribute('value','...');
 								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
 								var e6 = document.getElementById( 'patron_noncat' ); if (e6) e6.setAttribute('value','...');
-								obj.network.cached_request(
+								obj.network.simple_request(
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 									[ ses(), obj.patron.id() ],
 									function(req) {
-										try {
-											var robj = req.getResultObject();
-											e.setAttribute('value', robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
-											if (e2) e2.setAttribute('value', robj.overdue	);
-											if (e3) e3.setAttribute('value', robj.claims_returned	);
-											if (e4) e4.setAttribute('value', robj.long_overdue	);
-											if (e5) e5.setAttribute('value', robj.lost	);
-										} catch(E) {
-											alert(E);
-										}
+										var robj = req.getResultObject();
+										e.setAttribute('value', robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+										if (e2) e2.setAttribute('value', robj.overdue	);
+										if (e3) e3.setAttribute('value', robj.claims_returned	);
+										if (e4) e4.setAttribute('value', robj.long_overdue	);
+										if (e5) e5.setAttribute('value', robj.lost	);
 									}
 								);
 								obj.network.simple_request(
@@ -571,8 +567,9 @@ patron.summary.prototype = {
 					try {
 						var robj;
 						if (obj.barcode && obj.barcode != 'null') {
-							robj = obj.network.simple_request(
-								'FM_AU_RETRIEVE_VIA_BARCODE',
+							robj = obj.network.request(
+								api.FM_AU_RETRIEVE_VIA_BARCODE.app,
+								api.FM_AU_RETRIEVE_VIA_BARCODE.method,
 								[ ses(), obj.barcode ]
 							);
 						} else if (obj.id && obj.id != 'null') {

@@ -163,12 +163,11 @@ patron.bills.prototype = {
 									try {
 										JSAN.use('util.window');
 										var win = new util.window();
-										var my_xulG = win.open(
-											urls.XUL_PATRON_BILL_WIZARD,
-												//+ '?patron_id=' + window.escape(obj.patron_id),
+										var w = win.open(
+											urls.XUL_PATRON_BILL_WIZARD
+												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billwizard',
-											'chrome,resizable,modal',
-											{ 'patron_id' : obj.patron_id }
+											'chrome,resizable,modal'
 										);
 										obj.refresh();
 									} catch(E) {
@@ -183,17 +182,15 @@ patron.bills.prototype = {
 										JSAN.use('util.window');
 										var win = new util.window();
 										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
-										var my_xulG = win.open(
-											urls.XUL_PATRON_BILL_HISTORY,
-												//+ '?patron_id=' + window.escape(obj.patron_id),
+										var w = win.open(
+											urls.XUL_PATRON_BILL_HISTORY
+												+ '?patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
 											//'chrome,resizable,modal'
-											'chrome,resizable',
-											{
-												'patron_id' : obj.patron_id,
-												'refresh' : function() { obj.refresh(); }
-											}
+											'chrome,resizable'
 										);
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
+										//w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_bill_history',E);	
 									}
@@ -206,18 +203,15 @@ patron.bills.prototype = {
 										JSAN.use('util.window');
 										var win = new util.window();
 										//obj.OpenILS.data.init({'via':'stash'}); obj.OpenILS.data.temp = ''; obj.OpenILS.data.stash('temp');
-										var my_xulG = win.open(
-											urls.XUL_PATRON_BILL_HISTORY,
-												//+ '?current=1&patron_id=' + window.escape(obj.patron_id),
+										var w = win.open(
+											urls.XUL_PATRON_BILL_HISTORY
+												+ '?current=1&patron_id=' + window.escape(obj.patron_id),
 											'billhistory',
 											//'chrome,resizable,modal'
-											'chrome,resizable',
-											{
-												'current' : 1,
-												'patron_id' : obj.patron_id,
-												'refresh' : function() { obj.refresh(); },
-											}
+											'chrome,resizable'
 										);
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
+										//w.refresh = function() { obj.refresh(); };
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('bills -> cmd_alternate_view',E);	
 									}
@@ -454,26 +448,28 @@ patron.bills.prototype = {
 				var win = new util.window();
 				switch(obj.controller.view.payment_type.value) {
 					case 'credit_card_payment' :
-						//obj.OpenILS.data.temp = '';
-						//obj.OpenILS.data.stash('temp');
-						var my_xulG = win.open(
+						obj.OpenILS.data.temp = '';
+						obj.OpenILS.data.stash('temp');
+						var w = win.open(
 							urls.XUL_PATRON_BILL_CC_INFO,
 							'billccinfo',
 							'chrome,resizable,modal'
 						);
-						//obj.OpenILS.data.stash_retrieve();
-						payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						obj.OpenILS.data.stash_retrieve();
+						/* FIXME -- need unique temp space name */
+						payment_blob = JSON2js( obj.OpenILS.data.temp );
 					break;
 					case 'check_payment' :
-						//obj.OpenILS.data.temp = '';
-						//obj.OpenILS.data.stash('temp');
-						var my_xulG = win.open(
+						obj.OpenILS.data.temp = '';
+						obj.OpenILS.data.stash('temp');
+						var w = win.open(
 							urls.XUL_PATRON_BILL_CHECK_INFO,
 							'billcheckinfo',
 							'chrome,resizable,modal'
 						);
-						//obj.OpenILS.data.stash_retrieve();
-						payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						obj.OpenILS.data.stash_retrieve();
+						/* FIXME -- need unique temp space name */
+						payment_blob = JSON2js( obj.OpenILS.data.temp );
 					break;
 				}
 				if (payment_blob=='' || payment_blob.cancelled=='true') { alert('cancelled'); return; }
@@ -896,18 +892,14 @@ patron.bills.prototype = {
 									'command',
 									function(ev) {
 										JSAN.use('util.window'); var win = new util.window();
-										var my_xulG = win.open(
-											urls.XUL_PATRON_BILL_DETAILS,
-											//+ '?patron_id=' + window.escape(obj.patron_id)
-											//+ '&mbts_id=' + window.escape(my.mobts.id()),
+										var w = win.open(
+											urls.XUL_PATRON_BILL_DETAILS 
+											+ '?patron_id=' + window.escape(obj.patron_id)
+											+ '&mbts_id=' + window.escape(my.mobts.id()),
 											'test' + my.mobts.id(),
-											'chrome,resizable',
-											{
-												'patron_id' : obj.patron_id,
-												'mbts_id' : my.mobts.id(),
-												'refresh' : function() { obj.refresh(); },
-											}
+											'chrome,resizable'
 										);
+										w.xulG = { 'refresh' : function() { obj.refresh(); } };
 									},
 									false
 								);
@@ -920,16 +912,12 @@ patron.bills.prototype = {
 									function(ev) {
 										JSAN.use('util.window');
 										var win = new util.window();
-										var my_xulG = win.open(
-											urls.XUL_PATRON_BILL_WIZARD,
-												//+ '?patron_id=' + window.escape(obj.patron_id)
-												//+ '&xact_id=' + window.escape( my.mobts.id() ),
+										var w = win.open(
+											urls.XUL_PATRON_BILL_WIZARD
+												+ '?patron_id=' + window.escape(obj.patron_id)
+												+ '&xact_id=' + window.escape( my.mobts.id() ),
 											'billwizard',
-											'chrome,resizable,modal',
-											{
-												'patron_id' : obj.patron_id,
-												'xact_id' : my.mobts.id(),
-											}
+											'chrome,resizable,modal'
 										);
 										obj.refresh();
 									},

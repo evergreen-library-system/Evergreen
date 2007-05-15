@@ -32,8 +32,6 @@
 	<script>
 	<![CDATA[
 
-		// FIXME - change this to load each tab/sub-interface as needed and not all at once
-
 		function $(id) { return document.getElementById(id); }
 
 		function my_init() {
@@ -50,27 +48,24 @@
 
 				g.error.sdump('D_TRACE','my_init() for patron_info.xul');
 
-				g.patron_id = xul_param('patron_id');
+				g.cgi = new CGI();
+				g.patron_id = g.cgi.param('patron_id');
 
 				try{
-					$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES); 
-					get_contentWindow($('notes_frame')).xulG = 
-						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
+					$('notes_frame').setAttribute('src',urls.XUL_PATRON_INFO_NOTES + '?patron_id=' + window.escape(g.patron_id));
+					$('notes_frame').contentWindow.xulG = xulG;
 				}catch(E){alert(E);}
 				try{
-					$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS);
-					get_contentWindow($('stat_cats_frame')).xulG = 
-						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
+					$('stat_cats_frame').setAttribute('src',urls.XUL_PATRON_INFO_STAT_CATS + '?patron_id=' + window.escape(g.patron_id));
+					$('stat_cats_frame').contentWindow.xulG = xulG;
 				}catch(E){alert(E);}
 				try{
-					$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS);
-					get_contentWindow($('surveys_frame')).xulG = 
-						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
+					$('surveys_frame').setAttribute('src',urls.XUL_PATRON_INFO_SURVEYS + '?patron_id=' + window.escape(g.patron_id));
+					$('surveys_frame').contentWindow.xulG = xulG;
 				}catch(E){alert(E);}
 				try{
-					$('group_frame').setAttribute('src',urls.XUL_PATRON_INFO_GROUP);
-					get_contentWindow($('group_frame')).xulG = 
-						{ 'patron_id' : g.patron_id, 'url_prefix' : xulG.url_prefix, 'new_tab' : xulG.new_tab };
+					$('group_frame').setAttribute('src',urls.XUL_PATRON_INFO_GROUP + '?patron_id=' + window.escape(g.patron_id));
+					$('group_frame').contentWindow.xulG = xulG;
 				}catch(E){alert(E);}
 
 			} catch(E) {
@@ -84,10 +79,17 @@
 		function refresh() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-				for (var i in [ 'notes_frame', 'stat_cats_frame', 'surveys_frame', 'group_frame' ]) {
-					if (get_contentWindow($(i)) && typeof get_contentWindow($(i)).refresh == 'function') {
-						get_contentWindow($(i)).refresh();
-					}
+				if ($('notes_frame').contentWindow && typeof $('notes_frame').contentWindow.refresh == 'function') {
+					$('notes_frame').contentWindow.refresh();
+				}
+				if ($('stat_cats_frame').contentWindow && typeof $('stat_cats_frame').contentWindow.refresh == 'function') {
+					$('stat_cats_frame').contentWindow.refresh();
+				}
+				if ($('surveys_frame').contentWindow && typeof $('surveys_frame').contentWindow.refresh == 'function') {
+					$('surveys_frame').contentWindow.refresh();
+				}
+				if ($('group_frame').contentWindow && typeof $('group_frame').contentWindow.refresh == 'function') {
+					$('group_frame').contentWindow.refresh();
 				}
 			} catch(E) {
 				alert(E);

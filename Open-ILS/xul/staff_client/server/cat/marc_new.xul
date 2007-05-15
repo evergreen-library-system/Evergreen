@@ -116,7 +116,7 @@
 							};
 							$('marc_editor').setAttribute('src',url);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							get_contentWindow($('marc_editor')).xulG = params;
+							$('marc_editor').contentWindow.xulG = params;
 
 							/* hide template widgets */
 							$('actions').hidden = true;

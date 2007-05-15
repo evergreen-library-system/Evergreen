@@ -39,6 +39,8 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
 
+				g.cgi = new CGI();
+
 				var tb = document.getElementById('barcode_tb');
 				tb.addEventListener(
 					'keypress',
@@ -59,8 +61,8 @@
 					try { window.xulG.set_tab_name('User Permission Editor'); } catch(E) { alert(E); }
 				}
 
-				if (xul_param('error')) { 
-					var error = xul_param('error');
+				if (g.cgi.param('error')) { 
+					var error = g.cgi.param('error');
 					alert(error);
 				}
 

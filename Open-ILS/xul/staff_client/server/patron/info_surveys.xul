@@ -48,7 +48,8 @@
 
 				g.error.sdump('D_TRACE','my_init() for patron_info_surveys.xul');
 
-				g.patron_id = xul_param('patron_id');
+				g.cgi = new CGI();
+				g.patron_id = g.cgi.param('patron_id');
 
 				refresh();
 

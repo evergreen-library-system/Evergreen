@@ -41,7 +41,9 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for checkout.xul');
 
-				var patron_id = xul_param('patron_id');
+				g.cgi = new CGI();
+
+				var patron_id = g.cgi.param('patron_id') || xulG.patron_id;
 
 				JSAN.use('circ.checkout'); g.checkout = new circ.checkout();
 				g.checkout.init( 
@@ -56,7 +58,7 @@
 				try {
 					g.error.standard_unexpected_error_alert('circ/checkout.xul',E);
 				} catch(F) {
-					dump('FIXME: circ/checkout.xul -> ' + E + ' -> ' + F + '\n');
+					alert('FIXME: circ/checkout.xul -> ' + E);
 				}
 			}
 		}
@@ -64,14 +66,13 @@
 		function default_focus() {
 			try {
 				var x = document.getElementById('checkout_barcode_entry_textbox');
-				if (!x) return;
 				if (x.disabled) {
 					document.getElementById('checkout_duedate_menu').inputField.focus();
 				} else {
 				 x.focus();
 				}
 			} catch(E) {
-				try { g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E)); } catch(F) { dump('FIXME: circ/checkout.xul default_focus() -> ' + E + ' -> ' + F) }
+				g.error.sdump('D_ERROR','checkout default_focus(): ' + js2JSON(E));
 			}
 		}
 

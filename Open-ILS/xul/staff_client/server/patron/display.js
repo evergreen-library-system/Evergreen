@@ -67,7 +67,7 @@ patron.display.prototype = {
 				}
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.checkout_window = get_contentWindow(frame);
+			obj.checkout_window = frame.contentWindow;
 		}
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
@@ -150,11 +150,10 @@ patron.display.prototype = {
 						function(ev) {
 							obj.reset_nav_styling('cmd_patron_items');
 							var frame = obj.right_deck.set_iframe(
-								urls.XUL_PATRON_ITEMS,
-								//+ '?patron_id=' + window.escape( obj.patron.id() ),
+								urls.XUL_PATRON_ITEMS
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'patron_id' : obj.patron.id(),
 									'on_list_change' : function(b) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 										obj.summary_window.g.summary.controller.render('patron_checkouts');
@@ -167,7 +166,7 @@ patron.display.prototype = {
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							obj.items_window = get_contentWindow(frame);
+							obj.items_window = frame.contentWindow;
 						}
 					],
 					'cmd_patron_edit' : [
@@ -179,23 +178,22 @@ patron.display.prototype = {
 									obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
 									obj.data.stash_retrieve();
 									var loc = xulG.url_prefix(urls.XUL_PATRON_DISPLAY);
-									//loc += '?doit=1&query=' + window.escape(js2JSON(s));
-									xulG.new_tab( loc, {}, { 'doit' : 1, 'query' : s } );
+									loc += '?doit=1&query=' + window.escape(js2JSON(s));
+									xulG.new_tab( loc, {}, {} );
 								}
 
 								function spawn_editor(p) {
 									var url = urls.XUL_PATRON_EDIT;
-									//var param_count = 0;
-									//for (var i in p) {
-									//	if (param_count++ == 0) url += '?'; else url += '&';
-									//	url += i + '=' + window.escape(p[i]);
-									//}
-									var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ); // + '?url=' + window.escape( url );
+									var param_count = 0;
+									for (var i in p) {
+										if (param_count++ == 0) url += '?'; else url += '&';
+										url += i + '=' + window.escape(p[i]);
+									}
+									var loc = xulG.url_prefix( urls.XUL_REMOTE_BROWSER ) + '?url=' + window.escape( url );
 									xulG.new_tab(
 										loc, 
 										{}, 
 										{ 
-											'url' : url,
 											'show_print_button' : true , 
 											'tab_name' : 'Editing Related Patron' ,
 											'passthru_content_params' : {
@@ -203,33 +201,26 @@ patron.display.prototype = {
 												'spawn_editor' : spawn_editor,
 												'url_prefix' : xulG.url_prefix,
 												'new_tab' : xulG.new_tab,
-												'params' : p,
 											}
 										}
 									);
 								}
 
 							obj.right_deck.set_iframe(
-								urls.XUL_REMOTE_BROWSER,
-								//+ '?url=' + window.escape( 
-								//	urls.XUL_PATRON_EDIT
-								//	+ '?ses=' + window.escape( ses() )
-								//	+ '&usr=' + window.escape( obj.patron.id() )
-								//),
+								urls.XUL_REMOTE_BROWSER
+								+ '?url=' + window.escape( 
+									urls.XUL_PATRON_EDIT
+									+ '?ses=' + window.escape( ses() )
+									+ '&usr=' + window.escape( obj.patron.id() )
+								),
 								{}, {
-									'url' : urls.XUL_PATRON_EDIT,
 									'show_print_button' : true,
 									'passthru_content_params' : {
-										'params' : {
-											'ses' : ses(),
-											'usr' : obj.patron.id(),
-										},
 										'on_save' : function(p) {
 											try {
 												if (obj.barcode) obj.barcode = p.card().barcode();
 												netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-												//obj.summary_window.g.summary.retrieve();
-												obj.refresh_all();
+												obj.summary_window.g.summary.retrieve();
 											} catch(E) {
 												alert(E);
 											}
@@ -248,10 +239,9 @@ patron.display.prototype = {
 						function(ev) {
 							obj.reset_nav_styling('cmd_patron_info');
 							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_INFO, // + '?patron_id=' + window.escape( obj.patron.id() ),
+								urls.XUL_PATRON_INFO + '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
 									'new_tab' : xulG.new_tab,
 								}
@@ -269,16 +259,14 @@ patron.display.prototype = {
 						function(ev) {
 							obj.reset_nav_styling('cmd_patron_holds');
 							obj.right_deck.set_iframe(
-								urls.XUL_PATRON_HOLDS,	
-								//+ '?patron_id=' + window.escape( obj.patron.id() ),
+								urls.XUL_PATRON_HOLDS	
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'patron_id' : obj.patron.id(),
 									'on_list_change' : function(h) {
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										//obj.summary_window.g.summary.controller.render('patron_holds');
-										//obj.summary_window.g.summary.controller.render('patron_standing');
-										obj.refresh_all();
+										obj.summary_window.g.summary.controller.render('patron_holds');
+										obj.summary_window.g.summary.controller.render('patron_standing');
 									},
 									'url_prefix' : xulG.url_prefix,
 									'new_tab' : xulG.new_tab,
@@ -291,23 +279,21 @@ patron.display.prototype = {
 						function(ev) {
 							obj.reset_nav_styling('cmd_patron_bills');
 							var f = obj.right_deck.set_iframe(
-								urls.XUL_PATRON_BILLS,
-								//+ '?patron_id=' + window.escape( obj.patron.id() ),
+								urls.XUL_PATRON_BILLS
+								+ '?patron_id=' + window.escape( obj.patron.id() ),
 								{},
 								{
-									'patron_id' : obj.patron.id(),
 									'url_prefix' : xulG.url_prefix,
 									'on_money_change' : function(b) {
 										//alert('test');
 										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-										//obj.summary_window.g.summary.retrieve(true);
-										//obj.items_window.g.items.retrieve(true);
-										obj.refresh_all();
+										obj.summary_window.g.summary.retrieve(true);
+										obj.items_window.g.items.retrieve(true);
 									}
 								}
 							);
 							netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-							obj.bill_window = get_contentWindow(f);
+							obj.bill_window = f.contentWindow;
 						}
 					],
 					'patron_name' : [
@@ -476,7 +462,7 @@ patron.display.prototype = {
 				}
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.summary_window = get_contentWindow(frame);
+			obj.summary_window = frame.contentWindow;
 		} else {
 			obj.render_search_form(params);
 		}
@@ -502,65 +488,65 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
 			obj.controller.view.cmd_search_form.setAttribute('disabled','true');
 
-			var loc = urls.XUL_PATRON_SEARCH_FORM; 
-			var my_xulG = {
-				'clear_left_deck' : function() { setTimeout( function() { obj.left_deck.clear_all_except(loc); obj.render_search_form(params); }, 0); },
-				'on_submit' : function(query) {
-					obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
-					var list_frame = obj.right_deck.reset_iframe(
-						urls.XUL_PATRON_SEARCH_RESULT, // + '?' + query,
-						{},
-						{
-							'query' : query,
-							'on_select' : function(list) {
-								if (!list) return;
-								if (list.length < 1) return;
-								obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
-								obj.controller.view.cmd_search_form.setAttribute('disabled','false');
-								obj.retrieve_ids = list;
-								obj.controller.view.patron_name.setAttribute('value','Retrieving...');
-								document.documentElement.setAttribute('class','');
-								setTimeout(
-									function() {
-										var frame = obj.left_deck.set_iframe(
-											urls.XUL_PATRON_SUMMARY, // + '?id=' + window.escape(list[0]),
-											{},
-											{
-												'id' : list[0],
-												'on_finished' : function(patron) {
-													obj.patron = patron;
-													obj.controller.render();
-												}
-											}
-										);
-										netscape.security.PrivilegeManager.enablePrivilege(
-											"UniversalXPConnect"
-										);
-										obj.summary_window = get_contentWindow(frame);
-										obj.patron = obj.summary_window.g.summary.patron;
-										obj.controller.render('patron_name');
-									}, 0
-								);
-							}
-						}
-					);
-					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-					obj.search_result = get_contentWindow(list_frame);
-				}
-			};
-
+			var loc = urls.XUL_PATRON_SEARCH_FORM + '?blah=blah';
 			if (params['query']) {
-				my_xulG.query = JSON2js(params['query']);
-				if (params.doit) my_xulG.doit = 1;
+				var query = JSON2js(params['query']);
+				for (var i in query) {
+					loc += '&'+window.escape(i)+'='+window.escape(query[i].value);
+				}
+				if (params.doit) {
+					loc += '&doit=1';
+				}
 			}
-
 			var form_frame = obj.left_deck.set_iframe(
 				loc,
 				{},
-				my_xulG
+				{
+					'clear_left_deck' : function() { setTimeout( function() { obj.left_deck.clear_all_except(loc); obj.render_search_form(params); }, 0); },
+					'on_submit' : function(query) {
+						obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','true');
+						var list_frame = obj.right_deck.reset_iframe(
+							urls.XUL_PATRON_SEARCH_RESULT + '?' + query,
+							{},
+							{
+								'on_select' : function(list) {
+									if (!list) return;
+									if (list.length < 1) return;
+									obj.controller.view.cmd_patron_retrieve.setAttribute('disabled','false');
+									obj.controller.view.cmd_search_form.setAttribute('disabled','false');
+									obj.retrieve_ids = list;
+									obj.controller.view.patron_name.setAttribute('value','Retrieving...');
+									document.documentElement.setAttribute('class','');
+									setTimeout(
+										function() {
+											var frame = obj.left_deck.set_iframe(
+												urls.XUL_PATRON_SUMMARY + '?id=' + window.escape(list[0]),
+													{},
+													{
+														'on_finished' : function(patron) {
+															obj.patron = patron;
+															obj.controller.render();
+														}
+													}
+											);
+											netscape.security.PrivilegeManager.enablePrivilege(
+												"UniversalXPConnect"
+											);
+											obj.summary_window = frame.contentWindow;
+											obj.patron = obj.summary_window.g.summary.patron;
+											obj.controller.render('patron_name');
+										}, 0
+									);
+								}
+							}
+						);
+						netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+						obj.search_result = list_frame.contentWindow;
+					}
+				}
 			);
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			obj.search_window = get_contentWindow(form_frame);
+			obj.search_window = form_frame.contentWindow;
 			obj._checkout_spawned = true;
 	},
 
@@ -572,7 +558,7 @@ patron.display.prototype = {
 		for (var i = 0; i < obj.right_deck.node.childNodes.length; i++) {
 			try {
 				var f = obj.right_deck.node.childNodes[i];
-				var w = get_contentWindow(f);
+				var w = f.contentWindow;
 				if (url) {
 					if (w.location.href == url) w.refresh(true);
 				} else {
@@ -589,7 +575,6 @@ patron.display.prototype = {
 	
 	'refresh_all' : function() {
 		var obj = this;
-		obj.OpenILS.data.cached_request = {}; obj.OpenILS.data.stash('cached_request'); /* FIXME - do a more selective purging here */
 		obj.controller.view.patron_name.setAttribute(
 			'value','Retrieving...'
 		);

@@ -783,8 +783,7 @@ function uEditAddIdents(patron) {
 	uEditSetVal( patron, "ident_value", $('ue_primary_ident'), null, err );
 	*/
 
-	//FIXME - I think this file is deprecated, but there's this syntax error sitting here 
-	//var identdata = uEditParseIdent(
+	var identdata = uEditParseIdent(
 
 	var it1 = getSelectorVal($('ue_primary_ident_type'));
 	var name = getSelectorName($('ue_primary_ident_type'));
