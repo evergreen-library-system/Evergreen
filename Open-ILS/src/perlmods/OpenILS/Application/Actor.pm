@@ -1355,7 +1355,7 @@ sub _find_highest_perm_org {
 	my ( $perm, $userid, $start_org, $org_tree ) = @_;
 	my $org = $apputils->find_org($org_tree, $start_org );
 
-	my $lastid = undef;
+	my $lastid = -1;
 	while( $org ) {
 		last if ($apputils->check_perms( $userid, $org->id, $perm )); # perm failed
 		$lastid = $org->id;
