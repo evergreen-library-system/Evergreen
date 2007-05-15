@@ -83,6 +83,11 @@
 				'PERM_RETRIEVE_HIGHEST_ORG',
 				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
 			);
+			if (highest_org_id == -1) {
+				alert('You do not have permission to register a workstation.');
+				xulG.auth.logoff();
+				return;
+			}
 			var perm_depth = findOrgDepth( highest_org_id );
 
 			g.my_libs_tree = g.network.simple_request(
