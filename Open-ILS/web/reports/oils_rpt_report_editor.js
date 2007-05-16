@@ -150,22 +150,33 @@ oilsRptReportEditor.prototype.save = function() {
 	//return;
 
 	var obj = this;
-	var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
-	req.callback(
-		function(r) {
-			var res = r.getResultObject();
-			if(checkILSEvent(res)) {
-				alertILSEvent(res);
-			} else {
-				if( res && res != '0' ) {
-					oilsRptAlertSuccess();
-					oilsRptCurrentFolderManager.draw();
-					obj.folderWindow.draw();
-				}
-			}
-		}
-	);
-	req.send();
+    var folderReq = new Request(OILS_RPT_REPORT_EXISTS, SESSION, report);
+    folderReq.callback(
+        function(r1) {
+            if(r1.getResultObject() == 1) {
+                alertId('oils_rpt_report_exists');
+                return;
+            } else {
+                var req = new Request(OILS_RPT_CREATE_REPORT, SESSION, report, schedule );
+                req.callback(
+                    function(r) {
+                        var res = r.getResultObject();
+                        if(checkILSEvent(res)) {
+                            alertILSEvent(res);
+                        } else {
+                            if( res && res != '0' ) {
+                                oilsRptAlertSuccess();
+                                oilsRptCurrentFolderManager.draw();
+                                obj.folderWindow.draw();
+                            }
+                        }
+                    }
+                );
+                req.send();
+            }
+        }
+    );
+    folderReq.send();
 }
 
 
