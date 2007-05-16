@@ -69,7 +69,7 @@ public class Request {
      * negative, this method will wait indefinitely.
      * @return The result or null if none arrives in time
      */
-    public Result recv(long millis) throws SessionException {
+    public Result recv(long millis) throws SessionException, MethodException {
 
         Result result = null;
 

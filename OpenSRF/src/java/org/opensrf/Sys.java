@@ -22,10 +22,10 @@ public class Sys {
         Config.setConfig(config); /* set this as the global config */
 
         /** Collect the network connection info from the config */
-        String username = Config.getString("/username");
-        String passwd = Config.getString("/passwd");
-        String host = (String) Config.getFirst("/domains/domain");
-        int port = Config.getInt("/port");
+        String username = config.getString("/username");
+        String passwd = config.getString("/passwd");
+        String host = (String) config.getFirst("/domains/domain");
+        int port = config.getInt("/port");
 
         try {
             /** Connect to the Jabber network */

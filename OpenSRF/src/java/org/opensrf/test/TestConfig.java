@@ -11,6 +11,6 @@ public class TestConfig {
         System.out.println("");
 
         for(int i = 1; i < args.length; i++) 
-            System.out.println("Found config value: " + args[i] + ": " + Config.get(args[i]));
+            System.out.println("Found config value: " + args[i] + ": " + Config.global().get(args[i]));
     }
 }

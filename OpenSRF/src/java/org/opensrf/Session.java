@@ -60,7 +60,7 @@ public abstract class Session {
      * all received messages to the stack for processing
      * @param millis The number of milliseconds to wait for a message to arrive
      */
-    public static void waitForMessage(long millis) throws SessionException {
+    public static void waitForMessage(long millis) throws SessionException, MethodException {
         try {
             Stack.processXMPPMessage(
                 XMPPSession.getGlobalSession().recv(millis));
