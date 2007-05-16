@@ -840,15 +840,15 @@ function fleshFromPath ( template, rel ) {
 			current_obj.key = current_link.getAttribute('key');
 
 			if (
-					(
-						current_link.getAttribute('reltype') != 'has_a' ||
-						prev_type == 'left' ||
-						rel.reltype != 'has_a'
-					) && (
-						!rel.fields.filter_tab &&
-						!rel.fields.aggfitler_tab
-					)
-				) current_obj.type = 'left';
+				(
+					current_link.getAttribute('reltype') != 'has_a' ||
+					prev_type == 'left' ||
+					rel.reltype != 'has_a'
+				) && (
+					!rel.fields.filter_tab &&
+					!rel.fields.aggfitler_tab
+				)
+			) current_obj.type = 'left';
 
 			prev_type = current_obj.type; 
 		}
