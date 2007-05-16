@@ -42,12 +42,12 @@ var OILS_RPT_TRANSFORMS = {
    */
 
 	lower : {
-		datatype : OILS_RPT_DTYPE_STRING,
+		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
 		label : 'Lower case'
 	},
 
 	upper : {
-		datatype : OILS_RPT_DTYPE_STRING,
+		datatype : [OILS_RPT_DTYPE_STRING, 'text'],
 		label : 'Upper case'
 	},
 
