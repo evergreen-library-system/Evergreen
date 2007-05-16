@@ -840,9 +840,14 @@ function fleshFromPath ( template, rel ) {
 			current_obj.key = current_link.getAttribute('key');
 
 			if (
-				current_link.getAttribute('reltype') != 'has_a' ||
-				prev_type == 'left' ||
-				rel.reltype != 'has_a'
+				(
+					current_link.getAttribute('reltype') != 'has_a' ||
+					prev_type == 'left' ||
+					rel.reltype != 'has_a'
+				) && (
+					getKeys(rel.fields.filter_tab).length == 0 &&
+					getKeys(rel.fields.aggfitler_tab).length == 0
+				)
 			) current_obj.type = 'left';
 
 			prev_type = current_obj.type; 
@@ -860,12 +865,14 @@ function fleshFromPath ( template, rel ) {
 
 			if (join_link.getAttribute('reltype') != 'has_a') {
 				var fields_el = current_class.getElementsByTagName('fields')[0];
-				join_field = fields_el.getAttributeNS(persistNS, 'primary') + '-' + join_link.getAttribute('key');
+				join_field =
+					fields_el.getAttributeNS(persistNS, 'primary') +
+					'-' + join_link.getAttribute('class') +
+					'-' + join_link.getAttribute('key');
 			}
 
-			current_obj.alias = hex_md5( current_path ) ;
+			if (!current_obj.alias) current_obj.alias = hex_md5( current_path ) ;
 			join_field += '-' + current_obj.alias;
-			if (table_path.length == 1) join_field += '-' + rel.alias;
 
 			if (!current_obj.join) current_obj.join = {};
 			if (!current_obj.join[join_field]) current_obj.join[join_field] = {};
