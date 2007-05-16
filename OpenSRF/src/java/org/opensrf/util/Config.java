@@ -42,10 +42,14 @@ public class Config {
      * Parses an XML config file.
      * @param filename The path to the file to parse.
      */
-    public void parse(String filename) throws Exception {
-        String xml = Utils.fileToString(filename);
-        JSONObject jobj = XML.toJSONObject(xml);
-        configObject = (Map) new JSONReader(jobj.toString()).readObject();
+    public void parse(String filename) throws ConfigException {
+        try {
+            String xml = Utils.fileToString(filename);
+            JSONObject jobj = XML.toJSONObject(xml);
+            configObject = (Map) new JSONReader(jobj.toString()).readObject();
+        } catch(Exception e) {
+            throw new ConfigException("Error parsing config", e);
+        }
     }
 
     /**

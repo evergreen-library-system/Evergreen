@@ -73,7 +73,7 @@ public class Request {
 
         Result result = null;
 
-        if(millis < 0) {
+        if(millis < 0 && !complete) {
             /** wait potentially forever for a result to arrive */
             session.waitForMessage(millis);
             if((result = resultQueue.poll()) != null)
@@ -81,7 +81,7 @@ public class Request {
 
         } else {
 
-            while(millis >= 0) {
+            while(millis >= 0 && !complete) {
 
                 /** wait up to millis milliseconds for a result.  waitForMessage() 
                  * will return if a response to any request arrives, so we keep track
@@ -119,5 +119,10 @@ public class Request {
      */
     public void cleanup() {
         session.cleanupRequest(id);
+    }
+
+    /** Sets this request as complete */
+    public void setComplete() {
+        complete = true;
     }
 }

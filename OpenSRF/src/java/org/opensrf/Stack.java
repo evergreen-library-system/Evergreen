@@ -66,9 +66,22 @@ public class Stack {
      * Process a server response
      */
     private static void processResponse(ClientSession session, Message msg) {
-        if(msg.RESULT.equals(msg.getType())) {
+        String type = msg.getType();
+        if(msg.RESULT.equals(type)) {
             session.pushResponse(msg);
             return;
+        }
+
+        if(msg.STATUS.equals(type)) {
+
+            OSRFObject obj = (OSRFObject) msg.getPayload();
+            Status stat = new Status(obj.getString("status"), obj.getInt("statusCode"));
+            int statusCode = stat.getStatusCode();
+            String status = stat.getStatus();
+
+            if(statusCode == stat.COMPLETE) {
+                session.setRequestComplete(msg.getId());
+            }
         }
     }
 

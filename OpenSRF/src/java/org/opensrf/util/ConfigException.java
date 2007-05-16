@@ -8,4 +8,7 @@ public class ConfigException extends Exception {
     public ConfigException(String info) {
         super(info);
     }
+    public ConfigException(String info, Throwable t) {
+        super(info, t);
+    }
 }
