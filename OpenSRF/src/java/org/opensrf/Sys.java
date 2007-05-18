@@ -36,5 +36,12 @@ public class Sys {
             throw new SessionException("Unable to bootstrap client", e);
         }
     }
+
+    /**
+     * Shuts down the connection to the opensrf network
+     */
+    public static void shutdown() {
+        XMPPSession.getGlobalSession().disconnect();
+    }
 }
 

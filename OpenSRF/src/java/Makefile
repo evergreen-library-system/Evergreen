@@ -2,7 +2,7 @@
 JAVA_LIBDIR = .lib
 JAVAC=javac -J-Xmx256m
 JAVA=java -Xmx256m 
-JAVA_LIBS = .:$(JAVA_LIBDIR):ext/json-jdk1.5-2007-05-01.jar:ext/wstx-asl-3.2.1.jar:ext/stax-api-1.0.1.jar:ext/java_memcached-release_1.5.1.jar
+JAVA_LIBS = .:$(JAVA_LIBDIR):ext/json-jdk1.5-2007-05-01.jar:ext/wstx-lgpl-3.2.1.jar:ext/stax-api-1.0.1.jar:ext/java_memcached-release_1.5.1.jar
 JAVA_SRC = \
 	org/opensrf/net/xmpp/*.java \
 	org/opensrf/util/*.java \

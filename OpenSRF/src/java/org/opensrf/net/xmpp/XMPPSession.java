@@ -19,6 +19,8 @@ public class XMPPSession {
         "<iq id='123' type='set'><query xmlns='jabber:iq:auth'>" +
         "<username>%s</username><password>%s</password><resource>%s</resource></query></iq>";
 
+    public static final String JABBER_DISCONNECT = "</stream:stream>";
+
     /** jabber domain */
     private String host;
     /** jabber port */
@@ -36,6 +38,8 @@ public class XMPPSession {
     PrintWriter writer;
     /** Raw socket output stream */
     OutputStream outStream;
+    /** The raw socket */
+    Socket socket;
 
     /** The process-wide session.  All communication occurs
      * accross this single connection */
@@ -87,8 +91,6 @@ public class XMPPSession {
         this.username = username;
         this.password = password;
         this.resource = resource;
-
-        Socket socket;
 
         try { 
             /* open the socket and associated streams */
@@ -192,6 +194,17 @@ public class XMPPSession {
         }
 
         return null;
+    }
+
+
+    /**
+     * Disconnects from the jabber server and closes the socket
+     */
+    public void disconnect() {
+        try {
+            outStream.write(JABBER_DISCONNECT.getBytes());
+            socket.close();
+        } catch(Exception e) {}
     }
 }
 
