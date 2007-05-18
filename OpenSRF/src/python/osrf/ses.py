@@ -14,6 +14,7 @@
 # -----------------------------------------------------------------------
 
 from osrf.json import *
+from osrf.net_obj import *
 from osrf.conf import osrfConfigValue
 from osrf.net import osrfNetworkMessage, osrfGetNetworkHandle
 from osrf.log import *
