@@ -212,18 +212,13 @@ patron.search_form.prototype = {
 	'submit' : function() {
 		window.xulG.clear_left_deck();
 		var obj = this;
-		var query = '';
+		var query = {};
 		for (var i = 0; i < obj.controller.render_list.length; i++) {
 		var id = obj.controller.render_list[i][0];
 		var node = document.getElementById(id);
 			if (node && node.value != '') {
-				if (query == '') {
-					// Responsible for own ? or &
-				} else {
-					query += '&';
-				}
 				if (id == 'inactive') {
-					query += id + '=' + window.escape(node.getAttribute('value'));
+					query[id] = node.getAttribute('value');
 					obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
 				} else {
 					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
@@ -236,7 +231,7 @@ patron.search_form.prototype = {
 						break;
 					}
 					if (value != '') {
-						query += id + '=' + window.escape(value);
+						query[id] = value;
 						obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
 					}
 				}
