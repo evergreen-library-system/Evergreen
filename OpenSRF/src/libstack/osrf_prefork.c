@@ -586,7 +586,7 @@ void prefork_child_wait( prefork_child* child ) {
 		if( errno == EAGAIN ) n = 0;
 
       if( errno == EPIPE ) {
-         osrfLogWarning(OSRF_LOG_MARK, "C child attempted read on broken pipe, exiting...");
+         osrfLogDebug(OSRF_LOG_MARK, "C child attempted read on broken pipe, exiting...");
          break;
       }
 
