@@ -32,12 +32,14 @@ GNU General Public License for more details.
 #include "md5.h"
 
 #define OSRF_MALLOC(ptr, size) \
-	ptr = (void*) malloc( size ); \
-	if( ptr == NULL ) { \
-		perror("OSRF_MALLOC(): Out of Memory" );\
-		exit(99); \
-	} \
-	memset( ptr, 0, size ); 
+	do {\
+		ptr = (void*) malloc( size ); \
+		if( ptr == NULL ) { \
+			perror("OSRF_MALLOC(): Out of Memory" );\
+			exit(99); \
+		} \
+		memset( ptr, 0, size );\
+	} while(0)
 
 
 #define OSRF_BUFFER_ADD(gb, data) \
@@ -173,6 +175,7 @@ int buffer_add(growing_buffer* gb, char* c);
 int buffer_fadd(growing_buffer* gb, const char* format, ... );
 int buffer_reset( growing_buffer* gb);
 char* buffer_data( growing_buffer* gb);
+char* buffer_release( growing_buffer* gb );
 int buffer_free( growing_buffer* gb );
 int buffer_add_char(growing_buffer* gb, char c);
 

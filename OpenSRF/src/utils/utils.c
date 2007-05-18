@@ -214,6 +214,18 @@ int buffer_reset( growing_buffer *gb){
 	return 1;
 }
 
+/* Return a pointer to the text within a growing_buffer, */
+/* while destroying the growing_buffer itself.           */
+
+char* buffer_release( growing_buffer* gb) {
+	char* s = gb->buf;
+	s[gb->n_used] = '\0';
+	free( gb );
+	return s;
+}
+
+/* Destroy a growing_buffer and the text it contains */
+
 int buffer_free( growing_buffer* gb ) {
 	if( gb == NULL ) 
 		return 0;
