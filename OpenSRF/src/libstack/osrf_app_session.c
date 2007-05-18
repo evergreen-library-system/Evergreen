@@ -598,6 +598,7 @@ int osrfAppRequestRespond( osrfAppSession* ses, int requestId, jsonObject* data 
 	if(!ses || ! data ) return -1;
 
 	osrf_message* msg = osrf_message_init( RESULT, requestId, 1 );
+	osrf_message_set_status_info( msg, NULL, "OK", OSRF_STATUS_OK );
 	char* json = jsonObjectToJSON( data );
 
 	osrf_message_set_result_content( msg, json );
