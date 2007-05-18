@@ -1,5 +1,4 @@
 <!-- Needs serious DTD-ization -->
-
 <div
 	style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
 	<center id='copyright_block'>
@@ -10,8 +9,7 @@
 			}
 		</style>
 
-		<div 
-			style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
+		<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
 
 				<span class='footer_link'>
 					<a class='classic_link'
@@ -42,5 +40,8 @@
 					<span>Copyright &#xA9; 2006 Georgia Public Library Service</span>
 				</div>
 		</div>
+        <div>Powered by 
+            <a href='http://open-ils.org'><img style='border:none;' src='../../../../images/eg_tiny_logo.jpg'/></a>
+        </div>
 	</center>
 </div>
