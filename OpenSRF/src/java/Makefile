@@ -27,6 +27,14 @@ check:
 run:
 	@$(JAVA) -cp $(JAVA_LIBS) $(JAVA_EXE) $(JAVA_ARGS)
 
+deps:
+	mkdir -p ext
+	wget 'http://woodstox.codehaus.org/stax-api-1.0.1.jar' -O ext/stax-api-1.0.1.jar
+	wget 'http://woodstox.codehaus.org/3.2.1/wstx-lgpl-3.2.1.jar' -O ext/wstx-lgpl-3.2.1.jar
+	wget 'http://img.whalin.com/memcached/jdk5/standard/java_memcached-release_1.5.1.jar' -O ext/java_memcached-release_1.5.1.jar
+	mkdir -p .tmp && cd .tmp && wget 'http://www.json.org/java/json.zip' && unzip json.zip
+	$(JAVAC) -d $(JAVA_LIBDIR) .tmp/org/json/*.java
+
 docs:
 	find . -name *.java > files;
 	javadoc -classpath $(JAVA_LIBS) -d doc @files;
