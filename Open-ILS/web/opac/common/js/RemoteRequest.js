@@ -1,7 +1,5 @@
 var XML_HTTP_GATEWAY = "gateway";
 var XML_HTTP_SERVER = "";
-var XML_HTTP_MAX_TRIES = 3;
-
 
 
 /* This object is thrown when network failures occur */
@@ -18,20 +16,7 @@ NetworkFailure.prototype.toString = function() {
 
 
 
-//var IAMXUL = false;
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
-
-/* some communication exceptions */
-function EX(message) { this.init(message); }
-EX.prototype.init = function(message) { this.message = message; }
-EX.prototype.toString = function() { return "\n *** Exception Occured \n" + this.message; }  
-EXCommunication.prototype              = new EX();
-EXCommunication.prototype.constructor  = EXCommunication;
-EXCommunication.baseClass              = EX.prototype.constructor;
-function EXCommunication(message) { this.classname="EXCommunication"; this.init("EXCommunication: " + message); }                          
-/* ------------------------------------------------ */
-
-
 var _allrequests = {};
 
 function cleanRemoteRequests() {
@@ -64,6 +49,7 @@ function destroyRequest(r) {
 
 /* ----------------------------------------------------------------------- */
 /* Request object */
+var rrId = 0;
 function RemoteRequest( service, method ) {
 
 
@@ -71,11 +57,10 @@ function RemoteRequest( service, method ) {
 	this.method		= method;
 	this.xmlhttp	= false;
 	this.name		= null;
-	this.sendCount = 0;
 	this.alertEvent = true; /* only used when isXUL is false */
 
 	this.type		= "POST"; /* default */
-	this.id			= service + method + Math.random();
+	this.id			= rrId++;
 	this.cancelled = false;
 
 	this.setSecure(false);
@@ -141,25 +126,20 @@ RemoteRequest.prototype.buildXMLRequest = function() {
 
 
 function buildXMLRequest() {
-	var x;
-	try { 
-		x = new ActiveXObject("Msxml2.XMLHTTP"); 
-	} catch (e) {
-		try { 
-			x = new ActiveXObject("Microsoft.XMLHTTP"); 
-		} catch (E) {
-			x = false;
-		}
-	}
-
-	if (!x && typeof XMLHttpRequest!='undefined') x = new XMLHttpRequest();
-
-	if(!x) {
-		alert("NEEDS NEWER JAVASCRIPT for XMLHTTPRequest()");
-		return null;
-	}
-
-	return x;
+    try {
+	    return new XMLHttpRequest();
+    } catch(e) {
+	    try { 
+		    return new ActiveXObject("Msxml2.XMLHTTP"); 
+	    } catch (e2) {
+		    try { 
+			    return new ActiveXObject("Microsoft.XMLHTTP"); 
+		    } catch (e3) {
+		        alert("NEEDS NEWER JAVASCRIPT for XMLHTTPRequest()");
+                return null;
+		    }
+	    }
+    }
 }
 
 
@@ -169,27 +149,16 @@ function _remoteRequestCallback(id) {
 	if(object.cancelled) return;
 
 	if( object.xmlhttp.readyState == 4 ) {
+
+        try {
+            object.duration = new Date().getTime() - object.sendTime;
+            dump('request ' + object.id + ': duration = ' + object.duration + ' ms\n');
+        } catch(ee){}
+
 		try {
 			object.callback(object);
 		} catch(E) {
-
-			/* if we receive a communication error, retry the request up
-				to XML_HTTP_MAX_TRIES attempts */
-			if( E && E.classname == "EXCommunication" ) {
-
-				//try { dump('Communication Error: ' + E ); } catch(e){}
-				alert('Debug:  Communication Error: ' + E );
-
-				if(object.sendCount >= XML_HTTP_MAX_TRIES ) {
-					if(isXUL()) throw object;
-					 else alert("Arrrgghh, Matey! Error communicating:\n" + E  + "\n" + object.param_string);
-				} else {
-					object.buildXMLRequest();
-					object.send();
-					return;
-				}
-			} else { throw E; }
-
+            throw E
 		} finally { 
 			destroyRequest(object); 
 			object = null; 
@@ -271,9 +240,9 @@ RemoteRequest.prototype.send = function(blocking) {
 	}
 
 
+    this.sendTime = new Date().getTime();
 	try{ this.xmlhttp.send( data ); } catch(e){}
 
-	this.sendCount += 1;
 	return this;
 }
 
