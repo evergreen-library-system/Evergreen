@@ -205,7 +205,7 @@ void _osrfLogToFile( char* msg, ... ) {
 
 	FILE* file = fopen(__osrfLogFile, "a");
 	if(!file) {
-		fprintf(stderr, "Unable to fopen file %s for writing", __osrfLogFile);
+		fprintf(stderr, "Unable to fopen file %s for writing\n", __osrfLogFile);
 		return;
 	}
 
