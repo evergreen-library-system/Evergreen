@@ -212,7 +212,7 @@ void _osrfLogToFile( char* msg, ... ) {
 	fprintf(file, "%s %s %s\n", __osrfLogAppname, datebuf, VA_BUF );
 	if( fclose(file) != 0 ) 
 		osrfLogWarning(OSRF_LOG_MARK, "Error closing log file: %s", strerror(errno));
-	
+
 }
 
 
