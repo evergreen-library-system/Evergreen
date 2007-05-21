@@ -45,7 +45,7 @@ int main( int argc, char** argv ) {
 */
 
 
-transport_client* client_init( char* server, int port, char* unix_path, int component ) {
+transport_client* client_init( const char* server, int port, const char* unix_path, int component ) {
 
 	if(server == NULL) return NULL;
 

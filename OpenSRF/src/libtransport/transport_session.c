@@ -6,8 +6,8 @@
 // returns a built and allocated transport_session object.
 // This codes does no network activity, only memory initilization
 // ---------------------------------------------------------------------------------
-transport_session* init_transport(  char* server, 
-	int port, char* unix_path, void* user_data, int component ) {
+transport_session* init_transport(  const char* server, 
+	int port, const char* unix_path, void* user_data, int component ) {
 
 	/* create the session struct */
 	transport_session* session = 
