@@ -214,13 +214,13 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 
 	if(!username) {
 		fprintf(stderr, "No username specified in configuration file %s\n", config_file);
-		osrfLogError( OSRF_LOG_MARK, "No domain specified in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No username specified in configuration file %s\n", config_file);
 		failure = 1;
 	}
 
 	if(!password) {
 		fprintf(stderr, "No password specified in configuration file %s\n", config_file);
-		osrfLogError( OSRF_LOG_MARK, "No domain specified in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No password specified in configuration file %s\n", config_file);
 		failure = 1;
 	}
 
