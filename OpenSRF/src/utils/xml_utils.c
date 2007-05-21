@@ -48,10 +48,16 @@ jsonObject* _xmlToJSON(xmlNodePtr node, jsonObject* obj) {
 		}
 
 		xmlNodePtr child = node->children;
-		while(child) {
-			_xmlToJSON(child, new_obj);
-			child = child->next;
-		}	
+                if (child) { // at least one...
+			if (child != node->last) { // more than one -- ignore TEXT nodes
+				while(child) {
+					if (child->type != XML_TEXT_NODE) _xmlToJSON(child, new_obj);
+					child = child->next;
+				}
+			} else {
+				_xmlToJSON(child, new_obj);
+			}
+                }
 	}	
 
 	return obj;
