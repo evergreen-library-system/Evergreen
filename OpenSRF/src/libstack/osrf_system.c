@@ -138,6 +138,8 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, char* resource ) {
 
+	int failure = 0;
+
 	if(osrfSystemGetTransportClient()) {
 		osrfLogInfo(OSRF_LOG_MARK, "Client is already bootstrapped");
 		return 1; /* we already have a client connection */
@@ -156,31 +158,41 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 
 
 	char* log_file		= osrfConfigGetValue( NULL, "/logfile");
-	char* log_level	= osrfConfigGetValue( NULL, "/loglevel" );
-	osrfStringArray* arr = osrfNewStringArray(8);
+	char* log_level		= osrfConfigGetValue( NULL, "/loglevel" );
+	osrfStringArray* arr	= osrfNewStringArray(8);
 	osrfConfigGetValueList(NULL, arr, "/domains/domain");
+
 	char* username		= osrfConfigGetValue( NULL, "/username" );
 	char* password		= osrfConfigGetValue( NULL, "/passwd" );
-	char* port			= osrfConfigGetValue( NULL, "/port" );
+	char* port		= osrfConfigGetValue( NULL, "/port" );
 	char* unixpath		= osrfConfigGetValue( NULL, "/unixpath" );
 	char* facility		= osrfConfigGetValue( NULL, "/syslog" );
 	char* actlog		= osrfConfigGetValue( NULL, "/actlog" );
 
-	char* domain = strdup(osrfStringArrayGetString( arr, 0 )); /* just the first for now */
-	osrfStringArrayFree(arr);
+	if(!log_file) {
+		fprintf(stderr, "No log file specified in configuration file %s\n",
+			   config_file);
+		free(log_level);
+		free(username);
+		free(password);
+		free(port);
+		free(unixpath);
+		free(facility);
+		free(actlog);
+		free(domain);
+		return -1;
+	}
 
-   /* if we're a source-client, tell the logger */
-   char* isclient = osrfConfigGetValue(NULL, "/client");
-   if( isclient && !strcasecmp(isclient,"true") )
-      osrfLogSetIsClient(1);
-   free(isclient);
+	/* if we're a source-client, tell the logger */
+	char* isclient = osrfConfigGetValue(NULL, "/client");
+	if( isclient && !strcasecmp(isclient,"true") )
+		osrfLogSetIsClient(1);
+	free(isclient);
 
 	int llevel = 0;
 	int iport = 0;
 	if(port) iport = atoi(port);
 	if(log_level) llevel = atoi(log_level);
-
-	if(!log_file) { fprintf(stderr, "Log file needed\n"); return -1; }
 
 	if(!strcmp(log_file, "syslog")) {
 		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, contextnode, llevel );
@@ -192,15 +204,47 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		osrfLogSetFile( log_file );
 	}
 
-	osrfLogInfo( OSRF_LOG_MARK, "Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
 
+	/* Get a domain, if one is specified */
+	const char* domain = osrfStringArrayGetString( arr, 0 ); /* just the first for now */
+	if(!domain) {
+		fprintf(stderr, "No domain specified in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No domain specified in configuration file %s\n", config_file);
+		failure = 1;
+	}
+
+	if(!username) {
+		fprintf(stderr, "No username specified in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No domain specified in configuration file %s\n", config_file);
+		failure = 1;
+	}
+
+	if(!password) {
+		fprintf(stderr, "No password specified in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No domain specified in configuration file %s\n", config_file);
+		failure = 1;
+	}
+
+	if (failure) {
+		osrfStringArrayFree(arr);
+		free(log_level);
+		free(username);
+		free(password);
+		free(port);
+		free(unixpath);
+		free(facility);
+		free(actlog);
+		return 0;
+	}
+
+	osrfLogInfo( OSRF_LOG_MARK, "Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
 
-	char* host;
+	const char* host;
 	host = getenv("HOSTNAME");
 
 	char tbuf[32];
-	memset(tbuf, 0x0, 32);
+	tbuf[0] = '\0';
 	snprintf(tbuf, 32, "%f", get_timestamp_millis());
 
 	if(!host) host = "";
@@ -208,15 +252,16 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 
 	int len = strlen(resource) + 256;
 	char buf[len];
-	memset(buf,0,len);
+	buf[0] = '\0';
 	snprintf(buf, len - 1, "%s_%s_%s_%d", resource, host, tbuf, getpid() );
-	
+
 	if(client_connect( client, username, password, buf, 10, AUTH_DIGEST )) {
 		/* child nodes will leak the parents client... but we can't free
 			it without disconnecting the parents client :( */
 		__osrfGlobalTransportClient = client;
 	}
 
+	osrfStringArrayFree(arr);
 	free(actlog);
 	free(facility);
 	free(log_level);
