@@ -62,10 +62,8 @@
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" 
-					'patron/search_form.xul\n' + E + '\n';
+					"system administrator or software developer the following:\n" + 'patron/search_form.xul\n' + E + '\n';
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
-				alert(E);
 				alert(err_msg);
 			}
 		}

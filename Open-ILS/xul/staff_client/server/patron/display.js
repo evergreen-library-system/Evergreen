@@ -522,7 +522,7 @@ patron.display.prototype = {
 								document.documentElement.setAttribute('class','');
 								setTimeout(
 									function() {
-										var frame = obj.left_deck.set_iframe(
+										var frame = obj.left_deck.reset_iframe(
 											urls.XUL_PATRON_SUMMARY, // + '?id=' + window.escape(list[0]),
 											{},
 											{
