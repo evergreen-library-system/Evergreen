@@ -186,8 +186,8 @@ typedef struct transport_session_struct transport_session;
 // If port > 0, then this session uses  TCP connection.  Otherwise,
 // if unix_path != NULL, it uses a UNIX domain socket.
 // ------------------------------------------------------------------
-transport_session* init_transport( char* server, int port, 
-	char* unix_path, void* user_data, int component );
+transport_session* init_transport( const char* server, int port, 
+	const char* unix_path, void* user_data, int component );
 
 // ------------------------------------------------------------------
 // Returns the value of the given XML attribute

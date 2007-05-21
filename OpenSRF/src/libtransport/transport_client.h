@@ -42,7 +42,7 @@ typedef struct transport_client_struct transport_client;
 // if port > 0 => connect via TCP
 // else if unix_path != NULL => connect via UNIX socket
 // ---------------------------------------------------------------------------
-transport_client* client_init( char* server, int port, char* unix_path, int component );
+transport_client* client_init( const char* server, int port, const char* unix_path, int component );
 
 
 // ---------------------------------------------------------------------------

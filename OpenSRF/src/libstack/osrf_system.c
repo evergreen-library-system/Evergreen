@@ -179,7 +179,6 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		free(unixpath);
 		free(facility);
 		free(actlog);
-		free(domain);
 		return -1;
 	}
 
@@ -270,7 +269,6 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	free(password);
 	free(port);	
 	free(unixpath);
-	free(domain);
 
 	if(__osrfGlobalTransportClient)
 		return 1;
