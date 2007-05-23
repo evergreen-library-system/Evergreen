@@ -40,7 +40,7 @@ sub new {
 		}
 
 		my ($protokey,$value,$keytype,$key);
-		if ($line =~ /^([^=\s]+)\s*=\s*(.*)/s) {
+		if ($line =~ /^([^=\s]+)\s*=\s*(.*)\s*$/s) {
 			($protokey,$value) = ($1,$2);
 			($keytype,$key) = split(/:/,$protokey);
 		}
@@ -421,11 +421,11 @@ sub load_config {
 
 =head1 BUGS
 
-No know bugs, but report any to miker@purplefrog.com.
+No know bugs, but report any to mrylander@gmail.com.
 
 =head1 COPYRIGHT AND LICENSING
 
-Mike Rylander, Copyright 2000-2004
+Mike Rylander, Copyright 2000-2007
 
 The OpenSRF::Utils::Config module is free software. You may distribute under the terms
 of the GNU General Public License version 2 or greater.
