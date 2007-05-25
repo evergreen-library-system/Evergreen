@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+Copyright (C) 2007 Laurentian University
+Dan Scott <dscott@laurentian.ca>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- define types -->
+<xs:simpleType name="loglevelType">
+ <xs:restriction base="xs:positiveInteger">
+  <xs:maxInclusive value="4"/>
+ </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="portType">
+ <xs:restriction base="xs:positiveInteger">
+  <xs:maxInclusive value="65535"/>
+ </xs:restriction>
+</xs:simpleType>
+
+
+<!-- define simple elements -->
+<xs:element name="router_name" type="xs:string"/>
+<xs:element name="domain" type="xs:string"/>
+<xs:element name="username" type="xs:string"/>
+<xs:element name="passwd" type="xs:string"/>
+<xs:element name="port" type="portType"/>
+<xs:element name="logfile" type="xs:string"/>
+<xs:element name="loglevel" type="loglevelType"/>
+
+<!-- group type -->
+<xs:group name="srfshElements">
+ <xs:all>
+  <xs:element ref="router_name"/>
+  <xs:element ref="domains"/>
+  <xs:element ref="username"/>
+  <xs:element ref="passwd"/>
+  <xs:element ref="port"/>
+  <xs:element ref="logfile"/>
+  <xs:element ref="loglevel"/>
+ </xs:all>
+</xs:group>
+
+<!-- complex elements -->
+<xs:element name="domains">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="domain" minOccurs="1" maxOccurs="unbounded"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="srfsh">
+ <xs:complexType>
+  <xs:group ref="srfshElements"/>
+ </xs:complexType>
+</xs:element>
+
+</xs:schema>
