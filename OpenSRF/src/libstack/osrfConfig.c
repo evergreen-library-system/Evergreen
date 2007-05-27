@@ -1,11 +1,15 @@
 /* defines the currently used bootstrap config file */
 #include "osrfConfig.h"
 
-osrfConfig* __osrfConfigDefault = NULL;
+static osrfConfig* osrfConfigDefault = NULL;
 
 
 void osrfConfigSetDefaultConfig(osrfConfig* cfg) {
-	if(cfg) __osrfConfigDefault = cfg;
+	if(cfg) {
+		if( osrfConfigDefault )
+			osrfConfigFree( osrfConfigDefault );
+		osrfConfigDefault = cfg;
+	}
 }
 
 void osrfConfigFree(osrfConfig* cfg) {
@@ -18,13 +22,13 @@ void osrfConfigFree(osrfConfig* cfg) {
 
 
 int osrfConfigHasDefaultConfig() {
-	return ( __osrfConfigDefault != NULL );
+	return ( osrfConfigDefault != NULL );
 }
 
 
 void osrfConfigCleanup() { 
-	osrfConfigFree(__osrfConfigDefault); 
-	__osrfConfigDefault = NULL; 
+	osrfConfigFree(osrfConfigDefault);
+	osrfConfigDefault = NULL;
 }
 
 
@@ -36,8 +40,6 @@ void osrfConfigReplaceConfig(osrfConfig* cfg, const jsonObject* obj) {
 
 osrfConfig* osrfConfigInit(char* configFile, char* configContext) {
 	if(!configFile) return NULL;
-
-	osrfConfigFree(__osrfConfigDefault);
 
 	osrfConfig* cfg = safe_malloc(sizeof(osrfConfig));
 	if(configContext) cfg->configContext = strdup(configContext);
@@ -63,8 +65,8 @@ osrfConfig* osrfConfigInit(char* configFile, char* configContext) {
 char* osrfConfigGetValue(osrfConfig* cfg, char* path, ...) {
 
 	if(!path) return NULL;
-	if(!cfg) cfg = __osrfConfigDefault;
-	if(!cfg) { osrfLogWarning( OSRF_LOG_MARK, "No Confif object!"); return NULL; }
+	if(!cfg) cfg = osrfConfigDefault;
+	if(!cfg) { osrfLogWarning( OSRF_LOG_MARK, "No Config object in osrfConfigGetValue()"); return NULL; }
 
 	VA_LIST_TO_STRING(path);
 
@@ -88,7 +90,7 @@ char* osrfConfigGetValue(osrfConfig* cfg, char* path, ...) {
 int osrfConfigGetValueList(osrfConfig* cfg, osrfStringArray* arr, char* path, ...) {
 
 	if(!arr || !path) return 0;
-	if(!cfg) cfg = __osrfConfigDefault;
+	if(!cfg) cfg = osrfConfigDefault;
 	if(!cfg) { osrfLogWarning( OSRF_LOG_MARK, "No Config object!"); return -1;}
 
 	VA_LIST_TO_STRING(path);
