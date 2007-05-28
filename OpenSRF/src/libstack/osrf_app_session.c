@@ -229,7 +229,7 @@ osrf_app_session* osrf_app_client_session_init( char* remote_service ) {
 	char id[256];
 	memset(id,0,256);
 
-	sprintf(id, "%f.%d%d", get_timestamp_millis(), (int)time(NULL), getpid());
+	sprintf(id, "%f.%d%ld", get_timestamp_millis(), (int)time(NULL), (long) getpid());
 	session->session_id = strdup(id);
 	osrfLogDebug( OSRF_LOG_MARK,  "Building a new client session with id [%s] [%s]", 
 			session->remote_service, session->session_id );

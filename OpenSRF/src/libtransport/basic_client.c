@@ -29,7 +29,7 @@ int main( int argc, char** argv ) {
 	if( (pid=fork()) ) { /* parent */
 
 		signal(SIGINT, sig_int);
-		fprintf(stderr, "Listener: %d\n", getpid() );	
+		fprintf(stderr, "Listener: %ld\n", (long) getpid() );	
 		char buf[300];
 		memset(buf, 0, 300);
 		printf("=> ");
@@ -56,7 +56,7 @@ int main( int argc, char** argv ) {
 
 	} else {
 
-		fprintf(stderr, "Sender: %d\n", getpid() );	
+		fprintf(stderr, "Sender: %ld\n", (long) getpid() );	
 
 		transport_message* recv;
 		while( (recv=client_recv( client, -1)) ) {

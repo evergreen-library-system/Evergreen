@@ -587,7 +587,7 @@ int osrfChatHandleNewConnection( osrfChatNode* node, const char* name, const xml
 char* osrfChatMkAuthKey() {
 	char keybuf[112];
 	bzero(keybuf, 112);
-	snprintf(keybuf, 111, "%d%d%s", (int) time(NULL), getpid(), getenv("HOSTNAME"));
+	snprintf(keybuf, 111, "%d%ld%s", (int) time(NULL), (long) getpid(), getenv("HOSTNAME"));
 	return strdup(shahash(keybuf));
 }
 

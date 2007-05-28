@@ -36,7 +36,7 @@ static void mod_ils_gateway_child_init(apr_pool_t *p, server_rec *s) {
 		osrfLogError( OSRF_LOG_MARK, "Unable to load gateway config file...");
 		return;
 	}
-	fprintf(stderr, "Bootstrapping %d\n", getpid() );
+	fprintf(stderr, "Bootstrapping %ld\n", (long) getpid() );
 	fflush(stderr);
 }
 
@@ -138,8 +138,8 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	}
 
-	osrfLogInfo( OSRF_LOG_MARK, "Performing(%d):  service %s | method %s | \n",
-			getpid(), service, method );
+	osrfLogInfo( OSRF_LOG_MARK, "Performing(%ld):  service %s | method %s | \n",
+			(long) getpid(), service, method );
 
 	int k;
 	for( k = 0; k!= sarray->size; k++ ) {

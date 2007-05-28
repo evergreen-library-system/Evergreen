@@ -61,7 +61,7 @@ void osrfLogSetIsClient(int is) {
    /* go ahead and create the xid prefix so it will be consistent later */
    static char buff[32];
    memset(buff, 0x0, 32);
-   snprintf(buff, 32, "%d%d", (int)time(NULL), getpid());
+   snprintf(buff, 32, "%ld%d", (int)time(NULL), (long) getpid());
    __osrfLogXidPfx = buff;
 }
 
@@ -177,11 +177,11 @@ void _osrfLogDetail( int level, const char* filename, int line, char* msg ) {
 		buf[1533] = '.';
 		buf[1534] = '.';
 		buf[1535] = '\0';
-		syslog( fac | lvl, "[%s:%d:%s:%d:%s] %s", l, getpid(), filename, line, xid, buf );
+		syslog( fac | lvl, "[%s:%ld:%s:%d:%s] %s", l, (long) getpid(), filename, line, xid, buf );
 	}
 
 	else if( __osrfLogType == OSRF_LOG_TYPE_FILE )
-		_osrfLogToFile("[%s:%d:%s:%d:%s] %s", l, getpid(), filename, line, xid, msg );
+		_osrfLogToFile("[%s:%ld:%s:%d:%s] %s", l, (long) getpid(), filename, line, xid, msg );
 
 }
 
