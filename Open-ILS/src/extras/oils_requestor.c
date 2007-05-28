@@ -11,12 +11,12 @@
 char* script		= NULL;
 char* authtoken	= NULL;
 
-int do_request( char* request );
-char* format_response( jsonObject* o );
+static int do_request( char* request );
+static char* format_response( jsonObject* o );
 
 int main( int argc, char* argv[] ) {
 	
-	char c;
+	int c;
 	char* username		= NULL;
 	char* password		= NULL;
 	char* config		= NULL;
@@ -63,16 +63,24 @@ int main( int argc, char* argv[] ) {
 		printf("Login Session: %s\n", authtoken);
 	}
 
-	while((request=readline("oils# "))) 
-		if(do_request(request)) break;
+	while( request=readline("oils# ") ) {
+	   int retcode = do_request(request);
+	   free(request);
+	   if( retcode ) break;
+	}
 
+	free(config);
+	free(context);
+	free(username);
+	free(password);
+	free(script);
 	free(authtoken);
 	free(idl_filename);
 	return 1;
 }
 
 
-int do_request( char* request ) {
+static int do_request( char* request ) {
 
 	if(!strcasecmp(request, "exit") || !strcasecmp(request,"quit"))
 		return 1;
@@ -120,7 +128,7 @@ int do_request( char* request ) {
 }
 
 
-char* format_response( jsonObject* o ) {
+static char* format_response( jsonObject* o ) {
 	if(!o) return NULL;
 
 	int width = 20;
