@@ -90,20 +90,21 @@ static int do_request( char* request ) {
 	char* service;
 	char* method;
 	char* tmp;
-	char* item;
-	growing_buffer* buffer = buffer_init(256);
 	
 	service = strtok_r(request, " ", &tmp);
 	method = strtok_r(NULL, " ", &tmp);
-	while( (item = strtok_r(NULL, " ", &tmp)) ) 
-		buffer_fadd(buffer, "%s", item);
 
 	if( service && method ) {
 
 		jsonObject* params = NULL;
-		if(buffer->n_used > 0) 
-			params = jsonParseStringFmt("[%s]", buffer->buf);
 
+		if( *tmp ) {
+			growing_buffer* buffer = buffer_init(256);
+			buffer_fadd( buffer, "[%s]", tmp );
+			params = jsonParseString( buffer->buf );
+			buffer_free(buffer);
+		}
+		
 		osrfAppSession* session = osrf_app_client_session_init(service);
 		int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );
 		osrfMessage* omsg;
@@ -120,10 +121,9 @@ static int do_request( char* request ) {
 		jsonObjectFree(params);
 
 	} else {
-		fprintf(stderr, "STATMENT DOES NOT PARSE: %s\n", request);
+		fprintf(stderr, "STATEMENT DOES NOT PARSE: %s\n", request);
 	}
 
-	buffer_free(buffer);
 	return 0;
 }
 
