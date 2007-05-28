@@ -55,7 +55,7 @@ var oilsPageXMid;
 var oilsPageYMid;
 
 var oilsIDLReportsNS = 'http://open-ils.org/spec/opensrf/IDL/reporter/v1';
-var oilsIDLPersistNS = 'http://open-ils.org/spec/opensrf/IDL/persistance/v1';
+var oilsIDLPersistNS = 'http://open-ils.org/spec/opensrf/IDL/persistence/v1';
 
 /* the current transform manager for the builder transform window */
 var oilsRptCurrentTform;

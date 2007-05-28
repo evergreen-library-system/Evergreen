@@ -15,7 +15,7 @@
 
 
 OILS_NS_OBJ='http://open-ils.org/spec/opensrf/IDL/objects/v1'
-OILS_NS_PERSIST='http://open-ils.org/spec/opensrf/IDL/persistance/v1'
+OILS_NS_PERSIST='http://open-ils.org/spec/opensrf/IDL/persistence/v1'
 OILS_NS_REPORTER='http://open-ils.org/spec/opensrf/IDL/reporter/v1'
 
 OILS_APP_CSTORE='open-ils.cstore'

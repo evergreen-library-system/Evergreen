@@ -20,7 +20,7 @@ public class IDLParser {
     public static final String OILS_NS_BASE="http://opensrf.org/spec/IDL/base/v1";
     public static final String OILS_NS_OBJ="http://open-ils.org/spec/opensrf/IDL/objects/v1";
     public static final String OILS_NS_OBJ_PREFIX="oils_obj";
-    public static final String OILS_NS_PERSIST="http://open-ils.org/spec/opensrf/IDL/persistance/v1";
+    public static final String OILS_NS_PERSIST="http://open-ils.org/spec/opensrf/IDL/persistence/v1";
     public static final String OILS_NS_PERSIST_PREFIX="oils_persist";
     public static final String OILS_NS_REPORTER="http://open-ils.org/spec/opensrf/IDL/reporter/v1";
     public static final String OILS_NS_REPORTER_PREFIX="reporter";
