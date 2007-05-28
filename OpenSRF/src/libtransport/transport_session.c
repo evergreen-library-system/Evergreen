@@ -171,6 +171,10 @@ int session_connect( transport_session* session,
 				session->sock_mgr, session->unix_path)) <= 0 ) 
 			return 0;
 		}
+		else {
+			osrfLogWarning( OSRF_LOG_MARK, "Can't open session: no port or unix path" );
+			return 0;
+		}
 	}
 
 	if( session->component ) {
