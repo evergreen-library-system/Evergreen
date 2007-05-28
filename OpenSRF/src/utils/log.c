@@ -61,7 +61,7 @@ void osrfLogSetIsClient(int is) {
    /* go ahead and create the xid prefix so it will be consistent later */
    static char buff[32];
    memset(buff, 0x0, 32);
-   snprintf(buff, 32, "%ld%d", (int)time(NULL), (long) getpid());
+   snprintf(buff, 32, "%d%ld", (int)time(NULL), (long) getpid());
    __osrfLogXidPfx = buff;
 }
 
