@@ -38,14 +38,12 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
   */
 int osrfSystemBootstrap( char* hostName, char* configfile, char* contextNode );
 
-transport_client* osrfSystemGetTransportClient();
-transport_client* osrf_system_get_transport_client();
+transport_client* osrfSystemGetTransportClient( void );
+transport_client* osrf_system_get_transport_client( void );
 
 /* disconnects and destroys the current client connection */
 int osrf_system_disconnect_client();
-int osrf_system_shutdown(); 
-
-int _osrfSystemInitCache();
+int osrf_system_shutdown( void ); 
 
 
 /* this will clear the global transport client pointer without

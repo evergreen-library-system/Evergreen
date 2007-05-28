@@ -3,20 +3,21 @@
 #include "osrf_application.h"
 #include "osrf_prefork.h"
 
-void __osrfSystemSignalHandler( int sig );
+static void osrfSystemSignalHandler( int sig );
+static int _osrfSystemInitCache( void );
 
-transport_client* __osrfGlobalTransportClient = NULL;
+static transport_client* osrfGlobalTransportClient = NULL;
 
-transport_client* osrfSystemGetTransportClient() {
-	return __osrfGlobalTransportClient;
+transport_client* osrfSystemGetTransportClient( void ) {
+	return osrfGlobalTransportClient;
 }
 
 void osrfSystemIgnoreTransportClient() {
-	__osrfGlobalTransportClient = NULL;
+	osrfGlobalTransportClient = NULL;
 }
 
-transport_client* osrf_system_get_transport_client() {
-	return __osrfGlobalTransportClient;
+transport_client* osrf_system_get_transport_client( void ) {
+	return osrfGlobalTransportClient;
 }
 
 int osrf_system_bootstrap_client( char* config_file, char* contextnode ) {
@@ -28,7 +29,7 @@ int osrfSystemBootstrapClientResc( char* config_file, char* contextnode, char* r
 }
 
 
-int _osrfSystemInitCache() {
+static int _osrfSystemInitCache( void ) {
 
 	jsonObject* cacheServers = osrf_settings_host_value_object("/cache/global/servers/server");
 	char* maxCache = osrf_settings_host_value("/cache/global/max_cache_time");
@@ -129,7 +130,7 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 	/* background and let our children do their thing */
 	daemonize();
 	while(1) {
-		signal(SIGCHLD, __osrfSystemSignalHandler);
+		signal(SIGCHLD, osrfSystemSignalHandler);
 		sleep(10000);
 	}
 	
@@ -151,9 +152,11 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	}
 
 	if( config_file ) {
-		osrfConfigCleanup();
 		osrfConfig* cfg = osrfConfigInit( config_file, contextnode );
-		osrfConfigSetDefaultConfig(cfg);
+		if(cfg)
+			osrfConfigSetDefaultConfig(cfg);
+		else
+			return 0;   /* Can't load configuration?  Bail out */
 	}
 
 
@@ -224,6 +227,13 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		failure = 1;
 	}
 
+	if((iport <= 0) && !unixpath) {
+		fprintf(stderr, "No unixpath or valid port in configuration file %s\n", config_file);
+		osrfLogError( OSRF_LOG_MARK, "No unixpath or valid port in configuration file %s\n",
+			config_file);
+		failure = 1;
+	}
+
 	if (failure) {
 		osrfStringArrayFree(arr);
 		free(log_level);
@@ -236,7 +246,8 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 		return 0;
 	}
 
-	osrfLogInfo( OSRF_LOG_MARK, "Bootstrapping system with domain %s, port %d, and unixpath %s", domain, iport, unixpath );
+	osrfLogInfo( OSRF_LOG_MARK, "Bootstrapping system with domain %s, port %d, and unixpath %s",
+		domain, iport, unixpath ? unixpath : "(none)" );
 	transport_client* client = client_init( domain, iport, unixpath, 0 );
 
 	const char* host;
@@ -252,12 +263,12 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	int len = strlen(resource) + 256;
 	char buf[len];
 	buf[0] = '\0';
-	snprintf(buf, len - 1, "%s_%s_%s_%d", resource, host, tbuf, getpid() );
+	snprintf(buf, len - 1, "%s_%s_%s_%ld", resource, host, tbuf, (long) getpid() );
 
 	if(client_connect( client, username, password, buf, 10, AUTH_DIGEST )) {
 		/* child nodes will leak the parents client... but we can't free
 			it without disconnecting the parents client :( */
-		__osrfGlobalTransportClient = client;
+		osrfGlobalTransportClient = client;
 	}
 
 	osrfStringArrayFree(arr);
@@ -270,20 +281,20 @@ int osrf_system_bootstrap_client_resc( char* config_file, char* contextnode, cha
 	free(port);	
 	free(unixpath);
 
-	if(__osrfGlobalTransportClient)
+	if(osrfGlobalTransportClient)
 		return 1;
 
 	return 0;
 }
 
-int osrf_system_disconnect_client() {
-	client_disconnect( __osrfGlobalTransportClient );
-	client_free( __osrfGlobalTransportClient );
-	__osrfGlobalTransportClient = NULL;
+int osrf_system_disconnect_client( void ) {
+	client_disconnect( osrfGlobalTransportClient );
+	client_free( osrfGlobalTransportClient );
+	osrfGlobalTransportClient = NULL;
 	return 0;
 }
 
-int osrf_system_shutdown() {
+int osrf_system_shutdown( void ) {
 	osrfConfigCleanup();
 	osrf_system_disconnect_client();
 	osrf_settings_free_host_config(NULL);
@@ -295,7 +306,7 @@ int osrf_system_shutdown() {
 
 
 
-void __osrfSystemSignalHandler( int sig ) {
+static void osrfSystemSignalHandler( int sig ) {
 
 	pid_t pid;
 	int status;
