@@ -915,10 +915,14 @@ function fleshTemplateField ( template, rel, tab_name, field ) {
 
 	if (tab_name.match(/filter/)) {
 		element.condition = {};
-		element.condition[tab[field].op] =
-			tab[field].op_value.value ?
-				tab[field].op_value.value :
-				'::P' + param_count++;
+		if (tab[field].op == 'is' || tab[field].op == 'is not') {
+			element.condition[tab[field].op] = null;
+		} else {
+			element.condition[tab[field].op] =
+				tab[field].op_value.value ?
+					tab[field].op_value.value :
+					'::P' + param_count++;
+		}
 	}
 
 	template[tab_use[tab_name]].push(element);
