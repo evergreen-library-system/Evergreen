@@ -105,11 +105,11 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 				osrfLogInfo( OSRF_LOG_MARK, "Launching application %s with implementation %s", appname, libfile);
 		
-				int pid;
+				pid_t pid;
 		
 				if( (pid = fork()) ) { 
 					// storage pid in local table for re-launching dead children...
-					osrfLogInfo( OSRF_LOG_MARK, "Launched application child %d", pid);
+					osrfLogInfo( OSRF_LOG_MARK, "Launched application child %ld", (long) pid);
 	
 				} else {
 		
@@ -135,10 +135,12 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
             if(errno == ECHILD)
                 osrfLogError(OSRF_LOG_MARK, "We have no more live services... exiting");
             else
-                osrfLogError(OSRF_LOG_MARK, "Exiting top-level system loop with error: %s", strerror(errno));
+	    	char* err_str = strerror(errno);
+                osrfLogError(OSRF_LOG_MARK, "Exiting top-level system loop with error: %s", err_str);
+		free(err_str);
             break;
         } else {
-            osrfLogError(OSRF_LOG_MARK, "We lost a top-level service process with PID %d", pid);
+            osrfLogError(OSRF_LOG_MARK, "We lost a top-level service process with PID %ld", pid);
         }
     }
 
