@@ -135,9 +135,7 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
             if(errno == ECHILD)
                 osrfLogError(OSRF_LOG_MARK, "We have no more live services... exiting");
             else
-	    	char* err_str = strerror(errno);
-                osrfLogError(OSRF_LOG_MARK, "Exiting top-level system loop with error: %s", err_str);
-		free(err_str);
+                osrfLogError(OSRF_LOG_MARK, "Exiting top-level system loop with error: %s", strerror(errno));
             break;
         } else {
             osrfLogError(OSRF_LOG_MARK, "We lost a top-level service process with PID %ld", pid);
