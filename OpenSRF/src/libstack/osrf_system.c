@@ -118,7 +118,7 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 					if( osrfAppRegisterApplication( appname, libfile ) == 0 ) 
 						osrf_prefork_run(appname);
 	
-					osrfLogDebug( OSRF_LOG_MARK, "Server exiting for app %s and library %s", appname, libfile );
+					osrfLogDebug( OSRF_LOG_MARK, "Server exiting for app %s and library %s\n", appname, libfile );
 					exit(0);
 				}
 			} // language == c
@@ -130,10 +130,20 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 	/* background and let our children do their thing */
 	daemonize();
 	while(1) {
-		signal(SIGCHLD, osrfSystemSignalHandler);
-		sleep(10000);
+		errno = 0;
+		pid_t pid = wait( NULL );
+		if ( -1 == pid ) {
+			if ( errno != ECHILD ) {
+				char* err_str = strerror( errno );
+				osrfLogWarning( OSRF_LOG_MARK, "Exiting on singal or error: %s\n", err_str );
+				free(err_str);
+			}
+			break;
+		} else {
+			osrfLogWarning( OSRF_LOG_MARK, "We lost child %d", pid);
+		}
 	}
-	
+
 	return 0;
 }
 
