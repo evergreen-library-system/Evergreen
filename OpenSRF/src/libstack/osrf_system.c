@@ -3,7 +3,6 @@
 #include "osrf_application.h"
 #include "osrf_prefork.h"
 
-static void osrfSystemSignalHandler( int sig );
 static int _osrfSystemInitCache( void );
 
 static transport_client* osrfGlobalTransportClient = NULL;
@@ -129,20 +128,20 @@ int osrfSystemBootstrap( char* hostname, char* configfile, char* contextNode ) {
 
 	/* background and let our children do their thing */
 	daemonize();
-	while(1) {
-		errno = 0;
-		pid_t pid = wait( NULL );
-		if ( -1 == pid ) {
-			if ( errno != ECHILD ) {
-				char* err_str = strerror( errno );
-				osrfLogWarning( OSRF_LOG_MARK, "Exiting on singal or error: %s\n", err_str );
-				free(err_str);
-			}
-			break;
-		} else {
-			osrfLogWarning( OSRF_LOG_MARK, "We lost child %d", pid);
-		}
-	}
+    while(1) {
+        errno = 0;
+        pid_t pid = wait(NULL);
+        if(-1 == pid) {
+            if(errno == ECHILD)
+                osrfLogError(OSRF_LOG_MARK, "We have no more live services... exiting");
+            else
+                osrfLogError(OSRF_LOG_MARK, "Exiting top-level system loop with error: %s", strerror(errno));
+            break;
+        } else {
+            osrfLogError(OSRF_LOG_MARK, "We lost a top-level service process with PID %d", pid);
+        }
+    }
+
 
 	return 0;
 }
@@ -314,18 +313,5 @@ int osrf_system_shutdown( void ) {
 }
 
 
-
-
-static void osrfSystemSignalHandler( int sig ) {
-
-	pid_t pid;
-	int status;
-
-	while( (pid = waitpid(-1, &status, WNOHANG)) > 0) {
-		osrfLogWarning( OSRF_LOG_MARK, "We lost child %d", pid);
-	}
-
-	/** relaunch the server **/
-}
 
 
