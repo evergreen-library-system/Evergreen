@@ -63,7 +63,7 @@ int main( int argc, char* argv[] ) {
 		printf("Login Session: %s\n", authtoken);
 	}
 
-	while( request=readline("oils# ") ) {
+	while( (request=readline("oils# ")) ) {
 	   int retcode = do_request(request);
 	   free(request);
 	   if( retcode ) break;
