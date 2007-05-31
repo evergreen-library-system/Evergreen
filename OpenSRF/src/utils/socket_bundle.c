@@ -72,10 +72,11 @@ int socket_open_tcp_server(socket_manager* mgr, int port, char* listen_ip) {
 	int sock_fd;
 	struct sockaddr_in server_addr;
 
+	errno = 0;
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-
 	if(sock_fd < 0) {
-		osrfLogWarning( OSRF_LOG_MARK, "tcp_server_connect(): Unable to create socket");
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_tcp_server(): Unable to create TCP socket: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
@@ -89,13 +90,17 @@ int socket_open_tcp_server(socket_manager* mgr, int port, char* listen_ip) {
 
 	server_addr.sin_port = htons(port);
 
+	errno = 0;
 	if(bind( sock_fd, (struct sockaddr*) &server_addr, sizeof(server_addr)) < 0) {
-		osrfLogWarning( OSRF_LOG_MARK, "tcp_server_connect(): cannot bind to port %d", port );
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_tcp_server(): cannot bind to port %d: %s",
+			port, strerror( errno ) );
 		return -1;
 	}
 
+	errno = 0;
 	if(listen(sock_fd, 20) == -1) {
-		osrfLogWarning( OSRF_LOG_MARK, "tcp_server_connect(): listen() returned error");
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_tcp_server(): listen() returned error: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
@@ -110,24 +115,30 @@ int socket_open_unix_server(socket_manager* mgr, char* path) {
 	int sock_fd;
 	struct sockaddr_un server_addr;
 
+	errno = 0;
 	sock_fd = socket(AF_UNIX, SOCK_STREAM, 0);
 	if(sock_fd < 0){
-		osrfLogWarning( OSRF_LOG_MARK, "socket_open_unix_server(): socket() failed");
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_unix_server(): socket() failed: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
 	server_addr.sun_family = AF_UNIX;
 	strcpy(server_addr.sun_path, path);
 
+	errno = 0;
 	if( bind(sock_fd, (struct sockaddr*) &server_addr, 
 				sizeof(struct sockaddr_un)) < 0) {
 		osrfLogWarning( OSRF_LOG_MARK, 
-			"socket_open_unix_server(): cannot bind to unix port %s", path );
+			"socket_open_unix_server(): cannot bind to unix port %s: %s",
+			path, strerror( errno ) );
 		return -1;
 	}
 
+	errno = 0;
 	if(listen(sock_fd, 20) == -1) {
-		osrfLogWarning( OSRF_LOG_MARK, "socket_open_unix_server(): listen() returned error");
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_unix_server(): listen() returned error: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
@@ -154,8 +165,9 @@ int socket_open_udp_server(
 	int sockfd;
 	struct sockaddr_in server_addr;
 
+	errno = 0;
 	if( (sockfd = socket( AF_INET, SOCK_DGRAM, 0 )) < 0 ) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to create UDP socket");
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to create UDP socket: %s", strerror( errno ) );
 		return -1;
 	}
 
@@ -164,8 +176,10 @@ int socket_open_udp_server(
 	if(listen_ip) server_addr.sin_addr.s_addr = inet_addr(listen_ip);
 	else server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
+	errno = 0;
 	if( (bind (sockfd, (struct sockaddr *) &server_addr,sizeof(server_addr))) ) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to bind to UDP port %d", port);
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to bind to UDP port %d: %s",
+			port, strerror( errno ) );
 		return -1;
 	}
 
@@ -183,8 +197,10 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // ------------------------------------------------------------------
    // Create the socket
    // ------------------------------------------------------------------
+   errno = 0;
    if( (sock_fd = socket( AF_INET, SOCK_STREAM, 0 )) < 0 ) {
-      osrfLogWarning( OSRF_LOG_MARK,  "tcp_connect(): Cannot create socket" );
+	   osrfLogWarning( OSRF_LOG_MARK,  "socket_open_tcp_client(): Cannot create TCP socket: %s",
+			strerror( errno ) );
       return -1;
    }
 
@@ -196,8 +212,10 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // ------------------------------------------------------------------
    // Get the hostname
    // ------------------------------------------------------------------
+   errno = 0;
    if( (hptr = gethostbyname( dest_addr ) ) == NULL ) {
-      osrfLogWarning(  OSRF_LOG_MARK, "tcp_connect(): Unknown Host => %s", dest_addr );
+	   osrfLogWarning(  OSRF_LOG_MARK, "socket_open_tcp_client(): Unknown Host => %s: %s",
+						dest_addr, strerror( errno ) );
       return -1;
    }
 
@@ -221,17 +239,21 @@ int socket_open_tcp_client(socket_manager* mgr, int port, char* dest_addr) {
    // ------------------------------------------------------------------
    // Bind to a local port
    // ------------------------------------------------------------------
+   errno = 0;
    if( bind( sock_fd, (struct sockaddr *) &localAddr, sizeof( localAddr ) ) < 0 ) {
-      osrfLogWarning(  OSRF_LOG_MARK, "tcp_connect(): Cannot bind to local port" );
+	   osrfLogWarning( OSRF_LOG_MARK, "socket_open_tcp_client(): Cannot bind to local port: %s",
+		strerror( errno ) );
       return -1;
    }
 
    // ------------------------------------------------------------------
    // Connect to server
    // ------------------------------------------------------------------
+   errno = 0;
    if( connect( sock_fd, (struct sockaddr*) &remoteAddr, sizeof( struct sockaddr_in ) ) < 0 ) {
-      osrfLogWarning(  OSRF_LOG_MARK, "tcp_connect(): Cannot connect to server %s", dest_addr );
-      return -1;
+	   osrfLogWarning( OSRF_LOG_MARK, "socket_open_tcp_client(): Cannot connect to server %s: %s",
+		   dest_addr, strerror(errno) );
+	   return -1;
    }
 
 	_socket_add_node(mgr, CLIENT_SOCKET, INET, sock_fd, -1 );
@@ -247,8 +269,10 @@ int socket_open_udp_client(
 	struct sockaddr_in client_addr, server_addr;
 	struct hostent* host;
 
+	errno = 0;
 	if( (host = gethostbyname(dest_addr)) == NULL) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to resolve host: %s", dest_addr);
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to resolve host: %s: %s",
+			dest_addr, strerror( errno ) );
 		return -1;
 	}
 
@@ -257,8 +281,9 @@ int socket_open_udp_client(
 			     host->h_addr_list[0], host->h_length);
 	server_addr.sin_port = htons(port);
 
+	errno = 0;
 	if( (sockfd = socket(AF_INET,SOCK_DGRAM,0)) < 0 ) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to create UDP socket");
+		osrfLogWarning( OSRF_LOG_MARK, "socket_open_udp_client(): Unable to create UDP socket: %s", strerror( errno ) );
 		return -1;
 	}
 
@@ -266,8 +291,9 @@ int socket_open_udp_client(
 	client_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	client_addr.sin_port = htons(0);
 
+	errno = 0;
 	if( (bind(sockfd, (struct sockaddr *) &client_addr, sizeof(client_addr))) < 0 ) {
-		osrfLogWarning( OSRF_LOG_MARK, "Unable to bind UDP socket");
+		osrfLogWarning( OSRF_LOG_MARK, "Unable to bind UDP socket: %s", strerror( errno ) );
 		return -1;
 	}
 
@@ -282,8 +308,9 @@ int socket_open_unix_client(socket_manager* mgr, char* sock_path) {
 	int sock_fd, len;
    struct sockaddr_un usock;
 
+   errno = 0;
    if( (sock_fd = socket( AF_UNIX, SOCK_STREAM, 0 )) < 0 ) {
-		osrfLogWarning(  OSRF_LOG_MARK, "Cannot create socket" );
+	   osrfLogWarning(  OSRF_LOG_MARK, "socket_open_unix_client(): Cannot create UNIX socket: %s", strerror( errno ) );
 		return -1;
 	}
 
@@ -292,8 +319,10 @@ int socket_open_unix_client(socket_manager* mgr, char* sock_path) {
 
    len = sizeof( usock.sun_family ) + strlen( usock.sun_path );
 
+   errno = 0;
    if( connect( sock_fd, (struct sockaddr *) &usock, len ) < 0 ) {
-      osrfLogWarning(  OSRF_LOG_MARK, "Error connecting to unix socket" );
+	   osrfLogWarning(  OSRF_LOG_MARK, "Error connecting to unix socket: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
@@ -372,11 +401,13 @@ int _socket_send(int sock_fd, const char* data, int flags) {
 
 	signal(SIGPIPE, SIG_IGN); /* in case a unix socket was closed */
 
+	errno = 0;
 	size_t r = send( sock_fd, data, strlen(data), flags );
-
+	int local_errno = errno;
+	
 	if( r == -1 ) {
-		osrfLogWarning( OSRF_LOG_MARK, "tcp_server_send(): Error sending data with return %d", r );
-		osrfLogWarning( OSRF_LOG_MARK, "Last Sys Error: %s", strerror(errno));
+		osrfLogWarning( OSRF_LOG_MARK, "_socket_send(): Error sending data with return %d", r );
+		osrfLogWarning( OSRF_LOG_MARK, "Last Sys Error: %s", strerror(local_errno));
 		return -1;
 	}
 
@@ -408,11 +439,13 @@ int socket_send_timeout( int sock_fd, const char* data, int usecs ) {
 	tv.tv_sec = secs;
 	tv.tv_usec = usecs;
 
+	errno = 0;
 	int ret = select( sock_fd + 1, NULL, &write_set, NULL, &tv);
 	if( ret > 0 ) return _socket_send( sock_fd, data, 0);
 
 	osrfLogError(OSRF_LOG_MARK, "socket_send_timeout(): "
-		"timed out on send for socket %d after %d secs, %d usecs", sock_fd, secs, usecs );
+		"timed out on send for socket %d after %d secs, %d usecs: %s",
+		sock_fd, secs, usecs, strerror( errno ) );
 
 	return -1;
 }
@@ -450,6 +483,7 @@ int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
 	struct timeval tv;
 	tv.tv_sec = timeout;
 	tv.tv_usec = 0;
+	errno = 0;
 
 	if( timeout < 0 ) {  
 
@@ -475,7 +509,7 @@ int socket_wait(socket_manager* mgr, int timeout, int sock_fd) {
 int socket_wait_all(socket_manager* mgr, int timeout) {
 
 	if(mgr == NULL) {
-		osrfLogWarning( OSRF_LOG_MARK,  "tcp_wait(): null mgr" );
+		osrfLogWarning( OSRF_LOG_MARK,  "socket_wait_all(): null mgr" );
 		return -1;
 	}
 
@@ -496,6 +530,7 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 	struct timeval tv;
 	tv.tv_sec = timeout;
 	tv.tv_usec = 0;
+	errno = 0;
 
 	if( timeout < 0 ) {  
 
@@ -607,10 +642,12 @@ int _socket_route_data_id( socket_manager* mgr, int sock_id) {
 int _socket_handle_new_client(socket_manager* mgr, socket_node* node) {
 	if(mgr == NULL || node == NULL) return -1;
 
+	errno = 0;
 	int new_sock_fd;
 	new_sock_fd = accept(node->sock_fd, NULL, NULL);
 	if(new_sock_fd < 0) {
-		osrfLogWarning( OSRF_LOG_MARK, "_socket_route_data(): accept() failed");
+		osrfLogWarning( OSRF_LOG_MARK, "_socket_handle_new_client(): accept() failed: %s",
+			strerror( errno ) );
 		return -1;
 	}
 
@@ -680,3 +717,4 @@ void socket_manager_free(socket_manager* mgr) {
 	free(mgr);
 
 }
+
