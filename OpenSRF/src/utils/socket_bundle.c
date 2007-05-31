@@ -501,16 +501,14 @@ int socket_wait_all(socket_manager* mgr, int timeout) {
 
 		// If timeout is -1, there is no timeout passed to the call to select
 		if( (retval = select( max_fd, &read_set, NULL, NULL, NULL)) == -1 ) {
-			osrfLogWarning( OSRF_LOG_MARK, "Call to select interrupted (returned -1)");
-			osrfLogWarning( OSRF_LOG_MARK, "Sys Error: %s", strerror(errno));
+			osrfLogWarning( OSRF_LOG_MARK, "select() call aborted: %s", strerror(errno));
 			return -1;
 		}
 
 	} else if( timeout != 0 ) { /* timeout of 0 means don't block */
 
 		if( (retval = select( max_fd, &read_set, NULL, NULL, &tv)) == -1 ) {
-			osrfLogWarning( OSRF_LOG_MARK,  "Call to select interrupted (returned -1)" );
-			osrfLogWarning( OSRF_LOG_MARK, "Sys Error: %s", strerror(errno));
+			osrfLogWarning( OSRF_LOG_MARK, "select() call aborted: %s", strerror(errno));
 			return -1;
 		}
 	}
@@ -648,12 +646,13 @@ int _socket_handle_client_data(socket_manager* mgr, socket_node* node) {
 
 		memset(buf, 0, RBUFSIZE);
 	}
+    int local_errno = errno; /* capture errno as set by recv() */
 
 	if(socket_find_node(mgr, sock_fd)) {  /* someone may have closed this socket */
 		clr_fl(sock_fd, O_NONBLOCK); 
 		if(read_bytes < 0) { 
-			if( errno != EAGAIN ) 
-				osrfLogWarning( OSRF_LOG_MARK,  " * Error reading socket with errno %d", errno );
+			if(local_errno != EAGAIN) 
+				osrfLogWarning(OSRF_LOG_MARK,  " * Error reading socket with error %s", strerror(local_errno));
 		}
 
 	} else { return -1; } /* inform the caller that this node has been tampered with */
