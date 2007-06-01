@@ -1,0 +1,46 @@
+# --------------------------------------------------------------
+# This makefile creates a libosrfjson.so library for a standlone
+# JSON parser.
+#
+# usage: make -f Makefile.JSON
+#
+# --------------------------------------------------------------
+
+#PG = -pg # enable profiling support
+#G = -g  # enable debugging
+CFLAGS	+= $(G) -Wall $(PG) -O2 -fPIC -DJSON_IGNORE_COMMENTS -I ../utils/
+LDLIBS 	+= 
+LDFLAGS	+= -L .  $(PG)
+
+TARGETS =	osrf_hash.o \
+			osrf_list.o \
+			osrf_json_parser.o \
+			osrf_json_object.o \
+			osrf_json_tools.o \
+			../utils/utils.o \
+			../utils/md5.o \
+			../utils/string_array.o \
+			../utils/log.o \
+
+
+all:	libosrfjson.so
+
+osrf_hash.o:	osrf_hash.c osrf_hash.h
+osrf_list.o:	osrf_list.c osrf_list.h
+osrf_json_parser.o:	osrf_json_parser.c osrf_json.h osrf_json_utils.h
+osrf_json_object.o:	osrf_json_object.c osrf_json.h osrf_json_utils.h
+osrf_json_tools.o:	osrf_json_tools.c osrf_json.h osrf_json_utils.h
+../utils/utils.o:	../utils/utils.c ../utils/utils.h
+../utils/md5.o:	../utils/md5.c ../utils/md5.h
+../utils/string_array.o:	../utils/string_array.c ../utils/string_array.h
+../utils/log.o:	../utils/log.c ../utils/log.h
+
+
+
+libosrfjson.so:	$(TARGETS)	
+	$(CC) -shared -W1 $(LDFLAGS) $(ARGETS) -o $@
+
+clean:	
+	rm -f $(TARGETS) libosrfjson.so
+
+
