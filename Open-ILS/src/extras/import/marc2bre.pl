@@ -4,13 +4,7 @@ use warnings;
 
 use lib '/openils/lib/perl5/';
 
-use OpenSRF::System;
-use OpenSRF::Application;
-use OpenSRF::EX qw/:try/;
-use OpenSRF::AppSession;
-use OpenSRF::MultiSession;
-use OpenSRF::Utils::SettingsClient;
-use OpenILS::Application::AppUtils;
+use Error qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use JSON;
