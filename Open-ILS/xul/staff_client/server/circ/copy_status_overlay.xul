@@ -98,7 +98,12 @@
 	<textbox id="copy_status_barcode_entry_textbox"/>
 	<button id="copy_status_submit_barcode_button" 
 		label="Submit"
+		accesskey="t"
 		command="cmd_copy_status_submit_barcode"/>
+	<button id="copy_status_upload_file_button" 
+		label="Upload From File"
+		accesskey="U"
+		command="cmd_copy_status_upload_file"/>
 	<spacer flex="1"/>
 	<menubar>
 	<menu label="Actions for Catalogers" accesskey="f">

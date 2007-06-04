@@ -124,8 +124,8 @@ circ.copy_status.prototype = {
 									var checkin = circ.util.checkin_via_barcode( ses(), { 'barcode' : barcode } );
 									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 								}
-								alert('Action complete.');
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
+								alert('Action complete.');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
 							}
@@ -146,8 +146,8 @@ circ.copy_status.prototype = {
 										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
 									}
 								}
-								alert('Action complete.');
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
+								alert('Action complete.');
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Barcode replacements did not likely happen.',E);
 							}
@@ -193,8 +193,8 @@ circ.copy_status.prototype = {
 								var barcode = obj.selection_list[i].barcode;
 								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
 							}
-							alert('Action complete.');
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
+							alert('Action complete.');
 						}
 					],
 					'sel_patron' : [
@@ -228,8 +228,8 @@ circ.copy_status.prototype = {
 									alert('Item with barcode ' + barcode + ' is not circulating.');
 								}
 							}
-							alert('Action complete.');
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
+							alert('Action complete.');
 						}
 					],
 
@@ -282,6 +282,52 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							obj.copy_status();
+						}
+					],
+					'cmd_copy_status_upload_file' : [
+						['command'],
+						function() {
+							function pick_file(mode) {
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								var nsIFilePicker = Components.interfaces.nsIFilePicker;
+								var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+								fp.init( 
+									window, 
+									mode == 'open' ? "Import Barcode File" : "Save Barcode File As", 
+									mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
+								);
+								fp.appendFilters( nsIFilePicker.filterAll );
+								if ( fp.show( ) == nsIFilePicker.returnOK && fp.file ) {
+									return fp.file;
+								} else {
+									return null;
+								}
+							}
+							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+							JSAN.use('util.file');
+							var f = pick_file('open');
+							var i_file = new util.file(''); i_file._file = f;
+							var content = i_file.get_content();
+							i_file.close();
+							var barcodes = content.split(/\s+/);
+                			if (barcodes.length > 0) {
+			                    JSAN.use('util.exec'); var exec = new util.exec();
+			                    var funcs = [];
+			                    for (var i = 0; i < barcodes.length; i++) {
+			                        funcs.push(
+			                            function(b){
+			                                return function() {
+			                                    obj.copy_status(b);
+			                                }
+			                            }(barcodes[i])
+			                        );
+			                    }
+								funcs.push( function() { alert('File uploaded.'); } );
+			                    exec.chain( funcs );
+			                } else {
+								alert('No barcodes found in file.');
+							}
+
 						}
 					],
 					'cmd_copy_status_print' : [
@@ -969,7 +1015,7 @@ circ.copy_status.prototype = {
 						}
 					);
 				} catch(E) {
-					obj.error.standard_unexpected_error_alert('',E);
+					obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
 				}
 			}
 			var result = obj.network.simple_request('FM_ACP_DETAILS_VIA_BARCODE', [ ses(), barcode ]);
@@ -978,7 +1024,7 @@ circ.copy_status.prototype = {
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 			
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('',E);
+			obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
 			obj.controller.view.copy_status_barcode_entry_textbox.select();
 			obj.controller.view.copy_status_barcode_entry_textbox.focus();
 		}

@@ -92,6 +92,7 @@
 
 	<commandset id="copy_status_cmds">
 		<command id="cmd_copy_status_submit_barcode" />
+		<command id="cmd_copy_status_upload_file" />
 		<command id="cmd_copy_status_print" />
 		<command id="cmd_copy_status_export" />
 		<command id="cmd_copy_status_print_export" />
