@@ -92,6 +92,19 @@ OpenILS.data.prototype = {
 
 					// Convert soft path to object reference.  Error if any but the last node is undefined
 					for (var i in path_list) stash = stash[ path_list[i] ];
+
+					/*
+
+					// experiment with storing only json in cache to avoid the [ ] -> { '0' : .., '1' : .. } bug
+
+					if (stash[observed_prop] && getKeys( obj.observers.cache[ full_path ] ).length == 0) {
+						stash['_' + observed_prop] = js2JSON(stash[observed_prop]);
+					}
+
+					stash.__defineSetter__(observed_prop, function(x) { this['_'+observed_prop] = js2JSON(x); });
+					stash.__defineGetter__(observed_prop, function() { return JSON2js(this['_'+observed_prop]); });
+					*/
+
 					stash.watch(
 						observed_prop,
 						function(p,old_value,new_value) {
@@ -595,6 +608,19 @@ OpenILS.data.prototype = {
 		this.chain.push(
 			function () {
 				obj.tree.aou = obj.list.aou;
+				obj.list.aou = util.fm_utils.flatten_ou_branch( obj.tree.aou );
+				for (var i = 0; i < obj.list.aou.length; i++) {
+					var c = obj.list.aou[i].children();
+					if (!c) c = [];
+					c = c.sort(
+						function( a, b ) {
+							if (a.shortname() < b.shortname()) return -1;
+							if (a.shortname() > b.shortname()) return 1;
+							return 0;
+						}
+					);
+					obj.list.aou[i].children( c );
+				}
 				obj.list.aou = util.fm_utils.flatten_ou_branch( obj.tree.aou );
 				obj.hash.aou = util.functional.convert_object_list_to_hash( obj.list.aou );
 			}
