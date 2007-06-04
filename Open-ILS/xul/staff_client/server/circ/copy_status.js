@@ -13,6 +13,7 @@ circ.copy_status = function (params) {
 
 circ.copy_status.prototype = {
 	'selection_list' : [],
+	'list_barcode_map' : {},
 
 	'init' : function( params ) {
 
@@ -122,7 +123,7 @@ circ.copy_status.prototype = {
 								for (var i = 0; i < obj.selection_list.length; i++) {
 									var barcode = obj.selection_list[i].barcode;
 									var checkin = circ.util.checkin_via_barcode( ses(), { 'barcode' : barcode } );
-									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 								alert('Action complete.');
@@ -141,7 +142,7 @@ circ.copy_status.prototype = {
 									try { 
 										var barcode = obj.selection_list[i].barcode;
 										var new_bc = cat.util.replace_barcode( barcode );
-										funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(new_bc) );
+										funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(new_bc) );
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
 									}
@@ -161,7 +162,7 @@ circ.copy_status.prototype = {
 								obj.spawn_copy_editor();
 								for (var i = 0; i < obj.selection_list.length; i++) {
 										var barcode = obj.selection_list[i].barcode;
-										funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+										funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
@@ -191,7 +192,7 @@ circ.copy_status.prototype = {
 							circ.util.abort_transits(obj.selection_list);
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							alert('Action complete.');
@@ -223,7 +224,7 @@ circ.copy_status.prototype = {
 								var barcode = obj.selection_list[i].barcode;
 								if (test == 't') {
 									circ.util.renew_via_barcode( barcode );
-									funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								} else {
 									alert('Item with barcode ' + barcode + ' is not circulating.');
 								}
@@ -241,7 +242,7 @@ circ.copy_status.prototype = {
 							cat.util.mark_item_damaged( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
@@ -254,7 +255,7 @@ circ.copy_status.prototype = {
 							cat.util.mark_item_missing( util.functional.map_list( obj.selection_list, function(o) { return o.copy_id; } ) );
 							for (var i = 0; i < obj.selection_list.length; i++) {
 								var barcode = obj.selection_list[i].barcode;
-								funcs.push( function(a) { return function() { obj.copy_status( a ); }; }(barcode) );
+								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 						}
@@ -945,7 +946,7 @@ circ.copy_status.prototype = {
 		}
 	},
 
-	'copy_status' : function(barcode) {
+	'copy_status' : function(barcode,refresh) {
 		var obj = this;
 		try {
 			try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
@@ -990,30 +991,44 @@ circ.copy_status.prototype = {
 						var x = document.getElementById('trim_list');
 						if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
 					}
-					obj.list.append(
-						{
-							'retrieve_id' : js2JSON( 
-								{ 
-									'renewable' : details.circ ? 't' : 'f', 
-									'copy_id' : details.copy.id(), 
-									'acn_id' : details.volume ? details.volume.id() : -1, 
-									'barcode' : barcode, 
-									'doc_id' : details.mvr ? details.mvr.doc_id() : null  
-								} 
-							),
-							'row' : {
-								'my' : {
-									'mvr' : details.mvr,
-									'acp' : details.copy,
-									'acn' : details.volume,
-									'atc' : details.transit,
-									'circ' : details.circ,
-									'ahr' : details.hold,
-								}
-							},
-							'to_top' : true,
+					var params = {
+						'retrieve_id' : js2JSON( 
+							{ 
+								'renewable' : details.circ ? 't' : 'f', 
+								'copy_id' : details.copy.id(), 
+								'acn_id' : details.volume ? details.volume.id() : -1, 
+								'barcode' : barcode, 
+								'doc_id' : details.mvr ? details.mvr.doc_id() : null  
+							} 
+						),
+						'row' : {
+							'my' : {
+								'mvr' : details.mvr,
+								'acp' : details.copy,
+								'acn' : details.volume,
+								'atc' : details.transit,
+								'circ' : details.circ,
+								'ahr' : details.hold,
+							}
+						},
+						'to_top' : true,
+					};
+					if (!refresh) {
+						var nparams = obj.list.append(params);
+						if (!document.getElementById('trim_list').checked) {
+							if (typeof obj.list_barcode_map[barcode] == 'undefined') obj.list_barcode_map[barcode] =[];
+							obj.list_barcode_map[barcode].push(nparams);
 						}
-					);
+					} else {
+						if (!document.getElementById('trim_list').checked) {
+							for (var i = 0; i < obj.list_barcode_map[barcode].length; i++) {
+								params.my_node = obj.list_barcode_map[barcode][i].my_node;
+								obj.list.refresh_row(params);
+							}
+						} else {
+							obj.list.append(params);
+						}
+					}
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('barcode = ' + barcode,E);
 				}

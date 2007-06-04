@@ -297,13 +297,13 @@ util.list.prototype = {
 		var rnode;
 		var obj = this;
 		switch (this.node.nodeName) {
-			case 'tree' : rnode = this._append_to_tree(params); break;
-			case 'listbox' : rnode = this._append_to_listbox(params); break;
+			case 'tree' : rparams = this._append_to_tree(params); break;
+			case 'listbox' : rparams = this._append_to_listbox(params); break;
 			default: throw('NYI: Need .append() for ' + this.node.nodeName); break;
 		}
-		if (rnode && params.attributes) {
+		if (rparams && params.attributes) {
 			for (var i in params.attributes) {
-				rnode.setAttribute(i,params.attributes[i]);
+				rparams.my_node.setAttribute(i,params.attributes[i]);
 			}
 		}
 		this.row_count.total++;
@@ -312,8 +312,24 @@ util.list.prototype = {
 				setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 			}
 		}
-		return rnode;
+		return rparams;
 	},
+	
+	'refresh_row' : function (params) {
+		var rnode;
+		var obj = this;
+		switch (this.node.nodeName) {
+			case 'tree' : rparams = this._refresh_row_in_tree(params); break;
+			default: throw('NYI: Need .refresh_row() for ' + this.node.nodeName); break;
+		}
+		if (rparams && params.attributes) {
+			for (var i in params.attributes) {
+				rparams.my_node.setAttribute(i,params.attributes[i]);
+			}
+		}
+		return rparams;
+	},
+
 
 	'_append_to_tree' : function (params) {
 
@@ -474,7 +490,7 @@ util.list.prototype = {
 
 				if (obj.trim_list && obj.row_count.total >= obj.trim_list) {
 					// Remove oldest row
-					//if (typeof params.to_bottom != 'undefined') {
+					//if (typeof params.to_bottom != 'undefined') 
 					if (typeof params.to_top == 'undefined') {
 						treechildren_node.removeChild( treechildren_node.firstChild );
 					} else {
@@ -486,7 +502,157 @@ util.list.prototype = {
 
 		setTimeout( function() { obj.auto_retrieve(); }, 0 );
 
-		return treeitem;
+		params.my_node = treeitem;
+		return params;
+	},
+
+	'_refresh_row_in_tree' : function (params) {
+
+		var obj = this;
+
+		if (typeof params.row == 'undefined') throw('util.list.refresh_row: Object must contain a row');
+		if (typeof params.my_node == 'undefined') throw('util.list.refresh_row: Object must contain a my_node');
+		if (params.my_node.nodeName != 'treeitem') throw('util.list.refresh_rwo: my_node must be a treeitem');
+
+		var s = ('util.list.refresh_row: params = ' + (params) + '\n');
+
+		var treeitem = params.my_node;
+		treeitem.setAttribute('retrieve_id',params.retrieve_id);
+		if (typeof params.to_bottom != 'undefined') {
+			if (typeof params.no_auto_select == 'undefined') {
+				if (!obj.auto_select_pending) {
+					obj.auto_select_pending = true;
+					setTimeout(function() {
+						dump('auto-selecting\n');
+						var idx = Number(obj.node.view.rowCount)-1;
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						obj.auto_select_pending = false;
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+					}, 1000);
+				}
+			}
+		}
+		var delete_me = [];
+		for (var i in treeitem.childNodes) if (treeitem.childNodes[i].nodeName == 'treerow') delete_me.push(treeitem.childNodes[i]);
+		for (var i = 0; i < delete_me.length; i++) treeitem.removeChild(delete_me[i]);
+		var treerow = document.createElement('treerow');
+		treeitem.appendChild( treerow );
+		treerow.setAttribute('retrieve_id',params.retrieve_id);
+
+		s += ('tree = ' + this.node + '\n');
+		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
+
+		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+
+			obj.put_retrieving_label(treerow);
+			treerow.addEventListener(
+				'flesh',
+				function() {
+
+					if (treerow.getAttribute('retrieved') == 'true') return; /* already running */
+
+					treerow.setAttribute('retrieved','true');
+
+					//dump('fleshing = ' + params.retrieve_id + '\n');
+
+					function inc_fleshed() {
+						if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
+						treerow.setAttribute('fleshed','true');
+						obj.row_count.fleshed++;
+						if (obj.row_count.fleshed == obj.row_count.total) {
+							if (typeof obj.on_all_fleshed == 'function') {
+								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+							}
+						}
+					}
+
+					params.row_node = treeitem;
+					params.on_retrieve = function(p) {
+						try {
+							p.row = params.row;
+							obj._map_row_to_treecell(p,treerow);
+							inc_fleshed();
+							var idx = obj.node.contentView.getIndexOfItem( params.row_node );
+							dump('idx = ' + idx + '\n');
+							// if current row is selected, send another select event to re-sync data that the client code fetches on selects
+							if ( obj.node.view.selection.isSelected( idx ) ) {
+								dump('dispatching select event for on_retrieve for idx = ' + idx + '\n');
+								util.widgets.dispatch('select',params.row_node);
+							}
+						} catch(E) {
+							alert('fixme2: ' + E);
+						}
+					}
+
+					if (typeof params.retrieve_row == 'function') {
+
+						params.retrieve_row( params );
+
+					} else if (typeof obj.retrieve_row == 'function') {
+
+							obj.retrieve_row( params );
+
+					} else {
+					
+							inc_fleshed();
+					}
+				},
+				false
+			);
+			/*
+			setTimeout(
+				function() {
+					util.widgets.dispatch('flesh',treerow);
+				}, 0
+			);
+			*/
+		} else {
+			obj.put_retrieving_label(treerow);
+			treerow.addEventListener(
+				'flesh',
+				function() {
+					//dump('fleshing anon\n');
+					if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
+					obj._map_row_to_treecell(params,treerow);
+					treerow.setAttribute('retrieved','true');
+					treerow.setAttribute('fleshed','true');
+					obj.row_count.fleshed++;
+					if (obj.row_count.fleshed == obj.row_count.total) {
+						if (typeof obj.on_all_fleshed == 'function') {
+							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
+						}
+					}
+				},
+				false
+			);
+			/*
+			setTimeout(
+				function() {
+					util.widgets.dispatch('flesh',treerow);
+				}, 0
+			);
+			*/
+		}
+		this.error.sdump('D_LIST',s);
+
+			try {
+
+				if (obj.trim_list && obj.row_count.total >= obj.trim_list) {
+					// Remove oldest row
+					//if (typeof params.to_bottom != 'undefined') 
+					if (typeof params.to_top == 'undefined') {
+						treechildren_node.removeChild( treechildren_node.firstChild );
+					} else {
+						treechildren_node.removeChild( treechildren_node.lastChild );
+					}
+				}
+			} catch(E) {
+			}
+
+		setTimeout( function() { obj.auto_retrieve(); }, 0 );
+
+		return params;
 	},
 
 	'put_retrieving_label' : function(treerow) {
@@ -667,7 +833,8 @@ util.list.prototype = {
 		}
 
 		this.error.sdump('D_LIST',s);
-		return listitem;
+		params.my_node = listitem;
+		return params;
 
 	},
 

@@ -84,7 +84,7 @@ patron.bills.prototype = {
 				obj.current_payments = []; obj.list.clear();
 				//FIXME//.bills virtual field
 				for (var i = 0; i < obj.bills.length; i++) {
-					var rnode = obj.list.append( 
+					var rparams = obj.list.append( 
 						{ 'row' : 
 							{ 'my' : 
 								{ 'mobts' : obj.bills[i].transaction, 'circ' : obj.bills[i].circ, 'mvr' : obj.bills[i].record } 
@@ -92,6 +92,7 @@ patron.bills.prototype = {
 							'attributes' : { 'allowevents' : true } 
 						} 
 					);
+					var rnode = rparams.my_node;
 					obj.bill_map[ obj.bills[i].transaction.id() ] = obj.bills[i];
 					var cb = rnode.getElementsByTagName('checkbox')[0];
 					var tb = rnode.getElementsByTagName('textbox')[0];
