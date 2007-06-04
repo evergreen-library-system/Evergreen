@@ -877,6 +877,8 @@ cat.copy_browser.prototype = {
 					'command',
 					function(ev) {
 						//obj.show_my_libs(ev.target.value);
+						//alert('lib picker, command caught - ml = ' + ml + '\nml.value = ' + ml.value + '\n');
+						if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
 						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 						util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 						obj.refresh_list();

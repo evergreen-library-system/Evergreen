@@ -130,7 +130,7 @@
 		<hbox>
 			<checkbox id="show_acns" label="Show Volumes" />
 			<checkbox id="show_acps" label="Show Items" />
-			<button label="Refresh" command="cmd_refresh_list" />
+			<button id="refresh_button" label="Refresh" command="cmd_refresh_list" />
 			<button label="Show Libs With Items" command="cmd_show_libs_with_copies" accesskey="L"/>
 			<!-- <button label="Show My Libs" command="cmd_show_my_libs" accesskey="M"/>-->
 			<!--
