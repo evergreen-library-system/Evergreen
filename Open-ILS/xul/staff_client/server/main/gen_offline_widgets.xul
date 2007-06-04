@@ -93,9 +93,10 @@
 		}
 
 		function build_ou_list() {
+			JSAN.use('util.fm_utils');
 			return [
 				util.functional.map_list( 
-					g.data.list.aou,
+					/*util.fm_utils.flatten_ou_branch(g.data.tree.aou)*/ g.data.list.aou,
 					function(obj) { 
 						var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += ' ';
 						return [ 
