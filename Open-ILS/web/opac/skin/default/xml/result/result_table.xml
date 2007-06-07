@@ -37,7 +37,7 @@
 
 								<td class='result_table_title_cell' name='result_table_title_cell'>
 									<!-- Title goes here -->
-									<a title="View titles for this record" name='item_title' class='search_link'> 
+									<a title="&result.table.keyword;" name='item_title' class='search_link'> 
 										<!-- Title goes here -->
 									</a>
 									<!-- Empty span used for creating unAPI links -->
@@ -54,7 +54,7 @@
 		
 							<tr style='height: 1em' >
 								<td class='result_table_author_cell'>
-									<a title="Perform an Author Search" name='item_author' class='search_link'> 
+									<a title="&result.table.author;" name='item_author' class='search_link'> 
 										<!-- Author goes here -->
 									</a>
 									<div>
@@ -123,7 +123,7 @@
 
 									<span class='hide_me' name='place_hold_span'>
 										<a style='padding-left: 8px;' href='javascript:void(0);' 
-											class='classic_link' name='place_hold_link'>Place Hold</a>
+											class='classic_link' name='place_hold_link'>&opac.holds.placeHold;</a>
 									</span>
 
 								</td>
@@ -146,7 +146,7 @@
 	         <td style='vertical-align: top;'  id='next_prev_links2'>
                         
 	            <span class='hide_me' id='result_info_div2' style='font-size: 9pt;'>
-	               <span> Results </span> 
+	               <span> &common.results; </span> 
 	               <b id='offset_start2'> </b>
 	               <span> - </span>
 	               <b id='offset_end2'> </b>
@@ -161,13 +161,13 @@
 	            <span id='start_end_links_span2' class='hide_me' 
 	               style='padding-left: 40px;' >
 	            <a class='search_page_nav_link' id='search_home_link2' 
-	               title="First results page">Start</a><a class='search_page_nav_link' 
-	               id='prev_link2' title='Previous page'>&lt;&lt;</a>
+	               title="&rdetail.page.results;">&rdetail.start;</a><a class='search_page_nav_link' 
+	               id='prev_link2' title='&rdetail.page.previous;'>&lt;&lt;</a>
             
 	            <span class='search_page_nav_link' id='page_numbers2'> </span>
 	               <a  class='search_page_nav_link' id='next_link2' 
-	                  title='Next Page'>&gt;&gt;</a><a class='search_page_nav_link' 
-	                  id='end_link2' title="Last results page">End</a>
+	                  title='&rdetail.page.next;'>&gt;&gt;</a><a class='search_page_nav_link' 
+	                  id='end_link2' title="&rdetail.page.last;">&rdetail.end;</a>
 	            </span>
                         
 	         </td>

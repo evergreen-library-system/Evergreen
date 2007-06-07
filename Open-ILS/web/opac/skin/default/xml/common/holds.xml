@@ -9,9 +9,9 @@
 						<td><input type='text' id='xul_recipient_barcode'> </input></td>
 						<td><input type='submit' value='&common.submit;' 
 							id='xul_recipient_barcode_submit'> </input></td>
-						<td><input type='submit' value='Place hold for me' 
+						<td><input type='submit' value='&common.hold.place;' 
 							id='xul_recipient_me'> </input></td>
-						<td><input type='submit' value='Cancel' onclick='showCanvas();'></input></td>
+						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();'></input></td>
 					</tr>
 
 				</tbody>
@@ -22,7 +22,7 @@
 	<div id='check_holds_box' class='hide_me non_canvas' 
 		style='margin-top: 6px; width: 100%; text-align: center'>
 		<br/><br/><br/>
-		<b>Checking for possibility of hold fulfillment...</b>
+		<b>&common.hold.check;</b>
 	</div>
 
 	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
@@ -32,54 +32,54 @@
 			<tbody>
 				<tr>
 					<td class='holds_cell color_1' 
-						align='center' colspan='2'>Create / Edit a Hold</td>
+						align='center' colspan='2'>&common.hold.create;</td>
 				</tr>
 				<tr>
 					<td class='holds_cell'>&opac.holds.recipient;:</td>
 					<td class='holds_cell' id='holds_recipient'> </td>
 				</tr>
 				<tr>
-					<td class='holds_cell'>&common.title;:</td>
+					<td class='holds_cell'>&common.title.label;</td>
 					<td class='holds_cell' id='holds_title'> </td>
 				</tr>
 				<tr>
-					<td class='holds_cell'>&common.author;:</td>
+					<td class='holds_cell'>&common.author;</td>
 					<td class='holds_cell' id='holds_author'> </td>
 				</tr>
 				<tr>
-					<td class='holds_cell'>&common.format;:</td>
+					<td class='holds_cell'>&common.format;</td>
 					<td class='holds_cell' id='holds_format'> </td>
 				</tr>
 				<tr id='hold_physical_desc_row'>
-					<td class='holds_cell'>Physical Description:</td>
+					<td class='holds_cell'>&common.physical.label;</td>
 					<td class='holds_cell' id='holds_physical_desc'> </td>
 				</tr>
 
 				<tr class='hide_me' id='holds_cn_row'>
-					<td class='holds_cell'>Call Number:</td>
+					<td class='holds_cell'>&common.call.number.label;</td>
 					<td class='holds_cell'><b id='holds_cn'/> </td>
 				</tr>
 
 				<tr class='hide_me' id='holds_copy_row'>
-					<td class='holds_cell'>Copy Barcode:</td>
+					<td class='holds_cell'>&common.copy.barcode.label;</td>
 					<td class='holds_cell'><b id='holds_copy'/> </td>
 				</tr>
 
 				<tr class='hide_me' id='holds_type_row'>
-					<td class='holds_cell'>Hold Type:</td>
-					<td class='holds_cell hide_me' id='holds_is_cn'><b>Volume Hold</b></td>
-					<td class='holds_cell hide_me' id='holds_is_copy'><b>Copy Hold</b></td>
+					<td class='holds_cell'>&common.hold.type.label;</td>
+					<td class='holds_cell hide_me' id='holds_is_cn'><b>&common.hold.volume;</b></td>
+					<td class='holds_cell hide_me' id='holds_is_copy'><b>&common.hold.copy;</b></td>
 				</tr>
 
 				<tr>
 					<td class='holds_cell'>&opac.holds.contactPhone;:</td>
 					<td class='holds_cell'>
 						<input id='holds_phone' size='13' maxlength='12'/>
-						<span style='margin-left: 4px; font-size: 7pt;'>(XXX-YYY-ZZZZ)</span>
+						<span style='margin-left: 4px; font-size: 7pt;'>&common.phone.format;</span>
 					</td>
 				</tr>
 				<tr>
-					<td class='holds_cell'>Enable phone notifications for this hold?</td>
+					<td class='holds_cell'>&common.phone.enable;</td>
 					<td class='holds_cell'>
 						<input type='checkbox' id='holds_enable_phone'  checked='checked'
 							onchange='
@@ -89,20 +89,19 @@
 				</tr>
 
 				<tr>
-					<td class='holds_cell'>&opac.holds.concactEmail;:</td>
+					<td class='holds_cell'>&opac.holds.contactEmail;:</td>
 					<td class='holds_cell' id='holds_email'> 
                         <span class='hide_me' id='holds.no_email'>
-                            (See <a class='classic_link' 
-                                id='holds.no_email.my_account'>My Account</a> for setting your email address)
+                            
                         </span>
                         <span class='hide_me' id='holds.no_email.xul'>
-                            (Patron has no configured email address)
+                           &common.email.none; 
                         </span>
 
                     </td>
 				</tr>
 				<tr>
-					<td class='holds_cell'>Enable email notifications for this hold?</td>
+					<td class='holds_cell'>&common.email.enable;</td>
 					<td class='holds_cell'>
 						<input type='checkbox' id='holds_enable_email' checked='checked'/>
 					</td>
@@ -126,7 +125,7 @@
 					<td colspan='2' align='center'>
 						<div style='padding: 8px;'>
 							<a class='classic_link' href='javascript:void(0);' style='padding: 5px;'
-								onclick='unHideMe($("holds_alt_formats_row"));'>Advanced Hold Options</a>
+								onclick='unHideMe($("holds_alt_formats_row"));'>&common.hold.advanced;</a>
 						</div>
 					</td>
 				</tr>
@@ -135,11 +134,11 @@
 
 					<td class='holds_cell'>
 						<div style='margin-bottom: 5px;'>
-							<span>Acceptable Alternative Formats: </span>
+							<span>&common.format.alternatives; </span>
 							<span> <a class='classic_link' style='color:red;' href='javascript:void(0);' 
-								onclick='alert($("holds_explain_adv").innerHTML)'>(??)</a></span>
+								onclick='alert($("holds_explain_adv").innerHTML)'>&common.help;</a></span>
 						</div>
-						<div>(control-click to select multiple formats)</div>
+						<div>&common.control.click;</div>
 					</td>
 
 					<td class='holds_cell'>
@@ -156,7 +155,7 @@
 				<tr>
 					<td class='holds_cell' align='center' colspan='2'>
 						<button id='holds_submit'>&opac.holds.placeHold;</button>
-						<button class='hide_me' id='holds_update'>Update Hold</button>
+						<button class='hide_me' id='holds_update'>&common.hold.update;</button>
 						<span style='padding: 20px;'> </span>
 						<button id='holds_cancel'>&common.cancel;</button>
 					</td>
@@ -167,15 +166,11 @@
 		<div class='hide_me' id='holds_success'>&opac.holds.success;</div>
 		<div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
 		<span class='hide_me' id='holds_bad_phone'>
-			The phone number does not have the correct format.
-			The expected format is XXX-YYY-ZZZZ
+			&common.phone.format.help;
 		</span>
 
 		<span class='hide_me' id='hold_not_allowed'>
-			No items were found that could fulfill the requested holds.  
-			It's possible that choosing a different format will result in a successful hold.
-         It is also possible that you have exceeded the number of allowable holds.
-			For further information, please consult your local librarian.
+			&common.hold.failed;
 		</span>
 
 	</div>
@@ -191,32 +186,17 @@
 
 	<span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
 
-	<span class='hide_me' id='holds_pick_good_org'>
-		Please select a physical location where your hold can be delivered.
-	</span>
+	<span class='hide_me' id='holds_pick_good_org'>&common.hold.delivery;</span>
 
-	<span class='hide_me' id='hold_dup_exists'>
-		A hold already exists on the requested item
-	</span>
+	<span class='hide_me' id='hold_dup_exists'>&common.hold.exists;</span>
 
-	<span class='hide_me' id='hold_dup_exists_override'>
-		A hold already exists on the requested item.  Would you like to create the hold anyway?
-	</span>
+	<span class='hide_me' id='hold_dup_exists_override'>&common.hold.exists.override;</span>
 
-	<span id='hold_failed_patron_barred' class='hide_me'>
-		PATRON BARRED.  
-		Please see any notes in the "Staff Notes" section of your "My Account" page or contact your local library.
-	</span>
+	<span id='hold_failed_patron_barred' class='hide_me'>&common.hold.barred;</span>
 
-	<span id='invalid_hold' class='hide_me'>
-		This hold is no longer valid.  
-		It's likely that the target for the hold was deleted from the system.
-		Please cancel this hold and place a new one.
-	</span>
+	<span id='invalid_hold' class='hide_me'>&common.hold.item.invalid;</span>
 
-	<span id='holds_invalid_recipient' class='hide_me'>
-		The patron barcode entered as the hold recipient is invalid. 
-	</span>
+	<span id='holds_invalid_recipient' class='hide_me'>&common.hold.patron.invalid;</span>
 
 </div>
 

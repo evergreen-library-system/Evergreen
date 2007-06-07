@@ -7,50 +7,50 @@
 				<td id='rdetail_copy_info_link' class='rdetail_extras_td rdetail_extras_selected' 
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("copyinfo");' 
-						class='classic_link'>Copy Summary</a>
+						class='classic_link'>&rdetail.extras.summary;</a>
 				</td>
 
 				<td id='rdetail_viewcn_link' class='rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("cn");' 
-						class='classic_link'>Shelf Browser</a>
+						class='classic_link'>&rdetail.extras.browser;</a>
 				</td>
 
 				<td id='rdetail_reviews_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("reviews");' 
-						class='classic_link'>Reviews</a>
+						class='classic_link'>&rdetail.extras.reviews;</a>
 				</td>
 
 				<td id='rdetail_toc_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("toc");' 
-						class='classic_link'>Table of Contents</a>
+						class='classic_link'>&rdetail.extras.toc;</a>
 				</td>
 
 				<td id='rdetail_excerpt_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("excerpt");' 
-						class='classic_link'>Excerpt</a>
+						class='classic_link'>&rdetail.extras.excerpt;</a>
 				</td>
 
 				<td id='rdetail_anotes_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("anotes");' 
-						class='classic_link'>Author Notes</a>
+						class='classic_link'>&rdetail.extras.author.notes;</a>
 				</td>
 
 
 				<td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("annotation");' 
-						class='classic_link'>Annotation</a>
+						class='classic_link'>&rdetail.extras.annotation;</a>
 				</td>
 
 				<td id='rdetail_viewmarc_link' class='rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("marc");' 
-						class='classic_link'>MARC Record</a>
+						class='classic_link'>&rdetail.extras.marc;</a>
 				</td>
 
 
@@ -60,7 +60,7 @@
 
 	<div id='rdetail_extras_div' style='width: 95%;'> 
 		<div id='rdetail_extras_loading' class='hide_me' 
-			style='padding: 10px;'>Loading...</div>
+			style='padding: 10px;'>&common.loading;</div>
 		<!--#include virtual="rdetail_copyinfo.xml"-->
 
 		<div id='rdetail_reviews_div' class='rdetail_extras_div hide_me'> 
@@ -86,12 +86,12 @@
 		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
 
 			<div id='cn_browse_none' class='hide_me color_4' style='width: 90%; text-align: center; margin: 10px;'>
-				There are no call numbers for this item at this location.
+				&rdetail.extras.call.null;
 			</div>
 
 			<div id='rdetail_cn_browse_select_div' 
 				style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
-				<span>Local Call Numbers: </span>
+				<span>&rdetail.extras.call.local; </span>
 				<select id='cn_browse_selector'>
 				</select>
 			</div>

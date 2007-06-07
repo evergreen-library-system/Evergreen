@@ -12,45 +12,45 @@
 						<img style='border: none;' id='rdetail_image'> </img>
 					</a>
 				</td>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.title;</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
 				<td class='rdetail_item' id='rdetail_title'> </td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.author;</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.author;</td>		
 				<td class='rdetail_item'>
-					<a title='Perform an author search' id='rdetail_author'> </a>
+					<a title='&rdetail.author.search;' id='rdetail_author'> </a>
 				</td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.isbn;</td>			
+				<td nowrap='nowrap' class='rdetail_desc'>&common.isbn;</td>			
 				<td class='rdetail_item' id='rdetail_isbn'> </td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.edition;</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.edition;</td>		
 				<td class='rdetail_item' id='rdetail_edition'> </td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.pubdate;</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.pubdate;</td>		
 				<td class='rdetail_item' id='rdetail_pubdate'> </td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.publisher;</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.publisher;</td>		
 				<td class='rdetail_item' id='rdetail_publisher'> </td>
 			</tr>
 
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>Physical Description</td>		
+				<td nowrap='nowrap' class='rdetail_desc'>&common.physical;</td>		
 				<td class='rdetail_item' id='rdetail_physical_desc'> </td>
 			</tr>
 
 			<tr>
-				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.detailMain.tor;</td>			
+				<td nowrap='nowrap' class='rdetail_desc'>&common.format;</td>			
 				<td class='rdetail_item'>
 					<img id='rdetail_tor_pic' class='tor_pic'> </img>
 					<span id='rdetail_tor' style='padding-left: 5px;'> </span>
@@ -63,7 +63,7 @@
 			</tr>
 
 			<tr class='hide_me' id='rdetail_online_row'>
-				<td nowrap='nowrap' class='rdetail_desc'>Online Resources</td>
+				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.online;</td>
 				<td class='rdetail_item' id='rdetail_online'> </td>
 			</tr>
 

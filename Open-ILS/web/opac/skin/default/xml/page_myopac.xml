@@ -4,7 +4,7 @@
     <script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/DP_DateExtensions.js'/>
 
 	<script> config.ids.altcanvas.myopac_reload = 'myopac_reloading'; </script>
-	<div id='myopac_reloading' class='hide_me non_canvas'> Loading... </div>
+	<div id='myopac_reloading' class='hide_me non_canvas'> &common.loading; </div>
 
 	<script language='javascript'>
 		config.ids.myopac = {};
@@ -23,27 +23,27 @@
 
 				<td class='myopac_link' id='myopac_summary_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("summary");'> Account Summary</a>
+						onclick='myOPACChangePage("summary");'>&myopac.account;</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_checked_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("checked");'>Items Checked Out</a>
+						onclick='myOPACChangePage("checked");'>&myopac.checkouts;</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_holds_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("holds");'>Items on Hold</a>
+						onclick='myOPACChangePage("holds");'>&myopac.holds;</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_fines_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("fines");'>Fines</a>
+						onclick='myOPACChangePage("fines");'>&myopac.fines;</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_prefs_td' >
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("prefs");'>Account Preferences</a>
+						onclick='myOPACChangePage("prefs");'>&myopac.preferences;</a>
 				</td>
 
 				<td class='myopac_link' id='myopac_bookbag_td' nowrap='nowrap'>
@@ -51,7 +51,7 @@
 					<span><img src='../../../../images/bookbag.gif' style='width: 25px; height: 25px;'> </img></span>
 					-->
 					<a href='javascript:void(0);' 
-						onclick='myOPACChangePage("bookbag");'>My Bookbags</a>
+						onclick='myOPACChangePage("bookbag");'>&myopac.bookbags;</a>
 
 				</td>
 

@@ -7,21 +7,21 @@
 
 		<thead class='color_3'>
 			<tr>
-				<td width='30%'>Title</td>
-				<td width='30%'>Author</td>
-				<td>Formats</td>
-				<td>Pickup Location</td>
-				<td>Status</td>
-				<td>Edit/Cancel</td>
+				<td width='30%'>&common.title;</td>
+				<td width='30%'>&common.author;</td>
+				<td>&myopac.holds.formats;</td>
+				<td>&myopac.holds.location;</td>
+				<td>&common.status;</td>
+				<td>&myopac.holds.edit.cancel;</td>
 			</tr>
 		</thead>
 
 		<tbody id='myopac_holds_tbody'>
 
 			<tr id='myopac_holds_none' class='hide_me'>
-				<td colspan='10'><b>You have no items on hold at this time</b></td>
+				<td colspan='10'><b>&myopac.holds.status.none;</b></td>
 			</tr>
-			<tr id='myopac_holds_loading'><td>Loading...</td></tr>
+			<tr id='myopac_holds_loading'><td>&myopac.loading;</td></tr>
 
 			<tr id='myopac_holds_row' class='hide_me'>
 
@@ -41,16 +41,16 @@
 
 				<td name='myopac_holds_location'></td>
 				<td>
-					<span class='hide_me' name='hold_status_waiting'>Waiting for copy</span>
-					<span class='hide_me' name='hold_status_transit'>In Transit</span>
-					<span class='hide_me' name='hold_status_available'><b style='color:red'>Ready for Pickup</b></span>
+					<span class='hide_me' name='hold_status_waiting'>&myopac.holds.status.waiting;</span>
+					<span class='hide_me' name='hold_status_transit'>&myopac.holds.status.intransit;</span>
+					<span class='hide_me' name='hold_status_available'><b style='color:red'></b></span>
 				</td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 
-						name='myopac_holds_edit_link' class='classic_link'>Edit</a>
+						name='myopac_holds_edit_link' class='classic_link'>&myopac.holds.edit;</a>
 					<a href='javascript:void(0);' 
-						name='myopac_holds_cancel_link' class='classic_link'>Cancel</a>
+						name='myopac_holds_cancel_link' class='classic_link'></a>
 				</td>
 
 			</tr>
@@ -58,7 +58,7 @@
 	</table>
 
 	<span class='hide_me' id='myopac_holds_cancel_verify'>
-		If you wish to cancel the selected hold, click OK, otherwise click Cancel.
+		&myopac.holds.verify;
 	</span>
 
 </div>

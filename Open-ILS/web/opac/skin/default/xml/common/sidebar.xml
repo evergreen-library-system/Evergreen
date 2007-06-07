@@ -48,9 +48,9 @@
 				<a id='sidebar_title_results'>&navigate.titleResults;</a>
 			</div>
 	
-			<div title="Record Details"
+			<div title="&navigate.record.details;"
 				id='rdetail_link_div' class="side_bar_item hide_me">
-				<span>My Title Details</span>
+				<span>&navigate.title.details;</span>
 			</div>
 		</div>
 	</div>
@@ -104,17 +104,17 @@
 		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
 		<div id='adv_quick_search'>
-			<div class='adv_quick_search'><b>Quick Search</b></div>
+			<div class='adv_quick_search'><b>&sidebar.quick.search;</b></div>
 			<div style='margin-top: 8px;'>
 				<table><tbody><tr>
 					<td>
 						<select id='adv_quick_type' style='width: 6em;'>
-							<option value='isbn'>ISBN</option>
-							<option value='issn'>ISSN</option>
-							<option value='cn'>Call Number</option>
-							<option value='lccn'>LCCN</option>
-							<option value='tcn'>TCN</option>
-                            <option value='barcode'>Item Barcode</option>
+							<option value='isbn'>&opac.advanced.quick.isbn;</option>
+							<option value='issn'>&opac.advanced.quick.issn;</option>
+							<option value='cn'>&opac.advanced.quick.cn;</option>
+							<option value='lccn'>&opac.advanced.quick.lccn;</option>
+							<option value='tcn'>&opac.advanced.quick.tcn;</option>
+							<option value='barcode'>&opac.advanced.quick.barcode;</option>
 						</select>
 					</td><td>
 						<input type='text' id='adv_quick_text' size='16'> </input>
@@ -122,9 +122,9 @@
 				</tr></tbody></table>
 			</div>
 
-            <span class='hide_me' id='myopac.copy.not.found'>No copy with the requested barcode was found</span>
+            <span class='hide_me' id='myopac.copy.not.found'>&sidebar.copy.not.found;</span>
 			<div style='margin-top: 8px;' class='adv_quick_search_submit'>
-				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>Submit</a>
+				<a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>&common.submit;</a>
 			</div>
 		</div>
 	</div>
@@ -132,17 +132,17 @@
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
 		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
-		<div class='adv_quick_search'><b>MARC Expert Search</b></div>
+		<div class='adv_quick_search'><b>&search.marc;</b></div>
 		<table style='margin: 3px; border: 3px solid #E0E0E0; width: 100%;' id='adv_sdbar_table'>
 			<tbody>
 				<tr>
-					<td>Tag:</td>
+					<td>&search.marc.tag;</td>
 					<td><input name='advanced.marc.tag' maxlength='3' size='3'> </input></td>
-					<td>Subfield:</td>
+					<td>&search.marc.subfield;</td>
 					<td><input name='advanced.marc.subfield' maxlength='1' size='1'> </input></td>
 				</tr>
 				<tr>
-					<td>Value:</td>
+					<td>&search.marc.value;</td>
 					<td colspan='3'><input name='advanced.marc.value' size='18'> </input></td>
 				</tr>
 				<tr name='crow' class='hide_me'>
@@ -151,15 +151,15 @@
 						onclick='
 							var div = $("adv_marc_search_sidebar");
 							if( div.getElementsByTagName("table").length > 1 )
-								div.removeChild(this.parentNode.parentNode.parentNode.parentNode);'>close</a>
+								div.removeChild(this.parentNode.parentNode.parentNode.parentNode);'>&common.close;</a>
 					</td>
 				</tr>
 								
 			</tbody>
 		</table>
 		<div id='adv_marc_submit' class='adv_quick_search_submit'>
-			<a style='margin-right: 4px;' class='classic_link' href='javascript:advAddMARC();'>Add Row</a>
-			<a style='margin-left: 4px;' class='classic_link' href='javascript:advMARCRun();'>Submit</a>
+			<a style='margin-right: 4px;' class='classic_link' href='javascript:advAddMARC();'>&search.marc.add.row;</a>
+			<a style='margin-left: 4px;' class='classic_link' href='javascript:advMARCRun();'>&common.submit;</a>
 		</div>
 	</div>
 

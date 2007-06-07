@@ -6,17 +6,17 @@
 			<td colspan='10'>
 				<div style='text-align: center; margin-top: 6px; margin-bottom: 6px'>
 				
-					<a name='print' href='javascript:void(0);' class='classic_link'>print these details</a>
+					<a name='print' href='javascript:void(0);' class='classic_link'>&rdetail.print;</a>
 					<table class='data_grid data_grid_center' style='width: 100%'>
 						<thead>
 							<tr>
-								<td width='33%'>Barcode</td>
-								<td>Status</td>
-								<td>Location</td>
-								<td name='age_protect_label' class='hide_me'>Age Hold Protection</td>
-								<td name='create_date_label' class='hide_me'>Create Date</td>
-								<td name='holdable_label' class='hide_me'>Holdable</td>
-								<td name='due_date_label' class='hide_me'>Due Date</td>
+								<td width='33%'>&rdetail.cn.barcode;</td>
+								<td>&common.status;</td>
+								<td>&rdetail.cn.location;</td>
+								<td name='age_protect_label' class='hide_me'>&rdetail.cn.hold.age;</td>
+								<td name='create_date_label' class='hide_me'>&rdetail.cn.genesis;</td>
+								<td name='holdable_label' class='hide_me'>&rdetail.cn.holdable;</td>
+								<td name='due_date_label' class='hide_me'>&rdetail.cn.due;</td>
 							</tr>
 						</thead>
 						<tbody name='copies_tbody' class='copy_details_table' width='100%'>
@@ -25,15 +25,15 @@
 
 								<td>
 									<span name='barcode'> </span>
-									<a class='hide_me classic_link copy_more_info' name='details_link'>more info...</a>
-									<a class='hide_me classic_link copy_more_info' name='less_details_link'>less info</a>
+									<a class='hide_me classic_link copy_more_info' name='details_link'>&rdetail.cn.more;</a>
+									<a class='hide_me classic_link copy_more_info' name='less_details_link'>&rdetail.cn.less;</a>
 									<a class='hide_me classic_link copy_more_info' name='copy_hold_link' 
-										href='javascript:void(0);'>place hold</a>
+										href='javascript:void(0);'>&rdetail.cn.hold;</a>
 								</td>
 
 								<td name='status'> </td>
 								<td name='location'> </td>
-								<td name='age_protect_value' class='hide_me'>- Disabled -</td>
+								<td name='age_protect_value' class='hide_me'>&rdetail.cn.disabled;</td>
 								<td name='create_date_value' class='hide_me'> </td>
 
 								<td name='copy_holdable_td' class='hide_me'>
@@ -52,8 +52,8 @@
 										<tbody name='extras_tbody'>
 											<tr name='extras_row' class='hide_me'>
 												<td name='type' width='20%'> 
-													<span name='note' class='hide_me'><b>Copy Note</b></span>
-													<span name='cat' class='hide_me'><b>Copy Category</b></span>
+													<span name='note' class='hide_me'><b>&rdetail.cn.note;</b></span>
+													<span name='cat' class='hide_me'><b>&rdetail.cn.category;</b></span>
 												</td>
 												<td>
 													<span name='key'> </span> : <span name='value'> </span>
@@ -72,29 +72,29 @@
 	</tbody>
 </table>
 
-<span class='hide_me' id='rdetail.yes'>Yes</span>
-<span class='hide_me' id='rdetail.no'>No</span>
+<span class='hide_me' id='rdetail.yes'>&common.yes;</span>
+<span class='hide_me' id='rdetail.no'>&common.no;</span>
 
 
 <div id='rdetail_print_details' class='hide_me'>
 	<div style='text-align: center; padding: 20px; width: 100%'>
 		<div style='width:100%; border: 2px solid #E0F0E0; margin-bottom: 20px;'>
-			<input type='submit' value='Print Page' onclick='window.print();'> </input>
+			<input type='submit' value='&rdetail.cn.print;' onclick='window.print();'> </input>
 		</div>
 		<div name='body'> 
 			<table>
 				<tbody name='tbody'>
-					<tr><td>Library</td><td colspan='2' name='lib'></td></tr>
-					<tr><td>Title</td><td colspan='2' name='title'></td></tr>
-					<tr><td>Author</td><td colspan='2' name='author'></td></tr>
-					<tr><td>Edition</td><td colspan='2' name='edition'></td></tr>
-					<tr><td>Publication Date</td><td colspan='2' name='pubdate'></td></tr>
-					<tr><td>Publisher</td><td colspan='2' name='publisher'></td></tr>
-					<tr><td>Physical Description</td><td colspan='2' name='phys'></td></tr>
+					<tr><td>&common.library;</td><td colspan='2' name='lib'></td></tr>
+					<tr><td>&common.title;</td><td colspan='2' name='title'></td></tr>
+					<tr><td>&common.author;</td><td colspan='2' name='author'></td></tr>
+					<tr><td>&common.edition;</td><td colspan='2' name='edition'></td></tr>
+					<tr><td>&common.pubdate;</td><td colspan='2' name='pubdate'></td></tr>
+					<tr><td>&common.publisher;</td><td colspan='2' name='publisher'></td></tr>
+					<tr><td>&common.physical;</td><td colspan='2' name='phys'></td></tr>
 					<tr>
 						<td colspan='3' style='background: #E0F0E0;'> </td>
 					</tr>
-					<tr name='cnrow'><td><b>Call Number</b></td><td><b colspan='2' name='cn'></b></td></tr>
+					<tr name='cnrow'><td><b>&common.callnumber;</b></td><td><b colspan='2' name='cn'></b></td></tr>
 				</tbody>
 			</table>
 		</div>
