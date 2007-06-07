@@ -55,44 +55,44 @@
 
 	<vbox flex="1" class="my_overflow">
 		<hbox>
-			<groupbox id="lib_hbox">
-				<caption label="Transit Library"/> 
-				<hbox>
-					<menulist id="transit_direction">
-						<menupopup>
-							<menuitem label="Transit to" value="transit_to" selected="true"/>
-							<menuitem label="Transit from" value="transit_from" />
-						</menupopup>
-					</menulist>
-					<hbox id="libmenu_placeholder"/>
-				</hbox>
+			<groupbox id="lib_hbox" orient="horizontal">
+				<caption label="Transit Filter" class="shrinkable_groupbox"/> 
+				<vbox>
+					<label value="Transit Library" class="header"/>
+					<hbox>
+						<menulist id="transit_direction">
+							<menupopup>
+								<menuitem label="Transit to" value="transit_to" selected="true"/>
+								<menuitem label="Transit from" value="transit_from" />
+							</menupopup>
+						</menulist>
+						<hbox id="libmenu_placeholder"/>
+					</hbox>
+					<label value="Transit Date falls between" class="header"/> 
+					<hbox>
+						<menulist id="sdate" editable="true">
+							<menupopup>
+								<menuitem label="Today" selected="true"/>
+								<menuitem label="Today - 7 days" />
+								<menuitem label="Today - 14 days" />
+								<menuitem label="Today - 21 days" />
+								<menuitem label="Today - 30 days" />
+								<menuitem label="The Beginning" />
+							</menupopup>
+						</menulist>
+						<menulist id="edate" editable="true">
+							<menupopup>
+								<menuitem label="Today" selected="true"/>
+								<menuitem label="Today - 7 days" />
+								<menuitem label="Today - 14 days" />
+								<menuitem label="Today - 21 days" />
+								<menuitem label="Today - 30 days" />
+							</menupopup>
+						</menulist>
+					</hbox>
+				</vbox>
+				<button label="Retrieve Transits" accesskey="T" command="cmd_kick_off"/>
 			</groupbox>
-			<groupbox id="date_hbox">
-				<caption label="Transit Date falls between"/> 
-				<hbox>
-					<menulist id="sdate" editable="true">
-						<menupopup>
-							<menuitem label="Today" selected="true"/>
-							<menuitem label="Today - 7 days" />
-							<menuitem label="Today - 14 days" />
-							<menuitem label="Today - 21 days" />
-							<menuitem label="Today - 30 days" />
-							<menuitem label="The Beginning" />
-						</menupopup>
-					</menulist>
-					<menulist id="edate" editable="true">
-						<menupopup>
-							<menuitem label="Today" selected="true"/>
-							<menuitem label="Today - 7 days" />
-							<menuitem label="Today - 14 days" />
-							<menuitem label="Today - 21 days" />
-							<menuitem label="Today - 30 days" />
-						</menupopup>
-					</menulist>
-				</hbox>
-			</groupbox>
-			<spacer flex="1"/>
-			<button label="Retrieve Transits" accesskey="T" command="cmd_kick_off"/>
 		</hbox>
 
 		<groupbox flex="1">
