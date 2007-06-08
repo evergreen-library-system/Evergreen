@@ -397,23 +397,23 @@ patron.display.prototype = {
 							function(req) {
 								try {
 									var msg = ''; obj.stop_checkouts = false;
-									if (patron.alert_message()) msg += 'Alert message: "' + patron.alert_message() + '"\n';
+									if (patron.alert_message()) msg += 'Alert message: "' + patron.alert_message() + '"<br/><br/>\n';
 									//alert('obj.barcode = ' + obj.barcode);
 									if (obj.barcode) {
 										if (patron.cards()) for (var i = 0; i < patron.cards().length; i++) {
 											//alert('card #'+i+' == ' + js2JSON(patron.cards()[i]));
 											if ( (patron.cards()[i].barcode()==obj.barcode) && ( ! get_bool(patron.cards()[i].active()) ) ) {
-												msg += 'Patron account retrieved with an INACTIVE card.\n';
+												msg += 'Patron account retrieved with an INACTIVE card.<br/><br/>\n';
 												obj.stop_checkouts = true;
 											}
 										}
 									}
 									if (get_bool(patron.barred())) {
-										msg += 'Patron account is BARRED.\n';
+										msg += 'Patron account is BARRED.<br/><br/>\n';
 										obj.stop_checkouts = true;
 									}
 									if (!get_bool(patron.active())) {
-										msg += 'Patron account is INACTIVE.\n';
+										msg += 'Patron account is INACTIVE.<br/><br/>\n';
 										obj.stop_checkouts = true;
 									}
 									if (patron.expire_date()) {
@@ -428,7 +428,7 @@ patron.display.prototype = {
 										expire = expire.getTime()/1000
 
 										if (expire < now) {
-											msg += 'Patron account is EXPIRED.\n';
+											msg += 'Patron account is EXPIRED.<br/><br/>\n';
 										obj.stop_checkouts = true;
 										}
 									}
@@ -438,7 +438,7 @@ patron.display.prototype = {
 										if (msg != obj.old_msg) {
 											//obj.error.yns_alert(msg,'Alert Message','OK',null,null,'Check here to confirm this message.');
 											document.documentElement.firstChild.focus();
-											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>Alert</h1><blockquote><pre>' + msg + '\r\n\r\nPress a navigation button above (e.g. Check Out) to clear this alert.</pre></blockquote>');
+											var data_url = window.escape("<img src='" + xulG.url_prefix('/xul/server/skin/media/images/stop_sign.png') + "'/>" + '<h1>Alert</h1><blockquote><p>' + msg + '</p>\r\n\r\n<pre>Press a navigation button above (e.g. Check Out) to clear this alert.</pre></blockquote>');
 											obj.right_deck.set_iframe('data:text/html,'+data_url,{},{});
 											obj.old_msg = msg;
 										} else {
