@@ -13,6 +13,10 @@ int main( int argc, char* argv[] ) {
 	}
 
 	osrfConfig* cfg = osrfConfigInit( argv[1], argv[2] );
+	if( !cfg ) {
+		fprintf( stderr, "Unable to load configuration file %s\n", argv[1] );
+		return -1;
+	}
 
 	init_proc_title( argc, argv );
 	set_proc_title( "ChopChop" );
@@ -26,6 +30,27 @@ int main( int argc, char* argv[] ) {
 	char* lfile			= osrfConfigGetValue(cfg, "/logfile");
 	char* facility		= osrfConfigGetValue(cfg, "/syslog");
 
+	if(!domain)
+		fputs( "No domain specified in configuration file\n", stderr );
+	
+	if(!secret)
+		fputs( "No secret specified in configuration file\n", stderr );
+	
+	if(!sport)
+		fputs( "No port specified in configuration file\n", stderr );
+	
+	if(!listenaddr)
+		fputs( "No listen_address specified in configuration file\n", stderr );
+	
+	if(!llevel)
+		fputs( "No loglevel specified in configuration file\n", stderr );
+	
+	if(!lfile)
+		fputs( "No logfile specified in configuration file\n", stderr );
+	
+	if(!s2sport)
+		fputs( "No s2sport specified in configuration file\n", stderr );
+	
 	if(!(domain && secret && sport && listenaddr && llevel && lfile && s2sport)) {
 		fprintf(stderr, "Configuration error for ChopChop - missing key ingredient\n");
 		return -1;
@@ -35,10 +60,8 @@ int main( int argc, char* argv[] ) {
 	int s2port = atoi(s2sport);
 	int level = atoi(llevel);
 
-	if(!lfile) { fprintf(stderr, "Log file needed\n"); return -1; }
-
 	if(!strcmp(lfile, "syslog")) {
-		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "chochop", level );
+		osrfLogInit( OSRF_LOG_TYPE_SYSLOG, "chopchop", level );
 		osrfLogSetSyslogFacility(osrfLogFacilityToInt(facility));
 
 	} else {
