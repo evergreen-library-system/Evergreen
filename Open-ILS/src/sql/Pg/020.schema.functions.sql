@@ -1,3 +1,21 @@
+CREATE OR REPLACE FUNCTION public.non_filing_normalize ( TEXT, "char" ) RETURNS TEXT AS $$
+        SELECT  SUBSTRING(
+                        REGEXP_REPLACE(
+                                REGEXP_REPLACE(
+                                        $1,
+                                        '\\W*$',
+					''
+				),
+                                '  ',
+                                ' '
+                        ),
+                        CASE
+				WHEN $2::INT NOT BETWEEN 48 AND 57 THEN 1
+				ELSE $2::TEXT::INT + 1
+			END
+		);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	my $txt = shift;
 	$txt =~ s/^\s+//o;
