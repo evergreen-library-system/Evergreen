@@ -118,7 +118,7 @@ sub rawdata {
 		$self->{record}->raw( @_ );
 }
 
-*{__PACAKGE__ . '::raw'} = \&rawdata; 
+*{__PACKAGE__ . '::raw'} = \&rawdata; 
 
 sub AUTOLOAD {
 	my $self = shift;
