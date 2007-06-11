@@ -28,16 +28,16 @@ add_symlinks:
 	ln -s ../../chrome/content/main/lang.js server/main/lang.js
 	ln -s ../../chrome/content/main/simple_auth.xul server/main/simple_auth.xul
 	ln -s ../../chrome/content/OpenILS/data.js server/OpenILS/data.js
-	(cd build/chrome/content/OpenSRF/; for x in *; do ln -s  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
+	#(cd build/chrome/content/OpenSRF/; for x in *; do ln -s  ../../../build/chrome/content/OpenSRF/$$x ../../../../chrome/content/OpenSRF/$$x; done)
 	(cd build/chrome/content/OpenILS/util/; for x in *; do if [ $$x != 'fmall.js' ]; then ln -s  ../../../../build/chrome/content/OpenILS/util/$$x ../../../../../chrome/content/OpenILS/util/$$x; fi ; done)
-	(cd build/chrome/content/legacy/; for x in [a-z]*; do ln -s  ../../../build/chrome/content/legacy/$$x ../../../../chrome/content/legacy/$$x; done)
+	#(cd build/chrome/content/legacy/; for x in [a-z]*; do ln -s  ../../../build/chrome/content/legacy/$$x ../../../../chrome/content/legacy/$$x; done)
 	(cd build/chrome/locale/en-US/; for x in *; do ln -s  ../../../build/chrome/locale/en-US/$$x ../../../../chrome/locale/en-US/$$x; done)
 
 build_dir:
 	@echo
 	@echo '*********************************************************  Kludge, make sure these directories exists '
 	mkdir -p chrome/locale/en-US/
-	mkdir -p chrome/content/OpenSRF/
+	#mkdir -p chrome/content/OpenSRF/
 	@echo
 	@echo '*********************************************************  Creating and populating build/ '
 	mkdir -p build/
@@ -76,14 +76,14 @@ generated:
 open-ils:
 	@echo
 	@echo '********************************************************* Grabbing more OPAC code and legacy code and custom code'
-	cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
+	#cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
-	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* build/chrome/content/legacy/
-	cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* build/chrome/content/legacy/
+	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* build/chrome/content/legacy/
+	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* build/chrome/content/legacy/
 	cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd build/chrome/locale/en-US/
 	cp -R ../../../Evergreen/xul/staff_client/server/ build/
 	external/prune_dirs.sh build/
-	find build/chrome/content/legacy/ -type f -name '*.*' -exec sed -i s/evergreen/open_ils_staff_client/g {} \;
+	#find build/chrome/content/legacy/ -type f -name '*.*' -exec sed -i s/evergreen/open_ils_staff_client/g {} \;
 
 custom:
 	@echo
