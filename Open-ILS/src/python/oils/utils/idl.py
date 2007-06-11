@@ -1,133 +1,115 @@
-# -----------------------------------------------------------------------
-# Copyright (C) 2007  Georgia Public Library Service
-# Bill Erickson <billserickson@gmail.com>
-# 
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-# 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-# -----------------------------------------------------------------------
-
-from osrf.json import *
+from osrf.net_obj import osrfNetworkRegisterHint
 from osrf.log import *
 from osrf.set import osrfSettingsValue
 
-import sys, libxml2, osrf.conf, string
+import sys, string, xml.dom.minidom
 from oils.const import OILS_NS_OBJ, OILS_NS_PERSIST, OILS_NS_REPORTER
 
 __global_parser = None
 
 def oilsParseIDL():
-	global __global_parser
-	idlParser = oilsIDLParser();
-	idlParser.setIDL(osrfSettingsValue('IDL'))
-	idlParser.parseIDL()
-	__global_parser = idlParser
+    global __global_parser
+    idlParser = oilsIDLParser();
+    idlParser.setIDL(osrfSettingsValue('IDL'))
+    idlParser.parseIDL()
+    __global_parser = idlParser
 
 def oilsGetIDLParser():
-	global __global_parser
-	return __global_parser
+    global __global_parser
+    return __global_parser
 
 class oilsIDLParser(object):
 
-	def __init__(self):
-		self.IDLObject = {}
+    def __init__(self):
+        self.IDLObject = {}
 
-	def setIDL(self, file):
-		osrfLogInfo("setting IDL file to " + file)
-		self.idlFile = file
+    def setIDL(self, file):
+        osrfLogInfo("setting IDL file to " + file)
+        self.idlFile = file
 
-	def parseIDL(self):
-		"""Parses the IDL file and builds class objects"""
+    def __getAttr(self, node, name, ns=None):
+        """ Find the attribute value on a given node 
+            Namespace is ignored for now.. 
+            not sure if minidom has namespace support.
+            """
+        for (k, v) in node.attributes.items():
+            if k == name:
+                return v
+        return None
 
-		doc	= libxml2.parseFile(self.idlFile)
-		root	= doc.children
-		child = root.children
+    def parseIDL(self):
+        """Parses the IDL file and builds class objects"""
 
-		while child:
-		
-			if child.type == 'element':
-		
-				# -----------------------------------------------------------------------
-				# 'child' is the main class node for a fieldmapper class.
-				# It has 'fields' and 'links' nodes as children.
-				# -----------------------------------------------------------------------
+        doc = xml.dom.minidom.parse(self.idlFile)
+        root = doc.childNodes[0]
 
-				id = child.prop('id')
-				self.IDLObject[id] = {}
-				obj = self.IDLObject[id]
-				obj['fields'] = []
+        for child in root.childNodes:
+        
+            if child.nodeType == child.ELEMENT_NODE:
+        
+                # -----------------------------------------------------------------------
+                # 'child' is the main class node for a fieldmapper class.
+                # It has 'fields' and 'links' nodes as children.
+                # -----------------------------------------------------------------------
 
-				obj['controller'] = child.prop('controller')
-				obj['fieldmapper'] = child.nsProp('fieldmapper', OILS_NS_OBJ)
-				obj['virtual'] = child.nsProp('virtual', OILS_NS_PERSIST)
-				obj['rpt_label'] = child.nsProp('label', OILS_NS_REPORTER)
+                id = self.__getAttr(child, 'id')
+                self.IDLObject[id] = {}
+                obj = self.IDLObject[id]
+                obj['fields'] = []
 
-				class_node = child.children
-				#osrfLogInternal("parseIDL(): parsing class %s" % id)
-		
-				keys = []
-				while class_node:
-					if class_node.type == 'element':
-						if class_node.name == 'fields':
-							keys = self.parseFields(id, class_node)
-					class_node = class_node.next
+                obj['controller'] = self.__getAttr(child, 'controller')
+                obj['fieldmapper'] = self.__getAttr(child, 'oils_obj:fieldmapper', OILS_NS_OBJ)
+                obj['virtual'] = self.__getAttr(child, 'oils_perist:virtual', OILS_NS_PERSIST)
+                obj['rpt_label'] = self.__getAttr(child, 'reporter:label', OILS_NS_REPORTER)
 
-				#obj['fields'] = keys
-				osrfNetworkRegisterHint(id, keys, 'array' )
+                keys = []
+                for classNode in child.childNodes:
+                    if classNode.nodeType == classNode.ELEMENT_NODE:
+                        if classNode.nodeName == 'fields':
+                            keys = self.parseFields(id, classNode)
 
-			child = child.next
+                osrfNetworkRegisterHint(id, keys, 'array' )
 
-		doc.freeDoc()
+        doc.unlink()
 
 
-	def parseFields(self, cls, fields):
-		"""Takes the fields node and parses the included field elements"""
+    def parseFields(self, cls, fields):
+        """Takes the fields node and parses the included field elements"""
 
-		field = fields.children
-		keys = []
-		idlobj = self.IDLObject[cls]
+        keys = []
+        idlobj = self.IDLObject[cls]
 
-		while field:
-			if field.type == 'element':
-				keys.append(None)
-			field = field.next
-		
-		field = fields.children
-		while field:
-			obj = {}
-			if field.type == 'element':
-				name			= field.prop('name')
-				position		= int(field.nsProp('array_position', OILS_NS_OBJ))
-				obj['name'] = name
+        for field in fields.childNodes:
+            if field.nodeType == field.ELEMENT_NODE:
+                keys.append(None)
+        
+        for field in fields.childNodes:
+            obj = {}
+            if field.nodeType == fields.ELEMENT_NODE:
+                name            = self.__getAttr(field, 'name')
+                position        = int(self.__getAttr(field, 'oils_obj:array_position', OILS_NS_OBJ))
+                obj['name'] = name
 
-				try:
-					keys[position] = name
-				except Exception, e:
-					osrfLogErr("parseFields(): position out of range.  pos=%d : key-size=%d" % (position, len(keys)))
-					raise e
+                try:
+                    keys[position] = name
+                except Exception, e:
+                    osrfLogErr("parseFields(): position out of range.  pos=%d : key-size=%d" % (position, len(keys)))
+                    raise e
 
-				virtual = field.nsProp('virtual', OILS_NS_PERSIST)
-				obj['rpt_label']	= field.nsProp('label', OILS_NS_REPORTER)
-				obj['rpt_dtype']	= field.nsProp('datatype', OILS_NS_REPORTER)
-				obj['rpt_select']	= field.nsProp('selector', OILS_NS_REPORTER)
+                virtual = self.__getAttr(field, 'virtual', OILS_NS_PERSIST)
+                obj['rpt_label']    = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
+                obj['rpt_dtype']    = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
+                obj['rpt_select']   = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
 
-				if virtual == string.lower('true'):
-					obj['virtual']	= True
-				else:
-					obj['virtual']	= False
+                if virtual == string.lower('true'):
+                    obj['virtual']  = True
+                else:
+                    obj['virtual']  = False
 
-				idlobj['fields'].append(obj)
+                idlobj['fields'].append(obj)
 
-			field = field.next
-
-		return keys
+        return keys
 
 
 
-	
+    
