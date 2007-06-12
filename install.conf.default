@@ -18,13 +18,6 @@
 # --------------------------------------------------------------------
 # Build targets.  Options include:
 # 
-# opensrf_all		- builds all OpenSRF compenents
-# opensrf_jserver - custom 'single-domain' jabber server which may be used in place of jabberd2
-# opensrf_router  - jabber router.  
-# opensrf_gateway - mod_ils_gateway, Apache module for proxying API calls
-# opensrf_srfsh   - diagnostic shell interface to OpenSRF
-# opensrf_core		- install the OpenSRF perl modules and core files for running opensrf
-#
 # openils_all			- builds all OpenILS compenents
 # openils_core			- install the Open-ILS perl modules, and core files for running and openils server
 # openils_web			- copies over the javascript and html templates to the web root directory for running the OPAC
@@ -35,14 +28,11 @@
 # evergreen_core		- builds core Evergreen components (does not build evergreen_xul_client!)
 # evergreen_xul_client   - client XUL application
 #
-# When running the server components of OpenSRF/OpenILS, the simplest
-# thing is to build 'opensrf' even if you 
-# don't use all of the components.  
 # Build marcdumper only if you need to convert MARC binary files to MARCXML.  
 # If you only want to build the client app, then just build evergreen_xul_client.
 # --------------------------------------------------------------------
 
-TARGETS=("opensrf_all" "openils_core" "openils_web" "openils_db");
+TARGETS=("openils_core" "openils_web" "openils_db");
 
 
 # --------------------------------------------------------------------
@@ -93,12 +83,18 @@ APR_HEADERS="/usr/include/apr-1.0/";
 LIBXML2_HEADERS="/usr/include/libxml2/";
 
 
+# --------------------------------------------------------------------
+# Directories where the OpenSRF headers and libraries are located.
+# You must build and install OpenSRF before OpenILS.
+# --------------------------------------------------------------------
+OPENSRF_HEADERS="/openils/include/"
+OPENSRF_LIBS="/openils/lib/"
+
 
 # --------------------------------------------------------------------
 # These point to the top level makefiles for each of the sub 
 # projects.  Only change these if you have relocated the directories.
 # --------------------------------------------------------------------
-OPENSRFDIR="OpenSRF/src/";
 OPENILSDIR="Open-ILS/src/";
 EVERGREENDIR="Evergreen/";
 
