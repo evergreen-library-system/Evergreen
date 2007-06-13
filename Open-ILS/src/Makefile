@@ -1,7 +1,8 @@
 
-export LDFLAGS			+= -L . -L $(OPENSRF_LIBS)
+export LDFLAGS			+= -L . -L$(TMP) -L $(OPENSRF_LIBS)
 export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
-								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS)
+								-I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS) \
+								-I$(OPENSRF_HEADERS)/opensrf # <-- stop-gap until opensrf compilation can be fixed with external include directory
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
