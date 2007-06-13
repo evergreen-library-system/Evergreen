@@ -214,15 +214,24 @@ sub biblio_record_replace_marc  {
    # XXX should .update even bother with the tcn_info if it's not going to replace it?
    # there is the potential for returning a TCN_EXISTS event, even though no replacement happens
 
-	my( $tcn, $tsource, $marcdoc, $evt) = 
-		_find_tcn_info($storage, $newxml, $override, $recid);
+	my( $tcn, $tsource, $marcdoc, $evt);
 
-	return $evt if $evt;
+    if($fixtcn or $override) {
 
-	if( $fixtcn ) {
+	    ($tcn, $tsource, $marcdoc, $evt) = 
+		    _find_tcn_info($storage, $newxml, $override, $recid);
+
+	    return $evt if $evt;
+
 		$rec->tcn_value($tcn);
 		$rec->tcn_source($tsource);
-	}
+
+    } else {
+
+        $marcdoc = __make_marc_doc($newxml);
+    }
+
+
 
 	$rec->source(bib_source_from_name($source)) if $source;
 	$rec->editor($e->requestor->id);
