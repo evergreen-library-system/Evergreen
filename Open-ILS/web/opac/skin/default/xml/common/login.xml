@@ -23,7 +23,7 @@
 	<table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
 		<tbody>
 			<tr>
-				<td><span class='login_text'>Enter your username or library barcode</span></td>
+				<td><span class='login_text'>&login.username;</span></td>
 				<td>
 					<span class='login_text'>
 						<input id='login_username' type='text' size='16'> </input>
@@ -44,7 +44,7 @@
 			<tr class='color_1'>
 				<td colspan='2' align='center'>
 					<span class='login_text' style='margin-right: 20px;'>
-					<input type='submit' value='Login'  id='login_button'/>
+					<input type='submit' value='&common.login;'  id='login_button'/>
 					</span>
 					<span class='login_text' style='margin-left: 20px;'>
 						<input type='submit' id='login_cancel_button' value='&common.cancel;'/>
@@ -56,62 +56,54 @@
 
 	<table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
 		<thead>
-			<tr><td colspan='2' align='center'><b>Change Password</b></td></tr>
+			<tr><td colspan='2' align='center'><b>&login.password;</b></td></tr>
 		</thead>
 		<tbody>
 
 			<tr>
 				<td colspan='2' style='padding:10px;'>
-					This appears to be the first time you have logged in.  
-					You will need to change your password.
+					&login.first.time;
 					&common.password_criteria;
 				</td>
 			</tr>
 
 			<tr>
-				<td>Enter your current password</td>
+				<td>&login.password.current.enter;</td>
 				<td><input type='password' id='change_pw_current'/></td>
 			</tr>
 
 			<tr>
-				<td>Enter the new password</td>
+				<td>&login.password.new.enter;</td>
 				<td><input type='password' id='change_pw_1'/></td>
 			</tr>
 			<tr>
-				<td>Re-type the new password for verifiication</td>
+				<td>&login.password.new.reenter;</td>
 				<td><input type='password' id='change_pw_2'/></td>
 			</tr>
 			<tr><td><br/></td><td/></tr>
 			<tr class='color_1'>
 				<td colspan='2' align='center'>
 					<span class='login_text' style='margin-right: 20px;'>
-						<input type='submit' value='Update Password'  id='change_pw_button'/>
+						<input type='submit' value='&login.password.update;'  id='change_pw_button'/>
 					</span>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<span id='pw_no_match' class='hide_me'>Passwords do not match</span>
-	<span id='pw_update_successful' class='hide_me'>Password successfully updated</span>
+	<span id='pw_no_match' class='hide_me'>&login.password.nomatch;</span>
+	<span id='pw_update_successful' class='hide_me'>&login.password.success;</span>
 
 	<span id='pw_not_strong' class='hide_me'>
-		The password provided is not strong enough.  
+		&login.password.strength;
 		&common.password_criteria;
 	</span>
 
-	<span id='patron_card_inactive_alert' class='hide_me'>
-		The barcode used to login is marked as inactive.  Please contact your local library.
-	</span>
+	<span id='patron_card_inactive_alert' class='hide_me'>&login.barcode.inactive;</span>
 
-	<span id='patron_inactive_alert' class='hide_me'>
-		This account has been deactivated.  Please contact your local library.
-	</span>
+	<span id='patron_inactive_alert' class='hide_me'>&login.account.inactive;</span>
 
-	<span id='patron_login_failed' class='hide_me'>
-		Login failed.  The username or password provided was not valid.  
-		Make sure Caps-Lock is off and try again or contact your local library.
-	</span>
+	<span id='patron_login_failed' class='hide_me'>&login.failed;</span>
 
 </div>
 

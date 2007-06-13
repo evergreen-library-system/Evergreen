@@ -877,6 +877,8 @@ cat.copy_browser.prototype = {
 					'command',
 					function(ev) {
 						//obj.show_my_libs(ev.target.value);
+						//alert('lib picker, command caught - ml = ' + ml + '\nml.value = ' + ml.value + '\n');
+						if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
 						JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
 						util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
 						obj.refresh_list();
@@ -1247,7 +1249,8 @@ cat.copy_browser.prototype = {
 			if (parent_org) {
 				data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
 			}
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			if (params) {
 				for (var i in params) {
 					node.setAttribute(i,params[i]);
@@ -1314,7 +1317,8 @@ cat.copy_browser.prototype = {
 				'to_bottom' : true,
 				'no_auto_select' : true,
 			};
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
 			if (params) {
 				for (var i in params) {
@@ -1365,7 +1369,8 @@ cat.copy_browser.prototype = {
 				'to_bottom' : true,
 				'no_auto_select' : true,
 			};
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			obj.map_tree[ 'acp_' + acp_item.id() ] =  node;
 			if (params) {
 				for (var i in params) {

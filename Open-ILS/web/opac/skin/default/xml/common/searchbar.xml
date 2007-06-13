@@ -30,7 +30,7 @@
 
 					<input id='search_box' style='width: 190px;' type='text' />
 					<span style='padding-left: 6px;'>
-						<input type='button' style='width: 40px;' id='search_submit' value='Go!' />
+						<input type='button' style='width: 40px;' id='search_submit' value='&button.go;' />
 					</span>
 				</td>
 

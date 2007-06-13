@@ -9,7 +9,7 @@
 #include <libxml/debugXML.h>
 #include <libxml/xmlmemory.h>
 
-#define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistance/v1"
+#define PERSIST_NS "http://open-ils.org/spec/opensrf/IDL/persistence/v1"
 #define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
 #define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
 

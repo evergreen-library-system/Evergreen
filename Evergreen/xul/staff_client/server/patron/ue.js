@@ -220,6 +220,7 @@ function uEditResetPw() {
 	var pw = uEditMakeRandomPw(patron);	
 	$('ue_password1').value = pw;
 	$('ue_password2').value = pw;
+    $('ue_password1').onchange();
 }
 
 function uEditClone(clone) {

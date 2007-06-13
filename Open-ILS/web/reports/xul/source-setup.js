@@ -1,6 +1,6 @@
 
 var idlNS	= "http://opensrf.org/spec/IDL/base/v1";
-var persistNS	= "http://open-ils.org/spec/opensrf/IDL/persistance/v1";
+var persistNS	= "http://open-ils.org/spec/opensrf/IDL/persistence/v1";
 var objNS	= "http://open-ils.org/spec/opensrf/IDL/objects/v1";
 var rptNS	= "http://open-ils.org/spec/opensrf/IDL/reporter/v1";
 var gwNS	= "http://opensrf.org/-/namespaces/gateway/v1";

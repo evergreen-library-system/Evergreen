@@ -55,7 +55,7 @@ var oilsPageXMid;
 var oilsPageYMid;
 
 var oilsIDLReportsNS = 'http://open-ils.org/spec/opensrf/IDL/reporter/v1';
-var oilsIDLPersistNS = 'http://open-ils.org/spec/opensrf/IDL/persistance/v1';
+var oilsIDLPersistNS = 'http://open-ils.org/spec/opensrf/IDL/persistence/v1';
 
 /* the current transform manager for the builder transform window */
 var oilsRptCurrentTform;
@@ -91,6 +91,8 @@ var OILS_RPT_FETCH_OUTPUT			= 'open-ils.reporter:open-ils.reporter.schedule.retr
 var OILS_RPT_FETCH_REPORT			= 'open-ils.reporter:open-ils.reporter.report.retrieve';
 var OILS_RPT_FETCH_TEMPLATE		= 'open-ils.reporter:open-ils.reporter.template.retrieve';
 var OILS_RPT_MAGIC_FETCH			= 'open-ils.reporter:open-ils.reporter.magic_fetch';
+var OILS_RPT_REPORT_EXISTS      = 'open-ils.reporter:open-ils.reporter.report.exists';
+var OILS_RPT_TEMPLATE_EXISTS      = 'open-ils.reporter:open-ils.reporter.template.exists';
 
 var oilsRptCurrentFolderManager;
 

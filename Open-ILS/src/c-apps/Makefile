@@ -14,58 +14,58 @@ oils_dataloader.o:	oils_dataloader.c
 
 oils_dataloader:	oils_dataloader.o
 	@echo $@
-	$(CC) $(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils oils_dataloader.o -o $(TMPDIR)/$@
+	$(CC) $(LDLIBS) $(LDFLAGS) -loils_idl -loils_utils oils_dataloader.o -o $(TMP)/$@
 
 oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $(TMP)/$@
 
 oils_rstore.o:	oils_cstore.c oils_utils.h
-	$(CC) $(CFLAGS) -I$(TMPDIR) -I$(TMPDIR)/opensrf/ -DRSTORE -c -o $@ oils_cstore.c 
+	$(CC) $(CFLAGS) -I$(TMP) -DRSTORE -c -o $@ oils_cstore.c 
 
 oils_rstore.so:	oils_rstore.o liboils_utils.so liboils_idl.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_rstore.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_rstore.o -o $(TMP)/$@
 
 oils_fetch.so:	oils_fetch.o liboils_utils.so
 	@echo $@
 	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -ldbi -ldbdpgsql -loils_utils oils_fetch.o -o $(TMPDIR)/$@
+		$(LDLIBS) $(LDFLAGS) -ldbi -ldbdpgsql -loils_utils oils_fetch.o -o $(TMP)/$@
 
 oils_idl-core.o:	oils_idl-core.c oils_idl.h
 
 liboils_idl.so:	oils_idl-core.o
 	@echo $@
 	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_idl-core.o -o $@
-	cp $@ $(TMPDIR)/
-	mkdir -p $(TMPDIR)/openils/
-	cp oils_idl.h $(TMPDIR)/openils/
-	cp idl_fieldmapper.h $(TMPDIR)/openils/
+	cp $@ $(TMP)/
+	mkdir -p $(TMP)/openils/
+	cp oils_idl.h $(TMP)/openils/
+	cp idl_fieldmapper.h $(TMP)/openils/
 
 oils_auth.so:	oils_auth.o liboils_utils.so
 	@echo $@
-	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_utils -loils_idl oils_auth.o -o $(TMPDIR)/$@
+	$(CC) -shared -W1 $(CFLAGS) $(LDLIBS) $(LDFLAGS) -loils_utils -loils_idl oils_auth.o -o $(TMP)/$@
 
 liboils_utils.so:	oils_utils.o oils_event.o oils_constants.h
 	@echo $@
 	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_utils.o oils_event.o -o $@
-	cp $@ $(TMPDIR)/
-	mkdir -p $(TMPDIR)/openils/
-	cp oils_event.h $(TMPDIR)/openils/
-	cp oils_utils.h $(TMPDIR)/openils/
-	cp oils_constants.h $(TMPDIR)/openils/
+	cp $@ $(TMP)/
+	mkdir -p $(TMP)/openils/
+	cp oils_event.h $(TMP)/openils/
+	cp oils_utils.h $(TMP)/openils/
+	cp oils_constants.h $(TMP)/openils/
 
 install:
 	@echo $@;
-	cp $(TMPDIR)/oils_auth.so $(LIBDIR)/
-	#cp $(TMPDIR)/oils_fetch.so $(LIBDIR)/
-	cp $(TMPDIR)/oils_cstore.so $(LIBDIR)/
-	cp $(TMPDIR)/oils_rstore.so $(LIBDIR)/
-	cp $(TMPDIR)/liboils_utils.so $(LIBDIR)/
-	cp $(TMPDIR)/liboils_idl.so $(LIBDIR)/
-	cp $(TMPDIR)/oils_dataloader $(BINDIR)/
+	cp $(TMP)/oils_auth.so $(LIBDIR)/
+	#cp $(TMP)/oils_fetch.so $(LIBDIR)/
+	cp $(TMP)/oils_cstore.so $(LIBDIR)/
+	cp $(TMP)/oils_rstore.so $(LIBDIR)/
+	cp $(TMP)/liboils_utils.so $(LIBDIR)/
+	cp $(TMP)/liboils_idl.so $(LIBDIR)/
+	cp $(TMP)/oils_dataloader $(BINDIR)/
 	mkdir -p $(INCDIR)/
 	cp oils_utils.h $(INCDIR)
 	cp oils_idl.h $(INCDIR)

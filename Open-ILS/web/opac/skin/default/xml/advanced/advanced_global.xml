@@ -15,7 +15,7 @@
 			<table width='100%' id='adv_global_input_table'>
 	
 				<thead>
-					<tr><td colspan='2' align='center'>Search Input</td></tr>
+					<tr><td colspan='2' align='center'>&advanced.search.title;</td></tr>
 				</thead>
 				<tbody id='adv_global_tbody'>
 
@@ -33,10 +33,10 @@
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='center'>
-							<input type='submit' value='Add Search Row' 
+							<input type='submit' value='&advanced.add.row;' 
 								id='myopac_new_global_row' onclick='advAddGblRow();'> </input>
 							<span style='padding-left: 10px;'> </span>
-							<input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input>
+							<input type='submit' onclick='advSubmitGlobal();' value='&advanced.search.submit;'></input>
 						</td>
 					</tr>
 
@@ -62,7 +62,7 @@
 
 			<table with='100%'>
 				<thead>
-					<tr><td colspan='2' align='center'>Search Filters</td></tr>
+					<tr><td colspan='2' align='center'>&advanced.search.filters;</td></tr>
 				</thead>
 				<tbody>
 
@@ -76,7 +76,7 @@
 					-->
 					<tr>
 						<td align='right'>
-							<span>Item Form</span>
+							<span>&advanced.item.form;</span>
 						</td>
 						<td aligh='left'>
 							<select multiple='true' size='3' id='adv_global_item_form'>
@@ -86,14 +86,14 @@
 
 					<tr>
 						<td align='right'>
-							<span>Item Type</span>
+							<span>&advanced.item.type;</span>
 							<a id='adv_global_item_type_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								hideMe($("adv_global_item_type_basic"));
 								unHideMe($("adv_global_item_type"));
 								hideMe(this);
 								unHideMe($("adv_global_item_type_link_basic"));
-								'>Advanced</a>
+								'>&advanced.link;</a>
 
 							<a id='adv_global_item_type_link_basic' class='hide_me classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
@@ -101,7 +101,7 @@
 								hideMe($("adv_global_item_type"));
 								unHideMe($("adv_global_item_type_link_adv"));
 								hideMe(this);
-								'>Basic</a>
+								'>&advanced.basic.link;</a>
 						</td>
 
 						<td aligh='left'>
@@ -119,14 +119,14 @@
 
 					<tr>
 						<td align='right'>
-							<span>Literary&nbsp;Form</span>
+							<span>&advanced.literary.form;</span>
 							<a id='adv_global_lit_form_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								hideMe($("adv_global_lit_form_basic"));
 								unHideMe($("adv_global_lit_form"));
 								hideMe(this);
 								unHideMe($("adv_global_lit_form_link_basic"));
-								'>Advanced</a>
+								'>&advanced.link;</a>
 
 							<a id='adv_global_lit_form_link_basic' class='hide_me classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
@@ -134,14 +134,14 @@
 								hideMe($("adv_global_lit_form"));
 								unHideMe($("adv_global_lit_form_link_adv"));
 								hideMe(this);
-								'>Basic</a>
+								'>&advanced.basic.link;</a>
 						</td>
 						<td aligh='left'>
 							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
 							</select>	
 							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
-								<option value='0 '>Non Fiction</option>
-								<option value='1'>Fiction</option>
+								<option value='0 '>&advanced.non.fiction;</option>
+								<option value='1'>&advanced.fiction;</option>
 							</select>	
 						</td>
 					</tr>
@@ -150,7 +150,7 @@
 					<!-- Language selector -->
 					<tr>
 						<td align='right'>
-							<span>Language</span>
+							<span>&advanced.language;</span>
 						</td>
 
 						<td align='left'>
@@ -163,7 +163,7 @@
 					<!-- Audience selector -->
 					<tr>
 						<td align='right'>
-							<span>Audience</span>
+							<span>&advanced.audience;</span>
 
 							<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
@@ -171,23 +171,23 @@
 								unHideMe($("adv_global_audience"));
 								hideMe(this);
 								unHideMe($("adv_global_audience_link_basic"));
-								'>Advanced</a>
+								'>&advanced.link;</a>
 
 							<a id='adv_global_audience_link_basic' class='hide_me classic_link adv_adv_link'
 								href='javascript:void(0);' onclick='
 								unHideMe($("adv_global_audience_basic"));
 								hideMe($("adv_global_audience"));
 								unHideMe($("adv_global_audience_link_adv"));
-								hideMe(this);'>Basic</a>
+								hideMe(this);'>&advanced.basic.link;</a>
 						</td>
 
 						<td align='left'>
 							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
 							</select>
 							<select multiple='true' size='3' id='adv_global_audience_basic'>
-								<option value='e '>Adult</option>
-								<option value='abcdj'>Juvenile</option>
-								<option value='fg '>General</option>
+								<option value='e '>&advanced.adult;</option>
+								<option value='abcdj'>&advanced.juvenile;</option>
+								<option value='fg '>&advanced.general;</option>
 							</select>
 						</td>
 					</tr>
@@ -220,8 +220,8 @@
 			
 							<thead>
 								<tr>
-									<td align='center' width='50%'>Sort Criteria</td>
-									<td align='center'>Search Library</td>
+									<td align='center' width='50%'>&advanced.sort.criteria;</td>
+									<td align='center'>&advanced.search.library;</td>
 								</tr>
 							</thead>
 			
@@ -240,10 +240,10 @@
 
 									<td align=''>
 										<select id='adv_global_sort_by' onchange='__setsortsel();'>
-											<option value='rel'>Relevance</option>
-											<option value='title'>Title</option>
-											<option value='author'>Author</option>
-											<option value='pubdate'>Publication Date</option>
+											<option value='rel'>&advanced.relevance;</option>
+											<option value='title'>&common.title;</option>
+											<option value='author'>&common.author;</option>
+											<option value='pubdate'>&advanced.pubdate;</option>
 										</select>
 									</td>
 
@@ -258,8 +258,8 @@
 
 									<td>
 										<select id='adv_global_sort_dir' disabled='disabled'>
-											<option value='asc'>Ascending / A to Z</option>
-											<option value='desc'>Descending / Z to A</option>
+											<option value='asc'>&advanced.sort.asc;</option>
+											<option value='desc'>&advanced.sort.desc;</option>
 										</select>
 									</td>
 
@@ -273,7 +273,7 @@
 								</tr>
 								<tr>
 									<td colspan='2' align='center'>
-										<span>Group Formats and Editions</span>
+										<span>&advanced.frbrize;</span>
 										<!--
 										<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
 										-->
@@ -290,7 +290,7 @@
 	</tr>
 
 	<tr style='border: 2px solid #E0F0E0;'>
-		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input></td>
+		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='&advanced.search.submit;'></input></td>
 	</tr>
 
 </table>

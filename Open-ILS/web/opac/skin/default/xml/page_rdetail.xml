@@ -20,21 +20,21 @@
 				<td style='vertical-align: top;'>
 
 					<span>
-						Result <span id='np_offset'> </span>
+						&rdetail.result; <span id='np_offset'> </span>
 						<span> &common.of; </span>
 						<span id='np_count'> </span>
 					</span>
 	
 					<span style='padding-left: 40px;' >
 						<a class='np_nav_link classic_link hide_me' id='np_start'
-							href='javascript:rdetailStart();' title="First results page">Start</a>
+							href='javascript:rdetailStart();' title="&rdetail.page.results;">&rdetail.start;</a>
 						<a class='np_nav_link classic_link hide_me' id='np_prev'
-							href='javascript:rdetailPrev();' title='Previus page'>&lt;&lt;</a>
+							href='javascript:rdetailPrev();' title='&rdetail.page.previous;'>&lt;&lt;</a>
 						<span> </span>
 						<a  class='np_nav_link classic_link hide_me' id='np_next'
-							href='javascript:rdetailNext();' title='Next Page'>&gt;&gt;</a>
+							href='javascript:rdetailNext();' title='&rdetail.page.next;'>&gt;&gt;</a>
 						<a class='np_nav_link classic_link hide_me' id='np_end'
-							href='javascript:rdetailEnd();' title="Last results page">End</a>
+							href='javascript:rdetailEnd();' title="&rdetail.page.last;">&rdetail.end;</a>
 					</span>
 	
 				</td>
@@ -52,15 +52,15 @@
 
 				<td align='right' style='padding-right: 7px;' width='33%'>
 					<span style='padding-right: 7px;'>
-						<a id='rdetail_place_hold' class='classic_link'>Place Hold</a>
+						<a id='rdetail_place_hold' class='classic_link'>&opac.holds.placeHold;</a>
 					</span>
 					<span style='padding-right: 7px;' class='hide_me' id='rdetail_more_actions'>
 						<select id='rdetail_more_actions_selector' style='max-width: 11em;'>
-							<option value='start'>More Actions...</option>
+							<option value='start'>&rdetail.more;</option>
 							<option disabled='disabled'>--------------</option>
-							<option disabled='disabled'>Add to Bookbag</option>
+							<option disabled='disabled'>&rdetail.bookbag.add;</option>
 							<option disabled='disabled'>--------------</option>
-							<option value='new_bookbag' onclick='rdetailNewBookbag();'>Create a new bookbag</option>
+							<option value='new_bookbag' onclick='rdetailNewBookbag();'>&rdetail.bookbag.create;</option>
 						</select>
 					</span>
 
@@ -71,17 +71,16 @@
 
 	<div style='font-weight: bold; padding: 5px; margin: 5px; background: #E0F0E0; width: 100%;' 
 		class='hide_me' id='rdetail_deleted_exp'>
-			This record has been deleted from the database.  
-			We recommend that you remove this title from any bookbags it may have been added to.
+		&rdetail.record.deleted;
 	</div>
 
 	<!--#include virtual="rdetail/rdetail_summary.xml"-->
 	<br/><br/>
 	<!--#include virtual="rdetail/rdetail_extras.xml"-->
 
-	<div class='hide_me' id='rdetail_bb_none'>(none)</div>
-	<div class='hide_me' id='rdetail_bb_item_success'>Item successfully added to Bookbag</div>
-	<div class='hide_me' id='rdetail_bb_new'>Enter the name of the new bookbag</div>
-	<div class='hide_me' id='rdetail_bb_success'>Bookbag successfully created</div>
+	<div class='hide_me' id='rdetail_bb_none'>&rdetail.none;</div>
+	<div class='hide_me' id='rdetail_bb_item_success'>&rdetail.bookbag.add.success;</div>
+	<div class='hide_me' id='rdetail_bb_new'>&rdetail.bookbag.name;</div>
+	<div class='hide_me' id='rdetail_bb_success'>&rdetail.bookbag.create.success;</div>
 
 </div>

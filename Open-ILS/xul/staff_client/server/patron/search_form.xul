@@ -56,14 +56,13 @@
 				JSAN.use('patron.search_form'); g.search_form = new patron.search_form();
 				g.search_form.init( { 'query' : query } );
 
-				if (g.cgi.param('doit')) {
+				if (g.cgi.param('doit')||xulG.doit) {
 					g.search_form.submit();
 				}
 	
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" 
-					'patron/search_form.xul\n' + E + '\n';
+					"system administrator or software developer the following:\n" + 'patron/search_form.xul\n' + E + '\n';
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}

@@ -5,7 +5,7 @@ log_vars('circ_permit_hold');
 
 
 /* is a staff member placing this hold? */
-var isStaffHold = isGroupDescendant('Staff', patronProfile);
+var isStaffHold = isGroupDescendantId('Staff', requestor.profile);
 
 
 /* non-staff members are allowed 50 open holds at most */
@@ -14,7 +14,10 @@ if( ! isStaffHold ) {
    log_info("patron has " + count + " open holds");
    if( count >= 50 ) 
       result.events.push('MAX_HOLDS');
-} 
+} else {
+    log_info("This is a staff-placed hold");
+}
+
 
 
 if( isTrue(patron.barred) ) 

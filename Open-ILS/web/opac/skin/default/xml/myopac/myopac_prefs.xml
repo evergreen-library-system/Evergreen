@@ -6,15 +6,15 @@
 		<thead>
 			<tr>
 				<td colspan='2' align='center'>
-					<b>Preferences</b>
+					<b>&myopac.prefs.title;</b>
 				</td>
 			</tr>
 		</thead>
 
 		<tbody id='myopac_prefs_tbody'>
-			<tr id='myopac_prefs_loading'><td colspan='3'><b>Loading...</b></td></tr>
+			<tr id='myopac_prefs_loading'><td colspan='3'><b>&myopac.loading;</b></td></tr>
 			<tr id='myopac_prefs_row'>
-				<td width='50%'>Search hits per page</td>
+				<td width='50%'>&myopac.prefs.hits;</td>
 				<td>
 					<select id='prefs_hits_per'>
 						<option value='5'>5</option>
@@ -30,11 +30,11 @@
 
 			<!-- FONT size preference -->
 			<tr>
-				<td>Default Font Size</td>
+				<td>&myopac.prefs.font;</td>
 				<td>
 					<select id='prefs_def_font'>
-						<option value='regular'>Regular Font</option>
-						<option value='large'>Large Font</option>
+						<option value='regular'>&myopac.prefs.font.regular;</option>
+						<option value='large'>&myopac.prefs.font.large;</option>
 					</select>
 				</td>
 			</tr>
@@ -42,29 +42,29 @@
 			<!-- default hold notification type -->
 			<tr>
 				<td>
-					<span>Default Hold Notification Method</span>
+					<span>&myopac.prefs.holds.notify;</span>
 					<a class='classic_link' href='javascript:void(0);' 
-						onclick='alert($("myopac_pref_hold_notify_alert").textContent);' >(??)</a>
+						onclick='alert($("myopac_pref_hold_notify_alert").textContent);' >&common.help;</a>
 				</td>
 				<td>
 					<select id='prefs_hold_notify'>
-						<option value='phone:email' selected='selected'>Use Phone and Email</option>
-						<option value='phone'>Use Phone Only</option>
-						<option value='email'>Use Email Only</option>
+						<option value='phone:email' selected='selected'>&myopac.prefs.holds.both;</option>
+						<option value='phone'>&myopac.prefs.holds.phone;</option>
+						<option value='email'>&myopac.prefs.holds.email;</option>
 					</select>
 				</td>
 			</tr>
 
 
 			<tr>
-				<td>Default Search Location</td>
+				<td>&myopac.prefs.search.location;</td>
 				<td>
 					<div style='margin-bottom: 5px;'>
 						<input type='checkbox' id='myopac_pref_home_lib' 
 							onclick='
 								if( this.checked ) $("prefs_def_location").disabled = true;
 								else $("prefs_def_location").disabled = false;
-							'> </input> Always search my home library by default.
+							'> </input> &myopac.prefs.search.home; 
 					</div>
 					<select id='prefs_def_location'>
 					</select>
@@ -72,7 +72,7 @@
 			</tr>
 
 			<tr>
-				<td>Default Search Range</td>
+				<td>&myopac.prefs.search.range;</td>
 				<td>
 					<select id='prefs_def_range'>
 					</select>
@@ -87,19 +87,17 @@
 			<tr>
 				<td align='center' class='color_3' colspan='2'>
 					<button onclick='myOPACSavePrefs();' 
-						id='myopac_prefs_submit'>Save Preference Changes</button>
+						id='myopac_prefs_submit'>&myopac.prefs.save;</button>
 				</td>
 			</tr>
 
 		</tbody>
 	</table>
 
-	<div class='hide_me' id='prefs_update_success'>Preferences successfully updated</div>
-	<div class='hide_me' id='prefs_update_failure'>Preferences update failed!</div>
+	<div class='hide_me' id='prefs_update_success'>&myopac.prefs.save.success;</div>
+	<div class='hide_me' id='prefs_update_failure'>&myopac.prefs.save.failed;</div>
 	<span class='hide_me' id='myopac_pref_hold_notify_alert'>
-		This setting defines how you will be notified of holds that are ready to be picked up from the library.
-		By default, holds will use the notification style you choose here.  
-		However, you will still have the option to change individual holds regardless of this setting.
+		&myopac.prefs.help;
 	</span>
 
 </div>

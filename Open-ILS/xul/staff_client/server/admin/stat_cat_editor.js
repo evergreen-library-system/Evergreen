@@ -70,6 +70,7 @@ function scFetchPerms() {
 	PERMS[ASSET].delete_stat_cat_entry =  orgs[11];
 }
 
+/*
 function scFetchPerm(perm) {
 	var req = new RemoteRequest(
 		'open-ils.actor',
@@ -78,6 +79,7 @@ function scFetchPerm(perm) {
 	return req.getResultObject();
 	PERMS.create_stat = req.getResultObjecdt();
 }
+*/
 
 
 function scFetchAll( session, type, orgid, callback, args ) {

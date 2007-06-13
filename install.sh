@@ -116,7 +116,7 @@ function runInstall {
 			APACHE2_HEADERS=$APACHE2_HEADERS LIBXML2_HEADERS=$LIBXML2_HEADERS DBPORT=$DBPORT\
 			BINDIR=$BINDIR LIBDIR=$LIBDIR PERLDIR=$PERLDIR INCLUDEDIR=$INCLUDEDIR \
 			WEBDIR=$WEBDIR TEMPLATEDIR=$TEMPLATEDIR ETCDIR=$ETCDIR REPORTERDIR=$REPORTERDIR\
-			OPENSRFDIR=$OPENSRFDIR OPENILSDIR=$OPENILSDIR EVERGREENDIR=$EVERGREENDIR \
+			OPENSRF_HEADERS=$OPENSRF_HEADERS OPENSRF_LIBS=$OPENSRF_LIBS OPENILSDIR=$OPENILSDIR EVERGREENDIR=$EVERGREENDIR \
 			CIRCRULESDIR=$CIRCRULESDIR CATALOGSCRIPTDIR=$CATALOGSCRIPTDIR CGIDIR=$CGIDIR \
 			DBDRVR=$DBDRVR DBHOST=$DBHOST DBVER=$DBVER DATADIR=$DATADIR ADMINDIR=$ADMINDIR\
 			PENALTYRULESDIR=$PENALTYRULESDIR DBNAME=$DBNAME DBUSER=$DBUSER DBPW=$DBPW XSLDIR=$XSLDIR NEW_OPAC_URL=$NEW_OPAC_URL \
@@ -125,39 +125,6 @@ function runInstall {
 
 		case "$target" in
 	
-			# OpenSRF --- 			
-
-			"opensrf_all")
-				if building;	then $MAKE -C "$OPENSRFDIR" all; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" install; fi;
-				;;
-
-			"opensrf_jserver" )
-				if building;	then $MAKE -C "$OPENSRFDIR" "jserver"; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "jserver-install"; fi;
-				;;	
-
-			"opensrf_router" ) 
-				if building;	then $MAKE -C "$OPENSRFDIR" "router"; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "router-install"; fi;
-				;;
-
-			"opensrf_gateway" )
-				if building; then $MAKE -C "$OPENSRFDIR" "gateway"; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "gateway-install"; fi;
-				;;
-
-			"opensrf_srfsh" ) 
-				if building;	then $MAKE -C "$OPENSRFDIR" "srfsh"; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "srfsh-install"; fi;
-				;;
-
-			"opensrf_core" )
-				if building; then $MAKE -C "$OPENSRFDIR" libstack/opensrf; fi;
-				if installing; then $MAKE -C "$OPENSRFDIR" "perl-install"; fi;
-				;;
-
-
 			# OpenILS --- 			
 
 			"openils_all" )
@@ -278,7 +245,6 @@ function checkParams {
 
 function cleanMe {
 	loadConfig;
-	make "TMP=$TMP" -s -C "$OPENSRFDIR" clean;
 	make "TMP=$TMP" -s -C "$OPENILSDIR"  clean;
 	make "TMP=$TMP" -s -C "$EVERGREENDIR" clean;
 }

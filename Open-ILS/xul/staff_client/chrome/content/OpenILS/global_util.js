@@ -29,6 +29,12 @@
 		}
 	}
 
+	function getKeys(o) {
+		var keys = [];
+		for (var k in o) keys.push(k);
+		return keys;
+	}
+
 	function get_contentWindow(frame) {
 		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 		if (frame && frame.contentWindow) {

@@ -7,8 +7,7 @@
             <tbody>
                 <tr>
                     <td width='100%' style='color:red;'>
-                        Your account expired on <span id='myopac.expired.date'/>!  
-                        Please see a librarian to renew your account.
+		    	&myopac.summary.expired;
                     </td>
                 </tr>
             </tbody>
@@ -19,7 +18,7 @@
 		<table class='data_grid' width='100%'>
 			<thead>
 				<tr>
-					<td colspan='2'><b> * Staff Notes *</b></td>
+					<td colspan='2'><b> &myopac.summary.notes;</b></td>
 				</tr>
 			</thead>
 			<tbody id='myopac.notes.tbody'>
@@ -36,7 +35,7 @@
 	<table width='70%' class='light_border myopac_summary_table'>
 		<tbody id='myopac_summary_tbody'>
 			<tr>
-				<td width='30%' class='color_4 light_border'>Name</td>
+				<td width='30%' class='color_4 light_border'>&common.name;</td>
 				<td class='light_border'>
 					<span id='myopac_summary_first' style='padding-right: 5px;'> </span> 
 					<span id='myopac_summary_middle' style='padding-right: 5px;'> </span> 
@@ -45,46 +44,46 @@
 			</tr>
 
 			<tr>
-				<td class='color_4 light_border'>Day Phone</td>
+				<td class='color_4 light_border'>&myopac.summary.phone.day;</td>
 				<td class='light_border' id='myopac_summary_dayphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_4 light_border'>Evening Phone</td>
+				<td class='color_4 light_border'>&myopac.summary.phone.evening;</td>
 				<td class='light_border' id='myopac_summary_eveningphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_4 light_border'>Other Phone</td>
+				<td class='color_4 light_border'>&myopac.summary.phone.other;</td>
 				<td class='light_border' id='myopac_summary_otherphone'> </td>
 			</tr>
 			<tr>
-				<td class='color_4 light_border'>Username</td>
+				<td class='color_4 light_border'>&common.username;</td>
 				<td class='light_border' id='myopac_summary_username'> </td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_username_row"));$("myopac_new_username").focus();'
-					id='myopac_summary_username_change' style='text-decoration: underline;'>Change</a></td>
+					id='myopac_summary_username_change' style='text-decoration: underline;'>&myopac.summary.change;</a></td>
 			</tr>
 
 			<tr id='myopac_update_username_row' class='hide_me'>
 				<td class='myopac_update_cell' colspan='3'>
-					<span class='myopac_update_span'>Enter new username: </span>
+					<span class='myopac_update_span'>&myopac.summary.username.enter; </span>
 					<input type='text' size='24' id='myopac_new_username'
 						onkeydown='if(userPressedEnter(event)) myOPACUpdateUsername();'> </input>
 					<span class='myopac_update_span'>
-						<button onclick='myOPACUpdateUsername();'>Submit</button>
+						<button onclick='myOPACUpdateUsername();'>&common.submit;</button>
 					</span>
 					<span class='myopac_update_span'>
-						<button onclick='hideMe($("myopac_update_username_row"));'>Cancel</button>
+						<button onclick='hideMe($("myopac_update_username_row"));'>&common.cancel;</button>
 					</span>
 				</td>
 			</tr>
 
 
 			<tr>
-				<td class='color_4 light_border'>Password</td>
-				<td class='light_border' id='myopac_summary_password'>(not shown)</td>
+				<td class='color_4 light_border'>&common.password;</td>
+				<td class='light_border' id='myopac_summary_password'>&myopac.summary.password.text;</td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_password_row"));$("myopac_current_password").focus();'
-					id='myopac_summary_password_change' style='text-decoration: underline;'>Change</a></td>
+					id='myopac_summary_password_change' style='text-decoration: underline;'>&myopac.summary.change;</a></td>
 			</tr>
 
 			<tr id='myopac_update_password_row' class='hide_me'>
@@ -92,55 +91,55 @@
 
 					<table><tbody>
 						<tr>
-							<td><span class='myopac_update_span'>Enter current password: </span></td>
+							<td><span class='myopac_update_span'>&myopac.summary.password.current; </span></td>
 							<td><input type='password' size='24' id='myopac_current_password'
 								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
 						</tr>
 						<tr>
-							<td><span class='myopac_update_span'>Enter new password: </span></td>
+							<td><span class='myopac_update_span'>&myopac.summary.password.new; </span></td>
 							<td><input type='password' size='24' id='myopac_new_password'
 								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
 						</tr>
 						<tr>
-							<td><span class='myopac_update_span'>Re-Enter new password: </span></td>
+							<td><span class='myopac_update_span'>&myopac.summary.password.reenter; </span></td>
 							<td><input type='password' size='24' id='myopac_new_password2'
 								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
 						</tr>
 					</tbody></table>
 
 					<span class='myopac_update_span'>
-						<button onclick='myOPACUpdatePassword();'>Submit</button>
+						<button onclick='myOPACUpdatePassword();'>&common.submit;</button>
 					</span>
 					<span class='myopac_update_span'>
-						<button onclick='hideMe($("myopac_update_password_row"));'>Cancel</button>
+						<button onclick='hideMe($("myopac_update_password_row"));'>&common.cancel;</button>
 					</span>
 				</td>
 			</tr>
 
 			<tr>
-				<td class='color_4 light_border'>Email Address</td>
+				<td class='color_4 light_border'>&myopac.summary.email;</td>
 				<td class='light_border' id='myopac_summary_email'> </td>
 				<td class='light_border'><a href='javascript:void(0);' 
 					onclick='unHideMe($("myopac_update_email_row"));$("myopac_new_email").focus();'
-					id='myopac_summary_email_change' style='text-decoration: underline;'>Change</a></td>
+					id='myopac_summary_email_change' style='text-decoration: underline;'>&myopac.summary.change;</a></td>
 			</tr>
 
 			<tr id='myopac_update_email_row' class='hide_me'>
 				<td class='myopac_update_cell' colspan='3'>
-					<span class='myopac_update_span'>Enter new email address: </span>
+					<span class='myopac_update_span'>&myopac.summary.email.new; </span>
 					<input type='text' size='24' id='myopac_new_email'
 						onkeydown='if(userPressedEnter(event)) myOPACUpdateEmail();'> </input>
 					<span class='myopac_update_span'>
-						<button onclick='myOPACUpdateEmail();'>Submit</button>
+						<button onclick='myOPACUpdateEmail();'>&common.submit;</button>
 					</span>
 					<span class='myopac_update_span'>
-						<button onclick='hideMe($("myopac_update_email_row"));'>Cancel</button>
+						<button onclick='hideMe($("myopac_update_email_row"));'>&common.cancel;</button>
 					</span>
 				</td>
 			</tr>
 
 			<tr>
-				<td class='color_4 light_border'>Primary Identification</td>
+				<td class='color_4 light_border'>&myopac.summary.id.primary;</td>
 				<td class='light_border' id='myopac_summary_ident1'> </td>
 			</tr>
 			<!--
@@ -150,15 +149,15 @@
 			</tr>
 			-->
 			<tr>
-				<td class='color_4 light_border'>Active Barcode</td>
+				<td class='color_4 light_border'>&myopac.summary.barcode;</td>
 				<td class='light_border' id='myopac_summary_barcode'> </td>
 			</tr>
 			<tr>
-				<td class='color_4 light_border'>Home Library</td>
+				<td class='color_4 light_border'>&myopac.summary.home;</td>
 				<td class='light_border' id='myopac_summary_homelib'> </td>
 			</tr>
 			<tr>
-				<td class='color_4 light_border'>Account Creation Date</td>
+				<td class='color_4 light_border'>&myopac.summary.genesis;</td>
 				<td class='light_border' id='myopac_summary_create_date'> </td>
 			</tr>
 
@@ -174,14 +173,14 @@
 	-->
 	<table width='100%' class='light_border data_grid'>
 		<thead class='color_4'>
-			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>Addresses</b></td></tr>
+			<tr><td style='background: none; border-bottom: none' align='center' colspan='7'><b>&myopac.summary.addresses;</b></td></tr>
 			<tr>
-				<td width='16%'>Address Type</td>
-				<td width='16%'>Street</td>
-				<td width='16%'>City</td>
-				<td width='16%'>County</td>
-				<td width='16%'>State</td>
-				<td width='16%'>Zip</td>
+				<td width='16%'>&myopac.summary.address.type;</td>
+				<td width='16%'>&myopac.summary.address.street;</td>
+				<td width='16%'>&myopac.summary.address.city;</td>
+				<td width='16%'>&myopac.summary.address.county;</td>
+				<td width='16%'>&myopac.summary.address.state;</td>
+				<td width='16%'>&myopac.summary.address.zip;</td>
 			</tr>
 		</thead>
 
@@ -197,21 +196,21 @@
 		</tbody>
 	</table>
 
-	<div class='hide_me' id='myopac_username_error'>Please enter a username</div>
+	<div class='hide_me' id='myopac_username_error'>&myopac.summary.username.error;</div>
 	<div class='hide_me' id='myopac_username_dup'>
-		The requested username is not available.  Please choose a different username.
+		&myopac.summary.username.dup;
 	</div>
-	<div class='hide_me' id='myopac_username_success'>Username successfully updated</div>
-	<div class='hide_me' id='myopac_username_failure'>Username update failed</div>
+	<div class='hide_me' id='myopac_username_success'>&myopac.summary.username.success;</div>
+	<div class='hide_me' id='myopac_username_failure'>&myopac.summary.username.failure;</div>
 
-	<div class='hide_me' id='myopac_email_error'>Please enter a valid email address</div>
-	<div class='hide_me' id='myopac_email_success'>Email address successfully updated</div>
-	<div class='hide_me' id='myopac_email_failure'>Email address update failed</div>
+	<div class='hide_me' id='myopac_email_error'>&myopac.summary.email.error;</div>
+	<div class='hide_me' id='myopac_email_success'>&myopac.summary.email.success;</div>
+	<div class='hide_me' id='myopac_email_failure'>&myopac.summary.email.failed;</div>
 
-	<div class='hide_me' id='myopac_password_error'>Passwords are empty or do not match</div>
-	<div class='hide_me' id='myopac_password_success'>Password successfully updated</div>
-	<div class='hide_me' id='myopac_password_failure'>Password update failed</div>
-	<span class='hide_me' id='myopac_invalid_username'>Username cannot contain spaces</span>
+	<div class='hide_me' id='myopac_password_error'>&myopac.summary.password.error;</div>
+	<div class='hide_me' id='myopac_password_success'>&myopac.summary.password.success;</div>
+	<div class='hide_me' id='myopac_password_failure'>&myopac.summary.password.failure;</div>
+	<span class='hide_me' id='myopac_invalid_username'>&myopac.summary.username.invalid;</span>
 </div>
 
 

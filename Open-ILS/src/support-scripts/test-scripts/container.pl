@@ -52,8 +52,10 @@ sub containers_create {
 		my $bucket = "Fieldmapper::container::" . $types{$type};
 		$bucket = $bucket->new;
 		$bucket->owner($user->id);
-		$bucket->name("TestBucket");
-		$bucket->btype("TestType");
+		$bucket->name("TestBucket123");
+		$bucket->btype("TestType123");
+
+        printl("creating bucket " .$bucket->owner." : " . $bucket->name . " : " . $bucket->btype);
 	
 		my $resp = simplereq($ACTOR, 
 			'open-ils.actor.container.create',

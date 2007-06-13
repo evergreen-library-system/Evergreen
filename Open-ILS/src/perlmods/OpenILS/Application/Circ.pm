@@ -416,7 +416,8 @@ sub set_circ_claims_returned {
     my $barcode = $$args{barcode};
     my $backdate = $$args{backdate};
 
-    $logger->info("marking circ for item $barcode as claims returned");
+    $logger->info("marking circ for item $barcode as claims returned".
+        (($backdate) ? " with backdate $backdate" : ''));
 
     my $copy = $e->search_asset_copy({barcode=>$barcode, deleted=>'f'})->[0] 
         or return $e->die_event;
@@ -430,7 +431,6 @@ sub set_circ_claims_returned {
 
     $circ->stop_fines(OILS_STOP_FINES_CLAIMSRETURNED);
 	$circ->stop_fines_time('now') unless $circ->stop_fines_time;
-    $e->update_action_circulation($circ) or return $e->die_event;
 
     if( $backdate ) {
         # make it look like the circ stopped at the cliams returned time
@@ -439,6 +439,7 @@ sub set_circ_claims_returned {
         return $evt if $evt;
     }
 
+    $e->update_action_circulation($circ) or return $e->die_event;
     $e->commit;
     return 1;
 }

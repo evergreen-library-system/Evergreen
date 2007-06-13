@@ -4,13 +4,7 @@ use warnings;
 
 use lib '/openils/lib/perl5/';
 
-use OpenSRF::System;
-use OpenSRF::Application;
-use OpenSRF::EX qw/:try/;
-use OpenSRF::AppSession;
-use OpenSRF::MultiSession;
-use OpenSRF::Utils::SettingsClient;
-use OpenILS::Application::AppUtils;
+use Error qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use JSON;
@@ -27,8 +21,8 @@ use MARC::Charset;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields) =
-	('', 1, 1, '/openils/conf/bootstrap.conf', 'USMARC');
+my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields) =
+	('', 1, 1, '/openils/conf/bootstrap.conf', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 GetOptions(
 	'marctype=s'	=> \$marctype,
@@ -41,6 +35,7 @@ GetOptions(
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
 	'trash=s'	=> \@trash_fields,
+	'xml_idl=s'	=> \$idlfile,
 	'dontuse=s'	=> \$dontuse_file
 );
 
@@ -72,8 +67,8 @@ my %source_map = (
 );                              
 
 
-OpenSRF::System->bootstrap_client( config_file => $config );
-Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+
+Fieldmapper->import(IDL => $idlfile);
 
 my %keymap;
 if ($keyfile) {

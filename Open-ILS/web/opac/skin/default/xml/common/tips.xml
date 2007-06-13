@@ -4,5 +4,5 @@
 		<span>&common.tips.tip1;</span>
 		<span>&common.tips.tip2;</span>
 	</div>
-	<span style="font-weight: bold;">Tip:  </span>
+	<span style="font-weight: bold;">&tips.label;  </span>
 </div>

@@ -11,12 +11,12 @@
 char* script		= NULL;
 char* authtoken	= NULL;
 
-int do_request( char* request );
-char* format_response( jsonObject* o );
+static int do_request( char* request );
+static char* format_response( jsonObject* o );
 
 int main( int argc, char* argv[] ) {
 	
-	char c;
+	int c;
 	char* username		= NULL;
 	char* password		= NULL;
 	char* config		= NULL;
@@ -63,16 +63,24 @@ int main( int argc, char* argv[] ) {
 		printf("Login Session: %s\n", authtoken);
 	}
 
-	while((request=readline("oils# "))) 
-		if(do_request(request)) break;
+	while( (request=readline("oils# ")) ) {
+	   int retcode = do_request(request);
+	   free(request);
+	   if( retcode ) break;
+	}
 
+	free(config);
+	free(context);
+	free(username);
+	free(password);
+	free(script);
 	free(authtoken);
 	free(idl_filename);
 	return 1;
 }
 
 
-int do_request( char* request ) {
+static int do_request( char* request ) {
 
 	if(!strcasecmp(request, "exit") || !strcasecmp(request,"quit"))
 		return 1;
@@ -82,20 +90,21 @@ int do_request( char* request ) {
 	char* service;
 	char* method;
 	char* tmp;
-	char* item;
-	growing_buffer* buffer = buffer_init(256);
 	
 	service = strtok_r(request, " ", &tmp);
 	method = strtok_r(NULL, " ", &tmp);
-	while( (item = strtok_r(NULL, " ", &tmp)) ) 
-		buffer_fadd(buffer, "%s", item);
 
 	if( service && method ) {
 
 		jsonObject* params = NULL;
-		if(buffer->n_used > 0) 
-			params = jsonParseStringFmt("[%s]", buffer->buf);
 
+		if( *tmp ) {
+			growing_buffer* buffer = buffer_init(256);
+			buffer_fadd( buffer, "[%s]", tmp );
+			params = jsonParseString( buffer->buf );
+			buffer_free(buffer);
+		}
+		
 		osrfAppSession* session = osrf_app_client_session_init(service);
 		int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );
 		osrfMessage* omsg;
@@ -112,15 +121,14 @@ int do_request( char* request ) {
 		jsonObjectFree(params);
 
 	} else {
-		fprintf(stderr, "STATMENT DOES NOT PARSE: %s\n", request);
+		fprintf(stderr, "STATEMENT DOES NOT PARSE: %s\n", request);
 	}
 
-	buffer_free(buffer);
 	return 0;
 }
 
 
-char* format_response( jsonObject* o ) {
+static char* format_response( jsonObject* o ) {
 	if(!o) return NULL;
 
 	int width = 20;

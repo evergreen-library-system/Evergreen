@@ -80,6 +80,12 @@ function buildConfig {
 	prompt "Libxml2 headers directory [$LIBXML2_HEADERS] "
 	read X; if [ ! -z "$X" ]; then LIBXML2_HEADERS="$X"; fi;
 
+	prompt "OpenSRF headers directory [$OPENSRF_HEADERS] "
+	read X; if [ ! -z "$X" ]; then OPENSRF_HEADERS="$X"; fi;
+
+	prompt "OpenSRF libraries directory [$OPENSRF_LIBS] "
+	read X; if [ ! -z "$X" ]; then OPENSRF_LIBS="$X"; fi;
+
 	prompt "Build targets [${TARGETS[@]:0}] "
 	read X; if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
 
@@ -135,6 +141,9 @@ function writeConfig {
 	_write "APR_HEADERS=\"$APR_HEADERS\"";
 	_write "LIBXML2_HEADERS=\"$LIBXML2_HEADERS\"";
 
+	_write "OPENSRF_HEADERS=\"$OPENSRF_HEADERS\"";
+	_write "OPENSRF_LIBS=\"$OPENSRF_LIBS\"";
+
 	_write "WEBDIR=\"$WEBDIR\"";
 	_write "TEMPLATEDIR=\"$TEMPLATEDIR\"";
 	_write "ETCDIR=\"$ETCDIR\"";
@@ -151,7 +160,6 @@ function writeConfig {
 	STR="$STR)";
 	_write "$STR";
 
-	_write "OPENSRFDIR=\"OpenSRF/src/\"";
 	_write "OPENILSDIR=\"Open-ILS/src/\"";
 	_write "EVERGREENDIR=\"Evergreen/\"";
 

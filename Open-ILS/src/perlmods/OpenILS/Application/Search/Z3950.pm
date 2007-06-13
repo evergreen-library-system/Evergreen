@@ -2,7 +2,7 @@ package OpenILS::Application::Search::Z3950;
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
 
-use Net::Z3950;
+use OpenILS::Utils::ZClient;
 use MARC::Record;
 use MARC::File::XML;
 use Unicode::Normalize;
@@ -163,7 +163,7 @@ sub do_search {
 	return $editor->event unless $editor->checkauth;
 	return $editor->event unless $editor->allowed('REMOTE_Z3950_QUERY');
 
-	my $connection = new Net::Z3950::Connection(
+	my $connection = OpenILS::Utils::ZClient->new(
 		$host, $port,
 		databaseName				=> $db, 
 		user							=> $username,
@@ -184,7 +184,7 @@ sub do_search {
 	$logger->info("z3950: query => $query");
 
 	try {
-		$results = $connection->search( $query );
+		$results = $connection->search_pqf( $query );
 	} catch Error with { $err = shift; };
 
 	return OpenILS::Event->new(
@@ -220,11 +220,10 @@ sub process_results {
 	$logger->info("z3950: search returned $count hits");
 
 	my $tend = $limit + $offset;
-	$offset++; # records start at 1
 
 	my $end = ($tend <= $count) ? $tend : $count;
 
-	for($offset..$end) {
+	for($offset..$end - 1) {
 
 		my $err;
 		my $mods;
@@ -237,7 +236,7 @@ sub process_results {
 		try {
 
 			my $rec	= $results->record($_);
-			$marc		= MARC::Record->new_from_usmarc($rec->rawdata());
+			$marc		= MARC::Record->new_from_usmarc($rec->raw());
 			$marcs	= entityize($marc->as_xml_record);
 			my $doc	= XML::LibXML->new->parse_string($marcs);
 			$marcxml = entityize( $doc->documentElement->toString );
@@ -287,7 +286,7 @@ sub compile_query {
 #			$services{$service}->{attrs}->{$_}->{code} . " \"" . $$hash{$_} . "\" ";		
         $str .= 
             '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
-            ' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add teh structure attribute
+            ' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add the structure attribute
             " \"" . $$hash{$_} . "\" "; # add the search term
 	}
 	return $str;

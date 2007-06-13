@@ -4,20 +4,20 @@
 	<table width='100%' class='data_grid data_grid_center'>
 
 		<thead class='color_3'>
-			<tr><td colspan='3' style='padding: 6px'><b>Summary</b></td></tr>
+			<tr><td colspan='3' style='padding: 6px'><b>&myopac.fines.title;</b></td></tr>
 			<tr>
-				<td width='33%'>Total Owed</td>
-				<td width='33%'>Total Paid</td>
-				<td width='33%'>Balance Owed</td>
+				<td width='33%'>&myopac.fines.owed;</td>
+				<td width='33%'>&myopac.fines.paid;</td>
+				<td width='33%'>&myopac.fines.balance;</td>
 			</tr>
 		</thead>
 
 		<tbody id='myopac_fines_summary_tbody'>
-			<tr id='myopac_fines_summary_loading'><td>Loading...</td></tr>
+			<tr id='myopac_fines_summary_loading'><td>&myopac.fines.status;</td></tr>
 			<tr id='myopac_fines_summary_row' class='hide_me'>
-				<td id='myopac_fines_summary_total' >$</td>
-				<td id='myopac_fines_summary_paid' >$</td>
-				<td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>$</td>
+				<td id='myopac_fines_summary_total' >&common.currency;</td>
+				<td id='myopac_fines_summary_paid' >&common.currency;</td>
+				<td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>&common.currency;</td>
 			</tr>
 		</tbody>
 	</table>
@@ -36,14 +36,14 @@
 		<br/><hr/><br/>
 		<table width='100%' class='data_grid data_grid_center' id='myopac_circ_trans_table'>
 			<thead>
-				<tr><td colspan='10' style='padding: 6px'><b>Overdue Materials</b></td></tr>
+				<tr><td colspan='10' style='padding: 6px'><b>&myopac.fines.overdue;</b></td></tr>
 				<tr>
-					<td>Title</td>
-					<td>Author</td>
-					<td>Checkout Date</td>
-					<td>Due Date</td>
-					<td>Date Returned</td>
-					<td>Balance Owed</td>
+					<td>&common.title;</td>
+					<td>&common.author;</td>
+					<td>&myopac.fines.checkout;</td>
+					<td>&myopac.fines.due;</td>
+					<td>&myopac.fines.returned;</td>
+					<td>&myopac.fines.balance;</td>
 				</tr>
 			</thead>
 			<tbody id='myopac_circ_trans_tbody'>
@@ -52,10 +52,10 @@
 					<td name='myopac_circ_trans_author'> </td>
 					<td name='myopac_circ_trans_start'> </td>
 					<td name='myopac_circ_trans_due'> </td>
-					<td name='myopac_circ_trans_finished'><span style='color:red;'>(fines accruing)</span></td>
+					<td name='myopac_circ_trans_finished'><span style='color:red;'>&myopac.fines.accruing;</span></td>
 					<td>
 						<span style='color: red; font-weight: bold;' 
-							name='myopac_circ_trans_balance'>$</span>
+							name='myopac_circ_trans_balance'>&common.currency;</span>
 					</td>
 				</tr>
 			</tbody>
@@ -67,14 +67,14 @@
 		<br/><hr/><br/>
 		<table width='100%' class='data_grid data_grid_center' id='myopac_trans_table'>
 			<thead>
-				<tr><td colspan='8' style='padding: 6px'><b>Other Fees</b></td></tr>
+				<tr><td colspan='8' style='padding: 6px'><b>&myopac.fines.other;</b></td></tr>
 				<tr>
-					<td width='12%'>Transaction Start Time</td>
-					<td width='12%'>Last Payment Time</td>
-					<td width='12%'>Initial Amount Owed</td>
-					<td width='12%'>Total Amount Paid</td>
-					<td width='12%'>Balance Owed</td>
-					<td width='12%'>Billing Type</td>
+					<td width='12%'>&myopac.fines.time.start;</td>
+					<td width='12%'>&myopac.fines.time.paid;</td>
+					<td width='12%'>&myopac.fines.owed.initial;</td>
+					<td width='12%'>&myopac.fines.paid.amount;</td>
+					<td width='12%'>&myopac.fines.balance;</td>
+					<td width='12%'>&myopac.fines.type;</td>
 				</tr>
 			</thead>
 	
@@ -82,11 +82,11 @@
 				<tr id='myopac_trans_row'>
 					<td name='myopac_trans_start'> </td>
 					<td name='myopac_trans_last_payment'> </td>
-					<td name='myopac_trans_init_amount'>$</td>
-					<td name='myopac_trans_total_paid'>$</td>
+					<td name='myopac_trans_init_amount'>&common.currency;</td>
+					<td name='myopac_trans_total_paid'>&common.currency;</td>
 					<td style='color:red; font-weight: bold;'>
 						<span name='myopac_trans_balance_recur' class='hide_me'> * </span>
-						<span name='myopac_trans_balance'>$</span>
+						<span name='myopac_trans_balance'>&common.currency;</span>
 					</td>
 					<td name='myopac_trans_bill_type'> </td>
 				</tr>

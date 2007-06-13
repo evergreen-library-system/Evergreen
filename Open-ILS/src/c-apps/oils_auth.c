@@ -101,7 +101,7 @@ int oilsAuthInit( osrfMethodContext* ctx ) {
 
 		} else {
 
-			seed = va_list_to_string( "%d.%d.%s", time(NULL), getpid(), username );
+			seed = va_list_to_string( "%d.%ld.%s", time(NULL), (long) getpid(), username );
 			key = va_list_to_string( "%s%s", OILS_AUTH_CACHE_PRFX, username );
 	
 			md5seed = md5sum(seed);
@@ -282,7 +282,7 @@ oilsEvent* oilsAuthHandleLoginOK(
 	osrfLogDebug(OSRF_LOG_MARK, "Auth session timeout for %s: %f", uname, timeout );
 
 	char* string = va_list_to_string( 
-			"%d.%d.%s", getpid(), time(NULL), uname ); 
+			"%d.%ld.%s", (long) getpid(), time(NULL), uname ); 
 	char* authToken = md5sum(string); 
 	char* authKey = va_list_to_string( 
 			"%s%s", OILS_AUTH_CACHE_PRFX, authToken ); 

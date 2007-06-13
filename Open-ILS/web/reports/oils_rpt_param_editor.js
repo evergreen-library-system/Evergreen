@@ -74,6 +74,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 	widgetArgs.calFormat = OILS_RPT_TRANSFORMS[transform].cal_format;
 	widgetArgs.inputSize = OILS_RPT_TRANSFORMS[transform].input_size;
 	widgetArgs.regex = OILS_RPT_TRANSFORMS[transform].regex;
+    widgetArgs.value = param.value;
 
 	switch(transform) {
 		case 'date':
@@ -182,6 +183,9 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
             break;
 	}
 
+    if(widgetArgs.value != undefined) 
+        return new oilsRptTemplateWidget(widgetArgs);
+
 
 	switch(param.op) {
 		case 'in':
@@ -199,6 +203,7 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node) {
 		default:
 			return new atomicWidget(widgetArgs);
 	}
+
 }
 
 

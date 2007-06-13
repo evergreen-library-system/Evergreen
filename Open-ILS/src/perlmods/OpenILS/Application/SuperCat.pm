@@ -1008,6 +1008,8 @@ sub oISBN {
 	my $client = shift;
 	my $isbn = shift;
 
+	$isbn =~ s/-//gso;
+
 	throw OpenSRF::EX::InvalidArg ('I need an ISBN please')
 		unless (length($isbn) >= 10);
 
