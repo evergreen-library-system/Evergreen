@@ -1244,7 +1244,8 @@ cat.copy_browser.prototype = {
 			if (parent_org) {
 				data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
 			}
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			if (params) {
 				for (var i in params) {
 					node.setAttribute(i,params[i]);
@@ -1311,7 +1312,8 @@ cat.copy_browser.prototype = {
 				'to_bottom' : true,
 				'no_auto_select' : true,
 			};
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			obj.map_tree[ 'acn_' + acn_tree.id() ] =  node;
 			if (params) {
 				for (var i in params) {
@@ -1362,7 +1364,8 @@ cat.copy_browser.prototype = {
 				'to_bottom' : true,
 				'no_auto_select' : true,
 			};
-			var node = obj.list.append(data);
+			var nparams = obj.list.append(data);
+			var node = nparams.my_node;
 			obj.map_tree[ 'acp_' + acp_item.id() ] =  node;
 			if (params) {
 				for (var i in params) {
