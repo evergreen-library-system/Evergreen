@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="admin_transit_list_win" 
+	onload="try { my_init(); } catch(E) { alert(E); }"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+        <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+        <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for admin_transit_list.xul');
+
+				JSAN.use('admin.transit_list2');
+				g.transit_list = new admin.transit_list2();
+				g.transit_list.init();
+
+			} catch(E) {
+				try { g.error.standard_unexpected_error_alert('admin/transit_list.xul',E); } catch(F) { alert(E); }
+			}
+		}
+
+	]]>
+	</script>
+
+	<vbox flex="1" class="my_overflow">
+		<hbox>
+			<groupbox id="lib_hbox" orient="horizontal">
+				<caption label="Transit Filter" class="shrinkable_groupbox"/> 
+				<vbox>
+					<label value="Transit Library" class="header"/>
+					<hbox>
+						<menulist id="transit_direction">
+							<menupopup>
+								<menuitem label="Transit to" value="transit_to" selected="true"/>
+								<menuitem label="Transit from" value="transit_from" />
+							</menupopup>
+						</menulist>
+						<hbox id="libmenu_placeholder"/>
+					</hbox>
+					<label value="Transit Date falls between" class="header"/> 
+					<hbox>
+						<menulist id="sdate" editable="true">
+							<menupopup>
+								<menuitem label="Today" selected="true"/>
+								<menuitem label="Today - 7 days" />
+								<menuitem label="Today - 14 days" />
+								<menuitem label="Today - 21 days" />
+								<menuitem label="Today - 30 days" />
+								<menuitem label="The Beginning" />
+							</menupopup>
+						</menulist>
+						<menulist id="edate" editable="true">
+							<menupopup>
+								<menuitem label="Today" selected="true"/>
+								<menuitem label="Today - 7 days" />
+								<menuitem label="Today - 14 days" />
+								<menuitem label="Today - 21 days" />
+								<menuitem label="Today - 30 days" />
+							</menupopup>
+						</menulist>
+					</hbox>
+				</vbox>
+				<button label="Retrieve Transits" accesskey="T" command="cmd_kick_off"/>
+			</groupbox>
+		</hbox>
+
+		<groupbox flex="1">
+			<caption label="Transits" />
+			<hbox>
+				<button label="Print Transits" command="cmd_print_list" />
+				<spacer flex="1"/>
+				<menubar>
+					<menu label="Actions for Selected Transits" accesskey="S">
+						<menupopup>
+							<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+							<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+							<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+							<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+							<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+							<menuseparator />
+							<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+							<menuitem command="sel_transit_abort" label="Abort Transits" />
+							<menuseparator />
+							<menuitem command="save_columns" label="Save Columns"/>
+						</menupopup>
+					</menu>
+				</menubar>
+			</hbox>
+			<tree id="transit_list" flex="1" enableColumnDrag="true" context="transit_list_actions"/>
+		</groupbox>
+	</vbox>
+
+	<popupset id="transit_list_popupset">
+		<popup id="transit_list_actions" position="at_pointer"> 
+			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
+			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
+			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
+			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
+			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuseparator/>
+			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="sel_transit_abort" label="Abort Transits" />
+			<menuseparator/>
+			<menuitem command="save_columns" label="Save Columns"/>
+		</popup>
+	</popupset>
+
+	<commandset id="transit_list_cmds">
+		<command id="cmd_print_list" />
+		<command id="save_columns" />
+		<command id="sel_copy_details" disabled="true"/>
+		<command id="sel_patron" disabled="true"/>
+		<command id="sel_edit" disabled="true"/>
+		<command id="sel_opac" disabled="true"/>
+		<command id="sel_bucket" disabled="true"/>
+		<command id="sel_transit_abort" disabled="true"/>
+		<command id="sel_clip" disabled="true"/>
+		<command id="cmd_kick_off"/>
+	</commandset>
+
+</window>
+
