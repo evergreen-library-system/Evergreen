@@ -10,6 +10,8 @@ patron.items = function (params) {
 
 patron.items.prototype = {
 
+	'list_circ_map' : {},
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -87,21 +89,21 @@ patron.items.prototype = {
 					'cmd_items_print2' : [ ['command'], function() { obj.items_print(2); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(1); } ],
 					'cmd_items_export2' : [ ['command'], function() { obj.items_export(2); } ],
-					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); /*alert('Action complete.'); obj.retrieve();*/ } ],
+					'cmd_items_renew' : [ ['command'], function() { obj.items_renew(1); /* obj.retrieve();*/ } ],
 					'cmd_items_renew_all' : [ ['command'], function() { obj.items_renew_all(); } ],
-					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); /*alert('Action complete.'); obj.retrieve();*/ } ],
-					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_items_renew2' : [ ['command'], function() { obj.items_renew(2); /* obj.retrieve();*/ } ],
+					'cmd_items_edit' : [ ['command'], function() { obj.items_edit(1);  /*obj.retrieve();*/ } ],
+					'cmd_items_edit2' : [ ['command'], function() { obj.items_edit(2);  /*obj.retrieve();*/ } ],
+					'cmd_items_mark_lost' : [ ['command'], function() { obj.items_mark_lost(1);  /*obj.retrieve();*/ } ],
+					'cmd_items_mark_lost2' : [ ['command'], function() { obj.items_mark_lost(2);  /*obj.retrieve();*/ } ],
+					'cmd_items_claimed_returned' : [ ['command'], function() { obj.items_claimed_returned(1);  /*obj.retrieve();*/ } ],
+					'cmd_items_claimed_returned2' : [ ['command'], function() { obj.items_claimed_returned(2);  /*obj.retrieve();*/ } ],
+					'cmd_items_checkin' : [ ['command'], function() { obj.items_checkin(1);  /*obj.retrieve();*/ } ],
+					'cmd_items_checkin2' : [ ['command'], function() { obj.items_checkin(2);  /*obj.retrieve();*/ } ],
 					'cmd_show_catalog' : [ ['command'], function() { obj.show_catalog(1); } ],
 					'cmd_show_catalog2' : [ ['command'], function() { obj.show_catalog(2); } ],
-					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1); alert('Action complete.'); obj.retrieve(); } ],
-					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2); alert('Action complete.'); obj.retrieve(); } ],
+					'cmd_add_billing' : [ ['command'], function() { obj.add_billing(1);  /*obj.retrieve();*/ } ],
+					'cmd_add_billing2' : [ ['command'], function() { obj.add_billing(2);  /*obj.retrieve();*/ } ],
 					'cmd_show_noncats' : [ ['command'], function() { obj.show_noncats(); } ],
 				}
 			}
@@ -259,7 +261,7 @@ patron.items.prototype = {
 				try {
 					obj.list.select_all();
 					obj.items_renew(1,true);	
-					setTimeout(function(){list.on_all_fleshed = null; /*alert('Action complete.'); obj.retrieve();*/ },0);
+					setTimeout(function(){list.on_all_fleshed = null; /* obj.retrieve();*/ },0);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('2 All items were not likely renewed',E);
 				}
@@ -286,7 +288,7 @@ patron.items.prototype = {
 
 			var count = 0;
 
-			function gen_renew(bc) {
+			function gen_renew(bc,circ_id) {
 				var x = document.getElementById('renew_msgs');
 				if (x) {
 					var l = document.createElement('label');
@@ -295,16 +297,20 @@ patron.items.prototype = {
 				}
 				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
 					function(r) {
-						if ( instanceOf( r[0], 'circ' ) || (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
+						if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
 							l.setAttribute('value', bc + ' renewed.');
+							obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
+							obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
+							obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
 						} else {
-							l.setAttribute('value', bc + ' not renewed.  ' + r[0].desc);
+							l.setAttribute('value', bc + ' not renewed.  ' + r[0].textcode + ' : ' + r[0].desc);
 						}
 						count--;
 						if (count == 0) {
-							if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
+							//if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
 							JSAN.use('util.widgets'); util.widgets.remove_children(x);
 						}
+						obj.refresh(circ_id);
 					} 
 				);
 			}
@@ -313,8 +319,8 @@ patron.items.prototype = {
 				try {
 					count++;
 					var barcode = retrieve_ids[i].barcode;
-					gen_renew(barcode);
-
+					var circ_id = retrieve_ids[i].circ_id;
+					gen_renew(barcode,circ_id);
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('Renew probably did not happen for barcode ' + barcode,E);
 				}
@@ -371,6 +377,9 @@ patron.items.prototype = {
 						if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 					}
 				}
+				for (var i = 0; i < obj.retrieve_ids.length; i++) {
+					obj.refresh(retrieve_ids[i].circ_id);
+				}
 			} catch(E) {
 				obj.error.standard_unexpected_error_alert('The due dates were not likely modified.',E);
 			}
@@ -386,6 +395,7 @@ patron.items.prototype = {
 				dump('Mark barcode lost = ' + barcode);
 				var robj = obj.network.simple_request( 'MARK_ITEM_LOST', [ ses(), { barcode: barcode } ]);
 				if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+				obj.refresh(retrieve_ids[i].circ_id);
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked lost.',E);
@@ -442,6 +452,7 @@ patron.items.prototype = {
 					if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
 				}
 			}
+			for (var i = 0; i < retrieve_ids.length; i++) obj.refresh(retrieve_ids[i].circ_id);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('The items were not likely marked Claimed Returned.',E);
 		}
@@ -464,6 +475,7 @@ patron.items.prototype = {
 					ses(), { 'copy_id' : copy_id }
 				);
 				/* circ.util.checkin_via_barcode handles errors currently */
+				obj.refresh(retrieve_ids[i].circ_id);
 			}
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('Checkin probably did not happen.',E);
@@ -554,40 +566,46 @@ patron.items.prototype = {
 				return row;
 			}
 
-			obj.network.simple_request(
-				'FM_CIRC_DETAILS',
-				[ row.my.circ_id ],
-				function(req) {
-					try { 
-						var robj = req.getResultObject();
-						if (typeof robj.ilsevent != 'undefined') throw(robj);
-						if (typeof robj.ilsevent == 'null') throw('null result');
-						row.my.circ = robj.circ;
-						row.my.acp = robj.copy;
-						row.my.mvr = robj.mvr;
-						row.my.acn = robj.volume;
-
-						var copy_id = row.my.circ.target_copy();
-						if (typeof copy_id == 'object') {
-							if (copy_id != null) {
-								copy_id = copy_id.id();
-							} else {
-								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-							}
-						} else {
-								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-						}
-						
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+			if (!row.my.circ) {
+				obj.network.simple_request(
+					'FM_CIRC_DETAILS',
+					[ row.my.circ_id ],
+					function(req) {
+						try { 
+							var robj = req.getResultObject();
+							if (typeof robj.ilsevent != 'undefined') throw(robj);
+							if (typeof robj.ilsevent == 'null') throw('null result');
+							row.my.circ = robj.circ;
+							row.my.acp = robj.copy;
+							row.my.mvr = robj.mvr;
+							row.my.acn = robj.volume;
 	
-						if (typeof params.on_retrieve == 'function') {
-							params.on_retrieve(row);
+							var copy_id = row.my.circ.target_copy();
+							if (typeof copy_id == 'object') {
+								if (copy_id != null) {
+									copy_id = copy_id.id();
+								} else {
+									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+								}
+							} else {
+									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+							}
+							
+							params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+		
+							if (typeof params.on_retrieve == 'function') {
+								params.on_retrieve(row);
+							}
+						} catch(E) {
+							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 						}
-					} catch(E) {
-						obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 					}
+				);
+			} else {
+				if (typeof params.on_retrieve == 'function') {
+					params.on_retrieve(row);
 				}
-			);
+			}
 
 			return row;
 		}
@@ -641,6 +659,24 @@ patron.items.prototype = {
 		);
 	},
 
+	'refresh' : function(circ_id) {
+		var obj = this;
+		try {
+			var nparams = obj.list_circ_map[circ_id];
+			var which_list = nparams.which_list;
+			switch(which_list) {
+				case 1: case '1':
+					setTimeout(function(){try{obj.list2.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+					break;
+				default:
+					setTimeout(function(){try{obj.list.refresh_row(nparams);}catch(E){obj.error.standard_unexpected_error_alert('2 Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);}},1000);
+					break;
+			}
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('Error refreshing row in list\ncirc_id = ' + circ_id + '\nnparams = ' + nparams,E);
+		}
+	},
+
 	'retrieve' : function(dont_show_me_the_list_change) {
 		var obj = this;
 		if (window.xulG && window.xulG.checkouts) {
@@ -677,13 +713,19 @@ patron.items.prototype = {
 		function gen_list_append(circ_id,which_list) {
 			return function() {
 				try {
+					var nparams;
 					switch(which_list) {
 						case 1:
-							obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true } );
+							nparams = obj.list2.append( { 'row' : { 'my' : { 'circ_id' : circ_id } },  'to_bottom' : true, 'which_list' : which_list } );
 						break;
 						default:
-							obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, 'to_bottom' : true } );
+							nparams = obj.list.append( { 'row' : { 'my' : { 'circ_id' : circ_id } }, 'to_bottom' : true, 'which_list' : which_list } );
 						break;
+					}
+					if (nparams) {
+						obj.list_circ_map[circ_id] = nparams; // unlike item status interface, each circ should be in this list only once
+					} else {
+						alert('foo');
 					}
 				} catch(E) {
 					alert(E);
