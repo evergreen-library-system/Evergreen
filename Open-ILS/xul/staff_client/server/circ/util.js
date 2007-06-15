@@ -727,6 +727,17 @@ circ.util.hold_columns = function(modify,params) {
 
 	var c = [
 		{
+			'persist' : 'hidden width ordinal', 'id' : 'request_lib', 'label' : 'Request Lib (Full Name)', 'flex' : 1,
+			'primary' : false, 'hidden' : true,  
+			'render' : function(my) { if (Number(my.ahr.request_lib())>=0) return data.hash.aou[ my.ahr.request_lib() ].name(); else return my.ahr.request_lib().name(); },
+		},
+		{
+			'persist' : 'hidden width ordinal', 'id' : 'request_lib_shortname', 'label' : 'Request Lib', 'flex' : 0,
+			'primary' : false, 'hidden' : true,  
+			'render' : function(my) { if (Number(my.ahr.request_lib())>=0) return data.hash.aou[ my.ahr.request_lib() ].shortname(); else return my.ahr.request_lib().shortname(); },
+		},
+
+		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_timestamp', 'label' : 'Request Timestamp', 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
 			'render' : function(my) { return my.ahr.request_time().toString(); },
