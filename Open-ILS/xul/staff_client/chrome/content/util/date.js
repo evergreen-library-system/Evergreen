@@ -55,39 +55,46 @@ util.date.db_date2Date = function (date) {
 	return new Date(y,mo-1,d,h,mi,s);
 }
 
-util.date.formatted_date = function (date,format) {
+util.date.formatted_date = function (orig_date,format) {
+
+	var _date = orig_date;
+
+	try { 
+
 	// pass in a Date object or epoch seconds or a postgres style date string (2005-07-19 10:38:25.211964-04)
-	if (typeof(date) == 'string') {
-		if (date.match(/:/) || date.match(/-/)) {
-			date = util.date.db_date2Date(date);
+	if (typeof(_date) == 'string') {
+		if (_date.match(/:/) || _date.match(/-/)) {
+			_date = util.date.db_date2Date(_date);
 		} else {
-			date = new Date( Number( date + '000' ) );
+			_date = new Date( Number( _date + '000' ) );
 		}
-	} else if (typeof(date) == 'undefined') {
-		date = new Date( Number( date + '000' ) );
-	} else if (date == null) {
+	} else if (typeof(_date) == 'number') {
+		_date = new Date( _date * 1000 );
+	} 
+	
+	if (_date == null) {
 		return '';
 	}
 
-	var mm = date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
-	var dd = date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
-	var yyyy = date.getFullYear().toString();
+	var mm = _date.getMonth() + 1; mm = mm.toString(); if (mm.length == 1) mm = '0' +mm;
+	var dd = _date.getDate().toString(); if (dd.length == 1) dd = '0' +dd;
+	var yyyy = _date.getFullYear().toString();
 	var yy = yyyy.substr(2);
-	var H = date.getHours(); H = H.toString(); if (H.length == 1) H = '0' + H;
-	var I = date.getHours(); if (I > 12) I -= 12; I = I.toString();
-	var M = date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
-	var sec = date.getSeconds(); sec = sec.toString(); if (sec.length == 1) sec = '0' + sec;
+	var H = _date.getHours(); H = H.toString(); if (H.length == 1) H = '0' + H;
+	var I = _date.getHours(); if (I > 12) I -= 12; I = I.toString();
+	var M = _date.getMinutes(); M = M.toString(); if (M.length == 1) M = '0' + M;
+	var sec = _date.getSeconds(); sec = sec.toString(); if (sec.length == 1) sec = '0' + sec;
 
 	var s = format;
 	if (s == '') { s = '%F %H:%M'; }
-	if (typeof date.iso8601Format != 'function') {
+	if (typeof _date.iso8601Format != 'function') {
 		
 		var js = JSAN._loadJSFromUrl( urls.isodate_lib );
 		try { eval( js ); } catch(E) { alert('Problem loading ISO8601 date extension:' + E); }
 
 	}
-	if (typeof date.iso8601Format == 'function') {
-		s = s.replace( /%\{iso8601\}/g, date.iso8601Format("YMDHMS") );
+	if (typeof _date.iso8601Format == 'function') {
+		s = s.replace( /%\{iso8601\}/g, _date.iso8601Format("YMDHMS") );
 	}
 	s = s.replace( /%m/g, mm );
 	s = s.replace( /%d/g, dd );
@@ -99,6 +106,10 @@ util.date.formatted_date = function (date,format) {
 	s = s.replace( /%M/g, M );
 	s = s.replace( /%s/g, sec );
 	return s;
+
+	} catch(E) {
+		alert('Error in util.date.formatted_date:\ntypeof orig_date = ' + typeof orig_date + ' orig_date = ' + orig_date + '\ntypeof _date = ' + typeof _date + ' _date = ' + _date + '\nformat = ' + format + '\n' + E);
+	}
 }
 
 util.date.interval_to_seconds = function ( $interval ) {
@@ -120,5 +131,40 @@ util.date.interval_to_seconds = function ( $interval ) {
         }
         return $amount;
 }
+
+/* 
+	Lifted from /opac/common/js/util.js
+
+	builds a JS date object with the given info.  The given data
+	has to be valid (e.g. months == 30 is not valid).  Returns NULL on 
+	invalid date 
+	Months are 1-12 (unlike the JS date object)
+*/
+
+util.date.buildDate = function ( year, month, day, hours, minutes, seconds ) {
+
+	if(!year) year = 0;
+	if(!month) month = 1;
+	if(!day) day = 1;
+	if(!hours) hours = 0;
+	if(!minutes) minutes = 0;
+	if(!seconds) seconds = 0;
+
+	var d = new Date(year, month - 1, day, hours, minutes, seconds);
+	//alert('util.date.buildDate\nyear='+year+' month='+month+' day='+day+' hours='+hours+' minutes='+minutes+' seconds='+seconds+'\nd = ' + d);
+	
+	if( 
+		(d.getYear() + 1900) == year &&
+		d.getMonth()	== (month - 1) &&
+		d.getDate()		== new Number(day) &&
+		d.getHours()	== new Number(hours) &&
+		d.getMinutes() == new Number(minutes) &&
+		d.getSeconds() == new Number(seconds) ) {
+		return d;
+	}
+
+	return null;
+}
+
 
 dump('exiting util/date.js\n');
