@@ -297,10 +297,13 @@ patron.items.prototype = {
 				}
 				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
 					function(r) {
-						if ( instanceOf( r[0], 'circ' ) || (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
+						if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
 							l.setAttribute('value', bc + ' renewed.');
+							obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
+							obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
+							obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
 						} else {
-							l.setAttribute('value', bc + ' not renewed.  ' + r[0].desc);
+							l.setAttribute('value', bc + ' not renewed.  ' + r[0].textcode + r[0].desc);
 						}
 						count--;
 						if (count == 0) {
@@ -563,40 +566,46 @@ patron.items.prototype = {
 				return row;
 			}
 
-			obj.network.simple_request(
-				'FM_CIRC_DETAILS',
-				[ row.my.circ_id ],
-				function(req) {
-					try { 
-						var robj = req.getResultObject();
-						if (typeof robj.ilsevent != 'undefined') throw(robj);
-						if (typeof robj.ilsevent == 'null') throw('null result');
-						row.my.circ = robj.circ;
-						row.my.acp = robj.copy;
-						row.my.mvr = robj.mvr;
-						row.my.acn = robj.volume;
-
-						var copy_id = row.my.circ.target_copy();
-						if (typeof copy_id == 'object') {
-							if (copy_id != null) {
-								copy_id = copy_id.id();
-							} else {
-								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-							}
-						} else {
-								if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-						}
-						
-						params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+			if (!row.my.circ) {
+				obj.network.simple_request(
+					'FM_CIRC_DETAILS',
+					[ row.my.circ_id ],
+					function(req) {
+						try { 
+							var robj = req.getResultObject();
+							if (typeof robj.ilsevent != 'undefined') throw(robj);
+							if (typeof robj.ilsevent == 'null') throw('null result');
+							row.my.circ = robj.circ;
+							row.my.acp = robj.copy;
+							row.my.mvr = robj.mvr;
+							row.my.acn = robj.volume;
 	
-						if (typeof params.on_retrieve == 'function') {
-							params.on_retrieve(row);
+							var copy_id = row.my.circ.target_copy();
+							if (typeof copy_id == 'object') {
+								if (copy_id != null) {
+									copy_id = copy_id.id();
+								} else {
+									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+								}
+							} else {
+									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+							}
+							
+							params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
+		
+							if (typeof params.on_retrieve == 'function') {
+								params.on_retrieve(row);
+							}
+						} catch(E) {
+							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 						}
-					} catch(E) {
-						obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
 					}
+				);
+			} else {
+				if (typeof params.on_retrieve == 'function') {
+					params.on_retrieve(row);
 				}
-			);
+			}
 
 			return row;
 		}
