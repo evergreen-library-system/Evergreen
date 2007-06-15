@@ -32,6 +32,28 @@ sub create_folder {
 
 
 __PACKAGE__->register_method(
+    api_name => 'open-ils.reporter.report.exists',
+    method => 'report_exists',
+    notes => q/
+        Returns 1 if a report with the given name and folder already exists.
+    /
+);
+
+sub report_exists {
+    my( $self, $conn, $auth, $report ) = @_;
+
+    my $e = new_rstore_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('RUN_REPORTS');
+
+    my $existing = $e->search_reporter_report(
+        {folder=>$report->folder, name=>$report->name});
+    return 1 if @$existing;
+    return 0;
+}
+
+
+__PACKAGE__->register_method(
 	api_name => 'open-ils.reporter.folder.visible.retrieve',
 	method => 'retrieve_visible_folders'
 );
