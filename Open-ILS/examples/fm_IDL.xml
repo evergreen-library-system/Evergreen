@@ -1222,6 +1222,7 @@
 			<field reporter:label="Notifications" name="notifications" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Eligible Copies" name="eligible_copies" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Currently Frozen" name="frozen" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>

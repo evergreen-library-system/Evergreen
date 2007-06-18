@@ -711,6 +711,7 @@ sub new_hold_copy_targeter {
 							{ capture_time => undef,
 							  fulfillment_time => undef,
 							  cancel_time => undef,
+							  frozen => 'f',
 							  prev_check_time => { '<=' => $expire_threshold },
 							},
 							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time,prev_check_time' } ) ];
@@ -720,6 +721,7 @@ sub new_hold_copy_targeter {
 							capture_time => undef,
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
+							frozen => 'f',
 							cancel_time => undef,
 							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } );
 		} else {
@@ -730,6 +732,7 @@ sub new_hold_copy_targeter {
 							fulfillment_time => undef,
 				  			prev_check_time => undef,
 							cancel_time => undef,
+							frozen => 'f',
 							{ order_by => 'CASE WHEN hold_type = \'F\' THEN 0 ELSE 1 END, selection_depth DESC, request_time' } ) ];
 		}
 	} catch Error with {

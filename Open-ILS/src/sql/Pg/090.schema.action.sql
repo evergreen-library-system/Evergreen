@@ -178,7 +178,8 @@ CREATE TABLE action.hold_request (
 	hold_type		TEXT				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
-	email_notify		BOOL				NOT NULL DEFAULT TRUE
+	email_notify		BOOL				NOT NULL DEFAULT TRUE,
+	frozen			BOOL				NOT NULL DEFAULT FALSE
 );
 
 CREATE INDEX hold_request_target_idx ON action.hold_request (target);
