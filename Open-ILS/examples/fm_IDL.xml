@@ -609,6 +609,7 @@
 			<field name="xact" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="grocery" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="circulation" oils_obj:array_position="19" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="billing_location" oils_obj:array_position="20" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
