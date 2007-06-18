@@ -252,7 +252,7 @@ CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
 	  FROM	money.billable_xact xact
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 		LEFT JOIN "action".circulation circ ON (circ.id = xact.id)
-		LEFT JOIN money.grocery groc ON (circ.id = xact.id)
+		LEFT JOIN money.grocery groc ON (groc.id = xact.id)
 	  	LEFT JOIN (
 			SELECT	billing.xact,
 				billing.voided,
