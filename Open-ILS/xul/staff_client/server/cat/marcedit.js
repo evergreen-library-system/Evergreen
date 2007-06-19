@@ -419,7 +419,7 @@ function createMARCTextbox (element,attrs) {
 }
 
 var rec_type = {
-        BKS : { Type : /[at]{1}/,	BLvl : /[acdm]{1}/ },
+	BKS : { Type : /[at]{1}/,	BLvl : /[acdm]{1}/ },
 	SER : { Type : /[a]{1}/,	BLvl : /[bs]{1}/ },
 	VIS : { Type : /[gkro]{1}/,	BLvl : /[abcdms]{1}/ },
 	MIX : { Type : /[p]{1}/,	BLvl : /[cd]{1}/ },
@@ -430,6 +430,182 @@ var rec_type = {
 };
 
 var ff_pos = {
+	TrAr : {
+		_8 : {
+			SCO : {start : 33, len : 1, def : ' ' },
+			REC : {start : 33, len : 1, def : 'n' },
+		},
+		_6 : {
+			SCO : {start : 16, len : 1, def : ' ' },
+			REC : {start : 16, len : 1, def : 'n' },
+		},
+	},
+	TMat : {
+		_8 : {
+			VIS : {start : 33, len : 1, def : ' ' },
+		},
+		_6 : {
+			VIS : {start : 16, len : 1, def : ' ' },
+		},
+	},
+	Time : {
+		_8 : {
+			VIS : {start : 18, len : 3, def : ' ' },
+		},
+		_6 : {
+			VIS : {start : 1, len : 3, def : ' ' },
+		},
+	},
+	Tech : {
+		_8 : {
+			VIS : {start : 34, len : 1, def : 'n' },
+		},
+		_6 : {
+			VIS : {start : 17, len : 1, def : 'n' },
+		},
+	},
+	SrTp : {
+		_8 : {
+			SER : {start : 21, len : 1, def : ' ' },
+		},
+		_6 : {
+			SER : {start : 4, len : 1, def : ' ' },
+		},
+	},
+	Srce : {
+		_8 : {
+			BKS : {start : 39, len : 1, def : 'd' },
+			SER : {start : 39, len : 1, def : 'd' },
+			VIS : {start : 39, len : 1, def : 'd' },
+			MIX : {start : 39, len : 1, def : 'd' },
+			MAP : {start : 39, len : 1, def : 'd' },
+			SCO : {start : 39, len : 1, def : 'd' },
+			REC : {start : 39, len : 1, def : 'd' },
+			COM : {start : 39, len : 1, def : 'd' },
+		}
+	},
+	SpFm : {
+		_8 : {
+			MAP : {start : 33, len : 2, def : ' ' },
+		},
+		_6 : {
+			MAP : {start : 16, len : 2, def : ' ' },
+		},
+	},
+	Relf : {
+		_8 : {
+			MAP : {start : 18, len : 4, def : ' ' },
+		},
+		_6 : {
+			MAP : {start : 1, len : 4, def : ' ' },
+		},
+	},
+	Regl : {
+		_8 : {
+			SER : {start : 19, len : 1, def : ' ' },
+		},
+		_6 : {
+			SER : {start : 2, len : 1, def : ' ' },
+		},
+	},
+	Proj : {
+		_8 : {
+			MAP : {start : 22, len : 2, def : ' ' },
+		},
+		_6 : {
+			MAP : {start : 5, len : 2, def : ' ' },
+		},
+	},
+	Part : {
+		_8 : {
+			SCO : {start : 21, len : 1, def : ' ' },
+			REC : {start : 21, len : 1, def : 'n' },
+		},
+		_6 : {
+			SCO : {start : 4, len : 1, def : ' ' },
+			REC : {start : 4, len : 1, def : 'n' },
+		},
+	},
+	Orig : {
+		_8 : {
+			SER : {start : 22, len : 1, def : ' ' },
+		},
+		_6 : {
+			SER : {start : 5, len : 1, def : ' ' },
+		},
+	},
+	LTxt : {
+		_8 : {
+			SCO : {start : 30, len : 2, def : ' ' },
+			REC : {start : 30, len : 2, def : ' ' },
+		},
+		_6 : {
+			SCO : {start : 13, len : 2, def : ' ' },
+			REC : {start : 13, len : 2, def : ' ' },
+		},
+	},
+	Freq : {
+		_8 : {
+			SER : {start : 18, len : 1, def : ' ' },
+		},
+		_6 : {
+			SER : {start : 1, len : 1, def : ' ' },
+		},
+	},
+	FMus : {
+		_8 : {
+			SCO : {start : 20, len : 1, def : ' ' },
+			REC : {start : 20, len : 1, def : 'n' },
+		},
+		_6 : {
+			SCO : {start : 3, len : 1, def : ' ' },
+			REC : {start : 3, len : 1, def : 'n' },
+		},
+	},
+	File : {
+		_8 : {
+			COM : {start : 26, len : 1, def : 'u' },
+		},
+		_6 : {
+			COM : {start : 9, len : 1, def : 'u' },
+		},
+	},
+	EntW : {
+		_8 : {
+			SER : {start : 24, len : 1, def : ' ' },
+		},
+		_6 : {
+			SER : {start : 7, len : 1, def : ' ' },
+		},
+	},
+	AccM : {
+		_8 : {
+			SCO : {start : 24, len : 6, def : ' ' },
+			REC : {start : 24, len : 6, def : ' ' },
+		},
+		_6 : {
+			SCO : {start : 7, len : 6, def : ' ' },
+			REC : {start : 7, len : 6, def : ' ' },
+		},
+	},
+	Comp : {
+		_8 : {
+			SCO : {start : 18, len : 2, def : ' ' },
+			REC : {start : 18, len : 2, def : ' ' },
+		},
+		_6 : {
+			SCO : {start : 1, len : 2, def : ' ' },
+			REC : {start : 1, len : 2, def : ' ' },
+		},
+	},
+	CrTp : {
+		_8 : {
+			MAP : {start : 25, len : 1, def : ' ' },
+		},
+		_6 : {
+			MAP : {start : 8, len : 1, def : ' ' },
+		},
+	},
 	Ctry : {
 		_8 : {
 			BKS : {start : 15, len : 3, def : ' ' },
