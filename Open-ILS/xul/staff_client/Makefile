@@ -54,10 +54,7 @@ build_dir:
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
 	@echo 
-	cp ../../../Evergreen/xul/staff_client/server/patron/ue_config.js build/server/patron/
-	cp ../../../Evergreen/xul/staff_client/server/patron/ue.js build/server/patron/
-	cp ../../../Evergreen/xul/staff_client/server/patron/ue_ui.js build/server/patron/
-	cp ../../../Evergreen/xul/staff_client/server/patron/ue.xhtml build/server/patron/
+	for i in `cd ../../../Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn`; do echo ../../../Evergreen/xul/staff_client/server/$i build/$i; done
 	external/prune_dirs.sh build/
 
 stamp: 
