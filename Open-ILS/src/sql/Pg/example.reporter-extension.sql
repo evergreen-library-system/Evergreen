@@ -118,5 +118,43 @@ SELECT	id,
   WHERE	stat_cat = 2;
 
 
+CREATE OR REPLACE VIEW reporter.classic_current_billing_summary AS
+SELECT	x.id AS id,
+	x.usr AS usr,
+	bl.shortname AS billing_location_shortname,
+	bl.name AS billing_location_name,
+	x.billing_location AS billing_location,
+	c.barcode AS barcode,
+	u.home_ou AS usr_home_ou,
+	ul.shortname AS usr_home_ou_shortname,
+	ul.name AS usr_home_ou_name,
+	x.xact_start AS xact_start,
+	x.xact_finish AS xact_finish,
+	x.xact_type AS xact_type,
+	x.total_paid AS total_paid,
+	x.total_owed AS total_owed,
+	x.balance_owed AS balance_owed,
+	x.last_payment_ts AS last_payment_ts,
+	x.last_payment_note AS last_payment_note,
+	x.last_payment_type AS last_payment_type,
+	x.last_billing_ts AS last_billing_ts,
+	x.last_billing_note AS last_billing_note,
+	x.last_billing_type AS last_billing_type,
+	paddr.county AS patron_county,
+	paddr.city AS patron_city,
+	paddr.post_code AS patron_zip,
+	g.name AS profile_group,
+	dem.general_division AS demographic_general_division
+  FROM	money.open_billable_xact_summary x
+	JOIN actor.org_unit bl ON (x.billing_location = bl.id)
+	JOIN actor.usr u ON (u.id = x.usr)
+	JOIN actor.org_unit ul ON (u.home_ou = ul.id)
+	JOIN actor.card c ON (u.card = c.id)
+	JOIN permission.grp_tree g ON (u.profile = g.id)
+	JOIN reporter.demographic dem ON (dem.id = u.id)
+	JOIN actor.usr_address paddr ON (paddr.id = u.billing_address);
+
+
 COMMIT;
+
 

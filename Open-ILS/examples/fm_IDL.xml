@@ -2512,6 +2512,59 @@
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+
+	<class id="rccbs" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::classic_current_billing_summary" oils_persist:tablename="reporter.classic_current_billing_summary" reporter:core="true" reporter:label="Classic Open Transaction Summary">
+		<fields oils_persist:primary="id">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Transaction ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+
+			<field reporter:label="Billing Location Short (Policy) Name" name="billing_location_shortname" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Billing Location Name" name="billing_location_name" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Billing Location Link" name="billing_location" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+
+			<field reporter:label="User Home Library Short (Policy) Name" name="usr_home_ou_shortname" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User Home Library Name" name="usr_home_ou" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User Home Library Link" name="usr_home_ou" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="org_unit"/>
+
+			<field reporter:label="User Barcode" name="barcode" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User Link" name="usr" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
+
+			<field reporter:label="Transaction Start Date/Time" name="xact_start" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Transaction End Date/Time" name="xact_finish" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Transaction Type" name="xact_type" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text"/>
+
+			<field reporter:label="Total Paid" name="total_paid" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="money"/>
+			<field reporter:label="Total Billed" name="total_owed" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="money"/>
+
+			<field reporter:label="Last Payment Date/Time" name="last_payment_ts" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Payment Note" name="last_payment_note" oils_obj:array_position="18" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Last Payment Type" name="last_payment_type" oils_obj:array_position="19" oils_persist:virtual="false" reporter:datatype="text"/>
+
+			<field reporter:label="Last Billing Date/Time" name="last_billing_ts" oils_obj:array_position="20" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Billing Note" name="last_billing_note" oils_obj:array_position="21" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Last Billing Type" name="last_billing_type" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="text"/>
+
+			<field reporter:label="User Age Demographic" name="demographic_general_division" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User County" name="patron_county" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User City" name="patron_city" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User ZIP Code" name="patron_zip" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="text"/>
+
+			<field reporter:label="Balance Owed" name="balance_owed" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="money"/>
+			<field reporter:label="User Profile Group" name="profile_group" oils_obj:array_position="28" oils_persist:virtual="false" reporter:datatype="text"/>
+
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="billing_location" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
+
+
+
 	<!-- ********************************************************************************************************************* -->
 
 </IDL>
