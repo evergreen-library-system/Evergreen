@@ -53,6 +53,11 @@ build_dir:
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
+	@echo 
+	cp ../../../Evergreen/xul/staff_client/server/patron/ue_config.js build/server/patron/
+	cp ../../../Evergreen/xul/staff_client/server/patron/ue.js build/server/patron/
+	cp ../../../Evergreen/xul/staff_client/server/patron/ue_ui.js build/server/patron/
+	cp ../../../Evergreen/xul/staff_client/server/patron/ue.xhtml build/server/patron/
 	external/prune_dirs.sh build/
 
 stamp: 
