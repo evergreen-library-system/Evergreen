@@ -16,5 +16,7 @@ PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 070.schema.container.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 080.schema.money.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 090.schema.action.sql
 
+PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 500.view.cross-schema.sql
+
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 800.fkeys.sql
 PGUSER=$4 PGHOST=$1 PGPORT=$2 PGDATABASE=$3 psql -f 900.audit-tables.sql

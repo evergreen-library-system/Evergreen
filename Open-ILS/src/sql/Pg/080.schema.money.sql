@@ -233,47 +233,6 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	  GROUP BY 1,2,3,4,14
 	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
 
-CREATE OR REPLACE VIEW money.open_billable_xact_summary AS
-	SELECT	xact.id AS id,
-		xact.usr AS usr,
-		xact.xact_start AS xact_start,
-		xact.xact_finish AS xact_finish,
-		SUM(credit.amount) AS total_paid,
-		MAX(credit.payment_ts) AS last_payment_ts,
-		LAST(credit.note) AS last_payment_note,
-		LAST(credit.payment_type) AS last_payment_type,
-		SUM(debit.amount) AS total_owed,
-		MAX(debit.billing_ts) AS last_billing_ts,
-		LAST(debit.note) AS last_billing_note,
-		LAST(debit.billing_type) AS last_billing_type,
-		COALESCE(SUM(debit.amount),0) - COALESCE(SUM(credit.amount),0) AS balance_owed,
-		p.relname AS xact_type
-	  FROM	money.billable_xact xact
-	  	JOIN pg_class p ON (xact.tableoid = p.oid)
-	  	LEFT JOIN money.billing debit ON (xact.id = debit.xact AND debit.voided IS FALSE)
-	  	LEFT JOIN money.payment_view credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
-	  WHERE	xact.xact_finish IS NULL
-	  GROUP BY 1,2,3,4,14
-	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
-
-
-CREATE OR REPLACE VIEW money.open_usr_summary AS
-	SELECT	usr,
-		SUM(total_paid) AS total_paid,
-		SUM(total_owed) AS total_owed, 
-		SUM(balance_owed) AS balance_owed
-	  FROM money.open_billable_xact_summary
-	  GROUP BY 1;
-
-CREATE OR REPLACE VIEW money.open_usr_circulation_summary AS
-	SELECT	usr,
-		SUM(total_paid) AS total_paid,
-		SUM(total_owed) AS total_owed, 
-		SUM(balance_owed) AS balance_owed
-	  FROM	money.open_billable_xact_summary
-	  WHERE	xact_type = 'circulation'
-	  GROUP BY 1;
-
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,
 		SUM(total_paid) AS total_paid,
@@ -322,7 +281,6 @@ CREATE TABLE money.bnm_desk_payment (
 	cash_drawer	INT	REFERENCES actor.workstation (id)
 ) INHERITS (money.bnm_payment);
 ALTER TABLE money.bnm_desk_payment ADD PRIMARY KEY (id);
-
 
 CREATE OR REPLACE VIEW money.desk_payment_view AS
 	SELECT	p.*,c.relname AS payment_type
