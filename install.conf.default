@@ -77,6 +77,12 @@ APR_HEADERS="/usr/include/apr-1.0/";
 
 
 # --------------------------------------------------------------------
+# Directory where the libdbi libraries are located. libdbi is used
+# by the OpenILS cstore, fetch, and rstore applications
+# --------------------------------------------------------------------
+DBI_LIBS="/usr/local/lib/dbd";
+
+# --------------------------------------------------------------------
 # Directory where the libxml2 headers are located.  Libxml2 is used
 # by various components
 # --------------------------------------------------------------------

@@ -1,4 +1,5 @@
 LDLIBS += -lobjson -lopensrf #-lfieldmapper 
+LDFLAGS += -L$(DBI_LIBS)
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
@@ -18,21 +19,18 @@ oils_dataloader:	oils_dataloader.o
 
 oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	@echo $@
-	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $(TMP)/$@
+	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $(TMP)/$@
 
 oils_rstore.o:	oils_cstore.c oils_utils.h
 	$(CC) $(CFLAGS) -I$(TMP) -DRSTORE -c -o $@ oils_cstore.c 
 
 oils_rstore.so:	oils_rstore.o liboils_utils.so liboils_idl.so
 	@echo $@
-	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_rstore.o -o $(TMP)/$@
+	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -ldbdpgsql oils_rstore.o -o $(TMP)/$@
 
 oils_fetch.so:	oils_fetch.o liboils_utils.so
 	@echo $@
-	$(CC) -shared -W1 -L/usr/local/lib/dbd \
-		$(LDLIBS) $(LDFLAGS) -ldbi -ldbdpgsql -loils_utils oils_fetch.o -o $(TMP)/$@
+	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -ldbi -ldbdpgsql -loils_utils oils_fetch.o -o $(TMP)/$@
 
 oils_idl-core.o:	oils_idl-core.c oils_idl.h
 

@@ -77,6 +77,9 @@ function buildConfig {
 	prompt "Apache2 APR headers directory [$APR_HEADERS] "
 	read X; if [ ! -z "$X" ]; then APR_HEADERS="$X"; fi;
 
+	prompt "Libdbi libraries directory [$DBI_LIBS] "
+	read X; if [ ! -z "$X" ]; then DBI_LIBS="$X"; fi;
+
 	prompt "Libxml2 headers directory [$LIBXML2_HEADERS] "
 	read X; if [ ! -z "$X" ]; then LIBXML2_HEADERS="$X"; fi;
 
@@ -139,6 +142,7 @@ function writeConfig {
 	_write "APXS2=\"$APXS2\"";
 	_write "APACHE2_HEADERS=\"$APACHE2_HEADERS\"";
 	_write "APR_HEADERS=\"$APR_HEADERS\"";
+	_write "DBI_LIBS=\"$DBI_LIBS\"";
 	_write "LIBXML2_HEADERS=\"$LIBXML2_HEADERS\"";
 
 	_write "OPENSRF_HEADERS=\"$OPENSRF_HEADERS\"";
