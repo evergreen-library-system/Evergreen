@@ -17,6 +17,8 @@
 #endif
 
 #define SELECT_DISTINCT	1
+#define AND_OP_JOIN     0
+#define OR_OP_JOIN      1
 
 int osrfAppChildInit();
 int osrfAppInitialize();
@@ -1106,11 +1108,11 @@ char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObj
 	char* value = NULL;
 
 	if (!jsonObjectGetKey( node->item, "value" )) {
-		value = searchWHERE( node->item, osrfHashGet( oilsIDL(), class ), 0 );
+		value = searchWHERE( node->item, osrfHashGet( oilsIDL(), class ), AND_OP_JOIN );
 	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_ARRAY) {
 		value = searchValueTransform(jsonObjectGetKey( node->item, "value" ));
 	} else if (jsonObjectGetKey( node->item, "value" )->type == JSON_HASH) {
-		value = searchWHERE( jsonObjectGetKey( node->item, "value" ), osrfHashGet( oilsIDL(), class ), 0 );
+		value = searchWHERE( jsonObjectGetKey( node->item, "value" ), osrfHashGet( oilsIDL(), class ), AND_OP_JOIN );
 	} else if (jsonObjectGetKey( node->item, "value" )->type != JSON_NULL) {
 		if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			value = jsonNumberToDBString( field, jsonObjectGetKey( node->item, "value" ) );
@@ -1429,7 +1431,7 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 				buffer_add( join_buf, " AND " );
 			}
 
-			char* jpred = searchWHERE( filter, idlClass, 0 );
+			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN );
 			buffer_fadd( join_buf, " %s", jpred );
 			free(jpred);
 		}
@@ -1481,16 +1483,16 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 				buffer_fadd(sql_buf, " \"%s\".%s ", node->key + 1, subpred);
 				free(subpred);
 			} else {
-				char* subpred = searchWHERE( node->item, osrfHashGet( oilsIDL(), node->key + 1 ), 0);
+				char* subpred = searchWHERE( node->item, osrfHashGet( oilsIDL(), node->key + 1 ), AND_OP_JOIN );
 				buffer_fadd(sql_buf, "( %s )", subpred);
 				free(subpred);
 			}
 		} else if ( !strcasecmp("-or",node->key) ) {
-			char* subpred = searchWHERE( node->item, meta, 1);
+			char* subpred = searchWHERE( node->item, meta, OR_OP_JOIN );
 			buffer_fadd(sql_buf, "( %s )", subpred);
 			free(subpred);
 		} else if ( !strcasecmp("-and",node->key) ) {
-			char* subpred = searchWHERE( node->item, meta, 0);
+			char* subpred = searchWHERE( node->item, meta, AND_OP_JOIN );
 			buffer_fadd(sql_buf, "( %s )", subpred);
 			free(subpred);
 		} else {
@@ -1768,7 +1770,7 @@ char* SELECT (
 		buffer_add(sql_buf, " WHERE ");
 
 		// and it's on the the WHERE clause
-		char* pred = searchWHERE( search_hash, core_meta, 0 );
+		char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN );
 		if (!pred) {
 			osrfAppSessionStatus(
 				ctx->session,
@@ -2046,7 +2048,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
 	buffer_add(sql_buf, " WHERE ");
 
-	char* pred = searchWHERE( search_hash, meta, 0 );
+	char* pred = searchWHERE( search_hash, meta, AND_OP_JOIN );
 	if (!pred) {
 		osrfAppSessionStatus(
 			ctx->session,
