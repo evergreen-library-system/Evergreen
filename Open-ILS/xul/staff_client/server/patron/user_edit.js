@@ -265,14 +265,9 @@ function grep ( code, list ) {
 
 function trim_ou_tree (tree, list) {
 	for (var i in tree) {
-		if (
-			grep(
-				function(x) {x.id() == tree[i].ou_type()},
-				ou_type_list
-			)[0].can_have_users()
-		) {
+		var type = grep( function(x) {return x.id() == tree[i].ou_type()}, ou_type_list )[0];
+		if ( type && type.can_have_users() )
 			list.push(tree[i]);
-		}
 
 		if (tree[i].children()) trim_ou_tree(tree[i].children(), list);
 	}
