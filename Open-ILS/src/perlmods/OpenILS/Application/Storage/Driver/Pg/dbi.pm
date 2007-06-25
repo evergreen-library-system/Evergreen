@@ -593,6 +593,12 @@
 
 	#-------------------------------------------------------------------------------
 
+	package permission::usr_work_ou_map;
+	permission::usr_work_ou_map->sequence('permission.usr_work_ou_map_id_seq');
+	permission::usr_work_ou_map->table('permission.usr_work_ou_map');
+
+	#-------------------------------------------------------------------------------
+
 	package permission::usr_perm_map;
 
 	permission::usr_perm_map->sequence( 'permission.usr_perm_map_id_seq' );

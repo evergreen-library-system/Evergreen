@@ -36,5 +36,11 @@ __PACKAGE__->table('permission_grp_perm_map');
 __PACKAGE__->columns(Primary => qw/id/);
 __PACKAGE__->columns(Essential => qw/grp perm depth grantable/);
 #-------------------------------------------------------------------------------
+package permission::usr_work_ou_map;
+use base qw/permission/;
+__PACKAGE__->table('permission_usr_work_ou_map');
+__PACKAGE__->columns(Primary => qw/id/);
+__PACKAGE__->columns(Essential => qw/usr work_ou/);
+#-------------------------------------------------------------------------------
 1;
 

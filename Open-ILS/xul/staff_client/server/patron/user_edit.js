@@ -43,8 +43,6 @@ function set_work_ou(row) {
                         user_work_ous.push(p);
                 }
         }
-
-        alert( js2JSON( user_work_ous ) );
 }
 
 function set_perm(row) {
@@ -132,7 +130,7 @@ function save_user () {
 		if (pok || wok) {
 			alert(	'User ' + user.usrname() +
 				' [' + user.card().barcode() + '] ' +
-				' successfully modified.  ' + pok + ' permissions and ' + wok + ' work locations updated!');
+				' successfully modified.\n' + pok + ' permissions and ' + wok + ' work locations updated.');
 		}
 
 		init_editor();
