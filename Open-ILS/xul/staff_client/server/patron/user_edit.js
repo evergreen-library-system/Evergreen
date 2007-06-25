@@ -203,7 +203,7 @@ function init_editor (u) {
 	var staff_perms = req.getResultObject();
 
 	// Get the top of the staff perm org for ASSIGN_WORK_ORG_UNIT
-	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.perm.highest_org', ses_id, staff.id(), ASSIGN_WORK_ORG_UNIT );
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.perm.highest_org', ses_id, staff.id(), 'ASSIGN_WORK_ORG_UNIT' );
 	req.send(true);
 	var top_work_ou = req.getResultObject();
 
