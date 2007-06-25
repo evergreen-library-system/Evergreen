@@ -84,6 +84,19 @@
 					<table width="100%">
 						<thead>
 							<tr>
+								<th></th>
+								<th>Working Location</th>
+							</tr>
+						</thead>
+						<tbody id="work_ous" name="work_ous"/>
+					</table>
+				</td>
+			</tr>
+			<tr class='advanced hideme'>
+				<td class="value" colspan="6">
+					<table width="100%">
+						<thead>
+							<tr>
 								<th>Permission</th>
 								<th>Applied</th>
 								<th>Depth</th>
@@ -114,6 +127,19 @@
 				</td>
 				<td class="value" name='pgrant'>
 					<input type="checkbox" name="p.grantable" onclick="set_perm(this.parentNode.parentNode);"/>
+				</td>
+			</tr>
+		</div>
+
+
+		<div class='hideme' id="work_ou-tmpl">
+			<tr name='wrow'>
+				<td class="value" name='wapply'>
+					<input type="checkbox" name="a.id" onclick="set_work_ou(this.parentNode.parentNode);"/>
+				</td>
+				<td class="value" name='label'>
+					<span name="a.name"/>
+					(<span name="a.shortname"/>)
 				</td>
 			</tr>
 		</div>

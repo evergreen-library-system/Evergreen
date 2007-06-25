@@ -2361,6 +2361,25 @@ sub get_user_perm_groups {
 		'open-ils.cstore.direct.permission.usr_grp_map.search.atomic', { usr => $userid } );
 }	
 
+__PACKAGE__->register_method(
+	method	=> "get_user_work_ous",
+	api_name	=> "open-ils.actor.user.get_work_ous",
+	notes		=> <<"	NOTES");
+	Retrieve a user's work org units.
+	NOTES
+
+
+sub get_user_work_ous {
+	my( $self, $client, $authtoken, $userid ) = @_;
+
+	my( $requestor, $evt ) = $apputils->checksesperm( $authtoken, 'ASSIGN_WORK_ORG_UNIT' );
+	return $evt if $evt;
+
+	return $apputils->simplereq(
+		'open-ils.cstore',
+		'open-ils.cstore.direct.permission.usr_work_ou_map.search.atomic', { usr => $userid } );
+}	
+
 
 
 __PACKAGE__->register_method (

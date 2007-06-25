@@ -6,6 +6,44 @@ var user_groups = [];
 var adv_items = [];
 var user_perms = [];
 var perm_list = [];
+var ou_type_list = [];
+var user_work_ous = [];
+var work_ou_list = [];
+
+function set_work_ou(row) {
+        var wid = findNodeByName(row,'a.name').getAttribute('workou_id');
+        var wapply = findNodeByName(row,'p.id').checked;
+
+        var w;
+        for (var i in user_work_ous) {
+                if (user_work_ous[i].work_ou() == wid) {
+                        w = user_work_ous[i];
+                        if (wapply) {
+                                w.isdeleted(0);
+                                w.ischanged(1);
+                        } else {
+                                if (w.isnew()) {
+                                        user_work_ous[i] = null;
+                                } else {
+                                        w.isdeleted(1);
+                                }
+                        }
+                        break;
+                }
+        }
+
+        if (!w) {
+                if (wapply) {
+                        p = new puwoum();
+                        p.isnew(1);
+                        p.work_ou(wid);
+                        p.usr(user.id());
+
+                        user_work_ous.push(p);
+                }
+        }
+
+}
 
 function set_perm(row) {
 	var pid = findNodeByName(row,'p.code').getAttribute('permid');
@@ -155,9 +193,34 @@ function init_editor (u) {
 	if (user.family_name()) x['user.family_name'].value = user.family_name();
 	x['user.family_name'].setAttribute('onchange','user.family_name(this.value)');
 
+	// grab the editing staff user object
+	req = new RemoteRequest( 'open-ils.auth', 'open-ils.auth.session.retrieve', ses_id );
+	req.send(true);
+	var staff = req.getResultObject();
+
 	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.permissions.user_perms.retrieve', ses_id );
 	req.send(true);
 	var staff_perms = req.getResultObject();
+
+	// Get the top of the staff perm org for ASSIGN_WORK_ORG_UNIT
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.perm.highest_org', ses_id, staff.id(), ASSIGN_WORK_ORG_UNIT );
+	req.send(true);
+	var top_work_ou = req.getResultObject();
+
+	// and now, the orgs where this staff member can apply the perms
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.org_tree.descendants.retrieve', top_work_ou);
+	req.send(true);
+	var work_ou_tree = req.getResultObject();
+
+	// and now, the orgs where this staff member can apply the perms
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.get_work_ous', ses_id, user.id());
+	req.send(true);
+	user_work_ous = req.getResultObject();
+
+	// and finally, the ou types
+	req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.org_types.retrieve' );
+	req.send(true);
+	ou_type_list = req.getResultObject();
 
 	user_perms = [];
 	perm_list = [];
@@ -178,7 +241,63 @@ function init_editor (u) {
 	for (var i in perm_list.sort(function(a,b){ if (a.code() < b.code()) return -1;return 1; }))
 		display_perm(f,perm_list[i],staff_perms, rcount++);
 
+	f = document.getElementById('work_ous');
+	while (f.firstChild) f.removeChild(f.lastChild);
+
+	//flatten the ou tree, keep only those with can_hav_users = true
+	work_ou_list = [];
+	trim_ou_tree( [work_ou_tree], work_ou_list );
+
+	rcount = 0;
+	for (var i in work_ou_list.sort( function(a,b){ if (a.name() < b.name()) return -1;return 1; }) )
+		display_work_ou(f,work_ou_list[i], rcount++);
+
 	return true;
+}
+
+function grep ( code, list ) {
+	var ret = [];
+	for (var i in list) {
+		if (code(list[i])) ret.push(list[i]);
+	}
+	return ret;
+}
+
+function trim_ou_tree (tree, list) {
+	for (var i in tree) {
+		if (
+			grep(
+				function(x) {x.id() == tree[i].ou_type()},
+				ou_type_list
+			)[0].can_have_users()
+		) {
+			list.push(tree[i]);
+		}
+
+		if (tree[i].children()) trim_ou_tree(tree[i].children(), list);
+	}
+}
+
+function display_perm (root,ou_def,r) {
+
+	var wrow = findNodeByName(document.getElementById('work_ou-tmpl'), 'wrow').cloneNode(true);
+	root.appendChild(prow);
+
+	var label_cell = findNodeByName(wrow,'label');
+	findNodeByName(label_cell,'a.shortname').appendChild(text(ou_def.name()));
+	findNodeByName(label_cell,'a.shortname').appendChild(text(ou_def.shortname()));
+	if (r % 2) label_cell.className += ' odd';
+
+	var apply_cell = findNodeByName(wrow,'wapply');
+	findNodeByName(apply_cell,'a.id').setAttribute('ouid', ou_def.id());
+	if (r % 2) apply_cell.className += ' odd';
+
+	var has_it = grep(
+		function(x){ return x.work_ou() == ou_def.id() },
+		user_work_ous
+	).length;
+
+	findNodeByName(apply_cell,'a.id').checked = has_it > 0 ? true : false;
 }
 
 function display_perm (root,perm_def,staff_perms, r) {
