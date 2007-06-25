@@ -779,6 +779,46 @@ sub _create_perm_maps {
 
 
 __PACKAGE__->register_method(
+	method	=> "set_user_work_ous",
+	api_name	=> "open-ils.actor.user.work_ous.update",
+);
+
+sub set_user_work_ous {
+	my $self = shift;
+	my $client = shift;
+	my $ses = shift;
+	my $maps = shift;
+
+	my( $requestor, $evt ) = $apputils->checksesperm( $ses, 'ASSIGN_WORK_ORG_UNIT' );
+	return $evt if $evt;
+
+	my $session = $apputils->start_db_session();
+
+	for my $map (@$maps) {
+
+		my $method = "open-ils.storage.direct.permission.usr_work_ou_map.update";
+		if ($map->isdeleted()) {
+			$method = "open-ils.storage.direct.permission.usr_work_ou_map.delete";
+		} elsif ($map->isnew()) {
+			$method = "open-ils.storage.direct.permission.usr_work_ou_map.create";
+			$map->clear_id;
+		}
+
+		#warn( "Updating permissions with method $method and session $ses and map $map" );
+		$logger->info( "Updating work_ou map with method $method and map $map" );
+
+		my $stat = $session->request($method, $map)->gather(1);
+		$logger->warn( "update failed: ".$U->DB_UPDATE_FAILED($map) ) unless defined($stat);
+
+	}
+
+	$apputils->commit_db_session($session);
+
+	return scalar(@$maps);
+}
+
+
+__PACKAGE__->register_method(
 	method	=> "set_user_perms",
 	api_name	=> "open-ils.actor.user.permissions.update",
 );

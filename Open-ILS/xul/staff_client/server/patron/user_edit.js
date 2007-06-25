@@ -11,11 +11,12 @@ var user_work_ous = [];
 var work_ou_list = [];
 
 function set_work_ou(row) {
-        var wid = findNodeByName(row,'a.name').getAttribute('workou_id');
-        var wapply = findNodeByName(row,'p.id').checked;
+        var wid = findNodeByName(row,'a.id').getAttribute('workou_id');
+        var wapply = findNodeByName(row,'a.id').checked;
 
         var w;
         for (var i in user_work_ous) {
+                if (!user_work_ous[i]) continue;
                 if (user_work_ous[i].work_ou() == wid) {
                         w = user_work_ous[i];
                         if (wapply) {
@@ -43,6 +44,7 @@ function set_work_ou(row) {
                 }
         }
 
+        alert( js2JSON( user_work_ous ) );
 }
 
 function set_perm(row) {
@@ -109,16 +111,28 @@ function save_user () {
 			save_perms.push( user_perms[i] );
 		}
 
-		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, save_perms );
+		var save_ous = [];
+		for (var i in user_work_ous) {
+			if (!user_work_ous[i]) continue;
+			save_ous.push( user_work_ous[i] );
+		}
+
+		var req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.work_ous.update', ses_id, save_ous );
 		req.send(true);
-		var ok = req.getResultObject();
+		var wok = req.getResultObject();
 
-		if (ok.ilsevent) throw ok;
+		if (wok.ilsevent) throw wok;
 
-		if (ok) {
+		req = new RemoteRequest( 'open-ils.actor', 'open-ils.actor.user.permissions.update', ses_id, save_perms );
+		req.send(true);
+		var pok = req.getResultObject();
+
+		if (pok.ilsevent) throw pok;
+
+		if (pok || wok) {
 			alert(	'User ' + user.usrname() +
 				' [' + user.card().barcode() + '] ' +
-				' successfully updated.  ' + ok + ' permissions set!');
+				' successfully modified.  ' + pok + ' permissions and ' + wok + ' work locations updated!');
 		}
 
 		init_editor();
@@ -149,21 +163,30 @@ function init_editor (u) {
 	
 	cgi = new CGI();
 	if (cgi.param('adv')) adv_mode = true; 
-	if (xulG) if (xulG.adv) adv_mode = true;
-	if (xulG) if (xulG.params) if (xulG.params.adv) adv_mode = true;
+	try {
+		if (xulG) if (xulG.adv) adv_mode = true;
+		if (xulG) if (xulG.params) if (xulG.params.adv) adv_mode = true;
+	} catch (e) {}
+
 	apply_adv_mode(document.getElementById('editor'));
 
 	ses_id = cgi.param('ses'); 
-	if (xulG) if (xulG.ses) ses_id = xulG.ses;
-	if (xulG) if (xulG.params) if (xulG.params.ses) ses_id = xulG.params.ses;
+	try {
+		if (xulG) if (xulG.ses) ses_id = xulG.ses;
+		if (xulG) if (xulG.params) if (xulG.params.ses) ses_id = xulG.params.ses;
+	} catch (e) {}
 
 	var usr_id = cgi.param('usr'); 
-	if (xulG) if (xulG.usr_id) usr_id = xulG.usr_id;
-	if (xulG) if (xulG.params) if (xulG.params.usr_id) usr_id = xulG.params.usr_id;
+	try {
+		if (xulG) if (xulG.usr_id) usr_id = xulG.usr_id;
+		if (xulG) if (xulG.params) if (xulG.params.usr_id) usr_id = xulG.params.usr_id;
+	} catch (e) {}
 
 	var usr_barcode = cgi.param('barcode'); 
-	if (xulG) if (xulG.usr_barcode) usr_ibarcode = xulG.usr_barcode;
-	if (xulG) if (xulG.params) if (xulG.params.usr_barcode) usr_ibarcode = xulG.params.usr_barcode;
+	try {
+		if (xulG) if (xulG.usr_barcode) usr_ibarcode = xulG.usr_barcode;
+		if (xulG) if (xulG.params) if (xulG.params.usr_barcode) usr_ibarcode = xulG.params.usr_barcode;
+	} catch (e) {}
 
 	try {
 		var req;
@@ -266,25 +289,25 @@ function grep ( code, list ) {
 function trim_ou_tree (tree, list) {
 	for (var i in tree) {
 		var type = grep( function(x) {return x.id() == tree[i].ou_type()}, ou_type_list )[0];
-		if ( type && type.can_have_users() )
+		if ( type && type.can_have_users() == 't' )
 			list.push(tree[i]);
 
 		if (tree[i].children()) trim_ou_tree(tree[i].children(), list);
 	}
 }
 
-function display_perm (root,ou_def,r) {
+function display_work_ou (root,ou_def,r) {
 
 	var wrow = findNodeByName(document.getElementById('work_ou-tmpl'), 'wrow').cloneNode(true);
-	root.appendChild(prow);
+	root.appendChild(wrow);
 
 	var label_cell = findNodeByName(wrow,'label');
-	findNodeByName(label_cell,'a.shortname').appendChild(text(ou_def.name()));
+	findNodeByName(label_cell,'a.name').appendChild(text(ou_def.name()));
 	findNodeByName(label_cell,'a.shortname').appendChild(text(ou_def.shortname()));
 	if (r % 2) label_cell.className += ' odd';
 
 	var apply_cell = findNodeByName(wrow,'wapply');
-	findNodeByName(apply_cell,'a.id').setAttribute('ouid', ou_def.id());
+	findNodeByName(apply_cell,'a.id').setAttribute('workou_id', ou_def.id());
 	if (r % 2) apply_cell.className += ' odd';
 
 	var has_it = grep(
