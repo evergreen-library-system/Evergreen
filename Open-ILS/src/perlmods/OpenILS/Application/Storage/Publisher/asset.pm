@@ -229,8 +229,8 @@ sub cn_browse_pagedown {
 		from
 		        $table cn
 		where
-		        (upper(label) > ?
-		        or ( cn.id > ? and upper(label) = ? ))
+			not deleted
+		        and (upper(label) > ? or ( cn.id > ? and upper(label) = ? ))
 			and owning_lib in ($orgs)
 		order by upper(label), 4, 2
 		limit $size;
@@ -284,8 +284,8 @@ sub cn_browse_pageup {
 			from
 			        $table cn
 			where
-			        (upper(label) < ?
-			        or ( cn.id < ? and upper(label) = ? ))
+				not deleted
+			        and (upper(label) < ? or ( cn.id < ? and upper(label) = ? ))
 				and owning_lib in ($orgs)
 			order by upper(label) desc, 4 desc, 2 desc
 			limit $size
@@ -342,7 +342,8 @@ sub cn_browse_target {
 			from
 			        $table cn
 			where
-			        upper(label) < ?
+				not deleted
+			        and upper(label) < ?
 				and owning_lib in ($orgs)
 			order by upper(label) desc, 4 desc, 2 desc
 			limit $topsize
@@ -359,7 +360,8 @@ sub cn_browse_target {
 		from
 		        $table cn
 		where
-		        upper(label) >= ?
+			not deleted
+		        and upper(label) >= ?
 			and owning_lib in ($orgs)
 		order by upper(label),4,2
 		limit $bottomsize;
