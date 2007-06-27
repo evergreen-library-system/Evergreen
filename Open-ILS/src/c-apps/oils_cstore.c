@@ -9,6 +9,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #ifdef RSTORE
 #  define MODULENAME "open-ils.reporter-store"
@@ -250,9 +251,12 @@ int osrfAppChildInit() {
 
 	const char* err;
 	if (dbi_conn_connect(writehandle) < 0) {
-		dbi_conn_error(writehandle, &err);
-		osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
-		return -1;
+		sleep(1);
+		if (dbi_conn_connect(writehandle) < 0) {
+			dbi_conn_error(writehandle, &err);
+			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", err);
+			return -1;
+		}
 	}
 
 	osrfLogInfo(OSRF_LOG_MARK, "%s successfully connected to the database", MODULENAME);
