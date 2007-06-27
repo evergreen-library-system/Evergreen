@@ -24,13 +24,12 @@
 		<input type='text' size='18' name='term' style='margin-right: 3px;'> </input>
 	
 		<!-- Remove this row -->
-		<input type='submit' value='X'
+        <button 
 			onclick='
 				var row = this.parentNode.parentNode;
 				var tbody = row.parentNode;
 				if( tbody.getElementsByTagName("tr").length > 2 )
-					row.parentNode.removeChild(row);'>
-		</input>
+					row.parentNode.removeChild(row);'>X</button>
 
 	</td>
 </tr>

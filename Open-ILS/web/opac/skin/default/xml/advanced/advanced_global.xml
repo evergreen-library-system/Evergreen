@@ -33,10 +33,9 @@
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='center'>
-							<input type='submit' value='Add Search Row' 
-								id='myopac_new_global_row' onclick='advAddGblRow();'> </input>
+                            <button id='myopac_new_global_row' onclick='advAddGblRow();'>Add Search Row</button>
 							<span style='padding-left: 10px;'> </span>
-							<input type='submit' onclick='advSubmitGlobal();' value='Submit Search'></input>
+                            <button onclick='advSubmitGlobal();'>Submit Search</button>
 						</td>
 					</tr>
 
