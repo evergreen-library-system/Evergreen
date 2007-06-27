@@ -71,11 +71,20 @@
 					"dbname=$$master{db}",
 				$$master{user},
 				$$master{pw},
-				\%attrs) ||
-					throw OpenSRF::EX::ERROR
-						("Couldn't connect to $$master{db}".
-						 " on $$master{host}::$$master{port}".
-						 " as $$master{user}!!");
+				\%attrs)
+			|| do { sleep(1);
+				DBI->connect(
+					"dbi:Pg:".
+						"host=$$master{host};".
+						"port=$$master{port};".
+						"dbname=$$master{db}",
+					$$master{user},
+					$$master{pw},
+					\%attrs) }
+			|| throw OpenSRF::EX::ERROR
+				("Couldn't connect to $$master{db}".
+				 " on $$master{host}::$$master{port}".
+				 " as $$master{user}!!");
 		} catch Error with {
 			my $e = shift;
 			$log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
@@ -87,7 +96,19 @@
 		$master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
 
 		for my $db (@$_db_params) {
-			push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs);
+			try {
+				push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs)
+					|| do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}",$$db{user},$$db{pw}, \%attrs) }
+					|| throw OpenSRF::EX::ERROR
+						("Couldn't connect to $$db{db}".
+				 		" on $$db{host}::$$db{port}".
+				 		" as $$db{user}!!");
+			} catch Error with {
+				my $e = shift;
+				$log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
+				throw $e;
+			};
+
 			$slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
 
 			$log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
