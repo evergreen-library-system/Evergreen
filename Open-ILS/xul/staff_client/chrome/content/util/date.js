@@ -88,9 +88,23 @@ util.date.formatted_date = function (orig_date,format) {
 	var s = format;
 	if (s == '') { s = '%F %H:%M'; }
 	if (typeof _date.iso8601Format != 'function') {
-		
-		var js = JSAN._loadJSFromUrl( urls.isodate_lib );
-		try { eval( js ); } catch(E) { alert('Problem loading ISO8601 date extension:' + E); }
+	
+		try {
+			var js = JSAN._loadJSFromUrl( urls.isodate_lib_remote );
+			eval( js ); 
+
+		} catch(E) { 
+
+			try {
+				var js = JSAN._loadJSFromUrl( urls.isodate_lib_local );
+				eval( js );
+
+			} catch(F) {
+
+				alert('Problem loading ISO8601 date extension:' + E + '\n' + F); 
+
+			}
+		}
 
 	}
 	if (typeof _date.iso8601Format == 'function') {
