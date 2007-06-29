@@ -181,7 +181,8 @@ const urls = {
 	'org_tree' : '/opac/common/js/OrgTree.js',
 	'browser' : '/opac/en-US/skin/default/xml/advanced.xml',
 	'fieldmapper' : '/opac/common/js/fmall.js',
-	'isodate_lib' : '/opac/common/js/DP_DateExtensions.js',
+	'isodate_lib_remote' : '/opac/common/js/DP_DateExtensions.js',
+	'isodate_lib_local' : 'chrome://open_ils_staff_client/content/OpenILS/util/DP_DateExtensions.js',
 	'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
 
 	'AUDIO_GOOD_SOUND' : '/xul/server/skin/media/audio/bonus.wav',
