@@ -112,7 +112,7 @@ static int do_request( char* request ) {
 		while( (omsg = osrfAppSessionRequestRecv( session, req_id, 120 )) ) {
 			jsonObject* res = osrfMessageGetResult(omsg);
 			char* data = format_response(res);
-			printf("\n%s\n", data);
+			printf("%s\n", data);
 			free(data);
 			osrfMessageFree(omsg);
 		}
