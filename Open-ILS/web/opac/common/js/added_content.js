@@ -5,9 +5,9 @@
 */
 
 function buildISBNSrc(isbn, size) {
-	//return "http://images.amazon.com/images/P/" + isbn + ".01._SCMZZZZZZZ_.jpg";
-	//return '../../../../jackets/'+isbn;
 	size = (size) ? size : 'small';
+    if(OILS_OPAC_IMAGES_HOST)
+        return location.protocol + '//' + OILS_OPAC_IMAGES_HOST + size + '/' + isbn;
 	return '../../../../extras/jacket/'+size+'/'+isbn;
 }      
 

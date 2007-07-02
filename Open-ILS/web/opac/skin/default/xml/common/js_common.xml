@@ -4,9 +4,6 @@
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js'> </script>
-	<!--
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookie.js'> </script>
-	-->
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js'> </script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js'> </script>
 
@@ -24,10 +21,20 @@
 
 	<!-- Some global js -->
 	<script language='javascript'>
+
 		config.css.color_1 = "color_1";
 		config.css.color_2 = "color_2";
 		config.css.color_3 = "color_3";
+
+
+		<!-- set up some global JS config variables, read from the Apache config -->
+		var OILS_OPAC_IMAGES_HOST = null;
+		<!--#if expr="$OILS_OPAC_IMAGES_HOST"-->
+			OILS_OPAC_IMAGES_HOST = '<!--#echo var="OILS_OPAC_IMAGES_HOST"-->';
+		<!--#endif -->
+
 	</script>
+
 </div>
 
 
