@@ -20,7 +20,7 @@ USAGE
 
 my $root = shift(@ARGV);
 
-OpenSRF::System->bootstrap_client( config_file => $root.'/conf/bootstrap.conf');
+OpenSRF::System->bootstrap_client( config_file => $root.'/conf/opensrf_core.xml');
 
 try {
         OpenILS::Utils::ScriptRunner->add_path($root.'/var/web/opac/common/js/');

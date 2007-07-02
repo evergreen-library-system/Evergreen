@@ -28,7 +28,7 @@ MARC::Charset->ignore_errors(1);
 
 my @files;
 my ($type, $config, $autoprimary) =
-	('biblio.record_entry', '/openils/conf/bootstrap.conf', 0);
+	('biblio.record_entry', '/openils/conf/opensrf_core.xml', 0);
 
 GetOptions(
 	'type=s'	=> \$type,

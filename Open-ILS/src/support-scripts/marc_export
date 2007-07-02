@@ -20,7 +20,7 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML BRE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/bootstrap.conf','USMARC','MARC8','','$');
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$');
 
 GetOptions(
         'help'      => \$help,
@@ -37,7 +37,7 @@ if ($help) {
 	print <<"	HELP";
 Usage: $0 [options]
  --help or -h		This screen.
- --config or -c		Configuration file [/openils/conf/bootstrap.conf]
+ --config or -c		Configuration file [/openils/conf/opensrf_core.xml]
  --format or -f		Output format (USMARC, UNIMARC, XML) [USMARC]
  --encoding or -e	Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
  --items or -i		Include items (holdings) in the output

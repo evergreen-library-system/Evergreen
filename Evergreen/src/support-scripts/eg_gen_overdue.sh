@@ -12,7 +12,7 @@ SSH_CLIENT=$1
 RECIPIENT=$2;
 DATE=$(date +%Y-%m-%d);
 DAY=$(date +%u);
-BSCONFIG="/openils/conf/bootstrap.conf"
+BSCONFIG="/openils/conf/opensrf_core.xml"
 ODDIR="/openils/var/data/overdue";
 
 export EG_OVERDUE_EMAIL_TEMPLATE="../extras/overdue_notice_email";

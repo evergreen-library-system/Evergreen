@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------------
 # Generic databse object dumper.
 # ./object_dumper.pl <bootstrap_config> <type>, <type>, ...
-# ./object_dumper.pl /openils/conf/bootstrap.conf permission.grp_tree
+# ./object_dumper.pl /openils/conf/opensrf_core.xml permission.grp_tree
 # ---------------------------------------------------------------------
 
 use strict; 

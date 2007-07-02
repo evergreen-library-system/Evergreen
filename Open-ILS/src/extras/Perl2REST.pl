@@ -22,7 +22,7 @@ unless( $method ) {
 	exit;
 }
 
-OpenSRF::System->bootstrap_client( config_file => '/pines/conf/bootstrap.conf' );
+OpenSRF::System->bootstrap_client( config_file => '/openils/conf/opensrf_core.xml' );
 print "Content-Type: text/xml\n\n";
 
 my $val = '';

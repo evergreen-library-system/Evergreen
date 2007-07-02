@@ -1,7 +1,7 @@
 [%-
 USE CGI;
 USE ws = WebSession;
-j = ws.bootstrap_client("/pines/conf/bootstrap.conf");
+j = ws.bootstrap_client("/openils/conf/opensrf_core.xml");
 
 rank_threshold = 5000;
 base_url = 'http://dev.gapines.org/';

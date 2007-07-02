@@ -17,7 +17,7 @@ use Time::HiRes qw/time/;
 use XML::LibXML;
 
 my ($file,$config,$profileid,$identtypeid,$default_profile,$profile_map,$seenmap,$nosaveseen,$usermap) =
-	('return_file_0623-2.xml', '/openils/conf/bootstrap.conf', 1, 3, 'User', 'profile.map','/tmp/patron-import.seen');
+	('return_file_0623-2.xml', '/openils/conf/opensrf_core.xml', 1, 3, 'User', 'profile.map','/tmp/patron-import.seen');
 
 GetOptions(
         'usermap=s'        => \$usermap,

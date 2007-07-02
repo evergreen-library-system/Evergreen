@@ -79,7 +79,7 @@ sub handler {
 
 sub child_init_handler {
 	OpenSRF::System->bootstrap_client( 
-		config_file => "/pines/conf/web_bootstrap.conf" );
+		config_file => "/openils/conf/opensrf_core.xml" );
 }
 
 

@@ -16,7 +16,7 @@ use Digest::MD5 qw/md5_hex/;
 use Getopt::Long;
 
 my ($od_length, $user, $password, $config) =
-	('180 days', 'admin', 'open-ils', '/openils/conf/bootstrap.conf');
+	('180 days', 'admin', 'open-ils', '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'overdue=s'	=> \$od_length,

@@ -15,7 +15,7 @@ use Getopt::Long;
 
 my @files;
 my ($config, $output, @auto, @order, @wipe) =
-	('/openils/conf/bootstrap.conf');
+	('/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,

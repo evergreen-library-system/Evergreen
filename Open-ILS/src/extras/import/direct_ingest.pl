@@ -27,7 +27,7 @@ use MARC::Charset;
 MARC::Charset->ignore_errors(1);
 
 my ($auth, $config) =
-	(0, '/openils/conf/bootstrap.conf');
+	(0, '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,

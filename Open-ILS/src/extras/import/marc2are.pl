@@ -26,7 +26,7 @@ use MARC::Charset;
 MARC::Charset->ignore_errors(1);
 
 my ($utf8, $id_field, $count, $user, $password, $config, $marctype, $keyfile,  @files, @trash_fields) =
-	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/bootstrap.conf', 'USMARC');
+	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
 
 GetOptions(
 	'startid=i'	=> \$count,

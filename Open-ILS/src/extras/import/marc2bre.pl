@@ -22,7 +22,7 @@ use MARC::Charset;
 #MARC::Charset->ignore_errors(1);
 
 my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields) =
-	('', 1, 1, '/openils/conf/bootstrap.conf', '/openils/conf/fm_IDL.xml', 'USMARC');
+	('', 1, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 GetOptions(
 	'marctype=s'	=> \$marctype,
