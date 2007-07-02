@@ -8,12 +8,12 @@ use XML::LibXML;
 use Getopt::Long;
 use DateTime;
 use DateTime::Format::ISO8601;
-use JSON;
 use Data::Dumper;
 use Text::CSV_XS;
 use Spreadsheet::WriteExcel::Big;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:daemon/;
+use OpenSRF::Utils::JSON;
 #use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::System;
 use OpenSRF::AppSession;
@@ -129,9 +129,9 @@ while (my $r = $sth->fetchrow_hashref) {
 	$r->{report} = $s3;
 
 	my $b = OpenILS::Reporter::SQLBuilder->new;
-	$b->register_params( JSON->JSON2perl( $r->{report}->{data} ) );
+	$b->register_params( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) );
 
-	$r->{resultset} = $b->parse_report( JSON->JSON2perl( $r->{report}->{template}->{data} ) );
+	$r->{resultset} = $b->parse_report( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) );
 	$r->{resultset}->relative_time($r->{run_time});
 	push @reports, $r;
 }

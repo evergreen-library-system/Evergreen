@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;use warnings;
 use OpenSRF::EX qw/:try/;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
 use OpenSRF::Application;
 use OpenILS::Utils::Fieldmapper;

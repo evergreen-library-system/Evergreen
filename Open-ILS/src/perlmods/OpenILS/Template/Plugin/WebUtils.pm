@@ -8,7 +8,7 @@ use OpenSRF::AppSession;
 use OpenSRF::System;
 use XML::LibXML;
 use OpenSRF::Utils::SettingsParser;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 sub new {
 	my ($class) = @_;
@@ -26,7 +26,7 @@ sub XML2perl {
 
 sub perl2JSON {
 	my( $self, $perl ) = @_;
-	my $json = JSON->perl2JSON($perl);
+	my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
 	warn "Created JSON from perl:\n$json\n";
 	return $json;
 }
@@ -34,14 +34,14 @@ sub perl2JSON {
 sub JSON2perl {
 	my( $self, $perl ) = @_;
 	warn "Turning JSON into perl:\n$perl\n";
-	my $obj = JSON->JSON2perl($perl);
+	my $obj = OpenSRF::Utils::JSON->JSON2perl($perl);
 	warn "Created Perl from JSON: $obj \n";
 	return $obj;
 }
 
 sub perl2prettyJSON {
 	my( $self, $perl ) = @_;
-	return JSON->perl2prettyJSON($perl);
+	return OpenSRF::Utils::JSON->perl2prettyJSON($perl);
 }
 
 

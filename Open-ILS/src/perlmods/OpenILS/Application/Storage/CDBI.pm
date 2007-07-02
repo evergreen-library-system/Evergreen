@@ -14,7 +14,7 @@ use OpenILS::Application::Storage::CDBI::money;
 use OpenILS::Application::Storage::CDBI::permission;
 use OpenILS::Application::Storage::CDBI::container;
 
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw(:level);
 use OpenSRF::EX qw/:try/;
 
@@ -237,7 +237,7 @@ sub create {
 	my $self = shift;
 	my $arg = shift;
 
-	$log->debug("CDBI->create: \$arg is $arg (".ref($arg)." : ".JSON->perl2JSON($arg).")",DEBUG);
+	$log->debug("CDBI->create: \$arg is $arg (".ref($arg)." : ".OpenSRF::Utils::JSON->perl2JSON($arg).")",DEBUG);
 
 	if (ref($arg) && UNIVERSAL::isa($arg => 'Fieldmapper')) {
 		return $self->create_from_fieldmapper($arg,@_);

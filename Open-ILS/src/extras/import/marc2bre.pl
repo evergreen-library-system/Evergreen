@@ -7,7 +7,7 @@ use lib '/openils/lib/perl5/';
 use Error qw/:try/;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use JSON;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use Unicode::Normalize;
 use Encode;
@@ -172,7 +172,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$bib->tcn_value($tcn_value);
 	$bib->last_xact_id('IMPORT-'.$starttime);
 
-	print JSON->perl2JSON($bib)."\n";
+	print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";
 	$dontuse_id{$tcn_value} = 1;
 
 	$count++;

@@ -29,7 +29,7 @@ use XML::LibXML;
 use XML::LibXSLT;
 use Unicode::Normalize;
 
-use JSON;
+use OpenSRF::Utils::JSON;
 
 our (
   $_parser,

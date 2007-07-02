@@ -21,6 +21,7 @@ use DateTime;
 use Email::Send;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::JSON;
 use Unicode::Normalize;
 use OpenILS::Const qw/:const/;
 
@@ -445,7 +446,7 @@ sub send_email {
 	if( my $set = $e->search_actor_org_unit_setting( 
 			{ name => 'org.bounced_emails', org_unit => $org->id } )->[0] ) {
 
-		my $bemail = JSON->JSON2perl($set->value);
+		my $bemail = OpenSRF::Utils::JSON->JSON2perl($set->value);
 		$errors_to = $bemail if $bemail;
 	}
 

@@ -7,7 +7,7 @@
 
 use strict; 
 use warnings;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
@@ -24,5 +24,5 @@ for my $t (@ARGV) {
 	$t =~ s/\./_/og;
 	my $m = "retrieve_all_$t";
 	my $d = $e->$m();
-	print JSON->perl2JSON($_) . "\n" for @$d;
+	print OpenSRF::Utils::JSON->perl2JSON($_) . "\n" for @$d;
 }

@@ -1224,7 +1224,7 @@ sub ou_ancestor_setting {
 
         if( $setting ) {
             $logger->info("found org_setting $name at org $orgid : " . $setting->value);
-            return { org => $orgid, value => JSON->JSON2perl($setting->value) };
+            return { org => $orgid, value => OpenSRF::Utils::JSON->JSON2perl($setting->value) };
         }
 
         my $org = $e->retrieve_actor_org_unit($orgid) or return $e->event;

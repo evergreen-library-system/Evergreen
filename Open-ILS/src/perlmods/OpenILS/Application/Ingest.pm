@@ -10,7 +10,7 @@ use OpenSRF::Utils::Logger qw/:level/;
 
 use OpenILS::Utils::ScriptRunner;
 use OpenILS::Utils::Fieldmapper;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 use OpenILS::Utils::Fieldmapper;
 
@@ -933,7 +933,7 @@ sub flat_marc_record {
 	my @rows = $self->method_lookup("open-ils.ingest.flat_marc.$type.xml")->run($r->marc);
 	for my $row (@rows) {
 		$client->respond($row);
-		$log->debug(JSON->perl2JSON($row), DEBUG);
+		$log->debug(OpenSRF::Utils::JSON->perl2JSON($row), DEBUG);
 	}
 	return undef;
 }
@@ -1871,7 +1871,7 @@ sub extract_biblio_desc_record {
 	my $r = OpenILS::Application::Ingest->storage_req( "open-ils.storage.direct.biblio.record_entry.retrieve" => $rec );
 
 	my ($d) = $self->method_lookup("open-ils.worm.biblio_leader.xml")->run($r->marc);
-	$log->debug("Record descriptor for bib rec $rec is ".JSON->perl2JSON($d), DEBUG);
+	$log->debug("Record descriptor for bib rec $rec is ".OpenSRF::Utils::JSON->perl2JSON($d), DEBUG);
 	return $d;
 }
 __PACKAGE__->register_method(  

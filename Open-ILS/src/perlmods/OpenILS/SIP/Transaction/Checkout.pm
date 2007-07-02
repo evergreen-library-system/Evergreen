@@ -69,7 +69,7 @@ sub do_checkout {
 
 	my $key;
 
-	syslog('LOG_DEBUG', "OILS: Checkout permit returned event: " . JSON->perl2JSON($resp));
+	syslog('LOG_DEBUG', "OILS: Checkout permit returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
 
 	if( @$resp == 1 and ! $U->event_code($$resp[0]) ) {
 		$key = $$resp[0]->{payload};
@@ -111,7 +111,7 @@ sub do_checkout {
 		'open-ils.circ.checkout', $self->{authtoken}, $args );
 
 
-	syslog('LOG_DEBUG', "OILS: Checkout returned event: " . JSON->perl2JSON($resp));
+	syslog('LOG_DEBUG', "OILS: Checkout returned event: " . OpenSRF::Utils::JSON->perl2JSON($resp));
 
 	# XXX Check for events
 	if( $resp ) {

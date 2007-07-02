@@ -4,7 +4,7 @@ use lib '../src/perlmods/';
 use lib '../../OpenSRF/src/perlmods/';
 use lib '../src/perlmods/OpenILS/Utils/';
 
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
 use OpenILS::Utils::ScriptRunner;
 use OpenSRF::Utils::Logger;
@@ -27,8 +27,8 @@ try {
         OpenILS::Utils::ScriptRunner->add_path('../src/javascript/backend/libs/');
         OpenILS::Utils::ScriptRunner->add_path('./');
 
-	print JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new( file => shift(@ARGV) )->run );
-	#print JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new->run( shift(@ARGV) ) );
+	print OpenSRF::Utils::JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new( file => shift(@ARGV) )->run );
+	#print OpenSRF::Utils::JSON->perl2JSON( OpenILS::Utils::ScriptRunner->new->run( shift(@ARGV) ) );
 
 } otherwise {
         warn 'crap:'.shift();

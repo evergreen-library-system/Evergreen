@@ -7,7 +7,7 @@
 
 use strict; 
 use warnings;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
 
 my $config = shift || die "bootstrap config required\n";

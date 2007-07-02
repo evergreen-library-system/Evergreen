@@ -1,5 +1,5 @@
 package Fieldmapper;
-use JSON;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use base 'OpenSRF::Application';
 use OpenSRF::Utils::Logger;
@@ -97,7 +97,7 @@ sub import {
 			}
 		}
 
-		JSON->register_class_hint(
+		OpenSRF::Utils::JSON->register_class_hint(
 			hint => $pkg->json_hint,
 			name => $pkg,
 			type => 'array',

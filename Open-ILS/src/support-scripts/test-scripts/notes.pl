@@ -4,7 +4,7 @@ use vars qw/ $user $authtoken /;
 use strict; use warnings;
 use Time::HiRes qw/time/;
 use Data::Dumper;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 #-----------------------------------------------------------------------------
 # Does a checkout, renew, and checkin 

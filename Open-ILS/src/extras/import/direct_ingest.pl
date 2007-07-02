@@ -14,7 +14,7 @@ use OpenILS::Application::Ingest;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use JSON;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use FileHandle;
 
@@ -57,7 +57,7 @@ my $starttime = time;
 while (my $rec = <>) {
 	next unless ($rec);
 
-	my $bib = JSON->JSON2perl($rec);
+	my $bib = OpenSRF::Utils::JSON->JSON2perl($rec);
 	my $data;
 
 	try {
@@ -91,12 +91,12 @@ sub postprocess {
 	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
 	$bib->quality( $fp->{quality} ) unless ($auth);
 
-	print( JSON->perl2JSON($bib)."\n" );
+	print( OpenSRF::Utils::JSON->perl2JSON($bib)."\n" );
 	unless ($auth) {
-		print( JSON->perl2JSON($rd)."\n" );
-		print( JSON->perl2JSON($_)."\n" ) for (@$field_entries);
+		print( OpenSRF::Utils::JSON->perl2JSON($rd)."\n" );
+		print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$field_entries);
 	}
 
-	print( JSON->perl2JSON($_)."\n" ) for (@$full_rec);
+	print( OpenSRF::Utils::JSON->perl2JSON($_)."\n" ) for (@$full_rec);
 }
 

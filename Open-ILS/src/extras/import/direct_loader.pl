@@ -14,7 +14,7 @@ use OpenILS::Application::Storage;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use JSON;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use FileHandle;
 
@@ -57,7 +57,7 @@ my $starttime = time;
 while ( my $rec = <> ) {
 	next unless ($rec);
 
-	my $row = JSON->JSON2perl($rec);
+	my $row = OpenSRF::Utils::JSON->JSON2perl($rec);
 
 	OpenSRF::Application->method_lookup( "$base.push" )->run($row); 
 

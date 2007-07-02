@@ -7,7 +7,7 @@ use OpenSRF::System;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
-use JSON;
+use OpenSRF::Utils::JSON;
 use FileHandle;
 
 use Time::HiRes qw/time/;
@@ -38,7 +38,7 @@ while ( my $rec = <> ) {
 
 	my $row;
 	try {
-		$row = JSON->JSON2perl($rec);
+		$row = OpenSRF::Utils::JSON->JSON2perl($rec);
 	} catch Error with {
 		my $e = shift;
 		warn "\n\n !!! Error : $e \n\n at or around line $count\n";

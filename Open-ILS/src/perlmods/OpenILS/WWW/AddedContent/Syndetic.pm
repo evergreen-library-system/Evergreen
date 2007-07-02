@@ -3,7 +3,7 @@ use strict; use warnings;
 use LWP::UserAgent;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils::SettingsParser;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw/:try/;
 use OpenILS::WWW::AddedContent;
 
@@ -184,7 +184,7 @@ sub send_json {
 
 	return 0 unless $doc;
 	my $perl = OpenSRF::Utils::SettingsParser::XML2perl($doc->documentElement);
-	my $json = JSON->perl2JSON($perl);
+	my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
 	print "Content-type: text/plain\n\n";
 	print $json;
 	return 1;

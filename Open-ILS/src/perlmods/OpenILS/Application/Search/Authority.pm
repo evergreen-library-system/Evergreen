@@ -9,7 +9,7 @@ use XML::LibXSLT;
 use OpenILS::Utils::Editor q/:funcs/;
 use OpenSRF::Utils::Logger qw/$logger/;
 
-use JSON;
+use OpenSRF::Utils::JSON;
 
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);

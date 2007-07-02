@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict; use warnings;
 use CGI;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
@@ -226,7 +226,7 @@ sub ol_load {
 # --------------------------------------------------------------------
 sub ol_handle_result {
 	my $obj = shift;
-	my $json = JSON->perl2JSON($obj);
+	my $json = OpenSRF::Utils::JSON->perl2JSON($obj);
 
 	# Clear this so it's not remembered
 	$evt = undef;
@@ -417,7 +417,7 @@ sub ol_file_to_perl {
 	open(F, "$fname") or ol_handle_event('OFFLINE_FILE_ERROR');
 	my @d = <F>;
 	my @p;
-	push(@p, JSON->JSON2perl($_)) for @d;
+	push(@p, OpenSRF::Utils::JSON->JSON2perl($_)) for @d;
 	close(F);
 	return \@p;
 }
@@ -492,7 +492,7 @@ sub ol_append_result {
 	my $obj	= shift;
 	my $last = shift;
 
-	$obj = JSON->perl2JSON($obj);
+	$obj = OpenSRF::Utils::JSON->perl2JSON($obj);
 
 	if(!$rhandle) {
 		open($rhandle, ">>$basedir/pending/$org/$seskey/results") 

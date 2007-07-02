@@ -3,7 +3,7 @@
 
 use OpenSRF::AppSession;
 use OpenSRF::System;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Cache;
@@ -22,7 +22,7 @@ my $ses = OpenSRF::AppSession->create("open-ils.storage");
 my $tree = $ses->request("open-ils.storage.direct.actor.org_unit.retrieve.all.atomic")->gather(1);
 my $types = $ses->request("open-ils.storage.direct.actor.org_unit_type.retrieve.all.atomic")->gather(1);
 
-my $types_string = JSON->perl2JSON($types);
+my $types_string = OpenSRF::Utils::JSON->perl2JSON($types);
 $types_string =~ s/\"/\\\"/g;
 
 my $pile = "var _l = [";

@@ -6,7 +6,7 @@
 
 use strict;
 use warnings;
-use JSON;
+use OpenSRF::Utils::JSON;
 use Data::Dumper;
 use OpenSRF::System;
 use OpenSRF::AppSession;

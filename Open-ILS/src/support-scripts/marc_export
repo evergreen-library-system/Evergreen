@@ -6,6 +6,7 @@ use bytes;
 use OpenSRF::System;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::AppSession;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -138,7 +139,7 @@ while ( my $i = <> ) {
 	next unless $bib;
 
     if (uc($format) eq 'BRE') {
-        print JSON->perl2JSON($bib);
+        print OpenSRF::Utils::JSON->perl2JSON($bib);
 	    stats();
         next;
     }

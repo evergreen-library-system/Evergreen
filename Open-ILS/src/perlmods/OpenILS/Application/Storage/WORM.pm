@@ -11,7 +11,7 @@ my $log = 'OpenSRF::Utils::Logger';
 
 use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::Fieldmapper;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 use XML::LibXML;
 use XML::LibXSLT;

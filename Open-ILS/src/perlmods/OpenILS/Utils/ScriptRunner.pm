@@ -2,7 +2,7 @@ package OpenILS::Utils::ScriptRunner;
 use strict; use warnings;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenSRF::EX qw(:try);
-use JSON;
+use OpenSRF::Utils::JSON;
 use JavaScript::SpiderMonkey;
 use LWP::UserAgent;
 use XML::LibXML;
@@ -183,7 +183,7 @@ sub run {
 
 	close(F);
 	$logger->debug( "script result is [$res]" );
-	return JSON->JSON2perl( $res );
+	return OpenSRF::Utils::JSON->JSON2perl( $res );
 }
 
 sub remove_path { 
@@ -469,7 +469,7 @@ sub _jsonopensrfrequest_send {
 	my $blocking = shift;
 	my $params = shift;
 
-	my @p = @{ JSON->JSON2perl($params) };
+	my @p = @{ OpenSRF::Utils::JSON->JSON2perl($params) };
 
 	my $ctx = $self->context;
 
@@ -484,7 +484,7 @@ sub _jsonopensrfrequest_send {
 	if (!$req->failed) {
 		my $res = $req->recv->content;
 		
-		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', JSON->perl2JSON($res));
+		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.responseText', OpenSRF::Utils::JSON->perl2JSON($res));
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.readyState', 4);
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.statusText', 'OK');
 		$ctx->property_by_path('__jsonopensrfreq_hash.id'.$id.'.status', '200');

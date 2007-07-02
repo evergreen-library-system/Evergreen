@@ -6,7 +6,7 @@ use Time::HiRes qw/time usleep/;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use Data::Dumper;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 #-----------------------------------------------------------------------------
 # Does a checkout, renew, and checkin 
@@ -81,9 +81,9 @@ sub build_script {
 			backdate			=> $t1
 		};
 	
-		$json .= JSON->perl2JSON($checkout) . "\n";
-		$json .= JSON->perl2JSON($renew) . "\n" if $renew;
-		$json .= JSON->perl2JSON($checkin) . "\n";
+		$json .= OpenSRF::Utils::JSON->perl2JSON($checkout) . "\n";
+		$json .= OpenSRF::Utils::JSON->perl2JSON($renew) . "\n" if $renew;
+		$json .= OpenSRF::Utils::JSON->perl2JSON($checkin) . "\n";
 	}
 
 	return $json;
@@ -106,7 +106,7 @@ sub create_session {
 	my $url = "$baseurl/offline.pl$params&action=create&desc=test_d";
 	my $req = GET( $url );
 	my $res = $useragent->request($req);
-	my $response = JSON->JSON2perl($res->{_content});
+	my $response = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 
 	oils_event_die($response);
 	$seskey = $response->{payload};
@@ -136,7 +136,7 @@ sub upload_script {
 	my $res = $useragent->request($req);
 
 	# Pass request to the user agent and get a response back
-	my $event = JSON->JSON2perl($res->{_content});
+	my $event = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 	oils_event_die($event);
 	print "Upload succeeded to session $seskey...\n";
 }
@@ -151,7 +151,7 @@ sub check_sessions {
 	my $url = "$baseurl/offline.pl$params&action=status&status_type=scripts";
 	my $req = GET( $url );
 	my $res = $useragent->request($req);
-	my $ses = JSON->JSON2perl($res->{_content});
+	my $ses = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 
 	my $scripts = $ses->{scripts};
 	delete $ses->{scripts};
@@ -184,7 +184,7 @@ sub run_script {
 	my $req = GET( $url );
 
 	my $res = $useragent->request($req);
-	my $event = JSON->JSON2perl($res->{_content});
+	my $event = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 
 	oils_event_die($event);
 }
@@ -199,7 +199,7 @@ sub check_script {
 		my $url = "$baseurl/offline.pl$params&action=status&status_type=summary";
 		my $req = GET( $url );
 		my $res = $useragent->request($req);
-		my $blob = JSON->JSON2perl($res->{_content});
+		my $blob = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 
 		my $total = $blob->{total};
 		my $count = $blob->{num_complete} || "0";
@@ -216,7 +216,7 @@ sub check_script {
 	my $url = "$baseurl/offline.pl$params&action=status&status_type=exceptions";
 	my $req = GET( $url );
 	my $res = $useragent->request($req);
-	my $blob = JSON->JSON2perl($res->{_content});
+	my $blob = OpenSRF::Utils::JSON->JSON2perl($res->{_content});
 
 	my @events;
 	push(@events, $_->{event}) for @$blob;

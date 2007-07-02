@@ -7,7 +7,7 @@ use OpenILS::Application::Cat::Merge;
 use base qw/OpenSRF::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
 use OpenILS::Const qw/:const/;
@@ -768,7 +768,7 @@ sub fleshed_copy_update {
 	my $override = $self->api_name =~ /override/;
 	$evt = update_fleshed_copies($editor, $override, undef, $copies, $delete_stats);
 	if( $evt ) { 
-		$logger->info("fleshed copy update failed with event: ".JSON->perl2JSON($evt));
+		$logger->info("fleshed copy update failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
 		$editor->rollback; 
 		return $evt; 
 	}

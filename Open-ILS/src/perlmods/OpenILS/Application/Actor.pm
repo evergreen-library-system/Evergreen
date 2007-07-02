@@ -19,7 +19,7 @@ use OpenSRF::Utils qw/:datetime/;
 
 use OpenSRF::Utils::Cache;
 
-use JSON;
+use OpenSRF::Utils::JSON;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Const qw/:const/;
@@ -63,7 +63,7 @@ sub set_user_settings {
 	my @params = map { 
 		[{ usr => $user->id, name => $_}, {value => $$settings{$_}}] } keys %$settings;
 		
-	$_->[1]->{value} = JSON->perl2JSON($_->[1]->{value}) for @params;
+	$_->[1]->{value} = OpenSRF::Utils::JSON->perl2JSON($_->[1]->{value}) for @params;
 
 	$logger->activity("User " . $staff->id . " updating user $uid settings with: " . Dumper(\@params));
 
@@ -92,7 +92,7 @@ sub set_ou_settings {
 	my @params;
 	for my $set (keys %$settings) {
 
-		my $json = JSON->perl2JSON($$settings{$set});
+		my $json = OpenSRF::Utils::JSON->perl2JSON($$settings{$set});
 		$logger->activity("updating org_unit.setting: $ouid : $set : $json");
 
 		push( @params, 
@@ -128,7 +128,7 @@ sub user_settings {
 		'open-ils.cstore',
 		'open-ils.cstore.direct.actor.user_setting.search.atomic', { usr => $uid } );
 
-	my $settings =  { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+	my $settings =  { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
 
    return $$settings{$setting} if $setting;
    return $settings;
@@ -149,7 +149,7 @@ sub ou_settings {
 		'open-ils.cstore',
 		'open-ils.cstore.direct.actor.org_unit_setting.search.atomic', {org_unit => $ouid});
 
-	return { map { ( $_->name => JSON->JSON2perl($_->value) ) } @$s };
+	return { map { ( $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) ) } @$s };
 }
 
 
@@ -293,7 +293,7 @@ sub update_patron {
 	if( $opatron ) {
 		# Log the new and old patron for investigation
 		$logger->info("$user_session updating patron object. orig patron object = ".
-			JSON->perl2JSON($opatron). " |||| new patron = ".JSON->perl2JSON($fuser));
+			OpenSRF::Utils::JSON->perl2JSON($opatron). " |||| new patron = ".OpenSRF::Utils::JSON->perl2JSON($fuser));
 	}
 
 

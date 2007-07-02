@@ -4,7 +4,7 @@ use base qw/OpenILS::Application::Storage/;
 #use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::EX qw/:try/;
-use JSON;
+use OpenSRF::Utils::JSON;
 
 #
 
@@ -101,7 +101,7 @@ sub import_xml_holdings {
 			$org_cache{ $f->subfield( $map->{owning_lib} ) } = $ol;
 		} otherwise {
 			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{owning_lib} ).'] : '. shift(), ERROR);
-			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
+			$log->info('Failed holdings tag: ['.OpenSRF::Utils::JSON->perl2JSON( $f ).']');
 		};
 		
 		try {
@@ -112,7 +112,7 @@ sub import_xml_holdings {
 			$org_cache{ $f->subfield( $map->{circulating_lib} ) } = $cl;
 		} otherwise {
 			$log->debug('Could not find library with shortname ['.$f->subfield( $map->{circulating_lib} ).'] : '. shift(), ERROR);
-			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
+			$log->info('Failed holdings tag: ['.OpenSRF::Utils::JSON->perl2JSON( $f ).']');
 		};
 
 		next unless ($ol && $cl);
@@ -129,7 +129,7 @@ sub import_xml_holdings {
 			);
 		} otherwise {
 			$log->debug('Could not find or create callnumber ['.$f->subfield( $map->{call_number} )."] on record $record : ". shift(), ERROR);
-			$log->info('Failed holdings tag: ['.JSON->perl2JSON( $f ).']');
+			$log->info('Failed holdings tag: ['.OpenSRF::Utils::JSON->perl2JSON( $f ).']');
 		};
 
 		next unless ($cn);

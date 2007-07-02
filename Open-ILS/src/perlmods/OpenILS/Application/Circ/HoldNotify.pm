@@ -20,6 +20,7 @@ use strict; use warnings;
 use OpenSRF::EX qw(:try);
 use vars q/$AUTOLOAD/;
 use OpenILS::Event;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::SettingsClient;
@@ -350,7 +351,7 @@ sub flesh_template {
          {  name => OILS_SETTING_ORG_BOUNCED_EMAIL, 
             org_unit => $self->pickup_lib->id } )->[0] ) {
 
-      my $bemail = JSON->JSON2perl($set->value);
+      my $bemail = OpenSRF::Utils::JSON->JSON2perl($set->value);
       $sender = $bemail if $bemail;
    }
 

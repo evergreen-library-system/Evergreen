@@ -1,7 +1,7 @@
 package OpenILS::Application::Search;
 use base qw/OpenSRF::Application/;
 use strict; use warnings;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw(:logger);
 
 use OpenILS::Utils::Fieldmapper;
@@ -34,7 +34,7 @@ sub initialize {
 
 
 # ------------------------------------------------------------------
-# Create custome dictionaries like so:
+# Create custom dictionaries like so:
 # aspell --lang=en create  master ./oils_authority.dict < /tmp/words
 # where /tmp/words is a space separated list of words
 # ------------------------------------------------------------------

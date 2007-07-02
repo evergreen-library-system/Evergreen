@@ -9,7 +9,7 @@ use Apache2::RequestRec ();
 use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 
-use JSON;
+use OpenSRF::Utils::JSON;
 
 use CGI ();
 
@@ -47,7 +47,7 @@ sub handler {
 	}
 
 	if($err) {
-		print  JSON->perl2JSON($err);
+		print  OpenSRF::Utils::JSON->perl2JSON($err);
 		return Apache2::Const::OK;
 	}
 
@@ -58,11 +58,11 @@ sub handler {
 
 	if(defined($cgi->param("param"))) {
 		for my $param ( $cgi->param("param")) {
-			push( @param_array, JSON->JSON2perl( $param ));
+			push( @param_array, OpenSRF::Utils::JSON->JSON2perl( $param ));
 		}
 	} else {
 		for my $param ($cgi->param()) {
-			$param_hash{$param} = JSON->JSON2perl($cgi->param($param))
+			$param_hash{$param} = OpenSRF::Utils::JSON->JSON2perl($cgi->param($param))
 				unless( $param eq "method" or $param eq "service" );
 		}
 	}
@@ -122,7 +122,7 @@ sub perform_method {
 					"Service: $service \nMethod: $method \nParams: @params \n" .
 					$response->stringify() . "\n",
 			};
-			print JSON->perl2JSON($err);
+			print OpenSRF::Utils::JSON->perl2JSON($err);
 			$request->finish();
 			return 0;
 		}
@@ -140,7 +140,7 @@ sub perform_method {
 				"Service: $service \nMethod: $method \nParams: @params \n" .
 				"request->complete test failed in OpenILS::Web::Method\n" 
 		};
-		print JSON->perl2JSON($err); 
+		print OpenSRF::Utils::JSON->perl2JSON($err); 
 		$request->finish();
 		return 0;
 	}
@@ -151,7 +151,7 @@ sub perform_method {
 	warn "Results: \n";
 	warn Dumper \@results;
 
-	print JSON->perl2JSON( \@results );
+	print OpenSRF::Utils::JSON->perl2JSON( \@results );
 
 	return 1;
 }

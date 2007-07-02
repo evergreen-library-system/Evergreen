@@ -3,7 +3,7 @@ use base qw/OpenSRF::Application/;
 use strict; use warnings;
 
 
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
@@ -13,7 +13,7 @@ use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/:logger/;
 
 
-use JSON;
+use OpenSRF::Utils::JSON;
 
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
@@ -478,7 +478,7 @@ sub the_quest_for_knowledge {
 
 	my @search;
 	push( @search, ($_ => $$searchhash{$_})) for (sort keys %$searchhash);
-	my $s = JSON->perl2JSON(\@search);
+	my $s = OpenSRF::Utils::JSON->perl2JSON(\@search);
 	my $ckey = $pfx . md5_hex($method . $s);
 
 	$logger->info("bib search for: $s");
@@ -526,7 +526,7 @@ sub the_quest_for_knowledge {
 		}
 		@recs = @t;
 
-		#$logger->debug("cache done .. returning $offset..$end : " . JSON->perl2JSON(\@recs));
+		#$logger->debug("cache done .. returning $offset..$end : " . OpenSRF::Utils::JSON->perl2JSON(\@recs));
 	}
 
 	return { ids => \@recs, count => $count };
@@ -654,7 +654,7 @@ sub biblio_mrid_to_modsbatch {
 # converts a metarecord to an mvr
 sub _mr_to_mvr {
 	my $mr = shift;
-	my $perl = JSON->JSON2perl($mr->mods());
+	my $perl = OpenSRF::Utils::JSON->JSON2perl($mr->mods());
 	return Fieldmapper::metabib::virtual_record->new($perl);
 }
 
@@ -755,7 +755,7 @@ sub biblio_mrid_make_modsbatch {
 
 
 	# now update the mods string in the db
-	my $string = JSON->perl2JSON($mods->decast);
+	my $string = OpenSRF::Utils::JSON->perl2JSON($mods->decast);
 	$mr->mods($string);
 
 	#$e = OpenILS::Utils::Editor->new(xact => 1);
@@ -1035,7 +1035,7 @@ sub marc_search {
 
 	my @search;
 	push( @search, ($_ => $$args{$_}) ) for (sort keys %$args);
-	my $ckey = $pfx . md5_hex($method . JSON->perl2JSON(\@search));
+	my $ckey = $pfx . md5_hex($method . OpenSRF::Utils::JSON->perl2JSON(\@search));
 
 	my $recs = search_cache($ckey, $offset, $limit);
 

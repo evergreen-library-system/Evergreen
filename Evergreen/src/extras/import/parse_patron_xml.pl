@@ -11,7 +11,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
 use Getopt::Long;
-use JSON;
+use OpenSRF::Utils::JSON;
 use DateTime;
 use Time::HiRes qw/time/;
 use XML::LibXML;
@@ -302,7 +302,7 @@ for my $patron ( $doc->documentElement->childNodes ) {
 	}
 
 	print STDERR "\r$count     ".$count/(time - $starttime) unless ($count % 100);
-	print JSON->perl2JSON( $_ )."\n" for ($p,$card,$profile_sce,@addresses,@notes);
+	print OpenSRF::Utils::JSON->perl2JSON( $_ )."\n" for ($p,$card,$profile_sce,@addresses,@notes);
 
 	$count++;
 }

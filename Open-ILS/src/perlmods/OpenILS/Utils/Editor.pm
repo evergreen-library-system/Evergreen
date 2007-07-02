@@ -6,7 +6,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Event;
 use Data::Dumper;
-use JSON;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 
@@ -337,7 +337,7 @@ sub __arg_to_string {
 	my $arg = shift;
 	return "" unless defined $arg;
 	return $arg->id if UNIVERSAL::isa($arg, "Fieldmapper");
-	return JSON->perl2JSON($arg);
+	return OpenSRF::Utils::JSON->perl2JSON($arg);
 }
 
 
