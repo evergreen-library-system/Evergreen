@@ -210,6 +210,18 @@ SELECT  usr,
         MAX(last_pertinent_payment) AS last_pertinent_payment
   FROM  (
                 SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  money.grocery lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.billing_location IN (XX)
+                        AND bl.void_time BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
                         MAX(bl.billing_ts) AS last_pertinent_billing,
                         NULL::TIMESTAMPTZ AS last_pertinent_payment
                   FROM  money.grocery lt
@@ -253,6 +265,18 @@ SELECT  usr,
                   WHERE cl.location = ?
                         AND lt.circ_lib IN (XX)
                         AND pm.payment_ts BETWEEN ? AND ?
+                  GROUP BY 1
+
+                                UNION ALL
+                SELECT  lt.usr,
+                        NULL::TIMESTAMPTZ AS last_pertinent_billing,
+                        NULL::TIMESTAMPTZ AS last_pertinent_payment
+                  FROM  action.circulation lt
+                        JOIN money.collections_tracker cl ON (lt.usr = cl.usr)
+                        JOIN money.billing bl ON (lt.id = bl.xact)
+                  WHERE cl.location = ?
+                        AND lt.circ_lib IN (XX)
+                        AND bl.void_time BETWEEN ? AND ?
                   GROUP BY 1
 
                                 UNION ALL
