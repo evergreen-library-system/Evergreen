@@ -24,7 +24,7 @@ the following schemas set in the default search path: actor, permission, public,
 
 OTHER_DATABASES = { 
     'ils_data': { 
-        'DATABASE_ENGINE' : 'postgresql',
+        'DATABASE_ENGINE' : 'postgresql_psycopg2',
         'DATABASE_NAME' : 'evergreen',
         'DATABASE_HOST' : '127.0.0.1',
         'DATABASE_PORT' : '5432',
