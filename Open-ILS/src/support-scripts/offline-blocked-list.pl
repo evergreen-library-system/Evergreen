@@ -14,7 +14,7 @@ if(1) { # XXX command line param
     # Make this the default for now.
     # ------------------------------------------------------------
 
-    use JSON;
+    use OpenSRF::Utils::JSON;
     use IPC::Open2 qw/open2/;
 
     sub runmethod {
@@ -29,7 +29,7 @@ if(1) { # XXX command line param
         for my $barcode (<$child_stdout>) {
             next if $barcode =~ /^oils/o; # hack to chop out the oils_requestor prompt
             chomp $barcode;
-            $barcode = JSON->JSON2perl($barcode);
+            $barcode = OpenSRF::Utils::JSON->JSON2perl($barcode);
             print "$barcode $flag\n" if $barcode;
         }
         close($child_stdout);
