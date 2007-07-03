@@ -317,33 +317,34 @@ __PACKAGE__->register_method(
 );
 
 
+# start_date and end_date are optional endpoints for the transit creation date
 sub transits_by_lib {
-	my( $self, $conn, $auth, $orgid ) = @_;
+	my( $self, $conn, $auth, $orgid, $start_date, $end_date ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_CIRCULATIONS'); # eh.. basically the same permission
 
-	my $tos = $e->search_action_transit_copy(
-		[{
-			dest => $orgid,
-			dest_recv_time => undef,
-		},
-		{
-			order_by => { atc => 'source_send_time' }
-		}],
-		{ idlist => 1 }
-	);
+    my $order_by = {order_by => { atc => 'source_send_time' }};
+    my $search = { dest_recv_time => undef };
 
-	my $froms = $e->search_action_transit_copy(
-		[{
-			source => $orgid,
-			dest_recv_time => undef,
-		},
-		{
-			order_by => { atc => 'source_send_time' }
-		}],
-		{ idlist => 1 }
-	);
+    if($end_date) {
+        if($start_date) {
+            $search->{source_send_time} = {between => [$start_date, $end_date]};
+        } else {
+            $search->{source_send_time} = {'<=' => $end_date};
+        }
+    } elsif($start_date) {
+        $search->{source_send_time} = {'>=' => $start_date};
+    }
+
+    $search->{dest} = $orgid;
+
+	my $tos = $e->search_action_transit_copy([ $search, $order_by ], {idlist=>1});
+
+    delete $$search{dest};
+    $search->{source} = $orgid;
+
+	my $froms = $e->search_action_transit_copy([ $search, $order_by ], {idlist=>1});
 
 	return { from => $froms, to => $tos };
 }
