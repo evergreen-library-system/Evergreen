@@ -69,7 +69,7 @@ while (my $rec = <>) {
 
 	next unless $data;
 
-	postprocess( { bib => $bib, worm_data => $data } );
+	postprocess( { bib => $bib, ingest_data => $data } );
 
 	if (!($count % 20)) {
 		print NEWERR "\r$count\t". $count / (time - $starttime);
@@ -82,11 +82,11 @@ sub postprocess {
 	my $data = shift;
 
 	my $bib = $data->{bib};
-	my $full_rec = $data->{worm_data}->{full_rec};
+	my $full_rec = $data->{ingest_data}->{full_rec};
 
-	my $field_entries = $data->{worm_data}->{field_entries} unless ($auth);
-	my $fp = $data->{worm_data}->{fingerprint} unless ($auth);
-	my $rd = $data->{worm_data}->{descriptor} unless ($auth);
+	my $field_entries = $data->{ingest_data}->{field_entries} unless ($auth);
+	my $fp = $data->{ingest_data}->{fingerprint} unless ($auth);
+	my $rd = $data->{ingest_data}->{descriptor} unless ($auth);
 
 	$bib->fingerprint( $fp->{fingerprint} ) unless ($auth);
 	$bib->quality( $fp->{quality} ) unless ($auth);

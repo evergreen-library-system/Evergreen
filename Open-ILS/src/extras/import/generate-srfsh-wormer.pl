@@ -2,7 +2,7 @@
 use strict;
 use Getopt::Long;
 
-my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-wormizer-script.sfsh', 'open-ils.worm.wormize.biblio.nomap.noscrub');
+my ($start, $stop, $count, $group, $out, $method) = (1,1,1,50,'dynamic-reindex-script.sfsh', 'open-ils.ingest.full.biblio.record_list');
 GetOptions (	"start=i" => \$start,
 		"end=i"   => \$stop,
 		"groupsize=i"   => \$group,
@@ -21,7 +21,8 @@ for my $i ( $start .. $stop ) {
 		push @list, $i;
 		next;
 	}
-	print SFSH "request open-ils.storage $method [".join(',', @list)."]\n" if (@list);
-	@list = ($i);
+	push @list, $i;
+	print SFSH "request open-ils.ingest $method [".join(',', @list)."]\n" if (@list);
+	@list = ();
 }
-print SFSH "request open-ils.storage $method [".join(',', @list)."]\n" if (@list);
+print SFSH "request open-ils.ingest $method [".join(',', @list)."]\n" if (@list);

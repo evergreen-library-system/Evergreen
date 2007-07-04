@@ -316,7 +316,7 @@ sub biblio_record_xml_import {
 
 	$apputils->commit_db_session($session);
 
-	$logger->debug("Sending record off to be wormized");
+	$logger->debug("Sending record off to be ingested and indexed");
 
 	$client->respond_complete($record);
 

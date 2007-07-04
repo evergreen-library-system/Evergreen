@@ -48,12 +48,6 @@ sub initialize {
 		throw OpenSRF::EX::PANIC ( "FAILURE LOADING Publisher!  :  $@" );
 	}
 
-	OpenILS::Application::WoRM->use;
-	if ($@) {
-		$log->debug("FAILURE LOADING WORM!  $@", ERROR);
-		throw OpenSRF::EX::PANIC ( "FAILURE LOADING WoRM!  :  $@" );
-	}
-
 	$log->debug("We seem to be OK...",DEBUG);
 }
 
@@ -69,11 +63,10 @@ sub child_init {
 	);
 
 	if (OpenILS::Application::Storage::CDBI->db_Main()) {
-		#OpenILS::Application::Storage::WORM->child_init();
-		OpenILS::Application::WoRM->child_init();
 		$log->debug("Success initializing driver!", DEBUG);
 		return 1;
 	}
+
 	$log->debug("FAILURE initializing driver!", ERROR);
 	return 0;
 }

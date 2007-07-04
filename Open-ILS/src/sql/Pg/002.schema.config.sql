@@ -122,7 +122,7 @@ COMMENT ON TABLE config.metabib_field IS $$
  * Copyright (C) 2005  Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
- * XPath used for WoRMing
+ * XPath used for record indexing ingest
  *
  * This table contains the XPath used to chop up MODS into it's
  * indexable parts.  Each XPath entry is named and assigned to
