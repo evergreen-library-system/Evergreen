@@ -1,5 +1,5 @@
 
-<div id='login_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+<div id='login_box' class='hide_me canvas' style='margin-top: 6px;'>
 
 	<script language='javascript'>
 		config.ids.login = {};

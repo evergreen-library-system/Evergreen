@@ -1,6 +1,6 @@
 
-<div id='canvas_main' 
-	style='border: 3px solid #A7EA9D; -moz-border-radius: 6px; padding: 6px; margin-top: 65px;' 
+<div id='canvas_main' class='home_search canvas'
+	style='-moz-border-radius: 6px; padding: 6px; margin-top: 65px;' 
 	xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<!-- load my js -->
@@ -38,13 +38,13 @@
 
 		<tbody>
 
-			<tr style='background: #E0F6E0'>
+			<tr class='color_3'>
 
 				<script language='javascript'>
 					config.ids.common.now_searching = 'now_searching_location';
 				</script>
 
-				<td style='padding: 6px; border: 1px solid #D0D0D0;' class='' align='center'>
+				<td style='padding: 6px;' class='border_5' align='center'>
 					<span>&opac.search.nowSearching;</span>
 					<span style='padding: 1px;' id='now_searching_location'>  </span>
 				</td>
@@ -54,7 +54,7 @@
 			<tr class='rowpad'><td></td></tr>
 
 			<tr>
-				<td nowrap='nowrap' align='center' style='border: 1px solid #D0D0D0;' class='color_1'>
+				<td nowrap='nowrap' align='center' class='color_1 border_5'>
 					<input id='search_box' style='width: 300px;' type='text' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='Go!' />
@@ -64,7 +64,7 @@
 
 			<tr class='rowpad'><td></td></tr>
 
-			<tr style='border: 1px solid #D0D0D0; background: #E0F6E0'>
+			<tr class='color_3 border_5'>
 
 				<td nowrap='nowrap' align='center' style='padding: 4px;'>
 
@@ -85,7 +85,7 @@
 
 			<tr class='rowpad'><td></td></tr>
 
-			<tr class='color_1' style='border: 1px solid #D0D0D0;'>
+			<tr class='color_1 border_5'>
 				<td align='center' style='padding: 4px; padding-bottom: 6px;'>
 					<span style='padding-right: 15px;'>
 						<a id='home_adv_search_link' href='javascript:void(0);'>&opac.navigate.advanced;</a></span>

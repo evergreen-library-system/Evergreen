@@ -37,7 +37,7 @@
 			<span>&navigate.loggedinas;<b id='username_dest'> </b></span>
 		</div>
 
-		<div id='sidebar_results_wrapper' class='hide_me'  style='border: 1px solid #A7EA9D;'>
+		<div id='sidebar_results_wrapper' class='hide_me border_1'>
 			<div title="&navigate.titleGroupResults;" 
 				id='mresult_link_div' class="side_bar_item hide_me">
 				<a id='sidebar_title_group_results'>&navigate.titleGroupResults;</a>
@@ -104,7 +104,7 @@
 		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
 		<div id='adv_quick_search'>
-			<div class='adv_quick_search'><b>&sidebar.quick.search;</b></div>
+			<div class='adv_quick_search color_4'><b>&sidebar.quick.search;</b></div>
 			<div style='margin-top: 8px;'>
 				<table><tbody><tr>
 					<td>
@@ -132,8 +132,8 @@
 	<div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me' 
 		style='text-align:center; margin-top: 20px;'> 
 		<hr/>
-		<div class='adv_quick_search'><b>&search.marc;</b></div>
-		<table style='margin: 3px; border: 3px solid #E0E0E0; width: 100%;' id='adv_sdbar_table'>
+		<div class='adv_quick_search color_4'><b>&search.marc;</b></div>
+		<table style='margin: 3px; width: 100%;' id='adv_sdbar_table' class='border_4_3'>
 			<tbody>
 				<tr>
 					<td>&search.marc.tag;</td>

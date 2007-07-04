@@ -10,7 +10,7 @@
 					<!--#include virtual="common/sidebar.xml"-->
 				</td>
 				<td id='main_right_cell'>
-					<div id='canvas' class='canvas'>
+					<div id='content' class=''>
 
 						<!--#if expr="$OILS_PAGE!='advanced.xml'"-->
 							<!--#include virtual="common/searchbar.xml"-->

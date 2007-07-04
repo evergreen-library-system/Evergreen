@@ -1,0 +1,96 @@
+body a			{ color: black; text-decoration: none;}
+body a:visited { color: black; text-decoration: none;}
+body a:hover	{ color: red; text-decoration: underline;}
+
+
+/*
+.color_1 { background: #A7EA9D; color: #000000; }
+.color_2 { background: #64EA4F; color: #000000; }
+.color_3 { background: #CCFFFF; color: #000000; }
+.color_4 { background: #E0F0E0; color: #000000; } E0F6EO?
+*/
+
+.color_1 { background: #FF8000; color: #000000; }
+.color_2 { background: #B35A00; color: #000000; }
+.color_3 { background: #FFDFBF; color: #000000; }
+.color_4 { background: #FFC080; color: #000000; }
+
+.border_1 { border: 1px solid #FF8000; }
+.border_2 { border: 1px solid #B35A00; }
+.border_3 { border: 1px solid #FFDFBF; }
+.border_4 { border: 1px solid #FFC080; }
+
+.border_1_2 { border: 2px solid #FF8000; }
+.border_2_2 { border: 2px solid #B35A00; }
+.border_3_2 { border: 2px solid #FFDFBF; }
+.border_4_2 { border: 2px solid #FFC080; }
+
+.border_1_3 { border: 3px solid #FF8000; }
+.border_2_3 { border: 3px solid #B35A00; }
+.border_3_3 { border: 3px solid #FFDFBF; }
+.border_4_3 { border: 3px solid #FFC080; }
+
+
+
+
+/* general purpose light borders */
+.border_5 { border: 1px solid #D0D0D0; }
+.border_6 { border: 1px solid #808080; }
+
+input:focus { background: #FFDFBF; color: #000000;}
+a:focus { background: #FFDFBF; color: #000000;}
+
+
+/* ---------------------------------------------------------------------- */
+
+.canvas { /* main content div for each page */
+    border-left: 3px solid #FF8000;
+    border-bottom: 3px solid #FF8000;
+	border-top: 3px solid #FF8000;
+}
+
+/* border around home search box */
+.home_search { border: 3px solid #FF8000; }
+
+/* main nav sidebar */
+.sidebar_item_active { background: #FF8000; }
+
+/* record detail summary block */
+.rdetail_desc { border: 1px solid #FF8000; }
+.rdetail_item { border: 1px solid #FF8000; }
+.rdetail_extras_selected { background: #FFC080;} 
+
+
+.data_grid thead tr { background: #FFC080; color: #000000; }
+.data_grid thead td { border: 1px solid #808080; }
+.data_grid tbody td { border: 1px solid #FFDFBF; }
+.data_grid_nb thead tr { background: #FFC080; color: #000000; }
+.data_grid_nb thead td { border: none; }
+.data_grid_nb tbody td { border: none; }
+
+.light_border { border: 1px solid #FFDFBF; }
+
+.adv_quick_search_submit { border-bottom: 3px solid #FFDFBF;}
+
+.myopac_link_active { background: #FFDFBF; }
+
+.sidebar_extra_link { text-decoration: none; }
+#searchbar_tag_on { color: red; }
+.searchbar_item { color: black; } 
+#login_box { border-top: 1px solid #808080; border-bottom: 1px solid #808080; }
+#next_prev_links_dead { color: #808080; text-decoration: none; }
+
+.nav_link_active {font-weight: bold;}
+
+.search_link { text-decoration: none; }
+.result_table_subtable { border-top: 1px solid #E0E0E0; }
+
+.copy_count_cell { border-right: 1px solid #E0E0E0; } 
+.copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
+
+#rdetail_image_cell { border: 1px solid white; border-right: 1px solid #A7EA9D;}
+
+
+
+
+

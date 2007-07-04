@@ -1,7 +1,3 @@
-<!--
-<div id='cn_browse' class='hide_me non_canvas cn_browser' 
-	style='width: 90%; text-align: center; padding: 15px;'>
-	-->
 <div id='cn_browse' class='hide_me cn_browser' 
 	style='width: 95%; text-align: center; padding: 15px;'>
 	<div id='cn_browse_loading'  class='cn_browse_loading hide_me'>&common.cn.loading;</div>

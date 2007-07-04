@@ -11,6 +11,9 @@
 <link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/default/css/colors.css"  
 	name='Default' csstype='color'/>
 
+<link type='text/css' rel="alternate stylesheet" title='&opac.style.reddish;' href="<!--#echo var='OILS_THEME_BASE'-->/reddish/css/colors.css"  
+	name='Default' csstype='color'/>
+
 <!-- OpenSearch auto discovery -->
 <link rel='search' 
 	 type="application/opensearchdescription+xml"

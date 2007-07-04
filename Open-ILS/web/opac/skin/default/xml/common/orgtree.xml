@@ -1,6 +1,6 @@
 
 <!-- the org tree -->
-<div id='org_container' class='hide_me non_canvas'>
+<div id='org_container' class='hide_me canvas'>
 
 	<div id='org_link_container' class='color_1'>
 		<span class='org_link'>

@@ -1,6 +1,6 @@
 
 <div>
-	<div id='xulholds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
 		<center>
 			<table class='data_grid' style='margin-top: 20px;'>
 				<tbody>
@@ -19,13 +19,13 @@
 		</center>
 	</div>
 
-	<div id='check_holds_box' class='hide_me non_canvas' 
+	<div id='check_holds_box' class='hide_me canvas' 
 		style='margin-top: 6px; width: 100%; text-align: center'>
 		<br/><br/><br/>
 		<b>&common.hold.check;</b>
 	</div>
 
-	<div id='holds_box' class='hide_me non_canvas' style='margin-top: 6px;'>
+	<div id='holds_box' class='hide_me canvas' style='margin-top: 6px;'>
 	
 		<br/>
 		<table width='90%'>

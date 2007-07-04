@@ -1,5 +1,5 @@
 
-<div id='canvas_main' xmlns:xi="http://www.w3.org/2001/XInclude" >
+<div id='canvas_main' class='canvas' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
 	<script language='javascript'>
 		config.ids.result = {};

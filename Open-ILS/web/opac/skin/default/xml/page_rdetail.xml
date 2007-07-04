@@ -1,4 +1,4 @@
-<div id='canvas_main'>
+<div id='canvas_main' class='canvas'>
 
 	<script language='javascript' src='../js/sidebar_extras.js'> </script>
 	<script language='javascript' src='../js/result_common.js'> </script>
@@ -16,7 +16,7 @@
 
 	<table width='100%' id='np_table' class='hide_me' style='margin-top: 3px;'>
 		<tbody>
-			<tr style='height: 1em; background: #E0F6E0'>
+			<tr class='color_4' style='height: 1em;'>
 				<td style='vertical-align: top;'>
 
 					<span>
@@ -69,8 +69,8 @@
 		</tbody>
 	</table>
 
-	<div style='font-weight: bold; padding: 5px; margin: 5px; background: #E0F0E0; width: 100%;' 
-		class='hide_me' id='rdetail_deleted_exp'>
+	<div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;' 
+		class='hide_me color_4' id='rdetail_deleted_exp'>
 		&rdetail.record.deleted;
 	</div>
 

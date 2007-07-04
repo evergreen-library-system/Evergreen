@@ -288,8 +288,10 @@
 
 	</tr>
 
-	<tr style='border: 2px solid #E0F0E0;'>
+	<tr class='border_4_2'>
 		<td colspan='2'><input type='submit' onclick='advSubmitGlobal();' value='&advanced.search.submit;'></input></td>
 	</tr>
 
 </table>
+
+

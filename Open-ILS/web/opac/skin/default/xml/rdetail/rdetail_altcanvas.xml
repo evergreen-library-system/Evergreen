@@ -10,7 +10,7 @@
 		config.ids.rdetail.view_marc_box = "rdetail_view_marc_box";
 	</script>
 
-	<div class='hide_me non_canvas' id='view_marc_div'> 
+	<div class='hide_me canvas' id='view_marc_div'> 
 		<div>
 			<table width='100%'><tbody><tr>
 				<td class='color_1' align='left' style='padding-left: 7px;text-decoration: underline;'>

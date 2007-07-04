@@ -57,6 +57,8 @@
 	contain at least one letter (a-z/A-Z), 
 	and contain at least one number.">
 
+<!ENTITY opac.style.reddish "Reddish">
+
 <!ENTITY holds.where_am_i
 	"PINES is a statewide system with both patrons and items
 	associated with over 250 libraries, holds lists are not as simple as

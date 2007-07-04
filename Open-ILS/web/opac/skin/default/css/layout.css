@@ -7,79 +7,51 @@ body { background-color: white; }
 .right			{ position:absolute; right: 0px; }
 .hide_me			{ display:none; visibility: hidden; }
 
-/*
-input:focus:not(.invalid_value) { background: #E0F0E0; color: darkblue;}
-*/
-input:focus { background: #E0F0E0; color: darkblue;}
-/*select:focus { background: #E0F0E0; color: darkblue;}*/ /* this was causing strange behavior */
-a:focus { background: #E0F0E0; color: darkblue;}
-
 table { border-collapse: collapse; }
 
 /* generic CSS for a table with data */
 .data_grid { font-weight: 500; border-collapse: collapse;}
-.data_grid thead tr { background: #E0F0E0; color: #000000; }
-.data_grid thead td { border: 1px solid #808080; padding-right: 5px; padding-left: 5px;}
-.data_grid tbody td { border: 1px solid #E0E0E0; padding: 5px; }
+.data_grid thead tr { }
+.data_grid thead td { padding-right: 5px; padding-left: 5px;}
+.data_grid tbody td { padding: 5px; }
 .data_grid_center { text-align: center; }
 
 .data_grid_nb { font-weight: 500; border-collapse: collapse;}
-.data_grid_nb thead tr { background: #E0F0E0; color: #000000; }
-.data_grid_nb thead td { border: none; padding-right: 5px; padding-left: 5px;}
-.data_grid_nb tbody td { border: none; padding: 5px; }
+.data_grid_nb thead tr { color: #000000; }
+.data_grid_nb thead td { padding-right: 5px; padding-left: 5px;}
+.data_grid_nb tbody td { padding: 5px; }
 
 
 .classic_link { text-decoration: underline; color: black;}
 .classic_link:visited { text-decoration: underline; color: black;}
 .classic_link_col { text-decoration: underline; color: red;}
 
-.adv_quick_search { background-color: #E0F0E0; padding: 3px;}
-/*
-.adv_quick_search_submit { background-color: #F0E0E0; padding: 3px;}
-*/
-.adv_quick_search_submit { border-bottom: 3px solid #A0A0A0; padding: 3px;}
-
 .encircled { border: 1px solid black; }
 
-.light_border { border: 1px solid #E0E0E0; }
 
-/*.overdue { color: red; font-size: 110%; background: #F0F0E0; }*/
+.adv_quick_search { padding: 3px;}
+.adv_quick_search_submit { padding: 3px;}
+
 .overdue { color: red; font-weight: bold;}
-
-/*
-#main_table { border-collapse: collapse; width: 100%; height: 100%; }
-#main_left_cell { height: 100%; width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
-#main_right_cell { height: 100%; width: 80%; vertical-align: top; margin: 0px; padding:0px;}
-*/
 
 #main_table { border-collapse: collapse; width: 100%;  }
 #main_left_cell { width: 20%; vertical-align: top;margin: 0px; padding: 0px;}
 #main_right_cell { width: 80%; vertical-align: top; margin: 0px; padding:0px;}
 
 
-.canvas { min-height: 300px; }
-#not_the_canvas {}
+#content { min-height: 300px; }
 
-#canvas_main { min-height: 300px; padding-left: 4px; -moz-border-radius: 6px; padding-bottom: 4px; }
-.non_canvas {  min-height: 300px; padding-left: 4px; -moz-border-radius: 6px;}
-
+.canvas {  min-height: 300px; padding-left: 4px; -moz-border-radius: 6px;}
+#canvas_main { padding-bottom: 4px; }
 
 #loading_div { width: 100%;}
 
-
-/* default to image size to avoid image stretching */
-/*
-.logo { height: 65px; width: 180px; }
-*/
 
 
 .shadowed { background: #F0F0E0; }
 .no_copies { background: #E0E0E0; }
 .overdue_circ { border: 2px dashed #F0D0E0; }
 
-/*
-.org_tree { height: 500px; padding-left: 2px; padding-right: 2px; }            
-*/
 .org_tree { padding-left: 2px; padding-right: 2px; }            
 .org_link { padding-right: 15px; }
 #org_link_container { margin-bottom: 5px; padding-left: 4px; padding-bottom: 3px; padding-top: 3px; width: 100%; }
@@ -175,13 +147,8 @@ table { border-collapse: collapse; }
 
 /* ---------------------------------------------------------------------- */
 
-.myopac_link { 
-	width: 12%; margin: 3px; padding: 3px; 
-	text-align: center; vertical-align: middle; 
-	border-bottom: 1px solid #808080; 
-	border: 1px solid #808080; }
-
-.myopac_link_active { background: #E0F0E0; font-weight: 700;}
+.myopac_link { width: 12%; margin: 3px; padding: 3px; text-align: center; vertical-align: middle;  }
+.myopac_link_active { font-weight: 700;}
 .myopac_table thead tr td { padding: 2px; font-weight: 500; border: 1px solid #808080;}
 .myopac_table td { padding: 3px; }
 .myopac_form_pic { width: 20px; height: 20px; }
@@ -204,11 +171,9 @@ table { border-collapse: collapse; }
 	padding: 6px;
 	border: 2px solid #E0E0E0;
 	font-weight: 600;
-	/*background: #F0F0F0;*/
 }
 
 .rdetail_extras_td { padding-right: 15px; padding-left: 15px; border-right: 1px solid #888; }
-.rdetail_extras_selected { background: #E0F0E0;} 
 .rdetails_extra_links { border: 1px solid #808080; padding-right: 5px; padding-left: 5px; }
 
 

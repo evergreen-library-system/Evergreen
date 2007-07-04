@@ -141,7 +141,7 @@
    <table style='width: 100%; margin-top: 12px;' id='result_info_2' class='hide_me'>
       <tbody>
                
-	      <tr style='height: 1em; background: #E0F6E0'>
+	      <tr class='color_4' style='height: 1em;'>
                      
 	         <td style='vertical-align: top;'  id='next_prev_links2'>
                         
