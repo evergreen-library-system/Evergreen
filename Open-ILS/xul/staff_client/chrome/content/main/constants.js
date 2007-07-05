@@ -48,6 +48,7 @@ const api = {
 	'FM_ACP_RETRIEVE_VIA_BARCODE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed2.find_by_barcode', 'secure' : false },
 	'FM_ACP_FLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve', 'secure' : false },
 	'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
+	'FM_ACP_COUNT' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.copy_count.staff', 'secure' : false },
 	'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all', 'secure' : false },
 	'FM_ACPL_RETRIEVE_VIA_ID' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve', 'secure' : false },
 	'FM_ACPN_RETRIEVE_ALL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_note.retrieve.all', 'secure' : false },
