@@ -919,6 +919,16 @@ cat.copy_browser.prototype = {
 
 			obj.show_my_libs( ml.value );
 
+			obj.show_consortial_count();
+
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
+		}
+	},
+
+	'show_consortial_count' : function() {
+		var obj = this;
+		try {
 			obj.network.simple_request('FM_ACP_COUNT',[ obj.data.tree.aou.id(), obj.docid ],function(req){ 
 				try {
 					var robj = req.getResultObject();
@@ -930,9 +940,8 @@ cat.copy_browser.prototype = {
 					obj.error.standard_unexpected_error_alert('Error retrieving consortial copy count.',E);
 				}
 			});
-
 		} catch(E) {
-			this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
+			this.error.standard_unexpected_error_alert('cat.copy_browser.show_consortial_count: ',E);
 		}
 	},
 
@@ -1633,6 +1642,8 @@ cat.copy_browser.prototype = {
 			obj.show_libs( org );
 			*/
 			obj.show_my_libs( document.getElementById('lib_menu').value );
+			// FIXME - we get a null from the copy_count call if we call it too quickly here
+			setTimeout( function() { obj.show_consortial_count(); }, 2000 );
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Problem refreshing the volume/copy tree.',E);
 		}
