@@ -948,7 +948,7 @@ jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 char* jsonNumberToDBString ( osrfHash* field, jsonObject* value ) {
 	growing_buffer* val_buf = buffer_init(32);
 
-	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", 3) ) {
+	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
 		else buffer_fadd( val_buf, "%ld", atol(jsonObjectToSimpleString(value)) );
 
