@@ -126,6 +126,9 @@
 		<hbox><label id="legend" style="font-size: large" class="has_copies" value="Green in the list below means the library has volumes for this record." hidden="true"/></hbox>
 		<hbox>
 			<hbox id="x_lib_menu"/>
+			<spacer flex="1"/>
+			<label value="Consortial Total:"/><label id="consortial_total"/>
+			<label value="Available:"/><label id="consortial_available"/>
 		</hbox>
 		<hbox>
 			<checkbox id="show_acns" label="Show Volumes" />

@@ -919,6 +919,18 @@ cat.copy_browser.prototype = {
 
 			obj.show_my_libs( ml.value );
 
+			obj.network.simple_request('FM_ACP_COUNT',[ obj.data.tree.aou.id(), obj.docid ],function(req){ 
+				try {
+					var robj = req.getResultObject();
+					var x = document.getElementById('consortial_total');
+					if (x) x.setAttribute('value',robj[0].count);
+					x = document.getElementById('consortial_available');
+					if (x) x.setAttribute('value',robj[0].available);
+				} catch(E) {
+					obj.error.standard_unexpected_error_alert('Error retrieving consortial copy count.',E);
+				}
+			});
+
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
 		}
