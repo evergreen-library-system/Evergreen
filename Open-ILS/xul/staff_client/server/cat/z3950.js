@@ -619,6 +619,20 @@ cat.z3950.prototype = {
 										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
 										var title = 'Import Collision';
 										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : 'Overlay with alternate TCN ' + r.payload.new_tcn;
+										if (btn1) {
+											var robj = obj.network.simple_request(
+												'PERM_CHECK',[
+													ses(),
+													data.list.au[0].id(),
+													data.list.au[0].ws_ou(),
+													[ 'ALLOW_ALT_TCN' ]
+												]
+											);
+											if (typeof robj.ilsevent != 'undefined') {
+												obj.error.standard_unexpected_error_alert('check permission',E);
+											}
+											if (robj.length != 0) btn1 = null;
+										}
 										var btn2 = 'Cancel Import';
 										var p = obj.error.yns_alert(msg,title,btn1,btn2,null,'Check here to confirm this action');
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
