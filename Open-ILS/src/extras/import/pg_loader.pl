@@ -80,8 +80,12 @@ $output = FileHandle->new(">$output") if ($output);
 binmode($output,'utf8');
 
 $output->print("SET CLIENT_ENCODING TO 'UNICODE';\n\n");
+$output->print("BEGIN;\n\n");
 
 for my $h (@order) {
+	# continue if there was no data for this table
+	next unless ($fieldcache{$h});
+
 	my $fields = join(',', @{ $fieldcache{$h}{fields} });
 	$output->print( "DELETE FROM $fieldcache{$h}{table};\n" ) if (grep {$_ eq $h } @wipe);
 	$output->print( "COPY $fieldcache{$h}{table} ($fields) FROM STDIN;\n" );
@@ -113,3 +117,6 @@ for my $h (@order) {
 	$output->print("SELECT setval('$fieldcache{$h}{sequence}'::TEXT, (SELECT MAX($fieldcache{$h}{pkey}) FROM $fieldcache{$h}{table}), TRUE);\n\n")
 		if (!grep { $_ eq $h} @auto);
 }
+
+$output->print("COMMIT;\n\n");
+$output->close; 
