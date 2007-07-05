@@ -488,32 +488,32 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label= "Call Numbers" name="call_numbers" oils_obj:array_position="3" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Fixed Field Entry" name="fixed_fields" oils_obj:array_position="4" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Is Active?" name="active" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label= "Record Creation Date/Time" name="create_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label= "Record Creator" name="creator" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label= "Is Deleted?" name="deleted" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
-			<field reporter:label= "Last Edit Data/Time" name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
-			<field reporter:label= "Last Editing User" name="editor" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label= "Fingerprint" name="fingerprint" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label= "Record ID" name="id" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label= "Last Transaction ID" name="last_xact_id" oils_obj:array_position="13" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label= "MARC21Slim" name="marc" oils_obj:array_position="14" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label= "Overall Quality" name="quality" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="int" />
-			<field reporter:label= "Reocrd Source" name="source" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label= "TCN Source" name="tcn_source" oils_obj:array_position="17" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label= "TCN Value" name="tcn_value" oils_obj:array_position="18" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label= "Metarecord" name="metarecord" oils_obj:array_position="19" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Language Code" name="language" oils_obj:array_position="20" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Non-MARC Record Notes" name="notes" oils_obj:array_position="21" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Indexed Keyword Field Entries" name="keyword_field_entries" oils_obj:array_position="22" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Indexed Subject Field Entries" name="subject_field_entries" oils_obj:array_position="23" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Indexed Title Field Entries" name="title_field_entries" oils_obj:array_position="24" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Indexed Author Field Entries" name="author_field_entries" oils_obj:array_position="25" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Indexed Series Field Entries" name="series_field_entries" oils_obj:array_position="26" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Flattened MARC Fields " name="full_record_entries" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label= "Simple Record Extracts " name="simple_record" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Call Numbers" name="call_numbers" oils_obj:array_position="3" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Fixed Field Entry" name="fixed_fields" oils_obj:array_position="4" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Is Active?" name="active" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Record Creator" name="creator" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Is Deleted?" name="deleted" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Last Edit Data/Time" name="edit_date" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Editing User" name="editor" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Fingerprint" name="fingerprint" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Record ID" name="id" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Last Transaction ID" name="last_xact_id" oils_obj:array_position="13" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="MARC21Slim" name="marc" oils_obj:array_position="14" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Overall Quality" name="quality" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="int" />
+			<field reporter:label="Record Source" name="source" oils_obj:array_position="16" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="TCN Source" name="tcn_source" oils_obj:array_position="17" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="TCN Value" name="tcn_value" oils_obj:array_position="18" oils_persist:virtual="false"  reporter:datatype="text"/>
+			<field reporter:label="Metarecord" name="metarecord" oils_obj:array_position="19" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Language Code" name="language" oils_obj:array_position="20" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Non-MARC Record Notes" name="notes" oils_obj:array_position="21" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Keyword Field Entries" name="keyword_field_entries" oils_obj:array_position="22" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Subject Field Entries" name="subject_field_entries" oils_obj:array_position="23" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Title Field Entries" name="title_field_entries" oils_obj:array_position="24" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Author Field Entries" name="author_field_entries" oils_obj:array_position="25" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Indexed Series Field Entries" name="series_field_entries" oils_obj:array_position="26" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Flattened MARC Fields " name="full_record_entries" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Simple Record Extracts " name="simple_record" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
