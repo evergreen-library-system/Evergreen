@@ -44,13 +44,13 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 		if (!strcmp( (char*)kid->name, "class" )) {
 
 			usrData = osrfNewHash();
-			osrfHashSet( usrData, xmlGetProp(kid, "id"), "classname");
-			osrfHashSet( usrData, xmlGetNsProp(kid, "fieldmapper", OBJECT_NS), "fieldmapper");
+			osrfHashSet( usrData, xmlGetProp(kid, BAD_CAST "id"), "classname");
+			osrfHashSet( usrData, xmlGetNsProp(kid, BAD_CAST "fieldmapper", BAD_CAST OBJECT_NS), "fieldmapper");
 
 			osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
 
 			string_tmp = NULL;
-			if ((string_tmp = (char*)xmlGetNsProp(kid, "tablename", PERSIST_NS))) {
+			if ((string_tmp = (char*)xmlGetNsProp(kid, BAD_CAST "tablename", BAD_CAST PERSIST_NS))) {
 				osrfHashSet(
 					usrData,
 					strdup( string_tmp ),
@@ -59,7 +59,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 			}
 
 			string_tmp = NULL;
-			if ((string_tmp = (char*)xmlGetNsProp(kid, "virtual", PERSIST_NS))) {
+			if ((string_tmp = (char*)xmlGetNsProp(kid, BAD_CAST "virtual", BAD_CAST PERSIST_NS))) {
 				osrfHashSet(
 					usrData,
 					strdup( string_tmp ),
@@ -69,7 +69,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 
 			osrfStringArray* controller = osrfNewStringArray(0);
 			string_tmp = NULL;
-			if( (string_tmp = (char*)xmlGetProp(kid, "controller") )) {
+			if( (string_tmp = (char*)xmlGetProp(kid, BAD_CAST "controller") )) {
 				char* controller_list = strdup( string_tmp );
 				osrfLogInfo(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
 
@@ -100,7 +100,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 				if (!strcmp( (char*)_cur->name, "fields" )) {
 
 					string_tmp = NULL;
-					if( (string_tmp = (char*)xmlGetNsProp(_cur, "primary", PERSIST_NS)) ) {
+					if( (string_tmp = (char*)xmlGetNsProp(_cur, BAD_CAST "primary", BAD_CAST PERSIST_NS)) ) {
 						osrfHashSet(
 							usrData,
 							strdup( string_tmp ),
@@ -109,7 +109,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 					}
 
 					string_tmp = NULL;
-					if( (string_tmp = (char*)xmlGetNsProp(_cur, "sequence", PERSIST_NS)) ) {
+					if( (string_tmp = (char*)xmlGetNsProp(_cur, BAD_CAST "sequence", BAD_CAST PERSIST_NS)) ) {
 						osrfHashSet(
 							usrData,
 							strdup( string_tmp ),
@@ -128,7 +128,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						_tmp = osrfNewHash();
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "array_position", OBJECT_NS)) ) {
+						if( (string_tmp = (char*)xmlGetNsProp(_f, BAD_CAST "array_position", BAD_CAST OBJECT_NS)) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -137,7 +137,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						}
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "virtual", PERSIST_NS)) ) {
+						if( (string_tmp = (char*)xmlGetNsProp(_f, BAD_CAST "virtual", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -146,7 +146,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						}
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetNsProp(_f, "primitive", PERSIST_NS)) ) {
+						if( (string_tmp = (char*)xmlGetNsProp(_f, BAD_CAST "primitive", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -155,7 +155,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						}
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_f, "name")) ) {
+						if( (string_tmp = (char*)xmlGetProp(_f, BAD_CAST "name")) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -186,7 +186,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						_tmp = osrfNewHash();
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, "reltype")) ) {
+						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "reltype")) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -196,7 +196,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, "key")) ) {
+						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "key")) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -206,7 +206,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, "class")) ) {
+						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "class")) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),
@@ -218,7 +218,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						osrfStringArray* map = osrfNewStringArray(0);
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, "map") )) {
+						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "map") )) {
 							char* map_list = strdup( string_tmp );
 							osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
 
@@ -235,7 +235,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						osrfHashSet( _tmp, map, "map");
 
 						string_tmp = NULL;
-						if( (string_tmp = (char*)xmlGetProp(_l, "field")) ) {
+						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "field")) ) {
 							osrfHashSet(
 								_tmp,
 								strdup( string_tmp ),

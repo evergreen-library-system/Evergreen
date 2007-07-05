@@ -122,7 +122,7 @@ void _oilsEventParseEvents() {
 					xmlChar* code = xmlGetProp( child, BAD_CAST "code");
 					xmlChar* textcode = xmlGetProp( child, BAD_CAST "textcode");
 					if( code && textcode ) {
-						osrfHashSet( __oilsEventEvents, code, textcode );
+						osrfHashSet( __oilsEventEvents, code, (char*) textcode );
 						success = 1;
 					}
 
@@ -136,15 +136,15 @@ void _oilsEventParseEvents() {
 							if(lang) {
 								osrfLogDebug(OSRF_LOG_MARK, "Loaded event lang: %s", (char*) lang);
 								osrfHash* langHash = osrfHashGet(
-									__oilsEventDescriptions, lang);
+									__oilsEventDescriptions, (char*) lang);
 								if(!langHash) {
 									langHash = osrfNewHash();
-									osrfHashSet(__oilsEventDescriptions, langHash, lang);
+									osrfHashSet(__oilsEventDescriptions, langHash, (char*) lang);
 								}
 								char* content;
-								if( desc->children && (content = desc->children->content) ) {
-									osrfLogDebug(OSRF_LOG_MARK, "Loaded event desc: %s", (char*) content);
-									osrfHashSet( langHash, content, code );
+								if( desc->children && (content = (char*) desc->children->content) ) {
+									osrfLogDebug(OSRF_LOG_MARK, "Loaded event desc: %s", content);
+									osrfHashSet( langHash, content, (char*) code );
 								}
 							}
 						}
