@@ -127,7 +127,7 @@ patron.summary.prototype = {
 						function(e) {
 							return function() { 
 								e.setAttribute('value','...');
-								obj.network.cached_request(
+								obj.network.simple_request(
 									'FM_MOUS_RETRIEVE',
 									[ ses(), obj.patron.id() ],
 									function(req) {
@@ -171,7 +171,7 @@ patron.summary.prototype = {
 								var e4 = document.getElementById( 'patron_long_overdue' ); if (e4) e4.setAttribute('value','...');
 								var e5 = document.getElementById( 'patron_lost' ); if (e5) e5.setAttribute('value','...');
 								var e6 = document.getElementById( 'patron_noncat' ); if (e6) e6.setAttribute('value','...');
-								obj.network.cached_request(
+								obj.network.simple_request(
 									'FM_CIRC_COUNT_RETRIEVE_VIA_USER',
 									[ ses(), obj.patron.id() ],
 									function(req) {

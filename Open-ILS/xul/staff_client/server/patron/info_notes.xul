@@ -71,7 +71,7 @@
 				g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
 				g.new_note = false;
 			} else {
-				g.notes = g.network.cached_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
+				g.notes = g.network.simple_request('FM_AUN_RETRIEVE_ALL',[ ses(), { 'patronid' : g.patron_id } ]).reverse();
 			}
 		}
 

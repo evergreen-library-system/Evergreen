@@ -589,7 +589,6 @@ patron.display.prototype = {
 	
 	'refresh_all' : function() {
 		var obj = this;
-		obj.OpenILS.data.cached_request = {}; obj.OpenILS.data.stash('cached_request'); /* FIXME - do a more selective purging here */
 		obj.controller.view.patron_name.setAttribute(
 			'value','Retrieving...'
 		);

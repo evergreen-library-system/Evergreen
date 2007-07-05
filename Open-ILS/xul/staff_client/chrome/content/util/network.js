@@ -16,15 +16,13 @@ util.network.prototype = {
 	'NETWORK_FAILURE' : null,
 
 	'simple_request' : function(method_id,params,f,override_params) {
+		//var obj = this;
+		//var sparams = js2JSON(params);
+		//obj.error.sdump('D_SES','simple_request '+ method_id +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+		//	'\noverride_params = ' + override_params + '\n');
 		if (typeof api[method_id] == 'undefined') throw( 'Method not found for ' + method_id );
 		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
 		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'method_id' : method_id });
-	},
-
-	'cached_request' : function(method_id,params,f,override_params) {
-		if (typeof api[method_id] == 'undefined') throw( 'Method not found for ' + method_id );
-		var secure = true; if (typeof api[method_id].secure != 'undefined') secure = api[method_id].secure;
-		return this.request(api[method_id].app,api[method_id].method,params,f,override_params,{ 'secure' : secure, 'want_cached' : true, 'method_id' : method_id });
 	},
 
 	'get_result' : function (req) {
@@ -47,69 +45,23 @@ util.network.prototype = {
 		return result;
 	},
 
-	'is_cacheable' : function(method_id) {
-		return (api[method_id].cacheable);
-	},
-
 	'request' : function (app,name,params,f,override_params,_params) {
 
 		var obj = this;
+		
+		//var sparams = js2JSON(params);
+		//obj.error.sdump('D_SES','request '+ app + ' ' + name +' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+		//	'\noverride_params = ' + override_params + '\n_params = ' + _params + '\n');
 
 		try { 
 
-		if (_params && _params.want_cached) if ( this.is_cacheable(_params.method_id) ) {
-			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-			var key = (app + '+' + name + '+' + js2JSON(params)).replace(/\./g,'_');
-			var x = data.cached_request[key];
-			if (x) {
-				obj.error.sdump('D_CACHE','Cached request found for key = \n' + key + '\n' + js2JSON(x) + '\n');		
-				switch(x.status) {
-					case 'pending' :
-						if ( Number(new Date()) - Number(x.status_time) > 60000 ) break; // if pending request is taking too long
-						if (f) { // Setup a self-destroying observer on the pending request to handle this request
-							obj.error.sdump('D_CACHE','Cached request pending, adding watch to handle current asynchronous request. key = \n' + key + '\n');
-							var id = data.observers.add('cached_request.'+key+'.status',function(p,o,n) {
-									obj.error.sdump('D_OBSERVERS','Entering watch function for key = \n' + key + '\np = ' + p + '\no = ' + js2JSON(o) + '\nn = ' + js2JSON(n) + '\nx = ' + js2JSON(x) + '\n');
-									if (n == 'complete') {
-										obj.error.sdump('D_CACHE','Cached request completed for key = \n' + key + '\nNow calling a previous async request watching this one.\n');
-										f( { 'getResultObject' : function() { return JSON2js( js2JSON( x.request ) ); } } );
-										setTimeout( function() { try { data.observers.remove(id); } catch(E) { alert(E); } }, 0 );
-									}
-									return n;
-								}
-							);
-							return null;
-						} else {
-							obj.error.sdump('D_CACHE','Pending request and synchronous request collision with key = \n' + key + '\nFalling through...\n');
-						}
-					break;
-					case 'complete' :
-						if ( Number( new Date() ) < x.expire_time ) {
-							if (f) {
-								obj.error.sdump('D_CACHE','Cached request found completed, handling asynchronous request now. key = \n' + key + '\n');
-								f( { 'getResultObject' : function() { return JSON2js( js2JSON( x.request ) ); } } );
-								return null;
-							} else {
-								obj.error.sdump('D_CACHE','Cached request found completed, key = \n' + key + '\nreturning value =\n' + x.request + '\n');
-								return JSON2js( js2JSON( x.request ) ); // FIXME -- cloning the object is a workaround, otherwise instanceOf somehow silently fails
-							}
-						} else {
-							obj.error.sdump('D_CACHE','Cached request found completed, however, it has expired. key = \n' + key + '\nFalling through...\n');
-						}
-					break;
-				}
+			var request =  this._request(app,name,params,f,override_params,_params);
+			if (request) {
+				return this.get_result(request);
 			} else {
-				obj.error.sdump('D_CACHE','Cached request not found for key = \n' + key + '\n');		
+				return null;
 			}
-		}
-
-		var request =  this._request(app,name,params,f,override_params,_params);
-		if (request) {
-			return this.get_result(request);
-		} else {
-			return null;
-		}
-
+	
 		} catch(E) {
 			alert(E); 
 		}
@@ -119,19 +71,9 @@ util.network.prototype = {
 		var obj = this;
 		try {
 			var sparams = js2JSON(params);
-			obj.error.sdump('D_SES','request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
+			obj.error.sdump('D_SES','_request '+app+' '+name+' '+obj.error.pretty_print(sparams.slice(1,sparams.length-1))+
 				'\noverride_params = ' + override_params + '\n_params = ' + _params +
 				'\nResult #' + (++obj.link_id) + ( f ? ' asynced' : ' synced' ) );
-
-			var key; var x; var data;
-			if (_params && obj.is_cacheable(_params.method_id)) {
-				JSAN.use('OpenILS.data'); data = new OpenILS.data(); data.init({'via':'stash'});
-				key = (app + '+' + name + '+' + js2JSON(params)).replace(/\./g,'_');
-				data.cached_request[key] = { 'test' : 'test', 'status' : 'pending', 'status_time' : Number(new Date()) }; 
-				data.stash('cached_request');
-				x = data.cached_request[key];
-				obj.error.sdump('D_CACHE','Current request is cacheable, setting pending status for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
-			}
 
 			var request = new RemoteRequest( app, name );
 			if (_params && _params.secure) {
@@ -159,12 +101,6 @@ util.network.prototype = {
 								req = obj.rerequest_on_override(app,name,params,req,override_params,_params);
 							}
 							req = obj.check_for_offline(app,name,params,req,override_params,_params);
-							if (_params && obj.is_cacheable(_params.method_id)) {
-								x.request = obj.get_result(req);
-								x.status = 'complete'; x.status_time = Number(new Date()); x.expire_time = Number(x.status_time) + api[_params.method_id].ttl;
-								data.stash('cached_request');
-								obj.error.sdump('D_CACHE','Previously pending cached request is now complete for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
-							}
 							f(req);
 							obj.NETWORK_FAILURE = null;
 						} catch(E) {
@@ -201,12 +137,6 @@ util.network.prototype = {
 				}
 				request = obj.check_for_offline(app,name,params,request,override_params,_params);
 				obj.NETWORK_FAILURE = null;
-				if (_params && obj.is_cacheable(_params.method_id)) {
-					x.request = result;
-					x.status = 'complete'; x.status_time = Number(new Date()); x.expire_time = Number(x.status_time) + api[_params.method_id].ttl;
-					data.stash('cached_request');
-					obj.error.sdump('D_CACHE','Previously pending cached request is now complete for key = \n' + key + '\nUpdating cache with ' + js2JSON(x) + '\n');
-				}
 				return request;
 			}
 

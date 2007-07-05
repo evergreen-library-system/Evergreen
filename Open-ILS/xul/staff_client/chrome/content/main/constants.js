@@ -70,7 +70,7 @@ const api = {
 	'FM_AHR_ID_LIST_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.id_list.retrieve', 'secure' : false },
 	'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
 	'FM_AHR_ID_LIST_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve', 'secure' : false },
-	'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count' },
+	'FM_AHR_COUNT_RETRIEVE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.hold_requests.count', 'cacheable' : true, 'ttl' : 60000  },
 	'FM_AHR_CANCEL' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.cancel' },
 	'FM_AHR_UPDATE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.update' },
 	'FM_AHR_RESET' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold.reset' },

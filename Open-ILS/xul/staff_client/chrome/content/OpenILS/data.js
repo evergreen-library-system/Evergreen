@@ -14,7 +14,6 @@ OpenILS.data.prototype = {
 	'list' : {},
 	'hash' : {},
 	'tree' : {},
-	'cached_request' : {},
 
 	'temp' : '',
 
@@ -448,13 +447,6 @@ OpenILS.data.prototype = {
 					obj.error.sdump_levels.D_SES_RESULT = level;
 					convert();
 					obj.data_progress('Retrieved list for ' + classname + ' objects. ');
-					// if cacheable, store an offline copy
-					/* FIXME -- we're going to revisit caching and do it differently
-					if (cacheable) {
-						var file = new util.file( classname );
-						file.set_object( obj.list[classname] );
-					}
-					*/
 
 				} catch(E) {
 					// if cacheable, try offline
