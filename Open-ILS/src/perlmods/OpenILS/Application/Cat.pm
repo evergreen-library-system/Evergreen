@@ -208,11 +208,7 @@ sub biblio_record_replace_marc  {
 	# If we're not updating the TCN, all we care about it the marcdoc
 	my $override = $self->api_name =~ /override/;
 
-
 	my $storage = OpenSRF::AppSession->create('open-ils.storage');
-
-   # XXX should .update even bother with the tcn_info if it's not going to replace it?
-   # there is the potential for returning a TCN_EXISTS event, even though no replacement happens
 
 	my( $tcn, $tsource, $marcdoc, $evt);
 
