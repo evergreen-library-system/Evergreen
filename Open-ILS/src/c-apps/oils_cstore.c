@@ -774,10 +774,10 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			
 		} else if ( !strcmp(osrfHashGet(field, "primitive"), "number") ) {
 			if ( !strcmp(osrfHashGet(field, "datatype"), "INT8") ) {
-				buffer_fadd( val_buf, "%lld", atol(value) );
+				buffer_fadd( val_buf, "%lld", atoll(value) );
 				
 			} else if ( !strcmp(osrfHashGet(field, "datatype"), "INT") ) {
-				buffer_fadd( val_buf, "%ld", atoll(value) );
+				buffer_fadd( val_buf, "%d", atoi(value) );
 				
 			} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
 				buffer_fadd( val_buf, "%f", atof(value) );
