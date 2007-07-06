@@ -1042,7 +1042,7 @@ sub get_org_tree {
 		[
 			{"parent_ou" => undef },
 			{
-				flesh				=> 1000, 
+				flesh				=> -1,
 				flesh_fields	=> { aou =>  ['children'] },
 				order_by			=> { aou => 'name'}
 			}
@@ -2308,7 +2308,7 @@ sub retrieve_groups_tree {
 		[
 			{ parent => undef},
 			{	
-				flesh				=> 1000, 
+				flesh				=> -1,
 				flesh_fields	=> { pgt => ["children"] }, 
 				order_by			=> { pgt => 'name'}
 			}
@@ -2802,7 +2802,7 @@ sub slim_tree {
 		[
 			{"parent_ou" => undef },
 			{
-				flesh				=> 1000,
+				flesh				=> -1,
 				flesh_fields	=> { aou =>  ['children'] },
 				order_by			=> { aou => 'name'},
 				select			=> { aou => ["id","shortname", "name"]},
