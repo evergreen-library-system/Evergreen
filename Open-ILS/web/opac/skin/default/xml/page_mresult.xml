@@ -1,9 +1,9 @@
 <div>
-	<script language='javascript' src='../js/sidebar_extras.js'> </script>
-	<script language='javascript' src='../js/mresult.js'> </script>
-	<script language='javascript' src='../js/result_common.js'> </script>
-	<script language='javascript' src='../js/tips.js'> </script>
-	<script language='javascript' src='../js/holds.js'> </script>   
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar_extras.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/mresult.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/result_common.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/tips.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>   
 	<!--#include virtual="result/result_common.xml"-->
 </div>
 

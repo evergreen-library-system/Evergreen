@@ -30,12 +30,29 @@
 
 <!--#endif-->
 
+
 <!--#set var="OILS_BASE" value="http://${SERVER_NAME}/${OILS_OPAC_BASE}"-->
-<!--#set var="OILS_JS_BASE" value="${OILS_BASE}/common/js"-->
-<!--#set var="OILS_CSS_BASE" value="${OILS_BASE}/common/css"--> 
 <!--#set var="OILS_XML_BASE" value="${OILS_BASE}/common/xml"--> 
-<!--#set var="OILS_THEME_BASE" value="${OILS_BASE}/theme"--> 
-<!--#set var="OILS_SKIN_BASE" value="${OILS_BASE}/skin"--> 
+
+
+<!-- Javascript host -->
+<!--#if expr="$OILS_OPAC_JS_HOST"-->
+    <!--#set var="OILS_OPAC_JS_HOST" value="http://${OILS_OPAC_JS_HOST}"-->
+<!--#else -->
+    <!--#set var="OILS_OPAC_JS_HOST" value="$OILS_BASE"-->
+<!--#endif -->
+<!--#set var="OILS_JS_BASE" value="${OILS_OPAC_JS_HOST}/common/js"-->
+
+
+<!--#if expr="$OILS_OPAC_CSS_HOST"-->
+    <!--#set var="OILS_OPAC_CSS_HOST" value="http://${OILS_OPAC_CSS_HOST}"-->
+<!--#else -->
+    <!--#set var="OILS_OPAC_CSS_HOST" value="$OILS_BASE"-->
+<!--#endif -->
+<!--#set var="OILS_THEME_BASE" value="${OILS_OPAC_CSS_HOST}/theme"--> 
+<!--#set var="OILS_SKIN_BASE" value="${OILS_OPAC_CSS_HOST}/skin"--> 
+<!--#set var="OILS_CSS_BASE" value="${OILS_OPAC_CSS_HOST}/common/css"--> 
+
 
 <!--#if expr="!$locale || $locale=''"-->
 	<!--#set var="locale" value="en-US"-->

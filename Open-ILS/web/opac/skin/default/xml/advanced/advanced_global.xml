@@ -6,7 +6,7 @@
 		.adv_adv_link { font-size: 8pt; color: red; }
 	</style>
 
-	<script src='../js/adv_global.js'> </script>
+	<script src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
 
 	<tr style='border-bottom: none;'>
 

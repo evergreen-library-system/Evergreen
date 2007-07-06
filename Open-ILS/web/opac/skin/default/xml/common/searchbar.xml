@@ -54,7 +54,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<script language='javascript' src='../js/search_bar.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js'> </script>
 </div>
 
 

@@ -1,12 +1,12 @@
 <div id='canvas_main' class='canvas'>
 
-	<script language='javascript' src='../js/sidebar_extras.js'> </script>
-	<script language='javascript' src='../js/result_common.js'> </script>
-	<script language='javascript' src='../js/rresult.js'> </script>
-	<script language='javascript' src='../js/rdetail.js'> </script>
-	<script language='javascript' src='../js/holds.js'> </script>
-	<script language='javascript' src='../js/cn_browse.js'> </script>
-	<script language='javascript' src='../js/container.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar_extras.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/result_common.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/rresult.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/rdetail.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/cn_browse.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'> </script>
 
 	<script language='javascript'>
 		config.ids.rdetail = {};

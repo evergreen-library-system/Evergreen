@@ -1,7 +1,7 @@
 
 <div id='myopac_bookbag_div' class='hide_me' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript' src='../js/container.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'> </script>
 
 	<div id='myopac_delete_bookbag_warn' class='hide_me'>
 		&myopac.delete.bookbag;

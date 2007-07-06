@@ -1,6 +1,6 @@
 <table class='hide_me'>
-	<script language='javascript' src='../js/copy_details.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Date.W3CDTF.js'>  </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/copy_details.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/Date.W3CDTF.js'>  </script>
 	<tbody>
 		<tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row' templateRow='1'>
 			<td colspan='10'>
