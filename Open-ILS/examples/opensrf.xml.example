@@ -519,7 +519,7 @@ Example opensrf config file for OpenILS
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <IDL>/openils/conf/fm_IDL.xml</IDL> <!-- deprecated with 1.1.0-->
+                    <max_query_recursion>100</max_query_recursion>
                     <driver>pgsql</driver>
                     <database>
                         <type>master</type>
@@ -605,18 +605,17 @@ Example opensrf config file for OpenILS
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                <IDL>/openils/conf/fm_IDL.xml</IDL> <!-- deprecated with 1.1.0 -->
-                <driver>pgsql</driver>
-                <database>
-                    <type>master</type>
-                    <weight>2</weight>
-                    <user>postgres</user>
-                    <host>localhost</host>
-                    <port>5432</port>
-                    <pw>postgres</pw>
-                    <db>evergreen</db>
-                    <client_encoding>UTF-8</client_encoding>
-                </database>
+                    <driver>pgsql</driver>
+                    <database>
+                        <type>master</type>
+                        <weight>2</weight>
+                        <user>postgres</user>
+                        <host>localhost</host>
+                        <port>5432</port>
+                        <pw>postgres</pw>
+                        <db>evergreen</db>
+                        <client_encoding>UTF-8</client_encoding>
+                    </database>
                 </app_settings>
             </open-ils.reporter-store>
 

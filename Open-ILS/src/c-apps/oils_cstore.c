@@ -67,6 +67,7 @@ dbi_conn writehandle; /* our MASTER db connection */
 dbi_conn dbhandle; /* our CURRENT db connection */
 osrfHash readHandles;
 jsonObject* jsonNULL = NULL; // 
+static int max_flesh_depth = 100;
 
 /* called when this process is about to exit */
 void osrfAppChildExit() {
@@ -224,6 +225,7 @@ int osrfAppChildInit() {
 	char* port	= osrf_settings_host_value("/apps/%s/app_settings/database/port", MODULENAME);
 	char* db	= osrf_settings_host_value("/apps/%s/app_settings/database/db", MODULENAME);
 	char* pw	= osrf_settings_host_value("/apps/%s/app_settings/database/pw", MODULENAME);
+	char* md	= osrf_settings_host_value("/apps/%s/app_settings/max_query_recursion", MODULENAME);
 
 	osrfLogDebug(OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver);
 	writehandle = dbi_conn_new(driver);
@@ -242,6 +244,10 @@ int osrfAppChildInit() {
 	if(user) dbi_conn_set_option(writehandle, "username", user);
 	if(pw) dbi_conn_set_option(writehandle, "password", pw );
 	if(db) dbi_conn_set_option(writehandle, "dbname", db );
+
+	if(md) max_flesh_depth = atoi(md);
+	if(max_flesh_depth < 0) max_flesh_depth = 1;
+	if(max_flesh_depth > 1000) max_flesh_depth = 1000;
 
 	free(user);
 	free(host);
@@ -2335,6 +2341,7 @@ jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta, jsonOb
 		_tmp = jsonObjectGetKey( order_hash, "flesh" );
 		if (_tmp) {
 			int x = (int)jsonObjectGetNumber(_tmp);
+			if (x == -1 || x > max_flesh_depth) x = max_flesh_depth;
 
 			jsonObject* flesh_blob = NULL;
 			if ((flesh_blob = jsonObjectGetKey( order_hash, "flesh_fields" )) && x > 0) {
