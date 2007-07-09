@@ -455,29 +455,31 @@ patron.bills.prototype = {
 				var win = new util.window();
 				switch(obj.controller.view.payment_type.value) {
 					case 'credit_card_payment' :
-						//obj.OpenILS.data.temp = '';
-						//obj.OpenILS.data.stash('temp');
+						obj.OpenILS.data.temp = '';
+						obj.OpenILS.data.stash('temp');
 						var my_xulG = win.open(
 							urls.XUL_PATRON_BILL_CC_INFO,
 							'billccinfo',
 							'chrome,resizable,modal'
 						);
-						//obj.OpenILS.data.stash_retrieve();
-						payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						obj.OpenILS.data.stash_retrieve();
+						//payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						payment_blob = JSON2js( obj.OpenILS.data.temp );
 					break;
 					case 'check_payment' :
-						//obj.OpenILS.data.temp = '';
-						//obj.OpenILS.data.stash('temp');
+						obj.OpenILS.data.temp = '';
+						obj.OpenILS.data.stash('temp');
 						var my_xulG = win.open(
 							urls.XUL_PATRON_BILL_CHECK_INFO,
 							'billcheckinfo',
 							'chrome,resizable,modal'
 						);
-						//obj.OpenILS.data.stash_retrieve();
-						payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						obj.OpenILS.data.stash_retrieve();
+						//payment_blob = my_xulG.payment_blob; //JSON2js( obj.OpenILS.data.temp );
+						payment_blob = JSON2js( obj.OpenILS.data.temp );
 					break;
 				}
-				if (payment_blob=='' || payment_blob.cancelled=='true') { alert('cancelled'); return; }
+				if ((typeof payment_blob == 'undefined') || payment_blob=='' || payment_blob.cancelled=='true') { alert('cancelled'); return; }
 				payment_blob.userid = obj.patron_id;
 				payment_blob.note = payment_blob.note || '';
 				//payment_blob.cash_drawer = 1; // FIXME: get new Config() to work
@@ -543,6 +545,10 @@ patron.bills.prototype = {
 	'pay' : function(payment_blob) {
 		var obj = this;
 		try {
+            var x = document.getElementById('annotate_payment');
+            if (x && x.checked && (! payment_blob.note)) {
+                payment_blob.note = window.prompt('Please annotate this payment:','','Annotate Payment');
+            }
 			obj.previous_summary = {
 				original_balance : obj.controller.view.bill_total_owed.value,
 				voided_balance : obj.controller.view.voided_balance.value,
