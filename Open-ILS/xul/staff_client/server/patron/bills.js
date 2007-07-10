@@ -545,6 +545,10 @@ patron.bills.prototype = {
 	'pay' : function(payment_blob) {
 		var obj = this;
 		try {
+            var x = document.getElementById('annotate_payment');
+            if (x && x.checked && (! payment_blob.note)) {
+                payment_blob.note = window.prompt('Please annotate this payment:','','Annotate Payment');
+            }
 			obj.previous_summary = {
 				original_balance : obj.controller.view.bill_total_owed.value,
 				voided_balance : obj.controller.view.voided_balance.value,
