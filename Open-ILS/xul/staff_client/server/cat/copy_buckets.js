@@ -147,6 +147,12 @@ cat.copy_buckets.prototype = {
 											obj.bucket_id_name_map[ o.id() ] = o.name();
 											return [ o.name(), o.id() ];
 										}
+									).sort( 
+				                        function( a, b ) {
+				                            if (a[0] < b[0]) return -1;
+				                            if (a[0] > b[0]) return 1;
+				                            return 0;
+				                        }
 									)
 								);
 								obj.error.sdump('D_TRACE','items = ' + js2JSON(items));
