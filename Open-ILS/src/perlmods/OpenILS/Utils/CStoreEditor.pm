@@ -145,6 +145,12 @@ sub authtoken {
 	return $self->{authtoken};
 }
 
+sub timeout {
+    my($self, $to) = @_;
+    $self->{timeout} = $to if defined $to;
+    return defined($self->{timeout}) ? $self->{timeout} : 60;
+}
+
 # -----------------------------------------------------------------------------
 # fetches the session, creating if necessary.  If 'xact' is true on this
 # object, a db session is created
@@ -258,7 +264,7 @@ sub finish {
 sub request {
 	my( $self, $method, @params ) = @_;
 
-	my $val;
+    my $val;
 	my $err;
 	my $argstr = __arg_to_string( (scalar(@params)) == 1 ? $params[0] : \@params);
 
@@ -270,21 +276,24 @@ sub request {
 		#throw OpenSRF::EX::ERROR ("CStoreEditor lost it's connection - transaction cannot continue");
 	}
 
+
 	try {
 
-      my $req = $self->session->request($method, @params);
+        my $req = $self->session->request($method, @params);
 
-      if( $self->substream ) {
-         $self->log(D,"running in substream mode");
-         $val = [];
-         while( my $resp = $req->recv ) {
-            push(@$val, $resp->content) if $resp->content;
-         }
-      } else {
-         $val = $req->gather(1);
-      }
+        if($self->substream) {
+            $self->log(D,"running in substream mode");
+            $val = [];
+            while( my $resp = $req->recv(timeout => $self->timeout) ) {
+                push(@$val, $resp->content) if $resp->content;
+            }
 
-		#$val = $self->session->request($method, @params)->gather(1);
+        } else {
+            my $resp = $req->recv(timeout => $self->timeout);
+            $val = $resp->content;
+        }
+
+        $req->finish;
 
 	} catch Error with {
 		$err = shift;
@@ -494,6 +503,7 @@ sub runmethod {
 	$method =~ s/search/id_list/o if $options->{idlist};
 
     $method =~ s/\.atomic$//o if $self->substream($$options{substream} || 0);
+    $self->timeout($$options{timeout});
 
 	# remove any stale events
 	$self->clear_event;
