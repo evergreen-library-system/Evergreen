@@ -21,8 +21,10 @@ use DateTime;
 use Email::Send;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::JSON;
 use Unicode::Normalize;
 use OpenILS::Const qw/:const/;
+use OpenSRF::AppSession;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -95,7 +97,13 @@ sub print_notices {
 			},
 			{ order_by => { circ => 'usr, circ_lib' } }
 		];
-		my $circs = $e->search_action_circulation($query, {idlist=>1});
+		#my $circs = $e->search_action_circulation($query, {idlist=>1});
+
+        my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+        my $req = $ses->request('open-ils.cstore.direct.action.circulation.id_list', @$query);
+        my $circs = [];
+        my $resp;
+        push(@$circs, $resp->content) while ($resp = $req->recv(timeout=>600));
 
 		process_circs( $circs, "${day}day" );
 	}
@@ -445,7 +453,7 @@ sub send_email {
 	if( my $set = $e->search_actor_org_unit_setting( 
 			{ name => 'org.bounced_emails', org_unit => $org->id } )->[0] ) {
 
-		my $bemail = JSON->JSON2perl($set->value);
+		my $bemail = OpenSRF::Utils::JSON->JSON2perl($set->value);
 		$errors_to = $bemail if $bemail;
 	}
 
