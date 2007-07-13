@@ -54,7 +54,8 @@ build_dir:
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
 	@echo 
-	for i in `cd ../../../Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn`; do echo ../../../Evergreen/xul/staff_client/server/$i build/$i; done
+	# Is the following portable?
+	for i in `cd ../../../Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn|cut -f2- -d/`; do cp ../../../Evergreen/xul/staff_client/server/$$i build/server/$$i; done
 	external/prune_dirs.sh build/
 
 stamp: 
