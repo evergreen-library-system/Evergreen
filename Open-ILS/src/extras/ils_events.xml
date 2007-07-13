@@ -150,6 +150,9 @@
 		<desc xml:lang="en-US">The saved item has been edited by another user</desc>
 	</event>
 
+	<event code='1231' textcode='RECORD_NOT_EMPTY'>
+		<desc xml:lang="en-US">The selected bib record has volumes attached</desc>
+	</event>
 
 
 

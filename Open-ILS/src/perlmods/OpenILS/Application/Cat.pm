@@ -1054,6 +1054,25 @@ sub remove_empty_objects {
 	return undef;
 }
 
+
+__PACKAGE__->register_method (
+	method => 'delete_bib_record',
+	api_name => 'open-ils.cat.biblio.record_entry.delete');
+
+sub delete_bib_record {
+    my($self, $conn, $auth, $rec_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('DELETE_RECORD');
+    my $vols = $e->search_asset_call_number({record=>$rec_id, deleted=>'f'});
+    return OpenILS::Event->new('RECORD_NOT_EMPTY', payload=>$rec_id) if @$vols;
+    my $evt = delete_rec($e, $rec_id);
+    if($evt) { $e->rollback; return $evt; }   
+    $e->commit;
+    return 1;
+}
+
+
 # marks a record as deleted
 sub delete_rec {
    my( $editor, $rec_id ) = @_;
