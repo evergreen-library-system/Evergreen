@@ -6,10 +6,6 @@ INTERVAL_HELP_TEXT = _('examples: "1 hour", "14 days", "3 months", "DD:HH:MM:SS.
 CHAR_MAXLEN=200 # just provide a sane default
 
 
-#PG_SCHEMAS = "actor, permission, public, config"
-
-
-
 """ --------------------------------------------------------------
     Permission tables
     -------------------------------------------------------------- """
@@ -143,7 +139,7 @@ class OrgUnitSetting(models.Model):
 class OrgAddress(models.Model):
     valid = models.BooleanField()
     org_unit_id = models.ForeignKey('OrgUnit', db_column='org_unit')
-    address_type = models.CharField(blank=False, maxlength=CHAR_MAXLEN, default='MAILING')
+    address_type = models.CharField(blank=False, maxlength=CHAR_MAXLEN, default=_('MAILING'))
     street1 = models.CharField(blank=False, maxlength=CHAR_MAXLEN)
     street2 = models.CharField(maxlength=CHAR_MAXLEN)
     city = models.CharField(blank=False, maxlength=CHAR_MAXLEN)
@@ -278,10 +274,10 @@ class MetabibField(models.Model):
     name = models.CharField(maxlength=CHAR_MAXLEN, null=False, blank=False)
     xpath = models.TextField(null=False, blank=False)
     weight = models.IntegerField(null=False, blank=False)
-    format = models.ForeignKey('XmlTransform')
+    format_id = models.ForeignKey('XmlTransform', db_column='format')
     class Admin:
-        search_fields = ['name', 'format', 'field_class']
-        list_display = ('field_class', 'name', 'format')
+        search_fields = ['name', 'field_class', 'format_id']
+        list_display = ('field_class', 'name', 'format_id')
     class Meta:
         db_table = 'metabib_field'
         ordering = ['field_class', 'name']
@@ -416,6 +412,8 @@ class XmlTransform(models.Model):
         verbose_name = _('XML Transform')
     def __str__(self):
         return self.name
+
+
 
 
 
