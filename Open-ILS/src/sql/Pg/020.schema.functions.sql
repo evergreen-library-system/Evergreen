@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION public.non_filing_normalize ( TEXT, "char" ) RETURNS 
                         REGEXP_REPLACE(
                                 REGEXP_REPLACE(
                                         $1,
-                                        '\\W*$',
+                                        E'\W*$',
 					''
 				),
                                 '  ',
