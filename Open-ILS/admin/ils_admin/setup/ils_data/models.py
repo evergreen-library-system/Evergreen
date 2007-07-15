@@ -30,7 +30,7 @@ class GrpTree(models.Model):
 
 class PermList(models.Model):
     code = models.CharField(maxlength=100)
-    description = models.CharField(blank=True, maxlength=CHAR_MAXLEN)
+    description = models.TextField(blank=True)
     class Admin:
         list_display = ('code','description')
         search_fields = ['code']
