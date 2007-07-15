@@ -13,7 +13,7 @@ open FILE, ">$ARGV[1]";
 
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
 
-my $ses = OpenSRF::AppSession->create("open-ils.storage");
+my $ses = OpenSRF::AppSession->create("open-ils.actor");
 my $tree = $ses->request("open-ils.actor.org_tree.retrieve")->gather(1);
 
 print_option($tree);
