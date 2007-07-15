@@ -550,6 +550,81 @@ cat.record_buckets.prototype = {
 
 						}
 					],
+					
+					'cmd_delete_records' : [
+						['command'],
+						function() {
+							try {
+								obj.list2.select_all();
+								obj.data.stash_retrieve();
+								JSAN.use('util.functional');
+
+								var record_ids = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o).docid; // docid
+									}
+								);
+
+								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+								var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
+								top_xml += '<description>Delete these records? (Select the "lead" record first)</description>';
+								top_xml += '<hbox><button id="lead" disabled="true" label="Delete" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+
+								var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
+								xml += '<table><tr valign="top">';
+								for (var i = 0; i < record_ids.length; i++) {
+									xml += '<td>Record #' + record_ids[i] + '</td>';
+								}
+								xml += '</tr><tr valign="top">';
+								for (var i = 0; i < record_ids.length; i++) {
+									xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
+									xml += '?docid=' + record_ids[i] + '"/></td>';
+								}
+								xml += '</tr><tr valign="top">';
+								for (var i = 0; i < record_ids.length; i++) {
+									html = obj.network.simple_request('MARC_HTML_RETRIEVE',[ record_ids[i] ]);
+									xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="data:text/html,' + window.escape(html) + '"/></td>';
+								}
+								xml += '</tr></table></form>';
+								//obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
+								//obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
+								window.open(
+									urls.XUL_FANCY_PROMPT,
+									//+ '?xml_in_stash=temp_merge_mid'
+									//+ '&top_xml_in_stash=temp_merge_top'
+									//+ '&title=' + window.escape('Record Purging'),
+									'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
+									{
+										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Purging'
+									}
+								);
+								obj.data.stash_retrieve();
+								if (obj.data.fancy_prompt_data == '') { alert('Delete Aborted'); return; }
+								var s = '';
+								for (var i = 0; i < record_ids.length; i++) {
+									var robj = obj.network.simple_request('FM_BRE_DELETE',[ses(),record_ids[i]]);
+									if (typeof robj.ilsevent != 'undefined') {
+										if (!s) s = 'Error deleting these records:\n';
+										s += 'Record #' + record_ids[i] + ' : ' + robj.textcode + ' : ' + robj.desc + '\n';
+									}
+								}
+								if (s) { alert(s); } else { alert('Records deleted.'); }
+
+								obj.render_pending_records(); // FIXME -- need a generic refresh for lists
+								setTimeout(
+									function() {
+										JSAN.use('util.widgets'); 
+										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+									}, 0
+								);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Records were not likely deleted.',E);
+							}
+
+						}
+					],
+
 					'cmd_broken' : [
 						['command'],
 						function() { alert('Not Yet Implemented'); }

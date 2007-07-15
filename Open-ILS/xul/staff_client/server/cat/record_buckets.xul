@@ -93,6 +93,7 @@
 		<command id="cmd_record_buckets_reprint" />
 		<command id="cmd_record_buckets_done" />
 		<command id="cmd_merge_records" />
+		<command id="cmd_delete_records" />
 		<command id="cmd_sel_opac" />
 	</commandset>
 
