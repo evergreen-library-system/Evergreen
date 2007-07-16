@@ -195,7 +195,7 @@
 				//g.data.init({'via':'stash'});
 				//g.data.temp_notification_xml = xml; g.data.stash('temp_notification_xml');
 				JSAN.use('util.window'); var win = new util.window();
-				var fancy_prompt_data = window.open(
+				var fancy_prompt_data = win.open(
 					urls.XUL_FANCY_PROMPT,
 					//+ '?xml_in_stash=temp_notification_xml'
 					//+ '&focus=' + window.escape('method')

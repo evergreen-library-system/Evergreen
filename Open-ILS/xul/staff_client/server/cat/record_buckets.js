@@ -508,7 +508,8 @@ cat.record_buckets.prototype = {
 								xml += '</tr></table></form>';
 								//obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
 								//obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
-								window.open(
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
 									urls.XUL_FANCY_PROMPT,
 									//+ '?xml_in_stash=temp_merge_mid'
 									//+ '&top_xml_in_stash=temp_merge_top'
@@ -518,15 +519,15 @@ cat.record_buckets.prototype = {
 										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Merging'
 									}
 								);
-								obj.data.stash_retrieve();
-								if (obj.data.fancy_prompt_data == '') { alert('Merge Aborted'); return; }
+								//obj.data.stash_retrieve();
+								if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Merge Aborted'); return; }
 								var robj = obj.network.simple_request('MERGE_RECORDS', 
 									[ 
 										ses(), 
-										obj.data.fancy_prompt_data.lead, 
+										fancy_prompt_data.lead, 
 										util.functional.filter_list( record_ids,
 											function(o) {
-												return o != obj.data.fancy_prompt_data.lead;
+												return o != fancy_prompt_data.lead;
 											}
 										)
 									]
@@ -568,8 +569,8 @@ cat.record_buckets.prototype = {
 
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 								var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-								top_xml += '<description>Delete these records? (Select the "lead" record first)</description>';
-								top_xml += '<hbox><button id="lead" disabled="true" label="Delete" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
+								top_xml += '<description>Delete these records?</description>';
+								top_xml += '<hbox><button id="lead" disabled="false" label="Delete" name="fancy_submit"/><button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox></vbox>';
 
 								var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
 								xml += '<table><tr valign="top">';
@@ -589,7 +590,8 @@ cat.record_buckets.prototype = {
 								xml += '</tr></table></form>';
 								//obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
 								//obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
-								window.open(
+								JSAN.use('util.window'); var win = new util.window();
+								var fancy_prompt_data = win.open(
 									urls.XUL_FANCY_PROMPT,
 									//+ '?xml_in_stash=temp_merge_mid'
 									//+ '&top_xml_in_stash=temp_merge_top'
@@ -599,8 +601,8 @@ cat.record_buckets.prototype = {
 										'top_xml' : top_xml, 'xml' : xml, 'title' : 'Record Purging'
 									}
 								);
-								obj.data.stash_retrieve();
-								if (obj.data.fancy_prompt_data == '') { alert('Delete Aborted'); return; }
+								//obj.data.stash_retrieve();
+								if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Delete Aborted'); return; }
 								var s = '';
 								for (var i = 0; i < record_ids.length; i++) {
 									var robj = obj.network.simple_request('FM_BRE_DELETE',[ses(),record_ids[i]]);
