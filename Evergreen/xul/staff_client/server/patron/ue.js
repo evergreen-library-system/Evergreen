@@ -105,9 +105,29 @@ function uEditFetchNetLevels() {
 /* ------------------------------------------------------------------------------ */
 
 
+/*  
+ * adds all of the group.application_perm's to the list 
+ * provided by descending through the group tree 
+ */
+function buildAppPermList(list, group) {
+	if(!group) return;
+	if(group.application_perm() ) 
+        list.push(group.application_perm());
+    for(i in group.children()) {
+        buildAppPermList(list, group.children()[i]);
+    }
+}
 
-/* fetches necessary and builds the UI */
+/* fetches necessary objects and builds the UI */
 function uEditBuild() {
+
+    myPerms = ['BAR_PATRON'];
+
+    /*  grab the groups before we check perms so we know what
+        application_perms to check */
+    var groups = uEditFetchGroups();
+    buildAppPermList(myPerms, groups);
+
 	fetchHighestPermOrgs( SESSION, USER.id(), myPerms );
 
 	uEditBuildLibSelector();
@@ -119,7 +139,7 @@ function uEditBuild() {
 	
 	uEditDraw( 
 		uEditFetchIdentTypes(),
-		uEditFetchGroups(),
+        groups,
 		uEditFetchStatCats(),
 		uEditFetchSurveys(),
 		uEditFetchNetLevels()
