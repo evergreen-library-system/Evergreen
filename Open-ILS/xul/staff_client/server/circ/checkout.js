@@ -341,9 +341,106 @@ circ.checkout.prototype = {
 		}
 	},
 
+	'_checkout_pending_hash' : {},
+
 	'_checkout' : function(params) {
 		var obj = this;
 		try {
+		
+			/**********************************************************************************************************************/
+			/* This handles the return value of the checkout/renewal */
+			function _checkout_callback(req,x) {
+				try {
+
+					if (params.barcode) {
+						delete obj._checkout_pending_hash[ params.barcode ];	
+					}
+
+					var checkout = req.getResultObject();
+
+					if (checkout.ilsevent == 0) {
+		
+						if (!checkout.payload) checkout.payload = {};
+		
+						if (!checkout.payload.circ) {
+							checkout.payload.circ = new aoc();
+							/*********************************************************************************************/
+							/* Non Cat */
+							if (checkout.payload.noncat_circ) {
+								checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
+								checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
+								checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
+						
+								JSAN.use('util.date');
+								var c = checkout.payload.noncat_circ.circ_time();
+								var d = c == "now" ? new Date() : util.date.db_date2Date( c );
+								var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
+								var cd = t.circ_duration() || "14 days";
+								var i = util.date.interval_to_seconds( cd ) * 1000;
+								d.setTime( Date.parse(d) + i );
+								checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
+			
+							}
+						}
+	
+						if (!checkout.payload.record) {
+							checkout.payload.record = new mvr();
+							/*********************************************************************************************/
+							/* Non Cat */
+							if (checkout.payload.noncat_circ) {
+								checkout.payload.record.title(
+									obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ].name()
+								);
+							}
+						}
+			
+						if (!checkout.payload.copy) {
+							checkout.payload.copy = new acp();
+							checkout.payload.copy.barcode( '' );
+						}
+			
+						/*********************************************************************************************/
+						/* Override mvr title/author with dummy title/author for Pre cat */
+						if (checkout.payload.copy.dummy_title())  checkout.payload.record.title( checkout.payload.copy.dummy_title() );
+						if (checkout.payload.copy.dummy_author())  checkout.payload.record.author( checkout.payload.copy.dummy_author() );
+			
+						obj.list.append(
+							{
+								'row' : {
+									'my' : {
+									'circ' : checkout.payload.circ,
+									'mvr' : checkout.payload.record,
+									'acp' : checkout.payload.copy
+									}
+								},
+								'to_top' : true,
+							//I could override map_row_to_column here
+							}
+						);
+						document.getElementById('msg_area').removeChild(x);
+						/*
+						if (typeof obj.on_checkout == 'function') {
+							obj.on_checkout(checkout.payload);
+						}
+						*/
+						if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
+							window.xulG.on_list_change(checkout.payload);
+						} else {
+							obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
+						}
+		
+					} else {
+						throw(checkout);
+					}
+		
+				} catch(E) {
+					x.setAttribute('style','color: red');
+					x.setAttribute('value',params.barcode + ' failed.');
+					if (typeof params.noncat == 'undefined') obj.items_out_count--;
+					obj.error.standard_unexpected_error_alert('Check Out Failed #3',E);
+				}
+			}
+
 			/**********************************************************************************************************************/
 			/* This does the actual checkout/renewal */
 		
@@ -357,7 +454,7 @@ circ.checkout.prototype = {
 				api.CHECKOUT.method,
 				[ ses(), params, obj.items_out_count ],
 				function(req) {
-					obj._checkout_callback(req,x);
+					_checkout_callback(req,x);
 				}
 			);
 			
@@ -371,92 +468,6 @@ circ.checkout.prototype = {
 		}
 	},
 
-	'_checkout_callback' : function(req,x) {
-		var obj = this;
-		try {
-			var checkout = req.getResultObject();
-			if (checkout.ilsevent == 0) {
-
-			if (!checkout.payload) checkout.payload = {};
-
-			if (!checkout.payload.circ) {
-				checkout.payload.circ = new aoc();
-				/*********************************************************************************************/
-				/* Non Cat */
-				if (checkout.payload.noncat_circ) {
-					checkout.payload.circ.circ_lib( checkout.payload.noncat_circ.circ_lib() );
-					checkout.payload.circ.circ_staff( checkout.payload.noncat_circ.staff() );
-					checkout.payload.circ.usr( checkout.payload.noncat_circ.patron() );
-			
-					JSAN.use('util.date');
-					var c = checkout.payload.noncat_circ.circ_time();
-					var d = c == "now" ? new Date() : util.date.db_date2Date( c );
-					var t =obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ];
-					var cd = t.circ_duration() || "14 days";
-					var i = util.date.interval_to_seconds( cd ) * 1000;
-					d.setTime( Date.parse(d) + i );
-					checkout.payload.circ.due_date( util.date.formatted_date(d,'%F') );
-
-				}
-			}
-
-			if (!checkout.payload.record) {
-				checkout.payload.record = new mvr();
-				/*********************************************************************************************/
-				/* Non Cat */
-				if (checkout.payload.noncat_circ) {
-					checkout.payload.record.title(
-						obj.data.hash.cnct[ checkout.payload.noncat_circ.item_type() ].name()
-					);
-				}
-			}
-
-			if (!checkout.payload.copy) {
-				checkout.payload.copy = new acp();
-				checkout.payload.copy.barcode( '' );
-			}
-
-			/*********************************************************************************************/
-			/* Override mvr title/author with dummy title/author for Pre cat */
-			if (checkout.payload.copy.dummy_title())  checkout.payload.record.title( checkout.payload.copy.dummy_title() );
-			if (checkout.payload.copy.dummy_author())  checkout.payload.record.author( checkout.payload.copy.dummy_author() );
-
-			obj.list.append(
-				{
-					'row' : {
-						'my' : {
-						'circ' : checkout.payload.circ,
-						'mvr' : checkout.payload.record,
-						'acp' : checkout.payload.copy
-						}
-					},
-					'to_top' : true,
-				//I could override map_row_to_column here
-				}
-			);
-			document.getElementById('msg_area').removeChild(x);
-			/*
-			if (typeof obj.on_checkout == 'function') {
-				obj.on_checkout(checkout.payload);
-			}
-			*/
-			if (typeof window.xulG == 'object' && typeof window.xulG.on_list_change == 'function') {
-				window.xulG.on_list_change(checkout.payload);
-			} else {
-				obj.error.sdump('D_CIRC','circ.checkout: No external .on_checkout()\n');
-			}
-
-			} else {
-				throw(checkout);
-			}
-
-		} catch(E) {
-			x.setAttribute('style','color: red');
-			x.setAttribute('value',params.barcode + ' failed.');
-			if (typeof params.noncat == 'undefined') obj.items_out_count--;
-			obj.error.standard_unexpected_error_alert('Check Out Failed #3',E);
-		}
-	},
 
 	'test_barcode' : function(bc) {
 		var obj = this;
@@ -495,7 +506,19 @@ circ.checkout.prototype = {
 		if (! (params.barcode||params.noncat)) return;
 
 		if (params.barcode) {
+
 			if ( obj.test_barcode(params.barcode) ) { /* good */ } else { /* bad */ return; }
+
+			if (typeof obj._checkout_pending_hash[ params.barcode ] != 'undefined') {
+
+				obj.error.sdump('D_CIRC','Redundant barcode scan == ' + params.barcode);
+				return; // redundant barcode scan
+
+			} else {
+
+				obj._checkout_pending_hash[ params.barcode ] = true;	
+
+			}
 		}
 
 
@@ -688,7 +711,7 @@ circ.checkout.prototype = {
 							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
 							if (due_date) if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
 							if (! stop_checkout ) {
-								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
+								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Normal Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
 								JSAN.use('circ.util');
 								switch(r) {
 									case 1:
