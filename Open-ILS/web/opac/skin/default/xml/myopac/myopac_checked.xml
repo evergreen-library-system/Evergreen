@@ -11,28 +11,28 @@
                <!--
                Total items out: <b id='mo_items_out_count' style='padding-right: 20px;'>0</b>
                -->
-               Total items out: <b id='mo_items_out_count' style='padding: 5px;'>0</b> / 
-               Total items overdue: <b id='mo_items_overdue_count' style='padding: 5px;'>0</b>
+               &myopac.checked.out; <b id='mo_items_out_count' style='padding: 5px;'>0</b> / 
+               &myopac.checked.overdue; <b id='mo_items_overdue_count' style='padding: 5px;'>0</b>
          </td>
          <td align='right'>
-            <button onclick='myOPACRenewSelected();' id='mo_renew_button' disabled='disabled'>Renew Selected Items</button>
+            <button onclick='myOPACRenewSelected();' id='mo_renew_button' disabled='disabled'>&myopac.checked.renew;</button>
          </td>
       </tr>
-       <tr id='my_renewing' class='hide_me'><td align='center'><b>Renewing...</b></td></tr>
+       <tr id='my_renewing' class='hide_me'><td align='center'><b>&myopac.checked.renewing;</b></td></tr>
    </tbody></table>
 
 	<table width='100%' class='light_border data_grid'>
 
 		<thead class='color_3'>
 			<tr>
-				<td width='45%'>Title</td>
-				<td width='20%'>Author</td>
-				<td width='10%' nowrap='nowrap' align='center'>Due Date</td>
-				<td width='10%' nowrap='nowrap' align='center'>Renewals Remaining</td>
-            <td width='15%'>Select 
+				<td width='45%'>&common.title;</td>
+				<td width='20%'>&common.author;</td>
+				<td width='10%' nowrap='nowrap' align='center'>&myopac.fines.due;</td>
+				<td width='10%' nowrap='nowrap' align='center'>&myopac.checked.renew.remaining;</td>
+            <td width='15%'>&common.select;
                (<a id='myopac_select_all_checked' onclick='myopacSelectAllChecked();' 
-                  class='classic_link' href='javascript:void(0);'>All</a>/<a id='myopac_select_none_checked' 
-                  onclick='myopacSelectNoneChecked();' class='classic_link'   href='javascript:void(0);'>None</a>)
+                  class='classic_link' href='javascript:void(0);'>&common.all;</a>/<a id='myopac_select_none_checked' 
+                  onclick='myopacSelectNoneChecked();' class='classic_link'   href='javascript:void(0);'>&common.none;</a>)
             </td>
 			</tr>
 		</thead>
@@ -41,11 +41,11 @@
 		<tbody id='myopac_checked_tbody'>
 
 			<tr id='myopac_checked_none' class='hide_me'>
-				<td colspan='10' align='center'><b>You have no items checked out at this time</b></td>
+				<td colspan='10' align='center'><b>&myopac.checked.noitems;</b></td>
 			</tr>
 
 
-			<tr id='myopac_checked_loading'><td>Loading...</td></tr>
+			<tr id='myopac_checked_loading'><td>&common.loading;</td></tr>
 
 			<tr id='myopac_checked_row' class='light_border hide_me'>
 
@@ -75,13 +75,13 @@
 
 	<div id='non_cat_circs_div' class='hide_me'>
 		<br/>
-		<div style='text-align: center'><b>Other Circulations</b></div>
+		<div style='text-align: center'><b>&myopac.common.other.circ;</b></div>
 		<table class='data_grid' width='100%'>
 			<thead>
 				<tr>	
-					<td>Circulating Library</td>
-					<td>Circulation Type</td>
-					<td>Please return by ...</td>
+					<td>&myopac.checked.circ.lib;</td>
+					<td>&myopac.checked.item.type;</td>
+					<td>&myopac.checked.circ.time;</td>
 				</tr>
 			</thead>
 			<tbody id='non_cat_circs_tbody'>
@@ -94,17 +94,13 @@
 		</table>
 	</div>
 
-	<div id='myopac_renew_success' class='hide_me'>item(s) successfully renewed</div>
+	<div id='myopac_renew_success' class='hide_me'>&myopac.checked.renew.success;</div>
 
-	<span class='hide_me' id='myopac_renew_confirm'>Are you sure you wish to renew the selected item(s)?</span>
+	<span class='hide_me' id='myopac_renew_confirm'>&myopac.checked.renew.confirm;</span>
 
-	<span class='hide_me' id='myopac_renew_fail'>
-		The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.
-	</span>
+	<span class='hide_me' id='myopac_renew_fail'>&myopac.checked.renew.fail;</span>
 
-   <span class='hide_me' id='myopac_renew_fail2'>
-      PINES policy prevents the renewal of this item at this time.  Please see a librarian for further details.
-   </span>
+   <span class='hide_me' id='myopac_renew_fail2'>&myopac.checked.renew.fail2;</span>
 
 </div>
 

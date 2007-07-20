@@ -127,6 +127,26 @@ Pour voir le contenu public d'un sac de livres partagé, cliquez sur le lien 'Vi
 <!ENTITY myopac.describe.bookbags "Les sacs de livres sont...">
 
 <!--	================================================================= 
+	MyOPAC Checked Page 
+	================================================================= -->
+<!-- START: TO BE TRANSLATED -->
+<!ENTITY myopac.checked.out "Total items out:">
+<!ENTITY myopac.checked.overdue "Total items overdue:">
+<!ENTITY myopac.checked.renew "Renew Selected Items">
+<!ENTITY myopac.checked.renewing "Renewing...">
+<!ENTITY myopac.checked.renew.remaining "Renewals Remaining">
+<!ENTITY myopac.checked.noitems "You have no items checked out at this time">
+<!ENTITY myopac.checked.other.circ "Other Circulations">
+<!ENTITY myopac.checked.circ.lib "Circulating Library">
+<!ENTITY myopac.checked.item.type "Circulation Type">
+<!ENTITY myopac.checked.circ.time "Please return by ...">
+<!ENTITY myopac.checked.renew.success "item(s) successfully renewed">
+<!ENTITY myopac.checked.renew.confirm "Are you sure you wish to renew the selected item(s)?">
+<!ENTITY myopac.checked.renew.fail "The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.">
+<!ENTITY myopac.checked.renew.fail2 "PINES policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
+<!-- END: TO BE TRANSLATED -->
+
+<!--	================================================================= 
 	MyOPAC Fines Page 
 	================================================================= -->
 <!ENTITY myopac.fines.title "Sommaire">
