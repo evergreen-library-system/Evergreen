@@ -93,6 +93,7 @@ util.window.prototype = {
 		}
 		var w = this.SafeWindowOpen(url,title,features);
 		if (features.match(/modal/) && my_xulG) { 
+            data.init({'via':'stash'});
 			var x = data.modal_xulG_stack[key].pop();
 			data.stash('modal_xulG_stack');
 			return x;
