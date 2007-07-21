@@ -520,7 +520,8 @@ cat.record_buckets.prototype = {
 									}
 								);
 								//obj.data.stash_retrieve();
-								if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Merge Aborted'); return; }
+
+								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status == 'incomplete') { alert('Merge Aborted'); return; }
 								var robj = obj.network.simple_request('MERGE_RECORDS', 
 									[ 
 										ses(), 
@@ -602,7 +603,7 @@ cat.record_buckets.prototype = {
 									}
 								);
 								//obj.data.stash_retrieve();
-								if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Delete Aborted'); return; }
+								if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status != 'complete') { alert('Delete Aborted'); return; }
 								var s = '';
 								for (var i = 0; i < record_ids.length; i++) {
 									var robj = obj.network.simple_request('FM_BRE_DELETE',[ses(),record_ids[i]]);
