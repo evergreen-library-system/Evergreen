@@ -655,7 +655,7 @@ int verifyObjectClass ( osrfMethodContext* ctx, jsonObject* param ) {
 	osrfHash* meta = (osrfHash*) ctx->method->userData;
 	osrfHash* class = osrfHashGet( meta, "class" );
 	
-	if ((strcmp( osrfHashGet(class, "classname"), param->classname ))) {
+	if (!param->classname || (strcmp( osrfHashGet(class, "classname"), param->classname ))) {
 
 		growing_buffer* msg = buffer_init(128);
 		buffer_fadd(
