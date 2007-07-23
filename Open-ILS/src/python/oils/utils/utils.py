@@ -46,3 +46,11 @@ def md5sum(str):
     m = md5.new()
     m.update(str)
     return m.hexdigest()
+
+def unique(arr):
+    ''' Unique-ify a list.  only works if list items are hashable '''
+    o = {}
+    for x in arr:
+        o[x] = 1
+    return o.keys()
+
