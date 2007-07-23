@@ -231,7 +231,7 @@ INSERT INTO config.identification_type ( name ) VALUES ( 'Other' );
 
 CREATE TABLE config.rule_circ_duration (
 	id		SERIAL		PRIMARY KEY,
-	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	name		TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
 	extended	INTERVAL	NOT NULL,
 	normal		INTERVAL	NOT NULL,
 	shrt		INTERVAL	NOT NULL,
@@ -277,7 +277,7 @@ INSERT INTO config.rule_circ_duration VALUES (DEFAULT, 'default', '21 days', '14
 
 CREATE TABLE config.rule_max_fine (
 	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
 	amount	NUMERIC(6,2)	NOT NULL
 );
 COMMENT ON TABLE config.rule_max_fine IS $$
@@ -317,7 +317,7 @@ INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_max', 100.00);
 
 CREATE TABLE config.rule_recuring_fine (
 	id			SERIAL		PRIMARY KEY,
-	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
 	high			NUMERIC(6,2)	NOT NULL,
 	normal			NUMERIC(6,2)	NOT NULL,
 	low			NUMERIC(6,2)	NOT NULL,
@@ -357,7 +357,7 @@ INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '50_cent_per_day', 0.50, 
 
 CREATE TABLE config.rule_age_hold_protect (
 	id	SERIAL		PRIMARY KEY,
-	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ '^\\w+$' ),
+	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
 	age	INTERVAL	NOT NULL,
 	prox	INT		NOT NULL
 );
