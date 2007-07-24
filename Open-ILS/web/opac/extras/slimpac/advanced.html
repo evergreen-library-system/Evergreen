@@ -1,6 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+        <!--#include virtual="/opac/locale/${locale}/opac.dtd"-->
+]>
+
 <html>
 	<head>
-		<title>Advanced Search</title>
+		<title>&opac.navigate.advanced;</title>
 		<style>
 			.maintable {
 				border-collapse: collapse;
@@ -55,10 +63,10 @@
 
 		<table class="maintable">
 			<tbody>
-				<tr><td colspan="2" align="center"><b>Advanced Search</b></td></tr>
+				<tr><td colspan="2" align="center"><b>&opac.navigate.advanced;</b></td></tr>
 				<tr class="rowpad"><td></td></tr>
 				<tr class="bluerow">
-					<th>Now Searching:</th>
+					<th>&slimpac.start.nowSearching;</th>
 					<td>
 						<select name="searchOrg">
 							<!--#include file="lib_list.inc" -->
@@ -67,23 +75,23 @@
 				</tr>
 				<tr class="rowpad"><td></td></tr>
 				<tr class="greenrow">
-					<th> Keywords: </th><td><input type="text" name="kw" size="40"/></td>
+					<th> &common.keywords.label; </th><td><input type="text" name="kw" size="40"/></td>
 				</tr>
 				<tr class="greenrow">
-					<th> Title: </th><td><input type="text" name="ti" size="40"/></td>
+					<th> &common.title.label; </th><td><input type="text" name="ti" size="40"/></td>
 				</tr>
 				<tr class="greenrow">
-					<th> Author: </th><td><input type="text" name="au" size="40"/></td>
+					<th> &common.author.label; </th><td><input type="text" name="au" size="40"/></td>
 				</tr>
 				<tr class="greenrow">
-					<th> Subject: </th><td><input type="text" name="su" size="40"/></td>
+					<th> &common.subject.label; </th><td><input type="text" name="su" size="40"/></td>
 				</tr>
 				<tr class="greenrow">
-					<th> Series: </th><td><input type="text" name="se" size="40"/></td>
+					<th> &common.series.label; </th><td><input type="text" name="se" size="40"/></td>
 				</tr>
 				<tr class="rowpad"><td></td></tr>
 				<tr class="bluerow">
-					<th>Item Language</th>
+					<th>&advanced.language;</th>
 					<td>
 						<select name="searchLang">
 							<option value="">-- All --</option>
@@ -110,15 +118,15 @@
 					</td>
 				</tr>
 				<tr class="bluerow">
-					<th>Sort by:</th>
+					<th>&advanced.sort.criteria;</th>
 					<td>
 						<select name="searchSort">
-							<option value="">Relevance</option>
-							<option value="title">Title</option>
-							<option value="author">Author</option>
-							<option value="pubdate">Publication Date</option>
-							<option value="create_date">Record Creation Date</option>
-							<option value="edit_date">Record Edit Date</option>
+							<option value="">&advanced.relevance;</option>
+							<option value="title">&common.title;</option>
+							<option value="author">&common.author;</option>
+							<option value="pubdate">&advanced.pubdate;</option>
+							<option value="create_date">&slimpac.advanced.create_date;</option>
+							<option value="edit_date">&slimpac.advanced.edit_date;</option>
 						</select>
 					</td>
 				</tr>
@@ -133,7 +141,7 @@
 					</td>
 				</tr>
 				-->
-				<tr class="rowpad"><td align="center" colspan="2"><input type="submit" value="Go!"/></td></tr>
+				<tr class="rowpad"><td align="center" colspan="2"><input type="submit" value="&button.go;"/></td></tr>
 			</tbody>
 		</table>
 
@@ -144,35 +152,39 @@
 			<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
 
 				<span class='footer_link'>
-					<a class='classic_link' href='start.html'>Home</a>
+					<a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
+				</span> 
+
+				<span class='footer_link'>
+					<a class='classic_link' href='start.html'>&slimpac.start.title;</a>
 				</span> 
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/lib/directories/pineslibdir.html'>Find a Library Near Me</a>
+					<a target='_blank' class='classic_link' href='&footer.find.url;'>&footer.find.library;</a>
 				</span> 
 
 				<span> | </span>
 				
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help'>Help</a>
+					<a target='_blank' class='classic_link' href='&footer.help.url;'>&footer.help;</a>
 				</span>
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+					<a target='_blank' class='classic_link' href='&footer.library.url;'>&footer.library.about;</a>
 				</span>
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='' class='classic_link' id='eg_gal_link' href='http://www.galileo.usg.edu/'>GALILEO</a>
+					<a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
 				</span>
 				<br/>
 				<div style='margin-top: 4px; font-size: 7pt;'>
-					<span>Copyright &#169; 2006 Georgia Public Library Service</span>
+					<span>&footer.copyright;</span>
 				</div>
 			</div>
 			</center>

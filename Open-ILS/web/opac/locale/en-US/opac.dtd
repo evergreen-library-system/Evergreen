@@ -560,7 +560,10 @@ For further information, please consult your local librarian.">
 <!ENTITY common.email.enable "Enable email notifications for this hold?">
 <!ENTITY common.email.none "(Patron has no configured email address)">
 <!ENTITY common.email.set "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> for setting your email address)">
+<!ENTITY common.keywords.label "Keywords:">
 <!ENTITY common.physical.label "Physical Description:">
+<!ENTITY common.series.label "Series:">
+<!ENTITY common.subject.label "Subject:">
 <!ENTITY common.title.label "Title:">
 <!ENTITY common.author.label "Author:">
 <!ENTITY common.format.label "Format:">
@@ -583,3 +586,17 @@ You will need to change your password.">
 <!ENTITY login.failed "Login failed. The username or password provided was not valid.
 Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY button.go "Go!">
+
+<!--	================================================================= 
+	Slimpac Simple Search
+	================================================================= -->
+<!ENTITY slimpac.start.title "Simple Search">
+<!ENTITY slimpac.start.nowSearching "Now searching: ">
+<!ENTITY slimpac.start.dynamic "Dynamic Catalog">
+
+<!--	================================================================= 
+	Slimpac Advanced Search
+	================================================================= -->
+<!ENTITY slimpac.advanced.language "Item Language">
+<!ENTITY slimpac.advanced.create_date "Record Creation Date">
+<!ENTITY slimpac.advanced.edit_date "Record Edit Date">

@@ -1,6 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+        <!--#include virtual="/opac/locale/${locale}/opac.dtd"-->
+]>
+
 <html>
 	<head>
-		<title>Simple Search</title>
+		<title>&slimpac.start.title;</title>
 		<style>
 			.maintable {
 				border-collapse: collapse;
@@ -61,7 +69,7 @@
 				<tr class="bluerow">
 					<td>
 						<div style='width: 100%; text-align: center'>
-							<span>Now Searching: </span>
+							<span>&slimpac.search.nowSearching;</span>
 							<select name="searchOrg">
 								<!--#include file="lib_list.inc" -->
 							</select>
@@ -76,14 +84,14 @@
 							<input type="text" name="searchTerms" size="40"/>
 
 							<select name="searchClass">
-								<option value="keyword">Keyword</option>
-								<option value="title">Title</option>
-								<option value="author">Author</option>
-								<option value="subject">Subject</option>
-								<option value="series">Series</option>
+								<option value="keyword">&common.keyword;</option>
+								<option value="title">&common.title;</option>
+								<option value="author">&common.author;</option>
+								<option value="subject">&common.subject;</option>
+								<option value="series">&common.series;</option>
 							</select>
 
-							<input type="submit" value="Go!"/>
+							<input type="submit" value="&button.go;"/>
 						</div>
 					</td>
 				</tr>
@@ -98,41 +106,41 @@
 			<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
 
 				<span class='footer_link'>
-					<a class='classic_link' href='/'>Dynamic Catalog</a>
+					<a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
 				</span> 
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a class='classic_link' href='advanced.html'>Advanced Search</a>
+					<a class='classic_link' href='advanced.html'>&opac.navigate.advanced;</a>
 				</span> 
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/lib/directories/pineslibdir.html'>Find a Library Near Me</a>
+					<a target='_blank' class='classic_link' href='&footer.find.url;'>&footer.find.library;</a>
 				</span> 
 
 				<span> | </span>
 				
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help'>Help</a>
+					<a target='_blank' class='classic_link' href='&footer.help.url;'>&footer.help;</a>
 				</span>
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='_blank' class='classic_link' href='http://www.georgialibraries.org/public/pines.html'>About PINES</a>
+					<a target='_blank' class='classic_link' href='&footer.library.url;'>&footer.library.about;</a>
 				</span>
 
 				<span> | </span>
 
 				<span class='footer_link'>
-					<a target='' class='classic_link' id='eg_gal_link' href='http://www.galileo.usg.edu/'>GALILEO</a>
+					<a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
 				</span>
 				<br/>
 				<div style='margin-top: 4px; font-size: 7pt;'>
-					<span>Copyright &#169; 2006 Georgia Public Library Service</span>
+					<span>&footer.copyright;</span>
 				</div>
 			</div>
 			</center>

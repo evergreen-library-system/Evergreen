@@ -529,7 +529,10 @@ Nous vous recommandons de supprimer ce titre des sacs de livres auxquels il a pu
 <!ENTITY common.email.enable "Activer les avis par courrier électronique pour cette mise en réserve?">
 <!ENTITY common.email.none "(Le client n'a pas d'adresse électronique configurée)">
 <!ENTITY common.email.set "(Voir <a catégorie='lien_classique' id='réserve.pas_adresse_électronique.mon_compte>Mon compte </a> pour établir votre adresse électronique)">
+<!ENTITY common.keywords.label "Mot-clé :">
 <!ENTITY common.physical.label "Description physique :">
+<!ENTITY common.series.label "Collection :">
+<!ENTITY common.subject.label "Sujet :">
 <!ENTITY common.title.label "Titre :">
 <!ENTITY common.author.label "Auteur :">
 <!ENTITY common.format.label "Format :">
@@ -552,3 +555,20 @@ Nous vous recommandons de supprimer ce titre des sacs de livres auxquels il a pu
 Vérifier que la touche des majuscules n'est pas verrouillée et essayez de nouveau ou communiquez avec votre bibliothèque locale.">
 <!ENTITY button.go "Aller!">
 
+<!--	================================================================= 
+	Slimpac Simple Search
+	================================================================= -->
+<!-- START: TO BE TRANSLATED -->
+<!ENTITY slimpac.start.title "Simple Search">
+<!ENTITY slimpac.start.nowSearching "Recherche en cours : ">
+<!ENTITY slimpac.start.dynamic "Dynamic Catalog">
+<!-- END: TO BE TRANSLATED -->
+
+<!--	================================================================= 
+	Slimpac Advanced Search
+	================================================================= -->
+<!-- START: TO BE TRANSLATED -->
+<!ENTITY slimpac.advanced.language "Langue d'élément">
+<!ENTITY slimpac.advanced.create_date "Record Creation Date">
+<!ENTITY slimpac.advanced.edit_date "Record Edit Date">
+<!-- END: TO BE TRANSLATED -->
