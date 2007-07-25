@@ -572,14 +572,22 @@ function _rdetailBuildInfoRows(r) {
 
 		if(rowNode.getAttribute("used")) {
 
-			if( rowNode.nextSibling )
-				rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), rowNode.nextSibling);
-			else
+			if( rowNode.nextSibling ) {
+                sib = rowNode.nextSibling;
+                o ='cp_info_'+thisOrg.id()+'_';
+                /* push the new row on as the last row for this org unit */
+                while( sib.id.match(o) ) {
+                    sib = sib.nextSibling;
+                }
+				rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), sib);
+            } else {
 				rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
+            }
+
 			var n = findNodeByName( rowNode, config.names.rdetail.lib_cell );
 			n.appendChild(text(thisOrg.name()));
 			n.setAttribute("style", "padding-left: " + ((findOrgDepth(thisOrg) - 1)  * 9) + "px;");
-			rowNode.id = "cp_info_" + thisOrg.id() + '_' + (++ctr); //
+			rowNode.id = "cp_info_" + thisOrg.id() + '_' + (++ctr); 
 
 		} else {
 			rowNode.setAttribute("used", "1");
