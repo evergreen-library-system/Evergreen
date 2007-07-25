@@ -904,8 +904,10 @@ sub copy_count_summary {
 	my( $self, $client, $rid, $org, $depth ) = @_;
 	$org ||= 1;
 	$depth ||= 0;
-	return $U->storagereq(
+    my $data = $U->storagereq(
 		'open-ils.storage.biblio.record_entry.status_copy_count.atomic', $rid, $org, $depth );
+
+    return [ sort { $a->[1] cmp $b->[1] } @$data ];
 }
 
 
