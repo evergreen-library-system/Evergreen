@@ -311,15 +311,15 @@ sub new_set_circ_lost {
         return $evt if $evt;
     }
 
+    my $evt = reopen_xact($e, $circ->id);
+    return $evt if $evt;
+
     $e->commit;
     return 1;
 }
 
-
-sub create_bill {
-	my( $e, $amount, $type, $xactid ) = @_;
-
-	$logger->info("The system is charging $amount [$type] on xact $xactid");
+sub reopen_xact {
+    my($e, $xactid) = @_;
 
     # -----------------------------------------------------------------
     # make sure the transaction is not closed
@@ -328,13 +328,20 @@ sub create_bill {
 
     if( $xact->xact_finish ) {
         my ($mbts) = $U->fetch_mbts($xactid, $e);
-        if( ($mbts->balance_owed + $amount) != 0 ) {
-            $logger->info("* re-opening xact $xactid");
+        if( $mbts->balance_owed != 0 ) {
+            $logger->info("* re-opening xact $xactid, orig xact_finish is ".$xact->xact_finish);
             $xact->clear_xact_finish;
             $e->update_money_billable_transaction($xact)
                 or return $e->die_event;
         } 
     }
+}
+
+
+sub create_bill {
+	my( $e, $amount, $type, $xactid ) = @_;
+
+	$logger->info("The system is charging $amount [$type] on xact $xactid");
 
     # -----------------------------------------------------------------
     # now create the billing
