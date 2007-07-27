@@ -640,7 +640,7 @@ sub supercat {
 			$ret = 404;
 		};
 
-		return $ret;
+		return Apache2::Const::OK;
 
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
