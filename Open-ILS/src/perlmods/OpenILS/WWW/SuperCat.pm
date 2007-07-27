@@ -621,6 +621,7 @@ sub supercat {
 			print $r->as_usmarc;
 
 		} otherwise {
+			warn shift();
 			
 			print "Content-type: text/html; charset=utf-8\n\n";
 			$apache->custom_response( 404, <<"			HTML");
