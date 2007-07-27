@@ -5,6 +5,10 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// We need something like this to get window.open to work in some places (where it complains about
+// navigator.xul not being registered.  But is about:blank the best value to use here?
+pref("browser.chromeURL","about:blank");
+
 // This one is specific for Open-ILS
 pref("open-ils.write_in_user_chrome_directory", true);
 
