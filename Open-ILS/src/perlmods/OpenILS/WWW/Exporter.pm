@@ -55,7 +55,7 @@ sub handler {
 	return 200 unless (@records);
 
 	my $type = $cgi->param('rectype') || 'biblio';
-	if ($type ne 'biblio && $type ne 'authority') {
+	if ($type ne 'biblio' && $type ne 'authority') {
 		die "Bad record type: $type";
 	}
 
