@@ -24,6 +24,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
 use OpenSRF::Utils::Logger qw/$logger/;
 
+use MARC::Record;
+use MARC::File::XML;
 
 # set the bootstrap config when this module is loaded
 my ($bootstrap, $cstore, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
