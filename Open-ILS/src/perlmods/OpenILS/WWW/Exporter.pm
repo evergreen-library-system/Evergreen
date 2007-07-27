@@ -95,10 +95,7 @@ sub handler {
 	$r->content_type('application/octet-stream') if (uc($format) ne 'XML');
 	$r->content_type('application/xml') if (uc($format) eq 'XML');
 
-	my $content = '';
-
-
-	$content .= <<"	HEADER" if (uc($format) eq 'XML');
+	$r->print( <<"	HEADER" ) if (uc($format) eq 'XML');
 <?xml version="1.0" encoding="$encoding"?>
 <collection xmlns='http://www.loc.gov/MARC21/slim'>
 	HEADER
@@ -147,7 +144,7 @@ sub handler {
 		next unless $bib;
 
     		if (uc($format) eq 'BRE') {
-        		$content .= OpenSRF::Utils::JSON->perl2JSON($bib);
+        		$r->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
         		next;
     		}
 
@@ -209,11 +206,11 @@ sub handler {
 			if (uc($format) eq 'XML') {
 				my $x = $r->as_xml_record;
 				$x =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
-				$content .= $x;
+				$r->print($x);
 			} elsif (uc($format) eq 'UNIMARC') {
-				$content .= $r->as_unimarc
+				$r->print($r->as_unimarc);
 			} elsif (uc($format) eq 'USMARC') {
-				$content .= $r->as_usmarc
+				$r->print($r->as_usmarc);
 			}
 
 		} otherwise {
@@ -223,9 +220,8 @@ sub handler {
 
 	}
 
-	$content .= "</collection>\n" if ($format eq 'XML');
+	$r->print("</collection>\n") if ($format eq 'XML');
 
-	$r->print($content);
 	return Apache2::Const::OK;
 
 }
