@@ -144,7 +144,7 @@ sub handler {
 		next unless $bib;
 
     		if (uc($format) eq 'BRE') {
-        		$req->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
+        		$r->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
         		next;
     		}
 
