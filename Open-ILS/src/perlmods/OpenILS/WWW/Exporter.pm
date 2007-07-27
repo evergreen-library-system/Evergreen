@@ -106,25 +106,25 @@ sub handler {
 	my $flesh = {};
 	if ($holdings) {
 
-		my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
+		my $req = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
-    		while (my $o = $r->recv) {
-        		die $r->failed->stringify if ($r->failed);
+    		while (my $o = $req->recv) {
+        		die $req->failed->stringify if ($req->failed);
         		$o = $o->content;
         		last unless ($o);
 	    		$orgs{$o->id} = $o;
     		}
-    		$r->finish;
+    		$req->finish;
 
-		$r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
+		$req = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
 
-    		while (my $s = $r->recv) {
-        		die $r->failed->stringify if ($r->failed);
+    		while (my $s = $req->recv) {
+        		die $req->failed->stringify if ($req->failed);
         		$s = $s->content;
         		last unless ($s);
 	    		$shelves{$s->id} = $s;
     		}
-    		$r->finish;
+    		$req->finish;
 
     		$flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 	}
@@ -144,16 +144,16 @@ sub handler {
 		next unless $bib;
 
     		if (uc($format) eq 'BRE') {
-        		$r->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
+        		$req->print( OpenSRF::Utils::JSON->perl2JSON($bib) );
         		next;
     		}
 
 		try {
 
-			my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-			$r->delete_field( $_ ) for ($r->field(901));
+			my $req = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
+			$req->delete_field( $_ ) for ($req->field(901));
 
-			$r->append_fields(
+			$req->append_fields(
 				MARC::Field->new(
 					901, '', '', 
 					a => $bib->$tcn_v,
@@ -178,7 +178,7 @@ sub handler {
 	
 	                				for my $cp ( @$cn_map_list ) {
 		                        
-								$r->append_fields(
+								$req->append_fields(
 									MARC::Field->new(
 										852, '4', '', 
 										a => $location,
@@ -204,13 +204,13 @@ sub handler {
 			}
 
 			if (uc($format) eq 'XML') {
-				my $x = $r->as_xml_record;
+				my $x = $req->as_xml_record;
 				$x =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
 				$r->print($x);
 			} elsif (uc($format) eq 'UNIMARC') {
-				$r->print($r->as_unimarc);
+				$r->print($req->as_unimarc);
 			} elsif (uc($format) eq 'USMARC') {
-				$r->print($r->as_usmarc);
+				$r->print($req->as_usmarc);
 			}
 
 		} otherwise {
