@@ -178,7 +178,7 @@ Content-type: application/xml
 									j => $cn->label,
 									($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
 									p => $cp->barcode,
-									($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+									($cp->price ? ( y => $cp->price ) : ()),
 									($cp->copy_number ? ( t => $cp->copy_number ) : ()),
 									($cp->ref eq 't' ? ( x => 'reference' ) : ()),
 									($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
