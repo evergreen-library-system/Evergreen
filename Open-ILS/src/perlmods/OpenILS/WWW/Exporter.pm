@@ -92,9 +92,8 @@ sub handler {
 		$ftype->require;
 	}
 
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
-	$r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
+	$r->header_out("Content-Disposition" => "inline; filename=$filename");
 
 	if (uc($format) eq 'XML') {
 		$r->send_http_header('application/xml');
@@ -109,6 +108,8 @@ sub handler {
 
 	my %orgs;
 	my %shelves;
+
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
 	my $flesh = {};
 	if ($holdings) {
