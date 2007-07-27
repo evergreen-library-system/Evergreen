@@ -79,7 +79,10 @@ sub handler {
 
 	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
-	print <<"	HEADER" if ($format eq 'XML');
+	print "Content-type: application/octet-stream\n\n" if (uc($format) ne 'XML');
+	print <<"	HEADER" if (uc($format) eq 'XML');
+Content-type: application/xml
+
 <?xml version="1.0" encoding="$encoding"?>
 <collection xmlns='http://www.loc.gov/MARC21/slim'>
 	HEADER
@@ -194,6 +197,7 @@ sub handler {
 			} elsif (uc($format) eq 'UNIMARC') {
 				print $r->as_unimarc
 			} elsif (uc($format) eq 'USMARC') {
+				print "Content-type: application/octet-stream\n\n";
 				print $r->as_usmarc
 			}
 
