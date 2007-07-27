@@ -193,7 +193,9 @@ Content-type: application/xml
         		}
 
 			if (uc($format) eq 'XML') {
-				print $r->as_xml_record;
+				my $x = $r->as_xml_record;
+				$x =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
+				print $x;
 			} elsif (uc($format) eq 'UNIMARC') {
 				print $r->as_unimarc
 			} elsif (uc($format) eq 'USMARC') {
