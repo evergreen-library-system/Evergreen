@@ -598,6 +598,46 @@ sub supercat {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
+	} elsif ($base_format eq 'marc21') {
+
+		my $ret = 200;    
+		try {
+			my $bib = $supercat->request( "open-ils.supercat.record.object.retrieve", $id )->gather(1)->[0];
+        
+			my $r = MARC::Record->new_from_xml( $bib->marc, 'UTF-8', 'USMARC' );
+			$r->delete_field( $_ ) for ($r->field(901));
+                
+			$r->append_fields(
+				MARC::Field->new(
+					901, '', '',
+					a => $bib->tcn_value,
+					b => $bib->tcn_source,
+					c => $bib->id
+				)
+			);
+
+			print "Content-type: application/octet-stream\n\n";
+			print $r->as_usmarc;
+
+		} catch (Error) {
+			
+			print "Content-type: text/html; charset=utf-8\n\n";
+			$apache->custom_response( 404, <<"			HTML");
+			<html>
+				<head>
+					<title>$type $id not found!</title>
+				</head>
+				<body>
+					<br/>
+					<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
+				</body>
+			</html>
+			HTML
+			$ret = 404;
+		};
+
+		return $ret;
+
 	} elsif (OpenILS::WWW::SuperCat::Feed->exists($base_format)) {
 		my $feed = create_record_feed(
 			$type,
