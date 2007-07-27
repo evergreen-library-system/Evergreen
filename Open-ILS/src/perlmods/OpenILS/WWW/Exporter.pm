@@ -79,10 +79,13 @@ sub handler {
 
 	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
-	print "Content-type: application/octet-stream\n\n" if (uc($format) ne 'XML');
-	print <<"	HEADER" if (uc($format) eq 'XML');
-Content-type: application/xml
+	$r->content_type('application/octet-stream') if (uc($format) ne 'XML');
+	$r->content_type('application/xml') if (uc($format) eq 'XML');
 
+	my $content = '';
+
+
+	$content .= <<"	HEADER" if (uc($format) eq 'XML');
 <?xml version="1.0" encoding="$encoding"?>
 <collection xmlns='http://www.loc.gov/MARC21/slim'>
 	HEADER
@@ -131,7 +134,7 @@ Content-type: application/xml
 		next unless $bib;
 
     		if (uc($format) eq 'BRE') {
-        		print OpenSRF::Utils::JSON->perl2JSON($bib);
+        		$content .= OpenSRF::Utils::JSON->perl2JSON($bib);
         		next;
     		}
 
@@ -191,11 +194,11 @@ Content-type: application/xml
 			if (uc($format) eq 'XML') {
 				my $x = $r->as_xml_record;
 				$x =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
-				print $x;
+				$content .= $x;
 			} elsif (uc($format) eq 'UNIMARC') {
-				print $r->as_unimarc
+				$content .= $r->as_unimarc
 			} elsif (uc($format) eq 'USMARC') {
-				print $r->as_usmarc
+				$content .= $r->as_usmarc
 			}
 
 		} otherwise {
@@ -205,9 +208,10 @@ Content-type: application/xml
 
 	}
 
-	print "</collection>\n" if ($format eq 'XML');
+	$content .= "</collection>\n" if ($format eq 'XML');
 
-	return 200;
+	$r->print($content);
+	return Apache2::Const::OK;
 
 }
 
