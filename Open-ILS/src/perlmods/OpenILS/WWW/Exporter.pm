@@ -59,6 +59,14 @@ sub handler {
 		die "Bad record type: $type";
 	}
 
+	my $tcn_v = 'tcn_value';
+	my $tcn_s = 'tcn_source';
+
+	if ($type eq 'authority') {
+		$tcn_v = 'arn_value';
+		$tcn_s = 'arn_source';
+	}
+
 	my $holdings = $cgi->param('holdings') if ($type eq 'biblio');
 	my $location = $cgi->param('location') || 'gaaagpl'; # just because...
 
@@ -151,8 +159,8 @@ sub handler {
 			$r->append_fields(
 				MARC::Field->new(
 					901, '', '', 
-					a => $bib->tcn_value,
-					b => $bib->tcn_source,
+					a => $bib->$tcn_v,
+					b => $bib->$tcn_s,
 					c => $bib->id
 				)
 			);
