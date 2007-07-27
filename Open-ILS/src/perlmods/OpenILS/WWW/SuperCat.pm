@@ -598,6 +598,7 @@ sub supercat {
 		print "Location: $root/../../en-US/skin/default/xml/rdetail.xml?r=$id\n\n"
 			if ($type eq 'record');
 		return 302;
+
 	} elsif ($base_format eq 'marc21') {
 
 		my $ret = 200;    
@@ -619,17 +620,17 @@ sub supercat {
 			print "Content-type: application/octet-stream\n\n";
 			print $r->as_usmarc;
 
-		} catch (Error) {
+		} otherwise {
 			
 			print "Content-type: text/html; charset=utf-8\n\n";
 			$apache->custom_response( 404, <<"			HTML");
 			<html>
 				<head>
-					<title>$type $id not found!</title>
+					<title>ERROR</title>
 				</head>
 				<body>
 					<br/>
-					<center>Sorry, we couldn't $command a $type with the id of $id in format $format.</center>
+					<center>Couldn't fetch $id as MARC21.</center>
 				</body>
 			</html>
 			HTML
