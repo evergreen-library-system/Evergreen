@@ -197,7 +197,6 @@ Content-type: application/xml
 			} elsif (uc($format) eq 'UNIMARC') {
 				print $r->as_unimarc
 			} elsif (uc($format) eq 'USMARC') {
-				print "Content-type: application/octet-stream\n\n";
 				print $r->as_usmarc
 			}
 
