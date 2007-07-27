@@ -99,9 +99,9 @@ sub handler {
 	$r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
 
 	if (uc($format) eq 'XML') {
-		$r->send_http_header('application/xml');
+		$r->content_type('application/xml');
 	} else {
-		$r->send_http_header('application/octet-stream');
+		$r->content_type('application/octet-stream');
 	}
 
 	$r->print( <<"	HEADER" ) if (uc($format) eq 'XML');
