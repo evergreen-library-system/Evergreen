@@ -166,43 +166,45 @@ sub handler {
 			);
 
 
-        		my $cn_list = $bib->call_numbers;
-        		if ($cn_list && @$cn_list) {
+			if ($holdings) {
+        			my $cn_list = $bib->call_numbers;
+        			if ($cn_list && @$cn_list) {
 
-            			my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
-            			if ($cp_list && @$cp_list) {
+            				my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
+            				if ($cp_list && @$cp_list) {
 
-	            			my %cn_map;
-	            			push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+	            				my %cn_map;
+	            				push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
 		                        
-	            			for my $cn ( @$cn_list ) {
-	                			my $cn_map_list = $cn_map{$cn->id};
+	            				for my $cn ( @$cn_list ) {
+	                				my $cn_map_list = $cn_map{$cn->id};
 	
-	                			for my $cp ( @$cn_map_list ) {
+	                				for my $cp ( @$cn_map_list ) {
 		                        
-							$r->append_fields(
-								MARC::Field->new(
-									852, '4', '', 
-									a => $location,
-									b => $orgs{$cn->owning_lib}->shortname,
-									b => $orgs{$cp->circ_lib}->shortname,
-									c => $shelves{$cp->location}->name,
-									j => $cn->label,
-									($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-									p => $cp->barcode,
-									($cp->price ? ( y => $cp->price ) : ()),
-									($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-									($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-									($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-									($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-									($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-								)
-							);
+								$r->append_fields(
+									MARC::Field->new(
+										852, '4', '', 
+										a => $location,
+										b => $orgs{$cn->owning_lib}->shortname,
+										b => $orgs{$cp->circ_lib}->shortname,
+										c => $shelves{$cp->location}->name,
+										j => $cn->label,
+										($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+										p => $cp->barcode,
+										($cp->price ? ( y => $cp->price ) : ()),
+										($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+										($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+										($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+										($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+										($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+									)
+								);
 
+							}
 						}
 					}
-				}
-        		}
+        			}
+			}
 
 			if (uc($format) eq 'XML') {
 				my $x = $r->as_xml_record;
