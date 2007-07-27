@@ -76,6 +76,8 @@ sub handler {
 	my $encoding = $cgi->param('encoding') || 'UTF-8';
 	$encoding = uc($encoding);
 
+	my $filename = $cgi->param('filename') || "export.$type.$encoding.$format";
+
 	binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
 	binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
@@ -92,8 +94,13 @@ sub handler {
 
 	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
-	$r->content_type('application/octet-stream') if (uc($format) ne 'XML');
-	$r->content_type('application/xml') if (uc($format) eq 'XML');
+	$r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
+
+	if (uc($format) eq 'XML') {
+		$r->send_http_header('application/xml');
+	} else {
+		$r->send_http_header('application/octet-stream');
+	}
 
 	$r->print( <<"	HEADER" ) if (uc($format) eq 'XML');
 <?xml version="1.0" encoding="$encoding"?>
