@@ -93,7 +93,6 @@ Content-type: application/xml
 	my $flesh = {};
 	if ($holdings) {
 
-		print STDERR "Retrieving Org Units ... ";
 		my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
     		while (my $o = $r->recv) {
@@ -103,9 +102,7 @@ Content-type: application/xml
 	    		$orgs{$o->id} = $o;
     		}
     		$r->finish;
-		print STDERR "OK\n";
 
-		print STDERR "Retrieving Shelving locations ... ";
 		$r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
 
     		while (my $s = $r->recv) {
@@ -115,7 +112,6 @@ Content-type: application/xml
 	    		$shelves{$s->id} = $s;
     		}
     		$r->finish;
-		print STDERR "OK\n";
 
     		$flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 	}
@@ -210,6 +206,8 @@ Content-type: application/xml
 	}
 
 	print "</collection>\n" if ($format eq 'XML');
+
+	return 200;
 
 }
 
