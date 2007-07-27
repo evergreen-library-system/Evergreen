@@ -54,7 +54,12 @@ sub handler {
 
 	return 200 unless (@records);
 
-	my $holdings = $cgi->param('holdings');
+	my $type = $cgi->param('rectype') || 'biblio';
+	if ($type ne 'biblio && $type ne 'authority') {
+		die "Bad record type: $type";
+	}
+
+	my $holdings = $cgi->param('holdings') if ($type eq 'biblio');
 	my $location = $cgi->param('location') || 'gaaagpl'; # just because...
 
 	my $format = $cgi->param('format') || 'USMARC';
@@ -73,8 +78,8 @@ sub handler {
 	}
 
 	if ($format ne 'XML') {
-		my $type = 'MARC::File::' . $format;
-		$type->require;
+		my $ftype = 'MARC::File::' . $format;
+		$ftype->require;
 	}
 
 	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
@@ -124,7 +129,7 @@ sub handler {
     		try {
         		local $SIG{ALRM} = sub { die "TIMEOUT\n" };
         		alarm(1);
-	    		$bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
+	    		$bib = $ses->request( "open-ils.cstore.direct.$type.record_entry.retrieve", $i, $flesh )->gather(1);
         		alarm(0);
     		} otherwise {
         		warn "\n!!!!!! Timed out trying to read record $i\n";
