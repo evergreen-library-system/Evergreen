@@ -53,6 +53,11 @@ sub handler {
 	my $cgi = new CGI;
 	
 	my @records = $cgi->param('id');
+	my $path_rec = $cgi->path_info();
+
+	if (!@records && $path_rec) {
+		@records = map { $_ ? ($_) : () } split '/', $path_rec;
+	}
 
 	return 200 unless (@records);
 
