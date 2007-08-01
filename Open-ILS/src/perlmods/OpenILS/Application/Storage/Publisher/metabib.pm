@@ -1278,7 +1278,7 @@ sub postfilter_search_class_fts {
 					AND cn.record = mrs.source
 					AND cp.status = cs.id
 					AND cp.location = cl.id
-					AND cn.owning_lib = d.id
+					AND cp.circ_lib = d.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
 					AND cs.holdable IS TRUE
@@ -1304,6 +1304,7 @@ sub postfilter_search_class_fts {
 			  WHERE	EXISTS (
 			  	SELECT	1
 				  FROM	$asset_call_number_table cn,
+					$asset_copy_table cp,
 					$metabib_metarecord_source_map_table mrs,
 					$br_table br,
 					$descendants d,
@@ -1312,9 +1313,15 @@ sub postfilter_search_class_fts {
 				  WHERE	mrs.metarecord = s.metarecord
 					AND br.id = mrs.source
 					AND cn.record = mrs.source
-					AND cn.owning_lib = d.id
+					AND cn.id = cp.call_number
 					AND br.deleted IS FALSE
+					AND cn.deleted IS FALSE
 					AND ord.record = mrs.source
+					AND (	cn.owning_lib = d.id
+						OR (	cp.circ_lib = d.id
+							AND cp.deleted IS FALSE
+						)
+					)
 					$ot_filter
 					$of_filter
 					$oa_filter
@@ -1727,7 +1734,7 @@ sub postfilter_search_multi_class_fts {
 					AND cn.record = mrs.source
 					AND cp.status = cs.id
 					AND cp.location = cl.id
-					AND cn.owning_lib = d.id
+					AND cp.circ_lib = d.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
 					AND cs.holdable IS TRUE
@@ -1784,10 +1791,14 @@ sub postfilter_search_multi_class_fts {
 							$br_table br
 						  WHERE	br.id = omrs.source
 							AND cn.record = omrs.source
-							AND cn.owning_lib = d.id
 							AND br.deleted IS FALSE
 							AND cn.deleted IS FALSE
 							AND cp.call_number = cn.id
+							AND (	cn.owning_lib = d.id
+								OR (	cp.circ_lib = d.id
+									AND cp.deleted IS FALSE
+								)
+							)
 							$avail_filter
 						  LIMIT 1
 					)
@@ -2203,7 +2214,6 @@ sub biblio_search_multi_class_fts {
 				  WHERE	cn.record = s.id
 					AND cp.status = cs.id
 					AND cp.location = cl.id
-					AND cn.owning_lib = d.id
 					AND cp.call_number = cn.id
 					AND cp.opac_visible IS TRUE
 					AND cs.holdable IS TRUE
@@ -2211,6 +2221,7 @@ sub biblio_search_multi_class_fts {
 					AND d.opac_visible IS TRUE
 					AND cp.deleted IS FALSE
 					AND cn.deleted IS FALSE
+					AND cp.circ_lib = d.id
 					$avail_filter
 				  LIMIT 1
 			  	)
@@ -2229,9 +2240,13 @@ sub biblio_search_multi_class_fts {
 					$asset_copy_table cp,
 					$descendants d
 				  WHERE	cn.record = s.id
-					AND cn.owning_lib = d.id
 					AND cp.call_number = cn.id
 					AND cn.deleted IS FALSE
+					AND (	cn.owning_lib = d.id
+						OR (	cp.circ_lib = d.id
+							AND cp.deleted IS FALSE
+						)
+					)
 					$avail_filter
 				  LIMIT 1
 				)
@@ -2256,17 +2271,10 @@ sub biblio_search_multi_class_fts {
 	
 	$log->debug("Search yielded ".scalar(@$recs)." results.",DEBUG);
 
-#	my $max = 0;
-#	$max = 1 if (!@$recs);
-#	for (@$recs) {
-#		$max = $$_[1] if ($$_[1] > $max);
-#	}
-
 	my $count = scalar(@$recs);
 	for my $rec (@$recs[$offset .. $offset + $limit - 1]) {
 		next unless ($$rec[0]);
 		my ($mrid,$rank) = @$rec;
-#		$client->respond( [$mrid, sprintf('%0.3f',$rank/$max), $count] );
 		$client->respond( [$mrid, sprintf('%0.3f',$rank), $count] );
 	}
 	return undef;
