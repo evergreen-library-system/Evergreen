@@ -17,7 +17,6 @@
 <!ENTITY common.cancel "Cancel">
 <!ENTITY common.library "Library">
 <!ENTITY common.username "Username">
-<!ENTITY common.username.label "Username:">
 <!ENTITY common.password "Password">
 <!ENTITY common.submit "Submit">
 <!ENTITY common.user_not_found "User not found">
@@ -31,10 +30,7 @@
 
 
 
-<!ENTITY common.cancel.accesskey "C">
-<!ENTITY common.login.accesskey "L">
-<!ENTITY common.password.accesskey "P">
-<!ENTITY common.username.accesskey "U">
+
 <!ENTITY staff.about.title "About">
 <!ENTITY staff.acp_label_barcode "Barcode">
 <!ENTITY staff.acp_label_call_number "Call Number">
@@ -125,12 +121,10 @@
 <!ENTITY staff.au_usrname_label "Usrname">
 <!ENTITY staff.auth.login_header "Login">
 <!ENTITY staff.auth.logoff_prompt "Log Off">
-<!ENTITY staff.auth.logoff_prompt.accesskey "f">
 <!ENTITY staff.auth.logoff_prompt.key "L">
 <!ENTITY staff.auth.name_prompt "Name:">
 <!ENTITY staff.auth.name_prompt.key "N">
 <!ENTITY staff.auth.password_prompt "Password:">
-<!ENTITY staff.auth.password_prompt.accesskey "P">
 <!ENTITY staff.auth.password_prompt.key "P">
 <!ENTITY staff.auth.quit_prompt "Exit Evergreen">
 <!ENTITY staff.auth.quit_prompt.key "x">
@@ -414,69 +408,10 @@
 <!ENTITY staff.items_out_interface_label "ITEMS OUT">
 <!ENTITY staff.javascript_console_label "CONSOLE">
 <!ENTITY staff.javascript_shell_label "JS SHELL">
-<!ENTITY staff.main.auth.caption "Authentication">
-<!ENTITY staff.main.auth.caption "Startup / Shutdown">
-<!ENTITY staff.main.auth.debug.caption "Debug Options">
-<!ENTITY staff.main.auth.debug.clear "Clear Cache">
-<!ENTITY staff.main.auth.debug.clear.accesskey "C">
-<!ENTITY staff.main.auth.debug.javascript "Javascript Console">
-<!ENTITY staff.main.auth.debug.javascript.accesskey "J">
-<!ENTITY staff.main.auth.hostname "Hostname">
-<!ENTITY staff.main.auth.hostname.accesskey "H">
-<!ENTITY staff.main.auth.offline.caption "Offline Use">
-<!ENTITY staff.main.auth.offline.export "Export Transactions">
-<!ENTITY staff.main.auth.offline.import "Import Transactions">
-<!ENTITY staff.main.auth.offline.interface "Standalone Interface">
-<!ENTITY staff.main.auth.offline.interface.accesskey "S">
-<!ENTITY staff.main.auth.retest "Re-Test Server">
-<!ENTITY staff.main.auth.retest.accesskey "R">
-<!ENTITY staff.main.auth.server "Server">
-<!ENTITY staff.main.auth.status "Status">
-<!ENTITY staff.main.auth.version "Version">
-<!ENTITY staff.main.auth.workstation "Workstation">
 <!ENTITY staff.main.menu.acquisitions.key "q">
 <!ENTITY staff.main.menu.acquisitions.label "Acquisitions">
-<!ENTITY staff.main.menu.admin.accesskey "-">
-<!ENTITY staff.main.menu.admin.browse_holds.accesskey "B">
-<!ENTITY staff.main.menu.admin.browse_holds.label "Browse Unfulfilled Holds for this Pickup Lib">
-<!ENTITY staff.main.menu.admin.change_session.label "Operator Change: New">
-<!ENTITY staff.main.menu.admin.clear_cache.accesskey "3">
-<!ENTITY staff.main.menu.admin.clear_cache.label "Clear Cache">
-<!ENTITY staff.main.menu.admin.cmd_console.accesskey "J">
-<!ENTITY staff.main.menu.admin.cmd_console.label "Javascript Console">
-<!ENTITY staff.main.menu.admin.cmd_shell.accesskey "H">
-<!ENTITY staff.main.menu.admin.cmd_shell.label "Javascript Shell">
-<!ENTITY staff.main.menu.admin.cmd_test.label "Test Module">
-<!ENTITY staff.main.menu.admin.copy_location_edit.accesskey "L">
-<!ENTITY staff.main.menu.admin.copy_location_edit.label "Copy Location Editor">
-<!ENTITY staff.main.menu.admin.developer.accesskey "-">
-<!ENTITY staff.main.menu.admin.developer.label "For developers...">
-<!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
-<!ENTITY staff.main.menu.admin.download_patrons.label "Download Offline Patron List">
-<!ENTITY staff.main.menu.admin.fieldmapper.accesskey "m">
-<!ENTITY staff.main.menu.admin.fieldmapper.label "Fieldmapper">
 <!ENTITY staff.main.menu.admin.key "i">
 <!ENTITY staff.main.menu.admin.label "Admin">
-<!ENTITY staff.main.menu.admin.local_admin.accesskey "L">
-<!ENTITY staff.main.menu.admin.local_admin.label "Local System Administration">
-<!ENTITY staff.main.menu.admin.non_cat_type_edit.accesskey "n">
-<!ENTITY staff.main.menu.admin.non_cat_type_edit.label "Non-Cataloged Type Editor">
-<!ENTITY staff.main.menu.admin.offline_xacts.accesskey "T">
-<!ENTITY staff.main.menu.admin.offline_xacts.label "Offline Transaction Management">
-<!ENTITY staff.main.menu.admin.public_opac.accesskey "p">
-<!ENTITY staff.main.menu.admin.public_opac.label "Public OPAC">
-<!ENTITY staff.main.menu.admin.restore_all_tabs.label "Unhide Tabs">
-<!ENTITY staff.main.menu.admin.stat_cat_edit.accesskey "C">
-<!ENTITY staff.main.menu.admin.stat_cat_edit.label "Statistical Category Editor">
-<!ENTITY staff.main.menu.admin.survey_wizard.accesskey "S">
-<!ENTITY staff.main.menu.admin.survey_wizard.label "Survey Wizard">
-<!ENTITY staff.main.menu.admin.template_edit.accesskey "R">
-<!ENTITY staff.main.menu.admin.template_edit.label "Receipt Template Editor">
-<!ENTITY staff.main.menu.admin.user_edit.accesskey "U">
-<!ENTITY staff.main.menu.admin.user_edit.label "User Permission Editor">
-<!ENTITY staff.main.menu.admin.xuleditor.accesskey "X">
-<!ENTITY staff.main.menu.admin.xuleditor.label "XUL Test">
-<!ENTITY staff.main.menu.cat.accesskey "g">
 <!ENTITY staff.main.menu.cat.add_bib.key "B">
 <!ENTITY staff.main.menu.cat.add_bib.label "Add Bib Record">
 <!ENTITY staff.main.menu.cat.add_copy.key "I">
@@ -484,54 +419,29 @@
 <!ENTITY staff.main.menu.cat.add_volume.key "V">
 <!ENTITY staff.main.menu.cat.add_volume.label "Add Volume">
 <!ENTITY staff.main.menu.cat.bib_search.key "S">
-<!ENTITY staff.main.menu.cat.bib_search.label "Search the Catalog">
+<!ENTITY staff.main.menu.cat.bib_search.label "Search Catalog">
 <!ENTITY staff.main.menu.cat.bib_status.key "B">
 <!ENTITY staff.main.menu.cat.bib_status.label "Display Bib Record">
-<!ENTITY staff.main.menu.cat.copy_status.accesskey "B">
 <!ENTITY staff.main.menu.cat.copy_status.key "I">
 <!ENTITY staff.main.menu.cat.copy_status.label "Display Item">
-<!ENTITY staff.main.menu.cat.create_marc.accesskey "N">
-<!ENTITY staff.main.menu.cat.create_marc.label "Create New Marc Record">
 <!ENTITY staff.main.menu.cat.dedup.key "M">
 <!ENTITY staff.main.menu.cat.dedup.label "Merge/Transfer Interface">
-<!ENTITY staff.main.menu.cat.edit_copy_buckets.accesskey "B">
-<!ENTITY staff.main.menu.cat.edit_copy_buckets.label "Manage Copy Buckets">
-<!ENTITY staff.main.menu.cat.edit_record_buckets.accesskey "R">
-<!ENTITY staff.main.menu.cat.edit_record_buckets.label "Manage Record Buckets">
-<!ENTITY staff.main.menu.cat.edit_volume_buckets.accesskey "V">
-<!ENTITY staff.main.menu.cat.edit_volume_buckets.label "Manage Volume Buckets">
 <!ENTITY staff.main.menu.cat.key "a">
 <!ENTITY staff.main.menu.cat.label "Cataloging">
-<!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
-<!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
-<!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
-<!ENTITY staff.main.menu.cat.search_tcn.label "Retrieve record by TCN">
 <!ENTITY staff.main.menu.cat.volume_status.key "V">
 <!ENTITY staff.main.menu.cat.volume_status.label "Display Volume">
-<!ENTITY staff.main.menu.cat.z39_50_import.accesskey "Z">
-<!ENTITY staff.main.menu.cat.z39_50_import.label "Import Record from Z39.50">
-<!ENTITY staff.main.menu.circ.barcode.retrieve_patron "Retrieve Patron by Barcode">
-<!ENTITY staff.main.menu.circ.barcode.retrieve_patron.accesskey "P">
-<!ENTITY staff.main.menu.circ.barcode.show_item "Show Item Status by Barcode">
-<!ENTITY staff.main.menu.circ.barcode.show_item.accesskey "B">
 <!ENTITY staff.main.menu.circ.checkin.key "C">
-<!ENTITY staff.main.menu.circ.checkin.label "Check In Items">
+<!ENTITY staff.main.menu.circ.checkin.label "Check In">
 <!ENTITY staff.main.menu.circ.checkout.key "O">
-<!ENTITY staff.main.menu.circ.checkout.label "Check Out Items">
+<!ENTITY staff.main.menu.circ.checkout.label "Check Out">
 <!ENTITY staff.main.menu.circ.claimed_returned.key "C">
 <!ENTITY staff.main.menu.circ.claimed_returned.label 'Mark as "Claimed Returned"'>
 <!ENTITY staff.main.menu.circ.copy_status.key "I">
 <!ENTITY staff.main.menu.circ.copy_status.label "Display Item">
 <!ENTITY staff.main.menu.circ.found.key "F">
 <!ENTITY staff.main.menu.circ.found.label "Mark Found">
-<!ENTITY staff.main.menu.circ.hold_browse.accesskey "B">
-<!ENTITY staff.main.menu.circ.hold_browse.label "Browse Holds Shelf">
 <!ENTITY staff.main.menu.circ.hold_capture.key "H">
 <!ENTITY staff.main.menu.circ.hold_capture.label "Capture Holds">
-<!ENTITY staff.main.menu.circ.hold_pull.accesskey "S">
-<!ENTITY staff.main.menu.circ.hold_pull.label "Pull List for Hold Requests">
-<!ENTITY staff.main.menu.circ.in_house.accesskey "I">
-<!ENTITY staff.main.menu.circ.in_house.label "Record In-House Use">
 <!ENTITY staff.main.menu.circ.key "C">
 <!ENTITY staff.main.menu.circ.label "Circulation">
 <!ENTITY staff.main.menu.circ.lost.key "L">
@@ -540,33 +450,20 @@
 <!ENTITY staff.main.menu.circ.mark_used.label "Mark Used">
 <!ENTITY staff.main.menu.circ.missing.key "M">
 <!ENTITY staff.main.menu.circ.missing.label "Mark Missing">
-<!ENTITY staff.main.menu.circ.offline.accesskey "f">
-<!ENTITY staff.main.menu.circ.offline.label "Enter Offline Interface">
 <!ENTITY staff.main.menu.circ.patron_registration.key "R">
 <!ENTITY staff.main.menu.circ.patron_registration.label "Register Patron">
-<!ENTITY staff.main.menu.circ.patron_retrieve.accesskey "L">
-<!ENTITY staff.main.menu.circ.patron_retrieve.label "Retrieve Last Patron">
 <!ENTITY staff.main.menu.circ.patron_status.key "P">
 <!ENTITY staff.main.menu.circ.patron_status.label "Display Patron">
-<!ENTITY staff.main.menu.circ.place_hold.accesskey "H">
 <!ENTITY staff.main.menu.circ.place_hold.key "H">
 <!ENTITY staff.main.menu.circ.place_hold.label "Place Hold">
 <!ENTITY staff.main.menu.circ.quick_add.key "Q">
 <!ENTITY staff.main.menu.circ.quick_add.label "Quick Add">
 <!ENTITY staff.main.menu.circ.renew.key "n">
 <!ENTITY staff.main.menu.circ.renew.label "Renew">
-<!ENTITY staff.main.menu.circ.reprint.accesskey "L">
-<!ENTITY staff.main.menu.circ.reprint.label "Re-Print Last">
 <!ENTITY staff.main.menu.circ.special.key "S">
 <!ENTITY staff.main.menu.circ.special.label "Special Circulation">
-<!ENTITY staff.main.menu.edit.buckets.copies "Copy Buckets">
-<!ENTITY staff.main.menu.edit.buckets.copies.accesskey "B">
 <!ENTITY staff.main.menu.edit.buckets.key "B">
 <!ENTITY staff.main.menu.edit.buckets.label "Manage Buckets">
-<!ENTITY staff.main.menu.edit.buckets.records "Record Buckets">
-<!ENTITY staff.main.menu.edit.buckets.records.accesskey "R">
-<!ENTITY staff.main.menu.edit.buckets.volumes "Volume Buckets">
-<!ENTITY staff.main.menu.edit.buckets.volumes.accesskey "V">
 <!ENTITY staff.main.menu.edit.copy.key "C">
 <!ENTITY staff.main.menu.edit.copy.label "Copy">
 <!ENTITY staff.main.menu.edit.cut.key "t">
@@ -596,10 +493,8 @@
 <!ENTITY staff.main.menu.entity.patron.register.key "R">
 <!ENTITY staff.main.menu.entity.volume.key "">
 <!ENTITY staff.main.menu.entity.volume.label "Volumes">
-<!ENTITY staff.main.menu.file.close.accesskey "W">
 <!ENTITY staff.main.menu.file.close.key "C">
 <!ENTITY staff.main.menu.file.close.label "Close Window">
-<!ENTITY staff.main.menu.file.close_tab.accesskey "C">
 <!ENTITY staff.main.menu.file.close_tab.key "">
 <!ENTITY staff.main.menu.file.close_tab.label "Close Tab">
 <!ENTITY staff.main.menu.file.key "F">
@@ -614,33 +509,13 @@
 <!ENTITY staff.main.menu.file.save.label "Save Session">
 <!ENTITY staff.main.menu.help.key "H">
 <!ENTITY staff.main.menu.help.label "Help">
-<!ENTITY staff.main.menu.quit "Quit Program">
-<!ENTITY staff.main.menu.quit.accesskey "Q">
-<!ENTITY staff.main.menu.replace_barcode.label "Replace Barcode">
 <!ENTITY staff.main.menu.reports.key "">
 <!ENTITY staff.main.menu.reports.label "Reports">
-<!ENTITY staff.main.menu.search.catalog.accesskey "C">
-<!ENTITY staff.main.menu.search.catalog.label "the Catalog">
-<!ENTITY staff.main.menu.search.copies.accesskey "B">
-<!ENTITY staff.main.menu.search.copies.label "for copies by Barcode">
 <!ENTITY staff.main.menu.search.key "r">
 <!ENTITY staff.main.menu.search.label "Search">
-<!ENTITY staff.main.menu.search.patrons.accesskey "P">
-<!ENTITY staff.main.menu.search.patrons.label "for Patrons">
-<!ENTITY staff.main.menu.search.patrons_barcode.accesskey "n">
-<!ENTITY staff.main.menu.search.patrons_barcode.label "for patron by Barcode">
-<!ENTITY staff.main.menu.search.record.accesskey "T">
-<!ENTITY staff.main.menu.search.record.label "for record by TCN">
 <!ENTITY staff.main.menu.serials.key "l">
 <!ENTITY staff.main.menu.serials.label "Serials">
-<!ENTITY staff.main.menu.tabs.close "Close All Tabs">
-<!ENTITY staff.main.menu.tabs.close.accesskey "A">
 <!ENTITY staff.main.menu.title "Evergreen Staff Client">
-<!ENTITY staff.main.simple_auth.authorization.label "Authorization">
-<!ENTITY staff.main.simple_auth.authorize.accesskey "A">
-<!ENTITY staff.main.simple_auth.authorize.label "Authorization">
-<!ENTITY staff.main.simple_auth.exception.label "Exception">
-<!ENTITY staff.main.test.example_template.label "Hello world!">
 <!ENTITY staff.marc.008.BKS.MAP.indx.desc "Index">
 <!ENTITY staff.marc.008.BKS.MAP.indx.field "008">
 <!ENTITY staff.marc.008.BKS.MAP.indx.field_end_pos "31">
@@ -1065,24 +940,25 @@
 <!ENTITY staff.volume.wizard.page4 "Entering Copy-Level Attribute Defaults">
 <!ENTITY staff.volume.wizard.title "Batch Add Volumes/Copies Wizard">
 <!ENTITY staff.xuleditor_label "XUL TEST">
+<!ENTITY staff.z39_50_import_interface_label "Z39.50 IMPORT">
 <!ENTITY staff.z39_50.search_class.author "Author">
 <!ENTITY staff.z39_50.search_class.isbn "ISBN">
 <!ENTITY staff.z39_50.search_class.issn "ISSN">
-<!ENTITY staff.z39_50.search_class.item_type "Item Type">
-<!ENTITY staff.z39_50.search_class.item_type.all "All Formats"> 
-<!ENTITY staff.z39_50.search_class.item_type.art "Papers/Articles"> 
-<!ENTITY staff.z39_50.search_class.item_type.bks "Books"> 
-<!ENTITY staff.z39_50.search_class.item_type.com "Computer files"> 
-<!ENTITY staff.z39_50.search_class.item_type.map "Maps"> 
-<!ENTITY staff.z39_50.search_class.item_type.mix "Mixed material"> 
-<!ENTITY staff.z39_50.search_class.item_type.rec "Sound recordings"> 
-<!ENTITY staff.z39_50.search_class.item_type.sco "Musical scores"> 
-<!ENTITY staff.z39_50.search_class.item_type.ser "Serials"> 
-<!ENTITY staff.z39_50.search_class.item_type.url "Internet Resources"> 
-<!ENTITY staff.z39_50.search_class.item_type.vis "Visual materials"> 
-<!ENTITY staff.z39_50.search_class.lccn "LCCN">
 <!ENTITY staff.z39_50.search_class.pubdate "PubDate">
 <!ENTITY staff.z39_50.search_class.publisher "Publisher">
 <!ENTITY staff.z39_50.search_class.tcn "Accession #">
 <!ENTITY staff.z39_50.search_class.title "Title">
-<!ENTITY staff.z39_50_import_interface_label "Z39.50 IMPORT">
+<!ENTITY staff.z39_50.search_class.lccn "LCCN">
+<!ENTITY staff.z39_50.search_class.item_type "Item Type">
+<!ENTITY staff.z39_50.search_class.item_type.all "All Formats"> 
+<!ENTITY staff.z39_50.search_class.item_type.bks "Books"> 
+<!ENTITY staff.z39_50.search_class.item_type.ser "Serials"> 
+<!ENTITY staff.z39_50.search_class.item_type.vis "Visual materials"> 
+<!ENTITY staff.z39_50.search_class.item_type.rec "Sound recordings"> 
+<!ENTITY staff.z39_50.search_class.item_type.sco "Musical scores"> 
+<!ENTITY staff.z39_50.search_class.item_type.map "Maps"> 
+<!ENTITY staff.z39_50.search_class.item_type.com "Computer files"> 
+<!ENTITY staff.z39_50.search_class.item_type.mix "Mixed material"> 
+<!ENTITY staff.z39_50.search_class.item_type.url "Internet Resources"> 
+<!ENTITY staff.z39_50.search_class.item_type.art "Papers/Articles"> 
+
