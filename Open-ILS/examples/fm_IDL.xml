@@ -2525,7 +2525,7 @@
 			<field reporter:label="Billing Location Link" name="billing_location" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 
 			<field reporter:label="User Home Library Short (Policy) Name" name="usr_home_ou_shortname" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="User Home Library Name" name="usr_home_ou" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="User Home Library Name" name="usr_home_ou_name" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="User Home Library Link" name="usr_home_ou" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 
 			<field reporter:label="User Barcode" name="barcode" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
