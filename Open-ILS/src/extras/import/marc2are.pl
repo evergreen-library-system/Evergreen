@@ -25,7 +25,7 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($utf8, $id_field, $count, $user, $password, $config, $marctype, $keyfile,  @files, @trash_fields) =
+my ($utf8, $id_field, $count, $user, $password, $config, $marctype, $keyfile,  @files, @trash_fields, $quiet) =
 	(0, '998', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
 
 GetOptions(
@@ -35,6 +35,7 @@ GetOptions(
 	'password=s'	=> \$password,
 	'config=s'	=> \$config,
 	'file=s'	=> \@files,
+	'quiet'		=> \$quiet,
 );
 
 @files = @ARGV if (!@files);
@@ -84,7 +85,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 	$count++;
 
-	if (!($count % 20)) {
+	if (!$quiet && !($count % 20)) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 }

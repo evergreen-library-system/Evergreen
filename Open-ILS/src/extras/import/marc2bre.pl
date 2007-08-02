@@ -21,7 +21,7 @@ use MARC::Charset;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields) =
+my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
 	('', 1, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 GetOptions(
@@ -37,6 +37,7 @@ GetOptions(
 	'trash=s'	=> \@trash_fields,
 	'xml_idl=s'	=> \$idlfile,
 	'dontuse=s'	=> \$dontuse_file
+	'quiet'		=> \$quiet
 );
 
 if ($enc) {
@@ -177,7 +178,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 	$count++;
 
-	if (!($count % 50)) {
+	if (!$quiet && !($count % 50)) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 }

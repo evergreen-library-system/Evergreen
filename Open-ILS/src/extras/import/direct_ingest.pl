@@ -26,12 +26,13 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($auth, $config) =
+my ($auth, $config, $quiet) =
 	(0, '/openils/conf/opensrf_core.xml');
 
 GetOptions(
 	'config=s'	=> \$config,
 	'authority'	=> \$auth,
+	'quiet'		=> \$quiet,
 );
 
 my @ses;
@@ -71,7 +72,7 @@ while (my $rec = <>) {
 
 	postprocess( { bib => $bib, ingest_data => $data } );
 
-	if (!($count % 20)) {
+	if (!$quiet && !($count % 20)) {
 		print NEWERR "\r$count\t". $count / (time - $starttime);
 	}
 

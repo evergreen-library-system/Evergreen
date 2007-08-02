@@ -14,7 +14,7 @@ use Time::HiRes qw/time/;
 use Getopt::Long;
 
 my @files;
-my ($config, $output, @auto, @order, @wipe) =
+my ($config, $output, @auto, @order, @wipe, $quiet) =
 	('/openils/conf/opensrf_core.xml');
 
 GetOptions(
@@ -23,6 +23,7 @@ GetOptions(
 	'wipe=s'	=> \@wipe,
 	'autoprimary=s'	=> \@auto,
 	'order=s'	=> \@order,
+	'quiet'		=> \$quiet,
 );
 
 my %lineset;
@@ -65,14 +66,14 @@ while ( my $rec = <> ) {
 
 	push @{ $lineset{$hint} }, [map { $row->$_ } @{ $fieldcache{$hint}{fields} }];
 
-	if (!($count % 500)) {
+	if (!$quiet && !($count % 500)) {
 		print STDERR "\r$count\t". $count / (time - $starttime);
 	}
 
 	$count++;
 }
 
-print STDERR "\nWriting file ...\n";
+print STDERR "\nWriting file ...\n" if (!$quiet);
 
 $output = '&STDOUT' unless ($output);
 $output = FileHandle->new(">$output") if ($output);
