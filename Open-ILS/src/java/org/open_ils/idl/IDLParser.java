@@ -50,7 +50,7 @@ public class IDLParser {
     /**
     * Parses the IDL XML
     */
-    public void parse() throws IOException {
+    public void parse() throws IOException, IDLException {
     
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
@@ -85,7 +85,7 @@ public class IDLParser {
             }
 
         } catch(javax.xml.stream.XMLStreamException se) {
-            /* throw local exception */
+            throw new IDLException("Error parsing IDL XML", se);
         }
    }
 
@@ -129,7 +129,7 @@ public class IDLParser {
         }
     }
 
-    public void handleEndElement(XMLStreamReader reader) {
+    public void handleEndElement(XMLStreamReader reader) throws IDLException {
 
         if(!OILS_NS_BASE.equals(reader.getNamespaceURI())) return;
         String localpart = reader.getLocalName();
@@ -145,7 +145,13 @@ public class IDLParser {
             for(Iterator itr = fields.keySet().iterator(); itr.hasNext(); ) {
                 String key = (String) itr.next();
                 IDLField field = (IDLField) fields.get(key);
-                fieldNames[ field.getArrayPos() ] = field.getName();
+                try {
+                    fieldNames[ field.getArrayPos() ] = field.getName();
+                } catch(ArrayIndexOutOfBoundsException E) {
+                    String msg = "class="+current.getIDLClass()+";field="+key+
+                        ";fieldcount="+fields.size()+";currentpos="+field.getArrayPos();
+                    throw new IDLException(msg, E);
+                }
             }
 
             OSRFRegistry.registerObject(
