@@ -2485,6 +2485,35 @@ sub register_workstation {
 	return $ws->id; # note: editor sets the id on the new object for us
 }
 
+__PACKAGE__->register_method (
+	method		=> 'workstation_list',
+	api_name		=> 'open-ils.actor.workstation.list',
+	signature	=> q/
+		Returns a list of workstations registered at the given location
+		@param authtoken The login session key
+		@param ids A list of org_unit.id's for the workstation owners
+	/);
+
+sub workstation_list {
+	my( $self, $conn, $authtoken, @orgs ) = @_;
+
+	my $e = new_editor(authtoken=>$authtoken);
+	return $e->event unless $e->checkauth;
+    my %results;
+
+    for my $o (@orgs) {
+	    return $e->event 
+            unless $e->allowed('REGISTER_WORKSTATION', $o);
+        $results{$o} = $e->search_actor_workstation({owning_lib=>$o});
+    }
+    return \%results;
+}
+
+
+
+
+
+
 
 __PACKAGE__->register_method (
 	method		=> 'fetch_patron_note',
