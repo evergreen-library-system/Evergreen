@@ -2439,41 +2439,39 @@ __PACKAGE__->register_method (
 		if the name is already in use.
 	/);
 
-sub _register_workstation {
-	my( $self, $connection, $authtoken, $name, $owner ) = @_;
-	my( $requestor, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-	$evt = $U->check_perms($requestor->id, $owner, 'REGISTER_WORKSTATION');
-	return $evt if $evt;
-
-	my $ws = $U->cstorereq(
-		'open-ils.cstore.direct.actor.workstation.search', { name => $name } );
-	return OpenILS::Event->new('WORKSTATION_NAME_EXISTS') if $ws;
-
-	$ws = Fieldmapper::actor::workstation->new;
-	$ws->owning_lib($owner);
-	$ws->name($name);
-
-	my $id = $U->storagereq(
-		'open-ils.storage.direct.actor.workstation.create', $ws );
-	return $U->DB_UPDATE_FAILED($ws) unless $id;
-
-	$ws->id($id);
-	return $ws->id();
-}
-
 sub register_workstation {
 	my( $self, $conn, $authtoken, $name, $owner ) = @_;
 
 	my $e = new_editor(authtoken=>$authtoken, xact=>1);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('REGISTER_WORKSTATION'); # XXX rely on editor perms
-	my $existing = $e->search_actor_workstation({name => $name});
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('REGISTER_WORKSTATION', $owner);
+	my $existing = $e->search_actor_workstation({name => $name})->[0];
 
-	if( @$existing ) {
+	if( $existing ) {
+
 		if( $self->api_name =~ /override/o ) {
-			return $e->event unless $e->allowed('DELETE_WORKSTATION'); # XXX rely on editor perms
-			return $e->event unless $e->delete_actor_workstation($$existing[0]);
+            # workstation with the given name exists.  
+
+            if($owner ne $existing->owning_lib) {
+                # if necessary, update the owning_lib of the workstation
+
+                $logger->info("changing owning lib of workstation ".$existing->id.
+                    " from ".$existing->owning_lib." to $owner");
+			    return $e->die_event unless 
+                    $e->allowed('UPDATE_WORKSTATION', $existing->owning_lib); 
+
+                $existing->owning_lib($owner);
+			    return $e->die_event unless $e->update_actor_workstation($existing);
+
+                $e->commit;
+
+            } else {
+                $logger->info(  
+                    "attempt to register an existing workstation.  returning existing ID");
+            }
+
+            return $existing->id;
+
 		} else {
 			return OpenILS::Event->new('WORKSTATION_NAME_EXISTS')
 		}
@@ -2482,7 +2480,7 @@ sub register_workstation {
 	my $ws = Fieldmapper::actor::workstation->new;
 	$ws->owning_lib($owner);
 	$ws->name($name);
-	$e->create_actor_workstation($ws) or return $e->event;
+	$e->create_actor_workstation($ws) or return $e->die_event;
 	$e->commit;
 	return $ws->id; # note: editor sets the id on the new object for us
 }
