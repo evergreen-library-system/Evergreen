@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -131,26 +131,26 @@
 
 	<vbox id="simple_auth_main" flex="1">
 	<groupbox id="desc" hidden="true">
-		<caption label="Exception"/>
+		<caption label="&staff.main.simple_auth.exception.label;"/>
 		<description id="desc_brief" style="color: red"/>
 		<description id="desc_full"/>
 	</groupbox>
 	<groupbox>
-		<caption label="Authorization"/>
+		<caption label="&staff.main.simple_auth.authorization.label;"/>
 		<grid>
 			<columns><column /><column /></columns>
 			<rows>
 				<row>
-					<label value="Username:" control="username" accesskey="U"/>
+					<label value="&common.username.label;" control="username" accesskey="&common.username.accesskey;"/>
 					<textbox id="username" />
 				</row>
 				<row>
-					<label value="Password:" control="password" accesskey="P"/>
+					<label value="&staff.auth.password_prompt;" control="password" accesskey="&staff.auth.password_prompt.accesskey;"/>
 					<textbox id="password" type="password"/>
 				</row>
 				<row>
-					<button label="Cancel" accesskey="C" oncommand="window.close()"/>
-					<button label="Authorize" accesskey="A" oncommand="authorize()"/>
+					<button label="&common.cancel;" accesskey="&common.cancel.accesskey;" oncommand="window.close()"/>
+					<button label="&staff.main.simple_auth.authorize.label;" accesskey="&staff.main.simple_auth.authorize.accesskey;" oncommand="authorize()"/>
 				</row>
 			</rows>
 		</grid>
