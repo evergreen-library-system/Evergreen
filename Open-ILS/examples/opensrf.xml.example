@@ -42,7 +42,7 @@ Example opensrf config file for OpenILS
                     <driver>Pg</driver>
                     <host>localhost</host>
                     <port>5432</port>
-                    <name>evergreen</name>
+                    <db>evergreen</db>
                     <user>postgres</user>
                     <password>postgres</password>
                 </database>
@@ -475,9 +475,9 @@ Example opensrf config file for OpenILS
                 <implementation>OpenILS::Application::Storage</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
-                    <unix_log>storage_unix.log</unix_log>
-                    <unix_sock>storage_unix.sock</unix_sock>
-                    <unix_pid>storage_unix.pid</unix_pid>
+                    <unix_log>openils.storage_unix.log</unix_log>
+                    <unix_sock>openils.storage_unix.sock</unix_sock>
+                    <unix_pid>openils.storage_unix.pid</unix_pid>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -544,7 +544,7 @@ Example opensrf config file for OpenILS
                 <max_requests>17</max_requests>
                 <unix_config>
                     <unix_sock>opensrf.settings_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.settings_unix.pid</unix_pid>
+                    <unix_pid>opensrf.settings_unix.pid</unix_pid>
                     <max_requests>300</max_requests>
                     <unix_log>opensrf.settings_unix.log</unix_log>
                     <min_children>5</min_children>
@@ -561,10 +561,10 @@ Example opensrf config file for OpenILS
                 <implementation>OpenILS::Application::Collections</implementation>
                 <max_requests>17</max_requests>
                 <unix_config>
-                    <unix_sock>opensrf.collections_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.collections_unix.pid</unix_pid>
+                    <unix_sock>openils.collections_unix.sock</unix_sock>
+                    <unix_pid>openils.collections_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>opensrf.collections_unix.log</unix_log>
+                    <unix_log>openils.collections_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>
@@ -579,10 +579,10 @@ Example opensrf config file for OpenILS
                 <implementation>OpenILS::Application::Reporter</implementation>
                 <max_requests>99</max_requests>
                 <unix_config>
-                    <unix_sock>opensrf.reporter_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.reporter_unix.pid</unix_pid>
+                    <unix_sock>openils.reporter_unix.sock</unix_sock>
+                    <unix_pid>openils.reporter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
-                    <unix_log>opensrf.reporter_unix.log</unix_log>
+                    <unix_log>openils.reporter_unix.log</unix_log>
                     <min_children>1</min_children>
                     <max_children>10</max_children>
                     <min_spare_children>1</min_spare_children>

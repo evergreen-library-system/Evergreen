@@ -123,6 +123,7 @@ perl-install:
 	cp extras/ils_events.xml $(DATADIR)
 	cp -r perlmods/* $(PERLDIR)
 	cp ../examples/opensrf.xml.example $(ETCDIR)
+	cp ../examples/opensrf_core.xml.example $(ETCDIR)
 	cp ../examples/fm_IDL.xml $(ETCDIR)
 	cp ../examples/oils_sip.xml.example $(ETCDIR)
 	cp ../examples/hold_notification_template.example $(DATADIR)
