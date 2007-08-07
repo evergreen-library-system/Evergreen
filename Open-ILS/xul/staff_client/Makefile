@@ -35,10 +35,6 @@ add_symlinks:
 
 build_dir:
 	@echo
-	@echo '*********************************************************  Kludge, make sure these directories exists '
-	mkdir -p chrome/locale/en-US/
-	#mkdir -p chrome/content/OpenSRF/
-	@echo
 	@echo '*********************************************************  Creating and populating build/ '
 	mkdir -p build/
 	cp -R chrome build/

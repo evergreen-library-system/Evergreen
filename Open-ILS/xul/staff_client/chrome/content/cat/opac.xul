@@ -38,7 +38,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+                if (typeof JSAN == 'undefined') { throw(document.getElementById('commonStrings').getString('common.jsan.missing')); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -61,8 +61,7 @@
 				set_opac();
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncat/opac.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString("common.exception", ["cat/opac.xul", E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -77,7 +76,7 @@
 				{ 
 					'set_tab_name' : function(n) { 
 						if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-							try { window.xulG.set_tab_name('Bib Record: ' + n); } catch(E) { alert(E); }
+							try { window.xulG.set_tab_name(document.getElementById('catStrings').getFormattedString("cat.bib_record", [n])); } catch(E) { alert(E); }
 						} else {
 							dump('no set_tab_name\n');
 						}
@@ -96,23 +95,24 @@
 		}
 
 		function set_marc_edit(reset) {
+			var strbundle = document.getElementById('catStrings');
 			g.view = 'marc_edit';
 			var a =	xulG.url_prefix( urls.XUL_MARC_EDIT );
 			var b =	{};
 			var c =	{
 					'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
 					'save' : {
-						'label' : 'Save Record',
+						'label' : strbundle.getString('cat.save_record'),
 						'func' : function (new_marcxml) {
 							try {
 								var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
 								if (typeof r.ilsevent != 'undefined') {
 									throw(r);
 								} else {
-									alert('Record successfully saved.');
+									alert(strbundle.getString("cat.save.success"));
 								}
 							} catch(E) {
-									g.error.standard_unexpected_error_alert('Record not likely updated.',E);
+									g.error.standard_unexpected_error_alert(strbundle.getString("cat.save.failure"), E);
 							}
 						}
 					}
@@ -191,7 +191,7 @@
 
 						win.attachEvt("rdetail", "nextPrevDrawn",
 							function(rIndex,rCount){
-								$('record_pos').setAttribute('value','Record ' + (1+rIndex) + ' of ' + rCount);
+								$('record_pos').setAttribute('value', document.getElementById('catStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount]));
 								if (win.rdetailNext) {
 									g.f_record_next = function() { 
 										g.view_override = g.view; 
@@ -302,39 +302,44 @@
 				[ ses(), g.data.list.au[0].id(), { 'staff_client.catalog.record_view.default' : g.view } ]
 			)
 			if (typeof robj.ilsevent != 'undefined') {
-				if (robj.ilsevent != 0) g.error.standard_unexpected_error_alert('Preference not likely updated.',robj);
+				if (robj.ilsevent != 0) g.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('cat.preference.error'), robj);
 			}
 		}
 
 	]]>
 	</script>
 
+	<stringbundleset id="catBundleSet">
+		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+		<stringbundle id="catStrings" src="chrome://open_ils_staff_client/locale/cat.properties"/>
+	</stringbundleset>
+
 	<vbox flex="1">
 		<deck id="top_pane"/>
 		<hbox id="nav" hidden="true">
 			<label id="record_pos"/>
-			<button id="record_start" accesskey="S" label="Start" oncommand="if (g.f_record_start) g.f_record_start();"/>
-			<button id="record_prev" accesskey="P" label="Previous" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
-			<button id="record_next" accesskey="N" label="Next" oncommand="if (g.f_record_next) g.f_record_next();"/>
-			<button id="record_end" accesskey="E" label="End" oncommand="if (g.f_record_end) g.f_record_end();"/>
+			<button id="record_start" accesskey="&staff.cat.opac.record_start.accesskey;" label="&staff.cat.opac.record_start.label;" oncommand="if (g.f_record_start) g.f_record_start();"/>
+			<button id="record_prev" accesskey="&staff.cat.opac.record_prev.accesskey;" label="&staff.cat.opac.record_prev.label;" oncommand="if (g.f_record_prev) g.f_record_prev();"/>
+			<button id="record_next" accesskey="&staff.cat.opac.record_next.accesskey;" label="&staff.cat.opac.record_next.label;" oncommand="if (g.f_record_next) g.f_record_next();"/>
+			<button id="record_end" accesskey="&staff.cat.opac.record_end.accesskey;" label="&staff.cat.opac.record_end.label;" oncommand="if (g.f_record_end) g.f_record_end();"/>
 			<spacer flex="1"/>
 			<menubar>
-				<menu label="Actions for this Record" accesskey="A">
+				<menu label="&staff.cat.opac.menu.label;" accesskey="&staff.cat.opac.menu.accesskey;">
 				<menupopup>
-				<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
-				<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
-				<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
-				<menuitem label="Holdings Maintenance" accesskey="H" id="copy_browse" oncommand="set_copy_browser();"/>
-				<menuitem label="View Holds" accesskey="s" id="view_holds" oncommand="set_hold_browser();"/>
+				<menuitem label="&staff.cat.opac.opac_view.label;" accesskey="" id="opac_view" oncommand="set_opac();"/>
+				<menuitem label="&staff.cat.opac.marc_view.label;" accesskey="&staff.cat.opac.marc_view.accesskey;" id="marc_view" oncommand="set_marc_view();"/>
+				<menuitem label="&staff.cat.opac.marc_edit.label;" accesskey="&staff.cat.opac.marc_edit.accesskey;" id="marc_edit" oncommand="set_marc_edit();"/>
+				<menuitem label="&staff.cat.opac.copy_browse.label;" accesskey="&staff.cat.opac.copy_browse.accesskey;" id="copy_browse" oncommand="set_copy_browser();"/>
+				<menuitem label="&staff.cat.opac.view_holds.label;" accesskey="&staff.cat.opac.view_holds.accesskey;" id="view_holds" oncommand="set_hold_browser();"/>
 				<menuseparator/>
-				<menuitem label="Add to Bucket" accesskey="B" id="add_bucket" oncommand="add_to_bucket();"/>
-				<menuitem label="Mark for Overlay" accesskey="M" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
+				<menuitem label="&staff.cat.opac.add_bucket.label;" accesskey="&staff.cat.opac.add_bucket.accesskey;" id="add_bucket" oncommand="add_to_bucket();"/>
+				<menuitem label="&staff.cat.opac.mark_for_overlay.label;" accesskey="&staff.cat.opac.mark_for_overlay.accesskey;" id="mark_for_overlay" oncommand="mark_for_overlay();"/>
 				<menuseparator/>
-				<menuitem label="Duplicate in New Tab" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
-				<menuitem label="Remove this Frame" id="remove_me" oncommand="remove_me();"/>
+				<menuitem label="&staff.cat.opac.bib_in_new_tab.label;" id="bib_in_new_tab" oncommand="bib_in_new_tab();"/>
+				<menuitem label="&staff.cat.opac.remove_me.label;" id="remove_me" oncommand="remove_me();"/>
 				<menuseparator/>
-				<menuitem label="Set bottom interface as Default" id="default" oncommand="set_default();"/>
-				<menuitem label="Reset Display" id="refresh_me" oncommand="refresh_display(docid,true);"/>
+				<menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
+				<menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid,true);"/>
 				</menupopup>
 				</menu>
 			</menubar>

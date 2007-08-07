@@ -28,7 +28,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing'); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -48,14 +48,18 @@
 				document.getElementById('survey_add').canAdvance = false; 
 	
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\nsurvey_wizard.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['survey_wizard.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
 		}
 	]]>
 	</script>
+
+	<stringbundleset id="adminSet">
+		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+		<stringbundle id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
+	</stringbundleset>
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<wizardpage id="page1"/>

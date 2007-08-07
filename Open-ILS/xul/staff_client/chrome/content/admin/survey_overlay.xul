@@ -20,48 +20,48 @@
 		</columns>
 		<rows id="page1_grid1_rows">
 			<row id="page1_grid1_row1">
-				<label id="page1_row1_label1" value="Available to:" class="wizard_label"/>
+				<label id="page1_row1_label1" value="&staff.admin.survey.available.label;" class="wizard_label"/>
 				<menulist id="lib_menulist">
 					<menupopup id="lib_menupopup"/>
 				</menulist>
 			</row>
 
 			<row id="page1_grid1_row2">
-				<label id="page1_row2_label1" value="Name:" class="wizard_label"/>
+				<label id="page1_row2_label1" value="&staff.admin.survey.name.label;" class="wizard_label"/>
 				<textbox id="survey_name" onchange="page1_check_advance();" onkeyup="page1_check_advance();" />
 			</row>
 
 			<row id="page1_grid1_row3">
-				<label id="page1_row3_label1" value="Description:" class="wizard_label"/>
+				<label id="page1_row3_label1" value="&staff.admin.survey.description.label;" class="wizard_label"/>
 				<textbox id="survey_description" multiline="true" rows="4"/>
 			</row>
 
 			<row>
-				<label id="page1_row1_label2" value="Required:" class="wizard_label"/>
+				<label id="page1_row1_label2" value="&staff.admin.survey.required.label;" class="wizard_label"/>
 				<checkbox id="required_checkbox"/>
 			</row>
 			
 			<row id="page1_grid1_row1c">
-				<label id="page1_row1c_label3" value="Poll Format:" class="wizard_label"/>
+				<label id="page1_row1c_label3" value="&staff.admin.survey.format.label;" class="wizard_label"/>
 				<checkbox id="poll_checkbox"/>
 			</row>
 
 
 			<row id="page1_grid1_row1a">
-				<label id="page1_row1a_label3" value="OPAC Visible:" class="wizard_label"/>
+				<label id="page1_row1a_label3" value="&staff.admin.survey.opac_visible.label;" class="wizard_label"/>
 				<checkbox id="opac_checkbox"/>
 			</row>
 
 			<row id="page1_grid1_row1b">
-				<label id="page1_row1b_label3" value="Staff Client:" class="wizard_label"/>
+				<label id="page1_row1b_label3" value="&staff.admin.survey.staff_client.label;" class="wizard_label"/>
 				<checkbox id="patron_summary_checkbox"/>
 			</row>
 			<row id="page1_grid1_row1d">
-				<label id="page1_row2_label2" value="Start:" class="wizard_label"/>
+				<label id="page1_row2_label2" value="&staff.admin.survey.start.label;" class="wizard_label"/>
 				<textbox id="survey_start"/>
 			</row>
 			<row>
-				<label id="page1_row3_label2" value="End:" class="wizard_label"/>
+				<label id="page1_row3_label2" value="&staff.admin.survey.end.label;" class="wizard_label"/>
 				<textbox id="survey_end"/>
 			</row>
 		</rows>
@@ -89,7 +89,7 @@
 		<row id="page2_grid1_row1">
 			<label id="new_question_label" value="#1"/>
 			<textbox id="new_question" flex="1"/>
-			<button id="page2_button1" label="Save this Question" accesskey="q" oncommand="add_question(event);"/>
+			<button id="page2_button1" label="&staff.admin.survey.save_question.label;" accesskey="&staff.admin.survey.save_question.accesskey;" oncommand="add_question(event);"/>
 		</row>
 	</rows>
 

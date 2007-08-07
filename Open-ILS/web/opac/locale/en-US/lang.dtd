@@ -123,6 +123,17 @@
 <!ENTITY staff.au_survey_responses_label "Survey Responses">
 <!ENTITY staff.au_usrgroup_label "Usrgroup">
 <!ENTITY staff.au_usrname_label "Usrname">
+<!ENTITY staff.admin.survey.available.label "Available to:">
+<!ENTITY staff.admin.survey.description.label "Description:">
+<!ENTITY staff.admin.survey.end.label "End:">
+<!ENTITY staff.admin.survey.format.label "Poll Format:">
+<!ENTITY staff.admin.survey.name.label "Name:">
+<!ENTITY staff.admin.survey.opac_visible.label "OPAC Visible:">
+<!ENTITY staff.admin.survey.required.label "Required:">
+<!ENTITY staff.admin.survey.save_question.accesskey "q">
+<!ENTITY staff.admin.survey.save_question.label "Save this Question">
+<!ENTITY staff.admin.survey.staff_client.label "Staff Client:">
+<!ENTITY staff.admin.survey.start.label "Start:">
 <!ENTITY staff.auth.login_header "Login">
 <!ENTITY staff.auth.logoff_prompt "Log Off">
 <!ENTITY staff.auth.logoff_prompt.accesskey "f">
@@ -185,6 +196,34 @@
 <!ENTITY staff.cat.fixed.SER.key "S">
 <!ENTITY staff.cat.fixed.VIS "VIS">
 <!ENTITY staff.cat.fixed.VIS.key "V">
+<!ENTITY staff.cat.opac.add_bucket.accesskey "B">
+<!ENTITY staff.cat.opac.add_bucket.label "Add to Bucket">
+<!ENTITY staff.cat.opac.bib_in_new_tab.label "Duplicate in New Tab">
+<!ENTITY staff.cat.opac.copy_browse.accesskey "H">
+<!ENTITY staff.cat.opac.copy_browse.label "Holdings Maintenance">
+<!ENTITY staff.cat.opac.default.label "Set bottom interface as Default">
+<!ENTITY staff.cat.opac.marc_edit.accesskey "E">
+<!ENTITY staff.cat.opac.marc_edit.label "MARC Edit">
+<!ENTITY staff.cat.opac.marc_view.accesskey "V">
+<!ENTITY staff.cat.opac.marc_view.label "MARC View">
+<!ENTITY staff.cat.opac.mark_for_overlay.accesskey "M">
+<!ENTITY staff.cat.opac.mark_for_overlay.label "Mark for Overlay">
+<!ENTITY staff.cat.opac.menu.accesskey "A">
+<!ENTITY staff.cat.opac.menu.label "Actions for this Record">
+<!ENTITY staff.cat.opac.opac_view.accesskey "O">
+<!ENTITY staff.cat.opac.opac_view.label "OPAC View">
+<!ENTITY staff.cat.opac.record_end.accesskey "E">
+<!ENTITY staff.cat.opac.record_end.label "End">
+<!ENTITY staff.cat.opac.record_next.accesskey "N">
+<!ENTITY staff.cat.opac.record_next.label "Next">
+<!ENTITY staff.cat.opac.record_prev.accesskey "P">
+<!ENTITY staff.cat.opac.record_prev.label "Previous">
+<!ENTITY staff.cat.opac.record_start.accesskey "S">
+<!ENTITY staff.cat.opac.record_start.label "Start">
+<!ENTITY staff.cat.opac.refresh_me.label "Reset Display">
+<!ENTITY staff.cat.opac.remove_me.label "Remove this Frame">
+<!ENTITY staff.cat.opac.view_holds.accesskey "s">
+<!ENTITY staff.cat.opac.view_holds.label "View Holds">
 <!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket">
 <!ENTITY staff.cat.popup.add_to_bucket.key "">
 <!ENTITY staff.cat.popup.browse.record.tab.key "">

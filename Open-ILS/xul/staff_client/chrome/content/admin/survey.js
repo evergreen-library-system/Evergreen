@@ -247,8 +247,9 @@ function add_question_row(my_asvq) {
 	g_row_2.appendChild(g_tb);
 	if (last_button) last_button.setAttribute('accesskey','');
 	var g_b = document.createElement('button');
-		g_b.setAttribute('label','Save this Response');
-		g_b.setAttribute('accesskey','R');
+	var strbundle = document.getElementById("adminStrings");
+		g_b.setAttribute('label', strbundle.getString('staff.admin.survey.save_response.label'));
+		g_b.setAttribute('accesskey', strbundle.getString('staff.admin.survey.save_response.label'));
 		g_b.setAttribute('oncommand','add_answer(event,' + my_asvq.id() + ');');
 	g_row_2.appendChild(g_b);
 
