@@ -496,6 +496,9 @@ cat.record_buckets.prototype = {
 									function (o) { return JSON2js(o).docid }
 								);
 
+								var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+									.createInstance(Components.interfaces.nsIWebBrowserPersist);
+
 								var proto_uri = 'http://' + window.location.hostname + '/exporter';
 
 								var uri = Components.classes["@mozilla.org/network/io-service;1"]
