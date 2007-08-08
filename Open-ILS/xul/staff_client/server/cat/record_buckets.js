@@ -45,13 +45,13 @@ cat.record_buckets.export_records = function(obj, output_type) {
 		var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
 			.createInstance(Components.interfaces.nsIWebBrowserPersist);
 
-		var proto_uri = 'http://' + window.location.hostname + '/exporter';
+		var proto_uri = 'http://' + window.location.hostname + '/exporter?format=' + output_type;
 
-		dump('Record Export URI is ' + proto_uri + '?id=' + record_ids.join('&id=') + '\n');
+		dump('Record Export URI is ' + proto_uri + '&id=' + record_ids.join('&id=') + '\n');
 
 		var uri = Components.classes["@mozilla.org/network/io-service;1"]
 			.getService(Components.interfaces.nsIIOService)
-			.newURI( proto_uri + '?id=' + record_ids.join('&id='), null, null );
+			.newURI( proto_uri + '&id=' + record_ids.join('&id='), null, null );
 
 		var file = cat.record_buckets.pick_file('bucket.' + output_type);
 								
