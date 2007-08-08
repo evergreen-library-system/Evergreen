@@ -18,7 +18,7 @@ cat.record_buckets.pick_file = function (defaultFileName) {
 
 	fp.init( window, "Save File As", nsIFilePicker.modeSave );
 	if (defaultFileName)
-		fp.defaultString = default;
+		fp.defaultString = defaultFileName;
 
 	fp.appendFilters( nsIFilePicker.filterAll );
 
