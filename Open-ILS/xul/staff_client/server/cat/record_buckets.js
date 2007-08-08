@@ -53,7 +53,7 @@ cat.record_buckets.export_records = function(obj, output_type) {
 			.getService(Components.interfaces.nsIIOService)
 			.newURI( proto_uri + '?id=' + record_ids.join('&id='), null, null );
 
-		var file = pick_file('bucket.' + output_type);
+		var file = cat.record_buckets.pick_file('bucket.' + output_type);
 								
 		if (file) {
 			persist.saveURI(uri,null,null,null,null,file);
