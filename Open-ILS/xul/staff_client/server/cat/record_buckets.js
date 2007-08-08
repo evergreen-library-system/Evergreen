@@ -30,7 +30,7 @@ cat.record_buckets.pick_file = function (defaultFileName) {
 	}
 };
 
-cat.record_buckets.export_records = function(output_type) {
+cat.record_buckets.export_records = function(obj, output_type) {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		obj.list2.select_all();
@@ -526,22 +526,22 @@ cat.record_buckets.prototype = {
 
 					'cmd_export_records_usmarc' : [
 						['command'],
-						function () { return cat.record_buckets.export_records('usmarc') }
+						function () { return cat.record_buckets.export_records(obj, 'usmarc') }
 					],
 
 					'cmd_export_records_unimarc' : [
 						['command'],
-						function () { return cat.record_buckets.export_records('unimarc') }
+						function () { return cat.record_buckets.export_records(obj, 'unimarc') }
 					],
 
 					'cmd_export_records_xml' : [
 						['command'],
-						function () { return cat.record_buckets.export_records('xml') }
+						function () { return cat.record_buckets.export_records(obj, 'xml') }
 					],
 
 					'cmd_export_records_bre' : [
 						['command'],
-						function () { return cat.record_buckets.export_records('bre') }
+						function () { return cat.record_buckets.export_records(obj, 'bre') }
 					],
 
 					'cmd_merge_records' : [
