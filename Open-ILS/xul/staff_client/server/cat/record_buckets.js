@@ -470,20 +470,44 @@ cat.record_buckets.prototype = {
 					'cmd_export_records' : [
 						['command'],
 						function() {
+							function pick_file() {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+								var nsIFilePicker = Components.interfaces.nsIFilePicker;
+								var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+								fp.init( window, "Save File As", nsIFilePicker.modeSave );
+								fp.defaultString = 'bucket.mrc';
+								fp.appendFilters( nsIFilePicker.filterAll );
+								var result = fp.show(); 
+								if ( (result == nsIFilePicker.returnOK || result == nsIFilePicker.returnReplace) && fp.file ) {
+									return fp.file;
+								} else {
+									return null;
+								}
+							}
+
 							try {
+								netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 								obj.list2.select_all();
 								obj.data.stash_retrieve();
 								JSAN.use('util.functional');
 
 								var record_ids = util.functional.map_list(
 									obj.list2.dump_retrieve_ids(),
-									function (o) {
-										return JSON2js(o).docid; // docid
-									}
+									function (o) { return JSON2js(o).docid }
 								);
-								var id_string = 'id=' + record_ids.join('&id=');
 
-								window.location("/export?" + id_string);
+								var uri = Components.classes["@mozilla.org/network/io-service;1"]
+									.getService(Components.interfaces.nsIIOService)
+									.newURI("/export?id=" + record_ids.join('&id='), null, null);
+
+								var file = pick_file();
+								
+								if (file) {
+									persist.saveURI(uri,null,null,null,null,file);
+								} else {
+									alert("File not downloaded.");
+								}
+
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Records could not be exported.',E);
 							}
