@@ -467,6 +467,29 @@ cat.record_buckets.prototype = {
                         }
                     ],
 
+					'cmd_export_records' : [
+						['command'],
+						function() {
+							try {
+								obj.list2.select_all();
+								obj.data.stash_retrieve();
+								JSAN.use('util.functional');
+
+								var record_ids = util.functional.map_list(
+									obj.list2.dump_retrieve_ids(),
+									function (o) {
+										return JSON2js(o).docid; // docid
+									}
+								);
+								var id_string = 'id=' + record_ids.join('&id=');
+
+								window.location("/export?" + id_string);
+							} catch(E) {
+								obj.error.standard_unexpected_error_alert('Records could not be exported.',E);
+							}
+						}
+					],
+
 					'cmd_merge_records' : [
 						['command'],
 						function() {

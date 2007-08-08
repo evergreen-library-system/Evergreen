@@ -72,6 +72,7 @@
 		<button command="cmd_sel_opac" label="Show All in Catalog" accesskey="S"/>
 		<button id="record_buckets_delete_records" command="cmd_delete_records" label="Delete All Records"/>
 		<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
+		<button id="record_buckets_export_records" command="cmd_export_records" label="Export All Records"/>
 	</hbox>
 </hbox>
 
