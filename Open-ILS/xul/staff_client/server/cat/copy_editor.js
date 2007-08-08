@@ -188,7 +188,8 @@ function pick_file(mode) {
 		mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
 	);
 	fp.appendFilters( nsIFilePicker.filterAll );
-	if ( fp.show( ) == nsIFilePicker.returnOK && fp.file ) {
+	var fp_result = fp.show();
+	if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
 		return fp.file;
 	} else {
 		return null;
