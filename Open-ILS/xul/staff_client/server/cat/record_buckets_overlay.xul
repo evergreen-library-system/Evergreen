@@ -73,11 +73,11 @@
 		<button id="record_buckets_delete_records" command="cmd_delete_records" label="Delete All Records"/>
 		<button id="record_buckets_merge_records" command="cmd_merge_records" label="Merge All Records"/>
 		<button id="record_buckets_export_records" label="Export All Records" type="menu">
-			<menupopup id="record_buckets_export_record_types">
-				<menuitem command="cmd_export_records_usmarc" value="usmarc" label="MARC21"/>
-				<menuitem command="cmd_export_records_unimarc" value="unimarc" label="UNIMARC"/>
-				<menuitem command="cmd_export_records_xml" value="xml" label="XML"/>
-				<menuitem command="cmd_export_records_bre" value="bre" label="Evergreen BRE"/>
+			<menupopup id="record_buckets_export_record_types" allowevents="true">
+				<menuitem command="cmd_export_records_usmarc" label="MARC21"/>
+				<menuitem command="cmd_export_records_unimarc" label="UNIMARC"/>
+				<menuitem command="cmd_export_records_xml" label="XML"/>
+				<menuitem command="cmd_export_records_bre" label="Evergreen BRE"/>
 			</menupopup>
 		</button>
 	</hbox>
