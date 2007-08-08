@@ -8,16 +8,16 @@ cat.record_buckets = function (params) {
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	this.first_pause = true;
-}
+};
 
-cat.record_buckets.pick_file = function (default) {
+cat.record_buckets.pick_file = function (defaultFileName) {
 	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
 
 	fp.init( window, "Save File As", nsIFilePicker.modeSave );
-	if (default)
+	if (defaultFileName)
 		fp.defaultString = default;
 
 	fp.appendFilters( nsIFilePicker.filterAll );
@@ -28,7 +28,7 @@ cat.record_buckets.pick_file = function (default) {
 	} else {
 		return null;
 	}
-}
+};
 
 cat.record_buckets.export_records = function(output_type) {
 	try {
@@ -64,7 +64,7 @@ cat.record_buckets.export_records = function(output_type) {
 	} catch(E) {
 		obj.error.standard_unexpected_error_alert('Records could not be exported.',E);
 	}
-}
+};
 
 
 cat.record_buckets.prototype = {
@@ -785,6 +785,6 @@ cat.record_buckets.prototype = {
 
 	},
 	
-}
+};
 
 dump('exiting cat.record_buckets.js\n');
