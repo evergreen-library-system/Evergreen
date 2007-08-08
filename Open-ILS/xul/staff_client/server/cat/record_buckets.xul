@@ -93,7 +93,10 @@
 		<command id="cmd_record_buckets_reprint" />
 		<command id="cmd_record_buckets_done" />
 		<command id="cmd_merge_records" />
-		<command id="cmd_export_records" />
+		<command id="cmd_export_records_usmarc" />
+		<command id="cmd_export_records_unimarc" />
+		<command id="cmd_export_records_xml" />
+		<command id="cmd_export_records_bre" />
 		<command id="cmd_delete_records" />
 		<command id="cmd_sel_opac" />
 	</commandset>
