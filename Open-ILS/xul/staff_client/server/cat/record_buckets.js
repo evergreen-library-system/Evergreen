@@ -501,6 +501,8 @@ cat.record_buckets.prototype = {
 
 								var proto_uri = 'http://' + window.location.hostname + '/exporter';
 
+								dump('Record Export URI is ' + proto_uri + '?id=' + record_ids.join('&id=') + '\n');
+
 								var uri = Components.classes["@mozilla.org/network/io-service;1"]
 									.getService(Components.interfaces.nsIIOService)
 									.newURI( proto_uri + '?id=' + record_ids.join('&id='), null, null );
