@@ -496,9 +496,11 @@ cat.record_buckets.prototype = {
 									function (o) { return JSON2js(o).docid }
 								);
 
+								var proto_uri = 'http://' + window.location.hostname + '/exporter';
+
 								var uri = Components.classes["@mozilla.org/network/io-service;1"]
 									.getService(Components.interfaces.nsIIOService)
-									.newURI("/export?id=" + record_ids.join('&id='), null, null);
+									.newURI( proto_uri + '?id=' + record_ids.join('&id='), null, null );
 
 								var file = pick_file();
 								
