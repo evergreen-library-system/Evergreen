@@ -29,10 +29,10 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_checkin.js"/>
 
-	<stringbundleset id="circBundleSet">
-		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-		<stringbundle id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
-	</stringbundleset>
+	
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
+	
 
 	<groupbox flex="1">
 		<caption label="&staff.circ.offline_checkin.main.label;"/>

@@ -56,10 +56,10 @@
 	]]>
 	</script>
 
-	<stringbundleset id="adminSet">
-		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-		<stringbundle id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
-	</stringbundleset>
+	
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
+	
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<wizardpage id="page1"/>

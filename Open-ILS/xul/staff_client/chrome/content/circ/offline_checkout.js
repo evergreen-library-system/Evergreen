@@ -1,8 +1,11 @@
-var commonStrings = document.getElementById('commonStrings');
-var circStrings = document.getElementById('circStrings');
+var commonStrings;
+var circStrings;
 
 function my_init() {
 	try {
+		commonStrings = document.getElementById('commonStrings');
+		circStrings = document.getElementById('circStrings');
+
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
@@ -77,7 +80,7 @@ function my_init() {
 		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
-		var err_msg = commonStrings.getFormattedMessage('common.exception', ["circ/offline_checkout.xul", E]);
+		var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline_checkout.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}

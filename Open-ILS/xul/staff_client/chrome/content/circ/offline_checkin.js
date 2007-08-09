@@ -1,7 +1,11 @@
-var commonStrings = document.getElementById('commonStrings');
-var circStrings = document.getElementById('circStrings');
+var commonStrings;
+var circStrings;
+
 function my_init() {
 	try {
+		commonStrings = document.getElementById('commonStrings');
+		circStrings = document.getElementById('circStrings');
+
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die

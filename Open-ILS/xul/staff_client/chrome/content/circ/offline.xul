@@ -30,11 +30,14 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
-		var circStrings = document.getElementById('circStrings');
-		var commonStrings = document.getElementById('commonStrings');
+		var circStrings;
+		var commonStrings;
 
 		function my_init() {
 			try {
+				circStrings = document.getElementById('circStrings');
+				commonStrings = document.getElementById('commonStrings');
+
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		                if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 				JSAN.errorLevel = "die"; // none, warn, or die

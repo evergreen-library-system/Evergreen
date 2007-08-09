@@ -6,9 +6,8 @@
    xmlns:xbl="http://www.mozilla.org/xbl">
 
 	<binding id="messagecatalog">
-		<resources>
-		</resources>
-    
+		<resources/>
+
 		<content>
 			<children>
 			</children>
@@ -137,7 +136,7 @@
 					<![CDATA[
 					try { 
 						var x = new XMLHttpRequest();
-						x.open("GET","/xul/server/util/sprintf.js",false);
+						x.open("GET","chrome://open_ils_staff_client/content/util/sprintf.js",false);
 						x.send(null);
 						if (x.responseText) {
 							eval(x.responseText);
