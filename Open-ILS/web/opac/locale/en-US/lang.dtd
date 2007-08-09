@@ -2,6 +2,8 @@
 <!ENTITY lang.description "English">
 <!ENTITY lang.author "PINES">
 
+<!ENTITY common.enter "Enter">
+<!ENTITY common.enter.accesskey "E">
 <!ENTITY common.title "Title">
 <!ENTITY common.author "Author">
 <!ENTITY common.subject "Subject">
@@ -21,6 +23,10 @@
 <!ENTITY common.password "Password">
 <!ENTITY common.submit "Submit">
 <!ENTITY common.user_not_found "User not found">
+<!ENTITY common.unimplemented 'Not Yet Implemented'>
+<!ENTITY common.delete_transactions.label 'Delete selected transaction'>
+<!ENTITY common.save_transactions.accesskey 'S'>
+<!ENTITY common.save_transactions.label 'Save these transactions'>
 
 <!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
 <!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
@@ -296,6 +302,57 @@
 <!ENTITY staff.checkin_patron.retrieve 'Retrieve Patron'>
 <!ENTITY staff.checkin_patron.retrieve.accesskey 'R'>
 <!ENTITY staff.checkout_interface_label "CHECK OUT">
+<!ENTITY staff.circ.offline.main.label 'Evergreen Offline'>
+<!ENTITY staff.circ.offline.server_time.tooltiptext 'Estimated Server Time - Click to adjust'>
+<!ENTITY staff.circ.offline.cmd_checkout.accesskey 'C'>
+<!ENTITY staff.circ.offline.cmd_checkout.label 'Check Out'>
+<!ENTITY staff.circ.offline.cmd_renew.accesskey 'r'>
+<!ENTITY staff.circ.offline.cmd_renew.label 'Renew'>
+<!ENTITY staff.circ.offline.cmd_in_house_use.accesskey 'h'>
+<!ENTITY staff.circ.offline.cmd_in_house_use.label 'In House Use'>
+<!ENTITY staff.circ.offline.cmd_checkin.accesskey 'i'>
+<!ENTITY staff.circ.offline.cmd_checkin.label 'Check In'>
+<!ENTITY staff.circ.offline.cmd_register_patron.accesskey 'p'>
+<!ENTITY staff.circ.offline.cmd_register_patron.label 'Register Patron'>
+<!ENTITY staff.circ.offline.cmd_print_last_receipt.accesskey 'l'>
+<!ENTITY staff.circ.offline.cmd_print_last_receipt.label 'Last Receipt'>
+<!ENTITY staff.circ.offline.cmd_exit.accesskey 'x'>
+<!ENTITY staff.circ.offline.cmd_exit.label 'Exit'>
+<!ENTITY staff.circ.offline_checkin.main.label 'Standalone Check In'>
+<!ENTITY staff.circ.offline_checkin.step1.description "Check today's date above.">
+<!ENTITY staff.circ.offline_checkin.step1.label 'Step 1)'>
+<!ENTITY staff.circ.offline_checkin.step2.accesskey '2'>
+<!ENTITY staff.circ.offline_checkin.step2.description 'Enter the item barcode:'>
+<!ENTITY staff.circ.offline_checkin.step2.label 'Step 2)'>
+<!ENTITY staff.circ.offline_checkin.step2a.accesskey 'E'>
+<!ENTITY staff.circ.offline_checkin.step2a.label 'Enter'>
+<!ENTITY staff.circ.offline_checkin.step2b.label 'Check barcode?'>
+<!ENTITY staff.circ.offline_checkin.step3.description 'Repeat Steps 2 until done.'>
+<!ENTITY staff.circ.offline_checkin.step3.label 'Step 3)'>
+<!ENTITY staff.circ.offline.finish.description 'Finish'>
+<!ENTITY staff.circ.offline_checkin.step4.label 'Step 4)'>
+<!ENTITY staff.circ.offline.print.description 'Print receipt?'>
+<!ENTITY staff.circ.offline_checkout.main.label 'Standalone Check Out'>
+<!ENTITY staff.circ.offline_checkout.step1.description "Check today's date above.">
+<!ENTITY staff.circ.offline_checkout.step1.label 'Step 1)'>
+<!ENTITY staff.circ.offline_checkout.step2.accesskey '2'>
+<!ENTITY staff.circ.offline_checkout.step2.description "Enter the patron's barcode:">
+<!ENTITY staff.circ.offline_checkout.step2.label 'Step 2)'>
+<!ENTITY staff.circ.offline_checkout.step3.accesskey '3'>
+<!ENTITY staff.circ.offline_checkout.step3.description 'Enter the item due date:'>
+<!ENTITY staff.circ.offline_checkout.step3.label 'Step 3)'>
+<!ENTITY staff.circ.offline_checkout.step4.accesskey '4'>
+<!ENTITY staff.circ.offline_checkout.step4.description 'Enter the item barcode:'>
+<!ENTITY staff.circ.offline_checkout.step4.label 'Step 4)'>
+<!ENTITY staff.circ.offline_checkout.step5.description 'Repeat Steps 3 and 4 until done.'>
+<!ENTITY staff.circ.offline_checkout.step5.label 'Step 5)'>
+<!ENTITY staff.circ.offline_checkout.step6.label 'Step 6)'>
+<!ENTITY staff.circ.offline_checkout.date_helper 'or choose one of these'>
+<!ENTITY staff.circ.offline_checkout.date_helper.3_days 'Today + 3 days'>
+<!ENTITY staff.circ.offline_checkout.date_helper.7_days 'Today + 7 days'>
+<!ENTITY staff.circ.offline_checkout.date_helper.14_days 'Today + 14 days'>
+<!ENTITY staff.circ.offline_checkout.date_helper.30_days 'Today + 30 days'>
+<!ENTITY staff.circ.offline_checkout.strict_barcode.label 'Check barcode?'>
 <!ENTITY staff.circ.checkin.caption 'Check In'>
 <!ENTITY staff.circ.checkin.scan_label 'Enter Barcode:'>
 <!ENTITY staff.circ.checkin.scan_label.accesskey 'a'>

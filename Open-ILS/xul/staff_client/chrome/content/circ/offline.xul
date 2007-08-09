@@ -30,17 +30,20 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
+		var circStrings = document.getElementById('circStrings');
+		var commonStrings = document.getElementById('commonStrings');
+
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		                if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for offline.xul');
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 				}
 
 				g.cgi = new CGI();
@@ -53,6 +56,7 @@
 				JSAN.use('util.date');
 				
 				function update_clock() {
+					/* I18N to-do: enable localized date formats */
 					var today = util.date.formatted_date(new Date(),"%F %H:%M:%s");
 					document.getElementById('today').setAttribute('label',today);
 					setTimeout(update_clock,1);
@@ -61,8 +65,7 @@
 				update_clock();
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncirc/offline.xul\n" + E + '\n';
+				var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline.xul", E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -71,18 +74,23 @@
 	]]>
 	</script>
 
+	<stringbundleset id="circBundleSet">
+		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+		<stringbundle id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
+	</stringbundleset>
+
 	<groupbox flex="1" class="my_overflow">
-		<caption label="Evergreen Offline"/>
+		<caption label="&staff.circ.offline.main.label;"/>
 		<hbox id="nav">
-			<button id="today" onclick="alert('Not Yet Implemented');" tooltiptext="Estimated Server Time - Click to adjust"/>
+			<button id="today" onclick="alert('&common.unimplemented;');" tooltiptext="&staff.circ.offline.server_time.tooltiptext;"/>
 			<spacer flex="1"/>
-			<button id="cmd_checkout" label="Check Out" accesskey="C"/>
-			<button id="cmd_renew" label="Renew" accesskey="r"/>
-			<button id="cmd_in_house_use" label="In House Use" accesskey="h"/>
-			<button id="cmd_checkin" label="Check In" accesskey="i"/>
-			<button id="cmd_register_patron" label="Register Patron" accesskey="p"/>
-			<button id="cmd_print_last_receipt" label="Last Receipt" accesskey="l"/>
-			<button id="cmd_exit" label="Exit" accesskey="x"/>
+			<button id="cmd_checkout" label="&staff.circ.offline.cmd_checkout.label;" accesskey="&staff.circ.offline.cmd_checkout.accesskey;"/>
+			<button id="cmd_renew" label="&staff.circ.offline.cmd_renew.label;" accesskey="&staff.circ.offline.cmd_renew.accesskey;"/>
+			<button id="cmd_in_house_use" label="&staff.circ.offline.cmd_in_house_use.label;" accesskey="&staff.circ.offline.cmd_in_house_use.accesskey;"/>
+			<button id="cmd_checkin" label="&staff.circ.offline.cmd_checkin.label;" accesskey="&staff.circ.offline.cmd_checkin.accesskey;"/>
+			<button id="cmd_register_patron" label="&staff.circ.offline.cmd_register_patron.label;" accesskey="&staff.circ.offline.cmd_register_patron.accesskey;"/>
+			<button id="cmd_print_last_receipt" label="&staff.circ.offline.cmd_print_last_receipt.label;" accesskey="&staff.circ.offline.cmd_print_last_receipt.accesskey;"/>
+			<button id="cmd_exit" label="&staff.circ.offline.cmd_exit.label;" accesskey="&staff.circ.offline.cmd_exit.accesskey;"/>
 		</hbox>
 		<deck id="main" style="border: solid thin red; background-color: #FFAAAA;" flex="1">
 			<vbox flex="1">

@@ -1,7 +1,10 @@
+var commonStrings = document.getElementById('commonStrings');
+var circStrings = document.getElementById('circStrings');
+
 function my_init() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -10,7 +13,7 @@ function my_init() {
 		JSAN.use('util.widgets'); JSAN.use('util.file');
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
+			try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 		}
 
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
@@ -53,29 +56,28 @@ function my_init() {
 		if (file._file.exists()) {
 			list_data = file.get_object(); file.close();
 			ml = util.widgets.make_menulist( 
-				[ ['or choose a non-barcoded option...', ''] ].concat(list_data[0]), 
+				[ [circStrings.getString('circ.offline_checkout.nonbarcoded'), ''] ].concat(list_data[0]), 
 				list_data[1] 
 			);
 			ml.setAttribute('id','noncat_type_menu'); $('x_noncat_type').appendChild(ml);
 			ml.addEventListener(
 				'command',
 				function(ev) { 
-					var count = window.prompt('Enter the number of items:',1,ml.getAttribute('label'));
+					var count = window.prompt(circStrings.getString('circ.offline_checkout.items'),1,ml.getAttribute('label'));
 					append_to_list('noncat',count);	
 					ml.value = '';
 				},
 				false
 			);
 		} else {
-			alert('WARNING: The non-barcode types have not been downloaded from the server.  You should log in to retrieve these.');
+			alert(circStrings.getString('circ.offline_checkout.download.warning'));
 		}
 
 		var file = new util.file('offline_delta'); 
 		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
-		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-			"system administrator or software developer the following:\ncirc/offline_checkout.xul\n" + E + '\n';
+		var err_msg = commonStrings.getFormattedMessage('common.exception', ["circ/offline_checkout.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}
@@ -88,7 +90,7 @@ function test_patron(ev) {
 		var barcode = ev.target.value;
 		JSAN.use('util.barcode');
 		if ( ($('strict_p_barcode').checked) && (! util.barcode.check(barcode)) ) {
-			var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -100,15 +102,15 @@ function test_patron(ev) {
 
 		}
 		if (g.data.bad_patrons[barcode]) {
-			var msg = 'Warning: As of ' + g.data.bad_patrons_date.substr(0,15) + ', this barcode (' + barcode + ') was flagged ';
+			var msg = '';
 			switch(g.data.bad_patrons[barcode]) {
-				case 'L' : msg += 'Lost'; break;
-				case 'E' : msg += 'Expired'; break;
-				case 'B' : msg += 'Barred'; break;
-				case 'D' : msg += 'Blocked'; break;
-				default : msg += ' with an unknown code: ' + g.data.bad_patrons[barcode]; break;
+				case 'L' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.lost', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
+				case 'E' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.expired', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
+				case 'B' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.barred', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
+				case 'D' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.blocked', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
+				default : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.unknown', [g.data.bad_patrons_date.substr(0,15), barcode, g.data.bad_patrons[barcode]]); break;
 			}
-			var r = g.error.yns_alert(msg,'Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+			var r = g.error.yns_alert(msg,circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -126,9 +128,9 @@ function test_patron(ev) {
 function check_date(ev) {
 	JSAN.use('util.date');
 	try {
-		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw('Invalid Date'); }
-		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw('Due date needs to be after today.'); }
-		if ( util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw('Due date needs to be after today.'); }
+		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw(circStrings.getString('circ.offline_checkout.date.invalid')); }
+		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
+		if (util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
 	} catch(E) {
 		alert(E);
 		var today = new Date();
@@ -150,7 +152,7 @@ function handle_keypress(ev) {
 function handle_enter(ev) {
 	JSAN.use('util.barcode');
 	if ( ($('strict_i_barcode').checked) && (! util.barcode.check($('i_barcode').value)) ) {
-		var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+		var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
 		if (r == 1) {
 			setTimeout(
 				function() {
@@ -189,7 +191,7 @@ function append_to_list(checkout_type,count) {
 
 		var p_barcode = $('p_barcode').value;
 		if (! p_barcode) {
-			g.error.yns_alert('Please enter a patron barcode first.','Required Field','Ok',null,null,'Check here to confirm this message');
+			g.error.yns_alert(circStrings.getString('circ.barcode.enter'),circStrings.getString('circ.offline_checkout.required_field'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
 			return;
 		} else {
 
@@ -208,7 +210,7 @@ function append_to_list(checkout_type,count) {
 				var rows = g.list.dump_with_keys();
 				for (var i = 0; i < rows.length; i++) {
 					if (rows[i].barcode == i_barcode) {
-						g.error.yns_alert('This barcode has already been scanned.','Duplicate Scan','Ok',null,null,'Check here to confirm this message');
+						g.error.yns_alert(circStrings.getString('circ.duplicate_scan.msg'),circStrings.getString('circ.duplicate_scan.field'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
 						return;
 					}
 				}
@@ -217,7 +219,7 @@ function append_to_list(checkout_type,count) {
 			break;
 			case 'noncat' :
 				count = parseInt(count); if (! (count>0) ) {
-					g.error.yns_alert("Please try again and enter a valid count.",'Required Value','Ok',null,null,'Check here to confirm this message');
+					g.error.yns_alert(circStrings.getString('circ.offline_checkout.valid_count'),circStrings.getString('circ.offline_checkout.required_value'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
 					return;
 				}
 				my.barcode = $('noncat_type_menu').getAttribute('label');
@@ -225,7 +227,7 @@ function append_to_list(checkout_type,count) {
 				my.noncat_type = JSON2js($('noncat_type_menu').value)[0];
 				my.noncat_count = count;
 			break;
-			default: alert("Please report that this happened."); break;
+			default: alert(commonStrings.getString('common.error.default')); break;
 		}
 	
 		g.list.append( { 'row' : { 'my' : my }, 'to_top' : true } );
