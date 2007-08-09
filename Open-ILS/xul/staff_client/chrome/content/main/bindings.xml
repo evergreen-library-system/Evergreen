@@ -5,6 +5,154 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
+	<binding id="remote_stringbundle">
+		<resources>
+		</resources>
+    
+		<content>
+			<children>
+			</children>
+		</content>
+
+		<implementation>
+
+			<constructor>
+				<![CDATA[
+				if (typeof String.prototype.sprintf == 'undefined') {
+					this._load_sprintf();
+				}
+				if (typeof String.prototype.sprintf == 'undefined') {
+					alert('error loading String.prototype.sprintf');
+				}
+				this._props = {};
+				this._load_from_src();
+				]]>
+			</constructor>
+
+			<property name="src">
+				<getter>
+					<![CDATA[
+					return this.getAttribute('src');
+					]]>
+				</getter>
+				<setter>
+					<![CDATA[
+					this.setAttribute('src',val);
+					this.load_from_src();
+					return val;
+					]]>
+				</setter>
+			</property>
+
+			<method name="_load_from_src">
+				<body>
+					<![CDATA[
+					var x = new XMLHttpRequest();
+					x.open("GET",this.src,false);
+					x.send(null);
+					if (x.responseText) {
+						var props = this._props2object(x.responseText);
+						for (var i in props) {
+							this._props[i] = props[i];
+						}
+					}
+					]]>
+				</body>
+			</method>
+
+			<method name="_props2object">
+				<parameter name="str"/>
+				<body>
+					<![CDATA[
+					var lines = str.split("\n");
+					var props = {};
+					for (var l in lines) {
+						var line = lines[l];
+
+						var eq_pos = line.indexOf('=');
+						if (eq_pos < 0) continue;
+
+						var k = line.substring(0,eq_pos);
+						k = k.replace(/\s+/g,"");
+
+						var v = line.substring(eq_pos + 1);
+
+						var current_m = 0;
+						var cont = false;
+						do {    
+							var cont = false;
+							if (v.indexOf( "{" + current_m + "}" ) >= 0 ) {
+								var mes_bund = new RegExp( "\\\{" + current_m + "\\\}", 'g' );
+								var sprintf_format = "%" + (current_m + 1) + "$s";
+
+								v = v.replace( mes_bund, sprintf_format );
+
+								cont = true;
+								current_m++;
+							}
+						} while ( cont == true );
+
+						props[k] = v;
+			        }
+
+					return props;
+					]]>
+				</body>
+			</method>
+
+			<method name="getString">
+				<parameter name="key"/>
+				<body>
+					<![CDATA[
+						try {
+							return this._props[key];
+						} catch(e) {
+							dump("*** Failed to get string " + key + " in bundle: " + this.src + "\n");
+							throw(e);
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="getFormattedString">
+				<parameter name="key"/>
+				<parameter name="params"/>
+				<body>
+					<![CDATA[
+						try {
+							var str = this._props[key];
+							var val = str.sprintf.apply(str,params);
+							return val;
+						} catch(e) {
+							dump("*** Failed to get string " + key + " in bundle: " + this.src + "\n");
+							throw(e);
+						}
+					]]>
+				</body>
+			</method>
+
+			<method name="_load_sprintf">
+				<body>
+					<![CDATA[
+					try { 
+						var x = new XMLHttpRequest();
+						x.open("GET","/xul/server/util/sprintf.js",false);
+						x.send(null);
+						if (x.responseText) {
+							eval(x.responseText);
+						} else {
+							alert("*** Failed to load sprintf library: " + x.status + " : " + x.statusText);
+						}
+					} catch(e) {
+						alert("*** Failed to load sprintf library: " + e + "\n");
+						throw(e);
+					}
+					]]>
+				</body>
+			</method>
+		</implementation>
+	</binding>
+
   <binding id="caption" extends="chrome://global/content/bindings/general.xml#basetext">
     <resources>
       <stylesheet src="chrome://global/skin/groupbox.css"/>
