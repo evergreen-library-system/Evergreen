@@ -5,7 +5,7 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
-	<binding id="remote_stringbundle">
+	<binding id="messagecatalog">
 		<resources>
 		</resources>
     
@@ -80,7 +80,6 @@
 						var current_m = 0;
 						var cont = false;
 						do {    
-							var cont = false;
 							if (v.indexOf( "{" + current_m + "}" ) >= 0 ) {
 								var mes_bund = new RegExp( "\\\{" + current_m + "\\\}", 'g' );
 								var sprintf_format = "%" + (current_m + 1) + "$s";
@@ -89,6 +88,8 @@
 
 								cont = true;
 								current_m++;
+							} else {
+								cont = false;
 							}
 						} while ( cont == true );
 
@@ -153,27 +154,38 @@
 		</implementation>
 	</binding>
 
-  <binding id="caption" extends="chrome://global/content/bindings/general.xml#basetext">
-    <resources>
-      <stylesheet src="chrome://global/skin/groupbox.css"/>
-    </resources>
-    
-    <content>
-      <children>
-        <xul:image onclick="var n = document.getAnonymousNodes(parentNode.parentNode)[1]; if (n.hidden) { n.hidden = false; this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif'); } else { n.hidden = true; this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/triangle.gif');  }" />
-        <xul:image class="caption-icon" xbl:inherits="src=image"/>
-        <xul:label class="caption-text" flex="1" xbl:inherits="default,value=label,crop,accesskey" />
-      </children>
-    </content>
+	<binding id="caption" extends="chrome://global/content/bindings/general.xml#basetext">
+		<resources>
+			<stylesheet src="chrome://global/skin/groupbox.css"/>
+		</resources>
 
-    <implementation>
-    	<constructor>
-		<![CDATA[
-		var n = document.getAnonymousNodes(this)[0];
-		n.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
-		]]>
-	</constructor>
-    </implementation>
-  </binding>
+		<content>
+			<children>
+				<xul:image
+					onclick="
+						var n = document.getAnonymousNodes(parentNode.parentNode)[1];
+						if (n.hidden) {
+							n.hidden = false;
+							this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
+						} else {
+							n.hidden = true;
+							this.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/triangle.gif');
+						}
+					"
+				/>
+				<xul:image class="caption-icon" xbl:inherits="src=image"/>
+				<xul:label class="caption-text" flex="1" xbl:inherits="default,value=label,crop,accesskey" />
+			</children>
+		</content>
+
+		<implementation>
+			<constructor>
+				<![CDATA[
+					var n = document.getAnonymousNodes(this)[0];
+					n.setAttribute('src','chrome://open_ils_staff_client/skin/media/images/opentriangle.gif');
+				]]>
+			</constructor>
+		</implementation>
+	</binding>
 
 </bindings>
