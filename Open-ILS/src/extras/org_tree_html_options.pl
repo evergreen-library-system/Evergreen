@@ -5,6 +5,7 @@ use OpenSRF::AppSession;
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
+use Unicode::Normalize;
 
 die "usage: perl org_tree_html_options.pl <bootstrap_config> <output_file>" unless $ARGV[1];
 OpenSRF::System->bootstrap_client(config_file => $ARGV[0]);
@@ -26,11 +27,23 @@ close FILE;
 sub print_option {
 	my $node = shift;
 	return unless ($node->opac_visible =~ /^[y1t]+/i);
+
 	my $depth = $node->ou_type - 1;
-	my $sname = $node->shortname;
-	my $name = $node->name;
+	my $sname = entityize($node->shortname);
+	my $name = entityize($node->name);
 	my $kids = $node->children;
-	print FILE "<option value='$sname'><pre>" . '&nbsp;&nbsp;&nbsp;'x$depth . "</pre>$name</option>\n";
+
+	print FILE "<option value='$sname'><pre>" . '&#160;&#160;&#160;'x$depth . "</pre>$name</option>\n";
 	print_option($_) for (@$kids);
+}
+
+sub entityize {
+        my $stuff = shift || return "";
+        $stuff =~ s/\</&lt;/og;
+        $stuff =~ s/\>/&gt;/og;
+        $stuff =~ s/\&/&amp;/og;
+        $stuff = NFC($stuff);
+        $stuff =~ s/([\x{0080}-\x{fffd}])/sprintf('&#x%X;',ord($1))/sgoe;
+        return $stuff;
 }
 
