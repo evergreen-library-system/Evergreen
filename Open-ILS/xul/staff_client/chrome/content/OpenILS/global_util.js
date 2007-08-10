@@ -1,3 +1,5 @@
+	function $(id) { return document.getElementById(id); }
+
 	function ses(a) {
 		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 		switch(a) {

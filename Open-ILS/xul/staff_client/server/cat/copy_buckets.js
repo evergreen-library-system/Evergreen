@@ -461,7 +461,22 @@ cat.copy_buckets.prototype = {
 								}
 
 								var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
-								if (typeof robj.ilsevent != 'undefined') obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+								if (typeof robj.ilsevent != 'undefined') {
+									switch(robj.ilsevent) {
+										case 1227 /* COPY_DELETE_WARNING */ : 
+											var copy;
+											for (var i = 0; i < copies.length; i++) { if (copies[i].id()==robj.payload) copy = function(a){return a;}(copies[i]); }
+											/* The copy in question is not in an ideal status for deleting */
+											var err = '*** ' + robj.desc + ' ***\n';
+											/* The barcode for the item is {1} */
+											err += $('catStrings').getFormattedString('cat.barcode_for_item',[ copy.barcode() ]) + '\n';
+											/* The whole batch operation failed */
+											err += $('catStrings').getString('cat.batch_operation_failed') + '\n';
+											alert(err);
+										break;
+										default: obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+									}
+								}
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
