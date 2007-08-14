@@ -75,7 +75,7 @@
 	]]>
 	</script>
 
-	<messagecatalog id="catStrings" src="/server/xul/locale/<!--#echo var='locale' -->/cat.properties"/>
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
 	<commandset id="copy_buckets_cmds">
 		<command id="sel_clip1" />
