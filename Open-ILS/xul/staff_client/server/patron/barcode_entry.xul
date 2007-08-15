@@ -39,6 +39,8 @@
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for patron/barcode_entry.xul');
 
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
+
 				var tb = document.getElementById('barcode_tb');
 				tb.addEventListener(
 					'keypress',
@@ -102,9 +104,38 @@
 							return;
 						}
 
-						sound.good();
-
-						spawn(barcode);
+                        if (g.data.user_org_unit_opt_in_enabled) {
+                            var r = net.simple_request('USER_ORG_UNIT_OPT_IN_CHECK',[ ses(), robj ]);
+                            if (typeof r.ilsevent != 'undefined') {
+                                throw(r);
+                            } else {
+    
+                                if (r == 0) {
+                                
+                                    JSAN.use('patron.util');
+                                    var parts = patron.util.retrieve_name_via_id( ses(), robj );
+    
+                                    if (0 != g.error.yns_alert(
+                                        'Does patron ' + parts[0] + ', ' + parts[1] + (parts[2] ? ' ' + parts[2] : '') + ' from ' + g.data.hash.aou[ parts[3] ].shortname() + ' consent to having their personal information shared with your library?',
+                                        'Patron/Library Opt-In Confirmation',
+                                        'Accept', 'Deny', null, 'Check here to confirm this message'
+                                        )
+                                    ) {
+                                        tb.select(); tb.focus();
+                                        return;
+                                    } else {
+                                        var c = net.simple_request('USER_ORG_UNIT_OPT_IN_CREATE',[ ses(), robj ]);
+                                        if (typeof c.ilsevent != 'undefined') throw(r);
+                                    }
+                                }
+    
+    						    sound.good();
+    						    spawn(barcode);
+                            }
+                        } else {
+						    sound.good();
+						    spawn(barcode);
+                        }
 					}
 				);
 			} catch(E) {
