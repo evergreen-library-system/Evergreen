@@ -533,7 +533,7 @@ sub patron_search {
 	}
 
 	if (!$ws_ou) {  # XXX This should be required!!
-		$ws_ou = actor::org_unit->search( { parent_ou => undef } )->[0]->id;
+		$ws_ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
 	}
 
 	my $opt_in_join = '';
