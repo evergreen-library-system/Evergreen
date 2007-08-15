@@ -187,7 +187,14 @@ patron.search_form.prototype = {
 							};
 						}
 					],
-					'inactive' : [ ['render'], function(e) { return function() {}; } ],
+					'inactive' : [ ['render'], function(e) { 
+                            return function() {}; 
+                        } 
+                    ],
+                    'search_depth' : [ ['render'],function(e) {
+                            return function() {};
+                        }
+                    ],
 				}
 			}
 		);
@@ -202,6 +209,47 @@ patron.search_form.prototype = {
 		}
 		document.getElementById('family_name').focus();
 
+        JSAN.use('util.file'); JSAN.use('util.widgets'); JSAN.use('util.functional');
+        util.widgets.remove_children(obj.controller.view.search_depth);
+        var ml = util.widgets.make_menulist(
+            util.functional.map_list( obj.OpenILS.data.list.aout, 
+                function(el,idx) {
+                    return [ el.opac_label(), el.depth() ]
+                }
+            ).sort(
+                function(a,b) {
+                    if (a[1] < b[1]) return -1;
+                    if (a[1] > b[1]) return 1;
+                    return 0;
+                }
+            )
+        );
+        ml.addEventListener('command', function() {
+                ml.parentNode.setAttribute('value',ml.value);
+                var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
+                util.widgets.save_attributes(file, { 'search_depth_ml' : [ 'value' ], 'inactive' : [ 'value' ] });
+            }, false
+        );
+        ml.setAttribute('id','search_depth_ml');
+        obj.controller.view.search_depth.appendChild(ml);
+
+		var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
+		util.widgets.load_attributes(file);
+		ml.value = ml.getAttribute('value');
+		if (! ml.value) {
+			ml.value = 0
+			ml.setAttribute('value',ml.value);
+		}
+
+        var cb = obj.controller.view.inactive;
+        cb.addEventListener('command',function() { 
+                cb.setAttribute('value',cb.checked ? "true" : "false");
+                var file = new util.file('patron_search_prefs.'+obj.OpenILS.data.server_unadorned);
+                util.widgets.save_attributes(file, { 'search_depth_ml' : [ 'value' ], 'inactive' : [ 'value' ] });
+            }, false
+        );
+        cb.checked = cb.getAttribute('value') == "true" ? true : false;
+
 	},
 
 	'on_submit' : function(q) {
@@ -214,27 +262,31 @@ patron.search_form.prototype = {
 		var obj = this;
 		var query = {};
 		for (var i = 0; i < obj.controller.render_list.length; i++) {
-		var id = obj.controller.render_list[i][0];
-		var node = document.getElementById(id);
+    		var id = obj.controller.render_list[i][0];
+    		var node = document.getElementById(id);
 			if (node && node.value != '') {
 				if (id == 'inactive') {
 					query[id] = node.getAttribute('value');
 					obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
-				} else {
-					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
-					//value = value.replace(/\d/g,'');
-					switch(id) {
-						case 'family_name' :
-						case 'first_given_name' :
-						case 'second_given_name' :
-							value = value.replace(/^\W+/g,'').replace(/\W+$/g,'');
-						break;
-					}
-					if (value != '') {
-						query[id] = value;
-						obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
-					}
-				}
+                } else {
+                    if (id == 'search_depth') {
+                        query[id] = node.firstChild.getAttribute('value'); 
+    				} else {
+     					var value = node.value.replace(/^\s+/,'').replace(/[\\\s]+$/,'');
+    					//value = value.replace(/\d/g,'');
+    					switch(id) {
+    						case 'family_name' :
+    						case 'first_given_name' :
+    						case 'second_given_name' :
+    							value = value.replace(/^\W+/g,'').replace(/\W+$/g,'');
+    						break;
+    					}
+    					if (value != '') {
+    						query[id] = value;
+    						obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
+    					}
+    				}
+                }
 			}
 		}
 		if (typeof obj.on_submit == 'function') {

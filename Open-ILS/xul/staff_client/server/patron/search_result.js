@@ -154,6 +154,7 @@ patron.search_result.prototype = {
 		var search_hash = {};
 		obj.search_term_count = 0;
 		var inactive = false;
+        var search_depth = 0;
 		for (var i in query) {
 			switch( i ) {
 				case 'phone': case 'ident': 
@@ -183,6 +184,10 @@ patron.search_result.prototype = {
 				case 'inactive':
 					if (query[i] == 'checked') inactive = true;
 				break;
+
+                case 'search_depth':
+                    search_depth = function(a){return a;}(query[i]);
+                break;
 			}
 		}
 		try {
@@ -195,7 +200,10 @@ patron.search_result.prototype = {
 					document.getElementById('active').setAttribute('hidden','false');
 					document.getElementById('active').hidden = false;
 				}
-			}
+			} else {
+                params.push(0);
+            }
+            params.push(search_depth);
 			if (obj.search_term_count > 0) {
 				//alert('search params = ' + obj.error.pretty_print( js2JSON( params ) ) );
 				results = this.network.simple_request( 'FM_AU_IDS_RETRIEVE_VIA_HASH', params );
