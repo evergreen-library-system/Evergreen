@@ -4,6 +4,7 @@ use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::SettingsClient;
 
 use DateTime;           
 use DateTime::Format::ISO8601;  
@@ -438,6 +439,10 @@ sub patron_search {
 	my $limit = shift || 1000;
 	my $sort = shift;
 	my $inactive = shift;
+	my $ws_ou = shift;
+	my $ws_ou_depth = shift || 0;
+
+	my $strict_opt_in = OpenSRF::Utils::SettingsClient->new->config_value( share => user => 'opt_in' );
 
 	$sort = ['family_name','first_given_name'] unless ($$sort[0]);
 	push @$sort,'id';
@@ -495,6 +500,8 @@ sub patron_search {
 
 	my $u_table = actor::user->table;
 	my $a_table = actor::user_address->table;
+	my $opt_in_table = actor::usr_org_unit_opt_in->table;
+	my $ou_table = actor::org_unit->table;
 
 	my $u_select = "SELECT id as id FROM $u_table u WHERE $usr_where";
 	my $a_select = "SELECT usr as id FROM $a_table a WHERE $addr_where";
@@ -525,12 +532,29 @@ sub patron_search {
 		$inactive = 'AND users.active = TRUE';
 	}
 
+	if (!$ws_ou) {  # XXX This should be required!!
+		$ws_ou = actor::org_unit->search( { parent_ou => undef } )->[0]->id;
+	}
+
+	my $opt_in_join = '';
+	my $opt_in_where = '';
+	if (lc($strict_opt_in) eq 'true') {
+		$opt_in_join = "LEFT JOIN $opt_in_table oi ON (oi.org_unit = $ws_ou AND users.id = oi.usr)";
+		$opt_in_where = "AND (oi.id IS NOT NULL OR users.home_ou = $ws_ou)";
+	}
+
+	my $descendants = "actor.org_unit_descendants($ws_ou, $ws_ou_depth)";
+
 	$select = <<"	SQL";
 		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users
 			JOIN ($select) AS search USING (id)
+			JOIN $descendants d ON (d.id = users.home_ou)
+			$opt_in_join
 			$clone_select
-		  WHERE	users.deleted = FALSE $inactive
+		  WHERE	users.deleted = FALSE
+			$inactive
+			$opt_in_where
 		  ORDER BY $order_by
 		  LIMIT $limit
 	SQL

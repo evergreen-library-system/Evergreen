@@ -21,6 +21,13 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				day_phone evening_phone other_phone mailing_address/ );
 
 #-------------------------------------------------------------------------------
+package actor::usr_org_unit_opt_in;
+use base qw/actor/;
+__PACKAGE__->table( 'actor_usr_org_unit_opt_in' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/org_unit usr staff opt_in_ts opt_in_ws/ );
+
+#-------------------------------------------------------------------------------
 package actor::org_unit_proximity;
 use base qw/actor/;
 __PACKAGE__->table( 'actor_org_unit_proximity' );

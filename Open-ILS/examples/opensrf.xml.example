@@ -17,8 +17,18 @@ Example opensrf config file for OpenILS
             <script_lib>/openils/var</script_lib>
         </dirs>
 
+	<!-- global data visiblity settings -->
+        <share>
+		<user>
+        		<!-- Set to "true" to require patron opt-in for foreign (non-home_ou) transactions -->
+			<opt_in>false</opt_in>
+		</user>
+	</share>
+
         <IDL>/openils/conf/fm_IDL.xml</IDL> <!-- top level IDL file -->
+
         <server_type>prefork</server_type> <!-- net::server type -->
+
         <ils_events>/openils/var/data/ils_events.xml</ils_events> <!-- ILS events description file -->
         
         <email_notify>
