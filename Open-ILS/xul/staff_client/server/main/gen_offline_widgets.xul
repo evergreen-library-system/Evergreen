@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="gen_offline_menus_win" 
-	onload="try { gen_offline_menus_init(); } catch(E) { alert(E); }"
+	onload="try { my_init(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
@@ -34,9 +34,8 @@
 	<script>
 	<![CDATA[
 
-		function gen_offline_menus_init() {
-
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        function my_init() {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
 			if (typeof JSAN == 'undefined') {
 				throw(
@@ -51,6 +50,18 @@
 			JSAN.use('util.error'); g.error = new util.error();
 			JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 			JSAN.use('util.network'); g.network = new util.network();
+
+            gen_offline_menus_init();
+
+            var r = g.network.simple_request('USER_ORG_UNIT_OPT_IN_FEATURE',[]);
+            g.data.user_org_unit_opt_in_enabled = (r == "1" || r == 1);
+            g.data.stash('user_org_unit_opt_in_enabled');
+        }
+
+		function gen_offline_menus_init() {
+
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
 			JSAN.use('util.functional');
 
 			save_object('offline_ou_list', build_ou_list());

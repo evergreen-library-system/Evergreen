@@ -173,6 +173,9 @@ const api = {
 	'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
 	'PATRON_BARCODE_EXISTS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists' },
 	'RECALCULATE_STANDING_PENALTIES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalties.update' },
+    'USER_ORG_UNIT_OPT_IN_FEATURE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.enabled' },
+    'USER_ORG_UNIT_OPT_IN_CHECK' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.check' },
+    'USER_ORG_UNIT_OPT_IN_CREATE' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.org_unit_opt_in.create' },
 }
 
 const urls = {
