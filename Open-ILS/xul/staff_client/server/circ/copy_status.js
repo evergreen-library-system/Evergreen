@@ -721,8 +721,16 @@ circ.copy_status.prototype = {
 											api.FM_ACN_TREE_UPDATE.method,
 											[ ses(), volumes, false ]
 										);
-										if (typeof r.ilsevent != 'undefined') throw(r);
-										alert('Volumes modified.');
+                                        if (typeof r.ilsevent != 'undefined') {
+                                            switch(r.ilsevent) {
+                                                case 1705 /* VOLUME_LABEL_EXISTS */ :
+                                                    alert("Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead.");
+                                                    break;
+                                                default: throw(r);
+                                            }
+                                        } else {
+    										alert('Volumes modified.');
+                                        }
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('volume update error: ',E);
 									}
