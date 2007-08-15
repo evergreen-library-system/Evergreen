@@ -291,7 +291,7 @@ patron.bills.prototype = {
 											}
 											if (ev.type == 'change' && obj.controller.view.payment_type.value == 'credit_payment') {
 												JSAN.use('util.money');
-												JSAN.use('patron.util'); var au_obj = patron.util.retrieve_au_via_id(ses(),obj.patron_id);
+												JSAN.use('patron.util'); var au_obj = patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id);
 												var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
 												var available = util.money.dollars_float_to_cents_integer(au_obj.credit_forward_balance());
 												if (proposed > available) {
