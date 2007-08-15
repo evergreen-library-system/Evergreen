@@ -3028,7 +3028,7 @@ sub create_user_opt_in_at_org {
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
 	return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
-    my $opt_in = Fieldmapper::actor::user_org_unit_opt_in->new;
+    my $opt_in = Fieldmapper::actor::usr_org_unit_opt_in->new;
 
     $opt_in->org_unit($org_id);
     $opt_in->usr($user_id);
@@ -3036,7 +3036,7 @@ sub create_user_opt_in_at_org {
     $opt_in->opt_in_ts('now');
     $opt_in->opt_in_ws($e->requestor->wsid);
 
-    $opt_in = $e->create_actor_user_org_unit_opt_in($opt_in)
+    $opt_in = $e->create_actor_usr_org_unit_opt_in($opt_in)
         or return $e->die_event;
 
     $e->commit;
