@@ -16,6 +16,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::SettingsClient;
 
 use OpenSRF::Utils::Cache;
 
@@ -1153,13 +1154,15 @@ __PACKAGE__->register_method(
 	method	=> "patron_adv_search",
 	api_name	=> "open-ils.actor.patron.search.advanced" );
 sub patron_adv_search {
-	my( $self, $client, $auth, $search_hash, $search_limit, $search_sort, $include_inactive ) = @_;
+	my( $self, $client, $auth, $search_hash, 
+        $search_limit, $search_sort, $include_inactive, $search_depth ) = @_;
+
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
 	return $U->storagereq(
-		"open-ils.storage.actor.user.crazy_search", 
-		$search_hash, $search_limit, $search_sort, $include_inactive);
+		"open-ils.storage.actor.user.crazy_search", $search_hash, 
+            $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_depth);
 }
 
 
@@ -2961,6 +2964,85 @@ sub user_retrieve_parts {
 
 
 
+__PACKAGE__->register_method(
+    method => 'user_opt_in_enabled',
+    api_name => 'open-ils.actor.user.org_unit_opt_in.enabled',
+    signature => q/
+        @return 1 if user opt-in is globally enabled, 0 otherwise.
+    /);
+
+sub user_opt_in_enabled {
+    my($self, $conn) = @_;
+    my $sc = OpenSRF::Utils::SettingsClient->new;
+    return 1 if lc($sc->config_value(share => user => 'opt_in')) eq 'true'; 
+    return 0;
+}
+    
+
+__PACKAGE__->register_method(
+    method => 'user_opt_in_at_org',
+    api_name => 'open-ils.actor.user.org_unit_opt_in.check',
+    signature => q/
+        @param $auth The auth token
+        @param user_id The ID of the user to test
+        @return 1 if the user has opted in at the specified org,
+            event on error, and 0 otherwise. /);
+sub user_opt_in_at_org {
+    my($self, $conn, $auth, $user_id) = @_;
+
+    # see if we even need to enforce the opt-in value
+    return 1 unless $self->user_opt_in_enabled;
+
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+    my $org_id = $e->requestor->ws_ou;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+	return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+
+    # user is automatically opted-in at the home org
+    return 1 if $user->home_ou eq $org_id;
+
+    my $vals = $e->search_actor_usr_org_unit_opt_in(
+        {org_unit=>$org_id, usr=>$user_id},{idlist=>1});
+
+    return 1 if @$vals;
+    return 0;
+}
+
+__PACKAGE__->register_method(
+    method => 'create_user_opt_in_at_org',
+    api_name => 'open-ils.actor.user.org_unit_opt_in.create',
+    signature => q/
+        @param $auth The auth token
+        @param user_id The ID of the user to test
+        @return The ID of the newly created object, event on error./);
+
+sub create_user_opt_in_at_org {
+    my($self, $conn, $auth, $user_id) = @_;
+
+	my $e = new_editor(authtoken => $auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+    my $org_id = $e->requestor->ws_ou;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+	return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+
+    my $opt_in = Fieldmapper::actor::user_org_unit_opt_in->new;
+
+    $opt_in->org_unit($org_id);
+    $opt_in->usr($user_id);
+    $opt_in->staff($e->requestor->id);
+    $opt_in->opt_in_ts('now');
+    $opt_in->opt_in_ws($e->requestor->wsid);
+
+    $opt_in = $e->create_actor_user_org_unit_opt_in($opt_in)
+        or return $e->die_event;
+
+    $e->commit;
+
+    return $opt_in->id;
+}
 
 
 

@@ -547,6 +547,9 @@
 	<event code='1639' textcode='REPORTER_SCHEDULE_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested reporter_schedule was not found</desc>
 	</event>
+	<event code='1640' textcode='ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested actor_usr_org_unit_opt_in was not found</desc>
+	</event>
 
 
 
