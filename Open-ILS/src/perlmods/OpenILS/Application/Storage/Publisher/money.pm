@@ -192,6 +192,86 @@ __PACKAGE__->register_method(
 	argc		=> 3,
 );
 
+sub users_owing_money {
+	my $self = shift;
+	my $client = shift;
+	my $start = shift;
+	my $end = shift;
+	my $amount = shift;
+	my @loc = @_;
+
+	my $mct = money::collections_tracker->table;
+	my $mb = money::billing->table;
+	my $circ = action::circulation->table;
+	my $mg = money::grocery->table;
+	my $descendants = "actor.org_unit_descendants((select id from actor.org_unit where shortname = ?))";
+
+	my $SQL = <<"	SQL";
+
+select
+        usr,
+        SUM(total_billing) - SUM(COALESCE(p.amount,0)) as threshold_amount
+  from  (select
+                x.id,
+                x.usr,
+                SUM(b.amount) AS total_billing
+          from  action.circulation x
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and x.circ_lib in (XX)
+                and b.billing_ts between ? and ?
+                and not b.voided
+          group by 1,2
+
+                  union all
+
+         select
+                x.id,
+                x.usr,
+                SUM(b.amount) AS total_billing
+          from  money.grocery x
+                join money.billing b on (b.xact = x.id)
+          where x.xact_finish is null
+                and x.billing_location in (XX)
+                and b.billing_ts between ? and ?
+                and not b.voided
+          group by 1,2
+        ) full_list
+        left join money.payment p on (full_list.id = p.xact)
+  group by 1
+  having SUM(total_billing) - SUM(COALESCE(p.amount,0)) > ?
+;
+	SQL
+
+	my @l_ids;
+	for my $l (@loc) {
+		my ($org) = actor::org_unit->search( shortname => uc($l) );
+		next unless $org;
+
+		my $o_list = actor::org_unit->db_Main->selectcol_arrayref( "SELECT id FROM actor.org_unit_descendants(?);", {}, $org->id );
+		next unless (@$o_list);
+
+		my $o_txt = join ',' => @$o_list;
+
+		(my $real_sql = $SQL) =~ s/XX/$o_txt/gsm;
+
+		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
+		$sth->execute( $start, $end, $start, $end, $amount );
+
+		while (my $row = $sth->fetchrow_hashref) {
+			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
+			$client->respond( $row );
+		}
+	}
+	return undef;
+}
+__PACKAGE__->register_method(
+	method		=> 'users_owing_money',
+	api_name	=> 'open-ils.storage.money.collections.users_owing_money',
+	stream		=> 1,
+	argc		=> 4,
+);
+
 sub active_in_collections {
 	my $self = shift;
 	my $client = shift;
