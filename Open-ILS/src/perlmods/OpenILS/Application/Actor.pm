@@ -2726,9 +2726,10 @@ sub barcode_exists {
 	my( $self, $conn, $auth, $barcode ) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	my $a = $e->search_actor_card({barcode => $barcode}, {idlist=>1});
-	return $$a[0] if $a and @$a;
-	return 0;
+	my $card = $e->search_actor_card({barcode => $barcode});
+    return 0 unless @$card;
+    my $user = $e->retrieve_actor_user($card->[0]->usr) or return $e->event;
+    return $user->id;
 }
 
 
