@@ -436,6 +436,16 @@ CREATE TABLE actor.workstation (
 	owning_lib	INT	NOT NULL REFERENCES actor.org_unit (id)
 );
 
+CREATE TABLE actor.usr_org_unit_opt_in (
+	id		SERIAL				PRIMARY KEY,
+	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id),
+	usr		INT				NOT NULL REFERENCES actor.usr (id),
+	staff		INT				NOT NULL REFERENCES actor.usr (id),
+	opt_in_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	opt_in_ws	INT				NOT NULL REFERENCES actor.workstation (id),
+	CONSTRAINT usr_opt_in_once_per_org_unit UNIQUE (usr,org_unit)
+);
+
 CREATE TABLE actor.org_unit_setting (
 	id		BIGSERIAL	PRIMARY KEY,
 	org_unit	INT		NOT NULL REFERENCES actor.org_unit ON DELETE CASCADE,

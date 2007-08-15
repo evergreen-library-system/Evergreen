@@ -98,6 +98,26 @@
 
 
 	<!-- Actually in the DB -->
+	<class id="auoi" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_org_unit_opt_in" oils_persist:tablename="actor.usr_org_unit_opt_in" reporter:label="User Sharing Opt-in">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_org_unit_opt_in_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Opt-in ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Workstation" name="opt_in_ws" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Staff Member" name="staff" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="User" name="usr" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Allowed Org Unit" name="org_unit" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Opt-in Date/Time" name="opt_in_ts" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="opt_in_ws" reltype="has_a" key="id" map="" class="aws"/>
+		</links>
+	</class>
+
 	<class id="aws" controller="open-ils.cstore" oils_obj:fieldmapper="actor::workstation" oils_persist:tablename="actor.workstation" reporter:label="Workstation">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />

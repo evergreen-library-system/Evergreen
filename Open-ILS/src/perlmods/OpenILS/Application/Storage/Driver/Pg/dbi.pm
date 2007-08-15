@@ -394,6 +394,12 @@
 	actor::org_address->sequence( 'actor.org_address_id_seq' );
 	
 	#---------------------------------------------------------------------
+	package actor::usr_org_unit_opt_in;
+	
+	actor::usr_org_unit_opt_in->table( 'actor.usr_org_unit_opt_in' );
+	actor::usr_org_unit_opt_in->sequence( 'actor.usr_org_unit_opt_in_id_seq' );
+
+	#---------------------------------------------------------------------
 	package actor::org_unit_proximity;
 	
 	actor::org_unit_proximity->table( 'actor.org_unit_proximity' );
