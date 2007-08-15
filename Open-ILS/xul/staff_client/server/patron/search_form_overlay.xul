@@ -31,11 +31,12 @@
 	</columns>
 	<rows id="psr">
 		<row>
-			<spacer />
-			<hbox>
-				<label control="inactive" accesskey="I" value="Include inactive patrons?"/>
-				<checkbox id="inactive" value="unchecked" oncommand="if (this.getAttribute('value') == 'unchecked') this.setAttribute('value','checked'); else this.setAttribute('value','unchecked');"/>
-			</hbox>
+			<label control="inactive" accesskey="I" value="Include inactive patrons?"/>
+			<checkbox id="inactive" />
+        </row>
+        <row>
+			<label control="search_range_menu" value="Limit results to patrons in"/>
+            <hbox id="search_depth" />
 		</row>
 		<row id="psr1">
 			<label id="psl1" control="family_name" 
