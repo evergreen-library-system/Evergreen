@@ -291,7 +291,7 @@ patron.bills.prototype = {
 											}
 											if (ev.type == 'change' && obj.controller.view.payment_type.value == 'credit_payment') {
 												JSAN.use('util.money');
-												JSAN.use('patron.util'); var au_obj = patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id);
+												JSAN.use('patron.util'); var au_obj = patron.util.retrieve_au_via_id(ses(),obj.patron_id);
 												var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
 												var available = util.money.dollars_float_to_cents_integer(au_obj.credit_forward_balance());
 												if (proposed > available) {
@@ -501,7 +501,7 @@ patron.bills.prototype = {
 						var template = 'bill_payment';
 						JSAN.use('patron.util'); JSAN.use('util.functional');
 						var params = { 
-							'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+							'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id), 
 							'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
 							'staff' : obj.data.list.au[0],
 							'header' : obj.data.print_list_templates[template].header,
