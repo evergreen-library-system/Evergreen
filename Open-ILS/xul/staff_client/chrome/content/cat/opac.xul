@@ -60,6 +60,9 @@
 
 				set_opac();
 
+				g.data.actions_for_record_popup = $('actions_for_record_popup');
+				g.data.stash('actions_for_record_popup');
+
 			} catch(E) {
 				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
 					"system administrator or software developer the following:\ncat/opac.xul\n" + E + '\n';
@@ -320,7 +323,7 @@
 			<spacer flex="1"/>
 			<menubar>
 				<menu label="Actions for this Record" accesskey="A">
-				<menupopup>
+				<menupopup id="actions_for_record_popup">
 				<menuitem label="OPAC View" accesskey="O" id="opac_view" oncommand="set_opac();"/>
 				<menuitem label="MARC View" accesskey="V" id="marc_view" oncommand="set_marc_view();"/>
 				<menuitem label="MARC Edit" accesskey="E" id="marc_edit" oncommand="set_marc_edit();"/>
