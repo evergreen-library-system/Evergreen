@@ -467,26 +467,20 @@ __PACKAGE__->register_method (
 );
 
 sub set_circ_due_date {
-	my( $s, $c, $authtoken, $circid, $date ) = @_;
-	my ($circ, $evt) = $U->fetch_circulation($circid);
-	return $evt if $evt;
+	my( $self, $conn, $auth, $circ_id, $date ) = @_;
 
-	my $reqr;
-	($reqr, $evt) = $U->checkses($authtoken);
-	return $evt if $evt;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $circ = $e->retrieve_action_circulation($circ_id)
+        or return $e->die_event;
 
-	$evt = $U->check_perms($reqr->id, $circ->circ_lib, 'CIRC_OVERRIDE_DUE_DATE');
-	return $evt if $evt;
-
+    return $e->die_event unless $e->allowed('CIRC_OVERRIDE_DUE_DATE', $circ->circ_lib);
 	$date = clense_ISO8601($date);
-	$logger->activity("user ".$reqr->id.
-		" updating due_date on circ $circid: $date");
-
 	$circ->due_date($date);
-	my $stat = $U->storagereq(
-		'open-ils.storage.direct.action.circulation.update', $circ);
-	return $U->DB_UPDATE_FAILED unless defined $stat;
-	return $stat;
+    $e->update_action_circulation($circ) or return $e->die_event;
+    $e->commit;
+
+    return $circ->id;
 }
 
 
