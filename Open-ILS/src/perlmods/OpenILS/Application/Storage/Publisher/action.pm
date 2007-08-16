@@ -528,7 +528,9 @@ sub generate_fines {
 				"\tItem was due on or before: ".localtime($due)."\n");
 	
 			my @fines = money::billing->search_where(
-				{ xact => $c->id, billing_type => 'Overdue materials' },
+				{ xact => $c->id,
+				  billing_type => 'Overdue materials',
+				  billing_ts => { '>' => $c->due_date } },
 				{ order_by => 'billing_ts DESC'}
 			);
 
