@@ -2728,8 +2728,7 @@ sub barcode_exists {
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
     return 0 unless @$card;
-    my $user = $e->retrieve_actor_user($card->[0]->usr) or return $e->event;
-    return $user->id;
+    return $card->[0]->usr;
 }
 
 
