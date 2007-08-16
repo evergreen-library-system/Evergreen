@@ -92,7 +92,8 @@
 					<td class='holds_cell'>&opac.holds.contactEmail;:</td>
 					<td class='holds_cell' id='holds_email'> 
                         <span class='hide_me' id='holds.no_email'>
-                            
+                           &common.email.none;<br/>
+                           &common.email.set;
                         </span>
                         <span class='hide_me' id='holds.no_email.xul'>
                            &common.email.none; 
