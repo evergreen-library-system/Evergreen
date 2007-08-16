@@ -74,11 +74,6 @@
 				g.aout_hash[ g.aout_list[i].id() ] = g.aout_list[i];
 			}
 
-			//g.my_libs = g.network.simple_request(
-			//	'FM_AOU_RETRIEVE_RELATED_VIA_SESSION',
-			//	[ xulG.auth.session.key ]
-			//);
-
 			var highest_org_id = g.network.simple_request(
 				'PERM_RETRIEVE_HIGHEST_ORG',
 				[ xulG.auth.session.key, g.user.id(), 'REGISTER_WORKSTATION']
@@ -105,27 +100,6 @@
 				g.my_libs_shortname_hash[ g.my_libs[i].id() ] = g.my_libs[i].shortname();
 				g.my_libs_ou_hash[ g.my_libs[i].id() ] = function(o){return o;}(g.my_libs[i]);
 			}
-			/*
-			for (var i = 0; i < g.my_libs.length; i++) {
-				var p = g.my_libs[i].parent_ou();
-				if (!p) {
-					g.my_libs_tree = function(o){return o;}(g.my_libs_ou_hash[g.my_libs[i].id()]);
-				} else {
-					p = g.my_libs_ou_hash[ p ];
-					var c = p.children();
-					if (!c) c = [];
-					c.push( function(o){return o;}(g.my_libs[i]) );
-					c = c.sort(
-						function( a, b ) {
-							if (a.shortname() < b.shortname()) return -1;
-							if (a.shortname() > b.shortname()) return 1;
-							return 0;
-						}
-					);
-					p.children( c );
-				}
-			}
-			*/
 
 			g.tb = document.getElementById('wsname');
 
@@ -142,17 +116,27 @@
 			var x = document.getElementById('placeholder');
 			util.widgets.remove_children( x );
 
+			var default_lib = g.my_lib; 
+			if ( !get_bool( g.aout_hash[ g.my_libs_ou_hash[ default_lib ].ou_type() ].can_have_users() ) ) {
+				default_lib = null;
+			}
+
 			g.ml = util.widgets.make_menulist( 
 				util.functional.map_list( 
 					util.fm_utils.flatten_ou_branch( g.my_libs_tree ),
-					function(obj) { return [ 
-						obj.shortname(), 
-						obj.id(), 
-						( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
-						( g.aout_hash[ obj.ou_type() ].depth() ),
-					]; }
+					function(obj) { 
+						if (!default_lib) {
+							if ( get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ) default_lib = obj.id();
+						}
+						return [ 
+							obj.shortname(), 
+							obj.id(), 
+							( !get_bool( g.aout_hash[ obj.ou_type() ].can_have_users() ) ),
+							( g.aout_hash[ obj.ou_type() ].depth() ),
+						]; 
+					}
 				),
-				g.my_lib
+				default_lib
 			);
 
 			x.appendChild( g.ml );
