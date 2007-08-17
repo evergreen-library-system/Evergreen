@@ -108,6 +108,8 @@ sub handler {
 
 	$ws_ou ||= $user->home_ou;
 
+	warn "Checking perms " . join(',', @$perms) . " for user " . $user->id . " at location $ws_ou\n";
+
 	my $failures = OpenSRF::AppSession
 		->create('open-ils.actor')
 		->request('open-ils.actor.user.perm.check', $auth_ses, $user->id, $ws_ou, $perms)
