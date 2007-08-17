@@ -106,7 +106,7 @@ sub handler {
 	my $user = verify_login($auth_ses);
 	return Apache2::Const::FORBIDDEN unless ($user);
 
-	$ws_ou ||= $usr->home_ou;
+	$ws_ou ||= $user->home_ou;
 
 	my $failures = OpenSRF::AppSession
 		->create('open-ils.actor')
