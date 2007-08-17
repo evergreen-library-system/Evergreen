@@ -159,6 +159,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$xml =~ s/>\s+</></go;
 	$xml =~ s/\p{Cc}//go;
 	$xml = entityize($xml);
+	$xml =~ s/[\x00-\x1f]//go;
 
 	my $bib = new Fieldmapper::biblio::record_entry;
 	$bib->id($id);
