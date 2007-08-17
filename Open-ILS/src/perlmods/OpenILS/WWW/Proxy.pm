@@ -1,4 +1,4 @@
-package OpenILS::Reporter::Proxy;
+package OpenILS::WWW::Proxy;
 use strict; use warnings;
 
 use Apache2 ();
