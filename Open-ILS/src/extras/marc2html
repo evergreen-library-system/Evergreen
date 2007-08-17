@@ -1,19 +1,21 @@
 #!/usr/bin/perl
 
-use Error;
+use Error qw/:try/;
 use MARC::Batch;
 use MARC::File::XML;
 use XML::LibXSLT;
 use XML::LibXML;
 use Unicode::Normalize;
 use Getopt::Long;
+use FileHandle;
 
-my ($split,$enc,$marc,$out) = (100);
+my ($split,$enc,$marc,$out,$bad) = (100);
 GetOptions(
 	'split=i' => \$split,
 	'marc=s'  => \$marc,
 	'encoding=s'  => \$enc,
 	'out_dir=s'  => \$out,
+	'bad=s'  => \$bad,
 );
 
 if ($enc) {
@@ -31,6 +33,7 @@ my $xslt = XML::LibXSLT->new();
 
 $stylesheet = $xslt->parse_stylesheet( $parser->parse_string($xsl) );
 
+$bad = new FileHandle( $bad => '>:raw' ) if ($bad);
 
 my $xml = '';
 my $current = 1;
@@ -42,7 +45,20 @@ $marc->strict_off;
 $marc->warnings_off;
 
 while (my $r = $marc->next) {
-	$xml .= entityize(MARC::File::XML::record($r));
+	my $rxml = entityize(MARC::File::XML::record($r));
+	$rxml =~ s/[\x00-\x1f]//go;
+
+	try { $doc = $parser->parse_string($rxml); }
+	catch Error with {
+		my $e = shift;
+		warn "arg ... bad record $current, skipping: $e\n";
+		$current++;
+		print $bad $r->as_usmarc if ($bad);
+		$r = undef;
+	};
+	next unless ($r);
+
+	$xml .= $rxml;
 
 	unless ($current % $split) {
 		$xml = <<"		XML";
@@ -51,7 +67,11 @@ while (my $r = $marc->next) {
 			</collection>
 		XML
 
-		my $doc = $parser->parse_string($xml);
+		my $doc;
+		try { $doc = $parser->parse_string($xml); }
+		catch Error with { my $e = shift; warn "ARG! Doc failed to parse:\n$e\n-------------------------------------------\n$xml\n"; };
+		die unless $doc;
+
 		$xml = '';
 
 		my $results = $stylesheet->transform($doc, prev => "'$prev'", next => "'$next'");
