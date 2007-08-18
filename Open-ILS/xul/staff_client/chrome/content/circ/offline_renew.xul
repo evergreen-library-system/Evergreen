@@ -29,17 +29,20 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_renew.js"/>
 
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
+
 	<groupbox flex="1">
-		<caption label="Standalone Renew"/>
+		<caption label="&staff.circ.offline_renew.main.label;"/>
 		<hbox flex="1">
 			<vbox flex="1">
 				<hbox>
-					<label value="Step 1)" style="font-weight: bold" />
-					<description>Check today's date above.</description>
+					<label value="&common.step1.label;" style="font-weight: bold" />
+					<description>&common.check_date.description;</description>
 				</hbox>
 				<hbox>
-					<label value="Step 2)" style="font-weight: bold" accesskey="2" control="p_barcode"/>
-					<description>(Optional) Enter the patron's barcode:</description>
+					<label value="&common.step2.label;" style="font-weight: bold" accesskey="&common.step2.accesskey;" control="p_barcode"/>
+					<description>&staff.circ.offline_renew.p_barcode.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -47,12 +50,12 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>Check barcode?</description>
+					<description>&common.check_barcode.description;</description>
 					<checkbox id="strict_p_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
-					<label value="Step 3)" style="font-weight: bold" accesskey="3" control="duedate"/>
-					<description>Enter the item due date:</description>
+					<label value="&common.step3.label;" style="font-weight: bold" accesskey="&common.step3.accesskey;" control="duedate"/>
+					<description>&common.due_date.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -62,44 +65,44 @@
 					<spacer flex="1"/>
 					<menulist id="duedate_menu">
 						<menupopup>
-							<menuitem label="or choose one of these" value="0"/>
-							<menuitem label="Today + 3 days" value="3"/>
-							<menuitem label="Today + 7 days" value="7"/>
-							<menuitem label="Today + 14 days" value="14"/>
-							<menuitem label="Today + 30 days" value="30"/>
+							<menuitem label="&common.date_helper;" value="0"/>
+							<menuitem label="&common.date_helper.3_days;" value="3"/>
+							<menuitem label="&common.date_helper.7_days;" value="7"/>
+							<menuitem label="&common.date_helper.14_days;" value="14"/>
+							<menuitem label="&common.date_helper.30_days;" value="30"/>
 						</menupopup>
 					</menulist>
 				</hbox>
 				<hbox>
-					<label value="Step 4)" style="font-weight: bold" accesskey="4" control="i_barcode"/>
-					<description>Enter the item barcode:</description>
+					<label value="&common.step4.label;" style="font-weight: bold" accesskey="&common.step4.accesskey;" control="i_barcode"/>
+					<description>&common.enter_barcode.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<hbox><textbox id="i_barcode"/><button id="enter" label="Enter" accesskey="E"/></hbox>
+					<hbox><textbox id="i_barcode"/><button id="enter" label="&common.enter.label;" accesskey="&common.enter.accesskey;"/></hbox>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>Check barcode?</description>
+					<description>&common.check_barcode.description;</description>
 					<checkbox id="strict_i_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
-					<label value="Step 5)" style="font-weight: bold"/>
-					<description>Repeat Steps 3 and 4 until done.</description>
+					<label value="&common.step5.label;" style="font-weight: bold"/>
+					<description>&staff.circ.offline_renew.step5.label;</description>
 				</hbox>
 				<hbox>
-					<label value="Step 6)" style="font-weight: bold"/>
-					<description>Finish</description>
+					<label value="&common.step6.label;" style="font-weight: bold"/>
+					<description>&staff.circ.offline.finish.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>Print receipt?</description>
+					<description>&staff.circ.offline.print.description;</description>
 					<checkbox id="print_receipt" persist="checked"/>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<button id="cancel" label="Cancel" />
-					<button id="submit" label="Save these transactions" accesskey="S" />
+					<button id="cancel" label="&common.cancel;" />
+					<button id="submit" label="&common.save_transactions.label;" accesskey="&common.save_transactions.accesskey;" />
 				</hbox>
 			</vbox>
 			<splitter>
@@ -109,7 +112,7 @@
 				<tree id="checkout_list" flex="1" enableColumnDrag="true"/>
 				<hbox id="checkout_bottom_ui">
 					<spacer flex="1"/>
-					<button id="delete" label="Delete selected transaction" oncommand="alert('Not Yet Implemented');"/>
+					<button id="delete" label="&common.delete_transactions.label;" oncommand="alert('&common.unimplemented;');"/>
 				</hbox>
 			</vbox>
 		</hbox>

@@ -1,14 +1,20 @@
+var commonStrings;
+var circStrings;
+
 function my_init() {
 	try {
+		commonStrings = document.getElementById('commonStrings');
+		circStrings = document.getElementById('circStrings');
+
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
 		g.error.sdump('D_TRACE','my_init() for offline_checkout.xul');
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-			try { window.xulG.set_tab_name('Standalone'); } catch(E) { alert(E); }
+			try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 		}
 
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
@@ -31,8 +37,7 @@ function my_init() {
 		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
-		var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-			"system administrator or software developer the following:\ncirc/offline_in_house_use.xul\n" + E + '\n';
+		var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline_in_house_use.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}
@@ -51,7 +56,7 @@ function handle_keypress(ev) {
 function handle_enter(ev) {
 	JSAN.use('util.barcode');
 	if ( ($('strict_i_barcode').checked) && (! util.barcode.check($('i_barcode').value)) ) {
-		var r = g.error.yns_alert('This barcode has a bad checkdigit.','Barcode Warning','Ok','Clear',null,'Check here to confirm this message');
+		var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
 		if (r == 1) {
 			setTimeout(
 				function() {
@@ -77,6 +82,7 @@ function append_to_list() {
 
 		my.type = 'in_house_use';
 		my.timestamp = parseInt( new Date().getTime() / 1000) + g.delta;
+		/* I18N to-do: enable localized date formats */
 		my.use_time = util.date.formatted_date(new Date(),"%F %H:%M:%s");
 
 		var i_barcode = $('i_barcode').value;

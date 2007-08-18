@@ -3,8 +3,8 @@ var circStrings;
 
 function my_init() {
 	try {
-		commonStrings = document.getElementById('commonStrings');
-		circStrings = document.getElementById('circStrings');
+		commonStrings = $('commonStrings');
+		circStrings = $('circStrings');
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
@@ -104,15 +104,18 @@ function test_patron(ev) {
 			}
 
 		}
+
 		if (g.data.bad_patrons[barcode]) {
-			var msg = '';
+			var code;
 			switch(g.data.bad_patrons[barcode]) {
-				case 'L' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.lost', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
-				case 'E' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.expired', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
-				case 'B' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.barred', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
-				case 'D' : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.blocked', [g.data.bad_patrons_date.substr(0,15), barcode]); break;
-				default : msg = circStrings.getFormattedString('circ.offline_checkout.barcode.flagged.unknown', [g.data.bad_patrons_date.substr(0,15), barcode, g.data.bad_patrons[barcode]]); break;
+				case 'L' : code = commonStrings.getString('common.barcode.status.warning.lost'); break;
+				case 'E' : code = commonStrings.getString('common.barcode.status.warning.expired'); break;
+				case 'B' : code = commonStrings.getString('common.barcode.status.warning.barred'); break;
+				case 'D' : code = commonStrings.getString('common.barcode.status.warning.blocked'); break;
+				default : code = commonStrings.getFormattedString('common.barcode.status.warning.blocked', [g.data.bad_patrons[barcode]]); break;
 			}
+
+			var msg = commonStrings.getFormattedString('common.barcode.status.warning', [g.data.bad_patrons_date.substr(0,15), barcode, code]);
 			var r = g.error.yns_alert(msg,circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
@@ -131,7 +134,7 @@ function test_patron(ev) {
 function check_date(ev) {
 	JSAN.use('util.date');
 	try {
-		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw(circStrings.getString('circ.offline_checkout.date.invalid')); }
+		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw(commonStrings.getString('common.date.invalid')); }
 		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
 		if (util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
 	} catch(E) {

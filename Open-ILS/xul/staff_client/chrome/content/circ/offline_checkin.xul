@@ -29,22 +29,20 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_checkin.js"/>
 
-	
 	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
 	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
-	
 
 	<groupbox flex="1">
 		<caption label="&staff.circ.offline_checkin.main.label;"/>
 		<hbox flex="1">
 			<vbox flex="1">
 				<hbox>
-					<label value="&staff.circ.offline_checkin.step1.label;" style="font-weight: bold" />
-					<description>&staff.circ.offline_checkin.step1.description;</description>
+ 					<label value="&common.step1.label;" style="font-weight: bold" />
+ 					<description>&common.check_date.description;</description>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkin.step2.label;" style="font-weight: bold" accesskey="&staff.circ.offline_checkin.step2.accesskey;" control="i_barcode"/>
-					<description>&staff.circ.offline_checkin.step2.description;</description>
+ 					<label value="&common.step2.label;" style="font-weight: bold" accesskey="&common.step2.accesskey;" control="i_barcode"/>
+ 					<description>&common.enter_barcode.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -52,15 +50,15 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>&staff.circ.offline_checkin.step2b.label;</description>
+					<description>&common.check_barcode.description;</description>
 					<checkbox id="strict_i_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkin.step3.label;" style="font-weight: bold"/>
+					<label value="&common.step3.label;" style="font-weight: bold"/>
 					<description>&staff.circ.offline_checkin.step3.description;</description>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkin.step4.label;" style="font-weight: bold"/>
+					<label value="&common.step4.label;" style="font-weight: bold"/>
 					<description>&staff.circ.offline.finish.description;</description>
 				</hbox>
 				<hbox>

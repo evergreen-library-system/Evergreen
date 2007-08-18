@@ -29,17 +29,20 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_register.js"/>
 
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
+
 	<groupbox flex="1">
-		<caption label="Standalone Patron Registration"/>
+		<caption label="&staff.circ.offline_register.main.label;"/>
 		<grid>
 			<columns><column/><column/></columns>
 			<rows>
 				<row>
-					<label value="Home Library:"/>
+					<label value="&staff.circ.offline_register.x_home_ou.label;"/>
 					<hbox id="x_home_ou"/>
 				</row>
 				<row>
-					<label value="Profile:"/>
+					<label value="&staff.circ.offline_register.x_profile.label;"/>
 					<hbox id="x_profile"/>
 				</row>
 				<row>
@@ -53,33 +56,33 @@
 					<columns><column/><column/></columns>
 					<rows>
 						<row>
-							<label value="New Barcode:"/>
+							<label value="&staff.circ.offline_register.barcode.label;"/>
 							<textbox id="barcode"/>
 						</row>
 						<row>
-							<label value="New Password:"/>
+							<label value="&staff.circ.offline_register.passwd.label;"/>
 							<textbox id="passwd"/>
 						</row>
 						<row><label value=" "/></row>
 						<row>
-							<label value="Last Name:"/>
+							<label value="&staff.circ.offline_register.family_name.label;"/>
 							<textbox id="family_name"/>
 						</row>
 						<row>
-							<label value="First Name:"/>
+							<label value="&staff.circ.offline_register.first_given_name.label;"/>
 							<textbox id="first_given_name"/>
 						</row>
 						<row>
-							<label value="Date of Birth:"/>
+							<label value="&staff.circ.offline_register.dob.label;"/>
 							<textbox id="dob" style="font-family: monospace;"/>
 						</row>
 						<row><label value=" "/></row>
 						<row>
-							<label value="Ident Type:"/>
+							<label value="&staff.circ.offline_register.x_ident_type.label;"/>
 							<hbox id="x_ident_type"/>
 						</row>
 						<row>
-							<label value="Ident Value:"/>
+							<label value="&staff.circ.offline_register.ident_value.label;"/>
 							<textbox id="ident_value"/>
 						</row>
 					</rows>
@@ -91,31 +94,31 @@
 					<columns><column/><column/></columns>
 					<rows>
 						<row>
-							<label value="Billing Address"/>
+							<label value="&staff.circ.offline_register.billing_address.label;"/>
 						</row>
 						<row>
-							<label value="Line 1"/>
+							<label value="&staff.circ.offline_register.street1.label;"/>
 							<textbox id="street1"/>
 						</row>
 						<row>
-							<label value="Line 2"/>
+							<label value="&staff.circ.offline_register.street2.label;"/>
 							<textbox id="street2"/>
 						</row>
 						<row>
-							<label value="City"/>
+							<label value="&staff.circ.offline_register.city.label;"/>
 							<textbox id="city"/>
 						</row>
 						<row>
-							<label value="State"/>
-							<textbox id="state" value="GA"/>
+							<label value="&staff.circ.offline_register.state.label;"/>
+							<textbox id="state" value="&staff.circ.offline_register.state.default_value;"/>
 						</row>
 						<row>
-							<label value="Postal Code"/>
+							<label value="&staff.circ.offline_register.post_code.label;"/>
 							<textbox id="post_code"/>
 						</row>
 						<row hidden="true">
-							<label value="Country"/>
-							<textbox id="country" value="USA"/>
+							<label value="&staff.circ.offline_register.country.label;"/>
+							<textbox id="country" value="&staff.circ.offline_register.country.default_value;"/>
 						</row>
 						<row><label value=" "/></row>
 					</rows>
@@ -125,8 +128,8 @@
 		</hbox>
 		<hbox>
 			<spacer flex="1"/>
-			<button id="cancel" label="Cancel" />
-			<button id="submit" label="Save patron registration" accesskey="S" />
+			<button id="cancel" label="&common.cancel;" />
+			<button id="submit" label="&staff.circ.offline_register.submit.label;" accesskey="&staff.circ.offline_register.submit.accesskey;" />
 		</hbox>
 	</groupbox>
 

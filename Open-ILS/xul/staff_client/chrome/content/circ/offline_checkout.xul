@@ -29,21 +29,19 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="offline_checkout.js"/>
 
-	
 	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
 	<messagecatalog id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
-	
 
 	<groupbox flex="1">
 		<caption label="&staff.circ.offline_checkout.main.label;"/>
 		<hbox flex="1">
 			<vbox flex="1">
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step1.label;" style="font-weight: bold" />
-					<description>&staff.circ.offline_checkout.step1.description;</description>
+ 					<label value="&common.step1.label;" style="font-weight: bold" />
+ 					<description>&common.check_date.description;</description>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step2.label;" style="font-weight: bold" accesskey="&staff.circ.offline_checkout.step2.accesskey;" control="p_barcode"/>
+ 					<label value="&common.step2.label;" style="font-weight: bold" accesskey="&common.step2.accesskey;" control="p_barcode"/>
 					<description>&staff.circ.offline_checkout.step2.description;</description>
 				</hbox>
 				<hbox>
@@ -52,12 +50,12 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>&staff.circ.offline_checkout.strict_barcode.label;</description>
+					<description>&common.check_barcode.description;</description>
 					<checkbox id="strict_p_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step3.label;" style="font-weight: bold" accesskey="&staff.circ.offline_checkout.step3.accesskey;" control="duedate"/>
-					<description>&staff.circ.offline_checkout.step3.description;</description>
+					<label value="&common.step3.label;" style="font-weight: bold" accesskey="&common.step3.accesskey;" control="duedate"/>
+					<description>&common.due_date.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -67,21 +65,21 @@
 					<spacer flex="1"/>
 					<menulist id="duedate_menu">
 						<menupopup>
-							<menuitem label="&staff.circ.offline_checkout.date_helper;" value="0"/>
-							<menuitem label="&staff.circ.offline_checkout.date_helper.3_days;" value="3"/>
-							<menuitem label="&staff.circ.offline_checkout.date_helper.7_days;" value="7"/>
-							<menuitem label="&staff.circ.offline_checkout.date_helper.14_days;" value="14"/>
-							<menuitem label="&staff.circ.offline_checkout.date_helper.30_days;" value="30"/>
+							<menuitem label="&common.date_helper;" value="0"/>
+							<menuitem label="&common.date_helper.3_days;" value="3"/>
+							<menuitem label="&common.date_helper.7_days;" value="7"/>
+							<menuitem label="&common.date_helper.14_days;" value="14"/>
+							<menuitem label="&common.date_helper.30_days;" value="30"/>
 						</menupopup>
 					</menulist>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step4.label;" style="font-weight: bold" accesskey="&staff.circ.offline_checkout.step4.accesskey;" control="i_barcode"/>
-					<description>&staff.circ.offline_checkout.step4.description;</description>
+					<label value="&common.step4.label;" style="font-weight: bold" accesskey="&common.step4.accesskey;" control="i_barcode"/>
+					<description>&common.enter_barcode.description;</description>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<hbox><textbox id="i_barcode"/><button id="enter" label="&common.enter;" accesskey="&common.enter.accesskey;"/></hbox>
+					<hbox><textbox id="i_barcode"/><button id="enter" label="&common.enter.label;" accesskey="&common.enter.accesskey;"/></hbox>
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
@@ -89,15 +87,15 @@
 				</hbox>
 				<hbox>
 					<spacer flex="1"/>
-					<description>&staff.circ.offline_checkout.strict_barcode.label;</description>
+					<description>&common.check_barcode.description;</description>
 					<checkbox id="strict_i_barcode" persist="checked"/>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step5.label;" style="font-weight: bold"/>
+					<label value="&common.step5.label;" style="font-weight: bold"/>
 					<description>&staff.circ.offline_checkout.step5.description;</description>
 				</hbox>
 				<hbox>
-					<label value="&staff.circ.offline_checkout.step6.label;" style="font-weight: bold"/>
+					<label value="&common.step6.label;" style="font-weight: bold"/>
 					<description>&staff.circ.offline.finish.description;</description>
 				</hbox>
 				<hbox>

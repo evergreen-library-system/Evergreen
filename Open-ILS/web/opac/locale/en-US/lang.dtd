@@ -2,8 +2,17 @@
 <!ENTITY lang.description "English">
 <!ENTITY lang.author "PINES">
 
-<!ENTITY common.enter "Enter">
+<!ENTITY common.check_date.description "Check today's date above.">
+<!ENTITY common.check_barcode.description "Check barcode?">
+<!ENTITY common.date_helper 'or choose one of these'>
+<!ENTITY common.date_helper.3_days 'Today + 3 days'>
+<!ENTITY common.date_helper.7_days 'Today + 7 days'>
+<!ENTITY common.date_helper.14_days 'Today + 14 days'>
+<!ENTITY common.date_helper.30_days 'Today + 30 days'>
+<!ENTITY common.due_date.description 'Enter the item due date:'>
+<!ENTITY common.enter.label "Enter">
 <!ENTITY common.enter.accesskey "E">
+<!ENTITY common.enter_barcode.description 'Enter the item barcode:'>
 <!ENTITY common.title "Title">
 <!ENTITY common.author "Author">
 <!ENTITY common.subject "Subject">
@@ -18,6 +27,15 @@
 <!ENTITY common.of "of">
 <!ENTITY common.cancel "Cancel">
 <!ENTITY common.library "Library">
+<!ENTITY common.step1.label 'Step 1)'>
+<!ENTITY common.step2.accesskey '2'>
+<!ENTITY common.step2.label 'Step 2)'>
+<!ENTITY common.step3.accesskey '3'>
+<!ENTITY common.step3.label 'Step 3)'>
+<!ENTITY common.step4.accesskey '4'>
+<!ENTITY common.step4.label 'Step 4)'>
+<!ENTITY common.step5.label 'Step 5)'>
+<!ENTITY common.step6.label 'Step 6)'>
 <!ENTITY common.username "Username">
 <!ENTITY common.username.label "Username:">
 <!ENTITY common.password "Password">
@@ -319,40 +337,42 @@
 <!ENTITY staff.circ.offline.cmd_exit.accesskey 'x'>
 <!ENTITY staff.circ.offline.cmd_exit.label 'Exit'>
 <!ENTITY staff.circ.offline_checkin.main.label 'Standalone Check In'>
-<!ENTITY staff.circ.offline_checkin.step1.description "Check today's date above.">
-<!ENTITY staff.circ.offline_checkin.step1.label 'Step 1)'>
-<!ENTITY staff.circ.offline_checkin.step2.accesskey '2'>
-<!ENTITY staff.circ.offline_checkin.step2.description 'Enter the item barcode:'>
-<!ENTITY staff.circ.offline_checkin.step2.label 'Step 2)'>
 <!ENTITY staff.circ.offline_checkin.step2a.accesskey 'E'>
 <!ENTITY staff.circ.offline_checkin.step2a.label 'Enter'>
-<!ENTITY staff.circ.offline_checkin.step2b.label 'Check barcode?'>
 <!ENTITY staff.circ.offline_checkin.step3.description 'Repeat Steps 2 until done.'>
-<!ENTITY staff.circ.offline_checkin.step3.label 'Step 3)'>
 <!ENTITY staff.circ.offline.finish.description 'Finish'>
-<!ENTITY staff.circ.offline_checkin.step4.label 'Step 4)'>
 <!ENTITY staff.circ.offline.print.description 'Print receipt?'>
 <!ENTITY staff.circ.offline_checkout.main.label 'Standalone Check Out'>
-<!ENTITY staff.circ.offline_checkout.step1.description "Check today's date above.">
-<!ENTITY staff.circ.offline_checkout.step1.label 'Step 1)'>
-<!ENTITY staff.circ.offline_checkout.step2.accesskey '2'>
 <!ENTITY staff.circ.offline_checkout.step2.description "Enter the patron's barcode:">
-<!ENTITY staff.circ.offline_checkout.step2.label 'Step 2)'>
-<!ENTITY staff.circ.offline_checkout.step3.accesskey '3'>
-<!ENTITY staff.circ.offline_checkout.step3.description 'Enter the item due date:'>
-<!ENTITY staff.circ.offline_checkout.step3.label 'Step 3)'>
-<!ENTITY staff.circ.offline_checkout.step4.accesskey '4'>
-<!ENTITY staff.circ.offline_checkout.step4.description 'Enter the item barcode:'>
-<!ENTITY staff.circ.offline_checkout.step4.label 'Step 4)'>
 <!ENTITY staff.circ.offline_checkout.step5.description 'Repeat Steps 3 and 4 until done.'>
-<!ENTITY staff.circ.offline_checkout.step5.label 'Step 5)'>
-<!ENTITY staff.circ.offline_checkout.step6.label 'Step 6)'>
-<!ENTITY staff.circ.offline_checkout.date_helper 'or choose one of these'>
-<!ENTITY staff.circ.offline_checkout.date_helper.3_days 'Today + 3 days'>
-<!ENTITY staff.circ.offline_checkout.date_helper.7_days 'Today + 7 days'>
-<!ENTITY staff.circ.offline_checkout.date_helper.14_days 'Today + 14 days'>
-<!ENTITY staff.circ.offline_checkout.date_helper.30_days 'Today + 30 days'>
-<!ENTITY staff.circ.offline_checkout.strict_barcode.label 'Check barcode?'>
+<!ENTITY staff.circ.offline_in_house_use.main.label 'Standalone In House Use'>
+<!ENTITY staff.circ.offline_in_house_use.uses.label 'Enter the number of uses for the item:'>
+<!ENTITY staff.circ.offline_in_house_use.step4.description 'Repeat Steps 2 and 3 until done.'>
+<!ENTITY staff.circ.offline_register.main.label 'Standalone Patron Registration'>
+<!ENTITY staff.circ.offline_register.x_home_ou.label 'Home Library:'>
+<!ENTITY staff.circ.offline_register.x_profile.label 'Profile:'>
+<!ENTITY staff.circ.offline_register.barcode.label 'New Barcode:'>
+<!ENTITY staff.circ.offline_register.passwd.label 'New Password:'>
+<!ENTITY staff.circ.offline_register.family_name.label 'Last Name:'>
+<!ENTITY staff.circ.offline_register.first_given_name.label 'First Name:'>
+<!ENTITY staff.circ.offline_register.dob.label 'Date of Birth:'>
+<!ENTITY staff.circ.offline_register.x_ident_type.label 'Ident Type:'>
+<!ENTITY staff.circ.offline_register.ident_value.label 'Ident Value:'>
+<!ENTITY staff.circ.offline_register.billing_address.label 'Billing Address'>
+<!ENTITY staff.circ.offline_register.street1.label 'Line 1'>
+<!ENTITY staff.circ.offline_register.street2.label 'Line 2'>
+<!ENTITY staff.circ.offline_register.city.label 'City'>
+<!ENTITY staff.circ.offline_register.state.label 'State'>
+<!ENTITY staff.circ.offline_register.state.default_value 'GA'>
+<!ENTITY staff.circ.offline_register.post_code.label 'Postal Code'>
+<!ENTITY staff.circ.offline_register.country.label 'Country'>
+<!ENTITY staff.circ.offline_register.country.default_value 'USA'>
+<!ENTITY staff.circ.offline_register.submit.accesskey 'S'>
+<!ENTITY staff.circ.offline_register.submit.label 'Save patron registration'>
+<!ENTITY staff.circ.offline_renew.main.label 'Standalone Renew'>
+<!ENTITY staff.circ.offline_renew.p_barcode.description "(Optional) Enter the patron's barcode:">
+<!ENTITY staff.circ.offline_renew.step5.label 'Repeat Steps 3 and 4 until done.'>
+
 <!ENTITY staff.circ.checkin.caption 'Check In'>
 <!ENTITY staff.circ.checkin.scan_label 'Enter Barcode:'>
 <!ENTITY staff.circ.checkin.scan_label.accesskey 'a'>

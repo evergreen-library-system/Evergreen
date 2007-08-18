@@ -63,8 +63,37 @@
 					<![CDATA[
 					var lines = str.split("\n");
 					var props = {};
+					var line = '';
+					var in_comment = false;
+
 					for (var l in lines) {
-						var line = lines[l];
+						line += lines[l];
+
+						// handle multi-line comments
+						if (line.indexOf('/*') >= 0) in_comment = true;
+
+						if (in_comment && line.indexOf('*/') > 0) {
+							var comment_start = line.indexOf('/*');
+							var comment_end = line.indexOf('*/');
+							line = line.substring(0, comment_start) + line.substring(0, comment_end + 2);
+							in_comment = false;
+						} else if (in_comment) continue;
+							
+						// get rid of entire-line comments
+						if (line.indexOf('#') == 0) {
+							line = '';
+							continue;
+						}
+
+						// handle end-of-line comments
+						var end_comment = line.indexOf('//');
+						if (end_comment >= 0) line = line.substring(0, end_comment);
+
+						// and line concatenation
+						if (line.charAt(line.lenth - 1) == '\\') {
+							line = line.substring(0,line.lenth - 1);
+							continue;
+						}
 
 						var eq_pos = line.indexOf('=');
 						if (eq_pos < 0) continue;
@@ -91,6 +120,7 @@
 						} while ( cont == true );
 
 						props[k] = v;
+						line = '';
 			        	}
 
 					return props;
@@ -120,8 +150,24 @@
 						try {
 							var str = this._props[key]; if (!str) throw("messageCatalog: Failed to get string " + key + " in bundle.");
 							var these = [ str ].concat(params);
-							var val = this.sprintf.apply(this,these);
-							return val;
+							var v = this.sprintf.apply(this,these);
+
+							// The standard set of replacables
+							v = v.replace(/\\\\/g, '\\');
+							v = v.replace(/\\b/g, '\b');
+							v = v.replace(/\\f/g, '\f');
+							v = v.replace(/\\r/g, '\r');
+							v = v.replace(/\\t/g, '\t');
+							v = v.replace(/\\v/g, '\v');
+							v = v.replace(/\\n/g, '\n');
+
+							// replace unicode escapes
+							v = v.replace(
+								/\\u([0-9a-f]{4})/gi,
+								function (r,s) { return String.fromCharCode(s); }
+							);
+
+							return v;
 						} catch(e) {
 							alert("*** Failed to get string " + key + " in bundle: " + this.src + "\n");
 							throw(e);
@@ -255,6 +301,7 @@
 								var value = valueIndex ? a[valueIndex.slice(0, -1)] : a[i++];
 
 								switch (type) {
+								case 'S':
 								case 's': return formatString(String(value), leftJustify, minWidth, precision, zeroPad);
 								case 'c': return formatString(String.fromCharCode(+value), leftJustify, minWidth, precision, zeroPad);
 								case 'b': return formatBaseX(value, 2, prefixBaseX, leftJustify, minWidth, precision, zeroPad);
