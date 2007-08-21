@@ -184,19 +184,20 @@ sub nearest_hold {
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
 	my $age = shift() || '0';
+	my $prox = shift() || 0;
 
 	my $age_where = '';
 	if ($age) {
 		$age_where = "
 
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $pl, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $pl, $age, $prox);
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
 		  	JOIN actor.org_unit_proximity p ON (p.from_org = h.pickup_lib)
 		  WHERE hm.target_copy = ?
 			AND p.to_org = ?
-		  	AND h.request_time + ? < NOW()
+		  	AND (h.request_time + ? < NOW() OR p.prox <= ?)
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		ORDER BY
