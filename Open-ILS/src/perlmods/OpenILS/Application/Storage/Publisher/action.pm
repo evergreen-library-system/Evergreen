@@ -183,7 +183,7 @@ sub nearest_hold {
 	my $pl = shift;
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
-	my $age = shift() || '0 seconds';
+	my $age = shift() || '0';
 
 	my $age_where = '';
 	if ($age) {
@@ -196,7 +196,7 @@ sub nearest_hold {
 		  	JOIN actor.org_unit_proximity p ON (p.from_org = h.pickup_lib)
 		  WHERE hm.target_copy = ?
 			AND p.to_org = ?
-		  	AND AGE(h.request_time) > ?
+		  	AND h.request_time + ? < NOW()
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		ORDER BY
