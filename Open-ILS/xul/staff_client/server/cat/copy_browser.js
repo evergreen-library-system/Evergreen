@@ -961,7 +961,7 @@ cat.copy_browser.prototype = {
 			} else {
 				if (typeof org != 'object') org = obj.data.hash.aou[ org ];
 			}
-			obj.show_libs( org, true );
+			obj.show_libs( org, false );
 		
 			var p_org = obj.data.hash.aou[ org.parent_ou() ];
 			if (p_org) {
@@ -976,7 +976,7 @@ cat.copy_browser.prototype = {
 					funcs.push(
 						function(o) {
 							return function() {
-								obj.show_libs( o, true );
+								obj.show_libs( o, false );
 							}
 						}( p_org.children()[i] )
 					);
@@ -1056,7 +1056,7 @@ cat.copy_browser.prototype = {
 				funcs.push(
 					function(o) {
 						return function() {
-							obj.show_libs(o,true);
+							obj.show_libs(o,false);
 						}
 					}( orgs[i] )
 				);
@@ -1537,7 +1537,7 @@ cat.copy_browser.prototype = {
 					'on_click' : function(ev) {
 						netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
 						var row = {}; var col = {}; var nobj = {};
-						obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj);
+						obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj); 
 						if ((row.value == -1)||(nobj.value != 'twisty')) { return; }
 						var node = obj.list.node.contentView.getItemAtIndex(row.value);
 						var list = [ node.getAttribute('retrieve_id') ];
