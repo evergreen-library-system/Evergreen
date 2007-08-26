@@ -327,6 +327,7 @@ util.list.prototype = {
 				rparams.my_node.setAttribute(i,params.attributes[i]);
 			}
 		}
+        this.row_count.fleshed--;
 		return rparams;
 	},
 
@@ -410,7 +411,7 @@ util.list.prototype = {
 						if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
 						treerow.setAttribute('fleshed','true');
 						obj.row_count.fleshed++;
-						if (obj.row_count.fleshed == obj.row_count.total) {
+						if (obj.row_count.fleshed >= obj.row_count.total) {
 							if (typeof obj.on_all_fleshed == 'function') {
 								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 							}
@@ -468,7 +469,7 @@ util.list.prototype = {
 					treerow.setAttribute('retrieved','true');
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
-					if (obj.row_count.fleshed == obj.row_count.total) {
+					if (obj.row_count.fleshed >= obj.row_count.total) {
 						if (typeof obj.on_all_fleshed == 'function') {
 							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 						}
@@ -560,7 +561,7 @@ util.list.prototype = {
 						if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
 						treerow.setAttribute('fleshed','true');
 						obj.row_count.fleshed++;
-						if (obj.row_count.fleshed == obj.row_count.total) {
+						if (obj.row_count.fleshed >= obj.row_count.total) {
 							if (typeof obj.on_all_fleshed == 'function') {
 								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 							}
@@ -618,7 +619,7 @@ util.list.prototype = {
 					treerow.setAttribute('retrieved','true');
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
-					if (obj.row_count.fleshed == obj.row_count.total) {
+					if (obj.row_count.fleshed >= obj.row_count.total) {
 						if (typeof obj.on_all_fleshed == 'function') {
 							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 						}
@@ -765,15 +766,15 @@ util.list.prototype = {
 	'_full_retrieve_tree' : function(params) {
 		var obj = this;
 		try {
-			if (obj.row_count.total == obj.row_count.fleshed) {
-				//alert('Full retrieve... tree seems to be in sync\n' + js2JSON(obj.row_count));
+			if (obj.row_count.fleshed >= obj.row_count.total) {
+				dump('Full retrieve... tree seems to be in sync\n' + js2JSON(obj.row_count) + '\n');
 				if (typeof obj.on_all_fleshed == 'function') {
 					setTimeout( function() { obj.on_all_fleshed(); }, 0 );
 				} else {
-					alert('.full_retrieve called with no callback?');
+					dump('.full_retrieve called with no callback?' + '\n');
 				}
 			} else {
-				//alert('Full retrieve... syncing tree' + js2JSON(obj.row_count));
+				dump('Full retrieve... syncing tree' + js2JSON(obj.row_count) + '\n');
 				JSAN.use('util.widgets');
 				var nodes = obj.treechildren.childNodes;
 				for (var i = 0; i < nodes.length; i++) {
