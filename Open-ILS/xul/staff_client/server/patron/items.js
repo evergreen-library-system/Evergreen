@@ -559,55 +559,75 @@ patron.items.prototype = {
 		);
 
 		function retrieve_row(params) {
-			var row = params.row;
+            try { 
+    			var row = params.row;
 
-			if (!row.my.circ_id) {
-				if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-				return row;
-			}
-
-			if (!row.my.circ) {
-				obj.network.simple_request(
-					'FM_CIRC_DETAILS',
-					[ row.my.circ_id ],
-					function(req) {
-						try { 
-							var robj = req.getResultObject();
-							if (typeof robj.ilsevent != 'undefined') throw(robj);
-							if (typeof robj.ilsevent == 'null') throw('null result');
-							row.my.circ = robj.circ;
-							row.my.acp = robj.copy;
-							row.my.mvr = robj.mvr;
-							row.my.acn = robj.volume;
-	
-							var copy_id = row.my.circ.target_copy();
-							if (typeof copy_id == 'object') {
-								if (copy_id != null) {
-									copy_id = copy_id.id();
-								} else {
-									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-								}
-							} else {
-									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
-							}
-							
-							params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (robj.record ? robj.record.id() : null) }) );
-		
-							if (typeof params.on_retrieve == 'function') {
-								params.on_retrieve(row);
-							}
-						} catch(E) {
-							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
-						}
-					}
-				);
-			} else {
-				if (typeof params.on_retrieve == 'function') {
-					params.on_retrieve(row);
-				}
-			}
-
-			return row;
+    			if (!row.my.circ_id) {
+    				if (typeof params.on_retrieve == 'function') { 
+                        params.on_retrieve(row); 
+                    }
+    				return row;
+    			}
+    
+    			if (!row.my.circ) {
+    				obj.network.simple_request(
+    					'FM_CIRC_DETAILS',
+    					[ row.my.circ_id ],
+    					function(req) {
+    						try { 
+    							var robj = req.getResultObject();
+    							if (typeof robj.ilsevent != 'undefined') throw(robj);
+    							if (typeof robj.ilsevent == 'null') throw('null result');
+    							row.my.circ = robj.circ;
+    							row.my.acp = robj.copy;
+    							row.my.mvr = robj.mvr;
+    							row.my.acn = robj.volume;
+                                row.my.record = robj.record;
+    	
+    							var copy_id = row.my.circ.target_copy();
+    							if (typeof copy_id == 'object') {
+    								if (copy_id != null) {
+    									copy_id = copy_id.id();
+    								} else {
+    									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+    								}
+    							} else {
+    									if (typeof robj.copy == 'object' && robj.copy != null) copy_id = robj.copy.id();
+    							}
+    							
+    							params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
+    		
+    							if (typeof params.on_retrieve == 'function') {
+    								params.on_retrieve(row);
+    							}
+    						} catch(E) {
+    							obj.error.standard_unexpected_error_alert('Error in callback for FM_CIRC_DETAILS in patron/items.js',E);
+    						}
+    					}
+    				);
+    			} else {
+                    var copy_id = row.my.circ ? row.my.circ.target_copy() : null;
+    				if (typeof copy_id == 'object') {
+    					if (copy_id != null) {
+    						copy_id = copy_id.id();
+    					} else {
+    						if (typeof row.my.acp == 'object' && row.my.acp != null) copy_id = row.my.acp.id();
+    					}
+    				} else {
+    						if (typeof row.my.acp == 'object' && row.my.acp != null) copy_id = row.my.acp.id();
+    				}
+ 
+    				params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':row.my.acp.id(),'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': (row.my.record ? row.my.record.id() : null) }) );
+    				if (typeof params.on_retrieve == 'function') {
+    					params.on_retrieve(row);
+    				}
+    			}
+    
+    			return row;
+            } catch(E) {
+                obj.error.standard_unexpected_error_alert('error in patron/items.js retrieve_row(): ',E);
+                return params.row;
+            }
 		}
 
 		JSAN.use('util.list'); obj.list = new util.list('items_list');
