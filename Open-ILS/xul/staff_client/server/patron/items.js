@@ -297,20 +297,26 @@ patron.items.prototype = {
 				}
 				var renew = circ.util.renew_via_barcode( barcode, obj.patron_id, 
 					function(r) {
-						if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
-							l.setAttribute('value', bc + ' renewed.');
-							obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
-							obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
-							obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
-						} else {
-							l.setAttribute('value', bc + ' not renewed.  ' + r[0].textcode + r[0].desc);
-						}
-						count--;
-						if (count == 0) {
-							//if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
-							JSAN.use('util.widgets'); util.widgets.remove_children(x);
-						}
-						obj.refresh(circ_id);
+                        try {
+                            if ( (typeof r[0].ilsevent != 'undefined' && r[0].ilsevent == 0) ) {
+                                l.setAttribute('value', bc + ' renewed.');
+                                obj.list_circ_map[ circ_id ].row.my.circ = r[0].payload.circ;
+                                obj.list_circ_map[ circ_id ].row.my.acp = r[0].payload.copy;
+                                obj.list_circ_map[ circ_id ].row.my.mvr = r[0].payload.record;
+                                // A renewed circ is a new circ, and has a new circ_id.
+                                obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
+                            } else {
+                                l.setAttribute('value', bc + ' not renewed.  ' + r[0].textcode + r[0].desc);
+                            }
+                            count--;
+                            if (count == 0) {
+                                //if (window.confirm('Action completed. Refresh list?')) obj.retrieve();
+                                JSAN.use('util.widgets'); util.widgets.remove_children(x);
+                            }
+                            obj.refresh(circ_id);
+                        } catch(E) {
+					        obj.error.standard_unexpected_error_alert('Error in renew_via_barcode callback\nRenew probably did not happen for barcode ' + barcode,E);
+                        }
 					} 
 				);
 			}
@@ -745,10 +751,10 @@ patron.items.prototype = {
 					if (nparams) {
 						obj.list_circ_map[circ_id] = nparams; // unlike item status interface, each circ should be in this list only once
 					} else {
-						alert('foo');
+						throw('typeof nparams = ' + typeof nparams);
 					}
 				} catch(E) {
-					alert(E);
+					obj.error.standard_unexpected_error_alert('patron/items.js: error in gen_list_append',E);
 				}
 			};
 		}
