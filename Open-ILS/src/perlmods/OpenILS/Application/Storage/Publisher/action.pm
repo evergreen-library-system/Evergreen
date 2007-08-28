@@ -191,12 +191,12 @@ sub nearest_hold {
 			"actor.org_unit_descendants($pl, $depth)" :
 			"actor.org_unit_descendants($pl)" ;
 
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $pl, $cp, $age);
 		SELECT	h.id
 		  FROM	action.hold_request h
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
 		  	JOIN $descendents d ON (d.id = h.pickup_lib)
-			JOIN actor.org_unit_proximity p ON (p.from_org = d.id AND p.to_org = h.pickup_lib)
+			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = d.id)
 		  WHERE hm.target_copy = ?
 		  	AND AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL)
 			AND h.capture_time IS NULL
