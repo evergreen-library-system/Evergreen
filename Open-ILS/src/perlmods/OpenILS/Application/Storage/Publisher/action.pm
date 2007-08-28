@@ -186,10 +186,6 @@ sub nearest_hold {
 	my $age = shift() || '0';
 	my $prox = shift() || 0;
 
-	my $age_where = '';
-	if ($age) {
-		$age_where = "
-
 	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $cp, $pl, $age, $prox);
 		SELECT	h.id
 		  FROM	action.hold_request h
