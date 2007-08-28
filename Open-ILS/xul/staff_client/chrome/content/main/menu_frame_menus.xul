@@ -77,6 +77,7 @@
 	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
 	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
 	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="reprint-receipt-key" keycode="VK_F9" command="cmd_reprint"/>
 	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
 	<key id="search-tcn-key" keycode="VK_F3" modifiers="shift" command="cmd_search_tcn"/>
 	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
@@ -132,7 +133,7 @@
 		<menuitem label="Replace Barcode" command="cmd_replace_barcode"/>
 		<menuitem label="Record In-House Use" accesskey="I" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
-		<menuitem label="Re-Print Last" accesskey="L" command="cmd_reprint"/>
+		<menuitem label="Re-Print Last" key="reprint-receipt-key" accesskey="L" command="cmd_reprint"/>
 		<menuitem label="Enter Offline Interface" command="cmd_standalone" accesskey="f"/>
 	</menupopup>
 </menu>
