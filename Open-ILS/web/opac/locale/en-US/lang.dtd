@@ -616,6 +616,8 @@
 <!ENTITY staff.main.menu.cat.edit_record_buckets.label "Manage Record Buckets">
 <!ENTITY staff.main.menu.cat.edit_volume_buckets.accesskey "V">
 <!ENTITY staff.main.menu.cat.edit_volume_buckets.label "Manage Volume Buckets">
+<!ENTITY staff.main.menu.cat.edit_user_buckets.accesskey "U">
+<!ENTITY staff.main.menu.cat.edit_user_buckets.label "Manage User Buckets">
 <!ENTITY staff.main.menu.cat.key "a">
 <!ENTITY staff.main.menu.cat.label "Cataloging">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
@@ -683,6 +685,8 @@
 <!ENTITY staff.main.menu.edit.buckets.records.accesskey "R">
 <!ENTITY staff.main.menu.edit.buckets.volumes "Volume Buckets">
 <!ENTITY staff.main.menu.edit.buckets.volumes.accesskey "V">
+<!ENTITY staff.main.menu.edit.buckets.users "User Buckets">
+<!ENTITY staff.main.menu.edit.buckets.users.accesskey "U">
 <!ENTITY staff.main.menu.edit.copy.key "C">
 <!ENTITY staff.main.menu.edit.copy.label "Copy">
 <!ENTITY staff.main.menu.edit.cut.key "t">

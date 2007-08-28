@@ -268,6 +268,8 @@ const urls = {
 	'XUL_STANDALONE' : 'chrome://open_ils_staff_client/content/circ/offline.xul',
 	'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xhtml',
 	'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
+	'XUL_USER_BUCKETS' : '/xul/server/patron/user_buckets.xul',
+	'XUL_VOLUME_BUCKETS' : '/xul/server/cat/volume_buckets.xul',
 	'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
 	'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
 	'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
