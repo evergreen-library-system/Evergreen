@@ -79,6 +79,7 @@
 	<key id="close-window-key" modifiers="accel" key="Q" command="cmd_close_window"/>
 	<key id="circ-checkout-key" keycode="VK_F1" command="cmd_circ_checkout"/>
 	<key id="circ-checkin-key" keycode="VK_F2" command="cmd_circ_checkin"/>
+	<key id="reprint-receipt-key" keycode="VK_F9" command="cmd_reprint"/>
 	<key id="search-opac-key" keycode="VK_F3" command="cmd_search_opac"/>
 	<key id="search-tcn-key" keycode="VK_F3" modifiers="shift" command="cmd_search_tcn"/>
 	<key id="patron-search-key" keycode="VK_F4" command="cmd_patron_search"/>
@@ -135,7 +136,7 @@
 		<menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
 		<menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" key="circ-in-house-use-key" command="cmd_in_house_use"/>
 		<menuseparator />
-		<menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" command="cmd_reprint"/>
+		<menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" key="reprint-receipt-key" command="cmd_reprint"/>
 		<menuitem label="&staff.main.menu.circ.offline.label;" command="cmd_standalone" accesskey="&staff.main.menu.circ.offline.accesskey;"/>
 	</menupopup>
 </menu>
