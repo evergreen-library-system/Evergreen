@@ -1,230 +1,260 @@
 package OpenILS::WWW::AddedContent::Syndetic;
 use strict; use warnings;
-use LWP::UserAgent;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils::SettingsParser;
 use OpenSRF::Utils::JSON;
 use OpenSRF::EX qw/:try/;
 use OpenILS::WWW::AddedContent;
+use XML::LibXML;
+use MIME::Base64;
 
+my $AC = 'OpenILS::WWW::AddedContent';
 
 
 sub new {
-	my( $class, $args ) = @_;
-	$class = ref $class || $class;
-	return bless($args, $class);
+    my( $class, $args ) = @_;
+    $class = ref $class || $class;
+    return bless($args, $class);
 }
 
 sub base_url {
-	my $self = shift;
-	return $self->{base_url};
+    my $self = shift;
+    return $self->{base_url};
 }
 
 sub userid {
-	my $self = shift;
-	return $self->{userid};
+    my $self = shift;
+    return $self->{userid};
 }
 
 
 # --------------------------------------------------------------------------
+sub jacket_small {
+    my( $self, $key ) = @_;
+    return $self->send_img(
+        $self->fetch_response('sc.gif', $key, 1));
+}
+
+sub jacket_medium {
+    my( $self, $key ) = @_;
+    return $self->send_img(
+        $self->fetch_response('mc.gif', $key, 1));
+
+}
+sub jacket_large {
+    my( $self, $key ) = @_;
+    return $self->send_img(
+        $self->fetch_response('lc.gif', $key, 1));
+}
+
+# --------------------------------------------------------------------------
 
 sub toc_html {
-	my( $self, $key ) = @_;
-	return $self->send_html(
-		$self->fetch_content('toc.html', $key));
+    my( $self, $key ) = @_;
+    return $self->send_html(
+        $self->fetch_content('toc.html', $key));
 }
 
 sub toc_xml {
-	my( $self, $key ) = @_;
-	return $self->send_xml(
-		$self->fetch_content('toc.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_xml(
+        $self->fetch_content('toc.xml', $key));
 }
 
 sub toc_json {
-	my( $self, $key ) = @_;
-	return $self->send_json(
-		$self->fetch_content('toc.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_json(
+        $self->fetch_content('toc.xml', $key));
 }
 
 # --------------------------------------------------------------------------
 
 sub anotes_html {
-	my( $self, $key ) = @_;
-	return $self->send_html(
-		$self->fetch_content('anotes.html', $key));
+    my( $self, $key ) = @_;
+    return $self->send_html(
+        $self->fetch_content('anotes.html', $key));
 }
 
 sub anotes_xml {
-	my( $self, $key ) = @_;
-	return $self->send_xml(
-		$self->fetch_content('anotes.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_xml(
+        $self->fetch_content('anotes.xml', $key));
 }
 
 sub anotes_json {
-	my( $self, $key ) = @_;
-	return $self->send_json(
-		$self->fetch_content('anotes.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_json(
+        $self->fetch_content('anotes.xml', $key));
 }
 
 
 # --------------------------------------------------------------------------
 
 sub excerpt_html {
-	my( $self, $key ) = @_;
-	return $self->send_html(
-		$self->fetch_content('dbchapter.html', $key));
+    my( $self, $key ) = @_;
+    return $self->send_html(
+        $self->fetch_content('dbchapter.html', $key));
 }
 
 sub excerpt_xml {
-	my( $self, $key ) = @_;
-	return $self->send_xml(
-		$self->fetch_content('dbchapter.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_xml(
+        $self->fetch_content('dbchapter.xml', $key));
 }
 
 sub excerpt_json {
-	my( $self, $key ) = @_;
-	return $self->send_json(
-		$self->fetch_content('dbchapter.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_json(
+        $self->fetch_content('dbchapter.xml', $key));
 }
 
 # --------------------------------------------------------------------------
 
 sub reviews_html {
-	my( $self, $key ) = @_;
+    my( $self, $key ) = @_;
 
-	my %reviews;
+    my %reviews;
 
-	$reviews{ljreview} = $self->fetch_content('ljreview.html', $key);
-	$reviews{pwreview} = $self->fetch_content('pwreview.html', $key);
-	$reviews{slreview} = $self->fetch_content('slreview.html', $key);
-	$reviews{chreview} = $self->fetch_content('chreview.html', $key);
-	$reviews{blreview} = $self->fetch_content('blreview.html', $key);
-	$reviews{hbreview} = $self->fetch_content('hbreview.html', $key);
-	$reviews{kirkreview} = $self->fetch_content('kirkreview.html', $key);
+    $reviews{ljreview} = $self->fetch_content('ljreview.html', $key);
+    $reviews{pwreview} = $self->fetch_content('pwreview.html', $key);
+    $reviews{slreview} = $self->fetch_content('slreview.html', $key);
+    $reviews{chreview} = $self->fetch_content('chreview.html', $key);
+    $reviews{blreview} = $self->fetch_content('blreview.html', $key);
+    $reviews{hbreview} = $self->fetch_content('hbreview.html', $key);
+    $reviews{kirkreview} = $self->fetch_content('kirkreview.html', $key);
 
-	for(keys %reviews) {
-		if( ! $self->data_exists($reviews{$_}) ) {
-			delete $reviews{$_};
-			next;
-		}
-		$reviews{$_} =~ s/<!.*?>//og; # Strip any doctype declarations
-	}
+    for(keys %reviews) {
+        if( ! $self->data_exists($reviews{$_}) ) {
+            delete $reviews{$_};
+            next;
+        }
+        $reviews{$_} =~ s/<!.*?>//og; # Strip any doctype declarations
+    }
 
-	return 0 if scalar(keys %reviews) == 0;
-	
-	#my $html = "<div>";
-	my $html;
-	$html .= $reviews{$_} for keys %reviews;
-	#$html .= "</div>";
+    return 0 if scalar(keys %reviews) == 0;
+    
+    #my $html = "<div>";
+    my $html;
+    $html .= $reviews{$_} for keys %reviews;
+    #$html .= "</div>";
 
-	return $self->send_html($html);
+    return $self->send_html($html);
 }
 
 # we have to aggregate the reviews
 sub reviews_xml {
-	my( $self, $key ) = @_;
-	my %reviews;
+    my( $self, $key ) = @_;
+    my %reviews;
 
-	$reviews{ljreview} = $self->fetch_content('ljreview.xml', $key);
-	$reviews{pwreview} = $self->fetch_content('pwreview.xml', $key);
-	$reviews{slreview} = $self->fetch_content('slreview.xml', $key);
-	$reviews{chreview} = $self->fetch_content('chreview.xml', $key);
-	$reviews{blreview} = $self->fetch_content('blreview.xml', $key);
-	$reviews{hbreview} = $self->fetch_content('hbreview.xml', $key);
-	$reviews{kirkreview} = $self->fetch_content('kirkreview.xml', $key);
+    $reviews{ljreview} = $self->fetch_content('ljreview.xml', $key);
+    $reviews{pwreview} = $self->fetch_content('pwreview.xml', $key);
+    $reviews{slreview} = $self->fetch_content('slreview.xml', $key);
+    $reviews{chreview} = $self->fetch_content('chreview.xml', $key);
+    $reviews{blreview} = $self->fetch_content('blreview.xml', $key);
+    $reviews{hbreview} = $self->fetch_content('hbreview.xml', $key);
+    $reviews{kirkreview} = $self->fetch_content('kirkreview.xml', $key);
 
-	for(keys %reviews) {
-		if( ! $self->data_exists($reviews{$_}) ) {
-			delete $reviews{$_};
-			next;
-		}
-		# Strip the xml and doctype declarations
-		$reviews{$_} =~ s/<\?xml.*?>//og;
-		$reviews{$_} =~ s/<!.*?>//og;
-	}
+    for(keys %reviews) {
+        if( ! $self->data_exists($reviews{$_}) ) {
+            delete $reviews{$_};
+            next;
+        }
+        # Strip the xml and doctype declarations
+        $reviews{$_} =~ s/<\?xml.*?>//og;
+        $reviews{$_} =~ s/<!.*?>//og;
+    }
 
-	return 0 if scalar(keys %reviews) == 0;
-	
-	my $xml = "<reviews>";
-	$xml .= $reviews{$_} for keys %reviews;
-	$xml .= "</reviews>";
+    return 0 if scalar(keys %reviews) == 0;
+    
+    my $xml = "<reviews>";
+    $xml .= $reviews{$_} for keys %reviews;
+    $xml .= "</reviews>";
 
-	return $self->send_xml($xml);
+    return $self->send_xml($xml);
 }
 
 
 sub reviews_json {
-	my( $self, $key ) = @_;
-	return $self->send_json(
-		$self->fetch_content('dbchapter.xml', $key));
+    my( $self, $key ) = @_;
+    return $self->send_json(
+        $self->fetch_content('dbchapter.xml', $key));
 }
 
 # --------------------------------------------------------------------------
 
 
 sub data_exists {
-	my( $self, $data ) = @_;
-	return 0 if $data =~ m/<title>error<\/title>/iog;
-	return 1;
+    my( $self, $data ) = @_;
+    return 0 if $data =~ m/<title>error<\/title>/iog;
+    return 1;
 }
 
 
 sub send_json {
-	my( $self, $xml ) = @_;
-	return 0 unless $self->data_exists($xml);
-	my $doc;
+    my( $self, $xml ) = @_;
+    return 0 unless $self->data_exists($xml);
+    my $doc;
 
-	try {
-		$doc = XML::LibXML->new->parse_string($xml);
-	} catch Error with {
-		my $err = shift;
-		$logger->error("added content XML parser error: $err\n\n$xml");
-		$doc = undef;
-	};
+    try {
+        $doc = XML::LibXML->new->parse_string($xml);
+    } catch Error with {
+        my $err = shift;
+        $logger->error("added content XML parser error: $err\n\n$xml");
+        $doc = undef;
+    };
 
-	return 0 unless $doc;
-	my $perl = OpenSRF::Utils::SettingsParser::XML2perl($doc->documentElement);
-	my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
-	print "Content-type: text/plain\n\n";
-	print $json;
-	return 1;
+    return 0 unless $doc;
+    my $perl = OpenSRF::Utils::SettingsParser::XML2perl($doc->documentElement);
+    my $json = OpenSRF::Utils::JSON->perl2JSON($perl);
+    return { content_type => 'text/plain', content => $json };
 }
 
 sub send_xml {
-	my( $self, $xml ) = @_;
-	return 0 unless $self->data_exists($xml);
-	print "Content-Type: application/xml\n\n";
-	print $xml;
-	return 1;
+    my( $self, $xml ) = @_;
+    return 0 unless $self->data_exists($xml);
+    return { content_type => 'application/xml', content => $xml };
 }
 
 sub send_html {
-	my( $self, $content ) = @_;
-	return 0 unless $self->data_exists($content);
+    my( $self, $content ) = @_;
+    return 0 unless $self->data_exists($content);
 
-	# Hide anything that might contain a link since it will be broken
-	my $HTML = <<"	HTML";
-		<div>
-			<style type='text/css'>
-				div.ac input, div.ac a[href],div.ac img, div.ac button { display: none; visibility: hidden }
-			</style>
-			<div class='ac'>
-				$content
-			</div>
-		</div>
-	HTML
+    # Hide anything that might contain a link since it will be broken
+    my $HTML = <<"    HTML";
+        <div>
+            <style type='text/css'>
+                div.ac input, div.ac a[href],div.ac img, div.ac button { display: none; visibility: hidden }
+            </style>
+            <div class='ac'>
+                $content
+            </div>
+        </div>
+    HTML
 
-	print "Content-type: text/html\n\n";
-	print $HTML;
-
-	return 1;
+    return { content_type => 'text/html', content => $HTML };
 }
 
+sub send_img {
+    my($self, $response) = @_;
+    return { 
+        content_type => $response->header('Content-type'),
+        content => $response->content, 
+        binary => 1 
+    };
+}
+
+# returns the raw content returned from the URL fetch
 sub fetch_content {
-	my( $self, $page, $key ) = @_;
-	my $uname = $self->userid;
-	my $url = $self->base_url . "?isbn=$key/$page&client=$uname&type=rw12";
-    return OpenILS::WWW::AddedContent->get_url($url);
+    my( $self, $page, $key ) = @_;
+    return $self->fetch_response($page, $key)->content;
+}
+
+# returns the HTTP response object from the URL fetch
+sub fetch_response {
+    my( $self, $page, $key, $notype ) = @_;
+    my $uname = $self->userid;
+    my $url = $self->base_url . "?isbn=$key/$page&client=$uname" . (($notype) ? '' : "&type=rw12");
+    return $AC->get_url($url);
 }
 
 
