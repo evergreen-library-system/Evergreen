@@ -819,6 +819,6 @@ __PACKAGE__->register_method(
 	method		=> 'merge_record_assets',
 	argc		=> 2,
 	api_level	=> 1,
-)
+);
 
 1;
