@@ -4,7 +4,7 @@
 <overlay id="openils_util_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script>dump('Loading OpenILS/util_overlay.xul\n');</script>
+	<script>dump('Loading OpenILS/util_overlay_offline.xul\n');</script>
 	<scripts id="openils_util_scripts">
 		<script type="text/javascript" src="../main/constants.js" />
 		<script type="text/javascript" src="util/utils.js" />
@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="util/md5.js" />
 		<script type="text/javascript" src="util/JSON.js" />
 	</scripts>
-	<script>dump('Loaded OpenILS/util_overlay.xul\n');</script>
+	<script>dump('Loaded OpenILS/util_overlay_offline.xul\n');</script>
 
 </overlay>
 
