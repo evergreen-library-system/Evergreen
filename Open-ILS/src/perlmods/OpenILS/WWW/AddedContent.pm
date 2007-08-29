@@ -17,7 +17,9 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
-use XML::LibXML;
+
+use LWP::UserAgent;
+use MIME::Base64;
 
 
 # set the bootstrap config when this module is loaded
@@ -25,88 +27,189 @@ my $bs_config;
 my $handler;
 
 sub import {
-	my $self = shift;
-	$bs_config = shift;
+    my $self = shift;
+    $bs_config = shift;
 }
 
 
-my $net_timeout;
-my $cache;
+my $net_timeout; # max seconds to wait for a response from the added content vendor
+my $cache; # memcache handle
+my $max_errors; # max consecutive lookup failures before added content is temporarily disabled
+my $error_countdown; # current consecutive errors countdown
+my $jacket_url; # URL for fetching jacket images
+
+# number of seconds to wait before next lookup 
+# is attempted after lookups have been disabled
+my $error_retry_timeout;
+my $init = 0; # has the child init been run?
+
+
 sub child_init {
 
-	OpenSRF::System->bootstrap_client( config_file => $bs_config );
+    OpenSRF::System->bootstrap_client( config_file => $bs_config );
 
-	my $sclient = OpenSRF::Utils::SettingsClient->new();
-	my $ac_data = $sclient->config_value("added_content");
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+    my $ac_data = $sclient->config_value("added_content");
 
     return unless $ac_data;
 
     $cache = OpenSRF::Utils::Cache->new;
 
-	my $ac_handler = $ac_data->{module};
-    $net_timeout = $ac_data->{timeout} || 3;
+    $net_timeout = $ac_data->{timeout} || 1;
+    $error_countdown = $max_errors = $ac_data->{max_errors} || 10;
+    $jacket_url = $ac_data->{jacket_url};
+    $error_retry_timeout = $ac_data->{retry_timeout} || 600;
+
+    $init = 1;
     
-	return unless $ac_handler;
+    my $ac_handler = $ac_data->{module};
 
-	$logger->debug("Attempting to load Added Content handler: $ac_handler");
-
-	eval "use $ac_handler";
-
-	if($@) {	
-		$logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
-		return; 
-	}
-
-	$handler = $ac_handler->new($ac_data);
-	$logger->debug("added content loaded handler: $handler");
+    if($ac_handler) {
+        $logger->debug("Attempting to load Added Content handler: $ac_handler");
+    
+        eval "use $ac_handler";
+    
+        if($@) {    
+            $logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
+            return; 
+        }
+    
+        $handler = $ac_handler->new($ac_data);
+        $logger->debug("added content loaded handler: $handler");
+    }
 }
 
 
 sub handler {
 
-	my $r		= shift;
-	my $cgi	= CGI->new;
-	my $path = $r->path_info;
+    my $r   = shift;
+    my $cgi = CGI->new;
+    my $path = $r->path_info;
 
-	child_init() unless $handler; # why isn't apache doing this for us?
-	return Apache2::Const::NOT_FOUND unless $handler;
+    my( undef, $data, $format, $key ) = split(/\//, $r->path_info);
+    return Apache2::Const::NOT_FOUND unless $data and $format and $key;
 
-    # if this memcache key is set, added content lookups are disabled
-	if( $cache->get_cache('ac.no_lookup') ) {
-        $logger->info("added content lookup disabled");
-	    return Apache2::Const::NOT_FOUND;
-    }
+    child_init() unless $init;
+    return Apache2::Const::NOT_FOUND unless $init;
 
+    return fetch_jacket($format, $key) if $data eq 'jacket';
+    return Apache2::Const::NOT_FOUND unless lookups_enabled();
 
-	my( undef, $data, $format, $key ) = split(/\//, $r->path_info);
+    my $err;
+    my $success;
+    my $method = "${data}_${format}";
 
-	my $err;
-	my $success;
-	my $method = "${data}_${format}";
+    try {
+        $success = $handler->$method($key);
+    } catch Error with {
+        my $err = shift;
+        $logger->error("added content handler failed: $method($key) => $err");
+    };
 
-	try {
-		$success = $handler->$method($key);
-	} catch Error with {
-		my $err = shift;
-		$logger->error("added content handler failed: $method($key) => $err");
-	};
-
-	return Apache2::Const::NOT_FOUND if $err or !$success;
-	return Apache2::Const::OK;
+    return Apache2::Const::NOT_FOUND if $err or !$success;
+    return Apache2::Const::OK;
 }
 
 
 
 # generic GET call
 sub get_url {
-	my( $self, $url ) = @_;
-	$logger->info("added content getting [timeout=$net_timeout] URL = $url");
-	my $agent = LWP::UserAgent->new(timeout => $net_timeout);
-	my $res = $agent->get($url);
-	die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
-	return $res->content;
+    my( $self, $url ) = @_;
+    $logger->info("added content getting [timeout=$net_timeout] URL = $url");
+    my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+    my $res = $agent->get($url);
+    die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
+    return $res->content;
 }
 
+sub lookups_enabled {
+    if( $cache->get_cache('ac.no_lookup') ) {
+        $logger->info("added content lookup disabled");
+        return undef;
+    }
+    return 1;
+}
+
+sub disable_lookups {
+    $cache->put_cache('ac.no_lookup', 1, $error_retry_timeout);
+}
+
+sub fetch_jacket {
+    my($size, $isbn) = @_;
+    return Apache2::Const::NOT_FOUND unless $jacket_url and $size and $isbn;
+
+    if($size eq 'small') {
+
+        # try to serve small images from the cache first
+        my $img_data = $cache->get_cache("ac.$size.$isbn");
+
+        if($img_data) {
+
+            $logger->debug("serving jacket $isbn from cache...");
+
+            my $c_type = $img_data->{content_type};
+            my $img = decode_base64($img_data->{img});
+
+            print "Content-type: $c_type\n\n";
+
+            binmode STDOUT;
+            print $img;
+            return Apache2::Const::OK;
+        }
+    }
+
+    if(!lookups_enabled()) {
+        $error_countdown = $max_errors; # reset the counter
+        return Apache2::Const::NOT_FOUND;
+    }
+
+    (my $url = $jacket_url) =~ s/\${isbn}/$isbn/ig;
+
+    $logger->debug("added content getting jacket with timeout=$net_timeout and URL = $url");
+
+    my $res;
+    my $err;
+
+    try {
+        my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+        $res = $agent->get($url);
+    } catch Error with {
+        $err = shift;
+        $logger->error("added content lookup died with $err");
+    };
+
+    if( $err or $res->code == 500 ) {
+        $logger->warn("added content jacket fetch failed (retries remaining = $error_countdown) " . 
+            (($res) ? $res->status_line : "$err"));
+        $error_countdown--;
+        if($error_countdown < 1) {
+            $logger->warn("added content error count exhausted.  Disabling lookups for $error_retry_timeout seconds");
+            disable_lookups();
+        }
+        return Apache2::Const::NOT_FOUND;
+    }
+
+    return Apache2::Const::NOT_FOUND unless $res->code == 200;
+
+    # ignore old errors after a successful lookup
+    $error_countdown = $max_errors if $error_countdown < $max_errors;
+
+    my $c_type = $res->header('Content-type');
+    my $binary_img = $res->content;
+    print "Content-type: $c_type\n\n";
+
+    binmode STDOUT;
+    print $binary_img;
+
+    $cache->put_cache(
+        "ac.$size.$isbn", {   
+            content_type => $c_type, 
+            img => encode_base64($binary_img,'')
+        }
+    ) if $size eq 'small';
+
+    return Apache2::Const::OK;
+}
 
 
 
