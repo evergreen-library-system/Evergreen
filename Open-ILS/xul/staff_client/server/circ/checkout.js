@@ -352,9 +352,7 @@ circ.checkout.prototype = {
 			function _checkout_callback(req,x) {
 				try {
 
-					if (params.barcode) {
-						delete obj._checkout_pending_hash[ params.barcode ];	
-					}
+					if (params.barcode) { delete obj._checkout_pending_hash[ params.barcode ];	}
 
 					var checkout = req.getResultObject();
 
@@ -592,6 +590,8 @@ circ.checkout.prototype = {
 			/* Item not cataloged or barcode mis-scan.  Prompt for pre-cat option */
 			} else {
 			
+				if (params.barcode) { delete obj._checkout_pending_hash[ params.barcode ];	}
+
 				var found_handled = false; var found_not_handled = false; var msg = '';	
 
 				if (test_event(permit,1202 /* ITEM_NOT_CATALOGED */)) {
@@ -776,6 +776,7 @@ circ.checkout.prototype = {
 			}
 
 		} catch(E) {
+			if (params.barcode) { delete obj._checkout_pending_hash[ params.barcode ];	}
 			if (typeof E.ilsevent != 'undefined' && E.ilsevent == -1) {
 				obj.error.standard_network_error_alert('Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
 			} else {
