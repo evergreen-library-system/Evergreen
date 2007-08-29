@@ -8,7 +8,7 @@ function buildISBNSrc(isbn, size) {
 	size = (size) ? size : 'small';
     if(OILS_OPAC_IMAGES_HOST)
         return location.protocol + '//' + OILS_OPAC_IMAGES_HOST + size + '/' + isbn;
-	return '../../../../extras/jacket/'+size+'/'+isbn;
+	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
 
 
