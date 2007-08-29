@@ -71,6 +71,13 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':'Copy Buckets'},{});
 				}
 			],
+			'cmd_edit_volume_buckets' : [
+				['oncommand'],
+				function() {
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_VOLUME_BUCKETS),{'tab_name':'Volume Buckets'},{});
+				}
+			],
 			'cmd_edit_record_buckets' : [
 				['oncommand'],
 				function() {
@@ -78,6 +85,14 @@ main.menu.prototype = {
 					obj.set_tab(obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':'Record Buckets'},{});
 				}
 			],
+			'cmd_edit_user_buckets' : [
+				['oncommand'],
+				function() {
+					obj.data.stash_retrieve();
+					obj.set_tab(obj.url_prefix(urls.XUL_USER_BUCKETS),{'tab_name':'User Buckets'},{});
+				}
+			],
+
 
 			'cmd_replace_barcode' : [
 				['oncommand'],
