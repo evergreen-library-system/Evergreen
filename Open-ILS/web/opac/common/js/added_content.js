@@ -6,14 +6,16 @@
 
 function buildISBNSrc(isbn, size) {
 	size = (size) ? size : 'small';
-    if(OILS_OPAC_IMAGES_HOST)
-        return location.protocol + '//' + OILS_OPAC_IMAGES_HOST + size + '/' + isbn;
-	return '../../../../extras/jacket/'+size+'/'+isbn;
+    if(OILS_OPAC_AC_HOST)
+        return location.protocol + '//' + OILS_OPAC_AC_HOST + 'jacket/' + size + '/' + isbn;
+	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
 
 
 
 function acMakeURL(type, key) {
+    if(OILS_OPAC_AC_HOST)
+        return location.protocol + '//' + OILS_OPAC_AC_HOST + type + '/html/' + key;
 	return '../../../../extras/ac/' + type + '/html/' + key;
 }
 

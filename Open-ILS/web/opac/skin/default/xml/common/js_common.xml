@@ -28,9 +28,9 @@
 
 
 		<!-- set up some global JS config variables, read from the Apache config -->
-		var OILS_OPAC_IMAGES_HOST = null;
-		<!--#if expr="$OILS_OPAC_IMAGES_HOST"-->
-			OILS_OPAC_IMAGES_HOST = '<!--#echo var="OILS_OPAC_IMAGES_HOST"-->extras/jacket/';
+		var OILS_OPAC_AC_HOST = null;
+		<!--#if expr="$OILS_OPAC_AC_HOST"-->
+			OILS_OPAC_AC_HOST = '<!--#echo var="OILS_OPAC_AC_HOST"-->extras/ac/';
 		<!--#endif -->
 
 	</script>
