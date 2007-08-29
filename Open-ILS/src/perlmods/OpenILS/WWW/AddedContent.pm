@@ -104,12 +104,24 @@ sub handler {
     } catch Error with {
         my $err = shift;
         $logger->error("added content handler failed: $method($key) => $err");
+        decr_error_countdown();
     };
 
     return Apache2::Const::NOT_FOUND if $err or !$success;
     return Apache2::Const::OK;
 }
 
+sub decr_error_countdown {
+    $error_countdown--;
+    if($error_countdown < 1) {
+        $logger->warn("added content error count exhausted.  Disabling lookups for $error_retry_timeout seconds");
+        disable_lookups();
+    }
+}
+
+sub reset_error_countdown {
+    $error_countdown = $max_errors;
+}
 
 
 # generic GET call
@@ -119,6 +131,7 @@ sub get_url {
     my $agent = LWP::UserAgent->new(timeout => $net_timeout);
     my $res = $agent->get($url);
     die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
+    reset_error_countdown();
     return $res->content;
 }
 
@@ -181,18 +194,14 @@ sub fetch_jacket {
     if( $err or $res->code == 500 ) {
         $logger->warn("added content jacket fetch failed (retries remaining = $error_countdown) " . 
             (($res) ? $res->status_line : "$err"));
-        $error_countdown--;
-        if($error_countdown < 1) {
-            $logger->warn("added content error count exhausted.  Disabling lookups for $error_retry_timeout seconds");
-            disable_lookups();
-        }
+        decr_error_countdown();
         return Apache2::Const::NOT_FOUND;
     }
 
     return Apache2::Const::NOT_FOUND unless $res->code == 200;
 
     # ignore old errors after a successful lookup
-    $error_countdown = $max_errors if $error_countdown < $max_errors;
+    reset_error_countdown();
 
     my $c_type = $res->header('Content-type');
     my $binary_img = $res->content;
