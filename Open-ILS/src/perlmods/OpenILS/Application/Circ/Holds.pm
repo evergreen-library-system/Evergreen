@@ -1231,7 +1231,7 @@ sub find_nearest_permitted_hold {
 	my $class	= shift;
 	my $editor	= shift; # CStoreEditor object
 	my $copy		= shift; # copy to target
-	my $user		= shift; # hold recipient
+	my $user		= shift; # staff 
 	my $check_only = shift; # do no updates, just see if the copy could fulfill a hold
 	my $evt		= OpenILS::Event->new('ACTION_HOLD_REQUEST_NOT_FOUND');
 
@@ -1248,12 +1248,16 @@ sub find_nearest_permitted_hold {
 	# hold->type "R" means we need this copy
 	for my $h (@$old_holds) { return ($h) if $h->hold_type eq 'R'; }
 
-	$logger->info("circulator: searching for best hold at org ".$user->ws_ou." and copy $bc");
+
+    my $hold_stall_interval = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.hold_stalling.soft');
+
+	$logger->info("circulator: searching for best hold at org ".$user->ws_ou.
+        " and copy $bc with a hold stalling interval of ". ($hold_stall_interval || "(none)"));
 
 	# search for what should be the best holds for this copy to fulfill
 	my $best_holds = $U->storagereq(
 		"open-ils.storage.action.hold_request.nearest_hold.atomic",
-		$user->ws_ou, $copy->id, 10 );
+		$user->ws_ou, $copy->id, 10, $hold_stall_interval );
 
 	unless(@$best_holds) {
 
