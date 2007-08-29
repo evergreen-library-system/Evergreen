@@ -174,5 +174,36 @@ CREATE VIEW stats.fleshed_call_number AS
         FROM    asset.call_number cn
                 JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
 
+CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
+DECLARE
+	moved_cns INT := 0;
+	source_cn asset.call_number%ROWTYPE;
+	target_cn asset.call_number%ROWTYPE;
+BEGIN
+	FOR source_cn IN SELECT * FROM asset.call_number WHERE record = source_record LOOP
+
+		SELECT	INTO target_cn *
+		  FROM	asset.call_number
+		  WHERE	label = source_cn.label
+			AND owning_lib = source_cn.owning_lib
+			AND record = source_cn.record;
+
+		IF FOUND THEN
+			UPDATE	asset.copy
+			  SET	call_number = target_cn.id
+			  WHERE	call_number = source_cn.id;
+		ELSE
+			UPDATE	asset.call_number
+			  SET	record = target_record
+			  WHERE	id = source_cn.id;
+		END IF;
+
+		moved_cns := moved_cns + 1;
+	END LOOP;
+
+	RETURN moved_cns;
+END;
+$func$ LANGUAGE plpgsql;
 
 COMMIT;
+

@@ -171,3 +171,4 @@ CREATE AGGREGATE array_accum (
 	stype = anyarray,
 	initcond = '{}'
 );
+

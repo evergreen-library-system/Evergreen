@@ -794,5 +794,31 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 );
 
+sub merge_record_assets {
+	my $self = shift;
+	my $client = shift;
+	my $target = shift;
+	my @sources = @_;
+
+	my $count = 0;
+	for my $source ( @sources ) {
+		$count += asset::call_number
+				->db_Main
+				->selectcol_arrayref(
+					"SELECT asset.merge_record_assets(?,?);",
+					{},
+					$target,
+					$source
+				)->[0];
+	}
+
+	return $count;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.asset.merge_record_assets',
+	method		=> 'merge_record_assets',
+	argc		=> 2,
+	api_level	=> 1,
+)
 
 1;
