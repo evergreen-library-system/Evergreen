@@ -33,9 +33,12 @@ public class IDLParser {
     /** If true, we retain the full set of IDL objects in memory.  This is true by default. */
     private boolean keepIDLObjects;
 
+    private int parsedObjectCount;
+
     public IDLParser() {
         IDLObjects = new HashMap<String, IDLObject>();
         keepIDLObjects = true;
+        parsedObjectCount = 0;
     }
 
     public IDLParser(String fileName) throws IOException {
@@ -46,6 +49,7 @@ public class IDLParser {
         this();
         this.inStream = inStream;
     }
+
 
     /**
     * Parses the IDL XML
@@ -89,12 +93,28 @@ public class IDLParser {
         }
    }
 
-   /**
+    /**
     * Returns the IDLObject with the given IDLClass 
     */
-   public IDLObject getObject(String IDLClass) {
+    public IDLObject getObject(String IDLClass) {
       return (IDLObject) IDLObjects.get(IDLClass);
-   }
+    }
+
+    /**
+     * Returns the full set of IDL objects as a hash from classname to object.
+     * If keepIDLObjects is false, the map will be empty.
+     */
+    public HashMap<String, IDLObject> getIDLObjects() {
+        return IDLObjects;
+    }
+
+    /**
+     * Returns the number of parsed objects, regardless of the keepIDLObjects setting.
+     */
+    public int getObjectCount() {
+        return parsedObjectCount;
+    }
+
 
     public void handleStartElement(XMLStreamReader reader) {
 
@@ -156,6 +176,8 @@ public class IDLParser {
 
             OSRFRegistry.registerObject(
                 current.getIDLClass(), OSRFRegistry.WireProtocol.ARRAY, fieldNames);
+
+            parsedObjectCount++;
 
             current = null;
         }
