@@ -1,17 +1,24 @@
 JAVA_LIBDIR = .lib
 JAVAC = javac -J-Xmx256m
 JAVA = java -Xmx256m 
-OSRF_HOME = ../../../OpenSRF/src/java
-OSRF_JAVA = $(OSRF_HOME)/.lib
+OSRF_HOME = ../../../../../OpenSRF/trunk/src/java
+OSRF_JAVA = $(OSRF_HOME)/opensrf.jar
 EXT = $(OSRF_HOME)/ext
 JAVA_LIBS = .:$(JAVA_LIBDIR):$(OSRF_JAVA):$(EXT)/json-jdk1.5-2007-05-01.jar:$(EXT)/wstx-lgpl-3.2.1.jar:$(EXT)/stax-api-1.0.1.jar:$(EXT)/java_memcached-release_1.5.1.jar
 JAVA_SRC = \
+	org/open_ils/*.java\
 	org/open_ils/idl/*.java\
 	org/open_ils/test/*.java
 
-all:
+all:	jar
+
+jar:
 	mkdir -p $(JAVA_LIBDIR)
 	$(JAVAC) -d $(JAVA_LIBDIR) -cp $(JAVA_LIBS) $(JAVA_SRC) 2>&1 
+	rm -f openils.jar
+	echo "creating openils.jar"
+	jar cf openils.jar -C .lib org
+
 
 # only prints the first 30 lines of errors
 slim:
@@ -25,7 +32,7 @@ check:
 	@echo -e "\nTruncating at 30 lines"
 
 run:
-	@$(JAVA) -cp $(JAVA_LIBS) $(JAVA_EXE) $(JAVA_ARGS)
+	@$(JAVA) -cp $(JAVA_LIBS):openils.jar $(JAVA_EXE) $(JAVA_ARGS)
 
 deps:
 	mkdir -p ext
