@@ -209,7 +209,6 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	  	JOIN pg_class p ON (xact.tableoid = p.oid)
 	  	LEFT JOIN money.transaction_billing_summary debit ON (xact.id = debit.xact)
 	  	LEFT JOIN money.transaction_payment_summary credit ON (xact.id = credit.xact);
-*/
 
 CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	SELECT	xact.id AS id,
@@ -232,6 +231,46 @@ CREATE OR REPLACE VIEW money.billable_xact_summary AS
 	  	LEFT JOIN money.payment_view credit ON (xact.id = credit.xact AND credit.voided IS FALSE)
 	  GROUP BY 1,2,3,4,14
 	  ORDER BY MAX(debit.billing_ts), MAX(credit.payment_ts);
+*/
+
+CREATE OR REPLACE VIEW money.billable_xact_summary AS
+	SELECT	xact.id,
+		xact.usr,
+		xact.xact_start,
+		xact.xact_finish,
+		credit.amount AS total_paid,
+		credit.payment_ts AS last_payment_ts,
+		credit.note AS last_payment_note,
+		credit.payment_type AS last_payment_type,
+		debit.amount AS total_owed,
+		debit.billing_ts AS last_billing_ts,
+		debit.note AS last_billing_note,
+		debit.billing_type AS last_billing_type,
+		COALESCE(debit.amount, 0::numeric) - COALESCE(credit.amount, 0::numeric) AS balance_owed,
+		p.relname AS xact_type
+	  FROM	money.billable_xact xact
+		JOIN pg_class p ON xact.tableoid = p.oid
+		LEFT JOIN (
+			SELECT	billing.xact,
+				sum(billing.amount) AS amount,
+				max(billing.billing_ts) AS billing_ts,
+				last(billing.note) AS note,
+				last(billing.billing_type) AS billing_type
+			  FROM	money.billing
+			  WHERE	billing.voided IS FALSE
+			  GROUP BY billing.xact
+			) debit ON xact.id = debit.xact
+		LEFT JOIN (
+			SELECT	payment_view.xact,
+				sum(payment_view.amount) AS amount,
+				max(payment_view.payment_ts) AS payment_ts,
+				last(payment_view.note) AS note,
+				last(payment_view.payment_type) AS payment_type
+			  FROM	money.payment_view
+			  WHERE	payment_view.voided IS FALSE
+			  GROUP BY payment_view.xact
+			) credit ON xact.id = credit.xact
+	  ORDER BY debit.billing_ts, credit.payment_ts;
 
 CREATE OR REPLACE VIEW money.usr_summary AS
 	SELECT	usr,
