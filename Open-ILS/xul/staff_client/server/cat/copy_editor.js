@@ -44,6 +44,12 @@ function my_init() {
 
 		g.callnumbers = xul_param('callnumbers',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_callnumbers','clear_xpcom':true,'modal_xulG':true});
 
+
+		/******************************************************************************************************/
+		/* Quick fix, this was defined inline in the global scope but now needs g.error and g.copies from my_init */
+
+        init_panes();
+
 		/******************************************************************************************************/
 		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
 
@@ -507,6 +513,23 @@ g.apply_owning_lib = function(ou_id) {
 	}
 }
 
+/******************************************************************************************************/
+/* This returns true if none of the copies being edited are pre-cats */
+
+g.safe_to_change_owning_lib = function() {
+	try {
+		var safe = true;
+		for (var i = 0; i < g.copies.length; i++) {
+			var cn = g.copies[i].call_number();
+			if (typeof cn == 'object') { cn = cn.id(); }
+			if (cn == -1) { safe = false; }
+		}
+		return safe;
+	} catch(E) {
+        g.error.standard_unexpected_error_alert('safe_to_change_owning_lib?',E);
+		return false;
+	}
+}
 
 /******************************************************************************************************/
 /* This returns true if none of the copies being edited have a magical status found in my_constants.magical_statuses */
@@ -689,6 +712,7 @@ g.editable_stat_cat_names = [];
 /******************************************************************************************************/
 /* These get show in the left panel */
 
+function init_panes() {
 g.panes_and_field_names = {
 
 	'left_pane' :
@@ -748,7 +772,7 @@ g.panes_and_field_names = {
 		"Owning Lib : Call Number", 	
 		{
 			render: 'fm.call_number();',
-			input: 'c = function(v){ g.apply_owning_lib(v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.aou, function(obj) { var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ obj.name() ? sname + " " + obj.name() : obj.shortname(), obj.id(), ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_vols() ) ), ( g.data.hash.aout[ obj.ou_type() ].depth() * 2), ]; }), g.data.list.au[0].ws_ou()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: g.safe_to_change_owning_lib() ? 'c = function(v){ g.apply_owning_lib(v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.data.list.aou, function(obj) { var sname = obj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ obj.name() ? sname + " " + obj.name() : obj.shortname(), obj.id(), ( ! get_bool( g.data.hash.aout[ obj.ou_type() ].can_have_vols() ) ), ( g.data.hash.aout[ obj.ou_type() ].depth() * 2), ]; }), g.data.list.au[0].ws_ou()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);' : undefined,
 		}
 	],
 	[
@@ -871,6 +895,7 @@ g.panes_and_field_names = {
 ]
 
 };
+}
 
 /******************************************************************************************************/
 /* This loops through all our fieldnames and all the copies, tallying up counts for the different values */
