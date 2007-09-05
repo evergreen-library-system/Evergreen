@@ -44,6 +44,12 @@ function my_init() {
 
 		g.callnumbers = xul_param('callnumbers',{'concat':true,'JSON2js_if_cgi':true,'JSON2js_if_xpcom':true,'stash_name':'temp_callnumbers','clear_xpcom':true,'modal_xulG':true});
 
+
+		/******************************************************************************************************/
+		/* Quick fix, this was defined inline in the global scope but now needs g.error and g.copies from my_init */
+
+        init_panes();
+
 		/******************************************************************************************************/
 		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
 
@@ -520,7 +526,7 @@ g.safe_to_change_owning_lib = function() {
 		}
 		return safe;
 	} catch(E) {
-		g.error.standard_unexpected_error_alert('safe_to_change_owning_lib?',E);
+        g.error.standard_unexpected_error_alert('safe_to_change_owning_lib?',E);
 		return false;
 	}
 }
@@ -706,6 +712,7 @@ g.editable_stat_cat_names = [];
 /******************************************************************************************************/
 /* These get show in the left panel */
 
+function init_panes() {
 g.panes_and_field_names = {
 
 	'left_pane' :
@@ -888,6 +895,7 @@ g.panes_and_field_names = {
 ]
 
 };
+}
 
 /******************************************************************************************************/
 /* This loops through all our fieldnames and all the copies, tallying up counts for the different values */
