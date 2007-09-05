@@ -1454,11 +1454,21 @@ sub find_or_create_volume {
 	my( $self, $conn, $auth, $label, $record_id, $org_id ) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
+
+    my $vol;
+
+    if($record_id == OILS_PRECAT_RECORD) {
+
+        $vol = $e->retrieve_asset_call_number(OILS_PRECAT_CALL_NUMBER)
+            or return $e->die_event;
+
+    } else {
 	
-	my $vol = $e->search_asset_call_number(
-		{label => $label, record => $record_id, owning_lib => $org_id, deleted => 'f'}, 
-		{idlist=>1}
-	)->[0];
+	    $vol = $e->search_asset_call_number(
+		    {label => $label, record => $record_id, owning_lib => $org_id, deleted => 'f'}, 
+		    {idlist=>1}
+	    )->[0];
+    }
 
 	# If the volume exists, return the ID
 	if( $vol ) { $e->rollback; return $vol; }
@@ -1473,12 +1483,6 @@ sub find_or_create_volume {
 	$vol->owning_lib($org_id);
 	$vol->label($label);
 	$vol->record($record_id);
-
-	#$vol->creator($e->requestor->id);
-	#$vol->create_date('now');
-	#$vol->editor($e->requestor->id);
-	#$vol->edit_date('now');
-	#$e->create_asset_call_number($vol) or return $e->die_event;
 
    my $evt = create_volume( 0, $e, $vol );
    return $evt if $evt;
