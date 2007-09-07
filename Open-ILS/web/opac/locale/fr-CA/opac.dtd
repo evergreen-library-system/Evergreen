@@ -528,7 +528,7 @@ Nous vous recommandons de supprimer ce titre des sacs de livres auxquels il a pu
 <!ENTITY common.phone.enable "Activer les avis téléphoniques pour cette mise en réserve?">
 <!ENTITY common.email.enable "Activer les avis par courrier électronique pour cette mise en réserve?">
 <!ENTITY common.email.none "(Le client n'a pas d'adresse électronique configurée)">
-<!ENTITY common.email.set "(Voir <a catégorie='lien_classique' id='réserve.pas_adresse_électronique.mon_compte>Mon compte </a> pour établir votre adresse électronique)">
+<!ENTITY common.email.set "(Voir <a class='classic_link' id='holds.no_email.my_account'>Mon compte </a> pour établir votre adresse électronique)">
 <!ENTITY common.keywords.label "Mot-clé :">
 <!ENTITY common.physical.label "Description physique :">
 <!ENTITY common.series.label "Collection :">
