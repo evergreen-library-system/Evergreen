@@ -229,7 +229,7 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
 By default, holds will use the notification style you choose here.  
 However, you will still have the option to change individual holds regardless of this setting.">
-<!ENTITY myopac.holds.frozen "Frozen">
+<!ENTITY myopac.holds.unfrozen "Un-Frozen">
 <!ENTITY myopac.holds.frozen.until "Frozen Until">
 
 <!--	================================================================= 

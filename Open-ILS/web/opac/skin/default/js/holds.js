@@ -91,12 +91,19 @@ function _holdsUpdateEditHold() {
 	var status = holdArgs.status;
 
 	var orgsel = $('holds_org_selector');
+    var frozenbox = $('holds_frozen_chkbox');
+
 	setSelector(orgsel, hold.pickup_lib());
 
-	if( hold.capture_time() || status > 2 )
+	if( hold.capture_time() || status > 2 ) {
 		orgsel.disabled = true;
-	else	
+        frozenbox.disabled = true;
+        $('holds_frozen_thaw_input').disabled = true;
+
+    } else {
 		orgsel.disabled = false;
+        frozenbox.disabled = false;
+    }
 
 
 	$('holds_submit').onclick = holdsEditHold;
@@ -117,6 +124,21 @@ function _holdsUpdateEditHold() {
 	} else {
 		$('holds_enable_email').checked = false;
 	}
+
+    /* populate the hold freezing info */
+    if(!frozenbox.disabled && isTrue(hold.frozen())) {
+        frozenbox.checked = true;
+        unHideMe($('hold_frozen_thaw_row'));
+        if(hold.thaw_date()) {
+            $('holds_frozen_thaw_input').value = hold.thaw_date();
+        } else {
+            $('holds_frozen_thaw_input').value = '';
+        }
+    } else {
+        frozenbox.checked = false;
+        $('holds_frozen_thaw_input').value = '';
+        hideMe($('hold_frozen_thaw_row'));
+    }
 }
 
 function holdsEditHold() {
@@ -671,6 +693,17 @@ function holdsBuildHoldFromWindow() {
 	hold.usr(holdArgs.recipient.id());
 	hold.target(target);
 	hold.hold_type(holdArgs.type);
+
+    // see if this hold should be frozen and for how long
+    if($('holds_frozen_chkbox').checked) {
+        hold.frozen('t');
+        unHideMe($('hold_frozen_thaw_row'));
+        thawDate = $('holds_frozen_thaw_input').value;
+        if(thawDate) 
+            hold.thaw_date(thawDate);
+        else
+            hold.thaw_date(null);
+    }
 
 	//check for alternate hold formats 
 	var fstring = holdsSetSelectedFormats();

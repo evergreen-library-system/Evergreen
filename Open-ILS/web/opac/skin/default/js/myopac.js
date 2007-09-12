@@ -337,6 +337,18 @@ function myOPACDrawHolds(r) {
 		$n(row,'myopac_holds_edit_link').setAttribute(
 			'href','javascript:myOPACEditHold("'+ h.id()+'");'); 
 
+        if(isTrue(h.frozen())) {
+            hideMe($n(row, 'myopac_hold_unfrozen_true'))
+            unHideMe($n(row, 'myopac_hold_unfrozen_false'))
+            if(h.thaw_date()) {
+                var d = Date.parseIso8601(h.thaw_date());
+                $n(row, 'myopac_holds_frozen_until').appendChild(text(d.iso8601Format('YMD')));
+            }
+        } else {
+            unHideMe($n(row, 'myopac_hold_unfrozen_true'))
+            hideMe($n(row, 'myopac_hold_unfrozen_false'))
+        }
+
 		unHideMe(row);
 
 		myOPACDrawHoldTitle(h);

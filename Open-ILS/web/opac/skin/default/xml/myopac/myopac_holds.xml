@@ -12,7 +12,7 @@
 				<td>&myopac.holds.formats;</td>
 				<td>&myopac.holds.location;</td>
 				<td>&common.status;</td>
-				<td>&myopac.holds.frozen;</td>
+				<td>&myopac.holds.unfrozen;</td>
 				<td>&myopac.holds.frozen.until;</td>
 				<td>&myopac.holds.edit.cancel;</td>
 			</tr>
@@ -49,8 +49,8 @@
 				</td>
 
                 <td>
-                    <span name='myopac_hold_frozen_false' class='x_mark'>&#x2717;</span>
-                    <span name='myopac_hold_frozen_true' class='hide_me check_mark'>&#x2713;</span>
+                    <span name='myopac_hold_unfrozen_false' class='x_mark'>&#x2717;</span>
+                    <span name='myopac_hold_unfrozen_true' class='hide_me check_mark'>&#x2713;</span>
                 </td>
 
                 <td name='myopac_holds_frozen_until'></td>
