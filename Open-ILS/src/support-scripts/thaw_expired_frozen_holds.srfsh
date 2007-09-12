@@ -1,0 +1,2 @@
+#!/openils/bin/srfsh
+request open-ils.storage open-ils.storage.action.hold_request.thaw_expired_frozen

@@ -160,6 +160,30 @@ __PACKAGE__->register_method(
 	method          => 'complete_reshelving',
 );
 
+sub auto_thaw_frozen_holds {
+	my $self = shift;
+	my $client = shift;
+
+	local $OpenILS::Application::Storage::WRITE = 1;
+
+	my $holds = action::hold_request->table;
+
+	my $sql = "UPDATE $holds SET frozen = FALSE WHERE frozen IS TRUE AND thaw_date < NOW();";
+
+	my $sth = action::hold_request->db_Main->prepare_cached($sql);
+	$sth->execute();
+
+	return $sth->rows;
+
+}
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.hold_request.thaw_expired_frozen',
+	api_level       => 1,
+	stream		=> 0,
+	argc		=> 0,
+	method          => 'auto_thaw_frozen_holds',
+);
+
 sub grab_overdue {
 	my $self = shift;
 	my $client = shift;
