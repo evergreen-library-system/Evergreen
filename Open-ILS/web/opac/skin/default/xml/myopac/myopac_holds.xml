@@ -49,8 +49,8 @@
 				</td>
 
                 <td>
-                    <span name='myopac_hold_frozen_false'>&#x2717;</span>
-                    <span name='myopac_hold_frozen_true' class='hide_me'>&#x2713;</span>
+                    <span name='myopac_hold_frozen_false' class='x_mark'>&#x2717;</span>
+                    <span name='myopac_hold_frozen_true' class='hide_me check_mark'>&#x2713;</span>
                 </td>
 
                 <td name='myopac_holds_frozen_until'></td>
