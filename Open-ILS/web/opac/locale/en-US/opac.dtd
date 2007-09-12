@@ -203,6 +203,10 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
+<!ENTITY opac.holds.freeze "Freeze this hold">
+<!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">
+<!ENTITY opac.holds.freeze.thaw_date "Automatically un-freeze hold on:">
+<!ENTITY opac.holds.freeze.thaw_date.format "YYYY-MM-DD">
 
 <!--	================================================================= 
 	MyOPAC Preferences Page 
@@ -225,6 +229,8 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
 By default, holds will use the notification style you choose here.  
 However, you will still have the option to change individual holds regardless of this setting.">
+<!ENTITY myopac.holds.frozen "Frozen">
+<!ENTITY myopac.holds.frozen.until "Frozen Until">
 
 <!--	================================================================= 
 	 MyOPAC Summary page

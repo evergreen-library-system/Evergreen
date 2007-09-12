@@ -12,6 +12,8 @@
 				<td>&myopac.holds.formats;</td>
 				<td>&myopac.holds.location;</td>
 				<td>&common.status;</td>
+				<td>&myopac.holds.frozen;</td>
+				<td>&myopac.holds.frozen.until;</td>
 				<td>&myopac.holds.edit.cancel;</td>
 			</tr>
 		</thead>
@@ -45,6 +47,13 @@
 					<span class='hide_me' name='hold_status_transit'>&myopac.holds.status.intransit;</span>
 					<span class='hide_me' name='hold_status_available'><b style='color:red'></b></span>
 				</td>
+
+                <td>
+                    <span name='myopac_hold_frozen_false'>&#x2717;</span>
+                    <span name='myopac_hold_frozen_true' class='hide_me'>&#x2713;</span>
+                </td>
+
+                <td name='myopac_holds_frozen_until'></td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 

@@ -1,3 +1,8 @@
+<link rel="stylesheet" type="text/css"
+    href='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-brown.css' title="win2k-cold-1" />
+<script src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
+<script src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
+<script src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
 
 <div>
 	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
@@ -121,6 +126,52 @@
 						<select id='holds_org_selector'> </select>
 					</td>
 				</tr>
+
+                <tr>
+                    <td class='holds_cell'>
+                        &opac.holds.freeze;
+                        (<a class='classic_link' href='javascript:alert("&opac.holds.freeze.help;");'>Help</a>)
+                        </td>
+                    <td class='holds_cell'>
+                        <input type='checkbox' id='holds_frozen_chkbox' 
+                            onchange='
+                                if($("holds_frozen_chkbox").checked) 
+                                    unHideMe($("hold_frozen_thaw_row"));
+                                else
+                                    hideMe($("hold_frozen_thaw_row"));
+                            '> 
+                        </input>
+                    </td>
+                </tr>
+
+                <tr id='hold_frozen_thaw_row' class='hide_me'>
+                    <script> if($('holds_frozen_chkbox').checked) unHideMe($("hold_frozen_thaw_row"));</script>
+                    <td class='holds_cell'>
+                        &opac.holds.freeze.thaw_date;
+                    </td>
+                    <td class='holds_cell'>
+                        <input size='10' maxlength='10' id='holds_frozen_thaw_input'> </input>
+                        <button style='padding: 0px;' id='holds_frozen_thaw_date_button'>
+                            <img src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/img.gif'
+                                style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
+                                title="Date selector"
+                                onmouseover="this.style.background='red';"
+                                onmouseout="this.style.background=''" />
+                        </button>
+                        &nbsp;(&opac.holds.freeze.thaw_date.format;)
+
+                        <script type="text/javascript">
+                            Calendar.setup({
+                                inputField  : "holds_frozen_thaw_input",
+                                ifFormat    : "%Y-%m-%d",
+                                button      : "holds_frozen_thaw_date_button",
+                                align       : "Tl", 
+                                singleClick : true
+                            });
+                        </script>
+
+                    </td>
+                </tr>
 
 				<tr id='holds_alt_formats_row_extras' class='hide_me'>
 					<td colspan='2' align='center'>
