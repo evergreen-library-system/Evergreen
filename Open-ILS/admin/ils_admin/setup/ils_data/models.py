@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import signals
 from django.dispatch import dispatcher
+import datetime
 
 INTERVAL_HELP_TEXT = _('examples: "1 hour", "14 days", "3 months", "DD:HH:MM:SS.ms"')
 CHAR_MAXLEN=200 # just provide a sane default
@@ -9,6 +10,35 @@ CHAR_MAXLEN=200 # just provide a sane default
 """ --------------------------------------------------------------
     Permission tables
     -------------------------------------------------------------- """
+
+
+class PermList(models.Model):
+    code = models.CharField(maxlength=100)
+    description = models.TextField(blank=True)
+    class Admin:
+        list_display = ('code','description')
+        search_fields = ['code']
+    class Meta:
+        db_table = 'perm_list'
+        ordering = ['code']
+        verbose_name = _('Permission')
+    def __str__(self):
+        return self.code
+
+class GrpPermMap(models.Model):
+    grp_id = models.ForeignKey('GrpTree', db_column='grp')
+    perm_id = models.ForeignKey(PermList, db_column='perm')
+    depth_id = models.ForeignKey('OrgUnitType', to_field='depth', db_column='depth')
+    grantable = models.BooleanField()
+    class Admin:
+        list_filter = ['grp_id']
+        list_display = ('perm_id', 'grp_id', 'depth_id')
+    class Meta:
+        db_table = 'grp_perm_map'
+        ordering = ['perm_id', 'grp_id']
+        verbose_name = _('Permission Setting')
+    def __str__(self):
+        return str(self.grp_id)+' -> '+str(self.perm_id)
 
 class GrpTree(models.Model):
     name = models.CharField(maxlength=100)
@@ -28,33 +58,6 @@ class GrpTree(models.Model):
     def __str__(self):
         return self.name
 
-class PermList(models.Model):
-    code = models.CharField(maxlength=100)
-    description = models.TextField(blank=True)
-    class Admin:
-        list_display = ('code','description')
-        search_fields = ['code']
-    class Meta:
-        db_table = 'perm_list'
-        ordering = ['code']
-        verbose_name = _('Permission')
-    def __str__(self):
-        return self.code
-
-class GrpPermMap(models.Model):
-    grp_id = models.ForeignKey(GrpTree, db_column='grp')
-    perm_id = models.ForeignKey(PermList, db_column='perm')
-    depth_id = models.ForeignKey('OrgUnitType', to_field='depth', db_column='depth')
-    grantable = models.BooleanField()
-    class Admin:
-        list_filter = ['grp_id']
-        list_display = ('perm_id', 'grp_id', 'depth_id')
-    class Meta:
-        db_table = 'grp_perm_map'
-        ordering = ['perm_id', 'grp_id']
-        verbose_name = _('Permission Setting')
-    def __str__(self):
-        return str(self.grp_id)+' -> '+str(self.perm_id)
 
 
 
@@ -183,6 +186,33 @@ class OrgUnit(models.Model):
         verbose_name = _('Organizational Unit')
     def __str__(self):
         return self.shortname
+
+class HoursOfOperation(models.Model):
+    #choices = tuple([ (datetime.time(i), str(i)) for i in range(0,23) ])
+    org_unit = models.ForeignKey('OrgUnit', db_column='id')
+    # XXX add better time widget support
+    dow_0_open = models.TimeField(_('Monday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_0_close = models.TimeField(_('Monday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_1_open = models.TimeField(_('Tuesday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_1_close = models.TimeField(_('Tuesday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_2_open = models.TimeField(_('Wednesday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_2_close = models.TimeField(_('Wednesday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_3_open = models.TimeField(_('Thursday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_3_close = models.TimeField(_('Thursday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_4_open = models.TimeField(_('Friday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_4_close = models.TimeField(_('Friday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_5_open = models.TimeField(_('Saturday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_5_close = models.TimeField(_('Saturday Close'), null=False, blank=False, default=datetime.time(17))
+    dow_6_open = models.TimeField(_('Sunday Open'), null=False, blank=False, default=datetime.time(9))
+    dow_6_close = models.TimeField(_('Sunday Close'), null=False, blank=False, default=datetime.time(17))
+    class Admin:
+        pass
+    class Meta:
+        db_table = 'hours_of_operation'
+        verbose_name = _('Hours of Operation')
+        verbose_name_plural = verbose_name
+    def __str__(self):
+        return str(self.org_unit)
 
 
 
