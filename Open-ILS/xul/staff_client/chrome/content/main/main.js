@@ -247,7 +247,7 @@ function main_init() {
 		var x = document.getElementById('about_btn');
 		x.setAttribute('label','About this client...');
 		x.addEventListener(
-			'click',
+			'command',
 			function() {
 				try { 
 					G.window.open('about.html','about','chrome,resizable,width=800,height=600');
@@ -255,6 +255,19 @@ function main_init() {
 			}, 
 			false
 		);
+		if ( found_ws_info_in_Achrome() ) {
+			var hbox = x.parentNode; var b = document.createElement('button'); 
+			b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
+			b.addEventListener(
+				'command',
+				function() {
+					try {
+						handle_migration();
+					} catch(E) { alert(E); }
+				},
+				false
+			);
+		}
 
 	} catch(E) {
 		var error = "!! This software has encountered an error.  Please tell your friendly " +
@@ -263,6 +276,52 @@ function main_init() {
 		alert(error);
 	}
 	dump('exiting main_init()\n');
+}
+
+function found_ws_info_in_Achrome() {
+	JSAN.use('util.file');
+	var f = new util.file();
+	var f_in_chrome = f.get('ws_info','chrome');
+	var path = f_in_chrome.exists() ? f_in_chrome.path : false;
+	f.close();
+	return path;
+}
+
+function found_ws_info_in_Uchrome() {
+	JSAN.use('util.file');
+	var f = new util.file();
+	var f_in_uchrome = f.get('ws_info','uchrome');
+	var path = f_in_uchrome.exists() ? f_in_uchrome.path : false;
+	f.close();
+	return path;
+}
+
+function handle_migration() {
+	if ( found_ws_info_in_Uchrome() ) {
+		alert('WARNING: Unable to migrate legacy settings.  The settings and configuration files appear to exist in multiple locations.\n'
+			+ 'To resolve manually, please consider:\n\t' + found_ws_info_in_Uchrome() + '\n'
+			+ 'which is in the directory where we want to store settings for the current OS user, and:\n\t'
+			+ found_ws_info_in_Achrome() + '\nwhich is where we used to store such information.\n'
+		);
+	} else {
+		var dirService = Components.classes["@mozilla.org/file/directory_service;1"].getService( Components.interfaces.nsIProperties );
+		var f_new = dirService.get( "UChrm", Components.interfaces.nsIFile );
+		var f_old = dirService.get( "AChrom", Components.interfaces.nsIFile );
+		f_old.append(myPackageDir); f_old.append("content"); f_old.append("conf"); 
+		if (window.confirm("Move the settings and configuration files from\n" + f_old.path + "\nto\n" + f_new.path + "?")) {
+			var files = f_old.directoryEntries;
+			while (files.hasMoreElements()) {
+				var file = files.getNext();
+				var file2 = file.QueryInterface( Components.interfaces.nsILocalFile );
+				try {
+					file2.moveTo( f_new, '' );
+				} catch(E) {
+					alert('Error trying to move ' + file2.path + ' to directory ' + f_new.path + '\n');
+				}
+			}
+			location.href = location.href;
+		}
+	}
 }
 
 dump('exiting main/main.js\n');
