@@ -681,4 +681,24 @@ function debugFMObject(obj) {
 }
 
 
+function getTableRows(tbody) {
+    var rows = [];
+    if(!tbody) return rows;
 
+    var children = tbody.childNodes;
+    if(!children) return rows;
+
+    for(var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if(child.nodeName.match(/^tr$/i)) 
+            rows.push(child);
+    }
+    return rows;
+}
+
+function getObjectKeys(obj) {
+    keys = []
+    for(var k in obj)
+        keys.push(k)
+    return keys;
+}

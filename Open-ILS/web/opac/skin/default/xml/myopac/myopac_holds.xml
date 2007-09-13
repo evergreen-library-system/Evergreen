@@ -3,7 +3,27 @@
 
 	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
 
-	<table width='100%' class='light_border data_grid data_grid_center'>
+	<table width='100%'>
+        <tbody><tr><td width='100%' align='right'>
+            <select id='myopac_holds_actions' onchange='myopacDoHoldAction();'>
+                <option id='myopac_holds_actions_none' value=''>-- &myopac.holds.actions; --</option>
+                <option value='freeze'>&myopac.holds.freeze_selected;</option>
+                <option value='thaw'>&myopac.holds.thaw_selected;</option>
+                <option value='cancel'>&myopac.holds.cancel_selected;</option>
+            </select>
+        </td></tr></tbody>
+        <script>$('myopac_holds_actions_none').selected = true;</script>
+    </table>
+
+    <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>
+    <span id='myopac.holds.freeze.confirm' class='hide_me'>&myopac.holds.freeze.confirm;</span>
+    <span id='myopac.holds.thaw.confirm' class='hide_me'>&myopac.holds.thaw.confirm;</span>
+
+    <table width='100%' id='myopac_holds_processing' class='hide_me'>
+        <tr><td>&myopac.holds.processing;</td></tr>
+    </table>
+
+	<table width='100%' class='light_border data_grid data_grid_center' id='myopac_holds_main_table'>
 
 		<thead class='color_3'>
 			<tr>
@@ -14,6 +34,12 @@
 				<td>&common.status;</td>
 				<td>&myopac.holds.unfrozen;</td>
 				<td>&myopac.holds.frozen.until;</td>
+                <td width='15%'>&common.select;
+                    (<a id='myopac_select_all_holds' onclick='myopacSelectAllHolds();' 
+                        class='classic_link' href='javascript:void(0);'>&common.all;</a>/<a id='myopac_select_none_holds' 
+                        onclick='myopacSelectNoneHolds();' class='classic_link'  href='javascript:void(0);'>&common.none;</a>)
+                </td>
+
 				<td>&myopac.holds.edit.cancel;</td>
 			</tr>
 		</thead>
@@ -54,6 +80,7 @@
                 </td>
 
                 <td name='myopac_holds_frozen_until'></td>
+                <td><input type='checkbox' name='myopac_holds_selected_chkbx'/></td>
 
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 

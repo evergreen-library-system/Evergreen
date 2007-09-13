@@ -294,14 +294,18 @@ function myOPACShowHolds() {
 	var req = new Request(FETCH_HOLDS, G.user.session, G.user.id());	
 	req.callback(myOPACDrawHolds);
 	req.send();
+    $('myopac_holds_actions_none').selected = true;
 }
 
 var holdsTemplateRowOrig;
 var holdsTemplateRow;
+var myopacForceHoldsRedraw = false;
 function myOPACDrawHolds(r) {
 
 	var tbody = $("myopac_holds_tbody");
-	if(holdsTemplateRow) return;
+	if(holdsTemplateRow && !myopacForceHoldsRedraw) return;
+    myopacForceHoldsRedraw = false;
+
 	if(holdsTemplateRowOrig) {
 		holdsTemplateRow = holdsTemplateRowOrig;
 		removeChildren(tbody);
@@ -348,6 +352,8 @@ function myOPACDrawHolds(r) {
             unHideMe($n(row, 'myopac_hold_unfrozen_true'))
             hideMe($n(row, 'myopac_hold_unfrozen_false'))
         }
+
+        $n(row, 'myopac_holds_selected_chkbx').checked = false;
 
 		unHideMe(row);
 
@@ -1298,4 +1304,74 @@ function myHandleRenewResponse(r) {
 }
 
 
+/* myopac_holds_checkbx */
+function myopacSelectAllHolds() {
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb) cb.checked = true;
+    }
+}
 
+function myopacSelectNoneHolds() {
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb) cb.checked = false;
+    }
+}
+
+function myopacSelectedHoldsRows() {
+    var r = [];
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb && cb.checked)
+            r.push(rows[i]);
+    }
+    return r;
+}
+
+var myopacCancelledHolds = 0;
+var myopacTotalHoldsToCancel = 0;
+function myopacDoHoldAction() {
+
+    switch(getSelectorVal($('myopac_holds_actions'))) { 
+        case 'cancel':
+            myopacBatchCancelHold();
+            break;
+    }
+}
+
+function myopacBatchCancelHold() {
+    if(!confirmId('myopac.holds.cancel.confirm')) return;
+
+
+    myopacCancelledHolds = 0;
+    var rows = myopacSelectedHoldsRows();
+    myopacTotalHoldsToCancel = rows.length;
+    if(myopacTotalHoldsToCancel == 0) return;
+
+    unHideMe($('myopac_holds_processing'));
+    hideMe($('myopac_holds_main_table'));
+
+    for(var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        id = row.id.replace(/.*_(\d+)$/, '$1');
+        _debug("cancelling hold " + i);
+        var req = new Request(CANCEL_HOLD, G.user.session, id);
+        req.callback(myopacBatchCancelHoldCallback);
+        req.send();
+    }
+}
+
+function myopacBatchCancelHoldCallback(r) {
+    r.getResultObject();
+    if(++myopacCancelledHolds >= myopacTotalHoldsToCancel) {
+        hideMe($('myopac_holds_processing'));
+        unHideMe($('myopac_holds_main_table'));
+        holdCache = {};
+        myopacForceHoldsRedraw = true;
+        myOPACShowHolds();
+    }
+}
