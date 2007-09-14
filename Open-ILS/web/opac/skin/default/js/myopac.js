@@ -1371,6 +1371,8 @@ function myopacDoHoldAction() {
         }
     }
     myopacTotalHoldsToProcess = holds.length;
+    if(myopacTotalHoldsToProcess == 0) return;
+    myopacShowHoldProcessing();
 
     var thawDate = null;
     var thawDateSet = false;
