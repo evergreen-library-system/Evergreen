@@ -310,7 +310,7 @@ sub hold_items {
     my ($self, $start, $end) = @_;
 
 	 my $holds = $self->{editor}->search_action_hold_request(
-		{ usr => $self->{user}->id, fulfillment_time => undef }
+		{ usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef }
 	 );
 
 	my @holds;
