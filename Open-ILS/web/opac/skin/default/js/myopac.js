@@ -6,6 +6,7 @@ attachEvt('common','locationUpdated', myopacReload );
 var fleshedUser = null;
 var fleshedContainers = {};
 var holdCache = {};
+var holdStatusCache = {};
 
 
 function clearNodes( node, keepArray ) {
@@ -397,6 +398,8 @@ function myOShowHoldStatus(r) {
 
 	var hold = r.hold;
 	var status = r.getResultObject();
+    holdStatusCache[hold.id()] = status;
+
 	var row = $("myopac_holds_row_" + r.hold.id());
 
 	if( status < 3 )
@@ -1355,6 +1358,7 @@ function myopacDoHoldAction() {
     var holds = [];
     for(var i = 0; i < selectedRows.length; i++) {
         hold = holdCache[myopacHoldIDFromRow(selectedRows[i])];
+        var status = holdStatusCache[hold.id()];
         switch(action) {
             case 'cancel':
                 holds.push(hold);
@@ -1365,7 +1369,7 @@ function myopacDoHoldAction() {
                     holds.push(hold);
                 break;
             case 'freeze':
-                if(!isTrue(hold.frozen()))
+                if(!isTrue(hold.frozen()) && status < 3)
                     holds.push(hold);
                 break;
         }
@@ -1441,6 +1445,7 @@ function myopacBatchHoldCallback(r) {
     if(++myopacProcessedHolds >= myopacTotalHoldsToProcess) {
         myopacHideHoldProcessing();
         holdCache = {};
+        holdStatusCache = {};
         myopacForceHoldsRedraw = true;
         myOPACShowHolds();
     }
