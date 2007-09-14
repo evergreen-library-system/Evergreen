@@ -121,7 +121,7 @@ function buildAppPermList(list, group) {
 /* fetches necessary objects and builds the UI */
 function uEditBuild() {
 
-    myPerms = ['BAR_PATRON'];
+    myPerms = ['BAR_PATRON', 'UNBAR_PATRON'];
 
     /*  grab the groups before we check perms so we know what
         application_perms to check */
@@ -160,8 +160,17 @@ function uEditBuild() {
 		uEditCheckEditPerm();
 	}
 
-	if(PERMS['BAR_PATRON'] == -1) 
-		$('ue_barred').disabled = true;
+    uEditCheckBarredPerm();
+}
+
+function uEditCheckBarredPerm() {
+	if(PERMS['BAR_PATRON'] != -1) 
+        return;
+
+    if(isTrue(patron.barred()) && PERMS['UNBAR_PATRON'] != -1) 
+        return;
+
+    $('ue_barred').disabled = true;
 }
 
 
