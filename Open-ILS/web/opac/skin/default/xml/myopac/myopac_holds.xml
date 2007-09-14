@@ -9,6 +9,7 @@
                 <option id='myopac_holds_actions_none' value=''>-- &myopac.holds.actions; --</option>
                 <option value='freeze'>&myopac.holds.freeze_selected;</option>
                 <option value='thaw'>&myopac.holds.thaw_selected;</option>
+                <option value='thaw_date'>&myopac.holds.thaw_date_selected;</option>
                 <option value='cancel'>&myopac.holds.cancel_selected;</option>
             </select>
         </td></tr></tbody>
@@ -18,6 +19,8 @@
     <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>
     <span id='myopac.holds.freeze.confirm' class='hide_me'>&myopac.holds.freeze.confirm;</span>
     <span id='myopac.holds.thaw.confirm' class='hide_me'>&myopac.holds.thaw.confirm;</span>
+    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>&myopac.holds.thaw_date.confirm;</span>
+    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>&myopac.holds.freeze.select_thaw;</span>
 
     <table width='100%' id='myopac_holds_processing' class='hide_me'>
         <tr><td>&myopac.holds.processing;</td></tr>

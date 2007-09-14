@@ -203,14 +203,18 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
-<!ENTITY myopac.holds.freeze_selected "Freeze selected holds">
-<!ENTITY myopac.holds.thaw_selected "Un-freeze selected holds">
-<!ENTITY myopac.holds.cancel_selected "Cancel selected holds">
+<!ENTITY myopac.holds.freeze_selected "Freeze">
+<!ENTITY myopac.holds.thaw_selected "Un-freeze">
+<!ENTITY myopac.holds.thaw_date_selected "Set Un-freeze date">
+<!ENTITY myopac.holds.cancel_selected "Cancel">
 <!ENTITY myopac.holds.processing "Processing holds... This may take a moment.">
-<!ENTITY myopac.holds.actions 'Actions'>
+<!ENTITY myopac.holds.actions 'Actions for selected holds'>
 <!ENTITY myopac.holds.cancel.confirm 'Are you sure you wish to cancel the selected holds?'>
 <!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to freeze the selected holds?'>
 <!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to un-freeze the selected holds?'>
+<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the un-freeze date for the selected holds?'>
+<!ENTITY myopac.holds.freeze.select_thaw "Select an 'Un-Freeze' date.  This is the date at which the holds will become active again.
+    If no date is chosen, the holds will remain frozen until they are manually un-frozen.">
 
 <!ENTITY opac.holds.freeze "Freeze this hold">
 <!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">

@@ -1349,6 +1349,7 @@ function myopacDoHoldAction() {
 
     myopacSelectNoneHolds(); /* clear the selection */
 
+
     /* first, let's collect the holds that actually need processing and
         collect the full process count while we're at it */
     var holds = [];
@@ -1358,6 +1359,7 @@ function myopacDoHoldAction() {
             case 'cancel':
                 holds.push(hold);
                 break;
+            case 'thaw_date':
             case 'thaw':
                 if(isTrue(hold.frozen()))
                     holds.push(hold);
@@ -1369,6 +1371,9 @@ function myopacDoHoldAction() {
         }
     }
     myopacTotalHoldsToProcess = holds.length;
+
+    var thawDate = null;
+    var thawDateSet = false;
 
     /* now we process them */
     for(var i = 0; i < holds.length; i++) {
@@ -1388,8 +1393,25 @@ function myopacDoHoldAction() {
                 req = new Request(UPDATE_HOLD, G.user.session, hold);
                 break;
 
-            case 'freeze':
+            case 'thaw_date':
+                if(!thawDateSet)
+                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML) || null;
+                thawDateSet = true;
+                hold.thaw_date(thawDate);
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
                 break;
+
+
+            case 'freeze':
+                if(!thawDateSet)
+                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
+                thawDateSet = true;
+                hold.frozen('t');
+                if(thawDate) 
+                    hold.thaw_date(thawDate); 
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
+                break;
+
         }
 
         req.callback(myopacBatchHoldCallback);
