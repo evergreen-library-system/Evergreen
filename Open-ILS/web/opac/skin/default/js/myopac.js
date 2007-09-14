@@ -1303,6 +1303,8 @@ function myHandleRenewResponse(r) {
     myOPACShowChecked();
 }
 
+/** ---- batch hold processing ------------ */
+
 
 /* myopac_holds_checkbx */
 function myopacSelectAllHolds() {
@@ -1332,46 +1334,91 @@ function myopacSelectedHoldsRows() {
     return r;
 }
 
-var myopacCancelledHolds = 0;
-var myopacTotalHoldsToCancel = 0;
+var myopacProcessedHolds = 0;
+var myopacTotalHoldsToProcess = 0;
 function myopacDoHoldAction() {
 
-    switch(getSelectorVal($('myopac_holds_actions'))) { 
-        case 'cancel':
-            myopacBatchCancelHold();
-            break;
+    var selectedRows = myopacSelectedHoldsRows();
+    action = getSelectorVal($('myopac_holds_actions'));
+    $('myopac_holds_actions_none').selected = true;
+    if(selectedRows.length == 0) return;
+
+    myopacProcessedHolds = 0;
+
+    if(!confirmId('myopac.holds.'+action+'.confirm')) return;
+
+    myopacSelectNoneHolds(); /* clear the selection */
+
+    /* first, let's collect the holds that actually need processing and
+        collect the full process count while we're at it */
+    var holds = [];
+    for(var i = 0; i < selectedRows.length; i++) {
+        hold = holdCache[myopacHoldIDFromRow(selectedRows[i])];
+        switch(action) {
+            case 'cancel':
+                holds.push(hold);
+                break;
+            case 'thaw':
+                if(isTrue(hold.frozen()))
+                    holds.push(hold);
+                break;
+            case 'freeze':
+                if(!isTrue(hold.frozen()))
+                    holds.push(hold);
+                break;
+        }
+    }
+    myopacTotalHoldsToProcess = holds.length;
+
+    /* now we process them */
+    for(var i = 0; i < holds.length; i++) {
+
+        hold = holds[i];
+        
+        var req;
+        switch(action) { 
+
+            case 'cancel':
+                req = new Request(CANCEL_HOLD, G.user.session, hold.id());
+                break;
+    
+            case 'thaw':
+                hold.frozen('f');
+                hold.thaw_date(null);
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
+                break;
+
+            case 'freeze':
+                break;
+        }
+
+        req.callback(myopacBatchHoldCallback);
+        req.send();
+        req = null;
     }
 }
 
-function myopacBatchCancelHold() {
-    if(!confirmId('myopac.holds.cancel.confirm')) return;
+function myopacHoldIDFromRow(row) {
+    return row.id.replace(/.*_(\d+)$/, '$1');
+}
 
-
-    myopacCancelledHolds = 0;
-    var rows = myopacSelectedHoldsRows();
-    myopacTotalHoldsToCancel = rows.length;
-    if(myopacTotalHoldsToCancel == 0) return;
-
+function myopacShowHoldProcessing() {
     unHideMe($('myopac_holds_processing'));
     hideMe($('myopac_holds_main_table'));
-
-    for(var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        id = row.id.replace(/.*_(\d+)$/, '$1');
-        _debug("cancelling hold " + i);
-        var req = new Request(CANCEL_HOLD, G.user.session, id);
-        req.callback(myopacBatchCancelHoldCallback);
-        req.send();
-    }
 }
 
-function myopacBatchCancelHoldCallback(r) {
+function myopacHideHoldProcessing() {
+    hideMe($('myopac_holds_processing'));
+    unHideMe($('myopac_holds_main_table'));
+}
+
+function myopacBatchHoldCallback(r) {
     r.getResultObject();
-    if(++myopacCancelledHolds >= myopacTotalHoldsToCancel) {
-        hideMe($('myopac_holds_processing'));
-        unHideMe($('myopac_holds_main_table'));
+    if(++myopacProcessedHolds >= myopacTotalHoldsToProcess) {
+        myopacHideHoldProcessing();
         holdCache = {};
         myopacForceHoldsRedraw = true;
         myOPACShowHolds();
     }
 }
+
