@@ -69,7 +69,7 @@
 					if (node) document.getElementById('fancy_prompt_main').appendChild(node);
 				}
 
-				var bot_xml = xul_param('bot_xml',{'stash_name':xul_param('bottom_xml_in_stash',{'modal_xulG':true}),'modal_xulG':true});;
+				var bot_xml = xul_param('bottom_xml',{'stash_name':xul_param('bottom_xml_in_stash',{'modal_xulG':true}),'modal_xulG':true});;
 				if (bot_xml) {
 					var parser = new DOMParser();
 					var doc = parser.parseFromString( bot_xml, 'text/xml' );
