@@ -767,6 +767,14 @@ circ.util.hold_columns = function(modify,params) {
 			'persist' : 'hidden width ordinal', 'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.hold_type(); },
 		},
+        {
+			'persist' : 'hidden width ordinal', 'id' : 'frozen', 'label' : 'Frozen?', 'flex' : 0,
+			'primary' : false, 'hidden' : true,  'render' : function(my) { return get_bool( my.ahr.frozen() ) ? 'Yes' : 'No'; },
+        },
+        {
+			'persist' : 'hidden width ordinal', 'id' : 'thaw_date', 'label' : 'Thaw Date', 'flex' : 0,
+			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.thaw_date() == null ? 'No Date' : my.ahr.thaw_date().substr(0,10); },
+        },
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib', 'label' : 'Pickup Lib (Full Name)', 'flex' : 1,
 			'primary' : false, 'hidden' : true,  
