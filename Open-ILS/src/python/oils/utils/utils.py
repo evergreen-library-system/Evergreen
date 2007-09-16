@@ -14,19 +14,14 @@
 # -----------------------------------------------------------------------
 
 import re, md5
+from osrf.ses import osrfAtomicRequest
+from osrf.log import *
+
 
 
 # -----------------------------------------------------------------------
 # Grab-bag of general utility functions
 # -----------------------------------------------------------------------
-
-
-# -----------------------------------------------------------------------
-# more succinct search/replace call
-# -----------------------------------------------------------------------
-def replace(str, pattern, replace):
-   return re.compile(pattern).sub(replace, str)
-
 
 def isEvent(evt):
     return (evt and isinstance(evt, dict) and evt.get('ilsevent') != None)
@@ -53,4 +48,27 @@ def unique(arr):
     for x in arr:
         o[x] = 1
     return o.keys()
+
+
+def login(username, password, type=None, workstation=None):
+    ''' Login to the server and get back an authtoken'''
+
+    osrfLogInfo("attempting login with user " + username)
+
+    seed = osrfAtomicRequest(
+        'open-ils.auth', 
+        'open-ils.auth.authenticate.init', username)
+
+    # generate the hashed password
+    password = md5sum(seed + md5sum(password))
+
+    return osrfAtomicRequest(
+        'open-ils.auth',
+        'open-ils.auth.authenticate.complete',
+        {   'workstation' : workstation,
+            'username' : username,
+            'password' : password,
+            'type' : type
+        }
+    )
 
