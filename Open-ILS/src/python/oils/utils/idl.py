@@ -24,7 +24,7 @@ class oilsIDLParser(object):
         self.IDLObject = {}
 
     def setIDL(self, file):
-        osrfLogInfo("setting IDL file to " + file)
+        osrfLogInfo("setting IDL file to " + str(file))
         self.idlFile = file
 
     def __getAttr(self, node, name, ns=None):
@@ -61,6 +61,7 @@ class oilsIDLParser(object):
                 obj['fieldmapper'] = self.__getAttr(child, 'oils_obj:fieldmapper', OILS_NS_OBJ)
                 obj['virtual'] = self.__getAttr(child, 'oils_perist:virtual', OILS_NS_PERSIST)
                 obj['rpt_label'] = self.__getAttr(child, 'reporter:label', OILS_NS_REPORTER)
+                obj['tablename'] = self.__getAttr(child, 'oils_persist:tablename', OILS_NS_REPORTER)
 
                 keys = []
                 for classNode in child.childNodes:
@@ -68,7 +69,7 @@ class oilsIDLParser(object):
                         if classNode.nodeName == 'fields':
                             keys = self.parseFields(id, classNode)
 
-                osrfNetworkRegisterHint(id, keys, 'array' )
+                osrfNetworkRegisterHint(id, keys, 'array')
 
         doc.unlink()
 
@@ -96,7 +97,7 @@ class oilsIDLParser(object):
                     osrfLogErr("parseFields(): position out of range.  pos=%d : key-size=%d" % (position, len(keys)))
                     raise e
 
-                virtual = self.__getAttr(field, 'virtual', OILS_NS_PERSIST)
+                virtual = self.__getAttr(field, 'oils_persist:virtual', OILS_NS_PERSIST)
                 obj['rpt_label']    = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
                 obj['rpt_dtype']    = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
                 obj['rpt_select']   = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
