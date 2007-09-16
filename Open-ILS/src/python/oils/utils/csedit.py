@@ -15,7 +15,6 @@
 
 from osrf.log import *
 from osrf.json import *
-from oils.utils.utils import replace
 from oils.utils.idl import oilsGetIDLParser
 from osrf.ses import osrfClientSession
 from oils.const import *
@@ -138,11 +137,11 @@ class CSEditor(object):
       method = "%s.direct.%s.%s" % (self.app, type, action)
 
       if options.get('idlist'):
-         method = replace(method, 'search', 'id_list')
+         method = method.replace('search', 'id_list')
          del options['idlist']
 
       if action == 'search':
-         method = replace(method, '$', '.atomic')
+         method = method.replace('$', '.atomic')
 
       params = [arg];
       if len(options.keys()):
@@ -163,8 +162,8 @@ def oilsLoadCSEditor():
    for k, fm in obj.iteritems():
       for action in ACTIONS:
 
-         fmname = replace(fm['fieldmapper'], '::', '_')
-         type = replace(fm['fieldmapper'], '::', '.')
+         fmname = fm['fieldmapper'].replace('::', '_')
+         type = fm['fieldmapper'].replace('::', '.')
          name = "%s_%s" % (action, fmname)
 
          str = 'def %s(self, arg, **options):\n' % name
