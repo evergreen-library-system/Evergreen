@@ -554,7 +554,7 @@ Example opensrf config file for OpenILS
                 <max_requests>17</max_requests>
                 <unix_config>
                     <unix_sock>opensrf.settings_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.settings_unix.pid</unix_pid>
+                    <unix_pid>opensrf.settings_unix.pid</unix_pid>
                     <max_requests>300</max_requests>
                     <unix_log>opensrf.settings_unix.log</unix_log>
                     <min_children>5</min_children>
@@ -572,7 +572,7 @@ Example opensrf config file for OpenILS
                 <max_requests>17</max_requests>
                 <unix_config>
                     <unix_sock>opensrf.collections_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.collections_unix.pid</unix_pid>
+                    <unix_pid>opensrf.collections_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
                     <unix_log>opensrf.collections_unix.log</unix_log>
                     <min_children>1</min_children>
@@ -590,7 +590,7 @@ Example opensrf config file for OpenILS
                 <max_requests>99</max_requests>
                 <unix_config>
                     <unix_sock>opensrf.reporter_unix.sock</unix_sock>
-                    <unix_pid>opoensrf.reporter_unix.pid</unix_pid>
+                    <unix_pid>opensrf.reporter_unix.pid</unix_pid>
                     <max_requests>1000</max_requests>
                     <unix_log>opensrf.reporter_unix.log</unix_log>
                     <min_children>1</min_children>
