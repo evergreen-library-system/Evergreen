@@ -3,7 +3,16 @@
 	<head>
 		<title>Local System Administration</title>
 		<script>
-			function _l(l) { location.href = l + location.search; }
+			function _l(l,p) { 
+                var url = l + location.search;
+                if (p) {
+                    if (location.search) { url += '&amp;'; } else { url += '?'; }
+                    url += p;
+                }
+                dump('setting location.href to ' + url + '\n');
+                location.href = url;
+            }
+            function getBuildId() { return location.href.match(/\/xul\/(.+?)\/server\//)[1]; }
 		</script>
 		<style type='text/css'>
 			body { background-color: white; }
@@ -60,7 +69,7 @@
 								<a href='javascript:_l("hold_pull_list_classic.xhtml");'>Pull List for Hold Requests (Classic)</a> <span style="color: red">(Testing)</span>
 							</div>
 							<div style='padding: 8px;'>
-								<a href='javascript:_l("/reports/oils_rpt.xhtml");'>Reports</a>
+								<a href='javascript:_l( "/reports/oils_rpt.xhtml","build_id=" + getBuildId() );'>Reports</a>
 							</div>
 							<div style='padding: 8px;'>
 								<a href='javascript:_l("cash_reports.xhtml");'>Cash Reports</a>
