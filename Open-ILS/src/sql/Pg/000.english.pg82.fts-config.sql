@@ -92,9 +92,9 @@ INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'file', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'float', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'int', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'uint', '{simple}');
-INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lword', '{en_stem}');
-INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lpart_hword', '{en_stem}');
-INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lhword', '{en_stem}');
+INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lword', '{en_stem_nostop}');
+INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lpart_hword', '{en_stem_nostop}');
+INSERT INTO pg_ts_cfgmap VALUES ('keyword', 'lhword', '{en_stem_nostop}');
 
 INSERT INTO pg_ts_cfgmap VALUES ('series', 'nlword', '{simple}');
 INSERT INTO pg_ts_cfgmap VALUES ('series', 'word', '{simple}');
