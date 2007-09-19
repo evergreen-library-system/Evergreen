@@ -49,6 +49,7 @@
 				}
 				if (xulG.query) {
 					for (var i in xulG.query) {
+                        if (typeof xulG.query[i] == 'object') { xulG.query[i] = xulG.query[i].value; }
 						query[i] = xulG.query[i];
 					}
 				}
