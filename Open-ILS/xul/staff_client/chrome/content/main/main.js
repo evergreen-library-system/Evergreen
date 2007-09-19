@@ -256,17 +256,20 @@ function main_init() {
 			false
 		);
 		if ( found_ws_info_in_Achrome() ) {
-			var hbox = x.parentNode; var b = document.createElement('button'); 
-			b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
-			b.addEventListener(
-				'command',
-				function() {
-					try {
-						handle_migration();
-					} catch(E) { alert(E); }
-				},
-				false
-			);
+			//var hbox = x.parentNode; var b = document.createElement('button'); 
+			//b.setAttribute('label','Migrate legacy settings'); hbox.appendChild(b);
+			//b.addEventListener(
+			//	'command',
+			//	function() {
+			//		try {
+			//			handle_migration();
+			//		} catch(E) { alert(E); }
+			//	},
+			//	false
+			//);
+			if (window.confirm('This version of the staff client stores local settings in a different location than your previous installation.  Should we attempt to migrate these settings?')) {
+				setTimeout( function() { handle_migration(); }, 0 );
+			}
 		}
 
 	} catch(E) {
