@@ -342,7 +342,7 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 				/* log and die on XML errors */
 				ap_log_rerror( APLOG_MARK, APLOG_ERR, 0, f->r, "XMLENT XML Parse Error: %s at line %d\n",
 					XML_ErrorString(XML_GetErrorCode(ctx->parser)), 
-					XML_GetCurrentLineNumber(ctx->parser));
+					(int) XML_GetCurrentLineNumber(ctx->parser));
 
 				XML_ParserFree(parser);
 				parser = NULL;
