@@ -43,7 +43,7 @@ int osrfAppInitialize() {
 		"oilsAuthComplete", 
 		"Completes the authentication process.  Returns an object like so: "
 		"{authtoken : <token>, authtime:<time>}, where authtoken is the login "
-		"tokena and authtime is the number of seconds the session will be active"
+		"token and authtime is the number of seconds the session will be active"
 		"PARAMS(username, md5sum( seed + password ), type, org_id ) "
 		"type can be one of 'opac','staff', or 'temp' and it defaults to 'staff' "
 		"org_id is the location at which the login should be considered "
@@ -71,7 +71,7 @@ int osrfAppInitialize() {
 		"oilsAuthResetTimeout",
 		"Resets the login timeout for the given session "
 		"Returns an ILS Event with payload = session_timeout of session "
-		"is found, otherwise returns the NO_SESSION event"
+		"if found, otherwise returns the NO_SESSION event"
 		"PARAMS( authToken )", 1, 0 );
 
 	return 0;
@@ -177,6 +177,7 @@ int oilsAuthVerifyPassword(
 			"open-ils.auth.authenticate.init must be called first");
 	}
 
+	osrfLogInternal(OSRF_LOG_MARK, "oilsAuth retrieved real password: [%s]", realPassword);
 	osrfLogDebug(OSRF_LOG_MARK,  "oilsAuth retrieved seed from cache: %s", seed );
 	char* maskedPw = md5sum( "%s%s", seed, realPassword );
 	if(!maskedPw) return -1;
@@ -366,7 +367,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
 	if( !( (uname || barcode) && password) ) {
 		free(barcode);
 		return osrfAppRequestRespondException( ctx->session, ctx->request, 
-			"username/barocode and password required for method: %s", ctx->method->name );
+			"username/barcode and password required for method: %s", ctx->method->name );
 	}
 
 	oilsEvent* response = NULL;
