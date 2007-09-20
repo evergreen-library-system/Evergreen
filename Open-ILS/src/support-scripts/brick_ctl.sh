@@ -47,7 +47,7 @@ DRONE_BASE=". /etc/profile && osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
 function usage {
 	echo "";	
 	echo "usage: $0 -a <action>"
-	echo "	-h <base_url> : host + path URL where the download file lives";
+	echo "	-u <base_url> : host + path URL where the download file lives";
 	echo "	-f <build_file> : the name of the bundle to fetch";
 	echo "	-x <xul_dir> : the destination xul directory";
 	echo "Actions:";	
