@@ -413,10 +413,10 @@ g.stash_and_close = function() {
 					g.error.standard_unexpected_error_alert('volume tree update 2',E);
 				}
 
-				if (typeof window.refresh == 'function') window.refresh();
-
 			}
 		}
+
+		if (typeof window.refresh == 'function') window.refresh();
 
 		window.close();
 
