@@ -76,6 +76,7 @@ patron.holds.prototype = {
 									params.row_node.setAttribute('retrieve_id', 
 										js2JSON({
 											'copy_id':copy_id,
+                                            'barcode':row.my.acp ? row.my.acp.barcode() : null,
 											'id':row.my.ahr.id(),
 											'type':row.my.ahr.hold_type(),
 											'target':row.my.ahr.target(),
@@ -699,10 +700,39 @@ patron.holds.prototype = {
 								var msg = 'Are you sure you would like to cancel hold' + ( obj.retrieve_ids.length > 1 ? 's ' : ' ') + util.functional.map_list( obj.retrieve_ids, function(o){return o.id;}).join(', ') + '?';
 								var r = obj.error.yns_alert(msg,'Cancelling Holds','Yes','No',null,'Check here to confirm this message');
 								if (r == 0) {
+                                    var transits = [];
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                        if (obj.holds_map[ obj.retrieve_ids[i].id ].transit()) {
+                                            transits.push( obj.retrieve_ids[i].barcode );
+                                        }
 										var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
+                                    if (transits.length > 0) {
+                                        var msg2 = 'For barcodes ' + transits.join(', ') + ' cancel the transits as well?';
+                                        var r2 = obj.error.yns_alert(msg2,'Cancelling Transits','Yes','No',null,'Check here to confirm this message');
+                                        if (r2 == 0) {
+                                            try {
+                                                for (var i = 0; i < transits.length; i++) {
+                                                    var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : transits[i] } ]);
+                                                    if (typeof robj.ilsevent != 'undefined') {
+                                                        switch(robj.ilsevent) {
+                                                            case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
+                                                                alert(robj.desc);
+                                                            break;
+                                                            case 5000 /* PERM_FAILURE */ :
+                                                            break;
+                                                            default:
+                                                                throw(robj);
+                                                            break;
+                                                        }
+										            }
+                                                }
+                                            } catch(E) {
+    								            obj.error.standard_unexpected_error_alert('Hold-transits not likely cancelled.',E);
+                                            }
+                                        }
+                                    }
 									obj.retrieve();
 								}
 							} catch(E) {
