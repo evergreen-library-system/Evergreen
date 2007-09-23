@@ -53,6 +53,10 @@
 	<command id="cmd_download_patrons" />
 	<command id="cmd_local_admin" />
 
+	<command id="cmd_extension_manager"/>
+	<command id="cmd_theme_manager"/>
+	<command id="cmd_about_config"/>
+
 	<command id="cmd_adv_user_edit" />
 	<command id="cmd_console" />
 	<command id="cmd_shell" />
@@ -211,6 +215,9 @@
 				<menuitem label="server/main/test.xul" accesskey="2" command="cmd_test_xul"/>
 				<menuitem label="&staff.main.menu.admin.clear_cache.label;" accesskey="&staff.main.menu.admin.clear_cache.accesskey;" command="cmd_clear_cache"/>
 				<menuitem label="&staff.main.menu.admin.restore_all_tabs.label;" command="cmd_restore_all_tabs"/>
+				<menuitem label="&staff.main.menu.admin.extension_manager.label;" command="cmd_extension_manager"/>
+				<menuitem label="&staff.main.menu.admin.theme_manager.label;" command="cmd_theme_manager"/>
+				<menuitem label="&staff.main.menu.admin.about_config.label;" command="cmd_about_config"/>
 			</menupopup>
 		</menu>
 	</menupopup>

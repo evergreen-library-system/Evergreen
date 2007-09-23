@@ -582,6 +582,9 @@
 <!ENTITY staff.main.menu.admin.public_opac.accesskey "p">
 <!ENTITY staff.main.menu.admin.public_opac.label "Public OPAC">
 <!ENTITY staff.main.menu.admin.restore_all_tabs.label "Unhide Tabs">
+<!ENTITY staff.main.menu.admin.extension_manager.label "Extension Manager">
+<!ENTITY staff.main.menu.admin.theme_manager.label "Theme Manager">
+<!ENTITY staff.main.menu.admin.about_config.label "about:config">
 <!ENTITY staff.main.menu.admin.stat_cat_edit.accesskey "C">
 <!ENTITY staff.main.menu.admin.stat_cat_edit.label "Statistical Category Editor">
 <!ENTITY staff.main.menu.admin.survey_wizard.accesskey "S">

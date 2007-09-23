@@ -578,6 +578,24 @@ main.menu.prototype = {
 					}
 				}
 			],
+			'cmd_extension_manager' : [
+				['oncommand'],
+				function() {
+					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name':'Extension Manager'},{});
+				}
+			],
+			'cmd_theme_manager' : [
+				['oncommand'],
+				function() {
+					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name':'Theme Manager'},{});
+				}
+			],
+			'cmd_about_config' : [
+				['oncommand'],
+				function() {
+					obj.set_tab('chrome://global/content/config.xul',{'tab_name':'about:config'},{});
+				}
+			],
 			'cmd_shutdown' : [
 				['oncommand'],
 				function() {
