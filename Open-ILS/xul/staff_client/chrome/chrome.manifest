@@ -2,3 +2,6 @@ content open_ils_staff_client content/
 locale open_ils_staff_client en-US locale/en-US/
 skin open_ils_staff_client open_ils_staff_client skin/
 locale branding en-US branding/locale/en-US/
+content venkman jar:venkman.jar!/content/venkman/
+locale venkman en-US jar:venkman.jar!/locale/en-US/venkman/
+skin   venkman modern/1.0 jar:venkman.jar!/skin/modern/venkman/
