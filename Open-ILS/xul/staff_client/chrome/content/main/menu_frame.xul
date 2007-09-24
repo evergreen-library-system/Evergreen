@@ -75,6 +75,7 @@
 		}
 	]]>
 	</script>
+	<script src="chrome://venkman/content/venkman-overlay.js"/>
 
 	<commandset id="universal_cmds" />
 
