@@ -630,7 +630,7 @@ g.get_acpl_list = function() {
 
 		if (ancestor) {
 			var acpl_list = get(ancestor, ancestors);
-            for (var i = 0; i < acpl_list.length; i++) {
+            if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
                 if (acpl_list[i] != null) {
                     temp_acpl_list.push(acpl_list[i]);
                 }
@@ -661,7 +661,7 @@ g.get_acpl_list = function() {
                     if ( flat_acpl_list.indexOf( String( consider_acpl ) ) > -1 ) { 
                         /* already in list */ 
                     } else { 
-                        if (acpl_list[i] != null) temp_acpl_list.push( circ_acpl_list[i] ); 
+                        if (circ_acpl_list[i] != null) temp_acpl_list.push( circ_acpl_list[i] ); 
                     }
                 }
             }
