@@ -578,7 +578,7 @@ g.get_acpl_list = function() {
 		JSAN.use('util.functional');
 
 		function get(lib_id,only_these) {
-			g.data.stash_retrieve();
+            g.data.stash_retrieve();
 			var label = 'acpl_list_for_lib_'+lib_id;
 			if (typeof g.data[label] == 'undefined') {
 				var robj = g.network.simple_request('FM_ACPL_RETRIEVE', [ lib_id ]);
@@ -590,7 +590,8 @@ g.get_acpl_list = function() {
 						g.data.hash.acpl[ my_acpl.id() ] = my_acpl;
 						g.data.list.acpl.push( my_acpl );
 					}
-					if (only_these.indexOf( String( my_acpl.owning_lib() ) ) != -1) {
+                    var only_this_lib = my_acpl.owning_lib(); if (typeof only_this_lib == 'object') only_this_lib = only_this_lib.id();
+					if (only_these.indexOf( String( only_this_lib ) ) != -1) {
 						temp_list.push( my_acpl );
 					}
 				}
@@ -599,19 +600,26 @@ g.get_acpl_list = function() {
 			return g.data[label];
 		}
 
+        var temp_acpl_list = [];
+
+        /* find acpl's based on owning_lib */
+
 		var libs = []; var map_acn = {};
 		for (var i = 0; i < g.copies.length; i++) {
 			var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
 				if (! map_acn[ cn_id ]) {
 					map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
-					libs.push( map_acn[ cn_id ].owning_lib() );
+                    var consider_lib = map_acn[ cn_id ].owning_lib();
+				    if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
 				}
 			}
 		}
 		if (g.callnumbers) {
 			for (var i in g.callnumbers) {
-				if ( ( libs.indexOf( g.callnumbers[i].owning_lib ) > -1 ) || ( libs.indexOf( String( g.callnumbers[i].owning_lib ) ) > -1 ) ) { /* already in list */ } else { libs.push( g.callnumbers[i].owning_lib ); }
+                var consider_lib = g.callnumbers[i].owning_lib;
+                if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
+				if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
 			}
 		}
 		JSAN.use('util.fm_utils');
@@ -621,11 +629,46 @@ g.get_acpl_list = function() {
 		var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
 
 		if (ancestor) {
-			return get(ancestor, ancestors);
-		} else {
-			return [];
+			var acpl_list = get(ancestor, ancestors);
+            for (var i = 0; i < acpl_list.length; i++) {
+                if (acpl_list[i] != null) {
+                    temp_acpl_list.push(acpl_list[i]);
+                }
+            }
 		}
+        
+        /* find acpl's based on circ_lib */
 
+        var circ_libs = [];
+
+        for (var i = 0; i < g.copies.length; i++) {
+            var consider_lib = g.copies[i].circ_lib();
+            if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
+			if ( circ_libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { circ_libs.push( consider_lib ); }
+        }
+
+        if (circ_libs.length > 0) {
+    		var circ_ancestor = util.fm_utils.find_common_aou_ancestor( circ_libs );
+    		if (typeof circ_ancestor == 'object' && circ_ancestor != null) circ_ancestor = circ_ancestor.id();
+
+    		circ_ancestors = util.fm_utils.find_common_aou_ancestors( circ_libs );
+
+    		if (circ_ancestor) {
+    			var circ_acpl_list = get(circ_ancestor, circ_ancestors);
+                var flat_acpl_list = util.functional.map_list( temp_acpl_list, function(o){return o.id();} );
+                for (var i = 0; i < circ_acpl_list.length; i++) {
+                    var consider_acpl = circ_acpl_list[i].id();
+                    if ( flat_acpl_list.indexOf( String( consider_acpl ) ) > -1 ) { 
+                        /* already in list */ 
+                    } else { 
+                        if (acpl_list[i] != null) temp_acpl_list.push( circ_acpl_list[i] ); 
+                    }
+                }
+            }
+        }
+
+        return temp_acpl_list;
+	
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('get_acpl_list',E);
 		return [];
