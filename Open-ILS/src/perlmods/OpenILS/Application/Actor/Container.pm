@@ -249,8 +249,8 @@ sub item_create {
 			$e->allowed('CREATE_CONTAINER_ITEM');
 
 	} else {
-		return $e->event unless
-			$e->allowed('CREATE_CONTAINER_ITEM'); # new perm here?
+#		return $e->event unless
+#			$e->allowed('CREATE_CONTAINER_ITEM'); # new perm here?
 	}
 		
 	$item->clear_id;
