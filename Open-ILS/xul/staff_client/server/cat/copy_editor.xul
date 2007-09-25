@@ -76,6 +76,9 @@
 			<splitter><grippy /></splitter>
 			<vbox flex="1">
 				<button style="font-weight: bold; font-size: normal" label="Statistics" accesskey="4" oncommand="document.getElementById('right_pane4').firstChild.firstChild.focus();"/>
+                <menu label="Library Filter" id="stat_cat_lib_filter_menu">
+                    <menupopup />
+                </menu>
 				<vbox id="right_pane4" flex="1"/>
 			</vbox>
 		</hbox>

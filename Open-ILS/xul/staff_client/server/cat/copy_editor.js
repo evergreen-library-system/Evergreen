@@ -136,9 +136,10 @@ function my_init() {
 						+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
 					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
 						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ) ).sort() ); '
-					//input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", null ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
-					//	+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ).sort() ) ); '
 						+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
+                    attr: {
+                        sc_lib: sc.owner(),
+                    }
 				}
 			];
 
@@ -147,7 +148,7 @@ function my_init() {
 			g.panes_and_field_names.right_pane4.push( temp_array );
 		}
 
-		/* The stat cats for the pertinent library */
+		/* The stat cats for the pertinent library -- this is based on workstation ou */
 		for (var i = 0; i < g.data.list.my_asc.length; i++) {
 			add_stat_cat( g.data.list.my_asc[i] );	
 		}
@@ -161,6 +162,8 @@ function my_init() {
 				add_stat_cat( sc_id );
 			}
 		}
+
+        g.panes_and_field_names.right_pane4.sort();
 
 		/******************************************************************************************************/
 		/* Backup copies :) */
@@ -963,6 +966,7 @@ g.summarize = function( copies ) {
 
 		var field_name = g.field_names[i][0];
 		var render = g.field_names[i][1].render;
+        var attr = g.field_names[i][1].attr;
 		g.summary[ field_name ] = {};
 
 		/******************************************************************************************************/
@@ -1015,6 +1019,28 @@ g.render = function() {
 	}
 
 	/******************************************************************************************************/
+	/* Populate the library filter menu for stat cats */
+
+    var sc_libs = {};
+    for (var i = 0; i < g.panes_and_field_names.right_pane4.length; i++) {
+        sc_libs[ g.panes_and_field_names.right_pane4[i][1].attr.sc_lib ] = true;
+    }
+    var sc_libs2 = [];
+    for (var i in sc_libs) { sc_libs2.push( [ g.data.hash.aou[ i ].shortname(), i ] ); }
+    sc_libs2.sort();
+    var x = document.getElementById("stat_cat_lib_filter_menu").firstChild;
+    JSAN.use('util.widgets'); util.widgets.remove_children(x);
+    for (var i = 0; i < sc_libs2.length; i++) {
+        var menuitem = document.createElement('menuitem');
+        menuitem.setAttribute('type','checkbox');
+        menuitem.setAttribute('checked','true');
+        menuitem.setAttribute('label',sc_libs2[i][0]);
+        menuitem.setAttribute('value',sc_libs2[i][1]);
+        menuitem.setAttribute('oncommand','try{g.toggle_stat_cat_display(this);}catch(E){alert(E);}');
+        x.appendChild(menuitem);
+    }
+
+	/******************************************************************************************************/
 	/* Prepare the panes */
 
 	var groupbox; var caption; var vbox; var grid; var rows;
@@ -1026,8 +1052,13 @@ g.render = function() {
 		if (!document.getElementById(h)) continue;
 		for (var i = 0; i < g.panes_and_field_names[h].length; i++) {
 			try {
-				var f = g.panes_and_field_names[h][i]; var fn = f[0];
+				var f = g.panes_and_field_names[h][i]; var fn = f[0]; var attr = f[1].attr;
 				groupbox = document.createElement('groupbox'); document.getElementById(h).appendChild(groupbox);
+                if (attr) {
+                    for (var a in attr) {
+                        groupbox.setAttribute(a,attr[a]);
+                    }
+                }
 				if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class','copy_editor_field_changed');
 				caption = document.createElement('caption'); groupbox.appendChild(caption);
 				caption.setAttribute('label',fn); caption.setAttribute('id','caption_'+fn);
@@ -1087,6 +1118,7 @@ g.render_input = function(node,blob) {
 
 		var input_cmd = blob.input;
 		var render_cmd = blob.render;
+        var attr = blob.attr;
 
 		var block = false; var first = true;
 
@@ -1217,5 +1249,19 @@ g.copy_notes = function() {
 		'Copy Notes','chrome,resizable,modal',
 		{ 'copy_id' : g.copies[0].id() }
 	);
+}
+
+/******************************************************************************************************/
+/* hides or unhides stat cats based on library stat cat filter menu */
+g.toggle_stat_cat_display = function(el) {
+    var visible = el.getAttribute('checked');
+    var nl = document.getElementsByAttribute('sc_lib',el.getAttribute('value'));
+    for (var n = 0; n < nl.length; n++) {
+        if (visible) {
+            nl[n].setAttribute('hidden','false');
+        } else {
+            nl[n].setAttribute('hidden','true');
+        }
+    }
 }
 
