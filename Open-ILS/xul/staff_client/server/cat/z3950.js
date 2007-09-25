@@ -15,6 +15,10 @@ cat.z3950.prototype = {
 
 	'creds_version' : 1,
 
+    'number_of_result_sets' : 0,
+
+    'result_set' : [],
+
 	'init' : function( params ) {
 
 		try {
@@ -84,7 +88,7 @@ cat.z3950.prototype = {
 										copy_to_clipboard(obj.list.dump_csv());
 										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
 									} catch(E) {
-										alert(E); 
+			                            obj.error.standard_unexpected_error_alert('Failure during export.',E);
 									}
 								}
 								obj.list.full_retrieve();
@@ -123,36 +127,41 @@ cat.z3950.prototype = {
 										n.setAttribute('label','Results View');
 										netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 										var f = get_contentWindow(document.getElementById('marc_frame'));
-										f.xulG = { 'marcxml' : obj.results.records[ n.getAttribute('retrieve_id') ].marcxml };
+                                        var retrieve_id = n.getAttribute('retrieve_id');
+                                        var result_idx = retrieve_id.split('-')[0];
+                                        var record_idx = retrieve_id.split('-')[1];
+										f.xulG = { 'marcxml' : obj.result_set[result_idx].records[ record_idx ].marcxml };
 										f.my_init();
 										f.document.body.firstChild.focus();
 									}
 								} catch(E) {
-									alert(E);
+			                        obj.error.standard_unexpected_error_alert('Failure during marc view.',E);
 								}
 							},
 						],
 						'marc_import' : [
 							['command'],
 							function() {
-								obj.spawn_marc_editor(
-									obj.results.records[
-										obj.controller.view.marc_import.getAttribute('retrieve_id')
-									].marcxml
-								);
+                                try {
+                                    var retrieve_id = obj.controller.view.marc_import.getAttribute('retrieve_id');
+                                    var result_idx = retrieve_id.split('-')[0];
+                                    var record_idx = retrieve_id.split('-')[1];
+                                    obj.spawn_marc_editor( obj.result_set[ result_idx ].records[ record_idx ].marcxml);
+                                } catch(E) {
+			                        obj.error.standard_unexpected_error_alert('Failure during marc import.',E);
+                                }
 							},
 						],
 						'marc_import_overlay' : [ 
 							['command'],
 							function() {
 								try {
-								obj.spawn_marc_editor_for_overlay(
-									obj.results.records[
-										obj.controller.view.marc_import_overlay.getAttribute('retrieve_id')
-									].marcxml
-								);
+                                    var retrieve_id = obj.controller.view.marc_import_overlay.getAttribute('retrieve_id');
+                                    var result_idx = retrieve_id.split('-')[0];
+                                    var record_idx = retrieve_id.split('-')[1];
+                                    obj.spawn_marc_editor_for_overlay( obj.result_set[ result_idx ].records[ record_idx ].marcxml);
 								} catch(E) {
-									alert(E);
+			                        obj.error.standard_unexpected_error_alert('Failure during marc import overlay.',E);
 								}
 							},
 						],
@@ -262,7 +271,6 @@ cat.z3950.prototype = {
 											},0
 										);
 									} catch(E) {
-										alert(E);
 										obj.error.standard_unexpected_error_alert('Z39.50 services not likely retrieved.',E);
 									}
 								}
@@ -306,6 +314,7 @@ cat.z3950.prototype = {
 	'initial_search' : function() {
 		try {
 			var obj = this;
+            obj.result_set = []; obj.number_of_result_sets = 0;
 			JSAN.use('util.widgets');
 			util.widgets.remove_children( obj.controller.view.result_message );
 			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
@@ -341,6 +350,7 @@ cat.z3950.prototype = {
 	'initial_raw_search' : function(raw) {
 		try {
 			var obj = this;
+            obj.result_set = []; obj.number_of_result_sets = 0;
 			JSAN.use('util.widgets');
 			util.widgets.remove_children( obj.controller.view.result_message );
 			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
@@ -434,18 +444,18 @@ cat.z3950.prototype = {
 					);
 			}
 			if (results.records) {
-				obj.results = results;
+				obj.result_set[ ++obj.number_of_result_sets ] = results;
 				obj.controller.view.marc_import.disabled = true;
 				obj.controller.view.marc_import_overlay.disabled = true;
 				var x = obj.controller.view.marc_view;
 				if (x.getAttribute('toggle') == '0') x.disabled = true;
-				for (var i = 0; i < obj.results.records.length; i++) {
+				for (var i = 0; i < obj.result_set[ obj.number_of_result_sets ].records.length; i++) {
 					obj.list.append(
 						{
-							'retrieve_id' : i,
+							'retrieve_id' : String( obj.number_of_result_sets ) + '-' + String( i ),
 							'row' : {
 								'my' : {
-									'mvr' : function(a){return a;}(obj.results.records[i].mvr),
+									'mvr' : function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[i].mvr),
 								}
 							}
 						}
