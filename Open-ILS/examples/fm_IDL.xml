@@ -2589,9 +2589,9 @@
 
 			SELECT	t.*
 			  FROM	action.transit_copy t
-				JOIN actor.org_unit AS so ON (t.source = so.id)
-				JOIN actor.org_unit AS do ON (t.dest = do.id)
-			  WHERE	so.parent_ou &lt;&gt; do.parent_ou
+				JOIN actor.org_unit AS s ON (t.source = s.id)
+				JOIN actor.org_unit AS d ON (t.dest = d.id)
+			  WHERE	s.parent_ou &lt;&gt; d.parent_ou
 
 		</oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
