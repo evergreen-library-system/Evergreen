@@ -347,7 +347,9 @@ util.widgets.load_attributes = function (file) {
 					document.getElementById( element_id ).setAttribute(attribute, blob[ element_id ][ attribute ]);
 				}
 			}
+            return blob;
 		}
+        return {};
 	} catch(E) {
 		alert('Error loading preferences: ' + E);
 	}

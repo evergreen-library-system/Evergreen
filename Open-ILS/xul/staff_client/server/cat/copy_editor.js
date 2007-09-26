@@ -966,12 +966,24 @@ g.render = function() {
     JSAN.use('util.widgets'); util.widgets.remove_children(x);
     for (var i = 0; i < sc_libs2.length; i++) {
         var menuitem = document.createElement('menuitem');
+        menuitem.setAttribute('id','filter_'+sc_libs2[i][1]);
         menuitem.setAttribute('type','checkbox');
         menuitem.setAttribute('checked','true');
         menuitem.setAttribute('label',sc_libs2[i][0]);
         menuitem.setAttribute('value',sc_libs2[i][1]);
         menuitem.setAttribute('oncommand','try{g.toggle_stat_cat_display(this);}catch(E){alert(E);}');
         x.appendChild(menuitem);
+    }
+
+    JSAN.use('util.file'); 
+	var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
+	g.copy_editor_prefs = util.widgets.load_attributes(file);
+    for (var i in g.copy_editor_prefs) {
+        if (i.match(/filter_/) && g.copy_editor_prefs[i].checked == '') {
+            try { 
+                g.toggle_stat_cat_display( document.getElementById(i) ); 
+            } catch(E) { alert(E); }
+        }
     }
 
 	/******************************************************************************************************/
@@ -1197,6 +1209,14 @@ g.toggle_stat_cat_display = function(el) {
             nl[n].setAttribute('hidden','true');
         }
     }
+    g.copy_editor_prefs[ el.getAttribute('id') ] = { 'checked' : visible };
+	JSAN.use('util.widgets'); JSAN.use('util.file'); var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
+    var what_to_save = {};
+    for (var i in g.copy_editor_prefs) {
+        what_to_save[i] = [];
+        for (var j in g.copy_editor_prefs[i]) what_to_save[i].push(j);
+    }
+	util.widgets.save_attributes(file, what_to_save );
 }
 
 /******************************************************************************************************/
