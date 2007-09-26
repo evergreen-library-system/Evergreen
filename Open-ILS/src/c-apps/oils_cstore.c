@@ -283,9 +283,23 @@ int osrfAppChildInit() {
 			continue;
 		}
 
-	
+		growing_buffer* tablebuf = buffer_init(128);
+		char* tabledef = osrfHashGet(class, "tablename");
+		if (!tabledef) {
+			tabledef = osrfHashGet(class, "source_definition");
+			buffer_fadd( tablebuf, "(%s)x", tabledef );
+		} else {
+			buffer_add( tablebuf, tabledef );
+		}
+
+		free(tabledef);
+		tabledef = buffer_data(tablebuf);
+		buffer_free(tablebuf);
+
 		growing_buffer* sql_buf = buffer_init(32);
-		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", osrfHashGet(class, "tablename") );
+		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", tabledef );
+
+		free(tabledef);
 
 		char* sql = buffer_data(sql_buf);
 		buffer_free(sql_buf);
@@ -704,6 +718,19 @@ jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 		*err = -1;
 		return jsonNULL;
 	}
+
+	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"Cannot INSERT readonly class"
+		);
+		*err = -1;
+		return jsonNULL;
+	}
+
 
 	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
 
@@ -1325,7 +1352,16 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), snode->key );
 
 		char* class = osrfHashGet(idlClass, "classname");
+
+		growing_buffer* tablebuf = buffer_init(128);
 		char* table = osrfHashGet(idlClass, "tablename");
+		if (!table) {
+			table = osrfHashGet(idlClass, "source_definition");
+			buffer_fadd( tablebuf, "(%s)", table );
+			free(table);
+			table = buffer_data(tablebuf);
+			buffer_free(tablebuf);
+		}
 
 		char* type = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "type" ) );
 		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "filter_op" ) );
@@ -1511,13 +1547,17 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 			osrfHash* fields = osrfHashGet(meta, "fields");
 			osrfHash* field = osrfHashGet( fields, node->key );
 
+			char* table = osrfHashGet(meta, "tablename");
+			if (!table) table = "[CUSTOM RESULT SOURCE]";
+
 			if (!field) {
 				osrfLogError(
 					OSRF_LOG_MARK,
-					"%s: Attempt to reference non-existant column %s on table %s",
+					"%s: Attempt to reference non-existant column %s on %s (%s)",
 					MODULENAME,
 					node->key,
-					osrfHashGet(meta, "tablename")
+					table,
+					class
 				);
 				buffer_free(sql_buf);
 				return NULL;
@@ -1765,8 +1805,18 @@ char* SELECT (
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
 
+	growing_buffer* tablebuf = buffer_init(128);
+	char* table = osrfHashGet(core_meta, "tablename");
+	if (!table) {
+		table = osrfHashGet(core_meta, "source_definition");
+		buffer_fadd( tablebuf, "(%s)", table );
+		free(table);
+		table = buffer_data(tablebuf);
+		buffer_free(tablebuf);
+	}
+
 	// Put it all together
-	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, osrfHashGet(core_meta, "tablename"), core_class );
+	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
 	free(col_list);
 
 	// Now, walk the join tree and add that clause
@@ -2048,7 +2098,17 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
 
-	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, osrfHashGet(meta, "tablename"), core_class );
+	growing_buffer* tablebuf = buffer_init(128);
+	char* table = osrfHashGet(meta, "tablename");
+	if (!table) {
+		table = osrfHashGet(meta, "source_definition");
+		buffer_fadd( tablebuf, "(%s)", table );
+		free(table);
+		table = buffer_data(tablebuf);
+		buffer_free(tablebuf);
+	}
+
+	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, table, core_class );
 
 	if ( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, meta );
@@ -2586,6 +2646,18 @@ jsonObject* doUpdate(osrfMethodContext* ctx, int* err ) {
 		return jsonNULL;
 	}
 
+	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"Cannot UPDATE readonly class"
+		);
+		*err = -1;
+		return jsonNULL;
+	}
+
 	dbhandle = writehandle;
 
 	char* trans_id = osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" );
@@ -2747,6 +2819,18 @@ jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 			"osrfMethodException",
 			ctx->request,
 			"No active transaction -- required for DELETE"
+		);
+		*err = -1;
+		return jsonNULL;
+	}
+
+	if (osrfHashGet( meta, "readonly" ) && strncasecmp("true", osrfHashGet( meta, "readonly" ), 4)) {
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_BADREQUEST,
+			"osrfMethodException",
+			ctx->request,
+			"Cannot DELETE readonly class"
 		);
 		*err = -1;
 		return jsonNULL;

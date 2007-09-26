@@ -46,6 +46,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 			usrData = osrfNewHash();
 			osrfHashSet( usrData, xmlGetProp(kid, BAD_CAST "id"), "classname");
 			osrfHashSet( usrData, xmlGetNsProp(kid, BAD_CAST "fieldmapper", BAD_CAST OBJECT_NS), "fieldmapper");
+			osrfHashSet( usrData, xmlGetNsProp(kid, BAD_CAST "readonly", BAD_CAST PERSIST_NS), "readonly");
 
 			osrfHashSet( idlHash, usrData, (char*)osrfHashGet(usrData, "classname") );
 
@@ -253,6 +254,18 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 
 						_l = _l->next;
 					}
+				}
+
+				if (!strcmp( (char*)_cur->name, "source_definition" )) {
+					string_tmp = NULL;
+					if( (string_tmp = (char*)xmlNodeGetContent(_cur)) ) {
+						osrfHashSet(
+							usrData,
+							strdup( string_tmp ),
+							"source_definition"
+						);
+					}
+
 				}
 
 				_cur = _cur->next;

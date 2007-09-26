@@ -2584,6 +2584,39 @@
 		</links>
 	</class>
 
+	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
+		<oils_persist:source_definition>
+
+			SELECT	t.*
+			  FROM	action.transit_copy t
+				JOIN actor.org_unit so ON (t.source = so.id)
+				JOIN actor.org_unit do ON (t.dest = do.id)
+			  WHERE	so.parent_ou <> do.parent_ou
+
+		</oils_persist:source_definition>
+		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field reporter:label="Pretransit Copy Status" name="copy_status" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Destination" name="dest" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Receive Date/Time" name="dest_recv_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Transit ID" name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="id"/>
+			<field reporter:label="Is Persistent? (unused)" name="persistant_transfer" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Previous Hop (unused)" name="prev_hop" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Source" name="source" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Send Date/Time" name="source_send_time" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Transited Copy" name="target_copy" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="hold_transit_copy" reltype="might_have" key="id" map="" class="ahtc"/>
+			<link field="source" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_status" reltype="has_a" key="id" map="" class="ccs"/>
+			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+		</links>
+	</class>
 
 
 	<!-- ********************************************************************************************************************* -->
