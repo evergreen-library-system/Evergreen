@@ -975,17 +975,6 @@ g.render = function() {
         x.appendChild(menuitem);
     }
 
-    JSAN.use('util.file'); 
-	var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
-	g.copy_editor_prefs = util.widgets.load_attributes(file);
-    for (var i in g.copy_editor_prefs) {
-        if (i.match(/filter_/) && g.copy_editor_prefs[i].checked == '') {
-            try { 
-                g.toggle_stat_cat_display( document.getElementById(i) ); 
-            } catch(E) { alert(E); }
-        }
-    }
-
 	/******************************************************************************************************/
 	/* Prepare the panes */
 
@@ -1048,6 +1037,22 @@ g.render = function() {
 			}
 		}
 	}
+    
+    
+	/******************************************************************************************************/
+	/* Synchronize stat cat visiblity with library filter menu */
+    JSAN.use('util.file'); 
+	var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
+	g.copy_editor_prefs = util.widgets.load_attributes(file);
+    for (var i in g.copy_editor_prefs) {
+        if (i.match(/filter_/) && g.copy_editor_prefs[i].checked == '') {
+            try { 
+                g.toggle_stat_cat_display( document.getElementById(i) ); 
+            } catch(E) { alert(E); }
+        }
+    }
+
+
 }
 
 /******************************************************************************************************/
