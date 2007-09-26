@@ -2589,8 +2589,8 @@
 
 			SELECT	t.*
 			  FROM	action.transit_copy t
-				JOIN actor.org_unit so ON (t.source = so.id)
-				JOIN actor.org_unit do ON (t.dest = do.id)
+				JOIN actor.org_unit AS so ON (t.source = so.id)
+				JOIN actor.org_unit AS do ON (t.dest = do.id)
 			  WHERE	so.parent_ou &lt;&gt; do.parent_ou
 
 		</oils_persist:source_definition>
