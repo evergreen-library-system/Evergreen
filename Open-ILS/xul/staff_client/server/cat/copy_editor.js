@@ -99,71 +99,7 @@ function my_init() {
 		/******************************************************************************************************/
 		/* Add stat cats to the panes_and_field_names.right_pane4 */
 
-		g.stat_cat_seen = {};
-
-		function add_stat_cat(sc) {
-
-			if (typeof g.data.hash.asc == 'undefined') { g.data.hash.asc = {}; g.data.stash('hash'); }
-
-			var sc_id = sc;
-
-			if (typeof sc == 'object') {
-
-				sc_id = sc.id();
-			}
-
-			if (typeof g.stat_cat_seen[sc_id] != 'undefined') { return; }
-
-			g.stat_cat_seen[ sc_id ] = 1;
-
-			if (typeof sc != 'object') {
-
-				sc = g.network.simple_request(
-					'FM_ASC_BATCH_RETRIEVE',
-					[ ses(), [ sc_id ] ]
-				)[0];
-
-			}
-
-			g.data.hash.asc[ sc.id() ] = sc; g.data.stash('hash');
-
-			var label_name = g.data.hash.aou[ sc.owner() ].shortname() + " : " + sc.name();
-
-			var temp_array = [
-				label_name,
-				{
-					render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
-						+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
-					input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
-						+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ) ).sort() ); '
-						+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
-                    attr: {
-                        sc_lib: sc.owner(),
-                    }
-				}
-			];
-
-			dump('temp_array = ' + js2JSON(temp_array) + '\n');
-
-			g.panes_and_field_names.right_pane4.push( temp_array );
-		}
-
-		/* The stat cats for the pertinent library -- this is based on workstation ou */
-		for (var i = 0; i < g.data.list.my_asc.length; i++) {
-			add_stat_cat( g.data.list.my_asc[i] );	
-		}
-
-		/* Other stat cats present on these copies */
-		for (var i = 0; i < g.copies.length; i++) {
-			var entries = g.copies[i].stat_cat_entries();
-			if (!entries) entries = [];
-			for (var j = 0; j < entries.length; j++) {
-				var sc_id = entries[j].stat_cat();
-				add_stat_cat( sc_id );
-			}
-		}
-
-        g.panes_and_field_names.right_pane4.sort();
+        g.populate_stat_cats();
 
 		/******************************************************************************************************/
 		/* Backup copies :) */
@@ -485,21 +421,21 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 /******************************************************************************************************/
 /* Apply an "owning lib" to all the copies being edited.  That is, change and auto-vivicating volumes */
 
+g.map_acn = {};
 g.apply_owning_lib = function(ou_id) {
 	g.error.sdump('D_TRACE','ou_id = ' + ou_id + '\n');
-	var map_acn = {};
 	for (var i = 0; i < g.copies.length; i++) {
 		var copy = g.copies[i];
 		try {
-			if (!map_acn[copy.call_number()]) {
+			if (!g.map_acn[copy.call_number()]) {
 				var volume = g.network.simple_request('FM_ACN_RETRIEVE',[ copy.call_number() ]);
 				if (typeof volume.ilsevent != 'undefined') {
 					g.error.standard_unexpected_error_alert('Error retrieving Volume information for copy ' + copy.barcode() + ".  The owning library for this copy won't be changed.",volume);
 					continue;
 				}
-				map_acn[copy.call_number()] = volume;
+				g.map_acn[copy.call_number()] = volume;
 			}
-			var old_volume = map_acn[copy.call_number()];
+			var old_volume = g.map_acn[copy.call_number()];
 			var acn_id = g.network.simple_request(
 				'FM_ACN_FIND_OR_CREATE',
 				[ses(),old_volume.label(),old_volume.record(),ou_id]
@@ -607,15 +543,15 @@ g.get_acpl_list = function() {
 
         /* find acpl's based on owning_lib */
 
-		var libs = []; var map_acn = {};
+		var libs = []; 
 		for (var i = 0; i < g.copies.length; i++) {
 			var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
-				if (! map_acn[ cn_id ]) {
-					map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
-                    var consider_lib = map_acn[ cn_id ].owning_lib();
-				    if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
+				if (! g.map_acn[ cn_id ]) {
+					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
 				}
+                var consider_lib = g.map_acn[ cn_id ].owning_lib();
+                if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
 			}
 		}
 		if (g.callnumbers) {
@@ -629,9 +565,8 @@ g.get_acpl_list = function() {
 		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
 		if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
 
-		var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
-
 		if (ancestor) {
+		    var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
 			var acpl_list = get(ancestor, ancestors);
             if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
                 if (acpl_list[i] != null) {
@@ -654,9 +589,8 @@ g.get_acpl_list = function() {
     		var circ_ancestor = util.fm_utils.find_common_aou_ancestor( circ_libs );
     		if (typeof circ_ancestor == 'object' && circ_ancestor != null) circ_ancestor = circ_ancestor.id();
 
-    		circ_ancestors = util.fm_utils.find_common_aou_ancestors( circ_libs );
-
     		if (circ_ancestor) {
+    		    var circ_ancestors = util.fm_utils.find_common_aou_ancestors( circ_libs );
     			var circ_acpl_list = get(circ_ancestor, circ_ancestors);
                 var flat_acpl_list = util.functional.map_list( temp_acpl_list, function(o){return o.id();} );
                 for (var i = 0; i < circ_acpl_list.length; i++) {
@@ -1264,4 +1198,150 @@ g.toggle_stat_cat_display = function(el) {
         }
     }
 }
+
+/******************************************************************************************************/
+/* This adds a stat cat definition to the stat cat pane for rendering */
+g.add_stat_cat = function(sc) {
+    try {
+		if (typeof g.data.hash.asc == 'undefined') { g.data.hash.asc = {}; g.data.stash('hash'); }
+
+		var sc_id = sc;
+
+		if (typeof sc == 'object') {
+
+			sc_id = sc.id();
+		}
+
+		if (typeof g.stat_cat_seen[sc_id] != 'undefined') { return; }
+
+		g.stat_cat_seen[ sc_id ] = 1;
+
+		if (typeof sc != 'object') {
+
+			sc = g.network.simple_request(
+				'FM_ASC_BATCH_RETRIEVE',
+				[ ses(), [ sc_id ] ]
+			)[0];
+
+		}
+
+		g.data.hash.asc[ sc.id() ] = sc; g.data.stash('hash');
+
+		var label_name = g.data.hash.aou[ sc.owner() ].shortname() + " : " + sc.name();
+
+		var temp_array = [
+			label_name,
+			{
+				render: 'var l = util.functional.find_list( fm.stat_cat_entries(), function(e){ return e.stat_cat() == ' 
+					+ sc.id() + '; } ); l ? l.value() : "<Unset>";',
+				input: 'c = function(v){ g.apply_stat_cat(' + sc.id() + ',v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ "<Remove Stat Cat>", -1 ] ].concat( util.functional.map_list( g.data.hash.asc[' + sc.id() 
+					+ '].entries(), function(obj){ return [ obj.value(), obj.id() ]; } ) ).sort() ); '
+					+ 'x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c),false);',
+                attr: {
+                    sc_lib: sc.owner(),
+                }
+			}
+		];
+
+		g.panes_and_field_names.right_pane4.push( temp_array );
+	} catch(E) {
+		g.error.standard_unexpected_error_alert('Error adding stat cat to display definition',E);
+    }
+}
+
+/******************************************************************************************************/
+/* Add stat cats to the panes_and_field_names.right_pane4 */
+g.populate_stat_cats = function() {
+    try {
+        g.data.stash_retrieve();
+		g.stat_cat_seen = {};
+
+		function get(lib_id,only_these) {
+            g.data.stash_retrieve();
+			var label = 'asc_list_for_lib_'+lib_id;
+			if (typeof g.data[label] == 'undefined') {
+				var robj = g.network.simple_request('FM_ASC_RETRIEVE_VIA_AOU', [ ses(), lib_id ]);
+				if (typeof robj.ilsevent != 'undefined') throw(robj);
+				var temp_list = [];
+				for (var j = 0; j < robj.length; j++) {
+					var my_asc = robj[j];
+                    if (typeof g.data.hash.asc == 'undefined') { g.data.hash.asc = {}; }
+					if (typeof g.data.hash.asc[ my_asc.id() ] == 'undefined') {
+						g.data.hash.asc[ my_asc.id() ] = my_asc;
+					}
+                    var only_this_lib = my_asc.owner(); if (typeof only_this_lib == 'object') only_this_lib = only_this_lib.id();
+					if (only_these.indexOf( String( only_this_lib ) ) != -1) {
+						temp_list.push( my_asc );
+					}
+				}
+				g.data[label] = temp_list; g.data.stash(label,'hash','list');
+			}
+			return g.data[label];
+		}
+
+		/* The stat cats for the pertinent library -- this is based on workstation ou */
+        var label = 'asc_list_for_' + typeof g.data.ws_ou == 'object' ? g.data.ws_ou.id() : g.data.ws_ou;
+        g.data[ label ] = g.data.list.my_asc; g.data.stash('label');
+		for (var i = 0; i < g.data.list.my_asc.length; i++) {
+			g.add_stat_cat( g.data.list.my_asc[i] );
+		}
+
+        /* For the others, we want to consider the owning libs, circ libs, and any libs that have stat cats already on the copies,
+            however, if batch editing, we only want to show the ones they have in common.  So let's compile the libs  */
+
+        function add_common_ancestors(sc_libs) {
+            JSAN.use('util.fm_utils'); 
+            var libs = []; for (var i in sc_libs) libs.push(i);
+            var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
+            if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
+            if (ancestor) {
+                var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
+                var asc_list = get(ancestor, ancestors);
+                for (var i = 0; i < asc_list.length; i++) {
+                    g.add_stat_cat( asc_list[i] );
+                }
+            }
+        }
+
+		/* stat cats based on stat cat entries present on these copies */
+        var sc_libs = {};
+		for (var i = 0; i < g.copies.length; i++) {
+			var entries = g.copies[i].stat_cat_entries();
+			if (!entries) entries = [];
+			for (var j = 0; j < entries.length; j++) {
+                var lib = entries[j].owner(); if (typeof lib == 'object') lib = lib.id();
+				sc_libs[ lib ] = true;
+			}
+        }
+        add_common_ancestors(sc_libs); // CAVEAT - if a copy has no stat_cat_entries, it basically gets no vote here
+
+        /* stat cats based on Circ Lib */
+        sc_libs = {};
+		for (var i = 0; i < g.copies.length; i++) {
+            var circ_lib = g.copies[i].circ_lib(); if (typeof circ_lib == 'object') circ_lib = circ_lib.id();
+            sc_libs[ circ_lib ] = true;
+        }
+        add_common_ancestors(sc_libs);
+
+        /* stat cats based on Owning Lib */
+        sc_libs = {};
+		for (var i = 0; i < g.copies.length; i++) {
+            var cn_id = g.copies[i].call_number();
+			if (cn_id > 0) {
+				if (! g.map_acn[ cn_id ]) {
+					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+				}
+                var owning_lib = g.map_acn[ cn_id ].owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
+                sc_libs[ owning_lib ] = true;
+			}
+		}
+        add_common_ancestors(sc_libs); // CAVEAT - if a copy is a pre-cat, it basically gets no vote here
+
+        g.panes_and_field_names.right_pane4.sort();
+
+    } catch(E) {
+        g.error.standard_unexpected_error_alert('Error populating stat cats for display',E);
+    }
+}
+
 
