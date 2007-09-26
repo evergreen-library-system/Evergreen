@@ -288,13 +288,11 @@ int osrfAppChildInit() {
 		if (!tabledef) {
 			tabledef = osrfHashGet(class, "source_definition");
 			buffer_fadd( tablebuf, "(%s)x", tabledef );
+			tabledef = buffer_data(tablebuf);
+			buffer_free(tablebuf);
 		} else {
-			buffer_add( tablebuf, tabledef );
+			tabledef = strdup(tabledef);
 		}
-
-		free(tabledef);
-		tabledef = buffer_data(tablebuf);
-		buffer_free(tablebuf);
 
 		growing_buffer* sql_buf = buffer_init(32);
 		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", tabledef );
@@ -1358,9 +1356,10 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		if (!table) {
 			table = osrfHashGet(idlClass, "source_definition");
 			buffer_fadd( tablebuf, "(%s)", table );
-			free(table);
 			table = buffer_data(tablebuf);
 			buffer_free(tablebuf);
+		} else {
+			table = strdup(table);
 		}
 
 		char* type = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "type" ) );
@@ -1465,6 +1464,8 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		}
 
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
+
+		free(table);
 
 		if (filter) {
 			if (filter_op) {
@@ -1810,14 +1811,16 @@ char* SELECT (
 	if (!table) {
 		table = osrfHashGet(core_meta, "source_definition");
 		buffer_fadd( tablebuf, "(%s)", table );
-		free(table);
 		table = buffer_data(tablebuf);
 		buffer_free(tablebuf);
+	} else {
+		table = strdup(table);
 	}
 
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
 	free(col_list);
+	free(table);
 
 	// Now, walk the join tree and add that clause
 	if ( join_hash ) {
@@ -2103,12 +2106,14 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	if (!table) {
 		table = osrfHashGet(meta, "source_definition");
 		buffer_fadd( tablebuf, "(%s)", table );
-		free(table);
 		table = buffer_data(tablebuf);
 		buffer_free(tablebuf);
+	} else {
+		table = strdup(table);
 	}
 
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, table, core_class );
+	free(table);
 
 	if ( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, meta );
