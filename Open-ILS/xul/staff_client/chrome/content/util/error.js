@@ -424,7 +424,7 @@ util.error.prototype = {
 		var fancy_prompt_data = win.open(
 			url, 'fancy_prompt', 'chrome,resizable,modal,width=700,height=500', { 'xml' : xml, 'title' : title }
 		);
-		if (fancy_prompt_data == 'complete') {
+		if (fancy_prompt_data.fancy_status == 'complete') {
 			switch(fancy_prompt_data.fancy_submit) {
 				case 'b1' : return 0; break;
 				case 'b2' : return 1; break;
