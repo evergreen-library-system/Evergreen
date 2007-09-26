@@ -12,7 +12,7 @@
 
 				<span class='footer_link'>
 					<a class='classic_link'
-						href='/opac/<!--echo var="locale"-->/extras/slimpac/start.html'>&opac.basic;</a>
+						href='/opac/<!--#echo var="locale"-->/extras/slimpac/start.html'>&opac.basic;</a>
 				</span> 
 				<span> | </span>
 				<span class='footer_link'>
