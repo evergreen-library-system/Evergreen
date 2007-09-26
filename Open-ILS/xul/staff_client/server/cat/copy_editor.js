@@ -156,7 +156,13 @@ g.retrieve_templates = function() {
 		var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
 
 		g.template_menu = util.widgets.make_menulist( list );
+        g.template_menu.setAttribute('id','template_menu');
 		$('template_placeholder').appendChild(g.template_menu);
+        g.template_menu.addEventListener(
+            'command',
+            function() { g.copy_editor_prefs[ 'template_menu' ] = { 'value' : g.template_menu.value }; g.save_attributes(); },
+            false
+        );
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('Error retrieving templates',E);
 	}
@@ -1040,7 +1046,7 @@ g.render = function() {
     
     
 	/******************************************************************************************************/
-	/* Synchronize stat cat visiblity with library filter menu */
+	/* Synchronize stat cat visiblity with library filter menu, and default template selection */
     JSAN.use('util.file'); 
 	var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
 	g.copy_editor_prefs = util.widgets.load_attributes(file);
@@ -1051,7 +1057,7 @@ g.render = function() {
             } catch(E) { alert(E); }
         }
     }
-
+    g.template_menu.value = g.template_menu.getAttribute('value');
 
 }
 
@@ -1215,6 +1221,12 @@ g.toggle_stat_cat_display = function(el) {
         }
     }
     g.copy_editor_prefs[ el.getAttribute('id') ] = { 'checked' : visible };
+    g.save_attributes();
+}
+
+/******************************************************************************************************/
+/* This adds a stat cat definition to the stat cat pane for rendering */
+g.save_attributes = function() {
 	JSAN.use('util.widgets'); JSAN.use('util.file'); var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
     var what_to_save = {};
     for (var i in g.copy_editor_prefs) {
