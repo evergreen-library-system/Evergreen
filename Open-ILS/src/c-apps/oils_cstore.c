@@ -1464,7 +1464,6 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 		}
 
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
-
 		free(table);
 
 		if (filter) {
@@ -2120,6 +2119,10 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 		buffer_fadd(sql_buf, " %s", join_clause);
 		free(join_clause);
 	}
+
+	char* tmpsql = buffer_data(sql_buf);
+	osrfLogDebug(OSRF_LOG_MARK, "%s pre-predicate SQL =  %s", MODULENAME, tmpsql);
+	free(tmpsql);
 
 	buffer_add(sql_buf, " WHERE ");
 
