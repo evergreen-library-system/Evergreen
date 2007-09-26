@@ -52,6 +52,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 
 			string_tmp = NULL;
 			if ((string_tmp = (char*)xmlGetNsProp(kid, BAD_CAST "tablename", BAD_CAST PERSIST_NS))) {
+				osrfLogInfo(OSRF_LOG_MARK, "Using table '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 				osrfHashSet(
 					usrData,
 					strdup( string_tmp ),
@@ -259,6 +260,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 				if (!strcmp( (char*)_cur->name, "source_definition" )) {
 					string_tmp = NULL;
 					if( (string_tmp = (char*)xmlNodeGetContent(_cur)) ) {
+						osrfLogInfo(OSRF_LOG_MARK, "Using source definion '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 						osrfHashSet(
 							usrData,
 							strdup( string_tmp ),
