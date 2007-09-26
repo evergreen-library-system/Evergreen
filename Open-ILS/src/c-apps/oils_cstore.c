@@ -62,6 +62,7 @@ char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonOb
 
 void userDataFree( void* );
 void sessionDataFree( char*, void* );
+char* getSourceDefinition( osrfHash* );
 
 dbi_conn writehandle; /* our MASTER db connection */
 dbi_conn dbhandle; /* our CURRENT db connection */
@@ -210,6 +211,23 @@ int osrfAppInitialize() {
 	return 0;
 }
 
+char* getSourceDefinition( osrfHash* class ) {
+
+	char* tabledef = osrfHashGet(class, "tablename");
+
+	if (!tabledef) {
+		growing_buffer* tablebuf = buffer_init(128);
+		tabledef = osrfHashGet(class, "source_definition");
+		buffer_fadd( tablebuf, "(%s)", tabledef );
+		tabledef = buffer_data(tablebuf);
+		buffer_free(tablebuf);
+	} else {
+		tabledef = strdup(tabledef);
+	}
+
+	return tabledef;
+}
+
 /**
  * Connects to the database 
  */
@@ -283,19 +301,10 @@ int osrfAppChildInit() {
 			continue;
 		}
 
-		growing_buffer* tablebuf = buffer_init(128);
-		char* tabledef = osrfHashGet(class, "tablename");
-		if (!tabledef) {
-			tabledef = osrfHashGet(class, "source_definition");
-			buffer_fadd( tablebuf, "(%s)x", tabledef );
-			tabledef = buffer_data(tablebuf);
-			buffer_free(tablebuf);
-		} else {
-			tabledef = strdup(tabledef);
-		}
+		char* tabledef = getSourceDefinition(class);
 
 		growing_buffer* sql_buf = buffer_init(32);
-		buffer_fadd( sql_buf, "SELECT * FROM %s WHERE 1=0;", tabledef );
+		buffer_fadd( sql_buf, "SELECT * FROM %s AS x WHERE 1=0;", tabledef );
 
 		free(tabledef);
 
@@ -1351,17 +1360,7 @@ char* searchJOIN ( jsonObject* join_hash, osrfHash* leftmeta ) {
 
 		char* class = osrfHashGet(idlClass, "classname");
 
-		growing_buffer* tablebuf = buffer_init(128);
-		char* table = osrfHashGet(idlClass, "tablename");
-		if (!table) {
-			table = osrfHashGet(idlClass, "source_definition");
-			buffer_fadd( tablebuf, "(%s)", table );
-			table = buffer_data(tablebuf);
-			buffer_free(tablebuf);
-		} else {
-			table = strdup(table);
-		}
-
+		char* table = getSourceDefinition(idlClass);
 		char* type = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "type" ) );
 		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "filter_op" ) );
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKey( snode->item, "fkey" ) );
@@ -1547,10 +1546,9 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 			osrfHash* fields = osrfHashGet(meta, "fields");
 			osrfHash* field = osrfHashGet( fields, node->key );
 
-			char* table = osrfHashGet(meta, "tablename");
-			if (!table) table = "[CUSTOM RESULT SOURCE]";
 
 			if (!field) {
+				char* table = getSourceDefinition(meta);
 				osrfLogError(
 					OSRF_LOG_MARK,
 					"%s: Attempt to reference non-existant column %s on %s (%s)",
@@ -1560,6 +1558,7 @@ char* searchWHERE ( jsonObject* search_hash, osrfHash* meta, int opjoin_type ) {
 					class
 				);
 				buffer_free(sql_buf);
+				free(table);
 				return NULL;
 			}
 
@@ -1805,16 +1804,7 @@ char* SELECT (
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
 
-	growing_buffer* tablebuf = buffer_init(128);
-	char* table = osrfHashGet(core_meta, "tablename");
-	if (!table) {
-		table = osrfHashGet(core_meta, "source_definition");
-		buffer_fadd( tablebuf, "(%s)", table );
-		table = buffer_data(tablebuf);
-		buffer_free(tablebuf);
-	} else {
-		table = strdup(table);
-	}
+	char* table = getSourceDefinition(core_meta);
 
 	// Put it all together
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\" ", col_list, table, core_class );
@@ -2100,16 +2090,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 	char* col_list = buffer_data(select_buf);
 	buffer_free(select_buf);
 
-	growing_buffer* tablebuf = buffer_init(128);
-	char* table = osrfHashGet(meta, "tablename");
-	if (!table) {
-		table = osrfHashGet(meta, "source_definition");
-		buffer_fadd( tablebuf, "(%s)", table );
-		table = buffer_data(tablebuf);
-		buffer_free(tablebuf);
-	} else {
-		table = strdup(table);
-	}
+	char* table = getSourceDefinition(meta);
 
 	buffer_fadd(sql_buf, "SELECT %s FROM %s AS \"%s\"", col_list, table, core_class );
 	free(table);
