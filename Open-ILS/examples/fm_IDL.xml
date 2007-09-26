@@ -2585,7 +2585,7 @@
 	</class>
 
 	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
-		<oils_persist:source_definition>
+		<source_definition>
 
 			SELECT	t.*
 			  FROM	action.transit_copy t
@@ -2593,7 +2593,7 @@
 				JOIN actor.org_unit do ON (t.dest = do.id)
 			  WHERE	so.parent_ou <> do.parent_ou
 
-		</oils_persist:source_definition>
+		</source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
