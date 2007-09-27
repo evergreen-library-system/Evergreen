@@ -39,6 +39,11 @@ function removeReportAtom (args) {
 	return true;
 }
 
+function getSourceDefinition(class) {
+	var class_obj = getIDLClass(class);
+	return class_obj.getAttributeNS(persistNS,'tablename') || '(' + class_obj.getElementsByTagNameNS(persistNS,'source_definition')[0].nodeValue + ')';
+}
+
 function addReportAtoms () {
 	var nope = $( 'source-add' ).getAttribute('disabled');
 	if (nope == 'true') return false;
@@ -70,7 +75,7 @@ function addReportAtoms () {
 		var colname = item.getAttribute('idlfield');
 		var field_label = item.firstChild.firstChild.getAttribute('label');
 
-		var table_name = getIDLClass(field_class).getAttributeNS(persistNS,'tablename');
+		var table_name = getSourceDefinition(field_class);
 
 		if ( !rpt_rel_cache[relation_alias] ) {
 			rpt_rel_cache[relation_alias] =
@@ -830,7 +835,7 @@ function fleshFromPath ( template, rel ) {
 		var leaf = table_path.length == 0 ? true : false;
 
 		current_obj.path = current_path;
-		current_obj.table = getIDLClass( link.split(/-/)[0] ).getAttributeNS( persistNS, 'tablename' );
+		current_obj.table = getSourceDefinition( link.split(/-/)[0] );
 
 		if (prev_link != '') {
 			var prev_class = getIDLClass( prev_link.split(/-/)[0] );

@@ -169,6 +169,12 @@ int osrfAppInitialize() {
 
 			if (!osrfHashGet(idlClass, "fieldmapper")) continue;
 
+			char* readonly = osrfHashGet(idlClass, "readonly");
+			if (	readonly &&
+				!strncasecmp( "true", readonly, 4) &&
+				( *method_type == 's' || *method_type == 'r' || *method_type == 'i')
+			) continue;
+
 			method_meta = osrfNewHash();
 			osrfHashSet(method_meta, idlClass, "class");
 
