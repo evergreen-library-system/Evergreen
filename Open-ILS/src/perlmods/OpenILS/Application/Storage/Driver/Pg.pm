@@ -61,7 +61,7 @@
 		$$master{host} ||= 'localhost';
 		$$master{db} ||= 'openils';
 
-		$log->debug("Attmpting to connet to $$master{db} at $$master{host}", INFO);
+		$log->debug("Attempting to connect to $$master{db} at $$master{host}", INFO);
 
 		try {
 			$master_db = DBI->connect(
