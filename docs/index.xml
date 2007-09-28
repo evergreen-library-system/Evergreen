@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  <info>
+    <title>The Book of Evergreen</title>
+    <author><personname><firstname>Dan</firstname><surname>Scott</surname></personname></author>
+    <copyright><year>2007</year><holder>Dan Scott</holder></copyright>
+  </info>
+
+  <part><title>Preface</title>
+    <chapter><title>Why read this book?</title></chapter>
+    <chapter><title>Conventions</title></chapter>
+    <chapter><title>Getting Evergreen</title></chapter>
+    <chapter><title>Requests for comments</title></chapter>
+  </part>
+
+  <part><title>Introduction</title>
+    <chapter><title>What is Evergreen?</title></chapter>
+    <chapter><title>A brief history of Evergreen</title></chapter>
+    <chapter><title>Is Evergreen right for your library?</title></chapter>
+    <chapter><title>Evergreen architecture</title></chapter>
+    <chapter><title>Evergreen concepts</title>
+      <section><title>Organizational units: consortiums, libraries, and locations</title></section>
+      <section><title>Items: bibliographic records, volumes, and copies</title></section>
+    </chapter>
+    <chapter><title>Scenarios: a tale of two Evergreen systems</title>
+      <section>
+        <title>Scenario 1: Le Grande University</title>
+        <para>
+          Le Grande University is a large academic institution that
+          features one main library and six libraries with specialized
+          collections distributed across campus. Circulation counts are
+          low, search sessions are low volume but lengthy and in-depth,
+          faculty and students make heavy use of shared resource lists
+          and RSS feeds for lists of new resources in areas of interest.
+        </para>
+      </section>
+      <section>
+        <title>Scenario 2: Metropolitan Public Library Consortium</title>
+        <para>
+          The Metropolitan Public Library Consortium consists of one large
+          central reference library, a set of 33 branch libraries in the
+          city core, and 25 branch libraries distributed throughout the five
+          recently amalgamated suburban areas that were once independent public
+          libraries.
+        </para>
+        <para>
+          Circulation counts are extremely high. Search sessions are high
+          volume but typically short in duration and simple title / author
+          searches. Catalog interfaces must be available in many different
+          languages to support the diverse population of patrons. The staff
+          client interface must be available in both official federal
+          languages (French and English).
+        </para>
+      </section>
+    </chapter>
+  </part>
+
+  <part><title>Setting up an Evergreen system</title>
+    <chapter><title>Setting up the router</title></chapter>
+    <chapter><title>Setting up PostgreSQL database</title></chapter>
+    <chapter><title>Setting up the memcached servers</title></chapter>
+    <chapter><title>Configuring Evergreen</title>
+      <section><title>Defining basic connection information (opensrf_core.xml)</title></section>
+      <section><title>Defining Z39.50 sources (opensrf.xml)</title></section>
+      <section><title>Defining an added content service (opensrf.xml)</title></section>
+      <section><title>Setting default login timeouts (opensrf.xml)</title></section>
+      <section><title>Setting circulation policies (opensrf.xml / circ_groups.js)</title></section>
+      <section><title>Defining field mappings (fm_IDL.xml)</title></section>
+    </chapter>
+    <chapter><title>Setting up Apache Web server</title>
+      <section><title>Basic configuration (apache2.conf / httpd.conf)</title></section>
+      <section><title>Defining your virtual host</title></section>
+    </chapter>
+    <chapter><title>Installing the Evergreen staff client</title></chapter>
+    <chapter><title>Troubleshooting</title>
+  </part>
+
+  <part><title>Administering Evergreen</title>
+    <chapter><title>Starting and stopping Evergreen</title></chapter>
+    <chapter><title>Setting up organizational units</title></chapter>
+    <chapter><title>Generating reports</title></chapter>
+    <chapter><title>Preventing disaster</title></chapter>
+  </part>
+
+  <part><title>Core tasks</title>
+    <chapter><title>Cataloging</title></chapter>
+    <chapter><title>Circulation</title>
+      <section><title>Offline circulation</title></section>
+    </chapter>
+    <chapter><title>Course reserves</title></chapter>
+    <chapter><title>Acquisitions</title></chapter>
+    <chapter><title>Serials</title></chapter>
+  </part>
+
+  <part><title>Customizing Evergreen</title>
+    <partintro>
+      <title>About this section</title>
+      <para>
+        This section is intended to describe the tasks that Evergreen administrators
+        can perform to customize the look and feel of the system for their libraries.
+        All tasks described here will be able to be completed with a rudimentary
+        knowledge of XHTML, CSS, and JavaScript.
+      </para>
+    </partintro>
+    <chapter><title>Customizing the staff client</title>
+      <section><title>Changing the theme</title></section>
+      <section><title>Changing labels and messages</title></section>
+      <section><title>Changing key mappings</title></section>
+    </chapter>
+    <chapter><title>Customizing the catalog</title>
+      <section><title>Changing the theme</title></section>
+      <section><title>Changing labels and messages</title></section>
+      <section><title>Changing the hit list details</title></section>
+      <section><title>Changing the detailed view details</title></section>
+    </chapter>
+  </part>
+
+  <part><title>Technical reference</title>
+    <partintro>
+      <title>About this section</title>
+      <para>
+        This section will document the Evergreen application programming
+        interfaces (APIs), database schemas, communication protocols,
+        client and catalog design and implementation, and configuration
+        files.
+      </para>
+    </partintro>
+    <chapter><title>Application Programming Interfaces</title>
+      <section><title>OpenSRF</title></section>
+      <section><title>Web services</title></section>
+    </chapter>
+    <chapter><title>Database schemas</title></chapter>
+    <chapter><title>Communication protocols (XMPP + JSON)</title></chapter>
+    <chapter><title>Configuration files</title></chapter>
+  </part>
+</book>
