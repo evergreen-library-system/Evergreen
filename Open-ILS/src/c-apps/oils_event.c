@@ -86,8 +86,8 @@ jsonObject* oilsEventToJSON( oilsEvent* event ) {
 	jsonObjectSetKey( json, "pid", jsonNewNumberObject(getpid()) );
 
 	char buf[256];
-	memset(buf,0, 256);
-	snprintf(buf, 256, "%s:%d", event->file, event->line);
+	memset(buf, '\0', sizeof(buf));
+	snprintf(buf, sizeof(buf), "%s:%d", event->file, event->line);
 	jsonObjectSetKey( json, "stacktrace", jsonNewObject(buf) );
 
 	if(event->perm) jsonObjectSetKey( json, "ilsperm", jsonNewObject(event->perm) );

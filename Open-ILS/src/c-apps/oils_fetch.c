@@ -50,8 +50,7 @@ int osrfAppInitialize() {
 		osrfHashSet( fmClassMap, hint, apiname );
 
 		char method[256];
-		bzero(method, 256);
-		snprintf(method, 256, "open-ils.fetch.%s.retrieve", apiname);
+		snprintf(method, sizeof(method), "open-ils.fetch.%s.retrieve", apiname);
 
 		osrfAppRegisterMethod( MODULENAME, 
 				method, "oilsFetchDoRetrieve", "", 1, 0 );
@@ -129,13 +128,11 @@ int oilsFetchDoRetrieve( osrfMethodContext* ctx ) {
 
 	/* construct the SQL */
 	char sql[256];
-	bzero(sql, 256);
-	snprintf( sql, 255, "select * from %s.%s where id = %s;", schema, object, id );
+	snprintf( sql, sizeof(sql), "select * from %s.%s where id = %s;", schema, object, id );
 
 	/* find the object hint from the api name */
 	char hintbuf[256];
-	bzero(hintbuf,256);
-	snprintf(hintbuf, 255, "%s.%s", schema, object );
+	snprintf(hintbuf, sizeof(hintbuf), "%s.%s", schema, object );
 	char* hint = osrfHashGet( fmClassMap, hintbuf );
 
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);

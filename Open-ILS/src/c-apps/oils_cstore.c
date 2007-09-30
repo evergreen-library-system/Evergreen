@@ -2970,7 +2970,7 @@ jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* meta) {
 
 				case DBI_TYPE_DATETIME :
 
-					memset(dt_string, '\0', 256);
+					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
 					memset(&_tmp_dt, '\0', sizeof(_tmp_dt));
 
@@ -3049,7 +3049,7 @@ jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 
 				case DBI_TYPE_DATETIME :
 
-					memset(dt_string, '\0', 256);
+					memset(dt_string, '\0', sizeof(dt_string));
 					memset(&gmdt, '\0', sizeof(gmdt));
 					memset(&_tmp_dt, '\0', sizeof(_tmp_dt));
 

@@ -189,8 +189,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 	char* seed = jsonObjectGetString(o);
 	char* passhash = md5sum(passwd);
 	char buf[256];
-	bzero(buf, 256);
-	snprintf(buf, 255, "%s%s", seed, passhash);
+	snprintf(buf, sizeof(buf), "%s%s", seed, passhash);
 	char* fullhash = md5sum(buf);
 
 	jsonObjectFree(o);

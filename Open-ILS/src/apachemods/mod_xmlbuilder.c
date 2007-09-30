@@ -245,7 +245,7 @@ void xmlBuilderStartElement( void* context, const xmlChar *name, const xmlChar *
 			if(href[0] != '/') {
 				int len = strlen(ctx->xmlFile) + strlen(href) + 1;
 				char buf[len];
-				bzero(buf, len);
+                                memset( buf, '\0', sizeof(len) );
 				strcpy( buf, ctx->xmlFile );
 				int i;
 				for( i = strlen(buf); i != 0; i-- ) {
@@ -300,7 +300,7 @@ void xmlBuilderAddAtts( xmlBuilderContext* ctx, xmlNodePtr node, const xmlChar**
 
 			if( prop[0] == '&' && prop[nl-1] == ';' ) { /* replace the entity if we are one */
 				char buf[nl+1];
-				bzero(buf, nl+1);
+                                memset( buf, '\0', sizeof(buf) );
 				strncat(buf, prop + 1, nl - 2);
 				xmlEntityPtr ent = osrfHashGet( ctx->entHash, buf );
 				if(ent && ent->content) _prop = ent->content;
@@ -392,8 +392,8 @@ void xmlBuilderAddDtd( const char* sysId, xmlBuilderContext* context ) {
 
 	/* determine the path to the DTD file and load it */
 	int len = strlen(context->config->baseDir) + strlen(locale) + strlen(sysId) + 4;
-	char buf[len]; bzero(buf,len);
-	snprintf( buf, len, "%s/%s/%s", context->config->baseDir, locale, sysId );
+	char buf[len];
+	snprintf( buf, sizeof(buf), "%s/%s/%s", context->config->baseDir, locale, sysId );
 
 	xmlDtdPtr dtd = xmlParseDTD(NULL, buf);
 	if(!dtd) return;

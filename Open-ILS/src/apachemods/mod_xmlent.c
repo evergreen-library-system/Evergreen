@@ -202,7 +202,7 @@ static void XMLCALL startElement(void *userData, const char *name, const char **
 static void XMLCALL charHandler( void* userData, const XML_Char* s, int len ) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
 	char data[len+1];
-	bzero(data, len+1);
+	memset( data, '\0', sizeof(data) );
 	memcpy( data, s, len );
 
 	xmlEntConfig* config = ap_get_module_config( 

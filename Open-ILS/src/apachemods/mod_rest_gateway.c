@@ -85,12 +85,12 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 		}
 
 		char body[1025];
-		memset(body,0,1025);
+		memset(body, '\0', sizeof(body));
 		buffer = buffer_init(1025);
 
 		while(ap_get_client_block(r, body, 1024)) {
 			buffer_add( buffer, body );
-			memset(body,0,1025);
+			memset(body, '\0', sizeof(body));
 		}
 
 		if(arg && arg[0]) {
