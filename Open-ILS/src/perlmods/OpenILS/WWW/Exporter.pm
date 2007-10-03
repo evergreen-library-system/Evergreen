@@ -65,9 +65,13 @@ sub handler {
 			my $csv = new Text::CSV;
 
 			while (<$file>) {
+				chomp;
 				$csv->parse($_);
 				my @data = $csv->fields;
-				push @records, $data[$col];
+				my $id = $data[$col];
+				$id =~ s/\D+//o;
+				next unless ($id);
+				push @records, $id;
 			}
 		}
 	}
