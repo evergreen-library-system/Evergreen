@@ -71,6 +71,7 @@ sub handler {
 				my $id = $data[$col];
 				$id =~ s/\D+//o;
 				next unless ($id);
+				warn "ID $id";
 				push @records, $id;
 			}
 		}
