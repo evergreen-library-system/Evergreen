@@ -272,7 +272,7 @@ sub show_template {
 	</head>
 	<body>
 		<form method="POST" enctype="multipart/form-data">
-			Use field <input type="text" size="2" maxlength="2" name="idcolumn" value="0"/>
+			Use field number <input type="text" size="2" maxlength="2" name="idcolumn" value="0"/> (starting from 0)
 			from CSV file <input type="file" name="idfile"/>
 			<br/><br/> <b>or</b> <br/><br/>
 			Record ID <input type="text" size="12" maxlength="12" name="id"/>
@@ -283,15 +283,15 @@ sub show_template {
 			</select>
 			<br/><br/> Record Fromat:
 			<select name="format">
-				<option value="USMARC"/>
-				<option value="UNIMARC"/>
+				<option value="USMARC">MARC21</option>
+				<option value="UNIMARC">UNIMARC</option>
 				<option value="XML">MARC XML</option>
 				<option value="BRE">Evergreen BRE</option>
 			</select>
 			<br/><br/> Record Encoding:
 			<select name="encoding">
-				<option value="UTF8"/>
-				<option value="MARC8"/>
+				<option value="UTF-8">UTF-8</option>
+				<option value="MARC8">MARC8</option>
 			</select>
 			<br/><br/> Include holdings in Bibliographic Records:
 			<input type="checkbox" name="holdings" value="1">
@@ -302,7 +302,7 @@ sub show_template {
 
 HTML
 
-	return 200;
+	return Apache2::Const::OK;
 }
 
 1;
