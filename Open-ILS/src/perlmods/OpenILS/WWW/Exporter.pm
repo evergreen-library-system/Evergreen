@@ -88,6 +88,8 @@ sub handler {
 
 	return show_template($r) unless (@records);
 
+	warn "ids: :". join(',',@records);
+
 	my $type = $cgi->param('rectype') || 'biblio';
 	if ($type ne 'biblio' && $type ne 'authority') {
 		die "Bad record type: $type";
