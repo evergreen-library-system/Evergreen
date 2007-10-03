@@ -50,7 +50,7 @@ cat.util.replace_barcode = function(old_bc) {
 			return old_bc;
 		} else {
 			if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
-				obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' . new_bc . '".',test);
+				obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' + new_bc + '".',test);
 				return old_bc;
 			}	
 		}
