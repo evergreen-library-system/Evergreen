@@ -61,17 +61,14 @@ sub handler {
 	if (!@records) { # try for a file
 		my $file = $cgi->param('idfile');
 		if ($file) {
-			warn "FILE $file";
 			my $col = $cgi->param('idcolumn') || 0;
 			my $csv = new Text::CSV;
 
 			while (<$file>) {
 				chomp;
-				warn "LINE $_";
 				$csv->parse($_);
 				my @data = $csv->fields;
 				my $id = $data[$col];
-				warn "ID $id";
 				$id =~ s/\D+//o;
 				next unless ($id);
 				push @records, $id;
@@ -87,8 +84,6 @@ sub handler {
 	}
 
 	return show_template($r) unless (@records);
-
-	warn "ids: ". join(',',@records);
 
 	my $type = $cgi->param('rectype') || 'biblio';
 	if ($type ne 'biblio' && $type ne 'authority') {
