@@ -17,34 +17,63 @@ cat.util.replace_barcode = function(old_bc) {
 		if (!old_bc) old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
 		if (!old_bc) return;
 
-		var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
-		if (typeof copy.ilsevent != 'undefined') throw(copy); 
-		if (!copy) throw(copy);
-
+		var copy;
+        try {
+			copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
+			if (typeof copy.ilsevent != 'undefined') throw(copy); 
+			if (!copy) throw(copy);
+		} catch(E) {
+			alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n');
+			return old_bc;
+		}
+	
 		// Why did I want to do this twice?  Because this copy is more fleshed?
-		copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
-		if (typeof copy.ilsevent != 'undefined') throw(copy);
-		if (!copy) throw(copy);
-
-		var new_bc = window.prompt('Enter the replacement barcode for the copy with barcode ' + old_bc + ':','','Replace Barcode');
+		try {
+			copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
+			if (typeof copy.ilsevent != 'undefined') throw(copy);
+			if (!copy) throw(copy);
+		} catch(E) {
+			try { alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc)); } catch(F) { alert(E + '\n' + F); }
+			return old_bc;
+		}
+	
+		var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
 		new_bc = String( new_bc ).replace(/\s/g,'');
 		if (!new_bc) {
 			alert('Rename aborted.  Blank for barcode not allowed.');
 			return old_bc;
 		}
-
-		var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
+	
+		var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ new_bc ]);
 		if (typeof test.ilsevent == 'undefined') {
-			alert('Rename aborted.  Another copy has that barcode');
+			alert('Rename aborted.  Another copy has barcode "' + new_bc + '".');
 			return old_bc;
+		} else {
+			if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
+				obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' . new_bc . '".',test);
+				return old_bc;
+			}	
 		}
+
 		copy.barcode(new_bc); copy.ischanged('1');
 		var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
-		if (typeof r.ilsevent != 'undefined') { if (r.ilsevent != 0) throw(r); }
+		if (typeof r.ilsevent != 'undefined') { 
+			if (r.ilsevent != 0) {
+				if (r.ilsevent == 5000 /* PERM_FAILURE */) {
+					alert('Renamed aborted.  Insufficient permission.');
+					return old_bc;
+				} else {
+					obj.error.standard_unexpected_error_alert('Error renaming item.',r);
+					return old_bc;
+				}
+			}
+		}
+
 		return new_bc;
 	} catch(E) {
 		JSAN.use('util.error'); var error = new util.error();
 		error.standard_unexpected_error_alert('Rename did not likely occur.',E);
+		return old_bc;
 	}
 }
 

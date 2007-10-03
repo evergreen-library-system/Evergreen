@@ -101,28 +101,58 @@ main.menu.prototype = {
 						JSAN.use('util.network');
 						var network = new util.network();
 
-						var old_bc = window.prompt('Enter original barcode for the copy:','','Replace Barcode');
+						var old_bc = window.prompt('Enter original barcode for the item:','','Replace Barcode');
 						if (!old_bc) return;
 	
-						var copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
-						if (typeof copy.ilsevent != 'undefined') throw(copy); 
-						if (!copy) throw(copy);
+						var copy;
+                        try {
+                            copy = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ old_bc ]);
+    						if (typeof copy.ilsevent != 'undefined') throw(copy); 
+    						if (!copy) throw(copy);
+                        } catch(E) {
+                            alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n');
+                            return;
+                        }
 	
 						// Why did I want to do this twice?  Because this copy is more fleshed?
-						copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
-						if (typeof copy.ilsevent != 'undefined') throw(copy);
-						if (!copy) throw(copy);
+                        try {
+    						copy = network.simple_request('FM_ACP_RETRIEVE',[ copy.id() ]);
+    						if (typeof copy.ilsevent != 'undefined') throw(copy);
+    						if (!copy) throw(copy);
+                        } catch(E) {
+                            try { alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc)); } catch(F) { alert(E + '\n' + F); }
+                            return;
+                        }
 	
 						var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
-	
-						var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ ses(), new_bc ]);
-						if (typeof test.ilsevent == 'undefined') {
-							alert('Rename aborted.  Another copy has that barcode');
+						new_bc = String( new_bc ).replace(/\s/g,'');
+						if (!new_bc) {
+							alert('Rename aborted.  Blank for barcode not allowed.');
 							return;
 						}
+	
+						var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ new_bc ]);
+						if (typeof test.ilsevent == 'undefined') {
+    						alert('Rename aborted.  Another copy has barcode "' + new_bc + '".');
+							return;
+						} else {
+							if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
+						        obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' . new_bc . '".',test);
+								return;
+							}	
+						}
+
 						copy.barcode(new_bc); copy.ischanged('1');
 						var r = network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE', [ ses(), [ copy ] ]);
-						if (typeof r.ilsevent != 'undefined') { if (r.ilsevent != 0) throw(r); }
+						if (typeof r.ilsevent != 'undefined') { 
+                            if (r.ilsevent != 0) {
+                                if (r.ilsevent == 5000 /* PERM_FAILURE */) {
+                                    alert('Renamed aborted.  Insufficient permission.');
+                                } else {
+                                    obj.error.standard_unexpected_error_alert('Error renaming item.',r);
+                                }
+                            }
+                        }
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert('Rename did not likely occur.',copy);
 					}
