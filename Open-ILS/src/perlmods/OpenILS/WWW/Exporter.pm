@@ -61,6 +61,7 @@ sub handler {
 	if (!@records) { # try for a file
 		my $file = $cgi->param('idfile');
 		if ($file) {
+			warn "FILE $file";
 			my $col = $cgi->param('idcolumn') || 0;
 			my $csv = new Text::CSV;
 
@@ -287,21 +288,21 @@ sub show_template {
 				<option value="biblio">Bibliographic Records</option>
 				<option value="authority">Authority Records</option>
 			</select>
-			<br/><br/> Record Fromat:
+			<br/> Record Fromat:
 			<select name="format">
 				<option value="USMARC">MARC21</option>
 				<option value="UNIMARC">UNIMARC</option>
 				<option value="XML">MARC XML</option>
 				<option value="BRE">Evergreen BRE</option>
 			</select>
-			<br/><br/> Record Encoding:
+			<br/> Record Encoding:
 			<select name="encoding">
 				<option value="UTF-8">UTF-8</option>
 				<option value="MARC8">MARC8</option>
 			</select>
-			<br/><br/> Include holdings in Bibliographic Records:
+			<br/> Include holdings in Bibliographic Records:
 			<input type="checkbox" name="holdings" value="1">
-			<br/><input type="submit" value="Retrieve Records"/>
+			<br/><br/><input type="submit" value="Retrieve Records"/>
 		</form>
 	</body>
 </html>
