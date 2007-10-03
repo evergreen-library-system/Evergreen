@@ -508,7 +508,7 @@ sub patron_search {
 	my $clone_select = '';
 	$clone_select = "JOIN (SELECT cu.id as id FROM $a_table ca ".
 			   "JOIN $u_table cu ON (cu.mailing_address = ca.id OR cu.billing_address = ca.id) ".
-			   "WHERE $addr_where) AS clone USING (id)" if ($addr_where);
+			   "WHERE $addr_where) AS clone ON (clone.id = users.id)" if ($addr_where);
 
 	my $select = '';
 	if ($usr_where) {
@@ -548,7 +548,7 @@ sub patron_search {
 	$select = <<"	SQL";
 		SELECT	DISTINCT $distinct_list
 		  FROM	$u_table AS users
-			JOIN ($select) AS search USING (id)
+			JOIN ($select) AS search ON (search.id = users.id)
 			JOIN $descendants d ON (d.id = users.home_ou)
 			$opt_in_join
 			$clone_select
