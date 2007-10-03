@@ -137,7 +137,7 @@ main.menu.prototype = {
 							return;
 						} else {
 							if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
-						        obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' . new_bc . '".',test);
+						        obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' + new_bc + '".',test);
 								return;
 							}	
 						}
