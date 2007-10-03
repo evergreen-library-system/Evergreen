@@ -66,12 +66,13 @@ sub handler {
 
 			while (<$file>) {
 				chomp;
+				warn "LINE $_";
 				$csv->parse($_);
 				my @data = $csv->fields;
 				my $id = $data[$col];
+				warn "ID $id";
 				$id =~ s/\D+//o;
 				next unless ($id);
-				warn "ID $id";
 				push @records, $id;
 			}
 		}
