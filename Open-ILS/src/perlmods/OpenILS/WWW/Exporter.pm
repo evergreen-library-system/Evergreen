@@ -56,7 +56,7 @@ sub handler {
 	# find some IDs ...
 	my @records;
 
-	@records = $cgi->param('id');
+	@records = map { $_ ? ($_) : () } $cgi->param('id');
 
 	if (!@records) { # try for a file
 		my $file = $cgi->param('idfile');
@@ -88,7 +88,7 @@ sub handler {
 
 	return show_template($r) unless (@records);
 
-	warn "ids: :". join(',',@records);
+	warn "ids: ". join(',',@records);
 
 	my $type = $cgi->param('rectype') || 'biblio';
 	if ($type ne 'biblio' && $type ne 'authority') {
