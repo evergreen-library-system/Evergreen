@@ -13,6 +13,7 @@ use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use CGI;
 use Data::Dumper;
+use Text::CSV;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils qw/:datetime/;
@@ -51,15 +52,34 @@ sub child_init {
 sub handler {
 	my $r = shift;
 	my $cgi = new CGI;
-	
-	my @records = $cgi->param('id');
-	my $path_rec = $cgi->path_info();
 
-	if (!@records && $path_rec) {
-		@records = map { $_ ? ($_) : () } split '/', $path_rec;
+	# find some IDs ...
+	my @records;
+
+	@records = $cgi->param('id');
+
+	if (!@records) { # try for a file
+		my $file = $cgi->param('idfile');
+		if ($file) {
+			my $col = $cgi->param('idcolumn') || 0;
+			my $csv = new Text::CSV;
+
+			while (<$file>) {
+				$csv->parse($_);
+				my @data = $csv->fields;
+				push @records, $data[$col];
+			}
+		}
 	}
 
-	return 200 unless (@records);
+	if (!@records) { # try pathinfo
+		my $path_rec = $cgi->path_info();
+		if ($path_rec) {
+			@records = map { $_ ? ($_) : () } split '/', $path_rec;
+		}
+	}
+
+	return show_template($r) unless (@records);
 
 	my $type = $cgi->param('rectype') || 'biblio';
 	if ($type ne 'biblio' && $type ne 'authority') {
@@ -238,6 +258,51 @@ sub handler {
 
 	return Apache2::Const::OK;
 
+}
+
+sub show_template {
+	my $r = shift;
+
+	$r->content_type('text/html');
+	$r->print(<<HTML);
+
+<html>
+	<head>
+		<title>Record Export</title>
+	</head>
+	<body>
+		<form method="POST" enctype="multipart/form-data">
+			Use field <input type="text" size="2" maxlength="2" name="idcolumn" value="0"/>
+			from CSV file <input type="file" name="idfile"/>
+			<br/><br/> <b>or</b> <br/><br/>
+			Record ID <input type="text" size="12" maxlength="12" name="id"/>
+			<br/><br/> Record Type:
+			<select name="type">
+				<option value="biblio">Bibliographic Records</option>
+				<option value="authority">Authority Records</option>
+			</select>
+			<br/><br/> Record Fromat:
+			<select name="format">
+				<option value="USMARC"/>
+				<option value="UNIMARC"/>
+				<option value="XML">MARC XML</option>
+				<option value="BRE">Evergreen BRE</option>
+			</select>
+			<br/><br/> Record Encoding:
+			<select name="encoding">
+				<option value="UTF8"/>
+				<option value="MARC8"/>
+			</select>
+			<br/><br/> Include holdings in Bibliographic Records:
+			<input type="checkbox" name="holdings" value="1">
+			<br/><input type="submit" value="Retrieve Records"/>
+		</form>
+	</body>
+</html>
+
+HTML
+
+	return 200;
 }
 
 1;
