@@ -1121,7 +1121,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 			switch(check.copy.status()) {
 				case 0: /* AVAILABLE */
 				case 7: /* RESHELVING */
-					if (msg) msg += 'This item needs to be routed to ' + check.route_to + '.';
+					if (msg) msg += 'This item needs to be routed to ' + check.route_to + '.\n';
 				break;
 				case 8: /* ON HOLDS SHELF */
 					check.route_to = 'HOLDS SHELF';
