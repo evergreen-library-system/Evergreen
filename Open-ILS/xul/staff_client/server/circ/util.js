@@ -1328,6 +1328,7 @@ circ.util.renew_via_barcode = function ( barcode, patron_id, async ) {
 						case 1213 /* PATRON_BARRED */ : break;
 						case 1215 /* CIRC_EXCEEDS_COPY_RANGE */ : break;
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ : break;
+						case 1500 /* ACTION_CIRCULATION_NOT_FOUND */ : break;
 						case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
 						case 7003 /* COPY_CIRC_NOT_ALLOWED */ : break;
 						case 7004 /* COPY_NOT_AVAILABLE */ : break;
