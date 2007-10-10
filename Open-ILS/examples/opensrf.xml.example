@@ -660,7 +660,7 @@ Example opensrf config file for OpenILS
 
     <hosts>
 
-        <evergreen.example.org> 
+        <localhost> 
             <!-- ^-=- 
                 must match the fully qualified domain name of the host.
                 on Linux, this is usually the output of "hostname -f"
@@ -686,7 +686,7 @@ Example opensrf config file for OpenILS
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
             </activeapps>
-        </evergreen.example.org>
+        </localhost>
     </hosts>
 
 </opensrf>
