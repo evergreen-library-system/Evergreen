@@ -1,5 +1,5 @@
 LDLIBS += -lobjson -lopensrf #-lfieldmapper 
-LDFLAGS += -L$(DBI_LIBS)
+LDFLAGS += -Wl,-rpath=$(LIBDIR) -L$(DBI_LIBS)
 CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
