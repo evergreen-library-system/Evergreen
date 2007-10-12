@@ -1,8 +1,7 @@
 
 export LDFLAGS			+= -L . -L$(TMP) -L $(OPENSRF_LIBS)
 export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
-				-D_LARGEFILE64_SOURCE -I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS) \
-								-I$(OPENSRF_HEADERS)/opensrf # <-- stop-gap until opensrf compilation can be fixed with external include directory
+				-D_LARGEFILE64_SOURCE -I$(LIBXML2_HEADERS)/libxml  -I$(TMP) -I$(OPENSRF_HEADERS) 
 
 export INCDIR = "$(INCLUDEDIR)/openils/"
 
@@ -22,6 +21,11 @@ circ_rules-install:
 	cp javascript/backend/circ/*.js $(CIRCRULESDIR)
 	cp javascript/backend/penalty/*.js $(PENALTYRULESDIR)
 	cp javascript/backend/catalog/*.js $(CATALOGSCRIPTDIR)
+	cp support-scripts/fine_generator.pl $(BINDIR) 
+	cp support-scripts/hold_targeter.pl $(BINDIR) 
+	cp support-scripts/reshelving_complete.srfsh $(BINDIR) 
+	cp support-scripts/thaw_expired_frozen_holds.srfsh $(BINDIR) 
+	cp support-scripts/long-overdue-status-update.pl $(BINDIR) 
 
 
 # -----------------------------------------------------------------------------------
