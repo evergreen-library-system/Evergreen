@@ -36,7 +36,7 @@ GetOptions(
 	'file=s'	=> \@files,
 	'trash=s'	=> \@trash_fields,
 	'xml_idl=s'	=> \$idlfile,
-	'dontuse=s'	=> \$dontuse_file
+	'dontuse=s'	=> \$dontuse_file,
 	'quiet'		=> \$quiet
 );
 
