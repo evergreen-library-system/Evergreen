@@ -108,7 +108,7 @@ $output .= ($de) ? $de : "* Successfully connected to database $dsn\n";
 
 
 if ($gather) {
-	get_debug_info( $tmpdir, $logdir, $conf_dir, $perloutput, $output );
+	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
 }
 
 sub get_debug_info {
