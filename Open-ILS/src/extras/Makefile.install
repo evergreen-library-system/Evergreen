@@ -21,6 +21,11 @@
 #
 # ---------------------------------------------------------------------
  
+# XXX
+# Gentoo needs explicit versions on many of these packages
+# to simulate a "blessed" set of packages
+# Also, I (think) Gentoo has a javascript::spidermonkey package that does
+# not require fetching the sources externally ... needs testing/updating in here
 
  
 LIBJS=js-1.60
@@ -30,6 +35,9 @@ LIBJS_PERL_URL=ftp://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS
 # used for installing libjs lib and header files
 JS_INSTALL_PREFIX=/usr/
 
+
+# The libdbi sources can be fetched from sourceforge.net.  They are stored on
+# the open-ils.org site now for ease of direct linking
 LIBDBI=libdbi-0.8.2
 LIBDBI_DRIVERS=libdbi-drivers-0.8.2-1
 LIBDBI_HOST=http://open-ils.org/~erickson/evergreen
@@ -85,6 +93,8 @@ DEBS =  \
     apache2-prefork-dev\
     libapache2-mod-perl2\
     libreadline5-dev
+
+
 
 GENTOOS = \
     vim\
