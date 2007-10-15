@@ -281,7 +281,7 @@ sub show_template {
 			<br/><br/> <b>or</b> <br/><br/>
 			Record ID <input type="text" size="12" maxlength="12" name="id"/>
 			<br/><br/> Record Type:
-			<select name="type">
+			<select name="rectype">
 				<option value="biblio">Bibliographic Records</option>
 				<option value="authority">Authority Records</option>
 			</select>
