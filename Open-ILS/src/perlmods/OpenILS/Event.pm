@@ -77,7 +77,9 @@ sub _load_events {
 	for my $d (@desc) {
 		my $lang = $d->getAttribute('lang');
 		my $code = $d->parentNode->getAttribute('code');
-		$descs->{$lang} = {} unless $descs->{$lang};
+		if (!exists $descs->{$lang}) {
+			$descs->{$lang} = {};
+		}
 		$descs->{$lang}->{$code} = $d->textContent;
 	}
 }
