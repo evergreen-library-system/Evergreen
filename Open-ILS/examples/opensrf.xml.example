@@ -17,7 +17,7 @@ Example opensrf config file for OpenILS
             <script_lib>/openils/var</script_lib>
         </dirs>
 
-	<!-- global data visiblity settings -->
+	<!-- global data visibility settings -->
         <share>
 		<user>
         		<!-- Set to "true" to require patron opt-in for foreign (non-home_ou) transactions -->

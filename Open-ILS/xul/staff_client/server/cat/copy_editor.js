@@ -351,7 +351,7 @@ g.import_templates = function() {
 				var list = util.functional.map_object_to_list( g.templates, function(obj,i) { return [i, i]; } );
 				g.template_menu = util.widgets.make_menulist( list );
 				$('template_placeholder').appendChild(g.template_menu);
-				alert("Note: These imported templates will get saved along with any new template you try to create, but if that doesn't happen, then these templates will dissappear with the next invocation of the item attribute editor.");
+				alert("Note: These imported templates will get saved along with any new template you try to create, but if that doesn't happen, then these templates will disappear with the next invocation of the item attribute editor.");
 			}
 
 		} else {
@@ -1046,7 +1046,7 @@ g.render = function() {
     
     
 	/******************************************************************************************************/
-	/* Synchronize stat cat visiblity with library filter menu, and default template selection */
+	/* Synchronize stat cat visibility with library filter menu, and default template selection */
     JSAN.use('util.file'); 
 	var file = new util.file('copy_editor_prefs.'+g.data.server_unadorned);
 	g.copy_editor_prefs = util.widgets.load_attributes(file);

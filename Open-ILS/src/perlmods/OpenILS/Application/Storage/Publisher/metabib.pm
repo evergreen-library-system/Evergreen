@@ -1038,7 +1038,7 @@ sub postfilter_search_class_fts {
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit} || 10;
-	my $visiblity_limit = $args{visiblity_limit} || 5000;
+	my $visibility_limit = $args{visibility_limit} || 5000;
 	my $offset = $args{offset} || 0;
 
 	my $outer_limit = 1000;
@@ -1220,7 +1220,7 @@ sub postfilter_search_class_fts {
 			$lf_filter
   	  	GROUP BY m.metarecord
   	  	ORDER BY 4 $sort_dir, MIN(COALESCE(CHAR_LENGTH(f.value),1))
-		LIMIT $visiblity_limit
+		LIMIT $visibility_limit
 	SQL
 
 	if (0) {
@@ -1414,7 +1414,7 @@ sub postfilter_search_multi_class_fts {
 	my $ou = $args{org_unit};
 	my $ou_type = $args{depth};
 	my $limit = $args{limit} || 10;;
-	my $visiblity_limit = $args{visiblity_limit} || 5000;;
+	my $visibility_limit = $args{visibility_limit} || 5000;;
 	my $offset = $args{offset} || 0;
 
 	if (!$ou) {
@@ -1711,7 +1711,7 @@ sub postfilter_search_multi_class_fts {
 			$join_table_list
   	  	GROUP BY m.metarecord
   	  	-- ORDER BY 4 $sort_dir
-		LIMIT $visiblity_limit
+		LIMIT $visibility_limit
 	SQL
 
 	if ($self->api_name !~ /staff/o) {
@@ -1908,7 +1908,7 @@ sub biblio_search_multi_class_fts {
 	my $ou_type = $args{depth};
 	my $limit = $args{limit} || 10;
 	my $pref_lang = $args{prefered_language} || 'eng';
-	my $visiblity_limit = $args{visiblity_limit} || 5000;
+	my $visibility_limit = $args{visibility_limit} || 5000;
 	my $offset = $args{offset} || 0;
 
 	if (!$ou) {
@@ -2195,7 +2195,7 @@ sub biblio_search_multi_class_fts {
 			$lf_filter
   	  	GROUP BY b.id, b.source
   	  	ORDER BY 3 $sort_dir
-		LIMIT $visiblity_limit
+		LIMIT $visibility_limit
 	SQL
 
 	if ($self->api_name !~ /staff/o) {

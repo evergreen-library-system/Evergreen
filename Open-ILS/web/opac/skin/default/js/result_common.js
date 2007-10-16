@@ -72,7 +72,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	args.depth    = getDepth();
 	args.limit    = limit;
 	args.offset   = getOffset();
-	args.visiblity_limit = 3000;
+	args.visibility_limit = 3000;
 
 	if(sort) args.sort = sort;
 	if(sortdir) args.sort_dir = sortdir;
