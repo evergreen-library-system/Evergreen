@@ -85,12 +85,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="class">
  <xs:complexType>
   <xs:sequence>
+   <xs:element ref="oils_persist:source_definition" minOccurs="0" maxOccurs="unbounded"/>
    <xs:element ref="idl:fields"/>
    <xs:element ref="idl:links" minOccurs="0"/>
   </xs:sequence>
   <xs:attribute name="id"/>
   <xs:attribute name="controller"/>
   <xs:attribute ref="oils_obj:fieldmapper"/>
+  <xs:attribute ref="oils_persist:readonly"/>
   <xs:attribute ref="oils_persist:tablename"/>
   <xs:attribute ref="oils_persist:virtual"/>
   <xs:attribute ref="reporter:core"/>
