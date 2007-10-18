@@ -1,6 +1,7 @@
 # ILS/Open-ILS/xul/staff_client/Makefile
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
+export OPENSRF_JSLIBS = $(OPENSRF_LIBS)/javascript
 
 all: build 
 	@echo
@@ -59,6 +60,7 @@ open-ils:
 	@echo '********************************************************* Grabbing more OPAC code and legacy code and custom code'
 	#cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
+	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
 	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* build/chrome/content/legacy/
 	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* build/chrome/content/legacy/
 	#cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd build/chrome/locale/en-US/

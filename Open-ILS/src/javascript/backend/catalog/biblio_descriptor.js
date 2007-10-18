@@ -2,6 +2,7 @@
 load_lib('fmall.js');
 load_lib('fmgen.js');
 load_lib('record_type.js');
+load_lib('JSON_v1.js');
 
 var marcdoc = new XML(environment.marc);
 var marc_ns = new Namespace('http://www.loc.gov/MARC21/slim');

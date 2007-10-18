@@ -377,6 +377,7 @@ Example opensrf config file for OpenILS
                 </unix_config>
                 <app_settings>
                     <patron_penalty>penalty/patron_penalty.js</patron_penalty>
+                    <script_path>/openils/lib/javascript</script_path>
                     <script_path>/openils/var</script_path>
                     <script_path>/openils/var/catalog</script_path>
                 </app_settings>
@@ -404,6 +405,7 @@ Example opensrf config file for OpenILS
                     </notify_hold>
 
                     <!-- circulation policy scripts -->
+                    <script_path>/openils/lib/javascript</script_path>
                     <script_path>/openils/var</script_path>
                     <script_path>/openils/var/catalog</script_path>
                     <scripts> 
@@ -494,6 +496,7 @@ Example opensrf config file for OpenILS
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                    <script_path>/openils/lib/javascript/</script_path>
                     <script_path>/openils/var/catalog/</script_path>
                     <script_path>/openils/var/web/opac/common/js/</script_path>
                     <scripts>
@@ -519,6 +522,7 @@ Example opensrf config file for OpenILS
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                    <script_path>/openils/lib/javascript/</script_path>
                     <script_path>/openils/var/catalog/</script_path>
                     <scripts>
                         <biblio_fingerprint>biblio_fingerprint.js</biblio_fingerprint>

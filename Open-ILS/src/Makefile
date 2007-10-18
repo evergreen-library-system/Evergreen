@@ -70,6 +70,7 @@ webcore-install:
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/opac/extras/xsl/
 	cp -r ../web/* $(WEBDIR)
+	cp $(OPENSRF_LIBS)/javascript/* $(WEBDIR)/opac/common/js/
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/mresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rresult.xml
 	ln -sf $(WEBDIR)/opac/skin/default/xml/index.xml $(WEBDIR)/opac/skin/default/xml/rdetail.xml

@@ -1,5 +1,6 @@
 // so we can tell if it's a book or other type
 load_lib('record_type.js');
+load_lib('JSON_v1.js');
 
 environment.result = {};
 

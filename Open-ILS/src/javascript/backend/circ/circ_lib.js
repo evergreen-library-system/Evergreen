@@ -1,5 +1,6 @@
 load_lib('catalog/record_type.js');
 load_lib('circ/circ_groups.js');
+load_lib('JSON_v1.js');
 
 
 try {

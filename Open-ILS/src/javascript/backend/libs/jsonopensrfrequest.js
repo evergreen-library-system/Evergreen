@@ -1,6 +1,6 @@
 try {
 	load_lib('jsOO.js');
-	load_lib('JSON.js');
+	load_lib('JSON_v1.js');
 } catch (e) {}
 
 var __jsonopensrfreqid = 1;

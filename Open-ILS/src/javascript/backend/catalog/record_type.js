@@ -1,6 +1,7 @@
 // Constants ...
 load_lib('phys_char.js');
 load_lib('fixed_fields.js');
+load_lib('JSON_v1.js');
 
 function recordType (rec) {
 

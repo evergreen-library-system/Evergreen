@@ -1,6 +1,7 @@
 function go() {
 
 load_lib('circ/circ_lib.js');
+load_lib('JSON_v1.js');
 log_vars('circ_permit_hold');
 
 

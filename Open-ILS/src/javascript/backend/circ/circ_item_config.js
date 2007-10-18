@@ -1,4 +1,5 @@
 load_lib('circ/circ_lib.js');
+load_lib('JSON_v1.js');
 log_debug('loading circ_item_config.js ...');
 
 
