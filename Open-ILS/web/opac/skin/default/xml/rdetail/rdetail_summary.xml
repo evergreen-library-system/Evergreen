@@ -70,6 +70,11 @@
 		</tbody>
 	</table>
 
+	<!-- Empty span used for creating unAPI links -->
+	<abbr name="unapi" class="unapi-id">
+		<!-- unAPI URI goes here -->
+	</abbr>
+
 	<script language='javascript'>
 		config.ids.rdetail.details_body		= 'rdetail_details_body'; 
 		config.ids.rdetail.title				= 'rdetail_title';
