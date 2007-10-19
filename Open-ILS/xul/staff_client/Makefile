@@ -1,7 +1,12 @@
 # ILS/Open-ILS/xul/staff_client/Makefile
 
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
-export OPENSRF_JSLIBS = $(OPENSRF_LIBS)/javascript
+ifeq ($(origin $(OPENSRF_LIBS)), undefined)
+	# Reasonable default when making the client outside of the root dir
+	OPENSRF_JSLIBS := "/openils/lib/javascript"
+else
+	OPENSRF_JSLIBS := "$(OPENSRF_LIBS)/javascript"
+endif
 
 all: build 
 	@echo
