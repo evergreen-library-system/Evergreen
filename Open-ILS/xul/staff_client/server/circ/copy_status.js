@@ -13,7 +13,7 @@ circ.copy_status = function (params) {
 
 circ.copy_status.prototype = {
 	'selection_list' : [],
-	'list_barcode_map' : {},
+	'list_copyid_map' : {},
 
 	'init' : function( params ) {
 
@@ -1025,15 +1025,23 @@ circ.copy_status.prototype = {
 					if (!refresh) {
 						var nparams = obj.list.append(params);
 						if (!document.getElementById('trim_list').checked) {
-							if (typeof obj.list_barcode_map[barcode] == 'undefined') obj.list_barcode_map[barcode] =[];
-							obj.list_barcode_map[barcode].push(nparams);
+							if (typeof obj.list_copyid_map[details.copy.id()] == 'undefined') obj.list_copyid_map[details.copy.id()] =[];
+							obj.list_copyid_map[details.copy.id()].push(nparams);
 						}
 					} else {
 						if (!document.getElementById('trim_list').checked) {
-							for (var i = 0; i < obj.list_barcode_map[barcode].length; i++) {
-								params.my_node = obj.list_barcode_map[barcode][i].my_node;
-								obj.list.refresh_row(params);
-							}
+                            if (typeof obj.list_copyid_map[details.copy.id()] != 'undefined') {
+                                for (var i = 0; i < obj.list_copyid_map[details.copy.id()].length; i++) {
+                                    if (typeof obj.list_copyid_map[details.copy.id()][i] == 'undefined') {
+                                        obj.list.append(params);
+                                    } else {
+                                        params.my_node = obj.list_copyid_map[details.copy.id()][i].my_node;
+                                        obj.list.refresh_row(params);
+                                    }
+                                }
+                            } else {
+							    obj.list.append(params);
+                            }
 						} else {
 							obj.list.append(params);
 						}
