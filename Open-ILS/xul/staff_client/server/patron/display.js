@@ -357,7 +357,7 @@ patron.display.prototype = {
 			obj.controller.view.cmd_patron_info.setAttribute('disabled','true');
 			obj.controller.view.patron_name.setAttribute('value','Retrieving...');
 			document.documentElement.setAttribute('class','');
-			var frame = obj.left_deck.reset_iframe(
+			var frame = obj.left_deck.set_iframe(
 				urls.XUL_PATRON_SUMMARY,
 				{},
 				{
@@ -522,11 +522,11 @@ patron.display.prototype = {
 								document.documentElement.setAttribute('class','');
 								setTimeout(
 									function() {
-										var frame = obj.left_deck.reset_iframe(
-											urls.XUL_PATRON_SUMMARY, // + '?id=' + window.escape(list[0]),
+										var frame = obj.left_deck.set_iframe(
+											urls.XUL_PATRON_SUMMARY + '?id=' + window.escape(list[0]),
 											{},
 											{
-												'id' : list[0],
+												//'id' : list[0],
 												'on_finished' : function(patron) {
 													obj.patron = patron;
 													obj.controller.render();
