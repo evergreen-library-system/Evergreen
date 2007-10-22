@@ -1096,7 +1096,7 @@
 <!ENTITY staff.patron_display.items.print_receipt_label 'Print Receipt'>
 <!ENTITY staff.patron_display.items.print_receipt_label.accesskey 'P'>
 <!ENTITY staff.patron_display.items_claimed_returned.label 'Items Claimed Returned:'>
-<!ENTITY staff.patron_display.library_card.label 'PINES Card:'>
+<!ENTITY staff.patron_display.library_card.label 'Library Card:'>
 <!ENTITY staff.patron_display.mailing.city.label 'Mailing City:'>
 <!ENTITY staff.patron_display.mailing.post_code.label 'Mailing ZIP:'>
 <!ENTITY staff.patron_display.mailing.state.label 'Mailing State:'>
