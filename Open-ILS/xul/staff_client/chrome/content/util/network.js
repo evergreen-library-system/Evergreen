@@ -257,16 +257,16 @@ util.network.prototype = {
 		);
 		JSAN.use('OpenILS.data');
 		var data = new OpenILS.data(); data.init({'via':'stash'});
-		if (typeof my_xulG.temporary_session != 'undefined' && my_xulG.temporary_session != '') {
-			data.session.key = my_xulG.temporary_session.key; 
-			data.session.authtime = my_xulG.temporary_session.authtime; 
+		if (typeof data.temporary_session != 'undefined' && data.temporary_session != '') {
+			data.session.key = data.temporary_session.key; 
+			data.session.authtime = data.temporary_session.authtime; 
 			data.stash('session');
 			if (! data.list.au ) data.list.au = [];
-			data.list.au[0] = JSON2js( my_xulG.temporary_session.usr );
+			data.list.au[0] = JSON2js( data.temporary_session.usr );
 			data.stash('list');
 			obj.reset_titlebars(data);
 			return true;
-		} else { alert('here2'); }
+		} else { alert('Error applying new auth session in network.js'); }
 		return false;
 
 		} catch(E) {
