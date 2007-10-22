@@ -5,6 +5,10 @@
 // This one is required for XUL Runner
 pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/main.xul");
 
+// We need something like this to get window.open to work in some places (where it complains about
+// navigator.xul not being registered.  But is about:blank the best value to use here?
+pref("browser.chromeURL","about:blank");
+
 // This one is specific for Open-ILS
 pref("open-ils.write_in_user_chrome_directory", true);
 
@@ -31,10 +35,10 @@ pref("privacy.popups.policy",0);
 
 // Developer options
 pref("browser.dom.window.dump.enabled",true);
-pref("javascript.options.strict",false);
+pref("javascript.options.strict",true);
 pref("javascript.options.showInConsole",true);
-pref("nglayout.debug.disable_xul_cache",true);
-pref("nglayout.debug.disable_xul_fastload",true);
+pref("nglayout.debug.disable_xul_cache",false);
+pref("nglayout.debug.disable_xul_fastload",false);
 pref("browser.xul.error_pages.enabled",true);
 
 pref("browser.download.useDownloadDir", true);
@@ -48,4 +52,23 @@ pref("browser.download.manager.closeWhenDone", false);
 pref("browser.download.manager.openDelay", 0);
 pref("browser.download.manager.focusWhenStarting", false);
 pref("browser.download.manager.flashCount", 2); 
+
+
+// For extension manager, etc.
+pref("xpinstall.dialog.confirm", "chrome://mozapps/content/xpinstall/xpinstallConfirm.xul");
+pref("xpinstall.dialog.progress.skin", "chrome://mozapps/content/extensions/extensions.xul?type=themes");
+pref("xpinstall.dialog.progress.chrome", "chrome://mozapps/content/extensions/extensions.xul?type=extensions");
+pref("xpinstall.dialog.progress.type.skin", "Extension:Manager-themes");
+pref("xpinstall.dialog.progress.type.chrome", "Extension:Manager-extensions");
+pref("extensions.update.enabled", true);
+pref("extensions.update.interval", 86400);
+pref("extensions.dss.enabled", false);
+pref("extensions.dss.switchPending", false);
+pref("extensions.ignoreMTimeChanges", false);
+pref("extensions.logging.enabled", false);
+pref("general.skins.selectedSkin", "classic/1.0");
+// NB these point at AMO
+pref("extensions.update.url", "chrome://mozapps/locale/extensions/extensions.properties");
+pref("extensions.getMoreExtensionsURL", "chrome://mozapps/locale/extensions/extensions.properties");
+pref("extensions.getMoreThemesURL", "chrome://mozapps/locale/extensions/extensions.properties");
 
