@@ -306,7 +306,7 @@ patron.items.prototype = {
                                 // A renewed circ is a new circ, and has a new circ_id.
                                 obj.list_circ_map[ r[0].payload.circ.id() ] = obj.list_circ_map[ circ_id ];
                             } else {
-                                var msg = bc + ' not renewed.\n' + r[0].textcode + r[0].desc
+                                var msg = bc + ' not renewed.\n' + r[0].textcode + r[0].desc;
                                 l.setAttribute('value', msg);
                                 alert(msg);
                             }
