@@ -429,7 +429,7 @@ util.list.prototype = {
 							// if current row is selected, send another select event to re-sync data that the client code fetches on selects
 							if ( obj.node.view.selection.isSelected( idx ) ) {
 								dump('dispatching select event for on_retrieve for idx = ' + idx + '\n');
-								util.widgets.dispatch('select',params.row_node);
+								util.widgets.dispatch('select',obj.node);
 							}
 						} catch(E) {
 							alert('fixme2: ' + E);
@@ -579,7 +579,7 @@ util.list.prototype = {
 							// if current row is selected, send another select event to re-sync data that the client code fetches on selects
 							if ( obj.node.view.selection.isSelected( idx ) ) {
 								dump('dispatching select event for on_retrieve for idx = ' + idx + '\n');
-								util.widgets.dispatch('select',params.row_node);
+								util.widgets.dispatch('select',obj.node);
 							}
 						} catch(E) {
 							alert('fixme2: ' + E);
@@ -652,6 +652,8 @@ util.list.prototype = {
 			}
 
 		setTimeout( function() { obj.auto_retrieve(); }, 0 );
+
+        JSAN.use('util.widgets'); util.widgets.dispatch('select',obj.node);
 
 		return params;
 	},
@@ -811,7 +813,7 @@ util.list.prototype = {
 						params.row = row;
 						obj._map_row_to_listcell(params,listitem);
 						obj.node.appendChild( listitem );
-						util.widgets.dispatch('select',params.row_node);
+						util.widgets.dispatch('select',obj.node);
 					}
 
 					if (typeof params.retrieve_row == 'function') {
