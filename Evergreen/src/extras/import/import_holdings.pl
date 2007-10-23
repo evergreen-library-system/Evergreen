@@ -37,7 +37,7 @@ my %status_map = (
 $|=1;
 
 my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$lib_map_field,$id_tag, $marc_file) =
-	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','shortname','./datafield[@tag="035"]');
+	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','shortname','./controlfield[@tag="001"]');
 
 my ($holding_tag,$bc,$lbl,$own,$pr,$cpn,$avail) =
 	('./datafield[@tag="999"]','i','a','m','p','c','k');
