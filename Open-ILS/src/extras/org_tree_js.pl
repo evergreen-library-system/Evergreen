@@ -67,6 +67,7 @@ for my $t (@$types) {
 $pile =~ s/, $//; # remove trailing comma
 $pile .= '];';
 
+binmode STDOUT, ':utf8';
 print "$pile\n";
 
 
