@@ -36,19 +36,18 @@ my %status_map = (
 
 $|=1;
 
-my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$map_file,$lib_map_field,$id_tag) =
-	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','record_id_map.pl','shortname','/*/*/*[@tag="035"][1]');
+my ($userid,$cn_id,$cp_id,$cp_file,$cn_file,$lib_map_field,$id_tag, $marc_file) =
+	(1, 1, 1, 'asset_copy.sql','asset_volume.sql','shortname','./controlfield[@tag="035"]');
 
 my ($holding_tag,$bc,$lbl,$own,$pr,$cpn,$avail) =
-	('/*/*/*[@tag="999"]','i','a','m','p','c','k');
+	('./datafield[@tag="999"]','i','a','m','p','c','k');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
-	('Pg','localhost','demo-dev','postgres','postgres');
+	('Pg','localhost','evergreen','postgres','postgres');
 
 GetOptions (	
 	"copy_file=s"		=> \$cp_file,
 	"volume_file=s"		=> \$cn_file,
-	"tcn_map_file=s"	=> \$map_file,
 	"userid=i"		=> \$userid,
 	"first_volume=i"	=> \$cn_id,
 	"first_copy=i"		=> \$cp_id,
@@ -66,6 +65,7 @@ GetOptions (
 	"item_price=s"		=> \$pr,
 	"item_copy_number=s"	=> \$cpn,
 	"item_copy_status=s"	=> \$avail,
+	"marc_file=s"	=> \$marc_file,
 
 );
 
@@ -83,9 +83,9 @@ my $lib_map = {};
 while (my $lib = $sth->fetchrow_arrayref) {
 	$$lib_map{$$lib[0]} = $$lib[1];
 }
-	
-my $tcn_map;
-eval `cat $map_file`;
+
+my $tcn_sth = $dbh->prepare("SELECT id FROM biblio.record_entry WHERE tcn_value = ?");
+my $rec_id;
 
 open CP, ">$cp_file" or die "Can't open $cp_file!  $!\n";
 open CN, ">$cn_file" or die "Can't open $cn_file!  $!\n";
@@ -103,53 +103,51 @@ SQL
 
 my $xact_id = time;
 
-my $parser = XML::LibXML->new;
+my $parser = XML::LibXML->new();
 
 my $cn_map;
+my $doc;
 
-my $xml = '';
-while ( $xml .= <STDIN> ) {
-	chomp $xml;
-	next unless $xml;
+$doc = $parser->parse_file( $marc_file );
+my $xc = XML::LibXML::XPathContext->new($doc);
+my @records = $xc->findnodes('//record');
+foreach my $record (@records) {
 
 	my $tcn;
-	my $doc;
 	my $success = 0;
 	try {
-		$doc = $parser->parse_string($xml);;
-		$tcn = $doc->documentElement->findvalue( '//*[@tag="035"][1]' );
+		$tcn = $xc->findvalue( $id_tag, $record );
 		$success = 1;
 	} catch Error with {
 		my $e = shift;
 		warn $e;
-		warn $xml;
 	};	
 	next unless $success;
 
-	$tcn =~ s/^.*?(\w+)\s*$/$1/go;
+	$tcn =~ s/^\s*(\.+)\s*/$1/o;
+	$tcn =~ s/\s+/_/go;
 	
 	unless ($tcn) {
 		warn "\nNo TCN found in rec!!\n";
-		$xml = '';
 		next;
 	}
-	$tcn = "_$tcn";
 
-	unless (exists($$tcn_map{$tcn})) {
+	$tcn_sth->execute($tcn);
+	$tcn_sth->bind_col(1, \$rec_id);
+	$tcn_sth->fetch;
+
+	unless ($rec_id) {
 		warn "\n !! TCN $tcn not in the map!\n";
-		$xml = '';
 		next;
 	}
 
-	my $rec_id = $$tcn_map{$tcn};
-
-	for my $node ($doc->documentElement->findnodes($holding_tag)) {
-		my $barcode = $node->findvalue( "*[\@code=\"$bc\"]" );
-		my $label = $node->findvalue( "*[\@code=\"$lbl\"]" );
-		my $owning_lib = $$lib_map{ $node->findvalue( "*[\@code=\"$own\"]" ) };
-		my $price = $node->findvalue( "*[\@code=\"$pr\"]" );
-		my $copy_number = $node->findvalue( "*[\@code=\"$cpn\"]" ) || 0;
-		my $available = $node->findvalue( "*[\@code=\"$avail\"]" ) || '';
+	for my $node ($xc->findnodes($holding_tag, $record)) {
+		my $barcode = $xc->findvalue( "./*[\@code=\"$bc\"]", $node );
+		my $label = $xc->findvalue( "./*[\@code=\"$lbl\"]", $node );
+		my $owning_lib = $$lib_map{ $xc->findvalue( "./*[\@code=\"$own\"]", $node ) };
+		my $price = $xc->findvalue( "./*[\@code=\"$pr\"]", $node );
+		my $copy_number = $xc->findvalue( "./*[\@code=\"$cpn\"]", $node ) || 0;
+		my $available = $xc->findvalue( "./*[\@code=\"$avail\"]", $node ) || '';
 
 		my $status = $status_map{$available} || 0;
 
@@ -181,7 +179,6 @@ while ( $xml .= <STDIN> ) {
 		print 'c';
 		$cp_id++;
 	}
-	$xml = '';
 }
 
 print CN "\\.\n";
