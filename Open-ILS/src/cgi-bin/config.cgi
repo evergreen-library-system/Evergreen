@@ -4,6 +4,7 @@ Content-type: text/html
 
 <html>
 	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Open-ILS Bootstrapping Scripts</title>
 	</head>
 	<body>

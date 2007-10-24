@@ -105,6 +105,7 @@ Content-type: text/html
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<style>
 		table.table_class {
 			border: dashed lightgrey 1px;
