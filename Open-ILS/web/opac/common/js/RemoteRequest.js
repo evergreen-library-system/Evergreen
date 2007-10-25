@@ -1,4 +1,4 @@
-var XML_HTTP_GATEWAY = "gateway";
+var XML_HTTP_GATEWAY = "osrf-gateway-v1";
 var XML_HTTP_SERVER = "";
 
 
@@ -18,6 +18,13 @@ NetworkFailure.prototype.toString = function() {
 
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 var _allrequests = {};
+
+// If the legacy JSON gateway is needed by the staff client, uncomment this
+/* 
+if(isXUL()) {
+    XML_HTTP_GATEWAY = 'gateway';
+}
+*/
 
 function cleanRemoteRequests() {
 	for( var i in _allrequests ) 
