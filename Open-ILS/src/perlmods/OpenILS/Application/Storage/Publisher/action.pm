@@ -204,25 +204,18 @@ __PACKAGE__->register_method(
 sub nearest_hold {
 	my $self = shift;
 	my $client = shift;
-	my $pl = shift;
+	my $here = shift;
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
 	my $age = shift() || '0 seconds';
-	my $depth = shift;
 
-	my $descendents =
-		defined($depth) ?
-			"actor.org_unit_descendants($pl, $depth)" :
-			"actor.org_unit_descendants($pl)" ;
-
-	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $pl, $cp, $age);
+	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
 		SELECT	h.id
 		  FROM	action.hold_request h
+			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = h.pickup_lib)
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
-		  	JOIN $descendents d ON (d.id = h.pickup_lib)
-			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = d.id)
 		  WHERE hm.target_copy = ?
-		  	AND AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL)
+		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL
 		  	AND h.cancel_time IS NULL
 		ORDER BY
