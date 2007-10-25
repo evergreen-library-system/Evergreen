@@ -144,6 +144,9 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 
 	my $tcn;
 	($rec, $tcn) = preprocess($rec);
+
+    $tcn->add_subfields(c => $id);
+
 	$rec->delete_field( $_ ) for ($rec->field($id_field));
 	$rec->append_fields( $tcn );
 
@@ -192,6 +195,7 @@ sub preprocess {
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
+        $id = '' if ($dontuse_id{$id});
 	}
 
 	if (!$id || $dontuse_id{$source.$id}) {
