@@ -66,12 +66,7 @@ open-ils:
 	#cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
 	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
-	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/marc* build/chrome/content/legacy/
-	#cp ../../../Evergreen/staff_client/chrome/content/evergreen/cat/browse* build/chrome/content/legacy/
-	#cp ../../../Evergreen/staff_client/chrome/locale/en-US/evergreen/cat.dtd build/chrome/locale/en-US/
-	#cp -R ../../../Evergreen/xul/staff_client/server/ build/
 	external/prune_dirs.sh build/
-	#find build/chrome/content/legacy/ -type f -name '*.*' -exec sed -i s/evergreen/open_ils_staff_client/g {} \;
 
 custom:
 	@echo
