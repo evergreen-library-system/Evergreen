@@ -596,7 +596,7 @@ For further information, please consult your local librarian.">
 You will need to change your password.">
 <!ENTITY login.password.current.enter "Enter your current password">
 <!ENTITY login.password.new.enter "Enter the new password">
-<!ENTITY login.password.new.reenter "Re-type the new password for verifiication">
+<!ENTITY login.password.new.reenter "Re-type the new password for verification">
 <!ENTITY login.password.update "Update Password">
 <!ENTITY login.password.nomatch "Passwords do not match">
 <!ENTITY login.password.success "Password successfully updated">
