@@ -69,8 +69,12 @@ my %processing_cache;
 my $dsn = "dbi:$db_driver:host=$db_host;dbname=$db_name";
 
 if (!$recid) {
+    my $table = 'biblio_record_entry';
+    $table = 'biblio.record_entry' if ($db_driver eq 'Pg');
+
 	my $dbh = DBI->connect($dsn,$db_user,$db_pw);
-	my $sth = $dbh->prepare("SELECT nextval('biblio.record_entry_id_seq')");
+	my $sth = $dbh->prepare("SELECT MAX(id) + 1 FROM $table");
+
 	$sth->execute;
 	$sth->bind_col(1, \$recid);
 	$sth->fetch;
