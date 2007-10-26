@@ -18,11 +18,15 @@ use Getopt::Long;
 use MARC::Batch;
 use MARC::File::XML ( BinaryEncoding => 'utf-8' );
 use MARC::Charset;
+use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
 my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
-	('', 1, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
+	('', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
+
+my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
+	('Pg','localhost','evergreen','postgres','postgres');
 
 GetOptions(
 	'marctype=s'	=> \$marctype,
@@ -37,6 +41,11 @@ GetOptions(
 	'trash=s'	=> \@trash_fields,
 	'xml_idl=s'	=> \$idlfile,
 	'dontuse=s'	=> \$dontuse_file,
+	"db_driver=s"		=> \$db_driver,
+	"db_host=s"		=> \$db_host,
+	"db_name=s"		=> \$db_name,
+	"db_user=s"		=> \$db_user,
+	"db_pw=s"		=> \$db_pw,
 	'quiet'		=> \$quiet
 );
 
@@ -57,7 +66,18 @@ my @ses;
 my @req;
 my %processing_cache;
 
-my $startid = $recid;
+my $dsn = "dbi:$db_driver:host=$db_host;dbname=$db_name";
+
+if (!$recid) {
+	my $dbh = DBI->connect($dsn,$db_user,$db_pw);
+	my $sth = $dbh->prepare("SELECT nextval('biblio.record_entry_id_seq')");
+	$sth->execute;
+	$sth->bind_col(1, \$recid);
+	$sth->fetch;
+	$sth->finish;
+	$recid++;
+	$dbh->disconnect;
+}
 
 my %source_map = (      
 	o  => 'OCLC',
@@ -66,8 +86,6 @@ my %source_map = (
 	s  => 'System',  
 	g  => 'Gutenberg',  
 );                              
-
-
 
 Fieldmapper->import(IDL => $idlfile);
 
@@ -110,7 +128,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	my $id;
 
 	$recid++;
-	while ($used_ids{$recid}) {
+	while (exists $used_ids{$recid}) {
 		$recid++;
 	}
 	$used_ids{$recid} = 1;
@@ -195,39 +213,34 @@ sub preprocess {
 	if (!$id) {
 		my $f = $rec->field('001');
 		$id = $f->data if ($f);
-        $id = '' if ($dontuse_id{$id});
+        $id = '' if (exists $dontuse_id{$id});
 	}
 
-	if (!$id || $dontuse_id{$source.$id}) {
+	if (!$id || exists $dontuse_id{$source.$id}) {
 		my $f = $rec->field('000');
 		$id = $f->data if ($f);
 		$source = 'g' if ($f); # only PG seems to use this
 	}
 
-        if (!$id || $dontuse_id{$source.$id}) {
+        if (!$id || exists $dontuse_id{$source.$id}) {
                 my $f = $rec->field('020');
                 $id = $f->subfield('a') if ($f);
 		$source = 'i' if ($f);
         }
 
-        if (!$id || $dontuse_id{$source.$id}) {
+        if (!$id || exists $dontuse_id{$source.$id}) {
                 my $f = $rec->field('022');
                 $id = $f->subfield('a') if ($f);
 		$source = 'i' if ($f);
         }
 
-        if (!$id || $dontuse_id{$source.$id}) {
+        if (!$id || exists $dontuse_id{$source.$id}) {
                 my $f = $rec->field('010');
                 $id = $f->subfield('a') if ($f);
 		$source = 'l' if ($f);
         }
 
-#        if (!$id) {
-#                my $f = $rec->field($id_field);
-#                $id = $f->subfield('a') if ($f);
-#        }
-
-	$rec->delete_field($_) for ($rec->field($id_field, @trash_fields));
+	$rec->delete_field($_) for ($rec->field('901', $id_field, @trash_fields));
 
 	if ($id) {
 		$id =~ s/\s*$//o;
@@ -243,7 +256,7 @@ sub preprocess {
 		}
 	}
 
-	if ($id && $dontuse_id{$id}) {
+	if ($id && exists $dontuse_id{$id}) {
 		warn "\n!!! ID $id is already in use\n";
 		$id = '';
 	}
