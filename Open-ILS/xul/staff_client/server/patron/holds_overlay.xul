@@ -57,7 +57,16 @@
 </vbox>
 
 <hbox id="holds_top_ui" flex="1">
-	<vbox id="menu_placeholder" />
+	<menulist id="lib_type_menu">
+        <menupopup>
+            <menuitem id="pickup_lib" label="Pickup Library"/>
+            <menuitem id="request_lib" label="Requesting Library"/>
+            <menuitem id="circ_lib" label="Item Circulating Library"/>
+            <menuitem id="owning_lib" label="Volume Owning Library"/>
+            <menuitem id="home_lib" label="Patron Home Library foo"/>
+        </menupopup>
+    </menulist>
+	<vbox id="lib_menu_placeholder" />
 	<spacer flex="1"/>
 	<menubar>
 		<menu label="Actions for Selected Holds" accesskey="S">

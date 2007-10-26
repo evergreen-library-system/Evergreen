@@ -10,6 +10,8 @@ patron.holds = function (params) {
 
 patron.holds.prototype = {
 
+    'hold_interface_type' : null,
+
 	'foreign_shelf' : null,
 
 	'retrieve_ids' : [],
@@ -817,8 +819,9 @@ patron.holds.prototype = {
 				}
 			}
 		);
+        
+        obj.determine_hold_interface_type();
 		obj.controller.render();
-
 		obj.retrieve();
 
 		obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
@@ -832,33 +835,50 @@ patron.holds.prototype = {
 		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
 	},
 
+    'determine_hold_interface_type' : function() {
+		var obj = this;
+        if (obj.patron_id) { /*************************************************** PATRON ******************************/
+            obj.hold_interface_type = 'patron';
+		} else if (obj.docid) { /*************************************************** RECORD ******************************/
+            obj.hold_interface_type = 'record';
+		} else if (obj.pull) { /*************************************************** PULL ******************************/
+            obj.hold_interface_type = 'pull';
+		} else if (obj.shelf) { /*************************************************** HOLD SHELF ******************************/
+            obj.hold_interface_type = 'shelf';
+		} else { /*************************************************** PULL ******************************/
+            obj.hold_interface_type = 'pull';
+		}
+    },
+
 	'retrieve' : function(dont_show_me_the_list_change) {
 		var obj = this;
 		if (window.xulG && window.xulG.holds) {
 			obj.holds = window.xulG.holds;
 		} else {
 			var method; var params = [ ses() ];
-			if (obj.patron_id) {                 /*************************************************** PATRON ******************************/
-				method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU'; 
-				params.push( obj.patron_id ); 
-				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
-			} else if (obj.docid) {                 /*************************************************** RECORD ******************************/
-				method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
-				params.push( obj.docid ); 
-				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
-			} else if (obj.pull) {                 /*************************************************** PULL ******************************/
-				method = 'FM_AHR_ID_LIST_PULL_LIST'; 
-				params.push( 50 ); params.push( 0 );
-			} else if (obj.shelf) {
-				method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';                  /*************************************************** HOLD SHELF ******************************/
-				params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
-				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
-				obj.render_lib_menu();
-			} else {
-				//method = 'FM_AHR_RETRIEVE_VIA_PICKUP_AOU'; 
-				method = 'FM_AHR_ID_LIST_PULL_LIST';                  /*************************************************** PULL ******************************/
-				params.push( 50 ); params.push( 0 );
-				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+            switch(obj.hold_interface_type) {
+                case 'patron' :
+				    method = 'FM_AHR_ID_LIST_RETRIEVE_VIA_AU'; 
+    				params.push( obj.patron_id ); 
+    				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','true');
+                break;
+                case 'record' :
+				    method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
+    				params.push( obj.docid ); 
+    				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+                break;
+                case 'shelf' : 
+				    method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';
+                    params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
+    				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+    				obj.render_lib_menus({'pickup_lib':true});
+                break;
+                case 'pull' : 
+                default:
+				    method = 'FM_AHR_ID_LIST_PULL_LIST'; 
+    				params.push( 50 ); params.push( 0 );
+				    //obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
+                break;
 			}
 			var robj = obj.network.simple_request( method, params );
 			if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -921,14 +941,26 @@ patron.holds.prototype = {
 		}
 	},
 
-	'render_lib_menu' : function() {
+	'render_lib_menus' : function(types) {
 		try {
 			var obj = this;
 			JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
-			var x = document.getElementById('menu_placeholder');
+
+            var x = document.getElementById('lib_type_menu');
+            if (types) {
+                x.hidden = false;
+                var nodes = x.firstChild.childNodes;
+                for (var i = 0; i < nodes.length; i++) nodes[i].hidden = true;
+                for (var i in types) document.getElementById(i).hidden = false;
+            } else {
+                x.hidden = true;
+            }
+
+			x = document.getElementById('lib_menu_placeholder');
+            x.hidden = types ? false : true;
 			if (x.firstChild) return;
 			util.widgets.remove_children( x );
-	
+
 			var ml = util.widgets.make_menulist( 
 				util.functional.map_list( 
 					obj.data.list.my_aou.concat(
