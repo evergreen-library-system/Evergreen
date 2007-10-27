@@ -1,0 +1,622 @@
+<!--	================================================================= 
+		Some generic stuff 
+		================================================================= -->
+<!ENTITY lang.version "remote v1">
+<!ENTITY lang.description "English">
+<!ENTITY lang.author "PINES">
+<!ENTITY common.all "All">
+<!ENTITY common.currency "$">
+<!ENTITY common.name "Name">
+<!ENTITY common.none "None">
+<!ENTITY common.title "Title">
+<!ENTITY common.author "Author">
+<!ENTITY common.authors "Authors">
+<!ENTITY common.callnumber "Call Number">
+<!ENTITY common.edition "Edition">
+<!ENTITY common.subject "Subject">
+<!ENTITY common.series "Series">
+<!ENTITY common.keyword "Keyword">
+<!ENTITY common.type "Search Type">
+<!ENTITY common.isbn "ISBN">
+<!ENTITY common.format "Format">
+<!ENTITY common.loading "Loading..."> <!-- Message displayed while search results are loading -->
+<!ENTITY common.login "Login">
+<!ENTITY common.logout "Log Out">
+<!ENTITY common.physical "Physical Description">
+<!ENTITY common.pubdate "Publication Date">
+<!ENTITY common.publisher "Publisher">
+<!ENTITY common.results "Results">
+<!ENTITY common.select "Select">
+<!ENTITY common.status "Status">
+<!ENTITY common.at "at">
+<!ENTITY common.of "of">
+<!ENTITY common.no "No">
+<!ENTITY common.yes "Yes">
+<!ENTITY common.cancel "Cancel">
+<!ENTITY common.library "Library">
+<!ENTITY common.username "Username">
+<!ENTITY common.password "Password">
+<!ENTITY common.submit "Submit">
+<!ENTITY common.close "close">
+<!ENTITY common.and "and">
+<!ENTITY common.user_not_found "User not found">
+<!ENTITY opac.advanced.wizard.title "Advanced Search">
+<!ENTITY common.nowSearching "Now searching ">
+<!ENTITY common.ofAtLeast " of at least ">
+<!ENTITY common.relevancy "Match Score: ">
+<!ENTITY common.tips "Tips:">
+<!ENTITY common.tips.tip1 "Click on a folder icon in the sidebar to access related quick searches">
+<!ENTITY common.tips.tip2 "If you don't find what you want try expanding your search using the range selector at the right of the search bar">
+<!ENTITY common.org.openAll "Expand All">
+<!ENTITY common.org.closeAll "Close All">
+<!ENTITY common.org.cancel "Cancel">
+<!ENTITY common.org.loading "Loading library selector...">
+<!ENTITY common.org.note "Tip:">
+<!ENTITY common.org.notetext "Click on a location's name to select it.  Click on the folder icons to expand a section.">
+<!ENTITY opac.login.login "Login">
+<!ENTITY opac.basic "Basic Catalogue (HTML only)">
+<!ENTITY common.password_criteria 
+	"The password must be at least 7 characters in length, 
+	contain at least one letter (a-z/A-Z), 
+	and contain at least one number.">
+
+<!ENTITY opac.style.reddish "Reddish">
+
+<!ENTITY holds.where_am_i
+	"PINES is a statewide system with both patrons and items
+	associated with over 250 libraries, holds lists are not as simple as
+	'first come, first served' in PINES.  A complex matrix combining
+	consideration of item ownership, patron home library, and item purchase
+	date determines  priorities for holds; the list is dynamic, changing
+	with every hold placed.  Therefore, any indication of a place in the
+	holds list would be inaccurate.  The PINES holds system is designed to
+	obtain a requested item in the fastest and most efficient way possible.
+	Your PINES library will contact you when you hold items become
+	available.">
+
+<!ENTITY holds.advanced_options 
+	"If you wish to broaden the scope of your hold to include other 
+	versions of this title, select the formats that would be acceptable. 
+	The first available copy will be sent to you.">
+
+<!--	================================================================= 
+		Events and Permissions 
+		================================================================= -->
+<!ENTITY ilsevent.0 "Operation Succeeded">
+<!ENTITY ilsevent.1000 "Login failed.  The username or password entered was incorrect.">
+<!ENTITY ilsevent.1001 "Login session has timed out or does not exist">
+<!ENTITY ilsevent.1002 "User was not found in the database">
+<!ENTITY ilsevent.1200 "The given username already exists in the database">
+<!ENTITY ilsevent.5000 "Permission Denied">
+<!ENTITY ilsperm.CREATE_HOLD "User is not allowed to create holds for other users at this location">
+
+<!--	================================================================= 
+	common/pages
+	================================================================= -->
+
+<!ENTITY common.cn.loading "Loading Callnumber Page...">
+<!ENTITY common.cn.browsing "You are now browsing">
+<!ENTITY common.cn.previous "&lt;&lt; Previous Page">
+<!ENTITY common.cn.shelf "Shelf Browser">
+<!ENTITY common.cn.next "Next Page &gt;&gt;">
+
+<!ENTITY common.textsize.title "Text Size: ">
+<!ENTITY common.textsize.regular "Regular">
+<!ENTITY common.textsize.separator "/"> <!-- Regular / Large -->
+<!ENTITY common.textsize.large "Large">
+
+<!ENTITY home.js.disabled "JavaScript must be enabled in order for you to use the regular Evergreen Catalogue.
+However, it seems JavaScript is either disabled or not supported by your browser.
+To use the regular Evergreen Catalogue, enable JavaScript by changing your browser options, then
+<a style='color: blue; text-decoration: underline;' href='/'>try again</a>.
+<br/><br/>Alternatively, you can use the basic HTML-only catalogue
+<a style='color: blue; text-decoration: underline;' href='/opac/extras/slimpac/start.html'>here</a>.">
+
+<!--	================================================================= 
+	 MyOPAC bookbag page
+	================================================================= -->
+<!ENTITY myopac.delete.bookbag "This will remove the selected bookbag and all items contained within the bookbag.  
+Are you sure you wish to continue?">
+<!ENTITY myopac.no.bookbags "You have not created any bookbags">
+<!ENTITY myopac.bookbags.title "My Bookbags">
+<!ENTITY myopac.bookbag.items "# Items">
+<!ENTITY myopac.bookbag.shared "Shared">
+<!ENTITY myopac.bookbag.toggle "Share / Hide">
+<!ENTITY myopac.bookbag.delete "Delete this bookbag?">
+<!ENTITY myopac.items "Items">
+<!ENTITY myopac.view "(View)">
+<!ENTITY myopac.atom.feed "ATOM Feed">
+<!ENTITY myopac.bookbag.hide "Hide">
+<!ENTITY myopac.bookbag.share "Share">
+<!ENTITY myopac.delete "Delete">
+<!ENTITY myopac.bookbag.create "Create a new Bookbag">
+<!ENTITY myopac.bookbag.naming "Enter the name of the new Bookbag: ">
+<!ENTITY myopac.bookbag.share "Share this Bookbag">
+<!ENTITY myopac.bookbag.no.items "The selected bookbag contains no items...">
+<!ENTITY myopac.bookbag.remove "Remove this item?">
+<!ENTITY myopac.remove.link "remove">
+<!ENTITY myopac.publish.text 'Sharing a Bookbag means that the contents of the Bookbag will be visible to others.  
+To see the public view of a shared Bookbag, click the "View" link in the 
+"Shared" column of the Bookbag list at the top of this page.'>
+<!ENTITY myopac.item.confirm "Are you sure you wish to remove this bookbag item?">
+<!ENTITY myopac.publish.confirm "Sharing this bookbag will allow the contents 
+of the bookback to be seen by others.  Are you sure you wish to share this bookbag?">
+<!ENTITY myopac.unpublish.confirm "Are you sure you wish to hide this bookbag?">
+<!ENTITY myopac.update.success "The Bookbag was successfully updated.">
+<!ENTITY myopac.updated.success "Bookbag successfully updated">
+<!ENTITY myopac.create.warning "Warning: Adding items to a bookbag creates a link between you and the
+items in the database.  The contents of the bookbag are NOT publicly 
+viewable unless the bookbag is shared. However, if you prefer not to
+have any link between your patron record and a particular item or items,
+we suggest that you do not place said items in a bookbag or that you 
+avoid using bookbags all together.  Thank you.">
+<!ENTITY myopac.describe.bookbags "Bookbags are...">
+
+<!--	================================================================= 
+	MyOPAC Checked Page 
+	================================================================= -->
+<!ENTITY myopac.checked.out "Total items out:">
+<!ENTITY myopac.checked.overdue "Total items overdue:">
+<!ENTITY myopac.checked.renew "Renew Selected Items">
+<!ENTITY myopac.checked.renewing "Renewing...">
+<!ENTITY myopac.checked.renew.remaining "Renewals Remaining">
+<!ENTITY myopac.checked.noitems "You have no items checked out at this time">
+<!ENTITY myopac.checked.other.circ "Other Circulations">
+<!ENTITY myopac.checked.circ.lib "Circulating Library">
+<!ENTITY myopac.checked.item.type "Circulation Type">
+<!ENTITY myopac.checked.circ.time "Please return by ...">
+<!ENTITY myopac.checked.renew.success "item(s) successfully renewed">
+<!ENTITY myopac.checked.renew.confirm "Are you sure you wish to renew the selected item(s)?">
+<!ENTITY myopac.checked.renew.fail "The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.">
+<!ENTITY myopac.checked.renew.fail2 "PINES policy prevents the renewal of this item at this time.  Please see a librarian for further details.">
+
+<!--	================================================================= 
+	MyOPAC Fines Page 
+	================================================================= -->
+<!ENTITY myopac.fines.title "Summary">
+<!ENTITY myopac.fines.owed "Total Owed">
+<!ENTITY myopac.fines.paid "Total Paid">
+<!ENTITY myopac.fines.balance "Balance Owed">
+<!ENTITY myopac.fines.status "Loading...">
+<!ENTITY myopac.fines.overdue "Overdue Materials">
+<!ENTITY myopac.fines.checkout "Checkout Date">
+<!ENTITY myopac.fines.due "Due Date">
+<!ENTITY myopac.fines.returned "Date Returned">
+<!ENTITY myopac.fines.accruing "(fines accruing)">
+<!ENTITY myopac.fines.other "Other Fees">
+<!ENTITY myopac.fines.time.start "Transaction Start Time">
+<!ENTITY myopac.fines.time.paid "Last Payment Time">
+<!ENTITY myopac.fines.owed.initial "Initial Amount Owed">
+<!ENTITY myopac.fines.paid.amount "Total Amount Paid">
+<!ENTITY myopac.fines.type "Billing Type">
+
+<!--	================================================================= 
+	MyOPAC Holds Page 
+	================================================================= -->
+<!ENTITY myopac.holds.formats "Formats">
+<!ENTITY myopac.holds.location "Pickup Location">
+<!ENTITY myopac.holds.edit.cancel "Edit/Cancel">
+<!ENTITY myopac.holds.status.none "You have no items on hold at this time">
+<!ENTITY myopac.holds.status.waiting "Waiting for copy">
+<!ENTITY myopac.holds.status.intransit "In Transit">
+<!ENTITY myopac.holds.status.available "Ready for Pickup">
+<!ENTITY myopac.holds.edit "Edit">
+<!ENTITY myopac.holds.cancel "Cancel">
+<!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
+<!ENTITY myopac.holds.freeze_selected "Freeze">
+<!ENTITY myopac.holds.thaw_selected "Un-freeze">
+<!ENTITY myopac.holds.thaw_date_selected "Set Un-freeze date">
+<!ENTITY myopac.holds.cancel_selected "Cancel">
+<!ENTITY myopac.holds.processing "Processing holds... This may take a moment.">
+<!ENTITY myopac.holds.actions 'Actions for selected holds'>
+<!ENTITY myopac.holds.cancel.confirm 'Are you sure you wish to cancel the selected holds?'>
+<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to freeze the selected holds?
+Note that if an item has already been selected to fulfill the hold, it will not be frozen'>
+<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to un-freeze the selected holds?'>
+<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the un-freeze date for the selected holds?'>
+<!ENTITY myopac.holds.freeze.select_thaw "Select an 'Un-Freeze' date.  This is the date at which the holds will become active again.
+If no date is chosen, the holds will remain frozen until they are manually un-frozen.">
+
+<!ENTITY opac.holds.freeze "Freeze this hold">
+<!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">
+<!ENTITY opac.holds.freeze.thaw_date "Automatically un-freeze hold on:">
+<!ENTITY opac.holds.freeze.thaw_date.format "YYYY-MM-DD">
+
+<!--	================================================================= 
+	MyOPAC Preferences Page 
+	================================================================= -->
+<!ENTITY myopac.prefs.title "Preferences">
+<!ENTITY myopac.prefs.hits "Search hits per page">
+<!ENTITY myopac.prefs.font "Default Font Size">
+<!ENTITY myopac.prefs.font.regular "Regular Font">
+<!ENTITY myopac.prefs.font.large "Large Font">
+<!ENTITY myopac.prefs.holds.notify "Default Hold Notification Method">
+<!ENTITY myopac.prefs.holds.both "Use Phone and Email">
+<!ENTITY myopac.prefs.holds.phone "Use Phone Only">
+<!ENTITY myopac.prefs.holds.email "Use Email Only">
+<!ENTITY myopac.prefs.search.location "Default Search Location">
+<!ENTITY myopac.prefs.search.home "Always search my home library by default.">
+<!ENTITY myopac.prefs.search.range "Default Search Range">
+<!ENTITY myopac.prefs.save "Save Preference Changes">
+<!ENTITY myopac.prefs.save.success "Preferences successfully updated">
+<!ENTITY myopac.prefs.save.failed "Preferences update failed!">
+<!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
+By default, holds will use the notification style you choose here.  
+However, you will still have the option to change individual holds regardless of this setting.">
+<!ENTITY myopac.holds.unfrozen "Un-Frozen">
+<!ENTITY myopac.holds.frozen.until "Frozen Until">
+
+<!--	================================================================= 
+	 MyOPAC Summary page
+	================================================================= -->
+<!ENTITY myopac.summary.expired "Your account expired on <span id='myopac.expired.date'/>!  
+Please see a librarian to renew your account.">
+<!ENTITY myopac.summary.notes "* Staff Notes *">
+<!ENTITY myopac.summary.phone.day "Day Phone">
+<!ENTITY myopac.summary.phone.evening "Evening Phone">
+<!ENTITY myopac.summary.phone.other "Other Phone">
+<!ENTITY myopac.summary.change "Change">
+<!ENTITY myopac.summary.username.enter "Enter new username:">
+<!ENTITY myopac.summary.password.text "(not shown)">
+<!ENTITY myopac.summary.password.current "Enter current password:">
+<!ENTITY myopac.summary.password.new "Enter new password:">
+<!ENTITY myopac.summary.password.reenter "Re-enter new password:">
+<!ENTITY myopac.summary.email "Email Address">
+<!ENTITY myopac.summary.email.new "Enter new email address:">
+<!ENTITY myopac.summary.id.primary "Primary Identification">
+<!ENTITY myopac.summary.barcode "Active Barcode">
+<!ENTITY myopac.summary.home "Home Library">
+<!ENTITY myopac.summary.genesis "Account Creation Date">
+<!ENTITY myopac.summary.addresses "Addresses">
+<!ENTITY myopac.summary.address.type "Address Type">
+<!ENTITY myopac.summary.address.street "Street">
+<!ENTITY myopac.summary.address.city "City">
+<!ENTITY myopac.summary.address.county "County">
+<!ENTITY myopac.summary.address.state "Province">
+<!ENTITY myopac.summary.address.zip "Postal Code">
+<!ENTITY myopac.summary.username.error "Please enter a username">
+<!ENTITY myopac.summary.username.dup "The requested username is not available.  Please choose a different username.">
+<!ENTITY myopac.summary.username.success "Username successfully updated">
+<!ENTITY myopac.summary.username.failure "Username update failed">
+<!ENTITY myopac.summary.username.invalid "Username cannot contain spaces">
+<!ENTITY myopac.summary.email.error "Please enter a valid email address">
+<!ENTITY myopac.summary.email.success "Email address successfully updated">
+<!ENTITY myopac.summary.email.failed "Email address update failed">
+<!ENTITY myopac.summary.password.error "Passwords are empty or do not match">
+<!ENTITY myopac.summary.password.success "Password successfully updated">
+<!ENTITY myopac.summary.password.failure "Password update failed">
+
+<!--	================================================================= 
+	Advanced Search Page 
+	================================================================= -->
+<!ENTITY opac.advanced.wizard.contains "Selected field contains the following words">
+<!ENTITY opac.advanced.wizard.nocontains "Selected field does <u>not</u> contain the following words">
+<!ENTITY opac.advanced.wizard.exact "Selected field contains the <u>exact</u> phrase">
+<!ENTITY opac.advanced.refined.title "Refined Advanced Search">
+<!ENTITY opac.advanced.refined.title_contains "Title contains the following words">
+<!ENTITY opac.advanced.refined.author_contains "Author contains the following words">
+<!ENTITY opac.advanced.refined.subject_contains "Subject contains the following words">
+<!ENTITY opac.advanced.refined.series_contains "Series contains the following words">
+<!ENTITY opac.advanced.refined.contains "Contains">
+<!ENTITY opac.advanced.refined.nocontains "Does not contain">
+<!ENTITY opac.advanced.refined.exact "Matches Exactly">
+<!ENTITY opac.advanced.marc.warning "For Librarians">
+<!ENTITY opac.advanced.marc.title "MARC Expert Search">
+<!ENTITY opac.advanced.marc.tag "MARC Tag">
+<!ENTITY opac.advanced.marc.ind1 "Indicator 1">
+<!ENTITY opac.advanced.marc.ind2 "Indicator 2">
+<!ENTITY opac.advanced.marc.subfield "Subfield">
+<!ENTITY opac.advanced.marc.value "Value">
+<!ENTITY opac.advanced.marc.addrow "Add a new row">
+<!ENTITY opac.advanced.quick.title "Quick Search">
+<!ENTITY opac.advanced.quick.isbn "ISBN">
+<!ENTITY opac.advanced.quick.issn "ISSN">
+<!ENTITY opac.advanced.quick.lccn "LCCN"> 
+<!ENTITY opac.advanced.quick.tcn "TCN"> <!-- title control number -->
+<!ENTITY opac.advanced.quick.barcode "Item Barcode"> 
+<!ENTITY opac.advanced.quick.cn "Call Number"> 
+
+<!-- ==========================================================
+     MARC expert search
+     ========================================================== -->
+<!ENTITY search.marc "MARC Expert Search">
+<!ENTITY search.marc.tag "Tag:">
+<!ENTITY search.marc.subfield "Subfield:">
+<!ENTITY search.marc.value "Value:">
+<!ENTITY search.marc.add.row "Add Row">
+
+<!-- ==========================================================
+     Status bar
+     ========================================================== -->
+
+<!ENTITY status.results "Including results for">
+
+<!-- ==========================================================
+     Tips
+     ========================================================== -->
+
+<!ENTITY tips.label "Tip:">
+
+<!-- ================================================================= 
+		More generic stuff 
+		================================================================= -->
+<!ENTITY opac.session_expiring "Your login session will timeout in 1 minute unless there is activity.">
+<!ENTITY opac.session_expired "Your login session has expired">
+<!ENTITY navigate.home "Home">
+<!ENTITY navigate.home.title "Go to the Home page">
+<!ENTITY opac.navigate.advanced "Advanced Search">
+<!ENTITY opac.navigate.advanced.title "Go to the Advanced Search Page">
+<!ENTITY navigate.myopac "My Account">
+<!ENTITY opac.navigate.myopac "My Account">
+<!ENTITY navigate.myopac.title "Go to My OPAC">
+<!ENTITY navigate.login "Log in">
+<!ENTITY navigate.login.title "Log in for personalized features">
+<!ENTITY navigate.logout "Log out">
+<!ENTITY navigate.logout.title "Log out">
+<!ENTITY opac.navigate.selectNewOrg "Choose a different library">
+<!ENTITY opac.navigate.selectOrg "Choose a library to search">
+<!ENTITY navigate.loggedinas "You are logged in as ">
+<!ENTITY navigate.loggedinas.title "Logged in as...">
+<!ENTITY navigate.titleGroupResults "My Search Results">
+<!ENTITY navigate.titleResults "My Title Results">
+<!ENTITY navigate.title.details "My Title Details">
+<!ENTITY navigate.record.details "Record Details">
+
+<!--	================================================================= 
+	Footer
+	================================================================= -->
+<!ENTITY footer.basic "Basic Catalogue (HTML only)">
+<!ENTITY footer.find.library "Find a Library Near Me">
+<!ENTITY footer.find.url "http://www.georgialibraries.org/lib/directories/pineslibdir.html">
+<!ENTITY footer.help.url "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help">
+<!ENTITY footer.help "Help">
+<!ENTITY footer.library.url "http://www.georgialibraries.org/public/pines.html">
+<!ENTITY footer.library.about "About PINES">
+<!ENTITY footer.union.url "http://www.galileo.usg.edu/">
+<!ENTITY footer.union "GALILEO">
+<!ENTITY footer.copyright "Copyright &#xA9; 2006 Georgia Public Library Service">
+<!ENTITY footer.logo "Powered by"> <!-- Introduces the logo for the project -->
+
+<!--	================================================================= 
+	My OPAC
+	================================================================= -->
+<!ENTITY myopac.account "Account Summary">
+<!ENTITY myopac.checkouts "Items Checked Out">
+<!ENTITY myopac.holds "Items on Hold">
+<!ENTITY myopac.fines "Fines">
+<!ENTITY myopac.preferences "Account Preferences">
+<!ENTITY myopac.bookbags "My Bookbags">
+
+<!--	================================================================= 
+	Sidebar 
+	================================================================= -->
+<!ENTITY sidebar.relevantSubjects.headerLabel "Relevant Subjects">
+<!ENTITY sidebar.relevantAuthors.headerLabel "Relevant Authors">
+<!ENTITY sidebar.relevantSeries.headerLabel "Relevant Series">
+<!ENTITY sidebar.relevantReviews.headerLabel "Reviews">
+<!ENTITY sidebar.quick.search "Quick Search">
+<!ENTITY sidebar.copy.not.found "No copy with the requested barcode was found">
+
+<!--	================================================================= 
+		Search formats
+		================================================================= -->
+<!ENTITY opac.search.books "Books">
+<!ENTITY opac.search.allFormats "All Formats">
+<!ENTITY opac.search.largePrint "Large Print Books">
+<!ENTITY opac.search.audioBooks "Audiobooks">
+<!ENTITY opac.search.videoRecordings "Video Recordings">
+<!ENTITY opac.search.music "Music">
+<!ENTITY opac.search.electronic "Electronic Resources">
+<!ENTITY opac.search.nowSearching "Now Searching">
+
+
+<!--	================================================================= 
+		Page Titles
+		================================================================= -->
+<!ENTITY opac.title.home "Evergreen Home">
+<!ENTITY opac.title.mresult "Evergreen Title Groups">
+<!ENTITY opac.title.rresult "Evergreen Titles">
+<!ENTITY opac.title.myopac "Evergreen My Account">
+<!ENTITY opac.title.rdetail "Evergreen Title Details">
+<!ENTITY opac.title.advanced "Evergreen Advanced Search">
+<!ENTITY opac.title.reqitems "Evergreen Request Items">
+<!ENTITY opac.title.cnbrowse "Evergreen Call Number Browse">
+
+
+<!ENTITY opac.holds.forMe "Place this hold for myself">
+<!ENTITY opac.holds.xulRecipient "Enter recipient barcode">
+<!ENTITY opac.holds.recipient "Recipient">
+<!ENTITY opac.holds.placeHold "Place Hold">
+<!ENTITY opac.holds.contactPhone "Contact telephone number">
+<!ENTITY opac.holds.contactEmail "Contact email address">
+<!ENTITY opac.holds.pickupLocation "Pickup location">
+<!ENTITY opac.holds.success "Hold was successfully placed">
+<!ENTITY opac.holds.failure "Hold was not successfully placed">
+<!--	================================================================= 
+	Advanced
+	================================================================= -->
+<!ENTITY advanced.search.title "Search Input">
+<!ENTITY advanced.add.row "Add Search Row">
+<!ENTITY advanced.search.submit "Submit Search">
+<!ENTITY advanced.search.filters "Search Filters">
+<!ENTITY advanced.item.form "Item Form">
+<!ENTITY advanced.item.type "Item Type">
+<!ENTITY advanced.link "Advanced">
+<!ENTITY advanced.basic.link "Basic">
+<!ENTITY advanced.literary.form "Literary&nbsp;Form">
+<!ENTITY advanced.non.fiction "Non Fiction">
+<!ENTITY advanced.fiction "Fiction">
+<!ENTITY advanced.language "Language">
+<!ENTITY advanced.audience "Audience">
+<!ENTITY advanced.adult "Adult">
+<!ENTITY advanced.juvenile "Juvenile">
+<!ENTITY advanced.general "General">
+<!ENTITY advanced.sort.criteria "Sort Criteria">
+<!ENTITY advanced.search.library "Search Library">
+<!ENTITY advanced.relevance "Relevance">
+<!ENTITY advanced.pubdate "Publication date">
+<!ENTITY advanced.sort.asc "Ascending / A to Z">
+<!ENTITY advanced.sort.desc "Descending / Z to A">
+<!ENTITY advanced.frbrize "Group Formats and Editions">
+<!ENTITY advanced.go "Go">
+
+<!--	================================================================= 
+	Rdetail
+	================================================================= -->
+<!ENTITY rdetail.print "print these details">
+<!ENTITY rdetail.cn.barcode "Barcode">
+<!ENTITY rdetail.cn.location "Location">
+<!ENTITY rdetail.cn.hold.age "Age Hold Protection">
+<!ENTITY rdetail.cn.genesis "Create Date">
+<!ENTITY rdetail.cn.holdable "Holdable">
+<!ENTITY rdetail.cn.due "Due Date">
+<!ENTITY rdetail.cn.more "more info...">
+<!ENTITY rdetail.cn.less "less info">
+<!ENTITY rdetail.cn.hold "place hold">
+<!ENTITY rdetail.cn.disabled "- Disabled -">
+<!ENTITY rdetail.cn.note "Copy Note">
+<!ENTITY rdetail.cn.category "Copy Category">
+<!ENTITY rdetail.cn.print "Print Page">
+<!ENTITY rdetail.page.results "First results page">
+<!ENTITY rdetail.result "Result"> <!-- Result # &common.of; # -->
+<!ENTITY rdetail.start "Start">
+<!ENTITY rdetail.page.previous "Previous page">
+<!ENTITY rdetail.page.next "Next page">
+<!ENTITY rdetail.page.last "Last results page">
+<!ENTITY rdetail.end "End">
+<!ENTITY rdetail.more "More Actions...">
+<!ENTITY rdetail.bookbag.add "Add to bookbag">
+<!ENTITY rdetail.bookbag.create "Create a new bookbag">
+<!ENTITY rdetail.record.deleted "This record has been deleted from the database.
+We recommend that you remove this title from any bookbags it may have been added to.">
+<!ENTITY rdetail.none "(none)">
+<!ENTITY rdetail.bookbag.add.success "Item successfully added to bookbag">
+<!ENTITY rdetail.bookbag.name "Enter the name of the new bookbag">
+<!ENTITY rdetail.bookbag.create.success "Bookbag successfully created">
+<!ENTITY rdetail.detailMain.headerLabel "Record Summary">
+<!ENTITY rdetail.detailMain.subjects "Subjects">
+<!ENTITY rdetail.detailMain.abstract "Abstract">
+<!ENTITY rdetail.detailMain.viewMarc "View MARC">
+<!ENTITY rdetail.detailMain.hideMarc "Return to title details">
+<!ENTITY rdetail.author.search "Perform an author search">
+<!ENTITY rdetail.copyInfo.headerLabel "Copy Information">
+<!ENTITY rdetail.copyInfo.library "Library">
+<!ENTITY rdetail.copyInfo.callnumber "Callnumber">
+<!ENTITY rdetail.copyInfo.local "View Copy Information for this location only">
+<!ENTITY rdetail.copyInfo.all "View copy information for all libraries">
+<!ENTITY rdetail.copyInfo.actions "Actions">
+<!ENTITY rdetail.copyInfo.print "Print Call Numbers for this library">
+<!ENTITY rdetail.copyInfo.details "details">
+<!ENTITY rdetail.copyInfo.browse "browse">
+<!ENTITY rdetail.copyInfo.hold "place hold">
+<!ENTITY rdetail.extras.summary "Copy Summary">
+<!ENTITY rdetail.extras.browser "Shelf Browser">
+<!ENTITY rdetail.extras.reviews "Reviews">
+<!ENTITY rdetail.extras.toc "Table of Contents">
+<!ENTITY rdetail.extras.excerpt "Excerpt">
+<!ENTITY rdetail.extras.author.notes "Author Notes">
+<!ENTITY rdetail.extras.annotation "Annotation">
+<!ENTITY rdetail.extras.marc "MARC Record">
+<!ENTITY rdetail.extras.call.null "There are no call numbers for this item at this location.">
+<!ENTITY rdetail.extras.call.local "Local Call Numbers:">
+<!ENTITY rdetail.loading "Loading copy infomation...">
+<!ENTITY rdetail.noneAvailable " * There are no copies in this location">
+<!ENTITY rdetail.summary.online "Online Resources">
+
+<!ENTITY result.info.copies "Available copies / Total copies">
+<!ENTITY result.info.no.items "No items with the selected format were found in this location.">
+<!ENTITY result.info.format.items "Listed below are all items in the catalogue with the chosen format.">
+<!ENTITY result.info.show "Show records for">
+
+<!ENTITY result.lowhits.few "Few hits were returned for your search.">
+<!ENTITY result.lowhits.zero "Zero hits were returned for your search.">
+<!ENTITY result.lowhits.did.you.mean "Maybe you meant:">
+<!ENTITY result.lowhits.formats "You will find more hits when searching all item formats:">
+<!ENTITY result.lowhits.formats.search "Search again with all formats?">
+<!ENTITY result.lowhits.related "You may also like to try these related searches:">
+<!ENTITY result.lowhits.expand "You may also wish to expand your search range to:">
+<!ENTITY result.lowhits.class "You can try searching the same terms by:">
+<!ENTITY result.lowhits.title "title">
+<!ENTITY result.lowhits.author "author">
+<!ENTITY result.lowhits.subject "subject">
+<!ENTITY result.lowhits.series "series">
+<!ENTITY result.lowhits.keyword "keyword">
+
+<!ENTITY result.table.keyword "View titles for this record">
+<!ENTITY result.table.author "Perform an Author Search">
+
+<!ENTITY common.call.number.label "Call Number:">
+<!ENTITY common.isbn.label "ISBN:">
+<!ENTITY common.issn.label "ISSN:">
+<!ENTITY common.copy.barcode.label "Copy Barcode:">
+<!ENTITY common.hold.place "Place hold for me">
+<!ENTITY common.hold.check "Checking for possibility of hold fulfillment...">
+<!ENTITY common.hold.create "Create / Edit a Hold">
+<!ENTITY common.hold.update "Update Hold">
+<!ENTITY common.hold.type.label "Hold Type:">
+<!ENTITY common.hold.volume "Volume Hold">
+<!ENTITY common.hold.copy "Copy Hold">
+<!ENTITY common.hold.advanced "Advanced Hold Options">
+<!ENTITY common.hold.delivery "Please select a physical location where your hold can be delivered.">
+<!ENTITY common.hold.exists "A hold already exists on the requested item.">
+<!ENTITY common.hold.exists.override "A hold already exists on the requested
+item. Would you like to create the hold anyway?">
+<!ENTITY common.hold.barred 'PATRON BARRED. Please see any notes in the
+"Staff Notes" section of your "My Account" page or contact your local library.'>
+<!ENTITY common.hold.item.invalid "This hold is no longer valid. It's likely that the
+target for the hold was deleted from the system.  Please cancel this hold and
+place a new one.">
+<!ENTITY common.hold.patron.invalid "The patron barcode entered as the hold recipient is invalid.">
+<!ENTITY common.help "(Help)"> <!-- Was (??), perhaps change to a button or icon? -->
+<!ENTITY common.phone.format.help "The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ">
+<!ENTITY common.hold.failed "No items were found that could fulfill the requested holds.
+It's possible that choosing a different format will result in a successful hold.
+It is also possible that you have exceeded the number of allowable holds.
+For further information, please consult your local librarian.">
+<!ENTITY common.control.click "(control-click to select multiple formats)">
+<!ENTITY common.format.alternatives "Acceptable Alternative Formats:">
+<!ENTITY common.phone.format "(XXX-YYY-ZZZZ)">
+<!ENTITY common.phone.enable "Enable phone notifications for this hold?">
+<!ENTITY common.email.enable "Enable email notifications for this hold?">
+<!ENTITY common.email.none "(Patron has no configured email address)">
+<!ENTITY common.email.set "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> for setting your email address)">
+<!ENTITY common.keywords.label "Keywords:">
+<!ENTITY common.physical.label "Physical Description:">
+<!ENTITY common.series.label "Series:">
+<!ENTITY common.subject.label "Subject:">
+<!ENTITY common.title.label "Title:">
+<!ENTITY common.author.label "Author:">
+<!ENTITY common.format.label "Format:">
+<!ENTITY library.select "Find results in">
+<!ENTITY library.select.label "Choose a different library...">
+<!ENTITY library.select.help "Choose a library to search">
+<!ENTITY login.username "Enter your username or library barcode">
+<!ENTITY login.password.change "Change Password">
+<!ENTITY login.first.time "This appears to be the first time you have logged in.
+You will need to change your password.">
+<!ENTITY login.password.current.enter "Enter your current password">
+<!ENTITY login.password.new.enter "Enter the new password">
+<!ENTITY login.password.new.reenter "Re-type the new password for verification">
+<!ENTITY login.password.update "Update Password">
+<!ENTITY login.password.nomatch "Passwords do not match">
+<!ENTITY login.password.success "Password successfully updated">
+<!ENTITY login.password.strength "The password provided is not strong enough.">
+<!ENTITY login.barcode.inactive "The barcode used to login is marked as inactive.  Please contact your local library.">
+<!ENTITY login.account.inactive "This account has been deactivated.  Please contact your local library.">
+<!ENTITY login.failed "Login failed. The username or password provided was not valid.
+Ensure Caps-Lock is off and try again or contact your local library.">
+<!ENTITY button.go "Go!">
+
+<!--	================================================================= 
+	Slimpac Simple Search
+	================================================================= -->
+<!ENTITY slimpac.start.title "Simple Search">
+<!ENTITY slimpac.start.nowSearching "Now searching: ">
+<!ENTITY slimpac.start.dynamic "Dynamic Catalogue">
+
+<!--	================================================================= 
+	Slimpac Advanced Search
+	================================================================= -->
+<!ENTITY slimpac.advanced.language "Item Language">
+<!ENTITY slimpac.advanced.create_date "Record Creation Date">
+<!ENTITY slimpac.advanced.edit_date "Record Edit Date">
