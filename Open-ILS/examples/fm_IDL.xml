@@ -423,7 +423,7 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Audicence Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="text"/>
+			<field reporter:label="Audience Code" name="code" oils_obj:array_position="3" oils_persist:virtual="false" reporter:selector="value" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="text" />
 			<field reporter:label="Audience" name="value" oils_obj:array_position="5" oils_persist:virtual="false"  reporter:datatype="text"/>
 		</fields>
@@ -652,7 +652,7 @@
 			<field reporter:label="All Permissions" name="permissions" oils_obj:array_position="7" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="All User Settings" name="settings" oils_obj:array_position="8" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Standing Penalties" name="standing_penalties" oils_obj:array_position="9" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Statistical Catagorie Entries" name="stat_cat_entries" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_obj:array_position="10" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Survey Responses" name="survey_responses" oils_obj:array_position="11" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="ws_ou" oils_obj:array_position="12" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="wsid" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -668,7 +668,7 @@
 			<field reporter:label="Date of Birth" name="dob" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Email Address" name="email" oils_obj:array_position="24" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Evening Phone" name="evening_phone" oils_obj:array_position="25" oils_persist:virtual="false"  reporter:datatype="text"/>
-			<field reporter:label="Priviledge Expiration Date" name="expire_date" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp"/>
+			<field reporter:label="Privilege Expiration Date" name="expire_date" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Last Name" name="family_name" oils_obj:array_position="27" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="First Name" name="first_given_name" oils_obj:array_position="28" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Home Library" name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="org_unit"/>
@@ -715,7 +715,7 @@
 			<link field="hold_requests" reltype="has_many" key="usr" map="" class="circ"/>
 			<link field="permissions" reltype="has_many" key="usr" map="perm" class="pupm"/>
 			<link field="settings" reltype="has_many" key="usr" map="" class="aus"/>
-			<link reporter:label="Billable Tranastactions" field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
+			<link reporter:label="Billable Transactions" field="billable_transactions" reltype="has_many" key="usr" map="" class="mbt"/>
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
 			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
 			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
@@ -746,7 +746,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Note Creation Date/Time" name="create_date" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field reporter:label="Note Creator" name="creator" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Node ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Note ID" name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="id" />
 			<field reporter:label="Copy" name="owning_copy" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Is OPAC Visible?" name="pub" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="Note Title" name="title" oils_obj:array_position="8" oils_persist:virtual="false"  reporter:datatype="text"/>
@@ -1272,15 +1272,15 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field reporter:label="Subordinate Organizational Units" name="children" oils_obj:array_position="3" oils_persist:virtual="true" reporter:datatype="org_unit"/>
 			<field reporter:label="Billing Address" name="billing_address" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Holds Recieving Address" name="holds_address" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Holds Receiving Address" name="holds_address" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Organizational Unit ID" name="id" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="org_unit"/>
-			<field reporter:label="ILL Recieving Address" name="ill_address" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field reporter:label="Mailling Address" name="mailing_address" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="ILL Receiving Address" name="ill_address" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Mailing Address" name="mailing_address" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Name" name="name" oils_obj:array_position="9" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Organizational Unit Type" name="ou_type" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Parent Organizational Unit" name="parent_ou" oils_obj:array_position="11" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Short (Policy) Name" name="shortname" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="EMail Address" name="email" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field reporter:label="Email Address" name="email" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Phone Number" name="phone" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
