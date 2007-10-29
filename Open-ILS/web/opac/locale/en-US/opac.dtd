@@ -622,4 +622,5 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY slimpac.advanced.edit_date "Record Edit Date">
 
 <!ENTITY opac.image_provided "Image provided by">
-<!ENTITY vendor.amazon "Amazon">
+<!ENTITY vendor.name "Amazon">
+<!ENTITY vendor.base_link "http://amazon.com/dp/">

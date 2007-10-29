@@ -10,15 +10,6 @@ function buildISBNSrc(isbn, size) {
 	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
 
-function buildVendorProductLink(isbn, vendor) {
-    vendor = (vendor) ? vendor : ADDED_CONTENT_VENDOR;
-    switch(vendor) {
-        case 'amazon':
-            return 'http://www.amazon.com/dp/' + isbn;
-    }
-    return '';
-}
-
 
 function acMakeURL(type, key) {
 	return '../../../../extras/ac/' + type + '/html/' + key;

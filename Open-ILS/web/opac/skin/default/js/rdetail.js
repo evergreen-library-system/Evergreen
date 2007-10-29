@@ -192,10 +192,10 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
     try{
-        if(ADDED_CONTENT_VENDOR) {
+        if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
             unHideMe($('rdetail.jacket_attrib_div'));
-            $('rdetail.jacket_attrib_link').setAttribute(
-                'href', buildVendorProductLink(cleanISBN(record.isbn())));
+            var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
+            $('rdetail.jacket_attrib_link').setAttribute('href', href);
         }
     } catch(E) {}
 

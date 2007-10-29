@@ -140,13 +140,11 @@ var PREF_DEF_LOCATION = 'opac.default_search_location';
 var PREF_DEF_DEPTH	= 'opac.default_search_depth';
 
 
-/** global added content vendor setting.  This setting is only needed/used
-    if your added content vendor requires links back to their site.  If 
-    set to null, no links will be constructed 
-
-    Current options are: null and 'amazon'
+/** If enabled, added content attribution links will be 
+    made visible where appropriate.  The added content vendor name 
+    and URL are defined in the entities in opac.dtd
     */
-var ADDED_CONTENT_VENDOR=null; 
+var ENABLE_ADDED_CONTENT_ATTRIB_LINKS = false;
 
 
 /* container for global variables shared accross pages */
