@@ -620,3 +620,6 @@ Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY slimpac.advanced.language "Item Language">
 <!ENTITY slimpac.advanced.create_date "Record Creation Date">
 <!ENTITY slimpac.advanced.edit_date "Record Edit Date">
+
+<!ENTITY opac.image_provided "Image provided by">
+<!ENTITY vendor.amazon "Amazon">

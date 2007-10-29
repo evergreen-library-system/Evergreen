@@ -191,6 +191,14 @@ function _rdetailDraw(r) {
     }
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
+    try{
+        if(ADDED_CONTENT_VENDOR) {
+            unHideMe($('rdetail.jacket_attrib_div'));
+            $('rdetail.jacket_attrib_link').setAttribute(
+                'href', buildVendorProductLink(cleanISBN(record.isbn())));
+        }
+    } catch(E) {}
+
 
 	// see if the record has any external links 
 	var links = record.online_loc();
@@ -204,7 +212,6 @@ function _rdetailDraw(r) {
 			$('rdetail_online').appendChild(elem('br'));
 		}
 	}
-
 
 
 	$('rdetail_place_hold').setAttribute(

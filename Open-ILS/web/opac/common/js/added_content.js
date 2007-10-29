@@ -1,8 +1,7 @@
 /**
 * This function should return a URL which points to the book cover image based on ISBN.
-* Ideally, this should point to some type of added content service.
-* The example below uses Amazon... *use at own risk*
 */
+
 
 function buildISBNSrc(isbn, size) {
 	size = (size) ? size : 'small';
@@ -11,6 +10,14 @@ function buildISBNSrc(isbn, size) {
 	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
 
+function buildVendorProductLink(isbn, vendor) {
+    vendor = (vendor) ? vendor : ADDED_CONTENT_VENDOR;
+    switch(vendor) {
+        case 'amazon':
+            return 'http://www.amazon.com/dp/' + isbn;
+    }
+    return '';
+}
 
 
 function acMakeURL(type, key) {

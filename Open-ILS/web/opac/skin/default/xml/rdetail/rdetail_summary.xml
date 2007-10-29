@@ -4,13 +4,19 @@
 	<table id='rdetail_details_table'>
 		<tbody id='rdetail_details_tbody'>
 
-
-
 			<tr>
 				<td id='rdetail_image_cell' rowspan='10'>
 					<a id='rdetail_img_link'>
-						<img style='border: none;' id='rdetail_image'> </img>
+						<img style='border: none;' id='rdetail_image' 
+                            onerror='
+                                hideMe($("rdetail.jacket_attrib_div"));
+                                hideMe($("rdetail_img_link"));'/>
 					</a>
+                    <!-- vendor attribution link -->
+                    <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
+                        <div>&opac.image_provided;</div>
+                        <div><a class='classic_link' id='rdetail.jacket_attrib_link'>&vendor.amazon;</a></div>
+                    </div>
 				</td>
 				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
 				<td class='rdetail_item' id='rdetail_title'> </td>
