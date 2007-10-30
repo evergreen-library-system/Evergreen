@@ -72,6 +72,7 @@
 								-->
 								<menuitem id="payment_type_menuitem5" label="Work" value="work_payment"/>
 								<menuitem id="payment_type_menuitem6" label="Forgive" value="forgive_payment"/>
+								<menuitem id="payment_type_menuitem7" label="Goods" value="goods_payment"/>
 							</menupopup>
 						</menulist>
 					</row>

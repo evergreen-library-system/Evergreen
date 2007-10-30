@@ -475,14 +475,15 @@ sub ou_user_payments {
        	SELECT	au.id as usr,
 		SUM( CASE WHEN p.payment_type = 'forgive_payment' THEN p.amount ELSE 0.0 END ) as forgive_payment,
 		SUM( CASE WHEN p.payment_type = 'work_payment' THEN p.amount ELSE 0.0 END ) as work_payment,
-		SUM( CASE WHEN p.payment_type = 'credit_payment' THEN p.amount ELSE 0.0 END ) as credit_payment
+		SUM( CASE WHEN p.payment_type = 'credit_payment' THEN p.amount ELSE 0.0 END ) as credit_payment,
+		SUM( CASE WHEN p.payment_type = 'goods_payment' THEN p.amount ELSE 0.0 END ) as goods_payment
           FROM  money.bnm_payment_view p
                 JOIN actor.usr au ON (au.id = p.accepting_usr)
           WHERE p.payment_ts >= '$startdate'
                 AND p.payment_ts < '$enddate'::TIMESTAMPTZ + INTERVAL '1 day'
                 AND p.voided IS FALSE
                 AND au.home_ou = $lib
-		AND p.payment_type IN ('credit_payment','forgive_payment','work_payment')
+		AND p.payment_type IN ('credit_payment','forgive_payment','work_payment','goods_payment')
          GROUP BY 1
          ORDER BY 1;
 
@@ -496,6 +497,7 @@ sub ou_user_payments {
 		$x->forgive_payment($$r[1]);
 		$x->work_payment($$r[2]);
 		$x->credit_payment($$r[3]);
+		$x->goods_payment($$r[4]);
 
 		$client->respond($x);
 	}

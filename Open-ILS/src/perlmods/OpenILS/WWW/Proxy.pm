@@ -29,11 +29,14 @@ sub child_init {
 
 sub handler {
 	my $apache = shift;
-	my $title = $apache->dir_config('ProxyTitle');
-	my $desc = $apache->dir_config('ProxyDescription');
-	my $perms = [ split ' ', $apache->dir_config('ProxyPermissions') ];
 
-	return Apache2::Const::NOT_FOUND unless ($title);
+	my $proxyhtml = $apache->dir_config('OILSProxyHTML');
+	my $title = $apache->dir_config('OILSProxyTitle');
+	my $desc = $apache->dir_config('OILSProxyDescription');
+	my $ltype = $apache->dir_config('OILSProxyLoginType');
+	my $perms = [ split ' ', $apache->dir_config('OILSProxyPermissions') ];
+
+	return Apache2::Const::NOT_FOUND unless ($title || $proxyhtml);
 	return Apache2::Const::NOT_FOUND unless (@$perms);
 
 	my $cgi = new CGI;
@@ -56,40 +59,19 @@ sub handler {
 		if (!$u) {
 
 			print $cgi->header(-type=>'text/html', -expires=>'-1d');
-			print <<"			HTML";
+			if (!$proxyhtml) {
+				$proxyhtml = join '', <DATA>;
+				$proxyhtml =~ s/TITLE/$title/gso;
+				$proxyhtml =~ s/DESCRIPTION/$desc/gso;
+			} else {
+				# XXX template toolkit??
+			}
 
-<html>
-	<head>
-		<title>$title</title>
-	</head>
-	<body>
-		<br/><br/><br/>
-		<center>
-		<form method='POST'>
-			<table style='border-collapse: collapse; border: 1px solid black;'>
-				<tr>
-					<th colspan='2' align='center'><u>$desc</u></th>
-				</tr>
-				<tr>
-					<th align="right">Username or barcode:</th>
-					<td><input type="text" name="user"/></td>
-				</tr>
-				<tr>
-					<th align="right">Password:</th>
-					<td><input type="password" name="passwd"/></td>
-				</tr>
-			</table>
-			<input type="submit" value="Log in"/>
-		</form>
-		</center>
-	</body>
-</html>
-
-			HTML
+			print $proxyhtml;
 			return Apache2::Const::OK;
 		}
 
-		$auth_ses = oils_login($u, $p);
+		$auth_ses = oils_login($u, $p, $ltype);
 		if ($auth_ses) {
 			print $cgi->redirect(
 				-uri=>$url,
@@ -118,10 +100,7 @@ sub handler {
 	return Apache2::Const::FORBIDDEN if (@$failures > 0);
 
 	# they're good, let 'em through
-	return Apache2::Const::DECLINED if (-e $apache->filename);
-
-	# oops, file not found
-	return Apache2::Const::NOT_FOUND;
+	return Apache2::Const::DECLINED;
 }
 
 # returns the user object if the session is valid, 0 otherwise
@@ -172,3 +151,32 @@ sub oils_login {
 
 
 1;
+
+__DATA__
+<html>
+	<head>
+		<title>TITLE</title>
+	</head>
+	<body>
+		<br/><br/><br/>
+		<center>
+		<form method='POST'>
+			<table style='border-collapse: collapse; border: 1px solid black;'>
+				<tr>
+					<th colspan='2' align='center'><u>DESCRIPTION</u></th>
+				</tr>
+				<tr>
+					<th align="right">Username or barcode:</th>
+					<td><input type="text" name="user"/></td>
+				</tr>
+				<tr>
+					<th align="right">Password:</th>
+					<td><input type="password" name="passwd"/></td>
+				</tr>
+			</table>
+			<input type="submit" value="Log in"/>
+		</form>
+		</center>
+	</body>
+</html>
+

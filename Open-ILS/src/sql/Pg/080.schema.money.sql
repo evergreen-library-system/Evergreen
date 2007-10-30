@@ -316,6 +316,13 @@ CREATE INDEX money_credit_payment_xact_idx ON money.credit_payment (xact);
 CREATE INDEX money_credit_payment_payment_ts_idx ON money.credit_payment (payment_ts);
 CREATE INDEX money_credit_payment_accepting_usr_idx ON money.credit_payment (accepting_usr);
 
+CREATE TABLE money.goods_payment () INHERITS (money.bnm_payment);
+ALTER TABLE money.goods_payment ADD PRIMARY KEY (id);
+CREATE INDEX money_goods_id_idx ON money.goods_payment (id);
+CREATE INDEX money_goods_payment_xact_idx ON money.goods_payment (xact);
+CREATE INDEX money_goods_payment_payment_ts_idx ON money.goods_payment (payment_ts);
+CREATE INDEX money_goods_payment_accepting_usr_idx ON money.goods_payment (accepting_usr);
+
 CREATE TABLE money.bnm_desk_payment (
 	cash_drawer	INT	REFERENCES actor.workstation (id)
 ) INHERITS (money.bnm_payment);

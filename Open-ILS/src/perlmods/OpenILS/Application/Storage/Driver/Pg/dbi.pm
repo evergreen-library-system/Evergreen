@@ -113,6 +113,12 @@
 	money::work_payment->sequence( 'money.payment_id_seq' );
 
 	#---------------------------------------------------------------------
+	package money::goods_payment;
+	
+	money::goods_payment->table( 'money.goods_payment' );
+	money::goods_payment->sequence( 'money.payment_id_seq' );
+
+	#---------------------------------------------------------------------
 	package money::forgive_payment;
 	
 	money::forgive_payment->table( 'money.forgive_payment' );
