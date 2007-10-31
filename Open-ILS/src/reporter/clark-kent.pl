@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+# vim:ts=4:noet:
 
 use strict;
 use diagnostics;
@@ -79,7 +80,7 @@ if ($daemon) {
 
 DAEMON:
 
-$dbh = DBI->connect($dsn,$db_user,$db_pw, {pg_enable_utf8 => 1, RaiseError => 1});
+$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
 $current_time = DateTime->from_epoch( epoch => time() )->strftime('%FT%T%z');
 
@@ -148,7 +149,7 @@ for my $r ( @reports ) {
 	# This is the child (runner) process;
 	daemonize("Clark Kent reporting: $r->{report}->{name}");
 
-	$dbh = DBI->connect($dsn,$db_user,$db_pw, {pg_enable_utf8 => 1, RaiseError => 1});
+	$dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1});
 
 	try {
 		$dbh->do(<<'		SQL',{}, $r->{id});
@@ -260,7 +261,9 @@ for my $r ( @reports ) {
 	} otherwise {
 		my $e = shift;
 		$r->{error_text} = ''.$e;
-		$dbh->rollback;
+		if (!$dbh->{AutoCommit}) {
+			$dbh->rollback;
+		}
 		$dbh->do(<<'		SQL',{}, $e, $r->{id});
 			UPDATE	reporter.schedule
 			  SET	error_text = ?,
