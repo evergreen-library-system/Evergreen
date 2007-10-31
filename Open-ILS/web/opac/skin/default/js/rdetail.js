@@ -192,10 +192,15 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
 
     try{
-        if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
-            unHideMe($('rdetail.jacket_attrib_div'));
-            var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
-            $('rdetail.jacket_attrib_link').setAttribute('href', href);
+        if(record.isbn()) {
+            if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
+                unHideMe($('rdetail.jacket_attrib_div'));
+                var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
+                $('rdetail.jacket_attrib_link').setAttribute('href', href);
+            }
+        } else {
+            hideMe($("rdetail.jacket_attrib_div"));
+            hideMe($("rdetail_img_link"));
         }
     } catch(E) {}
 
