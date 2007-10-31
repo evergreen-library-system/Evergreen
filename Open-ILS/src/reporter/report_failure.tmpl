@@ -1,10 +1,16 @@
 To: {TO}
 From: {FROM}
-Reply-To: {REPLY-TO}
+Reply-To: {REPLY_TO}
 Subject: Report finished: "{REPORT_NAME}" 
 
-At {RUN_TIME} the report "{REPORT_NAME}" finished running with a complete
-time of {COMPLETE_TIME}.
+Your report, named [{REPORT_NAME}], was scheduled to run at {RUN_TIME} has failed with the following error message:
 
-You can view the report at the following URL:
-{OUTPUT_URL}
+ {ERROR_TEXT}
+
+The SQL command attempted was:
+
+ {SQL}
+
+If you are unsure of the meaning of this message, please contact your ILS adminstrator or support staff
+and give them both the error message and the SQL command.
+
