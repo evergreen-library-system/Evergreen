@@ -1,4 +1,5 @@
 package OpenILS::Event;
+# vim:noet:ts=4
 use strict; use warnings;
 use XML::LibXML;
 use OpenSRF::Utils::SettingsClient;
@@ -75,10 +76,16 @@ sub _load_events {
 	$descs = {};
 	my @desc = $doc->documentElement->findnodes('//desc');
 	for my $d (@desc) {
-		my $lang = $d->getAttribute('lang');
+		my $lang = $d->getAttributeNS('http://www.w3.org/XML/1998/namespace', 'lang');
 		my $code = $d->parentNode->getAttribute('code');
-		if (!exists $descs->{$lang}) {
+		unless ($descs && $lang && exists $descs->{$lang}) {
 			$descs->{$lang} = {};
+			if (!$descs) {
+				$logger->error("No error description nodes found in $eventsxml.");
+			}
+			if (!$lang) {
+				$logger->error("No xml:lang attribute found for node in $eventsxml.");
+			}
 		}
 		$descs->{$lang}->{$code} = $d->textContent;
 	}
