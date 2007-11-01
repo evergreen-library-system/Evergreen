@@ -1,3 +1,4 @@
+const g_max_copies_that_can_be_added_at_a_time_per_volume = 100;
 function my_init() {
 	try {
 
@@ -126,8 +127,9 @@ g.render_volume_count_entry = function(row,ou_id) {
 	function render_copy_count_entry(ev) {
 		if (ev.target.disabled) return;
 		if (! isNaN( Number( ev.target.value) ) ) {
-			if ( Number( ev.target.value ) > 100 ) {
-				if (!window.confirm('Are you sure you would like to create ' + ev.target.value + ' volumes?')) return;
+			if ( Number( ev.target.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
+                g.error.yns_alert('You may not add more than ' + g_max_copies_that_can_be_added_at_a_time_per_volume + ' items at a time for a given volume in this interface.','Maximum items exceeded.','Ok',null,null,'');
+                return;
 			}
 			if (node) { row.removeChild(node); node = null; }
 			//ev.target.disabled = true;
@@ -177,8 +179,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
 	function handle_change(tb1,tb2,hb3) {
 		if (tb1.value == '') return;
 		if (isNaN( Number( tb2.value ) )) return;
-		if ( Number( tb2.value ) > 100 ) {
-			if (!window.confirm('Are you sure you would like to create ' + tb2.value + ' copies?')) return;
+		if ( Number( tb2.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
+            g.error.yns_alert('You may not add more than ' + g_max_copies_that_can_be_added_at_a_time_per_volume + ' items at a time for a given volume in this interface.','Maximum items exceeded.','Ok',null,null,'');
+            return;
 		}
 
 		//if (tb1.disabled || tb2.disabled) return;
