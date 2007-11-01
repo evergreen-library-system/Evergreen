@@ -82,19 +82,18 @@ $output .= ($je) ? $je : "* Jabber successfully connected\n";
 
 my $xmlparser = XML::LibXML->new();
 my $osrfxml = $xmlparser->parse_file($settings_config);
-my $xpc = XML::LibXML::XPathContext->new($osrfxml);
 
 print "\nChecking database connections\n";
 # Check database connections
-my @databases = $xpc->findnodes('//database');
+my @databases = $osrfxml->findnodes('//database');
 foreach my $database (@databases) {
-	my $db_name = $xpc->findvalue("./db", $database);	
-	my $db_host = $xpc->findvalue("./host", $database);	
-	my $db_port = $xpc->findvalue("./port", $database);	
-	my $db_user = $xpc->findvalue("./user", $database);	
-	my $db_pw = $xpc->findvalue("./pw", $database);	
+	my $db_name = $database->findvalue("./db");	
+	my $db_host = $database->findvalue("./host");	
+	my $db_port = $database->findvalue("./port");	
+	my $db_user = $database->findvalue("./user");	
+	my $db_pw = $database->findvalue("./pw");	
 	my $osrf_xpath;
-	foreach my $node ($xpc->findnodes("ancestor::node()", $database)) {
+	foreach my $node ($database->findnodes("ancestor::node()")) {
 		$osrf_xpath .= "/" . $node->nodeName unless $node->nodeName eq '#document';
 	}
 	$output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
@@ -104,23 +103,23 @@ print "\nChecking database drivers to ensure <driver> matches <language>\n";
 # Check database drivers
 # if language eq 'C', driver eq 'pgsql'
 # if language eq 'perl', driver eq 'Pg'
-my @drivers = $xpc->findnodes('//driver');
+my @drivers = $osrfxml->findnodes('//driver');
 foreach my $driver_node (@drivers) {
 	my $language;
 	my $driver_xpath;
 	my @driver_xpath_nodes;
-	foreach my $node ($xpc->findnodes("ancestor::node()", $driver_node)) {
+	foreach my $node ($driver_node->findnodes("ancestor::node()")) {
 		next if $node->nodeName eq "#document";
 		$driver_xpath .= "/" . $node->nodeName;
 		push @driver_xpath_nodes, $node->nodeName;
 	}
 	my $lang_xpath;
-	my $driver = $xpc->findvalue("child::text()", $driver_node);
+	my $driver = $driver_node->findvalue("child::text()");
 	while (pop(@driver_xpath_nodes) && scalar(@driver_xpath_nodes) > 0 && !$language) {
 		$lang_xpath = "/" . join('/', @driver_xpath_nodes) . "/language";
-		my @lang_nodes = $xpc->findnodes($lang_xpath);
+		my @lang_nodes = $osrfxml->findnodes($lang_xpath);
 		next unless scalar(@lang_nodes > 0);
-		$language = $xpc->findvalue("child::text()", $lang_nodes[0]);
+		$language = $lang_nodes[0]->findvalue("child::text()");
 	}
 	my $result;
 	if ($driver eq "pgsql") {
@@ -234,7 +233,7 @@ sub get_debug_info {
   # Clean up after ourselves, somewhat dangerously
   system("rm -fr $oils_debug_dir");
 
-  print "Wrote your debug information to oils_$oils_time.tar.gz.\n";
+  print "Wrote your debug information to $temp_dir/oils_$oils_time.tar.gz.\n";
 }
 
 __DATA__
