@@ -1326,10 +1326,12 @@ sub find_nearest_permitted_hold {
 	# re-target any other holds that already target this copy
 	for my $old_hold (@$old_holds) {
 		next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
-		$logger->info("circulator: re-targeting hold ".$old_hold->id.
-			" after a better hold [".$best_hold->id."] was found");
-		$U->storagereq( 
-			'open-ils.storage.action.hold_request.copy_targeter', undef, $old_hold->id );
+		$logger->info("circulator: clearing current_copy and prev_check_time on hold ".
+            $old_hold->id." after a better hold [".$best_hold->id."] was found");
+        $old_hold->clear_current_copy;
+        $old_hold->clear_prev_check_time;
+        $editor->update_action_hold_request($old_hold) 
+            or return (undef, $editor->event);
 	}
 
 	return ($best_hold);
