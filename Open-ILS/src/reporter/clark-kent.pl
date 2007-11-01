@@ -50,7 +50,11 @@ my $sc = OpenSRF::Utils::SettingsClient->new;
 my $db_driver = $sc->config_value( reporter => setup => database => 'driver' );
 my $db_host = $sc->config_value( reporter => setup => database => 'host' );
 my $db_port = $sc->config_value( reporter => setup => database => 'port' );
-my $db_name = $sc->config_value( reporter => setup => database => 'name' );
+my $db_name = $sc->config_value( reporter => setup => database => 'db' );
+if (!$db_name) {
+    $db_name = $sc->config_value( reporter => setup => database => 'name' );
+    print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name; 
+}
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
 my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
 
