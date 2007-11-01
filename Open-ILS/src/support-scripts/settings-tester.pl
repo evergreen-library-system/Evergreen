@@ -94,7 +94,8 @@ foreach my $database (@databases) {
 	my $db_pw = $database->findvalue("./pw");	
 	my $osrf_xpath;
 	foreach my $node ($database->findnodes("ancestor::node()")) {
-		$osrf_xpath .= "/" . $node->nodeName unless $node->nodeName eq '#document';
+		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+		$osrf_xpath .= "/" . $node->nodeName;
 	}
 	$output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
 }
@@ -109,7 +110,7 @@ foreach my $driver_node (@drivers) {
 	my $driver_xpath;
 	my @driver_xpath_nodes;
 	foreach my $node ($driver_node->findnodes("ancestor::node()")) {
-		next if $node->nodeName eq "#document";
+		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;
 		$driver_xpath .= "/" . $node->nodeName;
 		push @driver_xpath_nodes, $node->nodeName;
 	}
