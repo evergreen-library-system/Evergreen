@@ -52,7 +52,7 @@ Example opensrf config file for OpenILS
                     <driver>Pg</driver>
                     <host>localhost</host>
                     <port>5432</port>
-                    <name>evergreen</name>
+                    <db>evergreen</db>
                     <user>postgres</user>
                     <password>postgres</password>
                 </database>
@@ -638,10 +638,12 @@ Example opensrf config file for OpenILS
         <evergreen.example.org> 
             <!-- ^-=- 
                 must match the fully qualified domain name of the host.
-                on Linux, this is usually the output of "hostname -f"
+
+                On Linux, the output of the following command is authoritative:
+                $ perl -MNet::Domain -e 'print Net::Domain::hostfqdn();'
+
                'localhost' won't work here
             -->
-
             <activeapps>
                 <!-- services hosted on this machine -->
                 <appname>opensrf.settings</appname> 
