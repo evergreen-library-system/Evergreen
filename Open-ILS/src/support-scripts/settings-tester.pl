@@ -88,6 +88,9 @@ print "\nChecking database connections\n";
 my @databases = $osrfxml->findnodes('//database');
 foreach my $database (@databases) {
 	my $db_name = $database->findvalue("./db");	
+	if (!$db_name) {
+		$db_name = $database->findvalue("./name");	
+	}
 	my $db_host = $database->findvalue("./host");	
 	my $db_port = $database->findvalue("./port");	
 	my $db_user = $database->findvalue("./user");	
@@ -147,8 +150,28 @@ foreach my $driver_node (@drivers) {
 	$output .= $result;
 }
 
-
+print "\nChecking libdbi and libdbi-drivers\n";
 $output .= check_libdbd();
+
+print "\nChecking hostname\n";
+my @hosts = $osrfxml->findnodes('/opensrf/hosts/*');
+foreach my $host (@hosts) {
+	next unless $host->nodeType == XML::LibXML::XML_ELEMENT_NODE;
+	my $osrfhost = $host->nodeName;
+	my $he;
+	if ($osrfhost ne $hostname && $osrfhost ne "localhost") {
+		$result = " * ERROR: expected hostname '$hostname', found '$osrfhost' in <hosts> section of opensrf.xml\n";
+		warn $result;
+		$he = 1;
+	} elsif ($osrfhost eq "localhost") {
+		$result = " * OK: found hostname 'localhost' in <hosts> section of opensrf.xml\n";
+	} else {
+		$result = " * OK: found hostname '$hostname' in <hosts> section of opensrf.xml\n";
+	}
+	print $result unless $he;
+	$output .= $result;
+}
+
 
 if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
