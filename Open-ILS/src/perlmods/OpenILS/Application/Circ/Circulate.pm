@@ -211,6 +211,7 @@ sub run_method {
     unless($circulator->bail_out) {
         $circulator->do_hold_notify($circulator->notify_hold)
             if $circulator->notify_hold;
+        $circulator->retarget_holds if $circulator->retarget;
     }
 }
 
@@ -333,11 +334,11 @@ my @AUTOLOAD_FIELDS = qw/
     dummy_author
     circ_lib
     barcode
-   duration_level
-   recurring_fines_level
-   duration_rule
-   recurring_fines_rule
-   max_fine_rule
+    duration_level
+    recurring_fines_level
+    duration_rule
+    recurring_fines_rule
+    max_fine_rule
     renewal_remaining
     due_date
     fulfilled_holds
@@ -351,6 +352,7 @@ my @AUTOLOAD_FIELDS = qw/
     opac_renewal
     phone_renewal
     desk_renewal
+    retarget
 /;
 
 
@@ -1537,7 +1539,7 @@ sub attempt_checkin_hold_capture {
     my $copy = $self->copy;
 
     # See if this copy can fulfill any holds
-    my ($hold) = $holdcode->find_nearest_permitted_hold( 
+    my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold( 
         $self->editor, $copy, $self->editor->requestor );
 
     if(!$hold) {
@@ -1546,6 +1548,7 @@ sub attempt_checkin_hold_capture {
         return undef;
     }
 
+    $self->retarget($retarget);
 
     $logger->info("circulator: found permitted hold ".
         $hold->id . " for copy, capturing...");
@@ -1624,6 +1627,13 @@ sub do_hold_notify {
     }
 }
 
+sub retarget_holds {
+    $logger->info("retargeting prev_check_time=null holds after opportunistic capture");
+    my $ses = OpenSRF::AppSession->create('open-ils.storage');
+    $ses->request('open-ils.storage.action.hold_request.copy_targeter');
+    # no reason to wait for the return value
+    return;
+}
 
 sub checkin_build_hold_transit {
     my $self = shift;

@@ -1323,6 +1323,8 @@ sub find_nearest_permitted_hold {
 		or return (undef, $editor->event);
 
 
+    my $retarget = 0;
+
 	# re-target any other holds that already target this copy
 	for my $old_hold (@$old_holds) {
 		next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
@@ -1332,9 +1334,10 @@ sub find_nearest_permitted_hold {
         $old_hold->clear_prev_check_time;
         $editor->update_action_hold_request($old_hold) 
             or return (undef, $editor->event);
+        $retarget = 1;
 	}
 
-	return ($best_hold);
+	return ($best_hold, undef, $retarget);
 }
 
 
