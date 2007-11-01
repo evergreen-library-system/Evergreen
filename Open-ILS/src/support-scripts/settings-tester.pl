@@ -2,14 +2,17 @@
 # vim:noet:ts=4:
 
 BEGIN {
+	eval "use OpenSRF::Utils::Config;";
+	die "Please ensure that /openils/lib/perl5 is in your PERL5LIB environment variable.
+	You must run this script as the 'opensrf' user.\n" if ($@);
 	eval "use Error qw/:try/;";
-	die "Please install Error.pm!\n" if ($@);
+	die "Please install Error.pm.\n" if ($@);
 	eval "use UNIVERSAL::require;";
-	die "Please install the UNIVERSAL::Require perl module!\n" if ($@);
+	die "Please install the UNIVERSAL::Require perl module.\n" if ($@);
 	eval "use Getopt::Long;";
-	die "Please install the Getopt::Long perl module!\n" if ($@);
+	die "Please install the Getopt::Long perl module.\n" if ($@);
 	eval "use Net::Domain;";
-	die "Please install the Net::Domain perl module!\n" if ($@);
+	die "Please install the Net::Domain perl module.\n" if ($@);
 }
 
 my $output = '';
@@ -28,14 +31,13 @@ GetOptions(
 while (my $mod = <DATA>) {
 	chomp $mod;
 	warn "Please install $mod\n" unless ($mod->use);
-	$perloutput .= "Please install $mod\n";
+	$perloutput .= "Please install the $mod Perl module.\n";
 	print "$mod version ".${$mod."::VERSION"}."\n" unless ($@);
 }
 
 use OpenSRF::Transport::SlimJabber::Client;
 use OpenSRF::Utils::SettingsParser;
 use OpenSRF::Utils::SettingsClient;
-use OpenSRF::Utils::Config;
 use Data::Dumper;
 use DBI;
 
@@ -53,6 +55,7 @@ my $logfile    = $conf->bootstrap->logfile;
 (my $log_dir = $logfile) =~ s#(.*)/.*#$1#;
 
 
+print "\nChecking Jabber connection\n";
 # connect to jabber 
 my $client = OpenSRF::Transport::SlimJabber::Client->new(
     port => $j_port, 
@@ -77,34 +80,73 @@ try {
 print "* Jabber successfully connected\n" unless ($je);
 $output .= ($je) ? $je : "* Jabber successfully connected\n";
 
-# parse the opensrf.xml file
-my $sparser = 'OpenSRF::Utils::SettingsParser';
-my $res = $sparser->initialize($settings_config);
-my $sconfig = $sparser->get_server_config($hostname);
-my $db_config = $sconfig->{apps}->{'open-ils.storage'}->{app_settings}->{databases}->{database};
+my $xmlparser = XML::LibXML->new();
+my $osrfxml = $xmlparser->parse_file($settings_config);
+my $xpc = XML::LibXML::XPathContext->new($osrfxml);
 
-# grab the open-ils.storage database settings
-my $db_host = $db_config->{host};
-my $db_user = $db_config->{user};
-my $db_port = $db_config->{port};
-my $db_pw = $db_config->{pw};
-my $db_db = $db_config->{db};
+print "\nChecking database connections\n";
+# Check database connections
+my @databases = $xpc->findnodes('//database');
+foreach my $database (@databases) {
+	my $db_name = $xpc->findvalue("./db", $database);	
+	my $db_host = $xpc->findvalue("./host", $database);	
+	my $db_port = $xpc->findvalue("./port", $database);	
+	my $db_user = $xpc->findvalue("./user", $database);	
+	my $db_pw = $xpc->findvalue("./pw", $database);	
+	my $osrf_xpath;
+	foreach my $node ($xpc->findnodes("ancestor::node()", $database)) {
+		$osrf_xpath .= "/" . $node->nodeName unless $node->nodeName eq '#document';
+	}
+	$output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
+}
 
+print "\nChecking database drivers to ensure <driver> matches <language>\n";
+# Check database drivers
+# if language eq 'C', driver eq 'pgsql'
+# if language eq 'perl', driver eq 'Pg'
+my @drivers = $xpc->findnodes('//driver');
+foreach my $driver_node (@drivers) {
+	my $language;
+	my $driver_xpath;
+	my @driver_xpath_nodes;
+	foreach my $node ($xpc->findnodes("ancestor::node()", $driver_node)) {
+		next if $node->nodeName eq "#document";
+		$driver_xpath .= "/" . $node->nodeName;
+		push @driver_xpath_nodes, $node->nodeName;
+	}
+	my $lang_xpath;
+	my $driver = $xpc->findvalue("child::text()", $driver_node);
+	while (pop(@driver_xpath_nodes) && scalar(@driver_xpath_nodes) > 0 && !$language) {
+		$lang_xpath = "/" . join('/', @driver_xpath_nodes) . "/language";
+		my @lang_nodes = $xpc->findnodes($lang_xpath);
+		next unless scalar(@lang_nodes > 0);
+		$language = $xpc->findvalue("child::text()", $lang_nodes[0]);
+	}
+	my $result;
+	if ($driver eq "pgsql") {
+		if ($language eq "C") {
+			$result = "* OK: $driver language is $language in $lang_xpath\n";
+		} else {
+			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
+			warn $result;
+		}
+	} elsif ($driver eq "Pg") {
+		if ($language eq "perl") {
+			$result = "* OK: $driver language is $language in $lang_xpath\n";
+		} elsif ($driver_xpath =~ /reporter/) {
+			$result = "* OK: $driver language is allowed to be undefined for reporter application\n";
+		} else {
+			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
+			warn $result;
+		}
+	} else {
+		$result = "* ERROR: Unknown driver $driver in $driver_xpath\n";
+		warn $result;
+	}
+	print $result;
+	$output .= $result;
+}
 
-# connect to the database
-my $dsn = "dbi:Pg:dbname=$db_db;host=$db_host;port=$db_port";
-my $de = undef;
-try {
-    unless( DBI->connect($dsn, $db_user, $db_pw) ) {
-        $de = "* Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-        warn "* Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
-    }
-} catch Error with {
-    $de = "* Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
-    warn "* Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
-};
-print "* Successfully connected to database $dsn\n" unless ($de);
-$output .= ($de) ? $de : "* Successfully connected to database $dsn\n";
 
 $output .= check_libdbd();
 
@@ -112,11 +154,29 @@ if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
 }
 
+sub test_db_connect {
+	my ($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath) = @_;
+
+	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
+	my $de = undef;
+	try {
+		unless( DBI->connect($dsn, $db_user, $db_pw) ) {
+			$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+			warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
+		}
+	} catch Error with {
+		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
+		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
+	};
+	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
+	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn\n";
+}
+
 sub check_libdbd {
 	my $results;
 	my $de = undef;
 	my @location = `locate libdbdpgsql.so`;
-	if ($location > 1) {
+	if (scalar(@location) > 1) {
 
 		my $res = "Found more than one location for libdbdpgsql.so.
   We have found that system packages don't link against libdbi.so;
