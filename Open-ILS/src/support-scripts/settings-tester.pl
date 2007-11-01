@@ -159,17 +159,32 @@ sub test_db_connect {
 
 	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
 	my $de = undef;
+	my $dbh, $encoding;
 	try {
-		unless( DBI->connect($dsn, $db_user, $db_pw) ) {
+		$dbh = DBI->connect($dsn, $db_user, $db_pw);
+		unless($dbh) {
 			$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 			warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n";
 		}
+		my $sth = $dbh->prepare("show server_encoding");
+		$sth->execute;
+		$sth->bind_col(1, \$encoding);
+		$sth->fetch;
+		$sth->finish;
+		$dbh->disconnect;
 	} catch Error with {
 		$de = "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 		warn "* $osrf_xpath :: Unable to connect to database $dsn, user=$db_user, password=$db_pw\n" . shift() . "\n";
 	};
 	print "* $osrf_xpath :: Successfully connected to database $dsn\n" unless ($de);
-	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn\n";
+	if ($encoding !~ m/(utf-?8|unicode)/i) {
+		$de .= "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
+		warn "* ERROR: $osrf_xpath :: Database $dsn has encoding $encoding instead of UTF8 or UNICODE.\n";
+	} else {
+		print "  * Database has the expected server encoding $encoding.\n";
+	}
+	return ($de) ? $de : "* $osrf_xpath :: Successfully connected to database $dsn with encoding $encoding\n";
+
 }
 
 sub check_libdbd {
