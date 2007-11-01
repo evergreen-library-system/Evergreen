@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# vim:noet:ts=4:
 
 BEGIN {
 	eval "use Error qw/:try/;";
@@ -82,7 +83,6 @@ my $res = $sparser->initialize($settings_config);
 my $sconfig = $sparser->get_server_config($hostname);
 my $db_config = $sconfig->{apps}->{'open-ils.storage'}->{app_settings}->{databases}->{database};
 
-
 # grab the open-ils.storage database settings
 my $db_host = $db_config->{host};
 my $db_user = $db_config->{user};
@@ -106,9 +106,33 @@ try {
 print "* Successfully connected to database $dsn\n" unless ($de);
 $output .= ($de) ? $de : "* Successfully connected to database $dsn\n";
 
+$output .= check_libdbd();
 
 if ($gather) {
 	get_debug_info( $tmpdir, $log_dir, $conf_dir, $perloutput, $output );
+}
+
+sub check_libdbd {
+	my $results;
+	my $de = undef;
+	my @location = `locate libdbdpgsql.so`;
+	if ($location > 1) {
+
+		my $res = "Found more than one location for libdbdpgsql.so.
+  We have found that system packages don't link against libdbi.so;
+  therefore, we strongly recommend compiling libdbi and libdbi-drivers from source.\n";
+		$results .= $res;
+		print $res;
+	}
+	foreach my $loc (@location) {
+		my @linkage = `ldd $loc`;
+		if (!grep(/libdbi/, @linkage)) {
+			my $res = "libdbi.so was not linked against $loc - you probably need to compile from source.\n";
+			$results .= $res;
+			print $res;
+		}
+	}
+	return $results;
 }
 
 sub get_debug_info {
