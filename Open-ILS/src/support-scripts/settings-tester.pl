@@ -134,7 +134,7 @@ foreach my $driver_node (@drivers) {
 		if ($language eq "perl") {
 			$result = "* OK: $driver language is $language in $lang_xpath\n";
 		} elsif ($driver_xpath =~ /reporter/) {
-			$result = "* OK: $driver language is allowed to be undefined for reporter application\n";
+			$result = "* OK: $driver language is undefined for reporter base configuration\n";
 		} else {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
@@ -190,7 +190,7 @@ sub test_db_connect {
 sub check_libdbd {
 	my $results;
 	my $de = undef;
-	my @location = `locate libdbdpgsql.so`;
+	my @location = `locate libdbdpgsql.so |grep -v home`; # simple(ton) attempt to filter out build versions
 	if (scalar(@location) > 1) {
 
 		my $res = "Found more than one location for libdbdpgsql.so.
@@ -202,7 +202,7 @@ sub check_libdbd {
 	foreach my $loc (@location) {
 		my @linkage = `ldd $loc`;
 		if (!grep(/libdbi/, @linkage)) {
-			my $res = "libdbi.so was not linked against $loc - you probably need to compile from source.\n";
+			my $res = "$loc was not linked against libdbi - you probably need to compile libdbi-drivers from source with the --enable-libdbi configure switch.\n";
 			$results .= $res;
 			print $res;
 		}
