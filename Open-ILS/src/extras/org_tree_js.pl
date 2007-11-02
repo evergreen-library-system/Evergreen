@@ -37,6 +37,8 @@ sub val {
     return 1 if $v eq 't';
     return 0 if $v eq 'f';
 
+    $v =~ s/([\x{0080}-\x{fffd}])/sprintf('\u%04x',ord($1))/sgoe;
+
     return "\"$v\"";
 }
 
@@ -44,30 +46,24 @@ my $pile = "var _l = [";
 
 my @array;
 for my $o (@$tree) {
-	my ($i,$t,$p,$n,$v) = ($o->id,$o->ou_type,val($o->parent_ou),$o->name,val($o->opac_visible));
+	my ($i,$t,$p,$n,$v) = ($o->id,$o->ou_type,$o->parent_ou,val($o->name),val($o->opac_visible));
     $p ||= 'null';
-	push @array, "[$i,$t,$p,\"$n\",$v]";
+	push @array, "[$i,$t,$p,$n,$v]";
 }
 
 $pile .= join ',', @array;
-$pile .= "];\n";
+$pile .= "]; /* Org Units */ \n";
 
 
 $pile .= 'globalOrgTypes = [';
 for my $t (@$types) {
-    $pile .= 'new aout([null,null,null,null,'.
-        val($t->can_have_users).','.
-        val($t->can_have_vols).','.
-        val($t->depth).','.
-        val($t->id).','.
-        val($t->name).','.
-        val($t->opac_label).','.
-        val($t->parent).']), ';
+    my ($u,$v,$d,$i,$n,$o,$p) = (val($t->can_have_users),val($t->can_have_vols),$t->depth,$t->id,val($t->name),val($t->opac_label),$t->parent);
+    $p ||= 'null';
+    $pile .= "new aout([null,null,null,null,$u,$v,$d,$i,$n,$o,$p]), ";
 }
 $pile =~ s/, $//; # remove trailing comma
-$pile .= '];';
+$pile .= ']; /* OU Types */';
 
-binmode STDOUT, ':utf8';
 print "$pile\n";
 
 
