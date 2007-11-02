@@ -30,9 +30,24 @@ GetOptions(
 
 while (my $mod = <DATA>) {
 	chomp $mod;
-	warn "Please install $mod\n" unless ($mod->use);
-	$perloutput .= "Please install the $mod Perl module.\n";
-	print "$mod version ".${$mod."::VERSION"}."\n" unless ($@);
+	my @list = split / /, $mod;
+
+	my $ok = 0;
+	for my $m (@list) {
+		$ok++ if ($m->use);
+		print "$m version ".${$m."::VERSION"}."\n" unless ($@);
+	}
+
+	unless ($ok) {
+		if (@list == 1) {
+			warn "Please install $mod\n";
+			$perloutput .= "Please install the $mod Perl module.\n";
+		} else {
+			warn "Please install one of the following modules: $mod\n";
+			$perloutput .= "Please install one of the following modules: $mod\n";
+		}
+	}
+			
 }
 
 use OpenSRF::Transport::SlimJabber::Client;
@@ -285,8 +300,7 @@ Class::DBI
 Class::DBI::AbstractSearch
 Template
 DBD::Pg
-Net::Z3950
-Net::Z3950::ZOOM
+Net::Z3950 Net::Z3950::ZOOM
 MARC::Record
 MARC::Charset
 MARC::File::XML
