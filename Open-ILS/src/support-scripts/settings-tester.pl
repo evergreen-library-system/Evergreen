@@ -286,6 +286,7 @@ Class::DBI::AbstractSearch
 Template
 DBD::Pg
 Net::Z3950
+Net::Z3950::ZOOM
 MARC::Record
 MARC::Charset
 MARC::File::XML
