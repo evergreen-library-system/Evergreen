@@ -1,7 +1,6 @@
 package OpenILS::WWW::Proxy;
 use strict; use warnings;
 
-use Apache2 ();
 use Apache2::Log;
 use Apache2::Const -compile => qw(REDIRECT FORBIDDEN OK NOT_FOUND DECLINED :log);
 use APR::Const    -compile => qw(:error SUCCESS);

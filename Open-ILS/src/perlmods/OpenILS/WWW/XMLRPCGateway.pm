@@ -2,7 +2,6 @@ package OpenILS::WWW::XMLRPCGateway;
 use strict; use warnings;
 
 use CGI;
-use Apache2 ();
 use Apache2::Log;
 use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
 use APR::Const    -compile => qw(:error SUCCESS);
