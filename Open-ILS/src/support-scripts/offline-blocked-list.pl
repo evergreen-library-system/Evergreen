@@ -54,8 +54,6 @@ if(1) { # XXX command line param
     use OpenSRF::System;
     use OpenSRF::AppSession;
 
-    my $config = shift || die "Please specify a config file\n";
-
     OpenSRF::System->bootstrap_client( config_file => $config );
 
     my $ses = OpenSRF::AppSession->connect( 'open-ils.storage' );
