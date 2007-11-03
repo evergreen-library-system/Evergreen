@@ -138,7 +138,6 @@ INSERT INTO permission.perm_list VALUES (141, 'PATRON_EXCEEDS_FINES.override', '
 INSERT INTO permission.perm_list VALUES (142, 'CIRC_EXCEEDS_COPY_RANGE.override', '');
 INSERT INTO permission.perm_list VALUES (143, 'ITEM_ON_HOLDS_SHELF.override', '');
 INSERT INTO permission.perm_list VALUES (144, 'COPY_NOT_AVAILABLE.override', 'Allow staff to force checkout of Missing/Lost type items');
-INSERT INTO permission.perm_list VALUES (145, 'VOLUME_UPDATE', '');
 INSERT INTO permission.perm_list VALUES (146, 'HOLD_EXISTS.override', 'allows users to place multiple holds on a single title');
 INSERT INTO permission.perm_list VALUES (147, 'RUN_REPORTS', 'Allows a users to run reports');
 INSERT INTO permission.perm_list VALUES (148, 'SHARE_REPORT_FOLDER', 'Allows a user to share report his own folders');
