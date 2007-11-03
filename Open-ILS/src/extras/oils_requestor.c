@@ -27,12 +27,12 @@ int main( int argc, char* argv[] ) {
 	while( (c = getopt( argc, argv, "f:u:p:s:c:i:" )) != -1 ) {
 		switch(c) {
 			case '?': return -1;
-			case 'f': config		= strdup(optarg);break;
-			case 'c': context		= strdup(optarg);break;
-			case 'u': username	= strdup(optarg);break;
-			case 'p': password	= strdup(optarg);break;
-			case 's': script		= strdup(optarg);break;
-			case 'i': idl_filename		= strdup(optarg);break;
+			case 'f': config		= strdup(optarg); break;
+			case 'c': context		= strdup(optarg); break;
+			case 'u': username	= strdup(optarg); break;
+			case 'p': password	= strdup(optarg); break;
+			case 's': script		= strdup(optarg); break;
+			case 'i': idl_filename		= strdup(optarg); break;
 		}
 	}
 
