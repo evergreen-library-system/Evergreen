@@ -36,7 +36,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 		return NULL;
 	}
 
-	osrfLogInfo(OSRF_LOG_MARK, "Initializing the Fieldmapper IDL...");
+	osrfLogDebug(OSRF_LOG_MARK, "Initializing the Fieldmapper IDL...");
 
 	xmlNodePtr docRoot = xmlDocGetRootElement(idlDoc);
 	xmlNodePtr kid = docRoot->children;
@@ -52,7 +52,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 
 			string_tmp = NULL;
 			if ((string_tmp = (char*)xmlGetNsProp(kid, BAD_CAST "tablename", BAD_CAST PERSIST_NS))) {
-				osrfLogInfo(OSRF_LOG_MARK, "Using table '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+				osrfLogDebug(OSRF_LOG_MARK, "Using table '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 				osrfHashSet(
 					usrData,
 					strdup( string_tmp ),
@@ -73,7 +73,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 			string_tmp = NULL;
 			if( (string_tmp = (char*)xmlGetProp(kid, BAD_CAST "controller") )) {
 				char* controller_list = strdup( string_tmp );
-				osrfLogInfo(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
+				osrfLogDebug(OSRF_LOG_MARK, "Controller list is %s", string_tmp );
 
 				if (strlen( controller_list ) > 0) {
 					char* st_tmp;
@@ -165,7 +165,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 							);
 						}
 
-						osrfLogInfo(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+						osrfLogDebug(OSRF_LOG_MARK, "Found field %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 
 						osrfHashSet(
 							fields,
@@ -195,7 +195,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 								"reltype"
 							);
 						}
-						osrfLogInfo(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
+						osrfLogDebug(OSRF_LOG_MARK, "Adding link with reltype %s", string_tmp );
 
 						string_tmp = NULL;
 						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "key")) ) {
@@ -205,7 +205,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 								"key"
 							);
 						}
-						osrfLogInfo(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
+						osrfLogDebug(OSRF_LOG_MARK, "Link fkey is %s", string_tmp );
 
 						string_tmp = NULL;
 						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "class")) ) {
@@ -215,14 +215,14 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 								"class"
 							);
 						}
-						osrfLogInfo(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
+						osrfLogDebug(OSRF_LOG_MARK, "Link fclass is %s", string_tmp );
 
 						osrfStringArray* map = osrfNewStringArray(0);
 
 						string_tmp = NULL;
 						if( (string_tmp = (char*)xmlGetProp(_l, BAD_CAST "map") )) {
 							char* map_list = strdup( string_tmp );
-							osrfLogInfo(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
+							osrfLogDebug(OSRF_LOG_MARK, "Link mapping list is %s", string_tmp );
 
 							if (strlen( map_list ) > 0) {
 								char* st_tmp;
@@ -251,7 +251,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 							strdup( string_tmp )
 						);
 
-						osrfLogInfo(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+						osrfLogDebug(OSRF_LOG_MARK, "Found link %s for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 
 						_l = _l->next;
 					}
@@ -260,7 +260,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 				if (!strcmp( (char*)_cur->name, "source_definition" )) {
 					string_tmp = NULL;
 					if( (string_tmp = (char*)xmlNodeGetContent(_cur)) ) {
-						osrfLogInfo(OSRF_LOG_MARK, "Using source definion '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+						osrfLogDebug(OSRF_LOG_MARK, "Using source definion '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 						osrfHashSet(
 							usrData,
 							strdup( string_tmp ),
