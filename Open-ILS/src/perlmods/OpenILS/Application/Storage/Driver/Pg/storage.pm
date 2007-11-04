@@ -47,7 +47,7 @@
 		$pg->set_xact_session( $client->session );
 		my $xact_id = $pg->current_xact_id;
 
-		$log->debug("Beginning a new trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+		$log->debug("Beginning a new transaction with Open-ILS XACT-ID [$xact_id]", INFO);
 
 		my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
 		
@@ -56,7 +56,7 @@
 
 		} catch Error with {
 			my $e = shift;
-			$log->debug("Failed to begin a new trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			$log->debug("Failed to begin a new transaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
 			throw $e;
 		};
 
@@ -67,7 +67,7 @@
 			}
 		);
 
-		$log->debug("Registered 'death' callback [$death_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+		$log->debug("Registered 'death' callback [$death_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
 
 		$client->session->session_data( death_cb => $death_cb );
 
@@ -80,7 +80,7 @@
 					__PACKAGE__->pg_commit_xaction;
 				}
 			);
-			$log->debug("Registered 'disconnect' callback [$dc_cb] for new trasaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
+			$log->debug("Registered 'disconnect' callback [$dc_cb] for new transaction with Open-ILS XACT-ID [$xact_id]", DEBUG);
 			if ($client and $client->session) {
 				$client->session->session_data( disconnect_cb => $dc_cb );
 			}
@@ -153,12 +153,12 @@
 		my $success = 1;
 		try {
 			my $dbh = OpenILS::Application::Storage::CDBI->db_Main;
-			$log->debug("Rolling back a trasaction with Open-ILS XACT-ID [$xact_id]", INFO);
+			$log->debug("Rolling back a transaction with Open-ILS XACT-ID [$xact_id]", INFO);
 			$dbh->rollback;
 
 		} catch Error with {
 			my $e = shift;
-			$log->debug("Failed to roll back trasaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
+			$log->debug("Failed to roll back transaction with Open-ILS XACT-ID [$xact_id]: ".$e, INFO);
 			$success = 0;
 		};
 	
