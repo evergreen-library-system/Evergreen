@@ -1,4 +1,5 @@
 package OpenILS::Application::AppUtils;
+# vim:noet:ts=4
 use strict; use warnings;
 use base qw/OpenSRF::Application/;
 use OpenSRF::Utils::Cache;
@@ -753,6 +754,13 @@ sub fetch_stat_cat_entry {
 
 sub find_org {
 	my( $self, $org_tree, $orgid )  = @_;
+	if (!$org_tree) {
+		$logger->warn("find_org() did not receive a value for \$org_tree");
+		return undef;
+	} elsif (!$orgid) {
+		$logger->warn("find_org() did not receive a value for \$orgid");
+		return undef;
+    }
 	return $org_tree if ( $org_tree->id eq $orgid );
 	return undef unless ref($org_tree->children);
 	for my $c (@{$org_tree->children}) {
