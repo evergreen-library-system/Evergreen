@@ -1,4 +1,13 @@
 #!/bin/bash
+# vim:noet:ts=4
+
+BASEDIR=${0%/*}
+if test "$BASEDIR" = "$0" ; then
+	BASEDIR="$(which $0)"
+	BASEDIR=${BASEDIR%/*}
+fi
+
+cd "$BASEDIR"
 
 CONFIG="$1";
 
