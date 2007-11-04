@@ -199,16 +199,7 @@ sub __create_hold {
 
 		# is this user allowed to have holds of this type?
 		$perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
-		if($perm) { 
-			#if there is a requestor, see if the requestor has override privelages
-			if($hold->requestor ne $hold->usr) {
-				$perm = _check_request_holds_override($user->id, $user->home_ou);
-				if($perm) {return $perm;}
-
-			} else {
-				return $perm; 
-			}
-		}
+        return $perm if $perm;
 
 		#enforce the fact that the login is the one requesting the hold
 		$hold->requestor($user->id); 
@@ -266,15 +257,6 @@ sub _check_request_holds_perm {
 	my $org_id = shift;
 	if(my $evt = $apputils->check_perms(
 		$user_id, $org_id, "REQUEST_HOLDS")) {
-		return $evt;
-	}
-}
-
-sub _check_request_holds_override {
-	my $user_id = shift;
-	my $org_id = shift;
-	if(my $evt = $apputils->check_perms(
-		$user_id, $org_id, "REQUEST_HOLDS_OVERRIDE")) {
 		return $evt;
 	}
 }
