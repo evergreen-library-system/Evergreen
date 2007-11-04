@@ -1942,11 +1942,6 @@ sub do_renew {
     $self->log_me("do_renew()");
     $self->is_renewal(1);
 
-    unless( $self->is_renewal ) {
-        return $self->bail_on_events($self->editor->events)
-            unless $self->editor->allowed('RENEW_CIRC');
-    }   
-
     # Make sure there is an open circ to renew that is not
     # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
     my $circ = $self->editor->search_action_circulation(
@@ -1963,6 +1958,12 @@ sub do_renew {
     }
 
     return $self->bail_on_events($self->editor->event) unless $circ;
+
+    # A user is not allowed to renew another user's items without permission
+    unless( $circ->usr eq $self->editor->requestor->id ) {
+        return $self->bail_on_events($self->editor->events)
+            unless $self->editor->allowed('RENEW_CIRC', $circ->circ_lib);
+    }   
 
     $self->push_events(OpenILS::Event->new('MAX_RENEWALS_REACHED'))
         if $circ->renewal_remaining < 1;
