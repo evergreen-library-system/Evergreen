@@ -1,4 +1,15 @@
 #!/bin/bash
+# vim:noet:ts=4
+
+(
+
+BASEDIR=${0%/*}
+if test "$BASEDIR" = "$0" ; then
+	BASEDIR="$(which $0)"
+	BASEDIR=${BASEDIR%/*}
+fi
+
+cd "$BASEDIR"
 
 CONFIG="$1";
 
@@ -20,4 +31,6 @@ echo "Updating OrgTree HTML";
 perl org_tree_html_options.pl "$CONFIG" "$SLIMPACDIR/lib_list.inc";
 
 echo "Done";
+
+)
 
