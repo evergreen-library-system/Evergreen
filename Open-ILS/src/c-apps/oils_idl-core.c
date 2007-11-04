@@ -1,4 +1,7 @@
 #include "oils_idl.h"
+/*
+ * vim:noet:ts=4:
+ */
 
 #include <stdlib.h>
 #include <string.h>
@@ -260,7 +263,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 				if (!strcmp( (char*)_cur->name, "source_definition" )) {
 					string_tmp = NULL;
 					if( (string_tmp = (char*)xmlNodeGetContent(_cur)) ) {
-						osrfLogDebug(OSRF_LOG_MARK, "Using source definion '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
+						osrfLogDebug(OSRF_LOG_MARK, "Using source definition '%s' for class %s", string_tmp, osrfHashGet(usrData, "classname") );
 						osrfHashSet(
 							usrData,
 							strdup( string_tmp ),
