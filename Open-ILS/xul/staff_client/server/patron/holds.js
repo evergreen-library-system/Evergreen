@@ -12,7 +12,12 @@ patron.holds.prototype = {
 
     'hold_interface_type' : null,
 
-	'foreign_shelf' : null,
+    'pull_from_shelf_interface' : {
+        'default' : { 'limit' : 50, 'offset' : 0 },
+        'current' : { 'limit' : 50, 'offset' : 0 }
+    },
+
+	'filter_lib' : null,
 
 	'retrieve_ids' : [],
 
@@ -92,129 +97,6 @@ patron.holds.prototype = {
 								}
 							}
 						);
-						/*
-						obj.network.simple_request('FM_AHR_RETRIEVE', [ ses(), row.my.hold_id ],
-							function(ahr_req) {
-								try {
-									var ahr_robj = ahr_req.getResultObject();
-									if (typeof ahr_robj.ilsevent != 'undefined') throw(ahr_robj);
-									row.my.ahr = ahr_robj[0];
-									obj.holds_map[ row.my.ahr.id() ] = row.my.ahr;
-									params.row_node.setAttribute('retrieve_id', 
-										js2JSON({
-											'copy_id':row.my.ahr.current_copy(),
-											'id':row.my.ahr.id(),
-											'type':row.my.ahr.hold_type(),
-											'target':row.my.ahr.target(),
-											'usr':row.my.ahr.usr(),
-										})
-									);
-
-									obj.network.simple_request('FM_AHR_STATUS',[ ses(), row.my.ahr.id() ],
-										function(status_req) {
-											try {
-												var status_robj = status_req.getResultObject();
-												row.my.status = status_robj;
-												switch(row.my.ahr.hold_type()) {
-													case 'M' :
-														obj.network.request(
-															api.MODS_SLIM_METARECORD_RETRIEVE.app,
-															api.MODS_SLIM_METARECORD_RETRIEVE.method,
-															[ row.my.ahr.target() ],
-															function(mvr_req) {
-																row.my.mvr = mvr_req.getResultObject();
-																if ( row.my.ahr.current_copy() && ! row.my.acp) {
-																	obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-																		function(acp_req) {
-																			row.my.acp = acp_req.getResultObject();
-																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																		}
-																	);
-																} else {
-																	if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																}
-															}
-														);
-													break;
-													case 'T' :
-														obj.network.request(
-															api.MODS_SLIM_RECORD_RETRIEVE.app,
-															api.MODS_SLIM_RECORD_RETRIEVE.method,
-															[ row.my.ahr.target() ],
-															function(mvr_req) {
-																row.my.mvr = mvr_req.getResultObject();
-																if ( row.my.ahr.current_copy() && ! row.my.acp) {
-																	obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-																		function(acp_req) {
-																			row.my.acp = acp_req.getResultObject();
-																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																		}
-																	);
-																} else {
-																	if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																}
-	
-															}
-														);
-													break;
-													case 'V' :
-														row.my.acn = obj.network.simple_request( 'FM_ACN_RETRIEVE', [ row.my.ahr.target() ],
-															function(acn_req) {
-																row.my.acn = acn_req.getResultObject();
-																obj.network.request(
-																	api.MODS_SLIM_RECORD_RETRIEVE.app,
-																	api.MODS_SLIM_RECORD_RETRIEVE.method,
-																	[ row.my.acn.record() ],
-																	function(mvr_req) {
-																		try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
-																		if ( row.my.ahr.current_copy() && ! row.my.acp) {
-																			obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.current_copy() ],
-																				function(acp_req) {
-																					row.my.acp = acp_req.getResultObject();
-																					if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																				}
-																			);
-																		} else {
-																			if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																		}
-																	}
-																);
-															}
-														);
-													break;
-													case 'C' :
-														obj.network.simple_request( 'FM_ACP_RETRIEVE', [ row.my.ahr.target() ],
-															function(acp_req) {
-																row.my.acp = acp_req.getResultObject();
-																obj.network.simple_request( 'FM_ACN_RETRIEVE', [ typeof row.my.acp.call_number() == 'object' ? row.my.acp.call_number().id() : row.my.acp.call_number() ],
-																	function(acn_req) {
-																		row.my.acn = acn_req.getResultObject();
-																		obj.network.request(
-																			api.MODS_SLIM_RECORD_RETRIEVE.app,
-																			api.MODS_SLIM_RECORD_RETRIEVE.method,
-																			[ row.my.acn.record() ],
-																			function(mvr_req) {
-																				try { row.my.mvr = mvr_req.getResultObject(); } catch(E) {}
-																				if (typeof params.on_retrieve == 'function') { params.on_retrieve(row); }
-																			}
-																		);
-																	}
-																);
-															}
-														);
-													break;
-												}
-											} catch(E) {
-												obj.error.standard_unexpected_error_alert('Error retrieving status for hold #' + row.my.hold_id, E);
-											}
-										}
-									);
-								} catch(E) {
-									obj.error.standard_unexpected_error_alert('Error retrieving hold #' + row.my.hold_id, E);
-								}
-							}
-						);
-						*/
 					} catch(E) {
 						obj.error.sdump('D_ERROR','retrieve_row: ' + E );
 					}
@@ -438,7 +320,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve(true);
+									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -496,7 +378,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve(true);
+									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -538,7 +420,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve(true);
+									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -579,7 +461,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve(true);
+									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -624,7 +506,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve(true);
+									obj.clear_and_retrieve(true);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -669,7 +551,7 @@ patron.holds.prototype = {
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
                                     }
-                                    obj.retrieve(true);
+									obj.clear_and_retrieve(true);
                                 }
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely modified.',E);
@@ -689,7 +571,7 @@ patron.holds.prototype = {
 										var robj = obj.network.simple_request('FM_AHR_RESET',[ ses(), obj.retrieve_ids[i].id]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
-									obj.retrieve();
+									obj.clear_and_retrieve();
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely reset.',E);
@@ -739,7 +621,7 @@ patron.holds.prototype = {
                                             }
                                         }
                                     }
-									obj.retrieve();
+									obj.clear_and_retrieve();
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('Holds not likely cancelled.',E);
@@ -816,23 +698,75 @@ patron.holds.prototype = {
 							}
 						}
 					],
+                    'fetch_more' : [
+                        ['command'],
+                        function() {
+                            obj.pull_from_shelf_interface.current.offset += obj.pull_from_shelf_interface.current.limit;
+                            obj.retrieve();
+                        }
+                    ],
+                    'lib_filter_checkbox' : [
+                        ['command'],
+                        function(ev) {
+                            var x_lib_type_menu = document.getElementById('lib_type_menu');
+                            if (x_lib_type_menu) x_lib_type_menu.disabled = ! ev.target.checked;
+                            if (obj.controller.view.lib_menu) obj.controller.view.lib_menu.disabled = ! ev.target.checked;
+                            obj.clear_and_retrieve();
+                            ev.target.setAttribute('checked',ev.target.checked);
+                        }
+                    ]
 				}
 			}
 		);
         
         obj.determine_hold_interface_type();
-		obj.controller.render();
-		obj.retrieve();
+        var x_fetch_more = document.getElementById('fetch_more');
+        var x_lib_type_menu = document.getElementById('lib_type_menu');
+        var x_lib_menu_placeholder = document.getElementById('lib_menu_placeholder');
+        var x_lib_filter_checkbox = document.getElementById('lib_filter_checkbox');
+        switch(obj.hold_interface_type) {
+            case 'shelf':
+                obj.render_lib_menus({'pickup_lib':true});
+                if (x_lib_type_menu) x_lib_type_menu.hidden = false;
+                if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
+            break;
+            case 'pull' :
+                if (x_fetch_more) x_fetch_more.hidden = false;
+                if (x_lib_type_menu) x_lib_type_menu.hidden = true;
+                if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
+            break;
+            case 'record' :
+                obj.render_lib_menus({'pickup_lib':true,'request_lib':true});
+                if (x_lib_filter_checkbox) x_lib_filter_checkbox.hidden = false;
+                if (x_lib_type_menu) x_lib_type_menu.hidden = false;
+                if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
+            break;
+            default:
+                if (x_fetch_more) x_fetch_more.hidden = true;
+                if (x_lib_type_menu) x_lib_type_menu.hidden = true;
+                if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
+            break;
+        }
+        setTimeout( // We do this because render_lib_menus above creates and appends a DOM node, but until this thread exits, it doesn't really happen
+            function() {
+                if (x_lib_filter_checkbox) if (!x_lib_filter_checkbox.checked) {
+                    if (x_lib_type_menu) x_lib_type_menu.disabled = true;
+                    if (obj.controller.view.lib_menu) obj.controller.view.lib_menu.disabled = true;
+                }
+                obj.controller.render();
+                obj.retrieve();
 
-		obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
-		obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
-		obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
-		obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+                obj.controller.view.cmd_retrieve_patron.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
+                obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
+                obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
+                obj.controller.view.cmd_show_catalog.setAttribute('disabled','true');
+            }, 0
+        );
 	},
 
     'determine_hold_interface_type' : function() {
@@ -850,10 +784,16 @@ patron.holds.prototype = {
 		}
     },
 
+    'clear_and_retrieve' : function(dont_show_me_the_list_change) {
+        this.list.clear();
+        this.pull_from_shelf_interface.current.offset = this.pull_from_shelf_interface.default.offset;
+        this.retrieve(dont_show_me_the_list_change);
+    },
+
 	'retrieve' : function(dont_show_me_the_list_change) {
-		var obj = this;
+		var obj = this; var holds = [];
 		if (window.xulG && window.xulG.holds) {
-			obj.holds = window.xulG.holds;
+			holds = window.xulG.holds;
 		} else {
 			var method; var params = [ ses() ];
             switch(obj.hold_interface_type) {
@@ -865,34 +805,57 @@ patron.holds.prototype = {
                 case 'record' :
 				    method = 'FM_AHR_RETRIEVE_ALL_VIA_BRE'; 
     				params.push( obj.docid ); 
+                    var x_lib_filter = document.getElementById('lib_filter_checkbox');
+                    var x_lib_type_menu = document.getElementById('lib_type_menu');
+                    if (x_lib_filter) {
+                        if (x_lib_filter.checked) {
+                            if (x_lib_type_menu && obj.controller.view.lib_menu) {
+                                var x = {};
+                                x[ x_lib_type_menu.value ] = obj.controller.view.lib_menu.value;
+                                params.push( x );
+                            } else { alert('3'); }
+                        } else { alert('2'); }
+                    } else { alert('1'); }
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
                 case 'shelf' : 
 				    method = 'FM_AHR_ID_LIST_ONSHELF_RETRIEVE';
-                    params.push( obj.foreign_shelf || obj.data.list.au[0].ws_ou() ); 
+                    params.push( obj.filter_lib || obj.data.list.au[0].ws_ou() ); 
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
-    				obj.render_lib_menus({'pickup_lib':true});
                 break;
                 case 'pull' : 
                 default:
 				    method = 'FM_AHR_ID_LIST_PULL_LIST'; 
-    				params.push( 50 ); params.push( 0 );
+    				params.push( obj.pull_from_shelf_interface.current.limit ); params.push( obj.pull_from_shelf_interface.current.offset );
 				    //obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
 			}
 			var robj = obj.network.simple_request( method, params );
 			if (typeof robj.ilsevent != 'undefined') throw(robj);
 			if (method == 'FM_AHR_RETRIEVE_ALL_VIA_BRE') {
-				obj.holds = [];
-				obj.holds = obj.holds.concat( robj.copy_holds );
-				obj.holds = obj.holds.concat( robj.volume_holds );
-				obj.holds = obj.holds.concat( robj.title_holds );
-				obj.holds = obj.holds.sort();
+				holds = [];
+				holds = holds.concat( robj.copy_holds );
+				holds = holds.concat( robj.volume_holds );
+				holds = holds.concat( robj.title_holds );
+				holds = holds.sort();
 			} else {
-				obj.holds = robj;
+				holds = robj;
 			}
 			//alert('method = ' + method + ' params = ' + js2JSON(params));
 		}
+
+        var x_fetch_more = document.getElementById('fetch_more');
+        if (holds.length == 0) {
+            if (x_fetch_more) x_fetch_more.disabled = true;
+        } else {
+            if (x_fetch_more) x_fetch_more.disabled = false;
+            obj.render(holds,dont_show_me_the_list_change);
+        }
+
+    },
+
+    'render' : function(holds,dont_show_me_the_list_change) {
+        var obj = this;
 
 		function list_append(hold_id) {
 			obj.list.append(
@@ -911,32 +874,23 @@ patron.holds.prototype = {
 				if (typeof obj.controller.view.lib_menu == 'undefined') {
 					list_append(typeof hold == 'object' ? hold.id() : hold);
 				} else {
-					/*
-					var pickup_lib = hold.pickup_lib();
-					if (typeof pickup_lib == 'object') pickup_lib = pickup_lib.id();
-					if (pickup_lib == obj.controller.view.lib_menu.value) {
-					*/
-						list_append(typeof hold == 'object' ? hold.id() : hold);
-					/*
-					}
-					*/
+					list_append(typeof hold == 'object' ? hold.id() : hold);
 				}
 			};
 		}
 
-		obj.list.clear();
+		//obj.list.clear();
 
-		//alert('obj.holds = ' + js2JSON(obj.holds));
 		JSAN.use('util.exec'); var exec = new util.exec(2);
 		var rows = [];
-		for (var i in obj.holds) {
-			rows.push( gen_list_append(obj.holds[i]) );
+		for (var i in holds) {
+			rows.push( gen_list_append(holds[i]) );
 		}
 		exec.chain( rows );
 	
 		if (!dont_show_me_the_list_change) {
 			if (window.xulG && typeof window.xulG.on_list_change == 'function') {
-				try { window.xulG.on_list_change(obj.holds); } catch(E) { this.error.sdump('D_ERROR',E); }
+				try { window.xulG.on_list_change(holds); } catch(E) { this.error.sdump('D_ERROR',E); }
 			}
 		}
 	},
@@ -948,73 +902,35 @@ patron.holds.prototype = {
 
             var x = document.getElementById('lib_type_menu');
             if (types) {
-                x.hidden = false;
                 var nodes = x.firstChild.childNodes;
                 for (var i = 0; i < nodes.length; i++) nodes[i].hidden = true;
                 for (var i in types) document.getElementById(i).hidden = false;
-            } else {
-                x.hidden = true;
             }
+            x.setAttribute('oncommand','g.holds.clear_and_retrieve()');
 
 			x = document.getElementById('lib_menu_placeholder');
-            x.hidden = types ? false : true;
-			if (x.firstChild) return;
 			util.widgets.remove_children( x );
 
-			var ml = util.widgets.make_menulist( 
-				util.functional.map_list( 
-					obj.data.list.my_aou.concat(
-						util.functional.filter_list(
-							util.fm_utils.find_ou(
-								obj.data.tree.aou,
-								obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ].parent_ou()
-							).children(),
-							function(o) {
-								return o.id() != obj.data.list.au[0].ws_ou();
-							}
-						)
-					),
-					function(o) { return [ 
-						o.shortname(), 
-						o.id(), 
-						( ! get_bool( obj.data.hash.aout[ o.ou_type() ].can_have_users() ) ),
-						( obj.data.hash.aout[ o.ou_type() ].depth() ),
-					]; }
-				).sort(
-					function( a, b ) {
-						var A = obj.data.hash.aou[ a[1] ];
-						var B = obj.data.hash.aou[ b[1] ];
-						var X = obj.data.hash.aout[ A.ou_type() ];
-						var Y = obj.data.hash.aout[ B.ou_type() ];
-						if (X.depth() < Y.depth()) return -1;
-						if (X.depth() > Y.depth()) return 1;
-						if (A.shortname() < B.shortname()) return -1;
-						if (A.shortname() > B.shortname()) return 1;
-						return 0;
-					}
-				),
-				obj.data.list.au[0].ws_ou()
-			);
-			x.appendChild( ml );
-			ml.addEventListener(
-				'command',
-				function(ev) {
-					/*
-					obj.list.on_all_fleshed = function() {
-						obj.list.clear();
-						obj.foreign_shelf = ev.target.value;
-						obj.retrieve();
-						setTimeout( function() { obj.list.on_all_fleshed = null; }, 0);
-					};
-					obj.list.full_retrieve();
-					*/
-					obj.list.clear();
-					obj.foreign_shelf = ev.target.value;
-					obj.retrieve();
-				},
-				false
-			);
-			obj.controller.view.lib_menu = ml;
+            JSAN.use('util.file');
+			var file = new util.file('offline_ou_list'); 
+			if (file._file.exists()) {
+				var list_data = file.get_object(); file.close();
+				var ml = util.widgets.make_menulist( list_data[0], obj.data.list.au[0].ws_ou() );
+                ml.setAttribute('id','lib_menu');
+                x.appendChild( ml );
+    			ml.addEventListener(
+    				'command',
+    				function(ev) {
+    					obj.filter_lib = ev.target.value;
+    					obj.clear_and_retrieve();
+    				},
+    				false
+    			);
+    			obj.controller.view.lib_menu = ml;
+			} else {
+				throw('Missing library list.\n');
+			}
+
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('rendering lib menu',E);
 		}
