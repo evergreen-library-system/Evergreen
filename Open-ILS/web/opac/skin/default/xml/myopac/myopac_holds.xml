@@ -89,7 +89,7 @@
 					<a href='javascript:void(0);' 
 						name='myopac_holds_edit_link' class='classic_link'>&myopac.holds.edit;</a>
 					<a href='javascript:void(0);' 
-						name='myopac_holds_cancel_link' class='classic_link'></a>
+						name='myopac_holds_cancel_link' class='classic_link'>&myopac.holds.cancel;</a>
 				</td>
 
 			</tr>
