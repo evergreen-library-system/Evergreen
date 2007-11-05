@@ -819,9 +819,9 @@ patron.holds.prototype = {
                                 var x = {};
                                 x[ x_lib_type_menu.value ] = obj.controller.view.lib_menu.value;
                                 params.push( x );
-                            } else { alert('3'); }
-                        } else { alert('2'); }
-                    } else { alert('1'); }
+                            }
+                        }
+                    }
     				obj.controller.view.cmd_retrieve_patron.setAttribute('hidden','false');
                 break;
                 case 'shelf' : 
