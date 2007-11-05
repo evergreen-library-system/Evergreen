@@ -168,6 +168,7 @@ cgi-bootstrap:
 	cp $(TMP)/cgi-bin/*cgi $(CGIDIR)
 	cp -r cgi-bin/support $(CGIDIR)
 	cp cgi-bin/setup.pl $(ETCDIR)/live-db-setup.pl
+	chmod 755 $(CGIDIR)/*cgi
 
 storage-bootstrap:
 	@echo $@

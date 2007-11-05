@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use strict;
+# vim:noet:ts=4
 
 use DateTime;
 use OpenILS::Application::Storage;
@@ -106,6 +107,8 @@ Content-type: text/html
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="Thu, 01 Dec 2000 16:00:00 GMT" />
 	<style>
 		table.table_class {
 			border: dashed lightgrey 1px;
