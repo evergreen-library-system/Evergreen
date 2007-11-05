@@ -1794,11 +1794,8 @@ sub postfilter_search_multi_class_fts {
 							AND br.deleted IS FALSE
 							AND cn.deleted IS FALSE
 							AND cp.call_number = cn.id
-							AND (	cn.owning_lib = d.id
-								OR (	cp.circ_lib = d.id
-									AND cp.deleted IS FALSE
-								)
-							)
+							AND cp.circ_lib = d.id
+							AND cp.deleted IS FALSE
 							$avail_filter
 						  LIMIT 1
 					)
@@ -2235,17 +2232,15 @@ sub biblio_search_multi_class_fts {
 			  FROM	($select) s
 			  	LEFT OUTER JOIN $source_table src ON (s.source = src.id)
 			  WHERE	EXISTS (
-			  	SELECT	1
-				  FROM	$asset_call_number_table cn,
-					$asset_copy_table cp,
-					$descendants d
-				  WHERE	cn.record = s.id
-					AND cp.call_number = cn.id
-					AND cn.deleted IS FALSE
-					AND (	cn.owning_lib = d.id
-						OR (	cp.circ_lib = d.id
-							AND cp.deleted IS FALSE
-						)
+    			  	SELECT	1
+	    			  FROM	$asset_call_number_table cn,
+		    			$asset_copy_table cp,
+			    		$descendants d
+				      WHERE	cn.record = s.id
+    					AND cp.call_number = cn.id
+	    				AND cn.deleted IS FALSE
+		    			AND cp.circ_lib = d.id
+			    		AND cp.deleted IS FALSE
 					)
 					$avail_filter
 				  LIMIT 1
