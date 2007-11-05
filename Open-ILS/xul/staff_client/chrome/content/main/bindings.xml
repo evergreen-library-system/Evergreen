@@ -152,20 +152,13 @@
 							var these = [ str ].concat(params);
 							var v = this.sprintf.apply(this,these);
 
-							// The standard set of replacables
-							v = v.replace(/\\\\/g, '\\');
-							v = v.replace(/\\b/g, '\b');
-							v = v.replace(/\\f/g, '\f');
-							v = v.replace(/\\r/g, '\r');
-							v = v.replace(/\\t/g, '\t');
-							v = v.replace(/\\v/g, '\v');
-							v = v.replace(/\\n/g, '\n');
-
 							// replace unicode escapes
+/*
 							v = v.replace(
 								/\\u([0-9a-f]{4})/gi,
 								function (r,s) { return String.fromCharCode(s); }
 							);
+*/
 
 							return v;
 						} catch(e) {
