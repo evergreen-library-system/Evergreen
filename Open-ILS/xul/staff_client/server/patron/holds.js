@@ -317,6 +317,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -375,6 +376,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -417,6 +419,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.phone_notify(  phone ); hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -458,6 +461,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.email_notify(  email ); hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -503,6 +507,7 @@ patron.holds.prototype = {
 											hold.thaw_date( null );
 										}
 										hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -548,6 +553,7 @@ patron.holds.prototype = {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
+                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
                                     }
