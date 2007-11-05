@@ -244,7 +244,7 @@
 							}
 
 							var a = arguments, i = 0, format = a[i++];
-							return format.replace(this.regex, function(substring, valueIndex, flags, minWidth, _, precision, type) {
+							return format.replace(/%%|%(\d+\$)?([-+#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuidfegEGS])/g, function(substring, valueIndex, flags, minWidth, _, precision, type) {
 								if (substring == '%%') return '%';
 
 								// parse flags
@@ -327,7 +327,6 @@
 								}
 								});
 						}
-						this.sprintf.regex = /%%|%(\d+\$)?([-+#0 ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([scboxXuidfegEG])/g;
 					} catch(e) {
 						alert("*** Failed to load sprintf library: " + e + "\n");
 						throw(e);
