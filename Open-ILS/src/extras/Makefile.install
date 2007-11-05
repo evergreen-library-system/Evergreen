@@ -92,7 +92,10 @@ DEBS =  \
     apache2-mpm-prefork\
     apache2-prefork-dev\
     libapache2-mod-perl2\
-    libreadline5-dev
+    libreadline5-dev\
+	libtext-csv-perl\
+	libspreadsheet-writeexcel-perl\
+	libtie-ixhash-perl
 
 
 
@@ -128,7 +131,10 @@ GENTOOS = \
     dev-perl/Net-Jabber\
     dev-perl/libwww-perl\
     dev-perl/Template-Toolkit\
-    dev-perl/Error
+    dev-perl/Error\
+	dev-perl/Text-CSV_XS\
+	dev-perl/Spreadsheet-WriteExcel\
+	dev-perl/Tie-IxHash
 
 GENTOO_RC = \
     ejabberd\
