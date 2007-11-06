@@ -2098,7 +2098,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
         	        char* tname = osrfHashGet(idlClass, "tablename");
 
-	    		    buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s )", tname, fname, cname, pkey, locale, cname, fname);
+	    		    buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s ) AS %s", tname, fname, cname, pkey, locale, cname, fname, fname);
                 } else {
 			        buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
                 }
