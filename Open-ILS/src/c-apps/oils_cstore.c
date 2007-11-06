@@ -1594,6 +1594,8 @@ char* SELECT (
 		/* OFFSET   */ jsonObject* offset,
 		/* flags    */ int flags
 ) {
+	char* locale = osrf_message_get_last_locale();
+
 	// in case we don't get a select list
 	jsonObject* defaultselhash = NULL;
 
@@ -1741,7 +1743,20 @@ char* SELECT (
 					buffer_add(select_buf, ",");
 				}
 
-				buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+                if (locale) {
+            		char* i18n = osrfHashGet(field, "i18n");
+
+    	    		if ( i18n && !strncasecmp("true", i18n, 4)) {
+        	            char* pkey = osrfHashGet(idlClass, "primarykey");
+        	            char* tname = osrfHashGet(idlClass, "tablename");
+
+    	    		    buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s ) AS %s", tname, fname, cname, pkey, locale, cname, __column, __column);
+                    } else {
+				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+                    }
+                } else {
+				    buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
+                }
 
 			// ... but it could be an object, in which case we check for a Field Transform
 			} else {
@@ -1770,7 +1785,20 @@ char* SELECT (
 					__column = searchFieldTransform(cname, field, selfield->item);
 					buffer_fadd(select_buf, " %s AS \"%s\"", __column, __alias);
 				} else {
-					buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+                    if (locale) {
+                		char* i18n = osrfHashGet(field, "i18n");
+
+    	        		if ( i18n && !strncasecmp("true", i18n, 4)) {
+        	                char* pkey = osrfHashGet(idlClass, "primarykey");
+        	                char* tname = osrfHashGet(idlClass, "tablename");
+
+    	    		        buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s ) AS %s", tname, fname, cname, pkey, locale, cname, fname, __alias);
+                        } else {
+					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+                        }
+                    } else {
+					    buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
+                    }
 				}
 			}
 
@@ -2022,6 +2050,8 @@ char* SELECT (
 
 char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
+	char* locale = osrf_message_get_last_locale();
+
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
 
@@ -2081,7 +2111,6 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 		while ( (node = jsonObjectIteratorNext( select_itr )) ) {
 			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
 			char* fname = osrfHashGet(field, "name");
-			char* locale = osrf_message_get_last_locale();
 
 			if (!field) continue;
 
