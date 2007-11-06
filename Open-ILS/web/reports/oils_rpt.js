@@ -162,7 +162,7 @@ oilsReport.prototype.__gatherTemplateParams = function(arr, type) {
 		var key = node[op];
 
         /** if this is a dynamic param, skip it */
-        if( key && key.match(/::.*/) ) continue;
+        if( key && (key+'').match(/::.*/) ) continue;
 
 		_debug("template params: op = " + op + ", value = " + js2JSON(key));
 
