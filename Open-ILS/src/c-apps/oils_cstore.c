@@ -1746,6 +1746,8 @@ char* SELECT (
 
                 if (locale) {
             		char* i18n = osrfHashGet(field, "i18n");
+			        if (flags & DISABLE_I18N)
+                        i18n = NULL;
 
     	    		if ( i18n && !strncasecmp("true", i18n, 4)) {
         	            char* pkey = osrfHashGet(idlClass, "primarykey");
@@ -1788,7 +1790,7 @@ char* SELECT (
 				} else {
                     if (locale) {
                 		char* i18n = osrfHashGet(field, "i18n");
-			            if (flags & SELECT_DISTINCT)
+			            if (flags & DISABLE_I18N)
                             i18n = NULL;
 
     	        		if ( i18n && !strncasecmp("true", i18n, 4)) {
