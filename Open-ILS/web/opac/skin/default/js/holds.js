@@ -621,6 +621,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 function holdsBuildOrgSelector(node) {
 
 	if(!node) node = globalOrgTree;
+    if(!isTrue(node.opac_visible())) return;
 
 	var selector = $('holds_org_selector');
 	var index = selector.options.length;
