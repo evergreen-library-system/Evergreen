@@ -28,6 +28,15 @@ COMMENT ON SCHEMA config IS $$
  */
 $$;
 
+CREATE TABLE config.i18n_core (
+    id              BIGSERIAL   PRIMARY KEY,
+    fq_field        TEXT        NOT NULL,
+    identity_value  TEXT        NOT NULL,
+    translation     TEXT        NOT NULL,
+    string          TEXT        NOT NULL
+);
+
+CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

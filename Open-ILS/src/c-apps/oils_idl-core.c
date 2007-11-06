@@ -142,6 +142,15 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 						}
 
 						string_tmp = NULL;
+						if( (string_tmp = (char*)xmlGetNsProp(_f, BAD_CAST "i18n", BAD_CAST PERSIST_NS)) ) {
+							osrfHashSet(
+								_tmp,
+								strdup( string_tmp ),
+								"i18n"
+							);
+						}
+
+						string_tmp = NULL;
 						if( (string_tmp = (char*)xmlGetNsProp(_f, BAD_CAST "virtual", BAD_CAST PERSIST_NS)) ) {
 							osrfHashSet(
 								_tmp,

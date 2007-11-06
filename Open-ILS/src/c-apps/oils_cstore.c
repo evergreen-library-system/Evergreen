@@ -1,5 +1,6 @@
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
+#include "opensrf/osrf_message.h"
 #include "opensrf/utils.h"
 #include "objson/object.h"
 #include "opensrf/log.h"
@@ -2080,6 +2081,7 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 		while ( (node = jsonObjectIteratorNext( select_itr )) ) {
 			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
 			char* fname = osrfHashGet(field, "name");
+			char* locale = osrf_message_get_last_locale();
 
 			if (!field) continue;
 
@@ -2089,7 +2091,20 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 				buffer_add(select_buf, ",");
 			}
 
-			buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
+            if (locale) {
+        		char* i18n = osrfHashGet(field, "i18n");
+
+    			if ( i18n && !strncasecmp("true", i18n, 4)) {
+        	        char* pkey = osrfHashGet(idlClass, "primarykey");
+        	        char* tname = osrfHashGet(idlClass, "tablename");
+
+	    		    buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s )", tname, fname, cname, pkey, locale, cname, fname);
+                } else {
+			        buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
+                }
+            } else {
+			    buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
+            }
 		}
 	}
 
