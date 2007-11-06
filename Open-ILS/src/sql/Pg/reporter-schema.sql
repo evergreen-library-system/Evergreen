@@ -206,5 +206,12 @@ SELECT	b.xact,
   FROM	money.payment b
   GROUP BY 1;
 
+CREATE OR REPLACE VIEW reporter.overdue_circs AS
+SELECT  *
+  FROM  "action".circulation
+  WHERE checkin_time is null
+        AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED') OR stop_fines IS NULL)
+        AND due_date < now();
+
 COMMIT;
 
