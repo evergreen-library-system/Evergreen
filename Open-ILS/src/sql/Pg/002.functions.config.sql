@@ -47,8 +47,6 @@ DECLARE
     result      config.i18n_core%ROWTYPE;
 BEGIN
 
-    RAISE NOTICE '%', locale;
-
     SELECT  * INTO result
       FROM  config.i18n_core
       WHERE fq_field = keyfield
