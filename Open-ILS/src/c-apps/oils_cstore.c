@@ -1595,7 +1595,7 @@ char* SELECT (
 		/* OFFSET   */ jsonObject* offset,
 		/* flags    */ int flags
 ) {
-	char* locale = osrf_message_get_last_locale();
+	const char* locale = osrf_message_get_last_locale();
 
 	// in case we don't get a select list
 	jsonObject* defaultselhash = NULL;
@@ -2055,7 +2055,7 @@ char* SELECT (
 
 char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
 
-	char* locale = osrf_message_get_last_locale();
+	const char* locale = osrf_message_get_last_locale();
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
 	char* core_class = osrfHashGet(meta, "classname");
