@@ -1792,7 +1792,7 @@ char* SELECT (
         	                char* pkey = osrfHashGet(idlClass, "primarykey");
         	                char* tname = osrfHashGet(idlClass, "tablename");
 
-    	    		        buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s ) AS %s", tname, fname, cname, pkey, locale, cname, fname, __alias);
+    	    		        buffer_fadd(select_buf, " COALESCE( oils_i18n_xlate('%s.%s', \"%s\".%s::TEXT, '%s'), \"%s\".%s ) AS \"%s\"", tname, fname, cname, pkey, locale, cname, fname, __alias);
                         } else {
 					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
                         }
