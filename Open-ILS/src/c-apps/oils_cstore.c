@@ -18,6 +18,7 @@
 #  define MODULENAME "open-ils.cstore"
 #endif
 
+#define DISABLE_I18N	2
 #define SELECT_DISTINCT	1
 #define AND_OP_JOIN     0
 #define OR_OP_JOIN      1
@@ -1787,6 +1788,8 @@ char* SELECT (
 				} else {
                     if (locale) {
                 		char* i18n = osrfHashGet(field, "i18n");
+			            if (flags & SELECT_DISTINCT)
+                            i18n = NULL;
 
     	        		if ( i18n && !strncasecmp("true", i18n, 4)) {
         	                char* pkey = osrfHashGet(idlClass, "primarykey");
@@ -2122,6 +2125,8 @@ char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* m
 
             if (locale) {
         		char* i18n = osrfHashGet(field, "i18n");
+	            if (jsonBoolIsTrue(jsonObjectGetKey( order_hash, "no_i18n" )))
+                    i18n = NULL;
 
     			if ( i18n && !strncasecmp("true", i18n, 4)) {
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
@@ -2312,6 +2317,14 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	jsonObject* hash = jsonObjectGetIndex(ctx->params, 0);
 
+    int flags = 0;
+
+	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )))
+         flags |= SELECT_DISTINCT;
+
+	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "no_i18n" )))
+         flags |= DISABLE_I18N;
+
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
 	char* sql = SELECT(
 			ctx,
@@ -2321,7 +2334,7 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			jsonObjectGetKey( hash, "order_by" ),
 			jsonObjectGetKey( hash, "limit" ),
 			jsonObjectGetKey( hash, "offset" ),
-			jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )) ? SELECT_DISTINCT : 0
+			flags
 	);
 
 	if (!sql) {
