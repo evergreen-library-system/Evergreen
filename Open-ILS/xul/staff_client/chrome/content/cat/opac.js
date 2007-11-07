@@ -230,18 +230,18 @@ function mark_for_overlay() {
 	g.data.marked_record = docid;
 	g.data.stash('marked_record');
 }
-/*	
+
 function delete_record() {
-	if (g.error.yns_alert('Are you sure you want to delete title record #' + docid + ' from the catalog?','title','butn 1','butn 2','butn 3','checkbox') == 1) {
+	if (g.error.yns_alert('Are you sure you want to delete title record #' + docid + ' from the catalog?','Delete Record','Delete','Cancel',null,'Check here to confirm this action.') == 0) {
 		var robj = g.network.simple_request('FM_BRE_DELETE',[ses(),docid]);
 		if (typeof robj.ilsevent != 'undefined') {
-			alert('Error deleting Record #' + docid + ' : ' + robj.textcode + ' : ' + robj.desc + '\n';
+			alert('Error deleting Record #' + docid + ' : ' + robj.textcode + ' : ' + robj.desc + '\n');
 		} else {
 			alert('Record deleted.'); refresh_display(docid,true);
 		}
 	}
 }
-*/
+
 function refresh_display(id,reset) {
 	try { 
 		while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
