@@ -31,9 +31,7 @@
             } catch(ee) {}
         }
     </script>
-	<center>
 		<!--#include virtual='../footer.xml'-->
-	</center>
 </body>
 
 

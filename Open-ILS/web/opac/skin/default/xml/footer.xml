@@ -1,15 +1,5 @@
-<div
-	style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
-	<center id='copyright_block'>
-		<style>
-			.footer_link {
-				margin-left: 10px; 
-				margin-right: 10px;
-			}
-		</style>
-
-		<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
-
+<div id='copyright_block'>
+		<div id='footer_links'>
 				<span class='footer_link'>
 					<a class='classic_link'
 						href='/opac/<!--#echo var="locale"-->/extras/slimpac/start.html'>&opac.basic;</a>
@@ -31,16 +21,14 @@
 				</span>
 				<span> | </span>
 				<span class='footer_link'>
-					<a target='' class='classic_link' id='eg_gal_link'
+					<a target='_blank' class='classic_link' id='eg_gal_link'
 						href='&footer.union.url;'>&footer.union;</a>
 				</span>
-				<br/>
-				<div style='margin-top: 4px; font-size: 7pt;'>
-					<span>&footer.copyright;</span>
-				</div>
 		</div>
-        <div>&footer.logo;
+        <div id='copyright_text'>
+            <span>&footer.copyright;</span>
+        </div>
+        <div id='footer_logo'>&footer.logo;
             <a href='http://open-ils.org'><img style='border:none;' src='../../../../images/eg_tiny_logo.jpg'/></a>
         </div>
-	</center>
 </div>

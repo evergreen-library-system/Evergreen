@@ -203,11 +203,42 @@ table { border-collapse: collapse; }
 
 .copy_more_info { padding-left: 6px; color: #804070; }
 
-
 .invalid_hold { background: #F0F0D0; }
 .myopac_summary_table td { padding : 3px; }
 
 .jacket_attrib { font-size: 7pt; }
 
+/* block that contains footer links and copyright */
+#copyright_block { 
+    width: 100%; 
+    text-align: center; 
+    vertical-align: bottom; 
+    margin-top: 10px;
+}
+
+/* block that contains the footer links */
+#footer_links {
+    width: 80%;
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+}
+
+/* span for each link in the footer */
+.footer-link {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* block that contains the copyright text */
+#copyright_text {
+    margin-top: 4px;
+}
+
+/* block that contains the logo */
+#footer_logo {
+    text-align: center;
+    margin: auto;
+}
 
 
