@@ -8,6 +8,7 @@ JAVA_LIBS = .:$(JAVA_LIBDIR):$(OSRF_JAVA):$(EXT)/json-jdk1.5-2007-05-01.jar:$(EX
 JAVA_SRC = \
 	org/open_ils/*.java\
 	org/open_ils/idl/*.java\
+	org/open_ils/util/*.java\
 	org/open_ils/test/*.java
 
 all:	jar
