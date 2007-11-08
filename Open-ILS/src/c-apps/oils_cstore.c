@@ -1140,10 +1140,37 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKey( node, "transform" ) );
 
-	if (field_transform)
-		buffer_fadd( sql_buf, "%s(\"%s\".%s)", field_transform, class, osrfHashGet(field, "name"));
-	else
+	if (field_transform) {
+		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
+	    jsonObject* array = jsonObjectGetKey( node, "params" );
+
+        if (array) {
+        	jsonObject* func_item;
+        	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
+
+	        	val = jsonObjectToSimpleString(func_item);
+
+       		    if ( dbi_conn_quote_string(dbhandle, &val) ) {
+	    		    buffer_fadd( sql_buf, ",%s", val );
+    		    	free(val);
+        		} else {
+	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
+		        	free(val);
+		    	    free(field_transform);
+        			buffer_free(sql_buf);
+	        		return NULL;
+    	    	}
+    	    }
+
+        	buffer_add(
+	        	sql_buf,
+		        " )"
+        	);
+        }
+ 
+	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
+    }
 
 	char* pred = buffer_data(sql_buf);
 	buffer_free(sql_buf);
