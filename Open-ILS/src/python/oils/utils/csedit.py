@@ -23,133 +23,153 @@ import re
 ACTIONS = ['create', 'retrieve', 'update', 'delete', 'search']
 
 class CSEditor(object):
-   def __init__(self, **args):
+    def __init__(self, **args):
 
-      self.app = args.get('app', OILS_APP_CSTORE)
-      self.authtoken = args.get('authtoken', args.get('auth'))
-      self.requestor = args.get('requestor')
-      self.connect = args.get('connect')
-      self.xact = args.get('xact')
-      self.__session = None
+        self.app = args.get('app', OILS_APP_CSTORE)
+        self.authtoken = args.get('authtoken', args.get('auth'))
+        self.requestor = args.get('requestor')
+        self.connect = args.get('connect')
+        self.xact = args.get('xact')
+        self.__session = None
 
-   def die_event(self):
-      pass
-   def checkauth(self):
-      pass
+    def die_event(self):
+        pass
+    def checkauth(self):
+        pass
 
 
-   # -------------------------------------------------------------------------
-   # Creates a session if one does not already exist.  If necessary, connects
-   # to the remote service and starts a transaction
-   # -------------------------------------------------------------------------
-   def session(self, ses=None):
-      if not self.__session:
-         self.__session = osrfClientSession(self.app)
+    # -------------------------------------------------------------------------
+    # Creates a session if one does not already exist.  If necessary, connects
+    # to the remote service and starts a transaction
+    # -------------------------------------------------------------------------
+    def session(self, ses=None):
+        if not self.__session:
+            self.__session = osrfClientSession(self.app)
 
-         if self.connect or self.xact:
+        if self.connect or self.xact:
             self.log(osrfLogDebug,'connecting to ' + self.app)
             self.__session.connect() 
 
-         if self.xact:
+        if self.xact:
             self.log(osrfLogInfo, "starting new db transaction")
             self.request(self.app + '.transaction.begin')
 
-      return self.__session
+        return self.__session
    
 
-   # -------------------------------------------------------------------------
-   # Logs string with some meta info
-   # -------------------------------------------------------------------------
-   def log(self, func, string):
-      s = "editor[";
-      if self.xact: s += "1|"
-      else: s += "0|"
-      if self.requestor: s += str(self.requestor.id())
-      else: s += "0"
-      s += "]"
-      func("%s %s" % (s, string))
+    # -------------------------------------------------------------------------
+    # Logs string with some meta info
+    # -------------------------------------------------------------------------
+    def log(self, func, string):
+        s = "editor[";
+        if self.xact: s += "1|"
+        else: s += "0|"
+        if self.requestor: s += str(self.requestor.id())
+        else: s += "0"
+        s += "]"
+        func("%s %s" % (s, string))
 
 
-   # -------------------------------------------------------------------------
-   # Rolls back the existing db transaction
-   # -------------------------------------------------------------------------
-   def rollback(self):
-      if self.__session and self.xact:
-         self.log(osrfLogInfo, "rolling back db transaction")
-         self.request(self.app + '.transaction.rollback')
-         self.disconnect()
-         
-   # -------------------------------------------------------------------------
-   # Commits the existing db transaction
-   # -------------------------------------------------------------------------
-   def commit(self):
-      if self.__session and self.xact:
-         self.log(osrfLogInfo, "comitting db transaction")
-         self.request(self.app + '.transaction.commit')
-         self.disconnect()
+    # -------------------------------------------------------------------------
+    # Rolls back the existing db transaction
+    # -------------------------------------------------------------------------
+    def rollback(self):
+        if self.__session and self.xact:
+             self.log(osrfLogInfo, "rolling back db transaction")
+             self.request(self.app + '.transaction.rollback')
+             self.disconnect()
+             
+    # -------------------------------------------------------------------------
+    # Commits the existing db transaction
+    # -------------------------------------------------------------------------
+    def commit(self):
+        if self.__session and self.xact:
+            self.log(osrfLogInfo, "comitting db transaction")
+            self.request(self.app + '.transaction.commit')
+            self.disconnect()
 
 
-   # -------------------------------------------------------------------------
-   # Disconnects from the remote service
-   # -------------------------------------------------------------------------
-   def disconnect(self):
-      if self.__session:
-         self.__session.disconnect()
-         self.__session = None
+    # -------------------------------------------------------------------------
+    # Disconnects from the remote service
+    # -------------------------------------------------------------------------
+    def disconnect(self):
+        if self.__session:
+            self.__session.disconnect()
+            self.__session = None
 
 
-   # -------------------------------------------------------------------------
-   # Sends a request
-   # -------------------------------------------------------------------------
-   def request(self, method, params=[]):
+    # -------------------------------------------------------------------------
+    # Sends a request
+    # -------------------------------------------------------------------------
+    def request(self, method, params=[]):
 
-      # XXX improve param logging here
+        # XXX improve param logging here
 
-      self.log(osrfLogInfo, "request %s %s" % (method, str(params)))
+        self.log(osrfLogInfo, "request %s %s" % (method, str(params)))
 
-      if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
-         self.log(osrfLogErr, "csedit lost it's connection!")
+        if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
+            self.log(osrfLogErr, "csedit lost it's connection!")
 
-      val = None
+        val = None
 
-      try:
-         req = self.session().request2(method, params)
-         resp = req.recv()
-         val = resp.content()
+        try:
+            req = self.session().request2(method, params)
+            resp = req.recv()
+            val = resp.content()
 
-      except Exception, e:
-         self.log(osrfLogErr, "request error: %s" % str(e))
-         raise e
+        except Exception, e:
+            self.log(osrfLogErr, "request error: %s" % str(e))
+            raise e
 
-      return val
-
-
-   # -------------------------------------------------------------------------
-   # Returns true if our requestor is allowed to perform the request action
-   # 'org' defaults to the requestors ws_ou
-   # -------------------------------------------------------------------------
-   def allowed(self, perm, org=None):
-      pass
+        return val
 
 
-   def runMethod(self, action, type, arg, options={}):
+    # -------------------------------------------------------------------------
+    # Returns true if our requestor is allowed to perform the request action
+    # 'org' defaults to the requestors ws_ou
+    # -------------------------------------------------------------------------
+    def allowed(self, perm, org=None):
+        pass # XXX
 
-      method = "%s.direct.%s.%s" % (self.app, type, action)
 
-      if options.get('idlist'):
-         method = method.replace('search', 'id_list')
-         del options['idlist']
+    def runMethod(self, action, type, arg, options={}):
 
-      if action == 'search':
-         method = method.replace('$', '.atomic')
+        method = "%s.direct.%s.%s" % (self.app, type, action)
 
-      params = [arg];
-      if len(options.keys()):
-         params.append(options)
+        if options.get('idlist'):
+            method = method.replace('search', 'id_list')
+            del options['idlist']
 
-      val = self.request( method, params )
+        if action == 'search':
+            method = method.replace('$', '.atomic')
 
-      return val
+        params = [arg];
+        if len(options.keys()):
+            params.append(options)
+
+        val = self.request( method, params )
+
+        return val
+
+    def rawSearch(self, args):
+        method = "%s.json_query.atomic" % self.app
+        self.log(osrfLogDebug, "rawSearch args: %s" % str(args))
+        return self.request(method, [args])
+
+    def rawSearch2(self, hint, fields, where, from_=None):
+        if not from_:   
+            from_ = {'%s' % hint : {}}
+
+        args = {
+            'select' : { '%s' % hint : fields },
+            'from' : from_,
+            'where' : { "+%s" % hint : where }
+        }
+        return self.rawSearch(args)
+
+
+    def fieldSearch(self, hint, fields, where):
+        return self.rawSearch2(hint, fields, where)
 
 
 
@@ -157,18 +177,18 @@ class CSEditor(object):
 # Creates a class method for each action on each type of fieldmapper object
 # -------------------------------------------------------------------------
 def oilsLoadCSEditor():
-   obj = oilsGetIDLParser().IDLObject
+    obj = oilsGetIDLParser().IDLObject
 
-   for k, fm in obj.iteritems():
-      for action in ACTIONS:
+    for k, fm in obj.iteritems():
+        for action in ACTIONS:
 
-         fmname = fm['fieldmapper'].replace('::', '_')
-         type = fm['fieldmapper'].replace('::', '.')
-         name = "%s_%s" % (action, fmname)
+            fmname = fm['fieldmapper'].replace('::', '_')
+            type = fm['fieldmapper'].replace('::', '.')
+            name = "%s_%s" % (action, fmname)
 
-         str = 'def %s(self, arg, **options):\n' % name
-         str += '\treturn self.runMethod("%s", "%s", arg, dict(options))\n' % (action, type)
-         str += 'setattr(CSEditor, "%s", %s)' % (name, name)
+            str = 'def %s(self, arg, **options):\n' % name
+            str += '\treturn self.runMethod("%s", "%s", arg, dict(options))\n' % (action, type)
+            str += 'setattr(CSEditor, "%s", %s)' % (name, name)
 
-         exec(str)
+            exec(str)
 
