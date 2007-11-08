@@ -339,10 +339,15 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 			/* push data into the XML push parser */
 			if ( XML_Parse(ctx->parser, data, len, 0) == XML_STATUS_ERROR ) {
 
+                char tmp[len+1];
+                memcpy(tmp, data, len);
+                tmp[len] = '\0';
+
 				/* log and die on XML errors */
-				ap_log_rerror( APLOG_MARK, APLOG_ERR, 0, f->r, "XMLENT XML Parse Error: %s at line %d\n",
+				ap_log_rerror( APLOG_MARK, APLOG_ERR, 0, f->r, 
+                    "XMLENT XML Parse Error: %s at line %d: parsing %s: data %s",
 					XML_ErrorString(XML_GetErrorCode(ctx->parser)), 
-					(int) XML_GetCurrentLineNumber(ctx->parser));
+					(int) XML_GetCurrentLineNumber(ctx->parser), f->r->filename, tmp);
 
 				XML_ParserFree(parser);
 				parser = NULL;
