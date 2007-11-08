@@ -1149,14 +1149,12 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
         	jsonObject* func_item;
         	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
-	        	val = jsonObjectToSimpleString(func_item);
+	        	char* val = jsonObjectToSimpleString(func_item);
 
        		    if ( dbi_conn_quote_string(dbhandle, &val) ) {
 	    		    buffer_fadd( sql_buf, ",%s", val );
-    		    	free(val);
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
-		        	free(val);
 		    	    free(field_transform);
         			buffer_free(sql_buf);
 	        		return NULL;
