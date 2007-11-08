@@ -168,7 +168,7 @@
 
 	<!-- ============================================================================= -->
 	<!-- Our javascript -->
-	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar.js' />
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar.js'></script>
 
 	<script language='javascript' type='text/javascript'>
 		config.ids.sidebar = {};

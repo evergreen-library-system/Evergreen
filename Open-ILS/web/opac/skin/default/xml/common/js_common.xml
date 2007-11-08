@@ -1,20 +1,20 @@
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js' type='text/javascript'></script>
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js' type='text/javascript'></script>
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/OrgTree.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/org_utils.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js' type='text/javascript' />
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/OrgTree.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/org_utils.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js' type='text/javascript'></script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js' type='text/javascript'></script>
 
 	<!-- Some global js -->
 	<script language='javascript' type='text/javascript'>

@@ -1,7 +1,7 @@
 <div id='canvas_main' class='canvas hide_me'>
 
-	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/myopac.js' />
-    <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'/>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/myopac.js'></script>
+    <script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
 
 	<script language='javascript' type='text/javascript'> config.ids.altcanvas.myopac_reload = 'myopac_reloading'; </script>
 	<div id='myopac_reloading' class='hide_me canvas'> &common.loading; </div>

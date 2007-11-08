@@ -1,8 +1,8 @@
 <link rel="stylesheet" type="text/css"
     href='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-brown.css' title="win2k-cold-1" />
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js' />
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js' />
-<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js' />
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
 
 <div>
 	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>

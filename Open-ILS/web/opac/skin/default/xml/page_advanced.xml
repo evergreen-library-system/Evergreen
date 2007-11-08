@@ -1,6 +1,6 @@
 <div id='canvas_main' class='canvas' style='margin-top: 20px;'>
 
-	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/advanced.js' />
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/advanced.js'></script>
 
 	<style type='text/css'>
 		.advanced_div { text-align: center; margin: 8px; margin-left: 2px; width: 95%; padding: 5px; }
