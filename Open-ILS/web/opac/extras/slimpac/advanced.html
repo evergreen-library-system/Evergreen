@@ -32,9 +32,30 @@
 				height: 20px;
 			}
 
+			.footer {
+				width: 100%;
+				text-align: center;
+				vertical-align: bottom;
+				margin: auto;
+				margin-top: 20px;
+			}
+
+			.footer_links {
+				width: 60%;
+				text-align: center;
+				padding: 10px;
+				font-size: 8pt;
+				margin: auto;
+			}
+
 			.footer_link {
 				margin-left: 10px; 
 				margin-right: 10px;
+			}
+
+			.copyright {
+				margin-top: 4px;
+				font-size: 7pt;
 			}
 
 			.indent0 {
@@ -147,13 +168,15 @@
 
 		</form>
 
-		<div style='width: 100%; text-align:center; vertical-align: bottom; margin-top: 20px;'>
+		<div class="footer">
 			<center>
-			<div style='width: 60%; text-align:center; padding: 10px; font-size: 8pt;'>
+			<div class="footer_links">
 
 				<span class='footer_link'>
 					<a class='classic_link' href='/'>&slimpac.start.dynamic;</a>
 				</span> 
+
+				<span> | </span>
 
 				<span class='footer_link'>
 					<a class='classic_link' href='start.html'>&slimpac.start.title;</a>
@@ -183,7 +206,7 @@
 					<a target='' class='classic_link' id='eg_gal_link' href='&footer.union.url;'>&footer.union;</a>
 				</span>
 				<br/>
-				<div style='margin-top: 4px; font-size: 7pt;'>
+				<div class="copyright">
 					<span>&footer.copyright;</span>
 				</div>
 			</div>
