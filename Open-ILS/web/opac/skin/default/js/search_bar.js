@@ -43,9 +43,8 @@ function searchBarInit() {
 
     if( (limit = $('opac.result.limit2avail')) ) {
         if(getAvail()) limit.checked = true;
-        s = getSort()+'.'+getSortDir();
-        if(s.length > 1)
-            setSelector($('opac.result.filters'), s);
+        if(getSort() && getSortDir()) 
+            setSelector($('opac.result.sort'), getSort()+'.'+getSortDir());
     }
 }
 
@@ -76,7 +75,7 @@ function searchBarSubmit() {
 
     if($('opac.result.limit2avail')) {
         args[PARAM_AVAIL] = ($('opac.result.limit2avail').checked) ? 1 : '';
-        if( (val = getSelectorVal($('opac.result.filters'))) ) {
+        if( (val = getSelectorVal($('opac.result.sort'))) ) {
             args[PARAM_SORT] = val.split('.')[0]
             args[PARAM_SORT_DIR] = val.split('.')[1]
         }
