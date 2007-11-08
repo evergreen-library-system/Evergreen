@@ -6,8 +6,10 @@
 
 		<!-- for some reason, this is the only way i can force the cell widths -->
 		<thead id='result_thead'>
-			<td class='result_table_pic_header'></td>
-			<td> </td>
+			<tr>
+				<td class='result_table_pic_header'></td>
+				<td> </td>
+			</tr>
 		</thead>
 
 		<tbody id='result_table'>
@@ -69,47 +71,47 @@
 								<td name='result_table_format_cell' class='result_table_format_cell'>
 
 									<a name='text_link' class='search_link'> 
-										<img src='../../../../images/tor/text.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/text.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='sound recording-nonmusical_link' class='search_link'> 
-										<img src='../../../../images/tor/sound recording-nonmusical.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording-nonmusical.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='moving image_link' class='search_link'> 
-										<img src='../../../../images/tor/moving image.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/moving image.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='software, multimedia_link' class='search_link'> 
-										<img src='../../../../images/tor/software, multimedia.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/software, multimedia.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='sound recording-musical_link' class='search_link'> 
-										<img src='../../../../images/tor/sound recording-musical.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording-musical.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='cartographic_link' class='search_link'> 
-										<img src='../../../../images/tor/cartographic.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/cartographic.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='mixed material_link' class='search_link'> 
-										<img src='../../../../images/tor/mixed material.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/mixed material.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='notated music_link' class='search_link'> 
-										<img src='../../../../images/tor/notated music.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/notated music.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='sound recording_link' class='search_link'> 
-										<img src='../../../../images/tor/sound recording.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/sound recording.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='still image_link' class='search_link'> 
-										<img src='../../../../images/tor/still images.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/still images.jpg' class='dim tor_pic' />
 									</a>
 
 									<a name='three dimensional object_link' class='search_link'> 
-										<img src='../../../../images/tor/three dimensional object.jpg' class='dim tor_pic'> </img>
+										<img src='../../../../images/tor/three dimensional object.jpg' class='dim tor_pic' />
 									</a>
 
 									<span class='hide_me' 
@@ -163,11 +165,11 @@
 	               style='padding-left: 40px;' >
 	            <a class='search_page_nav_link' id='search_home_link2' 
 	               title="&rdetail.page.results;">&rdetail.start;</a><a class='search_page_nav_link' 
-	               id='prev_link2' title='&rdetail.page.previous;'>&lt;&lt;</a>
+	               id='prev_link2' title='&rdetail.page.previous;'>&#171;</a>
             
 	            <span class='search_page_nav_link' id='page_numbers2'> </span>
 	               <a  class='search_page_nav_link' id='next_link2' 
-	                  title='&rdetail.page.next;'>&gt;&gt;</a><a class='search_page_nav_link' 
+	                  title='&rdetail.page.next;'>&#187;</a><a class='search_page_nav_link' 
 	                  id='end_link2' title="&rdetail.page.last;">&rdetail.end;</a>
 	            </span>
                         
@@ -187,7 +189,7 @@
    <!-- ====================== -->
 
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.names.result.format_cell = 'result_table_format_cell';
 		config.names.result.format_link = 'resource_link'
 		config.names.result.format_pic = 'format_pic'

@@ -6,7 +6,7 @@
 		.adv_adv_link { font-size: 8pt; color: red; }
 	</style>
 
-	<script src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
 
 	<tr style='border-bottom: none;'>
 
@@ -19,7 +19,7 @@
 				</thead>
 				<tbody id='adv_global_tbody'>
 
-					<script language='javascript'>
+					<script language='javascript' type='text/javascript'>
 						config.ids.common.now_searching = 'now_searching_location';
 					</script>
 
@@ -52,7 +52,7 @@
 					<tr>
 						<td colspan='2' align='center'>
 							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+							<input id='adv_group_titles' type='checkbox' checked='checked' />
 						</td>
 					</tr>
 				</thead>
@@ -204,7 +204,7 @@
 					<tr>
 						<td colspan='2' align='center'>
 							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+							<input id='adv_group_titles' type='checkbox' checked='checked' />
 						</td>
 					</tr>
 				</thead>
@@ -227,7 +227,7 @@
 							<tbody>
 								<tr>
 
-                           <script>
+                           <script language='javascript' type='text/javascript'>
                               function __setsortsel() {
                                  var sel = $('adv_global_sort_by')
 										   if(sel.selectedIndex == 0) {
@@ -263,7 +263,7 @@
 									</td>
 
                            <!-- force the enable/disable sort dir code to run -->
-                           <script>__setsortsel();</script>
+                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
 
 									<td align='center'>
 										<!--#include virtual="../common/libselect.xml"-->
@@ -274,9 +274,9 @@
 									<td colspan='2' align='center'>
 										<span>&advanced.frbrize;</span>
 										<!--
-										<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
+										<input id='adv_group_titles' type='checkbox' checked='checked' />
 										-->
-										<input id='adv_group_titles' type='checkbox'> </input>
+										<input id='adv_group_titles' type='checkbox' />
 									</td>
 								</tr>
 							</tbody>

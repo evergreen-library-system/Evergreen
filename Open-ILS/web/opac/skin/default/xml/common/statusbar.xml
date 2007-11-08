@@ -16,7 +16,7 @@
 		</tbody>
 	</table>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.common.now_searching = 'now_searching_location';
 	</script>
 

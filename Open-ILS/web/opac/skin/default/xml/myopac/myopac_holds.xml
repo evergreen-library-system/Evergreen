@@ -1,7 +1,7 @@
 
 <div id='myopac_holds_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
 
 	<table width='100%'>
         <tbody><tr><td width='100%' align='right'>
@@ -13,7 +13,7 @@
                 <option value='cancel'>&myopac.holds.cancel_selected;</option>
             </select>
         </td></tr></tbody>
-        <script>$('myopac_holds_actions_none').selected = true;</script>
+        <script language='javascript' type='text/javascript'>$('myopac_holds_actions_none').selected = true;</script>
     </table>
 
     <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>

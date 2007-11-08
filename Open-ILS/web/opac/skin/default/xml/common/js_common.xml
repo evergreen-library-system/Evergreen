@@ -1,26 +1,23 @@
-<div>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js' type='text/javascript' />
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/utils.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/config.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/CGI.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/Cookies.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/md5.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js' type='text/javascript' />
 
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/slimtree.js'> </script>
-
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/OrgTree.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/org_utils.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js'> </script>
-	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js'> </script>
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/JSON_v1.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmcore.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/fmgen.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/opac_utils.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/OrgTree.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/org_utils.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js' type='text/javascript' />
+	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js' type='text/javascript' />
 
 	<!-- Some global js -->
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 
 		config.css.color_1 = "color_1";
 		config.css.color_2 = "color_2";
@@ -34,7 +31,3 @@
 		<!--#endif -->
 
 	</script>
-
-</div>
-
-

@@ -1,7 +1,7 @@
 
 <div id='canvas_main' class='canvas' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.result = {};
 		config.css.result = {};
 		config.names.result = {};

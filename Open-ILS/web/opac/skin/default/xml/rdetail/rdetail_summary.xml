@@ -59,7 +59,7 @@
 			<tr>
 				<td nowrap='nowrap' class='rdetail_desc'>&common.format;</td>			
 				<td class='rdetail_item'>
-					<img id='rdetail_tor_pic' class='tor_pic'> </img>
+					<img id='rdetail_tor_pic' class='tor_pic' />
 					<span id='rdetail_tor' style='padding-left: 5px;'> </span>
 				</td>
 			</tr>
@@ -82,7 +82,7 @@
 		<!-- unAPI URI goes here -->
 	</abbr>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.rdetail.details_body		= 'rdetail_details_body'; 
 		config.ids.rdetail.title				= 'rdetail_title';
 		config.ids.rdetail.author				= 'rdetail_author';

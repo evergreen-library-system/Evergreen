@@ -2,7 +2,7 @@
 <div id='myopac_checked_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
     <!--
-	<script language='javascript' src='<!||#echo var="OILS_JS_BASE"||>/Date.W3CDTF.js'/>
+	<script language='javascript' type='text/javascript' src='<!||#echo var="OILS_JS_BASE"||>/Date.W3CDTF.js'/>
     -->
 
    <table width='100%'><tbody>

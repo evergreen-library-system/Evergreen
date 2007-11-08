@@ -4,12 +4,12 @@
 	xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<!-- load my js -->
-	<script language='javascript' 
+	<script language='javascript' type='text/javascript'
 		src="<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/depth_selector.js"> </script>
-	<script language='javascript' 
+	<script language='javascript' type='text/javascript'
 		src="<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js"> </script>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.searchbar = {};
 		config.css.searchbar = {};
 		config.ids.searchbar.text				= 'search_box';	
@@ -40,7 +40,7 @@
 
 			<tr class='color_3'>
 
-				<script language='javascript'>
+				<script language='javascript' type='text/javascript'>
 					config.ids.common.now_searching = 'now_searching_location';
 				</script>
 

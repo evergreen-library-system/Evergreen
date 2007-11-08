@@ -1,5 +1,5 @@
 <span>
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/depth_selector.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/depth_selector.js' />
 	<span class='hide_me' id='depth_selector_span'>
 		<!--#if expr="$SHOW_DEPTHSEL_TEXT='true'"-->
 		<span>&library.select; </span>

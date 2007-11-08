@@ -21,8 +21,8 @@
 			</tr>
 		</tbody>
 	</table>
-	<script language='javascript'>isFrontPage = true;</script>
-	<script language="javascript">
+	<script language='javascript' type='text/javascript'>isFrontPage = true;</script>
+	<script language="javascript" type='text/javascript'>
         try { 
             document.getElementById('toptable').style.display = 'table'; 
         } catch(e) {

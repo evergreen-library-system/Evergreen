@@ -57,7 +57,7 @@
 
 	<div id='subject_tree_sidebar' class='sidebar_chunk hide_me' style='margin-top: 12px;'> 
 		<div id='subject_sidebar_tree_div'> </div>
-		<script language='javascript'>
+		<script language='javascript' type='text/javascript'>
 			removeChildren($('subject_sidebar_tree_div'));
 			var subjectSidebarTree = new SlimTree(
 				document.getElementById('subject_sidebar_tree_div'),
@@ -72,7 +72,7 @@
 	<div id='author_tree_sidebar' class='sidebar_chunk hide_me'> 
 		<hr/>
 		<div id='author_sidebar_tree_div'> </div>
-		<script language='javascript'>
+		<script language='javascript' type='text/javascript'>
 			removeChildren($('author_sidebar_tree_div'));
 			var authorSidebarTree = new SlimTree(
 				document.getElementById('author_sidebar_tree_div'),
@@ -87,7 +87,7 @@
 	<div id='series_tree_sidebar' class='sidebar_chunk hide_me'> 
 		<hr/>
 		<div id='series_sidebar_tree_div'> </div>
-		<script language='javascript'>
+		<script language='javascript' type='text/javascript'>
 			removeChildren($('series_sidebar_tree_div'));
 			var seriesSidebarTree = new SlimTree(
 				document.getElementById('series_sidebar_tree_div'),
@@ -117,7 +117,7 @@
 							<option value='barcode'>&opac.advanced.quick.barcode;</option>
 						</select>
 					</td><td>
-						<input type='text' id='adv_quick_text' size='16'> </input>
+						<input type='text' id='adv_quick_text' size='16' />
 					</td>
 				</tr></tbody></table>
 			</div>
@@ -137,13 +137,13 @@
 			<tbody>
 				<tr>
 					<td>&search.marc.tag;</td>
-					<td><input name='advanced.marc.tag' maxlength='3' size='3'> </input></td>
+					<td><input name='advanced.marc.tag' maxlength='3' size='3' /></td>
 					<td>&search.marc.subfield;</td>
-					<td><input name='advanced.marc.subfield' maxlength='1' size='1'> </input></td>
+					<td><input name='advanced.marc.subfield' maxlength='1' size='1' /></td>
 				</tr>
 				<tr>
 					<td>&search.marc.value;</td>
-					<td colspan='3'><input name='advanced.marc.value' size='18'> </input></td>
+					<td colspan='3'><input name='advanced.marc.value' size='18' /></td>
 				</tr>
 				<tr name='crow' class='hide_me'>
 					<td colspan='4' align='center'>
@@ -168,9 +168,9 @@
 
 	<!-- ============================================================================= -->
 	<!-- Our javascript -->
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/sidebar.js' />
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.sidebar = {};
 		config.css.sidebar = {};
 		config.names.sidebar = {};
