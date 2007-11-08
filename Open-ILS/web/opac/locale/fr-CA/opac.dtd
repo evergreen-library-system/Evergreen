@@ -89,9 +89,9 @@
 <!ENTITY home.js.disabled "JavaScript doit être activé afin de pouvoir utiliser le catalogue Evergreen ordinaire.
 Cependant, il semble que JavaScript soit désactivé ou qu'il soit incompatible avec votre navigateur.
 Pour utiliser le catalogue Evergreen ordinaire, activez JavaScript en changeant les options de votre navigateur, puis
-<a style='couleur : bleu; décoration du texte : souligné;' href='/'>essayez de nouveau</a>.
+<a style='color: blue; text-decoration: underline;' href='/'>essayez de nouveau</a>.
 <br/><br/>Sinon, vous pouvez utiliser le catalogue de base en version HTML-seulement
-<a style='couleur : bleu; décoration du texte : souligné;' href='/opac/extras/slimpac/start.html'>ici</a>.">
+<a style='color: blue; text-decoration: underline;' href='/opac/extras/slimpac/start.html'>ici</a>.">
 
 <!--	================================================================= 
 	 MyOPAC bookbag page
