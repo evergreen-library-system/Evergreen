@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# turns the orgTree and orgTypes into js files
+# turns the orgTree and orgTypes into a static HTML option list
 
 use OpenSRF::AppSession;
 use OpenSRF::System;
@@ -33,7 +33,7 @@ sub print_option {
 	my $name = entityize($node->name);
 	my $kids = $node->children;
 
-	print FILE "<option value='$sname'><pre>" . '&#160;&#160;&#160;'x$depth . "</pre>$name</option>\n";
+	print FILE "<option value='$sname'>" . '&#160;&#160;&#160;'x$depth . "$name</option>\n";
 	print_option($_) for (@$kids);
 }
 
