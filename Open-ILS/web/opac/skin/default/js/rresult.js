@@ -27,34 +27,8 @@ function rresultDoSearch() {
 	rresultCollectIds();
 }
 
-function rresultCachedSearch() {
-
-	/* XXX */
-	return false;
-
-	/*
-	if(!getOffset()) {
-		cookieManager.remove(COOKIE_SRIDS);
-		return false;
-	}
-
-	var data = JSON2js(cookieManager.read(COOKIE_SRIDS));
-	//alert('cached count = ' + data.count);
-
-	if( data && data.ids[getOffset()] != null && 
-		data.ids[resultFinalPageIndex()] != null ) {
-		_rresultHandleIds( data.ids, data.count );
-		return true;
-	}
-
-	return false;
-	*/
-}
-
 function rresultCollectIds() {
 	var ids;
-
-	if(rresultCachedSearch()) return;
 
 	switch(getRtype()) {
 

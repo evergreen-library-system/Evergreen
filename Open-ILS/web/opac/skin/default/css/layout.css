@@ -241,4 +241,6 @@ table { border-collapse: collapse; }
     margin: auto;
 }
 
+#opac.result.sort { margin-left: 5px; }
+
 

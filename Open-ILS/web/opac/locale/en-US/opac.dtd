@@ -59,6 +59,10 @@
 	"The password must be at least 7 characters in length, 
 	contain at least one letter (a-z/A-Z), 
 	and contain at least one number.">
+<!ENTITY common.a2z "A to Z">
+<!ENTITY common.z2a "Z to A">
+<!ENTITY common.new2old "Newest to Oldest">
+<!ENTITY common.old2new "Oldest to Newest">
 
 <!ENTITY opac.style.reddish "Reddish">
 
@@ -523,6 +527,8 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.summary.online "Online Resources">
 
+<!ENTITY result.sort_by "Sort Results by ...">
+<!ENTITY result.limit2avail "Limit to Available">
 <!ENTITY result.info.copies "Available copies / Total copies">
 <!ENTITY result.info.no.items "No items with the selected format were found in this location.">
 <!ENTITY result.info.format.items "Listed below are all items in the catalog with the chosen format.">

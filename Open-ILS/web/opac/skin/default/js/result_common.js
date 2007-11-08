@@ -78,6 +78,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(sortdir) args.sort_dir = sortdir;
 	if(item_type) args.item_type	= item_type;
 	if(item_form) args.item_form	= item_form;
+    if(getAvail()) args.available = 1;
 
 
 	if(getAudience()) args.audience  = getAudience().split(/,/);

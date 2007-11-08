@@ -12,6 +12,11 @@
 						<span>&status.results;</span> <b id='including_results_location'> </b>
 					</i>
 				</td>
+                <td align='right'>
+                    <!--#if expr="$OILS_PAGE='rresult.xml'"-->
+                    <!--#include virtual="../result/filtersort.xml" -->
+                    <!--#endif -->
+                </td>
 			</tr>
 		</tbody>
 	</table>

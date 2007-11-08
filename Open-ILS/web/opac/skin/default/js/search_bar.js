@@ -41,6 +41,12 @@ function searchBarInit() {
 		attachEvt('common','depthChanged', searchBarSubmit);
 	}
 
+    if( (limit = $('opac.result.limit2avail')) ) {
+        if(getAvail()) limit.checked = true;
+        s = getSort()+'.'+getSortDir();
+        if(s.length > 1)
+            setSelector($('opac.result.filters'), s);
+    }
 }
 
 function searchBarSubmit() {
@@ -52,8 +58,6 @@ function searchBarSubmit() {
 	if(!text || text == "") return;
 	var d	= (newSearchDepth != null) ?  newSearchDepth : depthSelGetDepth();
 	if(isNaN(d)) d = 0;
-
-	//text = text.replace(/'/,'');
 
 	var args = {};
 
@@ -69,6 +73,14 @@ function searchBarSubmit() {
 	args[PARAM_LOCATION] = depthSelGetNewLoc();
 	args[PARAM_DEPTH]		= d;
 	args[PARAM_FORM]		= _fs.options[_fs.selectedIndex].value;
+
+    if($('opac.result.limit2avail')) {
+        args[PARAM_AVAIL] = ($('opac.result.limit2avail').checked) ? 1 : '';
+        if( (val = getSelectorVal($('opac.result.filters'))) ) {
+            args[PARAM_SORT] = val.split('.')[0]
+            args[PARAM_SORT_DIR] = val.split('.')[1]
+        }
+    }
 
 	goTo(buildOPACLink(args));
 }

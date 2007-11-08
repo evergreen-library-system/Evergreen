@@ -1,0 +1,20 @@
+<span>
+    &result.limit2avail;<input type='checkbox' id='opac.result.limit2avail'/>
+    <select id='opac.result.sort'>
+        <option selelted='selected' value=''>&result.sort_by;</option>
+        <optgroup label='&common.title;'>
+            <option id='opac.result.title.a2z' label='&common.a2z;' value='title.asc'>&common.a2z;</option>
+            <option id='opac.result.title.z2a' label='&common.z2a;' value='title.desc'>&common.z2a;</option>
+        </optgroup>
+        <optgroup label='&common.author;'>
+            <option id='opac.result.author.a2z' label='&common.a2z;' value='author.asc'>&common.a2z;</option>
+            <option id='opac.result.author.z2a' label='&common.z2a;' value='author.desc'>&common.z2a;</option>
+        </optgroup>
+        <optgroup label='&common.pubdate;'>
+            <option id='opac.result.pubdate.new2old' label='&common.new2old;' 
+                value='pubdate.desc'>&common.new2old;</option>
+            <option id='opac.result.pubdate.old2new' label='&common.old2new;' 
+                value='pubdate.asc'>&common.old2new;</option>
+        </optgroup>
+    </select>
+</span>
