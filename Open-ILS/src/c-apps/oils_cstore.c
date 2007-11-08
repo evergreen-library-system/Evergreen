@@ -1145,6 +1145,7 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
 	    jsonObject* array = jsonObjectGetKey( node, "params" );
 
         if (array) {
+        	int func_item_index = 0;
         	jsonObject* func_item;
         	while ( (func_item = jsonObjectGetIndex(array, func_item_index++)) ) {
 
