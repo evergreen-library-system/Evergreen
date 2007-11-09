@@ -1,4 +1,6 @@
 #include "httpd.h"
+/* vim:noet:ts=4
+ */
 #include "http_config.h"
 #include "http_core.h"
 #include "http_protocol.h"
@@ -40,11 +42,42 @@ typedef struct {
 	int stripComments;	/* should we strip comments on the way out? */
 	int stripPI;			/* should we strip processing instructions on the way out? */
 	int stripDoctype;
-	int escapeScript;		/* if true, we html-escape anything text inside a <scritp> tag */
+	int escapeScript;		/* if true, we html-escape anything text inside a <script> tag */
 	char* contentType;	/* the content type used to server pages */
 	char* doctype;			/* the doctype header to send before any other data */
 } xmlEntConfig;
 
+/* check to see if this is an empty XHTML element */
+static int isEmptyElement(const char *element) {
+	/* derived from "grep EMPTY xhtml1-transitional.dtd" */
+	static char *emptyTags[] = {
+		"base",
+		"meta",
+		"link",
+		"hr",
+		"br",
+		"basefont",
+		"param",
+		"img",
+		"area",
+		"input",
+		"isindex",
+		"col",
+		0
+	};
+
+	int i, isEmpty;
+	const char *p;
+
+    i = 0;
+    isEmpty = 0;
+    p = *(emptyTags);
+	while (!isEmpty && p != 0) {
+		isEmpty = !strcmp((const char*)element, (const char*)p); 
+        p = *(emptyTags + ++i);
+	}
+	return isEmpty;
+}
 
 /* get the content type from the config */
 static const char* xmlEntSetContentType(cmd_parms *params, void *cfg, const char *arg) {
@@ -54,7 +87,7 @@ static const char* xmlEntSetContentType(cmd_parms *params, void *cfg, const char
 }
 
 
-/* get the stip PI flag from the config */
+/* get the strip PI flag from the config */
 static const char* xmlEntSetStripPI(cmd_parms *params, void *cfg, const char *arg) {
 	xmlEntConfig* config = (xmlEntConfig*) cfg;
 	char* a = (char*) arg;
@@ -191,9 +224,16 @@ static void printAttr( ap_filter_t* filter, const char** atts ) {
 /* Starts an XML element */
 static void XMLCALL startElement(void *userData, const char *name, const char **atts) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
+	xmlEntConfig* config = ap_get_module_config( 
+			filter->r->per_dir_config, &xmlent_module );
 	_fwrite(filter, "<%s", name );
 	printAttr( filter, atts );
-	_fwrite(filter, ">", name );
+	if (!strcmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT)
+		&& isEmptyElement(name)) {
+		_fwrite(filter, " />", name );
+	} else {
+		_fwrite(filter, ">", name );
+	}
 	if(!strcmp(name, "script")) 
 		xmlEntInScript = 1;
 }
@@ -230,6 +270,12 @@ static void XMLCALL handleComment( void* userData, const XML_Char* comment ) {
 /* Ends an XML element */
 static void XMLCALL endElement(void *userData, const char *name) {
 	ap_filter_t* filter = (ap_filter_t*) userData;
+	xmlEntConfig* config = ap_get_module_config( 
+			filter->r->per_dir_config, &xmlent_module );
+	if (!strcmp(config->contentType, MODXMLENT_CONFIG_CONTENT_TYPE_DEFAULT)
+			&& isEmptyElement(name)) { 
+		return;
+	}
 	_fwrite( filter, "</%s>", name );
 	if(!strcmp(name, "script")) 
 		xmlEntInScript = 1;
@@ -316,8 +362,8 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 		/* clean up when we're done */
 		if (APR_BUCKET_IS_EOS(currentBucket) || APR_BUCKET_IS_FLUSH(currentBucket)) {
     	  	APR_BUCKET_REMOVE(currentBucket);
-      	APR_BRIGADE_INSERT_TAIL(ctx->brigade, currentBucket);
-      	ap_pass_brigade(f->next, ctx->brigade);
+			APR_BRIGADE_INSERT_TAIL(ctx->brigade, currentBucket);
+			ap_pass_brigade(f->next, ctx->brigade);
 			XML_ParserFree(parser);
 			parser = NULL;
 		  	return APR_SUCCESS;
