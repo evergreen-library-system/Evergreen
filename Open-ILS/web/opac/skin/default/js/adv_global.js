@@ -33,6 +33,16 @@ function advgInit() {
 	var input = $n($('adv_global_trow'), 'term');
 	input.focus();
 	setEnterFunc(input, advSubmitGlobal);
+
+    if(getSort() && getSortDir()) {
+	    setSelector($('adv_global_sort_by'), getSort());
+	    setSelector($('adv_global_sort_dir'), getSortDir());
+        if(getSort() != 'rel')
+            $('adv_global_sort_dir').disabled = false;
+    }
+
+    if(getAvail())
+        $('opac.result.limit2avail').checked = true;
 }
 
 function advAddGblRow() {
@@ -94,6 +104,7 @@ function advSubmitGlobal() {
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
 	var languages = getSelectedList($('adv_global_lang')) + '';	
+    var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
 	var searches = advBuildSearchBlob();
 	if(!searches) return;
@@ -115,6 +126,7 @@ function advSubmitGlobal() {
 	args[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
 	args[PARAM_STYPE]		= "";
 	args[PARAM_TERM]		= "";
+	args[PARAM_AVAIL]		= limit2avail;
 
 	/* pubdate sorting causes a record (not metarecord) search */
 	if( sortby == SORT_TYPE_PUBDATE || !$('adv_group_titles').checked ) {

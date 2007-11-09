@@ -5,7 +5,6 @@ attachEvt("common", "run", advInit);
 function advInit() { 
 
 	/* propogate these? */
-	clearSearchParams();
 
 	depthSelInit(); 
 	setEnterFunc( $n( $('advanced.marc.tbody'), 'advanced.marc.value'), advMARCRun );
@@ -33,6 +32,8 @@ function advAddMARC() {
 }
 
 function advMARCRun() {
+
+	clearSearchParams();
 
 	var div = $('adv_marc_search_sidebar');
 	var tbodies = div.getElementsByTagName('tbody');
@@ -77,6 +78,7 @@ function advExtractMARC(tbody) {
 }
 
 function advGenericSearch() {
+	clearSearchParams();
 	var type = getSelectorVal($('adv_quick_type'));
 	
 	var term = $('adv_quick_text').value;

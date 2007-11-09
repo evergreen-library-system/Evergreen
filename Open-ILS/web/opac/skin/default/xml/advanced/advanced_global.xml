@@ -46,33 +46,12 @@
 
 		<td rowspan='2'>
 
-			<!--
-			<table width='100%' style='margin-bottom: 3px;'>
-				<thead>
-					<tr>
-						<td colspan='2' align='center'>
-							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked' />
-						</td>
-					</tr>
-				</thead>
-			</table>
-			-->
-
 			<table width='100%'>
 				<thead>
 					<tr><td colspan='2' align='center'>&advanced.search.filters;</td></tr>
 				</thead>
 				<tbody>
 
-					<!--
-					<tr>
-						<td align='right'>Search Range</td>
-						<td align='left'>
-							<   #include virtual="../common/libselect.xml"  >
-						</td>
-					</tr>
-					-->
 					<tr>
 						<td align='right'>
 							<span>&advanced.item.form;</span>
@@ -198,20 +177,6 @@
 	<tr style='border-top: none;'>
 		<td align='center' valign='bottom' style='border-top: none;'>
 
-			<!--
-			<table width='100%' style='padding: 1px;'>
-				<thead>
-					<tr>
-						<td colspan='2' align='center'>
-							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked' />
-						</td>
-					</tr>
-				</thead>
-			</table>
-			-->
-
-
 			<table style='border: none; width: 100%;'>
 				<tr>
 					<td align='center' width='100%'>
@@ -271,13 +236,14 @@
 
 								</tr>
 								<tr>
-									<td colspan='2' align='center'>
+									<td align='center'>
 										<span>&advanced.frbrize;</span>
-										<!--
-										<input id='adv_group_titles' type='checkbox' checked='checked' />
-										-->
 										<input id='adv_group_titles' type='checkbox' />
 									</td>
+                                    <td align='center'>
+                                        <span>&result.limit2avail;</span>
+                                        <input type='checkbox' id='opac.result.limit2avail'/>
+                                    </td>
 								</tr>
 							</tbody>
 						</table>
