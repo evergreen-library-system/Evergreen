@@ -252,7 +252,8 @@ function rresultCollectRecords(ids) {
 	runEvt("result", "preCollectRecords");
 	var x = 0;
 
-	var base = getOffset();
+	//var base = getOffset();
+    var base = 0;
 	if( rresultIsPaged )  base = 0;
 
 	for( var i = base; i!= getDisplayCount() + base; i++ ) {

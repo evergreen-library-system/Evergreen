@@ -449,6 +449,9 @@ sub the_quest_for_knowledge {
 	return { count => 0 } unless $searchhash and
 		ref $searchhash->{searches} eq 'HASH';
 
+    use Data::Dumper;
+    warn Dumper($searchhash) . "\n";
+
 	my $method = 'open-ils.storage.biblio.multiclass.search_fts';
 	my $ismeta = 0;
 	my @recs;
@@ -486,6 +489,7 @@ sub the_quest_for_knowledge {
 	$searchhash->{limit} -= $offset;
 
 
+    my $trim = 0;
 	my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
 
 	if(!$result) {
@@ -499,6 +503,7 @@ sub the_quest_for_knowledge {
 		}
 	
 		$result = $U->storagereq( $method, %$searchhash );
+        $trim = 1;
 
 	} else { 
 		$docache = 0; 
@@ -506,28 +511,27 @@ sub the_quest_for_knowledge {
 
 	return {count => 0} unless ($result && $$result[0]);
 
-	#for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
 	@recs = @$result;
 
 	my $count = ($ismeta) ? $result->[0]->[3] : $result->[0]->[2];
 
-
-	if( $docache ) {
-
+	if($docache) {
 		# If we didn't get this data from the cache, put it into the cache
 		# then return the correct offset of records
 		$logger->debug("putting search cache $ckey\n");
 		put_cache($ckey, $count, \@recs);
-
-		my @t;
-		for ($offset..$end) {
-			last unless $recs[$_];
-			push(@t, $recs[$_]);
-		}
-		@recs = @t;
-
-		#$logger->debug("cache done .. returning $offset..$end : " . OpenSRF::Utils::JSON->perl2JSON(\@recs));
 	}
+
+    if($trim) {
+        # if we have the full set of data, trim out 
+        # the requested chunk based on limit and offset
+        my @t;
+        for ($offset..$end) {
+            last unless $recs[$_];
+            push(@t, $recs[$_]);
+        }
+        @recs = @t;
+    }
 
 	return { ids => \@recs, count => $count };
 }
