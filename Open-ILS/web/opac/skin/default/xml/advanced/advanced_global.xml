@@ -59,7 +59,7 @@
 			</table>
 			-->
 
-			<table with='100%'>
+			<table width='100%'>
 				<thead>
 					<tr><td colspan='2' align='center'>&advanced.search.filters;</td></tr>
 				</thead>
@@ -68,7 +68,7 @@
 					<!--
 					<tr>
 						<td align='right'>Search Range</td>
-						<td aligh='left'>
+						<td align='left'>
 							<   #include virtual="../common/libselect.xml"  >
 						</td>
 					</tr>
@@ -77,7 +77,7 @@
 						<td align='right'>
 							<span>&advanced.item.form;</span>
 						</td>
-						<td aligh='left'>
+						<td align='left'>
 							<select multiple='true' size='3' id='adv_global_item_form'>
 							</select>	
 						</td>
@@ -103,7 +103,7 @@
 								'>&advanced.basic.link;</a>
 						</td>
 
-						<td aligh='left'>
+						<td align='left'>
 							<select multiple='true' size='3' id='adv_global_item_type' class='hide_me'>
 							</select>	
 							<select multiple='true' size='3' id='adv_global_item_type_basic'>
@@ -135,7 +135,7 @@
 								hideMe(this);
 								'>&advanced.basic.link;</a>
 						</td>
-						<td aligh='left'>
+						<td align='left'>
 							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
 							</select>	
 							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
