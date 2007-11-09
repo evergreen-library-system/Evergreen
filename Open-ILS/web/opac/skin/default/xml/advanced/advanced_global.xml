@@ -78,7 +78,7 @@
 							<span>&advanced.item.form;</span>
 						</td>
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_item_form'>
+							<select multiple='multiple' size='3' id='adv_global_item_form'>
 							</select>	
 						</td>
 					</tr>
@@ -104,9 +104,9 @@
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_item_type' class='hide_me'>
+							<select multiple='multiple' size='3' id='adv_global_item_type' class='hide_me'>
 							</select>	
-							<select multiple='true' size='3' id='adv_global_item_type_basic'>
+							<select multiple='multiple' size='3' id='adv_global_item_type_basic'>
 								<option value='at'>&opac.search.books;</option>
 								<option value='i'>&opac.search.audioBooks;</option>
 								<option value='g'>&opac.search.videoRecordings;</option>
@@ -136,9 +136,9 @@
 								'>&advanced.basic.link;</a>
 						</td>
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
+							<select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'>
 							</select>	
-							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
+							<select multiple='multiple' size='3' id='adv_global_lit_form_basic'>
 								<option value='0 '>&advanced.non.fiction;</option>
 								<option value='1'>&advanced.fiction;</option>
 							</select>	
@@ -153,7 +153,7 @@
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_lang'>
+							<select multiple='multiple' size='3' id='adv_global_lang'>
 								<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
 							</select>
 						</td>
@@ -181,9 +181,9 @@
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
+							<select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'>
 							</select>
-							<select multiple='true' size='3' id='adv_global_audience_basic'>
+							<select multiple='multiple' size='3' id='adv_global_audience_basic'>
 								<option value='e '>&advanced.adult;</option>
 								<option value='abcdj'>&advanced.juvenile;</option>
 								<option value='fg '>&advanced.general;</option>
