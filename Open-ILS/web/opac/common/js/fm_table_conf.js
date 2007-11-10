@@ -73,7 +73,8 @@ var FM_TABLE_DISPLAY = {
 			'usr',
 			'credit_payment',
 			'forgive_payment',
-			'work_payment'
+			'work_payment',
+			'goods_payment'
 		]
 	},
 	'rr' : {

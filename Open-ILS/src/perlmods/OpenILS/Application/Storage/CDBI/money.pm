@@ -132,6 +132,11 @@ use base qw/money::forgive_payment/;
 __PACKAGE__->table('money_work_payment');
 #-------------------------------------------------------------------------------
 
+package money::goods_payment;
+use base qw/money::forgive_payment/;
+__PACKAGE__->table('money_goods_payment');
+#-------------------------------------------------------------------------------
+
 package money::credit_payment;
 use base qw/money::forgive_payment/;
 __PACKAGE__->table('money_credit_payment');

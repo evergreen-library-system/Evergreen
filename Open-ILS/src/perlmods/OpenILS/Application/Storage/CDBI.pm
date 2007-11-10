@@ -664,6 +664,10 @@ sub modify_from_fieldmapper {
 	money::work_payment->has_a( accepting_usr => 'actor::user' );
 	#money::work_payment->might_have( payment => 'money::payment' );
 
+	money::goods_payment->has_a( xact => 'money::billable_transaction' );
+	money::goods_payment->has_a( accepting_usr => 'actor::user' );
+	#money::goods_payment->might_have( payment => 'money::payment' );
+
 	money::credit_payment->has_a( xact => 'money::billable_transaction' );
 	money::credit_payment->has_a( accepting_usr => 'actor::user' );
 	#money::credit_payment->might_have( payment => 'money::payment' );
