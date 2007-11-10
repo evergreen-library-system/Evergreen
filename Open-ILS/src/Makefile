@@ -1,3 +1,4 @@
+# vim:noet:ts=4
 
 export LDFLAGS			+= -L . -L$(TMP) -L $(OPENSRF_LIBS)
 export CFLAGS			+= -pipe -g -Wall -O2 -fPIC -I$(LIBXML2_HEADERS) -I$(APACHE2_HEADERS) -I$(APR_HEADERS) \
@@ -11,7 +12,7 @@ all:  c_apps client-xul mod_xmlent
 
 install:	perl-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
 
-web-install:	webcore-install autojs-install mod_xmlent-install offline-install
+web-install:	webcore-install autojs-install mod_xmlent-install offline-install reporter-install
 
 circ_rules-install:
 	@echo $@
@@ -141,12 +142,11 @@ perl-install:
 
 reporter-install:
 	@echo $@
-#	@echo "Installing Reporter templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
-#	cp reporter/report_base.example.xml $(ETCDIR)/reporter.example.xml
-#	cp reporter/tables.example.xml $(ETCDIR)
-#	cp reporter/widgets.example.xml $(ETCDIR)
-#	mkdir -p $(REPORTERDIR)
-#	cp -r reporter/templates/* $(REPORTERDIR)
+	@echo "Installing Reporter email templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
+	cp reporter/clark-kent.pl $(BINDIR)
+	cp reporter/report-fail $(DATADIR)
+	cp reporter/report-success $(DATADIR)
+	mkdir -p $(REPORTERDIR)
 
 # -----------------------------------------------------------------------------------
 offline-install:
