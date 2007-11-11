@@ -9,6 +9,7 @@ __global_parser = None
 
 def oilsParseIDL():
     global __global_parser
+    if __global_parser: return # no need to re-parse the IDL
     idlParser = oilsIDLParser();
     idlParser.setIDL(osrfSettingsValue('IDL'))
     idlParser.parseIDL()
