@@ -13,7 +13,7 @@ patron.holds.prototype = {
     'hold_interface_type' : null,
 
     'pull_from_shelf_interface' : {
-        'default' : { 'limit' : 50, 'offset' : 0 },
+        '_default' : { 'limit' : 50, 'offset' : 0 },
         'current' : { 'limit' : 50, 'offset' : 0 }
     },
 
@@ -792,7 +792,7 @@ patron.holds.prototype = {
 
     'clear_and_retrieve' : function(dont_show_me_the_list_change) {
         this.list.clear();
-        this.pull_from_shelf_interface.current.offset = this.pull_from_shelf_interface.default.offset;
+        this.pull_from_shelf_interface.current.offset = this.pull_from_shelf_interface._default.offset;
         this.retrieve(dont_show_me_the_list_change);
     },
 
