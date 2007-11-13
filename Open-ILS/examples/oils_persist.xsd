@@ -31,6 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="source_definition" type="xs:string" />
 
 <xs:attribute name="primary"/>
+<xs:attribute name="i18n" type="xs:boolean"/>
 <xs:attribute name="primitive"/>
 <xs:attribute name="readonly" type="xs:boolean"/>
 <xs:attribute name="sequence"/>
