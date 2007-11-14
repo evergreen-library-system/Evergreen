@@ -1,4 +1,4 @@
-#include "oils_idl.h"
+#include "openils/oils_idl.h"
 /*
  * vim:noet:ts=4:
  */

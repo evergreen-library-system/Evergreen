@@ -6,8 +6,8 @@
 
 #include <stdio.h>
 
-#include "oils_idl.h"
-#include "oils_utils.h"
+#include "openils/oils_idl.h"
+#include "openils/oils_utils.h"
 
 #define CSTORE "open-ils.cstore"
 #define APPNAME "oils_dataloader"

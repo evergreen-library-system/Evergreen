@@ -1,4 +1,4 @@
-#include "oils_event.h"
+#include "openils/oils_event.h"
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include "opensrf/osrf_settings.h"

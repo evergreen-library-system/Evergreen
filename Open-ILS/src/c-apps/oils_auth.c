@@ -3,9 +3,9 @@
 #include "opensrf/osrf_settings.h"
 #include "objson/object.h"
 #include "opensrf/log.h"
-#include "oils_utils.h"
-#include "oils_constants.h"
-#include "oils_event.h"
+#include "openils/oils_utils.h"
+#include "openils/oils_constants.h"
+#include "openils/oils_event.h"
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
 

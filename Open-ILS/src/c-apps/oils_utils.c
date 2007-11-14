@@ -1,5 +1,5 @@
-#include "oils_utils.h"
-#include "oils_idl.h"
+#include "openils/oils_utils.h"
+#include "openils/oils_idl.h"
 
 osrfHash* oilsInitIDL(char* idl_filename) {
 
