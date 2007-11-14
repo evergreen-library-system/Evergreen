@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim:noet:ts=4
 # --------------------------------------------------------------------
 # Copyright (C) 2005  Georgia Public Library Service 
 # Bill Erickson <highfalutin@gmail.com>
@@ -82,6 +83,10 @@ function building {
 	return 0;
 }
 
+function testing {
+	if [ -z "$TESTING" ]; then return 1; fi;
+	return 0;
+}
 
 
 # --------------------------------------------------------------------
@@ -129,6 +134,7 @@ function runInstall {
 
 			"openils_all" )
 				if building;	then $MAKE -C "$OPENILSDIR" all; fi;
+				if testing;		then $MAKE -C "$OPENILSDIR/../examples" test; fi;
 				if installing; then $MAKE -C "$OPENILSDIR" install; fi;
 				;;
 
@@ -212,6 +218,7 @@ function runInstall {
 # clean - cleans all build files
 # build - builds the specified sources
 # install - installs the specified sources
+# test - tests the specified sources
 # --------------------------------------------------------------------
 function checkParams {
 
@@ -235,6 +242,9 @@ function checkParams {
 			"verbose")
 				verbose="";;
 
+			"test")
+				TESTING="1";;
+
 			*) fail "Unknown option => $arg";
 		esac
 	done
@@ -257,6 +267,7 @@ function usage {
 checkParams "$@";
 
 if building; then echo "Building..."; fi;
+if testing; then echo "Testing..."; fi;
 if installing; then echo "Installing..."; fi;
 
 
@@ -266,6 +277,4 @@ if installing; then echo "Installing..."; fi;
 loadConfig;
 mkInstallDirs;
 runInstall;
-
-
 

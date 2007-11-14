@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim:noet:ts=4
 # --------------------------------------------------------------------
 # Copyright (C) 2005  Georgia Public Library Service 
 # Bill Erickson <highfalutin@gmail.com>
@@ -39,3 +40,5 @@ install:
 clean:
 	@./install.sh clean
 	
+test:
+	@./install.sh test
