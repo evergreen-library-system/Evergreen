@@ -1161,11 +1161,12 @@ char* searchFieldTransform (const char* class, osrfHash* field, jsonObject* node
     	    	}
     	    }
 
-        	buffer_add(
-	        	sql_buf,
-		        " )"
-        	);
         }
+
+       	buffer_add(
+        	sql_buf,
+	        " )"
+       	);
  
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
