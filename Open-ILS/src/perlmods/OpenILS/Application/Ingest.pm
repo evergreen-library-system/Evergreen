@@ -1,5 +1,6 @@
 package OpenILS::Application::Ingest;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 
 use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;

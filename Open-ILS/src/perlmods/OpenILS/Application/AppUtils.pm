@@ -1,6 +1,7 @@
 package OpenILS::Application::AppUtils;
 use strict; use warnings;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::ModsParser;

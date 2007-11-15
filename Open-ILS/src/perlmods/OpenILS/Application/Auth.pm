@@ -1,7 +1,7 @@
 use strict; use warnings;
 package OpenILS::Application::Auth;
-use OpenSRF::Application;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Logger qw(:level);

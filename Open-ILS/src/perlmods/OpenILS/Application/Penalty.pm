@@ -10,7 +10,8 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
-use base 'OpenSRF::Application';
+use OpenILS::Application;
+use base 'OpenILS::Application';
 
 my $U = "OpenILS::Application::AppUtils";
 my $script;

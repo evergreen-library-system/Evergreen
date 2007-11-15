@@ -1,5 +1,6 @@
 package OpenILS::Application::Actor;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;

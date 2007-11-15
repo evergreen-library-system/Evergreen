@@ -1,10 +1,10 @@
 use strict; use warnings;
 package OpenILS::Application::Cat;
 use OpenILS::Application::AppUtils;
-use OpenSRF::Application;
+use OpenILS::Application;
 use OpenILS::Application::Cat::Utils;
 use OpenILS::Application::Cat::Merge;
-use base qw/OpenSRF::Application/;
+use base qw/OpenILS::Application/;
 use Time::HiRes qw(time);
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::JSON;

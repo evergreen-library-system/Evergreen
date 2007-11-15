@@ -1,6 +1,7 @@
 package OpenILS::Application::Proxy;
 use strict; use warnings;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use OpenSRF::EX qw(:try);
 
 
