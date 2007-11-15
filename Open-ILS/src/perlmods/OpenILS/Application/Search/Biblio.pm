@@ -463,9 +463,7 @@ sub multiclass_query {
     $query =~ s/name(:|\|)/author$1/og;
 
     $logger->debug("cleansed query string => $query");
-
-    my $search = $arghash->{searches}; 
-    $arghash->{searches} = $search = {} unless $search;
+    my $search = $arghash->{searches} = {};
 
     while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):[^:]+)$//so) {
         my($type, $value) = split(':', $1);
@@ -503,6 +501,15 @@ sub multiclass_query {
         }
     }
 
+    if($query) {
+        # This is the front part of the string before any special tokens were parsed. 
+        # Add this data to the default search class
+        my $type = $arghash->{default_class} || 'keyword';
+        $search->{$type} =  {} unless $search->{$type};
+        $search->{$type}->{term} =
+            ($search->{$type}->{term}) ? $search->{$type}->{term} . " $query" : $query;
+    }
+
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
 
@@ -512,7 +519,9 @@ sub multiclass_query {
 
     $arghash->{limit} = $ol if $ol;
     $data->{compiled_search} = $arghash;
+
     $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
+
     return $data;
 }
 
