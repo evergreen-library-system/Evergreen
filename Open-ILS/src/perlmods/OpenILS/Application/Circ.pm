@@ -1,5 +1,6 @@
 package OpenILS::Application::Circ;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 
 use OpenILS::Application::Circ::Circulate;

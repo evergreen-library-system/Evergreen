@@ -1,5 +1,6 @@
 package OpenILS::Application::Search;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 use strict; use warnings;
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw(:logger);

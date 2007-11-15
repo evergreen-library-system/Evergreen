@@ -1,6 +1,6 @@
 package OpenILS::Application::Storage;
-use OpenSRF::Application;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Logger qw/:level/;

@@ -5,8 +5,8 @@ use warnings;
 
 # All OpenSRF applications must be based on OpenSRF::Application or
 # a subclass thereof.  Makes sense, eh?
-use OpenSRF::Application;
-use base qw/OpenSRF::Application/;
+use OpenILS::Application;
+use base qw/OpenILS::Application/;
 
 # This is the client class, used for connecting to open-ils.storage
 use OpenSRF::AppSession;
