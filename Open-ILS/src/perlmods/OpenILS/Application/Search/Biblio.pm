@@ -464,7 +464,8 @@ sub multiclass_query {
 
     $logger->debug("cleansed query string => $query");
 
-    my %search;
+    my $search = $arghash->{searches}; 
+    $arghash->{searches} = $search = {} unless $search;
 
     while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):[^:]+)$//so) {
         my($type, $value) = split(':', $1);
@@ -496,12 +497,11 @@ sub multiclass_query {
 
         } else {
             # append the search term to the term under construction
-            $search{$type} =  {} unless $search{$type};
-            $search{$type}->{term} =  
-                ($search{$type}->{term}) ? $search{$type}->{term} . " $value" : $value;
+            $search->{$type} =  {} unless $search->{$type};
+            $search->{$type}->{term} =  
+                ($search->{$type}->{term}) ? $search->{$type}->{term} . " $value" : $value;
         }
     }
-    $arghash->{searches} = \%search;
 
     # capture the original limit because the search method alters the limit internally
     my $ol = $arghash->{limit};
@@ -512,6 +512,7 @@ sub multiclass_query {
 
     $arghash->{limit} = $ol if $ol;
     $data->{compiled_search} = $arghash;
+    $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
     return $data;
 }
 
@@ -558,9 +559,6 @@ sub the_quest_for_knowledge {
 
 	return { count => 0 } unless $searchhash and
 		ref $searchhash->{searches} eq 'HASH';
-
-    use Data::Dumper;
-    warn Dumper($searchhash) . "\n";
 
 	my $method = 'open-ils.storage.biblio.multiclass.search_fts';
 	my $ismeta = 0;
