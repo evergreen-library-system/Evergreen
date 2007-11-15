@@ -118,14 +118,14 @@ function advSubmitGlobal() {
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
-	args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
+	//args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
 	args[PARAM_DEPTH]		= depthSelGetDepth();
 	args[PARAM_LOCATION]	= depthSelGetNewLoc();
 	args[PARAM_SORT]		= sortby;
 	args[PARAM_SORT_DIR]	= sortdir;
 	args[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
 	args[PARAM_STYPE]		= "";
-	args[PARAM_TERM]		= "";
+	args[PARAM_TERM]		= searches;
 	args[PARAM_AVAIL]		= limit2avail;
 
 	/* pubdate sorting causes a record (not metarecord) search */
@@ -146,7 +146,7 @@ function advSubmitGlobal() {
 
 function advBuildSearchBlob() {
 
-	var searches;
+	var searches = '';
 	var tbody    = $('adv_global_tbody');
 	var rows     = tbody.getElementsByTagName('tr');
 
@@ -162,14 +162,6 @@ function advBuildSearchBlob() {
 		if(!term) continue;
 
 		var string = "";
-
-		if(!searches) searches = {};
-
-		if(searches[stype]) 
-			string = searches[stype].term;
-		else 
-			searches[stype] = { term : "" };
-
 		switch(contains) {
 			case 'contains' : 
 				string += " " + term; 
@@ -190,10 +182,15 @@ function advBuildSearchBlob() {
 		if(string) {
 			string = string.replace(/'/g,' ');
 			string = string.replace(/\\/g,' ');
-			searches[stype].term = string;
+            string = string.replace(/^\s*/,'');
+            string = string.replace(/\s*$/,'');
+			//searches[stype].term = string;
+            if(searches) searches += ' ';
+            searches += stype + ':'+ string;
 		}
 	}
 
+    _debug("created search query " + searches);
 	return searches;
 }
 

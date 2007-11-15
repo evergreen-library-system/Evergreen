@@ -37,11 +37,11 @@ function mresultDoSearch() {
 }
 
 function _mresultCollectIds() { 
-	resultCollectSearchIds(true, SEARCH_MRS, mresultHandleMRIds ); 
+	resultCollectSearchIds(true, SEARCH_MRS_QUERY, mresultHandleMRIds ); 
 }
 
 function mresultCollectAdvIds() { 
-	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
+	resultCollectSearchIds(false, SEARCH_MRS_QUERY, mresultHandleMRIds ); 
 }
 
 

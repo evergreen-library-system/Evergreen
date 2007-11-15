@@ -283,12 +283,12 @@ function rresultLaunchDrawn(id, node) {
 
 function rresultDoRecordSearch() { 
 	rresultIsPaged = true;
-	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); 
+	resultCollectSearchIds(true, SEARCH_RS_QUERY, rresultFilterSearchResults ); 
 }
 
 function rresultDoRecordMultiSearch() { 
 	rresultIsPaged = true;
-	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); 
+	resultCollectSearchIds(false, SEARCH_RS_QUERY, rresultFilterSearchResults ); 
 }
 
 

@@ -28,7 +28,7 @@
 
 				<td nowrap='nowrap' align='center'  class='search_box_container color_2'>
 
-					<input id='search_box' style='width: 190px;' type='text' />
+					<input id='search_box' type='text' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='&button.go;' />
 					</span>
