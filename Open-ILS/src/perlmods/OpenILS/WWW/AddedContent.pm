@@ -16,100 +16,184 @@ use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger qw/$logger/;
-use XML::LibXML;
+
+use LWP::UserAgent;
+use MIME::Base64;
+
+my $AC = __PACKAGE__;
 
 
 # set the bootstrap config when this module is loaded
 my $bs_config;
-my $handler;
 
 sub import {
-	my $self = shift;
-	$bs_config = shift;
+    my $self = shift;
+    $bs_config = shift;
 }
 
 
-my $net_timeout;
-my $cache;
+my $handler; # added content handler class handle
+my $cache; # memcache handle
+my $net_timeout; # max seconds to wait for a response from the added content vendor
+my $max_errors; # max consecutive lookup failures before added content is temporarily disabled
+my $error_countdown; # current consecutive errors countdown
+
+# number of seconds to wait before next lookup 
+# is attempted after lookups have been disabled
+my $error_retry_timeout;
+
+
 sub child_init {
 
-	OpenSRF::System->bootstrap_client( config_file => $bs_config );
-
-	my $sclient = OpenSRF::Utils::SettingsClient->new();
-	my $ac_data = $sclient->config_value("added_content");
-
-    return unless $ac_data;
-
+    OpenSRF::System->bootstrap_client( config_file => $bs_config );
     $cache = OpenSRF::Utils::Cache->new;
 
-	my $ac_handler = $ac_data->{module};
-    $net_timeout = $ac_data->{timeout} || 3;
-    
-	return unless $ac_handler;
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+    my $ac_data = $sclient->config_value("added_content");
 
-	$logger->debug("Attempting to load Added Content handler: $ac_handler");
+    return unless $ac_data;
+    my $ac_handler = $ac_data->{module};
+    return unless $ac_handler;
 
-	eval "use $ac_handler";
+    $net_timeout = $ac_data->{timeout} || 1;
+    $error_countdown = $max_errors = $ac_data->{max_errors} || 10;
+    $error_retry_timeout = $ac_data->{retry_timeout} || 600;
 
-	if($@) {	
-		$logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
-		return; 
-	}
+    $logger->debug("Attempting to load Added Content handler: $ac_handler");
 
-	$handler = $ac_handler->new($ac_data);
-	$logger->debug("added content loaded handler: $handler");
+    eval "use $ac_handler";
+
+    if($@) {    
+        $logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
+        return; 
+    }
+
+    $handler = $ac_handler->new($ac_data);
+    $logger->debug("added content loaded handler: $handler");
 }
 
 
 sub handler {
 
-	my $r		= shift;
-	my $cgi	= CGI->new;
-	my $path = $r->path_info;
+    my $r   = shift;
+    my $cgi = CGI->new;
+    my $path = $r->path_info;
+    my $res;
 
-	child_init() unless $handler; # why isn't apache doing this for us?
-	return Apache2::Const::NOT_FOUND unless $handler;
+    my( undef, $type, $format, $key ) = split(/\//, $r->path_info);
 
-    # if this memcache key is set, added content lookups are disabled
-	if( $cache->get_cache('ac.no_lookup') ) {
-        $logger->info("added content lookup disabled");
-	    return Apache2::Const::NOT_FOUND;
+    child_init() unless $handler;
+
+    return Apache2::Const::NOT_FOUND unless $handler and $type and $format and $key;
+    return $res if defined($res = $AC->serve_from_cache($type, $format, $key));
+    return Apache2::Const::NOT_FOUND unless $AC->lookups_enabled;
+
+    my $err;
+    my $data;
+    my $method = "${type}_${format}";
+
+    return Apache2::Const::NOT_FOUND unless $handler->can($method);
+
+    try {
+        $data = $handler->$method($key);
+    } catch Error with { 
+        $err = shift; 
+        decr_error_countdown();
+        $logger->error("added content handler failed: $method($key) => $err");
+    };
+
+    return Apache2::Const::NOT_FOUND if $err;
+
+    if(!$data) {
+        # if the AC lookup found no corresponding data, cache that information
+        $logger->debug("added content handler returned no results $method($key)") unless $data;
+        $AC->cache_result($type, $format, $key, {nocontent=>1});
+        return Apache2::Const::NOT_FOUND;
+    }
+    
+    $AC->print_content($data);
+    $AC->cache_result($type, $format, $key, $data);
+
+    reset_error_countdown();
+    return Apache2::Const::OK;
+}
+
+sub print_content {
+    my($class, $data, $from_cache) = @_;
+    return Apache2::Const::NOT_FOUND if $data->{nocontent};
+
+    my $ct = $data->{content_type};
+    my $content = $data->{content};
+    print "Content-type: $ct\n\n";
+
+    if($data->{binary}) {
+        binmode STDOUT;
+        # if it hasn't been cached yet, it's still in binary form
+        print( ($from_cache) ? decode_base64($content) : $content );
+    } else {
+        print $content;
     }
 
 
-	my( undef, $data, $format, $key ) = split(/\//, $r->path_info);
-
-	my $err;
-	my $success;
-	my $method = "${data}_${format}";
-
-	try {
-		$success = $handler->$method($key);
-	} catch Error with {
-		my $err = shift;
-		$logger->error("added content handler failed: $method($key) => $err");
-	};
-
-	return Apache2::Const::NOT_FOUND if $err or !$success;
-	return Apache2::Const::OK;
+    return Apache2::Const::OK;
 }
 
 
 
-# generic GET call
+
+# returns an HTPP::Response object
 sub get_url {
-	my( $self, $url ) = @_;
-	$logger->info("added content getting [timeout=$net_timeout] URL = $url");
-	my $agent = LWP::UserAgent->new(timeout => $net_timeout);
-	my $res = $agent->get($url);
-	die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
-	return $res->content;
+    my( $self, $url ) = @_;
+
+    $logger->info("added content getting [timeout=$net_timeout, errors_remaining=$error_countdown] URL = $url");
+    my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+
+    my $res = $agent->get($url); 
+    $logger->info("added content request returned with code " . $res->code);
+    die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
+
+    return $res;
 }
 
+sub lookups_enabled {
+    if( $cache->get_cache('ac.no_lookup') ) {
+        $logger->info("added content lookup disabled");
+        return undef;
+    }
+    return 1;
+}
 
+sub disable_lookups {
+    $cache->put_cache('ac.no_lookup', 1, $error_retry_timeout);
+}
 
+sub decr_error_countdown {
+    $error_countdown--;
+    if($error_countdown < 1) {
+        $logger->warn("added content error count exhausted.  Disabling lookups for $error_retry_timeout seconds");
+        $AC->disable_lookups;
+    }
+}
+
+sub reset_error_countdown {
+    $error_countdown = $max_errors;
+}
+
+sub cache_result {
+    my($class, $type, $format, $key, $data) = @_;
+    $logger->debug("caching $type/$format/$key");
+    $data->{content} = encode_base64($data->{content}) if $data->{binary};
+    return $cache->put_cache("ac.$type.$format.$key", $data);
+}
+
+sub serve_from_cache {
+    my($class, $type, $format, $key) = @_;
+    my $data = $cache->get_cache("ac.$type.$format.$key");
+    return undef unless $data;
+    $logger->debug("serving $type/$format/$key from cache");
+    return $class->print_content($data, 1);
+}
 
 
 
 1;
-

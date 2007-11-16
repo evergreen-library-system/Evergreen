@@ -1,16 +1,14 @@
 /**
 * This function should return a URL which points to the book cover image based on ISBN.
-* Ideally, this should point to some type of added content service.
-* The example below uses Amazon... *use at own risk*
 */
+
 
 function buildISBNSrc(isbn, size) {
 	size = (size) ? size : 'small';
     if(OILS_OPAC_IMAGES_HOST)
         return location.protocol + '//' + OILS_OPAC_IMAGES_HOST + size + '/' + isbn;
-	return '../../../../extras/jacket/'+size+'/'+isbn;
+	return '../../../../extras/ac/jacket/'+size+'/'+isbn;
 }      
-
 
 
 function acMakeURL(type, key) {
