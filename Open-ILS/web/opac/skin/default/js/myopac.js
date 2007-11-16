@@ -336,9 +336,6 @@ function myOPACDrawHolds(r) {
 
 		tbody.appendChild(row);
 
-		$n(row,'myopac_holds_cancel_link').setAttribute(
-			'href','javascript:myOPACCancelHold("'+ h.id()+'");'); 
-
 		$n(row,'myopac_holds_edit_link').setAttribute(
 			'href','javascript:myOPACEditHold("'+ h.id()+'");'); 
 
@@ -375,15 +372,6 @@ function myOPACEditHold(holdid) {
 			}
 		}
 	);
-}
-
-
-function myOPACCancelHold(holdid) {
-	if( confirm($('myopac_holds_cancel_verify').innerHTML) ) {
-		holdsCancel(holdid);
-		holdsTemplateRow = null
-		myOPACShowHolds();
-	}
 }
 
 
@@ -464,7 +452,6 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 		if(copy) $n(row, 'copy').appendChild(text(copy.barcode()));
 	}
 
-	/*var form = $("myopac_holds_form_" + hold.id() + '_' + record.doc_id());*/
 	var form = $("myopac_holds_form_" + hold.id());
 
 	if(form) {

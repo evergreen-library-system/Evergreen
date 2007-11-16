@@ -43,6 +43,40 @@ function advgInit() {
 
     if(getAvail())
         $('opac.result.limit2avail').checked = true;
+
+    initSearchBoxes();
+}
+
+function initSearchBoxes() {
+    /* loads the compiled search from the search cookie 
+        and sets the widgets accordingly */
+
+    search = cookieManager.read(COOKIE_SEARCH);
+    if(!search) return;
+    _debug("loaded compiled search cookie: " + search);
+
+    search = JSON2js(search);
+    if(!search) return;
+
+    var types = getObjectKeys(search.searches);
+
+    /* pre-add the needed rows */
+    while($('adv_global_tbody').getElementsByTagName('tr').length - 1 < types.length)
+        advAddGblRow();
+
+    var rows = $('adv_global_tbody').getElementsByTagName('tr');
+    for(var t = 0; t < types.length; t++) {
+        var row = rows[t];
+        setSelector($n(row, 'type'), types[t]);
+        var term = search.searches[types[t]].term;
+
+        /* if this is a single -<term> search, set the selector to nocontains */
+        if(match = term.match(/^-(\w+)$/)) {
+            term = match[1];
+            setSelector($n(row, 'contains'), 'nocontains');
+        }
+        $n(row, 'term').value = term;
+    }
 }
 
 function advAddGblRow() {

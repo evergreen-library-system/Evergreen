@@ -43,7 +43,7 @@
                         onclick='myopacSelectNoneHolds();' class='classic_link'  href='javascript:void(0);'>&common.none;</a>)
                 </td>
 
-				<td>&myopac.holds.edit.cancel;</td>
+				<td>&myopac.holds.edit;</td>
 			</tr>
 		</thead>
 
@@ -88,10 +88,7 @@
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 
 						name='myopac_holds_edit_link' class='classic_link'>&myopac.holds.edit;</a>
-					<a href='javascript:void(0);' 
-						name='myopac_holds_cancel_link' class='classic_link'>&myopac.holds.cancel;</a>
 				</td>
-
 			</tr>
 		</tbody>
 	</table>

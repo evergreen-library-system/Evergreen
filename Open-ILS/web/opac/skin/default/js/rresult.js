@@ -299,6 +299,8 @@ function rresultFilterSearchResults(r) {
 		for( var i = 0; i != result.ids.length; i++ ) 
 			ids.push(result.ids[i][0]);
 	}
+
+    cookieManager.write(COOKIE_SEARCH, js2JSON(result.compiled_search), -1);
 	_rresultHandleIds( ids, result.count );
 }
 

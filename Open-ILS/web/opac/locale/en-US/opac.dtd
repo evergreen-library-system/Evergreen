@@ -201,7 +201,7 @@ avoid using bookbags all together.  Thank you.">
 	================================================================= -->
 <!ENTITY myopac.holds.formats "Formats">
 <!ENTITY myopac.holds.location "Pickup Location">
-<!ENTITY myopac.holds.edit.cancel "Edit/Cancel">
+<!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.status.none "You have no items on hold at this time">
 <!ENTITY myopac.holds.status.waiting "Waiting for copy">
 <!ENTITY myopac.holds.status.intransit "In Transit">

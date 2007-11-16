@@ -51,6 +51,7 @@ function mresultHandleMRIds(r) {
 		if( getOffset() == 0 ) HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');
 	} 
+    cookieManager.write(COOKIE_SEARCH, js2JSON(res.compiled_search), -1);
 	runEvt('result', 'idsReceived', res.ids);
 }
 

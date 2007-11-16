@@ -201,6 +201,10 @@ function initCookies() {
 	scaleFonts(font);
 	if(font) FONTSIZE = font;
 	SKIN = cookieManager.read(COOKIE_SKIN);
+    if(findCurrentPage() == HOME)
+        cookieManager.remove(COOKIE_SEARCH);
+        
+
 }
 
 /* URL param accessors */
@@ -708,6 +712,7 @@ function doLogout(noredirect) {
 	cookieManager.remove(COOKIE_RIDS);
 	cookieManager.remove(COOKIE_SES);
 	cookieManager.remove(COOKIE_SKIN);
+	cookieManager.remove(COOKIE_SEARCH);
 
 	checkUserSkin("default");
 	COUNT = 10;

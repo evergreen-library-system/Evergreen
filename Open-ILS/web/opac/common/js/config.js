@@ -82,6 +82,7 @@ var COOKIE_SES		= "ses";
 var COOKIE_FONT	= "fnt";
 var COOKIE_SKIN	= "skin";
 var COOKIE_RIDS	= "rids"; /* list of record ids */
+var COOKIE_SEARCH = 'sr';
 
 /* pages */
 var MRESULT		= "mresult";
