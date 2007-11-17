@@ -8,7 +8,7 @@ BEGIN {
 	eval "use Error qw/:try/;";
 	die "Please install Error.pm.\n" if ($@);
 	eval "use UNIVERSAL::require;";
-	die "Please install the UNIVERSAL::Require perl module.\n" if ($@);
+	die "Please install the UNIVERSAL::require perl module.\n" if ($@);
 	eval "use Getopt::Long;";
 	die "Please install the Getopt::Long perl module.\n" if ($@);
 	eval "use Net::Domain;";

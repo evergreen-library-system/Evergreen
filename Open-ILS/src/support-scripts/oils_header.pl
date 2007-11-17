@@ -17,9 +17,11 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:logger/;
+use UNIVERSAL::require;
 
 
 # Some useful objects
+our $cache = "OpenSRF::Utils::Cache";
 our $apputils = "OpenILS::Application::AppUtils";
 our $memcache;
 our $user;
@@ -107,8 +109,8 @@ sub reset_cstore {
 # Get a handle for the memcache object
 #----------------------------------------------------------------
 sub osrf_cache { 
-	eval 'use OpenSRF::Utils::Cache;';
-	$memcache = OpenSRF::Utils::Cache->new('global') unless $memcache;
+	$cache->use;
+	$memcache = $cache->new('global') unless $memcache;
 	return $memcache;
 }
 
