@@ -11,6 +11,7 @@ use Apache2::RequestRec ();
 use Apache2::RequestIO ();
 use Apache2::RequestUtil;
 use Data::Dumper;
+use UNIVERSAL::require;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
@@ -61,7 +62,7 @@ sub child_init {
 
     $logger->debug("Attempting to load Added Content handler: $ac_handler");
 
-    eval "use $ac_handler";
+    $ac_handler->use;
 
     if($@) {    
         $logger->error("Unable to load Added Content handler [$ac_handler]: $@"); 
