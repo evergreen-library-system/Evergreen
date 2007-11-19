@@ -142,17 +142,18 @@ sub create_hold {
 		$hold->request_lib($e->requestor->ws_ou);
 		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
 		$hold = $e->create_action_hold_request($hold) or return $e->event;
-#		push( @copyholds, $hold ) if $hold->hold_type eq OILS_HOLD_TYPE_COPY;
 	}
 
 	$e->commit;
 
 	$conn->respond_complete(1);
 
-	# Go ahead and target the copy-level holds
-	$U->storagereq(
-		'open-ils.storage.action.hold_request.copy_targeter', 
-		undef, $_->id ) for @holds;
+    for(@holds) {
+        next if $_->frozen;
+	    $U->storagereq(
+		    'open-ils.storage.action.hold_request.copy_targeter', 
+		    undef, $_->id );
+    }
 
 	return undef;
 }
@@ -511,17 +512,42 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub update_hold {
-	my($self, $client, $login_session, $hold) = @_;
+	my($self, $client, $auth, $hold) = @_;
 
-	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $hold->usr, 'UPDATE_HOLD' );
-	return $evt if $evt;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
 
-	$logger->activity('User ' . $requestor->id . 
-		' updating hold ' . $hold->id . ' for user ' . $target->id );
+    if($hold->usr ne $e->requestor->id) {
+        # if the hold is for a different user, make sure the 
+        # requestor has the appropriate permissions
+        my $usr = $e->retrieve_actor_user($hold->usr)
+            or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
+    }
 
-	return $U->storagereq(
-		"open-ils.storage.direct.action.hold_request.update", $hold );
+    my $evt = $self->update_hold_if_frozen($e, $hold);
+    return $evt if $evt;
+
+    $e->update_action_hold_request($hold)
+        or return $e->die_event;
+
+    return $hold->id;
+}
+
+
+# if the hold is frozen, this method ensures that the hold is not "targeted", 
+# that is, it clears the current_copy and prev_check_time to essentiallly 
+# reset the hold
+sub update_hold_if_frozen {
+    my($self, $e, $hold) = @_;
+    return undef if $hold->capture_time;
+    if($hold->frozen and ($hold->current_copy or $hold->prev_check_time)) {
+        $logger->info("clearing current_copy and check_time for frozen hold");
+        $hold->clear_current_copy;
+        $hold->clear_prev_check_time;
+        $e->update_action_hold_request($hold) or return $e->die_event;
+    }
+    return undef;
 }
 
 
