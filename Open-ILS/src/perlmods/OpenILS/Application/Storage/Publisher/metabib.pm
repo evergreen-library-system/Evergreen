@@ -2241,7 +2241,6 @@ sub biblio_search_multi_class_fts {
 	    				AND cn.deleted IS FALSE
 		    			AND cp.circ_lib = d.id
 			    		AND cp.deleted IS FALSE
-					)
 					$avail_filter
 				  LIMIT 1
 				)
