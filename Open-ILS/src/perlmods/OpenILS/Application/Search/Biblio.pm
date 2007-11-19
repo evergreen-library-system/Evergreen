@@ -9,6 +9,7 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Cache;
+use Encode;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -405,6 +406,125 @@ sub biblio_copy_to_mods {
 }
 
 
+__PACKAGE__->register_method(
+    api_name => 'open-ils.search.biblio.multiclass.query',
+    method => 'multiclass_query',
+    signature => q#
+        @param arghash @see open-ils.search.biblio.multiclass
+        @param query Raw human-readable query string.  
+            Recognized search keys include: 
+                keyword/kw - search keyword(s)
+                author/au/name - search author(s)
+                title/ti - search title
+                subject/su - search subject
+                series/se - search series
+                lang - limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)
+                site - search at specified org unit, corresponds to actor.org_unit.shortname
+                sort - sort type (title, author, pubdate)
+                dir - sort direction (asc, desc)
+                available - if set to anything other than "false" or "0", limits to available items
+
+                keyword, title, author, subject, and series support additional search 
+                subclasses, specified with a "|". For example, "title|proper:gone with the wind" 
+                For more, see config.metabib_field
+
+        @param nocache @see open-ils.search.biblio.multiclass
+    #
+);
+__PACKAGE__->register_method(
+    api_name => 'open-ils.search.biblio.multiclass.query.staff',
+    method => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query');
+__PACKAGE__->register_method(
+    api_name => 'open-ils.search.metabib.multiclass.query',
+    method => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query');
+__PACKAGE__->register_method(
+    api_name => 'open-ils.search.metabib.multiclass.query.staff',
+    method => 'multiclass_query',
+    signature => '@see open-ils.search.biblio.multiclass.query');
+
+sub multiclass_query {
+    my($self, $conn, $arghash, $query, $docache) = @_;
+
+    $logger->debug("initial search query => $query");
+
+    $query = decode_utf8($query);
+    $query =~ s/\+/ /go;
+    $query =~ s/'//go;
+    $query =~ s/^\s+//go;
+
+    # convert convenience classes (e.g. kw for keyword) to the full class name
+    $query =~ s/kw(:|\|)/keyword$1/go;
+    $query =~ s/ti(:|\|)/title$1/go;
+    $query =~ s/au(:|\|)/author$1/go;
+    $query =~ s/su(:|\|)/subject$1/go;
+    $query =~ s/se(:|\|)/series$1/go;
+    $query =~ s/name(:|\|)/author$1/og;
+
+    $logger->debug("cleansed query string => $query");
+    my $search = $arghash->{searches} = {};
+
+    while ($query =~ s/((?:keyword(?:\|\w+)?|title(?:\|\w+)?|author(?:\|\w+)?|subject(?:\|\w+)?|series(?:\|\w+)?|site|dir|sort|lang|available):[^:]+)$//so) {
+        my($type, $value) = split(':', $1);
+        next unless $type and $value;
+
+        $value =~ s/^\s*//og;
+        $value =~ s/\s*$//og;
+        $type = 'sort_dir' if $type eq 'dir';
+
+        if($type eq 'site') {
+            # 'site' is the org shortname.  when using this, we also want 
+            # to search at the requested org's depth
+            my $e = new_editor();
+            if(my $org = $e->search_actor_org_unit({shortname => $value})->[0]) {
+                $arghash->{org_unit} = $org->id if $org;
+                $arghash->{depth} = $e->retrieve_actor_org_unit_type($org->ou_type)->depth;
+            } else {
+                $logger->warn("'site:' query used on invalid org shortname: $value ... ignoring");
+            }
+
+        } elsif($type eq 'available') {
+            # limit to available
+            $arghash->{available} = 1 unless $value eq 'false' or $value eq '0';
+
+        } elsif($type eq 'lang') {
+            # collect languages into an array of languages
+            $arghash->{language} = [] unless $arghash->{language};
+            push(@{$arghash->{language}}, $value);
+
+        } else {
+            # append the search term to the term under construction
+            $search->{$type} =  {} unless $search->{$type};
+            $search->{$type}->{term} =  
+                ($search->{$type}->{term}) ? $search->{$type}->{term} . " $value" : $value;
+        }
+    }
+
+    if($query) {
+        # This is the front part of the string before any special tokens were parsed. 
+        # Add this data to the default search class
+        my $type = $arghash->{default_class} || 'keyword';
+        $search->{$type} =  {} unless $search->{$type};
+        $search->{$type}->{term} =
+            ($search->{$type}->{term}) ? $search->{$type}->{term} . " $query" : $query;
+    }
+
+    # capture the original limit because the search method alters the limit internally
+    my $ol = $arghash->{limit};
+
+    (my $method = $self->api_name) =~ s/\.query//o;
+	$method = $self->method_lookup($method);
+    my ($data) = $method->run($arghash, $docache);
+
+    $arghash->{limit} = $ol if $ol;
+    $data->{compiled_search} = $arghash;
+
+    $logger->info("compiled search is " . OpenSRF::Utils::JSON->perl2JSON($arghash));
+
+    return $data;
+}
+
 # ----------------------------------------------------------------------------
 # These are the main OPAC search methods
 # ----------------------------------------------------------------------------
@@ -486,6 +606,7 @@ sub the_quest_for_knowledge {
 	$searchhash->{limit} -= $offset;
 
 
+    my $trim = 0;
 	my $result = ($docache) ? search_cache($ckey, $offset, $limit) : undef;
 
 	if(!$result) {
@@ -499,6 +620,7 @@ sub the_quest_for_knowledge {
 		}
 	
 		$result = $U->storagereq( $method, %$searchhash );
+        $trim = 1;
 
 	} else { 
 		$docache = 0; 
@@ -506,28 +628,27 @@ sub the_quest_for_knowledge {
 
 	return {count => 0} unless ($result && $$result[0]);
 
-	#for my $r (@$result) { push(@recs, $r) if ($r and $$r[0]); }
 	@recs = @$result;
 
 	my $count = ($ismeta) ? $result->[0]->[3] : $result->[0]->[2];
 
-
-	if( $docache ) {
-
+	if($docache) {
 		# If we didn't get this data from the cache, put it into the cache
 		# then return the correct offset of records
 		$logger->debug("putting search cache $ckey\n");
 		put_cache($ckey, $count, \@recs);
-
-		my @t;
-		for ($offset..$end) {
-			last unless $recs[$_];
-			push(@t, $recs[$_]);
-		}
-		@recs = @t;
-
-		#$logger->debug("cache done .. returning $offset..$end : " . OpenSRF::Utils::JSON->perl2JSON(\@recs));
 	}
+
+    if($trim) {
+        # if we have the full set of data, trim out 
+        # the requested chunk based on limit and offset
+        my @t;
+        for ($offset..$end) {
+            last unless $recs[$_];
+            push(@t, $recs[$_]);
+        }
+        @recs = @t;
+    }
 
 	return { ids => \@recs, count => $count };
 }
