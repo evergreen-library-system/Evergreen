@@ -12,7 +12,7 @@ char* script		= NULL;
 char* authtoken	= NULL;
 
 static int do_request( char* request );
-static char* format_response( jsonObject* o );
+static char* format_response( const jsonObject* o );
 
 int main( int argc, char* argv[] ) {
 	
@@ -87,8 +87,8 @@ static int do_request( char* request ) {
 
 	if(!strcmp(request,"")) return 0;
 
-	char* service;
-	char* method;
+	const char* service;
+	const char* method;
 	char* tmp;
 	
 	service = strtok_r(request, " ", &tmp);
@@ -106,7 +106,7 @@ static int do_request( char* request ) {
 		}
 		
 		osrfAppSession* session = osrf_app_client_session_init(service);
-		int req_id = osrf_app_session_make_req( session, params, method, 1, NULL );
+		int req_id = osrfAppSessionMakeRequest( session, params, method, 1, NULL );
 		osrfMessage* omsg;
 
 		while( (omsg = osrfAppSessionRequestRecv( session, req_id, 120 )) ) {
@@ -128,7 +128,7 @@ static int do_request( char* request ) {
 }
 
 
-static char* format_response( jsonObject* o ) {
+static char* format_response( const jsonObject* o ) {
 	if(!o) return NULL;
 
 	int width = 20;
@@ -143,7 +143,7 @@ static char* format_response( jsonObject* o ) {
 
 		while( (key = fm_pton(o->classname, i++)) ) {
 			char* val = oilsFMGetString(o, key);
-			jsonObject* item;
+			const jsonObject* item;
 
 			int l = strlen(key + 2);
 			buffer_fadd(buffer, " %s: ", key);
@@ -176,9 +176,7 @@ static char* format_response( jsonObject* o ) {
 			free(key);
 		}
 
-		char* data = buffer_data(buffer);
-		buffer_free(buffer);
-		return data;
+		return buffer_release(buffer);
 	}
 
 	char* jjson;
@@ -188,10 +186,10 @@ static char* format_response( jsonObject* o ) {
 		for( i = 0; i != o->size; i++ ) {
 			char* d = format_response(jsonObjectGetIndex(o, i));
 			buffer_fadd(arrb, "%s\n", d);
+			free(d);
 		}
 
-		jjson = buffer_data(arrb);
-		buffer_free(arrb);
+		jjson = buffer_release(arrb);
 
 	} else {
 		char* json = jsonObjectToJSON(o);
