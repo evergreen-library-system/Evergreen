@@ -69,7 +69,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
         jsonObjectSetKey(response, "payload", payload );
 
 	/* verify we are connected */
-	if(!osrf_system_get_transport_client()) {
+		if(!osrfSystemGetTransportClient()) {
 		osrfLogError( OSRF_LOG_MARK, "Bootstrap Failed, no transport client");
 		return HTTP_INTERNAL_SERVER_ERROR;
 	}
@@ -150,12 +150,12 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 
 	osrfLogDebug( OSRF_LOG_MARK, "MOD session service: %s", session->remote_service );
 
-	int req_id = osrf_app_session_make_req( session, NULL, method, 1, sarray );
+	int req_id = osrfAppSessionMakeRequest( session, NULL, method, 1, sarray );
 	string_array_destroy(sarray);
 
 	osrf_message* omsg = NULL;
 
-        while((omsg = osrf_app_session_request_recv( session, req_id, 60 ))) {
+	while((omsg = osrfAppSessionRequestRecv( session, req_id, 60 ))) {
 
                 jsonObjectSetKey(response, "status", jsonNewNumberObject(omsg->status_code));
 
@@ -168,7 +168,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
                         char* t = omsg->status_text ? omsg->status_text : "No Error Message";
                         jsonObjectSetKey(response, "debug", jsonNewObject("\n\n%s:\n%s\n", s, t));
                         osrfLogError( OSRF_LOG_MARK,  "Gateway received error: %s",
-                                        jsonObjectGetString(jsonObjectGetKey(response, "debug")));
+                                        jsonObjectGetString(jsonObjectGetKeyConst(response, "debug")));
                         break;
                 }
 
@@ -192,7 +192,7 @@ static int mod_ils_gateway_method_handler (request_rec *r) {
 	osrfLogDebug( OSRF_LOG_MARK, "gateway process message successfully");
 
 
-	osrf_app_session_destroy(session);
+	osrfAppSessionFree(session);
 
 
 	return OK;
