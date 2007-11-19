@@ -81,6 +81,8 @@
 		<command id="cmd_holds_edit_pickup_lib" />
 		<command id="cmd_holds_edit_phone_notify" />
 		<command id="cmd_holds_edit_email_notify" />
+		<command id="cmd_holds_edit_thaw_date" />
+		<command id="cmd_holds_edit_freeze" />
 		<command id="cmd_holds_edit_selection_depth" disabled="true" hidden="true"/>
 		<command id="cmd_broken" disabled="true" hidden="true"/>
 		<command id="cmd_holds_retarget"/>
