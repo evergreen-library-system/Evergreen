@@ -531,6 +531,7 @@ sub update_hold {
     $e->update_action_hold_request($hold)
         or return $e->die_event;
 
+    $e->commit;
     return $hold->id;
 }
 
