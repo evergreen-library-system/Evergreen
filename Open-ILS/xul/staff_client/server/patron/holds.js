@@ -766,6 +766,8 @@ patron.holds.prototype = {
                 obj.controller.view.cmd_holds_edit_pickup_lib.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_phone_notify.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_email_notify.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_edit_thaw_date.setAttribute('disabled','true');
+				obj.controller.view.cmd_holds_edit_freeze.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_edit_selection_depth.setAttribute('disabled','true');
                 obj.controller.view.cmd_show_notifications.setAttribute('disabled','true');
                 obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
