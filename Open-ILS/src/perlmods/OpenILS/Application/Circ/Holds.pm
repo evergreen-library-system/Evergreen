@@ -142,17 +142,18 @@ sub create_hold {
 		$hold->request_lib($e->requestor->ws_ou);
 		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
 		$hold = $e->create_action_hold_request($hold) or return $e->event;
-#		push( @copyholds, $hold ) if $hold->hold_type eq OILS_HOLD_TYPE_COPY;
 	}
 
 	$e->commit;
 
 	$conn->respond_complete(1);
 
-	# Go ahead and target the copy-level holds
-	$U->storagereq(
-		'open-ils.storage.action.hold_request.copy_targeter', 
-		undef, $_->id ) for @holds;
+    for(@holds) {
+        next if $_->frozen;
+	    $U->storagereq(
+		    'open-ils.storage.action.hold_request.copy_targeter', 
+		    undef, $_->id );
+    }
 
 	return undef;
 }
@@ -199,16 +200,7 @@ sub __create_hold {
 
 		# is this user allowed to have holds of this type?
 		$perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
-		if($perm) { 
-			#if there is a requestor, see if the requestor has override privelages
-			if($hold->requestor ne $hold->usr) {
-				$perm = _check_request_holds_override($user->id, $user->home_ou);
-				if($perm) {return $perm;}
-
-			} else {
-				return $perm; 
-			}
-		}
+        return $perm if $perm;
 
 		#enforce the fact that the login is the one requesting the hold
 		$hold->requestor($user->id); 
@@ -266,15 +258,6 @@ sub _check_request_holds_perm {
 	my $org_id = shift;
 	if(my $evt = $apputils->check_perms(
 		$user_id, $org_id, "REQUEST_HOLDS")) {
-		return $evt;
-	}
-}
-
-sub _check_request_holds_override {
-	my $user_id = shift;
-	my $org_id = shift;
-	if(my $evt = $apputils->check_perms(
-		$user_id, $org_id, "REQUEST_HOLDS_OVERRIDE")) {
 		return $evt;
 	}
 }
@@ -529,17 +512,43 @@ __PACKAGE__->register_method(
 	NOTE
 
 sub update_hold {
-	my($self, $client, $login_session, $hold) = @_;
+	my($self, $client, $auth, $hold) = @_;
 
-	my( $requestor, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $hold->usr, 'UPDATE_HOLD' );
-	return $evt if $evt;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
 
-	$logger->activity('User ' . $requestor->id . 
-		' updating hold ' . $hold->id . ' for user ' . $target->id );
+    if($hold->usr ne $e->requestor->id) {
+        # if the hold is for a different user, make sure the 
+        # requestor has the appropriate permissions
+        my $usr = $e->retrieve_actor_user($hold->usr)
+            or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
+    }
 
-	return $U->storagereq(
-		"open-ils.storage.direct.action.hold_request.update", $hold );
+    my $evt = $self->update_hold_if_frozen($e, $hold);
+    return $evt if $evt;
+
+    $e->update_action_hold_request($hold)
+        or return $e->die_event;
+
+    $e->commit;
+    return $hold->id;
+}
+
+
+# if the hold is frozen, this method ensures that the hold is not "targeted", 
+# that is, it clears the current_copy and prev_check_time to essentiallly 
+# reset the hold
+sub update_hold_if_frozen {
+    my($self, $e, $hold) = @_;
+    return undef if $hold->capture_time;
+    if($hold->frozen and ($hold->current_copy or $hold->prev_check_time)) {
+        $logger->info("clearing current_copy and check_time for frozen hold");
+        $hold->clear_current_copy;
+        $hold->clear_prev_check_time;
+        $e->update_action_hold_request($hold) or return $e->die_event;
+    }
+    return undef;
 }
 
 
@@ -1323,16 +1332,21 @@ sub find_nearest_permitted_hold {
 		or return (undef, $editor->event);
 
 
+    my $retarget = 0;
+
 	# re-target any other holds that already target this copy
 	for my $old_hold (@$old_holds) {
 		next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
-		$logger->info("circulator: re-targeting hold ".$old_hold->id.
-			" after a better hold [".$best_hold->id."] was found");
-		$U->storagereq( 
-			'open-ils.storage.action.hold_request.copy_targeter', undef, $old_hold->id );
+		$logger->info("circulator: clearing current_copy and prev_check_time on hold ".
+            $old_hold->id." after a better hold [".$best_hold->id."] was found");
+        $old_hold->clear_current_copy;
+        $old_hold->clear_prev_check_time;
+        $editor->update_action_hold_request($old_hold) 
+            or return (undef, $editor->event);
+        $retarget = 1;
 	}
 
-	return ($best_hold);
+	return ($best_hold, undef, $retarget);
 }
 
 
