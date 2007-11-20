@@ -16,13 +16,13 @@
 #define OBJECT_NS "http://open-ils.org/spec/opensrf/IDL/objects/v1"
 #define BASE_NS "http://opensrf.org/spec/IDL/base/v1"
 
-xmlDocPtr idlDoc = NULL; // parse and store the IDL here
+static xmlDocPtr idlDoc = NULL; // parse and store the IDL here
 
 /* parse and store the IDL here */
-osrfHash* idlHash;
+static osrfHash* idlHash;
 
-osrfHash* oilsIDL() { return idlHash; }
-osrfHash* oilsIDLInit( char* idl_filename ) {
+osrfHash* oilsIDL(void) { return idlHash; }
+osrfHash* oilsIDLInit( const char* idl_filename ) {
 
 	if (idlHash) return idlHash;
 
@@ -294,7 +294,7 @@ osrfHash* oilsIDLInit( char* idl_filename ) {
 	return idlHash;
 }
 
-osrfHash* oilsIDLFindPath( char* path, ... ) {
+osrfHash* oilsIDLFindPath( const char* path, ... ) {
 	if(!path || strlen(path) < 1) return NULL;
 
 	osrfHash* obj = idlHash;
@@ -316,13 +316,13 @@ osrfHash* oilsIDLFindPath( char* path, ... ) {
 	return obj;
 }
 
-int oilsIDL_classIsFieldmapper ( char* classname ) {
+int oilsIDL_classIsFieldmapper ( const char* classname ) {
 	if (!classname) return 0;
 	if(oilsIDLFindPath( "/%s", classname )) return 1;
 	return 0;
 }
 
-int oilsIDL_ntop (char* classname, char* fieldname) {
+int oilsIDL_ntop (const char* classname, const char* fieldname) {
 	osrfHash* _pos = NULL;
 
 	if (!oilsIDL_classIsFieldmapper(classname)) return -1;
@@ -331,7 +331,7 @@ int oilsIDL_ntop (char* classname, char* fieldname) {
 	return -1;
 }
 
-char * oilsIDL_pton (char* classname, int pos) {
+char * oilsIDL_pton (const char* classname, int pos) {
 	char* ret = NULL;
 	osrfHash* f = NULL;
 	osrfHash* fields = NULL;

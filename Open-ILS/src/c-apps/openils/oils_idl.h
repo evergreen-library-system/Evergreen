@@ -5,9 +5,9 @@
 #ifndef OILS_IDL_API
 #define OILS_IDL_API
 
-osrfHash* oilsIDLInit( char* );
-osrfHash* oilsIDL();
-osrfHash* oilsIDLFindPath( char*, ... );
+osrfHash* oilsIDLInit( const char* );
+osrfHash* oilsIDL(void);
+osrfHash* oilsIDLFindPath( const char*, ... );
 
 /* The oilsIDL hash looks like this:
 
@@ -44,8 +44,8 @@ osrfHash* oilsIDLFindPath( char*, ... );
 
 */
 
-int oilsIDL_classIsFieldmapper(char*);
-char * oilsIDL_pton(char *, int);
-int oilsIDL_ntop(char *, char *);
+int oilsIDL_classIsFieldmapper(const char*);
+char * oilsIDL_pton(const char *, int);
+int oilsIDL_ntop(const char *, const char *);
 
 #endif
