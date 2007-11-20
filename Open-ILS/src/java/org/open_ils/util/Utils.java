@@ -47,7 +47,7 @@ public class Utils {
 
     /**
      * Generates the hex md5sum of a string.
-     * @param The string to md5sum
+     * @param s The string to md5sum
      * @return The 32-character hex md5sum
      */
     public static String md5Hex(String s) {
