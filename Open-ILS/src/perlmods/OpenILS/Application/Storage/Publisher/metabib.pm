@@ -2242,11 +2242,8 @@ sub biblio_search_multi_class_fts {
 				  WHERE	cn.record = s.id
 					AND cp.call_number = cn.id
 					AND cn.deleted IS FALSE
-					AND (	cn.owning_lib = d.id
-						OR (	cp.circ_lib = d.id
-							AND cp.deleted IS FALSE
-						)
-					)
+					AND cp.circ_lib = d.id
+					AND cp.deleted IS FALSE
 					$avail_filter
 				  LIMIT 1
 				)
