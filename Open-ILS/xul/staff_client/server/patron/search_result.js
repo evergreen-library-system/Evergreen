@@ -182,7 +182,7 @@ patron.search_result.prototype = {
 				break;
 
 				case 'inactive':
-					if (query[i] == 'checked') inactive = true;
+					if (query[i] == 'checked' || query[i] == 'true') inactive = true;
 				break;
 
                 case 'search_depth':
