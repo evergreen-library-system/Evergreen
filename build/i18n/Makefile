@@ -28,7 +28,8 @@ newpot: dtds2pot props2pot
 newproject: po2dtds po2props
 	@echo "Generated newly translated project files for locale $(LOCALE)"
 
-updatepo: update_po_dtds update_po_props
+updatepo: 
+	@pot2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(POOUTDIR) -t $(POOUTDIR)/$(LOCALE) 2>&1
 	@echo "Updated PO files for locale $(LOCALE)"
 
 updateproject: update_moz_dtds update_moz_props
@@ -45,13 +46,6 @@ dtds2pot:
 
 props2pot:
 	@moz2po -P $(PROGRESS) -o $(POOUTDIR) -i $(PROPSDIR)/en-US/ 2>&1
-
-
-update_po_dtds:
-	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(DTDDIR)/$(LOCALE)/ 2>&1
-
-update_po_props:
-	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(PROPSDIR)/$(LOCALE)/ 2>&1
 
 po2dtds:
 	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1

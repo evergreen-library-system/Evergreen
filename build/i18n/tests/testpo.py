@@ -4,6 +4,7 @@ import filecmp
 import glob
 import os
 import re
+import shutil
 import subprocess
 import sys
 import unittest
@@ -14,17 +15,24 @@ class TestPOFramework(unittest.TestCase):
         '../../Open-ILS/xul/staff_client/chrome/locale/en-US/*.properties')
 
     def setUp(self):
+        self.tearDown()
         devnull = open('/dev/null', 'w')
         proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'newpo'), 0, None, None, devnull, devnull).wait()
         proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'newproject'), 0, None, None, devnull, devnull).wait()
+        devnull.close()
 
     def tearDown(self):
-        for file in os.listdir('po/ll-LL/'):
-            os.remove(os.path.join('po/ll-LL', file))
-        os.rmdir('po/ll-LL/')
-        for file in os.listdir('locale/ll-LL/'):
-            os.remove(os.path.join('locale/ll-LL/', file))
-        os.rmdir('locale/ll-LL/')
+        tmpdirs = ('po/ll-LL', 'locale/ll-LL')
+        tmpfiles = ('po/test.properties.pot', 'locale/ll-LL/temp.properties.po')
+        for dir in tmpdirs:
+            if os.access(dir, os.F_OK):
+                for file in os.listdir(dir):
+                    os.remove(os.path.join(dir, file))
+                os.rmdir(dir)
+
+        for file in tmpfiles:
+            if os.access(file, os.F_OK):
+                os.remove(file)
 
     def testnewpofiles(self):
         # Create a brand new set of PO files from our en-US project files.
@@ -83,6 +91,64 @@ class TestPOFramework(unittest.TestCase):
         devnull = open('/dev/null', 'w')
         proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'updateproject'), 0, None, None, devnull, devnull).wait()
 
+        self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
+
+    def testupdatepo(self):
+        # Add strings to a POT file, then ensure that the updated PO files
+        # include the new strings
+
+        # Create the "template" PO file
+        commonpo = 'po/ll-LL/common.properties.po'
+        testpo = 'po/ll-LL/test.properties.po'
+        commonfile = open(commonpo)
+        testfile = open(testpo, 'w')
+        for line in commonfile:
+            line = re.sub(r'common.properties$', r'test.properties', line)
+            testfile.write(line)
+        commonfile.close()
+        testfile.close()
+
+        # Create the test POT file
+        commonpot = 'po/common.properties.pot'
+        testpot = 'po/test.properties.pot'
+        commonfile = open(commonpot)
+        testfile = open(testpot, 'w')
+        for line in commonfile:
+            line = re.sub(r'common.properties$', r'test.properties', line)
+            testfile.write(line)
+        commonfile.close()
+        testfile.write("\n#: common.testupdatepo")
+        testfile.write('\nmsgid "TESTUPDATEPO"')
+        testfile.write('\nmsgstr ""')
+        testfile.close()
+
+        # Update the PO files to get the translated strings in place
+        devnull = open('/dev/null', 'w')
+        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'updatepo'), 0, None, None, devnull, devnull).wait()
+
+        commonprops = 'po/ll-LL/common.properties.po'
+        tempprops = 'po/ll-LL/temp.properties.po'
+        testprops = 'po/ll-LL/test.properties.po'
+
+        # Munge the common file to make it what we expect it to be
+        commonfile = open(commonprops, 'a+')
+        commonfile.write("\n#: common.testupdatepo")
+        commonfile.write('\nmsgid "TESTUPDATEPO"')
+        commonfile.write('\nmsgstr ""')
+        commonfile.close()
+
+        shutil.copyfile(commonprops, tempprops)
+        commonfile = open(commonprops, 'w')
+        tempfile = open(testpot)
+        for line in tempfile:
+            line = re.sub(r'common.properties$', r'test.properties', line)
+            line = re.sub(r'^"Project-Id-Version: .*"$', r'"Project-Id-Version: PACKAGE VERSION\\n"', line)
+            commonfile.write(line)
+        commonfile.write("\n")
+        commonfile.close()
+        tempfile.close()
+
+        # Compare the updated PO files - they should be the same
         self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
 
 if __name__ == '__main__':
