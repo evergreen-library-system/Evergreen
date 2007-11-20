@@ -1023,12 +1023,13 @@
 			<field reporter:label="Patron" name="usr" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Check Out Date/Time" name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="27" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Circulation Type" name="circ_type" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="text"/>
-			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="money"/>
-			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulation Type" name="circ_type" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="text"/>
+			<field reporter:label="Billing Totals" name="billing_total" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="money"/>
+			<field reporter:label="Payment Totals" name="payment_total" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="money"/>
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
