@@ -81,7 +81,7 @@ class TestPOFramework(unittest.TestCase):
 
         # Regenerate the project files to get the translated strings in place
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'newproject'), 0, None, None, devnull, devnull).wait()
+        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'updateproject'), 0, None, None, devnull, devnull).wait()
 
         self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
 

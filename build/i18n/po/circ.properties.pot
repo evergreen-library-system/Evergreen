@@ -1,0 +1,186 @@
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2007-11-19 13:21-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 1.0.1\n"
+"X-Accelerator-Marker: &\n"
+
+#: circ.bad_checkdigit
+msgid "This barcode has a bad check digit."
+msgstr ""
+
+#: circ.barcode.enter
+msgid "Please enter a patron barcode first."
+msgstr ""
+
+#: circ.barcode.warning
+msgid "Barcode Warning"
+msgstr ""
+
+#: circ.standalone
+msgid "Standalone"
+msgstr ""
+
+#: circ.duplicate_scan.msg
+msgid "This barcode has already been scanned."
+msgstr ""
+
+#: circ.duplicate_scan.field
+msgid "Duplicate Scan"
+msgstr ""
+
+#: circ.offline_checkout.nonbarcoded
+msgid "or choose a non-barcoded option..."
+msgstr ""
+
+#: circ.offline_checkout.items
+msgid "Enter the number of items:"
+msgstr ""
+
+#: circ.offline_checkout.download.warning
+msgid ""
+"WARNING: The non-barcode types have not been downloaded from the server.  "
+"You should log in to retrieve these."
+msgstr ""
+
+#: circ.offline_checkout.barcode.flagged.lost
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Lost."
+msgstr ""
+
+#: circ.offline_checkout.barcode.flagged.expired
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Expired."
+msgstr ""
+
+#: circ.offline_checkout.barcode.flagged.barred
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Barred."
+msgstr ""
+
+#: circ.offline_checkout.barcode.flagged.blocked
+msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
+msgstr ""
+
+#: circ.offline_checkout.barcode.flagged.unknown
+msgid ""
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
+msgstr ""
+
+#: circ.offline_checkout.date.early
+msgid "Due date needs to be after today."
+msgstr ""
+
+#: circ.offline_checkout.required_field
+msgid "Required Field"
+msgstr ""
+
+#: circ.offline_checkout.valid_count
+msgid "Please try again and enter a valid count."
+msgstr ""
+
+#: circ.offline_checkout.required_value
+msgid "Required Value"
+msgstr ""
+
+#: circ.offline_register.future.birth.date
+msgid "Patron needs to be born yesterday."
+msgstr ""
+
+#: circ.offline_register.invalid.birth.date
+msgid "Happy birthday!  You need to be more than 0 days old."
+msgstr ""
+
+#: circ.offline_register.survey.prompt
+msgid "Choose a response..."
+msgstr ""
+
+#: circ.offline_register.missing.post_code
+msgid "Missing Address : Postal Code"
+msgstr ""
+
+#: circ.offline_register.missing.state
+msgid "Missing Address : State"
+msgstr ""
+
+#: circ.offline_register.missing.city
+msgid "Missing Address : City"
+msgstr ""
+
+#: circ.offline_register.missing.street1
+msgid "Missing Address : Line 1"
+msgstr ""
+
+#: circ.offline_register.missing.ident_value
+msgid "Missing Identification Value"
+msgstr ""
+
+#: circ.offline_register.missing.ident_type
+msgid "Missing Identification Type"
+msgstr ""
+
+#: circ.offline_register.missing.dob
+msgid "Missing Date of Birth"
+msgstr ""
+
+#: circ.offline_register.missing.first_given_name
+msgid "Missing First Name"
+msgstr ""
+
+#: circ.offline_register.missing.family_name
+msgid "Missing Last Name"
+msgstr ""
+
+#: circ.offline_register.missing.passwd
+msgid "Missing Password"
+msgstr ""
+
+#: circ.offline_register.missing.barcode
+msgid "Missing Barcode"
+msgstr ""
+
+#: circ.offline_register.missing.profile
+msgid "Missing Profile"
+msgstr ""
+
+#: circ.offline_register.missing.home_ou
+msgid "Missing Home Library"
+msgstr ""
+
+#: circ.offline_register.missing.alert
+msgid "Please fix the following:"
+msgstr ""
+
+#: circ.offline_register.patron.saved
+msgid "Patron Registration Saved"
+msgstr ""
+
+#: circ.offline_register.missing.library.list
+msgid "Missing library list."
+msgstr ""
+
+#: circ.offline_register.missing.profile.list
+msgid "Missing profile list."
+msgstr ""
+
+#: circ.offline_register.missing.id.type.list
+msgid "Missing identification type list."
+msgstr ""
+
+#: circ.offline_register.missing.required.surveys
+msgid "Missing required surveys."
+msgstr ""
+
+#: circ.offline_register.missing.files.error
+msgid ""
+"ERROR: Offline patron registration requires some server-generated files.  "
+"Please login periodically to retrieve these files."
+msgstr ""

@@ -1,0 +1,3645 @@
+# extracted from ../../Open-ILS/web/opac/locale/en-US/lang.dtd
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2007-11-19 13:21-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Translate Toolkit 1.0.1\n"
+"X-Accelerator-Marker: &\n"
+
+#: lang.version
+msgid "remote v1"
+msgstr ""
+
+#: lang.description
+msgid "English"
+msgstr ""
+
+#: lang.author
+msgid "PINES"
+msgstr ""
+
+#: common.check_date.description
+msgid "Check today's date above."
+msgstr ""
+
+#: common.check_barcode.description
+msgid "Check barcode?"
+msgstr ""
+
+#: common.date_helper
+msgid "or choose one of these"
+msgstr ""
+
+#: common.date_helper.3_days
+msgid "Today + 3 days"
+msgstr ""
+
+#: common.date_helper.7_days
+msgid "Today + 7 days"
+msgstr ""
+
+#: common.date_helper.14_days
+msgid "Today + 14 days"
+msgstr ""
+
+#: common.date_helper.30_days
+msgid "Today + 30 days"
+msgstr ""
+
+#: common.due_date.description
+msgid "Enter the item due date:"
+msgstr ""
+
+#: common.enter.label
+#: common.enter.accesskey
+#: staff.circ.offline_checkin.step2a.label
+#: staff.circ.offline_checkin.step2a.accesskey
+msgid "&Enter"
+msgstr ""
+
+#: common.enter_barcode.description
+msgid "Enter the item barcode:"
+msgstr ""
+
+#: common.title
+#: staff.cat.search_title
+#: staff.mvr_label_title
+#: staff.record_list.title
+#: staff.z39_50.search_class.title
+msgid "Title"
+msgstr ""
+
+#: common.author
+#: staff.cat.search_author
+#: staff.mvr_label_author
+#: staff.record_list.author
+#: staff.z39_50.search_class.author
+msgid "Author"
+msgstr ""
+
+#: common.subject
+#: staff.cat.search_subject
+msgid "Subject"
+msgstr ""
+
+#: common.series
+msgid "Series"
+msgstr ""
+
+#: common.keyword
+#: staff.cat.search_all
+msgid "Keyword"
+msgstr ""
+
+#: common.type
+#: staff.ahr_hold_type_label
+#: staff.cat.search_type
+#: staff.marc.LDR.type.short
+msgid "Type"
+msgstr ""
+
+#: common.isbn
+#: staff.record_list.isbn
+#: staff.z39_50.search_class.isbn
+msgid "ISBN"
+msgstr ""
+
+#: common.format
+#: staff.cat.search_format
+msgid "Format"
+msgstr ""
+
+#: common.login
+#: staff.auth.login_header
+msgid "Login"
+msgstr ""
+
+#: common.logout
+msgid "Log Out"
+msgstr ""
+
+#: common.at
+msgid "at"
+msgstr ""
+
+#: common.of
+#: staff.displaying.of
+msgid "of"
+msgstr ""
+
+#: common.cancel
+msgid "Cancel"
+msgstr ""
+
+#: common.library
+msgid "Library"
+msgstr ""
+
+#: common.step1.label
+msgid "Step 1)"
+msgstr ""
+
+#: common.step2.label
+#: common.step2.accesskey
+msgid "Step &2)"
+msgstr ""
+
+#: common.step3.label
+#: common.step3.accesskey
+msgid "Step &3)"
+msgstr ""
+
+#: common.step4.label
+#: common.step4.accesskey
+msgid "Step &4)"
+msgstr ""
+
+#: common.step5.label
+msgid "Step 5)"
+msgstr ""
+
+#: common.step6.label
+msgid "Step 6)"
+msgstr ""
+
+#: common.username
+msgid "Username"
+msgstr ""
+
+#: common.username.label
+#: common.username.accesskey
+msgid "&Username:"
+msgstr ""
+
+#: common.password
+#: staff.au_password_label
+msgid "Password"
+msgstr ""
+
+#: common.submit
+#: staff.auth.submit_prompt
+#: staff.circ.checkin.submit_label
+#: staff.circ.hold_capture.submit_label
+#: staff.patron_display.checkout.submit_label
+msgid "Submit"
+msgstr ""
+
+#: common.user_not_found
+msgid "User not found"
+msgstr ""
+
+#: common.unimplemented
+msgid "Not Yet Implemented"
+msgstr ""
+
+#: common.delete_transactions.label
+msgid "Delete selected transaction"
+msgstr ""
+
+#: common.save_transactions.label
+#: common.save_transactions.accesskey
+msgid "&Save these transactions"
+msgstr ""
+
+#: ilsevent.1000
+msgid "Login failed.  The username or password entered was incorrect."
+msgstr ""
+
+#: ilsevent.1001
+msgid "Login session has timed out or does not exist"
+msgstr ""
+
+#: ilsevent.1002
+msgid "User was not found in the database"
+msgstr ""
+
+#: ilsevent.5000
+msgid "Permission Denied"
+msgstr ""
+
+#: ilsperm.CREATE_HOLD
+msgid "User is not allowed to create holds for other users at this location"
+msgstr ""
+
+#: common.cancel.accesskey
+#: staff.cat.fixed.SCO.key
+#: staff.copy.close.key
+#: staff.main.auth.debug.clear.accesskey
+#: staff.main.menu.circ.checkin.key
+#: staff.main.menu.circ.claimed_returned.key
+#: staff.main.menu.circ.key
+#: staff.main.menu.edit.copy.key
+#: staff.main.menu.file.close.key
+#: staff.marc.display.fixed.SCO.key
+#: staff.marc.file.close.key
+#: staff.patron_navbar.checkout.accesskey
+msgid "C"
+msgstr ""
+
+#: common.login.accesskey
+#: staff.auth.logoff_prompt.key
+#: staff.cat.search_count_copy.key
+#: staff.cat.search_location.key
+#: staff.checkin.reprint_receipt_label.accesskey
+#: staff.hold_capture.reprint_receipt_label.accesskey
+#: staff.main.menu.circ.lost.key
+#: staff.marc.display.legend.key
+#: staff.patron_display.checkout.reprint_receipt_label.accesskey
+msgid "L"
+msgstr ""
+
+#: common.password.accesskey
+#: staff.auth.password_prompt.accesskey
+#: staff.auth.password_prompt.key
+#: staff.cat.fixed.MAP.key
+#: staff.main.menu.circ.barcode.retrieve_patron.accesskey
+#: staff.main.menu.circ.patron_status.key
+#: staff.main.menu.edit.paste.key
+#: staff.marc.display.fixed.MAP.key
+#: staff.patron_display.items.print_receipt_label.accesskey
+#: staff.previous.range.key
+msgid "P"
+msgstr ""
+
+#: staff.about.title
+msgid "About"
+msgstr ""
+
+#: staff.acp_label_barcode
+#: staff.browse_list.barcode
+#: staff.copy.attr.barcode
+msgid "Barcode"
+msgstr ""
+
+#: staff.acp_label_call_number
+#: staff.browse_list.callnumber
+#: staff.cat.search_callnumber
+#: staff.volume.attr.callnumber
+msgid "Call Number"
+msgstr ""
+
+#: staff.acp_label_circ_as_type
+msgid "Circ As Type"
+msgstr ""
+
+#: staff.acp_label_circ_lib
+msgid "Circ Lib"
+msgstr ""
+
+#: staff.acp_label_circ_modifier
+#: staff.browse_list.circ_modifier
+msgid "Circ Modifier"
+msgstr ""
+
+#: staff.acp_label_copy_number
+#: staff.browse_list.copy_number
+msgid "Copy Number"
+msgstr ""
+
+#: staff.acp_label_deposit
+#: staff.browse_list.deposit
+msgid "Deposit"
+msgstr ""
+
+#: staff.acp_label_deposit_amount
+#: staff.browse_list.deposit_amount
+msgid "Deposit Amount"
+msgstr ""
+
+#: staff.acp_label_fine_level
+#: staff.browse_list.fine_level
+#: staff.copy.attr.fine_level
+msgid "Fine Level"
+msgstr ""
+
+#: staff.acp_label_id
+msgid "Copy ID"
+msgstr ""
+
+#: staff.acp_label_loan_duration
+#: staff.browse_list.loan_duration
+#: staff.copy.attr.loan_duration
+msgid "Loan Duration"
+msgstr ""
+
+#: staff.acp_label_location
+#: staff.browse_list.location2
+#: staff.cat.search_count_copy
+#: staff.cat.search_location
+msgid "Location"
+msgstr ""
+
+#: staff.acp_label_price
+#: staff.browse_list.price
+#: staff.copy.attr.price
+msgid "Price"
+msgstr ""
+
+#: staff.acp_label_status
+#: staff.ahr_status_label
+#: staff.browse_list.status
+#: staff.checkin_label_status
+#: staff.main.auth.status
+#: staff.patron_display.status.caption
+msgid "Status"
+msgstr ""
+
+#: staff.ahr_capture_time_label
+msgid "Capture Time"
+msgstr ""
+
+#: staff.ahr_current_copy_label
+msgid "Current Copy"
+msgstr ""
+
+#: staff.ahr_email_notify_label
+msgid "Email Notify"
+msgstr ""
+
+#: staff.ahr_expire_time_label
+msgid "Expire Time"
+msgstr ""
+
+#: staff.ahr_fulfillment_time_label
+msgid "Fulfillment Time"
+msgstr ""
+
+#: staff.ahr_holdable_formats_label
+msgid "Holdable Formats"
+msgstr ""
+
+#: staff.ahr_id_label
+msgid "Hold Id"
+msgstr ""
+
+#: staff.ahr_ischanged_label
+#: staff.au_ischanged_label
+msgid "Ischanged"
+msgstr ""
+
+#: staff.ahr_isdeleted_label
+#: staff.au_isdeleted_label
+msgid "Isdeleted"
+msgstr ""
+
+#: staff.ahr_isnew_label
+#: staff.au_isnew_label
+msgid "Isnew"
+msgstr ""
+
+#: staff.ahr_phone_notify_label
+msgid "Phone Notify"
+msgstr ""
+
+#: staff.ahr_pickup_lib_label
+msgid "Pickup Lib"
+msgstr ""
+
+#: staff.ahr_prev_check_time_label
+msgid "Prev Check Time"
+msgstr ""
+
+#: staff.ahr_request_time_label
+msgid "Request Time"
+msgstr ""
+
+#: staff.ahr_requestor_label
+msgid "Requestor"
+msgstr ""
+
+#: staff.ahr_selection_depth_label
+msgid "Selection Depth"
+msgstr ""
+
+#: staff.ahr_target_label
+msgid "Target"
+msgstr ""
+
+#: staff.ahr_usr_label
+msgid "Usr"
+msgstr ""
+
+#: staff.au_active_label
+#: staff.au_label_active
+msgid "Active"
+msgstr ""
+
+#: staff.au_addresses_label
+msgid "Addresses"
+msgstr ""
+
+#: staff.au_alert_message_label
+msgid "Alert Message"
+msgstr ""
+
+#: staff.au_billing_address_label
+#: staff.circ.offline_register.billing_address.label
+msgid "Billing Address"
+msgstr ""
+
+#: staff.au_card_label
+msgid "Card"
+msgstr ""
+
+#: staff.au_cards_label
+msgid "Cards"
+msgstr ""
+
+#: staff.au_checkouts_label
+msgid "Checkouts"
+msgstr ""
+
+#: staff.au_claims_returned_count_label
+msgid "Claims Returned Count"
+msgstr ""
+
+#: staff.au_create_date_label
+msgid "Create Date"
+msgstr ""
+
+#: staff.au_credit_forward_balance_label
+msgid "Credit Forward Balance"
+msgstr ""
+
+#: staff.au_day_phone_label
+msgid "Day Phone"
+msgstr ""
+
+#: staff.au_dob_label
+msgid "Dob"
+msgstr ""
+
+#: staff.au_email_label
+msgid "Email"
+msgstr ""
+
+#: staff.au_evening_phone_label
+msgid "Evening Phone"
+msgstr ""
+
+#: staff.au_expire_date_label
+msgid "Expire Date"
+msgstr ""
+
+#: staff.au_family_name_label
+#: staff.au_label_family_name
+msgid "Family Name"
+msgstr ""
+
+#: staff.au_first_given_name_label
+msgid "First Given Name"
+msgstr ""
+
+#: staff.au_hold_requests_label
+msgid "Hold Requests"
+msgstr ""
+
+#: staff.au_home_ou_label
+msgid "Home Ou"
+msgstr ""
+
+#: staff.au_id_label
+msgid "User Id"
+msgstr ""
+
+#: staff.au_ident_type2_label
+msgid "Ident Type2"
+msgstr ""
+
+#: staff.au_ident_type_label
+msgid "Ident Type"
+msgstr ""
+
+#: staff.au_ident_value2_label
+msgid "Ident Value2"
+msgstr ""
+
+#: staff.au_ident_value_label
+msgid "Ident Value"
+msgstr ""
+
+#: staff.au_label_first_given_name
+msgid "First Name"
+msgstr ""
+
+#: staff.au_label_id
+msgid "Record ID"
+msgstr ""
+
+#: staff.au_label_prefix
+#: staff.au_prefix_label
+msgid "Prefix"
+msgstr ""
+
+#: staff.au_label_second_given_name
+msgid "Middle Name"
+msgstr ""
+
+#: staff.au_label_suffix
+#: staff.au_suffix_label
+msgid "Suffix"
+msgstr ""
+
+#: staff.au_last_xact_id_label
+msgid "Last Xact Id"
+msgstr ""
+
+#: staff.au_mailing_address_label
+#: staff.patron_display.mailing_address
+msgid "Mailing Address"
+msgstr ""
+
+#: staff.au_master_account_label
+msgid "Master Account"
+msgstr ""
+
+#: staff.au_net_access_level_label
+msgid "Net Access Level"
+msgstr ""
+
+#: staff.au_other_phone_label
+msgid "Other Phone"
+msgstr ""
+
+#: staff.au_passwd_label
+msgid "Passwd"
+msgstr ""
+
+#: staff.au_photo_url_label
+msgid "Photo Url"
+msgstr ""
+
+#: staff.au_profile_label
+msgid "Profile"
+msgstr ""
+
+#: staff.au_second_given_name_label
+msgid "Second Given Name"
+msgstr ""
+
+#: staff.au_settings_label
+msgid "Settings"
+msgstr ""
+
+#: staff.au_standing_label
+msgid "Standing"
+msgstr ""
+
+#: staff.au_stat_cat_entries_label
+msgid "Stat Cat Entries"
+msgstr ""
+
+#: staff.au_super_user_label
+msgid "Super User"
+msgstr ""
+
+#: staff.au_survey_responses_label
+msgid "Survey Responses"
+msgstr ""
+
+#: staff.au_usrgroup_label
+msgid "Usrgroup"
+msgstr ""
+
+#: staff.au_usrname_label
+msgid "Usrname"
+msgstr ""
+
+#: staff.admin.survey.available.label
+msgid "Available to:"
+msgstr ""
+
+#: staff.admin.survey.description.label
+msgid "Description:"
+msgstr ""
+
+#: staff.admin.survey.end.label
+msgid "End:"
+msgstr ""
+
+#: staff.admin.survey.format.label
+msgid "Poll Format:"
+msgstr ""
+
+#: staff.admin.survey.name.label
+#: staff.auth.name_prompt
+msgid "Name:"
+msgstr ""
+
+#: staff.admin.survey.opac_visible.label
+msgid "OPAC Visible:"
+msgstr ""
+
+#: staff.admin.survey.required.label
+msgid "Required:"
+msgstr ""
+
+#: staff.admin.survey.save_question.label
+#: staff.admin.survey.save_question.accesskey
+msgid "Save this &Question"
+msgstr ""
+
+#: staff.admin.survey.staff_client.label
+msgid "Staff Client:"
+msgstr ""
+
+#: staff.admin.survey.start.label
+msgid "Start:"
+msgstr ""
+
+#: staff.auth.logoff_prompt
+msgid "Log Off"
+msgstr ""
+
+#: staff.auth.logoff_prompt.accesskey
+msgid "f"
+msgstr ""
+
+#: staff.auth.name_prompt.key
+#: staff.main.menu.file.new.key
+#: staff.next.range.key
+msgid "N"
+msgstr ""
+
+#: staff.auth.password_prompt
+msgid "Password:"
+msgstr ""
+
+#: staff.auth.quit_prompt
+msgid "Exit Evergreen"
+msgstr ""
+
+#: staff.auth.quit_prompt.key
+msgid "x"
+msgstr ""
+
+#: staff.auth.submit_prompt.key
+#: staff.cat.fixed.SER.key
+#: staff.cat.search_submit.key
+#: staff.circ.checkin.submit_label.accesskey
+#: staff.circ.hold_capture.submit_label.accesskey
+#: staff.copy.save.key
+#: staff.main.auth.offline.interface.accesskey
+#: staff.main.menu.cat.bib_search.key
+#: staff.main.menu.circ.special.key
+#: staff.main.menu.file.save.key
+#: staff.marc.display.fixed.SER.key
+#: staff.marc.file.publish.key
+#: staff.patron_display.checkout.submit_label.accesskey
+msgid "S"
+msgstr ""
+
+#: staff.auth.title
+msgid "Evergreen Staff Client 3"
+msgstr ""
+
+#: staff.auth.version
+msgid "Evergreen 0.1.0 20051202"
+msgstr ""
+
+#: staff.bills_current_payment_label
+msgid "Current Payment"
+msgstr ""
+
+#: staff.bills_information
+msgid "Information"
+msgstr ""
+
+#: staff.bills_interface_label
+msgid "BILLS"
+msgstr ""
+
+#: staff.bills_money_label
+msgid "Money"
+msgstr ""
+
+#: staff.bills_total_owed_label
+msgid "Total Owed"
+msgstr ""
+
+#: staff.bills_wizard_label
+msgid "Bill Patron"
+msgstr ""
+
+#: staff.bills_xact_dates_label
+msgid "Record / Dates"
+msgstr ""
+
+#: staff.browse_list.circ_as_type
+msgid "Circulate As"
+msgstr ""
+
+#: staff.browse_list.circ_lib
+msgid "Circulating Lib"
+msgstr ""
+
+#: staff.browse_list.circulate
+msgid "Circulate"
+msgstr ""
+
+#: staff.browse_list.create_date
+msgid "Creation Date"
+msgstr ""
+
+#: staff.browse_list.creator
+msgid "Creator"
+msgstr ""
+
+#: staff.browse_list.edit_date
+msgid "Edit Date"
+msgstr ""
+
+#: staff.browse_list.editor
+msgid "Editor"
+msgstr ""
+
+#: staff.browse_list.library
+msgid "Owning Lib"
+msgstr ""
+
+#: staff.browse_list.location
+msgid "Location/Barcode"
+msgstr ""
+
+#: staff.browse_list.opac_visible
+#: staff.copy.notes.opac
+msgid "OPAC"
+msgstr ""
+
+#: staff.browse_list.ref
+#: staff.copy.attr.shelving_location.example5
+msgid "Reference"
+msgstr ""
+
+#: staff.browse_list.shelving_loc
+#: staff.copy.attr.shelving_location
+msgid "Shelving Location"
+msgstr ""
+
+#: staff.browse_list.win_title
+#: staff.record_list.win_title
+msgid "Cataloging"
+msgstr ""
+
+#: staff.cat.fixed.BKS
+msgid "BKS"
+msgstr ""
+
+#: staff.cat.fixed.BKS.key
+#: staff.copy.bucket.key
+#: staff.main.menu.cat.add_bib.key
+#: staff.main.menu.cat.bib_status.key
+#: staff.main.menu.cat.copy_status.accesskey
+#: staff.main.menu.circ.barcode.show_item.accesskey
+#: staff.main.menu.edit.buckets.copies.accesskey
+#: staff.main.menu.edit.buckets.key
+#: staff.marc.display.fixed.BKS.key
+#: staff.patron_navbar.bills.accesskey
+msgid "B"
+msgstr ""
+
+#: staff.cat.fixed.COM
+msgid "COM"
+msgstr ""
+
+#: staff.cat.fixed.COM.key
+#: staff.cat.search_order.key
+#: staff.main.menu.circ.checkout.key
+#: staff.main.menu.file.open.key
+#: staff.marc.display.fixed.COM.key
+msgid "O"
+msgstr ""
+
+#: staff.cat.fixed.MAP
+msgid "MAP"
+msgstr ""
+
+#: staff.cat.fixed.MIX
+msgid "MIX"
+msgstr ""
+
+#: staff.cat.fixed.MIX.key
+#: staff.main.menu.cat.dedup.key
+#: staff.main.menu.circ.missing.key
+#: staff.marc.display.fixed.MIX.key
+#: staff.marc.file.key
+msgid "M"
+msgstr ""
+
+#: staff.cat.fixed.REC
+msgid "REC"
+msgstr ""
+
+#: staff.cat.fixed.REC.key
+#: staff.checkin_patron.retrieve.accesskey
+#: staff.copy.reload.key
+#: staff.hold_capture_patron.retrieve.accesskey
+#: staff.main.auth.retest.accesskey
+#: staff.main.menu.circ.patron_registration.key
+#: staff.main.menu.edit.buckets.records.accesskey
+#: staff.main.menu.edit.redo.key
+#: staff.main.menu.entity.patron.register.key
+#: staff.marc.display.fixed.REC.key
+#: staff.marc.file.reload.key
+#: staff.patron_navbar.refresh.accesskey
+#: staff.patron_navbar.retrieve.accesskey
+msgid "R"
+msgstr ""
+
+#: staff.cat.fixed.SCO
+msgid "SCO"
+msgstr ""
+
+#: staff.cat.fixed.SER
+msgid "SER"
+msgstr ""
+
+#: staff.cat.fixed.VIS
+msgid "VIS"
+msgstr ""
+
+#: staff.cat.fixed.VIS.key
+#: staff.cat.search_advanced.key
+#: staff.main.menu.cat.add_volume.key
+#: staff.main.menu.cat.volume_status.key
+#: staff.main.menu.edit.buckets.volumes.accesskey
+#: staff.marc.display.fixed.VIS.key
+#: staff.marc.file.validate.key
+msgid "V"
+msgstr ""
+
+#: staff.cat.opac.add_bucket.label
+#: staff.cat.opac.add_bucket.accesskey
+msgid "Add to &Bucket"
+msgstr ""
+
+#: staff.cat.opac.bib_in_new_tab.label
+msgid "Duplicate in New Tab"
+msgstr ""
+
+#: staff.cat.opac.copy_browse.label
+#: staff.cat.opac.copy_browse.accesskey
+msgid "&Holdings Maintenance"
+msgstr ""
+
+#: staff.cat.opac.default.label
+msgid "Set bottom interface as Default"
+msgstr ""
+
+#: staff.cat.opac.marc_edit.label
+#: staff.cat.opac.marc_edit.accesskey
+msgid "MARC &Edit"
+msgstr ""
+
+#: staff.cat.opac.marc_view.label
+#: staff.cat.opac.marc_view.accesskey
+msgid "MARC &View"
+msgstr ""
+
+#: staff.cat.opac.mark_for_overlay.label
+#: staff.cat.opac.mark_for_overlay.accesskey
+msgid "&Mark for Overlay"
+msgstr ""
+
+#: staff.cat.opac.delete_record.label
+#: staff.cat.opac.delete_record.accesskey
+msgid "&Delete Record"
+msgstr ""
+
+#: staff.cat.opac.menu.label
+#: staff.cat.opac.menu.accesskey
+msgid "&Actions for this Record"
+msgstr ""
+
+#: staff.cat.opac.opac_view.label
+#: staff.cat.opac.opac_view.accesskey
+msgid "&OPAC View"
+msgstr ""
+
+#: staff.cat.opac.record_end.label
+#: staff.cat.opac.record_end.accesskey
+msgid "&End"
+msgstr ""
+
+#: staff.cat.opac.record_next.label
+#: staff.cat.opac.record_next.accesskey
+msgid "&Next"
+msgstr ""
+
+#: staff.cat.opac.record_prev.label
+#: staff.cat.opac.record_prev.accesskey
+msgid "&Previous"
+msgstr ""
+
+#: staff.cat.opac.record_start.label
+#: staff.cat.opac.record_start.accesskey
+msgid "&Start"
+msgstr ""
+
+#: staff.cat.opac.refresh_me.label
+msgid "Reset Display"
+msgstr ""
+
+#: staff.cat.opac.remove_me.label
+msgid "Remove this Frame"
+msgstr ""
+
+#: staff.cat.opac.view_holds.label
+#: staff.cat.opac.view_holds.accesskey
+msgid "View Hold&s"
+msgstr ""
+
+#: staff.cat.popup.add_to_bucket
+#: staff.copy.bucket
+msgid "Add to Bucket"
+msgstr ""
+
+#: staff.cat.popup.add_to_bucket.key
+msgid ""
+"_: staff.cat.popup.add_to_bucket.key\n"
+msgstr ""
+
+#: staff.cat.popup.browse.record.tab.key
+msgid ""
+"_: staff.cat.popup.browse.record.tab.key\n"
+msgstr ""
+
+#: staff.cat.popup.browse.record.window.key
+msgid ""
+"_: staff.cat.popup.browse.record.window.key\n"
+msgstr ""
+
+#: staff.cat.popup.browse_record.tab
+msgid "View Copies (Tab)"
+msgstr ""
+
+#: staff.cat.popup.browse_record.window
+msgid "View Copies (Window)"
+msgstr ""
+
+#: staff.cat.popup.edit.record.tab.key
+msgid ""
+"_: staff.cat.popup.edit.record.tab.key\n"
+msgstr ""
+
+#: staff.cat.popup.edit.record.window.key
+msgid ""
+"_: staff.cat.popup.edit.record.window.key\n"
+msgstr ""
+
+#: staff.cat.popup.edit_record.tab
+msgid "Edit Record (Tab)"
+msgstr ""
+
+#: staff.cat.popup.edit_record.window
+msgid "Edit Record (Window)"
+msgstr ""
+
+#: staff.cat.search_advanced
+msgid "Advanced"
+msgstr ""
+
+#: staff.cat.search_barcode
+msgid "Item Barcode"
+msgstr ""
+
+#: staff.cat.search_count_copy_show
+msgid "Show Only These Records"
+msgstr ""
+
+#: staff.cat.search_criteria
+msgid "Search Criteria"
+msgstr ""
+
+#: staff.cat.search_format.key
+#: staff.main.menu.circ.found.key
+#: staff.main.menu.edit.find.key
+#: staff.main.menu.file.key
+#: staff.marc.display.control_fields.key
+msgid "F"
+msgstr ""
+
+#: staff.cat.search_id
+msgid "System ID"
+msgstr ""
+
+#: staff.cat.search_isbn
+msgid "ISBN/ISSN"
+msgstr ""
+
+#: staff.cat.search_order
+msgid "Order"
+msgstr ""
+
+#: staff.cat.search_pubyear
+#: staff.record_list.pubyear
+msgid "Pub Year"
+msgstr ""
+
+#: staff.cat.search_submit
+#: staff.main.menu.search.label
+msgid "Search"
+msgstr ""
+
+#: staff.cat.search_tcn
+#: staff.record_list.tcn
+msgid "TCN"
+msgstr ""
+
+#: staff.cat.search_term
+msgid "Terms"
+msgstr ""
+
+#: staff.cat.search_term.key
+msgid "e"
+msgstr ""
+
+#: staff.cat.search_type.key
+#: staff.main.menu.file.new_tab.key
+msgid "T"
+msgstr ""
+
+#: staff.cat.test
+msgid "Test"
+msgstr ""
+
+#: staff.cat.test.key
+#: staff.main.menu.edit.key
+#: staff.marc.display.meta_data.key
+#: staff.marc.file.export.key
+#: staff.patron_navbar.edit.accesskey
+msgid "E"
+msgstr ""
+
+#: staff.cat.title
+msgid "TCN goes here"
+msgstr ""
+
+#: staff.cat.type_of_material
+msgid "All"
+msgstr ""
+
+#: staff.cat.type_of_material.a
+msgid "Language Material"
+msgstr ""
+
+#: staff.cat.type_of_material.c
+msgid "Notated Music"
+msgstr ""
+
+#: staff.cat.type_of_material.d
+msgid "Manuscript Notated Music"
+msgstr ""
+
+#: staff.cat.type_of_material.e
+msgid "Cartographic Material"
+msgstr ""
+
+#: staff.cat.type_of_material.f
+msgid "Manuscript Cartographic Material"
+msgstr ""
+
+#: staff.cat.type_of_material.g
+msgid "Projected Medium"
+msgstr ""
+
+#: staff.cat.type_of_material.i
+msgid "Nonmusical Sound Recording"
+msgstr ""
+
+#: staff.cat.type_of_material.j
+msgid "Musical Sound Recording"
+msgstr ""
+
+#: staff.cat.type_of_material.k
+msgid "Two-dimensional Nonprojectable Graphic"
+msgstr ""
+
+#: staff.cat.type_of_material.m
+msgid "Computer File"
+msgstr ""
+
+#: staff.cat.type_of_material.o
+msgid "Kit"
+msgstr ""
+
+#: staff.cat.type_of_material.p
+msgid "Mixed Material"
+msgstr ""
+
+#: staff.cat.type_of_material.r
+msgid "Three-dimensional Artifact or Naturally Occuring Object"
+msgstr ""
+
+#: staff.cat.type_of_material.t
+msgid "Manuscript Language Material"
+msgstr ""
+
+#: staff.checkin.auto_print_label
+#: staff.hold_capture.auto_print_label
+#: staff.patron_display.checkout.auto_print_label
+msgid "Auto-Print"
+msgstr ""
+
+#: staff.checkin.auto_print_label.accesskey
+#: staff.copy.notes.add.key
+#: staff.hold_capture.auto_print_label.accesskey
+#: staff.main.menu.edit.select_all.key
+#: staff.main.menu.tabs.close.accesskey
+#: staff.marc.display.cover_art.key
+#: staff.patron_display.checkout.auto_print_label.accesskey
+msgid "A"
+msgstr ""
+
+#: staff.checkin.done_label
+#: staff.hold_capture.done_label
+#: staff.patron_display.checkout.done_label
+msgid "Done"
+msgstr ""
+
+#: staff.checkin.done_label.accesskey
+#: staff.copy.notes.delete.key
+#: staff.hold_capture.done_label.accesskey
+#: staff.main.menu.edit.delete.key
+#: staff.marc.display.key
+#: staff.patron_display.checkout.done_label.accesskey
+msgid "D"
+msgstr ""
+
+#: staff.checkin.print_receipt_label
+#: staff.hold_capture.print_receipt_label
+msgid "Print List"
+msgstr ""
+
+#: staff.checkin.print_receipt_label.accesskey
+msgid ""
+"_: staff.checkin.print_receipt_label.accesskey\n"
+msgstr ""
+
+#: staff.checkin.reprint_receipt_label
+#: staff.hold_capture.reprint_receipt_label
+msgid "Re-Print Last List"
+msgstr ""
+
+#: staff.checkin_interface_label
+msgid "CHECK IN"
+msgstr ""
+
+#: staff.checkin_label_route_to
+msgid "Route To"
+msgstr ""
+
+#: staff.checkin_label_text
+msgid "Message"
+msgstr ""
+
+#: staff.checkin_patron.name.label
+#: staff.hold_capture_patron.name.label
+#: staff.patron_display.name.label
+msgid "Patron Name"
+msgstr ""
+
+#: staff.checkin_patron.retrieve
+#: staff.hold_capture_patron.retrieve
+#: staff.patron.context_display
+#: staff.patron_navbar.retrieve
+msgid "Retrieve Patron"
+msgstr ""
+
+#: staff.checkout_interface_label
+msgid "CHECK OUT"
+msgstr ""
+
+#: staff.circ.offline.main.label
+msgid "Evergreen Offline"
+msgstr ""
+
+#: staff.circ.offline.server_time.tooltiptext
+msgid "Estimated Server Time - Click to adjust"
+msgstr ""
+
+#: staff.circ.offline.cmd_checkout.label
+#: staff.circ.offline.cmd_checkout.accesskey
+msgid "&Check Out"
+msgstr ""
+
+#: staff.circ.offline.cmd_renew.label
+#: staff.circ.offline.cmd_renew.accesskey
+msgid "&Renew"
+msgstr ""
+
+#: staff.circ.offline.cmd_in_house_use.label
+#: staff.circ.offline.cmd_in_house_use.accesskey
+msgid "In &House Use"
+msgstr ""
+
+#: staff.circ.offline.cmd_checkin.label
+#: staff.circ.offline.cmd_checkin.accesskey
+msgid "Check &In"
+msgstr ""
+
+#: staff.circ.offline.cmd_register_patron.label
+#: staff.circ.offline.cmd_register_patron.accesskey
+msgid "Register &Patron"
+msgstr ""
+
+#: staff.circ.offline.cmd_print_last_receipt.label
+#: staff.circ.offline.cmd_print_last_receipt.accesskey
+msgid "&Last Receipt"
+msgstr ""
+
+#: staff.circ.offline.cmd_exit.label
+#: staff.circ.offline.cmd_exit.accesskey
+msgid "E&xit"
+msgstr ""
+
+#: staff.circ.offline_checkin.main.label
+msgid "Standalone Check In"
+msgstr ""
+
+#: staff.circ.offline_checkin.step3.description
+msgid "Repeat Steps 2 until done."
+msgstr ""
+
+#: staff.circ.offline.finish.description
+#: staff.mbts_xact_finish_label
+msgid "Finish"
+msgstr ""
+
+#: staff.circ.offline.print.description
+msgid "Print receipt?"
+msgstr ""
+
+#: staff.circ.offline_checkout.main.label
+msgid "Standalone Check Out"
+msgstr ""
+
+#: staff.circ.offline_checkout.step2.description
+msgid "Enter the patron's barcode:"
+msgstr ""
+
+#: staff.circ.offline_checkout.step5.description
+#: staff.circ.offline_renew.step5.label
+msgid "Repeat Steps 3 and 4 until done."
+msgstr ""
+
+#: staff.circ.offline_in_house_use.main.label
+msgid "Standalone In House Use"
+msgstr ""
+
+#: staff.circ.offline_in_house_use.uses.label
+msgid "Enter the number of uses for the item:"
+msgstr ""
+
+#: staff.circ.offline_in_house_use.step4.description
+msgid "Repeat Steps 2 and 3 until done."
+msgstr ""
+
+#: staff.circ.offline_register.main.label
+msgid "Standalone Patron Registration"
+msgstr ""
+
+#: staff.circ.offline_register.x_home_ou.label
+#: staff.patron_display.home_ou.label
+msgid "Home Library:"
+msgstr ""
+
+#: staff.circ.offline_register.x_profile.label
+#: staff.patron_display.profile.label
+msgid "Profile:"
+msgstr ""
+
+#: staff.circ.offline_register.barcode.label
+msgid "New Barcode:"
+msgstr ""
+
+#: staff.circ.offline_register.passwd.label
+msgid "New Password:"
+msgstr ""
+
+#: staff.circ.offline_register.family_name.label
+#: staff.patron_display.family_name.label
+msgid "Last Name:"
+msgstr ""
+
+#: staff.circ.offline_register.first_given_name.label
+#: staff.patron_display.first_given_name.label
+#: staff.patron_search_form.first_given_name.label
+msgid "First Name:"
+msgstr ""
+
+#: staff.circ.offline_register.dob.label
+msgid "Date of Birth:"
+msgstr ""
+
+#: staff.circ.offline_register.x_ident_type.label
+msgid "Ident Type:"
+msgstr ""
+
+#: staff.circ.offline_register.ident_value.label
+msgid "Ident Value:"
+msgstr ""
+
+#: staff.circ.offline_register.street1.label
+msgid "Line 1"
+msgstr ""
+
+#: staff.circ.offline_register.street2.label
+msgid "Line 2"
+msgstr ""
+
+#: staff.circ.offline_register.city.label
+msgid "City"
+msgstr ""
+
+#: staff.circ.offline_register.state.label
+msgid "State"
+msgstr ""
+
+#: staff.circ.offline_register.state.default_value
+msgid "GA"
+msgstr ""
+
+#: staff.circ.offline_register.post_code.label
+msgid "Postal Code"
+msgstr ""
+
+#: staff.circ.offline_register.country.label
+msgid "Country"
+msgstr ""
+
+#: staff.circ.offline_register.country.default_value
+msgid "USA"
+msgstr ""
+
+#: staff.circ.offline_register.submit.label
+#: staff.circ.offline_register.submit.accesskey
+msgid "&Save patron registration"
+msgstr ""
+
+#: staff.circ.offline_renew.main.label
+msgid "Standalone Renew"
+msgstr ""
+
+#: staff.circ.offline_renew.p_barcode.description
+msgid "(Optional) Enter the patron's barcode:"
+msgstr ""
+
+#: staff.circ.checkin.caption
+#: staff.circ.context_checkin
+msgid "Check In"
+msgstr ""
+
+#: staff.circ.checkin.scan_label
+#: staff.circ.hold_capture.scan_label
+#: staff.patron_display.checkout.scan_label
+msgid "Enter Barcode:"
+msgstr ""
+
+#: staff.circ.checkin.scan_label.accesskey
+#: staff.circ.hold_capture.scan_label.accesskey
+#: staff.main.menu.cat.key
+#: staff.patron_display.checkout.scan_label.accesskey
+msgid "a"
+msgstr ""
+
+#: staff.circ.context_cancel_hold
+msgid "Cancel Hold"
+msgstr ""
+
+#: staff.circ.context_edit
+msgid "Edit Copy"
+msgstr ""
+
+#: staff.circ.context_lost
+msgid "Mark as Lost"
+msgstr ""
+
+#: staff.circ.context_missing
+msgid "Mark as Missing"
+msgstr ""
+
+#: staff.circ.context_opac
+msgid "Show Title in OPAC"
+msgstr ""
+
+#: staff.circ.context_renew
+#: staff.main.menu.circ.renew.label
+msgid "Renew"
+msgstr ""
+
+#: staff.circ.hold_capture.caption
+msgid "Capture Hold"
+msgstr ""
+
+#: staff.circ_label_due_date
+msgid "Due Date"
+msgstr ""
+
+#: staff.circ_label_id
+msgid "Circ Id"
+msgstr ""
+
+#: staff.circ_label_renewal_remaining
+msgid "Remaining Renewals"
+msgstr ""
+
+#: staff.circ_label_xact_finish
+msgid "Checkin Date"
+msgstr ""
+
+#: staff.circ_label_xact_start
+msgid "Checkout Date"
+msgstr ""
+
+#: staff.copies_editor_interface_label
+msgid "COPIES EDIT"
+msgstr ""
+
+#: staff.copy.attr.circulate
+msgid "Circulate?"
+msgstr ""
+
+#: staff.copy.attr.circulate.no
+#: staff.copy.attr.deposit.no
+#: staff.copy.attr.notes_viewable.example2
+#: staff.copy.attr.opac_visible.no
+#: staff.copy.attr.reference_material.no
+msgid "No"
+msgstr ""
+
+#: staff.copy.attr.circulate.yes
+#: staff.copy.attr.deposit.yes
+#: staff.copy.attr.notes_viewable.example1
+#: staff.copy.attr.opac_visible.yes
+#: staff.copy.attr.reference_material.yes
+msgid "Yes"
+msgstr ""
+
+#: staff.copy.attr.circulating_lib
+msgid "Circulating Library"
+msgstr ""
+
+#: staff.copy.attr.copy_available
+msgid "Copy Status: Available?"
+msgstr ""
+
+#: staff.copy.attr.copy_status
+msgid "Copy Status"
+msgstr ""
+
+#: staff.copy.attr.deposit
+msgid "Deposit?"
+msgstr ""
+
+#: staff.copy.attr.deposit_amount
+msgid "Amount"
+msgstr ""
+
+#: staff.copy.attr.deposit_notes
+msgid "Deposit Notes"
+msgstr ""
+
+#: staff.copy.attr.fine_level.high
+msgid "High"
+msgstr ""
+
+#: staff.copy.attr.fine_level.low
+msgid "Low"
+msgstr ""
+
+#: staff.copy.attr.fine_level.normal
+#: staff.copy.attr.loan_duration.normal
+msgid "Normal"
+msgstr ""
+
+#: staff.copy.attr.holds_protection
+msgid "Holds Protection"
+msgstr ""
+
+#: staff.copy.attr.holds_protection.example1
+msgid "3 months (facility)"
+msgstr ""
+
+#: staff.copy.attr.holds_protection.example2
+msgid "6 months (region)"
+msgstr ""
+
+#: staff.copy.attr.holds_protection.example3
+msgid "No hold protection"
+msgstr ""
+
+#: staff.copy.attr.holds_protection.example4
+msgid "Not holdable"
+msgstr ""
+
+#: staff.copy.attr.home_lib
+msgid "Home Library"
+msgstr ""
+
+#: staff.copy.attr.loan_duration.long
+msgid "Long"
+msgstr ""
+
+#: staff.copy.attr.loan_duration.short
+msgid "Short"
+msgstr ""
+
+#: staff.copy.attr.notes
+msgid "Copy Notes"
+msgstr ""
+
+#: staff.copy.attr.notes_viewable
+msgid "Copy Notes Patron Viewable?"
+msgstr ""
+
+#: staff.copy.attr.opac_visible
+msgid "OPAC Visible?"
+msgstr ""
+
+#: staff.copy.attr.reference_material
+msgid "Reference Material?"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example1
+msgid "Stacks"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example10
+msgid "Paperback"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example2
+msgid "Audio-Visual"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example3
+msgid "Children's Room"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example4
+msgid "Garden Room"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example6
+msgid "Ready Reference"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example7
+msgid "Behind Circulation Desk"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example8
+#: staff.marc.display
+msgid "Display"
+msgstr ""
+
+#: staff.copy.attr.shelving_location.example9
+msgid "Health"
+msgstr ""
+
+#: staff.copy.attr.stat.audience
+msgid "Audience"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example1
+msgid "Adult"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example2
+msgid "Juvenile"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example3
+msgid "Preschool"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example4
+msgid "Primary"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example5
+msgid "Pre-adolescent"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example6
+msgid "Young adult"
+msgstr ""
+
+#: staff.copy.attr.stat.audience.example7
+msgid "General"
+msgstr ""
+
+#: staff.copy.attr.stat.genre
+msgid "Genre"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example1
+msgid "Adventure"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example10
+msgid "Spy"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example11
+msgid "Thriller"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example12
+msgid "War"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example13
+msgid "Western"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example14
+msgid "Religious fiction"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example15
+msgid "Shortstory"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example16
+#: staff.marc.008.BKS.biog.desc
+msgid "Biography"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example17
+#: staff.copy.attr.stat.genre.example4
+msgid "Holiday"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example18
+msgid "Nonfiction"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example2
+msgid "Fantasy"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example3
+msgid "Historical"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example5
+msgid "Horror"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example6
+msgid "Humor"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example7
+msgid "Mystery"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example8
+msgid "Romance"
+msgstr ""
+
+#: staff.copy.attr.stat.genre.example9
+msgid "Sci-fi"
+msgstr ""
+
+#: staff.copy.clone
+msgid "Clone Copy"
+msgstr ""
+
+#: staff.copy.clone.key
+msgid ""
+"_: staff.copy.clone.key\n"
+msgstr ""
+
+#: staff.copy.close
+msgid "Close Window"
+msgstr ""
+
+#: staff.copy.default.attr
+msgid "Default Attributes"
+msgstr ""
+
+#: staff.copy.default.attr.value
+#: staff.copy.local.attr.value
+#: staff.copy.pines.attr.value
+msgid "Value"
+msgstr ""
+
+#: staff.copy.delete
+msgid "Delete Copy"
+msgstr ""
+
+#: staff.copy.delete.key
+msgid ""
+"_: staff.copy.delete.key\n"
+msgstr ""
+
+#: staff.copy.edit_categories
+msgid "Edit Categories"
+msgstr ""
+
+#: staff.copy.edit_entries
+msgid "Edit Entries"
+msgstr ""
+
+#: staff.copy.local.attr
+msgid "Local Attributes"
+msgstr ""
+
+#: staff.copy.notes
+msgid "Note"
+msgstr ""
+
+#: staff.copy.notes.add
+msgid "Add Note"
+msgstr ""
+
+#: staff.copy.notes.date
+msgid "Date"
+msgstr ""
+
+#: staff.copy.notes.delete
+msgid "Delete Note"
+msgstr ""
+
+#: staff.copy.notes.from
+msgid "From"
+msgstr ""
+
+#: staff.copy.pines.attr
+msgid "PINES Attributes"
+msgstr ""
+
+#: staff.copy.reload
+msgid "Reload Copy"
+msgstr ""
+
+#: staff.copy.save
+msgid "Save Copy"
+msgstr ""
+
+#: staff.copy.title
+msgid "Barcode goes here"
+msgstr ""
+
+#: staff.copy.transfer
+msgid "Transfer Copy"
+msgstr ""
+
+#: staff.copy.transfer.key
+msgid ""
+"_: staff.copy.transfer.key\n"
+msgstr ""
+
+#: staff.copy.wizard.title
+msgid "Batch Add Copies Wizard"
+msgstr ""
+
+#: staff.copy_browser_interface_label
+msgid "COPIES"
+msgstr ""
+
+#: staff.copy_stat_cat_editor_interface_label
+msgid "COPY STAT-CATS"
+msgstr ""
+
+#: staff.display_patron_interface_label
+msgid "DISPLAY PATRON"
+msgstr ""
+
+#: staff.displaying.hits_per_page
+msgid "Results per page"
+msgstr ""
+
+#: staff.displaying.results
+msgid "Displaying results"
+msgstr ""
+
+#: staff.fieldmapper_label
+msgid "FIELDMAPPER"
+msgstr ""
+
+#: staff.filter_console_label
+msgid "FCONSOLE"
+msgstr ""
+
+#: staff.hold_capture.print_receipt_label.accesskey
+msgid ""
+"_: staff.hold_capture.print_receipt_label.accesskey\n"
+msgstr ""
+
+#: staff.hold_capture_interface_label
+msgid "HOLD CAPTURE"
+msgstr ""
+
+#: staff.holds_status_available
+msgid "Available"
+msgstr ""
+
+#: staff.holds_status_in_transit
+msgid "In Transit"
+msgstr ""
+
+#: staff.holds_status_waiting_for_capture
+msgid "Copy found, waiting for capture"
+msgstr ""
+
+#: staff.holds_status_waiting_for_copy
+msgid "Waiting for available copy"
+msgstr ""
+
+#: staff.items_out_interface_label
+msgid "ITEMS OUT"
+msgstr ""
+
+#: staff.javascript_console_label
+msgid "CONSOLE"
+msgstr ""
+
+#: staff.javascript_shell_label
+msgid "JS SHELL"
+msgstr ""
+
+#: staff.main.auth.caption
+msgid "Authentication"
+msgstr ""
+
+#: staff.main.auth.caption
+msgid "Startup / Shutdown"
+msgstr ""
+
+#: staff.main.auth.debug.caption
+msgid "Debug Options"
+msgstr ""
+
+#: staff.main.auth.debug.clear
+#: staff.main.menu.admin.clear_cache.label
+msgid "Clear Cache"
+msgstr ""
+
+#: staff.main.auth.debug.javascript
+msgid "Javascript Console"
+msgstr ""
+
+#: staff.main.auth.debug.javascript.accesskey
+msgid "J"
+msgstr ""
+
+#: staff.main.auth.hostname
+msgid "Hostname"
+msgstr ""
+
+#: staff.main.auth.hostname.accesskey
+#: staff.main.menu.circ.hold_capture.key
+#: staff.main.menu.circ.place_hold.key
+#: staff.main.menu.help.key
+#: staff.patron_navbar.holds.accesskey
+msgid "H"
+msgstr ""
+
+#: staff.main.auth.offline.caption
+msgid "Offline Use"
+msgstr ""
+
+#: staff.main.auth.offline.export
+msgid "Export Transactions"
+msgstr ""
+
+#: staff.main.auth.offline.import
+msgid "Import Transactions"
+msgstr ""
+
+#: staff.main.auth.offline.interface
+msgid "Standalone Interface"
+msgstr ""
+
+#: staff.main.auth.retest
+msgid "Re-Test Server"
+msgstr ""
+
+#: staff.main.auth.server
+msgid "Server"
+msgstr ""
+
+#: staff.main.auth.version
+msgid "Version"
+msgstr ""
+
+#: staff.main.auth.workstation
+msgid "Workstation"
+msgstr ""
+
+#: staff.main.menu.acquisitions.key
+msgid "q"
+msgstr ""
+
+#: staff.main.menu.acquisitions.label
+msgid "Acquisitions"
+msgstr ""
+
+#: staff.main.menu.admin.accesskey
+#: staff.main.menu.admin.developer.accesskey
+msgid "-"
+msgstr ""
+
+#: staff.main.menu.admin.browse_holds.label
+#: staff.main.menu.admin.browse_holds.accesskey
+msgid "&Browse Unfulfilled Holds for this Pickup Lib"
+msgstr ""
+
+#: staff.main.menu.admin.change_session.label
+msgid "Operator Change: New"
+msgstr ""
+
+#: staff.main.menu.admin.clear_cache.accesskey
+#: staff.marc.008.SER.cont.field_size
+#: staff.marc.008.ctry.field_size
+#: staff.marc.008.lang.field_size
+msgid "3"
+msgstr ""
+
+#: staff.main.menu.admin.cmd_console.label
+#: staff.main.menu.admin.cmd_console.accesskey
+msgid "&Javascript Console"
+msgstr ""
+
+#: staff.main.menu.admin.cmd_shell.label
+#: staff.main.menu.admin.cmd_shell.accesskey
+msgid "Javascript S&hell"
+msgstr ""
+
+#: staff.main.menu.admin.cmd_test.label
+msgid "Test Module"
+msgstr ""
+
+#: staff.main.menu.admin.copy_location_edit.label
+#: staff.main.menu.admin.copy_location_edit.accesskey
+msgid "Copy &Location Editor"
+msgstr ""
+
+#: staff.main.menu.admin.developer.label
+msgid "For developers..."
+msgstr ""
+
+#: staff.main.menu.admin.download_patrons.label
+#: staff.main.menu.admin.download_patrons.accesskey
+msgid "&Download Offline Patron List"
+msgstr ""
+
+#: staff.main.menu.admin.fieldmapper.label
+#: staff.main.menu.admin.fieldmapper.accesskey
+msgid "Field&mapper"
+msgstr ""
+
+#: staff.main.menu.admin.key
+msgid "i"
+msgstr ""
+
+#: staff.main.menu.admin.label
+msgid "Admin"
+msgstr ""
+
+#: staff.main.menu.admin.local_admin.label
+#: staff.main.menu.admin.local_admin.accesskey
+msgid "&Local System Administration"
+msgstr ""
+
+#: staff.main.menu.admin.non_cat_type_edit.label
+#: staff.main.menu.admin.non_cat_type_edit.accesskey
+msgid "&Non-Cataloged Type Editor"
+msgstr ""
+
+#: staff.main.menu.admin.offline_xacts.label
+#: staff.main.menu.admin.offline_xacts.accesskey
+msgid "Offline &Transaction Management"
+msgstr ""
+
+#: staff.main.menu.admin.public_opac.label
+#: staff.main.menu.admin.public_opac.accesskey
+msgid "&Public OPAC"
+msgstr ""
+
+#: staff.main.menu.admin.restore_all_tabs.label
+msgid "Unhide Tabs"
+msgstr ""
+
+#: staff.main.menu.admin.extension_manager.label
+msgid "Extension Manager"
+msgstr ""
+
+#: staff.main.menu.admin.theme_manager.label
+msgid "Theme Manager"
+msgstr ""
+
+#: staff.main.menu.admin.about_config.label
+msgid "about:config"
+msgstr ""
+
+#: staff.main.menu.admin.stat_cat_edit.label
+#: staff.main.menu.admin.stat_cat_edit.accesskey
+msgid "Statistical &Category Editor"
+msgstr ""
+
+#: staff.main.menu.admin.survey_wizard.label
+#: staff.main.menu.admin.survey_wizard.accesskey
+msgid "&Survey Wizard"
+msgstr ""
+
+#: staff.main.menu.admin.template_edit.label
+#: staff.main.menu.admin.template_edit.accesskey
+msgid "&Receipt Template Editor"
+msgstr ""
+
+#: staff.main.menu.admin.user_edit.label
+#: staff.main.menu.admin.user_edit.accesskey
+msgid "&User Permission Editor"
+msgstr ""
+
+#: staff.main.menu.admin.xuleditor.label
+#: staff.main.menu.admin.xuleditor.accesskey
+msgid "&XUL Test"
+msgstr ""
+
+#: staff.main.menu.admin.venkman.label
+msgid "Venkman"
+msgstr ""
+
+#: staff.main.menu.cat.label
+#: staff.main.menu.cat.accesskey
+msgid "Catalo&ging"
+msgstr ""
+
+#: staff.main.menu.cat.add_bib.label
+msgid "Add Bib Record"
+msgstr ""
+
+#: staff.main.menu.cat.add_copy.key
+#: staff.main.menu.cat.copy_status.key
+#: staff.main.menu.circ.copy_status.key
+#: staff.patron_navbar.items.accesskey
+msgid "I"
+msgstr ""
+
+#: staff.main.menu.cat.add_copy.label
+msgid "Add Item"
+msgstr ""
+
+#: staff.main.menu.cat.add_volume.label
+msgid "Add Volume"
+msgstr ""
+
+#: staff.main.menu.cat.bib_search.label
+msgid "Search the Catalog"
+msgstr ""
+
+#: staff.main.menu.cat.bib_status.label
+msgid "Display Bib Record"
+msgstr ""
+
+#: staff.main.menu.cat.copy_status.label
+#: staff.main.menu.circ.copy_status.label
+msgid "Display Item"
+msgstr ""
+
+#: staff.main.menu.cat.create_marc.label
+#: staff.main.menu.cat.create_marc.accesskey
+msgid "Create &New Marc Record"
+msgstr ""
+
+#: staff.main.menu.cat.dedup.label
+msgid "Merge/Transfer Interface"
+msgstr ""
+
+#: staff.main.menu.cat.edit_copy_buckets.label
+#: staff.main.menu.cat.edit_copy_buckets.accesskey
+msgid "Manage Copy &Buckets"
+msgstr ""
+
+#: staff.main.menu.cat.edit_record_buckets.label
+#: staff.main.menu.cat.edit_record_buckets.accesskey
+msgid "Manage &Record Buckets"
+msgstr ""
+
+#: staff.main.menu.cat.edit_volume_buckets.label
+#: staff.main.menu.cat.edit_volume_buckets.accesskey
+msgid "Manage &Volume Buckets"
+msgstr ""
+
+#: staff.main.menu.cat.edit_user_buckets.label
+#: staff.main.menu.cat.edit_user_buckets.accesskey
+msgid "Manage &User Buckets"
+msgstr ""
+
+#: staff.main.menu.cat.retrieve_last_record.label
+#: staff.main.menu.cat.retrieve_last_record.accesskey
+msgid "Retrieve &Last Record"
+msgstr ""
+
+#: staff.main.menu.cat.search_tcn.label
+#: staff.main.menu.cat.search_tcn.accesskey
+msgid "Retrieve record by &TCN"
+msgstr ""
+
+#: staff.main.menu.cat.volume_status.label
+msgid "Display Volume"
+msgstr ""
+
+#: staff.main.menu.cat.z39_50_import.label
+#: staff.main.menu.cat.z39_50_import.accesskey
+msgid "Import Record from &Z39.50"
+msgstr ""
+
+#: staff.main.menu.circ.barcode.retrieve_patron
+msgid "Retrieve Patron by Barcode"
+msgstr ""
+
+#: staff.main.menu.circ.barcode.show_item
+msgid "Show Item Status by Barcode"
+msgstr ""
+
+#: staff.main.menu.circ.checkin.label
+msgid "Check In Items"
+msgstr ""
+
+#: staff.main.menu.circ.checkout.label
+msgid "Check Out Items"
+msgstr ""
+
+#: staff.main.menu.circ.claimed_returned.label
+msgid "Mark as \"Claimed Returned\""
+msgstr ""
+
+#: staff.main.menu.circ.found.label
+msgid "Mark Found"
+msgstr ""
+
+#: staff.main.menu.circ.hold_browse.label
+#: staff.main.menu.circ.hold_browse.accesskey
+msgid "&Browse Holds Shelf"
+msgstr ""
+
+#: staff.main.menu.circ.hold_capture.label
+msgid "Capture Holds"
+msgstr ""
+
+#: staff.main.menu.circ.hold_pull.label
+#: staff.main.menu.circ.hold_pull.accesskey
+msgid "Pull Li&st for Hold Requests"
+msgstr ""
+
+#: staff.main.menu.circ.in_house.label
+#: staff.main.menu.circ.in_house.accesskey
+msgid "Record &In-House Use"
+msgstr ""
+
+#: staff.main.menu.circ.label
+msgid "Circulation"
+msgstr ""
+
+#: staff.main.menu.circ.lost.label
+msgid "Mark Lost"
+msgstr ""
+
+#: staff.main.menu.circ.mark_used.key
+#: staff.main.menu.edit.buckets.users.accesskey
+#: staff.main.menu.edit.undo.key
+msgid "U"
+msgstr ""
+
+#: staff.main.menu.circ.mark_used.label
+msgid "Mark Used"
+msgstr ""
+
+#: staff.main.menu.circ.missing.label
+msgid "Mark Missing"
+msgstr ""
+
+#: staff.main.menu.circ.offline.label
+#: staff.main.menu.circ.offline.accesskey
+msgid "Enter O&ffline Interface"
+msgstr ""
+
+#: staff.main.menu.circ.patron_registration.label
+msgid "Register Patron"
+msgstr ""
+
+#: staff.main.menu.circ.patron_retrieve.label
+#: staff.main.menu.circ.patron_retrieve.accesskey
+msgid "Retrieve &Last Patron"
+msgstr ""
+
+#: staff.main.menu.circ.patron_status.label
+msgid "Display Patron"
+msgstr ""
+
+#: staff.main.menu.circ.place_hold.label
+#: staff.main.menu.circ.place_hold.accesskey
+msgid "Place &Hold"
+msgstr ""
+
+#: staff.main.menu.circ.quick_add.key
+#: staff.main.menu.quit.accesskey
+msgid "Q"
+msgstr ""
+
+#: staff.main.menu.circ.quick_add.label
+msgid "Quick Add"
+msgstr ""
+
+#: staff.main.menu.circ.renew.key
+msgid "n"
+msgstr ""
+
+#: staff.main.menu.circ.reprint.label
+#: staff.main.menu.circ.reprint.accesskey
+msgid "Re-Print &Last"
+msgstr ""
+
+#: staff.main.menu.circ.special.label
+msgid "Special Circulation"
+msgstr ""
+
+#: staff.main.menu.edit.buckets.copies
+msgid "Copy Buckets"
+msgstr ""
+
+#: staff.main.menu.edit.buckets.label
+msgid "Manage Buckets"
+msgstr ""
+
+#: staff.main.menu.edit.buckets.records
+msgid "Record Buckets"
+msgstr ""
+
+#: staff.main.menu.edit.buckets.volumes
+msgid "Volume Buckets"
+msgstr ""
+
+#: staff.main.menu.edit.buckets.users
+msgid "User Buckets"
+msgstr ""
+
+#: staff.main.menu.edit.copy.label
+msgid "Copy"
+msgstr ""
+
+#: staff.main.menu.edit.cut.key
+msgid "t"
+msgstr ""
+
+#: staff.main.menu.edit.cut.label
+msgid "Cut"
+msgstr ""
+
+#: staff.main.menu.edit.delete.label
+msgid "Delete"
+msgstr ""
+
+#: staff.main.menu.edit.find.label
+msgid "Find"
+msgstr ""
+
+#: staff.main.menu.edit.find_again.key
+msgid "g"
+msgstr ""
+
+#: staff.main.menu.edit.find_again.label
+msgid "Find Again"
+msgstr ""
+
+#: staff.main.menu.edit.label
+#: staff.patron_navbar.edit
+msgid "Edit"
+msgstr ""
+
+#: staff.main.menu.edit.paste.label
+msgid "Paste"
+msgstr ""
+
+#: staff.main.menu.edit.redo.label
+msgid "Redo"
+msgstr ""
+
+#: staff.main.menu.edit.select_all.label
+msgid "Select All"
+msgstr ""
+
+#: staff.main.menu.edit.undo.label
+msgid "Undo"
+msgstr ""
+
+#: staff.main.menu.entity.bib.key
+msgid ""
+"_: staff.main.menu.entity.bib.key\n"
+msgstr ""
+
+#: staff.main.menu.entity.bib.label
+msgid "Bib Records"
+msgstr ""
+
+#: staff.main.menu.entity.copy.key
+msgid ""
+"_: staff.main.menu.entity.copy.key\n"
+msgstr ""
+
+#: staff.main.menu.entity.copy.label
+msgid "Items"
+msgstr ""
+
+#: staff.main.menu.entity.patron.key
+msgid ""
+"_: staff.main.menu.entity.patron.key\n"
+msgstr ""
+
+#: staff.main.menu.entity.patron.label
+msgid "Patrons"
+msgstr ""
+
+#: staff.main.menu.entity.volume.key
+msgid ""
+"_: staff.main.menu.entity.volume.key\n"
+msgstr ""
+
+#: staff.main.menu.entity.volume.label
+msgid "Volumes"
+msgstr ""
+
+#: staff.main.menu.file.close.label
+#: staff.main.menu.file.close.accesskey
+msgid "Close &Window"
+msgstr ""
+
+#: staff.main.menu.file.close_tab.label
+#: staff.main.menu.file.close_tab.accesskey
+msgid "&Close Tab"
+msgstr ""
+
+#: staff.main.menu.file.close_tab.key
+msgid ""
+"_: staff.main.menu.file.close_tab.key\n"
+msgstr ""
+
+#: staff.main.menu.file.label
+msgid "File"
+msgstr ""
+
+#: staff.main.menu.file.new.label
+msgid "New Window"
+msgstr ""
+
+#: staff.main.menu.file.new_tab.label
+msgid "New Tab"
+msgstr ""
+
+#: staff.main.menu.file.open.label
+msgid "Open Session"
+msgstr ""
+
+#: staff.main.menu.file.save.label
+msgid "Save Session"
+msgstr ""
+
+#: staff.main.menu.help.label
+msgid "Help"
+msgstr ""
+
+#: staff.main.menu.quit
+msgid "Quit Program"
+msgstr ""
+
+#: staff.main.menu.replace_barcode.label
+msgid "Replace Barcode"
+msgstr ""
+
+#: staff.main.menu.reports.key
+msgid ""
+"_: staff.main.menu.reports.key\n"
+msgstr ""
+
+#: staff.main.menu.reports.label
+msgid "Reports"
+msgstr ""
+
+#: staff.main.menu.search.catalog.label
+#: staff.main.menu.search.catalog.accesskey
+msgid "the &Catalog"
+msgstr ""
+
+#: staff.main.menu.search.copies.label
+#: staff.main.menu.search.copies.accesskey
+msgid "for copies by &Barcode"
+msgstr ""
+
+#: staff.main.menu.search.key
+msgid "r"
+msgstr ""
+
+#: staff.main.menu.search.patrons.label
+#: staff.main.menu.search.patrons.accesskey
+msgid "for &Patrons"
+msgstr ""
+
+#: staff.main.menu.search.patrons_barcode.label
+#: staff.main.menu.search.patrons_barcode.accesskey
+msgid "for patro&n by Barcode"
+msgstr ""
+
+#: staff.main.menu.search.record.label
+#: staff.main.menu.search.record.accesskey
+msgid "for record by &TCN"
+msgstr ""
+
+#: staff.main.menu.serials.key
+msgid "l"
+msgstr ""
+
+#: staff.main.menu.serials.label
+#: staff.z39_50.search_class.item_type.ser
+msgid "Serials"
+msgstr ""
+
+#: staff.main.menu.tabs.close
+msgid "Close All Tabs"
+msgstr ""
+
+#: staff.main.menu.title
+msgid "Evergreen Staff Client"
+msgstr ""
+
+#: staff.main.simple_auth.authorization.label
+msgid "Authorization"
+msgstr ""
+
+#: staff.main.simple_auth.authorize.label
+#: staff.main.simple_auth.authorize.accesskey
+msgid "&Authorization"
+msgstr ""
+
+#: staff.main.simple_auth.exception.label
+msgid "Exception"
+msgstr ""
+
+#: staff.main.test.example_template.label
+msgid "Hello world!"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.desc
+msgid "Index"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.field
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.field
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field
+#: staff.marc.008.BKS.SER.conf.field
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field
+#: staff.marc.008.BKS.biog.field
+#: staff.marc.008.BKS.cont.field
+#: staff.marc.008.BKS.fest.field
+#: staff.marc.008.BKS.ills.field
+#: staff.marc.008.BKS.litf.field
+#: staff.marc.008.MAP.VIS.form.field
+#: staff.marc.008.SER.alph.field
+#: staff.marc.008.SER.cont.field
+#: staff.marc.008.SER.entw.field
+#: staff.marc.008.SER.freq.field
+#: staff.marc.008.SER.issn.field
+#: staff.marc.008.SER.orig.field
+#: staff.marc.008.SER.regl.field
+#: staff.marc.008.SER.srtp.field
+#: staff.marc.008.SER.succ.field
+#: staff.marc.008.ctry.field
+#: staff.marc.008.date1.field
+#: staff.marc.008.date2.field
+#: staff.marc.008.dtst.field
+#: staff.marc.008.entered.field
+#: staff.marc.008.lang.field
+#: staff.marc.008.mrec.field
+#: staff.marc.008.srce.field
+msgid "008"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.field_end_pos
+#: staff.marc.008.BKS.MAP.indx.field_start_pos
+msgid "31"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.field_size
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_size
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_size
+#: staff.marc.008.BKS.SER.conf.field_size
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_size
+#: staff.marc.008.BKS.biog.field_size
+#: staff.marc.008.BKS.fest.field_size
+#: staff.marc.008.BKS.litf.field_size
+#: staff.marc.008.MAP.VIS.form.field_size
+#: staff.marc.008.SER.alph.field_size
+#: staff.marc.008.SER.entw.field_size
+#: staff.marc.008.SER.freq.field_size
+#: staff.marc.008.SER.issn.field_size
+#: staff.marc.008.SER.orig.field_size
+#: staff.marc.008.SER.regl.field_size
+#: staff.marc.008.SER.srtp.field_size
+#: staff.marc.008.SER.succ.field_size
+#: staff.marc.008.dtst.field_size
+#: staff.marc.008.mrec.field_size
+#: staff.marc.008.srce.field_size
+#: staff.marc.LDR.blvl.field_size
+#: staff.marc.LDR.ctrl.field_size
+#: staff.marc.LDR.desc.field_size
+#: staff.marc.LDR.elvl.field_size
+#: staff.marc.LDR.rec_stat.field_size
+#: staff.marc.LDR.type.field_size
+msgid "1"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/indx.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.MAP.indx.short
+msgid "Indx"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.desc
+#: staff.marc.008.MAP.VIS.form.desc
+msgid "Form of Item"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_end_pos
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.field_start_pos
+msgid "23"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.help
+#: staff.marc.008.MAP.VIS.form.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/form.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.MIX.SCO.REC.form.short
+#: staff.marc.008.MAP.VIS.form.short
+msgid "Form"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.desc
+msgid "Government Publication"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_end_pos
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.field_start_pos
+msgid "28"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/gpub.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.VIS.MAP.COM.gpub.short
+msgid "GPub"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.conf.desc
+msgid "Conference Publication"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.conf.field_end_pos
+#: staff.marc.008.BKS.SER.conf.field_start_pos
+#: staff.marc.008.MAP.VIS.form.field_end_pos
+#: staff.marc.008.MAP.VIS.form.field_start_pos
+msgid "29"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.conf.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/conf.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.SER.conf.short
+msgid "Conf"
+msgstr ""
+
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.desc
+msgid "Target Audience"
+msgstr ""
+
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_end_pos
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.field_start_pos
+#: staff.marc.008.SER.orig.field_end_pos
+#: staff.marc.008.SER.orig.field_start_pos
+msgid "22"
+msgstr ""
+
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/audn.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.VIS.SCO.REC.COM.audn.short
+msgid "Audn"
+msgstr ""
+
+#: staff.marc.008.BKS.biog.field_end_pos
+#: staff.marc.008.BKS.biog.field_start_pos
+#: staff.marc.008.SER.succ.field_end_pos
+#: staff.marc.008.SER.succ.field_start_pos
+msgid "34"
+msgstr ""
+
+#: staff.marc.008.BKS.biog.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/biog.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.biog.short
+msgid "Biog"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.desc
+#: staff.marc.008.SER.cont.desc
+msgid "Nature of Contents"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.field_end_pos
+#: staff.marc.008.SER.cont.field_end_pos
+msgid "27"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.field_size
+#: staff.marc.008.BKS.ills.field_size
+#: staff.marc.008.date1.field_size
+#: staff.marc.008.date2.field_size
+msgid "4"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.field_start_pos
+#: staff.marc.008.SER.entw.field_end_pos
+#: staff.marc.008.SER.entw.field_start_pos
+msgid "24"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.help
+#: staff.marc.008.SER.cont.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/cont.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.cont.short
+#: staff.marc.008.SER.cont.short
+msgid "Cont"
+msgstr ""
+
+#: staff.marc.008.BKS.fest.desc
+msgid "Festschrift"
+msgstr ""
+
+#: staff.marc.008.BKS.fest.field_end_pos
+#: staff.marc.008.BKS.fest.field_start_pos
+msgid "30"
+msgstr ""
+
+#: staff.marc.008.BKS.fest.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/fest.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.fest.short
+msgid "Fest"
+msgstr ""
+
+#: staff.marc.008.BKS.ills.desc
+msgid "Illustrations"
+msgstr ""
+
+#: staff.marc.008.BKS.ills.field_end_pos
+#: staff.marc.008.SER.srtp.field_end_pos
+#: staff.marc.008.SER.srtp.field_start_pos
+msgid "21"
+msgstr ""
+
+#: staff.marc.008.BKS.ills.field_start_pos
+#: staff.marc.008.SER.freq.field_end_pos
+#: staff.marc.008.SER.freq.field_start_pos
+#: staff.marc.LDR.desc.field_end_pos
+#: staff.marc.LDR.desc.field_start_pos
+msgid "18"
+msgstr ""
+
+#: staff.marc.008.BKS.ills.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/ills.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.ills.short
+msgid "Ills"
+msgstr ""
+
+#: staff.marc.008.BKS.litf.desc
+msgid "Literary Form"
+msgstr ""
+
+#: staff.marc.008.BKS.litf.field_end_pos
+#: staff.marc.008.BKS.litf.field_start_pos
+#: staff.marc.008.SER.alph.field_end_pos
+#: staff.marc.008.SER.alph.field_start_pos
+msgid "33"
+msgstr ""
+
+#: staff.marc.008.BKS.litf.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/litf.shtm"
+msgstr ""
+
+#: staff.marc.008.BKS.litf.short
+msgid "LitF"
+msgstr ""
+
+#: staff.marc.008.SER.alph.desc
+msgid "Original Alphabet or Script of Title"
+msgstr ""
+
+#: staff.marc.008.SER.alph.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/alph.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.alph.short
+msgid "Alph"
+msgstr ""
+
+#: staff.marc.008.SER.cont.field_start_pos
+msgid "25"
+msgstr ""
+
+#: staff.marc.008.SER.entw.desc
+msgid "Nature of Entire Work"
+msgstr ""
+
+#: staff.marc.008.SER.entw.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/entw.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.entw.short
+msgid "EntW"
+msgstr ""
+
+#: staff.marc.008.SER.freq.desc
+msgid "Frequency"
+msgstr ""
+
+#: staff.marc.008.SER.freq.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/freq.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.freq.short
+msgid "Freq"
+msgstr ""
+
+#: staff.marc.008.SER.issn.desc
+msgid "ISSN Center"
+msgstr ""
+
+#: staff.marc.008.SER.issn.field_end_pos
+#: staff.marc.008.SER.issn.field_start_pos
+msgid "20"
+msgstr ""
+
+#: staff.marc.008.SER.issn.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/issn.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.issn.short
+#: staff.record_list.issn
+#: staff.z39_50.search_class.issn
+msgid "ISSN"
+msgstr ""
+
+#: staff.marc.008.SER.orig.desc
+msgid "Form of Original Item"
+msgstr ""
+
+#: staff.marc.008.SER.orig.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/orig.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.orig.short
+msgid "Orig"
+msgstr ""
+
+#: staff.marc.008.SER.regl.desc
+msgid "Regularity"
+msgstr ""
+
+#: staff.marc.008.SER.regl.field_end_pos
+#: staff.marc.008.SER.regl.field_start_pos
+msgid "19"
+msgstr ""
+
+#: staff.marc.008.SER.regl.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/regl.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.regl.short
+msgid "Regl"
+msgstr ""
+
+#: staff.marc.008.SER.srtp.desc
+msgid "Type of Continuing Resource"
+msgstr ""
+
+#: staff.marc.008.SER.srtp.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/srtp.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.srtp.short
+msgid "SrTp"
+msgstr ""
+
+#: staff.marc.008.SER.succ.desc
+msgid "Entry Convention"
+msgstr ""
+
+#: staff.marc.008.SER.succ.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/succ.shtm"
+msgstr ""
+
+#: staff.marc.008.SER.succ.short
+msgid "S/L"
+msgstr ""
+
+#: staff.marc.008.ctry.desc
+msgid "Country of Publication, etc."
+msgstr ""
+
+#: staff.marc.008.ctry.field_end_pos
+#: staff.marc.LDR.elvl.field_end_pos
+#: staff.marc.LDR.elvl.field_start_pos
+msgid "17"
+msgstr ""
+
+#: staff.marc.008.ctry.field_start_pos
+msgid "15"
+msgstr ""
+
+#: staff.marc.008.ctry.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/ctry.shtm"
+msgstr ""
+
+#: staff.marc.008.ctry.short
+msgid "Ctry"
+msgstr ""
+
+#: staff.marc.008.date1.desc
+#: staff.marc.008.date1.short
+msgid "Date 1"
+msgstr ""
+
+#: staff.marc.008.date1.field_end_pos
+msgid "10"
+msgstr ""
+
+#: staff.marc.008.date1.field_start_pos
+#: staff.marc.LDR.blvl.field_end_pos
+#: staff.marc.LDR.blvl.field_start_pos
+msgid "7"
+msgstr ""
+
+#: staff.marc.008.date2.desc
+#: staff.marc.008.date2.short
+msgid "Date 2"
+msgstr ""
+
+#: staff.marc.008.date2.field_end_pos
+msgid "14"
+msgstr ""
+
+#: staff.marc.008.date2.field_start_pos
+msgid "11"
+msgstr ""
+
+#: staff.marc.008.dates
+msgid "Dates"
+msgstr ""
+
+#: staff.marc.008.dates.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/dates.shtm"
+msgstr ""
+
+#: staff.marc.008.dtst.desc
+msgid "Type of Date/Publication Status"
+msgstr ""
+
+#: staff.marc.008.dtst.field_end_pos
+#: staff.marc.008.dtst.field_start_pos
+#: staff.marc.008.entered.field_size
+#: staff.marc.LDR.type.field_end_pos
+#: staff.marc.LDR.type.field_start_pos
+msgid "6"
+msgstr ""
+
+#: staff.marc.008.dtst.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/dtst.shtm"
+msgstr ""
+
+#: staff.marc.008.dtst.short
+msgid "DtSt"
+msgstr ""
+
+#: staff.marc.008.entered.desc
+msgid "Date Entered"
+msgstr ""
+
+#: staff.marc.008.entered.field_end_pos
+#: staff.marc.LDR.rec_stat.field_end_pos
+#: staff.marc.LDR.rec_stat.field_start_pos
+msgid "5"
+msgstr ""
+
+#: staff.marc.008.entered.field_start_pos
+msgid "0"
+msgstr ""
+
+#: staff.marc.008.entered.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/entered.shtm"
+msgstr ""
+
+#: staff.marc.008.entered.short
+msgid "Entered"
+msgstr ""
+
+#: staff.marc.008.lang.desc
+msgid "Language Code"
+msgstr ""
+
+#: staff.marc.008.lang.field_end_pos
+msgid "37"
+msgstr ""
+
+#: staff.marc.008.lang.field_start_pos
+msgid "35"
+msgstr ""
+
+#: staff.marc.008.lang.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/lang.shtm"
+msgstr ""
+
+#: staff.marc.008.lang.short
+msgid "Lang"
+msgstr ""
+
+#: staff.marc.008.mrec.desc
+msgid "Modified Record"
+msgstr ""
+
+#: staff.marc.008.mrec.field_end_pos
+#: staff.marc.008.mrec.field_start_pos
+msgid "38"
+msgstr ""
+
+#: staff.marc.008.mrec.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/mrec.shtm"
+msgstr ""
+
+#: staff.marc.008.mrec.short
+msgid "MRec"
+msgstr ""
+
+#: staff.marc.008.srce.desc
+msgid "Cataloging Source"
+msgstr ""
+
+#: staff.marc.008.srce.field_end_pos
+#: staff.marc.008.srce.field_start_pos
+msgid "39"
+msgstr ""
+
+#: staff.marc.008.srce.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/srce.shtm"
+msgstr ""
+
+#: staff.marc.008.srce.short
+msgid "Srce"
+msgstr ""
+
+#: staff.marc.LDR.blvl.desc
+msgid "Bibliographic Level"
+msgstr ""
+
+#: staff.marc.LDR.blvl.field
+#: staff.marc.LDR.ctrl.field
+#: staff.marc.LDR.desc.field
+#: staff.marc.LDR.elvl.field
+#: staff.marc.LDR.rec_stat.field
+#: staff.marc.LDR.type.field
+msgid "LDR"
+msgstr ""
+
+#: staff.marc.LDR.blvl.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/blvl.shtm"
+msgstr ""
+
+#: staff.marc.LDR.blvl.short
+msgid "BLvl"
+msgstr ""
+
+#: staff.marc.LDR.ctrl.desc
+msgid "Type of Control"
+msgstr ""
+
+#: staff.marc.LDR.ctrl.field_end_pos
+#: staff.marc.LDR.ctrl.field_start_pos
+msgid "8"
+msgstr ""
+
+#: staff.marc.LDR.ctrl.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/ctrl.shtm"
+msgstr ""
+
+#: staff.marc.LDR.ctrl.short
+msgid "Ctrl"
+msgstr ""
+
+#: staff.marc.LDR.desc.desc
+msgid "Descriptive Cataloging Form"
+msgstr ""
+
+#: staff.marc.LDR.desc.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/desc.shtm"
+msgstr ""
+
+#: staff.marc.LDR.desc.short
+msgid "Desc"
+msgstr ""
+
+#: staff.marc.LDR.elvl.desc
+msgid "Encoding Level"
+msgstr ""
+
+#: staff.marc.LDR.elvl.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/elvl.shtm"
+msgstr ""
+
+#: staff.marc.LDR.elvl.short
+msgid "ELvl"
+msgstr ""
+
+#: staff.marc.LDR.rec_stat.desc
+msgid "Record Status"
+msgstr ""
+
+#: staff.marc.LDR.rec_stat.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/rec.shtm"
+msgstr ""
+
+#: staff.marc.LDR.rec_stat.short
+msgid "Rec stat"
+msgstr ""
+
+#: staff.marc.LDR.type.desc
+msgid "Type of Record"
+msgstr ""
+
+#: staff.marc.LDR.type.help
+msgid "http://www.oclc.org/bibformats/en/fixedfield/type.shtm"
+msgstr ""
+
+#: staff.marc.close.editor.key
+msgid "W"
+msgstr ""
+
+#: staff.marc.display.control_fields
+msgid "Toggle Control/Data Fields"
+msgstr ""
+
+#: staff.marc.display.cover_art
+msgid "Toggle Cover Art"
+msgstr ""
+
+#: staff.marc.display.explain
+msgid "Explain Errors"
+msgstr ""
+
+#: staff.marc.display.explain.key
+msgid "X"
+msgstr ""
+
+#: staff.marc.display.fixed.BKS
+msgid "Fixed Fields as BKS"
+msgstr ""
+
+#: staff.marc.display.fixed.COM
+msgid "Fixed Fields as COM"
+msgstr ""
+
+#: staff.marc.display.fixed.MAP
+msgid "Fixed Fields as MAP"
+msgstr ""
+
+#: staff.marc.display.fixed.MIX
+msgid "Fixed Fields as MIX"
+msgstr ""
+
+#: staff.marc.display.fixed.REC
+msgid "Fixed Fields as REC"
+msgstr ""
+
+#: staff.marc.display.fixed.SCO
+msgid "Fixed Fields as SCO"
+msgstr ""
+
+#: staff.marc.display.fixed.SER
+msgid "Fixed Fields as SER"
+msgstr ""
+
+#: staff.marc.display.fixed.VIS
+msgid "Fixed Fields as VIS"
+msgstr ""
+
+#: staff.marc.display.legend
+msgid "Legend"
+msgstr ""
+
+#: staff.marc.display.meta_data
+msgid "Toggle Meta Data"
+msgstr ""
+
+#: staff.marc.editor.keys.help
+msgid "Control+D = Delimiter Symbol ; Control+Enter = Insert Row ; Control+Delete = Delete Row;"
+msgstr ""
+
+#: staff.marc.file
+#: staff.marc_editor_interface_label
+msgid "MARC"
+msgstr ""
+
+#: staff.marc.file.close
+msgid "Close Editor"
+msgstr ""
+
+#: staff.marc.file.export
+msgid "Export"
+msgstr ""
+
+#: staff.marc.file.publish
+msgid "Save (to DB)"
+msgstr ""
+
+#: staff.marc.file.reload
+msgid "Reload"
+msgstr ""
+
+#: staff.marc.file.validate
+msgid "Validate"
+msgstr ""
+
+#: staff.marc.groupbox.control
+msgid "Control Fields"
+msgstr ""
+
+#: staff.marc.groupbox.cover
+msgid "Cover Art"
+msgstr ""
+
+#: staff.marc.groupbox.data
+msgid "Data Fields"
+msgstr ""
+
+#: staff.marc.groupbox.fixed
+msgid "Fixed Fields"
+msgstr ""
+
+#: staff.marc.groupbox.meta
+msgid "Meta Data (NOT YET IMPLEMENTED)"
+msgstr ""
+
+#: staff.mbts_balance_owed_label
+msgid "Balance Owed"
+msgstr ""
+
+#: staff.mbts_id_label
+msgid "Bill # "
+msgstr ""
+
+#: staff.mbts_total_owed_label
+msgid "Total Billed"
+msgstr ""
+
+#: staff.mbts_total_paid_label
+msgid "Total Paid"
+msgstr ""
+
+#: staff.mbts_xact_start_label
+msgid "Start"
+msgstr ""
+
+#: staff.mvr_label_doc_id
+msgid "Doc Id"
+msgstr ""
+
+#: staff.next.range
+msgid "Next"
+msgstr ""
+
+#: staff.opac_navigator_interface_label
+msgid "CATALOG NAVIGATOR"
+msgstr ""
+
+#: staff.patron_barcode_entry_interface_label
+#: staff.patron_display_interface_label
+msgid "PATRON"
+msgstr ""
+
+#: staff.patron_display.bills.label
+msgid "Bills:"
+msgstr ""
+
+#: staff.patron_display.checkout.print_receipt_label
+#: staff.patron_display.items.print_receipt_label
+msgid "Print Receipt"
+msgstr ""
+
+#: staff.patron_display.checkout.print_receipt_label.accesskey
+msgid ""
+"_: staff.patron_display.checkout.print_receipt_label.accesskey\n"
+msgstr ""
+
+#: staff.patron_display.checkout.reprint_receipt_label
+msgid "Re-Print Last Receipt"
+msgstr ""
+
+#: staff.patron_display.checkouts.label
+msgid "Check Outs:"
+msgstr ""
+
+#: staff.patron_display.checkouts_overdue.label
+msgid "Overdue:"
+msgstr ""
+
+#: staff.patron_display.contact.caption
+msgid "Identity &amp; Contact Info"
+msgstr ""
+
+#: staff.patron_display.credit.label
+msgid "Credit:"
+msgstr ""
+
+#: staff.patron_display.date_of_birth.label
+msgid "DOB:"
+msgstr ""
+
+#: staff.patron_display.day_phone.label
+msgid "Day Phone:"
+msgstr ""
+
+#: staff.patron_display.email.label
+#: staff.patron_search_form.email.label
+msgid "Email:"
+msgstr ""
+
+#: staff.patron_display.evening_phone.label
+msgid "Evening Phone:"
+msgstr ""
+
+#: staff.patron_display.holds.label
+msgid "Holds:"
+msgstr ""
+
+#: staff.patron_display.holds_available.label
+msgid "Available:"
+msgstr ""
+
+#: staff.patron_display.ident1.label
+msgid "ID 1:"
+msgstr ""
+
+#: staff.patron_display.ident2.label
+msgid "ID 2:"
+msgstr ""
+
+#: staff.patron_display.items_claimed_returned.label
+msgid "Items Claimed Returned:"
+msgstr ""
+
+#: staff.patron_display.library_card.label
+msgid "Library Card:"
+msgstr ""
+
+#: staff.patron_display.mailing.city.label
+msgid "Mailing City:"
+msgstr ""
+
+#: staff.patron_display.mailing.post_code.label
+msgid "Mailing ZIP:"
+msgstr ""
+
+#: staff.patron_display.mailing.state.label
+msgid "Mailing State:"
+msgstr ""
+
+#: staff.patron_display.mailing.street1.label
+msgid "Mailing Address 1:"
+msgstr ""
+
+#: staff.patron_display.mailing.street2.label
+msgid "Mailing Address 2:"
+msgstr ""
+
+#: staff.patron_display.other_phone.label
+msgid "Other Phone:"
+msgstr ""
+
+#: staff.patron_display.physical.city.label
+msgid "Physical City:"
+msgstr ""
+
+#: staff.patron_display.physical.post_code.label
+msgid "Physical ZIP:"
+msgstr ""
+
+#: staff.patron_display.physical.state.label
+msgid "Physical State:"
+msgstr ""
+
+#: staff.patron_display.physical.street1.label
+msgid "Physical Address 1:"
+msgstr ""
+
+#: staff.patron_display.physical.street2.label
+msgid "Physical Address 2:"
+msgstr ""
+
+#: staff.patron_display.physical_address
+msgid "Physical Address"
+msgstr ""
+
+#: staff.patron_display.second_given_name.label
+#: staff.patron_search_form.second_given_name.label
+msgid "Middle Name:"
+msgstr ""
+
+#: staff.patron_display.standing.label
+msgid "Standing:"
+msgstr ""
+
+#: staff.patron_editor_interface_label
+msgid "PATRON EDIT"
+msgstr ""
+
+#: staff.patron_interface_label
+msgid "PATRON "
+msgstr ""
+
+#: staff.patron_navbar.bills
+msgid "Bills"
+msgstr ""
+
+#: staff.patron_navbar.checkout
+msgid "Check Out"
+msgstr ""
+
+#: staff.patron_navbar.holds
+msgid "Holds"
+msgstr ""
+
+#: staff.patron_navbar.info
+msgid "Info"
+msgstr ""
+
+#: staff.patron_navbar.info.accesskey
+msgid "o"
+msgstr ""
+
+#: staff.patron_navbar.items
+msgid "Items Out"
+msgstr ""
+
+#: staff.patron_navbar.refresh
+msgid "Refresh"
+msgstr ""
+
+#: staff.patron_register_interface_label
+msgid "NEW PATRON"
+msgstr ""
+
+#: staff.patron_search_form.caption
+msgid "Search for Patron"
+msgstr ""
+
+#: staff.patron_search_form.city.accesskey
+msgid ""
+"_: staff.patron_search_form.city.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.city.label
+msgid "City:"
+msgstr ""
+
+#: staff.patron_search_form.clear.label
+#: staff.patron_search_form.clear.accesskey
+msgid "&Clear Form"
+msgstr ""
+
+#: staff.patron_search_form.email.accesskey
+msgid ""
+"_: staff.patron_search_form.email.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.family_name.label
+#: staff.patron_search_form.family_name.accesskey
+msgid "&Last Name:"
+msgstr ""
+
+#: staff.patron_search_form.first_given_name.accesskey
+msgid ""
+"_: staff.patron_search_form.first_given_name.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.ident.accesskey
+msgid ""
+"_: staff.patron_search_form.ident.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.ident.label
+msgid "ID:"
+msgstr ""
+
+#: staff.patron_search_form.phone.label
+#: staff.patron_search_form.phone.accesskey
+msgid "&Phone:"
+msgstr ""
+
+#: staff.patron_search_form.post_code.accesskey
+msgid ""
+"_: staff.patron_search_form.post_code.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.post_code.label
+msgid "ZIP:"
+msgstr ""
+
+#: staff.patron_search_form.search.label
+#: staff.patron_search_form.search.accesskey
+msgid "&Search"
+msgstr ""
+
+#: staff.patron_search_form.second_given_name.accesskey
+msgid ""
+"_: staff.patron_search_form.second_given_name.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.state.accesskey
+msgid ""
+"_: staff.patron_search_form.state.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.state.label
+msgid "State:"
+msgstr ""
+
+#: staff.patron_search_form.street1.label
+#: staff.patron_search_form.street1.accesskey
+msgid "A&ddress 1:"
+msgstr ""
+
+#: staff.patron_search_form.street2.accesskey
+msgid ""
+"_: staff.patron_search_form.street2.accesskey\n"
+msgstr ""
+
+#: staff.patron_search_form.street2.label
+msgid "Address 2:"
+msgstr ""
+
+#: staff.patron_search_interface_label
+msgid "PATRON SEARCH"
+msgstr ""
+
+#: staff.patron_stat_cat_editor_interface_label
+msgid "PATRON STAT-CATS"
+msgstr ""
+
+#: staff.previous.range
+msgid "Previous"
+msgstr ""
+
+#: staff.receipt_template_editor_interface_label
+msgid "RECEIPTS"
+msgstr ""
+
+#: staff.record_list.copy_count
+msgid "Copies&#740;"
+msgstr ""
+
+#: staff.record_list.publisher
+#: staff.z39_50.search_class.publisher
+msgid "Publisher"
+msgstr ""
+
+#: staff.retrieving.record
+msgid "Retrieving..."
+msgstr ""
+
+#: staff.survey.wizard.page1
+msgid "Initial Settings"
+msgstr ""
+
+#: staff.survey.wizard.page2
+msgid "Add Questions for Survey:"
+msgstr ""
+
+#: staff.survey.wizard.title
+msgid "Add a Survey Wizard"
+msgstr ""
+
+#: staff.survey_admin_interface_label
+msgid "SURVEY ADMIN"
+msgstr ""
+
+#: staff.volume.attr.owning_lib
+msgid "Owning Library"
+msgstr ""
+
+#: staff.volume.wizard.page1
+msgid "Entering Volumes"
+msgstr ""
+
+#: staff.volume.wizard.page2
+msgid "Entering Copies"
+msgstr ""
+
+#: staff.volume.wizard.page3
+msgid "Entering Barcodes"
+msgstr ""
+
+#: staff.volume.wizard.page4
+msgid "Entering Copy-Level Attribute Defaults"
+msgstr ""
+
+#: staff.volume.wizard.title
+msgid "Batch Add Volumes/Copies Wizard"
+msgstr ""
+
+#: staff.xuleditor_label
+msgid "XUL TEST"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type
+msgid "Item Type"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.all
+msgid "All Formats"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.art
+msgid "Papers/Articles"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.bks
+msgid "Books"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.com
+msgid "Computer files"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.map
+msgid "Maps"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.mix
+msgid "Mixed material"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.rec
+msgid "Sound recordings"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.sco
+msgid "Musical scores"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.url
+msgid "Internet Resources"
+msgstr ""
+
+#: staff.z39_50.search_class.item_type.vis
+msgid "Visual materials"
+msgstr ""
+
+#: staff.z39_50.search_class.lccn
+msgid "LCCN"
+msgstr ""
+
+#: staff.z39_50.search_class.pubdate
+msgid "PubDate"
+msgstr ""
+
+#: staff.z39_50.search_class.tcn
+msgid "Accession #"
+msgstr ""
+
+#: staff.z39_50_import_interface_label
+msgid "Z39.50 IMPORT"
+msgstr ""
