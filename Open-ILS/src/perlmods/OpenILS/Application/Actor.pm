@@ -2464,6 +2464,8 @@ sub register_workstation {
 			    return $e->die_event unless 
                     $e->allowed('UPDATE_WORKSTATION', $existing->owning_lib); 
 
+			    return $e->die_event unless $e->allowed('UPDATE_WORKSTATION', $owner); 
+
                 $existing->owning_lib($owner);
 			    return $e->die_event unless $e->update_actor_workstation($existing);
 
