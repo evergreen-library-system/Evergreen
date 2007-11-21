@@ -1296,7 +1296,7 @@ sub batch_volume_transfer {
 
 	my $e = new_editor(authtoken => $auth, xact =>1);
 	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VOLUME_UPDATE', $o_lib);
+	return $e->event unless $e->allowed('UPDATE_VOLUME', $o_lib);
 
 	my $dorg = $e->retrieve_actor_org_unit($o_lib)
 		or return $e->event;
@@ -1477,7 +1477,7 @@ sub find_or_create_volume {
 	# Otherwise, create a new volume with the given attributes
 	# -----------------------------------------------------------------
 
-	return $e->die_event unless $e->allowed('VOLUME_UPDATE', $org_id);
+	return $e->die_event unless $e->allowed('UPDATE_VOLUME', $org_id);
 
 	$vol = Fieldmapper::asset::call_number->new;
 	$vol->owning_lib($org_id);

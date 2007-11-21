@@ -217,7 +217,7 @@ sub merge_volumes {
 		$_->deleted('t');
 		$_->editor($editor->requestor->id);
 		$_->edit_date('now');
-		return (undef,$editor->event) unless $editor->allowed('VOLUME_UPDATE', $_->owning_lib);
+		return (undef,$editor->event) unless $editor->allowed('UPDATE_VOLUME', $_->owning_lib);
 		$editor->update_asset_call_number($_) or return (undef, $editor->event);
 	}
 
