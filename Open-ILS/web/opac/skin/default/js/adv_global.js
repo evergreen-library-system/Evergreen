@@ -33,6 +33,50 @@ function advgInit() {
 	var input = $n($('adv_global_trow'), 'term');
 	input.focus();
 	setEnterFunc(input, advSubmitGlobal);
+
+    if(getSort() && getSortDir()) {
+	    setSelector($('adv_global_sort_by'), getSort());
+	    setSelector($('adv_global_sort_dir'), getSortDir());
+        if(getSort() != 'rel')
+            $('adv_global_sort_dir').disabled = false;
+    }
+
+    if(getAvail())
+        $('opac.result.limit2avail').checked = true;
+
+    initSearchBoxes();
+}
+
+function initSearchBoxes() {
+    /* loads the compiled search from the search cookie 
+        and sets the widgets accordingly */
+
+    search = cookieManager.read(COOKIE_SEARCH);
+    if(!search) return;
+    _debug("loaded compiled search cookie: " + search);
+
+    search = JSON2js(search);
+    if(!search) return;
+
+    var types = getObjectKeys(search.searches);
+
+    /* pre-add the needed rows */
+    while($('adv_global_tbody').getElementsByTagName('tr').length - 1 < types.length)
+        advAddGblRow();
+
+    var rows = $('adv_global_tbody').getElementsByTagName('tr');
+    for(var t = 0; t < types.length; t++) {
+        var row = rows[t];
+        setSelector($n(row, 'type'), types[t]);
+        var term = search.searches[types[t]].term;
+
+        /* if this is a single -<term> search, set the selector to nocontains */
+        if(match = term.match(/^-(\w+)$/)) {
+            term = match[1];
+            setSelector($n(row, 'contains'), 'nocontains');
+        }
+        $n(row, 'term').value = term;
+    }
 }
 
 function advAddGblRow() {
@@ -94,6 +138,7 @@ function advSubmitGlobal() {
 	var itemtypes = advGetVisSelectorVals('adv_global_item_type');
 	var audiences = advGetVisSelectorVals('adv_global_audience');
 	var languages = getSelectedList($('adv_global_lang')) + '';	
+    var limit2avail = $('opac.result.limit2avail').checked ? 1 : ''
 
 	var searches = advBuildSearchBlob();
 	if(!searches) return;
@@ -107,14 +152,15 @@ function advSubmitGlobal() {
 	args[PARAM_LITFORM]	= litforms;
 	args[PARAM_AUDIENCE]	= audiences;
 	args[PARAM_LANGUAGE] = languages;
-	args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
+	//args[PARAM_SEARCHES]	= js2JSON(searches); /* break these out */
 	args[PARAM_DEPTH]		= depthSelGetDepth();
 	args[PARAM_LOCATION]	= depthSelGetNewLoc();
 	args[PARAM_SORT]		= sortby;
 	args[PARAM_SORT_DIR]	= sortdir;
 	args[PARAM_ADVTYPE]	= ADVTYPE_MULTI;
 	args[PARAM_STYPE]		= "";
-	args[PARAM_TERM]		= "";
+	args[PARAM_TERM]		= searches;
+	args[PARAM_AVAIL]		= limit2avail;
 
 	/* pubdate sorting causes a record (not metarecord) search */
 	if( sortby == SORT_TYPE_PUBDATE || !$('adv_group_titles').checked ) {
@@ -134,7 +180,7 @@ function advSubmitGlobal() {
 
 function advBuildSearchBlob() {
 
-	var searches;
+	var searches = '';
 	var tbody    = $('adv_global_tbody');
 	var rows     = tbody.getElementsByTagName('tr');
 
@@ -150,14 +196,6 @@ function advBuildSearchBlob() {
 		if(!term) continue;
 
 		var string = "";
-
-		if(!searches) searches = {};
-
-		if(searches[stype]) 
-			string = searches[stype].term;
-		else 
-			searches[stype] = { term : "" };
-
 		switch(contains) {
 			case 'contains' : 
 				string += " " + term; 
@@ -178,10 +216,15 @@ function advBuildSearchBlob() {
 		if(string) {
 			string = string.replace(/'/g,' ');
 			string = string.replace(/\\/g,' ');
-			searches[stype].term = string;
+            string = string.replace(/^\s*/,'');
+            string = string.replace(/\s*$/,'');
+			//searches[stype].term = string;
+            if(searches) searches += ' ';
+            searches += stype + ':'+ string;
 		}
 	}
 
+    _debug("created search query " + searches);
 	return searches;
 }
 

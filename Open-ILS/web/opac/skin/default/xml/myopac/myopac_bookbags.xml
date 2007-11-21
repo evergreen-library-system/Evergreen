@@ -1,7 +1,7 @@
 
 <div id='myopac_bookbag_div' class='hide_me' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/container.js'> </script>
 
 	<div id='myopac_delete_bookbag_warn' class='hide_me'>
 		&myopac.delete.bookbag;
@@ -57,7 +57,7 @@
 			<tr>
 				<td> 
 					<span style='padding-right: 5px;'>&myopac.bookbag.naming;</span>
-					<input id='myopac_bookbag_new_name' type='text'> </input> 
+					<input id='myopac_bookbag_new_name' type='text' /> 
 				</td>
 			</tr>
 			<tr>
@@ -67,7 +67,7 @@
 					<span>&common.yes;</span> <input type='radio' name='bb_public' id='bb_public_yes'/>
 					<span>&common.no;</span> <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
 					<input style='padding-left: 10px;' onclick='myOPACCreateBookbag();' 
-						type='submit' value='&common.submit;'> </input>
+						type='submit' value='&common.submit;' />
 				</td>
 			</tr>
 		</tbody>

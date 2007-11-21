@@ -184,9 +184,25 @@ function _rdetailDraw(r) {
 	G.ui.rdetail.pubdate.appendChild(text(record.pubdate()));
 	G.ui.rdetail.publisher.appendChild(text(record.publisher()));
 	$('rdetail_physical_desc').appendChild(text(record.physical_description()));
-	G.ui.rdetail.tor.appendChild(text(record.types_of_resource()[0]));
-	setResourcePic( G.ui.rdetail.tor_pic, record.types_of_resource()[0]);
+    r = record.types_of_resource();
+    if(r) {
+        G.ui.rdetail.tor.appendChild(text(r[0]));
+	    setResourcePic( G.ui.rdetail.tor_pic, r[0]);
+    }
 	G.ui.rdetail.abstr.appendChild(text(record.synopsis()));
+
+    try{
+        if(record.isbn()) {
+            if(ENABLE_ADDED_CONTENT_ATTRIB_LINKS) {
+                unHideMe($('rdetail.jacket_attrib_div'));
+                var href = $('rdetail.jacket_attrib_link').getAttribute('href') +cleanISBN(record.isbn());
+                $('rdetail.jacket_attrib_link').setAttribute('href', href);
+            }
+        } else {
+            hideMe($("rdetail.jacket_attrib_div"));
+            hideMe($("rdetail_img_link"));
+        }
+    } catch(E) {}
 
 
 	// see if the record has any external links 
@@ -201,7 +217,6 @@ function _rdetailDraw(r) {
 			$('rdetail_online').appendChild(elem('br'));
 		}
 	}
-
 
 
 	$('rdetail_place_hold').setAttribute(

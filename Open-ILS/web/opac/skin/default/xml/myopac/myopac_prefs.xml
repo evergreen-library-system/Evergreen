@@ -64,7 +64,7 @@
 							onclick='
 								if( this.checked ) $("prefs_def_location").disabled = true;
 								else $("prefs_def_location").disabled = false;
-							'> </input> &myopac.prefs.search.home; 
+							' /> &myopac.prefs.search.home; 
 					</div>
 					<select id='prefs_def_location'>
 					</select>

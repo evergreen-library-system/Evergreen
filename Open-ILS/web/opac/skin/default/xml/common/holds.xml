@@ -1,3 +1,8 @@
+<link rel="stylesheet" type="text/css"
+    href='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-brown.css' title="win2k-cold-1" />
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/lang/calendar-en.js'></script>
+<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/calendar-setup.js'></script>
 
 <div>
 	<div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
@@ -6,12 +11,12 @@
 				<tbody>
 					<tr>
 						<td>&opac.holds.xulRecipient;:</td>
-						<td><input type='text' id='xul_recipient_barcode'> </input></td>
+						<td><input type='text' id='xul_recipient_barcode' /></td>
 						<td><input type='submit' value='&common.submit;' 
-							id='xul_recipient_barcode_submit'> </input></td>
+							id='xul_recipient_barcode_submit' /></td>
 						<td><input type='submit' value='&common.hold.place;' 
-							id='xul_recipient_me'> </input></td>
-						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();'></input></td>
+							id='xul_recipient_me' /></td>
+						<td><input type='submit' value='&common.cancel;' onclick='showCanvas();' /></td>
 					</tr>
 
 				</tbody>
@@ -122,6 +127,51 @@
 					</td>
 				</tr>
 
+                <tr>
+                    <td class='holds_cell'>
+                        &opac.holds.freeze;
+                        (<a class='classic_link' href='javascript:alert("&opac.holds.freeze.help;");'>&common.help;</a>)
+                        </td>
+                    <td class='holds_cell'>
+                        <input type='checkbox' id='holds_frozen_chkbox' 
+                            onchange='
+                                if($("holds_frozen_chkbox").checked) 
+                                    unHideMe($("hold_frozen_thaw_row"));
+                                else
+                                    hideMe($("hold_frozen_thaw_row"));
+                            ' /> 
+                    </td>
+                </tr>
+
+                <tr id='hold_frozen_thaw_row' class='hide_me'>
+                    <td class='holds_cell'>
+                        <script language='javascript' type='text/javascript'> if($('holds_frozen_chkbox').checked) unHideMe($("hold_frozen_thaw_row"));</script>
+                        &opac.holds.freeze.thaw_date;
+                    </td>
+                    <td class='holds_cell'>
+                        <input size='10' maxlength='10' id='holds_frozen_thaw_input' />
+                        <button style='padding: 0px;' id='holds_frozen_thaw_date_button'>
+                            <img src='<!--#echo var="OILS_JS_BASE"-->/jscalendar/img.gif'
+                                style="cursor: pointer; border: 1px solid red; padding: 0px; margin: -3px;"
+                                title="Date selector"
+                                onmouseover="this.style.background='red';"
+                                onmouseout="this.style.background=''" />
+                        </button>
+                        &nbsp;(&opac.holds.freeze.thaw_date.format;)
+
+                        <script language='javascript' type="text/javascript">
+                            Calendar.setup({
+                                inputField  : "holds_frozen_thaw_input",
+                                ifFormat    : "%Y-%m-%d",
+                                button      : "holds_frozen_thaw_date_button",
+                                align       : "Tl", 
+                                singleClick : true
+                            });
+                        </script>
+
+                    </td>
+                </tr>
+
 				<tr id='holds_alt_formats_row_extras' class='hide_me'>
 					<td colspan='2' align='center'>
 						<div style='padding: 8px;'>
@@ -143,7 +193,7 @@
 					</td>
 
 					<td class='holds_cell'>
-						<select id='hold_alt_form_selector' multiple='true' style='width: 14em;'>
+						<select id='hold_alt_form_selector' multiple='multiple' style='width: 14em;'>
 							<option value='at'	class='hide_me'>&opac.search.books;</option>
 							<option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
 							<option value='i'		class='hide_me'>&opac.search.audioBooks;</option>

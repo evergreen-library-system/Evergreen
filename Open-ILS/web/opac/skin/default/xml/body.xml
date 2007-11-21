@@ -29,7 +29,5 @@
 			</tr>
 		</tbody>
 	</table>
-	<center>
 		<!--#include virtual='footer.xml'-->
-	</center>
 </body>

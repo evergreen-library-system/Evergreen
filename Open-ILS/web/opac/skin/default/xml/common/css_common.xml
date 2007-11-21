@@ -4,19 +4,16 @@
 <link type='text/css' rel='stylesheet' href="<!--#echo var='OILS_SKIN_BASE'-->/default/css/layout.css"/>
 
 <!-- Our font CSS's -->
-<link type='text/css' rel='stylesheet'					
-	href='<!--#echo var="OILS_CSS_BASE"-->/mediumfont.css' name='meduim_fonts' csstype='font'/>
+<link type='text/css' rel='stylesheet' href='<!--#echo var="OILS_CSS_BASE"-->/mediumfont.css' />
 
 <!-- Our colors -->
-<link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/default/css/colors.css"  
-	name='Default' csstype='color'/>
+<link type='text/css' rel="stylesheet" href="<!--#echo var='OILS_THEME_BASE'-->/default/css/colors.css" />
 
-<link type='text/css' rel="alternate stylesheet" title='&opac.style.reddish;' href="<!--#echo var='OILS_THEME_BASE'-->/reddish/css/colors.css"  
-	name='Default' csstype='color'/>
+<!-- An alternate stylesheet -->
+<link type='text/css' rel="alternate stylesheet" title='&opac.style.reddish;' href="<!--#echo var='OILS_THEME_BASE'-->/reddish/css/colors.css" />
 
 <!-- OpenSearch auto discovery -->
-<link rel='search' 
-	 type="application/opensearchdescription+xml"
-    title="Evergreen"
-    href="http://<!--#echo var='SERVER_NAME'-->/opac/extras/opensearch/1.1/-/osd.xml"> </link>
+<link type="application/opensearchdescription+xml"
+	rel='search' title="Evergreen"
+	href="http://<!--#echo var='SERVER_NAME'-->/opac/extras/opensearch/1.1/-/osd.xml" />
 

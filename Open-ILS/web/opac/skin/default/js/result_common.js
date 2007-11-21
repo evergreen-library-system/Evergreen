@@ -42,21 +42,11 @@ function resultCollectSearchIds( type, method, handler ) {
 	var args = {};
 
 	if( type ) {
-		args.searches = {};
-		args.searches[getStype()] = {};
-		var term = getTerm();
-		if( term ) {
-			term = term.replace(/'/g,' ');
-			term = term.replace(/\\/g,' ');
-			args.searches[getStype()].term = term;
-		}
-
 		var form = parseForm(getForm());
 		item_type = form.item_type;
 		item_form = form.item_form;
 
 	} else {
-		args.searches = JSON2js(getSearches());
 		item_type = (getItemType()) ? getItemType().split(/,/) : null;
 		item_form = (getItemForm()) ? getItemForm().split(/,/) : null;
 	}
@@ -73,21 +63,23 @@ function resultCollectSearchIds( type, method, handler ) {
 	args.limit    = limit;
 	args.offset   = getOffset();
 	args.visibility_limit = 3000;
+    args.default_class = getStype();
 
 	if(sort) args.sort = sort;
 	if(sortdir) args.sort_dir = sortdir;
 	if(item_type) args.item_type	= item_type;
 	if(item_form) args.item_form	= item_form;
+    if(getAvail()) args.available = 1;
 
 
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);
 	if(getLanguage()) args.language	= getLanguage().split(/,/);
 
-	//alert(js2JSON(args));
+	_debug('Search args: ' + js2JSON(args));
+	_debug('Raw query: ' + getTerm());
 
-	_debug('SEARCH: \n' + js2JSON(args) + '\n\n');
-	var req = new Request(method, args, 1);
+	var req = new Request(method, args, getTerm(), 1);
 	req.callback(handler);
 	req.send();
 }
@@ -182,6 +174,8 @@ function resultLowHits() {
 	var sreq = new Request(CHECK_SPELL, getTerm());
 	sreq.callback(resultSuggestSpelling);
 	sreq.send();
+
+    /* XXX patch to use the search results */
 
 	var words = getTerm().split(' ');
 	var word;

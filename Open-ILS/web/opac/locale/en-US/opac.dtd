@@ -59,6 +59,12 @@
 	"The password must be at least 7 characters in length, 
 	contain at least one letter (a-z/A-Z), 
 	and contain at least one number.">
+<!ENTITY common.a2z.title "Title: A to Z">
+<!ENTITY common.z2a.title "Title: Z to A">
+<!ENTITY common.a2z.author "Author: A to Z">
+<!ENTITY common.z2a.author "Author: Z to A">
+<!ENTITY common.new2old.pubdate "Date: Newest to Oldest">
+<!ENTITY common.old2new.pubdate "Date: Oldest to Newest">
 
 <!ENTITY opac.style.reddish "Reddish">
 
@@ -195,7 +201,7 @@ avoid using bookbags all together.  Thank you.">
 	================================================================= -->
 <!ENTITY myopac.holds.formats "Formats">
 <!ENTITY myopac.holds.location "Pickup Location">
-<!ENTITY myopac.holds.edit.cancel "Edit/Cancel">
+<!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.status.none "You have no items on hold at this time">
 <!ENTITY myopac.holds.status.waiting "Waiting for copy">
 <!ENTITY myopac.holds.status.intransit "In Transit">
@@ -203,6 +209,24 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.holds.edit "Edit">
 <!ENTITY myopac.holds.cancel "Cancel">
 <!ENTITY myopac.holds.verify "If you wish to cancel the selected hold, click OK, otherwise click Cancel.">
+<!ENTITY myopac.holds.freeze_selected "Freeze">
+<!ENTITY myopac.holds.thaw_selected "Un-freeze">
+<!ENTITY myopac.holds.thaw_date_selected "Set Un-freeze date">
+<!ENTITY myopac.holds.cancel_selected "Cancel">
+<!ENTITY myopac.holds.processing "Processing holds... This may take a moment.">
+<!ENTITY myopac.holds.actions 'Actions for selected holds'>
+<!ENTITY myopac.holds.cancel.confirm 'Are you sure you wish to cancel the selected holds?'>
+<!ENTITY myopac.holds.freeze.confirm 'Are you sure you wish to freeze the selected holds?
+Note that if an item has already been selected to fulfill the hold, it will not be frozen'>
+<!ENTITY myopac.holds.thaw.confirm 'Are you sure you wish to un-freeze the selected holds?'>
+<!ENTITY myopac.holds.thaw_date.confirm 'Are you sure you wish to change the un-freeze date for the selected holds?'>
+<!ENTITY myopac.holds.freeze.select_thaw "Select an 'Un-Freeze' date.  This is the date at which the holds will become active again.
+If no date is chosen, the holds will remain frozen until they are manually un-frozen.">
+
+<!ENTITY opac.holds.freeze "Freeze this hold">
+<!ENTITY opac.holds.freeze.help "A 'frozen' will retain its place in the queue, but will not be fulfilled until it has been unfrozen.">
+<!ENTITY opac.holds.freeze.thaw_date "Automatically un-freeze hold on:">
+<!ENTITY opac.holds.freeze.thaw_date.format "YYYY-MM-DD">
 
 <!--	================================================================= 
 	MyOPAC Preferences Page 
@@ -225,6 +249,8 @@ avoid using bookbags all together.  Thank you.">
 <!ENTITY myopac.prefs.help "This setting defines how you will be notified of holds that are ready to be picked up from the library.
 By default, holds will use the notification style you choose here.  
 However, you will still have the option to change individual holds regardless of this setting.">
+<!ENTITY myopac.holds.unfrozen "Un-Frozen">
+<!ENTITY myopac.holds.frozen.until "Frozen Until">
 
 <!--	================================================================= 
 	 MyOPAC Summary page
@@ -503,6 +529,12 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY rdetail.noneAvailable " * There are no copies in this location">
 <!ENTITY rdetail.summary.online "Online Resources">
 
+<!ENTITY result.sort_by "Sort Results by Relevance">
+<!ENTITY result.sort_by.title "Sort Results by Title">
+<!ENTITY result.sort_by.author "Sort Results by Author">
+<!ENTITY result.sort_by.pubdate "Sort Results by Publicate Date">
+
+<!ENTITY result.limit2avail "Limit to Available">
 <!ENTITY result.info.copies "Available copies / Total copies">
 <!ENTITY result.info.no.items "No items with the selected format were found in this location.">
 <!ENTITY result.info.format.items "Listed below are all items in the catalog with the chosen format.">
@@ -560,7 +592,10 @@ For further information, please consult your local librarian.">
 <!ENTITY common.email.enable "Enable email notifications for this hold?">
 <!ENTITY common.email.none "(Patron has no configured email address)">
 <!ENTITY common.email.set "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> for setting your email address)">
+<!ENTITY common.keywords.label "Keywords:">
 <!ENTITY common.physical.label "Physical Description:">
+<!ENTITY common.series.label "Series:">
+<!ENTITY common.subject.label "Subject:">
 <!ENTITY common.title.label "Title:">
 <!ENTITY common.author.label "Author:">
 <!ENTITY common.format.label "Format:">
@@ -583,3 +618,21 @@ You will need to change your password.">
 <!ENTITY login.failed "Login failed. The username or password provided was not valid.
 Ensure Caps-Lock is off and try again or contact your local library.">
 <!ENTITY button.go "Go!">
+
+<!--	================================================================= 
+	Slimpac Simple Search
+	================================================================= -->
+<!ENTITY slimpac.start.title "Simple Search">
+<!ENTITY slimpac.start.nowSearching "Now searching: ">
+<!ENTITY slimpac.start.dynamic "Dynamic Catalog">
+
+<!--	================================================================= 
+	Slimpac Advanced Search
+	================================================================= -->
+<!ENTITY slimpac.advanced.language "Item Language">
+<!ENTITY slimpac.advanced.create_date "Record Creation Date">
+<!ENTITY slimpac.advanced.edit_date "Record Edit Date">
+
+<!ENTITY opac.image_provided "Image provided by">
+<!ENTITY vendor.name "Amazon">
+<!ENTITY vendor.base_link "http://amazon.com/dp/">

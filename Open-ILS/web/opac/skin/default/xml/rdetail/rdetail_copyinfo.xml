@@ -73,7 +73,7 @@
 
 	<div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.rdetail.cp_status			= "rdetail_copy_info_status";
 		config.ids.rdetail.cp_info_row		= "rdetail_copy_info_row";
 		config.ids.rdetail.cp_info_loading	= "rdetail_copy_info_loading";

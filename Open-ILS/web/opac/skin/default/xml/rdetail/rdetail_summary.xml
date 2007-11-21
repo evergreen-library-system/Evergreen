@@ -4,13 +4,20 @@
 	<table id='rdetail_details_table'>
 		<tbody id='rdetail_details_tbody'>
 
-
-
 			<tr>
 				<td id='rdetail_image_cell' rowspan='10'>
 					<a id='rdetail_img_link'>
-						<img style='border: none;' id='rdetail_image'> </img>
+						<img style='border: none;' id='rdetail_image' 
+                            onerror='
+                                hideMe($("rdetail.jacket_attrib_div"));
+                                hideMe($("rdetail_img_link"));'/>
 					</a>
+                    <!-- vendor attribution link -->
+                    <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
+                        <div>&opac.image_provided;</div>
+                        <div><a target='_blank' href='&vendor.base_link;' 
+                            class='classic_link' id='rdetail.jacket_attrib_link'>&vendor.name;</a></div>
+                    </div>
 				</td>
 				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
 				<td class='rdetail_item' id='rdetail_title'> </td>
@@ -52,7 +59,7 @@
 			<tr>
 				<td nowrap='nowrap' class='rdetail_desc'>&common.format;</td>			
 				<td class='rdetail_item'>
-					<img id='rdetail_tor_pic' class='tor_pic'> </img>
+					<img id='rdetail_tor_pic' class='tor_pic' />
 					<span id='rdetail_tor' style='padding-left: 5px;'> </span>
 				</td>
 			</tr>
@@ -70,7 +77,12 @@
 		</tbody>
 	</table>
 
-	<script language='javascript'>
+	<!-- Empty span used for creating unAPI links -->
+	<abbr name="unapi" class="unapi-id">
+		<!-- unAPI URI goes here -->
+	</abbr>
+
+	<script language='javascript' type='text/javascript'>
 		config.ids.rdetail.details_body		= 'rdetail_details_body'; 
 		config.ids.rdetail.title				= 'rdetail_title';
 		config.ids.rdetail.author				= 'rdetail_author';

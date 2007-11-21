@@ -21,7 +21,7 @@
 		</select>
 			
 		<!-- search term -->
-		<input type='text' size='18' name='term' style='margin-right: 3px;'> </input>
+		<input type='text' size='18' name='term' style='margin-right: 3px;' />
 	
 		<!-- Remove this row -->
         <button 

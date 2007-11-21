@@ -12,18 +12,18 @@ XXX Deprecate me
 		<tr>
 			<td>
 				<span style='padding-right: 0px;'>&common.call.number.label;</span>
-				<input id='opac.advanced.quick.cn' style='margin: 2px;' type='text' size='12'> </input>
-				<input type='submit' onclick='advCNRun();' value='&advanced.go;'> </input>
+				<input id='opac.advanced.quick.cn' style='margin: 2px;' type='text' size='12' />
+				<input type='submit' onclick='advCNRun();' value='&advanced.go;' />
 			</td>
 			<td>
 				<span style='padding-right: 0px;'>&common.isbn.label;</span>
-				<input id='opac.advanced.quick.isbn' style='margin: 2px;' type='text' size='13' maxlength='13'> </input>
-				<input type='submit' onclick='advISBNRun();' value='&advanced.go;'> </input>
+				<input id='opac.advanced.quick.isbn' style='margin: 2px;' type='text' size='13' maxlength='13' />
+				<input type='submit' onclick='advISBNRun();' value='&advanced.go;' />
 			</td>
 			<td>
 				<span style='padding-right: 0px;'>&common.issn.label;</span>
-				<input id='opac.advanced.quick.issn' style='margin: 2px;' type='text' size='9' maxlength='9'> </input>
-				<input type='submit' onclick='advISSNRun();' value='&advanced.go;'> </input>
+				<input id='opac.advanced.quick.issn' style='margin: 2px;' type='text' size='9' maxlength='9' />
+				<input type='submit' onclick='advISSNRun();' value='&advanced.go;' />
 			</td>
 		</tr>
 	</tbody>

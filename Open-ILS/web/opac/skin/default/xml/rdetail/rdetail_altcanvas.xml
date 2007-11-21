@@ -3,7 +3,7 @@
 <div class=''>
 
 	<!--
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.rdetail.view_marc_div = 'view_marc_div';
 		config.ids.altcanvas.view_marc_div = config.ids.rdetail.view_marc_div; 
 		config.ids.rdetail.hide_marc = "rdetail_hide_marc";

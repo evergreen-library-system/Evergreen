@@ -12,11 +12,16 @@
 						<span>&status.results;</span> <b id='including_results_location'> </b>
 					</i>
 				</td>
+                <td align='right'>
+                    <!--#if expr="$OILS_PAGE='rresult.xml'"-->
+                    <!--#include virtual="../result/filtersort.xml" -->
+                    <!--#endif -->
+                </td>
 			</tr>
 		</tbody>
 	</table>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.common.now_searching = 'now_searching_location';
 	</script>
 

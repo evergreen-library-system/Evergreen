@@ -35,6 +35,7 @@ var PARAM_LANGUAGE	= 'la';
 var PARAM_TFORM		= 'tf'; /* temporary format for title result pages */
 var PARAM_RDEPTH		= 'rd';
 var PARAM_REDIR		= 're'; /* true if we have been redirected by IP (we're at a real lib) */
+var PARAM_AVAIL     = 'av'; /* limit search results to available items */
 
 /* URL param values (see comments above) */
 var TERM;  
@@ -67,6 +68,7 @@ var SEARCHES;
 var LANGUAGE;
 var TFORM;
 var RDEPTH;
+var AVAIL;
 
 /* cookie values */
 var SBEXTRAS; 
@@ -80,6 +82,7 @@ var COOKIE_SES		= "ses";
 var COOKIE_FONT	= "fnt";
 var COOKIE_SKIN	= "skin";
 var COOKIE_RIDS	= "rids"; /* list of record ids */
+var COOKIE_SEARCH = 'sr';
 
 /* pages */
 var MRESULT		= "mresult";
@@ -138,6 +141,13 @@ var PREF_DEF_FONT		= 'opac.default_font';
 var PREF_HOLD_NOTIFY = 'opac.hold_notify';
 var PREF_DEF_LOCATION = 'opac.default_search_location';
 var PREF_DEF_DEPTH	= 'opac.default_search_depth';
+
+
+/** If enabled, added content attribution links will be 
+    made visible where appropriate.  The added content vendor name 
+    and URL are defined in the entities in opac.dtd
+    */
+var ENABLE_ADDED_CONTENT_ATTRIB_LINKS = false;
 
 
 /* container for global variables shared accross pages */
@@ -263,6 +273,8 @@ config.ids.altcanvas = {};
 
 var SEARCH_MRS						= 'open-ils.search:open-ils.search.metabib.multiclass:1';
 var SEARCH_RS						= 'open-ils.search:open-ils.search.biblio.multiclass:1';
+var SEARCH_MRS_QUERY			= 'open-ils.search:open-ils.search.metabib.multiclass.query:1';
+var SEARCH_RS_QUERY             = 'open-ils.search:open-ils.search.biblio.multiclass.query:1';
 var FETCH_SEARCH_RIDS			= "open-ils.search:open-ils.search.biblio.record.class.search:1";
 var FETCH_MRMODS					= "open-ils.search:open-ils.search.biblio.metarecord.mods_slim.retrieve";
 var FETCH_MODS_FROM_COPY		= "open-ils.search:open-ils.search.biblio.mods_from_copy";

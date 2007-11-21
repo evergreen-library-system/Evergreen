@@ -67,7 +67,7 @@
 				<td class='myopac_update_cell' colspan='3'>
 					<span class='myopac_update_span'>&myopac.summary.username.enter; </span>
 					<input type='text' size='24' id='myopac_new_username'
-						onkeydown='if(userPressedEnter(event)) myOPACUpdateUsername();'> </input>
+						onkeydown='if(userPressedEnter(event)) myOPACUpdateUsername();' />
 					<span class='myopac_update_span'>
 						<button onclick='myOPACUpdateUsername();'>&common.submit;</button>
 					</span>
@@ -93,17 +93,17 @@
 						<tr>
 							<td><span class='myopac_update_span'>&myopac.summary.password.current; </span></td>
 							<td><input type='password' size='24' id='myopac_current_password'
-								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
+								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();' /></td>
 						</tr>
 						<tr>
 							<td><span class='myopac_update_span'>&myopac.summary.password.new; </span></td>
 							<td><input type='password' size='24' id='myopac_new_password'
-								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
+								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();' /></td>
 						</tr>
 						<tr>
 							<td><span class='myopac_update_span'>&myopac.summary.password.reenter; </span></td>
 							<td><input type='password' size='24' id='myopac_new_password2'
-								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();'> </input></td>
+								onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();' /></td>
 						</tr>
 					</tbody></table>
 
@@ -128,7 +128,7 @@
 				<td class='myopac_update_cell' colspan='3'>
 					<span class='myopac_update_span'>&myopac.summary.email.new; </span>
 					<input type='text' size='24' id='myopac_new_email'
-						onkeydown='if(userPressedEnter(event)) myOPACUpdateEmail();'> </input>
+						onkeydown='if(userPressedEnter(event)) myOPACUpdateEmail();' />
 					<span class='myopac_update_span'>
 						<button onclick='myOPACUpdateEmail();'>&common.submit;</button>
 					</span>

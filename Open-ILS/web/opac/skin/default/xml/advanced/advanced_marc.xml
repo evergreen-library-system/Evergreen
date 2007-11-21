@@ -12,15 +12,15 @@ XXX Deprecate me
 		<tr id='advanced.marc.template'>
 			<td>
 				<span>&opac.advanced.marc.tag;: </span>
-				<input name='advanced.marc.tag' maxlength='3' size='3'> </input>
+				<input name='advanced.marc.tag' maxlength='3' size='3' />
 			</td>
 			<td>
 				<span>&opac.advanced.marc.subfield;: </span>
-				<input name='advanced.marc.subfield' maxlength='1' size='1'> </input>
+				<input name='advanced.marc.subfield' maxlength='1' size='1' />
 			</td>
 			<td>
 				<span>&opac.advanced.marc.value;: </span>
-				<input name='advanced.marc.value' size='36'> </input>
+				<input name='advanced.marc.value' size='36' />
 			</td>
 
 			<td>
@@ -29,17 +29,17 @@ XXX Deprecate me
 					var tbody = row.parentNode;
 					if(tbody.getElementsByTagName("tr").length > 2)
 						tbody.removeChild(row);
-					'> </input>
+					' />
 			</td>
 		</tr>
 		<tr id='advanced.marc.submit.row'>
 			<td colspan='4' align='center'>
 
 				<input name='advanced.marc.addrow' type='submit' onclick='advAddMARC();'
-					value='&opac.advanced.marc.addrow;'> </input>
+					value='&opac.advanced.marc.addrow;' />
 
 				<input style='margin-left: 10px;' 
-					onclick='advMARCRun();' type='submit' value='&common.submit;'> </input>
+					onclick='advMARCRun();' type='submit' value='&common.submit;' />
 			</td>
 		</tr>
 	</tbody>

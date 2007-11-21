@@ -27,34 +27,8 @@ function rresultDoSearch() {
 	rresultCollectIds();
 }
 
-function rresultCachedSearch() {
-
-	/* XXX */
-	return false;
-
-	/*
-	if(!getOffset()) {
-		cookieManager.remove(COOKIE_SRIDS);
-		return false;
-	}
-
-	var data = JSON2js(cookieManager.read(COOKIE_SRIDS));
-	//alert('cached count = ' + data.count);
-
-	if( data && data.ids[getOffset()] != null && 
-		data.ids[resultFinalPageIndex()] != null ) {
-		_rresultHandleIds( data.ids, data.count );
-		return true;
-	}
-
-	return false;
-	*/
-}
-
 function rresultCollectIds() {
 	var ids;
-
-	if(rresultCachedSearch()) return;
 
 	switch(getRtype()) {
 
@@ -278,7 +252,8 @@ function rresultCollectRecords(ids) {
 	runEvt("result", "preCollectRecords");
 	var x = 0;
 
-	var base = getOffset();
+	//var base = getOffset();
+    var base = 0;
 	if( rresultIsPaged )  base = 0;
 
 	for( var i = base; i!= getDisplayCount() + base; i++ ) {
@@ -308,12 +283,12 @@ function rresultLaunchDrawn(id, node) {
 
 function rresultDoRecordSearch() { 
 	rresultIsPaged = true;
-	resultCollectSearchIds(true, SEARCH_RS, rresultFilterSearchResults ); 
+	resultCollectSearchIds(true, SEARCH_RS_QUERY, rresultFilterSearchResults ); 
 }
 
 function rresultDoRecordMultiSearch() { 
 	rresultIsPaged = true;
-	resultCollectSearchIds(false, SEARCH_RS, rresultFilterSearchResults ); 
+	resultCollectSearchIds(false, SEARCH_RS_QUERY, rresultFilterSearchResults ); 
 }
 
 
@@ -324,6 +299,8 @@ function rresultFilterSearchResults(r) {
 		for( var i = 0; i != result.ids.length; i++ ) 
 			ids.push(result.ids[i][0]);
 	}
+
+    cookieManager.write(COOKIE_SEARCH, js2JSON(result.compiled_search), -1);
 	_rresultHandleIds( ids, result.count );
 }
 

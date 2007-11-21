@@ -4,7 +4,7 @@
 <div id='searchbar'>
 
 	<!-- load my js -->
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.searchbar = {};
 		config.css.searchbar = {};
 		config.ids.searchbar.text				= 'search_box';	
@@ -28,7 +28,7 @@
 
 				<td nowrap='nowrap' align='center'  class='search_box_container color_2'>
 
-					<input id='search_box' style='width: 190px;' type='text' />
+					<input id='search_box' type='text' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='&button.go;' />
 					</span>
@@ -54,7 +54,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js'></script>
 </div>
 
 

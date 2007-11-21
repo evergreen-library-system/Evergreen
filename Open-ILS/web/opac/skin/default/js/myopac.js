@@ -6,6 +6,7 @@ attachEvt('common','locationUpdated', myopacReload );
 var fleshedUser = null;
 var fleshedContainers = {};
 var holdCache = {};
+var holdStatusCache = {};
 
 
 function clearNodes( node, keepArray ) {
@@ -294,14 +295,18 @@ function myOPACShowHolds() {
 	var req = new Request(FETCH_HOLDS, G.user.session, G.user.id());	
 	req.callback(myOPACDrawHolds);
 	req.send();
+    $('myopac_holds_actions_none').selected = true;
 }
 
 var holdsTemplateRowOrig;
 var holdsTemplateRow;
+var myopacForceHoldsRedraw = false;
 function myOPACDrawHolds(r) {
 
 	var tbody = $("myopac_holds_tbody");
-	if(holdsTemplateRow) return;
+	if(holdsTemplateRow && !myopacForceHoldsRedraw) return;
+    myopacForceHoldsRedraw = false;
+
 	if(holdsTemplateRowOrig) {
 		holdsTemplateRow = holdsTemplateRowOrig;
 		removeChildren(tbody);
@@ -331,11 +336,22 @@ function myOPACDrawHolds(r) {
 
 		tbody.appendChild(row);
 
-		$n(row,'myopac_holds_cancel_link').setAttribute(
-			'href','javascript:myOPACCancelHold("'+ h.id()+'");'); 
-
 		$n(row,'myopac_holds_edit_link').setAttribute(
 			'href','javascript:myOPACEditHold("'+ h.id()+'");'); 
+
+        if(isTrue(h.frozen())) {
+            hideMe($n(row, 'myopac_hold_unfrozen_true'))
+            unHideMe($n(row, 'myopac_hold_unfrozen_false'))
+            if(h.thaw_date()) {
+                var d = Date.parseIso8601(h.thaw_date());
+                $n(row, 'myopac_holds_frozen_until').appendChild(text(d.iso8601Format('YMD')));
+            }
+        } else {
+            unHideMe($n(row, 'myopac_hold_unfrozen_true'))
+            hideMe($n(row, 'myopac_hold_unfrozen_false'))
+        }
+
+        $n(row, 'myopac_holds_selected_chkbx').checked = false;
 
 		unHideMe(row);
 
@@ -359,15 +375,6 @@ function myOPACEditHold(holdid) {
 }
 
 
-function myOPACCancelHold(holdid) {
-	if( confirm($('myopac_holds_cancel_verify').innerHTML) ) {
-		holdsCancel(holdid);
-		holdsTemplateRow = null
-		myOPACShowHolds();
-	}
-}
-
-
 function myOPACDrawHoldStatus(hold) {
 	var req = new Request(FETCH_HOLD_STATUS, G.user.session, hold.id() );
 	req.callback(myOShowHoldStatus);
@@ -379,6 +386,8 @@ function myOShowHoldStatus(r) {
 
 	var hold = r.hold;
 	var status = r.getResultObject();
+    holdStatusCache[hold.id()] = status;
+
 	var row = $("myopac_holds_row_" + r.hold.id());
 
 	if( status < 3 )
@@ -443,7 +452,6 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 		if(copy) $n(row, 'copy').appendChild(text(copy.barcode()));
 	}
 
-	/*var form = $("myopac_holds_form_" + hold.id() + '_' + record.doc_id());*/
 	var form = $("myopac_holds_form_" + hold.id());
 
 	if(form) {
@@ -1285,5 +1293,148 @@ function myHandleRenewResponse(r) {
     myOPACShowChecked();
 }
 
+/** ---- batch hold processing ------------ */
 
+
+/* myopac_holds_checkbx */
+function myopacSelectAllHolds() {
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb) cb.checked = true;
+    }
+}
+
+function myopacSelectNoneHolds() {
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb) cb.checked = false;
+    }
+}
+
+function myopacSelectedHoldsRows() {
+    var r = [];
+    var rows = getTableRows($("myopac_holds_tbody"));
+    for(var i = 0; i < rows.length; i++) {
+        cb = $n(rows[i], 'myopac_holds_selected_chkbx');
+        if(cb && cb.checked)
+            r.push(rows[i]);
+    }
+    return r;
+}
+
+var myopacProcessedHolds = 0;
+var myopacTotalHoldsToProcess = 0;
+function myopacDoHoldAction() {
+
+    var selectedRows = myopacSelectedHoldsRows();
+    action = getSelectorVal($('myopac_holds_actions'));
+    $('myopac_holds_actions_none').selected = true;
+    if(selectedRows.length == 0) return;
+
+    myopacProcessedHolds = 0;
+
+    if(!confirmId('myopac.holds.'+action+'.confirm')) return;
+
+    myopacSelectNoneHolds(); /* clear the selection */
+
+
+    /* first, let's collect the holds that actually need processing and
+        collect the full process count while we're at it */
+    var holds = [];
+    for(var i = 0; i < selectedRows.length; i++) {
+        hold = holdCache[myopacHoldIDFromRow(selectedRows[i])];
+        var status = holdStatusCache[hold.id()];
+        switch(action) {
+            case 'cancel':
+                holds.push(hold);
+                break;
+            case 'thaw_date':
+            case 'thaw':
+                if(isTrue(hold.frozen()))
+                    holds.push(hold);
+                break;
+            case 'freeze':
+                if(!isTrue(hold.frozen()) && status < 3)
+                    holds.push(hold);
+                break;
+        }
+    }
+    myopacTotalHoldsToProcess = holds.length;
+    if(myopacTotalHoldsToProcess == 0) return;
+    myopacShowHoldProcessing();
+
+    var thawDate = null;
+    var thawDateSet = false;
+
+    /* now we process them */
+    for(var i = 0; i < holds.length; i++) {
+
+        hold = holds[i];
+        
+        var req;
+        switch(action) { 
+
+            case 'cancel':
+                req = new Request(CANCEL_HOLD, G.user.session, hold.id());
+                break;
+    
+            case 'thaw':
+                hold.frozen('f');
+                hold.thaw_date(null);
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
+                break;
+
+            case 'thaw_date':
+                if(!thawDateSet)
+                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML) || null;
+                thawDateSet = true;
+                hold.thaw_date(thawDate);
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
+                break;
+
+
+            case 'freeze':
+                if(!thawDateSet)
+                    thawDate = prompt($('myopac.holds.freeze.select_thaw').innerHTML);
+                thawDateSet = true;
+                hold.frozen('t');
+                if(thawDate) 
+                    hold.thaw_date(thawDate); 
+                req = new Request(UPDATE_HOLD, G.user.session, hold);
+                break;
+
+        }
+
+        req.callback(myopacBatchHoldCallback);
+        req.send();
+        req = null;
+    }
+}
+
+function myopacHoldIDFromRow(row) {
+    return row.id.replace(/.*_(\d+)$/, '$1');
+}
+
+function myopacShowHoldProcessing() {
+    unHideMe($('myopac_holds_processing'));
+    hideMe($('myopac_holds_main_table'));
+}
+
+function myopacHideHoldProcessing() {
+    hideMe($('myopac_holds_processing'));
+    unHideMe($('myopac_holds_main_table'));
+}
+
+function myopacBatchHoldCallback(r) {
+    r.getResultObject();
+    if(++myopacProcessedHolds >= myopacTotalHoldsToProcess) {
+        myopacHideHoldProcessing();
+        holdCache = {};
+        holdStatusCache = {};
+        myopacForceHoldsRedraw = true;
+        myOPACShowHolds();
+    }
+}
 

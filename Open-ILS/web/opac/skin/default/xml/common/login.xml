@@ -1,7 +1,7 @@
 
 <div id='login_box' class='hide_me canvas' style='margin-top: 6px;'>
 
-	<script language='javascript'>
+	<script language='javascript' type='text/javascript'>
 		config.ids.login = {};
 		config.css.login = {};
 		config.ids.login.box			= "login_box";
@@ -26,7 +26,7 @@
 				<td><span class='login_text'>&login.username;</span></td>
 				<td>
 					<span class='login_text'>
-						<input id='login_username' type='text' size='16'> </input>
+						<input id='login_username' type='text' size='16' />
 					</span>
 				</td>
 			</tr>
@@ -36,7 +36,7 @@
 				</td>
 				<td>
 					<span class='login_text'>
-						<input id='login_password' type='password' size='16'> </input>
+						<input id='login_password' type='password' size='16' />
 					</span>
 				</td>
 			</tr>

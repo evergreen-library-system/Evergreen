@@ -1,9 +1,32 @@
 
 <div id='myopac_holds_div' xmlns:xi="http://www.w3.org/2001/XInclude" >
 
-	<script language='javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/holds.js'> </script>
 
-	<table width='100%' class='light_border data_grid data_grid_center'>
+	<table width='100%'>
+        <tbody><tr><td width='100%' align='right'>
+            <select id='myopac_holds_actions' onchange='myopacDoHoldAction();'>
+                <option id='myopac_holds_actions_none' value=''>-- &myopac.holds.actions; --</option>
+                <option value='freeze'>&myopac.holds.freeze_selected;</option>
+                <option value='thaw'>&myopac.holds.thaw_selected;</option>
+                <option value='thaw_date'>&myopac.holds.thaw_date_selected;</option>
+                <option value='cancel'>&myopac.holds.cancel_selected;</option>
+            </select>
+        </td></tr></tbody>
+        <script language='javascript' type='text/javascript'>$('myopac_holds_actions_none').selected = true;</script>
+    </table>
+
+    <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>
+    <span id='myopac.holds.freeze.confirm' class='hide_me'>&myopac.holds.freeze.confirm;</span>
+    <span id='myopac.holds.thaw.confirm' class='hide_me'>&myopac.holds.thaw.confirm;</span>
+    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>&myopac.holds.thaw_date.confirm;</span>
+    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>&myopac.holds.freeze.select_thaw;</span>
+
+    <table width='100%' id='myopac_holds_processing' class='hide_me'>
+        <tr><td>&myopac.holds.processing;</td></tr>
+    </table>
+
+	<table width='100%' class='light_border data_grid data_grid_center' id='myopac_holds_main_table'>
 
 		<thead class='color_3'>
 			<tr>
@@ -12,7 +35,15 @@
 				<td>&myopac.holds.formats;</td>
 				<td>&myopac.holds.location;</td>
 				<td>&common.status;</td>
-				<td>&myopac.holds.edit.cancel;</td>
+				<td>&myopac.holds.unfrozen;</td>
+				<td>&myopac.holds.frozen.until;</td>
+                <td width='15%'>&common.select;
+                    (<a id='myopac_select_all_holds' onclick='myopacSelectAllHolds();' 
+                        class='classic_link' href='javascript:void(0);'>&common.all;</a>/<a id='myopac_select_none_holds' 
+                        onclick='myopacSelectNoneHolds();' class='classic_link'  href='javascript:void(0);'>&common.none;</a>)
+                </td>
+
+				<td>&myopac.holds.edit;</td>
 			</tr>
 		</thead>
 
@@ -46,13 +77,18 @@
 					<span class='hide_me' name='hold_status_available'><b style='color:red'></b></span>
 				</td>
 
+                <td>
+                    <span name='myopac_hold_unfrozen_false' class='x_mark'>&#x2717;</span>
+                    <span name='myopac_hold_unfrozen_true' class='hide_me check_mark'>&#x2713;</span>
+                </td>
+
+                <td name='myopac_holds_frozen_until'></td>
+                <td><input type='checkbox' name='myopac_holds_selected_chkbx'/></td>
+
 				<td name='myopac_holds_cancel' style='border-left: 3px solid #E0E0E0; border-right: 3px solid #E0E0E0;'>
 					<a href='javascript:void(0);' 
 						name='myopac_holds_edit_link' class='classic_link'>&myopac.holds.edit;</a>
-					<a href='javascript:void(0);' 
-						name='myopac_holds_cancel_link' class='classic_link'>&myopac.holds.cancel;</a>
 				</td>
-
 			</tr>
 		</tbody>
 	</table>

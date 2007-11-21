@@ -37,11 +37,11 @@ function mresultDoSearch() {
 }
 
 function _mresultCollectIds() { 
-	resultCollectSearchIds(true, SEARCH_MRS, mresultHandleMRIds ); 
+	resultCollectSearchIds(true, SEARCH_MRS_QUERY, mresultHandleMRIds ); 
 }
 
 function mresultCollectAdvIds() { 
-	resultCollectSearchIds(false, SEARCH_MRS, mresultHandleMRIds ); 
+	resultCollectSearchIds(false, SEARCH_MRS_QUERY, mresultHandleMRIds ); 
 }
 
 
@@ -51,6 +51,7 @@ function mresultHandleMRIds(r) {
 		if( getOffset() == 0 ) HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');
 	} 
+    cookieManager.write(COOKIE_SEARCH, js2JSON(res.compiled_search), -1);
 	runEvt('result', 'idsReceived', res.ids);
 }
 

@@ -6,7 +6,7 @@
 		.adv_adv_link { font-size: 8pt; color: red; }
 	</style>
 
-	<script src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/adv_global.js'> </script>
 
 	<tr style='border-bottom: none;'>
 
@@ -19,7 +19,7 @@
 				</thead>
 				<tbody id='adv_global_tbody'>
 
-					<script language='javascript'>
+					<script language='javascript' type='text/javascript'>
 						config.ids.common.now_searching = 'now_searching_location';
 					</script>
 
@@ -46,39 +46,18 @@
 
 		<td rowspan='2'>
 
-			<!--
-			<table width='100%' style='margin-bottom: 3px;'>
-				<thead>
-					<tr>
-						<td colspan='2' align='center'>
-							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
-						</td>
-					</tr>
-				</thead>
-			</table>
-			-->
-
-			<table with='100%'>
+			<table width='100%'>
 				<thead>
 					<tr><td colspan='2' align='center'>&advanced.search.filters;</td></tr>
 				</thead>
 				<tbody>
 
-					<!--
-					<tr>
-						<td align='right'>Search Range</td>
-						<td aligh='left'>
-							<   #include virtual="../common/libselect.xml"  >
-						</td>
-					</tr>
-					-->
 					<tr>
 						<td align='right'>
 							<span>&advanced.item.form;</span>
 						</td>
-						<td aligh='left'>
-							<select multiple='true' size='3' id='adv_global_item_form'>
+						<td align='left'>
+							<select multiple='multiple' size='3' id='adv_global_item_form'>
 							</select>	
 						</td>
 					</tr>
@@ -103,10 +82,10 @@
 								'>&advanced.basic.link;</a>
 						</td>
 
-						<td aligh='left'>
-							<select multiple='true' size='3' id='adv_global_item_type' class='hide_me'>
+						<td align='left'>
+							<select multiple='multiple' size='3' id='adv_global_item_type' class='hide_me'>
 							</select>	
-							<select multiple='true' size='3' id='adv_global_item_type_basic'>
+							<select multiple='multiple' size='3' id='adv_global_item_type_basic'>
 								<option value='at'>&opac.search.books;</option>
 								<option value='i'>&opac.search.audioBooks;</option>
 								<option value='g'>&opac.search.videoRecordings;</option>
@@ -135,10 +114,10 @@
 								hideMe(this);
 								'>&advanced.basic.link;</a>
 						</td>
-						<td aligh='left'>
-							<select multiple='true' size='3' id='adv_global_lit_form' class='hide_me'>
+						<td align='left'>
+							<select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'>
 							</select>	
-							<select multiple='true' size='3' id='adv_global_lit_form_basic'>
+							<select multiple='multiple' size='3' id='adv_global_lit_form_basic'>
 								<option value='0 '>&advanced.non.fiction;</option>
 								<option value='1'>&advanced.fiction;</option>
 							</select>	
@@ -153,7 +132,7 @@
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_lang'>
+							<select multiple='multiple' size='3' id='adv_global_lang'>
 								<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
 							</select>
 						</td>
@@ -181,9 +160,9 @@
 						</td>
 
 						<td align='left'>
-							<select multiple='true' size='3' id='adv_global_audience' class='hide_me'>
+							<select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'>
 							</select>
-							<select multiple='true' size='3' id='adv_global_audience_basic'>
+							<select multiple='multiple' size='3' id='adv_global_audience_basic'>
 								<option value='e '>&advanced.adult;</option>
 								<option value='abcdj'>&advanced.juvenile;</option>
 								<option value='fg '>&advanced.general;</option>
@@ -197,20 +176,6 @@
 
 	<tr style='border-top: none;'>
 		<td align='center' valign='bottom' style='border-top: none;'>
-
-			<!--
-			<table width='100%' style='padding: 1px;'>
-				<thead>
-					<tr>
-						<td colspan='2' align='center'>
-							<span>Group Formats and Editions</span>
-							<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
-						</td>
-					</tr>
-				</thead>
-			</table>
-			-->
-
 
 			<table style='border: none; width: 100%;'>
 				<tr>
@@ -227,7 +192,7 @@
 							<tbody>
 								<tr>
 
-                           <script>
+                           <script language='javascript' type='text/javascript'>
                               function __setsortsel() {
                                  var sel = $('adv_global_sort_by')
 										   if(sel.selectedIndex == 0) {
@@ -263,7 +228,7 @@
 									</td>
 
                            <!-- force the enable/disable sort dir code to run -->
-                           <script>__setsortsel();</script>
+                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
 
 									<td align='center'>
 										<!--#include virtual="../common/libselect.xml"-->
@@ -271,13 +236,14 @@
 
 								</tr>
 								<tr>
-									<td colspan='2' align='center'>
+									<td align='center'>
 										<span>&advanced.frbrize;</span>
-										<!--
-										<input id='adv_group_titles' type='checkbox' checked='checked'> </input>
-										-->
-										<input id='adv_group_titles' type='checkbox'> </input>
+										<input id='adv_group_titles' type='checkbox' />
 									</td>
+                                    <td align='center'>
+                                        <span>&result.limit2avail;</span>
+                                        <input type='checkbox' id='opac.result.limit2avail'/>
+                                    </td>
 								</tr>
 							</tbody>
 						</table>
