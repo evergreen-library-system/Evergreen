@@ -28,7 +28,7 @@ osrfHash* oilsInitIDL( char* idl_filename );
   @return The string at the given position, if none exists, 
   then NULL is returned.  The caller must free the returned string
   */
-char* oilsFMGetString( jsonObject* object, char* field );
+char* oilsFMGetString( const jsonObject* object, const char* field );
 
 
 /**
@@ -39,7 +39,7 @@ char* oilsFMGetString( jsonObject* object, char* field );
   @return The found object or NULL if none exists.  Do NOT free the 
   returned object.
   */
-jsonObject* oilsFMGetObject( jsonObject* object, char* field );
+const jsonObject* oilsFMGetObject( const jsonObject* object, const char* field );
 
 /**
   Sets the given field in the given object to the given string
@@ -48,13 +48,13 @@ jsonObject* oilsFMGetObject( jsonObject* object, char* field );
   @param string The new data
   @return 0 if the field was updated successfully, -1 on error
   */
-int oilsFMSetString( jsonObject* object, char* field, char* string );
+int oilsFMSetString( jsonObject* object, const char* field, const char* string );
 
 /**
  * Returns the data stored in the id field of the object if it exists
  * returns -1 if the id field or the id value is not found
  */
-long oilsFMGetObjectId( jsonObject* obj );
+long oilsFMGetObjectId( const jsonObject* obj );
 
 
 /**
@@ -71,31 +71,32 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
  * Performs a single request and returns the resulting data
  * Caller is responsible for freeing the returned response object
  */
-jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params );
+jsonObject* oilsUtilsQuickReq( const char* service, const char* method,
+		const jsonObject* params );
 
-jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params );
+jsonObject* oilsUtilsStorageReq( const char* method, const jsonObject* params );
 
-jsonObject* oilsUtilsCStoreReq( char* method, jsonObject* params );
+jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params );
 
 /**
  * Searches the storage server for a user with the given username 
  * Caller is responsible for freeing the returned object
  */
-jsonObject* oilsUtilsFetchUserByUsername( char* name );
+jsonObject* oilsUtilsFetchUserByUsername( const char* name );
 
 
 /**
  * Returns the setting value
  * Caller must free the returned string
  */
-char* oilsUtilsFetchOrgSetting( int orgid, char* setting );
+char* oilsUtilsFetchOrgSetting( int orgid, const char* setting );
 
 
 /**
  * Logs into the auth server with the given username and password
  * @return The authtoken string which must be de-allocated by the caller
  */
-char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId );
+char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, int orgId );
 
 
 /**
@@ -103,9 +104,9 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId );
  */
 jsonObject* oilsUtilsFetchWorkstation( long id );
 
-jsonObject* oilsUtilsFetchUserByBarcode(char* barcode);
+jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode);
 
-jsonObject* oilsUtilsFetchWorkstationByName( char* name );
+jsonObject* oilsUtilsFetchWorkstationByName( const char* name );
 
 
-int oilsUtilsIsDBTrue( char* val );
+int oilsUtilsIsDBTrue( const char* val );

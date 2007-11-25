@@ -25,12 +25,12 @@ osrfHash* oilsInitIDL(char* idl_filename) {
 	return oilsIDL();
 }
 
-char* oilsFMGetString( jsonObject* object, char* field ) {
+char* oilsFMGetString( const jsonObject* object, const char* field ) {
 	return jsonObjectToSimpleString(oilsFMGetObject( object, field ));
 }
 
 
-jsonObject* oilsFMGetObject( jsonObject* object, char* field ) {
+const jsonObject* oilsFMGetObject( const jsonObject* object, const char* field ) {
 	if(!(object && field)) return NULL;
 	if( object->type != JSON_ARRAY || !object->classname ) return NULL;
 	int pos = fm_ntop(object->classname, field);
@@ -39,7 +39,7 @@ jsonObject* oilsFMGetObject( jsonObject* object, char* field ) {
 }
 
 
-int oilsFMSetString( jsonObject* object, char* field, char* string ) {
+int oilsFMSetString( jsonObject* object, const char* field, const char* string ) {
 	if(!(object && field && string)) return -1;
 	osrfLogInternal(OSRF_LOG_MARK, "oilsFMSetString(): Collecing position for field %s", field);
 	int pos = fm_ntop(object->classname, field);
@@ -53,13 +53,13 @@ int oilsFMSetString( jsonObject* object, char* field, char* string ) {
 }
 
 
-int oilsUtilsIsDBTrue( char* val ) {
+int oilsUtilsIsDBTrue( const char* val ) {
 	if( val && strcasecmp(val, "f") && strcmp(val, "0") ) return 1;
 	return 0;
 }
 
 
-long oilsFMGetObjectId( jsonObject* obj ) {
+long oilsFMGetObjectId( const jsonObject* obj ) {
 	long id = -1;
 	if(!obj) return id;
 	char* ids = oilsFMGetString( obj, "id" );
@@ -96,7 +96,8 @@ oilsEvent* oilsUtilsCheckPerms( int userid, int orgid, char* permissions[], int 
 	return evt;
 }
 
-jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params ) {
+jsonObject* oilsUtilsQuickReq( const char* service, const char* method,
+		const jsonObject* params ) {
 	if(!(service && method)) return NULL;
 	osrfLogDebug(OSRF_LOG_MARK, "oilsUtilsQuickReq(): %s - %s", service, method );
 	osrfAppSession* session = osrfAppSessionClientInit( service ); 
@@ -108,17 +109,17 @@ jsonObject* oilsUtilsQuickReq( char* service, char* method, jsonObject* params )
 	return result;
 }
 
-jsonObject* oilsUtilsStorageReq( char* method, jsonObject* params ) {
+jsonObject* oilsUtilsStorageReq( const char* method, const jsonObject* params ) {
 	return oilsUtilsQuickReq( "open-ils.storage", method, params );
 }
 
-jsonObject* oilsUtilsCStoreReq( char* method, jsonObject* params ) {
+jsonObject* oilsUtilsCStoreReq( const char* method, const jsonObject* params ) {
 	return oilsUtilsQuickReq("open-ils.cstore", method, params);
 }
 
 
 
-jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
+jsonObject* oilsUtilsFetchUserByUsername( const char* name ) {
 	if(!name) return NULL;
 	jsonObject* params = jsonParseStringFmt("{\"usrname\":\"%s\"}", name);
 	jsonObject* user = oilsUtilsQuickReq( 
@@ -130,7 +131,7 @@ jsonObject* oilsUtilsFetchUserByUsername( char* name ) {
 	return user;
 }
 
-jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
+jsonObject* oilsUtilsFetchUserByBarcode(const char* barcode) {
 	if(!barcode) return NULL;
 
 	osrfLogInfo(OSRF_LOG_MARK, "Fetching user by barcode %s", barcode);
@@ -155,7 +156,7 @@ jsonObject* oilsUtilsFetchUserByBarcode(char* barcode) {
 	return user;
 }
 
-char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
+char* oilsUtilsFetchOrgSetting( int orgid, const char* setting ) {
 	if(!setting) return NULL;
 
 	jsonObject* params = jsonParseStringFmt(
@@ -175,7 +176,7 @@ char* oilsUtilsFetchOrgSetting( int orgid, char* setting ) {
 
 
 
-char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
+char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, int orgId ) {
 	if(!(uname && passwd)) return NULL;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Logging in with username %s", uname );
@@ -186,7 +187,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 	jsonObject* o = oilsUtilsQuickReq( 
 		"open-ils.auth", "open-ils.auth.authenticate.init", params );
 
-	char* seed = jsonObjectGetString(o);
+	const char* seed = jsonObjectGetString(o);
 	char* passhash = md5sum(passwd);
 	char buf[256];
 	snprintf(buf, sizeof(buf), "%s%s", seed, passhash);
@@ -201,7 +202,7 @@ char* oilsUtilsLogin( char* uname, char* passwd, char* type, int orgId ) {
 		"open-ils.auth.authenticate.complete", params );
 
 	if(o) {
-		char* tok = jsonObjectGetString(
+		const char* tok = jsonObjectGetString(
 			jsonObjectGetKey(jsonObjectGetKey(o,"payload"), "authtoken"));
 		if(tok) token = strdup(tok);
 	}
@@ -223,7 +224,7 @@ jsonObject* oilsUtilsFetchWorkstation( long id ) {
 	return r;
 }
 
-jsonObject* oilsUtilsFetchWorkstationByName( char* name ) {
+jsonObject* oilsUtilsFetchWorkstationByName( const char* name ) {
 	jsonObject* p = jsonParseStringFmt("[\"%s\"]", name);
 	jsonObject* r = oilsUtilsStorageReq(
 		"open-ils.storage.direct.actor.workstation.search.name", p );
