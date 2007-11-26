@@ -20,7 +20,7 @@ from osrf.ses import osrfClientSession
 from oils.const import *
 import re
 
-ACTIONS = ['create', 'retrieve', 'update', 'delete', 'search']
+ACTIONS = ['create', 'retrieve', 'batch_retrieve', 'update', 'delete', 'search']
 
 class CSEditor(object):
     def __init__(self, **args):
@@ -142,6 +142,11 @@ class CSEditor(object):
 
         if action == 'search':
             method = method.replace('$', '.atomic')
+
+        if action == 'batch_retrieve':
+            method = method.replace('batch_retrieve', 'search')
+            method += '.atomic'
+            arg = {'id' : arg}
 
         params = [arg];
         if len(options.keys()):
