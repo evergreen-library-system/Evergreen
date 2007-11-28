@@ -108,7 +108,7 @@ class CSEditor(object):
         self.log(osrfLogInfo, "request %s %s" % (method, str(params)))
 
         if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
-            self.log(osrfLogErr, "csedit lost it's connection!")
+            self.log(osrfLogErr, "csedit lost its connection!")
 
         val = None
 
