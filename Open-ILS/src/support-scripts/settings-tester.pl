@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 # vim:noet:ts=4:
+use strict;
+use warnings;
 
 BEGIN {
 	eval "use OpenSRF::Utils::Config;";
@@ -17,6 +19,7 @@ BEGIN {
 
 my $output = '';
 my $perloutput = '';
+my $result;
 
 my ($gather, $hostname, $core_config, $tmpdir) =
 	(0, Net::Domain::hostfqdn(), '/openils/conf/opensrf_core.xml', '/tmp/');
@@ -35,6 +38,8 @@ while (my $mod = <DATA>) {
 	my $ok = 0;
 	for my $m (@list) {
 		$ok++ if ($m->use);
+		# Enable strict refs for now
+		no strict;
 		print "$m version ".${$m."::VERSION"}."\n" unless ($@);
 	}
 
@@ -110,9 +115,9 @@ foreach my $database (@databases) {
 	my $db_port = $database->findvalue("./port");	
 	my $db_user = $database->findvalue("./user");	
 	my $db_pw = $database->findvalue("./pw");	
-    if (!$db_pw && $database->findvalue('../../local-name()') eq 'reporter') {
+    if (!$db_pw && $database->parentNode->parentNode->nodeName eq 'reporter') {
         $db_pw = $database->findvalue("./password");
-        warn "* Deprecated <password> elemnt used for the <reporter>.  ".
+        warn "* WARNING: Deprecated <password> element used for the <reporter> entry.  ".
             "Please use <pw> instead.\n" if ($db_pw);
     }
 
@@ -146,7 +151,6 @@ foreach my $driver_node (@drivers) {
 		next unless scalar(@lang_nodes > 0);
 		$language = $lang_nodes[0]->findvalue("child::text()");
 	}
-	my $result;
 	if ($driver eq "pgsql") {
 		if ($language eq "C") {
 			$result = "* OK: $driver language is $language in $lang_xpath\n";
@@ -155,10 +159,10 @@ foreach my $driver_node (@drivers) {
 			warn $result;
 		}
 	} elsif ($driver eq "Pg") {
-		if ($language eq "perl") {
-			$result = "* OK: $driver language is $language in $lang_xpath\n";
-		} elsif ($driver_xpath =~ /reporter/) {
+		if ($driver_xpath =~ /reporter/) {
 			$result = "* OK: $driver language is undefined for reporter base configuration\n";
+		} elsif ($language eq "perl") {
+			$result = "* OK: $driver language is $language in $lang_xpath\n";
 		} else {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
@@ -203,7 +207,7 @@ sub test_db_connect {
 
 	my $dsn = "dbi:Pg:dbname=$db_name;host=$db_host;port=$db_port";
 	my $de = undef;
-	my $dbh, $encoding;
+	my ($dbh, $encoding);
 	try {
 		$dbh = DBI->connect($dsn, $db_user, $db_pw);
 		unless($dbh) {
@@ -232,8 +236,7 @@ sub test_db_connect {
 }
 
 sub check_libdbd {
-	my $results;
-	my $de = undef;
+	my $results = '';
 	my @location = `locate libdbdpgsql.so |grep -v home`; # simple(ton) attempt to filter out build versions
 	if (scalar(@location) > 1) {
 
