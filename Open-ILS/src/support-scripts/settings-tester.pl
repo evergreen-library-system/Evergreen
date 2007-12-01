@@ -110,6 +110,12 @@ foreach my $database (@databases) {
 	my $db_port = $database->findvalue("./port");	
 	my $db_user = $database->findvalue("./user");	
 	my $db_pw = $database->findvalue("./pw");	
+    if (!$db_pw && $database->findvalue('../../local-name()') eq 'reporter') {
+        $db_pw = $database->findvalue("./password");
+        warn "* Deprecated <password> elemnt used for the <reporter>.  ".
+            "Please use <pw> instead.\n" if ($db_pw);
+    }
+
 	my $osrf_xpath;
 	foreach my $node ($database->findnodes("ancestor::node()")) {
 		next unless $node->nodeType == XML::LibXML::XML_ELEMENT_NODE;

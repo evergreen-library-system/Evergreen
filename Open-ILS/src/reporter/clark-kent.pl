@@ -57,7 +57,7 @@ if (!$db_name) {
     print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $db_name; 
 }
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
-my $db_pw = $sc->config_value( reporter => setup => database => 'password' );
+my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
 
 die "Unable to retrieve database connection information from the settings server" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
 

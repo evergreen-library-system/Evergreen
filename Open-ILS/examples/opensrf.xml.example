@@ -54,7 +54,7 @@ Example opensrf config file for OpenILS
                     <port>5432</port>
                     <db>evergreen</db>
                     <user>postgres</user>
-                    <password>postgres</password>
+                    <pw>postgres</pw>
                 </database>
                 <files>
                     <!-- successful report outputs go here -->
