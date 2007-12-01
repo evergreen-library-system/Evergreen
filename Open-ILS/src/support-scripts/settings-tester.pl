@@ -38,8 +38,8 @@ while (my $mod = <DATA>) {
 	my $ok = 0;
 	for my $m (@list) {
 		$ok++ if ($m->use);
-		# Enable strict refs for now
-		no strict;
+		# Disable strict refs for now
+		no strict 'refs';
 		print "$m version ".${$m."::VERSION"}."\n" unless ($@);
 	}
 
