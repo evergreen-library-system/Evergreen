@@ -1917,15 +1917,41 @@ static char* SELECT (
 
 		// and it's on the the WHERE clause
 		char* pred = searchWHERE( search_hash, core_meta, AND_OP_JOIN );
-		char* having_pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN );
 
-		if (!pred || !having_pred) {
+		if (!pred) {
 			osrfAppSessionStatus(
 				ctx->session,
 				OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException",
 				ctx->request,
-				"Severe query error -- see error log for more details"
+				"Severe query error in WHERE predicate -- see error log for more details"
+			);
+			free(core_class);
+			buffer_free(having_buf);
+			buffer_free(group_buf);
+			buffer_free(order_buf);
+			buffer_free(sql_buf);
+			if (defaultselhash) jsonObjectFree(defaultselhash);
+			return NULL;
+		} else {
+			buffer_add(sql_buf, pred);
+			free(pred);
+		}
+    }
+
+	if ( having_hash ) {
+		buffer_add(sql_buf, " HAVING ");
+
+		// and it's on the the WHERE clause
+		char* pred = searchWHERE( having_hash, core_meta, AND_OP_JOIN );
+
+		if (!pred) {
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Severe query error in HAVING predicate -- see error log for more details"
 			);
 			free(core_class);
 			buffer_free(having_buf);
