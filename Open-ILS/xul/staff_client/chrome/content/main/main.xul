@@ -35,7 +35,7 @@
 		<script type="text/javascript" src="../OpenILS/util/utils.js" />
 		<script type="text/javascript" src="../OpenILS/util/CGI.js" />
 		<script type="text/javascript" src="../OpenILS/util/md5.js" />
-		<script type="text/javascript" src="../OpenILS/util/JSON.js" />
+		<script type="text/javascript" src="../OpenILS/util/JSON_v1.js" />
 		<!--
 		<script type="text/javascript" src="../OpenILS/util/fmall.js" />
 		<script type="text/javascript" src="../OpenILS/util/fmgen.js" />

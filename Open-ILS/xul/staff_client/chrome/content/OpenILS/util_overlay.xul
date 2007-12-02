@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="util/utils.js" />
 		<script type="text/javascript" src="util/CGI.js" />
 		<script type="text/javascript" src="util/md5.js" />
-		<script type="text/javascript" src="util/JSON.js" />
+		<script type="text/javascript" src="util/JSON_v1.js" />
 		<script type="text/javascript" src="util/fmall.js" />
 		<script type="text/javascript" src="util/fmgen.js" />
 		<script type="text/javascript" src="util/RemoteRequest.js" />
