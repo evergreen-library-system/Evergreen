@@ -1550,20 +1550,20 @@ static char* searchWHERE ( const jsonObject* search_hash, osrfHash* meta, int op
 
     int first = 1;
     if ( search_hash->type == JSON_ARRAY ) {
-        if (first) {
-            first = 0;
-        } else {
-            if (opjoin_type == OR_OP_JOIN) buffer_add(sql_buf, " OR ");
-            else buffer_add(sql_buf, " AND ");
-        }
+        jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
+        while ( (node = jsonObjectIteratorNext( search_itr )) ) {
+            if (first) {
+                first = 0;
+            } else {
+                if (opjoin_type == OR_OP_JOIN) buffer_add(sql_buf, " OR ");
+                else buffer_add(sql_buf, " AND ");
+            }
 
-		jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
-		while ( (node = jsonObjectIteratorNext( search_itr )) ) {
-                char* subpred = searchWHERE( node->item, meta, opjoin_type );
-                buffer_fadd(sql_buf, "( %s )", subpred);
-                free(subpred);
+            char* subpred = searchWHERE( node->item, meta, opjoin_type );
+            buffer_fadd(sql_buf, "( %s )", subpred);
+            free(subpred);
         }
-	    jsonObjectIteratorFree(search_itr);
+        jsonObjectIteratorFree(search_itr);
 
     } else if ( search_hash->type == JSON_HASH ) {
         jsonObjectIterator* search_itr = jsonNewObjectIterator( search_hash );
