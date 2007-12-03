@@ -47,12 +47,14 @@ DECLARE
     result      config.i18n_core%ROWTYPE;
 BEGIN
 
+    -- Try the full locale
     SELECT  * INTO result
       FROM  config.i18n_core
       WHERE fq_field = keyfield
             AND identity_value = keyvalue
             AND translation = locale;
 
+    -- Try just the language
     IF NOT FOUND THEN
         SELECT  * INTO result
           FROM  config.i18n_core
@@ -61,10 +63,19 @@ BEGIN
                 AND translation = language;
     END IF;
 
+    -- Fall back to the string we passed in in the first place
+    IF NOT FOUND THEN
+        RETURN keyvalue;
+    END IF;
+
     RETURN result.string;
 END;
 $func$ LANGUAGE PLPGSQL;
 
+-- Function for marking translatable strings in SQL statements
+CREATE OR REPLACE FUNCTION oils_i18n_gettext( TEXT ) RETURNS TEXT AS $$
+    SELECT $1;
+$$ LANGUAGE SQL;
 
 COMMIT;
 
