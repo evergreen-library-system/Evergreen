@@ -22,7 +22,7 @@ PROGRESS=--progress none
 newpo: dtds2po props2po
 	@echo "Generated new PO files for locale $(LOCALE)"
 
-newpot: dtds2pot props2pot
+newpot: dtds2pot props2pot sql2pot
 	@echo "Generated new POT files"
 
 newproject: po2dtds po2props
@@ -52,6 +52,9 @@ po2dtds:
 
 po2props:
 	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+
+sql2pot:
+	@scripts/db-seed-i18n.py
 
 update_moz_dtds:
 	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1

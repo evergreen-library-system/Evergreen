@@ -12,7 +12,6 @@ CREATE TABLE asset.copy_location (
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	circulate	BOOL	NOT NULL DEFAULT TRUE
 );
-INSERT INTO asset.copy_location (name,owning_lib) VALUES ('Stacks',1);
 
 CREATE TABLE asset.copy (
 	id		BIGSERIAL			PRIMARY KEY,
@@ -134,8 +133,6 @@ CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_numbe
 CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted IS FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
 
-INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
-
 CREATE TABLE asset.call_number_note (
 	id		BIGSERIAL			PRIMARY KEY,
 	call_number	BIGINT				NOT NULL,
@@ -145,7 +142,6 @@ CREATE TABLE asset.call_number_note (
 	title		TEXT				NOT NULL,
 	value		TEXT				NOT NULL
 );
-
 
 CREATE VIEW stats.fleshed_copy AS 
         SELECT  cp.*,

@@ -68,11 +68,6 @@ COMMENT ON TABLE config.bib_source IS $$
  */
 $$;
 
-
-INSERT INTO config.bib_source (quality, source) VALUES (90, 'oclc');
-INSERT INTO config.bib_source (quality, source) VALUES (10, 'System Local');
-INSERT INTO config.bib_source (quality, source, transcendant) VALUES (1, 'Project Gutenberg', TRUE);
-
 CREATE TABLE config.standing (
 	id		SERIAL	PRIMARY KEY,
 	value		TEXT	NOT NULL UNIQUE
@@ -86,7 +81,7 @@ COMMENT ON TABLE config.standing IS $$
  *
  * This table contains the values that can be applied to a patron
  * by a staff member.  These values should not be changed, other
- * that for translation, as the ID column is currently a "magic
+ * than for translation, as the ID column is currently a "magic
  * number" in the source. :(
  *
  * ****
@@ -103,18 +98,12 @@ COMMENT ON TABLE config.standing IS $$
  */
 $$;
 
-INSERT INTO config.standing (value) VALUES ('Good');
-INSERT INTO config.standing (value) VALUES ('Barred');
-
-
 CREATE TABLE config.xml_transform (
 	name		TEXT	PRIMARY KEY,
 	namespace_uri	TEXT	NOT NULL UNIQUE,
 	prefix		TEXT	NOT NULL,
 	xslt		TEXT	NOT NULL
 );
-INSERT INTO config.xml_transform VALUES ( 'marcxml', 'http://www.loc.gov/MARC21/slim', 'marc', '---' );
-INSERT INTO config.xml_transform VALUES ( 'mods', 'http://www.loc.gov/mods/', 'mods', '/home/miker/MARC21slim2MODS.xsl' );
 
 CREATE TABLE config.metabib_field (
 	id		SERIAL	PRIMARY KEY,
@@ -133,7 +122,7 @@ COMMENT ON TABLE config.metabib_field IS $$
  *
  * XPath used for record indexing ingest
  *
- * This table contains the XPath used to chop up MODS into it's
+ * This table contains the XPath used to chop up MODS into its
  * indexable parts.  Each XPath entry is named and assigned to
  * a "class" of either title, subject, author, keyword or series.
  * 
@@ -153,23 +142,6 @@ COMMENT ON TABLE config.metabib_field IS $$
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
-
-
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'series', 'seriestitle', $$//mods:mods/mods:relatedItem[@type="series"]/mods:titleInfo$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'abbreviated', $$//mods:mods/mods:titleInfo[mods:title and (@type='abbreviated')]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'translated', $$//mods:mods/mods:titleInfo[mods:title and (@type='translated')]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'uniform', $$//mods:mods/mods:titleInfo[mods:title and (@type='uniform')]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'title', 'proper', $$//mods:mods/mods:titleInfo[mods:title and not (@type)]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'corporate', $$//mods:mods/mods:name[@type='corporate']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'personal', $$//mods:mods/mods:name[@type='personal']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'conference', $$//mods:mods/mods:name[@type='conference']/mods:namePart[../mods:role/mods:text[text()='creator']]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'author', 'other', $$//mods:mods/mods:name[@type='personal']/mods:namePart[not(../mods:role)]$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'geographic', $$//mods:mods/mods:subject/mods:geographic$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'name', $$//mods:mods/mods:subject/mods:name$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'temporal', $$//mods:mods/mods:subject/mods:temporal$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'topic', $$//mods:mods/mods:subject/mods:topic$$ );
--- INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'subject', 'genre', $$//mods:mods/mods:genre$$ );
-INSERT INTO config.metabib_field ( field_class, name, xpath ) VALUES ( 'keyword', 'keyword', $$//mods:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */
 
 CREATE TABLE config.non_cataloged_type (
 	id		SERIAL		PRIMARY KEY,
@@ -201,9 +173,6 @@ COMMENT ON TABLE config.non_cataloged_type IS $$
  */
 $$;
 
-
-INSERT INTO config.non_cataloged_type ( owning_lib, name ) VALUES ( 1, 'Paperback Book' );
-
 CREATE TABLE config.identification_type (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE
@@ -232,11 +201,6 @@ COMMENT ON TABLE config.identification_type IS $$
  * GNU General Public License for more details.
  */
 $$;
-
-
-INSERT INTO config.identification_type ( name ) VALUES ( 'Drivers License' );
-INSERT INTO config.identification_type ( name ) VALUES ( 'SSN' );
-INSERT INTO config.identification_type ( name ) VALUES ( 'Other' );
 
 CREATE TABLE config.rule_circ_duration (
 	id		SERIAL		PRIMARY KEY,
@@ -270,20 +234,6 @@ COMMENT ON TABLE config.rule_circ_duration IS $$
  */
 $$;
 
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '7_days_0_renew', '7 days', '7 days', '7 days', 0);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '28_days_2_renew', '28 days', '28 days', '28 days', 2);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '3_months_0_renew', '3 mons', '3 mons', '3 mons', 0);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '3_days_1_renew', '3 days', '3 days', '3 days', 1);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '2_months_2_renew', '2 mons', '2 mons', '2 mons', 2);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '35_days_1_renew', '35 days', '35 days', '35 days', 1);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '7_days_2_renew', '7 days', '7 days', '7 days', 2);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '1_hour_2_renew', '1 hour', '1 hour', '1 hour', 2);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '28_days_0_renew', '28 days', '28 days', '28 days', 0);
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, '14_days_2_renew', '14 days', '14 days', '14 days', 2);
-
-INSERT INTO config.rule_circ_duration VALUES (DEFAULT, 'default', '21 days', '14 days', '7 days', 2);
-
-
 CREATE TABLE config.rule_max_fine (
 	id	SERIAL		PRIMARY KEY,
 	name	TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
@@ -314,16 +264,6 @@ COMMENT ON TABLE config.rule_max_fine IS $$
  */
 $$;
 
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'default', 5.00);
-
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_min', 5.00);
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_mid', 10.00);
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_max', 100.00);
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_min', 25.00);
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_mid', 25.00);
-INSERT INTO config.rule_max_fine VALUES (DEFAULT, 'overdue_equip_max', 100.00);
-
-
 CREATE TABLE config.rule_recuring_fine (
 	id			SERIAL		PRIMARY KEY,
 	name			TEXT		NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
@@ -337,9 +277,9 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  * Copyright (C) 2005  Georgia Public Library Service 
  * Mike Rylander <mrylander@gmail.com>
  *
- * Circulation Recuring Fine rules
+ * Circulation Recurring Fine rules
  *
- * Each circulation is given a recuring fine amount based on one of
+ * Each circulation is given a recurring fine amount based on one of
  * these rules.  The recurance_interval should not be any shorter
  * than the interval between runs of the fine_processor.pl script
  * (which is run from CRON), or you could miss fines.
@@ -359,10 +299,6 @@ COMMENT ON TABLE config.rule_recuring_fine IS $$
  */
 $$;
 
-INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, 'default', 0.50, 0.10, 0.05, '1 day');
-INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '10_cent_per_day', 0.50, 0.10, 0.10, '1 day');
-INSERT INTO config.rule_recuring_fine VALUES (DEFAULT, '50_cent_per_day', 0.50, 0.50, 0.50, '1 day');
-
 
 CREATE TABLE config.rule_age_hold_protect (
 	id	SERIAL		PRIMARY KEY,
@@ -380,7 +316,7 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
  * A hold request can only capture new(ish) items when they are
  * within a particular proximity of the home_ou of the requesting
  * user.  The proximity ('prox' column) is calculated by counting
- * the number of tree edges beween the user's home_ou and the owning_lib
+ * the number of tree edges between the user's home_ou and the owning_lib
  * of the copy that could fulfill the hold.
  * 
  *
@@ -398,10 +334,6 @@ COMMENT ON TABLE config.rule_age_hold_protect IS $$
  */
 $$;
 
-INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '3month', '3 mons', 0);
-INSERT INTO config.rule_age_hold_protect VALUES (DEFAULT, '6month', '6 mons', 2);
-
-
 CREATE TABLE config.copy_status (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL UNIQUE,
@@ -417,7 +349,7 @@ COMMENT ON TABLE config.copy_status IS $$
  * The available copy statuses, and whether a copy in that
  * status is available for hold request capture.  0 (zero) is
  * the only special number in this set, meaning that the item
- * is available for imediate checkout, and is counted as available
+ * is available for immediate checkout, and is counted as available
  * in the OPAC.
  *
  * Statuses with an ID below 100 are not removable, and have special
@@ -426,7 +358,7 @@ COMMENT ON TABLE config.copy_status IS $$
  *
  * You may add and remove statuses above 100, and these can be used
  * to remove items from normal circulation without affecting the rest
- * of the copy's values or it's location.
+ * of the copy's values or its location.
  *
  * ****
  *
@@ -441,25 +373,6 @@ COMMENT ON TABLE config.copy_status IS $$
  * GNU General Public License for more details.
  */
 $$;
-
-INSERT INTO config.copy_status (id,name,holdable)	VALUES (0,'Available','t');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('Checked out','t');
-INSERT INTO config.copy_status (name)			VALUES ('Bindery');
-INSERT INTO config.copy_status (name)			VALUES ('Lost');
-INSERT INTO config.copy_status (name)			VALUES ('Missing');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('In process','t');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('In transit','t');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('Reshelving','t');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('On holds shelf','t');
-INSERT INTO config.copy_status (name,holdable)		VALUES ('On order','t');
-INSERT INTO config.copy_status (name)			VALUES ('ILL');
-INSERT INTO config.copy_status (name)			VALUES ('Cataloging');
-INSERT INTO config.copy_status (name)			VALUES ('Reserves');
-INSERT INTO config.copy_status (name)			VALUES ('Discard/Weed');
-INSERT INTO config.copy_status (name)			VALUES ('Damaged');
-
-SELECT SETVAL('config.copy_status_id_seq'::TEXT, 100);
-
 
 CREATE TABLE config.net_access_level (
 	id	SERIAL		PRIMARY KEY,
@@ -489,28 +402,11 @@ COMMENT ON TABLE config.net_access_level IS $$
  */
 $$;
 
-INSERT INTO config.net_access_level (name) VALUES ('Filtered');
-INSERT INTO config.net_access_level (name) VALUES ('Unfiltered');
-INSERT INTO config.net_access_level (name) VALUES ('No Access');
-
 CREATE TABLE config.audience_map (
 	code		TEXT	PRIMARY KEY,
 	value		TEXT	NOT NULL,
 	description	TEXT
 );
-
-COPY config.audience_map FROM STDIN;
- 	Unknown or unspecified	The target audience for the item not known or not specified.
-a	Preschool	The item is intended for children, approximate ages 0-5 years.
-b	Primary	The item is intended for children, approximate ages 6-8 years.
-c	Pre-adolescent	The item is intended for young people, approximate ages 9-13 years.
-d	Adolescent	The item is intended for young people, approximate ages 14-17 years.
-e	Adult	The item is intended for adults.
-f	Specialized	The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience.
-g	General	The item is of general interest and not aimed at an audience of a particular intellectual level.
-j	Juvenile	The item is intended for children and young people, approximate ages 0-15 years.
-\.
-
 
 CREATE TABLE config.lit_form_map (
 	code		TEXT	PRIMARY KEY,
@@ -518,552 +414,20 @@ CREATE TABLE config.lit_form_map (
 	description	TEXT
 );
 
-COPY config.lit_form_map FROM STDIN;
-0	Not fiction (not further specified)	The item is not a work of fiction and no further identification of the literary form is desired
-1	Fiction (not further specified)	The item is a work of fiction and no further identification of the literary form is desired
-c	Comic strips	\N
-d	Dramas	\N
-e	Essays	\N
-f	Novels	\N
-h	Humor, satires, etc.	The item is a humorous work, satire or of similar literary form.
-i	Letters	The item is a single letter or collection of correspondence.
-j	Short stories	The item is a short story or collection of short stories.
-m	Mixed forms	The item is a variety of literary forms (e.g., poetry and short stories).
-p	Poetry	The item is a poem or collection of poems.
-s	Speeches	The item is a speech or collection of speeches.
-u	Unknown	The literary form of the item is unknown.
-\.
-
 CREATE TABLE config.language_map (
 	code	TEXT	PRIMARY KEY,
 	value	TEXT	NOT NULL
 );
-
-COPY config.language_map FROM STDIN;
-aar	Afar
-abk	Abkhaz
-ace	Achinese
-ach	Acoli
-ada	Adangme
-ady	Adygei
-afa	Afroasiatic (Other)
-afh	Afrihili (Artificial language)
-afr	Afrikaans
--ajm	Aljamía
-aka	Akan
-akk	Akkadian
-alb	Albanian
-ale	Aleut
-alg	Algonquian (Other)
-amh	Amharic
-ang	English, Old (ca. 450-1100)
-apa	Apache languages
-ara	Arabic
-arc	Aramaic
-arg	Aragonese Spanish
-arm	Armenian
-arn	Mapuche
-arp	Arapaho
-art	Artificial (Other)
-arw	Arawak
-asm	Assamese
-ast	Bable
-ath	Athapascan (Other)
-aus	Australian languages
-ava	Avaric
-ave	Avestan
-awa	Awadhi
-aym	Aymara
-aze	Azerbaijani
-bad	Banda
-bai	Bamileke languages
-bak	Bashkir
-bal	Baluchi
-bam	Bambara
-ban	Balinese
-baq	Basque
-bas	Basa
-bat	Baltic (Other)
-bej	Beja
-bel	Belarusian
-bem	Bemba
-ben	Bengali
-ber	Berber (Other)
-bho	Bhojpuri
-bih	Bihari
-bik	Bikol
-bin	Edo
-bis	Bislama
-bla	Siksika
-bnt	Bantu (Other)
-bos	Bosnian
-bra	Braj
-bre	Breton
-btk	Batak
-bua	Buriat
-bug	Bugis
-bul	Bulgarian
-bur	Burmese
-cad	Caddo
-cai	Central American Indian (Other)
--cam	Khmer
-car	Carib
-cat	Catalan
-cau	Caucasian (Other)
-ceb	Cebuano
-cel	Celtic (Other)
-cha	Chamorro
-chb	Chibcha
-che	Chechen
-chg	Chagatai
-chi	Chinese
-chk	Truk
-chm	Mari
-chn	Chinook jargon
-cho	Choctaw
-chp	Chipewyan
-chr	Cherokee
-chu	Church Slavic
-chv	Chuvash
-chy	Cheyenne
-cmc	Chamic languages
-cop	Coptic
-cor	Cornish
-cos	Corsican
-cpe	Creoles and Pidgins, English-based (Other)
-cpf	Creoles and Pidgins, French-based (Other)
-cpp	Creoles and Pidgins, Portuguese-based (Other)
-cre	Cree
-crh	Crimean Tatar
-crp	Creoles and Pidgins (Other)
-cus	Cushitic (Other)
-cze	Czech
-dak	Dakota
-dan	Danish
-dar	Dargwa
-day	Dayak
-del	Delaware
-den	Slave
-dgr	Dogrib
-din	Dinka
-div	Divehi
-doi	Dogri
-dra	Dravidian (Other)
-dua	Duala
-dum	Dutch, Middle (ca. 1050-1350)
-dut	Dutch
-dyu	Dyula
-dzo	Dzongkha
-efi	Efik
-egy	Egyptian
-eka	Ekajuk
-elx	Elamite
-eng	English
-enm	English, Middle (1100-1500)
-epo	Esperanto
--esk	Eskimo languages
--esp	Esperanto
-est	Estonian
--eth	Ethiopic
-ewe	Ewe
-ewo	Ewondo
-fan	Fang
-fao	Faroese
--far	Faroese
-fat	Fanti
-fij	Fijian
-fin	Finnish
-fiu	Finno-Ugrian (Other)
-fon	Fon
-fre	French
--fri	Frisian
-frm	French, Middle (ca. 1400-1600)
-fro	French, Old (ca. 842-1400)
-fry	Frisian
-ful	Fula
-fur	Friulian
-gaa	Gã
--gae	Scottish Gaelic
--gag	Galician
--gal	Oromo
-gay	Gayo
-gba	Gbaya
-gem	Germanic (Other)
-geo	Georgian
-ger	German
-gez	Ethiopic
-gil	Gilbertese
-gla	Scottish Gaelic
-gle	Irish
-glg	Galician
-glv	Manx
-gmh	German, Middle High (ca. 1050-1500)
-goh	German, Old High (ca. 750-1050)
-gon	Gondi
-gor	Gorontalo
-got	Gothic
-grb	Grebo
-grc	Greek, Ancient (to 1453)
-gre	Greek, Modern (1453- )
-grn	Guarani
--gua	Guarani
-guj	Gujarati
-gwi	Gwich'in
-hai	Haida
-hat	Haitian French Creole
-hau	Hausa
-haw	Hawaiian
-heb	Hebrew
-her	Herero
-hil	Hiligaynon
-him	Himachali
-hin	Hindi
-hit	Hittite
-hmn	Hmong
-hmo	Hiri Motu
-hun	Hungarian
-hup	Hupa
-iba	Iban
-ibo	Igbo
-ice	Icelandic
-ido	Ido
-iii	Sichuan Yi
-ijo	Ijo
-iku	Inuktitut
-ile	Interlingue
-ilo	Iloko
-ina	Interlingua (International Auxiliary Language Association)
-inc	Indic (Other)
-ind	Indonesian
-ine	Indo-European (Other)
-inh	Ingush
--int	Interlingua (International Auxiliary Language Association)
-ipk	Inupiaq
-ira	Iranian (Other)
--iri	Irish
-iro	Iroquoian (Other)
-ita	Italian
-jav	Javanese
-jpn	Japanese
-jpr	Judeo-Persian
-jrb	Judeo-Arabic
-kaa	Kara-Kalpak
-kab	Kabyle
-kac	Kachin
-kal	Kalâtdlisut
-kam	Kamba
-kan	Kannada
-kar	Karen
-kas	Kashmiri
-kau	Kanuri
-kaw	Kawi
-kaz	Kazakh
-kbd	Kabardian
-kha	Khasi
-khi	Khoisan (Other)
-khm	Khmer
-kho	Khotanese
-kik	Kikuyu
-kin	Kinyarwanda
-kir	Kyrgyz
-kmb	Kimbundu
-kok	Konkani
-kom	Komi
-kon	Kongo
-kor	Korean
-kos	Kusaie
-kpe	Kpelle
-kro	Kru
-kru	Kurukh
-kua	Kuanyama
-kum	Kumyk
-kur	Kurdish
--kus	Kusaie
-kut	Kutenai
-lad	Ladino
-lah	Lahnda
-lam	Lamba
--lan	Occitan (post-1500)
-lao	Lao
--lap	Sami
-lat	Latin
-lav	Latvian
-lez	Lezgian
-lim	Limburgish
-lin	Lingala
-lit	Lithuanian
-lol	Mongo-Nkundu
-loz	Lozi
-ltz	Letzeburgesch
-lua	Luba-Lulua
-lub	Luba-Katanga
-lug	Ganda
-lui	Luiseño
-lun	Lunda
-luo	Luo (Kenya and Tanzania)
-lus	Lushai
-mac	Macedonian
-mad	Madurese
-mag	Magahi
-mah	Marshallese
-mai	Maithili
-mak	Makasar
-mal	Malayalam
-man	Mandingo
-mao	Maori
-map	Austronesian (Other)
-mar	Marathi
-mas	Masai
--max	Manx
-may	Malay
-mdr	Mandar
-men	Mende
-mga	Irish, Middle (ca. 1100-1550)
-mic	Micmac
-min	Minangkabau
-mis	Miscellaneous languages
-mkh	Mon-Khmer (Other)
--mla	Malagasy
-mlg	Malagasy
-mlt	Maltese
-mnc	Manchu
-mni	Manipuri
-mno	Manobo languages
-moh	Mohawk
-mol	Moldavian
-mon	Mongolian
-mos	Mooré
-mul	Multiple languages
-mun	Munda (Other)
-mus	Creek
-mwr	Marwari
-myn	Mayan languages
-nah	Nahuatl
-nai	North American Indian (Other)
-nap	Neapolitan Italian
-nau	Nauru
-nav	Navajo
-nbl	Ndebele (South Africa)
-nde	Ndebele (Zimbabwe)  
-ndo	Ndonga
-nds	Low German
-nep	Nepali
-new	Newari
-nia	Nias
-nic	Niger-Kordofanian (Other)
-niu	Niuean
-nno	Norwegian (Nynorsk)
-nob	Norwegian (Bokmål)
-nog	Nogai
-non	Old Norse
-nor	Norwegian
-nso	Northern Sotho
-nub	Nubian languages
-nya	Nyanja
-nym	Nyamwezi
-nyn	Nyankole
-nyo	Nyoro
-nzi	Nzima
-oci	Occitan (post-1500)
-oji	Ojibwa
-ori	Oriya
-orm	Oromo
-osa	Osage
-oss	Ossetic
-ota	Turkish, Ottoman
-oto	Otomian languages
-paa	Papuan (Other)
-pag	Pangasinan
-pal	Pahlavi
-pam	Pampanga
-pan	Panjabi
-pap	Papiamento
-pau	Palauan
-peo	Old Persian (ca. 600-400 B.C.)
-per	Persian
-phi	Philippine (Other)
-phn	Phoenician
-pli	Pali
-pol	Polish
-pon	Ponape
-por	Portuguese
-pra	Prakrit languages
-pro	Provençal (to 1500)
-pus	Pushto
-que	Quechua
-raj	Rajasthani
-rap	Rapanui
-rar	Rarotongan
-roa	Romance (Other)
-roh	Raeto-Romance
-rom	Romani
-rum	Romanian
-run	Rundi
-rus	Russian
-sad	Sandawe
-sag	Sango (Ubangi Creole)
-sah	Yakut
-sai	South American Indian (Other)
-sal	Salishan languages
-sam	Samaritan Aramaic
-san	Sanskrit
--sao	Samoan
-sas	Sasak
-sat	Santali
-scc	Serbian
-sco	Scots
-scr	Croatian
-sel	Selkup
-sem	Semitic (Other)
-sga	Irish, Old (to 1100)
-sgn	Sign languages
-shn	Shan
--sho	Shona
-sid	Sidamo
-sin	Sinhalese
-sio	Siouan (Other)
-sit	Sino-Tibetan (Other)
-sla	Slavic (Other)
-slo	Slovak
-slv	Slovenian
-sma	Southern Sami
-sme	Northern Sami
-smi	Sami
-smj	Lule Sami
-smn	Inari Sami
-smo	Samoan
-sms	Skolt Sami
-sna	Shona
-snd	Sindhi
--snh	Sinhalese
-snk	Soninke
-sog	Sogdian
-som	Somali
-son	Songhai
-sot	Sotho
-spa	Spanish
-srd	Sardinian
-srr	Serer
-ssa	Nilo-Saharan (Other)
--sso	Sotho
-ssw	Swazi
-suk	Sukuma
-sun	Sundanese
-sus	Susu
-sux	Sumerian
-swa	Swahili
-swe	Swedish
--swz	Swazi
-syr	Syriac
--tag	Tagalog
-tah	Tahitian
-tai	Tai (Other)
--taj	Tajik
-tam	Tamil
--tar	Tatar
-tat	Tatar
-tel	Telugu
-tem	Temne
-ter	Terena
-tet	Tetum
-tgk	Tajik
-tgl	Tagalog
-tha	Thai
-tib	Tibetan
-tig	Tigré
-tir	Tigrinya
-tiv	Tiv
-tkl	Tokelauan
-tli	Tlingit
-tmh	Tamashek
-tog	Tonga (Nyasa)
-ton	Tongan
-tpi	Tok Pisin
--tru	Truk
-tsi	Tsimshian
-tsn	Tswana
-tso	Tsonga
--tsw	Tswana
-tuk	Turkmen
-tum	Tumbuka
-tup	Tupi languages
-tur	Turkish
-tut	Altaic (Other)
-tvl	Tuvaluan
-twi	Twi
-tyv	Tuvinian
-udm	Udmurt
-uga	Ugaritic
-uig	Uighur
-ukr	Ukrainian
-umb	Umbundu
-und	Undetermined
-urd	Urdu
-uzb	Uzbek
-vai	Vai
-ven	Venda
-vie	Vietnamese
-vol	Volapük
-vot	Votic
-wak	Wakashan languages
-wal	Walamo
-war	Waray
-was	Washo
-wel	Welsh
-wen	Sorbian languages
-wln	Walloon
-wol	Wolof
-xal	Kalmyk
-xho	Xhosa
-yao	Yao (Africa)
-yap	Yapese
-yid	Yiddish
-yor	Yoruba
-ypk	Yupik languages
-zap	Zapotec
-zen	Zenaga
-zha	Zhuang
-znd	Zande
-zul	Zulu
-zun	Zuni
-\.
 
 CREATE TABLE config.item_form_map (
 	code	TEXT	PRIMARY KEY,
 	value	TEXT	NOT NULL
 );
 
-COPY config.item_form_map FROM STDIN;
-a	Microfilm
-b	Microfiche
-c	Microopaque
-d	Large print
-f	Braille
-r	Regular print reproduction
-s	Electronic
-\.
-
 CREATE TABLE config.item_type_map (
 	code	TEXT	PRIMARY KEY,
 	value	TEXT	NOT NULL
 );
-
-COPY config.item_type_map FROM STDIN;
-a	Language material
-t	Manuscript language material
-g	Projected medium
-k	Two-dimensional nonprojectable graphic
-r	Three-dimensional artifact or naturally occurring object
-o	Kit
-p	Mixed materials
-e	Cartographic material
-f	Manuscript cartographic material
-c	Notated music
-d	Manuscript notated music
-i	Nonmusical sound recording
-j	Musical sound recording
-m	Computer file
-\.
 
 COMMIT;
 
