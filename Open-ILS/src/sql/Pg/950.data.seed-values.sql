@@ -633,11 +633,6 @@ INSERT INTO config.item_type_map (code, value) VALUES
 
 --005.schema.actors.sql:
 
--- Just so that there is a user...
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', oils_i18n_gettext('Administrator'), oils_i18n_gettext('System Account'), '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
-
-INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
-
 -- The PINES levels
 INSERT INTO actor.org_unit_type (name, opac_label, depth, parent, can_have_users, can_have_vols) VALUES 
     ( oils_i18n_gettext('Consortium'),oils_i18n_gettext('Everywhere'), 0, NULL, FALSE, FALSE ),
@@ -661,6 +656,12 @@ INSERT INTO actor.org_unit (parent_ou, ou_type, shortname, name) VALUES
 INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,oils_i18n_gettext('123 Main St.'),NULL,oils_i18n_gettext('Anywhere'),NULL,oils_i18n_gettext('GA'),oils_i18n_gettext('US'),oils_i18n_gettext('30303'));
 
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
+
+-- Just so that there is a user...
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', oils_i18n_gettext('Administrator'), oils_i18n_gettext('System Account'), '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
+
+INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
+
 
 --006.data.permissions.sql:
 INSERT INTO permission.perm_list VALUES 
