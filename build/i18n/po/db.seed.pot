@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org"
-"POT-Creation-Date: 2007-12-04 02:50:56 -0400"
+"POT-Creation-Date: 2007-12-04 05:05:05 -0400"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>"
 "Language-Team: LANGUAGE <LL@li.org>"
@@ -972,7 +972,7 @@ msgid "Gujarati"
 msgstr ""
 
 #: config.language_map:290
-msgid "Gwich\'in"
+msgid "Gwich'in"
 msgstr ""
 
 #: config.language_map:291
@@ -2396,11 +2396,11 @@ msgid "User is allowed to place a hold on a specific copy"
 msgstr ""
 
 #: permission.perm_list:676
-msgid "Allows a user to view another user\'s holds"
+msgid "Allows a user to view another user's holds"
 msgstr ""
 
 #: permission.perm_list:678
-msgid "Allows a user to update another user\'s hold"
+msgid "Allows a user to update another user's hold"
 msgstr ""
 
 #: permission.perm_list:683
@@ -2416,7 +2416,7 @@ msgid "Allows a user to create a new bill on a transaction"
 msgstr ""
 
 #: permission.perm_list:705
-msgid "Allows a user to view another user"
+msgid "Allows a user to view another user's containers (buckets)"
 msgstr ""
 
 #: permission.perm_list:706
@@ -2436,7 +2436,7 @@ msgid "Allows a user to see what another use has checked out"
 msgstr ""
 
 #: permission.perm_list:710
-msgid "User may view another user"
+msgid "User may view another user's transactions"
 msgstr ""
 
 #: permission.perm_list:711
@@ -2456,7 +2456,7 @@ msgid "User can remove other users from permission groups"
 msgstr ""
 
 #: permission.perm_list:715
-msgid "Allow user to view others"
+msgid "Allow user to view others' permission groups"
 msgstr ""
 
 #: permission.perm_list:716
@@ -2832,7 +2832,7 @@ msgid "Allows a user to checkout an item that is marked as non-circ"
 msgstr ""
 
 #: permission.perm_list:812
-msgid "Allows a user to delete an item out of another user\'s container"
+msgid "Allows a user to delete an item out of another user's container"
 msgstr ""
 
 #: permission.perm_list:813

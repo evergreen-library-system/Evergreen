@@ -78,7 +78,7 @@ class EvergreenSQL:
             if fi18n is not None:
                 for i18n in fi18n.groups():
                     # Unescape escaped SQL single-quotes for translators' sanity
-                    i18n = re.compile(r'\'\'').sub(r'\'', i18n)
+                    i18n = re.compile(r'\'\'').sub("'", i18n)
                     poe = polib.POEntry()
                     poe.occurences = [(table, n)]
                     poe.msgid = i18n
