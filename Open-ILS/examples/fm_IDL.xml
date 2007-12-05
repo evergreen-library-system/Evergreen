@@ -2032,6 +2032,7 @@
 			<field reporter:label="Work Payment Detail" name="work_payment" oils_obj:array_position="14" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_obj:array_position="15" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Voided" name="voided" oils_obj:array_position="17" oils_persist:virtual="false" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
