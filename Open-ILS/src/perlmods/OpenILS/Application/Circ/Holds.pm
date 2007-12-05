@@ -1107,16 +1107,10 @@ sub _check_metarecord_hold_is_possible {
                         field => 'id',
                         fkey => 'call_number',
                         'join' => {
-                            bre => {
-                                field => 'id',
+                            mmrsm => {
+                                field => 'source',
                                 fkey => 'record',
-				'join' => {
-					mmrsm => {
-	                                	filter => { metarecord => $mrid },
-		                                field => 'source',
-                		                fkey => 'id'
-					}
-				}
+                               	filter => { metarecord => $mrid }
                             }
                         }
                     },
