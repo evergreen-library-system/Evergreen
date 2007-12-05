@@ -2,7 +2,7 @@ package OpenILS::Application::Actor::UserGroups;
 use base 'OpenSRF::Application';
 use strict; use warnings;
 use OpenILS::Application::AppUtils;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenSRF::EX qw(:try);
 my $U = "OpenILS::Application::AppUtils";
@@ -97,10 +97,10 @@ sub reset_group {
 	my( $self, $conn, $auth, $userid, $leader ) = @_;
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('UPDATE_USER'); # XXX reley on editor perm
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('UPDATE_USER'); # XXX reley on editor perm
 
-	my $user = $e->retrieve_actor_user($userid) or return $e->event;
+	my $user = $e->retrieve_actor_user($userid) or return $e->die_event;
 
 	# ask for a new group id
 	my $groupid = $e->request('open-ils.storage.actor.user.group_id.new');
@@ -108,7 +108,7 @@ sub reset_group {
 	$user->usrgroup($groupid);
 	$user->master_account('t') if $leader;
 
-	$e->update_actor_user($user) or return $e->event;
+	$e->update_actor_user($user) or return $e->die_event;
 	$e->commit;
 	return $groupid;
 }
