@@ -266,7 +266,9 @@ util.network.prototype = {
 			data.stash('list');
 			obj.reset_titlebars(data);
 			return true;
-		} else { alert('Error applying new auth session in network.js'); }
+        } else {
+            obj.error.sdump('D_TRACE','No new session key after simple_auth in util/network\n');
+        }
 		return false;
 
 		} catch(E) {
