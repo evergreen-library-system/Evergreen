@@ -86,7 +86,7 @@ package money::payment;
 use base qw/money/;
 __PACKAGE__->table('money_payment');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type note/);
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts payment_type note voided/);
 #-------------------------------------------------------------------------------
 
 package money::desk_payment;
