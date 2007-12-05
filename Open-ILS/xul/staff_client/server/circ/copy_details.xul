@@ -145,7 +145,7 @@
 			try {
 				//g.data.fancy_prompt_data = js2JSON( [ g.circ.usr() ] );
 				//g.data.stash('fancy_prompt_data');
-				xulG.retrieve_these_patrons = [ g.circ.user() ];
+				xulG.retrieve_these_patrons = [ g.circ.usr() ];
 				update_modal_xulG(xulG);
 				window.close();
 			} catch(E) {
