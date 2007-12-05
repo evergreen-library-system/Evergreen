@@ -495,8 +495,6 @@
 <!ENTITY staff.copy.notes.delete.key "D">
 <!ENTITY staff.copy.notes.from "From">
 <!ENTITY staff.copy.notes.opac "OPAC">
-<!ENTITY staff.copy.pines.attr "PINES Attributes">
-<!ENTITY staff.copy.pines.attr.value "Value">
 <!ENTITY staff.copy.reload "Reload Copy">
 <!ENTITY staff.copy.reload.key "R">
 <!ENTITY staff.copy.save "Save Copy">
