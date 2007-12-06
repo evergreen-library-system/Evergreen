@@ -144,6 +144,7 @@ reporter-install:
 	@echo $@
 	@echo "Installing Reporter email templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
 	cp reporter/clark-kent.pl $(BINDIR)
+	cp reporter/find_orphaned_reports.pl $(BINDIR)
 	cp reporter/report-fail $(DATADIR)
 	cp reporter/report-success $(DATADIR)
 	mkdir -p $(REPORTERDIR)
