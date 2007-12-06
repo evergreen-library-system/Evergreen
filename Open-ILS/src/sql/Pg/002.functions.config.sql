@@ -40,11 +40,13 @@ $_$ LANGUAGE SQL;
 
 */
 
-CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keyfield TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION oils_i18n_xlate ( keytable TEXT, keycol TEXT, identcol TEXT, keyvalue TEXT, raw_locale TEXT ) RETURNS TEXT AS $func$
 DECLARE
     locale      TEXT := LOWER( REGEXP_REPLACE( REGEXP_REPLACE( raw_locale, E'[;, ].+$', '' ), E'-', '_', 'g' ) );
     language    TEXT := REGEXP_REPLACE( locale, E'_.+$', '' );
     result      config.i18n_core%ROWTYPE;
+    fallback    TEXT;
+    keyfield    TEXT := keytable || '.' || keycol;
 BEGIN
 
     -- Try the full locale
@@ -65,7 +67,13 @@ BEGIN
 
     -- Fall back to the string we passed in in the first place
     IF NOT FOUND THEN
-        RETURN keyvalue;
+	EXECUTE
+            'SELECT ' ||
+                keycol ||
+            ' FROM ' || keytable ||
+            ' WHERE ' || identcol || ' = ' || quote_literal(keyvalue)
+                INTO fallback;
+        RETURN fallback;
     END IF;
 
     RETURN result.string;
