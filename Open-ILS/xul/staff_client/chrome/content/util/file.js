@@ -166,7 +166,7 @@ util.file.prototype = {
 
 			this._f = Components.classes["@mozilla.org/network/file-input-stream;1"]
 				.createInstance(Components.interfaces.nsIFileInputStream);
-			this._f.init(this._file, 0x01, 0, 0);
+			this._f.init(this._file, MODE_RDONLY, 0, 0);
 			/*
 			this._f.QueryInterface(Components.interfaces.nsILineInputStream);
 			this._istream = this._f;
@@ -188,23 +188,31 @@ util.file.prototype = {
 
 	'_create_output_stream' : function(param) {
 		try {
-			//dump('_create_output_stream('+param+')\n');
+			//dump('_create_output_stream('+param+') for '+this._file.path+'\n');
 			
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead");
 
 			if (!this._file) throw('Must .get() a file first.');
 
-			if (! this._file.exists()) this._file.create( 0, 0640 );
-
+			if (! this._file.exists()) {
+                if (param == 'truncate+exec') {
+                    this._file.create( 0, 0777 );
+                } else {
+                    this._file.create( 0, PERMS_FILE );
+                }
+            }
 			this._output_stream = Components.classes["@mozilla.org/network/file-output-stream;1"]
 				.createInstance(Components.interfaces.nsIFileOutputStream);
 			switch(param){
 				case 'append' :
-					this._output_stream.init(this._file, 0x02 | 0x08 | 0x10 | 0x40, 0644, 0);
+					this._output_stream.init(this._file, MODE_WRONLY | MODE_APPEND, PERMS_FILE, 0);
 				break;
+                case 'truncate+exec' :
+					this._output_stream.init(this._file, MODE_WRONLY | MODE_CREATE | MODE_TRUNCATE, PERMS_FILE, 0);
+                break;
 				case 'truncate' :
 				default:
-					this._output_stream.init(this._file, 0x02 | 0x08 | 0x20 | 0x40, 0644, 0);
+					this._output_stream.init(this._file, MODE_WRONLY | MODE_CREATE | MODE_TRUNCATE, PERMS_FILE, 0);
 				break;
 			}
 

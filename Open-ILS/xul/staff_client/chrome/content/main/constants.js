@@ -1,5 +1,15 @@
 dump('Loading constants.js\n');
 
+const MODE_RDONLY   = 0x01;
+const MODE_WRONLY   = 0x02;
+const MODE_CREATE   = 0x08;
+const MODE_APPEND   = 0x10;
+const MODE_TRUNCATE = 0x20;
+const MODE_SYNC     = 0x40;
+const MODE_EXCL     = 0x80;
+const PERMS_FILE      = 0644;
+const PERMS_DIR      = 0755;
+
 const my_constants = {
 	'magical_statuses' : {
 		'1' : { 'disable_in_copy_editor' : true, 'block_mark_item_action' : true }, /* | Checked out    | t */
