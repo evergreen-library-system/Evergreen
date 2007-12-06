@@ -673,7 +673,7 @@
 			<field reporter:label="First Name" name="first_given_name" oils_obj:array_position="28" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Home Library" name="home_ou" oils_obj:array_position="29" oils_persist:virtual="false" reporter:datatype="org_unit"/>
 			<field reporter:label="User ID" name="id" oils_obj:array_position="30" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Primary Identifcation Type" name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Primary Identification Type" name="ident_type" oils_obj:array_position="31" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Secondary Identification Type" name="ident_type2" oils_obj:array_position="32" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Primary Identification" name="ident_value" oils_obj:array_position="33" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Secondary Identification" name="ident_value2" oils_obj:array_position="34" oils_persist:virtual="false"  reporter:datatype="text"/>
