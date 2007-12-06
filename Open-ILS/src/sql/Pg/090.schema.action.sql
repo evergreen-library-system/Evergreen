@@ -80,27 +80,26 @@ CREATE TRIGGER action_survey_response_answer_date_fixup_tgr
 
 
 CREATE TABLE action.circulation (
-	create_date		TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
-	target_copy		BIGINT				        NOT NULL, -- asset.copy.id
-	circ_lib		INT				            NOT NULL, -- actor.org_unit.id
-	circ_staff		INT			            	NOT NULL, -- actor.usr.id
-	checkin_staff	INT,			            		  -- actor.usr.id
-	checkin_lib		INT,	            				  -- actor.org_unit.id
-	renewal_remaining	INT		        		NOT NULL, -- derived from "circ duration" rule
+	target_copy		BIGINT				NOT NULL, -- asset.copy.id
+	circ_lib		INT				NOT NULL, -- actor.org_unit.id
+	circ_staff		INT				NOT NULL, -- actor.usr.id
+	checkin_staff		INT,					  -- actor.usr.id
+	checkin_lib		INT,					  -- actor.org_unit.id
+	renewal_remaining	INT				NOT NULL, -- derived from "circ duration" rule
 	due_date		TIMESTAMP WITH TIME ZONE,
-	stop_fines_time	TIMESTAMP WITH TIME ZONE,
-	checkin_time	TIMESTAMP WITH TIME ZONE,
-	duration		INTERVAL,				              -- derived from "circ duration" rule
-	fine_interval	INTERVAL        			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
-	recuring_fine	NUMERIC(6,2),	        			  -- derived from "circ fine" rule
-	max_fine		NUMERIC(6,2),			        	  -- derived from "max fine" rule
-	phone_renewal	BOOL        				NOT NULL DEFAULT FALSE,
-	desk_renewal	BOOL		        		NOT NULL DEFAULT FALSE,
-	opac_renewal	BOOL				        NOT NULL DEFAULT FALSE,
-	duration_rule	TEXT        				NOT NULL, -- name of "circ duration" rule
-	recuring_fine_rule	TEXT	        		NOT NULL, -- name of "circ fine" rule
-	max_fine_rule	TEXT				        NOT NULL, -- name of "max fine" rule
-	stop_fines		TEXT	        			CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE'))
+	stop_fines_time		TIMESTAMP WITH TIME ZONE,
+	checkin_time		TIMESTAMP WITH TIME ZONE,
+	duration		INTERVAL,				  -- derived from "circ duration" rule
+	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
+	recuring_fine		NUMERIC(6,2),				  -- derived from "circ fine" rule
+	max_fine		NUMERIC(6,2),				  -- derived from "max fine" rule
+	phone_renewal		BOOL				NOT NULL DEFAULT FALSE,
+	desk_renewal		BOOL				NOT NULL DEFAULT FALSE,
+	opac_renewal		BOOL				NOT NULL DEFAULT FALSE,
+	duration_rule		TEXT				NOT NULL, -- name of "circ duration" rule
+	recuring_fine_rule	TEXT				NOT NULL, -- name of "circ fine" rule
+	max_fine_rule		TEXT				NOT NULL, -- name of "max fine" rule
+	stop_fines		TEXT				CHECK (stop_fines IN ('CHECKIN','CLAIMSRETURNED','LOST','MAXFINES','RENEW','LONGOVERDUE'))
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
