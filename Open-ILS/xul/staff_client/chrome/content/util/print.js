@@ -282,21 +282,23 @@ util.print.prototype = {
 			var text = w;
 
 			var file = new util.file('receipt.txt');
-			file.write_content('truncate',text); file.close();
+			file.write_content('truncate',text); 
+            var path = file._file.path;
+            file.close();
 			
 			file = new util.file('receipt.bat');
-			if (! file._file.exists()) { 
-				file.write_content('truncate','copy chrome\\open_ils_staff_client\\content\\conf\\receipt.txt lpt1 /b\n');
-				file.close();
-				file = new util.file('receipt.bat');
-			}
+			file.write_content('truncate+exec','#!/bin/sh\ncopy ' + path + ' lpt1 /b\nlpr ' + path + '\n');
+            file.close();
+			file = new util.file('receipt.bat');
 
 			var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
 			process.init(file._file);
 
 			var args = [];
 
-			process.run(true, args, args.length);
+			dump('process.run = ' + process.run(true, args, args.length) + '\n');
+
+            file.close();
 
 		} catch (e) {
 			//alert('Probably not printing: ' + e);
