@@ -1,12 +1,11 @@
-#/usr/bin/env python
+#!/usr/bin/env python
 #
+"""
+This class enables translation of Evergreen's seed database strings.
+
+Requires polib from http://polib.googlecode.com
+"""
 # Copyright 2007 Dan Scott <dscott@laurentian.ca>
-#
-# This class enables translation of Evergreen's seed database strings.
-#
-# Requires polib from http://polib.googlecode.com
-#
-# ####
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,17 +17,42 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+import basel10n
+import optparse
 import polib
 import re
-import time
+import sys
 
-class EvergreenSQL:
+class SQL(basel10n.BaseL10N):
     """
     This class provides methods for extracting translatable strings from
     Evergreen's database seed values, generating a translatable POT file,
     reading translated PO files, and generating SQL for inserting the
     translated values into the Evergreen database.
     """
+
+    def __init__(self):
+        self.pot = None
+        basel10n.BaseL10N.__init__(self)
+        self.sql = []
+
+    def loadpo(self, potfile):
+        """
+        Load a POT file
+        """
+        basel10n.BaseL10N.loadpo(self, potfile)
+
+    def pothead(self):
+        """
+        Initialize POT metadata
+        """
+        basel10n.BaseL10N.pothead(self)
+
+    def savepot(self, outfile):
+        """
+        Write a POT file
+        """
+        basel10n.BaseL10N.savepot(self, outfile)
 
     def getstrings(self, source):
         """
@@ -44,27 +68,14 @@ class EvergreenSQL:
             INSERT INTO foo.bar (key, value) VALUES 
                 (99, oils_i18n_gettext('string'));
         """
-        date = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.pot = polib.POFile()
-
-        # We should be smarter about the Project-Id-Version attribute
-        self.pot.metadata['Project-Id-Version'] = 'Evergreen 1.4'
-        self.pot.metadata['Report-Msgid-Bugs-To'] = 'open-ils-dev@list.georgialibraries.org'
-        # Cheat and hard-code the time zone offset
-        self.pot.metadata['POT-Creation-Date'] = "%s %s" % (date, '-0400')
-        self.pot.metadata['PO-Revision-Date'] = 'YEAR-MO-DA HO:MI+ZONE'
-        self.pot.metadata['Last-Translator'] = 'FULL NAME <EMAIL@ADDRESS>'
-        self.pot.metadata['Language-Team'] = 'LANGUAGE <LL@li.org>'
-        self.pot.metadata['MIME-Version'] = '1.0'
-        self.pot.metadata['Content-Type'] = 'text/plain; charset=utf-8'
-        self.pot.metadata['Content-Transfer-Encoding'] = '8-bit'
+        self.pothead()
 
         # table holds the fully-qualified table name (schema.table)
         # The source SQL may use multi-row VALUES clauses for a single
         # insert statement, so we need to remember the fq-table for
         # multiple lines
         table = ''
-        n = 1
+        num = 1
         findtable = re.compile(r'\s*INSERT\s+INTO\s+(\S+).*?$')
         findi18n = re.compile(r'.*?oils_i18n_gettext\(\'(.+?)\'\)')
 
@@ -81,31 +92,19 @@ class EvergreenSQL:
                     i18n = re.compile(r'\'\'').sub("'", i18n)
                     if i18n is not None:
                         poe = polib.POEntry()
-                        poe.occurences = [(table, n)]
+                        poe.occurences = [(table, num)]
                         poe.msgid = i18n
                         self.pot.append(poe)
-            n = n + 1
+            num = num + 1
 
-    def savepot(self, destination):
-        """
-        Saves the POT file to a specified file.
-        """
-        self.pot.save(destination)
-        
-    def loadpo(self, source):
-        """
-        Loads a translated PO file so we can generate the corresponding SQL.
-        """
-        self.pot = polib.pofile(source)
-
-    def createsql(self, locale):
+    def create_sql(self, locale):
         """
         Creates a set of INSERT statements that place translated strings
         into the config.i18n_core table.
         """
 
-        insert = "INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('%s', '%s', '%s', '%s');"
-        self.sql = [] 
+        insert = "INSERT INTO config.i18n_core (fq_field, identity_value," \
+            "translation, string) VALUES ('%s', '%s', '%s', '%s');"
         for entry in self.pot:
             for table in entry.occurences:
                 # Escape SQL single-quotes to avoid b0rkage
@@ -116,19 +115,42 @@ class EvergreenSQL:
                     break
                 self.sql.append(insert % (table[0], msgid, locale, msgstr))
 
-    def __str__(self):
-        """
-        Returns the PO representation of the strings.
-        """
-        return self.pot.__str__()
- 
-if __name__ == '__main__':
-    pot = EvergreenSQL()
-    pot.getstrings('../../Open-ILS/src/sql/Pg/950.data.seed-values.sql')
-    pot.savepot('po/db.seed.pot')
+def main():
+    """
+    Determine what action to take
+    """
+    opts = optparse.OptionParser()
+    opts.add_option('-p', '--pot', action='store', \
+        help='Generate POT from the specified source SQL file', metavar='FILE')
+    opts.add_option('-s', '--sql', action='store', \
+        help='Generate SQL from the specified source POT file', metavar='FILE')
+    opts.add_option('-l', '--locale', \
+        help='Locale of the SQL file that will be generated')
+    opts.add_option('-o', '--output', dest='outfile', \
+        help='Write output to FILE (defaults to STDOUT)', metavar='FILE')
+    (options, args) = opts.parse_args()
 
-#    test = EvergreenSQL()
-#    test.loadpo('po/db.seed.pot')
-#    test.createsql('fr-CA')
-#    for insert in test.sql: 
-#       print insert
+    if options.pot:
+        pot = SQL()
+        pot.getstrings(options.pot)
+        if options.outfile:
+            pot.savepot(options.outfile)
+        else:
+            sys.stdout.write(pot.pot.__str__())
+    elif options.sql:
+        if not options.locale:
+            opts.error('Must specify an output locale')
+        pot = SQL()
+        pot.loadpo(options.sql)
+        pot.create_sql(options.locale)
+        if not options.outfile:
+            outfile = sys.stdout
+        else:
+            outfile = open(options.outfile, 'w')
+        for insert in pot.sql: 
+            outfile.write(insert)
+    else:
+        opts.print_help()
+
+if __name__ == '__main__':
+    main()
