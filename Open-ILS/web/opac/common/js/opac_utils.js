@@ -648,7 +648,10 @@ function doLogin(suppressEvents) {
 		org		: getOrigLocation()
 	};
 
-	if( uname.match(REGEX_BARCODE) ) args.barcode = uname; /* make this better */
+    r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    if(r) REGEX_BARCODE = new RegExp(r);
+    
+    if( uname.match(REGEX_BARCODE) ) args.barcode = uname;
 	else args.username = uname;
 
    var auth_request = new Request( LOGIN_COMPLETE, args );

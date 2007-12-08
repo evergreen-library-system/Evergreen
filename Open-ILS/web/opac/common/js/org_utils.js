@@ -2,6 +2,15 @@
 /* org tree utilities */
 /* ------------------------------------------------------------------------------------------------------ */
 
+function fetchOrgSettingDefault(orgId, name) {
+    var req = new Request(FETCH_ORG_SETTING, orgId, name);
+    req.send(true);
+    var res = req.result();
+    return res.value;
+}
+
+
+
 /* takes an org unit or id and return the numeric depth */
 function findOrgDepth(org_id_or_node) {
 	var org = findOrgUnit(org_id_or_node);

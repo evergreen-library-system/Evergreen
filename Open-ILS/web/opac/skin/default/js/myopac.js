@@ -847,6 +847,14 @@ function myOPACUpdateUsername() {
 		return;
 	}
 
+    r = fetchOrgSettingDefault(globalOrgTree.id(), 'opac.barcode_regex');
+    if(r) REGEX_BARCODE = new RegExp(r);
+
+    if(username.match(REGEX_BARCODE)) {
+        alert($('myopac_invalid_username').innerHTML);
+        return;
+    }
+
 	/* first see if the requested username is taken */
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);
