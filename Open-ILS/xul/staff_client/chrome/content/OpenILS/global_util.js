@@ -38,13 +38,21 @@
 	}
 
 	function get_contentWindow(frame) {
-		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-		if (frame && frame.contentWindow) {
-			if (typeof frame.contentWindow.wrappedJSObject != 'undefined') return frame.contentWindow.wrappedJSObject;
-			return frame.contentWindow;
-		} else {
-			return null;
-		}
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            if (frame && frame.contentWindow) {
+                try {
+                    if (typeof frame.contentWindow.wrappedJSObject != 'undefined') return frame.contentWindow.wrappedJSObject;
+                } catch(E) {
+                    alert("Error with get_contentWindow("+frame+") and wrappedJSObject:" + E);
+                }
+                return frame.contentWindow;
+            } else {
+                return null;
+            }
+        } catch(E) {
+            alert("Error with get_contentWindow("+frame+"): " + E);
+        }
 	}
 
 	function update_modal_xulG(v) {
