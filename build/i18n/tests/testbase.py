@@ -4,6 +4,7 @@
 Test the BaseL10N class to ensure that we have a solid foundation.
 """
 
+import filecmp
 import os
 import polib
 import sys
@@ -11,7 +12,10 @@ import unittest
 
 class TestBaseL10N(unittest.TestCase):
 
-    tmpdirs = ('tmp')
+    tmpdirs = [('tmp/')]
+    savefile = ('tmp/testsave.pot')
+    canonpot = ('data/complex.pot')
+    canonpo = ('data/complex.po')
     poentries = [{
         'msgid': 'Using Library', 
         'msgstr': 'Utiliser la bibliothèque',
@@ -51,7 +55,7 @@ class TestBaseL10N(unittest.TestCase):
         """
         import basel10n
         poload = basel10n.BaseL10N()
-        poload.loadpo('data/complex.po')
+        poload.loadpo(self.canonpo)
         pogen = basel10n.BaseL10N()
         pogen.pothead('Evergreen 1.4', '1999-12-31 23:59:59 -0400')
         pogen.pot.metadata['PO-Revision-Date'] = '2007-12-08 23:14:20 -0400'
@@ -67,6 +71,23 @@ class TestBaseL10N(unittest.TestCase):
             pogen.pot.append(poe)
 
         self.assertEqual(str(poload), str(pogen))
+
+    def testsavepot(self):
+        """
+        Save a generated POT file and compate to a known good one
+        """
+        import basel10n
+        pogen = basel10n.BaseL10N()
+        pogen.pothead('Evergreen 1.4', '1999-12-31 23:59:59 -0400')
+        for msg in self.poentries:
+            poe = polib.POEntry()
+            for x in msg['occurences']:
+                poe.occurences.append((x['line'], x['name']))
+            poe.msgid = msg['msgid']
+            pogen.pot.append(poe)
+        pogen.savepot(self.savefile)
+
+        self.assertEqual(filecmp.cmp(self.savefile, self.canonpot), 1)
 
 if __name__ == '__main__':
     unittest.main()
