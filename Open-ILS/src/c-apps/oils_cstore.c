@@ -637,7 +637,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		jsonObjectNode* cur;
 		jsonObjectIterator* itr = jsonNewObjectIterator( obj );
 		while ((cur = jsonObjectIteratorNext( itr ))) {
-			osrfAppRespond( ctx, jsonObjectClone(cur->item) );
+			osrfAppRespond( ctx, cur->item );
 		}
 		jsonObjectIteratorFree(itr);
 		osrfAppRespondComplete( ctx, NULL );
@@ -668,17 +668,15 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		while ((cur = jsonObjectIteratorNext( itr ))) {
 			osrfAppRespond(
 				ctx,
-				jsonObjectClone(
-					jsonObjectGetIndex(
-						cur->item,
-						atoi(
+				jsonObjectGetIndex(
+					cur->item,
+					atoi(
+						osrfHashGet(
 							osrfHashGet(
-								osrfHashGet(
-									osrfHashGet( class_obj, "fields" ),
-									osrfHashGet( class_obj, "primarykey")
-								),
-								"array_position"
-							)
+								osrfHashGet( class_obj, "fields" ),
+								osrfHashGet( class_obj, "primarykey")
+							),
+							"array_position"
 						)
 					)
 				)
@@ -2430,7 +2428,9 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			osrfLogDebug(OSRF_LOG_MARK, "Query returned at least one row");
 
 			do {
-				osrfAppRespond( ctx, oilsMakeJSONFromResult( result ) );
+				jsonObject* return_val = oilsMakeJSONFromResult( result );
+				osrfAppRespond( ctx, return_val );
+                jsonObjectFree( return_val );
 			} while (dbi_result_next_row(result));
 
 		} else {
@@ -3026,7 +3026,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* meta) {
 	if(!(result && meta)) return jsonNULL;
 
-	jsonObject* object = jsonParseString("[]");
+	jsonObject* object = jsonNewObject(NULL);
 	jsonObjectSetClass(object, osrfHashGet(meta, "classname"));
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -3136,7 +3136,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	if(!result) return jsonNULL;
 
-	jsonObject* object = jsonParseString("{}");
+	jsonObject* object = jsonNewObject(NULL);
 
 	time_t _tmp_dt;
 	char dt_string[256];
