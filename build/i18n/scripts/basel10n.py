@@ -29,19 +29,20 @@ class BaseL10N:
     def __init__(self):
         self.pot = polib.POFile()
 
-    def pothead(self, version=None):
+    def pothead(self, version=None, date=None):
         """
         Initializes the header for a POT file to reasonable defaults
         """
         # We should be smarter about the Project-Id-Version attribute
         if version is None:
             version = 'Evergreen 1.4'
-        date = time.strftime("%Y-%m-%d %H:%M:%S")
+        if date is None:
+            date = time.strftime("%Y-%m-%d %H:%M:%S") + '-0400'
         self.pot.metadata['Project-Id-Version'] = version
         self.pot.metadata['Report-Msgid-Bugs-To'] = \
             'open-ils-dev@list.georgialibraries.org'
         # Cheat and hard-code the time zone offset
-        self.pot.metadata['POT-Creation-Date'] = "%s %s" % (date, '-0400')
+        self.pot.metadata['POT-Creation-Date'] = date
         self.pot.metadata['PO-Revision-Date'] = 'YEAR-MO-DA HO:MI+ZONE'
         self.pot.metadata['Last-Translator'] = 'FULL NAME <EMAIL@ADDRESS>'
         self.pot.metadata['Language-Team'] = 'LANGUAGE <LL@li.org>'

@@ -1,0 +1,29 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org"
+"POT-Creation-Date: 2007-12-06 23:16:35 -0400"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>"
+"Language-Team: LANGUAGE <LL@li.org>"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=utf-8"
+"Content-Transfer-Encoding: 8-bit"
+
+#: 240:field.aihu.org_unit.label 257:field.ancihu.org_unit.label
+msgid "Using Library"
+msgstr ""
+
+#: 2475:field.rxbt.voided.label
+msgid ""
+"Super crazy long and repetitive message ID from hell"
+"Super crazy long and repetitive message ID from hell"
+"Super crazy long and repetitive message ID from hell"
+"Super crazy long and repetitive message ID from hell"
+"Super crazy long and repetitive message ID from hell"
+msgstr ""
+
+#: 524:field.bre.source.label
+msgid "Record Source"
+msgstr ""
