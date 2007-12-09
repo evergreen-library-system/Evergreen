@@ -1895,6 +1895,7 @@ static char* SELECT (
 
 			sel_pos++;
 		}
+
         jsonObjectIteratorFree(select_itr);
 	}
 
@@ -1978,9 +1979,9 @@ static char* SELECT (
 		if (!jsonObjectGetKeyConst(selhash,snode->key))
 			continue;
 
-		jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 		if ( snode->item->type == JSON_HASH ) {
 
+		    jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
 				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
@@ -2037,9 +2038,11 @@ static char* SELECT (
 				}
 
 			}
+            jsonObjectIteratorFree(order_itr);
 
 		} else if ( snode->item->type == JSON_ARRAY ) {
 
+		    jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
 				char* _f = jsonObjectToSimpleString( onode->item );
@@ -2057,6 +2060,7 @@ static char* SELECT (
 				free(_f);
 
 			}
+            jsonObjectIteratorFree(order_itr);
 
 
 		// IT'S THE OOOOOOOOOOOLD STYLE!
@@ -2075,12 +2079,9 @@ static char* SELECT (
 			buffer_free(group_buf);
 			buffer_free(order_buf);
 			buffer_free(sql_buf);
-            jsonObjectIteratorFree(order_itr);
 			if (defaultselhash) jsonObjectFree(defaultselhash);
 			return NULL;
 		}
-
-        jsonObjectIteratorFree(order_itr);
 
 	}
 
@@ -3047,7 +3048,7 @@ static jsonObject* doDelete(osrfMethodContext* ctx, int* err ) {
 static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* meta) {
 	if(!(result && meta)) return jsonNULL;
 
-	jsonObject* object = jsonNewObject(NULL);
+	jsonObject* object = jsonParseString("[]");
 	jsonObjectSetClass(object, osrfHashGet(meta, "classname"));
 
 	osrfHash* fields = osrfHashGet(meta, "fields");
@@ -3157,7 +3158,7 @@ static jsonObject* oilsMakeFieldmapperFromResult( dbi_result result, osrfHash* m
 static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	if(!result) return jsonNULL;
 
-	jsonObject* object = jsonNewObject(NULL);
+	jsonObject* object = jsonParseString("{}");
 
 	time_t _tmp_dt;
 	char dt_string[256];
