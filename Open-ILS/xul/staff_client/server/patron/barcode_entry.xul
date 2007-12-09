@@ -116,7 +116,7 @@
                                     var parts = patron.util.retrieve_name_via_id( ses(), robj );
     
                                     if (0 != g.error.yns_alert(
-                                        'Does patron ' + parts[0] + ', ' + parts[1] + (parts[2] ? ' ' + parts[2] : '') + ' from ' + g.data.hash.aou[ parts[3] ].shortname() + ' consent to having their personal information shared with your library?',
+                                        'Does patron ' + parts[0] + ', ' + parts[1] + (parts[2] ? ' ' + parts[2] : '') + ' from ' + g.data.hash.aou[ parts[3] ].name() + ' (' + g.data.hash.aou[ parts[3] ].shortname() + ') consent to having their personal information shared with your library?',
                                         'Patron/Library Opt-In Confirmation',
                                         'Accept', 'Deny', null, 'Check here to confirm this message'
                                         )
