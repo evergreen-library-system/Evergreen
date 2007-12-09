@@ -83,6 +83,9 @@ function clDraw(r) {
 		rowTemplate = tbody.removeChild($('cl_row'));
 	removeChildren(tbody);
 
+    for(var i = 0; i < cls.length; i++) /* force stringify */
+        cls[i].name(new String(cls[i].name()));
+
 	cls = cls.sort( function(a,b) {
 			if( a.name().toLowerCase() > b.name().toLowerCase() ) return 1;
 			if( a.name().toLowerCase() < b.name().toLowerCase() ) return -1;
