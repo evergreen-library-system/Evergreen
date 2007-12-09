@@ -661,6 +661,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
 		free(_s);
 
 		obj = doFieldmapperSearch(ctx, class_obj, _p, &err);
+		jsonObjectFree(_p);
 		if(err) return err;
 
 		jsonObjectNode* cur;
@@ -1321,6 +1322,7 @@ static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* n
 
 			break;
 		}
+        jsonObjectIteratorFree(pred_itr);
 	} else if (node->type == JSON_NULL) { // IS NULL search
 		growing_buffer* _p = buffer_init(64);
 		buffer_fadd(
@@ -1529,6 +1531,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(fkey);
 		free(field);
 	}
+
+    jsonObjectIteratorFree(search_itr);
 
 	return buffer_release(join_buf);
 }
@@ -1807,7 +1811,7 @@ static char* SELECT (
         	            char* pkey = osrfHashGet(idlClass, "primarykey");
         	            char* tname = osrfHashGet(idlClass, "tablename");
 
-    	    		    buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, __column, pkey, cname, pkey, locale, __column);
+                        buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, __column, pkey, cname, pkey, locale, __column);
                     } else {
 				        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, __column, __column);
                     }
@@ -1851,7 +1855,7 @@ static char* SELECT (
         	                char* pkey = osrfHashGet(idlClass, "primarykey");
         	                char* tname = osrfHashGet(idlClass, "tablename");
 
-    	    		        buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, __alias);
+                            buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, __alias);
                         } else {
 					        buffer_fadd(select_buf, " \"%s\".%s AS \"%s\"", cname, fname, __alias);
                         }
@@ -1891,7 +1895,10 @@ static char* SELECT (
 
 			sel_pos++;
 		}
+        jsonObjectIteratorFree(select_itr);
 	}
+
+    jsonObjectIteratorFree(selclass_itr);
 
 	if (is_agg) jsonObjectFree(is_agg);
 
@@ -2031,6 +2038,8 @@ static char* SELECT (
 
 			}
 
+            jsonObjectIteratorFree(order_itr);
+
 		} else if ( snode->item->type == JSON_ARRAY ) {
 
 			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
@@ -2051,6 +2060,8 @@ static char* SELECT (
 				free(_f);
 
 			}
+
+            jsonObjectIteratorFree(order_itr);
 
 		// IT'S THE OOOOOOOOOOOLD STYLE!
 		} else {
@@ -2073,6 +2084,8 @@ static char* SELECT (
 		}
 
 	}
+
+    jsonObjectIteratorFree(class_itr);
 
 	string = buffer_release(group_buf);
 
@@ -2212,7 +2225,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
         	        char* pkey = osrfHashGet(idlClass, "primarykey");
         	        char* tname = osrfHashGet(idlClass, "tablename");
 
-	    		    buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, fname);
+                    buffer_fadd(select_buf, " oils_i18n_xlate('%s', '%s', '%s', \"%s\".%s::TEXT, '%s') AS \"%s\"", tname, fname, pkey, cname, pkey, locale, fname);
                 } else {
 			        buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
                 }
@@ -2220,7 +2233,11 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			    buffer_fadd(select_buf, " \"%s\".%s", cname, fname);
             }
 		}
+
+        jsonObjectIteratorFree(select_itr);
 	}
+
+    jsonObjectIteratorFree(class_itr);
 
 	char* col_list = buffer_release(select_buf);
 	char* table = getSourceDefinition(meta);
@@ -2330,6 +2347,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 					}
 
+                    jsonObjectIteratorFree(order_itr);
+
 				} else {
 					string = jsonObjectToSimpleString(snode->item);
 					buffer_add(order_buf, string);
@@ -2338,6 +2357,8 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 				}
 
 			}
+
+            jsonObjectIteratorFree(class_itr);
 
 			string = buffer_release(order_buf);
 
@@ -2555,6 +2576,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						while ((_f = jsonObjectIteratorNext( _i ))) {
 							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
 						}
+                        jsonObjectIteratorFree(_i);
 					}
 				}
 
