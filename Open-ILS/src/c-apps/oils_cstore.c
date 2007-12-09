@@ -1978,9 +1978,9 @@ static char* SELECT (
 		if (!jsonObjectGetKeyConst(selhash,snode->key))
 			continue;
 
+		jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 		if ( snode->item->type == JSON_HASH ) {
 
-			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
 				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
@@ -2038,11 +2038,8 @@ static char* SELECT (
 
 			}
 
-            jsonObjectIteratorFree(order_itr);
-
 		} else if ( snode->item->type == JSON_ARRAY ) {
 
-			jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
 
 				char* _f = jsonObjectToSimpleString( onode->item );
@@ -2061,7 +2058,6 @@ static char* SELECT (
 
 			}
 
-            jsonObjectIteratorFree(order_itr);
 
 		// IT'S THE OOOOOOOOOOOLD STYLE!
 		} else {
@@ -2079,9 +2075,12 @@ static char* SELECT (
 			buffer_free(group_buf);
 			buffer_free(order_buf);
 			buffer_free(sql_buf);
+            jsonObjectIteratorFree(order_itr);
 			if (defaultselhash) jsonObjectFree(defaultselhash);
 			return NULL;
 		}
+
+        jsonObjectIteratorFree(order_itr);
 
 	}
 
