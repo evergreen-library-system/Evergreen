@@ -1322,7 +1322,7 @@ static char* searchPredicate ( const char* class, osrfHash* field, jsonObject* n
 
 			break;
 		}
-        jsonObjectIteratorFree(pred_itr);
+        // jsonObjectIteratorFree(pred_itr);
 	} else if (node->type == JSON_NULL) { // IS NULL search
 		growing_buffer* _p = buffer_init(64);
 		buffer_fadd(
@@ -1532,7 +1532,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		free(field);
 	}
 
-    jsonObjectIteratorFree(search_itr);
+    // jsonObjectIteratorFree(search_itr);
 
 	return buffer_release(join_buf);
 }
@@ -1896,10 +1896,10 @@ static char* SELECT (
 			sel_pos++;
 		}
 
-        jsonObjectIteratorFree(select_itr);
+        // jsonObjectIteratorFree(select_itr);
 	}
 
-    jsonObjectIteratorFree(selclass_itr);
+    // jsonObjectIteratorFree(selclass_itr);
 
 	if (is_agg) jsonObjectFree(is_agg);
 
@@ -2038,7 +2038,7 @@ static char* SELECT (
 				}
 
 			}
-            jsonObjectIteratorFree(order_itr);
+            // jsonObjectIteratorFree(order_itr);
 
 		} else if ( snode->item->type == JSON_ARRAY ) {
 
@@ -2060,7 +2060,7 @@ static char* SELECT (
 				free(_f);
 
 			}
-            jsonObjectIteratorFree(order_itr);
+            // jsonObjectIteratorFree(order_itr);
 
 
 		// IT'S THE OOOOOOOOOOOLD STYLE!
@@ -2085,7 +2085,7 @@ static char* SELECT (
 
 	}
 
-    jsonObjectIteratorFree(class_itr);
+    // jsonObjectIteratorFree(class_itr);
 
 	string = buffer_release(group_buf);
 
@@ -2234,10 +2234,10 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
             }
 		}
 
-        jsonObjectIteratorFree(select_itr);
+        // jsonObjectIteratorFree(select_itr);
 	}
 
-    jsonObjectIteratorFree(class_itr);
+    // jsonObjectIteratorFree(class_itr);
 
 	char* col_list = buffer_release(select_buf);
 	char* table = getSourceDefinition(meta);
@@ -2347,7 +2347,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 					}
 
-                    jsonObjectIteratorFree(order_itr);
+                    // jsonObjectIteratorFree(order_itr);
 
 				} else {
 					string = jsonObjectToSimpleString(snode->item);
@@ -2358,7 +2358,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 			}
 
-            jsonObjectIteratorFree(class_itr);
+            // jsonObjectIteratorFree(class_itr);
 
 			string = buffer_release(order_buf);
 
@@ -2576,7 +2576,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 						while ((_f = jsonObjectIteratorNext( _i ))) {
 							osrfStringArrayAdd( link_fields, jsonObjectToSimpleString( _f->item ) );
 						}
-                        jsonObjectIteratorFree(_i);
+                        // jsonObjectIteratorFree(_i);
 					}
 				}
 
