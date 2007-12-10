@@ -23,6 +23,7 @@
 		<button command="cmd_uncheck_all" label="Uncheck All"/>
 		<button command="cmd_check_all" label="Check All"/>
 		<spacer flex="1"/>
+		<button command="cmd_print_bills" label="Print Bills" />
 		<button command="cmd_alternate_view" label="Alternate View" accesskey="V"/>
 	</hbox>
 </box>

@@ -76,6 +76,7 @@
 		<command id="cmd_change_to_credit" />
 		<command id="cmd_uncheck_all" />
 		<command id="cmd_check_all" />
+		<command id="cmd_print_bills" />
 		<command id="cmd_alternate_view" />
 	</commandset>
 
