@@ -224,8 +224,17 @@ patron.bills.prototype = {
 									}
 								}
 							],
+                            'cmd_print_bills' : [
+                                ['command'],
+                                function() {
+									try {
+										obj.print_bills();
+									} catch(E) {
+										obj.error.standard_unexpected_error_alert('bills -> cmd_print_bills',E);	
+									}
 
-
+                                }
+                            ],
 							'cmd_change_to_credit' : [
 								['command'],
 								function() {
@@ -666,6 +675,44 @@ patron.bills.prototype = {
 			obj.error.standard_unexpected_error_alert('bills -> retrieve',E);	
 		}
 	},
+
+    'print_bills' : function() {
+        var obj = this;
+        try {
+            JSAN.use('util.functional'); JSAN.use('patron.util');
+            var columns = patron.util.mbts_columns({});
+            var template = 'bills_main_view';
+            var params = { 
+                'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+                'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
+                'staff' : obj.data.list.au[0],
+                'header' : obj.data.print_list_templates[template].header,
+                'line_item' : obj.data.print_list_templates[template].line_item,
+                'footer' : obj.data.print_list_templates[template].footer,
+                'type' : obj.data.print_list_templates[template].type,
+				'list' : util.functional.map_list(
+                    obj.bills,
+                    function(o) {
+                        var id = o.transaction.id();
+                        var hash = {
+                            'title' : typeof obj.bill_map[ id ].title != 'undefined' ? obj.bill_map[ id ].title : '', 
+                            'barcode' : typeof obj.bill_map[ id ].barcode != 'undefined' ? obj.bill_map[ id ].barcode : '', 
+                        };
+                        for (var i = 0; i < columns.length; i++) {
+                            var v = columns[i].render( { 'mbts' : o.transaction } );
+                            hash[ columns[i].id ] = v == null ? '' : v;
+                        }
+                        return hash;
+                    }
+                )
+            };
+            JSAN.use('util.print'); var print = new util.print();
+            print.tree_list( params );
+
+        } catch(E) {
+			obj.error.standard_unexpected_error_alert('bills -> print_bills',E);	
+        }
+    },
 
 	'xact_dates_box' : function ( mobts ) {
 		var obj = this;
