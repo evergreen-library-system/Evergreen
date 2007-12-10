@@ -12,10 +12,11 @@ import unittest
 
 class TestBaseL10N(unittest.TestCase):
 
-    tmpdirs = [('tmp/')]
-    savefile = ('tmp/testsave.pot')
-    canonpot = ('data/complex.pot')
-    canonpo = ('data/complex.po')
+    basedir = os.path.dirname(__file__)
+    tmpdirs = [(os.path.join(basedir, 'tmp/'))]
+    savefile = os.path.join(basedir, 'tmp/testsave.pot')
+    canonpot = os.path.join(basedir, 'data/complex.pot')
+    canonpo = os.path.join(basedir, 'data/complex.po')
     poentries = [{
         'msgid': 'Using Library', 
         'msgstr': 'Utiliser la bibliothèque',
@@ -37,7 +38,7 @@ class TestBaseL10N(unittest.TestCase):
     ]
 
     def setUp(self):
-        sys.path.append('../scripts/')
+        sys.path.append(os.path.join(self.basedir, '../scripts/'))
         self.tearDown()
         for dir in self.tmpdirs:
             os.mkdir(dir)

@@ -17,18 +17,20 @@ import unittest
 
 class TestIDLL10N(unittest.TestCase):
 
-    tmpdirs = [('tmp/')]
-    savepot = 'tmp/testsave.pot'
-    saveidlent = 'tmp/testidlent.xml'
-    saveentities = 'tmp/testentity.ent'
-    idlfile = 'data/testidl.xml'
-    idlentfile = 'data/testidlent.xml'
-    idlentities = 'data/testidl.ent'
-    testpot = 'data/testidl.pot'
-    testpo = 'data/testidl.po'
+    basedir = os.path.dirname(__file__)
+    script = os.path.join(basedir, '../scripts/fieldmapper.py')
+    tmpdirs = [(os.path.join(basedir, 'tmp/'))]
+    savepot = os.path.join(basedir, 'tmp/testsave.pot')
+    saveidlent = os.path.join(basedir, 'tmp/testidlent.xml')
+    saveentities = os.path.join(basedir, 'tmp/testentity.ent')
+    idlfile = os.path.join(basedir, 'data/testidl.xml')
+    idlentfile = os.path.join(basedir, 'data/testidlent.xml')
+    idlentities = os.path.join(basedir, 'data/testidl.ent')
+    testpot = os.path.join(basedir, 'data/testidl.pot')
+    testpo = os.path.join(basedir, 'data/testidl.po')
 
     def setUp(self):
-        sys.path.append('../scripts/')
+        sys.path.append(os.path.join(self.basedir, '../scripts/'))
         self.tearDown()
         for dir in self.tmpdirs:
             os.mkdir(dir)
@@ -46,7 +48,7 @@ class TestIDLL10N(unittest.TestCase):
         """
         devnull = open('/dev/null', 'w')
         proc = subprocess.Popen(
-            ('python', '../scripts/fieldmapper.py', '--convert', self.idlfile,
+            ('python', self.script, '--convert', self.idlfile,
             '--output', self.saveidlent),
             0, None, None, devnull, devnull).wait()
 
@@ -58,7 +60,7 @@ class TestIDLL10N(unittest.TestCase):
         """
         devnull = open('/dev/null', 'w')
         proc = subprocess.Popen(
-            ('python', '../scripts/fieldmapper.py', '--pot', self.idlfile,
+            ('python', self.script, '--pot', self.idlfile,
             '--output', self.savepot),
             0, None, None, devnull, devnull).wait()
 
@@ -73,7 +75,7 @@ class TestIDLL10N(unittest.TestCase):
         """
         devnull = open('/dev/null', 'w')
         proc = subprocess.Popen(
-            ('python', '../scripts/fieldmapper.py', '--entity', self.testpo,
+            ('python', self.script, '--entity', self.testpo,
             '--output', self.saveentities),
             0, None, None, devnull, devnull).wait()
         self.assertEqual(filecmp.cmp(self.saveentities, self.idlentities), 1)
