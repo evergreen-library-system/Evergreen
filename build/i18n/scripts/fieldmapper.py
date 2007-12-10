@@ -101,10 +101,11 @@ class IDLHandler(xml.sax.handler.ContentHandler):
         xml.sax.handler.ContentHandler.__init__(self)
         self.entities = dict()
         self.classid = None
-        self.entityized = u"<?xml version=\"1.0\" encoding=\"utf-8\"?>" \
-            "<!DOCTYPE fieldmapper [" \
-            "<!--#include virtual=\"/opac/locale/${locale}/fm_IDL.dtd\"--> " \
-            "]>"
+        self.entityized = u"""<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE fieldmapper [
+    <!--#include virtual="/opac/locale/${locale}/fm_IDL.dtd"--> 
+]>
+"""
         self.locator = None
 
     def setDocumentLocator(self, locator):
@@ -130,9 +131,9 @@ class IDLHandler(xml.sax.handler.ContentHandler):
                     attributes['name'])
             label = attributes['reporter:label']
             if not self.entities.has_key(label):
-                self.entities[label] = [(lineno, str(entity))]
+                self.entities[label] = [(str(entity), lineno)]
             else:
-                self.entities[label].append((lineno, str(entity)))
+                self.entities[label].append((str(entity), lineno))
 
         # Now we'll render an entity-ized version of this element
         element = "<%s" % (name)
@@ -198,7 +199,7 @@ def main():
         if options.outfile:
             outfile = open(options.outfile, 'w')
             for entity in pot.definitions: 
-                outfile.write(entity)
+                outfile.write(entity + "\n")
         else:
             for entity in pot.definitions:
                 print(entity)
@@ -206,7 +207,7 @@ def main():
     elif options.convert:
         pot.get_strings(options.convert)
         if options.outfile:
-            outfile = open(options.outfile)
+            outfile = open(options.outfile, 'w')
             outfile.write(pot.idl)
         else:
             sys.stdout.write(pot.idl)

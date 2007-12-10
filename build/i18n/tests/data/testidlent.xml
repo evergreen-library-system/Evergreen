@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE fieldmapper [
+    <!--#include virtual="/opac/locale/${locale}/fm_IDL.dtd"--> 
+]>
+<IDL xmlns:reporter='http://open-ils.org/spec/opensrf/IDL/reporter/v1' xmlns:oils_obj='http://open-ils.org/spec/opensrf/IDL/objects/v1' xmlns='http://opensrf.org/spec/IDL/base/v1' xmlns:oils_persist='http://open-ils.org/spec/opensrf/IDL/persistence/v1'>
+
+	
+	<class oils_obj:fieldmapper='money::user_payment_summary' controller='open-ils.cstore' id='mups' oils_persist:virtual='true'>
+		<fields>
+			<field oils_persist:virtual='true' name='isnew' oils_obj:array_position='0' />
+			<field oils_persist:virtual='true' name='ischanged' oils_obj:array_position='1' />
+			<field oils_persist:virtual='true' name='isdeleted' oils_obj:array_position='2' />
+			<field oils_persist:virtual='true' name='usr' oils_obj:array_position='3' />
+			<field oils_persist:virtual='true' name='forgive_payment' oils_obj:array_position='4' />
+			<field oils_persist:virtual='true' name='work_payment' oils_obj:array_position='5' />
+			<field oils_persist:virtual='true' name='credit_payment' oils_obj:array_position='6' />
+			<field oils_persist:virtual='true' name='goods_payment' oils_obj:array_position='7' />
+		</fields>
+		<links>
+			<link field='usr' reltype='has_a' class='au' key='id' map='' />
+		</links>
+	</class>
+	
+	<class oils_obj:fieldmapper='actor::usr_org_unit_opt_in' reporter:label='&class.auoi.label;' controller='open-ils.cstore' oils_persist:tablename='actor.usr_org_unit_opt_in' id='auoi'>
+		<fields oils_persist:sequence='actor.usr_org_unit_opt_in_id_seq' oils_persist:primary='id'>
+			<field oils_persist:virtual='true' name='isnew' oils_obj:array_position='0' />
+			<field oils_persist:virtual='true' name='ischanged' oils_obj:array_position='1' />
+			<field oils_persist:virtual='true' name='isdeleted' oils_obj:array_position='2' />
+			<field reporter:label='&field.auoi.id.label;' oils_persist:virtual='false' name='id' reporter:datatype='id' oils_obj:array_position='3' />
+			<field reporter:label='&field.auoi.opt_in_ws.label;' oils_persist:virtual='false' name='opt_in_ws' reporter:datatype='link' oils_obj:array_position='4' />
+			<field reporter:label='&field.auoi.staff.label;' oils_persist:virtual='false' name='staff' reporter:datatype='link' oils_obj:array_position='5' />
+			<field reporter:label='&field.auoi.usr.label;' oils_persist:virtual='false' name='usr' reporter:datatype='link' oils_obj:array_position='6' />
+			<field reporter:label='&field.auoi.org_unit.label;' oils_persist:virtual='false' name='org_unit' reporter:datatype='link' oils_obj:array_position='7' />
+			<field reporter:label='&field.auoi.opt_in_ts.label;' oils_persist:virtual='false' name='opt_in_ts' reporter:datatype='timestamp' oils_obj:array_position='8' />
+		</fields>
+		<links>
+			<link field='org_unit' reltype='has_a' class='aou' key='id' map='' />
+			<link field='usr' reltype='has_a' class='au' key='id' map='' />
+			<link field='staff' reltype='has_a' class='au' key='id' map='' />
+			<link field='opt_in_ws' reltype='has_a' class='aws' key='id' map='' />
+		</links>
+	</class>
+	<class oils_obj:fieldmapper='actor::workstation' reporter:label='&class.aws.label;' controller='open-ils.cstore' oils_persist:tablename='actor.workstation' id='aws'>
+		<fields oils_persist:sequence='actor.workstation_id_seq' oils_persist:primary='id'>
+			<field oils_persist:virtual='true' name='isnew' oils_obj:array_position='0' />
+			<field oils_persist:virtual='true' name='ischanged' oils_obj:array_position='1' />
+			<field oils_persist:virtual='true' name='isdeleted' oils_obj:array_position='2' />
+			<field reporter:label='&field.aws.id.label;' oils_persist:virtual='false' name='id' reporter:datatype='id' oils_obj:array_position='3' />
+			<field reporter:label='&field.aws.name.label;' oils_persist:virtual='false' name='name' reporter:datatype='text' oils_obj:array_position='4' />
+			<field reporter:label='&field.aws.owning_lib.label;' oils_persist:virtual='false' name='owning_lib' reporter:datatype='org_unit' oils_obj:array_position='5' />
+		</fields>
+		<links>
+			<link field='owning_lib' reltype='has_a' class='aou' key='id' map='' />
+		</links>
+	</class>
+	<class reporter:label='&class.rodcirc.label;' oils_persist:tablename='reporter.overdue_circs' reporter:core='true' oils_obj:fieldmapper='reporter::overdue_circs' controller='open-ils.reporter-store' id='rodcirc'>
+		<fields oils_persist:sequence='money.billable_xact_id_seq' oils_persist:primary='id'>
+			<field oils_persist:virtual='true' name='isnew' oils_obj:array_position='0' />
+			<field oils_persist:virtual='true' name='ischanged' oils_obj:array_position='1' />
+			<field oils_persist:virtual='true' name='isdeleted' oils_obj:array_position='2' />
+			<field reporter:label='&field.rodcirc.checkin_lib.label;' oils_persist:virtual='false' name='checkin_lib' reporter:datatype='org_unit' oils_obj:array_position='3' />
+			<field reporter:label='&field.rodcirc.checkin_staff.label;' oils_persist:virtual='false' name='checkin_staff' reporter:datatype='link' oils_obj:array_position='4' />
+			<field reporter:label='&field.rodcirc.checkin_time.label;' oils_persist:virtual='false' name='checkin_time' reporter:datatype='timestamp' oils_obj:array_position='5' />
+			<field reporter:label='&field.rodcirc.circ_lib.label;' oils_persist:virtual='false' name='circ_lib' reporter:datatype='org_unit' oils_obj:array_position='6' />
+			<field reporter:label='&field.rodcirc.circ_staff.label;' oils_persist:virtual='false' name='circ_staff' reporter:datatype='link' oils_obj:array_position='7' />
+			<field reporter:label='&field.rodcirc.desk_renewal.label;' oils_persist:virtual='false' name='desk_renewal' reporter:datatype='bool' oils_obj:array_position='8' />
+			<field reporter:label='&field.rodcirc.due_date.label;' oils_persist:virtual='false' name='due_date' reporter:datatype='timestamp' oils_obj:array_position='9' />
+			<field reporter:label='&field.rodcirc.duration.label;' oils_persist:virtual='false' name='duration' reporter:datatype='interval' oils_obj:array_position='10' />
+			<field reporter:label='&field.rodcirc.duration_rule.label;' oils_persist:virtual='false' name='duration_rule' reporter:datatype='link' oils_obj:array_position='11' />
+			<field reporter:label='&field.rodcirc.fine_interval.label;' oils_persist:virtual='false' name='fine_interval' reporter:datatype='interval' oils_obj:array_position='12' />
+			<field reporter:label='&field.rodcirc.id.label;' oils_persist:virtual='false' name='id' reporter:datatype='id' oils_obj:array_position='13' />
+			<field reporter:label='&field.rodcirc.max_fine.label;' oils_persist:virtual='false' name='max_fine' reporter:datatype='money' oils_obj:array_position='14' />
+			<field reporter:label='&field.rodcirc.max_fine_rule.label;' oils_persist:virtual='false' name='max_fine_rule' reporter:datatype='link' oils_obj:array_position='15' />
+			<field reporter:label='&field.rodcirc.opac_renewal.label;' oils_persist:virtual='false' name='opac_renewal' reporter:datatype='bool' oils_obj:array_position='16' />
+			<field reporter:label='&field.rodcirc.phone_renewal.label;' oils_persist:virtual='false' name='phone_renewal' reporter:datatype='bool' oils_obj:array_position='17' />
+			<field reporter:label='&field.rodcirc.recuring_fine.label;' oils_persist:virtual='false' name='recuring_fine' reporter:datatype='money' oils_obj:array_position='18' />
+			<field reporter:label='&field.rodcirc.recuring_fine_rule.label;' oils_persist:virtual='false' name='recuring_fine_rule' reporter:datatype='link' oils_obj:array_position='19' />
+			<field reporter:label='&field.rodcirc.renewal_remaining.label;' oils_persist:virtual='false' name='renewal_remaining' reporter:datatype='int' oils_obj:array_position='20' />
+			<field reporter:label='&field.rodcirc.stop_fines.label;' oils_persist:virtual='false' name='stop_fines' reporter:datatype='text' oils_obj:array_position='21' />
+			<field reporter:label='&field.rodcirc.stop_fines_time.label;' oils_persist:virtual='false' name='stop_fines_time' reporter:datatype='timestamp' oils_obj:array_position='22' />
+			<field reporter:label='&field.rodcirc.target_copy.label;' oils_persist:virtual='false' name='target_copy' reporter:datatype='link' oils_obj:array_position='23' />
+			<field reporter:label='&field.rodcirc.usr.label;' oils_persist:virtual='false' name='usr' reporter:datatype='link' oils_obj:array_position='24' />
+			<field reporter:label='&field.rodcirc.xact_finish.label;' oils_persist:virtual='false' name='xact_finish' reporter:datatype='timestamp' oils_obj:array_position='25' />
+			<field reporter:label='&field.rodcirc.xact_start.label;' oils_persist:virtual='false' name='xact_start' reporter:datatype='timestamp' oils_obj:array_position='26' />
+			<field reporter:label='&field.rodcirc.billings.label;' oils_persist:virtual='true' name='billings' reporter:datatype='link' oils_obj:array_position='27' />
+			<field reporter:label='&field.rodcirc.payments.label;' oils_persist:virtual='true' name='payments' reporter:datatype='link' oils_obj:array_position='28' />
+			<field reporter:label='&field.rodcirc.billable_transaction.label;' oils_persist:virtual='true' name='billable_transaction' reporter:datatype='link' oils_obj:array_position='29' />
+			<field reporter:label='&field.rodcirc.circ_type.label;' oils_persist:virtual='true' name='circ_type' reporter:datatype='text' oils_obj:array_position='30' />
+			<field reporter:label='&field.rodcirc.billing_total.label;' oils_persist:virtual='true' name='billing_total' reporter:datatype='money' oils_obj:array_position='31' />
+			<field reporter:label='&field.rodcirc.payment_total.label;' oils_persist:virtual='true' name='payment_total' reporter:datatype='money' oils_obj:array_position='32' />
+		</fields>
+		<links>
+			<link field='billable_transaction' reltype='might_have' class='mbt' key='id' map='' />
+			<link field='circ_staff' reltype='has_a' class='au' key='id' map='' />
+			<link field='checkin_lib' reltype='has_a' class='aou' key='id' map='' />
+			<link field='target_copy' reltype='has_a' class='acp' key='id' map='' />
+			<link field='checkin_staff' reltype='has_a' class='au' key='id' map='' />
+			<link field='usr' reltype='has_a' class='au' key='id' map='' />
+			<link field='circ_lib' reltype='has_a' class='aou' key='id' map='' />
+			<link field='payments' reltype='has_many' class='mp' key='xact' map='' />
+			<link field='billings' reltype='has_many' class='mb' key='xact' map='' />
+			<link field='duration_rule' reltype='has_a' class='crcd' key='name' map='' />
+			<link field='max_fine_rule' reltype='has_a' class='crmf' key='name' map='' />
+			<link field='recuring_fine_rule' reltype='has_a' class='crrf' key='name' map='' />
+			<link field='circ_type' reltype='might_have' class='rcirct' key='id' map='' />
+			<link field='billing_total' reltype='might_have' class='rxbt' key='xact' map='' />
+			<link field='payment_total' reltype='might_have' class='rxpt' key='xact' map='' />
+		</links>
+	</class>
+</IDL>

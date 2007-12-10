@@ -74,7 +74,7 @@ class TestBaseL10N(unittest.TestCase):
 
     def testsavepot(self):
         """
-        Save a generated POT file and compate to a known good one
+        Save a generated POT file and compare to a known good one
         """
         import basel10n
         pogen = basel10n.BaseL10N()
