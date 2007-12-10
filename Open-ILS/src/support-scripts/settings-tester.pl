@@ -153,14 +153,17 @@ foreach my $driver_node (@drivers) {
 		$language = $lang_nodes[0]->findvalue("child::text()");
 	}
 	if ($driver eq "pgsql") {
-		if ($language eq "C") {
+		if ($driver_xpath =~ m#/reporter/#) {
+			$result = "* ERROR: reporter application must use driver 'Pg', but '$driver' is defined\n";
+			warn $result;
+		} elsif ($language eq "C") {
 			$result = "* OK: $driver language is $language in $lang_xpath\n";
 		} else {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
 		}
 	} elsif ($driver eq "Pg") {
-		if ($driver_xpath =~ /reporter/) {
+		if ($driver_xpath =~ m#/reporter/#) {
 			$result = "* OK: $driver language is undefined for reporter base configuration\n";
 		} elsif ($language eq "perl") {
 			$result = "* OK: $driver language is $language in $lang_xpath\n";
