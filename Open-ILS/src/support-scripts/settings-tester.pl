@@ -241,7 +241,7 @@ sub test_db_connect {
 
 sub check_libdbd {
 	my $results = '';
-	my @location = `locate libdbdpgsql.so |grep -v home`; # simple(ton) attempt to filter out build versions
+	my @location = `locate libdbdpgsql.so | grep -v home | grep -v .libs`; # simple(ton) attempt to filter out build versions
 	if (scalar(@location) > 1) {
 
 		my $res = "Found more than one location for libdbdpgsql.so.
