@@ -104,7 +104,7 @@ class SQL(basel10n.BaseL10N):
         """
 
         insert = "INSERT INTO config.i18n_core (fq_field, identity_value," \
-            "translation, string) VALUES ('%s', '%s', '%s', '%s');"
+            " translation, string) VALUES ('%s', '%s', '%s', '%s');"
         for entry in self.pot:
             for table in entry.occurences:
                 # Escape SQL single-quotes to avoid b0rkage
@@ -148,7 +148,7 @@ def main():
         else:
             outfile = open(options.outfile, 'w')
         for insert in pot.sql: 
-            outfile.write(insert)
+            outfile.write(insert + "\n")
     else:
         opts.print_help()
 

@@ -12,7 +12,7 @@ import os
 import polib
 import re
 import subprocess
-import sys
+import testhelper
 import unittest
 
 class TestIDLL10N(unittest.TestCase):
@@ -30,17 +30,10 @@ class TestIDLL10N(unittest.TestCase):
     testpo = os.path.join(basedir, 'data/testidl.po')
 
     def setUp(self):
-        sys.path.append(os.path.join(self.basedir, '../scripts/'))
-        self.tearDown()
-        for dir in self.tmpdirs:
-            os.mkdir(dir)
+        testhelper.setUp(self)
 
     def tearDown(self):
-        for dir in self.tmpdirs:
-            if os.access(dir, os.F_OK):
-                for file in os.listdir(dir):
-                    os.remove(os.path.join(dir, file))
-                os.rmdir(dir)
+        testhelper.tearDown(self)
 
     def testentityize(self):
         """
@@ -64,8 +57,9 @@ class TestIDLL10N(unittest.TestCase):
             '--output', self.savepot),
             0, None, None, devnull, devnull).wait()
 
-        mungepothead(self.savepot)
-        mungepothead(self.testpot)
+        # Avoid timestamp mismatches
+        testhelper.mungepothead(self.savepot)
+        testhelper.mungepothead(self.testpot)
 
         self.assertEqual(filecmp.cmp(self.savepot, self.testpot), 1)
 
@@ -79,24 +73,6 @@ class TestIDLL10N(unittest.TestCase):
             '--output', self.saveentities),
             0, None, None, devnull, devnull).wait()
         self.assertEqual(filecmp.cmp(self.saveentities, self.idlentities), 1)
-
-
-def mungepothead(file):
-    """
-    Change POT header to avoid annoying timestamp mismatch
-    """
-    lines = [] 
-    mungefile = open(file)
-    for line in mungefile:
-        line = re.sub(r'^("POT-Creation-Date: ).+"$', r'\1', line)
-        lines.append(line)
-    mungefile.close()
-
-    # Write the changed lines back out
-    mungefile = open(file, 'w')
-    for line in lines:
-        mungefile.write(line)
-    mungefile.close()
 
 if __name__ == '__main__':
     unittest.main()

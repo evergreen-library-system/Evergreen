@@ -1,0 +1,14 @@
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.bib_source', 'oclc', 'zz-ZZ', 'OCLC');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.bib_source', 'System Local', 'zz-ZZ', 'Lorem ipsum');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.bib_source', 'Project Gutenberg', 'zz-ZZ', 'Projekt Runeberg');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.standing', 'Good', 'zz-ZZ', 'Gut');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.standing', 'Barred', 'zz-ZZ', 'största');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Preschool', 'zz-ZZ', 'årligen');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Primary', 'zz-ZZ', 'bläddra');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Pre-adolescent', 'zz-ZZ', 'hjälp');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Adolescent', 'zz-ZZ', 'utgåvor');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Adult', 'zz-ZZ', 'öppet');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Specialized', 'zz-ZZ', 'datorföreningen');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'General', 'zz-ZZ', 'skapa');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('config.audience_map', 'Juvenile', 'zz-ZZ', 'klassisk');
+INSERT INTO config.i18n_core (fq_field, identity_value, translation, string) VALUES ('asset.copy_location', 'Stacks', 'zz-ZZ', 'Linköping');

@@ -1,0 +1,72 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Evergreen 1.4"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org"
+"POT-Creation-Date: 
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>"
+"Language-Team: LANGUAGE <LL@li.org>"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=utf-8"
+"Content-Transfer-Encoding: 8-bit"
+
+#: config.bib_source:3
+msgid "oclc"
+msgstr ""
+
+#: config.bib_source:4
+msgid "System Local"
+msgstr ""
+
+#: config.bib_source:5
+msgid "Project Gutenberg"
+msgstr ""
+
+#: config.standing:7
+msgid "Good"
+msgstr ""
+
+#: config.standing:8
+msgid "Barred"
+msgstr ""
+
+#: config.audience_map:31
+msgid "Unknown or unspecified"
+msgstr ""
+
+#: config.audience_map:32
+msgid "Preschool"
+msgstr ""
+
+#: config.audience_map:33
+msgid "Primary"
+msgstr ""
+
+#: config.audience_map:34
+msgid "Pre-adolescent"
+msgstr ""
+
+#: config.audience_map:35
+msgid "Adolescent"
+msgstr ""
+
+#: config.audience_map:36
+msgid "Adult"
+msgstr ""
+
+#: config.audience_map:37
+msgid "Specialized"
+msgstr ""
+
+#: config.audience_map:38
+msgid "General"
+msgstr ""
+
+#: config.audience_map:39
+msgid "Juvenile"
+msgstr ""
+
+#: asset.copy_location:48
+msgid "Stacks"
+msgstr ""
