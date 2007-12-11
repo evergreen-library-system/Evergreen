@@ -205,6 +205,32 @@ function writeConfig {
 	_write '$main::config{index} = "config.cgi";';
 
 
+    # --------------------------------------------------------------------
+	# Now we'll write out the offline config
+	CONFIG_FILE='Open-ILS/src/offline/offline-config.pl';
+	rm -f "$CONFIG_FILE";
+	echo "Writing bootstrapping config to $CONFIG_FILE...";
+
+    _write "\$main::config{base_dir} = '$PREFIX/var/data/offline/';";
+    _write "\$main::config{bootstrap} = '$ETCDIR/opensrf_core.xml';";
+
+	STR='$main::config{dsn} =';
+		STR="$STR 'dbi:${DBDRVR}:host=";
+		STR="${STR}${DBHOST};dbname=";
+		STR="${STR}${DBNAME};port=";
+		STR="${STR}${DBPORT}';";
+	_write "$STR"
+
+	STR='$main::config{usr} =';
+		STR="$STR '$DBUSER';";
+	_write "$STR"
+	
+	STR='$main::config{pw} =';
+		STR="$STR '$DBPW';";
+	_write "$STR"
+    # --------------------------------------------------------------------
+	
+
 	prompt "";
 	prompt "";
 	prompt "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
