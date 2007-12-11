@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org"
-"POT-Creation-Date: 2007-12-04 05:12:22 -0400"
+"POT-Creation-Date: 2007-12-10 21:54:29-0400"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>"
 "Language-Team: LANGUAGE <LL@li.org>"
@@ -2327,518 +2327,518 @@ msgstr ""
 msgid "Computer file"
 msgstr ""
 
-#: actor.usr:637
-msgid "Administrator"
-msgstr ""
-
-#: actor.org_unit_type:643
+#: actor.org_unit_type:638
 msgid "Consortium"
 msgstr ""
 
-#: actor.org_unit_type:644
+#: actor.org_unit_type:639
 msgid "System"
 msgstr ""
 
-#: actor.org_unit_type:646
+#: actor.org_unit_type:641
 msgid "Branch"
 msgstr ""
 
-#: actor.org_unit_type:647
+#: actor.org_unit_type:642
 msgid "Sub-lib"
 msgstr ""
 
-#: actor.org_unit_type:648
+#: actor.org_unit_type:643
 msgid "Bookmobile"
 msgstr ""
 
-#: actor.org_unit:651
+#: actor.org_unit:646
 msgid "Example Consortium"
 msgstr ""
 
-#: actor.org_unit:652
+#: actor.org_unit:647
 msgid "Example System 1"
 msgstr ""
 
-#: actor.org_unit:653
+#: actor.org_unit:648
 msgid "Example System 2"
 msgstr ""
 
-#: actor.org_unit:654
+#: actor.org_unit:649
 msgid "Example Branch 1"
 msgstr ""
 
-#: actor.org_unit:655
+#: actor.org_unit:650
 msgid "Example Branch 2"
 msgstr ""
 
-#: actor.org_unit:656
+#: actor.org_unit:651
 msgid "Example Branch 3"
 msgstr ""
 
-#: actor.org_unit:657
+#: actor.org_unit:652
 msgid "Example Branch 4"
 msgstr ""
 
-#: actor.org_unit:658
+#: actor.org_unit:653
 msgid "Example Sub-lib 1"
 msgstr ""
 
-#: actor.org_unit:659
+#: actor.org_unit:654
 msgid "Example Bookmobile 1"
 msgstr ""
 
-#: actor.org_address:661
+#: actor.org_address:656
 msgid "123 Main St."
 msgstr ""
 
-#: permission.perm_list:673
+#: actor.usr:661
+msgid "Administrator"
+msgstr ""
+
+#: permission.perm_list:674
 msgid "User is allowed to place a hold on a specific copy"
 msgstr ""
 
-#: permission.perm_list:676
+#: permission.perm_list:677
 msgid "Allows a user to view another user's holds"
 msgstr ""
 
-#: permission.perm_list:678
+#: permission.perm_list:679
 msgid "Allows a user to update another user's hold"
 msgstr ""
 
-#: permission.perm_list:683
+#: permission.perm_list:684
 msgid "User is allowed to create new MARC records"
 msgstr ""
 
-#: permission.perm_list:703
+#: permission.perm_list:704
 msgid "User may create new billable transactions"
 msgstr ""
 
-#: permission.perm_list:704
+#: permission.perm_list:705
 msgid "Allows a user to create a new bill on a transaction"
 msgstr ""
 
-#: permission.perm_list:705
+#: permission.perm_list:706
 msgid "Allows a user to view another user's containers (buckets)"
 msgstr ""
 
-#: permission.perm_list:706
+#: permission.perm_list:707
 msgid "Allows a user to create a new container for another user"
 msgstr ""
 
-#: permission.perm_list:707
+#: permission.perm_list:708
 msgid "User is allowed to create a new copy object"
 msgstr ""
 
-#: permission.perm_list:708
+#: permission.perm_list:709
 msgid "Allows a user to change org unit settings"
 msgstr ""
 
-#: permission.perm_list:709
+#: permission.perm_list:710
 msgid "Allows a user to see what another use has checked out"
 msgstr ""
 
-#: permission.perm_list:710
+#: permission.perm_list:711
 msgid "User may view another user's transactions"
 msgstr ""
 
-#: permission.perm_list:711
+#: permission.perm_list:712
 msgid "Allows a user to delete another user container"
 msgstr ""
 
-#: permission.perm_list:712
+#: permission.perm_list:713
 msgid "Create a container item for another user"
 msgstr ""
 
-#: permission.perm_list:713
+#: permission.perm_list:714
 msgid "User can add other users to permission groups"
 msgstr ""
 
-#: permission.perm_list:714
+#: permission.perm_list:715
 msgid "User can remove other users from permission groups"
 msgstr ""
 
-#: permission.perm_list:715
+#: permission.perm_list:716
 msgid "Allow user to view others' permission groups"
 msgstr ""
 
-#: permission.perm_list:716
+#: permission.perm_list:717
 msgid "Allows a user to determine of another user can checkout an item"
 msgstr ""
 
-#: permission.perm_list:717
+#: permission.perm_list:718
 msgid "Allows a user to edit copies in batch"
 msgstr ""
 
-#: permission.perm_list:718
+#: permission.perm_list:719
 msgid "User may create a new patron statistical category"
 msgstr ""
 
-#: permission.perm_list:719
+#: permission.perm_list:720
 msgid "User may create a copy stat cat"
 msgstr ""
 
-#: permission.perm_list:720
+#: permission.perm_list:721
 msgid "User may create a new patron stat cat entry"
 msgstr ""
 
-#: permission.perm_list:721
+#: permission.perm_list:722
 msgid "User may create a new copy stat cat entry"
 msgstr ""
 
-#: permission.perm_list:722
+#: permission.perm_list:723
 msgid "User may update a patron stat cat"
 msgstr ""
 
-#: permission.perm_list:723
+#: permission.perm_list:724
 msgid "User may update a copy stat cat"
 msgstr ""
 
-#: permission.perm_list:724
+#: permission.perm_list:725
 msgid "User may update a patron stat cat entry"
 msgstr ""
 
-#: permission.perm_list:725
+#: permission.perm_list:726
 msgid "User may update a copy stat cat entry"
 msgstr ""
 
-#: permission.perm_list:726
+#: permission.perm_list:727
 msgid "User may link a copy to a stat cat entry"
 msgstr ""
 
-#: permission.perm_list:727
+#: permission.perm_list:728
 msgid "User may link another user to a stat cat entry"
 msgstr ""
 
-#: permission.perm_list:728
+#: permission.perm_list:729
 msgid "User may delete a patron stat cat"
 msgstr ""
 
-#: permission.perm_list:729
+#: permission.perm_list:730
 msgid "User may delete a copy stat cat"
 msgstr ""
 
-#: permission.perm_list:730
+#: permission.perm_list:731
 msgid "User may delete a patron stat cat entry"
 msgstr ""
 
-#: permission.perm_list:731
+#: permission.perm_list:732
 msgid "User may delete a copy stat cat entry"
 msgstr ""
 
-#: permission.perm_list:732
+#: permission.perm_list:733
 msgid "User may delete a patron stat cat entry map"
 msgstr ""
 
-#: permission.perm_list:733
+#: permission.perm_list:734
 msgid "User may delete a copy stat cat entry map"
 msgstr ""
 
-#: permission.perm_list:734
+#: permission.perm_list:735
 msgid "Allows a user to create a new non-cataloged item type"
 msgstr ""
 
-#: permission.perm_list:735
+#: permission.perm_list:736
 msgid "Allows a user to update a non cataloged type"
 msgstr ""
 
-#: permission.perm_list:736
+#: permission.perm_list:737
 msgid "Allows a user to create a new in-house-use "
 msgstr ""
 
-#: permission.perm_list:737
+#: permission.perm_list:738
 msgid "Allows a user to check out a copy"
 msgstr ""
 
-#: permission.perm_list:738
+#: permission.perm_list:739
 msgid "Allows a user to create a new copy location"
 msgstr ""
 
-#: permission.perm_list:739
+#: permission.perm_list:740
 msgid "Allows a user to update a copy location"
 msgstr ""
 
-#: permission.perm_list:740
+#: permission.perm_list:741
 msgid "Allows a user to delete a copy location"
 msgstr ""
 
-#: permission.perm_list:741
+#: permission.perm_list:742
 msgid "Allows a user to create a transit_copy object for transiting a copy"
 msgstr ""
 
-#: permission.perm_list:742
+#: permission.perm_list:743
 msgid "Allows a user to close out a transit on a copy"
 msgstr ""
 
-#: permission.perm_list:743
+#: permission.perm_list:744
 msgid "Allows a user to see if another user has permission to place a hold on a given copy"
 msgstr ""
 
-#: permission.perm_list:744
+#: permission.perm_list:745
 msgid "Allows a user to view which users have checked out a given copy"
 msgstr ""
 
-#: permission.perm_list:745
+#: permission.perm_list:746
 msgid "Allows a user to perform z3950 queries against remote servers"
 msgstr ""
 
-#: permission.perm_list:746
+#: permission.perm_list:747
 msgid "Allows a user to register a new workstation"
 msgstr ""
 
-#: permission.perm_list:747
+#: permission.perm_list:748
 msgid "Allows a user to view all notes attached to a copy"
 msgstr ""
 
-#: permission.perm_list:748
+#: permission.perm_list:749
 msgid "Allows a user to view all notes attached to a volume"
 msgstr ""
 
-#: permission.perm_list:749
+#: permission.perm_list:750
 msgid "Allows a user to view all notes attached to a title"
 msgstr ""
 
-#: permission.perm_list:750
+#: permission.perm_list:751
 msgid "Allows a user to create a new volume note"
 msgstr ""
 
-#: permission.perm_list:751
+#: permission.perm_list:752
 msgid "Allows a user to create a new copy note"
 msgstr ""
 
-#: permission.perm_list:752
+#: permission.perm_list:753
 msgid "Allows a user to create a new title note"
 msgstr ""
 
-#: permission.perm_list:753
+#: permission.perm_list:754
 msgid "Allows a user to delete someone elses copy notes"
 msgstr ""
 
-#: permission.perm_list:754
+#: permission.perm_list:755
 msgid "Allows a user to delete someone elses volume note"
 msgstr ""
 
-#: permission.perm_list:755
+#: permission.perm_list:756
 msgid "Allows a user to delete someone elses title note"
 msgstr ""
 
-#: permission.perm_list:756
+#: permission.perm_list:757
 msgid "Allows a user to update another users container"
 msgstr ""
 
-#: permission.perm_list:757
+#: permission.perm_list:758
 msgid "Allows a user to create a container for themselves"
 msgstr ""
 
-#: permission.perm_list:758
+#: permission.perm_list:759
 msgid "Allows a user to view notifications attached to a hold"
 msgstr ""
 
-#: permission.perm_list:759
+#: permission.perm_list:760
 msgid "Allows a user to create new hold notifications"
 msgstr ""
 
-#: permission.perm_list:760
+#: permission.perm_list:761
 msgid "Allows a user to update an org unit setting"
 msgstr ""
 
-#: permission.perm_list:761
+#: permission.perm_list:762
 msgid "Allows a user to upload an offline script"
 msgstr ""
 
-#: permission.perm_list:762
+#: permission.perm_list:763
 msgid "Allows a user to view uploaded offline script information"
 msgstr ""
 
-#: permission.perm_list:763
+#: permission.perm_list:764
 msgid "Allows a user to execute an offline script batch"
 msgstr ""
 
-#: permission.perm_list:764
+#: permission.perm_list:765
 msgid "Allows a user to change set the due date on an item to any date"
 msgstr ""
 
-#: permission.perm_list:765
+#: permission.perm_list:766
 msgid "Allows a user to bypass the circ permit call for checkout"
 msgstr ""
 
-#: permission.perm_list:766
+#: permission.perm_list:767
 msgid "Allows a user to override the copy_is_reference event"
 msgstr ""
 
-#: permission.perm_list:767
+#: permission.perm_list:768
 msgid "Allows a user to void a bill"
 msgstr ""
 
-#: permission.perm_list:768
+#: permission.perm_list:769
 msgid "Allows a person to check in/out an item that is claims returned"
 msgstr ""
 
-#: permission.perm_list:769
+#: permission.perm_list:770
 msgid "Allows a user to check out an item in a non-circulatable status"
 msgstr ""
 
-#: permission.perm_list:770
+#: permission.perm_list:771
 msgid "Allows a user to check in/out an item that has an alert message"
 msgstr ""
 
-#: permission.perm_list:771
+#: permission.perm_list:772
 msgid "Allows a user to remove the lost status from a copy"
 msgstr ""
 
-#: permission.perm_list:772
+#: permission.perm_list:773
 msgid "Allows a user to change the missing status on a copy"
 msgstr ""
 
-#: permission.perm_list:773
+#: permission.perm_list:774
 msgid "Allows a user to abort a copy transit if the user is at the transit destination or source"
 msgstr ""
 
-#: permission.perm_list:774
+#: permission.perm_list:775
 msgid "Allows a user to abort a copy transit if the user is not at the transit source or dest"
 msgstr ""
 
-#: permission.perm_list:775
+#: permission.perm_list:776
 msgid "Allowsa user to query the zip code data method"
 msgstr ""
 
-#: permission.perm_list:777
+#: permission.perm_list:778
 msgid "Allows a user to create duplicate holds (e.g. two holds on the same title)"
 msgstr ""
 
-#: permission.perm_list:778
+#: permission.perm_list:779
 msgid "Allows a user to update a closed date interval for a given location"
 msgstr ""
 
-#: permission.perm_list:779
+#: permission.perm_list:780
 msgid "Allows a user to remove a closed date interval for a given location"
 msgstr ""
 
-#: permission.perm_list:780
+#: permission.perm_list:781
 msgid "Allows a user to create a new closed date for a location"
 msgstr ""
 
-#: permission.perm_list:781
+#: permission.perm_list:782
 msgid "Allows a user to delete a non cataloged type"
 msgstr ""
 
-#: permission.perm_list:782
+#: permission.perm_list:783
 msgid "Allows a user to put someone into collections"
 msgstr ""
 
-#: permission.perm_list:783
+#: permission.perm_list:784
 msgid "Allows a user to remove someone from collections"
 msgstr ""
 
-#: permission.perm_list:784
+#: permission.perm_list:785
 msgid "Allows a user to bar a patron"
 msgstr ""
 
-#: permission.perm_list:785
+#: permission.perm_list:786
 msgid "Allows a user to un-bar a patron"
 msgstr ""
 
-#: permission.perm_list:786
+#: permission.perm_list:787
 msgid "Allows a user to remove an existing workstation so a new one can replace it"
 msgstr ""
 
-#: permission.perm_list:787
+#: permission.perm_list:788
 msgid "Allows a user to add/remove users to/from the "User" group"
 msgstr ""
 
-#: permission.perm_list:788
+#: permission.perm_list:789
 msgid "Allows a user to add/remove users to/from the "Patron" group"
 msgstr ""
 
-#: permission.perm_list:789
+#: permission.perm_list:790
 msgid "Allows a user to add/remove users to/from the "Staff" group"
 msgstr ""
 
-#: permission.perm_list:790
+#: permission.perm_list:791
 msgid "Allows a user to add/remove users to/from the "Circulator" group"
 msgstr ""
 
-#: permission.perm_list:791
+#: permission.perm_list:792
 msgid "Allows a user to add/remove users to/from the "Cataloger" group"
 msgstr ""
 
-#: permission.perm_list:792
+#: permission.perm_list:793
 msgid "Allows a user to add/remove users to/from the "GlobalAdmin" group"
 msgstr ""
 
-#: permission.perm_list:793
+#: permission.perm_list:794
 msgid "Allows a user to add/remove users to/from the "LocalAdmin" group"
 msgstr ""
 
-#: permission.perm_list:794
+#: permission.perm_list:795
 msgid "Allows a user to add/remove users to/from the "LibraryManager" group"
 msgstr ""
 
-#: permission.perm_list:795
+#: permission.perm_list:796
 msgid "Allows a user to add/remove users to/from the "Cat1" group"
 msgstr ""
 
-#: permission.perm_list:796
+#: permission.perm_list:797
 msgid "Allows a user to add/remove users to/from the "Supercat" group"
 msgstr ""
 
-#: permission.perm_list:797
+#: permission.perm_list:798
 msgid "Allows a user to add/remove users to/from the "SIP-Client" group"
 msgstr ""
 
-#: permission.perm_list:798
+#: permission.perm_list:799
 msgid "Allows a user to add/remove users to/from the "Vendor" group"
 msgstr ""
 
-#: permission.perm_list:799
+#: permission.perm_list:800
 msgid "Allows a user to place a hold on an age-protected item"
 msgstr ""
 
-#: permission.perm_list:800
+#: permission.perm_list:801
 msgid "Allows a user to renew an item past the maximun renewal count"
 msgstr ""
 
-#: permission.perm_list:801
+#: permission.perm_list:802
 msgid "Allow staff to override checkout count failure"
 msgstr ""
 
-#: permission.perm_list:802
+#: permission.perm_list:803
 msgid "Allow staff to override overdue count failure"
 msgstr ""
 
-#: permission.perm_list:803
+#: permission.perm_list:804
 msgid "Allow staff to override fine amount checkout failure"
 msgstr ""
 
-#: permission.perm_list:806
+#: permission.perm_list:807
 msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 
-#: permission.perm_list:807
+#: permission.perm_list:808
 msgid "allows users to place multiple holds on a single title"
 msgstr ""
 
-#: permission.perm_list:808
+#: permission.perm_list:809
 msgid "Allows a users to run reports"
 msgstr ""
 
-#: permission.perm_list:809
+#: permission.perm_list:810
 msgid "Allows a user to share report his own folders"
 msgstr ""
 
-#: permission.perm_list:810
+#: permission.perm_list:811
 msgid "Allow user to view report output"
 msgstr ""
 
-#: permission.perm_list:811
+#: permission.perm_list:812
 msgid "Allows a user to checkout an item that is marked as non-circ"
 msgstr ""
 
-#: permission.perm_list:812
+#: permission.perm_list:813
 msgid "Allows a user to delete an item out of another user's container"
 msgstr ""
 
-#: permission.perm_list:813
+#: permission.perm_list:814
 msgid "Allow a staff member to define where another staff member has their permissions"
 msgstr ""
 
-#: asset.copy_location:943
+#: asset.copy_location:944
 msgid "Stacks"
 msgstr ""

@@ -3,10 +3,15 @@ POINDIR=po
 LOCALE=fr-CA
 DTDDIR=../../Open-ILS/web/opac/locale
 PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
+FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
+FMIDLOUT=fm_IDL.pot
+SQLSRC=../../Open-ILS/src/sql/Pg/950.data.seed-values.sql
+SQLOUT=db.seed.pot
 PROGRESS=--progress none
 
 # This Makefile can be used to generate and update PO files for Evergreen,
-# as well as generate updated DTD and JavaScript property files from the PO.
+# as well as generate updated SQL, fieldmapper IDL, DTD and JavaScript
+# property files from the PO.
 #
 # Usage:
 #
@@ -22,7 +27,7 @@ PROGRESS=--progress none
 newpo: dtds2po props2po
 	@echo "Generated new PO files for locale $(LOCALE)"
 
-newpot: dtds2pot props2pot sql2pot
+newpot: dtds2pot fmidl2pot props2pot sql2pot
 	@echo "Generated new POT files"
 
 newproject: po2dtds po2props
@@ -54,7 +59,10 @@ po2props:
 	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 sql2pot:
-	@python scripts/db-seed-i18n.py
+	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POOUTDIR)/$(SQLOUT)
+
+fmidl2pot:
+	@scripts/fieldmapper.py --pot $(FMIDLSRC) --output $(POOUTDIR)/$(FMIDLOUT)
 
 update_moz_dtds:
 	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
