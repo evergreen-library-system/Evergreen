@@ -2,9 +2,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Evergreen 1.4\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2007-11-19 13:21-0400\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-11 13:27-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -631,8 +631,8 @@ msgstr ""
 msgid "Pickup Location"
 msgstr ""
 
-#: myopac.holds.edit.cancel
-msgid "Edit/Cancel"
+#: myopac.holds.edit
+msgid "Edit"
 msgstr ""
 
 #: myopac.holds.status.none
@@ -649,10 +649,6 @@ msgstr ""
 
 #: myopac.holds.status.available
 msgid "Ready for Pickup"
-msgstr ""
-
-#: myopac.holds.edit
-msgid "Edit"
 msgstr ""
 
 #: myopac.holds.verify
@@ -911,7 +907,7 @@ msgid "Username update failed"
 msgstr ""
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces"
+msgid "Username cannot contain spaces or have the same format as a barcode"
 msgstr ""
 
 #: myopac.summary.email.error
@@ -1668,7 +1664,7 @@ msgid "Sort Results by Author"
 msgstr ""
 
 #: result.sort_by.pubdate
-msgid "Sort Results by Publicate Date"
+msgid "Sort Results by Publication Date"
 msgstr ""
 
 #: result.limit2avail

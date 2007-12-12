@@ -59,9 +59,9 @@ class TestBaseL10N(unittest.TestCase):
         poload.loadpo(self.canonpo)
         pogen = basel10n.BaseL10N()
         pogen.pothead('Evergreen 1.4', '1999-12-31 23:59:59 -0400')
-        pogen.pot.metadata['PO-Revision-Date'] = '2007-12-08 23:14:20 -0400'
-        pogen.pot.metadata['Last-Translator'] = ' Dan Scott <dscott@laurentian.ca>'
-        pogen.pot.metadata['Language-Team'] = 'fr-CA <LL@li.org>'
+        pogen.pot.metadata['PO-Revision-Date'] = '2007-12-08 23:14:20 -0400\\n'
+        pogen.pot.metadata['Last-Translator'] = ' Dan Scott <dscott@laurentian.ca>\\n'
+        pogen.pot.metadata['Language-Team'] = 'fr-CA <LL@li.org>\\n'
         for msg in self.poentries:
             poe = polib.POEntry()
             for x in msg['occurences']:
