@@ -25,23 +25,6 @@ function clear_the_cache() {
 	}
 }
 
-function pick_file(mode) {
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
-	fp.init( 
-		window, 
-		mode == 'open' ? "Import Transaction File" : "Save Transaction File As", 
-		mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
-	);
-	fp.appendFilters( nsIFilePicker.filterAll );
-	var fp_result = fp.show();
-	if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
-		return fp.file;
-	} else {
-		return null;
-	}
-}
-
 function main_init() {
 	dump('entering main_init()\n');
 	try {
@@ -138,7 +121,8 @@ function main_init() {
 			try {
 				JSAN.use('util.file'); var file = new util.file('pending_xacts');
 				if (file._file.exists()) {
-					var f = pick_file('save');
+                    var file2 = new util.file('');
+					var f = file2.pick_file( { 'mode' : 'save', 'title' : 'Save Transaction File As' } );
 					if (f) {
 						if (f.exists()) {
 							var r = G.error.yns_alert(
@@ -193,7 +177,8 @@ function main_init() {
 				if (file._file.exists()) {
 					alert('There are already outstanding transactions on this staff client.  Upload these first.');
 				} else {
-					var f = pick_file('open');
+                    var file2 = new util.file('');
+					var f = file2.pick_file( { 'mode' : 'open', 'title' : 'Import Transaction File'} );
 					if (f && f.exists()) {
 						var i_file = new util.file(''); i_file._file = f;
 						file.write_content( 'truncate', i_file.get_content() );
