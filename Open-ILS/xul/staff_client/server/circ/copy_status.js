@@ -288,29 +288,11 @@ circ.copy_status.prototype = {
 					'cmd_copy_status_upload_file' : [
 						['command'],
 						function() {
-							function pick_file(mode) {
-								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								var nsIFilePicker = Components.interfaces.nsIFilePicker;
-								var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
-								fp.init( 
-									window, 
-									mode == 'open' ? "Import Barcode File" : "Save Barcode File As", 
-									mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
-								);
-								fp.appendFilters( nsIFilePicker.filterAll );
-								var fp_result = fp.show();
-								if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
-									return fp.file;
-								} else {
-									return null;
-								}
-							}
 							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 							JSAN.use('util.file');
-							var f = pick_file('open');
-							var i_file = new util.file(''); i_file._file = f;
-							var content = i_file.get_content();
-							i_file.close();
+							var f = new util.file('');
+                            var content = f.import_file( { 'title' : 'Import Barcode File', 'not_json' : true } );
+                            if (!content) return;
 							var barcodes = content.split(/\s+/);
                 			if (barcodes.length > 0) {
 			                    JSAN.use('util.exec'); var exec = new util.exec();

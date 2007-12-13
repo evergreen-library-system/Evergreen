@@ -121,27 +121,6 @@ function my_init() {
 }
 
 /******************************************************************************************************/
-/* File picker for template export/import */
-
-function pick_file(mode) {
-	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
-	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
-	fp.init( 
-		window, 
-		mode == 'open' ? "Import Templates File" : "Save Templates File As", 
-		mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
-	);
-	fp.appendFilters( nsIFilePicker.filterAll );
-	var fp_result = fp.show();
-	if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
-		return fp.file;
-	} else {
-		return null;
-	}
-}
-
-/******************************************************************************************************/
 /* Retrieve Templates */
 
 g.retrieve_templates = function() {
@@ -265,28 +244,8 @@ g.delete_template = function() {
 g.export_templates = function() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		JSAN.use('util.file');
-		var f = pick_file('save');
-		if (f) {
-			if (f.exists()) {
-				var r = G.error.yns_alert(
-					'Would you like to overwrite the existing file ' + f.leafName + '?',
-					'Templates Export Warning',
-					'Yes',
-					'No',
-					null,
-					'Check here to confirm this message'
-				);
-				if (r != 0) { file.close(); alert('Not overwriting file.'); return; }
-			}
-			var e_file = new util.file(''); e_file._file = f;
-			e_file.write_content( 'truncate', js2JSON( g.templates ) );
-			e_file.close();
-			alert('Templates exported as file ' + f.leafName);
-		} else {
-			alert('File not chosen for export.');
-		}
-
+		JSAN.use('util.file'); var f = new util.file('');
+        f.export_file( { 'title' : 'Save Templates File As', 'data' : g.templates } );
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('Error exporting templates',E);
 	}
@@ -298,12 +257,9 @@ g.export_templates = function() {
 g.import_templates = function() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		JSAN.use('util.file');
-		var f = pick_file('open');
-		if (f && f.exists()) {
-			var i_file = new util.file(''); i_file._file = f;
-			var temp = JSON2js( i_file.get_content() );
-			i_file.close();
+		JSAN.use('util.file'); var f = new util.file('');
+        var temp = f.import_file( { 'title' : 'Import Templates File' } );
+		if (temp) {
 			for (var i in temp) {
 
 				if (g.templates[i]) {
@@ -354,8 +310,6 @@ g.import_templates = function() {
 				alert("Note: These imported templates will get saved along with any new template you try to create, but if that doesn't happen, then these templates will disappear with the next invocation of the item attribute editor.");
 			}
 
-		} else {
-			alert('File not chosen for import.');
 		}
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('Error importing templates',E);
@@ -1211,6 +1165,7 @@ g.copy_notes = function() {
 /******************************************************************************************************/
 /* hides or unhides stat cats based on library stat cat filter menu */
 g.toggle_stat_cat_display = function(el) {
+    if (!el) return;
     var visible = el.getAttribute('checked');
     var nl = document.getElementsByAttribute('sc_lib',el.getAttribute('value'));
     for (var n = 0; n < nl.length; n++) {

@@ -222,6 +222,81 @@ util.file.prototype = {
 			this.error.sdump('D_ERROR',this._file.path + '\nutil.file._create_output_stream(): ' + E);
 			throw(E);
 		}
+	},
+
+	'pick_file' : function(params) {
+		try {
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (typeof params.mode == 'undefined') params.mode = 'open';
+			var nsIFilePicker = Components.interfaces.nsIFilePicker;
+			var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance( nsIFilePicker );
+			fp.init( 
+				window, 
+                typeof params.title == 'undefined' ? params.mode : params.title,
+				params.mode == 'open' ? nsIFilePicker.modeOpen : nsIFilePicker.modeSave
+			);
+			fp.appendFilters( nsIFilePicker.filterAll );
+			var fp_result = fp.show();
+			if ( ( fp_result == nsIFilePicker.returnOK || fp_result == nsIFilePicker.returnReplace ) && fp.file ) {
+				return fp.file;
+			} else {
+				return null;
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('error picking file',E);
+		}
+	},
+
+	'export_file' : function(params) {
+		try {
+			var obj = this;
+            params.mode = 'save';
+            if (typeof params.data == 'undefined') throw('Need a .data field to export');
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			var f = obj.pick_file( params );
+			if (f) {
+				obj._file = f;
+                var temp = params.data;
+                if (typeof params.not_json == 'undefined') {
+                    temp = js2JSON( temp );
+                }
+				obj.write_content( 'truncate', temp );
+				obj.close();
+				alert('Exported ' + f.leafName);
+                return obj._file;
+			} else {
+				alert('File not chosen for export.');
+                return null;
+			}
+
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Error exporting file',E);
+                return null;
+		}
+	},
+
+	'import_file' : function(params) {
+		try {
+			var obj = this;
+            params.mode = 'open';
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			var f = obj.pick_file(params);
+			if (f && f.exists()) {
+				obj._file = f;
+				var temp = obj.get_content();
+				obj.close();
+                if (typeof params.not_json == 'undefined') {
+                    temp = JSON2js( obj.get_content() );
+                }
+                return temp;
+			} else {
+				alert('File not chosen for import.');
+                return null;
+			}
+		} catch(E) {
+			this.error.standard_unexpected_error_alert('Error importing file',E);
+            return null;
+		}
 	}
 
 }
