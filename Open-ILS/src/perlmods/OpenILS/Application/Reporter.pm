@@ -205,7 +205,7 @@ sub create_report {
 
 
 __PACKAGE__->register_method(
-	api_name => 'open-ils.scheduleer.schedule.create',
+	api_name => 'open-ils.reporter.schedule.create',
 	method => 'create_schedule');
 sub create_schedule {
 	my( $self, $conn, $auth, $schedule ) = @_;
