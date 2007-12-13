@@ -771,8 +771,24 @@ util.list.prototype = {
 			if (obj.row_count.fleshed >= obj.row_count.total) {
 				dump('Full retrieve... tree seems to be in sync\n' + js2JSON(obj.row_count) + '\n');
 				if (typeof obj.on_all_fleshed == 'function') {
-					setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-				} else {
+					setTimeout( 
+                        function() { 
+                            try { obj.on_all_fleshed(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',obj.on_all_fleshed); }
+                        }, 0 
+                    );
+				} else if (typeof obj.on_all_fleshed.length != 'undefined') {
+                    setTimeout(
+                        function() {
+                            var f = obj.on_all_fleshed.pop();
+                            if (typeof f == 'function') { 
+                                try { f(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',f); } 
+                            } else { 
+                                obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback: expected a function',f);
+                            }
+                            if (obj.on_all_fleshed.length > 0) arguments.callee(); 
+                        }, 0
+                    ); 
+                } else {
 					dump('.full_retrieve called with no callback?' + '\n');
 				}
 			} else {
@@ -1055,6 +1071,15 @@ util.list.prototype = {
 		return dump;
 	},
 
+    'dump_csv_to_clipboard' : function(params) {
+        var obj = this;
+        if (params && params.no_full_retrieve) {
+            copy_to_clipboard( obj.dump_csv( params ) );
+        } else {
+            obj.wrap_in_full_retrieve( function() { copy_to_clipboard( obj.dump_csv( params ) ); } );
+        }
+    },
+
 	'dump_selected_with_keys' : function(params) {
 		var obj = this;
 		switch(this.node.nodeName) {
@@ -1113,6 +1138,16 @@ util.list.prototype = {
 		}
 		return dump;
 	},
+
+    'wrap_in_full_retrieve' : function(f) {
+        var obj = this;
+		if (typeof obj.on_all_fleshed == 'function') { // legacy
+            obj.on_all_fleshed = [ obj.on_all_fleshed ];
+		}
+        if (! obj.on_all_fleshed) obj.on_all_fleshed = [];
+        obj.on_all_fleshed.push(f);
+        obj.full_retrieve();
+    },
 
 	'_sort_tree' : function(col,sortDir) {
 		var obj = this;
