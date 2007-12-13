@@ -324,9 +324,15 @@ util.widgets.save_attributes = function (file,ids_attrs) {
 		for (var element_id in ids_attrs) {
 			var attribute_list = ids_attrs[ element_id ];
 			if (! blob[ element_id ] ) blob[ element_id ] =  {};
-			for (var j = 0; j < attribute_list.length; j++) {
-				blob[ element_id ][ attribute_list[j] ] = document.getElementById( element_id ).getAttribute( attribute_list[j] );
-			}
+            var x = document.getElementById( element_id );
+            if (x) {
+                for (var j = 0; j < attribute_list.length; j++) {
+                    blob[ element_id ][ attribute_list[j] ] = x.getAttribute( attribute_list[j] );
+                }
+            } else {
+                dump('Error in util.widgets.save_attributes('+file._file.path+','+js2JSON(ids_attrs)+'):\n');
+                dump('\telement_id = ' + element_id + '\n');
+            }
 		}
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		//FIXME - WHY DOES THIS NOT WORK?// JSAN.use('util.file'); var file = new util.file(filename);
@@ -344,7 +350,15 @@ util.widgets.load_attributes = function (file) {
 			var blob = file.get_object(); file.close();
 			for (var element_id in blob) {
 				for (var attribute in blob[ element_id ]) {
-					document.getElementById( element_id ).setAttribute(attribute, blob[ element_id ][ attribute ]);
+					var x = document.getElementById( element_id );
+                    if (x) {
+                        x.setAttribute(attribute, blob[ element_id ][ attribute ]);
+                    } else {
+                        dump('Error in util.widgets.load_attributes('+file._file.path+'):\n');
+                        dump('\telement_id = ' + element_id + '\n');
+                        dump('\tattribute = ' + attribute + '\n');
+                        dump('\tblob[id][attr] = ' + blob[element_id][attribute] + '\n');
+                    }
 				}
 			}
             return blob;
