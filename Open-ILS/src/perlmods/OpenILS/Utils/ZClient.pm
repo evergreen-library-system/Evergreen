@@ -45,6 +45,20 @@ sub search {
 	return OpenILS::Utils::ZClient::ResultSet->new( $r );
 }
 
+sub event {
+	my $list = shift;
+	if ($imp_class eq 'Net::Z3950') {
+		if (defined $$list[0]{_async_index}) {	
+			return 0 if ($$list[0]{_async_index} == @$list);
+			return ++$$list[0]{_async_index};
+		} else {
+			return $$list[0]{_async_index} = 1;
+		}
+	}
+
+	return ZOOM::event([map { ($_->{result}) } @$list]);
+}
+
 *{__PACKAGE__ . '::search_pqf'} = \&search; 
 
 sub AUTOLOAD {
@@ -82,6 +96,12 @@ sub record {
 		$self->{result}->record( $offset );
 
 	return  OpenILS::Utils::ZClient::Record->new( $r );
+}
+
+sub last_event {
+	my $self = shift;
+	return OpenILS::Utils::ZClient::Event::EVENT_END if ($imp_class eq 'Net::Z3950');
+	$self->{result}->last_event();
 }
 
 sub AUTOLOAD {
@@ -129,6 +149,20 @@ sub AUTOLOAD {
 	return $self->{record}->$method( @_ );
 }
 
+#-------------------------------------------------------------------------------
+package OpenILS::Utils::ZClient::Event;
+
+sub NONE { 0 }
+sub CONNECT { 1 }
+sub SEND_DATA { 2 }
+sub RECV_DATA { 3 }
+sub TIMEOUT { 4 }
+sub UNKNOWN { 5 }
+sub SEND_APDU { 6 }
+sub RECV_APDU { 7 }
+sub RECV_RECORD { 8 }
+sub RECV_SEARCH { 9 }
+sub END { 10 }
 
 1;
 

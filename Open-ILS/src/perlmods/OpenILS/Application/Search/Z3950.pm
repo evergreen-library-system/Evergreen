@@ -109,10 +109,35 @@ sub do_class_search {
 	my $auth			= shift;
 	my $args			= shift;
 
+	if (ref($$args{service}) =~ /ARRAY/o) {
+		$$args{service} = [$$args{service}];
+		$$args{username} = [$$args{username}];
+		$$args{password} = [$$args{password}];
+	}
+
+	$$args{async} = 1;
+
 	$$args{query} = 
 		compile_query('and', $$args{service}, $$args{search});
 
-	return $self->do_service_search( $conn, $auth, $args );
+	my @results;
+	for (var $i = 0; $i < @{$$args{service}}; i++) {
+		my %tmp_args = %$args;
+		$tmp_args{service} = $$args{service}[$i];
+		$tmp_args{username} = $$args{username}[$i];
+		$tmp_args{password} = $$args{password}[$i];
+		$results[$i] = $self->do_service_search( $conn, $auth, \%tmp_args );
+	}
+
+	my @records;
+	while ((my $index = OpenILS::Utils::ZClient::event( \@results )) != 0) {
+		my $ev = $results[$index - 1]->last_event();
+		if ($ev == OpenILS::Utils::ZClient::Event::END) {
+			my $munged = process_results( $results[$index - 1], $limit, $offset );
+			$$munged{service} = $$args{service}[$index];
+			$conn->respond($munged);
+		}
+	}
 }
 
 
@@ -152,6 +177,7 @@ sub do_search {
 	my $port		= $$args{port} or return undef;
 	my $db		= $$args{db}	or return undef;
 	my $query	= $$args{query} or return undef;
+	my $async	= $$args{async} || 0;
 
 	my $limit	= $$args{limit} || 10;
 	my $offset	= $$args{offset} || 0;
@@ -167,6 +193,7 @@ sub do_search {
 		$host, $port,
 		databaseName				=> $db, 
 		user							=> $username,
+		async							=> $async,
 		password						=> $password,
 		preferredRecordSyntax	=> $output, 
 	);
@@ -194,6 +221,8 @@ sub do_search {
 		debug => $connection->errcode." => ".$connection->errmsg." : query = $query") unless $results;
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
+
+	return $result if ($async);
 
 	my $munged = process_results($results, $limit, $offset);
 	$munged->{query} = $query;
