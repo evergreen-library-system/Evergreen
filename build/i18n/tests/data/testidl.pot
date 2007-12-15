@@ -11,166 +11,166 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: 29:field.auoi.org_unit.label
+#: field.auoi.org_unit.label:29
 msgid "Allowed Org Unit"
 msgstr ""
 
-#: 58:field.rodcirc.checkin_staff.label
+#: field.rodcirc.checkin_staff.label:58
 msgid "Check In Staff"
 msgstr ""
 
-#: 52:class.rodcirc.label
+#: class.rodcirc.label:52
 msgid "Overdue Circulation"
 msgstr ""
 
-#: 76:field.rodcirc.stop_fines_time.label
+#: field.rodcirc.stop_fines_time.label:76
 msgid "Fine Stop Date/Time"
 msgstr ""
 
-#: 57:field.rodcirc.checkin_lib.label
+#: field.rodcirc.checkin_lib.label:57
 msgid "Check In Library"
 msgstr ""
 
-#: 84:field.rodcirc.circ_type.label
+#: field.rodcirc.circ_type.label:84
 msgid "Circulation Type"
 msgstr ""
 
-#: 66:field.rodcirc.fine_interval.label
+#: field.rodcirc.fine_interval.label:66
 msgid "Fine Interval"
 msgstr ""
 
-#: 85:field.rodcirc.billing_total.label
+#: field.rodcirc.billing_total.label:85
 msgid "Billing Totals"
 msgstr ""
 
-#: 64:field.rodcirc.duration.label
+#: field.rodcirc.duration.label:64
 msgid "Circulation Duration"
 msgstr ""
 
-#: 45:field.aws.name.label
+#: field.aws.name.label:45
 msgid "Workstation Name"
 msgstr ""
 
-#: 20:class.auoi.label
+#: class.auoi.label:20
 msgid "User Sharing Opt-in"
 msgstr ""
 
-#: 73:field.rodcirc.recuring_fine_rule.label
+#: field.rodcirc.recuring_fine_rule.label:73
 msgid "Recurring Fine Rule"
 msgstr ""
 
-#: 65:field.rodcirc.duration_rule.label
+#: field.rodcirc.duration_rule.label:65
 msgid "Circ Duration Rule"
 msgstr ""
 
-#: 25:field.auoi.id.label
+#: field.auoi.id.label:25
 msgid "Opt-in ID"
 msgstr ""
 
-#: 86:field.rodcirc.payment_total.label
+#: field.rodcirc.payment_total.label:86
 msgid "Payment Totals"
 msgstr ""
 
-#: 71:field.rodcirc.phone_renewal.label
+#: field.rodcirc.phone_renewal.label:71
 msgid "Phone Renewal"
 msgstr ""
 
-#: 60:field.rodcirc.circ_lib.label
+#: field.rodcirc.circ_lib.label:60
 msgid "Circulating Library"
 msgstr ""
 
-#: 68:field.rodcirc.max_fine.label
+#: field.rodcirc.max_fine.label:68
 msgid "Max Fine Amount"
 msgstr ""
 
-#: 79:field.rodcirc.xact_finish.label
+#: field.rodcirc.xact_finish.label:79
 msgid "Transaction Finish Date/Time"
 msgstr ""
 
-#: 28:field.auoi.usr.label
+#: field.auoi.usr.label:28
 msgid "User"
 msgstr ""
 
-#: 26:field.auoi.opt_in_ws.label 39:class.aws.label
+#: field.auoi.opt_in_ws.label:26 class.aws.label:39
 msgid "Workstation"
 msgstr ""
 
-#: 75:field.rodcirc.stop_fines.label
+#: field.rodcirc.stop_fines.label:75
 msgid "Fine Stop Reason"
 msgstr ""
 
-#: 70:field.rodcirc.opac_renewal.label
+#: field.rodcirc.opac_renewal.label:70
 msgid "OPAC Renewal"
 msgstr ""
 
-#: 61:field.rodcirc.circ_staff.label
+#: field.rodcirc.circ_staff.label:61
 msgid "Circulating Staff"
 msgstr ""
 
-#: 82:field.rodcirc.payments.label
+#: field.rodcirc.payments.label:82
 msgid "Transaction Payments"
 msgstr ""
 
-#: 59:field.rodcirc.checkin_time.label
+#: field.rodcirc.checkin_time.label:59
 msgid "Check In Date/Time"
 msgstr ""
 
-#: 69:field.rodcirc.max_fine_rule.label
+#: field.rodcirc.max_fine_rule.label:69
 msgid "Max Fine Rule"
 msgstr ""
 
-#: 80:field.rodcirc.xact_start.label
+#: field.rodcirc.xact_start.label:80
 msgid "Check Out Date/Time"
 msgstr ""
 
-#: 83:field.rodcirc.billable_transaction.label
+#: field.rodcirc.billable_transaction.label:83
 msgid "Base Transaction"
 msgstr ""
 
-#: 72:field.rodcirc.recuring_fine.label
+#: field.rodcirc.recuring_fine.label:72
 msgid "Recurring Fine Amount"
 msgstr ""
 
-#: 27:field.auoi.staff.label
+#: field.auoi.staff.label:27
 msgid "Staff Member"
 msgstr ""
 
-#: 44:field.aws.id.label
+#: field.aws.id.label:44
 msgid "Workstation ID"
 msgstr ""
 
-#: 78:field.rodcirc.usr.label
+#: field.rodcirc.usr.label:78
 msgid "Patron"
 msgstr ""
 
-#: 63:field.rodcirc.due_date.label
+#: field.rodcirc.due_date.label:63
 msgid "Due Date/Time"
 msgstr ""
 
-#: 81:field.rodcirc.billings.label
+#: field.rodcirc.billings.label:81
 msgid "Transaction Billings"
 msgstr ""
 
-#: 30:field.auoi.opt_in_ts.label
+#: field.auoi.opt_in_ts.label:30
 msgid "Opt-in Date/Time"
 msgstr ""
 
-#: 62:field.rodcirc.desk_renewal.label
+#: field.rodcirc.desk_renewal.label:62
 msgid "Desk Renewal"
 msgstr ""
 
-#: 77:field.rodcirc.target_copy.label
+#: field.rodcirc.target_copy.label:77
 msgid "Circulating Item"
 msgstr ""
 
-#: 74:field.rodcirc.renewal_remaining.label
+#: field.rodcirc.renewal_remaining.label:74
 msgid "Remaining Renewals"
 msgstr ""
 
-#: 46:field.aws.owning_lib.label
+#: field.aws.owning_lib.label:46
 msgid "Owning Library"
 msgstr ""
 
-#: 67:field.rodcirc.id.label
+#: field.rodcirc.id.label:67
 msgid "Circ ID"
 msgstr ""

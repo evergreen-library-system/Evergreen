@@ -19,18 +19,18 @@ def mungepothead(file):
         mungefile.write(line)
     mungefile.close()
 
-def setUp(self):
-    sys.path.append(os.path.join(self.basedir, '../scripts/'))
-    sys.path.append(self.basedir)
-    self.tearDown()
-    for dir in self.tmpdirs:
-        os.mkdir(dir)
+def setUp(obj):
+    sys.path.append(os.path.join(obj.basedir, '../scripts/'))
+    sys.path.append(obj.basedir)
+    obj.tearDown()
+    for tmpdir in obj.tmpdirs:
+        os.mkdir(tmpdir)
 
-def tearDown(self):
-    for dir in self.tmpdirs:
-        if os.access(dir, os.F_OK):
-            for file in os.listdir(dir):
-                os.remove(os.path.join(dir, file))
-            os.rmdir(dir)
+def tearDown(obj):
+    for tmpdir in obj.tmpdirs:
+        if os.access(tmpdir, os.F_OK):
+            for tmpfile in os.listdir(tmpdir):
+                os.remove(os.path.join(tmpdir, tmpfile))
+            os.rmdir(tmpdir)
 
 

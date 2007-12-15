@@ -9,8 +9,6 @@
 
 import filecmp
 import os
-import polib
-import re
 import subprocess
 import testhelper
 import unittest
@@ -40,7 +38,7 @@ class TestIDLL10N(unittest.TestCase):
         Convert an en-US IDL file to an entityized version
         """
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(
+        subprocess.Popen(
             ('python', self.script, '--convert', self.idlfile,
             '--output', self.saveidlent),
             0, None, None, devnull, devnull).wait()
@@ -52,7 +50,7 @@ class TestIDLL10N(unittest.TestCase):
         Create a POT file from a fieldmapper IDL file
         """
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(
+        subprocess.Popen(
             ('python', self.script, '--pot', self.idlfile,
             '--output', self.savepot),
             0, None, None, devnull, devnull).wait()
@@ -68,7 +66,7 @@ class TestIDLL10N(unittest.TestCase):
         Generate an entity definition file from a PO file
         """
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(
+        subprocess.Popen(
             ('python', self.script, '--entity', self.testpo,
             '--output', self.saveentities),
             0, None, None, devnull, devnull).wait()

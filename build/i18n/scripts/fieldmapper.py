@@ -38,24 +38,6 @@ class IDL(basel10n.BaseL10N):
         self.idl = ''
         self.definitions = []
 
-    def loadpo(self, potfile):
-        """
-        Load a POT file
-        """
-        basel10n.BaseL10N.loadpo(self, potfile)
-
-    def pothead(self):
-        """
-        Initialize POT metadata
-        """
-        basel10n.BaseL10N.pothead(self)
-
-    def savepot(self, outfile):
-        """
-        Write a POT file
-        """
-        basel10n.BaseL10N.savepot(self, outfile)
-
     def get_strings(self, source):
         """
         Extracts translatable strings from the reporter:label attributes
@@ -72,7 +54,7 @@ class IDL(basel10n.BaseL10N):
 
         for entity in handler.entities:
             poe = polib.POEntry()
-            poe.occurences = handler.entities[entity]
+            poe.occurrences = handler.entities[entity]
             poe.msgid = entity
             self.pot.append(poe)
         self.idl = handler.entityized
@@ -83,7 +65,7 @@ class IDL(basel10n.BaseL10N):
         """
         entity = '<!ENTITY %s "%s">'
         for entry in self.pot:
-            for name in entry.occurences:
+            for name in entry.occurrences:
                 if entry.msgstr == '':
                     # No translation available; use the en-US definition
                     self.definitions.append(entity % (name[0], entry.msgid))

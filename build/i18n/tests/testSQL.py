@@ -32,8 +32,7 @@ class TestSQLFramework(unittest.TestCase):
         """
         Create a POT file from our test SQL statements.
         """
-        devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(
+        subprocess.Popen(
             ('python', self.script, '--pot', self.sqlsource,
             '--output', self.testpot),
             0, None, None).wait()
@@ -49,7 +48,7 @@ class TestSQLFramework(unittest.TestCase):
         Create a SQL file from a translated PO file.
         """
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(
+        subprocess.Popen(
             ('python', self.script, '--sql', self.canonpo,
             '--locale', 'zz-ZZ', '--output', self.testsql),
             0, None, None, devnull, devnull).wait()

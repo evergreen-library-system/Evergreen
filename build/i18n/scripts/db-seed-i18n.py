@@ -36,29 +36,11 @@ class SQL(basel10n.BaseL10N):
         basel10n.BaseL10N.__init__(self)
         self.sql = []
 
-    def loadpo(self, potfile):
-        """
-        Load a POT file
-        """
-        basel10n.BaseL10N.loadpo(self, potfile)
-
-    def pothead(self):
-        """
-        Initialize POT metadata
-        """
-        basel10n.BaseL10N.pothead(self)
-
-    def savepot(self, outfile):
-        """
-        Write a POT file
-        """
-        basel10n.BaseL10N.savepot(self, outfile)
-
     def getstrings(self, source):
         """
         Each INSERT statement contains a schema and tablename which we need to
         insert into the config.i18n table. We'll push this into our
-        POEntry.occurences attribute.
+        POEntry.occurrences attribute.
         
         Each INSERT statement also contains 0 or more oils_i18n_gettext()
         markers for the en-US string that we'll use for our msgid attribute.
@@ -92,7 +74,7 @@ class SQL(basel10n.BaseL10N):
                     i18n = re.compile(r'\'\'').sub("'", i18n)
                     if i18n is not None:
                         poe = polib.POEntry()
-                        poe.occurences = [(table, num)]
+                        poe.occurrences = [(table, num)]
                         poe.msgid = i18n
                         self.pot.append(poe)
             num = num + 1
@@ -106,7 +88,7 @@ class SQL(basel10n.BaseL10N):
         insert = "INSERT INTO config.i18n_core (fq_field, identity_value," \
             " translation, string) VALUES ('%s', '%s', '%s', '%s');"
         for entry in self.pot:
-            for table in entry.occurences:
+            for table in entry.occurrences:
                 # Escape SQL single-quotes to avoid b0rkage
                 msgid = re.compile(r'\'').sub("''", entry.msgid)
                 msgstr = re.compile(r'\'').sub("''", entry.msgstr)

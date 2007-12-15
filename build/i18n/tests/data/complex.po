@@ -17,10 +17,11 @@ msgstr "Utiliser la bibliothèque"
 
 #: 2475:field.rxbt.voided.label
 msgid ""
-"Super crazy long and repetitive message ID from hell"
-"Super crazy long and repetitive message ID from hell"
-"Super crazy long and repetitive message ID from hell"
-"Super crazy long and repetitive message ID from hell"
+"\n"
+"Super crazy long and repetitive message ID from hell\n"
+"Super crazy long and repetitive message ID from hell\n"
+"Super crazy long and repetitive message ID from hell\n"
+"Super crazy long and repetitive message ID from hell\n"
 "Super crazy long and repetitive message ID from hell"
 msgstr "ôèàéç"
 

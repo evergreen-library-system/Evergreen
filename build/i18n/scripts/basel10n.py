@@ -38,17 +38,17 @@ class BaseL10N:
             version = 'Evergreen 1.4'
         if date is None:
             date = time.strftime("%Y-%m-%d %H:%M:%S") + '-0400'
-        self.pot.metadata['Project-Id-Version'] = version + r'\n'
+        self.pot.metadata['Project-Id-Version'] = version
         self.pot.metadata['Report-Msgid-Bugs-To'] = \
-            'open-ils-dev@list.georgialibraries.org' + r'\n'
+            'open-ils-dev@list.georgialibraries.org'
         # Cheat and hard-code the time zone offset
-        self.pot.metadata['POT-Creation-Date'] = date + r'\n'
-        self.pot.metadata['PO-Revision-Date'] = 'YEAR-MO-DA HO:MI+ZONE' + r'\n'
-        self.pot.metadata['Last-Translator'] = 'FULL NAME <EMAIL@ADDRESS>' + r'\n'
-        self.pot.metadata['Language-Team'] = 'LANGUAGE <LL@li.org>' + r'\n'
-        self.pot.metadata['MIME-Version'] = '1.0' + r'\n'
-        self.pot.metadata['Content-Type'] = 'text/plain; charset=utf-8' + r'\n'
-        self.pot.metadata['Content-Transfer-Encoding'] = '8-bit' + r'\n'
+        self.pot.metadata['POT-Creation-Date'] = date
+        self.pot.metadata['PO-Revision-Date'] = 'YEAR-MO-DA HO:MI+ZONE'
+        self.pot.metadata['Last-Translator'] = 'FULL NAME <EMAIL@ADDRESS>'
+        self.pot.metadata['Language-Team'] = 'LANGUAGE <LL@li.org>'
+        self.pot.metadata['MIME-Version'] = '1.0'
+        self.pot.metadata['Content-Type'] = 'text/plain; charset=utf-8'
+        self.pot.metadata['Content-Transfer-Encoding'] = '8-bit'
 
     def savepot(self, destination):
         """

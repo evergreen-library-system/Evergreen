@@ -31,10 +31,10 @@ class TestPOFramework(unittest.TestCase):
         devnull = open('/dev/null', 'w')
         os.mkdir('tests/tmp')
         os.mkdir(self.project_dir)
-        proc = subprocess.Popen(('cp', '-r', 'po', 'tests/tmp'), 0, None, None, devnull, devnull).wait()
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpot'), 0, None, None, devnull, devnull).wait()
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpo'), 0, None, None, devnull, devnull).wait()
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'PROJECT=tests/tmp/locale', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newproject'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('cp', '-r', 'po', 'tests/tmp'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpot'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpo'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'PROJECT=tests/tmp/locale', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newproject'), 0, None, None, devnull, devnull).wait()
         devnull.close()
 
     def tearDown(self):
@@ -101,7 +101,7 @@ class TestPOFramework(unittest.TestCase):
 
         # Regenerate the project files to get the translated strings in place
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updateproject'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updateproject'), 0, None, None, devnull, devnull).wait()
 
         self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
 
@@ -136,7 +136,7 @@ class TestPOFramework(unittest.TestCase):
 
         # Update the PO files to get the translated strings in place
         devnull = open('/dev/null', 'w')
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updatepo'), 0, None, None, devnull, devnull).wait()
+        subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'updatepo'), 0, None, None, devnull, devnull).wait()
 
         commonprops = os.path.join(self.locale_dir, 'common.properties.po')
         tempprops = os.path.join(self.locale_dir, 'temp.properties.po')
