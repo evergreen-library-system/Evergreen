@@ -109,7 +109,7 @@ sub do_class_search {
 	my $auth			= shift;
 	my $args			= shift;
 
-	if (ref($$args{service}) =~ /ARRAY/o) {
+	if (!ref($$args{service})) {
 		$$args{service} = [$$args{service}];
 		$$args{username} = [$$args{username}];
 		$$args{password} = [$$args{password}];
