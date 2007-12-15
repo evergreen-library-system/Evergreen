@@ -121,7 +121,7 @@ sub do_class_search {
 		compile_query('and', $$args{service}, $$args{search});
 
 	my @results;
-	for (var $i = 0; $i < @{$$args{service}}; i++) {
+	for (my $i = 0; $i < @{$$args{service}}; i++) {
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
 		$tmp_args{username} = $$args{username}[$i];
@@ -133,7 +133,7 @@ sub do_class_search {
 	while ((my $index = OpenILS::Utils::ZClient::event( \@results )) != 0) {
 		my $ev = $results[$index - 1]->last_event();
 		if ($ev == OpenILS::Utils::ZClient::Event::END) {
-			my $munged = process_results( $results[$index - 1], $limit, $offset );
+			my $munged = process_results( $results[$index - 1], ($$args{limit} || 10), ($$args{offset} || 0) );
 			$$munged{service} = $$args{service}[$index];
 			$conn->respond($munged);
 		}
