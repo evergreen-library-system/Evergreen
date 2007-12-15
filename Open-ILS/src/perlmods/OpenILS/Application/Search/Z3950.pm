@@ -132,7 +132,7 @@ sub do_class_search {
 	my @records;
 	while ((my $index = OpenILS::Utils::ZClient::event( \@results )) != 0) {
 		my $ev = $results[$index - 1]->last_event();
-		if ($ev == OpenILS::Utils::ZClient::Event::END) {
+		if ($ev == OpenILS::Utils::ZClient::Event::END()) {
 			my $munged = process_results( $results[$index - 1], ($$args{limit} || 10), ($$args{offset} || 0) );
 			$$munged{service} = $$args{service}[$index];
 			$conn->respond($munged);
