@@ -18,33 +18,33 @@ class TestPOFramework(unittest.TestCase):
 
     po_tmp_files = ('tests/tmp/po/test.properties.pot', 'tests/tmp/po/ll-LL/temp.properties.po')
     pot_dir = 'tests/tmp/po'
-    locale_dir = 'tests/tmp/po/ll-LL/'
-    po_tmp_dirs = (locale_dir, locale_dir, pot_dir, 'tests/tmp')
+    locale = 'll-LL'
+    locale_dir = 'tests/tmp/po/ll-LL'
+    project_dir = 'tests/tmp/locale'
+    po_tmp_dirs = (project_dir + '/' + locale, project_dir, locale_dir, pot_dir, project_dir, 'tests/tmp')
+    newdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
     def setUp(self):
+        print os.getcwd()
+        os.chdir(self.newdir)
         self.tearDown()
         devnull = open('/dev/null', 'w')
         os.mkdir('tests/tmp')
+        os.mkdir(self.project_dir)
         proc = subprocess.Popen(('cp', '-r', 'po', 'tests/tmp'), 0, None, None, devnull, devnull).wait()
         proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpot'), 0, None, None, devnull, devnull).wait()
         proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newpo'), 0, None, None, devnull, devnull).wait()
-        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newproject'), 0, None, None, devnull, devnull).wait()
+        proc = subprocess.Popen(('make', 'LOCALE=ll-LL', 'PROJECT=tests/tmp/locale', 'POINDIR=tests/tmp/po', 'POOUTDIR=tests/tmp/po', 'newproject'), 0, None, None, devnull, devnull).wait()
         devnull.close()
 
     def tearDown(self):
-        for dir in self.po_tmp_dirs:
-            for root, dirs, files in os.walk(os.path.join(os.path.dirname(__file__), dir), topdown=False):
-                for name in files:
-                    os.remove(os.path.join(root, name))
-                for name in dirs:
-                    os.rmdir(os.path.join(root, name))
-
-        for file in self.po_tmp_files:
-            if os.access(file, os.F_OK):
-                os.remove(file)
-
-        if os.access('tests/tmp', os.F_OK):
-            os.rmdir('tests/tmp')
+        for root, dirs, files in os.walk(os.path.join(self.newdir, 'tests/tmp'), topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        if os.access(os.path.join(self.newdir, 'tests/tmp'), os.F_OK):
+            os.rmdir(os.path.join(self.newdir, 'tests/tmp'))
 
     def testnewpofiles(self):
         # Create a brand new set of PO files from our en-US project files.
@@ -89,7 +89,7 @@ class TestPOFramework(unittest.TestCase):
         os.rename(testpo, commonpo)
 
         # Create the "translated" properties file
-        commonprops = os.path.join(self.locale_dir, 'common.properties')
+        commonprops = os.path.join(self.project_dir, self.locale, 'common.properties')
         testprops = os.path.join(self.locale_dir, 'test.properties')
         commonfile = open(commonprops)
         testfile = open(testprops, 'w')
@@ -164,5 +164,4 @@ class TestPOFramework(unittest.TestCase):
         self.assertEqual(filecmp.cmp(commonprops, testprops), 1)
 
 if __name__ == '__main__':
-    os.chdir('..')
     unittest.main()

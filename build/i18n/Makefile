@@ -1,5 +1,6 @@
 POOUTDIR=po
 POINDIR=po
+PROJECT=locale
 LOCALE=fr-CA
 DTDDIR=../../Open-ILS/web/opac/locale
 PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
@@ -37,7 +38,7 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2ent props2pot sql2pot
+newpot: dtds2pot fmidl2pot fmidl2fmidlent props2pot sql2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
@@ -63,19 +64,19 @@ props2pot:
 	@moz2po -P $(PROGRESS) -o $(POOUTDIR) -i $(PROPSDIR)/en-US/ 2>&1
 
 po2dtds:
-	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 po2props:
-	@po2moz $(PROGRESS) -o locale/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POOUTDIR)/$(SQLOUT)
 
 po2sql:
-	@scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output locale/$(LOCALE)/$(SQLOUT)
+	scripts/db-seed-i18n.py --sql $(POINDIR)/$(LOCALE)/$(SQLPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(SQLOUT)
 
 # Generate a fieldmapper IDL file that uses entities instead of hard-coded strings
-fmidlpo2fmidlent:
+fmidl2fmidlent:
 	@scripts/fieldmapper.py --convert $(FMIDLSRC) --output $(POOUTDIR)/$(FMIDLENT)
 
 # Generate a POT file for translating the entity values
@@ -84,4 +85,4 @@ fmidl2pot:
 
 # Generate a set of entity declarations from a PO file
 fmidlpo2entity:
-	@scripts/fieldmapper.py --entity $(POINDIR)/$(LOCALE)/$(FMIDLOUT) --output locale/$(LOCALE)/$(FMIDLENTITY)
+	@scripts/fieldmapper.py --entity $(POINDIR)/$(FMIDLOUT) --output $(PROJECT)/$(LOCALE)/$(FMIDLENTITY)
