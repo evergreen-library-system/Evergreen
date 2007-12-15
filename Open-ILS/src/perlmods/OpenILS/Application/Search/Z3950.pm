@@ -121,7 +121,7 @@ sub do_class_search {
 		compile_query('and', $$args{service}, $$args{search});
 
 	my @results;
-	for (my $i = 0; $i < @{$$args{service}}; i++) {
+	for (my $i = 0; $i < @{$$args{service}}; $i++) {
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
 		$tmp_args{username} = $$args{username}[$i];
@@ -222,7 +222,7 @@ sub do_search {
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
-	return $result if ($async);
+	return $results if ($async);
 
 	my $munged = process_results($results, $limit, $offset);
 	$munged->{query} = $query;
