@@ -525,6 +525,57 @@ sub multiclass_query {
     return $data;
 }
 
+__PACKAGE__->register_method(
+	method		=> 'cat_search_z_style_wrapper',
+	api_name	=> 'open-ils.search.biblio.zstyle',
+	stream		=> 1,
+	signature	=> q/@see open-ils.search.biblio.multiclass/);
+
+sub cat_search_z_style_wrapper {
+	my $self = shift;
+	my $client = shift;
+	my $authtoken = shift;
+	my $args = shift;
+
+	my $result = { service => 'native-evergreen-catalog', records => [] };
+	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}};
+
+	$$searchhash{searches}{title} = $$args{search}{title};
+	$$searchhash{searches}{author} = $$args{search}{author};
+	$$searchhash{searches}{subject} = $$args{search}{subject};
+	$$searchhash{searches}{keyword} = $$args{search}{keyword};
+	$$searchhash{searches}{keyword} .= ' '.$$args{search}{tcn};
+	$$searchhash{searches}{keyword} .= ' '.$$args{search}{isbn};
+	$$searchhash{searches}{keyword} .= ' '.$$args{search}{publisher};
+	$$searchhash{searches}{keyword} .= ' '.$$args{search}{pubdate};
+	$$searchhash{searches}{keyword} .= ' '.$$args{search}{item_type};
+
+	my $list = $self->the_quest_for_knowledge( $client, $searchhash );
+
+	if ($list->{count} > 0) {
+		$result->{count} = $list->{count};
+
+		my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+		my $records = $cstore->request(
+			'open-ils.cstore.direct.biblio.record_entry.search.atomic',
+			{ id => [ map { ( $_->[0] ) } @{$list->{ids}} ] }
+		)->gather(1);
+
+		for my $rec ( @$records ) {
+			
+			my $u = OpenILS::Utils::ModsParser->new();
+                        $u->start_mods_batch( $rec->marc );
+                        my $mods = $u->finish_mods_batch();
+
+			push @{ $result->{records} }, { mvr => $mods, marcxml => $rec->marc };
+
+		}
+
+	}
+
+	return $result;
+}
+
 # ----------------------------------------------------------------------------
 # These are the main OPAC search methods
 # ----------------------------------------------------------------------------
@@ -560,8 +611,6 @@ __PACKAGE__->register_method(
 	method		=> 'the_quest_for_knowledge',
 	api_name		=> 'open-ils.search.metabib.multiclass.staff',
 	signature	=> q/@see open-ils.search.biblio.multiclass/);
-
-
 
 sub the_quest_for_knowledge {
 	my( $self, $conn, $searchhash, $docache ) = @_;
