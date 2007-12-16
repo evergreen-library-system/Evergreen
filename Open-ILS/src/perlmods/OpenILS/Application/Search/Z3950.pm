@@ -27,6 +27,7 @@ my $default_service;
 __PACKAGE__->register_method(
 	method		=> 'do_class_search',
 	api_name		=> 'open-ils.search.z3950.search_class',
+	stream		=> 1,
 	signature	=> q/
 		Performs a class based Z search.  The classes available
 		are defined by the 'attr' fields in the config for the
@@ -117,27 +118,40 @@ sub do_class_search {
 
 	$$args{async} = 1;
 
-	$$args{query} = 
-		compile_query('and', $$args{service}, $$args{search});
-
+	my @connections;
 	my @results;
 	for (my $i = 0; $i < @{$$args{service}}; $i++) {
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
 		$tmp_args{username} = $$args{username}[$i];
 		$tmp_args{password} = $$args{password}[$i];
-		$results[$i] = $self->do_service_search( $conn, $auth, \%tmp_args );
+
+		$logger->debug("z3950: service: $tmp_args{service}, async: $tmp_args{async}");
+
+		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
+
+		my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
+
+		push @results, $res->{result};
+		push @connections, $res->{connection};
+
+		$logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
 	}
 
+	$logger->debug("z3950: Connections created");
+
 	my @records;
-	while ((my $index = OpenILS::Utils::ZClient::event( \@results )) != 0) {
-		my $ev = $results[$index - 1]->last_event();
-		if ($ev == OpenILS::Utils::ZClient::Event::END()) {
-			my $munged = process_results( $results[$index - 1], ($$args{limit} || 10), ($$args{offset} || 0) );
-			$$munged{service} = $$args{service}[$index];
+	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
+		my $ev = $connections[$index - 1]->last_event();
+		$logger->debug("z3950: Received event $ev");
+		if ($ev == OpenILS::Utils::ZClient::EVENT_END()) {
+			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset} );
+			$$munged{service} = $$args{service}[$index - 1];
 			$conn->respond($munged);
 		}
 	}
+
+	$logger->debug("z3950: Search Complete");
 }
 
 
@@ -193,8 +207,8 @@ sub do_search {
 		$host, $port,
 		databaseName				=> $db, 
 		user							=> $username,
-		async							=> $async,
 		password						=> $password,
+		async							=> $async,
 		preferredRecordSyntax	=> $output, 
 	);
 
@@ -222,7 +236,7 @@ sub do_search {
 
 	$logger->info("z3950: search [$query] took ".(time - $start)." seconds");
 
-	return $results if ($async);
+	return {result => $results, connection => $connection} if ($async);
 
 	my $munged = process_results($results, $limit, $offset);
 	$munged->{query} = $query;
@@ -237,8 +251,8 @@ sub do_search {
 # -------------------------------------------------------------------
 sub process_results {
 	my $results	= shift;
-	my $limit	= shift;
-	my $offset	= shift;
+	my $limit	= shift || 10;
+	my $offset	= shift || 0;
 
 	$results->option(elementSetName => "FI"); # full records with no holdings
 

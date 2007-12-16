@@ -3,6 +3,18 @@ use UNIVERSAL::require;
 
 use overload 'bool' => sub { return $_[0]->{connection} ? 1 : 0 };
 
+sub EVENT_NONE { 0 }
+sub EVENT_CONNECT { 1 }
+sub EVENT_SEND_DATA { 2 }
+sub EVENT_RECV_DATA { 3 }
+sub EVENT_TIMEOUT { 4 }
+sub EVENT_UNKNOWN { 5 }
+sub EVENT_SEND_APDU { 6 }
+sub EVENT_RECV_APDU { 7 }
+sub EVENT_RECV_RECORD { 8 }
+sub EVENT_RECV_SEARCH { 9 }
+sub EVENT_END { 10 }
+
 our $conn_class = 'ZOOM::Connection';
 our $imp_class = 'ZOOM';
 our $AUTOLOAD;
@@ -56,7 +68,7 @@ sub event {
 		}
 	}
 
-	return ZOOM::event([map { ($_->{result}) } @$list]);
+	return ZOOM::event([map { ($_->{connection}) } @$list]);
 }
 
 *{__PACKAGE__ . '::search_pqf'} = \&search; 
@@ -100,7 +112,7 @@ sub record {
 
 sub last_event {
 	my $self = shift;
-	return OpenILS::Utils::ZClient::Event::EVENT_END if ($imp_class eq 'Net::Z3950');
+	return OpenILS::Utils::ZClient::EVENT_END() if ($imp_class eq 'Net::Z3950');
 	$self->{result}->last_event();
 }
 
@@ -148,21 +160,6 @@ sub AUTOLOAD {
 
 	return $self->{record}->$method( @_ );
 }
-
-#-------------------------------------------------------------------------------
-package OpenILS::Utils::ZClient::Event;
-
-sub NONE { 0 }
-sub CONNECT { 1 }
-sub SEND_DATA { 2 }
-sub RECV_DATA { 3 }
-sub TIMEOUT { 4 }
-sub UNKNOWN { 5 }
-sub SEND_APDU { 6 }
-sub RECV_APDU { 7 }
-sub RECV_RECORD { 8 }
-sub RECV_SEARCH { 9 }
-sub END { 10 }
 
 1;
 
