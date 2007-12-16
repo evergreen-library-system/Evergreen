@@ -537,8 +537,15 @@ sub cat_search_z_style_wrapper {
 	my $authtoken = shift;
 	my $args = shift;
 
+	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+
+	my $ou = $cstore->request(
+		'open-ils.cstore.direct.actor.org_unit.search',
+		{ parent_ou => undef }
+	)->gather(1);
+
 	my $result = { service => 'native-evergreen-catalog', records => [] };
-	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}};
+	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}, org_unit => $ou->id };
 
 	$$searchhash{searches}{title} = $$args{search}{title};
 	$$searchhash{searches}{author} = $$args{search}{author};
@@ -555,7 +562,6 @@ sub cat_search_z_style_wrapper {
 	if ($list->{count} > 0) {
 		$result->{count} = $list->{count};
 
-		my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 		my $records = $cstore->request(
 			'open-ils.cstore.direct.biblio.record_entry.search.atomic',
 			{ id => [ map { ( $_->[0] ) } @{$list->{ids}} ] }
