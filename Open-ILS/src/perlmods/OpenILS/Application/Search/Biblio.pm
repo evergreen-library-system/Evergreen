@@ -547,15 +547,17 @@ sub cat_search_z_style_wrapper {
 	my $result = { service => 'native-evergreen-catalog', records => [] };
 	my $searchhash = { limit => $$args{limit}, offset => $$args{offset}, org_unit => $ou->id };
 
-	$$searchhash{searches}{title} = $$args{search}{title};
-	$$searchhash{searches}{author} = $$args{search}{author};
-	$$searchhash{searches}{subject} = $$args{search}{subject};
-	$$searchhash{searches}{keyword} = $$args{search}{keyword};
-	$$searchhash{searches}{keyword} .= ' '.$$args{search}{tcn};
-	$$searchhash{searches}{keyword} .= ' '.$$args{search}{isbn};
-	$$searchhash{searches}{keyword} .= ' '.$$args{search}{publisher};
-	$$searchhash{searches}{keyword} .= ' '.$$args{search}{pubdate};
-	$$searchhash{searches}{keyword} .= ' '.$$args{search}{item_type};
+	$$searchhash{searches}{title}{term} = $$args{search}{title} if $$args{search}{title};
+	$$searchhash{searches}{author}{term} = $$args{search}{author} if $$args{search}{author};
+	$$searchhash{searches}{subject}{term} = $$args{search}{subject} if $$args{search}{subject};
+	$$searchhash{searches}{keyword}{term} = $$args{search}{keyword} if $$args{search}{keyword};
+
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{tcn} if $$args{search}{tcn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{isbn} if $$args{search}{isbn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{issn} if $$args{search}{issn};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{publisher} if $$args{search}{publisher};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate} if $$args{search}{pubdate};
+	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
 	my $list = $self->the_quest_for_knowledge( $client, $searchhash );
 
