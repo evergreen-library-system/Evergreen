@@ -1,6 +1,6 @@
-from osrf.net_obj import osrfNetworkRegisterHint
-from osrf.log import *
-from osrf.set import osrfSettingsValue
+from osrf.net_obj import NetworkRegisterHint
+import osrf.log
+import osrf.set
 
 import sys, string, xml.dom.minidom
 from oils.const import OILS_NS_OBJ, OILS_NS_PERSIST, OILS_NS_REPORTER
@@ -11,7 +11,7 @@ def oilsParseIDL():
     global __global_parser
     if __global_parser: return # no need to re-parse the IDL
     idlParser = oilsIDLParser();
-    idlParser.setIDL(osrfSettingsValue('IDL'))
+    idlParser.setIDL(osrf.set.get('IDL'))
     idlParser.parseIDL()
     __global_parser = idlParser
 
@@ -25,7 +25,7 @@ class oilsIDLParser(object):
         self.IDLObject = {}
 
     def setIDL(self, file):
-        osrfLogInfo("setting IDL file to " + str(file))
+        osrf.log.log_info("setting IDL file to " + str(file))
         self.idlFile = file
 
     def __getAttr(self, node, name, ns=None):
@@ -70,7 +70,7 @@ class oilsIDLParser(object):
                         if classNode.nodeName == 'fields':
                             keys = self.parseFields(id, classNode)
 
-                osrfNetworkRegisterHint(id, keys, 'array')
+                NetworkRegisterHint(id, keys, 'array')
 
         doc.unlink()
 
@@ -95,7 +95,7 @@ class oilsIDLParser(object):
                 try:
                     keys[position] = name
                 except Exception, e:
-                    osrfLogErr("parseFields(): position out of range.  pos=%d : key-size=%d" % (position, len(keys)))
+                    osrf.log.log_error("parseFields(): position out of range.  pos=%d : key-size=%d" % (position, len(keys)))
                     raise e
 
                 virtual = self.__getAttr(field, 'oils_persist:virtual', OILS_NS_PERSIST)

@@ -13,14 +13,14 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-from osrf.log import *
-from osrf.system import osrfConnect
+import osrf.log
+from osrf.system import connect
 from oils.utils.idl import oilsParseIDL
 from oils.utils.csedit import oilsLoadCSEditor
 
 def oilsConnect(config, configContext):
 	"""Connects to the opensrf network,  parses the IDL file, and loads the CSEditor"""
-	osrfLogInfo("oilsConnect(): connecting with config %s" % config)
-	osrfConnect(config, configContext)
+	osrf.log.log_info("oilsConnect(): connecting with config %s" % config)
+	connect(config, configContext)
 	oilsParseIDL()
 	oilsLoadCSEditor()

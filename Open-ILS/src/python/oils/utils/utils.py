@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------
 
 import re, md5
-from osrf.ses import osrfAtomicRequest
+from osrf.ses import AtomicRequest
 from osrf.log import *
 
 
@@ -53,16 +53,16 @@ def unique(arr):
 def login(username, password, type=None, workstation=None):
     ''' Login to the server and get back an authtoken'''
 
-    osrfLogInfo("attempting login with user " + username)
+    log_info("attempting login with user " + username)
 
-    seed = osrfAtomicRequest(
+    seed = AtomicRequest(
         'open-ils.auth', 
         'open-ils.auth.authenticate.init', username)
 
     # generate the hashed password
     password = md5sum(seed + md5sum(password))
 
-    return osrfAtomicRequest(
+    return AtomicRequest(
         'open-ils.auth',
         'open-ils.auth.authenticate.complete',
         {   'workstation' : workstation,

@@ -16,7 +16,7 @@
 from osrf.log import *
 from osrf.json import *
 from oils.utils.idl import oilsGetIDLParser
-from osrf.ses import osrfClientSession
+from osrf.ses import ClientSession
 from oils.const import *
 import re
 
@@ -44,14 +44,14 @@ class CSEditor(object):
     # -------------------------------------------------------------------------
     def session(self, ses=None):
         if not self.__session:
-            self.__session = osrfClientSession(self.app)
+            self.__session = ClientSession(self.app)
 
         if self.connect or self.xact:
-            self.log(osrfLogDebug,'connecting to ' + self.app)
+            self.log(log_debug,'connecting to ' + self.app)
             self.__session.connect() 
 
         if self.xact:
-            self.log(osrfLogInfo, "starting new db transaction")
+            self.log(log_info, "starting new db transaction")
             self.request(self.app + '.transaction.begin')
 
         return self.__session
@@ -75,7 +75,7 @@ class CSEditor(object):
     # -------------------------------------------------------------------------
     def rollback(self):
         if self.__session and self.xact:
-             self.log(osrfLogInfo, "rolling back db transaction")
+             self.log(log_info, "rolling back db transaction")
              self.request(self.app + '.transaction.rollback')
              self.disconnect()
              
@@ -84,7 +84,7 @@ class CSEditor(object):
     # -------------------------------------------------------------------------
     def commit(self):
         if self.__session and self.xact:
-            self.log(osrfLogInfo, "comitting db transaction")
+            self.log(log_info, "comitting db transaction")
             self.request(self.app + '.transaction.commit')
             self.disconnect()
 
@@ -105,10 +105,10 @@ class CSEditor(object):
 
         # XXX improve param logging here
 
-        self.log(osrfLogInfo, "request %s %s" % (method, str(params)))
+        self.log(log_info, "request %s %s" % (method, str(params)))
 
         if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
-            self.log(osrfLogErr, "csedit lost its connection!")
+            self.log(log_error, "csedit lost its connection!")
 
         val = None
 
@@ -118,7 +118,7 @@ class CSEditor(object):
             val = resp.content()
 
         except Exception, e:
-            self.log(osrfLogErr, "request error: %s" % str(e))
+            self.log(log_error, "request error: %s" % str(e))
             raise e
 
         return val
@@ -158,7 +158,7 @@ class CSEditor(object):
 
     def rawSearch(self, args):
         method = "%s.json_query.atomic" % self.app
-        self.log(osrfLogDebug, "rawSearch args: %s" % str(args))
+        self.log(log_debug, "rawSearch args: %s" % str(args))
         return self.request(method, [args])
 
     def rawSearch2(self, hint, fields, where, from_=None):
