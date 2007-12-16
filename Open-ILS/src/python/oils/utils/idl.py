@@ -1,4 +1,4 @@
-from osrf.net_obj import NetworkRegisterHint
+import osrf.net_obj
 import osrf.log
 import osrf.set
 
@@ -70,7 +70,7 @@ class oilsIDLParser(object):
                         if classNode.nodeName == 'fields':
                             keys = self.parseFields(id, classNode)
 
-                NetworkRegisterHint(id, keys, 'array')
+                osrf.net_obj.register_hint(id, keys, 'array')
 
         doc.unlink()
 
