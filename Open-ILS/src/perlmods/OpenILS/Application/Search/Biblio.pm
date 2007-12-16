@@ -575,7 +575,7 @@ sub cat_search_z_style_wrapper {
                         $u->start_mods_batch( $rec->marc );
                         my $mods = $u->finish_mods_batch();
 
-			push @{ $result->{records} }, { mvr => $mods, marcxml => $rec->marc };
+			push @{ $result->{records} }, { mvr => $mods, marcxml => $rec->marc, bibid => $rec->id };
 
 		}
 
