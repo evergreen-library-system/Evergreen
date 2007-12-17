@@ -113,25 +113,19 @@ function next_patron() {
 
 		if ($('print_receipt').checked) {
 			try {
-				var params = {
-					'header' : g.data.print_list_templates.offline_checkin.header,
-					'line_item' : g.data.print_list_templates.offline_checkin.line_item,
-					'footer' : g.data.print_list_templates.offline_checkin.footer,
-					'type' : g.data.print_list_templates.offline_checkin.type,
-					'list' : g.list.dump(),
-				};
-				JSAN.use('util.print'); var print = new util.print();
-				print.tree_list( params );
+                var params = {
+                    'template' : 'offline_checkin',
+                    'callback' : function() {
+                        g.list.clear();
+                        var x = $('i_barcode'); x.value = ''; x.focus();
+                    }
+                };
+                g.list.print( params );
 			} catch(E) {
 				g.error.sdump('D_ERROR','print: ' + E);
 				alert('print: ' + E);
 			}
 		}
-
-		g.list.clear();
-		
-		var x;
-		x = $('i_barcode'); x.value = ''; x.focus();
 
 	} catch(E) {
 		dump(E+'\n'); alert(E);

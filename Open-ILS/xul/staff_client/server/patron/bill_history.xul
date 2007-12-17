@@ -323,29 +323,13 @@
 
 		function print_bills() {
 			try {
-				g.bill_list.on_all_fleshed = function() {
-					try {
-						var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
-						JSAN.use('patron.util');
-						var params = { 
-							'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
-							'lib' : g.data.hash.aou[ g.data.list.au[0].ws_ou() ],
-							'staff' : g.data.list.au[0],
-							'header' : g.data.print_list_templates[template].header,
-							'line_item' : g.data.print_list_templates[template].line_item,
-							'footer' : g.data.print_list_templates[template].footer,
-							'type' : g.data.print_list_templates[template].type,
-							'list' : g.bill_list.dump_with_keys(),
-							//'modal' : true,
-						};
-						JSAN.use('util.print'); var print = new util.print();
-						print.tree_list( params );
-						setTimeout(function(){ g.bill_list.on_all_fleshed = null; },0);
-					} catch(E) {
-						g.error.standard_unexpected_error_alert('printing bills', E);
-					}
-				}
-				g.bill_list.full_retrieve();
+                var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
+                JSAN.use('patron.util');
+                var params = { 
+                    'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
+                    'template' : template
+                };
+				g.bill_list.print(params);
 			} catch(E) {
 				g.error.standard_unexpected_error_alert('printing bills', E);
 			}

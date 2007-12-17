@@ -200,29 +200,12 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var list = (which==2 ? obj.list2 : obj.list);
-			dump(js2JSON( list.dump_with_keys() ) + '\n');
-			function flesh_callback() {
-				try {
-					JSAN.use('patron.util');
-					var params = { 
-						'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id), 
-						'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-						'staff' : obj.data.list.au[0],
-						'header' : obj.data.print_list_templates.items_out.header,
-						'line_item' : obj.data.print_list_templates.items_out.line_item,
-						'footer' : obj.data.print_list_templates.items_out.footer,
-						'type' : obj.data.print_list_templates.items_out.type,
-						'list' : list.dump_with_keys(),
-					};
-					JSAN.use('util.print'); var print = new util.print();
-					print.tree_list( params );
-					setTimeout(function(){list.on_all_fleshed = null;},0);
-				} catch(E) {
-					obj.error.standard_unexpected_error_alert('printing 2',E);
-				}
-			}
-			list.on_all_fleshed = flesh_callback;
-			list.full_retrieve();
+            JSAN.use('patron.util');
+            var params = { 
+                'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id), 
+                'template' : 'items_out'
+            };
+            list.print( params );
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('printing 1',E);
 		}
@@ -232,17 +215,7 @@ patron.items.prototype = {
 		var obj = this;
 		try {
 			var list = (which==2 ? obj.list2 : obj.list);
-			function flesh_callback() {
-				try {
-					dump( list.dump_csv() + '\n');
-					copy_to_clipboard(list.dump_csv());
-					setTimeout(function(){list.on_all_fleshed = null;},0);
-				} catch(E) {
-					obj.error.standard_unexpected_error_alert('export 2',E);
-				}
-			}
-			list.on_all_fleshed = flesh_callback;
-			list.full_retrieve();
+			list.dump_csv_to_clipboard();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('export 1',E);
 		}

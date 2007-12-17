@@ -82,16 +82,7 @@ cat.z3950.prototype = {
 						'cmd_export' : [
 							['command'],
 							function() {
-								obj.list.on_all_fleshed = function() {
-									try {
-										dump(obj.list.dump_csv() + '\n');
-										copy_to_clipboard(obj.list.dump_csv());
-										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-									} catch(E) {
-			                            obj.error.standard_unexpected_error_alert('Failure during export.',E);
-									}
-								}
-								obj.list.full_retrieve();
+								obj.list.dump_csv_to_clipboard();
 							}
 						],
 						'cmd_broken' : [

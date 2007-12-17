@@ -448,32 +448,14 @@ cat.record_buckets.prototype = {
 					'cmd_record_buckets_export' : [
 						['command'],
 						function() {
-							obj.list2.on_all_fleshed = function() {
-								try {
-									dump(obj.list2.dump_csv() + '\n');
-									copy_to_clipboard(obj.list2.dump_csv());
-									setTimeout(function(){obj.list2.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list2.full_retrieve();
+							obj.list2.dump_csv_to_clipboard();
 						}
 					],
 
 					'cmd_export1' : [
 						['command'],
 						function() {
-							obj.list1.on_all_fleshed = function() {
-								try {
-									dump(obj.list1.dump_csv() + '\n');
-									copy_to_clipboard(obj.list1.dump_csv());
-									setTimeout(function(){obj.list1.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list1.full_retrieve();
+							obj.list1.dump_csv_to_clipboard();
 						}
 					],
 

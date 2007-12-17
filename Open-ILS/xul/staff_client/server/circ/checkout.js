@@ -266,39 +266,25 @@ circ.checkout.prototype = {
 		var obj = this;
 		try {
 			obj.patron = obj.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ses(),obj.patron_id]);
-			dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-			obj.list.on_all_fleshed = function() {
-				try {
-					var params = { 
-						'patron' : obj.patron, 
-						'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-						'staff' : obj.data.list.au[0],
-						'header' : obj.data.print_list_templates.checkout.header,
-						'line_item' : obj.data.print_list_templates.checkout.line_item,
-						'footer' : obj.data.print_list_templates.checkout.footer,
-						'type' : obj.data.print_list_templates.checkout.type,
-						'list' : obj.list.dump_with_keys(),
-					};
-					if (silent) params.no_prompt = true;
-					JSAN.use('util.print'); var print = new util.print();
-					print.tree_list( params );
-					setTimeout(
-						function(){
-							obj.list.on_all_fleshed = null;
-							if (typeof f == 'function') { 
-								setTimeout( 
-									function() {
-										f();
-									}, 1000
-								)
-							} }
-						, 1000
-					);
-				} catch(E) {
-					obj.error.standard_unexpected_error_alert('print',E);
-				}
-			}
-			obj.list.full_retrieve();
+            var params = { 
+                'patron' : obj.patron, 
+                'header' : 'checkout',
+                'callback' : function() {
+                    setTimeout(
+                        function(){
+                            if (typeof f == 'function') { 
+                                setTimeout( 
+                                    function() {
+                                        f();
+                                    }, 1000
+                                )
+                            } 
+                        }, 1000
+                    );
+                }
+            };
+			if (silent) params.no_prompt = true;
+			obj.list.print(params);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('print',E);
 		}
@@ -307,16 +293,7 @@ circ.checkout.prototype = {
 	'export_list' : function(silent,f) {
 		var obj = this;
 		try {
-			obj.list.on_all_fleshed = function() {
-				try {
-					dump( obj.list.dump_csv() + '\n' );
-					copy_to_clipboard(obj.list.dump_csv());
-					setTimeout(function(){obj.list.on_all_fleshed = null;if (typeof f == 'function') f();},0);
-				} catch(E) {
-					obj.error.standard_unexpected_error_alert('print',E);
-				}
-			}
-			obj.list.full_retrieve();
+			obj.list.dump_csv_to_clipboard();
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('export',E);
 		}

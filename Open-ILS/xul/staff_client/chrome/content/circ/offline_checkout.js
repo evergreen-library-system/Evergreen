@@ -272,28 +272,21 @@ function next_patron(cancel) {
 			try {
 				var params = {
 					'patron_barcode' : $('p_barcode').value,
-					'header' : g.data.print_list_templates.offline_checkout.header,
-					'line_item' : g.data.print_list_templates.offline_checkout.line_item,
-					'footer' : g.data.print_list_templates.offline_checkout.footer,
-					'type' : g.data.print_list_templates.offline_checkout.type,
-					'list' : g.list.dump(),
+					'template' : 'offline_checkout',
+                    'callback' : function() {
+                        g.list.clear();
+                        var x = $('i_barcode'); x.value = '';
+                        x = $('p_barcode'); x.value = ''; 
+                        x.setAttribute('disabled','false'); x.disabled = false; 
+                        x.focus();
+                    }
 				};
-				JSAN.use('util.print'); var print = new util.print();
-				print.tree_list( params );
+				g.list.print( params );
 			} catch(E) {
 				g.error.sdump('D_ERROR','print: ' + E);
 				alert('print: ' + E);
 			}
 		}
-
-		g.list.clear();
-		
-		var x;
-		x = $('i_barcode'); x.value = '';
-		x = $('p_barcode'); x.value = ''; 
-		x.setAttribute('disabled','false'); x.disabled = false; 
-		x.focus();
-
 	} catch(E) {
 		dump(E+'\n'); alert(E);
 	}

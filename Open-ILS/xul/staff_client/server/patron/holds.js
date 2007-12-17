@@ -195,29 +195,12 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-								dump(js2JSON(obj.list.dump_with_keys()) + '\n');
-								function flesh_callback() {
-									try {
-										JSAN.use('patron.util');
-										var params = { 
-											'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
-											'lib' : obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ],
-											'staff' : obj.data.list.au[0],
-											'header' : obj.data.print_list_templates.holds.header,
-											'line_item' : obj.data.print_list_templates.holds.line_item,
-											'footer' : obj.data.print_list_templates.holds.footer,
-											'type' : obj.data.print_list_templates.holds.type,
-											'list' : obj.list.dump_with_keys(),
-										};
-										JSAN.use('util.print'); var print = new util.print();
-										print.tree_list( params );
-										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-									} catch(E) {
-										obj.error.standard_unexpected_error_alert('print 2',E);
-									}
-								}
-								obj.list.on_all_fleshed = flesh_callback;
-								obj.list.full_retrieve();
+								JSAN.use('patron.util');
+								var params = { 
+									'patron' : patron.util.retrieve_au_via_id(ses(),obj.patron_id), 
+									'template' : 'holds'
+								};
+								obj.list.print(params);
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('print 1',E);
 							}
@@ -227,17 +210,7 @@ patron.holds.prototype = {
 						['command'],
 						function() {
 							try {
-								function flesh_callback() {
-									try {
-										dump(obj.list.dump_csv() + '\n');
-										copy_to_clipboard(obj.list.dump_csv());
-										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-									} catch(E) {
-										obj.error.standard_unexpected_error_alert('export 2',E);
-									}
-								}
-								obj.list.on_all_fleshed = flesh_callback;
-								obj.list.full_retrieve();
+								obj.list.dump_csv_to_clipboard();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('export 1',E);
 							}
