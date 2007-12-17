@@ -318,30 +318,10 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
-								obj.list.on_all_fleshed =
-									function() {
-										try {
-											dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-											obj.data.stash_retrieve();
-											var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-											lib.children(null);
-											var p = { 
-												'lib' : lib,
-												'staff' : obj.data.list.au[0],
-												'header' : obj.data.print_list_templates.item_status.header,
-												'line_item' : obj.data.print_list_templates.item_status.line_item,
-												'footer' : obj.data.print_list_templates.item_status.footer,
-												'type' : obj.data.print_list_templates.item_status.type,
-												'list' : obj.list.dump_with_keys(),
-											};
-											JSAN.use('util.print'); var print = new util.print();
-											print.tree_list( p );
-											setTimeout(function(){ obj.list.on_all_fleshed = null; },0);
-										} catch(E) {
-											obj.error.standard_unexpected_error_alert('print',E); 
-										}
-									}
-								obj.list.full_retrieve();
+                                var p = { 
+                                    'template' : 'item_status'
+                                };
+								obj.list.print(p);
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('print',E); 
 							}
@@ -351,17 +331,7 @@ circ.copy_status.prototype = {
 						['command'],
 						function() {
 							try {
-								obj.list.on_all_fleshed =
-									function() {
-										try {
-											dump( obj.list.dump_csv() + '\n' );
-											copy_to_clipboard(obj.list.dump_csv());
-											setTimeout(function(){ obj.list.on_all_fleshed = null; },0);
-										} catch(E) {
-											obj.error.standard_unexpected_error_alert('export',E); 
-										}
-									}
-								obj.list.full_retrieve();
+								obj.list.dump_csv_to_clipboard();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('export',E); 
 							}

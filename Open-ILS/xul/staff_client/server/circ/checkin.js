@@ -236,44 +236,16 @@ circ.checkin.prototype = {
 					'cmd_checkin_print' : [
 						['command'],
 						function() {
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-									obj.OpenILS.data.stash_retrieve();
-									var lib = obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ];
-									lib.children(null);
-									var p = { 
-										'lib' : lib,
-										'staff' : obj.OpenILS.data.list.au[0],
-										'header' : obj.OpenILS.data.print_list_templates.checkin.header,
-										'line_item' : obj.OpenILS.data.print_list_templates.checkin.line_item,
-										'footer' : obj.OpenILS.data.print_list_templates.checkin.footer,
-										'type' : obj.OpenILS.data.print_list_templates.checkin.type,
-										'list' : obj.list.dump_with_keys(),
-									};
-									JSAN.use('util.print'); var print = new util.print();
-									print.tree_list( p );
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
+							var p = { 
+								'template' : 'checkin'
+							};
+							obj.list.print(p);
 						}
 					],
 					'cmd_checkin_export' : [
 						['command'],
 						function() {
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump(obj.list.dump_csv() + '\n');
-									copy_to_clipboard(obj.list.dump_csv());
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
+							obj.list.dump_csv_to_clipboard();
 						}
 					],
 

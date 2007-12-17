@@ -320,17 +320,7 @@ admin.offline_manage_xacts.prototype = {
 			'command',
 			function(ev) {
 				try {
-					obj.error_list.on_all_fleshed =
-						function() {
-							try {
-								dump( obj.error_list.dump_csv() + '\n' );
-								copy_to_clipboard(obj.error_list.dump_csv());
-								setTimeout(function(){ obj.error_list.on_all_fleshed = null; },0);
-							} catch(E) {
-								obj.error.standard_unexpected_error_alert('export',E); 
-							}
-						}
-					obj.error_list.full_retrieve();
+					obj.error_list.dump_csv_to_clipboard();
 				} catch(E) {
 					obj.error.standard_unexpected_error_alert('export',E); 
 				}

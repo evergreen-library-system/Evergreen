@@ -155,44 +155,16 @@ circ.in_house_use.prototype = {
 					'cmd_in_house_use_print' : [
 						['command'],
 						function() {
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-									obj.data.stash_retrieve();
-									var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-									lib.children(null);
-									var p = { 
-										'lib' : lib,
-										'staff' : obj.data.list.au[0],
-										'header' : obj.data.print_list_templates.in_house_use.header,
-										'line_item' : obj.data.print_list_templates.in_house_use.line_item,
-										'footer' : obj.data.print_list_templates.in_house_use.footer,
-										'type' : obj.data.print_list_templates.in_house_use.type,
-										'list' : obj.list.dump_with_keys(),
-									};
-									JSAN.use('util.print'); var print = new util.print();
-									print.tree_list( p );
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
+							var p = { 
+								'template' : 'in_house_use'
+							};
+							obj.list.print(p);
 						}
 					],
 					'cmd_in_house_use_export' : [
 						['command'],
 						function() {
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump(obj.list.dump_csv() + '\n');
-									copy_to_clipboard(obj.list.dump_csv());
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
+							obj.list.dump_csv_to_clipboard();
 						}
 					],
 

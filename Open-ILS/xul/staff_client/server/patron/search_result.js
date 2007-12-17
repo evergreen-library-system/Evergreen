@@ -94,32 +94,14 @@ patron.search_result.prototype = {
 					'cmd_search_print' : [
 						['command'],
 						function() {
-							dump( js2JSON( obj.list.dump_with_keys() ) );
-							JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-									obj.OpenILS.data.stash_retrieve();
-									var lib = data.hash.aou[ data.list.au[0].ws_ou() ];
-									lib.children(null);
-									var p = { 
-										'lib' : lib,
-										'staff' : data.list.au[0],
-										'header' : data.print_list_templates.patron.header,
-										'line_item' : data.print_list_templates.patron.line_item,
-										'footer' : data.print_list_templates.patron.footer,
-										'type' : data.print_list_templates.patron.type,
-										'list' : obj.list.dump_with_keys(),
-									};
-									JSAN.use('util.print'); var print = new util.print();
-									print.tree_list( p );
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
-
+                            try {
+								var p = { 
+									'template' : 'patron'
+								};
+								obj.list.print( p );
+                            } catch(E) {
+								obj.error.standard_unexpected_error_alert('patron search print',E);
+                            }
 						}
 					],
 					'cmd_sel_clip' : [

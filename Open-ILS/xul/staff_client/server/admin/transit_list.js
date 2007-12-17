@@ -421,37 +421,11 @@ admin.transit_list.prototype = {
 	'print_list' : function(which_list) {
 		var obj = this;
 		try {
-
 			var list = which_list == 0 ? obj.list : obj.list2;
-
-			if (list.on_all_fleshed != null) {
-				var r = window.confirm('This list is busy retrieving/rendering rows for a pending action.  Would you like to abort the pending action and proceed?');
-				if (!r) return;
-			}
-			list.on_all_fleshed =
-				function() {
-					try {
-						dump( js2JSON( list.dump_with_keys() ) + '\n' );
-						obj.data.stash_retrieve();
-						var lib = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-						lib.children(null);
-						var p = { 
-							'lib' : lib,
-							'staff' : obj.data.list.au[0],
-							'header' : obj.data.print_list_templates.transit_list.header,
-							'line_item' : obj.data.print_list_templates.transit_list.line_item,
-							'footer' : obj.data.print_list_templates.transit_list.footer,
-							'type' : obj.data.print_list_templates.transit_list.type,
-							'list' : list.dump_with_keys(),
-						};
-						JSAN.use('util.print'); var print = new util.print();
-						print.tree_list( p );
-						setTimeout(function(){ list.on_all_fleshed = null; },0);
-					} catch(E) {
-						obj.error.standard_unexpected_error_alert('print',E); 
-					}
-				}
-			list.full_retrieve();
+            var p = { 
+                'template' : 'transit_list'
+            };
+			list.print(p);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('print',E); 
 		}

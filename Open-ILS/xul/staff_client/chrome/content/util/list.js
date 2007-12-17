@@ -1080,6 +1080,47 @@ util.list.prototype = {
         }
     },
 
+    'print' : function(params) {
+        if (!params) params = {};
+		switch(this.node.nodeName) {
+			case 'tree' : return this._print_tree(params); break;
+			default: throw('NYI: Need ._print() for ' + this.node.nodeName); break;
+		}
+    },
+
+    '_print_tree' : function(params) {
+        var obj = this;
+        try {
+			JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+            if (!params.staff && data.list.au && data.list.au[0]) {
+                params.staff = data.list.au[0];
+            }
+            if (!params.lib && data.list.au && data.list.au[0] && data.list.au[0].ws_ou() && data.hash.aou && data.hash.aou[ data.list.au[0].ws_ou() ]) {
+                params.lib = data.hash.aou[ data.list.au[0].ws_ou() ];
+                params.lib.children(null);
+            }
+            if (params.template && data.print_list_templates[ params.template ]) {
+                var template = data.print_list_templates[ params.template ];
+                for (var i in template) params[i] = template[i];
+            }
+            obj.wrap_in_full_retrieve(
+                function() {
+                    try {
+                        if (!params.list) params.list = obj.dump_with_keys();
+                        JSAN.use('util.print'); var print = new util.print();
+                        print.tree_list( params );
+                        if (typeof params.callback == 'function') params.callback();
+                    } catch(E) {
+			            obj.error.standard_unexpected_error_alert('inner _print_tree',E);
+                    }
+                }
+            );
+            
+        } catch(E) {
+			obj.error.standard_unexpected_error_alert('_print_tree',E);
+        }
+    },
+
 	'dump_selected_with_keys' : function(params) {
 		var obj = this;
 		switch(this.node.nodeName) {

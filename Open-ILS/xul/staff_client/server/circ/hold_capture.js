@@ -60,29 +60,10 @@ circ.hold_capture.prototype = {
 					'cmd_hold_capture_print' : [
 						['command'],
 						function() {
-							obj.list.on_all_fleshed = function() {
-								try {
-									dump( js2JSON( obj.list.dump_with_keys() ) + '\n' );
-									obj.OpenILS.data.stash_retrieve();
-									var lib = obj.OpenILS.data.hash.aou[ obj.OpenILS.data.list.au[0].ws_ou() ];
-									lib.children(null);
-									var p = { 
-										'lib' : lib,
-										'staff' : obj.OpenILS.data.list.au[0],
-										'header' : obj.OpenILS.data.print_list_templates.hold_capture.header,
-										'line_item' : obj.OpenILS.data.print_list_templates.hold_capture.line_item,
-										'footer' : obj.OpenILS.data.print_list_templates.hold_capture.footer,
-										'type' : obj.OpenILS.data.print_list_templates.hold_capture.type,
-										'list' : obj.list.dump_with_keys(),
-									};
-									JSAN.use('util.print'); var print = new util.print();
-									print.tree_list( p );
-									setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-								} catch(E) {
-									alert(E); 
-								}
-							}
-							obj.list.full_retrieve();
+							var p = { 
+								'template' : 'hold_capture'
+							};
+							obj.list.print(p);
 						}
 					],
 					'cmd_hold_capture_reprint' : [

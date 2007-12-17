@@ -82,16 +82,7 @@ cat.z3950.prototype = {
 						'cmd_export' : [
 							['command'],
 							function() {
-								obj.list.on_all_fleshed = function() {
-									try {
-										dump(obj.list.dump_csv() + '\n');
-										copy_to_clipboard(obj.list.dump_csv());
-										setTimeout(function(){obj.list.on_all_fleshed = null;},0);
-									} catch(E) {
-			                            obj.error.standard_unexpected_error_alert('Failure during export.',E);
-									}
-								}
-								obj.list.full_retrieve();
+								obj.list.dump_csv_to_clipboard();
 							}
 						],
 						'cmd_broken' : [
@@ -294,11 +285,11 @@ cat.z3950.prototype = {
 		var obj = this;
 		var x = obj.creds.services[service].default_attr;
 		if (x) {
-			document.getElementById(x+'_input').focus();
+			var xx = document.getElementById(x+'_input'); if (xx) xx.focus();
 		} else {
 			var y;
 			for (var i in obj.services[service].attr) { y = i; }
-			document.getElementById(y+'_input').focus();
+			var xx = document.getElementById(y+'_input'); if (xx) xx.focus();
 		}
 	},
 
