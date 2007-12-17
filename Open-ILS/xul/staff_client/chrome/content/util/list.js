@@ -46,10 +46,6 @@ util.list.prototype = {
 		}
 	},
 
-	'register_all_fleshed_callback' : function(f) {
-		this.on_all_fleshed = f;
-	},
-
 	'_init_tree' : function (params) {
 		var obj = this;
 		if (this.prebuilt) {
@@ -265,9 +261,7 @@ util.list.prototype = {
 		this.error.sdump('D_LIST','Clearing list ' + this.node.getAttribute('id') + '\n');
 		this.row_count.total = 0;
 		this.row_count.fleshed = 0;
-		if (typeof obj.on_all_fleshed == 'function') {
-			setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-		}
+		setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 	},
 
 	'_clear_tree' : function(params) {
@@ -308,9 +302,7 @@ util.list.prototype = {
 		}
 		this.row_count.total++;
 		if (this.row_count.fleshed == this.row_count.total) {
-			if (typeof this.on_all_fleshed == 'function') {
-				setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-			}
+			setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 		}
 		return rparams;
 	},
@@ -412,9 +404,7 @@ util.list.prototype = {
 						treerow.setAttribute('fleshed','true');
 						obj.row_count.fleshed++;
 						if (obj.row_count.fleshed >= obj.row_count.total) {
-							if (typeof obj.on_all_fleshed == 'function') {
-								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-							}
+							setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 						}
 					}
 
@@ -470,9 +460,7 @@ util.list.prototype = {
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
 					if (obj.row_count.fleshed >= obj.row_count.total) {
-						if (typeof obj.on_all_fleshed == 'function') {
-							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-						}
+						setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 					}
 				},
 				false
@@ -562,9 +550,7 @@ util.list.prototype = {
 						treerow.setAttribute('fleshed','true');
 						obj.row_count.fleshed++;
 						if (obj.row_count.fleshed >= obj.row_count.total) {
-							if (typeof obj.on_all_fleshed == 'function') {
-								setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-							}
+							setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 						}
 					}
 
@@ -620,9 +606,7 @@ util.list.prototype = {
 					treerow.setAttribute('fleshed','true');
 					obj.row_count.fleshed++;
 					if (obj.row_count.fleshed >= obj.row_count.total) {
-						if (typeof obj.on_all_fleshed == 'function') {
-							setTimeout( function() { obj.on_all_fleshed(); }, 0 );
-						}
+						setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
 					}
 				},
 				false
@@ -757,6 +741,42 @@ util.list.prototype = {
 		}
 	},
 
+    'exec_on_all_fleshed' : function() {
+        var obj = this;
+        try {
+            if (obj.on_all_fleshed) {
+				if (typeof obj.on_all_fleshed == 'function') {
+                    dump('exec_on_all_fleshed == function\n');
+					setTimeout( 
+                        function() { 
+                            try { obj.on_all_fleshed(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',obj.on_all_fleshed); }
+                        }, 0 
+                    );
+				} else if (typeof obj.on_all_fleshed.length != 'undefined') {
+                    dump('exec_on_all_fleshed == array\n');
+                    setTimeout(
+                        function() {
+                            try {
+                                dump('exec_on_all_fleshed, processing on_all_fleshed array, length = ' + obj.on_all_fleshed.length + '\n');
+                                var f = obj.on_all_fleshed.pop();
+                                if (typeof f == 'function') { 
+                                    try { f(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',f); } 
+                                }
+                                if (obj.on_all_fleshed.length > 0) arguments.callee(); 
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('exec_on_all_fleshed callback error',E);
+                            }
+                        }, 0
+                    ); 
+				} else {
+                    obj.error.standard_unexpected_error_alert('unexpected on_all_fleshed object: ', obj.on_all_fleshed);
+                }
+            }
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('exec_on_all-fleshed error',E);
+        }
+    },
+
 	'full_retrieve' : function(params) {
 		var obj = this;
 		switch (this.node.nodeName) {
@@ -770,27 +790,7 @@ util.list.prototype = {
 		try {
 			if (obj.row_count.fleshed >= obj.row_count.total) {
 				dump('Full retrieve... tree seems to be in sync\n' + js2JSON(obj.row_count) + '\n');
-				if (typeof obj.on_all_fleshed == 'function') {
-					setTimeout( 
-                        function() { 
-                            try { obj.on_all_fleshed(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',obj.on_all_fleshed); }
-                        }, 0 
-                    );
-				} else if (typeof obj.on_all_fleshed.length != 'undefined') {
-                    setTimeout(
-                        function() {
-                            var f = obj.on_all_fleshed.pop();
-                            if (typeof f == 'function') { 
-                                try { f(); } catch(E) { obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback',f); } 
-                            } else { 
-                                obj.error.standard_unexpected_error_alert('_full_retrieve_tree callback: expected a function',f);
-                            }
-                            if (obj.on_all_fleshed.length > 0) arguments.callee(); 
-                        }, 0
-                    ); 
-                } else {
-					dump('.full_retrieve called with no callback?' + '\n');
-				}
+                obj.exec_on_all_fleshed();
 			} else {
 				dump('Full retrieve... syncing tree' + js2JSON(obj.row_count) + '\n');
 				JSAN.use('util.widgets');
@@ -1155,15 +1155,12 @@ util.list.prototype = {
 			if (obj.node.getAttribute('no_sort')) {
 				return;
 			}
-			if (obj.on_all_fleshed) {
-				var r = window.confirm('This list is busy rendering/retrieving data.  Abort current action and proceed?');
-				if (r) {} else { return; }
-			}
 			var col_pos;
 			for (var i = 0; i < obj.columns.length; i++) { 
 				if (obj.columns[i].id == col.id) col_pos = function(a){return a;}(i); 
 			}
-			obj.on_all_fleshed = function() {
+            obj.wrap_in_full_retrieve(
+                function() {
 					try {
 						JSAN.use('util.money');
 						var rows = [];
@@ -1213,9 +1210,8 @@ util.list.prototype = {
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert('sorting',E); 
 					}
-					setTimeout(function(){ obj.on_all_fleshed = null; },0);
 				}
-			obj.full_retrieve();
+            );
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('pre sorting', E);
 		}
