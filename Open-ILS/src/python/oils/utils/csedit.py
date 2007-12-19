@@ -105,7 +105,7 @@ class CSEditor(object):
 
         # XXX improve param logging here
 
-        self.log(osrfLogInfo, "request %s %s" % (method, unicode(params)))
+        self.log(log_info, "request %s %s" % (method, unicode(params)))
 
         if self.xact and self.session().state != OSRF_APP_SESSION_CONNECTED:
             self.log(log_error, "csedit lost its connection!")
@@ -118,7 +118,7 @@ class CSEditor(object):
             val = resp.content()
 
         except Exception, e:
-            self.log(osrfLogErr, "request error: %s" % unicode(e))
+            self.log(log_error, "request error: %s" % unicode(e))
             raise e
 
         return val
@@ -158,7 +158,7 @@ class CSEditor(object):
 
     def rawSearch(self, args):
         method = "%s.json_query.atomic" % self.app
-        self.log(osrfLogDebug, "rawSearch args: %s" % unicode(args))
+        self.log(log_debug, "rawSearch args: %s" % unicode(args))
         return self.request(method, [args])
 
     def rawSearch2(self, hint, fields, where, from_=None):
