@@ -324,13 +324,10 @@ sub compile_query {
     # "structure attribute"
     # -------------------------------------------------------------------
 	for( keys %$hash ) {
-#		$str .= '@attr ' .
-#			$services{$service}->{attrs}->{$_}->{format} . '=' .
-#			$services{$service}->{attrs}->{$_}->{code} . " \"" . $$hash{$_} . "\" ";		
-        $str .= 
-            '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
-            ' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add the structure attribute
-            " \"" . $$hash{$_} . "\" "; # add the search term
+		next unless ( exists $services{$service}->{attrs}->{$_} );
+		$str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
+			' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add the structure attribute
+			" \"" . $$hash{$_} . "\" "; # add the search term
 	}
 	return $str;
 }
