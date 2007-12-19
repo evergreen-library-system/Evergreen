@@ -129,8 +129,11 @@
 			<field reporter:label="Port" name="port" oils_obj:array_position="6" oils_persist:virtual="false"  reporter:datatype="int"/>
 			<field reporter:label="DB" name="db" oils_obj:array_position="7" oils_persist:virtual="false"  reporter:datatype="text"/>
 			<field reporter:label="Auth" name="auth" oils_obj:array_position="8" oils_persist:virtual="false"  reporter:datatype="bool"/>
+			<field reporter:label="Attrs" name="attrs" oils_obj:array_position="9" oils_persist:virtual="true"  reporter:datatype="link"/>
 		</fields>
-		<links/>
+		<links>
+			<link field="attrs" reltype="has_many" key="source" map="" class="cza"/>
+		</links>
 	</class>
 
 	<class id="cza" controller="open-ils.cstore" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute">
