@@ -84,7 +84,38 @@ sub query_services {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
-	return $sclient->config_value('z3950', 'services');
+
+	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+	my $sources = $cstore->request(
+		'open-ils.cstore.direct.config.z3950_source.search.atomic',
+		{ id => { '!=' => null } },
+		{ flesh => 1, flesh_fields => { czs => ['attrs'] } }
+	)->gather(1);
+	$cstore->disconnect;
+
+	my %hash = ();
+	for my $s ( @$sources ) {
+		$hash{ $s->name } = {
+			name => $s->name,
+			label => $s->label,
+			host => $s->host,
+			port => $s->port,
+			db => $s->db,
+			auth => $s->auth,
+		};
+
+		for my $a ( @{ $s->attrs } ) {
+			$hash{ $a->source }{attrs}{ $a->name } = {
+				name => $a->name,
+				label => $a->label,
+				code => $a->code,
+				format => $a->format,
+				source => $a->source,
+			};
+		}
+	}
+	
+	return \%hash;
 }
 
 
@@ -325,7 +356,7 @@ sub compile_query {
     # -------------------------------------------------------------------
 	for( keys %$hash ) {
 		next unless ( exists $services{$service}->{attrs}->{$_} );
-        	$str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
+		$str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
 			' @attr 4=' . $services{$service}->{attrs}->{$_}->{format} . # add the structure attribute
 			" \"" . $$hash{$_} . "\" "; # add the search term
 	}
