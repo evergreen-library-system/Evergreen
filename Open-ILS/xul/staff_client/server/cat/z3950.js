@@ -13,11 +13,13 @@ cat.z3950 = function (params) {
 
 cat.z3950.prototype = {
 
-	'creds_version' : 1,
+	'creds_version' : 2,
 
     'number_of_result_sets' : 0,
 
     'result_set' : [],
+
+    'limit' : 10,
 
 	'init' : function( params ) {
 
@@ -26,6 +28,8 @@ cat.z3950.prototype = {
 			JSAN.use('util.widgets');
 
 			var obj = this;
+
+            JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
 
 			obj.load_creds();
 
@@ -39,8 +43,9 @@ cat.z3950.prototype = {
 					'edition' : { 'hidden' : false },
 					'pubdate' : { 'hidden' : false },
 					'publisher' : { 'hidden' : false },
+					'service' : { 'hidden' : false }
 				}
-			);
+            );
 
 			JSAN.use('util.list'); obj.list = new util.list('results');
 			obj.list.init(
@@ -137,7 +142,10 @@ cat.z3950.prototype = {
                                     var retrieve_id = obj.controller.view.marc_import.getAttribute('retrieve_id');
                                     var result_idx = retrieve_id.split('-')[0];
                                     var record_idx = retrieve_id.split('-')[1];
-                                    obj.spawn_marc_editor( obj.result_set[ result_idx ].records[ record_idx ].marcxml);
+                                    obj.spawn_marc_editor( 
+                                        obj.result_set[ result_idx ].records[ record_idx ].marcxml,
+                                        obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
+                                    );
                                 } catch(E) {
 			                        obj.error.standard_unexpected_error_alert('Failure during marc import.',E);
                                 }
@@ -150,7 +158,10 @@ cat.z3950.prototype = {
                                     var retrieve_id = obj.controller.view.marc_import_overlay.getAttribute('retrieve_id');
                                     var result_idx = retrieve_id.split('-')[0];
                                     var record_idx = retrieve_id.split('-')[1];
-                                    obj.spawn_marc_editor_for_overlay( obj.result_set[ result_idx ].records[ record_idx ].marcxml);
+                                    obj.spawn_marc_editor_for_overlay( 
+                                        obj.result_set[ result_idx ].records[ record_idx ].marcxml,
+                                        obj.result_set[ result_idx ].records[ record_idx ].service /* FIXME: we want biblio_source here */
+                                    );
 								} catch(E) {
 			                        obj.error.standard_unexpected_error_alert('Failure during marc import overlay.',E);
 								}
@@ -168,66 +179,89 @@ cat.z3950.prototype = {
 								obj.page_next();
 							},
 						],
-						'raw_search' : [
-							['command'],
-							function() {
-								var raw = window.prompt('WARNING: This is not a simple keyword search.  Enter raw z39.50 PQN search string: ','','Raw Z39.50 PQN Search');
-								if (raw) obj.initial_raw_search(raw);
-							},
-						],
-						'menu_placeholder' : [
+						'service_rows' : [
 							['render'],
 							function(e) {
 								return function() {
 									try {
 
 										function handle_switch(node) {
-											var service = obj.controller.view.service_menu.value;
-											obj.current_service = service;
-											var nl = document.getElementsByAttribute('mytype','search_class');
-											for (var i = 0; i < nl.length; i++) { nl[i].disabled = true; }
-											for (var i in obj.services[service].attrs) {
-												var x = document.getElementById(i + '_input');
-												if (x) {
-													x.disabled = false;
-												} else {
-													var rows = document.getElementById('query_inputs');
-													var row = document.createElement('row'); rows.appendChild(row);
-													var label = document.createElement('label');
-													label.setAttribute('control',i+'_input');
-													label.setAttribute('search_class',i);
-													label.setAttribute('style','-moz-user-focus: ignore');
-													if (entities['staff.z39_50.search_class.'+i]) {
-														label.setAttribute('value',entities['staff.z39_50.search_class.'+i]);
-													} else {
-														label.setAttribute('value',i);
-													}
-													row.appendChild(label);
-													label.addEventListener('click',function(ev){
-															var a = ev.target.getAttribute('search_class');
-															if (a) obj.default_attr = a;
-														},false
-													);
-													var tb = document.createElement('textbox');
-													tb.setAttribute('id',i+'_input');
-													tb.setAttribute('mytype','search_class');
-													tb.setAttribute('search_class',i);
-													row.appendChild(tb);
-													tb.addEventListener('keypress',obj.handle_enter,false);
-												}
-											}
-											if (obj.creds.services[ service ]) {
-												document.getElementById('username').setAttribute('value',
-													obj.creds.services[service].username
-												);
-												document.getElementById('password').setAttribute('value',
-													obj.creds.services[service].password
-												);
-												try { g.service = service; } catch(E) {}
-												obj.focus(service);
-											} else {
-												document.getElementById('username').focus();
-											}
+                                            try {
+                                                obj.active_services = [];
+                                                var snl = document.getElementsByAttribute('mytype','service_class');
+                                                for (var i = 0; i < snl.length; i++) {
+                                                    var n = snl[i];
+                                                    if (n.nodeName == 'checkbox') {
+                                                        if (n.checked) obj.active_services.push( n.getAttribute('service') );
+                                                    }
+                                                }
+                                                var nl = document.getElementsByAttribute('mytype','search_class');
+                                                for (var i = 0; i < nl.length; i++) { nl[i].disabled = true; }
+                                                var attrs = {};
+                                                for (var j = 0; j < obj.active_services.length; j++) {
+                                                    for (var i in obj.services[obj.active_services[j]].attrs) {
+                                                        var attr = obj.services[obj.active_services[j]].attrs[i];
+                                                        if (! attrs[i]) {
+                                                            attrs[i] = { 'labels' : {} };
+                                                        }
+                                                        if (attr.label) {
+                                                            attrs[i].labels[ attr.label ] = true;
+                                                        } else if (entities['staff.z39_50.search_class.'+i]) {
+                                                            attrs[i].labels[ entities['staff.z39_50.search_class.'+i] ] = true;
+                                                        } else if (attr.name) {
+                                                            attrs[i].labels[ attr.name ] = true;
+                                                        } else {
+                                                            attrs[i].labels[ i ] = true;
+                                                        }
+
+                                                    }
+                                                    
+                                                }
+
+                                                function set_label(x,attr) {
+                                                    var labels = [];
+                                                    for (var j in attrs[attr].labels) {
+                                                        labels.push(j);
+                                                    }
+                                                    if (labels.length > 0) {
+                                                        x.setAttribute('value',labels[0]);
+                                                        x.setAttribute('tooltiptext',labels.join(','));
+                                                        if (labels.length > 1) x.setAttribute('class','multiple_labels');
+                                                    }
+                                                }
+
+                                                for (var i in attrs) {
+                                                    var x = document.getElementById(i + '_input');
+                                                    if (x) {
+                                                        x.disabled = false;
+                                                        var y = document.getElementById(i + '_label',i);
+                                                        if (y) set_label(y,i);
+                                                    } else {
+                                                        var rows = document.getElementById('query_inputs');
+                                                        var row = document.createElement('row'); rows.appendChild(row);
+                                                        var label = document.createElement('label');
+                                                        label.setAttribute('id',i+'_label');
+                                                        label.setAttribute('control',i+'_input');
+                                                        label.setAttribute('search_class',i);
+                                                        label.setAttribute('style','-moz-user-focus: ignore');
+                                                        row.appendChild(label);
+                                                        set_label(label,i);
+                                                        label.addEventListener('click',function(ev){
+                                                                var a = ev.target.getAttribute('search_class');
+                                                                if (a) obj.default_attr = a;
+                                                            },false
+                                                        );
+                                                        var tb = document.createElement('textbox');
+                                                        tb.setAttribute('id',i+'_input');
+                                                        tb.setAttribute('mytype','search_class');
+                                                        tb.setAttribute('search_class',i);
+                                                        row.appendChild(tb);
+                                                        tb.addEventListener('keypress',function(ev) { dump('foo\n'); return obj.handle_enter(ev); },false);
+                                                    }
+                                                }
+                                            } catch(E) {
+										        obj.error.standard_unexpected_error_alert('Error setting up search fields.',E);
+                                            }
 										}
 
 										var robj = obj.network.simple_request(
@@ -236,29 +270,40 @@ cat.z3950.prototype = {
 										);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 										obj.services = robj;
-										var list = [];
+                                        var x = document.getElementById('service_rows');
 										for (var i in robj) {
-											list.push(
-												[
-													i + ' : ' + robj[i].db + '@' + robj[i].host + ':' + robj[i].port,
-													i
-												]
-											);
-										}
-										util.widgets.remove_children(e);
-										var ml = util.widgets.make_menulist( list );
-										ml.setAttribute('flex','1');
-										e.appendChild(ml);
-										ml.addEventListener(
-											'command',
-											function(ev) { handle_switch(ev.target); },
-											false
-										);
-										obj.controller.view.service_menu = ml;
-										setTimeout(
+                                            var r = document.createElement('row'); x.appendChild(r);
+                                            var cb = document.createElement('checkbox'); 
+                                                if (robj[i].label) {
+                                                    cb.setAttribute('label',robj[i].label);
+                                                } else if (robj[i].name) {
+                                                    cb.setAttribute('label',robj[i].name);
+                                                } else {
+                                                    cb.setAttribute('label',i);
+                                                }
+                                                cb.setAttribute('tooltiptext',i + ' : ' + robj[i].db + '@' + robj[i].host + ':' + robj[i].port); 
+                                                cb.setAttribute('mytype','service_class'); cb.setAttribute('service',i);
+                                                cb.setAttribute('id',i+'_service'); r.appendChild(cb);
+                                                cb.addEventListener('command',handle_switch,false);
+                                            var username = document.createElement('textbox'); username.setAttribute('id',i+'_username'); 
+                                            if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) username.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].username);
+                                            r.appendChild(username);
+                                            var password = document.createElement('textbox'); password.setAttribute('id',i+'_password'); 
+                                            if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) password.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].password);
+                                            password.setAttribute('type','password'); r.appendChild(password);
+                                        }
+                                        setTimeout(
 											function() { 
-												if (obj.creds.default_service) ml.value = obj.creds.default_service;
-												handle_switch(ml); 
+                                                if (obj.creds.hosts[ obj.data.server_unadorned ]) {
+                                                    for (var i = 0; i < obj.creds.hosts[ obj.data.server_unadorned ].default_services.length; i++) {
+                                                        var x = document.getElementById(obj.creds.hosts[ obj.data.server_unadorned ].default_services[i]+'_service');
+                                                        if (x) x.checked = true;
+                                                    }
+                                                } else if (obj.creds.default_service) {
+                                                    var x = document.getElementById(obj.creds.default_service+'_service');
+                                                    if (x) x.checked = true;
+                                                }
+                                                handle_switch();
 											},0
 										);
 									} catch(E) {
@@ -273,31 +318,32 @@ cat.z3950.prototype = {
 
 			obj.controller.render();
 
-			obj.controller.view.username = document.getElementById('username');
-			obj.controller.view.password = document.getElementById('password');
+            setTimeout( function() { obj.focus(); }, 0 );
 
 		} catch(E) {
 			this.error.sdump('D_ERROR','cat.z3950.init: ' + E + '\n');
 		}
 	},
 
-	'focus' : function(service) {
+	'focus' : function() {
 		var obj = this;
-		var x = obj.creds.services[service].default_attr;
-		if (x) {
-			var xx = document.getElementById(x+'_input'); if (xx) xx.focus();
-		} else {
-			var y;
-			for (var i in obj.services[service].attr) { y = i; }
-			var xx = document.getElementById(y+'_input'); if (xx) xx.focus();
-		}
+        var focus_me; var or_focus_me;
+        for (var i = 0; i < obj.active_services.length; i++) {
+            if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ]) {
+		        var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
+                if (x) { focus_me = x; break; }
+            }
+			for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
+        }
+        if (! focus_me) focus_me = or_focus_me;
+		var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
 	},
 
 	'clear' : function() {
 		var obj = this;
 		var nl = document.getElementsByAttribute('mytype','search_class');
 		for (var i = 0; i < nl.length; i++) { nl[i].value = ''; nl[i].setAttribute('value',''); }
-		obj.focus(obj.controller.view.service_menu.value);
+		//obj.focus(obj.controller.view.service_menu.value);
 	},
 
 	'search_params' : {},
@@ -309,14 +355,23 @@ cat.z3950.prototype = {
 			JSAN.use('util.widgets');
 			util.widgets.remove_children( obj.controller.view.result_message );
 			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+            if (obj.active_services.length < 1) {
+			    x.appendChild( document.createTextNode( 'No services selected to search.' ));
+                return;
+            }
 			x.appendChild( document.createTextNode( 'Searching...' ));
 			obj.search_params = {}; obj.list.clear();
 			obj.controller.view.page_next.disabled = true;
 
-			obj.search_params.service = obj.controller.view.service_menu.value;
-			obj.search_params.username = obj.controller.view.username.value;
-			obj.search_params.password = obj.controller.view.password.value;
-			obj.search_params.limit = 10;
+			obj.search_params.service = []; 
+			obj.search_params.username = [];
+			obj.search_params.password = [];
+            for (var i = 0; i < obj.active_services.length; i++) {
+                obj.search_params.service.push( obj.active_services[i] );
+                obj.search_params.username.push( document.getElementById( obj.active_services[i]+'_username' ).value );
+                obj.search_params.password.push( document.getElementById( obj.active_services[i]+'_password' ).value );
+            }
+			obj.search_params.limit = Math.ceil( obj.limit / obj.active_services.length );
 			obj.search_params.offset = 0;
 
 			obj.search_params.search = {};
@@ -335,31 +390,6 @@ cat.z3950.prototype = {
 			}
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Failure during initial search.',E);
-		}
-	},
-
-	'initial_raw_search' : function(raw) {
-		try {
-			var obj = this;
-            obj.result_set = []; obj.number_of_result_sets = 0;
-			JSAN.use('util.widgets');
-			util.widgets.remove_children( obj.controller.view.result_message );
-			var x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-			x.appendChild( document.createTextNode( 'Searching...' ) );
-			obj.search_params = {}; obj.result_count = 0; obj.list.clear();
-			obj.controller.view.page_next.disabled = true;
-
-			obj.search_params.service = obj.controller.view.service_menu.value;
-			obj.search_params.username = obj.controller.view.username.value;
-			obj.search_params.password = obj.controller.view.password.value;
-			obj.search_params.limit = 10;
-			obj.search_params.offset = 0;
-
-			obj.search_params.query = raw;
-
-			obj.search();
-		} catch(E) {
-			this.error.standard_unexpected_error_alert('Failure during initial raw search.',E);
 		}
 	},
 
@@ -414,50 +444,55 @@ cat.z3950.prototype = {
 				x.appendChild( document.createTextNode( 'Server Error: ' + results.textcode + ' : ' + results.desc ));
 				return;
 			}
-			if (results.query) {
-				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild( document.createTextNode( 'Raw query: ' + results.query ));
-			}
-			if (results.count) {
-				if (results.records) {
-					x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-					x.appendChild(
-						document.createTextNode( 'Showing ' + (obj.search_params.offset + results.records.length) + ' of ' + results.count)
-					);
-				}
-				if (obj.search_params.offset + obj.search_params.limit <= results.count) {
-					obj.controller.view.page_next.disabled = false;
-				}
-			} else {
-					x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-					x.appendChild(
-						document.createTextNode( results.count + ' records found')
-					);
-			}
-			if (results.records) {
-				obj.result_set[ ++obj.number_of_result_sets ] = results;
-				obj.controller.view.marc_import.disabled = true;
-				obj.controller.view.marc_import_overlay.disabled = true;
-				var x = obj.controller.view.marc_view;
-				if (x.getAttribute('toggle') == '0') x.disabled = true;
-				for (var i = 0; i < obj.result_set[ obj.number_of_result_sets ].records.length; i++) {
-					obj.list.append(
-						{
-							'retrieve_id' : String( obj.number_of_result_sets ) + '-' + String( i ),
-							'row' : {
-								'my' : {
-									'mvr' : function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[i].mvr),
-								}
-							}
-						}
-					);
-				}
-			} else {
-				x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
-				x.appendChild(
-					document.createTextNode( 'Error retrieving results.')
-				);
-			}
+            if (typeof results.length == 'undefined') results = [ results ];
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].query) {
+                    x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                    x.appendChild( document.createTextNode( 'Raw query: ' + results[i].query ));
+                }
+                if (results[i].count) {
+                    if (results[i].records) {
+                        x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                        var showing = obj.search_params.offset + results[i].records.length; 
+                        x.appendChild(
+                            document.createTextNode( 'Showing ' + (showing > results[i].count ? results[i].count : showing) + ' of ' + results[i].count + ' for ' + results[i].service )
+                        );
+                    }
+                    if (obj.search_params.offset + obj.search_params.limit <= results[i].count) {
+                        obj.controller.view.page_next.disabled = false;
+                    }
+                } else {
+                        x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                        x.appendChild(
+                            document.createTextNode( results[i].count + ' records found')
+                        );
+                }
+                if (results[i].records) {
+                    obj.result_set[ ++obj.number_of_result_sets ] = results[i];
+                    obj.controller.view.marc_import.disabled = true;
+                    obj.controller.view.marc_import_overlay.disabled = true;
+                    var x = obj.controller.view.marc_view;
+                    if (x.getAttribute('toggle') == '0') x.disabled = true;
+                    for (var j = 0; j < obj.result_set[ obj.number_of_result_sets ].records.length; j++) {
+                        obj.list.append(
+                            {
+                                'retrieve_id' : String( obj.number_of_result_sets ) + '-' + String( j ),
+                                'row' : {
+                                    'my' : {
+                                        'mvr' : function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr),
+                                        'service' : results[i].service
+                                    }
+                                }
+                            }
+                        );
+                    }
+                } else {
+                    x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
+                    x.appendChild(
+                        document.createTextNode( 'Error retrieving results.')
+                    );
+                }
+            }
 		} catch(E) {
 			this.error.standard_unexpected_error_alert('Failure during search result handling.',E);
 		}
@@ -477,7 +512,7 @@ cat.z3950.prototype = {
 		);
 	},
 
-	'spawn_marc_editor' : function(my_marcxml) {
+	'spawn_marc_editor' : function(my_marcxml,biblio_source) {
 		var obj = this;
 		xulG.new_tab(
 			xulG.url_prefix(urls.XUL_MARC_EDIT), 
@@ -488,7 +523,7 @@ cat.z3950.prototype = {
 					'label' : 'Import Record',
 					'func' : function (new_marcxml) {
 						try {
-							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, obj.current_service ]);
+							var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
@@ -497,12 +532,12 @@ cat.z3950.prototype = {
 										var btn1 = 'Overlay';
 										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
 										if (btn2) {
-											JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+											obj.data.init({'via':'stash'});
 											var robj = obj.network.simple_request(
 												'PERM_CHECK',[
 													ses(),
-													data.list.au[0].id(),
-													data.list.au[0].ws_ou(),
+													obj.data.list.au[0].id(),
+													obj.data.list.au[0].ws_ou(),
 													[ 'ALLOW_ALT_TCN' ]
 												]
 											);
@@ -516,7 +551,7 @@ cat.z3950.prototype = {
 										obj.error.sdump('D_ERROR','option ' + p + 'chosen');
 										switch(p) {
 											case 0:
-												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, obj.current_service ]);
+												var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
 												if (typeof r3.ilsevent != 'undefined') {
 													throw(r3);
 												} else {
@@ -528,7 +563,7 @@ cat.z3950.prototype = {
 												var r2 = obj.network.request(
 													api.MARC_XML_RECORD_IMPORT.app,
 													api.MARC_XML_RECORD_IMPORT.method + '.override',
-													[ ses(), new_marcxml, obj.current_service ]
+													[ ses(), new_marcxml, biblio_source ]
 												);
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
@@ -595,10 +630,10 @@ cat.z3950.prototype = {
 		return true;
 	},
 
-	'spawn_marc_editor_for_overlay' : function(my_marcxml) {
+	'spawn_marc_editor_for_overlay' : function(my_marcxml,biblio_source) {
 		var obj = this;
-		JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-		if (!data.marked_record) {
+		obj.data.init({'via':'stash'});
+		if (!obj.data.marked_record) {
 			alert('Please mark a record for overlay from within the catalog and try this again.');
 			return;
 		}
@@ -612,8 +647,8 @@ cat.z3950.prototype = {
 					'label' : 'Overlay Record',
 					'func' : function (new_marcxml) {
 						try {
-							if (! obj.confirm_overlay( [ data.marked_record ] ) ) { return; }
-							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), data.marked_record, new_marcxml, obj.current_service ]);
+							if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
+							var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
@@ -624,8 +659,8 @@ cat.z3950.prototype = {
 											var robj = obj.network.simple_request(
 												'PERM_CHECK',[
 													ses(),
-													data.list.au[0].id(),
-													data.list.au[0].ws_ou(),
+													obj.data.list.au[0].id(),
+													obj.data.list.au[0].ws_ou(),
 													[ 'ALLOW_ALT_TCN' ]
 												]
 											);
@@ -642,7 +677,7 @@ cat.z3950.prototype = {
 												var r2 = obj.network.request(
 													api.MARC_XML_RECORD_REPLACE.app,
 													api.MARC_XML_RECORD_REPLACE.method + '.override',
-													[ ses(), data.marked_record, new_marcxml, obj.current_service ]
+													[ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
 												);
 												if (typeof r2.ilsevent != 'undefined') {
 													throw(r2);
@@ -678,7 +713,7 @@ cat.z3950.prototype = {
 	'load_creds' : function() {
 		var obj = this;
 		try {
-			obj.creds = { 'version' : g.save_version, 'services' : {} };
+			obj.creds = { 'version' : g.save_version, 'services' : {}, 'hosts' : {} };
 			/*
 				{
 					'version' : xx,
@@ -697,6 +732,26 @@ cat.z3950.prototype = {
 							'default_attr' : xx,
 						},
 					},
+                    // new in version 2
+                    'hosts' : {
+                        'xxxx' : {
+                            'default_services' : [ xx, ... ],
+                            'services' : {
+
+                                'xx' : {
+                                    'username' : xx,
+                                    'password' : xx,
+                                    'default_attr' : xx,
+                                },
+
+                                'xx' : {
+                                    'username' : xx,
+                                    'password' : xx,
+                                    'default_attr' : xx,
+                                },
+                            },
+                        }
+                    }
 				}
 			*/
 			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
@@ -704,7 +759,8 @@ cat.z3950.prototype = {
 			if (file._file.exists()) {
 				var creds = file.get_object(); file.close();
 				if (typeof creds.version != 'undefined') {
-					if (creds.version >= obj.creds_version) {
+					if (creds.version >= obj.creds_version) {  /* so apparently, this guy is assuming that future versions will be backwards compatible */
+                        if (typeof creds.hosts == 'undefined') creds.hosts = {};
 						obj.creds = creds;
 					}
 				}
@@ -717,15 +773,20 @@ cat.z3950.prototype = {
 	'save_creds' : function () {
 		try {
 			var obj = this;
-			obj.creds.default_service = obj.controller.view.service_menu.value;
-			if (typeof obj.creds.services[ obj.creds.default_service ] == 'undefined') {
-				obj.creds.services[ obj.creds.default_service ] = {}
-			}
-			obj.creds.services[obj.creds.default_service].username = document.getElementById('username').value;
-			obj.creds.services[obj.creds.default_service].password = document.getElementById('password').value;
-			if (obj.default_attr) {
-				obj.creds.services[obj.creds.default_service].default_attr = obj.default_attr;
-			}
+            if (typeof obj.creds.hosts == 'undefined') obj.creds.hosts = {};
+            if (typeof obj.creds.hosts[ obj.data.server_unadorned ] == 'undefined') obj.creds.hosts[ obj.data.server_unadorned ] = { 'services' : {} };
+            obj.creds.hosts[ obj.data.server_unadorned ].default_services = obj.active_services;
+            for (var i = 0; i < obj.creds.hosts[ obj.data.server_unadorned ].default_services.length; i++) {
+			    var service = obj.creds.hosts[ obj.data.server_unadorned ].default_services[i];
+    			if (typeof obj.creds.hosts[ obj.data.server_unadorned ].services[ service ] == 'undefined') {
+                    obj.creds.hosts[ obj.data.server_unadorned ].services[ service ] = {}
+    			}
+    			obj.creds.hosts[ obj.data.server_unadorned ].services[service].username = document.getElementById(service + '_username').value;
+    			obj.creds.hosts[ obj.data.server_unadorned ].services[service].password = document.getElementById(service + '_password').value;
+    			if (obj.default_attr) {
+    				obj.creds.hosts[ obj.data.server_unadorned ].services[service].default_attr = obj.default_attr;
+    			}
+            }
 			obj.creds.version = obj.creds_version;
 			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
 			JSAN.use('util.file'); var file = new util.file('z3950_store');

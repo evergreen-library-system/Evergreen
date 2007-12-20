@@ -420,6 +420,10 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mvr.doc_id(); },
 			'persist' : 'hidden width ordinal',
 		},
+        {
+			'persist' : 'hidden width ordinal', 'id' : 'service', 'label' : 'Service', 'flex' : 1,
+			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.service; },
+        },
 		{
 			'id' : 'barcode', 'label' : getString('staff.acp_label_barcode'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.barcode(); },
@@ -603,7 +607,7 @@ circ.util.columns = function(modify,params) {
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : 'Alert Message', 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.alert_message(); },
-		},
+		}
 	];
 	for (var i = 0; i < c.length; i++) {
 		if (modify[ c[i].id ]) {
