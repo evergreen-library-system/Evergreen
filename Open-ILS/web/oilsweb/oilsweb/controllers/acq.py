@@ -1,10 +1,11 @@
-import logging
-
 from oilsweb.lib.base import *
-import pylons, os
+
+import logging
+import pylons
 import oilsweb.lib.context
 import oilsweb.lib.util
 import oilsweb.lib.acq.search
+import osrf.cache
 from oilsweb.lib.context import Context, SubContext, ContextItem
 
 log = logging.getLogger(__name__)
@@ -16,7 +17,9 @@ class AcqContext(SubContext):
         self.search_class = ContextItem(cgi_name='acq.sc', multi=True)
         self.search_source = ContextItem(cgi_name='acq.ss', multi=True)
         self.picked_records = ContextItem(cgi_name='acq.sr', multi=True)
-
+        self.search_cache_key = ContextItem(cgi_name='acq.sk')
+        self.record_id = ContextItem(cgi_name='acq.r')
+        self.record = ContextItem(cgi_name='acq.r')
 Context.applySubContext('acq', AcqContext)
 
 
@@ -44,10 +47,9 @@ class AcqController(BaseController):
         # add logic to see where we are fetching bib data from
 
         if c.oils.acq.search_source:
-            c.oils_acq_records = self._build_z39_search(c.oils)
+            c.oils_acq_records, c.oils.acq.search_cache_key = self._build_z39_search(c.oils)
 
         return render('oils/%s/acq/pl_builder.html' % c.oils.core.skin)
-
 
 
     def _build_z39_search(self, ctx):
@@ -62,8 +64,8 @@ class AcqController(BaseController):
         # collect the sources and credentials
         for src in c.oils.acq.search_source:
             search['service'].append(src)
-            search['username'].append("") # XXX
-            search['password'].append("") # XXX
+            search['username'].append("") # XXX config values? in-db?
+            search['password'].append("") # XXX config values? in-db?
 
         # collect the search classes
         for cls in c.oils.acq.search_class:
@@ -72,5 +74,23 @@ class AcqController(BaseController):
 
         return oilsweb.lib.acq.search.multi_search(ctx, search)
 
+    def rdetails(self):
+        c.oils = oilsweb.lib.context.Context.init(request)
+        rec_id = c.oils.acq.record_id
+        cache_key = c.oils.acq.search_cache_key
+        logging.info("record = " + str(rec_id))
+        logging.info("cache_key = " + str(cache_key))
+
+        results = osrf.cache.CacheClient().get(cache_key)
+        for res in results:
+            for rec in res['records']:
+                logging.info('cache_id ' + str(rec['cache_id']))
+                if str(rec['cache_id']) == str(rec_id):
+                    logging.info(unicode(rec))
+                    c.oils.acq.record = rec
+                    return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
+        return ''
+
+        
 
 

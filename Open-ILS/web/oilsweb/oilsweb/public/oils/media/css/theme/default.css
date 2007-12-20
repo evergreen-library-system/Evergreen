@@ -5,10 +5,10 @@ body { font-size: 85%; }
 
 /* base default style */
 #oils-base-body-block {}
-#oils-base-navigate-block {border: 1px solid green;}
+#oils-base-navigate-block {border: 1px solid #808080;}
 #oils-base-content-block {}
-#oils-base-sidebar-block {border: 1px solid red;}
-#oils-base-footer-block {padding: 3px; margin-top: 20px; border: 1px solid green;}
+#oils-base-sidebar-block {}
+#oils-base-footer-block {padding: 3px; margin-top: 20px; border: 1px solid #808080;}
 
 
 

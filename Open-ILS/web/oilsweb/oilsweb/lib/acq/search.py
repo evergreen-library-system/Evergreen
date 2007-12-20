@@ -1,9 +1,9 @@
-import os
+import os, md5
 import oilsweb.lib.context
 import osrf.ses
 import osrf.xml_obj
 import oils.const
-import osrf.log
+import osrf.log, osrf.cache
 
 EG_Z39_SEARCH = 'open-ils.search.z3950.search_class'
 _z_sources = None
@@ -28,6 +28,7 @@ def multi_search(ctx, search):
     req = ses.request(EG_Z39_SEARCH, ctx.core.authtoken, search)
     osrf.log.log_debug("sending " + unicode(search))
 
+    cache_id = 0
     results = []
     while not req.complete:
         resp = req.recv(60)
@@ -36,9 +37,18 @@ def multi_search(ctx, search):
         res = resp.content()
         for rec in res['records']:
             rec['extracts'] = flatten_record(rec['marcxml'])
+            rec['cache_id'] = cache_id
+            cache_id += 1
+
         results.append(res)
 
     osrf.log.log_debug("got " + unicode(results))
-    return results
+    return results, cache_search(search, results)
 
+def cache_search(search, results):
+    key = md5.new()
+    key.update(unicode(search))
+    key = key.hexdigest()
+    osrf.cache.CacheClient().put(key, results)
+    return key
 

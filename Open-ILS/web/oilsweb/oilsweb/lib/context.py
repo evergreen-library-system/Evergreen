@@ -32,9 +32,11 @@ class Context(object):
                 if val != f.default_value:
                     if isinstance(val, list):
                         for v in val:
-                            q += f.cgi_name+'='+cgi.escape(v)+'&'
+                            if isinstance(val, str) or isinstance(val, unicode):
+                                q += f.cgi_name+'='+cgi.escape(v)+'&'
                     else:
-                        q += f.cgi_name+'='+cgi.escape(val)+'&'
+                        if isinstance(val, str) or isinstance(val, unicode):
+                            q += f.cgi_name+'='+cgi.escape(val)+'&'
         if len(q) > 0: q = q[:-1] # strip the trailing &
         return q
 

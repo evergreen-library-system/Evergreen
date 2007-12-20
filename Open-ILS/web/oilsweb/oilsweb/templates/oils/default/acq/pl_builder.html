@@ -2,17 +2,40 @@
 <%def name="block_title()">${_('Evergreen Acquisitions Results')}</%def>
 <%def name="block_content()">
     <table id='oils-acq-pl_builder-table'>
+        <!--
         <thead>
             <tr><td>${_('Add To Picklist')}</td><td>${_('Title')}</td><td>${_('Author')}</td><td>${_('Source')}</td></tr>
         </thead>
+        -->
         <tbody>
         % for res in c.oils_acq_records:
             % for rec in res['records']:
-                <tr>
-                    <td><input type='checkbox' name='${c.oils.acq.picked_records_.cgi_name}' value='blah'/></td>
-                    <td>${rec['extracts'].get("bibdata.title")}</td>
-                    <td>${rec['extracts'].get("bibdata.author")}</td>
+                <tr class='oils-acq-pl_builder-records-title-row'>
+                    <td rowspan='3'>
+                        <% 
+                            isbn = rec["extracts"].get("bibdata.isbns.isbn") 
+                            if isinstance(isbn, list): 
+                                isbn = isbn[0]
+                        %>
+                        <img class='oils-acq-pl_builder-records-jacket'
+                            src='${c.oils.core.ac_prefix}/jacket/small/${isbn}'/>
+                    </td>
+                    <td>
+                        <a href='rdetails?${c.oils.make_query_string()}&${c.oils.acq.record_id_.cgi_name}=${rec["cache_id"]}&${c.oils.acq.search_cache_key_.cgi_name}=${c.oils.acq.search_cache_key}'>${rec['extracts'].get("bibdata.title")}</a>
+                    </td>
+                    <td>${isbn}</td>
                     <td>${res['service']}</td>
+                </tr>
+
+                </tr>
+                <tr class='oils-acq-pl_builder-records-author-row'>
+                    <td colspan='3'>${rec['extracts'].get("bibdata.author")}</td>
+                </tr>
+                <tr class='oils-acq-pl_builder-records-phys_desc-row'>
+                    <td colspan='3'>
+                        ${rec['extracts'].get('bibdata.pubdate')} | 
+                        ${rec['extracts'].get('bibdata.physicalSize')}
+                    </td>
                 </tr>
             % endfor
         % endfor

@@ -1,0 +1,13 @@
+<%inherit file='../base.html'/>
+<%def name="block_title()">${_('Evergreen ACQ Details')}</%def>
+<%def name="block_content()">
+    <table>
+        % for key,val in c.oils.acq.record['extracts'].iteritems():
+            <tr>
+               <td>${key}</td>
+               <td>${val}</td>
+            </tr>
+        % endfor
+    </table>
+</%def>
+
