@@ -15,7 +15,7 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenILS::Utils::Editor q/:funcs/;
+use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 my $output	= "USMARC"; 
 
@@ -85,13 +85,10 @@ sub query_services {
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('REMOTE_Z3950_QUERY');
 
-	my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
-	my $sources = $cstore->request(
-		'open-ils.cstore.direct.config.z3950_source.search.atomic',
-		{ id => { '!=' => null } },
-		{ flesh => 1, flesh_fields => { czs => ['attrs'] } }
-	)->gather(1);
-	$cstore->disconnect;
+    my $sources = $e->search_config_z3950_source(
+        [ { name => { '!=' => undef } },
+        { flesh => 1, flesh_fields => { czs => ['attrs'] } }] 
+    );
 
 	my %hash = ();
 	for my $s ( @$sources ) {
