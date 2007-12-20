@@ -18,6 +18,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 
 my $output	= "USMARC"; 
+my $U = 'OpenILS::Application::AppUtils';
 
 my $sclient;
 my %services;
@@ -170,6 +171,7 @@ sub do_class_search {
 		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
 		my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
+        return $res if $U->event_code($res);
 
 		push @results, $res->{result};
 		push @connections, $res->{connection};
