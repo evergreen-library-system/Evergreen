@@ -192,6 +192,8 @@ sub do_class_search {
 	}
 
 	$logger->debug("z3950: Search Complete");
+
+    return undef;
 }
 
 

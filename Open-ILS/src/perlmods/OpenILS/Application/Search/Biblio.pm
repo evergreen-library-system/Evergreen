@@ -558,7 +558,7 @@ sub cat_search_z_style_wrapper {
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate} if $$args{search}{pubdate};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
-	my $list = $self->the_quest_for_knowledge( $client, $searchhash );
+    my ($list) = $self->method_lookup('open-ils.search.biblio.multiclass.staff')->run( $searchhash );
 
 	if ($list->{count} > 0) {
 		$result->{count} = $list->{count};
