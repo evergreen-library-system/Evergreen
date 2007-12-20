@@ -166,20 +166,21 @@ sub do_class_search {
 					'open-ils.search.biblio.zstyle'
 				)->run($auth, \%tmp_args)
 			);
-			next;
-		}
+		} else {
 
-		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
+		    $tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
-		my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
-        if ($U->event_code($res)) {
-            $conn->respond($res) if $U->event_code($res);
-            next;
+		    my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
+
+            if ($U->event_code($res)) {
+                $conn->respond($res) if $U->event_code($res);
+            } else {
+
+                push @services, $tmp_args{service};
+	    	    push @results, $res->{result};
+		        push @connections, $res->{connection};
+            }
         }
-
-        push @services, $tmp_args{service};
-		push @results, $res->{result};
-		push @connections, $res->{connection};
 	}
 
 	$logger->debug("z3950: Connections created");
