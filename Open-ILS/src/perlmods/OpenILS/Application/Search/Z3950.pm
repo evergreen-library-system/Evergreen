@@ -149,6 +149,7 @@ sub do_class_search {
 
 	my @connections;
 	my @results;
+	my @services;
 	for (my $i = 0; $i < @{$$args{service}}; $i++) {
 			
 		my %tmp_args = %$args;
@@ -171,12 +172,14 @@ sub do_class_search {
 		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
 		my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
-        return $res if $U->event_code($res);
+        if ($U->event_code($res)) {
+            $conn->respond($res) if $U->event_code($res);
+            next;
+        }
 
+        push @services, $tmp_args{service};
 		push @results, $res->{result};
 		push @connections, $res->{connection};
-
-		$logger->debug("z3950: Result object: $results[$i], Connection object: $connections[$i]");
 	}
 
 	$logger->debug("z3950: Connections created");
@@ -186,7 +189,7 @@ sub do_class_search {
 		$logger->debug("z3950: Received event $ev");
 		if ($ev == OpenILS::Utils::ZClient::EVENT_END()) {
 			my $munged = process_results( $results[$index - 1], $$args{limit}, $$args{offset} );
-			$$munged{service} = $$args{service}[$index - 1];
+			$$munged{service} = $services[$index - 1];
 			$conn->respond($munged);
 		}
 	}
