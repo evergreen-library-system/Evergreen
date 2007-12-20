@@ -184,6 +184,7 @@ sub do_class_search {
 
 	$logger->debug("z3950: Connections created");
 
+    return undef unless (@connections);
 	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
 		my $ev = $connections[$index - 1]->last_event();
 		$logger->debug("z3950: Received event $ev");
