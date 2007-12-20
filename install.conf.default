@@ -44,6 +44,7 @@ PREFIX="/openils/";
 BINDIR="$PREFIX/bin/";
 LIBDIR="$PREFIX/lib/";
 PERLDIR="$LIBDIR/perl5/";
+PYTHONDIR="$LIBDIR/python25/";
 INCLUDEDIR="$PREFIX/include/";
 ETCDIR="$PREFIX/etc/";
 WEBDIR="$PREFIX/web/";
