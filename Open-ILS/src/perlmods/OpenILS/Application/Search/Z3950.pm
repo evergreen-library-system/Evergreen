@@ -149,12 +149,23 @@ sub do_class_search {
 	my @connections;
 	my @results;
 	for (my $i = 0; $i < @{$$args{service}}; $i++) {
+			
 		my %tmp_args = %$args;
 		$tmp_args{service} = $$args{service}[$i];
 		$tmp_args{username} = $$args{username}[$i];
 		$tmp_args{password} = $$args{password}[$i];
 
 		$logger->debug("z3950: service: $tmp_args{service}, async: $tmp_args{async}");
+
+		if ($tmp_args{service} eq 'native-evergreen-catalog') {
+			my $method = $self->method_lookup('open-ils.search.biblio.zstyle');
+			$conn->respond(
+				$self->method_lookup(
+					'open-ils.search.biblio.zstyle'
+				)->run($auth, \%tmp_args)
+			);
+			next;
+		}
 
 		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
@@ -168,7 +179,6 @@ sub do_class_search {
 
 	$logger->debug("z3950: Connections created");
 
-	my @records;
 	while ((my $index = OpenILS::Utils::ZClient::event( \@connections )) != 0) {
 		my $ev = $connections[$index - 1]->last_event();
 		$logger->debug("z3950: Received event $ev");

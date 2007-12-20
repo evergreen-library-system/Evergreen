@@ -529,8 +529,7 @@ __PACKAGE__->register_method(
 	method		=> 'cat_search_z_style_wrapper',
 	api_name	=> 'open-ils.search.biblio.zstyle',
 	stream		=> 1,
-	signature	=> q/@see open-ils.search.biblio.multiclass/);
-
+);
 sub cat_search_z_style_wrapper {
 	my $self = shift;
 	my $client = shift;
