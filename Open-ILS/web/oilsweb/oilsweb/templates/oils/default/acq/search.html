@@ -1,0 +1,36 @@
+<%inherit file='../base.html'/>
+<%def name="block_title()">${_('Evergreen Acquisitions Search')}</%def>
+
+<%def name="block_content()">
+    <form method='GET' action='pl_builder'>
+        <input type='hidden' name='ses' value='${c.oils.core.authtoken}'/>
+        <div id='oils-acq-search-block' class='container'>
+            <div id='oils-acq-search-sources-block'>
+                <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
+                <select name='${c.oils.acq.search_source_.cgi_name}' multiple='multiple' id='oils-acq-search-sources-selector'>
+                    <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
+                    <optgroup label='${_("Z39.50 Sources")}'>
+                        % for src,cfg in c.oils_z39_sources.iteritems():
+                        <option value='${src}'>${src} ${cfg["host"]}:${cfg["db"]}</option>
+                        % endfor
+                    </optgroup>
+                </select>
+            </div>
+            <div id='oils-acq-search-form-block'>
+                <table>
+                % for cls, lbl in c.oils_search_classes.iteritems():
+                <tr class='oils-acq-search-form-row'>
+                    <td class='oils-acq-search-form-label'>${lbl}</td>
+                    <td class='oils-acq-search-form-input'>
+                        <input name='${cls}' size='24'/>
+                        <input type='hidden' name='${c.oils.acq.search_class_.cgi_name}' value='${cls}'/>
+                    </td>
+                </tr>
+                % endfor
+                </table>
+                <input type='submit' value='${_("Submit")}'/>
+            </div>
+        </div>
+    </form>
+</%def>
+

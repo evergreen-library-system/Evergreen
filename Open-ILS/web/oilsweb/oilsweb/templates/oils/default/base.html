@@ -1,0 +1,33 @@
+<%inherit file='../base.html'/>
+
+<%def name='block_body_content()'>
+    <div id='oils-base-body-block'> 
+        <div id='oils-base-header-block'>
+            ${self.block_header()}
+        </div>
+        <div id='oils-base-main-block' class='container'>
+            <div id='oils-base-navigate-block'>
+                ${self.block_navigate()}
+            </div>
+            <div id='oils-base-content-block'>
+                ${self.block_content()}
+            </div>
+            <div id='oils-base-sidebar-block'>
+                ${self.block_sidebar()}
+            </div>
+        </div>
+        <div id='oils-base-footer-block'>
+            ${self.block_footer()}
+        </div>
+    </div>
+</%def>
+
+<%def name='block_header()'/>
+<%def name='block_sidebar()'/>
+<%def name='block_content()'/>
+<%def name='block_navigate()'>
+    <%include file='navigate.html'/>
+</%def>
+<%def name='block_footer()'>
+    <%include file='footer.html'/>
+</%def>

@@ -1,0 +1,23 @@
+/* import the default css for the install applications */
+@import "acq_default.css";
+
+/* base default style */
+
+/** Generic style ------------------------------ **/
+/* use this for divs whose contents should be entirely contained within the div */
+.container:after {content: ""; display: block; height: 0; clear: both; }
+table { border-collapse: collapse; }
+
+#oils-base-body-block { width: 100%; }
+#oils-base-main-block { width: 100%; }
+#oils-base-navigate-block { width: 15%; vertical-align: top; float:left;}
+#oils-base-content-block { width: 84%; vertical-align: top; float:right;}
+#oils-base-sidebar-block { width: 15%; vertical-align: top; float:left;}
+
+#oils-base-header-block { width: 100%; text-align: center; vertical-align: bottom;}
+#oils-base-footer-block { width: 100%; text-align: center; vertical-align: bottom;}
+
+
+
+
+

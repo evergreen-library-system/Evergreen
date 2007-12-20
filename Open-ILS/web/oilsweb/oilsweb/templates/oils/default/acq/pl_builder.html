@@ -1,0 +1,21 @@
+<%inherit file='../base.html'/>
+<%def name="block_title()">${_('Evergreen Acquisitions Results')}</%def>
+<%def name="block_content()">
+    <table id='oils-acq-pl_builder-table'>
+        <thead>
+            <tr><td>${_('Title')}</td><td>${_('Author')}</td><td>${_('Source')}</td></tr>
+        </thead>
+        <tbody>
+        % for res in c.oils_acq_records:
+            % for rec in res['records']:
+                <tr>
+                    <td><input type='checkbox' name='${c.oils.acq.picked_records_.cgi_name}' value='blah'/></td>
+                    <td>${rec['extracts'].get("bibdata.title")}</td>
+                    <td>${rec['extracts'].get("bibdata.author")}</td>
+                    <td>${res['service']}</td>
+                </tr>
+            % endfor
+        % endfor
+        </tbody>
+    </table>
+</%def>

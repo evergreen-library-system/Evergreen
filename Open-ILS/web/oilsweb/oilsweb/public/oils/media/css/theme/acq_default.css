@@ -1,0 +1,10 @@
+
+#oils-acq-index-div { font-weight:bold; }
+#oils-acq-search-container { width:100%; }
+#oils-acq-search-sources-div { width:20%; float:left; }
+#oils-acq-search-form-div { width:80%; float:right; }
+#oils-acq-search-z39-sources-table thead td { font-weight: bold; }
+#oils-acq-search-z39-sources-table tbody td { width: 33%; }
+#oils-acq-search-sources-label { font-weight: bold; }
+#oils-acq-pl_builder-table thead td { font-weight: bold; }
+#oils-acq-pl_builder-table td { border-bottom: 1px solid green;}

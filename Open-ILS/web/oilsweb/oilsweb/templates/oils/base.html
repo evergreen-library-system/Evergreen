@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<!-- This file defines the most basic requirements of an XHTML block -->
+
+<% locale = 'en-US' %> <!-- XXX GET LOCALE FROM PYTHON -->
+<html xmlns='http://www.w3.org/1999/xhtml' lang='${locale}' xml:lang='${locale}'>
+    ${self.block_head()}
+    ${self.block_body()}
+</html>
+
+<%def name='block_head()'> <!-- haha.. blockhead -->
+    <!-- Construct a sane default HTML head -->
+    <head>
+        <%def name="block_title()">${_('Evergreen Acquisitions')}</%def>
+        <title>${self.block_title()}</title>
+        ${self.block_css()}
+    </head>
+</%def>
+
+<%def name='block_body()'>
+<body>${self.block_body_content()}</body>
+</%def>
+<%def name='block_body_content()'/>
+
+<%def name='block_css()'>
+    <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix}/css/skin/${c.oils.core.skin}.css'/>
+    <link rel='stylesheet' type='text/css' href='${c.oils.core.media_prefix}/css/theme/${c.oils.core.theme}.css'/>
+</%def>
+
