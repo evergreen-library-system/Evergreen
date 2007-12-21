@@ -23,6 +23,33 @@ import re
 ACTIONS = ['create', 'retrieve', 'batch_retrieve', 'update', 'delete', 'search']
 
 class CSEditor(object):
+    """
+    Contains generated methods for accessing fieldmapper objects using the
+    following syntax:
+    
+        <instance>.<action>_<schema>_<table>(<id>)
+
+      * <instance> = CSEditor class instance
+      * <action>   = one of 'create', 'retrieve', 'batch_retrieve', 'update',
+        'delete', or 'search'
+      * <schema>   = the name of the schema that contains the table
+      * <table>    = the name of the table
+
+    Each generated object has accessor methods corresponding to the fieldmapper
+    name attributes for a given field. The following example demonstrates how to
+    instantiate the CSEditor and a given table object, and how to invoke an
+    accessor method on that table object:
+
+    >>> import oils.utils.csedit
+    >>> import oils.utils.idl
+    >>> import osrf.system
+    >>> osrf.system.connect('/openils/conf/opensrf_core.xml', 'config.opensrf')
+    >>> oils.utils.idl.oilsParseIDL()
+    >>> oils.utils.csedit.oilsLoadCSEditor()
+    >>> editor = oils.utils.csedit.CSEditor()
+    >>> rec = editor.retrieve_biblio_record_entry(-1)
+    >>> print rec.tcn_value()
+    """
     def __init__(self, **args):
 
         self.app = args.get('app', OILS_APP_CSTORE)
