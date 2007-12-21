@@ -60,7 +60,7 @@ class oilsIDLParser(object):
 
                 obj['controller'] = self.__getAttr(child, 'controller')
                 obj['fieldmapper'] = self.__getAttr(child, 'oils_obj:fieldmapper', OILS_NS_OBJ)
-                obj['virtual'] = self.__getAttr(child, 'oils_perist:virtual', OILS_NS_PERSIST)
+                obj['virtual'] = self.__getAttr(child, 'oils_persist:virtual', OILS_NS_PERSIST)
                 obj['rpt_label'] = self.__getAttr(child, 'reporter:label', OILS_NS_REPORTER)
                 obj['tablename'] = self.__getAttr(child, 'oils_persist:tablename', OILS_NS_REPORTER)
 
