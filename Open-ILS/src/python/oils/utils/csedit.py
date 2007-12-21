@@ -141,7 +141,7 @@ class CSEditor(object):
             del options['idlist']
 
         if action == 'search':
-            method = method.replace('$', '.atomic')
+            method += '.atomic'
 
         if action == 'batch_retrieve':
             method = method.replace('batch_retrieve', 'search')
