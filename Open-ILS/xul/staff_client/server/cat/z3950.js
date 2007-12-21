@@ -199,7 +199,7 @@ cat.z3950.prototype = {
                                                 for (var i = 0; i < nl.length; i++) { nl[i].disabled = true; }
                                                 var attrs = {};
                                                 for (var j = 0; j < obj.active_services.length; j++) {
-                                                    for (var i in obj.services[obj.active_services[j]].attrs) {
+                                                    if (obj.services[obj.active_services[j]]) for (var i in obj.services[obj.active_services[j]].attrs) {
                                                         var attr = obj.services[obj.active_services[j]].attrs[i];
                                                         if (! attrs[i]) {
                                                             attrs[i] = { 'labels' : {} };
@@ -264,6 +264,8 @@ cat.z3950.prototype = {
                                             }
 										}
 
+                                        document.getElementById('native-evergreen-catalog_service').addEventListener('command',handle_switch,false);
+
 										var robj = obj.network.simple_request(
 											'RETRIEVE_Z3950_SERVICES',
 											[ ses() ]
@@ -294,6 +296,7 @@ cat.z3950.prototype = {
                                             password.setAttribute('type','password'); r.appendChild(password);
                                             if (typeof robj[i].auth != 'undefined') password.hidden = ! get_bool( robj[i].auth );
                                         }
+                                        obj.services[ 'native-evergreen-catalog' ] = { 'attrs' : { 'author' : {}, 'title' : {} } };
                                         setTimeout(
 											function() { 
                                                 if (obj.creds.hosts[ obj.data.server_unadorned ]) {
@@ -335,7 +338,7 @@ cat.z3950.prototype = {
 		        var x = obj.creds.hosts[ obj.data.server_unadorned ].services[ obj.active_services[i] ].default_attr;
                 if (x) { focus_me = x; break; }
             }
-			for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
+            if (ob.services[ obj.active_services[i] ]) for (var i in obj.services[ obj.active_services[i] ].attr) { or_focus_me = i; }
         }
         if (! focus_me) focus_me = or_focus_me;
 		var xx = document.getElementById(focus_me+'_input'); if (xx) xx.focus();
@@ -466,7 +469,7 @@ cat.z3950.prototype = {
                 } else {
                         x = document.createElement('description'); obj.controller.view.result_message.appendChild(x);
                         x.appendChild(
-                            document.createTextNode( results[i].count + ' records found')
+                            document.createTextNode( (results[i].count ? results[i].count : 0) + ' records found')
                         );
                 }
                 if (results[i].records) {
