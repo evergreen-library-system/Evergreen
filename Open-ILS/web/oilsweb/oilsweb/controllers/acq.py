@@ -5,6 +5,7 @@ import pylons
 import oilsweb.lib.context
 import oilsweb.lib.util
 import oilsweb.lib.acq.search
+import oilsweb.lib.bib
 import osrf.cache, osrf.json
 from oilsweb.lib.context import Context, SubContext, ContextItem
 
@@ -43,14 +44,16 @@ class AcqController(BaseController):
         
 
     def pl_builder(self):
-        c.oils = oilsweb.lib.context.Context.init(request)
+        ctx = oilsweb.lib.context.Context.init(request)
         # add logic to see where we are fetching bib data from
 
-        if c.oils.acq.search_source:
-            c.oils_acq_records, c.oils.acq.search_cache_key = self._build_z39_search(c.oils)
+        if ctx.acq.search_source:
+            c.oils_acq_records, ctx.acq.search_cache_key = self._build_z39_search(ctx)
 
-        c.oils.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
-        return render('oils/%s/acq/pl_builder.html' % c.oils.core.skin)
+        ctx.scrub_isbn = oilsweb.lib.bib.scrub_isbn  # XXX add more generically to the context object
+        ctx.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
+        c.oils = ctx
+        return render('oils/%s/acq/pl_builder.html' % ctx.core.skin)
 
 
     def _build_z39_search(self, ctx):
@@ -63,13 +66,13 @@ class AcqController(BaseController):
         }
 
         # collect the sources and credentials
-        for src in c.oils.acq.search_source:
+        for src in ctx.acq.search_source:
             search['service'].append(src)
             search['username'].append("") # XXX config values? in-db?
             search['password'].append("") # XXX config values? in-db?
 
         # collect the search classes
-        for cls in c.oils.acq.search_class:
+        for cls in ctx.acq.search_class:
             if request.params[cls]:
                 search['search'][cls] = request.params[cls]
 
@@ -85,6 +88,7 @@ class AcqController(BaseController):
             for rec in res['records']:
                 if str(rec['cache_id']) == str(rec_id):
                     c.oils.acq.record = rec
+                    #c.oils.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
                     return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
         return 'exception -> no record'
 

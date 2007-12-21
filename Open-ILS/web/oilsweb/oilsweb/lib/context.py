@@ -21,8 +21,10 @@ class Context(object):
     def wrap(self):
         return {'oils': self}
 
+    '''
     def applySubContext(self, app, subContext):
         setattr(self, app, subContext)
+    '''
 
     def make_query_string(self):
         q = ''
@@ -44,7 +46,7 @@ class Context(object):
     def applySubContext(app, ctx):
         global _subContexts
         _subContexts[app] = ctx
-    
+
     @staticmethod
     def getContext():
         global _context

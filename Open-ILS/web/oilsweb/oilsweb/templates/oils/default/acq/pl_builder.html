@@ -13,12 +13,12 @@
                 <tr class='oils-acq-pl_builder-records-title-row'>
                     <td rowspan='3'>
                         <img class='oils-acq-pl_builder-records-jacket'
-                            src='${c.oils.core.ac_prefix}/jacket/small/${c.oils.acq.extract_bib_field(rec,"isbns.isbn")}'/>
+                            src='${c.oils.core.ac_prefix}/jacket/small/${c.oils.scrub_isbn(c.oils.acq.extract_bib_field(rec,"isbns.isbn"))}'/>
                     </td>
                     <td>
                         <a href='rdetails?${c.oils.make_query_string()}&${c.oils.acq.record_id_.cgi_name}=${rec["cache_id"]}&${c.oils.acq.search_cache_key_.cgi_name}=${c.oils.acq.search_cache_key}'>${c.oils.acq.extract_bib_field(rec, 'title')}</a>
                     </td>
-                    <td>${c.oils.acq.extract_bib_field(rec, 'isbns.isbn')}</td>
+                    <td>${c.oils.scrub_isbn(c.oils.acq.extract_bib_field(rec, 'isbns.isbn'))}</td>
                     <td>${res['service']}</td>
                 </tr>
 
