@@ -1,3 +1,17 @@
+"""
+Parses an Evergreen fieldmapper IDL file and builds a global registry of
+objects representing that IDL.
+
+Typical usage:
+
+>>> import osrf.system
+>>> import oils.utils.idl
+>>> osrf.system.connect('/openils/conf/opensrf_core.xml', 'config.opensrf')
+>>> oils.utils.idl.oilsParseIDL()
+>>> # 'bre' is a network registry hint, or class ID in the IDL file
+... print oils.utils.idl.oilsGetIDLParser().IDLObject['bre']['tablename']
+biblio.record_entry
+"""
 import osrf.net_obj
 import osrf.log
 import osrf.set
