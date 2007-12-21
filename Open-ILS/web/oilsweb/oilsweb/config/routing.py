@@ -19,7 +19,9 @@ def make_map():
     # CUSTOM ROUTES HERE
 
     map.connect('oils/:controller/:action')
-    #map.connect(':controller/:action/:id')
+    map.connect('acq_admin', 'oils/admin', controller='acq_admin')
+    map.connect('acq_admin_object', 'oils/admin/:object', controller='acq_admin')
+    map.connect('acq_admin_direct', 'oils/admin/direct/:object/:id', controller='acq_admin')
     map.connect('*url', controller='template', action='view')
 
     return map
