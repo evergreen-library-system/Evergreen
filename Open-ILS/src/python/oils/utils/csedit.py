@@ -27,11 +27,31 @@ class CSEditor(object):
     Contains generated methods for accessing fieldmapper objects using the
     following syntax:
     
-        <instance>.<action>_<schema>_<table>(<id>)
+        <ret> = <instance>.<action>_<schema>_<table>(<args>)
 
       * <instance> = CSEditor class instance
-      * <action>   = one of 'create', 'retrieve', 'batch_retrieve', 'update',
-        'delete', or 'search'
+      * <action>   = 
+        * create 
+          <args>   = object to create
+          <ret>    = the numeric ID of the newly created object
+        * retrieve 
+          <args>   = numeric ID of the object to retrieve 
+          <ret>    = object, instance of osrf.net_obj.NetworkObject
+        * batch_retrieve
+          <args>   = list of numeric ID's
+          <ret>    = list of objects, instances of osrf.net_obj.NetworkObject
+        * update
+          <args>   = object to update
+          <ret>    = 1 on success
+        * delete
+          <args>   = object to delete
+          <ret>    = 1 on sucess
+        * search
+          <args>   = a cstore-compatible search dict.  e.g. {"id":1}.  
+            See cstore docs for the full range of search options.
+          <ret>    = a list of search results.  For standard searches, this
+                   will be a list of objects.  idlist searches will return
+                   a list of ID's.
       * <schema>   = the name of the schema that contains the table
       * <table>    = the name of the table
 
@@ -50,7 +70,22 @@ class CSEditor(object):
     >>> rec = editor.retrieve_biblio_record_entry(-1)
     >>> print rec.tcn_value()
     """
+
     def __init__(self, **args):
+        ''' 
+            Creates a new editor object.
+
+            Support keyword arguments:
+            authtoken - Authtoken string -- used to determine 
+                the requestor if none is provided.
+            requestor - existing user (au) object.  The requestor is 
+                is the user performing the action.  This is important 
+                for permission checks, logging, etc.
+            connect - boolean.  If true, a connect call is sent to the opensrf
+                service at session create time
+            xact - boolean.  If true, a cstore transaction is created at 
+                connect time.  xact implies connect.
+        '''
 
         self.app = args.get('app', OILS_APP_CSTORE)
         self.authtoken = args.get('authtoken', args.get('auth'))
@@ -60,8 +95,15 @@ class CSEditor(object):
         self.__session = None
 
     def die_event(self):
+        ''' Rolls back the existing transaction, disconnects our session, 
+            and returns the last received event.
+        '''
         pass
+
     def checkauth(self):
+        ''' Checks the authtoken against open-ils.auth and uses the 
+            retrieved user as the requestor
+        '''
         pass
 
 
@@ -70,6 +112,9 @@ class CSEditor(object):
     # to the remote service and starts a transaction
     # -------------------------------------------------------------------------
     def session(self, ses=None):
+        ''' Creates a session if one does not already exist.  If necessary, connects
+            to the remote service and starts a transaction
+        '''
         if not self.__session:
             self.__session = ClientSession(self.app)
 
@@ -84,10 +129,9 @@ class CSEditor(object):
         return self.__session
    
 
-    # -------------------------------------------------------------------------
-    # Logs string with some meta info
-    # -------------------------------------------------------------------------
     def log(self, func, string):
+        ''' Logs string with some meta info '''
+
         s = "editor[";
         if self.xact: s += "1|"
         else: s += "0|"
@@ -97,29 +141,25 @@ class CSEditor(object):
         func("%s %s" % (s, string))
 
 
-    # -------------------------------------------------------------------------
-    # Rolls back the existing db transaction
-    # -------------------------------------------------------------------------
     def rollback(self):
+        ''' Rolls back the existing db transaction '''
+
         if self.__session and self.xact:
              self.log(log_info, "rolling back db transaction")
              self.request(self.app + '.transaction.rollback')
              self.disconnect()
              
-    # -------------------------------------------------------------------------
-    # Commits the existing db transaction
-    # -------------------------------------------------------------------------
     def commit(self):
+        ''' Commits the existing db transaction and disconnects '''
+
         if self.__session and self.xact:
             self.log(log_info, "comitting db transaction")
             self.request(self.app + '.transaction.commit')
             self.disconnect()
 
 
-    # -------------------------------------------------------------------------
-    # Disconnects from the remote service
-    # -------------------------------------------------------------------------
     def disconnect(self):
+        ''' Disconnects from the remote service '''
         if self.__session:
             self.__session.disconnect()
             self.__session = None
