@@ -1,4 +1,4 @@
-<IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1">
+<IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1" xmlns:crud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 
 	<!-- Virtual classes -->
 	<class id="mups" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_payment_summary" oils_persist:virtual="true">
@@ -322,6 +322,16 @@
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="TRANSIT_COPY" context_field="owner">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="asvr" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response" reporter:label="Survey Response">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_response_id_seq">
@@ -1846,6 +1856,20 @@
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </update>
+                <delete permission="DELETE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="crahp" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
@@ -2215,6 +2239,16 @@
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="TRANSIT_COPY" context_field="owner">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mb" controller="open-ils.cstore" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing" reporter:label="Billing Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
@@ -2321,6 +2355,14 @@
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create   permission="CREATE_ACQ_FUND" context_field="owner"/>
+                <retrieve permission="VIEW_ACQ_FUND"   context_field="owner"/>
+                <update   permission="UPDATE_ACQ_FUND" context_field="owner"/>
+                <delete   permission="DELETE_ACQ_FUND" context_field="owner"/>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqfsm" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::fund_share_map" oils_persist:tablename="acq.fund_share_map">
