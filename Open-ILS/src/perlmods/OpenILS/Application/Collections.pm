@@ -55,13 +55,13 @@ __PACKAGE__->register_method(
 				type => 'string' },
 
 			{	name => 'age',
-				desc => q/The date before or at which the user's fine level exceeded the fine_level param/,
-				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+				desc => q/Number of days back to check/,
+				type => q/number/,
 			},
 
 			{	name => 'fine_level',
 				desc => q/The fine threshold at which users will be included in the search results /,
-				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+				type => q/number/,
 			},
 			{	name => 'location',
 				desc => q/The short-name of the orginization unit (library) at which the fines were created.  
@@ -94,42 +94,50 @@ __PACKAGE__->register_method(
 
 
 sub users_of_interest {
-	my( $self, $conn, $auth, $age, $fine_level, $location ) = @_;
+    my( $self, $conn, $auth, $age, $fine_level, $location ) = @_;
 
-	return OpenILS::Event->new('BAD_PARAMS') 
-		unless ($auth and $age and $fine_level and $location);
+    return OpenILS::Event->new('BAD_PARAMS') 
+        unless ($auth and $age and $location);
 
-	my $e = new_editor(authtoken => $auth);
-	return $e->event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
-	my $org = $e->search_actor_org_unit({shortname => $location})
-		or return $e->event; $org = $org->[0];
+    my $org = $e->search_actor_org_unit({shortname => $location})
+        or return $e->event; $org = $org->[0];
 
-	# they need global perms to view users so no org is provided
-	return $e->event unless $e->allowed('VIEW_USER'); 
+    # they need global perms to view users so no org is provided
+    return $e->event unless $e->allowed('VIEW_USER'); 
 
-   my $data = [];
+    my $data = [];
 
-   my $ses = OpenSRF::AppSession->create('open-ils.storage');
+    my $ses = OpenSRF::AppSession->create('open-ils.storage');
 
-   my $start = time;
-   my $req = $ses->request(
-      'open-ils.storage.money.collections.users_of_interest', 
-      $age, $fine_level, $location);
+    my $start = time;
+    my $req = $ses->request(
+        'open-ils.storage.money.collections.users_of_interest', 
+        $age, $fine_level, $location);
 
-   # let the client know we're still here
-   $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
+    # let the client know we're still here
+    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+    return $self->process_users_of_interest_results(
+        $conn, $e, $req, $start, $age, $fine_level, $location);
+}
+
+
+sub process_users_of_interest_results {
+    my($self, $conn, $e, $req, $starttime, @params) = @_;
 
    my $total;
    while( my $resp = $req->recv(timeout => 600) ) {
+
         return $req->failed if $req->failed;
         my $hash = $resp->content;
         next unless $hash;
 
         unless($total) {
-            $total = time - $start;
-            $logger->info("collections: users_of_interest ".
-            "($age, $fine_level, $location) took $total seconds");
+            $total = time - $starttime;
+            $logger->info("collections: request (@params) took $total seconds");
         }
 
         my $u = $e->retrieve_actor_user(
@@ -138,7 +146,6 @@ sub users_of_interest {
 	            {
 		            flesh				=> 1,
 		            flesh_fields	=> {au => ["groups","profile", "card"]},
-		            #select			=> {au => ["profile","id","dob", "card"]}
 	            }
             ]
         ) or return $e->event;
@@ -156,6 +163,81 @@ sub users_of_interest {
 
     return undef;
 }
+
+
+__PACKAGE__->register_method(
+	method    => 'users_owing_money',
+	api_name  => 'open-ils.collections.users_owing_money.retrieve',
+	api_level => 1,
+	argc      => 5,
+    stream    => 1,
+	signature => { 
+		desc     => q/
+			Returns an array of users that owe money during 
+			the given time frame at the location (or child locations)
+			provided/,
+		            
+		params   => [
+			{	name => 'auth',
+				desc => 'The authentication token',
+				type => 'string' },
+
+			{	name => 'start_date',
+				desc => 'The start of the time interval to check',
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+
+			{	name => 'end_date',
+				desc => q/Then end date of the time interval to check/,
+				type => q/string (ISO 8601 timestamp.  E.g. 2006-06-24, 1994-11-05T08:15:30-05:00 /,
+			},
+			{	name => 'fine_level',
+				desc => q/The fine threshold at which users will be included in the search results /,
+				type => q/number/,
+			},
+			{	name => 'locations',
+				desc => q/  A list of one or more org-unit short names.
+							If a selected location has 'child' locations (e.g. a library region), the
+							child locations will be included in the search/,
+				type => q'string',
+			},
+		],
+	  	'return' => { 
+			desc		=> q/An array of user information objects/,
+			type		=> 'array',
+		}
+	}
+);
+
+
+sub users_owing_money {
+	my( $self, $conn, $auth, $start_date, $end_date, $fine_level, @locations ) = @_;
+
+	return OpenILS::Event->new('BAD_PARAMS') 
+		unless ($auth and $start_date and $end_date and @locations);
+
+	my $e = new_editor(authtoken => $auth);
+	return $e->event unless $e->checkauth;
+
+	# they need global perms to view users so no org is provided
+    return $e->event unless $e->allowed('VIEW_USER'); 
+
+    my $data = [];
+
+    my $ses = OpenSRF::AppSession->create('open-ils.storage');
+
+    my $start = time;
+    my $req = $ses->request(
+        'open-ils.storage.money.collections.users_owing_money',
+        $start_date, $end_date, $fine_level, @locations);
+
+    # let the client know we're still here
+    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
+
+    return $self->process_users_of_interest_results(
+        $conn, $e, $req, $start, $start_date, $end_date, $fine_level, @locations);
+}
+
 
 
 __PACKAGE__->register_method(
