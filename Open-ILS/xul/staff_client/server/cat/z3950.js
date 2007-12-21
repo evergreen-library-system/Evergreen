@@ -288,9 +288,11 @@ cat.z3950.prototype = {
                                             var username = document.createElement('textbox'); username.setAttribute('id',i+'_username'); 
                                             if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) username.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].username);
                                             r.appendChild(username);
+                                            if (typeof robj[i].auth != 'undefined') username.hidden = ! get_bool( robj[i].auth );
                                             var password = document.createElement('textbox'); password.setAttribute('id',i+'_password'); 
                                             if (obj.creds.hosts[ obj.data.server_unadorned ] && obj.creds.hosts[ obj.data.server_unadorned ].services[i]) password.setAttribute('value',obj.creds.hosts[ obj.data.server_unadorned ].services[i].password);
                                             password.setAttribute('type','password'); r.appendChild(password);
+                                            if (typeof robj[i].auth != 'undefined') password.hidden = ! get_bool( robj[i].auth );
                                         }
                                         setTimeout(
 											function() { 
