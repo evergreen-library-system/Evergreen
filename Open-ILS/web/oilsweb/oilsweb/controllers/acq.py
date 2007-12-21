@@ -5,7 +5,7 @@ import pylons
 import oilsweb.lib.context
 import oilsweb.lib.util
 import oilsweb.lib.acq.search
-import osrf.cache
+import osrf.cache, osrf.json
 from oilsweb.lib.context import Context, SubContext, ContextItem
 
 log = logging.getLogger(__name__)
@@ -49,6 +49,7 @@ class AcqController(BaseController):
         if c.oils.acq.search_source:
             c.oils_acq_records, c.oils.acq.search_cache_key = self._build_z39_search(c.oils)
 
+        c.oils.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
         return render('oils/%s/acq/pl_builder.html' % c.oils.core.skin)
 
 
@@ -78,18 +79,14 @@ class AcqController(BaseController):
         c.oils = oilsweb.lib.context.Context.init(request)
         rec_id = c.oils.acq.record_id
         cache_key = c.oils.acq.search_cache_key
-        logging.info("record = " + str(rec_id))
-        logging.info("cache_key = " + str(cache_key))
 
         results = osrf.cache.CacheClient().get(cache_key)
         for res in results:
             for rec in res['records']:
-                logging.info('cache_id ' + str(rec['cache_id']))
                 if str(rec['cache_id']) == str(rec_id):
-                    logging.info(unicode(rec))
                     c.oils.acq.record = rec
                     return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
-        return ''
+        return 'exception -> no record'
 
         
 

@@ -12,29 +12,24 @@
             % for rec in res['records']:
                 <tr class='oils-acq-pl_builder-records-title-row'>
                     <td rowspan='3'>
-                        <% 
-                            isbn = rec["extracts"].get("bibdata.isbns.isbn") 
-                            if isinstance(isbn, list): 
-                                isbn = isbn[0]
-                        %>
                         <img class='oils-acq-pl_builder-records-jacket'
-                            src='${c.oils.core.ac_prefix}/jacket/small/${isbn}'/>
+                            src='${c.oils.core.ac_prefix}/jacket/small/${c.oils.acq.extract_bib_field(rec,"isbns.isbn")}'/>
                     </td>
                     <td>
-                        <a href='rdetails?${c.oils.make_query_string()}&${c.oils.acq.record_id_.cgi_name}=${rec["cache_id"]}&${c.oils.acq.search_cache_key_.cgi_name}=${c.oils.acq.search_cache_key}'>${rec['extracts'].get("bibdata.title")}</a>
+                        <a href='rdetails?${c.oils.make_query_string()}&${c.oils.acq.record_id_.cgi_name}=${rec["cache_id"]}&${c.oils.acq.search_cache_key_.cgi_name}=${c.oils.acq.search_cache_key}'>${c.oils.acq.extract_bib_field(rec, 'title')}</a>
                     </td>
-                    <td>${isbn}</td>
+                    <td>${c.oils.acq.extract_bib_field(rec, 'isbns.isbn')}</td>
                     <td>${res['service']}</td>
                 </tr>
 
                 </tr>
                 <tr class='oils-acq-pl_builder-records-author-row'>
-                    <td colspan='3'>${rec['extracts'].get("bibdata.author")}</td>
+                    <td colspan='3'>${c.oils.acq.extract_bib_field(rec, 'author')}</td>
                 </tr>
                 <tr class='oils-acq-pl_builder-records-phys_desc-row'>
                     <td colspan='3'>
-                        ${rec['extracts'].get('bibdata.pubdate')} | 
-                        ${rec['extracts'].get('bibdata.physicalSize')}
+                        ${c.oils.acq.extract_bib_field(rec, 'pubdate')} |
+                        ${c.oils.acq.extract_bib_field(rec, 'physicalSize')}
                     </td>
                 </tr>
             % endfor
