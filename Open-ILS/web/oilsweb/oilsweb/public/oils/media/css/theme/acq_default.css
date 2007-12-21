@@ -9,3 +9,6 @@
 #oils-acq-pl_builder-table thead td { font-weight: bold; }
 #oils-acq-pl_builder-table td { border-bottom: 1px solid #808080;}
 #oils-acq-rdetail-marc-block { border-top: 1px solid #808080; }
+.oils-acq-record_list-picklist-td { background: #D0D0D0; } 
+.oils-acq-record_list-records-service-td { font-size: 85%; }
+#oils-acq-pl_builder-picklist-submit { text-align: right; }

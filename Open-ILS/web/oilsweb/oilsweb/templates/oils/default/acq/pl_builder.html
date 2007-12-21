@@ -1,6 +1,8 @@
 <%inherit file='../base.html'/>
 <%def name="block_title()">${_('Evergreen Acquisitions Results')}</%def>
 <%def name="block_content()">
+    <form action='create_picklist' method='GET'>
+    <input type='hidden' name='${c.oils.acq.search_cache_key_.cgi_name}' value='${c.oils.acq.search_cache_key}'/>
     <table id='oils-acq-pl_builder-table'>
         <!--
         <thead>
@@ -8,6 +10,8 @@
         </thead>
         -->
         <tbody>
+        <%include file="record_list.html"/>
+        <!--
         % for res in c.oils_acq_records:
             % for rec in res['records']:
                 <tr class='oils-acq-pl_builder-records-title-row'>
@@ -18,22 +22,33 @@
                     <td>
                         <a href='rdetails?${c.oils.make_query_string()}&${c.oils.acq.record_id_.cgi_name}=${rec["cache_id"]}&${c.oils.acq.search_cache_key_.cgi_name}=${c.oils.acq.search_cache_key}'>${c.oils.acq.extract_bib_field(rec, 'title')}</a>
                     </td>
-                    <td>${c.oils.scrub_isbn(c.oils.acq.extract_bib_field(rec, 'isbns.isbn'))}</td>
-                    <td>${res['service']}</td>
+                    <td class='oils-acq-pl_builder-records-service-td'>${res['service']}</td>
+                    <td rowspan='3' class='oils-acq-pl_builder-picklist-td' >
+                        <input type='checkbox' 
+                            name='${c.oils.acq.picklist_item_.cgi_name}' 
+                            value='${rec["cache_id"]}:${c.oils.acq.search_cache_key}'/>
                 </tr>
 
                 </tr>
                 <tr class='oils-acq-pl_builder-records-author-row'>
-                    <td colspan='3'>${c.oils.acq.extract_bib_field(rec, 'author')}</td>
+                    <td colspan='4'>${c.oils.acq.extract_bib_field(rec, 'author')}</td>
                 </tr>
                 <tr class='oils-acq-pl_builder-records-phys_desc-row'>
-                    <td colspan='3'>
+                    <td colspan='4'>
+                        ${c.oils.scrub_isbn(c.oils.acq.extract_bib_field(rec, 'isbns.isbn'))} |
                         ${c.oils.acq.extract_bib_field(rec, 'pubdate')} |
                         ${c.oils.acq.extract_bib_field(rec, 'physicalSize')}
                     </td>
                 </tr>
             % endfor
         % endfor
+        -->
+            <tr>
+                <td colspan='4' id='oils-acq-pl_builder-picklist-submit'>
+                    <input type='submit' value='${_("Add to Picklist")}'/>
+                </td>
+            </tr>
         </tbody>
     </table>
+    </form>
 </%def>

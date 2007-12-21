@@ -10,9 +10,9 @@
 .oils-acq-search-form-input {}
 
 #oils-acq-pl_builder-table td {}
-.oils-acq-pl_builder-records-jacket { width: 42px; height: 54px; padding-left: 10px; }
-.oils-acq-pl_builder-records-title-row {}
-.oils-acq-pl_builder-records-author-row td { padding-left: 30px; }
-.oils-acq-pl_builder-records-phys_desc-row td { padding-left: 30px; }
-.oils-acq-pl_builder-records-phys_desc-row {}
+.oils-acq-record_list-records-jacket { width: 42px; height: 54px; padding-left: 10px; }
+.oils-acq-record_list-records-title-row {}
+.oils-acq-record_list-records-author-row td { padding-left: 30px; }
+.oils-acq-record_list-records-phys_desc-row td { padding-left: 30px; }
+.oils-acq-record_list-records-phys_desc-row {}
 #oils-acq-rdetail-marc-block { margin-top: 10px; padding: 10px; }

@@ -21,6 +21,7 @@ class AcqContext(SubContext):
         self.search_cache_key = ContextItem(cgi_name='acq.sk')
         self.record_id = ContextItem(cgi_name='acq.r')
         self.record = ContextItem(cgi_name='acq.r')
+        self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
 Context.applySubContext('acq', AcqContext)
 
 
@@ -84,14 +85,38 @@ class AcqController(BaseController):
         cache_key = c.oils.acq.search_cache_key
 
         results = osrf.cache.CacheClient().get(cache_key)
-        for res in results:
-            for rec in res['records']:
-                if str(rec['cache_id']) == str(rec_id):
-                    c.oils.acq.record = rec
-                    #c.oils.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
-                    return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
+        rec = self._find_cached_record(results, rec_id)
+        if rec:
+            c.oils.acq.record = rec
+            #c.oils.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
+            return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
         return 'exception -> no record'
 
         
+    def create_picklist(self):  
+        ctx = oilsweb.lib.context.Context.init(request)
+        if not isinstance(ctx.acq.picklist_item, list):
+            ctx.acq.picklist_item = [ctx.acq.picklist_item]
 
+        results = osrf.cache.CacheClient().get(ctx.acq.search_cache_key)
+
+        records = []
+        for cache_id in ctx.acq.picklist_item:
+            rec = self._find_cached_record(results, cache_id)
+            records.append(rec)
+            log.debug('pi = ' + unicode(cache_id))
+
+        c.oils_acq_records = records
+        ctx.scrub_isbn = oilsweb.lib.bib.scrub_isbn  # XXX add more generically to the context object
+        ctx.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
+        c.oils = ctx
+        return render('oils/%s/acq/picklist.html' % c.oils.core.skin)
+
+        return "PL"
+
+    def _find_cached_record(self, results, cache_id):
+        for res in results:
+            for rec in res['records']:
+                if str(rec['cache_id']) == str(cache_id):
+                    return rec
 
