@@ -10,7 +10,7 @@ export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
 all:  c_apps client-xul mod_xmlent
 
-install:	perl-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
+install:	perl-install python-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
 
 web-install:	webcore-install autojs-install mod_xmlent-install offline-install reporter-install
 
@@ -140,6 +140,12 @@ perl-install:
 
 # -----------------------------------------------------------------------------------
 
+python-install:
+	@echo $@
+	make -C python install
+
+# -----------------------------------------------------------------------------------
+
 reporter-install:
 	@echo $@
 	@echo "Installing Reporter email templates to $(REPORTERDIR) and example configs to $(ETCDIR)"
@@ -204,4 +210,5 @@ clean:
 	make -C extras clean
 	make -C apachemods clean
 	make -C c-apps clean
+	make -C python clean
 
