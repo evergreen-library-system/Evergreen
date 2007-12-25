@@ -1,11 +1,11 @@
 from oilsweb.lib.util import childInit
-import pylons.config
 import cgi
 
 _context = None
 _subContexts = {}
 
 class ContextItem(object):
+    ''' Defines a single field on a subcontext object. '''
     def __init__(self, **kwargs):
         self.app = None
         self.name = kwargs.get('name')
@@ -14,19 +14,28 @@ class ContextItem(object):
         self.qname = None
         self.multi = kwargs.get('multi')
 
+class SubContext(object):
+    ''' A SubContext is a class-specific context object that lives inside the global context object '''
+    def _fields(self):
+        ''' Returns all public fields for this subcontext '''
+        return [ f for f in dir(self) if f[0:1] != '_' and 
+            getattr(self, f).__class__.__name__.find('function') < 0  and
+            getattr(self, f).__class__.__name__.find('method') < 0 ]
+
+    def postinit(self):
+        ''' Overide with any post-global-init initialization '''
+        pass
+
 class Context(object):
+    ''' Global context object '''
+
     def __init__(self):
         self._fields = []
 
-    def wrap(self):
-        return {'oils': self}
-
-    '''
-    def applySubContext(self, app, subContext):
-        setattr(self, app, subContext)
-    '''
-
     def make_query_string(self):
+        ''' Compiles a CGI query string from the collection of values 
+            stored in the subcontexts '''
+
         q = ''
         for f in self._fields:
             if f.cgi_name:
@@ -39,7 +48,10 @@ class Context(object):
                     else:
                         if isinstance(val, str) or isinstance(val, unicode):
                             q += f.cgi_name+'='+cgi.escape(val)+'&'
-        if len(q) > 0: q = q[:-1] # strip the trailing &
+
+        if len(q) > 0: 
+            q = q[:-1] # strip the trailing &
+
         return q
 
     @staticmethod
@@ -74,30 +86,10 @@ class Context(object):
                 else:
                     setattr(getattr(c, app), name, item.default_value)
 
-                # store the metatdata at _<name>
+                # store the metatdata at <name>_
                 setattr(getattr(c, app), "%s_" % name, item)
 
-        c.core.prefix = pylons.config['oils_prefix']
-        c.core.media_prefix = pylons.config['oils_media_prefix']
-        c.core.ac_prefix = pylons.config['oils_added_content_prefix']
-
-        c.core.skin = 'default' # XXX
-        c.core.theme = 'default' # XXX
+            ctx.postinit()
 
         return c
-
-
-class SubContext(object):
-    def _fields(self):
-        return [ f for f in dir(self) if f[0:1] != '_' ]
-
-class CoreContext(SubContext):
-    def __init__(self):
-        self.prefix = ContextItem()
-        self.media_prefix = ContextItem()
-        self.ac_prefix = ContextItem()
-        self.skin = ContextItem()
-        self.theme = ContextItem()
-        self.authtoken = ContextItem(cgi_name='ses')
-Context.applySubContext('core', CoreContext)
 

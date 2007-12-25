@@ -8,7 +8,6 @@ class Globals(object):
     """
 
     def __init__(self):
-        #oilsweb.lib.util.childInit()
-        self.oils_authtoken = None
+        pass
 
 

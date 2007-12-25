@@ -3,12 +3,8 @@
 <%def name="block_content()">
     <form action='create_picklist' method='GET'>
     <input type='hidden' name='${c.oils.acq.search_cache_key_.cgi_name}' value='${c.oils.acq.search_cache_key}'/>
+    <input type='hidden' name='${c.oils.core.authtoken_.cgi_name}' value='${c.oils.core.authtoken}'/>
     <table id='oils-acq-pl_builder-table'>
-        <!--
-        <thead>
-            <tr><td>${_('Add To Picklist')}</td><td>${_('Title')}</td><td>${_('Author')}</td><td>${_('Source')}</td></tr>
-        </thead>
-        -->
         <tbody>
         <%include file="record_list.html"/>
         <!--
