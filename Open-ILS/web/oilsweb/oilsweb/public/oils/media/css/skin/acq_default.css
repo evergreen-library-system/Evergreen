@@ -16,8 +16,9 @@
 .oils-acq-search-subsources-label { margin-top: 5px; }
 #oils-acq-search-sources-label { margin-bottom: 10px; }
 #oils-acq-search-fields-label { margin-bottom: 10px; }
+#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
 
-#oils-acq-pl_builder-table td {}
+#oils-acq-pl_builder-table { width: 100%; }
 .oils-acq-record_list-records-jacket { width: 42px; height: 54px; padding-left: 10px; }
 .oils-acq-record_list-records-title-row {}
 .oils-acq-record_list-records-author-row td { padding-left: 30px; }
@@ -25,4 +26,5 @@
 .oils-acq-record_list-records-phys_desc-row {}
 #oils-acq-rdetail-marc-block { margin-top: 10px; padding: 10px; }
 
-#oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
+
+#oils-acq-picklist-table { width: 100%; }

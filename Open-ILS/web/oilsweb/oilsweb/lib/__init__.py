@@ -48,3 +48,12 @@ class CoreContext(SubContext):
         
 Context.applySubContext('core', CoreContext)
 
+
+class UtilContext(SubContext):
+    ''' The UtilContext maintains a set of general use functions '''
+    def __init__(self):
+        import oilsweb.lib.bib
+        self.scrub_isbn = ContextItem(default_value=oilsweb.lib.bib.scrub_isbn)
+
+Context.applySubContext('util', UtilContext)
+

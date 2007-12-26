@@ -1,5 +1,6 @@
 
 #oils-acq-index-div { font-weight:bold; }
+
 #oils-acq-search-container { width:100%; }
 #oils-acq-search-sources-div { width:20%; float:left; }
 #oils-acq-search-form-div { width:80%; float:right; }
@@ -8,10 +9,14 @@
 #oils-acq-search-sources-label { font-weight: bold; border-bottom: 1px solid #6BA160;}
 #oils-acq-search-fields-label { font-weight: bold; border-bottom: 1px solid #6BA160;}
 #oils-acq-search-subsources-label { font-weight: bold; }
+#oils-acq-search-fields-submit-block { border: 2px solid #A1A1A1; }
+
 #oils-acq-pl_builder-table thead td { font-weight: bold; }
-#oils-acq-pl_builder-table td { border-bottom: 1px solid #808080;}
-#oils-acq-rdetail-marc-block { border-top: 1px solid #808080; }
-.oils-acq-record_list-picklist-td { background: #D0D0D0; } 
+/* #oils-acq-pl_builder-table tr { border-bottom: 1px solid #808080;} */
+.oils-acq-record_list-records-phys_desc-row { border-bottom: 1px solid #6BA160; }
+.oils-acq-record_list-picklist-td { border-style: solid; border-color: #A1A1A1; border-width: 0px 1px 0px 1px; } 
 .oils-acq-record_list-records-service-td { font-size: 85%; }
 #oils-acq-pl_builder-picklist-submit { text-align: right; }
-#oils-acq-search-fields-submit-block { border: 2px solid #A1A1A1; }
+
+
+#oils-acq-rdetail-marc-block { border-top: 1px solid #808080; }

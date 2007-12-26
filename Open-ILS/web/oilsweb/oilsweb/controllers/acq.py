@@ -22,6 +22,7 @@ class AcqContext(SubContext):
         self.record_id = ContextItem(cgi_name='acq.r')
         self.record = ContextItem(cgi_name='acq.r')
         self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
+        self.extract_bib_field = ContextItem(default_value=oilsweb.lib.acq.search.extract_bib_field)
 Context.applySubContext('acq', AcqContext)
 
 
@@ -53,9 +54,6 @@ class AcqController(BaseController):
 
         if ctx.acq.search_source:
             c.oils_acq_records, ctx.acq.search_cache_key = self._build_z39_search(ctx)
-
-        ctx.scrub_isbn = oilsweb.lib.bib.scrub_isbn  # XXX add more generically to the context object
-        ctx.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
         c.oils = ctx
         return render('oils/%s/acq/pl_builder.html' % ctx.core.skin)
 
@@ -109,12 +107,8 @@ class AcqController(BaseController):
             records.append(rec)
 
         c.oils_acq_records = records
-        ctx.scrub_isbn = oilsweb.lib.bib.scrub_isbn  # XXX add more generically to the context object
-        ctx.acq.extract_bib_field = oilsweb.lib.acq.search.extract_bib_field
         c.oils = ctx
         return render('oils/%s/acq/picklist.html' % c.oils.core.skin)
-
-        return "PL"
 
     def _find_cached_record(self, results, cache_id):
         for res in results:

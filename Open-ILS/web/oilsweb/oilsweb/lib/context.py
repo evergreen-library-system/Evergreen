@@ -19,7 +19,6 @@ class SubContext(object):
     def _fields(self):
         ''' Returns all public fields for this subcontext '''
         return [ f for f in dir(self) if f[0:1] != '_' and 
-            getattr(self, f).__class__.__name__.find('function') < 0  and
             getattr(self, f).__class__.__name__.find('method') < 0 ]
 
     def postinit(self):
