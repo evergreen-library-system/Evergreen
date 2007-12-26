@@ -40,6 +40,9 @@ class AcqController(BaseController):
             for key, val in data['attrs'].iteritems():
                 sc[key] = val.get('label') or key
         c.oils_search_classes = sc
+        keys = sc.keys()
+        keys.sort()
+        c.oils_search_classes_sorted = keys
             
         return render('oils/%s/acq/search.html' % c.oils.core.skin)
         
@@ -104,7 +107,6 @@ class AcqController(BaseController):
         for cache_id in ctx.acq.picklist_item:
             rec = self._find_cached_record(results, cache_id)
             records.append(rec)
-            log.debug('pi = ' + unicode(cache_id))
 
         c.oils_acq_records = records
         ctx.scrub_isbn = oilsweb.lib.bib.scrub_isbn  # XXX add more generically to the context object

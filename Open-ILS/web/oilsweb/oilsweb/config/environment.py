@@ -16,7 +16,7 @@ def load_environment(global_conf, app_conf):
     paths = dict(root=root,
                  controllers=os.path.join(root, 'controllers'),
                  static_files=os.path.join(root, 'public'),
-                 templates=[os.path.join(root, 'templates')])
+                 templates=[app_conf.get('local_templates', ''), os.path.join(root, 'templates')])
 
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package='oilsweb',

@@ -23,13 +23,28 @@ class CoreContext(SubContext):
 
         self.fetchUser()
 
+    _auth_cache = {}
     def fetchUser(self):
         ''' Grab the logged in user and their workstation '''
         if self.authtoken:
+
+            if self.authtoken in CoreContext._auth_cache:
+                self.user = CoreContext._auth_cache[self.authtoken]['user']
+                self.workstation = CoreContext._auth_cache[self.authtoken]['workstation']
+                return
+
             self.user = osrf.ses.AtomicRequest(
                 'open-ils.auth', 
                 'open-ils.auth.session.retrieve', self.authtoken)
             self.workstation = oils.utils.csedit.CSEditor().retrieve_actor_workstation(self.user.wsid())
+
+            # cache the auth data and destroy any old auth data
+            CoreContext._auth_cache = {
+                self.authtoken : {
+                    'user' : self.user, 
+                    'workstation' : self.workstation
+                }
+            }
         
 Context.applySubContext('core', CoreContext)
 

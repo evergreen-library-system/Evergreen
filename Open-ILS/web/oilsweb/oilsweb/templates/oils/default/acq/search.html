@@ -7,20 +7,33 @@
         <div id='oils-acq-search-block' class='container'>
             <div id='oils-acq-search-sources-block'>
                 <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
-                <select name='${c.oils.acq.search_source_.cgi_name}' multiple='multiple' id='oils-acq-search-sources-selector'>
-                    <option value='native-evergreen-catalog'>${_('Evergreen Catalog')}</option>
-                    <optgroup label='${_("Z39.50 Sources")}'>
-                        % for src,cfg in c.oils_z39_sources.iteritems():
-                        <option value='${src}'>${src} ${cfg["host"]}:${cfg["db"]}</option>
-                        % endfor
-                    </optgroup>
-                </select>
+                <ul id='oils-acq-search-sources-list'>
+                    <li><input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' 
+                        value='native-evergreen-catalog'>${_('Evergreen Catalog')}</input></li>
+                    <li>
+                        <div class='oils-acq-search-subsources-label'>${_("Z39.50 Sources")}</div>
+                        <ul class='oils-acq-search-sources-sublist'>
+                            % for src,cfg in c.oils_z39_sources.iteritems():
+                            <li>
+                                <input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' 
+                                    value='${src}'>
+                                    ${src} ${cfg["host"]}:${cfg["db"]}
+                                    % if cfg['auth'] == 't':
+                                        <span class='oils-acq-search-source-auth'>*</span>
+                                    % endif
+                                    </input>
+                            </li>
+                            % endfor
+                        </ul>
+                    </li>
+                </ul>
             </div>
             <div id='oils-acq-search-form-block'>
-                <table>
-                % for cls, lbl in c.oils_search_classes.iteritems():
+                <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
+                <table id='oils-acq-search-fields-table'>
+                % for cls in c.oils_search_classes_sorted:
                 <tr class='oils-acq-search-form-row'>
-                    <td class='oils-acq-search-form-label'>${lbl}</td>
+                    <td class='oils-acq-search-form-label'>${c.oils_search_classes[cls]}</td>
                     <td class='oils-acq-search-form-input'>
                         <input name='${cls}' size='24'/>
                         <input type='hidden' name='${c.oils.acq.search_class_.cgi_name}' value='${cls}'/>
@@ -28,7 +41,9 @@
                 </tr>
                 % endfor
                 </table>
-                <input type='submit' value='${_("Submit")}'/>
+                <div id='oils-acq-search-fields-submit-block'>
+                    <input type='submit' value='${_("Submit")}'/>
+                </div>
             </div>
         </div>
     </form>

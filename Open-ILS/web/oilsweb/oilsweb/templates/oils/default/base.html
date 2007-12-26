@@ -2,12 +2,12 @@
 
 <%def name='block_body_content()'>
     <div id='oils-base-body-block'> 
+        <div id='oils-base-header-block'>
+            ${self.block_header()}
+        </div>
         <div id='oils-base-main-block' class='container'>
             <div id='oils-base-navigate-block'>
                 ${self.block_navigate()}
-            </div>
-            <div id='oils-base-header-block'>
-                ${self.block_header()}
             </div>
             <div id='oils-base-content-block'>
                 ${self.block_content()}
