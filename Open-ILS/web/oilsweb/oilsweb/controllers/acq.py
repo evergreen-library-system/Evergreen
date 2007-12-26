@@ -1,7 +1,6 @@
 from oilsweb.lib.base import *
 
 import logging
-import pylons
 import oilsweb.lib.context
 import oilsweb.lib.util
 import oilsweb.lib.acq.search
@@ -29,11 +28,11 @@ Context.applySubContext('acq', AcqContext)
 class AcqController(BaseController):
 
     def index(self):
-        c.oils = oilsweb.lib.context.Context.init(request)
+        c.oils = oilsweb.lib.context.Context.init(request, response)
         return render('oils/%s/acq/index.html' % c.oils.core.skin)
 
     def search(self):
-        c.oils = Context.init(request)
+        c.oils = Context.init(request, response)
         c.oils_z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(c.oils)
 
         sc = {}
@@ -49,7 +48,7 @@ class AcqController(BaseController):
         
 
     def pl_builder(self):
-        ctx = oilsweb.lib.context.Context.init(request)
+        ctx = oilsweb.lib.context.Context.init(request, response)
         # add logic to see where we are fetching bib data from
 
         if ctx.acq.search_source:
@@ -81,7 +80,7 @@ class AcqController(BaseController):
         return oilsweb.lib.acq.search.multi_search(ctx, search)
 
     def rdetails(self):
-        c.oils = oilsweb.lib.context.Context.init(request)
+        c.oils = oilsweb.lib.context.Context.init(request, response)
         rec_id = c.oils.acq.record_id
         cache_key = c.oils.acq.search_cache_key
 
@@ -95,7 +94,7 @@ class AcqController(BaseController):
 
         
     def create_picklist(self):  
-        ctx = oilsweb.lib.context.Context.init(request)
+        ctx = oilsweb.lib.context.Context.init(request, response)
         if not isinstance(ctx.acq.picklist_item, list):
             ctx.acq.picklist_item = [ctx.acq.picklist_item]
 

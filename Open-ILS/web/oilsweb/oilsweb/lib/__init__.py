@@ -1,14 +1,23 @@
 from oilsweb.lib.context import Context, SubContext, ContextItem
 import osrf.ses, oils.utils.csedit, pylons.config
+from gettext import gettext as _
+
+class AuthException(Exception):
+    def __init__(self, info=''):
+        self.info = info
+    def __str__(self):
+        return "%s: %s" % (self.__class__.__name__, unicode(self.info))
+        
+    
 
 class CoreContext(SubContext):
     def __init__(self):
-        self.prefix = ContextItem() # web prefi
+        self.prefix = ContextItem() # web prefix
         self.media_prefix = ContextItem() # media prefix
         self.ac_prefix = ContextItem() # added content prefix
         self.skin = ContextItem() # web skin
         self.theme = ContextItem() # web theme
-        self.authtoken = ContextItem(cgi_name='ses') # authtoken string
+        self.authtoken = ContextItem(cgi_name='ses', cookie=True) # authtoken string
         self.user = ContextItem() # logged in user object
         self.workstation = ContextItem() # workstation object
 
@@ -36,7 +45,13 @@ class CoreContext(SubContext):
             self.user = osrf.ses.AtomicRequest(
                 'open-ils.auth', 
                 'open-ils.auth.session.retrieve', self.authtoken)
+
+            if not self.user:
+                raise AuthException(_('No user found with authtoken %(self.authtoken)s'))
             self.workstation = oils.utils.csedit.CSEditor().retrieve_actor_workstation(self.user.wsid())
+
+            if not self.workstation:
+                raise AuthException(_('No workstation found'))
 
             # cache the auth data and destroy any old auth data
             CoreContext._auth_cache = {
@@ -45,6 +60,8 @@ class CoreContext(SubContext):
                     'workstation' : self.workstation
                 }
             }
+        else:
+            raise AuthException(_('No authentication token provided'))
         
 Context.applySubContext('core', CoreContext)
 

@@ -31,7 +31,7 @@ class AcqAdminController(BaseController):
         import pprint
 
         # Parse IDL and render as links for viewing the objects, perhaps?
-        c.oils = oilsweb.lib.context.Context.init(request)
+        c.oils = oilsweb.lib.context.Context.init(request, response)
         c.request = request
         oilsConnect('/openils/conf/opensrf_core.xml', 'config.opensrf')
         c.idl = oils.utils.idl.oilsGetIDLParser()
