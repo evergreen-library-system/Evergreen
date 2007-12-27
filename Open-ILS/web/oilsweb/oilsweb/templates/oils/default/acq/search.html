@@ -1,9 +1,8 @@
-<%inherit file='../base.html'/>
+<%inherit file='base.html'/>
 <%def name="block_title()">${_('Evergreen Acquisitions Search')}</%def>
 
 <%def name="block_content()">
     <form method='GET' action='pl_builder'>
-        <input type='hidden' name='ses' value='${c.oils.core.authtoken}'/>
         <div id='oils-acq-search-block' class='container'>
             <div id='oils-acq-search-sources-block'>
                 <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>

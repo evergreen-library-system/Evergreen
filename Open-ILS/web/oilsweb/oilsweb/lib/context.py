@@ -111,6 +111,9 @@ class Context(object):
                 # store the metatdata at <name>_
                 setattr(getattr(c, app), "%s_" % name, item)
 
+        # run postinit after all contexts have been loaded
+        for app in _subContexts.keys():
+            ctx = getattr(c, app)
             ctx.postinit()
 
         return c

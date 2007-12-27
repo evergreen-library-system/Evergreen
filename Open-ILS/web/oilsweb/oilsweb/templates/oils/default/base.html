@@ -10,7 +10,7 @@
                 ${self.block_navigate()}
             </div>
             <div id='oils-base-content-block'>
-                ${self.block_content()}
+                ${self.block_global_content()}
             </div>
             <div id='oils-base-sidebar-block'>
                 ${self.block_sidebar()}
@@ -26,6 +26,12 @@
     <%include file='header.html'/>
 </%def>
 <%def name='block_sidebar()'/>
+<%def name='block_global_content()'>
+    <div class='oils-base-sub-navigate-block'>
+        ${self.block_sub_navigate()}
+    </div>
+    ${self.block_content()}
+</%def>
 <%def name='block_content()'/>
 <%def name='block_navigate()'>
     <%include file='navigate.html'/>
@@ -33,3 +39,4 @@
 <%def name='block_footer()'>
     <%include file='footer.html'/>
 </%def>
+<%def name='block_sub_navigate()'/>

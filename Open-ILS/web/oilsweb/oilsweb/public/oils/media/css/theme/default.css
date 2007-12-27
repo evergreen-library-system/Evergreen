@@ -1,9 +1,9 @@
 /* import the default css for the install applications */
-@import "acq_default.css";
+@import "default/acq.css";
+@import "default/admin.css";
 
 body { font-size: 80%; }
 
-/* base default style */
 #oils-base-body-block {}
 #oils-base-navigate-block {border: 2px solid #85C777; background: #6BA160;}
 #oils-base-navigate-block a { color: #000000; }
@@ -14,5 +14,7 @@ body { font-size: 80%; }
 #oils-base-header-block {border-bottom: 1px solid #5E5E5E; }
 
 
-
+.oils-base-sub-navigate-block { border: 2px solid #6BA160; background: #85C777;}
+.oils-base-sub-navigate-block a { color: #000000; }
+.oils-base-sub-navigate-block span:hover { background: #6BA160; }
 

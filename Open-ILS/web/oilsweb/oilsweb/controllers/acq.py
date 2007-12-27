@@ -1,6 +1,6 @@
 from oilsweb.lib.base import *
 
-import logging
+import logging, pylons
 import oilsweb.lib.context
 import oilsweb.lib.util
 import oilsweb.lib.acq.search
@@ -22,6 +22,11 @@ class AcqContext(SubContext):
         self.record = ContextItem(cgi_name='acq.r')
         self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
         self.extract_bib_field = ContextItem(default_value=oilsweb.lib.acq.search.extract_bib_field)
+        self.prefix = ContextItem()
+
+    def postinit(self):
+        self.prefix = "%s/acq" % Context.getContext().core.prefix
+
 Context.applySubContext('acq', AcqContext)
 
 

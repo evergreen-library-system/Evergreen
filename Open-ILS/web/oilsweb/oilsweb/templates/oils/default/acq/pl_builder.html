@@ -1,15 +1,14 @@
-<%inherit file='../base.html'/>
+<%inherit file='base.html'/>
 <%def name="block_title()">${_('Evergreen Acquisitions Results')}</%def>
 <%def name="block_content()">
     <form action='create_picklist' method='GET'>
     <input type='hidden' name='${c.oils.acq.search_cache_key_.cgi_name}' value='${c.oils.acq.search_cache_key}'/>
-    <input type='hidden' name='${c.oils.core.authtoken_.cgi_name}' value='${c.oils.core.authtoken}'/>
     <table id='oils-acq-pl_builder-table'>
         <tbody>
         % for res in c.oils_acq_records:
             % for rec in res['records']:
                 <tr class='oils-acq-record_list-records-title-row'>
-                    <td rowspan='3'>
+                    <td class='oils-acq-record_list-records-jacket-td' rowspan='3'>
                         <img class='oils-acq-record_list-records-jacket'
                             src='${c.oils.core.ac_prefix}/jacket/small/${c.oils.util.scrub_isbn(c.oils.acq.extract_bib_field(rec,"isbns.isbn"))}'/>
                     </td>

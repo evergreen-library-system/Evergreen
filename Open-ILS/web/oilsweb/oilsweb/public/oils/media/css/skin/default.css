@@ -1,5 +1,6 @@
 /* import the default css for the install applications */
-@import "acq_default.css";
+@import "default/acq.css";
+@import "default/admin.css";
 
 /* base default style */
 
@@ -11,16 +12,17 @@ body { margin-top: 0px; padding-top: 0px;}
 
 #oils-base-body-block { width: 100%; margin-top: 0px; padding-top: 0px;}
 #oils-base-main-block { width: 100%; margin-top: 0px; padding-top: 0px;}
+#oils-base-content-block { width: 84%; vertical-align: top; float:right; padding-top: 0px;}
 #oils-base-navigate-block { width: 15%; vertical-align: top; float:left;}
-#oils-base-content-block { width: 84%; vertical-align: top; float:right; padding-top: 8px;}
-#oils-base-sidebar-block { width: 15%; vertical-align: top; float:left;}
 #oils-base-navigate-table { width: 100%; }
 #oils-base-navigate-table td { width: 100%; }
+#oils-base-sidebar-block { width: 15%; vertical-align: top; float:left;}
 
 #oils-base-header-block { width: 100%; text-align: right; margin-top: 0px; padding-bottom: 4px;}
 #oils-base-footer-block { width: 100%; text-align: center; vertical-align: bottom;}
 
 
-
+.oils-base-sub-navigate-block { text-align: center; padding: 3px; margin-bottom: 10px;}
+.oils-base-sub-navigate-block span { padding: 3px; }
 
 

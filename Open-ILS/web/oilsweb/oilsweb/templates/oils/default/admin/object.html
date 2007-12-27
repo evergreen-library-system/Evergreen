@@ -1,0 +1,37 @@
+<%inherit file='base.html'/>
+
+<%def name="block_title()">${_('Evergreen Admin')}</%def>
+<%def name="block_content()">
+    <div id='oils-admin-object-lable'>${c.oils.adm.object_meta['rpt_label']}</div>
+    % if c.oils.adm.mode == 'delete':
+    <div>
+        <%
+        ## Why does doing this inline (inside ${...}) give me a syntax error????
+        string = _("Are you sure you want to delete %(cls)s with id %(id)d?") % {"cls":c.oils.adm.object_class, "id":c.oils.adm.object.id()}
+        %>
+        ${string}
+    </div>
+    % else:
+    <table id='oils-admin-object-table'>
+        % for fieldmeta in [ f for f in c.oils.adm.object_meta['fields'] if not f['virtual']]:
+            <tr>
+                <td>${fieldmeta['rpt_label']}</td>
+                <td>
+                    % if c.oils.adm.mode == 'update':
+                        <input type='text' size='36' value='${unicode(getattr(c.oils.adm.object, fieldmeta["name"])())}'/>
+                    % else:
+                        % if c.oils.adm.mode == 'create':
+                            <input type='text'size='36' />
+                        % else:
+                            % if c.oils.adm.mode == 'view':
+                                <span>${unicode(getattr(c.oils.adm.object, fieldmeta['name'])())}</span>
+                            % endif
+                        % endif
+                    % endif
+                </td>
+            </tr>
+        % endfor
+    </table>
+    % endif
+</%def>
+

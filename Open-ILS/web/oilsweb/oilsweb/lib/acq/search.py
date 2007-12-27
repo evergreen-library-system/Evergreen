@@ -4,6 +4,7 @@ import osrf.ses
 import osrf.xml_obj
 import oils.const
 import osrf.log, osrf.cache, osrf.json
+import pylons.config
 
 EG_Z39_SOURCES = 'open-ils.search.z3950.retrieve_services'
 EG_Z39_SEARCH = 'open-ils.search.z3950.search_class'
@@ -47,7 +48,7 @@ def cache_search(search, results):
     key = md5.new()
     key.update(unicode(search))
     key = key.hexdigest()
-    osrf.cache.CacheClient().put(key, results)
+    osrf.cache.CacheClient().put(key, results, pylons.config.get('oils_bib_cache_time', 900))
     return key
 
 def extract_bib_field(rec, field, all=False):

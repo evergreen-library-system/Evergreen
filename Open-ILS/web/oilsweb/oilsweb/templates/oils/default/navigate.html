@@ -1,7 +1,9 @@
 <table id='oils-base-navigate-table'>
     <tbody>
-        <tr><td><a href='index?${c.oils.make_query_string()}'>${_('Home')}</a></td></tr>
-        <tr><td><a href='search?${c.oils.make_query_string()}'>${_('Bib Search')}</a></td></tr>
+        <tr><td><a href='${c.oils.core.prefix}/base/dashboard'>${_('Dashboard')}</a></td></tr>
+        <tr><td><a href='${c.oils.core.prefix}/acq/index'>${_('Acqisitions')}</a></td></tr>
+        <tr><td><a href='${c.oils.core.prefix}/ser/index'>${_('Serials')}</a></td></tr>
+        <tr><td><a href='${c.oils.core.prefix}/admin/index'>${_('Admin')}</a></td></tr>
     </tbody>
 </table>
 

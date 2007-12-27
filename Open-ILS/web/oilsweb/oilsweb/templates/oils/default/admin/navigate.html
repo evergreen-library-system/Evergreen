@@ -1,0 +1,17 @@
+<span>
+    <a href='${c.oils.adm.prefix}/search/${c.oils.adm.object_class}'>${_('Search')}</a>
+</span>
+% if c.oils.adm.mode != 'create':
+    <span>
+        <a href='${c.oils.adm.prefix}/create/${c.oils.adm.object_class}'>${_('Create')}</a>
+    </span>
+    % if c.oils.adm.mode != 'update':
+        <span>
+            <a href='${c.oils.adm.prefix}/update/${c.oils.adm.object_class}/${c.oils.adm.object.id()}'>${_('Update')}</a>
+        </span>
+    % endif
+    <span>
+        <a href='${c.oils.adm.prefix}/delete/${c.oils.adm.object_class}/${c.oils.adm.object.id()}'>${_('Delete')}</a>
+    </span>
+% endif
+

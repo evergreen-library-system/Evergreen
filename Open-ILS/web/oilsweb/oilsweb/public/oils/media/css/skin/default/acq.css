@@ -1,5 +1,9 @@
 
 #oils-acq-index-block { font-weight:bold; }
+/*
+.oils-sub-navigate-block { width: 100%;  text-align: left; padding: 3px;}
+.oils-sub-navigate-block span { padding: 3px; }
+*/
 
 /* bib search */
 #oils-acq-search-container { width:100%; }
@@ -21,7 +25,8 @@
 
 /* bib search results / picklist builder interface */
 #oils-acq-pl_builder-table { width: 100%; }
-.oils-acq-record_list-records-jacket { width: 42px; height: 54px; padding-left: 10px; }
+.oils-acq-record_list-records-jacket-td { width: 46px; }
+.oils-acq-record_list-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
 .oils-acq-record_list-records-title-row {}
 .oils-acq-record_list-records-author-row td { padding-left: 30px; }
 .oils-acq-record_list-records-phys_desc-row td { padding-left: 30px; }
