@@ -23,7 +23,8 @@ def childInit():
     servers = osrf.set.get('cache.global.servers.server')
     if not isinstance(servers, list):
         servers = [servers]
-    osrf.cache.CacheClient.connect(servers)
+    if not osrf.cache.CacheClient.get_client():
+        osrf.cache.CacheClient.connect(servers)
 
 
 
