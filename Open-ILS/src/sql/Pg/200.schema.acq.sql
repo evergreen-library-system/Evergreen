@@ -10,7 +10,7 @@ CREATE TABLE acq.currency_type (
 );
 
 INSERT INTO acq.currency_type (code, label) VALUES ('USD','US Dollars');
-INSERT INTO acq.currency_type (code, label) VALUES ('CAN','Canadian Dollars');
+INSERT INTO acq.currency_type (code, label) VALUES ('CAD','Canadian Dollars');
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
 
 CREATE TABLE acq.exchange_rate (
@@ -68,4 +68,27 @@ CREATE TABLE acq.fund_debit (
 	encumberance		BOOL	NOT NULL DEFAULT TRUE
 );
 
+CREATE TABLE acq.budget (
+    id      SERIAL  PRIMARY KEY,
+    org     INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    name    TEXT    NOT NULL,
+    year    INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
+    CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
+);
+
+CREATE TABLE acq.budget_allocation (
+    id          SERIAL  PRIMARY KEY,
+    fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    budget      INT     NOT NULL REFERENCES acq.budget (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    amount      NUMERIC,
+    percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
+    allocator   INT NOT NULL REFERENCES actor.usr (id),
+    note        TEXT,
+    CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
+);
+
 COMMIT;
+
+
+
+
