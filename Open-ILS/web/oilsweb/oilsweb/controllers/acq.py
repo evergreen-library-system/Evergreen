@@ -1,4 +1,5 @@
 from oilsweb.lib.base import *
+from oilsweb.lib.request import RequestMgr
 
 import logging, pylons
 import oilsweb.lib.context
@@ -23,6 +24,9 @@ class AcqContext(SubContext):
         self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
         self.extract_bib_field = ContextItem(default_value=oilsweb.lib.acq.search.extract_bib_field)
         self.prefix = ContextItem()
+        self.z39_sources = ContextItem()
+        self.search_classes = ContextItem()
+        self.search_classes_sorted = ContextItem()
 
     def postinit(self):
         self.prefix = "%s/acq" % Context.getContext().core.prefix
@@ -33,33 +37,33 @@ Context.applySubContext('acq', AcqContext)
 class AcqController(BaseController):
 
     def index(self):
-        c.oils = oilsweb.lib.context.Context.init(request, response)
-        return render('oils/%s/acq/index.html' % c.oils.core.skin)
+        return RequestMgr().render('acq/index.html')
 
     def search(self):
-        c.oils = Context.init(request, response)
-        c.oils_z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(c.oils)
+        r = RequestMgr()
+        r.ctx.acq.z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
 
         sc = {}
-        for data in c.oils_z39_sources.values():
+        for data in r.ctx.acq.z39_sources.values():
             for key, val in data['attrs'].iteritems():
                 sc[key] = val.get('label') or key
-        c.oils_search_classes = sc
+        r.ctx.acq.search_classes = sc
         keys = sc.keys()
         keys.sort()
-        c.oils_search_classes_sorted = keys
+        r.ctx.acq.search_classes_sorted = keys
+        log.debug("keys = %s" % unicode(r.ctx.acq.z39_sources))
             
-        return render('oils/%s/acq/search.html' % c.oils.core.skin)
+        return r.render('acq/search.html')
         
 
     def pl_builder(self):
-        ctx = oilsweb.lib.context.Context.init(request, response)
+        r = RequestMgr()
         # add logic to see where we are fetching bib data from
+        # XXX fix
+        if r.ctx.acq.search_source:
+            c.oils_acq_records, r.ctx.acq.search_cache_key = self._build_z39_search(r.ctx)
 
-        if ctx.acq.search_source:
-            c.oils_acq_records, ctx.acq.search_cache_key = self._build_z39_search(ctx)
-        c.oils = ctx
-        return render('oils/%s/acq/pl_builder.html' % ctx.core.skin)
+        return r.render('acq/pl_builder.html')
 
 
     def _build_z39_search(self, ctx):
@@ -85,34 +89,33 @@ class AcqController(BaseController):
         return oilsweb.lib.acq.search.multi_search(ctx, search)
 
     def rdetails(self):
-        c.oils = oilsweb.lib.context.Context.init(request, response)
-        rec_id = c.oils.acq.record_id
-        cache_key = c.oils.acq.search_cache_key
+        r = RequestMgr()
+        rec_id = r.ctx.acq.record_id
+        cache_key = r.ctx.acq.search_cache_key
 
         results = osrf.cache.CacheClient().get(cache_key)
         rec = self._find_cached_record(results, rec_id)
         if rec:
-            c.oils.acq.record = rec
-            #c.oils.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
-            return render('oils/%s/acq/rdetails.html' % c.oils.core.skin)
+            r.ctx.acq.record = rec
+            #r.ctx.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
+            return r.render('acq/rdetails.html')
         return 'exception -> no record'
 
         
     def create_picklist(self):  
-        ctx = oilsweb.lib.context.Context.init(request, response)
-        if not isinstance(ctx.acq.picklist_item, list):
-            ctx.acq.picklist_item = [ctx.acq.picklist_item]
+        r = RequestMgr()
+        if not isinstance(r.ctx.acq.picklist_item, list):
+            r.ctx.acq.picklist_item = [r.ctx.acq.picklist_item]
 
-        results = osrf.cache.CacheClient().get(ctx.acq.search_cache_key)
+        results = osrf.cache.CacheClient().get(r.ctx.acq.search_cache_key)
 
         records = []
-        for cache_id in ctx.acq.picklist_item:
+        for cache_id in r.ctx.acq.picklist_item:
             rec = self._find_cached_record(results, cache_id)
             records.append(rec)
 
-        c.oils_acq_records = records
-        c.oils = ctx
-        return render('oils/%s/acq/picklist.html' % c.oils.core.skin)
+        c.oils_acq_records = records # XXX
+        return r.render('acq/picklist.html')
 
     def _find_cached_record(self, results, cache_id):
         for res in results:

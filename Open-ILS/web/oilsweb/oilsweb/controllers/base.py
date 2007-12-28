@@ -1,5 +1,6 @@
 import logging
 
+from oilsweb.lib.request import RequestMgr
 from oilsweb.lib.base import *
 from oilsweb.lib.context import Context, SubContext, ContextItem
 
@@ -16,6 +17,6 @@ class BaseController(BaseController):
     ''' Controller for globally shared interfaces '''
 
     def dashboard(self):
-        c.oils = Context.init(request, response)
-        return render('oils/%s/dashboard.html' % c.oils.core.skin)
+        r = RequestMgr()
+        return r.render('dashboard.html')
 

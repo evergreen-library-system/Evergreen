@@ -1,3 +1,4 @@
+from oilsweb.lib.request import RequestMgr
 from oilsweb.lib.base import *
 import oilsweb.lib.util
 from oilsweb.lib.context import Context, SubContext, ContextItem
@@ -21,35 +22,38 @@ Context.applySubContext('adm', AdminContext)
 class AdminController(BaseController):
 
     def init(self, type, id=None):
-        c.oils = oilsweb.lib.context.Context.init(request, response)
-        c.oils.adm.object_class = type
-        meta = c.oils.adm.object_meta = oils.utils.idl.oilsGetIDLParser().IDLObject[type]
+        r = RequestMgr()
+        r.ctx.adm.object_class = type
+        meta = r.ctx.adm.object_meta = oils.utils.idl.oilsGetIDLParser().IDLObject[type]
 
         if id is not None:
-            c.oils.adm.object = osrf.ses.AtomicRequest(
+            r.ctx.adm.object = osrf.ses.AtomicRequest(
                 'open-ils.cstore',
                 'open-ils.cstore.direct.%s.retrieve' % 
                     meta['fieldmapper'].replace('::', '.'), id)
+        return r
 
-        c.oils.apply_cookies()
+    def test(self, type, id):
+        r = self.init()
+        return r.render('dashboard.html')
 
     def view(self, type, id):
-        self.init(type, id)
-        return render('oils/%s/admin/object.html' % c.oils.core.skin)
+        r = self.init(type, id)
+        return r.render('admin/object.html')
 
     def update(self, type, id):
-        self.init(type, id)
+        r = self.init(type, id)
         c.oils.adm.mode = 'update'
-        return render('oils/%s/admin/object.html' % c.oils.core.skin)
+        return r.render('admin/object.html')
 
     def create(self, type):
-        self.init(type)
+        r = self.init(type, id)
         c.oils.adm.mode = 'create'
-        return render('oils/%s/admin/object.html' % c.oils.core.skin)
+        return r.render('admin/object.html')
 
     def delete(self, type, id):
-        self.init(type, id)
+        r = self.init(type, id)
         c.oils.adm.mode = 'delete'
-        return render('oils/%s/admin/object.html' % c.oils.core.skin) # show a confirmation page
+        return r.render('admin/object.html')
 
         
