@@ -12,7 +12,7 @@
                     <li>
                         <div class='oils-acq-search-subsources-label'>${_("Z39.50 Sources")}</div>
                         <ul class='oils-acq-search-sources-sublist'>
-                            % for src,cfg in c.oils_z39_sources.iteritems():
+                            % for src,cfg in c.oils.acq.z39_sources.iteritems():
                             <li>
                                 <input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' 
                                     value='${src}'>
@@ -30,9 +30,9 @@
             <div id='oils-acq-search-form-block'>
                 <div id='oils-acq-search-fields-label'>${_('Search Fields')}</div>
                 <table id='oils-acq-search-fields-table'>
-                % for cls in c.oils_search_classes_sorted:
+                % for cls in c.oils.acq.search_classes_sorted:
                 <tr class='oils-acq-search-form-row'>
-                    <td class='oils-acq-search-form-label'>${c.oils_search_classes[cls]}</td>
+                    <td class='oils-acq-search-form-label'>${c.oils.acq.search_classes[cls]}</td>
                     <td class='oils-acq-search-form-input'>
                         <input name='${cls}' size='24'/>
                         <input type='hidden' name='${c.oils.acq.search_class_.cgi_name}' value='${cls}'/>
