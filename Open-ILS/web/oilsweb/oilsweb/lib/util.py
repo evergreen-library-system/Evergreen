@@ -1,12 +1,6 @@
-import pylons.config
+import pylons.config, pylons.templating
 import libxml2, libxslt
 import oils.utils.utils
-
-WEB_ROOT='oils'
-
-
-def makeTemplatePath(ctx, tail):
-    return '%s/%s/%s' % (WEB_ROOT, ctx.core.skin, tail)
 
 def childInit():
     ''' Global child-init handler.  
