@@ -1,7 +1,9 @@
 from oilsweb.lib.util import childInit
 import cgi
 
+# global context
 _context = None
+# global collection of sub-contexts
 _subContexts = {}
 
 class ContextItem(object):
@@ -51,10 +53,7 @@ class Context(object):
                         if isinstance(val, str) or isinstance(val, unicode):
                             q += f.cgi_name+'='+cgi.escape(val)+'&'
 
-        if len(q) > 0: 
-            q = q[:-1] # strip the trailing &
-
-        return q
+        return q[:-1] # strip the trailing &
 
     def apply_cookies(self):
         for f in self._fields:
