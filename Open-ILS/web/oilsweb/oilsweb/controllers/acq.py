@@ -97,7 +97,7 @@ class AcqController(BaseController):
         rec = self._find_cached_record(results, rec_id)
         if rec:
             r.ctx.acq.record = rec
-            #r.ctx.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
+            r.ctx.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
             return r.render('acq/rdetails.html')
         return 'exception -> no record'
 

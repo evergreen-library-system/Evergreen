@@ -19,4 +19,5 @@
 #oils-acq-pl_builder-picklist-submit { text-align: right; }
 
 
-#oils-acq-rdetail-marc-block { border-top: 1px solid #808080; }
+#oils-acq-rdetail-marc-block { border: 1px solid #6BA160; }
+#oils-acq-rdetail-summary-block { border: 1px solid #6BA160; }
