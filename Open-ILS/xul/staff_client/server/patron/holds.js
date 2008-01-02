@@ -23,6 +23,11 @@ patron.holds.prototype = {
 
 	'holds_map' : {},
 
+    'flatten_copy' : function(hold) {
+        try { if ( hold.current_copy() && typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('FIXME: Error flattening hold before hold update: ' + E); }
+        return hold;
+    },
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -61,6 +66,7 @@ patron.holds.prototype = {
 									if (typeof blob.ilsevent != 'undefined') throw(blob);
 									row.my.ahr = blob.hold;
 									row.my.status = blob.status;
+                                    row.my.ahr.status( blob.status );
 									row.my.acp = blob.copy;
 									row.my.acn = blob.volume;
 									row.my.mvr = blob.mvr;
@@ -290,7 +296,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -349,7 +355,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -392,7 +398,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.phone_notify(  phone ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -434,7 +440,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.email_notify(  email ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -480,7 +486,7 @@ patron.holds.prototype = {
 											hold.thaw_date( null );
 										}
 										hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -526,7 +532,7 @@ patron.holds.prototype = {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
                                     }
