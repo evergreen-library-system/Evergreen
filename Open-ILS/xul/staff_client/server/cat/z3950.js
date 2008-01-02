@@ -501,7 +501,7 @@ cat.z3950.prototype = {
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
-										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
+										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\n'; // FIXME: add record summary here';
 										var title = 'Import Collision';
 										var btn1 = 'Overlay';
 										var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : 'Import with alternate TCN ' + r.payload.new_tcn;
@@ -626,7 +626,7 @@ cat.z3950.prototype = {
 							if (typeof r.ilsevent != 'undefined') {
 								switch(r.ilsevent) {
 									case 1704 /* TCN_EXISTS */ :
-										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\nFIXME: add record summary here';
+										var msg = 'A record with TCN ' + r.payload.tcn + ' already exists.\n'; // FIXME: add record summary here';
 										var title = 'Import Collision';
 										var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : 'Overlay with alternate TCN ' + r.payload.new_tcn;
 										if (btn1) {
