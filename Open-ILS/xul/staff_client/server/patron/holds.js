@@ -54,6 +54,7 @@ patron.holds.prototype = {
 									if (typeof blob.ilsevent != 'undefined') throw(blob);
 									row.my.ahr = blob.hold;
 									row.my.status = blob.status;
+                                    row.my.ahr.status( blob.status );
 									row.my.acp = blob.copy;
 									row.my.acn = blob.volume;
 									row.my.mvr = blob.mvr;
@@ -445,6 +446,17 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+
+                                var deny_edit_because_of_transit = false;
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                    if (hold.status() > 2 /* Which means holds that are In-Transit or Ready for Pickup */) deny_edit_because_of_transit = true;
+                                }
+                                if (deny_edit_because_of_transit) {
+                                    alert('You may not edit the pickup library for holds that are in-transit or ready for pickup.');
+                                    return;
+                                }
+
 								var list = util.functional.map_list(
 									obj.data.list.aou,
 									function(o) { 
