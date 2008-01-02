@@ -567,6 +567,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.email_notify(  email ); hold.ischanged('1');
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
