@@ -16,6 +16,11 @@ patron.holds.prototype = {
 
 	'holds_map' : {},
 
+    'flatten_copy' : function(hold) {
+        try { if ( hold.current_copy() && typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('FIXME: Error flattening hold before hold update: ' + E); }
+        return hold;
+    },
+
 	'init' : function( params ) {
 
 		var obj = this;
@@ -54,6 +59,7 @@ patron.holds.prototype = {
 									if (typeof blob.ilsevent != 'undefined') throw(blob);
 									row.my.ahr = blob.hold;
 									row.my.status = blob.status;
+                                    row.my.ahr.status( blob.status );
 									row.my.acp = blob.copy;
 									row.my.acn = blob.volume;
 									row.my.mvr = blob.mvr;
@@ -406,7 +412,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.selection_depth( obj.data.hash.aout[selection].depth() ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -423,6 +429,17 @@ patron.holds.prototype = {
 						function() {
 							try {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); 
+
+                                var deny_edit_because_of_transit = false;
+                                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                                    var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
+                                    if (hold.status() > 2 /* Which means holds that are In-Transit or Ready for Pickup */) deny_edit_because_of_transit = true;
+                                }
+                                if (deny_edit_because_of_transit) {
+                                    alert('You may not edit the pickup library for holds that are in-transit or ready for pickup.');
+                                    return;
+                                }
+
 								var list = util.functional.map_list(
 									obj.data.list.aou,
 									function(o) { 
@@ -465,7 +482,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.pickup_lib(  pickup_lib ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -508,7 +525,7 @@ patron.holds.prototype = {
 									for (var i = 0; i < obj.retrieve_ids.length; i++) {
 										var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
 										hold.phone_notify(  phone ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -595,7 +612,7 @@ patron.holds.prototype = {
 											hold.thaw_date( null );
 										}
 										hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
 										var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
 										if (typeof robj.ilsevent != 'undefined') throw(robj);
 									}
@@ -641,7 +658,7 @@ patron.holds.prototype = {
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
                                         var hold = obj.holds_map[ obj.retrieve_ids[i].id ];
                                         hold.thaw_date(  thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') ); hold.ischanged('1');
-                                        try { if ( typeof hold.current_copy() == 'object') hold.current_copy( hold.current_copy().id() ); } catch(E) { alert('IFXME: Error flattening hold before hold update: ' + E); }
+                                        hold = obj.flatten_copy(hold);
                                         var robj = obj.network.simple_request('FM_AHR_UPDATE',[ ses(), hold ]);
                                         if (typeof robj.ilsevent != 'undefined') throw(robj);
                                     }
