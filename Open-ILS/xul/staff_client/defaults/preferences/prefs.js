@@ -9,7 +9,7 @@ pref("toolkit.defaultChromeURI", "chrome://open_ils_staff_client/content/main/ma
 pref("open-ils.repository.headURL","$HeadURL$");
 pref("open-ils.repository.author","$Author$");
 pref("open-ils.repository.revision","$Revision$");
-pref("open-ils.repository.date","$HeadURL$");
+pref("open-ils.repository.date","$Date$");
 pref("open-ils.repository.id","$Id$");
 
 // We need something like this to get window.open to work in some places (where it complains about
