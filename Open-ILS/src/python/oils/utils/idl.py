@@ -47,9 +47,9 @@ class oilsIDLParser(object):
             Namespace is ignored for now.. 
             not sure if minidom has namespace support.
             """
-        for (k, v) in node.attributes.items():
-            if k == name:
-                return v
+        attr = node.attributes.get(name)
+        if attr:
+            return attr.nodeValue
         return None
 
     def parseIDL(self):
