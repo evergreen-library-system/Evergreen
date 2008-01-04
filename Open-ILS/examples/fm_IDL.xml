@@ -2435,7 +2435,7 @@
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqfund"/>
-			<link field="origin_currency" reltype="has_a" key="code" map="" class="acqct"/>
+			<link field="origin_currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 		</links>
 	</class>
 
