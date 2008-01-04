@@ -95,6 +95,11 @@ class oilsIDLParser(object):
         keys = []
         idlobj = self.IDLObject[cls]
 
+        idlobj['field_meta'] = {
+            'primary': self.__getAttr(fields, 'oils_persist:primary', OILS_NS_PERSIST),
+            'sequence': self.__getAttr(fields, 'oils_persist:sequence', OILS_NS_PERSIST)
+        }
+
         for field in fields.childNodes:
             if field.nodeType == field.ELEMENT_NODE:
                 keys.append(None)
@@ -113,9 +118,10 @@ class oilsIDLParser(object):
                     raise e
 
                 virtual = self.__getAttr(field, 'oils_persist:virtual', OILS_NS_PERSIST)
-                obj['rpt_label']    = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
-                obj['rpt_dtype']    = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
-                obj['rpt_select']   = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
+                obj['rpt_label'] = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
+                obj['rpt_dtype'] = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
+                obj['rpt_select'] = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
+                obj['primitive'] = self.__getAttr(field, 'oils_persist:primitive', OILS_NS_PERSIST)
 
                 if virtual == string.lower('true'):
                     obj['virtual']  = True
