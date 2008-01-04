@@ -254,8 +254,8 @@ def oilsLoadCSEditor():
     for k, fm in obj.iteritems():
         for action in ACTIONS:
 
-            fmname = fm['fieldmapper'].replace('::', '_')
-            type = fm['fieldmapper'].replace('::', '.')
+            fmname = fm.fieldmapper.replace('::', '_')
+            type = fm.fieldmapper.replace('::', '.')
             name = "%s_%s" % (action, fmname)
 
             s = 'def %s(self, arg, **options):\n' % name
