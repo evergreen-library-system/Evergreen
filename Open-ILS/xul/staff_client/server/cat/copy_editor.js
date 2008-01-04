@@ -510,15 +510,15 @@ g.get_acpl_list = function() {
 				if (! g.map_acn[ cn_id ]) {
 					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
 				}
-                var consider_lib = g.map_acn[ cn_id ].owning_lib();
-                if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
+                var consider_lib = String( g.map_acn[ cn_id ].owning_lib() );
+                if ( libs.indexOf( consider_lib ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
 			}
 		}
 		if (g.callnumbers) {
 			for (var i in g.callnumbers) {
                 var consider_lib = g.callnumbers[i].owning_lib;
                 if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
-				if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
+				if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( String( consider_lib ) ); }
 			}
 		}
 		JSAN.use('util.fm_utils');
@@ -530,7 +530,8 @@ g.get_acpl_list = function() {
 			var acpl_list = get(ancestor, ancestors);
             if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
                 if (acpl_list[i] != null) {
-                    temp_acpl_list.push(acpl_list[i]);
+                    var consider_acpl = String( typeof acpl_list[i] == 'object' ? acpl_list[i].id() : acpl_list[i] );
+                    if ( temp_acpl_list.indexOf( consider_acpl ) > -1 ) { /* already in list */ } else { temp_acpl_list.push(consider_acpl); }
                 }
             }
 		}
@@ -542,7 +543,7 @@ g.get_acpl_list = function() {
         for (var i = 0; i < g.copies.length; i++) {
             var consider_lib = g.copies[i].circ_lib();
             if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
-			if ( circ_libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { circ_libs.push( consider_lib ); }
+			if ( circ_libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { circ_libs.push( String( consider_lib ) ); }
         }
 
         if (circ_libs.length > 0) {
@@ -552,19 +553,15 @@ g.get_acpl_list = function() {
     		if (circ_ancestor) {
     		    var circ_ancestors = util.fm_utils.find_common_aou_ancestors( circ_libs );
     			var circ_acpl_list = get(circ_ancestor, circ_ancestors);
-                var flat_acpl_list = util.functional.map_list( temp_acpl_list, function(o){return o.id();} );
                 for (var i = 0; i < circ_acpl_list.length; i++) {
-                    var consider_acpl = circ_acpl_list[i].id();
-                    if ( flat_acpl_list.indexOf( String( consider_acpl ) ) > -1 ) { 
-                        /* already in list */ 
-                    } else { 
-                        if (circ_acpl_list[i] != null) temp_acpl_list.push( circ_acpl_list[i] ); 
+                    if (circ_acpl_list[i] != null) {
+                        var consider_acpl = String( typeof circ_acpl_list[i] == 'object' ? circ_acpl_list[i].id() : circ_acpl_list[i] );
+                        if ( temp_acpl_list.indexOf( consider_acpl ) > -1 ) { /* already in list */ } else { temp_acpl_list.push( consider_acpl ); }
                     }
                 }
             }
         }
-
-        return temp_acpl_list;
+        return util.functional.map_list( temp_acpl_list, function(i) { return g.data.hash.acpl[i]; } );
 	
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('get_acpl_list',E);
