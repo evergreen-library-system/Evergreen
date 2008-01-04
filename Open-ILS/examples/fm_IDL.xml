@@ -342,6 +342,7 @@
 			<field name="marc" oils_obj:array_position="13" oils_persist:virtual="false" />
 			<field name="source" oils_obj:array_position="14" oils_persist:virtual="false" />
 			<field name="fixed_fields" oils_obj:array_position="15" oils_persist:virtual="true" />
+			<field name="notes" oils_obj:array_position="16" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -454,6 +455,7 @@
 			<field reporter:label="Call Number Label" name="label" oils_obj:array_position="10" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Owning Library" name="owning_lib" oils_obj:array_position="11" oils_persist:virtual="false"  reporter:datatype="org_unit"/>
 			<field reporter:label="Bib Record" name="record" oils_obj:array_position="12" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field reporter:label="Notes" name="notes" oils_obj:array_position="13" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -696,6 +698,9 @@
 			<field reporter:label="Is Deleted" name="deleted" oils_obj:array_position="51" oils_persist:virtual="false" reporter:datatype="bool"/>
 			<field reporter:label="User Notes" name="notes" oils_obj:array_position="52" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Demographic Info" name="demographic" oils_obj:array_position="53" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Billable Transactions" name="billable_transactions" oils_obj:array_position="54" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Checkins" name="checkins" oils_obj:array_position="55" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulations Performed as Staff" name="performed_circulations" oils_obj:array_position="56" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="demographic" reltype="might_have" key="id" map="" class="rud"/>
@@ -1284,6 +1289,13 @@
 			<field reporter:label="Email Address" name="email" oils_obj:array_position="13" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Phone Number" name="phone" oils_obj:array_position="14" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" oils_obj:array_position="15" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field reporter:label="Users" name="users" oils_obj:array_position="16" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Closed Dates" name="closed_dates" oils_obj:array_position="17" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Circulations" name="circulations" oils_obj:array_position="18" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Settings" name="settings" oils_obj:array_position="19" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Addresses" name="addresses" oils_obj:array_position="20" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Checkins" name="checkins" oils_obj:array_position="21" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Workstations" name="workstations" oils_obj:array_position="22" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="billing_address" reltype="has_a" key="id" map="" class="aoa"/>
@@ -1796,6 +1808,7 @@
 			<field reporter:label="Copy Notes" name="notes" oils_obj:array_position="31" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_obj:array_position="32" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_obj:array_position="33" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Holds" name="holds" oils_obj:array_position="34" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -2418,7 +2431,7 @@
 			<field reporter:label="Personal Name Subjects (normalized)" name="name_subject" oils_obj:array_position="22" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="Corporate Name Subjects (normalized)" name="corporate_subject" oils_obj:array_position="23" oils_persist:virtual="false" reporter:datatype="text"/>
 			<field reporter:label="External URI List (normalized)" name="external_uri" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="text"/>
-			<field reporter:label="Full Bibliographic record" name="biblo_record" oils_obj:array_position="25" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Full Bibliographic record" name="biblio_record" oils_obj:array_position="25" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
