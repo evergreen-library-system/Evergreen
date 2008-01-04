@@ -1,3 +1,17 @@
+"""
+Parses an Evergreen fieldmapper IDL file and builds a global registry of
+objects representing that IDL.
+
+Typical usage:
+
+>>> import osrf.system
+>>> import oils.utils.idl
+>>> osrf.system.connect('/openils/conf/opensrf_core.xml', 'config.opensrf')
+>>> oils.utils.idl.oilsParseIDL()
+>>> # 'bre' is a network registry hint, or class ID in the IDL file
+... print oils.utils.idl.oilsGetIDLParser().IDLObject['bre']['tablename']
+biblio.record_entry
+"""
 import osrf.net_obj
 import osrf.log
 import osrf.set
@@ -33,9 +47,9 @@ class oilsIDLParser(object):
             Namespace is ignored for now.. 
             not sure if minidom has namespace support.
             """
-        for (k, v) in node.attributes.items():
-            if k == name:
-                return v
+        attr = node.attributes.get(name)
+        if attr:
+            return attr.nodeValue
         return None
 
     def parseIDL(self):
@@ -81,6 +95,11 @@ class oilsIDLParser(object):
         keys = []
         idlobj = self.IDLObject[cls]
 
+        idlobj['field_meta'] = {
+            'primary': self.__getAttr(fields, 'oils_persist:primary', OILS_NS_PERSIST),
+            'sequence': self.__getAttr(fields, 'oils_persist:sequence', OILS_NS_PERSIST)
+        }
+
         for field in fields.childNodes:
             if field.nodeType == field.ELEMENT_NODE:
                 keys.append(None)
@@ -99,9 +118,10 @@ class oilsIDLParser(object):
                     raise e
 
                 virtual = self.__getAttr(field, 'oils_persist:virtual', OILS_NS_PERSIST)
-                obj['rpt_label']    = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
-                obj['rpt_dtype']    = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
-                obj['rpt_select']   = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
+                obj['rpt_label'] = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER)
+                obj['rpt_dtype'] = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER)
+                obj['rpt_select'] = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER)
+                obj['primitive'] = self.__getAttr(field, 'oils_persist:primitive', OILS_NS_PERSIST)
 
                 if virtual == string.lower('true'):
                     obj['virtual']  = True
