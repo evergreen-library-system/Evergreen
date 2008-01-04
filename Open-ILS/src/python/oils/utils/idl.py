@@ -164,8 +164,8 @@ class IDLClass(object):
             return [f for f in self.fields if f.name == field_name][0]
         except:
             msg = "No field '%s' in IDL class '%s'" % (field_name, self.name)
-            #osrf.log.log_error(msg)
-            raise IDLException(msg)
+            osrf.log.log_error(msg)
+            #raise IDLException(msg)
 
 class IDLField(object):
     def __init__(self, idl_class, **kwargs):
