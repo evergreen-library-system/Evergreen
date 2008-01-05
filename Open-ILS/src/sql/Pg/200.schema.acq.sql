@@ -56,12 +56,14 @@ CREATE TABLE acq.fund_share_map (
 
 CREATE TABLE acq.fund_credit (
 	id	SERIAL	PRIMARY KEY,
+    fund    INT     NOT NULL REFERENCES acq.fund (id),
 	amount	NUMERIC	NOT NULL,
 	note	TEXT
 );
 
 CREATE TABLE acq.fund_debit (
 	id			SERIAL	PRIMARY KEY,
+    fund    INT     NOT NULL REFERENCES acq.fund (id),
 	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
 	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
 	amount			NUMERIC	NOT NULL,
