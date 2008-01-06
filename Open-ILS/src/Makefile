@@ -138,11 +138,11 @@ perl-install:
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
 
+# -----------------------------------------------------------------------------------
+
 python-install:
 	@echo $@
-	@echo "Installing Python modules to $(PYTHONDIR)"
-	mkdir -p $(PYTHONDIR)
-	cp -r python/* $(PYTHONDIR)
+	make -C python install
 
 # -----------------------------------------------------------------------------------
 
@@ -210,4 +210,5 @@ clean:
 	make -C extras clean
 	make -C apachemods clean
 	make -C c-apps clean
+	make -C python clean
 
