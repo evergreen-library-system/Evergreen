@@ -7,41 +7,62 @@ Typical usage:
 >>> import osrf.system
 >>> import oils.utils.idl
 >>> osrf.system.connect('/openils/conf/opensrf_core.xml', 'config.opensrf')
->>> oils.utils.idl.oilsParseIDL()
+>>> oils.utils.idl.IDLParser.parse()
 >>> # 'bre' is a network registry hint, or class ID in the IDL file
-... print oils.utils.idl.oilsGetIDLParser().IDLObject['bre'].tablename
+... print oils.utils.idl.IDLParser.get_class('bre').tablename
 biblio.record_entry
 """
-import osrf.net_obj
-import osrf.log, osrf.set, osrf.ex
-
 import sys, string, xml.dom.minidom
+import osrf.net_obj, osrf.log, osrf.set, osrf.ex
 from oils.const import OILS_NS_OBJ, OILS_NS_PERSIST, OILS_NS_REPORTER
 
-__global_parser = None
+class IDLException(osrf.ex.OSRFException):
+    pass
 
-def oilsParseIDL():
-    global __global_parser
-    if __global_parser: return # no need to re-parse the IDL
-    idlParser = oilsIDLParser();
-    idlParser.setIDL(osrf.set.get('IDL'))
-    idlParser.parseIDL()
-    __global_parser = idlParser
+class IDLParser(object):
 
-def oilsGetIDLParser():
-    global __global_parser
-    return __global_parser
+    # ------------------------------------------------------------
+    # static methods and variables for managing a global parser
+    # ------------------------------------------------------------
+    _global_parser = None
 
-class oilsIDLParser(object):
+    @staticmethod
+    def get_parser():
+        ''' Returns the global IDL parser object '''
+        if IDLParser._global_parser is None:
+            raise IDLException("IDL has not been parsed")
+        return IDLParser._global_parser
+
+    @staticmethod
+    def parse():
+        ''' Finds the path to the IDL file from the OpenSRF settings 
+            server, parses the IDL file, and uses the parsed data as
+            the global IDL repository '''
+        if IDLParser._global_parser is None:
+            parser = IDLParser()
+            parser.set_IDL(osrf.set.get('IDL'))
+            parser.parse_IDL()
+            IDLParser._global_parser = parser
+
+    @staticmethod
+    def get_class(class_name):
+        ''' Returns the IDLClass object with the given 
+            network hint / IDL class name.
+            @param The class ID from the IDL
+            '''
+        return IDLParser.get_parser().IDLObject[class_name]
+
+    # ------------------------------------------------------------
+    # instance methods
+    # ------------------------------------------------------------
 
     def __init__(self):
         self.IDLObject = {}
 
-    def setIDL(self, file):
-        osrf.log.log_info("setting IDL file to " + str(file))
+    def set_IDL(self, file):
         self.idlFile = file
 
-    def __getAttr(self, node, name, ns=None):
+    def _get_attr(self, node, name, ns=None):
         """ Find the attribute value on a given node 
             Namespace is ignored for now.. 
             not sure if minidom has namespace support.
@@ -51,8 +72,8 @@ class oilsIDLParser(object):
             return attr.nodeValue
         return None
 
-    def parseIDL(self):
-        """Parses the IDL file and builds class objects"""
+    def parse_IDL(self):
+        """Parses the IDL file and builds class, field, and link objects"""
 
         doc = xml.dom.minidom.parse(self.idlFile)
         root = doc.childNodes[0]
@@ -67,12 +88,12 @@ class oilsIDLParser(object):
                 # -----------------------------------------------------------------------
 
                 obj = IDLClass(
-                    self.__getAttr(child, 'id'),
-                    controller = self.__getAttr(child, 'controller'),
-                    fieldmapper = self.__getAttr(child, 'oils_obj:fieldmapper', OILS_NS_OBJ),
-                    virtual = self.__getAttr(child, 'oils_persist:virtual', OILS_NS_PERSIST),
-                    label = self.__getAttr(child, 'reporter:label', OILS_NS_REPORTER),
-                    tablename = self.__getAttr(child, 'oils_persist:tablename', OILS_NS_REPORTER),
+                    self._get_attr(child, 'id'),
+                    controller = self._get_attr(child, 'controller'),
+                    fieldmapper = self._get_attr(child, 'oils_obj:fieldmapper', OILS_NS_OBJ),
+                    virtual = self._get_attr(child, 'oils_persist:virtual', OILS_NS_PERSIST),
+                    label = self._get_attr(child, 'reporter:label', OILS_NS_REPORTER),
+                    tablename = self._get_attr(child, 'oils_persist:tablename', OILS_NS_REPORTER),
                 )
 
 
@@ -80,7 +101,8 @@ class oilsIDLParser(object):
 
                 fields = [f for f in child.childNodes if f.nodeName == 'fields']
                 links = [f for f in child.childNodes if f.nodeName == 'links']
-                keys = self.parseFields(obj, fields[0])
+
+                keys = self.parse_fields(obj, fields[0])
                 if len(links) > 0:
                     self.parse_links(obj, links[0])
 
@@ -93,21 +115,21 @@ class oilsIDLParser(object):
 
         for link in [l for l in links.childNodes if l.nodeName == 'link']:
             obj = IDLLink(
-                field = idlobj.get_field(self.__getAttr(link, 'field')),
-                rel_type = self.__getAttr(link, 'rel_type'),
-                key = self.__getAttr(link, 'key'),
-                map = self.__getAttr(link, 'map')
+                field = idlobj.get_field(self._get_attr(link, 'field')),
+                rel_type = self._get_attr(link, 'rel_type'),
+                key = self._get_attr(link, 'key'),
+                map = self._get_attr(link, 'map')
             )
             idlobj.links.append(obj)
 
 
-    def parseFields(self, idlobj, fields):
+    def parse_fields(self, idlobj, fields):
         """Takes the fields node and parses the included field elements"""
 
         keys = []
 
-        idlobj.primary = self.__getAttr(fields, 'oils_persist:primary', OILS_NS_PERSIST)
-        idlobj.sequence =  self.__getAttr(fields, 'oils_persist:sequence', OILS_NS_PERSIST)
+        idlobj.primary = self._get_attr(fields, 'oils_persist:primary', OILS_NS_PERSIST)
+        idlobj.sequence =  self._get_attr(fields, 'oils_persist:sequence', OILS_NS_PERSIST)
 
         # pre-flesh the array of keys to accomodate random index insertions
         for field in fields.childNodes:
@@ -118,19 +140,19 @@ class oilsIDLParser(object):
 
             obj = IDLField(
                 idlobj,
-                name = self.__getAttr(field, 'name'),
-                position = int(self.__getAttr(field, 'oils_obj:array_position', OILS_NS_OBJ)),
-                virtual = self.__getAttr(field, 'oils_persist:virtual', OILS_NS_PERSIST),
-                label = self.__getAttr(field, 'reporter:label', OILS_NS_REPORTER),
-                rpt_datatype = self.__getAttr(field, 'reporter:datatype', OILS_NS_REPORTER),
-                rpt_select = self.__getAttr(field, 'reporter:selector', OILS_NS_REPORTER),
-                primitive = self.__getAttr(field, 'oils_persist:primitive', OILS_NS_PERSIST)
+                name = self._get_attr(field, 'name'),
+                position = int(self._get_attr(field, 'oils_obj:array_position', OILS_NS_OBJ)),
+                virtual = self._get_attr(field, 'oils_persist:virtual', OILS_NS_PERSIST),
+                label = self._get_attr(field, 'reporter:label', OILS_NS_REPORTER),
+                rpt_datatype = self._get_attr(field, 'reporter:datatype', OILS_NS_REPORTER),
+                rpt_select = self._get_attr(field, 'reporter:selector', OILS_NS_REPORTER),
+                primitive = self._get_attr(field, 'oils_persist:primitive', OILS_NS_PERSIST)
             )
 
             try:
                 keys[obj.position] = obj.name
             except Exception, e:
-                osrf.log.log_error("parseFields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
+                osrf.log.log_error("parse_fields(): position out of range.  pos=%d : key-size=%d" % (obj.position, len(keys)))
                 raise e
 
             idlobj.fields.append(obj)
@@ -138,8 +160,6 @@ class oilsIDLParser(object):
         return keys
 
 
-class IDLException(osrf.ex.OSRFException):
-    pass
 
 class IDLClass(object):
     def __init__(self, name, **kwargs):

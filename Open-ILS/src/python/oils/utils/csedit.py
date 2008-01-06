@@ -15,7 +15,7 @@
 
 from osrf.log import *
 from osrf.json import *
-from oils.utils.idl import oilsGetIDLParser
+from oils.utils.idl import IDLParser
 from osrf.ses import ClientSession
 from oils.const import *
 import re
@@ -249,7 +249,7 @@ class CSEditor(object):
 # Creates a class method for each action on each type of fieldmapper object
 # -------------------------------------------------------------------------
 def oilsLoadCSEditor():
-    obj = oilsGetIDLParser().IDLObject
+    obj = IDLParser.get_parser().IDLObject
 
     for k, fm in obj.iteritems():
         for action in ACTIONS:
