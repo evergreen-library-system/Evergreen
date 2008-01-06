@@ -21,39 +21,40 @@ Context.applySubContext('adm', AdminContext)
 
 class AdminController(BaseController):
 
-    def init(self, type, id=None):
+    def init(self, obj_type, obj_id=None):
         r = RequestMgr()
-        r.ctx.adm.object_class = type
-        meta = r.ctx.adm.object_meta = oils.utils.idl.oilsGetIDLParser().IDLObject[type]
+        r.ctx.adm.object_class = obj_type
+        meta = r.ctx.adm.object_meta = oils.utils.idl.IDLParser.get_class(obj_type)
 
-        if id is not None:
+        if obj_id is not None:
             r.ctx.adm.object = osrf.ses.AtomicRequest(
                 'open-ils.cstore',
                 'open-ils.cstore.direct.%s.retrieve' % 
-                    meta['fieldmapper'].replace('::', '.'), id)
+                    meta.fieldmapper.replace('::', '.'), obj_id)
         return r
 
-    def test(self, type, id):
-        r = self.init()
-        return r.render('dashboard.html')
+    def index(self):
+        r = RequestMgr()
+        return r.render('admin/index.html')
 
-    def view(self, type, id):
-        r = self.init(type, id)
+    def view(self, **kwargs):
+        r = self.init(kwargs['type'], kwargs['id'])
+        r.ctx.adm.mode = 'view'
         return r.render('admin/object.html')
 
-    def update(self, type, id):
-        r = self.init(type, id)
-        c.oils.adm.mode = 'update'
+    def update(self, **kwargs):
+        r = self.init(kwargs['type'], kwargs['id'])
+        r.ctx.adm.mode = 'update'
         return r.render('admin/object.html')
 
-    def create(self, type):
-        r = self.init(type, id)
-        c.oils.adm.mode = 'create'
+    def create(self, **kwargs):
+        r = self.init(kwargs['type'])
+        r.ctx.adm.mode = 'create'
         return r.render('admin/object.html')
 
-    def delete(self, type, id):
-        r = self.init(type, id)
-        c.oils.adm.mode = 'delete'
+    def delete(self, **kwargs):
+        r = self.init(kwargs['type'], kwargs['id'])
+        r.ctx.adm.mode = 'delete'
         return r.render('admin/object.html')
 
         

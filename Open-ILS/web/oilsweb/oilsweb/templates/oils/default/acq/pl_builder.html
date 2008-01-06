@@ -1,5 +1,5 @@
 <%inherit file='base.html'/>
-<%def name="block_title()">${_('Evergreen Acquisitions Results')}</%def>
+<%def name="page_title()">${_('Evergreen Acquisitions Results')}</%def>
 <%def name="block_content()">
     <form action='create_picklist' method='GET'>
     <input type='hidden' name='${c.oils.acq.search_cache_key_.cgi_name}' value='${c.oils.acq.search_cache_key}'/>

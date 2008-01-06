@@ -17,7 +17,7 @@ class CoreContext(SubContext):
         self.ac_prefix = ContextItem() # added content prefix
         self.skin = ContextItem() # web skin
         self.theme = ContextItem() # web theme
-        self.authtoken = ContextItem(cgi_name='ses', cookie=True) # authtoken string
+        self.authtoken = ContextItem(cgi_name='ses', session=True) # authtoken string
         self.user = ContextItem() # logged in user object
         self.workstation = ContextItem() # workstation object
 

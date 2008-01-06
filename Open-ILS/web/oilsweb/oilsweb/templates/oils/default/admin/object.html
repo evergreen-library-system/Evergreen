@@ -1,8 +1,10 @@
+<!-- vim:set filetype=mako: -->
 <%inherit file='base.html'/>
+<%namespace name='widget' file='widgets.html'/>
 
-<%def name="block_title()">${_('Evergreen Admin')}</%def>
+<%def name="page_title()">${_('Evergreen Admin')}</%def>
 <%def name="block_content()">
-    <div id='oils-admin-object-lable'>${c.oils.adm.object_meta['rpt_label']}</div>
+    <div id='oils-admin-object-lable'>${c.oils.adm.object_meta.label}</div>
     % if c.oils.adm.mode == 'delete':
     <div>
         <%
@@ -12,19 +14,21 @@
         ${string}
     </div>
     % else:
+    <form action='update_object' method='POST'>
     <table id='oils-admin-object-table'>
-        % for fieldmeta in [ f for f in c.oils.adm.object_meta['fields'] if not f['virtual']]:
+        % for fieldmeta in [ f for f in c.oils.adm.object_meta.fields if not f.virtual]:
             <tr>
-                <td>${fieldmeta['rpt_label']}</td>
+                <td>${fieldmeta.label}</td>
                 <td>
                     % if c.oils.adm.mode == 'update':
-                        <input type='text' size='36' value='${unicode(getattr(c.oils.adm.object, fieldmeta["name"])())}'/>
+                        (${fieldmeta.rpt_datatype}) 
+                        ${widget.load(fieldmeta.rpt_datatype,fieldmeta.name, getattr(c.oils.adm.object, fieldmeta.name)())}
                     % else:
                         % if c.oils.adm.mode == 'create':
                             <input type='text'size='36' />
                         % else:
                             % if c.oils.adm.mode == 'view':
-                                <span>${unicode(getattr(c.oils.adm.object, fieldmeta['name'])())}</span>
+                                <span>${unicode(getattr(c.oils.adm.object, fieldmeta.name)())}</span>
                             % endif
                         % endif
                     % endif
@@ -32,6 +36,7 @@
             </tr>
         % endfor
     </table>
+    </form>
     % endif
 </%def>
 

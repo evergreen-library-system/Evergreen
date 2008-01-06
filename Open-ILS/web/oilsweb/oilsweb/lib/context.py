@@ -15,7 +15,7 @@ class ContextItem(object):
         self.default_value = kwargs.get('default_value')
         self.qname = None
         self.multi = kwargs.get('multi')
-        self.cookie = kwargs.get('cookie')
+        self.session = kwargs.get('session')
 
 class SubContext(object):
     ''' A SubContext is a class-specific context object that lives inside the global context object '''
@@ -42,7 +42,7 @@ class Context(object):
 
         q = ''
         for f in self._fields:
-            if f.cgi_name and not f.cookie:
+            if f.cgi_name and not f.session:
                 val = getattr(getattr(self, f.app), f.name)
                 if val != f.default_value:
                     if isinstance(val, list):
@@ -55,12 +55,13 @@ class Context(object):
 
         return q[:-1] # strip the trailing &
 
-    def apply_cookies(self):
+    def apply_session_vars(self):
+        from oilsweb.lib.base import session
         for f in self._fields:
-            if f.cgi_name and f.cookie:
+            if f.cgi_name and f.session:
                 val = getattr(getattr(self, f.app), f.name)
-                if isinstance(val, str) or isinstance(val, unicode):
-                    self._resp.set_cookie(f.cgi_name, val) # config var for timeout?
+                if val is not None and val != f.default_value:
+                    session[f.cgi_name] =  val
 
 
     @staticmethod
@@ -76,6 +77,7 @@ class Context(object):
     @staticmethod
     def init(req, resp):
         global _context, _subContexts
+        from oilsweb.lib.base import session
         c = _context = Context()
         c._req = req
         c._resp = resp
@@ -91,6 +93,11 @@ class Context(object):
                 item.name = name
                 c._fields.append(item)
 
+                # -------------------------------------------------------------------
+                # Load the cgi/session data.  First try the URL params, then try the
+                # session cache, and finally see if the data is in a cookie.  If 
+                # no data is found, use the default
+                # -------------------------------------------------------------------
                 set = False
                 if item.cgi_name:
                     if item.cgi_name in req.params:
@@ -100,9 +107,14 @@ class Context(object):
                             setattr(getattr(c, app), name, req.params[item.cgi_name])
                         set = True
                     else:
-                        if item.cookie and item.cgi_name in req.cookies:
-                            setattr(getattr(c, app), name, req.cookies[item.cgi_name])
-                            set = True
+                        if item.session:
+                            if item.cgi_name in session:
+                                setattr(getattr(c, app), name, session[item.cgi_name])
+                                set = True
+                            else:
+                                if item.cgi_name in req.cookies:
+                                    setattr(getattr(c, app), name, req.cookies[item.cgi_name])
+                                    set = True
 
                 if not set:
                     setattr(getattr(c, app), name, item.default_value)

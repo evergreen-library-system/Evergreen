@@ -25,8 +25,8 @@ class RequestMgr(object):
     def finalize(self):
         ''' Perform any last minute cleanup just prior to sending the result '''
         if not self.finalized:
+            self.ctx.apply_session_vars()
             self.session.save()
-            self.ctx.apply_cookies()
             self.pylons_context.oils = self.ctx
             self.finalized = True
         
