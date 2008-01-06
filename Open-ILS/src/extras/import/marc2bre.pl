@@ -261,7 +261,7 @@ sub preprocess {
 	}
 
 	if ($id && exists $dontuse_id{$id}) {
-		warn "\n!!! ID $id is already in use\n";
+		warn "\n!!! TCN $id is already in use.  Using the record ID ($recid) as a system-generated TCN.\n";
 		$id = '';
 	}
 
