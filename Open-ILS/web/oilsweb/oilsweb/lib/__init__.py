@@ -20,6 +20,7 @@ class CoreContext(SubContext):
         self.authtoken = ContextItem(cgi_name='ses', session=True) # authtoken string
         self.user = ContextItem() # logged in user object
         self.workstation = ContextItem() # workstation object
+        self.page = ContextItem() # the current page
 
     def postinit(self):
         import pylons.config

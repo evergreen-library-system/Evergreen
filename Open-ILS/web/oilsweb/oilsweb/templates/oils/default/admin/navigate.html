@@ -1,7 +1,7 @@
 <span>
     <a href='${c.oils.adm.prefix}/search/${c.oils.adm.object_class}'>${_('Search')}</a>
 </span>
-% if c.oils.adm.mode != 'create':
+% if c.oils.adm.mode != 'create' and c.oils.core.page != 'admin/index.html':
     <span>
         <a href='${c.oils.adm.prefix}/create/${c.oils.adm.object_class}'>${_('Create')}</a>
     </span>
