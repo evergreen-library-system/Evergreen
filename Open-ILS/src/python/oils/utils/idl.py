@@ -155,7 +155,7 @@ class IDLClass(object):
         self.links = []
 
         if self.virtual and self.virtual.lower() == 'true':
-            self.virtul = True
+            self.virtual = True
         else:
             self.virtual = False
 
@@ -182,7 +182,7 @@ class IDLField(object):
         self.position = kwargs.get('position')
 
         if self.virtual and self.virtual.lower() == 'true':
-            self.virtul = True
+            self.virtual = True
         else:
             self.virtual = False
 
