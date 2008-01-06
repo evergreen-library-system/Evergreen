@@ -10,13 +10,13 @@ from oilsweb.lib.context import Context, SubContext, ContextItem
 import oils.utils.csedit
 import osrf.log
 import osrf.system
-from oils.utils.idl import oilsParseIDL
+from oils.utils.idl import IDLParser
 from oils.utils.csedit import oilsLoadCSEditor
 
 def oilsConnect(config, configContext):
 	"""Connects to the opensrf network,  parses the IDL file, and loads the CSEditor"""
 	osrf.system.connect(config, configContext)
-	oilsParseIDL()
+	IDLParser.parse()
 	oilsLoadCSEditor()
 
 log = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class AcqAdminController(BaseController):
         c.oils = oilsweb.lib.context.Context.init(request, response)
         c.request = request
         oilsConnect('/openils/conf/opensrf_core.xml', 'config.opensrf')
-        c.idl = oils.utils.idl.oilsGetIDLParser()
+        c.idl = oils.utils.idl.IDLParser.get_parser()
         c.csedit = oils.utils.csedit.CSEditor()
         c.registry = osrf.net_obj.OBJECT_REGISTRY
         return render('oils/%s/acq/admin.html' % c.oils.core.skin)
