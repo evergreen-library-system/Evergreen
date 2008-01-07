@@ -8,7 +8,7 @@ export INCDIR = "$(INCLUDEDIR)/openils/"
 
 export STAFF_CLIENT_BUILD_ID = `/bin/cat ../xul/staff_client/build/BUILD_ID`
 
-all:  c_apps client-xul mod_xmlent
+all:  c_apps client-xul mod_xmlent python-build
 
 install:	perl-install python-install web-install server-xul string-templates-install xsl-install c_apps-install circ_rules-install offline-install storage-bootstrap cgi-bootstrap
 
@@ -137,6 +137,12 @@ perl-install:
 	cp ../examples/lib_ips.txt.example $(ETCDIR)
 	mkdir -p $(TEMPLATEDIR)
 	cp -r templates/marc $(TEMPLATEDIR)
+
+# ------------------------------------------------------------------------------
+
+python-build:
+	@echo $@
+	make -C python build
 
 # -----------------------------------------------------------------------------------
 

@@ -139,9 +139,13 @@ function runInstall {
 				;;
 
 			"openils_core" )
-				if building; then $MAKE -C "$OPENILSDIR" "c_apps"; fi;
+				if building; then 
+					$MAKE -C "$OPENILSDIR" "c_apps";
+					$MAKE -C "$OPENILSDIR" "python-build";
+				fi;
 				if installing; then 
 					$MAKE -C "$OPENILSDIR" "perl-install"; 
+					$MAKE -C "$OPENILSDIR" "python-install"; 
 					$MAKE -C "$OPENILSDIR" "string-templates-install"; 
 					$MAKE -C "$OPENILSDIR" "xsl-install"; 
 					$MAKE -C "$OPENILSDIR" "c_apps-install"; 
