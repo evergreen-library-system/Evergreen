@@ -57,18 +57,51 @@ CREATE TABLE acq.fund_share_map (
 
 CREATE TABLE acq.fund_credit (
 	id	SERIAL	PRIMARY KEY,
-    fund    INT     NOT NULL REFERENCES acq.fund (id),
+	fund    INT     NOT NULL REFERENCES acq.fund (id),
 	amount	NUMERIC	NOT NULL,
 	note	TEXT
 );
 
 CREATE TABLE acq.fund_debit (
 	id			SERIAL	PRIMARY KEY,
-    fund    INT     NOT NULL REFERENCES acq.fund (id),
+	fund			INT     NOT NULL REFERENCES acq.fund (id),
 	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
 	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
 	amount			NUMERIC	NOT NULL,
 	encumberance		BOOL	NOT NULL DEFAULT TRUE
+);
+
+CREATE TABLE acq.picklist (
+	id		SERIAL				PRIMARY KEY,
+	owner		INT				NOT NULL REFERENCES actor.usr (id),
+	name		TEXT				NOT NULL,
+	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	CONSTRAINT name_once_per_owner UNIQUE (name,owner)
+);
+
+CREATE TABLE acq.picklist_entry (
+	id		SERIAL	PRIMARY KEY,
+	picklist	INT	NOT NULL REFERENCES acq.picklist (id),
+	marc		TEXT	NOT NULL,
+	marc_title	TEXT,
+	marc_author	TEXT,
+	marc_lanuage	TEXT,
+	marc_pagination	TEXT,
+	marc_isbn	TEXT,
+	marc_issn	TEXT,
+	marc_identifier	TEXT,
+	marc_publisher	TEXT,
+	marc_pubdate	TEXT,
+	marc_edition	TEXT,
+	marc_price	TEXT,
+	marc_currency	TEXT	REFERENCES acq.currency_type (code),
+	eg_bib_id	INT,
+	source_label	TEXT,
+	vendor_price	TEXT,
+	vendor_currency	TEXT	REFERENCES acq.currency_type (code),
+	vendor_avail	INT,
+	vendor_po	TEXT,
+	vendor_identifier	TEXT
 );
 
 CREATE TABLE acq.budget (
