@@ -2413,9 +2413,10 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Fund ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
-			<field reporter:label="Note" name="note" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Credit ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Note" name="note" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqfund"/>
@@ -2427,11 +2428,12 @@
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
 			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
-			<field reporter:label="Fund ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
-			<field reporter:label="Amount" name="amount" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Debit ID" name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
+			<field reporter:label="Fund ID" name="fund" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link" />
 			<field reporter:label="Origin Amount" name="origin_amount" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="money" />
 			<field reporter:label="Origin Currency" name="origin_currency_type" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link" />
-			<field reporter:label="Note" name="note" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="text" />
+			<field reporter:label="Amount" name="amount" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="money" />
+			<field reporter:label="Encumberance" name="encumberance" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqfund"/>
