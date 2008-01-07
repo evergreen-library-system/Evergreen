@@ -357,6 +357,7 @@ sub perm_checked {
 # If this perm at the given org has already been verified, true is returned
 # and the perm is not re-checked
 # -----------------------------------------------------------------------------
+=head
 sub allowed {
 	my( $self, $perm, $org ) = @_;
 	my $uid = $self->requestor->id;
@@ -365,7 +366,41 @@ sub allowed {
 	return 1 if $self->perm_checked($perm, $org); 
 	return $self->checkperm($uid, $org, $perm);
 }
+=cut
 
+my $PERM_QUERY = {
+    select => {
+        au => [ {
+            transform => 'permission.usr_has_perm',
+            alias => 'has_perm',
+            column => 'id',
+            params => []
+        } ]
+    },
+    from => 'au',
+    where => {},
+};
+
+sub allowed {
+	my( $self, $perm, $org ) = @_;
+	my $uid = $self->requestor->id;
+	$org ||= $self->requestor->ws_ou;
+	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
+
+    # fill in the search hash
+    $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
+    $PERM_QUERY->{where}->{id} = $uid;
+
+    return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+
+    # set the perm failure event if the permission check returned false
+	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
+	$self->event($e);
+	return undef;
+
+}
+
+=head
 sub checkperm {
 	my($self, $userid, $org, $perm) = @_;
 	my $s = $U->storagereq(
@@ -379,6 +414,7 @@ sub checkperm {
 
 	return 1;
 }
+=cut
 
 
 
