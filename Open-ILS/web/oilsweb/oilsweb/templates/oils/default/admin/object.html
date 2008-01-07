@@ -25,7 +25,7 @@
                         ${widget.load(fieldmeta.rpt_datatype,fieldmeta.name, getattr(c.oils.adm.object, fieldmeta.name)())}
                     % else:
                         % if c.oils.adm.mode == 'create':
-                            <input type='text'size='36' />
+                            <input type='text' size='36' />
                         % else:
                             % if c.oils.adm.mode == 'view':
                                 <span>${unicode(getattr(c.oils.adm.object, fieldmeta.name)())}</span>
