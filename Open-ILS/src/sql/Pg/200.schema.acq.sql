@@ -9,6 +9,7 @@ CREATE TABLE acq.currency_type (
 	label	TEXT
 );
 
+-- Use the ISO 4217 abbreviations for currency codes
 INSERT INTO acq.currency_type (code, label) VALUES ('USD','US Dollars');
 INSERT INTO acq.currency_type (code, label) VALUES ('CAD','Canadian Dollars');
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
@@ -21,7 +22,7 @@ CREATE TABLE acq.exchange_rate (
 	CONSTRAINT exchange_rate_from_to_once UNIQUE (from_currency,to_currency)
 );
 
-INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAN',1.2);
+INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','CAD',1.2);
 INSERT INTO acq.exchange_rate (from_currency,to_currency,ratio) VALUES ('USD','EUR',0.5);
 
 CREATE TABLE acq.provider (
