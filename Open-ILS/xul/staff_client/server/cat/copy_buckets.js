@@ -390,40 +390,11 @@ cat.copy_buckets.prototype = {
 									}
 								);
 
-								var copies = util.functional.map_list(
-									list,
-									function (acp_id) {
-										return obj.network.simple_request('FM_ACP_RETRIEVE',[acp_id]);
-									}
-								);
-
-								var edit = 0;
-								try {
-									edit = obj.network.request(
-										api.PERM_MULTI_ORG_CHECK.app,
-										api.PERM_MULTI_ORG_CHECK.method,
-										[ 
-											ses(), 
-											obj.data.list.au[0].id(), 
-											util.functional.map_list(
-												copies,
-												function (o) {
-													return o.call_number() == -1 ? o.circ_lib() : obj.network.simple_request('FM_ACN_RETRIEVE',[o.call_number()]).owning_lib();
-												}
-											),
-											copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-										]
-									).length == 0 ? 1 : 0;
-								} catch(E) {
-									obj.error.sdump('D_ERROR','batch permission check: ' + E);
-								}
-
-								JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+								JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 
 								obj.render_pending_copies(); // FIXME -- need a generic refresh for lists
 								setTimeout(
 									function() {
-										JSAN.use('util.widgets'); 
 										util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
 									}, 0
 								);

@@ -1,4 +1,5 @@
 var g = {};
+g.map_acn = {};
 
 var xulG = {};
 
@@ -54,10 +55,47 @@ function my_init() {
 		/* Is the interface an editor or a viewer, single or multi copy, existing copies or new copies? */
 
 		if (xul_param('edit',{'modal_xulG':true}) == '1') { 
-			g.edit = true;
-			document.getElementById('caption').setAttribute('label','Copy Editor'); 
-			document.getElementById('save').setAttribute('hidden','false'); 
-			g.retrieve_templates();
+
+            // Editor desired, but let's check permissions
+			g.edit = false;
+
+            try {
+                var check = g.network.simple_request(
+                    'PERM_MULTI_ORG_CHECK',
+                    [ 
+                        ses(), 
+                        g.data.list.au[0].id(), 
+                        util.functional.map_list(
+                            g.copies,
+                            function (o) {
+                                var lib;
+                                var cn_id = o.call_number();
+                                if (cn_id == -1) {
+                                    lib = o.circ_lib(); // base perms on circ_lib instead of owning_lib if pre-cat
+                                } else {
+                                    if (! g.map_acn[ cn_id ]) {
+                                        g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                                    }
+                                    lib = g.map_acn[ cn_id ].owning_lib();
+                                }
+                                return lib;
+                            }
+                        ),
+                        g.copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+                    ]
+                );
+                g.edit = check.length == 0;
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('batch permission check',E);
+            }
+
+			if (g.edit) {
+                document.getElementById('caption').setAttribute('label','Copy Editor'); 
+    			document.getElementById('save').setAttribute('hidden','false'); 
+    			g.retrieve_templates();
+            } else {
+			    $('top_nav').setAttribute('hidden','true');
+            }
 		} else {
 			$('top_nav').setAttribute('hidden','true');
 		}
@@ -381,7 +419,6 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 /******************************************************************************************************/
 /* Apply an "owning lib" to all the copies being edited.  That is, change and auto-vivicating volumes */
 
-g.map_acn = {};
 g.apply_owning_lib = function(ou_id) {
 	g.error.sdump('D_TRACE','ou_id = ' + ou_id + '\n');
 	for (var i = 0; i < g.copies.length; i++) {

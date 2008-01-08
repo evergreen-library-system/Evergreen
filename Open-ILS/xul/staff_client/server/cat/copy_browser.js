@@ -295,33 +295,7 @@ cat.copy_browser.prototype = {
 										}
 									);
 
-									var edit = 0;
-									try {
-										edit = obj.network.request(
-											api.PERM_MULTI_ORG_CHECK.app,
-											api.PERM_MULTI_ORG_CHECK.method,
-											[ 
-												ses(), 
-												obj.data.list.au[0].id(), 
-												util.functional.map_list(
-													list,
-													function (o) {
-														var o_acp = obj.map_acp[ 'acp_' + o ];
-														if (o_acp.call_number() == -1) {
-															return o_acp.circ_lib();
-														} else {
-															return obj.map_acn[ 'acn_' + o_acp.call_number() ].owning_lib();
-														}
-													}
-												),
-												list.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-											]
-										).length == 0 ? 1 : 0;
-									} catch(E) {
-										obj.error.sdump('D_ERROR','batch permission check: ' + E);
-									}
-
-									JSAN.use('cat.util'); cat.util.spawn_copy_editor(list,edit);
+									JSAN.use('cat.util'); cat.util.spawn_copy_editor( { 'copy_ids' : list, 'edit' : 1 } );
 									obj.refresh_list();
 
 								} catch(E) {

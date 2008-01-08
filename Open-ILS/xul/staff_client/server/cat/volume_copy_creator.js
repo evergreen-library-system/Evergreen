@@ -1,4 +1,6 @@
 const g_max_copies_that_can_be_added_at_a_time_per_volume = 100;
+var g = {};
+
 function my_init() {
 	try {
 
@@ -377,47 +379,25 @@ g.stash_and_close = function() {
 
 		JSAN.use('util.window'); var win = new util.window();
 		if (copies.length > 0) {
-			//g.data.temp_copies = js2JSON(copies); g.data.stash('temp_copies');
-			//g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
-			////g.data.temp_callnumbers = js2JSON(volume_labels); g.data.stash('temp_callnumbers');
-			//g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
-			var my_xulG = win.open(
-				urls.XUL_COPY_EDITOR,
-					//+'?edit=1&handle_update=1&docid='+window.escape(g.doc_id),
-				title,
-				'chrome,modal,resizable',
-				{ 'edit' : 1, 'handle_update' : 1, 'docid' : g.doc_id, 'copies' : copies }
-			);
-			/* FIXME -- need to unique the temp space, and not rely on modalness of window */
-			//g.data.stash_retrieve();
-			//copies = JSON2js( g.data.temp_copies );
-			copies = my_xulG.copies;
-			//g.data.temp_copy_ids = undefined; g.data.stash('temp_copy_ids');
-			//g.data.temp_copies = undefined; g.data.stash('temp_copies');
-			//g.data.temp_callnumbers = undefined; g.data.stash('temp_callnumbers');
-			if (!copies) {
-				alert('Items were not created.');
-				return;
-			} else {
-				try {
-					//case 1706 /* ITEM_BARCODE_EXISTS */ :
-					if (copies.length > 0 && $('print_labels').checked) {
-						JSAN.use('util.functional');
-						JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-						data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
-						data.stash('temp_barcodes_for_labels');
-						var w = win.open(
-							urls.XUL_SPINE_LABEL,
-							'spine_labels',
-							'chrome,resizable,width=750,height=550'
-						);
-					}
-				} catch(E) {
-					g.error.standard_unexpected_error_alert('volume tree update 2',E);
-				}
-
-			}
-		}
+			JSAN.use('cat.util');
+            copies = cat.util.spawn_copy_editor( { 'edit' : 1, 'docid' : g.doc_id, 'copies' : copies });
+            try {
+                //case 1706 /* ITEM_BARCODE_EXISTS */ :
+                if (copies && copies.length > 0 && $('print_labels').checked) {
+                    JSAN.use('util.functional');
+                    JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+                    data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
+                    data.stash('temp_barcodes_for_labels');
+                    var w = win.open(
+                        urls.XUL_SPINE_LABEL,
+                        'spine_labels',
+                        'chrome,resizable,width=750,height=550'
+                    );
+                }
+            } catch(E) {
+                g.error.standard_unexpected_error_alert('volume tree update 2',E);
+            }
+	}
 
 		if (typeof window.refresh == 'function') window.refresh();
 
