@@ -572,7 +572,7 @@ g.get_acpl_list = function() {
 
 		JSAN.use('util.fm_utils');
         var libs = []; for (var i in owning_libs) libs.push(i);
-        if (libs.length > 1) {
+        if (libs.length > 0) {
             var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
             if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
 
