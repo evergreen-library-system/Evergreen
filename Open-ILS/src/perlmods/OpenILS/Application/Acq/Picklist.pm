@@ -18,7 +18,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Creates a new picklist
 		@param authtoken
-		@pararm picklist
+		@param picklist
 	/
 );
 
@@ -40,7 +40,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Updates a picklist
 		@param authtoken
-		@pararm picklist
+		@param picklist
 	/
 );
 
@@ -67,7 +67,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Retrieves a picklist
 		@param authtoken
-		@pararm picklist_id
+		@param picklist_id
         @param flesh Causes the linked picklist_entry objects
             to be appended to the object
 	/
@@ -114,7 +114,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Deletes a picklist
 		@param authtoken
-		@pararm picklist_id
+		@param picklist_id
 	/
 );
 
@@ -145,9 +145,9 @@ __PACKAGE__->register_method(
         Creates a new picklist entry.  This method extracts the bib
         data from the provided MARC XML.
 		@param authtoken
-		@pararm picklist_id
-		@pararm marc_xml
-		@pararm bibid ID of the existing bibliio.record_entry if appropriate
+		@param picklist_id
+		@param marc_xml
+		@param bibid ID of the existing bibliio.record_entry if appropriate
 	/
 );
 
