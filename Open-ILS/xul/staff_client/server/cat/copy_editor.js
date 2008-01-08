@@ -468,6 +468,33 @@ g.populate_alert_message_input = function(tb) {
 	}
 }
 
+/***************************************************************************************************************/
+/* This returns a list of acpl's appropriate for the copies being edited (and caches them in the global stash) */
+
+g.get_acpl_list_for_lib = function(lib_id,but_only_these) {
+    g.data.stash_retrieve();
+    var label = 'acpl_list_for_lib_'+lib_id;
+    if (typeof g.data[label] == 'undefined') {
+        var robj = g.network.simple_request('FM_ACPL_RETRIEVE', [ lib_id ]); // This returns acpl's for all ancestors and descendants as well as the lib
+        if (typeof robj.ilsevent != 'undefined') throw(robj);
+        var temp_list = [];
+        for (var j = 0; j < robj.length; j++) {
+            var my_acpl = robj[j];
+            if (typeof g.data.hash.acpl[ my_acpl.id() ] == 'undefined') {
+                g.data.hash.acpl[ my_acpl.id() ] = my_acpl;
+                g.data.list.acpl.push( my_acpl );
+            }
+            var only_this_lib = my_acpl.owning_lib(); if (!only_this_lib) continue;
+            if (typeof only_this_lib == 'object') only_this_lib = only_this_lib.id();
+            if (but_only_these.indexOf( String( only_this_lib ) ) != -1) { // This filters out some of the libraries (usually the descendants)
+                temp_list.push( my_acpl );
+            }
+        }
+        g.data[label] = temp_list; g.data.stash(label,'hash','list');
+    }
+    return g.data[label];
+}
+
 /******************************************************************************************************/
 /* This returns a list of acpl's appropriate for the copies being edited */
 
@@ -476,95 +503,93 @@ g.get_acpl_list = function() {
 
 		JSAN.use('util.functional');
 
-		function get(lib_id,only_these) {
-            g.data.stash_retrieve();
-			var label = 'acpl_list_for_lib_'+lib_id;
-			if (typeof g.data[label] == 'undefined') {
-				var robj = g.network.simple_request('FM_ACPL_RETRIEVE', [ lib_id ]);
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
-				var temp_list = [];
-				for (var j = 0; j < robj.length; j++) {
-					var my_acpl = robj[j];
-					if (typeof g.data.hash.acpl[ my_acpl.id() ] == 'undefined') {
-						g.data.hash.acpl[ my_acpl.id() ] = my_acpl;
-						g.data.list.acpl.push( my_acpl );
-					}
-                    var only_this_lib = my_acpl.owning_lib(); if (typeof only_this_lib == 'object') only_this_lib = only_this_lib.id();
-					if (only_these.indexOf( String( only_this_lib ) ) != -1) {
-						temp_list.push( my_acpl );
-					}
-				}
-				g.data[label] = temp_list; g.data.stash(label,'hash','list');
-			}
-			return g.data[label];
-		}
+        var my_acpls = {};
 
-        var temp_acpl_list = [];
+        /**************************************/
+        /* get owning libs from call numbers */
 
-        /* find acpl's based on owning_lib */
-
-		var libs = []; 
+		var owning_libs = {}; 
 		for (var i = 0; i < g.copies.length; i++) {
-			var cn_id = g.copies[i].call_number();
+            var callnumber = g.copies[i].call_number();
+            if (!callnumber) continue;
+			var cn_id = typeof callnumber == 'object' ? callnumber.id() : callnumber;
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
 					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
 				}
                 var consider_lib = g.map_acn[ cn_id ].owning_lib();
-                if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
+                if (!consider_lib) continue;
+                owning_libs[ typeof consider_lib == 'object' ? consider_lib.id() : consider_lib ] = true;
 			}
 		}
 		if (g.callnumbers) {
 			for (var i in g.callnumbers) {
                 var consider_lib = g.callnumbers[i].owning_lib;
-                if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
-				if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
+                if (!consider_lib) continue;
+                owning_libs[ typeof consider_lib == 'object' ? consider_lib.id() : consider_lib ] = true;
 			}
 		}
-		JSAN.use('util.fm_utils');
-		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
-		if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
 
-		if (ancestor) {
-		    var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
-			var acpl_list = get(ancestor, ancestors);
-            if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
-                if (acpl_list[i] != null) {
-                    temp_acpl_list.push(acpl_list[i]);
+        /***************************************************************************************************/
+        /* now find the first ancestor they all have in common, get the acpl's for it and higher ancestors */
+
+		JSAN.use('util.fm_utils');
+        var libs = []; for (var i in owning_libs) libs.push(i);
+        if (libs.length > 1) {
+            var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
+            if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
+
+            if (ancestor) {
+                var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
+                var acpl_list = g.get_acpl_list_for_lib(ancestor, ancestors);
+                if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
+                    if (acpl_list[i] != null) {
+                        my_acpls[ typeof acpl_list[i] == 'object' ? acpl_list[i].id() : acpl_list[i] ] = true;
+                    }
                 }
             }
-		}
+        }
         
-        /* find acpl's based on circ_lib */
+        /*****************/
+        /* get circ libs */
 
-        var circ_libs = [];
+        var circ_libs = {};
 
         for (var i = 0; i < g.copies.length; i++) {
             var consider_lib = g.copies[i].circ_lib();
-            if (typeof consider_lib == 'object') consider_lib = consider_lib.id();
-			if ( circ_libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { circ_libs.push( consider_lib ); }
+            if (!consider_lib) continue;
+            circ_libs[ typeof consider_lib == 'object' ? consider_lib.id() : consider_lib ] = true;
         }
 
-        if (circ_libs.length > 0) {
-    		var circ_ancestor = util.fm_utils.find_common_aou_ancestor( circ_libs );
-    		if (typeof circ_ancestor == 'object' && circ_ancestor != null) circ_ancestor = circ_ancestor.id();
+        /***************************************************************************************************/
+        /* now find the first ancestor they all have in common, get the acpl's for it and higher ancestors */
 
-    		if (circ_ancestor) {
-    		    var circ_ancestors = util.fm_utils.find_common_aou_ancestors( circ_libs );
-    			var circ_acpl_list = get(circ_ancestor, circ_ancestors);
-                var flat_acpl_list = util.functional.map_list( temp_acpl_list, function(o){return o.id();} );
-                for (var i = 0; i < circ_acpl_list.length; i++) {
-                    var consider_acpl = circ_acpl_list[i].id();
-                    if ( flat_acpl_list.indexOf( String( consider_acpl ) ) > -1 ) { 
-                        /* already in list */ 
-                    } else { 
-                        if (circ_acpl_list[i] != null) temp_acpl_list.push( circ_acpl_list[i] ); 
+        libs = []; for (var i in circ_libs) libs.push(i);
+        if (libs.length > 0) {
+    		var ancestor = util.fm_utils.find_common_aou_ancestor( libs );
+    		if (typeof ancestor == 'object' && ancestor != null) ancestor = ancestor.id();
+
+    		if (ancestor) {
+    		    var ancestors = util.fm_utils.find_common_aou_ancestors( libs );
+    			var acpl_list = g.get_acpl_list_for_lib(ancestor, ancestors);
+                if (acpl_list) for (var i = 0; i < acpl_list.length; i++) {
+                    if (acpl_list[i] != null) {
+                        my_acpls[ typeof acpl_list[i] == 'object' ? acpl_list[i].id() : acpl_list[i] ] = true;
                     }
                 }
             }
         }
 
-        return temp_acpl_list;
+        var acpl_list = []; for (var i in my_acpls) acpl_list.push( g.data.hash.acpl[ i ] );
+        return acpl_list.sort(
+            function(a,b) {
+                var label_a = g.data.hash.aou[ a.owning_lib() ].shortname() + ' : ' + a.name();
+                var label_b = g.data.hash.aou[ b.owning_lib() ].shortname() + ' : ' + b.name();
+                if (label_a < label_b) return -1;
+                if (label_a > label_b) return 1;
+                return 0;
+            }
+        );
 	
 	} catch(E) {
 		g.error.standard_unexpected_error_alert('get_acpl_list',E);
@@ -1011,7 +1036,7 @@ g.render = function() {
             } catch(E) { alert(E); }
         }
     }
-    g.template_menu.value = g.template_menu.getAttribute('value');
+    if (g.template_menu) g.template_menu.value = g.template_menu.getAttribute('value');
 
 }
 
