@@ -17,7 +17,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Creates a new fund
 		@param auth Authentication token
-		@pararm fund
+		@param fund
 	/
 );
 
@@ -37,7 +37,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Retrieves a fund by ID
 		@param auth Authentication token
-		@pararm fund_id
+		@param fund_id
 	/
 );
 
@@ -56,7 +56,7 @@ __PACKAGE__->register_method(
 	signature => q/
         Retrieves all the funds associated with an org unit
 		@param auth Authentication token
-		@pararm org_id
+		@param org_id
         @param options Hash of options.  Options include "children", 
             which includes the funds for the requested org and
             all descendant orgs.
