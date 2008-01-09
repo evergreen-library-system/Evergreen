@@ -79,7 +79,7 @@ sub retrieve_picklist {
     return $e->die_event unless $e->checkauth;
 
     my $args = ($$options{flesh}) ?  # XXX
-        { flesh => 1, flesh_fields => {XXX => ['entries']} : undef;
+        { flesh => 1, flesh_fields => {XXX => ['entries']}} : undef;
 
     my $picklist = $e->retrieve_acq_picklist($picklist_id, $args)
         or return $e->die_event;
