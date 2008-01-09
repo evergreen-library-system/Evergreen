@@ -38,11 +38,14 @@ sub org_descendants {
 __PACKAGE__->register_method(
 	method => 'create_fund',
 	api_name	=> 'open-ils.acq.fund.create',
-	signature => q/
-        Creates a new fund
-		@param auth Authentication token
-		@param fund
-	/
+	signature => {
+        desc => q/Creates a new fund/,
+        params => [
+            { desc => q/Authentication token/, type => 'string' },
+            { desc => q/Fund object to create/, type => 'object' }
+        ],
+        return => { desc => q/The ID of the new fund/ }
+    }
 );
 
 sub create_fund {
@@ -151,7 +154,7 @@ __PACKAGE__->register_method(
 	method => 'delete_budget',
 	api_name	=> 'open-ils.acq.budget.delete',
 	signature => q/
-        Creates a new budget
+        Deletes a budget
 		@param auth Authentication token
 		@param budget
 	/
@@ -191,9 +194,9 @@ __PACKAGE__->register_method(
 	method => 'retrieve_org_budgets',
 	api_name	=> 'open-ils.acq.budget.org.retrieve',
 	signature => q/
-        Retrieves all the budgets associated with an org unit
-		@param auth Authentication token
-		@param org_id
+        Retrieves all the budgets associated with an org unit 
+		@param auth Authentication token 
+		@param org_id 
         @param options Hash of options.  Options include "children", 
             which includes the budgets for the requested org and
             all descendant orgs.
@@ -211,6 +214,79 @@ sub retrieve_org_budgets {
     my $budgets = $e->search_acq_budget($search) or return $e->event;
 
     return $budgets; 
+}
+
+# ---------------------------------------------------------------
+# Budget Allocations
+# ---------------------------------------------------------------
+
+__PACKAGE__->register_method(
+	method => 'create_budget_alloc',
+	api_name	=> 'open-ils.acq.budget_allocation.create',
+	signature => q/
+        Creates a new budget_allocation
+		@param auth Authentication token
+		@param budget_alloc
+	/
+);
+
+sub create_budget_alloc {
+    my($self, $conn, $auth, $budget_alloc) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->die_event;
+    return $e->die_event unless $e->allowed('CREATE_BUDGET_ALLOCATION', $budget->org);
+
+    $budget_alloc->allocator($e->requestor->id);
+    $e->create_acq_budget_allocation($budget_alloc) or return $e->die_event;
+    $e->commit;
+    return $budget_alloc->id;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'delete_budget_alloc',
+	api_name	=> 'open-ils.acq.budget_allocation.delete',
+	signature => q/
+        Creates a new budget_allocation
+		@param auth Authentication token
+		@param budget_alloc
+	/
+);
+
+sub delete_budget_alloc {
+    my($self, $conn, $auth, $budget_alloc_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $budget_alloc = $e->retrieve_acq_budget_allocation($budget_alloc_id) or return $e->die_event;
+    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_BUDGET_ALLOCATION', $budget->org);
+
+    $e->delete_acq_budget_allocation($budget_alloc) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method => 'retrieve_budget_alloc',
+	api_name	=> 'open-ils.acq.budget_allocation.retrieve',
+	signature => q/
+        Retrieves a budget_allocation by ID
+		@param auth Authentication token
+		@param budget_alloc_id
+	/
+);
+
+sub retrieve_budget_alloc {
+    my($self, $conn, $auth, $budget_alloc_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $budget_alloc = $e->retrieve_acq_budget_allocation($budget_alloc_id) or return $e->event;
+    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_BUDGET_ALLOCATION', $budget->org);
+    return $budget_alloc;
 }
 
 
