@@ -8,6 +8,8 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Const qw/:const/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
+use OpenILS::Application::AppUtils;
+my $U = 'OpenILS::Application::AppUtils';
 
 my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
 
@@ -63,7 +65,7 @@ __PACKAGE__->register_method(
 	/
 );
 
-sub retrieve_org_fund {
+sub retrieve_org_funds {
     my($self, $conn, $auth, $org_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
@@ -72,12 +74,13 @@ sub retrieve_org_fund {
     my $search = {owner => $org_id};
 
     if($$options{children}) {
-        $org_list = $e->search_actor_org_unit([
-            {id => $org_id}, {
-                flesh => -1,
-                flesh_fields => {aou => ['children']}
-            }
-        ]);
+        # grab the descendent orgs
+        my $org = $e->retrieve_actor_org_unit(
+            [$org_id, {flesh=>1, flesh_fields=>{aou=>['ou_type']}}]) or return $e->event;
+        my $org_list = $U->simplereq(
+            'open-ils.storage',
+            'open-ils.storage.actor.org_unit.descendants.atomic',
+            $org_id, $org->ou_type->depth);
 
         my $org_ids = [];
         push(@$org_ids, $_->id) for @$org_list;
@@ -89,4 +92,4 @@ sub retrieve_org_fund {
 }
 
 
-
+1;
