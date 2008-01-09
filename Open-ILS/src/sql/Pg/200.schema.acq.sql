@@ -82,7 +82,7 @@ CREATE TABLE acq.picklist (
 
 CREATE TABLE acq.picklist_entry (
 	id		BIGSERIAL			PRIMARY KEY,
-	picklist	INT				NOT NULL REFERENCES acq.picklist (id),
+	picklist	INT				NOT NULL REFERENCES acq.picklist (id) ON DELETE CASCADE,
 	provider	INT				REFERENCES acq.provider (id),
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	edit_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
@@ -93,7 +93,7 @@ CREATE TABLE acq.picklist_entry (
 
 CREATE TABLE acq.picklist_entry_attr (
 	id		BIGSERIAL	PRIMARY KEY,
-	picklist_entry	BIGINT		NOT NULL REFERENCES acq.picklist_entry (id),
+	picklist_entry	BIGINT		NOT NULL REFERENCES acq.picklist_entry (id) ON DELETE CASCADE,
 	attr_type	TEXT		NOT NULL,
 	attr_name	TEXT		NOT NULL,
 	attr_value	TEXT		NOT NULL
@@ -146,7 +146,7 @@ INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUE
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('pagination','Pagination','//*[@tag="300"]/*[@code="a"][1]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('isbn','ISBN','//*[@tag="020"]/*[@code="a"]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('issn','ISSN','//*[@tag="022"]/*[@code="a"]');
-INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="a"][1]');
+INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('price','Price','//*[@tag="020" or @tag="022"]/*[@code="c"][1]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('identifier','Identifier','//*[@tag="001"]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('publisher','Publisher','//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO acq.picklist_marc_attr_definition ( code, description, xpath ) VALUES ('pubdate','Publication Date','//*[@tag="260"]/*[@code="c"][1]');
@@ -188,6 +188,21 @@ BEGIN
 	RETURN NULL;
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION public.cleanup_acq_marc ( ) RETURNS TRIGGER AS $$
+BEGIN
+	DELETE FROM acq.picklist_entry_attr WHERE picklist_entry = OLD.id;
+	IF TG_OP = 'UPDATE' THEN
+		RETURN NEW;
+	ELSE
+		RETURN OLD;
+	END IF;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER cleanup_picklist_entry_trigger
+	BEFORE UPDATE OR DELETE ON acq.picklist_entry 
+	FOR EACH ROW EXECUTE PROCEDURE public.cleanup_acq_marc();
 
 CREATE TRIGGER ingest_picklist_entry_trigger
 	AFTER INSERT OR UPDATE ON acq.picklist_entry 
