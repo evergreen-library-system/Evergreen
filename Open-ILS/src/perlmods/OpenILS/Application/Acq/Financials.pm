@@ -68,9 +68,24 @@ sub retrieve_org_fund {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_FUND', $org_id);
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    # XXX add descendant logic
-    return $fund;
+
+    my $search = {owner => $org_id};
+
+    if($$options{children}) {
+        $org_list = $e->search_actor_org_unit([
+            {id => $org_id}, {
+                flesh => -1,
+                flesh_fields => {aou => ['children']}
+            }
+        ]);
+
+        my $org_ids = [];
+        push(@$org_ids, $_->id) for @$org_list;
+        $search = {owner => $org_ids};
+    }
+
+    my $funds = $e->search_acq_fund($search) or return $e->event;
+    return $funds; 
 }
 
 
