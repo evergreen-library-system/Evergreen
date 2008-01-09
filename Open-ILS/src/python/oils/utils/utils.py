@@ -49,6 +49,12 @@ def unique(arr):
         o[x] = 1
     return o.keys()
 
+def is_db_true(data):
+    ''' Returns true if the data provided matches what the database considers a true value '''
+    if not data or data == 'f' or str(data) == '0':
+        return False
+    return True
+
 
 def login(username, password, type=None, workstation=None):
     ''' Login to the server and get back an authtoken'''
