@@ -10,4 +10,5 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Event;
 
 use OpenILS::Application::Acq::Picklist;
+use OpenILS::Application::Acq::Financials;
 
