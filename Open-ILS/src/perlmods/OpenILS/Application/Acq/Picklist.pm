@@ -176,4 +176,10 @@ sub create_picklist_entry {
 }
 
 
+=head EXAMPLE JSON_QUERY
+srfsh# request open-ils.cstore open-ils.cstore.json_query.atomic {"select" : { "acqple" : ["id"], "acqplea" : ["attr_value"] }, "from" : { "acqple" : { "acqplea" : { "field" : "picklist_entry", "fkey" : "id" } } }, "where" : { "+acqple" :{ "picklist" : 2 }, "+acqplea" : { "attr_type" : "picklist_marc_attr_definition", "attr_name" : "title" } }, "order_by" : { "acqplea" : { "attr_value" : { "direction" : "asc" } } } }
+=cut
+
+
+
 1;
