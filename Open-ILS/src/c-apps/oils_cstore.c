@@ -1753,14 +1753,10 @@ static char* SELECT (
 	jsonObjectIterator* selclass_itr = jsonNewObjectIterator( selhash );
 	while ( (selclass = jsonObjectIteratorNext( selclass_itr )) ) {
 
-		osrfLogDebug(OSRF_LOG_MARK, "%s SELECT clause class check: %s", MODULENAME, selclass->key);
-
 		// round trip through the idl, just to be safe
 		idlClass = osrfHashGet( oilsIDL(), selclass->key );
 		if (!idlClass) continue;
 		char* cname = osrfHashGet(idlClass, "classname");
-
-		osrfLogDebug(OSRF_LOG_MARK, "%s SELECT clause class, post-IDL check: %s", MODULENAME, cname);
 
 		// make sure the target relation is in the join tree
 		if (strcmp(core_class,cname)) {
@@ -1980,19 +1976,13 @@ static char* SELECT (
 	jsonObjectIterator* class_itr = jsonNewObjectIterator( order_hash );
 	while ( (snode = jsonObjectIteratorNext( class_itr )) ) {
 
-		osrfLogDebug(OSRF_LOG_MARK, "%s ORDER BY clause selhash class check: %s", MODULENAME, snode->key);
-
 		if (!jsonObjectGetKeyConst(selhash,snode->key))
 			continue;
-
-		osrfLogDebug(OSRF_LOG_MARK, "%s Made it past the ORDER BY clause selhash class check for %s", MODULENAME, snode->key);
 
 		if ( snode->item->type == JSON_HASH ) {
 
 		    jsonObjectIterator* order_itr = jsonNewObjectIterator( snode->item );
 			while ( (onode = jsonObjectIteratorNext( order_itr )) ) {
-
-				osrfLogDebug(OSRF_LOG_MARK, "%s ORDER BY clause class and field check: %s %s", MODULENAME, snode->key, onode->key);
 
 				if (!oilsIDLFindPath( "/%s/fields/%s", snode->key, onode->key ))
 					continue;
