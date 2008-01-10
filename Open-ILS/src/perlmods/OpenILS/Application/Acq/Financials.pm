@@ -28,9 +28,9 @@ sub org_descendants {
         'open-ils.storage.actor.org_unit.descendants.atomic',
         $org_id, $org->ou_type->depth);
 
-    my $org_ids = [];
-    push(@$org_ids, $_->id) for @$org_list;
-    return $org_ids;
+    my @org_ids;
+    push(@org_ids, $_->id) for @$org_list;
+    return \@org_ids;
 }
 
 
@@ -39,12 +39,12 @@ __PACKAGE__->register_method(
 	method => 'create_fund',
 	api_name	=> 'open-ils.acq.fund.create',
 	signature => {
-        desc => q/Creates a new fund/,
+        desc => 'Creates a new fund',
         params => [
-            { desc => q/Authentication token/, type => 'string' },
-            { desc => q/Fund object to create/, type => 'object' }
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Fund object to create', type => 'object'}
         ],
-        return => { desc => q/The ID of the new fund/ }
+        return => {desc => 'The ID of the new fund'}
     }
 );
 
@@ -62,11 +62,14 @@ sub create_fund {
 __PACKAGE__->register_method(
 	method => 'delete_fund',
 	api_name	=> 'open-ils.acq.fund.delete',
-	signature => q/
-        Creates a new fund
-		@param auth Authentication token
-		@param fund
-	/
+	signature => {
+        desc => 'Deletes a fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Fund ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
 );
 
 sub delete_fund {
@@ -83,11 +86,14 @@ sub delete_fund {
 __PACKAGE__->register_method(
 	method => 'retrieve_fund',
 	api_name	=> 'open-ils.acq.fund.retrieve',
-	signature => q/
-        Retrieves a fund by ID
-		@param auth Authentication token
-		@param fund_id
-	/
+	signature => {
+        desc => 'Retrieves a new fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Fund ID', type => 'number'}
+        ],
+        return => {desc => 'The fund object on success, Event on failure'}
+    }
 );
 
 sub retrieve_fund {
@@ -102,14 +108,17 @@ sub retrieve_fund {
 __PACKAGE__->register_method(
 	method => 'retrieve_org_funds',
 	api_name	=> 'open-ils.acq.fund.org.retrieve',
-	signature => q/
-        Retrieves all the funds associated with an org unit
-		@param auth Authentication token
-		@param org_id
-        @param options Hash of options.  Options include "children", 
-            which includes the funds for the requested org and
-            all descendant orgs.
-	/
+	signature => {
+        desc => 'Retrieves all the funds associated with an org unit',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Org Unit ID', type => 'number'},
+            {desc => 'Hash or options, including "children", which, if true,  
+                includes funds for descendant orgs in addition to the requested org', 
+            type => 'hash'},
+        ],
+        return => {desc => 'The fund objects on success, Event on failure'}
+    }
 );
 
 sub retrieve_org_funds {
@@ -132,11 +141,14 @@ sub retrieve_org_funds {
 __PACKAGE__->register_method(
 	method => 'create_budget',
 	api_name	=> 'open-ils.acq.budget.create',
-	signature => q/
-        Creates a new budget
-		@param auth Authentication token
-		@param budget
-	/
+	signature => {
+        desc => 'Creates a new budget',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget object to create', type => 'object'}
+        ],
+        return => {desc => 'The ID of the newly created budget object'}
+    }
 );
 
 sub create_budget {
@@ -153,11 +165,14 @@ sub create_budget {
 __PACKAGE__->register_method(
 	method => 'delete_budget',
 	api_name	=> 'open-ils.acq.budget.delete',
-	signature => q/
-        Deletes a budget
-		@param auth Authentication token
-		@param budget
-	/
+	signature => {
+        desc => 'Deletes a budget',
+        params => {
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget ID', type => 'number'}
+        },
+        return => {desc => '1 on success, Event on failure'}
+    }
 );
 
 sub delete_budget {
@@ -174,11 +189,14 @@ sub delete_budget {
 __PACKAGE__->register_method(
 	method => 'retrieve_budget',
 	api_name	=> 'open-ils.acq.budget.retrieve',
-	signature => q/
-        Retrieves a budget by ID
-		@param auth Authentication token
-		@param budget_id
-	/
+	signature => {
+        desc => 'Retrieves a new budget',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget ID', type => 'number'}
+        ],
+        return => {desc => 'The budget object on success, Event on failure'}
+    }
 );
 
 sub retrieve_budget {
@@ -193,14 +211,18 @@ sub retrieve_budget {
 __PACKAGE__->register_method(
 	method => 'retrieve_org_budgets',
 	api_name	=> 'open-ils.acq.budget.org.retrieve',
-	signature => q/
-        Retrieves all the budgets associated with an org unit 
-		@param auth Authentication token 
-		@param org_id 
-        @param options Hash of options.  Options include "children", 
-            which includes the budgets for the requested org and
-            all descendant orgs.
-	/
+	signature => {
+        desc => 'Retrieves all the budgets associated with an org unit',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Org Unit ID', type => 'number'},
+            {desc => 
+                'Options.  Options include "children", which includes
+                budgets for descendant orgs in addition to the requested org', 
+            type => 'hash'},
+        ],
+        return => {desc => 'The budget objects on success, Event on failure'}
+    }
 );
 
 sub retrieve_org_budgets {
@@ -223,11 +245,14 @@ sub retrieve_org_budgets {
 __PACKAGE__->register_method(
 	method => 'create_budget_alloc',
 	api_name	=> 'open-ils.acq.budget_allocation.create',
-	signature => q/
-        Creates a new budget_allocation
-		@param auth Authentication token
-		@param budget_alloc
-	/
+	signature => {
+        desc => 'Creates a new budget_allocation',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget allocation object to create', type => 'object'}
+        ],
+        return => {desc => 'The ID of the new budget_allocation'}
+    }
 );
 
 sub create_budget_alloc {
@@ -248,11 +273,14 @@ sub create_budget_alloc {
 __PACKAGE__->register_method(
 	method => 'delete_budget_alloc',
 	api_name	=> 'open-ils.acq.budget_allocation.delete',
-	signature => q/
-        Creates a new budget_allocation
-		@param auth Authentication token
-		@param budget_alloc
-	/
+	signature => {
+        desc => 'Deletes a budget_allocation',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget Alocation ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
 );
 
 sub delete_budget_alloc {
@@ -272,11 +300,14 @@ sub delete_budget_alloc {
 __PACKAGE__->register_method(
 	method => 'retrieve_budget_alloc',
 	api_name	=> 'open-ils.acq.budget_allocation.retrieve',
-	signature => q/
-        Retrieves a budget_allocation by ID
-		@param auth Authentication token
-		@param budget_alloc_id
-	/
+	signature => {
+        desc => 'Retrieves a new budget_allocation',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Budget Allocation ID', type => 'number'}
+        ],
+        return => {desc => 'The budget allocation object on success, Event on failure'}
+    }
 );
 
 sub retrieve_budget_alloc {

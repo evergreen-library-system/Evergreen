@@ -15,11 +15,14 @@ my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
 __PACKAGE__->register_method(
 	method => 'create_picklist',
 	api_name	=> 'open-ils.acq.picklist.create',
-	signature => q/
-        Creates a new picklist
-		@param authtoken
-		@param picklist
-	/
+	signature => {
+        desc => 'Creates a new picklist',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist object to create', type => 'object'}
+        ],
+        return => {desc => 'The ID of the new picklist'}
+    }
 );
 
 sub create_picklist {
@@ -37,11 +40,14 @@ sub create_picklist {
 __PACKAGE__->register_method(
 	method => 'update_picklist',
 	api_name	=> 'open-ils.acq.picklist.update',
-	signature => q/
-        Updates a picklist
-		@param authtoken
-		@param picklist
-	/
+	signature => {
+        desc => 'Updates a new picklist',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist object to update', type => 'object'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
 );
 
 sub update_picklist {
@@ -64,13 +70,16 @@ sub update_picklist {
 __PACKAGE__->register_method(
 	method => 'retrieve_picklist',
 	api_name	=> 'open-ils.acq.picklist.retrieve',
-	signature => q/
-        Retrieves a picklist
-		@param authtoken
-		@param picklist_id
-        @param flesh Causes the linked picklist_entry objects
-            to be appended to the object
-	/
+	signature => {
+        desc => 'Retrieves a picklist',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist ID to retrieve', type => 'object'},
+            {desc => 'Options, including "flesh", which causes the picklist
+                entries to be included', type => 'hash'}
+        ],
+        return => {desc => 'Picklist object on success, Event on error'}
+    }
 );
 
 sub retrieve_picklist {
@@ -91,13 +100,15 @@ sub retrieve_picklist {
 __PACKAGE__->register_method(
 	method => 'retrieve_user_picklist',
 	api_name	=> 'open-ils.acq.picklist.user.retrieve',
-	signature => q/
-        Retrieves all the picklists that belong to the requestor
-		@param authtoken
-        @param options A hash of retrieval options.  Options include 
-            "idlist", which causes the method to return a list of IDs
-            instead of objects;
-	/
+	signature => {
+        desc => 'Retrieves a  user\'s picklists',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Options, including "idlist", whch forces the return
+                of a list of IDs instead of objects', type => 'hash'},
+        ],
+        return => {desc => 'Picklist object on success, Event on error'}
+    }
 );
 
 sub retrieve_user_picklist {
@@ -111,11 +122,14 @@ sub retrieve_user_picklist {
 __PACKAGE__->register_method(
 	method => 'delete_picklist',
 	api_name	=> 'open-ils.acq.picklist.delete',
-	signature => q/
-        Deletes a picklist
-		@param authtoken
-		@param picklist_id
-	/
+	signature => {
+        desc => 'Deletes a picklist',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist ID to delete', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
 );
 
 sub delete_picklist {
@@ -141,14 +155,16 @@ sub delete_picklist {
 __PACKAGE__->register_method(
 	method => 'create_picklist_entry',
 	api_name	=> 'open-ils.acq.picklist_entry.create',
-	signature => q/
-        Creates a new picklist entry.  This method extracts the bib
-        data from the provided MARC XML.
-		@param authtoken
-		@param picklist_id
-		@param marc_xml
-		@param bibid ID of the existing bibliio.record_entry if appropriate
-	/
+	signature => {
+        desc => 'Creates a picklist entry',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'ID of Picklist to attach to', type => 'number'}
+            {desc => 'MARC XML of picklist data', type => 'string'}
+            {desc => 'Bib ID of exising biblio.record_entry if appropriate', type => 'string'}
+        ],
+        return => {desc => 'ID of newly created picklist_entry on success, Event on error'}
+    }
 );
 
 sub create_picklist_entry {
