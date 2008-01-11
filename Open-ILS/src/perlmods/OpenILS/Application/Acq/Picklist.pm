@@ -60,7 +60,7 @@ sub update_picklist {
         or return $e->die_event;
     return $BAD_PARAMS if (
         $o_picklist->owner != $picklist->owner or
-        $picklist->owner != $e->requestor->owner );
+        $picklist->owner != $e->requestor->id );
 
     $e->update_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
@@ -74,7 +74,7 @@ __PACKAGE__->register_method(
         desc => 'Retrieves a picklist',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Picklist ID to retrieve', type => 'object'},
+            {desc => 'Picklist ID to retrieve', type => 'number'},
             {desc => 'Options, including "flesh", which causes the picklist
                 entries to be included', type => 'hash'}
         ],
@@ -140,7 +140,7 @@ sub delete_picklist {
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->die_event;
     # don't let anyone delete someone else's picklist
-    return $BAD_PARAMS if $picklist->owner != $e->requestor->owner;
+    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
 
     $e->delete_acq_picklist($picklist) or return $e->die_event;
     $e->commit;
@@ -159,8 +159,8 @@ __PACKAGE__->register_method(
         desc => 'Creates a picklist entry',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'ID of Picklist to attach to', type => 'number'}
-            {desc => 'MARC XML of picklist data', type => 'string'}
+            {desc => 'ID of Picklist to attach to', type => 'number'},
+            {desc => 'MARC XML of picklist data', type => 'string'},
             {desc => 'Bib ID of exising biblio.record_entry if appropriate', type => 'string'}
         ],
         return => {desc => 'ID of newly created picklist_entry on success, Event on error'}
@@ -177,19 +177,79 @@ sub create_picklist_entry {
         or return $e->die_event;
     return $BAD_PARAMS unless $picklist->owner == $e->requestor->id;
 
-    # XXX data extraction ...
-
-    my $entry = Fieldmaper::acq::picklist_entry->new;
+    my $entry = Fieldmapper::acq::picklist_entry->new;
     $entry->picklist($picklist_id);
     $entry->marc($marc_xml);
     $entry->eg_bib_id($bibid);
     $e->create_acq_picklist_entry($entry) or return $e->die_event;
 
-    # XXX create entry attributes from the extracted data
-
     $e->commit;
     return $entry->id;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'retrieve_picklist_entry',
+	api_name	=> 'open-ils.acq.picklist_entry.retrieve',
+	signature => {
+        desc => 'Retrieves a picklist_entry',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist entry ID to retrieve', type => 'number'},
+        ],
+        return => {desc => 'Picklist entry object on success, Event on error'}
+    }
+);
+
+sub retrieve_picklist_entry {
+    my($self, $conn, $auth, $pl_entry_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
+        or return $e->event;
+
+    my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
+        or return $e->event;
+
+    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
+    return $pl_entry;
+}
+
+
+__PACKAGE__->register_method(
+	method => 'delete_picklist_entry',
+	api_name	=> 'open-ils.acq.picklist_entry.delete',
+	signature => {
+        desc => 'Deletes a picklist_entry',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist entry ID to delete', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+sub delete_picklist_entry {
+    my($self, $conn, $auth, $pl_entry_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
+        or return $e->die_event;
+
+    my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
+        or return $e->die_event;
+
+    # don't let anyone delete someone else's picklist entry
+    return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
+
+    $e->delete_acq_picklist_entry($pl_entry) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+
 
 
 =head EXAMPLE JSON_QUERY
