@@ -251,6 +251,8 @@ sub handler {
 				$r->print($req->as_usmarc);
 			}
 
+            $r->rflush();
+
 		} otherwise {
 			my $e = shift;
 			warn "\n$e\n";
