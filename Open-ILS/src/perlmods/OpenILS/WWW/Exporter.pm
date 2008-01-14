@@ -83,11 +83,25 @@ sub handler {
 		}
 	}
 
+	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+
+	# still no records ...
+	my $container = $cgi->param('containerid');
+	if ($container) {
+		my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+		my $auth = verify_login($authid);
+		if (!$auth) {
+			return 403;
+		}
+		my $recs = $ses->request( 'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic', { bucket => $cointainer } )->gather(1);
+		@records = map { ($_->target_biblio_record_entry) } @$recs;
+	}
+
 	return show_template($r) unless (@records);
 
 	my $type = $cgi->param('rectype') || 'biblio';
 	if ($type ne 'biblio' && $type ne 'authority') {
-		die "Bad record type: $type";
+		return 400;
 	}
 
 	my $tcn_v = 'tcn_value';
@@ -113,9 +127,7 @@ sub handler {
 	binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
 	if (!grep { uc($format) eq $_ } @formats) {
-		die	"Please select a supported format.  ".
-			"Right now that means one of [".
-			join('|',@formats). "]\n";
+		return 400;
 	}
 
 	if ($format ne 'XML') {
@@ -123,7 +135,6 @@ sub handler {
 		$ftype->require;
 	}
 
-	my $ses = OpenSRF::AppSession->create('open-ils.cstore');
 
 	$r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
 
@@ -147,7 +158,7 @@ sub handler {
 		my $req = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
     		while (my $o = $req->recv) {
-        		die $req->failed->stringify if ($req->failed);
+        		next if ($req->failed);
         		$o = $o->content;
         		last unless ($o);
 	    		$orgs{$o->id} = $o;
@@ -157,7 +168,7 @@ sub handler {
 		$req = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
 
     		while (my $s = $req->recv) {
-        		die $req->failed->stringify if ($req->failed);
+        		next if ($req->failed);
         		$s = $s->content;
         		last unless ($s);
 	    		$shelves{$s->id} = $s;
@@ -264,6 +275,23 @@ sub handler {
 
 	return Apache2::Const::OK;
 
+}
+
+sub verify_login {
+        my $auth_token = shift;
+        return undef unless $auth_token;
+
+        my $user = OpenSRF::AppSession
+                ->create("open-ils.auth")
+                ->request( "open-ils.auth.session.retrieve", $auth_token )
+                ->gather(1);
+
+        if (ref($user) eq 'HASH' && $user->{ilsevent} == 1001) {
+                return undef;
+        }
+
+        return $user if ref($user);
+        return undef;
 }
 
 sub show_template {
