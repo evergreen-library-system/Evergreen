@@ -36,6 +36,12 @@ TARGETS=("openils_core" "openils_web" "openils_db");
 
 
 # --------------------------------------------------------------------
+# Should we build the Evergreen Python modules?
+# These depend on having the setuptools module installed.
+# --------------------------------------------------------------------
+EG_PYTHON_INSTALL="N"
+
+# --------------------------------------------------------------------
 # Global install prefix.  Binaries will be installed into PREFIX/bin,
 # libraries will be installed into PREFIX/lib, etc.  The user 
 # running 'install.sh install' must have write permissions to PREFIX

@@ -141,14 +141,12 @@ perl-install:
 # ------------------------------------------------------------------------------
 
 python-build:
-	@echo $@
-	make -C python build
+	if [ -n "$(EG_PYTHON_INSTALL)" ]; then echo $@; make -C python build; fi;
 
 # -----------------------------------------------------------------------------------
 
 python-install:
-	@echo $@
-	make -C python install
+	if [ -n "$(EG_PYTHON_INSTALL)" ]; then echo $@; make -C python install; fi;
 
 # -----------------------------------------------------------------------------------
 
@@ -216,5 +214,5 @@ clean:
 	make -C extras clean
 	make -C apachemods clean
 	make -C c-apps clean
-	make -C python clean
+	if [ -n "$(EG_PYTHON_INSTALL)" ]; then echo $@; make -C python clean --all; fi;
 
