@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------
 
 import re, md5
-from osrf.ses import AtomicRequest
+import osrf.ses
 from osrf.log import *
 
 
@@ -61,14 +61,14 @@ def login(username, password, type=None, workstation=None):
 
     log_info("attempting login with user " + username)
 
-    seed = AtomicRequest(
+    seed = osrf.ses.ClientSession.atomic_request(
         'open-ils.auth', 
         'open-ils.auth.authenticate.init', username)
 
     # generate the hashed password
     password = md5sum(seed + md5sum(password))
 
-    return AtomicRequest(
+    return osrf.ses.ClientSession.atomic_request(
         'open-ils.auth',
         'open-ils.auth.authenticate.complete',
         {   'workstation' : workstation,

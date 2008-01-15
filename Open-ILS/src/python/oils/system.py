@@ -14,13 +14,14 @@
 # -----------------------------------------------------------------------
 
 import osrf.log
-from osrf.system import connect
+import osrf.system
 from oils.utils.idl import IDLParser
 from oils.utils.csedit import oilsLoadCSEditor
 
-def oilsConnect(config, configContext):
-	"""Connects to the opensrf network,  parses the IDL file, and loads the CSEditor"""
-	osrf.log.log_info("oilsConnect(): connecting with config %s" % config)
-	connect(config, configContext)
-	IDLParser.parse()
-	oilsLoadCSEditor()
+class System(object):
+    @staticmethod
+    def connect(**kwargs):
+	    """Connects to the opensrf network,  parses the IDL file, and loads the CSEditor"""
+	    osrf.system.System.connect(**kwargs)
+	    IDLParser.parse()
+	    oilsLoadCSEditor()
