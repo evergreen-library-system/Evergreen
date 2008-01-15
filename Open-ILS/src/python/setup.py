@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-from distutils.core import setup
-import os, os.path
-
-dir = os.path.dirname(__file__)
+from setuptools import setup
 
 setup(name='Evergreen',
-    version='1.2',
-    requires='OpenSRF',
+    version='1.4',
+    install_requires='OpenSRF>=1.0',
     description='Evergreen Python Modules',
     author='Bill Erickson',
-    author_email='open-ils-dev@list.georgialibraries.org',
+    author_email='erickson@esilibrary.com',
+    license='GPL',
     url='http://www.open-ils.org/',
     packages=['oils', 'oils.utils'],
-    package_dir={'': dir}
+    package_dir={'': '.'}
 )
