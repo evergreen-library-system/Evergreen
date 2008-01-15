@@ -11,6 +11,10 @@ class AuthException(Exception):
     
 
 class CoreContext(SubContext):
+
+    # cache the authenticated user info
+    _auth_cache = {}
+
     def __init__(self):
         self.prefix = ContextItem() # web prefix
         self.media_prefix = ContextItem() # media prefix
@@ -23,7 +27,6 @@ class CoreContext(SubContext):
         self.page = ContextItem() # the current page
 
     def postinit(self):
-        import pylons.config
         self.prefix = pylons.config['oils_prefix']
         self.media_prefix = pylons.config['oils_media_prefix']
         self.ac_prefix = pylons.config['oils_added_content_prefix']
@@ -33,7 +36,6 @@ class CoreContext(SubContext):
 
         self.fetchUser()
 
-    _auth_cache = {}
     def fetchUser(self):
         ''' Grab the logged in user and their workstation '''
         if self.authtoken:
@@ -43,7 +45,7 @@ class CoreContext(SubContext):
                 self.workstation = CoreContext._auth_cache[self.authtoken]['workstation']
                 return
 
-            self.user = osrf.ses.AtomicRequest(
+            self.user = osrf.ses.ClientSession.atomic_request(
                 'open-ils.auth', 
                 'open-ils.auth.session.retrieve', self.authtoken)
 

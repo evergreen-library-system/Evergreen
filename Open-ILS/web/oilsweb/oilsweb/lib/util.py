@@ -1,6 +1,5 @@
 import pylons.config, pylons.templating
 import libxml2, libxslt
-#import oils.utils.utils
 
 def childInit():
     ''' Global child-init handler.  
@@ -9,12 +8,15 @@ def childInit():
         2. Parses the IDL file 
     '''
 
-    import oils.system, osrf.system
-    oils.system.oilsConnect(pylons.config['osrf_config'], pylons.config['osrf_config_ctxt'])
-    osrf.system.connect_cache()
+    import oils.system
+    oils.system.System.connect(
+        config_file = pylons.config['osrf_config'],
+        config_context = pylons.config['osrf_config_ctxt'],
+        connect_cache = True)
 
 _parsedSheets = {}
 def apply_xsl(xmlStr, xslFile, xslParams={}):
+    ''' Applies xslFile to xmlStr and returns the string result '''
     doc = libxml2.parseDoc(xmlStr)
     stylesheet = _parsedSheets.get(xslFile)
 

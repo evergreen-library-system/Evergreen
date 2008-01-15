@@ -14,7 +14,7 @@ def fetch_z39_sources(ctx):
     global _z_sources
     if _z_sources:
         return _z_sources
-    _z_sources = osrf.ses.AtomicRequest(
+    _z_sources = osrf.ses.ClientSession.atomic_request(
         'open-ils.search', EG_Z39_SOURCES, ctx.core.authtoken)
     return _z_sources
 

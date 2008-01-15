@@ -27,7 +27,7 @@ class AdminController(BaseController):
         meta = r.ctx.adm.object_meta = oils.utils.idl.IDLParser.get_class(obj_type)
 
         if obj_id is not None:
-            r.ctx.adm.object = osrf.ses.AtomicRequest(
+            r.ctx.adm.object = osrf.ses.ClientSession.atomic_request(
                 'open-ils.cstore',
                 'open-ils.cstore.direct.%s.retrieve' % 
                     meta.fieldmapper.replace('::', '.'), obj_id)
