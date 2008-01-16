@@ -75,8 +75,6 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID to retrieve', type => 'number'},
-            {desc => 'Options, including "flesh", which causes the picklist
-                entries to be included', type => 'hash'}
         ],
         return => {desc => 'Picklist object on success, Event on error'}
     }
@@ -87,15 +85,15 @@ sub retrieve_picklist {
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $args = ($$options{flesh}) ?  # XXX
-        { flesh => 1, flesh_fields => {XXX => ['entries']}} : undef;
-
-    my $picklist = $e->retrieve_acq_picklist($picklist_id, $args)
+    my $picklist = $e->retrieve_acq_picklist($picklist_id)
         or return $e->die_event;
 
     return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
     return $picklist;
 }
+
+
+
 
 __PACKAGE__->register_method(
 	method => 'retrieve_user_picklist',
@@ -250,12 +248,96 @@ sub delete_picklist_entry {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'retrieve_pl_picklist_entry',
+	api_name	=> 'open-ils.acq.picklist_entry.picklist.retrieve',
+	signature => {
+        desc => 'Retrieves picklist_entry objects according to picklist',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist ID whose entries to retrieve', type => 'number'},
+            {desc => q/Options, including 
+                "sort_attr", which defines the attribute to sort on; 
+                "sort_attr_type", which defines the attribute type sort on; 
+                "sort_dir", which defines the sort order between "asc" and "desc";
+                "limit", retrieval limit;
+                "offset", retrieval offset;
+                "idlist", return a list of IDs instead of objects
+                "flesh", additionaly return the list of flattened attributes
+                "clear_marc", discards the raw MARC data to reduce data size
+                /, 
+                type => 'hash'}
+        ],
+        return => {desc => 'Array of picklist entry objects or IDs,  on success, Event on error'}
+    }
+);
 
 
-=head EXAMPLE JSON_QUERY
-srfsh# request open-ils.cstore open-ils.cstore.json_query.atomic {"select" : { "acqple" : ["id"], "acqplea" : ["attr_value"] }, "from" : { "acqple" : { "acqplea" : { "field" : "picklist_entry", "fkey" : "id" } } }, "where" : { "+acqple" :{ "picklist" : 2 }, "+acqplea" : { "attr_type" : "picklist_marc_attr_definition", "attr_name" : "title" } }, "order_by" : { "acqplea" : { "attr_value" : { "direction" : "asc" } } } }
-=cut
+# some defaults are filled in for reference
+my $PL_ENTRY_JSON_QUERY = {
+    select => {acqple => ['id']}, # display fields
+    from => {
+        acqple => { # selecting from picklist_entry_attr
+            acqplea => {field => 'picklist_entry', fkey => 'id'}
+        }
+    },
+    where => {
+        '+acqple' => {picklist => 1},
+        '+acqplea' => { # grab attr rows with the requested type and name for sorting
+            'attr_type' => 'picklist_marc_attr_definition',
+            'attr_name' => 'title'
+        }
+    },
+    'order_by' => {
+        acqplea => {
+            'attr_value' => {direction => 'asc'}
+        }
+    },
+    limit => 10,
+    offset => 0
+};
 
+sub retrieve_pl_picklist_entry {
+    my($self, $conn, $auth, $picklist_id, $options) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    # collect the retrieval options
+    my $sort_attr = $$options{sort_attr} || 'title';
+    my $sort_attr_type = $$options{sort_attr_type} || 'picklist_marc_attr_definition';
+    my $sort_dir = $$options{sort_dir} || 'asc';
+    my $limit = $$options{limit} || 10;
+    my $offset = $$options{offset} || 0;
+
+    $PL_ENTRY_JSON_QUERY->{where}->{'+acqple'}->{picklist} = $picklist_id;
+    $PL_ENTRY_JSON_QUERY->{where}->{'+acqplea'}->{attr_name} = $sort_attr;
+    $PL_ENTRY_JSON_QUERY->{where}->{'+acqplea'}->{attr_type} = $sort_attr_type;
+    $PL_ENTRY_JSON_QUERY->{order_by}->{acqplea}->{attr_value}->{direction} = $sort_dir;
+    $PL_ENTRY_JSON_QUERY->{limit} = $limit;
+    $PL_ENTRY_JSON_QUERY->{offset} = $offset;
+
+    my $entries = $e->json_query($PL_ENTRY_JSON_QUERY);
+    return [] unless $entries and @$entries;
+
+    my @ids;
+    push(@ids, $_->{id}) for @$entries;
+    return \@ids if $$options{idlist};
+
+    if($$options{flesh}) {
+        $entries = $e->search_acq_picklist_entry([
+            {id => \@ids},
+            {flesh => 1, flesh_fields => {acqple => ['attributes']}}
+        ]);
+    } else {
+        $entries = $e->batch_retrieve_acq_picklist_entry(\@ids);
+    }
+
+    if($$options{clear_marc}) {
+        $_->clear_marc for @$entries;
+    }
+
+    return $entries;
+}
 
 
 1;
