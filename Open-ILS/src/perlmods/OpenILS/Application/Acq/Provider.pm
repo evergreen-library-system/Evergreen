@@ -29,6 +29,7 @@ __PACKAGE__->register_method(
 
 sub create_provider {
     my($self, $conn, $auth, $provider) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PROVIDER', $provider->owner);
     $e->create_acq_provider($provider) or return $e->die_event;
@@ -61,4 +62,4 @@ sub retrieve_provider {
 }
 
 
-
+1;
