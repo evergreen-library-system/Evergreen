@@ -10,5 +10,4 @@ setup(name='Evergreen',
     license='GPL',
     url='http://www.open-ils.org/',
     packages=['oils', 'oils.utils'],
-    package_dir={'': '.'}
 )

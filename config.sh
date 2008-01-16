@@ -92,6 +92,13 @@ function buildConfig {
 	prompt "Build targets [${TARGETS[@]:0}] "
 	read X; if [ ! -z "$X" ]; then TARGETS=("$X"); fi;
 
+	prompt "Should we build Python modules? (Y/N) [$EG_PYTHON_INSTALL] "
+	read X; 
+    if [ "$X" = "Y" ]; 
+        then EG_PYTHON_INSTALL="Y"; 
+        else EG_PYTHON_INSTALL="";
+    fi;
+
 	prompt "Database Driver [$DBDRVR] "
 	read X; if [ ! -z "$X" ]; then DBDRVR="$X"; fi;
 
@@ -164,6 +171,7 @@ function writeConfig {
 	STR="$STR)";
 	_write "$STR";
 
+    _write "EG_PYTHON_INSTALL=\"$EG_PYTHON_INSTALL\"";
 	_write "OPENILSDIR=\"Open-ILS/src/\"";
 	_write "EVERGREENDIR=\"Evergreen/\"";
 

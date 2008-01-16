@@ -18,5 +18,5 @@ install:	build
 # CLEAN	
 # ------------------------------------------------------------------------------
 clean:
-	/bin/rm -rf build 
+	python setup.py clean --all
 
