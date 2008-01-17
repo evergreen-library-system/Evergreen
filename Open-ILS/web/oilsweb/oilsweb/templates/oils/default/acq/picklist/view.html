@@ -16,6 +16,27 @@
 </div>
 
 <table id='oils-acq-picklist-table'>
+    <thead>
+        <tr>
+            <td colspan='4'>
+                <%
+                    c.oils.acq.offset = int(c.oils.acq.offset)
+                    c.oils.acq.limit = int(c.oils.acq.limit)
+                    # set up the paging info
+                    paging = _('Entries %(offset)s - %(limit)s') % {
+                        'offset': c.oils.acq.offset + 1,
+                        'limit': c.oils.acq.limit + c.oils.acq.offset
+                    }
+                %>
+                ${paging}
+                % if c.oils.acq.offset > 0:
+                    <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset - c.oils.acq.limit}'>&#171;</a>
+                % endif
+                <a href='?${c.oils.acq.offset_.cgi_name}=${c.oils.acq.offset + c.oils.acq.limit}'>&#187;</a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
     % for entry in c.oils.acq.picklist.entries():
     <tr class='oils-acq-picklist-records-title-row'>
         <td rowspan='3'>
@@ -44,5 +65,6 @@
         </td>
     </tr>
     % endfor
+    </tbody>
 </table>
 </%def>
