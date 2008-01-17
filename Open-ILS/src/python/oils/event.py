@@ -32,7 +32,7 @@ class Event(object):
             like an ILS event, construct an Event object and return it.
             Returns None otherwise.  '''
 
-        if evt and 'ilsevent' in evt and 'textcode' in evt:
+        if isinstance(evt, dict) and 'ilsevent' in evt and 'textcode' in evt:
             return Event(evt)
 
         return None
