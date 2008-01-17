@@ -13,9 +13,15 @@ class PicklistController(BaseController):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
         pl_manager.retrieve()
-        pl_manager.retrieve_entries()
+        pl_manager.retrieve_entries(flesh_provider=True, offset=r.ctx.acq.offset, limit=r.ctx.acq.limit)
         r.ctx.acq.picklist = pl_manager.picklist
         return r.render('acq/picklist/view.html')
+
+    def view_entry(self, **kwargs):
+        return 'details for entry ' + str(kwargs.get('id'))
+
+    def search(self):
+        return 'search interface'
 
 
     '''
