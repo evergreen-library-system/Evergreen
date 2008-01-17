@@ -1,6 +1,8 @@
+import osrf.ex
 
 class Event(object):
     ''' Generic ILS event object '''
+
 
     def __init__(self, evt_hash={}):
         self.code = evt_hash.get('ilsevent') or -1 
@@ -20,6 +22,10 @@ class Event(object):
 
     # XXX eventually, add events file parsing...
 
+    def to_ex(self):
+        return EventException(unicode(self))
+        
+
     @staticmethod
     def parse_event(evt=None):
         ''' If the provided evt object is a dictionary object that looks
@@ -30,3 +36,17 @@ class Event(object):
             return Event(evt)
 
         return None
+
+    @staticmethod
+    def parse_and_raise(evt=None):
+        ''' Parses with parse_event.  If the resulting event is a non-success
+            event, it is converted to an exception and raised '''
+        evt = Event.parse_event(evt)
+        if evt and not evt.success:
+            raise evt.to_ex()
+
+
+class EventException(osrf.ex.OSRFException):
+    ''' A throw-able exception wrapper for events '''
+    pass
+
