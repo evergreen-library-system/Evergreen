@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2007-12-11 13:27:40-0400\n"
+"POT-Creation-Date: 2008-01-17 14:20:24-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2740,51 +2740,51 @@ msgid "Allows a user to remove an existing workstation so a new one can replace 
 msgstr ""
 
 #: permission.perm_list:788
-msgid "Allows a user to add/remove users to/from the "User" group"
+msgid "Allows a user to add/remove users to/from the \"User\" group"
 msgstr ""
 
 #: permission.perm_list:789
-msgid "Allows a user to add/remove users to/from the "Patron" group"
+msgid "Allows a user to add/remove users to/from the \"Patron\" group"
 msgstr ""
 
 #: permission.perm_list:790
-msgid "Allows a user to add/remove users to/from the "Staff" group"
+msgid "Allows a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
 
 #: permission.perm_list:791
-msgid "Allows a user to add/remove users to/from the "Circulator" group"
+msgid "Allows a user to add/remove users to/from the \"Circulator\" group"
 msgstr ""
 
 #: permission.perm_list:792
-msgid "Allows a user to add/remove users to/from the "Cataloger" group"
+msgid "Allows a user to add/remove users to/from the \"Cataloger\" group"
 msgstr ""
 
 #: permission.perm_list:793
-msgid "Allows a user to add/remove users to/from the "GlobalAdmin" group"
+msgid "Allows a user to add/remove users to/from the \"GlobalAdmin\" group"
 msgstr ""
 
 #: permission.perm_list:794
-msgid "Allows a user to add/remove users to/from the "LocalAdmin" group"
+msgid "Allows a user to add/remove users to/from the \"LocalAdmin\" group"
 msgstr ""
 
 #: permission.perm_list:795
-msgid "Allows a user to add/remove users to/from the "LibraryManager" group"
+msgid "Allows a user to add/remove users to/from the \"LibraryManager\" group"
 msgstr ""
 
 #: permission.perm_list:796
-msgid "Allows a user to add/remove users to/from the "Cat1" group"
+msgid "Allows a user to add/remove users to/from the \"Cat1\" group"
 msgstr ""
 
 #: permission.perm_list:797
-msgid "Allows a user to add/remove users to/from the "Supercat" group"
+msgid "Allows a user to add/remove users to/from the \"Supercat\" group"
 msgstr ""
 
 #: permission.perm_list:798
-msgid "Allows a user to add/remove users to/from the "SIP-Client" group"
+msgid "Allows a user to add/remove users to/from the \"SIP-Client\" group"
 msgstr ""
 
 #: permission.perm_list:799
-msgid "Allows a user to add/remove users to/from the "Vendor" group"
+msgid "Allows a user to add/remove users to/from the \"Vendor\" group"
 msgstr ""
 
 #: permission.perm_list:800
