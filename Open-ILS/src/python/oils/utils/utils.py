@@ -23,20 +23,6 @@ from osrf.log import *
 # Grab-bag of general utility functions
 # -----------------------------------------------------------------------
 
-def isEvent(evt):
-    return (evt and isinstance(evt, dict) and evt.get('ilsevent') != None)
-
-def eventCode(evt):
-    if isEvent(evt):
-        return evt['ilsevent']
-    return None
-
-def eventText(evt):
-    if isEvent(evt):
-        return evt['textcode']
-    return None
-
-      
 def md5sum(str):
     m = md5.new()
     m.update(str)
