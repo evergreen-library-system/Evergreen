@@ -24,7 +24,7 @@
 #oils-acq-search-fields-submit-block { margin: 5px; text-align: center;}
 
 /* bib search results / picklist builder interface */
-#oils-acq-pl_builder-table { width: 100%; }
+#oils-acq-picklist-header { padding: 4px; margin-bottom: 20px; }
 .oils-acq-picklist-records-jacket-td { width: 46px; }
 .oils-acq-picklist-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
 .oils-acq-picklist-records-title-row {}
