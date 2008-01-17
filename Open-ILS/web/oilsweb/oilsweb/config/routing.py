@@ -18,14 +18,15 @@ def make_map():
 
     # CUSTOM ROUTES HERE
 
-    if config.get('use_mod_python'):
-        map.connect(':controller/:action')
-        map.connect('admin/:action/:type/:id', controller='admin')
-        map.connect('admin/:action/:type', controller='admin')
-    else:
-        map.connect('oils/:controller/:action')
-        map.connect('oils/admin/:action/:type/:id', controller='admin')
-        map.connect('oils/admin/:action/:type', controller='admin')
+    prefix = ''
+    if not config.get('use_mod_python'):
+        prefix = 'oils/'
+
+    map.connect(prefix+':controller/:action')
+    map.connect(prefix+':controller/:action/:id')
+    map.connect(prefix+'admin/:action/:type/:id', controller='admin')
+    map.connect(prefix+'admin/:action/:type', controller='admin')
+
 
     ''' trying a different set of admin routes above...
     map.connect('acq_admin', 'oils/admin', controller='acq_admin')
