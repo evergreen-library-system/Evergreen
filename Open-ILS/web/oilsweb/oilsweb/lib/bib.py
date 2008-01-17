@@ -12,7 +12,7 @@ def marc_to_html(marcxml):
 
 def scrub_isbn(isbn):
     ''' removes trailing data from an ISBN '''
-    if not isbn: return isbn
+    if not isbn: return ''
     return re.sub('\s.*','', isbn)
 
     

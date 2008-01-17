@@ -25,12 +25,12 @@
 
 /* bib search results / picklist builder interface */
 #oils-acq-pl_builder-table { width: 100%; }
-.oils-acq-record_list-records-jacket-td { width: 46px; }
-.oils-acq-record_list-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
-.oils-acq-record_list-records-title-row {}
-.oils-acq-record_list-records-author-row td { padding-left: 30px; }
-.oils-acq-record_list-records-phys_desc-row td { padding-left: 30px; }
-.oils-acq-record_list-records-phys_desc-row {}
+.oils-acq-picklist-records-jacket-td { width: 46px; }
+.oils-acq-picklist-records-jacket { width: 42px; height: 54px; padding-left: 0px; }
+.oils-acq-picklist-records-title-row {}
+.oils-acq-picklist-records-author-row td { padding-left: 30px; }
+.oils-acq-picklist-records-phys_desc-row td { padding-left: 30px; }
+.oils-acq-picklist-records-phys_desc-row {}
 
 #oils-acq-rdetail-marc-block { margin-top: 0px; padding: 6px; }
 #oils-acq-rdetail-summary-block { margin-top: 0px; padding: 6px; }

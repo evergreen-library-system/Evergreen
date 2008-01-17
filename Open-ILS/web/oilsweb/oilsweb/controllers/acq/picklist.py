@@ -1,44 +1,24 @@
 from oilsweb.lib.base import *
 from oilsweb.lib.request import RequestMgr
-
 import logging, pylons
-import oilsweb.lib.context
-import oilsweb.lib.util
-import oilsweb.lib.acq.search
-import oilsweb.lib.bib
-import osrf.cache, osrf.json
-from oilsweb.lib.context import Context, SubContext, ContextItem
-
-log = logging.getLogger(__name__)
-
-class AcqContext(SubContext):
-    ''' Define the CGI params for this application '''
-    def __init__(self):
-        self.query = ContextItem(cgi_name='acq.q')
-        self.search_class = ContextItem(cgi_name='acq.sc', multi=True)
-        self.search_source = ContextItem(cgi_name='acq.ss', multi=True)
-        self.picked_records = ContextItem(cgi_name='acq.sr', multi=True)
-        self.search_cache_key = ContextItem(cgi_name='acq.sk')
-        self.record_id = ContextItem(cgi_name='acq.r')
-        self.record = ContextItem(cgi_name='acq.r')
-        self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
-        self.extract_bib_field = ContextItem(default_value=oilsweb.lib.acq.search.extract_bib_field)
-        self.prefix = ContextItem()
-        self.z39_sources = ContextItem()
-        self.search_classes = ContextItem()
-        self.search_classes_sorted = ContextItem()
-
-    def postinit(self):
-        self.prefix = "%s/acq" % Context.getContext().core.prefix
-
-Context.applySubContext('acq', AcqContext)
+import oilsweb.lib.context, oilsweb.lib.util
+import oilsweb.lib.bib, oilsweb.lib.acq.search, oilsweb.lib.acq.picklist
+import osrf.cache, osrf.json, osrf.ses
+import oils.const, oils.utils.utils, oils.event
 
 
-class AcqController(BaseController):
+class PicklistController(BaseController):
 
-    def index(self):
-        return RequestMgr().render('acq/index.html')
+    def view(self, **kwargs):
+        r = RequestMgr()
+        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
+        pl_manager.retrieve()
+        pl_manager.retrieve_entries()
+        r.ctx.acq.picklist = pl_manager.picklist
+        return r.render('acq/picklist/view.html')
 
+
+    '''
     def search(self):
         r = RequestMgr()
         r.ctx.acq.z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
@@ -53,8 +33,7 @@ class AcqController(BaseController):
         r.ctx.acq.search_classes_sorted = keys
         log.debug("keys = %s" % unicode(r.ctx.acq.z39_sources))
             
-        return r.render('acq/search.html')
-        
+        return r.render('acq/picklist/search.html')
 
     def pl_builder(self):
         r = RequestMgr()
@@ -63,7 +42,7 @@ class AcqController(BaseController):
         if r.ctx.acq.search_source:
             c.oils_acq_records, r.ctx.acq.search_cache_key = self._build_z39_search(r.ctx)
 
-        return r.render('acq/pl_builder.html')
+        return r.render('acq/picklist/pl_builder.html')
 
 
     def _build_z39_search(self, ctx):
@@ -98,8 +77,14 @@ class AcqController(BaseController):
         if rec:
             r.ctx.acq.record = rec
             r.ctx.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
-            return r.render('acq/rdetails.html')
+            return r.render('acq/picklist/rdetails.html')
         return 'exception -> no record'
+
+
+    def view_picklist(self):
+        r = RequestMgr()
+        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
+        picklist = osrf
 
         
     def create_picklist(self):  
@@ -115,11 +100,11 @@ class AcqController(BaseController):
             records.append(rec)
 
         c.oils_acq_records = records # XXX
-        return r.render('acq/picklist.html')
+        return r.render('acq/picklist/view.html')
 
     def _find_cached_record(self, results, cache_id):
         for res in results:
             for rec in res['records']:
                 if str(rec['cache_id']) == str(cache_id):
                     return rec
-
+'''

@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%def name="page_title()">${_('Evergreen ACQ Picklist')}</%def>
+<%def name="block_content()">
+<table id='oils-acq-picklist-table'>
+    % for entry in c.oils.acq.picklist.entries():
+    <tr class='oils-acq-picklist-records-title-row'>
+        <td rowspan='3'>
+            <img class='oils-acq-picklist-records-jacket'
+                src='${c.oils.core.ac_prefix}/jacket/small/${c.oils.util.scrub_isbn(c.oils.acq.find_entry_attr(entry, "isbn"))}'/>
+        </td>
+        <td>
+            <a href='../view_entry/${entry.id()}'>${c.oils.acq.find_entry_attr(entry, "title")}</a>
+        </td>
+        <td class='oils-acq-picklist-records-service-td'>${entry.provider()}</td>
+    </tr>
+
+    </tr>
+    <tr class='oils-acq-picklist-records-author-row'>
+        <td colspan='4'>${c.oils.acq.find_entry_attr(entry, "author")}
+    </tr>
+    <tr class='oils-acq-picklist-records-phys_desc-row'>
+        <td colspan='4'>
+            ${c.oils.acq.find_entry_attr(entry, "isbn")} |
+            ${c.oils.acq.find_entry_attr(entry, "pubdate")} |
+            ${c.oils.acq.find_entry_attr(entry, "pagination")}
+        </td>
+    </tr>
+    % endfor
+</table>
+</%def>
