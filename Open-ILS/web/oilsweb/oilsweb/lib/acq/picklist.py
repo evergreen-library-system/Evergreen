@@ -31,6 +31,15 @@ class PicklistMgr(object):
             }
         ).recv().content()
 
+        if kwargs.get('flesh_provider'):
+            for entry in entries:
+                if entry.provider():
+                    provider = self.ses.request(
+                        'open-ils.acq.provider.retrieve', 
+                        self.request_mgr.ctx.core.authtoken, 
+                        entry.provider()).recv().content()
+                    entry.provider(provider)
+
         self.picklist.entries(entries)
 
     def retrieve_entry(self, entry_id):
