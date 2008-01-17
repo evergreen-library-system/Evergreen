@@ -550,6 +550,16 @@
 	<event code='1640' textcode='ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested actor_usr_org_unit_opt_in was not found</desc>
 	</event>
+	<event code='1641' textcode='ACQ_PICKLIST_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.picklist was not found</desc>
+	</event>
+	<event code='1642' textcode='ACQ_PICKLIST_ENTRY_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.picklist_entry was not found</desc>
+	</event>
+	<event code='1643' textcode='ACQ_PICKLIST_ENTRY_ATTR_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.picklist_entry_attr was not found</desc>
+	</event>
+
 
 
 
