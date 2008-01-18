@@ -581,6 +581,7 @@ sub cat_search_z_style_wrapper {
 
 	}
 
+    $cstore->disconnect();
 	return $result;
 }
 
