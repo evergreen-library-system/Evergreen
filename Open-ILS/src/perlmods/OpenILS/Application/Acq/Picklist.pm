@@ -157,28 +157,22 @@ __PACKAGE__->register_method(
         desc => 'Creates a picklist entry',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'ID of Picklist to attach to', type => 'number'},
-            {desc => 'MARC XML of picklist data', type => 'string'},
-            {desc => 'Bib ID of exising biblio.record_entry if appropriate', type => 'string'}
+            {desc => 'The picklist_entry object to create', type => 'object'},
         ],
         return => {desc => 'ID of newly created picklist_entry on success, Event on error'}
     }
 );
 
 sub create_picklist_entry {
-    my($self, $conn, $auth, $picklist_id, $marc_xml, $bibid) = @_;
+    my($self, $conn, $auth, $entry) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_PICKLIST');
 
-    my $picklist = $e->retrieve_acq_picklist($picklist_id)
+    my $picklist = $e->retrieve_acq_picklist($entry->picklist)
         or return $e->die_event;
     return $BAD_PARAMS unless $picklist->owner == $e->requestor->id;
 
-    my $entry = Fieldmapper::acq::picklist_entry->new;
-    $entry->picklist($picklist_id);
-    $entry->marc($marc_xml);
-    $entry->eg_bib_id($bibid);
     $e->create_acq_picklist_entry($entry) or return $e->die_event;
 
     $e->commit;
