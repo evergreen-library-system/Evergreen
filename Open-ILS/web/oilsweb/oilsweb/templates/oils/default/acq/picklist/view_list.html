@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%def name="page_title()">${_('Evergreen My Picklists')}</%def>
+<%def name="block_content()">
+
+<h3>${_('My Picklists')}</h3>
+
+<table id='oils-acq-picklist-list-table'>
+    <thead>
+        <tr>
+            <td>${_('Name')}</td>
+            <td>${_('Create Time')}</td>
+            <td>${_('Edit Time')}</td>
+        </tr>
+    </thead>
+    <tbody>
+    % for picklist in c.oils.acq.picklist_list:
+    <tr>
+        <td><a href='${c.oils.acq.prefix}/picklist/view/${picklist.id()}'>${picklist.name()}</a></td>
+        <td>${picklist.create_time()}</td>
+        <td>${picklist.edit_time()}</td>
+    </tr>
+    % endfor
+    </tbody>
+</table>
+</%def>
