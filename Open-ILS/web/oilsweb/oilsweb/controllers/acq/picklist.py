@@ -36,11 +36,6 @@ class PicklistController(BaseController):
          
 
     def search(self):
-        return 'search interface'
-
-
-    '''
-    def search(self):
         r = RequestMgr()
         r.ctx.acq.z39_sources = oilsweb.lib.acq.search.fetch_z39_sources(r.ctx)
 
@@ -52,42 +47,18 @@ class PicklistController(BaseController):
         keys = sc.keys()
         keys.sort()
         r.ctx.acq.search_classes_sorted = keys
-        log.debug("keys = %s" % unicode(r.ctx.acq.z39_sources))
             
         return r.render('acq/picklist/search.html')
 
-    def pl_builder(self):
+    def do_search(self):
         r = RequestMgr()
-        # add logic to see where we are fetching bib data from
-        # XXX fix
-        if r.ctx.acq.search_source:
-            c.oils_acq_records, r.ctx.acq.search_cache_key = self._build_z39_search(r.ctx)
+        picklist_id = oilsweb.lib.acq.search.multi_search(
+            r, oilsweb.lib.acq.search.compile_multi_search(r))
+        return redirect_to('%s/picklist/view/%d' % (r.ctx.acq.prefix, int(picklist_id)))
 
-        return r.render('acq/picklist/pl_builder.html')
+        return 'search complete'
 
-
-    def _build_z39_search(self, ctx):
-
-        search = {
-            'service' : [],
-            'username' : [],
-            'password' : [],
-            'search' : {}
-        }
-
-        # collect the sources and credentials
-        for src in ctx.acq.search_source:
-            search['service'].append(src)
-            search['username'].append("") # XXX config values? in-db?
-            search['password'].append("") # XXX config values? in-db?
-
-        # collect the search classes
-        for cls in ctx.acq.search_class:
-            if request.params[cls]:
-                search['search'][cls] = request.params[cls]
-
-        return oilsweb.lib.acq.search.multi_search(ctx, search)
-
+    '''
     def rdetails(self):
         r = RequestMgr()
         rec_id = r.ctx.acq.record_id
@@ -102,12 +73,6 @@ class PicklistController(BaseController):
         return 'exception -> no record'
 
 
-    def view_picklist(self):
-        r = RequestMgr()
-        ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
-        picklist = osrf
-
-        
     def create_picklist(self):  
         r = RequestMgr()
         if not isinstance(r.ctx.acq.picklist_item, list):
@@ -122,10 +87,4 @@ class PicklistController(BaseController):
 
         c.oils_acq_records = records # XXX
         return r.render('acq/picklist/view.html')
-
-    def _find_cached_record(self, results, cache_id):
-        for res in results:
-            for rec in res['records']:
-                if str(rec['cache_id']) == str(cache_id):
-                    return rec
 '''

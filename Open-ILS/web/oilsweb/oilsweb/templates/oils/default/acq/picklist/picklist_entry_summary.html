@@ -2,8 +2,10 @@
     ${_('Picklist Entry')}
     <div class='oils-acq-picklist-entry-attributes'>
         <%
+        provider = c.oils.acq.picklist_entry.provider() or ''
+        if provider: provider.name() 
         meta = _("Source %(data)s") % {"data":c.oils.acq.picklist_entry.source_label()}
-        meta2 = _("Provider %(data)s") % {"data":c.oils.acq.picklist_entry.provider().name()}
+        meta2 = _("Provider %(data)s") % {"data":provider}
         meta3 = _("Create date %(data)s") % {"data":c.oils.acq.picklist_entry.create_time()}
         meta4 = _("Last update time %(data)s") % {"data":c.oils.acq.picklist_entry.edit_time()}
         %>

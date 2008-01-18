@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-<%inherit file='base.html'/>
+<%inherit file='../base.html'/>
 <%def name="page_title()">${_('Evergreen Acquisitions Search')}</%def>
 
 <%def name="block_content()">
-    <form method='GET' action='pl_builder'>
+    <form method='GET' action='${c.oils.acq.prefix}/picklist/do_search'>
         <div id='oils-acq-search-block' class='container'>
             <div id='oils-acq-search-sources-block'>
                 <div id='oils-acq-search-sources-label'>${_('Search Sources')}</div>
@@ -15,8 +15,7 @@
                         <ul class='oils-acq-search-sources-sublist'>
                             % for src,cfg in c.oils.acq.z39_sources.iteritems():
                             <li>
-                                <input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' 
-                                    value='${src}'>
+                                <input type='checkbox' name='${c.oils.acq.search_source_.cgi_name}' value='${src}'>
                                     ${src} ${cfg["host"]}:${cfg["db"]}
                                     % if cfg['auth'] == 't':
                                         <span class='oils-acq-search-source-auth'>*</span>
