@@ -83,15 +83,35 @@ __PACKAGE__->register_method(
 sub retrieve_picklist {
     my($self, $conn, $auth, $picklist_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
+    return $e->event unless $e->checkauth;
 
     my $picklist = $e->retrieve_acq_picklist($picklist_id)
-        or return $e->die_event;
+        or return $e->event;
 
     return $BAD_PARAMS unless $e->requestor->id == $picklist->owner;
     return $picklist;
 }
 
+__PACKAGE__->register_method(
+	method => 'retrieve_picklist_name',
+	api_name	=> 'open-ils.acq.picklist.name.retrieve',
+	signature => {
+        desc => 'Retrieves a picklist by name.  Owner is implied by the caller',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Picklist name to retrieve', type => 'strin'},
+        ],
+        return => {desc => 'Picklist object on success, null on not found'}
+    }
+);
+
+sub retrieve_picklist_name {
+    my($self, $conn, $auth, $name) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->search_acq_picklist(
+        {name => $name, owner => $e->requestor->id})->[0];
+}
 
 
 
@@ -172,6 +192,10 @@ sub create_picklist_entry {
     my $picklist = $e->retrieve_acq_picklist($entry->picklist)
         or return $e->die_event;
     return $BAD_PARAMS unless $picklist->owner == $e->requestor->id;
+
+    # indicate the picklist was updated
+    $picklist->edit_time('now');
+    $e->update_acq_picklist($picklist) or return $e->die_event;
 
     $e->create_acq_picklist_entry($entry) or return $e->die_event;
 
