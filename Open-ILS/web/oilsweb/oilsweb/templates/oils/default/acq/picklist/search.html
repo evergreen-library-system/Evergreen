@@ -39,6 +39,17 @@
                     </td>
                 </tr>
                 % endfor
+                <tr>
+                    <td>${_('Results Per Source')}</td>
+                    <td>
+                        <select name='${c.oils.acq.limit_.cgi_name}'>
+                            <option value='5'>5</option>
+                            <option value='10' selected='selected'>10</option>
+                            <option value='15'>15</option>
+                            <option value='20'>20</option>
+                        </select>
+                    </td>
+                </tr>
                 </table>
                 <div id='oils-acq-search-fields-submit-block'>
                     <input type='submit' value='${_("Submit")}'/>
