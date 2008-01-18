@@ -20,7 +20,7 @@ def multi_search(request_mgr, search):
     req = ses.request(EG_Z39_SEARCH, request_mgr.ctx.core.authtoken, search)
 
     pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(request_mgr)
-    picklist_id = pl_manager.create_or_replace("__search_tmp__")
+    picklist_id = pl_manager.create_or_replace("")
 
     while not req.complete:
         resp = req.recv()
