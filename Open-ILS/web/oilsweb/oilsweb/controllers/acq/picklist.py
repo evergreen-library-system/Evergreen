@@ -28,6 +28,13 @@ class PicklistController(BaseController):
         r.ctx.acq.picklist_entry_marc_html = oilsweb.lib.bib.marc_to_html(entry.marc())
         return r.render('acq/picklist/view_entry.html')
 
+    def list(self):
+        r = RequestMgr()
+        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
+        r.ctx.acq.picklist_list = pl_manager.retrieve_list()
+        return r.render('acq/picklist/view_list.html')
+         
+
     def search(self):
         return 'search interface'
 

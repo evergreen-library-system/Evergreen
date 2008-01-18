@@ -42,6 +42,15 @@ class PicklistMgr(object):
 
         self.picklist.entries(entries)
 
+    def retrieve_list(self):
+        ''' Returns my list of picklist objects '''
+        list = self.ses.request(
+            'open-ils.acq.picklist.user.retrieve', 
+            self.request_mgr.ctx.core.authtoken).recv().content()
+        oils.event.Event.parse_and_raise(list)
+        return list
+        
+
     def retrieve_entry(self, entry_id, **kwargs):
         args = {'flesh': kwargs.get('flesh')}
         entry = self.ses.request(
