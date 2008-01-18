@@ -54,9 +54,7 @@ class PicklistController(BaseController):
         r = RequestMgr()
         picklist_id = oilsweb.lib.acq.search.multi_search(
             r, oilsweb.lib.acq.search.compile_multi_search(r))
-        return redirect_to('%s/picklist/view/%d' % (r.ctx.acq.prefix, int(picklist_id)))
-
-        return 'search complete'
+        return redirect_to('view/%d' % int(picklist_id))
 
     '''
     def rdetails(self):
