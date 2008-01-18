@@ -5,15 +5,15 @@ class Event(object):
 
 
     def __init__(self, evt_hash={}):
-        self.code = evt_hash.get('ilsevent') or -1 
-        self.text_code = evt_hash.get('textcode') or ''
+        self.code = int(evt_hash['ilsevent'])
+        self.text_code = evt_hash['textcode']
         self.desc = evt_hash.get('desc') or ''
-        self.payload = evt_hash.get('payload') or None
+        self.payload = evt_hash.get('payload')
         self.debug = evt_hash.get('stacktrace') or ''
         self.servertime = evt_hash.get('servertime') or ''
 
         self.success = False
-        if self.code == int(0):
+        if self.code == 0:
             self.success = True
 
     def __str__(self):
