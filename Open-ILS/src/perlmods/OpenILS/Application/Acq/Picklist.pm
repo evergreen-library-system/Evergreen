@@ -194,18 +194,26 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist entry ID to retrieve', type => 'number'},
+            {options => 'Hash of options, including "flesh", which fleshes the attributes', type => 'hash'},
         ],
         return => {desc => 'Picklist entry object on success, Event on error'}
     }
 );
 
 sub retrieve_picklist_entry {
-    my($self, $conn, $auth, $pl_entry_id) = @_;
+    my($self, $conn, $auth, $pl_entry_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
-        or return $e->event;
+    my $pl_entry;
+    if($$options{flesh}) {
+        $pl_entry = $e->retrieve_acq_picklist_entry([
+            $pl_entry_id, {flesh => 1, flesh_fields => {acqple => ['attributes']}}])
+            or return $e->event;
+    } else {
+        $pl_entry = $e->retrieve_acq_picklist_entry($pl_entry_id)
+            or return $e->event;
+    }
 
     my $picklist = $e->retrieve_acq_picklist($pl_entry->picklist)
         or return $e->event;
@@ -213,6 +221,7 @@ sub retrieve_picklist_entry {
     return $BAD_PARAMS if $picklist->owner != $e->requestor->id;
     return $pl_entry;
 }
+
 
 
 __PACKAGE__->register_method(
