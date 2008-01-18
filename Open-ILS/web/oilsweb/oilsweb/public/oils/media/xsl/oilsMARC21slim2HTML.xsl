@@ -3,29 +3,22 @@
 	<xsl:output method="html"/>
 	
 	<xsl:template match="/">
-		<html>
-			<head>
-
-				<style>
-
-					.marc_table {}
-					.marc_tag_row {}
-					.marc_tag_data {}
-					.marc_tag_col {}
-					.marc_tag_ind {}
-					.marc_subfields {}
-					.marc_subfield_code { 
-						color: blue; 
-						padding-left: 5px;
-						padding-right: 5px; 
-					}
-
-				</style>
-			</head>
-			<body>
-				<xsl:apply-templates/>
-			</body>
-		</html>
+        <div>
+            <style>
+                .marc_table {}
+                .marc_tag_row {}
+                .marc_tag_data {}
+                .marc_tag_col {}
+                .marc_tag_ind {}
+                .marc_subfields {}
+                .marc_subfield_code { 
+                    color: blue; 
+                    padding-left: 5px;
+                    padding-right: 5px; 
+                }
+            </style>
+            <xsl:apply-templates/>
+        </div>
 	</xsl:template>
 	
 	<xsl:template match="marc:record">
