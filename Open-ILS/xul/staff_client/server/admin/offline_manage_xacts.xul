@@ -34,7 +34,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing'); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -44,9 +44,7 @@
 				g.admin.init({});
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" 
-					+ 'admin/offline_manage_xacts.xul\n' + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['admin/offline_manage_xacts.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -54,17 +52,19 @@
 
 	]]>
 	</script>
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
 
 	<vbox id="admin_offline_manage_xacts_main" flex="1">
 
 		<groupbox flex="1">
-			<caption label="Offline Sessions"/>
+			<caption label="&staff.server.admin.offline.xacts.sessions;"/>
 			<hbox>
-				<button id="refresh" label="Refresh" accesskey="R"/>
-				<button id="create" label="Create" disabled="true"/>
-				<button id="execute" label="Process" disabled="true"/>
+				<button id="refresh" label="&common.refresh;" accesskey="&staff.server.admin.offline.xacts.refresh.accesskey;"/>
+				<button id="create" label="&staff.server.admin.offline.xacts.create.label;" disabled="true"/>
+				<button id="execute" label="&staff.server.admin.offline.xacts.execute.label;" disabled="true"/>
 				<spacer flex="1"/>
-				<button id="upload" label="Upload" disabled="true"/>
+				<button id="upload" label="&staff.server.admin.offline.xacts.update.label;" disabled="true"/>
 			</hbox>
 			<tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 		</groupbox>
@@ -72,31 +72,31 @@
 		<deck flex="1" id="deck">
 			<label value=" "/>
 			<groupbox flex="1">
-				<caption id="status_caption" label="Uploaded Transaction Files"/>
+				<caption id="status_caption" label="&staff.server.admin.offline.xacts.status.label;"/>
 				<description style="background-color: lightgreen">
-				The transactions from the following workstations have been uploaded, but not processed.  When all expected workstations are present here, use the Process button above.
+                &staff.server.admin.offline.xacts.status.desc;
 				</description>
 				<tree id="script_tree" enableColumnDrag="true" seltype="single" flex="1"/>
 			</groupbox>
 			<groupbox flex="1">
-				<caption id="errors_caption" label="Exceptions"/>
+				<caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.label;"/>
 				<description style="background-color: orange">
-				All transactions from this session have been processed.  The errors, if any, are listed below.
+                &staff.server.admin.offline.xacts.errors.desc;
 				</description>
 				<vbox flex="1">
 					<hbox>
-						<button id='export_btn' label="Export List" />
-						<button id='print_export_btn' label="Print Export" />
+						<button id='export_btn' label="&staff.server.admin.offline.xacts.export.label;" />
+						<button id='print_export_btn' label="&staff.server.admin.offline.xacts.print.label;" />
 						<spacer flex="1"/>
-						<button id='retrieve_item' label="Retrieve Item" disabled="true"/>
-						<button id='retrieve_patron' label="Retrieve Patron" disabled="true"/>
-						<button id='retrieve_details' label="Details" disabled="true"/>
+						<button id='retrieve_item' label="&staff.server.admin.offline.xacts.get_item.label;" disabled="true"/>
+						<button id='retrieve_patron' label="&staff.server.admin.offline.xacts.get_patron.label;" disabled="true"/>
+						<button id='retrieve_details' label="&staff.server.admin.offline.xacts.get_details.label;" disabled="true"/>
 					</hbox>
 					<tree id="error_tree" enableColumnDrag="true" seltype="multiple" flex="1"/>
 				</vbox>
 			</groupbox>
 			<groupbox flex="1">
-				<caption id="errors_caption" label="The session is now processing.  Hit Refresh to check its status."/>
+				<caption id="errors_caption" label="&staff.server.admin.offline.xacts.errors.caption;"/>
 			</groupbox>
 		</deck>
 		<hbox id="iframe_placeholder" hidden="false" flex="0"/>
