@@ -1,5 +1,5 @@
 from oilsweb.lib.context import Context, SubContext, ContextItem
-import osrf.ses, oils.utils.csedit, pylons.config
+import osrf.ses, oils.utils.csedit, pylons.config, oils.utils.utils, oils.event
 from gettext import gettext as _
 
 class AuthException(Exception):
@@ -25,6 +25,7 @@ class CoreContext(SubContext):
         self.user = ContextItem() # logged in user object
         self.workstation = ContextItem() # workstation object
         self.page = ContextItem() # the current page
+        self.use_demo = ContextItem(cgi_name='demo') # use the demo login
 
     def postinit(self):
         self.prefix = pylons.config['oils_prefix']
@@ -36,8 +37,22 @@ class CoreContext(SubContext):
 
         self.fetchUser()
 
+    def doLogin(self):
+        if pylons.config.get('oils_demo_user'):
+            evt = oils.utils.utils.login(
+                pylons.config['oils_demo_user'],
+                pylons.config['oils_demo_password'],
+                'staff',
+                pylons.config['oils_demo_workstation'])
+            oils.event.Event.parse_and_raise(evt)
+            self.authtoken = evt['payload']['authtoken']
+
     def fetchUser(self):
         ''' Grab the logged in user and their workstation '''
+
+        if not self.authtoken:
+            self.doLogin()
+
         if self.authtoken:
 
             if self.authtoken in CoreContext._auth_cache:
