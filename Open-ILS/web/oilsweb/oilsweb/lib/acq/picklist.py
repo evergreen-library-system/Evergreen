@@ -42,11 +42,20 @@ class PicklistMgr(object):
 
         self.picklist.entries(entries)
 
-    def retrieve_entry(self, entry_id):
+    def retrieve_entry(self, entry_id, **kwargs):
+        args = {'flesh': kwargs.get('flesh')}
         entry = self.ses.request(
             'open-ils.acq.picklist_entry.retrieve',
-            self.request_mgr.ctx.core.auththoken, entry_id).recv.content()
+            self.request_mgr.ctx.core.authtoken, entry_id, args).recv().content()
         oils.event.Event.parse_and_raise(entry)
+        if kwargs.get('flesh_provider'):
+            if entry.provider():
+                provider = self.ses.request(
+                    'open-ils.acq.provider.retrieve', 
+                    self.request_mgr.ctx.core.authtoken, 
+                    entry.provider()).recv().content()
+                entry.provider(provider)
+
         return entry
 
     @staticmethod

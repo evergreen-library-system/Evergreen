@@ -20,13 +20,15 @@ class AcqContext(SubContext):
         self.z39_sources = ContextItem()
         self.search_classes = ContextItem()
         self.search_classes_sorted = ContextItem()
-        self.picklist_id = ContextItem(cgi_name='acq.pl')
+        #self.picklist_id = ContextItem(cgi_name='acq.pl')
         self.picklist = ContextItem()
+        self.picklist_entry = ContextItem()
         self.offset = ContextItem(cgi_name='acq.os', default_value=0)
         self.limit = ContextItem(cgi_name='acq.li', default_value=10)
 
         self.extract_bib_field = ContextItem(default_value=oilsweb.lib.acq.search.extract_bib_field)
         self.find_entry_attr = ContextItem(default_value=oilsweb.lib.acq.picklist.PicklistMgr.find_entry_attr)
+        self.picklist_entry_marc_html = ContextItem()
 
     def postinit(self):
         self.prefix = "%s/acq" % Context.getContext().core.prefix
