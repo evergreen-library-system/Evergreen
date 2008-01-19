@@ -1226,3 +1226,33 @@
 <!ENTITY staff.server.admin.offline.xacts.get_patron.label "Retrieve Patron">
 <!ENTITY staff.server.admin.offline.xacts.get_details.label "Details">
 <!ENTITY staff.server.admin.offline.xacts.errors.caption "The session is now processing.  Hit Refresh to check its status.">
+<!ENTITY staff.server.admin.font.sound.caption "Adjust Sound">
+<!ENTITY staff.server.admin.font.sound.checkbox "Disable sound?">
+<!ENTITY staff.server.admin.save_disk "Save to Disk">
+<!ENTITY staff.server.admin.font.global.caption "Adjust Global Font">
+<!ENTITY staff.server.admin.font.smaller "Smaller than Default">
+<!ENTITY staff.server.admin.font.default "Default">
+<!ENTITY staff.server.admin.font.larger "Larger than Default">
+<!ENTITY staff.server.admin.font.xxsmall "XX-Small">
+<!ENTITY staff.server.admin.font.xsmall "X-Small">
+<!ENTITY staff.server.admin.font.small "Small">
+<!ENTITY staff.server.admin.font.medium "Medium">
+<!ENTITY staff.server.admin.font.large "Large">
+<!ENTITY staff.server.admin.font.xlarge "X-Large">
+<!ENTITY staff.server.admin.font.xxlarge "XX-Large">
+<!ENTITY staff.server.admin.font.5pt "5pt">
+<!ENTITY staff.server.admin.font.6pt "6pt">
+<!ENTITY staff.server.admin.font.7pt "7pt">
+<!ENTITY staff.server.admin.font.8pt "8pt">
+<!ENTITY staff.server.admin.font.9pt "9pt">
+<!ENTITY staff.server.admin.font.10pt "10pt">
+<!ENTITY staff.server.admin.font.11pt "11pt">
+<!ENTITY staff.server.admin.font.12pt "12pt">
+<!ENTITY staff.server.admin.font.13pt "13pt">
+<!ENTITY staff.server.admin.font.14pt "14pt">
+<!ENTITY staff.server.admin.font.15pt "15pt">
+<!ENTITY staff.server.admin.font.16pt "16pt">
+<!ENTITY staff.server.admin.font.17pt "17pt">
+<!ENTITY staff.server.admin.font.18pt "18pt">
+<!ENTITY staff.server.admin.font.restore "Restore Default">
+<!ENTITY staff.server.admin.font.restore "Restore Default">

@@ -35,7 +35,8 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
+
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -55,16 +56,44 @@
 				JSAN.use('util.file'); var file = new util.file('global_font_adjust');
 				file.set_object(g.data.global_font_adjust);
 				file.close();
-				alert('Global Font saved to file system.');
+				alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.save'));
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
 			}
 		}
 
-		function adjust(my_class,my_msg) {
+		function adjust(my_class) {
+			var status_msg = {
+				'ALL_FONTS_SMALLER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER'),
+				'ALL_FONTS_DEFAULT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT'),
+				'ALL_FONTS_LARGER': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGER'),
+				'ALL_FONTS_XX_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL'),
+				'ALL_FONTS_X_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL'),
+				'ALL_FONTS_SMALL': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_SMALL'),
+				'ALL_FONTS_MEDIUM': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM'),
+				'ALL_FONTS_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_LARGE'),
+				'ALL_FONTS_X_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE'),
+				'ALL_FONTS_XX_LARGE': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE'),
+				'ALL_FONTS_5PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_5PT'),
+				'ALL_FONTS_6PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_6PT'),
+				'ALL_FONTS_7PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_7PT'),
+				'ALL_FONTS_8PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_8PT'),
+				'ALL_FONTS_9PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_9PT'),
+				'ALL_FONTS_10PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_10PT'),
+				'ALL_FONTS_11PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_11PT'),
+				'ALL_FONTS_12PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_12PT'),
+				'ALL_FONTS_13PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_13PT'),
+				'ALL_FONTS_14PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_14PT'),
+				'ALL_FONTS_15PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_15PT'),
+				'ALL_FONTS_16PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_16PT'),
+				'ALL_FONTS_17PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_17PT'),
+				'ALL_FONTS_18PT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_18PT'),
+				'ALL_FONTS_DEFAULT': document.getElementById("adminStrings").getString('staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT')
+			};
+
 			try {
 				g.data.global_font_adjust = my_class; g.data.stash('global_font_adjust');
-				alert(my_msg);
+				alert(status_msg[my_class]);
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('setting font in admin/font_settings.xul',E); } catch(F) { alert(E); }
 			}
@@ -74,7 +103,11 @@
 			try {
 				var bool = document.getElementById('sound').checked;
 				g.data.no_sound = bool; g.data.stash('no_sound');
-				alert('Sound is now ' + (bool ? ' disabled.' : ' enabled.') ); 
+				if (bool) {
+					alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.disabled'));
+				} else {
+					alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound.enabled'));
+				}
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('setting sound in admin/font_settings.xul',E); } catch(F) { alert(E); }
 			}
@@ -86,7 +119,7 @@
 				JSAN.use('util.file'); var file = new util.file('no_sound');
 				file.write_content( 'truncate', String( document.getElementById('sound').checked ) );
 				file.close();
-				alert('Sound preference saved to file system.');
+				alert(document.getElementById("adminStrings").getString('staff.admin.font_settings.sound'));
 			} catch(E) {
 				try { g.error.standard_unexpected_error_alert('saving in admin/font_settings.xul',E); } catch(F) { alert(E); }
 			}
@@ -95,50 +128,53 @@
 	]]>
 	</script>
 
+	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
+	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
+
 	<groupbox orient="vertical">
-		<caption label="Adjust Sound"/>
+		<caption label="&staff.server.admin.font.sound.caption;"/>
 		<hbox>
-			<checkbox id="sound" label="Disable sound?" oncommand="toggle_sound();"/>
-			<button label='Save to Disk' oncommand="save_sound();"/>
+			<checkbox id="sound" label="&staff.server.admin.font.sound.checkbox;" oncommand="toggle_sound();"/>
+			<button label="&staff.server.admin.save_disk;" oncommand="save_sound();"/>
 		</hbox>
 	</groupbox>
 
 	<groupbox>
-		<caption label="Adjust Global Font"/>
+		<caption label="&staff.server.admin.font.global.caption;"/>
 		<hbox>
 			<vbox>
-				<button class="ALL_FONTS_SMALLER" label="Smaller than Default" oncommand="adjust('ALL_FONTS_SMALLER','Global Font Adjust set to Smaller than Default');"/>
-				<button class="ALL_FONTS_DEFAULT" label="Default" oncommand="adjust('ALL_FONTS_DEFAULT','Global Font Adjust set to Default');"/>
-				<button class="ALL_FONTS_LARGER" label="Larger than Default" oncommand="adjust('ALL_FONTS_LARGER','Global Font Adjust set to Larger than Default');"/>
+				<button class="ALL_FONTS_SMALLER" label="&staff.server.admin.font.smaller;" oncommand="adjust('ALL_FONTS_SMALLER');"/>
+				<button class="ALL_FONTS_DEFAULT" label="&staff.server.admin.font.default;" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
+				<button class="ALL_FONTS_LARGER" label="&staff.server.admin.font.larger;" oncommand="adjust('ALL_FONTS_LARGER');"/>
 			</vbox>
 			<vbox>
-				<button class="ALL_FONTS_XX_SMALL" label="XX-Small" oncommand="adjust('ALL_FONTS_XX_SMALL','Global Font set to XX-Small');"/>
-				<button class="ALL_FONTS_X_SMALL" label="X-Small" oncommand="adjust('ALL_FONTS_X_SMALL','Global Font set to X-Small');"/>
-				<button class="ALL_FONTS_SMALL" label="Small" oncommand="adjust('ALL_FONTS_SMALL','Global Font set to Small');"/>
-				<button class="ALL_FONTS_MEDIUM" label="Medium" oncommand="adjust('ALL_FONTS_MEDIUM','Global Font set to Medium');"/>
-				<button class="ALL_FONTS_LARGE" label="Large" oncommand="adjust('ALL_FONTS_LARGE','Global Font set to Large');"/>
-				<button class="ALL_FONTS_X_LARGE" label="X-Large" oncommand="adjust('ALL_FONTS_X_LARGE','Global Font set to X-Large');"/>
-				<button class="ALL_FONTS_XX_LARGE" label="XX-Large" oncommand="adjust('ALL_FONTS_XX_LARGE','Global Font set to XX-Large');"/>
+				<button class="ALL_FONTS_XX_SMALL" label="&staff.server.admin.font.xxsmall;" oncommand="adjust('ALL_FONTS_XX_SMALL');"/>
+				<button class="ALL_FONTS_X_SMALL" label="&staff.server.admin.font.xsmall;" oncommand="adjust('ALL_FONTS_X_SMALL');"/>
+				<button class="ALL_FONTS_SMALL" label="&staff.server.admin.font.small;" oncommand="adjust('ALL_FONTS_SMALL');"/>
+				<button class="ALL_FONTS_MEDIUM" label="&staff.server.admin.font.medium;" oncommand="adjust('ALL_FONTS_MEDIUM');"/>
+				<button class="ALL_FONTS_LARGE" label="&staff.server.admin.font.large;" oncommand="adjust('ALL_FONTS_LARGE');"/>
+				<button class="ALL_FONTS_X_LARGE" label="&staff.server.admin.font.xlarge;" oncommand="adjust('ALL_FONTS_X_LARGE');"/>
+				<button class="ALL_FONTS_XX_LARGE" label="&staff.server.admin.font.xxlarge;" oncommand="adjust('ALL_FONTS_XX_LARGE');"/>
 			</vbox>
 			<vbox>
-				<button class="ALL_FONTS_5PT" label="5pt" oncommand="adjust('ALL_FONTS_5PT','Global Font set to 5pt');"/>
-				<button class="ALL_FONTS_6PT" label="6pt" oncommand="adjust('ALL_FONTS_6PT','Global Font set to 6pt');"/>
-				<button class="ALL_FONTS_7PT" label="7pt" oncommand="adjust('ALL_FONTS_7PT','Global Font set to 7pt');"/>
-				<button class="ALL_FONTS_8PT" label="8pt" oncommand="adjust('ALL_FONTS_8PT','Global Font set to 8pt');"/>
-				<button class="ALL_FONTS_9PT" label="9pt" oncommand="adjust('ALL_FONTS_9PT','Global Font set to 9pt');"/>
-				<button class="ALL_FONTS_10PT" label="10pt" oncommand="adjust('ALL_FONTS_10PT','Global Font set to 10pt');"/>
-				<button class="ALL_FONTS_11PT" label="11pt" oncommand="adjust('ALL_FONTS_11PT','Global Font set to 11pt');"/>
-				<button class="ALL_FONTS_12PT" label="12pt" oncommand="adjust('ALL_FONTS_12PT','Global Font set to 12pt');"/>
-				<button class="ALL_FONTS_13PT" label="13pt" oncommand="adjust('ALL_FONTS_13PT','Global Font set to 13pt');"/>
-				<button class="ALL_FONTS_14PT" label="14pt" oncommand="adjust('ALL_FONTS_14PT','Global Font set to 14pt');"/>
-				<button class="ALL_FONTS_15PT" label="15pt" oncommand="adjust('ALL_FONTS_15PT','Global Font set to 15pt');"/>
-				<button class="ALL_FONTS_16PT" label="16pt" oncommand="adjust('ALL_FONTS_16PT','Global Font set to 16pt');"/>
-				<button class="ALL_FONTS_17PT" label="17pt" oncommand="adjust('ALL_FONTS_17PT','Global Font set to 17pt');"/>
-				<button class="ALL_FONTS_18PT" label="18pt" oncommand="adjust('ALL_FONTS_18PT','Global Font set to 18pt');"/>
+				<button class="ALL_FONTS_5PT" label="&staff.server.admin.font.5pt;" oncommand="adjust('ALL_FONTS_5PT');"/>
+				<button class="ALL_FONTS_6PT" label="&staff.server.admin.font.6pt;" oncommand="adjust('ALL_FONTS_6PT');"/>
+				<button class="ALL_FONTS_7PT" label="&staff.server.admin.font.7pt;" oncommand="adjust('ALL_FONTS_7PT');"/>
+				<button class="ALL_FONTS_8PT" label="&staff.server.admin.font.8pt;" oncommand="adjust('ALL_FONTS_8PT');"/>
+				<button class="ALL_FONTS_9PT" label="&staff.server.admin.font.9pt;" oncommand="adjust('ALL_FONTS_9PT');"/>
+				<button class="ALL_FONTS_10PT" label="&staff.server.admin.font.10pt;" oncommand="adjust('ALL_FONTS_10PT');"/>
+				<button class="ALL_FONTS_11PT" label="&staff.server.admin.font.11pt;" oncommand="adjust('ALL_FONTS_11PT');"/>
+				<button class="ALL_FONTS_12PT" label="&staff.server.admin.font.12pt;" oncommand="adjust('ALL_FONTS_12PT');"/>
+				<button class="ALL_FONTS_13PT" label="&staff.server.admin.font.13pt;" oncommand="adjust('ALL_FONTS_13PT');"/>
+				<button class="ALL_FONTS_14PT" label="&staff.server.admin.font.14pt;" oncommand="adjust('ALL_FONTS_14PT');"/>
+				<button class="ALL_FONTS_15PT" label="&staff.server.admin.font.15pt;" oncommand="adjust('ALL_FONTS_15PT');"/>
+				<button class="ALL_FONTS_16PT" label="&staff.server.admin.font.16pt;" oncommand="adjust('ALL_FONTS_16PT');"/>
+				<button class="ALL_FONTS_17PT" label="&staff.server.admin.font.17pt;" oncommand="adjust('ALL_FONTS_17PT');"/>
+				<button class="ALL_FONTS_18PT" label="&staff.server.admin.font.18pt;" oncommand="adjust('ALL_FONTS_18PT');"/>
 			</vbox>
 			<vbox>
-				<button label="Restore Default" flex="1" oncommand="adjust('ALL_FONTS_DEFAULT','Global Font Adjust set to Default');"/>
-				<button label='Save to Disk' flex="1" oncommand="save();"/>
+				<button label="&staff.server.admin.font.restore;" flex="1" oncommand="adjust('ALL_FONTS_DEFAULT');"/>
+				<button label="&staff.server.admin.save_disk;" flex="1" oncommand="save();"/>
 			</vbox>
 		</hbox>
 	</groupbox>
