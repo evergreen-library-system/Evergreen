@@ -52,8 +52,8 @@
 
 	]]>
 	</script>
-	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale'-->/common.properties"/>
+	<messagecatalog id="adminStrings" src="/xul/server/locale/<!--#echo var='locale'-->/admin.properties"/>
 
 	<vbox id="admin_offline_manage_xacts_main" flex="1">
 

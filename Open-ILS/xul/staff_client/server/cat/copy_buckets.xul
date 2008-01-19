@@ -35,7 +35,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -60,13 +60,11 @@
 				);
 	
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Copy Buckets'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(document.getElementById("catStrings").getString('cat.copy_buckets.tab')); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\n" 
-					+ 'cat.copy_buckets.xul\n' + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ["cat/copy_buckets.xul", E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -75,6 +73,7 @@
 	]]>
 	</script>
 
+	<messagecatalog id="commonStrings" src="/xul/server/locale/<!--#echo var='locale' -->/common.properties"/>
 	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale' -->/cat.properties"/>
 
 	<commandset id="copy_buckets_cmds">

@@ -128,8 +128,8 @@
 	]]>
 	</script>
 
-	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
+	<messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
+	<messagecatalog id="adminStrings" src='/xul/server/locale/<!--#echo var="locale"-->/admin.properties'/>
 
 	<groupbox orient="vertical">
 		<caption label="&staff.server.admin.font.sound.caption;"/>
