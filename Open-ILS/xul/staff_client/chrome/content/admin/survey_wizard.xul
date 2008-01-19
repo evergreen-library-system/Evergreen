@@ -28,7 +28,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing'); }
+		        if (typeof JSAN == 'undefined') { throw( document.getElementById("offlineStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -48,7 +48,7 @@
 				document.getElementById('survey_add').canAdvance = false; 
 	
 			} catch(E) {
-				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['survey_wizard.xul', E]);
+				var err_msg = document.getElementById("offlineStrings").getFormattedString('common.exception', ['survey_wizard.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -56,10 +56,7 @@
 	]]>
 	</script>
 
-	
-	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-	<messagecatalog id="adminStrings" src="chrome://open_ils_staff_client/locale/admin.properties"/>
-	
+	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
 	<!-- Layout to be filled in by overlays and javascript -->
 	<wizardpage id="page1"/>

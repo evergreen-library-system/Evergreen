@@ -30,9 +30,7 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/cat/opac.js"/>
 	
-	<messagecatalog id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-	<messagecatalog id="catStrings" src="chrome://open_ils_staff_client/locale/cat.properties"/>
-	
+	<messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
 	<vbox flex="1">
 		<deck id="top_pane"/>

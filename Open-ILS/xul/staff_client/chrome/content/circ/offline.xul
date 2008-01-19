@@ -30,23 +30,21 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
-		var circStrings;
-		var commonStrings;
+		var offlineStrings;
 
 		function my_init() {
 			try {
-				circStrings = document.getElementById('circStrings');
-				commonStrings = document.getElementById('commonStrings');
+				offlineStrings = document.getElementById('offlineStrings');
 
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
+		                if (typeof JSAN == 'undefined') { throw(offlineStrings.getString('common.jsan.missing')); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('..');
 				JSAN.use('util.error'); g.error = new util.error();
 				g.error.sdump('D_TRACE','my_init() for offline.xul');
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(offlineStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 				}
 
 				g.cgi = new CGI();
@@ -68,7 +66,7 @@
 				update_clock();
 
 			} catch(E) {
-				var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline.xul", E]);
+				var err_msg = offlineStrings.getFormattedString('common.exception', ["circ/offline.xul", E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -77,10 +75,7 @@
 	]]>
 	</script>
 
-	<stringbundleset id="circBundleSet">
-		<stringbundle id="commonStrings" src="chrome://open_ils_staff_client/locale/common.properties"/>
-		<stringbundle id="circStrings" src="chrome://open_ils_staff_client/locale/circ.properties"/>
-	</stringbundleset>
+    <messagecatalog id="offlineStrings" src="chrome://open_ils_staff_client/locale/offline.properties"/>
 
 	<groupbox flex="1" class="my_overflow">
 		<caption label="&staff.circ.offline.main.label;"/>

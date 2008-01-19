@@ -1,13 +1,11 @@
-var commonStrings;
-var circStrings;
+var offlineStrings;
 
 function my_init() {
 	try {
-		commonStrings = $('commonStrings');
-		circStrings = $('circStrings');
+		offlineStrings = $('offlineStrings');
 
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw(commonStrings.getString('common.jsan.missing')); }
+		if (typeof JSAN == 'undefined') { throw(offlineStrings.getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -16,7 +14,7 @@ function my_init() {
 		JSAN.use('util.widgets'); JSAN.use('util.file');
 
 		if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-			try { window.xulG.set_tab_name(circStrings.getString('circ.standalone')); } catch(E) { alert(E); }
+			try { window.xulG.set_tab_name(offlineStrings.getString('circ.standalone')); } catch(E) { alert(E); }
 		}
 
 		JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
@@ -59,28 +57,28 @@ function my_init() {
 		if (file._file.exists()) {
 			list_data = file.get_object(); file.close();
 			ml = util.widgets.make_menulist( 
-				[ [circStrings.getString('circ.offline_checkout.nonbarcoded'), ''] ].concat(list_data[0]), 
+				[ [offlineStrings.getString('circ.offline_checkout.nonbarcoded'), ''] ].concat(list_data[0]), 
 				list_data[1] 
 			);
 			ml.setAttribute('id','noncat_type_menu'); $('x_noncat_type').appendChild(ml);
 			ml.addEventListener(
 				'command',
 				function(ev) { 
-					var count = window.prompt(circStrings.getString('circ.offline_checkout.items'),1,ml.getAttribute('label'));
+					var count = window.prompt(offlineStrings.getString('circ.offline_checkout.items'),1,ml.getAttribute('label'));
 					append_to_list('noncat',count);	
 					ml.value = '';
 				},
 				false
 			);
 		} else {
-			alert(circStrings.getString('circ.offline_checkout.download.warning'));
+			alert(offlineStrings.getString('circ.offline_checkout.download.warning'));
 		}
 
 		var file = new util.file('offline_delta'); 
 		if (file._file.exists()) { g.delta = file.get_object()[0]; file.close(); } else { g.delta = 0; }
 
 	} catch(E) {
-		var err_msg = commonStrings.getFormattedString('common.exception', ["circ/offline_checkout.xul", E]);
+		var err_msg = offlineStrings.getFormattedString('common.exception', ["circ/offline_checkout.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}
@@ -93,7 +91,7 @@ function test_patron(ev) {
 		var barcode = ev.target.value;
 		JSAN.use('util.barcode');
 		if ( ($('strict_p_barcode').checked) && (! util.barcode.check(barcode)) ) {
-			var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
+			var r = g.error.yns_alert(offlineStrings.getString('circ.bad_checkdigit'),offlineStrings.getString('circ.barcode.warning'),offlineStrings.getString('common.ok'),offlineStrings.getString('common.clear'),null,offlineStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -108,15 +106,15 @@ function test_patron(ev) {
 		if (g.data.bad_patrons[barcode]) {
 			var code;
 			switch(g.data.bad_patrons[barcode]) {
-				case 'L' : code = commonStrings.getString('common.barcode.status.warning.lost'); break;
-				case 'E' : code = commonStrings.getString('common.barcode.status.warning.expired'); break;
-				case 'B' : code = commonStrings.getString('common.barcode.status.warning.barred'); break;
-				case 'D' : code = commonStrings.getString('common.barcode.status.warning.blocked'); break;
-				default : code = commonStrings.getFormattedString('common.barcode.status.warning.blocked', [g.data.bad_patrons[barcode]]); break;
+				case 'L' : code = offlineStrings.getString('common.barcode.status.warning.lost'); break;
+				case 'E' : code = offlineStrings.getString('common.barcode.status.warning.expired'); break;
+				case 'B' : code = offlineStrings.getString('common.barcode.status.warning.barred'); break;
+				case 'D' : code = offlineStrings.getString('common.barcode.status.warning.blocked'); break;
+				default : code = offlineStrings.getFormattedString('common.barcode.status.warning.blocked', [g.data.bad_patrons[barcode]]); break;
 			}
 
-			var msg = commonStrings.getFormattedString('common.barcode.status.warning', [g.data.bad_patrons_date.substr(0,15), barcode, code]);
-			var r = g.error.yns_alert(msg,circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
+			var msg = offlineStrings.getFormattedString('common.barcode.status.warning', [g.data.bad_patrons_date.substr(0,15), barcode, code]);
+			var r = g.error.yns_alert(msg,offlineStrings.getString('circ.barcode.warning'),offlineStrings.getString('common.ok'),offlineStrings.getString('common.clear'),null,offlineStrings.getString('common.confirm'));
 			if (r == 1) {
 				setTimeout(
 					function() {
@@ -134,9 +132,9 @@ function test_patron(ev) {
 function check_date(ev) {
 	JSAN.use('util.date');
 	try {
-		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw(commonStrings.getString('common.date.invalid')); }
-		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
-		if (util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw(circStrings.getString('circ.offline_checkout.date.early')); }
+		if (! util.date.check('YYYY-MM-DD',ev.target.value) ) { throw(offlineStrings.getString('common.date.invalid')); }
+		if (util.date.check_past('YYYY-MM-DD',ev.target.value) ) { throw(offlineStrings.getString('circ.offline_checkout.date.early')); }
+		if (util.date.formatted_date(new Date(),'%F') == ev.target.value) { throw(offlineStrings.getString('circ.offline_checkout.date.early')); }
 	} catch(E) {
 		alert(E);
 		var today = new Date();
@@ -158,7 +156,7 @@ function handle_keypress(ev) {
 function handle_enter(ev) {
 	JSAN.use('util.barcode');
 	if ( ($('strict_i_barcode').checked) && (! util.barcode.check($('i_barcode').value)) ) {
-		var r = g.error.yns_alert(circStrings.getString('circ.bad_checkdigit'),circStrings.getString('circ.barcode.warning'),commonStrings.getString('common.ok'),commonStrings.getString('common.clear'),null,commonStrings.getString('common.confirm'));
+		var r = g.error.yns_alert(offlineStrings.getString('circ.bad_checkdigit'),offlineStrings.getString('circ.barcode.warning'),offlineStrings.getString('common.ok'),offlineStrings.getString('common.clear'),null,offlineStrings.getString('common.confirm'));
 		if (r == 1) {
 			setTimeout(
 				function() {
@@ -197,7 +195,7 @@ function append_to_list(checkout_type,count) {
 
 		var p_barcode = $('p_barcode').value;
 		if (! p_barcode) {
-			g.error.yns_alert(circStrings.getString('circ.barcode.enter'),circStrings.getString('circ.offline_checkout.required_field'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
+			g.error.yns_alert(offlineStrings.getString('circ.barcode.enter'),offlineStrings.getString('circ.offline_checkout.required_field'),offlineStrings.getString('common.ok'),null,null,offlineStrings.getString('common.confirm'));
 			return;
 		} else {
 
@@ -216,7 +214,7 @@ function append_to_list(checkout_type,count) {
 				var rows = g.list.dump_with_keys();
 				for (var i = 0; i < rows.length; i++) {
 					if (rows[i].barcode == i_barcode) {
-						g.error.yns_alert(circStrings.getString('circ.duplicate_scan.msg'),circStrings.getString('circ.duplicate_scan.field'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
+						g.error.yns_alert(offlineStrings.getString('circ.duplicate_scan.msg'),offlineStrings.getString('circ.duplicate_scan.field'),offlineStrings.getString('common.ok'),null,null,offlineStrings.getString('common.confirm'));
 						return;
 					}
 				}
@@ -225,7 +223,7 @@ function append_to_list(checkout_type,count) {
 			break;
 			case 'noncat' :
 				count = parseInt(count); if (! (count>0) ) {
-					g.error.yns_alert(circStrings.getString('circ.offline_checkout.valid_count'),circStrings.getString('circ.offline_checkout.required_value'),commonStrings.getString('common.ok'),null,null,commonStrings.getString('common.confirm'));
+					g.error.yns_alert(offlineStrings.getString('circ.offline_checkout.valid_count'),offlineStrings.getString('circ.offline_checkout.required_value'),offlineStrings.getString('common.ok'),null,null,offlineStrings.getString('common.confirm'));
 					return;
 				}
 				my.barcode = $('noncat_type_menu').getAttribute('label');
@@ -233,7 +231,7 @@ function append_to_list(checkout_type,count) {
 				my.noncat_type = JSON2js($('noncat_type_menu').value)[0];
 				my.noncat_count = count;
 			break;
-			default: alert(commonStrings.getString('common.error.default')); break;
+			default: alert(offlineStrings.getString('common.error.default')); break;
 		}
 	
 		g.list.append( { 'row' : { 'my' : my }, 'to_top' : true } );
