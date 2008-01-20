@@ -1256,3 +1256,44 @@
 <!ENTITY staff.server.admin.font.18pt "18pt">
 <!ENTITY staff.server.admin.font.restore "Restore Default">
 <!ENTITY staff.server.admin.font.restore "Restore Default">
+<!ENTITY staff.server.admin.transit.filter.caption "Transit Filter">
+<!ENTITY staff.server.admin.transit.library.label "Transit Library">
+<!ENTITY staff.server.admin.transit.to.label "Transit to">
+<!ENTITY staff.server.admin.transit.from.label "Transit from">
+<!ENTITY staff.server.admin.transit.date.label "Transit Date falls between">
+<!ENTITY staff.server.admin.transit.date.today "Today">
+<!ENTITY staff.server.admin.transit.date.week "Today - 7 days">
+<!ENTITY staff.server.admin.transit.date.2weeks "Today - 14 days">
+<!ENTITY staff.server.admin.transit.date.3weeks "Today - 21 days">
+<!ENTITY staff.server.admin.transit.date.30days "Today - 30 days">
+<!ENTITY staff.server.admin.transit.date.start "The Beginning">
+<!ENTITY staff.server.admin.transit.retrieve.label "Retrieve Transits">
+<!ENTITY staff.server.admin.transit.retrieve.accesskey "T">
+<!ENTITY staff.server.admin.transit.list.label "Transits">
+<!ENTITY staff.server.admin.transit.list.print "Print Transits">
+<!ENTITY staff.server.admin.transit.list.actions "Actions for Selected Transits">
+<!ENTITY staff.server.admin.transit.list.actions.accesskey "S">
+<!ENTITY staff.server.admin.transit.list.copy.label "Copy to Clipboard">
+<!ENTITY staff.server.admin.transit.list.copy.accesskey "C">
+<!ENTITY staff.server.admin.transit.list.add.label "Add to Item Bucket">
+<!ENTITY staff.server.admin.transit.list.add.accesskey "A">
+<!ENTITY staff.server.admin.transit.list.show.label "Show in Catalog">
+<!ENTITY staff.server.admin.transit.list.show.accesskey "S">
+<!ENTITY staff.server.admin.transit.list.details.label "Show Item Details">
+<!ENTITY staff.server.admin.transit.list.details.accesskey "I">
+<!ENTITY staff.server.admin.transit.list.circs.label "Show Last Few Circulations">
+<!ENTITY staff.server.admin.transit.list.circs.accesskey "L">
+<!ENTITY staff.server.admin.transit.list.edit.label "Edit Item Attributes">
+<!ENTITY staff.server.admin.transit.list.edit.accesskey "E">
+<!ENTITY staff.server.admin.transit.list.abort.label "Abort Transits">
+<!ENTITY staff.server.admin.transit.list.save.label "Save Columns">
+<!ENTITY staff.server.admin.cash.title "Evergreen: Cash Reports">
+<!ENTITY staff.server.admin.cash.welcome "Welcome ">
+<!ENTITY staff.server.admin.cash.start_date "Start Date:">
+<!ENTITY staff.server.admin.cash.date.select "Date selector">
+<!ENTITY staff.server.admin.cash.end_date "End Date:">
+<!ENTITY staff.server.admin.cash.date_format "(YYYY-MM-DD)">
+<!ENTITY staff.server.admin.cash.view "View reports for : ">
+<!ENTITY staff.server.admin.cash.submit "Go!">
+<!ENTITY staff.server.admin.cash.desk "Desk Payments">
+<!ENTITY staff.server.admin.cash.user "User Payments">
