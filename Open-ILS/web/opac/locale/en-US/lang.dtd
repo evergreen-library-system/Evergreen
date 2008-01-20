@@ -1323,3 +1323,52 @@
 <!ENTITY staff.server.admin.closed_dates.date.invalid "Invalid date format">
 <!ENTITY staff.server.admin.closed_dates.time.invalid "Invalid time format">
 <!ENTITY staff.server.admin.closed_dates.success "Closed date successfully updated">
+<!ENTITY staff.server.admin.copy_locations.title "Evergreen: Copy Locations Editor">
+<!ENTITY staff.server.admin.copy_locations.editor " Copy Locations Editor ">
+<!ENTITY staff.server.admin.copy_locations.editor.create "Create a new copy location">
+<!ENTITY staff.server.admin.copy_locations.editor.name "Name: ">
+<!ENTITY staff.server.admin.copy_locations.editor.holdable.label "Holdable: ">
+<!ENTITY staff.server.admin.copy_locations.editor.yes "Yes">
+<!ENTITY staff.server.admin.copy_locations.editor.no "No">
+<!ENTITY staff.server.admin.copy_locations.editor.opac_visible.label "OPAC Visible: ">
+<!ENTITY staff.server.admin.copy_locations.editor.circulate.label "Circulate: ">
+<!ENTITY staff.server.admin.copy_locations.editor.library.label "Owning Library:">
+<!ENTITY staff.server.admin.copy_locations.editor.name "Name">
+<!ENTITY staff.server.admin.copy_locations.editor.library "Owning Library">
+<!ENTITY staff.server.admin.copy_locations.editor.holdable "Holdable">
+<!ENTITY staff.server.admin.copy_locations.editor.help "Help">
+<!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
+<!ENTITY staff.server.admin.copy_locations.editor.circulate "Circulate">
+<!ENTITY staff.server.admin.copy_locations.editor.edit "Edit">
+<!ENTITY staff.server.admin.copy_locations.editor.delete "Delete">
+<!ENTITY staff.server.admin.copy_locations.editor.help.holdable "If a copy location is 'Holdable', copies in that location may have holds placed on them.">
+<!ENTITY staff.server.admin.copy_locations.editor.delete.confirm "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail.">
+<!ENTITY staff.server.admin.copy_locations.submit "Submit">
+<!ENTITY staff.server.admin.copy_locations.cancel "Cancel">
+<!ENTITY staff.server.admin.copy_locations.update_success "Update Succeeded">
+<!ENTITY staff.server.admin.hold_pull.title "Evergreen Holds Pull List">
+<!-- This will be followed by the org_unit name -->
+<!ENTITY staff.server.admin.hold_pull.header "Evergreen Holds Pull List : ">
+<!-- This will be followed by the user's name -->
+<!ENTITY staff.server.admin.hold_pull.greeting "Welcome ">
+<!ENTITY staff.server.admin.hold_pull.sort.note "Note: Click on a column header to sort the column">
+<!ENTITY staff.server.admin.hold_pull.title "Title">
+<!ENTITY staff.server.admin.hold_pull.author "Author">
+<!ENTITY staff.server.admin.hold_pull.copy_location "Copy Location">
+<!ENTITY staff.server.admin.hold_pull.call_number "Call Number">
+<!ENTITY staff.server.admin.hold_pull.barcode "Item Barcode">
+<!ENTITY staff.server.admin.hold_pull.copy "Copy Number">
+<!ENTITY staff.server.admin.hold_pull.format "Format">
+<!ENTITY staff.server.admin.hold_pull.patron_barcode "Patron Barcode">
+<!ENTITY staff.server.admin.hold_pull.hold_date "Hold Placement Date">
+<!ENTITY staff.server.admin.hold_pull.hold_type "Hold Type">
+<!ENTITY staff.server.admin.hold_pull.book "Book">
+<!ENTITY staff.server.admin.hold_pull.large_book "Large Print Book">
+<!ENTITY staff.server.admin.hold_pull.audiobook "Audiobook">
+<!ENTITY staff.server.admin.hold_pull.video "Video Recording">
+<!ENTITY staff.server.admin.hold_pull.music "Music">
+<!ENTITY staff.server.admin.hold_pull.eresource "Electronic Resource">
+<!ENTITY staff.server.admin.hold_pull.copy_hold "Copy Hold">
+<!ENTITY staff.server.admin.hold_pull.volume_hold "Volume Hold">
+<!ENTITY staff.server.admin.hold_pull.title_hold "Title Hold">
+<!ENTITY staff.server.admin.hold_pull.metarecord_hold "Metarecord Hold">

@@ -1,8 +1,15 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Copy Locations Editor</title>
+		<title>&staff.server.admin.copy_locations.title;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script>
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -30,48 +37,48 @@
 		</div>
 
 		<center>
-			<div class='title'> Copy Locations Editor </div>
+			<div class='title'>&staff.server.admin.copy_locations.editor;</div>
 			<br/>
 
 			<table class='data_grid data_grid_center' width='65%'>
 				<thead>
-					<tr><td colspan='4'>Create a new copy location</td></tr>
+					<tr><td colspan='4'>&staff.server.admin.copy_locations.editor.create;</td></tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td id='id'>Name: </td>
+						<td id='id'>&staff.server.admin.copy_locations.editor.name;</td>
 						<td>
 							<input id='cl_new_name' type='text' size='10'/>
 						</td>
-						<td>Holdable: </td>
+						<td>&staff.server.admin.copy_locations.editor.holdable.label;</td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<input type='radio' name='cl_new_hold' id='cl_new_hold_yes'/>
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<input type='radio' name='cl_new_hold'  
 								id='cl_new_hold_no' checked='checked'> </input>
 						</td>
 					</tr>
 
 					<tr>
-						<td>OPAC Visible: </td>
+						<td>&staff.server.admin.copy_locations.editor.opac_visible.label;</td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<input type='radio' name='cl_new_vis' id='cl_new_vis_yes' />
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<input type='radio' name='cl_new_vis'  id='cl_new_vis_no' checked='checked'> </input>
 						</td>
-						<td>Circulate: </td>
+						<td>&staff.server.admin.copy_locations.editor.circulate.label;</td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<input type='radio' name='cl_new_circulate' id='cl_new_circulate_yes' />
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<input type='radio' name='cl_new_circulate'  
 								id='cl_new_circulate_no' checked='checked'> </input>
 						</td>
 					</tr>
 					<tr>
-						<td>Owning Library:</td>
+						<td>&staff.server.admin.copy_locations.editor.library;</td>
 						<td colspan='2' >
 							<select id='cl_new_owner' disabled='disabled' style='width:auto;'> </select>
 						</td>
@@ -86,16 +93,16 @@
 			<table class='data_grid data_grid_center' style='width: 95%'>
 				<thead>
 					<tr>
-						<td width='15%'>Name</td>
-						<td width='20%'>Owning Library</td>
+						<td width='15%'>&staff.server.admin.copy_locations.editor.name;</td>
+						<td width='20%'>&staff.server.admin.copy_locations.editor.library;</td>
 						<td width='15%'>
-							<span>Holdable </span>
-							<a class='context_help' href='javascript:clHoldMsg();'> ??</a>
+							<span>&staff.server.admin.copy_locations.editor.holdable;</span>
+							<a class='context_help' href='javascript:clHoldMsg();'></a>
 						</td>
-						<td width='15%'>OPAC Visible</td>
-						<td width='15%'>Circulate</td>
-						<td width='10%'>Edit</td>
-						<td width='10%'>Delete</td>
+						<td width='15%'>&staff.server.admin.copy_locations.editor.opac_visible;</td>
+						<td width='15%'>&staff.server.admin.copy_locations.editor.circulate;</td>
+						<td width='10%'>&staff.server.admin.copy_locations.editor.edit;</td>
+						<td width='10%'>&staff.server.admin.copy_locations.editor.delete;</td>
 					</tr>
 				</thead>
 				<tbody id='cl_tbody'>
@@ -113,59 +120,56 @@
 		 </center>
 
 		 <div class='hide_me'>
-			<span id='yes'>Yes</span>
-			<span id='no'>No</span>
+			<span id='yes'>&staff.server.admin.copy_locations.editor.yes;</span>
+			<span id='no'>&staff.server.admin.copy_locations.editor.no;</span>
 			<span id='cl_hold_msg'>
-				If a copy location is "Holdable", copies in that location may have holds placed on them.
+				&staff.server.admin.copy_locations.editor.help.holdable;
 			</span>
 			<span id='cl_delete_confirm'>
-				Are you sure you wish to delete the selected copy location?
-				Note: If copies are currently attached to this location, the delete operation will fail.
+				&staff.server.admin.copy_locations.editor.delete.confirm;
 			</span>
 			<table>
-				<tbody>
-					<tr id='cl_edit' class='insert_row'>
 						<td><input name='cl_edit_name' type='text'> </input></td>
 						<td name='cl_edit_owner'></td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<span name='cl_edit_holdable_yes'>
 								<input type='radio' name='cl_edit_holdable'/>
 							</span>
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<span name='cl_edit_holdable_no'>
 								<input type='radio' name='cl_edit_holdable'/>
 							</span>
 						</td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<span name='cl_edit_visible_yes'>
 								<input type='radio' name='cl_edit_visible'/>
 							</span>
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<span name='cl_edit_visible_no'>
 								<input type='radio' name='cl_edit_visible'/>
 							</span>
 						</td>
 						<td>
-							<span>Yes</span>
+							<span>&staff.server.admin.copy_locations.editor.yes;</span>
 							<span name='cl_edit_circulate_yes'>
 								<input type='radio' name='cl_edit_circulate'/>
 							</span>
-							<span>No</span>
+							<span>&staff.server.admin.copy_locations.editor.no;</span>
 							<span name='cl_edit_circulate_no'>
 								<input type='radio' name='cl_edit_circulate'/>
 							</span>
 						</td>
-						<td><input type='submit' name='cl_edit_commit' value='Submit'/></td>
-						<td><input type='submit' name='cl_edit_cancel' value='Cancel'/></td>
+						<td><input type='submit' name='cl_edit_commit' value='&staff.server.admin.copy_locations.submit;'/></td>
+						<td><input type='submit' name='cl_edit_cancel' value='&staff.server.admin.copy_locations.cancel;'/></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</body>
 	<span class='hide_me' id='cl_update_success'>
-		Update Succeeded
+		&staff.server.admin.copy_locations.update_success;
 	</span>
 </html>
 
