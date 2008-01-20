@@ -1297,3 +1297,29 @@
 <!ENTITY staff.server.admin.cash.submit "Go!">
 <!ENTITY staff.server.admin.cash.desk "Desk Payments">
 <!ENTITY staff.server.admin.cash.user "User Payments">
+<!ENTITY staff.server.admin.closed_dates.title "Evergreen: Library Closed Dates Editor">
+<!ENTITY staff.server.admin.closed_dates.welcome "Welcome ">
+<!ENTITY staff.server.admin.closed_dates.editor.title " Closed Dates Editor ">
+<!ENTITY staff.server.admin.closed_dates.editor.for "Edit Closed Dates for: ">
+<!ENTITY staff.server.admin.closed_dates.editor.duration "Closed Duration">
+<!ENTITY staff.server.admin.closed_dates.editor.reason "Reason for Closing">
+<!ENTITY staff.server.admin.closed_dates.editor.delete "Delete">
+<!ENTITY staff.server.admin.closed_dates.editor.allmultiday.delete "delete">
+<!-- Translators: do not translate "<b>YYYY-MM-DD</b>" or "<b>HH:MM</b>" -->
+<!ENTITY staff.server.admin.closed_dates.editor.allmultiday.format "Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the form <b>HH:MM</b>">
+<!ENTITY staff.server.admin.closed_dates.add.allday "Add Single Day Closing">
+<!ENTITY staff.server.admin.closed_dates.add.multiday "Add Mult-Date Closing">
+<!ENTITY staff.server.admin.closed_dates.add.detailed "Add Detailed Closing">
+<!ENTITY staff.server.admin.closed_dates.date.start "Start Date">
+<!ENTITY staff.server.admin.closed_dates.time.start "Start Time">
+<!ENTITY staff.server.admin.closed_dates.date.end "End Date">
+<!ENTITY staff.server.admin.closed_dates.time.end "End Time">
+<!ENTITY staff.server.admin.closed_dates.allday.label "All Day">
+<!ENTITY staff.server.admin.closed_dates.editor.reason.label "Reason for closing: ">
+<!ENTITY staff.server.admin.closed_dates.apply_all "Apply to all of my libraries">
+<!ENTITY staff.server.admin.closed_dates.save "Save">
+<!ENTITY staff.server.admin.closed_dates.cancel "Cancel">
+<!ENTITY staff.server.admin.closed_dates.confirm_delete "Are you sure you wish to delete the selected close date?">
+<!ENTITY staff.server.admin.closed_dates.date.invalid "Invalid date format">
+<!ENTITY staff.server.admin.closed_dates.time.invalid "Invalid time format">
+<!ENTITY staff.server.admin.closed_dates.success "Closed date successfully updated">
