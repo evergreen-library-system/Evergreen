@@ -1,3 +1,48 @@
+<!--
+
+Copyright (C) 2008 Equinox Software, Inc.
+Mike Rylander <miker@esilibrary.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+-->
+
+
+<!--
+
+This XSLT will take the MARC21 Concise Format for Bibliographic Data
+documentation maintained by the Library of Congress and turn it into an XML
+document for use by Evergreen (and others, if you so desire, under the terms
+of the GPL).
+
+The format of the output XML is similar to that produced sometime during
+2005 by Ed Summers and shared at textualize.com.  That site was not available
+at the time of this XSLT's creation, and thus this exists.
+
+Please report any problems to Mike Rylander at <miker@esilibrary.com>.
+
+Here's an easy way to use this:
+
+curl -o - http://www.loc.gov/marc/bibliographic/ecbd{ldrd,cntr,007s,008s,numb,clas,main,tils,impr,phys,sers,not1,not2,subj,adde,link,srae,hold}.html | \
+ tidy -asxml -n -q -utf8 | \
+ xsltproc &hyphen;&hyphen;html &hyphen;&hyphen;novalid locDoc2xml.xsl - | \
+ xmllint &hyphen;&hyphen;format &hyphen;&hyphen;noblanks - > marcedit-tooltips.xml
+
+-->
+
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output omit-xml-declaration="yes" method="xml" encoding="UTF-8" media-type="text/plain" />
 
