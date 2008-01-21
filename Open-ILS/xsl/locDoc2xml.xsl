@@ -25,7 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 This XSLT will take the MARC21 Concise Format for Bibliographic Data
 documentation maintained by the Library of Congress and turn it into an XML
 document for use by Evergreen (and others, if you so desire, under the terms
-of the GPL).
+of the GPL).  The LoC docs are available from:
+
+ http://www.loc.gov/marc/bibliographic/
 
 The format of the output XML is similar to that produced sometime during
 2005 by Ed Summers and shared at textualize.com.  That site was not available
