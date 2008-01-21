@@ -17,23 +17,38 @@
 
 			<constructor>
 				<![CDATA[
-				this._load_sprintf();
-				this._props = {};
-				this._load_from_src();
+                try {
+                        this._load_sprintf();
+                        this._props = {};
+                        this._load_from_src();
+                } catch(E) {
+                    alert('Error constructing messagecatalog in bindings.xml: ' + E);
+                    throw(E);
+                }
 				]]>
 			</constructor>
 
 			<property name="src">
 				<getter>
 					<![CDATA[
-					return this.getAttribute('src');
+                    try {
+    					return this.getAttribute('src');
+                    } catch(E) {
+                        alert('Error getting @src in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
 					]]>
 				</getter>
 				<setter>
 					<![CDATA[
-					this.setAttribute('src',val);
-					this.load_from_src();
-					return val;
+                    try {
+					    this.setAttribute('src',val);
+    					this.load_from_src();
+    					return val;
+                    } catch(E) {
+                        alert('Error setting @src in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
 					]]>
 				</setter>
 			</property>
@@ -41,18 +56,23 @@
 			<method name="_load_from_src">
 				<body>
 					<![CDATA[
-					var x = new XMLHttpRequest();
-					x.open("GET",this.src,false);
-					x.send(null);
-					if (x.responseText) {
-						var props = this._props2object(x.responseText);
-						for (var i in props) {
-							this._props[i] = props[i];
-						}
-					} else {
-						var msg = "messageCatalog: No text from " + this.src;
-						alert(msg); throw(msg);
-					}
+                    try {
+                            var x = new XMLHttpRequest();
+                            x.open("GET",this.src,false);
+                            x.send(null);
+                            if (x.responseText) {
+                                var props = this._props2object(x.responseText);
+                                for (var i in props) {
+                                    this._props[i] = props[i];
+                                }
+                            } else {
+                                var msg = "messageCatalog: No text from " + this.src;
+                                alert(msg); throw(msg);
+                            }
+                    } catch(E) {
+                        alert('Error loading properties in messagecatalog in bindings.xml: ' + E);
+                        throw(E);
+                    }
 					]]>
 				</body>
 			</method>
@@ -61,69 +81,74 @@
 				<parameter name="str"/>
 				<body>
 					<![CDATA[
-					var lines = str.split("\n");
-					var props = {};
-					var line = '';
-					var in_comment = false;
+                        try {
+                            var lines = str.split("\n");
+                            var props = {};
+                            var line = '';
+                            var in_comment = false;
 
-					for (var l in lines) {
-						line += lines[l];
+                            for (var l in lines) {
+                                line += lines[l];
 
-						// handle multi-line comments
-						if (line.indexOf('/*') >= 0) in_comment = true;
+                                // handle multi-line comments
+                                if (line.indexOf('/*') >= 0) in_comment = true;
 
-						if (in_comment && line.indexOf('*/') > 0) {
-							var comment_start = line.indexOf('/*');
-							var comment_end = line.indexOf('*/');
-							line = line.substring(0, comment_start) + line.substring(0, comment_end + 2);
-							in_comment = false;
-						} else if (in_comment) continue;
-							
-						// get rid of entire-line comments
-						if (line.indexOf('#') == 0) {
-							line = '';
-							continue;
-						}
+                                if (in_comment && line.indexOf('*/') > 0) {
+                                    var comment_start = line.indexOf('/*');
+                                    var comment_end = line.indexOf('*/');
+                                    line = line.substring(0, comment_start) + line.substring(0, comment_end + 2);
+                                    in_comment = false;
+                                } else if (in_comment) continue;
+                                    
+                                // get rid of entire-line comments
+                                if (line.indexOf('#') == 0) {
+                                    line = '';
+                                    continue;
+                                }
 
-						// handle end-of-line comments
-						var end_comment = line.indexOf('//');
-						if (end_comment >= 0) line = line.substring(0, end_comment);
+                                // handle end-of-line comments
+                                var end_comment = line.indexOf('//');
+                                if (end_comment >= 0) line = line.substring(0, end_comment);
 
-						// and line concatenation
-						if (line.charAt(line.lenth - 1) == '\\') {
-							line = line.substring(0,line.lenth - 1);
-							continue;
-						}
+                                // and line concatenation
+                                if (line.charAt(line.lenth - 1) == '\\') {
+                                    line = line.substring(0,line.lenth - 1);
+                                    continue;
+                                }
 
-						var eq_pos = line.indexOf('=');
-						if (eq_pos < 0) continue;
+                                var eq_pos = line.indexOf('=');
+                                if (eq_pos < 0) continue;
 
-						var k = line.substring(0,eq_pos);
-						k = k.replace(/\s+/g,"");
+                                var k = line.substring(0,eq_pos);
+                                k = k.replace(/\s+/g,"");
 
-						var v = line.substring(eq_pos + 1);
+                                var v = line.substring(eq_pos + 1);
 
-						var current_m = 0;
-						var cont = false;
-						do {    
-							if (v.indexOf( "{" + current_m + "}" ) >= 0 ) {
-								var mes_bund = new RegExp( "\\\{" + current_m + "\\\}", 'g' );
-								var sprintf_format = "%" + (current_m + 1) + "$s";
+                                var current_m = 0;
+                                var cont = false;
+                                do {    
+                                    if (v.indexOf( "{" + current_m + "}" ) >= 0 ) {
+                                        var mes_bund = new RegExp( "\\\{" + current_m + "\\\}", 'g' );
+                                        var sprintf_format = "%" + (current_m + 1) + "$s";
 
-								v = v.replace( mes_bund, sprintf_format );
+                                        v = v.replace( mes_bund, sprintf_format );
 
-								cont = true;
-								current_m++;
-							} else {
-								cont = false;
-							}
-						} while ( cont == true );
+                                        cont = true;
+                                        current_m++;
+                                    } else {
+                                        cont = false;
+                                    }
+                                } while ( cont == true );
 
-						props[k] = v;
-						line = '';
-			        	}
+                                props[k] = v;
+                                line = '';
+                                }
 
-					return props;
+                            return props;
+                        } catch(E) {
+                            alert('Error in props2object in messagecatalog in bindings.xml: ' + E);
+                            throw(E);
+                        }
 					]]>
 				</body>
 			</method>
@@ -133,9 +158,11 @@
 				<body>
 					<![CDATA[
 						try {
-							return this._props[key];
+                            var str = this._props[key];
+                            if (typeof str == 'undefined') throw(str);
+							return str;
 						} catch(e) {
-							alert("*** Failed to get string " + key + " in bundle: " + this.src + "\n");
+							alert("*** Failed to get string " + key + " in bundle: " + this.src + "\n" + e);
 							throw(e);
 						}
 					]]>
@@ -148,7 +175,8 @@
 				<body>
 					<![CDATA[
 						try {
-							var str = this._props[key]; if (!str) throw("messageCatalog: Failed to get string " + key + " in bundle.");
+							var str = this._props[key]; 
+                            if (typeof str == 'undefined') throw(str);
 							var these = [ str ].concat(params);
 							var v = this.sprintf.apply(this,these);
 
