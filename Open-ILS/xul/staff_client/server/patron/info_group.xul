@@ -67,7 +67,6 @@
 				g.OpenILS.data = new OpenILS.data(); g.OpenILS.data.init({'via':'stash'});
 
 				JSAN.use('util.list'); g.list = new util.list('patron_list');
-				function getString(s) { return g.OpenILS.data.entities[s]; }
 
 				JSAN.use('patron.util');
 				var columns = patron.util.columns(

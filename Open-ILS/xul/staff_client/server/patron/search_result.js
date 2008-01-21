@@ -22,7 +22,6 @@ patron.search_result.prototype = {
 		obj.OpenILS.data = new OpenILS.data(); obj.OpenILS.data.init({'via':'stash'});
 
 		JSAN.use('util.list'); obj.list = new util.list('patron_list');
-		function getString(s) { return obj.OpenILS.data.entities[s]; }
 
 		JSAN.use('patron.util');
 		var columns = patron.util.columns(

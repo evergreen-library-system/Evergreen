@@ -254,12 +254,6 @@ util.error.prototype = {
 
 	's_alert' : function (s) { alert(s); },
 
-	'get_ilsevent' : function(status) {
-		JSAN.use('OpenILS.data'); 
-		this.OpenILS.data = new OpenILS.data(); this.OpenILS.data.init({'via':'stash'});
-		return this.OpenILS.data.entities['ilsevent.'+status];
-	},
-
 	'standard_network_error_alert' : function(msg) {
 		var obj = this;
 		if (!msg) msg = '';

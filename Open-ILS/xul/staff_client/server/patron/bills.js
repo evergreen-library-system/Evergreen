@@ -123,18 +123,17 @@ patron.bills.prototype = {
 
 				JSAN.use('util.list'); obj.list = new util.list('bill_list');
 
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				obj.list.init(
 					{
 						'columns' : [
 						/*
 								{
-									'id' : 'xact_dates', 'label' : getString('staff.bills_xact_dates_label'), 'flex' : 1,
+									'id' : 'xact_dates', 'label' : document.getElementById('commonStrings').getString('staff.bills_xact_dates_label'), 'flex' : 1,
 									'primary' : false, 'hidden' : false, 'render' : 'obj.xact_dates_box(my.mobts)'
 								},
 						*/
 								{
-									'id' : 'notes', 'label' : getString('staff.bills_information'), 'flex' : 2,
+									'id' : 'notes', 'label' : document.getElementById('commonStrings').getString('staff.bills_information'), 'flex' : 2,
 									'primary' : false, 'hidden' : false, 'render' : 'obj.info_box(my)'
 								},
 								{
@@ -142,7 +141,7 @@ patron.bills.prototype = {
 									'primary' : false, 'hidden' : false, 'render' : 'obj.money_box(my.mobts)'
 								},
 								{
-									'id' : 'current_pay', 'label' : getString('staff.bills_current_payment_label'), 'flex' : 0, 
+									'id' : 'current_pay', 'label' : document.getElementById('commonStrings').getString('staff.bills_current_payment_label'), 'flex' : 0, 
 									'render' : 'obj.payment_box()'
 								}
 						],
@@ -717,7 +716,6 @@ patron.bills.prototype = {
 	'xact_dates_box' : function ( mobts ) {
 		var obj = this;
 		try {
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var grid = document.createElement('grid');
 					var cols = document.createElement('columns');
 					grid.appendChild( cols );
@@ -734,7 +732,7 @@ patron.bills.prototype = {
 							row0.appendChild( hb_r0_1 );
 								var label_r0_1 = document.createElement('label');
 								hb_r0_1.appendChild( label_r0_1 );
-								label_r0_1.setAttribute('value',getString('staff.mbts_id_label'));
+								label_r0_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_id_label'));
 								var label_r0_2 = document.createElement('label');
 								hb_r0_1.appendChild( label_r0_2 );
 								label_r0_2.setAttribute('value',mobts.id());
@@ -742,7 +740,7 @@ patron.bills.prototype = {
 						rows.appendChild( row1 );
 							var label_r1_1 = document.createElement('label');
 							row1.appendChild( label_r1_1 );
-							label_r1_1.setAttribute('value',getString('staff.mbts_xact_start_label'));
+							label_r1_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_start_label'));
 							var label_r1_2 = document.createElement('label');
 							row1.appendChild( label_r1_2 );
 							label_r1_2.setAttribute('value',mobts.xact_start().toString().substr(0,10));
@@ -750,7 +748,7 @@ patron.bills.prototype = {
 						rows.appendChild( row2 );
 							var label_r2_1 = document.createElement('label');
 							row2.appendChild( label_r2_1 );
-							label_r2_1.setAttribute('value',getString('staff.mbts_xact_finish_label'));
+							label_r2_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_xact_finish_label'));
 							var label_r2_2 = document.createElement('label');
 							row2.appendChild( label_r2_2 );
 							try { label_r2_2.setAttribute('value',mobts.xact_finish().toString().substr(0,10));
@@ -766,7 +764,6 @@ patron.bills.prototype = {
 		var obj = this;
 		try {
 				JSAN.use('util.money');
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var grid = document.createElement('grid');
 					var cols = document.createElement('columns');
 					grid.appendChild( cols );
@@ -778,7 +775,7 @@ patron.bills.prototype = {
 						rows.appendChild( row1 );
 							var label_r1_1 = document.createElement('label');
 							row1.appendChild( label_r1_1 );
-							label_r1_1.setAttribute('value',getString('staff.mbts_total_owed_label'));
+							label_r1_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_total_owed_label'));
 							var label_r1_2 = document.createElement('label');
 							row1.appendChild( label_r1_2 );
 							label_r1_2.setAttribute('value','$' + util.money.sanitize(mobts.total_owed() || '0') );
@@ -786,7 +783,7 @@ patron.bills.prototype = {
 						rows.appendChild( row2 );
 							var label_r2_1 = document.createElement('label');
 							row2.appendChild( label_r2_1 );
-							label_r2_1.setAttribute('value',getString('staff.mbts_total_paid_label'));
+							label_r2_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_total_paid_label'));
 							var label_r2_2 = document.createElement('label');
 							row2.appendChild( label_r2_2 );
 							label_r2_2.setAttribute('value','$' + util.money.sanitize(mobts.total_paid() || '0') );
@@ -794,7 +791,7 @@ patron.bills.prototype = {
 						rows.appendChild( row3 );
 							var label_r3_1 = document.createElement('label');
 							row3.appendChild( label_r3_1 );
-							label_r3_1.setAttribute('value',getString('staff.mbts_balance_owed_label'));
+							label_r3_1.setAttribute('value',document.getElementById('commonStrings').getString('staff.mbts_balance_owed_label'));
 							label_r3_1.setAttribute('style','font-weight: bold');
 							var label_r3_2 = document.createElement('label');
 							row3.appendChild( label_r3_2 );
@@ -810,7 +807,6 @@ patron.bills.prototype = {
 	'info_box' : function ( my ) {
 		var obj = this;
 		try {
-				function getString(s) { return obj.OpenILS.data.entities[s]; }
 				var vbox = document.createElement('vbox');
 
 					var hbox = document.createElement('hbox');

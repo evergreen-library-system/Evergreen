@@ -403,20 +403,18 @@ circ.util.columns = function(modify,params) {
 	JSAN.use('util.network'); var network = new util.network();
 	JSAN.use('util.money');
 
-	function getString(s) { return data.entities[s]; }
-
 	var c = [
 		{
-			'id' : 'acp_id', 'label' : getString('staff.acp_label_id'), 'flex' : 1,
+			'id' : 'acp_id', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_id'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.id(); }, 'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'circ_id', 'label' : getString('staff.circ_label_id'), 'flex' : 1,
+			'id' : 'circ_id', 'label' : document.getElementById('commonStrings').getString('staff.circ_label_id'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.id() : ( my.acp.circulations() ? my.acp.circulations()[0].id() : ""); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'mvr_doc_id', 'label' : getString('staff.mvr_label_doc_id'), 'flex' : 1,
+			'id' : 'mvr_doc_id', 'label' : document.getElementById('commonStrings').getString('staff.mvr_label_doc_id'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mvr.doc_id(); },
 			'persist' : 'hidden width ordinal',
 		},
@@ -425,12 +423,12 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.service; },
         },
 		{
-			'id' : 'barcode', 'label' : getString('staff.acp_label_barcode'), 'flex' : 1,
+			'id' : 'barcode', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_barcode'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.barcode(); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'call_number', 'label' : getString('staff.acp_label_call_number'), 'flex' : 1,
+			'id' : 'call_number', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_call_number'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { if (my.acp && my.acp.call_number() == -1) { return "Not Cataloged"; } else { if (!my.acn) { var x = network.simple_request("FM_ACN_RETRIEVE",[ my.acp.call_number() ]); if (x.ilsevent) { return "Not Cataloged"; } else { my.acn = x; return x.label(); } } else { return my.acn.label(); } } },
 			'persist' : 'hidden width ordinal',
 		},
@@ -441,28 +439,28 @@ circ.util.columns = function(modify,params) {
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'copy_number', 'label' : getString('staff.acp_label_copy_number'), 'flex' : 1, 'sort_type' : 'number',
+			'id' : 'copy_number', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_copy_number'), 'flex' : 1, 'sort_type' : 'number',
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.copy_number(); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'location', 'label' : getString('staff.acp_label_location'), 'flex' : 1,
+			'id' : 'location', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_location'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { if (Number(my.acp.location())>=0) return data.lookup("acpl", my.acp.location() ).name(); else return my.acp.location().name(); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'loan_duration', 'label' : getString('staff.acp_label_loan_duration'), 'flex' : 1,
+			'id' : 'loan_duration', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_loan_duration'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 
 			'render' : function(my) { switch(my.acp.loan_duration()){ case 1: return "Short"; break; case 2: return "Normal"; break; case 3: return "Long"; break; }; },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'circ_lib', 'label' : getString('staff.acp_label_circ_lib'), 'flex' : 1,
+			'id' : 'circ_lib', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_lib'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { if (Number(my.acp.circ_lib())>=0) return data.hash.aou[ my.acp.circ_lib() ].shortname(); else return my.acp.circ_lib().shortname(); },
 			'persist' : 'hidden width ordinal',
 		},
 		{
-			'id' : 'fine_level', 'label' : getString('staff.acp_label_fine_level'), 'flex' : 1,
+			'id' : 'fine_level', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_fine_level'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,
 			'render' : function(my) { switch(my.acp.fine_level()){ case 1: return "Low"; break; case 2: return "Normal"; break; case 3: return "High"; break; }; },
 			'persist' : 'hidden width ordinal',
@@ -496,19 +494,19 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.acp.deposit() ) ? "Yes" : "No"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'deposit_amount', 'label' : getString('staff.acp_label_deposit_amount'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'deposit_amount', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_deposit_amount'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.price() == null ? "<Unset>" : util.money.sanitize(my.acp.deposit_amount()); }, 'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'price', 'label' : getString('staff.acp_label_price'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'price', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_price'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.price() == null ? "<Unset>" : util.money.sanitize(my.acp.price()); }, 'sort_type' : 'money',
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'circ_as_type', 'label' : getString('staff.acp_label_circ_as_type'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'circ_as_type', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_as_type'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.circ_as_type(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'circ_modifier', 'label' : getString('staff.acp_label_circ_modifier'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'circ_modifier', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_circ_modifier'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.circ_modifier(); },
 		},
 		{
@@ -537,7 +535,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ.xact_finish(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'due_date', 'label' : getString('staff.circ_label_due_date'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'due_date', 'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_date'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.due_date().substr(0,10) : (my.acp.circulations() ? my.acp.circulations()[0].due_date().substr(0,10) : ""); },
 		},
 		{
@@ -549,11 +547,11 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.acp.edit_date().substr(0,10); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 2, 'sort_type' : 'title',
+			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'), 'flex' : 2, 'sort_type' : 'title',
 			'primary' : false, 'hidden' : true, 'render' : function(my) { try {  return my.mvr.title(); } catch(E) { return my.acp.dummy_title(); } }
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : document.getElementById('commonStrings').getString('staff.mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { try { return my.mvr.author(); } catch(E) { return my.acp.dummy_author(); } }
 		},
 		{
@@ -577,7 +575,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mvr.tcn(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'renewal_remaining', 'label' : getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
+			'persist' : 'hidden width ordinal', 'id' : 'renewal_remaining', 'label' : document.getElementById('commonStrings').getString('staff.circ_label_renewal_remaining'), 'flex' : 0,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.renewal_remaining() : (my.acp.circulations() ? my.acp.circulations()[0].renewal_remaining() : ""); }, 'sort_type' : 'number',
 		},
 		{
@@ -589,7 +587,7 @@ circ.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.circ ? my.circ.stop_fines_time() : (my.acp.circulations() ? my.acp.circulations()[0].stop_fines_time() : ""); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.acp_label_status'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : document.getElementById('commonStrings').getString('staff.acp_label_status'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { if (Number(my.acp.status())>=0) return data.hash.ccs[ my.acp.status() ].name(); else return my.acp.status().name(); },
 		},
 		{
@@ -642,8 +640,6 @@ circ.util.columns = function(modify,params) {
 circ.util.transit_columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-
-	function getString(s) { return data.entities[s]; }
 
 	var c = [
 		{
@@ -723,8 +719,6 @@ circ.util.hold_columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
-	function getString(s) { return data.entities[s]; }
-
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'request_lib', 'label' : 'Request Lib (Full Name)', 'flex' : 1,
@@ -764,11 +758,11 @@ circ.util.hold_columns = function(modify,params) {
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.capture_time() ? my.ahr.capture_time().toString().substr(0,10) : ""; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : getString('staff.ahr_status_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'status', 'label' : document.getElementById('commonStrings').getString('staff.ahr_status_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : false,  'render' : function(my) { switch(my.status) { case 1: case "1": return "Waiting for copy"; break; case 2: case "2": return "Waiting for capture"; break; case 3: case "3": return "In-Transit"; break; case 4: case "4" : return "Ready for pickup"; break; default: return my.status; break;}; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'hold_type', 'label' : getString('staff.ahr_hold_type_label'), 'flex' : 0,
+			'persist' : 'hidden width ordinal', 'id' : 'hold_type', 'label' : document.getElementById('commonStrings').getString('staff.ahr_hold_type_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.hold_type(); },
 		},
         {
@@ -785,64 +779,64 @@ circ.util.hold_columns = function(modify,params) {
 			'render' : function(my) { if (Number(my.ahr.pickup_lib())>=0) return data.hash.aou[ my.ahr.pickup_lib() ].name(); else return my.ahr.pickup_lib().name(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib_shortname', 'label' : getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
+			'persist' : 'hidden width ordinal', 'id' : 'pickup_lib_shortname', 'label' : document.getElementById('commonStrings').getString('staff.ahr_pickup_lib_label'), 'flex' : 0,
 			'primary' : false, 'hidden' : true,  
 			'render' : function(my) { if (Number(my.ahr.pickup_lib())>=0) return data.hash.aou[ my.ahr.pickup_lib() ].shortname(); else return my.ahr.pickup_lib().shortname(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'current_copy', 'label' : getString('staff.ahr_current_copy_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'current_copy', 'label' : document.getElementById('commonStrings').getString('staff.ahr_current_copy_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.acp ? my.acp.barcode() : "No Copy"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'email_notify', 'label' : getString('staff.ahr_email_notify_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'email_notify', 'label' : document.getElementById('commonStrings').getString('staff.ahr_email_notify_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return get_bool(my.ahr.email_notify()) ? "Yes" : "No"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'expire_time', 'label' : getString('staff.ahr_expire_time_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'expire_time', 'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.expire_time(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'fulfillment_time', 'label' : getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'fulfillment_time', 'label' : document.getElementById('commonStrings').getString('staff.ahr_fulfillment_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.fulfillment_time(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'holdable_formats', 'label' : getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'holdable_formats', 'label' : document.getElementById('commonStrings').getString('staff.ahr_holdable_formats_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.holdable_formats(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : getString('staff.ahr_id_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : document.getElementById('commonStrings').getString('staff.ahr_id_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.id(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'phone_notify', 'label' : getString('staff.ahr_phone_notify_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'phone_notify', 'label' : document.getElementById('commonStrings').getString('staff.ahr_phone_notify_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.phone_notify(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'prev_check_time', 'label' : getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'prev_check_time', 'label' : document.getElementById('commonStrings').getString('staff.ahr_prev_check_time_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.prev_check_time(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'requestor', 'label' : getString('staff.ahr_requestor_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'requestor', 'label' : document.getElementById('commonStrings').getString('staff.ahr_requestor_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.requestor(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'selection_depth', 'label' : getString('staff.ahr_selection_depth_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'selection_depth', 'label' : document.getElementById('commonStrings').getString('staff.ahr_selection_depth_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.selection_depth(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'target', 'label' : getString('staff.ahr_target_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'target', 'label' : document.getElementById('commonStrings').getString('staff.ahr_target_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.target(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : getString('staff.ahr_usr_label'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'usr', 'label' : document.getElementById('commonStrings').getString('staff.ahr_usr_label'), 'flex' : 1,
 			'primary' : false, 'hidden' : true,  'render' : function(my) { return my.ahr.usr(); },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : getString('staff.mvr_label_title'), 'flex' : 1, 'sort_type' : 'title',
+			'persist' : 'hidden width ordinal', 'id' : 'title', 'label' : document.getElementById('commonStrings').getString('staff.mvr_label_title'), 'flex' : 1, 'sort_type' : 'title',
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mvr ? my.mvr.title() : "No Title?"; },
 		},
 		{
-			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : getString('staff.mvr_label_author'), 'flex' : 1,
+			'persist' : 'hidden width ordinal', 'id' : 'author', 'label' : document.getElementById('commonStrings').getString('staff.mvr_label_author'), 'flex' : 1,
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.mvr ? my.mvr.author() : "No Author?"; },
 		},
 		{

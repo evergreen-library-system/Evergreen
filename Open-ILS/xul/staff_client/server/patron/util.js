@@ -14,9 +14,6 @@ patron.util.mbts_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date');
 
-	function getString(s) { return data.entities[s]; }
-
-
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
@@ -113,9 +110,6 @@ patron.util.mb_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date');
 
-	function getString(s) { return data.entities[s]; }
-
-
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : 'Id', 'flex' : 1,
@@ -191,9 +185,6 @@ patron.util.mp_columns = function(modify,params) {
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 	JSAN.use('util.money'); JSAN.use('util.date'); JSAN.use('patron.util');
 
-	function getString(s) { return data.entities[s]; }
-
-
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'mp_id', 'label' : 'ID', 'flex' : 1,
@@ -264,8 +255,6 @@ patron.util.columns = function(modify,params) {
 	
 	JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
 
-	function getString(s) { return data.entities[s]; }
-
 	var c = [
 		{
 			'persist' : 'hidden width ordinal', 'id' : 'barcode', 'label' : 'Barcode', 'flex' : 1, 
@@ -280,7 +269,7 @@ patron.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return data.hash.pgt[ my.au.profile() ].name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : getString('staff.au_label_active'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'active', 'label' : document.getElementById('commonStrings').getString('staff.au_label_active'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.active() ) ? "Yes" : "No"; },
 		},
 		{
@@ -288,27 +277,27 @@ patron.util.columns = function(modify,params) {
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return get_bool( my.au.barred() ) ? "Yes" : "No"; },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : getString('staff.au_label_id'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'id', 'label' : document.getElementById('commonStrings').getString('staff.au_label_id'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.id(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : getString('staff.au_label_prefix'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'prefix', 'label' : document.getElementById('commonStrings').getString('staff.au_label_prefix'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.prefix(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : getString('staff.au_label_family_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'family_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_family_name'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.family_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : getString('staff.au_label_first_given_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'first_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_first_given_name'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.first_given_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : getString('staff.au_label_second_given_name'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'second_given_name', 'label' : document.getElementById('commonStrings').getString('staff.au_label_second_given_name'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.second_given_name(); },
 		},
 		{ 
-			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : getString('staff.au_label_suffix'), 'flex' : 1, 
+			'persist' : 'hidden width ordinal', 'id' : 'suffix', 'label' : document.getElementById('commonStrings').getString('staff.au_label_suffix'), 'flex' : 1, 
 			'primary' : false, 'hidden' : true, 'render' : function(my) { return my.au.suffix(); },
 		},
 		{ 

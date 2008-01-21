@@ -19,6 +19,8 @@
 		<script type="text/javascript" src="/opac/common/js/org_utils.js" />   
 		<script type="text/javascript" src="global_util.js" />   
 		<script>dump('finished openils_util_overlay\n');</script>
+
+        <messagecatalog id="commonStrings" src='/xul/server/locale/<!--#echo var="locale"-->/common.properties'/>
 	</scripts>
 
 </overlay>

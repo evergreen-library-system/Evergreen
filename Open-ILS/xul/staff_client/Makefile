@@ -48,9 +48,6 @@ stamp:
 generated:
 	@echo ' * Grabbing lang.dtd from the OPAC code '
 	cp ../../../Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
-	# Generate the lang.js file for the stamped build
-	external/dtd2js.pl build/chrome/locale/en-US/lang.dtd > build/chrome/content/main/lang.js
-	cp build/chrome/content/main/lang.js build/server/main/lang.js
 
 open-ils:
 	@echo ' * Grabbing more OPAC code and legacy code and custom code'

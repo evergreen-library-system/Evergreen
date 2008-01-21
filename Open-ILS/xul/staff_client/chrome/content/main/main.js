@@ -58,8 +58,6 @@ function main_init() {
 		JSAN.use('OpenILS.data');
 		G.data = new OpenILS.data()
 		G.data.on_error = G.auth.logoff;
-		G.data.entities = entities;
-		G.data.stash('entities');
 
 		JSAN.use('util.file');
 		G.file = new util.file();

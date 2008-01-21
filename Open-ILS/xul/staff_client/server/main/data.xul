@@ -37,12 +37,10 @@
 	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
 	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
-	<script type="text/javascript" src="/xul/server/main/lang.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<script>
 	<![CDATA[
-		dump("entities['lang.version'] = " + entities['lang.version'] + '\n');
+		dump("lang.version = " + document.getElementById('commonStrings').getString('lang.version') + "\n");
 
 		function data_init() {
 
@@ -181,8 +179,6 @@
 			JSAN.use('OpenILS.data');
 			g.data = new OpenILS.data()
 			g.data.on_error = xulG.auth.logoff;
-			g.data.entities = entities;
-			g.data.stash('entities');
 
 			g.data.session = {};
 			g.data.session.key = xulG.auth.session.key;
