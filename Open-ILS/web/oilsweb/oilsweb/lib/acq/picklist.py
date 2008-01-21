@@ -9,13 +9,28 @@ class PicklistMgr(object):
         self.ses = osrf.ses.ClientSession(oils.const.OILS_APP_ACQ)
 
     def retrieve(self):
-
         picklist = self.ses.request(
             'open-ils.acq.picklist.retrieve', 
             self.request_mgr.ctx.core.authtoken, self.id).recv().content()
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
+
+    def delete(self, picklist_id=None):
+        picklist_id = picklist_id or self.id
+        status = self.ses.request(
+            'open-ils.acq.picklist.delete',
+            self.request_mgr.ctx.core.authtoken, picklist_id).recv().content()
+        oils.event.Event.parse_and_raise(status)
+        return status
+
+    def delete_entry(self, entry_id):
+        status = self.ses.request(
+            'open-ils.acq.picklist_entry.delete',
+            self.request_mgr.ctx.core.authtoken, entry_id).recv().content()
+        oils.event.Event.parse_and_raise(status)
+        return status
+
 
     def retrieve_entries(self, **kwargs):
         # grab the picklist entries
@@ -74,20 +89,18 @@ class PicklistMgr(object):
             'open-ils.acq.picklist.name.retrieve',
             self.request_mgr.ctx.core.authtoken, pl_name).recv()
         if data:
-            picklist = data.content()
-            status = self.ses.request(
-                'open-ils.acq.picklist.delete',
-                self.request_mgr.ctx.core.authtoken, picklist.id()).recv().content()
-            oils.event.Event.parse_and_raise(status)
+            self.delete(data.content().id())
         
         # create the new one
         picklist = osrf.net_obj.NetworkObject.acqpl()
         picklist.name(pl_name)
         picklist.owner(self.request_mgr.ctx.core.user.id()) 
+
         picklist = self.ses.request(
             'open-ils.acq.picklist.create',
             self.request_mgr.ctx.core.authtoken, picklist).recv().content()
         oils.event.Event.parse_and_raise(picklist)
+
         return picklist
 
     def create_entry(self, entry):

@@ -54,35 +54,19 @@ class PicklistController(BaseController):
         r = RequestMgr()
         picklist_id = oilsweb.lib.acq.search.multi_search(
             r, oilsweb.lib.acq.search.compile_multi_search(r))
-        return redirect_to('view/%d' % int(picklist_id))
+        return redirect_to(controller='acq/picklist', action='view', id=picklist_id)
 
-    '''
-    def rdetails(self):
+    def delete(self, **kwargs):
         r = RequestMgr()
-        rec_id = r.ctx.acq.record_id
-        cache_key = r.ctx.acq.search_cache_key
-
-        results = osrf.cache.CacheClient().get(cache_key)
-        rec = self._find_cached_record(results, rec_id)
-        if rec:
-            r.ctx.acq.record = rec
-            r.ctx.acq.record_html = oilsweb.lib.bib.marc_to_html(rec['marcxml'])
-            return r.render('acq/picklist/rdetails.html')
-        return 'exception -> no record'
+        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r, picklist_id=kwargs['id'])
+        pl_manager.delete()
+        return redirect_to(controller='acq/picklist', action='list')
 
 
-    def create_picklist(self):  
+    def delete_entry(self, **kwargs):
         r = RequestMgr()
-        if not isinstance(r.ctx.acq.picklist_item, list):
-            r.ctx.acq.picklist_item = [r.ctx.acq.picklist_item]
-
-        results = osrf.cache.CacheClient().get(r.ctx.acq.search_cache_key)
-
-        records = []
-        for cache_id in r.ctx.acq.picklist_item:
-            rec = self._find_cached_record(results, cache_id)
-            records.append(rec)
-
-        c.oils_acq_records = records # XXX
-        return r.render('acq/picklist/view.html')
-'''
+        pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)
+        entry_id = kwargs['id']
+        entry = pl_manager.retrieve_entry(entry_id)
+        pl_manager.delete_entry(entry_id)
+        return redirect_to(controller='acq/picklist', action='view', id=entry.picklist())

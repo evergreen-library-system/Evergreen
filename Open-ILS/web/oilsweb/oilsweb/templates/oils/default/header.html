@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
 <div id='oils-base-header-content-div'>
+    <% 
+        import pylons
+        if 'oils_demo_user' in pylons.config:
+            auto_login = True
+        else:
+            auto_login = False
+    %>
+    % if auto_login:
+        <span id='oils-base-header-auto-login'>${_('Auto-login is enabled')}</span>|
+    % endif
     <span id='oils-base-header-user-info'>
         ${c.oils.core.user.usrname()} / ${c.oils.core.workstation.name()}
     </span>

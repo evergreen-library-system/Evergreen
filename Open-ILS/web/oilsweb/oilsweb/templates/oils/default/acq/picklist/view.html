@@ -52,6 +52,7 @@
             ${c.oils.acq.find_entry_attr(entry, "isbn")} |
             ${c.oils.acq.find_entry_attr(entry, "pubdate")} |
             ${c.oils.acq.find_entry_attr(entry, "pagination")}
+            <a class='oils-acq-picklist-entry-delete-link' href='${c.oils.acq.prefix}/picklist/delete_entry/${entry.id()}'>${_('Delete')}</a>
         </td>
     </tr>
     % endfor

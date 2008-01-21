@@ -32,6 +32,7 @@ class AcqContext(SubContext):
 
         self.picklist = ContextItem() # picklist object
         self.picklist_list = ContextItem() # list of picklist objects
+        self.picklist_id_list = ContextItem() # list of picklist objects
         self.picklist_entry = ContextItem() # picklist_entry object
 
         # -------------------------------------------------------------

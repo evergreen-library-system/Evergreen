@@ -11,6 +11,8 @@
             <td>${_('Name')}</td>
             <td>${_('Create Time')}</td>
             <td>${_('Edit Time')}</td>
+            <td/>
+            <td/>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +21,7 @@
         <td><a href='${c.oils.acq.prefix}/picklist/view/${picklist.id()}'>${picklist.name()}</a></td>
         <td>${picklist.create_time()}</td>
         <td>${picklist.edit_time()}</td>
+        <td><a href='${c.oils.acq.prefix}/picklist/delete/${picklist.id()}'>${_('Delete')}</a></td>
     </tr>
     % endfor
     </tbody>
