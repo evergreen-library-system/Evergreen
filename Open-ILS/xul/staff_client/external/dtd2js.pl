@@ -12,7 +12,9 @@ while( $line = <> ) {
 
 	if ($line =~ /<!ENTITY\s+(\S+)\s+((["']).*\3)\s*>\s*$/) {
 		print "entities['$1'] = $2;\n";	
-	} else {
+	} elsif ($line =~ /^\s*<!--.*?-->\s*$/) {
+        # Ignore comments
+    } else {
 		chomp $line;
 		if ($line) { print STDERR "Problem with: $line\n"; }
 	}
