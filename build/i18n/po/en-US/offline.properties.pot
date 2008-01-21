@@ -1,4 +1,4 @@
-# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 #, fuzzy
 msgid ""
 msgstr ""
@@ -69,4 +69,36 @@ msgstr ""
 
 #: common.date.invalid
 msgid "Invalid Date"
+msgstr ""
+
+#: cat.bib_record
+msgid "Bib Record: %1$s"
+msgstr ""
+
+#: cat.save_record
+msgid "Save Record"
+msgstr ""
+
+#: cat.save.success
+msgid "Record successfully saved."
+msgstr ""
+
+#: cat.save.failure
+msgid "Record not likely updated."
+msgstr ""
+
+#: cat.record.counter
+msgid "Record %1$s of %2$s"
+msgstr ""
+
+#: cat.preference.error
+msgid "Preference not likely updated."
+msgstr ""
+
+#: staff.admin.survey.save_response.label
+msgid "Save this response"
+msgstr ""
+
+#: staff.admin.survey.save_response.accesskey
+msgid "R"
 msgstr ""

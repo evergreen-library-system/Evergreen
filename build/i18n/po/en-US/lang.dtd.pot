@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-17 14:20-0400\n"
+"POT-Creation-Date: 2008-01-20 23:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,6 +75,7 @@ msgstr ""
 #: staff.mvr_label_title
 #: staff.record_list.title
 #: staff.z39_50.search_class.title
+#: staff.server.admin.hold_pull.title
 msgid "Title"
 msgstr ""
 
@@ -83,6 +84,7 @@ msgstr ""
 #: staff.mvr_label_author
 #: staff.record_list.author
 #: staff.z39_50.search_class.author
+#: staff.server.admin.hold_pull.author
 msgid "Author"
 msgstr ""
 
@@ -115,6 +117,7 @@ msgstr ""
 
 #: common.format
 #: staff.cat.search_format
+#: staff.server.admin.hold_pull.format
 msgid "Format"
 msgstr ""
 
@@ -137,6 +140,10 @@ msgid "of"
 msgstr ""
 
 #: common.cancel
+#: staff.server.admin.closed_dates.cancel
+#: staff.server.admin.copy_locations.cancel
+#: staff.server.admin.non_cat_types.cancel
+#: staff.server.admin.stat_cat.cancel
 msgid "Cancel"
 msgstr ""
 
@@ -185,11 +192,18 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
+#: common.refresh
+#: staff.patron_navbar.refresh
+msgid "Refresh"
+msgstr ""
+
 #: common.submit
 #: staff.auth.submit_prompt
 #: staff.circ.checkin.submit_label
 #: staff.circ.hold_capture.submit_label
 #: staff.patron_display.checkout.submit_label
+#: staff.server.admin.copy_locations.submit
+#: staff.server.admin.non_cat_types.submit
 msgid "Submit"
 msgstr ""
 
@@ -284,6 +298,7 @@ msgstr ""
 #: staff.browse_list.callnumber
 #: staff.cat.search_callnumber
 #: staff.volume.attr.callnumber
+#: staff.server.admin.hold_pull.call_number
 msgid "Call Number"
 msgstr ""
 
@@ -302,6 +317,7 @@ msgstr ""
 
 #: staff.acp_label_copy_number
 #: staff.browse_list.copy_number
+#: staff.server.admin.hold_pull.copy
 msgid "Copy Number"
 msgstr ""
 
@@ -695,6 +711,7 @@ msgstr ""
 #: staff.marc.display.fixed.SER.key
 #: staff.marc.file.publish.key
 #: staff.patron_display.checkout.submit_label.accesskey
+#: staff.server.admin.transit.list.actions.accesskey
 msgid "S"
 msgstr ""
 
@@ -743,6 +760,7 @@ msgid "Circulating Lib"
 msgstr ""
 
 #: staff.browse_list.circulate
+#: staff.server.admin.copy_locations.editor.circulate
 msgid "Circulate"
 msgstr ""
 
@@ -852,6 +870,7 @@ msgstr ""
 #: staff.marc.file.reload.key
 #: staff.patron_navbar.refresh.accesskey
 #: staff.patron_navbar.retrieve.accesskey
+#: staff.server.admin.offline.xacts.refresh.accesskey
 msgid "R"
 msgstr ""
 
@@ -1009,6 +1028,7 @@ msgid "Advanced"
 msgstr ""
 
 #: staff.cat.search_barcode
+#: staff.server.admin.hold_pull.barcode
 msgid "Item Barcode"
 msgstr ""
 
@@ -1212,6 +1232,7 @@ msgstr ""
 #: staff.hold_capture_patron.retrieve
 #: staff.patron.context_display
 #: staff.patron_navbar.retrieve
+#: staff.server.admin.offline.xacts.get_patron.label
 msgid "Retrieve Patron"
 msgstr ""
 
@@ -1474,6 +1495,7 @@ msgstr ""
 #: staff.copy.attr.notes_viewable.example2
 #: staff.copy.attr.opac_visible.no
 #: staff.copy.attr.reference_material.no
+#: staff.server.admin.copy_locations.editor.no
 msgid "No"
 msgstr ""
 
@@ -1482,6 +1504,7 @@ msgstr ""
 #: staff.copy.attr.notes_viewable.example1
 #: staff.copy.attr.opac_visible.yes
 #: staff.copy.attr.reference_material.yes
+#: staff.server.admin.copy_locations.editor.yes
 msgid "Yes"
 msgstr ""
 
@@ -2286,6 +2309,7 @@ msgid "User Buckets"
 msgstr ""
 
 #: staff.main.menu.edit.copy.label
+#: staff.server.admin.stat_cat.copy
 msgid "Copy"
 msgstr ""
 
@@ -2298,6 +2322,9 @@ msgid "Cut"
 msgstr ""
 
 #: staff.main.menu.edit.delete.label
+#: staff.server.admin.closed_dates.editor.delete
+#: staff.server.admin.copy_locations.editor.delete
+#: staff.server.admin.non_cat_types.delete
 msgid "Delete"
 msgstr ""
 
@@ -2315,6 +2342,9 @@ msgstr ""
 
 #: staff.main.menu.edit.label
 #: staff.patron_navbar.edit
+#: staff.server.admin.copy_locations.editor.edit
+#: staff.server.admin.non_cat_types.edit
+#: staff.server.admin.stat_cat.edit
 msgid "Edit"
 msgstr ""
 
@@ -2406,6 +2436,8 @@ msgid "Save Session"
 msgstr ""
 
 #: staff.main.menu.help.label
+#: staff.server.admin.copy_locations.editor.help
+#: staff.server.admin.non_cat_types.in_house_circ
 msgid "Help"
 msgstr ""
 
@@ -2423,6 +2455,7 @@ msgid ""
 msgstr ""
 
 #: staff.main.menu.reports.label
+#: staff.server.admin.index.reports
 msgid "Reports"
 msgstr ""
 
@@ -3409,10 +3442,6 @@ msgstr ""
 msgid "Items Out"
 msgstr ""
 
-#: staff.patron_navbar.refresh
-msgid "Refresh"
-msgstr ""
-
 #: staff.patron_register_interface_label
 msgid "NEW PATRON"
 msgstr ""
@@ -3552,6 +3581,8 @@ msgid "SURVEY ADMIN"
 msgstr ""
 
 #: staff.volume.attr.owning_lib
+#: staff.server.admin.copy_locations.editor.library
+#: staff.server.admin.stat_cat.owning_library.label
 msgid "Owning Library"
 msgstr ""
 
@@ -3637,4 +3668,864 @@ msgstr ""
 
 #: staff.z39_50_import_interface_label
 msgid "Z39.50 IMPORT"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.caption
+msgid "Offline Sessions"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.create.label
+#: staff.server.admin.non_cat_types.editor.create
+msgid "Create"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.execute.label
+msgid "Process"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.update.label
+msgid "Update"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.status.label
+msgid "Uploaded Transaction Files"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.status.desc
+msgid "The transactions from the following workstations have been uploaded, but not processed.  When all expected workstations are present here, use the Process button above."
+msgstr ""
+
+#: staff.server.admin.offline.xacts.errors.label
+msgid "Exceptions"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.errors.desc
+msgid "All transactions from this session have been processed.  The errors, if any, are listed below."
+msgstr ""
+
+#: staff.server.admin.offline.xacts.export.label
+msgid "Export List"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.print.label
+msgid "Print Export"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.get_item.label
+msgid "Retrieve Item"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.get_details.label
+msgid "Details"
+msgstr ""
+
+#: staff.server.admin.offline.xacts.errors.caption
+msgid "The session is now processing.  Hit Refresh to check its status."
+msgstr ""
+
+#: staff.server.admin.font.sound.caption
+msgid "Adjust Sound"
+msgstr ""
+
+#: staff.server.admin.font.sound.checkbox
+msgid "Disable sound?"
+msgstr ""
+
+#: staff.server.admin.save_disk
+msgid "Save to Disk"
+msgstr ""
+
+#: staff.server.admin.font.global.caption
+msgid "Adjust Global Font"
+msgstr ""
+
+#: staff.server.admin.font.smaller
+msgid "Smaller than Default"
+msgstr ""
+
+#: staff.server.admin.font.default
+msgid "Default"
+msgstr ""
+
+#: staff.server.admin.font.larger
+msgid "Larger than Default"
+msgstr ""
+
+#: staff.server.admin.font.xxsmall
+msgid "XX-Small"
+msgstr ""
+
+#: staff.server.admin.font.xsmall
+msgid "X-Small"
+msgstr ""
+
+#: staff.server.admin.font.small
+msgid "Small"
+msgstr ""
+
+#: staff.server.admin.font.medium
+msgid "Medium"
+msgstr ""
+
+#: staff.server.admin.font.large
+msgid "Large"
+msgstr ""
+
+#: staff.server.admin.font.xlarge
+msgid "X-Large"
+msgstr ""
+
+#: staff.server.admin.font.xxlarge
+msgid "XX-Large"
+msgstr ""
+
+#: staff.server.admin.font.5pt
+msgid "5pt"
+msgstr ""
+
+#: staff.server.admin.font.6pt
+msgid "6pt"
+msgstr ""
+
+#: staff.server.admin.font.7pt
+msgid "7pt"
+msgstr ""
+
+#: staff.server.admin.font.8pt
+msgid "8pt"
+msgstr ""
+
+#: staff.server.admin.font.9pt
+msgid "9pt"
+msgstr ""
+
+#: staff.server.admin.font.10pt
+msgid "10pt"
+msgstr ""
+
+#: staff.server.admin.font.11pt
+msgid "11pt"
+msgstr ""
+
+#: staff.server.admin.font.12pt
+msgid "12pt"
+msgstr ""
+
+#: staff.server.admin.font.13pt
+msgid "13pt"
+msgstr ""
+
+#: staff.server.admin.font.14pt
+msgid "14pt"
+msgstr ""
+
+#: staff.server.admin.font.15pt
+msgid "15pt"
+msgstr ""
+
+#: staff.server.admin.font.16pt
+msgid "16pt"
+msgstr ""
+
+#: staff.server.admin.font.17pt
+msgid "17pt"
+msgstr ""
+
+#: staff.server.admin.font.18pt
+msgid "18pt"
+msgstr ""
+
+#: staff.server.admin.font.restore
+msgid "Restore Default"
+msgstr ""
+
+#: staff.server.admin.transit.filter.caption
+msgid "Transit Filter"
+msgstr ""
+
+#: staff.server.admin.transit.library.label
+msgid "Transit Library"
+msgstr ""
+
+#: staff.server.admin.transit.to.label
+msgid "Transit to"
+msgstr ""
+
+#: staff.server.admin.transit.from.label
+msgid "Transit from"
+msgstr ""
+
+#: staff.server.admin.transit.date.label
+msgid "Transit Date falls between"
+msgstr ""
+
+#: staff.server.admin.transit.date.today
+msgid "Today"
+msgstr ""
+
+#: staff.server.admin.transit.date.week
+msgid "Today - 7 days"
+msgstr ""
+
+#: staff.server.admin.transit.date.2weeks
+msgid "Today - 14 days"
+msgstr ""
+
+#: staff.server.admin.transit.date.3weeks
+msgid "Today - 21 days"
+msgstr ""
+
+#: staff.server.admin.transit.date.30days
+msgid "Today - 30 days"
+msgstr ""
+
+#: staff.server.admin.transit.date.start
+msgid "The Beginning"
+msgstr ""
+
+#: staff.server.admin.transit.retrieve.label
+#: staff.server.admin.transit.retrieve.accesskey
+msgid "Retrieve &Transits"
+msgstr ""
+
+#: staff.server.admin.transit.list.label
+#: staff.server.admin.index.transits
+msgid "Transits"
+msgstr ""
+
+#: staff.server.admin.transit.list.print
+msgid "Print Transits"
+msgstr ""
+
+#: staff.server.admin.transit.list.actions
+msgid "Actions for Selected Transits"
+msgstr ""
+
+#: staff.server.admin.transit.list.copy.label
+#: staff.server.admin.transit.list.copy.accesskey
+msgid "&Copy to Clipboard"
+msgstr ""
+
+#: staff.server.admin.transit.list.add.label
+#: staff.server.admin.transit.list.add.accesskey
+msgid "&Add to Item Bucket"
+msgstr ""
+
+#: staff.server.admin.transit.list.show.label
+#: staff.server.admin.transit.list.show.accesskey
+msgid "&Show in Catalog"
+msgstr ""
+
+#: staff.server.admin.transit.list.details.label
+#: staff.server.admin.transit.list.details.accesskey
+msgid "Show &Item Details"
+msgstr ""
+
+#: staff.server.admin.transit.list.circs.label
+#: staff.server.admin.transit.list.circs.accesskey
+msgid "Show &Last Few Circulations"
+msgstr ""
+
+#: staff.server.admin.transit.list.edit.label
+#: staff.server.admin.transit.list.edit.accesskey
+msgid "&Edit Item Attributes"
+msgstr ""
+
+#: staff.server.admin.transit.list.abort.label
+msgid "Abort Transits"
+msgstr ""
+
+#: staff.server.admin.transit.list.save.label
+msgid "Save Columns"
+msgstr ""
+
+#: staff.server.admin.cash.title
+msgid "Evergreen: Cash Reports"
+msgstr ""
+
+# This will be followed by the user's name
+#: staff.server.admin.cash.welcome
+#: staff.server.admin.closed_dates.welcome
+#: staff.server.admin.hold_pull.greeting
+#: staff.server.admin.non_cat_types.greeting
+#: staff.server.admin.org_settings.greeting
+#: staff.server.admin.stat_cat.greeting
+msgid "Welcome "
+msgstr ""
+
+#: staff.server.admin.cash.start_date
+msgid "Start Date:"
+msgstr ""
+
+#: staff.server.admin.cash.date.select
+msgid "Date selector"
+msgstr ""
+
+#: staff.server.admin.cash.end_date
+msgid "End Date:"
+msgstr ""
+
+#: staff.server.admin.cash.date_format
+msgid "(YYYY-MM-DD)"
+msgstr ""
+
+#: staff.server.admin.cash.view
+msgid "View reports for : "
+msgstr ""
+
+#: staff.server.admin.cash.submit
+msgid "Go!"
+msgstr ""
+
+#: staff.server.admin.cash.desk
+msgid "Desk Payments"
+msgstr ""
+
+#: staff.server.admin.cash.user
+msgid "User Payments"
+msgstr ""
+
+#: staff.server.admin.closed_dates.title
+msgid "Evergreen: Library Closed Dates Editor"
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.title
+msgid " Closed Dates Editor "
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.for
+msgid "Edit Closed Dates for: "
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.duration
+msgid "Closed Duration"
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.reason
+msgid "Reason for Closing"
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.allmultiday.delete
+msgid "delete"
+msgstr ""
+
+# Translators: do not translate "<b>YYYY-MM-DD</b>" or "<b>HH:MM</b>"
+#: staff.server.admin.closed_dates.editor.allmultiday.format
+msgid "Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the form <b>HH:MM</b>"
+msgstr ""
+
+#: staff.server.admin.closed_dates.add.allday
+msgid "Add Single Day Closing"
+msgstr ""
+
+#: staff.server.admin.closed_dates.add.multiday
+msgid "Add Mult-Date Closing"
+msgstr ""
+
+#: staff.server.admin.closed_dates.add.detailed
+msgid "Add Detailed Closing"
+msgstr ""
+
+#: staff.server.admin.closed_dates.date.start
+msgid "Start Date"
+msgstr ""
+
+#: staff.server.admin.closed_dates.time.start
+msgid "Start Time"
+msgstr ""
+
+#: staff.server.admin.closed_dates.date.end
+msgid "End Date"
+msgstr ""
+
+#: staff.server.admin.closed_dates.time.end
+msgid "End Time"
+msgstr ""
+
+#: staff.server.admin.closed_dates.allday.label
+msgid "All Day"
+msgstr ""
+
+#: staff.server.admin.closed_dates.editor.reason.label
+msgid "Reason for closing: "
+msgstr ""
+
+#: staff.server.admin.closed_dates.apply_all
+msgid "Apply to all of my libraries"
+msgstr ""
+
+#: staff.server.admin.closed_dates.save
+msgid "Save"
+msgstr ""
+
+#: staff.server.admin.closed_dates.confirm_delete
+msgid "Are you sure you wish to delete the selected close date?"
+msgstr ""
+
+#: staff.server.admin.closed_dates.date.invalid
+msgid "Invalid date format"
+msgstr ""
+
+#: staff.server.admin.closed_dates.time.invalid
+msgid "Invalid time format"
+msgstr ""
+
+#: staff.server.admin.closed_dates.success
+msgid "Closed date successfully updated"
+msgstr ""
+
+#: staff.server.admin.copy_locations.title
+msgid "Evergreen: Copy Locations Editor"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor
+msgid " Copy Locations Editor "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.create
+msgid "Create a new copy location"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.name
+msgid "Name: "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.holdable.label
+msgid "Holdable: "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.opac_visible.label
+msgid "OPAC Visible: "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.circulate.label
+msgid "Circulate: "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.library.label
+msgid "Owning Library:"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.name
+#: staff.server.admin.non_cat_types.name
+msgid "Name"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.holdable
+msgid "Holdable"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.opac_visible
+msgid "OPAC Visible"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.help.holdable
+msgid "If a copy location is 'Holdable', copies in that location may have holds placed on them."
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.delete.confirm
+msgid "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail."
+msgstr ""
+
+#: staff.server.admin.copy_locations.update_success
+msgid "Update Succeeded"
+msgstr ""
+
+#: staff.server.admin.hold_pull.title
+msgid "Evergreen Holds Pull List"
+msgstr ""
+
+# This will be followed by the org_unit name
+#: staff.server.admin.hold_pull.header
+msgid "Evergreen Holds Pull List : "
+msgstr ""
+
+#: staff.server.admin.hold_pull.sort.note
+msgid "Note: Click on a column header to sort the column"
+msgstr ""
+
+#: staff.server.admin.hold_pull.copy_location
+msgid "Copy Location"
+msgstr ""
+
+#: staff.server.admin.hold_pull.patron_barcode
+msgid "Patron Barcode"
+msgstr ""
+
+#: staff.server.admin.hold_pull.hold_date
+msgid "Hold Placement Date"
+msgstr ""
+
+#: staff.server.admin.hold_pull.hold_type
+msgid "Hold Type"
+msgstr ""
+
+#: staff.server.admin.hold_pull.book
+msgid "Book"
+msgstr ""
+
+#: staff.server.admin.hold_pull.large_book
+msgid "Large Print Book"
+msgstr ""
+
+#: staff.server.admin.hold_pull.audiobook
+msgid "Audiobook"
+msgstr ""
+
+#: staff.server.admin.hold_pull.video
+msgid "Video Recording"
+msgstr ""
+
+#: staff.server.admin.hold_pull.music
+msgid "Music"
+msgstr ""
+
+#: staff.server.admin.hold_pull.eresource
+msgid "Electronic Resource"
+msgstr ""
+
+#: staff.server.admin.hold_pull.copy_hold
+msgid "Copy Hold"
+msgstr ""
+
+#: staff.server.admin.hold_pull.volume_hold
+msgid "Volume Hold"
+msgstr ""
+
+#: staff.server.admin.hold_pull.title_hold
+msgid "Title Hold"
+msgstr ""
+
+#: staff.server.admin.hold_pull.metarecord_hold
+msgid "Metarecord Hold"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.title
+msgid "Evergreen: Non Cataloged Types Editor"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.title
+msgid " Non Cataloged Types Editor "
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.header
+msgid "Create a new non-cataloged type"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.minutes
+msgid "Minutes"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.hours
+msgid "Hours"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.days
+msgid "Days"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.weeks
+msgid "Weeks"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.editor.months
+msgid "Months"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.in_house_circ
+msgid "Circulate In-House?"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.owning_location
+msgid "Owning Location"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.duration
+msgid "Duration"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.in_house.circulate
+msgid "Circulate In House"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.delete.confirm
+msgid "Are you sure you wish to delete the selected non-cataloged type?"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.in_house.help
+msgid "If the \"In-House\" flag is set on a non-cataloged type, items that circulate as that type will create \"In-House\" circulations.  This is ideal for computer use, room \"rentals\", etc."
+msgstr ""
+
+#: staff.server.admin.non_cat_types.update.success
+msgid "Non-cataloged type successfully updated"
+msgstr ""
+
+#: staff.server.admin.non_cat_types.name_exists
+msgid "A non-cataloged type with the selected name already exists."
+msgstr ""
+
+#: staff.server.admin.index.title
+msgid "Local System Administration"
+msgstr ""
+
+#: staff.server.admin.index.workstation_configuration
+msgid "Workstation Configuration"
+msgstr ""
+
+#: staff.server.admin.index.library_configuration
+msgid "Library Configuration"
+msgstr ""
+
+#: staff.server.admin.index.maintenance_reports
+msgid "Maintenance Reports"
+msgstr ""
+
+#: staff.server.admin.index.fonts_and_sounds
+msgid "Global Font and Sound Settings"
+msgstr ""
+
+#: staff.server.admin.index.printer
+msgid "Printer Settings Editor"
+msgstr ""
+
+#: staff.server.admin.index.closed_dates
+msgid "Closed Dates Editor"
+msgstr ""
+
+#: staff.server.admin.index.copy_locations
+msgid "Copy Locations Editor"
+msgstr ""
+
+#: staff.server.admin.index.library_settings
+msgid "Library Settings Editor"
+msgstr ""
+
+#: staff.server.admin.index.non_cataloged_types
+msgid "Non-cataloged Types Editor"
+msgstr ""
+
+#: staff.server.admin.index.statistical_categories
+msgid "Statistical Categories Editor"
+msgstr ""
+
+#: staff.server.admin.index.hold_pull_list
+msgid "Pull List for Hold Requests"
+msgstr ""
+
+#: staff.server.admin.index.testing
+msgid "(Testing)"
+msgstr ""
+
+#: staff.server.admin.index.hold_pull_list_classic
+msgid "Pull List for Hold Requests (Classic)"
+msgstr ""
+
+#: staff.server.admin.index.cash_reports
+msgid "Cash Reports"
+msgstr ""
+
+#: staff.server.admin.index.transit_list
+msgid "Transit List"
+msgstr ""
+
+#: staff.server.admin.org_settings.title
+msgid "Evergreen: Library Settings Editor"
+msgstr ""
+
+#: staff.server.admin.org_settings.header
+msgid " Library Settings Editor "
+msgstr ""
+
+# This will be followed by the library's name
+#: staff.server.admin.org_settings.select_library
+msgid "Edit Settings for : "
+msgstr ""
+
+# This will be followed by the library's name
+#: staff.server.admin.org_settings.selected_library
+msgid "Library Settings for "
+msgstr ""
+
+#: staff.server.admin.org_settings.opac_timeout
+msgid "OPAC Inactivity Timeout (in seconds)"
+msgstr ""
+
+#: staff.server.admin.org_settings.apply
+msgid "Apply"
+msgstr ""
+
+#: staff.server.admin.org_settings.apply_all
+msgid "Apply to all Locations"
+msgstr ""
+
+#: staff.server.admin.org_settings.staff_timeout
+msgid "Staff Login Inactivity Timeout (in seconds)"
+msgstr ""
+
+#: staff.server.admin.org_settings.lost_fee
+msgid "Lost Materials Processing Fee"
+msgstr ""
+
+#: staff.server.admin.org_settings.default_price
+msgid "Default Item Price"
+msgstr ""
+
+#: staff.server.admin.org_settings.from_address
+msgid "\"FROM\" email address for patron notices"
+msgstr ""
+
+#: staff.server.admin.org_settings.bounce_note
+msgid "(note: delivery failures will be returned this address)"
+msgstr ""
+
+#: staff.server.admin.org_settings.apply_all.note
+msgid "I. \"Apply to all Locations\" will force the new setting to be applied to all locations in the location dropdown."
+msgstr ""
+
+#: staff.server.admin.org_settings.update_success
+msgid "Update succeeded."
+msgstr ""
+
+#: staff.server.admin.org_settings.apply_all.confirm
+msgid "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?"
+msgstr ""
+
+#: staff.server.admin.stat_cat.title
+msgid "Evergreen: Statistical Category Editor"
+msgstr ""
+
+#: staff.server.admin.stat_cat.heading
+msgid " Statistical Category Editor"
+msgstr ""
+
+#: staff.server.admin.stat_cat.create
+msgid "Create a new statistical category"
+msgstr ""
+
+#: staff.server.admin.stat_cat.name
+msgid "Enter the name: "
+msgstr ""
+
+#: staff.server.admin.stat_cat.owning_library
+msgid "Owning Library: "
+msgstr ""
+
+#: staff.server.admin.stat_cat.opac_visibility
+msgid "OPAC Visibility: "
+msgstr ""
+
+#: staff.server.admin.stat_cat.on
+msgid "On"
+msgstr ""
+
+#: staff.server.admin.stat_cat.off
+msgid "Off"
+msgstr ""
+
+#: staff.server.admin.stat_cat.type
+msgid "Type: "
+msgstr ""
+
+#: staff.server.admin.stat_cat.patron
+msgid "Patron"
+msgstr ""
+
+#: staff.server.admin.stat_cat.create.submit
+msgid "Create new statistical category"
+msgstr ""
+
+#: staff.server.admin.stat_cat.loading_status
+msgid "Loading permissions and statistical categories..."
+msgstr ""
+
+#: staff.server.admin.stat_cat.copy_stat_cats
+msgid "Copy Statistical Categories"
+msgstr ""
+
+#: staff.server.admin.stat_cat.patron_stat_cats
+msgid "Patron Statistical Categories"
+msgstr ""
+
+#: staff.server.admin.stat_cat.info_prompt
+msgid "* To edit or view information about an entry, click on the entry in the drop-down menu"
+msgstr ""
+
+#: staff.server.admin.stat_cat.none_defined
+msgid "No statistical categories are defined"
+msgstr ""
+
+#: staff.server.admin.stat_cat.name.label
+msgid "Statistical Category Name"
+msgstr ""
+
+#: staff.server.admin.stat_cat.opac_visibility.label
+msgid "OPAC Visibility"
+msgstr ""
+
+#: staff.server.admin.stat_cat.entries.label
+msgid "Entries"
+msgstr ""
+
+#: staff.server.admin.stat_cat.add_entry
+msgid "Add Entry"
+msgstr ""
+
+#: staff.server.admin.stat_cat.none
+msgid "(none)"
+msgstr ""
+
+#: staff.server.admin.stat_cat.add.label
+msgid "Add"
+msgstr ""
+
+#: staff.server.admin.stat_cat.add.prompt
+msgid "Enter the value for the new statistical category entry"
+msgstr ""
+
+#: staff.server.admin.stat_cat.delete.confirm
+msgid "This will delete the selected statistical category and all attached entries. Are you sure you wish to continue?"
+msgstr ""
+
+#: staff.server.admin.stat_cat.entry_delete.confirm
+msgid "Are you sure you wish to remove this statistical category entry?"
+msgstr ""
+
+#: staff.server.admin.stat_cat.edit_submit
+msgid "Update Statistical Category"
+msgstr ""
+
+#: staff.server.admin.stat_cat.edit_delete
+msgid "Delete Statistical Category"
+msgstr ""
+
+#: staff.server.admin.stat_cat.edit_entry_owner
+msgid "Owned By "
+msgstr ""
+
+#: staff.server.admin.stat_cat.edit_entry_name_submit
+msgid "Update Entry Value"
+msgstr ""
+
+#: staff.server.admin.stat_cat.edit_entry_delete
+msgid "Delete Entry"
+msgstr ""
+
+#: staff.server.admin.stat_cat.new_entry_name
+msgid "Enter the value of the new entry: "
+msgstr ""
+
+#: staff.server.admin.stat_cat.new_entry_create
+msgid "Create new entry"
+msgstr ""
+
+#: staff.server.admin.stat_cat.update_success
+msgid "Update succeeded"
+msgstr ""
+
+#: staff.server.admin.upload_xacts.title
+msgid "Upload Offline Transactions"
+msgstr ""
+
+#: staff.server.admin.upload_xacts.header
+msgid "Uploading transactions..."
 msgstr ""

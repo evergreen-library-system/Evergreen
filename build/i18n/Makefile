@@ -4,7 +4,8 @@ POINDIR=po
 PROJECT=locale
 LOCALE=fr-CA
 DTDDIR=../../Open-ILS/web/opac/locale
-PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
+CHROME_PROPSDIR=../../Open-ILS/xul/staff_client/chrome/locale
+SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 FMIDLSRC=../../Open-ILS/examples/fm_IDL.xml
 FMIDLOUT=fm_IDL.pot
 FMIDLENT=fm_IDL.xml
@@ -66,7 +67,8 @@ dtds2po:
 	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(DTDDIR)/en-US/ 2>&1
 
 props2po:
-	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(PROPSDIR)/en-US/ 2>&1
+	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(CHROME_PROPSDIR)/en-US/ 2>&1
+	@moz2po $(PROGRESS) -o $(POOUTDIR)/$(LOCALE) -i $(SERVER_PROPSDIR)/en-US/ 2>&1
 
 dtds2pot:
 	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(DTDDIR)/en-US/ 2>&1
@@ -78,13 +80,15 @@ po2ils:
 	@scripts/ils_events.py --create $(POINDIR)/$(LOCALE)/$(EVTPO) --locale $(LOCALE) --output $(PROJECT)/$(LOCALE)/$(EVTXML) 
 
 props2pot:
-	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(PROPSDIR)/en-US/ 2>&1
+	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(CHROME_PROPSDIR)/en-US/ 2>&1
+	@moz2po -P $(PROGRESS) -o $(POTSRC) -i $(SERVER_PROPSDIR)/en-US/ 2>&1
 
 po2dtds:
 	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(DTDDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 po2props:
-	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(CHROME_PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
+	@po2moz $(PROGRESS) -o $(PROJECT)/$(LOCALE) -t $(SERVER_PROPSDIR)/en-US/ -i $(POINDIR)/$(LOCALE) 2>&1
 
 sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRC) --output $(POTSRC)/$(SQLPOT)

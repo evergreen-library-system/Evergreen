@@ -1,10 +1,10 @@
-# extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/admin.properties
+# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/admin.properties
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-17 14:20-0400\n"
+"POT-Creation-Date: 2008-01-20 23:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,10 +15,114 @@ msgstr ""
 "X-Generator: Translate Toolkit 1.0.1\n"
 "X-Accelerator-Marker: &\n"
 
-#: staff.admin.survey.save_response.label
-msgid "Save this response"
+#: staff.admin.font_settings.sound
+msgid "Sound preference saved to file system."
 msgstr ""
 
-#: staff.admin.survey.save_response.accesskey
-msgid "R"
+#: staff.admin.font_settings.save
+msgid "Global Font saved to file system."
+msgstr ""
+
+#: staff.admin.font_settings.sound.disabled
+msgid "Sound is now disabled."
+msgstr ""
+
+#: staff.admin.font_settings.sound.enabled
+msgid "Sound is now enabled."
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALLER
+msgid "Global Font Adjust set to Smaller than Default"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_DEFAULT
+msgid "Global Font Adjust set to Default"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGER
+msgid "Global Font Adjust set to Larger than Default"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_SMALL
+msgid "Global Font set to XX-Small"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_SMALL
+msgid "Global Font set to X-Small"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_SMALL
+msgid "Global Font set to Small"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_MEDIUM
+msgid "Global Font set to Medium"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_LARGE
+msgid "Global Font set to Large"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_X_LARGE
+msgid "Global Font set to X-Large"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_XX_LARGE
+msgid "Global Font set to XX-Large"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
+msgid "Global Font set to 5pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
+msgid "Global Font set to 6pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
+msgid "Global Font set to 7pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
+msgid "Global Font set to 8pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
+msgid "Global Font set to 9pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
+msgid "Global Font set to 10pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
+msgid "Global Font set to 11pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
+msgid "Global Font set to 12pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
+msgid "Global Font set to 13pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
+msgid "Global Font set to 14pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
+msgid "Global Font set to 15pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
+msgid "Global Font set to 16pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
+msgid "Global Font set to 17pt"
+msgstr ""
+
+#: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
+msgid "Global Font set to 18pt"
 msgstr ""
