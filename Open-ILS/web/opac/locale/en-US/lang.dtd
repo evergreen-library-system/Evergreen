@@ -1372,3 +1372,105 @@
 <!ENTITY staff.server.admin.hold_pull.volume_hold "Volume Hold">
 <!ENTITY staff.server.admin.hold_pull.title_hold "Title Hold">
 <!ENTITY staff.server.admin.hold_pull.metarecord_hold "Metarecord Hold">
+<!ENTITY staff.server.admin.non_cat_types.title "Evergreen: Non Cataloged Types Editor">
+<!-- This will be followed by the user's name -->
+<!ENTITY staff.server.admin.non_cat_types.greeting "Welcome ">
+<!ENTITY staff.server.admin.non_cat_types.editor.title " Non Cataloged Types Editor ">
+<!ENTITY staff.server.admin.non_cat_types.editor.header "Create a new non-cataloged type">
+<!ENTITY staff.server.admin.non_cat_types.editor.minutes "Minutes">
+<!ENTITY staff.server.admin.non_cat_types.editor.hours "Hours">
+<!ENTITY staff.server.admin.non_cat_types.editor.days "Days">
+<!ENTITY staff.server.admin.non_cat_types.editor.weeks "Weeks">
+<!ENTITY staff.server.admin.non_cat_types.editor.months "Months">
+<!ENTITY staff.server.admin.non_cat_types.in_house_circ "Circulate In-House?">
+<!ENTITY staff.server.admin.non_cat_types.in_house_circ "Help">
+<!ENTITY staff.server.admin.non_cat_types.editor.create "Create">
+<!ENTITY staff.server.admin.non_cat_types.name "Name">
+<!ENTITY staff.server.admin.non_cat_types.owning_location "Owning Location">
+<!ENTITY staff.server.admin.non_cat_types.duration "Duration">
+<!ENTITY staff.server.admin.non_cat_types.in_house.circulate "Circulate In House">
+<!ENTITY staff.server.admin.non_cat_types.edit "Edit">
+<!ENTITY staff.server.admin.non_cat_types.delete "Delete">
+<!ENTITY staff.server.admin.non_cat_types.submit "Submit">
+<!ENTITY staff.server.admin.non_cat_types.cancel "Cancel">
+<!ENTITY staff.server.admin.non_cat_types.delete.confirm "Are you sure you wish to delete the selected non-cataloged type?">
+<!ENTITY staff.server.admin.non_cat_types.in_house.help 'If the "In-House" flag is set on a non-cataloged type, items that circulate as that type will create "In-House" circulations.  This is ideal for computer use, room "rentals", etc.'>
+<!ENTITY staff.server.admin.non_cat_types.update.success "Non-cataloged type successfully updated">
+<!ENTITY staff.server.admin.non_cat_types.name_exists "A non-cataloged type with the selected name already exists.">
+<!ENTITY staff.server.admin.index.title "Local System Administration">
+<!ENTITY staff.server.admin.index.workstation_configuration "Workstation Configuration">
+<!ENTITY staff.server.admin.index.library_configuration "Library Configuration">
+<!ENTITY staff.server.admin.index.maintenance_reports "Maintenance Reports">
+<!ENTITY staff.server.admin.index.fonts_and_sounds "Global Font and Sound Settings">
+<!ENTITY staff.server.admin.index.printer "Printer Settings Editor">
+<!ENTITY staff.server.admin.index.closed_dates "Closed Dates Editor">
+<!ENTITY staff.server.admin.index.copy_locations "Copy Locations Editor">
+<!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
+<!ENTITY staff.server.admin.index.non_cataloged_types "Non-cataloged Types Editor">
+<!ENTITY staff.server.admin.index.statistical_categories "Statistical Categories Editor">
+<!ENTITY staff.server.admin.index.hold_pull_list "Pull List for Hold Requests">
+<!ENTITY staff.server.admin.index.testing "(Testing)">
+<!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for Hold Requests (Classic)">
+<!ENTITY staff.server.admin.index.reports "Reports">
+<!ENTITY staff.server.admin.index.cash_reports "Cash Reports">
+<!ENTITY staff.server.admin.index.transits "Transits">
+<!ENTITY staff.server.admin.index.transit_list "Transit List">
+<!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
+<!-- This will be followed by the user's name -->
+<!ENTITY staff.server.admin.org_settings.greeting "Welcome ">
+<!ENTITY staff.server.admin.org_settings.header " Library Settings Editor ">
+<!-- This will be followed by the library's name -->
+<!ENTITY staff.server.admin.org_settings.select_library "Edit Settings for : ">
+<!-- This will be followed by the library's name -->
+<!ENTITY staff.server.admin.org_settings.selected_library "Library Settings for ">
+<!ENTITY staff.server.admin.org_settings.opac_timeout "OPAC Inactivity Timeout (in seconds)">
+<!ENTITY staff.server.admin.org_settings.apply "Apply">
+<!ENTITY staff.server.admin.org_settings.apply_all "Apply to all Locations">
+<!ENTITY staff.server.admin.org_settings.staff_timeout "Staff Login Inactivity Timeout (in seconds)">
+<!ENTITY staff.server.admin.org_settings.lost_fee "Lost Materials Processing Fee">
+<!ENTITY staff.server.admin.org_settings.default_price "Default Item Price">
+<!ENTITY staff.server.admin.org_settings.from_address '"FROM" email address for patron notices'>
+<!ENTITY staff.server.admin.org_settings.bounce_note "(note: delivery failures will be returned this address)">
+<!ENTITY staff.server.admin.org_settings.apply_all.note 'I. "Apply to all Locations" will force the new setting to be applied to all locations in the location dropdown.'>
+<!ENTITY staff.server.admin.org_settings.update_success "Update succeeded.">
+<!ENTITY staff.server.admin.org_settings.apply_all.confirm "This will update the setting for all of the locations listed in the dropdown menu. Are you sure you wish to continue?">
+<!ENTITY staff.server.admin.stat_cat.title "Evergreen: Statistical Category Editor">
+<!ENTITY staff.server.admin.stat_cat.greeting "Welcome ">
+<!ENTITY staff.server.admin.stat_cat.heading " Statistical Category Editor">
+<!ENTITY staff.server.admin.stat_cat.create "Create a new statistical category">
+<!ENTITY staff.server.admin.stat_cat.name "Enter the name: ">
+<!ENTITY staff.server.admin.stat_cat.owning_library "Owning Library: ">
+<!ENTITY staff.server.admin.stat_cat.opac_visibility "OPAC Visibility: ">
+<!ENTITY staff.server.admin.stat_cat.on "On">
+<!ENTITY staff.server.admin.stat_cat.off "Off">
+<!ENTITY staff.server.admin.stat_cat.type "Type: ">
+<!ENTITY staff.server.admin.stat_cat.patron "Patron">
+<!ENTITY staff.server.admin.stat_cat.copy "Copy">
+<!ENTITY staff.server.admin.stat_cat.create.submit "Create new statistical category">
+<!ENTITY staff.server.admin.stat_cat.loading_status "Loading permissions and statistical categories...">
+<!ENTITY staff.server.admin.stat_cat.copy_stat_cats "Copy Statistical Categories">
+<!ENTITY staff.server.admin.stat_cat.patron_stat_cats "Patron Statistical Categories">
+<!ENTITY staff.server.admin.stat_cat.info_prompt "* To edit or view information about an entry, click on the entry in the drop-down menu">
+<!ENTITY staff.server.admin.stat_cat.none_defined "No statistical categories are defined">
+<!ENTITY staff.server.admin.stat_cat.name.label "Statistical Category Name">
+<!ENTITY staff.server.admin.stat_cat.owning_library.label "Owning Library">
+<!ENTITY staff.server.admin.stat_cat.opac_visibility.label "OPAC Visibility">
+<!ENTITY staff.server.admin.stat_cat.entries.label "Entries">
+<!ENTITY staff.server.admin.stat_cat.add_entry "Add Entry">
+<!ENTITY staff.server.admin.stat_cat.edit "Edit">
+<!ENTITY staff.server.admin.stat_cat.none "(none)">
+<!ENTITY staff.server.admin.stat_cat.add.label "Add">
+<!ENTITY staff.server.admin.stat_cat.add.prompt "Enter the value for the new statistical category entry">
+<!ENTITY staff.server.admin.stat_cat.delete.confirm "This will delete the selected statistical category and all attached entries. Are you sure you wish to continue?">
+<!ENTITY staff.server.admin.stat_cat.entry_delete.confirm "Are you sure you wish to remove this statistical category entry?">
+<!ENTITY staff.server.admin.stat_cat.edit_submit "Update Statistical Category">
+<!ENTITY staff.server.admin.stat_cat.edit_delete "Delete Statistical Category">
+<!ENTITY staff.server.admin.stat_cat.cancel "Cancel">
+<!ENTITY staff.server.admin.stat_cat.edit_entry_owner "Owned By ">
+<!ENTITY staff.server.admin.stat_cat.edit_entry_name_submit "Update Entry Value">
+<!ENTITY staff.server.admin.stat_cat.edit_entry_delete "Delete Entry">
+<!ENTITY staff.server.admin.stat_cat.new_entry_name "Enter the value of the new entry: ">
+<!ENTITY staff.server.admin.stat_cat.new_entry_create "Create new entry">
+<!ENTITY staff.server.admin.stat_cat.update_success "Update succeeded">
+<!ENTITY staff.server.admin.upload_xacts.title "Upload Offline Transactions">
+<!ENTITY staff.server.admin.upload_xacts.header "Uploading transactions...">

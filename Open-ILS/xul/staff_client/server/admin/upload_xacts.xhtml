@@ -1,16 +1,16 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <!DOCTYPE html PUBLIC 
 	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 	<!ENTITY nbsp " "> <!-- calendar needs this entity -->
 ]>
-
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <head>
-	<title>Upload Offline Transactions</title>
+	<title>&staff.server.admin.upload_xacts.title;</title>
 	<link rel="stylesheet" type="text/css" media="all" href="chrome://global/skin/" title="chrome_skin" />
 	<script type="text/javascript" src="/xul/server/main/JSAN.js"></script>
 	<script type="text/javascript" src="/xul/server/main/constants.js" />
@@ -27,7 +27,7 @@
 	<script type="text/javascript" src="upload_xacts.js" />
 </head>
 <body onload="try{my_init();}catch(E){alert(E);}">
-	<h3>Uploading transactions...</h3>
+	<h3>&staff.server.admin.upload_xacts.header;</h3>
 	<form id="form" method='post' enctype='multipart/form-data' style="display: none">
 		action:<input type='text' id="action" name='action' value='load'></input>
 		ws:<input type='text' id="ws" name='ws' value=''></input>

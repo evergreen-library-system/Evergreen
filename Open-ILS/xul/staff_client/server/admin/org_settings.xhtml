@@ -1,8 +1,15 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Library Settings Editor</title>
+		<title>&staff.server.admin.org_settings.title;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script>
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -26,67 +33,65 @@
 	<body onload='osEditorInit();'>
 
 		<div class='welcome_box'>
-			<span>Welcome </span><b><span id='user'/></b>
+			<span>&staff.server.admin.org_settings.greeting;</span><b><span id='user'/></b>
 		</div>
 
 		<center>
-			<div class='title'> Library Settings Editor </div>
+			<div class='title'>&staff.server.admin.org_settings.header;</div>
 
 			<br/><br/>
-			Edit Settings for : <select id='os_orgs' style='width:auto;'/>
+			&staff.server.admin.org_settings.select_library;<select id='os_orgs' style='width:auto;'/>
 			<br/><br/>
 
 			<table class='data_grid data_grid_center' width='85%'>
 				<thead>
-					<tr><td colspan='4' style='padding: 8px;'>Library Settings for <b id='osCurrentOrg'/></td></tr>
+					<tr><td colspan='4' style='padding: 8px;'>&staff.server.admin.org_settings.selected_library;<b id='osCurrentOrg'/></td></tr>
 				</thead>
 				<tbody id='os_tbody'>
 					<tr>
-						<td>OPAC Inactivity Timeout (in seconds)</td>
+						<td>&staff.server.admin.org_settings.opac_timeout;</td>
 						<td><input type='text' id='auth.opac_timeout' size='5'/></td>
-						<td><button id='auth.opac_timeout.apply'>Apply</button></td>
-						<td><button id='auth.opac_timeout.apply_all'>Apply to all Locations</button></td>
+						<td><button id='auth.opac_timeout.apply'>&staff.server.admin.org_settings.apply;</button></td>
+						<td><button id='auth.opac_timeout.apply_all'>&staff.server.admin.org_settings.apply_all;</button></td>
 					</tr>
 					<tr>
-						<td>Staff Login Inactivity Timeout (in seconds)</td>
+						<td>&staff.server.admin.org_settings.staff_timeout;</td>
 						<td><input type='text' id='auth.staff_timeout' size='5'/></td>
-						<td><button id='auth.staff_timeout.apply'>Apply</button></td>
-						<td><button id='auth.staff_timeout.apply_all'>Apply to all Locations</button></td>
+						<td><button id='auth.staff_timeout.apply'>&staff.server.admin.org_settings.apply;</button></td>
+						<td><button id='auth.staff_timeout.apply_all'>&staff.server.admin.org_settings.apply_all;</button></td>
 					</tr>
 					<tr>
-						<td>Lost Materials Processing Fee</td>
+						<td>&staff.server.admin.org_settings.lost_fee;</td>
 						<td>&#036;<input ismoney='1' type='text' id='circ.lost_materials_processing_fee' size='5'/></td>
-						<td><button id='circ.lost_materials_processing_fee.apply'>Apply</button></td>
-						<td><button id='circ.lost_materials_processing_fee.apply_all'>Apply to all Locations</button></td>
+						<td><button id='circ.lost_materials_processing_fee.apply'>&staff.server.admin.org_settings.apply;</button></td>
+						<td><button id='circ.lost_materials_processing_fee.apply_all'>&staff.server.admin.org_settings.apply_all;</button></td>
 					</tr>
 					<tr>
-						<td>Default Item Price</td>
+						<td>&staff.server.admin.org_settings.default_price;</td>
 						<td>&#036;<input ismoney='1' type='text' id='cat.default_item_price' size='5'/></td>
-						<td><button id='cat.default_item_price.apply'>Apply</button></td>
-						<td><button id='cat.default_item_price.apply_all'>Apply to all Locations</button></td>
+						<td><button id='cat.default_item_price.apply'>&staff.server.admin.org_settings.apply;</button></td>
+						<td><button id='cat.default_item_price.apply_all'>&staff.server.admin.org_settings.apply_all;</button></td>
 					</tr>
 					<tr>
-						<td>"FROM" email address for patron notices<br/>(note: delivery failures will be returned this address)</td>
+						<td>&staff.server.admin.org_settings.from_address;<br/>&staff.server.admin.org_settings.bounce_note;</td>
 						<td><input type='text' id='org.bounced_emails' size='25'/></td>
-						<td><button id='org.bounced_emails.apply'>Apply</button></td>
-						<td><button id='org.bounced_emails.apply_all'>Apply to all Locations</button></td>
+						<td><button id='org.bounced_emails.apply'>&staff.server.admin.org_settings.apply;</button></td>
+						<td><button id='org.bounced_emails.apply_all'>&staff.server.admin.org_settings.apply_all;</button></td>
 					</tr>
 				</tbody>
 			</table>
 			<br/>
 			<div style='font-size: 9pt;'>
 				<div>
-					I. "Apply to all Locations" will force the new setting 
-					to be applied to all locations in the location dropdown.
+					&staff.server.admin.org_settings.apply_all.note;
 				</div>
 			</div>
 		</center>
 		<span id='os_success' class='hide_me'>
-			Update succeeded.
+			&staff.server.admin.org_settings.update_success;
 		</span>
 		<span id='os_confirm_all' class='hide_me'>
-			This will update the setting for all of the locations listed in the dropdown menu.
-			Are you sure you wish to continue?
+			&staff.server.admin.org_settings.apply_all.confirm;
 		</span>
 	</body>
 </html>

@@ -1,8 +1,15 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC 
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 
 	<head>
-		<title>Evergreen: Non Cataloged Types Editor</title>
+		<title>&staff.server.admin.non_cat_types.title;</title>
 		<script language='javascript' src='/opac/common/js/utils.js'> </script>
 		<script language='javascript' src='/opac/common/js//config.js'> </script>
 		<script language='javascript' src='/opac/common/js/CGI.js'> </script>
@@ -26,17 +33,17 @@
 	<body onload='try{ncEditorInit();}catch(e){alert(js2JSON(e));}'>
 
 		<div class='welcome_box'>
-			<span>Welcome </span><b><span id='nc_user'/></b>
+			<span>&staff.server.admin.non_cat_types.greeting;</span><b><span id='nc_user'/></b>
 		</div>
 
 		<center>
-			<div class='title'> Non Cataloged Types Editor </div>
+			<div class='title'>&staff.server.admin.non_cat_types.editor.title;</div>
 
 			<br/>
 
 			<table class='data_grid data_grid_center' width='85%'>
 				<thead>
-					<tr><td colspan='5'>Create a new non-cataloged type</td></tr>
+					<tr><td colspan='5'>&staff.server.admin.non_cat_types.editor.header;</td></tr>
 				</thead>
 				<tbody>
 					<tr>
@@ -44,19 +51,19 @@
 						<td>
 							<input id='nc_new_interval_count' type='text' size='3' maxlength='3' value='14'/>
 							<select id='nc_new_interval_type' style='width: 6em;'>
-								<option value='minutes'>Minutes</option>
-								<option value='hours'>Hours</option>
-								<option value='days' selected='selected'>Days</option>
-								<option value='weeks'>Weeks</option>
-								<option value='months'>Months</option>
+								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+								<option value='days' selected='selected'>&staff.server.admin.non_cat_types.editor.days;</option>
+								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
 							</select>
 						</td>
-						<td>Circulate In-House? 
-							<a href='javascript:alert($("cd_in_house_exp").innerHTML);' style='color:red'>(??)</a>
+						<td>&staff.server.admin.non_cat_types.in_house_circ;
+							<a href='javascript:alert($("cd_in_house_exp").innerHTML);' style='color:red'>&staff.server.admin.non_cat_types.in_house.help;</a>
 							<input id='nc_new_inhouse' type='checkbox'/>
 						</td>
 						<td><select class='select_big' id='nc_new_owner' disabled='disabled'> </select></td>
-						<td><input id='nc_new_submit' type='submit' value='Create' disabled='disabled'> </input></td>
+						<td><input id='nc_new_submit' type='submit' value='&staff.server.admin.non_cat_types.editor.create;' disabled='disabled'> </input></td>
 					</tr>
 				</tbody>
 			</table>
@@ -66,12 +73,12 @@
 			<table id='nc_table' class='data_grid' width='85%'>
 				<thead>
 					<tr>
-						<td>Name</td>
-						<td>Owning Location</td>
-						<td>Duration</td>
-						<td>Circulate In House</td>
-						<td>Edit</td>
-						<td>Delete</td>
+						<td>&staff.server.admin.non_cat_types.name;</td>
+						<td>&staff.server.admin.non_cat_types.owning_location;</td>
+						<td>&staff.server.admin.non_cat_types.duration;</td>
+						<td>&staff.server.admin.non_cat_types.in_house.circulate;</td>
+						<td>&staff.server.admin.non_cat_types.edit;</td>
+						<td>&staff.server.admin.non_cat_types.delete;</td>
 					</tr>
 				</thead>
 				<tbody id='nc_tbody'>
@@ -81,18 +88,18 @@
 						<td>
 							<input name='nc_interval_count' type='text' size='3' maxlength='3' disabled='disabled'/>
 							<select name='nc_interval_type' style='width: 6em;' disabled='disabled'>
-								<option value='minutes'>Minutes</option>
-								<option value='hours'>Hours</option>
-								<option value='days'>Days</option>
-								<option value='weeks'>Weeks</option>
-								<option value='months'>Months</option>
+								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+								<option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
+								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
 							</select>
 						</td>
 						<td>
 							<input name='nc_inhouse' type='checkbox' disabled='disabled'/>
 						</td>
-						<td><input name='nc_edit' type='submit' value='Edit' disabled='disabled'/></td>
-						<td><input name='nc_delete' type='submit' value='Delete' disabled='disabled'/></td>
+						<td><input name='nc_edit' type='submit' value='&staff.server.admin.non_cat_types.edit;' disabled='disabled'/></td>
+						<td><input name='nc_delete' type='submit' value='&staff.server.admin.non_cat_types.delete;' disabled='disabled'/></td>
 					</tr>
 				</tbody>
 			</table>
@@ -111,11 +118,11 @@
 						<span>
 							<input name='nc_edit_interval_count' type='text' size='3' maxlength='3'/>
 							<select name='nc_edit_interval_type' style='width: 6em;'>
-								<option value='minutes'>Minutes</option>
-								<option value='hours'>Hours</option>
-								<option value='days'>Days</option>
-								<option value='weeks'>Weeks</option>
-								<option value='months'>Months</option>
+								<option value='minutes'>&staff.server.admin.non_cat_types.editor.minutes;</option>
+								<option value='hours'>&staff.server.admin.non_cat_types.editor.hours;</option>
+								<option value='days'>&staff.server.admin.non_cat_types.editor.days;</option>
+								<option value='weeks'>&staff.server.admin.non_cat_types.editor.weeks;</option>
+								<option value='months'>&staff.server.admin.non_cat_types.editor.months;</option>
 							</select>
 						</span>
 					</td>
@@ -124,12 +131,12 @@
 
 					<td>
 						<span class='padded'>
-							<input name='nc_edit_submit' type='submit' value='Submit'> </input>
+							<input name='nc_edit_submit' type='submit' value='&staff.server.admin.non_cat_types.submit;'> </input>
 						</span>
 					</td>
 					<td>
 						<span class='padded'>
-							<input name='nc_edit_cancel' type='submit' value='Cancel'> </input>
+							<input name='nc_edit_cancel' type='submit' value='&staff.server.admin.non_cat_types.cancel;'> </input>
 						</span>
 					</td>
 				</tr>
@@ -138,25 +145,21 @@
 	</body>
 
 	<span class='hide_me' id='nc_delete_confirm'>
-		Are you sure you wish to delete the select non cataloged type?
+		&staff.server.admin.non_cat_types.delete.confirm;
 	</span>
 
 	<span class='hide_me' id='cd_in_house_exp'>
-		If the 'In-House' flag is set on a non-cataloged type, items that circulate as
-		that type will create "In-House" circulations.  This is ideal for computer use, 
-		room "rentals", etc.
+		&staff.server.admin.non_cat_types.in_house.help;
 	</span>
 
 	<span class='hide_me' id='nc_update_success'>
-		Non cataloged type successfully updated
+		&staff.server.admin.non_cat_types.update.success;
 	</span>
 
 	<span class='hide_me' id='nc_type_exists'>
-		A Non-Cat type with the selected name already exists.
+		&staff.server.admin.non_cat_types.name_exists;
 	</span>
 
 
 </html>
 
-
-	
