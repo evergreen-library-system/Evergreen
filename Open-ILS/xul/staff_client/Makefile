@@ -9,19 +9,14 @@ else
 endif
 
 all: build 
-	@echo
-	@echo
 
 build: build_dir generated open-ils custom stamp 
-	@echo
-	@echo 
 	@echo To test the staff client:
 	@echo "  cd build/"
 	@echo "  xulrunner application.ini"
 
 build_dir:
-	@echo
-	@echo '*********************************************************  Creating and populating build/ '
+	@echo ' * Creating and populating build/ '
 	mkdir -p build/
 	cp -R chrome build/
 	cp -R server build/
@@ -34,13 +29,11 @@ build_dir:
 	cp build/chrome/content/main/simple_auth.xul build/server/main/simple_auth.xul
 	cp build/chrome/content/OpenILS/data.js build/server/OpenILS/data.js
 	cp build/chrome/content/OpenILS/global_util.js build/server/OpenILS/global_util.js
-	@echo 
 	# Is the following portable?
 	for i in `cd ../../../Evergreen/xul/staff_client/server/ && find -type f |grep -v \.svn|cut -f2- -d/`; do cp ../../../Evergreen/xul/staff_client/server/$$i build/server/$$i; done
 	external/prune_dirs.sh build/
 
 stamp: 
-	@echo
 	@/bin/date +"%Y%m%d.%H%M%S" > build/BUILD_ID
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "Stamping with Build ID: ${STAFF_CLIENT_BUILD_ID}" ; echo ${STAFF_CLIENT_BUILD_ID} > build/BUILD_ID ) ; fi
 	@if [ -z "${STAFF_CLIENT_BUILD_ID}" ]; then ( echo "No Build ID for versioning" ; echo "none" > build/BUILD_ID ) ; fi
@@ -53,28 +46,23 @@ stamp:
 	@if [ -n "${STAFF_CLIENT_BUILD_ID}" ]; then find build/ -name '*.xml' -exec sed -i s/xul\\\/server/xul\\\/${STAFF_CLIENT_BUILD_ID}\\\/server/g {} \; ; fi
 
 generated:
-	@echo
-	@echo '********************************************************* Grabbing lang.dtd from the OPAC code '
+	@echo ' * Grabbing lang.dtd from the OPAC code '
 	cp ../../../Open-ILS/web/opac/locale/en-US/lang.dtd build/chrome/locale/en-US/
 	# Generate the lang.js file for the stamped build
 	external/dtd2js.pl build/chrome/locale/en-US/lang.dtd > build/chrome/content/main/lang.js
 	cp build/chrome/content/main/lang.js build/server/main/lang.js
 
 open-ils:
-	@echo
-	@echo '********************************************************* Grabbing more OPAC code and legacy code and custom code'
+	@echo ' * Grabbing more OPAC code and legacy code and custom code'
 	#cp ../../../OpenSRF/src/javascript/*.js build/chrome/content/OpenSRF/
 	cp ../../../Open-ILS/web/opac/common/js/*.js build/chrome/content/OpenILS/util/
 	cp $(OPENSRF_JSLIBS)/*.js build/chrome/content/OpenILS/util/
 	external/prune_dirs.sh build/
 
 custom:
-	@echo
-	@echo
-	@echo '********************************************************* Placeholder for debugging tweaks '
+	@echo ' * Placeholder for debugging tweaks '
 	#(cd chrome/content/OpenILS/util; cp RemoteRequest.js~ RemoteRequest.js)
 
 clean: 
-	@echo
-	@echo '********************************************************* Removing build/ '
+	@echo ' * Removing build/ '
 	rm -rf build/
