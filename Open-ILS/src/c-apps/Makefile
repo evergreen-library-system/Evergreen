@@ -55,7 +55,7 @@ install:
 	cp liboils_idl.so $(LIBDIR)/
 	cp oils_dataloader $(BINDIR)/
 	mkdir -p $(INCDIR)/
-	cp openils/*.h $(INCDIR)/
+	cp ../../include/openils/*.h $(INCDIR)/
 
 clean:
 	@echo $@;
