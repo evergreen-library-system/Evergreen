@@ -213,4 +213,10 @@
 		window.open(uri, "_blank", winopts);
 	}
 
+	function url_prefix(url) {
+		if (url.match(/^\//)) url = urls.remote + url;
+		if (! url.match(/^(http|chrome):\/\//) && ! url.match(/^data:/) ) url = 'http://' + url;
+		dump('url_prefix = ' + url + '\n');
+		return url;
+	}
 

@@ -83,9 +83,13 @@ util.window.prototype = {
 			if (typeof data.modal_xulG_stack == 'undefined') data.modal_xulG_stack = {}; 
 			/* FIXME - not a perfect key.. could imagine two top-level windows both opening modal windows */
 			key = url; 
-			if (typeof xulG == 'object') if (typeof xulG.url_prefix == 'function') {
-				key = key.replace( xulG.url_prefix('/'), '/' );	
-			}
+			if (typeof xulG == 'object') {
+                if (typeof xulG.url_prefix == 'function') {
+				    key = key.replace( xulG.url_prefix('/'), '/' );	
+    			}
+            } else if (typeof url_prefix == 'function') {
+				    key = key.replace( url_prefix('/'), '/' );	
+            }
 			if (typeof data.modal_xulG_stack[key] == 'undefined') data.modal_xulG_stack[key] = [];
 			data.modal_xulG_stack[key].push( my_xulG );
 			data.stash('modal_xulG_stack');
