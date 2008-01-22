@@ -1,6 +1,6 @@
 LDLIBS += -lobjson -lopensrf #-lfieldmapper 
 LDFLAGS += -Wl,-rpath=$(LIBDIR) -L$(DBI_LIBS)
-CFLAGS += -DOSRF_LOG_PARAMS
+CFLAGS += -DOSRF_LOG_PARAMS -I../../include
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
 all:	liboils_idl.so oils_auth.so oils_cstore.so oils_rstore.so oils_dataloader
@@ -22,7 +22,7 @@ oils_cstore.so:	oils_cstore.o liboils_utils.so liboils_idl.so
 	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) -loils_idl -ldbi -loils_utils -ldbdpgsql oils_cstore.o -o $@
 
 oils_rstore.o:	oils_cstore.c
-	$(CC) $(CFLAGS) -I$(TMP) -DRSTORE -c -o $@ oils_cstore.c 
+	$(CC) $(CFLAGS) -DRSTORE -c -o $@ oils_cstore.c 
 
 oils_rstore.so:	oils_rstore.o liboils_utils.so liboils_idl.so
 	@echo $@
@@ -36,11 +36,7 @@ oils_idl-core.o:	oils_idl-core.c
 
 liboils_idl.so:	oils_idl-core.o
 	@echo $@
-	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_idl-core.o -o $@
-#	cp $@ $(TMP)/
-#	mkdir -p $(TMP)/openils/
-#	cp oils_idl.h $(TMP)/openils/
-#	cp idl_fieldmapper.h $(TMP)/openils/
+	$(CC) $(CFLAGS) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_idl-core.o -o $@
 
 oils_auth.so:	oils_auth.o liboils_utils.so
 	@echo $@
@@ -49,16 +45,10 @@ oils_auth.so:	oils_auth.o liboils_utils.so
 liboils_utils.so:	oils_utils.o oils_event.o
 	@echo $@
 	$(CC) -shared -W1 $(LDLIBS) $(LDFLAGS) oils_utils.o oils_event.o -o $@
-#	cp $@ $(TMP)/
-#	mkdir -p $(TMP)/openils/
-#	cp oils_event.h $(TMP)/openils/
-#	cp oils_utils.h $(TMP)/openils/
-#	cp oils_constants.h $(TMP)/openils/
 
 install:
 	@echo $@;
 	cp oils_auth.so $(LIBDIR)/
-	#cp $(TMP)/oils_fetch.so $(LIBDIR)/
 	cp oils_cstore.so $(LIBDIR)/
 	cp oils_rstore.so $(LIBDIR)/
 	cp liboils_utils.so $(LIBDIR)/
