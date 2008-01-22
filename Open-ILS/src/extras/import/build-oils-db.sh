@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ "_$4" == "_" ]; then
 	echo "Usage:"
 	echo "	$0 {Open-ILS-driver} {db-host} {db-port} {db-name} {db-user} {db-password} [db-version]"
