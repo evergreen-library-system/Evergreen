@@ -28,8 +28,8 @@
 # not require fetching the sources externally ... needs testing/updating in here
 
  
-LIBJS=js-1.7.0
-LIBJS_PERL=JavaScript-SpiderMonkey-0.19
+LIBJS=js-1.60
+LIBJS_PERL=JavaScript-SpiderMonkey-0.17
 LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
 LIBJS_PERL_URL=ftp://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
 # used for installing libjs lib and header files
@@ -92,11 +92,8 @@ DEBS =  \
     apache2-mpm-prefork\
     apache2-prefork-dev\
     libapache2-mod-perl2\
-    libreadline5-dev\
-	libtext-csv-perl\
-	libspreadsheet-writeexcel-perl\
-	libtie-ixhash-perl\
-	python-setuptools 
+    libreadline5-dev
+
 
 
 GENTOOS = \
@@ -131,10 +128,7 @@ GENTOOS = \
     dev-perl/Net-Jabber\
     dev-perl/libwww-perl\
     dev-perl/Template-Toolkit\
-    dev-perl/Error\
-	dev-perl/Text-CSV_XS\
-	dev-perl/Spreadsheet-WriteExcel\
-	dev-perl/Tie-IxHash
+    dev-perl/Error
 
 GENTOO_RC = \
     ejabberd\
@@ -204,7 +198,7 @@ install_js_sm:
 	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/Linux_All_DBG.OBJ/*.so $(JS_INSTALL_PREFIX)/lib/
 	cp js/src/Linux_All_DBG.OBJ/*.a $(JS_INSTALL_PREFIX)/lib/
-	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
+	cd JavaScript-SpiderMonkey-0.17 && perl Makefile.PL -E4X && make && make test && make install
 
 
 # Install libdbi and the postgres drivers
