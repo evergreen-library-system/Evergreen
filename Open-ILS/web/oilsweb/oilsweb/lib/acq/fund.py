@@ -14,6 +14,13 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(types)
         return types
 
+    def retrieve(self, fund_id):
+        status = self.ses.request(
+            'open-ils.acq.fund.retrieve', 
+            self.request_mgr.ctx.core.authtoken, fund_id).recv().content()
+        oils.event.Event.parse_and_raise(status)
+        return status
+
     def create_fund(self, fund):
         fund_id = self.ses.request(
             'open-ils.acq.fund.create', 

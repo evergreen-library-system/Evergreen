@@ -4,8 +4,12 @@
     Define some common widgets 
 -->
 
-<%def name='org_draw_node(node, indent=0)'>
-    <option value='${node.id()}'>
+<%def name='org_draw_node(node, indent=0, selected=None)'>
+    <option value='${node.id()}'
+    % if selected == node.id():
+        selected='selected'
+    %endif
+    >
         % for i in range(indent):
             &#160;&#160;
         % endfor
@@ -18,7 +22,7 @@
         
 </%def>
 
-<%def name='org_select(select_name, tree=None)'>
+<%def name='org_select(select_name, tree=None, selected=None)'>
     <!-- Draws a select dropdown of the org tree provided
         with indentation based on org depth -->
     <%
@@ -26,6 +30,6 @@
             tree = c.oils.core.org_tree
     %>
     <select name='${select_name}'>
-        ${org_draw_node(tree, 0)}
+        ${org_draw_node(tree, 0, selected)}
     </select>
 </%def>

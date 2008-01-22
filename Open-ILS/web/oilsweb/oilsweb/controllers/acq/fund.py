@@ -8,7 +8,16 @@ import oils.org
 class FundController(BaseController):
 
     def view(self, **kwargs):
-        return 'view %s' % kwargs['id']
+        r = RequestMgr()
+        r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
+        fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
+        fund = fund_mgr.retrieve(kwargs.get('id'))
+        fund.owner(oils.org.OrgUtil.get_org_unit(fund.owner())) # flesh the owner
+        r.ctx.acq.fund = fund
+        return r.render('acq/financial/view_fund.html')
+
+    def list(self):
+        pass
 
     def create(self):
         r = RequestMgr()
@@ -20,7 +29,7 @@ class FundController(BaseController):
             fund.owner(r.ctx.acq.fund_owner)
             fund.currency_type(r.ctx.acq.fund_currency_type)
             fund_id = fund_mgr.create_fund(fund)
-            redirect_to(controller='acq/fund', action='view', id=fund_id)
+            return redirect_to(controller='acq/fund', action='view', id=fund_id)
 
         r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
