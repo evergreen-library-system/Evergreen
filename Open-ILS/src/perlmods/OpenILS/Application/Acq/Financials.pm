@@ -321,4 +321,25 @@ sub retrieve_budget_alloc {
 }
 
 
+__PACKAGE__->register_method(
+	method => 'retrieve_all_currency_type',
+	api_name	=> 'open-ils.acq.currency_type.all.retrieve',
+	signature => {
+        desc => 'Retrieves all currency_type objects',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+        ],
+        return => {desc => 'List of currency_type objects', type => 'list'}
+    }
+);
+
+sub retrieve_all_currency_type {
+    my($self, $conn, $auth, $budget_alloc_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('GENERAL_ACQ');
+    return $e->retrieve_all_acq_currency_type();
+}
+
+
 1;
