@@ -32,6 +32,10 @@ class OrgUtil(object):
         OrgUtil._flat_org_tree[node.id()] = node
         for child in node.children():
             OrgUtil.flatten_org_tree(child)
+
+    @staticmethod
+    def get_org_unit(org_id):
+        return OrgUtil._flat_org_tree[org_id]
         
 
     @staticmethod
