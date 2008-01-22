@@ -1,0 +1,31 @@
+<!-- vim:set filetype=mako: -->
+
+<!--
+    Define some common widgets 
+-->
+
+<%def name='org_draw_node(node, indent=0)'>
+    <option value='${node.id()}'>
+        % for i in range(indent):
+            &#160;&#160;
+        % endfor
+        ${node.name()} (${node.shortname()})
+    </option> 
+    <% indent += 1 %>
+    % for child in node.children():
+        ${org_draw_node(child, indent)}
+    % endfor
+        
+</%def>
+
+<%def name='org_select(select_name, tree=None)'>
+    <!-- Draws a select dropdown of the org tree provided
+        with indentation based on org depth -->
+    <%
+        if tree is None:
+            tree = c.oils.core.org_tree
+    %>
+    <select name='${select_name}'>
+        ${org_draw_node(tree, 0)}
+    </select>
+</%def>

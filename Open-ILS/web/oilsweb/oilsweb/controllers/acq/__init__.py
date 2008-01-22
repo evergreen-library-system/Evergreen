@@ -18,11 +18,6 @@ class AcqContext(SubContext):
         self.offset = ContextItem(cgi_name='acq.os', default_value=0)
         self.limit = ContextItem(cgi_name='acq.li', default_value=10)
 
-        #self.search_cache_key = ContextItem(cgi_name='acq.sk')
-        #self.record_id = ContextItem(cgi_name='acq.ri')
-        #self.record = ContextItem(cgi_name='acq.r')
-        #self.picklist_item = ContextItem(cgi_name='acq.pi', multi=True)
-
         # -------------------------------------------------------------
         # shared objects and data
         self.prefix = ContextItem()
@@ -34,6 +29,11 @@ class AcqContext(SubContext):
         self.picklist_list = ContextItem() # list of picklist objects
         self.picklist_id_list = ContextItem() # list of picklist objects
         self.picklist_entry = ContextItem() # picklist_entry object
+
+        self.currency_types = ContextItem()
+        self.fund_name = ContextItem(cgi_name='acq.fn')
+        self.fund_currency_type = ContextItem(cgi_name='acq.fc')
+        self.fund_owner = ContextItem(cgi_name='acq.fo')
 
         # -------------------------------------------------------------
         # utility functions

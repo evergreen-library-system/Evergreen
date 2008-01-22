@@ -26,6 +26,7 @@ class CoreContext(SubContext):
         self.workstation = ContextItem() # workstation object
         self.page = ContextItem() # the current page
         self.use_demo = ContextItem(cgi_name='demo') # use the demo login
+        self.org_tree = ContextItem() # full org tree
 
     def postinit(self):
         self.prefix = pylons.config['oils_prefix']

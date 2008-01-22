@@ -19,3 +19,6 @@ body { font-size: 80%; }
 .oils-base-sub-navigate-block span:hover { background: #6BA160; }
 
 .label { font-weight: bold; }
+
+.oils-admin-table td { border-bottom: 1px solid #5E5E5E; }
+.oils-admin-label { font-weight: bold; }

@@ -26,4 +26,9 @@ body { margin-top: 0px; padding-top: 0px;}
 .oils-base-sub-navigate-block { text-align: center; padding: 3px; margin-bottom: 10px;}
 .oils-base-sub-navigate-block span { padding: 3px; }
 
+/* general purpose form table */
+.oils-admin-table { width: 100%; }
+.oils-admin-table td { padding: 4px; }
+.oils-admin-label { width: 20%; }
+
 .label { margin: 1px; }
