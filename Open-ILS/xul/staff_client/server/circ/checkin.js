@@ -137,7 +137,7 @@ circ.checkin.prototype = {
 								if (circs.length > 0) {
 									patrons[circs[0].usr()] = 1;
 								} else {
-									alert('Item ' + obj.selection_list[i].barcode + ' has never circulated');
+									alert(document.getElementById('circStrings').getFormattedString('staff.circ.item_no_circs', [obj.selection_list[i].barcode]));
 								}
 							}
 							for (var i in patrons) {
@@ -201,23 +201,23 @@ circ.checkin.prototype = {
 										throw('invalid date format');
 									}
 									var d = new Date( year, month - 1, day );
-									if (d.toString() == 'Invalid Date') throw('Invalid Date');
-									if ( d > new Date() ) throw('Future Date');
+									if (d.toString() == 'Invalid Date') throw(document.getElementById('circStrings').getString('staff.circ.invalid_date'));
+									if ( d > new Date() ) throw(document.getElementById('circStrings').getString('staff.circ.future_date'));
 									ev.target.value = util.date.formatted_date(d,'%F');
 									var x = document.getElementById('background');
 									if (x) {
 										if ( ev.target.value == util.date.formatted_date(new Date(),'%F') ) {
 											x.setAttribute('style','background-color: green');
-											document.getElementById('background-text').setAttribute('value','Check In / Process Item');
+											document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getString('staff.circ.process_item'));
 										} else {
 											x.setAttribute('style','background-color: red');
-											document.getElementById('background-text').setAttribute('value','Backdated ' + ev.target.value + ' Check In');
+											document.getElementById('background-text').setAttribute('value',document.getElementById('circStrings').getFormattedString('staff.circ.backdated_checkin', [ev.target.value]));
 										}
 									}
 
 								} catch(E) {
 									dump('checkin:effective_date: ' + E + '\n');
-									alert('Problem setting backdate: ' + E);
+									alert(document.getElementById('circStrings').getFormattedString('staff.circ.backdate.exception', [E]));
 									ev.target.value = util.date.formatted_date(new Date(),'%F');
 								}
 							}
@@ -225,7 +225,7 @@ circ.checkin.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert(document.getElementById('circStrings').getString('staff.circ.unimplemented')); }
 					],
 					'cmd_checkin_submit_barcode' : [
 						['command'],
@@ -278,12 +278,12 @@ circ.checkin.prototype = {
 			return true;
 		} else {
 			if ( 1 == obj.error.yns_alert(
-						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
-						'Bad Barcode',
-						'Cancel',
-						'Accept Barcode',
+						document.getElementById('circStrings').getFormattedString('staff.circ.check_digit.bad', [bc]),
+						document.getElementById('circStrings').getString('staff.circ.barcode.bad'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.barcode.accept'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
 			) ) {
 				return true;
@@ -323,15 +323,15 @@ circ.checkin.prototype = {
 				}
 			);
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Something went wrong in circ.util.checkin: ',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.exception', [E]));
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
-				obj.error.sdump('D_CIRC','circ.util.checkin: Calling external .on_failure()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.util.checkin.exception.external') + '\n');
 				window.xulG.on_failure(E);
 			} else {
-				obj.error.sdump('D_CIRC','circ.util.checkin: No external .on_failure()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.util.checkin.exception.no_external') + '\n');
 			}
 		}
 
@@ -380,24 +380,24 @@ circ.checkin.prototype = {
 				obj.on_checkin(checkin);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_checkin == 'function') {
-				obj.error.sdump('D_CIRC','circ.checkin: Calling external .on_checkin()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.checkin.exception.external') + '\n');
 				window.xulG.on_checkin(checkin);
 			} else {
-				obj.error.sdump('D_CIRC','circ.checkin: No external .on_checkin()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.checkin.exception.no_external') + '\n');
 			}
 
 			return true;
 
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Something went wrong in circ.util.checkin2: ',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin2.exception', [E]));
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
-				obj.error.sdump('D_CIRC','circ.util.checkin2: Calling external .on_failure()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.checkin2.exception.external') + '\n');
 				window.xulG.on_failure(E);
 			} else {
-				obj.error.sdump('D_CIRC','circ.util.checkin2: No external .on_failure()\n');
+				obj.error.sdump('D_CIRC', document.getElementById('circStrings').getString('staff.circ.checkin2.exception.no_external') + '\n');
 			}
 		}
 
