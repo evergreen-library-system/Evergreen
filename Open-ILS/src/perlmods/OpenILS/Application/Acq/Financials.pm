@@ -18,21 +18,24 @@ my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
 # any descendents
 # ---------------------------------------------------------------
 sub org_descendants {
-    my($e, $org_id) = @_;
-
-    my $org = $e->retrieve_actor_org_unit(
-        [$org_id, {flesh=>1, flesh_fields=>{aou=>['ou_type']}}]) or return $e->event;
-
+    my $org_id  = shift;
     my $org_list = $U->simplereq(
         'open-ils.storage',
-        'open-ils.storage.actor.org_unit.descendants.atomic',
-        $org_id, $org->ou_type->depth);
-
+        'open-ils.storage.actor.org_unit.descendants.atomic', $org_id);
     my @org_ids;
     push(@org_ids, $_->id) for @$org_list;
     return \@org_ids;
 }
 
+sub org_ancestors {
+    my $org_id  = shift;
+    my $org_list = $U->simplereq(
+        'open-ils.storage',
+        'open-ils.storage.actor.org_unit.ancestors.atomic', $org_id);
+    my @org_ids;
+    push(@org_ids, $_->id) for @$org_list;
+    return \@org_ids;
+}
 
 
 __PACKAGE__->register_method(
@@ -113,8 +116,10 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Org Unit ID', type => 'number'},
-            {desc => 'Hash or options, including "children", which, if true,  
-                includes funds for descendant orgs in addition to the requested org', 
+            {desc => 'Hash or options, including "descendants",
+                includes funds for descendant orgs in addition to the requested org;
+                "ancestor", includes ancestor org funds; 
+                "full_path", includes orgs for ancestors and descendants', 
             type => 'hash'},
         ],
         return => {desc => 'The fund objects on success, Event on failure'}
@@ -128,9 +133,16 @@ sub retrieve_org_funds {
     return $e->event unless $e->allowed('VIEW_FUND', $org_id);
 
     my $search = {owner => $org_id};
-    $search = {owner => org_descendents($e, $org_id)} if $$options{children};
-    my $funds = $e->search_acq_fund($search) or return $e->event;
+    if($$options{full_path}) {
+        my $orglist = org_descendants($org_id);
+        push(@$orglist, @{org_ancestors($org_id)});
+        $search = {owner => $orglist};
+    } else {
+        $search = {owner => org_descendants($org_id)} if $$options{descendants};
+        $search = {owner => org_ancestors($org_id)} if $$options{ancestors};
+    }
 
+    my $funds = $e->search_acq_fund($search) or return $e->event;
     return $funds; 
 }
 
