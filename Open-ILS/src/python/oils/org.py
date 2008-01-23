@@ -88,6 +88,18 @@ class OrgUtil(object):
         return root
 
     @staticmethod
+    def get_related_list(org_unit):
+        ''' Returns a flat list of related org_units '''
+        tree = OrgUtil.get_related_tree(org_unit)
+        orglist = []
+        def flatten(node):
+            orglist.append(node)
+            for child in node.children():
+                flatten(child)
+        flatten(tree)
+        return orglist
+
+    @staticmethod
     def debug_org(org_unit, indent=0):
         ''' Simple function to print the tree of orgs provided '''
         import sys
