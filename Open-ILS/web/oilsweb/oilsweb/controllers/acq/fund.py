@@ -17,7 +17,13 @@ class FundController(BaseController):
         return r.render('acq/financial/view_fund.html')
 
     def list(self):
-        pass
+        r = RequestMgr()
+        fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
+        r.ctx.acq.fund_list = fund_mgr.retrieve_org_funds()
+        for f in r.ctx.acq.fund_list:
+            f.owner(oils.org.OrgUtil.get_org_unit(f.owner()))
+        return r.render('acq/financial/list_funds.html')
+            
 
     def create(self):
         r = RequestMgr()
