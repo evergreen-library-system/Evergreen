@@ -559,6 +559,13 @@
 	<event code='1643' textcode='ACQ_PICKLIST_ENTRY_ATTR_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.picklist_entry_attr was not found</desc>
 	</event>
+	<event code='1644' textcode='ACQ_FUND_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund was not found</desc>
+	</event>
+	<event code='1645' textcode='ACQ_PROVIDER_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.provider was not found</desc>
+	</event>
+
 
 
 
