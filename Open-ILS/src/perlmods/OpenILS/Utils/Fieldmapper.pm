@@ -52,7 +52,7 @@ sub import {
 		next unless ($idl->{$c}{'oils_obj:fieldmapper'});
 		my $n = 'Fieldmapper::'.$idl->{$c}{'oils_obj:fieldmapper'};
 
-		$log->debug("Building Fieldmapper clas for [$n] from IDL");
+		$log->debug("Building Fieldmapper class for [$n] from IDL");
 
 		$$fieldmap{$n}{hint} = $c;
 		$$fieldmap{$n}{virtual} = ($idl->{$c}{'oils_persist:virtual'} eq 'true') ? 1 : 0;
