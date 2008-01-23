@@ -21,7 +21,6 @@
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/JSAN.js"/>
 	<scripts id="openils_util_scripts"/>
 
-	<script type="text/javascript" src="chrome://open_ils_staff_client/content/main/lang.js"/>
 	<script type="text/javascript" src="chrome://open_ils_staff_client/content/admin/survey.js" />
 	<script type="text/javascript">
 	<![CDATA[
