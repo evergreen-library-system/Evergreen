@@ -565,6 +565,10 @@
 	<event code='1645' textcode='ACQ_PROVIDER_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested acq.provider was not found</desc>
 	</event>
+	<event code='1646' textcode='ACQ_FUND_CREDIT_NOT_FOUND'>
+		<desc xml:lang='en-US'>The requested acq.fund_credit was not found</desc>
+	</event>
+
 
 
 
