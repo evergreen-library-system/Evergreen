@@ -9,6 +9,11 @@ class OrgUtil(object):
     _flat_org_tree = {}
 
     @staticmethod
+    def _verify_tree():
+        if not OrgUtil._org_tree:
+            OrgUtil.fetch_org_tree()
+
+    @staticmethod
     def fetch_org_tree():
         ''' Returns the whole org_unit tree '''
 
@@ -35,6 +40,7 @@ class OrgUtil(object):
 
     @staticmethod
     def get_org_unit(org_id):
+        OrgUtil._verify_tree()
         return OrgUtil._flat_org_tree[org_id]
         
 
@@ -65,7 +71,8 @@ class OrgUtil(object):
         ''' Returns a cloned tree of orgs including all ancestors and 
             descendants of the provided org '''
 
-        org = org_unit = org_unit.shallow_clone()
+        OrgUtil._verify_tree()
+        org = org_unit = OrgUtil.get_org_unit(org_unit.id()).shallow_clone()
         while org.parent_ou():
             parent = org.parent_ou()
             if not isinstance(parent, osrf.net_obj.NetworkObject):
@@ -90,6 +97,7 @@ class OrgUtil(object):
     @staticmethod
     def get_related_list(org_unit):
         ''' Returns a flat list of related org_units '''
+        OrgUtil._verify_tree()
         tree = OrgUtil.get_related_tree(org_unit)
         orglist = []
         def flatten(node):
