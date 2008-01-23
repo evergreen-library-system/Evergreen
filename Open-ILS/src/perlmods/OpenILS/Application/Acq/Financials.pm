@@ -112,7 +112,7 @@ __PACKAGE__->register_method(
 	method => 'retrieve_org_funds',
 	api_name	=> 'open-ils.acq.fund.org.retrieve',
 	signature => {
-        desc => 'Retrieves all the funds associated with an org unit',
+        desc => 'Retrieves all the funds associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Org Unit ID', type => 'number'},
@@ -132,16 +132,21 @@ sub retrieve_org_funds {
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_FUND', $org_id);
 
-    my $search = {owner => $org_id};
+    my $orglist = [$org_id];
     if($$options{full_path}) {
-        my $orglist = org_descendants($org_id);
+        $orglist = org_descendants($org_id);
         push(@$orglist, @{org_ancestors($org_id)});
-        $search = {owner => $orglist};
     } else {
-        $search = {owner => org_descendants($org_id)} if $$options{descendants};
-        $search = {owner => org_ancestors($org_id)} if $$options{ancestors};
+        $orglist = org_descendants($org_id) if $$options{descendants};
+        $orglist = org_ancestors($org_id) if $$options{ancestors};
     }
 
+    my @search_orgs;
+    for my $orgid (@$orglist) {
+        push(@search_orgs, $orgid) if $e->allowed('VIEW_FUND', $orgid);
+    }
+
+    my $search = {owner => \@search_orgs};
     my $funds = $e->search_acq_fund($search) or return $e->event;
     return $funds; 
 }
