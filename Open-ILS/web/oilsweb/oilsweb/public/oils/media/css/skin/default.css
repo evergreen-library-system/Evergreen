@@ -10,21 +10,20 @@
 table { border-collapse: collapse; }
 body { margin-top: 0px; padding-top: 0px;}
 
+/* main layout blocks */
 #oils-base-body-block { width: 100%; margin-top: 0px; padding-top: 0px;}
 #oils-base-main-block { width: 100%; margin-top: 0px; padding-top: 0px;}
-#oils-base-content-block { width: 84%; vertical-align: top; float:right; padding-top: 0px;}
 #oils-base-navigate-block { width: 15%; vertical-align: top; float:left;}
-#oils-base-navigate-table { width: 100%; }
-#oils-base-navigate-table td { width: 100%; }
+#oils-base-content-block { width: 84%; vertical-align: top; float:right; padding-top: 0px;}
 #oils-base-sidebar-block { width: 15%; vertical-align: top; float:left;}
 
 #oils-base-header-auto-login { padding-right: 20px; }
 #oils-base-header-block { width: 100%; text-align: right; margin-top: 0px; padding-bottom: 4px;}
 #oils-base-footer-block { width: 100%; text-align: center; vertical-align: bottom;}
 
-
-.oils-base-sub-navigate-block { text-align: center; padding: 3px; margin-bottom: 10px;}
-.oils-base-sub-navigate-block span { padding: 3px; }
+#oils-base-navigate-list { width: 100%; }
+.oils-base-navigate-sub-list { padding-left: 4px; }
+.oils-base-navigate-item {}
 
 /* general purpose form table */
 .oils-admin-table { width: 100%; }
@@ -32,3 +31,4 @@ body { margin-top: 0px; padding-top: 0px;}
 .oils-admin-label { width: 20%; }
 
 .label { margin: 1px; }
+

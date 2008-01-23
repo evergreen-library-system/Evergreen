@@ -7,16 +7,26 @@ body { font-size: 80%; }
 #oils-base-body-block {}
 #oils-base-navigate-block {border: 2px solid #85C777; background: #6BA160;}
 #oils-base-navigate-block a { color: #000000; }
-#oils-base-navigate-table td:hover { background: #85C777; }
 #oils-base-content-block {}
 #oils-base-sidebar-block {}
 #oils-base-footer-block {padding: 3px; margin-top: 20px; border-top: 1px solid #5E5E5E;}
-#oils-base-header-block {border-bottom: 1px solid #5E5E5E; }
+/*
+#oils-base-header-block {border-bottom: 1px solid #5E5E5E; border: 2px solid #85C777; background: #6BA160;}
+*/
+#oils-base-header-block {border-bottom: 1px solid #6BA160;}
 
 
+#oils-base-navigate-list { width: 100%; }
+.oils-base-navigate-sub-list { margin-left: 14px; }
+/*.oils-base-navigate-item {border: 2px solid #85C777; background: #6BA160;}*/
+.oils-base-navigate-item:hover { background: #85C777; }
+
+/*
+#oils-base-navigate-table td:hover { background: #85C777; }
 .oils-base-sub-navigate-block { border: 2px solid #6BA160; background: #85C777;}
 .oils-base-sub-navigate-block a { color: #000000; }
-.oils-base-sub-navigate-block span:hover { background: #6BA160; }
+*/
+
 
 .label { font-weight: bold; }
 

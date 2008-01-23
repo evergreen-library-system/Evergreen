@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
-<table id='oils-base-navigate-table'>
-    <tbody>
-        <tr><td><a href='${c.oils.core.prefix}/base/dashboard'>${_('Dashboard')}</a></td></tr>
-        <tr><td><a href='${c.oils.core.prefix}/acq/base/index'>${_('Acquisitions')}</a></td></tr>
-        <tr><td><a href='${c.oils.core.prefix}/ser/index'>${_('Serials')}</a></td></tr>
-        <tr><td><a href='${c.oils.core.prefix}/admin/index'>${_('Admin')}</a></td></tr>
-    </tbody>
-</table>
+<div id='oils-base-navigate-list'>
+    <div class='oils-base-navigate-item'>
+        <a href='${c.oils.core.prefix}/base/dashboard'>${_('Dashboard')}</a>
+    </div>
+    <div class='oils-base-navigate-item'>
+        <a href='${c.oils.core.prefix}/acq/base/index'>${_('Acquisitions')}</a>
+    </div>
+    % if c.oils.core.page.startswith('acq'):
+        <div class='oils-base-navigate-sub-list'>
+            <%include file='acq/navigate.html'/>
+        </div>
+    % endif
+    <div class='oils-base-navigate-item'>
+        <a href='${c.oils.core.prefix}/ser/index'>${_('Serials')}</a>
+    </div>
+    <div class='oils-base-navigate-item'>
+        <a href='${c.oils.core.prefix}/admin/index'>${_('Admin')}</a>
+    </div>
+</div>
 

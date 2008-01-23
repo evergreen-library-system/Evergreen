@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+<%inherit file='../base.html'/>
+<%namespace file='../../common/widgets.html' name='widget'/>
+<%def name="page_title()">${_('Evergreen Create Fund')}</%def>
+<%def name="block_content()">
+
+<table class='oils-admin-table'>
+    <thead>
+        <tr>
+            <td>${_('Fund Name')}</td>
+            <td>${_('Fund Owner')}</td>
+            <td>${_('Fund Currency Type')}</td>
+        </tr>
+    </thead>
+    <tbody>
+        % for fund in c.oils.acq.fund_list:
+        <tr>
+            <td><a href='${c.oils.acq.prefix}/fund/view/${fund.id()}'>${fund.name()}</a></td>
+            <td>${fund.owner().name()}</td> 
+            <td>${fund.currency_type()}</td> 
+        </tr>
+        %endfor
+    </tbody>
+</table>
+</%def>

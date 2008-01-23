@@ -24,9 +24,9 @@ class CoreContext(SubContext):
         self.authtoken = ContextItem(cgi_name='ses', session=True) # authtoken string
         self.user = ContextItem() # logged in user object
         self.workstation = ContextItem() # workstation object
-        self.page = ContextItem() # the current page
         self.use_demo = ContextItem(cgi_name='demo') # use the demo login
         self.org_tree = ContextItem() # full org tree
+        self.page = ContextItem() # the current page
 
     def postinit(self):
         self.prefix = pylons.config['oils_prefix']
