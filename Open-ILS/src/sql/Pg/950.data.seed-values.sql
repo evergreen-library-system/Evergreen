@@ -657,12 +657,6 @@ INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,oils_i18n_gettex
 
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
 
--- Just so that there is a user...
-INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', oils_i18n_gettext('Administrator'), oils_i18n_gettext('System Account'), '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
-
-INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
-
-
 --006.data.permissions.sql:
 INSERT INTO permission.perm_list VALUES 
     (-1, 'EVERYTHING', NULL),
@@ -934,7 +928,13 @@ INSERT INTO permission.grp_perm_map VALUES
     (133, 5, 102, 0, false),
     (138, 5, 104, 1, false);
 
--- Admin user
+-- Admin user account
+INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, 'admin', 'open-ils', oils_i18n_gettext('Administrator'), oils_i18n_gettext('System Account'), '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
+
+-- Admin user barcode
+INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
+
+-- Admin user permissions
 INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
 
 --010.schema.biblio.sql:
