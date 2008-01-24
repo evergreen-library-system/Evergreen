@@ -82,6 +82,8 @@
 	]]>
 	</script>
 
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
 	<commandset id="checkout_cmds">
 		<command id="cmd_checkout_submit" />
 		<command id="cmd_checkout_print" />

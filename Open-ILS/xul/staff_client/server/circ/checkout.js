@@ -68,7 +68,7 @@ circ.checkout.prototype = {
 														[ b.owning_lib(), b.name() ]
 													);
 												} catch(E) {
-													alert('error in noncat sorting: ' + E);
+													alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkout.sorting.exception', [E]));
 													return 0;
 												}
 											}
@@ -124,7 +124,7 @@ circ.checkout.prototype = {
 								ev.target.parentNode.setAttribute('style','');
 							} catch(E) {
 								ev.target.parentNode.setAttribute('style','background-color: red');
-								alert(E + '\nUse this format: YYYY-MM-DD');
+								alert(E + '\n' + document.getElementById('circStrings').getString('staff.circ.checkout.date.exception'));
 								try {
 									ev.target.inputField.select();
 									ev.target.inputField.focus();
@@ -136,7 +136,7 @@ circ.checkout.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert(document.getElementById('circStrings').getString('staff.circ.checkout.unimplemented')); }
 					],
 					'cmd_checkout_submit' : [
 						['command'],
@@ -150,19 +150,44 @@ circ.checkout.prototype = {
 								params.noncat = 1;
 								params.noncat_type = obj.controller.view.checkout_menu.value;
 								netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-								var r = window.prompt('Enter the number of ' + obj.data.hash.cnct[ params.noncat_type].name() + ' circulating:','1','Non-cataloged Items');
+								var r = window.prompt(
+									document.getElementById('circStrings').getFormattedString('staff.circ.checkout.cmd_checkout_submit.msg', [obj.data.hash.cnct[params.noncat_type].name()]),
+									'1',
+									document.getElementById('circStrings').getString('staff.circ.checkout.cmd_checkout_submit.title')
+								);
 								if (r) {
 									count = Number(r);
 									if (count > 0) {
 										if (count > 99) {
-											obj.error.yns_alert('You tried to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '.  The maximum is 99 per action.','Non-cataloged Circulation','OK',null,null,'Check here to confirm this message.');
+											obj.error.yns_alert(
+												document.getElementById('circStrings').getFormattedString('staff.circ.checkout.cmd_checkout_submit.too_many.msg', [count, obj.data.hash.cnct[params.noncat_type].name()]),
+												document.getElementById('circStrings').getString('staff.circ.checkout.cmd_checkout_submit.too_many.title'),
+												document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+												null,
+												null,
+												document.getElementById('circStrings').getString('staff.circ.confirm')
+											);
 											return;
 										} else if (count > 20) {
-											r = obj.error.yns_alert('Are you sure you want to circulate ' + count + ' ' + obj.data.hash.cnct[ params.noncat_type].name() + '?','Non-cataloged Circulation','Yes','No',null,'Check here to confirm this message.');
+											r = obj.error.yns_alert(
+												document.getElementById('circStrings').getFormattedString('staff.circ.checkout.cmd_checkout_submit.confirm.msg', [count, obj.data.hash.cnct[params.noncat_type].name()]),
+												document.getElementById('circStrings').getString('staff.circ.checkout.cmd_checkout_submit.confirm.title'),
+												document.getElementById('circStrings').getString('staff.circ.checkout.yes.btn'),
+												document.getElementById('circStrings').getString('staff.circ.checkout.no.btn'),
+												null,
+												document.getElementById('circStrings').getString('staff.circ.confirm')
+											);
 											if (r != 0) return;
 										}
 									} else {
-										r = obj.error.yns_alert('Error with non-cataloged checkout.  ' + r + ' is not a valid number.','Non-cataloged Circulation','Ok',null,null,'Check here to confirm this message.');
+										r = obj.error.yns_alert(
+											document.getElementById('circStrings').getFormattedString('staff.circ.checkout.cmd_checkout_submit.non_numeric.msg', [r]),
+											document.getElementById('circStrings').getString('staff.circ.checkout.cmd_checkout_submit.non_numeric.title'),
+											document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+											null,
+											null,
+											document.getElementById('circStrings').getString('staff.circ.confirm')
+										);
 										return;
 									}
 								} else {
@@ -258,7 +283,7 @@ circ.checkout.prototype = {
 				}
 			}
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error determining whether to disable checkout.',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.checkout.disable.error'),E);
 		}
 	},
 
@@ -309,9 +334,9 @@ circ.checkout.prototype = {
 				var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*pattern[1] );
 				node.value = util.date.formatted_date(todayPlus,"%F");
 			}
-			if (! util.date.check('YYYY-MM-DD',node.value) ) { throw('Invalid Date'); }
-			if (util.date.check_past('YYYY-MM-DD',node.value) ) { throw('Due date needs to be after today.'); }
-			if ( util.date.formatted_date(new Date(),'%F') == node.value) { throw('Due date needs to be after today.'); }
+			if (! util.date.check('YYYY-MM-DD',node.value) ) { throw(document.getElementById('circStrings').getString('staff.circ.invalid_date')); }
+			if (util.date.check_past('YYYY-MM-DD',node.value) ) { throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error')); }
+			if ( util.date.formatted_date(new Date(),'%F') == node.value) { throw(throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error')); }
 			return true;
 		} catch(E) {
 			throw(E);
@@ -410,9 +435,9 @@ circ.checkout.prototype = {
 		
 				} catch(E) {
 					x.setAttribute('style','color: red');
-					x.setAttribute('value',params.barcode + ' failed.');
+					x.setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed', [params.barcode]));
 					if (typeof params.noncat == 'undefined') obj.items_out_count--;
-					obj.error.standard_unexpected_error_alert('Check Out Failed #3',E);
+					obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed.alert', ['#3']),E);
 				}
 			}
 
@@ -421,7 +446,11 @@ circ.checkout.prototype = {
 		
 			var x = document.createElement('label');
 			x.setAttribute('style','color: green');
-			x.setAttribute('value',(params.barcode ? params.barcode : 'non-cat' ) + ' checkout pending...');
+			if (params.barcode) {
+				x.setAttribute('value',document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.pending', [params.barcode]));
+			} else {
+				x.setAttribute('value',document.getElementById('circStrings').getString('staff.circ.checkout.non_cataloged.pending'));
+			}
 			document.getElementById('msg_area').appendChild(x);
 
 			obj.network.request(
@@ -437,9 +466,9 @@ circ.checkout.prototype = {
 
 		} catch(E) {
 			x.setAttribute('style','color: red');
-			x.setAttribute('value',params.barcode + ' failed.');
+			x.setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed', [params.barcode]));
 			if (typeof params.noncat == 'undefined') obj.items_out_count--;
-			obj.error.standard_unexpected_error_alert('Check Out Failed #2',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed.alert', ['#2']),E);
 		}
 	},
 
@@ -453,12 +482,12 @@ circ.checkout.prototype = {
 			return true;
 		} else {
 			if ( 1 == obj.error.yns_alert(
-						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
-						'Bad Barcode',
-						'Cancel',
-						'Accept Barcode',
+						document.getElementById('circStrings').getFormattedString('staff.circ.check_digit.bad', [bc]),
+						document.getElementById('circStrings').getString('staff.circ.barcode.bad'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.barcode.accept'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
 			) ) {
 				return true;
@@ -509,7 +538,7 @@ circ.checkout.prototype = {
 				[ ses(), params, obj.items_out_count ],
 				null,
 				{
-					'title' : 'Override Checkout Failure?',
+					'title' : document.getElementById('circStrings').getString('staff.circ.checkout.override.confirm'),
 					'overridable_events' : [ 
 						1212 /* PATRON_EXCEEDS_OVERDUE_COUNT */,
 						1213 /* PATRON_BARRED */,
@@ -574,12 +603,12 @@ circ.checkout.prototype = {
 				if (test_event(permit,1202 /* ITEM_NOT_CATALOGED */)) {
 
 					if ( 1 == obj.error.yns_alert(
-						'Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?',
-						'Alert',
-						'Cancel',
-						'Pre-Cat',
+						documents.getElementById('circStrings').getString('staff.circ.checkout.not_cataloged.confirm'),
+						documents.getElementById('circStrings').getString('staff.circ.alert'),
+						documents.getElementById('circStrings').getString('staff.circ.cancel'),
+						documents.getElementById('circStrings').getString('staff.circ.non_cataloged'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/book_question.png'
 					) ) {
 
@@ -593,7 +622,7 @@ circ.checkout.prototype = {
 						params.dummy_author = obj.data.dummy_author;
 						params.precat = 1;
 
-						if (params.dummy_title != '') { obj._checkout( params ); } else { throw('Checkout cancelled'); }
+						if (params.dummy_title != '') { obj._checkout( params ); } else { throw(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled')); }
 					} 
 				};
 
@@ -625,18 +654,39 @@ circ.checkout.prototype = {
 						break;
 						case 1216 /* PATRON_CARD_INACTIVE */ :
 							found_handled = true;
-							msg += 'The card used to retrieve this account is inactive and may not be used to circulate items.\n';
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							msg += document.getElementById('circStrings').getString('staff.circ.checkout.card.inactive') + '\n';
+							obj.error.yns_alert(
+								msg,
+								document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+								document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
 						break;
 						case 1217 /* PATRON_INACTIVE */ :
 							found_handled = true;
-							msg += 'This account is inactive and may not circulate items.\n';
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							msg += document.getElementById('circStrings').getString('staff.circ.checkout.account.inactive') + '\n';
+							obj.error.yns_alert(
+								msg,
+								document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+								document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
 						break;
 						case 1224 /* PATRON_ACCOUNT_EXPIRED */ :
 							found_handled = true;
-							msg += 'This account has expired  and may not circulate items.\n';
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							msg += document.getElementById('circStrings').getString('staff.circ.checkout.account.expired') + '\n';
+							obj.error.yns_alert(
+								msg,
+								document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+								document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
 						break;
 						case 7013 /* PATRON_EXCEEDS_FINES */ :
 							found_handled = true;
@@ -648,7 +698,7 @@ circ.checkout.prototype = {
 							found_handled = true;
 						break;
 						case 7004 /* COPY_NOT_AVAILABLE */ :
-							msg += test_permit[i].desc + '\n' + 'Copy status = ' + ( test_permit[i].payload.status().name() ) + '\n';
+							msg += test_permit[i].desc + '\n' + document.getElementById('circStrings').getFormattedString('staff.circ.checkout.copy_status', [test_permit[i].payload.status().name()]) + '\n';
 							found_handled = true;
 						break;
 						case 7006 /* COPY_IS_REFERENCE */ :
@@ -657,11 +707,18 @@ circ.checkout.prototype = {
 						break;
 						case 7009 /* CIRC_CLAIMS_RETURNED */ :
 							msg += test_permit[i].desc + '\n';
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							obj.error.yns_alert(
+								msg,
+								document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+								document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
 							found_handled = true;
 						break;
 						case 7010 /* COPY_ALERT_MESSAGE */ :
-							msg += test_permit[i].desc + '\n' + 'Alert Message = ' + test_permit[i].payload + '\n';
+							msg += test_permit[i].desc + '\n' + document.getElementById('circStrings').getFormattedString('staff.circ.checkout.alert_message', [test_permit[i].payload]) + '\n';
 							found_handled = true;
 						break;
 						case 7016 /* ITEM_ON_HOLDS_SHELF */ :
@@ -672,7 +729,7 @@ circ.checkout.prototype = {
 							found_handled = true;
 						break;
 						case 5000 /* PERM_FAILURE */ :
-							msg += test_permit[i].desc + '\n' + 'Permission Denied = ' + test_permit[i].ilsperm + '\n';
+							msg += test_permit[i].desc + '\n' + document.getElementById('circStrings').getFormattedString('staff.circ.checkout.permission_denied', [test_permit[i].ilsperm]) + '\n';
 							found_handled = true;
 						break;
 						case 1702 /* OPEN_CIRCULATION_EXISTS */ :
@@ -686,9 +743,20 @@ circ.checkout.prototype = {
 							my_circ = my_circ[0];
 							var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
 							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
-							if (due_date) if (today > due_date) msg += '\nThis item was due on ' + due_date + '.\n';
+							if (due_date) {
+								if (today > due_date) {
+									msg += (document.getElementById('circStrings').getFormattedString('staff.circ.checkout.item_due', [due_date]) + '\n');
+								}
+							}
 							if (! stop_checkout ) {
-								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Normal Checkin then Checkout', due_date ? (today > due_date ? 'Forgiving Checkin then Checkout' : null) : null,'Check here to confirm this message');
+								var r = obj.error.yns_alert(
+									msg,
+									document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+									document.getElementById('circStrings').getString('staff.circ.cancel'),
+									document.getElementById('circStrings').getString('staff.circ.checkout.normal_checkin_then_checkout'),
+									due_date ? (today > due_date ? document.getElementById('circStrings').getString('staff.circ.checkout.forgiving_checkin_then_checkout') : null) : null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 								JSAN.use('circ.util');
 								switch(r) {
 									case 1:
@@ -701,14 +769,28 @@ circ.checkout.prototype = {
 									break;
 								}
 							} else {
-								obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+								obj.error.yns_alert(
+									msg,
+									document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+									document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+									null,
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 							}
 						break;
 						case 7014 /* COPY_IN_TRANSIT */ :
 							msg += test_permit[i].desc + '\n';
 							found_handled = true;
 							if (! stop_checkout ) {
-								var r = obj.error.yns_alert(msg,'Check Out Failed','Cancel','Abort Transit then Checkout',null,'Check here to confirm this message');
+								var r = obj.error.yns_alert(
+									msg,
+									document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+									document.getElementById('circStrings').getString('staff.circ.cancel'),
+									document.getElementById('circStrings').getString('staff.circ.checkout.abort_transit_then_checkout'),
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 								switch(r) {
 									case 1:
 										var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
@@ -729,13 +811,27 @@ circ.checkout.prototype = {
 									break;
 								}
 							} else {
-								obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+								obj.error.yns_alert(
+									msg,
+									document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+									document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+									null,
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 							}
 						break;
 						case -1 /* NETWORK_FAILURE */ :
-							msg += 'There was a network failure.\n';
+							msg += document.getElementById('circStrings').getString('staff.circ.checkout.network_failure') + '\n';
 							found_handled = true;
-							obj.error.yns_alert(msg,'Check Out Failed','OK',null,null,'Check here to confirm this message');
+							obj.error.yns_alert(
+								msg,
+								document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),
+								document.getElementById('circStrings').getString('staff.circ.checkout.ok.btn'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
 						break;
 						default:
 							msg += 'FIXME: ' + js2JSON(test_permit[i]) + '\n';
@@ -755,9 +851,9 @@ circ.checkout.prototype = {
 		} catch(E) {
 			if (params.barcode) { delete obj._checkout_pending_hash[ params.barcode ];	}
 			if (typeof E.ilsevent != 'undefined' && E.ilsevent == -1) {
-				obj.error.standard_network_error_alert('Check Out Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface');
+				obj.error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.checkout.suggest_offline'));
 			} else {
-				obj.error.standard_unexpected_error_alert('Check Out Failed',E);
+				obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.checkout.barcode.check_out_failed'),E);
 			}
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);

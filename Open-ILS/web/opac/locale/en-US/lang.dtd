@@ -1474,3 +1474,34 @@
 <!ENTITY staff.server.admin.stat_cat.update_success "Update succeeded">
 <!ENTITY staff.server.admin.upload_xacts.title "Upload Offline Transactions">
 <!ENTITY staff.server.admin.upload_xacts.header "Uploading transactions...">
+<!ENTITY staff.circ.checkin_overlay.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.circ.checkin_overlay.sel_clip.accesskey "C">
+<!ENTITY staff.circ.checkin_overlay.sel_bucket.label "Add to Item Bucket">
+<!ENTITY staff.circ.checkin_overlay.sel_bucket.accesskey "A">
+<!ENTITY staff.circ.checkin_overlay.sel_opac.label "Show in Catalog">
+<!ENTITY staff.circ.checkin_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.checkin_overlay.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.circ.checkin_overlay.sel_copy_details.accesskey "I">
+<!ENTITY staff.circ.checkin_overlay.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.circ.checkin_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.circ.checkin_overlay.sel_last_patron.label "Retrieve Last Patron who circulated item">
+<!ENTITY staff.circ.checkin_overlay.sel_last_patron.accesskey "R">
+<!ENTITY staff.circ.checkin_overlay.sel_edit.label "Edit Item Attributes">
+<!ENTITY staff.circ.checkin_overlay.sel_edit.accesskey "E">
+<!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.checkin_overlay.sel_transit_abort.label "Abort Transit">
+<!ENTITY staff.circ.checkin_overlay.sel_spine.label "Print Spine Label">
+<!ENTITY staff.circ.checkin_overlay.sel_spine.accesskey "P">
+<!ENTITY staff.circ.checkin_overlay.save_columns.label "Save Columns">
+<!ENTITY staff.circ.checkin_overlay.background_text "Check In / Process Item">
+<!ENTITY staff.circ.checkin_overlay.background_text.hold_capture "Auto-Print Hold and Transit Slips">
+<!ENTITY staff.circ.checkin_overlay.effective_date.label "Effective Date:">
+<!ENTITY staff.circ.checkin_overlay.actions.label "Actions for Selected Items">
+<!ENTITY staff.circ.checkin_overlay.actions.accesskey "S">
+<!ENTITY staff.circ.checkin_overlay.checkin_export.label "Export">
+<!ENTITY staff.circ.checkin_overlay.trim_list.label "Trim List (20 rows)">
+<!ENTITY staff.circ.checkin_overlay.strict_barcode.label "Strict Barcode">
+<!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
+<!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
