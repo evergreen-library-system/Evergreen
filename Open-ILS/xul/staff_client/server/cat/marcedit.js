@@ -1842,12 +1842,11 @@ function validateAuthority (button) {
 
 
 function searchAuthority (term, tag, sf, limit) {
-	var url = "/gateway?format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
+	var url = "/gateway?input_format=json&format=xml&service=open-ils.search&method=open-ils.search.authority.fts";
 	url += '&param="term"&param="' + term + '"';
 	url += '&param="limit"&param=' + limit;
 	url += '&param="tag"&param=' + tag;
 	url += '&param="subfield"&param="' + sf + '"';
-
 
 	var req = new XMLHttpRequest();
 	req.open('GET',url,false);
