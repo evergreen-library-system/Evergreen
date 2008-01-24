@@ -393,6 +393,8 @@ SELECT  usr,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
+			$org->id, $startdate, $enddate,
 			$org->id, $startdate, $enddate
 		);
 
