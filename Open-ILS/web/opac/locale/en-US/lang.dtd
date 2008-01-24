@@ -1308,7 +1308,7 @@
 <!-- Translators: do not translate "<b>YYYY-MM-DD</b>" or "<b>HH:MM</b>" -->
 <!ENTITY staff.server.admin.closed_dates.editor.allmultiday.format "Note: All dates must have the form <b>YYYY-MM-DD</b>.  Times must have the form <b>HH:MM</b>">
 <!ENTITY staff.server.admin.closed_dates.add.allday "Add Single Day Closing">
-<!ENTITY staff.server.admin.closed_dates.add.multiday "Add Mult-Date Closing">
+<!ENTITY staff.server.admin.closed_dates.add.multiday "Add Multiple Date Closing">
 <!ENTITY staff.server.admin.closed_dates.add.detailed "Add Detailed Closing">
 <!ENTITY staff.server.admin.closed_dates.date.start "Start Date">
 <!ENTITY staff.server.admin.closed_dates.time.start "Start Time">
