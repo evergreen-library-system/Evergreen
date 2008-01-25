@@ -2417,7 +2417,13 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )))
          flags |= SELECT_DISTINCT;
 
+	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "distinct" ))) == 1 ) // support 1/0 for perl's sake
+         flags |= SELECT_DISTINCT;
+
 	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "no_i18n" )))
+         flags |= DISABLE_I18N;
+
+	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "no_i18n" ))) == 1 ) // support 1/0 for perl's sake
          flags |= DISABLE_I18N;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
