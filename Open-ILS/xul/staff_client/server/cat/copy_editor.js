@@ -609,7 +609,24 @@ g.get_acpl_list = function() {
                 }
             }
         }
-
+        /* Quick Bug fix for duplicate shelving locations.. this whole section has been rewritten in higher branches */
+        var temp_acpl_list_dedup =  {};
+        for (var i = 0; i < temp_acpl_list.length; i++) {
+            temp_acpl_list_dedup[ temp_acpl_list[i].id() ] = temp_acpl_list[i];
+        }
+        temp_acpl_list = [];
+        for (var i in temp_acpl_list_dedup) {
+            temp_acpl_list.push( temp_acpl_list_dedup[i] );
+        }
+        temp_acpl_list = temp_acpl_list.sort(
+            function(a,b) {
+                if (a.owning_lib() < b.owning_lib()) return -1;
+                if (a.owning_lib() > b.owning_lib()) return 1;
+                if (a.name() < b.name()) return -1;
+                if (a.name() > b.name()) return 1;
+                return 0;
+            }
+        );
         return temp_acpl_list;
 	
 	} catch(E) {
@@ -742,7 +759,7 @@ g.panes_and_field_names = {
 		"Shelving Location",
 		{ 
 			render: 'typeof fm.location() == "object" ? fm.location().name() : g.data.lookup("acpl",fm.location()).name()', 
-			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name(), obj.id() ]; }).sort()); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
+			input: 'c = function(v){ g.apply("location",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( g.get_acpl_list(), function(obj) { return [ g.data.hash.aou[ obj.owning_lib() ].shortname() + " : " + obj.name(), obj.id() ]; })); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
 		}
 	],
