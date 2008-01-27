@@ -43,7 +43,7 @@ function set_brief_view(reset) {
 		{ 
 			'set_tab_name' : function(n) { 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name(document.getElementById('catStrings').getFormattedString("cat.bib_record", [n])); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(document.getElementById('offlineStrings').getFormattedString("cat.bib_record", [n])); } catch(E) { alert(E); }
 				} else {
 					dump('no set_tab_name\n');
 				}
@@ -62,24 +62,23 @@ function set_marc_view(reset) {
 }
 
 function set_marc_edit(reset) {
-	var strbundle = document.getElementById('catStrings');
 	g.view = 'marc_edit';
 	var a =	xulG.url_prefix( urls.XUL_MARC_EDIT );
 	var b =	{};
 	var c =	{
 			'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
 			'save' : {
-				'label' : strbundle.getString('cat.save_record'),
+				'label' : document.getElementById('offlineStrings').getString('cat.save_record'),
 				'func' : function (new_marcxml) {
 					try {
 						var r = g.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), docid, new_marcxml ]);
 						if (typeof r.ilsevent != 'undefined') {
 							throw(r);
 						} else {
-							alert(strbundle.getString("cat.save.success"));
+							alert(document.getElementById('offlineStrings').getString("cat.save.success"));
 						}
 					} catch(E) {
-							g.error.standard_unexpected_error_alert(strbundle.getString("cat.save.failure"), E);
+							g.error.standard_unexpected_error_alert(document.getElementById('offlineStrings').getString("cat.save.failure"), E);
 					}
 				}
 			}
@@ -158,7 +157,7 @@ function set_opac(reset) {
 
 				win.attachEvt("rdetail", "nextPrevDrawn",
 					function(rIndex,rCount){
-						$('record_pos').setAttribute('value', document.getElementById('catStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount]));
+						$('record_pos').setAttribute('value', document.getElementById('offlineStrings').getFormattedString('cat.record.counter', [(1+rIndex), rCount]));
 						if (win.rdetailNext) {
 							g.f_record_next = function() { 
 								g.view_override = g.view; 
@@ -280,7 +279,7 @@ function set_default() {
 		[ ses(), g.data.list.au[0].id(), { 'staff_client.catalog.record_view.default' : g.view } ]
 	)
 	if (typeof robj.ilsevent != 'undefined') {
-		if (robj.ilsevent != 0) g.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('cat.preference.error'), robj);
+		if (robj.ilsevent != 0) g.error.standard_unexpected_error_alert(document.getElementById('offlineStrings').getString('cat.preference.error'), robj);
 	}
 }
 
