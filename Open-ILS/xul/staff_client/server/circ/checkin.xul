@@ -74,8 +74,6 @@
 	]]>
 	</script>
 
-	<messagecatalog id="circStrings" src="/xul/server/locale/<!-- #echo var='locale'-->/circ.properties"/>
-
 	<popupset id="copy_status_popupset"/>
 
 	<commandset id="checkin_cmds">
