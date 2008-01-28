@@ -121,7 +121,7 @@ sub users_of_interest {
    $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
    my $total;
-   while( my $resp = $req->recv(timeout => 600) ) {
+   while( my $resp = $req->recv(timeout => 7200) ) {
         return $req->failed if $req->failed;
         my $hash = $resp->content;
         next unless $hash;
@@ -222,7 +222,7 @@ sub users_with_activity {
     $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
     my $total;
-    while( my $resp = $req->recv(timeout => 600) ) {
+    while( my $resp = $req->recv(timeout => 7200) ) {
 
         unless($total) {
             $total = time - $start;
