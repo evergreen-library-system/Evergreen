@@ -576,7 +576,7 @@ circ.checkout.prototype = {
 				}
 			);
 
-			if (!permit) throw(permit);
+			if (!permit) { throw(permit); }
 
 			function test_event(list,ev) {
 				if (typeof list.ilsevent != 'undefined' ) {
@@ -588,7 +588,7 @@ circ.checkout.prototype = {
 				} else {
 					for (var i = 0; i < list.length; i++) {
 						if (typeof list[i].ilsevent != 'undefined') {
-							if (list[i].ilsevent == ev) return list[i];
+							if (list[i].ilsevent == ev) { return list[i]; }
 						}
 					}
 					return false;
@@ -633,9 +633,13 @@ circ.checkout.prototype = {
 						params.dummy_author = obj.data.dummy_author;
 						params.precat = 1;
 
-						if (params.dummy_title != '') { obj._checkout( params ); } else { throw(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled')); }
+						if (params.dummy_title !== '') { 
+							obj._checkout( params );
+						} else {
+							throw(document.getElementById('circStrings').getString('staff.circ.checkout.cancelled'));
+						}
 					} 
-				};
+				}
 
 				var test_permit;
 				if (typeof permit.ilsevent != 'undefined') { test_permit = [ permit ]; } else { test_permit = permit; }
@@ -748,9 +752,9 @@ circ.checkout.prototype = {
 							found_handled = true;
 
 							var my_copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[params.barcode]);
-							if (typeof my_copy.ilsevent != 'undefined') throw(my_copy);
+							if (typeof my_copy.ilsevent != 'undefined') { throw(my_copy); }
 							var my_circ = obj.network.simple_request('FM_CIRC_RETRIEVE_VIA_COPY',[ses(),my_copy.id(),1]);
-							if (typeof my_circ.ilsevent != 'undefined') throw(my_copy);
+							if (typeof my_circ.ilsevent != 'undefined') { throw(my_copy); }
 							my_circ = my_circ[0];
 							var due_date = my_circ.due_date() ? my_circ.due_date().substr(0,10) : null;
 							JSAN.use('util.date'); var today = util.date.formatted_date(new Date(),'%F');
@@ -802,24 +806,22 @@ circ.checkout.prototype = {
 									null,
 									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
 								);
-								switch(r) {
-									case 1:
-										var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
-										if (typeof robj.ilsevent == 'undefined') {
-											obj.checkout(params);
-										} else {
-											switch(robj.ilsevent) {
-												case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
-													alert(robj.desc);
-												break;
-												case 5000 /* PERM_FAILURE */ :
-												break;
-												default:
-													throw(robj);
-												break;
-											}
+								if (r == 1) {
+									var robj = obj.network.simple_request('FM_ATC_VOID',[ ses(), { 'barcode' : params.barcode } ]);
+									if (typeof robj.ilsevent == 'undefined') {
+										obj.checkout(params);
+									} else {
+										switch(robj.ilsevent) {
+											case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
+												alert(robj.desc);
+											break;
+											case 5000 /* PERM_FAILURE */ :
+											break;
+											default:
+												throw(robj);
+											break;
 										}
-									break;
+									}
 								}
 							} else {
 								obj.error.yns_alert(
@@ -891,6 +893,6 @@ circ.checkout.prototype = {
 		this.controller.view.checkout_barcode_entry_textbox.select();
 		this.controller.view.checkout_barcode_entry_textbox.focus();
 	}
-}
+};
 
 dump('exiting circ.checkout.js\n');
