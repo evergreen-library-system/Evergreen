@@ -1,13 +1,13 @@
 dump('entering circ.checkout.js\n');
 
-if (typeof circ == 'undefined') circ = {};
+if (typeof circ == 'undefined') { circ = {}; }
 circ.checkout = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	JSAN.use('util.barcode');
-}
+};
 
 circ.checkout.prototype = {
 
@@ -15,14 +15,14 @@ circ.checkout.prototype = {
 
 		var obj = this;
 
-		obj.patron_id = params['patron_id'];
+		obj.patron_id = params.patron_id;
 
 		JSAN.use('circ.util');
 		var columns = circ.util.columns( 
 			{ 
 				'barcode' : { 'hidden' : false },
 				'title' : { 'hidden' : false },
-				'due_date' : { 'hidden' : false },
+				'due_date' : { 'hidden' : false }
 			} 
 		);
 
@@ -81,9 +81,7 @@ circ.checkout.prototype = {
 								);
 								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
 								util.widgets.remove_children( e );
-								var ml = util.widgets.make_menulist(
-									items
-								);
+								var ml = util.widgets.make_menulist(items);
 								e.appendChild( ml );
 								ml.setAttribute('id','checkout_menulist');
 								ml.setAttribute('accesskey','');
@@ -106,7 +104,7 @@ circ.checkout.prototype = {
 								);
 								obj.controller.view.checkout_menu = ml;
 							};
-						},
+						}
 					],
 					'checkout_barcode_entry_textbox' : [
 						['keypress'],
@@ -128,8 +126,8 @@ circ.checkout.prototype = {
 								try {
 									ev.target.inputField.select();
 									ev.target.inputField.focus();
-								} catch(E) { /* this should work, let me try on other platforms */ 
-									obj.error.sdump('D_ERROR','menulist.inputField: ' + E);
+								} catch(EX) { /* this should work, let me try on other platforms */ 
+									obj.error.sdump('D_ERROR','menulist.inputField: ' + EX);
 								}
 							}
 						}
@@ -144,7 +142,7 @@ circ.checkout.prototype = {
 							var params = {}; var count = 1;
 
 							if (obj.controller.view.checkout_menu.value == 'barcode' ||
-								obj.controller.view.checkout_menu.value == '') {
+								obj.controller.view.checkout_menu.value === '') {
 								params.barcode = obj.controller.view.checkout_barcode_entry_textbox.value;
 							} else {
 								params.noncat = 1;
@@ -177,7 +175,7 @@ circ.checkout.prototype = {
 												null,
 												document.getElementById('circStrings').getString('staff.circ.confirm')
 											);
-											if (r != 0) return;
+											if (r !== 0) { return; }
 										}
 									} else {
 										r = obj.error.yns_alert(
@@ -248,7 +246,7 @@ circ.checkout.prototype = {
 								obj.error.standard_unexpected_error_alert('cmd_checkout_done',E);
 							}
 						}
-					],
+					]
 				}
 			}
 		);
@@ -302,13 +300,13 @@ circ.checkout.prototype = {
                                     function() {
                                         f();
                                     }, 1000
-                                )
+                                );
                             } 
                         }, 1000
                     );
                 }
             };
-			if (silent) params.no_prompt = true;
+			if (silent) { params.no_prompt = true; }
 			obj.list.print(params);
 		} catch(E) {
 			obj.error.standard_unexpected_error_alert('print',E);
@@ -327,16 +325,22 @@ circ.checkout.prototype = {
 	'check_date' : function(node) {
 		JSAN.use('util.date');
 		try {
-			if (node.value == 'Normal') return true;
+			if (node.value == 'Normal') { return true; }
 			var pattern = node.value.match(/Today \+ (\d+) days/);
 			if (pattern) {
 				var today = new Date();
 				var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*pattern[1] );
 				node.value = util.date.formatted_date(todayPlus,"%F");
 			}
-			if (! util.date.check('YYYY-MM-DD',node.value) ) { throw(document.getElementById('circStrings').getString('staff.circ.invalid_date')); }
-			if (util.date.check_past('YYYY-MM-DD',node.value) ) { throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error')); }
-			if ( util.date.formatted_date(new Date(),'%F') == node.value) { throw(throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error')); }
+			if (! util.date.check('YYYY-MM-DD',node.value) ) { 
+				throw(document.getElementById('circStrings').getString('staff.circ.invalid_date'));
+			}
+			if (util.date.check_past('YYYY-MM-DD',node.value) ) {
+				throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error'));
+			}
+			if ( util.date.formatted_date(new Date(),'%F') == node.value) {
+				throw(document.getElementById('circStrings').getString('staff.circ.checkout.date.too_early.error'));
+			}
 			return true;
 		} catch(E) {
 			throw(E);
@@ -354,13 +358,15 @@ circ.checkout.prototype = {
 			function _checkout_callback(req,x) {
 				try {
 
-					if (params.barcode) { delete obj._checkout_pending_hash[ params.barcode ];	}
+					if (params.barcode) { 
+						delete obj._checkout_pending_hash[ params.barcode ];
+					}
 
 					var checkout = req.getResultObject();
 
-					if (checkout.ilsevent == 0) {
+					if (checkout.ilsevent === 0) {
 		
-						if (!checkout.payload) checkout.payload = {};
+						if (!checkout.payload) { checkout.payload = {}; }
 		
 						if (!checkout.payload.circ) {
 							checkout.payload.circ = new aoc();
@@ -401,8 +407,12 @@ circ.checkout.prototype = {
 			
 						/*********************************************************************************************/
 						/* Override mvr title/author with dummy title/author for Pre cat */
-						if (checkout.payload.copy.dummy_title())  checkout.payload.record.title( checkout.payload.copy.dummy_title() );
-						if (checkout.payload.copy.dummy_author())  checkout.payload.record.author( checkout.payload.copy.dummy_author() );
+						if (checkout.payload.copy.dummy_title()) {
+							checkout.payload.record.title( checkout.payload.copy.dummy_title() );
+						}
+						if (checkout.payload.copy.dummy_author()) {
+							checkout.payload.record.author( checkout.payload.copy.dummy_author() );
+						}
 			
 						obj.list.append(
 							{
@@ -413,7 +423,7 @@ circ.checkout.prototype = {
 									'acp' : checkout.payload.copy
 									}
 								},
-								'to_top' : true,
+								'to_top' : true
 							//I could override map_row_to_column here
 							}
 						);
@@ -436,7 +446,7 @@ circ.checkout.prototype = {
 				} catch(E) {
 					x.setAttribute('style','color: red');
 					x.setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed', [params.barcode]));
-					if (typeof params.noncat == 'undefined') obj.items_out_count--;
+					if (typeof params.noncat == 'undefined') { obj.items_out_count--; }
 					obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed.alert', ['#3']),E);
 				}
 			}
@@ -462,12 +472,12 @@ circ.checkout.prototype = {
 				}
 			);
 			
-			if (typeof params.noncat == 'undefined') obj.items_out_count++;
+			if (typeof params.noncat == 'undefined') { obj.items_out_count++; }
 
 		} catch(E) {
 			x.setAttribute('style','color: red');
 			x.setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed', [params.barcode]));
-			if (typeof params.noncat == 'undefined') obj.items_out_count--;
+			if (typeof params.noncat == 'undefined') { obj.items_out_count--; }
 			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkout.barcode.failed.alert', ['#2']),E);
 		}
 	},
@@ -476,7 +486,7 @@ circ.checkout.prototype = {
 	'test_barcode' : function(bc) {
 		var obj = this;
 		var x = document.getElementById('strict_barcode');
-		if (x && x.checked != true) return true;
+		if (x && x.checked !== true) { return true; }
 		var good = util.barcode.check(bc);
 		if (good) {
 			return true;
@@ -489,7 +499,8 @@ circ.checkout.prototype = {
 						null,
 						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
-			) ) {
+				)
+			) {
 				return true;
 			} else {
 				return false;
@@ -507,7 +518,7 @@ circ.checkout.prototype = {
 
 		if (typeof obj.on_checkout == 'function') { obj.on_checkout(params); }
 
-		if (! (params.barcode||params.noncat)) return;
+		if (! (params.barcode||params.noncat)) { return; }
 
 		if (params.barcode) {
 
@@ -549,7 +560,7 @@ circ.checkout.prototype = {
 						7006 /* COPY_IS_REFERENCE */, 
 						7010 /* COPY_ALERT_MESSAGE */,
 						7016 /* ITEM_ON_HOLDS_SHELF */,
-						7013 /* PATRON_EXCEEDS_FINES */,
+						7013 /* PATRON_EXCEEDS_FINES */
 					],
 					'text' : {
 						'7004' : function(r) {
@@ -560,7 +571,7 @@ circ.checkout.prototype = {
 						},
 						'7010' : function(r) {
 							return r.payload;
-						},
+						}
 					}
 				}
 			);
@@ -586,7 +597,7 @@ circ.checkout.prototype = {
 
 			/**********************************************************************************************************************/
 			/* Normal case, proceed with checkout */
-			if (permit.ilsevent == 0) {
+			if (permit.ilsevent === 0) {
 
 				JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 				params.permit_key = permit.payload;
