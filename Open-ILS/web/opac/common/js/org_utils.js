@@ -6,7 +6,7 @@ function fetchOrgSettingDefault(orgId, name) {
     var req = new Request(FETCH_ORG_SETTING, orgId, name);
     req.send(true);
     var res = req.result();
-    return res.value;
+    return (res) ? res.value : null;
 }
 
 
