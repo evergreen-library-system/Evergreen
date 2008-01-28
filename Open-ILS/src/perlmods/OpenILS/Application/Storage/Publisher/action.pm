@@ -818,7 +818,7 @@ sub new_hold_copy_targeter {
 			$log->info("Processing hold ".$hold->id."...\n");
 
 			#first, re-fetch the hold, to make sure it's not captured already
-            $hold->remove_from_object_index();
+			$hold->remove_from_object_index();
 			$hold = action::hold_request->retrieve( $hold->id );
 			die "OK\n" if (!$hold or $hold->capture_time);
 
