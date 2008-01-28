@@ -53,7 +53,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 	$txt =~ s/\s+$//o;	# Remove trailing space
 
 	return $txt;
-$func$ LANGUAGE 'plperl' STRICT IMMUTABLE;
+$func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
 	SELECT public.naco_normalize($1,'');
@@ -69,7 +69,7 @@ CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT ) RETURNS TEXT AS $$
 	} else {
 		return (split /\s+/, $txt)[0];
 	}
-$$ LANGUAGE 'plperl' STRICT IMMUTABLE;
+$$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.call_number_dewey( TEXT, INT ) RETURNS TEXT AS $$
 	SELECT SUBSTRING(call_number_dewey($1) FROM 1 FOR $2);
