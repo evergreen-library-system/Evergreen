@@ -129,7 +129,7 @@ sub process_users_of_interest_results {
     my($self, $conn, $e, $req, $starttime, @params) = @_;
 
    my $total;
-   while( my $resp = $req->recv(timeout => 600) ) {
+   while( my $resp = $req->recv(timeout => 7200) ) {
 
         return $req->failed if $req->failed;
         my $hash = $resp->content;
@@ -304,7 +304,7 @@ sub users_with_activity {
     $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
     my $total;
-    while( my $resp = $req->recv(timeout => 600) ) {
+    while( my $resp = $req->recv(timeout => 7200) ) {
 
         unless($total) {
             $total = time - $start;
