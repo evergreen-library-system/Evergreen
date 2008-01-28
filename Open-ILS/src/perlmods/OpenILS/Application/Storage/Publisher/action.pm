@@ -786,7 +786,7 @@ sub new_hold_copy_targeter {
 			$log->info("Processing hold ".$hold->id."...\n");
 
 			#first, re-fetch the hold, to make sure it's not captured already
-            $hold->remove_from_object_index();
+			$hold->remove_from_object_index();
 			$hold = action::hold_request->retrieve( $hold->id );
 			die "OK\n" if (!$hold or $hold->capture_time);
 
@@ -806,7 +806,11 @@ sub new_hold_copy_targeter {
 						{$_->record}
 						metabib::record_descriptor
 							->search(
-								record => [ map { $_->id } metabib::metarecord->retrieve($hold->target)->source_records ],
+								record => [
+									map {
+										isTrue($_->deleted) ?  () : ($_->id)
+									} metabib::metarecord->retrieve($hold->target)->source_records
+								],
 								( $types   ? (item_type => [split '', $types])   : () ),
 								( $formats ? (item_form => [split '', $formats]) : () ),
 								( $lang    ? (item_lang => $lang)                : () ),
