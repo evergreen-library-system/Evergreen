@@ -89,6 +89,7 @@ CREATE TABLE action.circulation (
 	due_date		TIMESTAMP WITH TIME ZONE,
 	stop_fines_time		TIMESTAMP WITH TIME ZONE,
 	checkin_time		TIMESTAMP WITH TIME ZONE,
+	create_time		TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	duration		INTERVAL,				  -- derived from "circ duration" rule
 	fine_interval		INTERVAL			NOT NULL DEFAULT '1 day'::INTERVAL, -- derived from "circ fine" rule
 	recuring_fine		NUMERIC(6,2),				  -- derived from "circ fine" rule
