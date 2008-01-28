@@ -53,7 +53,7 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 	$txt =~ s/\s+$//o;	# Remove trailing space
 
 	return $txt;
-$func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
+$func$ LANGUAGE 'plperl' STRICT IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT ) RETURNS TEXT AS $func$
 	SELECT public.naco_normalize($1,'');
