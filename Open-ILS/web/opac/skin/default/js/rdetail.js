@@ -591,10 +591,13 @@ function _rdetailBuildInfoRows(r) {
                 sib = rowNode.nextSibling;
                 o ='cp_info_'+thisOrg.id()+'_';
                 /* push the new row on as the last row for this org unit */
-                while( sib.id.match(o) ) {
+                while( sib && sib.id.match(o) ) {
                     sib = sib.nextSibling;
                 }
-				rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), sib);
+                if(sib)
+				    rowNode = copyRowParent.insertBefore(copyRow.cloneNode(true), sib);
+                else
+                    rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
             } else {
 				rowNode = copyRowParent.appendChild(copyRow.cloneNode(true));
             }
