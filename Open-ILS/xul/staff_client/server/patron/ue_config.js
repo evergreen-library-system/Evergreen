@@ -52,12 +52,12 @@ var barredAlerted = false;
 
 function uEditUsrnameBlur(field) {
 	var usrname = uEditNodeVal(field);
-	if(!usrname) return;
+	if (!usrname) { return; }
 	var req = new Request(CHECK_USERNAME, SESSION, usrname);
 	req.callback( 
 		function(r) {
 			var res = r.getResultObject();
-			if( res && res != patron.id() ) {
+			if( res !== null && res != patron.id() ) {
 				field.widget.onblur = null; /* prevent alert storm */
 				alertId('ue_dup_username');
 				field.widget.onblur = uEditUsrnameBlur;
@@ -81,7 +81,7 @@ function uEditBarcodeBlur(field) {
 	req.callback( 
 		function(r) {
 			var res = r.getResultObject();
-			if( res && res != patron.id() ) {
+			if( res !== null && res != patron.id() ) {
 				field.widget.onblur = null; /* prevent alert storm */
 				alertId('ue_dup_barcode');
 				field.widget.onblur = uEditBarcodeBlur;

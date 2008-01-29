@@ -859,7 +859,14 @@ function myOPACUpdateUsername() {
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);
 	var res = req.result();
-	if( res && res == G.user.id() ) {
+	/* If the username does not already exist, res will be null;
+	 * we can move on to updating the username.
+	 * 
+	 * If the username does exist, then res will be the user ID.
+	 * G.user.id() gives us the currently authenticated user ID.
+	 * If res == G.user.id(), we try to update the username anyways.
+	 */
+	if( res !== null && res != G.user.id() ) {
 		alertId('myopac_username_dup');
 		return;
 	}
