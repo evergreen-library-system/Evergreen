@@ -70,6 +70,26 @@ if( ( marcItemType == 'g' ||
 
 	log_info("this is a range-protected item...");
 
+	/* ------------------------------------------------------------------------ */
+	/** This patch allows DCPL and LEE patrons to place 
+		holds on protected items accross their systems.  In short, if the pickup lib,
+		owning lib, and patron home (or request lib) are all within either of the two 
+		systems, allow the hold */
+	if(
+		/* DCPL=33, LEE=115 */
+		(hasCommonAncestor(holdPickupLib, 33, 1) || hasCommonAncestor(holdPickupLib, 115, 1)) &&
+		(hasCommonAncestor(volume.owning_lib, 33, 1) || hasCommonAncestor(volume.owning_lib, 115, 1)) &&
+		(
+			hasCommonAncestor(patron.home_ou.id, 33, 1) || hasCommonAncestor(patron.home_ou.id, 115, 1) || 
+			hasCommonAncestor(holdRequestLib.id, 33, 1) || hasCommonAncestor(holdRequestLib.id, 115, 1)
+		)) {
+
+		log_info("DCPL and LEE are allowed to place holds on protected items accross the two systems");
+		return;
+	}
+	/* ------------------------------------------------------------------------ */
+
+
     if( ! hasCommonAncestor( volume.owning_lib, holdPickupLib, 1 ) ) {
 
         /* we don't want these items to transit to the pickup lib */
