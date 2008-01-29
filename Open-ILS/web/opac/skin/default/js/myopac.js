@@ -859,7 +859,7 @@ function myOPACUpdateUsername() {
 	var req = new Request(CHECK_USERNAME, G.user.session, username);
 	req.send(true);
 	var res = req.result();
-	if( res && res != G.user.id() ) {
+	if( res && res == G.user.id() ) {
 		alertId('myopac_username_dup');
 		return;
 	}
