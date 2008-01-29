@@ -206,8 +206,8 @@ cat.z3950.prototype = {
                                                         }
                                                         if (attr.label) {
                                                             attrs[i].labels[ attr.label ] = true;
-                                                        } else if (entities['staff.z39_50.search_class.'+i]) {
-                                                            attrs[i].labels[ entities['staff.z39_50.search_class.'+i] ] = true;
+                                                        } else if (document.getElementById('commonStrings').getString('staff.z39_50.search_class.' + i)) {
+                                                            attrs[i].labels[ document.getElementById('commonStrings').getString('staff.z39_50.search_class.' + i) ] = true;
                                                         } else if (attr.name) {
                                                             attrs[i].labels[ attr.name ] = true;
                                                         } else {
