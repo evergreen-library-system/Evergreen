@@ -354,10 +354,10 @@ util.list.prototype = {
 					setTimeout(function() {
 						dump('auto-selecting\n');
 						var idx = Number(obj.node.view.rowCount)-1;
-						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -371,10 +371,10 @@ util.list.prototype = {
 				if (!obj.auto_select_pending) {
 					obj.auto_select_pending = true;
 					setTimeout(function() {
-						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(0); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(0).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(0).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
@@ -514,10 +514,10 @@ util.list.prototype = {
 					setTimeout(function() {
 						dump('auto-selecting\n');
 						var idx = Number(obj.node.view.rowCount)-1;
-						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_ALERT','tree auto select: ' + E + '\n'); }
-						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, on_select: ' + E + '\n'); }
+						try { obj.node.view.selection.select(idx); } catch(E) { obj.error.sdump('D_WARN','tree auto select: ' + E + '\n'); }
+						try { if (typeof params.on_select == 'function') params.on_select(); } catch(E) { obj.error.sdump('D_WARN','tree auto select, on_select: ' + E + '\n'); }
 						obj.auto_select_pending = false;
-						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_ALERT','tree auto select, flesh: ' + E + '\n'); }
+						try { util.widgets.dispatch('flesh',obj.node.contentView.getItemAtIndex(idx).firstChild); } catch(E) { obj.error.sdump('D_WARN','tree auto select, flesh: ' + E + '\n'); }
 					}, 1000);
 				}
 			}
