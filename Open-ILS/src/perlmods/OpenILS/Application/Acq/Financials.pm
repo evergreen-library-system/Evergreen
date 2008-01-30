@@ -39,98 +39,98 @@ sub org_ancestors {
 
 
 __PACKAGE__->register_method(
-	method => 'create_fund',
-	api_name	=> 'open-ils.acq.fund.create',
+	method => 'create_funding_source',
+	api_name	=> 'open-ils.acq.funding_source.create',
 	signature => {
-        desc => 'Creates a new fund',
+        desc => 'Creates a new funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Fund object to create', type => 'object'}
+            {desc => 'funding source object to create', type => 'object'}
         ],
-        return => {desc => 'The ID of the new fund'}
+        return => {desc => 'The ID of the new funding_source'}
     }
 );
 
-sub create_fund {
-    my($self, $conn, $auth, $fund) = @_;
+sub create_funding_source {
+    my($self, $conn, $auth, $funding_source) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_FUND', $fund->owner);
-    $e->create_acq_fund($fund) or return $e->die_event;
+    return $e->die_event unless $e->allowed('CREATE_FUNDING_SOURCE', $funding_source->owner);
+    $e->create_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
-    return $fund->id;
+    return $funding_source->id;
 }
 
 
 __PACKAGE__->register_method(
-	method => 'delete_fund',
-	api_name	=> 'open-ils.acq.fund.delete',
+	method => 'delete_funding_source',
+	api_name	=> 'open-ils.acq.funding_source.delete',
 	signature => {
-        desc => 'Deletes a fund',
+        desc => 'Deletes a funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Fund ID', type => 'number'}
+            {desc => 'funding source ID', type => 'number'}
         ],
         return => {desc => '1 on success, Event on failure'}
     }
 );
 
-sub delete_fund {
-    my($self, $conn, $auth, $fund_id) = @_;
+sub delete_funding_source {
+    my($self, $conn, $auth, $funding_source_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_FUND', $fund->owner);
-    $e->delete_acq_fund($fund) or return $e->die_event;
+    my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_FUNDING_SOURCE', $funding_source->owner);
+    $e->delete_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return 1;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_fund',
-	api_name	=> 'open-ils.acq.fund.retrieve',
+	method => 'retrieve_funding_source',
+	api_name	=> 'open-ils.acq.funding_source.retrieve',
 	signature => {
-        desc => 'Retrieves a new fund',
+        desc => 'Retrieves a new funding_source',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Fund ID', type => 'number'}
+            {desc => 'funding source ID', type => 'number'}
         ],
-        return => {desc => 'The fund object on success, Event on failure'}
+        return => {desc => 'The funding_source object on success, Event on failure'}
     }
 );
 
-sub retrieve_fund {
-    my($self, $conn, $auth, $fund_id) = @_;
+sub retrieve_funding_source {
+    my($self, $conn, $auth, $funding_source_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_FUND', $fund->owner);
-    return $fund;
+    my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_FUNDING_SOURCE', $funding_source->owner);
+    return $funding_source;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_funds',
-	api_name	=> 'open-ils.acq.fund.org.retrieve',
+	method => 'retrieve_org_funding_sources',
+	api_name	=> 'open-ils.acq.funding_source.org.retrieve',
 	signature => {
-        desc => 'Retrieves all the funds associated with an org unit that the requestor has access to see',
+        desc => 'Retrieves all the funding_sources associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Org Unit ID', type => 'number'},
             {desc => 'Hash or options, including "descendants",
-                includes funds for descendant orgs in addition to the requested org;
-                "ancestor", includes ancestor org funds; 
+                includes funding_sources for descendant orgs in addition to the requested org;
+                "ancestor", includes ancestor org funding_sources; 
                 "full_path", includes orgs for ancestors and descendants', 
             type => 'hash'},
         ],
-        return => {desc => 'The fund objects on success, Event on failure'}
+        return => {desc => 'The funding_source objects on success, Event on failure'}
     }
 );
 
-sub retrieve_org_funds {
+sub retrieve_org_funding_sources {
     my($self, $conn, $auth, $org_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_FUND', $org_id);
+    return $e->event unless $e->allowed('VIEW_FUNDING_SOURCE', $org_id);
 
     my $orglist = [$org_id];
     if($$options{full_path}) {
@@ -143,198 +143,198 @@ sub retrieve_org_funds {
 
     my @search_orgs;
     for my $orgid (@$orglist) {
-        push(@search_orgs, $orgid) if $e->allowed('VIEW_FUND', $orgid);
+        push(@search_orgs, $orgid) if $e->allowed('VIEW_FUNDING_SOURCE', $orgid);
     }
 
     my $search = {owner => \@search_orgs};
-    my $funds = $e->search_acq_fund($search) or return $e->event;
-    return $funds; 
+    my $funding_sources = $e->search_acq_funding_source($search) or return $e->event;
+    return $funding_sources; 
 }
 
 # ---------------------------------------------------------------
-# Budgets
+# funds
 # ---------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_budget',
-	api_name	=> 'open-ils.acq.budget.create',
+	method => 'create_fund',
+	api_name	=> 'open-ils.acq.fund.create',
 	signature => {
-        desc => 'Creates a new budget',
+        desc => 'Creates a new fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget object to create', type => 'object'}
+            {desc => 'fund object to create', type => 'object'}
         ],
-        return => {desc => 'The ID of the newly created budget object'}
+        return => {desc => 'The ID of the newly created fund object'}
     }
 );
 
-sub create_budget {
-    my($self, $conn, $auth, $budget) = @_;
+sub create_fund {
+    my($self, $conn, $auth, $fund) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_BUDGET', $budget->org);
-    $e->create_acq_budget($budget) or return $e->die_event;
+    return $e->die_event unless $e->allowed('CREATE_FUND', $fund->org);
+    $e->create_acq_fund($fund) or return $e->die_event;
     $e->commit;
-    return $budget->id;
+    return $fund->id;
 }
 
 
 __PACKAGE__->register_method(
-	method => 'delete_budget',
-	api_name	=> 'open-ils.acq.budget.delete',
+	method => 'delete_fund',
+	api_name	=> 'open-ils.acq.fund.delete',
 	signature => {
-        desc => 'Deletes a budget',
+        desc => 'Deletes a fund',
         params => {
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget ID', type => 'number'}
+            {desc => 'fund ID', type => 'number'}
         },
         return => {desc => '1 on success, Event on failure'}
     }
 );
 
-sub delete_budget {
-    my($self, $conn, $auth, $budget_id) = @_;
+sub delete_fund {
+    my($self, $conn, $auth, $fund_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    my $budget = $e->retrieve_acq_budget($budget_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_BUDGET', $budget->org);
-    $e->delete_acq_budget($budget) or return $e->die_event;
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_FUND', $fund->org);
+    $e->delete_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return 1;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_budget',
-	api_name	=> 'open-ils.acq.budget.retrieve',
+	method => 'retrieve_fund',
+	api_name	=> 'open-ils.acq.fund.retrieve',
 	signature => {
-        desc => 'Retrieves a new budget',
+        desc => 'Retrieves a new fund',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget ID', type => 'number'}
+            {desc => 'fund ID', type => 'number'}
         ],
-        return => {desc => 'The budget object on success, Event on failure'}
+        return => {desc => 'The fund object on success, Event on failure'}
     }
 );
 
-sub retrieve_budget {
-    my($self, $conn, $auth, $budget_id) = @_;
+sub retrieve_fund {
+    my($self, $conn, $auth, $fund_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    my $budget = $e->retrieve_acq_budget($budget_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_BUDGET', $budget->org);
-    return $budget;
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_FUND', $fund->org);
+    return $fund;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_org_budgets',
-	api_name	=> 'open-ils.acq.budget.org.retrieve',
+	method => 'retrieve_org_funds',
+	api_name	=> 'open-ils.acq.fund.org.retrieve',
 	signature => {
-        desc => 'Retrieves all the budgets associated with an org unit',
+        desc => 'Retrieves all the funds associated with an org unit',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Org Unit ID', type => 'number'},
             {desc => 
                 'Options.  Options include "children", which includes
-                budgets for descendant orgs in addition to the requested org', 
+                funds for descendant orgs in addition to the requested org', 
             type => 'hash'},
         ],
-        return => {desc => 'The budget objects on success, Event on failure'}
+        return => {desc => 'The fund objects on success, Event on failure'}
     }
 );
 
-sub retrieve_org_budgets {
+sub retrieve_org_funds {
     my($self, $conn, $auth, $org_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_BUDGET', $org_id);
+    return $e->event unless $e->allowed('VIEW_FUND', $org_id);
 
     my $search = {org => $org_id};
     $search = {org => org_descendents($e, $org_id)} if $$options{children};
-    my $budgets = $e->search_acq_budget($search) or return $e->event;
+    my $funds = $e->search_acq_fund($search) or return $e->event;
 
-    return $budgets; 
+    return $funds; 
 }
 
 # ---------------------------------------------------------------
-# Budget Allocations
+# fund Allocations
 # ---------------------------------------------------------------
 
 __PACKAGE__->register_method(
-	method => 'create_budget_alloc',
-	api_name	=> 'open-ils.acq.budget_allocation.create',
+	method => 'create_fund_alloc',
+	api_name	=> 'open-ils.acq.fund_allocation.create',
 	signature => {
-        desc => 'Creates a new budget_allocation',
+        desc => 'Creates a new fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget allocation object to create', type => 'object'}
+            {desc => 'fund allocation object to create', type => 'object'}
         ],
-        return => {desc => 'The ID of the new budget_allocation'}
+        return => {desc => 'The ID of the new fund_allocation'}
     }
 );
 
-sub create_budget_alloc {
-    my($self, $conn, $auth, $budget_alloc) = @_;
+sub create_fund_alloc {
+    my($self, $conn, $auth, $fund_alloc) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->die_event;
-    return $e->die_event unless $e->allowed('CREATE_BUDGET_ALLOCATION', $budget->org);
+    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
+    return $e->die_event unless $e->allowed('CREATE_FUND_ALLOCATION', $fund->org);
 
-    $budget_alloc->allocator($e->requestor->id);
-    $e->create_acq_budget_allocation($budget_alloc) or return $e->die_event;
+    $fund_alloc->allocator($e->requestor->id);
+    $e->create_acq_fund_allocation($fund_alloc) or return $e->die_event;
     $e->commit;
-    return $budget_alloc->id;
+    return $fund_alloc->id;
 }
 
 
 __PACKAGE__->register_method(
-	method => 'delete_budget_alloc',
-	api_name	=> 'open-ils.acq.budget_allocation.delete',
+	method => 'delete_fund_alloc',
+	api_name	=> 'open-ils.acq.fund_allocation.delete',
 	signature => {
-        desc => 'Deletes a budget_allocation',
+        desc => 'Deletes a fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget Alocation ID', type => 'number'}
+            {desc => 'fund Alocation ID', type => 'number'}
         ],
         return => {desc => '1 on success, Event on failure'}
     }
 );
 
-sub delete_budget_alloc {
-    my($self, $conn, $auth, $budget_alloc_id) = @_;
+sub delete_fund_alloc {
+    my($self, $conn, $auth, $fund_alloc_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
-    my $budget_alloc = $e->retrieve_acq_budget_allocation($budget_alloc_id) or return $e->die_event;
-    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_BUDGET_ALLOCATION', $budget->org);
+    my $fund_alloc = $e->retrieve_acq_fund_allocation($fund_alloc_id) or return $e->die_event;
+    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_FUND_ALLOCATION', $fund->org);
 
-    $e->delete_acq_budget_allocation($budget_alloc) or return $e->die_event;
+    $e->delete_acq_fund_allocation($fund_alloc) or return $e->die_event;
     $e->commit;
     return 1;
 }
 
 __PACKAGE__->register_method(
-	method => 'retrieve_budget_alloc',
-	api_name	=> 'open-ils.acq.budget_allocation.retrieve',
+	method => 'retrieve_fund_alloc',
+	api_name	=> 'open-ils.acq.fund_allocation.retrieve',
 	signature => {
-        desc => 'Retrieves a new budget_allocation',
+        desc => 'Retrieves a new fund_allocation',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Budget Allocation ID', type => 'number'}
+            {desc => 'fund Allocation ID', type => 'number'}
         ],
-        return => {desc => 'The budget allocation object on success, Event on failure'}
+        return => {desc => 'The fund allocation object on success, Event on failure'}
     }
 );
 
-sub retrieve_budget_alloc {
-    my($self, $conn, $auth, $budget_alloc_id) = @_;
+sub retrieve_fund_alloc {
+    my($self, $conn, $auth, $fund_alloc_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    my $budget_alloc = $e->retrieve_acq_budget_allocation($budget_alloc_id) or return $e->event;
-    my $budget = $e->retrieve_acq_budget($budget_alloc->budget) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_BUDGET_ALLOCATION', $budget->org);
-    return $budget_alloc;
+    my $fund_alloc = $e->retrieve_acq_fund_allocation($fund_alloc_id) or return $e->event;
+    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_FUND_ALLOCATION', $fund->org);
+    return $fund_alloc;
 }
 
 
@@ -351,7 +351,7 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_all_currency_type {
-    my($self, $conn, $auth, $budget_alloc_id) = @_;
+    my($self, $conn, $auth, $fund_alloc_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('GENERAL_ACQ');
