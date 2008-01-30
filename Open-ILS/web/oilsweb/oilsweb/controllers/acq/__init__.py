@@ -32,10 +32,11 @@ class AcqContext(SubContext):
 
         self.currency_types = ContextItem()
         self.fund = ContextItem()
-        self.fund_list = ContextItem()
-        self.fund_name = ContextItem(cgi_name='acq.fn')
-        self.fund_currency_type = ContextItem(cgi_name='acq.fc')
-        self.fund_owner = ContextItem(cgi_name='acq.fo')
+        self.fund_source = ContextItem()
+        self.fund_source_list = ContextItem()
+        self.fund_source_name = ContextItem(cgi_name='acq.fn')
+        self.fund_source_currency_type = ContextItem(cgi_name='acq.fc')
+        self.fund_source_owner = ContextItem(cgi_name='acq.fo')
 
         # -------------------------------------------------------------
         # utility functions

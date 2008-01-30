@@ -4,20 +4,20 @@
 <%def name="page_title()">${_('Evergreen Create Fund')}</%def>
 <%def name="block_content()">
 
-<form action='${c.oils.acq.prefix}/fund/create' method='POST'>
+<form action='${c.oils.acq.prefix}/fund_source/create' method='POST'>
     <table class='oils-admin-table'>
         <tbody>
             <tr>
                 <td class='oils-admin-label'>${_('Fund Name')}</td>
-                <td>${c.oils.acq.fund.name()}</td>
+                <td>${c.oils.acq.fund_source.name()}</td>
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Fund Onwer')}</td>
-                <td>${c.oils.acq.fund.owner().name()}</td> 
+                <td>${c.oils.acq.fund_source.owner().name()}</td> 
             </tr>
             <tr>
                 <td class='oils-admin-label'>${_('Fund Currency Type')}</td>
-                <td>${c.oils.acq.fund.currency_type()}</td> 
+                <td>${c.oils.acq.fund_source.currency_type()}</td> 
             </tr>
         </tbody>
     </table>

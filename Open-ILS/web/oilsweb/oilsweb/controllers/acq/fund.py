@@ -5,6 +5,8 @@ import oilsweb.lib.acq.fund
 import osrf.net_obj
 import oils.org
 
+# XXX update to match new fund layout
+
 class FundController(BaseController):
 
     def view(self, **kwargs):
@@ -40,4 +42,3 @@ class FundController(BaseController):
         r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
         return r.render('acq/financial/create_fund.html')
-
