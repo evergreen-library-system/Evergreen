@@ -40,31 +40,31 @@ CREATE TABLE acq.provider_share_map (
 	CONSTRAINT provider_share_once_per_owner UNIQUE (provider,org)
 );
 
-CREATE TABLE acq.fund (
+CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id),
 	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
-	CONSTRAINT fund_name_once_per_owner UNIQUE (name,owner)
+	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
 
-CREATE TABLE acq.fund_share_map (
+CREATE TABLE acq.funding_source_share_map (
 	id		SERIAL	PRIMARY KEY,
-	fund		INT	NOT NULL REFERENCES acq.fund (id),
+	funding_source		INT	NOT NULL REFERENCES acq.funding_source (id),
 	org		INT	NOT NULL REFERENCES actor.org_unit (id),
-	CONSTRAINT fund_share_once_per_owner UNIQUE (fund,org)
+	CONSTRAINT funding_source_share_once_per_owner UNIQUE (funding_source,org)
 );
 
-CREATE TABLE acq.fund_credit (
+CREATE TABLE acq.funding_source_credit (
 	id	SERIAL	PRIMARY KEY,
-	fund    INT     NOT NULL REFERENCES acq.fund (id),
+	funding_source    INT     NOT NULL REFERENCES acq.funding_source (id),
 	amount	NUMERIC	NOT NULL,
 	note	TEXT
 );
 
-CREATE TABLE acq.fund_debit (
+CREATE TABLE acq.funding_source_debit (
 	id			SERIAL	PRIMARY KEY,
-	fund			INT     NOT NULL REFERENCES acq.fund (id),
+	funding_source			INT     NOT NULL REFERENCES acq.funding_source (id),
 	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
 	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
 	amount			NUMERIC	NOT NULL,
@@ -208,7 +208,7 @@ CREATE TRIGGER ingest_picklist_entry_trigger
 	AFTER INSERT OR UPDATE ON acq.picklist_entry 
 	FOR EACH ROW EXECUTE PROCEDURE public.ingest_acq_marc();
 
-CREATE TABLE acq.budget (
+CREATE TABLE acq.fund (
     id      SERIAL  PRIMARY KEY,
     org     INT     NOT NULL REFERENCES actor.org_unit (id) ON UPDATE CASCADE ON DELETE CASCADE,
     name    TEXT    NOT NULL,
@@ -216,10 +216,10 @@ CREATE TABLE acq.budget (
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
 );
 
-CREATE TABLE acq.budget_allocation (
+CREATE TABLE acq.fund_allocation (
     id          SERIAL  PRIMARY KEY,
+    funding_source        INT     NOT NULL REFERENCES acq.funding_source (id) ON UPDATE CASCADE ON DELETE CASCADE,
     fund        INT     NOT NULL REFERENCES acq.fund (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    budget      INT     NOT NULL REFERENCES acq.budget (id) ON UPDATE CASCADE ON DELETE CASCADE,
     amount      NUMERIC,
     percent     NUMERIC CHECK (percent IS NULL OR percent BETWEEN 0.0 AND 100.0),
     allocator   INT NOT NULL REFERENCES actor.usr (id),
