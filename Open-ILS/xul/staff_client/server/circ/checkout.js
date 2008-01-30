@@ -364,7 +364,7 @@ circ.checkout.prototype = {
 
 					var checkout = req.getResultObject();
 
-					if (checkout.ilsevent === 0) {
+					if (checkout.ilsevent === '0') {
 		
 						if (!checkout.payload) { checkout.payload = {}; }
 		
@@ -597,7 +597,7 @@ circ.checkout.prototype = {
 
 			/**********************************************************************************************************************/
 			/* Normal case, proceed with checkout */
-			if (permit.ilsevent === 0) {
+			if (permit.ilsevent === '0') {
 
 				JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();
 				params.permit_key = permit.payload;
