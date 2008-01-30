@@ -115,7 +115,7 @@ function next_patron() {
 					'line_item' : g.data.print_list_templates.offline_inhouse_use.line_item,
 					'footer' : g.data.print_list_templates.offline_inhouse_use.footer,
 					'type' : g.data.print_list_templates.offline_inhouse_use.type,
-					'list' : g.list.dump(),
+					'list' : g.list.dump_with_keys(),
 				};
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );

@@ -268,7 +268,7 @@ function next_patron(cancel) {
 					'line_item' : g.data.print_list_templates.offline_checkout.line_item,
 					'footer' : g.data.print_list_templates.offline_checkout.footer,
 					'type' : g.data.print_list_templates.offline_checkout.type,
-					'list' : g.list.dump(),
+					'list' : g.list.dump_with_keys(),
 				};
 				JSAN.use('util.print'); var print = new util.print();
 				print.tree_list( params );
