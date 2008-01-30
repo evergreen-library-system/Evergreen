@@ -315,6 +315,11 @@ sub create_grocery_bill {
 	
 	$apputils->commit_db_session($session);
 
+    my $e = new_editor(xact=>1);
+    $evt = _check_open_xact($e, $transid);
+    return $evt if $evt;
+    $e->commit;
+
 	return $transid;
 }
 
