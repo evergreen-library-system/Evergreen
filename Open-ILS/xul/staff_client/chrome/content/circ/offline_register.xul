@@ -70,7 +70,7 @@
 							<textbox id="first_given_name"/>
 						</row>
 						<row>
-							<label value="Date of Birth:"/>
+							<label value="Date of Birth (YYYY-MM-DD):"/>
 							<textbox id="dob" style="font-family: monospace;"/>
 						</row>
 						<row><label value=" "/></row>
