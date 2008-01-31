@@ -1173,7 +1173,7 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
  
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
-    }
+	}
 
 	if (field_transform) free(field_transform);
 
@@ -2518,10 +2518,10 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
-	osrfHash* dedup = osrfNewHash();
 	jsonObject* res_list = jsonParseString("[]");
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
+		osrfHash* dedup = osrfNewHash();
 
 		if (dbi_result_first_row(result)) {
 			/* JSONify the result */
@@ -2541,6 +2541,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
 		}
 
+		osrfHashFree(dedup);
+
 		/* clean up the query */
 		dbi_result_free(result); 
 
@@ -2556,12 +2558,10 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 		*err = -1;
 		free(sql);
 		jsonObjectFree(res_list);
-		osrfHashFree(dedup);
 		return jsonNULL;
 
 	}
 
-	osrfHashFree(dedup);
 	free(sql);
 
 	if (res_list->size && order_hash) {
