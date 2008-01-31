@@ -20,36 +20,35 @@ typedef struct _oilsEventStruct oilsEvent;
 
 
 /** Creates a new event.  User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent( char* file, int line, char* event );
+oilsEvent* oilsNewEvent( const char* file, int line, const char* event );
 
 /** Creates a new event with payload.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent2( char* file, int line, char* event, jsonObject* payload );
+oilsEvent* oilsNewEvent2( const char* file, int line, const char* event,
+		const jsonObject* payload );
 
 /** Creates a new event with permission and permission location.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent3( char* file, int line, char* event, char* perm, int permloc );
+oilsEvent* oilsNewEvent3( const char* file, int line, const char* event,
+		const char* perm, int permloc );
 
 /** Creates a new event with permission, permission location, and payload.  
  * User is responsible for freeing event with oilsEventFree */
-oilsEvent* oilsNewEvent4( char* file, int line, 
-		char* event, char* perm, int permloc, jsonObject* payload );
+oilsEvent* oilsNewEvent4( const char* file, int line, const char* event,
+		const char* perm, int permloc, const jsonObject* payload );
 
 /** Sets the permission info for the event */
-void oilsEventSetPermission( oilsEvent* event, char* perm, int permloc );
+void oilsEventSetPermission( oilsEvent* event, const char* perm, int permloc );
 
 /* Sets the payload for the event 
  * This clones the payload, so the user is responsible
  * for handling the payload object's memory
  * */
-void oilsEventSetPayload( oilsEvent* event, jsonObject* payload );
+void oilsEventSetPayload( oilsEvent* event, const jsonObject* payload );
 
 /** Creates the JSON associated with an event.  The JSON should NOT be
  * freed by the user.  It will be freed by oilsEventFree */
 jsonObject* oilsEventToJSON( oilsEvent* event );
-
-/* Parses the events file */
-void _oilsEventParseEvents();
 
 /* Frees an event object */
 void oilsEventFree( oilsEvent* event );
