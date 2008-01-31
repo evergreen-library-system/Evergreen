@@ -172,6 +172,7 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx,
 	char* seed = osrfCacheGetString( "%s%s", OILS_AUTH_CACHE_PRFX, uname ); /**/
 
 	if(!seed) {
+		free(realPassword);
 		return osrfAppRequestRespondException( ctx->session,
 			ctx->request, "No authentication seed found. "
 			"open-ils.auth.authenticate.init must be called first");
