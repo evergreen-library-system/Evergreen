@@ -12,20 +12,20 @@
 #define CSTORE "open-ils.cstore"
 #define APPNAME "oils_dataloader"
 
-#define ESUCCESS 0
-#define ECOMMITERROR -1
-#define ECOMMANDERROR -2
-#define EROLLBACKERROR -3
+#define E_SUCCESS 0
+#define E_COMMITERROR -1
+#define E_COMMANDERROR -2
+#define E_ROLLBACKERROR -3
 
-int sendCommand ( char* );
-int startTransaction ( );
-int commitTransaction ( );
-int rollbackTransaction ( );
+static int sendCommand ( const char* );
+static int startTransaction ( );
+static int commitTransaction ( );
+static int rollbackTransaction ( );
 
 
-osrfHash* mnames = NULL;
-osrfAppSession* session = NULL;
-char* trans_id = NULL;
+static osrfHash* mnames = NULL;
+static osrfAppSession* session = NULL;
+static char* trans_id = NULL;
 
 int main (int argc, char **argv) {
 	if( argc < 4 ) {
@@ -80,12 +80,12 @@ int main (int argc, char **argv) {
 		}
 		buffer_fadd(_method_name, ".%s", method);
 
-		char* m = buffer_data(_method_name);
+		char* m = buffer_release(_method_name);
 		osrfHashSet( mnames, m, classname );
 
 		osrfLogDebug(OSRF_LOG_MARK, "Constructed %s method named %s for %s", method, m, classname);
 
-		buffer_free(_method_name);
+		free(_fm);
 	}
 
 	free(config);
@@ -124,11 +124,11 @@ int main (int argc, char **argv) {
 					if (!rollbackTransaction()) {
 						osrfAppSessionFree(session);
 						osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to complete a transaction");
-						return EROLLBACKERROR;
+						return E_ROLLBACKERROR;
 					}
 
 					osrfAppSessionFree(session);
-					return ECOMMANDERROR;
+					return E_COMMANDERROR;
 				}
 
 				counter++;
@@ -143,29 +143,30 @@ int main (int argc, char **argv) {
 		}
 	}
 
+	buffer_free(json);
+
 	// clean up, commit, go away
 	if (!commitTransaction()) {
 		osrfLogError(OSRF_LOG_MARK, "An error occured while attempting to complete a transaction");
 		osrfAppSessionFree(session);
-		return ECOMMITERROR;
+		return E_COMMITERROR;
 	}
 
 	osrfAppSessionFree(session);
 	free(method);
 
-	return ESUCCESS;
+	return E_SUCCESS;
 }
 
-int commitTransaction () {
+static int commitTransaction () {
 	int ret = 1;
-	jsonObject* data;
+	const jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.commit", 1, NULL );
 	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
-	if ( (data = jsonObjectClone(osrfMessageGetResult(res))) ) {
+	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
 			ret = 0;
 		}
-		jsonObjectFree(data);
 	} else {
 		ret = 0;
 	}
@@ -174,16 +175,15 @@ int commitTransaction () {
 	return ret;
 }
 
-int rollbackTransaction () {
+static int rollbackTransaction () {
 	int ret = 1;
-	jsonObject* data;
+	const jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.rollback", 1, NULL );
 	osrf_message* res = osrfAppSessionRequestRecv( session, req_id, 5 );
-	if ( (data = jsonObjectClone(osrfMessageGetResult(res))) ) {
+	if ( (data = osrfMessageGetResult(res)) ) {
 		if(!(trans_id = jsonObjectGetString(data))) {
 			ret = 0;
 		}
-		jsonObjectFree(data);
 	} else {
 		ret = 0;
 	}
@@ -192,7 +192,7 @@ int rollbackTransaction () {
 	return ret;
 }
 
-int startTransaction () {
+static int startTransaction () {
 	int ret = 1;
 	jsonObject* data;
 	int req_id = osrfAppSessionMakeRequest( session, NULL, "open-ils.cstore.transaction.begin", 1, NULL );
@@ -209,7 +209,7 @@ int startTransaction () {
 	return ret;
 }
 
-int sendCommand ( char* json ) {
+static int sendCommand ( const char* json ) {
 	int ret = 1;
 	jsonObject* item = jsonParseString(json);
 
