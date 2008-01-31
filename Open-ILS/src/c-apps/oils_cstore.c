@@ -213,7 +213,7 @@ int osrfAppInitialize() {
 			free(_fm);
 
 			osrfHashSet( method_meta, method, "methodname" );
-			osrfHashSet( method_meta, method_type, "methodtype" );
+			osrfHashSet( method_meta, strdup(method_type), "methodtype" );
 
 			int flags = 0;
 			if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
