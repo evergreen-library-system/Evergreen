@@ -234,6 +234,7 @@ int osrfAppInitialize() {
 		}
 	}
 
+	osrfStringArrayFree( global_methods );
 	return 0;
 }
 
@@ -1180,8 +1181,6 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 }
 
 static char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObjectNode* node) {
-	growing_buffer* sql_buf = buffer_init(32);
-	
 	char* field_transform = searchFieldTransform( class, field, node->item );
 	char* value = NULL;
 
@@ -1199,11 +1198,14 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, value);
 				free(value);
+				free(field_transform);
 				return NULL;
 			}
 		}
 	}
 
+	growing_buffer* sql_buf = buffer_init(32);
+	
 	buffer_fadd(
 		sql_buf,
 		"%s %s %s",
@@ -1212,6 +1214,7 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 		value
 	);
 
+	free(value);
 	free(field_transform);
 
 	return buffer_release(sql_buf);
@@ -1418,6 +1421,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 			fkey = strdup( fkey );
@@ -1434,6 +1438,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 			field = strdup( field );
@@ -1480,6 +1485,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 
@@ -1703,8 +1709,10 @@ static char* SELECT (
 	}
 
 	// punt if we don't know about the core class
-	if (!(core_meta = osrfHashGet( oilsIDL(), core_class )))
+	if (!(core_meta = osrfHashGet( oilsIDL(), core_class ))) {
+		free(core_class);
 		return NULL;
+	}
 
 	// if the select list is empty, or the core class field list is '*',
 	// build the default select list ...
@@ -2548,10 +2556,12 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 		*err = -1;
 		free(sql);
 		jsonObjectFree(res_list);
+		osrfHashFree(dedup);
 		return jsonNULL;
 
 	}
 
+	osrfHashFree(dedup);
 	free(sql);
 
 	if (res_list->size && order_hash) {
