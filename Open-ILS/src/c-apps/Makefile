@@ -1,6 +1,6 @@
 LDLIBS += -lobjson -lopensrf #-lfieldmapper 
 LDFLAGS += -Wl,-rpath=$(LIBDIR) -L$(DBI_LIBS)
-CFLAGS += -DOSRF_LOG_PARAMS -I../../include
+CFLAGS += -DOSRF_LOG_PARAMS
 
 #all:	oils_auth.so oils_fetch.so oils_cstore.so
 all:	liboils_idl.so oils_auth.so oils_cstore.so oils_rstore.so oils_dataloader
