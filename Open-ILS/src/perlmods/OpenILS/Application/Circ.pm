@@ -257,6 +257,9 @@ sub new_set_circ_lost {
 
     $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
 
+    return OpenILS::Event->new('COPY_MARKED_LOST')
+	    if $copy->status == OILS_COPY_STATUS_LOST;
+
     # ---------------------------------------------------------------------
     # fetch the related org settings
     my $default_price = $U->ou_ancestor_setting_value(
@@ -273,12 +276,10 @@ sub new_set_circ_lost {
 
     # ---------------------------------------------------------------------
     # move the copy into LOST status
-	unless( $copy->status == OILS_COPY_STATUS_LOST ) {
-		$copy->status(OILS_COPY_STATUS_LOST);
-        $copy->editor($e->requestor->id);
-        $copy->edit_date('now');
-        $e->update_asset_copy($copy) or return $e->die_event;
-	}
+    $copy->status(OILS_COPY_STATUS_LOST);
+    $copy->editor($e->requestor->id);
+    $copy->edit_date('now');
+    $e->update_asset_copy($copy) or return $e->die_event;
 
     # ---------------------------------------------------------------------
     # determine the appropriate item price to charge and create the billing

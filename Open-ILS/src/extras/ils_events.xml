@@ -675,6 +675,12 @@
 	</event>
 
 
+	<event code='7018' textcode='COPY_MARKED_LOST'>
+		<desc xml:lang="en-US">The requested item is already marked as lost</desc>
+	</event>
+
+
+
 	<!-- ================================================================ -->
 
 
