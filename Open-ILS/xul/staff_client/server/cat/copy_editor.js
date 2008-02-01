@@ -74,9 +74,16 @@ function my_init() {
                                     lib = o.circ_lib(); // base perms on circ_lib instead of owning_lib if pre-cat
                                 } else {
                                     if (! g.map_acn[ cn_id ]) {
-                                        g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                                        var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                                        if (typeof req.ilsevent == 'undefined') {
+                                            g.map_acn[ cn_id ] = req;
+                                            lib = g.map_acn[ cn_id ].owning_lib();
+                                        } else {
+                                            lib = o.circ_lib();
+                                        }
+                                    } else {
+                                        lib = g.map_acn[ cn_id ].owning_lib();
                                     }
-                                    lib = g.map_acn[ cn_id ].owning_lib();
                                 }
                                 return lib;
                             }
@@ -552,7 +559,12 @@ g.get_acpl_list = function() {
 			var cn_id = typeof callnumber == 'object' ? callnumber.id() : callnumber;
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+					var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    if (typeof req.ilsevent == 'undefined') {
+    					g.map_acn[ cn_id ] = req;
+                    } else {
+                        continue;
+                    }
 				}
                 var consider_lib = g.map_acn[ cn_id ].owning_lib();
                 if (!consider_lib) continue;
@@ -1383,7 +1395,12 @@ g.populate_stat_cats = function() {
             var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    if (typeof req.ilsevent == 'undefined') {
+    					g.map_acn[ cn_id ] = req;
+                    } else {
+                        continue;
+                    }
 				}
                 var owning_lib = g.map_acn[ cn_id ].owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
                 sc_libs[ owning_lib ] = true;
