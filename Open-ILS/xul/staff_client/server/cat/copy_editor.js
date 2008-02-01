@@ -1079,7 +1079,7 @@ g.render = function() {
             } catch(E) { alert(E); }
         }
     }
-    g.template_menu.value = g.template_menu.getAttribute('value');
+    if (g.template_menu) g.template_menu.value = g.template_menu.getAttribute('value');
 
 }
 
