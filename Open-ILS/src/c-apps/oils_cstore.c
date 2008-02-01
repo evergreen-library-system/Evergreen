@@ -1142,6 +1142,7 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
+	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
 
 	if (field_transform) {
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
@@ -1170,12 +1171,21 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
         	sql_buf,
 	        " )"
        	);
- 
+
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
 	}
 
+    if (transform_subcolumn) {
+       	buffer_fadd(
+            sql_buf,
+            ".\"%s\"",
+            transform_subcolumn
+        );
+    }
+ 
 	if (field_transform) free(field_transform);
+	if (transform_subcolumn) free(transform_subcolumn);
 
 	return buffer_release(sql_buf);
 }
