@@ -554,7 +554,12 @@ g.get_acpl_list = function() {
 			var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+					var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    if (typeof req.ilsevent == 'undefined') {
+    					g.map_acn[ cn_id ] = req;
+                    } else {
+                        continue;
+                    }
 				}
                 var consider_lib = g.map_acn[ cn_id ].owning_lib();
                 if ( libs.indexOf( String( consider_lib ) ) > -1 ) { /* already in list */ } else { libs.push( consider_lib ); }
@@ -1228,6 +1233,7 @@ g.copy_notes = function() {
 /******************************************************************************************************/
 /* hides or unhides stat cats based on library stat cat filter menu */
 g.toggle_stat_cat_display = function(el) {
+    if (!el) return;
     var visible = el.getAttribute('checked');
     var nl = document.getElementsByAttribute('sc_lib',el.getAttribute('value'));
     for (var n = 0; n < nl.length; n++) {
@@ -1383,7 +1389,13 @@ g.populate_stat_cats = function() {
             var cn_id = g.copies[i].call_number();
 			if (cn_id > 0) {
 				if (! g.map_acn[ cn_id ]) {
-					g.map_acn[ cn_id ] = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    var req = g.network.simple_request('FM_ACN_RETRIEVE',[ cn_id ]);
+                    if (typeof req.ilsevent == 'undefined') {
+    					g.map_acn[ cn_id ] = req;
+                    } else {
+                        continue;
+                    }
+
 				}
                 var owning_lib = g.map_acn[ cn_id ].owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
                 sc_libs[ owning_lib ] = true;
