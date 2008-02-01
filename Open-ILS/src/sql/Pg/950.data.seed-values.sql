@@ -811,7 +811,24 @@ INSERT INTO permission.perm_list VALUES
     (149, 'VIEW_REPORT_OUTPUT', oils_i18n_gettext('Allow user to view report output')),
     (150, 'COPY_CIRC_NOT_ALLOWED.override', oils_i18n_gettext('Allows a user to checkout an item that is marked as non-circ')),
     (151, 'DELETE_CONTAINER_ITEM', oils_i18n_gettext('Allows a user to delete an item out of another user''s container')),
-    (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext('Allow a staff member to define where another staff member has their permissions'));
+    (152, 'ASSIGN_WORK_ORG_UNIT', oils_i18n_gettext('Allow a staff member to define where another staff member has their permissions')),
+    (153, 'CREATE_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to create a new funding source')),
+    (154, 'DELETE_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to delete a funding source')),
+    (155, 'VIEW_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to view a funding source')),
+    (156, 'UPDATE_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to update a funding source')),
+    (157, 'CREATE_FUND', oils_i18n_gettext('Allow a user to create a new fund')),
+    (158, 'DELETE_FUND', oils_i18n_gettext('Allow a user to delete a fund')),
+    (159, 'VIEW_FUND', oils_i18n_gettext('Allow a user to view a fund')),
+    (160, 'UPDATE_FUND', oils_i18n_gettext('Allow a user to update a fund')),
+    (161, 'CREATE_FUND_ALLOCATION', oils_i18n_gettext('Allow a user to create a new fund allocation')),
+    (162, 'DELETE_FUND_ALLOCATION', oils_i18n_gettext('Allow a user to delete a fund allocation')),
+    (163, 'VIEW_FUND_ALLOCATION', oils_i18n_gettext('Allow a user to view a fund allocation')),
+    (164, 'UPDATE_FUND_ALLOCATION', oils_i18n_gettext('Allow a user to update a fund allocation')),
+    (165, 'GENERAL_ACQ', oils_i18n_gettext('Lowest level permission required to access the ACQ interface')),
+    (166, 'CREATE_PROVIDER', oils_i18n_gettext('Allow a user to create a new provider')),
+    (167, 'DELETE_PROVIDER', oils_i18n_gettext('Allow a user to delate a provider')),
+    (168, 'VIEW_PROVIDER', oils_i18n_gettext('Allow a user to view a provider')),
+    (169, 'UPDATE_PROVIDER', oils_i18n_gettext('Allow a user to update a provider'));
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, 'Users', NULL, NULL, '3 years', FALSE, 'group_application.user'),
