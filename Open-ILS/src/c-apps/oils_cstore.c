@@ -1177,11 +1177,15 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	}
 
     if (transform_subcolumn) {
-       	buffer_fadd(
+        char * tmp = buffer_release(sql_buf);
+        sql_buf = buffer_init(32);
+        buffer_fadd(
             sql_buf,
-            ".\"%s\"",
-            transform_subcolumn
+            "(%s).\"%s\"",
+            tmp,
+            transform_subcolum
         );
+        free(tmp);
     }
  
 	if (field_transform) free(field_transform);
