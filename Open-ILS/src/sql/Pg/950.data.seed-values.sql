@@ -933,6 +933,7 @@ INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family
 
 -- Admin user barcode
 INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
+UPDATE actor.usr SET card = (SELECT id FROM actor.card WHERE barcode = '101010101010101') WHERE id = 1;
 
 -- Admin user permissions
 INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
