@@ -41,6 +41,8 @@ class OrgUtil(object):
     @staticmethod
     def get_org_unit(org_id):
         OrgUtil._verify_tree()
+        if isinstance(org_id, osrf.net_obj.NetworkObject):
+            return org_id
         return OrgUtil._flat_org_tree[org_id]
         
 
@@ -93,6 +95,23 @@ class OrgUtil(object):
 
         trim_org(org_unit)
         return root
+
+    @staticmethod
+    def get_union_tree(org_list):
+        ''' Returns the smallest org tree which encompases all of the orgs in org_list '''
+        main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_list.pop(0)))
+        for org in org_list:
+            node = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org))
+            main_node = main_tree
+
+            while node.id() == main_node.id():
+                node = node.children()[0]
+                main_node = main_node.children()[0]
+
+            print main_node.id()
+            OrgUtil.get_org_unit(main_node.parent_ou()).children().append(node)
+
+        return main_tree
 
     @staticmethod
     def get_related_list(org_unit):
