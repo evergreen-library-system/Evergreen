@@ -9,7 +9,7 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::EX qw(:try);
 use OpenILS::Event;
 use Data::Dumper;
-use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenILS::Utils::CStoreEditor;
 use OpenILS::Const qw/:const/;
 
 # ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ sub check_user_perms {
 	for my $type (@perm_types) {
 	    $PERM_QUERY->{select}->{au}->[0]->{params} = [$type, $org_id];
 		$PERM_QUERY->{where}->{id} = $user_id;
-		return $type unless $self->is_true(new_editor()->json_query($PERM_QUERY)->[0]->{has_perm});
+		return $type unless $self->is_true(OpenILS::Utils::CStoreEditor->new->json_query($PERM_QUERY)->[0]->{has_perm});
 	}
 	return undef;
 }
