@@ -9,7 +9,7 @@ use OpenILS::Utils::ModsParser;
 use OpenSRF::EX qw(:try);
 use OpenILS::Event;
 use Data::Dumper;
-use OpenILS::Utils::CStoreEditor;
+use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Const qw/:const/;
 
 # ---------------------------------------------------------------------------
@@ -41,16 +41,30 @@ sub start_db_session {
 	return $session;
 }
 
+my $PERM_QUERY = {
+    select => {
+        au => [ {
+            transform => 'permission.usr_has_perm',
+            alias => 'has_perm',
+            column => 'id',
+            params => []
+        } ]
+    },
+    from => 'au',
+    where => {},
+};
+
 
 # returns undef if user has all of the perms provided
 # returns the first failed perm on failure
 sub check_user_perms {
 	my($self, $user_id, $org_id, @perm_types ) = @_;
 	$logger->debug("Checking perms with user : $user_id , org: $org_id, @perm_types");
+
 	for my $type (@perm_types) {
-		return $type unless ($self->storagereq(
-			"open-ils.storage.permission.user_has_perm", 
-			$user_id, $type, $org_id ));
+	    $PERM_QUERY->{select}->{au}->[0]->{params} = [$type, $org_id];
+		$PERM_QUERY->{where}->{id} = $user_id;
+		return $type unless $self->is_true(new_editor()->json_query($PERM_QUERY)->[0]->{has_perm});
 	}
 	return undef;
 }
