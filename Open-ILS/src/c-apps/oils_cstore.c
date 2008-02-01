@@ -1183,7 +1183,7 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
             sql_buf,
             "(%s).\"%s\"",
             tmp,
-            transform_subcolum
+            transform_subcolumn
         );
         free(tmp);
     }
