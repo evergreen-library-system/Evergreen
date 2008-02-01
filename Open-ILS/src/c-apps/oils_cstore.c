@@ -213,7 +213,7 @@ int osrfAppInitialize() {
 			free(_fm);
 
 			osrfHashSet( method_meta, method, "methodname" );
-			osrfHashSet( method_meta, method_type, "methodtype" );
+			osrfHashSet( method_meta, strdup(method_type), "methodtype" );
 
 			int flags = 0;
 			if (!(strcmp( method_type, "search" )) || !(strcmp( method_type, "id_list" ))) {
@@ -234,6 +234,7 @@ int osrfAppInitialize() {
 		}
 	}
 
+	osrfStringArrayFree( global_methods );
 	return 0;
 }
 
@@ -1141,6 +1142,7 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
 	growing_buffer* sql_buf = buffer_init(32);
 	
 	char* field_transform = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "transform" ) );
+	char* transform_subcolumn = jsonObjectToSimpleString( jsonObjectGetKeyConst( node, "result_field" ) );
 
 	if (field_transform) {
 		buffer_fadd( sql_buf, "%s(\"%s\".%s", field_transform, class, osrfHashGet(field, "name"));
@@ -1169,19 +1171,30 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
         	sql_buf,
 	        " )"
        	);
- 
+
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class, osrfHashGet(field, "name"));
-    }
+	}
 
+    if (transform_subcolumn) {
+        char * tmp = buffer_release(sql_buf);
+        sql_buf = buffer_init(32);
+        buffer_fadd(
+            sql_buf,
+            "(%s).\"%s\"",
+            tmp,
+            transform_subcolumn
+        );
+        free(tmp);
+    }
+ 
 	if (field_transform) free(field_transform);
+	if (transform_subcolumn) free(transform_subcolumn);
 
 	return buffer_release(sql_buf);
 }
 
 static char* searchFieldTransformPredicate (const char* class, osrfHash* field, jsonObjectNode* node) {
-	growing_buffer* sql_buf = buffer_init(32);
-	
 	char* field_transform = searchFieldTransform( class, field, node->item );
 	char* value = NULL;
 
@@ -1199,11 +1212,14 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 			if ( !dbi_conn_quote_string(dbhandle, &value) ) {
 				osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, value);
 				free(value);
+				free(field_transform);
 				return NULL;
 			}
 		}
 	}
 
+	growing_buffer* sql_buf = buffer_init(32);
+	
 	buffer_fadd(
 		sql_buf,
 		"%s %s %s",
@@ -1212,6 +1228,7 @@ static char* searchFieldTransformPredicate (const char* class, osrfHash* field, 
 		value
 	);
 
+	free(value);
 	free(field_transform);
 
 	return buffer_release(sql_buf);
@@ -1418,6 +1435,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 			fkey = strdup( fkey );
@@ -1434,6 +1452,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 			field = strdup( field );
@@ -1480,6 +1499,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
+				free(table);
 				return NULL;
 			}
 
@@ -1703,8 +1723,10 @@ static char* SELECT (
 	}
 
 	// punt if we don't know about the core class
-	if (!(core_meta = osrfHashGet( oilsIDL(), core_class )))
+	if (!(core_meta = osrfHashGet( oilsIDL(), core_class ))) {
+		free(core_class);
 		return NULL;
+	}
 
 	// if the select list is empty, or the core class field list is '*',
 	// build the default select list ...
@@ -2417,7 +2439,13 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "distinct" )))
          flags |= SELECT_DISTINCT;
 
+	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "distinct" ))) == 1 ) // support 1/0 for perl's sake
+         flags |= SELECT_DISTINCT;
+
 	if (jsonBoolIsTrue(jsonObjectGetKey( hash, "no_i18n" )))
+         flags |= DISABLE_I18N;
+
+	if ( ((int)jsonObjectGetNumber(jsonObjectGetKey( hash, "no_i18n" ))) == 1 ) // support 1/0 for perl's sake
          flags |= DISABLE_I18N;
 
 	osrfLogDebug(OSRF_LOG_MARK, "Building SQL ...");
@@ -2504,10 +2532,10 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	osrfLogDebug(OSRF_LOG_MARK, "%s SQL =  %s", MODULENAME, sql);
 	dbi_result result = dbi_conn_query(dbhandle, sql);
 
-	osrfHash* dedup = osrfNewHash();
 	jsonObject* res_list = jsonParseString("[]");
 	if(result) {
 		osrfLogDebug(OSRF_LOG_MARK, "Query returned with no errors");
+		osrfHash* dedup = osrfNewHash();
 
 		if (dbi_result_first_row(result)) {
 			/* JSONify the result */
@@ -2526,6 +2554,8 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 		} else {
 			osrfLogDebug(OSRF_LOG_MARK, "%s returned no results for query %s", MODULENAME, sql);
 		}
+
+		osrfHashFree(dedup);
 
 		/* clean up the query */
 		dbi_result_free(result); 
