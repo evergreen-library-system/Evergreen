@@ -1246,6 +1246,7 @@ sub update_password {
 
 __PACKAGE__->register_method(
 	method	=> "update_passwd",
+    authoritative => 1,
 	api_name	=> "open-ils.actor.user.password.update");
 
 __PACKAGE__->register_method(
@@ -1408,6 +1409,99 @@ sub _find_highest_perm_org {
 
 	return $lastid;
 }
+
+
+__PACKAGE__->register_method(
+	method => 'check_user_work_perms',
+	api_name	=> 'open-ils.actor.user.work_perm.highest_org_set',
+    authoritative => 1,
+    signature => {
+        desc => q/
+            Returns a set of org units which represent the highest orgs in 
+            the org tree where the user has the requested permission.  The
+            purpose of this method is to return the smallest set of org units
+            which represent the full expanse of the user's ability to perform
+            the requested action.  The user whose perms this method should
+            check is implied by the authtoken. /,
+        params => [
+		    {desc => 'authtoken', type => 'string'},
+            {desc => 'permission name', type => 'string'}
+        ],
+        return => {desc => 'An array of org IDs'}
+    }
+);
+
+sub check_user_work_perms {
+    my($self, $conn, $auth, $perm) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    # first, quickly grab the list of work_ou's for this user
+    my $work_orgs = $e->json_query({
+        select => {puwoum => ['work_ou']},
+        from => 'puwoum',
+        where => {usr => $e->requestor->id}});
+
+    return [] unless @$work_orgs;
+    my @work_orgs;
+    push(@work_orgs, $_->{work_ou}) for @$work_orgs;
+
+    $logger->debug("found work orgs @work_orgs");
+
+    my @allowed_orgs;
+	my $org_tree = get_org_tree();
+    my $org_types = get_org_types();
+
+    # use the first work org to determine the highest depth at which 
+    # the user has the requested permission
+    my $first_org = shift @work_orgs;
+    my $high_org_id = _find_highest_perm_org($perm, $e->requestor->id, $first_org, $org_tree);
+    $logger->debug("found highest work org $high_org_id");
+
+    
+    return [] if $high_org_id == -1; # not allowed anywhere
+    push(@allowed_orgs, $high_org_id);
+    my $high_org = $apputils->find_org($org_tree, $high_org_id);
+
+    # now that we have the highest depth, find the org in the tree relative to 
+    # each work org at that depth. 
+    my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
+    my $org_depth = $org_type->depth;
+    for my $org (@work_orgs) {
+        $logger->debug("work org looking at $org");
+
+        # retrieve sorted list of ancestors and descendants for this work_ou
+        my $org_list = $e->json_query({
+            select => {
+                aou => [{
+                    transform => 'actor.org_unit_full_path',
+                    column => 'id',
+                    result_field => 'id',
+                    params => [$org_depth]
+                }]
+            },
+            from => 'aou',
+            where => {id=>$org}
+        });
+
+        # go through the list until we find the org at the correct depth
+        my @org_list;
+        push(@org_list, $_->{id}) for @$org_list;
+        for my $sub_org (@org_list) {
+            $logger->debug("work org looking at sub-org $sub_org");
+            my $org_unit = $apputils->find_org($org_tree, $sub_org);
+            my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
+            if($ou_type->depth >= $org_depth) {
+                push(@allowed_orgs, $sub_org);
+                last;
+            }
+        }
+    }
+
+    return \@allowed_orgs;
+}
+
+
 
 __PACKAGE__->register_method(
 	method => 'check_user_perms4',
@@ -2707,6 +2801,8 @@ __PACKAGE__->register_method(
 		Returns the user ID of the requested username if that username exists, returns null otherwise
 	/
 );
+
+# XXX Make me retun undef if no user has the ID 
 
 sub usrname_exists {
 	my( $self, $conn, $auth, $usrname ) = @_;
