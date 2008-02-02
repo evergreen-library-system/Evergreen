@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE overlay PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 <overlay id="copy_status_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -11,58 +11,58 @@
 
 <popupset id="copy_status_popupset">
 	<popup id="copy_status_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-		<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
-		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
+		<menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+		<menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+		<menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
+		<menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+		<menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
 		<menuseparator/>
-		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+		<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
+		<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_transit_abort" label="Abort Transits" />
+		<menuitem command="sel_transit_abort" label="&staff.circ.copy_status_overlay.sel_transit_abort.label;" />
 		<menuseparator/>
-		<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+		<menuitem command="sel_checkin" label="&staff.circ.copy_status_overlay.sel_checkin.label;" accesskey="&staff.circ.copy_status_overlay.sel_checkin.accesskey;" />
 		<menuseparator/>
-		<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
+		<menuitem command="sel_renew" label="&staff.circ.copy_status_overlay.sel_renew.label;" accesskey="&staff.circ.copy_status_overlay.sel_renew.accesskey;" />
 		<menuseparator />
-		<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
-		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-		<menuitem command="save_columns" label="Save Columns"/>
+		<menuitem command="sel_spine" label="&staff.circ.copy_status_overlay.sel_spine.label;" accesskey="&staff.circ.copy_status_overlay.sel_spine.accesskey;"/>
+		<menuitem command="cmd_replace_barcode" label="&staff.circ.copy_status_overlay.cmd_replace_barcode.label;" accesskey="&staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey;"/>
+		<menuitem command="save_columns" label="&staff.circ.copy_status_overlay.save_columns.label;"/>
 	</popup>
 </popupset>
 
 <popupset id="copy_cat_status_popupset">
 	<popup id="copy_cat_status_actions" position="at_pointer"> 
-		<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
-		<menuitem command="sel_bucket" label="Add Items to Buckets" accesskey="B"/>
-		<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-		<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-		<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+		<menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
+		<menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+		<menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+		<menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
+		<menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E"/>
-		<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+		<menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+		<menuitem command="cmd_transfer_items" label="&staff.circ.copy_status_overlay.cmd_transfer_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_items.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
-		<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+		<menuitem command="cmd_add_volumes" label="&staff.circ.copy_status_overlay.cmd_add_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_volumes.accesskey;"/>
+		<menuitem command="cmd_mark_library" label="&staff.circ.copy_status_overlay.cmd_mark_library.label;" accesskey="&staff.circ.copy_status_overlay.cmd_mark_library.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
-		<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
-		<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-		<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+		<menuitem command="cmd_add_items" label="&staff.circ.copy_status_overlay.cmd_add_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_items.accesskey;"/>
+		<menuitem command="cmd_edit_volumes" label="&staff.circ.copy_status_overlay.cmd_edit_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey;"/>
+		<menuitem command="cmd_mark_volume" label="&staff.circ.copy_status_overlay.cmd_mark_volume.label;" accesskey="&staff.circ.copy_status_overlay.cmd_mark_volume.accesskey;"/>
+		<menuitem command="cmd_transfer_volume" label="&staff.circ.copy_status_overlay.cmd_transfer_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
-		<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+		<menuitem command="cmd_delete_items" label="&staff.circ.copy_status_overlay.cmd_delete_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_items.accesskey;"/>
+		<menuitem command="cmd_delete_volumes" label="&staff.circ.copy_status_overlay.cmd_delete_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-		<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+		<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
+		<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey;"/>
 		<menuseparator/>
-		<menuitem command="sel_spine" label="Print Item Spine Labels" accesskey="P"/>
-		<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-		<menuitem command="save_columns" label="Save Columns"/>
+		<menuitem command="sel_spine" label="&staff.circ.copy_status_overlay.sel_spine.label;" accesskey="&staff.circ.copy_status_overlay.sel_spine.accesskey;"/>
+		<menuitem command="cmd_replace_barcode" label="&staff.circ.copy_status_overlay.cmd_replace_barcode.label;" accesskey="&staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey;"/>
+		<menuitem command="save_columns" label="&staff.circ.copy_status_overlay.save_columns.label;"/>
 	</popup>
 </popupset>
 
@@ -74,7 +74,7 @@
 <vbox id="cmvb1" flex="1">
 	<hbox id="background" style="background-color: yellow">
 		<spacer flex="1"/>
-		<label value="Item Status" style="font-size: x-large; font-weight: bold;"/>
+		<label value="&staff.circ.copy_status_overlay.item_status.label;" style="font-size: x-large; font-weight: bold;"/>
 		<spacer flex="1"/>
 	</hbox>
 	<hbox id="last_scanned_hbox" style="background-color: yellow">
@@ -83,7 +83,7 @@
 		<spacer flex="1"/>
 	</hbox>
 	<groupbox id="cmgb1" flex="2">
-		<caption label="Scan Item" />
+		<caption label="&staff.circ.copy_status_overlay.last_scanned.caption;" />
 		<hbox id="copy_status_top_ui" />
 		<tree id="copy_status_list" flex="1" enableColumnDrag="true" context="copy_status_actions" />
 		<hbox id="copy_status_bottom_ui" />
@@ -92,73 +92,73 @@
 
 <hbox id="copy_status_top_ui">
 	<label id="copy_status_scan_barcode_label" 
-		value="Barcode:"
-		accesskey="B"
+		value="&staff.circ.copy_status_overlay.copy_status_scan_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey;"
 		control="copy_status_barcode_entry_textbox"/>
 	<textbox id="copy_status_barcode_entry_textbox"/>
 	<button id="copy_status_submit_barcode_button" 
-		label="Submit"
-		accesskey="t"
+		label="&staff.circ.copy_status_overlay.copy_status_submit_barcode.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_submit_barcode.accesskey;"
 		command="cmd_copy_status_submit_barcode"/>
 	<button id="copy_status_upload_file_button" 
-		label="Upload From File"
-		accesskey="U"
+		label="&staff.circ.copy_status_overlay.copy_status_upload_file.label;"
+		accesskey="&staff.circ.copy_status_overlay.copy_status_upload_file.accesskey;"
 		command="cmd_copy_status_upload_file"/>
 	<spacer flex="1"/>
 	<menubar>
-	<menu label="Actions for Catalogers" accesskey="f">
+	<menu label="&staff.circ.copy_status_overlay.cataloger_actions.label;" accesskey="&staff.circ.copy_status_overlay.cataloger_actions.accesskey;">
 		<menupopup>
-			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C"/>
-			<menuitem command="sel_bucket" label="Add Items to Buckets" accesskey="B"/>
-			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
+			<menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+			<menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+			<menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
+			<menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E"/>
-			<menuitem command="cmd_transfer_items" label="Transfer Items to Previously Marked Volume" accesskey="T"/>
+			<menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
+			<menuitem command="cmd_transfer_items" label="&staff.circ.copy_status_overlay.cmd_transfer_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_items.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_add_volumes" label="Add Volumes" accesskey="V"/>
-			<menuitem command="cmd_mark_library" label="Mark Library as Volume Transfer Destination" accesskey="M"/>
+			<menuitem command="cmd_add_volumes" label="&staff.circ.copy_status_overlay.cmd_add_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_volumes.accesskey;"/>
+			<menuitem command="cmd_mark_library" label="&staff.circ.copy_status_overlay.cmd_mark_library.label;" accesskey="&staff.circ.copy_status_overlay.cmd_mark_library.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_add_items" label="Add Items" accesskey="A"/>
-			<menuitem command="cmd_edit_volumes" label="Edit Volumes" accesskey="E"/>
-			<menuitem command="cmd_mark_volume" label="Mark Volume as Item Transfer Destination" accesskey="M"/>
-			<menuitem command="cmd_transfer_volume" label="Transfer Volumes to Previously Marked Library" accesskey="T"/>
+			<menuitem command="cmd_add_items" label="&staff.circ.copy_status_overlay.cmd_add_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_add_items.accesskey;"/>
+			<menuitem command="cmd_edit_volumes" label="&staff.circ.copy_status_overlay.cmd_edit_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey;"/>
+			<menuitem command="cmd_mark_volume" label="&staff.circ.copy_status_overlay.cmd_mark_volume.label;" accesskey="&staff.circ.copy_status_overlay.cmd_mark_volume.accesskey;"/>
+			<menuitem command="cmd_transfer_volume" label="&staff.circ.copy_status_overlay.cmd_transfer_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="cmd_delete_items" label="Delete Items" accesskey=""/>
-			<menuitem command="cmd_delete_volumes" label="Delete Volumes" accesskey=""/>
+			<menuitem command="cmd_delete_items" label="&staff.circ.copy_status_overlay.cmd_delete_items.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_items.accesskey;"/>
+			<menuitem command="cmd_delete_volumes" label="&staff.circ.copy_status_overlay.cmd_delete_volumes.label;" accesskey="&staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
-			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="g"/>
+			<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
+			<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey;"/>
 			<menuseparator/>
-			<menuitem command="sel_spine" label="Print Item Spine Labels" accesskey="P"/>
-			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-			<menuitem command="save_columns" label="Save Columns"/>
+			<menuitem command="sel_spine" label="&staff.circ.copy_status_overlay.sel_spine.label;" accesskey="&staff.circ.copy_status_overlay.sel_spine.accesskey;"/>
+			<menuitem command="cmd_replace_barcode" label="&staff.circ.copy_status_overlay.cmd_replace_barcode.label;" accesskey="&staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey;"/>
+			<menuitem command="save_columns" label="&staff.circ.copy_status_overlay.save_columns.label;"/>
 		</menupopup>
 	</menu>
 	<menu label="Actions for Selected Items" accesskey="S">
 		<menupopup>
-			<menuitem command="sel_clip" label="Copy to Clipboard" accesskey="C" />
-			<menuitem command="sel_bucket" label="Add to Item Bucket" accesskey="A"/>
-			<menuitem command="sel_opac" label="Show in Catalog" accesskey="S" />
-			<menuitem command="sel_copy_details" label="Show Item Details" accesskey="I" />
-			<menuitem command="sel_patron" label="Show Last Few Circulations" accesskey="L"/>
+			<menuitem command="sel_clip" label="&staff.circ.copy_status_overlay.sel_clip.label;" accesskey="&staff.circ.copy_status_overlay.sel_clip.accesskey;" />
+			<menuitem command="sel_bucket" label="&staff.circ.copy_status_overlay.sel_bucket.label;" accesskey="&staff.circ.copy_status_overlay.sel_bucket.accesskey;"/>
+			<menuitem command="sel_opac" label="&staff.circ.copy_status_overlay.sel_opac.label;" accesskey="&staff.circ.copy_status_overlay.sel_opac.accesskey;" />
+			<menuitem command="sel_copy_details" label="&staff.circ.copy_status_overlay.sel_copy_details.label;" accesskey="&staff.circ.copy_status_overlay.sel_copy_details.accesskey;" />
+			<menuitem command="sel_patron" label="&staff.circ.copy_status_overlay.sel_patron.label;" accesskey="&staff.circ.copy_status_overlay.sel_patron.accesskey;"/>
 			<menuseparator />
-			<menuitem command="sel_edit" label="Edit Item Attributes" accesskey="E" />
+			<menuitem command="sel_edit" label="&staff.circ.copy_status_overlay.sel_edit.label;" accesskey="&staff.circ.copy_status_overlay.sel_edit.accesskey;" />
 			<menuseparator />
-			<menuitem command="sel_mark_items_damaged" label="Mark Item Damaged" accesskey="D"/>
+			<menuitem command="sel_mark_items_damaged" label="&staff.circ.copy_status_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey;"/>
 			<menuseparator />
-			<menuitem command="sel_mark_items_missing" label="Mark Item Missing" accesskey="M"/>
+			<menuitem command="sel_mark_items_missing" label="&staff.circ.copy_status_overlay.sel_mark_items_missing.label;" accesskey="&staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey;"/>
 			<menuseparator />
-			<menuitem command="sel_transit_abort" label="Abort Transits" />
+			<menuitem command="sel_transit_abort" label="&staff.circ.copy_status_overlay.sel_transit_abort.label;" />
 			<menuseparator />
-			<menuitem command="sel_checkin" label="Check In Items" accesskey="N" />
+			<menuitem command="sel_checkin" label="&staff.circ.copy_status_overlay.sel_checkin.label;" accesskey="&staff.circ.copy_status_overlay.sel_checkin.accesskey;" />
 			<menuseparator />
-			<menuitem command="sel_renew" label="Renew Items" accesskey="R" />
+			<menuitem command="sel_renew" label="&staff.circ.copy_status_overlay.sel_renew.label;" accesskey="&staff.circ.copy_status_overlay.sel_renew.accesskey;" />
 			<menuseparator />
-			<menuitem command="sel_spine" label="Print Spine Label" accesskey="P"/>
-			<menuitem command="cmd_replace_barcode" label="Replace Barcode" accesskey=""/>
-			<menuitem command="save_columns" label="Save Columns"/>
+			<menuitem command="sel_spine" label="&staff.circ.copy_status_overlay.sel_spine.label;" accesskey="&staff.circ.copy_status_overlay.sel_spine.accesskey;"/>
+			<menuitem command="cmd_replace_barcode" label="&staff.circ.copy_status_overlay.cmd_replace_barcode.label;" accesskey="&staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey;"/>
+			<menuitem command="save_columns" label="&staff.circ.copy_status_overlay.save_columns.label;"/>
 		</menupopup>
 	</menu>
 	</menubar>
@@ -166,11 +166,11 @@
 </hbox>
 
 <hbox id="copy_status_bottom_ui">
-	<button id="copy_status_print" label="Print" command="cmd_copy_status_print" accesskey="P"/>
-	<button id="copy_status_export" label="Export" command="cmd_copy_status_export" accesskey=""/>
-	<button id="copy_status_export" label="Print Export" command="cmd_copy_status_print_export" accesskey=""/>
-	<checkbox id="trim_list" label="Trim List (20 rows)" checked="true" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
-	<checkbox id="strict_barcode" label="Strict Barcode" checked="false" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
+	<button id="copy_status_print" label="&staff.circ.copy_status_overlay.copy_status_print.label;" command="cmd_copy_status_print" accesskey="&staff.circ.copy_status_overlay.copy_status_print.accesskey;"/>
+	<button id="copy_status_export" label="&staff.circ.copy_status_overlay.copy_status_export.label;" command="cmd_copy_status_export" accesskey="&staff.circ.copy_status_overlay.copy_status_export.accesskey;"/>
+	<button id="copy_status_print_export" label="&staff.circ.copy_status_overlay.copy_status_print_export.label;" command="cmd_copy_status_print_export" accesskey="&staff.circ.copy_status_overlay.copy_status_print_export.accesskey;"/>
+	<checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
+	<checkbox id="strict_barcode" label="&staff.circ.copy_status_overlay.strict_barcode.label;" checked="false" persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
 	<spacer flex="1"/>
 </hbox>
 

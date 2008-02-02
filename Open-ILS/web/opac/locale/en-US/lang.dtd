@@ -1519,3 +1519,69 @@
 <!ENTITY staff.circ.copy_details.r_hold.accesskey "H">
 <!ENTITY staff.circ.copy_details.done.label "Done">
 <!ENTITY staff.circ.copy_details.done.accesskey "D">
+<!ENTITY staff.circ.copy_status_overlay.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.circ.copy_status_overlay.sel_clip.accesskey "C">
+<!ENTITY staff.circ.copy_status_overlay.sel_bucket.label "Add to Item Bucket">
+<!ENTITY staff.circ.copy_status_overlay.sel_bucket.accesskey "A">
+<!ENTITY staff.circ.copy_status_overlay.sel_opac.label "Show in Catalog">
+<!ENTITY staff.circ.copy_status_overlay.sel_opac.accesskey "S">
+<!ENTITY staff.circ.copy_status_overlay.sel_copy_details.label "Show Item Details">
+<!ENTITY staff.circ.copy_status_overlay.sel_copy_details.accesskey "I">
+<!ENTITY staff.circ.copy_status_overlay.sel_patron.label "Show Last Few Circulations">
+<!ENTITY staff.circ.copy_status_overlay.sel_patron.accesskey "L">
+<!ENTITY staff.circ.copy_status_overlay.sel_edit.label "Edit Item Attributes">
+<!ENTITY staff.circ.copy_status_overlay.sel_edit.accesskey "E">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.label "Mark Item Missing">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey "M">
+<!ENTITY staff.circ.copy_status_overlay.sel_transit_abort.label "Abort Transits">
+<!ENTITY staff.circ.copy_status_overlay.sel_checkin.label "Check In Items">
+<!ENTITY staff.circ.copy_status_overlay.sel_checkin.accesskey "N">
+<!ENTITY staff.circ.copy_status_overlay.sel_renew.label "Renew Items">
+<!ENTITY staff.circ.copy_status_overlay.sel_renew.accesskey "R">
+<!ENTITY staff.circ.copy_status_overlay.sel_spine.label "Print Spine Label">
+<!ENTITY staff.circ.copy_status_overlay.sel_spine.accesskey "P">
+<!ENTITY staff.circ.copy_status_overlay.cmd_replace_barcode.label "Replace Barcode">
+<!ENTITY staff.circ.copy_status_overlay.cmd_replace_barcode.accesskey "">
+<!ENTITY staff.circ.copy_status_overlay.save_columns.label "Save Columns">
+<!ENTITY staff.circ.copy_status_overlay.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
+<!ENTITY staff.circ.copy_status_overlay.cmd_transfer_items.accesskey "T">
+<!ENTITY staff.circ.copy_status_overlay.cmd_add_volumes.label "Add Volumes">
+<!ENTITY staff.circ.copy_status_overlay.cmd_add_volumes.accesskey "V">
+<!ENTITY staff.circ.copy_status_overlay.cmd_mark_library.label "Mark Library as Volume Transfer Destination">
+<!ENTITY staff.circ.copy_status_overlay.cmd_mark_library.accesskey "M">
+<!ENTITY staff.circ.copy_status_overlay.cmd_add_items.label "Add Items">
+<!ENTITY staff.circ.copy_status_overlay.cmd_add_items.accesskey "A">
+<!ENTITY staff.circ.copy_status_overlay.cmd_edit_volumes.label "Edit Volumes">
+<!ENTITY staff.circ.copy_status_overlay.cmd_edit_volumes.accesskey "E">
+<!ENTITY staff.circ.copy_status_overlay.cmd_mark_volume.label "Mark Volume as Item Transfer Destination">
+<!ENTITY staff.circ.copy_status_overlay.cmd_mark_volume.accesskey "M">
+<!ENTITY staff.circ.copy_status_overlay.cmd_transfer_volumes.label "Transfer Volumes to Previously Marked Library">
+<!ENTITY staff.circ.copy_status_overlay.cmd_transfer_volumes.accesskey "T">
+<!ENTITY staff.circ.copy_status_overlay.cmd_delete_items.label "Delete Items">
+<!ENTITY staff.circ.copy_status_overlay.cmd_delete_items.accesskey "">
+<!ENTITY staff.circ.copy_status_overlay.cmd_delete_volumes.label "Delete Volumes">
+<!ENTITY staff.circ.copy_status_overlay.cmd_delete_volumes.accesskey "">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.label "Mark Item Missing">
+<!ENTITY staff.circ.copy_status_overlay.sel_mark_items_missing.accesskey "g">
+<!ENTITY staff.circ.copy_status_overlay.item_status.label "Item Status">
+<!ENTITY staff.circ.copy_status_overlay.last_scanned.caption "Scan Item">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_scan_barcode.label "Barcode:">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_scan_barcode.accesskey "B">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_submit_barcode.label "Submit">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_submit_barcode.accesskey "t">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_upload_file.label "Upload From File">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_upload_file.accesskey "U">
+<!ENTITY staff.circ.copy_status_overlay.cataloger_actions.label "Actions for Catalogers">
+<!ENTITY staff.circ.copy_status_overlay.cataloger_actions.accesskey "f">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_print.label "Print">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_print.accesskey "P">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_export.label "Export">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_export.accesskey "">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_print_export.label "Print Export">
+<!ENTITY staff.circ.copy_status_overlay.copy_status_print_export.accesskey "">
+<!ENTITY staff.circ.copy_status_overlay.trim_list.label "Trim List (20 rows)">
+<!ENTITY staff.circ.copy_status_overlay.strict_barcode.label "Strict Barcode">
