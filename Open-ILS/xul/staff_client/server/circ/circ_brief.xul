@@ -37,7 +37,7 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { throw( document.getElementById("commonStrings").getString('common.jsan.missing') ); }
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -58,10 +58,10 @@
 						$('circ_lib').value = r_circ.circ_lib() ? g.data.hash.aou[ r_circ.circ_lib() ].shortname() : '';
 						$('xact_start').value = r_circ.xact_start() ? r_circ.xact_start().toString().substr(0,16).replace(/T/,' ') : '';
 						$('due_date').value = r_circ.due_date() ? r_circ.due_date().toString().substr(0,10) : '';
-						$('circ_lib').setAttribute('tooltiptext','Check Out Staff ID = ' + r_circ.circ_staff() );
+						$('circ_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_out_id', [r_circ.circ_staff()]) );
 						$('checkin_lib').value = r_circ.checkin_lib() ? g.data.hash.aou[ r_circ.checkin_lib() ].shortname() : '';
 						$('checkin_time').value = r_circ.checkin_time() ? r_circ.checkin_time().toString().substr(0,16).replace(/T/,' ') : '';
-						$('checkin_lib').setAttribute('tooltiptext','Check In Staff ID = ' + r_circ.checkin_staff() );
+						$('checkin_lib').setAttribute('tooltiptext', document.getElementById('circStrings').getFormattedString('staff.circ.circ_brief.staff_in_id', [r_circ.checkin_staff()]) );
 						$('id').value = r_circ.id() ? r_circ.id() : '';
 						$('stop_fines').value = r_circ.stop_fines() ? r_circ.stop_fines() : '';
 						$('stop_fines_time').value = r_circ.stop_fines_time() ? r_circ.stop_fines_time().toString().substr(0,16).replace(/T/,' ') : '';
@@ -78,7 +78,7 @@
 						});
 
 					} catch(E) {
-						g.error.standard_unexpected_error_alert('Failure rendering circ.',E);
+						g.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.circ_brief.failure'), E);
 					}
 				}
 
@@ -91,8 +91,7 @@
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncirc/circ_brief.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ/circ_brief.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -116,12 +115,14 @@
 	]]>
 	</script>
 
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
 	<groupbox id="gb" flex="1" style="overflow: auto;">
 		<caption id="caption"/>
 		<hbox>
 			<label id="patron_name" class="patronNameLarge" flex="1"/>
-			<label value="Circ ID: "/><label id="id"/>
-			<button id="add_billing" disabled="true" label="Add Billing" oncommand="g.add_billing();"/>
+			<label value="&staff.circ.circ_brief.patron_id.label;"/><label id="id"/>
+			<button id="add_billing" disabled="true" label="&staff.circ.circ_brief.add_billing.label;" oncommand="g.add_billing();"/>
 		</hbox>
 		<grid flex="1">
 			<columns>
@@ -136,16 +137,16 @@
 			</columns>
 			<rows>
 				<row>
-					<label style="font-weight: bold" value="Check Out Time"/><label id="xact_start"/>
-					<label style="font-weight: bold" value="Due Date"/><label id="due_date"/>
-					<label style="font-weight: bold" value="Stop Fines Time"/><label id="stop_fines_time"/>
-					<label style="font-weight: bold" value="Check In Time"/><label id="checkin_time"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.xact_start.label;"/><label id="xact_start"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.due_date.label;"/><label id="due_date"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines_time.label;"/><label id="stop_fines_time"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_time.label;"/><label id="checkin_time"/>
 				</row>
 				<row>
-					<label style="font-weight: bold" value="Check Out Lib"/><label id="circ_lib"/>
-					<label style="font-weight: bold" value="Renewal"/><label id="renewal"/>
-					<label style="font-weight: bold" value="Stop Fines Reason"/><label id="stop_fines"/>
-					<label style="font-weight: bold" value="Check In Lib"/><label id="checkin_lib"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.circ_lib.label;"/><label id="circ_lib"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.renewal.label;"/><label id="renewal"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.stop_fines.label;"/><label id="stop_fines"/>
+					<label style="font-weight: bold" value="&staff.circ.circ_brief.checkin_lib.label;"/><label id="checkin_lib"/>
 				</row>
 			</rows>
 		</grid>

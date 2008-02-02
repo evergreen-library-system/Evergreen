@@ -5,6 +5,7 @@
 <!ENTITY common.check_date.description "Check today's date above.">
 <!ENTITY common.check_barcode.description "Check barcode?">
 <!ENTITY common.date_helper 'or choose one of these'>
+<!ENTITY common.date_helper.normal 'Normal'>
 <!ENTITY common.date_helper.3_days 'Today + 3 days'>
 <!ENTITY common.date_helper.7_days 'Today + 7 days'>
 <!ENTITY common.date_helper.14_days 'Today + 14 days'>
@@ -1484,3 +1485,21 @@
 <!ENTITY staff.circ.checkin_overlay.do_not_alert_on_precat.label "Ignore Pre-cataloged Items">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.label "Auto-Print Hold and Transit Slips">
 <!ENTITY staff.circ.checkin_overlay.checkin_auto.accesskey "P">
+<!ENTITY staff.circ.checkout_overlay.duedate_menu.label "Normal">
+<!ENTITY staff.circ.checkout_overlay.duedate_menu.accesskey "u">
+<!ENTITY staff.circ.checkout_overlay.barcode.accesskey "C">
+<!ENTITY staff.circ.checkout_overlay.export.accesskey "">
+<!ENTITY staff.circ.checkout_overlay.export.label "Export">
+<!ENTITY staff.circ.checkout_overlay.sel_clip.label "Copy to Clipboard">
+<!ENTITY staff.circ.checkout_overlay.save_columns.label "Save Columns">
+<!ENTITY staff.circ.checkout_overlay.strict_barcode.label "Strict Barcode">
+<!ENTITY staff.circ.circ_brief.patron_id.label "Circ ID: ">
+<!ENTITY staff.circ.circ_brief.add_billing.label "Add Billing">
+<!ENTITY staff.circ.circ_brief.xact_start.label "Check Out Time">
+<!ENTITY staff.circ.circ_brief.due_date.label "Due Date">
+<!ENTITY staff.circ.circ_brief.stop_fines_time.label "Stop Fines Time">
+<!ENTITY staff.circ.circ_brief.checkin_time.label "Check In Time">
+<!ENTITY staff.circ.circ_brief.circ_lib.label "Check Out Library">
+<!ENTITY staff.circ.circ_brief.renewal.label "Renewal">
+<!ENTITY staff.circ.circ_brief.stop_fines.label "Stop Fines Reason">
+<!ENTITY staff.circ.circ_brief.checkin_lib.label "Check In Library">
