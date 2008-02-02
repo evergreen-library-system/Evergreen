@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Brief Bib Display -->
 
@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -42,7 +42,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') {
+					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -136,13 +138,13 @@
 		<iframe id="mid" style="overflow: auto;"/>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="circs" style="overflow: auto;">
-			<caption label="Last Few Circulations"/>
+			<caption label="&staff.circ.circ_summary.caption;"/>
 		</groupbox>
 		<hbox>
-			<button id="r_last" label="Retrieve Last Patron" accesskey="L" oncommand="retrieve_last();"/>
-			<button id="r_all" label="Retrieve All These Patrons" accesskey="A" oncommand="retrieve_all();"/>
+			<button id="r_last" label="&staff.circ.circ_summary.retrieve_last.label;" accesskey="&staff.circ.circ_summary.retrieve_last.accesskey;" oncommand="retrieve_last();"/>
+			<button id="r_all" label="&staff.circ.circ_summary.retrieve_all.label;" accesskey="&staff.circ.circ_summary.retrieve_all.accesskey;" oncommand="retrieve_all();"/>
 			<spacer flex="1"/>
-			<button label="Done" accesskey="D" oncommand="window.close();"/>
+			<button label="&staff.circ.circ_summary.done.label;" accesskey="&staff.circ.circ_summary.done.accesskey;" oncommand="window.close();"/>
 		</hbox>
 	</vbox>
 

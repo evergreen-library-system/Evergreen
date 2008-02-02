@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Brief Bib Display -->
 
@@ -12,7 +12,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -42,7 +42,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') { 
+					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -56,12 +58,28 @@
 
 				// uber method
 				var robj = g.network.simple_request('FM_ACP_DETAILS', [ ses(), g.copy_id ] );
-				if (typeof robj.ilsevent != 'undefined') throw(robj);
-				if (robj.copy) g.copy = robj.copy; else throw(robj);
+				if (typeof robj.ilsevent != 'undefined') {
+					throw(robj);
+				}
+				if (robj.copy) {
+					g.copy = robj.copy;
+				} else {
+					throw(robj);
+				}
 				g.hold = robj.hold; g.transit = robj.transit; g.circ = robj.circ; g.callnumber = robj.volume;
-				if (g.hold) $('hold_caption').setAttribute('tooltiptext','Hold ID = ' + g.hold.id());
-				if (g.transit) $('transit_caption').setAttribute('tooltiptext','Transit ID = ' + g.transit.id());
-				if (g.circ) $('circ_caption').setAttribute('tooltiptext','Circ ID = ' + g.circ.id());
+				var tt_msg = '';
+				if (g.hold) {
+					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.hold', [g.hold.id()]);
+					$('hold_caption').setAttribute('tooltiptext', tt_msg);
+				}
+				if (g.transit) {
+					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.transit', [g.transit.id()]);
+					$('transit_caption').setAttribute('tooltiptext', tt_msg);
+				}
+				if (g.circ) {
+					tt_msg = $('circStrings').getFormattedString('staff.circ.copy_details.circ', [g.circ.id()]);
+					$('circ_caption').setAttribute('tooltiptext', tt_msg);
+				}
 
 				//g.callnumber = g.network.simple_request('FM_ACN_RETRIEVE',[ g.copy.call_number() ]);
 				//if (typeof g.callnumber.ilsevent != 'undefined') throw(g.callnumber);
@@ -80,12 +98,12 @@
 					$('circ').setAttribute('src',urls.XUL_CIRC_BRIEF); // + '?no_border=1');
 					get_contentWindow($('circ')).xulG = { 'no_border' : 1 };
 					if (g.circ.checkin_time()) {
-						$('circ_caption').setAttribute('label','Last Circulation');
+						$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.last_circ'));
 					} else {
-						$('circ_caption').setAttribute('label','Current Circulation');
+						$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.current_circ'));
 					}
 				} else {
-					$('circ_caption').setAttribute('label','This item has yet to circulate.');
+					$('circ_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_circ'));
 					$('circ').hidden = true;
 				}
 
@@ -97,7 +115,7 @@
 					g.list.append( { 'row' : { 'my' : { 'atc' : g.transit, } } });
 	
 				} else {
-					$('transit_caption').setAttribute('label','This item is not in transit.');
+					$('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.not_transit'));
 					$('transit').hidden = true;
 				}
 
@@ -125,13 +143,13 @@
 	
 					JSAN.use('patron.util'); 
 					var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.hold.usr() );
-					$('patron_name').setAttribute('value', au_obj.family_name() + ', ' + au_obj.first_given_name() + ' : ' + au_obj.card().barcode() );
+					$('patron_name').setAttribute('value', $('circStrings').getFormattedString('staff.circ.copy_details.user_details', [au_obj.family_name(), au_obj.first_given_name(), au_obj.card().barcode()]) );
 
 				} else {
 					if (g.copy.status() == 8 /* ON HOLDS SHELF */) {
-						$('hold_caption').setAttribute('label','This item is not captured for a hold, however its status is incorrectly set to "On Holds Shelf".  Please check this item in to correct the status.');
+						$('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.bad_hold_status'));
 					} else {
-						$('hold_caption').setAttribute('label','This item is not captured for a hold.');
+						$('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_hold'));
 					}
 					$('hold').hidden = true;
 				}
@@ -168,6 +186,8 @@
 	]]>
 	</script>
 
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
 	<vbox flex="1" style="overflow: auto;">
 		<vbox style="border: none; overflow: none; min-height: 80;">
 			<iframe flex="1" id="top" style="overflow: none; min-height: 80;"/>
@@ -178,27 +198,27 @@
 		</vbox>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="holds" style="overflow: none; min-height: 80;">
-			<caption id="hold_caption" label="Captured for Hold"/>
+			<caption id="hold_caption" label="&staff.circ.copy_details.hold_caption;"/>
 			<label id="patron_name" class="patronNameLarge"/>
 			<tree id="hold" flex="1" enableColumnDrag="true"/>
 			<spacer FIXME="label and tree get swapped without this"/>
 		</groupbox>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="transits" style="overflow: none; min-height: 80;">
-			<caption id="transit_caption" label="In Transit"/>
+			<caption id="transit_caption" label="&staff.circ.copy_details.transit_caption;"/>
 			<tree id="transit" flex="1" enableColumnDrag="true"/>
 		</groupbox>
 		<splitter><grippy/></splitter>
 		<groupbox flex="1" id="circs" style="overflow: none; min-height: 80;">
-			<caption id="circ_caption" label="Last/Current Circulation" style="font-weight: bold"/>
+			<caption id="circ_caption" label="&staff.circ.copy_details.circ_caption;" style="font-weight: bold"/>
 			<iframe id="circ" style="min-height: 80" flex="1"/>
 		</groupbox>
 	</vbox>
 	<hbox>
-		<button id="r_last" label="Retrieve Last Patron" accesskey="L" oncommand="retrieve_last_patron();"/>
-		<button id="r_hold" label="Retrieve Hold Patron" accesskey="H" oncommand="retrieve_hold_patron();"/>
+		<button id="r_last" label="&staff.circ.copy_details.r_last.label;" accesskey="&staff.circ.copy_details.r_last.accesskey;" oncommand="retrieve_last_patron();"/>
+		<button id="r_hold" label="&staff.circ.copy_details.r_hold.label;" accesskey="&staff.circ.copy_details.r_hold.accesskey;" oncommand="retrieve_hold_patron();"/>
 		<spacer flex="1"/>
-		<button id="done" label="Done" accesskey="D" oncommand="window.close();"/>
+		<button id="done" label="&staff.circ.copy_details.done.label;" accesskey="&staff.circ.copy_details.done.accesskey;" oncommand="window.close();"/>
 	</hbox>
 
 </window>

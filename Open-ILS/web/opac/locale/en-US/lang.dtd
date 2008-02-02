@@ -1503,3 +1503,19 @@
 <!ENTITY staff.circ.circ_brief.renewal.label "Renewal">
 <!ENTITY staff.circ.circ_brief.stop_fines.label "Stop Fines Reason">
 <!ENTITY staff.circ.circ_brief.checkin_lib.label "Check In Library">
+<!ENTITY staff.circ.circ_summary.caption "Last Few Circulations">
+<!ENTITY staff.circ.circ_summary.retrieve_last.label "Retrieve Last Patron">
+<!ENTITY staff.circ.circ_summary.retrieve_last.accesskey "L">
+<!ENTITY staff.circ.circ_summary.retrieve_all.label "Retrieve All These Patrons">
+<!ENTITY staff.circ.circ_summary.retrieve_all.accesskey "A">
+<!ENTITY staff.circ.circ_summary.done.label "Done">
+<!ENTITY staff.circ.circ_summary.done.accesskey "D">
+<!ENTITY staff.circ.copy_details.hold_caption "Captured for Hold">
+<!ENTITY staff.circ.copy_details.transit_caption "In Transit">
+<!ENTITY staff.circ.copy_details.circ_caption "Last or Current Circulation">
+<!ENTITY staff.circ.copy_details.r_last.label "Retrieve Last Patron">
+<!ENTITY staff.circ.copy_details.r_last.accesskey "L">
+<!ENTITY staff.circ.copy_details.r_hold.label "Retrieve Hold Patron">
+<!ENTITY staff.circ.copy_details.r_hold.accesskey "H">
+<!ENTITY staff.circ.copy_details.done.label "Done">
+<!ENTITY staff.circ.copy_details.done.accesskey "D">
