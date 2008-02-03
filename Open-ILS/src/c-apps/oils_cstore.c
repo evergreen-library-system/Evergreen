@@ -463,8 +463,6 @@ int beginTransaction ( osrfMethodContext* ctx ) {
 int setSavepoint ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 
-	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
-
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
 		osrfAppSessionStatus(
 			ctx->session,
@@ -475,6 +473,8 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 		);
 		return -1;
 	}
+
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	dbi_result result = dbi_conn_queryf(writehandle, "SAVEPOINT \"%s\";", spName);
 	if (!result) {
@@ -486,19 +486,19 @@ int setSavepoint ( osrfMethodContext* ctx ) {
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error creating savepoint" );
+		free(spName);
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
 	}
+	free(spName);
 	return 0;
 }
 
 int releaseSavepoint ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
-
-	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
 		osrfAppSessionStatus(
@@ -510,6 +510,8 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 		);
 		return -1;
 	}
+
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	dbi_result result = dbi_conn_queryf(writehandle, "RELEASE SAVEPOINT \"%s\";", spName);
 	if (!result) {
@@ -521,19 +523,19 @@ int releaseSavepoint ( osrfMethodContext* ctx ) {
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error releasing savepoint" );
+		free(spName);
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
 	}
+	free(spName);
 	return 0;
 }
 
 int rollbackSavepoint ( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
-
-	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
 
 	if (!osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )) {
 		osrfAppSessionStatus(
@@ -546,6 +548,8 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
+	char* spName = jsonObjectToSimpleString(jsonObjectGetIndex(ctx->params, 0));
+
 	dbi_result result = dbi_conn_queryf(writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName);
 	if (!result) {
 		osrfLogError(
@@ -556,12 +560,14 @@ int rollbackSavepoint ( osrfMethodContext* ctx ) {
 			osrfHashGet( (osrfHash*)ctx->session->userData, "xact_id" )
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR, "osrfMethodException", ctx->request, "Error rolling back savepoint" );
+		free(spName);
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject(spName);
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree(ret);
 	}
+	free(spName);
 	return 0;
 }
 
@@ -922,10 +928,18 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 			id = buffer_release(_id);
 		}
 
-		if (	!options
-			|| !jsonObjectGetKeyConst( options, "quiet")
-			|| strcmp( jsonObjectToSimpleString(jsonObjectGetKeyConst( options, "quiet")), "true" )
-		) {
+		// Find quietness specification, if present
+		char* quiet_str = NULL;
+		if ( options ) {
+			const jsonObject* quiet_obj = jsonObjectGetKeyConst( options, "quiet" );
+			if( quiet_obj )
+				quiet_str = jsonObjectToSimpleString( quiet_obj );
+		}
+
+		if( quiet_str && !strcmp( quiet_str, "true" )) {  // if quietness is specified
+			obj = jsonNewObject(id);
+		}
+		else {
 
 			jsonObject* fake_params = jsonParseString("[]");
 			jsonObjectPush(fake_params, jsonParseString("{}"));
@@ -947,11 +961,9 @@ static jsonObject* doCreate(osrfMethodContext* ctx, int* err ) {
 
 			jsonObjectFree( list );
 			jsonObjectFree( fake_params );
-
-		} else {
-			obj = jsonNewObject(id);
 		}
 
+		if(quiet_str) free(quiet_str);
 		free(id);
 	}
 
@@ -988,6 +1000,8 @@ static jsonObject* doRetrieve(osrfMethodContext* ctx, int* err ) {
 		jsonParseString(id)
 	);
 
+	free(id);
+
 	if (order_hash) jsonObjectPush(fake_params, jsonObjectClone(order_hash) );
 
 	jsonObject* list = doFieldmapperSearch( ctx,meta, fake_params, err);
@@ -1010,11 +1024,19 @@ static char* jsonNumberToDBString ( osrfHash* field, const jsonObject* value ) {
 
 	if ( !strncmp(osrfHashGet(field, "datatype"), "INT", (size_t)3) ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%ld", (long)jsonObjectGetNumber(value) );
-		else buffer_fadd( val_buf, "%ld", atol(jsonObjectToSimpleString(value)) );
+		else {
+			char* val_str = jsonObjectToSimpleString(value);
+			buffer_fadd( val_buf, "%ld", atol(val_str) );
+			free(val_str);
+		}
 
 	} else if ( !strcmp(osrfHashGet(field, "datatype"), "NUMERIC") ) {
 		if (value->type == JSON_NUMBER) buffer_fadd( val_buf, "%f",  jsonObjectGetNumber(value) );
-		else buffer_fadd( val_buf, "%f", atof(jsonObjectToSimpleString(value)) );
+		else {
+			char* val_str = jsonObjectToSimpleString(value);
+			buffer_fadd( val_buf, "%f", atof(val_str) );
+			free(val_str);
+		}
 	}
 
 	return buffer_release(val_buf);
@@ -1160,10 +1182,12 @@ static char* searchFieldTransform (const char* class, osrfHash* field, const jso
         		} else {
 	        		osrfLogError(OSRF_LOG_MARK, "%s: Error quoting key string [%s]", MODULENAME, val);
 		    	    free(field_transform);
+					free(val);
         			buffer_free(sql_buf);
 	        		return NULL;
     	    	}
-    	    }
+				free(val);
+			}
 
         }
 
@@ -1414,14 +1438,8 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 
 		char* class = osrfHashGet(idlClass, "classname");
 
-		char* table = getSourceDefinition(idlClass);
-		char* type = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "type" ) );
-		char* filter_op = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "filter_op" ) );
 		char* fkey = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "fkey" ) );
 		char* field = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "field" ) );
-
-		const jsonObject* filter = jsonObjectGetKeyConst( snode->item, "filter" );
-		const jsonObject* join_filter = jsonObjectGetKeyConst( snode->item, "join" );
 
 		if (field && !fkey) {
 			fkey = (char*)oilsIDLFindPath("/%s/links/%s/key", class, field);
@@ -1435,7 +1453,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					leftclass
 				);
 				buffer_free(join_buf);
-				free(table);
+				free(field);
 				return NULL;
 			}
 			fkey = strdup( fkey );
@@ -1452,7 +1470,7 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
-				free(table);
+				free(fkey);
 				return NULL;
 			}
 			field = strdup( field );
@@ -1499,12 +1517,12 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 					class
 				);
 				buffer_free(join_buf);
-				free(table);
 				return NULL;
 			}
 
 		}
 
+		char* type = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "type" ) );
 		if (type) {
 			if ( !strcasecmp(type,"left") ) {
 				buffer_add(join_buf, " LEFT JOIN");
@@ -1518,11 +1536,15 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 		} else {
 			buffer_add(join_buf, " INNER JOIN");
 		}
+		free(type);
 
+		char* table = getSourceDefinition(idlClass);
 		buffer_fadd(join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s", table, class, class, field, leftclass, fkey);
 		free(table);
 
+		const jsonObject* filter = jsonObjectGetKeyConst( snode->item, "filter" );
 		if (filter) {
+			char* filter_op = jsonObjectToSimpleString( jsonObjectGetKeyConst( snode->item, "filter_op" ) );
 			if (filter_op) {
 				if (!strcasecmp("or",filter_op)) {
 					buffer_add( join_buf, " OR " );
@@ -1536,18 +1558,18 @@ static char* searchJOIN ( const jsonObject* join_hash, osrfHash* leftmeta ) {
 			char* jpred = searchWHERE( filter, idlClass, AND_OP_JOIN );
 			buffer_fadd( join_buf, " %s", jpred );
 			free(jpred);
+			free(filter_op);
 		}
 
 		buffer_add(join_buf, " ) ");
 		
+		const jsonObject* join_filter = jsonObjectGetKeyConst( snode->item, "join" );
 		if (join_filter) {
 			char* jpred = searchJOIN( join_filter, idlClass );
 			buffer_fadd( join_buf, " %s", jpred );
 			free(jpred);
 		}
 
-		free(type);
-		free(filter_op);
 		free(fkey);
 		free(field);
 	}
@@ -2227,7 +2249,9 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 		jsonObjectIterator* select_itr = jsonNewObjectIterator( snode->item );
 		while ( (node = jsonObjectIteratorNext( select_itr )) ) {
-			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), jsonObjectToSimpleString(node->item) );
+			char* item_str = jsonObjectToSimpleString(node->item);
+			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), item_str );
+			free(item_str);
 			char* fname = osrfHashGet(field, "name");
 
 			if (!field) continue;
@@ -2546,6 +2570,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 				char* pkey_val = jsonObjectToSimpleString( jsonObjectGetIndex( obj, pkey_pos ) );
 				if ( osrfHashGet( dedup, pkey_val ) ) {
 					jsonObjectFree(obj);
+					free(pkey_val);
 				} else {
 					osrfHashSet( dedup, pkey_val, pkey_val );
 					jsonObjectPush(res_list, obj);
