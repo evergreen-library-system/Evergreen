@@ -1,7 +1,6 @@
 import osrf.ses
 import oils.event, oils.const
 
-
 class OrgUtil(object):
     ''' Collection of general purpose org_unit utility functions '''
 
