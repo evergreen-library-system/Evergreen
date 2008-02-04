@@ -282,16 +282,16 @@ class CircMatrixMatchpoint(models.Model):
         list_filter = ['grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id','marc_vr_format_id']
     class Meta:
         db_table = 'circ_matrix_matchpoint'
-        ordering = ['name']
+        ordering = ['org_unit_id', 'grp_id']
         verbose_name = _('Circulation Matrix Matchpoint')
     def __str__(self):
         return _("OrgUnit: %s, Group: %s, Circ Modifier: %s") % (self.org_unit_id, self.grp_id, self.circ_modifier_id)
 
-class CircMatrixTest(models.Model)
+class CircMatrixTest(models.Model):
     matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint')
     max_items_out = models.IntegerField()
     max_overdue = models.IntegerField()
-    max_fines = FloatField(max_digits=8, decimal_places=2)
+    max_fines = models.FloatField(max_digits=8, decimal_places=2)
     script_test = models.CharField(maxlength=CHAR_MAXLEN);
     class Admin:
         list_display = ('matchpoint_id','max_items_out','max_overdue','max_fines','script_test')
@@ -302,7 +302,7 @@ class CircMatrixTest(models.Model)
     def __str__(self):
         return self.matchpoint_id + _(", Max Items Out: %s, Max Overdue: %s, Max Fines: %s") % (self.max_items_out, self.max_overdue, self.max_fines)
 
-class CircMatrixCircModTest(models.Model)
+class CircMatrixCircModTest(models.Model):
     matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint')
     items_out = models.IntegerField()
     circ_mod_id = models.ForeignKey(CircModifier, db_column='circ_mod')
@@ -311,22 +311,22 @@ class CircMatrixCircModTest(models.Model)
         list_display = ('matchpoint_id','circ_mod_id','items_out')
     class Meta:
         db_table = 'circ_matrix_circ_mod_test'
-        ordering = ['name']
+        ordering = ['matchpoint_id']
         verbose_name = _('Circ Matrix Items Out Cirulation Modifier Subtest')
     def __str__(self):
         return self.matchpoint_id + _(", Restrict: ") + self.circ_mod_id
 
-class CircMatrixRuleSet(models.Model)
+class CircMatrixRuleSet(models.Model):
     matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint')
     duration_rule_id = models.ForeignKey(RuleCircDuration, db_column='duration_rule')
-    recurring_fine_rule_id = models.ForeignKey(RuleRecurringFine, db_column='recurring_fine_rule')
-    max_fine_rule_id = models.ForeignKey(RuleMaxFine, db_column='max_fine_rule')
+    recurring_fine_rule_id = models.ForeignKey('RuleRecurringFine', db_column='recurring_fine_rule')
+    max_fine_rule_id = models.ForeignKey('RuleMaxFine', db_column='max_fine_rule')
     class Admin:
         search_fields = ['matchoint_id']
         list_display = ('matchpoint_id','duration_rule_id','recurring_fine_rule_id','max_fine_rule_id')
     class Meta:
         db_table = 'circ_matrix_circ_mod_test'
-        ordering = ['name']
+        ordering = ['matchpoint_id']
         verbose_name = _('Circ Matrix Items Out Cirulation Modifier Subtest')
     def __str__(self):
         return self.matchpoint_id + _(", Restrict: ") + self.circ_mod_id
