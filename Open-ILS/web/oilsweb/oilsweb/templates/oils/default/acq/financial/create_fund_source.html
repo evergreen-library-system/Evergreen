@@ -1,27 +1,30 @@
 # -*- coding: utf-8 -*-
+<!-- vim:set filetype=mako: -->
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget'/>
-<%def name="page_title()">${_('Evergreen Create Fund')}</%def>
+<%def name="page_title()">${_('Create Fund Source')}</%def>
 <%def name="block_content()">
 
 <form action='${c.oils.acq.prefix}/fund_source/create' method='POST'>
     <table class='oils-admin-table'>
         <tbody>
             <tr>
-                <td class='oils-admin-label'>${_('Fund Name')}</td>
+                <td class='oils-admin-label'>${_('Fund Source Name')}</td>
                 <td> 
                     <input type='text' size='42' name='${c.oils.acq.fund_source_name_.cgi_name}'/>
                 </td>
             </tr>
             <tr>
-                <td class='oils-admin-label'>${_('Fund Onwer')}</td>
+                <td class='oils-admin-label'>${_('Fund Source Onwer')}</td>
                 <td> 
-                    ${widget.org_select(c.oils.acq.fund_source_owner_.cgi_name)}
-                    <b>* ADD PERM FILTER HERE *</b>
+                    ${widget.org_select(
+                        c.oils.acq.fund_source_owner_.cgi_name, 
+                        c.oils.core.perm_tree['CREATE_FUNDING_SOURCE'], c.oils.core.workstation.id(),
+                        c.oils.util.get_min_org_depth(c.oils.core.perm_orgs['CREATE_FUNDING_SOURCE']))}
                 </td>
             </tr>
             <tr>
-                <td class='oils-admin-label'>${_('Fund Currency Type')}</td>
+                <td class='oils-admin-label'>${_('Fund Source Currency Type')}</td>
                 <td> 
                     <select name='${c.oils.acq.fund_source_currency_type_.cgi_name}'>
                         % for type in c.oils.acq.currency_types:
@@ -32,7 +35,7 @@
             </tr>
             <tr>
                 <td colspan='2'>
-                    <input type='submit' value='${_("Create Fund")}'/>
+                    <input type='submit' value='${_("Create Fund Source")}'/>
                 </td>
             </tr>
         </tbody>

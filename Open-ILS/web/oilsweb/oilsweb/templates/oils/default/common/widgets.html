@@ -4,11 +4,14 @@
     Define some common widgets 
 -->
 
-<%def name='org_draw_node(node, indent=0, selected=None)'>
+<%def name='org_draw_node(node, indent=0, selected=None, disable_depth=-1)'>
     <option value='${node.id()}'
     % if selected == node.id():
         selected='selected'
-    %endif
+    % endif
+    % if c.oils.util.get_org_type(node).depth() < disable_depth:
+        disabled='disabled'
+    % endif
     >
         % for i in range(indent):
             &#160;&#160;
@@ -22,7 +25,7 @@
         
 </%def>
 
-<%def name='org_select(select_name, tree=None, selected=None)'>
+<%def name='org_select(select_name, tree=None, selected=None, disable_depth=-1)'>
     <!-- Draws a select dropdown of the org tree provided
         with indentation based on org depth -->
     <%
@@ -30,6 +33,6 @@
             tree = c.oils.core.org_tree
     %>
     <select name='${select_name}'>
-        ${org_draw_node(tree, 0, selected)}
+        ${org_draw_node(tree, 0, selected, disable_depth)}
     </select>
 </%def>

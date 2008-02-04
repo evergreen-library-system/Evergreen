@@ -28,6 +28,12 @@ class CoreContext(SubContext):
         self.org_tree = ContextItem() # full org tree
         self.page = ContextItem() # the current page
 
+        # place to store perm org sets
+        self.perm_orgs = ContextItem(default_value={})
+
+        # place to store slim perm org trees
+        self.perm_tree = ContextItem(default_value={})
+
     def postinit(self):
         self.prefix = pylons.config['oils_prefix']
         self.media_prefix = pylons.config['oils_media_prefix']
@@ -65,6 +71,17 @@ class CoreContext(SubContext):
                 'open-ils.auth', 
                 'open-ils.auth.session.retrieve', self.authtoken)
 
+            evt = oils.event.Event.parse_event(self.user)
+            if evt and evt.text_code == 'NO_SESSION':
+                # our authtoken has timed out.  If we have the ability 
+                # to loin, go ahead and try
+                self.doLogin()
+                self.user = osrf.ses.ClientSession.atomic_request(
+                    'open-ils.auth', 
+                    'open-ils.auth.session.retrieve', self.authtoken)
+                oils.event.Event.parse_and_raise(self.user)
+
+
             if not self.user:
                 raise AuthException(_('No user found with authtoken %(self.authtoken)s'))
             self.workstation = oils.utils.csedit.CSEditor().retrieve_actor_workstation(self.user.wsid())
@@ -90,6 +107,9 @@ class UtilContext(SubContext):
     def __init__(self):
         import oilsweb.lib.bib
         self.scrub_isbn = ContextItem(default_value=oilsweb.lib.bib.scrub_isbn)
+        self.get_org_type = ContextItem(default_value=oils.org.OrgUtil.get_org_type)
+        self.get_min_org_depth = ContextItem(default_value=oils.org.OrgUtil.get_min_depth)
 
 Context.applySubContext('util', UtilContext)
+
 

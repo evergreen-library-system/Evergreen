@@ -38,7 +38,19 @@ class FundSourceController(BaseController):
             source_id = fund_mgr.create_fund_source(source)
             return redirect_to(controller='acq/fund_source', action='view', id=source_id)
 
-        r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
+        perm_orgs = osrf.ses.ClientSession.atomic_request(
+            'open-ils.actor',
+            'open-ils.actor.user.work_perm.highest_org_set',
+            r.ctx.core.authtoken, 'CREATE_FUNDING_SOURCE');
+
+        if len(perm_orgs) == 0:
+            return _("Insufficient Permissions") # XXX Return a perm failure template
+
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
+        r.ctx.core.perm_tree['CREATE_FUNDING_SOURCE'] = oils.org.OrgUtil.get_union_tree(perm_orgs)
+        r.ctx.core.perm_orgs['CREATE_FUNDING_SOURCE'] = perm_orgs
+        r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
         return r.render('acq/financial/create_fund_source.html')
+
+
 
