@@ -105,11 +105,14 @@ class OrgUtil(object):
             main_node = main_tree
 
             while node.id() == main_node.id():
-                node = node.children()[0]
-                main_node = main_node.children()[0]
+                child = node.children()[0]
+                main_child_node = main_node.children()[0]
+                child.parent_ou(node)
+                main_child_node.parent_ou(main_node)
+                node = child
+                main_node = main_child_node
 
-            print main_node.id()
-            OrgUtil.get_org_unit(main_node.parent_ou()).children().append(node)
+            main_node.parent_ou().children().append(node)
 
         return main_tree
 
@@ -127,14 +130,14 @@ class OrgUtil(object):
         return orglist
 
     @staticmethod
-    def debug_org(org_unit, indent=0):
+    def debug_tree(org_unit, indent=0):
         ''' Simple function to print the tree of orgs provided '''
         import sys
         for i in range(indent):
-            sys.stdout.write('-')
-        print org_unit.shortname()
+            sys.stdout.write('_')
+        print '%s id=%s depth=%s' % (org_unit.shortname(), str(org_unit.id()), str(OrgUtil.get_org_type(org_unit).depth()))
         indent += 1
         for child in org_unit.children():
-            OrgUtil.debug_org(child, indent)
+            OrgUtil.debug_tree(child, indent)
         
 
