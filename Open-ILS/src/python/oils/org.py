@@ -1,5 +1,6 @@
 import osrf.ses
 import oils.event, oils.const
+import sys
 
 class OrgUtil(object):
     ''' Collection of general purpose org_unit utility functions '''
@@ -34,7 +35,7 @@ class OrgUtil(object):
         ''' Creates links from an ID-based hash to the org units in the org tree '''
         if not node:
             node = OrgUtil._org_tree
-        OrgUtil._flat_org_tree[node.id()] = node
+        OrgUtil._flat_org_tree[int(node.id())] = node
         for child in node.children():
             OrgUtil.flatten_org_tree(child)
 
@@ -43,7 +44,7 @@ class OrgUtil(object):
         OrgUtil._verify_tree()
         if isinstance(org_id, osrf.net_obj.NetworkObject):
             return org_id
-        return OrgUtil._flat_org_tree[org_id]
+        return OrgUtil._flat_org_tree[int(org_id)]
         
 
     @staticmethod
@@ -140,7 +141,6 @@ class OrgUtil(object):
     @staticmethod
     def debug_tree(org_unit, indent=0):
         ''' Simple function to print the tree of orgs provided '''
-        import sys
         for i in range(indent):
             sys.stdout.write('_')
         print '%s id=%s depth=%s' % (org_unit.shortname(), str(org_unit.id()), str(OrgUtil.get_org_type(org_unit).depth()))
