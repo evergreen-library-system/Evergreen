@@ -246,7 +246,7 @@ JSAN._createScript = function (js, pkg) {
     try {
         return JSAN._makeNamespace(js, pkg);
     } catch (e) {
-        JSAN._handleError("Could not create namespace[" + pkg + "]: " + e);
+        JSAN._handleError(document.getElementById('offlineStrings').getFormattedString('jsan.namespace.creation.error', [pkg, e]));
     }
     return null;
 }
@@ -276,11 +276,11 @@ JSAN.Request.prototype = {
             if (this._req.status == 200 || this._req.status == 0)
                 return this._req.responseText;
         } catch (e) {
-            JSAN._handleError("File not found: " + url);
+            JSAN._handleError(document.getElementById('offlineStrings').getFormattedString('jsan.file_not_found.error', [url]));
             return null;
         };
 
-        JSAN._handleError("File not found: " + url);
+        JSAN._handleError(document.getElementById('offlineStrings').getFormattedString('jsan.file_not_found.error', [url]));
         return null;
     }
 };
