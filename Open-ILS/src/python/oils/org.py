@@ -100,6 +100,7 @@ class OrgUtil(object):
     def get_union_tree(org_list):
         ''' Returns the smallest org tree which encompases all of the orgs in org_list '''
 
+        OrgUtil._verify_tree()
         if len(org_list) == 0:
             return None
         main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_list[0]))
