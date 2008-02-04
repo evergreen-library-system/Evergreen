@@ -115,38 +115,27 @@ __PACKAGE__->register_method(
         desc => 'Retrieves all the funding_sources associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Org Unit ID', type => 'number'},
-            {desc => 'Hash or options, including "descendants",
-                includes funding_sources for descendant orgs in addition to the requested org;
-                "ancestor", includes ancestor org funding_sources; 
-                "full_path", includes orgs for ancestors and descendants', 
-            type => 'hash'},
+            {desc => 'Org Unit ID.  If no ID is provided, this method returns the 
+                full set of funding sources this user has permission to view', type => 'number'},
         ],
         return => {desc => 'The funding_source objects on success, Event on failure'}
     }
 );
 
 sub retrieve_org_funding_sources {
-    my($self, $conn, $auth, $org_id, $options) = @_;
+    my($self, $conn, $auth, $org_id) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_FUNDING_SOURCE', $org_id);
 
-    my $orglist = [$org_id];
-    if($$options{full_path}) {
-        $orglist = org_descendants($org_id);
-        push(@$orglist, @{org_ancestors($org_id)});
-    } else {
-        $orglist = org_descendants($org_id) if $$options{descendants};
-        $orglist = org_ancestors($org_id) if $$options{ancestors};
-    }
+    my $org_ids = ($org_id) ? [$org_id] :
+        $U->find_highest_work_orgs($e, 'VIEW_FUNDING_SOURCE');
 
-    my @search_orgs;
-    for my $orgid (@$orglist) {
-        push(@search_orgs, $orgid) if $e->allowed('VIEW_FUNDING_SOURCE', $orgid);
-    }
+    return [] unless @$org_ids;
 
-    my $search = {owner => \@search_orgs};
+    my @orglist;
+    push(@orglist, @{org_descendants($_)}) for @$org_ids;
+
+    my $search = {owner => \@orglist};
     my $funding_sources = $e->search_acq_funding_source($search) or return $e->event;
     return $funding_sources; 
 }
