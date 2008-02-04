@@ -48,7 +48,7 @@ class FundSourceController(BaseController):
 
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
         r.ctx.core.perm_tree['CREATE_FUNDING_SOURCE'] = oils.org.OrgUtil.get_union_tree(perm_orgs)
-        r.ctx.core.perm_orgs['CREATE_FUNDING_SOURCE'] = perm_orgs
+        r.ctx.core.high_perm_orgs['CREATE_FUNDING_SOURCE'] = perm_orgs
         r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()
         return r.render('acq/financial/create_fund_source.html')
 

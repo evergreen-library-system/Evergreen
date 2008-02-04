@@ -51,9 +51,7 @@ class FundMgr(object):
     def retrieve_org_fund_sources(self):
         sources = self.ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            self.request_mgr.ctx.core.authtoken, 
-            self.request_mgr.ctx.core.workstation.owning_lib(),
-            {"full_path":1}).recv().content()
+            self.request_mgr.ctx.core.authtoken).recv().content()
         oils.event.Event.parse_and_raise(sources)
         return sources
 

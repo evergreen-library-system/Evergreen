@@ -26,8 +26,14 @@
 </%def>
 
 <%def name='org_select(select_name, tree=None, selected=None, disable_depth=-1)'>
-    <!-- Draws a select dropdown of the org tree provided
-        with indentation based on org depth -->
+    <!-- 
+        Draws a select dropdown of the org tree provided with indentation based on org depth.
+        @param select_name The form name for the select object
+        @param tree The org tree to draw
+        @param selected The ID of the org whose <option> to mark as selected
+        @param disable_depth Any orgs in the tree whose depth is less than disable_depth
+            will have their <options>'s disabled with disabled='disabled'
+    -->
     <%
         if tree is None:
             tree = c.oils.core.org_tree
