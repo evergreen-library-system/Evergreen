@@ -1,4 +1,5 @@
 dump('entering main/main.js\n');
+// vim:noet:sw=4:ts=4:
 
 function grant_perms(url) {
 	var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";

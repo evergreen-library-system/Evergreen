@@ -1585,3 +1585,21 @@
 <!ENTITY staff.circ.copy_status_overlay.copy_status_print_export.accesskey "">
 <!ENTITY staff.circ.copy_status_overlay.trim_list.label "Trim List (20 rows)">
 <!ENTITY staff.circ.copy_status_overlay.strict_barcode.label "Strict Barcode">
+<!ENTITY staff.chrome.menu_frame_overlay.tab1.label "Tab 1">
+<!ENTITY staff.chrome.menu_frame_overlay.tab1.accesskey "1">
+<!ENTITY staff.chrome.menu_frame_overlay.tab2.label "Tab 2">
+<!ENTITY staff.chrome.menu_frame_overlay.tab2.accesskey "2">
+<!ENTITY staff.chrome.menu_frame_overlay.tab3.label "Tab 3">
+<!ENTITY staff.chrome.menu_frame_overlay.tab3.accesskey "3">
+<!ENTITY staff.chrome.menu_frame_overlay.tab4.label "Tab 4">
+<!ENTITY staff.chrome.menu_frame_overlay.tab4.accesskey "4">
+<!ENTITY staff.chrome.menu_frame_overlay.tab5.label "Tab 5">
+<!ENTITY staff.chrome.menu_frame_overlay.tab5.accesskey "5">
+<!ENTITY staff.chrome.menu_frame_overlay.tab6.label "Tab 6">
+<!ENTITY staff.chrome.menu_frame_overlay.tab6.accesskey "6">
+<!ENTITY staff.chrome.menu_frame_overlay.tab7.label "Tab 7">
+<!ENTITY staff.chrome.menu_frame_overlay.tab7.accesskey "7">
+<!ENTITY staff.chrome.menu_frame_overlay.tab8.label "Tab 8">
+<!ENTITY staff.chrome.menu_frame_overlay.tab8.accesskey "8">
+<!ENTITY staff.chrome.menu_frame_overlay.tab9.label "Tab 9">
+<!ENTITY staff.chrome.menu_frame_overlay.tab9.accesskey "9">

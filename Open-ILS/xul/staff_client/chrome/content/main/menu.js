@@ -1,4 +1,8 @@
 dump('entering main/menu.js\n');
+// vim:noet:sw=4:ts=4:
+
+var offlineStrings;
+offlineStrings = document.getElementById('offlineStrings');
 
 if (typeof main == 'undefined') main = {};
 main.menu = function () {
@@ -31,7 +35,7 @@ main.menu.prototype = {
 		var cmd_map = {
 			'cmd_broken' : [
 				['oncommand'],
-				function() { alert('Not Yet Implemented'); }
+				function() { alert(offlineStrings.getString('common.unimplemented')); }
 			],
 
 			/* File Menu */
@@ -68,28 +72,28 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':'Copy Buckets'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_copy_buckets.tab')},{});
 				}
 			],
 			'cmd_edit_volume_buckets' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_VOLUME_BUCKETS),{'tab_name':'Volume Buckets'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_VOLUME_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_volume_buckets.tab')},{});
 				}
 			],
 			'cmd_edit_record_buckets' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':'Record Buckets'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_RECORD_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_record_buckets.tab')},{});
 				}
 			],
 			'cmd_edit_user_buckets' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_USER_BUCKETS),{'tab_name':'User Buckets'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_USER_BUCKETS),{'tab_name':offlineStrings.getString('menu.cmd_edit_user_buckets.tab')},{});
 				}
 			],
 
@@ -101,7 +105,7 @@ main.menu.prototype = {
 						JSAN.use('util.network');
 						var network = new util.network();
 
-						var old_bc = window.prompt('Enter original barcode for the item:','','Replace Barcode');
+						var old_bc = window.prompt(offlineStrings.getString('menu.cmd_replace_barcode.prompt'),'',offlineStrings.getString('menu.cmd_replace_barcode.label'));
 						if (!old_bc) return;
 	
 						var copy;
@@ -110,7 +114,7 @@ main.menu.prototype = {
     						if (typeof copy.ilsevent != 'undefined') throw(copy); 
     						if (!copy) throw(copy);
                         } catch(E) {
-                            alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n');
+                            alert(offlineStrings.getFormattedString('menu.cmd_replace_barcode.retrieval.error', [old_bc]) + '\n');
                             return;
                         }
 	
@@ -120,24 +124,24 @@ main.menu.prototype = {
     						if (typeof copy.ilsevent != 'undefined') throw(copy);
     						if (!copy) throw(copy);
                         } catch(E) {
-                            try { alert('We were unable to retrieve an item with barcode "' + old_bc + '".\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc)); } catch(F) { alert(E + '\n' + F); }
+                            try { alert(offlineStrings.getFormattedString('menu.cmd_replace_barcode.retrieval.error', [old_bc]) + '\n' + (typeof E.ilsevent == 'undefined' ? '' : E.textcode + ' : ' + E.desc)); } catch(F) { alert(E + '\n' + F); }
                             return;
                         }
 	
-						var new_bc = window.prompt('Enter the replacement barcode for the copy:','','Replace Barcode');
+						var new_bc = window.prompt(offlineStrings.getString('menu.cmd_replace_barcode.replacement.prompt'),'',offlineStrings.getString('menu.cmd_replace_barcode.replacement.label'));
 						new_bc = String( new_bc ).replace(/\s/g,'');
 						if (!new_bc) {
-							alert('Rename aborted.  Blank for barcode not allowed.');
+							alert(offlineStrings.getString('menu.cmd_replace_barcode.blank.error'));
 							return;
 						}
 	
 						var test = network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ new_bc ]);
 						if (typeof test.ilsevent == 'undefined') {
-    						alert('Rename aborted.  Another copy has barcode "' + new_bc + '".');
+    						alert(offlineStrings.getFormattedString('menu.cmd_replace_barcode.duplicate.error', [new_bc]));
 							return;
 						} else {
 							if (test.ilsevent != 1502 /* ASSET_COPY_NOT_FOUND */) {
-						        obj.error.standard_unexpected_error_alert('Error testing replacement barcode "' + new_bc + '".',test);
+						        obj.error.standard_unexpected_error_alert(offlineStrings.getFormattedString('menu.cmd_replace_barcode.testing.error', [new_bc]),test);
 								return;
 							}	
 						}
@@ -147,14 +151,14 @@ main.menu.prototype = {
 						if (typeof r.ilsevent != 'undefined') { 
                             if (r.ilsevent != 0) {
                                 if (r.ilsevent == 5000 /* PERM_FAILURE */) {
-                                    alert('Renamed aborted.  Insufficient permission.');
+                                    alert(offlineStrings.getString('menu.cmd_replace_barcode.permission.error'));
                                 } else {
-                                    obj.error.standard_unexpected_error_alert('Error renaming item.',r);
+                                    obj.error.standard_unexpected_error_alert(offlineStrings.getString('menu.cmd_replace_barcode.renaming.error'),r);
                                 }
                             }
                         }
 					} catch(E) {
-						obj.error.standard_unexpected_error_alert('Rename did not likely occur.',copy);
+						obj.error.standard_unexpected_error_alert(offlineStrings.getString('menu.cmd_replace_barcode.renaming.failure'),copy);
 					}
 				}
 			],
@@ -172,13 +176,13 @@ main.menu.prototype = {
 				function() {
 					obj.data.stash_retrieve();
 					var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
-					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':'Catalog'}, content_params);
+					obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':offlineStrings.getString('menu.cmd_search_opac.tab')}, content_params);
 				}
 			],
 			'cmd_search_tcn' : [
 				['oncommand'],
 				function() {
-					var tcn = prompt('What is the TCN or accession ID for the record?','','TCN Lookup');
+					var tcn = prompt(offlineStrings.getString('menu.cmd_search_tcn.tab'),'',offlineStrings.getString('menu.cmd_search_tcn.prompt'));
 
 					function spawn_tcn(r) {
 						for (var i = 0; i < r.count; i++) {
@@ -214,9 +218,9 @@ main.menu.prototype = {
 						if (robj.count == 0) {
 							var robj2 = network.simple_request('FM_BRE_ID_SEARCH_VIA_TCN',[tcn,1]);
 							if (robj2.count == 0) {
-								alert('"' + tcn + '" not found');
+								alert(offlineStrings.getFormattedString('menu.cmd_search_tcn.not_found.error', [tcn]));
 							} else {
-								if ( window.confirm('"' + tcn + '" is deleted.  Show deleted record anyway?') ) {
+								if ( window.confirm(offlineStrings.getFormattedString('menu.cmd_search_tcn.deleted.error', [tcn])) ) {
 									spawn_tcn(robj2);
 								}
 							}
@@ -251,7 +255,7 @@ main.menu.prototype = {
 										{}, 
 										{ 
 											'show_print_button' : true , 
-											'tab_name' : 'Editing Related Patron' ,
+											'tab_name' : offline.getString('menu.cmd_patron_register.related.tab'),
 											'passthru_content_params' : {
 												'spawn_search' : function(s) { obj.spawn_search(s); },
 												'spawn_editor' : spawn_editor,
@@ -268,7 +272,7 @@ main.menu.prototype = {
 						{}, 
 						{ 
 							'show_print_button' : true , 
-							'tab_name' : 'Register Patron' ,
+							'tab_name' : offlineStrings.getString('menu.cmd_patron_register.tab'),
 							'passthru_content_params' : {
 								'spawn_search' : function(s) { obj.spawn_search(s); },
 								'spawn_editor' : spawn_editor,
@@ -302,14 +306,14 @@ main.menu.prototype = {
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : 'Hold Browser' },{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER),{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds.tab') },{});
 				}
 			],
 			'cmd_browse_holds_shelf' : [
 				['oncommand'],
 				function() { 
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : 'Holds Shelf' },{});
+					obj.set_tab(obj.url_prefix(urls.XUL_HOLDS_BROWSER)+'?shelf=1',{ 'tab_name' : offlineStrings.getString('menu.cmd_browse_holds_shelf.tab') },{});
 				}
 			],
 			'cmd_circ_hold_pull_list' : [
@@ -319,7 +323,7 @@ main.menu.prototype = {
 					var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(
 						obj.url_prefix(urls.XUL_HOLD_PULL_LIST) + '?ses='+window.escape(ses())
 					);
-					obj.set_tab( loc, {'tab_name':'On Shelf Pull List'}, { 'show_print_button' : true, } );
+					obj.set_tab( loc, {'tab_name' : offlineStrings.getString('menu.cmd_browse_hold_pull_list.tab')}, { 'show_print_button' : true, } );
 				}
 			],
 
@@ -347,7 +351,7 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name':'Local Administration', 'browser' : true }, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_local_admin.tab'), 'browser' : true }, 
 						{ 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 
@@ -371,7 +375,7 @@ main.menu.prototype = {
 				function() {
 					obj.data.stash_retrieve();
 					if (!obj.data.last_patron) {
-						alert('No patron visited yet this session.');
+						alert(offlineStrings.getString('menu.cmd_retrieve_last_patron.session.error'));
 						return;
 					}
 					var url = obj.url_prefix( urls.XUL_PATRON_DISPLAY ); // + '?id=' + window.escape( obj.data.last_patron ) );
@@ -384,7 +388,7 @@ main.menu.prototype = {
 				function() {
 					obj.data.stash_retrieve();
 					if (!obj.data.last_record) {
-						alert('No record visited yet this session.');
+						alert(offlineStrings.getString('menu.cmd_retrieve_last_record.session.error'));
 						return;
 					}
 					var opac_url = obj.url_prefix( urls.opac_rdetail ) + '?r=' + obj.data.last_record;
@@ -395,7 +399,7 @@ main.menu.prototype = {
 					};
 					obj.set_tab(
 						obj.url_prefix(urls.XUL_OPAC_WRAPPER),
-						{'tab_name':'Retrieving title...'},
+						{'tab_name' : offlineStrings.getString('menu.cmd_retrieve_last_record.status')},
 						content_params
 					);
 				}
@@ -439,13 +443,13 @@ main.menu.prototype = {
 							obj.data.stash('session');
 							removeCSSClass(document.getElementById('main_tabbox'),'operator_change');
 						} else {
-							if (network.get_new_session('Change Login',{'url_prefix':obj.url_prefix})) {
+							if (network.get_new_session(offlineStrings.getString('menu.cmd_chg_session.label'),{'url_prefix':obj.url_prefix})) {
 								obj.data.stash_retrieve();
 								obj.data.list.au[1] = JSON2js( temp_au );
 								obj.data.stash('list');
 								obj.data.previous_session = JSON2js( temp_ses );
 								obj.data.stash('previous_session');
-								x.setAttribute('label', 'Change Operator: ' + obj.data.list.au[1].usrname() );
+								x.setAttribute('label', offlineStrings.getFormattedString('menu.cmd_chg_session.operator.label', [obj.data.list.au[1].usrname()]) );
 								addCSSClass(document.getElementById('main_tabbox'),'operator_change');
 							}
 						}
@@ -457,7 +461,7 @@ main.menu.prototype = {
 			'cmd_manage_offline_xacts' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {'tab_name':'Offline Transactions'}, {});
+					obj.set_tab(obj.url_prefix(urls.XUL_OFFLINE_MANAGE_XACTS), {'tab_name' : offlineStrings.getString('menu.cmd_manage_offline_xacts.tab')}, {});
 				}
 			],
 			'cmd_download_patrons' : [
@@ -476,9 +480,9 @@ main.menu.prototype = {
 							file = new util.file('offline_patron_list.date');
 							file.write_content('truncate',new Date());
 							file.close();
-							alert('Download completed');
+							alert(offlineStrings.getString('menu.cmd_download_patrons.complete.status'));
 						} else {
-							alert('There was a problem with the download.  The server returned a status ' + x.status + ' : ' + x.statusText);
+							alert(offlineStrings.getFormattedString('menu.cmd_download_patrons.error', [x.status, x.statusText]));
 						}
 					} catch(E) {
 						obj.error.standard_unexpected_error_alert('cmd_download_patrons',E);
@@ -503,21 +507,21 @@ main.menu.prototype = {
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Stat Cat Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_STAT_CAT_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_stat_cat_edit.tab')},{});
 				}
 			],
 			'cmd_non_cat_type_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Non-Cataloged Type Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_NON_CAT_LABEL_EDIT) + '?ses='+window.escape(ses()), {'tab_name' : offlineStrings.getString('menu.cmd_non_cat_type_edit.tab')},{});
 				}
 			],
 			'cmd_copy_location_edit' : [
 				['oncommand'],
 				function() {
 					obj.data.stash_retrieve();
-					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(ses()),{'tab_name':'Copy Location Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_COPY_LOCATION_EDIT) + '?ses='+window.escape(ses()),{'tab_name' : offlineStrings.getString('menu.cmd_copy_location_edit.tab')},{});
 				}
 			],
 			'cmd_test' : [
@@ -545,25 +549,25 @@ main.menu.prototype = {
 			'cmd_console' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name':'Console'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_CONSOLE),{'tab_name' : offlineStrings.getString('menu.cmd_console.tab')},{});
 				}
 			],
 			'cmd_shell' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{'tab_name':'JS Shell'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_SHELL),{'tab_name' : offlineStrings.getString('menu.cmd_shell.tab')},{});
 				}
 			],
 			'cmd_xuleditor' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{'tab_name':'XUL Editor'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_XULEDITOR),{'tab_name' : offlineStrings.getString('menu.cmd_xuleditor.tab')},{});
 				}
 			],
 			'cmd_fieldmapper' : [
 				['oncommand'],
 				function() {
-					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{'tab_name':'Fieldmapper'},{});
+					obj.set_tab(obj.url_prefix(urls.XUL_DEBUG_FIELDMAPPER),{'tab_name' : offlineStrings.getString('menu.cmd_fieldmapper.tab')},{});
 				}
 			],
 			'cmd_survey_wizard' : [
@@ -581,7 +585,7 @@ main.menu.prototype = {
 					);
 					obj.set_tab( 
 						loc, 
-						{'tab_name':'OPAC', 'browser' : true}, 
+						{'tab_name' : offlineStrings.getString('menu.cmd_public_opac.tab'), 'browser' : true}, 
 						{ 'no_xulG' : true, 'show_nav_buttons' : true, 'show_print_button' : true } 
 					);
 				}
@@ -611,25 +615,25 @@ main.menu.prototype = {
 			'cmd_extension_manager' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name':'Extension Manager'},{});
+					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=extensions',{'tab_name' : offlineStrings.getString('menu.cmd_extension_manager.tab')},{});
 				}
 			],
 			'cmd_theme_manager' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name':'Theme Manager'},{});
+					obj.set_tab('chrome://mozapps/content/extensions/extensions.xul?type=themes',{'tab_name' : offlineStrings.getString('menu.cmd_theme_manager.tab')},{});
 				}
 			],
 			'cmd_about_config' : [
 				['oncommand'],
 				function() {
-					obj.set_tab('chrome://global/content/config.xul',{'tab_name':'about:config'},{});
+					obj.set_tab('chrome://global/content/config.xul',{'tab_name' : 'about:config'},{});
 				}
 			],
 			'cmd_shutdown' : [
 				['oncommand'],
 				function() {
-					if (window.confirm('Exit Evergreen completely?')) {
+					if (window.confirm(offlineStrings.getString('menu.cmd_shutdown.prompt'))) {
 						var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
 						var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
 						var enumerator = windowManagerInterface.getEnumerator(null);
@@ -659,7 +663,7 @@ main.menu.prototype = {
 
 	'spawn_search' : function(s) {
 		var obj = this;
-		obj.error.sdump('D_TRACE', 'Editor would like to search for: ' + js2JSON(s) ); 
+		obj.error.sdump('D_TRACE', offlineStrings.getFormattedString('menu.spawn_search.msg', [js2JSON(s)]) ); 
 		obj.data.stash_retrieve();
 		var loc = obj.url_prefix(urls.XUL_PATRON_DISPLAY);
 		loc += '?doit=1&query=' + window.escape(js2JSON(s));
@@ -704,7 +708,7 @@ main.menu.prototype = {
 			for (var i = 0; i < count; i++) obj.close_tab();
 			setTimeout( function(){ obj.controller.view.tabs.firstChild.focus(); }, 0);
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('Error closing all tabs',E);
+			obj.error.standard_unexpected_error_alert(offlineStrings.getString('menu.close_all_tabs.error'),E);
 		}
 	},
 
@@ -713,7 +717,7 @@ main.menu.prototype = {
 		var tab = this.controller.view.tabs.childNodes[idx];
 		var panel = this.controller.view.panels.childNodes[ idx ];
 		while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-		tab.setAttribute('label','Tab ' + (idx+1));
+		tab.setAttribute('label', offlineStrings.getFormattedString('menu.close_tab.update_tab_label', [(idx+1)]));
 		if (idx == 0) {
 			try {
 				this.controller.view.tabs.advanceSelectedTab(+1);
@@ -790,7 +794,7 @@ main.menu.prototype = {
 		var tab = this.controller.view.tabs.childNodes[ tc ];
 		tab.hidden = false;
 		if (!content_params) content_params = {};
-		if (!params) params = { 'tab_name' : 'Tab ' + (tc+1) };
+		if (!params) params = { 'tab_name' : offlineStrings.getString('menu.new_tab.tab', [(tc+1)]) };
 		if (!params.nofocus) params.focus = true; /* make focus the default */
 		try {
 			if (params.focus) this.controller.view.tabs.selectedIndex = tc;
@@ -863,7 +867,7 @@ main.menu.prototype = {
 			}
 		} catch(E) {
 			this.error.sdump('D_ERROR', 'main.menu:2: ' + E);
-			alert('pause for error');
+			alert(offlineStrings.getString('menu.set_tab.error'));
 		}
 
 		return frame;
