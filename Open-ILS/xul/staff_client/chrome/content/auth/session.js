@@ -83,7 +83,7 @@ auth.session.prototype = {
 
 			} else {
 
-				var error = document.getElementById('authStrings').getStrint('staff.auth.session.init_false') + '\n';
+				var error = document.getElementById('authStrings').getString('staff.auth.session.init_false') + '\n';
 				this.error.sdump('D_ERROR',error);
 				throw(error);
 			}
