@@ -99,8 +99,15 @@ class OrgUtil(object):
     @staticmethod
     def get_union_tree(org_list):
         ''' Returns the smallest org tree which encompases all of the orgs in org_list '''
-        main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_list.pop(0)))
-        for org in org_list:
+
+        if len(org_list) == 0:
+            return None
+        main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_list[0]))
+
+        if len(org_list) == 1:
+            return main_tree
+
+        for org in org_list[1:]:
             node = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org))
             main_node = main_tree
 
