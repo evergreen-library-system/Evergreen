@@ -98,18 +98,18 @@ class OrgUtil(object):
         return root
 
     @staticmethod
-    def get_union_tree(org_list):
-        ''' Returns the smallest org tree which encompases all of the orgs in org_list '''
+    def get_union_tree(org_id_list):
+        ''' Returns the smallest org tree which encompases all of the orgs in org_id_list '''
 
         OrgUtil._verify_tree()
-        if len(org_list) == 0:
+        if len(org_id_list) == 0:
             return None
-        main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_list[0]))
+        main_tree = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org_id_list[0]))
 
-        if len(org_list) == 1:
+        if len(org_id_list) == 1:
             return main_tree
 
-        for org in org_list[1:]:
+        for org in org_id_list[1:]:
             node = OrgUtil.get_related_tree(OrgUtil.get_org_unit(org))
             main_node = main_tree
 
@@ -137,6 +137,18 @@ class OrgUtil(object):
                 flatten(child)
         flatten(tree)
         return orglist
+
+    @staticmethod
+    def get_min_depth(org_id_list):
+        ''' Returns the minimun depth (highest tree position) of all orgs in the list '''
+        depth = None
+        for org in org_id_list:
+            new_depth = OrgUtil.get_org_type(OrgUtil.get_org_unit(org)).depth()
+            if depth is None:
+                depth = new_depth
+            elif new_depth < depth:
+                depth = new_depth
+        return depth
 
     @staticmethod
     def debug_tree(org_unit, indent=0):
