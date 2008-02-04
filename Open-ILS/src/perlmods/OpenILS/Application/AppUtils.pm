@@ -189,7 +189,9 @@ my $orglist					= undef;
 my $org_typelist			= undef;
 my $org_typelist_hash	= {};
 
-sub get_org_tree {
+sub __get_org_tree {
+	
+	# can we throw this version away??
 
 	my $self = shift;
 	if($tree) { return $tree; }
@@ -1270,6 +1272,127 @@ sub epoch2ISO8601 {
     return $date;
 }
 			
-	
+sub find_highest_perm_org {
+	my ( $self, $perm, $userid, $start_org, $org_tree ) = @_;
+	my $org = $self->find_org($org_tree, $start_org );
+
+	my $lastid = -1;
+	while( $org ) {
+		last if ($self->check_perms( $userid, $org->id, $perm )); # perm failed
+		$lastid = $org->id;
+		$org = $self->find_org( $org_tree, $org->parent_ou() );
+	}
+
+	return $lastid;
+}
+
+
+sub find_highest_work_orgs {
+    my($self, $e, $perm) = @_;
+    my $work_orgs = $self->get_user_work_ou_ids($e, $e->requestor->id);
+    $logger->debug("found work orgs @$work_orgs");
+
+    my @allowed_orgs;
+	my $org_tree = $self->get_org_tree();
+    my $org_types = $self->get_org_types();
+
+    # use the first work org to determine the highest depth at which 
+    # the user has the requested permission
+    my $first_org = shift @$work_orgs;
+    my $high_org_id = $self->find_highest_perm_org($perm, $e->requestor->id, $first_org, $org_tree);
+    $logger->debug("found highest work org $high_org_id");
+
+    
+    return [] if $high_org_id == -1; # not allowed anywhere
+    push(@allowed_orgs, $high_org_id);
+    my $high_org = $self->find_org($org_tree, $high_org_id);
+
+    my ($high_org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
+    return [$high_org_id] if $high_org_type->depth == 0;
+
+    # now that we have the highest depth, find the org in the tree relative to 
+    # each work org at that depth. 
+    my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
+    my $org_depth = $org_type->depth;
+    for my $org (@$work_orgs) {
+        $logger->debug("work org looking at $org");
+
+        # retrieve sorted list of ancestors and descendants for this work_ou
+        my $org_list = $e->json_query({
+            select => {
+                aou => [{
+                    transform => 'actor.org_unit_full_path',
+                    column => 'id',
+                    result_field => 'id',
+                    params => [$org_depth]
+                }]
+            },
+            from => 'aou',
+            where => {id=>$org}
+        });
+
+        # go through the list until we find the org at the correct depth
+        my @org_list;
+        push(@org_list, $_->{id}) for @$org_list;
+        for my $sub_org (@org_list) {
+            $logger->debug("work org looking at sub-org $sub_org");
+            my $org_unit = $self->find_org($org_tree, $sub_org);
+            my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
+            if($ou_type->depth >= $org_depth) {
+                push(@allowed_orgs, $sub_org);
+                last;
+            }
+        }
+    }
+
+    my %de_dupe;
+    $de_dupe{$_} = 1 for @allowed_orgs;
+    return [keys %de_dupe];
+}
+
+
+sub get_user_work_ou_ids {
+    my($self, $e, $userid) = @_;
+    my $work_orgs = $e->json_query({
+        select => {puwoum => ['work_ou']},
+        from => 'puwoum',
+        where => {usr => $e->requestor->id}});
+
+    return [] unless @$work_orgs;
+    my @work_orgs;
+    push(@work_orgs, $_->{work_ou}) for @$work_orgs;
+
+    return \@work_orgs;
+}
+
+
+my $org_types;
+sub get_org_types {
+	my($self, $client) = @_;
+	return $org_types if $org_types;
+	return $org_types = OpenILS::Utils::CStoreEditor->new->retrieve_all_actor_org_unit_type();
+}
+
+sub get_org_tree {
+	my $cache = OpenSRF::Utils::Cache->new("global", 0);
+	my $tree = $cache->get_cache('orgtree');
+	return $tree if $tree;
+
+	$tree = OpenILS::Utils::CStoreEditor->new->search_actor_org_unit( 
+		[
+			{"parent_ou" => undef },
+			{
+				flesh				=> -1,
+				flesh_fields	=> { aou =>  ['children'] },
+				order_by			=> { aou => 'name'}
+			}
+		]
+	)->[0];
+
+	$cache->put_cache('orgtree', $tree);
+	return $tree;
+}
+
+
 1;
 

@@ -966,11 +966,8 @@ __PACKAGE__->register_method(
 	method	=> "get_org_types",
 	api_name	=> "open-ils.actor.org_types.retrieve",);
 
-my $org_types;
 sub get_org_types {
-	my($self, $client) = @_;
-	return $org_types if $org_types;
-	return $org_types = new_editor()->retrieve_all_actor_org_unit_type();
+    return $U->get_org_types();
 }
 
 
@@ -1035,24 +1032,7 @@ __PACKAGE__->register_method(
 
 sub get_org_tree {
 	my( $self, $client) = @_;
-
-	$cache	= OpenSRF::Utils::Cache->new("global", 0) unless $cache;
-	my $tree = $cache->get_cache('orgtree');
-	return $tree if $tree;
-
-	$tree = new_editor()->search_actor_org_unit( 
-		[
-			{"parent_ou" => undef },
-			{
-				flesh				=> -1,
-				flesh_fields	=> { aou =>  ['children'] },
-				order_by			=> { aou => 'name'}
-			}
-		]
-	)->[0];
-
-	$cache->put_cache('orgtree', $tree);
-	return $tree;
+    return $U->get_org_tree();
 }
 
 
@@ -1166,83 +1146,6 @@ sub patron_adv_search {
             $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_depth);
 }
 
-
-
-=head old
-sub _verify_password {
-	my($user_session, $password) = @_;
-	my $user_obj = $apputils->check_user_session($user_session); 
-
-	#grab the user with password
-	$user_obj = $apputils->simple_scalar_request(
-		"open-ils.cstore", 
-		"open-ils.cstore.direct.actor.user.retrieve",
-		$user_obj->id );
-
-	if($user_obj->passwd eq $password) {
-		return 1;
-	}
-
-	return 0;
-}
-
-
-__PACKAGE__->register_method(
-	method	=> "update_password",
-	api_name	=> "open-ils.actor.user.password.update");
-
-__PACKAGE__->register_method(
-	method	=> "update_password",
-	api_name	=> "open-ils.actor.user.username.update");
-
-__PACKAGE__->register_method(
-	method	=> "update_password",
-	api_name	=> "open-ils.actor.user.email.update");
-
-sub update_password {
-	my( $self, $client, $user_session, $new_value, $current_password ) = @_;
-
-	my $evt;
-
-	my $session = $apputils->start_db_session();
-	my $user_obj = $apputils->check_user_session($user_session); 
-
-    #fetch the in-database version so we get the latest xact_id
-    $user_obj = $session->request(
-        'open-ils.storage.direct.actor.user.retrieve', $user_obj->id)->gather(1);
-
-	if($self->api_name =~ /password/o) {
-
-		#make sure they know the current password
-		if(!_verify_password($user_session, md5_hex($current_password))) {
-			return OpenILS::Event->new('INCORRECT_PASSWORD');
-		}
-
-		$logger->debug("update_password setting new password $new_value");
-		$user_obj->passwd($new_value);
-
-	} elsif($self->api_name =~ /username/o) {
-		my $users = search_username(undef, undef, $new_value); 
-		if( $users and $users->[0] ) {
-			return OpenILS::Event->new('USERNAME_EXISTS');
-		}
-		$user_obj->usrname($new_value);
-
-	} elsif($self->api_name =~ /email/o) {
-		#warn "Updating email to $new_value\n";
-		$user_obj->email($new_value);
-	}
-
-
-	( $user_obj, $evt ) = _update_patron($session, $user_obj, $user_obj, 1);
-	return $evt if $evt;
-
-	$apputils->commit_db_session($session);
-
-	if($user_obj) { return 1; }
-	return undef;
-}
-=cut
 
 __PACKAGE__->register_method(
 	method	=> "update_passwd",
@@ -1435,70 +1338,8 @@ sub check_user_work_perms {
     my($self, $conn, $auth, $perm) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-
-    my $work_orgs = _get_user_work_ou_ids($e, $e->requestor->id);
-
-    $logger->debug("found work orgs @$work_orgs");
-
-    my @allowed_orgs;
-	my $org_tree = get_org_tree();
-    my $org_types = get_org_types();
-
-    # use the first work org to determine the highest depth at which 
-    # the user has the requested permission
-    my $first_org = shift @$work_orgs;
-    my $high_org_id = _find_highest_perm_org($perm, $e->requestor->id, $first_org, $org_tree);
-    $logger->debug("found highest work org $high_org_id");
-
-    
-    return [] if $high_org_id == -1; # not allowed anywhere
-    push(@allowed_orgs, $high_org_id);
-    my $high_org = $apputils->find_org($org_tree, $high_org_id);
-
-    my ($high_org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
-    return [$high_org_id] if $high_org_type->depth == 0;
-
-    # now that we have the highest depth, find the org in the tree relative to 
-    # each work org at that depth. 
-    my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
-    my $org_depth = $org_type->depth;
-    for my $org (@$work_orgs) {
-        $logger->debug("work org looking at $org");
-
-        # retrieve sorted list of ancestors and descendants for this work_ou
-        my $org_list = $e->json_query({
-            select => {
-                aou => [{
-                    transform => 'actor.org_unit_full_path',
-                    column => 'id',
-                    result_field => 'id',
-                    params => [$org_depth]
-                }]
-            },
-            from => 'aou',
-            where => {id=>$org}
-        });
-
-        # go through the list until we find the org at the correct depth
-        my @org_list;
-        push(@org_list, $_->{id}) for @$org_list;
-        for my $sub_org (@org_list) {
-            $logger->debug("work org looking at sub-org $sub_org");
-            my $org_unit = $apputils->find_org($org_tree, $sub_org);
-            my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
-            if($ou_type->depth >= $org_depth) {
-                push(@allowed_orgs, $sub_org);
-                last;
-            }
-        }
-    }
-
-    my %de_dupe;
-    $de_dupe{$_} = 1 for @allowed_orgs;
-    return [keys %de_dupe];
+    return $U->find_highest_work_orgs($e, $perm);
 }
-
-
 
 __PACKAGE__->register_method(
 	method => 'check_user_perms4',
@@ -2527,22 +2368,10 @@ sub get_user_work_ous {
         unless $self->api_name =~ /.ids$/;
 
     # client just wants a list of org IDs
-    return _get_user_work_ou_ids($e, $userid);
+    return $U->get_user_work_ou_ids($e, $userid);
 }	
 
-sub _get_user_work_ou_ids {
-    my($e, $userid) = @_;
-    my $work_orgs = $e->json_query({
-        select => {puwoum => ['work_ou']},
-        from => 'puwoum',
-        where => {usr => $e->requestor->id}});
 
-    return [] unless @$work_orgs;
-    my @work_orgs;
-    push(@work_orgs, $_->{work_ou}) for @$work_orgs;
-
-    return \@work_orgs;
-}
 
 
 __PACKAGE__->register_method (
