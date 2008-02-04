@@ -29,6 +29,10 @@ patron.bills.prototype = {
 	'refresh' : function(dont_show_me_the_money) {
 		var obj = this;
 		try {
+                if (document.getElementById('circulating_hint')) {
+                    document.getElementById('circulating_hint').hidden = true;
+                }
+
 				obj.bills = obj.network.simple_request(
 					obj.SHOW_ME_THE_BILLS,
 					[ ses(), obj.patron_id ]
