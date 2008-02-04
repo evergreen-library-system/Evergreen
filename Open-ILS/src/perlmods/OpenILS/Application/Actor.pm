@@ -1436,17 +1436,9 @@ sub check_user_work_perms {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    # first, quickly grab the list of work_ou's for this user
-    my $work_orgs = $e->json_query({
-        select => {puwoum => ['work_ou']},
-        from => 'puwoum',
-        where => {usr => $e->requestor->id}});
+    my $work_orgs = _get_user_work_ou_ids($e, $e->requestor->id);
 
-    return [] unless @$work_orgs;
-    my @work_orgs;
-    push(@work_orgs, $_->{work_ou}) for @$work_orgs;
-
-    $logger->debug("found work orgs @work_orgs");
+    $logger->debug("found work orgs @$work_orgs");
 
     my @allowed_orgs;
 	my $org_tree = get_org_tree();
@@ -1454,7 +1446,7 @@ sub check_user_work_perms {
 
     # use the first work org to determine the highest depth at which 
     # the user has the requested permission
-    my $first_org = shift @work_orgs;
+    my $first_org = shift @$work_orgs;
     my $high_org_id = _find_highest_perm_org($perm, $e->requestor->id, $first_org, $org_tree);
     $logger->debug("found highest work org $high_org_id");
 
@@ -1463,11 +1455,14 @@ sub check_user_work_perms {
     push(@allowed_orgs, $high_org_id);
     my $high_org = $apputils->find_org($org_tree, $high_org_id);
 
+    my ($high_org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
+    return [$high_org_id] if $high_org_type->depth == 0;
+
     # now that we have the highest depth, find the org in the tree relative to 
     # each work org at that depth. 
     my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
     my $org_depth = $org_type->depth;
-    for my $org (@work_orgs) {
+    for my $org (@$work_orgs) {
         $logger->debug("work org looking at $org");
 
         # retrieve sorted list of ancestors and descendants for this work_ou
@@ -1498,7 +1493,9 @@ sub check_user_work_perms {
         }
     }
 
-    return \@allowed_orgs;
+    my %de_dupe;
+    $de_dupe{$_} = 1 for @allowed_orgs;
+    return [keys %de_dupe];
 }
 
 
@@ -2499,25 +2496,53 @@ sub get_user_perm_groups {
 		'open-ils.cstore.direct.permission.usr_grp_map.search.atomic', { usr => $userid } );
 }	
 
+
 __PACKAGE__->register_method(
 	method	=> "get_user_work_ous",
 	api_name	=> "open-ils.actor.user.get_work_ous",
 	notes		=> <<"	NOTES");
 	Retrieve a user's work org units.
 	NOTES
+__PACKAGE__->register_method(
+	method	=> "get_user_work_ous",
+	api_name	=> "open-ils.actor.user.get_work_ous.ids",
+	notes		=> <<"	NOTES");
+	Retrieve a user's work org units.
+	NOTES
 
 
 sub get_user_work_ous {
-	my( $self, $client, $authtoken, $userid ) = @_;
+	my( $self, $client, $auth, $userid ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    $userid ||= $e->requestor->id;
 
-	my( $requestor, $evt ) = $apputils->checksesperm( $authtoken, 'ASSIGN_WORK_ORG_UNIT' );
-	return $evt if $evt;
+    if($e->requestor->id != $userid) {
+        my $user = $e->retrieve_actor_user($userid)
+            or return $e->event;
+        return $e->event unless $e->allowed('ASSIGN_WORK_ORG_UNIT', $user->home_ou);
+    }
 
-	return $apputils->simplereq(
-		'open-ils.cstore',
-		'open-ils.cstore.direct.permission.usr_work_ou_map.search.atomic', { usr => $userid } );
+    return $e->search_permission_usr_work_ou_map({usr => $userid})
+        unless $self->api_name =~ /.ids$/;
+
+    # client just wants a list of org IDs
+    return _get_user_work_ou_ids($e, $userid);
 }	
 
+sub _get_user_work_ou_ids {
+    my($e, $userid) = @_;
+    my $work_orgs = $e->json_query({
+        select => {puwoum => ['work_ou']},
+        from => 'puwoum',
+        where => {usr => $e->requestor->id}});
+
+    return [] unless @$work_orgs;
+    my @work_orgs;
+    push(@work_orgs, $_->{work_ou}) for @$work_orgs;
+
+    return \@work_orgs;
+}
 
 
 __PACKAGE__->register_method (
