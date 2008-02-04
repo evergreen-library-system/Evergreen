@@ -1,4 +1,5 @@
 dump('entering auth/controller.js\n');
+// vim:sw=4:ts=4:noet:
 
 if (typeof auth == 'undefined') auth = {};
 auth.controller = function (params) {
@@ -130,7 +131,7 @@ auth.controller.prototype = {
 								} else {
 									x.appendChild(
 										document.createTextNode(
-											'Not yet configured for the specified server.'
+											document.getElementById('authStrings').getString('staff.auth.controller.not_configured')
 										)
 									);
 								}
@@ -211,11 +212,11 @@ auth.controller.prototype = {
 		obj.controller.view.submit_button.disabled = true;
 		obj.controller.view.server_prompt.disabled = true;
 		var s = document.getElementById('status');
-		s.setAttribute('value','Testing hostname...');
+		s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.testing_hostname'));
 		s.setAttribute('style','color: orange;');
 		document.getElementById('version').value = '';
 		if (!url) {
-			s.setAttribute('value','Please enter a server hostname.');
+			s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.prompt_hostname'));
 			s.setAttribute('style','color: red;');
 			obj.controller.view.server_prompt.disabled = false;
 			obj.controller.view.server_prompt.focus();
@@ -229,7 +230,7 @@ auth.controller.prototype = {
 			x.onreadystatechange = function() {
 				try {
 					if (x.readyState != 4) return;
-					s.setAttribute('value',x.status + ' : ' + x.statusText);
+					s.setAttribute('value', document.getElementById('authStrings').getFormattedString('staff.auth.controller.status', [x.status, x.statusText]));
 					if (x.status == 200) {
 						s.setAttribute('style','color: green;');
 					} else {
@@ -239,14 +240,14 @@ auth.controller.prototype = {
 				} catch(E) {
 					obj.controller.view.server_prompt.disabled = false;
 					obj.controller.view.server_prompt.focus();
-					s.setAttribute('value','There was an error testing this hostname.');
+					s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.error_hostname'));
 					s.setAttribute('style','color: red;');
 					obj.error.sdump('D_ERROR',E);
 				}
 			}
 			x.send(null);
 		} catch(E) {
-			s.setAttribute('value','There was an error testing this hostname.');
+			s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.error_hostname'));
 			s.setAttribute('style','color: brown;');
 			obj.error.sdump('D_ERROR',E);
 			obj.controller.view.server_prompt.disabled = false;
@@ -257,7 +258,7 @@ auth.controller.prototype = {
 	'test_version' : function(url) {
 		var obj = this;
 		var s = document.getElementById('version');
-		s.setAttribute('value','Testing version...');
+		s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.testing_version'));
 		s.setAttribute('style','color: orange;');
 		try {
 			var x = new XMLHttpRequest();
@@ -267,7 +268,7 @@ auth.controller.prototype = {
 			x.onreadystatechange = function() {
 				try {
 					if (x.readyState != 4) return;
-					s.setAttribute('value',x.status + ' : ' + x.statusText);
+					s.setAttribute('value', document.getElementById('authStrings').getFormattedString('staff.auth.controller.status', [x.status, x.statusText]));
 					if (x.status == 200) {
 						s.setAttribute('style','color: green;');
 						obj.controller.view.submit_button.disabled = false;
@@ -277,7 +278,7 @@ auth.controller.prototype = {
 					}
 					obj.controller.view.server_prompt.disabled = false;
 				} catch(E) {
-					s.setAttribute('value','There was an error checking version support.');
+					s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.error_version'));
 					s.setAttribute('style','color: red;');
 					obj.error.sdump('D_ERROR',E);
 					obj.controller.view.server_prompt.disabled = false;
@@ -285,7 +286,7 @@ auth.controller.prototype = {
 			}
 			x.send(null);
 		} catch(E) {
-			s.setAttribute('value','There was an error checking version support.');
+			s.setAttribute('value', document.getElementById('authStrings').getString('staff.auth.controller.error_version'));
 			s.setAttribute('style','color: brown;');
 			obj.error.sdump('D_ERROR',E);
 			obj.controller.view.server_prompt.disabled = false;
@@ -305,7 +306,7 @@ auth.controller.prototype = {
 					if (x.status == 200) {
 						window.open('data:text/html,'+window.escape(x.responseText),'upgrade','chrome,resizable,modal,centered');
 					} else {
-						alert('This server does not support your version of the staff client.  Please check with your system administrator.');
+						alert(document.getElementById('authStrings').getString('staff.auth.controller.version_mismatch'));
 					}
 					obj.controller.view.server_prompt.disabled = false;
 				} catch(E) {
@@ -324,10 +325,14 @@ auth.controller.prototype = {
 
 		var obj = this;
 
-		this.error.sdump('D_AUTH','login with ' 
-			+ this.controller.view.name_prompt.value + ' and ' 
-			+ this.controller.view.password_prompt.value + ' at ' 
-			+ this.controller.view.server_prompt.value + '\n'
+		this.error.sdump('D_AUTH',
+			document.getElementById('authStrings').getFormattedString(
+				'staff.auth.controller.error_login', [
+					this.controller.view.name_prompt.value,
+					this.controller.view.password_prompt.value,
+					this.controller.view.server_prompt.value
+				]
+			)
 		); 
 		this.controller.view.server_prompt.disabled = true;
 		this.controller.view.name_prompt.disabled = true;
@@ -455,7 +460,7 @@ auth.controller.prototype = {
 	
 		this.error.sdump('D_AUTH','close' + this.w + '\n');
 
-		if (window.confirm('Are you sure you would like to exit the program completely?')) {
+		if (window.confirm(document.getElementById('authStrings').getString('staff.auth.controller.confirm_close'))) {
 			this.logoff();
 			this.w.close(); /* Probably won't go any further */
 

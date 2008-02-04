@@ -1,4 +1,5 @@
 dump('entering auth/session.js\n');
+// vim:sw=4:ts=4:noet:
 
 if (typeof auth == 'undefined') auth = {};
 auth.session = function (view,login_type) {
@@ -52,7 +53,7 @@ auth.session.prototype = {
 						this.authtime = robj.payload.authtime;
 					break;
 					case 1520 /* WORKSTATION_NOT_FOUND */:
-						alert(params.workstation + ' is not registered with this server.');
+						alert(document.getElementById('authStrings').getFormattedString('staff.auth.session.unregistered', [params.workstation]));
 						delete(params.workstation);
 						delete(data.ws_info[ this.view.server_prompt.value ]);
 						data.stash('ws_info');
@@ -82,13 +83,13 @@ auth.session.prototype = {
 
 			} else {
 
-				var error = 'open-ils.auth.authenticate.init returned false\n';
+				var error = document.getElementById('authStrings').getStrint('staff.auth.session.init_false') + '\n';
 				this.error.sdump('D_ERROR',error);
 				throw(error);
 			}
 
 		} catch(E) {
-			alert('Login failed.  Please check your Server Hostname, Username, Password, and your CAPS LOCK key.');
+			alert(document.getElementById('authStrings').getString('staff.auth.session.login_failed'));
 			//obj.error.standard_unexpected_error_alert('Error on auth.session.init()',E); 
 
 			if (typeof this.on_init_error == 'function') {
