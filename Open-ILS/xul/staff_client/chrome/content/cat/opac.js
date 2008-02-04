@@ -5,7 +5,7 @@ function $(id) { return document.getElementById(id); }
 function my_init() {
 	try {
 		netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		if (typeof JSAN == 'undefined') { throw(document.getElementById('commonStrings').getString('common.jsan.missing')); }
+		if (typeof JSAN == 'undefined') { throw(document.getElementById('offlineStrings').getString('common.jsan.missing')); }
 		JSAN.errorLevel = "die"; // none, warn, or die
 		JSAN.addRepository('..');
 		JSAN.use('util.error'); g.error = new util.error();
@@ -28,7 +28,7 @@ function my_init() {
 		set_opac();
 
 	} catch(E) {
-		var err_msg = document.getElementById("commonStrings").getFormattedString("common.exception", ["cat/opac.xul", E]);
+		var err_msg = document.getElementById("offlineStrings").getFormattedString("common.exception", ["cat/opac.xul", E]);
 		try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 		alert(err_msg);
 	}
@@ -231,12 +231,19 @@ function mark_for_overlay() {
 }
 
 function delete_record() {
-	if (g.error.yns_alert('Are you sure you want to delete title record #' + docid + ' from the catalog?','Delete Record','Delete','Cancel',null,'Check here to confirm this action.') == 0) {
+	if (g.error.yns_alert(
+		document.getElementById('offlineStrings').getFormattedString('cat.opac.delete_record.confirm', [docid]),
+		document.getElementById('offlineStrings').getString('cat.opac.delete_record'),
+		document.getElementById('offlineStrings').getString('cat.opac.delete'),
+		document.getElementById('offlineStrings').getString('cat.opac.cancel'),
+		null,
+		document.getElementById('offlineStrings').getString('cat.opac.record_deleted.confirm')) == 0) {
 		var robj = g.network.simple_request('FM_BRE_DELETE',[ses(),docid]);
 		if (typeof robj.ilsevent != 'undefined') {
-			alert('Error deleting Record #' + docid + ' : ' + robj.textcode + ' : ' + robj.desc + '\n');
+			alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_deleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
 		} else {
-			alert('Record deleted.'); refresh_display(docid,true);
+			alert(document.getElementById('offlineStrings').getString('cat.opac.record_deleted'));
+			refresh_display(docid,true);
 		}
 	}
 }
