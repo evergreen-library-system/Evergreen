@@ -1383,7 +1383,7 @@ sub get_org_descendants {
 	my($self, $org_id, $depth) = @_;
 	$depth ||= 0;
 
-	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query(
+	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query({
 		select => {
 			aou => [{
 				transform => 'actor.org_unit_descendants',
@@ -1391,12 +1391,12 @@ sub get_org_descendants {
 				result_field => 'id',
 				params => [$depth]
 			}],
-			from => 'aou',
-			where => {id => $org_id}
-		}
-	);
+		},
+        from => 'aou',
+		where => {id => $org_id}
+	});
 	my @orgs;
-	push(@orgs, $_->{id}) for $org_list;
+	push(@orgs, $_->{id}) for @$org_list;
 	return \@orgs;
 }
 
@@ -1404,7 +1404,7 @@ sub get_org_ancestors {
 	my($self, $org_id, $depth) = @_;
 	$depth ||= 0;
 
-	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query(
+	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query({
 		select => {
 			aou => [{
 				transform => 'actor.org_unit_ancestors',
@@ -1412,13 +1412,13 @@ sub get_org_ancestors {
 				result_field => 'id',
 				params => [$depth]
 			}],
-			from => 'aou',
-			where => {id => $org_id}
-		}
-	);
+		},
+		from => 'aou',
+		where => {id => $org_id}
+	});
 
 	my @orgs;
-	push(@orgs, $_->{id}) for $org_list;
+	push(@orgs, $_->{id}) for @$org_list;
 	return \@orgs;
 }
 
@@ -1426,7 +1426,7 @@ sub get_org_full_path {
 	my($self, $org_id, $depth) = @_;
 	$depth ||= 0;
 
-	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query(
+	my $org_list = OpenILS::Utils::CStoreEditor->new->json_query({
 		select => {
 			aou => [{
 				transform => 'actor.org_unit_full_path',
@@ -1434,13 +1434,13 @@ sub get_org_full_path {
 				result_field => 'id',
 				params => [$depth]
 			}],
-			from => 'aou',
-			where => {id => $org_id}
-		}
-	);
+		},
+		from => 'aou',
+		where => {id => $org_id}
+	});
 
 	my @orgs;
-	push(@orgs, $_->{id}) for $org_list;
+	push(@orgs, $_->{id}) for @$org_list;
 	return \@orgs;
 }
 
