@@ -2,6 +2,7 @@ from oilsweb.lib.context import Context, SubContext, ContextItem
 import osrf.ses, oils.utils.csedit, pylons.config, oils.utils.utils, oils.event
 import oilsweb.lib.user
 from gettext import gettext as _
+import oils.org
 
 class CoreContext(SubContext):
     # cache the authenticated user info
