@@ -3,23 +3,20 @@
 <%namespace file='../../common/widgets.html' name='widget'/>
 <%def name="page_title()">${_('View Fund Source')}</%def>
 <%def name="block_content()">
-
-<form action='${c.oils.acq.prefix}/fund_source/create' method='POST'>
-    <table class='oils-admin-table'>
-        <tbody>
-            <tr>
-                <td class='oils-admin-label'>${_('Fund Source Name')}</td>
-                <td>${c.oils.acq.fund_source.name()}</td>
-            </tr>
-            <tr>
-                <td class='oils-admin-label'>${_('Fund Source Onwer')}</td>
-                <td>${c.oils.acq.fund_source.owner().name()}</td> 
-            </tr>
-            <tr>
-                <td class='oils-admin-label'>${_('Fund Source Currency Type')}</td>
-                <td>${c.oils.acq.fund_source.currency_type()}</td> 
-            </tr>
-        </tbody>
-    </table>
-</form>
+<table class='oils-admin-table'>
+    <tbody>
+        <tr>
+            <td class='oils-admin-label'>${_('Fund Source Name')}</td>
+            <td>${c.oils.acq.fund_source.name()}</td>
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Fund Source Onwer')}</td>
+            <td>${c.oils.acq.fund_source.owner().name()}</td> 
+        </tr>
+        <tr>
+            <td class='oils-admin-label'>${_('Fund Source Currency Type')}</td>
+            <td>${c.oils.acq.fund_source.currency_type()}</td> 
+        </tr>
+    </tbody>
+</table>
 </%def>

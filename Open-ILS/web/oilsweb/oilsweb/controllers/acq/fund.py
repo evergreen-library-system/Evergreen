@@ -12,7 +12,7 @@ class FundController(BaseController):
         r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
         fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
         fund = fund_mgr.retrieve(kwargs.get('id'))
-        fund.owner(oils.org.OrgUtil.get_org_unit(fund.owner())) # flesh the owner
+        fund.org(oils.org.OrgUtil.get_org_unit(fund.org())) # flesh the org
         r.ctx.acq.fund = fund
         return r.render('acq/financial/view_fund.html')
 
@@ -21,7 +21,7 @@ class FundController(BaseController):
         fund_mgr = oilsweb.lib.acq.fund.FundMgr(r)
         r.ctx.acq.fund_list = fund_mgr.retrieve_org_funds()
         for f in r.ctx.acq.fund_list:
-            f.owner(oils.org.OrgUtil.get_org_unit(f.owner()))
+            f.org(oils.org.OrgUtil.get_org_unit(f.org()))
         return r.render('acq/financial/list_funds.html')
             
 
