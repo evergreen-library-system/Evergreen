@@ -14,7 +14,6 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(types)
         return types
 
-    ''' XXX update to look like a fund 
     def retrieve(self, fund_id):
         fund = self.ses.request(
             'open-ils.acq.fund.retrieve', 
@@ -22,6 +21,7 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(fund)
         return fund
 
+    ''' XXX update to look like a fund 
     def retrieve_org_funds(self):
         funds = self.ses.request(
             'open-ils.acq.fund.org.retrieve', 
@@ -32,13 +32,13 @@ class FundMgr(object):
         return funds
 
 
+    '''
     def create_fund(self, fund):
         fund_id = self.ses.request(
             'open-ils.acq.fund.create', 
             self.request_mgr.ctx.core.authtoken, fund).recv().content()
         oils.event.Event.parse_and_raise(fund_id)
         return fund_id
-    '''
 
     
     def retrieve_fund_source(self, source_id):

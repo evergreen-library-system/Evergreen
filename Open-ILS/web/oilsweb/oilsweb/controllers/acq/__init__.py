@@ -31,7 +31,13 @@ class AcqContext(SubContext):
         self.picklist_entry = ContextItem() # picklist_entry object
 
         self.currency_types = ContextItem()
+
         self.fund = ContextItem()
+        self.fund_list = ContextItem()
+        self.fund_name = ContextItem(cgi_name='acq.fn')
+        self.fund_year = ContextItem(cgi_name='acq.fc')
+        self.fund_org = ContextItem(cgi_name='acq.fo')
+
         self.fund_source = ContextItem()
         self.fund_source_list = ContextItem()
         self.fund_source_name = ContextItem(cgi_name='acq.fn')

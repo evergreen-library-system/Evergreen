@@ -46,7 +46,6 @@ class FundSourceController(BaseController):
         if len(perm_orgs) == 0:
             return _("Insufficient Permissions") # XXX Return a perm failure template
 
-        r.ctx.core.org_tree = oils.org.OrgUtil.fetch_org_tree()
         r.ctx.core.perm_tree['CREATE_FUNDING_SOURCE'] = oils.org.OrgUtil.get_union_tree(perm_orgs)
         r.ctx.core.high_perm_orgs['CREATE_FUNDING_SOURCE'] = perm_orgs
         r.ctx.acq.currency_types = fund_mgr.fetch_currency_types()

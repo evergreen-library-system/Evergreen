@@ -59,5 +59,18 @@ class User(object):
         oils.event.Event.parse_and_raise(work_orgs)
         return work_orgs
 
+    def highest_work_perm_set(self, perm):
+        perm_orgs = osrf.ses.ClientSession.atomic_request(
+            'open-ils.actor',
+            'open-ils.actor.user.work_perm.highest_org_set', self.ctx.authtoken, perm);
+        self.ctx.high_perm_orgs[perm] = perm_orgs
+        return perm_orgs
+
+    def highest_work_perm_tree(self, perm):
+        perm_orgs = self.highest_work_perm_set(perm)
+        if len(perm_orgs) == 0:
+            return None
+        self.ctx.perm_tree[perm] = oils.org.OrgUtil.get_union_tree(perm_orgs)
+        return self.ctx.perm_tree[perm]
 
 
