@@ -1314,27 +1314,13 @@ sub find_highest_work_orgs {
     # each work org at that depth. 
     my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
     my $org_depth = $org_type->depth;
+
     for my $org (@$work_orgs) {
+
         $logger->debug("work org looking at $org");
+		my $org_list = $self->get_org_full_path($org, $org_depth);
 
-        # retrieve sorted list of ancestors and descendants for this work_ou
-        my $org_list = $e->json_query({
-            select => {
-                aou => [{
-                    transform => 'actor.org_unit_full_path',
-                    column => 'id',
-                    result_field => 'id',
-                    params => [$org_depth]
-                }]
-            },
-            from => 'aou',
-            where => {id=>$org}
-        });
-
-        # go through the list until we find the org at the correct depth
-        my @org_list;
-        push(@org_list, $_->{id}) for @$org_list;
-        for my $sub_org (@org_list) {
+        for my $sub_org (@$org_list) {
             $logger->debug("work org looking at sub-org $sub_org");
             my $org_unit = $self->find_org($org_tree, $sub_org);
             my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
@@ -1393,6 +1379,70 @@ sub get_org_tree {
 	return $tree;
 }
 
+sub get_org_descendants {
+	my($self, $org_id, $depth) = @_;
+	$depth ||= 0;
+
+	my $org_list = new_editor()->json_query(
+		select => {
+			aou => [{
+				transform => 'actor.org_unit_descendants',
+				column => 'id',
+				result_field => 'id',
+				params => [$depth]
+			}],
+			from => 'aou',
+			where => {id => $org_id}
+		}
+	);
+	my @orgs;
+	push(@orgs, $_->{id}) for $org_list;
+	return \@orgs;
+}
+
+sub get_org_ancestors {
+	my($self, $org_id, $depth) = @_;
+	$depth ||= 0;
+
+	my $org_list = new_editor()->json_query(
+		select => {
+			aou => [{
+				transform => 'actor.org_unit_ancestors',
+				column => 'id',
+				result_field => 'id',
+				params => [$depth]
+			}],
+			from => 'aou',
+			where => {id => $org_id}
+		}
+	);
+
+	my @orgs;
+	push(@orgs, $_->{id}) for $org_list;
+	return \@orgs;
+}
+
+sub get_org_full_path {
+	my($self, $org_id, $depth) = @_;
+	$depth ||= 0;
+
+	my $org_list = new_editor()->json_query(
+		select => {
+			aou => [{
+				transform => 'actor.org_unit_full_path',
+				column => 'id',
+				result_field => 'id',
+				params => [$depth]
+			}],
+			from => 'aou',
+			where => {id => $org_id}
+		}
+	);
+
+	my @orgs;
+	push(@orgs, $_->{id}) for $org_list;
+	return \@orgs;
+}
 
 1;
 
