@@ -237,6 +237,11 @@ util.print.prototype = {
 
 				switch(params.print_strategy || obj.data.print_strategy) {
 					case 'dos.print':
+                        if (typeof w != 'string') {
+			                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                			w.getSelection().selectAllChildren(w.document.firstChild);
+                			w = w.getSelection().toString();
+                        }
 						obj._NSPrint_dos_print(w,silent,params);
 					break;	
 					case 'window.print':
@@ -271,12 +276,6 @@ util.print.prototype = {
 				the html window handle our receipt template rendering, and then force a selection of all
 				the text nodes and dump that to a file, for printing through a dos utility */
 
-			/*
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			w.getSelection().selectAllChildren(w.document.firstChild);
-			var text = w.getSelection().toString();
-			*/
-
 			/* NEW way: we just pass in the text */
 
 			var text = w;
@@ -287,7 +286,7 @@ util.print.prototype = {
             file.close();
 			
 			file = new util.file('receipt.bat');
-			file.write_content('truncate+exec','#!/bin/sh\ncopy ' + path + ' lpt1 /b\nlpr ' + path + '\n');
+			file.write_content('truncate+exec','#!/bin/sh\ncopy "' + path + '" lpt1 /b\nlpr ' + path + '\n');
             file.close();
 			file = new util.file('receipt.bat');
 
