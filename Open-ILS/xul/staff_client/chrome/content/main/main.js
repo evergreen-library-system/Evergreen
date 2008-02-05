@@ -264,7 +264,7 @@ function main_init() {
 		}
 
 	} catch(E) {
-		var error = offlineStrings.getFormattedString('common.error', [E, '']);
+		var error = offlineStrings.getFormattedString('common.exception', [E, '']);
 		try { G.error.sdump('D_ERROR',error); } catch(E) { dump(error); }
 		alert(error);
 	}
