@@ -327,6 +327,77 @@ sub create_fund {
     return $fund->id;
 }
 
+__PACKAGE__->register_method(
+	method => 'delete_fund',
+	api_name	=> 'open-ils.acq.fund.delete',
+	signature => {
+        desc => 'Deletes a fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'fund ID', type => 'number'}
+        ],
+        return => {desc => '1 on success, Event on failure'}
+    }
+);
+
+sub delete_fund {
+    my($self, $conn, $auth, $fund_id) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('DELETE_FUND', $fund->org);
+    $e->delete_acq_fund($fund) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+	method => 'retrieve_fund',
+	api_name	=> 'open-ils.acq.fund.retrieve',
+	signature => {
+        desc => 'Retrieves a new fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'fund ID', type => 'number'}
+        ],
+        return => {desc => 'The fund object on success, Event on failure'}
+    }
+);
+
+sub retrieve_fund {
+    my($self, $conn, $auth, $fund_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
+    return $e->event unless $e->allowed('VIEW_FUND', $fund->org);
+    return $fund;
+}
+
+__PACKAGE__->register_method(
+	method => 'retrieve_org_funds',
+	api_name	=> 'open-ils.acq.fund.org.retrieve',
+	signature => {
+        desc => 'Retrieves all the funds associated with an org unit that the requestor has access to see',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Org Unit ID.  If no ID is provided, this method returns the 
+                full set of funds this user has permission to view', type => 'number'},
+        ],
+        return => {desc => 'The fund objects on success, empty array otherwise'}
+    }
+);
+
+sub retrieve_org_funds {
+    my($self, $conn, $auth, $org_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+
+    my $org_ids = ($org_id) ? [$org_id] :
+        $U->find_highest_work_orgs($e, 'VIEW_FUND', {descendants =>1});
+
+    return [] unless @$org_ids;
+    return $e->search_acq_fund({org => $org_ids});
+}
 
 # ----------------------------------------------------------------------------
 # Currency
