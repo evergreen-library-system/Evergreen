@@ -3,6 +3,8 @@ use lib qw( /openils/lib/perl5 );
 use OpenILS::WWW::SuperCat qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::AddedContent qw( /openils/conf/opensrf_core.xml );
 use OpenILS::Reporter::Proxy ('/openils/conf/opensrf_core.xml');
+use OpenILS::WWW::Proxy ('/openils/conf/opensrf_core.xml');
+use OpenILS::WWW::Exporter ('/openils/conf/opensrf_core.xml');
 
 
 # - Uncoment the following 2 lines to make use of the IP redirection code
