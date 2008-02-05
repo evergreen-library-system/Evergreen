@@ -13,30 +13,10 @@ my $U = 'OpenILS::Application::AppUtils';
 
 my $BAD_PARAMS = OpenILS::Event->new('BAD_PARAMS');
 
-# ---------------------------------------------------------------
-# Returns a list containing the current org id plus the IDs of 
-# any descendents
-# ---------------------------------------------------------------
-sub org_descendants {
-    my $org_id  = shift;
-    my $org_list = $U->simplereq(
-        'open-ils.storage',
-        'open-ils.storage.actor.org_unit.descendants.atomic', $org_id);
-    my @org_ids;
-    push(@org_ids, $_->id) for @$org_list;
-    return \@org_ids;
-}
 
-sub org_ancestors {
-    my $org_id  = shift;
-    my $org_list = $U->simplereq(
-        'open-ils.storage',
-        'open-ils.storage.actor.org_unit.ancestors.atomic', $org_id);
-    my @org_ids;
-    push(@org_ids, $_->id) for @$org_list;
-    return \@org_ids;
-}
-
+# ----------------------------------------------------------------------------
+# Funding Sources
+# ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
 	method => 'create_funding_source',
@@ -118,7 +98,7 @@ __PACKAGE__->register_method(
             {desc => 'Org Unit ID.  If no ID is provided, this method returns the 
                 full set of funding sources this user has permission to view', type => 'number'},
         ],
-        return => {desc => 'The funding_source objects on success, Event on failure'}
+        return => {desc => 'The funding_source objects on success, empty array otherwise'}
     }
 );
 
@@ -128,16 +108,10 @@ sub retrieve_org_funding_sources {
     return $e->event unless $e->checkauth;
 
     my $org_ids = ($org_id) ? [$org_id] :
-        $U->find_highest_work_orgs($e, 'VIEW_FUNDING_SOURCE');
+        $U->find_highest_work_orgs($e, 'VIEW_FUNDING_SOURCE', {descendants =>1});
 
     return [] unless @$org_ids;
-
-    my @orglist;
-    push(@orglist, @{org_descendants($_)}) for @$org_ids;
-
-    my $search = {owner => \@orglist};
-    my $funding_sources = $e->search_acq_funding_source($search) or return $e->event;
-    return $funding_sources; 
+    return $e->search_acq_funding_source({owner => $org_ids});
 }
 
 # ---------------------------------------------------------------
@@ -238,7 +212,7 @@ sub retrieve_org_funds {
     return $e->event unless $e->allowed('VIEW_FUND', $org_id);
 
     my $search = {org => $org_id};
-    $search = {org => org_descendents($e, $org_id)} if $$options{children};
+    $search = {org => $U->get_org_descendents($org_id)} if $$options{children};
     my $funds = $e->search_acq_fund($search) or return $e->event;
 
     return $funds; 
@@ -326,6 +300,37 @@ sub retrieve_fund_alloc {
     return $fund_alloc;
 }
 
+# ----------------------------------------------------------------------------
+# Funds
+# ----------------------------------------------------------------------------
+
+__PACKAGE__->register_method(
+	method => 'create_fund',
+	api_name	=> 'open-ils.acq.fund.create',
+	signature => {
+        desc => 'Creates a new fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'fund object to create', type => 'object'}
+        ],
+        return => {desc => 'The ID of the new fund'}
+    }
+);
+
+sub create_fund {
+    my($self, $conn, $auth, $fund) = @_;
+    my $e = new_editor(xact=>1, authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_FUND', $fund->org);
+    $e->create_acq_fund($fund) or return $e->die_event;
+    $e->commit;
+    return $fund->id;
+}
+
+
+# ----------------------------------------------------------------------------
+# Currency
+# ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
 	method => 'retrieve_all_currency_type',
