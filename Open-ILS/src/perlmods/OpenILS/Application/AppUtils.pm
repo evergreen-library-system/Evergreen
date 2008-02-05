@@ -1304,16 +1304,18 @@ sub find_highest_work_orgs {
 
     
     return [] if $high_org_id == -1; # not allowed anywhere
-    push(@allowed_orgs, $high_org_id);
+
     my $high_org = $self->find_org($org_tree, $high_org_id);
-
     my ($high_org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
-    return [$high_org_id] if $high_org_type->depth == 0;
+    my $org_depth = $high_org_type->depth;
 
-    # now that we have the highest depth, find the org in the tree relative to 
-    # each work org at that depth. 
-    my ($org_type) = grep { $_->id == $high_org->ou_type } @$org_types;
-    my $org_depth = $org_type->depth;
+	if($$options{descendants}) {
+		push(@allowed_orgs, @{$self->get_org_descendants($high_org_id, $org_depth)});
+	} else {
+		push(@allowed_orgs, $high_org_id);
+	}
+
+	return \@allowed_orgs if $org_depth == 0;
 
     for my $org (@$work_orgs) {
 
