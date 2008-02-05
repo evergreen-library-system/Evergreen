@@ -1288,7 +1288,7 @@ sub find_highest_perm_org {
 
 
 sub find_highest_work_orgs {
-    my($self, $e, $perm) = @_;
+    my($self, $e, $perm, $options) = @_;
     my $work_orgs = $self->get_user_work_ou_ids($e, $e->requestor->id);
     $logger->debug("found work orgs @$work_orgs");
 
@@ -1320,14 +1320,20 @@ sub find_highest_work_orgs {
         $logger->debug("work org looking at $org");
 		my $org_list = $self->get_org_full_path($org, $org_depth);
 
+		my $found = 0;
         for my $sub_org (@$org_list) {
-            $logger->debug("work org looking at sub-org $sub_org");
-            my $org_unit = $self->find_org($org_tree, $sub_org);
-            my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
-            if($ou_type->depth >= $org_depth) {
-                push(@allowed_orgs, $sub_org);
-                last;
-            }
+			if(not $found) {
+				$logger->debug("work org looking at sub-org $sub_org");
+				my $org_unit = $self->find_org($org_tree, $sub_org);
+				my ($ou_type) = grep { $_->id == $org_unit->ou_type } @$org_types;
+				if($ou_type->depth >= $org_depth) {
+					push(@allowed_orgs, $sub_org);
+					$found = 1;
+				}
+			} else {
+				last unless $$options{descendants}; 
+				push(@allowed_orgs, $sub_org);
+			}
         }
     }
 

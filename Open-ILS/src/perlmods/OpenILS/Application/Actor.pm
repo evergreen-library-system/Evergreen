@@ -1328,17 +1328,18 @@ __PACKAGE__->register_method(
             check is implied by the authtoken. /,
         params => [
 		    {desc => 'authtoken', type => 'string'},
-            {desc => 'permission name', type => 'string'}
+            {desc => 'permission name', type => 'string'},
+            {desc => 'options hash, including "descendants", which will include all child orgs of the found perm orgs', type => 'hash'}
         ],
         return => {desc => 'An array of org IDs'}
     }
 );
 
 sub check_user_work_perms {
-    my($self, $conn, $auth, $perm) = @_;
+    my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $U->find_highest_work_orgs($e, $perm);
+    return $U->find_highest_work_orgs($e, $perm, $options);
 }
 
 __PACKAGE__->register_method(
