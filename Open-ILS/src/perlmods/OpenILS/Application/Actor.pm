@@ -1328,17 +1328,18 @@ __PACKAGE__->register_method(
             check is implied by the authtoken. /,
         params => [
 		    {desc => 'authtoken', type => 'string'},
-            {desc => 'permission name', type => 'string'}
+            {desc => 'permission name', type => 'string'},
+            {desc => 'options hash, including "descendants", which will include all child orgs of the found perm orgs', type => 'hash'}
         ],
         return => {desc => 'An array of org IDs'}
     }
 );
 
 sub check_user_work_perms {
-    my($self, $conn, $auth, $perm) = @_;
+    my($self, $conn, $auth, $perm, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $U->find_highest_work_orgs($e, $perm);
+    return $U->find_highest_work_orgs($e, $perm, $options);
 }
 
 __PACKAGE__->register_method(
@@ -2652,7 +2653,7 @@ __PACKAGE__->register_method(
 	method => 'usrname_exists',
 	api_name	=> 'open-ils.actor.username.exists',
 	signature => q/
-		Returns the user ID of the requested username if that username exists, returns null otherwise
+		Returns 1 if the requested username exists, returns 0 otherwise
 	/
 );
 
@@ -2664,14 +2665,14 @@ sub usrname_exists {
 	return $e->event unless $e->checkauth;
 	my $a = $e->search_actor_user({usrname => $usrname, deleted=>'f'}, {idlist=>1});
 	return $$a[0] if $a and @$a;
-	return undef;
+	return 0;
 }
 
 __PACKAGE__->register_method(
 	method => 'barcode_exists',
 	api_name	=> 'open-ils.actor.barcode.exists',
 	signature => q/
-		Returns the user ID for the requested barcode if that barcode exists, returns null otherwise
+		Returns 1 if the requested barcode exists, returns 0 otherwise
 	/
 );
 
@@ -2680,8 +2681,8 @@ sub barcode_exists {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	my $card = $e->search_actor_card({barcode => $barcode});
-	return undef unless @$card;
-	return $card->[0]->usr;
+    return 0 unless @$card;
+    return $card->[0]->usr;
 }
 
 
