@@ -120,10 +120,10 @@ CREATE TABLE config.circ_matrix_test (
 
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
-    id          INT     PRIMARY KEY,
+	id          SERIAL     PRIMARY KEY,
 	matchpoint  INT     NOT NULL REFERENCES config.circ_matrix_matchpoint (id) ON DELETE CASCADE,
 	items_out   INT     NOT NULL,                        	-- Total current active circulations must be less than this, NULL means skip (always pass)
-    circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE -- circ_modifier type that the max out applies to
+	circ_mod    TEXT    NOT NULL REFERENCES config.circ_modifier (code) ON DELETE CASCADE ON UPDATE CASCADE -- circ_modifier type that the max out applies to
 );
 
 
