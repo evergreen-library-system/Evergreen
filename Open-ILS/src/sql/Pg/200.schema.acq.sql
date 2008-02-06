@@ -213,6 +213,57 @@ CREATE TABLE acq.fund_allocation (
     CONSTRAINT allocation_amount_or_percent CHECK ((percent IS NULL AND amount IS NOT NULL) OR (percent IS NOT NULL AND amount IS NULL))
 );
 
+CREATE OR REPLACE VIEW acq.fund_allocation_total AS
+    SELECT  fund,
+            SUM(amount)::NUMERIC(100,2) AS amount
+      FROM (
+            SELECT  fund,
+                    SUM(amount)::NUMERIC(100,2) AS amount
+              FROM  acq.fund_allocation
+              WHERE percent IS NULL
+              GROUP BY 1
+                            UNION ALL
+            SELECT  fund,
+                    SUM( (SELECT SUM(amount) FROM acq.funding_source_credit c WHERE c.funding_source = a.funding_source) * (a.percent/100.0) )::NUMERIC(100,2) AS amount
+              FROM  acq.fund_allocation a
+              WHERE a.amount IS NULL
+              GROUP BY 1
+        ) x
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW acq.fund_debit_total AS
+    SELECT  id AS fund,
+            encumberance,
+            SUM(amount) AS amount
+      FROM  acq.fund_debit 
+      GROUP BY 1,2;
+
+CREATE OR REPLACE VIEW acq.fund_encumberance_total AS
+    SELECT  fund,
+            SUM(amount) AS amount
+      FROM  acq.fund_debit_total
+      WHERE encumberance IS TRUE
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW acq.fund_spent_total AS
+    SELECT  fund,
+            SUM(amount) AS amount
+      FROM  acq.fund_debit_total
+      WHERE encumberance IS FALSE
+      GROUP BY 1;
+
+CREATE OR REPLACE VIEW acq.fund_combined_balance AS
+    SELECT  c.fund,
+            c.amount - COALESCE(d.amount,0.0) AS amount
+      FROM  acq.fund_allocation_total c
+            LEFT JOIN acq.fund_debit_total d USING (fund);
+
+CREATE OR REPLACE VIEW acq.fund_spent_balance AS
+    SELECT  c.fund,
+            c.amount - COALESCE(d.amount,0.0) AS amount
+      FROM  acq.fund_allocation_total c
+            LEFT JOIN acq.fund_spent_total d USING (fund);
+
 COMMIT;
 
 
