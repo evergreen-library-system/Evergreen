@@ -11,6 +11,10 @@ use OpenSRF::Utils::Logger qw($logger);
 my $U = "OpenILS::Application::AppUtils";
 my %PERMS;
 my $cache;
+my %xact_ed_cache;
+
+our $always_xact = 0;
+our $_loaded = 1;
 
 #my %PERMS = (
 #	'biblio.record_entry'	=> { update => 'UPDATE_MARC' },
@@ -19,7 +23,12 @@ my $cache;
 #	'action.circulation'		=> { retrieve => 'VIEW_CIRCULATIONS'},
 #);
 
-
+sub flush_forced_xacts {
+    for my $k ( keys %xact_ed_cache ) {
+        $xact_ed_cache{$k}->rollback;
+        delete $xact_ed_cache{$k};
+    }
+}
 
 # -----------------------------------------------------------------------------
 # Export some useful functions
@@ -78,8 +87,13 @@ sub app {
 sub log {
 	my( $self, $lev, $str ) = @_;
 	my $s = "editor[";
-	$s .= "0|" unless $self->{xact};
-	$s .= "1|" if $self->{xact};
+    if ($always_xact) {
+        $s .= "!|";
+    } elsif ($self->{xact}) {
+        $s .= "1|";
+    } else {
+	    $s .= "0|";
+    }
 	$s .= "0" unless $self->requestor;
 	$s .= $self->requestor->id if $self->requestor;
 	$s .= "]";
@@ -168,9 +182,11 @@ sub session {
 			throw OpenSRF::EX::ERROR ($str);
 		}
 
-		$self->{session}->connect if $self->{xact} or $self->{connect};
-		$self->xact_start if $self->{xact};
+		$self->{session}->connect if $self->{xact} or $self->{connect} or $always_xact;
+		$self->xact_start if $self->{xact} or $always_xact;
 	}
+
+    $xact_ed_cache{$self->{xact_id}} = $self if $always_xact;
 	return $self->{session};
 }
 
@@ -181,8 +197,9 @@ sub session {
 sub xact_start {
 	my $self = shift;
 	$self->log(D, "starting new db session");
-	my $stat = $self->request($self->app . '.transaction.begin');
+	my $stat = $self->request($self->app . '.transaction.begin') unless $self->{xact_id};
 	$self->log(E, "error starting database transaction") unless $stat;
+    $self->{xact_id} = $stat;
 	return $stat;
 }
 
@@ -192,8 +209,9 @@ sub xact_start {
 sub xact_commit {
 	my $self = shift;
 	$self->log(D, "comitting db session");
-	my $stat = $self->request($self->app.'.transaction.commit');
+	my $stat = $self->request($self->app.'.transaction.commit') if $self->{xact_id};
 	$self->log(E, "error comitting database transaction") unless $stat;
+    delete $self->{xact_id};
 	return $stat;
 }
 
@@ -204,7 +222,10 @@ sub xact_rollback {
 	my $self = shift;
    return unless $self->{session};
 	$self->log(I, "rolling back db session");
-	return $self->request($self->app.".transaction.rollback");
+	my $stat = $self->request($self->app.".transaction.rollback") if $self->{xact_id};
+	$self->log(E, "error rolling back database transaction") unless $stat;
+    delete $self->{xact_id};
+	return $stat;
 }
 
 
@@ -214,7 +235,7 @@ sub xact_rollback {
 # -----------------------------------------------------------------------------
 sub rollback {
 	my $self = shift;
-	$self->xact_rollback if $self->{xact};
+	$self->xact_rollback;
    delete $self->{xact};
 	$self->disconnect;
 }
@@ -231,7 +252,7 @@ sub disconnect {
 # -----------------------------------------------------------------------------
 sub commit {
 	my $self = shift;
-	return unless $self->{xact};
+	return unless $self->{xact_id};
 	$self->xact_commit;
 	$self->session->disconnect;
 	$self->{session} = undef;
@@ -270,7 +291,7 @@ sub request {
 
 	$self->log(I, "request $method : $argstr");
 
-	if( $self->{xact} and 
+	if( ($self->{xact} or $always_xact) and 
 			$self->session->state != OpenSRF::AppSession::CONNECTED() ) {
 		#$logger->error("CStoreEditor lost it's connection!!");
 		throw OpenSRF::EX::ERROR ("CStore connection timed out - transaction cannot continue");
@@ -357,6 +378,7 @@ sub perm_checked {
 # If this perm at the given org has already been verified, true is returned
 # and the perm is not re-checked
 # -----------------------------------------------------------------------------
+=head
 sub allowed {
 	my( $self, $perm, $org ) = @_;
 	my $uid = $self->requestor->id;
@@ -365,7 +387,41 @@ sub allowed {
 	return 1 if $self->perm_checked($perm, $org); 
 	return $self->checkperm($uid, $org, $perm);
 }
+=cut
 
+my $PERM_QUERY = {
+    select => {
+        au => [ {
+            transform => 'permission.usr_has_perm',
+            alias => 'has_perm',
+            column => 'id',
+            params => []
+        } ]
+    },
+    from => 'au',
+    where => {},
+};
+
+sub allowed {
+	my( $self, $perm, $org ) = @_;
+	my $uid = $self->requestor->id;
+	$org ||= $self->requestor->ws_ou;
+	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
+
+    # fill in the search hash
+    $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
+    $PERM_QUERY->{where}->{id} = $uid;
+
+    return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+
+    # set the perm failure event if the permission check returned false
+	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
+	$self->event($e);
+	return undef;
+
+}
+
+=head
 sub checkperm {
 	my($self, $userid, $org, $perm) = @_;
 	my $s = $U->storagereq(
@@ -379,6 +435,7 @@ sub checkperm {
 
 	return 1;
 }
+=cut
 
 
 
@@ -509,7 +566,7 @@ sub runmethod {
 	$self->clear_event;
 
 	if( $action eq 'update' or $action eq 'delete' or $action eq 'create' ) {
-		if(!$self->{xact}) {
+		if(!$self->{xact_id}) {
 			$logger->error("Attempt to update DB while not in a transaction : $method");
 			throw OpenSRF::EX::ERROR ("Attempt to update DB while not in a transaction : $method");
 		}
