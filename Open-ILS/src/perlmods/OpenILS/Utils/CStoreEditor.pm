@@ -397,7 +397,8 @@ sub allowed {
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
 
-    my $perms = [$perm] unless ref($perm) eq 'ARRAY';
+    my $perms = (ref($perm) eq 'ARRAY') ? $perm : [$perm];
+
     for $perm (@$perms) {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
@@ -413,24 +414,6 @@ sub allowed {
 	$self->event($e);
 	return undef;
 }
-
-
-=head
-sub checkperm {
-	my($self, $userid, $org, $perm) = @_;
-	my $s = $U->storagereq(
-		"open-ils.storage.permission.user_has_perm", $userid, $perm, $org );
-
-	if(!$s) {
-		my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
-		$self->event($e);
-		return undef;
-	}
-
-	return 1;
-}
-=cut
-
 
 
 # -----------------------------------------------------------------------------
