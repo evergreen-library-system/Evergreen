@@ -398,7 +398,6 @@ sub allowed {
 	$org ||= $self->requestor->ws_ou;
 
     my $perms = [$perm] unless ref($perm) eq 'ARRAY';
-    my $perm;
     for $perm (@$perms) {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
