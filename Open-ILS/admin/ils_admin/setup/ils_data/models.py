@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import signals
 from django.dispatch import dispatcher
 import datetime
+from gettext import gettext as _
 
 INTERVAL_HELP_TEXT = _('examples: "1 hour", "14 days", "3 months", "DD:HH:MM:SS.ms"')
 CHAR_MAXLEN=200 # just provide a sane default
@@ -270,47 +271,36 @@ class CircMatrixMatchpoint(models.Model):
     active = models.BooleanField(blank=False, default=True)
     org_unit_id = models.ForeignKey(OrgUnit, db_column='org_unit', blank=False)
     grp_id = models.ForeignKey(GrpTree, db_column='grp', blank=False)
-    circ_modifier_id = models.ForeignKey(CircModifier, db_column='circ_modifier', null=True)
-    marc_type_id = models.ForeignKey('ItemTypeMap', db_column='marc_type', null=True)
-    marc_form_id = models.ForeignKey('ItemFormMap', db_column='marc_form', null=True)
-    marc_vr_format_id = models.ForeignKey('VideoRecordingFormat', db_column='marc_vr_format', null=True)
+    circ_modifier_id = models.ForeignKey(CircModifier, db_column='circ_modifier', null=True,blank=True)
+    marc_type_id = models.ForeignKey('ItemTypeMap', db_column='marc_type', null=True,blank=True)
+    marc_form_id = models.ForeignKey('ItemFormMap', db_column='marc_form', null=True,blank=True)
+    marc_vr_format_id = models.ForeignKey('VideoRecordingFormat', db_column='marc_vr_format', null=True,blank=True)
     ref_flag = models.BooleanField(null=True)
-    usr_age_lower_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True)
-    usr_age_upper_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True)
+    usr_age_lower_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True, blank=True)
+    usr_age_upper_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True, blank=True)
     class Admin:
-        fields = (
-          (None, {
-            'fields': ('org_unit_id', 'circ_modifier_id', 'marc_type_id', 'marc_form_id','marc_vr_format_id','usr_age_lower_bound','usr_age_upper_bound')
-          }),
-          ('Baseline Test', {
-            'classes': 'collapse',
-            'fields' : ('circmatrixtest_set')
-          }),
-          ('Circ Mod Tests', {
-            'classes': 'collapse',
-            'fields': ('circmatrixcircmodtest_set')
-          }),
-          ('Ruleset', {
-            'classes': 'collapse',
-            'fields': ('circmatrixruleset_set')
-          })
-        )
-        search_fields = ['grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id','marc_vr_format_id','usr_age_lower_bound','usr_age_upper_bound']
-        list_display = ('grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id','marc_vr_format_id','ref_flag','usr_age_lower_bound','usr_age_upper_bound')
+        search_fields = ['grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id',
+            'marc_vr_format_id','usr_age_lower_bound','usr_age_upper_bound']
+
+        list_display = ('grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id',
+            'marc_vr_format_id','ref_flag','usr_age_lower_bound','usr_age_upper_bound')
+
         list_filter = ['grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id','marc_vr_format_id']
     class Meta:
         db_table = 'circ_matrix_matchpoint'
         ordering = ['id']
         verbose_name = _('Circulation Matrix Matchpoint')
     def __str__(self):
-        return _("OrgUnit: %s, Group: %s, Circ Modifier: %s") % (self.org_unit_id, self.grp_id, self.circ_modifier_id)
+        return _("OrgUnit: %(orgid)s, Group: %(grpid)s, Circ Modifier: %(modid)s") % {
+            'orgid':self.org_unit_id, 'grpid':self.grp_id, 'modid':self.circ_modifier_id}
 
 class CircMatrixTest(models.Model):
-    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', blank=False, primary_key=True)
-    max_items_out = models.IntegerField(null=True)
-    max_overdue = models.IntegerField(null=True)
-    max_fines = models.FloatField(max_digits=8, decimal_places=2, null=True)
-    script_test = models.CharField(maxlength=CHAR_MAXLEN, null=True)
+    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', blank=False, primary_key=True, 
+        edit_inline=models.TABULAR, core=True, num_in_admin=1)
+    max_items_out = models.IntegerField(null=True, blank=True)
+    max_overdue = models.IntegerField(null=True, blank=True)
+    max_fines = models.FloatField(max_digits=8, decimal_places=2, null=True, blank=True)
+    script_test = models.CharField(maxlength=CHAR_MAXLEN, null=True, blank=True)
     class Admin:
         list_display = ('matchpoint_id','max_items_out','max_overdue','max_fines','script_test')
     class Meta:
@@ -318,10 +308,11 @@ class CircMatrixTest(models.Model):
         ordering = ['matchpoint_id']
         verbose_name = _('Circ Matrix Test')
     def __str__(self):
-        return self.matchpoint_id + _(", Max Items Out: %s, Max Overdue: %s, Max Fines: %s") % (self.max_items_out, self.max_overdue, self.max_fines)
+        return _("%(mid)s, Max Items Out: %(iout)s, Max Overdue: %(odue)s, Max Fines: %(fines)s") % {
+            'mid': self.matchpoint_id, 'iout' : self.max_items_out, 'odue':self.max_overdue, 'fines':self.max_fines}
 
 class CircMatrixCircModTest(models.Model):
-    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', blank=False)
+    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', blank=False, edit_inline=True,core=True, num_in_admin=1)
     items_out = models.IntegerField(blank=False)
     circ_mod_id = models.ForeignKey(CircModifier, db_column='circ_mod', blank=False)
     class Admin:
@@ -332,10 +323,11 @@ class CircMatrixCircModTest(models.Model):
         ordering = ['matchpoint_id']
         verbose_name = _('Circ Matrix Items Out Cirulation Modifier Subtest')
     def __str__(self):
-        return self.matchpoint_id + _(", Restriction: ") + self.circ_mod_id
+        return _("%(mid)s, Restriction: %(mod)s") % {'mid': self.matchpoint_id,'mod':self.circ_mod_id}
 
 class CircMatrixRuleSet(models.Model):
-    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', blank=False, primary_key=True)
+    matchpoint_id =  models.ForeignKey(CircMatrixMatchpoint, db_column='matchpoint', 
+        blank=False, primary_key=True, edit_inline=True,core=True, num_in_admin=1)
     duration_rule_id = models.ForeignKey(RuleCircDuration, db_column='duration_rule', blank=False)
     recurring_fine_rule_id = models.ForeignKey('RuleRecurringFine', db_column='recurring_fine_rule', blank=False)
     max_fine_rule_id = models.ForeignKey('RuleMaxFine', db_column='max_fine_rule', blank=False)
@@ -347,7 +339,8 @@ class CircMatrixRuleSet(models.Model):
         ordering = ['matchpoint_id']
         verbose_name = _('Circ Matrix Rule Set')
     def __str__(self):
-        return _(", Duration: %s, Recurring Fine: %s, Max Fine: %s") % (self.duration_rule_id, self.recurring_fine_rule_id, self.max_fine_rule_id)
+        return _("Duration: %(dur)s, Recurring Fine: %(rfine)s, Max Fine: %(mfine)s") % {
+            'dur':self.duration_rule_id, 'rfine':self.recurring_fine_rule_id, 'mfine':self.max_fine_rule_id}
 
 class RuleMaxFine(models.Model):
     name = models.CharField(maxlength=CHAR_MAXLEN)
