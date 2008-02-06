@@ -1294,23 +1294,8 @@ sub check_user_perms3 {
 		$authtoken, $userid, 'VIEW_PERMISSION' );
 	return $evt if $evt;
 
-	my $tree = $self->get_org_tree();
-	return _find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
-}
-
-
-sub _find_highest_perm_org {
-	my ( $perm, $userid, $start_org, $org_tree ) = @_;
-	my $org = $apputils->find_org($org_tree, $start_org );
-
-	my $lastid = -1;
-	while( $org ) {
-		last if ($apputils->check_perms( $userid, $org->id, $perm )); # perm failed
-		$lastid = $org->id;
-		$org = $apputils->find_org( $org_tree, $org->parent_ou() );
-	}
-
-	return $lastid;
+	my $tree = $U->get_org_tree();
+	return $U->find_highest_perm_org( $perm, $userid, $target->ws_ou, $tree );
 }
 
 
@@ -1368,10 +1353,10 @@ sub check_user_perms4 {
 
 	my @arr;
 	return [] unless ref($perms);
-	my $tree = $self->get_org_tree();
+	my $tree = $U->get_org_tree();
 
 	for my $p (@$perms) {
-		push( @arr, _find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
+		push( @arr, $U->find_highest_perm_org( $p, $userid, $target->home_ou, $tree ) );
 	}
 	return \@arr;
 }
