@@ -278,6 +278,15 @@ class CircMatrixMatchpoint(models.Model):
     ref_flag = models.BooleanField(null=True)
     usr_age_lower_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True, blank=True)
     usr_age_upper_bound = models.CharField(maxlength=CHAR_MAXLEN, help_text=INTERVAL_HELP_TEXT, null=True, blank=True)
+
+    def save(self):
+        ''' Override to force None-ness on the interval fields '''
+        if self.usr_age_lower_bound == "":
+            self.usr_age_lower_bound = None
+        if self.usr_age_upper_bound == "":
+            self.usr_age_upper_bound = None
+        return models.Model.save(self)
+
     class Admin:
         search_fields = ['grp_id','org_unit_id','circ_modifier_id','marc_type_id','marc_form_id',
             'marc_vr_format_id','usr_age_lower_bound','usr_age_upper_bound']
