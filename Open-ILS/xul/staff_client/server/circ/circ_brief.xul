@@ -69,7 +69,7 @@
 						if (get_bool( r_circ.desk_renewal() ) ) r += 'DESK ';
 						if (get_bool(r_circ.opac_renewal() ) ) r += 'OPAC ';
 						if (get_bool(r_circ.phone_renewal() ) ) r += 'PHONE ';
-						$('renewal').value = r || 'No';
+						$('renewal').value = r || document.getElementById('circStrings').getString('staff.circ.checkout.no.btn');
 						g.patron_id = r_circ.usr(); $('add_billing').disabled = false;
 						g.network.simple_request('FM_AU_FLESHED_RETRIEVE_VIA_ID',[ ses(), r_circ.usr() ], function(preq) {
 							var r_au = preq.getResultObject();

@@ -1454,6 +1454,7 @@
 <!ENTITY staff.server.admin.stat_cat.update_success "Update succeeded">
 <!ENTITY staff.server.admin.upload_xacts.title "Upload Offline Transactions">
 <!ENTITY staff.server.admin.upload_xacts.header "Uploading transactions...">
+<!ENTITY staff.server.admin.upload_xacts.upload "Upload">
 <!ENTITY staff.circ.checkin_overlay.sel_clip.label "Copy to Clipboard">
 <!ENTITY staff.circ.checkin_overlay.sel_clip.accesskey "C">
 <!ENTITY staff.circ.checkin_overlay.sel_bucket.label "Add to Item Bucket">

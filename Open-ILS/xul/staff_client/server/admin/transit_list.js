@@ -34,7 +34,7 @@ admin.transit_list.prototype = {
 				false
 			);
 		} else {
-			throw('Missing library list.\n');
+			throw(document.getElementById('adminStrings').getString('staff.admin.transit_list.missing_list') + '\n');
 		}
 
 		file = new util.file('transit_list_prefs.'+obj.data.server_unadorned);
@@ -76,7 +76,7 @@ admin.transit_list.prototype = {
 				if (util.date.check('YYYY-MM-DD',_string[1]+'-'+_string[2]+'-'+_string[3])) {
 					_date = util.date.buildDate( _string[1], _string[2], _string[3], 0, 0, 0);
 				} else {
-					alert('Invalid Date (' + _string + '), setting to Today'); 
+					alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.invalid_date', [_string])); 
 					_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 				}
 			}
@@ -89,7 +89,7 @@ admin.transit_list.prototype = {
 			}
 
 			if (! util.date.check('YYYY-MM-DD',util.date.formatted_date(_date,"%F")) ) { 
-				alert('Invalid Date (' + _date + ',' + util.date.formatted_date(_date,"%F") + '), setting to Today'); 
+				alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.invalid_date', [_date, util.date.formatted_date(_date,"%F")])); 
 				_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 			}
 				
@@ -99,7 +99,7 @@ admin.transit_list.prototype = {
 
 			return util.date.formatted_date(_date,'%{iso8601}');
 		} catch(E) {
-			try { obj.error.standard_unexpected_error_alert('processing date',E); } catch(F) { alert(E); }
+			try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.date_processing.error'),E); } catch(F) { alert(E); }
 			_date = new Date(); _date = util.date.buildDate( _date.getFullYear(), _date.getMonth()+1, _date.getDate(), 0, 0, 0); // morning
 			return util.date.formatted_date(_date,'%{iso8601}');
 		}
@@ -151,16 +151,16 @@ admin.transit_list.prototype = {
 						if (rows.length > 0) {
 							exec.chain( rows );
 						} else {
-							alert('No matching transits.');
+							alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.no_match'));
 						}
 
 					} catch(E) {
-						try { obj.error.standard_unexpected_error_alert('retrieving transits',E); } catch(F) { alert(E); }
+						try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.retrieving_transit.error'),E); } catch(F) { alert(E); }
 					}
 				}
 			);
 		} catch(E) {
-			try { obj.error.standard_unexpected_error_alert('pre-retrieving transits',E); } catch(F) { alert(E); }
+			try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.preretrieving_transit.error'),E); } catch(F) { alert(E); }
 		}
 	},
 
@@ -227,7 +227,7 @@ admin.transit_list.prototype = {
 							function(transit,hold) { return obj.get_rest_of_row_given_transit_and_hold(params,transit,hold); }
 						);
 					} catch(E) {
-						try { obj.error.standard_unexpected_error_alert('retrieving row',E); } catch(F) { alert(E); }
+						try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.retrieving_row.error'),E); } catch(F) { alert(E); }
 					}
 				},
 				'on_select' : function(ev) {
@@ -281,7 +281,7 @@ admin.transit_list.prototype = {
 									var r_ahr = req3.getResultObject();
 									if (typeof r_ahr.ilsevent != 'undefined') throw(r_ahr);
 									if (r_ahr.length == 0) {
-										try { obj.error.standard_unexpected_error_alert('Empty array returned by hold retrieve.  retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
+										try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getString('staff.admin.transit_list.empty_array.error') + document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.empty_array.error', [r_atc.hold(), transit_id]),E); } catch(F) { alert(E); }
 										do_this(r_atc,null);
 									} else {
 										if (instanceOf(r_ahr[0],ahr)) {
@@ -291,7 +291,7 @@ admin.transit_list.prototype = {
 										}
 									}
 								} catch(E) {
-									try { obj.error.standard_unexpected_error_alert('retrieving hold id = ' + r_atc.hold() + ' for transit id = ' + transit_id,E); } catch(F) { alert(E); }
+									try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.empty_array.error', [r_atc.hold(), transit_id]),E); } catch(F) { alert(E); }
 									do_this(r_atc,null);
 								}
 							}
@@ -301,7 +301,7 @@ admin.transit_list.prototype = {
 					}
 
 				} catch(E) {
-					try { obj.error.standard_unexpected_error_alert('retrieving transit id = ' + transit_id,E); } catch(F) { alert(E); }
+					try { obj.error.standard_unexpected_error_alert(document.getElementById('adminStrings').getFormattedString('staff.admin.transit_list.transit_id.error', [transit_id]),E); } catch(F) { alert(E); }
 				}
 			}
 		);
