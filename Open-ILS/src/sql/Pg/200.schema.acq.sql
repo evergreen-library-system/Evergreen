@@ -11,7 +11,7 @@ CREATE TABLE acq.currency_type (
 
 -- Use the ISO 4217 abbreviations for currency codes
 INSERT INTO acq.currency_type (code, label) VALUES ('USD','US Dollars');
-INSERT INTO acq.currency_type (code, label) VALUES ('CAD','Canadian Dollars');
+INSERT INTO acq.currency_type (code, label) VALUES ('CAN','Canadian Dollars');
 INSERT INTO acq.currency_type (code, label) VALUES ('EUR','Euros');
 
 CREATE TABLE acq.exchange_rate (
@@ -33,13 +33,6 @@ CREATE TABLE acq.provider (
 	CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner)
 );
 
-CREATE TABLE acq.provider_share_map (
-	id		SERIAL	PRIMARY KEY,
-	provider	INT	NOT NULL REFERENCES acq.provider (id),
-	org		INT	NOT NULL REFERENCES actor.org_unit (id),
-	CONSTRAINT provider_share_once_per_owner UNIQUE (provider,org)
-);
-
 CREATE TABLE acq.funding_source (
 	id		SERIAL	PRIMARY KEY,
 	name		TEXT	NOT NULL,
@@ -48,27 +41,11 @@ CREATE TABLE acq.funding_source (
 	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
 
-CREATE TABLE acq.funding_source_share_map (
-	id		SERIAL	PRIMARY KEY,
-	funding_source		INT	NOT NULL REFERENCES acq.funding_source (id),
-	org		INT	NOT NULL REFERENCES actor.org_unit (id),
-	CONSTRAINT funding_source_share_once_per_owner UNIQUE (funding_source,org)
-);
-
 CREATE TABLE acq.funding_source_credit (
 	id	SERIAL	PRIMARY KEY,
 	funding_source    INT     NOT NULL REFERENCES acq.funding_source (id),
 	amount	NUMERIC	NOT NULL,
 	note	TEXT
-);
-
-CREATE TABLE acq.funding_source_debit (
-	id			SERIAL	PRIMARY KEY,
-	funding_source			INT     NOT NULL REFERENCES acq.funding_source (id),
-	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
-	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
-	amount			NUMERIC	NOT NULL,
-	encumberance		BOOL	NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE acq.picklist (
@@ -214,6 +191,15 @@ CREATE TABLE acq.fund (
     name    TEXT    NOT NULL,
     year    INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
     CONSTRAINT name_once_per_org_year UNIQUE (org,name,year)
+);
+
+CREATE TABLE acq.fund_debit (
+	id			SERIAL	PRIMARY KEY,
+	fund			INT     NOT NULL REFERENCES acq.fund (id),
+	origin_amount		NUMERIC	NOT NULL,  -- pre-exchange-rate amount
+	origin_currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code),
+	amount			NUMERIC	NOT NULL,
+	encumberance		BOOL	NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE acq.fund_allocation (
