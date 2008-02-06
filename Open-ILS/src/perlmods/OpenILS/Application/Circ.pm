@@ -337,6 +337,8 @@ sub reopen_xact {
                 or return $e->die_event;
         } 
     }
+
+    return undef;
 }
 
 
