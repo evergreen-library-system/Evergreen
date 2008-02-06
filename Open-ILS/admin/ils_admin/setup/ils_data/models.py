@@ -270,7 +270,7 @@ class RuleCircDuration(models.Model):
 class CircMatrixMatchpoint(models.Model):
     active = models.BooleanField(blank=False, default=True)
     org_unit_id = models.ForeignKey(OrgUnit, db_column='org_unit', blank=False)
-    grp_id = models.ForeignKey(GrpTree, db_column='grp', blank=False)
+    grp_id = models.ForeignKey(GrpTree, db_column='grp', blank=False, verbose_name=_("User Group"))
     circ_modifier_id = models.ForeignKey(CircModifier, db_column='circ_modifier', null=True,blank=True)
     marc_type_id = models.ForeignKey('ItemTypeMap', db_column='marc_type', null=True,blank=True)
     marc_form_id = models.ForeignKey('ItemFormMap', db_column='marc_form', null=True,blank=True)
