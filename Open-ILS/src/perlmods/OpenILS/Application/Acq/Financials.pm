@@ -35,7 +35,7 @@ sub create_funding_source {
     my($self, $conn, $auth, $funding_source) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_FUNDING_SOURCE', $funding_source->owner);
+    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner);
     $e->create_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return $funding_source->id;
@@ -60,7 +60,7 @@ sub delete_funding_source {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_FUNDING_SOURCE', $funding_source->owner);
+    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner);
     $e->delete_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return 1;
@@ -84,7 +84,8 @@ sub retrieve_funding_source {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_FUNDING_SOURCE', $funding_source->owner);
+    return $e->event unless $e->allowed(
+        ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner); 
     return $funding_source;
 }
 
@@ -95,20 +96,25 @@ __PACKAGE__->register_method(
         desc => 'Retrieves all the funding_sources associated with an org unit that the requestor has access to see',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Org Unit ID.  If no ID is provided, this method returns the 
+            {desc => 'List of org Unit IDs.  If no IDs are provided, this method returns the 
                 full set of funding sources this user has permission to view', type => 'number'},
+            {desc => q/Limiting permission.  this permission is used find the work-org tree from which  
+                the list of orgs is generated if no org ids are provided.  
+                The default is ADMIN_FUNDING_SOURCE/, type => 'string'},
         ],
         return => {desc => 'The funding_source objects on success, empty array otherwise'}
     }
 );
 
 sub retrieve_org_funding_sources {
-    my($self, $conn, $auth, $org_id) = @_;
+    my($self, $conn, $auth, $org_id_list, $limit_perm) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    my $org_ids = ($org_id) ? [$org_id] :
-        $U->find_highest_work_orgs($e, 'VIEW_FUNDING_SOURCE', {descendants =>1});
+    $limit_perm ||= 'ADMIN_FUNDING_SOURCE';
+
+    my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
+        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
     return $e->search_acq_funding_source({owner => $org_ids});
@@ -135,7 +141,7 @@ sub create_fund {
     my($self, $conn, $auth, $fund) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org);
     $e->create_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return $fund->id;
@@ -160,7 +166,7 @@ sub delete_fund {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org);
     $e->delete_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return 1;
@@ -184,7 +190,8 @@ sub retrieve_fund {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_FUND', $fund->org);
+    return $e->event unless
+        $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org);
     return $fund;
 }
 
@@ -195,28 +202,66 @@ __PACKAGE__->register_method(
         desc => 'Retrieves all the funds associated with an org unit',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Org Unit ID', type => 'number'},
-            {desc => 
-                'Options.  Options include "children", which includes
-                funds for descendant orgs in addition to the requested org', 
-            type => 'hash'},
+            {desc => 'List of org Unit IDs.  If no IDs are provided, this method returns the 
+                full set of funding sources this user has permission to view', type => 'number'},
+            {desc => q/Limiting permission.  this permission is used find the work-org tree from which  
+                the list of orgs is generated if no org ids are provided.  
+                The default is ADMIN_FUND/, type => 'string'},
         ],
         return => {desc => 'The fund objects on success, Event on failure'}
     }
 );
 
 sub retrieve_org_funds {
-    my($self, $conn, $auth, $org_id, $options) = @_;
+    my($self, $conn, $auth, $org_id_list, $limit_perm) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('VIEW_FUND', $org_id);
 
-    my $search = {org => $org_id};
-    $search = {org => $U->get_org_descendents($org_id)} if $$options{children};
-    my $funds = $e->search_acq_fund($search) or return $e->event;
+    $limit_perm ||= 'ADMIN_FUND';
 
-    return $funds; 
+    my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
+        $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
+    return [] unless @$org_ids;
+    return $e->search_acq_fund({org => $org_ids});
 }
+
+__PACKAGE__->register_method(
+	method => 'retrieve_fund_summary',
+	api_name	=> 'open-ils.acq.fund.summary.retrieve',
+	signature => {
+        desc => 'Returns a summary of credits/debits/encumberances for a fund',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'fund id', type => 'number' }
+        ],
+        return => {desc => 'A hash of summary information, Event on failure'}
+    }
+);
+
+sub retrieve_fund_summary {
+    my($self, $conn, $auth, $fund_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
+    return $e->event unless $e->allowed('MANAGE_FUND', $fund->org);
+
+    my $at = $e->search_acq_fund_allocation_total({fund => $fund_id})->[0];
+    my $dt = $e->search_acq_fund_debit_total({fund => $fund_id})->[0];
+    my $et = $e->search_acq_fund_encumberance_total({fund => $fund_id})->[0];
+    my $st = $e->search_acq_fund_spent_total({fund => $fund_id})->[0];
+    my $cb = $e->search_acq_fund_combined_balance({fund => $fund_id})->[0];
+    my $sb = $e->search_acq_fund_spent_balance({fund => $fund_id})->[0];
+
+    return {
+        allocation_total => ($at) ? $at->amount : 0,
+        debit_total => ($dt) ? $dt->amount : 0,
+        encumberance_total => ($et) ? $et->amount : 0,
+        spent_total => ($st) ? $st->amount : 0,
+        combined_balance => ($cb) ? $cb->amount : 0,
+        spent_balance => ($sb) ? $sb->amount : 0,
+    };
+}
+
 
 # ---------------------------------------------------------------
 # fund Allocations
@@ -240,8 +285,14 @@ sub create_fund_alloc {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
 
+    # this action is equivalent to both debiting a funding source and crediting a fund
+
+    my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
-    return $e->die_event unless $e->allowed('CREATE_FUND_ALLOCATION', $fund->org);
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
 
     $fund_alloc->allocator($e->requestor->id);
     $e->create_acq_fund_allocation($fund_alloc) or return $e->die_event;
@@ -269,8 +320,13 @@ sub delete_fund_alloc {
     return $e->die_event unless $e->checkauth;
 
     my $fund_alloc = $e->retrieve_acq_fund_allocation($fund_alloc_id) or return $e->die_event;
+
+    my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_FUND_ALLOCATION', $fund->org);
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
 
     $e->delete_acq_fund_allocation($fund_alloc) or return $e->die_event;
     $e->commit;
@@ -295,109 +351,17 @@ sub retrieve_fund_alloc {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $fund_alloc = $e->retrieve_acq_fund_allocation($fund_alloc_id) or return $e->event;
-    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_FUND_ALLOCATION', $fund->org);
+
+    my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
+        or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+
+    my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
+
     return $fund_alloc;
 }
 
-# ----------------------------------------------------------------------------
-# Funds
-# ----------------------------------------------------------------------------
-
-__PACKAGE__->register_method(
-	method => 'create_fund',
-	api_name	=> 'open-ils.acq.fund.create',
-	signature => {
-        desc => 'Creates a new fund',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'fund object to create', type => 'object'}
-        ],
-        return => {desc => 'The ID of the new fund'}
-    }
-);
-
-sub create_fund {
-    my($self, $conn, $auth, $fund) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_FUND', $fund->org);
-    $e->create_acq_fund($fund) or return $e->die_event;
-    $e->commit;
-    return $fund->id;
-}
-
-__PACKAGE__->register_method(
-	method => 'delete_fund',
-	api_name	=> 'open-ils.acq.fund.delete',
-	signature => {
-        desc => 'Deletes a fund',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'fund ID', type => 'number'}
-        ],
-        return => {desc => '1 on success, Event on failure'}
-    }
-);
-
-sub delete_fund {
-    my($self, $conn, $auth, $fund_id) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$auth);
-    return $e->die_event unless $e->checkauth;
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('DELETE_FUND', $fund->org);
-    $e->delete_acq_fund($fund) or return $e->die_event;
-    $e->commit;
-    return 1;
-}
-
-__PACKAGE__->register_method(
-	method => 'retrieve_fund',
-	api_name	=> 'open-ils.acq.fund.retrieve',
-	signature => {
-        desc => 'Retrieves a new fund',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'fund ID', type => 'number'}
-        ],
-        return => {desc => 'The fund object on success, Event on failure'}
-    }
-);
-
-sub retrieve_fund {
-    my($self, $conn, $auth, $fund_id) = @_;
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
-    my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_FUND', $fund->org);
-    return $fund;
-}
-
-__PACKAGE__->register_method(
-	method => 'retrieve_org_funds',
-	api_name	=> 'open-ils.acq.fund.org.retrieve',
-	signature => {
-        desc => 'Retrieves all the funds associated with an org unit that the requestor has access to see',
-        params => [
-            {desc => 'Authentication token', type => 'string'},
-            {desc => 'Org Unit ID.  If no ID is provided, this method returns the 
-                full set of funds this user has permission to view', type => 'number'},
-        ],
-        return => {desc => 'The fund objects on success, empty array otherwise'}
-    }
-);
-
-sub retrieve_org_funds {
-    my($self, $conn, $auth, $org_id) = @_;
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
-
-    my $org_ids = ($org_id) ? [$org_id] :
-        $U->find_highest_work_orgs($e, 'VIEW_FUND', {descendants =>1});
-
-    return [] unless @$org_ids;
-    return $e->search_acq_fund({org => $org_ids});
-}
 
 # ----------------------------------------------------------------------------
 # Currency
