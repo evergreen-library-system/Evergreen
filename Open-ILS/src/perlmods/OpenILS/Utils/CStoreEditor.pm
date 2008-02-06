@@ -375,20 +375,10 @@ sub perm_checked {
 # $e->event is set and undef is returned
 # The perm user is $e->requestor->id and perm org defaults to the requestor's
 # ws_ou
-# If this perm at the given org has already been verified, true is returned
-# and the perm is not re-checked
+# if perm is an array of perms, method will return true at the first allowed
+# permission.  If none of the perms are allowed, the perm_failure event
+# is created with the last perm to fail
 # -----------------------------------------------------------------------------
-=head
-sub allowed {
-	my( $self, $perm, $org ) = @_;
-	my $uid = $self->requestor->id;
-	$org ||= $self->requestor->ws_ou;
-	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
-	return 1 if $self->perm_checked($perm, $org); 
-	return $self->checkperm($uid, $org, $perm);
-}
-=cut
-
 my $PERM_QUERY = {
     select => {
         au => [ {
@@ -406,20 +396,25 @@ sub allowed {
 	my( $self, $perm, $org ) = @_;
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
-	$self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
 
-    # fill in the search hash
-    $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
-    $PERM_QUERY->{where}->{id} = $uid;
-
-    return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+    my $perms = [$perm] unless ref($perm) eq 'ARRAY';
+    my $perm;
+    for $perm (@$perms) {
+	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
+    
+        # fill in the search hash
+        $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
+        $PERM_QUERY->{where}->{id} = $uid;
+    
+        return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+    }
 
     # set the perm failure event if the permission check returned false
 	my $e = OpenILS::Event->new('PERM_FAILURE', ilsperm => $perm, ilspermloc => $org);
 	$self->event($e);
 	return undef;
-
 }
+
 
 =head
 sub checkperm {
