@@ -1036,33 +1036,6 @@ sub get_org_tree {
 }
 
 
-# turns an org list into an org tree
-sub build_org_tree {
-
-	my( $self, $orglist) = @_;
-
-	return $orglist unless ref $orglist;
-    return $$orglist[0] if @$orglist == 1;
-
-	my @list = sort { 
-		$a->ou_type <=> $b->ou_type ||
-		$a->name cmp $b->name } @$orglist;
-
-	for my $org (@list) {
-
-		next unless ($org and defined($org->parent_ou));
-		my ($parent) = grep { $_->id == $org->parent_ou } @list;
-		next unless $parent;
-
-		$parent->children([]) unless defined($parent->children); 
-		push( @{$parent->children}, $org );
-	}
-
-	return $list[0];
-
-}
-
-
 __PACKAGE__->register_method(
 	method	=> "get_org_descendants",
 	api_name	=> "open-ils.actor.org_tree.descendants.retrieve"
@@ -1075,7 +1048,7 @@ sub get_org_descendants {
 			"open-ils.storage", 
 			"open-ils.storage.actor.org_unit.descendants.atomic",
 			$org_unit, $depth );
-	return $self->build_org_tree($orglist);
+	return $U->build_org_tree($orglist);
 }
 
 
@@ -1091,7 +1064,7 @@ sub get_org_ancestors {
 			"open-ils.storage", 
 			"open-ils.storage.actor.org_unit.ancestors.atomic",
 			$org_unit, $depth );
-	return $self->build_org_tree($orglist);
+	return $U->build_org_tree($orglist);
 }
 
 
