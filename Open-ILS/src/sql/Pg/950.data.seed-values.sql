@@ -828,7 +828,11 @@ INSERT INTO permission.perm_list VALUES
     (166, 'CREATE_PROVIDER', oils_i18n_gettext('Allow a user to create a new provider')),
     (167, 'DELETE_PROVIDER', oils_i18n_gettext('Allow a user to delate a provider')),
     (168, 'VIEW_PROVIDER', oils_i18n_gettext('Allow a user to view a provider')),
-    (169, 'UPDATE_PROVIDER', oils_i18n_gettext('Allow a user to update a provider'));
+    (169, 'UPDATE_PROVIDER', oils_i18n_gettext('Allow a user to update a provider')),
+    (170, 'ADMIN_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to create/view/update/delete a funding source')),
+    (171, 'ADMIN_FUND', oils_i18n_gettext('Allow a user to create/view/update/delete a fund')),
+    (172, 'MANAGE_FUNDING_SOURCE', oils_i18n_gettext('Allow a user to view/credit/debit a funding source')),
+    (173, 'MANAGE_FUND', oils_i18n_gettext('Allow a user to view/credit/debit a fund'));
 
 INSERT INTO permission.grp_tree (id, name, parent, description, perm_interval, usergroup, application_perm) VALUES
 	(1, 'Users', NULL, NULL, '3 years', FALSE, 'group_application.user'),
