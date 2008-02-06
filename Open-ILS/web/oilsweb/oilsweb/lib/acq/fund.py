@@ -21,10 +21,10 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(fund)
         return fund
 
-    def retrieve_org_funds(self):
+    def retrieve_org_funds(self, limit_perm=None):
         funds = self.ses.request(
             'open-ils.acq.fund.org.retrieve', 
-            self.request_mgr.ctx.core.authtoken).recv().content()
+            self.request_mgr.ctx.core.authtoken, None, limit_perm).recv().content()
         oils.event.Event.parse_and_raise(funds)
         return funds
 
@@ -43,10 +43,10 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(source)
         return source
 
-    def retrieve_org_fund_sources(self):
+    def retrieve_org_fund_sources(self, limit_perm=None):
         sources = self.ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            self.request_mgr.ctx.core.authtoken).recv().content()
+            self.request_mgr.ctx.core.authtoken, None, limit_perm).recv().content()
         oils.event.Event.parse_and_raise(sources)
         return sources
 
@@ -58,4 +58,10 @@ class FundMgr(object):
         oils.event.Event.parse_and_raise(source_id)
         return source_id
 
+    def create_allocation(self, alloc):
+        alloc_id = self.ses.request(
+            'open-ils.acq.fund_allocation.create',
+            self.request_mgr.ctx.core.authtoken, alloc).recv().content()
+        oils.event.Event.parse_and_raise(alloc_id)
+        return alloc_id
 

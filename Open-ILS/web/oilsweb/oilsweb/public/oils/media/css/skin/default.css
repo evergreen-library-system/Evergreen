@@ -28,7 +28,8 @@ body { margin-top: 0px; padding-top: 0px;}
 /* general purpose form table */
 .oils-admin-table { width: 100%; }
 .oils-admin-table td { padding: 4px; }
-.oils-admin-label { width: 20%; }
+.oils-admin-table textarea { width: 400px; height: 40px; overflow:auto;}
+.oils-admin-label { width: auto; }
 
 .label { margin: 1px; }
 

@@ -33,16 +33,28 @@ class AcqContext(SubContext):
         self.currency_types = ContextItem()
 
         self.fund = ContextItem()
+        self.fund_id = ContextItem(cgi_name='acq.fi')
         self.fund_list = ContextItem()
         self.fund_name = ContextItem(cgi_name='acq.fn')
         self.fund_year = ContextItem(cgi_name='acq.fc')
         self.fund_org = ContextItem(cgi_name='acq.fo')
+        self.fund_summary = ContextItem()
 
         self.fund_source = ContextItem()
         self.fund_source_list = ContextItem()
         self.fund_source_name = ContextItem(cgi_name='acq.fn')
         self.fund_source_currency_type = ContextItem(cgi_name='acq.fc')
         self.fund_source_owner = ContextItem(cgi_name='acq.fo')
+
+
+        self.fund_allocation = ContextItem()
+        self.fund_allocation_list = ContextItem()
+        self.fund_allocation_source= ContextItem(cgi_name='acq.fas')
+        self.fund_allocation_fund = ContextItem(cgi_name='acq.faf')
+        self.fund_allocation_amount = ContextItem(cgi_name='acq.faa')
+        self.fund_allocation_percent = ContextItem(cgi_name='acq.fap')
+        self.fund_allocation_note = ContextItem(cgi_name='acq.fan')
+
 
         # -------------------------------------------------------------
         # utility functions
