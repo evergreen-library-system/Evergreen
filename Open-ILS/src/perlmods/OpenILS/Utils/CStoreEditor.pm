@@ -392,8 +392,21 @@ my $PERM_QUERY = {
     where => {},
 };
 
+my $OBJECT_PERM_QUERY = {
+    select => {
+        au => [ {
+            transform => 'permission.usr_has_object_perm',
+            alias => 'has_perm',
+            column => 'id',
+            params => []
+        } ]
+    },
+    from => 'au',
+    where => {},
+};
+
 sub allowed {
-	my( $self, $perm, $org ) = @_;
+	my( $self, $perm, $org, $object ) = @_;
 	my $uid = $self->requestor->id;
 	$org ||= $self->requestor->ws_ou;
 
@@ -402,11 +415,16 @@ sub allowed {
     for $perm (@$perms) {
 	    $self->log(I, "checking perms user=$uid, org=$org, perm=$perm");
     
-        # fill in the search hash
-        $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
-        $PERM_QUERY->{where}->{id} = $uid;
-    
-        return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+        if($object) {
+            $OBJECT_PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $object->json_hint, $object->id, $org];
+            $OBJECT_PERM_QUERY->{where}->{id} = $uid;
+            return 1 if $U->is_true($self->json_query($OBJECT_PERM_QUERY)->[0]->{has_perm});
+
+        } else {
+            $PERM_QUERY->{select}->{au}->[0]->{params} = [$perm, $org];
+            $PERM_QUERY->{where}->{id} = $uid;
+            return 1 if $U->is_true($self->json_query($PERM_QUERY)->[0]->{has_perm});
+        }
     }
 
     # set the perm failure event if the permission check returned false
