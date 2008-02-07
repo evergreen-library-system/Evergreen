@@ -191,7 +191,7 @@ int osrfAppInitialize() {
 			char* readonly = osrfHashGet(idlClass, "readonly");
 			if (	readonly &&
 				!strncasecmp( "true", readonly, 4) &&
-				( *method_type == 's' || *method_type == 'r' || *method_type == 'i')
+				( *method_type == 'c' || *method_type == 'u' || *method_type == 'd')
 			) continue;
 
 			method_meta = osrfNewHash();
