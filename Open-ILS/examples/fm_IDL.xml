@@ -1073,7 +1073,7 @@
 			<field reporter:label="Patron" name="usr" oils_obj:array_position="24" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field reporter:label="Transaction Finish Date/Time" name="xact_finish" oils_obj:array_position="25" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Check Out Date/Time" name="xact_start" oils_obj:array_position="26" oils_persist:virtual="false" reporter:datatype="timestamp" />
-			<field reporter:label="Record Creation Date/Time" name="create_date" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="timestamp" />
+			<field reporter:label="Record Creation Date/Time" name="create_time" oils_obj:array_position="27" oils_persist:virtual="false" reporter:datatype="timestamp" />
 			<field reporter:label="Transaction Billings" name="billings" oils_obj:array_position="28" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Transaction Payments" name="payments" oils_obj:array_position="29" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Base Transaction" name="billable_transaction" oils_obj:array_position="30" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -2770,7 +2770,7 @@
 			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
 			<field name="id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="id" />
 			<field name="owner" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="link"/>
-			<field name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="tiemstamp"/>
+			<field name="create_time" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="timestamp"/>
 			<field name="template" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="data" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
 			<field name="folder" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="link"/>
