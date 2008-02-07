@@ -111,8 +111,8 @@
                                 if (end_comment >= 0) line = line.substring(0, end_comment);
 
                                 // and line concatenation
-                                if (line.charAt(line.lenth - 1) == '\\') {
-                                    line = line.substring(0,line.lenth - 1);
+                                if (line.charAt(line.length - 1) == '\\') {
+                                    line = line.substring(0,line.length - 1);
                                     continue;
                                 }
 
