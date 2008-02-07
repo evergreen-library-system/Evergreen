@@ -35,7 +35,7 @@ sub create_funding_source {
     my($self, $conn, $auth, $funding_source) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner);
+    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner, $funding_source);
     $e->create_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return $funding_source->id;
@@ -60,7 +60,7 @@ sub delete_funding_source {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner);
+    return $e->die_event unless $e->allowed('ADMIN_FUNDING_SOURCE', $funding_source->owner, $funding_source);
     $e->delete_acq_funding_source($funding_source) or return $e->die_event;
     $e->commit;
     return 1;
@@ -85,7 +85,7 @@ sub retrieve_funding_source {
     return $e->event unless $e->checkauth;
     my $funding_source = $e->retrieve_acq_funding_source($funding_source_id) or return $e->event;
     return $e->event unless $e->allowed(
-        ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner); 
+        ['ADMIN_FUNDING_SOURCE','MANAGE_FUNDING_SOURCE'], $funding_source->owner, $funding_source); 
     return $funding_source;
 }
 
@@ -141,7 +141,7 @@ sub create_fund {
     my($self, $conn, $auth, $fund) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org, $fund);
     $e->create_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return $fund->id;
@@ -166,7 +166,7 @@ sub delete_fund {
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->die_event;
-    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('ADMIN_FUND', $fund->org, $fund);
     $e->delete_acq_fund($fund) or return $e->die_event;
     $e->commit;
     return 1;
@@ -191,7 +191,7 @@ sub retrieve_fund {
     return $e->event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
     return $e->event unless
-        $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org);
+        $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org, $fund);
     $fund->summary(retrieve_fund_summary_impl($e, $fund))
         if $$options{flesh_summary};
     return $fund;
@@ -255,7 +255,7 @@ sub retrieve_fund_summary {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
-    return $e->event unless $e->allowed('MANAGE_FUND', $fund->org);
+    return $e->event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
     return retrieve_fund_summary_impl($e, $fund);
 }
 
@@ -307,10 +307,10 @@ sub create_fund_alloc {
 
     my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
         or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner, $source);
 
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
 
     $fund_alloc->allocator($e->requestor->id);
     $e->create_acq_fund_allocation($fund_alloc) or return $e->die_event;
@@ -341,10 +341,10 @@ sub delete_fund_alloc {
 
     my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
         or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner, $source);
 
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
 
     $e->delete_acq_fund_allocation($fund_alloc) or return $e->die_event;
     $e->commit;
@@ -372,10 +372,10 @@ sub retrieve_fund_alloc {
 
     my $source = $e->retrieve_acq_funding_source($fund_alloc->funding_source)
         or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner);
+    return $e->die_event unless $e->allowed('MANAGE_FUNDING_SOURCE', $source->owner, $source);
 
     my $fund = $e->retrieve_acq_fund($fund_alloc->fund) or return $e->die_event;
-    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org);
+    return $e->die_event unless $e->allowed('MANAGE_FUND', $fund->org, $fund);
 
     return $fund_alloc;
 }
