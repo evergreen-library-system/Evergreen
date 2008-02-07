@@ -31,7 +31,7 @@ sub create_provider {
     my($self, $conn, $auth, $provider) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CREATE_PROVIDER', $provider->owner);
+    return $e->die_event unless $e->allowed('CREATE_PROVIDER', $provider->owner, $provider);
     $e->create_acq_provider($provider) or return $e->die_event;
     $e->commit;
     return $provider->id;
@@ -57,7 +57,7 @@ sub retrieve_provider {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $provider = $e->retrieve_acq_provider($provider_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_PROVIDER', $provider->owner);
+    return $e->event unless $e->allowed('VIEW_PROVIDER', $provider->owner, $provider);
     return $provider;
 }
 
