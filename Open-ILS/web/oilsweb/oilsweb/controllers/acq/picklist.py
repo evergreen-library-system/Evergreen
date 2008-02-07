@@ -17,6 +17,19 @@ class PicklistController(BaseController):
         r.ctx.acq.picklist = pl_manager.picklist
         return r.render('acq/picklist/view.html')
 
+    def create(self, **kwargs):
+        r = RequestMgr()
+        if r.ctx.acq.picklist_name:
+            picklist = osrf.net_obj.NetworkObject.acqpl()
+            picklist.name(r.ctx.acq.picklist_name)
+            picklist.owner(r.ctx.core.user.id())
+            picklist_id = osrf.ses.ClientSession.atomic_request(
+                oils.const.OILS_APP_ACQ,
+                'open-ils.acq.picklist.create', r.ctx.core.authtoken, picklist)
+            oils.event.Event.parse_and_raise(picklist_id)
+            return redirect_to(controller='acq/picklist', action='view', id=picklist_id)
+        return r.render('acq/picklist/create.html')
+
     def view_entry(self, **kwargs):
         r = RequestMgr()
         pl_manager = oilsweb.lib.acq.picklist.PicklistMgr(r)

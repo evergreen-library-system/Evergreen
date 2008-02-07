@@ -1,4 +1,4 @@
-import osrf.ses, oils.utils.csedit, pylons.config, oils.utils.utils, oils.event
+import osrf.ses, oils.utils.csedit, pylons.config, oils.utils.utils, oils.event, oils.const
 from gettext import gettext as _
 
 class AuthException(Exception):
@@ -72,5 +72,25 @@ class User(object):
             return None
         self.ctx.perm_tree[perm] = oils.org.OrgUtil.get_union_tree(perm_orgs)
         return self.ctx.perm_tree[perm]
+
+    def fetch_user_setting(self, setting):
+        setting = osrf.ses.ClientSession.atomic_request(
+            oils.const.OILS_APP_ACTOR,
+            'open-ils.actor.patron.settings.retrieve',
+            self.ctx.authtoken, self.ctx.user.id(), setting)
+        oils.event.Event.parse_and_raise(setting)
+        return setting
+
+    def get_date_format(self):
+        setting = self.fetch_user_setting('common.date_format')
+        if not setting:
+            return '%Y-%m-%d'
+        return setting
+
+    def get_datetime_format(self):
+        setting = self.fetch_user_setting('common.datetime_format')
+        if not setting:
+            return '%Y-%m-%d %H:%M'
+        return setting
 
 

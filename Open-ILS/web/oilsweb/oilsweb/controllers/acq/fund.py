@@ -72,12 +72,12 @@ class FundController(BaseController):
         if r.ctx.acq.fund_allocation_source:
             return self._allocate(r, ses)
 
-        fund = self._retrieve_fund(r, ses, fund_id)
+        fund = self._retrieve_fund(r, ses, r.ctx.acq.fund_id)
 
-        source_list = self.ses.request(
+        source_list = ses.request(
             'open-ils.acq.funding_source.org.retrieve', 
-            self.request_mgr.ctx.core.authtoken, None, 'MANAGE_FUNDING_SOURCE').recv().content()
-        oils.event.Event.parse_and_raise(sources)
+            r.ctx.core.authtoken, None, 'MANAGE_FUNDING_SOURCE').recv().content()
+        oils.event.Event.parse_and_raise(source_list)
 
         r.ctx.acq.fund = fund
         r.ctx.acq.fund_source_list = source_list

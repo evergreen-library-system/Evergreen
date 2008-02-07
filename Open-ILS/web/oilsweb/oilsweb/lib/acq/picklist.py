@@ -1,5 +1,7 @@
 import osrf.cache, osrf.json, osrf.ses, osrf.net_obj
 import oils.const, oils.utils.utils, oils.event
+import oilsweb.lib.user
+import mx.DateTime.ISO
 
 class PicklistMgr(object):
     def __init__(self, request_mgr, **kwargs):
@@ -15,6 +17,17 @@ class PicklistMgr(object):
 
         oils.event.Event.parse_and_raise(picklist)
         self.picklist = picklist
+
+        usermgr = oilsweb.lib.user.User(self.request_mgr.ctx.core)
+
+        picklist.create_time(
+            mx.DateTime.ISO.ParseAny(
+            picklist.create_time()).strftime(usermgr.get_date_format()))
+
+        picklist.edit_time(
+            mx.DateTime.ISO.ParseAny(
+            picklist.edit_time()).strftime(usermgr.get_date_format()))
+           
 
     def delete(self, picklist_id=None):
         picklist_id = picklist_id or self.id
@@ -63,6 +76,18 @@ class PicklistMgr(object):
             'open-ils.acq.picklist.user.retrieve', 
             self.request_mgr.ctx.core.authtoken).recv().content()
         oils.event.Event.parse_and_raise(list)
+
+        usermgr = oilsweb.lib.user.User(self.request_mgr.ctx.core)
+
+        for picklist in list:
+            picklist.create_time(
+                mx.DateTime.ISO.ParseAny(
+                picklist.create_time()).strftime(usermgr.get_date_format()))
+    
+            picklist.edit_time(
+                mx.DateTime.ISO.ParseAny(
+                picklist.edit_time()).strftime(usermgr.get_date_format()))
+    
         return list
         
 

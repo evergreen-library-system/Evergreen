@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
-<%def name="page_title()">${_('Evergreen ACQ Picklist')}</%def>
+<%def name="page_title()">${_('Picklist')}</%def>
 <%def name="block_content()">
 
 <%include file='picklist_summary.html'/>
@@ -41,9 +41,9 @@
                 ${entry.provider().name()}
             % endif
         </td>
+        <td><input type='checkbox' name='${c.oils.acq.picklist_id_list_.cgi_name}' value='${c.oils.acq.picklist.id()}'/></td>
     </tr>
 
-    </tr>
     <tr class='oils-acq-picklist-records-author-row'>
         <td colspan='4'>${c.oils.acq.find_entry_attr(entry, "author")}
     </tr>
