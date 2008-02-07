@@ -1,4 +1,5 @@
 dump('entering circ.in_house_use.js\n');
+// vim:noet:sw=4:ts=4:
 
 if (typeof circ == 'undefined') circ = {};
 circ.in_house_use = function (params) {
@@ -54,7 +55,7 @@ circ.in_house_use.prototype = {
 						function(e) {
 							return function() {
 								JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
-								var items = [ [ 'Barcode:' , 'barcode' ] ].concat(
+								var items = [ [ document.getElementById('circStrings').getString('staff.circ.in_house_use.barcode') , 'barcode' ] ].concat(
 									util.functional.map_list(
 										util.functional.filter_list(
 											obj.data.list.cnct,
@@ -70,7 +71,7 @@ circ.in_house_use.prototype = {
 														[ b.owning_lib(), b.name() ]
 													);
 												} catch(E) {
-													alert('error in noncat sorting: ' + E);
+													alert(document.getElementById('circStrings').getString('staff.circ.in_house_use.noncat_sort_error') + ' ' + E);
 													return 0;
 												}
 											}
@@ -81,7 +82,7 @@ circ.in_house_use.prototype = {
 										}
 									)
 								);
-								g.error.sdump('D_TRACE','items = ' + js2JSON(items));
+								g.error.sdump('D_TRACE', document.getElementById('circStrings').getString('staff.circ.in_house_use.items_dump') + js2JSON(items));
 								util.widgets.remove_children( e );
 								var ml = util.widgets.make_menulist(
 									items
@@ -99,7 +100,7 @@ circ.in_house_use.prototype = {
 											tb.focus();
 										} else {
 											tb.disabled = true;
-											tb.value = 'Non-Cataloged';
+											tb.value = document.getElementById('circStrings').getString('staff.circ.in_house_use.noncataloged');
 										}
 									}, false
 								);
@@ -144,7 +145,7 @@ circ.in_house_use.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert(document.getElementById('circStrings').getString('staff.circ.unimplemented')); }
 					],
 					'cmd_in_house_use_submit_barcode' : [
 						['command'],
@@ -195,12 +196,12 @@ circ.in_house_use.prototype = {
 			return true;
 		} else {
 			if ( 1 == obj.error.yns_alert(
-						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
-						'Bad Barcode',
-						'Cancel',
-						'Accept Barcode',
+						document.getElementById('circStrings').getFormattedString('staff.circ.check_digit.bad', [bc]),
+						document.getElementById('circStrings').getString('staff.circ.barcode.bad'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.barcode.accept'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
 			) ) {
 				return true;
@@ -237,7 +238,14 @@ circ.in_house_use.prototype = {
 			}
 
 			if (multiplier > 20) {
-				var r = obj.error.yns_alert('Are you sure you want to mark ' + barcode + ' as having been used ' + multiplier + ' times?','In-House Use Verification', 'Yes', 'No', null, 'Check here to confirm this message.');
+				var r = obj.error.yns_alert(
+					document.getElementById('circStrings').getFormattedString('staff.circ.in_house_use.confirm_multiple', [barcode, multiplier]),
+					document.getElementById('circStrings').getString('staff.circ.in_house_use.confirm_multiple.title'),
+					document.getElementById('circStrings').getString('staff.circ.in_house_use.yes'),
+					document.getElementById('circStrings').getString('staff.circ.in_house_use.no'),
+					null,
+					document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+				);
 				if (r != 0) {
 					obj.controller.view.in_house_use_multiplier_textbox.focus();
 					obj.controller.view.in_house_use_multiplier_textbox.select();
@@ -252,9 +260,21 @@ circ.in_house_use.prototype = {
 				var copy = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]); 
 				if (copy.ilsevent) { 
 					switch(copy.ilsevent) {
-						case -1 : obj.error.standard_network_error_alert('In House Use Failed.  If you wish to use the offline interface, in the top menubar select Circulation -> Offline Interface'); break;
-						case 1502 /* ASSET_COPY_NOT_FOUND */ : obj.error.yns_alert(copy.textcode,'In House Use Failed','Ok',null,null,'Check here to confirm this message'); break;
-						default: throw(copy);
+						case -1 : 
+							obj.error.standard_network_error_alert(document.getElementById('circStrings').getString('staff.circ.in_house_use.failed.verbose'));
+							break;
+						case 1502 /* ASSET_COPY_NOT_FOUND */ : 
+							obj.error.yns_alert(
+								copy.textcode,
+								document.getElementById('circStrings').getString('staff.circ.in_house_use.failed'),
+								document.getElementById('circStrings').getString('staff.circ.in_house_use.ok'),
+								null,
+								null,
+								document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+							);
+							break;
+						default:
+							throw(copy);
 					}
 					return; 
 				}
@@ -294,22 +314,22 @@ circ.in_house_use.prototype = {
 				obj.on_in_house_use(result);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_in_house_use == 'function') {
-				obj.error.sdump('D_CIRC','circ.in_house_use: Calling external .on_in_house_use()\n');
+				obj.error.sdump('D_CIRC', + document.getElementById('circStrings').getString('staff.circ.in_house_use.external') + '\n');
 				window.xulG.on_in_house_use(result);
 			} else {
-				obj.error.sdump('D_CIRC','circ.in_house_use: No external .on_in_house_use()\n');
+				obj.error.sdump('D_CIRC', + document.getElementById('circStrings').getString('staff.circ.in_house_use.no_external') + '\n');
 			}
 
 		} catch(E) {
-			obj.error.standard_unexpected_error_alert('In House Use Failed',E);
+			obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.in_house_use.failed'), E);
 			if (typeof obj.on_failure == 'function') {
 				obj.on_failure(E);
 			}
 			if (typeof window.xulG == 'object' && typeof window.xulG.on_failure == 'function') {
-				obj.error.sdump('D_CIRC','circ.in_house_use: Calling external .on_failure()\n');
+				obj.error.sdump('D_CIRC', + document.getElementById('circStrings').getString('staff.circ.in_house_use.on_failure.external') + '\n');
 				window.xulG.on_failure(E);
 			} else {
-				obj.error.sdump('D_CIRC','circ.in_house_use: No external .on_failure()\n');
+				obj.error.sdump('D_CIRC', + document.getElementById('circStrings').getString('staff.circ.in_house_use.on_failure.external') + '\n');
 			}
 		}
 

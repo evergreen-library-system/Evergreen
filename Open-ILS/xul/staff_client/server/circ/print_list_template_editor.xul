@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Example Template for remote xul -->
 
@@ -11,7 +11,7 @@
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
 <!DOCTYPE window PUBLIC "" ""[
-	<!--#include virtual="/opac/locale/en-US/lang.dtd"-->
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -35,7 +35,9 @@
 		function my_init() {
 			try {
 				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		                if (typeof JSAN == 'undefined') { throw( "The JSAN library object is missing."); }
+				if (typeof JSAN == 'undefined') {
+					throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+				}
 				JSAN.errorLevel = "die"; // none, warn, or die
 				JSAN.addRepository('/xul/server/');
 				JSAN.use('util.error'); g.error = new util.error();
@@ -50,12 +52,11 @@
 				);
 
 				if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-					try { window.xulG.set_tab_name('Receipt Template Editor'); } catch(E) { alert(E); }
+					try { window.xulG.set_tab_name(document.getElementById('circStrings').getString('staff.circ.print_list_template.tab_name')); } catch(E) { alert(E); }
 				}
 
 			} catch(E) {
-				var err_msg = "!! This software has encountered an error.  Please tell your friendly " +
-					"system administrator or software developer the following:\ncirc/print_list.xul\n" + E + '\n';
+				var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['circ/print_list_template_editor.xul', E]);
 				try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
 				alert(err_msg);
 			}
@@ -64,57 +65,59 @@
 	]]>
 	</script>
 
+	<messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
 	<commandset id="print_list_cmds">
 		<command id="cmd_broken" />
 	</commandset>
 
 	<groupbox id="main" flex="1">
-		<caption label="Templates" />
+		<caption label="&staff.circ.print_list.main.label;" />
 		<hbox id="top_ui">
 			<groupbox flex="1">
-				<caption label="ID" />
+				<caption label="&staff.circ.print_list.top_ui.label;" />
 				<hbox>
-					<label value="Name" accesskey="N" control="template_name_menu" />
+					<label value="&staff.circ.print_list.top_ui.name.label;" accesskey="&staff.circ.print_list.top_ui.name.accesskey;" control="template_name_menu" />
 					<hbox id="template_name_menu_placeholder" flex="1"/>
 				</hbox>
 				<hbox>
-					<label value="Type" />
+					<label value="&staff.circ.print_list.top_ui.type.label;" />
 					<hbox id="template_type_menu_placeholder" />
 				</hbox>
 			</groupbox>
 			<groupbox orient="horizontal">
-				<caption label="Actions" />
+				<caption label="&staff.circ.print_list.top_ui.actions.label;" />
 				<vbox>
-					<button id="preview" label="Preview" accesskey="P" />
-					<button id="macros" label="Macros" accesskey="M" />
+					<button id="preview" label="&staff.circ.print_list.top_ui.preview.label;" accesskey="&staff.circ.print_list.top_ui.preview.accesskey;" />
+					<button id="macros" label="&staff.circ.print_list.top_ui.macros.label;" accesskey="&staff.circ.print_list.top_ui.macros.accesskey;" />
 				</vbox>
 				<vbox>
-					<button id="default" label="Default" accesskey="D" />
-					<button id="save" label="Save Locally" accesskey="S" />
+					<button id="default" label="&staff.circ.print_list.top_ui.default.label;" accesskey="&staff.circ.print_list.top_ui.default.accesskey;" />
+					<button id="save" label="&staff.circ.print_list.top_ui.save.label;" accesskey="&staff.circ.print_list.top_ui.save.accesskey;" />
 				</vbox>
 				<vbox>
-					<description>Be sure to "Save Locally" before export</description>
-					<button id="export" label="Export" accesskey="E" />
-					<button id="import" label="Import" accesskey="I" />
+					<description>&staff.circ.print_list.top_ui.description;</description>
+					<button id="export" label="&staff.circ.print_list.top_ui.description.export.label;" accesskey="&staff.circ.print_list.top_ui.description.export.accesskey;" />
+					<button id="import" label="&staff.circ.print_list.top_ui.description.import.label;" accesskey="&staff.circ.print_list.top_ui.description.import.accesskey;" />
 				</vbox>
 			</groupbox>
 		</hbox>
 		<hbox flex="1">
 			<groupbox flex="1">
-				<caption label="Preview" />
+				<caption label="&staff.circ.print_list.top_ui.preview.label;" />
 				<iframe id="sample" flex="1"/>
 			</groupbox>
 			<vbox flex="1">
 				<groupbox flex="1">
-					<caption label="Header"/>
+					<caption label="&staff.circ.print_list.header.label;"/>
 					<textbox id="header" multiline="true" flex="1"/>
 				</groupbox>
 				<groupbox flex="1">
-					<caption label="Line Item"/>
+					<caption label="&staff.circ.print_list.line_item.label;"/>
 					<textbox id="line_item" multiline="true" flex="1"/>
 				</groupbox>
 				<groupbox flex="1">
-					<caption label="Footer"/>
+					<caption label="&staff.circ.print_list.footer.label;"/>
 					<textbox id="footer" multiline="true" flex="1"/>
 				</groupbox>
 			</vbox>

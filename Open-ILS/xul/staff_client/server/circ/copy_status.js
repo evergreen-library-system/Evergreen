@@ -1,7 +1,7 @@
 dump('entering circ.copy_status.js\n');
 // vim:noet:sw=4:ts=4:
 
-if (typeof circ == 'undefined') circ = {};
+if (typeof circ == 'undefined') { circ = {}; }
 circ.copy_status = function (params) {
 
 	JSAN.use('util.error'); this.error = new util.error();
@@ -10,7 +10,7 @@ circ.copy_status = function (params) {
 	JSAN.use('util.date');
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 	JSAN.use('util.sound'); this.sound = new util.sound();
-}
+};
 
 circ.copy_status.prototype = {
 	'selection_list' : [],
@@ -29,12 +29,12 @@ circ.copy_status.prototype = {
 				'call_number' : { 'hidden' : false },
 				'status' : { 'hidden' : false },
 				'alert_message' : { 'hidden' : false },
-				'due_date' : { 'hidden' : false },
+				'due_date' : { 'hidden' : false }
 			},
 			{
 				'except_these' : [
-					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish',
-				],
+					'checkin_time', 'checkin_time_full', 'route_to', 'message', 'uses', 'xact_finish'
+				]
 			}
 		);
 
@@ -102,7 +102,7 @@ circ.copy_status.prototype = {
 					} catch(E) {
 						alert('FIXME: ' + E);
 					}
-				},
+				}
 			}
 		);
 		
@@ -293,7 +293,7 @@ circ.copy_status.prototype = {
 							JSAN.use('util.file');
 							var f = new util.file('');
                             var content = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.title'), 'not_json' : true } );
-                            if (!content) return;
+                            if (!content) { return; }
 							var barcodes = content.split(/\s+/);
                 			if (barcodes.length > 0) {
 			                    JSAN.use('util.exec'); var exec = new util.exec();
@@ -303,7 +303,7 @@ circ.copy_status.prototype = {
 			                            function(b){
 			                                return function() {
 			                                    obj.copy_status(b);
-			                                }
+			                                };
 			                            }(barcodes[i])
 			                        );
 			                    }
@@ -353,7 +353,7 @@ circ.copy_status.prototype = {
 										} catch(E) {
 											obj.error.standard_unexpected_error_alert('export',E); 
 										}
-									}
+									};
 								obj.list.full_retrieve();
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('export',E); 
@@ -368,21 +368,27 @@ circ.copy_status.prototype = {
 
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var copy_shortcut = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) { 
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
 										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
 									}
 									var record_id = map_acn[ volume_id ].record();
 									var ou_id = map_acn[ volume_id ].owning_lib();
 									var label = map_acn[ volume_id ].label();
-									if (!copy_shortcut[record_id]) copy_shortcut[record_id] = {};
-									if (!copy_shortcut[record_id][ou_id]) copy_shortcut[record_id][ou_id] = {};
+									if (!copy_shortcut[record_id]) {
+										copy_shortcut[record_id] = {};
+									}
+									if (!copy_shortcut[record_id][ou_id]) {
+										copy_shortcut[record_id][ou_id] = {};
+									}
 									copy_shortcut[record_id][ou_id][ label ] = volume_id;
 
 								}
@@ -408,7 +414,9 @@ circ.copy_status.prototype = {
 										obj.error.sdump('D_ERROR','batch permission check: ' + E);
 									}
 	
-									if (edit==0) return; // no read-only view for this interface
+									if (edit==0) { 
+										return; // no read-only view for this interface
+									}
 	
 									var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_items.title', [r]);
 	
@@ -451,7 +459,9 @@ circ.copy_status.prototype = {
                                     copies[i].isdeleted(1);
                                 }
 
-								if (! window.confirm(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.del_items.confirm', [util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", "))]) ) return;
+								if (! window.confirm(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.del_items.confirm', [util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")]))) {
+									return;
+								}
 
                                 var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								var robj = obj.network.simple_request(
@@ -462,7 +472,7 @@ circ.copy_status.prototype = {
 										'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.title'),
 										'overridable_events' : [
 											1208 /* TITLE_LAST_COPY */,
-											1227 /* COPY_DELETE_WARNING */,
+											1227 /* COPY_DELETE_WARNING */
 										]
 									}
 								);
@@ -503,7 +513,7 @@ circ.copy_status.prototype = {
 										'copy_ids' : list, 
 										'docid' : volume.record(),
 										'volume_label' : volume.label(),
-										'owning_lib' : volume.owning_lib(),
+										'owning_lib' : volume.owning_lib()
 									} );
 
 								} catch(E) {
@@ -518,13 +528,15 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var aou_hash = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
 										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
 									}
@@ -587,25 +599,32 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var volume_hash = {}; var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
 										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
 										map_acn[ volume_id ].copies( [] );
 									}
 									var record_id = map_acn[ volume_id ].record();
-									if (!volume_hash[record_id]) volume_hash[record_id] = {};
+									if (!volume_hash[record_id]) {
+										volume_hash[record_id] = {};
+									}
 									volume_hash[record_id][volume_id] = 1;
 								}
 
 								for (var rec in volume_hash) {
 
-									list = []; for (var v in volume_hash[rec]) list.push( map_acn[v] );
+									list = [];
+									for (var v in volume_hash[rec]) {
+										list.push( map_acn[v] );
+									}
 
 									var edit = 0;
 									try {
@@ -654,7 +673,7 @@ circ.copy_status.prototype = {
 									//obj.data.stash_retrieve();
 									//var volumes = JSON2js( obj.data.volumes_temp );
 									var volumes = my_xulG.volumes;
-									if (!volumes) return;
+									if (!volumes) { return; }
 								
 									volumes = util.functional.filter_list(
 										volumes,
@@ -671,7 +690,7 @@ circ.copy_status.prototype = {
 										}
 									);
 
-									if (volumes.length == 0) return;
+									if (volumes.length == 0) { return; }
 
 									try {
 										var r = obj.network.request(
@@ -706,19 +725,24 @@ circ.copy_status.prototype = {
 							try {
 								JSAN.use('util.functional');
 								var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-								if (list.length == 0) return;
+								if (list.length == 0) { return; }
 
 								var map_acn = {};
 
 								for (var i = 0; i < list.length; i++) {
 									var volume_id = list[i];
-									if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+									if (volume_id == -1) {
+										continue; /* ignore magic pre-cat volume */
+									}
 									if (! map_acn[volume_id]) {
 										map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
 									}
 								}
 
-								list = []; for (var v in map_acn) list.push( map_acn[v] );
+								list = [];
+								for (var v in map_acn) {
+									list.push( map_acn[v] );
+								}
 
 								var confirm_prompt;
 								if (list.length == 1) {
@@ -756,7 +780,7 @@ circ.copy_status.prototype = {
 											alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.delete_copies'));
 											return;
 										}
-										if (robj.ilsevent != 0) throw(robj);
+										if (robj.ilsevent != 0) { throw(robj); }
 									}
 									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.success'));
 								}
@@ -802,7 +826,10 @@ circ.copy_status.prototype = {
 
 								if (list.length == 1) {
 									var v = obj.network.simple_request('FM_ACN_RETRIEVE',[list[0]]);
-									var owning_lib = v.owning_lib(); if (typeof owning_lib == 'object') owning_lib = owning_lib.id();
+									var owning_lib = v.owning_lib();
+									if (typeof owning_lib == 'object') {
+										owning_lib = owning_lib.id();
+									}
 
 									obj.data.marked_library = { 'lib' : owning_lib, 'docid' : v.record() };
 									obj.data.stash('marked_library');
@@ -835,19 +862,24 @@ circ.copy_status.prototype = {
 									JSAN.use('util.functional');
 
 									var list = util.functional.map_list( obj.selection_list, function(o) { return o.acn_id; } );
-									if (list.length == 0) return;
+									if (list.length == 0) { return; }
 
 									var map_acn = {};
 
 									for (var i = 0; i < list.length; i++) {
 										var volume_id = list[i];
-										if (volume_id == -1) continue; /* ignore magic pre-cat volume */
+										if (volume_id == -1) {
+											continue; /* ignore magic pre-cat volume */
+										}
 										if (! map_acn[volume_id]) {
 											map_acn[ volume_id ] = obj.network.simple_request('FM_ACN_RETRIEVE',[ volume_id ]);
 										}
 									}
 
-									list = []; for (v in map_acn) list.push(map_acn[v]);
+									list = [];
+									for (v in map_acn) {
+										list.push(map_acn[v]);
+									}
 
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
@@ -899,8 +931,8 @@ circ.copy_status.prototype = {
 											'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.override_failure'),
 											'overridable_events' : [
 												1208 /* TITLE_LAST_COPY */,
-												1219 /* COPY_REMOTE_CIRC_LIB */,
-											],
+												1219 /* COPY_REMOTE_CIRC_LIB */
+											]
 										}
 									);
 
@@ -919,7 +951,7 @@ circ.copy_status.prototype = {
 							}
 						}
 
-					],
+					]
 				}
 			}
 		);
@@ -956,8 +988,10 @@ circ.copy_status.prototype = {
 		var obj = this;
 		try {
 			try { document.getElementById('last_scanned').setAttribute('value',''); } catch(E) {}
-			if (!barcode) barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
-			if (!barcode) return;
+			if (!barcode) {
+				barcode = obj.controller.view.copy_status_barcode_entry_textbox.value;
+			}
+			if (!barcode) { return; }
 			if (barcode) {
 				if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
 			}
@@ -1002,9 +1036,10 @@ circ.copy_status.prototype = {
 						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.hold') + '  ';
 					}
 					if (details.transit) {
-						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.transit') + '  '; }
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.transit') + '  ';
+					}
 					if (details.circ && ! details.circ.checkin_time()) {
-						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.circ') + '  '; }
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.circ') + '  ';
 					}
 					try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
 					if (document.getElementById('trim_list')) {
