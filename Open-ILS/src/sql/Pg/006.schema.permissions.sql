@@ -49,6 +49,8 @@ CREATE TABLE permission.usr_object_perm_map (
 		CONSTRAINT perm_usr_obj_once UNIQUE (usr,perm,object_type,object_id)
 );
 
+CREATE INDEX uopm_usr_idx ON permission.usr_object_perm_map (usr);
+
 CREATE TABLE permission.usr_grp_map (
 	id	SERIAL	PRIMARY KEY,
 	usr	INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE,
@@ -221,7 +223,7 @@ $$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( iuser INT, tperm TEXT, obj_type TEXT, obj_id TEXT, target_ou INT ) RETURNS BOOL AS $$
 DECLARE
 	r_usr	actor.usr%ROWTYPE;
-    res     BOOL;
+	res     BOOL;
 BEGIN
 
 	SELECT * INTO r_usr FROM actor.usr WHERE id = iuser;
@@ -234,17 +236,17 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-    SELECT TRUE INTO res FROM permission.usr_object_perm_map WHERE usr = r_usr.id AND object_type = obj_type AND object_id = obj_id;
+	SELECT TRUE INTO res FROM permission.usr_object_perm_map WHERE usr = r_usr.id AND object_type = obj_type AND object_id = obj_id;
 
-    IF FOUND THEN
-        RETURN TRUE;
-    END IF;
-
-    IF target_ou > -1 THEN
-        RETURN permission.usr_has_perm( iuser, tperm, target_ou);
+	IF FOUND THEN
+		RETURN TRUE;
 	END IF;
 
-    RETURN FALSE;
+	IF target_ou > -1 THEN
+		RETURN permission.usr_has_perm( iuser, tperm, target_ou);
+	END IF;
+
+	RETURN FALSE;
 
 END;
 $$ LANGUAGE PLPGSQL;
