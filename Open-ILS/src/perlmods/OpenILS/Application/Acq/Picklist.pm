@@ -133,7 +133,7 @@ sub retrieve_user_picklist {
     my($self, $conn, $auth, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->search_acq_picklist({owner=>$e->requestor->id},{idlist=>$$options{idlist}});
+    return $e->search_acq_picklist({owner=>$e->requestor->id, name=>{'!='=>''}},{idlist=>$$options{idlist}});
 }
 
 
@@ -365,6 +365,11 @@ sub retrieve_pl_picklist_entry {
 
     return $entries;
 }
+
+=head comment
+request open-ils.cstore open-ils.cstore.json_query.atomic {"select":{"acqple":[{"transform":"count", "attregate":1, "column":"id","alias":"count"}]}, "from":"acqple","where":{"picklist":1}}
+=cut
+
 
 
 1;
