@@ -186,12 +186,14 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_fund {
-    my($self, $conn, $auth, $fund_id) = @_;
+    my($self, $conn, $auth, $fund_id, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
     return $e->event unless
         $e->allowed(['ADMIN_FUND','MANAGE_FUND'], $fund->org);
+    $fund->summary(retrieve_fund_summary_impl($e, $fund))
+        if $$options{flesh_summary};
     return $fund;
 }
 
@@ -204,8 +206,10 @@ __PACKAGE__->register_method(
             {desc => 'Authentication token', type => 'string'},
             {desc => 'List of org Unit IDs.  If no IDs are provided, this method returns the 
                 full set of funding sources this user has permission to view', type => 'number'},
-            {desc => q/Limiting permission.  this permission is used find the work-org tree from which  
-                the list of orgs is generated if no org ids are provided.  
+            {desc => q/Options hash.  
+                "limit_perm" -- this permission is used find the work-org tree from which  
+                the list of orgs is generated if no org ids are provided.  The default is ADMIN_FUND.
+                "flesh_summary" -- if true, the summary field on each fund is fleshed
                 The default is ADMIN_FUND/, type => 'string'},
         ],
         return => {desc => 'The fund objects on success, Event on failure'}
@@ -213,16 +217,24 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_org_funds {
-    my($self, $conn, $auth, $org_id_list, $limit_perm) = @_;
+    my($self, $conn, $auth, $org_id_list, $options) = @_;
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
 
-    $limit_perm ||= 'ADMIN_FUND';
+    my $limit_perm = ($$options{limit_perm}) ? $$options{limit_perm} : 'ADMIN_FUND';
 
     my $org_ids = ($org_id_list and @$org_id_list) ? $org_id_list :
         $U->find_highest_work_orgs($e, $limit_perm, {descendants =>1});
     return [] unless @$org_ids;
-    return $e->search_acq_fund({org => $org_ids});
+    my $funds = $e->search_acq_fund({org => $org_ids});
+
+    if($$options{flesh_summary}) {
+        for my $fund (@$funds) {
+            $fund->summary(retrieve_fund_summary_impl($e, $fund));
+        }
+    }
+
+    return $funds;
 }
 
 __PACKAGE__->register_method(
@@ -244,13 +256,19 @@ sub retrieve_fund_summary {
     return $e->event unless $e->checkauth;
     my $fund = $e->retrieve_acq_fund($fund_id) or return $e->event;
     return $e->event unless $e->allowed('MANAGE_FUND', $fund->org);
+    return retrieve_fund_summary_impl($e, $fund);
+}
 
-    my $at = $e->search_acq_fund_allocation_total({fund => $fund_id})->[0];
-    my $dt = $e->search_acq_fund_debit_total({fund => $fund_id})->[0];
-    my $et = $e->search_acq_fund_encumberance_total({fund => $fund_id})->[0];
-    my $st = $e->search_acq_fund_spent_total({fund => $fund_id})->[0];
-    my $cb = $e->search_acq_fund_combined_balance({fund => $fund_id})->[0];
-    my $sb = $e->search_acq_fund_spent_balance({fund => $fund_id})->[0];
+
+sub retrieve_fund_summary_impl {
+    my($e, $fund) = @_;
+
+    my $at = $e->search_acq_fund_allocation_total({fund => $fund->id})->[0];
+    my $dt = $e->search_acq_fund_debit_total({fund => $fund->id})->[0];
+    my $et = $e->search_acq_fund_encumberance_total({fund => $fund->id})->[0];
+    my $st = $e->search_acq_fund_spent_total({fund => $fund->id})->[0];
+    my $cb = $e->search_acq_fund_combined_balance({fund => $fund->id})->[0];
+    my $sb = $e->search_acq_fund_spent_balance({fund => $fund->id})->[0];
 
     return {
         allocation_total => ($at) ? $at->amount : 0,
