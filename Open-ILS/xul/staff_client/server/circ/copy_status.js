@@ -1,4 +1,5 @@
 dump('entering circ.copy_status.js\n');
+// vim:noet:sw=4:ts=4:
 
 if (typeof circ == 'undefined') circ = {};
 circ.copy_status = function (params) {
@@ -126,9 +127,9 @@ circ.copy_status.prototype = {
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert('Action complete.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Checkin did not likely happen.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.sel_checkin.error'),E);
 							}
 						}
 					],
@@ -144,13 +145,13 @@ circ.copy_status.prototype = {
 										var new_bc = cat.util.replace_barcode( barcode );
 										funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(new_bc) );
 									} catch(E) {
-										obj.error.standard_unexpected_error_alert('Barcode ' + barcode + ' was not likely replaced.',E);
+										obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.cmd_replace_barcode.error', [barcode]), E);
 									}
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-								alert('Action complete.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('Barcode replacements did not likely happen.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.cmd_replace_barcodes.error'), E);
 							}
 						}
 					],
@@ -166,7 +167,7 @@ circ.copy_status.prototype = {
 								}
 								for (var i = 0; i < funcs.length; i++) { funcs[i](); }
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('with copy editor',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.sel_edit.error'), E);
 							}
 						}
 					],
@@ -195,7 +196,7 @@ circ.copy_status.prototype = {
 								funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert('Action complete.');
+							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 					'sel_patron' : [
@@ -226,11 +227,11 @@ circ.copy_status.prototype = {
 									circ.util.renew_via_barcode( barcode );
 									funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
 								} else {
-									alert('Item with barcode ' + barcode + ' is not circulating.');
+									alert(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.sel_renew.not_circulating', [barcode]));
 								}
 							}
 							for (var i = 0; i < funcs.length; i++) { funcs[i](); }
-							alert('Action complete.');
+							alert(document.getElementById('circStrings').getString('staff.circ.copy_status.action.complete'));
 						}
 					],
 
@@ -277,7 +278,7 @@ circ.copy_status.prototype = {
 					],
 					'cmd_broken' : [
 						['command'],
-						function() { alert('Not Yet Implemented'); }
+						function() { alert(document.getElementById('circStrings').getString('staff.circ.unimplemented')); }
 					],
 					'cmd_copy_status_submit_barcode' : [
 						['command'],
@@ -291,7 +292,7 @@ circ.copy_status.prototype = {
 							netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 							JSAN.use('util.file');
 							var f = new util.file('');
-                            var content = f.import_file( { 'title' : 'Import Barcode File', 'not_json' : true } );
+                            var content = f.import_file( { 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.title'), 'not_json' : true } );
                             if (!content) return;
 							var barcodes = content.split(/\s+/);
                 			if (barcodes.length > 0) {
@@ -306,10 +307,10 @@ circ.copy_status.prototype = {
 			                            }(barcodes[i])
 			                        );
 			                    }
-								funcs.push( function() { alert('File uploaded.'); } );
+								funcs.push( function() { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file..complete')); } );
 			                    exec.chain( funcs );
 			                } else {
-								alert('No barcodes found in file.');
+								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.no_barcodes'));
 							}
 
 						}
@@ -409,7 +410,7 @@ circ.copy_status.prototype = {
 	
 									if (edit==0) return; // no read-only view for this interface
 	
-									var title = 'Add Item for record #' + r;
+									var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_items.title', [r]);
 	
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -450,7 +451,7 @@ circ.copy_status.prototype = {
                                     copies[i].isdeleted(1);
                                 }
 
-								if (! window.confirm('Are you sure sure you want to delete these items? ' + util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", ")) ) return;
+								if (! window.confirm(document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.del_items.confirm', [util.functional.map_list( copies, function(o) { return o.barcode(); }).join(", "))]) ) return;
 
                                 var robj = obj.network.simple_request('FM_ACP_FLESHED_BATCH_UPDATE',[ ses(), copies, true]);
 								var robj = obj.network.simple_request(
@@ -458,7 +459,7 @@ circ.copy_status.prototype = {
 									[ ses(), copies, true ], 
 									null,
 									{
-										'title' : 'Override Delete Failure?',
+										'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.title'),
 										'overridable_events' : [
 											1208 /* TITLE_LAST_COPY */,
 											1227 /* COPY_DELETE_WARNING */,
@@ -472,10 +473,10 @@ circ.copy_status.prototype = {
 										case 1227 /* COPY_DELETE_WARNING */:
 										break;
 										default:
-											obj.error.standard_unexpected_error_alert('Batch Item Deletion',robj);
+											obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.success.error'), robj);
 										break;
 									}
-								} else { alert('Items Deleted'); }
+								} else { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.del_items.success')); }
 
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> delete items',E);
@@ -488,7 +489,7 @@ circ.copy_status.prototype = {
 								try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_volume) {
-										alert('Please mark a volume as the destination and then try this again.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_items.mark_destination'));
 										return;
 									}
 									
@@ -506,7 +507,7 @@ circ.copy_status.prototype = {
 									} );
 
 								} catch(E) {
-									obj.error.standard_unexpected_error_alert('All copies not likely transferred.',E);
+									obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_items.problem'), E);
 								}
 							}
 
@@ -556,11 +557,11 @@ circ.copy_status.prototype = {
 									}
 
 									if (edit==0) {
-										alert("You don't have permission to add volumes to that library.");
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.add_volumes.perm_failure'));
 										return; // no read-only view for this interface
 									}
 
-									var title = 'Add Volume/Item for Record # ' + r;
+									var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [r]);
 
 									JSAN.use('util.window'); var win = new util.window();
 									var w = win.open(
@@ -628,11 +629,16 @@ circ.copy_status.prototype = {
 									}
 
 									if (edit==0) {
-										alert("You don't have permission to edit this volume.");
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.perm_failure'));
 										return; // no read-only view for this interface
 									}
 
-									var title = (list.length == 1 ? 'Volume' : 'Volumes') + ' for record # ' + rec;
+									var title;
+									if (list.length == 1) {
+										title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volume.title', [rec]);
+									} else {
+										title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.edit_volumes.title', [rec]);
+									}
 
 									JSAN.use('util.window'); var win = new util.window();
 									//obj.data.volumes_temp = js2JSON( list );
@@ -676,12 +682,12 @@ circ.copy_status.prototype = {
                                         if (typeof r.ilsevent != 'undefined') {
                                             switch(r.ilsevent) {
                                                 case 1705 /* VOLUME_LABEL_EXISTS */ :
-                                                    alert("Edit failed:  You tried to change a volume's callnumber to one that is already in use for the given library.  You should transfer the items to the desired callnumber instead.");
+                                                    alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.duplicate'));
                                                     break;
                                                 default: throw(r);
                                             }
                                         } else {
-    										alert('Volumes modified.');
+    										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.edit_volumes.success'));
                                         }
 									} catch(E) {
 										obj.error.standard_unexpected_error_alert('volume update error: ',E);
@@ -714,7 +720,21 @@ circ.copy_status.prototype = {
 
 								list = []; for (var v in map_acn) list.push( map_acn[v] );
 
-								var r = obj.error.yns_alert('Are you sure you would like to delete ' + (list.length != 1 ? 'these ' + list.length + ' volumes' : 'this one volume') + '?', 'Delete Volumes?', 'Delete', 'Cancel', null, 'Check here to confirm this action');
+								var confirm_prompt;
+								if (list.length == 1) {
+									confirm_prompt = document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.singular');
+								} else {
+									confirm_prompt = document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.plural');
+								}	
+
+								var r = obj.error.yns_alert(
+									confirm_prompt,
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.title'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.delete'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.cancel'),
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm')
+								);
 
 								if (r == 0) {
 									for (var i = 0; i < list.length; i++) {
@@ -725,7 +745,7 @@ circ.copy_status.prototype = {
 										[ ses(), list, true ],
 										null,
 										{
-											'title' : 'Override Delete Failure?',
+											'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.override'),
 											'overridable_events' : [
 											]
 										}
@@ -733,12 +753,12 @@ circ.copy_status.prototype = {
 									if (robj == null) throw(robj);
 									if (typeof robj.ilsevent != 'undefined') {
 										if (robj.ilsevent == 1206 /* VOLUME_NOT_EMPTY */) {
-											alert('You must delete all the copies on the volume before you may delete the volume itself.');
+											alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.delete_copies'));
 											return;
 										}
 										if (robj.ilsevent != 0) throw(robj);
 									}
-									alert('Volumes deleted.');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.delete_volumes.success'));
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> delete volumes',E);
@@ -757,9 +777,16 @@ circ.copy_status.prototype = {
 								if (list.length == 1) {
 									obj.data.marked_volume = list[0];
 									obj.data.stash('marked_volume');
-									alert('Volume marked as Item Transfer Destination');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.status'));
 								} else {
-									obj.error.yns_alert('Choose just one Volume to mark as Item Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									obj.error.yns_alert(
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.prompt'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_volume.title'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+										null,
+										null,
+										document.getElementById('circStrings').getString('staff.circ.confirm')
+									);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> mark volume',E);
@@ -779,9 +806,16 @@ circ.copy_status.prototype = {
 
 									obj.data.marked_library = { 'lib' : owning_lib, 'docid' : v.record() };
 									obj.data.stash('marked_library');
-									alert('Library + Record marked as Volume Transfer Destination');
+									alert(document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library'));
 								} else {
-									obj.error.yns_alert('Choose just one Library to mark as Volume Transfer Destination','Limit Selection','OK',null,null,'Check here to confirm this dialog');
+									obj.error.yns_alert(
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library.limit_one'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.mark_library.limit_one.title'),
+										document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+										null,
+										null,
+										document.getElementById('circStrings').getString('staff.circ.confirm')
+									);
 								}
 							} catch(E) {
 								obj.error.standard_unexpected_error_alert('copy status -> mark library',E);
@@ -794,7 +828,7 @@ circ.copy_status.prototype = {
 							try {
 									obj.data.stash_retrieve();
 									if (!obj.data.marked_library) {
-										alert('Please mark a library as the destination from within holdings maintenance and then try this again.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.none'));
 										return;
 									}
 									
@@ -817,19 +851,27 @@ circ.copy_status.prototype = {
 
 									netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 									var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
-									xml += '<description>Transfer volumes ';
+									xml += '<description>';
 
-									xml += util.functional.map_list(
-										list,
+									var vols = util.functional.map_list(list,
 										function (o) {
 											return o.label();
 										}
 									).join(", ");
 
-									xml += ' to library ' + obj.data.hash.aou[ obj.data.marked_library.lib ].shortname();
-									xml += ' on the following record?</description>';
-									xml += '<hbox><button label="Transfer" name="fancy_submit"/>';
-									xml += '<button label="Cancel" accesskey="C" name="fancy_cancel"/></hbox>';
+									var volume_list = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.transfer_volume.confirm', 
+										[vols, obj.data.hash.aou[ obj.data.marked_library.lib ].shortname()]);
+
+									xml += volume_list;
+									xml += '</description>';
+									xml += '<hbox><button label="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.transfer.label');
+									xml += '" name="fancy_submit"/>';
+									xml += '<button label="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cancel.label');
+									xml += '" accesskey="';
+									xml += document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cancel.accesskey');
+									xml += '" name="fancy_cancel"/></hbox>';
 									xml += '<iframe style="overflow: scroll" flex="1" src="' + urls.XUL_BIB_BRIEF + '?docid=' + obj.data.marked_library.docid + '"/>';
 									xml += '</vbox>';
 									JSAN.use('OpenILS.data');
@@ -841,17 +883,20 @@ circ.copy_status.prototype = {
 										//+ '?xml_in_stash=temp_transfer'
 										//+ '&title=' + window.escape('Volume Transfer'),
 										'fancy_prompt', 'chrome,resizable,modal,width=500,height=300',
-										{ 'xml' : xml, 'title' : 'Volume Transfer' }
+										{ 'xml' : xml, 'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.title') }
 									);
 								
-									if (fancy_prompt_data.fancy_status == 'incomplete') { alert('Transfer Aborted'); return; }
+									if (fancy_prompt_data.fancy_status == 'incomplete') { 
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.aborted'));
+										return;
+									}
 
 									var robj = obj.network.simple_request(
 										'FM_ACN_TRANSFER', 
 										[ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'volumes' : util.functional.map_list( list, function(o) { return o.id(); }) } ],
 										null,
 										{
-											'title' : 'Override Volume Transfer Failure?',
+											'title' : document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.override_failure'),
 											'overridable_events' : [
 												1208 /* TITLE_LAST_COPY */,
 												1219 /* COPY_REMOTE_CIRC_LIB */,
@@ -861,16 +906,16 @@ circ.copy_status.prototype = {
 
 									if (typeof robj.ilsevent != 'undefined') {
 										if (robj.ilsevent == 1221 /* ORG_CANNOT_HAVE_VOLS */) {
-											alert('That destination cannot have volumes.');
+											alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.cannot_have_vols'));
 										} else {
 											throw(robj);
 										}
 									} else {
-										alert('Volumes transferred.');
+										alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.success'));
 									}
 
 							} catch(E) {
-								obj.error.standard_unexpected_error_alert('All volumes not likely transferred.',E);
+								obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getString('staff.circ.copy_status.transfer_volume.error'),E);
 							}
 						}
 
@@ -887,17 +932,17 @@ circ.copy_status.prototype = {
 		var obj = this;
 		var good = util.barcode.check(bc);
 		var x = document.getElementById('strict_barcode');
-		if (x && x.checked != true) return true;
+		if (x && x.checked != true) { return true; }
 		if (good) {
 			return true;
 		} else {
 			if ( 1 == obj.error.yns_alert(
-						'Bad checkdigit; possible mis-scan.  Use this barcode ("' + bc + '") anyway?',
-						'Bad Barcode',
-						'Cancel',
-						'Accept Barcode',
+						document.getElementById('circStrings').getFormattedString('staff.circ.check_digit.bad', [bc]),
+						document.getElementById('circStrings').getString('staff.circ.barcode.bad'),
+						document.getElementById('circStrings').getString('staff.circ.cancel'),
+						document.getElementById('circStrings').getString('staff.circ.barcode.accept'),
 						null,
-						'Check here to confirm this action',
+						document.getElementById('circStrings').getString('staff.circ.confirm'),
 						'/xul/server/skin/media/images/bad_barcode.png'
 			) ) {
 				return true;
@@ -921,7 +966,7 @@ circ.copy_status.prototype = {
 				try {
 					var details = req.getResultObject();
 					if (details == null) {
-						throw('Something weird happened.  null result');
+						throw(document.getElementById('circStrings').getString('staff.circ.copy_status.status.null_result'));
 					} else if (details.ilsevent) {
 						switch(details.ilsevent) {
 							case -1: 
@@ -931,8 +976,15 @@ circ.copy_status.prototype = {
 								return;
 							break;
 							case 1502 /* ASSET_COPY_NOT_FOUND */ :
-								try { document.getElementById('last_scanned').setAttribute('value',barcode + ' was either mis-scanned or is not cataloged.'); } catch(E) {}
-								obj.error.yns_alert(barcode + ' was either mis-scanned or is not cataloged.','Not Cataloged','OK',null,null,'Check here to confirm this message');
+								try { document.getElementById('last_scanned').setAttribute('value', document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [barcode])); } catch(E) {}
+								obj.error.yns_alert(
+									document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.status.copy_not_found', [barcode]),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.status.not_cataloged'),
+									document.getElementById('circStrings').getString('staff.circ.copy_status.ok'),
+									null,
+									null,
+									document.getElementById('circStrings').getString('staff.circ.confirm.msg')
+								);
 								obj.controller.view.copy_status_barcode_entry_textbox.select();
 								obj.controller.view.copy_status_barcode_entry_textbox.focus();
 								return;
@@ -943,10 +995,17 @@ circ.copy_status.prototype = {
 						}
 					}
 					var msg = details.copy.barcode() + ' -- ';
-					if (details.copy.call_number() == -1) msg += 'Item is a Pre-Cat.  ';
-					if (details.hold) msg += 'Item is captured for a Hold.  ';
-					if (details.transit) msg += 'Item is in Transit.  ';
-					if (details.circ && ! details.circ.checkin_time()) msg += 'Item is circulating.  ';
+					if (details.copy.call_number() == -1) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.pre_cat') + '  ';
+					}
+					if (details.hold) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.hold') + '  ';
+					}
+					if (details.transit) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.transit') + '  '; }
+					if (details.circ && ! details.circ.checkin_time()) {
+						msg += document.getElementById('circStrings').getString('staff.circ.copy_status.status.circ') + '  '; }
+					}
 					try { document.getElementById('last_scanned').setAttribute('value',msg); } catch(E) {}
 					if (document.getElementById('trim_list')) {
 						var x = document.getElementById('trim_list');
