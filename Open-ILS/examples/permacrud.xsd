@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+Copyright (C) 2007 Laurentian University
+Dan Scott <dscott@laurentian.ca>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
+ targetNamespace="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
+ elementFormDefault="unqualified"
+ attributeFormDefault="unqualified"
+>
+
+<xs:attribute name="permsission" type="xs:string"/>
+<xs:attribute name="context_field" type="xs:string"/>
+
+<xs:element name="context" nillable="true">
+ <xs:complexType>
+  <xs:attribute name="link"/>
+  <xs:attribute name="field"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="create" nillable="true">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="permission" use="required"/>
+  <xs:attribute name="context_field"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="retrieve" nillable="true">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="permission"/>
+  <xs:attribute name="context_field"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="update" nillable="true">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="permission" use="required"/>
+  <xs:attribute name="context_field"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="delete" nillable="true">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="context" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="permission" use="required"/>
+  <xs:attribute name="context_field"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="actions">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="create" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="retrieve" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="update" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="delete" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="permacrud">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="actions" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
+</xs:schema>
