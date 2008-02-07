@@ -287,6 +287,16 @@
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="TRANSIT_COPY" context_field="owner">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="asvr" controller="open-ils.cstore" oils_obj:fieldmapper="action::survey_response" oils_persist:tablename="action.survey_response" reporter:label="Survey Response">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_response_id_seq">
@@ -1824,6 +1834,20 @@
 			<link field="stat_cat_entries" reltype="has_many" key="owning_copy" map="stat_cat_entry" class="ascecm"/>
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </update>
+                <delete permission="DELETE_COPY">
+                    <context link="call_number" field="owning_lib"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="crahp" controller="open-ils.cstore" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
@@ -2026,6 +2050,23 @@
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
+	<class id="puopm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_object_perm_map" oils_persist:tablename="permission.usr_object_perm_map">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_object_perm_map_id_seq">
+			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
+			<field name="ischanged" oils_obj:array_position="1" oils_persist:virtual="true" />
+			<field name="isdeleted" oils_obj:array_position="2" oils_persist:virtual="true" />
+			<field name="object_id" oils_obj:array_position="3" oils_persist:virtual="false" reporter:datatype="text"/>
+			<field name="grantable" oils_obj:array_position="4" oils_persist:virtual="false" reporter:datatype="bool"/>
+			<field name="id" oils_obj:array_position="5" oils_persist:virtual="false" reporter:datatype="id" />
+			<field name="perm" oils_obj:array_position="6" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="usr" oils_obj:array_position="7" oils_persist:virtual="false" reporter:datatype="link"/>
+			<field name="object_type" oils_obj:array_position="8" oils_persist:virtual="false" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+		</links>
+	</class>
 	<class id="mp" controller="open-ils.cstore" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:core="true" reporter:label="Payments: All">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="isnew" oils_obj:array_position="0" oils_persist:virtual="true" />
@@ -2193,6 +2234,16 @@
 			<link field="dest" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="TRANSIT_COPY" context_field="owner">
+                    <context link="target_copy" field="circ_lib"/>
+                </create>
+                <retrieve/>
+                <update permission="UPDATE_TRANSIT" context_field="dest|source"/>
+                <delete permission="DELETE_TRANSIT" context_field="dest|source"/>
+            </actions>
+        </permacrud>
 	</class>
 	<class id="mb" controller="open-ils.cstore" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing" reporter:label="Billing Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
