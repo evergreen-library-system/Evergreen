@@ -22,8 +22,8 @@ use DBI;
 
 #MARC::Charset->ignore_errors(1);
 
-my ($id_field, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
-	('', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
+my ($id_field, $id_subfield, $recid, $user, $config, $idlfile, $marctype, $keyfile, $dontuse_file, $enc, $force_enc, @files, @trash_fields, $quiet) =
+	('', 'a', 0, 1, '/openils/conf/opensrf_core.xml', '/openils/conf/fm_IDL.xml', 'USMARC');
 
 my ($db_driver,$db_host,$db_name,$db_user,$db_pw) =
 	('Pg','localhost','evergreen','postgres','postgres');
@@ -32,6 +32,7 @@ GetOptions(
 	'marctype=s'	=> \$marctype,
 	'startid=i'	=> \$recid,
 	'idfield=s'	=> \$id_field,
+	'idsubfield=s'	=> \$id_subfield,
 	'user=s'	=> \$user,
 	'encoding=s'	=> \$enc,
 	'hard_encoding'	=> \$force_enc,
@@ -143,7 +144,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 			if ($field->is_control_field) {
 				$id = $field->data;
 			} else {
-				$id = $field->subfield('a');
+				$id = $field->subfield($id_subfield);
 			}
 
 			$id =~ s/\D+//gso;
@@ -157,7 +158,7 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	if ($keyfile) {
 		if (my $tcn = $keymap{$id}) {
 			$rec->delete_field( $_ ) for ($rec->field($id_field));
-			$rec->append_fields( MARC::Field->new( $id_field, '', '', 'a', $tcn ) );
+			$rec->append_fields( MARC::Field->new( $id_field, '', '', $id_subfield, $tcn ) );
 		} else {
 			$count++;
 			next;
