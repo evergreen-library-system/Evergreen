@@ -55,7 +55,7 @@ sub add_survey {
 	if($err) { throw OpenSRF::EX::ERROR ($err); }
 
 	# re-retrieve the survey from the db and return it
-	return $self->get_fleshed_survey( $client, $survey->id() );
+	return get_fleshed_survey($self, $client, $survey->id() );
 }
 
 
@@ -161,7 +161,7 @@ sub get_required_surveys {
 
 	my @fleshed;
 	for my $survey (@$surveys) {
-		push(@fleshed, $self->get_fleshed_survey($client, $survey));
+		push(@fleshed, get_fleshed_survey($self, $client, $survey));
 	}
 	return \@fleshed;
 
@@ -210,7 +210,7 @@ sub get_all_surveys {
 
 	my @fleshed;
 	for my $survey (@$surveys) {
-		push(@fleshed, $self->get_fleshed_survey($client, $survey));
+		push(@fleshed, get_fleshed_survey($self, $client, $survey));
 	}
 	return \@fleshed;
 }
@@ -368,7 +368,7 @@ sub get_random_survey {
 	warn "Random survey index for process $$ is $random\n";
 	my $surv = $surveys->[$random];
 
-	return $self->get_fleshed_survey($client, $surv);
+	return get_fleshed_survey($self, $client, $surv);
 
 }
 
@@ -390,7 +390,7 @@ sub get_random_survey_global {
 	warn "Random survey index for process $$ is $random\n";
 	my $surv = $surveys->[$random];
 
-	return $self->get_fleshed_survey($client, $surv);
+	return get_fleshed_survey($self, $client, $surv);
 
 }
 

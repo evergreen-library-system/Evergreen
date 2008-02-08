@@ -86,7 +86,7 @@ sub make_payments {
 
 		$total_paid += $amount;
 
-		$trans = $self->fetch_mbts($client, $login, $transid);
+		$trans = fetch_mbts($self, $client, $login, $transid);
 		return $trans if $U->event_code($trans);
 
 		$logger->info("payment: processing transaction [$transid] with balance_owed = ". 

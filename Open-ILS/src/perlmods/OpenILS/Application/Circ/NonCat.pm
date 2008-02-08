@@ -58,39 +58,6 @@ __PACKAGE__->register_method(
 		event on failure
 	/);
 
-sub __create_noncat_type {
-	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
-	my( $staff, $evt ) = $U->checkses($authtoken);
-	return $evt if $evt;
-
-	# grab all of "my" non-cat types and see if one with 
-	# the requested name already exists
-	my $types = $self->retrieve_noncat_types_all($client, $orgId);
-	for(@$types) {
-		if( $_->name eq $name ) {
-			return OpenILS::Event->new('NON_CAT_TYPE_EXISTS', payload => $name);
-		}
-	}
-
-	$evt = $U->check_perms( $staff->id, $orgId, 'CREATE_NON_CAT_TYPE' );
-	return $evt if $evt;
-
-	my $type = Fieldmapper::config::non_cataloged_type->new;
-	$type->name($name);
-	$type->owning_lib($orgId);
-	$type->circ_duration($interval);
-	$type->in_house( ($inhouse) ? 't' : 'f' );
-
-	my $id = $U->simplereq(
-		'open-ils.storage',
-		'open-ils.storage.direct.config.non_cataloged_type.create', $type );
-
-	return $U->DB_UPDATE_FAILED($type) unless $id;
-	$type->id($id);
-	return $type;
-}
-
-
 sub create_noncat_type {
 	my( $self, $client, $authtoken, $name, $orgId, $interval, $inhouse ) = @_;
 
@@ -100,7 +67,7 @@ sub create_noncat_type {
 
 	# grab all of "my" non-cat types and see if one with 
 	# the requested name already exists
-	my $types = $self->retrieve_noncat_types_all($client, $orgId);
+	my $types = retrieve_noncat_types_all($self, $client, $orgId);
 	for(@$types) {
 		if( $_->name eq $name ) {
 			$e->rollback;
