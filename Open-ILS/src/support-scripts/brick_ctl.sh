@@ -27,8 +27,6 @@
 [ -f ~/.bashrc ] && . ~/.bashrc
 
 DEFAULT_CONFIG=~/.oils_brick.cfg
-LOCAL_BASE="osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
-DRONE_BASE=". /etc/profile && osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
 
 
 # -------------------------------------------------------------------
@@ -98,6 +96,8 @@ fi;
 # make sure an action was specified
 [ -z "$OPT_ACTION" ] && usage;
 
+LOCAL_BASE="osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
+DRONE_BASE=". /etc/profile && osrf_ctl.sh -d $OSRF_PID_DIR -c $OSRF_CONFIG";
 
 # -------------------------------------------------------------------
 # Runs DRONE_ACT on the drones, then LOCAL_ACT on the local machine
