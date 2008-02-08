@@ -120,8 +120,8 @@ sub users_of_interest {
     # let the client know we're still here
     $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-    return $self->process_users_of_interest_results(
-        $conn, $e, $req, $start, $age, $fine_level, $location);
+    return process_users_of_interest_results(
+        $self, $conn, $e, $req, $start, $age, $fine_level, $location);
 }
 
 
@@ -234,8 +234,8 @@ sub users_owing_money {
     # let the client know we're still here
     $conn->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-    return $self->process_users_of_interest_results(
-        $conn, $e, $req, $start, $start_date, $end_date, $fine_level, @locations);
+    return process_users_of_interest_results(
+        $self, $conn, $e, $req, $start, $start_date, $end_date, $fine_level, @locations);
 }
 
 

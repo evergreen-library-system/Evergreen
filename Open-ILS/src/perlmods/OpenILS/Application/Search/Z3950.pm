@@ -130,7 +130,7 @@ sub do_class_search {
 
 		$tmp_args{query} = compile_query('and', $tmp_args{service}, $tmp_args{search});
 
-		my $res = $self->do_service_search( $conn, $auth, \%tmp_args );
+		my $res = do_service_search( $self, $conn, $auth, \%tmp_args );
 
 		push @results, $res->{result};
 		push @connections, $res->{connection};
@@ -171,7 +171,7 @@ sub do_service_search {
 	$$args{port}	= $$info{port},
 	$$args{db}		= $$info{db},
 
-	return $self->do_search( $conn, $auth, $args );
+	return do_search( $self, $conn, $auth, $args );
 }
 
 

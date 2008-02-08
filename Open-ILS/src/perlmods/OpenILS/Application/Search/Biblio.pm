@@ -270,7 +270,7 @@ sub fleshed_by_barcode {
 	my $copyid = $e->search_asset_copy(
 		{barcode => $barcode, deleted => 'f'}, {idlist=>1})->[0]
 		or return $e->event;
-	return $self->fleshed_copy_retrieve2($conn, $copyid);
+	return fleshed_copy_retrieve2( $self, $conn, $copyid);
 }
 
 
@@ -559,7 +559,7 @@ sub cat_search_z_style_wrapper {
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{pubdate} if $$args{search}{pubdate};
 	$$searchhash{searches}{keyword}{term} .= join ' ', $$searchhash{searches}{keyword}{term}, $$args{search}{item_type} if $$args{search}{item_type};
 
-	my $list = $self->the_quest_for_knowledge( $client, $searchhash );
+	my $list = the_quest_for_knowledge( $self, $client, $searchhash );
 
 	if ($list->{count} > 0) {
 		$result->{count} = $list->{count};
@@ -801,8 +801,8 @@ sub biblio_mrid_to_modsbatch {
 	my ($mr, $evt) = _grab_metarecord($mrid);
 	return $evt unless $mr;
 
-	my $mvr = $self->biblio_mrid_check_mvr($client, $mr);
-	$mvr = $self->biblio_mrid_make_modsbatch( $client, $mr ) unless $mvr;
+	my $mvr = biblio_mrid_check_mvr($self, $client, $mr);
+	$mvr = biblio_mrid_make_modsbatch( $self, $client, $mr ) unless $mvr;
 
 	return $mvr unless ref($args);	
 

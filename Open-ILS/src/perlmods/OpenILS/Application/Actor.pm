@@ -2903,7 +2903,7 @@ sub user_opt_in_at_org {
     my($self, $conn, $auth, $user_id) = @_;
 
     # see if we even need to enforce the opt-in value
-    return 1 unless $self->user_opt_in_enabled;
+    return 1 unless user_opt_in_enabled($self);
 
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
