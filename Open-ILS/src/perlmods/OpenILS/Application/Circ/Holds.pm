@@ -358,7 +358,7 @@ sub user_hold_count {
    my $patron = $e->retrieve_actor_user($userid)
       or return $e->event;
    return $e->event unless $e->allowed('VIEW_HOLD', $patron->home_ou);
-   return $self->__user_hold_count($e, $userid);
+   return __user_hold_count($self, $e, $userid);
 }
 
 sub __user_hold_count {
@@ -482,7 +482,7 @@ sub cancel_hold {
 	$e->update_action_hold_request($hold)
 		or return $e->event;
 
-	$self->delete_hold_copy_maps($e, $hold->id);
+	delete_hold_copy_maps($self, $e, $hold->id);
 
 	$e->commit;
 	return 1;
@@ -525,7 +525,7 @@ sub update_hold {
         return $e->die_event unless $e->allowed('UPDATE_HOLD', $usr->home_ou);
     }
 
-    my $evt = $self->update_hold_if_frozen($e, $hold);
+    my $evt = update_hold_if_frozen($self, $e, $hold);
     return $evt if $evt;
 
     $e->update_action_hold_request($hold)
@@ -773,7 +773,7 @@ sub reset_hold {
 	return $evt if $evt;
 	($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD'); # XXX stronger permission
 	return $evt if $evt;
-	$evt = $self->_reset_hold($reqr, $hold);
+	$evt = _reset_hold($self, $reqr, $hold);
 	return $evt if $evt;
 	return 1;
 }
