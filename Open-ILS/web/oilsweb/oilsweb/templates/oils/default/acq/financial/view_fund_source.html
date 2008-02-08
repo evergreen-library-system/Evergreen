@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget'/>
-<%def name="page_title()">${_('View Fund Source')}</%def>
+<%def name="page_title()">${_('View Funding Source')}</%def>
 <%def name="block_content()">
 <table class='oils-admin-table'>
     <tbody>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Source Name')}</td>
+            <td class='oils-admin-label'>${_('Funding Source Name')}</td>
             <td>${c.oils.acq.fund_source.name()}</td>
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Source Onwer')}</td>
+            <td class='oils-admin-label'>${_('Funding Source Onwer')}</td>
             <td>${c.oils.acq.fund_source.owner().name()}</td> 
         </tr>
         <tr>
-            <td class='oils-admin-label'>${_('Fund Source Currency Type')}</td>
+            <td class='oils-admin-label'>${_('Funding Source Currency Type')}</td>
             <td>${c.oils.acq.fund_source.currency_type()}</td> 
         </tr>
     </tbody>

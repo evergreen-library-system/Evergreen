@@ -2,7 +2,7 @@
 <!-- vim:set filetype=mako: -->
 <%inherit file='../base.html'/>
 <%namespace file='../../common/widgets.html' name='widget'/>
-<%def name="page_title()">${_('Create Fund Allocation')}</%def>
+<%def name="page_title()">${_('Create Funding Allocation')}</%def>
 <%def name="block_content()">
 
 <form action='${c.oils.acq.prefix}/fund/allocate' method='POST'>
@@ -17,7 +17,7 @@
                 </td>
             </tr>
             <tr>
-                <td class='oils-admin-label'>${_('Fund Source')}</td>
+                <td class='oils-admin-label'>${_('Funding Source')}</td>
                 <td> 
                     <select name='${c.oils.acq.fund_allocation_source_.cgi_name}'>
                         % for source in c.oils.acq.fund_source_list:
