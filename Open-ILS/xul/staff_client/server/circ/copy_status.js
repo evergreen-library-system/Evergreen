@@ -307,7 +307,7 @@ circ.copy_status.prototype = {
 			                            }(barcodes[i])
 			                        );
 			                    }
-								funcs.push( function() { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file..complete')); } );
+								funcs.push( function() { alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.complete')); } );
 			                    exec.chain( funcs );
 			                } else {
 								alert(document.getElementById('circStrings').getString('staff.circ.copy_status.upload_file.no_barcodes'));
